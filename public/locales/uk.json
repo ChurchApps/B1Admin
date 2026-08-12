@@ -37,8 +37,15 @@
       "unscheduled": "Незапланований"
     },
     "attendanceSetup": {
-      "setupMessage": "Налаштуйте кампуси, служби та часи служб, щоб почати відстеження відвідуваності.",
+      "manageCampuses": "Керувати кампусами",
+      "setupMessage": "Налаштуйте кампуси, служби та час служб, щоб почати відстежувати відвідуваність.",
       "unassigned": "Не призначено"
+    },
+    "checkinType": {
+      "guest": "Гість",
+      "header": "Тип",
+      "volunteer": "Волонтер",
+      "volunteers": "волонтери"
     },
     "labels": {
       "align": "Вирівнювання",
@@ -55,6 +62,17 @@
       "empty": "Порожньо",
       "equals": "Дорівнює",
       "field": "Поле",
+      "fieldChildren": "Діти",
+      "fieldChildrenAllergies": "Алергії дітей",
+      "fieldChurchName": "Назва церкви",
+      "fieldDate": "Дата",
+      "fieldDisplayName": "Ім'я",
+      "fieldFirstName": "Ім'я",
+      "fieldLastName": "Прізвище",
+      "fieldNametagNotes": "Нотатки на бейджі",
+      "fieldNickName": "Нікнейм",
+      "fieldSecurityCode": "Код безпеки",
+      "fieldSessions": "Сесії",
       "fill": "Заливка",
       "fontSize": "Розмір шрифту",
       "height": "Висота (дюйми)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "Створіть шаблон етикетки для налаштування бейджів, що друкуються на кіосках реєстрації.",
       "notEmpty": "Не порожньо",
       "notEquals": "Не дорівнює",
+      "opDoesNotEqual": "Не дорівнює",
+      "opEquals": "Дорівнює",
+      "opIsBlank": "Порожньо",
+      "opIsNotBlank": "Не порожньо",
       "operator": "Оператор",
       "palette": "Додати блок",
       "pickup": "Квиток для видачі",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Схвалити",
+      "approvedToast": "Запит схвалено.",
       "bookingRequests": "Запити на кімнати та ресурси",
+      "confirmReject": "Ви впевнені, що хочете відхилити цей запит?",
       "conflicts": "Конфлікти",
       "description": "Опис",
       "event": "Подія",
@@ -127,6 +151,8 @@
       "noPendingBookings": "Немає очікуваних запитів на кімнати або ресурси.",
       "noPendingEvents": "Немає очікуваних запитів на події.",
       "reject": "Відхилити",
+      "rejectTitle": "Відхилити запит",
+      "rejectedToast": "Запит відхилено.",
       "roomResource": "Кімната / Ресурс",
       "status": "Статус",
       "subtitle": "Перегляньте очікувані запити на кімнати, ресурси та події",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "Скасувати",
       "confirmDelete": "Ви впевнені, що хочете видалити цю подію?",
+      "confirmDeleteSeries": "Це повторювана подія. Її видалення призведе до видалення всієї серії та всіх її повторень. Ви впевнені?",
       "delete": "Видалити",
+      "editEvent": "Редагувати подію",
       "manageRegistrations": "Керувати реєстраціями",
-      "noGroups": "Групи не знайдені.",
-      "editEvent": "Редагувати подію"
+      "noGroups": "Групи не знайдені."
     },
     "calendarList": {
       "aboutParagraph1": "Календарі дозволяють організовувати та відображати події вашої церкви.",
@@ -203,6 +230,7 @@
       "importIcs": "Імпортувати .ics",
       "newEvent": "Нова подія",
       "noGroupsAdded": "Ще не додано жодної групи",
+      "pendingApprovals": "{count} очікують схвалення",
       "print": "Друк",
       "subtitle": "Керуйте подіями та групами календаря"
     },
@@ -334,12 +362,12 @@
     "confirm": "Підтвердити",
     "copy": "Копіювати",
     "createPerson": {
+      "confirmDuplicate": "Користувач '{{existingName}}' ({{existingEmail}}) з такою електронною адресою вже існує. Ви дійсно хочете додати '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Введіть ім'я.",
         "lastName": "Введіть прізвище.",
         "validEmail": "Введіть дійсну адресу електронної пошти."
-      },
-      "confirmDuplicate": "Користувач '{{existingName}}' ({{existingEmail}}) з такою електронною адресою вже існує. Ви дійсно хочете додати '{{firstName}} {{lastName}}'?"
+      }
     },
     "custom": "Власне",
     "delete": "Видалити",
@@ -360,8 +388,14 @@
     },
     "help": "Допомога",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Молитва"
+      },
+      "noResults": "Нічого не знайдено",
       "searchLabel": "Пошук іконок",
       "searchPlaceholder": "Почніть друкувати для пошуку (наприклад, особа, дім, церква)...",
+      "showingDefault": "Показано {{count}} значків за замовчуванням",
+      "showingMatching": "Показано {{count}} відповідних значків",
       "title": "Вибрати іконку",
       "tryDifferent": "Спробуйте інший пошуковий запит"
     },
@@ -386,6 +420,7 @@
     "right": "Право",
     "save": "Зберегти",
     "saveChanges": "Зберегти зміни",
+    "saveError": "Не вдалося зберегти. Спробуйте ще раз.",
     "saving": "Збереження...",
     "search": "Пошук",
     "searching": "Пошук...",
@@ -490,6 +525,9 @@
       "workflows": "Процеси"
     }
   },
+  "controlPanel": {
+    "serverError": "Щось пішло не так. Спробуйте ще раз."
+  },
   "createPerson": {
     "addNewPerson": "Додати нову особу",
     "email": "Електронна пошта",
@@ -538,6 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "Пошук людей",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "Очистити пошук",
       "display": "Показати",
       "noResults": "Не знайдено людей за вашими критеріями пошуку.",
       "photo": "Фото",
@@ -590,6 +629,8 @@
       "invalidCode": "Недійсний або застарілий код. Перевірте та спробуйте ще раз.",
       "loading": "Завантаження...",
       "noChurchSelected": "Церкву не вибрано. Увійдіть знову та виберіть церкву.",
+      "planType": "Показувати плани для",
+      "planTypeNone": "Немає (лише перегляд)",
       "requestedPermissions": "Запитані дозволи:",
       "title": "Авторизувати пристрій",
       "verifyFailed": "Не вдалося перевірити код. Спробуйте ще раз."
@@ -609,6 +650,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Метод",
+      "viewBatch": "Переглянути партію",
       "willAppear": "Donations will appear here once they have been made."
     }
   },
@@ -665,7 +707,8 @@
       "ofGoal": "від мети",
       "pledges": "Зобов'язання",
       "status": "Статус",
-      "subtitle": "Зобов'язання та прогрес пожертв для цієї кампанії"
+      "subtitle": "Зобов'язання та прогрес пожертв для цієї кампанії",
+      "unknownPerson": "Невідома особа"
     },
     "campaignsPage": {
       "addCampaign": "Додати кампанію",
@@ -708,6 +751,7 @@
       "cash": "Готівка",
       "check": "Чек",
       "checkNum": "№ чека",
+      "confirmMsg": "Ви впевнені, що хочете остаточно видалити це пожертвування?",
       "date": "Дата",
       "fund": "Фонд",
       "inKind": "Натурою",
@@ -733,6 +777,7 @@
       "errMsg": "Фонд не знайдено. Створіть фонд перед оформленням пожертви.",
       "export": "Експорт",
       "funds": "Фонди",
+      "method": "Метод",
       "noDonMsg": "Пожертви не відстежуються. Після введення пожертви з'являться тут.",
       "pending": "В очікуванні",
       "statements": "Виписки пожертв",
@@ -786,7 +831,8 @@
       "subtitle": "Керуйте фондами пожертв і відстежуйте категорії пожертвувань",
       "taxDeductible": "Звільнено від податків",
       "taxStatus": "Податковий статус",
-      "totalFunds": "Всього фондів"
+      "totalFunds": "Всього фондів",
+      "viewBatch": "Переглянути партію"
     },
     "period": {
       "monthly": "Щомісяця",
@@ -936,6 +982,7 @@
       "emailNotifMsg": "Щоразу, коли форма буде надіслана, ви отримуватимете сповіщення електронною поштою.",
       "formMem": "Учасники форми",
       "perm": "Дозвіл",
+      "removeConfirm": "Видалити {name} з цієї форми?",
       "view": "Лише перегляд"
     },
     "formPage": {
@@ -949,6 +996,7 @@
       "date": "Дата",
       "decNum": "Десяткове",
       "desc": "Опис",
+      "fieldType": "Тип поля",
       "fund": "Фонд",
       "multiChoice": "Кілька варіантів",
       "payment": "Оплата",
@@ -1001,7 +1049,8 @@
   "gallery": {
     "aspectRatio": "Співвідношення сторін",
     "confirmDelete": "Підтвердити видалення",
-    "freeForm": "Довільна форма"
+    "freeForm": "Довільна форма",
+    "uploadError": "Обробку зображення завершено, але завантаження не вдалося. Можливо, у цьому середовищі API недоступний."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1071,9 @@
       "duplicateTooltip": "Дублювати цю групу",
       "emailTooltip": "Надіслати лист цій групі",
       "labels": "Мітки",
+      "location": "Місце",
       "meetingInfo": "Інформація про зустріч",
+      "meetingTime": "Час зустрічі",
       "moreLabels": "Більше міток",
       "parentPickup": "Забирання батьками",
       "printNametag": "Друк бейджа",
@@ -1033,6 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "Додати події",
+      "allowRsvps": "Дозволити підтвердження участі",
       "bulkAddTitle": "Додати повторювані події",
       "confirmDelete": "Видалити \"{title}\" та всі його повторення?",
       "datesPreview": "Буде створено {count} зустрічей. Зніміть позначку з дат, які потрібно пропустити.",
@@ -1042,7 +1094,15 @@
       "lastMeeting": "Остання зустріч",
       "noDates": "У вибраному діапазоні немає дат зустрічей.",
       "noEvents": "Подій ще немає. Використайте «Додати події», щоб запланувати зустрічі групи.",
+      "noResponses": "Поки що немає відповідей.",
       "oneTime": "Один раз",
+      "response_maybe": "Можливо",
+      "response_no": "Ні",
+      "response_yes": "Так",
+      "rosterTitle": "Відповіді щодо участі",
+      "rsvpSummary": "{yes} так · {maybe} можливо · {no} ні",
+      "rsvps": "Підтвердження участі",
+      "rsvpsDisabled": "Вимкнено",
       "skipHolidays": "Пропустити свята",
       "skippedDates": "Пропущені дати",
       "until": "до"
@@ -1064,15 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Додати фото",
+      "ageGrade": "Вік і клас",
       "archive": "Архівувати",
       "archiveAria": "Архівувати групу",
       "attTrack": "Відстежувати відвідуваність",
       "attendance": "Відвідування",
       "attendanceReminders": "Нагадування про відвідуваність електронною поштою",
+      "capacity": "Місткість",
       "catName": "Назва категорії",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Змінити фото групи",
+      "checkinCapacity": "Місткість для реєстрації",
+      "checkinClosed": "Закрито для реєстрації",
       "clickToAddPhoto": "Натисніть, щоб додати фото",
+      "confidential": "Конфіденційна група",
+      "confidentialHelp": "Приховати цю групу та її список учасників на публічних сторінках, у пошуку груп і від осіб, які не є учасниками.",
       "confirmArchive": "Ви впевнені, що хочете архівувати цю групу? Вона буде прихована зі списку груп, поки не буде відновлена.",
       "confirmMsg": "Ви впевнені, що хочете назавжди видалити цю групу?",
       "enrollment": "Запис",
@@ -1083,14 +1149,24 @@
       "groupNameMsg": "Введіть назву групи.",
       "groupPhotoAlt": "група",
       "groupSlugAria": "Слаг групи",
+      "guestCapacity": "Місткість для гостей",
+      "maxAge": "Максимальний вік",
+      "maxGrade": "Максимальний клас",
       "meetingLocation": "Місце зустрічі",
       "meetingLocationAria": "Місце зустрічі",
       "meetingTime": "Час зустрічі",
       "meetingTimeAria": "Час зустрічі",
+      "minAge": "Мінімальний вік",
+      "minGrade": "Мінімальний клас",
+      "minVolunteers": "Мінімум волонтерів",
+      "months": "Місяці",
+      "noLimit": "Без обмежень",
       "parPick": "Забирання батьками",
       "prinName": "Друк бейджа",
       "publicRoster": "Показувати список на сайті",
-      "slug": "Slug (ключова назва для URL-адрес)"
+      "slug": "Slug (ключова назва для URL-адрес)",
+      "volunteerRatio": "Дітей на одного волонтера",
+      "years": "Роки"
     },
     "groupHealth": {
       "attendance": "Відвідуваність",
@@ -1124,8 +1200,10 @@
       "member": "учасник",
       "members": "учасники",
       "messagePlaceholder": "Напишіть повідомлення для всіх учасників групи…",
+      "messageSent": "Повідомлення надіслано.",
       "noMemDesc": "Додайте учасників з панелі праворуч, щоб почати формувати групу.",
       "noMemTitle": "Учасників ще немає",
+      "removeConfirm": "Видалити {name} з цієї групи?",
       "removeLeaderAccess": "Прибрати права лідера",
       "role": "Роль",
       "send": "Надіслати",
@@ -1171,9 +1249,13 @@
       "groups": "Групи",
       "labels": "Мітки",
       "noGroupMsg": "Груп не знайдено. Створіть групу.",
+      "noMatchMsg": "Жодна група не відповідає вашому пошуку.",
+      "pendingRequestSingular": "{count} запит очікує",
+      "pendingRequests": "{count} запитів очікують",
       "pers": "1 особа",
       "ppl": "Люди",
       "restore": "Відновити",
+      "searchPlaceholder": "Пошук груп...",
       "showArchived": "Показати архівовані",
       "spPpl": " людей",
       "subtitle": {
@@ -1186,6 +1268,11 @@
       "availableMem": "Доступні учасники групи",
       "noMem": "Немає доступних учасників групи.",
       "unknown": "Невідомо"
+    },
+    "pendingRequestsPage": {
+      "empty": "Немає запитів, що очікують.",
+      "subtitle": "Схвалюйте або відхиляйте запити, ініційовані учасниками, у всіх групах.",
+      "title": "Запити на вступ, що очікують"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Вставити поле злиття в тіло:",
@@ -1223,6 +1310,8 @@
       "eligibleSummary": "{eligibleCount} з {totalMembers} учасників отримають це SMS.",
       "eligibleSummarySingular": "{eligibleCount} з {totalMembers} учасник отримає це SMS.",
       "fallbackError": "Не вдалося надіслати SMS.",
+      "insufficientCredits": "У вашій церкві закінчилися кредити на текстові повідомлення в цьому розрахунковому періоді. Повідомлення не було надіслано. Оновіть тариф або зачекайте на поновлення кредитів на",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Завантаження одержувачів...",
       "messageLabel": "Повідомлення",
       "noPhoneNotice": "{count} не мають номера телефону.",
@@ -1268,6 +1357,11 @@
       "deleteConfirm": "Ви впевнені, що хочете назавжди видалити цей сеанс?",
       "sesEdit": "Редагувати сеанс"
     },
+    "sessionsDisabled": {
+      "description": "Увімкніть відстеження відвідуваності, щоб фіксувати сеанси та реєстрації для цієї групи.",
+      "enable": "Увімкнути відвідуваність",
+      "title": "Відстеження відвідуваності не увімкнено"
+    },
     "tabs": {
       "mem": "Учасники",
       "ses": "Сеанси"
@@ -1309,8 +1403,8 @@
       "registrations": "Реєстрації",
       "roomsResources": "Кімнати та ресурси",
       "sermons": "Проповіді",
-      "stripeImport": "Імпорт Stripe",
       "site": "Сайт",
+      "stripeImport": "Імпорт Stripe",
       "website": "Веб-сайт"
     }
   },
@@ -1384,6 +1478,11 @@
     "sep": "Вер.",
     "september": "Вересень"
   },
+  "notFound": {
+    "backHome": "Назад до панелі керування",
+    "message": "Сторінку, яку ви шукаєте, не знайдено або її було переміщено.",
+    "title": "Сторінку не знайдено"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Завантаження користувацьких полів...",
@@ -1414,6 +1513,11 @@
       "clearSelection": "Скасувати вибір",
       "createNewGroup": "Створити нову групу",
       "delete": "Видалити",
+      "deleteConfirm": "Ви впевнені, що хочете видалити {count} вибраних осіб? Цю дію неможливо скасувати.",
+      "deleteError": "Не вдалося видалити вибраних осіб",
+      "deleteSelected": "Видалити вибраних осіб",
+      "deleteSuccess": "{count} осіб успішно видалено",
+      "deleting": "Видалення...",
       "error": "Помилка",
       "fieldPrompt": "Оновити поле для {count} вибраних осіб.",
       "fieldSuccess": "Оновлено {count} осіб.",
@@ -1428,8 +1532,8 @@
       "optedOutYes": "Відмова: так",
       "removeFromGroup": "Видалити з групи",
       "selected": "Вибрано",
-      "workflowSuccess": "Додано {count} осіб до процесу.",
-      "setCampus": "Встановити кампус"
+      "setCampus": "Встановити кампус",
+      "workflowSuccess": "Додано {count} осіб до процесу."
     },
     "demographics": {
       "age": "Вік",
@@ -1623,6 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "Додати до процесу",
       "age": "Вік",
+      "emailPerson": "Написати цій особі на пошту",
       "gender": "Стать",
       "hasLogin": "Має вхід",
       "maritalStatus": "Сімейний стан",
@@ -1632,6 +1737,7 @@
       "applyQuestion": "Бажаєте застосувати це до всього",
       "cannotDeleteSelf": "Ви не можете видалити свій запис особи.",
       "confirmMsg": "Ви впевнені, що хочете назавжди видалити цей запис особи?",
+      "customFields": "Додаткові поля",
       "donorNumber": "Номер жертводавця",
       "exten": "Розширення",
       "family": "сім'я",
@@ -1668,6 +1774,8 @@
       "profile": "Профіль"
     },
     "personPage": {
+      "confidentialNotes": "Конфіденційні нотатки",
+      "confidentialNotesSuffix": " Конфіденційні нотатки",
       "notesSuffix": " Нотатки",
       "thisPerson": "ця особа"
     },
@@ -1681,6 +1789,18 @@
       "mobile": "Мобільний",
       "persDet": "Особисті дані",
       "work": "Робота"
+    },
+    "pickup": {
+      "add": "Додати",
+      "confirmDelete": "Ви впевнені, що хочете видалити цю особу?",
+      "name": "Ім'я",
+      "none": "Не додано жодної особи.",
+      "notAuthorized": "Не авторизовано",
+      "orAddByName": "Або додайте когось, кого немає в системі:",
+      "relationship": "Ступінь спорідненості",
+      "status": "Статус",
+      "title": "Забирання",
+      "trusted": "Довірений"
     },
     "tabs": {
       "att": "Відвідування",
@@ -1706,6 +1826,7 @@
     "female": "Жіноча",
     "firstName": "Ім'я",
     "gender": "Стать",
+    "grade": "Клас",
     "inactive": "Неактивний",
     "lastName": "Прізвище",
     "line1": "Рядок 1",
@@ -1723,6 +1844,7 @@
     "phone": "Телефон",
     "prefix": "Префікс",
     "regularAttendee": "Регулярний відвідувач",
+    "school": "Школа",
     "single": "Неодружений",
     "staff": "Персонал",
     "state": "Штат/Провінція",
@@ -1906,6 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Призначити позицію",
+      "confirmDelete": "Ви впевнені, що хочете видалити це призначення волонтера?",
       "done": "Готово",
       "editAssign": "Редагувати призначення",
       "noMem": "Учасників групи не знайдено."
@@ -1964,6 +2087,7 @@
       "waitingForAuth": "Очікування авторизації..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Ваш браузер не підтримує відтворення аудіо.",
       "fallbackPreview": "Попередній перегляд",
       "fallbackTitle": "Попередній перегляд вмісту",
       "noContent": "Немає вмісту для відображення.",
@@ -2156,7 +2280,11 @@
       "ppl": "людей",
       "prefTimeMismatch": "воліє служити о",
       "publish": "Опублікувати план",
+      "publishConfirm": "Опублікувати цей план, щоб волонтери могли бачити свої призначення?",
+      "publishConfirmLabel": "Опублікувати",
+      "publishConfirmTitle": "Опублікувати план",
       "publishNotify": "Опублікувати та сповістити",
+      "publishNotifyConfirm": "Опублікувати цей план і сповістити {count} волонтерів про їхні призначення? Сповіщення надсилаються негайно.",
       "timeCon": "Конфлікт часу між",
       "timeCon2": "Конфлікт часу в",
       "timesThisMonth": "разів цього місяця, понад бажаний максимум",
@@ -2177,6 +2305,7 @@
       "allowSelfSignup": "Дозволити самостійну реєстрацію",
       "catName": "Назва категорії",
       "catNameReq": "Назва категорії обов'язкова.",
+      "confirmDelete": "Ви впевнені, що хочете видалити цю позицію? Усі, кого зараз на неї призначено, будуть зняті з розкладу.",
       "description": "Опис",
       "descriptionHelper": "Показується волонтерам при перегляді можливостей реєстрації",
       "nameReq": "Ім'я обов'язкове",
@@ -2198,6 +2327,14 @@
       "length": "Довжина",
       "serviceOrder": "ПОРЯДОК СЛУЖБИ",
       "time": "Час"
+    },
+    "printPreview": {
+      "colorCoded": "Кольорове кодування",
+      "format": "Формат:",
+      "materials": "Матеріали:",
+      "script": "Сценарій",
+      "serviceOrder": "Порядок служіння",
+      "title": "Попередній перегляд друку"
     },
     "schedulingPreference": {
       "household": "Планування сім'ї",
@@ -2248,7 +2385,8 @@
       "title": "Огляд служіння"
     },
     "servingPage": {
-      "showAll": "Показати все"
+      "showAll": "Показати все",
+      "showAllHint": "Ваші служіння приховані, оскільки ви не є учасником. Увімкніть «Показати все» вище, щоб їх побачити."
     },
     "songDialog": {
       "close": "Закрити",
@@ -2289,6 +2427,7 @@
       "updateFromPlanHelp": "Замінює вміст цього шаблону поточним порядком богослужіння та позиціями з плану."
     },
     "timeEdit": {
+      "confirmDelete": "Ви впевнені, що хочете видалити цей час?",
       "disName": "Відображуване ім'я",
       "disNameReq": "Відображуване ім'я обов'язкове.",
       "endReq": "Час закінчення обов'язковий",
@@ -2341,7 +2480,9 @@
     "pairScreen": {
       "codeRequired": "Код підключення обов'язковий",
       "invalidCode": "Недійсний код підключення",
-      "pairingCode": "Код підключення"
+      "pairingCode": "Код підключення",
+      "planType": "Показувати плани для",
+      "planTypeNone": "Немає (лише сповіщення)"
     },
     "profilePage": {
       "accDel": "Видалення облікового запису",
@@ -2375,6 +2516,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Додати код знижки",
+      "addSelection": "Додати вибір",
+      "addType": "Додати тип",
+      "amount": "Сума",
+      "attendeeTypes": "Типи учасників",
+      "balance": "Залишок",
+      "capacity": "Місткість",
+      "code": "Код",
+      "description": "Опис",
+      "discountCodes": "Коди знижок",
+      "discountType": "Тип",
+      "endDate": "Дата закінчення",
+      "kind": "Вид",
+      "maxQuantity": "Макс. кількість",
+      "maxUses": "Макс. використань",
+      "method": "Метод",
+      "minMembers": "Мін. учасників",
+      "name": "Назва",
+      "noCoupons": "Поки що немає кодів знижок.",
+      "noPayments": "Платежів не зафіксовано.",
+      "noSelections": "Поки що немає варіантів вибору.",
+      "noTypes": "Поки що немає типів учасників.",
+      "paid": "Оплачено",
+      "paidTotal": "Оплачено / Всього",
+      "payments": "Платежі",
+      "percent": "Відсоток",
+      "price": "Ціна",
+      "promote": "Просувати",
+      "registrationDetails": "Деталі реєстрації",
+      "removeConfirm": "Видалити цей елемент? Цю дію неможливо скасувати.",
+      "selections": "Вибори",
+      "sort": "Сортувати",
+      "startDate": "Дата початку",
+      "total": "Всього",
+      "type": "Тип",
+      "usesSoFar": "Використано: {count}",
+      "value": "Значення"
+    },
     "registrationDetailsPage": {
       "addAttendee": "Додати учасника",
       "addAttendeeError": "Не вдалося зареєструвати учасника.",
@@ -2405,6 +2585,7 @@
       "capacity": "Місткість",
       "capacityPlaceholder": "Залиште порожнім для необмеженої кількості",
       "enableRegistration": "Увімкнути реєстрацію",
+      "enableWaitlist": "Увімкнути список очікування",
       "none": "Немає",
       "registrationCloses": "Реєстрація закривається",
       "registrationOpens": "Реєстрація відкривається",
@@ -2704,7 +2885,11 @@
       "church": "Church",
       "churchName": "Назва церкви",
       "churches": "Churches",
+      "churchesSubtitle": "Пошук і керування всіма церквами",
+      "impersonateSubtitle": "Увійти як інший користувач для підтримки",
       "impersonateUser": "Увійти як користувач",
+      "jobs": "Фонові завдання",
+      "jobsSubtitle": "Останній запуск і збої запланованих завдань",
       "location": "Місцезнаходження",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
@@ -2717,13 +2902,20 @@
       "searchResults": "Результати пошуку",
       "servAdmin": "Адміністратор сервера",
       "serverHealth": "Стан сервера",
+      "serverHealthSubtitle": "Перевірка стану серверних служб",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
+      "translationSubtitle": "Пошук перекладених рядків локалізації",
+      "usageSubtitle": "Перегляд тенденцій використання сервера",
       "usageTrends": "Usage Trends",
+      "users": "Користувачі",
+      "usersSubtitle": "Пошук будь-якого облікового запису користувача для підтримки",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
+      "archiveConfirm": "Архівувати {name}? Учасники втратять доступ, доки його не буде відновлено.",
       "churchNameSearchAria": "Пошук за назвою церкви",
+      "restoreConfirm": "Відновити доступ для {name}?",
       "searchChurchesAria": "Пошук церков"
     },
     "impersonateTab": {
@@ -2734,6 +2926,18 @@
       "searchAria": "Пошук користувачів для входу від їхнього імені",
       "searchLabel": "Email користувача",
       "searchPlaceholder": "Пошук за email для входу"
+    },
+    "jobsTab": {
+      "duration": "Тривалість",
+      "failed": "Не вдалося",
+      "job": "Завдання",
+      "lastRun": "Останній запуск",
+      "loadError": "Не вдалося завантажити запуски завдань.",
+      "noRuns": "Поки що немає записаних запусків завдань.",
+      "recentFailures": "Останні збої",
+      "subtitle": "Останній запуск кожного запланованого завдання. Запуски фіксуються обробниками таймера та зберігаються 30 днів.",
+      "success": "Успішно",
+      "title": "Фонові завдання"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2760,6 +2964,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Пошук статистики перекладу"
+    },
+    "usersTab": {
+      "access": "Доступ",
+      "description": "Шукайте всі облікові записи користувачів за іменем або електронною поштою, щоб переглянути їхні церкви та активність входу.",
+      "email": "Електронна пошта",
+      "lastLogin": "Останній вхід",
+      "member": "Учасник",
+      "name": "Ім'я",
+      "noChurches": "Цей користувач не пов'язаний з жодною церквою.",
+      "searchAria": "Пошук користувачів",
+      "searchLabel": "Ім'я або електронна пошта",
+      "staff": "Персонал",
+      "subDomain": "Піддомен",
+      "title": "Пошук користувачів"
     }
   },
   "settings": {
@@ -2847,7 +3065,8 @@
     },
     "auditLogPage": {
       "action": "Дія",
-      "allCategories": "Усі категорії",
+      "allCategories": "Всі категорії",
+      "allModules": "Всі модулі",
       "category": "Категорія",
       "categoryDonation": "Пожертви",
       "categoryForm": "Форми",
@@ -2855,18 +3074,63 @@
       "categoryLogin": "Вхід",
       "categoryPermission": "Дозволи",
       "categoryPerson": "Люди",
-      "categorySettings": "Параметри",
+      "categorySettings": "Налаштування",
+      "changes": "Зміни",
       "date": "Дата",
+      "deletedRecord": "Видалений запис",
       "details": "Деталі",
-      "endDate": "Дата завершення",
+      "endDate": "Дата закінчення",
       "entity": "Сутність",
-      "exportCsv": "Експортувати CSV",
+      "exportCsv": "Експорт CSV",
+      "field": "Поле",
       "ipAddress": "IP-адреса",
-      "noEntries": "Записів журналу аудиту не знайдено",
+      "module": "Модуль",
+      "moduleAttendance": "Відвідуваність",
+      "moduleContent": "Контент",
+      "moduleDoing": "Служіння",
+      "moduleGiving": "Пожертви",
+      "moduleLessons": "Уроки",
+      "moduleMembership": "Членство",
+      "moduleMessaging": "Повідомлення",
+      "newValue": "Нове значення",
+      "noDetails": "Немає доступних деталей змін",
+      "noEntries": "Записи журналу аудиту не знайдені",
+      "noPrevious": "Попередній запис не знайдено; відображаються лише надіслані значення.",
+      "oldValue": "Старе значення",
       "search": "Пошук",
       "startDate": "Дата початку",
       "subtitle": "Відстежуйте зміни та активність у вашій церкві",
-      "title": "Журнал аудиту"
+      "title": "Журнал аудиту",
+      "truncated": "Деталі були обрізані, і цей запис не можна скасувати."
+    },
+    "batches": {
+      "action": "Дія",
+      "actions": "Дії",
+      "created": "Створено",
+      "creator": "Автор",
+      "date": "Дата",
+      "entityId": "ID об'єкта",
+      "entityType": "Тип об'єкта",
+      "failed": "Не вдалося ({count})",
+      "items": "Елементи",
+      "label": "Мітка",
+      "noEntries": "Партій не знайдено",
+      "noResults": "У цій партії немає записів",
+      "restored": "Відновлено {count} запис(ів).",
+      "resultsTitle": "Результати партії",
+      "skipped": "Пропущено ({count})",
+      "skippedHelp": "Записи, змінені після створення партії, було пропущено, щоб уникнути перезапису новіших змін.",
+      "source": "Джерело",
+      "status": "Статус",
+      "subtitle": "Переглядайте та скасовуйте масові імпорти й дії",
+      "title": "Партії",
+      "undo": "Скасувати",
+      "undoConfirm": "Скасувати партію «{label}»? Це відновить зачеплені записи до стану, який був до партії.",
+      "undoError": "Не вдалося виконати запит на скасування.",
+      "undoTitle": "Скасувати партію",
+      "undoWarning": "Записи, змінені після створення цієї партії, будуть пропущені. Цю дію неможливо скасувати.",
+      "undoing": "Скасування…",
+      "viewResults": "Переглянути результати"
     },
     "campusEdit": {
       "address2": "Адреса (рядок 2)",
@@ -2886,6 +3150,13 @@
       "location": "Місцезнаходження",
       "none": "Кампусів ще не додано.",
       "subtitle": "Керуйте фізичними локаціями вашої церкви"
+    },
+    "checkinSettingsEdit": {
+      "block": "Блокувати (заборонити реєстрацію)",
+      "help": "Виберіть, як реєстрація реагує, коли кімната перевищує співвідношення волонтерів до дітей або має менше мінімальної кількості волонтерів.",
+      "ratioEnforcement": "Контроль співвідношення волонтерів",
+      "title": "Реєстрація",
+      "warn": "Попереджати (дозволяти з підтвердженням)"
     },
     "church": {
       "subdomainHelper": "Your church's unique web address"
@@ -2909,6 +3180,21 @@
       "subdomainAria": "Піддомен",
       "textingSubtitle": "Налаштувати постачальника SMS",
       "textingTitle": "SMS-повідомлення"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Ви впевнені, що хочете видалити це додаткове поле? Його збережені значення також буде видалено.",
+      "fieldType": "Тип поля",
+      "name": "Назва",
+      "validate": {
+        "name": "Будь ласка, введіть назву поля."
+      }
+    },
+    "customFields": {
+      "addField": "Додати поле",
+      "customFields": "Користувацькі поля",
+      "field": "Додаткове поле",
+      "none": "Поки що не додано жодного додаткового поля.",
+      "subtitle": "Визначте додаткові поля для відстеження в записах людей"
     },
     "developer": {
       "actions": "Дії",
@@ -2955,7 +3241,9 @@
       "domMsg4": ".  It can take up to 5 minutes.",
       "domMsgConnect": "connect",
       "domain": "Domain",
-      "domains": "Domains"
+      "domains": "Domains",
+      "mainWebsite": "Основний сайт",
+      "site": "Сайт"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Вміст обов'язковий.",
@@ -3036,25 +3324,46 @@
       "webhookKeyHelper": "Секрет підпису вебхука з панелі управління Kingdom Funding. Потрібний для оновлень статусу транзакцій.",
       "webhookUrlCopied": "URL вебхука скопійовано в буфер обміну"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "День",
+      "disabled": "Вимкнено",
+      "enabled": "Увімкнено",
+      "help": "Цього дня щороку всі, хто має клас, автоматично переводяться на наступний клас (12-й клас стає «Випущено»). Залиште вимкненим, щоб відключити автоматичний перевід.",
+      "month": "Місяць",
+      "title": "Перехід до наступного класу"
+    },
     "landing": {
       "campusesCount": "{count} локацій",
       "campusesOne": "1 локація",
       "campusesSubtitle": "Фізичні локації",
       "configuration": "Конфігурація",
+      "customFieldsCount": "{count} додаткових полів",
+      "customFieldsSubtitle": "Поки немає користувацьких полів",
       "developerSubtitle": "API-ключі, вебхуки, підключені застосунки",
       "domainsCount": "{count} підключено",
       "domainsNone": "Немає власних доменів",
       "domainsOne": "1 підключено",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "Автоматичний перехід вимкнено",
+      "gradePromotionOn": "Переводить щороку {date}",
       "notConfigured": "Не налаштовано",
       "notSet": "Не встановлено"
     },
     "manageChurch": {
       "auditLog": "Журнал аудиту",
+      "batches": "Партії",
       "imEx": "Import/Export",
       "noData": "No church data available",
       "subtitle": "Configure church settings and preferences",
       "title": "Manage Church"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 років і старше",
+      "age16": "16 років і старше",
+      "age18": "18 років і старше",
+      "helpText": "Блокує нові приватні розмови, якщо хоча б одна особа молодша за цей вік, на основі дати народження. Особи молодшого віку залишаються видимими в довіднику. Наявні розмови не змінюються.",
+      "label": "Мінімальний вік для приватних повідомлень",
+      "off": "Вимкнено (без обмежень)"
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
@@ -3108,6 +3417,34 @@
     "rolesPage": {
       "subtitle": "Керуйте ролями та дозволами"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Не вдалося виконати вхід. Спробуйте ще раз.",
+      "byosHelper": "Нові завантаження зберігаються у вашому власному обліковому записі, а завантаження виконуються з нього. Файли, які вже завантажено, залишаються на місці.",
+      "churchAppsFree": "ChurchApps (Безкоштовно)",
+      "connect": "Підключити обліковий запис",
+      "connectFirst": "Підключіть свій обліковий запис перед збереженням.",
+      "connected": "Обліковий запис підключено",
+      "connecting": "Очікування входу...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Файли зберігатимуться на вашому тарифі сховища MinistryStuff, автоматично пов'язаному з цією церквою. Керуйте своїм тарифом на",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Спливаюче вікно заблоковано. Дозвольте спливаючі вікна та спробуйте ще раз.",
+      "provider": "Постачальник",
+      "reconnect": "Перепідключити",
+      "s3AccessKey": "Ідентифікатор ключа доступу",
+      "s3Bucket": "Бакет",
+      "s3Endpoint": "Кінцева точка (залиште порожнім для AWS)",
+      "s3Helper": "Бакет має дозволяти публічний доступ на читання та CORS PUT-запити з цього сайту. Працює з AWS S3, Cloudflare R2 та Backblaze B2.",
+      "s3PublicBase": "Базова публічна URL-адреса",
+      "s3Region": "Регіон",
+      "s3Required": "Бакет і базова публічна URL-адреса обов'язкові.",
+      "s3SecretKey": "Секретний ключ доступу",
+      "saveError": "Помилка збереження налаштувань сховища.",
+      "sessionExpired": "Сеанс входу закінчився. Спробуйте ще раз.",
+      "sessionFailed": "Не вдалося розпочати сеанс входу.",
+      "title": "Сховище файлів",
+      "usage": "Використано {used} ГБ з {quota} ГБ."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
       "link": "Зв'язати",
@@ -3121,13 +3458,17 @@
       "clearstreamHelper": "Створіть API-ключ у вашому",
       "clearstreamHelperLink": "Налаштування облікового запису Clearstream",
       "clearstreamHelperSuffix": "у розділі API-ключі.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Ваша підписка на текстові повідомлення MinistryStuff активна, залишилося {} кредитів у цьому періоді.",
+      "ministryStuffHelper": "Ключ API не потрібен. Кредити на текстові повідомлення надходять з вашої підписки MinistryStuff, автоматично пов'язаної з цією церквою. Керуйте своїм тарифом на",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Немає",
       "provider": "Постачальник",
       "saveError": "Помилка збереження налаштувань SMS.",
+      "textInChurch": "Текст у церкві",
       "textInChurchHelper": "Відвідайте",
       "textInChurchHelperLink": "Підтримка Text In Church",
-      "textInChurchHelperSuffix": "щоб запросити доступ до API розробника. Після затвердження створіть API-ключ у розділі Налаштування облікового запису > Developer API.",
-      "textInChurch": "Текст у церкві"
+      "textInChurchHelperSuffix": "щоб запросити доступ до API розробника. Після затвердження створіть API-ключ у розділі Налаштування облікового запису > Developer API."
     },
     "userAdd": {
       "addTo": "Add To ",
@@ -3364,27 +3705,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
+      "draft": "Чернетка",
+      "navHint": "Відвідувачі можуть читати ваші дописи на /blog. Додайте навігаційне посилання на екрані Сторінки, щоб вони могли його знайти:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Опубліковано",
+      "scheduled": "Заплановано",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "Переглянути на сайті"
     },
     "blogEdit": {
+      "author": "Автор",
       "category": "Category",
+      "content": "Вміст",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "Ця веб-адреса вже використовується іншим дописом.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Попередній перегляд",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Автоматично заповнюється з заголовка, доки ви його не зміните. Адреса:",
+      "slugLabel": "Веб-адреса",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4067,7 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "externalStorage": "Зберігається у вашому пов'язаному обліковому записі",
       "files": "Файли",
       "getStarted": "Get started by uploading your first file",
       "name": "Ім'я",
@@ -3936,6 +4288,7 @@
     },
     "paletteEdit": {
       "accent": "Акцент",
+      "accentDesc": "Основний акцент — кнопки та виділення",
       "applyPaletteAria": "Застосувати запропоновану палітру кольорів",
       "applySuggested": "Натисніть будь-яку палітру, щоб застосувати її миттєво",
       "baseColors": "Базові кольори",
@@ -3943,20 +4296,29 @@
       "colorValues": "Color Values",
       "dark": "Темний",
       "darkAccent": "Темний акцент",
+      "darkAccentDesc": "Глибокий акцент — заголовки та посилання",
+      "darkDesc": "Найтемніший відтінок — основний текст",
       "error": "Помилка",
+      "errorDesc": "Помилки та деструктивні дії",
       "headerSubtitle": "Налаштуйте кольорову схему вашого сайту. Для кольорів мобільного додатку, порталу учасників і кіоску перейдіть до Параметри > Тема програми.",
       "headerTitle": "Палітра кольорів",
       "light": "Світлий",
       "lightAccent": "Світлий акцент",
+      "lightAccentDesc": "М'який акцент — ненав'язливі фони",
+      "lightDesc": "Найсвітліший відтінок — фони розділів",
       "palette": "Палітра",
       "previewWorkTogether": "Подивіться, як ваші кольори поєднуються",
       "primary": "Основний",
+      "primaryDesc": "Основні кнопки та посилання",
       "savePalette": "Save Palette",
       "secondary": "Додатковий",
+      "secondaryDesc": "Другорядні кнопки та акценти",
       "semanticColors": "Семантичні кольори",
       "success": "Успіх",
+      "successDesc": "Повідомлення про успіх і підтвердження",
       "suggestedPalettes": "Suggested Palettes",
-      "warning": "Попередження"
+      "warning": "Попередження",
+      "warningDesc": "Попередження та застереження"
     },
     "pickColors": {
       "background": "Фон",
@@ -4144,6 +4506,10 @@
       "showCampus": "Показувати кампус",
       "title": "Назва"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Основний сайт",
+      "manageSites": "Керувати сайтами…"
+    },
     "siteTemplates": {
       "back": "Назад",
       "create": "Створити сайт",
@@ -4212,6 +4578,15 @@
       "textColor": "Колір тексту",
       "title": "Віджети сайту",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Додати сайт",
+      "deleteConfirm": "Видалити цей сайт? Його сторінки, навігацію та оформлення буде остаточно видалено. Його власні домени буде переприв'язано до основного сайту.",
+      "empty": "Поки що немає додаткових сайтів.",
+      "name": "Назва",
+      "subDomain": "Піддомен",
+      "subDomainHint": "Лише малі літери та цифри. Стане {subdomain}.b1.church",
+      "title": "Сайти"
     },
     "socialIconsEdit": {
       "alignment": "Вирівнювання",
@@ -4331,11 +4706,13 @@
       "columns": "Стовпці",
       "empty": "(порожньо)",
       "firstRowHeader": "Перший рядок - заголовок",
+      "markdownHelper": "Вмикає Markdown у клітинках для жирного тексту, посилань та іншого форматування.",
       "medium": "Середній",
       "no": "Ні",
       "rows": "Рядки",
       "size": "Розмір",
       "sizeSmall": "Малий",
+      "textFormatting": "Форматування тексту",
       "yes": "Так"
     },
     "templates": {
@@ -4812,6 +5189,7 @@
     },
     "workflowEdit": {
       "active": "Активний",
+      "confirmDelete": "Ви впевнені, що хочете видалити цей робочий процес?",
       "editWorkflow": "Редагувати процес",
       "inactive": "Неактивний",
       "name": "Назва"
@@ -4842,6 +5220,7 @@
       "title": "Маршрутизація"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Ви впевнені, що хочете видалити цей крок?",
       "defaultAssignee": "Виконавець за замовчуванням",
       "dueDays": "Термін виконання (дні)",
       "dueDaysHelp": "Встановлює дату виконання при вході картки до цього кроку",

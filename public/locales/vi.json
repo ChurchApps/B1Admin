@@ -37,8 +37,15 @@
       "unscheduled": "Unscheduled"
     },
     "attendanceSetup": {
-      "setupMessage": "Set up Các cơ sở, Các buổi lễ, and Buổi lễ times to begin tracking Tham dự.",
-      "unassigned": "Unassigned"
+      "manageCampuses": "Quản lý cơ sở",
+      "setupMessage": "Thiết lập các cơ sở, dịch vụ và thời gian dịch vụ để bắt đầu theo dõi điểm danh.",
+      "unassigned": "Chưa được chỉ định"
+    },
+    "checkinType": {
+      "guest": "Khách",
+      "header": "Loại",
+      "volunteer": "Tình nguyện viên",
+      "volunteers": "tình nguyện viên"
     },
     "labels": {
       "align": "Căn chỉnh",
@@ -55,6 +62,17 @@
       "empty": "Trống",
       "equals": "Bằng",
       "field": "Trường",
+      "fieldChildren": "Trẻ em",
+      "fieldChildrenAllergies": "Dị ứng của trẻ",
+      "fieldChurchName": "Tên nhà thờ",
+      "fieldDate": "Ngày",
+      "fieldDisplayName": "Tên",
+      "fieldFirstName": "Tên",
+      "fieldLastName": "Họ",
+      "fieldNametagNotes": "Ghi chú bảng tên",
+      "fieldNickName": "Biệt danh",
+      "fieldSecurityCode": "Mã bảo mật",
+      "fieldSessions": "Phiên",
       "fill": "Tô màu",
       "fontSize": "Cỡ chữ",
       "height": "Chiều cao (inch)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "Tạo mẫu nhãn để tùy chỉnh nhãn được in tại kiosk điểm danh.",
       "notEmpty": "Không trống",
       "notEquals": "Không bằng",
+      "opDoesNotEqual": "Không bằng",
+      "opEquals": "Bằng",
+      "opIsBlank": "Trống",
+      "opIsNotBlank": "Không trống",
       "operator": "Toán tử",
       "palette": "Thêm khối",
       "pickup": "Phiếu lấy hàng",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Phê duyệt",
+      "approvedToast": "Yêu cầu đã được phê duyệt.",
       "bookingRequests": "Yêu cầu phòng & tài nguyên",
+      "confirmReject": "Bạn có chắc chắn muốn từ chối yêu cầu này không?",
       "conflicts": "Xung đột",
       "description": "Mô tả",
       "event": "Sự kiện",
@@ -127,6 +151,8 @@
       "noPendingBookings": "Không có yêu cầu phòng hoặc tài nguyên nào đang chờ xử lý.",
       "noPendingEvents": "Không có yêu cầu sự kiện nào đang chờ xử lý.",
       "reject": "Từ chối",
+      "rejectTitle": "Từ chối yêu cầu",
+      "rejectedToast": "Yêu cầu đã bị từ chối.",
       "roomResource": "Phòng / Tài nguyên",
       "status": "Trạng thái",
       "subtitle": "Xem xét các yêu cầu phòng, tài nguyên và sự kiện đang chờ xử lý",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "Hủy",
       "confirmDelete": "Are you sure you wish to Xóa this event?",
+      "confirmDeleteSeries": "Đây là một sự kiện định kỳ. Việc xóa nó sẽ xóa toàn bộ chuỗi và tất cả các lần lặp lại của nó. Bạn có chắc chắn không?",
       "delete": "Xóa",
+      "editEvent": "Chỉnh sửa sự kiện",
       "manageRegistrations": "Quản lý đăng ký",
-      "noGroups": "Không Các nhóm found.",
-      "editEvent": "Chỉnh sửa sự kiện"
+      "noGroups": "Không Các nhóm found."
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -203,6 +230,7 @@
       "importIcs": "Nhập .ics",
       "newEvent": "Sự kiện mới",
       "noGroupsAdded": "Không Các nhóm added yet",
+      "pendingApprovals": "{count} yêu cầu đang chờ phê duyệt",
       "print": "In",
       "subtitle": "Manage calendar events and Các nhóm"
     },
@@ -334,12 +362,12 @@
     "confirm": "Xác nhận",
     "copy": "Sao chép",
     "createPerson": {
+      "confirmDuplicate": "Một người dùng '{{existingName}}' ({{existingEmail}}) đã tồn tại với email này. Bạn có chắc chắn muốn thêm '{{firstName}} {{lastName}}' không?",
       "validate": {
         "firstName": "Please enter a first Tên.",
         "lastName": "Please enter a last Tên.",
         "validEmail": "Please enter a valid Email Địa chỉ."
-      },
-      "confirmDuplicate": "Một người dùng '{{existingName}}' ({{existingEmail}}) đã tồn tại với email này. Bạn có chắc chắn muốn thêm '{{firstName}} {{lastName}}' không?"
+      }
     },
     "custom": "Custom",
     "delete": "Xóa",
@@ -360,8 +388,14 @@
     },
     "help": "Trợ giúp",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Cầu nguyện"
+      },
+      "noResults": "Không tìm thấy kết quả nào",
       "searchLabel": "Tìm kiếm Icons",
       "searchPlaceholder": "Type to Tìm kiếm (e.g., person, Trang chủ, church)...",
+      "showingDefault": "Đang hiển thị {{count}} biểu tượng mặc định",
+      "showingMatching": "Đang hiển thị {{count}} biểu tượng phù hợp",
       "title": "Select Icon",
       "tryDifferent": "Try a different Tìm kiếm term"
     },
@@ -386,6 +420,7 @@
     "right": "Right",
     "save": "Lưu",
     "saveChanges": "Lưu Changes",
+    "saveError": "Không thể lưu. Vui lòng thử lại.",
     "saving": "Saving...",
     "search": "Tìm kiếm",
     "searching": "Searching...",
@@ -490,6 +525,9 @@
       "workflows": "Quy trình làm việc"
     }
   },
+  "controlPanel": {
+    "serverError": "Đã xảy ra lỗi. Vui lòng thử lại."
+  },
   "createPerson": {
     "addNewPerson": "Thêm Mới Person",
     "email": "Email",
@@ -538,6 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "Tìm kiếm người",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "Xóa tìm kiếm",
       "display": "Display",
       "noResults": "Không tìm thấy người nào phù hợp với tiêu chí tìm kiếm của bạn.",
       "photo": "Photo",
@@ -590,6 +629,8 @@
       "invalidCode": "Mã không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra và thử lại.",
       "loading": "Đang tải...",
       "noChurchSelected": "Chưa chọn nhà thờ. Vui lòng đăng nhập lại và chọn nhà thờ.",
+      "planType": "Hiển thị kế hoạch cho",
+      "planTypeNone": "Không có (chỉ xem)",
       "requestedPermissions": "Quyền được yêu cầu:",
       "title": "Ủy quyền thiết bị",
       "verifyFailed": "Không thể xác minh mã. Vui lòng thử lại."
@@ -609,6 +650,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year In",
       "method": "Method",
+      "viewBatch": "Xem lô",
       "willAppear": "Donations will appear here once they have been made."
     }
   },
@@ -665,7 +707,8 @@
       "ofGoal": "so với mục tiêu",
       "pledges": "Cam kết",
       "status": "Trạng thái",
-      "subtitle": "Cam kết và tiến độ dâng hiến cho chiến dịch này"
+      "subtitle": "Cam kết và tiến độ dâng hiến cho chiến dịch này",
+      "unknownPerson": "Người không xác định"
     },
     "campaignsPage": {
       "addCampaign": "Thêm chiến dịch",
@@ -708,6 +751,7 @@
       "cash": "Cash",
       "check": "Check",
       "checkNum": "Check #",
+      "confirmMsg": "Bạn có chắc chắn muốn xóa vĩnh viễn khoản đóng góp này không?",
       "date": "Ngày",
       "fund": "Fund",
       "inKind": "In-Kind",
@@ -733,6 +777,7 @@
       "errMsg": "Không fund found. Please Tạo mới a fund before making a donation",
       "export": "Xuất",
       "funds": "Funds",
+      "method": "Phương thức",
       "noDonMsg": "Không donations have been tracked. Once donations are entered they will show up here.",
       "pending": "Đang chờ",
       "statements": "Giving Statements",
@@ -786,7 +831,8 @@
       "subtitle": "Manage donation funds and Theo dõi giving categories",
       "taxDeductible": "Được khấu trừ thuế",
       "taxStatus": "Trạng thái thuế",
-      "totalFunds": "Tổng số quỹ"
+      "totalFunds": "Tổng số quỹ",
+      "viewBatch": "Xem lô"
     },
     "period": {
       "monthly": "Monthly",
@@ -936,6 +982,7 @@
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
+      "removeConfirm": "Xóa {name} khỏi biểu mẫu này?",
       "view": "Xem Only"
     },
     "formPage": {
@@ -949,6 +996,7 @@
       "date": "Ngày",
       "decNum": "Decimal",
       "desc": "Mô tả",
+      "fieldType": "Loại trường",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -1001,7 +1049,8 @@
   "gallery": {
     "aspectRatio": "Tỷ lệ khung hình",
     "confirmDelete": "Xác nhận xóa",
-    "freeForm": "Tự do"
+    "freeForm": "Tự do",
+    "uploadError": "Xử lý hình ảnh đã hoàn tất, nhưng tải lên thất bại. API có thể không khả dụng trong môi trường này."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1071,9 @@
       "duplicateTooltip": "Nhân bản nhóm này",
       "emailTooltip": "Email cho nhóm này",
       "labels": "Labels",
+      "location": "Địa điểm",
       "meetingInfo": "Meeting Information",
+      "meetingTime": "Thời gian họp",
       "moreLabels": "More Labels",
       "parentPickup": "Parent Pickup",
       "printNametag": "In Nametag",
@@ -1033,6 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "Thêm sự kiện",
+      "allowRsvps": "Cho phép xác nhận tham dự",
       "bulkAddTitle": "Thêm sự kiện định kỳ",
       "confirmDelete": "Xóa \"{title}\" và tất cả các lần xuất hiện của nó?",
       "datesPreview": "{count} buổi họp sẽ được tạo. Bỏ chọn ngày nào để bỏ qua.",
@@ -1042,7 +1094,15 @@
       "lastMeeting": "Buổi họp cuối cùng",
       "noDates": "Không có ngày họp nào trong khoảng thời gian đã chọn.",
       "noEvents": "Chưa có sự kiện. Sử dụng Thêm sự kiện để lên lịch các buổi họp của nhóm.",
+      "noResponses": "Chưa có phản hồi nào.",
       "oneTime": "Một lần",
+      "response_maybe": "Có thể",
+      "response_no": "Không",
+      "response_yes": "Có",
+      "rosterTitle": "Phản hồi xác nhận tham dự",
+      "rsvpSummary": "{yes} có · {maybe} có thể · {no} không",
+      "rsvps": "Xác nhận tham dự",
+      "rsvpsDisabled": "Đã tắt",
       "skipHolidays": "Bỏ qua ngày lễ",
       "skippedDates": "Ngày bỏ qua",
       "until": "đến"
@@ -1064,15 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Thêm Photo",
+      "ageGrade": "Độ tuổi & khối lớp",
       "archive": "Lưu trữ",
       "archiveAria": "Lưu trữ nhóm",
       "attTrack": "Theo dõi Tham dự",
       "attendance": "Tham dự",
       "attendanceReminders": "Email nhắc nhở điểm danh",
+      "capacity": "Sức chứa",
       "catName": "Danh mục Tên",
       "catNameMsg": "Please enter a Danh mục Tên.",
       "changePhotoAria": "Thay đổi ảnh nhóm",
+      "checkinCapacity": "Sức chứa điểm danh",
+      "checkinClosed": "Đóng điểm danh",
       "clickToAddPhoto": "Click to Thêm photo",
+      "confidential": "Nhóm bảo mật",
+      "confidentialHelp": "Ẩn nhóm này và danh sách thành viên khỏi các trang công khai, công cụ tìm nhóm và những người không phải là thành viên.",
       "confirmArchive": "Bạn có chắc chắn muốn lưu trữ nhóm này không? Nhóm sẽ bị ẩn khỏi danh sách nhóm cho đến khi được khôi phục.",
       "confirmMsg": "Are you sure you wish to permanently Xóa this Nhóm?",
       "enrollment": "Đăng ký",
@@ -1083,14 +1149,24 @@
       "groupNameMsg": "Please enter a Nhóm Tên.",
       "groupPhotoAlt": "nhóm",
       "groupSlugAria": "Slug nhóm",
+      "guestCapacity": "Sức chứa cho khách",
+      "maxAge": "Độ tuổi tối đa",
+      "maxGrade": "Khối lớp tối đa",
       "meetingLocation": "Meeting Location",
       "meetingLocationAria": "Địa điểm họp",
       "meetingTime": "Meeting Thời gian",
       "meetingTimeAria": "Thời gian họp",
+      "minAge": "Độ tuổi tối thiểu",
+      "minGrade": "Khối lớp tối thiểu",
+      "minVolunteers": "Số tình nguyện viên tối thiểu",
+      "months": "Tháng",
+      "noLimit": "Không giới hạn",
       "parPick": "Parent Pickup",
       "prinName": "In Nametag",
       "publicRoster": "Hiển thị danh sách trên trang web",
-      "slug": "Slug (key Tên used for urls)"
+      "slug": "Slug (key Tên used for urls)",
+      "volunteerRatio": "Số trẻ em trên mỗi tình nguyện viên",
+      "years": "Năm"
     },
     "groupHealth": {
       "attendance": "Điểm danh",
@@ -1124,8 +1200,10 @@
       "member": "thành viên",
       "members": "thành viên",
       "messagePlaceholder": "Viết tin nhắn gửi đến tất cả thành viên nhóm…",
+      "messageSent": "Tin nhắn đã được gửi.",
       "noMemDesc": "Thêm thành viên từ bảng bên phải để bắt đầu xây dựng nhóm này.",
       "noMemTitle": "Chưa có thành viên",
+      "removeConfirm": "Xóa {name} khỏi nhóm này?",
       "removeLeaderAccess": "Xóa quyền trưởng nhóm",
       "role": "Vai trò",
       "send": "Send",
@@ -1171,9 +1249,13 @@
       "groups": "Các nhóm",
       "labels": "Labels",
       "noGroupMsg": "Không Các nhóm found. Please Tạo mới a Nhóm.",
+      "noMatchMsg": "Không có nhóm nào khớp với tìm kiếm của bạn.",
+      "pendingRequestSingular": "{count} yêu cầu đang chờ xử lý",
+      "pendingRequests": "{count} yêu cầu đang chờ xử lý",
       "pers": "1 person",
       "ppl": "People",
       "restore": "Khôi phục",
+      "searchPlaceholder": "Tìm kiếm nhóm...",
       "showArchived": "Hiển thị mục đã lưu trữ",
       "spPpl": " people",
       "subtitle": {
@@ -1186,6 +1268,11 @@
       "availableMem": "Available Nhóm Members",
       "noMem": "Không Nhóm members available.",
       "unknown": "Không xác định"
+    },
+    "pendingRequestsPage": {
+      "empty": "Không có yêu cầu nào đang chờ xử lý.",
+      "subtitle": "Phê duyệt hoặc từ chối các yêu cầu do thành viên khởi tạo trên tất cả các nhóm.",
+      "title": "Yêu cầu tham gia đang chờ xử lý"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Chèn trường gộp vào nội dung:",
@@ -1223,6 +1310,8 @@
       "eligibleSummary": "{eligibleCount} trên {totalMembers} thành viên sẽ nhận được tin nhắn này.",
       "eligibleSummarySingular": "{eligibleCount} trên {totalMembers} thành viên sẽ nhận được tin nhắn này.",
       "fallbackError": "Không thể gửi tin nhắn văn bản.",
+      "insufficientCredits": "Nhà thờ của bạn đã hết tín dụng nhắn tin cho chu kỳ thanh toán này. Không có tin nhắn nào được gửi. Nâng cấp hoặc đợi tín dụng của bạn được gia hạn tại",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Đang tải người nhận...",
       "messageLabel": "Tin nhắn",
       "noPhoneNotice": "{count} không có số điện thoại trong hồ sơ.",
@@ -1268,6 +1357,11 @@
       "deleteConfirm": "Are you sure you wish to permanently Xóa this session?",
       "sesEdit": "Chỉnh sửa Session"
     },
+    "sessionsDisabled": {
+      "description": "Bật theo dõi điểm danh để ghi lại các phiên và lượt điểm danh cho nhóm này.",
+      "enable": "Bật điểm danh",
+      "title": "Theo dõi điểm danh chưa được bật"
+    },
     "tabs": {
       "mem": "Members",
       "ses": "Sessions"
@@ -1309,8 +1403,8 @@
       "registrations": "Đăng ký",
       "roomsResources": "Phòng & Tài nguyên",
       "sermons": "Bài giảng",
-      "stripeImport": "Nhập Stripe",
       "site": "Trang",
+      "stripeImport": "Nhập Stripe",
       "website": "Trang web"
     }
   },
@@ -1384,6 +1478,11 @@
     "sep": "September",
     "september": "September"
   },
+  "notFound": {
+    "backHome": "Quay lại Bảng điều khiển",
+    "message": "Trang bạn đang tìm không tồn tại hoặc có thể đã được di chuyển.",
+    "title": "Không tìm thấy trang"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Đang tải các trường tùy chỉnh...",
@@ -1414,6 +1513,11 @@
       "clearSelection": "Bỏ chọn",
       "createNewGroup": "Tạo nhóm mới",
       "delete": "Xóa",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa {count} người đã chọn không? Không thể hoàn tác hành động này.",
+      "deleteError": "Không thể xóa những người đã chọn",
+      "deleteSelected": "Xóa những người đã chọn",
+      "deleteSuccess": "Đã xóa thành công {count} người",
+      "deleting": "Đang xóa...",
       "error": "Lỗi",
       "fieldPrompt": "Cập nhật trường cho {count} người đã chọn.",
       "fieldSuccess": "Đã cập nhật {count} người.",
@@ -1428,8 +1532,8 @@
       "optedOutYes": "Có chọn không tham gia",
       "removeFromGroup": "Xóa khỏi nhóm",
       "selected": "Đã chọn",
-      "workflowSuccess": "Đã thêm {count} người vào quy trình.",
-      "setCampus": "Đặt cơ sở"
+      "setCampus": "Đặt cơ sở",
+      "workflowSuccess": "Đã thêm {count} người vào quy trình."
     },
     "demographics": {
       "age": "Tuổi",
@@ -1623,6 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "Thêm vào quy trình",
       "age": "Tuổi",
+      "emailPerson": "Gửi email cho người này",
       "gender": "Giới tính",
       "hasLogin": "Có đăng nhập",
       "maritalStatus": "Tình trạng hôn nhân",
@@ -1632,6 +1737,7 @@
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot Xóa your own person record.",
       "confirmMsg": "Are you sure you wish to permanently Xóa this person record?",
+      "customFields": "Trường tùy chỉnh",
       "donorNumber": "Donor Number",
       "exten": "Extension",
       "family": "family",
@@ -1668,6 +1774,8 @@
       "profile": "Hồ sơ"
     },
     "personPage": {
+      "confidentialNotes": "Ghi chú bảo mật",
+      "confidentialNotesSuffix": " Ghi chú bảo mật",
       "notesSuffix": " Ghi chú",
       "thisPerson": "người này"
     },
@@ -1681,6 +1789,18 @@
       "mobile": "Mobile",
       "persDet": "Personal Chi tiết",
       "work": "Work"
+    },
+    "pickup": {
+      "add": "Thêm",
+      "confirmDelete": "Bạn có chắc chắn muốn xóa người đón này không?",
+      "name": "Tên",
+      "none": "Chưa thêm người đón nào.",
+      "notAuthorized": "Không được ủy quyền",
+      "orAddByName": "Hoặc thêm người không có trong hệ thống:",
+      "relationship": "Mối quan hệ",
+      "status": "Trạng thái",
+      "title": "Đón",
+      "trusted": "Đáng tin cậy"
     },
     "tabs": {
       "att": "Tham dự",
@@ -1706,6 +1826,7 @@
     "female": "Female",
     "firstName": "First Tên",
     "gender": "Gender",
+    "grade": "Lớp",
     "inactive": "Không hoạt động",
     "lastName": "Last Tên",
     "line1": "Line 1",
@@ -1723,6 +1844,7 @@
     "phone": "Điện thoại",
     "prefix": "Prefix",
     "regularAttendee": "Regular Attendee",
+    "school": "Trường học",
     "single": "Single",
     "staff": "Staff",
     "state": "State/Province",
@@ -1906,6 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
+      "confirmDelete": "Bạn có chắc chắn muốn xóa phân công của tình nguyện viên này không?",
       "done": "Done",
       "editAssign": "Chỉnh sửa Assignment",
       "noMem": "Không Nhóm members found."
@@ -1964,6 +2087,7 @@
       "waitingForAuth": "Waiting for authorization..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Trình duyệt của bạn không hỗ trợ phát âm thanh.",
       "fallbackPreview": "Xem trước",
       "fallbackTitle": "Xem trước nội dung",
       "noContent": "Không có nội dung để hiển thị.",
@@ -2156,7 +2280,11 @@
       "ppl": "people",
       "prefTimeMismatch": "thích phục vụ lúc",
       "publish": "Công bố kế hoạch",
+      "publishConfirm": "Xuất bản kế hoạch này để tình nguyện viên có thể xem phân công của họ?",
+      "publishConfirmLabel": "Xuất bản",
+      "publishConfirmTitle": "Xuất bản kế hoạch",
       "publishNotify": "Công bố & Thông báo",
+      "publishNotifyConfirm": "Xuất bản kế hoạch này và thông báo cho {count} tình nguyện viên về phân công của họ? Thông báo sẽ được gửi ngay lập tức.",
       "timeCon": "Thời gian conflict between",
       "timeCon2": "Thời gian conflict at",
       "timesThisMonth": "lần trong tháng này, vượt quá tối đa ưu tiên của họ là",
@@ -2177,6 +2305,7 @@
       "allowSelfSignup": "Cho phép tự đăng ký",
       "catName": "Danh mục Tên",
       "catNameReq": "Danh mục Tên is required.",
+      "confirmDelete": "Bạn có chắc chắn muốn xóa vị trí này không? Bất kỳ ai hiện đang được phân công vào vị trí này sẽ bị hủy lịch.",
       "description": "Mô tả",
       "descriptionHelper": "Hiển thị cho tình nguyện viên khi duyệt cơ hội đăng ký",
       "nameReq": "Tên is required",
@@ -2198,6 +2327,14 @@
       "length": "Length",
       "serviceOrder": "Buổi lễ ORDER",
       "time": "Thời gian"
+    },
+    "printPreview": {
+      "colorCoded": "Mã hóa màu sắc",
+      "format": "Định dạng:",
+      "materials": "Tài liệu:",
+      "script": "Kịch bản",
+      "serviceOrder": "Thứ tự buổi lễ",
+      "title": "Xem trước bản in"
     },
     "schedulingPreference": {
       "household": "Lên lịch gia đình",
@@ -2248,7 +2385,8 @@
       "title": "Tổng quan phục vụ"
     },
     "servingPage": {
-      "showAll": "Hiển thị tất cả"
+      "showAll": "Hiển thị tất cả",
+      "showAllHint": "Các mục vụ của bạn đang bị ẩn vì bạn không phải là thành viên. Bật \"Hiển thị tất cả\" ở trên để xem chúng."
     },
     "songDialog": {
       "close": "Đóng",
@@ -2289,6 +2427,7 @@
       "updateFromPlanHelp": "Thay thế nội dung của mẫu này bằng thứ tự chương trình và vị trí hiện tại của một kế hoạch."
     },
     "timeEdit": {
+      "confirmDelete": "Bạn có chắc chắn muốn xóa thời gian này không?",
       "disName": "Display Tên",
       "disNameReq": "Display Tên is required.",
       "endReq": "Kết thúc Thời gian is required",
@@ -2341,7 +2480,9 @@
     "pairScreen": {
       "codeRequired": "Pairing code is required",
       "invalidCode": "Invalid pairing code",
-      "pairingCode": "Pairing Code"
+      "pairingCode": "Pairing Code",
+      "planType": "Hiển thị kế hoạch cho",
+      "planTypeNone": "Không có (chỉ thông báo)"
     },
     "profilePage": {
       "accDel": "Account Deletion",
@@ -2375,6 +2516,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Thêm mã giảm giá",
+      "addSelection": "Thêm lựa chọn",
+      "addType": "Thêm loại",
+      "amount": "Số tiền",
+      "attendeeTypes": "Loại người tham dự",
+      "balance": "Số dư",
+      "capacity": "Sức chứa",
+      "code": "Mã",
+      "description": "Mô tả",
+      "discountCodes": "Mã giảm giá",
+      "discountType": "Loại",
+      "endDate": "Ngày kết thúc",
+      "kind": "Loại",
+      "maxQuantity": "Số lượng tối đa",
+      "maxUses": "Số lần sử dụng tối đa",
+      "method": "Phương thức",
+      "minMembers": "Số thành viên tối thiểu",
+      "name": "Tên",
+      "noCoupons": "Chưa có mã giảm giá nào.",
+      "noPayments": "Không có khoản thanh toán nào được ghi nhận.",
+      "noSelections": "Chưa có lựa chọn nào.",
+      "noTypes": "Chưa có loại người tham dự nào.",
+      "paid": "Đã thanh toán",
+      "paidTotal": "Đã thanh toán / Tổng cộng",
+      "payments": "Thanh toán",
+      "percent": "Phần trăm",
+      "price": "Giá",
+      "promote": "Quảng bá",
+      "registrationDetails": "Chi tiết đăng ký",
+      "removeConfirm": "Xóa mục này? Hành động này không thể hoàn tác.",
+      "selections": "Lựa chọn",
+      "sort": "Sắp xếp",
+      "startDate": "Ngày bắt đầu",
+      "total": "Tổng cộng",
+      "type": "Loại",
+      "usesSoFar": "Đã sử dụng: {count}",
+      "value": "Giá trị"
+    },
     "registrationDetailsPage": {
       "addAttendee": "Thêm người tham dự",
       "addAttendeeError": "Đăng ký người tham dự thất bại.",
@@ -2405,6 +2585,7 @@
       "capacity": "Sức chứa",
       "capacityPlaceholder": "Để trống cho không giới hạn",
       "enableRegistration": "Bật đăng ký",
+      "enableWaitlist": "Bật danh sách chờ",
       "none": "Không có",
       "registrationCloses": "Đăng ký đóng",
       "registrationOpens": "Đăng ký mở",
@@ -2704,7 +2885,11 @@
       "church": "Church",
       "churchName": "Church Tên",
       "churches": "Churches",
+      "churchesSubtitle": "Tìm kiếm và quản lý tất cả các nhà thờ",
+      "impersonateSubtitle": "Đăng nhập với tư cách người dùng khác để hỗ trợ",
       "impersonateUser": "Giả mạo người dùng",
+      "jobs": "Tác vụ nền",
+      "jobsSubtitle": "Lần chạy gần nhất và lỗi của các tác vụ đã lên lịch",
       "location": "Location",
       "noChurch": "Không churches found.  Please Tìm kiếm for a different Tên.",
       "noUsers": "Không users found. Please Tìm kiếm for a different Tên or Email.",
@@ -2717,13 +2902,20 @@
       "searchResults": "Tìm kiếm Results",
       "servAdmin": "Server Admin",
       "serverHealth": "Tình trạng máy chủ",
+      "serverHealthSubtitle": "Kiểm tra tình trạng của các dịch vụ backend",
       "subtitle": "Manage server-wide Cài đặt and churches",
       "translationLookups": "Translation Lookups",
+      "translationSubtitle": "Tra cứu chuỗi bản địa hóa đã dịch",
+      "usageSubtitle": "Xem xu hướng sử dụng máy chủ",
       "usageTrends": "Usage Trends",
+      "users": "Người dùng",
+      "usersSubtitle": "Tra cứu bất kỳ tài khoản người dùng nào để hỗ trợ",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
+      "archiveConfirm": "Lưu trữ {name}? Thành viên sẽ mất quyền truy cập cho đến khi được khôi phục.",
       "churchNameSearchAria": "Tìm kiếm tên nhà thờ",
+      "restoreConfirm": "Khôi phục quyền truy cập cho {name}?",
       "searchChurchesAria": "Tìm kiếm nhà thờ"
     },
     "impersonateTab": {
@@ -2734,6 +2926,18 @@
       "searchAria": "Tìm kiếm người dùng để giả mạo",
       "searchLabel": "Email người dùng",
       "searchPlaceholder": "Tìm kiếm theo email đăng nhập"
+    },
+    "jobsTab": {
+      "duration": "Thời lượng",
+      "failed": "Thất bại",
+      "job": "Tác vụ",
+      "lastRun": "Lần chạy gần nhất",
+      "loadError": "Không thể tải các lần chạy tác vụ.",
+      "noRuns": "Chưa có lần chạy tác vụ nào được ghi nhận.",
+      "recentFailures": "Lỗi gần đây",
+      "subtitle": "Lần chạy gần nhất của mỗi tác vụ đã lên lịch. Các lần chạy được ghi lại bởi bộ xử lý hẹn giờ và được lưu giữ trong 30 ngày.",
+      "success": "Thành công",
+      "title": "Tác vụ nền"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2760,6 +2964,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Tìm kiếm thống kê dịch thuật"
+    },
+    "usersTab": {
+      "access": "Quyền truy cập",
+      "description": "Tìm kiếm tất cả tài khoản người dùng theo tên hoặc email để xem nhà thờ và hoạt động đăng nhập của họ.",
+      "email": "Email",
+      "lastLogin": "Lần đăng nhập gần nhất",
+      "member": "Thành viên",
+      "name": "Tên",
+      "noChurches": "Người dùng này chưa liên kết với nhà thờ nào.",
+      "searchAria": "Tìm kiếm người dùng",
+      "searchLabel": "Tên hoặc email",
+      "staff": "Nhân viên",
+      "subDomain": "Tên miền phụ",
+      "title": "Tra cứu người dùng"
     }
   },
   "settings": {
@@ -2848,25 +3066,71 @@
     "auditLogPage": {
       "action": "Hành động",
       "allCategories": "Tất cả danh mục",
+      "allModules": "Tất cả mô-đun",
       "category": "Danh mục",
-      "categoryDonation": "Đóng góp",
+      "categoryDonation": "Quyên góp",
       "categoryForm": "Biểu mẫu",
       "categoryGroup": "Nhóm",
       "categoryLogin": "Đăng nhập",
       "categoryPermission": "Quyền",
       "categoryPerson": "Người",
       "categorySettings": "Cài đặt",
+      "changes": "Thay đổi",
       "date": "Ngày",
+      "deletedRecord": "Bản ghi đã xóa",
       "details": "Chi tiết",
       "endDate": "Ngày kết thúc",
       "entity": "Thực thể",
       "exportCsv": "Xuất CSV",
+      "field": "Trường",
       "ipAddress": "Địa chỉ IP",
-      "noEntries": "Không tìm thấy mục nhật ký kiểm tra nào",
+      "module": "Mô-đun",
+      "moduleAttendance": "Điểm danh",
+      "moduleContent": "Nội dung",
+      "moduleDoing": "Phục vụ",
+      "moduleGiving": "Cho đi",
+      "moduleLessons": "Bài học",
+      "moduleMembership": "Thành viên",
+      "moduleMessaging": "Nhắn tin",
+      "newValue": "Giá trị mới",
+      "noDetails": "Không có chi tiết thay đổi",
+      "noEntries": "Không tìm thấy nhật ký kiểm toán",
+      "noPrevious": "Không tìm thấy mục nhập trước đó; chỉ hiển thị các giá trị đã gửi.",
+      "oldValue": "Giá trị cũ",
       "search": "Tìm kiếm",
       "startDate": "Ngày bắt đầu",
-      "subtitle": "Theo dõi các thay đổi và hoạt động trong nhà thờ của bạn",
-      "title": "Nhật ký kiểm tra"
+      "subtitle": "Theo dõi những thay đổi và hoạt động trong nhà thờ của bạn",
+      "title": "Nhật ký kiểm toán",
+      "truncated": "Chi tiết đã bị cắt ngắn và không thể hoàn tác mục này."
+    },
+    "batches": {
+      "action": "Hành động",
+      "actions": "Hành động",
+      "created": "Đã tạo",
+      "creator": "Người tạo",
+      "date": "Ngày",
+      "entityId": "ID thực thể",
+      "entityType": "Loại thực thể",
+      "failed": "Thất bại ({count})",
+      "items": "Mục",
+      "label": "Nhãn",
+      "noEntries": "Không tìm thấy lô nào",
+      "noResults": "Không có bản ghi nào trong lô này",
+      "restored": "Đã khôi phục {count} bản ghi.",
+      "resultsTitle": "Kết quả lô",
+      "skipped": "Đã bỏ qua ({count})",
+      "skippedHelp": "Các bản ghi đã được sửa đổi kể từ khi lô được tạo đã bị bỏ qua để tránh ghi đè lên các thay đổi mới hơn.",
+      "source": "Nguồn",
+      "status": "Trạng thái",
+      "subtitle": "Xem xét và hoàn tác các thao tác nhập hàng loạt và hành động",
+      "title": "Lô",
+      "undo": "Hoàn tác",
+      "undoConfirm": "Hoàn tác lô \"{label}\"? Điều này sẽ khôi phục các bản ghi bị ảnh hưởng về trạng thái trước khi lô được thực hiện.",
+      "undoError": "Yêu cầu hoàn tác đã thất bại.",
+      "undoTitle": "Hoàn tác lô",
+      "undoWarning": "Các bản ghi đã được sửa đổi kể từ khi lô này được tạo sẽ bị bỏ qua. Điều này không thể hoàn tác.",
+      "undoing": "Đang hoàn tác…",
+      "viewResults": "Xem kết quả"
     },
     "campusEdit": {
       "address2": "Địa chỉ dòng 2",
@@ -2886,6 +3150,13 @@
       "location": "Địa điểm",
       "none": "Chưa có cơ sở nào được thêm.",
       "subtitle": "Quản lý các địa điểm thực tế của hội thánh"
+    },
+    "checkinSettingsEdit": {
+      "block": "Chặn (ngăn điểm danh)",
+      "help": "Chọn cách điểm danh phản hồi khi một phòng vượt quá tỷ lệ tình nguyện viên trên trẻ em hoặc dưới mức tình nguyện viên tối thiểu.",
+      "ratioEnforcement": "Áp dụng tỷ lệ tình nguyện viên",
+      "title": "Đăng ký (Check-In)",
+      "warn": "Cảnh báo (cho phép với xác nhận)"
     },
     "church": {
       "subdomainHelper": "Your church's unique web Địa chỉ"
@@ -2909,6 +3180,21 @@
       "subdomainAria": "Tên miền phụ",
       "textingSubtitle": "Cấu hình nhà cung cấp SMS",
       "textingTitle": "Nhắn tin"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Bạn có chắc chắn muốn xóa trường tùy chỉnh này không? Các giá trị đã lưu của trường này cũng sẽ bị xóa.",
+      "fieldType": "Loại trường",
+      "name": "Tên",
+      "validate": {
+        "name": "Vui lòng nhập tên trường."
+      }
+    },
+    "customFields": {
+      "addField": "Thêm trường",
+      "customFields": "Trường Tùy Chỉnh",
+      "field": "Trường tùy chỉnh",
+      "none": "Chưa có trường tùy chỉnh nào được thêm.",
+      "subtitle": "Xác định các trường tùy chỉnh để theo dõi trên hồ sơ người"
     },
     "developer": {
       "actions": "Hành động",
@@ -2955,7 +3241,9 @@
       "domMsg4": ".  It can take up to 5 minutes.",
       "domMsgConnect": "connect",
       "domain": "Domain",
-      "domains": "Domains"
+      "domains": "Domains",
+      "mainWebsite": "Trang web chính",
+      "site": "Trang web"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Nội dung là bắt buộc.",
@@ -3036,25 +3324,46 @@
       "webhookKeyHelper": "Bí mật ký webhook từ bảng điều khiển Kingdom Funding. Bắt buộc để cập nhật trạng thái giao dịch.",
       "webhookUrlCopied": "Đã sao chép URL webhook vào bộ nhớ tạm"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "Ngày",
+      "disabled": "Đã tắt",
+      "enabled": "Đã bật",
+      "help": "Vào ngày này mỗi năm, mọi người có khối lớp sẽ tự động được thăng lên khối lớp tiếp theo (lớp 12 trở thành Đã tốt nghiệp). Để tắt sẽ ngừng thăng khối lớp tự động.",
+      "month": "Tháng",
+      "title": "Thăng Lớp"
+    },
     "landing": {
       "campusesCount": "{count} địa điểm",
       "campusesOne": "1 địa điểm",
       "campusesSubtitle": "Địa điểm thực tế",
       "configuration": "Cấu hình",
+      "customFieldsCount": "{count} trường tùy chỉnh",
+      "customFieldsSubtitle": "Chưa có trường tùy chỉnh nào",
       "developerSubtitle": "Khóa API, webhook, ứng dụng kết nối",
       "domainsCount": "{count} đã kết nối",
       "domainsNone": "Không có tên miền tùy chỉnh",
       "domainsOne": "1 đã kết nối",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "Thăng lớp tự động bị vô hiệu hóa",
+      "gradePromotionOn": "Thăng khối lớp vào {date} mỗi năm",
       "notConfigured": "Chưa cấu hình",
       "notSet": "Chưa đặt"
     },
     "manageChurch": {
       "auditLog": "Nhật ký kiểm tra",
+      "batches": "Lô",
       "imEx": "Nhập/Xuất",
       "noData": "Không church data available",
       "subtitle": "Configure church Cài đặt and Tùy chọn",
       "title": "Manage Church"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 tuổi trở lên",
+      "age16": "16 tuổi trở lên",
+      "age18": "18 tuổi trở lên",
+      "helpText": "Chặn các cuộc trò chuyện tin nhắn riêng tư mới khi một trong hai người dưới độ tuổi này, dựa trên ngày sinh của họ. Những người dưới độ tuổi này vẫn hiển thị trong danh bạ. Các cuộc trò chuyện hiện có không bị ảnh hưởng.",
+      "label": "Độ tuổi tối thiểu cho tin nhắn riêng tư",
+      "off": "Tắt (không giới hạn)"
     },
     "mobileAppSettings": {
       "addTab": "Thêm Tab",
@@ -3108,6 +3417,34 @@
     "rolesPage": {
       "subtitle": "Quản lý vai trò và quyền hạn"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Đăng nhập thất bại. Vui lòng thử lại.",
+      "byosHelper": "Các tệp tải lên mới được lưu trữ trong tài khoản của riêng bạn và các lượt tải xuống được phục vụ từ đó. Các tệp đã tải lên trước đây vẫn giữ nguyên vị trí.",
+      "churchAppsFree": "ChurchApps (Miễn phí)",
+      "connect": "Kết nối tài khoản",
+      "connectFirst": "Vui lòng kết nối tài khoản của bạn trước khi lưu.",
+      "connected": "Tài khoản đã được kết nối",
+      "connecting": "Đang chờ đăng nhập...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Tệp sẽ được lưu trữ trên gói lưu trữ MinistryStuff của bạn, được liên kết tự động với nhà thờ này. Quản lý gói của bạn tại",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Cửa sổ bật lên đã bị chặn. Vui lòng cho phép cửa sổ bật lên và thử lại.",
+      "provider": "Nhà cung cấp",
+      "reconnect": "Kết nối lại",
+      "s3AccessKey": "Access Key Id",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (để trống cho AWS)",
+      "s3Helper": "Bucket phải cho phép truy cập đọc công khai và các yêu cầu CORS PUT từ trang này. Hoạt động với AWS S3, Cloudflare R2 và Backblaze B2.",
+      "s3PublicBase": "URL công khai cơ sở",
+      "s3Region": "Khu vực",
+      "s3Required": "Bucket và URL công khai cơ sở là bắt buộc.",
+      "s3SecretKey": "Secret Access Key",
+      "saveError": "Lỗi khi lưu cài đặt lưu trữ.",
+      "sessionExpired": "Phiên đăng nhập đã hết hạn. Vui lòng thử lại.",
+      "sessionFailed": "Không thể bắt đầu phiên đăng nhập.",
+      "title": "Lưu Trữ Tệp",
+      "usage": "Đang sử dụng {used} GB trên {quota} GB."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to Liên hệ the church",
       "link": "Link",
@@ -3121,13 +3458,17 @@
       "clearstreamHelper": "Tạo Khóa API trong",
       "clearstreamHelperLink": "Cài đặt tài khoản Clearstream",
       "clearstreamHelperSuffix": "trong mục API Keys.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Gói đăng ký nhắn tin MinistryStuff của bạn đang hoạt động với {} tín dụng còn lại trong chu kỳ này.",
+      "ministryStuffHelper": "Không cần khóa API. Tín dụng nhắn tin đến từ gói đăng ký MinistryStuff của bạn, được liên kết tự động với nhà thờ này. Quản lý gói của bạn tại",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Không có",
       "provider": "Nhà cung cấp",
       "saveError": "Lỗi khi lưu cài đặt nhắn tin.",
+      "textInChurch": "Văn bản trong nhà thờ",
       "textInChurchHelper": "Truy cập",
       "textInChurchHelperLink": "Hỗ trợ Text In Church",
-      "textInChurchHelperSuffix": "để yêu cầu quyền truy cập API nhà phát triển. Sau khi được chấp thuận, tạo Khóa API trong Cài đặt tài khoản > phần Developer API.",
-      "textInChurch": "Văn bản trong nhà thờ"
+      "textInChurchHelperSuffix": "để yêu cầu quyền truy cập API nhà phát triển. Sau khi được chấp thuận, tạo Khóa API trong Cài đặt tài khoản > phần Developer API."
     },
     "userAdd": {
       "addTo": "Thêm To ",
@@ -3364,27 +3705,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
+      "draft": "Bản nháp",
+      "navHint": "Khách truy cập có thể đọc bài đăng của bạn tại /blog. Hãy thêm liên kết điều hướng trên màn hình Trang để họ có thể tìm thấy liên kết đó:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Đã xuất bản",
+      "scheduled": "Đã lên lịch",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "Xem trên trang web"
     },
     "blogEdit": {
+      "author": "Tác giả",
       "category": "Category",
+      "content": "Nội dung",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "Địa chỉ web đó đã được sử dụng bởi một bài viết khác.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Xem trước",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Tự động điền từ tiêu đề cho đến khi bạn chỉnh sửa. Địa chỉ:",
+      "slugLabel": "Địa chỉ web",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4067,7 @@
       "uploadFiles": "Tải lên Files"
     },
     "filesManager": {
+      "externalStorage": "Được lưu trữ trong tài khoản đã liên kết của bạn",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Tên",
@@ -3936,6 +4288,7 @@
     },
     "paletteEdit": {
       "accent": "Nhấn",
+      "accentDesc": "Màu nhấn chính — nút và điểm nổi bật",
       "applyPaletteAria": "Áp dụng bảng màu được đề xuất",
       "applySuggested": "Nhấp vào bất kỳ bảng nào để áp dụng ngay lập tức",
       "baseColors": "Màu cơ sở",
@@ -3943,20 +4296,29 @@
       "colorValues": "Color Values",
       "dark": "Tối",
       "darkAccent": "Nhấn tối",
+      "darkAccentDesc": "Màu nhấn đậm — tiêu đề và liên kết",
+      "darkDesc": "Sắc tối nhất — văn bản nội dung",
       "error": "Lỗi",
+      "errorDesc": "Lỗi và hành động phá hủy",
       "headerSubtitle": "Tùy chỉnh bảng màu trang web. Đối với màu ứng dụng di động, cổng thành viên và kiosk, đi tới Cài đặt > Chủ đề ứng dụng.",
       "headerTitle": "Bảng màu",
       "light": "Sáng",
       "lightAccent": "Nhấn sáng",
+      "lightAccentDesc": "Màu nhấn nhẹ — nền tinh tế",
+      "lightDesc": "Sắc sáng nhất — nền phần",
       "palette": "Bảng màu",
       "previewWorkTogether": "Xem cách màu sắc của bạn kết hợp với nhau",
       "primary": "Chính",
+      "primaryDesc": "Nút và liên kết chính",
       "savePalette": "Lưu Palette",
       "secondary": "Phụ",
+      "secondaryDesc": "Nút và điểm nhấn phụ",
       "semanticColors": "Màu ngữ nghĩa",
       "success": "Thành công",
+      "successDesc": "Thông báo thành công và xác nhận",
       "suggestedPalettes": "Suggested Palettes",
-      "warning": "Cảnh báo"
+      "warning": "Cảnh báo",
+      "warningDesc": "Cảnh báo và lưu ý"
     },
     "pickColors": {
       "background": "Nền",
@@ -4144,6 +4506,10 @@
       "showCampus": "Hiển thị Cơ sở",
       "title": "Tiêu đề"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Trang web chính",
+      "manageSites": "Quản lý trang web…"
+    },
     "siteTemplates": {
       "back": "Quay lại",
       "create": "Tạo trang web",
@@ -4212,6 +4578,15 @@
       "textColor": "Màu Văn bản",
       "title": "Tiện ích Trang web",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Thêm trang web",
+      "deleteConfirm": "Xóa trang web này? Các trang, điều hướng và giao diện của nó sẽ bị xóa vĩnh viễn. Các tên miền tùy chỉnh của nó sẽ được chuyển sang trang web chính.",
+      "empty": "Chưa có trang web bổ sung nào.",
+      "name": "Tên",
+      "subDomain": "Tên miền phụ",
+      "subDomainHint": "Chỉ chữ thường và số. Sẽ trở thành {subdomain}.b1.church",
+      "title": "Trang web"
     },
     "socialIconsEdit": {
       "alignment": "Căn Chỉnh",
@@ -4331,11 +4706,13 @@
       "columns": "Cột",
       "empty": "(trống)",
       "firstRowHeader": "Hàng đầu là tiêu đề",
+      "markdownHelper": "Bật Markdown trong các ô để in đậm, liên kết và định dạng khác.",
       "medium": "Trung bình",
       "no": "Không",
       "rows": "Hàng",
       "size": "Kích thước",
       "sizeSmall": "Nhỏ",
+      "textFormatting": "Định dạng văn bản",
       "yes": "Có"
     },
     "templates": {
@@ -4812,6 +5189,7 @@
     },
     "workflowEdit": {
       "active": "Hoạt động",
+      "confirmDelete": "Bạn có chắc chắn muốn xóa quy trình làm việc này không?",
       "editWorkflow": "Chỉnh sửa quy trình",
       "inactive": "Không hoạt động",
       "name": "Tên"
@@ -4842,6 +5220,7 @@
       "title": "Định tuyến"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Bạn có chắc chắn muốn xóa bước này không?",
       "defaultAssignee": "Người được gán mặc định",
       "dueDays": "Hạn trong (ngày)",
       "dueDaysHelp": "Đặt ngày hạn khi thẻ vào bước này",
