@@ -49,6 +49,12 @@ The application secrets (JWT signing key, encryption key, third-party API keys) 
 - After any `reset:staging` / `reset:prod`, Aurora leaves a final snapshot by design. Snapshots cost money monthly. When you are sure you do not need one: RDS > Snapshots > select it > Actions > Delete snapshot.
 - The NAT gateway (about $33/month) is required for outbound connections to non-AWS services: payment gateways (Stripe/PayPal), Mautic, YouTube lookups, and outgoing email through SES's API. Only set `CreateNatGateway` to `"false"` if you use none of those; AWS-internal features (database, secrets, file storage, text-to-speech, WebSocket pushes) keep working through private endpoints, which have their own smaller cost (roughly $8/month per endpoint).
 
+## Security Posture Notes
+
+- Application secrets are delivered to the Lambda functions as environment variables, resolved from Secrets Manager at deploy time. This is why a redeploy is needed after changing a secret, and it means anyone whose AWS access allows reading Lambda function configuration can read the values. Keep AWS console/CLI access to this account limited to people you would trust with the secrets themselves. (Fetching secrets at runtime instead would require changes to the upstream Api application.)
+- Uploaded assets are served through CloudFront, not from a public S3 bucket. The asset bucket itself blocks all public access.
+- The API only accepts browser requests from your site's own address (the CORS origin adopted during install), not from arbitrary websites.
+
 ## Logs and Troubleshooting
 
 - Application logs: AWS console > CloudWatch > Log groups > `/aws/lambda/b1admin-prod-api` (and the other `b1admin-prod-*` groups).

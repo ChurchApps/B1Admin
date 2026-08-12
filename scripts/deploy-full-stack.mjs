@@ -35,9 +35,13 @@ function exitForCommandError(error, quiet = false) {
   process.exit(1);
 }
 
+function maskSensitiveArg(arg) {
+  return String(arg).replace(/^(--[^=]*(?:password|secret-string)[^=]*=).+/i, "$1<hidden>");
+}
+
 function run(command, args, options = {}) {
   const { quiet = false, ...execOptions } = options;
-  if (!quiet) console.log(`\n> ${command} ${args.join(" ")}`);
+  if (!quiet) console.log(`\n> ${command} ${args.map(maskSensitiveArg).join(" ")}`);
 
   try {
     return execFileSync(command, args, {

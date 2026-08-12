@@ -8,44 +8,34 @@
   "parameterCount": 10,
   "parameters": [
     {
-      "name": "/prod/jwtSecret",
-      "value": "replace-me"
+      "name": "/prod/jwtSecret"
     },
     {
-      "name": "/prod/encryptionKey",
-      "value": "replace-me"
+      "name": "/prod/encryptionKey"
     },
     {
-      "name": "/prod/membershipApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/membership"
+      "name": "/prod/membershipApi/connectionString"
     },
     {
-      "name": "/prod/attendanceApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/attendance"
+      "name": "/prod/attendanceApi/connectionString"
     },
     {
-      "name": "/prod/contentApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/content"
+      "name": "/prod/contentApi/connectionString"
     },
     {
-      "name": "/prod/givingApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/giving"
+      "name": "/prod/givingApi/connectionString"
     },
     {
-      "name": "/prod/messagingApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/messaging"
+      "name": "/prod/messagingApi/connectionString"
     },
     {
-      "name": "/prod/doingApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/doing"
+      "name": "/prod/doingApi/connectionString"
     },
     {
-      "name": "/prod/reportingApi/connectionString",
-      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/reporting"
+      "name": "/prod/reportingApi/connectionString"
     },
     {
-      "name": "/prod/webPushSubject",
-      "value": "mailto:support@example.com"
+      "name": "/prod/webPushSubject"
     }
   ]
 }

@@ -5145,8 +5145,11 @@ function expectSyncLegacySsmOutputSampleMatchesContract() {
     if (sample.parameterCount !== 10) {
       throw new Error(`sync-legacy-ssm output sample should document parameterCount=10 for the checked sample inputs.\nSample:\n${JSON.stringify(sample, null, 2)}`);
     }
-    if (!Array.isArray(sample.parameters) || !sample.parameters.some((entry) => entry.name === "/prod/webPushSubject" && entry.value === "mailto:support@example.com")) {
+    if (!Array.isArray(sample.parameters) || !sample.parameters.some((entry) => entry.name === "/prod/webPushSubject")) {
       throw new Error(`sync-legacy-ssm output sample should include the sample webPushSubject parameter.\nSample:\n${JSON.stringify(sample, null, 2)}`);
+    }
+    if (sample.parameters.some((entry) => "value" in entry) || (actual.parameters || []).some((entry) => "value" in entry)) {
+      throw new Error(`sync-legacy-ssm output must list parameter names only; values are secrets and must not appear.\nSample:\n${JSON.stringify(sample, null, 2)}`);
     }
   });
 }

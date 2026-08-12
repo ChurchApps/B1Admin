@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -53,18 +54,6 @@ function runJson(command, args) {
     stdio: "pipe",
     maxBuffer: 20 * 1024 * 1024,
   }));
-}
-
-function run(command, args) {
-  console.log(`\n> ${command} ${args.join(" ")}`);
-  try {
-    execFileSync(command, args, {
-      cwd: rootDir,
-      stdio: "inherit",
-    });
-  } catch (error) {
-    exitForCommandError(error);
-  }
 }
 
 function normalizeOutputs(raw) {
@@ -144,7 +133,37 @@ function getSecretJson(secretId, region) {
 }
 
 function buildMysqlConnectionString({ username, password, host, port, database }) {
-  return `mysql://${username}:${password}@${host}:${port}/${database}`;
+  return `mysql://${encodeURIComponent(username)}:${encodeURIComponent(password)}@${host}:${port}/${database}`;
+}
+
+// Writes each parameter through a 0600 temp file (--cli-input-json) so the
+// secret value never appears on the process argv or in the echoed command.
+function putParameter(parameter, region, overwrite) {
+  console.log(`\n> aws ssm put-parameter --name ${parameter.name} --type SecureString (value hidden)`);
+  const tempFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "b1admin-ssm-")), "put-parameter.json");
+  try {
+    fs.writeFileSync(tempFile, JSON.stringify({
+      Name: parameter.name,
+      Value: parameter.value,
+      Type: "SecureString",
+      Overwrite: overwrite,
+    }), { mode: 0o600 });
+    execFileSync("aws", [
+      "ssm",
+      "put-parameter",
+      "--cli-input-json",
+      `file://${tempFile}`,
+      "--region",
+      region,
+    ], {
+      cwd: rootDir,
+      stdio: "inherit",
+    });
+  } catch (error) {
+    exitForCommandError(error);
+  } finally {
+    fs.rmSync(path.dirname(tempFile), { recursive: true, force: true });
+  }
 }
 
 function compactParameters(entries, includeEmpty) {
@@ -231,6 +250,13 @@ function main() {
     { name: `${prefix}/webPushSubject`, value: appConfig.webPushSubject || "" },
   ], includeEmpty);
 
+  if (!dryRun) {
+    for (const parameter of parameters) {
+      putParameter(parameter, region, overwrite);
+    }
+  }
+
+  // Parameter values are secrets; report names only.
   const result = {
     stackName,
     region,
@@ -239,7 +265,7 @@ function main() {
     overwrite,
     dryRun,
     parameterCount: parameters.length,
-    parameters,
+    parameters: parameters.map((parameter) => ({ name: parameter.name })),
   };
 
   if (outputMode === "json") {
@@ -254,22 +280,6 @@ function main() {
     console.log(`Parameters: ${parameters.length}`);
     parameters.forEach((parameter) => console.log(`- ${parameter.name}`));
     return;
-  }
-
-  for (const parameter of parameters) {
-    run("aws", [
-      "ssm",
-      "put-parameter",
-      "--name",
-      parameter.name,
-      "--value",
-      parameter.value,
-      "--type",
-      "SecureString",
-      "--region",
-      region,
-      ...(overwrite ? ["--overwrite"] : []),
-    ]);
   }
 
   console.log("\nLegacy SSM parameter sync complete.");

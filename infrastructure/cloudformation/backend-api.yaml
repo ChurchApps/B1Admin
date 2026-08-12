@@ -807,21 +807,64 @@ Resources:
         CorsRules:
           - AllowedHeaders: ["*"]
             AllowedMethods: [GET, HEAD, PUT]
-            AllowedOrigins: ["*"]
+            AllowedOrigins: [!Ref CorsOrigin]
             ExposedHeaders: [ETag]
             MaxAge: 3000
       OwnershipControls:
         Rules:
           - ObjectOwnership: BucketOwnerEnforced
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       VersioningConfiguration:
         Status: Enabled
 
-  ManagedAssetBucketPublicReadPolicy:
+  # Uploaded assets are served through CloudFront with Origin Access Control
+  # instead of a world-readable bucket; CONTENT_ROOT points at the
+  # distribution domain.
+  ManagedAssetOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Condition: CreateManagedAssetBucket
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${ProjectName}-${EnvironmentName}-assets-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  ManagedAssetDistribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: CreateManagedAssetBucket
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub "${ProjectName} ${EnvironmentName} uploaded assets"
+        HttpVersion: http2
+        PriceClass: PriceClass_100
+        Origins:
+          - Id: managed-assets
+            DomainName: !GetAtt ManagedAssetBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt ManagedAssetOriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: managed-assets
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD]
+          CachedMethods: [GET, HEAD]
+          # AWS managed CachingOptimized cache policy
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          # AWS managed CORS-S3Origin origin request policy
+          OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  ManagedAssetBucketCloudFrontReadPolicy:
     Type: AWS::S3::BucketPolicy
     Condition: CreateManagedAssetBucket
     Properties:
@@ -830,10 +873,14 @@ Resources:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
-            Principal: "*"
+            Principal:
+              Service: cloudfront.amazonaws.com
             Action:
               - s3:GetObject
             Resource: !Sub "arn:${AWS::Partition}:s3:::${ManagedAssetBucket}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${ManagedAssetDistribution}"
 
   ApiLogGroup:
     Type: AWS::Logs::LogGroup
@@ -1014,18 +1061,20 @@ Resources:
             - !Ref ContentRootUrl
             - !If
               - HasResolvedAssetBucket
-              - !Sub
-                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
-                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - !If
+                - CreateManagedAssetBucket
+                - !Sub "https://${ManagedAssetDistribution.DomainName}"
+                - !Sub "https://${AssetBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
               - ""
           CONTENT_ROOT: !If
             - HasContentRootUrl
             - !Ref ContentRootUrl
             - !If
               - HasResolvedAssetBucket
-              - !Sub
-                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
-                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - !If
+                - CreateManagedAssetBucket
+                - !Sub "https://${ManagedAssetDistribution.DomainName}"
+                - !Sub "https://${AssetBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
               - ""
           B1ADMIN_ROOT: !If [HasB1AdminRootUrl, !Ref B1AdminRootUrl, !Ref WebsiteBaseUrl]
           TRANSFER_URL: !Ref TransferUrl
@@ -1223,9 +1272,10 @@ Resources:
             - !Ref ContentRootUrl
             - !If
               - HasResolvedAssetBucket
-              - !Sub
-                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
-                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - !If
+                - CreateManagedAssetBucket
+                - !Sub "https://${ManagedAssetDistribution.DomainName}"
+                - !Sub "https://${AssetBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
               - ""
           B1ADMIN_ROOT: !If [HasB1AdminRootUrl, !Ref B1AdminRootUrl, !Ref WebsiteBaseUrl]
       Tags:
@@ -1318,9 +1368,10 @@ Resources:
             - !Ref ContentRootUrl
             - !If
               - HasResolvedAssetBucket
-              - !Sub
-                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
-                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - !If
+                - CreateManagedAssetBucket
+                - !Sub "https://${ManagedAssetDistribution.DomainName}"
+                - !Sub "https://${AssetBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
               - ""
           B1ADMIN_ROOT: !If [HasB1AdminRootUrl, !Ref B1AdminRootUrl, !Ref WebsiteBaseUrl]
       Tags:
@@ -1693,7 +1744,7 @@ Resources:
           - DELETE
           - OPTIONS
         AllowOrigins:
-          - "*"
+          - !Ref CorsOrigin
         AllowHeaders:
           - authorization
           - content-type
@@ -1854,10 +1905,13 @@ Outputs:
       - !Ref ContentRootUrl
       - !If
         - HasResolvedAssetBucket
-        - !Sub
-          - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
-          - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+        - !If
+          - CreateManagedAssetBucket
+          - !Sub "https://${ManagedAssetDistribution.DomainName}"
+          - !Sub "https://${AssetBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
         - ""
+  AssetDistributionId:
+    Value: !If [CreateManagedAssetBucket, !Ref ManagedAssetDistribution, ""]
   WebsiteBaseUrl:
     Value: !Ref WebsiteBaseUrl
   LessonsApiUrl:
