@@ -13,7 +13,6 @@ This folder is reference material for the installer. New installers should not s
 - [`staging/`](./staging): optional practice-environment starter files copied into the user's private repository.
 - [`private-deployment-repo.md`](./private-deployment-repo.md): reference guide for the user's private repository.
 - [`github-actions-setup.md`](./github-actions-setup.md): lower-level GitHub Actions reference.
-- [`deployment-workbook.md`](./deployment-workbook.md): optional planning worksheet.
 - [`first-rollout-checklist.md`](./first-rollout-checklist.md): detailed verification checklist after a deploy.
 
 ## Normal Installer Path

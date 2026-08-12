@@ -148,8 +148,11 @@ function validateApiMigrationArgs(action, moduleName) {
 }
 
 function validateApiMigrationRunner(runner) {
-  if (runner && !["direct", "data-api"].includes(runner)) {
-    fail(`Invalid api-migration-runner "${runner}". Use direct or data-api.`);
+  if (runner === "direct") {
+    fail('The "direct" migration runner has been removed; migrations run through the RDS Data API. Use --api-migration-runner=data-api (the default).');
+  }
+  if (runner && !["data-api"].includes(runner)) {
+    fail(`Invalid api-migration-runner "${runner}". Use data-api.`);
   }
 }
 
@@ -340,7 +343,7 @@ function main() {
   const runApiMigrations = getBooleanArgString("run-api-migrations");
   const apiMigrationAction = getArg("api-migration-action");
   const apiMigrationModule = getArg("api-migration-module");
-  const apiMigrationRunner = getArg("api-migration-runner", "direct");
+  const apiMigrationRunner = getArg("api-migration-runner", "data-api");
   const apiMigrationApiRepoPath = getArg("api-migration-api-repo-path");
   const apiMigrationDbSecretArn = getArg("api-migration-db-secret-arn");
   const apiMigrationDbSecretFile = getArg("api-migration-db-secret-file");
@@ -439,12 +442,6 @@ function main() {
     const resolvedApiMigrationRepoPath = path.resolve(rootDir, apiMigrationApiRepoPath || apiRepoPath || "../Api");
     if (!fs.existsSync(resolvedApiMigrationRepoPath)) {
       fail(`API migration repo not found: ${resolvedApiMigrationRepoPath}`);
-    }
-    if (apiMigrationRunner === "direct" && !fs.existsSync(path.join(resolvedApiMigrationRepoPath, "tools", "migrate.ts"))) {
-      fail(`API migration repo is missing tools/migrate.ts: ${path.join(resolvedApiMigrationRepoPath, "tools", "migrate.ts")}`);
-    }
-    if (apiMigrationRunner === "direct" && apiMigrationDryRun !== "true" && !fs.existsSync(path.join(resolvedApiMigrationRepoPath, "node_modules"))) {
-      fail(`API migration repo dependencies are not installed: ${path.join(resolvedApiMigrationRepoPath, "node_modules")}`);
     }
     if (apiMigrationRunner === "data-api" && !fs.existsSync(path.join(rootDir, "node_modules", "typescript", "package.json"))) {
       fail(`B1Admin dependencies are not installed: ${path.join(rootDir, "node_modules", "typescript", "package.json")}`);

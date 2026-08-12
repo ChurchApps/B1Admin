@@ -19,8 +19,7 @@
     "publishDependenciesLayer": "",
     "deployBackend": "yarn deploy:backend -- --package-manifest-file=infrastructure/artifacts/api/api-prod-self-contained.manifest.json",
     "deployAws": "yarn deploy:aws -- --package-manifest-file=infrastructure/artifacts/api/api-prod-self-contained.manifest.json",
-    "deployFullStack": "yarn deploy:full-stack -- --package-manifest-file=infrastructure/artifacts/api/api-prod-self-contained.manifest.json",
-    "deployMode": "Use the resulting backend zip directly with deploy:backend, deploy:aws, or deploy:full-stack."
+    "deployMode": "Use the resulting backend zip directly with deploy:backend or deploy:aws."
   },
   "includedBackendEntries": [
     "config",

@@ -789,5 +789,4 @@ Use these only when you need detail beyond the guided path:
 
 - [User's private repository guide](./private-deployment-repo.md)
 - [GitHub Actions setup guide](./github-actions-setup.md)
-- [Deployment workbook](./deployment-workbook.md)
 - [IAM setup guide](../iam/README.md)

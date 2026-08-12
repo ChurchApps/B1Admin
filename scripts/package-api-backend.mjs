@@ -224,10 +224,9 @@ function main() {
         : "",
       deployBackend: `yarn deploy:backend -- --package-manifest-file=${relativeManifestPath}`,
       deployAws: `yarn deploy:aws -- --package-manifest-file=${relativeManifestPath}`,
-      deployFullStack: `yarn deploy:full-stack -- --package-manifest-file=${relativeManifestPath}`,
       deployMode:
         packageMode === "self-contained"
-          ? "Use the resulting backend zip directly with deploy:backend, deploy:aws, or deploy:full-stack."
+          ? "Use the resulting backend zip directly with deploy:backend or deploy:aws."
           : "Upload the backend zip and dependencies layer zip separately. Then publish the layer and pass its ARN through DependenciesLayerArn.",
     },
     includedBackendEntries: backendEntries,

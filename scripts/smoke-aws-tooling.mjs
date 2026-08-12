@@ -97,7 +97,6 @@ function expectJsonExampleContractCoverage(jsonFilesToParse) {
     "infrastructure/examples/database-secret.sample.json",
     "infrastructure/examples/frontend-outputs.sample.json",
     "infrastructure/examples/frontend-parameters.sample.json",
-    "infrastructure/examples/full-stack-parameters.sample.json",
   ].sort();
 
   const parsedExampleSamples = jsonFilesToParse
@@ -3604,30 +3603,6 @@ function expectPlanEnvironmentDeployBackendArtifactInputBlockerWorks() {
   }
 }
 
-function expectDeployFullStackPackageManifestMissingArtifact() {
-  withFakePackageManifest((manifestPath) => {
-    withFakeAwsAllowingS3Cp((env) => {
-      const result = runScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--stack-name=example-full-stack",
-        "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-        `--package-manifest-file=${manifestPath}`,
-        "--template-bucket=my-template-bucket",
-        "--lambda-code-s3-bucket=my-artifacts-bucket",
-        "--infrastructure-only",
-      ], env);
-
-      if (result.status === 0) {
-        throw new Error(`deploy-full-stack package manifest file without api repo unexpectedly passed.\nSTDOUT:\n${result.stdout}`);
-      }
-
-      const combined = `${result.stdout}\n${result.stderr}`;
-      if (!combined.includes("Source file not found:")) {
-        throw new Error(`deploy-full-stack package manifest file without api repo did not include expected missing artifact error.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-    });
-  }, { missingBackendArtifact: true });
-}
-
 function expectDeployBackendPackageManifestMissingMigrationArtifact() {
   withFakePackageManifest((manifestPath) => {
     withFakeAwsAllowingS3Cp((env) => {
@@ -3671,32 +3646,6 @@ function expectDeployAwsPackageManifestMissingMigrationArtifact() {
       const combined = `${result.stdout}\n${result.stderr}`;
       if (!combined.includes("Source file not found:")) {
         throw new Error(`deploy-aws package manifest missing migration artifact did not include expected missing artifact error.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-    });
-  }, { missingMigrationArtifact: true });
-}
-
-function expectDeployFullStackPackageManifestMissingMigrationArtifact() {
-  withFakePackageManifest((manifestPath) => {
-    withFakeAwsAllowingS3Cp((env) => {
-      const result = runScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--stack-name=example-full-stack",
-        "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-        `--package-manifest-file=${manifestPath}`,
-        "--template-bucket=my-template-bucket",
-        "--lambda-code-s3-bucket=my-artifacts-bucket",
-        "--run-migrations=true",
-        "--migration-handler=index.migrate",
-        "--infrastructure-only",
-      ], env);
-
-      if (result.status === 0) {
-        throw new Error(`deploy-full-stack package manifest missing migration artifact unexpectedly passed.\nSTDOUT:\n${result.stdout}`);
-      }
-
-      const combined = `${result.stdout}\n${result.stderr}`;
-      if (!combined.includes("Source file not found:")) {
-        throw new Error(`deploy-full-stack package manifest missing migration artifact did not include expected missing artifact error.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
       }
     });
   }, { missingMigrationArtifact: true });
@@ -3757,35 +3706,6 @@ function expectDeployAwsJsonIncludesManifestProvenance() {
 
       if (parsed.backend?.lambdaCodeS3Key !== "b1admin/prod/backend/api.zip") {
         throw new Error(`deploy-aws nested backend json output did not reflect the uploaded backend artifact key.\nSTDOUT:\n${result.stdout}`);
-      }
-    });
-  });
-}
-
-function expectDeployFullStackJsonIncludesManifestProvenance() {
-  withFakePackageManifest((manifestPath) => {
-    withFakeAwsForFullStackDeploy((env) => {
-      const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--stack-name=example-full-stack",
-        `--package-manifest-file=${manifestPath}`,
-        "--template-bucket=my-template-bucket",
-        "--lambda-code-s3-bucket=my-artifacts-bucket",
-        "--infrastructure-only",
-        "--output=json",
-      ], env);
-
-      if (result.status !== 0) {
-        throw new Error(`deploy-full-stack json provenance failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-
-      const parsed = result.parsed || {};
-      if (parsed.resolvedPackageManifestFile !== manifestPath) {
-        throw new Error(`deploy-full-stack json output did not include the resolved manifest path.\nSTDOUT:\n${result.stdout}`);
-      }
-
-      const expectedBackendArtifact = path.join(path.dirname(manifestPath), "api-test-self-contained.zip");
-      if (parsed.resolvedBackendArtifactSourceFile !== expectedBackendArtifact) {
-        throw new Error(`deploy-full-stack json output did not include the resolved backend artifact path.\nSTDOUT:\n${result.stdout}`);
       }
     });
   });
@@ -4498,44 +4418,6 @@ function expectValidatorBootstrapRespectsEnvironmentName() {
   }
 }
 
-function expectValidatorFullStackRespectsEnvironmentName() {
-  const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-validate-full-stack-env-"));
-  const paramsPath = path.join(tempDir, "full-stack-parameters.json");
-
-  try {
-    fs.writeFileSync(paramsPath, `${JSON.stringify({
-      ProjectName: "b1admin",
-      EnvironmentName: "staging",
-      BackendTemplateUrl: "https://example-bucket.s3.amazonaws.com/b1admin/backend-api.yaml",
-      FrontendTemplateUrl: "https://example-bucket.s3.amazonaws.com/b1admin/frontend-site.yaml",
-      LambdaCodeS3Bucket: "full-stack-staging-artifacts-123456789012",
-      LambdaCodeS3Key: "b1admin/staging/backend/api.zip",
-    }, null, 2)}\n`);
-
-    const result = runJsonScript("scripts/validate-aws-deploy.mjs", [
-      "--mode=full-stack",
-      "--region=us-east-1",
-      "--template-bucket=example-template-bucket",
-      `--parameters-file=${paramsPath}`,
-      "--output=json",
-    ]);
-
-    if (result.status !== 0) {
-      throw new Error(`full-stack EnvironmentName validation failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-    }
-
-    if (result.parsed?.environmentName !== "staging") {
-      throw new Error(`full-stack validator did not preserve EnvironmentName from the parameters file.\nSTDOUT:\n${result.stdout}`);
-    }
-
-    if (result.parsed?.resolved?.artifactKey !== "b1admin/staging/backend/api.zip") {
-      throw new Error(`full-stack validator did not derive the staging artifact key from EnvironmentName.\nSTDOUT:\n${result.stdout}`);
-    }
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-}
-
 function expectValidateApiMigrationsOutputSampleMatchesContract() {
   const sample = readJsonFile("infrastructure/examples/validate-api-migrations-output.sample.json");
   const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-validate-api-migrations-sample-"));
@@ -4728,124 +4610,6 @@ function expectValidateSplitStackFrontendInfraOutputSampleMatchesContract() {
   }
   if (!Array.isArray(sample.warnings) || sample.warnings.length !== 0 || !Array.isArray(sample.errors) || sample.errors.length !== 0) {
     throw new Error(`validate-split-stack frontend-infrastructure output sample should document a clean validation result with no warnings or errors.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-}
-
-function expectValidateFullStackOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/validate-full-stack-output.sample.json");
-
-  const result = runJsonScript("scripts/validate-aws-deploy.mjs", [
-    "--mode=full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--template-bucket=my-template-bucket",
-    "--output=json",
-  ]);
-
-  if (result.status !== 0) {
-    throw new Error(`validate-full-stack output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-
-  const actual = result.parsed || {};
-  expectObjectContainsKeys("validate-full-stack output sample", actual, sample);
-  expectObjectContainsKeys("validate-full-stack output sample", actual.resolved || {}, sample.resolved || {}, "resolved");
-
-  if (sample.ok !== true || sample.mode !== "full-stack" || sample.fullStackPublishOnly !== false) {
-    throw new Error(`validate-full-stack output sample should document an ok non-publish full-stack validation result.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (sample.parametersFile !== "infrastructure/examples/full-stack-parameters.sample.json") {
-    throw new Error(`validate-full-stack output sample should point to the sample full-stack parameters file.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (sample.resolved?.templateBucket !== "my-template-bucket") {
-    throw new Error(`validate-full-stack output sample should document templateBucket=my-template-bucket.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (sample.resolved?.artifactBucket !== "my-artifacts-bucket") {
-    throw new Error(`validate-full-stack output sample should document artifactBucket=my-artifacts-bucket.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.info) || !sample.info.includes("Template bucket: my-template-bucket")) {
-    throw new Error(`validate-full-stack output sample should document the resolved template bucket.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.errors) || sample.errors.length !== 0 || !Array.isArray(sample.warnings) || sample.warnings.length !== 0) {
-    throw new Error(`validate-full-stack output sample should document a clean validation result with no warnings or errors.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-}
-
-function expectValidateFullStackFrontendInfraOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/validate-full-stack-frontend-infra-output.sample.json");
-
-  const result = runJsonScript("scripts/validate-aws-deploy.mjs", [
-    "--mode=full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--template-bucket=my-template-bucket",
-    "--frontend-infrastructure-only",
-    "--output=json",
-  ]);
-
-  if (result.status !== 0) {
-    throw new Error(`validate-full-stack frontend-infrastructure output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-
-  const actual = result.parsed || {};
-  expectObjectContainsKeys("validate-full-stack frontend-infrastructure output sample", actual, sample);
-  expectObjectContainsKeys("validate-full-stack frontend-infrastructure output sample", actual.resolved || {}, sample.resolved || {}, "resolved");
-
-  if (sample.ok !== true || sample.mode !== "full-stack" || sample.frontendInfrastructureOnly !== true) {
-    throw new Error(`validate-full-stack frontend-infrastructure output sample should document an ok hosting-only full-stack validation result.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.info) || !sample.info.includes("Frontend infrastructure-only deploy requested.")) {
-    throw new Error(`validate-full-stack frontend-infrastructure output sample should document the frontend infrastructure-only mode.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.info) || !sample.info.some((line) => String(line).includes("frontend asset publishing deferred"))) {
-    throw new Error(`validate-full-stack frontend-infrastructure output sample should document the deferred frontend publish phase.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.warnings) || sample.warnings.length !== 0 || !Array.isArray(sample.errors) || sample.errors.length !== 0) {
-    throw new Error(`validate-full-stack frontend-infrastructure output sample should document a clean validation result with no warnings or errors.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-}
-
-function expectValidateFullStackPublishOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/validate-full-stack-publish-output.sample.json");
-
-  const result = runJsonScript("scripts/validate-aws-deploy.mjs", [
-    "--mode=full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--skip-infrastructure",
-    "--publish-frontend-assets",
-    "--frontend-outputs-file=infrastructure/examples/frontend-outputs.sample.json",
-    "--backend-outputs-file=infrastructure/examples/backend-outputs.sample.json",
-    "--output=json",
-  ]);
-
-  if (result.status !== 0) {
-    throw new Error(`validate-full-stack publish output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-
-  const actual = result.parsed || {};
-  expectObjectContainsKeys("validate-full-stack publish output sample", actual, sample);
-  expectObjectContainsKeys("validate-full-stack publish output sample", actual.resolved || {}, sample.resolved || {}, "resolved");
-
-  if (sample.ok !== true || sample.mode !== "full-stack" || sample.fullStackPublishOnly !== true) {
-    throw new Error(`validate-full-stack publish output sample should document an ok full-stack publish-only validation result.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (sample.parametersFile !== "infrastructure/examples/full-stack-parameters.sample.json") {
-    throw new Error(`validate-full-stack publish output sample should point to the sample full-stack parameters file.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (sample.resolved?.artifactBucket !== "my-artifacts-bucket") {
-    throw new Error(`validate-full-stack publish output sample should document artifactBucket=my-artifacts-bucket.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (sample.resolved?.artifactKey !== "b1admin/backend/api.zip") {
-    throw new Error(`validate-full-stack publish output sample should document artifactKey=b1admin/backend/api.zip.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.info) || !sample.info.some((line) => String(line).includes("Frontend outputs file: /abs/path/to/"))) {
-    throw new Error(`validate-full-stack publish output sample should show the frontend outputs file placeholder.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.info) || !sample.info.some((line) => String(line).includes("Backend outputs file: /abs/path/to/"))) {
-    throw new Error(`validate-full-stack publish output sample should show the backend outputs file placeholder.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.warnings) || !sample.warnings.some((line) => String(line).includes("/abs/path/to/B1Admin/node_modules"))) {
-    throw new Error(`validate-full-stack publish output sample should show the node_modules warning placeholder.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-  }
-  if (!Array.isArray(sample.nextSteps) || !sample.nextSteps.some((step) => String(step).includes("deploy:full-stack"))) {
-    throw new Error(`validate-full-stack publish output sample should include a deploy:full-stack next step.\nSample:\n${JSON.stringify(sample, null, 2)}`);
   }
 }
 
@@ -5243,63 +5007,6 @@ function expectDispatchGithubAwsDeployOutputSampleMatchesContract() {
   }
 }
 
-function expectRunApiMigrationsOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/run-api-migrations-output.sample.json");
-  const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-run-api-migrations-sample-"));
-
-  try {
-    fs.mkdirSync(path.join(tempDir, "tools", "migrations", "attendance"), { recursive: true });
-    fs.writeFileSync(path.join(tempDir, "package.json"), `${JSON.stringify({
-      name: "fake-api-repo",
-      private: true,
-    }, null, 2)}\n`);
-    fs.writeFileSync(path.join(tempDir, "tools", "migrate.ts"), "export {};\n");
-    fs.writeFileSync(path.join(tempDir, "tools", "kysely-config.ts"), "const MODULES = [\"attendance\"] as const;\nexport { MODULES };\n");
-
-    const result = runJsonScript("scripts/run-api-migrations.mjs", [
-      `--api-repo-path=${tempDir}`,
-      "--outputs-file=infrastructure/examples/backend-stack-outputs.sample.json",
-      "--db-secret-file=infrastructure/examples/database-secret.sample.json",
-      "--module=attendance",
-      "--action=status",
-      "--dry-run=true",
-      "--output=json",
-    ]);
-
-    if (result.status !== 0) {
-      throw new Error(`run-api-migrations output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-    }
-
-    const actual = result.parsed || {};
-    expectObjectContainsKeys("run-api-migrations output sample", actual, sample);
-    expectObjectContainsKeys("run-api-migrations output sample", actual.connectionStrings || {}, sample.connectionStrings || {}, "connectionStrings");
-
-    if (sample.apiRepoPath !== "<api-repo-path>") {
-      throw new Error(`run-api-migrations output sample should use the <api-repo-path> placeholder.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.command !== "<yarn-command> migrate --action=status --module=attendance") {
-      throw new Error(`run-api-migrations output sample should use the <yarn-command> placeholder.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.outputsFile !== "infrastructure/examples/backend-stack-outputs.sample.json" || sample.module !== "attendance" || sample.action !== "status") {
-      throw new Error(`run-api-migrations output sample should document the checked sample invocation.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (!String(sample.resolvedDbSecretSource).includes("/abs/path/to/")) {
-      throw new Error(`run-api-migrations output sample should show a db-secret placeholder path.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (!String(actual.command || "").includes("migrate --action=status --module=attendance")) {
-      throw new Error(`run-api-migrations contract run did not expose the expected migration command.\nSTDOUT:\n${result.stdout}`);
-    }
-    if (sample.connectionStrings?.ATTENDANCE_CONNECTION_STRING !== "mysql://churchapps:***@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/attendance") {
-      throw new Error(`run-api-migrations output sample should document the redacted attendance connection string.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.executed !== false || sample.dryRun !== true) {
-      throw new Error(`run-api-migrations output sample should document the dry-run non-executed state.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-}
-
 function expectPublishFrontendOutputSampleMatchesContract() {
   const sample = readJsonFile("infrastructure/examples/publish-frontend-output.sample.json");
 
@@ -5686,142 +5393,6 @@ function expectDeployAwsFrontendInfraOutputSampleMatchesContract() {
   });
 }
 
-function expectDeployFullStackFrontendInfraOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/deploy-full-stack-frontend-infra-output.sample.json");
-
-  withFakeAwsForFullStackDeploy((env) => {
-    const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-      "--stack-name=example-full-stack",
-      "--template-bucket=my-template-bucket",
-      "--lambda-code-s3-bucket=my-artifacts-bucket",
-      "--lambda-code-s3-key=b1admin/prod/backend/api.zip",
-      "--frontend-infrastructure-only",
-      "--output=json",
-    ], env);
-
-    if (result.status !== 0) {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-    }
-
-    const actual = result.parsed || {};
-    expectObjectContainsKeys("deploy-full-stack frontend-infrastructure output sample", actual, sample);
-    expectObjectContainsKeys("deploy-full-stack frontend-infrastructure output sample", actual.outputs || {}, sample.outputs || {}, "outputs");
-    expectObjectContainsKeys("deploy-full-stack frontend-infrastructure output sample", actual.frontendEnv || {}, sample.frontendEnv || {}, "frontendEnv");
-
-    if (sample.stackName !== "example-full-stack" || sample.region !== "us-east-1" || sample.environmentName !== "prod") {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document the default region/environment/stack identity.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.frontendInfrastructureOnly !== true || sample.infrastructureOnly !== false || sample.publishFrontendAssets !== false) {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document the hosting-only non-publish flow.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.lambdaCodeS3Bucket !== "my-artifacts-bucket" || sample.lambdaCodeS3Key !== "b1admin/prod/backend/api.zip") {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document the resolved backend artifact location.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.frontendBucketName !== "example-frontend-bucket" || sample.frontendDistributionId !== "EXAMPLE123") {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document the resolved frontend hosting target.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.frontendAppUrl !== "https://admin.example.com") {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document the resolved frontend app URL.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.frontendEnv?.REACT_APP_API_BASE !== "https://api.example.com") {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document REACT_APP_API_BASE from full-stack outputs.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-    if (sample.frontendPublished !== false) {
-      throw new Error(`deploy-full-stack frontend-infrastructure output sample should document that frontend publishing is deferred.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-    }
-  });
-}
-
-function expectDeployFullStackFullOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/deploy-full-stack-full-output.sample.json");
-
-  withFakeFrontendBuildHarness(({ envCapturePath, PATH }) => {
-    withFakeAwsForFullStackDeploy((awsEnv) => {
-      const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--stack-name=example-full-stack",
-        "--template-bucket=my-template-bucket",
-        "--lambda-code-s3-bucket=my-artifacts-bucket",
-        "--lambda-code-s3-key=b1admin/prod/backend/api.zip",
-        "--output=json",
-      ], {
-        ...awsEnv,
-        PATH: `${awsEnv.PATH || ""}${path.delimiter}${PATH}`,
-      });
-
-      if (result.status !== 0) {
-        throw new Error(`deploy-full-stack full output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-
-      const actual = result.parsed || {};
-      expectObjectContainsKeys("deploy-full-stack full output sample", actual, sample);
-      expectObjectContainsKeys("deploy-full-stack full output sample", actual.outputs || {}, sample.outputs || {}, "outputs");
-      expectObjectContainsKeys("deploy-full-stack full output sample", actual.frontendEnv || {}, sample.frontendEnv || {}, "frontendEnv");
-
-      const capturedEnv = JSON.parse(fs.readFileSync(envCapturePath, "utf8"));
-      if (sample.stackName !== "example-full-stack" || sample.region !== "us-east-1" || sample.environmentName !== "prod") {
-        throw new Error(`deploy-full-stack full output sample should document the default region/environment/stack identity.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.skipInfrastructure !== false || sample.publishFrontendAssets !== false || sample.frontendInfrastructureOnly !== false || sample.infrastructureOnly !== false) {
-        throw new Error(`deploy-full-stack full output sample should document the standard end-to-end wrapper flow.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.lambdaCodeS3Bucket !== "my-artifacts-bucket" || sample.lambdaCodeS3Key !== "b1admin/prod/backend/api.zip") {
-        throw new Error(`deploy-full-stack full output sample should document the resolved backend artifact location.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendPublished !== true || sample.frontendBucketName !== "example-frontend-bucket" || sample.frontendDistributionId !== "EXAMPLE123") {
-        throw new Error(`deploy-full-stack full output sample should document the published frontend target.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendAppUrl !== "https://admin.example.com") {
-        throw new Error(`deploy-full-stack full output sample should document the resolved frontend app URL.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendEnv?.REACT_APP_API_BASE !== "https://api.example.com") {
-        throw new Error(`deploy-full-stack full output sample should document REACT_APP_API_BASE from full-stack outputs.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (capturedEnv.REACT_APP_API_BASE !== "https://api.example.com" || capturedEnv.REACT_APP_STAGE !== "prod") {
-        throw new Error(`deploy-full-stack full output sample contract run did not receive the expected frontend build env.\nCaptured env:\n${JSON.stringify(capturedEnv, null, 2)}\nSTDOUT:\n${result.stdout}`);
-      }
-    });
-  });
-}
-
-function expectDeployFullStackPublishOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/deploy-full-stack-publish-output.sample.json");
-
-  withFakeFrontendBuildOutput(() => {
-    withFakeAwsForFrontendPublish((env) => {
-      const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--skip-infrastructure",
-        "--publish-frontend-assets",
-        "--skip-build",
-        "--frontend-outputs-file=infrastructure/examples/frontend-outputs.sample.json",
-        "--output=json",
-      ], env);
-
-      if (result.status !== 0) {
-        throw new Error(`deploy-full-stack publish output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-
-      const actual = result.parsed || {};
-      expectObjectContainsKeys("deploy-full-stack publish output sample", actual, sample);
-
-      if (sample.region !== "us-east-1" || sample.environmentName !== "prod") {
-        throw new Error(`deploy-full-stack publish output sample should document the default region/environment identity.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.publishFrontendAssets !== true || sample.skipInfrastructure !== true || sample.skipBuild !== true) {
-        throw new Error(`deploy-full-stack publish output sample should document the publish-only skip-build flow.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendBucketName !== "example-frontend-bucket" || sample.frontendDistributionId !== "EXAMPLE123") {
-        throw new Error(`deploy-full-stack publish output sample should document the saved frontend publish target.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendAppUrl !== "https://admin.example.com") {
-        throw new Error(`deploy-full-stack publish output sample should document the saved frontend app URL.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendPublished !== true) {
-        throw new Error(`deploy-full-stack publish output sample should document a successful publish-only result.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-    });
-  });
-}
-
 function expectDeployAwsPublishBuildOutputSampleMatchesContract() {
   const sample = readJsonFile("infrastructure/examples/deploy-aws-publish-build-output.sample.json");
 
@@ -5865,53 +5436,6 @@ function expectDeployAwsPublishBuildOutputSampleMatchesContract() {
       }
       if (capturedEnv.REACT_APP_API_BASE !== "https://api.example.com" || capturedEnv.REACT_APP_STAGE !== "prod") {
         throw new Error(`deploy-aws publish build output sample contract run did not receive the expected build env.\nCaptured env:\n${JSON.stringify(capturedEnv, null, 2)}\nSTDOUT:\n${result.stdout}`);
-      }
-    });
-  });
-}
-
-function expectDeployFullStackPublishBuildOutputSampleMatchesContract() {
-  const sample = readJsonFile("infrastructure/examples/deploy-full-stack-publish-build-output.sample.json");
-
-  withFakeFrontendBuildHarness(({ envCapturePath, PATH }) => {
-    withFakeAwsForFrontendPublish((awsEnv) => {
-      const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--skip-infrastructure",
-        "--publish-frontend-assets",
-        "--frontend-outputs-file=infrastructure/examples/frontend-outputs.sample.json",
-        "--backend-outputs-file=infrastructure/examples/backend-outputs.sample.json",
-        "--output=json",
-      ], {
-        ...awsEnv,
-        PATH: `${awsEnv.PATH || ""}${path.delimiter}${PATH}`,
-      });
-
-      if (result.status !== 0) {
-        throw new Error(`deploy-full-stack publish build output sample contract run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-
-      const actual = result.parsed || {};
-      expectObjectContainsKeys("deploy-full-stack publish build output sample", actual, sample);
-      expectObjectContainsKeys("deploy-full-stack publish build output sample", actual.frontendEnv || {}, sample.frontendEnv || {}, "frontendEnv");
-
-      const capturedEnv = JSON.parse(fs.readFileSync(envCapturePath, "utf8"));
-      if (sample.skipBuild !== false || sample.publishFrontendAssets !== true || sample.skipInfrastructure !== true) {
-        throw new Error(`deploy-full-stack publish build output sample should document the build-driven publish-only flow.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendBucketName !== "example-frontend-bucket" || sample.frontendDistributionId !== "EXAMPLE123") {
-        throw new Error(`deploy-full-stack publish build output sample should document the saved frontend publish target.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendAppUrl !== "https://admin.example.com") {
-        throw new Error(`deploy-full-stack publish build output sample should document the saved frontend app URL.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendEnv?.REACT_APP_API_BASE !== "https://api.example.com") {
-        throw new Error(`deploy-full-stack publish build output sample should document REACT_APP_API_BASE from saved backend outputs.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (sample.frontendEnv?.REACT_APP_DEFAULT_STOCK_PHOTO !== "https://content.example.com/stockPhotos/default.jpg") {
-        throw new Error(`deploy-full-stack publish build output sample should document REACT_APP_DEFAULT_STOCK_PHOTO from saved backend outputs.\nSample:\n${JSON.stringify(sample, null, 2)}`);
-      }
-      if (capturedEnv.REACT_APP_API_BASE !== "https://api.example.com" || capturedEnv.REACT_APP_STAGE !== "prod") {
-        throw new Error(`deploy-full-stack publish build output sample contract run did not receive the expected build env.\nCaptured env:\n${JSON.stringify(capturedEnv, null, 2)}\nSTDOUT:\n${result.stdout}`);
       }
     });
   });
@@ -5962,21 +5486,6 @@ function expectScriptOk(name, scriptPath, invocation) {
   const result = runScript(scriptPath, invocation);
   if (result.status !== 0) {
     throw new Error(`${name} failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-}
-
-function withFakeApiRepoWithoutNodeModules(callback) {
-  const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-fake-api-repo-"));
-  try {
-    fs.mkdirSync(path.join(tempDir, "tools"), { recursive: true });
-    fs.writeFileSync(path.join(tempDir, "package.json"), `${JSON.stringify({
-      name: "fake-api-repo",
-      private: true,
-    }, null, 2)}\n`);
-    fs.writeFileSync(path.join(tempDir, "tools", "migrate.ts"), "export {};\n");
-    callback(tempDir);
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
   }
 }
 
@@ -6600,67 +6109,6 @@ process.exit(1);
   }
 }
 
-function withFakeAwsForFullStackDeploy(callback) {
-  const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-fake-aws-full-stack-"));
-  const awsPath = path.join(tempDir, "aws");
-  const script = `#!/usr/bin/env node
-const args = process.argv.slice(2);
-if (args[0] === "s3" && (args[1] === "cp" || args[1] === "sync")) {
-  process.exit(0);
-}
-if (args[0] === "cloudfront" && args[1] === "create-invalidation") {
-  process.stdout.write(JSON.stringify({ Invalidation: { Id: "TEST" } }));
-  process.exit(0);
-}
-if (args[0] === "cloudformation" && args[1] === "deploy") {
-  process.exit(0);
-}
-  if (args[0] === "cloudformation" && args[1] === "describe-stacks") {
-    const stackNameIndex = args.indexOf("--stack-name");
-    const stackName = stackNameIndex >= 0 ? args[stackNameIndex + 1] : "";
-    if (stackName === "example-full-stack") {
-      process.stdout.write(JSON.stringify({
-        Stacks: [{
-          Outputs: [
-          { OutputKey: "AppConfigSecretArn", OutputValue: "arn:aws:secretsmanager:us-east-1:123456789012:secret:example" },
-          { OutputKey: "FrontendBucketName", OutputValue: "example-frontend-bucket" },
-          { OutputKey: "FrontendDistributionId", OutputValue: "EXAMPLE123" },
-          { OutputKey: "FrontendAppUrl", OutputValue: "https://admin.example.com" },
-          { OutputKey: "PublicApiBaseUrl", OutputValue: "https://api.example.com" },
-          { OutputKey: "ContentRootUrl", OutputValue: "https://content.example.com" },
-          { OutputKey: "WebsiteBaseUrl", OutputValue: "https://{subdomain}.example.com" },
-          { OutputKey: "LessonsApiUrl", OutputValue: "https://lessons-api.example.com" },
-          { OutputKey: "TransferUrl", OutputValue: "https://transfer.example.com" },
-          { OutputKey: "SupportEmail", OutputValue: "support@example.com" },
-          { OutputKey: "SupportPhone", OutputValue: "555-555-5555" },
-          { OutputKey: "SupportSiteUrl", OutputValue: "https://support.example.com" },
-          { OutputKey: "MobileAppUrl", OutputValue: "https://example.com/app" },
-          { OutputKey: "DomainCnameTarget", OutputValue: "proxy.example.com" },
-          { OutputKey: "DomainATarget", OutputValue: "203.0.113.10" },
-          { OutputKey: "DefaultStockPhoto", OutputValue: "https://content.example.com/stockPhotos/default.jpg" }
-        ]
-      }]
-    }));
-    process.exit(0);
-  }
-  process.stderr.write("Unexpected stack lookup: " + stackName + "\\n");
-  process.exit(1);
-}
-process.stderr.write("Unexpected aws invocation: " + args.join(" ") + "\\n");
-process.exit(1);
-`;
-
-  try {
-    fs.writeFileSync(awsPath, script);
-    fs.chmodSync(awsPath, 0o755);
-    callback({
-      PATH: `${tempDir}${path.delimiter}${process.env.PATH || ""}`,
-    });
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-}
-
 function withFakeAwsForFrontendDeploy(callback) {
   const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-fake-aws-frontend-"));
   const awsPath = path.join(tempDir, "aws");
@@ -7214,124 +6662,6 @@ function expectDeployFrontendSkipBuildIgnoresBackendStack() {
   });
 }
 
-function expectApiMigrationConnectionStringEncoding() {
-  const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-api-migration-encoding-"));
-  try {
-    const secretPath = path.join(tempDir, "database-secret.json");
-    fs.writeFileSync(secretPath, `${JSON.stringify({
-      username: "church@apps",
-      password: "p@ss word/with:symbols",
-    }, null, 2)}\n`);
-
-    const result = runJsonScript("scripts/run-api-migrations.mjs", [
-      "--api-repo-path=../Api",
-      "--outputs-file=infrastructure/examples/backend-stack-outputs.sample.json",
-      `--db-secret-file=${secretPath}`,
-      "--module=all",
-      "--action=status",
-      "--dry-run=true",
-      "--output=json",
-    ]);
-
-    if (result.status !== 0) {
-      throw new Error(`run-api-migrations dry run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-    }
-
-    const membershipConnectionString = result.parsed?.connectionStrings?.MEMBERSHIP_CONNECTION_STRING || "";
-    if (!membershipConnectionString.includes("mysql://church%40apps:***@")) {
-      throw new Error(`Encoded connection string was not redacted/encoded as expected.\nSTDOUT:\n${result.stdout}`);
-    }
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-}
-
-function expectApiMigrationSingleModuleMinimalOutputs() {
-  const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-api-migration-single-module-"));
-  try {
-    const outputsPath = path.join(tempDir, "outputs.json");
-    const secretPath = path.join(tempDir, "database-secret.json");
-
-    fs.writeFileSync(outputsPath, `${JSON.stringify({
-      DatabaseEndpoint: "example.cluster.us-east-1.rds.amazonaws.com",
-      DatabasePort: "3306",
-      AttendanceDatabaseName: "attendance",
-    }, null, 2)}\n`);
-    fs.writeFileSync(secretPath, `${JSON.stringify({
-      username: "churchapps",
-      password: "replace-me",
-    }, null, 2)}\n`);
-
-    const result = runJsonScript("scripts/run-api-migrations.mjs", [
-      "--api-repo-path=../Api",
-      `--outputs-file=${outputsPath}`,
-      `--db-secret-file=${secretPath}`,
-      "--module=attendance",
-      "--action=status",
-      "--dry-run=true",
-      "--output=json",
-    ]);
-
-    if (result.status !== 0) {
-      throw new Error(`single-module migration dry run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-    }
-
-    const keys = Object.keys(result.parsed?.connectionStrings || {});
-    const expectedKeys = ["ATTENDANCE_CONNECTION_STRING"];
-    if (JSON.stringify(keys) !== JSON.stringify(expectedKeys)) {
-      throw new Error(`single-module migration generated unexpected connection strings: ${keys.join(", ")}`);
-    }
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-}
-
-function expectApiMigrationAllModuleRepoSupportSignal() {
-  const result = runJsonScript("scripts/run-api-migrations.mjs", [
-    "--api-repo-path=../Api",
-    "--outputs-file=infrastructure/examples/backend-stack-outputs.sample.json",
-    "--db-secret-file=infrastructure/examples/database-secret.sample.json",
-    "--module=all",
-    "--action=status",
-    "--dry-run=true",
-    "--output=json",
-  ]);
-
-  if (result.status !== 0) {
-    throw new Error(`all-module migration dry run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-
-  const effectiveModules = result.parsed?.effectiveModules || [];
-  const skippedConfiguredModules = result.parsed?.skippedConfiguredModules || [];
-  if (!Array.isArray(effectiveModules) || effectiveModules.length === 0) {
-    throw new Error(`all-module migration dry run did not report effective modules.\nSTDOUT:\n${result.stdout}`);
-  }
-  if (!skippedConfiguredModules.includes("reporting")) {
-    throw new Error(`all-module migration dry run did not surface reporting as skipped.\nSTDOUT:\n${result.stdout}`);
-  }
-}
-
-function expectApiMigrationReportingSupportSignal() {
-  const result = runJsonScript("scripts/run-api-migrations.mjs", [
-    "--api-repo-path=../Api",
-    "--outputs-file=infrastructure/examples/backend-stack-outputs.sample.json",
-    "--db-secret-file=infrastructure/examples/database-secret.sample.json",
-    "--module=reporting",
-    "--action=status",
-    "--dry-run=true",
-    "--output=json",
-  ]);
-
-  if (result.status !== 0) {
-    throw new Error(`reporting migration dry run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-
-  const warnings = result.parsed?.warnings || [];
-  if (!warnings.some((warning) => String(warning).includes("No migration directory exists"))) {
-    throw new Error(`reporting migration dry run did not surface missing migration directory.\nSTDOUT:\n${result.stdout}`);
-  }
-}
-
 function expectValidatorReportingMigrationNoNextStep() {
   const result = runJsonScript("scripts/validate-aws-deploy.mjs", [
     "--mode=backend",
@@ -7374,25 +6704,6 @@ function expectStandaloneValidatorReportingMigrationNoNextStep() {
   }
 }
 
-function expectApiMigrationReportingFailsOutsideDryRun() {
-  const result = runScript("scripts/run-api-migrations.mjs", [
-    "--api-repo-path=../Api",
-    "--outputs-file=infrastructure/examples/backend-stack-outputs.sample.json",
-    "--db-secret-file=infrastructure/examples/database-secret.sample.json",
-    "--module=reporting",
-    "--action=status",
-  ]);
-
-  if (result.status === 0) {
-    throw new Error(`reporting migration unexpectedly succeeded outside dry-run mode.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-
-  const combined = `${result.stdout}\n${result.stderr}`;
-  if (!combined.includes("has no tools/migrations/reporting directory")) {
-    throw new Error(`reporting migration failure did not mention missing migration directory.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  }
-}
-
 function runCase(name, fn, results) {
   try {
     fn();
@@ -7413,7 +6724,6 @@ function main() {
     "scripts/deploy-frontend.mjs",
     "scripts/deploy-backend.mjs",
     "scripts/deploy-aws.mjs",
-    "scripts/deploy-full-stack.mjs",
     "scripts/upload-backend-artifact.mjs",
     "scripts/publish-frontend-assets.mjs",
     "scripts/package-api-backend.mjs",
@@ -7448,7 +6758,7 @@ function main() {
     "scripts/save-split-stack-outputs.mjs",
     "scripts/show-deployment-summary.mjs",
     "scripts/verify-split-stack.mjs",
-    "scripts/run-api-migrations.mjs",
+    "scripts/run-api-migrations-data-api.mjs",
     "scripts/publish-lambda-layer.mjs",
     "scripts/sync-app-config-secret.mjs",
     "scripts/sync-github-app-config-secret.mjs",
@@ -7464,7 +6774,6 @@ function main() {
     "infrastructure/cloudformation/bootstrap.yaml",
     "infrastructure/cloudformation/frontend-site.yaml",
     "infrastructure/cloudformation/backend-api.yaml",
-    "infrastructure/cloudformation/full-stack.yaml",
   ];
   const workflowsToParse = [
     ".github/workflows/deploy-aws-self-hosted.yml",
@@ -7492,18 +6801,12 @@ function main() {
     "infrastructure/examples/deploy-frontend-output.sample.json",
     "infrastructure/examples/deploy-frontend-publish-output.sample.json",
     "infrastructure/examples/dispatch-github-aws-deploy-output.sample.json",
-    "infrastructure/examples/deploy-full-stack-frontend-infra-output.sample.json",
-    "infrastructure/examples/deploy-full-stack-full-output.sample.json",
-    "infrastructure/examples/deploy-full-stack-publish-build-output.sample.json",
-    "infrastructure/examples/deploy-full-stack-publish-output.sample.json",
     "infrastructure/examples/frontend-outputs.sample.json",
     "infrastructure/examples/frontend-parameters.sample.json",
-    "infrastructure/examples/full-stack-parameters.sample.json",
     "infrastructure/examples/package-api-backend-output.sample.json",
     "infrastructure/examples/package-manifest.sample.json",
     "infrastructure/examples/publish-lambda-layer-output.sample.json",
     "infrastructure/examples/publish-frontend-output.sample.json",
-    "infrastructure/examples/run-api-migrations-output.sample.json",
     "infrastructure/examples/save-split-stack-outputs-output.sample.json",
     "infrastructure/examples/show-rollout-status-output.sample.json",
     "infrastructure/examples/sync-app-config-secret-output.sample.json",
@@ -7516,9 +6819,6 @@ function main() {
     "infrastructure/examples/validate-bootstrap-output.sample.json",
     "infrastructure/examples/validate-frontend-output.sample.json",
     "infrastructure/examples/validate-frontend-publish-output.sample.json",
-    "infrastructure/examples/validate-full-stack-frontend-infra-output.sample.json",
-    "infrastructure/examples/validate-full-stack-output.sample.json",
-    "infrastructure/examples/validate-full-stack-publish-output.sample.json",
     "infrastructure/examples/validate-split-stack-frontend-infra-output.sample.json",
     "infrastructure/examples/validate-split-stack-output.sample.json",
     "infrastructure/examples/validate-split-stack-publish-output.sample.json",
@@ -7554,32 +6854,12 @@ function main() {
       "--api-repo-path=../Api",
       "--build-command=definitely-not-a-real-build-command",
     ], "definitely-not-a-real-build-command"), results);
-    runCase("run-api-migrations dry run", () => expectScriptOk("run-api-migrations dry run", "scripts/run-api-migrations.mjs", [
-      "--api-repo-path=../Api",
-      "--outputs-file=infrastructure/examples/backend-stack-outputs.sample.json",
-      "--db-secret-file=infrastructure/examples/database-secret.sample.json",
-      "--module=all",
-      "--action=status",
-      "--dry-run=true",
-      "--output=json",
-    ]), results);
-    runCase("run-api-migrations connection string encoding", () => expectApiMigrationConnectionStringEncoding(), results);
-    runCase("run-api-migrations single-module minimal outputs", () => expectApiMigrationSingleModuleMinimalOutputs(), results);
-    runCase("run-api-migrations all-module repo support signal", () => expectApiMigrationAllModuleRepoSupportSignal(), results);
-    runCase("run-api-migrations reporting support signal", () => expectApiMigrationReportingSupportSignal(), results);
-    runCase("run-api-migrations reporting fails outside dry run", () => expectApiMigrationReportingFailsOutsideDryRun(), results);
     runCase("validator reporting migration no next step", () => expectValidatorReportingMigrationNoNextStep(), results);
     runCase("standalone validator reporting migration no next step", () => expectStandaloneValidatorReportingMigrationNoNextStep(), results);
   } else {
     addSkippedResults(results, [
       "api repo serverless env key coverage",
       "package-api-backend child failure is clean",
-      "run-api-migrations dry run",
-      "run-api-migrations connection string encoding",
-      "run-api-migrations single-module minimal outputs",
-      "run-api-migrations all-module repo support signal",
-      "run-api-migrations reporting support signal",
-      "run-api-migrations reporting fails outside dry run",
       "validator reporting migration no next step",
       "standalone validator reporting migration no next step",
     ]);
@@ -7651,13 +6931,8 @@ function main() {
   runCase("deploy-aws full output sample matches contract", () => expectDeployAwsFullOutputSampleMatchesContract(), results);
   runCase("deploy-aws publish output sample matches contract", () => expectDeployAwsPublishOutputSampleMatchesContract(), results);
   runCase("deploy-aws publish build output sample matches contract", () => expectDeployAwsPublishBuildOutputSampleMatchesContract(), results);
-  runCase("deploy-full-stack frontend-infrastructure output sample matches contract", () => expectDeployFullStackFrontendInfraOutputSampleMatchesContract(), results);
-  runCase("deploy-full-stack full output sample matches contract", () => expectDeployFullStackFullOutputSampleMatchesContract(), results);
-  runCase("deploy-full-stack publish output sample matches contract", () => expectDeployFullStackPublishOutputSampleMatchesContract(), results);
-  runCase("deploy-full-stack publish build output sample matches contract", () => expectDeployFullStackPublishBuildOutputSampleMatchesContract(), results);
   runCase("publish-lambda-layer output sample matches contract", () => expectPublishLambdaLayerOutputSampleMatchesContract(), results);
   runCase("dispatch-github-aws-deploy output sample matches contract", () => expectDispatchGithubAwsDeployOutputSampleMatchesContract(), results);
-  runCase("run-api-migrations output sample matches contract", () => expectRunApiMigrationsOutputSampleMatchesContract(), results);
   runCase("sync-app-config-secret output sample matches contract", () => expectSyncAppConfigSecretOutputSampleMatchesContract(), results);
   runCase("sync-github-app-config-secret output sample matches contract", () => expectSyncGithubAppConfigSecretOutputSampleMatchesContract(), results);
   runCase("sync-legacy-ssm output sample matches contract", () => expectSyncLegacySsmOutputSampleMatchesContract(), results);
@@ -7678,9 +6953,6 @@ function main() {
   runCase("staging deploy script stops on unreadable api repo", () => expectStagingDeployScriptStopsOnUnreadableApiRepo(), results);
   runCase("validate-frontend output sample matches contract", () => expectValidateFrontendOutputSampleMatchesContract(), results);
   runCase("validate-frontend publish output sample matches contract", () => expectValidateFrontendPublishOutputSampleMatchesContract(), results);
-  runCase("validate-full-stack frontend-infrastructure output sample matches contract", () => expectValidateFullStackFrontendInfraOutputSampleMatchesContract(), results);
-  runCase("validate-full-stack output sample matches contract", () => expectValidateFullStackOutputSampleMatchesContract(), results);
-  runCase("validate-full-stack publish output sample matches contract", () => expectValidateFullStackPublishOutputSampleMatchesContract(), results);
   runCase("validate-split-stack frontend-infrastructure output sample matches contract", () => expectValidateSplitStackFrontendInfraOutputSampleMatchesContract(), results);
   runCase("validate-split-stack output sample matches contract", () => expectValidateSplitStackOutputSampleMatchesContract(), results);
   runCase("validate-split-stack publish output sample matches contract", () => expectValidateSplitStackPublishOutputSampleMatchesContract(), results);
@@ -7704,7 +6976,6 @@ function main() {
   ]), results);
 
   runCase("validator bootstrap mode respects EnvironmentName", () => expectValidatorBootstrapRespectsEnvironmentName(), results);
-  runCase("validator full-stack mode respects EnvironmentName", () => expectValidatorFullStackRespectsEnvironmentName(), results);
 
   runCase("validator bootstrap mode", () => expectOk("bootstrap mode", [
     "--mode=bootstrap",
@@ -7723,12 +6994,9 @@ function main() {
     "--output=json",
   ]), results);
 
-  runCase("validator full-stack mode", () => expectOk("full-stack mode", [
+  runCase("validator full-stack mode is removed", () => expectScriptError("validator full-stack mode is removed", "scripts/validate-aws-deploy.mjs", [
     "--mode=full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--template-bucket=my-template-bucket",
-    "--output=json",
-  ]), results);
+  ], "The full-stack deployment mode has been removed"), results);
 
   runCase("validator frontend publish mode", () => expectOk("frontend publish mode", [
     "--mode=frontend-publish",
@@ -7798,15 +7066,6 @@ function main() {
     "--output=json",
   ], "cannot be combined with --frontend-infrastructure-only"), results);
 
-  runCase("validator full-stack invalid publish combo", () => expectError("full-stack invalid publish combo", [
-    "--mode=full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--template-bucket=my-template-bucket",
-    "--infrastructure-only",
-    "--publish-frontend-assets",
-    "--output=json",
-  ], "cannot be combined with --infrastructure-only"), results);
-
   runCase("validator frontend invalid skip-build combo", () => expectError("frontend invalid skip-build combo", [
     "--mode=frontend",
     "--frontend-parameters-file=infrastructure/examples/frontend-parameters.sample.json",
@@ -7875,31 +7134,12 @@ function main() {
   }
 
   runCase("validator unreadable bootstrap stack", () => expectError("unreadable bootstrap stack", [
-    "--mode=full-stack",
+    "--mode=split-stack",
     "--bootstrap-stack-name=definitely-not-a-real-bootstrap-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
+    "--backend-parameters-file=infrastructure/examples/backend-parameters.sample.json",
+    "--frontend-parameters-file=infrastructure/examples/frontend-parameters.sample.json",
     "--output=json",
   ], 'Bootstrap stack "definitely-not-a-real-bootstrap-stack" could not be read'), results);
-
-  runCase("validator full-stack publish-only ignores bootstrap stack", () => expectOk("full-stack publish-only ignores bootstrap stack", [
-    "--mode=full-stack",
-    "--stack-name=example-full-stack",
-    "--bootstrap-stack-name=definitely-not-a-real-bootstrap-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--skip-infrastructure",
-    "--publish-frontend-assets",
-    "--output=json",
-  ]), results);
-
-  runCase("validator full-stack publish-only with outputs files", () => expectOk("full-stack publish-only with outputs files", [
-    "--mode=full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-    "--skip-infrastructure",
-    "--publish-frontend-assets",
-    "--frontend-outputs-file=infrastructure/examples/frontend-outputs.sample.json",
-    "--backend-outputs-file=infrastructure/examples/backend-outputs.sample.json",
-    "--output=json",
-  ]), results);
 
   runCase("validator split-stack publish-only ignores bootstrap stack", () => expectOk("split-stack publish-only ignores bootstrap stack", [
     "--mode=split-stack",
@@ -8023,138 +7263,12 @@ function main() {
     "--api-migration-dry-run=true",
   ], 'Invalid api-migration-action "nope"'), results);
 
-  runCase("deploy-backend missing migration repo dependencies", () => withFakeApiRepoWithoutNodeModules((fakeApiRepoPath) => {
-    expectScriptError("deploy-backend missing migration repo dependencies", "scripts/deploy-backend.mjs", [
-      "--stack-name=example-backend",
-      "--run-api-migrations=true",
-      `--api-migration-api-repo-path=${fakeApiRepoPath}`,
-    ], "API migration repo dependencies are not installed");
-  }), results);
-
-  runCase("deploy-full-stack missing parameters file", () => expectScriptError("deploy-full-stack missing parameters file", "scripts/deploy-full-stack.mjs", [
-    "--stack-name=example-full-stack",
-    "--parameters-file=does-not-exist.json",
-  ], 'Could not load parameters file "does-not-exist.json"'), results);
-
-  runCase("deploy-full-stack package manifest file without api repo", () => expectDeployFullStackPackageManifestMissingArtifact(), results);
-  runCase("deploy-full-stack json includes manifest provenance", () => expectDeployFullStackJsonIncludesManifestProvenance(), results);
-  runCase("deploy-full-stack package manifest missing migration artifact", () => expectDeployFullStackPackageManifestMissingMigrationArtifact(), results);
-
-  runCase("deploy-full-stack publish-only ignores bootstrap stack", () => withFakeFrontendBuildOutput(() => {
-    expectScriptError("deploy-full-stack publish-only ignores bootstrap stack", "scripts/deploy-full-stack.mjs", [
-      "--stack-name=example-full-stack",
-      "--bootstrap-stack-name=definitely-not-a-real-bootstrap-stack",
-      "--skip-infrastructure",
-      "--publish-frontend-assets",
-      "--skip-build",
-    ], 'Could not read full-stack "example-full-stack"');
-  }), results);
-
-  runCase("deploy-full-stack publish-only accepts frontend outputs file without stack", () => withFakeFrontendBuildOutput(() => {
-    expectScriptErrorClean("deploy-full-stack publish-only accepts frontend outputs file without stack", "scripts/deploy-full-stack.mjs", [
-      "--skip-infrastructure",
-      "--publish-frontend-assets",
-      "--skip-build",
-      "--frontend-outputs-file=does-not-exist.json",
-    ], 'Could not load frontend outputs file "does-not-exist.json"');
-  }), results);
-
-  runCase("deploy-full-stack publish-only with frontend outputs file works", () => withFakeFrontendBuildOutput(() => {
-    withFakeAwsForFrontendPublish((env) => {
-      const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--skip-infrastructure",
-        "--publish-frontend-assets",
-        "--skip-build",
-        "--frontend-outputs-file=infrastructure/examples/frontend-outputs.sample.json",
-        "--output=json",
-      ], env);
-
-      if (result.status !== 0) {
-        throw new Error(`deploy-full-stack publish-only with frontend outputs file failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-
-      const parsed = result.parsed || {};
-      if (parsed.frontendBucketName !== "example-frontend-bucket") {
-        throw new Error(`deploy-full-stack publish-only did not reuse the saved bucket from frontend outputs.\nSTDOUT:\n${result.stdout}`);
-      }
-      if (parsed.frontendDistributionId !== "EXAMPLE123") {
-        throw new Error(`deploy-full-stack publish-only did not reuse the saved distribution from frontend outputs.\nSTDOUT:\n${result.stdout}`);
-      }
-      if (parsed.frontendAppUrl !== "https://admin.example.com") {
-        throw new Error(`deploy-full-stack publish-only did not reuse the saved app URL from frontend outputs.\nSTDOUT:\n${result.stdout}`);
-      }
-      if (!parsed.frontendPublished || parsed.frontendEnv === undefined) {
-        throw new Error(`deploy-full-stack publish-only did not complete the outputs-driven publish follow-up cleanly.\nSTDOUT:\n${result.stdout}`);
-      }
-    });
-  }), results);
-
-  runCase("deploy-full-stack publish-only backend outputs file drives build env", () => withFakeFrontendBuildHarness(({ envCapturePath, PATH }) => {
-    withFakeAwsForFrontendPublish((awsEnv) => {
-      const result = runJsonScriptWithEnv("scripts/deploy-full-stack.mjs", [
-        "--skip-infrastructure",
-        "--publish-frontend-assets",
-        "--frontend-outputs-file=infrastructure/examples/frontend-outputs.sample.json",
-        "--backend-outputs-file=infrastructure/examples/backend-outputs.sample.json",
-        "--output=json",
-      ], {
-        ...awsEnv,
-        PATH: `${awsEnv.PATH || ""}${path.delimiter}${PATH}`,
-      });
-
-      if (result.status !== 0) {
-        throw new Error(`deploy-full-stack publish-only backend outputs build run failed unexpectedly.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-      }
-
-      const parsed = result.parsed || {};
-      const capturedEnv = JSON.parse(fs.readFileSync(envCapturePath, "utf8"));
-      if (parsed.frontendEnv?.REACT_APP_API_BASE !== "https://api.example.com") {
-        throw new Error(`deploy-full-stack publish-only did not expose REACT_APP_API_BASE from saved backend outputs.\nSTDOUT:\n${result.stdout}`);
-      }
-      if (parsed.frontendEnv?.REACT_APP_SUPPORT_EMAIL !== "support@example.com") {
-        throw new Error(`deploy-full-stack publish-only did not expose REACT_APP_SUPPORT_EMAIL from saved backend outputs.\nSTDOUT:\n${result.stdout}`);
-      }
-      if (capturedEnv.REACT_APP_API_BASE !== "https://api.example.com") {
-        throw new Error(`deploy-full-stack publish-only did not pass REACT_APP_API_BASE into the frontend build.\nCaptured env:\n${JSON.stringify(capturedEnv, null, 2)}\nSTDOUT:\n${result.stdout}`);
-      }
-      if (capturedEnv.REACT_APP_DEFAULT_STOCK_PHOTO !== "https://content.example.com/stockPhotos/default.jpg") {
-        throw new Error(`deploy-full-stack publish-only did not pass REACT_APP_DEFAULT_STOCK_PHOTO into the frontend build.\nCaptured env:\n${JSON.stringify(capturedEnv, null, 2)}\nSTDOUT:\n${result.stdout}`);
-      }
-      if (capturedEnv.REACT_APP_STAGE !== "prod") {
-        throw new Error(`deploy-full-stack publish-only did not pass REACT_APP_STAGE into the frontend build.\nCaptured env:\n${JSON.stringify(capturedEnv, null, 2)}\nSTDOUT:\n${result.stdout}`);
-      }
-    });
-  }), results);
-
-  if (siblingApiRepoReadable) {
-    runCase("deploy-full-stack unsupported reporting migration target", () => expectScriptError("deploy-full-stack unsupported reporting migration target", "scripts/deploy-full-stack.mjs", [
-      "--stack-name=example-full-stack",
-      "--run-api-migrations=true",
-      "--api-migration-module=reporting",
-    ], "Refusing to deploy with --run-api-migrations=true for an unsupported direct migration target"), results);
-  } else {
-    addSkippedResults(results, ["deploy-full-stack unsupported reporting migration target"]);
-  }
-
-  runCase("deploy-full-stack invalid migration action", () => expectScriptError("deploy-full-stack invalid migration action", "scripts/deploy-full-stack.mjs", [
-    "--stack-name=example-full-stack",
+  runCase("deploy-backend direct migration runner is removed", () => expectScriptError("deploy-backend direct migration runner is removed", "scripts/deploy-backend.mjs", [
+    "--stack-name=example-backend",
     "--run-api-migrations=true",
-    "--api-migration-action=nope",
+    "--api-migration-runner=direct",
     "--api-migration-dry-run=true",
-  ], 'Invalid api-migration-action "nope"'), results);
-
-  runCase("deploy-full-stack missing migration repo dependencies", () => withFakeApiRepoWithoutNodeModules((fakeApiRepoPath) => {
-    expectScriptError("deploy-full-stack missing migration repo dependencies", "scripts/deploy-full-stack.mjs", [
-      "--stack-name=example-full-stack",
-      "--run-api-migrations=true",
-      `--api-migration-api-repo-path=${fakeApiRepoPath}`,
-    ], "API migration repo dependencies are not installed");
-  }), results);
-
-  runCase("deploy-full-stack missing frontend dependencies", () => withMissingFrontendNodeModules(() => expectScriptError("deploy-full-stack missing frontend dependencies", "scripts/deploy-full-stack.mjs", [
-    "--stack-name=example-full-stack",
-    "--parameters-file=infrastructure/examples/full-stack-parameters.sample.json",
-  ], "Frontend dependencies are not installed:")), results);
+  ], 'The "direct" migration runner has been removed'), results);
 
   runCase("deploy-aws missing backend parameters file", () => expectScriptError("deploy-aws missing backend parameters file", "scripts/deploy-aws.mjs", [
     "--backend-parameters-file=does-not-exist.json",
@@ -8324,32 +7438,19 @@ function main() {
     "--skip-frontend",
   ], "--run-api-migrations=true requires the backend deploy step"), results);
 
-  runCase("deploy-aws missing migration repo dependencies", () => withFakeApiRepoWithoutNodeModules((fakeApiRepoPath) => {
-    expectScriptError("deploy-aws missing migration repo dependencies", "scripts/deploy-aws.mjs", [
-      "--backend-parameters-file=infrastructure/examples/backend-parameters.sample.json",
-      "--run-api-migrations=true",
-      `--api-migration-api-repo-path=${fakeApiRepoPath}`,
-      "--skip-frontend",
-    ], "API migration repo dependencies are not installed");
-  }), results);
+  runCase("deploy-aws direct migration runner is removed", () => expectScriptError("deploy-aws direct migration runner is removed", "scripts/deploy-aws.mjs", [
+    "--backend-parameters-file=infrastructure/examples/backend-parameters.sample.json",
+    "--run-api-migrations=true",
+    "--api-migration-runner=direct",
+    "--api-migration-dry-run=true",
+    "--skip-frontend",
+  ], 'The "direct" migration runner has been removed'), results);
 
   runCase("deploy-aws missing frontend dependencies", () => withMissingFrontendNodeModules(() => expectScriptError("deploy-aws missing frontend dependencies", "scripts/deploy-aws.mjs", [
     "--backend-parameters-file=infrastructure/examples/backend-parameters.sample.json",
     "--backend-outputs-file=infrastructure/examples/backend-outputs.sample.json",
     "--skip-backend",
   ], "Frontend dependencies are not installed:")), results);
-
-  runCase("deploy-full-stack invalid publish combo", () => expectScriptError("deploy-full-stack invalid publish combo", "scripts/deploy-full-stack.mjs", [
-    "--stack-name=b1admin-prod",
-    "--publish-frontend-assets",
-  ], "--publish-frontend-assets is only needed for the later publish-only phase."), results);
-
-  runCase("deploy-full-stack run-api-migrations requires infrastructure phase", () => expectScriptError("deploy-full-stack run-api-migrations requires infrastructure phase", "scripts/deploy-full-stack.mjs", [
-    "--stack-name=example-full-stack",
-    "--run-api-migrations=true",
-    "--skip-infrastructure",
-    "--publish-frontend-assets",
-  ], "--run-api-migrations=true is only supported during the infrastructure deploy phase"), results);
 
   runCase("deploy-aws publish-only missing frontend dependencies is clean", () => withMissingFrontendNodeModules(() => expectScriptErrorClean("deploy-aws publish-only missing frontend dependencies is clean", "scripts/deploy-aws.mjs", [
     "--skip-backend",

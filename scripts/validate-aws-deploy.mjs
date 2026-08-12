@@ -301,7 +301,11 @@ function main() {
   const frontendParametersFile = getArg("frontend-parameters-file");
   const parametersFile = getArg("parameters-file");
   const fullStackParametersFile = parametersFile;
-  const mode = getArg("mode", "full-stack");
+  const mode = getArg("mode", "split-stack");
+  if (mode === "full-stack") {
+    console.error("The full-stack deployment mode has been removed from this distribution. Use --mode=split-stack (the guided installer path).");
+    process.exit(1);
+  }
   const splitStackMode = mode === "split-stack" || mode === "aws";
   const frontendPublishMode = mode === "frontend-publish" || mode === "publish-frontend";
   const bootstrapMode = mode === "bootstrap";
@@ -982,7 +986,7 @@ function main() {
           warnings.push("RunMigrations is enabled, but the real Api repo currently exposes CLI migration tooling under tools/migrate.ts rather than a proven Lambda migration handler. Treat MigrationHandler as a custom integration you still need to supply and validate.");
         }
         if (backendRelevant && !runApiMigrations) {
-          info.push("You can also run the real Api repo's CLI migrations after deploy with yarn run:api-migrations or by adding --run-api-migrations=true to deploy:backend / deploy:aws / deploy:full-stack.");
+          info.push("You can also run the Api migrations after deploy with yarn run:api-migrations or by adding --run-api-migrations=true to deploy:backend / deploy:aws.");
         }
         if (backendRelevant && !lambdaNodeOptions) {
           info.push("No LambdaNodeOptions value is set. That is fine unless you intentionally package observability auto-instrumentation such as Sentry.");
