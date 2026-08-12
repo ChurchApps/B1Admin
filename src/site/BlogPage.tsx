@@ -4,6 +4,7 @@ import { Alert, Box, Button, Card, Chip, Stack, Table, TableBody, TableCell, Tab
 import { Add as AddIcon, Article as ArticleIcon, Delete as DeleteIcon, Edit as EditIcon, OpenInNew as OpenInNewIcon, RssFeed as RssFeedIcon } from "@mui/icons-material";
 import { ApiHelper, PageHeader, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { BlogPostEdit } from "./components";
+import { clearSiteCache } from "./siteCache";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { HeaderPrimaryButton } from "../components/ui";
 import { ConfirmDialog } from "../components/ui/ConfirmDialog";
@@ -27,13 +28,6 @@ export const BlogPage = () => {
   };
 
   useEffect(loadData, []);
-
-  const clearSiteCache = () => {
-    const subDomain = UserHelper.currentUserChurch?.church?.subDomain;
-    if (!subDomain) return;
-    const b1Url = EnvironmentHelper.B1Url.replace("{subdomain}", subDomain);
-    fetch(b1Url + "/api/revalidate/" + subDomain, { method: "POST" }).catch(() => { /* best-effort */ });
-  };
 
   const handleDelete = () => {
     const p = deletePost;
