@@ -388,13 +388,16 @@
     },
     "help": "Lusito",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Umthandazo"
+      },
+      "noResults": "Kute imiphumela etfolakele",
       "searchLabel": "Sesha Emaphawu",
       "searchPlaceholder": "Bhala kute usesha (sibonelo: umuntfu, likhaya, libandla)...",
-      "title": "Khetsa Liphawu",
-      "tryDifferent": "Zama ligama lekusesha lelehlukile",
       "showingDefault": "Kukhonjiswa {{count}} timphawu letimisiwe",
       "showingMatching": "Kukhonjiswa {{count}} timphawu letifanako",
-      "noResults": "Kute imiphumela etfolakele"
+      "title": "Khetsa Liphawu",
+      "tryDifferent": "Zama ligama lekusesha lelehlukile"
     },
     "left": "Kwesancele",
     "loading": "Iyalayisha",
@@ -626,8 +629,8 @@
       "invalidCode": "Ikhodi lengakalungi noma lesiphelelwe. Sicela uhlole bese uzama futsi.",
       "loading": "Iyalayisha...",
       "noChurchSelected": "Akukho libandla lelikhetsiwe. Sicela ungene futsi bese ukhetsa libandla.",
-      "planType": "Show Plans For",
-      "planTypeNone": "None (browse only)",
+      "planType": "Khombisa Tinhlelo Ta-",
+      "planTypeNone": "Akukho (kuphequlula kuphela)",
       "requestedPermissions": "Timvumo Leticeliwe:",
       "title": "Vumela Idivayisi",
       "verifyFailed": "Kwehlulekile kuchaza ikhodi. Sicela uzame futsi."
@@ -2084,7 +2087,7 @@
       "waitingForAuth": "Kulindzelwe kugunyatwa..."
     },
     "contentRenderer": {
-      "audioUnsupported": "Your browser does not support audio playback.",
+      "audioUnsupported": "Sikhangeli sakho asisekeli kudlala umsindvo.",
       "fallbackPreview": "Buka Kucala",
       "fallbackTitle": "Kubuka Lokucuketfwe Kucala",
       "noContent": "Akukho lokucuketfwe lokungaboniswa.",
@@ -2326,12 +2329,12 @@
       "time": "Sikhatsi"
     },
     "printPreview": {
-      "colorCoded": "Color Coded",
-      "format": "Format:",
-      "materials": "Materials:",
-      "script": "Script",
-      "serviceOrder": "Service Order",
-      "title": "Print Preview"
+      "colorCoded": "Kuhlukaniswe Ngemibala",
+      "format": "Fomethi:",
+      "materials": "Tintfo:",
+      "script": "Umbhalo",
+      "serviceOrder": "Luhlu Lwenkhonzo",
+      "title": "Bukela Ngembi Kwekushicelela"
     },
     "schedulingPreference": {
       "household": "Kuhlela Kwemndeni",
@@ -2478,8 +2481,8 @@
       "codeRequired": "Ikhodi yekuphatanisa iyadzingeka",
       "invalidCode": "Ikhodi yekuphatanisa lengakalungi",
       "pairingCode": "Ikhodi Yekuphatanisa",
-      "planType": "Show Plans For",
-      "planTypeNone": "None (notifications only)"
+      "planType": "Khombisa Tinhlelo Ta-",
+      "planTypeNone": "Akukho (tati kuphela)"
     },
     "profilePage": {
       "accDel": "Kususwa Kwe-akhawunti",
@@ -3355,12 +3358,12 @@
       "title": "Phatsa Libandla"
     },
     "messagingMinimumAge": {
-      "age13": "13 and older",
-      "age16": "16 and older",
-      "age18": "18 and older",
-      "helpText": "Blocks new private-message conversations when either person is under this age, based on their birthdate. People below the age stay visible in the directory. Existing conversations are not affected.",
-      "label": "Minimum Age for Private Messages",
-      "off": "Off (no restriction)"
+      "age13": "13 nangetulu",
+      "age16": "16 nangetulu",
+      "age18": "18 nangetulu",
+      "helpText": "Kuvimbela tingcoco letisha temilayeto yangasese nangabe lomunye webantfu labili angaphansi kwaleminyaka, kususela elusukwini lwakhe lekutalwa. Bantfu labaphansi kwaleminyaka bahlala bebonakala eluhlwini. Tingcoco letikhona atikaphatfwa.",
+      "label": "Iminyaka Lencane Yekutfumelelana Imilayeto Yangasese",
+      "off": "Valiwe (akukho kuvinjelwa)"
     },
     "mobileAppSettings": {
       "addTab": "Engeta Ithebhu",
@@ -3415,30 +3418,30 @@
       "subtitle": "Phatsa tikhundla nemvumo"
     },
     "storageSettingsEdit": {
-      "authFailed": "Sign-in failed. Please try again.",
-      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "authFailed": "Kungena kwehlulekile. Sicela uzame futsi.",
+      "byosHelper": "Kulayishwa lokusha kugcinwa ku-akhawundi yakho matfupha futsi kulandzwa kuvela kuyo. Emafayela lasakalayishiwe ahlala lapho akhona khona.",
       "churchAppsFree": "ChurchApps (Free)",
-      "connect": "Connect Account",
-      "connectFirst": "Connect your account before saving.",
-      "connected": "Account connected",
-      "connecting": "Waiting for sign-in...",
+      "connect": "Xhumanisa Akhawundi",
+      "connectFirst": "Xhumanisa akhawundi yakho ngembi kwekugcina.",
+      "connected": "Akhawundi ixhunyiwe",
+      "connecting": "Kulindzelwe kungena...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Emafayela atawugcinwa eluhlelweni lwakho lwekugcina lwe-MinistryStuff, lohlotjiswe naleli bandla ngekutitentekela. Phatsa luhlelo lwakho ku",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup blocked. Please allow popups and try again.",
+      "popupBlocked": "Liphopu livinjelwe. Sicela uvumele emaphopu bese uzama futsi.",
       "provider": "Umhlinzeki",
-      "reconnect": "Reconnect",
-      "s3AccessKey": "Access Key Id",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (blank for AWS)",
-      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
-      "s3PublicBase": "Public URL Base",
-      "s3Region": "Region",
-      "s3Required": "Bucket and public URL base are required.",
-      "s3SecretKey": "Secret Access Key",
+      "reconnect": "Xhumanisa Kabusha",
+      "s3AccessKey": "I-ID Yesikhiya Sekungena",
+      "s3Bucket": "Sikhwama",
+      "s3Endpoint": "Sicu Sekugcina (shiya ingenalutfo uma ku-AWS)",
+      "s3Helper": "Sikhwama kufanele sivumele kufinyelelwa ngumphakatsi nekufundza, kanye netincelo te-CORS PUT letivela kulesi sitfombe. Kusebenta ne-AWS S3, Cloudflare R2 ne-Backblaze B2.",
+      "s3PublicBase": "Sisekelo Se-URL Lesiphelele",
+      "s3Region": "Sifundza",
+      "s3Required": "Sikhwama ne-URL lesiphelele siyadzingeka.",
+      "s3SecretKey": "Sikhiya Lesifihlakele Sekungena",
       "saveError": "Liphutsa lekugcina tilungiselelo tekugcina.",
-      "sessionExpired": "The sign-in session expired. Please try again.",
-      "sessionFailed": "Could not start the sign-in session.",
+      "sessionExpired": "Sigceme sekungena siphelelwe sikhatsi. Sicela uzame futsi.",
+      "sessionFailed": "Kwehlulekile kucala sigceme sekungena.",
       "title": "File Storage",
       "usage": "Kusetjentiswa {used} GB kwa-{quota} GB."
     },
@@ -3702,31 +3705,31 @@
       "confirmDelete": "Sula lesi sihloko nelikhasi lelixhunywe kuso? Loku angeke kubuyiselwe emuva.",
       "date": "Lusuku",
       "deleteTitle": "Sula Sihloko",
-      "draft": "Draft",
+      "draft": "Umdvwebo",
       "navHint": "Tivakashi tingafundza tiposti takho ku /blog. Faka linki yekuzula esikrinini semakhasi ukuze bakhone kuyitfola:",
       "noPosts": "Ayikho imibhalo okwamanje",
       "posts": "Timbhalo",
-      "published": "Published",
-      "scheduled": "Scheduled",
+      "published": "Kushicelelwe",
+      "scheduled": "Kuhleliwe",
       "state": "Simo",
       "subtitle": "Yakha futsi uphatse timbhalo teBulogo yeweb sayithi yakho",
       "title": "Bulogo",
-      "view": "View on Site"
+      "view": "Buka Esayithini"
     },
     "blogEdit": {
-      "author": "Author",
+      "author": "Umbhali",
       "category": "Sigaba",
       "content": "Sichubo",
       "draft": "Umdvwebo",
       "editPost": "Hlela Sihloko",
       "errSave": "Kwehlulekile kugcina sihloko.",
       "errSlug": "Sicela ufake i-slug.",
-      "errSlugTaken": "That web address is already used by another post.",
+      "errSlugTaken": "Lelo keli lewebhu selisake lasetjentiswa nguwo lomunye umbhalo.",
       "errTitle": "Sicela ufake sihloko.",
       "excerpt": "Sicutjulo",
       "image": "Sitfombe",
       "newPost": "Sihloko Lesisha",
-      "preview": "Preview",
+      "preview": "Kubukwa Ngaphambili",
       "publishDate": "Lusuku Lwekushicelela",
       "published": "Kushicelelwe",
       "selectImage": "Khetsa Sitfombe",
@@ -4064,7 +4067,7 @@
       "uploadFiles": "Layisha Emafayela"
     },
     "filesManager": {
-      "externalStorage": "Stored in your linked account",
+      "externalStorage": "Kugcinwe ku-akhawundi yakho lexhunyiwe",
       "files": "Emafayela",
       "getStarted": "Cala ngekulayisha lifayela lakho lekucala",
       "name": "Ligama",

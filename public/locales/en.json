@@ -388,6 +388,9 @@
     },
     "help": "Help",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Prayer"
+      },
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",

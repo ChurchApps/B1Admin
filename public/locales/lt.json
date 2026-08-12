@@ -42,10 +42,10 @@
       "unassigned": "Nepriskirta"
     },
     "checkinType": {
-      "guest": "Guest",
-      "header": "Type",
-      "volunteer": "Volunteer",
-      "volunteers": "volunteers"
+      "guest": "Svečias",
+      "header": "Tipas",
+      "volunteer": "Savanoris",
+      "volunteers": "savanoriai"
     },
     "labels": {
       "align": "Lygiuoti",
@@ -84,10 +84,10 @@
       "noTemplatesDesc": "Sukurkite etikečių šabloną, kad pritaikytumėte registracijos kioskų spausdinamas etiketes.",
       "notEmpty": "Ne tuščias",
       "notEquals": "Nelygu",
-      "opDoesNotEqual": "Does not equal",
-      "opEquals": "Equals",
-      "opIsBlank": "Is blank",
-      "opIsNotBlank": "Is not blank",
+      "opDoesNotEqual": "Nelygu",
+      "opEquals": "Lygu",
+      "opIsBlank": "Yra tuščias",
+      "opIsNotBlank": "Nėra tuščias",
       "operator": "Operatorius",
       "palette": "Pridėti bloką",
       "pickup": "Atsiėmimo lapelis",
@@ -140,9 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Patvirtinti",
-      "approvedToast": "Request approved.",
+      "approvedToast": "Prašymas patvirtintas.",
       "bookingRequests": "Patalpų ir išteklių prašymai",
-      "confirmReject": "Are you sure you wish to reject this request?",
+      "confirmReject": "Ar tikrai norite atmesti šį prašymą?",
       "conflicts": "Konfliktai",
       "description": "Aprašymas",
       "event": "Renginys",
@@ -151,8 +151,8 @@
       "noPendingBookings": "Nėra laukiančių patalpų ar išteklių prašymų.",
       "noPendingEvents": "Nėra laukiančių renginių prašymų.",
       "reject": "Atmesti",
-      "rejectTitle": "Reject Request",
-      "rejectedToast": "Request rejected.",
+      "rejectTitle": "Atmesti prašymą",
+      "rejectedToast": "Prašymas atmestas.",
       "roomResource": "Patalpa / išteklius",
       "status": "Būsena",
       "subtitle": "Peržiūrėkite laukiančius patalpų, išteklių ir renginių prašymus",
@@ -195,7 +195,7 @@
     "calendarEvent": {
       "cancel": "Atšaukti",
       "confirmDelete": "Ar tikrai norite panaikinti šį renginį?",
-      "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
+      "confirmDeleteSeries": "Tai pasikartojantis renginys. Jį ištrynus bus panaikinta visa serija ir visi jos pasikartojimai. Ar tikrai norite tęsti?",
       "delete": "Panaikinti",
       "editEvent": "Redaguoti įvykį",
       "manageRegistrations": "Tvarkyti registracijas",
@@ -230,7 +230,7 @@
       "importIcs": "Importuoti .ics",
       "newEvent": "Naujas renginys",
       "noGroupsAdded": "No groups added yet",
-      "pendingApprovals": "{count} pending approvals",
+      "pendingApprovals": "{count} laukiančių patvirtinimų",
       "print": "Spausdinti",
       "subtitle": "Manage calendar events and groups"
     },
@@ -388,13 +388,16 @@
     },
     "help": "Help",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Malda"
+      },
+      "noResults": "Rezultatų nerasta",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "title": "Select Icon",
-      "tryDifferent": "Try a different search term",
       "showingDefault": "Rodoma {{count}} numatytųjų piktogramų",
       "showingMatching": "Rodoma {{count}} atitinkančių piktogramų",
-      "noResults": "Rezultatų nerasta"
+      "title": "Select Icon",
+      "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "Įkeliama",
@@ -417,7 +420,7 @@
     "right": "Right",
     "save": "Išsaugoti",
     "saveChanges": "Save Changes",
-    "saveError": "Unable to save. Please try again.",
+    "saveError": "Nepavyko išsaugoti. Bandykite dar kartą.",
     "saving": "Išsaugoma...",
     "search": "Search",
     "searching": "Searching...",
@@ -523,7 +526,7 @@
     }
   },
   "controlPanel": {
-    "serverError": "Something went wrong. Please try again."
+    "serverError": "Įvyko klaida. Bandykite dar kartą."
   },
   "createPerson": {
     "addNewPerson": "Add New Person",
@@ -573,7 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "Ieškoti žmonių",
       "ariaSearchBox": "paieškosLaukas",
-      "clearSearch": "Clear Search",
+      "clearSearch": "Išvalyti paiešką",
       "display": "Display",
       "noResults": "Nerasta žmonių, atitinkančių paieškos kriterijus.",
       "photo": "Photo",
@@ -626,8 +629,8 @@
       "invalidCode": "Neteisingas arba pasenęs kodas. Patikrinkite ir bandykite dar kartą.",
       "loading": "Įkeliama...",
       "noChurchSelected": "Nepasirinkta jokia bažnyčia. Prašome vėl prisijungti ir pasirinkti bažnyčią.",
-      "planType": "Show Plans For",
-      "planTypeNone": "None (browse only)",
+      "planType": "Rodyti planus, skirtus",
+      "planTypeNone": "Nėra (tik naršymas)",
       "requestedPermissions": "Prašomi leidimai:",
       "title": "Autorizuoti įrenginį",
       "verifyFailed": "Nepavyko patikrinti kodo. Bandykite dar kartą."
@@ -647,7 +650,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
-      "viewBatch": "View batch",
+      "viewBatch": "Peržiūrėti partiją",
       "willAppear": "Donations will appear here once they have been made."
     }
   },
@@ -705,7 +708,7 @@
       "pledges": "Pasižadėjimai",
       "status": "Būsena",
       "subtitle": "Šios kampanijos pasižadėjimai ir aukojimo pažanga",
-      "unknownPerson": "Unknown person"
+      "unknownPerson": "Nežinomas asmuo"
     },
     "campaignsPage": {
       "addCampaign": "Pridėti kampaniją",
@@ -748,7 +751,7 @@
       "cash": "Cash",
       "check": "Check",
       "checkNum": "Check #",
-      "confirmMsg": "Are you sure you wish to permanently delete this donation?",
+      "confirmMsg": "Ar tikrai norite visam laikui ištrinti šią auką?",
       "date": "Date",
       "fund": "Fund",
       "inKind": "In-Kind",
@@ -774,7 +777,7 @@
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "Eksportuoti",
       "funds": "Funds",
-      "method": "Method",
+      "method": "Būdas",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "pending": "Laukiama",
       "statements": "Giving Statements",
@@ -829,7 +832,7 @@
       "taxDeductible": "Atskaitoma nuo mokesčių",
       "taxStatus": "Mokesčių statusas",
       "totalFunds": "Iš viso fondų",
-      "viewBatch": "View batch"
+      "viewBatch": "Peržiūrėti partiją"
     },
     "period": {
       "monthly": "Monthly",
@@ -979,7 +982,7 @@
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
-      "removeConfirm": "Remove {name} from this form?",
+      "removeConfirm": "Pašalinti {name} iš šios formos?",
       "view": "View Only"
     },
     "formPage": {
@@ -993,7 +996,7 @@
       "date": "Date",
       "decNum": "Decimal",
       "desc": "Description",
-      "fieldType": "Field Type",
+      "fieldType": "Lauko tipas",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -1047,7 +1050,7 @@
     "aspectRatio": "Kraštinių santykis",
     "confirmDelete": "Patvirtinti trynimą",
     "freeForm": "Laisva forma",
-    "uploadError": "Image processing completed, but upload failed. The API may not be available in this environment."
+    "uploadError": "Vaizdo apdorojimas baigtas, tačiau įkėlimas nepavyko. Galbūt API šioje aplinkoje nepasiekiamas."
   },
   "groups": {
     "groupAdd": {
@@ -1068,9 +1071,9 @@
       "duplicateTooltip": "Dubliuoti šią grupę",
       "emailTooltip": "Siųsti el. laišką šiai grupei",
       "labels": "Labels",
-      "location": "Location",
+      "location": "Vieta",
       "meetingInfo": "Meeting Information",
-      "meetingTime": "Meeting Time",
+      "meetingTime": "Susitikimo laikas",
       "moreLabels": "More Labels",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
@@ -1081,7 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "Pridėti renginius",
-      "allowRsvps": "Allow RSVPs",
+      "allowRsvps": "Leisti dalyvavimo patvirtinimus",
       "bulkAddTitle": "Pridėti pasikartojančius renginius",
       "confirmDelete": "Ištrinti \"{title}\" ir visus jo pasikartojimus?",
       "datesPreview": "Bus sukurta {count} susitikimų. Nuimkite varnelę nuo norimo praleisti datos.",
@@ -1091,15 +1094,15 @@
       "lastMeeting": "Paskutinis susitikimas",
       "noDates": "Pasirinktame laikotarpyje nėra susitikimų datų.",
       "noEvents": "Renginių dar nėra. Naudokite Pridėti renginius, kad suplanuotumėte šios grupės susitikimus.",
-      "noResponses": "No responses yet.",
+      "noResponses": "Kol kas nėra atsakymų.",
       "oneTime": "Vieną kartą",
-      "response_maybe": "Maybe",
-      "response_no": "No",
-      "response_yes": "Yes",
-      "rosterTitle": "RSVP Responses",
-      "rsvpSummary": "{yes} yes · {maybe} maybe · {no} no",
-      "rsvps": "RSVPs",
-      "rsvpsDisabled": "Disabled",
+      "response_maybe": "Galbūt",
+      "response_no": "Ne",
+      "response_yes": "Taip",
+      "rosterTitle": "Dalyvavimo atsakymai",
+      "rsvpSummary": "{yes} taip · {maybe} galbūt · {no} ne",
+      "rsvps": "Dalyvavimo patvirtinimai",
+      "rsvpsDisabled": "Išjungta",
       "skipHolidays": "Praleisti švenčių dienas",
       "skippedDates": "Praleistos datos",
       "until": "iki"
@@ -1121,21 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
-      "ageGrade": "Age & Grade",
+      "ageGrade": "Amžius ir klasė",
       "archive": "Archyvuoti",
       "archiveAria": "Archyvuoti grupę",
       "attTrack": "Track Attendance",
       "attendance": "Lankomumas",
       "attendanceReminders": "Lankomumo priminimo el. laiškai",
-      "capacity": "Capacity",
+      "capacity": "Talpa",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Pakeisti grupės nuotrauką",
-      "checkinCapacity": "Check-In Capacity",
-      "checkinClosed": "Closed for Check-In",
+      "checkinCapacity": "Registracijos talpa",
+      "checkinClosed": "Registracija uždaryta",
       "clickToAddPhoto": "Click to add photo",
-      "confidential": "Confidential group",
-      "confidentialHelp": "Hide this group and its roster from public pages, the group finder, and non-members.",
+      "confidential": "Konfidenciali grupė",
+      "confidentialHelp": "Slėpti šią grupę ir jos narių sąrašą viešuose puslapiuose, grupių paieškoje ir nuo narių nepriklausančių asmenų.",
       "confirmArchive": "Ar tikrai norite archyvuoti šią grupę? Ji bus paslėpta iš grupių sąrašo, kol nebus atkurta.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Įtraukimas",
@@ -1146,24 +1149,24 @@
       "groupNameMsg": "Please enter a group name.",
       "groupPhotoAlt": "grupė",
       "groupSlugAria": "Grupės slug",
-      "guestCapacity": "Guest Capacity",
-      "maxAge": "Maximum Age",
-      "maxGrade": "Maximum Grade",
+      "guestCapacity": "Svečių talpa",
+      "maxAge": "Didžiausias amžius",
+      "maxGrade": "Aukščiausia klasė",
       "meetingLocation": "Meeting Location",
       "meetingLocationAria": "Susitikimo vieta",
       "meetingTime": "Meeting Time",
       "meetingTimeAria": "Susitikimo laikas",
-      "minAge": "Minimum Age",
-      "minGrade": "Minimum Grade",
-      "minVolunteers": "Minimum Volunteers",
-      "months": "Months",
-      "noLimit": "No limit",
+      "minAge": "Mažiausias amžius",
+      "minGrade": "Žemiausia klasė",
+      "minVolunteers": "Mažiausias savanorių skaičius",
+      "months": "Mėnesiai",
+      "noLimit": "Be apribojimo",
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "publicRoster": "Rodyti sąrašą svetainėje",
       "slug": "Slug (key name used for urls)",
-      "volunteerRatio": "Children per Volunteer",
-      "years": "Years"
+      "volunteerRatio": "Vaikų vienam savanoriui",
+      "years": "Metai"
     },
     "groupHealth": {
       "attendance": "Lankomumas",
@@ -1197,10 +1200,10 @@
       "member": "narys",
       "members": "nariai",
       "messagePlaceholder": "Parašykite žinutę visiems grupės nariams…",
-      "messageSent": "Message sent.",
+      "messageSent": "Žinutė išsiųsta.",
       "noMemDesc": "Pridėkite narius iš dešinėje esančio skydelio, kad pradėtumėte kurti šią grupę.",
       "noMemTitle": "Narių dar nėra",
-      "removeConfirm": "Remove {name} from this group?",
+      "removeConfirm": "Pašalinti {name} iš šios grupės?",
       "removeLeaderAccess": "Pašalinti vadovo prieigą",
       "role": "Vaidmuo",
       "send": "Send",
@@ -1246,13 +1249,13 @@
       "groups": "Grupės",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
-      "noMatchMsg": "No groups match your search.",
-      "pendingRequestSingular": "{count} pending request",
-      "pendingRequests": "{count} pending requests",
+      "noMatchMsg": "Jūsų paiešką atitinkančių grupių nerasta.",
+      "pendingRequestSingular": "{count} laukiantis prašymas",
+      "pendingRequests": "{count} laukiančių prašymų",
       "pers": "1 person",
       "ppl": "People",
       "restore": "Atkurti",
-      "searchPlaceholder": "Search groups...",
+      "searchPlaceholder": "Ieškoti grupių...",
       "showArchived": "Rodyti archyvuotas grupes",
       "spPpl": " people",
       "subtitle": {
@@ -1267,9 +1270,9 @@
       "unknown": "Nežinoma"
     },
     "pendingRequestsPage": {
-      "empty": "No pending requests.",
-      "subtitle": "Approve or decline member-initiated requests across all groups.",
-      "title": "Pending Join Requests"
+      "empty": "Nėra laukiančių prašymų.",
+      "subtitle": "Patvirtinkite arba atmeskite narių pateiktus prašymus visose grupėse.",
+      "title": "Laukiantys prašymai prisijungti"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Įterpti suliejimo lauką į turinį:",
@@ -1307,7 +1310,7 @@
       "eligibleSummary": "{eligibleCount} iš {totalMembers} narių gaus šią SMS.",
       "eligibleSummarySingular": "{eligibleCount} iš {totalMembers} nario gaus šią SMS.",
       "fallbackError": "Nepavyko išsiųsti SMS.",
-      "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
+      "insufficientCredits": "Jūsų bažnyčia neturi SMS žinučių kreditų šiam atsiskaitymo ciklui. Žinutės nebuvo išsiųstos. Atnaujinkite planą arba palaukite, kol kreditai bus atnaujinti čia:",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Įkeliami gavėjai...",
       "messageLabel": "Žinutė",
@@ -1355,9 +1358,9 @@
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
-      "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
-      "enable": "Enable Attendance",
-      "title": "Attendance tracking isn't enabled"
+      "description": "Įjunkite lankomumo stebėjimą, kad galėtumėte registruoti šios grupės seansus ir dalyvių registraciją.",
+      "enable": "Įjungti lankomumo stebėjimą",
+      "title": "Lankomumo stebėjimas neįjungtas"
     },
     "tabs": {
       "mem": "Members",
@@ -1476,9 +1479,9 @@
     "september": "September"
   },
   "notFound": {
-    "backHome": "Back to Dashboard",
-    "message": "The page you're looking for doesn't exist or may have moved.",
-    "title": "Page Not Found"
+    "backHome": "Grįžti į valdymo skydą",
+    "message": "Ieškomo puslapio nėra arba jis galėjo būti perkeltas.",
+    "title": "Puslapis nerastas"
   },
   "people": {
     "advancedPeopleSearch": {
@@ -1724,7 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "Pridėti į darbo eigą",
       "age": "Amžius",
-      "emailPerson": "Email this person",
+      "emailPerson": "Rašyti šiam asmeniui el. laišką",
       "gender": "Lytis",
       "hasLogin": "Turi prisijungimą",
       "maritalStatus": "Šeimyninė padėtis",
@@ -1734,7 +1737,7 @@
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot delete your own person record.",
       "confirmMsg": "Are you sure you wish to permanently delete this person record?",
-      "customFields": "Custom Fields",
+      "customFields": "Pasirinktiniai laukai",
       "donorNumber": "Donor Number",
       "exten": "Extension",
       "family": "family",
@@ -2025,7 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
-      "confirmDelete": "Are you sure you wish to remove this volunteer's assignment?",
+      "confirmDelete": "Ar tikrai norite pašalinti šio savanorio priskyrimą?",
       "done": "Done",
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
@@ -2084,7 +2087,7 @@
       "waitingForAuth": "Waiting for authorization..."
     },
     "contentRenderer": {
-      "audioUnsupported": "Your browser does not support audio playback.",
+      "audioUnsupported": "Jūsų naršyklė nepalaiko garso atkūrimo.",
       "fallbackPreview": "Peržiūra",
       "fallbackTitle": "Turinio peržiūra",
       "noContent": "Nėra ko rodyti.",
@@ -2277,11 +2280,11 @@
       "ppl": "people",
       "prefTimeMismatch": "pageidauja tarnauti",
       "publish": "Paskelbti planą",
-      "publishConfirm": "Publish this plan so volunteers can see their assignments?",
-      "publishConfirmLabel": "Publish",
-      "publishConfirmTitle": "Publish Plan",
+      "publishConfirm": "Paskelbti šį planą, kad savanoriai matytų savo priskyrimus?",
+      "publishConfirmLabel": "Paskelbti",
+      "publishConfirmTitle": "Paskelbti planą",
       "publishNotify": "Paskelbti ir pranešti",
-      "publishNotifyConfirm": "Publish this plan and notify {count} volunteers of their assignments? Notifications are sent immediately.",
+      "publishNotifyConfirm": "Paskelbti šį planą ir pranešti {count} savanoriams apie jų priskyrimus? Pranešimai bus išsiųsti nedelsiant.",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
       "timesThisMonth": "kartų šį mėnesį, viršijant jų pageidaujamą maksimumą",
@@ -2302,7 +2305,7 @@
       "allowSelfSignup": "Leisti savarankišką registraciją",
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
-      "confirmDelete": "Are you sure you wish to delete this position? Anyone currently assigned to it will be unscheduled.",
+      "confirmDelete": "Ar tikrai norite ištrinti šią pareigybę? Visi jai šiuo metu priskirti asmenys bus atšaukti iš tvarkaraščio.",
       "description": "Aprašymas",
       "descriptionHelper": "Rodoma savanoriams, kai jie naršo registracijos galimybes",
       "nameReq": "Name is required",
@@ -2326,12 +2329,12 @@
       "time": "Laikas"
     },
     "printPreview": {
-      "colorCoded": "Color Coded",
-      "format": "Format:",
-      "materials": "Materials:",
-      "script": "Script",
-      "serviceOrder": "Service Order",
-      "title": "Print Preview"
+      "colorCoded": "Pažymėta spalvomis",
+      "format": "Formatas:",
+      "materials": "Medžiaga:",
+      "script": "Scenarijus",
+      "serviceOrder": "Pamaldų tvarka",
+      "title": "Spausdinimo peržiūra"
     },
     "schedulingPreference": {
       "household": "Namų ūkio planavimas",
@@ -2383,7 +2386,7 @@
     },
     "servingPage": {
       "showAll": "Rodyti viską",
-      "showAllHint": "Your ministries are hidden because you're not a member. Turn on \"Show All\" above to see them."
+      "showAllHint": "Jūsų tarnystės paslėptos, nes nesate narys. Įjunkite „Rodyti visas“ aukščiau, kad jas matytumėte."
     },
     "songDialog": {
       "close": "Uždaryti",
@@ -2424,7 +2427,7 @@
       "updateFromPlanHelp": "Pakeičia šio šablono turinį plano dabartine pamaldų tvarka ir pozicijomis."
     },
     "timeEdit": {
-      "confirmDelete": "Are you sure you wish to delete this time?",
+      "confirmDelete": "Ar tikrai norite ištrinti šį laiką?",
       "disName": "Display Name",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
@@ -2478,8 +2481,8 @@
       "codeRequired": "Pairing code is required",
       "invalidCode": "Invalid pairing code",
       "pairingCode": "Pairing Code",
-      "planType": "Show Plans For",
-      "planTypeNone": "None (notifications only)"
+      "planType": "Rodyti planus, skirtus",
+      "planTypeNone": "Nėra (tik pranešimai)"
     },
     "profilePage": {
       "accDel": "Account Deletion",
@@ -2514,43 +2517,43 @@
   },
   "registrations": {
     "commerce": {
-      "addCoupon": "Add Discount Code",
-      "addSelection": "Add Selection",
-      "addType": "Add Type",
-      "amount": "Amount",
-      "attendeeTypes": "Attendee Types",
-      "balance": "Balance",
-      "capacity": "Capacity",
-      "code": "Code",
-      "description": "Description",
-      "discountCodes": "Discount Codes",
-      "discountType": "Type",
-      "endDate": "End Date",
-      "kind": "Kind",
-      "maxQuantity": "Max Qty",
-      "maxUses": "Max Uses",
-      "method": "Method",
-      "minMembers": "Min Members",
-      "name": "Name",
-      "noCoupons": "No discount codes yet.",
-      "noPayments": "No payments recorded.",
-      "noSelections": "No selections yet.",
-      "noTypes": "No attendee types yet.",
-      "paid": "Paid",
-      "paidTotal": "Paid / Total",
-      "payments": "Payments",
-      "percent": "Percent",
-      "price": "Price",
-      "promote": "Promote",
-      "registrationDetails": "Registration Details",
-      "removeConfirm": "Remove this item? This cannot be undone.",
-      "selections": "Selections",
-      "sort": "Sort",
-      "startDate": "Start Date",
-      "total": "Total",
-      "type": "Type",
-      "usesSoFar": "Uses: {count}",
-      "value": "Value"
+      "addCoupon": "Pridėti nuolaidos kodą",
+      "addSelection": "Pridėti pasirinkimą",
+      "addType": "Pridėti tipą",
+      "amount": "Suma",
+      "attendeeTypes": "Dalyvių tipai",
+      "balance": "Likutis",
+      "capacity": "Talpa",
+      "code": "Kodas",
+      "description": "Aprašymas",
+      "discountCodes": "Nuolaidos kodai",
+      "discountType": "Tipas",
+      "endDate": "Pabaigos data",
+      "kind": "Rūšis",
+      "maxQuantity": "Didž. kiekis",
+      "maxUses": "Didž. panaudojimų",
+      "method": "Būdas",
+      "minMembers": "Mažiausiai narių",
+      "name": "Pavadinimas",
+      "noCoupons": "Nuolaidos kodų dar nėra.",
+      "noPayments": "Įrašytų mokėjimų nėra.",
+      "noSelections": "Pasirinkimų dar nėra.",
+      "noTypes": "Dalyvių tipų dar nėra.",
+      "paid": "Sumokėta",
+      "paidTotal": "Sumokėta / Iš viso",
+      "payments": "Mokėjimai",
+      "percent": "Procentai",
+      "price": "Kaina",
+      "promote": "Reklamuoti",
+      "registrationDetails": "Registracijos informacija",
+      "removeConfirm": "Pašalinti šį elementą? Šio veiksmo negalima anuliuoti.",
+      "selections": "Pasirinkimai",
+      "sort": "Rikiuoti",
+      "startDate": "Pradžios data",
+      "total": "Iš viso",
+      "type": "Tipas",
+      "usesSoFar": "Panaudota: {count}",
+      "value": "Reikšmė"
     },
     "registrationDetailsPage": {
       "addAttendee": "Pridėti dalyvį",
@@ -2582,7 +2585,7 @@
       "capacity": "Talpa",
       "capacityPlaceholder": "Palikite tuščią, jei neribota",
       "enableRegistration": "Įjungti registraciją",
-      "enableWaitlist": "Enable Waitlist",
+      "enableWaitlist": "Įjungti laukiančiųjų sąrašą",
       "none": "Nėra",
       "registrationCloses": "Registracija baigiasi",
       "registrationOpens": "Registracija prasideda",
@@ -2882,11 +2885,11 @@
       "church": "Church",
       "churchName": "Church Name",
       "churches": "Churches",
-      "churchesSubtitle": "Search and manage all churches",
-      "impersonateSubtitle": "Log in as another user for support",
+      "churchesSubtitle": "Ieškokite ir tvarkykite visas bažnyčias",
+      "impersonateSubtitle": "Prisijunkite kaip kitas naudotojas, kad suteiktumėte pagalbą",
       "impersonateUser": "Apsimesti vartotoju",
-      "jobs": "Background Jobs",
-      "jobsSubtitle": "Last run and failures for scheduled jobs",
+      "jobs": "Foniniai darbai",
+      "jobsSubtitle": "Suplanuotų darbų paskutinis vykdymas ir triktys",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
@@ -2899,20 +2902,20 @@
       "searchResults": "Search Results",
       "servAdmin": "Server Admin",
       "serverHealth": "Serverio būklė",
-      "serverHealthSubtitle": "Check the health of backend services",
+      "serverHealthSubtitle": "Patikrinkite serverio paslaugų būklę",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
-      "translationSubtitle": "Look up translated locale strings",
-      "usageSubtitle": "View trends in server usage",
+      "translationSubtitle": "Ieškokite išverstų lokalizacijos eilučių",
+      "usageSubtitle": "Peržiūrėkite serverio naudojimo tendencijas",
       "usageTrends": "Usage Trends",
-      "users": "Users",
-      "usersSubtitle": "Look up any user account for support",
+      "users": "Naudotojai",
+      "usersSubtitle": "Suraskite bet kurią naudotojo paskyrą, kad suteiktumėte pagalbą",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
-      "archiveConfirm": "Archive {name}? Members will lose access until it is restored.",
+      "archiveConfirm": "Archyvuoti {name}? Nariai neteks prieigos, kol ji nebus atkurta.",
       "churchNameSearchAria": "Bažnyčios pavadinimo paieška",
-      "restoreConfirm": "Restore access for {name}?",
+      "restoreConfirm": "Atkurti prieigą {name}?",
       "searchChurchesAria": "Ieškoti bažnyčių"
     },
     "impersonateTab": {
@@ -2925,16 +2928,16 @@
       "searchPlaceholder": "Ieškoti pagal prisijungimo el. paštą"
     },
     "jobsTab": {
-      "duration": "Duration",
-      "failed": "Failed",
-      "job": "Job",
-      "lastRun": "Last Run",
-      "loadError": "Unable to load job runs.",
-      "noRuns": "No job runs recorded yet.",
-      "recentFailures": "Recent Failures",
-      "subtitle": "Latest run of each scheduled job. Runs are recorded by the timer handlers and kept for 30 days.",
-      "success": "Success",
-      "title": "Background Jobs"
+      "duration": "Trukmė",
+      "failed": "Nepavyko",
+      "job": "Darbas",
+      "lastRun": "Paskutinis vykdymas",
+      "loadError": "Nepavyko įkelti darbų vykdymo įrašų.",
+      "noRuns": "Kol kas nėra įrašytų darbų vykdymų.",
+      "recentFailures": "Paskutinės triktys",
+      "subtitle": "Paskutinis kiekvieno suplanuoto darbo vykdymas. Vykdymai registruojami laikmačio apdorojiklių ir saugomi 30 dienų.",
+      "success": "Sėkmingai",
+      "title": "Foniniai darbai"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2963,18 +2966,18 @@
       "searchTranslationStatsAria": "Ieškoti vertimo statistikos"
     },
     "usersTab": {
-      "access": "Access",
-      "description": "Search all user accounts by name or email to see their churches and login activity.",
-      "email": "Email",
-      "lastLogin": "Last Login",
-      "member": "Member",
-      "name": "Name",
-      "noChurches": "This user is not linked to any churches.",
-      "searchAria": "Search users",
-      "searchLabel": "Name or email",
-      "staff": "Staff",
-      "subDomain": "Subdomain",
-      "title": "User Lookup"
+      "access": "Prieiga",
+      "description": "Ieškokite visų naudotojų paskyrų pagal vardą ar el. paštą, kad pamatytumėte jų bažnyčias ir prisijungimo veiklą.",
+      "email": "El. paštas",
+      "lastLogin": "Paskutinis prisijungimas",
+      "member": "Narys",
+      "name": "Vardas",
+      "noChurches": "Šis naudotojas nesusietas su jokiomis bažnyčiomis.",
+      "searchAria": "Ieškoti naudotojų",
+      "searchLabel": "Vardas arba el. paštas",
+      "staff": "Darbuotojas",
+      "subDomain": "Subdomenas",
+      "title": "Naudotojų paieška"
     }
   },
   "settings": {
@@ -3101,33 +3104,33 @@
       "truncated": "Išsami informacija buvo sutrumpinta ir šio įrašo negalima anuliuoti."
     },
     "batches": {
-      "action": "Action",
-      "actions": "Actions",
-      "created": "Created",
-      "creator": "Creator",
-      "date": "Date",
-      "entityId": "Entity ID",
-      "entityType": "Entity Type",
-      "failed": "Failed ({count})",
-      "items": "Items",
-      "label": "Label",
-      "noEntries": "No batches found",
-      "noResults": "No records in this batch",
-      "restored": "Restored {count} record(s).",
-      "resultsTitle": "Batch Results",
-      "skipped": "Skipped ({count})",
-      "skippedHelp": "Records modified since the batch was created were skipped to avoid overwriting newer changes.",
-      "source": "Source",
-      "status": "Status",
-      "subtitle": "Review and undo bulk imports and actions",
-      "title": "Batches",
-      "undo": "Undo",
-      "undoConfirm": "Undo batch \"{label}\"? This will restore affected records to their state before the batch.",
-      "undoError": "The undo request failed.",
-      "undoTitle": "Undo Batch",
-      "undoWarning": "Records modified since this batch was created will be skipped. This cannot be reversed.",
-      "undoing": "Undoing…",
-      "viewResults": "View Results"
+      "action": "Veiksmas",
+      "actions": "Veiksmai",
+      "created": "Sukurta",
+      "creator": "Kūrėjas",
+      "date": "Data",
+      "entityId": "Subjekto ID",
+      "entityType": "Subjekto tipas",
+      "failed": "Nepavyko ({count})",
+      "items": "Įrašai",
+      "label": "Žyma",
+      "noEntries": "Partijų nerasta",
+      "noResults": "Šioje partijoje įrašų nėra",
+      "restored": "Atkurta {count} įrašų.",
+      "resultsTitle": "Partijos rezultatai",
+      "skipped": "Praleista ({count})",
+      "skippedHelp": "Įrašai, pakeisti po partijos sukūrimo, buvo praleisti, kad nebūtų perrašyti naujesni pakeitimai.",
+      "source": "Šaltinis",
+      "status": "Būsena",
+      "subtitle": "Peržiūrėkite ir anuliuokite masinius importus bei veiksmus",
+      "title": "Partijos",
+      "undo": "Anuliuoti",
+      "undoConfirm": "Anuliuoti partiją „{label}“? Tai atkurs paveiktus įrašus į jų būseną prieš partiją.",
+      "undoError": "Anuliavimo užklausa nepavyko.",
+      "undoTitle": "Anuliuoti partiją",
+      "undoWarning": "Įrašai, pakeisti po šios partijos sukūrimo, bus praleisti. Šio veiksmo negalima grąžinti.",
+      "undoing": "Anuliuojama…",
+      "viewResults": "Peržiūrėti rezultatus"
     },
     "campusEdit": {
       "address2": "Adreso 2 eilutė",
@@ -3149,9 +3152,9 @@
       "subtitle": "Tvarkykite bažnyčios fizines vietas"
     },
     "checkinSettingsEdit": {
-      "block": "Block (prevent check-in)",
-      "help": "Choose how check-in responds when a room is over its volunteer-to-child ratio or below its minimum volunteers.",
-      "ratioEnforcement": "Volunteer Ratio Enforcement",
+      "block": "Blokuoti (neleisti registruotis)",
+      "help": "Pasirinkite, kaip registracija reaguoja, kai patalpoje viršijamas savanorių ir vaikų santykis arba trūksta savanorių.",
+      "ratioEnforcement": "Savanorių santykio taikymas",
       "title": "Registracija",
       "warn": "Įspėti (leisti su patvirtinimu)"
     },
@@ -3179,19 +3182,19 @@
       "textingTitle": "SMS žinutės"
     },
     "customFieldEdit": {
-      "confirmDelete": "Are you sure you wish to delete this custom field? Its stored values will also be removed.",
-      "fieldType": "Field Type",
-      "name": "Name",
+      "confirmDelete": "Ar tikrai norite ištrinti šį pasirinktinį lauką? Jame saugomos reikšmės taip pat bus pašalintos.",
+      "fieldType": "Lauko tipas",
+      "name": "Pavadinimas",
       "validate": {
-        "name": "Please enter a field name."
+        "name": "Įveskite lauko pavadinimą."
       }
     },
     "customFields": {
-      "addField": "Add Field",
+      "addField": "Pridėti lauką",
       "customFields": "Pasirinktiniai laukai",
-      "field": "Custom Field",
-      "none": "No custom fields have been added yet.",
-      "subtitle": "Define custom fields to track on people"
+      "field": "Pasirinktinis laukas",
+      "none": "Pasirinktinių laukų dar nepridėta.",
+      "subtitle": "Apibrėžkite pasirinktinius laukus žmonių duomenims stebėti"
     },
     "developer": {
       "actions": "Veiksmai",
@@ -3239,8 +3242,8 @@
       "domMsgConnect": "connect",
       "domain": "Domain",
       "domains": "Domains",
-      "mainWebsite": "Main Website",
-      "site": "Website"
+      "mainWebsite": "Pagrindinė svetainė",
+      "site": "Svetainė"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Reikalingas turinys.",
@@ -3322,11 +3325,11 @@
       "webhookUrlCopied": "Webhook URL nukopijuotas į iškarpinę"
     },
     "gradePromotionSettingsEdit": {
-      "day": "Day",
-      "disabled": "Disabled",
-      "enabled": "Enabled",
-      "help": "On this date each year, everyone with a grade is promoted to the next grade automatically (12th grade becomes Graduated). Leave disabled to turn off automatic promotion.",
-      "month": "Month",
+      "day": "Diena",
+      "disabled": "Išjungta",
+      "enabled": "Įjungta",
+      "help": "Šią dieną kiekvienais metais visi turintys klasę automatiškai perkeliami į kitą klasę (12 klasė tampa „Baigė mokyklą“). Palikite išjungtą, jei norite išjungti automatinį perkėlimą.",
+      "month": "Mėnuo",
       "title": "Klasės perkėlimas"
     },
     "landing": {
@@ -3334,7 +3337,7 @@
       "campusesOne": "1 vieta",
       "campusesSubtitle": "Fizinės vietos",
       "configuration": "Konfigūracija",
-      "customFieldsCount": "{count} custom fields",
+      "customFieldsCount": "{count} pasirinktiniai laukai",
       "customFieldsSubtitle": "Dar nėra pasirinktinių laukų",
       "developerSubtitle": "API raktai, webhook'ai, sujungtos programos",
       "domainsCount": "{count} sujungta",
@@ -3342,7 +3345,7 @@
       "domainsOne": "1 sujungta",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatinis perkėlimas išjungtas",
-      "gradePromotionOn": "Promotes on {date} each year",
+      "gradePromotionOn": "Perkelia {date} kiekvienais metais",
       "notConfigured": "Nesukonfigūruota",
       "notSet": "Nenustatyta"
     },
@@ -3355,12 +3358,12 @@
       "title": "Manage Church"
     },
     "messagingMinimumAge": {
-      "age13": "13 and older",
-      "age16": "16 and older",
-      "age18": "18 and older",
-      "helpText": "Blocks new private-message conversations when either person is under this age, based on their birthdate. People below the age stay visible in the directory. Existing conversations are not affected.",
-      "label": "Minimum Age for Private Messages",
-      "off": "Off (no restriction)"
+      "age13": "13 metų ir vyresni",
+      "age16": "16 metų ir vyresni",
+      "age18": "18 metų ir vyresni",
+      "helpText": "Blokuoja naujus privačių žinučių pokalbius, kai bet kuris iš asmenų yra jaunesnis nei nurodytas amžius, remiantis jo gimimo data. Jaunesni nei šis amžius asmenys išlieka matomi kataloge. Esami pokalbiai neįtakojami.",
+      "label": "Mažiausias amžius privačioms žinutėms",
+      "off": "Išjungta (be apribojimo)"
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
@@ -3415,32 +3418,32 @@
       "subtitle": "Tvarkykite vaidmenis ir teises"
     },
     "storageSettingsEdit": {
-      "authFailed": "Sign-in failed. Please try again.",
-      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "authFailed": "Prisijungti nepavyko. Bandykite dar kartą.",
+      "byosHelper": "Nauji įkėlimai saugomi jūsų pačių paskyroje, o atsisiuntimai teikiami iš jos. Jau įkelti failai lieka ten, kur yra.",
       "churchAppsFree": "ChurchApps (Nemokamai)",
-      "connect": "Connect Account",
-      "connectFirst": "Connect your account before saving.",
-      "connected": "Account connected",
-      "connecting": "Waiting for sign-in...",
+      "connect": "Prijungti paskyrą",
+      "connectFirst": "Prieš išsaugant prijunkite savo paskyrą.",
+      "connected": "Paskyra prijungta",
+      "connecting": "Laukiama prisijungimo...",
       "ministryStuff": "MinistryStuff",
-      "ministryStuffHelper": "Files will be stored on your MinistryStuff storage plan, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelper": "Failai bus saugomi jūsų MinistryStuff saugyklos plane, automatiškai susietame su šia bažnyčia. Tvarkykite savo planą čia:",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup blocked. Please allow popups and try again.",
-      "provider": "Provider",
-      "reconnect": "Reconnect",
-      "s3AccessKey": "Access Key Id",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (blank for AWS)",
-      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
-      "s3PublicBase": "Public URL Base",
-      "s3Region": "Region",
-      "s3Required": "Bucket and public URL base are required.",
-      "s3SecretKey": "Secret Access Key",
-      "saveError": "Error saving storage settings.",
-      "sessionExpired": "The sign-in session expired. Please try again.",
-      "sessionFailed": "Could not start the sign-in session.",
+      "popupBlocked": "Iškylantis langas užblokuotas. Leiskite iškylančius langus ir bandykite dar kartą.",
+      "provider": "Teikėjas",
+      "reconnect": "Prijungti iš naujo",
+      "s3AccessKey": "Prieigos rakto ID",
+      "s3Bucket": "Talpykla",
+      "s3Endpoint": "Galinis taškas (palikite tuščią AWS)",
+      "s3Helper": "Talpykla turi leisti viešą skaitymo prieigą ir CORS PUT užklausas iš šios svetainės. Veikia su AWS S3, Cloudflare R2 ir Backblaze B2.",
+      "s3PublicBase": "Viešo URL bazė",
+      "s3Region": "Regionas",
+      "s3Required": "Būtina nurodyti talpyklą ir viešo URL bazę.",
+      "s3SecretKey": "Slaptasis prieigos raktas",
+      "saveError": "Klaida išsaugant saugyklos nustatymus.",
+      "sessionExpired": "Prisijungimo seansas baigėsi. Bandykite dar kartą.",
+      "sessionFailed": "Nepavyko pradėti prisijungimo seanso.",
       "title": "Failų saugykla",
-      "usage": "Using {used} GB of {quota} GB."
+      "usage": "Naudojama {used} GB iš {quota} GB."
     },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
@@ -3456,8 +3459,8 @@
       "clearstreamHelperLink": "Clearstream paskyros nustatymuose",
       "clearstreamHelperSuffix": "skiltyje API raktai.",
       "ministryStuff": "MinistryStuff",
-      "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
-      "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
+      "ministryStuffActive": "Jūsų MinistryStuff SMS žinučių prenumerata yra aktyvi, likę {} kreditų šiam ciklui.",
+      "ministryStuffHelper": "API rakto nereikia. SMS žinučių kreditai gaunami iš jūsų MinistryStuff prenumeratos, automatiškai susietos su šia bažnyčia. Tvarkykite savo planą čia:",
       "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Nėra",
       "provider": "Teikėjas",
@@ -3702,38 +3705,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "draft": "Draft",
-      "editContent": "Edit content",
+      "draft": "Juodraštis",
       "navHint": "Lankytojai gali skaityti jūsų įrašus adresu /blog. Pridėkite naršymo nuorodą Puslapių ekrane, kad jie galėtų jį rasti:",
       "noPosts": "No posts yet",
       "posts": "Posts",
-      "published": "Published",
-      "scheduled": "Scheduled",
+      "published": "Paskelbta",
+      "scheduled": "Suplanuota",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
       "title": "Blog",
-      "view": "View on Site"
+      "view": "Žiūrėti svetainėje"
     },
     "blogEdit": {
-      "author": "Author",
+      "author": "Autorius",
       "category": "Category",
-      "content": "Content",
+      "content": "Turinys",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
-      "errSlugTaken": "That web address is already used by another post.",
+      "errSlugTaken": "Šį web adresą jau naudoja kitas įrašas.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
-      "preview": "Preview",
+      "preview": "Peržiūra",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
-      "slugHelper": "Auto-fills from the title until you edit it. Address:",
-      "slugLabel": "Web address",
+      "slugHelper": "Automatiškai užpildoma pagal pavadinimą, kol jo neredaguojate. Adresas:",
+      "slugLabel": "Web adresas",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -4065,7 +4067,7 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Stored in your linked account",
+      "externalStorage": "Saugoma jūsų susietoje paskyroje",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Pavadinimas",
@@ -4286,7 +4288,7 @@
     },
     "paletteEdit": {
       "accent": "Akcentas",
-      "accentDesc": "Main accent — buttons and highlights",
+      "accentDesc": "Pagrindinis akcentas — mygtukai ir paryškinimai",
       "applyPaletteAria": "Taikyti siūlomą spalvų paletę",
       "applySuggested": "Spustelėkite bet kurią paletę, kad iškart pritaikytumėte",
       "baseColors": "Pagrindinės spalvos",
@@ -4294,29 +4296,29 @@
       "colorValues": "Color Values",
       "dark": "Tamsi",
       "darkAccent": "Tamsus akcentas",
-      "darkAccentDesc": "Deep accent — headings and links",
-      "darkDesc": "Darkest shade — body text",
+      "darkAccentDesc": "Tamsus akcentas — antraštės ir nuorodos",
+      "darkDesc": "Tamsiausias atspalvis — pagrindinio teksto",
       "error": "Klaida",
-      "errorDesc": "Errors and destructive actions",
+      "errorDesc": "Klaidos ir naikinimo veiksmai",
       "headerSubtitle": "Tinkinkite svetainės spalvų schemą. Mobiliosios programėlės, narių portalo ir kiosko spalvas rasite skiltyje Nustatymai > Programos tema.",
       "headerTitle": "Spalvų paletė",
       "light": "Šviesi",
       "lightAccent": "Šviesus akcentas",
-      "lightAccentDesc": "Soft accent — subtle backgrounds",
-      "lightDesc": "Lightest shade — section backgrounds",
+      "lightAccentDesc": "Švelnus akcentas — subtilūs fonai",
+      "lightDesc": "Šviesiausias atspalvis — skyrių fonai",
       "palette": "Paletė",
       "previewWorkTogether": "Peržiūrėkite, kaip jūsų spalvos dera tarpusavyje",
       "primary": "Pagrindinė",
-      "primaryDesc": "Primary buttons and links",
+      "primaryDesc": "Pagrindiniai mygtukai ir nuorodos",
       "savePalette": "Save Palette",
       "secondary": "Antrinė",
-      "secondaryDesc": "Secondary buttons and accents",
+      "secondaryDesc": "Antriniai mygtukai ir akcentai",
       "semanticColors": "Semantinės spalvos",
       "success": "Sėkmė",
-      "successDesc": "Success messages and confirmations",
+      "successDesc": "Sėkmės pranešimai ir patvirtinimai",
       "suggestedPalettes": "Suggested Palettes",
       "warning": "Įspėjimas",
-      "warningDesc": "Warnings and cautions"
+      "warningDesc": "Įspėjimai ir perspėjimai"
     },
     "pickColors": {
       "background": "Fonas",
@@ -4505,8 +4507,8 @@
       "title": "Pavadinimas"
     },
     "siteSwitcher": {
-      "mainWebsite": "Main Website",
-      "manageSites": "Manage websites…"
+      "mainWebsite": "Pagrindinė svetainė",
+      "manageSites": "Tvarkyti svetaines…"
     },
     "siteTemplates": {
       "back": "Atgal",
@@ -4578,13 +4580,13 @@
       "url": "URL"
     },
     "sitesDialog": {
-      "add": "Add Website",
-      "deleteConfirm": "Delete this website? Its pages, navigation and appearance will be permanently deleted. Its custom domains will be reassigned to the main website.",
-      "empty": "No additional websites yet.",
-      "name": "Name",
-      "subDomain": "Subdomain",
-      "subDomainHint": "Lowercase letters and numbers only. Becomes {subdomain}.b1.church",
-      "title": "Websites"
+      "add": "Pridėti svetainę",
+      "deleteConfirm": "Ištrinti šią svetainę? Jos puslapiai, navigacija ir išvaizda bus negrįžtamai ištrinti. Jos pasirinktiniai domenai bus priskirti pagrindinei svetainei.",
+      "empty": "Papildomų svetainių dar nėra.",
+      "name": "Pavadinimas",
+      "subDomain": "Subdomenas",
+      "subDomainHint": "Tik mažosios raidės ir skaičiai. Taps {subdomain}.b1.church",
+      "title": "Svetainės"
     },
     "socialIconsEdit": {
       "alignment": "Lygiuotė",
@@ -4704,13 +4706,13 @@
       "columns": "Stulpeliai",
       "empty": "(tuščia)",
       "firstRowHeader": "Pirma eilutė yra antraštė",
-      "markdownHelper": "Enables Markdown in cells for bold, links, and other formatting.",
+      "markdownHelper": "Įjungia Markdown formatavimą langeliuose paryškinimui, nuorodoms ir kitam formatavimui.",
       "medium": "Vidutinis",
       "no": "Ne",
       "rows": "Eilutės",
       "size": "Dydis",
       "sizeSmall": "Mažas",
-      "textFormatting": "Text formatting",
+      "textFormatting": "Teksto formatavimas",
       "yes": "Taip"
     },
     "templates": {
@@ -5187,7 +5189,7 @@
     },
     "workflowEdit": {
       "active": "Aktyvus",
-      "confirmDelete": "Are you sure you want to delete this workflow?",
+      "confirmDelete": "Ar tikrai norite ištrinti šią darbo eigą?",
       "editWorkflow": "Redaguoti darbo eigą",
       "inactive": "Neaktyvus",
       "name": "Pavadinimas"
@@ -5218,7 +5220,7 @@
       "title": "Maršrutizavimas"
     },
     "workflowStepEdit": {
-      "confirmDelete": "Are you sure you want to delete this step?",
+      "confirmDelete": "Ar tikrai norite ištrinti šį žingsnį?",
       "defaultAssignee": "Numatytasis vykdytojas",
       "dueDays": "Terminas (dienomis)",
       "dueDaysHelp": "Nustato terminą, kai kortelė patenka į šį žingsnį",

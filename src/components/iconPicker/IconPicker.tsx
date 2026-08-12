@@ -173,13 +173,11 @@ export const IconPicker: React.FC<Props> = (props) => {
                           overflow: "hidden"
                         }}
                       >
-                        {iconName === 'self_improvement'
-                          ? 'Prayer'
-                          : iconName
-                            .replaceAll('_', ' ')
-                            .split(' ')
-                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                            .join(' ')}
+                        {Locale.label(`common.iconPicker.icons.${iconName}`, iconName
+                          .replaceAll("_", " ")
+                          .split(" ")
+                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                          .join(" "))}
                       </Typography>
                     </Box>
                   </Grid>
