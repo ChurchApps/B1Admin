@@ -235,6 +235,7 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error.stack || error.message);
+  console.error(`Customer setup hit a problem: ${error instanceof Error ? error.message : String(error)}`);
+  console.error("Your previous answers are kept. Run `yarn installer:customer-values` again to continue.");
   process.exit(1);
 });

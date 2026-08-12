@@ -195,6 +195,41 @@ export function failText(message, outputMode = "text", extra = {}) {
   process.exit(1);
 }
 
+const failureHints = [
+  {
+    pattern: /Unable to locate credentials|InvalidClientTokenId|ExpiredToken|security token.*(?:invalid|expired)|SSO session.*expired|Token has expired/i,
+    hint: "This looks like an AWS sign-in problem. Sign in to the AWS CLI again using your normal method (for example `aws configure` or your organization's AWS sign-in), then retry.",
+  },
+  {
+    pattern: /AccessDenied|not authorized to perform/i,
+    hint: "Your AWS sign-in does not have permission for this action. Sign in as someone who can manage this AWS account, or send `aws-admin-handoff.md` to whoever manages it.",
+  },
+  {
+    pattern: /gh auth login|not logged into any GitHub hosts|Bad credentials|HTTP 401/i,
+    hint: "This looks like a GitHub sign-in problem. Run `gh auth login -h github.com`, finish signing in, then retry.",
+  },
+  {
+    pattern: /command not found|is not recognized as an internal or external command|spawn .* ENOENT/i,
+    hint: "A required tool is missing on this computer. Run `yarn installer:doctor -- --output=markdown` to see which tools still need to be installed.",
+  },
+  {
+    pattern: /Could not resolve host|getaddrinfo|ETIMEDOUT|ECONNRESET|ENETUNREACH|network is unreachable/i,
+    hint: "This looks like a network problem. Check your internet connection, then retry.",
+  },
+  {
+    pattern: /Could not connect to the endpoint URL|InvalidRegion/i,
+    hint: "The AWS region looks wrong. Check the AWS region answer in `yarn installer:customer-values` (normally `us-east-1`).",
+  },
+];
+
+export function explainFailure(text) {
+  const combined = String(text || "");
+  for (const { pattern, hint } of failureHints) {
+    if (pattern.test(combined)) return hint;
+  }
+  return "";
+}
+
 export function latestWorkflowRunId(repo) {
   const args = [
     "run",

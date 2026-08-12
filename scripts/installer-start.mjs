@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import {
@@ -8,6 +9,15 @@ import {
   rootDir,
   runNodeJson,
 } from "./installer-common.mjs";
+
+function gitSynced(deployRepoDir) {
+  if (!fs.existsSync(path.join(deployRepoDir, ".git"))) return false;
+  const runGit = (args) => spawnSync("git", args, { cwd: deployRepoDir, encoding: "utf8", stdio: "pipe" });
+  const status = runGit(["status", "--porcelain"]);
+  if (status.status !== 0 || status.stdout.trim() !== "") return false;
+  const ahead = runGit(["rev-list", "--count", "@{u}..HEAD"]);
+  return ahead.status === 0 && ahead.stdout.trim() === "0";
+}
 
 function exists(filePath) {
   return fs.existsSync(filePath);
@@ -151,7 +161,9 @@ function main() {
   const backendParameters = readJsonIfExists(path.join(environmentDir, "backend-parameters.json"));
   const preflightPlanFile = path.join(evidenceDir, "preflight-plan.md");
   const reportFile = path.join(deploymentRoot, "deployment-report.md");
-  const roleFilesExist = exists(roleDir) && fs.readdirSync(roleDir).some((fileName) => fileName.endsWith(".json"));
+  const roleFilesExist = exists(roleDir) && fs.readdirSync(roleDir).some((fileName) => fileName.endsWith(".json") && fileName !== "apply-result.json");
+  const iamApplyResult = readJsonIfExists(path.join(roleDir, "apply-result.json"));
+  const repoSynced = gitSynced(deployRepoDir);
   const audit = exists(environmentDir) ? auditEnvironment(environment, deployEnvDirArg, customerFile) : null;
   const auditBlockerCount = audit?.blockerSummary?.blockerCount ?? null;
 
@@ -161,6 +173,8 @@ function main() {
     installDeps: "yarn install",
     setup: `yarn installer:init -- --deploy-repo-dir=${deployRepoDirArg} --output=markdown`,
     awsHandoff: `yarn installer:aws-handoff -- --customer-file=${relativeToRoot(customerFile)} --deploy-repo-dir=${deployRepoDirArg} --write=true --output=markdown`,
+    awsApply: `yarn installer:aws-roles -- --environment=${environment} --customer-file=${relativeToRoot(customerFile)} --output-dir=${path.join(deployRepoDirArg, "iam", environment)} --apply=true --output=markdown`,
+    commit: `yarn installer:commit -- --deploy-repo-dir=${deployRepoDirArg} --customer-file=${relativeToRoot(customerFile)} --push=true --output=markdown`,
     roles: `yarn installer:aws-roles -- --environment=${environment} --customer-file=${relativeToRoot(customerFile)} --output-dir=${path.join(deployRepoDirArg, "iam", environment)} --write=true --output=markdown`,
     githubEnvironments: `yarn installer:github-setup -- --repo=${repo || "<owner>/<private-deploy-repo>"} --write=true --output=markdown`,
     configurePreview: `yarn installer:configure -- ${envBase} --output=markdown`,
@@ -196,11 +210,13 @@ function main() {
     status(privateDeploymentScaffoldReady, "Private deployment scaffold", privateDeploymentScaffoldReady ? "workflow plus staging/prod folders" : "create the private deployment repo scaffold", commands.setup),
     status(exists(customerFile), "Customer values file", exists(customerFile) ? "found" : "copy the sample and replace placeholders", exists(sampleCustomerFile) ? commands.createCustomerFile : commands.setup),
     status(hasCustomerValue("repo", repo) && hasCustomerValue("account-id", accountId), "Core customer values", hasCustomerValue("repo", repo) && hasCustomerValue("account-id", accountId) ? "repo and AWS account id available" : "answer the customer setup questions", commands.editCustomerValues),
-    status(roleFilesExist, "AWS IAM admin handoff", roleFilesExist ? `prepared${exists(handoffFile) ? " with handoff document" : ""}` : "generate files and commands for an AWS admin", commands.awsHandoff),
+    status(roleFilesExist, "AWS IAM role files", roleFilesExist ? `prepared${exists(handoffFile) ? " with handoff document" : ""}` : "render the IAM role files and admin handoff document", commands.awsHandoff),
+    status(iamApplyResult?.ok === true, "AWS IAM roles created", iamApplyResult?.ok === true ? "deploy and CloudFormation roles exist in AWS" : "create the roles with your AWS sign-in (or have your AWS admin run aws-admin-handoff.md, then run this to confirm)", commands.awsApply),
     status(hasCustomerValue("root-domain", rootDomain) && hasCustomerValue("support-phone", supportPhone), "Environment public values", hasCustomerValue("root-domain", rootDomain) && hasCustomerValue("support-phone", supportPhone) ? "root domain and support phone available" : "answer the customer setup questions", commands.editCustomerValues),
     status(auditBlockerCount === 0, "Environment parameter files", auditBlockerCount === null ? "not checked yet" : `${auditBlockerCount} blocker(s) remaining`, commands.configureWrite),
     status(exists(appConfigSecret), "App config secret", exists(appConfigSecret) ? "local secret file exists and should not be committed" : "generate random app secrets locally", commands.appConfig),
     status(hasCustomerValue("support-email", supportEmail), "Support email", hasCustomerValue("support-email", supportEmail) ? "available for web push subject" : "set supportEmail before syncing app config", commands.editCustomerValues),
+    status(repoSynced, "Private repository synced", repoSynced ? "no unpushed private repo changes" : "commit and push the private repo changes so the deploy workflow can read them", commands.commit),
     status(githubReadiness?.ok === true, "GitHub readiness", githubReadiness?.ok === true ? "environments and required secret names confirmed" : "confirm GitHub Environments and required secrets", githubReadinessCommand),
     status(preflightReadiness?.ok === true, "Installer preflight", preflightReadiness?.ok === true ? "ready for workflow dispatch" : "run local preflight before dispatch", commands.preflight),
     status(exists(preflightPlanFile), "Preview workflow observed", exists(preflightPlanFile) ? "preflight plan evidence downloaded" : previewDispatch ? "preview dispatch found; observe the run" : "dispatch a preview workflow", previewDispatch ? commands.observePreview : commands.previewDeploy),

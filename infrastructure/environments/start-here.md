@@ -348,26 +348,14 @@ yarn installer:init -- \
   --output=markdown
 ```
 
-3. Commit and push the safe scaffold files from the user's private repository.
-
-Run these from inside the `B1Admin` source repository folder:
-
-```bash
-git -C ../b1admin-deploy add README.md .gitignore .github/workflows/deploy-aws-self-hosted.yml customer-values.sample.json environments
-git -C ../b1admin-deploy commit -m "Add B1Admin deployment scaffold"
-git -C ../b1admin-deploy push
-```
-
-If Git says there is nothing to commit, continue to the next step.
-
-Do not add `customer-values.json`, `app-config-secret.json`, `bootstrap-admin-secret.json`, or `deployment/`.
-
-If Git says it does not know your name or email, set them once and rerun the commit command:
+3. Tell Git your name and email once, if you have never used Git on this computer:
 
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
+
+You do not need to run any other Git commands. The guided runner commits and pushes the safe private-repository files for you (the `Private repository synced` step), only ever touches the safe file list, and creates the private GitHub repository if it does not exist yet. If you prefer to commit manually, `yarn installer:init` prints the safe commands.
 
 4. Answer the customer setup questions:
 
@@ -398,10 +386,10 @@ Starting the runner does not mean AWS resources are created immediately. The run
 When it pauses, read the command it shows. If it looks right, answer `y` to let it continue.
 If you are not sure, answer `n`; nothing is lost, and you can run `installer:run` again later.
 
-If the runner stops because an outside task is needed, such as an AWS administrator creating IAM roles or a GitHub administrator approving production, complete that task and run the same `installer:run` command again.
-If the runner changes safe files in the user's private repository, commit and push those safe files before continuing.
+If the runner stops because an outside task is needed, such as a GitHub administrator approving production, complete that task and run the same `installer:run` command again.
+When the runner changes safe files in the user's private repository, it commits and pushes them for you in the `Private repository synced` step.
 
-The runner does not create your AWS account, create the GitHub repository, clone repositories to your computer, approve AWS IAM changes, approve protected GitHub deployments, or decide whether a production change is safe. It guides those steps and pauses when a person should review them.
+The runner does not create your AWS account, clone repositories to your computer, approve protected GitHub deployments, or decide whether a production change is safe. It guides those steps and pauses when a person should review them. It can create the AWS IAM roles and the private GitHub repository itself, and it always asks before doing so.
 
 Example runner pause:
 
@@ -428,15 +416,15 @@ In a small church or organization, all three roles below are usually the same pe
 
 The deployment operator runs the installer commands, answers the customer setup questions, commits safe files to the user's private repository, dispatches workflows, and checks the final report.
 
-The AWS administrator creates or approves the IAM roles from the generated handoff document. They do not need to edit B1Admin code.
+The AWS administrator creates or approves the IAM roles. If that is you (the normal case for a small organization), just approve the `AWS IAM roles created` step when the runner asks; it creates the roles with your own AWS sign-in.
 
-When the installer creates this file, send it to the AWS administrator:
+If a separate person manages your AWS account, send them this generated file instead, and re-run the `AWS IAM roles created` step afterward to confirm the roles exist:
 
 ```text
 ../b1admin-deploy/aws-admin-handoff.md
 ```
 
-That file contains the AWS IAM commands and role ARN values needed by the deployment.
+That file contains the AWS IAM commands and role ARN values needed by the deployment. They do not need to edit B1Admin code.
 
 The GitHub administrator may need to create the user's private repository, grant repository access, approve production environment protection rules, or create source-repository read tokens.
 
@@ -570,7 +558,7 @@ After staging is clean, run the prod command from the previous section.
 
 ## Production Notes
 
-If prod does not use a custom frontend domain yet, the first deploy creates a generated CloudFront URL. The installer will then ask you to run `yarn installer:adopt-frontend-origin`, commit and push the private parameter-file change, and rerun the real prod deploy. That second deploy lets browser login work from the generated CloudFront URL.
+If prod does not use a custom frontend domain yet, the first deploy creates a generated CloudFront URL, and the backend must then be redeployed once so it accepts logins from that URL. The guided runner walks this second pass automatically: it asks to adopt the URL, commits and pushes the parameter change, and reruns the prod deploy. Just keep answering the runner's prompts; the second deploy is expected, not a sign that something failed.
 
 For production, consider adding required reviewers to the `aws-prod` GitHub Environment before the first prod deploy.
 

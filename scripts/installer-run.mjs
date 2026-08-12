@@ -3,6 +3,7 @@ import process from "node:process";
 import readline from "node:readline/promises";
 import {
   boolArg,
+  explainFailure,
   getArg,
   printJson,
   rootDir,
@@ -84,6 +85,9 @@ function invocationFromCommand(command) {
   if (!trimmed || trimmed.startsWith("#")) return null;
 
   const words = splitWords(trimmed);
+  if (words[0] === "yarn" && words[1]) {
+    return { command: "yarn", args: words.slice(1).filter((word) => word !== "--") };
+  }
   if (words[0] === "npm" && words[1] === "install" && words.length === 2) {
     return { command: "npm", args: ["install"] };
   }
@@ -99,6 +103,8 @@ function invocationFromCommand(command) {
 function isApprovalGate(command) {
   return command.includes("installer:deploy")
     || command.includes("--write-secrets=true")
+    || command.includes("--apply=true")
+    || command.includes("installer:commit")
     || command.includes("installer:bootstrap-admin")
     || command.includes("installer:browser-smoke")
     || command.includes("installer:adopt-frontend-origin")
@@ -183,11 +189,12 @@ async function main() {
       const result = spawnSync(invocation.command, invocation.args, {
         cwd: rootDir,
         encoding: "utf8",
-        stdio: outputMode === "json" ? "pipe" : "inherit",
+        stdio: outputMode === "json" ? "pipe" : ["inherit", "inherit", "pipe"],
         maxBuffer: 20 * 1024 * 1024,
       });
 
       if ((result.status ?? 1) !== 0) {
+        const hint = explainFailure(`${result.stdout || ""}\n${result.stderr || ""}`);
         if (outputMode === "json") {
           printJson({
             ok: false,
@@ -196,13 +203,18 @@ async function main() {
             status: result.status ?? 1,
             stdout: result.stdout || "",
             stderr: result.stderr || "",
+            hint,
             history,
           });
         } else {
-          console.error("That command did not finish successfully. Fix the issue shown above, then run installer:run again.");
+          if (result.stderr) process.stderr.write(result.stderr);
+          console.error("\nThat command did not finish successfully.");
+          if (hint) console.error(hint);
+          console.error("After fixing the issue, run installer:run again. It will continue from this step.");
         }
         process.exit(result.status ?? 1);
       }
+      if (outputMode !== "json" && result.stderr) process.stderr.write(result.stderr);
     }
 
     const message = `Paused after ${options.maxSteps} step(s). Re-run installer:run to continue.`;
@@ -217,6 +229,10 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error.stack || error.message);
+  const message = error instanceof Error ? error.message : String(error);
+  const hint = explainFailure(message);
+  console.error(`The installer hit a problem it could not recover from: ${message}`);
+  if (hint) console.error(hint);
+  console.error("Run `yarn installer:doctor -- --output=markdown` for a readiness report, then run installer:run again.");
   process.exit(1);
 });

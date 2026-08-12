@@ -94,6 +94,7 @@
     "installer:setup": "node scripts/setup-private-deployment-repo.mjs",
     "installer:app-config-secret": "node scripts/installer-app-config-secret.mjs",
     "installer:aws-handoff": "node scripts/installer-aws-handoff.mjs",
+    "installer:commit": "node scripts/installer-commit.mjs",
     "installer:aws-roles": "node scripts/installer-aws-roles.mjs",
     "installer:configure": "node scripts/installer-configure.mjs",
     "installer:doctor": "node scripts/installer-doctor.mjs",

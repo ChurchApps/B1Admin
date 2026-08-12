@@ -1,7 +1,9 @@
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import {
   boolArg,
+  explainFailure,
   failText,
   getArg,
   inferDeployRepo,
@@ -45,6 +47,68 @@ function shellQuote(value) {
   return `'${String(value).replace(/'/g, "'\\''")}'`;
 }
 
+function runAws(args) {
+  const result = spawnSync("aws", args, {
+    cwd: rootDir,
+    encoding: "utf8",
+    stdio: "pipe",
+    maxBuffer: 20 * 1024 * 1024,
+  });
+  return {
+    ok: result.status === 0,
+    stdout: result.stdout || "",
+    stderr: result.stderr || "",
+  };
+}
+
+function applyRole(roleName, trustPath, policyPath, actions) {
+  const create = runAws(["iam", "create-role", "--role-name", roleName, "--assume-role-policy-document", fileUri(trustPath)]);
+  if (create.ok) {
+    actions.push({ ok: true, label: `Created role ${roleName}` });
+  } else if (/EntityAlreadyExists/.test(create.stderr)) {
+    const update = runAws(["iam", "update-assume-role-policy", "--role-name", roleName, "--policy-document", fileUri(trustPath)]);
+    if (!update.ok) {
+      actions.push({ ok: false, label: `Could not update trust policy for existing role ${roleName}`, detail: update.stderr.trim() });
+      return false;
+    }
+    actions.push({ ok: true, label: `Role ${roleName} already existed; refreshed its trust policy` });
+  } else {
+    actions.push({ ok: false, label: `Could not create role ${roleName}`, detail: create.stderr.trim() });
+    return false;
+  }
+
+  const putPolicy = runAws(["iam", "put-role-policy", "--role-name", roleName, "--policy-name", `${roleName}-policy`, "--policy-document", fileUri(policyPath)]);
+  if (!putPolicy.ok) {
+    actions.push({ ok: false, label: `Could not attach permissions to role ${roleName}`, detail: putPolicy.stderr.trim() });
+    return false;
+  }
+  actions.push({ ok: true, label: `Attached permissions policy to ${roleName}` });
+  return true;
+}
+
+function applyOidcProvider(actions) {
+  const list = runAws(["iam", "list-open-id-connect-providers", "--output", "json"]);
+  if (list.ok) {
+    try {
+      const providers = JSON.parse(list.stdout)?.OpenIDConnectProviderList || [];
+      if (providers.some((provider) => String(provider.Arn || "").endsWith("/token.actions.githubusercontent.com"))) {
+        actions.push({ ok: true, label: "GitHub OIDC provider already exists" });
+        return true;
+      }
+    } catch {
+      // fall through to create
+    }
+  }
+
+  const create = runAws(["iam", "create-open-id-connect-provider", "--url", "https://token.actions.githubusercontent.com", "--client-id-list", "sts.amazonaws.com"]);
+  if (create.ok || /EntityAlreadyExists/.test(create.stderr)) {
+    actions.push({ ok: true, label: "GitHub OIDC provider is in place" });
+    return true;
+  }
+  actions.push({ ok: false, label: "Could not create the GitHub OIDC provider", detail: create.stderr.trim() });
+  return false;
+}
+
 function fileUri(filePath) {
   return `file://${filePath}`;
 }
@@ -69,6 +133,13 @@ function renderMarkdown(result) {
   result.files.forEach((file) => {
     lines.push(`- ${file.written ? "wrote" : "planned"} \`${file.path}\``);
   });
+
+  if (result.applied) {
+    lines.push("", "## AWS Apply Results", "");
+    result.applied.actions.forEach((action) => {
+      lines.push(`- ${action.ok ? "OK" : "FAILED"}: ${action.label}${action.detail ? ` - ${action.detail}` : ""}`);
+    });
+  }
 
   lines.push("", "## AWS Commands", "");
   result.awsCommands.forEach((command) => lines.push(`- \`${command}\``));
@@ -97,6 +168,7 @@ function main() {
   const outputDir = path.resolve(rootDir, getArg("output-dir", path.join("infrastructure", "iam", "generated", environment)));
   const write = boolArg("write", false);
   const force = boolArg("force", false);
+  const apply = boolArg("apply", false);
 
   if (!accountId.match(/^\d{12}$/)) {
     failText("--account-id or AWS_ACCOUNT_ID must be a 12-digit AWS account id.", outputMode);
@@ -171,6 +243,10 @@ function main() {
     });
   }
 
+  if (apply && rendered.some((file) => !fs.existsSync(file.targetPath))) {
+    failText("The IAM role files have not been written yet. Re-run with `--write=true` (or `--write=true --apply=true`) first.", outputMode);
+  }
+
   const deployRoleArn = `arn:aws:iam::${accountId}:role/${deployRoleName}`;
   const cfnRoleArn = `arn:aws:iam::${accountId}:role/${cfnRoleName}`;
   const fileFor = (key) => rendered.find((file) => file.key === key).path;
@@ -186,17 +262,47 @@ function main() {
     `gh secret set AWS_ROLE_TO_ASSUME --repo ${repo} --env ${githubEnvironment} --body ${shellQuote(deployRoleArn)}`,
     `gh secret set AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN --repo ${repo} --env ${githubEnvironment} --body ${shellQuote(cfnRoleArn)}`,
   ];
-  const nextSteps = [
-    write
-      ? "Run the AWS commands from an administrator-authenticated shell, skipping the OIDC provider create command if the provider already exists."
-      : "Re-run with `--write=true` to create the rendered IAM JSON files.",
-    "Run the GitHub secret commands after the AWS roles exist.",
-    `Run \`yarn installer:aws-preflight -- --environment=${environment} --account-id=${accountId} --cloudformation-execution-role-arn=${cfnRoleArn} --output=markdown\`.`,
-  ];
+  let applied = null;
+  if (apply) {
+    const filePathFor = (key) => rendered.find((file) => file.key === key).targetPath;
+    const actions = [];
+    const oidcOk = applyOidcProvider(actions);
+    const deployOk = oidcOk && applyRole(deployRoleName, filePathFor("githubDeployTrust"), filePathFor("githubDeployPolicy"), actions);
+    const cfnOk = deployOk && applyRole(cfnRoleName, filePathFor("cloudFormationTrust"), filePathFor("cloudFormationPolicy"), actions);
+    applied = {
+      ok: oidcOk && deployOk && cfnOk,
+      appliedAt: new Date().toISOString(),
+      accountId,
+      environment,
+      roleArns: { deployRoleArn, cfnRoleArn },
+      actions,
+    };
+    fs.mkdirSync(outputDir, { recursive: true });
+    fs.writeFileSync(path.join(outputDir, "apply-result.json"), `${JSON.stringify(applied, null, 2)}\n`);
+  }
+
+  const nextSteps = [];
+  if (applied?.ok) {
+    nextSteps.push("The AWS roles exist. The installer will confirm the GitHub secrets in the GitHub setup step.");
+  } else if (apply) {
+    const failureDetail = applied.actions.filter((action) => !action.ok).map((action) => action.detail || "").join("\n");
+    const hint = explainFailure(failureDetail);
+    nextSteps.push(hint || "Fix the AWS problem shown above and re-run this command, or send `aws-admin-handoff.md` to whoever manages your AWS account.");
+  } else {
+    nextSteps.push(
+      write
+        ? "Run `--apply=true` to create the roles with your own AWS sign-in, or have an AWS administrator run the AWS commands from `aws-admin-handoff.md`."
+        : "Re-run with `--write=true` to create the rendered IAM JSON files.",
+    );
+    nextSteps.push("Run the GitHub secret commands after the AWS roles exist.");
+  }
+  nextSteps.push(`Run \`yarn installer:aws-preflight -- --environment=${environment} --account-id=${accountId} --cloudformation-execution-role-arn=${cfnRoleArn} --output=markdown\`.`);
 
   const result = {
-    ok: true,
+    ok: apply ? Boolean(applied?.ok) : true,
     write,
+    apply,
+    applied,
     accountId,
     region,
     repo,
@@ -232,6 +338,8 @@ function main() {
     result.awsCommands.forEach((command) => console.log(command));
     result.githubSecretCommands.forEach((command) => console.log(command));
   }
+
+  if (!result.ok) process.exit(1);
 }
 
 main();

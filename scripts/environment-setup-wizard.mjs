@@ -172,6 +172,8 @@ async function main() {
 
   try {
     console.log(`Environment setup wizard: ${requestedEnvironment}`);
+    console.log("Note: this is an advanced tool for editing parameter files directly.");
+    console.log("For the normal guided install, use `yarn installer:run` instead.\n");
     console.log("This will walk through first-deploy values first, then optional custom-domain and integration values.");
     console.log("Press Enter to keep the suggested default. Type blank only where the wizard says it is allowed.\n");
 

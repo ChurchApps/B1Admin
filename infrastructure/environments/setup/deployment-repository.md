@@ -2,9 +2,9 @@
 
 Create a private GitHub repository owned by the organization or team operating B1Admin. A name such as `b1admin-deploy` works well.
 
-This repository is the operator's deployment workspace. It should be created in GitHub first, then cloned beside the B1Admin source repository on the operator machine.
+This repository is the operator's deployment workspace. It lives beside the B1Admin source repository on the operator machine.
 
-You can create it in the GitHub website, or with GitHub CLI.
+The guided runner can create it for you: when the `Private repository synced` step runs, the installer creates the private GitHub repository if it does not exist yet and connects the local folder to it. If you prefer to create it yourself first, use the GitHub website or GitHub CLI.
 
 Run this from the parent folder that will contain both repositories:
 

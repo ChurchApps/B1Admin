@@ -45,6 +45,16 @@ function main() {
     params.B1AdminRootUrl = next.B1AdminRootUrl;
     params.CorsOrigin = next.CorsOrigin;
     fs.writeFileSync(backendParametersFile, `${JSON.stringify(params, null, 2)}\n`);
+    // The saved deployment summary now describes a backend whose CORS/root URL
+    // no longer match the desired parameters. Archive it, along with the deploy
+    // dispatch evidence (observing the old run would just restore the stale
+    // summary), so the guided runner walks commit -> deploy -> observe again
+    // instead of treating the rollout as finished.
+    fs.renameSync(summaryFile, `${summaryFile.replace(/\.json$/, "")}.pre-adopt.json`);
+    const dispatchFile = path.join(path.dirname(summaryFile), "last-deploy-dispatch.json");
+    if (fs.existsSync(dispatchFile)) {
+      fs.renameSync(dispatchFile, path.join(path.dirname(summaryFile), "last-deploy-dispatch.pre-adopt.json"));
+    }
   }
 
   const result = {
@@ -58,8 +68,8 @@ function main() {
     next,
     followUp: changed
       ? [
-        "Commit and push the updated private environment file.",
-        `Rerun the real ${environment} deploy so CloudFormation updates the backend CORS/root URL.`,
+        "The saved deployment summary was archived because the backend must be redeployed with the new CORS/root URL.",
+        "Run `yarn installer:run` again; it will commit and push the change, rerun the deploy, and observe it.",
       ]
       : [],
   };

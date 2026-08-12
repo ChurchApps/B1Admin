@@ -1629,6 +1629,36 @@ function expectInstallerUpdateDryRun() {
   }
 }
 
+function gitCommitAllFixture(repoDir) {
+  const runGit = (args) => {
+    const result = spawnSync("git", args, { cwd: repoDir, encoding: "utf8", timeout: childProcessTimeoutMs });
+    return { status: result.status ?? 1, stdout: result.stdout || "", stderr: result.stderr || "" };
+  };
+  const requireGit = (args) => {
+    const result = runGit(args);
+    if (result.status !== 0) throw new Error(`fixture git ${args.join(" ")} failed: ${result.stderr}`);
+    return result;
+  };
+
+  if (!fs.existsSync(path.join(repoDir, ".git"))) {
+    requireGit(["init", "-b", "main"]);
+    requireGit(["config", "user.email", "smoke@example.com"]);
+    requireGit(["config", "user.name", "Smoke Fixture"]);
+    const remoteDir = path.join(repoDir, ".remote.git");
+    const bare = spawnSync("git", ["init", "--bare", remoteDir], { encoding: "utf8", timeout: childProcessTimeoutMs });
+    if ((bare.status ?? 1) !== 0) throw new Error(`fixture bare git init failed: ${bare.stderr}`);
+    fs.appendFileSync(path.join(repoDir, ".gitignore"), "\n/.remote.git/\n");
+    requireGit(["remote", "add", "origin", remoteDir]);
+  }
+
+  requireGit(["add", "-A"]);
+  const commit = runGit(["commit", "-m", "fixture commit"]);
+  if (commit.status !== 0 && !/nothing to commit/.test(`${commit.stdout}${commit.stderr}`)) {
+    throw new Error(`fixture git commit failed: ${commit.stderr || commit.stdout}`);
+  }
+  requireGit(["push", "-u", "origin", "HEAD"]);
+}
+
 function expectInstallerStartRecommendsNextStep() {
   const tempDir = fs.mkdtempSync(path.join(rootDir, ".tmp-installer-start-"));
   const nodeModulesDir = path.join(rootDir, "node_modules");
@@ -1745,6 +1775,14 @@ function expectInstallerStartRecommendsNextStep() {
       throw new Error(`installer start fixture handoff failed.\nSTDOUT:\n${handoff.stdout}\nSTDERR:\n${handoff.stderr}`);
     }
 
+    const needsIamApply = runJsonScript("scripts/installer-start.mjs", startArgs);
+    if (needsIamApply.status !== 0 || !String(needsIamApply.parsed?.nextCommand || "").includes("--apply=true")) {
+      throw new Error(`installer start should recommend creating the IAM roles after the handoff files exist.\nSTDOUT:\n${needsIamApply.stdout}\nSTDERR:\n${needsIamApply.stderr}`);
+    }
+
+    fs.mkdirSync(path.join(tempDir, "iam", "staging"), { recursive: true });
+    fs.writeFileSync(path.join(tempDir, "iam", "staging", "apply-result.json"), JSON.stringify({ ok: true }, null, 2));
+
     const configure = runJsonScript("scripts/installer-configure.mjs", [
       "--environment=staging",
       `--environment-dir=${path.join(tempDir, "environments", "staging")}`,
@@ -1766,6 +1804,12 @@ function expectInstallerStartRecommendsNextStep() {
     if (appConfig.status !== 0) {
       throw new Error(`installer start fixture app-config failed.\nSTDOUT:\n${appConfig.stdout}\nSTDERR:\n${appConfig.stderr}`);
     }
+
+    const needsCommit = runJsonScript("scripts/installer-start.mjs", startArgs);
+    if (needsCommit.status !== 0 || !String(needsCommit.parsed?.nextCommand || "").includes("installer:commit")) {
+      throw new Error(`installer start should recommend syncing the private repository after local files change.\nSTDOUT:\n${needsCommit.stdout}\nSTDERR:\n${needsCommit.stderr}`);
+    }
+    gitCommitAllFixture(tempDir);
 
     const needsGithubReadiness = runJsonScript("scripts/installer-start.mjs", startArgs);
     if (needsGithubReadiness.status !== 0 || !String(needsGithubReadiness.parsed?.nextCommand || "").includes("installer:github-readiness")) {
@@ -1832,6 +1876,24 @@ function expectInstallerStartRecommendsNextStep() {
     if (adoptFrontendOrigin.status !== 0 || !adoptFrontendOrigin.parsed?.ok) {
       throw new Error(`installer adopt frontend origin should update backend parameters from deployment evidence.\nSTDOUT:\n${adoptFrontendOrigin.stdout}\nSTDERR:\n${adoptFrontendOrigin.stderr}`);
     }
+
+    const needsPostAdoptCommit = runJsonScript("scripts/installer-start.mjs", startArgs);
+    if (needsPostAdoptCommit.status !== 0 || !String(needsPostAdoptCommit.parsed?.nextCommand || "").includes("installer:commit")) {
+      throw new Error(`installer start should recommend committing the adopted frontend origin.\nSTDOUT:\n${needsPostAdoptCommit.stdout}\nSTDERR:\n${needsPostAdoptCommit.stderr}`);
+    }
+    gitCommitAllFixture(tempDir);
+
+    const needsRedeploy = runJsonScript("scripts/installer-start.mjs", startArgs);
+    if (needsRedeploy.status !== 0 || !String(needsRedeploy.parsed?.nextCommand || "").includes("--confirm=true")) {
+      throw new Error(`installer start should recommend rerunning the real deploy after adopting the frontend origin.\nSTDOUT:\n${needsRedeploy.stdout}\nSTDERR:\n${needsRedeploy.stderr}`);
+    }
+
+    fs.writeFileSync(path.join(stagingEvidenceDir, "last-deploy-dispatch.json"), JSON.stringify({ ok: true, runId: 789 }, null, 2));
+    const needsObserveRedeploy = runJsonScript("scripts/installer-start.mjs", startArgs);
+    if (needsObserveRedeploy.status !== 0 || !String(needsObserveRedeploy.parsed?.nextCommand || "").includes("--verify=true")) {
+      throw new Error(`installer start should recommend observing the post-adopt redeploy.\nSTDOUT:\n${needsObserveRedeploy.stdout}\nSTDERR:\n${needsObserveRedeploy.stderr}`);
+    }
+    writeReportEvidenceFixture(deploymentRoot, "staging");
 
     const needsFirstAdminValues = runJsonScript("scripts/installer-start.mjs", startArgs);
     if (needsFirstAdminValues.status !== 0

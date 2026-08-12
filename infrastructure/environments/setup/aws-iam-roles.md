@@ -13,7 +13,9 @@ Generate one AWS admin handoff document from the installer:
 yarn installer:aws-handoff -- --customer-file=../b1admin-deploy/customer-values.json --deploy-repo-dir=../b1admin-deploy --write=true --output=markdown
 ```
 
-Send `../b1admin-deploy/aws-admin-handoff.md` to an AWS administrator. Have them run the printed `aws iam ...` commands. If the AWS account already has the GitHub OIDC provider for `token.actions.githubusercontent.com`, they should skip the provider creation command.
+If you manage the AWS account yourself (the normal case for a small organization), you do not need to run the printed commands by hand: approve the `AWS IAM roles created` step in the guided runner, or run the role generator with `--apply=true`, and the installer creates the OIDC provider and both roles with your AWS sign-in. It safely skips anything that already exists.
+
+If a separate person manages your AWS account, send them `../b1admin-deploy/aws-admin-handoff.md` and have them run the printed `aws iam ...` commands. If the AWS account already has the GitHub OIDC provider for `token.actions.githubusercontent.com`, they should skip the provider creation command. Afterward, run the `AWS IAM roles created` step once yourself to confirm the roles exist.
 
 If you only need one environment, use the lower-level role generator for prod:
 
