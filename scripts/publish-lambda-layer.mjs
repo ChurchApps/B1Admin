@@ -58,6 +58,9 @@ function main() {
   const region = getArg("region", process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1");
   const layerName = getArg("layer-name");
   const sourceFile = getArg("source-file");
+  const contentBucket = getArg("content-bucket");
+  const contentKey = getArg("content-key");
+  const contentObjectVersion = getArg("content-object-version");
   const description = getArg("description", "Published by B1Admin AWS deployment tooling");
   const licenseInfo = getArg("license-info");
   const compatibleRuntimes = parseCsv(getArg("compatible-runtimes", "nodejs22.x"));
@@ -65,15 +68,28 @@ function main() {
   const outputMode = getArg("output", "text");
 
   requireValue("layer-name", layerName);
-  requireValue("source-file", sourceFile);
-
-  const resolvedSource = path.resolve(rootDir, sourceFile);
-  if (!fs.existsSync(resolvedSource)) {
-    console.error(`Source file not found: ${resolvedSource}`);
-    process.exit(1);
+  if (!sourceFile && !(contentBucket && contentKey)) {
+    fail("Provide either --source-file or --content-bucket and --content-key.");
   }
-  if (path.extname(resolvedSource).toLowerCase() !== ".zip") {
-    fail(`Source file must be a .zip archive: ${resolvedSource}`);
+  if (sourceFile && (contentBucket || contentKey)) {
+    fail("Provide --source-file or --content-bucket/--content-key, not both.");
+  }
+
+  let contentArg;
+  if (sourceFile) {
+    const resolvedSource = path.resolve(rootDir, sourceFile);
+    if (!fs.existsSync(resolvedSource)) {
+      console.error(`Source file not found: ${resolvedSource}`);
+      process.exit(1);
+    }
+    if (path.extname(resolvedSource).toLowerCase() !== ".zip") {
+      fail(`Source file must be a .zip archive: ${resolvedSource}`);
+    }
+    contentArg = ["--zip-file", `fileb://${resolvedSource}`];
+  } else {
+    const contentParts = [`S3Bucket=${contentBucket}`, `S3Key=${contentKey}`];
+    if (contentObjectVersion) contentParts.push(`S3ObjectVersion=${contentObjectVersion}`);
+    contentArg = ["--content", contentParts.join(",")];
   }
 
   const args = [
@@ -81,8 +97,7 @@ function main() {
     "publish-layer-version",
     "--layer-name",
     layerName,
-    "--zip-file",
-    `fileb://${resolvedSource}`,
+    ...contentArg,
     "--description",
     description,
     "--region",

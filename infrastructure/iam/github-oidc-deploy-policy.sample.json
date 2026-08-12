@@ -99,20 +99,51 @@
       ]
     },
     {
-      "Sid": "OptionalValidationAndExtensions",
+      "Sid": "OptionalCertificateValidation",
       "Effect": "Allow",
       "Action": [
-        "acm:DescribeCertificate",
-        "lambda:PublishLayerVersion",
+        "acm:DescribeCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OptionalLayerPublish",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:PublishLayerVersion"
+      ],
+      "Resource": "arn:aws:lambda:<region>:<account-id>:layer:<project-name>-<environment>-*"
+    },
+    {
+      "Sid": "OptionalDataApiMigrations",
+      "Effect": "Allow",
+      "Action": [
         "rds-data:BeginTransaction",
         "rds-data:CommitTransaction",
         "rds-data:ExecuteStatement",
-        "rds-data:RollbackTransaction",
-        "secretsmanager:GetSecretValue",
+        "rds-data:RollbackTransaction"
+      ],
+      "Resource": "arn:aws:rds:<region>:<account-id>:cluster:<project-name>-<environment>-*"
+    },
+    {
+      "Sid": "OptionalSecretRead",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:<region>:<account-id>:secret:<project-name>/<environment>/*",
+        "arn:aws:secretsmanager:<region>:<account-id>:secret:<project-name>-<environment>-*"
+      ]
+    },
+    {
+      "Sid": "OptionalLegacySsmSync",
+      "Effect": "Allow",
+      "Action": [
         "ssm:PutParameter",
         "ssm:AddTagsToResource"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:ssm:<region>:<account-id>:parameter/<environment>/*"
     }
   ]
 }

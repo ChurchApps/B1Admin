@@ -1201,6 +1201,9 @@ Resources:
   MigrationRunner:
     Type: Custom::MigrationRunner
     Condition: RunMigrationResources
+    DependsOn:
+      - DatabaseInstanceWriter
+      - MigrationLogGroup
     Properties:
       ServiceToken: !GetAtt MigrationFunction.Arn
       MigrationTrigger: !Ref MigrationTrigger

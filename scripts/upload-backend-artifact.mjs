@@ -136,6 +136,25 @@ function main() {
     region,
   ], { quiet: jsonOutput });
 
+  let versionId = "";
+  try {
+    const headResponse = runJson("aws", [
+      "s3api",
+      "head-object",
+      "--bucket",
+      bucket,
+      "--key",
+      key,
+      "--region",
+      region,
+      "--output",
+      "json",
+    ]);
+    versionId = headResponse.VersionId || "";
+  } catch {
+    versionId = "";
+  }
+
   const result = {
     artifactLabel,
     region,
@@ -143,6 +162,7 @@ function main() {
     key,
     sourceFile: resolvedSource,
     s3Uri: `s3://${bucket}/${key}`,
+    versionId,
     bootstrapStackName,
   };
 
@@ -155,6 +175,7 @@ function main() {
   console.log(`Bucket: ${bucket}`);
   console.log(`Key: ${key}`);
   console.log(`S3 URI: s3://${bucket}/${key}`);
+  if (versionId) console.log(`VersionId: ${versionId}`);
 }
 
 main();

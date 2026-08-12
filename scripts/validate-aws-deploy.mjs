@@ -1140,26 +1140,26 @@ function main() {
       if (!distributionCheck.ok) errors.push(`Split-stack publish distribution "${resolvedFrontendPublishDistributionId}" is not accessible: ${distributionCheck.error}`);
     }
 
-    if (splitStackPublishOnly && !frontendOutputsFile && !frontendPublishBucket && frontendStackName) {
+    if (splitStackPublishOnly && !frontendOutputsFile && !frontendPublishBucket && frontendPublishStackName) {
       const splitStackDescribe = tryExec("aws", [
         "cloudformation",
         "describe-stacks",
         "--stack-name",
-        frontendStackName,
+        frontendPublishStackName,
         "--region",
         region,
         "--output",
         "json",
       ]);
       if (!splitStackDescribe.ok) {
-        errors.push(`Split-stack publish-only target "${frontendStackName}" is not accessible: ${splitStackDescribe.error}`);
+        errors.push(`Split-stack publish-only target "${frontendPublishStackName}" is not accessible: ${splitStackDescribe.error}`);
       } else {
         const splitStackOutputs = normalizeOutputs(JSON.parse(splitStackDescribe.output));
         if (!splitStackOutputs.SiteBucketName) {
-          errors.push(`Split-stack publish-only target "${frontendStackName}" is missing SiteBucketName output.`);
+          errors.push(`Split-stack publish-only target "${frontendPublishStackName}" is missing SiteBucketName output.`);
         }
         if (!splitStackOutputs.CloudFrontDistributionId) {
-          errors.push(`Split-stack publish-only target "${frontendStackName}" is missing CloudFrontDistributionId output.`);
+          errors.push(`Split-stack publish-only target "${frontendPublishStackName}" is missing CloudFrontDistributionId output.`);
         }
         if (splitStackOutputs.SiteBucketName) {
           const publishBucketCheck = tryExec("aws", ["s3api", "head-bucket", "--bucket", splitStackOutputs.SiteBucketName]);

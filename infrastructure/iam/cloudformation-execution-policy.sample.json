@@ -62,25 +62,56 @@
         "rds:ModifyDBCluster",
         "rds:ModifyDBInstance",
         "rds:RemoveTagsFromResource",
-        "rds-data:*",
+        "rds-data:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecretsRandomPassword",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetRandomPassword"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProjectSecrets",
+      "Effect": "Allow",
+      "Action": [
         "secretsmanager:CreateSecret",
         "secretsmanager:DeleteSecret",
         "secretsmanager:DescribeSecret",
-        "secretsmanager:GetRandomPassword",
         "secretsmanager:GetSecretValue",
         "secretsmanager:PutSecretValue",
         "secretsmanager:TagResource",
         "secretsmanager:UntagResource",
         "secretsmanager:UpdateSecret"
       ],
-      "Resource": "*"
+      "Resource": [
+        "arn:aws:secretsmanager:<region>:<account-id>:secret:<project-name>/<environment>/*",
+        "arn:aws:secretsmanager:<region>:<account-id>:secret:<project-name>-<environment>-*"
+      ]
+    },
+    {
+      "Sid": "IamServiceLinkedRoles",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "arn:aws:iam::<account-id>:role/aws-service-role/rds.amazonaws.com/*",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": [
+            "rds.amazonaws.com"
+          ]
+        }
+      }
     },
     {
       "Sid": "IamForStackManagedRoles",
       "Effect": "Allow",
       "Action": [
         "iam:AttachRolePolicy",
-        "iam:CreateServiceLinkedRole",
         "iam:CreateRole",
         "iam:DeleteRole",
         "iam:DeleteRolePolicy",
@@ -95,14 +126,7 @@
         "iam:UntagRole",
         "iam:UpdateRole"
       ],
-      "Resource": "*",
-      "Condition": {
-        "StringEqualsIfExists": {
-          "iam:AWSServiceName": [
-            "rds.amazonaws.com"
-          ]
-        }
-      }
+      "Resource": "arn:aws:iam::<account-id>:role/<project-name>-<environment>-*"
     },
     {
       "Sid": "LambdaLogsApiEvents",

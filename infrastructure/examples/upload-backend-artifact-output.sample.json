@@ -5,5 +5,6 @@
   "key": "b1admin/backend/api.zip",
   "sourceFile": "/abs/path/to/api.zip",
   "s3Uri": "s3://my-artifacts-bucket/b1admin/backend/api.zip",
+  "versionId": "3sL4kqtJlcpXroDTDmJ+rmSpXd3dIbrHY+MTRCxf3vjVBH40Nr8X8gdRQBpUMLUo",
   "bootstrapStackName": "example-bootstrap"
 }

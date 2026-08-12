@@ -408,17 +408,20 @@ function main() {
     process.exit(1);
   }
 
-  if (runApiMigrations && skipBackend) {
+  const runApiMigrationsEnabled = runApiMigrations.toLowerCase() === "true";
+  const runBootstrapAdminEnabled = runBootstrapAdmin.toLowerCase() === "true";
+
+  if (runApiMigrationsEnabled && skipBackend) {
     console.error("--run-api-migrations=true requires the backend deploy step. Remove --skip-backend or run yarn run:api-migrations separately afterward.");
     process.exit(1);
   }
 
-  if (runBootstrapAdmin && skipBackend) {
+  if (runBootstrapAdminEnabled && skipBackend) {
     console.error("--run-bootstrap-admin=true requires the backend deploy step. Remove --skip-backend or run yarn run:bootstrap-admin separately afterward.");
     process.exit(1);
   }
 
-  if (runApiMigrations) {
+  if (runApiMigrationsEnabled) {
     validateApiMigrationArgs(apiMigrationAction || "up", apiMigrationModule || "all");
     validateApiMigrationRunner(apiMigrationRunner);
   }
@@ -428,7 +431,7 @@ function main() {
     process.exit(1);
   }
 
-  if (runApiMigrations) {
+  if (runApiMigrationsEnabled) {
     const resolvedApiMigrationRepoPath = path.resolve(rootDir, apiMigrationApiRepoPath || apiRepoPath || "../Api");
     if (!fs.existsSync(resolvedApiMigrationRepoPath)) {
       fail(`API migration repo not found: ${resolvedApiMigrationRepoPath}`);
