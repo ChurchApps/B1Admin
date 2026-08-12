@@ -31,7 +31,7 @@ Read these sections in order the first time through:
 14. [Production Notes](#production-notes) - important production behavior and approval suggestions.
 15. [What Costs Money?](#what-costs-money) - shows which parts may create AWS charges.
 16. [Final Report](#final-report) - writes the deployment sign-off report.
-17. [When You Are Done](#when-you-are-done) - final completion checklist.
+17. [When You Are Done](#when-you-are-done) - final completion checklist. After that, [Operations After Launch](./operations.md) covers updates, backups, secrets, and cost control.
 18. [Update An Existing Install](#update-an-existing-install) - deploys newer source code into an already installed AWS stack.
 19. [Clean Reset](#clean-reset) - removes AWS resources when testing or starting over.
 20. [If Something Fails](#if-something-fails) - troubleshooting entry point.
@@ -573,6 +573,8 @@ Plan for roughly **$80-$90 per month** for a production-only install with the de
 | CloudFront, S3, Lambda, API Gateway, Secrets Manager, logs | ~$3-$10 combined |
 | Route53 hosted zone (only with a custom domain) | ~$0.50 |
 
+The NAT gateway is what lets the backend reach services outside AWS: payment gateways such as Stripe, Mautic, YouTube, and outgoing email. Only consider setting `CreateNatGateway` to `"false"` if you use none of those; the trade-offs are explained in [Operations After Launch](./operations.md#cost-control).
+
 Also plan for time: expect the first install to take **2 to 4 focused hours**, longer if you are creating AWS and GitHub accounts from scratch or waiting on someone else to approve access.
 
 After the install, consider creating an AWS billing alarm (AWS console > Billing > Budgets) so an unexpected charge emails you instead of surprising you at the end of the month.
@@ -689,7 +691,7 @@ The update command will:
 
 The update command still pauses before approval steps. Read each prompt before answering.
 
-If your team deploys a specific branch, tag, or commit instead of latest `main`, switch to that approved version before running `installer:update`, or run with `--skip-pull=true`.
+If your team deploys a specific branch, tag, or commit instead of latest `main`, switch to that approved version before running `installer:update`, or run with `--skip-pull=true`. For a stable production install, pin both source repositories to a release tag instead of `main`; see [Operations After Launch](./operations.md#pin-versions-instead-of-main).
 
 Important: `installer:update` is a guided update command, not a zero-downtime guarantee. For a production environment with active users, update optional staging first when available, verify login and key workflows, confirm backups or snapshots exist, review the prod preflight and preview output, and run prod during an approved low-traffic or maintenance window. Database migrations, CloudFormation replacements, API changes, and frontend/backend compatibility changes can affect live users if they are not planned carefully.
 

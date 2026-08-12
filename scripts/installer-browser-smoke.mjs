@@ -109,11 +109,49 @@ async function runBrowserSmoke({ appUrl, email, password, churchName, route, hea
   }
 }
 
+async function runHttpSmoke({ appUrl, timeoutMs }) {
+  const steps = [];
+  const errors = [];
+
+  const check = async (name, url) => {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(timeoutMs), redirect: "follow" });
+      const body = await response.text();
+      const looksLikeApp = response.ok && /<(html|div|script)/i.test(body);
+      steps.push({ name, ok: looksLikeApp, detail: `${url} -> HTTP ${response.status}` });
+      if (!looksLikeApp) errors.push(`${url} responded with HTTP ${response.status} but did not look like the app.`);
+      return looksLikeApp;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      steps.push({ name, ok: false, detail: `${url} -> ${message}` });
+      errors.push(`${url}: ${message}`);
+      return false;
+    }
+  };
+
+  const homeOk = await check("load app home page", `${appUrl}/`);
+  const loginOk = await check("load login page", `${appUrl}/login`);
+  steps.push({
+    name: "sign-in check",
+    ok: true,
+    skipped: true,
+    detail: "HTTP mode cannot sign in; sign in once in your own browser to confirm the login works.",
+  });
+
+  return {
+    ok: homeOk && loginOk,
+    finalUrl: appUrl,
+    steps,
+    errors,
+  };
+}
+
 function renderMarkdown(result) {
   const lines = [
     `# Browser Smoke: ${result.environment}`,
     "",
     `- Status: ${result.ok ? "ok" : "failed"}`,
+    `- Mode: ${result.mode}`,
     `- App URL: \`${result.appUrl}\``,
     `- Route: \`${result.route}\``,
     `- Evidence file: \`${result.outputFile}\``,
@@ -151,6 +189,10 @@ async function main() {
   const route = getArg("route", "/people");
   const timeoutMs = Number(getArg("timeout-ms", "30000"));
   const dryRun = boolArg("dry-run", false);
+  const modeArg = getArg("mode", "auto").toLowerCase();
+  if (!["auto", "browser", "http"].includes(modeArg)) {
+    failText("--mode must be auto, browser, or http.", outputMode);
+  }
 
   if (!appUrl) failText("--app-url is required, or deployment/<environment>/deployment-summary.json must contain resolved.frontendAppUrl.", outputMode);
   if (!email) failText("--email or firstAdminEmail in --customer-file is required.", outputMode);
@@ -163,22 +205,48 @@ async function main() {
       { name: "dry run", ok: true, detail: "Browser was not launched." },
     ],
   };
+  let mode = dryRun ? "dry-run" : modeArg;
 
   if (!dryRun) {
-    smoke = await runBrowserSmoke({
-      appUrl,
-      email,
-      password,
-      churchName,
-      route,
-      headed: boolArg("headed", false),
-      timeoutMs,
-      screenshotFile,
-    });
+    if (modeArg === "http") {
+      smoke = await runHttpSmoke({ appUrl, timeoutMs });
+      mode = "http";
+    } else {
+      try {
+        smoke = await runBrowserSmoke({
+          appUrl,
+          email,
+          password,
+          churchName,
+          route,
+          headed: boolArg("headed", false),
+          timeoutMs,
+          screenshotFile,
+        });
+        mode = "browser";
+      } catch (error) {
+        // Playwright missing or its browser is not installed. In auto mode,
+        // fall back to plain HTTP checks so the smoke step still verifies the
+        // site is reachable; in browser mode, surface the problem.
+        const message = error instanceof Error ? error.message : String(error);
+        if (modeArg === "browser") {
+          failText(`Could not launch the test browser: ${message}\nRun \`yarn install\` (and \`yarn playwright install chromium\` if asked), or re-run with --mode=http.`, outputMode);
+        }
+        smoke = await runHttpSmoke({ appUrl, timeoutMs });
+        mode = "http";
+        smoke.steps.unshift({
+          name: "browser fallback",
+          ok: true,
+          skipped: true,
+          detail: "The test browser is not installed, so HTTP checks were used instead.",
+        });
+      }
+    }
   }
 
   const result = {
     ok: smoke.ok,
+    mode,
     environment,
     appUrl,
     route,

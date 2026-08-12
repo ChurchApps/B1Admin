@@ -313,6 +313,9 @@ Rules:
 Conditions:
   UseNatGateway: !Equals [!Ref CreateNatGateway, "true"]
   CreatePrivateAwsEndpoints: !Equals [!Ref CreateNatGateway, "false"]
+  CreatePrivateExecuteApiEndpoint: !And
+    - !Condition CreatePrivateAwsEndpoints
+    - !Condition CreateWebSocketApi
   CreateWebSocketApi: !Equals [!Ref EnableWebSocketApi, "true"]
   CreateScheduledWorkers: !Equals [!Ref EnableScheduledWorkers, "true"]
   RunMigrationResources: !Equals [!Ref RunMigrations, "true"]
@@ -577,6 +580,39 @@ Resources:
       ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
       RouteTableIds:
         - !Ref PrivateRouteTable
+
+  PollyVpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Condition: CreatePrivateAwsEndpoints
+    Properties:
+      VpcId: !Ref BackendVpc
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.polly"
+      SecurityGroupIds:
+        - !Ref VpcEndpointSecurityGroup
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+
+  # WebSocket pushes call the API Gateway management API (execute-api) from
+  # inside the VPC; without NAT this endpoint is the only route to it.
+  # Note: SES has no usable API interface endpoint, so outbound email (and any
+  # third-party integration such as payment gateways) still requires the NAT
+  # gateway. See infrastructure/environments/operations.md.
+  ExecuteApiVpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Condition: CreatePrivateExecuteApiEndpoint
+    Properties:
+      VpcId: !Ref BackendVpc
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.execute-api"
+      SecurityGroupIds:
+        - !Ref VpcEndpointSecurityGroup
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
 
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
