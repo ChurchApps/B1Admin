@@ -129,7 +129,6 @@
     "verify:split-stack": "node scripts/verify-split-stack.mjs",
     "audit:environment-starter": "node scripts/audit-environment-starter.mjs",
     "validate:aws-deploy": "node scripts/validate-aws-deploy.mjs",
-    "smoke:aws-tooling": "node scripts/smoke-aws-tooling.mjs",
     "deploy:backend": "node scripts/deploy-backend.mjs",
     "deploy:frontend": "node scripts/deploy-frontend.mjs",
     "deploy:aws": "node scripts/deploy-aws.mjs",

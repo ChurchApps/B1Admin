@@ -44,4 +44,4 @@ See [What Costs Money?](./environments/start-here.md#what-costs-money) for the m
 
 - Stack names: `b1admin-<environment>-bootstrap|backend|frontend`.
 - All scripts accept `--output=json|markdown|text`, read defaults from `customer-values.json` via `--customer-file`, and are plain Node (no dependencies beyond the AWS/GitHub CLIs).
-- The smoke suite (`yarn smoke:aws-tooling`) exercises every script against stubbed `aws`/`gh` binaries. Run it with invalid AWS credentials in the environment so the handful of live-CLI scenarios cannot touch a real account.
+- A smoke suite exercising every script against stubbed `aws`/`gh` binaries ships separately on the `codex/aws-tooling-smoke-harness` branch (follow-up PR), together with the example output fixtures it checks against.

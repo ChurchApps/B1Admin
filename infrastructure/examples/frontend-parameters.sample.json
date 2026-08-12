@@ -1,9 +1,0 @@
-{
-  "ProjectName": "b1admin",
-  "EnvironmentName": "prod",
-  "BucketName": "",
-  "AlternateDomainName": "admin.example.com",
-  "AcmCertificateArn": "arn:aws:acm:us-east-1:123456789012:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-  "HostedZoneId": "Z1234567890ABC",
-  "PriceClass": "PriceClass_100"
-}
