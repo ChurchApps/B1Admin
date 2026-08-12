@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import { Palette as PaletteIcon, TextFields as TextFieldsIcon, Code as CodeIcon, Image as ImageIcon, SmartButton as SmartButtonIcon, SpaceBar as SpaceBarIcon, FormatSize as FormatSizeIcon, Menu as MenuIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -6,7 +6,7 @@ import type { GlobalStyleInterface, BlockInterface, GenericSettingInterface, Sit
 import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit, SpacingScaleEdit, NavStyleEdit } from "./";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SettingsConfigList, type ConfigSection } from "../../settings/components/SettingsConfigList";
-import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
+import { clearSiteCache } from "../siteCache";
 
 type Props = {
   siteId: string;
@@ -24,12 +24,7 @@ export function StylesManager(props: Props) {
   const [churchSettings, setChurchSettings] = useState<any>(null);
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
 
-  const clearSiteCache = () => {
-    const subDomain = selectedSite?.subDomain || UserHelper.currentUserChurch?.church?.subDomain;
-    if (!subDomain) return;
-    const b1Url = EnvironmentHelper.B1Url.replace("{subdomain}", subDomain);
-    fetch(b1Url + "/api/revalidate/" + subDomain, { method: "POST" }).catch(() => { /* best-effort */ });
-  };
+  const clearCache = () => clearSiteCache(selectedSite?.subDomain);
 
   // Fork inherited rows to avoid overwriting primary.
   const prepareForSave = (gs: GlobalStyleInterface): GlobalStyleInterface => {
@@ -68,7 +63,7 @@ export function StylesManager(props: Props) {
     if (paletteJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.palette = paletteJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearCache(); });
     }
     setSection("");
   };
@@ -77,13 +72,13 @@ export function StylesManager(props: Props) {
     if (fontsJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.fonts = fontsJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearCache(); });
     }
     setSection("");
   };
 
   const handleUpdate = (gs: GlobalStyleInterface | null) => {
-    if (gs) ApiHelper.post("/globalStyles", [prepareForSave(gs)], "ContentApi").then(() => { loadData(); clearSiteCache(); });
+    if (gs) ApiHelper.post("/globalStyles", [prepareForSave(gs)], "ContentApi").then(() => { loadData(); clearCache(); });
     setSection("");
   };
 
@@ -91,7 +86,7 @@ export function StylesManager(props: Props) {
     if (typographyJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.typography = typographyJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearCache(); });
     }
     setSection("");
   };
@@ -100,7 +95,7 @@ export function StylesManager(props: Props) {
     if (spacingJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.spacing = spacingJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearCache(); });
     }
     setSection("");
   };
@@ -109,7 +104,7 @@ export function StylesManager(props: Props) {
     if (navStylesJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.navStyles = navStylesJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearCache(); });
     }
     setSection("");
   };

@@ -97,8 +97,6 @@ typings/
 #yarn.lock
 
 # dotenv environment variables file
-.env
-.env.*
 !.env.sample
 !.env.example
 
@@ -133,3 +131,4 @@ dist
 # TernJS port file
 .tern-port
 .auth-state.json
+config.bat

@@ -1,3 +1,5 @@
+import { clearSiteCache } from "../siteCache";
+
 export type SaveStatus = "saved" | "saving" | "error";
 
 let inflight = 0;
@@ -17,6 +19,7 @@ export function trackSave<T>(promise: Promise<T>): Promise<T> {
         status = "saved";
         lastSavedAt = Date.now();
         notify();
+        clearSiteCache();
       }
       return result;
     },
