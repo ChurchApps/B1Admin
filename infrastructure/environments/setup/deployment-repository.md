@@ -15,8 +15,10 @@ gh repo create <owner>/b1admin-deploy --private --clone
 If you use the GitHub website, clone it from that same parent folder before continuing:
 
 ```bash
-git clone git@github.com:<owner>/b1admin-deploy.git b1admin-deploy
+git clone https://github.com/<owner>/b1admin-deploy.git b1admin-deploy
 ```
+
+The HTTPS address above works with the same GitHub CLI sign-in you already have. Only use the SSH form (`git@github.com:...`) if you have already set up SSH keys with GitHub.
 
 Check the folder layout before running installer commands:
 

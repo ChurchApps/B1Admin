@@ -176,11 +176,11 @@ You need a local computer where you can run terminal commands.
 
 Have:
 
-- Node.js installed
-- yarn installed
-- Git installed
-- GitHub CLI installed and signed in; the guided runner uses it for GitHub repository, secret, workflow, and evidence steps
-- AWS CLI installed and signed in to the target AWS account; the guided runner uses it for AWS readiness, verification, and reset steps
+- Node.js 20 or newer installed ([download](https://nodejs.org/en/download))
+- Yarn enabled through Corepack; Node.js 20+ ships with Corepack, so run `corepack enable` once and this repository's pinned Yarn version is used automatically. Do not install Yarn with `npm install -g yarn`; that installs an old version this repository rejects.
+- Git installed ([download](https://git-scm.com/downloads))
+- GitHub CLI installed and signed in ([download](https://cli.github.com)); the guided runner uses it for GitHub repository, secret, workflow, and evidence steps
+- AWS CLI installed and signed in to the target AWS account ([download](https://aws.amazon.com/cli/)); the guided runner uses it for AWS readiness, verification, and reset steps
 - a local copy of the B1Admin source repository
 
 Quick checks:
@@ -188,12 +188,14 @@ Quick checks:
 ```bash
 node --version
 npm --version
+corepack enable
+yarn --version
 git --version
 gh --version
 aws --version
 ```
 
-Each command should print a version number instead of saying the command was not found.
+Each command should print a version number instead of saying the command was not found. If `yarn --version` fails after `corepack enable`, open a new terminal and try again.
 
 After the repositories are cloned, run this from the `B1Admin` source repository folder:
 
@@ -201,7 +203,7 @@ After the repositories are cloned, run this from the `B1Admin` source repository
 yarn installer:doctor -- --output=markdown
 ```
 
-The doctor report is allowed to show later-step items as not ready before the install starts. At this point, focus on whether `node`, `npm`, `git`, `gh`, `aws`, and the folder paths look correct.
+The doctor report is allowed to show later-step items as not ready before the install starts. At this point, focus on whether `node`, `npm`, `yarn`, `git`, `gh`, `aws`, and the folder paths look correct.
 
 You do not need to run `yarn install` before the first installer command. The installer will ask for `yarn install` later when it reaches local first-admin bootstrap and browser smoke.
 
@@ -422,6 +424,8 @@ The installer will ask you to run `yarn install` when the flow reaches local fir
 
 ## Who Does What
 
+In a small church or organization, all three roles below are usually the same person: you. That is fine. Read each role as "a hat I put on for that step" rather than a separate person you need to find. When a step says to send something to the AWS administrator or GitHub administrator and that is you, just do that step yourself with the same signed-in accounts you have been using.
+
 The deployment operator runs the installer commands, answers the customer setup questions, commits safe files to the user's private repository, dispatches workflows, and checks the final report.
 
 The AWS administrator creates or approves the IAM roles from the generated handoff document. They do not need to edit B1Admin code.
@@ -571,6 +575,19 @@ If prod does not use a custom frontend domain yet, the first deploy creates a ge
 For production, consider adding required reviewers to the `aws-prod` GitHub Environment before the first prod deploy.
 
 ## What Costs Money?
+
+Plan for roughly **$80-$90 per month** for a production-only install with the default settings, and roughly double that if you also run staging. These are estimates at low, church-scale traffic in `us-east-1` as of mid-2026; check current AWS pricing and your first month's bill. The largest pieces:
+
+| Resource | Estimated monthly cost |
+| --- | --- |
+| Aurora Serverless v2 database (0.5 capacity-unit minimum, always on) | ~$44 |
+| NAT gateway (default setting `CreateNatGateway: "true"`) | ~$33 plus data charges |
+| CloudFront, S3, Lambda, API Gateway, Secrets Manager, logs | ~$3-$10 combined |
+| Route53 hosted zone (only with a custom domain) | ~$0.50 |
+
+Also plan for time: expect the first install to take **2 to 4 focused hours**, longer if you are creating AWS and GitHub accounts from scratch or waiting on someone else to approve access.
+
+After the install, consider creating an AWS billing alarm (AWS console > Billing > Budgets) so an unexpected charge emails you instead of surprising you at the end of the month.
 
 AWS charges depend on your account, region, usage, and current AWS pricing. In general:
 

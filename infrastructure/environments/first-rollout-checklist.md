@@ -2,6 +2,13 @@
 
 Use this after the first real `staging` or `prod` AWS rollout.
 
+The commands below use two shell variables. Set them first (adjust if your private repository uses a different name or location):
+
+```bash
+export DEPLOY_REPO=<owner>/b1admin-deploy
+export DEPLOY_ENV_DIR=../b1admin-deploy/environments
+```
+
 ## Before Deploy
 
 1. Confirm all `replace-me` placeholders and starter-only default values such as `example.com`, `support@example.com`, `mailto:support@example.com`, and `555-555-5555` are gone from the target environment folder.

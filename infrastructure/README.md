@@ -1,5 +1,7 @@
 # AWS Deployment
 
+> **Setting up B1Admin for your church or organization?** You do not need this page. Follow the guided installer instead: [Start Here](./environments/start-here.md). This page is the technical reference for operators who want to understand or customize the templates and scripts the installer uses.
+
 This repo now includes AWS deployment building blocks for both the B1Admin frontend and a backend foundation:
 
 - Bootstrap stack: [`cloudformation/bootstrap.yaml`](./cloudformation/bootstrap.yaml)

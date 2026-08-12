@@ -2,7 +2,7 @@
 
 You need access to the AWS account where B1Admin will run. Staging is optional. If you use staging, keep staging and prod separated by their environment names and IAM roles.
 
-For the recommended GitHub Actions deployment, an AWS administrator must create these for each environment you plan to deploy:
+For the recommended GitHub Actions deployment, an AWS administrator must create these for each environment you plan to deploy. If nobody else manages your AWS account, the AWS administrator is you: sign in with your normal AWS CLI login (it needs permission to create IAM roles, which the account owner has) and run the printed commands yourself.
 
 - a GitHub OIDC provider for `token.actions.githubusercontent.com`, if the account does not already have one
 - a GitHub deploy role for each environment

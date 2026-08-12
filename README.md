@@ -57,9 +57,10 @@ If you would like to contribute in any way, head over to our [Slack Channel](htt
 If you'd like to set up the project locally, see our [development guide](https://churchapps.org/dev). The short version is:
 
 1. Copy `dotenv.sample.txt` to `.env` and updated it to point to the appropriate API urls.
-2. Install the dependencies with: `npm install`
-3. Run `npm run postinstall` to get language files
-4. run `npm start` to launch the project.
+2. Enable Yarn with `corepack enable` (this project uses Yarn Berry; plain `npm install` is rejected).
+3. Install the dependencies with: `yarn install`
+4. Run `yarn postinstall` to get language files
+5. run `yarn start` to launch the project.
 
 ### ⚙️ Payment Gateway Setup
 

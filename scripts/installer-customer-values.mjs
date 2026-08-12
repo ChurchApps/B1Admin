@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -101,6 +102,13 @@ async function promptYesNo(rl, label, defaultValue = false) {
   return promptYesNo(rl, label, defaultValue);
 }
 
+function generateTemporaryPassword() {
+  // Unambiguous alphabet: no 0/O, 1/l/I, or symbols that break copy-paste.
+  const alphabet = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  const segment = (length) => Array.from({ length }, () => alphabet[crypto.randomInt(alphabet.length)]).join("");
+  return `${segment(4)}-${segment(4)}-${segment(4)}`;
+}
+
 async function collectInteractive(values) {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -119,7 +127,12 @@ async function collectInteractive(values) {
     values.supportEmail = await promptText(rl, "Support email", values.supportEmail || (values.rootDomain ? `support@${values.rootDomain}` : ""));
     values.supportPhone = await promptText(rl, "Support phone", values.supportPhone);
     values.firstAdminEmail = await promptText(rl, "First admin email", values.firstAdminEmail);
-    values.firstAdminPassword = await promptText(rl, "Temporary first admin password", values.firstAdminPassword);
+    values.firstAdminPassword = await promptText(rl, "Temporary first admin password (press Enter to generate one)", values.firstAdminPassword);
+    if (!values.firstAdminPassword) {
+      values.firstAdminPassword = generateTemporaryPassword();
+      console.log(`Generated temporary first admin password: ${values.firstAdminPassword}`);
+      console.log("Write it down. You will use it for the first sign-in and then change it.");
+    }
     values.firstChurchName = await promptText(rl, "First church name", values.firstChurchName);
     values.b1adminRepo = await promptText(rl, "B1Admin source repository", values.b1adminRepo);
     values.b1adminRef = await promptText(rl, "B1Admin source branch or tag", values.b1adminRef);

@@ -26,15 +26,6 @@ function checkFile(filePath, label) {
   };
 }
 
-function envValue(name) {
-  const value = process.env[name] || "";
-  return {
-    name,
-    ok: value.trim() !== "",
-    value: value.trim() !== "" ? value : "<not set>",
-  };
-}
-
 function buildEnvironmentChecks(environment, environmentDir) {
   return {
     environment,
@@ -73,7 +64,7 @@ function renderMarkdown(result) {
     lines.push(`- ${tool.ok ? "[x]" : "[ ]"} \`${tool.name}\``);
   });
 
-  lines.push("", "## Shell Values", "");
+  lines.push("", "## Setup Values", "");
   result.environmentVariables.forEach((entry) => {
     lines.push(`- ${entry.ok ? "[x]" : "[ ]"} \`${entry.name}\`: \`${entry.value}\``);
   });
@@ -111,16 +102,26 @@ function main() {
   const stagingDir = resolveEnvironmentDir("staging", getArg("staging-dir", path.join(deployEnvDir, "staging")));
   const prodDir = resolveEnvironmentDir("prod", getArg("prod-dir", path.join(deployEnvDir, "prod")));
 
-  const tools = ["node", "npm", "git", "gh", "aws"].map((name) => ({
+  const tools = ["node", "npm", "yarn", "git", "gh", "aws"].map((name) => ({
     name,
     ok: commandExists(name),
   }));
 
+  const awsRegionValue = getArg("region", process.env.AWS_REGION || "");
+  const awsAccountIdValue = getArg("account-id", process.env.AWS_ACCOUNT_ID || "");
   const environmentVariables = [
-    envValue("AWS_REGION"),
-    envValue("AWS_ACCOUNT_ID"),
     {
-      name: "DEPLOY_REPO",
+      name: "AWS region",
+      ok: awsRegionValue.trim() !== "",
+      value: awsRegionValue.trim() !== "" ? awsRegionValue : "<not set>",
+    },
+    {
+      name: "AWS account ID",
+      ok: awsAccountIdValue.trim() !== "",
+      value: awsAccountIdValue.trim() !== "" ? awsAccountIdValue : "<not set>",
+    },
+    {
+      name: "Private deploy repo",
       ok: deployRepo.trim() !== "",
       value: deployRepo.trim() !== "" ? deployRepo : "<not set>",
     },
@@ -164,13 +165,16 @@ function main() {
     nextSteps.push("Run `yarn installer:init -- --deploy-repo-dir=../b1admin-deploy --output=markdown`.");
   }
   if (!deployRepo) {
-    nextSteps.push("Set `DEPLOY_REPO=<owner>/<private-deploy-repo>`.");
+    nextSteps.push("Run `yarn installer:customer-values` and answer the private repository question.");
   }
-  if (!process.env.AWS_ACCOUNT_ID) {
-    nextSteps.push("Set `AWS_ACCOUNT_ID=<aws-account-id>`.");
+  if (!awsAccountIdValue.trim()) {
+    nextSteps.push("Run `yarn installer:customer-values` and answer the AWS account ID question.");
   }
-  if (!process.env.AWS_REGION) {
-    nextSteps.push("Set `AWS_REGION=us-east-1` unless your install intentionally uses another region.");
+  if (!awsRegionValue.trim()) {
+    nextSteps.push("Run `yarn installer:customer-values` and answer the AWS region question. `us-east-1` is the normal choice.");
+  }
+  if (!tools.find((tool) => tool.name === "yarn")?.ok) {
+    nextSteps.push("Enable Yarn by running `corepack enable` (Node.js 20+ includes Corepack), then open a new terminal.");
   }
   if (!tools.find((tool) => tool.name === "gh")?.ok) {
     nextSteps.push("Install GitHub CLI or use the GitHub web UI for environment/secrets/workflow steps.");
