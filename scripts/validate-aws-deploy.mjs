@@ -406,7 +406,7 @@ function main() {
   const standaloneMigrationModuleArg = apiMigrationsMode ? getArg("module") : "";
   const apiMigrationAction = getArg("api-migration-action", standaloneMigrationActionArg || "up");
   const apiMigrationModule = getArg("api-migration-module", standaloneMigrationModuleArg || "all");
-  const apiMigrationRunner = getArg("api-migration-runner", "direct");
+  const apiMigrationRunner = getArg("api-migration-runner", "data-api");
   const apiMigrationApiRepoPathArg = getArg("api-migration-api-repo-path", apiRepoPathArg || "../Api");
   const apiMigrationApiRepoPath = path.resolve(rootDir, apiMigrationApiRepoPathArg);
   const standaloneMigrationDbSecretArn = apiMigrationsMode ? getArg("db-secret-arn") : "";
@@ -622,8 +622,10 @@ function main() {
     errors.push(`Invalid api-migration-module "${apiMigrationModule}". Use all, membership, attendance, content, giving, messaging, doing, or reporting.`);
   }
 
-  if (migrationValidationRequested && !["direct", "data-api"].includes(apiMigrationRunner)) {
-    errors.push(`Invalid api-migration-runner "${apiMigrationRunner}". Use direct or data-api.`);
+  if (migrationValidationRequested && apiMigrationRunner === "direct") {
+    errors.push('The "direct" migration runner has been removed; migrations run through the RDS Data API. Use --api-migration-runner=data-api (the default).');
+  } else if (migrationValidationRequested && !["data-api"].includes(apiMigrationRunner)) {
+    errors.push(`Invalid api-migration-runner "${apiMigrationRunner}". Use data-api.`);
   }
 
   if (migrationValidationRequested && !fs.existsSync(apiMigrationApiRepoPath)) {
@@ -645,25 +647,11 @@ function main() {
       errors.push(`API migration repo package.json is not readable: ${path.join(apiMigrationApiRepoPath, "package.json")}`);
       apiMigrationRepoFallbackSuggested = true;
     }
-    if (apiMigrationRunner === "direct") {
-      if (!fs.existsSync(path.join(apiMigrationApiRepoPath, "tools", "migrate.ts"))) {
-        errors.push(`API migration repo is missing tools/migrate.ts: ${path.join(apiMigrationApiRepoPath, "tools", "migrate.ts")}`);
-      } else if (!canReadPath(path.join(apiMigrationApiRepoPath, "tools", "migrate.ts"))) {
-        errors.push(`API migration repo migrate tool is not readable: ${path.join(apiMigrationApiRepoPath, "tools", "migrate.ts")}`);
-      }
-      if (!fs.existsSync(path.join(apiMigrationApiRepoPath, "node_modules"))) {
-        errors.push(`API migration repo dependencies are not installed: ${path.join(apiMigrationApiRepoPath, "node_modules")}`);
-      } else if (!canReadPath(path.join(apiMigrationApiRepoPath, "node_modules"))) {
-        errors.push(`API migration repo dependencies are not readable: ${path.join(apiMigrationApiRepoPath, "node_modules")}`);
-        apiMigrationRepoFallbackSuggested = true;
-      }
-    } else {
-      const localTypescriptPath = path.join(rootDir, "node_modules", "typescript", "package.json");
-      if (!fs.existsSync(localTypescriptPath)) {
-        errors.push(`B1Admin is missing typescript for Data API migrations: ${localTypescriptPath}`);
-      } else if (!canReadPath(localTypescriptPath)) {
-        errors.push(`B1Admin typescript package is not readable: ${localTypescriptPath}`);
-      }
+    const localTypescriptPath = path.join(rootDir, "node_modules", "typescript", "package.json");
+    if (!fs.existsSync(localTypescriptPath)) {
+      errors.push(`B1Admin is missing typescript for Data API migrations: ${localTypescriptPath}`);
+    } else if (!canReadPath(localTypescriptPath)) {
+      errors.push(`B1Admin typescript package is not readable: ${localTypescriptPath}`);
     }
     if (apiRepoMigrationModules.length > 0) {
       info.push(`API repo migration modules: ${apiRepoMigrationModules.join(", ")}`);
@@ -680,7 +668,7 @@ function main() {
         if (apiMigrationDryRun) {
           warnings.push(`The current Api repo has no tools/migrations/${apiMigrationModule} directory. A ${apiMigrationRunner} migration run for ${apiMigrationModule} will currently skip without applying anything.`);
         } else {
-          errors.push(`The current Api repo has no tools/migrations/${apiMigrationModule} directory. ${apiMigrationRunner === "direct" ? "Direct" : "Data API"} ${apiMigrationModule} migrations are not currently runnable outside dry-run mode.`);
+          errors.push(`The current Api repo has no tools/migrations/${apiMigrationModule} directory. Data API ${apiMigrationModule} migrations are not currently runnable outside dry-run mode.`);
         }
       }
     }

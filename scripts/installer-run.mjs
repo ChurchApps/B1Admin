@@ -186,9 +186,16 @@ async function main() {
       }
 
       history.push({ step, action: "run", command: nextCommand });
-      const result = spawnSync(invocation.command, invocation.args, {
+      // On Windows, yarn/npm are .cmd shims that spawnSync cannot execute
+      // without a shell; quote args so paths with spaces survive the shell.
+      const isWindows = process.platform === "win32";
+      const spawnArgs = isWindows
+        ? invocation.args.map((arg) => (/\s/.test(arg) ? `"${arg}"` : arg))
+        : invocation.args;
+      const result = spawnSync(invocation.command, spawnArgs, {
         cwd: rootDir,
         encoding: "utf8",
+        shell: isWindows,
         stdio: outputMode === "json" ? "pipe" : ["inherit", "inherit", "pipe"],
         maxBuffer: 20 * 1024 * 1024,
       });

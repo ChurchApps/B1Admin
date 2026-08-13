@@ -47,7 +47,7 @@ The application secrets (JWT signing key, encryption key, third-party API keys) 
 
 - Create a billing alert once: AWS console > Billing and Cost Management > Budgets > Create budget. A monthly cost budget with an email alert at your expected amount (see [What Costs Money?](./start-here.md#what-costs-money)) catches surprises.
 - After any `reset:staging` / `reset:prod`, Aurora leaves a final snapshot by design. Snapshots cost money monthly. When you are sure you do not need one: RDS > Snapshots > select it > Actions > Delete snapshot.
-- The NAT gateway (about $33/month) is required for outbound connections to non-AWS services: payment gateways (Stripe/PayPal), Mautic, YouTube lookups, and outgoing email through SES's API. Only set `CreateNatGateway` to `"false"` if you use none of those; AWS-internal features (database, secrets, file storage, text-to-speech, WebSocket pushes) keep working through private endpoints, which have their own smaller cost (roughly $8/month per endpoint).
+- The NAT gateway (about $33/month) is required for outbound connections the backend makes to anything outside the VPC: payment gateways (Stripe/PayPal), Mautic, YouTube lookups, outgoing email through SES's API, and real-time WebSocket pushes (chat/notifications). Only set `CreateNatGateway` to `"false"` if you use none of those; the core features (database, secrets, file storage, text-to-speech) keep working through private endpoints, which have their own smaller cost (roughly $8/month per endpoint).
 
 ## Security Posture Notes
 

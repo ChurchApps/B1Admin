@@ -179,8 +179,11 @@ function main() {
   const appConfigSecretArn = getArg("app-config-secret-arn");
   const includeEmpty = parseBoolean(getArg("include-empty", "false"), false);
   const overwrite = parseBoolean(getArg("overwrite", "true"), true);
-  const dryRun = parseBoolean(getArg("dry-run", "false"), false);
   const outputMode = getArg("output", "text");
+  // JSON output has historically been a side-effect-free preview; keep that
+  // contract by defaulting json mode to dry-run. Pass --dry-run=false
+  // explicitly to sync while emitting JSON.
+  const dryRun = parseBoolean(getArg("dry-run", outputMode === "json" ? "true" : "false"), outputMode === "json");
 
   requireValue("stack-name", stackName);
   requireValue("environment", environment);

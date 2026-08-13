@@ -35,6 +35,10 @@ Parameters:
   LambdaCodeS3Key:
     Type: String
     Description: S3 key for the packaged backend Lambda zip.
+  LambdaCodeS3ObjectVersion:
+    Type: String
+    Default: ""
+    Description: Optional S3 object version of the backend Lambda zip. Pinning the version makes CloudFormation update the functions when a new zip is uploaded under the same key.
   LambdaHandler:
     Type: String
     Default: lambda.web
@@ -130,6 +134,10 @@ Parameters:
     Type: String
     Default: ""
     Description: Optional S3 key for the migration Lambda package. Falls back to LambdaCodeS3Key when omitted.
+  MigrationCodeS3ObjectVersion:
+    Type: String
+    Default: ""
+    Description: Optional S3 object version of the migration Lambda package. Only used when MigrationCodeS3Key is set; otherwise the migration function follows LambdaCodeS3ObjectVersion.
   MigrationHandler:
     Type: String
     Default: ""
@@ -313,9 +321,6 @@ Rules:
 Conditions:
   UseNatGateway: !Equals [!Ref CreateNatGateway, "true"]
   CreatePrivateAwsEndpoints: !Equals [!Ref CreateNatGateway, "false"]
-  CreatePrivateExecuteApiEndpoint: !And
-    - !Condition CreatePrivateAwsEndpoints
-    - !Condition CreateWebSocketApi
   CreateWebSocketApi: !Equals [!Ref EnableWebSocketApi, "true"]
   CreateScheduledWorkers: !Equals [!Ref EnableScheduledWorkers, "true"]
   RunMigrationResources: !Equals [!Ref RunMigrations, "true"]
@@ -346,6 +351,8 @@ Conditions:
   HasObservabilityLayerArn: !Not [!Equals [!Ref ObservabilityLayerArn, ""]]
   HasMigrationCodeS3Bucket: !Not [!Equals [!Ref MigrationCodeS3Bucket, ""]]
   HasMigrationCodeS3Key: !Not [!Equals [!Ref MigrationCodeS3Key, ""]]
+  HasLambdaCodeS3ObjectVersion: !Not [!Equals [!Ref LambdaCodeS3ObjectVersion, ""]]
+  HasMigrationCodeS3ObjectVersion: !Not [!Equals [!Ref MigrationCodeS3ObjectVersion, ""]]
   HasMigrationRuntime: !Not [!Equals [!Ref MigrationRuntime, ""]]
   HasLambdaNodeOptions: !Not [!Equals [!Ref LambdaNodeOptions, ""]]
   UseS3FileStore: !Equals [!Ref FileStore, "S3"]
@@ -595,24 +602,11 @@ Resources:
         - !Ref PrivateSubnet1
         - !Ref PrivateSubnet2
 
-  # WebSocket pushes call the API Gateway management API (execute-api) from
-  # inside the VPC; without NAT this endpoint is the only route to it.
-  # Note: SES has no usable API interface endpoint, so outbound email (and any
-  # third-party integration such as payment gateways) still requires the NAT
-  # gateway. See infrastructure/environments/operations.md.
-  ExecuteApiVpcEndpoint:
-    Type: AWS::EC2::VPCEndpoint
-    Condition: CreatePrivateExecuteApiEndpoint
-    Properties:
-      VpcId: !Ref BackendVpc
-      VpcEndpointType: Interface
-      PrivateDnsEnabled: true
-      ServiceName: !Sub "com.amazonaws.${AWS::Region}.execute-api"
-      SecurityGroupIds:
-        - !Ref VpcEndpointSecurityGroup
-      SubnetIds:
-        - !Ref PrivateSubnet1
-        - !Ref PrivateSubnet2
+  # No-NAT limitations: API Gateway VPC endpoints only support private REST
+  # APIs, so WebSocket pushes (the @connections management API), the SES API
+  # (outbound email), and any third-party integration such as payment gateways
+  # all still require the NAT gateway. See
+  # infrastructure/environments/operations.md.
 
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
@@ -895,6 +889,7 @@ Resources:
       Code:
         S3Bucket: !Ref LambdaCodeS3Bucket
         S3Key: !Ref LambdaCodeS3Key
+        S3ObjectVersion: !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref LambdaHandler
       Runtime: !Ref LambdaRuntime
       Architectures:
@@ -1108,6 +1103,10 @@ Resources:
       Code:
         S3Bucket: !If [HasMigrationCodeS3Bucket, !Ref MigrationCodeS3Bucket, !Ref LambdaCodeS3Bucket]
         S3Key: !If [HasMigrationCodeS3Key, !Ref MigrationCodeS3Key, !Ref LambdaCodeS3Key]
+        S3ObjectVersion: !If
+          - HasMigrationCodeS3Key
+          - !If [HasMigrationCodeS3ObjectVersion, !Ref MigrationCodeS3ObjectVersion, !Ref "AWS::NoValue"]
+          - !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref MigrationHandler
       Runtime: !If [HasMigrationRuntime, !Ref MigrationRuntime, !Ref LambdaRuntime]
       Architectures:
@@ -1313,6 +1312,7 @@ Resources:
       Code:
         S3Bucket: !Ref LambdaCodeS3Bucket
         S3Key: !Ref LambdaCodeS3Key
+        S3ObjectVersion: !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref SocketLambdaHandler
       Runtime: !Ref LambdaRuntime
       Architectures:
@@ -1452,6 +1452,7 @@ Resources:
       Code:
         S3Bucket: !Ref LambdaCodeS3Bucket
         S3Key: !Ref LambdaCodeS3Key
+        S3ObjectVersion: !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref Timer15MinLambdaHandler
       Runtime: !Ref LambdaRuntime
       Architectures:
@@ -1524,6 +1525,7 @@ Resources:
       Code:
         S3Bucket: !Ref LambdaCodeS3Bucket
         S3Key: !Ref LambdaCodeS3Key
+        S3ObjectVersion: !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref TimerMidnightLambdaHandler
       Runtime: !Ref LambdaRuntime
       Architectures:
@@ -1601,6 +1603,7 @@ Resources:
       Code:
         S3Bucket: !Ref LambdaCodeS3Bucket
         S3Key: !Ref LambdaCodeS3Key
+        S3ObjectVersion: !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref TimerScheduledTasksLambdaHandler
       Runtime: !Ref LambdaRuntime
       Architectures:
@@ -1678,6 +1681,7 @@ Resources:
       Code:
         S3Bucket: !Ref LambdaCodeS3Bucket
         S3Key: !Ref LambdaCodeS3Key
+        S3ObjectVersion: !If [HasLambdaCodeS3ObjectVersion, !Ref LambdaCodeS3ObjectVersion, !Ref "AWS::NoValue"]
       Handler: !Ref TimerWebhooksLambdaHandler
       Runtime: !Ref LambdaRuntime
       Architectures:

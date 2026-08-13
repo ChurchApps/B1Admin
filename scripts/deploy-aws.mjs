@@ -26,7 +26,11 @@ function hasFlag(name) {
 }
 
 function getBooleanArgString(name, fallback = "") {
-  return hasFlag(name) ? "true" : getArg(name, fallback);
+  // Check for an explicit value first (--name=false or --name false) so a
+  // space-separated "false" is honored; only a bare flag means "true".
+  const value = getArg(name, "");
+  if (value !== "") return value;
+  return hasFlag(name) ? "true" : fallback;
 }
 
 function exitForCommandError(error, quiet = false) {

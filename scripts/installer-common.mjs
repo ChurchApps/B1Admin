@@ -5,6 +5,20 @@ import { fileURLToPath } from "node:url";
 
 export const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
+// The only paths the installer ever stages/commits in the private deployment
+// repository. installer-commit stages exactly these; installer-start's
+// "Private repository synced" check watches exactly these, so stray files
+// (e.g. .DS_Store) neither get committed nor wedge the guided runner.
+export const DEPLOY_REPO_SAFE_PATHS = [
+  "README.md",
+  ".gitignore",
+  ".github",
+  "customer-values.sample.json",
+  "environments",
+  "iam",
+  "aws-admin-handoff.md",
+];
+
 let customerValuesCache;
 
 function rawCliArg(name) {

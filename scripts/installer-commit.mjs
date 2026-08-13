@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import {
+  DEPLOY_REPO_SAFE_PATHS,
   boolArg,
   explainFailure,
   failText,
@@ -12,18 +13,18 @@ import {
   rootDir,
 } from "./installer-common.mjs";
 
-// Only these paths are ever staged. Secrets never appear here, and the
-// check-ignore guard below refuses to continue if the .gitignore that keeps
-// them out is missing.
-const SAFE_PATHS = [
-  "README.md",
-  ".gitignore",
-  ".github",
-  "customer-values.sample.json",
-  "environments",
-  "iam",
-  "aws-admin-handoff.md",
-];
+// Only the shared safe-path allowlist is ever staged. Secrets never appear
+// there, the check-ignore guard below refuses to continue if the .gitignore
+// that keeps them out is missing, and a post-staging scan aborts if anything
+// secret-shaped was staged anyway.
+const SAFE_PATHS = DEPLOY_REPO_SAFE_PATHS;
+
+function looksSecret(stagedPath) {
+  if (/(^|\/)customer-values\.json$/.test(stagedPath)) return true;
+  if (!stagedPath.endsWith(".json")) return false;
+  if (stagedPath.endsWith(".template.json") || stagedPath.endsWith(".sample.json")) return false;
+  return /secret/i.test(stagedPath);
+}
 
 const SENSITIVE_GLOBS = [
   "customer-values.json",
@@ -83,6 +84,11 @@ function main() {
   if (!stage.ok) failText(`Could not stage files: ${stage.stderr.trim()}`, outputMode);
 
   const staged = run("git", ["diff", "--cached", "--name-only"], deployRepoDir).stdout.trim();
+  const stagedSecrets = staged.split("\n").filter(Boolean).filter(looksSecret);
+  if (stagedSecrets.length > 0) {
+    run("git", ["reset", "-q", "--", ...stagedSecrets], deployRepoDir);
+    failText(`Refusing to commit: these staged files look like secrets and are not covered by .gitignore: ${stagedSecrets.join(", ")}. Add them to the private repository's .gitignore, then retry.`, outputMode);
+  }
   let committed = false;
   if (staged) {
     const identityOk = run("git", ["config", "user.email"], deployRepoDir).stdout.trim() !== "";

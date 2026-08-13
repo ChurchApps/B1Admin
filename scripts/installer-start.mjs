@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import {
+  DEPLOY_REPO_SAFE_PATHS,
   boolArg,
   getArg,
   printJson,
@@ -13,7 +14,9 @@ import {
 function gitSynced(deployRepoDir) {
   if (!fs.existsSync(path.join(deployRepoDir, ".git"))) return false;
   const runGit = (args) => spawnSync("git", args, { cwd: deployRepoDir, encoding: "utf8", stdio: "pipe" });
-  const status = runGit(["status", "--porcelain"]);
+  // Only watch the paths installer-commit actually stages; stray files such
+  // as .DS_Store must not wedge the runner in a commit loop.
+  const status = runGit(["status", "--porcelain", "--", ...DEPLOY_REPO_SAFE_PATHS]);
   if (status.status !== 0 || status.stdout.trim() !== "") return false;
   const ahead = runGit(["rev-list", "--count", "@{u}..HEAD"]);
   return ahead.status === 0 && ahead.stdout.trim() === "0";
