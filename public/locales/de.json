@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Die einzigartige Webadresse Ihrer Kirche"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Erster Tag der Woche",
       "address1": "Adresszeile 1",
       "address2": "Adresszeile 2",
       "addressLine1Aria": "Adresszeile 1",

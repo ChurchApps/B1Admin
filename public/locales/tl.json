@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Ang natatanging web address ng iyong simbahan"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Unang araw ng linggo",
       "address1": "Address Linya 1",
       "address2": "Address Linya 2",
       "addressLine1Aria": "Address line 1",

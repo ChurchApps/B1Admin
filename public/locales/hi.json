@@ -3162,6 +3162,7 @@
       "subdomainHelper": "आपकी चर्च का अद्वितीय वेब पता"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "सप्ताह का पहला दिन",
       "address1": "पता पंक्ति 1",
       "address2": "पता पंक्ति 2",
       "addressLine1Aria": "पता पंक्ति 1",

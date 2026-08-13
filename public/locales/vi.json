@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web Địa chỉ"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Ngày đầu tiên của tuần",
       "address1": "Địa chỉ Line 1",
       "address2": "Địa chỉ Line 2",
       "addressLine1Aria": "Dòng địa chỉ 1",

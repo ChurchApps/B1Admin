@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
-import { Box, Divider, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Box, Divider, Grid, Stack, TextField, Typography, MenuItem } from "@mui/material";
 
 type AnyRecord = Record<string, any>;
 
@@ -77,6 +77,17 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
           <Grid size={{ xs: 12 }}>
             <TextField fullWidth label={Locale.label("person.country")} id="country" {...register("country")} />
           </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField fullWidth select label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} id="firstDayOfWeek" {...register("firstDayOfWeek", { valueAsNumber: true })} defaultValue={(church as any)?.firstDayOfWeek || 0}>
+              <MenuItem value={0}>Sunday</MenuItem>
+              <MenuItem value={1}>Monday</MenuItem>
+              <MenuItem value={2}>Tuesday</MenuItem>
+              <MenuItem value={3}>Wednesday</MenuItem>
+              <MenuItem value={4}>Thursday</MenuItem>
+              <MenuItem value={5}>Friday</MenuItem>
+              <MenuItem value={6}>Saturday</MenuItem>
+            </TextField>
+          </Grid>
         </Grid>
       </FormCard>
     );
@@ -98,6 +109,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
         <DisplayRow label={Locale.label("person.state")} value={church?.state} />
         <DisplayRow label={Locale.label("person.zip")} value={church?.zip} />
         <DisplayRow label={Locale.label("person.country")} value={church?.country} />
+        <DisplayRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][(church as any)?.firstDayOfWeek || 0]} />
       </Box>
     </DisplayBox>
   );

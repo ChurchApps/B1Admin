@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Din kirkes unikke webadresse"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Første dag i ugen",
       "address1": "Adresselinje 1",
       "address2": "Adresselinje 2",
       "addressLine1Aria": "Adresselinje 1",

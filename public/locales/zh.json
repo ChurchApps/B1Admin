@@ -3162,6 +3162,7 @@
       "subdomainHelper": "您的教会独特的网址"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "每周第一天",
       "address1": "地址第1行",
       "address2": "地址第2行",
       "addressLine1Aria": "地址行 1",
