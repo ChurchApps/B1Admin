@@ -50,7 +50,7 @@ export const PlanItemHeader: React.FC<Props> = ({
             <Box
               component="button"
               type="button"
-              className="actionButton"
+              className="actionButton alwaysVisible"
               onClick={onAddClick}
               aria-label={Locale.label("plans.planItem.addItem") || "Add item to section"}
               sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}>
@@ -59,7 +59,7 @@ export const PlanItemHeader: React.FC<Props> = ({
             <Box
               component="button"
               type="button"
-              className="actionButton"
+              className="actionButton alwaysVisible"
               onClick={onEditClick}
               aria-label={Locale.label("plans.planItem.editSection") || "Edit section"}
               sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}>
