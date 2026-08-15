@@ -113,9 +113,6 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      // Only tag primary-nav chrome (header + drawer list items). Secondary-menu
-      // chips and in-page links (e.g. a task titled "Dashboard Task") must not
-      // inherit nav-item-* via text.includes().
       const scopes = document.querySelectorAll("header, .MuiDrawer-root");
       const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {

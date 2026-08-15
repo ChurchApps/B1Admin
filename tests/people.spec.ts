@@ -585,8 +585,6 @@ test.describe("People Management", () => {
       await navigateToPeople(page);
       const searchInput = page.locator('input[name="searchText"]');
       await expect(searchInput).toBeVisible({ timeout: 10000 });
-      // fill() + debounce (500ms) triggers advancedSearch; assert the row, not the XHR,
-      // so a cached list or a missed waiter still fails only if Robert remains.
       await searchInput.fill("Robert Moore");
       const validatedMerge = page.locator("table tbody tr").filter({ hasText: "Robert Moore" });
       await expect(validatedMerge).toHaveCount(0, { timeout: 20000 });

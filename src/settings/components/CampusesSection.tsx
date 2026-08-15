@@ -25,8 +25,6 @@ export const CampusesSection: React.FC = () => {
   if (campuses.isLoading) return <Loading />;
 
   const data = campuses.data || [];
-  // Keep the editor bound to the latest query row so a refetch after save
-  // (or a click that captured a stale list item) still shows persisted fields.
   const selectedCampus = editCampus?.id ? (data.find((c) => c.id === editCampus.id) ?? editCampus) : editCampus;
 
   const rows = data.map((c) => {

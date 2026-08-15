@@ -220,8 +220,6 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should edit group details", async () => {
-      // Do not rename Sunday Morning Service — later serial tests and parallel
-      // specs (attendance, check-in, campus) still need the seed group.
       await openSeedGroup(page, "Elementary (3-5)");
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
@@ -234,7 +232,6 @@ test.describe.serial("Group Management", () => {
       await saveBtn.click();
       const title = page.locator("#page-header-title");
       await expect(title).toContainText("Elementary (2-5)", { timeout: 10000 });
-      // Restore the seed name so a serial retry can find Elementary (3-5) again.
       await editIconButton(page).click();
       await expect(page.locator('[name="name"]')).toBeVisible({ timeout: 10000 });
       await page.locator('[name="name"]').fill("Elementary (3-5)");
