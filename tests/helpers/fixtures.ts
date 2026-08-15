@@ -18,6 +18,10 @@ export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
 
 // Seed standard group from Api/tools/dbScripts/membership/demo.sql.
 export const SEED_GROUP = "Sunday Morning Service";
+// Members, no seed sessions/visits — used by session attendance tests so
+// auto-select of "most recent past session" does not pick a demo session
+// that already has a roster (Sunday Morning Service has ~10 visits).
+export const SESSION_GROUP = "Prayer Team";
 
 export async function openSeedGroup(page: Page, name = SEED_GROUP) {
   // The groups table is long (30+ demo rows). Playwright's default "visible"

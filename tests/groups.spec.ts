@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { groupsTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, confirmDelete, openSeedGroup } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -234,12 +234,18 @@ test.describe.serial("Group Management", () => {
       await saveBtn.click();
       const title = page.locator("#page-header-title");
       await expect(title).toContainText("Elementary (2-5)", { timeout: 10000 });
+      // Restore the seed name so a serial retry can find Elementary (3-5) again.
+      await editIconButton(page).click();
+      await expect(page.locator('[name="name"]')).toBeVisible({ timeout: 10000 });
+      await page.locator('[name="name"]').fill("Elementary (3-5)");
+      await page.locator("button").getByText("Save").click();
+      await expect(title).toContainText("Elementary (3-5)", { timeout: 10000 });
     });
   });
 
   test.describe("Sessions", () => {
     test("should cancel adding session to group", async () => {
-      await openSeedGroup(page);
+      await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
@@ -254,7 +260,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should add session to group", async () => {
-      await openSeedGroup(page);
+      await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
@@ -272,7 +278,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should add person to session", async () => {
-      await openSeedGroup(page);
+      await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
@@ -295,7 +301,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should remove person from session", async () => {
-      await openSeedGroup(page);
+      await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
