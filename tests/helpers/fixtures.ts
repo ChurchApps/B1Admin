@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { navigateToPeople } from "./navigation";
+import { navigateToPeople, navigateToGroups } from "./navigation";
 
 // Named seed people known to exist in the reset demo database (see
 // Api/tools/dbScripts/membership/demo.sql). Tests should prefer
@@ -23,6 +23,7 @@ export async function openSeedGroup(page: Page, name = SEED_GROUP) {
   // The groups table is long (30+ demo rows). Playwright's default "visible"
   // wait requires the row in the viewport, so filter via the client-side
   // search box and scroll before clicking.
+  if (!/\/groups\/?(\?|$)/.test(page.url())) await navigateToGroups(page);
   const search = page.locator('[data-testid="groups-search"] input');
   await search.waitFor({ state: "visible", timeout: 10000 });
   await search.fill(name);

@@ -25,6 +25,9 @@ export const CampusesSection: React.FC = () => {
   if (campuses.isLoading) return <Loading />;
 
   const data = campuses.data || [];
+  // Keep the editor bound to the latest query row so a refetch after save
+  // (or a click that captured a stale list item) still shows persisted fields.
+  const selectedCampus = editCampus?.id ? (data.find((c) => c.id === editCampus.id) ?? editCampus) : editCampus;
 
   const rows = data.map((c) => {
     const location = [c.city, c.state].filter(Boolean).join(", ");
@@ -85,9 +88,9 @@ export const CampusesSection: React.FC = () => {
           </Table>
         </SectionListCard>
       </Grid>
-      {editCampus && (
+      {selectedCampus && (
         <Grid size={{ xs: 12, md: 5 }}>
-          <CampusEdit campus={editCampus} updatedFunction={handleUpdated} />
+          <CampusEdit campus={selectedCampus} updatedFunction={handleUpdated} />
         </Grid>
       )}
     </Grid>

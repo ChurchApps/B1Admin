@@ -71,7 +71,9 @@ test.describe.serial("Campus multi-site", () => {
     await expect(city).toBeVisible({ timeout: 10000 });
     await city.fill("Northtown");
     await expectResponse("/campuses", saveInputBox("#campusBox"));
-    await page.locator("table tbody tr").filter({ hasText: NORTH }).first().click();
+    const northRow = page.locator("table tbody tr").filter({ hasText: NORTH }).first();
+    await expect(northRow).toContainText("Northtown", { timeout: 10000 });
+    await northRow.click();
     await expect(page.locator("#city")).toHaveValue("Northtown", { timeout: 10000 });
   });
 

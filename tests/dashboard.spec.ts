@@ -40,9 +40,8 @@ test.describe("Dashboard Management", () => {
     const results = page.getByRole("link", { name: "Dorothy Jackson" }).first();
     await expect(results).toBeVisible({ timeout: 10000 });
     await results.click();
-    await expect(page).toHaveURL(/\/people\/PER\w+/, { timeout: 10000 });
-    const validatedName = page.locator("p").getByText("Dorothy Jackson");
-    await expect(validatedName).toHaveCount(1);
+    await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000 });
+    await expect(page.getByRole("heading", { name: "Dorothy Jackson" }).first()).toBeVisible();
   });
 
   test("should show empty state when no people match search", async ({ page }) => {

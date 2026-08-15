@@ -220,7 +220,9 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should edit group details", async () => {
-      await openSeedGroup(page);
+      // Do not rename Sunday Morning Service — later serial tests and parallel
+      // specs (attendance, check-in, campus) still need the seed group.
+      await openSeedGroup(page, "Elementary (3-5)");
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const editBtn = editIconButton(page);
@@ -359,7 +361,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should delete group", async () => {
-      await openSeedGroup(page);
+      await openSeedGroup(page, "Zacchaeus Test Group");
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const editBtn = editIconButton(page);
@@ -369,10 +371,7 @@ test.describe.serial("Group Management", () => {
       await deleteBtn.click();
       await confirmDelete(page);
 
-      const deletedGroup = page.locator("table tbody tr a").getByText("Elementary (3-5)");
-      const editedDeletedGroup = page.locator("table tbody tr a").getByText("Elementary (2-5)");
-      const delGroups = deletedGroup.or(editedDeletedGroup);
-      await expect(delGroups).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("table tbody tr a").getByText("Zacchaeus Test Group")).toHaveCount(0, { timeout: 10000 });
     });
   });
 
@@ -416,10 +415,7 @@ test.describe("Group communication and roster controls", () => {
 
 test.describe("Group service times (optional) field", () => {
   test("lists available service times and assigns one to a group", async ({ page }) => {
-    const groupLink = page.locator("table tbody tr a").getByText("Women's Bible Study", { exact: true });
-    await expect(groupLink).toBeVisible({ timeout: 10000 });
-    await groupLink.click();
-    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+    await openSeedGroup(page, "Women's Bible Study");
 
     await editIconButton(page).first().click();
     const box = page.locator("#groupDetailsBox");
