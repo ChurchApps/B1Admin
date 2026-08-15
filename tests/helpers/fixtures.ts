@@ -16,6 +16,16 @@ export const SEED_PEOPLE = {
 
 export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
 
+// Seed standard group from Api/tools/dbScripts/membership/demo.sql.
+export const SEED_GROUP = "Sunday Morning Service";
+
+export async function openSeedGroup(page: Page, name = SEED_GROUP) {
+  const link = page.locator("table tbody tr a").filter({ hasText: name }).first();
+  await link.waitFor({ state: "visible", timeout: 10000 });
+  await link.click();
+  await page.waitForURL(/\/groups\/(?!health|pending)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+}
+
 // Replaces the brittle `page.locator('table tbody tr').first()` pattern that depends on default sort + prior test mutations.
 export async function openKnownPerson(page: Page, name: SeedPersonName) {
   await navigateToPeople(page);

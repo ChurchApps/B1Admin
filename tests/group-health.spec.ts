@@ -3,7 +3,7 @@ import { groupsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
-import { confirmDelete } from "./helpers/fixtures";
+import { confirmDelete, openSeedGroup } from "./helpers/fixtures";
 
 test.describe.serial("Group Health & Calendar", () => {
   let page: Page;
@@ -24,8 +24,7 @@ test.describe.serial("Group Health & Calendar", () => {
   });
 
   const openFirstGroup = async () => {
-    await page.locator("table tbody tr a").first().click();
-    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+    await openSeedGroup(page);
   };
 
   test("groups page links to the health comparison view", async () => {

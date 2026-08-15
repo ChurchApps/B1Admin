@@ -121,8 +121,8 @@ test.describe.serial("Donations Management", () => {
       await editBtn.click();
       await batchGet;
 
-      const batchName = page.locator('[name="name"]');
-      await expect(batchName).not.toHaveValue("", { timeout: 10000 });
+      const batchName = page.locator("#batchBox [name=\"name\"]");
+      await expect(batchName).toHaveValue(TEST_BATCH_INITIAL, { timeout: 10000 });
       await batchName.fill(TEST_BATCH_RENAMED);
       await page.locator('[name="date"]').fill("2025-10-01");
       await page.locator("button").getByText("Save").click();

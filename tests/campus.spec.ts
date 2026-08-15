@@ -2,7 +2,7 @@ import type { Page, Locator } from "@playwright/test";
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToPeople, navigateToGroups } from "./helpers/navigation";
-import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
+import { openKnownPerson, openSeedGroup, editIconButton, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 const MAIN = "Main Campus";
@@ -132,8 +132,7 @@ test.describe.serial("Campus multi-site", () => {
 
   test("assigns a group to a campus and persists", async () => {
     await navigateToGroups(page);
-    await page.locator("table tbody tr a").first().click();
-    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+    await openSeedGroup(page);
     await editIconButton(page).first().click();
     const select = page.getByTestId("group-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });
