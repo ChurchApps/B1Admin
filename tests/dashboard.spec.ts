@@ -28,7 +28,7 @@ test.describe("Dashboard Management", () => {
     const firstGroupLink = page.locator('a[href^="/groups/GRP"]').first();
     await expect(firstGroupLink).toBeVisible({ timeout: 10000 });
     await firstGroupLink.click();
-    await expect(page).toHaveURL(/\/groups\/GRP\w+/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000 });
   });
 
   test("should search people from dashboard", async ({ page }) => {

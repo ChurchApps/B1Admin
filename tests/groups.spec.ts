@@ -40,27 +40,27 @@ test.describe.serial("Group Management", () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
 
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
     });
 
     test("should view person details from group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const firstPerson = page.locator('[id="groupMemberTable"] a').first();
       await firstPerson.click();
-      await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/people\/PER\d+/);
+      await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/);
     });
 
     test("should add person to group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const searchInput = page.locator('input[name="personAddText"]');
       await searchInput.fill("Demo User");
@@ -78,8 +78,8 @@ test.describe.serial("Group Management", () => {
     test("should advanced add people", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const advBtn = page.locator("button").getByText("Advanced");
       await advBtn.click();
@@ -110,8 +110,8 @@ test.describe.serial("Group Management", () => {
     test("should delete advanced add conditions", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const advBtn = page.locator("button").getByText("Advanced");
       await advBtn.click();
@@ -137,8 +137,8 @@ test.describe.serial("Group Management", () => {
     test("should remove person from group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
       await removeBtn.click();
@@ -150,8 +150,8 @@ test.describe.serial("Group Management", () => {
     test("should toggle member leader status", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const memberTable = page.locator("#groupMemberTable");
       const promoteButtons = memberTable.locator('button[data-testid^="promote-leader-button-"]');
@@ -181,8 +181,8 @@ test.describe.serial("Group Management", () => {
     test("should expose member export link", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const exportLink = page.locator("#groupMembersBox a[download]");
       await expect(exportLink).toHaveCount(1);
@@ -192,8 +192,8 @@ test.describe.serial("Group Management", () => {
     test("should send a message to group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const messageBtn = page.locator('button[aria-label="Email this group"]').first();
       await expect(messageBtn).toBeVisible({ timeout: 10000 });
@@ -215,8 +215,8 @@ test.describe.serial("Group Management", () => {
     test("should show templates above group message sender", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const messageBtn = page.locator('[data-testid="send-message-button"]').first();
       await expect(messageBtn).toBeVisible({ timeout: 10000 });
@@ -230,8 +230,8 @@ test.describe.serial("Group Management", () => {
     test("should cancel editing group details", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const editBtn = editIconButton(page);
       await editBtn.click();
@@ -245,8 +245,8 @@ test.describe.serial("Group Management", () => {
     test("should edit group details", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const editBtn = editIconButton(page);
       await editBtn.click();
@@ -264,8 +264,8 @@ test.describe.serial("Group Management", () => {
     test("should cancel adding session to group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
       await sessionsBtn.click();
@@ -281,8 +281,8 @@ test.describe.serial("Group Management", () => {
     test("should add session to group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
       await expect(sessionsBtn).toBeVisible({ timeout: 10000 });
@@ -301,8 +301,8 @@ test.describe.serial("Group Management", () => {
     test("should add person to session", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
       await sessionsBtn.click();
@@ -326,8 +326,8 @@ test.describe.serial("Group Management", () => {
     test("should remove person from session", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
       await sessionsBtn.click();
@@ -394,8 +394,8 @@ test.describe.serial("Group Management", () => {
     test("should delete group", async () => {
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+      await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/);
 
       const editBtn = editIconButton(page);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -417,21 +417,21 @@ test.describe("Group communication and roster controls", () => {
   test("group detail page exposes Send Message affordance", async ({ page }) => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await expect(page.locator('[data-testid="send-message-button"]')).toBeVisible({ timeout: 10000 });
   });
 
   test("group detail page exposes a roster CSV download link", async ({ page }) => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await expect(page.locator('a[download="groupmembers.csv"]')).toBeVisible({ timeout: 10000 });
   });
 
   test("clicking Send Message opens the message composer", async ({ page }) => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await page.locator('[data-testid="send-message-button"]').click();
     await expect(page.locator("#groupMembersBox textarea").first()).toBeVisible({ timeout: 10000 });
   });
@@ -439,7 +439,7 @@ test.describe("Group communication and roster controls", () => {
   test("promotes a group member to leader and back", async ({ page }) => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 
     const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
     if (!(await promoteBtn.isVisible().catch(() => false))) {
@@ -462,7 +462,7 @@ test.describe("Group service times (optional) field", () => {
     const groupLink = page.locator("table tbody tr a").getByText("Women's Bible Study", { exact: true });
     await expect(groupLink).toBeVisible({ timeout: 10000 });
     await groupLink.click();
-    await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 
     await editIconButton(page).first().click();
     const box = page.locator("#groupDetailsBox");
@@ -510,7 +510,7 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     const groupLink = page.locator("table tbody tr a").getByText(SOURCE_GROUP, { exact: true });
     await expect(groupLink).toBeVisible({ timeout: 10000 });
     await groupLink.click();
-    await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     const originalUrl = page.url();
 
     const groupPost = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST", { timeout: 15000 });

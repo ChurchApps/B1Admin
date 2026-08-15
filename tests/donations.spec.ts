@@ -244,7 +244,7 @@ test.describe.serial("Donations Management", () => {
       const editBtn = page.locator('[data-cy="edit-link-0"]');
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const deleteBtn = page.locator("button").getByText("Delete");
+      const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
       await confirmDelete(page);

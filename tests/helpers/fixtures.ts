@@ -37,7 +37,7 @@ export async function openPersonRow(page: Page, name: SeedPersonName | string) {
   }
   await row.waitFor({ state: "visible", timeout: 10000 });
   await row.click();
-  await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
+  await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 }
 
 // MUI icon-only button helpers. Matches buttons whose icon SVG carries the

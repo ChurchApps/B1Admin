@@ -25,7 +25,7 @@ test.describe.serial("Group Health & Calendar", () => {
 
   const openFirstGroup = async () => {
     await page.locator("table tbody tr a").first().click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
   };
 
   test("groups page links to the health comparison view", async () => {

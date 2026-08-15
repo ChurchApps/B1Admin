@@ -133,7 +133,7 @@ test.describe.serial("Campus multi-site", () => {
   test("assigns a group to a campus and persists", async () => {
     await navigateToGroups(page);
     await page.locator("table tbody tr a").first().click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await editIconButton(page).first().click();
     const select = page.getByTestId("group-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });

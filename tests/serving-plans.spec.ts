@@ -74,8 +74,7 @@ test.describe.serial("Serving Management - Plans", () => {
       ).catch((): null => null);
       await saveBtn.click();
       await groupPost;
-      const verifiedEdit = page.locator("p").getByText("Zebedee Ministry");
-      await expect(verifiedEdit).toHaveCount(1, { timeout: 15000 });
+      await expect(page.locator("#page-header-title")).toHaveText("Zebedee Ministry", { timeout: 15000 });
     });
 
     test("should cancel editing ministry", async () => {

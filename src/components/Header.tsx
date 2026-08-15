@@ -113,7 +113,10 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      const navLinks = document.querySelectorAll('a[href^="/"], button[role="menuitem"]');
+      // Only tag header/drawer chrome. Page content links (e.g. a task titled
+      // "Dashboard Task") used to inherit nav-item-* via text.includes().
+      const scopes = document.querySelectorAll("header, .MuiDrawer-root, #secondaryMenu");
+      const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], [role="button"]')));
       navLinks.forEach((link) => {
         const href = link.getAttribute("href");
         if (href && urlToTestId[href]) {
