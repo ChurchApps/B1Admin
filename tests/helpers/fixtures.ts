@@ -20,8 +20,15 @@ export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
 export const SEED_GROUP = "Sunday Morning Service";
 
 export async function openSeedGroup(page: Page, name = SEED_GROUP) {
+  // The groups table is long (30+ demo rows). Playwright's default "visible"
+  // wait requires the row in the viewport, so filter via the client-side
+  // search box and scroll before clicking.
+  const search = page.locator('[data-testid="groups-search"] input');
+  await search.waitFor({ state: "visible", timeout: 10000 });
+  await search.fill(name);
   const link = page.locator("table tbody tr a").filter({ hasText: name }).first();
   await link.waitFor({ state: "visible", timeout: 10000 });
+  await link.scrollIntoViewIfNeeded();
   await link.click();
   await page.waitForURL(/\/groups\/(?!health|pending)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 }
