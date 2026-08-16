@@ -7,15 +7,21 @@ import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
-  batchId: string;
+  batch: DonationBatchInterface;
   updatedFunction: () => void;
 }
 
 type AnyRecord = Record<string, any>;
 
 export const BatchEdit = memo((props: Props) => {
-  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: "", date: DateHelper.formatHtml5Date(new Date()) } });
+  "use no memo";
+  const batchId = props.batch?.id || "";
+  const { register, handleSubmit } = useForm<AnyRecord>({
+    defaultValues: {
+      name: props.batch?.name || "",
+      date: props.batch?.batchDate ? DateHelper.formatHtml5Date(props.batch.batchDate) : DateHelper.formatHtml5Date(new Date())
+    }
+  });
 
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -23,29 +29,17 @@ export const BatchEdit = memo((props: Props) => {
 
   const handleDelete = useCallback(async () => {
     if (await confirm(Locale.label("donations.batchEdit.confirmMsg"))) {
-      ApiHelper.delete("/donationbatches/" + props.batchId, "GivingApi").then(() => props.updatedFunction());
+      ApiHelper.delete("/donationbatches/" + batchId, "GivingApi").then(() => props.updatedFunction());
     }
-  }, [props.batchId, props.updatedFunction, confirm]);
+  }, [batchId, props.updatedFunction, confirm]);
 
-  const getDeleteFunction = useCallback(() => (!UniqueIdHelper.isMissing(props.batchId) ? handleDelete : undefined), [props.batchId, handleDelete]);
+  const getDeleteFunction = useCallback(() => (!UniqueIdHelper.isMissing(batchId) ? handleDelete : undefined), [batchId, handleDelete]);
 
   const onValid = useCallback((values: AnyRecord) => {
     const batchToSave: DonationBatchInterface = { name: values.name, batchDate: values.date ? DateHelper.formatHtml5Date(values.date) : undefined };
-    if (!UniqueIdHelper.isMissing(props.batchId)) batchToSave.id = props.batchId;
+    if (!UniqueIdHelper.isMissing(batchId)) batchToSave.id = batchId;
     return ApiHelper.post("/donationbatches", [batchToSave], "GivingApi").then(() => props.updatedFunction());
-  }, [props.batchId, props.updatedFunction]);
-
-  const loadData = useCallback(() => {
-    if (UniqueIdHelper.isMissing(props.batchId)) {
-      reset({ name: "", date: DateHelper.formatHtml5Date(new Date()) });
-    } else {
-      ApiHelper.get("/donationbatches/" + props.batchId, "GivingApi").then((data: DonationBatchInterface) => {
-        reset({ name: data.name, date: data.batchDate ? DateHelper.formatHtml5Date(data.batchDate) : "" });
-      });
-    }
-  }, [props.batchId, reset]);
-
-  React.useEffect(loadData, [loadData]);
+  }, [batchId, props.updatedFunction]);
 
   return (
     <>

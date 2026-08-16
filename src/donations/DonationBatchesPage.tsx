@@ -56,11 +56,7 @@ export const DonationBatchesPage = () => {
     }
   }, [batches.data]);
 
-  const getSidebarModules = () => {
-    const result = [];
-    if (editBatchId !== "notset") result.push(<BatchEdit key={result.length - 1} batchId={editBatchId} updatedFunction={batchUpdated} />);
-    return result;
-  };
+  const editBatch = editBatchId === "notset" ? undefined : editBatchId === "" ? {} : (sortedBatches.find((b) => b.id === editBatchId) || { id: editBatchId });
 
   const getRows = () => {
     const result: JSX.Element[] = [];
@@ -200,7 +196,7 @@ export const DonationBatchesPage = () => {
       </PageHeader>
 
       <Box sx={{ p: 3 }}>
-        {editBatchId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
+        {editBatch && <Box sx={{ mb: 3 }}><BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} /></Box>}
 
         <CardWithHeader
           icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
