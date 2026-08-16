@@ -131,7 +131,7 @@ test.describe.serial("Donations Management", () => {
       const batchName = page.locator("#batchBox [name=\"name\"]");
       await expect(batchName).toBeVisible({ timeout: 10000 });
       await expect(batchName).toHaveValue(TEST_BATCH_RENAMED, { timeout: 10000 });
-      await page.locator("#batchBox button").getByText("Cancel").click();
+      await page.locator("#batchBox button").getByText("Cancel").click({ force: true });
       await expect(batchName).toHaveCount(0, { timeout: 10000 });
     });
 
