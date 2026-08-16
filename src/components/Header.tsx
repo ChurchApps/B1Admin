@@ -113,7 +113,8 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      const navLinks = document.querySelectorAll('a[href^="/"], button[role="menuitem"]');
+      const scopes = document.querySelectorAll("header, .MuiDrawer-root");
+      const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
         const href = link.getAttribute("href");
         if (href && urlToTestId[href]) {
