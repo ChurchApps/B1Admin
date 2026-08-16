@@ -110,34 +110,24 @@ test.describe.serial("Donations Management", () => {
 
     test("should edit batch", async () => {
       await openBatchesTab(page);
-
-      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_INITIAL, { exact: true }) });
-      const editBtn = row.getByRole("button", { name: /Edit/ });
-      await row.scrollIntoViewIfNeeded();
-      await row.hover();
-      await expect(editBtn).toBeVisible({ timeout: 10000 });
-      await editBtn.click({ force: true });
-
+      const batchLink = page.getByRole("link", { name: TEST_BATCH_INITIAL, exact: true });
+      await expect(batchLink).toBeVisible({ timeout: 10000 });
+      await page.locator("tr", { has: batchLink }).getByRole("button", { name: "Edit" }).click();
       const batchName = page.locator("#batchBox [name=\"name\"]");
       await expect(batchName).toBeVisible({ timeout: 10000 });
       await expect(batchName).toHaveValue(TEST_BATCH_INITIAL, { timeout: 10000 });
       await batchName.fill(TEST_BATCH_RENAMED);
       await page.locator("#batchBox [name=\"date\"]").fill("2025-10-01");
       await page.locator("#batchBox button").getByText("Save").click();
-
-      await expect(page.locator("a").getByText(TEST_BATCH_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
+      await expect(page.getByRole("link", { name: TEST_BATCH_RENAMED, exact: true })).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("p").getByText("Oct 1, 2025")).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should cancel editing batch", async () => {
       await openBatchesTab(page);
-
-      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_RENAMED, { exact: true }) });
-      const editBtn = row.getByRole("button", { name: /Edit/ });
-      await row.scrollIntoViewIfNeeded();
-      await row.hover();
-      await expect(editBtn).toBeVisible({ timeout: 10000 });
-      await editBtn.click({ force: true });
+      const batchLink = page.getByRole("link", { name: TEST_BATCH_RENAMED, exact: true });
+      await expect(batchLink).toBeVisible({ timeout: 10000 });
+      await page.locator("tr", { has: batchLink }).getByRole("button", { name: "Edit" }).click();
       const batchName = page.locator("#batchBox [name=\"name\"]");
       await expect(batchName).toBeVisible({ timeout: 10000 });
       await expect(batchName).toHaveValue(TEST_BATCH_RENAMED, { timeout: 10000 });
