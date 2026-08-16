@@ -111,42 +111,37 @@ test.describe.serial("Donations Management", () => {
     test("should edit batch", async () => {
       await openBatchesTab(page);
 
-      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_INITIAL) });
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_INITIAL, { exact: true }) });
       const editBtn = row.getByRole("button", { name: /Edit/ });
+      await row.scrollIntoViewIfNeeded();
+      await row.hover();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
-      const batchGet = page.waitForResponse(
-        r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === "GET",
-        { timeout: 15000 }
-      ).catch((): null => null);
-      await editBtn.click();
-      await batchGet;
+      await editBtn.click({ force: true });
 
       const batchName = page.locator("#batchBox [name=\"name\"]");
+      await expect(batchName).toBeVisible({ timeout: 10000 });
       await expect(batchName).toHaveValue(TEST_BATCH_INITIAL, { timeout: 10000 });
       await batchName.fill(TEST_BATCH_RENAMED);
-      await page.locator('[name="date"]').fill("2025-10-01");
-      await page.locator("button").getByText("Save").click();
+      await page.locator("#batchBox [name=\"date\"]").fill("2025-10-01");
+      await page.locator("#batchBox button").getByText("Save").click();
 
-      await expect(page.locator("a").getByText(TEST_BATCH_RENAMED)).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_BATCH_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("p").getByText("Oct 1, 2025")).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should cancel editing batch", async () => {
       await openBatchesTab(page);
 
-      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_RENAMED) });
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_RENAMED, { exact: true }) });
       const editBtn = row.getByRole("button", { name: /Edit/ });
+      await row.scrollIntoViewIfNeeded();
+      await row.hover();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
-      const batchGet = page.waitForResponse(
-        r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === "GET",
-        { timeout: 15000 }
-      ).catch((): null => null);
-      await editBtn.click();
-      await batchGet;
-      const batchName = page.locator('[name="name"]');
+      await editBtn.click({ force: true });
+      const batchName = page.locator("#batchBox [name=\"name\"]");
       await expect(batchName).toBeVisible({ timeout: 10000 });
-      await expect(batchName).not.toHaveValue("", { timeout: 10000 });
-      await page.locator("button").getByText("Cancel").click();
+      await expect(batchName).toHaveValue(TEST_BATCH_RENAMED, { timeout: 10000 });
+      await page.locator("#batchBox button").getByText("Cancel").click();
       await expect(batchName).toHaveCount(0, { timeout: 10000 });
     });
 
