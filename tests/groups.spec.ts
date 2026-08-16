@@ -495,7 +495,7 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
   });
 
   test('archived group is hidden by default and reappears with "Show archived"', async () => {
-    await navigateToGroups(page);
+    if (!/\/groups\/?(\?|$)/.test(page.url())) await navigateToGroups(page);
     await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toHaveCount(0, { timeout: 10000 });
 
     const toggle = page.locator('[data-testid="show-archived-toggle"] input');
