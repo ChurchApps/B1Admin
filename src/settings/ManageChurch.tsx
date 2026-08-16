@@ -249,7 +249,7 @@ export const ManageChurch = () => {
             </HeaderSecondaryButton>
           )}
           <HeaderSecondaryButton
-            {...({ href: `https://transfer.b1.church/login?jwt=${jwt}&churchId=${churchId}`, target: "_blank", rel: "noreferrer noopener" } as any)}
+            {...({ href: `https://transfer.b1.church/login?churchId=${churchId}#jwt=${encodeURIComponent(jwt || "")}`, target: "_blank", rel: "noreferrer noopener" } as any)}
             startIcon={<PlayArrowIcon />}>
             {Locale.label("settings.manageChurch.imEx")}
           </HeaderSecondaryButton>
