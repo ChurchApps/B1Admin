@@ -24,10 +24,10 @@ export const DonationBatchesPage = () => {
 
   const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<DonationBatchInterface>(batches.data || [], "", "asc", batchComparators);
 
-  const batchUpdated = () => {
+  const batchUpdated = React.useCallback(() => {
     setEditBatchId("notset");
     batches.refetch();
-  };
+  }, [batches]);
 
   const showEditBatch = (e: React.MouseEvent) => {
     e.preventDefault();

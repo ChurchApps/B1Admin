@@ -447,6 +447,7 @@ test.describe("Group service times (optional) field", () => {
 });
 
 test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
+  test.describe.configure({ retries: 0 });
   let page: Page;
   const SOURCE_GROUP = "Empty Nesters Group";
   const DUPLICATE_NAME = `${SOURCE_GROUP} (Copy)`;
@@ -499,7 +500,7 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
 
     const toggle = page.locator('[data-testid="show-archived-toggle"] input');
     await toggle.click();
-    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME).first()).toBeVisible({ timeout: 10000 });
   });
 
   test("Restore returns the group to the active (non-archived) list", async () => {
@@ -510,7 +511,7 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
 
     const toggle = page.locator('[data-testid="show-archived-toggle"] input');
     await toggle.click();
-    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME).first()).toBeVisible({ timeout: 10000 });
   });
 
   test("cleanup: deletes the duplicated group", async () => {

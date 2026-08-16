@@ -63,4 +63,4 @@ export const BatchEdit = memo((props: Props) => {
       </FormCard>
     </>
   );
-});
+}, (prev, next) => prev.batch?.id === next.batch?.id && prev.batch?.name === next.batch?.name && prev.batch?.batchDate === next.batch?.batchDate && prev.updatedFunction === next.updatedFunction);
