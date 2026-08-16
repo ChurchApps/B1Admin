@@ -1,9 +1,26 @@
-import { defineConfig, loadEnv, type UserConfig } from "vite";
+import { defineConfig, loadEnv, type Plugin, type UserConfig } from "vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
+import fs from "fs";
 import path from "path";
 
+// demo.b1.church is this app (s3://demo-chums-app). Do not noindex prod (admin.b1.church / s3://chums-app).
+function noindexNonProd(stage: string | undefined): Plugin {
+  const noindexMeta = stage === "demo" || stage === "staging";
+  const disallowAll = stage === "demo";
+  return {
+    name: "noindex-nonprod",
+    transformIndexHtml(html) {
+      if (!noindexMeta || html.includes('name="robots"')) return html;
+      return html.replace("<head>", '<head>\n    <meta name="robots" content="noindex, nofollow" />');
+    },
+    closeBundle() {
+      if (!disallowAll) return;
+      fs.writeFileSync(path.resolve("dist/robots.txt"), "User-agent: *\nDisallow: /\n");
+    }
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -13,6 +30,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       babel({ presets: [reactCompilerPreset()] }),
+      noindexNonProd(env.REACT_APP_STAGE),
       // Uploads sourcemaps so Sentry stack traces aren't minified; no-op without the token.
       !!env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
         org: "churchapps",
