@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "週の最初の日",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "住所1行目",

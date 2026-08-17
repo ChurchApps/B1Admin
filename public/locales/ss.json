@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Likheli le-web lelihlukile lelibandla lakho"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Lilanga lekucala leviki",
       "address1": "Umugca Wekheli 1",
       "address2": "Umugca Wekheli 2",
       "addressLine1Aria": "Umugca wekheli 1",

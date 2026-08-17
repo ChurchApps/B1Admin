@@ -3162,6 +3162,7 @@
       "subdomainHelper": "교회의 고유한 웹 주소"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "주의 첫날",
       "address1": "주소 1",
       "address2": "주소 2",
       "addressLine1Aria": "주소 1번째 줄",

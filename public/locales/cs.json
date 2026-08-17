@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Unikátní webová adresa vašeho sboru"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "První den v týdnu",
       "address1": "Adresa řádek 1",
       "address2": "Adresa řádek 2",
       "addressLine1Aria": "Řádek adresy 1",

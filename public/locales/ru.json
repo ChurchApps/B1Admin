@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Уникальный веб-адрес вашей церкви"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Первый день недели",
       "address1": "Адресная строка 1",
       "address2": "Адресная строка 2",
       "addressLine1Aria": "Адрес, строка 1",

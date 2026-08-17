@@ -3162,6 +3162,7 @@
       "subdomainHelper": "La dirección web única de su iglesia"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Primer día de la semana",
       "address1": "Dirección Línea 1",
       "address2": "Dirección Línea 2",
       "addressLine1Aria": "Línea de dirección 1",
