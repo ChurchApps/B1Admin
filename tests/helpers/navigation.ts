@@ -86,7 +86,7 @@ export async function openPrimaryNav(page: Page) {
 
 async function clickPrimary(page: Page, section: PrimarySection) {
   await openPrimaryNav(page);
-  const item = page.locator(`[data-testid="nav-item-${section}"]`);
+  const item = page.locator(`.MuiListItemButton-root[data-testid="nav-item-${section}"]`);
   await item.waitFor({ state: "visible", timeout: 10000 });
   await item.click();
   await page.waitForURL(PRIMARY_URL_PATTERNS[section], { timeout: 15000 });
