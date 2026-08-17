@@ -2,86 +2,12 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import { type PersonInterface } from "@churchapps/helpers";
+import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { Locale, PersonHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
-
-interface DirectoryHousehold {
-  key: string;
-  sortName: string;
-  letter: string;
-  displayName: string;
-  address1?: string;
-  address2?: string;
-  cityStateZip?: string;
-  phone?: string;
-  email?: string;
-  members: PersonInterface[];
-}
+import { buildHouseholds, firstName } from "./buildHouseholds";
 
 const EXCLUDED_STATUSES = new Set(["Inactive", "Visitor"]);
-
-const ageFrom = (birthDate?: string): number => {
-  if (!birthDate) return -1;
-  const d = new Date(birthDate);
-  if (Number.isNaN(d.getTime())) return -1;
-  const ms = Date.now() - d.getTime();
-  return ms / (365.25 * 24 * 60 * 60 * 1000);
-};
-
-const firstName = (p: PersonInterface) => p.name?.nick || p.name?.first || p.name?.display || "";
-
-const buildHouseholds = (people: PersonInterface[]): DirectoryHousehold[] => {
-  const groups = new Map<string, PersonInterface[]>();
-  people.forEach((p) => {
-    const key = p.householdId || `solo-${p.id}`;
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key)!.push(p);
-  });
-
-  const households: DirectoryHousehold[] = [];
-  groups.forEach((members, key) => {
-    const sorted = [...members].sort((a, b) => ageFrom(b.birthDate) - ageFrom(a.birthDate));
-    const primary = sorted[0];
-    const lastName = (primary.name?.last || primary.name?.display?.split(" ").pop() || "").trim();
-
-    let displayName: string;
-    if (members.length === 1) {
-      displayName = primary.name?.display || `${firstName(primary)} ${lastName}`.trim();
-    } else if (members.length === 2 && lastName) {
-      displayName = `${firstName(sorted[0])} & ${firstName(sorted[1])} ${lastName}`;
-    } else if (lastName) {
-      displayName = `The ${lastName} Family`;
-    } else {
-      displayName = primary.name?.display || "";
-    }
-
-    const addressSource = members.find((m) => m.contactInfo?.address1) || primary;
-    const ci = addressSource.contactInfo || {};
-    const cityStateZip = [ci.city, ci.state].filter(Boolean).join(", ") + (ci.zip ? ` ${ci.zip}` : "");
-
-    const phoneSource = members.find((m) => m.contactInfo?.homePhone || m.contactInfo?.mobilePhone);
-    const phone = phoneSource?.contactInfo?.homePhone || phoneSource?.contactInfo?.mobilePhone;
-    const emailSource = members.find((m) => m.contactInfo?.email);
-
-    const letter = (lastName[0] || displayName[0] || "#").toUpperCase();
-
-    households.push({
-      key,
-      sortName: (lastName || displayName).toLowerCase(),
-      letter,
-      displayName,
-      address1: ci.address1,
-      address2: ci.address2,
-      cityStateZip: cityStateZip.trim() || undefined,
-      phone,
-      email: emailSource?.contactInfo?.email,
-      members: sorted
-    });
-  });
-
-  return households.sort((a, b) => a.sortName.localeCompare(b.sortName));
-};
 
 const formatDate = (date?: string): string => {
   if (!date) return "";
@@ -120,23 +46,38 @@ export const PrintDirectoryPage = () => {
     placeholderData: []
   });
 
+  const householdRecords = useQuery<HouseholdInterface[]>({
+    queryKey: ["/households", "MembershipApi"],
+    placeholderData: []
+  });
+
+  const householdNameById = useMemo(() => {
+    const map = new Map<string, string>();
+    (householdRecords.data || []).forEach((h) => {
+      if (h.id && h.name?.trim()) map.set(h.id, h.name.trim());
+    });
+    return map;
+  }, [householdRecords.data]);
+
   const households = useMemo(() => {
     if (!people.data) return [];
     const eligible = people.data.filter((p) => !p.optedOut && !EXCLUDED_STATUSES.has(p.membershipStatus || ""));
-    return buildHouseholds(eligible);
-  }, [people.data]);
+    return buildHouseholds(eligible, householdNameById);
+  }, [people.data, householdNameById]);
+
+  const isLoading = people.isLoading || householdRecords.isLoading;
 
   useEffect(() => {
-    if (!people.isLoading && households.length > 0) {
+    if (!isLoading && households.length > 0) {
       const t = setTimeout(() => {
         window.print();
         navigate("/people");
       }, 1500);
       return () => clearTimeout(t);
     }
-  }, [people.isLoading, households.length, navigate]);
+  }, [isLoading, households.length, navigate]);
 
-  if (people.isLoading) {
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" gap={2}>
         <CircularProgress />
