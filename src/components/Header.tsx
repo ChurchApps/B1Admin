@@ -47,6 +47,7 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/site/pages", label: Locale.label("common.website"), icon: "language" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
+    menuItems.push({ url: "/reports", label: Locale.label("reports.reportsPage.reports"), icon: "bar_chart" });
 
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
     else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
@@ -75,6 +76,7 @@ export const Header: React.FC = () => {
     else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = Locale.label("helpers.secondaryMenuHelper.calendars");
     else if (path.startsWith("/site")) result = Locale.label("common.website");
     else if (path.startsWith("/mobile")) result = Locale.label("common.mobile");
+    else if (path.startsWith("/reports")) result = Locale.label("reports.reportsPage.reports");
     else if (path.startsWith("/settings") || path.startsWith("/admin")) result = Locale.label("components.wrapper.set");
     else if (path.startsWith("/dashboard")) result = Locale.label("dashboard.dashboardPage.dash");
     return result;
@@ -110,7 +112,8 @@ export const Header: React.FC = () => {
         "/mobile": "nav-item-mobile",
         "/site/pages": "nav-item-website",
         "/calendars": "nav-item-calendars",
-        "/sermons": "nav-item-sermons"
+        "/sermons": "nav-item-sermons",
+        "/reports": "nav-item-reports"
       };
 
       const scopes = document.querySelectorAll("header, .MuiDrawer-root");
@@ -142,7 +145,8 @@ export const Header: React.FC = () => {
             devices: "nav-item-devices",
             mobile: "nav-item-mobile",
             website: "nav-item-website",
-            sermons: "nav-item-sermons"
+            sermons: "nav-item-sermons",
+            reports: "nav-item-reports"
           };
 
           for (const [key, testId] of Object.entries(textToTestId)) {

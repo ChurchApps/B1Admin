@@ -10,6 +10,7 @@ type PrimarySection =
   | "website"
   | "calendars"
   | "mobile"
+  | "reports"
   | "settings";
 
 // Secondary nav items: only visible after navigating to a parent section.
@@ -47,6 +48,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   website: /\/site\/pages/,
   calendars: /\/calendars(?!\/)/,
   mobile: /\/mobile/,
+  reports: /\/reports/,
   settings: /\/settings/
 };
 

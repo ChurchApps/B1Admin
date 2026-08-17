@@ -19,6 +19,7 @@ export class SecondaryMenuHelper {
     else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = this.getCalendarMenu(path);
     else if (path.startsWith("/site")) result = this.getSiteMenu(path);
     else if (path.startsWith("/sermons")) result = this.getSermonsMenu(path);
+    else if (path.startsWith("/reports")) result = this.getReportsMenu(path);
     else if (path.startsWith("/profile")) result = this.getProfileMenu(path);
     else if (path === "/" || path.startsWith("/dashboard")) result = this.getDashboardMenu();
     return result;
@@ -185,6 +186,26 @@ export class SecondaryMenuHelper {
     if (path.startsWith("/sermons/bulk")) label = Locale.label("helpers.secondaryMenuHelper.bulkImport");
     else if (path.startsWith("/sermons/times")) label = Locale.label("helpers.secondaryMenuHelper.liveStreamTimes");
     else if (path.startsWith("/sermons")) label = Locale.label("helpers.secondaryMenuHelper.sermons");
+
+    return { menuItems, label };
+  };
+
+  static getReportsMenu = (path: string) => {
+    const menuItems: MenuItem[] = [];
+    let label: string = Locale.label("reports.reportsPage.reports");
+    menuItems.push({ url: "/reports", label: Locale.label("reports.reportsPage.reports"), icon: "bar_chart" });
+    menuItems.push({ url: "/reports/birthdays", label: Locale.label("reports.reportsPage.bDays"), icon: "cake" });
+    menuItems.push({ url: "/reports/attendanceTrend", label: Locale.label("reports.reportsPage.attTrend"), icon: "trending_up" });
+    menuItems.push({ url: "/reports/groupAttendance", label: Locale.label("reports.reportsPage.groupAtt"), icon: "groups" });
+    menuItems.push({ url: "/reports/dailyGroupAttendance", label: Locale.label("reports.reportsPage.dailyGroupAtt"), icon: "today" });
+    menuItems.push({ url: "/reports/donationSummary", label: Locale.label("reports.reportsPage.donSum"), icon: "volunteer_activism" });
+
+    if (path.startsWith("/reports/birthdays")) label = Locale.label("reports.reportsPage.bDays");
+    else if (path.startsWith("/reports/attendanceTrend")) label = Locale.label("reports.reportsPage.attTrend");
+    else if (path.startsWith("/reports/groupAttendance")) label = Locale.label("reports.reportsPage.groupAtt");
+    else if (path.startsWith("/reports/dailyGroupAttendance")) label = Locale.label("reports.reportsPage.dailyGroupAtt");
+    else if (path.startsWith("/reports/donationSummary")) label = Locale.label("reports.reportsPage.donSum");
+    else if (path.startsWith("/reports")) label = Locale.label("reports.reportsPage.reports");
 
     return { menuItems, label };
   };
