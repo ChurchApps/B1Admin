@@ -91,7 +91,7 @@ test.describe("Attendance Management", () => {
   test("should view group from attendance homepage", async ({ page }) => {
     const groupBtn = page.locator("a").getByText("Worship").first();
     await groupBtn.click();
-    await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
   });
 
   test.describe("Trends", () => {

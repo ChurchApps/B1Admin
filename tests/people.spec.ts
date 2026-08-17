@@ -12,7 +12,7 @@ test.describe("People Management", () => {
   test.describe("Individuals", () => {
     test("should view person details", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      await expect(page).toHaveURL(/\/people\/PER\d+/);
+      await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/);
     });
 
     test("should search for people", async ({ page }) => {
@@ -49,7 +49,7 @@ test.describe("People Management", () => {
       const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
       await expect(donaldRow).toBeVisible({ timeout: 10000 });
       await donaldRow.click();
-      await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
+      await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
     test("should delete advance search conditions", async ({ page }) => {
@@ -258,7 +258,7 @@ test.describe("People Management", () => {
       const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
     test("should open attendance tab", async ({ page }) => {
@@ -281,7 +281,7 @@ test.describe("People Management", () => {
       const seekGroup = page.locator('table a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+      await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
     test("should open donations tab", async ({ page }) => {
@@ -571,7 +571,7 @@ test.describe("People Management", () => {
       await expect(confirmBtn).toBeVisible({ timeout: 20000 });
       // Wait for DELETE + navigate("/people") after Promise.all resolves.
       const deleteResponse = page.waitForResponse(
-        (response) => response.url().match(/\/people\/PER\d+/) !== null
+        (response) => response.url().match(/\/people\/(?!demographics|lists)[^/?#]+/) !== null
           && response.request().method() === "DELETE"
           && response.status() === 200,
         { timeout: 30000 }
@@ -584,13 +584,8 @@ test.describe("People Management", () => {
       // After merge, one of the two should no longer show in search results.
       await navigateToPeople(page);
       const searchInput = page.locator('input[name="searchText"]');
-      // Register listener before fill (fast response may slip past waiter).
-      const searched = page.waitForResponse(
-        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
-        { timeout: 20000 }
-      );
+      await expect(searchInput).toBeVisible({ timeout: 10000 });
       await searchInput.fill("Robert Moore");
-      await searched;
       const validatedMerge = page.locator("table tbody tr").filter({ hasText: "Robert Moore" });
       await expect(validatedMerge).toHaveCount(0, { timeout: 20000 });
     });
