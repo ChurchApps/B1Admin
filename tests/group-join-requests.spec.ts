@@ -28,7 +28,7 @@ test.describe.serial("Group Join Requests", () => {
   test("enrollment policy field is present and persists", async () => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await page.locator('[data-testid="edit-group-button"]').click();
 
     const select = page.locator('[data-testid="join-policy-select"]');
@@ -40,7 +40,7 @@ test.describe.serial("Group Join Requests", () => {
     await page.locator("#groupDetailsBox button").filter({ hasText: /^save$/i }).first().click();
     await savePost;
     await page.reload();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await page.locator('[data-testid="edit-group-button"]').click();
     await expect(page.locator('[data-testid="join-policy-select"]')).toContainText(/Request to Join/i);
     await page.locator('[data-testid="join-policy-select"]').click();
@@ -53,7 +53,7 @@ test.describe.serial("Group Join Requests", () => {
   test("members tab still renders for a group in request mode", async () => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     await expect(page.locator("#groupMembersBox")).toBeVisible({ timeout: 10000 });
   });
 

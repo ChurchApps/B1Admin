@@ -9,10 +9,11 @@ test.describe("Settings — Import/Export entry point", () => {
 
   test("Import/Export button targets transfer.b1.church with auth params", async ({ page }) => {
     const button = page.getByRole("link", { name: "Import/Export" });
-    const href = await button.getAttribute("href");
+    const href = await button.getAttribute("href") || "";
     expect(href).toContain("transfer.b1.church/login");
-    expect(href).toContain("jwt=");
-    expect(href).toContain("churchId=");
+    expect(href).toMatch(/[?&]churchId=/);
+    expect(href).toContain("#jwt=");
+    expect(href).not.toMatch(/[?&]jwt=/);
   });
 
   test("Import/Export button opens in a new tab", async ({ page }) => {

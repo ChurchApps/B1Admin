@@ -198,6 +198,12 @@ test.describe.serial("Serving Management - Workflows", () => {
       await expect(groupButton).toBeVisible({ timeout: 1500 });
     }).toPass({ timeout: 15000 });
     await groupButton.click();
+    // The picker closes before the members fetch + bulk POST fire; navigating away aborts them.
+    // Wait for the board's own refetch to show the new cards before reloading.
+    await expect(async () => {
+      const now = parseInt(((await countLocator.innerText()).trim() || "0"), 10);
+      expect(now).toBeGreaterThan(before);
+    }).toPass({ timeout: 15000 });
 
     await openSeedBoard(page);
     const after = parseInt(((await page.locator('[data-testid="step-count-WFS00000001"]').innerText()).trim() || "0"), 10);

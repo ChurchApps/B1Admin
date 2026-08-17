@@ -1,3 +1,4 @@
 # https://www.robotstxt.org/robotstxt.html
+# Allow all. Demo deploy overwrites dist/robots.txt with Disallow: / (see vite.config.ts). Do not Disallow here — that would noindex admin.b1.church.
 User-agent: *
 Disallow:
