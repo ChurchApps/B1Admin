@@ -115,6 +115,7 @@ export const Assignment = (props: Props) => {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={() => {
+              setAssignment(null);
               setPosition({
                 categoryName: "Band",
                 name: "",
@@ -170,6 +171,7 @@ export const Assignment = (props: Props) => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => {
+            setAssignment(null);
             setPosition({
               categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
               name: "",
@@ -330,7 +332,7 @@ export const Assignment = (props: Props) => {
                 <LinearProgress variant="determinate" value={progress} sx={{ height: 8, borderRadius: 4 }} />
               </Stack>
             )}
-            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => setPosition(p)} onAssignmentSelect={handleAssignmentSelect} />
+            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
           </CardContent>
         </Card>
 
@@ -395,6 +397,7 @@ export const Assignment = (props: Props) => {
         <Stack spacing={3}>
           {canEdit && position && !assignment && (
             <PositionEdit
+              key={position?.id || position?.name || "new-position"}
               position={position}
               categoryNames={positions?.length > 0 ? ArrayHelper.getUniqueValues(positions, "categoryName") : [Locale.label("plans.planPage.band")]}
               updatedFunction={() => {
@@ -405,6 +408,7 @@ export const Assignment = (props: Props) => {
           )}
           {canEdit && assignment && position && (
             <AssignmentEdit
+              key={assignment?.id || position?.id || "new-assignment"}
               position={position}
               assignment={assignment}
               peopleNeeded={peopleNeededForPosition}
