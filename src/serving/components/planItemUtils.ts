@@ -60,7 +60,7 @@ export async function duplicatePlanItem(planItem: PlanItemInterface): Promise<vo
 /** Fresh media info for a provider item, fetched per page load (provider links can expire). */
 export interface ProviderMediaInfo {
   url: string;
-  mediaType?: "video" | "image";
+  mediaType?: "video" | "image" | "audio";
   seconds?: number;
 }
 
@@ -86,6 +86,7 @@ export function matchProviderMedia(planItem: PlanItemInterface, lookup?: Record<
 }
 
 const VIDEO_EXT_PATTERN = /\.(mp4|webm|mov|m4v|avi|mkv)\s*(\?|#|$)/i;
+const AUDIO_EXT_PATTERN = /\.(mp3|m4a|aac|wav|flac|oga)\s*(\?|#|$)/i;
 
 /** Planning estimate for images. Stored seconds stay 0 so playback (FreePlay) leaves the
  * volunteer in control; this value is display/schedule-math only. */
@@ -96,13 +97,17 @@ export function estimateSeconds(planItem: PlanItemInterface, lookup?: Record<str
   if (planItem.seconds && planItem.seconds > 0) return planItem.seconds;
   if (planItem.itemType === "header") return 0;
   const media = matchProviderMedia(planItem, lookup);
-  if (media && !isVideoMedia(planItem.label, media)) return ESTIMATED_IMAGE_SECONDS;
+  if (media && !isVideoMedia(planItem.label, media) && !isAudioMedia(planItem.label, media)) return ESTIMATED_IMAGE_SECONDS;
   return 0;
 }
 
 /** Older provider versions omit mediaType, so also sniff the file extension from the label/url. */
 export function isVideoMedia(label: string | undefined, media: ProviderMediaInfo): boolean {
   return media.mediaType === "video" || VIDEO_EXT_PATTERN.test(label || "") || VIDEO_EXT_PATTERN.test(media.url.split("?")[0]);
+}
+
+export function isAudioMedia(label: string | undefined, media: ProviderMediaInfo): boolean {
+  return media.mediaType === "audio" || AUDIO_EXT_PATTERN.test(label || "") || AUDIO_EXT_PATTERN.test(media.url.split("?")[0]);
 }
 
 /** Reads a video's duration (seconds) by loading just its metadata. Resolves null on error/timeout. */
