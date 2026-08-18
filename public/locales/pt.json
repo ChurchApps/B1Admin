@@ -2630,19 +2630,7 @@
       "report": "Relatório"
     },
     "reportsPage": {
-      "attTrend": "Tendência de Presença",
-      "attTrendDesc": "Veja tendências de frequência ao longo do tempo",
-      "bDays": "Aniversários",
-      "bDaysDesc": "Veja os próximos aniversários",
-      "dailyGroupAtt": "Presença Diária do Grupo",
-      "dailyGroupAttDesc": "Ver participação diária do grupo",
-      "donSum": "Resumo de Doações",
-      "donSumDesc": "Ver resumo da doação",
-      "groupAtt": "Presença de Grupo",
-      "groupAttDesc": "Ver participação no grupo",
-      "helpText": "Selecione um relatório para visualizar informações detalhadas",
-      "reports": "Relatórios",
-      "subtitle": "Visualize e baixe relatórios da igreja"
+      "reports": "Relatórios"
     }
   },
   "sermons": {

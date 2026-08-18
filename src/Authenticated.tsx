@@ -20,7 +20,6 @@ const FundPage = React.lazy(() => import("./donations/FundPage").then((module) =
 const FormsPage = React.lazy(() => import("./forms/FormsPage").then((module) => ({ default: module.FormsPage })));
 const Settings = React.lazy(() => import("./settings/Settings").then((module) => ({ default: module.Settings })));
 const FormPage = React.lazy(() => import("./forms/FormPage").then((module) => ({ default: module.FormPage })));
-const ReportsPage = React.lazy(() => import("./reports/ReportsPage").then((module) => ({ default: module.ReportsPage })));
 const ReportPage = React.lazy(() => import("./reports/ReportPage").then((module) => ({ default: module.ReportPage })));
 const AdminReportPage = React.lazy(() => import("./serverAdmin/ReportPage").then((module) => ({ default: module.ReportPage })));
 const TasksPage = React.lazy(() => import("./serving/tasks/TasksPage").then((module) => ({ default: module.TasksPage })));
@@ -129,7 +128,6 @@ export const Authenticated: React.FC = () => {
           <Route path="/forms/:id" element={<FormPage />} />
           <Route path="/forms" element={<FormsPage />} />
           <Route path="/reports/:keyName" element={<ReportPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
           <Route path="/email-templates" element={<Navigate to="/settings/email-templates" replace />} />
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/serving/tasks/workflows/:id/reports" element={<WorkflowReportsPage />} />

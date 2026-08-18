@@ -2630,19 +2630,7 @@
       "report": "Umbiko"
     },
     "reportsPage": {
-      "attTrend": "Sifo Sebukhona",
-      "attTrendDesc": "Buka tifo tebukhona ngesikhatsi",
-      "bDays": "Emalanga Ekutalwa",
-      "bDaysDesc": "Buka emalanga ekutalwa latako",
-      "dailyGroupAtt": "Bukhona Beliqembu Lansuku Nsuku",
-      "dailyGroupAttDesc": "Buka bukhona beliqembu lansuku nsuku",
-      "donSum": "Sifingo Seminikelo",
-      "donSumDesc": "Buka sifingo seminikelo",
-      "groupAtt": "Bukhona Beliqembu",
-      "groupAttDesc": "Buka bukhona beliqembu",
-      "helpText": "Khetsa umbiko kute ubone imininingwane lengiyo",
-      "reports": "Imibiko",
-      "subtitle": "Buka futsi udawunilode imibiko yelibandla"
+      "reports": "Imibiko"
     }
   },
   "sermons": {

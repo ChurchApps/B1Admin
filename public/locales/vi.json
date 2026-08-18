@@ -2630,19 +2630,7 @@
       "report": "Báo cáo"
     },
     "reportsPage": {
-      "attTrend": "Tham dự Trend",
-      "attTrendDesc": "Xem Tham dự trends over Thời gian",
-      "bDays": "Birthdays",
-      "bDaysDesc": "Xem upcoming birthdays",
-      "dailyGroupAtt": "Daily Nhóm Tham dự",
-      "dailyGroupAttDesc": "Xem daily Nhóm Tham dự",
-      "donSum": "Donation Tóm tắt",
-      "donSumDesc": "Xem donation Tóm tắt",
-      "groupAtt": "Nhóm Tham dự",
-      "groupAttDesc": "Xem Nhóm Tham dự",
-      "helpText": "Select a Báo cáo to Xem detailed information",
-      "reports": "Reports",
-      "subtitle": "Xem and Tải xuống church reports"
+      "reports": "Reports"
     }
   },
   "sermons": {

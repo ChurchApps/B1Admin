@@ -2630,19 +2630,7 @@
       "report": "Informe"
     },
     "reportsPage": {
-      "attTrend": "Tendencia de Asistencia",
-      "attTrendDesc": "Ver tendencias de asistencia a lo largo del tiempo",
-      "bDays": "Cumpleaños",
-      "bDaysDesc": "Ver próximos cumpleaños",
-      "dailyGroupAtt": "Asistencia Diaria del Grupo",
-      "dailyGroupAttDesc": "Ver asistencia diaria del grupo",
-      "donSum": "Resumen de Donaciones",
-      "donSumDesc": "Ver resumen de donación",
-      "groupAtt": "Asistencia del Grupo",
-      "groupAttDesc": "Ver asistencia al grupo",
-      "helpText": "Seleccione un informe para ver información detallada",
-      "reports": "Informes",
-      "subtitle": "Ver y descargar informes de la iglesia"
+      "reports": "Informes"
     }
   },
   "sermons": {

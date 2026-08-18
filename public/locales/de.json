@@ -2630,19 +2630,7 @@
       "report": "Bericht"
     },
     "reportsPage": {
-      "attTrend": "Anwesenheitstrend",
-      "attTrendDesc": "Sehen Sie sich die Anwesenheitstrends im Laufe der Zeit an",
-      "bDays": "Geburtstage",
-      "bDaysDesc": "Kommende Geburtstage anzeigen",
-      "dailyGroupAtt": "Tägliche Gruppenanwesenheit",
-      "dailyGroupAttDesc": "Sehen Sie sich die tägliche Anwesenheit der Gruppe an",
-      "donSum": "Spendenzusammenfassung",
-      "donSumDesc": "Spendenzusammenfassung anzeigen",
-      "groupAtt": "Gruppenanwesenheit",
-      "groupAttDesc": "Gruppenteilnahme anzeigen",
-      "helpText": "Wählen Sie einen Bericht aus, um detaillierte Informationen anzuzeigen",
-      "reports": "Berichte",
-      "subtitle": "Kirchenberichte ansehen und herunterladen"
+      "reports": "Berichte"
     }
   },
   "sermons": {

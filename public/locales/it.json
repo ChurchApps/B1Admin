@@ -2630,19 +2630,7 @@
       "report": "Rapporto"
     },
     "reportsPage": {
-      "attTrend": "Andamento della Partecipazione",
-      "attTrendDesc": "Visualizza l'andamento delle presenze nel tempo",
-      "bDays": "Compleanni",
-      "bDaysDesc": "Visualizza i prossimi compleanni",
-      "dailyGroupAtt": "Partecipazione Giornaliera al Gruppo",
-      "dailyGroupAttDesc": "Visualizza la partecipazione giornaliera al gruppo",
-      "donSum": "Riepilogo delle Donazioni",
-      "donSumDesc": "Visualizza il riepilogo delle donazioni",
-      "groupAtt": "Partecipazione di Gruppo",
-      "groupAttDesc": "Visualizza la partecipazione del gruppo",
-      "helpText": "Seleziona un rapporto per visualizzare informazioni dettagliate",
-      "reports": "Rapporti",
-      "subtitle": "Visualizza e scarica i resoconti della chiesa"
+      "reports": "Rapporti"
     }
   },
   "sermons": {
