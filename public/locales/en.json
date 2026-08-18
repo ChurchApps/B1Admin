@@ -2632,6 +2632,8 @@
       "report": "Report"
     },
     "reportsPage": {
+      "anniversaries": "Anniversaries",
+      "anniversariesDesc": "View upcoming anniversaries",
       "attTrend": "Attendance Trend",
       "attTrendDesc": "View attendance trends over time",
       "bDays": "Birthdays",
