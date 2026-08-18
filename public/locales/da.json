@@ -4833,7 +4833,9 @@
       "importPrompt": "Vil du importere sangteksten fra PraiseCharts?",
       "keysTabsAria": "Nøglefaner",
       "noKeysAvailable": "Ingen nøgler tilgængelige. Tilføj en nøgle for at komme i gang.",
-      "title": "Toner"
+      "title": "Toner",
+      "audioTracks": "Lydspor",
+      "uploadAudio": "Upload lyd"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Sange",
       "subtitle": "Administrer dit musikbibliotek"
     },
-    "title": "Sange"
+    "title": "Sange",
+    "audio": {
+      "deleteConfirm": "Er du sikker på, at du vil slette denne lydfil?",
+      "tooLarge": "Filen er for stor. Maksimal størrelse er 25 MB.",
+      "unsupportedFormat": "Ikke-understøttet lydformat. Upload venligst en MP3-, M4A- eller AAC-fil.",
+      "upload": "Upload lyd"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto af",

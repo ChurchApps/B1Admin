@@ -14,6 +14,8 @@ interface Props {
   contentId: string;
   pendingSave: boolean;
   saveCallback: (file: any) => void;
+  accept?: string;
+  errorCallback?: () => void;
 }
 
 export function CustomFileUpload(props: Props) {
@@ -78,9 +80,14 @@ export function CustomFileUpload(props: Props) {
         setUploadError(Locale.label("fileUpload.quotaExceeded", "Storage quota exceeded. Delete unused files or upgrade your storage plan."));
       } else if (message.includes("storage_provider_error")) {
         setUploadError(message.substring(message.indexOf("storage_provider_error")));
+      } else if (message.includes("unsupported_audio_format")) {
+        setUploadError(Locale.label("songs.audio.unsupportedFormat", "Unsupported audio format. Please upload an MP3, M4A, or AAC file."));
+      } else if (message.includes("file_too_large")) {
+        setUploadError(Locale.label("songs.audio.tooLarge", "File is too large. Maximum size is 25 MB."));
       } else {
         setUploadError(Locale.label("fileUpload.uploadFailed", "Upload failed. Please try again."));
       }
+      props.errorCallback?.();
     }
   };
 
@@ -188,6 +195,7 @@ export function CustomFileUpload(props: Props) {
       <input
         id="fileUpload"
         type="file"
+        accept={props.accept}
         ref={fileInputRef}
         onChange={handleChange}
         style={{ display: "none" }}

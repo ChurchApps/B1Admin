@@ -4833,7 +4833,9 @@
       "importPrompt": "Vuoi importare i testi delle canzoni da PraiseCharts?",
       "keysTabsAria": "Schede chiavi",
       "noKeysAvailable": "Nessuna chiave disponibile. Aggiungi una chiave per iniziare.",
-      "title": "Tonalità"
+      "title": "Tonalità",
+      "audioTracks": "Tracce audio",
+      "uploadAudio": "Carica audio"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Canzoni",
       "subtitle": "Gestisci la tua libreria musicale"
     },
-    "title": "Canzoni"
+    "title": "Canzoni",
+    "audio": {
+      "deleteConfirm": "Sei sicuro di voler eliminare questo file audio?",
+      "tooLarge": "Il file è troppo grande. La dimensione massima è 25 MB.",
+      "unsupportedFormat": "Formato audio non supportato. Carica un file MP3, M4A o AAC.",
+      "upload": "Carica audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto di",

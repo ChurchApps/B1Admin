@@ -4833,7 +4833,9 @@
       "importPrompt": "您想从 PraiseCharts 导入文本歌词吗？",
       "keysTabsAria": "调标签",
       "noKeysAvailable": "无可用调。添加一个调以开始。",
-      "title": "调式"
+      "title": "调式",
+      "audioTracks": "音轨",
+      "uploadAudio": "上传音频"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "歌曲",
       "subtitle": "管理您的音乐库"
     },
-    "title": "歌曲"
+    "title": "歌曲",
+    "audio": {
+      "deleteConfirm": "确定要删除此音频文件吗？",
+      "tooLarge": "文件太大。最大大小为 25 MB。",
+      "unsupportedFormat": "不支持的音频格式。请上传 MP3、M4A 或 AAC 文件。",
+      "upload": "上传音频"
+    }
   },
   "stockPhotos": {
     "photoBy": "摄影：",

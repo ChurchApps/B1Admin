@@ -4833,7 +4833,9 @@
       "importPrompt": "Would you like to Nhập the text lyrics from PraiseCharts?",
       "keysTabsAria": "Tab khóa",
       "noKeysAvailable": "Không có khóa nào. Thêm khóa để bắt đầu.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Bản nhạc",
+      "uploadAudio": "Tải lên âm thanh"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "Bạn có chắc muốn xóa tệp âm thanh này không?",
+      "tooLarge": "Tệp quá lớn. Kích thước tối đa là 25 MB.",
+      "unsupportedFormat": "Định dạng âm thanh không được hỗ trợ. Hãy tải lên tệp MP3, M4A hoặc AAC.",
+      "upload": "Tải lên âm thanh"
+    }
   },
   "stockPhotos": {
     "photoBy": "Ảnh bởi",

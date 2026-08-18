@@ -4833,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Zavihki tonalitet",
       "noKeysAvailable": "Ni razpoložljivih tonalitet. Dodajte tonaliteto za začetek.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Zvočne sledi",
+      "uploadAudio": "Naloži zvok"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Pesmi",
       "subtitle": "Manage your music library"
     },
-    "title": "Pesmi"
+    "title": "Pesmi",
+    "audio": {
+      "deleteConfirm": "Ali res želite izbrisati to zvočno datoteko?",
+      "tooLarge": "Datoteka je prevelika. Največja velikost je 25 MB.",
+      "unsupportedFormat": "Nepodprta zvočna oblika. Naložite datoteko MP3, M4A ali AAC.",
+      "upload": "Naloži zvok"
+    }
   },
   "stockPhotos": {
     "photoBy": "Fotografija avtorja",

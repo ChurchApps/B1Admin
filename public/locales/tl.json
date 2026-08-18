@@ -4833,7 +4833,9 @@
       "importPrompt": "Gusto mo bang i-import ang mga text lyrics mula sa PraiseCharts?",
       "keysTabsAria": "Mga tab ng keys",
       "noKeysAvailable": "Walang available na keys. Magdagdag ng key upang magsimula.",
-      "title": "Mga Key"
+      "title": "Mga Key",
+      "audioTracks": "Mga audio track",
+      "uploadAudio": "Mag-upload ng audio"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Mga Awit",
       "subtitle": "Pamahalaan ang iyong library ng musika"
     },
-    "title": "Mga Awit"
+    "title": "Mga Awit",
+    "audio": {
+      "deleteConfirm": "Sigurado ka bang gusto mong tanggalin ang audio file na ito?",
+      "tooLarge": "Masyadong malaki ang file. Ang maximum ay 25 MB.",
+      "unsupportedFormat": "Hindi suportadong audio format. Mag-upload ng MP3, M4A, o AAC file.",
+      "upload": "Mag-upload ng audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Larawan ni",

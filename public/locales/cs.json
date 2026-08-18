@@ -4833,7 +4833,9 @@
       "importPrompt": "Chcete importovat textové texty z PraiseCharts?",
       "keysTabsAria": "Záložky tónin",
       "noKeysAvailable": "Nejsou k dispozici žádné tóniny. Přidejte tóninu, abyste mohli začít.",
-      "title": "Tóniny"
+      "title": "Tóniny",
+      "audioTracks": "Zvukové stopy",
+      "uploadAudio": "Nahrát audio"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Písně",
       "subtitle": "Spravujte svou hudební knihovnu"
     },
-    "title": "Písně"
+    "title": "Písně",
+    "audio": {
+      "deleteConfirm": "Opravdu chcete smazat tento zvukový soubor?",
+      "tooLarge": "Soubor je příliš velký. Maximální velikost je 25 MB.",
+      "unsupportedFormat": "Nepodporovaný zvukový formát. Nahrajte soubor MP3, M4A nebo AAC.",
+      "upload": "Nahrát audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto:",
