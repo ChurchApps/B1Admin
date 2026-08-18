@@ -2630,19 +2630,7 @@
       "report": "Rapport"
     },
     "reportsPage": {
-      "attTrend": "Närvarotrend",
-      "attTrendDesc": "Visa närvarotrender över tid",
-      "bDays": "Födelsedagar",
-      "bDaysDesc": "Visa kommande födelsedagar",
-      "dailyGroupAtt": "Daglig gruppnärvaro",
-      "dailyGroupAttDesc": "Visa daglig gruppnärvaro",
-      "donSum": "Gåvosammanfattning",
-      "donSumDesc": "Visa gåvosammanfattning",
-      "groupAtt": "Gruppnärvaro",
-      "groupAttDesc": "Visa gruppnärvaro",
-      "helpText": "Välj en rapport för att visa detaljerad information",
-      "reports": "Rapporter",
-      "subtitle": "Visa och ladda ner kyrkrapporter"
+      "reports": "Rapporter"
     }
   },
   "sermons": {

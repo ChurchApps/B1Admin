@@ -2630,19 +2630,7 @@
       "report": "Zpráva"
     },
     "reportsPage": {
-      "attTrend": "Trend docházky",
-      "attTrendDesc": "Zobrazit trendy docházky v čase",
-      "bDays": "Narozeniny",
-      "bDaysDesc": "Zobrazit nadcházející narozeniny",
-      "dailyGroupAtt": "Denní docházka skupin",
-      "dailyGroupAttDesc": "Zobrazit denní docházku skupin",
-      "donSum": "Souhrn darů",
-      "donSumDesc": "Zobrazit souhrn darů",
-      "groupAtt": "Docházka skupin",
-      "groupAttDesc": "Zobrazit docházku skupin",
-      "helpText": "Vyberte zprávu pro zobrazení podrobných informací",
-      "reports": "Zprávy",
-      "subtitle": "Zobrazení a stahování zpráv sboru"
+      "reports": "Zprávy"
     }
   },
   "sermons": {

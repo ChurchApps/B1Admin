@@ -2630,19 +2630,7 @@
       "report": "Rapport"
     },
     "reportsPage": {
-      "attTrend": "Oppmøtetrend",
-      "attTrendDesc": "Se oppmøtetrender over tid",
-      "bDays": "Bursdager",
-      "bDaysDesc": "Se kommende bursdager",
-      "dailyGroupAtt": "Daglig gruppeoppmøte",
-      "dailyGroupAttDesc": "Se daglig gruppeoppmøte",
-      "donSum": "Donasjonssammendrag",
-      "donSumDesc": "Se donasjonssammendrag",
-      "groupAtt": "Gruppens oppmøte",
-      "groupAttDesc": "Se gruppedeltakelse",
-      "helpText": "Velg en rapport for å se detaljert informasjon",
-      "reports": "Rapporter",
-      "subtitle": "Se og last ned kirkelige rapporter"
+      "reports": "Rapporter"
     }
   },
   "sermons": {

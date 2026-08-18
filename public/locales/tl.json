@@ -2630,19 +2630,7 @@
       "report": "Ulat"
     },
     "reportsPage": {
-      "attTrend": "Trendo ng Pagdalo",
-      "attTrendDesc": "Tingnan ang mga uso sa pagdalo sa paglipas ng panahon",
-      "bDays": "Mga Kaarawan",
-      "bDaysDesc": "Tingnan ang paparating na kaarawan",
-      "dailyGroupAtt": "Araw-araw na Pagdalo ng Grupo",
-      "dailyGroupAttDesc": "Tingnan ang Pang -araw -araw na Pagdalo ng Grupo",
-      "donSum": "Buod ng Donasyon",
-      "donSumDesc": "Tingnan ang Buod ng Donasyon",
-      "groupAtt": "Pagdalo ng Grupo",
-      "groupAttDesc": "Tingnan ang Pagdalo ng Grupo",
-      "helpText": "Pumili ng isang ulat upang matingnan ang detalyadong impormasyon",
-      "reports": "Mga Ulat",
-      "subtitle": "Tingnan at i -download ang Mga Ulat sa Simbahan"
+      "reports": "Mga Ulat"
     }
   },
   "sermons": {

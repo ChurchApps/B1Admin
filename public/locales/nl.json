@@ -2630,19 +2630,7 @@
       "report": "Rapport"
     },
     "reportsPage": {
-      "attTrend": "Aanwezigheidstrend",
-      "attTrendDesc": "Bekijk aanwezigheidstrends in de tijd",
-      "bDays": "Verjaardagen",
-      "bDaysDesc": "Bekijk aankomende verjaardagen",
-      "dailyGroupAtt": "Dagelijkse groepsaanwezigheid",
-      "dailyGroupAttDesc": "Bekijk dagelijkse groepsaanwezigheid",
-      "donSum": "Donatiesamenvatting",
-      "donSumDesc": "Bekijk donatiesamenvatting",
-      "groupAtt": "Groepsaanwezigheid",
-      "groupAttDesc": "Bekijk groepsaanwezigheid",
-      "helpText": "Selecteer een rapport om gedetailleerde informatie te bekijken",
-      "reports": "Rapporten",
-      "subtitle": "Bekijk en download kerkrapporten"
+      "reports": "Rapporten"
     }
   },
   "sermons": {

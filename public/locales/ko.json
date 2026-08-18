@@ -2630,19 +2630,7 @@
       "report": "보고서"
     },
     "reportsPage": {
-      "attTrend": "출석 추세",
-      "attTrendDesc": "시간 경과에 따른 출석 추세 보기",
-      "bDays": "생일",
-      "bDaysDesc": "다가오는 생일 보기",
-      "dailyGroupAtt": "일일 그룹 출석",
-      "dailyGroupAttDesc": "일일 그룹 출석 보기",
-      "donSum": "기부 요약",
-      "donSumDesc": "기부 요약 보기",
-      "groupAtt": "그룹 출석",
-      "groupAttDesc": "그룹 출석 보기",
-      "helpText": "자세한 정보를 보려면 보고서를 선택하세요.",
-      "reports": "보고서",
-      "subtitle": "교회 보고서 보기 및 다운로드"
+      "reports": "보고서"
     }
   },
   "sermons": {

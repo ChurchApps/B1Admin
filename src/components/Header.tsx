@@ -47,8 +47,6 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/site/pages", label: Locale.label("common.website"), icon: "language" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
-    menuItems.push({ url: "/reports", label: Locale.label("reports.reportsPage.reports"), icon: "bar_chart" });
-
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
     else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
     // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
@@ -112,8 +110,7 @@ export const Header: React.FC = () => {
         "/mobile": "nav-item-mobile",
         "/site/pages": "nav-item-website",
         "/calendars": "nav-item-calendars",
-        "/sermons": "nav-item-sermons",
-        "/reports": "nav-item-reports"
+        "/sermons": "nav-item-sermons"
       };
 
       const scopes = document.querySelectorAll("header, .MuiDrawer-root");
@@ -145,8 +142,7 @@ export const Header: React.FC = () => {
             devices: "nav-item-devices",
             mobile: "nav-item-mobile",
             website: "nav-item-website",
-            sermons: "nav-item-sermons",
-            reports: "nav-item-reports"
+            sermons: "nav-item-sermons"
           };
 
           for (const [key, testId] of Object.entries(textToTestId)) {

@@ -2630,19 +2630,7 @@
       "report": "报告"
     },
     "reportsPage": {
-      "attTrend": "出席趋势",
-      "attTrendDesc": "查看随时间变化的出席率趋势",
-      "bDays": "生日",
-      "bDaysDesc": "查看即将到来的生日",
-      "dailyGroupAtt": "每日团体出席",
-      "dailyGroupAttDesc": "查看每日团体出席情况",
-      "donSum": "捐款摘要",
-      "donSumDesc": "查看捐款摘要",
-      "groupAtt": "团体出席",
-      "groupAttDesc": "查看团体出席情况",
-      "helpText": "选择报告以查看详细信息",
-      "reports": "报告",
-      "subtitle": "查看和下载教会报告"
+      "reports": "报告"
     }
   },
   "sermons": {
