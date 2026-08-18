@@ -495,6 +495,9 @@ label .description {
   opacity: 0;
   transition: opacity 0.15s;
 }
+.planItemHeader .actionButton.alwaysVisible {
+  opacity: 1;
+}
 .planItem:hover .dragHandle, .planItemHeader:hover .dragHandle,
 .planItem:hover .actionButton, .planItemHeader:hover .actionButton {
   opacity: 1;
