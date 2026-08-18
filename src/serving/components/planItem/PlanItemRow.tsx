@@ -1,12 +1,12 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon } from "@mui/icons-material";
+import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
-import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, estimateSeconds } from "../planItemUtils";
+import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds } from "../planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -37,6 +37,7 @@ export const PlanItemRow: React.FC<Props> = ({
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
   const showVideoThumb = !!providerMedia && isVideoMedia(planItem.label, providerMedia);
+  const showAudioIcon = !!providerMedia && isAudioMedia(planItem.label, providerMedia);
   // Untimed images show a planning estimate (~5:00) rather than an alarming 0:00 —
   // stored seconds stay 0 so playback leaves the volunteer in control.
   const storedSeconds = planItem.seconds ?? 0;
@@ -91,6 +92,13 @@ export const PlanItemRow: React.FC<Props> = ({
               }}
               sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2, pointerEvents: "none", backgroundColor: "grey.900" }}
             />
+          ) : showAudioIcon ? (
+            <Box
+              component="span"
+              sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: 80, height: 45, backgroundColor: "grey.300", borderRadius: 2 }}
+            >
+              <MusicNoteIcon sx={{ fontSize: 32, color: "text.secondary" }} />
+            </Box>
           ) : (
             <Box
               component="img"
