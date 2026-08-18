@@ -5,6 +5,7 @@ export { useCampuses } from "./useCampuses";
 export { useConfirmDelete } from "./useConfirmDelete";
 export { useSortableData } from "./useSortableData";
 export { useErrorSummary } from "./useErrorSummary";
+export { useFirstDayOfWeek, applyWeekStart } from "./useFirstDayOfWeek";
 export { useReorderableLinks } from "./useReorderableLinks";
 export { useRequirePermission } from "./useRequirePermission";
 export { usePendingApprovalsCount, usePendingJoinRequestsCount } from "./usePendingCounts";

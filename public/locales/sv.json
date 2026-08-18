@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Din kyrkas unika webbadress"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Första dagen i veckan",
       "address1": "Adressrad 1",
       "address2": "Adressrad 2",
       "addressLine1Aria": "Adressrad 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Vill du importera textsångtexterna från PraiseCharts?",
       "keysTabsAria": "Tonartsflikar",
       "noKeysAvailable": "Inga tonarter tillgängliga. Lägg till en tonart för att komma igång.",
-      "title": "Tonarter"
+      "title": "Tonarter",
+      "audioTracks": "Ljudspår",
+      "uploadAudio": "Ladda upp ljud"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Sånger",
       "subtitle": "Hantera ditt musikbibliotek"
     },
-    "title": "Sånger"
+    "title": "Sånger",
+    "audio": {
+      "deleteConfirm": "Är du säker på att du vill ta bort den här ljudfilen?",
+      "tooLarge": "Filen är för stor. Maximal storlek är 25 MB.",
+      "unsupportedFormat": "Formatet stöds inte. Ladda upp en MP3-, M4A- eller AAC-fil.",
+      "upload": "Ladda upp ljud"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto av",

@@ -3162,6 +3162,7 @@
       "subdomainHelper": "आपकी चर्च का अद्वितीय वेब पता"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "सप्ताह का पहला दिन",
       "address1": "पता पंक्ति 1",
       "address2": "पता पंक्ति 2",
       "addressLine1Aria": "पता पंक्ति 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "क्या आप PraiseCharts से पाठ गीत आयात करना चाहते हैं?",
       "keysTabsAria": "कुंजी टैब",
       "noKeysAvailable": "कोई कुंजी उपलब्ध नहीं। शुरू करने के लिए एक कुंजी जोड़ें।",
-      "title": "कुंजियां"
+      "title": "कुंजियां",
+      "audioTracks": "ऑडियो ट्रैक",
+      "uploadAudio": "ऑडियो अपलोड करें"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "गीत",
       "subtitle": "अपनी संगीत लाइब्रेरी प्रबंधित करें"
     },
-    "title": "गीत"
+    "title": "गीत",
+    "audio": {
+      "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
+      "tooLarge": "फ़ाइल बहुत बड़ी है। अधिकतम आकार 25 MB है।",
+      "unsupportedFormat": "असमर्थित ऑडियो फ़ॉर्मेट। कृपया MP3, M4A या AAC फ़ाइल अपलोड करें।",
+      "upload": "ऑडियो अपलोड करें"
+    }
   },
   "stockPhotos": {
     "photoBy": "फ़ोटो द्वारा",

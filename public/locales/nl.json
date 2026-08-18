@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Het unieke webadres van uw kerk"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Eerste dag van de week",
       "address1": "Adresregel 1",
       "address2": "Adresregel 2",
       "addressLine1Aria": "Adresregel 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Wilt u de tekst van PraiseCharts importeren?",
       "keysTabsAria": "Toonsoort-tabbladen",
       "noKeysAvailable": "Geen toonsoorten beschikbaar. Voeg een toonsoort toe om te beginnen.",
-      "title": "Toonsoorten"
+      "title": "Toonsoorten",
+      "audioTracks": "Audiosporen",
+      "uploadAudio": "Audio uploaden"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Liederen",
       "subtitle": "Beheer uw muziekbibliotheek"
     },
-    "title": "Liederen"
+    "title": "Liederen",
+    "audio": {
+      "deleteConfirm": "Weet u zeker dat u dit audiobestand wilt verwijderen?",
+      "tooLarge": "Het bestand is te groot. De maximale grootte is 25 MB.",
+      "unsupportedFormat": "Niet-ondersteund audioformaat. Upload een MP3-, M4A- of AAC-bestand.",
+      "upload": "Audio uploaden"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto door",

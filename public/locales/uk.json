@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Перший день тижня",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Адреса, рядок 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Вкладки ключів",
       "noKeysAvailable": "Немає доступних ключів. Додайте ключ для початку.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Аудіодоріжки",
+      "uploadAudio": "Завантажити аудіо"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Пісні",
       "subtitle": "Manage your music library"
     },
-    "title": "Пісні"
+    "title": "Пісні",
+    "audio": {
+      "deleteConfirm": "Ви впевнені, що хочете видалити цей аудіофайл?",
+      "tooLarge": "Файл завеликий. Максимальний розмір — 25 МБ.",
+      "unsupportedFormat": "Непідтримуваний формат аудіо. Завантажте файл MP3, M4A або AAC.",
+      "upload": "Завантажити аудіо"
+    }
   },
   "stockPhotos": {
     "photoBy": "Фото від",

@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Viikon ensimmäinen päivä",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Osoiterivi 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Sävellajivälilehdet",
       "noKeysAvailable": "Sävellajeja ei ole saatavilla. Lisää sävellaji aloittaaksesi.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Ääniraidat",
+      "uploadAudio": "Lataa ääni"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "Haluatko varmasti poistaa tämän äänitiedoston?",
+      "tooLarge": "Tiedosto on liian suuri. Enimmäiskoko on 25 Mt.",
+      "unsupportedFormat": "Äänimuotoa ei tueta. Lataa MP3-, M4A- tai AAC-tiedosto.",
+      "upload": "Lataa ääni"
+    }
   },
   "stockPhotos": {
     "photoBy": "Kuvaaja",

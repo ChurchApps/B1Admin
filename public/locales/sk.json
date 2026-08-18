@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Prvý deň v týždni",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Adresa, riadok 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Karty tónin",
       "noKeysAvailable": "Žiadne tóniny nie sú k dispozícii. Pridajte tóninu, aby ste začali.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Zvukové stopy",
+      "uploadAudio": "Nahrať audio"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "Naozaj chcete odstrániť tento zvukový súbor?",
+      "tooLarge": "Súbor je príliš veľký. Maximálna veľkosť je 25 MB.",
+      "unsupportedFormat": "Nepodporovaný zvukový formát. Nahrajte súbor MP3, M4A alebo AAC.",
+      "upload": "Nahrať audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Fotografia od",

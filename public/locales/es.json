@@ -3162,6 +3162,7 @@
       "subdomainHelper": "La dirección web única de su iglesia"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Primer día de la semana",
       "address1": "Dirección Línea 1",
       "address2": "Dirección Línea 2",
       "addressLine1Aria": "Línea de dirección 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "¿Desea importar las letras de texto desde PraiseCharts?",
       "keysTabsAria": "Pestañas de tonalidades",
       "noKeysAvailable": "No hay tonalidades disponibles. Agregue una tonalidad para comenzar.",
-      "title": "Tonalidades"
+      "title": "Tonalidades",
+      "audioTracks": "Pistas de audio",
+      "uploadAudio": "Subir audio"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Canciones",
       "subtitle": "Administra tu biblioteca de música"
     },
-    "title": "Canciones"
+    "title": "Canciones",
+    "audio": {
+      "deleteConfirm": "¿Seguro que quieres eliminar este archivo de audio?",
+      "tooLarge": "El archivo es demasiado grande. El tamaño máximo es 25 MB.",
+      "unsupportedFormat": "Formato de audio no compatible. Sube un archivo MP3, M4A o AAC.",
+      "upload": "Subir audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto de",

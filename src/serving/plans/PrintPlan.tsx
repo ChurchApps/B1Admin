@@ -8,7 +8,7 @@ import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterfac
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
-import { getProviderInstructions } from "../components/planItemUtils";
+import { getProviderInstructions, filterFeedByPlanItems } from "../components/planItemUtils";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -170,33 +170,7 @@ export const PrintPlan = () => {
       }
     }
 
-    // Sections still present in the plan print as-is; sections expanded to
-    // individual actions keep only the actions still present in the plan.
-    if (currentFeed?.sections) {
-      const norm = (s?: string) => (s || "").trim().toLowerCase();
-      const planActionIds = new Set(flatPlanItems.map(pi => pi.relatedId).filter(Boolean));
-      const providerItemNames = new Set(flatPlanItems
-        .filter(pi => pi.providerId || pi.relatedId)
-        .map(pi => norm(pi.label || pi.description))
-        .filter(Boolean));
-
-      const sectionItems = flatPlanItems.filter(pi => ["section", "providerSection", "lessonSection", "header"].includes(pi.itemType));
-      const sectionIdsInPlan = new Set(sectionItems.map(pi => pi.relatedId).filter(Boolean));
-      const sectionNamesInPlan = new Set(sectionItems.map(pi => norm(pi.label || pi.description)).filter(Boolean));
-      const sectionInPlan = (s: FeedSectionInterface) => (!!s.id && sectionIdsInPlan.has(s.id)) || sectionNamesInPlan.has(norm(s.name));
-
-      currentFeed.sections.forEach((s: FeedSectionInterface) => {
-        if (sectionInPlan(s)) return;
-        s.actions = (s.actions || []).filter((a: FeedActionInterface) => {
-          if (a.id) return planActionIds.has(a.id);
-          // ponytail: id-less actions fall back to exact normalized name match — still
-          // plan-global; scope per-section if duplicate action text misprints in practice.
-          return !!a.content && providerItemNames.has(norm(a.content));
-        });
-      });
-
-      currentFeed.sections = currentFeed.sections.filter((s: FeedSectionInterface) => sectionInPlan(s) || (s.actions && s.actions.length > 0));
-    }
+    currentFeed = filterFeedByPlanItems(currentFeed, planItemsData || []);
 
     setFeed(currentFeed);
 

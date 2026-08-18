@@ -1,7 +1,7 @@
 import React from "react";
 import { Locale, PageHeader } from "@churchapps/apphelper";
 import { Box, Card, CardContent, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Container, Paper } from "@mui/material";
-import { CakeOutlined as BirthdayIcon, TrendingUp as TrendIcon, Groups as GroupsIcon, Today as DailyIcon, VolunteerActivism as DonationIcon, BarChart as BarChartIcon } from "@mui/icons-material";
+import { CakeOutlined as BirthdayIcon, FavoriteOutlined as AnniversaryIcon, TrendingUp as TrendIcon, Groups as GroupsIcon, Today as DailyIcon, VolunteerActivism as DonationIcon, BarChart as BarChartIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 export const ReportsPage = () => {
@@ -11,6 +11,12 @@ export const ReportsPage = () => {
       label: Locale.label("reports.reportsPage.bDays"),
       icon: <BirthdayIcon />,
       description: Locale.label("reports.reportsPage.bDaysDesc")
+    },
+    {
+      path: "/reports/anniversaries",
+      label: Locale.label("reports.reportsPage.anniversaries"),
+      icon: <AnniversaryIcon />,
+      description: Locale.label("reports.reportsPage.anniversariesDesc")
     },
     {
       path: "/reports/attendanceTrend",

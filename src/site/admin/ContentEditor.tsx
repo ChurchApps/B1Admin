@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState, useContext, useRef, useCallback, useMemo, useSyncExternalStore } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skeleton, Box, Button, Icon, Typography } from "@mui/material";
-import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface } from "../../helpers/Interfaces";
+import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface, SiteInterface } from "../../helpers/Interfaces";
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
 import { Permissions } from "@churchapps/helpers";
 import { Section } from "./Section";
@@ -29,6 +29,7 @@ import { useThemeMode } from "../../ThemeContext";
 import { SectionTemplatePicker } from "./templates/SectionTemplatePicker";
 import { buildTemplateSection, remapSectionContent, type SectionTemplateDef } from "./templates/sectionTemplates";
 import { trackSave, resetSaveStatus, subscribeSaveStatus, getSaveStatus, getLastSavedAt } from "./saveStatusTracker";
+import { setActiveSiteSubDomain } from "../siteCache";
 import { EDITOR_HOVER_CSS, getSelectionSuppressCss } from "./editorCss";
 import { AddSectionDivider } from "./AddSectionDivider";
 import { SelectionBreadcrumb, type BreadcrumbCrumb } from "./SelectionBreadcrumb";
@@ -226,6 +227,22 @@ export function ContentEditor(props: Props) {
   };
 
   useEffect(loadDataInternal, [props.pageId, props.blockId]);
+
+  // Every persisting mutation clears the public cache via trackSave; point it at this page's site.
+  const containerSiteId = (container as PageInterface)?.siteId;
+  useEffect(() => {
+    if (!containerSiteId) {
+      setActiveSiteSubDomain(null);
+      return;
+    }
+    ApiHelper.get("/sites", "MembershipApi")
+      .then((sites: SiteInterface[]) => {
+        const match = (Array.isArray(sites) ? sites : []).find((s) => s.id === containerSiteId);
+        setActiveSiteSubDomain(match?.subDomain || null);
+      })
+      .catch(() => setActiveSiteSubDomain(null));
+    return () => setActiveSiteSubDomain(null);
+  }, [containerSiteId]);
 
   useEffect(() => {
     if (container && !initialSnapshotSavedRef.current) {

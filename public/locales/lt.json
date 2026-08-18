@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Pirmoji savaitės diena",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Adreso 1 eilutė",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Tonacijų skirtukai",
       "noKeysAvailable": "Nėra prieinamų tonacijų. Pridėkite tonaciją, kad pradėtumėte.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Garso takeliai",
+      "uploadAudio": "Įkelti garsą"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "Ar tikrai norite ištrinti šį garso failą?",
+      "tooLarge": "Failas per didelis. Didžiausias dydis yra 25 MB.",
+      "unsupportedFormat": "Nepalaikomas garso formatas. Įkelkite MP3, M4A arba AAC failą.",
+      "upload": "Įkelti garsą"
+    }
   },
   "stockPhotos": {
     "photoBy": "Nuotrauka",

@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "أول يوم في الأسبوع",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "سطر العنوان 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "علامات تبويب المفاتيح",
       "noKeysAvailable": "لا توجد مفاتيح متاحة. أضف مفتاحًا للبدء.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "المقاطع الصوتية",
+      "uploadAudio": "رفع صوت"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "هل أنت متأكد من حذف ملف الصوت هذا؟",
+      "tooLarge": "الملف كبير جدًا. الحد الأقصى للحجم هو 25 ميجابايت.",
+      "unsupportedFormat": "تنسيق صوت غير مدعوم. يرجى رفع ملف MP3 أو M4A أو AAC.",
+      "upload": "رفع صوت"
+    }
   },
   "stockPhotos": {
     "photoBy": "صورة بواسطة",

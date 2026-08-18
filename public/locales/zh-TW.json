@@ -3162,6 +3162,7 @@
       "subdomainHelper": "您的教會獨特的網址"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "每週第一天",
       "address1": "地址第1行",
       "address2": "地址第2行",
       "addressLine1Aria": "地址行 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "您想從 PraiseCharts 匯入文本歌詞嗎？",
       "keysTabsAria": "調標籤",
       "noKeysAvailable": "無可用調。新增一個調以開始。",
-      "title": "調式"
+      "title": "調式",
+      "audioTracks": "音軌",
+      "uploadAudio": "上傳音訊"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "歌曲",
       "subtitle": "管理您的音樂庫"
     },
-    "title": "歌曲"
+    "title": "歌曲",
+    "audio": {
+      "deleteConfirm": "確定要刪除此音訊檔案嗎？",
+      "tooLarge": "檔案太大。大小上限為 25 MB。",
+      "unsupportedFormat": "不支援的音訊格式。請上傳 MP3、M4A 或 AAC 檔案。",
+      "upload": "上傳音訊"
+    }
   },
   "stockPhotos": {
     "photoBy": "攝影：",

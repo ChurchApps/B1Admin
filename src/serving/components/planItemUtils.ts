@@ -1,6 +1,6 @@
 import { type InstructionItem, type Instructions, type IProvider } from "@churchapps/content-providers";
 import { ApiHelper } from "@churchapps/apphelper";
-import { type PlanItemInterface } from "../../helpers";
+import { type PlanItemInterface, type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 
 /** Gets instructions from a provider based on its capabilities, proxying through the API when auth is required. */
 export async function getProviderInstructions(provider: IProvider, path: string, ministryId?: string, providerId?: string): Promise<Instructions | null> {
@@ -60,7 +60,7 @@ export async function duplicatePlanItem(planItem: PlanItemInterface): Promise<vo
 /** Fresh media info for a provider item, fetched per page load (provider links can expire). */
 export interface ProviderMediaInfo {
   url: string;
-  mediaType?: "video" | "image";
+  mediaType?: "video" | "image" | "audio";
   seconds?: number;
 }
 
@@ -86,6 +86,7 @@ export function matchProviderMedia(planItem: PlanItemInterface, lookup?: Record<
 }
 
 const VIDEO_EXT_PATTERN = /\.(mp4|webm|mov|m4v|avi|mkv)\s*(\?|#|$)/i;
+const AUDIO_EXT_PATTERN = /\.(mp3|m4a|aac|wav|flac|oga)\s*(\?|#|$)/i;
 
 /** Planning estimate for images. Stored seconds stay 0 so playback (FreePlay) leaves the
  * volunteer in control; this value is display/schedule-math only. */
@@ -96,13 +97,17 @@ export function estimateSeconds(planItem: PlanItemInterface, lookup?: Record<str
   if (planItem.seconds && planItem.seconds > 0) return planItem.seconds;
   if (planItem.itemType === "header") return 0;
   const media = matchProviderMedia(planItem, lookup);
-  if (media && !isVideoMedia(planItem.label, media)) return ESTIMATED_IMAGE_SECONDS;
+  if (media && !isVideoMedia(planItem.label, media) && !isAudioMedia(planItem.label, media)) return ESTIMATED_IMAGE_SECONDS;
   return 0;
 }
 
 /** Older provider versions omit mediaType, so also sniff the file extension from the label/url. */
 export function isVideoMedia(label: string | undefined, media: ProviderMediaInfo): boolean {
   return media.mediaType === "video" || VIDEO_EXT_PATTERN.test(label || "") || VIDEO_EXT_PATTERN.test(media.url.split("?")[0]);
+}
+
+export function isAudioMedia(label: string | undefined, media: ProviderMediaInfo): boolean {
+  return media.mediaType === "audio" || AUDIO_EXT_PATTERN.test(label || "") || AUDIO_EXT_PATTERN.test(media.url.split("?")[0]);
 }
 
 /** Reads a video's duration (seconds) by loading just its metadata. Resolves null on error/timeout. */
@@ -245,4 +250,52 @@ export function isFileType(itemType: string | undefined): boolean {
 
 export function isSongType(itemType: string | undefined): boolean {
   return ["song", "arrangementKey"].includes(itemType || "");
+}
+
+const SECTION_PLAN_TYPES = new Set(["section", "providerSection", "lessonSection", "header"]);
+
+function flattenPlanItems(items: PlanItemInterface[]): PlanItemInterface[] {
+  let result: PlanItemInterface[] = [];
+  items.forEach(item => {
+    result.push(item);
+    if (item.children) result = result.concat(flattenPlanItems(item.children));
+  });
+  return result;
+}
+
+/**
+ * Reconciles pristine lesson/provider content against the (possibly customized) plan items, so
+ * every print format matches the Service Order. Sections still in the plan print in full;
+ * sections expanded into actions keep only the actions that survived; anything else is dropped.
+ */
+export function filterFeedByPlanItems(feed: FeedVenueInterface | null, planItems: PlanItemInterface[]): FeedVenueInterface | null {
+  if (!feed?.sections?.length || !planItems?.length) return feed;
+
+  const norm = (s?: string) => (s || "").trim().toLowerCase();
+  const flat = flattenPlanItems(planItems);
+
+  const sectionItems = flat.filter(pi => SECTION_PLAN_TYPES.has(pi.itemType || ""));
+  const sectionIds = new Set(sectionItems.map(pi => pi.relatedId).filter(Boolean));
+  const sectionNames = new Set(sectionItems.map(pi => norm(pi.label || pi.description)).filter(Boolean));
+
+  const actionItems = flat.filter(pi => !SECTION_PLAN_TYPES.has(pi.itemType || ""));
+  const actionIds = new Set(actionItems.map(pi => pi.relatedId).filter(Boolean));
+  const actionNames = new Set(actionItems
+    .filter(pi => pi.providerId || pi.relatedId)
+    .map(pi => norm(pi.label || pi.description))
+    .filter(Boolean));
+
+  const sectionInPlan = (s: FeedSectionInterface) => (!!s.id && sectionIds.has(s.id)) || sectionNames.has(norm(s.name));
+
+  const sections = feed.sections
+    .map((s: FeedSectionInterface) => {
+      if (sectionInPlan(s)) return s;
+      // id-less actions fall back to exact normalized name match — plan-global, so scope
+      // per-section if duplicate action text ever misprints.
+      const actions = (s.actions || []).filter((a: FeedActionInterface) => (a.id ? actionIds.has(a.id) : !!a.content && actionNames.has(norm(a.content))));
+      return { ...s, actions };
+    })
+    .filter((s: FeedSectionInterface) => sectionInPlan(s) || !!s.actions?.length);
+
+  return { ...feed, sections };
 }

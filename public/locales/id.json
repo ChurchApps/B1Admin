@@ -3162,6 +3162,7 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Hari pertama dalam seminggu",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Alamat baris 1",
@@ -4832,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Tab nada",
       "noKeysAvailable": "Tidak ada nada tersedia. Tambahkan nada untuk memulai.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Trek audio",
+      "uploadAudio": "Unggah audio"
     },
     "library": {
       "empty": {
@@ -4911,7 +4914,13 @@
       "songs": "Lagu",
       "subtitle": "Manage your music library"
     },
-    "title": "Lagu"
+    "title": "Lagu",
+    "audio": {
+      "deleteConfirm": "Yakin ingin menghapus file audio ini?",
+      "tooLarge": "File terlalu besar. Ukuran maksimum 25 MB.",
+      "unsupportedFormat": "Format audio tidak didukung. Unggah file MP3, M4A, atau AAC.",
+      "upload": "Unggah audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto Oleh",

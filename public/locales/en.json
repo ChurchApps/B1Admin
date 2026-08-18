@@ -2632,6 +2632,8 @@
       "report": "Report"
     },
     "reportsPage": {
+      "anniversaries": "Anniversaries",
+      "anniversariesDesc": "View upcoming anniversaries",
       "attTrend": "Attendance Trend",
       "attTrendDesc": "View attendance trends over time",
       "bDays": "Birthdays",
@@ -3152,6 +3154,7 @@
       "churchNameAria": "Church name",
       "churchSettings": "Church Settings",
       "domainsSubtitle": "Custom domain configuration",
+      "firstDayOfWeek": "First Day of Week",
       "general": "General",
       "generalSubtitle": "Support contact, directory, and visibility",
       "givingSubtitle": "Payment gateway and fee options",
@@ -4794,6 +4797,12 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "audio": {
+      "deleteConfirm": "Are you sure you want to delete this audio file?",
+      "tooLarge": "File is too large. Maximum size is 25 MB.",
+      "unsupportedFormat": "Unsupported audio format. Please upload an MP3, M4A, or AAC file.",
+      "upload": "Upload Audio"
+    },
     "create": {
       "artist": "Artist",
       "songTitle": "Song Title",
@@ -4827,6 +4836,7 @@
       "add": "Add",
       "addExternalLink": "Add external link",
       "addFiles": "Add Files",
+      "audioTracks": "Audio Tracks",
       "availableDownloads": "Available Downloads",
       "externalLinks": "External Links",
       "import": "Import",
@@ -4834,7 +4844,8 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Keys tabs",
       "noKeysAvailable": "No keys available. Add a key to get started.",
-      "title": "Keys"
+      "title": "Keys",
+      "uploadAudio": "Upload Audio"
     },
     "library": {
       "empty": {
