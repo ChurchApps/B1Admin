@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -24,10 +24,12 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Loading, EventHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GroupInterface, type EventInterface } from "@churchapps/helpers";
+import { applyWeekStart } from "../../hooks";
 
 interface Props {
   churchId: string;
   curatedCalendarId: string;
+  firstDayOfWeek?: number;
   onDone?: () => void;
 }
 
@@ -39,7 +41,10 @@ export function EditCalendarEventModal(props: Props) {
   const [groupEvents, setGroupEvents] = useState<EventInterface[]>([]);
   const [eventIdsList, setEventIdsList] = useState<string[]>([]);
 
-  const localizer = dayjsLocalizer(dayjs);
+  const localizer = useMemo(() => {
+    applyWeekStart(props.firstDayOfWeek);
+    return dayjsLocalizer(dayjs);
+  }, [props.firstDayOfWeek]);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down(396));
