@@ -4833,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Anahtar sekmeleri",
       "noKeysAvailable": "Kullanılabilir anahtar yok. Başlamak için bir anahtar ekleyin.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Ses parçaları",
+      "uploadAudio": "Ses yükle"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Şarkılar",
       "subtitle": "Manage your music library"
     },
-    "title": "Şarkılar"
+    "title": "Şarkılar",
+    "audio": {
+      "deleteConfirm": "Bu ses dosyasını silmek istediğinizden emin misiniz?",
+      "tooLarge": "Dosya çok büyük. Maksimum boyut 25 MB.",
+      "unsupportedFormat": "Desteklenmeyen ses formatı. Lütfen bir MP3, M4A veya AAC dosyası yükleyin.",
+      "upload": "Ses yükle"
+    }
   },
   "stockPhotos": {
     "photoBy": "Fotoğraf",

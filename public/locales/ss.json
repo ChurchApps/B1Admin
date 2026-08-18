@@ -4833,7 +4833,9 @@
       "importPrompt": "Ungatsandza yini kungenisa emavi embhalo kusuka ku-PraiseCharts?",
       "keysTabsAria": "emathebhu etikhiya",
       "noKeysAvailable": "Ayikho tikhiya letitfolakalako. Engeta sikhiya kute ucale.",
-      "title": "Tikhiya"
+      "title": "Tikhiya",
+      "audioTracks": "Audio Tracks",
+      "uploadAudio": "Upload Audio"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Tingoma",
       "subtitle": "Phatsa layibhulari yakho yemculo"
     },
-    "title": "Tingoma"
+    "title": "Tingoma",
+    "audio": {
+      "deleteConfirm": "Are you sure you want to delete this audio file?",
+      "tooLarge": "File is too large. Maximum size is 25 MB.",
+      "unsupportedFormat": "Unsupported audio format. Please upload an MP3, M4A, or AAC file.",
+      "upload": "Upload Audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Sitfombe Ngu",

@@ -4833,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Zakładki tonacji",
       "noKeysAvailable": "Brak dostępnych tonacji. Dodaj tonację, aby rozpocząć.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Ścieżki audio",
+      "uploadAudio": "Prześlij audio"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Piosenki",
       "subtitle": "Manage your music library"
     },
-    "title": "Piosenki"
+    "title": "Piosenki",
+    "audio": {
+      "deleteConfirm": "Czy na pewno chcesz usunąć ten plik audio?",
+      "tooLarge": "Plik jest za duży. Maksymalny rozmiar to 25 MB.",
+      "unsupportedFormat": "Nieobsługiwany format audio. Prześlij plik MP3, M4A lub AAC.",
+      "upload": "Prześlij audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Zdjęcie autorstwa",

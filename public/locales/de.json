@@ -4833,7 +4833,9 @@
       "importPrompt": "Möchten Sie die Textlieder von PraiseCharts importieren?",
       "keysTabsAria": "Tonart-Tabs",
       "noKeysAvailable": "Keine Tonarten verfügbar. Fügen Sie eine Tonart hinzu, um zu beginnen.",
-      "title": "Tonarten"
+      "title": "Tonarten",
+      "audioTracks": "Audiospuren",
+      "uploadAudio": "Audio hochladen"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Lieder",
       "subtitle": "Verwalten Sie Ihre Musikbibliothek"
     },
-    "title": "Lieder"
+    "title": "Lieder",
+    "audio": {
+      "deleteConfirm": "Möchten Sie diese Audiodatei wirklich löschen?",
+      "tooLarge": "Die Datei ist zu groß. Die maximale Größe beträgt 25 MB.",
+      "unsupportedFormat": "Nicht unterstütztes Audioformat. Bitte laden Sie eine MP3-, M4A- oder AAC-Datei hoch.",
+      "upload": "Audio hochladen"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto von",

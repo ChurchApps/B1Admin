@@ -4833,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "キータブ",
       "noKeysAvailable": "利用可能なキーがありません。キーを追加して開始します。",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "音声トラック",
+      "uploadAudio": "音声をアップロード"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "この音声ファイルを削除してもよろしいですか？",
+      "tooLarge": "ファイルが大きすぎます。最大サイズは 25 MB です。",
+      "unsupportedFormat": "未対応の音声形式です。MP3、M4A、または AAC ファイルをアップロードしてください。",
+      "upload": "音声をアップロード"
+    }
   },
   "stockPhotos": {
     "photoBy": "写真提供",

@@ -4833,7 +4833,9 @@
       "importPrompt": "Deseja importar as letras das músicas do PraiseCharts?",
       "keysTabsAria": "Abas de tons",
       "noKeysAvailable": "Nenhum tom disponível. Adicione um tom para começar.",
-      "title": "Tons"
+      "title": "Tons",
+      "audioTracks": "Faixas de áudio",
+      "uploadAudio": "Enviar áudio"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Músicas",
       "subtitle": "Gerencie sua biblioteca de música"
     },
-    "title": "Músicas"
+    "title": "Músicas",
+    "audio": {
+      "deleteConfirm": "Tem certeza de que deseja excluir este arquivo de áudio?",
+      "tooLarge": "O arquivo é muito grande. O tamanho máximo é 25 MB.",
+      "unsupportedFormat": "Formato de áudio não suportado. Envie um arquivo MP3, M4A ou AAC.",
+      "upload": "Enviar áudio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto por",

@@ -4833,7 +4833,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Hangnem fülek",
       "noKeysAvailable": "Nincsenek elérhető hangnemek. Adjon hozzá egyet a kezdéshez.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Sávok",
+      "uploadAudio": "Hang feltöltése"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "Biztosan törli ezt a hangfájlt?",
+      "tooLarge": "A fájl túl nagy. A maximális méret 25 MB.",
+      "unsupportedFormat": "Nem támogatott hangformátum. Töltsön fel MP3, M4A vagy AAC fájlt.",
+      "upload": "Hang feltöltése"
+    }
   },
   "stockPhotos": {
     "photoBy": "Fotó:",

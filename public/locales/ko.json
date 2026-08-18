@@ -4833,7 +4833,9 @@
       "importPrompt": "PraiseCharts에서 텍스트 가사를 가져오시겠습니까?",
       "keysTabsAria": "키 탭",
       "noKeysAvailable": "사용 가능한 키가 없습니다. 시작하려면 키를 추가하세요.",
-      "title": "키"
+      "title": "키",
+      "audioTracks": "오디오 트랙",
+      "uploadAudio": "오디오 업로드"
     },
     "library": {
       "empty": {
@@ -4912,7 +4914,13 @@
       "songs": "노래",
       "subtitle": "음악 라이브러리 관리"
     },
-    "title": "노래"
+    "title": "노래",
+    "audio": {
+      "deleteConfirm": "이 오디오 파일을 삭제하시겠습니까?",
+      "tooLarge": "파일이 너무 큽니다. 최대 크기는 25MB입니다.",
+      "unsupportedFormat": "지원되지 않는 오디오 형식입니다. MP3, M4A 또는 AAC 파일을 업로드하세요.",
+      "upload": "오디오 업로드"
+    }
   },
   "stockPhotos": {
     "photoBy": "사진 제공자",
