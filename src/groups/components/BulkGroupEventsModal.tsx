@@ -71,7 +71,10 @@ export function BulkGroupEventsModal(props: Props) {
         end: new Date(`${dates[0]}T${endTime}`),
         allDay: false,
         visibility,
-        recurrenceRule: dates.length > 1 ? `FREQ=WEEKLY;INTERVAL=${interval};UNTIL=${lastDate.replace(/-/g, "")}T235959Z` : undefined
+        recurrenceRule: dates.length > 1
+          // Explicit BYDAY anchors the series to the actual selected weekday instead of an implicit parse-time default.
+          ? `FREQ=WEEKLY;INTERVAL=${interval};BYDAY=${["SU", "MO", "TU", "WE", "TH", "FR", "SA"][new Date(dates[0] + "T12:00:00").getDay()]};UNTIL=${lastDate.replace(/-/g, "")}T235959Z`
+          : undefined
       } as EventInterface;
       // Explicit boolean (never undefined) so Kysely persists the disabled flag on the created event.
       (event as any).rsvpDisabled = !allowRsvps;
