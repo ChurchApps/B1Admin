@@ -155,6 +155,54 @@ test.describe.serial("Webhooks", () => {
     await expect(page.getByRole("button", { name: "New Webhook" })).toBeVisible({ timeout: 10000 });
   });
 
+  test("shows Mailchimp credential fields instead of a URL", async () => {
+    await page.getByRole("button", { name: "New Webhook" }).click();
+    await page.getByLabel("Name", { exact: true }).fill("Zacchaeus Mailchimp Webhook");
+
+    const connectorSelect = page.getByRole("combobox");
+    await connectorSelect.click();
+    await page.getByRole("option", { name: "Mailchimp", exact: true }).click();
+
+    await expect(page.getByLabel("Mailchimp API Key", { exact: true })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByLabel("Audience ID", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Payload URL", { exact: true })).toHaveCount(0);
+
+    // Catalog collapses to sync-capable events, pre-selected; unmapped ones disappear.
+    await expect(page.getByLabel("person.created")).toBeChecked({ timeout: 10000 });
+    await expect(page.getByLabel("donation.created")).toHaveCount(0);
+
+    await page.locator("button").getByText("Cancel").click();
+    await expect(page.getByRole("button", { name: "New Webhook" })).toBeVisible({ timeout: 10000 });
+  });
+
+  test("surfaces Mailchimp credential validation from the API", async () => {
+    await page.getByRole("button", { name: "New Webhook" }).click();
+    await page.getByLabel("Name", { exact: true }).fill("Zacchaeus Mailchimp Webhook");
+
+    const connectorSelect = page.getByRole("combobox");
+    await connectorSelect.click();
+    await page.getByRole("option", { name: "Mailchimp", exact: true }).click();
+
+    const apiKeyField = page.getByLabel("Mailchimp API Key", { exact: true });
+    await expect(apiKeyField).toBeVisible({ timeout: 10000 });
+
+    // Malformed key (no -dcN suffix) is rejected server-side before touching Mailchimp.
+    await apiKeyField.fill("bogus-key");
+    await page.getByLabel("Audience ID", { exact: true }).fill("abc123");
+    const savePost = page.waitForResponse(
+      (r) => r.url().includes("/webhooks") && r.request().method() === "POST",
+      { timeout: 15000 }
+    );
+    await page.locator("button").getByText("Save").click();
+    expect((await savePost).status()).toBe(400);
+    await expect(page.getByText(/data center suffix/)).toBeVisible({ timeout: 10000 });
+
+    // No webhook row was created.
+    await page.locator("button").getByText("Cancel").click();
+    await expect(page.getByRole("button", { name: "New Webhook" })).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("tr").filter({ hasText: "Zacchaeus Mailchimp Webhook" })).toHaveCount(0);
+  });
+
   test("deletes a webhook", async () => {
     const row = page.locator("tr").filter({ hasText: WEBHOOK_NAME_EDITED }).first();
     await row.getByRole("button", { name: "Delete" }).click();
