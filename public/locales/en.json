@@ -2033,6 +2033,22 @@
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
     },
+    "applyYearPlan": {
+      "dateTaken": "A plan already exists on this date.",
+      "externalSkipped": "This week is from an external provider and cannot be applied here.",
+      "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Could not load published year plans.",
+      "missingVenue": "Missing program, lesson, or venue.",
+      "nonePublished": "No year plans have been published yet.",
+      "savingFailed": "Failed to create some plans. Please check and try again.",
+      "schedulingProgress": "Scheduling...",
+      "startDate": "First class date",
+      "title": "Apply Year Plan",
+      "week": "Week",
+      "weekCount": "How many weeks",
+      "weeks": "weeks",
+      "yearPlan": "Year plan"
+    },
     "browseGrid": {
       "addOn": "Add-On"
     },
@@ -2184,6 +2200,7 @@
       "seconds": "Seconds"
     },
     "planList": {
+      "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "createFirst": "Create First Plan",
       "createPlan": "Create Plan",
@@ -2225,6 +2242,7 @@
       "heading": "Associated Groups",
       "noGroups": "No groups associated",
       "noGroupsDescription": "Associate groups with this plan type so members see plans on their group's page in the B1App.",
+      "parentHint": "Associate a parent group here so members see this week's lesson on the group page. Past is the usual filter for parent groups.",
       "removeConfirm": "Remove this group association?",
       "selectGroup": "Select a group",
       "showsLabel": "Shows",
