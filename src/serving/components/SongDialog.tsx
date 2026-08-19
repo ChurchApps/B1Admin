@@ -63,7 +63,7 @@ export const SongDialog: React.FC<Props> = (props) => {
     <ul>
       {links.map((l) => (
         <li key={l.id}>
-          <a href={l.url} target="_blank" rel="noreferrer">{l.text}</a>
+          <a href={/^https?:\/\//i.test(l.url || "") || /^mailto:/i.test(l.url || "") ? l.url : "#"} target="_blank" rel="noreferrer">{l.text}</a>
         </li>
       ))}
     </ul>

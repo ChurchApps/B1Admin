@@ -174,7 +174,7 @@ export const Keys = memo((props: Props) => {
                 )}
                 <ListItemButton
                   component="a"
-                  href={l.url}
+                  href={/^https?:\/\//i.test(l.url || "") || /^mailto:/i.test(l.url || "") ? l.url : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{
