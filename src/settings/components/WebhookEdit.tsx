@@ -19,12 +19,21 @@ const statusColor = (status?: string): "success" | "warning" | "error" | "defaul
   return "default";
 };
 
+const MAILCHIMP_EVENTS = ["person.created", "person.updated", "person.destroyed", "group.member.added", "group.member.removed", "list.member.added", "list.member.removed"];
+
+const parseConfig = (raw?: string): { apiKey?: string; audienceId?: string } => {
+  try { return raw ? JSON.parse(raw) : {}; } catch { return {}; }
+};
+
 const codeBox = { backgroundColor: "#fafafa", border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1, mb: 2, overflow: "auto", maxHeight: 240, fontSize: 12, whiteSpace: "pre-wrap", wordBreak: "break-all" } as const;
 
 export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDelete }) => {
   const [name, setName] = useState(webhook.name || "");
   const [url, setUrl] = useState(webhook.url || "");
   const [connectorType, setConnectorType] = useState(webhook.connectorType || "standard");
+  const initialConfig = parseConfig(webhook.connectorConfig);
+  const [apiKey, setApiKey] = useState(initialConfig.apiKey || "");
+  const [audienceId, setAudienceId] = useState(initialConfig.audienceId || "");
   const [active, setActive] = useState(webhook.active !== false);
   const [events, setEvents] = useState<string[]>(webhook.events || []);
   const [catalog, setCatalog] = useState<Record<string, string[]>>({});
@@ -50,10 +59,20 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
     setEvents((prev) => (prev.includes(event) ? prev.filter((e) => e !== event) : [...prev, event]));
   };
 
+  const isMailchimp = connectorType === "mailchimp";
+
+  const handleConnectorChange = (value: string) => {
+    setConnectorType(value);
+    if (value === "mailchimp") setEvents((prev) => (prev.some((e) => MAILCHIMP_EVENTS.includes(e)) ? prev.filter((e) => MAILCHIMP_EVENTS.includes(e)) : [...MAILCHIMP_EVENTS]));
+  };
+
   const validate = () => {
     const errs: string[] = [];
     if (!name.trim()) errs.push(Locale.label("settings.webhookEdit.nameRequired"));
-    if (!url.trim()) errs.push(Locale.label("settings.webhookEdit.urlRequired"));
+    if (isMailchimp) {
+      if (!apiKey.trim()) errs.push(Locale.label("settings.webhookEdit.apiKeyRequired"));
+      if (!audienceId.trim()) errs.push(Locale.label("settings.webhookEdit.audienceIdRequired"));
+    } else if (!url.trim()) errs.push(Locale.label("settings.webhookEdit.urlRequired"));
     if (events.length === 0) errs.push(Locale.label("settings.webhookEdit.eventsRequired"));
     setErrors(errs);
     return errs.length === 0;
@@ -62,10 +81,15 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
   const handleSave = async () => {
     if (!validate()) return;
     const payload: WebhookInterface = { id: webhook.id, name, url, events, active, connectorType };
-    const saved: WebhookInterface = await ApiHelper.post("/webhooks", payload, "MembershipApi");
-    // The signing secret is only returned when a webhook is first created.
-    if (saved?.secret) setSecret(saved.secret);
-    else onSave();
+    if (isMailchimp) payload.connectorConfig = JSON.stringify({ apiKey, audienceId });
+    try {
+      const saved: WebhookInterface = await ApiHelper.post("/webhooks", payload, "MembershipApi");
+      // The signing secret is only returned when a webhook is first created.
+      if (saved?.secret) setSecret(saved.secret);
+      else onSave();
+    } catch (e: any) {
+      setErrors([e?.message || Locale.label("settings.webhookEdit.saveFailed")]);
+    }
   };
 
   const handleRegenerate = async () => {
@@ -106,18 +130,26 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
       <FormCard icon="webhook" title={webhook.id ? Locale.label("settings.webhookEdit.editWebhook") : Locale.label("settings.webhookEdit.newWebhook")} onSave={handleSave} onCancel={onCancel} onDelete={onDelete}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.webhookEdit.name")} placeholder={Locale.label("settings.webhookEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
-        <TextField select fullWidth label={Locale.label("settings.webhookEdit.connectorType")} value={connectorType} onChange={(e) => setConnectorType(e.target.value)}>
+        <TextField select fullWidth label={Locale.label("settings.webhookEdit.connectorType")} value={connectorType} onChange={(e) => handleConnectorChange(e.target.value)}>
           <MenuItem value="standard">{Locale.label("settings.webhookEdit.connectorStandard")}</MenuItem>
           <MenuItem value="slack">{Locale.label("settings.webhookEdit.connectorSlack")}</MenuItem>
           <MenuItem value="discord">{Locale.label("settings.webhookEdit.connectorDiscord")}</MenuItem>
+          <MenuItem value="mailchimp">{Locale.label("settings.webhookEdit.connectorMailchimp")}</MenuItem>
         </TextField>
-        <TextField fullWidth label={Locale.label("settings.webhookEdit.url")} placeholder={Locale.label("settings.webhookEdit.urlPlaceholder")} value={url} onChange={(e) => setUrl(e.target.value)} helperText={connectorType === "slack" ? Locale.label("settings.webhookEdit.slackUrlHelp") : connectorType === "discord" ? Locale.label("settings.webhookEdit.discordUrlHelp") : ""} />
+        {isMailchimp ? (
+          <>
+            <TextField fullWidth type="password" label={Locale.label("settings.webhookEdit.mailchimpApiKey")} placeholder="xxxxxxxxxxxxxxxx-us21" value={apiKey} onChange={(e) => setApiKey(e.target.value)} helperText={Locale.label("settings.webhookEdit.mailchimpApiKeyHelp")} />
+            <TextField fullWidth label={Locale.label("settings.webhookEdit.mailchimpAudienceId")} value={audienceId} onChange={(e) => setAudienceId(e.target.value)} helperText={Locale.label("settings.webhookEdit.mailchimpAudienceIdHelp")} />
+          </>
+        ) : (
+          <TextField fullWidth label={Locale.label("settings.webhookEdit.url")} placeholder={Locale.label("settings.webhookEdit.urlPlaceholder")} value={url} onChange={(e) => setUrl(e.target.value)} helperText={connectorType === "slack" ? Locale.label("settings.webhookEdit.slackUrlHelp") : connectorType === "discord" ? Locale.label("settings.webhookEdit.discordUrlHelp") : ""} />
+        )}
         <FormControlLabel control={<Switch checked={active} onChange={(e) => setActive(e.target.checked)} />} label={Locale.label("settings.webhookEdit.active")} />
         <Box sx={{ mt: 2 }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.webhookEdit.events")}</Typography>
-          {Object.keys(catalog).map((group) => (
+          {Object.keys(catalog).filter((group) => !isMailchimp || catalog[group].some((e) => MAILCHIMP_EVENTS.includes(e))).map((group) => (
             <Stack key={group} direction="row" flexWrap="wrap">
-              {catalog[group].map((event) => (
+              {catalog[group].filter((event) => !isMailchimp || MAILCHIMP_EVENTS.includes(event)).map((event) => (
                 <FormControlLabel key={event} control={<Checkbox size="small" checked={events.includes(event)} onChange={() => toggleEvent(event)} />} label={event} />
               ))}
             </Stack>
@@ -125,7 +157,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
         </Box>
         {webhook.id && (
           <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-            <Button variant="outlined" size="small" onClick={handleRegenerate}>{Locale.label("settings.webhookEdit.regenerateSecret")}</Button>
+            {!isMailchimp && <Button variant="outlined" size="small" onClick={handleRegenerate}>{Locale.label("settings.webhookEdit.regenerateSecret")}</Button>}
             <Button variant="outlined" size="small" onClick={handleSendTest} disabled={testing}>{testing ? Locale.label("settings.webhookEdit.sendingTest") : Locale.label("settings.webhookEdit.sendTest")}</Button>
           </Stack>
         )}
