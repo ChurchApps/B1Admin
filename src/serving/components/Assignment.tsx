@@ -279,6 +279,8 @@ export const Assignment = (props: Props) => {
     loadPlans();
   }, [props.plan?.id, loadData, loadPlans]);
 
+  const categoryNames = React.useMemo(() => positions?.length > 0 ? ArrayHelper.getUniqueValues(positions, "categoryName") : [Locale.label("plans.planPage.band")], [positions]);
+
   const totalNeeded = positions.reduce((s, p) => s + (p.count || 0), 0);
   const totalFilled = positions.reduce((s, p) => s + Math.min(assignments.filter((a) => a.positionId === p.id).length, p.count || 0), 0);
   const remaining = Math.max(0, totalNeeded - totalFilled);
@@ -399,7 +401,7 @@ export const Assignment = (props: Props) => {
             <PositionEdit
               key={position?.id || position?.name || "new-position"}
               position={position}
-              categoryNames={positions?.length > 0 ? ArrayHelper.getUniqueValues(positions, "categoryName") : [Locale.label("plans.planPage.band")]}
+              categoryNames={categoryNames}
               updatedFunction={() => {
                 setPosition(null);
                 loadData();

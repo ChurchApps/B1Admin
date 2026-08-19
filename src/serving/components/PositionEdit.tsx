@@ -29,7 +29,7 @@ export const PositionEdit = (props: Props) => {
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const { control, register, handleSubmit, setValue, watch, reset } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, setValue, watch } = useForm<AnyRecord>({
     defaultValues: {
       categoryName: props.position?.categoryName ?? "",
       name: props.position?.name ?? "",
@@ -92,22 +92,6 @@ export const PositionEdit = (props: Props) => {
   };
 
   useEffect(() => {
-    reset({
-      categoryName: props.position?.categoryName ?? "",
-      name: props.position?.name ?? "",
-      count: props.position?.count ?? 0,
-      groupId: props.position?.groupId ?? "",
-      description: props.position?.description ?? ""
-    });
-    setAllowSelfSignup(props.position?.allowSelfSignup ?? false);
-    const opts = props.categoryNames.map((n) => ({ value: n, label: n }));
-    if (props.position?.categoryName && !opts.some((o) => o.value === props.position.categoryName)) {
-      opts.push({ value: props.position.categoryName, label: props.position.categoryName });
-    }
-    setCategoryOptions(opts);
-  }, [props.position, props.categoryNames, reset]);
-
-  useEffect(() => {
     ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => setGroups(data));
   }, []);
 
@@ -133,10 +117,8 @@ export const PositionEdit = (props: Props) => {
               options={categoryOptions}
               onBlur={handleCategoryBlur}
               className="comboBox"
-              menuPortalTarget={typeof document !== "undefined" ? document.body : null}
-              styles={{
-                menu: (base) => ({ ...base, zIndex: 9999 })
-              }}
+              menuPortalTarget={document.body}
+              styles={{ menu: (base) => ({ ...base, zIndex: 9999 }) }}
             />
           )} />
         </FormControl>
