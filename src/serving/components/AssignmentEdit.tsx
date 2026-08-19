@@ -87,8 +87,9 @@ export const AssignmentEdit = (props: Props) => {
   };
 
   useEffect(() => {
+    setPreferencePerson(null);
     loadData();
-  }, [props.position?.groupId]);
+  }, [props.position?.id, props.position?.groupId, props.assignment?.id]);
 
   return (
     <>

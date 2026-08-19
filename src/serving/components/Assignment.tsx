@@ -115,6 +115,7 @@ export const Assignment = (props: Props) => {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={() => {
+              setAssignment(null);
               setPosition({
                 categoryName: "Band",
                 name: "",
@@ -170,6 +171,7 @@ export const Assignment = (props: Props) => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => {
+            setAssignment(null);
             setPosition({
               categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
               name: "",
@@ -277,6 +279,8 @@ export const Assignment = (props: Props) => {
     loadPlans();
   }, [props.plan?.id, loadData, loadPlans]);
 
+  const categoryNames = React.useMemo(() => positions?.length > 0 ? ArrayHelper.getUniqueValues(positions, "categoryName") : [Locale.label("plans.planPage.band")], [positions]);
+
   const totalNeeded = positions.reduce((s, p) => s + (p.count || 0), 0);
   const totalFilled = positions.reduce((s, p) => s + Math.min(assignments.filter((a) => a.positionId === p.id).length, p.count || 0), 0);
   const remaining = Math.max(0, totalNeeded - totalFilled);
@@ -330,7 +334,7 @@ export const Assignment = (props: Props) => {
                 <LinearProgress variant="determinate" value={progress} sx={{ height: 8, borderRadius: 4 }} />
               </Stack>
             )}
-            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => setPosition(p)} onAssignmentSelect={handleAssignmentSelect} />
+            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
           </CardContent>
         </Card>
 
@@ -395,8 +399,9 @@ export const Assignment = (props: Props) => {
         <Stack spacing={3}>
           {canEdit && position && !assignment && (
             <PositionEdit
+              key={position?.id || position?.name || "new-position"}
               position={position}
-              categoryNames={positions?.length > 0 ? ArrayHelper.getUniqueValues(positions, "categoryName") : [Locale.label("plans.planPage.band")]}
+              categoryNames={categoryNames}
               updatedFunction={() => {
                 setPosition(null);
                 loadData();
@@ -405,6 +410,7 @@ export const Assignment = (props: Props) => {
           )}
           {canEdit && assignment && position && (
             <AssignmentEdit
+              key={assignment?.id || position?.id || "new-assignment"}
               position={position}
               assignment={assignment}
               peopleNeeded={peopleNeededForPosition}
