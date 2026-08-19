@@ -99,6 +99,23 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await expect(allTabs).toHaveCount(3, { timeout: 10000 });
     });
 
+    test("should upload audio to a song key and play it inline", async () => {
+      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      await songsBtn.click();
+      await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
+      await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
+      const song = page.locator("a").getByText("Frolic", { exact: true }).first();
+      await song.click();
+      await expect(page.locator("#page-header-title")).toBeVisible({ timeout: 10000 });
+
+      await page.locator('[id="addBtnGroup"]').first().click();
+      await page.locator("li").getByText("Upload Audio").click();
+      await page.locator('input[type="file"]').setInputFiles({ name: "frolic.mp3", mimeType: "audio/mpeg", buffer: Buffer.from("SUQzAwAAAAAAAA==", "base64") });
+      await page.locator("button").getByText("Save", { exact: true }).last().click();
+      await expect(page.getByText("frolic.mp3").first()).toBeVisible({ timeout: 20000 });
+      await expect(page.locator("audio")).toBeVisible();
+    });
+
     test("should add link from song key menu", async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
       await songsBtn.click();

@@ -24,6 +24,7 @@ export const SongDialog: React.FC<Props> = (props) => {
   const [songDetail, setSongDetail] = React.useState<SongDetailInterface | null>(null);
   const [products, setProducts] = React.useState<PraiseChartsProduct[]>([]);
   const [links, setLinks] = React.useState<LinkInterface[]>([]);
+  const [audioFiles, setAudioFiles] = React.useState<any[]>([]);
   const [keyOffset, setKeyOffset] = React.useState(0);
 
   const loadData = async () => {
@@ -34,6 +35,8 @@ export const SongDialog: React.FC<Props> = (props) => {
     setArrangement(arr);
     const sd = await ApiHelper.get("/songDetails/" + arr.songDetailId, "ContentApi");
     setSongDetail(sd);
+    const files = await ApiHelper.get("/files/arrangement/" + arr.id, "ContentApi");
+    setAudioFiles(files || []);
   };
 
   const download = async (product: PraiseChartsProduct) => {
@@ -61,6 +64,17 @@ export const SongDialog: React.FC<Props> = (props) => {
       {links.map((l) => (
         <li key={l.id}>
           <a href={l.url} target="_blank" rel="noreferrer">{l.text}</a>
+        </li>
+      ))}
+    </ul>
+  );
+
+  const listAudioFiles = () => (
+    <ul>
+      {audioFiles.map((f) => (
+        <li key={f.id}>
+          {f.fileName}
+          <audio controls preload="none" src={f.contentPath} style={{ width: "100%", maxWidth: 420, display: "block", marginTop: 4 }} />
         </li>
       ))}
     </ul>
@@ -122,11 +136,12 @@ export const SongDialog: React.FC<Props> = (props) => {
       <DialogContent>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 9 }}>
-            {(products?.length > 0 || links.length > 0) && (
+            {(products?.length > 0 || links.length > 0 || audioFiles.length > 0) && (
               <>
                 <h3>{Locale.label("plans.songDialog.files")}</h3>
                 {listProducts()}
                 {listLinks()}
+                {listAudioFiles()}
               </>
             )}
 
