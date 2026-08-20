@@ -171,7 +171,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
         )}
         {selectedChild ? selectedChild.label : (props.sectionName || Locale.label("plans.lessonDialog.fallbackTitle"))}
       </DialogTitle>
-      <DialogContent sx={{ p: 0, overflow: "hidden" }}>
+      <DialogContent sx={{ p: 0, overflowY: "auto" }}>
         {renderContent()}
       </DialogContent>
       <DialogActions>

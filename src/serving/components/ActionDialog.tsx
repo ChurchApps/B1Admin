@@ -55,7 +55,7 @@ export const ActionDialog: React.FC<Props> = (props) => {
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
       <DialogTitle>{props.contentName || Locale.label("plans.actionDialog.fallbackTitle")}</DialogTitle>
-      <DialogContent sx={{ p: 0, overflow: "hidden" }}>
+      <DialogContent sx={{ p: 0, overflowY: "auto" }}>
         <ContentRenderer
           url={content?.url}
           mediaType={effectiveMediaType}
