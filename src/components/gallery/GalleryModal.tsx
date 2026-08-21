@@ -43,11 +43,12 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
 
     setUploadError([]);
     try {
-      const fileName = Math.floor(Date.now() / 1000).toString() + ".jpg";
       const blob = FileHelper.dataURLtoBlob(dataUrl);
+      const extension = blob.type.split("/")[1] || "jpg";
+      const fileName = Math.floor(Date.now() / 1000).toString() + "." + extension;
       const file = new File([blob], fileName, { type: blob.type });
 
-      const params = { folder: aspectRatio.toString(), fileName };
+      const params = { folder: aspectRatio.toString(), fileName, contentType: blob.type, size: blob.size };
 
       const presigned = await ApiHelper.post("/gallery/requestUpload", params, "ContentApi");
       const doUpload = presigned.key !== undefined;
