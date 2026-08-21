@@ -2173,6 +2173,7 @@
     },
     "planItem": {
       "addItem": "Add Item",
+      "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
       "duration": "Duration",
@@ -2181,6 +2182,7 @@
       "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
       "item": "Item",
+      "restoreOriginal": "Restore Original",
       "song": "Song"
     },
     "planItemEdit": {

@@ -21,6 +21,8 @@ interface ExpandResult {
   handleExpandToActions: () => Promise<void>;
   canCollapse: boolean;
   handleCollapseToSection: () => Promise<void>;
+  handleSaveDescription: (text: string) => Promise<void>;
+  handleRestoreOriginal: () => Promise<void>;
 }
 
 /** Expand a section plan item into its child action items via provider or plan-level association. */
@@ -50,8 +52,10 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       parentId: planItem.parentId,
       sort: currentSort + (index + 1) / (count + 1),
       itemType: "providerPresentation",
+      actionType: action.actionType,
       relatedId: action.relatedId || action.id || "",
       label: action.label || "",
+      description: action.content || "",
       seconds: action.seconds || 0,
       providerId,
       providerPath,
@@ -188,11 +192,44 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     }
   }, [collapseItems, ministryId, onChange, onError]);
 
+  const handleSaveDescription = useCallback(async (text: string) => {
+    await ApiHelper.post("/planItems", [{ ...planItem, description: text }], "DoingApi");
+    if (onChange) onChange();
+  }, [planItem, onChange]);
+
+  /** Re-resolves this single node from its provider path and overwrites the local edit — no stored-original copy needed. */
+  const handleRestoreOriginal = useCallback(async () => {
+    const { providerId, providerPath, providerContentPath } = planItem;
+    if (!providerId || !providerPath || !providerContentPath || !ministryId) return;
+
+    try {
+      const instructions: Instructions = await ApiHelper.post(
+        "/providerProxy/getInstructions",
+        { ministryId, providerId, path: providerPath },
+        "DoingApi"
+      );
+      if (!instructions?.items) return;
+
+      const found = planItem.relatedId ? findByRelatedId(instructions.items, planItem.relatedId) : null;
+      const node = found?.item || navigateToPath(instructions, providerContentPath);
+      if (!node) return;
+
+      const restored = { ...planItem, label: node.label || "", description: node.content || "", actionType: node.actionType };
+      await ApiHelper.post("/planItems", [restored], "DoingApi");
+      if (onChange) onChange();
+    } catch (error) {
+      console.error("Error restoring original content:", error);
+      if (onError) onError("Failed to restore original content");
+    }
+  }, [planItem, ministryId, onChange, onError]);
+
   return {
     isExpanding,
     canExpand,
     handleExpandToActions,
     canCollapse,
-    handleCollapseToSection
+    handleCollapseToSection,
+    handleSaveDescription,
+    handleRestoreOriginal
   };
 }
