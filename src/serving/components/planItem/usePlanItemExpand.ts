@@ -2,13 +2,15 @@ import { useState, useCallback } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
 import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-providers";
 import { type PlanItemInterface } from "../../../helpers";
-import { findThumbnailRecursive, findByRelatedId } from "../planItemUtils";
+import { findThumbnailRecursive, findByRelatedId, getExpandedSectionPath } from "../planItemUtils";
 
 interface ExpandOptions {
   planItem: PlanItemInterface;
   associatedProviderId?: string;
   associatedContentPath?: string;
   ministryId?: string;
+  /** Contiguous run of action items this section was expanded into, when this item starts one. */
+  collapseItems?: PlanItemInterface[];
   onChange?: () => void;
   onError?: (message: string) => void;
 }
@@ -17,16 +19,19 @@ interface ExpandResult {
   isExpanding: boolean;
   canExpand: boolean;
   handleExpandToActions: () => Promise<void>;
+  canCollapse: boolean;
+  handleCollapseToSection: () => Promise<void>;
 }
 
 /** Expand a section plan item into its child action items via provider or plan-level association. */
 export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
-  const { planItem, associatedProviderId, associatedContentPath, ministryId, onChange, onError } = options;
+  const { planItem, associatedProviderId, associatedContentPath, ministryId, collapseItems, onChange, onError } = options;
   const [isExpanding, setIsExpanding] = useState(false);
 
   const canExpandViaProvider = !!(planItem.providerId && planItem.providerPath && planItem.providerContentPath);
   const canExpandViaPlan = !!(associatedProviderId && associatedContentPath && planItem.relatedId);
   const canExpand = canExpandViaProvider || canExpandViaPlan;
+  const canCollapse = !!(ministryId && collapseItems && collapseItems.length > 1 && getExpandedSectionPath(collapseItems[0]));
 
   const createActionItems = useCallback((
     section: InstructionItem,
@@ -138,9 +143,56 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     }
   }, [canExpand, canExpandViaProvider, expandViaProvider, expandViaPlan, onChange, onError]);
 
+
+  /** Inverse of handleExpandToActions: re-resolves the section from the provider and swaps the run back. */
+  const handleCollapseToSection = useCallback(async () => {
+    const first = collapseItems?.[0];
+    const sectionPath = first ? getExpandedSectionPath(first) : null;
+    if (!first || !sectionPath || !ministryId) return;
+
+    try {
+      const instructions: Instructions = await ApiHelper.post(
+        "/providerProxy/getInstructions",
+        { ministryId, providerId: first.providerId, path: first.providerPath },
+        "DoingApi"
+      );
+      const section = instructions?.items ? navigateToPath(instructions, sectionPath) : null;
+      if (!section) throw new Error("Section no longer exists in the provider content");
+
+      // Post the replacement first so a failure leaves the actions intact.
+      const saved = await ApiHelper.post("/planItems", [
+        {
+          planId: first.planId,
+          parentId: first.parentId,
+          sort: (first.sort || 1) - 0.5,
+          itemType: "providerSection",
+          relatedId: section.relatedId || section.id || "",
+          label: section.label || "",
+          description: section.content,
+          seconds: section.seconds || 0,
+          providerId: first.providerId,
+          providerPath: first.providerPath,
+          providerContentPath: sectionPath,
+          thumbnailUrl: findThumbnailRecursive(section)
+        }
+      ], "DoingApi");
+
+      for (const item of collapseItems || []) {
+        if (item.id) await ApiHelper.delete(`/planItems/${item.id}`, "DoingApi");
+      }
+      if (saved?.[0]) await ApiHelper.post("/planItems/sort", saved[0], "DoingApi");
+      if (onChange) onChange();
+    } catch (error) {
+      console.error("Error collapsing section:", error);
+      if (onError) onError("Failed to collapse section");
+    }
+  }, [collapseItems, ministryId, onChange, onError]);
+
   return {
     isExpanding,
     canExpand,
-    handleExpandToActions
+    handleExpandToActions,
+    canCollapse,
+    handleCollapseToSection
   };
 }

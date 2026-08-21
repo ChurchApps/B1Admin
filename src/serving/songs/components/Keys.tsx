@@ -174,7 +174,7 @@ export const Keys = memo((props: Props) => {
                 )}
                 <ListItemButton
                   component="a"
-                  href={l.url}
+                  href={/^https?:\/\//i.test(l.url || "") || /^mailto:/i.test(l.url || "") ? l.url : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{
@@ -221,24 +221,11 @@ export const Keys = memo((props: Props) => {
           {audioFiles.map((f) => (
             <ListItem key={f.id} sx={{ px: 0, py: 0.5 }}>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
-                <ListItemButton
-                  component="a"
-                  href={f.contentPath}
-                  download
-                  sx={{
-                    borderRadius: 1,
-                    flex: 1,
-                    "&:hover": { backgroundColor: "action.hover" }
-                  }}>
-                  <AudioFileIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
-                  <ListItemText
-                    primary={f.fileName}
-                    primaryTypographyProps={{
-                      variant: "body2",
-                      fontWeight: 500
-                    }}
-                  />
-                </ListItemButton>
+                <AudioFileIcon sx={{ fontSize: 18, color: "primary.main" }} />
+                <Stack sx={{ flex: 1, minWidth: 0 }}>
+                  <ListItemText primary={f.fileName} primaryTypographyProps={{ variant: "body2", fontWeight: 500 }} />
+                  <Box component="audio" controls preload="none" src={f.contentPath} sx={{ width: "100%", maxWidth: 420 }} />
+                </Stack>
                 {canEdit && (
                   <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" onClick={() => handleDeleteAudio(f)} />
                 )}

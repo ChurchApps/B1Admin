@@ -105,12 +105,21 @@ export const PositionEdit = (props: Props) => {
         onSave={handleSubmit(onValid)}
         onCancel={props.updatedFunction}
         onDelete={props.position?.id ? handleDelete : undefined}>
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{ position: "relative", zIndex: 10 }}>
           <div style={{ fontSize: 12, color: "var(--text-muted)", position: "absolute", top: -8, left: 10, backgroundColor: "var(--bg-card)", zIndex: 999 }}>
             {Locale.label("plans.positionEdit.catName")}
           </div>
           <Controller name="categoryName" control={control} rules={{ required: Locale.label("plans.positionEdit.catNameReq") }} render={() => (
-            <ReactSelect onInputChange={(v: string) => setCategoryInput(v)} value={categoryOption} onChange={handleCategoryChange} options={categoryOptions} onBlur={handleCategoryBlur} className="comboBox" />
+            <ReactSelect
+              onInputChange={(v: string) => setCategoryInput(v)}
+              value={categoryOption}
+              onChange={handleCategoryChange}
+              options={categoryOptions}
+              onBlur={handleCategoryBlur}
+              className="comboBox"
+              menuPortalTarget={document.body}
+              styles={{ menu: (base) => ({ ...base, zIndex: 9999 }) }}
+            />
           )} />
         </FormControl>
         <Grid container spacing={2}>

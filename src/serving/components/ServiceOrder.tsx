@@ -2,9 +2,9 @@ import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert, TextField } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon, BookmarkAdd as BookmarkAddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
+import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface, type PositionInterface, type AssignmentInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, hasPlansEditAccess } from "../../helpers";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { getProvider, type InstructionItem, type IProvider } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
@@ -16,7 +16,7 @@ import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
 import { formatTime } from "./PlanUtils";
-import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, type ProviderMediaInfo } from "./planItemUtils";
+import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, buildPositionLabels, type ProviderMediaInfo } from "./planItemUtils";
 
 interface Props {
   plan: PlanInterface;
@@ -79,6 +79,8 @@ export const ServiceOrder = memo((props: Props) => {
   const [showSaveTemplate, setShowSaveTemplate] = React.useState(false);
   const [mediaLookup, setMediaLookup] = React.useState<Record<string, ProviderMediaInfo>>({});
   const [settingTimes, setSettingTimes] = React.useState(false);
+  const [positions, setPositions] = React.useState<PositionInterface[]>([]);
+  const [positionLabels, setPositionLabels] = React.useState<Record<string, { text: string; assigned: boolean }>>({});
 
   // Get the provider dynamically based on plan's providerId
   const provider: IProvider | null = useMemo(() => {
@@ -105,6 +107,22 @@ export const ServiceOrder = memo((props: Props) => {
         setErrorMessage(Locale.label("plans.serviceOrder.loadError") || "Failed to load plan items");
         setPlanItems([]);
       }
+    }
+  }, [props.plan?.id]);
+
+  const loadPositions = useCallback(async () => {
+    if (!props.plan?.id) return;
+    try {
+      const [positionsData, assignmentsData]: [PositionInterface[], AssignmentInterface[]] = await Promise.all([
+        ApiHelper.get("/positions/plan/" + props.plan.id, "DoingApi"),
+        ApiHelper.get("/assignments/plan/" + props.plan.id, "DoingApi")
+      ]);
+      const peopleIds = ArrayHelper.getUniqueValues(assignmentsData || [], "personId");
+      const people: PersonInterface[] = peopleIds.length > 0 ? await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi") : [];
+      setPositions(positionsData || []);
+      setPositionLabels(buildPositionLabels(positionsData || [], assignmentsData || [], people));
+    } catch (error) {
+      console.error("Error loading positions:", error);
     }
   }, [props.plan?.id]);
 
@@ -535,6 +553,7 @@ export const ServiceOrder = memo((props: Props) => {
                   selectedServiceTimeId={selectedServiceTimeId}
                   excluded={excluded}
                   mediaLookup={mediaLookup}
+                  positionLabels={positionLabels}
                 />
               </DraggableWrapper>
             </RowDropZone>
@@ -555,6 +574,7 @@ export const ServiceOrder = memo((props: Props) => {
               selectedServiceTimeId={selectedServiceTimeId}
               excluded={excluded}
               mediaLookup={mediaLookup}
+              positionLabels={positionLabels}
             />
           )}
         </React.Fragment>
@@ -601,6 +621,10 @@ export const ServiceOrder = memo((props: Props) => {
   }, [loadTimesAndExclusions]);
 
   React.useEffect(() => {
+    loadPositions();
+  }, [loadPositions]);
+
+  React.useEffect(() => {
     loadContentName();
   }, [loadContentName]);
 
@@ -614,6 +638,7 @@ export const ServiceOrder = memo((props: Props) => {
       {editPlanItem && canEdit && (
         <PlanItemEdit
           planItem={editPlanItem}
+          positions={positions}
           onDone={() => {
             setEditPlanItem(null);
             loadData();

@@ -88,12 +88,12 @@ export class ContentProviderAuthHelper {
     const tokenHelper = new TokenHelper();
     if (tokenHelper.isAuthValid(auth)) return auth;
 
-    const refreshed = await tokenHelper.refreshToken(provider.config, auth);
-    if (refreshed) {
-      await this.storeAuth(ministryId, providerId, refreshed);
-      return refreshed;
+    try {
+      const record = await ApiHelper.post("/contentProviderAuths/refresh", { ministryId, providerId }, "DoingApi");
+      return record ? this.toAuthData(record) : null;
+    } catch {
+      return null;
     }
-    return null;
   }
 
   static async isLinked(ministryId: string, providerId: string): Promise<boolean> {

@@ -1,5 +1,6 @@
 import { type InstructionItem, type Instructions, type IProvider } from "@churchapps/content-providers";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, type PersonInterface } from "@churchapps/apphelper";
+import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 
 /** Gets instructions from a provider based on its capabilities, proxying through the API when auth is required. */
@@ -40,6 +41,35 @@ export function findByRelatedId(items: InstructionItem[], relatedId: string, par
     }
   }
   return null;
+}
+
+/** "Expand to Actions" stamps each generated action with `${sectionPath}.${index}`, so the
+ * section's own content path is the action's path minus that trailing index. */
+export function getExpandedSectionPath(item: PlanItemInterface): string | null {
+  if (!isPresentationType(item.itemType) || !item.providerId || !item.providerPath) return null;
+  return /^(.+)\.\d+$/.exec(item.providerContentPath || "")?.[1] || null;
+}
+
+/** Contiguous runs of action items expanded from the same section, keyed by the run's first item id. */
+export function findExpandedRuns(items: PlanItemInterface[]): Map<string, PlanItemInterface[]> {
+  const runs = new Map<string, PlanItemInterface[]>();
+  let run: PlanItemInterface[] = [];
+  let key: string | null = null;
+  const flush = () => {
+    if (run.length > 1 && run[0].id) runs.set(run[0].id, run);
+    run = [];
+  };
+  items.forEach((item) => {
+    const sectionPath = getExpandedSectionPath(item);
+    const itemKey = sectionPath ? `${item.providerId}|${item.providerPath}|${sectionPath}` : null;
+    if (itemKey !== key) {
+      flush();
+      key = itemKey;
+    }
+    if (itemKey) run.push(item);
+  });
+  flush();
+  return runs;
 }
 
 /** Handles undefined/null children arrays to avoid NaN. */
@@ -298,4 +328,22 @@ export function filterFeedByPlanItems(feed: FeedVenueInterface | null, planItems
     .filter((s: FeedSectionInterface) => sectionInPlan(s) || !!s.actions?.length);
 
   return { ...feed, sections };
+}
+
+export interface PositionLabel {
+  text: string;
+  assigned: boolean;
+}
+
+/** Maps each position id to the assigned volunteer name(s), falling back to the position name when nobody is assigned. */
+export function buildPositionLabels(positions: PositionInterface[], assignments: AssignmentInterface[], people: PersonInterface[]): Record<string, PositionLabel> {
+  const result: Record<string, PositionLabel> = {};
+  (positions || []).forEach((p) => {
+    const names = (assignments || [])
+      .filter((a) => a.positionId === p.id)
+      .map((a) => (people || []).find((person) => person.id === a.personId)?.name?.display)
+      .filter(Boolean);
+    if (p.id) result[p.id] = names.length > 0 ? { text: names.join(", "), assigned: true } : { text: p.name || "", assigned: false };
+  });
+  return result;
 }

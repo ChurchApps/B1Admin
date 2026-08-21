@@ -8,11 +8,12 @@ import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/help
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort, estimateSeconds, duplicatePlanItem, type ProviderMediaInfo } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
 import { usePlanItemExpand } from "./planItem/usePlanItemExpand";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -30,6 +31,9 @@ interface Props {
   selectedServiceTimeId?: string;
   excluded?: boolean;
   mediaLookup?: Record<string, ProviderMediaInfo>;
+  /** Set on the first item of a run of actions expanded from one section, enabling the collapse control. */
+  collapseItems?: PlanItemInterface[];
+  positionLabels?: Record<string, { text: string; assigned: boolean }>;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -41,13 +45,25 @@ export const PlanItem = React.memo((props: Props) => {
   const open = Boolean(anchorEl);
 
   // Use the expand hook for section expansion functionality
-  const { handleExpandToActions } = usePlanItemExpand({
+  const { handleExpandToActions, canCollapse, handleCollapseToSection } = usePlanItemExpand({
     planItem: props.planItem,
     associatedProviderId: props.associatedProviderId,
     associatedContentPath: props.associatedContentPath,
     ministryId: props.ministryId,
+    collapseItems: props.collapseItems,
     onChange: props.onChange
   });
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
+
+  const showCollapse = canCollapse && !props.readOnly;
+  const handleCollapseClick = async () => {
+    const confirmed = await confirm(Locale.label("plans.planItem.collapseToSectionConfirm"), {
+      title: Locale.label("plans.planItem.collapseToSection"),
+      confirmLabel: Locale.label("plans.planItem.collapseToSection"),
+      "data-testid": "confirm-collapse-dialog"
+    });
+    if (confirmed) await handleCollapseToSection();
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -130,6 +146,11 @@ export const PlanItem = React.memo((props: Props) => {
     return (props.exclusions || []).some((ex) => ex.planItemId === childId && ex.timeId === props.selectedServiceTimeId && ex.excluded);
   };
 
+  const expandedRuns = React.useMemo(
+    () => (props.readOnly ? new Map<string, PlanItemInterface[]>() : findExpandedRuns(props.planItem.children || [])),
+    [props.planItem.children, props.readOnly]
+  );
+
   const getChildren = () => {
     const result: JSX.Element[] = [];
     let cumulativeTime = props.startTime || 0;
@@ -137,7 +158,7 @@ export const PlanItem = React.memo((props: Props) => {
       const childStartTime = cumulativeTime;
       const childExcluded = c.itemType !== "header" && isChildExcluded(c.id || "");
       const childPlanItem = (
-        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} />
+        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} />
       );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
@@ -173,6 +194,7 @@ export const PlanItem = React.memo((props: Props) => {
       startTime={props.startTime}
       serviceStartTime={props.serviceTime?.startTime}
       readOnly={props.readOnly}
+      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       wrapRow={props.readOnly ? undefined : (row) => (
@@ -200,7 +222,9 @@ export const PlanItem = React.memo((props: Props) => {
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       onDuplicateClick={handleDuplicate}
+      onCollapseClick={showCollapse ? handleCollapseClick : undefined}
       mediaLookup={props.mediaLookup}
+      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
     />
   );
 
@@ -234,6 +258,7 @@ export const PlanItem = React.memo((props: Props) => {
   return (
     <>
       {getPlanItem()}
+      {showCollapse && ConfirmDialogElement}
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>

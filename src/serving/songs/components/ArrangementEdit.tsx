@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ArrangementInterface } from "../../../helpers";
-import { TextField } from "@mui/material";
+import { ChordProHelper } from "../../../helpers/ChordProHelper";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import { FormCard } from "../../../components/ui";
 import { useConfirmDelete } from "../../../hooks";
 
@@ -16,8 +17,9 @@ type AnyRecord = Record<string, any>;
 
 export const ArrangementEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: "", lyrics: "" } });
+  const { register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { name: "", lyrics: "" } });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const lyrics = watch("lyrics");
 
   useEffect(() => {
     if (props.arrangement) reset({ ...props.arrangement });
@@ -49,7 +51,34 @@ export const ArrangementEdit = (props: Props) => {
         <TextField label={Locale.label("songs.details.meter") || "Meter"} fullWidth {...register("meter")} />
         <TextField label={Locale.label("songs.details.length") || "Length"} type="number" placeholder="seconds" fullWidth {...register("seconds", { valueAsNumber: true })} />
         <TextField label="Sequence" fullWidth placeholder="Verse 1, Chorus, Verse 2, Chorus, Bridge" {...register("sequence")} />
-        <TextField label={Locale.label("songs.arrangement.lyrics")} multiline fullWidth placeholder={Locale.label("placeholders.song.lyrics")} {...register("lyrics")} maxRows={25} sx={{ "& textarea": { maxHeight: 600, overflowY: "auto !important" } }} />
+        <Typography variant="caption" color="text.secondary">
+          {Locale.label("songs.arrangement.chordProHint") || "ChordPro format: [G] inline chords, [Verse 1] section headers."}
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField label={Locale.label("songs.arrangement.lyrics")} multiline fullWidth placeholder={Locale.label("placeholders.song.lyrics")} {...register("lyrics")} maxRows={25} sx={{ "& textarea": { maxHeight: 600, overflowY: "auto !important" } }} />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box
+              className="chordPro"
+              sx={{
+                backgroundColor: "background.subtle",
+                color: "text.primary",
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                p: 2,
+                minHeight: 200,
+                maxHeight: 600,
+                overflowY: "auto",
+                fontFamily: "monospace",
+                fontSize: "0.875rem",
+                lineHeight: 1.6
+              }}
+              dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(lyrics || "", 0) }}
+            />
+          </Grid>
+        </Grid>
       </FormCard>
     </>
   );
