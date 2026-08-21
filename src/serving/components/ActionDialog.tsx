@@ -14,6 +14,8 @@ interface Props {
   providerPath?: string;
   /** Dot-notation path to specific content item */
   providerContentPath?: string;
+  /** Stable content id, preferred over the index-based path */
+  relatedId?: string;
   /** Ministry ID for auth */
   ministryId?: string;
 }
@@ -25,6 +27,7 @@ export const ActionDialog: React.FC<Props> = (props) => {
     providerId: props.providerId,
     providerPath: props.providerPath,
     providerContentPath: props.providerContentPath,
+    relatedId: props.relatedId,
     ministryId: props.ministryId,
     fallbackUrl: props.downloadUrl
   });
@@ -52,7 +55,7 @@ export const ActionDialog: React.FC<Props> = (props) => {
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
       <DialogTitle>{props.contentName || Locale.label("plans.actionDialog.fallbackTitle")}</DialogTitle>
-      <DialogContent sx={{ p: 0, overflow: "hidden" }}>
+      <DialogContent sx={{ p: 0, overflowY: "auto" }}>
         <ContentRenderer
           url={content?.url}
           mediaType={effectiveMediaType}

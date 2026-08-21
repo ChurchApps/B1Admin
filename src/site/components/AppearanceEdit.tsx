@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Resizer from "react-image-file-resizer";
 import { Box, Typography, Stack, Button, Card, CardContent, alpha, TextField } from "@mui/material";
 import { Image as ImageIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon } from "@mui/icons-material";
@@ -66,6 +66,7 @@ export function AppearanceEdit(props: Props) {
   const [currentEditLogo, setCurrentEditLogo] = useState<string>("");
   const [currentUrl, setCurrentUrl] = useState<string | null>("about:blank");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const init = () => {
     const startingUrl = (ArrayHelper.getOne(props.settings || [], "keyName", currentEditLogo))?.value;
@@ -73,6 +74,11 @@ export function AppearanceEdit(props: Props) {
   };
 
   useEffect(init, [currentEditLogo]);
+
+  // The editor renders above the logo cards, so reveal it after the click that opened it.
+  useEffect(() => {
+    if (editLogo) editorRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [editLogo]);
 
   const getValue = async (keyName: string, dataURL: string) => {
     let url = dataURL;
@@ -204,7 +210,7 @@ export function AppearanceEdit(props: Props) {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
-      {getLogoEditor(currentEditLogo)}
+      <Box ref={editorRef}>{getLogoEditor(currentEditLogo)}</Box>
 
       <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">

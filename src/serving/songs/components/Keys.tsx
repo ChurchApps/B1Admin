@@ -3,13 +3,15 @@ import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetai
 import { type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, Chip } from "@mui/material";
-import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon } from "@mui/icons-material";
+import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon, AudioFile as AudioFileIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { PraiseChartsProducts } from "./PraiseChartsProducts";
 import { KeyEdit } from "./KeyEdit";
 import { PraiseChartsHelper } from "../../../helpers/PraiseChartsHelper";
 import { LinkEdit } from "./LinkEdit";
+import { AudioFilesEdit } from "./AudioFilesEdit";
 import { EmptyState } from "../../../components/ui/EmptyState";
+import { useConfirmDelete } from "../../../hooks";
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -24,9 +26,12 @@ export const Keys = memo((props: Props) => {
   const [editLink, setEditLink] = React.useState<LinkInterface | null>(null);
   const [products, setProducts] = React.useState<any[]>([]);
   const [links, setLinks] = React.useState<LinkInterface[]>([]);
+  const [audioFiles, setAudioFiles] = React.useState<any[]>([]);
   const [showImport, setShowImport] = React.useState(false);
+  const [showAudioUpload, setShowAudioUpload] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     setAnchorEl(e.currentTarget);
@@ -81,6 +86,15 @@ export const Keys = memo((props: Props) => {
     }
   }, [selectedKey]);
 
+  // Scoped to the arrangement, not the selected key, so tracks persist across key tabs.
+  const loadAudioFiles = useCallback(() => {
+    if (props.arrangement?.id) {
+      ApiHelper.get("/files/arrangement/" + props.arrangement.id, "ContentApi").then((data: any) => {
+        setAudioFiles(data || []);
+      });
+    }
+  }, [props.arrangement?.id]);
+
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -88,6 +102,9 @@ export const Keys = memo((props: Props) => {
     loadPraiseCharts();
     loadLinks();
   }, [loadPraiseCharts, loadLinks]);
+  useEffect(() => {
+    loadAudioFiles();
+  }, [loadAudioFiles]);
 
   //<DisplayBox headerText="Keys" headerIcon="music_note">
   //<PraiseChartsProducts praiseChartsId={songDetail?.praiseChartsId} />
@@ -157,7 +174,7 @@ export const Keys = memo((props: Props) => {
                 )}
                 <ListItemButton
                   component="a"
-                  href={l.url}
+                  href={/^https?:\/\//i.test(l.url || "") || /^mailto:/i.test(l.url || "") ? l.url : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{
@@ -181,6 +198,44 @@ export const Keys = memo((props: Props) => {
       </Box>
     );
   }, [links, canEdit]);
+
+  const handleDeleteAudio = useCallback(
+    async (file: any) => {
+      if (await confirm(Locale.label("songs.audio.deleteConfirm") || "Are you sure you want to delete this audio file?")) {
+        await ApiHelper.delete("/files/" + file.id, "ContentApi");
+        loadAudioFiles();
+      }
+    },
+    [confirm, loadAudioFiles]
+  );
+
+  const audioFilesList = useMemo(() => {
+    if (audioFiles.length === 0) return null;
+
+    return (
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+          {Locale.label("songs.keys.audioTracks") || "Audio Tracks"}
+        </Typography>
+        <List sx={{ p: 0 }}>
+          {audioFiles.map((f) => (
+            <ListItem key={f.id} sx={{ px: 0, py: 0.5 }}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
+                <AudioFileIcon sx={{ fontSize: 18, color: "primary.main" }} />
+                <Stack sx={{ flex: 1, minWidth: 0 }}>
+                  <ListItemText primary={f.fileName} primaryTypographyProps={{ variant: "body2", fontWeight: 500 }} />
+                  <Box component="audio" controls preload="none" src={f.contentPath} sx={{ width: "100%", maxWidth: 420 }} />
+                </Stack>
+                {canEdit && (
+                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" onClick={() => handleDeleteAudio(f)} />
+                )}
+              </Stack>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    );
+  }, [audioFiles, canEdit, handleDeleteAudio]);
 
   const tabsComponent = useMemo(
     () =>
@@ -251,6 +306,7 @@ export const Keys = memo((props: Props) => {
             <Box>
               {productsList}
               {linksList}
+              {audioFilesList}
 
               {canEdit && (
                 <Box
@@ -305,7 +361,28 @@ export const Keys = memo((props: Props) => {
           <LinkIcon sx={{ mr: 2, color: "secondary.main" }} />
           {Locale.label("songs.keys.addExternalLink") || "Add External Link"}
         </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            setShowAudioUpload(true);
+          }}>
+          <AudioFileIcon sx={{ mr: 2, color: "primary.main" }} />
+          {Locale.label("songs.keys.uploadAudio") || "Upload Audio"}
+        </MenuItem>
       </Menu>
+
+      {ConfirmDialogElement}
+
+      {showAudioUpload && canEdit && (
+        <AudioFilesEdit
+          arrangementId={props.arrangement.id}
+          onSave={() => {
+            setShowAudioUpload(false);
+            loadAudioFiles();
+          }}
+          onCancel={() => setShowAudioUpload(false)}
+        />
+      )}
 
       {editLink && canEdit && (
         <LinkEdit

@@ -47,7 +47,6 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/site/pages", label: Locale.label("common.website"), icon: "language" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
-
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
     else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
     // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
@@ -75,6 +74,7 @@ export const Header: React.FC = () => {
     else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = Locale.label("helpers.secondaryMenuHelper.calendars");
     else if (path.startsWith("/site")) result = Locale.label("common.website");
     else if (path.startsWith("/mobile")) result = Locale.label("common.mobile");
+    else if (path.startsWith("/reports")) result = Locale.label("reports.reportsPage.reports");
     else if (path.startsWith("/settings") || path.startsWith("/admin")) result = Locale.label("components.wrapper.set");
     else if (path.startsWith("/dashboard")) result = Locale.label("dashboard.dashboardPage.dash");
     return result;
@@ -113,7 +113,8 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      const navLinks = document.querySelectorAll('a[href^="/"], button[role="menuitem"]');
+      const scopes = document.querySelectorAll("header, .MuiDrawer-root");
+      const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
         const href = link.getAttribute("href");
         if (href && urlToTestId[href]) {

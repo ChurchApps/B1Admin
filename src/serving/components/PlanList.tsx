@@ -12,6 +12,7 @@ import { PlanEdit } from "./PlanEdit";
 import { PlanTemplateManager } from "./PlanTemplateManager";
 import { LessonScheduleEdit } from "./LessonScheduleEdit";
 import { BulkLessonSchedule } from "./BulkLessonSchedule";
+import { ApplyYearPlan } from "./ApplyYearPlan";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
 
@@ -27,6 +28,7 @@ export const PlanList = memo((props: Props) => {
   const [showPast, setShowPast] = React.useState(false);
   const [showLessonSchedule, setShowLessonSchedule] = React.useState(false);
   const [showBulkSchedule, setShowBulkSchedule] = React.useState(false);
+  const [showApplyYearPlan, setShowApplyYearPlan] = React.useState(false);
   const [showTemplates, setShowTemplates] = React.useState(false);
   const [lessonMenuAnchor, setLessonMenuAnchor] = React.useState<null | HTMLElement>(null);
   const hasPlansEdit = hasPlansEditAccess();
@@ -83,6 +85,7 @@ export const PlanList = memo((props: Props) => {
     setPlan(null);
     setShowLessonSchedule(false);
     setShowBulkSchedule(false);
+    setShowApplyYearPlan(false);
     plansQuery.refetch();
     // Invalidate both the specific plan type query and the general plans query
     if (props.planTypeId) {
@@ -104,6 +107,18 @@ export const PlanList = memo((props: Props) => {
         plans={plans}
         onSave={handleUpdated}
         onCancel={() => setShowBulkSchedule(false)}
+      />
+    );
+  }
+
+  if (showApplyYearPlan && canEdit) {
+    return (
+      <ApplyYearPlan
+        ministryId={props.ministry.id || ""}
+        planTypeId={props.planTypeId}
+        plans={plans}
+        onSave={handleUpdated}
+        onCancel={() => setShowApplyYearPlan(false)}
       />
     );
   }
@@ -143,7 +158,7 @@ export const PlanList = memo((props: Props) => {
                 <Button variant="contained" size="large" startIcon={<AddIcon />} onClick={addPlan} data-testid="add-plan-button" sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
                   {Locale.label("plans.planList.createPlan")}
                 </Button>
-                <Button variant="contained" size="large" startIcon={<MenuBookIcon />} endIcon={<ArrowDropDownIcon />} onClick={(e) => setLessonMenuAnchor(e.currentTarget)} sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
+                <Button variant="contained" size="large" startIcon={<MenuBookIcon />} endIcon={<ArrowDropDownIcon />} onClick={(e) => setLessonMenuAnchor(e.currentTarget)} data-testid="schedule-lesson-button" sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
                   {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
                 </Button>
               </Stack>
@@ -163,6 +178,10 @@ export const PlanList = memo((props: Props) => {
           <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowBulkSchedule(true); }}>
             <ListItemIcon><DateRangeIcon fontSize="small" /></ListItemIcon>
             <ListItemText>{Locale.label("plans.planList.bulkSchedule") || "Bulk Schedule"}</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowApplyYearPlan(true); }} data-testid="apply-year-plan-menu">
+            <ListItemIcon><CalendarIcon fontSize="small" /></ListItemIcon>
+            <ListItemText>{Locale.label("plans.planList.applyYearPlan") || "Apply Year Plan"}</ListItemText>
           </MenuItem>
         </Menu>
       </Box>
@@ -200,7 +219,8 @@ export const PlanList = memo((props: Props) => {
                 size="medium"
                 startIcon={<MenuBookIcon />}
                 endIcon={<ArrowDropDownIcon />}
-                onClick={(e) => setLessonMenuAnchor(e.currentTarget)}>
+                onClick={(e) => setLessonMenuAnchor(e.currentTarget)}
+                data-testid="schedule-lesson-button">
                 {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
               </Button>
               <Button
@@ -325,6 +345,10 @@ export const PlanList = memo((props: Props) => {
         <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowBulkSchedule(true); }}>
           <ListItemIcon><DateRangeIcon fontSize="small" /></ListItemIcon>
           <ListItemText>{Locale.label("plans.planList.bulkSchedule") || "Bulk Schedule"}</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowApplyYearPlan(true); }} data-testid="apply-year-plan-menu">
+          <ListItemIcon><CalendarIcon fontSize="small" /></ListItemIcon>
+          <ListItemText>{Locale.label("plans.planList.applyYearPlan") || "Apply Year Plan"}</ListItemText>
         </MenuItem>
       </Menu>
 

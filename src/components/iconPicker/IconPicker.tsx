@@ -40,7 +40,7 @@ const defaultIcons = [
   "music_note",
   "school",
   "volunteer_activism",
-  "prayer",
+  "self_improvement",
   "celebration",
   "campaign",
   "handshake",
@@ -120,7 +120,7 @@ export const IconPicker: React.FC<Props> = (props) => {
       </DialogTitle>
 
       <DialogContent sx={{ p: 2, pt: 3, marginTop: 2 }}>
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{ marginTop: 1 }}>
           <TextField
             fullWidth
             label={Locale.label("common.iconPicker.searchLabel")}
@@ -173,7 +173,11 @@ export const IconPicker: React.FC<Props> = (props) => {
                           overflow: "hidden"
                         }}
                       >
-                        {iconName}
+                        {Locale.label(`common.iconPicker.icons.${iconName}`, iconName
+                          .replaceAll("_", " ")
+                          .split(" ")
+                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                          .join(" "))}
                       </Typography>
                     </Box>
                   </Grid>

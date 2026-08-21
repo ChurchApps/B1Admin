@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, TextField, CircularProgress } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon } from "@mui/icons-material";
+import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
-import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, estimateSeconds } from "../planItemUtils";
+import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds } from "../planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -17,8 +17,10 @@ interface Props {
   onLabelClick?: () => void;
   onEditClick: () => void;
   onDuplicateClick?: () => void;
+  onCollapseClick?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
   onChange?: () => void;
+  positionLabel?: { text: string; assigned: boolean };
 }
 
 /**
@@ -33,12 +35,15 @@ export const PlanItemRow: React.FC<Props> = ({
   onLabelClick,
   onEditClick,
   onDuplicateClick,
+  onCollapseClick,
   mediaLookup,
-  onChange
+  onChange,
+  positionLabel
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
   const showVideoThumb = !!providerMedia && isVideoMedia(planItem.label, providerMedia);
+  const showAudioIcon = !!providerMedia && isAudioMedia(planItem.label, providerMedia);
   // Untimed images show a planning estimate (~5:00) rather than an alarming 0:00 —
   // stored seconds stay 0 so playback leaves the volunteer in control.
   const storedSeconds = planItem.seconds ?? 0;
@@ -202,12 +207,18 @@ export const PlanItemRow: React.FC<Props> = ({
                 preload="metadata"
                 muted
                 playsInline
-                // Browsers won't decode a frame until forced; seeking just past 0 paints the first frame without playing.
                 onLoadedMetadata={(e: React.SyntheticEvent<HTMLVideoElement>) => {
                   try { e.currentTarget.currentTime = 0.1; } catch { /* ignore */ }
                 }}
                 sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2, pointerEvents: "none", backgroundColor: "grey.900" }}
               />
+            ) : showAudioIcon ? (
+              <Box
+                component="span"
+                sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: 80, height: 45, backgroundColor: "grey.300", borderRadius: 2 }}
+              >
+                <MusicNoteIcon sx={{ fontSize: 32, color: "text.secondary" }} />
+              </Box>
             ) : (
               <Box
                 component="img"
@@ -290,9 +301,32 @@ export const PlanItemRow: React.FC<Props> = ({
           </>
         )}
       </Box>
+      {positionLabel?.text && (
+        <Box
+          component="span"
+          className="planItemPosition"
+          sx={{ flexShrink: 0, ml: 1.5, fontSize: "0.85rem", textAlign: "right", color: positionLabel.assigned ? "text.secondary" : "text.disabled", fontStyle: positionLabel.assigned ? "normal" : "italic" }}
+        >
+          {positionLabel.text}
+        </Box>
+      )}
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
         {!readOnly && (
           <>
+            {onCollapseClick && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton rowControl"
+                data-testid="collapse-to-section-button"
+                onClick={(e: React.MouseEvent) => { e.stopPropagation(); onCollapseClick(); }}
+                aria-label={Locale.label("plans.planItem.collapseToSection")}
+                title={Locale.label("plans.planItem.collapseToSection")}
+                sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
+              >
+                <UnfoldLessIcon />
+              </Box>
+            )}
             <Box
               component="button"
               type="button"

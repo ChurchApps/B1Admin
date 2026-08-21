@@ -8,7 +8,7 @@ import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterfac
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
-import { getProviderInstructions } from "../components/planItemUtils";
+import { getProviderInstructions, buildPositionLabels } from "../components/planItemUtils";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -37,6 +37,8 @@ export const PrintPlan = () => {
       const url = item.downloadUrl || file?.downloadUrl;
       const thumbnail = item.thumbnail || file?.thumbnail;
       return {
+        // relatedId first: expanded plan items store relatedId || id, so the feed must match.
+        id: item.relatedId || item.id,
         actionType: item.actionType || "note",
         content: item.content || item.label || "",
         files: url || thumbnail ? [{ name: item.label, url, thumbnail, seconds: item.seconds || file?.seconds }] : []
@@ -55,7 +57,7 @@ export const PrintPlan = () => {
         if (item.itemType === "section") {
           const actions: FeedActionInterface[] = [];
           collectActions(item.children || [], actions);
-          sections.push({ name: item.label || "", actions });
+          sections.push({ id: item.relatedId || item.id, name: item.label || "", actions });
         } else if (item.children?.length) {
           walk(item.children);
         }
@@ -104,7 +106,6 @@ export const PrintPlan = () => {
       return null;
     }
   };
-
   const loadData = async () => {
     setIsLoading(true);
 
@@ -136,12 +137,34 @@ export const PrintPlan = () => {
       setPeople(peopleData);
     }
 
+    const flattenItems = (items: PlanItemInterface[]): PlanItemInterface[] => {
+      let result: PlanItemInterface[] = [];
+      items.forEach(item => {
+        result.push(item);
+        if (item.children) result = result.concat(flattenItems(item.children));
+      });
+      return result;
+    };
+
+    const flatPlanItems = flattenItems(planItemsData || []);
+
+    const primaryLessonItem = flatPlanItems.find(pi => pi.providerId && pi.providerPath);
+    const activeProviderId = primaryLessonItem?.providerId || planData?.providerId;
+    const activeContentId = primaryLessonItem?.providerPath || planData?.contentId;
+    const activeContentType = planData?.contentType;
+
     let currentFeed: FeedVenueInterface | null = null;
-    if (planData?.providerId) {
-      currentFeed = await loadProviderFeed(planData);
-    } else if (planData?.contentId && (planData?.contentType === "venue" || planData?.contentType === "lesson")) {
+    if (activeProviderId) {
+      const mockPlanData = {
+        ...planData,
+        providerId: activeProviderId,
+        contentId: activeContentId,
+        providerPlanId: primaryLessonItem?.providerPath || planData?.providerPlanId
+      } as PlanInterface;
+      currentFeed = await loadProviderFeed(mockPlanData);
+    } else if (activeContentId && (activeContentType === "venue" || activeContentType === "lesson")) {
       try {
-        currentFeed = await ApiHelper.get("/venues/public/feed/" + planData.contentId, "LessonsApi");
+        currentFeed = await ApiHelper.get("/venues/public/feed/" + activeContentId, "LessonsApi");
       } catch (error) {
         console.error("Failed to load lesson feed:", error);
       }
@@ -258,6 +281,8 @@ export const PrintPlan = () => {
     return result;
   };
 
+  const positionLabels = React.useMemo(() => buildPositionLabels(positions, assignments, people), [positions, assignments, people]);
+
   // Per-column accumulators are mutated as the recursive renderer walks the tree.
   // Single-column fallback uses index 0; multi-column uses one entry per service time.
   const renderRows = () => {
@@ -294,6 +319,9 @@ export const PrintPlan = () => {
                   <>
                     {pi.label && <b>{pi.label}:</b>} {pi.description}
                   </>
+                )}
+                {plan?.showVolunteerNames && pi.positionId && positionLabels[pi.positionId]?.text && (
+                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{positionLabels[pi.positionId].text}</span>
                 )}
               </td>
               <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>

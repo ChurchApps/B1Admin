@@ -308,7 +308,7 @@ export const PersonEdit = memo((props: Props) => {
             <FormControl fullWidth>
               <InputLabel id="grade-label">{Locale.label("person.grade")}</InputLabel>
               <Controller name="grade" control={control} render={({ field }) => (
-                <Select {...field} value={field.value ?? ""} id="grade" labelId="grade-label" label={Locale.label("person.grade")} data-testid="grade-select" aria-label="Grade">
+                <Select {...field} displayEmpty value={field.value ?? ""} id="grade" labelId="grade-label" label={Locale.label("person.grade")} data-testid="grade-select" aria-label="Grade">
                   <MenuItem value="">{Locale.label("person.unspecified")}</MenuItem>
                   {GRADE_OPTIONS.map((g) => <MenuItem key={g} value={g}>{g}</MenuItem>)}
                 </Select>

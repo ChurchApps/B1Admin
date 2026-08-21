@@ -17,6 +17,7 @@ export interface WebhookInterface {
   events?: string[];
   active?: boolean;
   connectorType?: string;
+  connectorConfig?: string;
   consecutiveFailures?: number;
   dateCreated?: Date;
   dateModified?: Date;

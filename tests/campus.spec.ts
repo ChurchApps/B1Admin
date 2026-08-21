@@ -2,7 +2,7 @@ import type { Page, Locator } from "@playwright/test";
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToPeople, navigateToGroups } from "./helpers/navigation";
-import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
+import { openKnownPerson, openSeedGroup, editIconButton, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 const MAIN = "Main Campus";
@@ -71,7 +71,9 @@ test.describe.serial("Campus multi-site", () => {
     await expect(city).toBeVisible({ timeout: 10000 });
     await city.fill("Northtown");
     await expectResponse("/campuses", saveInputBox("#campusBox"));
-    await page.locator("table tbody tr").filter({ hasText: NORTH }).first().click();
+    const northRow = page.locator("table tbody tr").filter({ hasText: NORTH }).first();
+    await expect(northRow).toContainText("Northtown", { timeout: 10000 });
+    await northRow.click();
     await expect(page.locator("#city")).toHaveValue("Northtown", { timeout: 10000 });
   });
 
@@ -132,8 +134,7 @@ test.describe.serial("Campus multi-site", () => {
 
   test("assigns a group to a campus and persists", async () => {
     await navigateToGroups(page);
-    await page.locator("table tbody tr a").first().click();
-    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await openSeedGroup(page);
     await editIconButton(page).first().click();
     const select = page.getByTestId("group-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });

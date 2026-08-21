@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { navigateToPeople } from "./navigation";
+import { navigateToPeople, navigateToGroups } from "./navigation";
 
 // Named seed people known to exist in the reset demo database (see
 // Api/tools/dbScripts/membership/demo.sql). Tests should prefer
@@ -15,6 +15,21 @@ export const SEED_PEOPLE = {
 } as const;
 
 export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
+
+export const SEED_GROUP = "Sunday Morning Service";
+export const SESSION_GROUP = "Prayer Team";
+
+export async function openSeedGroup(page: Page, name = SEED_GROUP) {
+  if (!/\/groups\/?(\?|$)/.test(page.url())) await navigateToGroups(page);
+  const search = page.locator('[data-testid="groups-search"] input');
+  await search.waitFor({ state: "visible", timeout: 10000 });
+  await search.fill(name);
+  const link = page.locator("table tbody tr a").filter({ hasText: name }).first();
+  await link.waitFor({ state: "visible", timeout: 10000 });
+  await link.scrollIntoViewIfNeeded();
+  await link.click();
+  await page.waitForURL(/\/groups\/(?!health|pending)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+}
 
 // Replaces the brittle `page.locator('table tbody tr').first()` pattern that depends on default sort + prior test mutations.
 export async function openKnownPerson(page: Page, name: SeedPersonName) {
@@ -37,7 +52,7 @@ export async function openPersonRow(page: Page, name: SeedPersonName | string) {
   }
   await row.waitFor({ state: "visible", timeout: 10000 });
   await row.click();
-  await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
+  await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 }
 
 // MUI icon-only button helpers. Matches buttons whose icon SVG carries the

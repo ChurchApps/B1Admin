@@ -1,16 +1,19 @@
 import React from "react";
-import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
-import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
+import { type TimeInterface, type PlanItemTimeInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { shouldShowLabel, shouldShowDescription, shouldShowDuration, duplicatePlanItem } from "./planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
+  positions?: PositionInterface[];
   onDone: () => void;
 }
+
+const keyLabel = (shortDescription?: string, keySignature?: string) => (keySignature ? `${shortDescription || ""} (${keySignature})` : shortDescription || "");
 
 export const PlanItemEdit = (props: Props) => {
   const [planItem, setPlanItem] = React.useState<PlanItemInterface | null>(null);
@@ -158,7 +161,7 @@ export const PlanItemEdit = (props: Props) => {
       ...planItem,
       relatedId: song.arrangementKeyId,
       label: song.title,
-      description: `${song.artist} - ${song.shortDescription || ""} (${song.arrangementKeySignature || ""})`,
+      description: `${song.artist} - ${keyLabel(song.shortDescription, song.arrangementKeySignature)}`,
       seconds: song.seconds,
       thumbnailUrl: song.thumbnail
     };
@@ -188,7 +191,7 @@ export const PlanItemEdit = (props: Props) => {
                 {keys.map((k: any) => (
                   <Chip
                     key={k.arrangementKeyId}
-                    label={`${k.shortDescription} (${k.arrangementKeySignature})`}
+                    label={keyLabel(k.shortDescription, k.arrangementKeySignature)}
                     size="small"
                     clickable
                     onClick={() => selectSong(k)}
@@ -294,6 +297,23 @@ export const PlanItemEdit = (props: Props) => {
                 />
               </Grid>
             </Grid>
+          )}
+          {(props.positions?.length || 0) > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="positionId-label">{Locale.label("plans.planItemEdit.position")}</InputLabel>
+              <Select
+                labelId="positionId-label"
+                label={Locale.label("plans.planItemEdit.position")}
+                value={(props.positions || []).some((p) => p.id === planItem?.positionId) ? planItem?.positionId || "" : ""}
+                onChange={(e) => setPlanItem({ ...planItem, positionId: e.target.value || undefined } as PlanItemInterface)}
+                data-testid="plan-item-position-select"
+              >
+                <MenuItem value="">{Locale.label("plans.planItemEdit.noPosition")}</MenuItem>
+                {(props.positions || []).map((p) => (
+                  <MenuItem key={p.id} value={p.id}>{p.categoryName ? `${p.categoryName} - ${p.name}` : p.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           )}
           {planItem?.itemType !== "header" && serviceTimes.length > 1 && (
             <Box>

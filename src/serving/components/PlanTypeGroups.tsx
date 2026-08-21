@@ -132,8 +132,11 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
           </Button>
         )}
       </Stack>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
         {Locale.label("plans.planTypeGroups.description")}
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        {Locale.label("plans.planTypeGroups.parentHint")}
       </Typography>
 
       {associationsList.length === 0 ? (

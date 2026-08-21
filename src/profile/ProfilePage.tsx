@@ -17,6 +17,7 @@ export const ProfilePage = () => {
   const isDemo = process.env.REACT_APP_STAGE === "demo";
   const { mode, toggleTheme } = useThemeMode();
 
+  const [currentPassword, setCurrentPassword] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordVerify, setPasswordVerify] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
@@ -45,7 +46,7 @@ export const ProfilePage = () => {
       const promises: Promise<any>[] = [];
 
       if (password.length >= 8) {
-        promises.push(ApiHelper.post("/users/updatePassword", { newPassword: password }, "MembershipApi"));
+        promises.push(ApiHelper.post("/users/updatePassword", { currentPassword, newPassword: password }, "MembershipApi"));
       }
 
       if (areNamesChanged()) {
@@ -63,6 +64,7 @@ export const ProfilePage = () => {
       UserHelper.user.lastName = lastName;
       UserHelper.user.email = email;
       setSaveMessage(Locale.label("profile.profilePage.saveChange"));
+      setCurrentPassword("");
       setPassword("");
       setPasswordVerify("");
       sendEventToReactNative("profile_updated");
@@ -99,6 +101,7 @@ export const ProfilePage = () => {
       case "firstName": setFirstName(val); break;
       case "lastName": setLastName(val); break;
       case "email": setEmail(val); break;
+      case "currentPassword": setCurrentPassword(val); break;
       case "password": setPassword(val); break;
       case "passwordVerify": setPasswordVerify(val); break;
     }
@@ -112,6 +115,7 @@ export const ProfilePage = () => {
       { condition: !lastName, message: Locale.label("profile.profilePage.lastMsg") },
       { condition: email === "", message: Locale.label("profile.profilePage.emailMsg") },
       { condition: email !== "" && !validateEmail(email), message: Locale.label("profile.profilePage.valEmail") },
+      { condition: password !== "" && !currentPassword, message: Locale.label("profile.profilePage.passCurrentMsg", "Please enter your current password.") },
       { condition: password !== passwordVerify, message: Locale.label("profile.profilePage.passMatch") },
       { condition: password !== "" && password.length < 8, message: Locale.label("profile.profilePage.passLong") }
     ];
@@ -175,6 +179,24 @@ export const ProfilePage = () => {
                 <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} placeholder={Locale.label("placeholders.person.lastName")} />
               </Grid>
 
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  type={showPassword ? "text" : "password"}
+                  fullWidth
+                  name="currentPassword"
+                  label={Locale.label("profile.profilePage.passCurrent", "Current password")}
+                  value={currentPassword}
+                  onChange={handleChange}
+                  disabled={isDemo}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <AppIconButton label={Locale.label("profile.profilePage.togglePasswordVisibility")} icon={showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>} onClick={() => setShowPassword(!showPassword)} disabled={isDemo} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   type={showPassword ? "text" : "password"}

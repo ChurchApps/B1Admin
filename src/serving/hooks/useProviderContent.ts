@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { getProvider, navigateToPath, type Instructions } from "@churchapps/content-providers";
 import { ApiHelper } from "@churchapps/apphelper";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
+import { findByRelatedId } from "../components/planItemUtils";
 
 export interface ProviderContentChild {
   id?: string;
@@ -30,6 +31,8 @@ export interface UseProviderContentParams {
   providerId?: string;
   providerPath?: string;
   providerContentPath?: string;
+  /** Stable content id; preferred over the index-based providerContentPath, which goes stale when the provider edits content. */
+  relatedId?: string;
   ministryId?: string;
   fallbackUrl?: string;
 }
@@ -59,7 +62,7 @@ function detectMediaType(url: string): "video" | "image" | "audio" | "iframe" {
 }
 
 export function useProviderContent(params: UseProviderContentParams): UseProviderContentResult {
-  const { providerId, providerPath, providerContentPath, ministryId, fallbackUrl } = params;
+  const { providerId, providerPath, providerContentPath, relatedId, ministryId, fallbackUrl } = params;
   const [content, setContent] = useState<ProviderContent | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -133,8 +136,9 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
           return;
         }
 
-        // Navigate to the specific item using providerContentPath
-        const item = navigateToPath(instructions, providerContentPath);
+        // Prefer relatedId (stable across provider edits); fall back to the stored index path.
+        const item = (relatedId && findByRelatedId(instructions.items || [], relatedId)?.item)
+          || navigateToPath(instructions, providerContentPath);
 
         if (item) {
           // Look for downloadUrl on the item itself, or on the first child with a downloadUrl
@@ -206,7 +210,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
     };
 
     fetchContent();
-  }, [providerId, providerPath, providerContentPath, ministryId, fallbackUrl, hasFallback]);
+  }, [providerId, providerPath, providerContentPath, relatedId, ministryId, fallbackUrl, hasFallback]);
 
   return { content, loading, error };
 }

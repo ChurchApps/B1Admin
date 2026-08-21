@@ -35,7 +35,7 @@ export class ChordProHelper {
   };
 
   static transposeChords = (line: string, halfSteps: number) => {
-    const chords = line.match(/\[[A-G][#bm]?(\/[A-G][#bm]?)?\]/g);
+    const chords = line.match(/\[[A-G][#b]?[^/\]]*(\/[A-G][#b]?)?\]/g);
     if (chords) {
       chords.forEach((chord) => {
         const newChord = this.transposeChord(chord.substring(1, chord.length - 1), halfSteps);
@@ -85,12 +85,6 @@ export class ChordProHelper {
     const newRoot = this.noteNames[newIndex];
 
     return newRoot + modifier;
-  };
-
-  static transposeLyrics = () => {
-    const result: string[] = [];
-
-    return result.join("\n");
   };
 
   static escapeHtml = (s: string) => s

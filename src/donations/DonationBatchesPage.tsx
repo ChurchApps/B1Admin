@@ -24,10 +24,11 @@ export const DonationBatchesPage = () => {
 
   const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<DonationBatchInterface>(batches.data || [], "", "asc", batchComparators);
 
-  const batchUpdated = () => {
+  const refetchBatches = batches.refetch;
+  const batchUpdated = React.useCallback(() => {
     setEditBatchId("notset");
-    batches.refetch();
-  };
+    refetchBatches();
+  }, [refetchBatches]);
 
   const showEditBatch = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -56,11 +57,7 @@ export const DonationBatchesPage = () => {
     }
   }, [batches.data]);
 
-  const getSidebarModules = () => {
-    const result = [];
-    if (editBatchId !== "notset") result.push(<BatchEdit key={result.length - 1} batchId={editBatchId} updatedFunction={batchUpdated} />);
-    return result;
-  };
+  const editBatch = editBatchId === "notset" ? undefined : editBatchId === "" ? {} : (sortedBatches.find((b) => b.id === editBatchId) || { id: editBatchId });
 
   const getRows = () => {
     const result: JSX.Element[] = [];
@@ -200,7 +197,7 @@ export const DonationBatchesPage = () => {
       </PageHeader>
 
       <Box sx={{ p: 3 }}>
-        {editBatchId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
+        {editBatch && <Box sx={{ mb: 3 }}><BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} /></Box>}
 
         <CardWithHeader
           icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}

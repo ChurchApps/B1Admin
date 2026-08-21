@@ -155,6 +155,7 @@ export interface PlanItemInterface {
   providerContentPath?: string;
   thumbnailUrl?: string;
   textOverride?: string;
+  positionId?: string;
 
   children?: PlanItemInterface[];
 }
@@ -485,6 +486,7 @@ export interface FeedFileInterface {
 }
 
 export interface FeedSectionInterface {
+  id?: string;
   name?: string;
   actions?: FeedActionInterface[];
   materials?: string;

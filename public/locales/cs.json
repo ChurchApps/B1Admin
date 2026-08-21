@@ -37,8 +37,15 @@
       "unscheduled": "Nenaplánováno"
     },
     "attendanceSetup": {
-      "setupMessage": "Nastavte kampusy, bohoslužby a časy bohoslužeb pro zahájení sledování docházky.",
+      "manageCampuses": "Spravovat kampusy",
+      "setupMessage": "Nastavte kampusy, služby a časy služeb a začněte sledovat docházku.",
       "unassigned": "Nepřiřazeno"
+    },
+    "checkinType": {
+      "guest": "Host",
+      "header": "Typ",
+      "volunteer": "Dobrovolník",
+      "volunteers": "dobrovolníci"
     },
     "labels": {
       "align": "Zarovnání",
@@ -55,6 +62,17 @@
       "empty": "Prázdný",
       "equals": "Rovná se",
       "field": "Pole",
+      "fieldChildren": "Děti",
+      "fieldChildrenAllergies": "Alergie dětí",
+      "fieldChurchName": "Název církve",
+      "fieldDate": "Datum",
+      "fieldDisplayName": "Jméno",
+      "fieldFirstName": "Jméno",
+      "fieldLastName": "Příjmení",
+      "fieldNametagNotes": "Poznámky na jmenovce",
+      "fieldNickName": "Přezdívka",
+      "fieldSecurityCode": "Bezpečnostní kód",
+      "fieldSessions": "Relace",
       "fill": "Výplň",
       "fontSize": "Velikost písma",
       "height": "Výška (palce)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "Vytvořte šablonu štítku pro přizpůsobení štítků tisknutých na přihlašovacích kioscích.",
       "notEmpty": "Není prázdný",
       "notEquals": "Nerovná se",
+      "opDoesNotEqual": "Nerovná se",
+      "opEquals": "Rovná se",
+      "opIsBlank": "Je prázdný",
+      "opIsNotBlank": "Není prázdný",
       "operator": "Operátor",
       "palette": "Přidat blok",
       "pickup": "Vyzvedávací lístek",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Schválit",
+      "approvedToast": "Žádost byla schválena.",
       "bookingRequests": "Žádosti o místnosti a prostředky",
+      "confirmReject": "Opravdu chcete tuto žádost zamítnout?",
       "conflicts": "Konflikty",
       "description": "Popis",
       "event": "Událost",
@@ -127,6 +151,8 @@
       "noPendingBookings": "Žádné čekající žádosti o místnosti nebo prostředky.",
       "noPendingEvents": "Žádné čekající žádosti o události.",
       "reject": "Zamítnout",
+      "rejectTitle": "Zamítnout žádost",
+      "rejectedToast": "Žádost byla zamítnuta.",
       "roomResource": "Místnost / prostředek",
       "status": "Stav",
       "subtitle": "Zkontrolujte čekající žádosti o místnosti, prostředky a události",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "Zrušit",
       "confirmDelete": "Opravdu chcete smazat tuto událost?",
+      "confirmDeleteSeries": "Toto je opakovaná událost. Jejím smazáním odstraníte celou sérii a všechny její výskyty. Opravdu chcete pokračovat?",
       "delete": "Smazat",
+      "editEvent": "Upravit událost",
       "manageRegistrations": "Spravovat registrace",
-      "noGroups": "Nebyly nalezeny žádné skupiny.",
-      "editEvent": "Upravit událost"
+      "noGroups": "Nebyly nalezeny žádné skupiny."
     },
     "calendarList": {
       "aboutParagraph1": "Kalendáře vám umožňují organizovat a zobrazovat události pro váš sbor.",
@@ -203,6 +230,7 @@
       "importIcs": "Importovat .ics",
       "newEvent": "Nová událost",
       "noGroupsAdded": "Zatím nebyly přidány žádné skupiny",
+      "pendingApprovals": "{count} čekajících schválení",
       "print": "Tisknout",
       "subtitle": "Spravujte události kalendáře a skupiny"
     },
@@ -334,12 +362,12 @@
     "confirm": "Potvrdit",
     "copy": "Kopírovat",
     "createPerson": {
+      "confirmDuplicate": "S tímto e-mailem byl nalezen existující uživatel '{{existingName}}' ({{existingEmail}}). Opravdu chcete přidat '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Prosím zadejte křestní jméno.",
         "lastName": "Prosím zadejte příjmení.",
         "validEmail": "Prosím zadejte platnou e-mailovou adresu."
-      },
-      "confirmDuplicate": "S tímto e-mailem byl nalezen existující uživatel '{{existingName}}' ({{existingEmail}}). Opravdu chcete přidat '{{firstName}} {{lastName}}'?"
+      }
     },
     "custom": "Vlastní",
     "delete": "Smazat",
@@ -360,8 +388,14 @@
     },
     "help": "Nápověda",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Modlitba"
+      },
+      "noResults": "Nebyly nalezeny žádné výsledky",
       "searchLabel": "Hledat ikony",
       "searchPlaceholder": "Zadejte pro vyhledání (např. osoba, domov, kostel)...",
+      "showingDefault": "Zobrazeno {{count}} výchozích ikon",
+      "showingMatching": "Zobrazeno {{count}} odpovídajících ikon",
       "title": "Vybrat ikonu",
       "tryDifferent": "Zkuste jiný hledaný výraz"
     },
@@ -386,6 +420,7 @@
     "right": "Vpravo",
     "save": "Uložit",
     "saveChanges": "Uložit změny",
+    "saveError": "Nelze uložit. Zkuste to prosím znovu.",
     "saving": "Ukládání...",
     "search": "Hledat",
     "searching": "Vyhledávání...",
@@ -490,6 +525,9 @@
       "workflows": "Pracovní postupy"
     }
   },
+  "controlPanel": {
+    "serverError": "Něco se pokazilo. Zkuste to prosím znovu."
+  },
   "createPerson": {
     "addNewPerson": "Přidat novou osobu",
     "email": "E-mail",
@@ -538,6 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "Hledat osoby",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "Vymazat hledání",
       "display": "Zobrazit",
       "noResults": "Nebyly nalezeny žádné osoby odpovídající vašim kritériím vyhledávání.",
       "photo": "Fotografie",
@@ -590,6 +629,8 @@
       "invalidCode": "Neplatný nebo vypršený kód. Zkontrolujte prosím a zkuste to znovu.",
       "loading": "Načítání...",
       "noChurchSelected": "Nebyla vybrána žádná církev. Přihlaste se prosím znovu a vyberte církev.",
+      "planType": "Zobrazit plány pro",
+      "planTypeNone": "Žádné (pouze prohlížení)",
       "requestedPermissions": "Požadovaná oprávnění:",
       "title": "Autorizovat zařízení",
       "verifyFailed": "Ověření kódu se nezdařilo. Zkuste to prosím znovu."
@@ -609,6 +650,7 @@
       "lastYearCsv": "CSV za minulý rok",
       "lastYearPrint": "Tisk za minulý rok",
       "method": "Metoda",
+      "viewBatch": "Zobrazit dávku",
       "willAppear": "Dary se zde zobrazí po jejich zaznamenání."
     }
   },
@@ -665,7 +707,8 @@
       "ofGoal": "z cíle",
       "pledges": "Sliby",
       "status": "Stav",
-      "subtitle": "Sliby a průběh darování pro tuto kampaň"
+      "subtitle": "Sliby a průběh darování pro tuto kampaň",
+      "unknownPerson": "Neznámá osoba"
     },
     "campaignsPage": {
       "addCampaign": "Přidat kampaň",
@@ -708,6 +751,7 @@
       "cash": "Hotovost",
       "check": "Šek",
       "checkNum": "Číslo šeku",
+      "confirmMsg": "Opravdu chcete trvale smazat tento dar?",
       "date": "Datum",
       "fund": "Fond",
       "inKind": "Věcný dar",
@@ -733,6 +777,7 @@
       "errMsg": "Nebyl nalezen žádný fond. Prosím vytvořte fond před zadáním daru",
       "export": "Exportovat",
       "funds": "Fondy",
+      "method": "Metoda",
       "noDonMsg": "Nebyly zaznamenány žádné dary. Po zadání darů se zobrazí zde.",
       "pending": "Čeká se",
       "statements": "Výpisy darů",
@@ -786,7 +831,8 @@
       "subtitle": "Spravujte fondy darů a sledujte kategorie darování",
       "taxDeductible": "Daňově odečitatelné",
       "taxStatus": "Daňový status",
-      "totalFunds": "Celkové fondy"
+      "totalFunds": "Celkové fondy",
+      "viewBatch": "Zobrazit dávku"
     },
     "period": {
       "monthly": "Měsíčně",
@@ -936,6 +982,7 @@
       "emailNotifMsg": "Při každém odeslání formuláře obdržíte upozornění e-mailem.",
       "formMem": "Členové formuláře",
       "perm": "Oprávnění",
+      "removeConfirm": "Odebrat {name} z tohoto formuláře?",
       "view": "Pouze zobrazení"
     },
     "formPage": {
@@ -949,6 +996,7 @@
       "date": "Datum",
       "decNum": "Desetinné číslo",
       "desc": "Popis",
+      "fieldType": "Typ pole",
       "fund": "Fond",
       "multiChoice": "Více možností",
       "payment": "Platba",
@@ -1001,7 +1049,8 @@
   "gallery": {
     "aspectRatio": "Poměr stran",
     "confirmDelete": "Potvrdit smazání",
-    "freeForm": "Volný formát"
+    "freeForm": "Volný formát",
+    "uploadError": "Zpracování obrázku bylo dokončeno, ale nahrání selhalo. Rozhraní API nemusí být v tomto prostředí dostupné."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1071,9 @@
       "duplicateTooltip": "Duplikovat tuto skupinu",
       "emailTooltip": "Poslat skupině e-mail",
       "labels": "Štítky",
+      "location": "Místo",
       "meetingInfo": "Informace o setkání",
+      "meetingTime": "Čas setkání",
       "moreLabels": "Další štítky",
       "parentPickup": "Vyzvednutí rodiči",
       "printNametag": "Vytisknout jmenovku",
@@ -1033,6 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "Přidat události",
+      "allowRsvps": "Povolit potvrzení účasti",
       "bulkAddTitle": "Přidat opakující se události",
       "confirmDelete": "Smazat \"{title}\" a všechny jeho výskyty?",
       "datesPreview": "Bude vytvořeno {count} setkání. Zrušte zaškrtnutí dat, která chcete přeskočit.",
@@ -1042,7 +1094,15 @@
       "lastMeeting": "Poslední setkání",
       "noDates": "Ve zvoleném rozsahu nejsou žádná data setkání.",
       "noEvents": "Zatím žádné události. Pomocí Přidat události naplánujte setkání skupiny.",
+      "noResponses": "Zatím žádné odpovědi.",
       "oneTime": "Jednorázové",
+      "response_maybe": "Možná",
+      "response_no": "Ne",
+      "response_yes": "Ano",
+      "rosterTitle": "Odpovědi na pozvánku",
+      "rsvpSummary": "{yes} ano · {maybe} možná · {no} ne",
+      "rsvps": "Potvrzení účasti",
+      "rsvpsDisabled": "Vypnuto",
       "skipHolidays": "Přeskočit svátky",
       "skippedDates": "Přeskočená data",
       "until": "do"
@@ -1064,15 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Přidat fotografii",
+      "ageGrade": "Věk a ročník",
       "archive": "Archivovat",
       "archiveAria": "Archivovat skupinu",
       "attTrack": "Sledovat docházku",
       "attendance": "Docházka",
       "attendanceReminders": "E-maily s připomínkami docházky",
+      "capacity": "Kapacita",
       "catName": "Název kategorie",
       "catNameMsg": "Prosím zadejte název kategorie.",
       "changePhotoAria": "Změnit fotografii skupiny",
+      "checkinCapacity": "Kapacita přihlášení",
+      "checkinClosed": "Uzavřeno pro přihlášení",
       "clickToAddPhoto": "Klikněte pro přidání fotografie",
+      "confidential": "Důvěrná skupina",
+      "confidentialHelp": "Skryje tuto skupinu a její seznam členů z veřejných stránek, vyhledávače skupin i před nečleny.",
       "confirmArchive": "Opravdu chcete archivovat tuto skupinu? Bude skryta ze seznamu skupin, dokud nebude obnovena.",
       "confirmMsg": "Opravdu chcete trvale smazat tuto skupinu?",
       "enrollment": "Zápis",
@@ -1083,14 +1149,24 @@
       "groupNameMsg": "Prosím zadejte název skupiny.",
       "groupPhotoAlt": "skupina",
       "groupSlugAria": "Slug skupiny",
+      "guestCapacity": "Kapacita pro hosty",
+      "maxAge": "Maximální věk",
+      "maxGrade": "Maximální ročník",
       "meetingLocation": "Místo setkání",
       "meetingLocationAria": "Místo setkání",
       "meetingTime": "Čas setkání",
       "meetingTimeAria": "Čas setkání",
+      "minAge": "Minimální věk",
+      "minGrade": "Minimální ročník",
+      "minVolunteers": "Minimální počet dobrovolníků",
+      "months": "Měsíce",
+      "noLimit": "Bez omezení",
       "parPick": "Vyzvednutí rodiči",
       "prinName": "Vytisknout jmenovku",
       "publicRoster": "Zobrazit seznam členů na webu",
-      "slug": "Slug (klíčové jméno použité v URL)"
+      "slug": "Slug (klíčové jméno použité v URL)",
+      "volunteerRatio": "Dětí na jednoho dobrovolníka",
+      "years": "Roky"
     },
     "groupHealth": {
       "attendance": "Docházka",
@@ -1124,8 +1200,10 @@
       "member": "člen",
       "members": "členové",
       "messagePlaceholder": "Napište zprávu pro všechny členy skupiny…",
+      "messageSent": "Zpráva byla odeslána.",
       "noMemDesc": "Přidejte členy z panelu vpravo a začněte budovat tuto skupinu.",
       "noMemTitle": "Zatím žádní členové",
+      "removeConfirm": "Odebrat {name} z této skupiny?",
       "removeLeaderAccess": "Odebrat oprávnění vedoucího",
       "role": "Role",
       "send": "Odeslat",
@@ -1171,9 +1249,13 @@
       "groups": "Skupiny",
       "labels": "Štítky",
       "noGroupMsg": "Nebyly nalezeny žádné skupiny. Prosím vytvořte skupinu.",
+      "noMatchMsg": "Vašemu hledání neodpovídají žádné skupiny.",
+      "pendingRequestSingular": "{count} čekající žádost",
+      "pendingRequests": "{count} čekajících žádostí",
       "pers": "1 osoba",
       "ppl": "Lidé",
       "restore": "Obnovit",
+      "searchPlaceholder": "Hledat skupiny...",
       "showArchived": "Zobrazit archivované",
       "spPpl": " osob",
       "subtitle": {
@@ -1186,6 +1268,11 @@
       "availableMem": "Dostupní členové skupiny",
       "noMem": "Žádní členové skupiny nejsou k dispozici.",
       "unknown": "Neznámý"
+    },
+    "pendingRequestsPage": {
+      "empty": "Žádné čekající žádosti.",
+      "subtitle": "Schvalte nebo zamítněte žádosti podané členy napříč všemi skupinami.",
+      "title": "Čekající žádosti o vstup"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Vložit slučovací pole do těla:",
@@ -1223,6 +1310,8 @@
       "eligibleSummary": "{eligibleCount} z {totalMembers} členů obdrží tuto SMS.",
       "eligibleSummarySingular": "{eligibleCount} z {totalMembers} člena obdrží tuto SMS.",
       "fallbackError": "Odeslání SMS se nezdařilo.",
+      "insufficientCredits": "Vaší církvi došel v tomto zúčtovacím období kredit na SMS. Žádné zprávy nebyly odeslány. Upgradujte nebo počkejte na obnovení kreditu na",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Načítání příjemců...",
       "messageLabel": "Zpráva",
       "noPhoneNotice": "{count} nemají uložené telefonní číslo.",
@@ -1268,6 +1357,11 @@
       "deleteConfirm": "Opravdu chcete trvale smazat tuto relaci?",
       "sesEdit": "Upravit relaci"
     },
+    "sessionsDisabled": {
+      "description": "Zapněte sledování docházky pro zaznamenávání relací a přihlášení v této skupině.",
+      "enable": "Zapnout docházku",
+      "title": "Sledování docházky není zapnuté"
+    },
     "tabs": {
       "mem": "Členové",
       "ses": "Relace"
@@ -1309,8 +1403,8 @@
       "registrations": "Registrace",
       "roomsResources": "Místnosti a prostředky",
       "sermons": "Kázání",
-      "stripeImport": "Import Stripe",
       "site": "Web",
+      "stripeImport": "Import Stripe",
       "website": "Webové stránky"
     }
   },
@@ -1384,6 +1478,11 @@
     "sep": "Zář",
     "september": "Září"
   },
+  "notFound": {
+    "backHome": "Zpět na nástěnku",
+    "message": "Stránka, kterou hledáte, neexistuje nebo mohla být přesunuta.",
+    "title": "Stránka nenalezena"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Načítání vlastních polí...",
@@ -1414,6 +1513,11 @@
       "clearSelection": "Zrušit výběr",
       "createNewGroup": "Vytvořit novou skupinu",
       "delete": "Smazat",
+      "deleteConfirm": "Opravdu chcete smazat {count} vybraných osob? Tuto akci nelze vrátit zpět.",
+      "deleteError": "Vybrané osoby se nepodařilo smazat",
+      "deleteSelected": "Smazat vybrané osoby",
+      "deleteSuccess": "Úspěšně smazáno {count} osob",
+      "deleting": "Mazání...",
       "error": "Chyba",
       "fieldPrompt": "Aktualizovat pole pro {count} vybraných osob.",
       "fieldSuccess": "Aktualizováno {count} osob.",
@@ -1428,8 +1532,8 @@
       "optedOutYes": "Odhlášení: ano",
       "removeFromGroup": "Odebrat ze skupiny",
       "selected": "Vybráno",
-      "workflowSuccess": "Přidáno {count} osob do pracovního postupu.",
-      "setCampus": "Nastavit kampus"
+      "setCampus": "Nastavit kampus",
+      "workflowSuccess": "Přidáno {count} osob do pracovního postupu."
     },
     "demographics": {
       "age": "Věk",
@@ -1623,6 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "Přidat do pracovního postupu",
       "age": "Věk",
+      "emailPerson": "Odeslat e-mail této osobě",
       "gender": "Pohlaví",
       "hasLogin": "Má přihlášení",
       "maritalStatus": "Rodinný stav",
@@ -1632,6 +1737,7 @@
       "applyQuestion": "Chcete to aplikovat na celou",
       "cannotDeleteSelf": "Nemůžete smazat svůj vlastní záznam osoby.",
       "confirmMsg": "Opravdu chcete trvale smazat tento záznam osoby?",
+      "customFields": "Vlastní pole",
       "donorNumber": "Číslo dárce",
       "exten": "Linka",
       "family": "rodinu",
@@ -1668,6 +1774,8 @@
       "profile": "Profil"
     },
     "personPage": {
+      "confidentialNotes": "Důvěrné poznámky",
+      "confidentialNotesSuffix": " Důvěrné poznámky",
       "notesSuffix": " Poznámky",
       "thisPerson": "tato osoba"
     },
@@ -1681,6 +1789,18 @@
       "mobile": "Mobil",
       "persDet": "Osobní údaje",
       "work": "Práce"
+    },
+    "pickup": {
+      "add": "Přidat",
+      "confirmDelete": "Opravdu chcete odebrat tuto pověřenou osobu?",
+      "name": "Jméno",
+      "none": "Nebyly přidány žádné osoby pro vyzvednutí.",
+      "notAuthorized": "Neautorizováno",
+      "orAddByName": "Nebo přidejte někoho, kdo není v systému:",
+      "relationship": "Vztah",
+      "status": "Stav",
+      "title": "Vyzvednutí",
+      "trusted": "Důvěryhodný"
     },
     "tabs": {
       "att": "Docházka",
@@ -1706,6 +1826,7 @@
     "female": "Žena",
     "firstName": "Křestní jméno",
     "gender": "Pohlaví",
+    "grade": "Třída",
     "inactive": "Neaktivní",
     "lastName": "Příjmení",
     "line1": "Řádek 1",
@@ -1723,6 +1844,7 @@
     "phone": "Telefon",
     "prefix": "Titul před",
     "regularAttendee": "Pravidelný účastník",
+    "school": "Škola",
     "single": "Svobodný/á",
     "staff": "Zaměstnanec",
     "state": "Kraj",
@@ -1906,6 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Přiřadit pozici",
+      "confirmDelete": "Opravdu chcete odebrat toto přiřazení dobrovolníka?",
       "done": "Hotovo",
       "editAssign": "Upravit přiřazení",
       "noMem": "Nebyli nalezeni žádní členové skupiny."
@@ -1964,6 +2087,7 @@
       "waitingForAuth": "Čekání na autorizaci..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Váš prohlížeč nepodporuje přehrávání zvuku.",
       "fallbackPreview": "Náhled",
       "fallbackTitle": "Náhled obsahu",
       "noContent": "Žádný obsah k zobrazení.",
@@ -2156,7 +2280,11 @@
       "ppl": "osob",
       "prefTimeMismatch": "preferuje sloužit v",
       "publish": "Zveřejnit plán",
+      "publishConfirm": "Zveřejnit tento plán, aby dobrovolníci viděli svá přiřazení?",
+      "publishConfirmLabel": "Zveřejnit",
+      "publishConfirmTitle": "Zveřejnit plán",
       "publishNotify": "Zveřejnit a upozornit",
+      "publishNotifyConfirm": "Zveřejnit tento plán a upozornit {count} dobrovolníků na jejich přiřazení? Upozornění budou odeslána okamžitě.",
       "timeCon": "Časový konflikt mezi",
       "timeCon2": "Časový konflikt v",
       "timesThisMonth": "krát tento měsíc, nad jejich preferovaným maximem",
@@ -2177,6 +2305,7 @@
       "allowSelfSignup": "Povolit samopřihlášení",
       "catName": "Název kategorie",
       "catNameReq": "Název kategorie je povinný.",
+      "confirmDelete": "Opravdu chcete smazat tuto pozici? Všem, kdo jsou na ni aktuálně přiřazeni, bude zrušeno naplánování.",
       "description": "Popis",
       "descriptionHelper": "Zobrazeno dobrovolníkům při prohlížení příležitostí k přihlášení",
       "nameReq": "Název je povinný",
@@ -2198,6 +2327,14 @@
       "length": "Délka",
       "serviceOrder": "POŘAD BOHOSLUŽBY",
       "time": "Čas"
+    },
+    "printPreview": {
+      "colorCoded": "Barevně odlišeno",
+      "format": "Formát:",
+      "materials": "Materiály:",
+      "script": "Scénář",
+      "serviceOrder": "Pořad bohoslužby",
+      "title": "Náhled tisku"
     },
     "schedulingPreference": {
       "household": "Plánování domácnosti",
@@ -2248,7 +2385,8 @@
       "title": "Přehled služby"
     },
     "servingPage": {
-      "showAll": "Zobrazit vše"
+      "showAll": "Zobrazit vše",
+      "showAllHint": "Vaše služby jsou skryté, protože nejste členem. Zapněte výše \"Zobrazit vše\", abyste je viděli."
     },
     "songDialog": {
       "close": "Zavřít",
@@ -2289,6 +2427,7 @@
       "updateFromPlanHelp": "Nahradí obsah této šablony aktuálním pořadem bohoslužby a pozicemi z plánu."
     },
     "timeEdit": {
+      "confirmDelete": "Opravdu chcete smazat tento čas?",
       "disName": "Zobrazovaný název",
       "disNameReq": "Zobrazovaný název je povinný.",
       "endReq": "Čas konce je povinný",
@@ -2341,7 +2480,9 @@
     "pairScreen": {
       "codeRequired": "Párovací kód je povinný",
       "invalidCode": "Neplatný párovací kód",
-      "pairingCode": "Párovací kód"
+      "pairingCode": "Párovací kód",
+      "planType": "Zobrazit plány pro",
+      "planTypeNone": "Žádné (pouze upozornění)"
     },
     "profilePage": {
       "accDel": "Smazání účtu",
@@ -2375,6 +2516,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Přidat slevový kód",
+      "addSelection": "Přidat výběr",
+      "addType": "Přidat typ",
+      "amount": "Částka",
+      "attendeeTypes": "Typy účastníků",
+      "balance": "Zůstatek",
+      "capacity": "Kapacita",
+      "code": "Kód",
+      "description": "Popis",
+      "discountCodes": "Slevové kódy",
+      "discountType": "Typ",
+      "endDate": "Datum konce",
+      "kind": "Druh",
+      "maxQuantity": "Max. množství",
+      "maxUses": "Max. použití",
+      "method": "Metoda",
+      "minMembers": "Min. počet členů",
+      "name": "Název",
+      "noCoupons": "Zatím žádné slevové kódy.",
+      "noPayments": "Nejsou zaznamenány žádné platby.",
+      "noSelections": "Zatím žádné výběry.",
+      "noTypes": "Zatím žádné typy účastníků.",
+      "paid": "Zaplaceno",
+      "paidTotal": "Zaplaceno / Celkem",
+      "payments": "Platby",
+      "percent": "Procento",
+      "price": "Cena",
+      "promote": "Propagovat",
+      "registrationDetails": "Podrobnosti registrace",
+      "removeConfirm": "Odebrat tuto položku? Tuto akci nelze vrátit zpět.",
+      "selections": "Výběry",
+      "sort": "Řadit",
+      "startDate": "Datum zahájení",
+      "total": "Celkem",
+      "type": "Typ",
+      "usesSoFar": "Použito: {count}",
+      "value": "Hodnota"
+    },
     "registrationDetailsPage": {
       "addAttendee": "Přidat účastníka",
       "addAttendeeError": "Nepodařilo se zaregistrovat účastníka.",
@@ -2405,6 +2585,7 @@
       "capacity": "Kapacita",
       "capacityPlaceholder": "Ponechte prázdné pro neomezené",
       "enableRegistration": "Povolit registraci",
+      "enableWaitlist": "Povolit čekací listinu",
       "none": "Žádné",
       "registrationCloses": "Registrace končí",
       "registrationOpens": "Registrace začíná",
@@ -2449,19 +2630,7 @@
       "report": "Zpráva"
     },
     "reportsPage": {
-      "attTrend": "Trend docházky",
-      "attTrendDesc": "Zobrazit trendy docházky v čase",
-      "bDays": "Narozeniny",
-      "bDaysDesc": "Zobrazit nadcházející narozeniny",
-      "dailyGroupAtt": "Denní docházka skupin",
-      "dailyGroupAttDesc": "Zobrazit denní docházku skupin",
-      "donSum": "Souhrn darů",
-      "donSumDesc": "Zobrazit souhrn darů",
-      "groupAtt": "Docházka skupin",
-      "groupAttDesc": "Zobrazit docházku skupin",
-      "helpText": "Vyberte zprávu pro zobrazení podrobných informací",
-      "reports": "Zprávy",
-      "subtitle": "Zobrazení a stahování zpráv sboru"
+      "reports": "Zprávy"
     }
   },
   "sermons": {
@@ -2704,7 +2873,11 @@
       "church": "Sbor",
       "churchName": "Název sboru",
       "churches": "Sbory",
+      "churchesSubtitle": "Vyhledávejte a spravujte všechny církve",
+      "impersonateSubtitle": "Přihlaste se jako jiný uživatel za účelem podpory",
       "impersonateUser": "Vystupovat jako uživatel",
+      "jobs": "Úlohy na pozadí",
+      "jobsSubtitle": "Poslední spuštění a selhání naplánovaných úloh",
       "location": "Umístění",
       "noChurch": "Nebyly nalezeny žádné sbory. Prosím hledejte jiný název.",
       "noUsers": "Nebyli nalezeni žádní uživatelé. Prosím hledejte jiné jméno nebo e-mail.",
@@ -2717,13 +2890,20 @@
       "searchResults": "Výsledky hledání",
       "servAdmin": "Správa serveru",
       "serverHealth": "Zdraví serveru",
+      "serverHealthSubtitle": "Zkontrolujte stav backendových služeb",
       "subtitle": "Spravujte celoserverová nastavení a sbory",
       "translationLookups": "Vyhledávání překladů",
+      "translationSubtitle": "Vyhledejte přeložené řetězce lokalizace",
+      "usageSubtitle": "Zobrazte trendy ve využití serveru",
       "usageTrends": "Trendy používání",
+      "users": "Uživatelé",
+      "usersSubtitle": "Vyhledejte libovolný uživatelský účet za účelem podpory",
       "valueNotes": "Poznámky k výpočtu hodnot"
     },
     "churchesTab": {
+      "archiveConfirm": "Archivovat {name}? Členové ztratí přístup, dokud nebude obnoven.",
       "churchNameSearchAria": "Hledání podle názvu církve",
+      "restoreConfirm": "Obnovit přístup pro {name}?",
       "searchChurchesAria": "Hledat církve"
     },
     "impersonateTab": {
@@ -2734,6 +2914,18 @@
       "searchAria": "Hledat uživatele k vystupování",
       "searchLabel": "E-mail uživatele",
       "searchPlaceholder": "Hledat podle přihlašovacího e-mailu"
+    },
+    "jobsTab": {
+      "duration": "Doba trvání",
+      "failed": "Selhalo",
+      "job": "Úloha",
+      "lastRun": "Poslední spuštění",
+      "loadError": "Nelze načíst historii spuštění úloh.",
+      "noRuns": "Zatím nejsou zaznamenána žádná spuštění úloh.",
+      "recentFailures": "Nedávná selhání",
+      "subtitle": "Poslední spuštění každé naplánované úlohy. Spuštění jsou zaznamenávána časovými obslužnými rutinami a uchovávána po dobu 30 dní.",
+      "success": "Úspěch",
+      "title": "Úlohy na pozadí"
     },
     "reportPage": {
       "adminOnly": "Pouze správce",
@@ -2760,6 +2952,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Hledat statistiky překladu"
+    },
+    "usersTab": {
+      "access": "Přístup",
+      "description": "Vyhledejte všechny uživatelské účty podle jména nebo e-mailu a zobrazte jejich církve a přihlašovací aktivitu.",
+      "email": "E-mail",
+      "lastLogin": "Poslední přihlášení",
+      "member": "Člen",
+      "name": "Jméno",
+      "noChurches": "Tento uživatel není propojen s žádnou církví.",
+      "searchAria": "Hledat uživatele",
+      "searchLabel": "Jméno nebo e-mail",
+      "staff": "Personál",
+      "subDomain": "Subdoména",
+      "title": "Vyhledávání uživatelů"
     }
   },
   "settings": {
@@ -2848,25 +3054,71 @@
     "auditLogPage": {
       "action": "Akce",
       "allCategories": "Všechny kategorie",
+      "allModules": "Všechny moduly",
       "category": "Kategorie",
       "categoryDonation": "Dary",
       "categoryForm": "Formuláře",
       "categoryGroup": "Skupiny",
       "categoryLogin": "Přihlášení",
       "categoryPermission": "Oprávnění",
-      "categoryPerson": "Osoby",
+      "categoryPerson": "Lidé",
       "categorySettings": "Nastavení",
+      "changes": "Změny",
       "date": "Datum",
+      "deletedRecord": "Smazaný záznam",
       "details": "Podrobnosti",
       "endDate": "Datum ukončení",
-      "entity": "Entita",
+      "entity": "Subjekt",
       "exportCsv": "Exportovat CSV",
+      "field": "Pole",
       "ipAddress": "IP adresa",
-      "noEntries": "Nebyly nalezeny žádné položky auditního protokolu",
+      "module": "Modul",
+      "moduleAttendance": "Účast",
+      "moduleContent": "Obsah",
+      "moduleDoing": "Služba",
+      "moduleGiving": "Dávání",
+      "moduleLessons": "Lekce",
+      "moduleMembership": "Členství",
+      "moduleMessaging": "Zprávy",
+      "newValue": "Nová hodnota",
+      "noDetails": "Nejsou k dispozici žádné podrobnosti o změnách",
+      "noEntries": "Nebyly nalezeny žádné záznamy auditu",
+      "noPrevious": "Nebyl nalezen žádný předchozí záznam; zobrazují se pouze odeslané hodnoty.",
+      "oldValue": "Stará hodnota",
       "search": "Hledat",
       "startDate": "Datum zahájení",
-      "subtitle": "Sledujte změny a aktivity ve vaší církvi",
-      "title": "Auditní protokol"
+      "subtitle": "Sledujte změny a aktivitu v celé církvi",
+      "title": "Auditní záznam",
+      "truncated": "Podrobnosti byly zkráceny a tento záznam nelze vrátit zpět."
+    },
+    "batches": {
+      "action": "Akce",
+      "actions": "Akce",
+      "created": "Vytvořeno",
+      "creator": "Tvůrce",
+      "date": "Datum",
+      "entityId": "ID entity",
+      "entityType": "Typ entity",
+      "failed": "Selhalo ({count})",
+      "items": "Položky",
+      "label": "Popisek",
+      "noEntries": "Nebyly nalezeny žádné dávky",
+      "noResults": "V této dávce nejsou žádné záznamy",
+      "restored": "Obnoveno {count} záznamů.",
+      "resultsTitle": "Výsledky dávky",
+      "skipped": "Přeskočeno ({count})",
+      "skippedHelp": "Záznamy změněné od vytvoření dávky byly přeskočeny, aby nedošlo k přepsání novějších změn.",
+      "source": "Zdroj",
+      "status": "Stav",
+      "subtitle": "Kontrolujte a vracejte zpět hromadné importy a akce",
+      "title": "Dávky",
+      "undo": "Vrátit zpět",
+      "undoConfirm": "Vrátit zpět dávku \"{label}\"? Tím se dotčené záznamy obnoví do stavu před touto dávkou.",
+      "undoError": "Požadavek na vrácení zpět selhal.",
+      "undoTitle": "Vrátit dávku zpět",
+      "undoWarning": "Záznamy změněné od vytvoření této dávky budou přeskočeny. Tuto akci nelze vrátit zpět.",
+      "undoing": "Vracení zpět…",
+      "viewResults": "Zobrazit výsledky"
     },
     "campusEdit": {
       "address2": "Adresa řádek 2",
@@ -2887,10 +3139,18 @@
       "none": "Zatím nebyly přidány žádné campusy.",
       "subtitle": "Spravujte fyzická místa vašeho sboru"
     },
+    "checkinSettingsEdit": {
+      "block": "Blokovat (zabránit přihlášení)",
+      "help": "Zvolte, jak se přihlášení zachová, když místnost překročí poměr dobrovolníků k dětem nebo klesne pod minimální počet dobrovolníků.",
+      "ratioEnforcement": "Vynucení poměru dobrovolníků",
+      "title": "Odbavení",
+      "warn": "Varovat (povolit s potvrzením)"
+    },
     "church": {
       "subdomainHelper": "Unikátní webová adresa vašeho sboru"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "První den v týdnu",
       "address1": "Adresa řádek 1",
       "address2": "Adresa řádek 2",
       "addressLine1Aria": "Řádek adresy 1",
@@ -2909,6 +3169,21 @@
       "subdomainAria": "Subdoména",
       "textingSubtitle": "Konfigurovat poskytovatele SMS",
       "textingTitle": "SMS zprávy"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Opravdu chcete smazat toto vlastní pole? Budou odstraněny i jeho uložené hodnoty.",
+      "fieldType": "Typ pole",
+      "name": "Název",
+      "validate": {
+        "name": "Zadejte prosím název pole."
+      }
+    },
+    "customFields": {
+      "addField": "Přidat pole",
+      "customFields": "Vlastní pole",
+      "field": "Vlastní pole",
+      "none": "Zatím nebyla přidána žádná vlastní pole.",
+      "subtitle": "Definujte vlastní pole pro sledování u osob"
     },
     "developer": {
       "actions": "Akce",
@@ -2955,7 +3230,9 @@
       "domMsg4": ". Může to trvat až 5 minut.",
       "domMsgConnect": "připojení",
       "domain": "Doména",
-      "domains": "Domény"
+      "domains": "Domény",
+      "mainWebsite": "Hlavní web",
+      "site": "Web"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Obsah těla je povinný.",
@@ -3036,25 +3313,46 @@
       "webhookKeyHelper": "Podpisový tajný klíč webhooku z ovládacího panelu Kingdom Funding. Vyžadováno pro aktualizace stavu transakcí.",
       "webhookUrlCopied": "URL webhooku zkopírováno do schránky"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "Den",
+      "disabled": "Vypnuto",
+      "enabled": "Zapnuto",
+      "help": "K tomuto datu je každý rok každý, kdo má vyplněný ročník, automaticky povýšen do dalšího ročníku (12. ročník se stane Absolvent). Ponechte vypnuté, chcete-li automatické povyšování zakázat.",
+      "month": "Měsíc",
+      "title": "Povýšení do další třídy"
+    },
     "landing": {
       "campusesCount": "{count} míst",
       "campusesOne": "1 místo",
       "campusesSubtitle": "Fyzická místa",
       "configuration": "Konfigurace",
+      "customFieldsCount": "{count} vlastních polí",
+      "customFieldsSubtitle": "Zatím žádná vlastní pole",
       "developerSubtitle": "API klíče, webhooky, připojené aplikace",
       "domainsCount": "{count} připojeno",
       "domainsNone": "Žádné vlastní domény",
       "domainsOne": "1 připojeno",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "Automatické povýšení vypnuto",
+      "gradePromotionOn": "Povyšuje každý rok {date}",
       "notConfigured": "Nenakonfigurováno",
       "notSet": "Nenastaveno"
     },
     "manageChurch": {
       "auditLog": "Auditní protokol",
+      "batches": "Dávky",
       "imEx": "Import/Export",
       "noData": "Žádná data sboru nejsou k dispozici",
       "subtitle": "Nakonfigurujte nastavení a předvolby sboru",
       "title": "Správa sboru"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 let a starší",
+      "age16": "16 let a starší",
+      "age18": "18 let a starší",
+      "helpText": "Blokuje nové soukromé konverzace, pokud je kterákoli z osob mladší než tento věk, na základě data narození. Osoby pod tímto věkem zůstávají viditelné v adresáři. Stávajících konverzací se to netýká.",
+      "label": "Minimální věk pro soukromé zprávy",
+      "off": "Vypnuto (bez omezení)"
     },
     "mobileAppSettings": {
       "addTab": "Přidat záložku",
@@ -3108,6 +3406,34 @@
     "rolesPage": {
       "subtitle": "Spravujte role a oprávnění"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Přihlášení se nezdařilo. Zkuste to prosím znovu.",
+      "byosHelper": "Nová nahrání se ukládají do vašeho vlastního účtu a stahování jsou z něj poskytována. Již nahrané soubory zůstávají tam, kde jsou.",
+      "churchAppsFree": "ChurchApps (Zdarma)",
+      "connect": "Připojit účet",
+      "connectFirst": "Před uložením připojte svůj účet.",
+      "connected": "Účet připojen",
+      "connecting": "Čekání na přihlášení...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Soubory budou uloženy ve vašem úložném plánu MinistryStuff, automaticky propojeném s touto církví. Spravujte svůj plán na",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Vyskakovací okno bylo zablokováno. Povolte prosím vyskakovací okna a zkuste to znovu.",
+      "provider": "Poskytovatel",
+      "reconnect": "Znovu připojit",
+      "s3AccessKey": "ID přístupového klíče",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Koncový bod (ponechte prázdné pro AWS)",
+      "s3Helper": "Bucket musí povolovat veřejný přístup pro čtení a CORS PUT požadavky z tohoto webu. Funguje s AWS S3, Cloudflare R2 a Backblaze B2.",
+      "s3PublicBase": "Základní veřejná URL",
+      "s3Region": "Region",
+      "s3Required": "Bucket a základní veřejná URL jsou povinné.",
+      "s3SecretKey": "Tajný přístupový klíč",
+      "saveError": "Chyba při ukládání nastavení úložiště.",
+      "sessionExpired": "Platnost přihlašovací relace vypršela. Zkuste to prosím znovu.",
+      "sessionFailed": "Nepodařilo se zahájit přihlašovací relaci.",
+      "title": "Úložiště souborů",
+      "usage": "Využito {used} GB z {quota} GB."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "Tento odkaz budou uživatelé používat pro kontaktování sboru",
       "link": "Odkaz",
@@ -3121,13 +3447,17 @@
       "clearstreamHelper": "Vytvořte API klíč ve svém",
       "clearstreamHelperLink": "Nastavení účtu Clearstream",
       "clearstreamHelperSuffix": "pod API klíče.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Vaše předplatné SMS MinistryStuff je aktivní a v tomto cyklu vám zbývá {} kreditů.",
+      "ministryStuffHelper": "Není potřeba žádný klíč API. Kredity na SMS pocházejí z vašeho předplatného MinistryStuff, automaticky propojeného s touto církví. Spravujte svůj plán na",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Žádný",
       "provider": "Poskytovatel",
       "saveError": "Chyba při ukládání nastavení SMS.",
+      "textInChurch": "Text v církvi",
       "textInChurchHelper": "Navštivte",
       "textInChurchHelperLink": "Podpora Text In Church",
-      "textInChurchHelperSuffix": "pro vyžádání vývojářského API přístupu. Po schválení vytvořte API klíč v Nastavení účtu > sekce Vývojářské API.",
-      "textInChurch": "Text v církvi"
+      "textInChurchHelperSuffix": "pro vyžádání vývojářského API přístupu. Po schválení vytvořte API klíč v Nastavení účtu > sekce Vývojářské API."
     },
     "userAdd": {
       "addTo": "Přidat do ",
@@ -3364,27 +3694,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
+      "draft": "Koncept",
+      "navHint": "Návštěvníci si mohou přečíst vaše příspěvky na adrese /blog. Přidejte navigační odkaz na obrazovce Stránky, aby jej mohli najít:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Zveřejněno",
+      "scheduled": "Naplánováno",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "Zobrazit na webu"
     },
     "blogEdit": {
+      "author": "Autor",
       "category": "Category",
+      "content": "Obsah",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "Tato webová adresa je již použita jiným příspěvkem.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Náhled",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Automaticky se vyplní podle nadpisu, dokud jej neupravíte. Adresa:",
+      "slugLabel": "Webová adresa",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4056,7 @@
       "uploadFiles": "Nahrát soubory"
     },
     "filesManager": {
+      "externalStorage": "Uloženo ve vašem propojeném účtu",
       "files": "Soubory",
       "getStarted": "Začněte nahráním svého prvního souboru",
       "name": "Jméno",
@@ -3936,6 +4277,7 @@
     },
     "paletteEdit": {
       "accent": "Akcent",
+      "accentDesc": "Hlavní akcent — tlačítka a zvýraznění",
       "applyPaletteAria": "Použít navrženou paletu barev",
       "applySuggested": "Kliknutím na libovolnou paletu ji okamžitě použijete",
       "baseColors": "Základní barvy",
@@ -3943,20 +4285,29 @@
       "colorValues": "Hodnoty barev",
       "dark": "Tmavá",
       "darkAccent": "Tmavý akcent",
+      "darkAccentDesc": "Tmavý akcent — nadpisy a odkazy",
+      "darkDesc": "Nejtmavší odstín — text obsahu",
       "error": "Chyba",
+      "errorDesc": "Chyby a destruktivní akce",
       "headerSubtitle": "Přizpůsobte barevné schéma vašeho webu. Pro mobilní aplikaci, členský portál a barvy kiosku přejděte do Nastavení > Motiv aplikace.",
       "headerTitle": "Paleta barev",
       "light": "Světlá",
       "lightAccent": "Světlý akcent",
+      "lightAccentDesc": "Jemný akcent — nenápadná pozadí",
+      "lightDesc": "Nejsvětlejší odstín — pozadí sekcí",
       "palette": "Paleta",
       "previewWorkTogether": "Náhled toho, jak vaše barvy spolupracují",
       "primary": "Primární",
+      "primaryDesc": "Primární tlačítka a odkazy",
       "savePalette": "Uložit paletu",
       "secondary": "Sekundární",
+      "secondaryDesc": "Sekundární tlačítka a akcenty",
       "semanticColors": "Sémantické barvy",
       "success": "Úspěch",
+      "successDesc": "Zprávy o úspěchu a potvrzení",
       "suggestedPalettes": "Navrhované palety",
-      "warning": "Varování"
+      "warning": "Varování",
+      "warningDesc": "Varování a upozornění"
     },
     "pickColors": {
       "background": "Pozadí",
@@ -4144,6 +4495,10 @@
       "showCampus": "Zobrazit pobočku",
       "title": "Název"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Hlavní web",
+      "manageSites": "Spravovat weby…"
+    },
     "siteTemplates": {
       "back": "Zpět",
       "create": "Vytvořit web",
@@ -4212,6 +4567,15 @@
       "textColor": "Barva textu",
       "title": "Widgety webu",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Přidat web",
+      "deleteConfirm": "Smazat tento web? Jeho stránky, navigace a vzhled budou trvale smazány. Jeho vlastní domény budou přeřazeny na hlavní web.",
+      "empty": "Zatím žádné další weby.",
+      "name": "Název",
+      "subDomain": "Subdoména",
+      "subDomainHint": "Pouze malá písmena a číslice. Stane se {subdomain}.b1.church",
+      "title": "Weby"
     },
     "socialIconsEdit": {
       "alignment": "Zarovnání",
@@ -4331,11 +4695,13 @@
       "columns": "Sloupce",
       "empty": "(prázdné)",
       "firstRowHeader": "První řádek je záhlaví",
+      "markdownHelper": "Povolí Markdown v buňkách pro tučné písmo, odkazy a další formátování.",
       "medium": "Střední",
       "no": "Ne",
       "rows": "Řádky",
       "size": "Velikost",
       "sizeSmall": "Malé",
+      "textFormatting": "Formátování textu",
       "yes": "Ano"
     },
     "templates": {
@@ -4455,7 +4821,9 @@
       "importPrompt": "Chcete importovat textové texty z PraiseCharts?",
       "keysTabsAria": "Záložky tónin",
       "noKeysAvailable": "Nejsou k dispozici žádné tóniny. Přidejte tóninu, abyste mohli začít.",
-      "title": "Tóniny"
+      "title": "Tóniny",
+      "audioTracks": "Zvukové stopy",
+      "uploadAudio": "Nahrát audio"
     },
     "library": {
       "empty": {
@@ -4534,7 +4902,13 @@
       "songs": "Písně",
       "subtitle": "Spravujte svou hudební knihovnu"
     },
-    "title": "Písně"
+    "title": "Písně",
+    "audio": {
+      "deleteConfirm": "Opravdu chcete smazat tento zvukový soubor?",
+      "tooLarge": "Soubor je příliš velký. Maximální velikost je 25 MB.",
+      "unsupportedFormat": "Nepodporovaný zvukový formát. Nahrajte soubor MP3, M4A nebo AAC.",
+      "upload": "Nahrát audio"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto:",
@@ -4812,6 +5186,7 @@
     },
     "workflowEdit": {
       "active": "Aktivní",
+      "confirmDelete": "Opravdu chcete smazat tento pracovní postup?",
       "editWorkflow": "Upravit pracovní postup",
       "inactive": "Neaktivní",
       "name": "Název"
@@ -4842,6 +5217,7 @@
       "title": "Přesměrování"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Opravdu chcete smazat tento krok?",
       "defaultAssignee": "Výchozí přiřazený",
       "dueDays": "Termín za (dny)",
       "dueDaysHelp": "Nastaví termín, když karta vstoupí do tohoto kroku",

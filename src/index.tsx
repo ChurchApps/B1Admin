@@ -18,6 +18,19 @@ DateHelper.getDisplayDuration = (d: Date) => {
   return originalGetDisplayDuration(d);
 };
 
+// Stale chunk hashes after a deploy; reload once to pick up the new build.
+window.addEventListener("vite:preloadError", (e) => {
+  let reloaded = false;
+  try {
+    reloaded = sessionStorage.getItem("preload-error-reloaded") === "1";
+    if (!reloaded) sessionStorage.setItem("preload-error-reloaded", "1");
+  } catch { /* storage unavailable */ }
+  if (!reloaded) {
+    e.preventDefault();
+    window.location.reload();
+  }
+});
+
 Sentry.init({
   dsn: "https://0fa8dbad4eea6ffc6b2ffc157c43cff2@o4510432524107776.ingest.us.sentry.io/4510432531251200",
   sendDefaultPii: true,

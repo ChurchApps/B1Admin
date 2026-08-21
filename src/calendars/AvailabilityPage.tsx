@@ -6,7 +6,7 @@ import { ApiHelper, UserHelper, EventHelper, Loading, PageHeader, Locale } from 
 import { Permissions } from "@churchapps/helpers";
 import { Box, MenuItem, Stack, TextField } from "@mui/material";
 import { Add as AddIcon, EventAvailable as AvailabilityIcon } from "@mui/icons-material";
-import { useRequirePermission } from "../hooks";
+import { useRequirePermission, useFirstDayOfWeek, applyWeekStart } from "../hooks";
 import { EventModal } from "./components/EventModal";
 import { HeaderPrimaryButton } from "../components/ui/headerButtons";
 import { type CalendarBlockoutInterface, type EventBookingInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
@@ -24,7 +24,12 @@ export const AvailabilityPage = () => {
   const [loading, setLoading] = useState(true);
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
-  const localizer = dayjsLocalizer(dayjs);
+  const firstDayOfWeek = useFirstDayOfWeek();
+
+  const localizer = useMemo(() => {
+    applyWeekStart(firstDayOfWeek);
+    return dayjsLocalizer(dayjs);
+  }, [firstDayOfWeek]);
 
   const loadBookings = useCallback(() => {
     setLoading(true);

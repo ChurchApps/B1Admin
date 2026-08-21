@@ -43,7 +43,7 @@ export const SendTextDialog: React.FC<Props> = (props) => {
       if (!message.trim()) return null;
       return isGroupMode
         ? { groupId: props.groupId, message }
-        : { personId: props.personId, phoneNumber: props.phoneNumber, message };
+        : { personId: props.personId, phoneNumber: props.phoneNumber, personName: props.personName, message };
     },
     fallbackError: Locale.label("groups.sendTextDialog.fallbackError")
   });

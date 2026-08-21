@@ -53,7 +53,7 @@ export const SongDetailsEdit = (props: Props) => {
           <TextField type="number" label={Locale.label("songs.details.bpm")} fullWidth size="small" placeholder={Locale.label("placeholders.song.bpm")} {...register("bpm")} />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <TextField label={Locale.label("songs.details.key")} fullWidth size="small" placeholder={Locale.label("placeholders.song.keySignature")} {...register("keySignature")} />
+          <TextField label={Locale.label("songs.details.key")} fullWidth size="small" placeholder={Locale.label("placeholders.song.keySignature")} slotProps={{ htmlInput: { maxLength: 20 } }} {...register("keySignature")} />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
           <TextField type="number" label={Locale.label("songs.details.seconds")} fullWidth size="small" placeholder={Locale.label("placeholders.song.lengthSeconds")} {...register("seconds")} />

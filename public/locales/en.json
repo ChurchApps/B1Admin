@@ -388,10 +388,16 @@
     },
     "help": "Help",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Prayer"
+      },
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Showing {{count}} default icons",
+      "showingMatching": "Showing {{count}} matching icons",
+      "noResults": "No results found"
     },
     "left": "Left",
     "loading": "Loading",
@@ -1522,7 +1528,12 @@
       "removeFromGroup": "Remove From Group",
       "selected": "Selected",
       "workflowSuccess": "Added {count} people to the workflow.",
-      "setCampus": "Set Campus"
+      "setCampus": "Set Campus",
+      "deleteSelected": "Delete Selected People",
+      "deleteConfirm": "Are you sure you want to delete {count} selected people? This action cannot be undone.",
+      "deleting": "Deleting...",
+      "deleteSuccess": "{count} people deleted successfully",
+      "deleteError": "Unable to delete selected people"
     },
     "demographics": {
       "age": "Age",
@@ -1763,6 +1774,8 @@
       "profile": "Profile"
     },
     "personPage": {
+      "confidentialNotes": "Confidential Notes",
+      "confidentialNotesSuffix": " Confidential Notes",
       "notesSuffix": " Notes",
       "thisPerson": "this person"
     },
@@ -2020,6 +2033,22 @@
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
     },
+    "applyYearPlan": {
+      "dateTaken": "A plan already exists on this date.",
+      "externalSkipped": "This week is from an external provider and cannot be applied here.",
+      "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Could not load published year plans.",
+      "missingVenue": "Missing program, lesson, or venue.",
+      "nonePublished": "No year plans have been published yet.",
+      "savingFailed": "Failed to create some plans. Please check and try again.",
+      "schedulingProgress": "Scheduling...",
+      "startDate": "First class date",
+      "title": "Apply Year Plan",
+      "week": "Week",
+      "weekCount": "How many weeks",
+      "weeks": "weeks",
+      "yearPlan": "Year plan"
+    },
     "browseGrid": {
       "addOn": "Add-On"
     },
@@ -2144,6 +2173,8 @@
     },
     "planItem": {
       "addItem": "Add Item",
+      "collapseToSection": "Collapse to Section",
+      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
       "duration": "Duration",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
@@ -2165,12 +2196,15 @@
       "enterSearch": "Enter search term",
       "includeInServices": "Include in services",
       "minutes": "Minutes",
+      "noPosition": "None",
       "planItemDescriptionAria": "Plan item description",
       "planItemNameAria": "Plan item name",
+      "position": "Position",
       "searchBoxAria": "searchBox",
       "seconds": "Seconds"
     },
     "planList": {
+      "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "createFirst": "Create First Plan",
       "createPlan": "Create Plan",
@@ -2212,6 +2246,7 @@
       "heading": "Associated Groups",
       "noGroups": "No groups associated",
       "noGroupsDescription": "Associate groups with this plan type so members see plans on their group's page in the B1App.",
+      "parentHint": "Associate a parent group here so members see this week's lesson on the group page. Past is the usual filter for parent groups.",
       "removeConfirm": "Remove this group association?",
       "selectGroup": "Select a group",
       "showsLabel": "Shows",
@@ -2485,6 +2520,8 @@
       "lightMode": "Light Mode",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
+      "passCurrent": "Current password",
+      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2617,19 +2654,7 @@
       "report": "Report"
     },
     "reportsPage": {
-      "attTrend": "Attendance Trend",
-      "attTrendDesc": "View attendance trends over time",
-      "bDays": "Birthdays",
-      "bDaysDesc": "View upcoming birthdays",
-      "dailyGroupAtt": "Daily Group Attendance",
-      "dailyGroupAttDesc": "View daily group attendance",
-      "donSum": "Donation Summary",
-      "donSumDesc": "View donation summary",
-      "groupAtt": "Group Attendance",
-      "groupAttDesc": "View group attendance",
-      "helpText": "Select a report to view detailed information",
-      "reports": "Reports",
-      "subtitle": "View and download church reports"
+      "reports": "Reports"
     }
   },
   "sermons": {
@@ -3137,6 +3162,7 @@
       "churchNameAria": "Church name",
       "churchSettings": "Church Settings",
       "domainsSubtitle": "Custom domain configuration",
+      "firstDayOfWeek": "First Day of Week",
       "general": "General",
       "generalSubtitle": "Support contact, directory, and visibility",
       "givingSubtitle": "Payment gateway and fee options",
@@ -3420,9 +3446,12 @@
     },
     "webhookEdit": {
       "active": "Active",
+      "apiKeyRequired": "API key is required",
       "attempts": "Attempts",
+      "audienceIdRequired": "Audience ID is required",
       "close": "Close",
       "connectorDiscord": "Discord",
+      "connectorMailchimp": "Mailchimp",
       "connectorSlack": "Slack",
       "connectorStandard": "Standard (raw JSON)",
       "connectorType": "Connector Type",
@@ -3436,6 +3465,10 @@
       "event": "Event",
       "events": "Events",
       "eventsRequired": "Select at least one event",
+      "mailchimpApiKey": "Mailchimp API Key",
+      "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
+      "mailchimpAudienceId": "Audience ID",
+      "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
       "name": "Name",
       "namePlaceholder": "e.g. Zapier — new members",
       "nameRequired": "Name is required",
@@ -3447,6 +3480,7 @@
       "regenerateSecret": "Regenerate Secret",
       "response": "Response",
       "responseBody": "Response Body",
+      "saveFailed": "Unable to save webhook",
       "secretIntro": "Copy your signing secret now — it will not be shown again.",
       "secretSignNote": "Use it to verify the X-B1-Signature header on every delivery.",
       "secretTitle": "Signing Secret",
@@ -4779,6 +4813,12 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "audio": {
+      "deleteConfirm": "Are you sure you want to delete this audio file?",
+      "tooLarge": "File is too large. Maximum size is 25 MB.",
+      "unsupportedFormat": "Unsupported audio format. Please upload an MP3, M4A, or AAC file.",
+      "upload": "Upload Audio"
+    },
     "create": {
       "artist": "Artist",
       "songTitle": "Song Title",
@@ -4812,6 +4852,7 @@
       "add": "Add",
       "addExternalLink": "Add external link",
       "addFiles": "Add Files",
+      "audioTracks": "Audio Tracks",
       "availableDownloads": "Available Downloads",
       "externalLinks": "External Links",
       "import": "Import",
@@ -4819,7 +4860,8 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Keys tabs",
       "noKeysAvailable": "No keys available. Add a key to get started.",
-      "title": "Keys"
+      "title": "Keys",
+      "uploadAudio": "Upload Audio"
     },
     "library": {
       "empty": {

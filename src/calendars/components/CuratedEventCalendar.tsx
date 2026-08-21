@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
@@ -10,6 +10,7 @@ import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 import { EditCalendarEventModal } from "./EditCalendarEventModal";
 import { DisplayCalendarEventModal } from "./DisplayCalendarEventModal";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
+import { useFirstDayOfWeek, applyWeekStart } from "../../hooks";
 
 interface Props {
   events: CuratedEventWithEventInterface[];
@@ -26,7 +27,12 @@ export function CuratedEventCalendar(props: Props) {
   const [showCopy, setShowCopy] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const localizer = dayjsLocalizer(dayjs);
+  const firstDayOfWeek = useFirstDayOfWeek();
+
+  const localizer = useMemo(() => {
+    applyWeekStart(firstDayOfWeek);
+    return dayjsLocalizer(dayjs);
+  }, [firstDayOfWeek]);
 
   const getIcsUrl = () => {
     const contentApi = EnvironmentHelper.Common.ContentApi;
@@ -140,7 +146,7 @@ export function CuratedEventCalendar(props: Props) {
         onSelectEvent={handleEventClick}
       />
       {open && props.mode === "edit" && (
-        <EditCalendarEventModal onDone={handleDone} churchId={props.churchId || ""} curatedCalendarId={props.curatedCalendarId || ""} />
+        <EditCalendarEventModal onDone={handleDone} churchId={props.churchId || ""} curatedCalendarId={props.curatedCalendarId || ""} firstDayOfWeek={firstDayOfWeek} />
       )}
       {displayCalendarEvent && (
         <DisplayCalendarEventModal event={displayCalendarEvent} curatedCalendarId={props.curatedCalendarId} mode={props.mode} onDone={handleDone} />

@@ -37,8 +37,15 @@
       "unscheduled": "Nenačrtovano"
     },
     "attendanceSetup": {
-      "setupMessage": "Nastavite kampuse, bogoslužja in čase bogoslužij, da začnete spremljati obisk.",
-      "unassigned": "Nerazporejeno"
+      "manageCampuses": "Upravljanje kampusov",
+      "setupMessage": "Nastavite kampuse, storitve in ure storitev, da začnete spremljati prisotnost.",
+      "unassigned": "Nedodeljeno"
+    },
+    "checkinType": {
+      "guest": "Gost",
+      "header": "Vrsta",
+      "volunteer": "Prostovoljec",
+      "volunteers": "prostovoljci"
     },
     "labels": {
       "align": "Poravnava",
@@ -55,6 +62,17 @@
       "empty": "Prazno",
       "equals": "Enako",
       "field": "Polje",
+      "fieldChildren": "Otroci",
+      "fieldChildrenAllergies": "Alergije otrok",
+      "fieldChurchName": "Ime cerkve",
+      "fieldDate": "Datum",
+      "fieldDisplayName": "Ime",
+      "fieldFirstName": "Ime",
+      "fieldLastName": "Priimek",
+      "fieldNametagNotes": "Opombe na imenski oznaki",
+      "fieldNickName": "Vzdevek",
+      "fieldSecurityCode": "Varnostna koda",
+      "fieldSessions": "Seje",
       "fill": "Zapolni",
       "fontSize": "Velikost pisave",
       "height": "Višina (palci)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "Ustvarite predlogo nalepke za prilagoditev nalepk, ki jih natiskajo kiosks za prijavo.",
       "notEmpty": "Ni prazno",
       "notEquals": "Ni enako",
+      "opDoesNotEqual": "Ni enako",
+      "opEquals": "Enako",
+      "opIsBlank": "Je prazno",
+      "opIsNotBlank": "Ni prazno",
       "operator": "Operator",
       "palette": "Dodaj blok",
       "pickup": "Listek za prevzem",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Odobri",
+      "approvedToast": "Zahteva odobrena.",
       "bookingRequests": "Zahteve za sobe in vire",
+      "confirmReject": "Ali ste prepričani, da želite zavrniti to zahtevo?",
       "conflicts": "Konflikti",
       "description": "Opis",
       "event": "Dogodek",
@@ -127,6 +151,8 @@
       "noPendingBookings": "Ni čakajočih zahtev za sobe ali vire.",
       "noPendingEvents": "Ni čakajočih zahtev za dogodke.",
       "reject": "Zavrni",
+      "rejectTitle": "Zavrni zahtevo",
+      "rejectedToast": "Zahteva zavrnjena.",
       "roomResource": "Soba / vir",
       "status": "Stanje",
       "subtitle": "Preglejte čakajoče zahteve za sobe, vire in dogodke",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "Prekliči",
       "confirmDelete": "Ali ste prepričani, da želite izbrisati ta dogodek?",
+      "confirmDeleteSeries": "To je ponavljajoči se dogodek. Če ga izbrišete, boste odstranili celotno serijo in vse njene ponovitve. Ali ste prepričani?",
       "delete": "Izbriši",
+      "editEvent": "Uredi dogodek",
       "manageRegistrations": "Upravljaj registracije",
-      "noGroups": "Nobene skupina niso bile najdene.",
-      "editEvent": "Uredi dogodek"
+      "noGroups": "Nobene skupina niso bile najdene."
     },
     "calendarList": {
       "aboutParagraph1": "Koledarji vam omogočajo, da organizirate in prikazujete dogodke vaše cerkve.",
@@ -203,6 +230,7 @@
       "importIcs": "Uvozi .ics",
       "newEvent": "Nov dogodek",
       "noGroupsAdded": "Še nobena skupina ni dodana",
+      "pendingApprovals": "{count} čakajočih odobritev",
       "print": "Natisni",
       "subtitle": "Upravljajte dogodke in skupina koledarja"
     },
@@ -334,12 +362,12 @@
     "confirm": "Potrdi",
     "copy": "Kopiraj",
     "createPerson": {
+      "confirmDuplicate": "S tem e-poštnim naslovom je že bila najdena oseba '{{existingName}}' ({{existingEmail}}). Ali ste prepričani, da želite dodati '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Prosimo, vnesite ime.",
         "lastName": "Prosimo, vnesite priimek.",
         "validEmail": "Prosimo, vnesite veljaven naslov e-pošte."
-      },
-      "confirmDuplicate": "S tem e-poštnim naslovom je že bila najdena oseba '{{existingName}}' ({{existingEmail}}). Ali ste prepričani, da želite dodati '{{firstName}} {{lastName}}'?"
+      }
     },
     "custom": "Po meri",
     "delete": "Izbriši",
@@ -360,8 +388,14 @@
     },
     "help": "Pomoč",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Molitev"
+      },
+      "noResults": "Ni zadetkov",
       "searchLabel": "Iskanje ikon",
       "searchPlaceholder": "Vnesite za iskanje (npr. oseba, dom, cerkev)...",
+      "showingDefault": "Prikaz {{count}} privzetih ikon",
+      "showingMatching": "Prikaz {{count}} ujemajočih se ikon",
       "title": "Izberite ikono",
       "tryDifferent": "Poskusite drugačen iskalni izraz"
     },
@@ -386,6 +420,7 @@
     "right": "Desno",
     "save": "Shrani",
     "saveChanges": "Shrani spremembe",
+    "saveError": "Shranjevanje ni uspelo. Poskusite znova.",
     "saving": "Shranjujem...",
     "search": "Iskanje",
     "searching": "Iskanje...",
@@ -490,6 +525,9 @@
       "workflows": "Poteki dela"
     }
   },
+  "controlPanel": {
+    "serverError": "Prišlo je do napake. Poskusite znova."
+  },
   "createPerson": {
     "addNewPerson": "Dodaj novo osebo",
     "email": "E-pošta",
@@ -538,6 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "Iskanje ljudi",
       "ariaSearchBox": "iskalno polje",
+      "clearSearch": "Počisti iskanje",
       "display": "Prikaz",
       "noResults": "Ni najdenih ljudi, ki ustrezajo iskanju.",
       "photo": "Fotografija",
@@ -590,6 +629,8 @@
       "invalidCode": "Neveljavna ali pretečena koda. Preverite in poskusite znova.",
       "loading": "Nalaganje...",
       "noChurchSelected": "Cerkev ni izbrana. Ponovno se prijavite in izberite cerkev.",
+      "planType": "Prikaži načrte za",
+      "planTypeNone": "Brez (samo brskanje)",
       "requestedPermissions": "Zahtevana dovoljenja:",
       "title": "Avtoriziraj napravo",
       "verifyFailed": "Preverjanje kode ni uspelo. Poskusite znova."
@@ -609,6 +650,7 @@
       "lastYearCsv": "CSV lanskega leta",
       "lastYearPrint": "Tisk lanskega leta",
       "method": "Metoda",
+      "viewBatch": "Ogled serije",
       "willAppear": "Daritve se bodo pojavile tukaj, ko bodo narejene."
     }
   },
@@ -665,7 +707,8 @@
       "ofGoal": "od cilja",
       "pledges": "Obljube",
       "status": "Stanje",
-      "subtitle": "Obljube in napredek donacij za to kampanjo"
+      "subtitle": "Obljube in napredek donacij za to kampanjo",
+      "unknownPerson": "Neznana oseba"
     },
     "campaignsPage": {
       "addCampaign": "Dodaj kampanjo",
@@ -708,6 +751,7 @@
       "cash": "Gotovina",
       "check": "Ček",
       "checkNum": "Ček #",
+      "confirmMsg": "Ali ste prepričani, da želite trajno izbrisati ta dar?",
       "date": "Datum",
       "fund": "Sklad",
       "inKind": "V naravi",
@@ -733,6 +777,7 @@
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "Izvoz",
       "funds": "Sredstva",
+      "method": "Način",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "pending": "V čakanju",
       "statements": "Giving Statements",
@@ -786,7 +831,8 @@
       "subtitle": "Manage donation funds and track giving categories",
       "taxDeductible": "Davčno priznano",
       "taxStatus": "Davčni status",
-      "totalFunds": "Skupaj skladov"
+      "totalFunds": "Skupaj skladov",
+      "viewBatch": "Ogled serije"
     },
     "period": {
       "monthly": "Mesečno",
@@ -936,6 +982,7 @@
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
+      "removeConfirm": "Odstrani {name} iz tega obrazca?",
       "view": "View Only"
     },
     "formPage": {
@@ -949,6 +996,7 @@
       "date": "Datum",
       "decNum": "Decimal",
       "desc": "Description",
+      "fieldType": "Vrsta polja",
       "fund": "Sklad",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -1001,7 +1049,8 @@
   "gallery": {
     "aspectRatio": "Razmerje stranic",
     "confirmDelete": "Potrdi brisanje",
-    "freeForm": "Prosta oblika"
+    "freeForm": "Prosta oblika",
+    "uploadError": "Obdelava slike je zaključena, vendar nalaganje ni uspelo. API morda v tem okolju ni na voljo."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1071,9 @@
       "duplicateTooltip": "Podvoji to skupino",
       "emailTooltip": "Pošlji e-pošto tej skupini",
       "labels": "Labels",
+      "location": "Lokacija",
       "meetingInfo": "Meeting Information",
+      "meetingTime": "Čas srečanja",
       "moreLabels": "More Labels",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
@@ -1033,6 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "Dodaj dogodke",
+      "allowRsvps": "Dovoli potrditve udeležbe",
       "bulkAddTitle": "Dodaj ponavljajoče se dogodke",
       "confirmDelete": "Izbriši \"{title}\" in vse njegove pojavitve?",
       "datesPreview": "Ustvarjenih bo {count} srečanj. Odznačite datume, ki jih želite preskočiti.",
@@ -1042,7 +1094,15 @@
       "lastMeeting": "Zadnje srečanje",
       "noDates": "V izbranem obdobju ni datumov srečanj.",
       "noEvents": "Ni dogodkov. Uporabite Dodaj dogodke za načrtovanje srečanj te skupine.",
+      "noResponses": "Še ni odgovorov.",
       "oneTime": "Enkratno",
+      "response_maybe": "Morda",
+      "response_no": "Ne",
+      "response_yes": "Da",
+      "rosterTitle": "Odgovori na potrditve udeležbe",
+      "rsvpSummary": "{yes} da · {maybe} morda · {no} ne",
+      "rsvps": "Potrditve udeležbe",
+      "rsvpsDisabled": "Onemogočeno",
       "skipHolidays": "Preskoči praznike",
       "skippedDates": "Preskočeni datumi",
       "until": "do"
@@ -1064,15 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "ageGrade": "Starost in razred",
       "archive": "Arhiviraj",
       "archiveAria": "Arhiviraj skupino",
       "attTrack": "Track Attendance",
       "attendance": "Obisk",
       "attendanceReminders": "E-poštni opomniki za obisk",
+      "capacity": "Kapaciteta",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Spremeni fotografijo skupine",
+      "checkinCapacity": "Kapaciteta prijave",
+      "checkinClosed": "Zaprto za prijavo",
       "clickToAddPhoto": "Click to add photo",
+      "confidential": "Zaupna skupina",
+      "confidentialHelp": "Skrij to skupino in njen seznam članov pred javnimi stranmi, iskalnikom skupin in nečlani.",
       "confirmArchive": "Ali ste prepričani, da želite arhivirati to skupino? Skrita bo s seznama skupin, dokler je ne obnovite.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Vpisovanje",
@@ -1083,14 +1149,24 @@
       "groupNameMsg": "Please enter a group name.",
       "groupPhotoAlt": "skupina",
       "groupSlugAria": "Slug skupine",
+      "guestCapacity": "Kapaciteta za goste",
+      "maxAge": "Najvišja starost",
+      "maxGrade": "Najvišji razred",
       "meetingLocation": "Meeting Location",
       "meetingLocationAria": "Lokacija srečanja",
       "meetingTime": "Meeting Time",
       "meetingTimeAria": "Čas srečanja",
+      "minAge": "Najnižja starost",
+      "minGrade": "Najnižji razred",
+      "minVolunteers": "Najmanjše število prostovoljcev",
+      "months": "Meseci",
+      "noLimit": "Brez omejitve",
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "publicRoster": "Prikaži seznam članov na spletni strani",
-      "slug": "Slug (key name used for urls)"
+      "slug": "Slug (key name used for urls)",
+      "volunteerRatio": "Otrok na prostovoljca",
+      "years": "Leta"
     },
     "groupHealth": {
       "attendance": "Obisk",
@@ -1124,8 +1200,10 @@
       "member": "član",
       "members": "člani",
       "messagePlaceholder": "Napišite sporočilo za vse člane skupine…",
+      "messageSent": "Sporočilo poslano.",
       "noMemDesc": "Dodajte člane iz plošče na desni, da začnete graditi to skupino.",
       "noMemTitle": "Še ni članov",
+      "removeConfirm": "Odstrani {name} iz te skupine?",
       "removeLeaderAccess": "Odstrani dostop vodje",
       "role": "Vloga",
       "send": "Send",
@@ -1171,9 +1249,13 @@
       "groups": "Skupine",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
+      "noMatchMsg": "Nobena skupina ne ustreza vašemu iskanju.",
+      "pendingRequestSingular": "{count} čakajoča zahteva",
+      "pendingRequests": "{count} čakajočih zahtev",
       "pers": "1 person",
       "ppl": "Ljudje",
       "restore": "Obnovi",
+      "searchPlaceholder": "Iskanje skupin ...",
       "showArchived": "Prikaži arhivirane",
       "spPpl": " people",
       "subtitle": {
@@ -1186,6 +1268,11 @@
       "availableMem": "Available Group Members",
       "noMem": "No group members available.",
       "unknown": "Neznano"
+    },
+    "pendingRequestsPage": {
+      "empty": "Ni čakajočih zahtev.",
+      "subtitle": "Odobrite ali zavrnite zahteve, ki so jih dali člani, v vseh skupinah.",
+      "title": "Čakajoče zahteve za pridružitev"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Vstavi spojno polje v vsebino:",
@@ -1223,6 +1310,8 @@
       "eligibleSummary": "{eligibleCount} od {totalMembers} članov bo prejelo to sporočilo.",
       "eligibleSummarySingular": "{eligibleCount} od {totalMembers} člana bo prejel to sporočilo.",
       "fallbackError": "Pošiljanje SMS sporočila ni uspelo.",
+      "insufficientCredits": "Vaša cerkev je porabila vsa dobroimetja za SMS sporočila v tem obračunskem obdobju. Nobeno sporočilo ni bilo poslano. Nadgradite ali počakajte na obnovitev dobroimetja na",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Nalaganje prejemnikov...",
       "messageLabel": "Sporočilo",
       "noPhoneNotice": "{count} nima telefonske številke v evidenci.",
@@ -1268,6 +1357,11 @@
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
       "sesEdit": "Edit Session"
     },
+    "sessionsDisabled": {
+      "description": "Vklopite spremljanje obiska za beleženje sej in prijav za to skupino.",
+      "enable": "Omogoči spremljanje obiska",
+      "title": "Spremljanje obiska ni omogočeno"
+    },
     "tabs": {
       "mem": "Members",
       "ses": "Sessions"
@@ -1309,8 +1403,8 @@
       "registrations": "Prijave",
       "roomsResources": "Sobe in viri",
       "sermons": "Pridige",
-      "stripeImport": "Uvoz Stripe",
       "site": "Spletno mesto",
+      "stripeImport": "Uvoz Stripe",
       "website": "Spletna stran"
     }
   },
@@ -1384,6 +1478,11 @@
     "sep": "September",
     "september": "September"
   },
+  "notFound": {
+    "backHome": "Nazaj na nadzorno ploščo",
+    "message": "Stran, ki jo iščete, ne obstaja ali je bila premaknjena.",
+    "title": "Stran ni najdena"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Nalaganje polj po meri...",
@@ -1414,6 +1513,11 @@
       "clearSelection": "Počisti izbor",
       "createNewGroup": "Ustvari novo skupino",
       "delete": "Izbriši",
+      "deleteConfirm": "Ali ste prepričani, da želite izbrisati {count} izbranih oseb? Tega dejanja ni mogoče razveljaviti.",
+      "deleteError": "Izbranih oseb ni bilo mogoče izbrisati",
+      "deleteSelected": "Izbriši izbrane osebe",
+      "deleteSuccess": "{count} oseb uspešno izbrisanih",
+      "deleting": "Brisanje...",
       "error": "Napaka",
       "fieldPrompt": "Posodobi polje za {count} izbranih oseb.",
       "fieldSuccess": "Posodobljenih {count} oseb.",
@@ -1428,8 +1532,8 @@
       "optedOutYes": "Odjava: da",
       "removeFromGroup": "Odstrani iz skupine",
       "selected": "Izbrano",
-      "workflowSuccess": "Dodanih {count} oseb v potek dela.",
-      "setCampus": "Nastavi kampus"
+      "setCampus": "Nastavi kampus",
+      "workflowSuccess": "Dodanih {count} oseb v potek dela."
     },
     "demographics": {
       "age": "Starost",
@@ -1623,6 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "Dodaj v potek dela",
       "age": "Starost",
+      "emailPerson": "Pošlji e-pošto tej osebi",
       "gender": "Spol",
       "hasLogin": "Ima prijavo",
       "maritalStatus": "Zakonski stan",
@@ -1632,6 +1737,7 @@
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot delete your own person record.",
       "confirmMsg": "Are you sure you wish to permanently delete this person record?",
+      "customFields": "Polja po meri",
       "donorNumber": "Donor Number",
       "exten": "Extension",
       "family": "family",
@@ -1668,6 +1774,8 @@
       "profile": "Profil"
     },
     "personPage": {
+      "confidentialNotes": "Zaupne opombe",
+      "confidentialNotesSuffix": " Zaupne opombe",
       "notesSuffix": " Opombe",
       "thisPerson": "ta oseba"
     },
@@ -1681,6 +1789,18 @@
       "mobile": "Mobilni",
       "persDet": "Personal Details",
       "work": "Work"
+    },
+    "pickup": {
+      "add": "Dodaj",
+      "confirmDelete": "Ali ste prepričani, da želite odstraniti to osebo za prevzem?",
+      "name": "Ime",
+      "none": "Ni dodanih oseb za prevzem.",
+      "notAuthorized": "Nepooblaščeno",
+      "orAddByName": "Ali dodajte nekoga, ki ni v sistemu:",
+      "relationship": "Razmerje",
+      "status": "Stanje",
+      "title": "Prevzem",
+      "trusted": "Zaupanja vreden"
     },
     "tabs": {
       "att": "Obisk",
@@ -1706,6 +1826,7 @@
     "female": "Female",
     "firstName": "Ime",
     "gender": "Gender",
+    "grade": "Razred",
     "inactive": "Inactive",
     "lastName": "Priimek",
     "line1": "Line 1",
@@ -1723,6 +1844,7 @@
     "phone": "Telefon",
     "prefix": "Prefix",
     "regularAttendee": "Regular Attendee",
+    "school": "Šola",
     "single": "Single",
     "staff": "Staff",
     "state": "State/Province",
@@ -1906,6 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
+      "confirmDelete": "Ali ste prepričani, da želite odstraniti to nalogo prostovoljca?",
       "done": "Končano",
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
@@ -1964,6 +2087,7 @@
       "waitingForAuth": "Waiting for authorization..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Vaš brskalnik ne podpira predvajanja zvoka.",
       "fallbackPreview": "Predogled",
       "fallbackTitle": "Predogled vsebine",
       "noContent": "Ni vsebine za prikaz.",
@@ -2156,7 +2280,11 @@
       "ppl": "people",
       "prefTimeMismatch": "raje služi ob",
       "publish": "Objavi načrt",
+      "publishConfirm": "Objavi ta načrt, da bodo prostovoljci videli svoje naloge?",
+      "publishConfirmLabel": "Objavi",
+      "publishConfirmTitle": "Objavi načrt",
       "publishNotify": "Objavi in obvesti",
+      "publishNotifyConfirm": "Objavi ta načrt in obvesti {count} prostovoljcev o njihovih nalogah? Obvestila bodo poslana takoj.",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
       "timesThisMonth": "krat ta mesec, nad njihovim prednostnim maksimumom",
@@ -2177,6 +2305,7 @@
       "allowSelfSignup": "Dovoli samoprijavo",
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
+      "confirmDelete": "Ali ste prepričani, da želite izbrisati to mesto? Vsi, ki so trenutno nanj razporejeni, bodo odstranjeni z urnika.",
       "description": "Opis",
       "descriptionHelper": "Prikazano prostovoljcem pri brskanju po priložnostih za prijavo",
       "nameReq": "Name is required",
@@ -2198,6 +2327,14 @@
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
       "time": "Čas"
+    },
+    "printPreview": {
+      "colorCoded": "Barvno označeno",
+      "format": "Oblika:",
+      "materials": "Gradiva:",
+      "script": "Scenarij",
+      "serviceOrder": "Vrstni red bogoslužja",
+      "title": "Predogled tiskanja"
     },
     "schedulingPreference": {
       "household": "Načrtovanje gospodinjstva",
@@ -2248,7 +2385,8 @@
       "title": "Pregled služenja"
     },
     "servingPage": {
-      "showAll": "Prikaži vse"
+      "showAll": "Prikaži vse",
+      "showAllHint": "Vaše službe so skrite, ker niste član. Zgoraj vklopite \"Prikaži vse\", da jih vidite."
     },
     "songDialog": {
       "close": "Zapri",
@@ -2289,6 +2427,7 @@
       "updateFromPlanHelp": "Nadomesti vsebino te predloge s trenutnim vrstnim redom bogoslužja in mesti iz načrta."
     },
     "timeEdit": {
+      "confirmDelete": "Ali ste prepričani, da želite izbrisati ta čas?",
       "disName": "Display Name",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
@@ -2341,7 +2480,9 @@
     "pairScreen": {
       "codeRequired": "Pairing code is required",
       "invalidCode": "Invalid pairing code",
-      "pairingCode": "Pairing Code"
+      "pairingCode": "Pairing Code",
+      "planType": "Prikaži načrte za",
+      "planTypeNone": "Brez (samo obvestila)"
     },
     "profilePage": {
       "accDel": "Account Deletion",
@@ -2375,6 +2516,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Dodaj kodo za popust",
+      "addSelection": "Dodaj izbiro",
+      "addType": "Dodaj vrsto",
+      "amount": "Znesek",
+      "attendeeTypes": "Vrste udeležencev",
+      "balance": "Saldo",
+      "capacity": "Kapaciteta",
+      "code": "Koda",
+      "description": "Opis",
+      "discountCodes": "Kode za popust",
+      "discountType": "Vrsta",
+      "endDate": "Datum konca",
+      "kind": "Vrsta",
+      "maxQuantity": "Najv. količina",
+      "maxUses": "Najv. uporab",
+      "method": "Način",
+      "minMembers": "Najm. članov",
+      "name": "Ime",
+      "noCoupons": "Še ni kod za popust.",
+      "noPayments": "Ni evidentiranih plačil.",
+      "noSelections": "Še ni izbir.",
+      "noTypes": "Še ni vrst udeležencev.",
+      "paid": "Plačano",
+      "paidTotal": "Plačano / Skupaj",
+      "payments": "Plačila",
+      "percent": "Odstotek",
+      "price": "Cena",
+      "promote": "Promoviraj",
+      "registrationDetails": "Podrobnosti registracije",
+      "removeConfirm": "Odstrani ta element? Tega dejanja ni mogoče razveljaviti.",
+      "selections": "Izbire",
+      "sort": "Razvrsti",
+      "startDate": "Datum začetka",
+      "total": "Skupaj",
+      "type": "Vrsta",
+      "usesSoFar": "Uporab doslej: {count}",
+      "value": "Vrednost"
+    },
     "registrationDetailsPage": {
       "addAttendee": "Dodaj udeleženca",
       "addAttendeeError": "Prijava udeleženca ni uspela.",
@@ -2405,6 +2585,7 @@
       "capacity": "Kapaciteta",
       "capacityPlaceholder": "Pustite prazno za neomejeno",
       "enableRegistration": "Omogoči prijavo",
+      "enableWaitlist": "Omogoči čakalni seznam",
       "none": "Brez",
       "registrationCloses": "Prijava se zapre",
       "registrationOpens": "Prijava se odpre",
@@ -2449,19 +2630,7 @@
       "report": "Report"
     },
     "reportsPage": {
-      "attTrend": "Trend obiska",
-      "attTrendDesc": "View attendance trends over time",
-      "bDays": "Birthdays",
-      "bDaysDesc": "View upcoming birthdays",
-      "dailyGroupAtt": "Daily Group Attendance",
-      "dailyGroupAttDesc": "View daily group attendance",
-      "donSum": "Donation Summary",
-      "donSumDesc": "View donation summary",
-      "groupAtt": "Obisk skupin",
-      "groupAttDesc": "View group attendance",
-      "helpText": "Select a report to view detailed information",
-      "reports": "Reports",
-      "subtitle": "View and download church reports"
+      "reports": "Reports"
     }
   },
   "sermons": {
@@ -2704,7 +2873,11 @@
       "church": "Church",
       "churchName": "Church Name",
       "churches": "Churches",
+      "churchesSubtitle": "Iskanje in upravljanje vseh cerkva",
+      "impersonateSubtitle": "Prijava kot drug uporabnik za podporo",
       "impersonateUser": "Prevzemi identiteto uporabnika",
+      "jobs": "Opravila v ozadju",
+      "jobsSubtitle": "Zadnji zagon in napake za načrtovana opravila",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
@@ -2717,13 +2890,20 @@
       "searchResults": "Search Results",
       "servAdmin": "Skrbnik strežnika",
       "serverHealth": "Zdravje strežnika",
+      "serverHealthSubtitle": "Preverite stanje zalednih storitev",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
+      "translationSubtitle": "Poiščite prevedene nize lokalizacije",
+      "usageSubtitle": "Oglejte si trende uporabe strežnika",
       "usageTrends": "Usage Trends",
+      "users": "Uporabniki",
+      "usersSubtitle": "Poiščite kateri koli uporabniški račun za podporo",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
+      "archiveConfirm": "Arhiviraj {name}? Člani bodo izgubili dostop, dokler ne bo obnovljen.",
       "churchNameSearchAria": "Iskanje po imenu cerkve",
+      "restoreConfirm": "Obnovi dostop za {name}?",
       "searchChurchesAria": "Iskanje cerkev"
     },
     "impersonateTab": {
@@ -2734,6 +2914,18 @@
       "searchAria": "Išči uporabnike za prevzem identitete",
       "searchLabel": "E-pošta uporabnika",
       "searchPlaceholder": "Išči po prijavni e-pošti"
+    },
+    "jobsTab": {
+      "duration": "Trajanje",
+      "failed": "Neuspešno",
+      "job": "Opravilo",
+      "lastRun": "Zadnji zagon",
+      "loadError": "Nalaganje zagonov opravil ni uspelo.",
+      "noRuns": "Ni zabeleženih zagonov opravil.",
+      "recentFailures": "Nedavne napake",
+      "subtitle": "Zadnji zagon vsakega načrtovanega opravila. Zagoni se beležijo z upravljalniki časovnika in se hranijo 30 dni.",
+      "success": "Uspešno",
+      "title": "Opravila v ozadju"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2760,6 +2952,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Iskanje statistik prevodov"
+    },
+    "usersTab": {
+      "access": "Dostop",
+      "description": "Iščite po vseh uporabniških računih po imenu ali e-pošti, da vidite njihove cerkve in aktivnost prijav.",
+      "email": "E-pošta",
+      "lastLogin": "Zadnja prijava",
+      "member": "Član",
+      "name": "Ime",
+      "noChurches": "Ta uporabnik ni povezan z nobeno cerkvijo.",
+      "searchAria": "Iskanje uporabnikov",
+      "searchLabel": "Ime ali e-pošta",
+      "staff": "Osebje",
+      "subDomain": "Poddomena",
+      "title": "Iskanje uporabnikov"
     }
   },
   "settings": {
@@ -2846,27 +3052,73 @@
       "change": "Sprememba"
     },
     "auditLogPage": {
-      "action": "Dejanje",
+      "action": "Akcija",
       "allCategories": "Vse kategorije",
+      "allModules": "Vsi moduli",
       "category": "Kategorija",
       "categoryDonation": "Donacije",
       "categoryForm": "Obrazci",
       "categoryGroup": "Skupine",
       "categoryLogin": "Prijava",
       "categoryPermission": "Dovoljenja",
-      "categoryPerson": "Ljudje",
+      "categoryPerson": "Osebe",
       "categorySettings": "Nastavitve",
+      "changes": "Spremembe",
       "date": "Datum",
+      "deletedRecord": "Izbrisan zapis",
       "details": "Podrobnosti",
       "endDate": "Končni datum",
-      "entity": "Entiteta",
+      "entity": "Subjekt",
       "exportCsv": "Izvozi CSV",
+      "field": "Polje",
       "ipAddress": "IP naslov",
-      "noEntries": "Ni najdenih vnosov dnevnika",
+      "module": "Modul",
+      "moduleAttendance": "Prisotnost",
+      "moduleContent": "Vsebina",
+      "moduleDoing": "Služenje",
+      "moduleGiving": "Dajanje",
+      "moduleLessons": "Lekcije",
+      "moduleMembership": "Članstvo",
+      "moduleMessaging": "Sporočila",
+      "newValue": "Nova vrednost",
+      "noDetails": "Ni podrobnosti o spremembah",
+      "noEntries": "Zapisov revizijske sledi ni bilo mogoče najti",
+      "noPrevious": "Prejšnjega vnosa ni bilo mogoče najti; prikazane so samo poslane vrednosti.",
+      "oldValue": "Stara vrednost",
       "search": "Iskanje",
       "startDate": "Začetni datum",
-      "subtitle": "Sledi spremembam in aktivnostim v vaši cerkvi",
-      "title": "Dnevnik nadzora"
+      "subtitle": "Sledite spremembam in dejavnostim v vaši cerkvi",
+      "title": "Revizijska sled",
+      "truncated": "Podrobnosti so bile skrajšane in tega vnosa ni mogoče razveljaviti."
+    },
+    "batches": {
+      "action": "Dejanje",
+      "actions": "Dejanja",
+      "created": "Ustvarjeno",
+      "creator": "Ustvarjalec",
+      "date": "Datum",
+      "entityId": "ID entitete",
+      "entityType": "Vrsta entitete",
+      "failed": "Neuspešno ({count})",
+      "items": "Elementi",
+      "label": "Oznaka",
+      "noEntries": "Ni najdenih serij",
+      "noResults": "V tej seriji ni zapisov",
+      "restored": "Obnovljenih {count} zapisov.",
+      "resultsTitle": "Rezultati serije",
+      "skipped": "Preskočeno ({count})",
+      "skippedHelp": "Zapisi, spremenjeni po ustvarjanju serije, so bili preskočeni, da se prepreči prepisovanje novejših sprememb.",
+      "source": "Vir",
+      "status": "Stanje",
+      "subtitle": "Preglejte in razveljavite množične uvoze in dejanja",
+      "title": "Serije",
+      "undo": "Razveljavi",
+      "undoConfirm": "Razveljavi serijo \"{label}\"? To bo obnovilo prizadete zapise v stanje pred serijo.",
+      "undoError": "Zahteva za razveljavitev ni uspela.",
+      "undoTitle": "Razveljavi serijo",
+      "undoWarning": "Zapisi, spremenjeni po ustvarjanju te serije, bodo preskočeni. Tega dejanja ni mogoče razveljaviti.",
+      "undoing": "Razveljavljanje …",
+      "viewResults": "Ogled rezultatov"
     },
     "campusEdit": {
       "address2": "Naslov 2. vrstica",
@@ -2887,10 +3139,18 @@
       "none": "Še ni dodanih kampusov.",
       "subtitle": "Upravljajte fizične lokacije vaše cerkve"
     },
+    "checkinSettingsEdit": {
+      "block": "Blokiraj (prepreči prijavo)",
+      "help": "Izberite, kako se prijava odzove, ko je soba nad razmerjem prostovoljec-otrok ali pod najmanjšim številom prostovoljcev.",
+      "ratioEnforcement": "Uveljavljanje razmerja prostovoljcev",
+      "title": "Prijava",
+      "warn": "Opozori (dovoli s potrditvijo)"
+    },
     "church": {
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Prvi dan v tednu",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Naslov vrstica 1",
@@ -2909,6 +3169,21 @@
       "subdomainAria": "Poddomena",
       "textingSubtitle": "Konfiguriraj ponudnika SMS sporočil",
       "textingTitle": "SMS sporočanje"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Ali ste prepričani, da želite izbrisati to polje po meri? Njegove shranjene vrednosti bodo prav tako odstranjene.",
+      "fieldType": "Vrsta polja",
+      "name": "Ime",
+      "validate": {
+        "name": "Vnesite ime polja."
+      }
+    },
+    "customFields": {
+      "addField": "Dodaj polje",
+      "customFields": "Polja po meri",
+      "field": "Polje po meri",
+      "none": "Še ni dodanih polj po meri.",
+      "subtitle": "Določite polja po meri za spremljanje pri osebah"
     },
     "developer": {
       "actions": "Dejanja",
@@ -2955,7 +3230,9 @@
       "domMsg4": ".  It can take up to 5 minutes.",
       "domMsgConnect": "connect",
       "domain": "Domain",
-      "domains": "Domains"
+      "domains": "Domains",
+      "mainWebsite": "Glavno spletno mesto",
+      "site": "Spletno mesto"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Vsebina je obvezna.",
@@ -3036,25 +3313,46 @@
       "webhookKeyHelper": "Podpisna skrivnost webhooka iz nadzorne plošče Kingdom Funding. Potrebna za posodobitve stanja transakcij.",
       "webhookUrlCopied": "URL webhooka kopiran v odložišče"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "Dan",
+      "disabled": "Onemogočeno",
+      "enabled": "Omogočeno",
+      "help": "Na ta datum vsako leto se vsi z razredom samodejno napredujejo v naslednji razred (12. razred postane Diplomiral). Pustite onemogočeno, da izklopite samodejno napredovanje.",
+      "month": "Mesec",
+      "title": "Napredovanje v višji razred"
+    },
     "landing": {
       "campusesCount": "{count} lokacij",
       "campusesOne": "1 lokacija",
       "campusesSubtitle": "Fizične lokacije",
       "configuration": "Konfiguracija",
+      "customFieldsCount": "{count} polj po meri",
+      "customFieldsSubtitle": "Še ni polj po meri",
       "developerSubtitle": "API ključi, webhooki, povezane aplikacije",
       "domainsCount": "{count} povezanih",
       "domainsNone": "Ni lastnih domen",
       "domainsOne": "1 povezana",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "Samodejno napredovanje onemogočeno",
+      "gradePromotionOn": "Napreduje {date} vsako leto",
       "notConfigured": "Ni konfigurirano",
       "notSet": "Ni nastavljeno"
     },
     "manageChurch": {
       "auditLog": "Dnevnik nadzora",
+      "batches": "Serije",
       "imEx": "Import/Export",
       "noData": "No church data available",
       "subtitle": "Configure church settings and preferences",
       "title": "Manage Church"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 let in več",
+      "age16": "16 let in več",
+      "age18": "18 let in več",
+      "helpText": "Blokira nove zasebne pogovore, kadar je katera koli od oseb mlajša od te starosti, glede na datum rojstva. Osebe pod to starostjo ostanejo vidne v imeniku. Obstoječi pogovori niso prizadeti.",
+      "label": "Najnižja starost za zasebna sporočila",
+      "off": "Izklopljeno (brez omejitve)"
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
@@ -3108,6 +3406,34 @@
     "rolesPage": {
       "subtitle": "Upravljajte vloge in dovoljenja"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Prijava ni uspela. Poskusite znova.",
+      "byosHelper": "Nova nalaganja se shranijo v vaš lastni račun, prenosi pa se strežejo iz njega. Že naložene datoteke ostanejo tam, kjer so.",
+      "churchAppsFree": "ChurchApps (Brezplačno)",
+      "connect": "Poveži račun",
+      "connectFirst": "Pred shranjevanjem povežite svoj račun.",
+      "connected": "Račun povezan",
+      "connecting": "Čakanje na prijavo ...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Datoteke bodo shranjene v vašem paketu za shranjevanje MinistryStuff, samodejno povezanem s to cerkvijo. Upravljajte svoj paket na",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Pojavno okno je blokirano. Dovolite pojavna okna in poskusite znova.",
+      "provider": "Ponudnik",
+      "reconnect": "Ponovno poveži",
+      "s3AccessKey": "ID dostopnega ključa",
+      "s3Bucket": "Vedro",
+      "s3Endpoint": "Končna točka (prazno za AWS)",
+      "s3Helper": "Vedro mora dovoliti javni dostop za branje in CORS PUT zahteve s tega spletnega mesta. Deluje z AWS S3, Cloudflare R2 in Backblaze B2.",
+      "s3PublicBase": "Osnovni URL naslov (javni)",
+      "s3Region": "Regija",
+      "s3Required": "Vedro in osnovni javni URL naslov sta obvezna.",
+      "s3SecretKey": "Skrivni dostopni ključ",
+      "saveError": "Napaka pri shranjevanju nastavitev shranjevanja.",
+      "sessionExpired": "Seja za prijavo je potekla. Poskusite znova.",
+      "sessionFailed": "Seje za prijavo ni bilo mogoče začeti.",
+      "title": "Shranjevanje datotek",
+      "usage": "Uporabljeno {used} GB od {quota} GB."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
       "link": "Link",
@@ -3121,13 +3447,17 @@
       "clearstreamHelper": "Ustvari API ključ v",
       "clearstreamHelperLink": "Nastavitvah računa Clearstream",
       "clearstreamHelperSuffix": "pod API ključi.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Vaša naročnina MinistryStuff za SMS sporočila je aktivna, z {} preostalimi dobroimetji v tem obdobju.",
+      "ministryStuffHelper": "API ključ ni potreben. Dobroimetja za SMS sporočila izhajajo iz vaše naročnine MinistryStuff, samodejno povezane s to cerkvijo. Upravljajte svoj paket na",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Brez",
       "provider": "Ponudnik",
       "saveError": "Napaka pri shranjevanju nastavitev SMS.",
+      "textInChurch": "Besedilo v cerkvi",
       "textInChurchHelper": "Obišči",
       "textInChurchHelperLink": "Podporo Text In Church",
-      "textInChurchHelperSuffix": "za zahtevo dostopa do razvijalskega API. Po odobritvi ustvarite API ključ v razdelku Nastavitve računa > Razvijalski API.",
-      "textInChurch": "Besedilo v cerkvi"
+      "textInChurchHelperSuffix": "za zahtevo dostopa do razvijalskega API. Po odobritvi ustvarite API ključ v razdelku Nastavitve računa > Razvijalski API."
     },
     "userAdd": {
       "addTo": "Add To ",
@@ -3364,27 +3694,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
+      "draft": "Osnutek",
+      "navHint": "Obiskovalci lahko berejo vaše objave na naslovu /blog. Dodajte navigacijsko povezavo na zaslonu Strani, da jo lahko najdejo:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Objavljeno",
+      "scheduled": "Načrtovano",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "Ogled na spletnem mestu"
     },
     "blogEdit": {
+      "author": "Avtor",
       "category": "Category",
+      "content": "Vsebina",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "Ta spletni naslov že uporablja druga objava.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Predogled",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Samodejno se izpolni iz naslova, dokler ga ne uredite. Naslov:",
+      "slugLabel": "Spletni naslov",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4056,7 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "externalStorage": "Shranjeno v vašem povezanem računu",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Ime",
@@ -3936,6 +4277,7 @@
     },
     "paletteEdit": {
       "accent": "Poudarek",
+      "accentDesc": "Glavni poudarek — gumbi in poudarki",
       "applyPaletteAria": "Uporabi predlagano barvno paleto",
       "applySuggested": "Kliknite katero koli paleto, da jo takoj uporabite",
       "baseColors": "Osnovne barve",
@@ -3943,20 +4285,29 @@
       "colorValues": "Color Values",
       "dark": "Temno",
       "darkAccent": "Temni poudarek",
+      "darkAccentDesc": "Temni poudarek — naslovi in povezave",
+      "darkDesc": "Najtemnejši odtenek — besedilo",
       "error": "Napaka",
+      "errorDesc": "Napake in uničujoča dejanja",
       "headerSubtitle": "Prilagodi barvno shemo svoje spletne strani. Za barve mobilne aplikacije, portala članov in kioska pojdite v Nastavitve > Tema aplikacije.",
       "headerTitle": "Barvna paleta",
       "light": "Svetlo",
       "lightAccent": "Svetli poudarek",
+      "lightAccentDesc": "Blag poudarek — subtilna ozadja",
+      "lightDesc": "Najsvetlejši odtenek — ozadja odsekov",
       "palette": "Paleta",
       "previewWorkTogether": "Predogled, kako vaše barve sodelujejo",
       "primary": "Primarna",
+      "primaryDesc": "Osnovni gumbi in povezave",
       "savePalette": "Save Palette",
       "secondary": "Sekundarna",
+      "secondaryDesc": "Sekundarni gumbi in poudarki",
       "semanticColors": "Semantične barve",
       "success": "Uspeh",
+      "successDesc": "Sporočila o uspehu in potrditve",
       "suggestedPalettes": "Suggested Palettes",
-      "warning": "Opozorilo"
+      "warning": "Opozorilo",
+      "warningDesc": "Opozorila in previdnostna sporočila"
     },
     "pickColors": {
       "background": "Ozadje",
@@ -4144,6 +4495,10 @@
       "showCampus": "Prikaži kampus",
       "title": "Naslov"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Glavno spletno mesto",
+      "manageSites": "Upravljanje spletnih mest …"
+    },
     "siteTemplates": {
       "back": "Nazaj",
       "create": "Ustvari spletno mesto",
@@ -4212,6 +4567,15 @@
       "textColor": "Barva besedila",
       "title": "Pripomočki spletne strani",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Dodaj spletno mesto",
+      "deleteConfirm": "Izbriši to spletno mesto? Njegove strani, navigacija in videz bodo trajno izbrisani. Njegove domene po meri bodo dodeljene glavnemu spletnemu mestu.",
+      "empty": "Še ni dodatnih spletnih mest.",
+      "name": "Ime",
+      "subDomain": "Poddomena",
+      "subDomainHint": "Samo male črke in številke. Postane {subdomain}.b1.church",
+      "title": "Spletna mesta"
     },
     "socialIconsEdit": {
       "alignment": "Poravnava",
@@ -4331,11 +4695,13 @@
       "columns": "Stolpci",
       "empty": "(prazno)",
       "firstRowHeader": "Prva vrstica je glava",
+      "markdownHelper": "Omogoči Markdown v celicah za krepko, povezave in drugo oblikovanje.",
       "medium": "Srednje",
       "no": "Ne",
       "rows": "Vrstice",
       "size": "Velikost",
       "sizeSmall": "Majhno",
+      "textFormatting": "Oblikovanje besedila",
       "yes": "Da"
     },
     "templates": {
@@ -4455,7 +4821,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "Zavihki tonalitet",
       "noKeysAvailable": "Ni razpoložljivih tonalitet. Dodajte tonaliteto za začetek.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "Zvočne sledi",
+      "uploadAudio": "Naloži zvok"
     },
     "library": {
       "empty": {
@@ -4534,7 +4902,13 @@
       "songs": "Pesmi",
       "subtitle": "Manage your music library"
     },
-    "title": "Pesmi"
+    "title": "Pesmi",
+    "audio": {
+      "deleteConfirm": "Ali res želite izbrisati to zvočno datoteko?",
+      "tooLarge": "Datoteka je prevelika. Največja velikost je 25 MB.",
+      "unsupportedFormat": "Nepodprta zvočna oblika. Naložite datoteko MP3, M4A ali AAC.",
+      "upload": "Naloži zvok"
+    }
   },
   "stockPhotos": {
     "photoBy": "Fotografija avtorja",
@@ -4812,6 +5186,7 @@
     },
     "workflowEdit": {
       "active": "Aktivno",
+      "confirmDelete": "Ali ste prepričani, da želite izbrisati ta potek dela?",
       "editWorkflow": "Uredi potek dela",
       "inactive": "Neaktivno",
       "name": "Ime"
@@ -4842,6 +5217,7 @@
       "title": "Usmerjanje"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Ali ste prepričani, da želite izbrisati ta korak?",
       "defaultAssignee": "Privzeti dodeljenec",
       "dueDays": "Rok (dni)",
       "dueDaysHelp": "Nastavi rok, ko kartica vstopi v ta korak",

@@ -37,8 +37,15 @@
       "unscheduled": "غير مجدولة"
     },
     "attendanceSetup": {
-      "setupMessage": "قم بإعداد الأحرام الجامعية والخدمات وأوقات الخدمات لبدء تتبع الحضور.",
+      "manageCampuses": "إدارة الفروع",
+      "setupMessage": "قم بإعداد الفروع والخدمات وأوقات الخدمة لبدء تتبع الحضور.",
       "unassigned": "غير معين"
+    },
+    "checkinType": {
+      "guest": "ضيف",
+      "header": "النوع",
+      "volunteer": "متطوع",
+      "volunteers": "متطوعون"
     },
     "labels": {
       "align": "محاذاة",
@@ -55,6 +62,17 @@
       "empty": "فارغ",
       "equals": "يساوي",
       "field": "حقل",
+      "fieldChildren": "أطفال",
+      "fieldChildrenAllergies": "حساسية الأطفال",
+      "fieldChurchName": "اسم الكنيسة",
+      "fieldDate": "التاريخ",
+      "fieldDisplayName": "الاسم",
+      "fieldFirstName": "الاسم الأول",
+      "fieldLastName": "الاسم العائلة",
+      "fieldNametagNotes": "ملاحظات بطاقة الاسم",
+      "fieldNickName": "اللقب",
+      "fieldSecurityCode": "رمز الأمان",
+      "fieldSessions": "الجلسات",
       "fill": "تعبئة",
       "fontSize": "حجم الخط",
       "height": "الارتفاع (بوصة)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "أنشئ قالب ملصق لتخصيص الملصقات المطبوعة في أكشاك تسجيل الحضور.",
       "notEmpty": "غير فارغ",
       "notEquals": "لا يساوي",
+      "opDoesNotEqual": "لا يساوي",
+      "opEquals": "يساوي",
+      "opIsBlank": "فارغ",
+      "opIsNotBlank": "غير فارغ",
       "operator": "عامل",
       "palette": "إضافة كتلة",
       "pickup": "قسيمة الاستلام",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "موافقة",
+      "approvedToast": "تمت الموافقة على الطلب.",
       "bookingRequests": "طلبات القاعات والموارد",
+      "confirmReject": "هل أنت متأكد من رغبتك في رفض هذا الطلب؟",
       "conflicts": "تعارضات",
       "description": "الوصف",
       "event": "حدث",
@@ -127,6 +151,8 @@
       "noPendingBookings": "لا توجد طلبات قاعات أو موارد معلقة.",
       "noPendingEvents": "لا توجد طلبات أحداث معلقة.",
       "reject": "رفض",
+      "rejectTitle": "رفض الطلب",
+      "rejectedToast": "تم رفض الطلب.",
       "roomResource": "القاعة / المورد",
       "status": "الحالة",
       "subtitle": "مراجعة طلبات القاعات والموارد والأحداث المعلقة",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "إلغاء",
       "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الحدث؟",
+      "confirmDeleteSeries": "هذا حدث متكرر. سيؤدي حذفه إلى إزالة السلسلة بأكملها وجميع مناسباتها. هل أنت متأكد؟",
       "delete": "حذف",
+      "editEvent": "تحرير الحدث",
       "manageRegistrations": "إدارة التسجيلات",
-      "noGroups": "لم يتم العثور على مجموعات.",
-      "editEvent": "تحرير الحدث"
+      "noGroups": "لم يتم العثور على مجموعات."
     },
     "calendarList": {
       "aboutParagraph1": "تتيح لك التقاويس تنظيم وعرض الأحداث في كنيستك.",
@@ -203,6 +230,7 @@
       "importIcs": "استيراد .ics",
       "newEvent": "حدث جديد",
       "noGroupsAdded": "No groups added yet",
+      "pendingApprovals": "{count} موافقات معلقة",
       "print": "طباعة",
       "subtitle": "Manage calendar events and groups"
     },
@@ -334,12 +362,12 @@
     "confirm": "تأكيد",
     "copy": "نسخ",
     "createPerson": {
+      "confirmDuplicate": "تم العثور على شخص موجود بالفعل باسم '{{existingName}}' ({{existingEmail}}) بهذا البريد الإلكتروني. هل أنت متأكد من رغبتك في إضافة '{{firstName}} {{lastName}}'؟",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
         "validEmail": "Please enter a valid email address."
-      },
-      "confirmDuplicate": "تم العثور على شخص موجود بالفعل باسم '{{existingName}}' ({{existingEmail}}) بهذا البريد الإلكتروني. هل أنت متأكد من رغبتك في إضافة '{{firstName}} {{lastName}}'؟"
+      }
     },
     "custom": "Custom",
     "delete": "حذف",
@@ -360,8 +388,14 @@
     },
     "help": "مساعدة",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "صلاة"
+      },
+      "noResults": "لم يتم العثور على نتائج",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
+      "showingDefault": "عرض {{count}} من الرموز الافتراضية",
+      "showingMatching": "عرض {{count}} من الرموز المطابقة",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
@@ -386,6 +420,7 @@
     "right": "Right",
     "save": "حفظ",
     "saveChanges": "Save Changes",
+    "saveError": "تعذر الحفظ. يرجى المحاولة مرة أخرى.",
     "saving": "جاري الحفظ...",
     "search": "البحث",
     "searching": "Searching...",
@@ -490,6 +525,9 @@
       "workflows": "سير العمل"
     }
   },
+  "controlPanel": {
+    "serverError": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+  },
   "createPerson": {
     "addNewPerson": "Add New Person",
     "email": "البريد الإلكتروني",
@@ -538,6 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "البحث عن أشخاص",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "مسح البحث",
       "display": "Display",
       "noResults": "لم يتم العثور على أشخاص يطابقون معايير البحث.",
       "photo": "Photo",
@@ -590,6 +629,8 @@
       "invalidCode": "الرمز غير صالح أو منتهي الصلاحية. يرجى التحقق والمحاولة مرة أخرى.",
       "loading": "جارٍ التحميل...",
       "noChurchSelected": "لم يتم اختيار أي كنيسة. يرجى تسجيل الدخول مرة أخرى واختيار كنيسة.",
+      "planType": "عرض الخطط لـ",
+      "planTypeNone": "بلا (تصفح فقط)",
       "requestedPermissions": "الأذونات المطلوبة:",
       "title": "تفويض الجهاز",
       "verifyFailed": "فشل في التحقق من الرمز. يرجى المحاولة مرة أخرى."
@@ -609,6 +650,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "viewBatch": "عرض الدفعة",
       "willAppear": "Donations will appear here once they have been made."
     }
   },
@@ -665,7 +707,8 @@
       "ofGoal": "من الهدف",
       "pledges": "الالتزامات",
       "status": "الحالة",
-      "subtitle": "الالتزامات وتقدم التبرعات لهذه الحملة"
+      "subtitle": "الالتزامات وتقدم التبرعات لهذه الحملة",
+      "unknownPerson": "شخص غير معروف"
     },
     "campaignsPage": {
       "addCampaign": "إضافة حملة",
@@ -708,6 +751,7 @@
       "cash": "Cash",
       "check": "Check",
       "checkNum": "Check #",
+      "confirmMsg": "هل أنت متأكد من رغبتك في حذف هذا التبرع نهائيًا؟",
       "date": "التاريخ",
       "fund": "Fund",
       "inKind": "In-Kind",
@@ -733,6 +777,7 @@
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "تصدير",
       "funds": "Funds",
+      "method": "الطريقة",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "pending": "قيد الانتظار",
       "statements": "Giving Statements",
@@ -786,7 +831,8 @@
       "subtitle": "Manage donation funds and track giving categories",
       "taxDeductible": "قابل للخصم الضريبي",
       "taxStatus": "الحالة الضريبية",
-      "totalFunds": "إجمالي الصناديق"
+      "totalFunds": "إجمالي الصناديق",
+      "viewBatch": "عرض الدفعة"
     },
     "period": {
       "monthly": "Monthly",
@@ -936,6 +982,7 @@
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
+      "removeConfirm": "إزالة {name} من هذا النموذج؟",
       "view": "View Only"
     },
     "formPage": {
@@ -949,6 +996,7 @@
       "date": "التاريخ",
       "decNum": "Decimal",
       "desc": "الوصف",
+      "fieldType": "نوع الحقل",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -1001,7 +1049,8 @@
   "gallery": {
     "aspectRatio": "نسبة العرض إلى الارتفاع",
     "confirmDelete": "تأكيد الحذف",
-    "freeForm": "حر"
+    "freeForm": "حر",
+    "uploadError": "اكتملت معالجة الصورة، لكن فشل الرفع. قد لا تكون واجهة برمجة التطبيقات متاحة في هذه البيئة."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1071,9 @@
       "duplicateTooltip": "تكرار هذه المجموعة",
       "emailTooltip": "أرسل بريدًا إلكترونيًا إلى هذه المجموعة",
       "labels": "Labels",
+      "location": "الموقع",
       "meetingInfo": "Meeting Information",
+      "meetingTime": "وقت الاجتماع",
       "moreLabels": "More Labels",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
@@ -1033,6 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "إضافة أحداث",
+      "allowRsvps": "السماح بالردود",
       "bulkAddTitle": "إضافة أحداث متكررة",
       "confirmDelete": "حذف \"{title}\" وجميع تكراراته؟",
       "datesPreview": "سيتم إنشاء {count} اجتماعات. أزل علامة الاختيار عن التواريخ المراد تخطيها.",
@@ -1042,7 +1094,15 @@
       "lastMeeting": "الاجتماع الأخير",
       "noDates": "لا توجد تواريخ اجتماعات في النطاق المحدد.",
       "noEvents": "لا توجد أحداث بعد. استخدم إضافة أحداث لجدولة اجتماعات هذه المجموعة.",
+      "noResponses": "لا توجد ردود بعد.",
       "oneTime": "مرة واحدة",
+      "response_maybe": "ربما",
+      "response_no": "لا",
+      "response_yes": "نعم",
+      "rosterTitle": "ردود الحضور",
+      "rsvpSummary": "{yes} نعم · {maybe} ربما · {no} لا",
+      "rsvps": "الردود",
+      "rsvpsDisabled": "معطل",
       "skipHolidays": "تخطي الأعياد",
       "skippedDates": "التواريخ المتخطاة",
       "until": "حتى"
@@ -1064,15 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "ageGrade": "العمر والصف",
       "archive": "أرشفة",
       "archiveAria": "أرشفة المجموعة",
       "attTrack": "Track Attendance",
       "attendance": "الحضور",
       "attendanceReminders": "تذكيرات الحضور عبر البريد الإلكتروني",
+      "capacity": "السعة",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "تغيير صورة المجموعة",
+      "checkinCapacity": "سعة تسجيل الحضور",
+      "checkinClosed": "مغلق لتسجيل الحضور",
       "clickToAddPhoto": "Click to add photo",
+      "confidential": "مجموعة سرية",
+      "confidentialHelp": "إخفاء هذه المجموعة وقائمة أعضائها من الصفحات العامة وأداة البحث عن المجموعات وغير الأعضاء.",
       "confirmArchive": "هل أنت متأكد من رغبتك في أرشفة هذه المجموعة؟ ستُخفى من قائمة المجموعات حتى تتم استعادتها.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "التسجيل",
@@ -1083,14 +1149,24 @@
       "groupNameMsg": "Please enter a group name.",
       "groupPhotoAlt": "مجموعة",
       "groupSlugAria": "معرّف المجموعة",
+      "guestCapacity": "سعة الضيوف",
+      "maxAge": "الحد الأقصى للعمر",
+      "maxGrade": "الحد الأقصى للصف",
       "meetingLocation": "Meeting Location",
       "meetingLocationAria": "موقع الاجتماع",
       "meetingTime": "Meeting Time",
       "meetingTimeAria": "وقت الاجتماع",
+      "minAge": "الحد الأدنى للعمر",
+      "minGrade": "الحد الأدنى للصف",
+      "minVolunteers": "الحد الأدنى للمتطوعين",
+      "months": "أشهر",
+      "noLimit": "بلا حد",
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "publicRoster": "إظهار قائمة الأعضاء على الموقع الإلكتروني",
-      "slug": "Slug (key name used for urls)"
+      "slug": "Slug (key name used for urls)",
+      "volunteerRatio": "عدد الأطفال لكل متطوع",
+      "years": "سنوات"
     },
     "groupHealth": {
       "attendance": "الحضور",
@@ -1124,8 +1200,10 @@
       "member": "عضو",
       "members": "أعضاء",
       "messagePlaceholder": "اكتب رسالة لإرسالها إلى جميع أعضاء المجموعة…",
+      "messageSent": "تم إرسال الرسالة.",
       "noMemDesc": "أضف أعضاء من اللوحة الجانبية لبدء بناء هذه المجموعة.",
       "noMemTitle": "لا يوجد أعضاء بعد",
+      "removeConfirm": "إزالة {name} من هذه المجموعة؟",
       "removeLeaderAccess": "إزالة وصول القائد",
       "role": "الدور",
       "send": "Send",
@@ -1171,9 +1249,13 @@
       "groups": "المجموعات",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
+      "noMatchMsg": "لا توجد مجموعات تطابق بحثك.",
+      "pendingRequestSingular": "{count} طلب معلق",
+      "pendingRequests": "{count} طلبات معلقة",
       "pers": "1 person",
       "ppl": "People",
       "restore": "استعادة",
+      "searchPlaceholder": "البحث عن مجموعات...",
       "showArchived": "إظهار المؤرشف",
       "spPpl": " people",
       "subtitle": {
@@ -1186,6 +1268,11 @@
       "availableMem": "Available Group Members",
       "noMem": "No group members available.",
       "unknown": "غير معروف"
+    },
+    "pendingRequestsPage": {
+      "empty": "لا توجد طلبات معلقة.",
+      "subtitle": "الموافقة على الطلبات التي بدأها الأعضاء أو رفضها عبر جميع المجموعات.",
+      "title": "طلبات الانضمام المعلقة"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "إدراج حقل دمج في النص:",
@@ -1223,6 +1310,8 @@
       "eligibleSummary": "{eligibleCount} من {totalMembers} عضوًا سيتلقون هذه الرسالة.",
       "eligibleSummarySingular": "{eligibleCount} من {totalMembers} عضو سيتلقى هذه الرسالة.",
       "fallbackError": "فشل في إرسال الرسالة النصية.",
+      "insufficientCredits": "نفدت أرصدة الرسائل النصية لكنيستك في دورة الفوترة هذه. لم يتم إرسال أي رسائل. قم بالترقية أو انتظر تجديد رصيدك على",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "جارٍ تحميل المستلمين...",
       "messageLabel": "الرسالة",
       "noPhoneNotice": "{count} ليس لديهم رقم هاتف مسجل.",
@@ -1268,6 +1357,11 @@
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
       "sesEdit": "Edit Session"
     },
+    "sessionsDisabled": {
+      "description": "قم بتفعيل تتبع الحضور لتسجيل الجلسات وعمليات تسجيل الحضور لهذه المجموعة.",
+      "enable": "تفعيل الحضور",
+      "title": "تتبع الحضور غير مفعّل"
+    },
     "tabs": {
       "mem": "الأعضاء",
       "ses": "Sessions"
@@ -1309,8 +1403,8 @@
       "registrations": "التسجيلات",
       "roomsResources": "القاعات والموارد",
       "sermons": "العظات",
-      "stripeImport": "استيراد Stripe",
       "site": "الموقع",
+      "stripeImport": "استيراد Stripe",
       "website": "الموقع الإلكتروني"
     }
   },
@@ -1384,6 +1478,11 @@
     "sep": "September",
     "september": "September"
   },
+  "notFound": {
+    "backHome": "العودة إلى لوحة التحكم",
+    "message": "الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها.",
+    "title": "الصفحة غير موجودة"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "جارٍ تحميل الحقول المخصصة...",
@@ -1414,6 +1513,11 @@
       "clearSelection": "إلغاء التحديد",
       "createNewGroup": "إنشاء مجموعة جديدة",
       "delete": "حذف",
+      "deleteConfirm": "هل أنت متأكد أنك تريد حذف {count} من الأشخاص المحددين؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteError": "تعذر حذف الأشخاص المحددين",
+      "deleteSelected": "حذف الأشخاص المحددين",
+      "deleteSuccess": "تم حذف {count} من الأشخاص بنجاح",
+      "deleting": "جاري الحذف...",
       "error": "خطأ",
       "fieldPrompt": "تحديث الحقل لـ {count} شخصًا محددًا.",
       "fieldSuccess": "تم تحديث {count} شخص.",
@@ -1428,8 +1532,8 @@
       "optedOutYes": "منسحب",
       "removeFromGroup": "إزالة من مجموعة",
       "selected": "محدد",
-      "workflowSuccess": "تمت إضافة {count} شخص إلى سير العمل.",
-      "setCampus": "تعيين الحرم الجامعي"
+      "setCampus": "تعيين الحرم الجامعي",
+      "workflowSuccess": "تمت إضافة {count} شخص إلى سير العمل."
     },
     "demographics": {
       "age": "العمر",
@@ -1623,6 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "إضافة إلى سير العمل",
       "age": "العمر",
+      "emailPerson": "مراسلة هذا الشخص عبر البريد الإلكتروني",
       "gender": "الجنس",
       "hasLogin": "لديه تسجيل دخول",
       "maritalStatus": "الحالة الاجتماعية",
@@ -1632,6 +1737,7 @@
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot delete your own person record.",
       "confirmMsg": "Are you sure you wish to permanently delete this person record?",
+      "customFields": "حقول مخصصة",
       "donorNumber": "Donor Number",
       "exten": "Extension",
       "family": "family",
@@ -1668,6 +1774,8 @@
       "profile": "الملف الشخصي"
     },
     "personPage": {
+      "confidentialNotes": "ملاحظات سرية",
+      "confidentialNotesSuffix": " ملاحظات سرية",
       "notesSuffix": " ملاحظات",
       "thisPerson": "هذا الشخص"
     },
@@ -1681,6 +1789,18 @@
       "mobile": "Mobile",
       "persDet": "Personal Details",
       "work": "Work"
+    },
+    "pickup": {
+      "add": "إضافة",
+      "confirmDelete": "هل أنت متأكد أنك تريد إزالة هذا الشخص المخول بالاستلام؟",
+      "name": "الاسم",
+      "none": "لم يتم إضافة أشخاص للاستلام.",
+      "notAuthorized": "غير مصرح به",
+      "orAddByName": "أو أضف شخصًا غير موجود في النظام:",
+      "relationship": "صلة القرابة",
+      "status": "الحالة",
+      "title": "استلام",
+      "trusted": "موثوق"
     },
     "tabs": {
       "att": "الحضور",
@@ -1706,6 +1826,7 @@
     "female": "Female",
     "firstName": "الاسم الأول",
     "gender": "Gender",
+    "grade": "الصف",
     "inactive": "غير نشطة",
     "lastName": "الاسم الأخير",
     "line1": "Line 1",
@@ -1723,6 +1844,7 @@
     "phone": "الهاتف",
     "prefix": "Prefix",
     "regularAttendee": "Regular Attendee",
+    "school": "المدرسة",
     "single": "Single",
     "staff": "Staff",
     "state": "State/Province",
@@ -1906,6 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
+      "confirmDelete": "هل أنت متأكد من رغبتك في إزالة تكليف هذا المتطوع؟",
       "done": "Done",
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
@@ -1964,6 +2087,7 @@
       "waitingForAuth": "Waiting for authorization..."
     },
     "contentRenderer": {
+      "audioUnsupported": "متصفحك لا يدعم تشغيل الصوت.",
       "fallbackPreview": "معاينة",
       "fallbackTitle": "معاينة المحتوى",
       "noContent": "لا يوجد محتوى لعرضه.",
@@ -2156,7 +2280,11 @@
       "ppl": "people",
       "prefTimeMismatch": "يفضل الخدمة في",
       "publish": "نشر الخطة",
+      "publishConfirm": "نشر هذه الخطة حتى يتمكن المتطوعون من رؤية تكليفاتهم؟",
+      "publishConfirmLabel": "نشر",
+      "publishConfirmTitle": "نشر الخطة",
       "publishNotify": "نشر وإشعار",
+      "publishNotifyConfirm": "نشر هذه الخطة وإخطار {count} متطوعين بتكليفاتهم؟ سيتم إرسال الإشعارات فورًا.",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
       "timesThisMonth": "مرات هذا الشهر، متجاوزًا الحد المفضل لديه وهو",
@@ -2177,6 +2305,7 @@
       "allowSelfSignup": "السماح بالتسجيل الذاتي",
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
+      "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا المنصب؟ سيتم إلغاء جدولة أي شخص مُكلّف به حاليًا.",
       "description": "الوصف",
       "descriptionHelper": "تظهر للمتطوعين عند تصفح فرص التسجيل",
       "nameReq": "Name is required",
@@ -2198,6 +2327,14 @@
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
       "time": "الوقت"
+    },
+    "printPreview": {
+      "colorCoded": "مرمّز بالألوان",
+      "format": "التنسيق:",
+      "materials": "المواد:",
+      "script": "النص",
+      "serviceOrder": "ترتيب الخدمة",
+      "title": "معاينة الطباعة"
     },
     "schedulingPreference": {
       "household": "جدولة الأسرة",
@@ -2248,7 +2385,8 @@
       "title": "نظرة عامة على الخدمة"
     },
     "servingPage": {
-      "showAll": "عرض الكل"
+      "showAll": "عرض الكل",
+      "showAllHint": "خدماتك مخفية لأنك لست عضوًا. قم بتفعيل \"عرض الكل\" أعلاه لرؤيتها."
     },
     "songDialog": {
       "close": "إغلاق",
@@ -2289,6 +2427,7 @@
       "updateFromPlanHelp": "استبدال محتويات هذا القالب بترتيب الخدمة والمناصب الحالية للخطة."
     },
     "timeEdit": {
+      "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الوقت؟",
       "disName": "Display Name",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
@@ -2341,7 +2480,9 @@
     "pairScreen": {
       "codeRequired": "Pairing code is required",
       "invalidCode": "Invalid pairing code",
-      "pairingCode": "Pairing Code"
+      "pairingCode": "Pairing Code",
+      "planType": "عرض الخطط لـ",
+      "planTypeNone": "بلا (إشعارات فقط)"
     },
     "profilePage": {
       "accDel": "Account Deletion",
@@ -2375,6 +2516,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "إضافة رمز خصم",
+      "addSelection": "إضافة اختيار",
+      "addType": "إضافة نوع",
+      "amount": "المبلغ",
+      "attendeeTypes": "أنواع الحضور",
+      "balance": "الرصيد",
+      "capacity": "السعة",
+      "code": "الرمز",
+      "description": "الوصف",
+      "discountCodes": "رموز الخصم",
+      "discountType": "النوع",
+      "endDate": "تاريخ الانتهاء",
+      "kind": "الصنف",
+      "maxQuantity": "الحد الأقصى للكمية",
+      "maxUses": "الحد الأقصى للاستخدامات",
+      "method": "الطريقة",
+      "minMembers": "الحد الأدنى للأعضاء",
+      "name": "الاسم",
+      "noCoupons": "لا توجد رموز خصم بعد.",
+      "noPayments": "لم يتم تسجيل أي مدفوعات.",
+      "noSelections": "لا توجد اختيارات بعد.",
+      "noTypes": "لا توجد أنواع حضور بعد.",
+      "paid": "مدفوع",
+      "paidTotal": "المدفوع / الإجمالي",
+      "payments": "المدفوعات",
+      "percent": "النسبة المئوية",
+      "price": "السعر",
+      "promote": "ترقية",
+      "registrationDetails": "تفاصيل التسجيل",
+      "removeConfirm": "إزالة هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+      "selections": "الاختيارات",
+      "sort": "الترتيب",
+      "startDate": "تاريخ البدء",
+      "total": "الإجمالي",
+      "type": "النوع",
+      "usesSoFar": "الاستخدامات: {count}",
+      "value": "القيمة"
+    },
     "registrationDetailsPage": {
       "addAttendee": "إضافة مشارك",
       "addAttendeeError": "فشل تسجيل المشارك.",
@@ -2405,6 +2585,7 @@
       "capacity": "السعة",
       "capacityPlaceholder": "اتركه فارغًا لعدم وجود حد",
       "enableRegistration": "تمكين التسجيل",
+      "enableWaitlist": "تفعيل قائمة الانتظار",
       "none": "لا شيء",
       "registrationCloses": "إغلاق التسجيل",
       "registrationOpens": "فتح التسجيل",
@@ -2449,19 +2630,7 @@
       "report": "Report"
     },
     "reportsPage": {
-      "attTrend": "اتجاه الحضور",
-      "attTrendDesc": "View attendance trends over time",
-      "bDays": "Birthdays",
-      "bDaysDesc": "View upcoming birthdays",
-      "dailyGroupAtt": "Daily Group Attendance",
-      "dailyGroupAttDesc": "View daily group attendance",
-      "donSum": "Donation Summary",
-      "donSumDesc": "View donation summary",
-      "groupAtt": "حضور المجموعة",
-      "groupAttDesc": "View group attendance",
-      "helpText": "Select a report to view detailed information",
-      "reports": "Reports",
-      "subtitle": "View and download church reports"
+      "reports": "Reports"
     }
   },
   "sermons": {
@@ -2704,7 +2873,11 @@
       "church": "Church",
       "churchName": "Church Name",
       "churches": "Churches",
+      "churchesSubtitle": "البحث عن جميع الكنائس وإدارتها",
+      "impersonateSubtitle": "تسجيل الدخول كمستخدم آخر لأغراض الدعم",
       "impersonateUser": "انتحال هوية مستخدم",
+      "jobs": "المهام الخلفية",
+      "jobsSubtitle": "آخر تشغيل وإخفاقات المهام المجدولة",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
@@ -2717,13 +2890,20 @@
       "searchResults": "Search Results",
       "servAdmin": "Server Admin",
       "serverHealth": "صحة الخادم",
+      "serverHealthSubtitle": "التحقق من سلامة خدمات الخادم",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
+      "translationSubtitle": "البحث عن سلاسل الترجمة المترجمة",
+      "usageSubtitle": "عرض اتجاهات استخدام الخادم",
       "usageTrends": "Usage Trends",
+      "users": "المستخدمون",
+      "usersSubtitle": "البحث عن أي حساب مستخدم لأغراض الدعم",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
+      "archiveConfirm": "أرشفة {name}؟ سيفقد الأعضاء الوصول حتى تتم استعادتها.",
       "churchNameSearchAria": "البحث باسم الكنيسة",
+      "restoreConfirm": "استعادة الوصول لـ {name}؟",
       "searchChurchesAria": "البحث عن الكنائس"
     },
     "impersonateTab": {
@@ -2734,6 +2914,18 @@
       "searchAria": "البحث عن مستخدمين لانتحال هويتهم",
       "searchLabel": "بريد المستخدم",
       "searchPlaceholder": "البحث ببريد تسجيل الدخول"
+    },
+    "jobsTab": {
+      "duration": "المدة",
+      "failed": "فشل",
+      "job": "المهمة",
+      "lastRun": "آخر تشغيل",
+      "loadError": "تعذر تحميل عمليات تشغيل المهام.",
+      "noRuns": "لم يتم تسجيل أي عمليات تشغيل بعد.",
+      "recentFailures": "الإخفاقات الأخيرة",
+      "subtitle": "آخر تشغيل لكل مهمة مجدولة. يتم تسجيل عمليات التشغيل بواسطة معالجات المؤقت والاحتفاظ بها لمدة 30 يومًا.",
+      "success": "نجاح",
+      "title": "المهام الخلفية"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2760,6 +2952,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "البحث في إحصاءات الترجمة"
+    },
+    "usersTab": {
+      "access": "الوصول",
+      "description": "البحث في جميع حسابات المستخدمين بالاسم أو البريد الإلكتروني لعرض كنائسهم ونشاط تسجيل الدخول.",
+      "email": "البريد الإلكتروني",
+      "lastLogin": "آخر تسجيل دخول",
+      "member": "عضو",
+      "name": "الاسم",
+      "noChurches": "هذا المستخدم غير مرتبط بأي كنيسة.",
+      "searchAria": "البحث عن المستخدمين",
+      "searchLabel": "الاسم أو البريد الإلكتروني",
+      "staff": "طاقم العمل",
+      "subDomain": "النطاق الفرعي",
+      "title": "البحث عن المستخدمين"
     }
   },
   "settings": {
@@ -2848,6 +3054,7 @@
     "auditLogPage": {
       "action": "إجراء",
       "allCategories": "جميع الفئات",
+      "allModules": "جميع الوحدات",
       "category": "الفئة",
       "categoryDonation": "التبرعات",
       "categoryForm": "النماذج",
@@ -2856,17 +3063,62 @@
       "categoryPermission": "الأذونات",
       "categoryPerson": "الأشخاص",
       "categorySettings": "الإعدادات",
+      "changes": "التغييرات",
       "date": "التاريخ",
+      "deletedRecord": "سجل محذوف",
       "details": "التفاصيل",
       "endDate": "تاريخ الانتهاء",
       "entity": "الكيان",
       "exportCsv": "تصدير CSV",
+      "field": "الحقل",
       "ipAddress": "عنوان IP",
-      "noEntries": "لم يتم العثور على إدخالات سجل التدقيق",
+      "module": "الوحدة",
+      "moduleAttendance": "الحضور",
+      "moduleContent": "المحتوى",
+      "moduleDoing": "الخدمة",
+      "moduleGiving": "العطاء",
+      "moduleLessons": "الدروس",
+      "moduleMembership": "العضوية",
+      "moduleMessaging": "المراسلة",
+      "newValue": "القيمة الجديدة",
+      "noDetails": "لا توجد تفاصيل للتغيير",
+      "noEntries": "لم يتم العثور على إدخالات في سجل التدقيق",
+      "noPrevious": "لا توجد إدخالات سابقة؛ يتم عرض القيم المقدمة فقط.",
+      "oldValue": "القيمة القديمة",
       "search": "بحث",
       "startDate": "تاريخ البدء",
-      "subtitle": "تتبع التغييرات والأنشطة في كنيستك",
-      "title": "سجل التدقيق"
+      "subtitle": "تتبع التغييرات والنشاط عبر كنيستك",
+      "title": "سجل التدقيق",
+      "truncated": "تم اقتطاع التفاصيل ولا يمكن التراجع عن هذا الإدخال."
+    },
+    "batches": {
+      "action": "الإجراء",
+      "actions": "الإجراءات",
+      "created": "تاريخ الإنشاء",
+      "creator": "المُنشئ",
+      "date": "التاريخ",
+      "entityId": "معرّف الكيان",
+      "entityType": "نوع الكيان",
+      "failed": "فشل ({count})",
+      "items": "العناصر",
+      "label": "التسمية",
+      "noEntries": "لم يتم العثور على دفعات",
+      "noResults": "لا توجد سجلات في هذه الدفعة",
+      "restored": "تمت استعادة {count} سجل.",
+      "resultsTitle": "نتائج الدفعة",
+      "skipped": "تم التخطي ({count})",
+      "skippedHelp": "تم تخطي السجلات التي تم تعديلها منذ إنشاء الدفعة لتجنب الكتابة فوق التغييرات الأحدث.",
+      "source": "المصدر",
+      "status": "الحالة",
+      "subtitle": "مراجعة عمليات الاستيراد والإجراءات الجماعية والتراجع عنها",
+      "title": "الدفعات",
+      "undo": "تراجع",
+      "undoConfirm": "التراجع عن الدفعة \"{label}\"؟ سيؤدي هذا إلى استعادة السجلات المتأثرة إلى حالتها قبل الدفعة.",
+      "undoError": "فشل طلب التراجع.",
+      "undoTitle": "التراجع عن الدفعة",
+      "undoWarning": "سيتم تخطي السجلات التي تم تعديلها منذ إنشاء هذه الدفعة. لا يمكن التراجع عن هذا الإجراء.",
+      "undoing": "جارٍ التراجع…",
+      "viewResults": "عرض النتائج"
     },
     "campusEdit": {
       "address2": "سطر العنوان 2",
@@ -2887,10 +3139,18 @@
       "none": "لم تتم إضافة أي أحرام بعد.",
       "subtitle": "إدارة المواقع الجغرافية لكنيستك"
     },
+    "checkinSettingsEdit": {
+      "block": "حظر (منع تسجيل الحضور)",
+      "help": "اختر كيفية استجابة تسجيل الحضور عندما تتجاوز الغرفة نسبة المتطوعين إلى الأطفال أو تقل عن الحد الأدنى للمتطوعين.",
+      "ratioEnforcement": "فرض نسبة المتطوعين",
+      "title": "تسجيل الدخول",
+      "warn": "تحذير (السماح مع التأكيد)"
+    },
     "church": {
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "أول يوم في الأسبوع",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "سطر العنوان 1",
@@ -2909,6 +3169,21 @@
       "subdomainAria": "نطاق فرعي",
       "textingSubtitle": "تكوين مزود الرسائل النصية",
       "textingTitle": "الرسائل النصية"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الحقل المخصص؟ سيتم أيضًا حذف القيم المخزنة به.",
+      "fieldType": "نوع الحقل",
+      "name": "الاسم",
+      "validate": {
+        "name": "يرجى إدخال اسم الحقل."
+      }
+    },
+    "customFields": {
+      "addField": "إضافة حقل",
+      "customFields": "حقول مخصصة",
+      "field": "حقل مخصص",
+      "none": "لم تتم إضافة أي حقول مخصصة بعد.",
+      "subtitle": "تعريف حقول مخصصة لتتبعها على الأشخاص"
     },
     "developer": {
       "actions": "الإجراءات",
@@ -2955,7 +3230,9 @@
       "domMsg4": ".  It can take up to 5 minutes.",
       "domMsgConnect": "connect",
       "domain": "Domain",
-      "domains": "Domains"
+      "domains": "Domains",
+      "mainWebsite": "الموقع الرئيسي",
+      "site": "الموقع الإلكتروني"
     },
     "emailTemplateEdit": {
       "bodyRequired": "محتوى النص مطلوب.",
@@ -3036,25 +3313,46 @@
       "webhookKeyHelper": "سر توقيع Webhook من لوحة تحكم Kingdom Funding. مطلوب لتحديثات حالة المعاملات.",
       "webhookUrlCopied": "تم نسخ رابط Webhook إلى الحافظة"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "اليوم",
+      "disabled": "معطل",
+      "enabled": "مفعّل",
+      "help": "في هذا التاريخ من كل عام، تتم ترقية كل من لديه صف دراسي إلى الصف التالي تلقائيًا (يصبح الصف الثاني عشر متخرجًا). اتركه معطلاً لإيقاف الترقية التلقائية.",
+      "month": "الشهر",
+      "title": "ترقية الصف"
+    },
     "landing": {
       "campusesCount": "{count} موقع",
       "campusesOne": "موقع واحد",
       "campusesSubtitle": "المواقع الجغرافية",
       "configuration": "الإعدادات",
+      "customFieldsCount": "{count} حقول مخصصة",
+      "customFieldsSubtitle": "لا توجد حقول مخصصة بعد",
       "developerSubtitle": "مفاتيح API، Webhooks، التطبيقات المتصلة",
       "domainsCount": "{count} متصل",
       "domainsNone": "لا نطاقات مخصصة",
       "domainsOne": "1 متصل",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "الترقية التلقائية معطلة",
+      "gradePromotionOn": "يتم الترقية في {date} من كل عام",
       "notConfigured": "غير مُهيأ",
       "notSet": "غير محدد"
     },
     "manageChurch": {
       "auditLog": "سجل التدقيق",
+      "batches": "الدفعات",
       "imEx": "Import/Export",
       "noData": "No church data available",
       "subtitle": "Configure church settings and preferences",
       "title": "Manage Church"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 عامًا فأكثر",
+      "age16": "16 عامًا فأكثر",
+      "age18": "18 عامًا فأكثر",
+      "helpText": "يمنع محادثات الرسائل الخاصة الجديدة عندما يكون أحد الشخصين أقل من هذا العمر، استنادًا إلى تاريخ ميلاده. يظل الأشخاص الأصغر من هذا العمر مرئيين في الدليل. لا يؤثر هذا على المحادثات الحالية.",
+      "label": "الحد الأدنى للعمر للرسائل الخاصة",
+      "off": "معطل (بلا قيود)"
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
@@ -3108,6 +3406,34 @@
     "rolesPage": {
       "subtitle": "إدارة الأدوار والصلاحيات"
     },
+    "storageSettingsEdit": {
+      "authFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+      "byosHelper": "يتم تخزين الملفات المرفوعة الجديدة في حسابك الخاص، ويتم تقديم التنزيلات منه. تبقى الملفات المرفوعة سابقًا في مكانها.",
+      "churchAppsFree": "ChurchApps (مجانًا)",
+      "connect": "ربط الحساب",
+      "connectFirst": "قم بربط حسابك قبل الحفظ.",
+      "connected": "تم ربط الحساب",
+      "connecting": "في انتظار تسجيل الدخول...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "سيتم تخزين الملفات على خطة تخزين MinistryStuff الخاصة بك، المرتبطة بهذه الكنيسة تلقائيًا. أدر خطتك على",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "تم حظر النافذة المنبثقة. يرجى السماح بالنوافذ المنبثقة والمحاولة مرة أخرى.",
+      "provider": "المزوّد",
+      "reconnect": "إعادة الربط",
+      "s3AccessKey": "معرّف مفتاح الوصول",
+      "s3Bucket": "الحاوية",
+      "s3Endpoint": "نقطة النهاية (اتركها فارغة لـ AWS)",
+      "s3Helper": "يجب أن تسمح الحاوية بالوصول العام للقراءة وطلبات CORS PUT من هذا الموقع. يعمل مع AWS S3 وCloudflare R2 وBackblaze B2.",
+      "s3PublicBase": "أساس الرابط العام",
+      "s3Region": "المنطقة",
+      "s3Required": "الحاوية وأساس الرابط العام مطلوبان.",
+      "s3SecretKey": "مفتاح الوصول السري",
+      "saveError": "خطأ في حفظ إعدادات التخزين.",
+      "sessionExpired": "انتهت صلاحية جلسة تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+      "sessionFailed": "تعذر بدء جلسة تسجيل الدخول.",
+      "title": "تخزين الملفات",
+      "usage": "تم استخدام {used} جيجابايت من {quota} جيجابايت."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
       "link": "Link",
@@ -3121,13 +3447,17 @@
       "clearstreamHelper": "أنشئ مفتاح API في",
       "clearstreamHelperLink": "إعدادات حساب Clearstream",
       "clearstreamHelperSuffix": "تحت مفاتيح API.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "اشتراكك في الرسائل النصية عبر MinistryStuff نشط، مع تبقّي {} رصيد في هذه الدورة.",
+      "ministryStuffHelper": "لا حاجة لمفتاح API. تأتي أرصدة الرسائل النصية من اشتراكك في MinistryStuff، المرتبط بهذه الكنيسة تلقائيًا. أدر خطتك على",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "لا شيء",
       "provider": "المزود",
       "saveError": "خطأ في حفظ إعدادات الرسائل النصية.",
+      "textInChurch": "نص في الكنيسة",
       "textInChurchHelper": "قم بزيارة",
       "textInChurchHelperLink": "دعم Text In Church",
-      "textInChurchHelperSuffix": "لطلب وصول API للمطورين. بعد الموافقة، قم بإنشاء مفتاح API في إعدادات حسابك > قسم API للمطورين.",
-      "textInChurch": "نص في الكنيسة"
+      "textInChurchHelperSuffix": "لطلب وصول API للمطورين. بعد الموافقة، قم بإنشاء مفتاح API في إعدادات حسابك > قسم API للمطورين."
     },
     "userAdd": {
       "addTo": "Add To ",
@@ -3364,27 +3694,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
+      "draft": "مسودة",
+      "navHint": "يمكن للزوار قراءة منشوراتك على /blog. أضف رابط تنقل في شاشة الصفحات حتى يتمكنوا من العثور عليه:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "منشور",
+      "scheduled": "مجدول",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "عرض على الموقع"
     },
     "blogEdit": {
+      "author": "الكاتب",
       "category": "Category",
+      "content": "المحتوى",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "هذا العنوان مستخدم بالفعل من قبل منشور آخر.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "معاينة",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "يُملأ تلقائيًا من العنوان حتى تقوم بتعديله. العنوان:",
+      "slugLabel": "عنوان الويب",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4056,7 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "externalStorage": "مخزّن في حسابك المرتبط",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "الاسم",
@@ -3936,6 +4277,7 @@
     },
     "paletteEdit": {
       "accent": "تمييز",
+      "accentDesc": "اللون البارز الرئيسي — الأزرار والتمييزات",
       "applyPaletteAria": "تطبيق لوحة الألوان المقترحة",
       "applySuggested": "انقر على أي لوحة لتطبيقها على الفور",
       "baseColors": "الألوان الأساسية",
@@ -3943,20 +4285,29 @@
       "colorValues": "Color Values",
       "dark": "داكن",
       "darkAccent": "تمييز داكن",
+      "darkAccentDesc": "اللون البارز الداكن — العناوين والروابط",
+      "darkDesc": "أغمق درجة — نص المحتوى",
       "error": "خطأ",
+      "errorDesc": "الأخطاء والإجراءات المدمرة",
       "headerSubtitle": "خصص نظام ألوان موقعك. لألوان تطبيق الهاتف ومنفذ الأعضاء والكشك، انتقل إلى الإعدادات > سمة التطبيق.",
       "headerTitle": "لوحة الألوان",
       "light": "فاتح",
       "lightAccent": "تمييز فاتح",
+      "lightAccentDesc": "اللون البارز الفاتح — خلفيات خفيفة",
+      "lightDesc": "أفتح درجة — خلفيات الأقسام",
       "palette": "لوحة",
       "previewWorkTogether": "معاينة كيفية عمل ألوانك معًا",
       "primary": "أساسي",
+      "primaryDesc": "الأزرار والروابط الرئيسية",
       "savePalette": "Save Palette",
       "secondary": "ثانوي",
+      "secondaryDesc": "الأزرار والألوان الثانوية",
       "semanticColors": "ألوان دلالية",
       "success": "نجاح",
+      "successDesc": "رسائل النجاح والتأكيدات",
       "suggestedPalettes": "Suggested Palettes",
-      "warning": "تحذير"
+      "warning": "تحذير",
+      "warningDesc": "التحذيرات والتنبيهات"
     },
     "pickColors": {
       "background": "الخلفية",
@@ -4144,6 +4495,10 @@
       "showCampus": "إظهار الفرع",
       "title": "العنوان"
     },
+    "siteSwitcher": {
+      "mainWebsite": "الموقع الرئيسي",
+      "manageSites": "إدارة المواقع…"
+    },
     "siteTemplates": {
       "back": "رجوع",
       "create": "إنشاء الموقع",
@@ -4212,6 +4567,15 @@
       "textColor": "لون النص",
       "title": "أدوات الموقع",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "إضافة موقع",
+      "deleteConfirm": "حذف هذا الموقع؟ سيتم حذف صفحاته وتنقّله ومظهره نهائيًا. سيتم إعادة تعيين نطاقاته المخصصة إلى الموقع الرئيسي.",
+      "empty": "لا توجد مواقع إضافية بعد.",
+      "name": "الاسم",
+      "subDomain": "النطاق الفرعي",
+      "subDomainHint": "أحرف صغيرة وأرقام فقط. يصبح {subdomain}.b1.church",
+      "title": "المواقع"
     },
     "socialIconsEdit": {
       "alignment": "المحاذاة",
@@ -4331,11 +4695,13 @@
       "columns": "الأعمدة",
       "empty": "(فارغ)",
       "firstRowHeader": "الصف الأول هو الترويسة",
+      "markdownHelper": "يتيح استخدام Markdown داخل الخلايا للنص العريض والروابط وتنسيقات أخرى.",
       "medium": "متوسط",
       "no": "لا",
       "rows": "الصفوف",
       "size": "الحجم",
       "sizeSmall": "صغير",
+      "textFormatting": "تنسيق النص",
       "yes": "نعم"
     },
     "templates": {
@@ -4455,7 +4821,9 @@
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
       "keysTabsAria": "علامات تبويب المفاتيح",
       "noKeysAvailable": "لا توجد مفاتيح متاحة. أضف مفتاحًا للبدء.",
-      "title": "Keys"
+      "title": "Keys",
+      "audioTracks": "المقاطع الصوتية",
+      "uploadAudio": "رفع صوت"
     },
     "library": {
       "empty": {
@@ -4534,7 +4902,13 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "audio": {
+      "deleteConfirm": "هل أنت متأكد من حذف ملف الصوت هذا؟",
+      "tooLarge": "الملف كبير جدًا. الحد الأقصى للحجم هو 25 ميجابايت.",
+      "unsupportedFormat": "تنسيق صوت غير مدعوم. يرجى رفع ملف MP3 أو M4A أو AAC.",
+      "upload": "رفع صوت"
+    }
   },
   "stockPhotos": {
     "photoBy": "صورة بواسطة",
@@ -4812,6 +5186,7 @@
     },
     "workflowEdit": {
       "active": "نشط",
+      "confirmDelete": "هل أنت متأكد من رغبتك في حذف سير العمل هذا؟",
       "editWorkflow": "تعديل سير العمل",
       "inactive": "غير نشط",
       "name": "الاسم"
@@ -4842,6 +5217,7 @@
       "title": "التوجيه"
     },
     "workflowStepEdit": {
+      "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذه الخطوة؟",
       "defaultAssignee": "المسند إليه الافتراضي",
       "dueDays": "تاريخ الاستحقاق (أيام)",
       "dueDaysHelp": "يضبط تاريخ استحقاق عند دخول بطاقة هذه الخطوة",

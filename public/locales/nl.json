@@ -37,8 +37,15 @@
       "unscheduled": "Ongepland"
     },
     "attendanceSetup": {
-      "setupMessage": "Stel locaties, diensten en diensttijden in om aanwezigheid te gaan volgen.",
+      "manageCampuses": "Campussen beheren",
+      "setupMessage": "Stel campussen, diensten en diensttijden in om de aanwezigheid te gaan bijhouden.",
       "unassigned": "Niet toegewezen"
+    },
+    "checkinType": {
+      "guest": "Gast",
+      "header": "Type",
+      "volunteer": "Vrijwilliger",
+      "volunteers": "vrijwilligers"
     },
     "labels": {
       "align": "Uitlijnen",
@@ -55,6 +62,17 @@
       "empty": "Leeg",
       "equals": "Gelijk aan",
       "field": "Veld",
+      "fieldChildren": "Kinderen",
+      "fieldChildrenAllergies": "Allergieën van kinderen",
+      "fieldChurchName": "Kerknaam",
+      "fieldDate": "Datum",
+      "fieldDisplayName": "Naam",
+      "fieldFirstName": "Voornaam",
+      "fieldLastName": "Achternaam",
+      "fieldNametagNotes": "Naamkaartje Notities",
+      "fieldNickName": "Bijnaam",
+      "fieldSecurityCode": "Beveiligingscode",
+      "fieldSessions": "Sessies",
       "fill": "Vulling",
       "fontSize": "Lettergrootte",
       "height": "Hoogte (in)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "Maak een labelsjabloon aan om de labels die worden afgedrukt door incheckkiosken aan te passen.",
       "notEmpty": "Niet leeg",
       "notEquals": "Niet gelijk aan",
+      "opDoesNotEqual": "Is niet gelijk aan",
+      "opEquals": "Gelijk aan",
+      "opIsBlank": "Is leeg",
+      "opIsNotBlank": "Is niet leeg",
       "operator": "Operator",
       "palette": "Blok toevoegen",
       "pickup": "Ophaalbon",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Goedkeuren",
+      "approvedToast": "Aanvraag goedgekeurd.",
       "bookingRequests": "Ruimte- en middelenaanvragen",
+      "confirmReject": "Weet u zeker dat u deze aanvraag wilt afwijzen?",
       "conflicts": "Conflicten",
       "description": "Omschrijving",
       "event": "Evenement",
@@ -127,6 +151,8 @@
       "noPendingBookings": "Geen openstaande ruimte- of middelenaanvragen.",
       "noPendingEvents": "Geen openstaande evenementaanvragen.",
       "reject": "Afwijzen",
+      "rejectTitle": "Aanvraag afwijzen",
+      "rejectedToast": "Aanvraag afgewezen.",
       "roomResource": "Ruimte / Middel",
       "status": "Status",
       "subtitle": "Beoordeel openstaande ruimte-, middelen- en evenementaanvragen",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "Annuleren",
       "confirmDelete": "Weet u zeker dat u dit evenement wilt verwijderen?",
+      "confirmDeleteSeries": "Dit is een terugkerend evenement. Als u het verwijdert, wordt de hele reeks en alle bijbehorende voorvallen verwijderd. Weet u het zeker?",
       "delete": "Verwijderen",
+      "editEvent": "Evenement bewerken",
       "manageRegistrations": "Registraties beheren",
-      "noGroups": "Geen groepen gevonden.",
-      "editEvent": "Evenement bewerken"
+      "noGroups": "Geen groepen gevonden."
     },
     "calendarList": {
       "aboutParagraph1": "Met kalenders kunt u evenementen voor uw kerk organiseren en weergeven.",
@@ -203,6 +230,7 @@
       "importIcs": ".ics importeren",
       "newEvent": "Nieuw evenement",
       "noGroupsAdded": "Nog geen groepen toegevoegd",
+      "pendingApprovals": "{count} openstaande goedkeuringen",
       "print": "Afdrukken",
       "subtitle": "Beheer kalenderevenementen en -groepen"
     },
@@ -334,12 +362,12 @@
     "confirm": "Bevestigen",
     "copy": "Kopiëren",
     "createPerson": {
+      "confirmDuplicate": "Er is al een persoon '{{existingName}}' ({{existingEmail}}) met dit e-mailadres gevonden. Weet u zeker dat u '{{firstName}} {{lastName}}' wilt toevoegen?",
       "validate": {
         "firstName": "Voer een voornaam in.",
         "lastName": "Voer een achternaam in.",
         "validEmail": "Voer een geldig e-mailadres in."
-      },
-      "confirmDuplicate": "Er is al een persoon '{{existingName}}' ({{existingEmail}}) met dit e-mailadres gevonden. Weet u zeker dat u '{{firstName}} {{lastName}}' wilt toevoegen?"
+      }
     },
     "custom": "Aangepast",
     "delete": "Verwijderen",
@@ -360,8 +388,14 @@
     },
     "help": "Help",
     "iconPicker": {
+      "icons": {
+        "self_improvement": "Gebed"
+      },
+      "noResults": "Geen resultaten gevonden",
       "searchLabel": "Pictogrammen zoeken",
       "searchPlaceholder": "Typ om te zoeken (bijv. persoon, huis, kerk)...",
+      "showingDefault": "Toont {{count}} standaard pictogrammen",
+      "showingMatching": "Toont {{count}} overeenkomende pictogrammen",
       "title": "Pictogram selecteren",
       "tryDifferent": "Probeer een andere zoekterm"
     },
@@ -386,6 +420,7 @@
     "right": "Rechts",
     "save": "Opslaan",
     "saveChanges": "Wijzigingen opslaan",
+    "saveError": "Opslaan is mislukt. Probeer het opnieuw.",
     "saving": "Opslaan...",
     "search": "Zoeken",
     "searching": "Zoeken...",
@@ -490,6 +525,9 @@
       "workflows": "Workflows"
     }
   },
+  "controlPanel": {
+    "serverError": "Er is iets misgegaan. Probeer het opnieuw."
+  },
   "createPerson": {
     "addNewPerson": "Nieuwe persoon toevoegen",
     "email": "E-mail",
@@ -538,6 +576,7 @@
     "peopleSearch": {
       "ariaSearch": "Zoek mensen",
       "ariaSearchBox": "zoekvak",
+      "clearSearch": "Zoekopdracht wissen",
       "display": "Weergave",
       "noResults": "Geen mensen gevonden die voldoen aan je zoekcriteria.",
       "photo": "Foto",
@@ -590,6 +629,8 @@
       "invalidCode": "Ongeldige of verlopen code. Controleer en probeer het opnieuw.",
       "loading": "Laden...",
       "noChurchSelected": "Geen kerk geselecteerd. Log opnieuw in en selecteer een kerk.",
+      "planType": "Plannen tonen voor",
+      "planTypeNone": "Geen (alleen bladeren)",
       "requestedPermissions": "Gevraagde machtigingen:",
       "title": "Apparaat autoriseren",
       "verifyFailed": "Code verifiëren mislukt. Probeer het opnieuw."
@@ -609,6 +650,7 @@
       "lastYearCsv": "CSV vorig jaar",
       "lastYearPrint": "Afdrukken vorig jaar",
       "method": "Methode",
+      "viewBatch": "Batch bekijken",
       "willAppear": "Donaties verschijnen hier zodra ze zijn gedaan."
     }
   },
@@ -665,7 +707,8 @@
       "ofGoal": "van doel",
       "pledges": "Toezeggingen",
       "status": "Status",
-      "subtitle": "Toezeggingen en geefvoortgang voor deze campagne"
+      "subtitle": "Toezeggingen en geefvoortgang voor deze campagne",
+      "unknownPerson": "Onbekende persoon"
     },
     "campaignsPage": {
       "addCampaign": "Campagne toevoegen",
@@ -708,6 +751,7 @@
       "cash": "Contant",
       "check": "Cheque",
       "checkNum": "Cheque #",
+      "confirmMsg": "Weet u zeker dat u deze donatie permanent wilt verwijderen?",
       "date": "Datum",
       "fund": "Fonds",
       "inKind": "In natura",
@@ -733,6 +777,7 @@
       "errMsg": "Geen fonds gevonden. Maak eerst een fonds aan voordat u een donatie doet",
       "export": "Exporteren",
       "funds": "Fondsen",
+      "method": "Methode",
       "noDonMsg": "Er zijn geen donaties bijgehouden. Zodra donaties worden ingevoerd, verschijnen ze hier.",
       "pending": "In behandeling",
       "statements": "Giftenoverzichten",
@@ -786,7 +831,8 @@
       "subtitle": "Beheer donatiefondsen en volg giftencategorieën",
       "taxDeductible": "Fiscaal aftrekbaar",
       "taxStatus": "Belastingstatus",
-      "totalFunds": "Totaal fondsen"
+      "totalFunds": "Totaal fondsen",
+      "viewBatch": "Batch bekijken"
     },
     "period": {
       "monthly": "Maandelijks",
@@ -936,6 +982,7 @@
       "emailNotifMsg": "Wanneer het formulier wordt ingediend, krijgt u een melding per e-mail.",
       "formMem": "Formulierleden",
       "perm": "Machtiging",
+      "removeConfirm": "{name} verwijderen uit dit formulier?",
       "view": "Alleen weergeven"
     },
     "formPage": {
@@ -949,6 +996,7 @@
       "date": "Datum",
       "decNum": "Decimaal",
       "desc": "Beschrijving",
+      "fieldType": "Veldtype",
       "fund": "Fonds",
       "multiChoice": "Meerkeuze",
       "payment": "Betaling",
@@ -1001,7 +1049,8 @@
   "gallery": {
     "aspectRatio": "Beeldverhouding",
     "confirmDelete": "Verwijdering bevestigen",
-    "freeForm": "Vrije vorm"
+    "freeForm": "Vrije vorm",
+    "uploadError": "Afbeeldingsverwerking voltooid, maar uploaden is mislukt. De API is mogelijk niet beschikbaar in deze omgeving."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1071,9 @@
       "duplicateTooltip": "Dupliceer deze groep",
       "emailTooltip": "E-mail deze groep",
       "labels": "Labels",
+      "location": "Locatie",
       "meetingInfo": "Vergaderinformatie",
+      "meetingTime": "Bijeenkomsttijd",
       "moreLabels": "Meer labels",
       "parentPickup": "Ophalen door ouders",
       "printNametag": "Naamplaatje afdrukken",
@@ -1033,6 +1084,7 @@
     },
     "groupCalendar": {
       "addEvents": "Evenementen toevoegen",
+      "allowRsvps": "RSVP's toestaan",
       "bulkAddTitle": "Terugkerende evenementen toevoegen",
       "confirmDelete": "\"{title}\" en alle bijbehorende herhalingen verwijderen?",
       "datesPreview": "Er worden {count} bijeenkomsten aangemaakt. Deselecteer datums om ze over te slaan.",
@@ -1042,7 +1094,15 @@
       "lastMeeting": "Laatste bijeenkomst",
       "noDates": "Geen bijeenkomstdata in het geselecteerde bereik.",
       "noEvents": "Nog geen evenementen. Gebruik Evenementen toevoegen om de bijeenkomsten van deze groep in te plannen.",
+      "noResponses": "Nog geen reacties.",
       "oneTime": "Eenmalig",
+      "response_maybe": "Misschien",
+      "response_no": "Nee",
+      "response_yes": "Ja",
+      "rosterTitle": "RSVP-reacties",
+      "rsvpSummary": "{yes} ja · {maybe} misschien · {no} nee",
+      "rsvps": "RSVP's",
+      "rsvpsDisabled": "Uitgeschakeld",
       "skipHolidays": "Feestdagen overslaan",
       "skippedDates": "Overgeslagen datums",
       "until": "tot"
@@ -1064,15 +1124,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Foto toevoegen",
+      "ageGrade": "Leeftijd en klas",
       "archive": "Archiveren",
       "archiveAria": "Groep archiveren",
       "attTrack": "Aanwezigheid bijhouden",
       "attendance": "Aanwezigheid",
       "attendanceReminders": "Herinneringsmails aanwezigheid",
+      "capacity": "Capaciteit",
       "catName": "Categorienaam",
       "catNameMsg": "Voer een categorienaam in.",
       "changePhotoAria": "Groepsfoto wijzigen",
+      "checkinCapacity": "Incheckcapaciteit",
+      "checkinClosed": "Gesloten voor inchecken",
       "clickToAddPhoto": "Klik om foto toe te voegen",
+      "confidential": "Vertrouwelijke groep",
+      "confidentialHelp": "Verberg deze groep en de ledenlijst voor openbare pagina's, de groepenzoeker en niet-leden.",
       "confirmArchive": "Weet u zeker dat u deze groep wilt archiveren? Deze wordt verborgen uit de groepenlijst totdat deze wordt hersteld.",
       "confirmMsg": "Weet u zeker dat u deze groep permanent wilt verwijderen?",
       "enrollment": "Inschrijving",
@@ -1083,14 +1149,24 @@
       "groupNameMsg": "Voer een groepsnaam in.",
       "groupPhotoAlt": "groep",
       "groupSlugAria": "Groepsslug",
+      "guestCapacity": "Gastcapaciteit",
+      "maxAge": "Maximumleeftijd",
+      "maxGrade": "Maximale klas",
       "meetingLocation": "Vergaderlocatie",
       "meetingLocationAria": "Bijeenkomstlocatie",
       "meetingTime": "Vergadertijd",
       "meetingTimeAria": "Bijeenkomsttijd",
+      "minAge": "Minimumleeftijd",
+      "minGrade": "Minimale klas",
+      "minVolunteers": "Minimum aantal vrijwilligers",
+      "months": "Maanden",
+      "noLimit": "Geen limiet",
       "parPick": "Ophalen door ouders",
       "prinName": "Naamplaatje afdrukken",
       "publicRoster": "Ledenlijst op website tonen",
-      "slug": "Slug (sleutelnaam gebruikt voor URL's)"
+      "slug": "Slug (sleutelnaam gebruikt voor URL's)",
+      "volunteerRatio": "Kinderen per vrijwilliger",
+      "years": "Jaren"
     },
     "groupHealth": {
       "attendance": "Aanwezigheid",
@@ -1124,8 +1200,10 @@
       "member": "lid",
       "members": "leden",
       "messagePlaceholder": "Schrijf een bericht aan alle groepsleden…",
+      "messageSent": "Bericht verzonden.",
       "noMemDesc": "Voeg leden toe vanuit het paneel aan de rechterkant om deze groep op te bouwen.",
       "noMemTitle": "Nog geen leden",
+      "removeConfirm": "{name} verwijderen uit deze groep?",
       "removeLeaderAccess": "Leiderstoegang verwijderen",
       "role": "Rol",
       "send": "Verzenden",
@@ -1171,9 +1249,13 @@
       "groups": "Groepen",
       "labels": "Labels",
       "noGroupMsg": "Geen groepen gevonden. Maak een groep aan.",
+      "noMatchMsg": "Geen groepen komen overeen met uw zoekopdracht.",
+      "pendingRequestSingular": "{count} openstaand verzoek",
+      "pendingRequests": "{count} openstaande verzoeken",
       "pers": "1 persoon",
       "ppl": "Mensen",
       "restore": "Herstellen",
+      "searchPlaceholder": "Groepen zoeken...",
       "showArchived": "Gearchiveerde groepen tonen",
       "spPpl": " mensen",
       "subtitle": {
@@ -1186,6 +1268,11 @@
       "availableMem": "Beschikbare groepsleden",
       "noMem": "Geen groepsleden beschikbaar.",
       "unknown": "Onbekend"
+    },
+    "pendingRequestsPage": {
+      "empty": "Geen openstaande verzoeken.",
+      "subtitle": "Keur verzoeken van leden voor alle groepen goed of wijs ze af.",
+      "title": "Openstaande deelnameverzoeken"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Samenvoegveld in inhoud invoegen:",
@@ -1223,6 +1310,8 @@
       "eligibleSummary": "{eligibleCount} van {totalMembers} leden ontvangen deze sms.",
       "eligibleSummarySingular": "{eligibleCount} van {totalMembers} lid ontvangt deze sms.",
       "fallbackError": "Sms verzenden mislukt.",
+      "insufficientCredits": "Uw kerk heeft geen sms-tegoed meer voor deze factureringsperiode. Er zijn geen berichten verzonden. Upgrade of wacht tot uw tegoed wordt vernieuwd op",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Ontvangers laden...",
       "messageLabel": "Bericht",
       "noPhoneNotice": "{count} hebben geen telefoonnummer in het bestand.",
@@ -1268,6 +1357,11 @@
       "deleteConfirm": "Weet u zeker dat u deze sessie permanent wilt verwijderen?",
       "sesEdit": "Sessie bewerken"
     },
+    "sessionsDisabled": {
+      "description": "Schakel aanwezigheidsregistratie in om sessies en incheckmomenten voor deze groep vast te leggen.",
+      "enable": "Aanwezigheid inschakelen",
+      "title": "Aanwezigheidsregistratie is niet ingeschakeld"
+    },
     "tabs": {
       "mem": "Leden",
       "ses": "Sessies"
@@ -1309,8 +1403,8 @@
       "registrations": "Registraties",
       "roomsResources": "Ruimten en middelen",
       "sermons": "Preken",
-      "stripeImport": "Stripe-import",
       "site": "Site",
+      "stripeImport": "Stripe-import",
       "website": "Website"
     }
   },
@@ -1384,6 +1478,11 @@
     "sep": "September",
     "september": "September"
   },
+  "notFound": {
+    "backHome": "Terug naar dashboard",
+    "message": "De pagina die u zoekt bestaat niet of is mogelijk verplaatst.",
+    "title": "Pagina niet gevonden"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Aangepaste velden laden...",
@@ -1414,6 +1513,11 @@
       "clearSelection": "Selectie wissen",
       "createNewGroup": "Nieuwe groep aanmaken",
       "delete": "Verwijderen",
+      "deleteConfirm": "Weet u zeker dat u {count} geselecteerde personen wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "deleteError": "Kan geselecteerde personen niet verwijderen",
+      "deleteSelected": "Geselecteerde personen verwijderen",
+      "deleteSuccess": "{count} personen succesvol verwijderd",
+      "deleting": "Verwijderen...",
       "error": "Fout",
       "fieldPrompt": "Het veld bijwerken voor {count} geselecteerde personen.",
       "fieldSuccess": "{count} personen bijgewerkt.",
@@ -1428,8 +1532,8 @@
       "optedOutYes": "Afgemeld ja",
       "removeFromGroup": "Verwijderen uit groep",
       "selected": "Geselecteerd",
-      "workflowSuccess": "{count} personen toegevoegd aan de workflow.",
-      "setCampus": "Campus instellen"
+      "setCampus": "Campus instellen",
+      "workflowSuccess": "{count} personen toegevoegd aan de workflow."
     },
     "demographics": {
       "age": "Leeftijd",
@@ -1623,6 +1727,7 @@
     "personBanner": {
       "addToWorkflow": "Toevoegen aan workflow",
       "age": "Leeftijd",
+      "emailPerson": "E-mail deze persoon",
       "gender": "Geslacht",
       "hasLogin": "Heeft login",
       "maritalStatus": "Burgerlijke staat",
@@ -1632,6 +1737,7 @@
       "applyQuestion": "Wilt u dit toepassen op het hele",
       "cannotDeleteSelf": "U kunt uw eigen persoonsrecord niet verwijderen.",
       "confirmMsg": "Weet u zeker dat u dit persoonsrecord permanent wilt verwijderen?",
+      "customFields": "Aangepaste velden",
       "donorNumber": "Donornummer",
       "exten": "Toestel",
       "family": "gezin",
@@ -1668,6 +1774,8 @@
       "profile": "Profiel"
     },
     "personPage": {
+      "confidentialNotes": "Vertrouwelijke notities",
+      "confidentialNotesSuffix": " Vertrouwelijke notities",
       "notesSuffix": " Notities",
       "thisPerson": "deze persoon"
     },
@@ -1681,6 +1789,18 @@
       "mobile": "Mobiel",
       "persDet": "Persoonlijke gegevens",
       "work": "Werk"
+    },
+    "pickup": {
+      "add": "Toevoegen",
+      "confirmDelete": "Weet u zeker dat u deze ophaalpersoon wilt verwijderen?",
+      "name": "Naam",
+      "none": "Geen ophaalpersonen toegevoegd.",
+      "notAuthorized": "Niet geautoriseerd",
+      "orAddByName": "Of voeg iemand toe die niet in het systeem staat:",
+      "relationship": "Relatie",
+      "status": "Status",
+      "title": "Ophalen",
+      "trusted": "Vertrouwd"
     },
     "tabs": {
       "att": "Aanwezigheid",
@@ -1706,6 +1826,7 @@
     "female": "Vrouw",
     "firstName": "Voornaam",
     "gender": "Geslacht",
+    "grade": "Cijfer",
     "inactive": "Inactief",
     "lastName": "Achternaam",
     "line1": "Regel 1",
@@ -1723,6 +1844,7 @@
     "phone": "Telefoon",
     "prefix": "Voorvoegsel",
     "regularAttendee": "Regelmatige bezoeker",
+    "school": "School",
     "single": "Ongehuwd",
     "staff": "Medewerker",
     "state": "Provincie",
@@ -1906,6 +2028,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Positie toewijzen",
+      "confirmDelete": "Weet u zeker dat u deze toewijzing van de vrijwilliger wilt verwijderen?",
       "done": "Klaar",
       "editAssign": "Toewijzing bewerken",
       "noMem": "Geen groepsleden gevonden."
@@ -1964,6 +2087,7 @@
       "waitingForAuth": "Wachten op autorisatie..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Uw browser ondersteunt geen audioweergave.",
       "fallbackPreview": "Voorbeeld",
       "fallbackTitle": "Inhoudsvoorbeeld",
       "noContent": "Geen inhoud om weer te geven.",
@@ -2156,7 +2280,11 @@
       "ppl": "mensen",
       "prefTimeMismatch": "heeft voorkeur voor dienst om",
       "publish": "Plan publiceren",
+      "publishConfirm": "Dit plan publiceren zodat vrijwilligers hun toewijzingen kunnen zien?",
+      "publishConfirmLabel": "Publiceren",
+      "publishConfirmTitle": "Plan publiceren",
       "publishNotify": "Publiceren en mededelen",
+      "publishNotifyConfirm": "Dit plan publiceren en {count} vrijwilligers op de hoogte stellen van hun toewijzingen? Meldingen worden direct verzonden.",
       "timeCon": "Tijdconflict tussen",
       "timeCon2": "Tijdconflict om",
       "timesThisMonth": "keer deze maand, boven hun voorkeurslimiet van",
@@ -2177,6 +2305,7 @@
       "allowSelfSignup": "Zelfaanmelding toestaan",
       "catName": "Categorienaam",
       "catNameReq": "Categorienaam is verplicht.",
+      "confirmDelete": "Weet u zeker dat u deze positie wilt verwijderen? Iedereen die hier momenteel aan is toegewezen, wordt uitgepland.",
       "description": "Beschrijving",
       "descriptionHelper": "Getoond aan vrijwilligers bij het bekijken van aanmeldmogelijkheden",
       "nameReq": "Naam is verplicht",
@@ -2198,6 +2327,14 @@
       "length": "Lengte",
       "serviceOrder": "DIENSTORDE",
       "time": "Tijd"
+    },
+    "printPreview": {
+      "colorCoded": "Kleurgecodeerd",
+      "format": "Indeling:",
+      "materials": "Materialen:",
+      "script": "Script",
+      "serviceOrder": "Volgorde van de dienst",
+      "title": "Afdrukvoorbeeld"
     },
     "schedulingPreference": {
       "household": "Huishoudelijke planning",
@@ -2248,7 +2385,8 @@
       "title": "Dienenoverzicht"
     },
     "servingPage": {
-      "showAll": "Alle tonen"
+      "showAll": "Alle tonen",
+      "showAllHint": "Uw bedieningen zijn verborgen omdat u geen lid bent. Schakel hierboven \"Alles tonen\" in om ze te zien."
     },
     "songDialog": {
       "close": "Sluiten",
@@ -2289,6 +2427,7 @@
       "updateFromPlanHelp": "Vervangt de inhoud van dit sjabloon door de huidige volgorde van de dienst en posities van een plan."
     },
     "timeEdit": {
+      "confirmDelete": "Weet u zeker dat u deze tijd wilt verwijderen?",
       "disName": "Weergavenaam",
       "disNameReq": "Weergavenaam is verplicht.",
       "endReq": "Eindtijd is verplicht",
@@ -2341,7 +2480,9 @@
     "pairScreen": {
       "codeRequired": "Koppelingscode is verplicht",
       "invalidCode": "Ongeldige koppelingscode",
-      "pairingCode": "Koppelingscode"
+      "pairingCode": "Koppelingscode",
+      "planType": "Plannen tonen voor",
+      "planTypeNone": "Geen (alleen meldingen)"
     },
     "profilePage": {
       "accDel": "Account verwijderen",
@@ -2375,6 +2516,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Kortingscode toevoegen",
+      "addSelection": "Selectie toevoegen",
+      "addType": "Type toevoegen",
+      "amount": "Bedrag",
+      "attendeeTypes": "Deelnemertypen",
+      "balance": "Saldo",
+      "capacity": "Capaciteit",
+      "code": "Code",
+      "description": "Omschrijving",
+      "discountCodes": "Kortingscodes",
+      "discountType": "Type",
+      "endDate": "Einddatum",
+      "kind": "Soort",
+      "maxQuantity": "Max. aantal",
+      "maxUses": "Max. gebruik",
+      "method": "Methode",
+      "minMembers": "Min. leden",
+      "name": "Naam",
+      "noCoupons": "Nog geen kortingscodes.",
+      "noPayments": "Geen betalingen geregistreerd.",
+      "noSelections": "Nog geen selecties.",
+      "noTypes": "Nog geen deelnemertypen.",
+      "paid": "Betaald",
+      "paidTotal": "Betaald / Totaal",
+      "payments": "Betalingen",
+      "percent": "Percentage",
+      "price": "Prijs",
+      "promote": "Promoten",
+      "registrationDetails": "Registratiegegevens",
+      "removeConfirm": "Dit item verwijderen? Dit kan niet ongedaan worden gemaakt.",
+      "selections": "Selecties",
+      "sort": "Sorteren",
+      "startDate": "Startdatum",
+      "total": "Totaal",
+      "type": "Type",
+      "usesSoFar": "Gebruikt: {count}",
+      "value": "Waarde"
+    },
     "registrationDetailsPage": {
       "addAttendee": "Deelnemer toevoegen",
       "addAttendeeError": "Deelnemer registreren mislukt",
@@ -2405,6 +2585,7 @@
       "capacity": "Capaciteit",
       "capacityPlaceholder": "Laat leeg voor onbeperkt",
       "enableRegistration": "Registratie inschakelen",
+      "enableWaitlist": "Wachtlijst inschakelen",
       "none": "Geen",
       "registrationCloses": "Registratie sluit",
       "registrationOpens": "Registratie opent",
@@ -2449,19 +2630,7 @@
       "report": "Rapport"
     },
     "reportsPage": {
-      "attTrend": "Aanwezigheidstrend",
-      "attTrendDesc": "Bekijk aanwezigheidstrends in de tijd",
-      "bDays": "Verjaardagen",
-      "bDaysDesc": "Bekijk aankomende verjaardagen",
-      "dailyGroupAtt": "Dagelijkse groepsaanwezigheid",
-      "dailyGroupAttDesc": "Bekijk dagelijkse groepsaanwezigheid",
-      "donSum": "Donatiesamenvatting",
-      "donSumDesc": "Bekijk donatiesamenvatting",
-      "groupAtt": "Groepsaanwezigheid",
-      "groupAttDesc": "Bekijk groepsaanwezigheid",
-      "helpText": "Selecteer een rapport om gedetailleerde informatie te bekijken",
-      "reports": "Rapporten",
-      "subtitle": "Bekijk en download kerkrapporten"
+      "reports": "Rapporten"
     }
   },
   "sermons": {
@@ -2704,7 +2873,11 @@
       "church": "Kerk",
       "churchName": "Kerknaam",
       "churches": "Kerken",
+      "churchesSubtitle": "Zoek en beheer alle kerken",
+      "impersonateSubtitle": "Log in als een andere gebruiker voor ondersteuning",
       "impersonateUser": "Gebruiker nabootsen",
+      "jobs": "Achtergrondtaken",
+      "jobsSubtitle": "Laatste uitvoering en mislukkingen van geplande taken",
       "location": "Locatie",
       "noChurch": "Geen kerken gevonden. Zoek op een andere naam.",
       "noUsers": "Geen gebruikers gevonden. Zoek op een andere naam of e-mail.",
@@ -2717,13 +2890,20 @@
       "searchResults": "Zoekresultaten",
       "servAdmin": "Serverbeheer",
       "serverHealth": "Serverstatus",
+      "serverHealthSubtitle": "Controleer de status van backend-services",
       "subtitle": "Beheer serverbrede instellingen en kerken",
       "translationLookups": "Vertalingzoekopdrachten",
+      "translationSubtitle": "Vertaalde taalteksten opzoeken",
+      "usageSubtitle": "Bekijk trends in servergebruik",
       "usageTrends": "Gebruikstrends",
+      "users": "Gebruikers",
+      "usersSubtitle": "Zoek een gebruikersaccount op voor ondersteuning",
       "valueNotes": "Notities over hoe waarden worden berekend"
     },
     "churchesTab": {
+      "archiveConfirm": "{name} archiveren? Leden verliezen de toegang totdat deze wordt hersteld.",
       "churchNameSearchAria": "Zoeken op kerknaam",
+      "restoreConfirm": "Toegang herstellen voor {name}?",
       "searchChurchesAria": "Zoek kerken"
     },
     "impersonateTab": {
@@ -2734,6 +2914,18 @@
       "searchAria": "Gebruikers zoeken om na te bootsen",
       "searchLabel": "E-mailadres gebruiker",
       "searchPlaceholder": "Zoeken op aanmeldingse-mail"
+    },
+    "jobsTab": {
+      "duration": "Duur",
+      "failed": "Mislukt",
+      "job": "Taak",
+      "lastRun": "Laatste uitvoering",
+      "loadError": "Kan taakuitvoeringen niet laden.",
+      "noRuns": "Nog geen taakuitvoeringen geregistreerd.",
+      "recentFailures": "Recente mislukkingen",
+      "subtitle": "Laatste uitvoering van elke geplande taak. Uitvoeringen worden geregistreerd door de timerhandlers en 30 dagen bewaard.",
+      "success": "Geslaagd",
+      "title": "Achtergrondtaken"
     },
     "reportPage": {
       "adminOnly": "Alleen beheerder",
@@ -2760,6 +2952,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Vertaalstatistieken doorzoeken"
+    },
+    "usersTab": {
+      "access": "Toegang",
+      "description": "Doorzoek alle gebruikersaccounts op naam of e-mail om hun kerken en inlogactiviteit te zien.",
+      "email": "E-mail",
+      "lastLogin": "Laatst ingelogd",
+      "member": "Lid",
+      "name": "Naam",
+      "noChurches": "Deze gebruiker is aan geen enkele kerk gekoppeld.",
+      "searchAria": "Gebruikers zoeken",
+      "searchLabel": "Naam of e-mail",
+      "staff": "Medewerker",
+      "subDomain": "Subdomein",
+      "title": "Gebruiker opzoeken"
     }
   },
   "settings": {
@@ -2848,25 +3054,71 @@
     "auditLogPage": {
       "action": "Actie",
       "allCategories": "Alle categorieën",
+      "allModules": "Alle modules",
       "category": "Categorie",
       "categoryDonation": "Donaties",
       "categoryForm": "Formulieren",
       "categoryGroup": "Groepen",
       "categoryLogin": "Inloggen",
-      "categoryPermission": "Machtigingen",
-      "categoryPerson": "Mensen",
+      "categoryPermission": "Rechten",
+      "categoryPerson": "Personen",
       "categorySettings": "Instellingen",
+      "changes": "Wijzigingen",
       "date": "Datum",
+      "deletedRecord": "Verwijderd record",
       "details": "Details",
       "endDate": "Einddatum",
       "entity": "Entiteit",
       "exportCsv": "CSV exporteren",
+      "field": "Veld",
       "ipAddress": "IP-adres",
-      "noEntries": "Geen audit log-vermeldingen gevonden",
+      "module": "Module",
+      "moduleAttendance": "Aanwezigheid",
+      "moduleContent": "Inhoud",
+      "moduleDoing": "Dienen",
+      "moduleGiving": "Geven",
+      "moduleLessons": "Lessen",
+      "moduleMembership": "Lidmaatschap",
+      "moduleMessaging": "Berichten",
+      "newValue": "Nieuwe waarde",
+      "noDetails": "Geen wijzigingsdetails beschikbaar",
+      "noEntries": "Geen auditlog-items gevonden",
+      "noPrevious": "Geen eerdere invoer gevonden; toont alleen ingediende waarden.",
+      "oldValue": "Oude waarde",
       "search": "Zoeken",
-      "startDate": "Begindatum",
-      "subtitle": "Volg wijzigingen en activiteiten in je kerk",
-      "title": "Audit log"
+      "startDate": "Startdatum",
+      "subtitle": "Volg wijzigingen en activiteiten in uw kerk",
+      "title": "Auditlogboek",
+      "truncated": "Details zijn afgekapt en deze invoer kan niet ongedaan worden gemaakt."
+    },
+    "batches": {
+      "action": "Actie",
+      "actions": "Acties",
+      "created": "Aangemaakt",
+      "creator": "Aangemaakt door",
+      "date": "Datum",
+      "entityId": "Entiteits-ID",
+      "entityType": "Entiteitstype",
+      "failed": "Mislukt ({count})",
+      "items": "Items",
+      "label": "Label",
+      "noEntries": "Geen batches gevonden",
+      "noResults": "Geen records in deze batch",
+      "restored": "{count} record(s) hersteld.",
+      "resultsTitle": "Batchresultaten",
+      "skipped": "Overgeslagen ({count})",
+      "skippedHelp": "Records die zijn gewijzigd sinds de batch is aangemaakt, zijn overgeslagen om te voorkomen dat nieuwere wijzigingen worden overschreven.",
+      "source": "Bron",
+      "status": "Status",
+      "subtitle": "Beoordeel en maak bulkimporten en acties ongedaan",
+      "title": "Batches",
+      "undo": "Ongedaan maken",
+      "undoConfirm": "Batch \"{label}\" ongedaan maken? Hiermee worden betrokken records hersteld naar hun status van vóór de batch.",
+      "undoError": "Het ongedaan maken is mislukt.",
+      "undoTitle": "Batch ongedaan maken",
+      "undoWarning": "Records die zijn gewijzigd sinds deze batch is aangemaakt, worden overgeslagen. Dit kan niet ongedaan worden gemaakt.",
+      "undoing": "Ongedaan maken…",
+      "viewResults": "Resultaten bekijken"
     },
     "campusEdit": {
       "address2": "Adresregel 2",
@@ -2887,10 +3139,18 @@
       "none": "Er zijn nog geen campussen toegevoegd.",
       "subtitle": "Beheer de fysieke locaties van uw kerk"
     },
+    "checkinSettingsEdit": {
+      "block": "Blokkeren (inchecken voorkomen)",
+      "help": "Kies hoe inchecken reageert wanneer een ruimte de vrijwilliger-kindratio overschrijdt of onder het minimumaantal vrijwilligers zakt.",
+      "ratioEnforcement": "Handhaving vrijwilligersratio",
+      "title": "Inchecken",
+      "warn": "Waarschuwen (toestaan met bevestiging)"
+    },
     "church": {
       "subdomainHelper": "Het unieke webadres van uw kerk"
     },
     "churchSettingsEdit": {
+      "firstDayOfWeek": "Eerste dag van de week",
       "address1": "Adresregel 1",
       "address2": "Adresregel 2",
       "addressLine1Aria": "Adresregel 1",
@@ -2909,6 +3169,21 @@
       "subdomainAria": "Subdomein",
       "textingSubtitle": "Configureer sms-provider",
       "textingTitle": "Sms"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Weet u zeker dat u dit aangepaste veld wilt verwijderen? De opgeslagen waarden worden ook verwijderd.",
+      "fieldType": "Veldtype",
+      "name": "Naam",
+      "validate": {
+        "name": "Voer een veldnaam in."
+      }
+    },
+    "customFields": {
+      "addField": "Veld toevoegen",
+      "customFields": "Aangepaste velden",
+      "field": "Aangepast veld",
+      "none": "Er zijn nog geen aangepaste velden toegevoegd.",
+      "subtitle": "Definieer aangepaste velden om bij te houden voor personen"
     },
     "developer": {
       "actions": "Acties",
@@ -2955,7 +3230,9 @@
       "domMsg4": ". Het kan tot 5 minuten duren.",
       "domMsgConnect": "verbinden",
       "domain": "Domein",
-      "domains": "Domeinen"
+      "domains": "Domeinen",
+      "mainWebsite": "Hoofdwebsite",
+      "site": "Website"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Inhoud is verplicht.",
@@ -3036,25 +3313,46 @@
       "webhookKeyHelper": "Webhook-ondertekeningsgeheim uit het Kingdom Funding-configuratiescherm. Vereist voor statusupdates van transacties.",
       "webhookUrlCopied": "Webhook-URL gekopieerd naar klembord"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "Dag",
+      "disabled": "Uitgeschakeld",
+      "enabled": "Ingeschakeld",
+      "help": "Op deze datum wordt elk jaar iedereen met een klas automatisch bevorderd naar de volgende klas (12e klas wordt Afgestudeerd). Laat uitgeschakeld om automatische bevordering uit te schakelen.",
+      "month": "Maand",
+      "title": "Klaspromotie"
+    },
     "landing": {
       "campusesCount": "{count} locaties",
       "campusesOne": "1 locatie",
       "campusesSubtitle": "Fysieke locaties",
       "configuration": "Configuratie",
+      "customFieldsCount": "{count} aangepaste velden",
+      "customFieldsSubtitle": "Nog geen aangepaste velden",
       "developerSubtitle": "API-sleutels, webhooks, verbonden apps",
       "domainsCount": "{count} verbonden",
       "domainsNone": "Geen aangepaste domeinen",
       "domainsOne": "1 verbonden",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "Automatische promotie uitgeschakeld",
+      "gradePromotionOn": "Bevordert elk jaar op {date}",
       "notConfigured": "Niet geconfigureerd",
       "notSet": "Niet ingesteld"
     },
     "manageChurch": {
       "auditLog": "Audit log",
+      "batches": "Batches",
       "imEx": "Importeren/Exporteren",
       "noData": "Geen kerkgegevens beschikbaar",
       "subtitle": "Configureer kerkinstellingen en voorkeuren",
       "title": "Kerk beheren"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 jaar en ouder",
+      "age16": "16 jaar en ouder",
+      "age18": "18 jaar en ouder",
+      "helpText": "Blokkeert nieuwe privéberichtgesprekken wanneer een van beide personen jonger is dan deze leeftijd, op basis van hun geboortedatum. Personen onder deze leeftijd blijven zichtbaar in de gids. Bestaande gesprekken worden niet beïnvloed.",
+      "label": "Minimumleeftijd voor privéberichten",
+      "off": "Uit (geen beperking)"
     },
     "mobileAppSettings": {
       "addTab": "Tabblad toevoegen",
@@ -3108,6 +3406,34 @@
     "rolesPage": {
       "subtitle": "Beheer rollen en machtigingen"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Aanmelden is mislukt. Probeer het opnieuw.",
+      "byosHelper": "Nieuwe uploads worden opgeslagen in uw eigen account en downloads worden hiervandaan geleverd. Reeds geüploade bestanden blijven waar ze zijn.",
+      "churchAppsFree": "ChurchApps (Gratis)",
+      "connect": "Account koppelen",
+      "connectFirst": "Koppel uw account voordat u opslaat.",
+      "connected": "Account gekoppeld",
+      "connecting": "Wachten op aanmelding...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Bestanden worden opgeslagen op uw MinistryStuff-opslagabonnement, automatisch gekoppeld aan deze kerk. Beheer uw abonnement op",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Pop-up geblokkeerd. Sta pop-ups toe en probeer het opnieuw.",
+      "provider": "Provider",
+      "reconnect": "Opnieuw koppelen",
+      "s3AccessKey": "Access Key ID",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (leeg laten voor AWS)",
+      "s3Helper": "De bucket moet openbare leestoegang en CORS PUT-verzoeken vanaf deze site toestaan. Werkt met AWS S3, Cloudflare R2 en Backblaze B2.",
+      "s3PublicBase": "Basis-URL (openbaar)",
+      "s3Region": "Regio",
+      "s3Required": "Bucket en openbare basis-URL zijn verplicht.",
+      "s3SecretKey": "Secret Access Key",
+      "saveError": "Fout bij het opslaan van opslaginstellingen.",
+      "sessionExpired": "De aanmeldsessie is verlopen. Probeer het opnieuw.",
+      "sessionFailed": "Kan de aanmeldsessie niet starten.",
+      "title": "Bestandsopslag",
+      "usage": "{used} GB van {quota} GB gebruikt."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "Deze link wordt door gebruikers gebruikt om contact op te nemen met de kerk",
       "link": "Link",
@@ -3121,13 +3447,17 @@
       "clearstreamHelper": "Maak een API-sleutel aan in je",
       "clearstreamHelperLink": "Clearstream-accountinstellingen",
       "clearstreamHelperSuffix": "onder API-sleutels.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Uw MinistryStuff sms-abonnement is actief met {} tegoed resterend in deze cyclus.",
+      "ministryStuffHelper": "Geen API-sleutel nodig. Sms-tegoed komt van uw MinistryStuff-abonnement, automatisch gekoppeld aan deze kerk. Beheer uw abonnement op",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Geen",
       "provider": "Provider",
       "saveError": "Fout bij het opslaan van sms-instellingen.",
+      "textInChurch": "Tekst in de kerk",
       "textInChurchHelper": "Bezoek",
       "textInChurchHelperLink": "Text In Church-ondersteuning",
-      "textInChurchHelperSuffix": "om ontwikkelaars-API-toegang aan te vragen. Eenmaal goedgekeurd, maak een API-sleutel aan in je Accountinstellingen > Ontwikkelaars-API-sectie.",
-      "textInChurch": "Tekst in de kerk"
+      "textInChurchHelperSuffix": "om ontwikkelaars-API-toegang aan te vragen. Eenmaal goedgekeurd, maak een API-sleutel aan in je Accountinstellingen > Ontwikkelaars-API-sectie."
     },
     "userAdd": {
       "addTo": "Toevoegen aan ",
@@ -3364,27 +3694,37 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "editContent": "Edit content",
+      "draft": "Concept",
+      "navHint": "Bezoekers kunnen uw berichten lezen op /blog. Voeg een navigatielink toe op het scherm Pagina's zodat ze deze kunnen vinden:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Gepubliceerd",
+      "scheduled": "Gepland",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "Bekijken op site"
     },
     "blogEdit": {
+      "author": "Auteur",
       "category": "Category",
+      "content": "Inhoud",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "Dat webadres wordt al door een ander bericht gebruikt.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Voorbeeld",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Wordt automatisch ingevuld op basis van de titel totdat u het bewerkt. Adres:",
+      "slugLabel": "Webadres",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4056,7 @@
       "uploadFiles": "Bestanden uploaden"
     },
     "filesManager": {
+      "externalStorage": "Opgeslagen in uw gekoppelde account",
       "files": "Bestanden",
       "getStarted": "Begin met het uploaden van uw eerste bestand",
       "name": "Naam",
@@ -3936,6 +4277,7 @@
     },
     "paletteEdit": {
       "accent": "Accent",
+      "accentDesc": "Hoofdaccent — knoppen en accenten",
       "applyPaletteAria": "Voorgestelde kleurenpalet toepassen",
       "applySuggested": "Klik op een palet om het direct toe te passen",
       "baseColors": "Basiskleuren",
@@ -3943,20 +4285,29 @@
       "colorValues": "Kleurwaarden",
       "dark": "Donker",
       "darkAccent": "Donker accent",
+      "darkAccentDesc": "Diep accent — koppen en links",
+      "darkDesc": "Donkerste tint — hoofdtekst",
       "error": "Fout",
+      "errorDesc": "Fouten en destructieve acties",
       "headerSubtitle": "Pas het kleurenschema van je website aan. Voor mobiele app-, ledenportaal- en kioskkleuren ga je naar Instellingen > App-thema.",
       "headerTitle": "Kleurenpalet",
       "light": "Licht",
       "lightAccent": "Licht accent",
+      "lightAccentDesc": "Zacht accent — subtiele achtergronden",
+      "lightDesc": "Lichtste tint — sectieachtergronden",
       "palette": "Palet",
       "previewWorkTogether": "Bekijk hoe je kleuren samenwerken",
       "primary": "Primair",
+      "primaryDesc": "Primaire knoppen en links",
       "savePalette": "Palet opslaan",
       "secondary": "Secundair",
+      "secondaryDesc": "Secundaire knoppen en accenten",
       "semanticColors": "Semantische kleuren",
       "success": "Succes",
+      "successDesc": "Succesberichten en bevestigingen",
       "suggestedPalettes": "Voorgestelde paletten",
-      "warning": "Waarschuwing"
+      "warning": "Waarschuwing",
+      "warningDesc": "Waarschuwingen"
     },
     "pickColors": {
       "background": "Achtergrond",
@@ -4144,6 +4495,10 @@
       "showCampus": "Toon locatie",
       "title": "Titel"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Hoofdwebsite",
+      "manageSites": "Websites beheren…"
+    },
     "siteTemplates": {
       "back": "Terug",
       "create": "Site aanmaken",
@@ -4212,6 +4567,15 @@
       "textColor": "Tekstkleur",
       "title": "Website-widgets",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Website toevoegen",
+      "deleteConfirm": "Deze website verwijderen? De pagina's, navigatie en vormgeving worden permanent verwijderd. De aangepaste domeinen worden opnieuw toegewezen aan de hoofdwebsite.",
+      "empty": "Nog geen extra websites.",
+      "name": "Naam",
+      "subDomain": "Subdomein",
+      "subDomainHint": "Alleen kleine letters en cijfers. Wordt {subdomain}.b1.church",
+      "title": "Websites"
     },
     "socialIconsEdit": {
       "alignment": "Uitlijning",
@@ -4331,11 +4695,13 @@
       "columns": "Kolommen",
       "empty": "(leeg)",
       "firstRowHeader": "Eerste rij is kop",
+      "markdownHelper": "Schakelt Markdown in cellen in voor vet, links en andere opmaak.",
       "medium": "Medium",
       "no": "Nee",
       "rows": "Rijen",
       "size": "Grootte",
       "sizeSmall": "Klein",
+      "textFormatting": "Tekstopmaak",
       "yes": "Ja"
     },
     "templates": {
@@ -4455,7 +4821,9 @@
       "importPrompt": "Wilt u de tekst van PraiseCharts importeren?",
       "keysTabsAria": "Toonsoort-tabbladen",
       "noKeysAvailable": "Geen toonsoorten beschikbaar. Voeg een toonsoort toe om te beginnen.",
-      "title": "Toonsoorten"
+      "title": "Toonsoorten",
+      "audioTracks": "Audiosporen",
+      "uploadAudio": "Audio uploaden"
     },
     "library": {
       "empty": {
@@ -4534,7 +4902,13 @@
       "songs": "Liederen",
       "subtitle": "Beheer uw muziekbibliotheek"
     },
-    "title": "Liederen"
+    "title": "Liederen",
+    "audio": {
+      "deleteConfirm": "Weet u zeker dat u dit audiobestand wilt verwijderen?",
+      "tooLarge": "Het bestand is te groot. De maximale grootte is 25 MB.",
+      "unsupportedFormat": "Niet-ondersteund audioformaat. Upload een MP3-, M4A- of AAC-bestand.",
+      "upload": "Audio uploaden"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto door",
@@ -4812,6 +5186,7 @@
     },
     "workflowEdit": {
       "active": "Actief",
+      "confirmDelete": "Weet u zeker dat u deze workflow wilt verwijderen?",
       "editWorkflow": "Workflow bewerken",
       "inactive": "Inactief",
       "name": "Naam"
@@ -4842,6 +5217,7 @@
       "title": "Routering"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Weet u zeker dat u deze stap wilt verwijderen?",
       "defaultAssignee": "Standaard toegewezen persoon",
       "dueDays": "Vervalt over (dagen)",
       "dueDaysHelp": "Stelt een vervaldatum in wanneer een kaart deze stap binnenkomt",
