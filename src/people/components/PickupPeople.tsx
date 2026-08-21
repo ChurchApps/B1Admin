@@ -97,7 +97,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
   ));
 
   const addForm = adding && (
-    <Box sx={{ mt: 2, p: 2, backgroundColor: "grey.50", borderRadius: 1 }}>
+    <Box sx={{ mt: 2, p: 2, backgroundColor: "action.hover", borderRadius: 1 }}>
       <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddPerson} showCreatePersonOnNotFound={true} />
       <Typography variant="body2" color="text.secondary" sx={{ my: 1 }}>{Locale.label("people.pickup.orAddByName")}</Typography>
       <Stack spacing={2}>
