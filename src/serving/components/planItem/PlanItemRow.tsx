@@ -19,6 +19,7 @@ interface Props {
   onDuplicateClick?: () => void;
   onCollapseClick?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
+  positionLabel?: { text: string; assigned: boolean };
 }
 
 /**
@@ -34,7 +35,8 @@ export const PlanItemRow: React.FC<Props> = ({
   onEditClick,
   onDuplicateClick,
   onCollapseClick,
-  mediaLookup
+  mediaLookup,
+  positionLabel
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
@@ -148,6 +150,15 @@ export const PlanItemRow: React.FC<Props> = ({
           </Box>
         )}
       </Box>
+      {positionLabel?.text && (
+        <Box
+          component="span"
+          className="planItemPosition"
+          sx={{ flexShrink: 0, ml: 1.5, fontSize: "0.85rem", textAlign: "right", color: positionLabel.assigned ? "text.secondary" : "text.disabled", fontStyle: positionLabel.assigned ? "normal" : "italic" }}
+        >
+          {positionLabel.text}
+        </Box>
+      )}
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
         {!readOnly && (
           <>

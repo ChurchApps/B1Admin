@@ -33,6 +33,7 @@ interface Props {
   mediaLookup?: Record<string, ProviderMediaInfo>;
   /** Set on the first item of a run of actions expanded from one section, enabling the collapse control. */
   collapseItems?: PlanItemInterface[];
+  positionLabels?: Record<string, { text: string; assigned: boolean }>;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -157,7 +158,7 @@ export const PlanItem = React.memo((props: Props) => {
       const childStartTime = cumulativeTime;
       const childExcluded = c.itemType !== "header" && isChildExcluded(c.id || "");
       const childPlanItem = (
-        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} />
+        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} />
       );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
@@ -193,6 +194,7 @@ export const PlanItem = React.memo((props: Props) => {
       startTime={props.startTime}
       serviceStartTime={props.serviceTime?.startTime}
       readOnly={props.readOnly}
+      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       wrapRow={props.readOnly ? undefined : (row) => (
@@ -222,6 +224,7 @@ export const PlanItem = React.memo((props: Props) => {
       onDuplicateClick={handleDuplicate}
       onCollapseClick={showCollapse ? handleCollapseClick : undefined}
       mediaLookup={props.mediaLookup}
+      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
     />
   );
 

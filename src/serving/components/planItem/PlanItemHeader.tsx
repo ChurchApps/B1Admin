@@ -10,6 +10,7 @@ interface Props {
   startTime?: number;
   serviceStartTime?: Date;
   readOnly?: boolean;
+  positionLabel?: { text: string; assigned: boolean };
   onAddClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onEditClick: () => void;
   children?: React.ReactNode;
@@ -23,6 +24,7 @@ export const PlanItemHeader: React.FC<Props> = ({
   startTime = 0,
   serviceStartTime,
   readOnly,
+  positionLabel,
   onAddClick,
   onEditClick,
   children,
@@ -44,6 +46,15 @@ export const PlanItemHeader: React.FC<Props> = ({
         </Box>
       )}
       <Box component="span" sx={{ flex: 1 }}>{planItem.label}</Box>
+      {positionLabel?.text && (
+        <Box
+          component="span"
+          className="planItemPosition"
+          sx={{ flexShrink: 0, ml: 1.5, fontSize: "0.85rem", textAlign: "right", color: positionLabel.assigned ? "text.secondary" : "text.disabled", fontStyle: positionLabel.assigned ? "normal" : "italic" }}
+        >
+          {positionLabel.text}
+        </Box>
+      )}
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
         {!readOnly && (
           <>
