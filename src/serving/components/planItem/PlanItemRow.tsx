@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
+import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
@@ -17,6 +17,7 @@ interface Props {
   onLabelClick?: () => void;
   onEditClick: () => void;
   onDuplicateClick?: () => void;
+  onCollapseClick?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
 }
 
@@ -32,6 +33,7 @@ export const PlanItemRow: React.FC<Props> = ({
   onLabelClick,
   onEditClick,
   onDuplicateClick,
+  onCollapseClick,
   mediaLookup
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
@@ -149,6 +151,20 @@ export const PlanItemRow: React.FC<Props> = ({
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
         {!readOnly && (
           <>
+            {onCollapseClick && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton rowControl"
+                data-testid="collapse-to-section-button"
+                onClick={(e: React.MouseEvent) => { e.stopPropagation(); onCollapseClick(); }}
+                aria-label={Locale.label("plans.planItem.collapseToSection")}
+                title={Locale.label("plans.planItem.collapseToSection")}
+                sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
+              >
+                <UnfoldLessIcon />
+              </Box>
+            )}
             <Box
               component="button"
               type="button"
