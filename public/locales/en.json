@@ -2196,8 +2196,10 @@
       "enterSearch": "Enter search term",
       "includeInServices": "Include in services",
       "minutes": "Minutes",
+      "noPosition": "None",
       "planItemDescriptionAria": "Plan item description",
       "planItemNameAria": "Plan item name",
+      "position": "Position",
       "searchBoxAria": "searchBox",
       "seconds": "Seconds"
     },

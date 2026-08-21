@@ -1,5 +1,6 @@
 import { type InstructionItem, type Instructions, type IProvider } from "@churchapps/content-providers";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, type PersonInterface } from "@churchapps/apphelper";
+import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 
 /** Gets instructions from a provider based on its capabilities, proxying through the API when auth is required. */
@@ -327,4 +328,22 @@ export function filterFeedByPlanItems(feed: FeedVenueInterface | null, planItems
     .filter((s: FeedSectionInterface) => sectionInPlan(s) || !!s.actions?.length);
 
   return { ...feed, sections };
+}
+
+export interface PositionLabel {
+  text: string;
+  assigned: boolean;
+}
+
+/** Maps each position id to the assigned volunteer name(s), falling back to the position name when nobody is assigned. */
+export function buildPositionLabels(positions: PositionInterface[], assignments: AssignmentInterface[], people: PersonInterface[]): Record<string, PositionLabel> {
+  const result: Record<string, PositionLabel> = {};
+  (positions || []).forEach((p) => {
+    const names = (assignments || [])
+      .filter((a) => a.positionId === p.id)
+      .map((a) => (people || []).find((person) => person.id === a.personId)?.name?.display)
+      .filter(Boolean);
+    if (p.id) result[p.id] = names.length > 0 ? { text: names.join(", "), assigned: true } : { text: p.name || "", assigned: false };
+  });
+  return result;
 }

@@ -8,7 +8,7 @@ import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterfac
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
-import { getProviderInstructions, filterFeedByPlanItems } from "../components/planItemUtils";
+import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } from "../components/planItemUtils";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -230,6 +230,8 @@ export const PrintPlan = () => {
     return result;
   };
 
+  const positionLabels = React.useMemo(() => buildPositionLabels(positions, assignments, people), [positions, assignments, people]);
+
   // Per-column accumulators are mutated as the recursive renderer walks the tree.
   // Single-column fallback uses index 0; multi-column uses one entry per service time.
   const renderRows = () => {
@@ -261,6 +263,9 @@ export const PrintPlan = () => {
               {timeCells}
               <td style={Styles.tableCell}>
                 <b>{pi.label}:</b> {pi.description}
+                {plan?.showVolunteerNames && pi.positionId && positionLabels[pi.positionId]?.text && (
+                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{positionLabels[pi.positionId].text}</span>
+                )}
               </td>
               <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
             </tr>
