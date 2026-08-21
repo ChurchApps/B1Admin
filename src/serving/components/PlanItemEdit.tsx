@@ -12,6 +12,8 @@ interface Props {
   onDone: () => void;
 }
 
+const keyLabel = (shortDescription?: string, keySignature?: string) => (keySignature ? `${shortDescription || ""} (${keySignature})` : shortDescription || "");
+
 export const PlanItemEdit = (props: Props) => {
   const [planItem, setPlanItem] = React.useState<PlanItemInterface | null>(null);
   const [searchText, setSearchText] = React.useState("");
@@ -158,7 +160,7 @@ export const PlanItemEdit = (props: Props) => {
       ...planItem,
       relatedId: song.arrangementKeyId,
       label: song.title,
-      description: `${song.artist} - ${song.shortDescription || ""} (${song.arrangementKeySignature || ""})`,
+      description: `${song.artist} - ${keyLabel(song.shortDescription, song.arrangementKeySignature)}`,
       seconds: song.seconds,
       thumbnailUrl: song.thumbnail
     };
@@ -188,7 +190,7 @@ export const PlanItemEdit = (props: Props) => {
                 {keys.map((k: any) => (
                   <Chip
                     key={k.arrangementKeyId}
-                    label={`${k.shortDescription} (${k.arrangementKeySignature})`}
+                    label={keyLabel(k.shortDescription, k.arrangementKeySignature)}
                     size="small"
                     clickable
                     onClick={() => selectSong(k)}
