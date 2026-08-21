@@ -40,6 +40,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
 
   return {
     itemType,
+    actionType: item.actionType,
     relatedId: item.relatedId,
     label: item.label || "",
     description: item.content,

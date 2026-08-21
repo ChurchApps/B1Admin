@@ -45,7 +45,7 @@ export const PlanItem = React.memo((props: Props) => {
   const open = Boolean(anchorEl);
 
   // Use the expand hook for section expansion functionality
-  const { handleExpandToActions, canCollapse, handleCollapseToSection } = usePlanItemExpand({
+  const { handleExpandToActions, canCollapse, handleCollapseToSection, handleSaveDescription, handleRestoreOriginal } = usePlanItemExpand({
     planItem: props.planItem,
     associatedProviderId: props.associatedProviderId,
     associatedContentPath: props.associatedContentPath,
@@ -223,6 +223,8 @@ export const PlanItem = React.memo((props: Props) => {
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       onDuplicateClick={handleDuplicate}
       onCollapseClick={showCollapse ? handleCollapseClick : undefined}
+      onSaveDescription={handleSaveDescription}
+      onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
       positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
     />

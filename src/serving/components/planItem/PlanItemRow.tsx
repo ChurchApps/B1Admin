@@ -1,12 +1,16 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon } from "@mui/icons-material";
+import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
+import { InlineEditableText } from "./InlineEditableText";
 import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds } from "../planItemUtils";
+
+// Script lines (spoken/read text), as opposed to slide/media action types.
+const TEXT_ACTION_TYPES = new Set(["say", "do", "note"]);
 
 interface Props {
   planItem: PlanItemInterface;
@@ -18,6 +22,8 @@ interface Props {
   onEditClick: () => void;
   onDuplicateClick?: () => void;
   onCollapseClick?: () => void;
+  onSaveDescription?: (text: string) => void;
+  onRestoreOriginal?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
   positionLabel?: { text: string; assigned: boolean };
 }
@@ -35,6 +41,8 @@ export const PlanItemRow: React.FC<Props> = ({
   onEditClick,
   onDuplicateClick,
   onCollapseClick,
+  onSaveDescription,
+  onRestoreOriginal,
   mediaLookup,
   positionLabel
 }) => {
@@ -47,11 +55,15 @@ export const PlanItemRow: React.FC<Props> = ({
   const storedSeconds = planItem.seconds ?? 0;
   const estimatedSeconds = storedSeconds === 0 ? estimateSeconds(planItem, mediaLookup) : 0;
   const isEstimate = estimatedSeconds > 0;
+  // Script lines edit inline; the row itself no longer opens the read-only dialog.
+  const isTextAction = !readOnly && !!onSaveDescription && TEXT_ACTION_TYPES.has(planItem.actionType || "");
+  const canRestore = isTextAction && !!onRestoreOriginal && !!planItem.providerId && !!planItem.providerPath && !!planItem.providerContentPath;
+  const rowClick = isTextAction ? undefined : onLabelClick;
   return (
     <Box
-      className={`planItem${onLabelClick ? " clickableRow" : ""}`}
-      sx={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default", opacity: excluded ? 0.5 : 1 }}
-      onClick={onLabelClick}
+      className={`planItem${rowClick ? " clickableRow" : ""}`}
+      sx={{ display: "flex", alignItems: "center", cursor: rowClick ? "pointer" : "default", opacity: excluded ? 0.5 : 1 }}
+      onClick={rowClick}
     >
       <div className="timeRailCell">
         <span className="timeRailLabel" style={excluded ? { color: "var(--text-muted)" } : undefined}>{railLabel}</span>
@@ -136,7 +148,16 @@ export const PlanItemRow: React.FC<Props> = ({
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <div>{planItem.label}</div>
-        {planItem.description && (
+        {isTextAction ? (
+          <Box className="planItemDescription" sx={{ clear: "both", width: "100%", pt: 0.5, fontSize: "0.9rem" }}>
+            <InlineEditableText
+              value={planItem.description || ""}
+              onSave={(text) => onSaveDescription?.(text)}
+              placeholder={Locale.label("plans.planItem.clickToAddText") || "Click to add text"}
+              data-testid="planItem-inline-text"
+            />
+          </Box>
+        ) : planItem.description && (
           <Box
             className="planItemDescription"
             sx={{
@@ -162,6 +183,20 @@ export const PlanItemRow: React.FC<Props> = ({
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
         {!readOnly && (
           <>
+            {canRestore && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton rowControl"
+                data-testid="restore-original-button"
+                onClick={(e: React.MouseEvent) => { e.stopPropagation(); onRestoreOriginal?.(); }}
+                aria-label={Locale.label("plans.planItem.restoreOriginal") || "Restore original"}
+                title={Locale.label("plans.planItem.restoreOriginal") || "Restore original"}
+                sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
+              >
+                <RestartAltIcon />
+              </Box>
+            )}
             {onCollapseClick && (
               <Box
                 component="button"
