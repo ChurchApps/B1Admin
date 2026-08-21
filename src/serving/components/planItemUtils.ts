@@ -42,6 +42,35 @@ export function findByRelatedId(items: InstructionItem[], relatedId: string, par
   return null;
 }
 
+/** "Expand to Actions" stamps each generated action with `${sectionPath}.${index}`, so the
+ * section's own content path is the action's path minus that trailing index. */
+export function getExpandedSectionPath(item: PlanItemInterface): string | null {
+  if (!isPresentationType(item.itemType) || !item.providerId || !item.providerPath) return null;
+  return /^(.+)\.\d+$/.exec(item.providerContentPath || "")?.[1] || null;
+}
+
+/** Contiguous runs of action items expanded from the same section, keyed by the run's first item id. */
+export function findExpandedRuns(items: PlanItemInterface[]): Map<string, PlanItemInterface[]> {
+  const runs = new Map<string, PlanItemInterface[]>();
+  let run: PlanItemInterface[] = [];
+  let key: string | null = null;
+  const flush = () => {
+    if (run.length > 1 && run[0].id) runs.set(run[0].id, run);
+    run = [];
+  };
+  items.forEach((item) => {
+    const sectionPath = getExpandedSectionPath(item);
+    const itemKey = sectionPath ? `${item.providerId}|${item.providerPath}|${sectionPath}` : null;
+    if (itemKey !== key) {
+      flush();
+      key = itemKey;
+    }
+    if (itemKey) run.push(item);
+  });
+  flush();
+  return runs;
+}
+
 /** Handles undefined/null children arrays to avoid NaN. */
 export function getNextChildSort(children: PlanItemInterface[] | undefined | null): number {
   return (children?.length ?? 0) + 1;
