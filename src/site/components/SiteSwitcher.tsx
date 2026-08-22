@@ -21,8 +21,24 @@ export function SiteSwitcher(props: Props) {
   };
 
   return (
-    <FormControl size="small" sx={{ minWidth: 180, backgroundColor: "#FFF", borderRadius: 1 }}>
-      <Select value={props.siteId} onChange={handleChange} displayEmpty data-testid="site-switcher" aria-label={Locale.label("site.siteSwitcher.mainWebsite", "Main Website")}>
+    <FormControl size="small" sx={{ minWidth: 180 }}>
+      <Select 
+        value={props.siteId} 
+        onChange={handleChange} 
+        displayEmpty 
+        data-testid="site-switcher" 
+        aria-label={Locale.label("site.siteSwitcher.mainWebsite", "Main Website")}
+        sx={{
+          backgroundColor: "#FFF",
+          color: "var(--c1d1, #11439B)",
+          fontWeight: 600,
+          borderRadius: "7px",
+          boxShadow: "0 1px 4px rgba(0,0,0,.22)",
+          "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+          "& .MuiSvgIcon-root": { color: "var(--c1d1, #11439B)" },
+          "&:hover": { backgroundColor: "#F0F5FD" }
+        }}
+      >
         <MenuItem value="">{Locale.label("site.siteSwitcher.mainWebsite", "Main Website")}</MenuItem>
         {props.sites.map((s) => (<MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>))}
         {canManage && <Divider />}
