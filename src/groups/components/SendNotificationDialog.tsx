@@ -157,7 +157,7 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
           error={!imageUrlValid}
           helperText={!imageUrlValid ? "Use an https URL or leave this blank." : " "}
         />
-        <Paper variant="outlined" sx={{ p: 2, borderRadius: 1.5, bgcolor: "grey.50" }}>
+        <Paper variant="outlined" sx={{ p: 2, borderRadius: 1.5, bgcolor: (theme) => theme.palette.mode === "dark" ? "background.default" : "grey.50" }}>
           <Stack direction="row" spacing={1.5} alignItems="flex-start">
             <NotificationsActiveIcon sx={{ color: "primary.main", mt: 0.25 }} />
             <Box sx={{ minWidth: 0 }}>
