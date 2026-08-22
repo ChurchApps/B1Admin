@@ -71,14 +71,14 @@ export const Question: React.FC<Props> = memo((props) => {
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         py: 1.5,
         px: 2,
-        backgroundColor: "grey.50",
+        backgroundColor: theme.palette.mode === "dark" ? "grey.900" : "grey.50",
         borderRadius: 1,
         border: "1px solid",
-        borderColor: "grey.200"
-      }}>
+        borderColor: theme.palette.mode === "dark" ? "grey.800" : "grey.200"
+      })}>
       <Typography
         variant="subtitle2"
         sx={{
