@@ -54,7 +54,7 @@ export const PlanPage = () => {
     );
   }
 
-  const breadcrumbItems: BreadcrumbItem[] = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" }];
+  const breadcrumbItems: BreadcrumbItem[] = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving/plans" }];
 
   if (planType) {
     breadcrumbItems.push({ label: planType.name || "", path: `/serving/planTypes/${planType.id}` });
