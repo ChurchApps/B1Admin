@@ -451,9 +451,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/helpers@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@churchapps/helpers@npm:2.1.0"
+"@churchapps/helpers@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "@churchapps/helpers@npm:2.1.3"
   dependencies:
     dayjs: "npm:^1.11.20"
   peerDependencies:
@@ -461,7 +461,7 @@ __metadata:
   peerDependenciesMeta:
     rrule:
       optional: true
-  checksum: 10c0/6908d13cc7f191c7b8842f96c2a1eb92487888ab9bfa6d72a463f0a58d44d4f08033a8b9d3d60cfda0880b652eb192bfa7bc988ba60e6e66ef5bda18ca8c5fab
+  checksum: 10c0/60f56ad94130dbc47b188daf697c147249cfa2558aa1dcc6c3d285d783027231d0ea7857cae5a781eb771c332650888e6a47f059f2e0fce622f559a1a6f742a6
   languageName: node
   linkType: hard
 
@@ -2899,7 +2899,7 @@ __metadata:
     "@babel/core": "npm:^8.0.1"
     "@churchapps/apphelper": "npm:^1.1.4"
     "@churchapps/content-providers": "npm:^0.9.1"
-    "@churchapps/helpers": "npm:^2.1.0"
+    "@churchapps/helpers": "npm:^2.1.3"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"
