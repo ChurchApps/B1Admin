@@ -43,7 +43,7 @@ export const Search: React.FC<Props> = (props) => {
             }}
             data-testid="select-person-button"
             aria-label={Locale.label("components.search.ariaSelectPerson")}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", color: "text.primary" }}>
               <Icon sx={{ marginRight: "5px" }}>person</Icon>
               {props.buttonText}
             </Box>
