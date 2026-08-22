@@ -145,6 +145,7 @@ export interface PlanItemInterface {
   parentId?: string;
   sort?: number;
   itemType?: string;
+  actionType?: string;
   relatedId?: string;
   label?: string;
   description?: string;
