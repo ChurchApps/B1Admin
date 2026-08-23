@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
-import { Button, Icon, Snackbar, Stack, Menu, MenuItem } from "@mui/material";
+import { Button, Icon, Snackbar, Stack, Menu, MenuItem, Box } from "@mui/material";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { EventHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -137,14 +137,27 @@ export function CuratedEventCalendar(props: Props) {
           />
         )}
       </Stack>
-      <Calendar
-        localizer={localizer}
-        events={expandedEvents}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        onSelectEvent={handleEventClick}
-      />
+      <Box sx={{
+        "& .rbc-btn-group button": {
+          color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
+        },
+        "& .rbc-btn-group button.rbc-active": {
+          color: (theme) => theme.palette.mode === "dark" ? "#000" : "inherit",
+          backgroundColor: (theme) => theme.palette.mode === "dark" ? "#e0e0e0" : undefined
+        },
+        "& .rbc-toolbar-label": {
+          color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
+        }
+      }}>
+        <Calendar
+          localizer={localizer}
+          events={expandedEvents}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+          onSelectEvent={handleEventClick}
+        />
+      </Box>
       {open && props.mode === "edit" && (
         <EditCalendarEventModal onDone={handleDone} churchId={props.churchId || ""} curatedCalendarId={props.curatedCalendarId || ""} firstDayOfWeek={firstDayOfWeek} />
       )}
