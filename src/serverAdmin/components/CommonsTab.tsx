@@ -28,8 +28,7 @@ interface CommonsAsset {
 
 interface CommonsReport {
   id: string;
-  contentType: "song" | "asset";
-  contentId: string;
+  assetId?: string;
   contentText?: string;
   reporterRole?: string;
   details?: string;
@@ -145,7 +144,6 @@ export const CommonsTab = () => {
           <Table size="small" id="commonsReportsTable">
             <TableHead>
               <TableRow>
-                <TableCell>{Locale.label("serverAdmin.commonsTab.contentType")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.commonsTab.contentText")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.commonsTab.reporterRole")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.commonsTab.date")}</TableCell>
@@ -156,8 +154,17 @@ export const CommonsTab = () => {
             <TableBody>
               {[...openReports, ...resolvedReports].map((r) => (
                 <TableRow key={r.id}>
-                  <TableCell>{r.contentType}</TableCell>
-                  <TableCell>{r.contentText || "-"}</TableCell>
+                  <TableCell>
+                    {r.contentText || "-"}
+                    {r.assetId && (
+                      <>
+                        <br />
+                        <Typography variant="caption" color="text.secondary">
+                          {r.assetId}
+                        </Typography>
+                      </>
+                    )}
+                  </TableCell>
                   <TableCell>{r.reporterRole || "-"}</TableCell>
                   <TableCell>{DateHelper.prettyDate(DateHelper.toDate(r.createdAt))}</TableCell>
                   <TableCell>
