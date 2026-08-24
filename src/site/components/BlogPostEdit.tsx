@@ -23,6 +23,8 @@ export function BlogPostEdit(props: Props) {
   const [slugTouched, setSlugTouched] = useState<boolean>(!!props.post.id);
   const [published, setPublished] = useState<boolean>(!!props.post.publishDate);
   const [showGallery, setShowGallery] = useState<boolean>(false);
+  const [showContentGallery, setShowContentGallery] = useState<boolean>(false);
+  const [editorKey, setEditorKey] = useState<number>(0);
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [showAuthorSearch, setShowAuthorSearch] = useState<boolean>(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -72,8 +74,10 @@ export function BlogPostEdit(props: Props) {
     setIsSubmitting(true);
     try {
       const slug = kebab(post.slug || "");
+      const cleanedContent = (post.content || "").replace(/\\!\[/g, "![").replace(/\[!\s*([iI]mage)\s*\]\(([^)]+)\)(\{[^}]+\})?/g, "![$1]($2)").replace(/!\s*\[([^\]]*)\]\(([^)]+)\)(\{[^}]+\})?/g, "![$1]($2)");
       const toSave: PostInterface = {
         ...post,
+        content: cleanedContent,
         slug,
         publishDate: published ? (post.publishDate || new Date()) : null
       };
@@ -103,13 +107,18 @@ export function BlogPostEdit(props: Props) {
           <Grid size={{ xs: 12 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 0.5 }}>
               <Typography variant="body2">{Locale.label("site.blogEdit.content")}</Typography>
-              <Button size="small" onClick={() => setShowPreview((v) => !v)} data-testid="blog-preview-toggle">
-                {showPreview ? Locale.label("common.edit") : Locale.label("site.blogEdit.preview")}
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <Button size="small" onClick={() => setShowContentGallery(true)} startIcon={<Icon>image</Icon>}>
+                  {Locale.label("site.blogEdit.insertImage", "Insert Image")}
+                </Button>
+                <Button size="small" onClick={() => setShowPreview((v) => !v)} data-testid="blog-preview-toggle">
+                  {showPreview ? Locale.label("common.edit") : Locale.label("site.blogEdit.preview")}
+                </Button>
+              </Stack>
             </Stack>
-            {showPreview
-              ? <Box sx={{ maxHeight: 300, overflowY: "auto", border: "1px solid", borderColor: "grey.300", borderRadius: 1, p: 2 }}><MarkdownPreviewLight value={post.content || ""} /></Box>
-              : <MarkdownEditor value={post.content || ""} onChange={(val) => setPost((p) => ({ ...p, content: val }))} style={{ maxHeight: 300, overflowY: "scroll" }} />}
+            z{showPreview
+              ? <Box sx={{ maxHeight: 300, overflowY: "auto", border: "1px solid", borderColor: "grey.300", borderRadius: 1, p: 2 }}><MarkdownPreviewLight value={(post.content || "").replace(/\\!\[/g, "![").replace(/\[!\s*([iI]mage)\s*\]\(([^)]+)\)(\{[^}]+\})?/g, "![$1]($2)").replace(/!\s*\[([^\]]*)\]\(([^)]+)\)(\{[^}]+\})?/g, "![$1]($2)")} /></Box>
+              : <MarkdownEditor key={editorKey} value={post.content || ""} onChange={(val) => setPost((p) => ({ ...p, content: val }))} style={{ maxHeight: 300, overflowY: "scroll" }} />}
           </Grid>
           <Grid size={{ xs: 6 }}>
             <Autocomplete freeSolo options={props.categories || []} value={post.category || ""} onInputChange={(_, val) => setPost((p) => ({ ...p, category: val }))} renderInput={(params) => <TextField {...params} size="small" label={Locale.label("site.blogEdit.category")} />} />
@@ -148,6 +157,7 @@ export function BlogPostEdit(props: Props) {
         </Grid>
       </FormCard>
       {showGallery && <GalleryModal aspectRatio={16 / 9} onClose={() => setShowGallery(false)} onSelect={(img) => { setPost((p) => ({ ...p, photoUrl: img })); setShowGallery(false); }} />}
+      {showContentGallery && <GalleryModal aspectRatio={0} onClose={() => setShowContentGallery(false)} onSelect={(img) => { setPost((p) => ({ ...p, content: (p.content || "") + `\n\n![Image](${img})\n\n` })); setEditorKey((k) => k + 1); setShowContentGallery(false); }} />}
     </Dialog>
   );
 }
