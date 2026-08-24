@@ -30,6 +30,8 @@ export const UserAdd = (props: Props) => {
   const [showInviteDialog, setShowInviteDialog] = useState<boolean>(false);
   const [inviteEmail, setInviteEmail] = useState<string>("");
   const [invitePersonName, setInvitePersonName] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [savedPersonId, setSavedPersonId] = useState<string>("");
 
   const showInviteOrFinish = (emailAddr: string, personName: string) => {
     if (!emailAddr) {
@@ -73,6 +75,8 @@ export const UserAdd = (props: Props) => {
       return;
     }
     if (!selectedPerson) return;
+    // Already committed by the auto-save in handleAssociatePerson - a second post would duplicate the role member.
+    if (selectedPerson.id && selectedPerson.id === savedPersonId) return;
     const { first, last } = selectedPerson.name;
     const userEmail = showEmailField ? email : (selectedPerson.contactInfo.email || "");
     const user = await createUserAndToGroup(first || "", last || "", userEmail);
@@ -92,9 +96,15 @@ export const UserAdd = (props: Props) => {
   };
 
   const handleSave = async () => {
-    if (editMode) saveExistingUser();
-    else if (showNameFields) saveNewUser();
-    else saveUserFromPerson();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      if (editMode) await saveExistingUser();
+      else if (showNameFields) await saveNewUser();
+      else await saveUserFromPerson();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const validate = () => {
@@ -145,12 +155,17 @@ export const UserAdd = (props: Props) => {
   };
 
   const handleAssociatePerson = async (person: PersonInterface) => {
+    if (isSubmitting) return;
     setSelectedPerson(person);
 
     if (!person.contactInfo.email) {
       setShowEmailField(true);
-    } else {
-      // Auto-save when person with email is selected
+      return;
+    }
+
+    // Auto-save when person with email is selected
+    setIsSubmitting(true);
+    try {
       const { first, last } = person.name;
       const userEmail = person.contactInfo.email;
       const user = await createUserAndToGroup(first || "", last || "", userEmail);
@@ -160,7 +175,10 @@ export const UserAdd = (props: Props) => {
         setErrors([Locale.label("settings.userAdd.errDiff")]);
         return;
       }
+      setSavedPersonId(person.id || "");
       showInviteOrFinish(userEmail, first || "");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -212,8 +230,24 @@ export const UserAdd = (props: Props) => {
     <TextField type="email" fullWidth name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} placeholder={Locale.label("placeholders.user.email")} data-testid="email-input" aria-label={Locale.label("settings.userAdd.emailAddressAria")} />
   );
 
+  const inviteDialog = showInviteDialog && (
+    <SendInviteDialog
+      open={showInviteDialog}
+      personName={invitePersonName}
+      personEmail={inviteEmail}
+      contextName={props.role.name || ""}
+      onClose={() => { setShowInviteDialog(false); props.updatedFunction(); }}
+    />
+  );
+
+  // The auto-save already added the role member, so close the form rather than leave a live
+  // Save button that would post a duplicate for the same person.
+  if (savedPersonId) {
+    return inviteDialog || null;
+  }
+
   return (
-    <FormCard icon="lock" title={Locale.label("settings.userAdd.addTo") + props.role.name} onSave={handleSave} onCancel={props.updatedFunction}>
+    <FormCard icon="lock" title={Locale.label("settings.userAdd.addTo") + props.role.name} onSave={handleSave} onCancel={props.updatedFunction} isSubmitting={isSubmitting} disabled={isSubmitting}>
       <ErrorMessages errors={errors} />
       {(!showNameFields || editMode) && (
         <AssociatePerson
@@ -228,15 +262,7 @@ export const UserAdd = (props: Props) => {
       {nameField}
       {emailField}
       {message}
-      {showInviteDialog && (
-        <SendInviteDialog
-          open={showInviteDialog}
-          personName={invitePersonName}
-          personEmail={inviteEmail}
-          contextName={props.role.name || ""}
-          onClose={() => { setShowInviteDialog(false); props.updatedFunction(); }}
-        />
-      )}
+      {inviteDialog}
     </FormCard>
   );
 };

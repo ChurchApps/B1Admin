@@ -3,6 +3,7 @@ import { EnvironmentHelper as WebsiteEnvironmentHelper } from "@churchapps/apphe
 
 export class EnvironmentHelper {
   private static LessonsApi = "";
+  private static CommonsApi = "";
   static B1Url = "";
   static ChurchAppsUrl = "";
 
@@ -18,6 +19,9 @@ export class EnvironmentHelper {
       default: EnvironmentHelper.initDev(); break;
     }
     EnvironmentHelper.Common.init(stage || "");
+    // Commons module isn't in @churchapps/helpers' CommonEnvironmentHelper yet — derive its
+    // base from MembershipApi's, which every stage already resolves correctly.
+    EnvironmentHelper.CommonsApi = CommonEnvironmentHelper.MembershipApi.replace(/\/membership$/, "/commons");
 
     // Inlined from apphelper/website EnvironmentHelper.init — that helper crashes due to circular import.
     ApiHelper.apiConfigs = [
@@ -29,7 +33,8 @@ export class EnvironmentHelper {
       { keyName: "DoingApi", url: CommonEnvironmentHelper.DoingApi, jwt: "", permissions: [] },
       { keyName: "ReportingApi", url: CommonEnvironmentHelper.ReportingApi, jwt: "", permissions: [] },
       { keyName: "LessonsApi", url: EnvironmentHelper.LessonsApi, jwt: "", permissions: [] },
-      { keyName: "AskApi", url: CommonEnvironmentHelper.AskApi, jwt: "", permissions: [] }
+      { keyName: "AskApi", url: CommonEnvironmentHelper.AskApi, jwt: "", permissions: [] },
+      { keyName: "CommonsApi", url: EnvironmentHelper.CommonsApi, jwt: "", permissions: [] }
     ];
     WebsiteEnvironmentHelper.Common = CommonEnvironmentHelper;
     WebsiteEnvironmentHelper.hasInit = true;
