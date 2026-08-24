@@ -1,16 +1,19 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Box, Container, Typography } from "@mui/material";
-import { GridOn as GridOnIcon, Assignment as AssignmentIcon } from "@mui/icons-material";
+import { GridOn as GridOnIcon, Assignment as AssignmentIcon, RssFeed as RssFeedIcon } from "@mui/icons-material";
 import { Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../../helpers";
 import { PlanList } from "../components/PlanList";
 import { PlanTypeGroups } from "../components/PlanTypeGroups";
+import { SignageFeedDialog } from "../components/SignageFeedDialog";
 import { Breadcrumbs, type BreadcrumbItem, HeaderSecondaryButton } from "../../components/ui";
 
 export const PlanTypePage = () => {
   const params = useParams();
+  const [showSignageFeed, setShowSignageFeed] = useState(false);
 
   const planType = useQuery<PlanTypeInterface>({
     queryKey: [`/planTypes/${params.id}`, "DoingApi"],
@@ -58,7 +61,11 @@ export const PlanTypePage = () => {
         >
           {Locale.label("plans.planTypePage.overview")}
         </HeaderSecondaryButton>
+        <HeaderSecondaryButton startIcon={<RssFeedIcon />} onClick={() => setShowSignageFeed(true)} data-testid="signage-feed-button">
+          {Locale.label("plans.signageFeed.button") || "Digital Signage"}
+        </HeaderSecondaryButton>
       </PageHeader>
+      {showSignageFeed && <SignageFeedDialog planTypeId={planType.data.id!} onClose={() => setShowSignageFeed(false)} />}
 
       <Box sx={{ p: 3 }}>
         <PlanList key="plans" ministry={ministry.data} planTypeId={planType.data.id} />

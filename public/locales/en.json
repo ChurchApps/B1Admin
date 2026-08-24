@@ -2319,6 +2319,14 @@
       "volNotif": "All volunteers notified.",
       "volReq": "Volunteer Requests: "
     },
+    "signageFeed": {
+      "button": "Digital Signage",
+      "title": "Digital Signage Feed",
+      "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
+      "feedUrl": "Feed Url",
+      "copy": "Copy",
+      "instructions": "Instructions for connecting to SignPresenter"
+    },
     "plansPage": {
       "addMinistry": "Add Ministry",
       "editMinistry": "Edit Ministry",
