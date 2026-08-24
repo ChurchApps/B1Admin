@@ -15,9 +15,9 @@ interface CommonsAsset {
   publisherUserId?: string;
   publisherChurchId?: string;
   status: string;
-  contentPath?: string;
-  thumbPath?: string;
-  sizeBytes?: number;
+  path?: string;
+  files?: string;
+  fileUrls?: Record<string, string>;
   contentHash?: string;
   version?: number;
   downloadCount?: number;
@@ -37,14 +37,6 @@ interface CommonsReport {
   status: "open" | "resolved";
   createdAt: string;
 }
-
-const formatBytes = (bytes?: number) => {
-  if (!bytes && bytes !== 0) return "-";
-  if (bytes === 0) return "0 B";
-  const units = ["B", "KB", "MB", "GB"];
-  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
-  return `${(bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
-};
 
 export const CommonsTab = () => {
   const [pendingAssets, setPendingAssets] = React.useState<CommonsAsset[]>([]);
@@ -98,7 +90,6 @@ export const CommonsTab = () => {
                 <TableCell>{Locale.label("serverAdmin.commonsTab.type")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.commonsTab.publisher")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.commonsTab.license")}</TableCell>
-                <TableCell>{Locale.label("serverAdmin.commonsTab.size")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.commonsTab.submitted")}</TableCell>
                 <TableCell align="right">{Locale.label("serverAdmin.adminPage.act")}</TableCell>
               </TableRow>
@@ -110,7 +101,6 @@ export const CommonsTab = () => {
                   <TableCell>{a.assetType}</TableCell>
                   <TableCell>{a.publisherChurchId || a.publisherUserId || "-"}</TableCell>
                   <TableCell>{a.license || "-"}</TableCell>
-                  <TableCell>{formatBytes(a.sizeBytes)}</TableCell>
                   <TableCell>{DateHelper.prettyDate(DateHelper.toDate(a.createdAt))}</TableCell>
                   <TableCell align="right">
                     <Chip
