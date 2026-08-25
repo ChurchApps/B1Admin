@@ -1533,7 +1533,11 @@
       "deleteConfirm": "Are you sure you want to delete {count} selected people? This action cannot be undone.",
       "deleting": "Deleting...",
       "deleteSuccess": "{count} people deleted successfully",
-      "deleteError": "Unable to delete selected people"
+      "deleteError": "Unable to delete selected people",
+      "customFieldTitle": "Set Custom Field",
+      "customField": "Custom Field",
+      "value": "Value",
+      "noCustomFields": "No Yes/No custom fields have been set up for people."
     },
     "demographics": {
       "age": "Age",
