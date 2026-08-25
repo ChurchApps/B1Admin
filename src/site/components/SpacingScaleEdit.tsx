@@ -112,7 +112,7 @@ export function SpacingScaleEdit(props: Props) {
           </Grid>
         </CardWithHeader>
 
-        <Box sx={{ mt: 3 }}>
+        <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "var(--border-main)", borderTop: "none" }}>
           <CardWithHeader title={Locale.label("site.spacingScaleEdit.practicalExamples")} icon={<VisibilityIcon />}>
             <Box sx={{ p: 3, backgroundColor: "var(--bg-sub)", borderRadius: 2 }}>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -125,12 +125,12 @@ export function SpacingScaleEdit(props: Props) {
                 borderRadius: 2,
                 p: `${spacing.sm}px`,
                 mb: 4,
-                backgroundColor: "#fff",
+                backgroundColor: "background.paper",
                 display: "flex",
                 gap: `${spacing.xs}px`
               }}>
                 {["A", "B", "C", "D", "E"].map((letter) => (
-                  <Box key={letter} sx={{ width: 32, height: 32, backgroundColor: "grey.200", borderRadius: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: 600 }}>{letter}</Box>
+                  <Box key={letter} sx={{ width: 32, height: 32, backgroundColor: "action.selected", borderRadius: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: 600 }}>{letter}</Box>
                 ))}
               </Box>
               <Typography variant="caption" color="text.secondary" sx={{ mt: -3, mb: 4, display: "block" }}>
@@ -143,7 +143,7 @@ export function SpacingScaleEdit(props: Props) {
                 borderRadius: 2,
                 p: `${spacing.md}px`,
                 mb: 4,
-                backgroundColor: "#fff"
+                backgroundColor: "background.paper"
               }}>
                 <Typography variant="h6" sx={{ mb: `${spacing.sm}px` }}>{Locale.label("site.spacingScaleEdit.cardTitle")}</Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: `${spacing.md}px` }}>
@@ -151,7 +151,7 @@ export function SpacingScaleEdit(props: Props) {
                 </Typography>
                 <Stack direction="row" spacing={`${spacing.sm}px`}>
                   <Box sx={{ px: 2, py: 1, backgroundColor: "primary.main", color: "#fff", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonOne")}</Box>
-                  <Box sx={{ px: 2, py: 1, backgroundColor: "grey.300", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonTwo")}</Box>
+                  <Box sx={{ px: 2, py: 1, backgroundColor: "action.disabledBackground", color: "text.primary", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonTwo")}</Box>
                 </Stack>
               </Box>
 
