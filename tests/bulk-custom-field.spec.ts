@@ -6,8 +6,8 @@ import { confirmDelete } from "./helpers/fixtures";
 
 // Issue #1015: select people in the People list, then Actions > Set Custom Field
 // to set a Yes/No custom field on all of them at once.
-const FIELD_NAME = "Zz Playwright Newsletter";
 const SUFFIX = Date.now().toString();
+const FIELD_NAME = `Zz Newsletter ${SUFFIX}`;
 const LAST_NAME = `BulkCustom${SUFFIX}`;
 const PEOPLE = [
   { first: "Priscilla", last: LAST_NAME, email: `bulk-custom-a-${SUFFIX}@example.com` },
@@ -27,9 +27,10 @@ test.describe.serial("Bulk custom field (#1015)", () => {
 
   test.afterAll(async () => {
     await page.goto("/settings/custom-fields").catch(() => { });
-    const row = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: FIELD_NAME }).first();
-    if (await row.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await row.click();
+    // Also sweeps fields left behind by earlier retried runs.
+    const rows = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: /Zz (Playwright )?Newsletter/ });
+    while (await rows.first().isVisible({ timeout: 3000 }).catch(() => false)) {
+      await rows.first().click();
       await page.locator("#customFieldBox").getByRole("button", { name: "Delete" }).click().catch(() => { });
       await confirmDelete(page).catch(() => { });
       await page.locator("#customFieldBox").waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
@@ -75,7 +76,7 @@ test.describe.serial("Bulk custom field (#1015)", () => {
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible({ timeout: 10000 });
     await dialog.getByTestId("bulk-custom-field-select").click();
-    await page.getByRole("option", { name: FIELD_NAME }).click();
+    await page.getByRole("option", { name: FIELD_NAME, exact: true }).click();
     await dialog.getByTestId("bulk-custom-value-select").click();
     await page.getByRole("option", { name: "Yes", exact: true }).click();
 
