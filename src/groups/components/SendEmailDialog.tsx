@@ -96,7 +96,11 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     previewHtml = previewHtml.replace(/\{\{displayName\}\}/g, "John Smith");
     previewHtml = previewHtml.replace(/\{\{email\}\}/g, "john@example.com");
     previewHtml = previewHtml.replace(/\{\{churchName\}\}/g, churchName);
-    return previewHtml;
+    
+    const isDarkTheme = document.body.classList.contains("dark-theme");
+    const styleInjection = isDarkTheme ? "<style>body { color: white; font-family: sans-serif; }</style>" : "<style>body { font-family: sans-serif; }</style>";
+    
+    return previewHtml + styleInjection;
   };
 
   const getPreviewSubject = () => {
