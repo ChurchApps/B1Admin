@@ -23,6 +23,7 @@ export interface FormInterface {
   thankYouMessage?: string;
   displayMode?: string;
   autoCreatePerson?: boolean;
+  groupId?: string;
   followUpSubject?: string;
   followUpBody?: string;
 }
@@ -36,7 +37,7 @@ export function FormEdit(props: Props) {
   const isMounted = useMountedState();
   const queryClient = useQueryClient();
 
-  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { name: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, followUpSubject: "", followUpBody: "" } });
+  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { name: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "" } });
 
   const e = formState.errors as any;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "accessStartTime", "accessEndTime"]);
@@ -44,6 +45,11 @@ export function FormEdit(props: Props) {
 
   const watchedId = watch("id");
   const autoCreatePerson = watch("autoCreatePerson");
+
+  const groupsQuery = useQuery<{ id: string; name: string }[]>({
+    queryKey: ["/groups", "MembershipApi"],
+    enabled: !!autoCreatePerson
+  });
 
   const formQuery = useQuery<FormInterface>({
     queryKey: ["/forms/" + props.formId, "MembershipApi"],
@@ -63,6 +69,7 @@ export function FormEdit(props: Props) {
         restricted: data.restricted ?? false,
         displayMode: data.displayMode ?? "standard",
         autoCreatePerson: data.autoCreatePerson ?? false,
+        groupId: data.groupId ?? "",
         followUpSubject: data.followUpSubject ?? "",
         followUpBody: data.followUpBody ?? ""
       });
@@ -90,6 +97,7 @@ export function FormEdit(props: Props) {
 
   const onValid = (values: AnyRecord) => {
     const f = { ...values };
+    f.groupId = f.autoCreatePerson ? (f.groupId || null) : null;
     if (!showDates) { f.accessEndTime = null; f.accessStartTime = null; } else {
       f.accessStartTime = f.accessStartTime ? DateHelper.toDate(f.accessStartTime) : null;
       f.accessEndTime = f.accessEndTime ? DateHelper.toDate(f.accessEndTime) : null;
@@ -168,6 +176,16 @@ export function FormEdit(props: Props) {
       )} />
       {autoCreatePerson && (
         <>
+          <FormControl fullWidth>
+            <InputLabel id="formGroup">{Locale.label("forms.formEdit.addToGroup")}</InputLabel>
+            <Controller name="groupId" control={control} render={({ field }) => (
+              <Select {...field} value={(groupsQuery.data || []).some((g) => g.id === field.value) ? field.value : ""} labelId="formGroup" label={Locale.label("forms.formEdit.addToGroup")} data-testid="form-group-select">
+                <MenuItem value="">{Locale.label("forms.formEdit.addToGroupNone")}</MenuItem>
+                {(groupsQuery.data || []).map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
+              </Select>
+            )} />
+          </FormControl>
+          <Typography variant="caption" color="text.secondary">{Locale.label("forms.formEdit.addToGroupHelper")}</Typography>
           <TextField fullWidth label={Locale.label("forms.formEdit.followUpSubject")} type="text" {...register("followUpSubject")} data-testid="follow-up-subject-input" />
           <TextField fullWidth multiline minRows={4} label={Locale.label("forms.formEdit.followUpBody")} {...register("followUpBody")} data-testid="follow-up-body-input" />
           <Typography variant="caption" color="text.secondary">{Locale.label("forms.formEdit.followUpHelper")}</Typography>
