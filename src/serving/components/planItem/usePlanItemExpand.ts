@@ -25,7 +25,9 @@ interface ExpandResult {
   handleRestoreOriginal: () => Promise<void>;
 }
 
-/** Expand a section plan item into its child action items via provider or plan-level association. */
+/** Expand a section plan item into nested child action items via provider or plan-level association.
+ * The section row stays as a folder; collapse is a view toggle. handleCollapseToSection only serves
+ * legacy sibling runs created before folders existed. */
 export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
   const { planItem, associatedProviderId, associatedContentPath, ministryId, collapseItems, onChange, onError } = options;
   const [isExpanding, setIsExpanding] = useState(false);
@@ -44,13 +46,11 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
   ): Partial<PlanItemInterface>[] => {
     if (!section.children || section.children.length === 0) return [];
 
-    // Fractional sorts keep the new items in the deleted section's slot without
-    // colliding with later siblings; a /planItems/sort call renumbers afterward.
-    const count = section.children.length;
+    // The section stays and becomes a folder; actions nest beneath it.
     return section.children.map((action, index) => ({
       planId: planItem.planId,
-      parentId: planItem.parentId,
-      sort: currentSort + (index + 1) / (count + 1),
+      parentId: planItem.id,
+      sort: currentSort + index + 1,
       itemType: "providerPresentation",
       actionType: action.actionType,
       relatedId: action.relatedId || action.id || "",
@@ -62,17 +62,10 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       providerContentPath: `${pathPrefix}.${index}`,
       thumbnailUrl: findThumbnailRecursive(action)
     }));
-  }, [planItem.planId, planItem.parentId]);
-
-  const replaceSectionWith = useCallback(async (actionItems: Partial<PlanItemInterface>[]) => {
-    // Post replacement items first to preserve original if post fails.
-    const saved = await ApiHelper.post("/planItems", actionItems, "DoingApi");
-    await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
-    if (saved?.[0]) await ApiHelper.post("/planItems/sort", saved[0], "DoingApi");
-  }, [planItem.id]);
+  }, [planItem.planId, planItem.id]);
 
   const expandViaProvider = useCallback(async () => {
-    const { providerId, providerPath, providerContentPath, sort } = planItem;
+    const { providerId, providerPath, providerContentPath } = planItem;
     if (!providerId || !providerPath || !providerContentPath || !ministryId) return;
 
     const instructions: Instructions = await ApiHelper.post(
@@ -89,16 +82,9 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     const pathPrefix = found?.path || providerContentPath;
     if (!section?.children || section.children.length === 0) return;
 
-    const actionItems = createActionItems(
-      section,
-      pathPrefix,
-      providerId,
-      providerPath,
-      sort || 1
-    );
-
-    if (actionItems.length > 0) await replaceSectionWith(actionItems);
-  }, [planItem, ministryId, createActionItems, replaceSectionWith]);
+    const actionItems = createActionItems(section, pathPrefix, providerId, providerPath, planItem.children?.length || 0);
+    if (actionItems.length > 0) await ApiHelper.post("/planItems", actionItems, "DoingApi");
+  }, [planItem, ministryId, createActionItems]);
 
   const expandViaPlan = useCallback(async () => {
     if (!associatedProviderId || !associatedContentPath || !ministryId || !planItem.relatedId) return;
@@ -114,16 +100,9 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     const found = findByRelatedId(instructions.items, planItem.relatedId);
     if (!found || !found.item.children || found.item.children.length === 0) return;
 
-    const actionItems = createActionItems(
-      found.item,
-      found.path,
-      associatedProviderId,
-      associatedContentPath,
-      planItem.sort || 1
-    );
-
-    if (actionItems.length > 0) await replaceSectionWith(actionItems);
-  }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems, replaceSectionWith]);
+    const actionItems = createActionItems(found.item, found.path, associatedProviderId, associatedContentPath, planItem.children?.length || 0);
+    if (actionItems.length > 0) await ApiHelper.post("/planItems", actionItems, "DoingApi");
+  }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems]);
 
   const handleExpandToActions = useCallback(async () => {
     if (!canExpand) {
