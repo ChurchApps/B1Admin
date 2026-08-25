@@ -955,6 +955,9 @@
       "availableEnd": "Availability End Date",
       "availableStart": "Availability Start Date",
       "autoCreatePerson": "Create a person record from submissions",
+      "addToGroup": "Add submitters to a group",
+      "addToGroupNone": "None",
+      "addToGroupHelper": "Submitters are added to this group automatically.",
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
       "contentTypeAria": "Content type",
       "displayConversational": "Conversational (one question at a time)",
@@ -1533,7 +1536,11 @@
       "deleteConfirm": "Are you sure you want to delete {count} selected people? This action cannot be undone.",
       "deleting": "Deleting...",
       "deleteSuccess": "{count} people deleted successfully",
-      "deleteError": "Unable to delete selected people"
+      "deleteError": "Unable to delete selected people",
+      "customFieldTitle": "Set Custom Field",
+      "customField": "Custom Field",
+      "value": "Value",
+      "noCustomFields": "No Yes/No custom fields have been set up for people."
     },
     "demographics": {
       "age": "Age",

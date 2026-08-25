@@ -32,11 +32,9 @@ export const PersonPage = () => {
   React.useEffect(() => {
     if (!formPermission) return;
     ApiHelper.get("/forms", "MembershipApi").then((data: PersonFormOption[]) => {
-      setPersonForms((data || []).filter((form) => !form.archived && form.contentType === "person"));
+      setPersonForms((data || []).filter((form) => !form.archived));
     }).catch(() => setPersonForms([]));
   }, [formPermission]);
-
-  const showForms = formPermission && personForms.length > 0;
 
   const personData = useQuery<PersonInterface | null>({
     queryKey: ["/people/" + params.id, "MembershipApi"],
@@ -108,6 +106,14 @@ export const PersonPage = () => {
     }
     return p;
   }, [params.id, personData.data]);
+
+  // Person forms show for everyone; a stand-alone form only shows for the people it's linked to.
+  const visibleForms = useMemo(() => {
+    const submittedFormIds = new Set((person?.formSubmissions || []).map((fs) => fs.formId));
+    return personForms.filter((form) => form.contentType === "person" || submittedFormIds.has(form.id));
+  }, [personForms, person?.formSubmissions]);
+
+  const showForms = formPermission && visibleForms.length > 0;
 
   const handleCreateConversation = async () => {
     if (!person) return "";
@@ -188,7 +194,7 @@ export const PersonPage = () => {
         break;
       case "attendance": currentTab = <PersonAttendance key="attendance" personId={person.id!} personName={person.name?.display} updatedFunction={refetch} />; break;
       case "donations": currentTab = <PersonDonations key="donations" personId={person.id!} />; break;
-      case "forms": currentTab = <PersonForms key="forms" person={person} forms={personForms} updatedFunction={refetch} />; break;
+      case "forms": currentTab = <PersonForms key="forms" person={person} forms={visibleForms} updatedFunction={refetch} />; break;
       case "groups": currentTab = <Groups key="groups" personId={person.id!} updatedFunction={refetch} />; break;
       default: currentTab = <div key="default">{Locale.label("people.tabs.noImplement")}</div>; break;
     }
