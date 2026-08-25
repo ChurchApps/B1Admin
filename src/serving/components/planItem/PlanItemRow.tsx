@@ -1,13 +1,13 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
+import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon, RestartAlt as RestartAltIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
 import { InlineEditableText } from "./InlineEditableText";
-import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds } from "../planItemUtils";
+import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds, treeSeconds } from "../planItemUtils";
 
 // Script lines (spoken/read text), as opposed to slide/media action types.
 const TEXT_ACTION_TYPES = new Set(["say", "do", "note"]);
@@ -22,6 +22,9 @@ interface Props {
   onEditClick: () => void;
   onDuplicateClick?: () => void;
   onCollapseClick?: () => void;
+  /** Set when the item is a folder (section with nested actions). */
+  folderCollapsed?: boolean;
+  onToggleFolder?: () => void;
   onSaveDescription?: (text: string) => void;
   onRestoreOriginal?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
@@ -41,18 +44,21 @@ export const PlanItemRow: React.FC<Props> = ({
   onEditClick,
   onDuplicateClick,
   onCollapseClick,
+  folderCollapsed,
+  onToggleFolder,
   onSaveDescription,
   onRestoreOriginal,
   mediaLookup,
   positionLabel
 }) => {
+  const isFolder = !!onToggleFolder;
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
   const showVideoThumb = !!providerMedia && isVideoMedia(planItem.label, providerMedia);
   const showAudioIcon = !!providerMedia && isAudioMedia(planItem.label, providerMedia);
   // Untimed images show a planning estimate (~5:00) rather than an alarming 0:00 —
   // stored seconds stay 0 so playback leaves the volunteer in control.
-  const storedSeconds = planItem.seconds ?? 0;
+  const storedSeconds = isFolder ? treeSeconds(planItem, mediaLookup) : planItem.seconds ?? 0;
   const estimatedSeconds = storedSeconds === 0 ? estimateSeconds(planItem, mediaLookup) : 0;
   const isEstimate = estimatedSeconds > 0;
   // Script lines edit inline; the row itself no longer opens the read-only dialog.
@@ -78,6 +84,20 @@ export const PlanItemRow: React.FC<Props> = ({
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
         >
           <DragIndicatorIcon />
+        </Box>
+      )}
+      {isFolder && (
+        <Box
+          component="button"
+          type="button"
+          className="actionButton alwaysVisible"
+          data-testid="folder-toggle-button"
+          aria-expanded={!folderCollapsed}
+          aria-label={folderCollapsed ? Locale.label("common.expand") : Locale.label("common.collapse")}
+          onClick={(e: React.MouseEvent) => { e.stopPropagation(); onToggleFolder?.(); }}
+          sx={{ border: 0, cursor: "pointer", color: "text.secondary", background: "transparent", display: "inline-flex", p: 0, mr: 0.5 }}
+        >
+          {folderCollapsed ? <ChevronRightIcon /> : <ExpandMoreIcon />}
         </Box>
       )}
       <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
