@@ -2,10 +2,11 @@ import React from "react";
 import { Locale } from "@churchapps/apphelper";
 import { useCampuses } from "../../../hooks/useCampuses";
 import { Button, Menu, MenuItem, Divider, ListItemIcon, ListItemText } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon, Business as CampusIcon, ViewKanban as WorkflowIcon } from "@mui/icons-material";
+import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon, Business as CampusIcon, ViewKanban as WorkflowIcon, RuleFolder as CustomFieldIcon } from "@mui/icons-material";
 import { BulkFieldDialog, type BulkFieldOption, type BulkResult } from "./BulkFieldDialog";
 import { BulkGroupDialog } from "./BulkGroupDialog";
 import { BulkWorkflowDialog } from "./BulkWorkflowDialog";
+import { BulkCustomFieldDialog } from "./BulkCustomFieldDialog";
 import { getMembershipStatusOptions } from "../../helpers/MembershipStatusOptions";
 
 interface FieldConfig {
@@ -27,6 +28,7 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
   const [fieldConfig, setFieldConfig] = React.useState<FieldConfig | null>(null);
   const [groupMode, setGroupMode] = React.useState<"add" | "remove" | null>(null);
   const [showWorkflow, setShowWorkflow] = React.useState(false);
+  const [showCustomField, setShowCustomField] = React.useState(false);
   const campuses = useCampuses();
   const campusOptions: BulkFieldOption[] = React.useMemo(
     () => campuses.filter((c) => c.id).map((c) => ({ value: c.id as string, label: c.name || "" })),
@@ -117,6 +119,10 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
             <ListItemText>{Locale.label(menuLabels[config.field])}</ListItemText>
           </MenuItem>
         ))}
+        <MenuItem onClick={() => { setShowCustomField(true); closeMenu(); }} data-testid="bulk-action-custom-field">
+          <ListItemIcon><CustomFieldIcon fontSize="small" /></ListItemIcon>
+          <ListItemText>{Locale.label("people.bulk.customFieldTitle")}</ListItemText>
+        </MenuItem>
         <Divider />
         <MenuItem onClick={() => openGroup("add")} data-testid="bulk-action-add-group">
           <ListItemIcon><GroupAddIcon fontSize="small" /></ListItemIcon>
@@ -157,6 +163,15 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
           mode={groupMode}
           personIds={props.selectedPersonIds}
           onClose={() => setGroupMode(null)}
+          onComplete={props.onComplete}
+        />
+      )}
+
+      {showCustomField && (
+        <BulkCustomFieldDialog
+          open={showCustomField}
+          personIds={props.selectedPersonIds}
+          onClose={() => setShowCustomField(false)}
           onComplete={props.onComplete}
         />
       )}
