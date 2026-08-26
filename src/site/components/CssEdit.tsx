@@ -104,7 +104,7 @@ a:hover {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <Alert severity="warning" icon={<WarningIcon />} sx={{ mb: 3 }}>
           <Typography variant="body2"><strong>{Locale.label("site.cssEdit.advancedFeature")}</strong> {Locale.label("site.cssEdit.advancedFeatureDescription")}</Typography>
         </Alert>

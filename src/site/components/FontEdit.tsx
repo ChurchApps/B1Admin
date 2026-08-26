@@ -98,7 +98,7 @@ export function FontEdit(props: Props) {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title={Locale.label("site.fontEdit.fontSelection")} icon={<StyleIcon />}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>
