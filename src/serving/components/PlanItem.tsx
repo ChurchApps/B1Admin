@@ -8,7 +8,7 @@ import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/help
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort, treeSeconds, duplicatePlanItem, findExpandedRuns, type ProviderMediaInfo } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
@@ -42,10 +42,7 @@ export const PlanItem = React.memo((props: Props) => {
   const [lessonSectionId, setLessonSectionId] = React.useState<string | null>(null);
   const [actionId, setActionId] = React.useState<string | null>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
-  const [folderCollapsed, setFolderCollapsed] = React.useState(false);
   const open = Boolean(anchorEl);
-  const isHeader = props.planItem.itemType === "header";
-  const isFolder = !isHeader && (props.planItem.children?.length || 0) > 0;
 
   // Use the expand hook for section expansion functionality
   const { handleExpandToActions, canCollapse, handleCollapseToSection, handleSaveDescription, handleRestoreOriginal } = usePlanItemExpand({
@@ -149,10 +146,9 @@ export const PlanItem = React.memo((props: Props) => {
     return (props.exclusions || []).some((ex) => ex.planItemId === childId && ex.timeId === props.selectedServiceTimeId && ex.excluded);
   };
 
-  // Legacy sibling runs live directly under headers; a folder's children are never a run.
   const expandedRuns = React.useMemo(
-    () => (props.readOnly || !isHeader ? new Map<string, PlanItemInterface[]>() : findExpandedRuns(props.planItem.children || [])),
-    [props.planItem.children, props.readOnly, isHeader]
+    () => (props.readOnly ? new Map<string, PlanItemInterface[]>() : findExpandedRuns(props.planItem.children || [])),
+    [props.planItem.children, props.readOnly]
   );
 
   const getChildren = () => {
@@ -187,7 +183,7 @@ export const PlanItem = React.memo((props: Props) => {
           )}
         </React.Fragment>
       );
-      if (!childExcluded) cumulativeTime += treeSeconds(c, props.mediaLookup);
+      if (!childExcluded) cumulativeTime += estimateSeconds(c, props.mediaLookup);
     });
     return result;
   };
@@ -217,26 +213,21 @@ export const PlanItem = React.memo((props: Props) => {
   );
 
   const getGenericRow = (onLabelClick?: () => void) => (
-    <>
-      <PlanItemRow
-        planItem={props.planItem}
-        startTime={props.startTime}
-        serviceStartTime={props.serviceTime?.startTime}
-        excluded={props.excluded}
-        readOnly={props.readOnly}
-        onLabelClick={onLabelClick}
-        onEditClick={() => props.setEditPlanItem?.(props.planItem)}
-        onDuplicateClick={handleDuplicate}
-        onCollapseClick={showCollapse ? handleCollapseClick : undefined}
-        folderCollapsed={isFolder ? folderCollapsed : undefined}
-        onToggleFolder={isFolder ? () => setFolderCollapsed((v) => !v) : undefined}
-        onSaveDescription={handleSaveDescription}
-        onRestoreOriginal={handleRestoreOriginal}
-        mediaLookup={props.mediaLookup}
-        positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
-      />
-      {isFolder && !folderCollapsed && <div className="planItemChildren" style={{ paddingLeft: 32 }}>{getChildren()}</div>}
-    </>
+    <PlanItemRow
+      planItem={props.planItem}
+      startTime={props.startTime}
+      serviceStartTime={props.serviceTime?.startTime}
+      excluded={props.excluded}
+      readOnly={props.readOnly}
+      onLabelClick={onLabelClick}
+      onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      onDuplicateClick={handleDuplicate}
+      onCollapseClick={showCollapse ? handleCollapseClick : undefined}
+      onSaveDescription={handleSaveDescription}
+      onRestoreOriginal={handleRestoreOriginal}
+      mediaLookup={props.mediaLookup}
+      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
+    />
   );
 
   const getPlanItem = () => {
@@ -290,7 +281,7 @@ export const PlanItem = React.memo((props: Props) => {
           sectionName={props.planItem.label}
           onClose={() => setLessonSectionId(null)}
           onExpandToActions={
-            !props.readOnly && !isFolder && (
+            !props.readOnly && (
               (props.associatedContentPath && props.planItem.relatedId) ||
               (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
             )
