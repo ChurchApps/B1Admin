@@ -38,10 +38,10 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const providerOptions = listPaymentProviders().filter((p) => p.descriptor.selectableInAdmin && (!p.descriptor.betaOnly || !isProd || p.descriptor.adminValue === provider));
 
   const webhookUrl = React.useMemo(() => {
-    if (!props.churchId || !descriptor?.keyLabels.webhook) return "";
+    if (!props.churchId || (!descriptor?.keyLabels.webhook && !descriptor?.webhookInstructionsKey)) return "";
     const base = ApiHelper.getConfig("GivingApi")?.url?.replace(/\/+$/, "") || "";
     return base ? base + "/donate/webhook/" + getPaymentProvider(provider).key + "?churchId=" + props.churchId : "";
-  }, [props.churchId, provider, descriptor?.keyLabels.webhook]);
+  }, [props.churchId, provider, descriptor?.keyLabels.webhook, descriptor?.webhookInstructionsKey]);
 
   const signupHref = descriptor?.signupUrl
     ? descriptor.signupUrl(props.churchInfo, { ...UserHelper.user, contactInfo: UserHelper.person?.contactInfo })
@@ -210,7 +210,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
             </Typography>
             {webhookUrl && (
               <Typography variant="body2" color="textSecondary" component="div" sx={{ mt: 1 }}>
-                {Locale.label("settings.givingSettingsEdit.kfWebhookInstructions")} <code style={{ wordBreak: "break-all" }}>{webhookUrl}</code>
+                {Locale.label(descriptor.webhookInstructionsKey || "settings.givingSettingsEdit.kfWebhookInstructions")} <code style={{ wordBreak: "break-all" }}>{webhookUrl}</code>
                 <IconButton size="small" onClick={copyWebhookUrl} aria-label={Locale.label("settings.givingSettingsEdit.copyWebhookUrl")} sx={{ ml: 0.5, verticalAlign: "middle" }}>
                   <ContentCopyIcon fontSize="small" />
                 </IconButton>

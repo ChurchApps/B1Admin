@@ -3391,6 +3391,8 @@
       "kfWebhookInstructions": "Provide this webhook URL to your Kingdom Funding representative during onboarding so transaction updates flow back into your giving reports:",
       "none": "None",
       "paypalSetup": "Create a PayPal REST app and paste its Client ID and Secret below. Get started at",
+      "paystackSetup": "Copy your Public and Secret keys from the Paystack Dashboard (Settings → API Keys & Webhooks) and paste them below. Open the",
+      "paystackWebhookInstructions": "Paste this URL into the Webhook URL field of your Paystack Dashboard (Settings → API Keys & Webhooks) so recurring gifts and mobile money payments are recorded:",
       "privateKeyRequired": "Please enter the secret/private key for this provider before saving.",
       "prov": "Provider",
       "pubKey": "Public Key",

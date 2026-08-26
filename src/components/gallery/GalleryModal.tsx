@@ -2,7 +2,7 @@
 
 import { ApiHelper, ErrorMessages, FileHelper, ImageEditor, Locale, TabPanel } from "@churchapps/apphelper";
 import { CommonEnvironmentHelper } from "@churchapps/helpers";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs } from "@mui/material";
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs } from "@mui/material";
 import { DeleteOutline as DeleteOutlineIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { AppIconButton } from "../ui/AppIconButton";
@@ -25,6 +25,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   const [aspectRatio, setAspectRatio] = React.useState(Math.round(props.aspectRatio * 100) / 100);
   const [editorPhotoUrl, setEditorPhotoUrl] = React.useState("");
   const [uploadError, setUploadError] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const contentRoot = props.contentRoot || CommonEnvironmentHelper.ContentRoot;
@@ -42,6 +43,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
     }
 
     setUploadError([]);
+    setIsUploading(true);
     try {
       const blob = FileHelper.dataURLtoBlob(dataUrl);
       const extension = blob.type.split("/")[1] || "jpg";
@@ -64,6 +66,8 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
     } catch (error) {
       console.error("Error in handleImageUpdated:", error);
       setUploadError([Locale.label("gallery.uploadError")]);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -160,7 +164,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
           <div>{Locale.label("gallery.aspectRatio")}: {getDisplayAspect()}</div>
-          <ImageEditor onUpdate={handleImageUpdated} photoUrl={editorPhotoUrl} aspectRatio={aspectRatio} outputWidth={1280} outputHeight={768} hideDelete={true} />
+          {isUploading ? <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}><CircularProgress /></Box> : <ImageEditor onUpdate={handleImageUpdated} photoUrl={editorPhotoUrl} aspectRatio={aspectRatio} outputWidth={1280} outputHeight={768} hideDelete={true} />}
         </TabPanel>
         <TabPanel value={tabIndex} index={2}>
           <StockPhotos aspectRatio={aspectRatio} onSelect={props.onSelect} onStockSelect={handleStockSelect} />
