@@ -495,7 +495,7 @@ label .description {
   opacity: 0;
   transition: opacity 0.15s;
 }
-.planItemHeader .actionButton.alwaysVisible, .planItem .actionButton.alwaysVisible {
+.planItemHeader .actionButton.alwaysVisible {
   opacity: 1;
 }
 .planItem:hover .dragHandle, .planItemHeader:hover .dragHandle,
@@ -598,14 +598,15 @@ label .description {
 }
 
 .chordPro .line {
-  margin-top: 5px;
+  position: relative;
+  padding-top: 14px;
   vertical-align: bottom;
 }
 
 .chordPro sup {
   vertical-align: top;
   position: absolute;
-  margin-top: -12px;
+  top: 0;
   font-weight: bold;
 }
 

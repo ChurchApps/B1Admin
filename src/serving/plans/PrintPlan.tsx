@@ -243,12 +243,10 @@ export const PrintPlan = () => {
       let rows: JSX.Element[] = [];
       items.forEach((pi) => {
         if (pi.itemType !== "header") {
-          const isFolder = (pi.children?.length || 0) > 0;
-          const seconds = isFolder ? 0 : pi.seconds || 0;
           const timeCells: JSX.Element[] = [];
           if (serviceTimes.length === 0) {
             timeCells.push(<td key="t0" style={Styles.tableCell}>{formatTime(accumulators[0])}</td>);
-            accumulators[0] += seconds;
+            accumulators[0] += pi.seconds || 0;
           } else {
             serviceTimes.forEach((st, i) => {
               const excluded = isExcluded(pi.id || "", st.id || "");
@@ -256,7 +254,7 @@ export const PrintPlan = () => {
                 timeCells.push(<td key={st.id} style={{ ...Styles.tableCell, color: "#999" }}>—</td>);
               } else {
                 timeCells.push(<td key={st.id} style={Styles.tableCell}>{formatClockTime(st.startTime, accumulators[i])}</td>);
-                accumulators[i] += seconds;
+                accumulators[i] += pi.seconds || 0;
               }
             });
           }
@@ -269,7 +267,7 @@ export const PrintPlan = () => {
                   <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{positionLabels[pi.positionId].text}</span>
                 )}
               </td>
-              <td style={{ ...Styles.tableCell, textAlign: "right" }}>{isFolder ? "" : formatTime(seconds)}</td>
+              <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
             </tr>
           );
         }

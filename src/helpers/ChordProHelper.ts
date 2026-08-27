@@ -100,7 +100,7 @@ export class ChordProHelper {
     lines.forEach((line) => {
       let l = line.trim();
       let lineType = "line";
-      if (line.startsWith("[") && line.endsWith("]")) lineType = "header";
+      if (/^\[[^[\]]*\]$/.test(l)) lineType = "header";
       else if (l.length === 0) lineType = "empty";
       switch (lineType) {
         case "header":

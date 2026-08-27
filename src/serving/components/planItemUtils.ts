@@ -124,17 +124,11 @@ export const ESTIMATED_IMAGE_SECONDS = 300;
 
 /** Effective seconds for schedule math: stored value, else the image planning estimate. */
 export function estimateSeconds(planItem: PlanItemInterface, lookup?: Record<string, ProviderMediaInfo>): number {
-  // A section expanded into child actions is a folder: its children carry the time.
-  if (planItem.itemType === "header" || (planItem.children?.length || 0) > 0) return 0;
   if (planItem.seconds && planItem.seconds > 0) return planItem.seconds;
+  if (planItem.itemType === "header") return 0;
   const media = matchProviderMedia(planItem, lookup);
   if (media && !isVideoMedia(planItem.label, media) && !isAudioMedia(planItem.label, media)) return ESTIMATED_IMAGE_SECONDS;
   return 0;
-}
-
-/** estimateSeconds for an item plus all of its descendants. */
-export function treeSeconds(planItem: PlanItemInterface, lookup?: Record<string, ProviderMediaInfo>): number {
-  return estimateSeconds(planItem, lookup) + (planItem.children || []).reduce((sum, c) => sum + treeSeconds(c, lookup), 0);
 }
 
 /** Older provider versions omit mediaType, so also sniff the file extension from the label/url. */
@@ -310,8 +304,7 @@ export function filterFeedByPlanItems(feed: FeedVenueInterface | null, planItems
   const norm = (s?: string) => (s || "").trim().toLowerCase();
   const flat = flattenPlanItems(planItems);
 
-  // A section with nested actions is a folder: its surviving children decide what prints, not the section.
-  const sectionItems = flat.filter(pi => SECTION_PLAN_TYPES.has(pi.itemType || "") && !pi.children?.length);
+  const sectionItems = flat.filter(pi => SECTION_PLAN_TYPES.has(pi.itemType || ""));
   const sectionIds = new Set(sectionItems.map(pi => pi.relatedId).filter(Boolean));
   const sectionNames = new Set(sectionItems.map(pi => norm(pi.label || pi.description)).filter(Boolean));
 

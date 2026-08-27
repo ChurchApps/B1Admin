@@ -1,10 +1,9 @@
 import { request as pwRequest, type APIRequestContext } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
-// Issues #996 / #1009: "Expand to Actions" nests the actions under the section (a folder) instead of
-// replacing it, so collapsing is a view toggle and per-action edits survive. The plan is seeded
-// through DoingApi and the provider is mocked at the API proxy, since no content provider is linked
-// in the local stack.
+// Issue #996 (fix 2): "Expand to Actions" permanently rewrote the plan with no way back.
+// The plan is seeded through DoingApi and the provider is mocked at the API proxy, since
+// no content provider is linked in the local stack.
 const API = "http://localhost:8084";
 
 const INSTRUCTIONS = {
@@ -24,7 +23,7 @@ const INSTRUCTIONS = {
           content: "Section notes",
           seconds: 300,
           children: [
-            { id: "COLACT1", itemType: "action", actionType: "say", relatedId: "COLACT1", label: "Collapse Repro Action One", content: "Original line", seconds: 120 },
+            { id: "COLACT1", itemType: "action", relatedId: "COLACT1", label: "Collapse Repro Action One", seconds: 120 },
             { id: "COLACT2", itemType: "action", relatedId: "COLACT2", label: "Collapse Repro Action Two", seconds: 180 }
           ]
         }
@@ -42,7 +41,7 @@ async function apiLogin(ctx: APIRequestContext): Promise<string> {
   return uc.jwt as string;
 }
 
-test.describe("issue-996 / #1009 expanded sections are collapsible folders", () => {
+test.describe("issue-996 collapse expanded actions back to a section", () => {
   let ctx: APIRequestContext;
   let jwt: string;
   let planId: string;
@@ -86,12 +85,10 @@ test.describe("issue-996 / #1009 expanded sections are collapsible folders", () 
           itemType: "providerSection",
           relatedId: "COLSEC1",
           label: "Collapse Repro Section",
-          seconds: 300,
           providerId: "lessonschurch",
           providerPath: "COLVENUE1",
           providerContentPath: "0.0"
-        },
-        { planId, parentId: headerId, sort: 2, itemType: "item", label: "Collapse Repro After", seconds: 60 }
+        }
       ]
     });
     expect(sectionRes.ok()).toBeTruthy();
@@ -102,7 +99,7 @@ test.describe("issue-996 / #1009 expanded sections are collapsible folders", () 
     await ctx.dispose();
   });
 
-  test("expand keeps the section as a folder; collapse hides actions without losing edits", async ({ page }) => {
+  test("an expanded run offers a visible collapse control that restores the section", async ({ page }) => {
     await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: INSTRUCTIONS }));
     // No provider is linked locally; keep the dialog's direct provider call off the network.
     await page.route("**/lessons.church/**", (route) => route.abort());
@@ -113,43 +110,24 @@ test.describe("issue-996 / #1009 expanded sections are collapsible folders", () 
     const sectionRow = page.locator(".planItem").filter({ hasText: "Collapse Repro Section" });
     await expect(sectionRow).toHaveCount(1, { timeout: 15000 });
     await sectionRow.click();
+
     await page.getByRole("button", { name: "Expand to Actions" }).click();
 
     const actionOne = page.locator(".planItem").filter({ hasText: "Collapse Repro Action One" });
     const actionTwo = page.locator(".planItem").filter({ hasText: "Collapse Repro Action Two" });
     await expect(actionOne).toHaveCount(1, { timeout: 15000 });
     await expect(actionTwo).toHaveCount(1);
-    await expect(sectionRow).toHaveCount(1);
+    await expect(page.locator(".planItem").filter({ hasText: "Collapse Repro Section" })).toHaveCount(0);
 
-    // Folder time is the sum of its children (300), not double-counted: the next item starts at 5:00.
-    const afterRow = page.locator(".planItem").filter({ hasText: "Collapse Repro After" });
-    await expect(afterRow.locator(".timeRailLabel")).toHaveText("5:00");
+    // The bug: expansion was one-way, with no control anywhere to undo it.
+    const collapseButton = actionOne.locator('[data-testid="collapse-to-section-button"]');
+    await expect(collapseButton).toBeVisible({ timeout: 10000 });
+    await collapseButton.click();
 
-    // Already a folder: the dialog no longer offers to expand again.
-    await sectionRow.click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Expand to Actions" })).toHaveCount(0);
-    await page.getByRole("button", { name: "Close" }).click();
+    await page.locator('[data-testid="confirm-collapse-dialog"]').getByRole("button", { name: "Collapse to Section" }).click();
 
-    // Edit an action inline, then collapse and re-expand the folder.
-    await actionOne.getByTestId("planItem-inline-text").click();
-    await actionOne.getByTestId("planItem-inline-text").locator("textarea").first().fill("Edited line");
-    await actionOne.getByTestId("planItem-inline-text").locator("textarea").first().press("Enter");
-    await expect(actionOne).toContainText("Edited line", { timeout: 10000 });
-
-    const toggle = sectionRow.getByTestId("folder-toggle-button");
-    await toggle.click();
+    await expect(page.locator(".planItem").filter({ hasText: "Collapse Repro Section" })).toHaveCount(1, { timeout: 15000 });
     await expect(actionOne).toHaveCount(0);
     await expect(actionTwo).toHaveCount(0);
-    await expect(sectionRow).toHaveCount(1);
-
-    await toggle.click();
-    await expect(actionOne).toHaveCount(1);
-    await expect(actionOne).toContainText("Edited line");
-
-    // Survives a reload: nothing was deleted or recreated.
-    await page.reload();
-    await page.getByRole("tab", { name: "Service Order" }).click();
-    await expect(page.locator(".planItem").filter({ hasText: "Collapse Repro Action One" })).toContainText("Edited line", { timeout: 15000 });
   });
 });
