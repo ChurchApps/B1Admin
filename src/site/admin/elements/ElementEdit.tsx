@@ -749,7 +749,7 @@ export function ElementEdit(props: Props) {
 
   const getSocialIconsFields = () => (
     <>
-      {["facebook", "instagram", "youtube", "x", "tiktok", "vimeo"].map((network) => (
+      {["facebook", "instagram", "youtube", "x", "tiktok", "vimeo", "podcast"].map((network) => (
         <TextField key={network} fullWidth size="small" label={Locale.label("site.socialIconsEdit." + network)} name={network} value={parsedData[network] || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} data-testid={`social-${network}-input`} />
       ))}
       <FormControl fullWidth>
