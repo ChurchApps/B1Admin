@@ -51,7 +51,7 @@ export const LinkedAccounts = () => {
       <Grid container spacing={3}>
         <Grid size={{ sm: 3 }}>
           <Card>
-            <CardContent sx={{ textAlign: "center" }}>
+            <CardContent sx={{ textAlign: "center", backgroundColor: "#FFF" }}>
               <CardMedia component="img" image="/images/praisecharts.png" alt="Praise Charts" />
               <br />
 
