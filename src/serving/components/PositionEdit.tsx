@@ -20,6 +20,21 @@ type OptionType = {
   label: string;
 };
 
+// react-select renders outside the MUI theme, so it needs the theme css variables directly.
+const selectStyles = {
+  menuPortal: (base: AnyRecord) => ({ ...base, zIndex: 9999 }),
+  menu: (base: AnyRecord) => ({ ...base, zIndex: 9999, backgroundColor: "var(--bg-card)", border: "1px solid var(--border-main)" }),
+  control: (base: AnyRecord) => ({ ...base, backgroundColor: "var(--bg-card)", borderColor: "var(--border-main)" }),
+  singleValue: (base: AnyRecord) => ({ ...base, color: "var(--text-main)" }),
+  input: (base: AnyRecord) => ({ ...base, color: "var(--text-main)" }),
+  placeholder: (base: AnyRecord) => ({ ...base, color: "var(--text-muted)" }),
+  option: (base: AnyRecord, state: { isSelected: boolean; isFocused: boolean }) => ({
+    ...base,
+    backgroundColor: state.isSelected ? "var(--c1)" : state.isFocused ? "var(--bg-sub)" : "transparent",
+    color: state.isSelected ? "#FFFFFF" : "var(--text-main)"
+  })
+};
+
 export const PositionEdit = (props: Props) => {
   const initialOptions: OptionType[] = props.categoryNames.map((n) => ({ value: n, label: n }));
 
@@ -118,7 +133,7 @@ export const PositionEdit = (props: Props) => {
               onBlur={handleCategoryBlur}
               className="comboBox"
               menuPortalTarget={document.body}
-              styles={{ menu: (base) => ({ ...base, zIndex: 9999 }) }}
+              styles={selectStyles}
             />
           )} />
         </FormControl>
