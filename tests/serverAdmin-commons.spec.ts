@@ -97,7 +97,7 @@ test.describe("serverAdmin Commons tab", () => {
     const row1 = page.locator(`[data-testid="commons-queue-row-${sub1.submissionId}"]`);
     await expect(row1).toBeVisible();
     await expect(row1.getByText(title1)).toBeVisible();
-    await expect(row1.getByText("New")).toBeVisible();
+    await expect(row1.getByText("New", { exact: true })).toBeVisible();
     await expect(row1.getByText("Demo", { exact: false })).toBeVisible();
 
     // (b) review drawer: payload fields + file, approve publishes the asset
