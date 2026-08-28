@@ -43,6 +43,23 @@ export interface CommonsSubmitterStats {
   approved: number;
 }
 
+export interface CommonsQualityDetail {
+  heuristic?: number;
+  llm?: number;
+  parts?: string[];
+  notes?: string;
+}
+
+export interface CommonsDetailField {
+  key: string;
+  label: string;
+}
+
+export interface CommonsAttestation {
+  key: string;
+  label: string;
+}
+
 export interface CommonsQueueRow {
   id: string;
   assetId: string;
@@ -60,6 +77,7 @@ export interface CommonsQueueRow {
   isThirdParty: boolean;
   note?: string;
   triageScore?: number;
+  qualityDetail?: CommonsQualityDetail;
   submittedAt?: string;
   createdAt?: string;
   filesChanged: CommonsFileSummary[];
@@ -87,6 +105,7 @@ export interface CommonsPayload {
   license?: string;
   publisherChurchId?: string;
   detail?: Record<string, unknown>;
+  qualityDetail?: CommonsQualityDetail;
 }
 
 export interface CommonsLiveAsset {
@@ -105,6 +124,8 @@ export interface CommonsSubmissionDetail extends CommonsQueueRow {
   live?: CommonsLiveAsset;
   diff: { fields: CommonsDiffField[]; files: CommonsFileSummary[] };
   previewUrl?: string;
+  detailFields?: CommonsDetailField[];
+  attestations?: CommonsAttestation[];
 }
 
 export interface CommonsReport {

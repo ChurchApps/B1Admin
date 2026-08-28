@@ -107,6 +107,7 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(drawer.getByText("tune.abc")).toBeVisible();
 
     await drawer.getByTestId("commons-drawer-approve").click();
+    await page.getByTestId("commons-drawer-approve-confirm").click();
     await expect(row1).not.toBeVisible();
 
     const publishedAsset = await request.get(`${API}/commons/assets/${sub1.assetId}`, auth(adminJwt));

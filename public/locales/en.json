@@ -2956,6 +2956,8 @@
       "approve": "Approve",
       "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
+      "confirmApprove": "Approve this submission?",
+      "confirmApproveDetail": "{name} · {license}",
       "assetStatus": {
         "pending": "Pending",
         "published": "Published",
@@ -2983,7 +2985,18 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
+      "field": {
+        "description": "Description",
+        "language": "Language",
+        "license": "License",
+        "name": "Name",
+        "tags": "Themes"
+      },
       "files": "Files",
+      "firstSubmission": "first submission",
+      "justNow": "just now",
+      "licensePd": "Public domain",
+      "licenseWc": "Free for worship",
       "name": "Name",
       "noAssets": "No assets found.",
       "noFieldChanges": "No changes to show.",
@@ -3024,6 +3037,8 @@
         "unpublish": "Unpublish"
       },
       "review": "Review",
+      "rights": "Rights",
+      "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
       "status": "Status",
