@@ -91,6 +91,7 @@ test.describe("serverAdmin Commons tab", () => {
     const commonsSection = page.locator('[data-testid="settings-section-commons"]');
     await expect(commonsSection).toBeVisible();
     await commonsSection.click();
+    await expect(page).toHaveURL(/[?&]tab=commons/);
 
     // (a) queue shows the seeded submission with the New badge and submitter
     const row1 = page.locator(`[data-testid="commons-queue-row-${sub1.submissionId}"]`);
@@ -153,5 +154,11 @@ test.describe("serverAdmin Commons tab", () => {
 
     await assetRow.getByTestId(`commons-asset-republish-${sub1.assetId}`).click();
     await expect(assetRow.getByText("Published")).toBeVisible();
+  });
+
+  test("opens Commons from tab query param", async ({ page }) => {
+    await login(page);
+    await page.goto("/admin?tab=commons");
+    await expect(page.getByTestId("commons-tab-queue")).toBeVisible();
   });
 });

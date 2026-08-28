@@ -2997,6 +2997,7 @@
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
+      "lyricsAndChords": "Lyrics and chords",
       "name": "Name",
       "noAssets": "No assets found.",
       "noFieldChanges": "No changes to show.",
@@ -3004,6 +3005,7 @@
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
       "policyReports": "Policy & Other",
+      "possibleDuplicate": "Duplicate?",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
@@ -3038,6 +3040,8 @@
       },
       "review": "Review",
       "rights": "Rights",
+      "rightsFlag": "Rights",
+      "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
@@ -3047,7 +3051,8 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unchangedFiles": "Unchanged files",
-      "unpublish": "Unpublish"
+      "unpublish": "Unpublish",
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "You will be logged out of your own session and signed in as {email}. To return to your account, log out and back in.",

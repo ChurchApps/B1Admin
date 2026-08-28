@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Card, List, ListItemButton, Typography, alpha } from "@mui/material";
 import { ChevronRight as ChevronRightIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { CountChip } from "../../components/ui";
 
 export interface ConfigSection {
   key: string;
@@ -9,6 +10,7 @@ export interface ConfigSection {
   subtitle: string;
   icon: React.ReactNode;
   color: "primary" | "secondary" | "success" | "info" | "warning" | "error";
+  count?: number;
 }
 
 interface Props {
@@ -50,7 +52,10 @@ export const SettingsConfigList: React.FC<Props> = ({ sections, selected, onSele
               {s.icon}
             </Box>
             <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>{s.title}</Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>{s.title}</Typography>
+                {s.count != null && s.count > 0 && <CountChip count={s.count} />}
+              </Box>
               <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>{s.subtitle}</Typography>
             </Box>
             <ChevronRightIcon sx={{ color: "text.disabled" }} />

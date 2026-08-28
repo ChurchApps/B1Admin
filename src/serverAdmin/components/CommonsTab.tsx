@@ -1,13 +1,13 @@
 import React from "react";
 import { DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
 import {
-  Box, Button, Chip, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Stack,
+  Alert, Box, Button, Chip, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack,
   Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
 } from "@mui/material";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import {
-  CommonsApi, REJECT_REASONS, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
+  CommonsApi, getWorshipCommonsOrigin, REJECT_REASONS, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
   type CommonsTypeDef, type CommonsQueueRow, type CommonsReport, type CommonsAsset, type CommonsQualityDetail, type CommonsSubmitterStats,
   type RejectReason, type ReportResolution, type ReportAction, type RemovedReason, type AssetStatus
 } from "../commonsApi";
@@ -97,7 +97,7 @@ const RejectDialog = (props: { row: CommonsQueueRow | null; onClose: () => void;
   );
 };
 
-const QueueView = () => {
+const QueueView = (props: { onPublished?: (assetId: string) => void }) => {
   const [types, setTypes] = React.useState<CommonsTypeDef[]>([]);
   const [rows, setRows] = React.useState<CommonsQueueRow[]>([]);
   const [product, setProduct] = React.useState("");
@@ -197,7 +197,17 @@ const QueueView = () => {
                   <TableCell sx={{ whiteSpace: "normal", wordBreak: "break-word", maxWidth: 280 }}>
                     {row.assetName}
                     <br />
-                    <Chip size="small" label={badgeLabel(row)} />
+                    <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
+                      <Chip size="small" label={badgeLabel(row)} />
+                      {row.rightsFlag && (
+                        <Tooltip title={Locale.label("serverAdmin.commonsTab.rightsFlagTooltip")}>
+                          <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.rightsFlag")} />
+                        </Tooltip>
+                      )}
+                      {row.possibleDuplicate && (
+                        <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
+                      )}
+                    </Stack>
                   </TableCell>
                   <TableCell>
                     {row.submittedByName || "-"}
@@ -240,7 +250,11 @@ const QueueView = () => {
           queueIds={queueIds}
           onClose={() => setReviewId(null)}
           onSelect={setReviewId}
-          onApproved={(id) => { removeRow(id); setReviewId(null); }}
+          onApproved={(id, assetId) => {
+            removeRow(id);
+            setReviewId(null);
+            if (assetId) props.onPublished?.(assetId);
+          }}
           onRejected={(id) => { removeRow(id); setReviewId(null); }}
         />
       )}
@@ -548,6 +562,7 @@ const AssetsView = () => {
 
 export const CommonsTab = () => {
   const [subTab, setSubTab] = React.useState("queue");
+  const [publishedAssetId, setPublishedAssetId] = React.useState<string | null>(null);
 
   const tabs: NavigationTab[] = [
     { value: "queue", label: Locale.label("serverAdmin.commonsTab.tabQueue"), testId: "commons-tab-queue" },
@@ -559,10 +574,32 @@ export const CommonsTab = () => {
     <>
       <NavigationTabs selectedTab={subTab} onTabChange={setSubTab} tabs={tabs} testId="commonsTabs" />
       <Box sx={{ mt: 2 }}>
-        {subTab === "queue" && <QueueView />}
+        {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} />}
         {subTab === "reports" && <ReportsView />}
         {subTab === "assets" && <AssetsView />}
       </Box>
+      <Snackbar
+        open={!!publishedAssetId}
+        autoHideDuration={6000}
+        onClose={() => setPublishedAssetId(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="success" variant="filled" onClose={() => setPublishedAssetId(null)} sx={{ width: "100%" }}>
+          {Locale.label("serverAdmin.commonsTab.assetStatus.published")}
+          {" · "}
+          {publishedAssetId && (
+            <Box
+              component="a"
+              href={`${getWorshipCommonsOrigin()}/songs/${publishedAssetId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ color: "inherit", fontWeight: 600, textDecoration: "underline" }}
+            >
+              {Locale.label("serverAdmin.commonsTab.viewOnWorshipCommons")}
+            </Box>
+          )}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

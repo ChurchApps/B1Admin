@@ -2,10 +2,11 @@ import React from "react";
 import { Locale } from "@churchapps/apphelper";
 import {
   Box, Button, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControl, Grid,
-  IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography
+  IconButton, InputLabel, MenuItem, Select, Stack, TextField, Tooltip, Typography
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { CommonsApi, REJECT_REASONS, type CommonsDetailField, type CommonsSubmissionDetail, type CommonsSubmissionFile, type RejectReason } from "../commonsApi";
+import { ChordProHelper } from "../../helpers/ChordProHelper";
 
 const IMAGE_EXT = ["png", "jpg", "jpeg", "webp"];
 const AUDIO_EXT = ["mp3", "wav", "m4a", "ogg"];
@@ -136,7 +137,14 @@ const RightsBlock = (props: { detail: CommonsSubmissionDetail }) => {
   const pro = d.proAnswer == null || d.proAnswer === "" ? "" : String(d.proAnswer);
   return (
     <Box sx={{ mb: 2 }}>
-      <Typography variant="subtitle1" sx={{ mb: 1 }}>{Locale.label("serverAdmin.commonsTab.rights")}</Typography>
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+        <Typography variant="subtitle1">{Locale.label("serverAdmin.commonsTab.rights")}</Typography>
+        {props.detail.rightsFlag && (
+          <Tooltip title={Locale.label("serverAdmin.commonsTab.rightsFlagTooltip")}>
+            <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.rightsFlag")} />
+          </Tooltip>
+        )}
+      </Stack>
       <LabeledValue fieldKey="license" value={payload.license} fields={props.detail.detailFields} />
       {attestations.map((a) => (
         <Box key={a.key} sx={{ mb: 1.5 }}>
@@ -147,7 +155,7 @@ const RightsBlock = (props: { detail: CommonsSubmissionDetail }) => {
       {pro && (
         <Box sx={{ mb: 1.5 }}>
           <Typography variant="caption" color="text.secondary">{fieldLabel("proAnswer", props.detail.detailFields)}</Typography>
-          <Typography variant="body2" sx={PRO_FLAG.test(pro) ? { color: "error.main" } : undefined}>{pro}</Typography>
+          <Typography variant="body2" sx={PRO_FLAG.test(pro) || props.detail.rightsFlag ? { color: "error.main" } : undefined}>{pro}</Typography>
         </Box>
       )}
     </Box>
@@ -160,12 +168,31 @@ const submitterRecord = (stats?: CommonsSubmissionDetail["submitterStats"]) => {
   return `${stats.approved}/${stats.total} ${Locale.label("serverAdmin.commonsTab.approvedSuffix")}`;
 };
 
+const ChordProChart = (props: { chordPro: string }) => {
+  const html = props.chordPro.split("\n").map((line) => ChordProHelper.replaceChords(ChordProHelper.escapeHtml(line))).join("<br/>");
+  return (
+    <Box
+      sx={{
+        maxHeight: 280,
+        overflow: "auto",
+        bgcolor: "action.hover",
+        p: 1.5,
+        fontSize: 13,
+        fontFamily: "monospace",
+        lineHeight: 1.8,
+        "& sup": { fontWeight: 700, fontSize: "0.7em", color: "primary.main" }
+      }}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+};
+
 interface Props {
   submissionId: string;
   queueIds: string[];
   onClose: () => void;
   onSelect: (id: string) => void;
-  onApproved: (id: string) => void;
+  onApproved: (id: string, assetId?: string) => void;
   onRejected: (id: string) => void;
 }
 
@@ -190,9 +217,9 @@ export const CommonsReviewDrawer = (props: Props) => {
   }, [submissionId]);
 
   const approve = React.useCallback(async () => {
-    await CommonsApi.post(`/admin/submissions/${submissionId}/approve`, approveNote.trim() ? { note: approveNote.trim() } : {});
-    onApproved(submissionId);
-  }, [submissionId, approveNote, onApproved]);
+    const result = await CommonsApi.post(`/admin/submissions/${submissionId}/approve`, approveNote.trim() ? { note: approveNote.trim() } : {});
+    onApproved(submissionId, result?.assetId || detail?.assetId);
+  }, [submissionId, approveNote, onApproved, detail?.assetId]);
 
   const reject = async () => {
     if (!rejectNote.trim()) return;
@@ -249,8 +276,8 @@ export const CommonsReviewDrawer = (props: Props) => {
 
           {chordPro && (
             <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle1" sx={{ mb: 1 }}>{chordProLabel === "chordPro" ? "Lyrics and chords" : chordProLabel}</Typography>
-              <Box component="pre" sx={{ maxHeight: 280, overflow: "auto", bgcolor: "action.hover", p: 1, fontSize: 13, whiteSpace: "pre-wrap" }}>{chordPro}</Box>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>{chordProLabel === "chordPro" ? Locale.label("serverAdmin.commonsTab.lyricsAndChords") : chordProLabel}</Typography>
+              <ChordProChart chordPro={chordPro} />
             </Box>
           )}
 

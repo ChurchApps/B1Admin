@@ -7,6 +7,13 @@ export const CommonsApi = {
   post: (path: string, data: any[] | Record<string, unknown> = {}): Promise<any> => ApiHelper.post(path, data, "CommonsApi" as any)
 };
 
+export const getWorshipCommonsOrigin = (): string => {
+  const env = import.meta.env as ImportMetaEnv & Record<string, string | undefined>;
+  const fromEnv = env.REACT_APP_WORSHIPCOMMONS_ORIGIN || env.VITE_WORSHIPCOMMONS_ORIGIN;
+  if (fromEnv) return fromEnv.replace(/\/$/, "");
+  return window.location.hostname === "localhost" ? "http://localhost:3104" : "https://worshipcommons.org";
+};
+
 // Shapes copied from Packages/helpers/src/interfaces/Commons.ts (not yet published for B1Admin to import)
 // plus the /commons/admin response shapes documented on CommonsAdminController. Keep in sync by hand.
 
@@ -81,6 +88,8 @@ export interface CommonsQueueRow {
   submittedAt?: string;
   createdAt?: string;
   filesChanged: CommonsFileSummary[];
+  rightsFlag?: boolean;
+  possibleDuplicate?: boolean;
 }
 
 export interface CommonsSubmissionFile {
