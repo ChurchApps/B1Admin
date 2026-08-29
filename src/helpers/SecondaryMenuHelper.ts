@@ -79,7 +79,8 @@ export class SecondaryMenuHelper {
   static getProfileMenu = (path:string) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    if (path.startsWith("/profile")) label = Locale.label("helpers.secondaryMenuHelper.profile");
+    if (path.startsWith("/profile/devices")) label = Locale.label("helpers.secondaryMenuHelper.devices");
+    else if (path.startsWith("/profile")) label = Locale.label("helpers.secondaryMenuHelper.profile");
     menuItems.push({ url: "/profile", label: Locale.label("helpers.secondaryMenuHelper.profile"), icon: "person" });
     menuItems.push({ url: "/profile/devices", label: Locale.label("helpers.secondaryMenuHelper.devices"), icon: "devices" });
     return { menuItems, label };
