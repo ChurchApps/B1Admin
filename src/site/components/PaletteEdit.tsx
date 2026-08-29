@@ -166,7 +166,7 @@ export function PaletteEdit(props: Props) {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title={Locale.label("site.paletteEdit.colorValues")} icon={<ColorLensIcon />}>
           <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.paletteEdit.baseColors")}</Typography>
           <Grid container spacing={2} sx={{ mb: 3 }}>

@@ -110,7 +110,11 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
     preview = preview.replace(/\{\{email\}\}/g, "john@example.com");
     preview = preview.replace(/\{\{churchName\}\}/g, churchName);
-    return preview;
+    
+    const isDarkTheme = document.body.classList.contains("dark-theme");
+    const styleInjection = isDarkTheme ? "<style>body { color: white; font-family: sans-serif; }</style>" : "<style>body { font-family: sans-serif; }</style>";
+    
+    return preview + styleInjection;
   };
 
   const getPreviewSubject = () => {

@@ -432,7 +432,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
         mb: 2.5,
         borderRadius: 1.5,
         borderColor: "divider",
-        bgcolor: "grey.50"
+        bgcolor: (theme) => theme.palette.mode === "dark" ? "background.default" : "grey.50"
       }}>
       <Stack spacing={1.75}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">

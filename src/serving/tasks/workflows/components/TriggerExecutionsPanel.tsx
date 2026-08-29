@@ -53,7 +53,7 @@ export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box sx={{ mt: 3, backgroundColor: 'white', padding: 2, borderRadius: 2 }} data-testid="trigger-executions-panel">
+    <Box sx={{ mt: 3, backgroundColor: "background.paper", padding: 2, borderRadius: 2 }} data-testid="trigger-executions-panel">
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Typography variant="subtitle2">{Locale.label("tasks.executions.title")}</Typography>
         <AppIconButton label={Locale.label("tasks.executions.refresh")} icon={<RefreshIcon />} data-testid="refresh-executions" onClick={load} />
