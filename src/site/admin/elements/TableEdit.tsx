@@ -17,6 +17,13 @@ export function TableEdit(props: Props) {
   const cols = (contents.length > 0) ? contents[0].length : 0;
   const markdown = props.parsedData.markdown || false;
   const [editCellIdx, setEditCellIdx] = React.useState<number[] | null>(null);
+  const [rowsText, setRowsText] = React.useState(rows.toString());
+  const [colsText, setColsText] = React.useState(cols.toString());
+
+  // Re-sync on the counts, not on props.contents — the parent re-parses answersJSON
+  // every render, so that array's identity changes even while the grid is unchanged.
+  React.useEffect(() => { setRowsText(rows.toString()); }, [rows]);
+  React.useEffect(() => { setColsText(cols.toString()); }, [cols]);
 
   const updateRows = (newRows: number) => {
     const c = [...contents];
@@ -36,11 +43,22 @@ export function TableEdit(props: Props) {
     return c;
   };
 
+  // Resizing on every keystroke would truncate the grid on the intermediate "1" of "12".
+  const commit = (name: "rows" | "columns") => {
+    const isRows = name === "rows";
+    const current = isRows ? rows : cols;
+    const n = Number(isRows ? rowsText : colsText);
+    if (!Number.isInteger(n) || n < 1) {
+      if (isRows) setRowsText(rows.toString()); else setColsText(cols.toString());
+      return;
+    }
+    if (n === current) return;
+    props.onRealtimeChange({ ...props.parsedData, contents: isRows ? updateRows(n) : updateCols(n) });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     e.preventDefault();
     const data = { ...props.parsedData };
-    if (e.target.name === "rows") data.contents = updateRows(parseInt(e.target.value));
-    if (e.target.name === "columns") data.contents = updateCols(parseInt(e.target.value));
     if (e.target.name === "head") data.head = (e.target.value === "true");
     if (e.target.name === "markdown") data.markdown = (e.target.value === "true");
     if (e.target.name === "size") data.size = e.target.value;
@@ -88,10 +106,10 @@ export function TableEdit(props: Props) {
     <>
       <Grid container columnSpacing={3}>
         <Grid size={{ md: 6, xs: 12 }}>
-          <TextField fullWidth size="small" label={Locale.label("site.tableEdit.rows")} name="rows" value={rows} onChange={handleChange} data-testid="table-rows-input" />
+          <TextField fullWidth size="small" label={Locale.label("site.tableEdit.rows")} name="rows" value={rowsText} onChange={e => setRowsText(e.target.value)} onBlur={() => commit("rows")} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); commit("rows"); } }} data-testid="table-rows-input" />
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
-          <TextField fullWidth size="small" label={Locale.label("site.tableEdit.columns")} name="columns" value={cols} onChange={handleChange} data-testid="table-columns-input" />
+          <TextField fullWidth size="small" label={Locale.label("site.tableEdit.columns")} name="columns" value={colsText} onChange={e => setColsText(e.target.value)} onBlur={() => commit("columns")} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); commit("columns"); } }} data-testid="table-columns-input" />
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
           <FormControl fullWidth size="small">
