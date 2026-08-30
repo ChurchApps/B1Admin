@@ -7,7 +7,8 @@ import React, { useEffect } from "react";
 
 interface Props {
   animations: AnimationsInterface,
-  onSave: (animations: AnimationsInterface | null) => void;
+  onSave: (animations: AnimationsInterface) => void;
+  onCancel?: () => void;
 }
 
 
@@ -20,8 +21,7 @@ export const AnimationsEdit: React.FC<Props> = (props) => {
   }, [props.animations]);
 
   const handleSave = () => {
-    props.onSave(animations);
-    props.onSave(null);
+    props.onSave((animations?.onShow ? { onShow: animations.onShow, onShowSpeed: animations.onShowSpeed || "normal" } : {}) as AnimationsInterface);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
@@ -37,7 +37,7 @@ export const AnimationsEdit: React.FC<Props> = (props) => {
     setAnimations(a);
   };
 
-  return <FormCard onSave={handleSave} saveText={Locale.label("common.update")} title={Locale.label("site.animations.editAnimations")} onCancel={() => { props.onSave(null); }}>
+  return <FormCard onSave={handleSave} saveText={Locale.label("common.update")} title={Locale.label("site.animations.editAnimations")} onCancel={() => { props.onCancel?.(); }}>
     <Grid container spacing={2}>
       <Grid size={{ xs: 6 }}>
         <FormControl size="small" fullWidth style={{ marginTop: 10 }}>
