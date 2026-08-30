@@ -5,28 +5,35 @@ export type SaveStatus = "saved" | "saving" | "error";
 let inflight = 0;
 let status: SaveStatus = "saved";
 let lastSavedAt: number | null = null;
+// Bumped on reset so saves still in flight from a previous page can't drive inflight negative.
+let generation = 0;
 const listeners = new Set<() => void>();
 
 const notify = () => listeners.forEach((cb) => cb());
 
 export function trackSave<T>(promise: Promise<T>): Promise<T> {
+  const gen = generation;
   inflight++;
-  if (status !== "saving") { status = "saving"; notify(); }
+  if (status === "saved") { status = "saving"; notify(); }
   return promise.then(
     (result) => {
-      inflight--;
-      if (inflight === 0) {
-        status = "saved";
-        lastSavedAt = Date.now();
-        notify();
-        clearSiteCache();
+      if (gen === generation) {
+        inflight--;
+        if (inflight === 0) {
+          lastSavedAt = Date.now();
+          if (status !== "error") status = "saved";
+          notify();
+          clearSiteCache();
+        }
       }
       return result;
     },
     (error) => {
-      inflight--;
-      status = "error";
-      notify();
+      if (gen === generation) {
+        inflight--;
+        status = "error";
+        notify();
+      }
       throw error;
     }
   );
@@ -41,6 +48,7 @@ export function subscribeSaveStatus(cb: () => void): () => void {
 }
 
 export function resetSaveStatus() {
+  generation++;
   inflight = 0;
   status = "saved";
   lastSavedAt = null;
