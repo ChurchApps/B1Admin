@@ -326,6 +326,10 @@ test.describe("Website Management", () => {
       const card = page.locator('[data-testid="draggable-element-text"]');
       if (!await card.isVisible({ timeout: 500 }).catch(() => false)) await addBtn.click();
       await expect(card).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="draggable-element-buttonLink"]')).toBeVisible();
+      await expect(page.locator('[data-testid="draggable-element-whiteSpace"]')).toBeVisible();
+      await expect(page.locator('[data-testid="draggable-element-column"]')).toHaveCount(0);
+      await expect(page.locator('[data-testid="draggable-element-block"]')).toHaveCount(0);
       await card.click();
       const textbox = page.locator('[role="textbox"]');
       await expect(textbox).toBeVisible({ timeout: 10000 });
@@ -334,6 +338,20 @@ test.describe("Website Management", () => {
       await page.locator("button").getByText("Save").click();
       expect((await elementPost).status()).toBe(200);
       await expect(page.locator("p").getByText("Zacchaeus Click Added")).toBeVisible({ timeout: 10000 });
+
+      const buttonCard = page.locator('[data-testid="draggable-element-buttonLink"]');
+      if (!await buttonCard.isVisible({ timeout: 500 }).catch(() => false)) await addBtn.click();
+      await expect(buttonCard).toBeVisible({ timeout: 10000 });
+      await buttonCard.click();
+      const buttonText = page.locator('input[name="buttonLinkText"]');
+      await expect(buttonText).toBeVisible({ timeout: 10000 });
+      await buttonText.fill("Zacchaeus Button");
+      const buttonPost = page.waitForResponse(r => r.url().endsWith("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator("button").getByText("Save").click();
+      const buttonResponse = await buttonPost;
+      expect(buttonResponse.status()).toBe(200);
+      expect(buttonResponse.request().postDataJSON()[0].elementType).toBe("buttonLink");
+      await expect(page.locator("button").getByText("Zacchaeus Button")).toBeVisible({ timeout: 10000 });
     });
 
     test("should warn before discarding unsaved element edits", async () => {

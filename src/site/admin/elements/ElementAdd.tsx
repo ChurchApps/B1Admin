@@ -120,8 +120,10 @@ export function ElementAdd(props: Props) {
   const elementUI: Record<string, { icon: string; labelKey?: string; descKey?: string; label?: string; description?: string }> = {
     row: { icon: "view_column", labelKey: "site.elementAdd.row", descKey: "site.elementAdd.descRow" },
     box: { icon: "crop_square", labelKey: "site.elementAdd.box", descKey: "site.elementAdd.descBox" },
+    whiteSpace: { icon: "space_bar" },
     carousel: { icon: "view_carousel", labelKey: "site.elementAdd.carousel", descKey: "site.elementAdd.descCarousel" },
     text: { icon: "text_fields", labelKey: "site.elementAdd.text", descKey: "site.elementAdd.descText" },
+    buttonLink: { icon: "smart_button" },
     textWithPhoto: { icon: "article", labelKey: "site.elementAdd.textWithPhoto", descKey: "site.elementAdd.descTextWithPhoto" },
     card: { icon: "dashboard", labelKey: "site.elementAdd.card", descKey: "site.elementAdd.descCard" },
     faq: { icon: "help_outline", labelKey: "site.elementAdd.expandable", descKey: "site.elementAdd.descExpandable" },
@@ -151,7 +153,7 @@ export function ElementAdd(props: Props) {
     iframe: { icon: "web", labelKey: "site.elementAdd.embedPage", descKey: "site.elementAdd.descEmbedPage" }
   };
 
-  const hiddenTypes = ["column", "block", "whiteSpace", "buttonLink"];
+  const hiddenTypes = ["column", "block"];
 
   const allElements: ElementConfig[] = useMemo(() => {
     const elements: ElementConfig[] = [];
