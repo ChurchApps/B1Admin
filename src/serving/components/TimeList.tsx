@@ -61,7 +61,7 @@ export const TimeList = (props: Props) => {
 
   const getRows = () => {
     const result: JSX.Element[] = [];
-    props.times.forEach((t) => {
+    props.times.forEach((t, i) => {
       const teamList = t.teams?.split(",") || [];
       const startTime = new Date(t.startTime || new Date());
       //startTime.setMinutes(startTime.getMinutes() - startTime.getTimezoneOffset());
@@ -74,7 +74,7 @@ export const TimeList = (props: Props) => {
           ? Locale.label("plans.timeEdit.typeOther")
           : Locale.label("plans.timeEdit.typeService");
       result.push(
-        <tr key={t.id}>
+        <tr key={t.id || `time-${i}`}>
           <td style={{ verticalAlign: "top" }}>
             <Icon>{typeIcon}</Icon>
           </td>
@@ -102,7 +102,7 @@ export const TimeList = (props: Props) => {
     });
     if (props.times.length === 0) {
       result.push(
-        <tr>
+        <tr key="no-times">
           <td colSpan={2}>{Locale.label("plans.timeList.noTime")}</td>
         </tr>
       );
@@ -125,7 +125,7 @@ export const TimeList = (props: Props) => {
   } else {
     return (
       <DisplayBox headerText={Locale.label("plans.timeList.times")} headerIcon="schedule" editContent={getAddTimeLink()}>
-        <table style={{ width: "100%" }}>{getRows()}</table>
+        <table style={{ width: "100%" }}><tbody>{getRows()}</tbody></table>
       </DisplayBox>
     );
   }

@@ -160,7 +160,7 @@ export function AppearanceEdit(props: Props) {
 
       return (
         <ImageEditor
-          photoUrl={currentUrl || ""}
+          photoUrl={currentUrl || "/images/no-image.png"}
           onUpdate={(dataUrl) => { imageUpdated(dataUrl || "", logoName); }}
           onCancel={() => { setEditLogo(false); setCurrentUrl(null); }}
           aspectRatio={aspectRatio}
