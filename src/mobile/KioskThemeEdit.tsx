@@ -138,7 +138,7 @@ export const KioskThemeEdit: React.FC = () => {
 
   if (editingImage === "slide") {
     const currentUrl = editingSlideIndex < config.idleScreen.slides.length ? config.idleScreen.slides[editingSlideIndex]?.imageUrl : "";
-    return <ImageEditor aspectRatio={16 / 9} photoUrl={currentUrl || ""} onCancel={() => setEditingImage(null)} onUpdate={handleSlideImageUpdate} outputWidth={1920} outputHeight={1080} />;
+    return <ImageEditor aspectRatio={16 / 9} photoUrl={currentUrl || "/images/no-image.png"} onCancel={() => setEditingImage(null)} onUpdate={handleSlideImageUpdate} outputWidth={1920} outputHeight={1080} />;
   }
 
   return (

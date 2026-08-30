@@ -78,6 +78,9 @@ export const NavigationTabs = memo((props: Props) => {
     handleDropdownClose();
   };
 
+  const tabValues = tabs.map((t) => t.value).filter(Boolean);
+  const tabsValue = tabValues.includes(selectedTab) ? selectedTab : (tabValues[0] || false);
+
   const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
     if (newValue !== dropdown?.value) onTabChange(newValue);
   };
@@ -89,7 +92,7 @@ export const NavigationTabs = memo((props: Props) => {
   return (
     <div style={containerStyle}>
       <Tabs
-        value={selectedTab}
+        value={tabsValue}
         onChange={handleTabChange}
         variant="scrollable"
         scrollButtons="auto"

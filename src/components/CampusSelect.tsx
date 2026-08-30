@@ -19,12 +19,16 @@ export const CampusSelect: React.FC<Props> = ({ control, name = "campusId", labe
   return (
     <FormControl fullWidth>
       <InputLabel id={labelId}>{lbl}</InputLabel>
-      <Controller name={name} control={control} render={({ field }) => (
-        <Select {...field} value={field.value ?? ""} labelId={labelId} label={lbl} data-testid={testId}>
-          <MenuItem value="">{Locale.label("people.personEdit.noCampus")}</MenuItem>
-          {campuses.map((c) => <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>)}
-        </Select>
-      )} />
+      <Controller name={name} control={control} render={({ field }) => {
+        const raw = field.value ?? "";
+        const known = raw === "" || campuses.some((c) => c.id === raw);
+        return (
+          <Select {...field} value={known ? raw : ""} labelId={labelId} label={lbl} data-testid={testId}>
+            <MenuItem value="">{Locale.label("people.personEdit.noCampus")}</MenuItem>
+            {campuses.map((c) => <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>)}
+          </Select>
+        );
+      }} />
     </FormControl>
   );
 };

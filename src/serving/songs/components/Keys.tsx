@@ -286,7 +286,7 @@ export const Keys = memo((props: Props) => {
           </Stack>
 
           <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-            <Tabs value={selectedKey?.id || ""} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" aria-label={Locale.label("songs.keys.keysTabsAria")}>
+            <Tabs value={selectedKey?.id || (canEdit ? "add" : false)} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" aria-label={Locale.label("songs.keys.keysTabsAria")}>
               {tabsComponent}
               {canEdit && (
                 <Tab

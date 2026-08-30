@@ -36,31 +36,31 @@ export const TreeReport = (props: Props) => {
     const result: React.ReactElement[] = [];
     const columns = props.output.columns;
     let previousData = {};
-    props.reportResult.table.forEach((d) => {
+    props.reportResult.table.forEach((d, rowIdx) => {
       const row: React.ReactElement[] = [];
-      const groupingRows: React.ReactElement[] = getGroupingRows(previousData, d);
+      const groupingRows: React.ReactElement[] = getGroupingRows(previousData, d, rowIdx);
       groupingRows.forEach((gr) => result.push(gr));
       for (let i = totalGroupings; i < columns.length; i++) {
         const c = columns[i];
-        if (i === totalGroupings) row.push(<TableCell style={{ paddingLeft: 30 * totalGroupings }}>{ReportHelper.getField(c, d)}</TableCell>);
-        else row.push(<TableCell>{ReportHelper.getField(c, d)}</TableCell>);
+        if (i === totalGroupings) row.push(<TableCell key={c.value || i} style={{ paddingLeft: 30 * totalGroupings }}>{ReportHelper.getField(c, d)}</TableCell>);
+        else row.push(<TableCell key={c.value || i}>{ReportHelper.getField(c, d)}</TableCell>);
       }
-      result.push(<TableRow>{row}</TableRow>);
+      result.push(<TableRow key={`row-${rowIdx}`}>{row}</TableRow>);
       previousData = d;
     });
     return result;
   };
 
-  const getGroupingRows = (previousData: any, data: any) => {
+  const getGroupingRows = (previousData: any, data: any, rowIdx: number) => {
     const result: React.ReactElement[] = [];
     const firstGroupModified = getFirstGroupModified(previousData, data);
     for (let i = firstGroupModified; i <= groupings.length; i++) {
-      result.push(getGroupingRow(data, i));
+      result.push(getGroupingRow(data, i, rowIdx));
     }
     return result;
   };
 
-  const getGroupingRow = (row: any, groupNumber: number) => {
+  const getGroupingRow = (row: any, groupNumber: number, rowIdx: number) => {
     const g = groupings[groupNumber];
     const prevCols = getPreviousGroupingCount(groupNumber);
     const outputRow: React.ReactElement[] = [];
@@ -69,13 +69,13 @@ export const TreeReport = (props: Props) => {
       const className = "heading" + (groupNumber + 1);
       if (i === prevCols && i > 0) {
         outputRow.push(
-          <TableCell className={className} style={{ paddingLeft: 30 * groupNumber }}>
+          <TableCell key={c.value || i} className={className} style={{ paddingLeft: 30 * groupNumber }}>
             {ReportHelper.getField(c, row)}
           </TableCell>
         );
-      } else outputRow.push(<TableCell className={className}>{ReportHelper.getField(c, row)}</TableCell>);
+      } else outputRow.push(<TableCell key={c.value || i} className={className}>{ReportHelper.getField(c, row)}</TableCell>);
     }
-    return <TableRow>{outputRow}</TableRow>;
+    return <TableRow key={`group-${rowIdx}-${groupNumber}`}>{outputRow}</TableRow>;
   };
 
   const getFirstGroupModified = (previousRow: any, row: any) => {

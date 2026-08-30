@@ -25,12 +25,12 @@ export const TableReport = (props: Props) => {
 
   const getRows = () => {
     const result: React.ReactElement[] = [];
-    props.reportResult.table.forEach((d) => {
+    props.reportResult.table.forEach((d, rowIdx) => {
       const row: React.ReactElement[] = [];
-      props.output.columns.forEach((c) => {
-        row.push(<TableCell>{ReportHelper.getField(c, d)}</TableCell>);
+      props.output.columns.forEach((c, colIdx) => {
+        row.push(<TableCell key={c.value || colIdx}>{ReportHelper.getField(c, d)}</TableCell>);
       });
-      result.push(<TableRow>{row}</TableRow>);
+      result.push(<TableRow key={rowIdx}>{row}</TableRow>);
     });
     return result;
   };
