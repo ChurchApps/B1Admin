@@ -10,7 +10,7 @@ import { type PlanInterface } from "../../helpers";
 import { CampusSelect } from "../../components/CampusSelect";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
-
+import { useFirstDayOfWeek, applyWeekStart } from "../../hooks";
 interface Props {
   plan: PlanInterface;
   plans: PlanInterface[];
@@ -23,6 +23,11 @@ export const PlanEdit = (props: Props) => {
   const [copyMode, setCopyMode] = React.useState<string>("all");
   const [copyServiceOrder, setCopyServiceOrder] = React.useState<boolean>(false);
   const [templateId, setTemplateId] = React.useState<string>("");
+
+  const firstDayOfWeek = useFirstDayOfWeek();
+  React.useMemo(() => {
+    applyWeekStart(firstDayOfWeek);
+  }, [firstDayOfWeek]);
 
   const templatesQuery = useQuery<any[]>({
     queryKey: [`/plantemplates/ministry/${props.plan?.ministryId}`, "DoingApi"],
@@ -43,8 +48,7 @@ export const PlanEdit = (props: Props) => {
     }
   });
 
-  const { errors } = useFormState({ control });
-  const e = errors as any;
+  const { errors } = useFormState({ control }); const e = errors as any;
 
   const summaryErrors: string[] = React.useMemo(() => {
     const errs: string[] = [];
@@ -139,13 +143,13 @@ export const PlanEdit = (props: Props) => {
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller name="serviceDate" control={control} rules={{ required: Locale.label("plans.planEdit.servReq") }} render={({ field }) => (
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} key={firstDayOfWeek}>
                 {/* MUI picker instead of native input: Chromium can render the native date popup off-screen on multi-monitor setups */}
                 <DatePicker
                   label={Locale.label("plans.planEdit.servDate")}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(v) => field.onChange(v && v.isValid() ? v.format("YYYY-MM-DD") : "")}
-                  slotProps={{ textField: { fullWidth: true, id: "serviceDate", error: !!e.serviceDate, helperText: e.serviceDate?.message, inputProps: { "data-testid": "service-date-input", "aria-label": Locale.label("plans.planEdit.serviceDateAria") } } }}
+                  slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true }, id: "serviceDate", error: !!e.serviceDate, helperText: e.serviceDate?.message, inputProps: { "data-testid": "service-date-input", "aria-label": Locale.label("plans.planEdit.serviceDateAria") } } }}
                 />
               </LocalizationProvider>
             )} />
