@@ -59,20 +59,7 @@
       "condition": "Feltétel",
       "confirmDelete": "Biztosan törölni szeretnéd ezt a címkesablont?",
       "default": "Alapértelmezett",
-      "empty": "Üres",
-      "equals": "Egyenlő",
       "field": "Mező",
-      "fieldChildren": "Gyermekek",
-      "fieldChildrenAllergies": "Gyermekek allergiái",
-      "fieldChurchName": "Gyülekezet neve",
-      "fieldDate": "Dátum",
-      "fieldDisplayName": "Név",
-      "fieldFirstName": "Keresztnév",
-      "fieldLastName": "Vezetéknév",
-      "fieldNametagNotes": "Névjegykártya megjegyzések",
-      "fieldNickName": "Becenév",
-      "fieldSecurityCode": "Biztonsági kód",
-      "fieldSessions": "Alkalmak",
       "fill": "Kitöltés",
       "fontSize": "Betűméret",
       "height": "Magasság (hüvelyk)",
@@ -82,8 +69,6 @@
       "nametag": "Névkitűző",
       "noTemplates": "Nincs címkesablon",
       "noTemplatesDesc": "Hozz létre címkesablont a be-/kijelentkezési kioszkokban nyomtatott címkék testreszabásához.",
-      "notEmpty": "Nem üres",
-      "notEquals": "Nem egyenlő",
       "opDoesNotEqual": "Nem egyenlő",
       "opEquals": "Egyenlő",
       "opIsBlank": "Üres",
@@ -140,7 +125,6 @@
   "calendars": {
     "approvals": {
       "approve": "Jóváhagyás",
-      "approvedToast": "Kérés jóváhagyva.",
       "bookingRequests": "Terem- és erőforráskérések",
       "confirmReject": "Biztosan elutasítja ezt a kérést?",
       "conflicts": "Ütközések",
@@ -152,7 +136,6 @@
       "noPendingEvents": "Nincs függőben lévő eseménykérés.",
       "reject": "Elutasítás",
       "rejectTitle": "Kérés elutasítása",
-      "rejectedToast": "Kérés elutasítva.",
       "roomResource": "Terem / Erőforrás",
       "status": "Állapot",
       "subtitle": "Függőben lévő terem-, erőforrás- és eseménykérések áttekintése",
@@ -183,12 +166,10 @@
       "create": "Create",
       "createCalendar": "Create Calendar",
       "delete": "Delete",
-      "deleting": "Deleting...",
       "editCalendar": "Edit Calendar",
       "namePlaceholder": "Enter a name for this calendar",
       "nameRequired": "Calendar name is required",
       "save": "Save",
-      "saving": "Saving...",
       "unauthorizedCreate": "Unauthorized to create calendars",
       "unauthorizedDelete": "Unauthorized to delete calendars"
     },
@@ -274,7 +255,6 @@
       "customWindow": "Egyéni foglalási ablak",
       "daily": "Naponta",
       "description": "Leírás",
-      "doesNotRepeat": "Nem ismétlődik",
       "end": "Vége",
       "eventTitle": "Cím",
       "group": "Csoport",
@@ -388,9 +368,6 @@
     },
     "help": "Help",
     "iconPicker": {
-      "icons": {
-        "self_improvement": "Imádság"
-      },
       "noResults": "Nincs találat",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
@@ -436,11 +413,7 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez chat megnyitása",
-      "ariaSend": "Üzenet küldése",
-      "errorAnswer": "Sajnálom, nem találtam választ.",
-      "errorGeneric": "Valami elromlott. Kérjük, próbálja újra.",
       "intro": "Üdv, Bez vagyok! Segíthetek eligazodni a B1 Adminban. Próbáljon kérdezni tőlem:",
-      "placeholderInput": "Tegyen fel egy kérdést Beznek...",
       "sampleCsv": "\"Hogyan importálok tagokat egy CSV-ből?\"",
       "sampleGiving": "\"Hogyan állítsam be az online adományozást?\"",
       "sampleGroup": "\"Hogyan hozok létre új csoportot?\"",
@@ -448,12 +421,8 @@
     },
     "docChat": {
       "ariaOpen": "Súgó chat megnyitása",
-      "ariaSend": "Üzenet küldése",
       "composing": "Válasz írása...",
-      "errorAnswer": "Sajnálom, nem találtam választ.",
-      "errorGeneric": "Valami elromlott. Kérjük, próbálja újra.",
       "intro": "Tegyen fel bármilyen kérdést a B1 Adminról. Például:",
-      "placeholderInput": "Tegyen fel egy kérdést...",
       "sampleCsv": "\"Hogyan importálok tagokat egy CSV-ből?\"",
       "sampleGiving": "\"Hogyan állítsam be az online adományozást?\"",
       "sampleGroup": "\"Hogyan hozok létre új csoportot?\"",
@@ -496,11 +465,7 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee chat megnyitása",
-      "ariaSend": "Üzenet küldése",
-      "errorAnswer": "Néha még a szuperhős is falba ütközik. Próbálja újra!",
-      "errorGeneric": "Valami elromlott. De ne aggódj — még erősebben térek vissza!",
       "intro": "Szia bajnok! Én vagyok SuperBee — a B1 Admin erőforrása. Tegye fel a legnehezebb kérdéseit!",
-      "placeholderInput": "Kérdezz bármit SuperBee-től...",
       "sampleCsv": "\"Hogyan importálok tagokat egy CSV-ből?\"",
       "sampleGiving": "\"Hogyan állítsam be az online adományozást?\"",
       "sampleGroup": "\"Hogyan hozok létre új csoportot?\"",
@@ -510,7 +475,6 @@
       "att": "Jelenlét",
       "dash": "Dashboard",
       "don": "Donations",
-      "form": "Form",
       "forms": "Forms",
       "groups": "Groups",
       "myWork": "Saját munka",
@@ -520,7 +484,6 @@
       "serving": "Serving",
       "set": "Settings",
       "songs": "Songs",
-      "tasks": "Tasks",
       "teams": "Teams",
       "workflows": "Munkafolyamatok"
     }
@@ -782,7 +745,6 @@
       "pending": "Függőben",
       "statements": "Giving Statements",
       "summary": "Summary",
-      "tableIdent": "Id",
       "total": "Total"
     },
     "donationsPage": {
@@ -847,55 +809,8 @@
       "errAmount": "Add meg a nullánál nagyobb fogadalmi összeget",
       "errPerson": "Válassz személyt"
     },
-    "pledgeStatus": {
-      "beyondPledged": "Fogadalmon felül",
-      "fulfilled": "Teljesített",
-      "inProgress": "Folyamatban",
-      "nonPledged": "Nem fogadott",
-      "notStarted": "Nem kezdett"
-    },
     "printAllStatementsPage": {
-      "annualStatementTitle": "{year} éves adományozási kimutatás",
-      "campaign": "Kampány",
-      "contributionDetails": "Adományozási részletek",
-      "disclaimer": "A {churchName} nem nyújtott árukat vagy szolgáltatásokat ezen adományok ellenértékeként. Az egyetlen kapott előny egy nem materiális vallási előny volt. A {churchName} nonprofit szervezet.",
-      "donorInformation": "Adományozói információk",
-      "fund": "Alap",
-      "fundBreakdown": "Alapok bontása",
-      "given": "Adományozott",
-      "issued": "Kibocsátva:",
-      "loadingStatements": "Kimutatások betöltése...",
-      "noteLabel": "Megjegyzés:",
-      "noteText": "Ez a kimutatás összegzi a {churchName} részére tett adományokat a {year}-es naptári évben. Kérjük, őrizze meg ezt a dokumentumot az adónyilvántartásához. A kimutatással kapcsolatos kérdések esetén forduljon a gyülekezet irodájához.",
-      "organization": "Szervezet",
-      "period": "Időszak: január 1. - december 31., {year}",
-      "pledgeProgress": "Fogadalmi kampányok",
-      "pledged": "Fogadott",
-      "statementSummary": "Kimutatás összefoglaló",
-      "status": "Állapot",
-      "totalContributions": "Összes adomány",
-      "totalContributionsLabel": "Összes adomány:"
-    },
-    "printDonationPage": {
-      "annualStatementTitle": "{year} éves adományozási kimutatás",
-      "campaign": "Kampány",
-      "contributionDetails": "Adományozási részletek",
-      "disclaimer": "A {churchName} nem nyújtott árukat vagy szolgáltatásokat ezen adományok ellenértékeként. Az egyetlen kapott előny egy nem materiális vallási előny volt. A {churchName} nonprofit szervezet.",
-      "donorInformation": "Adományozói információk",
-      "fund": "Alap",
-      "fundBreakdown": "Alapok bontása",
-      "given": "Adományozott",
-      "issued": "Kibocsátva:",
-      "noteLabel": "Megjegyzés:",
-      "noteText": "Ez a kimutatás összegzi a {churchName} részére tett adományokat a {year}-es naptári évben. Kérjük, őrizze meg ezt a dokumentumot az adónyilvántartásához. A kimutatással kapcsolatos kérdések esetén forduljon a gyülekezet irodájához.",
-      "organization": "Szervezet",
-      "period": "Időszak: január 1. - december 31., {year}",
-      "pledgeProgress": "Fogadalmi kampányok",
-      "pledged": "Fogadott",
-      "statementSummary": "Kimutatás összefoglaló",
-      "status": "Állapot",
-      "totalContributions": "Összes adomány",
-      "totalContributionsLabel": "Összes adomány:"
+      "loadingStatements": "Kimutatások betöltése..."
     },
     "stripeImportPage": {
       "alreadyImported": "Már importálva",
@@ -927,6 +842,11 @@
       "type": "Típus"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "Action",
@@ -949,6 +869,9 @@
     "formEdit": {
       "access": "Form Access",
       "accessLevelAria": "Hozzáférési szint",
+      "addToGroup": "Add submitters to a group",
+      "addToGroupHelper": "Submitters are added to this group automatically.",
+      "addToGroupNone": "None",
       "alone": "Stand Alone",
       "associate": "Associate With",
       "autoCreatePerson": "Create a person record from submissions",
@@ -1002,7 +925,6 @@
       "payment": "Payment",
       "phoneNum": "Phone Number",
       "plcOp": "Placeholder (optional)",
-      "prov": "Provider",
       "questionDescriptionAria": "Kérdés leírása",
       "questionEdit": "Edit Question",
       "questionReq": "Question is required.",
@@ -1065,19 +987,15 @@
       "team": "Team"
     },
     "groupBanner": {
-      "associatedServices": "Associated Services",
       "confirmDuplicate": "Duplikálod ezt a csoportot? A tagok nem lesznek átmásolva.",
       "copySuffix": "(Másolat)",
       "duplicateTooltip": "Csoport duplikálása",
       "emailTooltip": "E-mail küldése ennek a csoportnak",
-      "labels": "Labels",
       "location": "Helyszín",
-      "meetingInfo": "Meeting Information",
       "meetingTime": "Találkozó időpontja",
       "moreLabels": "More Labels",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
-      "settings": "Settings",
       "team": "Team",
       "textTooltip": "SMS küldése ennek a csoportnak",
       "trackAttendance": "Track Attendance"
@@ -1096,9 +1014,6 @@
       "noEvents": "Még nincs esemény. Használd az Események hozzáadása funkciót a csoport találkozóinak ütemezéséhez.",
       "noResponses": "Még nincs visszajelzés.",
       "oneTime": "Egyszeri",
-      "response_maybe": "Talán",
-      "response_no": "Nem",
-      "response_yes": "Igen",
       "rosterTitle": "Visszajelzések",
       "rsvpSummary": "{yes} igen · {maybe} talán · {no} nem",
       "rsvps": "Visszajelzések",
@@ -1261,8 +1176,7 @@
       "subtitle": {
         "create": "Get started by creating your first group",
         "manage": "Organize and manage your church groups"
-      },
-      "totalGroups": "Total Groups"
+      }
     },
     "membersAdd": {
       "availableMem": "Available Group Members",
@@ -1509,9 +1423,10 @@
       "addToWorkflow": "Hozzáadás munkafolyamathoz",
       "addToWorkflowPrompt": "{count} kiválasztott személy hozzáadása egy munkafolyamathoz kártyaként.",
       "apply": "Alkalmaz",
-      "campusTitle": "Hozzárendelés campushoz",
       "clearSelection": "Kijelölés törlése",
       "createNewGroup": "Új csoport létrehozása",
+      "customField": "Custom Field",
+      "customFieldTitle": "Set Custom Field",
       "delete": "Törlés",
       "deleteConfirm": "Biztosan törölni szeretne {count} kiválasztott személyt? Ez a művelet nem vonható vissza.",
       "deleteError": "A kiválasztott személyek törlése sikertelen",
@@ -1521,18 +1436,15 @@
       "error": "Hiba",
       "fieldPrompt": "{count} kiválasztott személy mezőjének frissítése.",
       "fieldSuccess": "{count} személy frissítve.",
-      "genderTitle": "Nem beállítása",
       "group": "Csoport",
-      "maritalStatusTitle": "Családi állapot beállítása",
-      "membershipStatusTitle": "Tagsági állapot beállítása",
       "newGroupName": "Új csoport neve",
+      "noCustomFields": "No Yes/No custom fields have been set up for people.",
       "optedOutField": "Leiratkozott mező",
       "optedOutNo": "Nem iratkozott le",
-      "optedOutTitle": "Leiratkozás beállítása",
       "optedOutYes": "Leiratkozott",
       "removeFromGroup": "Eltávolítás csoportból",
       "selected": "Kiválasztva",
-      "setCampus": "Kampusz beállítása",
+      "value": "Value",
       "workflowSuccess": "{count} személy hozzáadva a munkafolyamathoz."
     },
     "demographics": {
@@ -1743,7 +1655,6 @@
       "family": "family",
       "firstReq": "First name is required",
       "for": "for",
-      "invalForm": "Inval Form",
       "lastReq": "Last name is required",
       "maritalStatus": "Marital Status",
       "merge": "Merge",
@@ -1770,17 +1681,13 @@
       "donations": "Adományok",
       "forms": "Űrlapok",
       "groups": "Csoportok",
-      "notes": "Jegyzetek",
-      "profile": "Profil"
+      "notes": "Jegyzetek"
     },
     "personPage": {
       "confidentialNotes": "Bizalmas jegyzetek",
       "confidentialNotesSuffix": " Bizalmas jegyzetek",
       "notesSuffix": " Jegyzetek",
       "thisPerson": "ez a személy"
-    },
-    "personProfile": {
-      "railLabel": "Profil és űrlapok"
     },
     "personView": {
       "hasLoginLabel": "Van bejelentkezése: {email}",
@@ -1819,7 +1726,6 @@
     "campus": "Campus",
     "city": "City",
     "country": "Country",
-    "deceased": "Elhunyt",
     "displayName": "Display Name",
     "divorced": "Divorced",
     "email": "Email",
@@ -1827,14 +1733,12 @@
     "firstName": "First Name",
     "gender": "Gender",
     "grade": "Osztály",
-    "inactive": "Inactive",
     "lastName": "Last Name",
     "line1": "Line 1",
     "line2": "Line 2",
     "male": "Male",
     "maritalStatus": "Marital Status",
     "married": "Married",
-    "member": "Member",
     "membershipStatus": "Membership Status",
     "membershp": "Membership",
     "middleName": "Middle Name",
@@ -1843,10 +1747,8 @@
     "person": "Person",
     "phone": "Phone",
     "prefix": "Prefix",
-    "regularAttendee": "Regular Attendee",
     "school": "Iskola",
     "single": "Single",
-    "staff": "Staff",
     "state": "State/Province",
     "suffix": "Suffix",
     "unknown": "Unknown",
@@ -2013,6 +1915,22 @@
       "selectAction": "Select Action",
       "selectExternalItem": "Select External Item"
     },
+    "applyYearPlan": {
+      "dateTaken": "A plan already exists on this date.",
+      "externalSkipped": "This week is from an external provider and cannot be applied here.",
+      "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Could not load published year plans.",
+      "missingVenue": "Missing program, lesson, or venue.",
+      "nonePublished": "No year plans have been published yet.",
+      "savingFailed": "Failed to create some plans. Please check and try again.",
+      "schedulingProgress": "Scheduling...",
+      "startDate": "First class date",
+      "title": "Apply Year Plan",
+      "week": "Week",
+      "weekCount": "How many weeks",
+      "weeks": "weeks",
+      "yearPlan": "Year plan"
+    },
     "assignment": {
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
@@ -2157,12 +2075,17 @@
     },
     "planItem": {
       "addItem": "Add Item",
+      "clickToAddText": "Click to add text",
+      "collapseToSection": "Collapse to Section",
+      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
       "duration": "Időtartam",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
+      "estimatedDuration": "Estimated Duration",
       "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
       "item": "Item",
+      "restoreOriginal": "Restore Original",
       "song": "Song"
     },
     "planItemEdit": {
@@ -2178,12 +2101,15 @@
       "enterSearch": "Enter search term",
       "includeInServices": "Bevonás az istentiszteletekbe",
       "minutes": "Minutes",
+      "noPosition": "None",
       "planItemDescriptionAria": "Tervtétel leírása",
       "planItemNameAria": "Tervtétel neve",
+      "position": "Position",
       "searchBoxAria": "keresőmező",
       "seconds": "Seconds"
     },
     "planList": {
+      "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "createFirst": "Create First Plan",
       "createPlan": "Create Plan",
@@ -2225,6 +2151,7 @@
       "heading": "Kapcsolódó csoportok",
       "noGroups": "Nincs kapcsolódó csoport",
       "noGroupsDescription": "Rendelj csoportokat ehhez a tervtípushoz, hogy a tagok lássák a terveket a csoport B1App-beli oldalán.",
+      "parentHint": "Associate a parent group here so members see this week's lesson on the group page. Past is the usual filter for parent groups.",
       "removeConfirm": "Eltávolítod ezt a csoportkapcsolatot?",
       "selectGroup": "Válassz csoportot",
       "showsLabel": "Megjelenít",
@@ -2246,22 +2173,6 @@
       "overview": "Áttekintés",
       "planType": "Plan Type",
       "subtitle": "Configure plan type settings"
-    },
-    "planTypeReminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "Day of service",
-      "days2": "2 days before",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the service)"
     },
     "planValidation": {
       "and": "and",
@@ -2352,6 +2263,7 @@
       "addSection": "Add Section",
       "associateError": "Associate Error",
       "associateLesson": "Associate Lesson",
+      "autoSetTimesError": "Auto Set Times Error",
       "customizeLesson": "Customize",
       "disassociateError": "Disassociate Error",
       "lessonPreview": "Lesson Preview",
@@ -2360,8 +2272,7 @@
       "orderOfService": "Order of Service",
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "runTimes": "Futási idők",
-      "scrollDown": "Görgetés lefelé",
-      "scrollUp": "Görgetés felfelé",
+      "settingTimes": "Setting Times",
       "viewingAs": "Megtekintés mint"
     },
     "servingOverviewPage": {
@@ -2387,6 +2298,14 @@
     "servingPage": {
       "showAll": "Összes megjelenítése",
       "showAllHint": "A szolgálatai rejtve vannak, mert nem tagja azoknak. Kapcsolja be a fenti \"Összes megjelenítése\" opciót a megtekintésükhöz."
+    },
+    "signageFeed": {
+      "button": "Digital Signage",
+      "copy": "Copy",
+      "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
+      "feedUrl": "Feed Url",
+      "instructions": "Instructions for connecting to SignPresenter",
+      "title": "Digital Signage Feed"
     },
     "songDialog": {
       "close": "Bezárás",
@@ -2498,6 +2417,8 @@
       "lightMode": "Világos mód",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
+      "passCurrent": "Current password",
+      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2550,7 +2471,6 @@
       "selections": "Választható elemek",
       "sort": "Rendezés",
       "startDate": "Kezdés dátuma",
-      "total": "Összesen",
       "type": "Típus",
       "usesSoFar": "Felhasználás: {count}",
       "value": "Érték"
@@ -2560,10 +2480,6 @@
       "addAttendeeError": "Nem sikerült regisztrálni a résztvevőt.",
       "cancelConfirm": "Megszakítja ezt a regisztrációt?",
       "cancelRegistration": "Regisztráció megszakítása",
-      "csvDate": "Dátum",
-      "csvMembers": "Tagok",
-      "csvName": "Név",
-      "csvStatus": "Állapot",
       "date": "Dátum",
       "deleteConfirm": "Véglegesen törli ezt a regisztrációt?",
       "eventFull": "Ez az esemény megtelt.",
@@ -2874,6 +2790,8 @@
       "churchName": "Church Name",
       "churches": "Churches",
       "churchesSubtitle": "Keresés és az összes gyülekezet kezelése",
+      "commons": "Commons",
+      "commonsSubtitle": "Moderate community-submitted assets and reports",
       "impersonateSubtitle": "Bejelentkezés másik felhasználóként támogatás céljából",
       "impersonateUser": "Felhasználó megszemélyesítése",
       "jobs": "Háttérfeladatok",
@@ -2905,6 +2823,82 @@
       "churchNameSearchAria": "Gyülekezet név keresése",
       "restoreConfirm": "Visszaállítja a hozzáférést a(z) {name} gyülekezet számára?",
       "searchChurchesAria": "Gyülekezetek keresése"
+    },
+    "commonsTab": {
+      "allProducts": "All Products",
+      "allStatuses": "All Statuses",
+      "allTypes": "All Types",
+      "approve": "Approve",
+      "approveNote": "Approval note (optional)",
+      "approvedSuffix": "approved",
+      "assetStatus": {
+        "published": "Published"
+      },
+      "assetType": "Asset Type",
+      "badgeEditBy": "Edit by {name}",
+      "badgeEditByAuthor": "Edit by author",
+      "badgeNew": "New",
+      "changes": "Changes",
+      "claim": "Claim",
+      "colActions": "Actions",
+      "colAge": "Age",
+      "colAsset": "Asset",
+      "colChanges": "Changes",
+      "colScore": "Score",
+      "colSubmitter": "Submitter",
+      "colType": "Type",
+      "confirmApprove": "Approve this submission?",
+      "confirmApproveDetail": "{name} · {license}",
+      "confirmReject": "Reject Submission",
+      "copyrightReports": "Copyright",
+      "date": "Date",
+      "detailsUpdated": "Details updated",
+      "download": "Download",
+      "downloads": "Downloads",
+      "feature": "Feature",
+      "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
+      "files": "Files",
+      "firstSubmission": "first submission",
+      "justNow": "just now",
+      "licensePd": "Public domain",
+      "licenseWc": "Free for worship",
+      "lyricsAndChords": "Lyrics and chords",
+      "name": "Name",
+      "noAssets": "No assets found.",
+      "noFieldChanges": "No changes to show.",
+      "noReports": "No reports have been filed.",
+      "noSubmissions": "No submissions are waiting for review.",
+      "note": "Note",
+      "policyReports": "Policy & Other",
+      "possibleDuplicate": "Duplicate?",
+      "product": "Product",
+      "publisher": "Publisher",
+      "reason": "Reason",
+      "recentlyResolved": "Recently Resolved",
+      "reject": "Reject",
+      "remove": "Remove",
+      "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
+      "reporterRole": "Reporter Role",
+      "republish": "Republish",
+      "resolve": "Resolve",
+      "review": "Review",
+      "rights": "Rights",
+      "rightsFlag": "Rights",
+      "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
+      "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
+      "searchAssets": "Search assets",
+      "signature": "Signature",
+      "status": "Status",
+      "submittedBy": "Submitted by",
+      "tabAssets": "Assets",
+      "tabQueue": "Queue",
+      "tabReports": "Reports",
+      "unchangedFiles": "Unchanged files",
+      "unpublish": "Unpublish",
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "Kijelentkezel a saját munkamenetedből, és {email} felhasználóként lépsz be. A saját fiókodhoz való visszatéréshez jelentkezz ki, majd be újra.",
@@ -3150,7 +3144,6 @@
       "subdomainHelper": "Your church's unique web address"
     },
     "churchSettingsEdit": {
-      "firstDayOfWeek": "A hét első napja",
       "address1": "Address Line 1",
       "address2": "Address Line 2",
       "addressLine1Aria": "Cím 1. sor",
@@ -3160,6 +3153,7 @@
       "churchNameAria": "Gyülekezet neve",
       "churchSettings": "Church Settings",
       "domainsSubtitle": "Custom domain configuration",
+      "firstDayOfWeek": "A hét első napja",
       "general": "General",
       "generalSubtitle": "Support contact, directory, and visibility",
       "givingSubtitle": "Payment gateway and fee options",
@@ -3220,15 +3214,11 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "Done.  Please only click this link once.",
       "errorInvalid": "Invalid format. Enter domain only (e.g., yoursite.com or sub.yoursite.org). Do not include http://, paths, or trailing slashes."
     },
     "domainSettingsEdit": {
       "domMsg": "You can make your B1 website answer for any custom domain you wish.  Enter the associated domain name here and then add the following record to your DNS:",
       "domMsg2": "If your DNS provider will not allow you to add a CNAME record you can alternatively use an A record:",
-      "domMsg3": "If you receive SSL errors after adding the DNS entry.  Click here to ",
-      "domMsg4": ".  It can take up to 5 minutes.",
-      "domMsgConnect": "connect",
       "domain": "Domain",
       "domains": "Domains",
       "mainWebsite": "Fő weboldal",
@@ -3288,28 +3278,17 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
-      "clientId": "Client ID",
-      "clientSecret": "Client Secret",
       "copyWebhookUrl": "Webhook URL másolása",
       "currency": "Pénznem",
       "currencyHelper": "Győződjön meg arról, hogy ez a pénznem a Stripe műszerfalán is engedélyezve van. Pénznem engedélyezése itt:",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
-      "kfSetup": "Add meg a Kingdom Funding irányítópultodból a tokenizálási kulcsot és a forráskódot. Kezdés:",
-      "kfWebhookInstructions": "Add meg ezt a webhook URL-t a Kingdom Funding képviselőjének az onboarding során, hogy a tranzakciófrissítések visszakerüljenek az adományozási jelentéseidbe:",
       "none": "None",
-      "paypalSetup": "Hozz létre egy PayPal REST alkalmazást, és illeszd be az ügyfél-azonosítót és a titkos kulcsot az alábbiakba. Kezdés:",
       "privateKeyRequired": "Mentés előtt adja meg a szolgáltató titkos/privát kulcsát.",
       "prov": "Provider",
-      "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",
-      "secKey": "Secret Key",
-      "sourceKey": "Forráskód",
       "stripeDashboard": "Stripe Dashboard",
-      "stripeSetup": "Másold ki a nyilvános és titkos kulcsokat a Stripe irányítópultból (Fejlesztők → API-kulcsok), és illeszd be az alábbiakba. Nyisd meg a",
-      "tokenizationKey": "Tokenizálási kulcs",
       "transFee": "Transaction Fee",
-      "webhookKey": "Webhook-kulcs",
       "webhookKeyHelper": "Webhook-aláírási titok az Kingdom Funding vezérlőpaneljéről. A tranzakcióállapot-frissítésekhez szükséges.",
       "webhookUrlCopied": "A webhook URL vágólapra másolva"
     },
@@ -3486,9 +3465,12 @@
     },
     "webhookEdit": {
       "active": "Aktív",
+      "apiKeyRequired": "API key is required",
       "attempts": "Kísérletek",
+      "audienceIdRequired": "Audience ID is required",
       "close": "Bezárás",
       "connectorDiscord": "Discord",
+      "connectorMailchimp": "Mailchimp",
       "connectorSlack": "Slack",
       "connectorStandard": "Szabványos (nyers JSON)",
       "connectorType": "Összekötő típusa",
@@ -3502,6 +3484,10 @@
       "event": "Esemény",
       "events": "Események",
       "eventsRequired": "Válassz legalább egy eseményt",
+      "mailchimpApiKey": "Mailchimp API Key",
+      "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
+      "mailchimpAudienceId": "Audience ID",
+      "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
       "name": "Név",
       "namePlaceholder": "pl. Zapier — új tagok",
       "nameRequired": "A név megadása kötelező",
@@ -3513,6 +3499,7 @@
       "regenerateSecret": "Titok újragenerálása",
       "response": "Válasz",
       "responseBody": "Válasz tartalma",
+      "saveFailed": "Unable to save webhook",
       "secretIntro": "Másold ki az aláírási titkot most — többé nem jelenik meg.",
       "secretSignNote": "Ezzel ellenőrizheted az X-B1-Signature fejlécet minden kézbesítésnél.",
       "secretTitle": "Aláírási titok",
@@ -3542,32 +3529,16 @@
       "buttonTip": "Akadálymentesség ellenőrzése",
       "buttonTipIssues": "{count} akadálymentességi probléma az áttekintéshez",
       "close": "Bezárás",
-      "contrastLow": "A(z) {fg} szövegszín és a(z) {bg} háttérszín kontrasztaránya {ratio}:1, ami a 4.5:1-es minimum alatt van.",
-      "contrastLowHeading": "A(z) {fg} címszín és a(z) {bg} háttérszín kontrasztaránya {ratio}:1, ami a 4.5:1-es minimum alatt van.",
-      "emptyButtonText": "Ez a gomb a következőre mutat: {url}, de nincs szövegcímkéje.",
-      "emptyCardText": "Ez a kártya a következőre mutat: {url}, de nincs címe vagy szövege.",
-      "emptyLinkAnchor": "Egy hivatkozásnak nincs olvasható szövege. Adjon hozzá szöveget, hogy a célja egyértelmű legyen.",
-      "errorLabel": "Hiba",
-      "headingMultipleH1": "Ez az oldal több H1 címsort tartalmaz. Az oldal címeként csak egy H1-et használjon.",
-      "headingNoH1": "Ennek az oldalnak nincs H1 címsora. Adjon hozzá egy legfelső szintű címsort oldalcímként.",
-      "headingSkipped": "A címsorszint H{from}-ról H{to}-ra ugrik. A címsorszinteket egyesével növelje.",
       "highlight": "Megjelenítés az oldalon",
-      "missingAltGallery": "A(z) {n}. galériaképről hiányzik az alternatív szöveg.",
-      "missingAltImage": "A képről hiányzik az alternatív szöveg. Adjon hozzá leírást, hogy a képernyőolvasók közvetíteni tudják.",
       "noIssues": "Nem található akadálymentességi probléma",
       "noIssuesDetail": "A képeknek van alternatív szövege, a színek megfelelnek a kontrasztminimumnak, és a címsorok sorrendje helyes.",
       "pageLevel": "Teljes oldal",
       "panelAria": "Akadálymentességi problémák",
-      "rule_contrast": "Alacsony kontraszt",
-      "rule_emptyLink": "Üres hivatkozásszöveg",
-      "rule_headingOrder": "Címsorrend",
-      "rule_missingAlt": "Hiányzó alternatív szöveg",
       "sectionLabel": "{n}. szakasz",
       "subtitle": "Javítsa ezeket az oldal közzététele előtt",
       "summaryErrors": "{count} hiba",
       "summaryWarnings": "{count} figyelmeztetés",
-      "title": "Akadálymentesség",
-      "warningLabel": "Figyelmeztetés"
+      "title": "Akadálymentesség"
     },
     "addPage": {
       "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
@@ -3608,10 +3579,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_formal": "More formal",
-      "preset_grammar": "Fix grammar",
-      "preset_shorter": "Shorter",
-      "preset_warmer": "Warmer",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3694,12 +3661,9 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "draft": "Piszkozat",
       "navHint": "A látogatók a /blog oldalon olvashatják a bejegyzéseit. Adjon hozzá egy navigációs hivatkozást az Oldalak képernyőn, hogy megtalálják:",
       "noPosts": "No posts yet",
       "posts": "Posts",
-      "published": "Közzétéve",
-      "scheduled": "Ütemezve",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
       "title": "Blog",
@@ -3722,7 +3686,6 @@
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
-      "slug": "Slug",
       "slugHelper": "Automatikusan kitöltődik a címből, amíg nem módosítja. Webcím:",
       "slugLabel": "Webcím",
       "tags": "Tags",
@@ -3885,39 +3848,9 @@
       "column": "Oszlop",
       "common": "Általános",
       "countdown": "Visszaszámláló",
-      "descBox": "Flexible container box",
-      "descCalendar": "Event calendar view",
-      "descCampaignProgress": "Adománygyűjtési folyamatjelző, egy alap céljához kötve.",
-      "descCard": "Content card with image",
-      "descCarousel": "Sliding content gallery",
-      "descCountdown": "Visszaszámlálás egy dátumig vagy a heti alkalomig.",
-      "descDonateLink": "Donation link button",
-      "descDonation": "Donation form",
-      "descEmbedPage": "Embed external page",
-      "descExpandable": "Expandable Q&A section",
-      "descForm": "Custom form builder",
-      "descGallery": "Fotórács opcionális feliratokkal.",
-      "descGroupList": "Group directory",
-      "descHtml": "Custom HTML code",
-      "descIconFeature": "Ikon címmel és rövid leírással.",
-      "descImage": "Image with caption",
-      "descLocation": "Interactive map",
-      "descLogo": "Church logo/branding",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
-      "descRow": "Horizontal column layout",
       "descSection": "Container for grouping content",
-      "descSermons": "Sermon video gallery",
-      "descServiceTimes": "A heti istentiszteleti idők listája.",
-      "descSocialIcons": "Linkek a közösségimédia-profiljaidhoz.",
-      "descStaffGrid": "Csoporttagok rácsos elrendezése fotókkal és szerepkörökkel.",
-      "descStats": "Emeld ki a legfontosabb számokat címkékkel.",
-      "descStream": "Live stream embed",
-      "descTable": "Data table layout",
-      "descTestimonial": "Tagok idézetei szerzővel és opcionális fotóval.",
-      "descText": "Rich text content",
-      "descTextWithPhoto": "Text with side image",
-      "descVideo": "Video embed or upload",
       "donateLink": "Donate Link",
       "donation": "Donation",
       "embedPage": "Embed Page",
@@ -4062,8 +3995,7 @@
       "name": "Név",
       "noFilesYet": "No files uploaded yet",
       "size": "Méret",
-      "storage": "Tárhely:",
-      "storageLimit": "/ 100MB"
+      "storage": "Tárhely:"
     },
     "filesPage": {
       "subtitle": "Manage files and media for your website",
@@ -4114,14 +4046,7 @@
       "wide": "Széles"
     },
     "generateSite": {
-      "audience_community": "Community",
-      "audience_families": "Families",
-      "audience_newcomers": "Newcomers",
-      "audience_seniors": "Seniors",
-      "audience_youngAdults": "Young Adults",
-      "audience_youth": "Youth",
       "audiences": "Audiences",
-      "building": "Building your site...",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
       "churchName": "Church Name",
@@ -4139,11 +4064,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_casual": "Casual",
-      "tone_formal": "Formal",
-      "tone_inspirational": "Inspirational",
-      "tone_warm": "Warm"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Kattintson a Tartalom hozzáadása gombra az eszköztárban, majd húzzon egy szekciót vagy elemet az oldalra.",
@@ -4420,54 +4341,15 @@
       "dividerNone": "Nincs",
       "dividerShape": "Alakzat",
       "dividerTop": "Felső elválasztó",
-      "divider_curve": "Ív",
-      "divider_peaks": "Csúcsok",
-      "divider_slant": "Ferde",
-      "divider_triangle": "Háromszög",
-      "divider_wave": "Hullám",
-      "divider_waves": "Hullámok",
       "dividers": "Alakzatelválasztók",
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "Azonosító"
     },
     "sectionTemplates": {
-      "aboutSplit": "Történetünk",
       "all": "Összes",
       "blank": "Üres szekció",
-      "category": {
-        "about": "Rólunk",
-        "cta": "Cselekvésre ösztönzés",
-        "giving": "Adakozás",
-        "hero": "Hero",
-        "media": "Média",
-        "people": "Emberek és csoportok",
-        "services": "Istentiszteletek"
-      },
-      "connectColumns": "Kapcsolati oszlopok",
-      "ctaBanner": "Következő lépés banner",
-      "faqSection": "Gyakori kérdések",
-      "findUs": "Találjon meg minket",
-      "galleryRow": "Fotósor",
-      "givingBanner": "Adakozás banner",
-      "givingOptions": "Adakozási lehetőségek",
-      "groupListSection": "Csoportlista",
-      "groupsBrowser": "Csoportböngésző",
-      "heroCentered": "Fotó hero",
-      "heroGradient": "Színátmenetes hero",
-      "heroSplit": "Osztott hero",
-      "ministriesCards": "Szolgálati kártyák",
-      "sermonsLatest": "Legutóbbi üzenetek",
-      "serviceTimes": "Istentiszteleti időpontok",
-      "staffGrid": "Munkatársi rács",
-      "storyColumns": "Három oszlop",
-      "switchHint": "Az új elrendezésbe nem férő tartalom törlődik. A visszavonással állíthatja vissza.",
-      "switchTitle": "Másik elrendezés kipróbálása",
-      "testimony": "Bizonyságtétel idézet",
-      "title": "Szekció hozzáadása",
-      "verseBanner": "Igevers banner",
-      "watchOnline": "Nézze online",
-      "welcome": "Üdvözlő szöveg"
+      "switchHint": "Az új elrendezésbe nem férő tartalom törlődik. A visszavonással állíthatja vissza."
     },
     "sectionToolbar": {
       "aiRewrite": "AI rewrite",
@@ -4498,51 +4380,6 @@
     "siteSwitcher": {
       "mainWebsite": "Fő weboldal",
       "manageSites": "Weboldalak kezelése…"
-    },
-    "siteTemplates": {
-      "back": "Vissza",
-      "create": "Webhely létrehozása",
-      "creating": "{title} létrehozása...",
-      "descriptions": {
-        "classic": "Teljes, hagyományos webhely barátságos kezdőlappal, bemutatkozó oldallal és látogatástervező oldallal.",
-        "community": "A csoportokat és szolgálatokat helyezi középpontba, hogy az emberek gyorsan kapcsolódhassanak.",
-        "heritage": "Klasszikus, igeközpontú dizájn régóta fennálló gyülekezetek számára.",
-        "media": "Az élő közvetítés és az üzenetarchívum köré épül, erős online jelenléttel rendelkező gyülekezeteknek.",
-        "modern": "Modern megjelenés merész színátmenetekkel, online istentiszteletekkel és kapcsolódás oldallal.",
-        "simple": "Letisztult, kétoldalas kezdőcsomag, tökéletes gyülekezetplántálásokhoz és kis gyülekezetekhez.",
-        "visitor": "Arra összpontosít, hogy az először érkező vendégek kérdéseit még érkezésük előtt megválaszolja."
-      },
-      "errFailed": "A webhely létrehozása sikertelen. Kérjük, próbálja újra.",
-      "exists": "Már létezik",
-      "existsNote": "A „már létezik” jelölésű oldalak változatlanok maradnak.",
-      "intro": "Válasszon az alábbi kezdő webhelyek közül. Létrehozzuk Önnek az oldalakat és a navigációs linkeket — később minden szerkeszthető.",
-      "names": {
-        "classic": "Klasszikus gyülekezet",
-        "community": "Közösségi élet",
-        "heritage": "Örökség",
-        "media": "Elsősorban online",
-        "modern": "Modern üdvözlet",
-        "simple": "Egyszerű kezdet",
-        "visitor": "Látogatóközpontú"
-      },
-      "nav": {
-        "about": "Rólunk",
-        "connect": "Kapcsolódás",
-        "give": "Adakozás",
-        "home": "Kezdőlap",
-        "live": "Élő",
-        "sermons": "Igehirdetések",
-        "visit": "Látogatás"
-      },
-      "navLinksNote": "Emellett navigációs linkeket ad hozzá a beépített oldalakhoz:",
-      "pageCount": "{count} oldal",
-      "pages": {
-        "about": "Rólunk",
-        "connect": "Kapcsolódás",
-        "home": "Kezdőlap",
-        "visit": "Tervezze meg látogatását"
-      },
-      "title": "Kezdés sablonból"
     },
     "siteWidgets": {
       "addAction": "Művelet hozzáadása",
@@ -4580,20 +4417,13 @@
     "socialIconsEdit": {
       "alignment": "Igazítás",
       "color": "Szín",
-      "facebook": "Facebook",
       "filled": "Kitöltött",
       "iconStyle": "Ikonstílus",
-      "instagram": "Instagram",
       "large": "Nagy",
       "medium": "Közepes",
       "outlined": "Körvonalas",
-      "podcast": "Podcast",
       "size": "Méret",
-      "small": "Kicsi",
-      "tiktok": "TikTok",
-      "vimeo": "Vimeo",
-      "x": "X (Twitter)",
-      "youtube": "YouTube"
+      "small": "Kicsi"
     },
     "spacingScaleEdit": {
       "buttonOne": "1. gomb",
@@ -4692,7 +4522,6 @@
       "yourChurch": "Az Ön gyülekezete"
     },
     "tableEdit": {
-      "allowMarkdown": "Markdown engedélyezése",
       "columns": "Oszlopok",
       "empty": "(üres)",
       "firstRowHeader": "Első sor a fejléc",
@@ -4775,12 +4604,19 @@
   "songs": {
     "addSong": "Add Song",
     "arrangement": {
+      "chordProHint": "Chord Pro Hint",
       "deleteConfirm": "Are you sure you want to delete this arrangement?",
       "edit": "Edit Arrangement",
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
       "lyrics": "Lyrics",
       "name": "Arrangement Name",
       "title": "Arrangement"
+    },
+    "audio": {
+      "deleteConfirm": "Biztosan törli ezt a hangfájlt?",
+      "tooLarge": "A fájl túl nagy. A maximális méret 25 MB.",
+      "unsupportedFormat": "Nem támogatott hangformátum. Töltsön fel MP3, M4A vagy AAC fájlt.",
+      "upload": "Hang feltöltése"
     },
     "create": {
       "artist": "Artist",
@@ -4815,6 +4651,7 @@
       "add": "Add",
       "addExternalLink": "Add external link",
       "addFiles": "Add Files",
+      "audioTracks": "Sávok",
       "availableDownloads": "Elérhető letöltések",
       "externalLinks": "Külső linkek",
       "import": "Import",
@@ -4823,7 +4660,6 @@
       "keysTabsAria": "Hangnem fülek",
       "noKeysAvailable": "Nincsenek elérhető hangnemek. Adjon hozzá egyet a kezdéshez.",
       "title": "Keys",
-      "audioTracks": "Sávok",
       "uploadAudio": "Hang feltöltése"
     },
     "library": {
@@ -4903,13 +4739,7 @@
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },
-    "title": "Songs",
-    "audio": {
-      "deleteConfirm": "Biztosan törli ezt a hangfájlt?",
-      "tooLarge": "A fájl túl nagy. A maximális méret 25 MB.",
-      "unsupportedFormat": "Nem támogatott hangformátum. Töltsön fel MP3, M4A vagy AAC fájlt.",
-      "upload": "Hang feltöltése"
-    }
+    "title": "Songs"
   },
   "stockPhotos": {
     "photoBy": "Fotó:",
@@ -5001,10 +4831,6 @@
       "operator": "Operátor",
       "pauseAll": "Automatizálás szüneteltetése",
       "paused": "Szüneteltetve",
-      "recur_daily": "Naponta",
-      "recur_monthly": "Havonta",
-      "recur_weekly": "Hetente",
-      "recur_yearly": "Évente",
       "recurs": "Ismétlés",
       "resumeAll": "Automatizálás folytatása",
       "runNow": "Futtatás most",
@@ -5025,10 +4851,6 @@
       "resume": "Folytatás",
       "retry": "Újrapróbálás",
       "statusHeader": "Állapot",
-      "status_failed": "Sikertelen",
-      "status_paused": "Szüneteltetve",
-      "status_pending": "Függőben",
-      "status_success": "Sikeres",
       "subject": "Személy",
       "title": "Végrehajtási előzmények",
       "trigger": "Trigger",
@@ -5055,22 +4877,6 @@
       "taskNotesAria": "Feladat jegyzetek",
       "taskTitleAria": "Feladat címe",
       "titleTask": "Please enter a title for this task."
-    },
-    "reminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "On due date",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "noDueDate": "This task has no due date, so reminders won't send until one is set.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the due date)"
     },
     "requestedChanges": {
       "applied": "Changes applied",
@@ -5137,17 +4943,6 @@
       "taskDescription": "Leírás (opcionális)",
       "taskTitle": "Feladat neve",
       "title": "Automatizált műveletek",
-      "type": {
-        "addNote": "Megjegyzés hozzáadása",
-        "addToGroup": "Hozzáadás csoporthoz",
-        "addToWorkflow": "Hozzáadás munkafolyamathoz",
-        "createTask": "Feladat létrehozása",
-        "delay": "Várakozás",
-        "removeFromGroup": "Eltávolítás csoportból",
-        "sendEmail": "E-mail küldése",
-        "setField": "Mező beállítása",
-        "webhook": "Webhook"
-      },
       "value": "Érték",
       "webhookUrl": "Webhook URL (https)"
     },
@@ -5232,20 +5027,6 @@
       "noWorkflows": "Még nincs munkafolyamat. Adj hozzá egyet a kezdéshez.",
       "subtitle": "Személyek végigvezetése lépések sorozatán",
       "title": "Munkafolyamatok"
-    }
-  },
-  "ui": {
-    "personBanner": {
-      "memberStatus": "TAG"
-    },
-    "personNav": {
-      "attendance": "Részvétel",
-      "customForms": "Egyéni űrlapok",
-      "details": "Részletek",
-      "discipleship": "Tanítványság",
-      "giving": "Adományozás",
-      "groups": "Csoportok",
-      "notes": "Jegyzetek"
     }
   }
 }
