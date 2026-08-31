@@ -2,9 +2,10 @@ import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
-import { TextField, FormControl, Grid, Select, InputLabel, MenuItem, Box } from "@mui/material";
+import { FormControl, Grid, Select, InputLabel, MenuItem, Box } from "@mui/material";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
+import { AppDatePicker } from "../../components";
 
 type AnyRecord = Record<string, any>;
 
@@ -132,7 +133,9 @@ export const SessionEdit: React.FC<Props> = (props) => {
         <Grid container spacing={2}>
           {groupServiceTimes.length > 0 && <Grid size={{ xs: 12, sm: 6 }}>{getServiceTimes()}</Grid>}
           <Grid size={{ xs: 12, sm: groupServiceTimes.length > 0 ? 6 : 12 }}>
-            <TextField fullWidth type="date" label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...register("sessionDate", { validate: validateDate })} />
+            <Controller name="sessionDate" control={control} rules={{ validate: validateDate }} render={({ field }) => (
+              <AppDatePicker fullWidth label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...field} />
+            )} />
           </Grid>
         </Grid>
       </FormCard>

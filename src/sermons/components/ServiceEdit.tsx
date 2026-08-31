@@ -2,7 +2,7 @@ import { useForm, Controller, useFormState } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
-import { useConfirmDelete, useErrorSummary } from "../../hooks";
+import { useConfirmDelete, useErrorSummary, useFirstDayOfWeek, applyWeekStart } from "../../hooks";
 import {
   Grid,
   InputLabel,
@@ -28,6 +28,10 @@ import {
 } from "@mui/icons-material";
 import React from "react";
 import { ApiHelper } from "@churchapps/apphelper";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+
 import { DateHelper } from "@churchapps/apphelper";
 import { UniqueIdHelper } from "@churchapps/apphelper";
 import { Loading } from "@churchapps/apphelper";
@@ -39,6 +43,10 @@ type AnyRecord = Record<string, any>;
 
 export const ServiceEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
+  const firstDayOfWeek = useFirstDayOfWeek();
+  React.useMemo(() => {
+    applyWeekStart(firstDayOfWeek);
+  }, [firstDayOfWeek]);
   const sermonsQuery = useQuery<SermonInterface[]>({ queryKey: ["/sermons", "ContentApi"], placeholderData: [] });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -56,8 +64,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     }
   });
 
-  const { errors } = useFormState({ control });
-  const e = errors as any;
+  const { errors } = useFormState({ control }); const e = errors as any;
 
   const summaryErrors = useErrorSummary(errors, ["serviceLabel", "serviceTime"]);
 
@@ -229,22 +236,30 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, md: 6 }}>
-                    <TextField
-                      fullWidth
-                      label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTime")}
-                      type="datetime-local"
-                      InputLabelProps={{ shrink: true }}
-                      data-testid="service-time-input"
-                      error={!!e.serviceTime}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-                          </InputAdornment>
-                        )
-                      }}
-                      {...register("serviceTime", { required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTimeRequired") })}
-                    />
+                    <Controller name="serviceTime" control={control} rules={{ required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTimeRequired") }} render={({ field }) => (
+                      <LocalizationProvider dateAdapter={AdapterDayjs} key={firstDayOfWeek}>
+                        <DateTimePicker
+                          label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTime")}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(v) => field.onChange(v && v.isValid() ? v.format("YYYY-MM-DDTHH:mm") : "")}
+                          slotProps={{
+                            textField: {
+                              fullWidth: true,
+                              InputLabelProps: { shrink: true },
+                              inputProps: { "data-testid": "service-time-input" },
+                              error: !!e.serviceTime,
+                              InputProps: {
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                                  </InputAdornment>
+                                )
+                              }
+                            }
+                          }}
+                        />
+                      </LocalizationProvider>
+                    )} />
                   </Grid>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <FormControl fullWidth>

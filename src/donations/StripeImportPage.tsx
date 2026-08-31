@@ -1,9 +1,10 @@
 import React from "react";
 import { ApiHelper, DateHelper, UserHelper, CurrencyHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/apphelper";
-import { Box, Typography, Card, Stack, Button, TextField, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
+import { Box, Typography, Card, Stack, Button, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
 import { CloudDownload as ImportIcon, Search as PreviewIcon, CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
 import { CardWithHeader, hoverRowSx } from "../components/ui";
+import { AppDatePicker } from "../components";
 
 interface StripeEventResult {
   eventId: string;
@@ -201,17 +202,17 @@ export const StripeImportPage = () => {
             </Typography>
 
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="flex-start">
-              <TextField
+              <AppDatePicker
                 label="Start Date"
-                type="date"
+                
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
                 sx={{ minWidth: 200 }}
               />
-              <TextField
+              <AppDatePicker
                 label="End Date"
-                type="date"
+                
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}

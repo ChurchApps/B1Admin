@@ -7,6 +7,7 @@ import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { FundDonations } from "@churchapps/apphelper/donations";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   donationId: string;
@@ -140,7 +141,9 @@ export const DonationEdit = memo((props: Props) => {
         </Box>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField fullWidth label={Locale.label("donations.donationEdit.date")} type="date" data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...register("date")} />
+            <Controller name="date" control={control} render={({ field }) => (
+    <AppDatePicker fullWidth label={Locale.label("donations.donationEdit.date")}  data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")}  {...field} />
+  )} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller

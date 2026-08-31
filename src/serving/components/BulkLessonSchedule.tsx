@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
-  Box, Button, Typography, Stack, TextField, FormControl, InputLabel,
+  Box, Button, Typography, Stack, FormControl, InputLabel,
   Select, MenuItem, Table, TableHead, TableRow, TableCell, TableBody,
   Checkbox, LinearProgress, Alert
 } from "@mui/material";
@@ -10,6 +10,7 @@ import { FormCard } from "../../components/ui";
 import { getProvider, type ContentFolder, type ContentItem } from "@churchapps/content-providers";
 import { type PlanInterface } from "../../helpers";
 import { LessonSelector } from "./LessonSelector";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   ministryId: string;
@@ -263,10 +264,10 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
             )}
           </Box>
 
-          <TextField
+          <AppDatePicker
             fullWidth
             label={Locale.label("plans.bulkLessonSchedule.startDate") || "Start Date"}
-            type="date"
+            
             value={DateHelper.formatHtml5Date(startDate)}
             onChange={(e) => setStartDate(DateHelper.toDate(e.target.value))}
             disabled={saving}

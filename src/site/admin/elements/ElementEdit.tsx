@@ -33,6 +33,7 @@ import { StyleList } from "./StyleList";
 import { AnimationsEdit } from "./AnimationsEdit";
 import { VisibilityToggles } from "./VisibilityToggles";
 import { trackSave } from "../saveStatusTracker";
+import { AppDatePicker } from "../../../components";
 
 const standardAppearance = [
   "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
@@ -856,8 +857,8 @@ export function ElementEdit(props: Props) {
       </FormControl>
       <TextField fullWidth size="small" type="number" label={Locale.label("site.campaignProgressEdit.goalAmount")} name="goalAmount" value={parsedData.goalAmount ?? ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="campaign-goal-input" />
       <TextField fullWidth size="small" label={Locale.label("site.campaignProgressEdit.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-      <TextField fullWidth size="small" type="date" label={Locale.label("site.campaignProgressEdit.startDate")} name="startDate" value={parsedData.startDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-start-date-input" />
-      <TextField fullWidth size="small" type="date" label={Locale.label("site.campaignProgressEdit.endDate")} name="endDate" value={parsedData.endDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-end-date-input" />
+      <AppDatePicker fullWidth size="small"  label={Locale.label("site.campaignProgressEdit.startDate")} name="startDate" value={parsedData.startDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-start-date-input" />
+      <AppDatePicker fullWidth size="small"  label={Locale.label("site.campaignProgressEdit.endDate")} name="endDate" value={parsedData.endDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-end-date-input" />
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.showAmounts !== "false" && parsedData.showAmounts !== false} />} name="showAmounts" label={Locale.label("site.campaignProgressEdit.showAmounts")} />
       <TextField fullWidth size="small" label={Locale.label("site.campaignProgressEdit.donateUrl")} name="donateUrl" value={parsedData.donateUrl || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
     </>
