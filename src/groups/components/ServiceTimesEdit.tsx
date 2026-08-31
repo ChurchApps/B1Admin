@@ -3,7 +3,7 @@ import { type GroupInterface, type GroupServiceTimeInterface, type ServiceInterf
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import {
   Table, TableBody, TableRow, TableCell, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent,
-  Icon
+  Icon, Snackbar, Alert
 } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
 import { useCampuses } from "../../hooks/useCampuses";
@@ -21,6 +21,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
   const [serviceTimes, setServiceTimes] = React.useState<ServiceTimeInterface[]>([]);
   const [services, setServices] = React.useState<ServiceInterface[]>([]);
   const [addServiceTimeId, setAddServiceTimeId] = React.useState("");
+  const [errorToast, setErrorToast] = React.useState("");
 
   const loadData = useCallback(() => {
     ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => setGroupServiceTimes(data));
@@ -71,10 +72,18 @@ export const ServiceTimesEdit = memo((props: Props) => {
   const handleAdd = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
+      if (!addServiceTimeId) return;
+
+      const exists = groupServiceTimes.some(gst => gst.serviceTimeId === addServiceTimeId);
+      if (exists) {
+        setErrorToast("This service time is already added to the group.");
+        return;
+      }
+
       const gst = { groupId: props.group.id, serviceTimeId: addServiceTimeId } as GroupServiceTimeInterface;
       ApiHelper.post("/groupservicetimes", [gst], "AttendanceApi").then(loadData);
     },
-    [props.group.id, addServiceTimeId, loadData]
+    [props.group.id, addServiceTimeId, loadData, groupServiceTimes]
   );
 
   const handleChange = useCallback((e: SelectChangeEvent) => {
@@ -109,6 +118,9 @@ export const ServiceTimesEdit = memo((props: Props) => {
           {options}
         </Select>
       </FormControl>
+      <Snackbar open={!!errorToast} autoHideDuration={5000} onClose={() => setErrorToast("")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert severity="error" onClose={() => setErrorToast("")}>{errorToast}</Alert>
+      </Snackbar>
     </div>
   );
 });

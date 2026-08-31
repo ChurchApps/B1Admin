@@ -46,6 +46,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
   const [redoStack, setRedoStack] = useState<HistoryEntry[]>([]);
   const [isRestoring, setIsRestoring] = useState(false);
   const lastSaveRef = useRef<number>(0);
+  const lastDescriptionRef = useRef<string>("");
 
   // Use refs to track current stack values for use in callbacks
   const undoStackRef = useRef<HistoryEntry[]>([]);
@@ -207,6 +208,8 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = async (e: KeyboardEvent) => {
+      const ae = document.activeElement as HTMLElement | null;
+      if (ae && (["INPUT", "TEXTAREA", "SELECT"].includes(ae.tagName) || ae.isContentEditable)) return;
       // Ctrl+Z or Cmd+Z for undo
       if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
         e.preventDefault();
@@ -259,9 +262,11 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
 
     const now = Date.now();
 
-    // Debounce: don't save if last save was less than 500ms ago
-    if (now - lastSaveRef.current < 500) return;
+    // Debounce duplicate bursts only. A different description is a distinct action
+    // ("Before x"/"After x" pairs land <500ms apart) and must always be kept.
+    if (now - lastSaveRef.current < 500 && description === lastDescriptionRef.current) return;
     lastSaveRef.current = now;
+    lastDescriptionRef.current = description;
 
     const snapshot = createSnapshot(container);
     const entry: HistoryEntry = { snapshot, description, timestamp: now };

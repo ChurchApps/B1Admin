@@ -8,6 +8,7 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 // ZACCHAEUS/ZEBEDEE are test marker names.
 
 test.describe("People Management", () => {
+  test.describe.configure({ mode: "serial" });
 
   test.describe("Individuals", () => {
     test("should view person details", async ({ page }) => {

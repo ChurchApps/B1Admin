@@ -218,7 +218,7 @@ export function SectionEdit(props: Props) {
     setSection(p);
   };
 
-  const handleAnimationChange = (animations: AnimationsInterface | null) => {
+  const handleAnimationChange = (animations: AnimationsInterface) => {
     const p = { ...section };
     p.animations = animations || undefined;
     p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : undefined;

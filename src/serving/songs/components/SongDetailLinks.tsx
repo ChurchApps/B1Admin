@@ -81,7 +81,8 @@ export const SongDetailLinks = memo((props: Props) => {
             "&:hover": {
               transform: "translateY(-2px)",
               boxShadow: 2
-            }
+            },
+            backgroundColor: "#FFF"
           }}
           component="a"
           href={/^https?:\/\//i.test(link.url || "") || /^mailto:/i.test(link.url || "") ? link.url : "#"}
@@ -95,7 +96,7 @@ export const SongDetailLinks = memo((props: Props) => {
                 alt={link.service}
                 style={{
                   maxHeight: 40,
-                  maxWidth: 40,
+                  maxWidth: 60,
                   objectFit: "contain"
                 }}
               />

@@ -56,6 +56,9 @@ export const ComboBox: React.FC<Props> = (props) => {
         onChange={handleSelect}
         data-testid={props.testId ? `${props.testId}-select` : undefined}
         aria-label={props.label}>
+        {props.value && !props.options.includes(props.value) && (
+          <MenuItem key={props.value} value={props.value}>{props.value}</MenuItem>
+        )}
         {props.options.map((option) => (
           <MenuItem key={option} value={option}>{option}</MenuItem>
         ))}

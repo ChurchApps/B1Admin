@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 export const GroupPage = () => {
   const params = useParams();
 
-  const [selectedTab, setSelectedTab] = React.useState("");
+  const [selectedTab, setSelectedTab] = React.useState("members");
   const [editMode, setEditMode] = React.useState(false);
 
   const group = useQuery<GroupInterface>({

@@ -11,7 +11,7 @@ interface Props {
   styles: InlineStylesInterface,
   animations: AnimationsInterface,
   onStylesChange: (styles: any) => void;
-  onAnimationsChange: (animations: AnimationsInterface | null) => void;
+  onAnimationsChange: (animations: AnimationsInterface) => void;
 }
 
 export const StylesAnimations: React.FC<Props> = (props) => {
@@ -47,7 +47,7 @@ export const StylesAnimations: React.FC<Props> = (props) => {
           <Typography sx={{ color: "text.secondary" }}>{Locale.label("site.stylesAnimations.animationsDesc")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <AnimationsEdit animations={props.animations} onSave={(animations) => { setExpanded(""); props.onAnimationsChange(animations); }} />
+          <AnimationsEdit animations={props.animations} onSave={(animations) => { setExpanded(""); props.onAnimationsChange(animations); }} onCancel={() => setExpanded("")} />
         </AccordionDetails>
       </Accordion>
 

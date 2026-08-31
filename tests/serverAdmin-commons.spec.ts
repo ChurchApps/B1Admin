@@ -91,12 +91,13 @@ test.describe("serverAdmin Commons tab", () => {
     const commonsSection = page.locator('[data-testid="settings-section-commons"]');
     await expect(commonsSection).toBeVisible();
     await commonsSection.click();
+    await expect(page).toHaveURL(/[?&]tab=commons/);
 
     // (a) queue shows the seeded submission with the New badge and submitter
     const row1 = page.locator(`[data-testid="commons-queue-row-${sub1.submissionId}"]`);
     await expect(row1).toBeVisible();
     await expect(row1.getByText(title1)).toBeVisible();
-    await expect(row1.getByText("New")).toBeVisible();
+    await expect(row1.getByText("New", { exact: true })).toBeVisible();
     await expect(row1.getByText("Demo", { exact: false })).toBeVisible();
 
     // (b) review drawer: payload fields + file, approve publishes the asset
@@ -107,6 +108,7 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(drawer.getByText("tune.abc")).toBeVisible();
 
     await drawer.getByTestId("commons-drawer-approve").click();
+    await page.getByTestId("commons-drawer-approve-confirm").click();
     await expect(row1).not.toBeVisible();
 
     const publishedAsset = await request.get(`${API}/commons/assets/${sub1.assetId}`, auth(adminJwt));
@@ -152,5 +154,11 @@ test.describe("serverAdmin Commons tab", () => {
 
     await assetRow.getByTestId(`commons-asset-republish-${sub1.assetId}`).click();
     await expect(assetRow.getByText("Published")).toBeVisible();
+  });
+
+  test("opens Commons from tab query param", async ({ page }) => {
+    await login(page);
+    await page.goto("/admin?tab=commons");
+    await expect(page.getByTestId("commons-tab-queue")).toBeVisible();
   });
 });

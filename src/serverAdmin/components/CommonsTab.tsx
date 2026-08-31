@@ -1,14 +1,14 @@
 import React from "react";
 import { DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
 import {
-  Box, Button, Chip, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Stack,
-  Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography
+  Alert, Box, Button, Chip, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack,
+  Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
 } from "@mui/material";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import {
-  CommonsApi, REJECT_REASONS, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
-  type CommonsTypeDef, type CommonsQueueRow, type CommonsReport, type CommonsAsset,
+  CommonsApi, getWorshipCommonsOrigin, REJECT_REASONS, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
+  type CommonsTypeDef, type CommonsQueueRow, type CommonsReport, type CommonsAsset, type CommonsQualityDetail, type CommonsSubmitterStats,
   type RejectReason, type ReportResolution, type ReportAction, type RemovedReason, type AssetStatus
 } from "../commonsApi";
 import { CommonsReviewDrawer } from "./CommonsReviewDrawer";
@@ -16,6 +16,29 @@ import { CommonsReviewDrawer } from "./CommonsReviewDrawer";
 const OVERDUE_MS = 72 * 60 * 60 * 1000;
 
 const changeSymbol = (action: string) => (action === "add" ? "+" : action === "remove" ? "−" : "~");
+
+const queueAge = (d: Date) => {
+  const ms = Date.now() - d.getTime();
+  if (ms < 60 * 1000) return Locale.label("serverAdmin.commonsTab.justNow");
+  const minutes = Math.floor(ms / 60000);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  return DateHelper.prettyDate(d);
+};
+
+const submitterRecord = (stats: CommonsSubmitterStats) => {
+  if (stats.total === 0) return Locale.label("serverAdmin.commonsTab.firstSubmission");
+  return `${stats.approved}/${stats.total} ${Locale.label("serverAdmin.commonsTab.approvedSuffix")}`;
+};
+
+const scoreTooltip = (score: number, detail?: CommonsQualityDetail) => {
+  const bits = [String(score)];
+  if (detail?.parts?.length) bits.push(detail.parts.join(" + "));
+  if (detail?.notes) bits.push(detail.notes);
+  else if (!detail?.llm) bits.push(Locale.label("serverAdmin.commonsTab.scoreHeuristicOnly"));
+  return bits.join(" · ");
+};
 
 const badgeLabel = (row: CommonsQueueRow) => {
   if (row.isNewAsset) return Locale.label("serverAdmin.commonsTab.badgeNew");
@@ -74,7 +97,7 @@ const RejectDialog = (props: { row: CommonsQueueRow | null; onClose: () => void;
   );
 };
 
-const QueueView = () => {
+const QueueView = (props: { onPublished?: (assetId: string) => void }) => {
   const [types, setTypes] = React.useState<CommonsTypeDef[]>([]);
   const [rows, setRows] = React.useState<CommonsQueueRow[]>([]);
   const [product, setProduct] = React.useState("");
@@ -101,11 +124,6 @@ const QueueView = () => {
   const typesForProduct = React.useMemo(() => types.filter((t) => !product || t.product === product), [types, product]);
   const queueIds = React.useMemo(() => rows.map((r) => r.id), [rows]);
 
-  const approve = async (row: CommonsQueueRow) => {
-    await CommonsApi.post(`/admin/submissions/${row.id}/approve`, {});
-    setRows((prev) => prev.filter((r) => r.id !== row.id));
-  };
-
   const removeRow = (id: string) => setRows((prev) => prev.filter((r) => r.id !== id));
 
   const changesSummary = (row: CommonsQueueRow) => {
@@ -116,11 +134,13 @@ const QueueView = () => {
   return (
     <DisplayBox headerIcon="inventory_2" headerText={Locale.label("serverAdmin.commonsTab.tabQueue")}>
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
-          <InputLabel id="commons-product-label">{Locale.label("serverAdmin.commonsTab.product")}</InputLabel>
+        <FormControl size="small" sx={{ minWidth: 220, "& .MuiInputLabel-root": { overflow: "visible" } }}>
+          <InputLabel id="commons-product-label" shrink>{Locale.label("serverAdmin.commonsTab.product")}</InputLabel>
           <Select
             labelId="commons-product-label"
             label={Locale.label("serverAdmin.commonsTab.product")}
+            displayEmpty
+            notched
             value={product}
             onChange={(e) => { setProduct(e.target.value); setAssetType(""); }}
             data-testid="commons-filter-product"
@@ -129,11 +149,13 @@ const QueueView = () => {
             {products.map(([key, label]) => <MenuItem key={key} value={key}>{label}</MenuItem>)}
           </Select>
         </FormControl>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
-          <InputLabel id="commons-type-label">{Locale.label("serverAdmin.commonsTab.assetType")}</InputLabel>
+        <FormControl size="small" sx={{ minWidth: 240, "& .MuiInputLabel-root": { overflow: "visible" } }}>
+          <InputLabel id="commons-type-label" shrink>{Locale.label("serverAdmin.commonsTab.assetType")}</InputLabel>
           <Select
             labelId="commons-type-label"
             label={Locale.label("serverAdmin.commonsTab.assetType")}
+            displayEmpty
+            notched
             value={assetType}
             onChange={(e) => setAssetType(e.target.value)}
             data-testid="commons-filter-type"
@@ -162,8 +184,9 @@ const QueueView = () => {
           <TableBody>
             {rows.map((row) => {
               const submittedDate = row.submittedAt ? DateHelper.toDate(row.submittedAt) : null;
-              const age = submittedDate ? DateHelper.getDisplayDuration(submittedDate) : "-";
+              const age = submittedDate ? queueAge(submittedDate) : "-";
               const overdue = !!submittedDate && Date.now() - submittedDate.getTime() > OVERDUE_MS;
+              const score = row.triageScore;
               return (
                 <TableRow key={row.id} data-testid={`commons-queue-row-${row.id}`}>
                   <TableCell>
@@ -171,31 +194,42 @@ const QueueView = () => {
                     <br />
                     <Chip size="small" label={row.productLabel} />
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ whiteSpace: "normal", wordBreak: "break-word", maxWidth: 280 }}>
                     {row.assetName}
                     <br />
-                    <Chip size="small" label={badgeLabel(row)} />
+                    <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
+                      <Chip size="small" label={badgeLabel(row)} />
+                      {row.rightsFlag && (
+                        <Tooltip title={Locale.label("serverAdmin.commonsTab.rightsFlagTooltip")}>
+                          <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.rightsFlag")} />
+                        </Tooltip>
+                      )}
+                      {row.possibleDuplicate && (
+                        <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
+                      )}
+                    </Stack>
                   </TableCell>
                   <TableCell>
                     {row.submittedByName || "-"}
                     {row.submitterStats && (
                       <>
                         <br />
-                        <Typography variant="caption" color="text.secondary">
-                          {row.submitterStats.approved}/{row.submitterStats.total} {Locale.label("serverAdmin.commonsTab.approvedSuffix")}
-                        </Typography>
+                        <Typography variant="caption" color="text.secondary">{submitterRecord(row.submitterStats)}</Typography>
                       </>
                     )}
                   </TableCell>
                   <TableCell>{changesSummary(row)}</TableCell>
                   <TableCell sx={overdue ? { color: "error.main" } : undefined}>{age}</TableCell>
-                  <TableCell>{row.triageScore ?? "-"}</TableCell>
+                  <TableCell>
+                    {score == null ? "-" : (
+                      <Tooltip title={scoreTooltip(score, row.qualityDetail)}>
+                        <Typography variant="body2" component="span" sx={{ borderBottom: "1px dotted", cursor: "help" }}>{score}</Typography>
+                      </Tooltip>
+                    )}
+                  </TableCell>
                   <TableCell align="right">
                     <Button size="small" onClick={() => setReviewId(row.id)} data-testid={`commons-review-${row.id}`}>
                       {Locale.label("serverAdmin.commonsTab.review")}
-                    </Button>
-                    <Button size="small" color="success" onClick={() => approve(row)} data-testid={`commons-approve-${row.id}`}>
-                      {Locale.label("serverAdmin.commonsTab.approve")}
                     </Button>
                     <Button size="small" color="error" onClick={() => setRejectRow(row)} data-testid={`commons-reject-${row.id}`}>
                       {Locale.label("serverAdmin.commonsTab.reject")}
@@ -216,7 +250,11 @@ const QueueView = () => {
           queueIds={queueIds}
           onClose={() => setReviewId(null)}
           onSelect={setReviewId}
-          onApproved={(id) => { removeRow(id); setReviewId(null); }}
+          onApproved={(id, assetId) => {
+            removeRow(id);
+            setReviewId(null);
+            if (assetId) props.onPublished?.(assetId);
+          }}
           onRejected={(id) => { removeRow(id); setReviewId(null); }}
         />
       )}
@@ -524,6 +562,7 @@ const AssetsView = () => {
 
 export const CommonsTab = () => {
   const [subTab, setSubTab] = React.useState("queue");
+  const [publishedAssetId, setPublishedAssetId] = React.useState<string | null>(null);
 
   const tabs: NavigationTab[] = [
     { value: "queue", label: Locale.label("serverAdmin.commonsTab.tabQueue"), testId: "commons-tab-queue" },
@@ -535,10 +574,32 @@ export const CommonsTab = () => {
     <>
       <NavigationTabs selectedTab={subTab} onTabChange={setSubTab} tabs={tabs} testId="commonsTabs" />
       <Box sx={{ mt: 2 }}>
-        {subTab === "queue" && <QueueView />}
+        {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} />}
         {subTab === "reports" && <ReportsView />}
         {subTab === "assets" && <AssetsView />}
       </Box>
+      <Snackbar
+        open={!!publishedAssetId}
+        autoHideDuration={6000}
+        onClose={() => setPublishedAssetId(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="success" variant="filled" onClose={() => setPublishedAssetId(null)} sx={{ width: "100%" }}>
+          {Locale.label("serverAdmin.commonsTab.assetStatus.published")}
+          {" · "}
+          {publishedAssetId && (
+            <Box
+              component="a"
+              href={`${getWorshipCommonsOrigin()}/songs/${publishedAssetId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ color: "inherit", fontWeight: 600, textDecoration: "underline" }}
+            >
+              {Locale.label("serverAdmin.commonsTab.viewOnWorshipCommons")}
+            </Box>
+          )}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

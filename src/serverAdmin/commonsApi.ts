@@ -7,6 +7,13 @@ export const CommonsApi = {
   post: (path: string, data: any[] | Record<string, unknown> = {}): Promise<any> => ApiHelper.post(path, data, "CommonsApi" as any)
 };
 
+export const getWorshipCommonsOrigin = (): string => {
+  const env = import.meta.env as ImportMetaEnv & Record<string, string | undefined>;
+  const fromEnv = env.REACT_APP_WORSHIPCOMMONS_ORIGIN || env.VITE_WORSHIPCOMMONS_ORIGIN;
+  if (fromEnv) return fromEnv.replace(/\/$/, "");
+  return window.location.hostname === "localhost" ? "http://localhost:3104" : "https://worshipcommons.org";
+};
+
 // Shapes copied from Packages/helpers/src/interfaces/Commons.ts (not yet published for B1Admin to import)
 // plus the /commons/admin response shapes documented on CommonsAdminController. Keep in sync by hand.
 
@@ -43,6 +50,23 @@ export interface CommonsSubmitterStats {
   approved: number;
 }
 
+export interface CommonsQualityDetail {
+  heuristic?: number;
+  llm?: number;
+  parts?: string[];
+  notes?: string;
+}
+
+export interface CommonsDetailField {
+  key: string;
+  label: string;
+}
+
+export interface CommonsAttestation {
+  key: string;
+  label: string;
+}
+
 export interface CommonsQueueRow {
   id: string;
   assetId: string;
@@ -60,9 +84,12 @@ export interface CommonsQueueRow {
   isThirdParty: boolean;
   note?: string;
   triageScore?: number;
+  qualityDetail?: CommonsQualityDetail;
   submittedAt?: string;
   createdAt?: string;
   filesChanged: CommonsFileSummary[];
+  rightsFlag?: boolean;
+  possibleDuplicate?: boolean;
 }
 
 export interface CommonsSubmissionFile {
@@ -87,6 +114,7 @@ export interface CommonsPayload {
   license?: string;
   publisherChurchId?: string;
   detail?: Record<string, unknown>;
+  qualityDetail?: CommonsQualityDetail;
 }
 
 export interface CommonsLiveAsset {
@@ -105,6 +133,8 @@ export interface CommonsSubmissionDetail extends CommonsQueueRow {
   live?: CommonsLiveAsset;
   diff: { fields: CommonsDiffField[]; files: CommonsFileSummary[] };
   previewUrl?: string;
+  detailFields?: CommonsDetailField[];
+  attestations?: CommonsAttestation[];
 }
 
 export interface CommonsReport {

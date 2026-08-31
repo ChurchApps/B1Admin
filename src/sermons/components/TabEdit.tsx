@@ -210,7 +210,7 @@ export const TabEdit: React.FC<Props> = (props) => {
                         alignItems: "center",
                         justifyContent: "center",
                         color: "primary.main",
-                        backgroundColor: "#fff",
+                        backgroundColor: "background.paper",
                         cursor: "pointer",
                         "&:hover": {
                           borderColor: "primary.main",
@@ -284,7 +284,7 @@ export const TabEdit: React.FC<Props> = (props) => {
           </Stack>
         </DialogContent>
 
-        <DialogActions sx={{ p: 3, backgroundColor: "grey.50" }}>
+        <DialogActions sx={{ p: 3 }}>
           <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
             {currentTab?.id && (
               <Button

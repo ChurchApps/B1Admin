@@ -160,7 +160,7 @@ export function AppearanceEdit(props: Props) {
 
       return (
         <ImageEditor
-          photoUrl={currentUrl || ""}
+          photoUrl={currentUrl || "/images/no-image.png"}
           onUpdate={(dataUrl) => { imageUpdated(dataUrl || "", logoName); }}
           onCancel={() => { setEditLogo(false); setCurrentUrl(null); }}
           aspectRatio={aspectRatio}
@@ -230,7 +230,7 @@ export function AppearanceEdit(props: Props) {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title={Locale.label("site.appearanceEdit.logoManagement")} icon={<ImageIcon />}>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("site.appearanceEdit.logoUploadDescription")}</Typography>
 

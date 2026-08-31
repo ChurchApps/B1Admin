@@ -86,6 +86,7 @@ export const PositionList = (props: Props) => {
       const label = remaining === 1 ? Locale.label("plans.positionList.persNeed") : remaining.toString() + Locale.label("plans.positionList.pplNeed");
       result.push(
         <button
+          key="remaining"
           type="button"
           onClick={() => props.onAssignmentSelect?.(position, { positionId: position.id })}
           style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
@@ -101,7 +102,7 @@ export const PositionList = (props: Props) => {
     const hasPeople = assignments.length > 0;
     const group = position.groupId && Array.isArray(props.groups) ? ArrayHelper.getOne(props.groups, "id", position.groupId) : null;
     return (
-      <TableRow style={{ backgroundColor: color }}>
+      <TableRow key={position.id} style={{ backgroundColor: color }}>
         <TableCell style={{ paddingLeft: 10, paddingTop: 10, paddingBottom: 10, fontWeight: "bold", verticalAlign: "top" }}>{first ? position.categoryName : ""}</TableCell>
         <TableCell style={{ paddingTop: 10, paddingBottom: 10, verticalAlign: "top" }}>
           {canEdit ? (
