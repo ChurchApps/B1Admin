@@ -23,10 +23,8 @@ export const TimeEdit = (props: Props) => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const firstDayOfWeek = useFirstDayOfWeek();
-  React.useMemo(() => {
-    applyWeekStart(firstDayOfWeek);
-  }, [firstDayOfWeek]);
-  
+  applyWeekStart(firstDayOfWeek);
+
   const { control, register, handleSubmit, reset } = useForm<AnyRecord>({
     defaultValues: {
       serviceTimeType: props.time?.serviceTimeType ?? "service",
@@ -138,7 +136,7 @@ export const TimeEdit = (props: Props) => {
                   label={Locale.label("plans.timeEdit.timeStart")}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(v) => field.onChange(v && v.isValid() ? v.format("YYYY-MM-DDTHH:mm") : "")}
-                  slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true }, id: "startTime", error: !!e.startTime, helperText: e.startTime?.message, inputProps: { "data-testid": "time-start-input", "aria-label": Locale.label("plans.timeEdit.startTimeAria") } } }}
+                  slotProps={{ textField: { fullWidth: true, id: "startTime", error: !!e.startTime, helperText: e.startTime?.message, inputProps: { "data-testid": "time-start-input", "aria-label": Locale.label("plans.timeEdit.startTimeAria") } } }}
                 />
               </LocalizationProvider>
             )} />
@@ -150,7 +148,7 @@ export const TimeEdit = (props: Props) => {
                   label={Locale.label("plans.timeEdit.timeEnd")}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(v) => field.onChange(v && v.isValid() ? v.format("YYYY-MM-DDTHH:mm") : "")}
-                  slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true }, id: "endTime", error: !!e.endTime, helperText: e.endTime?.message, inputProps: { "data-testid": "time-end-input", "aria-label": Locale.label("plans.timeEdit.endTimeAria") } } }}
+                  slotProps={{ textField: { fullWidth: true, id: "endTime", error: !!e.endTime, helperText: e.endTime?.message, inputProps: { "data-testid": "time-end-input", "aria-label": Locale.label("plans.timeEdit.endTimeAria") } } }}
                 />
               </LocalizationProvider>
             )} />
