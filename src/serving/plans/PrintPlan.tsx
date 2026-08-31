@@ -334,8 +334,10 @@ export const PrintPlan = () => {
         <Grid size={{ xs: 8 }} style={{ padding: 5 }}>
           <div style={{ border: "5px solid #000" }}>
             <table style={{ width: "100%", margin: 0 }} cellSpacing={0}>
-              {renderHeaderRow()}
-              {renderRows()}
+              <tbody>
+                {renderHeaderRow()}
+                {renderRows()}
+              </tbody>
             </table>
           </div>
         </Grid>

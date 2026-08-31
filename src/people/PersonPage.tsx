@@ -54,18 +54,18 @@ export const PersonPage = () => {
     if (!params.id || params.id === "add") return;
     const churchId = UserHelper.currentUserChurch?.church?.id;
     const personId = UserHelper.person?.id;
-    if (!churchId) return;
-    const room = `content-person-${params.id}`;
-    SubscriptionManager.joinRoom(room, churchId, personId).catch(() => { /* ignore */ });
+    const conversationId = personData.data?.conversationId;
+    if (!churchId || !conversationId) return;
+    SubscriptionManager.joinRoom(conversationId, churchId, personId).catch(() => { /* ignore */ });
     const handlerId = `PersonPage-${params.id}`;
     SocketHelper.addHandler("conversationActivity", handlerId, (data: any) => {
       if (data?.contentType === "person" && data?.contentId === params.id) refetchRef.current();
     });
     return () => {
       SocketHelper.removeHandler(handlerId);
-      SubscriptionManager.leaveRoom(room, churchId).catch(() => { /* ignore */ });
+      SubscriptionManager.leaveRoom(conversationId, churchId).catch(() => { /* ignore */ });
     };
-  }, [params.id]);
+  }, [params.id, personData.data?.conversationId]);
 
   const person = useMemo<PersonInterface | null>(() => {
     if (params.id === "add" || !params.id) {

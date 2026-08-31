@@ -59,20 +59,7 @@
       "condition": "條件",
       "confirmDelete": "確定要刪除此標籤模板嗎？",
       "default": "預設",
-      "empty": "為空",
-      "equals": "等於",
       "field": "欄位",
-      "fieldChildren": "兒童",
-      "fieldChildrenAllergies": "兒童過敏資訊",
-      "fieldChurchName": "教會名稱",
-      "fieldDate": "日期",
-      "fieldDisplayName": "姓名",
-      "fieldFirstName": "名字",
-      "fieldLastName": "姓氏",
-      "fieldNametagNotes": "名牌備註",
-      "fieldNickName": "暱稱",
-      "fieldSecurityCode": "安全碼",
-      "fieldSessions": "場次",
       "fill": "填充",
       "fontSize": "字型大小",
       "height": "高度（英寸）",
@@ -82,8 +69,6 @@
       "nametag": "姓名牌",
       "noTemplates": "無標籤模板",
       "noTemplatesDesc": "建立標籤模板以自訂簽到自助服務機列印的標籤。",
-      "notEmpty": "不為空",
-      "notEquals": "不等於",
       "opDoesNotEqual": "不等於",
       "opEquals": "等於",
       "opIsBlank": "為空白",
@@ -140,7 +125,6 @@
   "calendars": {
     "approvals": {
       "approve": "批准",
-      "approvedToast": "請求已核准。",
       "bookingRequests": "房間與資源申請",
       "confirmReject": "您確定要拒絕此請求嗎？",
       "conflicts": "衝突",
@@ -152,7 +136,6 @@
       "noPendingEvents": "無待處理的活動申請。",
       "reject": "拒絕",
       "rejectTitle": "拒絕請求",
-      "rejectedToast": "請求已拒絕。",
       "roomResource": "房間 / 資源",
       "status": "狀態",
       "subtitle": "稽核待處理的房間、資源和活動申請",
@@ -183,12 +166,10 @@
       "create": "創造",
       "createCalendar": "建立日曆",
       "delete": "刪除",
-      "deleting": "刪除中...",
       "editCalendar": "編輯日曆",
       "namePlaceholder": "輸入此日曆的名稱",
       "nameRequired": "日曆名稱為必填項",
       "save": "儲存",
-      "saving": "儲存中...",
       "unauthorizedCreate": "無權建立日曆",
       "unauthorizedDelete": "無權刪除日曆"
     },
@@ -274,7 +255,6 @@
       "customWindow": "自訂預約視窗",
       "daily": "每天",
       "description": "描述",
-      "doesNotRepeat": "不重複",
       "end": "結束",
       "eventTitle": "標題",
       "group": "團體",
@@ -388,9 +368,6 @@
     },
     "help": "幫助",
     "iconPicker": {
-      "icons": {
-        "self_improvement": "祈禱"
-      },
       "noResults": "找不到結果",
       "searchLabel": "搜尋圖示",
       "searchPlaceholder": "輸入搜尋（例如：person、home、church）...",
@@ -436,11 +413,7 @@
   "components": {
     "bezChat": {
       "ariaOpen": "開啟 Bez 聊天",
-      "ariaSend": "傳送訊息",
-      "errorAnswer": "抱歉，我找不到答案。",
-      "errorGeneric": "出了點問題。請重試。",
       "intro": "您好，我是 Bez！我可以幫助您導航 B1 Admin。請嘗試問我：",
-      "placeholderInput": "向 Bez 提問...",
       "sampleCsv": "“如何從 CSV 匯入成員？”",
       "sampleGiving": "“如何設定線上奉獻？”",
       "sampleGroup": "“如何建立新小組？”",
@@ -448,12 +421,8 @@
     },
     "docChat": {
       "ariaOpen": "開啟幫助聊天",
-      "ariaSend": "傳送訊息",
       "composing": "正在編寫答案...",
-      "errorAnswer": "抱歉，我找不到答案。",
-      "errorGeneric": "出了點問題。請重試。",
       "intro": "詢問關於 B1 Admin 的任何問題。例如：",
-      "placeholderInput": "提出問題...",
       "sampleCsv": "“如何從 CSV 匯入成員？”",
       "sampleGiving": "“如何設定線上奉獻？”",
       "sampleGroup": "“如何建立新小組？”",
@@ -496,11 +465,7 @@
     },
     "superBeeChat": {
       "ariaOpen": "開啟 SuperBee 聊天",
-      "ariaSend": "傳送訊息",
-      "errorAnswer": "即使是超級英雄有時也會碰壁。請重試！",
-      "errorGeneric": "出了點問題。但別擔心 — 我會變得更強大歸來！",
       "intro": "嘿，冠軍！我是 SuperBee — 您的 B1 Admin 強力助手。把您最棘手的問題交給我！",
-      "placeholderInput": "向 SuperBee 提問任何問題...",
       "sampleCsv": "“如何從 CSV 匯入成員？”",
       "sampleGiving": "“如何設定線上奉獻？”",
       "sampleGroup": "“如何建立新小組？”",
@@ -510,7 +475,6 @@
       "att": "出席",
       "dash": "儀表板",
       "don": "捐贈",
-      "form": "表單",
       "forms": "表單",
       "groups": "小組",
       "myWork": "我的工作",
@@ -520,7 +484,6 @@
       "serving": "服務",
       "set": "設定",
       "songs": "歌曲",
-      "tasks": "任務",
       "teams": "團隊",
       "workflows": "工作流"
     }
@@ -782,7 +745,6 @@
       "pending": "待處理",
       "statements": "捐贈報表",
       "summary": "摘要",
-      "tableIdent": "ID",
       "total": "總計"
     },
     "donationsPage": {
@@ -847,55 +809,8 @@
       "errAmount": "請輸入大於零的承諾金額",
       "errPerson": "請選擇一個人"
     },
-    "pledgeStatus": {
-      "beyondPledged": "超額完成",
-      "fulfilled": "已完成",
-      "inProgress": "進行中",
-      "nonPledged": "非承諾",
-      "notStarted": "未開始"
-    },
     "printAllStatementsPage": {
-      "annualStatementTitle": "{year} 年度奉獻宣告",
-      "campaign": "活動",
-      "contributionDetails": "捐贈詳情",
-      "disclaimer": "{churchName} 沒有為這些捐贈提供任何商品或服務。所獲得的唯一益處是無形的宗教利益。{churchName} 是一個非營利組織。",
-      "donorInformation": "捐贈者資訊",
-      "fund": "基金",
-      "fundBreakdown": "基金明細",
-      "given": "已奉獻",
-      "issued": "簽發：",
-      "loadingStatements": "正在載入宣告...",
-      "noteLabel": "備註：",
-      "noteText": "本宣告彙總了 {year} 日曆年期間向 {churchName} 所作的捐贈。請保留此檔案作為您的稅務記錄。如對本宣告有任何疑問，請聯絡教會辦公室。",
-      "organization": "組織",
-      "period": "期間：{year} 年 1 月 1 日 - 12 月 31 日",
-      "pledgeProgress": "承諾活動",
-      "pledged": "已承諾",
-      "statementSummary": "宣告摘要",
-      "status": "狀態",
-      "totalContributions": "捐贈總額",
-      "totalContributionsLabel": "捐贈總額："
-    },
-    "printDonationPage": {
-      "annualStatementTitle": "{year} 年度奉獻宣告",
-      "campaign": "活動",
-      "contributionDetails": "捐贈詳情",
-      "disclaimer": "{churchName} 沒有為這些捐贈提供任何商品或服務。所獲得的唯一益處是無形的宗教利益。{churchName} 是一個非營利組織。",
-      "donorInformation": "捐贈者資訊",
-      "fund": "基金",
-      "fundBreakdown": "基金明細",
-      "given": "已奉獻",
-      "issued": "簽發：",
-      "noteLabel": "備註：",
-      "noteText": "本宣告彙總了 {year} 日曆年期間向 {churchName} 所作的捐贈。請保留此檔案作為您的稅務記錄。如對本宣告有任何疑問，請聯絡教會辦公室。",
-      "organization": "組織",
-      "period": "期間：{year} 年 1 月 1 日 - 12 月 31 日",
-      "pledgeProgress": "承諾活動",
-      "pledged": "已承諾",
-      "statementSummary": "宣告摘要",
-      "status": "狀態",
-      "totalContributions": "捐贈總額",
-      "totalContributionsLabel": "捐贈總額："
+      "loadingStatements": "正在載入宣告..."
     },
     "stripeImportPage": {
       "alreadyImported": "已匯入",
@@ -927,6 +842,11 @@
       "type": "型別"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "操作",
@@ -949,6 +869,9 @@
     "formEdit": {
       "access": "表單存取",
       "accessLevelAria": "存取級別",
+      "addToGroup": "Add submitters to a group",
+      "addToGroupHelper": "Submitters are added to this group automatically.",
+      "addToGroupNone": "None",
       "alone": "獨立",
       "associate": "關聯於",
       "autoCreatePerson": "Create a person record from submissions",
@@ -1002,7 +925,6 @@
       "payment": "付款",
       "phoneNum": "電話號碼",
       "plcOp": "佔位符（可選）",
-      "prov": "提供商",
       "questionDescriptionAria": "問題描述",
       "questionEdit": "編輯問題",
       "questionReq": "問題為必填項。",
@@ -1065,19 +987,15 @@
       "team": "團隊"
     },
     "groupBanner": {
-      "associatedServices": "相關服務",
       "confirmDuplicate": "複製此群組？成員不會被複制。",
       "copySuffix": "(副本)",
       "duplicateTooltip": "複製此群組",
       "emailTooltip": "向此小組傳送電子郵件",
-      "labels": "標籤",
       "location": "地點",
-      "meetingInfo": "會議資訊",
       "meetingTime": "聚會時間",
       "moreLabels": "更多標籤",
       "parentPickup": "家長接送",
       "printNametag": "列印名牌",
-      "settings": "設定",
       "team": "團隊",
       "textTooltip": "向此小組傳送簡訊",
       "trackAttendance": "追蹤出席"
@@ -1096,9 +1014,6 @@
       "noEvents": "暫無活動。使用「新增活動」安排本團體的會議。",
       "noResponses": "尚無回覆。",
       "oneTime": "一次性",
-      "response_maybe": "或許",
-      "response_no": "否",
-      "response_yes": "是",
       "rosterTitle": "RSVP 回覆名單",
       "rsvpSummary": "{yes} 是 · {maybe} 或許 · {no} 否",
       "rsvps": "RSVP 回覆",
@@ -1261,8 +1176,7 @@
       "subtitle": {
         "create": "首先建立您的第一個組",
         "manage": "組織和管理您的教會團體"
-      },
-      "totalGroups": "總組數"
+      }
     },
     "membersAdd": {
       "availableMem": "可用的群組成員",
@@ -1509,9 +1423,10 @@
       "addToWorkflow": "新增到工作流",
       "addToWorkflowPrompt": "將 {count} 名選中人員以卡片形式新增到工作流。",
       "apply": "應用",
-      "campusTitle": "分配到堂區",
       "clearSelection": "清除選擇",
       "createNewGroup": "建立新團體",
+      "customField": "Custom Field",
+      "customFieldTitle": "Set Custom Field",
       "delete": "刪除",
       "deleteConfirm": "您確定要刪除已選取的 {count} 位人員嗎？此操作無法復原。",
       "deleteError": "無法刪除所選人員",
@@ -1521,18 +1436,15 @@
       "error": "錯誤",
       "fieldPrompt": "更新 {count} 名選中人員的欄位。",
       "fieldSuccess": "已更新 {count} 人。",
-      "genderTitle": "設定性別",
       "group": "團體",
-      "maritalStatusTitle": "設定婚姻狀況",
-      "membershipStatusTitle": "設定會籍狀態",
       "newGroupName": "新團體名稱",
+      "noCustomFields": "No Yes/No custom fields have been set up for people.",
       "optedOutField": "退出欄位",
       "optedOutNo": "未退出",
-      "optedOutTitle": "設定退出",
       "optedOutYes": "已退出",
       "removeFromGroup": "從團體中移除",
       "selected": "已選中",
-      "setCampus": "設定校園",
+      "value": "Value",
       "workflowSuccess": "已將 {count} 人新增到工作流。"
     },
     "demographics": {
@@ -1743,7 +1655,6 @@
       "family": "家庭",
       "firstReq": "名字為必填項",
       "for": "為",
-      "invalForm": "格式無效",
       "lastReq": "姓氏為必填項",
       "maritalStatus": "婚姻狀況",
       "merge": "合併",
@@ -1770,17 +1681,13 @@
       "donations": "奉獻",
       "forms": "表單",
       "groups": "小組",
-      "notes": "筆記",
-      "profile": "個人資料"
+      "notes": "筆記"
     },
     "personPage": {
       "confidentialNotes": "機密備註",
       "confidentialNotesSuffix": " 機密備註",
       "notesSuffix": " 筆記",
       "thisPerson": "此人"
-    },
-    "personProfile": {
-      "railLabel": "資料與表單"
     },
     "personView": {
       "hasLoginLabel": "有登入帳號：{email}",
@@ -1819,7 +1726,6 @@
     "campus": "堂區",
     "city": "城市",
     "country": "國家",
-    "deceased": "已故",
     "displayName": "顯示名稱",
     "divorced": "離婚",
     "email": "電子郵件",
@@ -1827,14 +1733,12 @@
     "firstName": "名字",
     "gender": "性別",
     "grade": "年級",
-    "inactive": "不活躍",
     "lastName": "姓氏",
     "line1": "第1行",
     "line2": "第2行",
     "male": "男性",
     "maritalStatus": "婚姻狀況",
     "married": "已婚",
-    "member": "成員",
     "membershipStatus": "會員狀態",
     "membershp": "會員資格",
     "middleName": "中間名",
@@ -1843,10 +1747,8 @@
     "person": "人",
     "phone": "電話",
     "prefix": "字首",
-    "regularAttendee": "常規參加者",
     "school": "學校",
     "single": "單身",
-    "staff": "職員",
     "state": "州/省",
     "suffix": "字尾",
     "unknown": "未知",
@@ -2013,6 +1915,22 @@
       "selectAction": "選擇操作",
       "selectExternalItem": "選擇外部專案"
     },
+    "applyYearPlan": {
+      "dateTaken": "A plan already exists on this date.",
+      "externalSkipped": "This week is from an external provider and cannot be applied here.",
+      "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Could not load published year plans.",
+      "missingVenue": "Missing program, lesson, or venue.",
+      "nonePublished": "No year plans have been published yet.",
+      "savingFailed": "Failed to create some plans. Please check and try again.",
+      "schedulingProgress": "Scheduling...",
+      "startDate": "First class date",
+      "title": "Apply Year Plan",
+      "week": "Week",
+      "weekCount": "How many weeks",
+      "weeks": "weeks",
+      "yearPlan": "Year plan"
+    },
     "assignment": {
       "addPosition": "新增職位",
       "autoAssign": "自動分配",
@@ -2157,12 +2075,17 @@
     },
     "planItem": {
       "addItem": "新增專案",
+      "clickToAddText": "Click to add text",
+      "collapseToSection": "Collapse to Section",
+      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
       "duration": "持續時間",
       "editItem": "編輯專案",
       "editSection": "編輯部分",
+      "estimatedDuration": "Estimated Duration",
       "expandToActions": "展開為操作",
       "externalItem": "外部專案",
       "item": "物品",
+      "restoreOriginal": "Restore Original",
       "song": "歌曲"
     },
     "planItemEdit": {
@@ -2178,12 +2101,15 @@
       "enterSearch": "輸入搜尋詞",
       "includeInServices": "包含在服務中",
       "minutes": "分鐘",
+      "noPosition": "None",
       "planItemDescriptionAria": "計劃專案描述",
       "planItemNameAria": "計劃專案名稱",
+      "position": "Position",
       "searchBoxAria": "searchBox",
       "seconds": "秒"
     },
     "planList": {
+      "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "批次安排",
       "createFirst": "建立第一個計劃",
       "createPlan": "建立計劃",
@@ -2225,6 +2151,7 @@
       "heading": "關聯團體",
       "noGroups": "無關聯團體",
       "noGroupsDescription": "將團體與此計劃型別關聯，以便成員在 B1App 的團體頁面上看到計劃。",
+      "parentHint": "Associate a parent group here so members see this week's lesson on the group page. Past is the usual filter for parent groups.",
       "removeConfirm": "移除此團體關聯？",
       "selectGroup": "選擇團體",
       "showsLabel": "顯示",
@@ -2246,22 +2173,6 @@
       "overview": "概覽",
       "planType": "計劃型別",
       "subtitle": "配置計劃型別設定"
-    },
-    "planTypeReminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "Day of service",
-      "days2": "2 days before",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the service)"
     },
     "planValidation": {
       "and": "和",
@@ -2352,6 +2263,7 @@
       "addSection": "新增部分",
       "associateError": "關聯錯誤",
       "associateLesson": "副課",
+      "autoSetTimesError": "Auto Set Times Error",
       "customizeLesson": "自訂",
       "disassociateError": "取消關聯錯誤",
       "lessonPreview": "課程預覽",
@@ -2360,8 +2272,7 @@
       "orderOfService": "服務順序",
       "previewBanner": "這是關聯課程的預覽。點選\"定製\"進行編輯。",
       "runTimes": "執行時間",
-      "scrollDown": "向下滾動",
-      "scrollUp": "向上滾動",
+      "settingTimes": "Setting Times",
       "viewingAs": "以此身份檢視"
     },
     "servingOverviewPage": {
@@ -2387,6 +2298,14 @@
     "servingPage": {
       "showAll": "顯示全部",
       "showAllHint": "由於您不是成員，您的事工已被隱藏。請開啟上方的「顯示全部」以檢視。"
+    },
+    "signageFeed": {
+      "button": "Digital Signage",
+      "copy": "Copy",
+      "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
+      "feedUrl": "Feed Url",
+      "instructions": "Instructions for connecting to SignPresenter",
+      "title": "Digital Signage Feed"
     },
     "songDialog": {
       "close": "關閉",
@@ -2498,6 +2417,8 @@
       "lightMode": "淺色模式",
       "linkedAccounts": "關聯帳戶",
       "noDirect": "在成員目錄中隱藏我",
+      "passCurrent": "Current password",
+      "passCurrentMsg": "Please enter your current password.",
       "passLong": "請輸入至少8個字元的密碼。",
       "passMatch": "密碼不匹配。",
       "passNew": "新密碼",
@@ -2550,7 +2471,6 @@
       "selections": "選項",
       "sort": "排序",
       "startDate": "開始日期",
-      "total": "總計",
       "type": "類型",
       "usesSoFar": "已使用次數：{count}",
       "value": "數值"
@@ -2560,10 +2480,6 @@
       "addAttendeeError": "參與者報名失敗。",
       "cancelConfirm": "取消此報名？",
       "cancelRegistration": "取消報名",
-      "csvDate": "日期",
-      "csvMembers": "成員",
-      "csvName": "姓名",
-      "csvStatus": "狀態",
       "date": "日期",
       "deleteConfirm": "永久刪除此報名？",
       "eventFull": "此活動已達名額上限。",
@@ -2874,6 +2790,8 @@
       "churchName": "教會名稱",
       "churches": "教會",
       "churchesSubtitle": "搜尋並管理所有教會",
+      "commons": "Commons",
+      "commonsSubtitle": "Moderate community-submitted assets and reports",
       "impersonateSubtitle": "以其他使用者身分登入以提供支援",
       "impersonateUser": "模擬使用者",
       "jobs": "背景工作",
@@ -2905,6 +2823,82 @@
       "churchNameSearchAria": "教會名稱搜尋",
       "restoreConfirm": "要恢復 {name} 的存取權限嗎？",
       "searchChurchesAria": "搜尋教會"
+    },
+    "commonsTab": {
+      "allProducts": "All Products",
+      "allStatuses": "All Statuses",
+      "allTypes": "All Types",
+      "approve": "Approve",
+      "approveNote": "Approval note (optional)",
+      "approvedSuffix": "approved",
+      "assetStatus": {
+        "published": "Published"
+      },
+      "assetType": "Asset Type",
+      "badgeEditBy": "Edit by {name}",
+      "badgeEditByAuthor": "Edit by author",
+      "badgeNew": "New",
+      "changes": "Changes",
+      "claim": "Claim",
+      "colActions": "Actions",
+      "colAge": "Age",
+      "colAsset": "Asset",
+      "colChanges": "Changes",
+      "colScore": "Score",
+      "colSubmitter": "Submitter",
+      "colType": "Type",
+      "confirmApprove": "Approve this submission?",
+      "confirmApproveDetail": "{name} · {license}",
+      "confirmReject": "Reject Submission",
+      "copyrightReports": "Copyright",
+      "date": "Date",
+      "detailsUpdated": "Details updated",
+      "download": "Download",
+      "downloads": "Downloads",
+      "feature": "Feature",
+      "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
+      "files": "Files",
+      "firstSubmission": "first submission",
+      "justNow": "just now",
+      "licensePd": "Public domain",
+      "licenseWc": "Free for worship",
+      "lyricsAndChords": "Lyrics and chords",
+      "name": "Name",
+      "noAssets": "No assets found.",
+      "noFieldChanges": "No changes to show.",
+      "noReports": "No reports have been filed.",
+      "noSubmissions": "No submissions are waiting for review.",
+      "note": "Note",
+      "policyReports": "Policy & Other",
+      "possibleDuplicate": "Duplicate?",
+      "product": "Product",
+      "publisher": "Publisher",
+      "reason": "Reason",
+      "recentlyResolved": "Recently Resolved",
+      "reject": "Reject",
+      "remove": "Remove",
+      "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
+      "reporterRole": "Reporter Role",
+      "republish": "Republish",
+      "resolve": "Resolve",
+      "review": "Review",
+      "rights": "Rights",
+      "rightsFlag": "Rights",
+      "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
+      "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
+      "searchAssets": "Search assets",
+      "signature": "Signature",
+      "status": "Status",
+      "submittedBy": "Submitted by",
+      "tabAssets": "Assets",
+      "tabQueue": "Queue",
+      "tabReports": "Reports",
+      "unchangedFiles": "Unchanged files",
+      "unpublish": "Unpublish",
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "您將退出自己的會話並以 {email} 身份登入。要返回您的帳戶，請退出後重新登入。",
@@ -3150,7 +3144,6 @@
       "subdomainHelper": "您的教會獨特的網址"
     },
     "churchSettingsEdit": {
-      "firstDayOfWeek": "每週第一天",
       "address1": "地址第1行",
       "address2": "地址第2行",
       "addressLine1Aria": "地址行 1",
@@ -3160,6 +3153,7 @@
       "churchNameAria": "教會名稱",
       "churchSettings": "教會設定",
       "domainsSubtitle": "自訂域名配置",
+      "firstDayOfWeek": "每週第一天",
       "general": "常規",
       "generalSubtitle": "支援聯絡人、目錄和可見性",
       "givingSubtitle": "支付閘道器和費用選項",
@@ -3220,15 +3214,11 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "完成。請只點擊此連結一次。",
       "errorInvalid": "格式無效。僅輸入域名（如 yoursite.com 或 sub.yoursite.org）。不要包含 http://、路徑或斜槓。"
     },
     "domainSettingsEdit": {
       "domMsg": "您可以讓您的 B1 網站響應任何您想要的自訂域名。在此處輸入關聯的域名，然後將以下記錄新增到您的 DNS：",
       "domMsg2": "如果您的 DNS 提供商不允許您新增 CNAME 記錄，您可以替代使用 A 記錄：",
-      "domMsg3": "如果在新增 DNS 條目後收到 SSL 錯誤。單擊此處 ",
-      "domMsg4": "。最多可能需要5分鐘。",
-      "domMsgConnect": "連線",
       "domain": "域名",
       "domains": "域名",
       "mainWebsite": "主要網站",
@@ -3288,28 +3278,17 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
-      "clientId": "用戶端 ID",
-      "clientSecret": "用戶端金鑰",
       "copyWebhookUrl": "複製 Webhook URL",
       "currency": "貨幣",
       "currencyHelper": "請確保此貨幣也已在您的 Stripe 儀表板中啟用。在此啟用貨幣：",
       "forceMsg": "自動強制使用者承擔交易費用",
       "giving": "捐贈",
-      "kfSetup": "輸入您 Kingdom Funding 控制台中的權杖金鑰和來源金鑰。請前往",
-      "kfWebhookInstructions": "請在入駐期間將此 Webhook URL 提供給您的 Kingdom Funding 代表，以便交易更新流回您的奉獻報告：",
       "none": "無",
-      "paypalSetup": "建立 PayPal REST 應用並將其用戶端 ID 和金鑰貼上到下方。請前往",
       "privateKeyRequired": "儲存前請輸入此提供商的金鑰/私鑰。",
       "prov": "提供商",
-      "pubKey": "公鑰",
       "saveError": "無法儲存給予設定",
-      "secKey": "金鑰",
-      "sourceKey": "來源金鑰",
       "stripeDashboard": "Stripe儀表板",
-      "stripeSetup": "從 Stripe 控制台（開發者 → API 金鑰）複製您的可釋出金鑰和秘密金鑰並貼上到下方。開啟",
-      "tokenizationKey": "令牌金鑰",
       "transFee": "交易費",
-      "webhookKey": "Webhook 金鑰",
       "webhookKeyHelper": "來自 Kingdom Funding 控制面板的 Webhook 簽名金鑰。交易狀態更新所必需。",
       "webhookUrlCopied": "Webhook URL 已複製到剪貼簿"
     },
@@ -3486,9 +3465,12 @@
     },
     "webhookEdit": {
       "active": "已啟用",
+      "apiKeyRequired": "API key is required",
       "attempts": "嘗試次數",
+      "audienceIdRequired": "Audience ID is required",
       "close": "關閉",
       "connectorDiscord": "Discord",
+      "connectorMailchimp": "Mailchimp",
       "connectorSlack": "Slack",
       "connectorStandard": "標準（原始 JSON）",
       "connectorType": "聯結器型別",
@@ -3502,6 +3484,10 @@
       "event": "事件",
       "events": "事件",
       "eventsRequired": "請至少選擇一個事件",
+      "mailchimpApiKey": "Mailchimp API Key",
+      "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
+      "mailchimpAudienceId": "Audience ID",
+      "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
       "name": "名稱",
       "namePlaceholder": "例如：Zapier — 新成員",
       "nameRequired": "名稱為必填項",
@@ -3513,6 +3499,7 @@
       "regenerateSecret": "重新生成金鑰",
       "response": "響應",
       "responseBody": "響應正文",
+      "saveFailed": "Unable to save webhook",
       "secretIntro": "立即複製您的簽名金鑰——它不會再次顯示。",
       "secretSignNote": "使用它驗證每次推送中的 X-B1-Signature 標頭。",
       "secretTitle": "簽名金鑰",
@@ -3542,32 +3529,16 @@
       "buttonTip": "檢查無障礙功能",
       "buttonTipIssues": "{count} 個需要檢視的無障礙問題",
       "close": "關閉",
-      "contrastLow": "背景 {bg} 上的文本 {fg} 對比度為 {ratio}:1，低於 4.5:1 的最低要求。",
-      "contrastLowHeading": "背景 {bg} 上的標題顏色 {fg} 對比度為 {ratio}:1，低於 4.5:1 的最低要求。",
-      "emptyButtonText": "此按鈕連結到 {url}，但沒有文本標籤。",
-      "emptyCardText": "此卡片連結到 {url}，但沒有標題或文本。",
-      "emptyLinkAnchor": "此連結沒有可讀文本。請新增文本以明確其用途。",
-      "errorLabel": "錯誤",
-      "headingMultipleH1": "此頁面有多個 H1 標題。請只使用一個 H1 作為頁面標題。",
-      "headingNoH1": "此頁面沒有 H1 標題。請新增一個頂級標題作為頁面標題。",
-      "headingSkipped": "標題級別從 H{from} 跳到 H{to}。請逐級提高標題級別。",
       "highlight": "在頁面中顯示",
-      "missingAltGallery": "相簿圖片 {n} 缺少替代文本。",
-      "missingAltImage": "圖片缺少替代文本。請新增描述，以便螢幕閱讀器可以傳達它。",
       "noIssues": "未發現無障礙問題",
       "noIssuesDetail": "圖片有替代文本，顏色符合最低對比度要求，標題順序正確。",
       "pageLevel": "整個頁面",
       "panelAria": "無障礙問題",
-      "rule_contrast": "對比度過低",
-      "rule_emptyLink": "連結文本為空",
-      "rule_headingOrder": "標題順序",
-      "rule_missingAlt": "缺少替代文本",
       "sectionLabel": "第 {n} 部分",
       "subtitle": "請在釋出頁面前修復這些問題",
       "summaryErrors": "{count} 個錯誤",
       "summaryWarnings": "{count} 個警告",
-      "title": "無障礙功能",
-      "warningLabel": "警告"
+      "title": "無障礙功能"
     },
     "addPage": {
       "aiPlaceholder": "示例：建立一個歡迎主頁，包含我們教會名稱、使命宣言、禮拜時間和捐贈按鈕",
@@ -3608,10 +3579,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_formal": "More formal",
-      "preset_grammar": "Fix grammar",
-      "preset_shorter": "Shorter",
-      "preset_warmer": "Warmer",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3694,12 +3661,9 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "draft": "草稿",
       "navHint": "訪客可於 /blog 閱讀您的文章。請於「頁面」畫面新增導覽連結，方便訪客找到：",
       "noPosts": "No posts yet",
       "posts": "Posts",
-      "published": "已發布",
-      "scheduled": "已排程",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
       "title": "Blog",
@@ -3722,7 +3686,6 @@
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
-      "slug": "Slug",
       "slugHelper": "在您編輯前會自動依標題產生。網址：",
       "slugLabel": "網址",
       "tags": "Tags",
@@ -3885,39 +3848,9 @@
       "column": "列",
       "common": "常用",
       "countdown": "倒計時",
-      "descBox": "靈活容器盒",
-      "descCalendar": "活動日曆檢視",
-      "descCampaignProgress": "與基金目標關聯的籌款進度條。",
-      "descCard": "帶圖片的內容卡片",
-      "descCarousel": "滑動內容畫廊",
-      "descCountdown": "距某日期或每週聚會的倒計時器。",
-      "descDonateLink": "捐贈連結按鈕",
-      "descDonation": "捐贈表單",
-      "descEmbedPage": "嵌入外部頁面",
-      "descExpandable": "可展開的常見問題部分",
-      "descForm": "自訂表單生成器",
-      "descGallery": "帶可選說明文字的照片網格。",
-      "descGroupList": "群組目錄",
-      "descHtml": "自訂HTML程式碼",
-      "descIconFeature": "帶標題和簡短描述的圖示。",
-      "descImage": "帶標題的圖片",
-      "descLocation": "互動式地圖",
-      "descLogo": "教會標誌/品牌",
       "descReusableElement": "可重用元素塊",
       "descReusableSection": "可重用部分",
-      "descRow": "水平列布局",
       "descSection": "用於分組內容的容器",
-      "descSermons": "講道影片畫廊",
-      "descServiceTimes": "您每週禮拜時間的列表。",
-      "descSocialIcons": "連結到您的社交媒體主頁。",
-      "descStaffGrid": "包含照片和角色的團體成員網格。",
-      "descStats": "用標籤突出顯示關鍵數字。",
-      "descStream": "嵌入直播流",
-      "descTable": "資料表格佈局",
-      "descTestimonial": "帶作者和可選照片的會員語錄。",
-      "descText": "富文本內容",
-      "descTextWithPhoto": "帶側邊圖片的文字",
-      "descVideo": "嵌入或上傳影片",
       "donateLink": "捐贈連結",
       "donation": "捐贈",
       "embedPage": "嵌入頁面",
@@ -4062,8 +3995,7 @@
       "name": "名稱",
       "noFilesYet": "尚未上傳檔案",
       "size": "大小",
-      "storage": "儲存：",
-      "storageLimit": "/ 100MB"
+      "storage": "儲存："
     },
     "filesPage": {
       "subtitle": "管理網站的檔案和媒體",
@@ -4114,14 +4046,7 @@
       "wide": "寬幅"
     },
     "generateSite": {
-      "audience_community": "Community",
-      "audience_families": "Families",
-      "audience_newcomers": "Newcomers",
-      "audience_seniors": "Seniors",
-      "audience_youngAdults": "Young Adults",
-      "audience_youth": "Youth",
       "audiences": "Audiences",
-      "building": "Building your site...",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
       "churchName": "Church Name",
@@ -4139,11 +4064,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_casual": "Casual",
-      "tone_formal": "Formal",
-      "tone_inspirational": "Inspirational",
-      "tone_warm": "Warm"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "在工具欄中點選“新增內容”，然後將部分或元素拖到頁面上。",
@@ -4420,54 +4341,15 @@
       "dividerNone": "無",
       "dividerShape": "形狀",
       "dividerTop": "頂部分隔線",
-      "divider_curve": "曲線",
-      "divider_peaks": "尖峰",
-      "divider_slant": "斜線",
-      "divider_triangle": "三角形",
-      "divider_wave": "波浪",
-      "divider_waves": "多重波浪",
       "dividers": "造型分隔線",
       "duplicate": "複製",
       "duplicateSection": "複製部分",
       "id": "ID"
     },
     "sectionTemplates": {
-      "aboutSplit": "我們的故事",
       "all": "全部",
       "blank": "空白部分",
-      "category": {
-        "about": "關於我們",
-        "cta": "行動號召",
-        "giving": "奉獻",
-        "hero": "主視覺",
-        "media": "媒體",
-        "people": "人員與小組",
-        "services": "聚會"
-      },
-      "connectColumns": "聯絡方式分欄",
-      "ctaBanner": "下一步橫幅",
-      "faqSection": "常見問題",
-      "findUs": "找到我們",
-      "galleryRow": "照片行",
-      "givingBanner": "奉獻橫幅",
-      "givingOptions": "奉獻方式",
-      "groupListSection": "小組列表",
-      "groupsBrowser": "小組瀏覽",
-      "heroCentered": "照片主視覺",
-      "heroGradient": "漸變主視覺",
-      "heroSplit": "分欄主視覺",
-      "ministriesCards": "事工卡片",
-      "sermonsLatest": "最新講道",
-      "serviceTimes": "聚會時間",
-      "staffGrid": "同工網格",
-      "storyColumns": "三欄",
-      "switchHint": "不適合新佈局的多餘內容將被刪除。使用撤銷可將其恢復。",
-      "switchTitle": "嘗試其他佈局",
-      "testimony": "見證引言",
-      "title": "新增部分",
-      "verseBanner": "經文橫幅",
-      "watchOnline": "線上觀看",
-      "welcome": "歡迎文字"
+      "switchHint": "不適合新佈局的多餘內容將被刪除。使用撤銷可將其恢復。"
     },
     "sectionToolbar": {
       "aiRewrite": "AI rewrite",
@@ -4498,51 +4380,6 @@
     "siteSwitcher": {
       "mainWebsite": "主要網站",
       "manageSites": "管理網站…"
-    },
-    "siteTemplates": {
-      "back": "返回",
-      "create": "建立網站",
-      "creating": "正在建立 {title}...",
-      "descriptions": {
-        "classic": "一個完整的傳統網站，包含熱情的首頁、關於我們頁面和計劃來訪頁面。",
-        "community": "將小組和事工放在最顯眼的位置，讓人們快速融入。",
-        "heritage": "經典且以聖經為中心的設計，適合歷史悠久的教會。",
-        "media": "以您的直播和講道存檔為核心，適合線上影響力強的教會。",
-        "modern": "現代風格，配有醒目的漸變、線上聚會和聯絡頁面。",
-        "simple": "簡潔的兩頁起步網站，非常適合新建教會和小型會眾。",
-        "visitor": "專注於在初次來訪的訪客到來之前解答他們的問題。"
-      },
-      "errFailed": "建立網站失敗。請重試。",
-      "exists": "已存在",
-      "existsNote": "標記為“已存在”的頁面將保持不變。",
-      "intro": "請在下方選擇一個起步網站。我們將為您建立頁面和導航連結——之後一切都可以編輯。",
-      "names": {
-        "classic": "經典教會",
-        "community": "社群生活",
-        "heritage": "傳承",
-        "media": "線上優先",
-        "modern": "現代歡迎",
-        "simple": "簡單起步",
-        "visitor": "聚焦訪客"
-      },
-      "nav": {
-        "about": "關於我們",
-        "connect": "聯絡",
-        "give": "奉獻",
-        "home": "首頁",
-        "live": "直播",
-        "sermons": "講道",
-        "visit": "來訪"
-      },
-      "navLinksNote": "同時還會為內建頁面新增導航連結：",
-      "pageCount": "{count} 個頁面",
-      "pages": {
-        "about": "關於我們",
-        "connect": "聯絡",
-        "home": "首頁",
-        "visit": "計劃您的來訪"
-      },
-      "title": "從模板開始"
     },
     "siteWidgets": {
       "addAction": "新增操作",
@@ -4580,20 +4417,13 @@
     "socialIconsEdit": {
       "alignment": "對齊方式",
       "color": "顏色",
-      "facebook": "Facebook",
       "filled": "實心",
       "iconStyle": "圖示樣式",
-      "instagram": "Instagram",
       "large": "大",
       "medium": "中",
       "outlined": "描邊",
-      "podcast": "Podcast",
       "size": "大小",
-      "small": "小",
-      "tiktok": "TikTok",
-      "vimeo": "Vimeo",
-      "x": "X (Twitter)",
-      "youtube": "YouTube"
+      "small": "小"
     },
     "spacingScaleEdit": {
       "buttonOne": "按鈕 1",
@@ -4692,7 +4522,6 @@
       "yourChurch": "您的教會"
     },
     "tableEdit": {
-      "allowMarkdown": "允許 Markdown",
       "columns": "列",
       "empty": "（空）",
       "firstRowHeader": "首行作為標題",
@@ -4775,12 +4604,19 @@
   "songs": {
     "addSong": "新增歌曲",
     "arrangement": {
+      "chordProHint": "Chord Pro Hint",
       "deleteConfirm": "您確定要刪除此編曲嗎？",
       "edit": "編輯編曲",
       "enterLyrics": "手動輸入歌詞或從 PraiseCharts 匯入",
       "lyrics": "歌詞",
       "name": "編曲名稱",
       "title": "編曲"
+    },
+    "audio": {
+      "deleteConfirm": "確定要刪除此音訊檔案嗎？",
+      "tooLarge": "檔案太大。大小上限為 25 MB。",
+      "unsupportedFormat": "不支援的音訊格式。請上傳 MP3、M4A 或 AAC 檔案。",
+      "upload": "上傳音訊"
     },
     "create": {
       "artist": "藝術家",
@@ -4815,6 +4651,7 @@
       "add": "新增",
       "addExternalLink": "新增外部連結",
       "addFiles": "新增檔案",
+      "audioTracks": "音軌",
       "availableDownloads": "可用下載",
       "externalLinks": "外部連結",
       "import": "匯入",
@@ -4823,7 +4660,6 @@
       "keysTabsAria": "調標籤",
       "noKeysAvailable": "無可用調。新增一個調以開始。",
       "title": "調式",
-      "audioTracks": "音軌",
       "uploadAudio": "上傳音訊"
     },
     "library": {
@@ -4903,13 +4739,7 @@
       "songs": "歌曲",
       "subtitle": "管理您的音樂庫"
     },
-    "title": "歌曲",
-    "audio": {
-      "deleteConfirm": "確定要刪除此音訊檔案嗎？",
-      "tooLarge": "檔案太大。大小上限為 25 MB。",
-      "unsupportedFormat": "不支援的音訊格式。請上傳 MP3、M4A 或 AAC 檔案。",
-      "upload": "上傳音訊"
-    }
+    "title": "歌曲"
   },
   "stockPhotos": {
     "photoBy": "攝影：",
@@ -5001,10 +4831,6 @@
       "operator": "運算子",
       "pauseAll": "暫停自動化",
       "paused": "已暫停",
-      "recur_daily": "每天",
-      "recur_monthly": "每月",
-      "recur_weekly": "每週",
-      "recur_yearly": "每年",
       "recurs": "重複",
       "resumeAll": "恢復自動化",
       "runNow": "立即執行",
@@ -5025,10 +4851,6 @@
       "resume": "恢復",
       "retry": "重試",
       "statusHeader": "狀態",
-      "status_failed": "失敗",
-      "status_paused": "已暫停",
-      "status_pending": "待處理",
-      "status_success": "成功",
       "subject": "人員",
       "title": "執行歷史",
       "trigger": "觸發器",
@@ -5055,22 +4877,6 @@
       "taskNotesAria": "任務備註",
       "taskTitleAria": "任務標題",
       "titleTask": "請輸入此任務的標題。"
-    },
-    "reminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "On due date",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "noDueDate": "This task has no due date, so reminders won't send until one is set.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the due date)"
     },
     "requestedChanges": {
       "applied": "已應用更改",
@@ -5137,17 +4943,6 @@
       "taskDescription": "描述（可選）",
       "taskTitle": "任務標題",
       "title": "自動化操作",
-      "type": {
-        "addNote": "新增備註",
-        "addToGroup": "新增到團體",
-        "addToWorkflow": "新增到工作流",
-        "createTask": "建立任務",
-        "delay": "等待",
-        "removeFromGroup": "從團體中移除",
-        "sendEmail": "傳送郵件",
-        "setField": "設定欄位",
-        "webhook": "Webhook"
-      },
       "value": "值",
       "webhookUrl": "Webhook URL（https）"
     },
@@ -5232,20 +5027,6 @@
       "noWorkflows": "暫無工作流。新增一個以開始。",
       "subtitle": "讓人們經歷一系列步驟",
       "title": "工作流"
-    }
-  },
-  "ui": {
-    "personBanner": {
-      "memberStatus": "成員"
-    },
-    "personNav": {
-      "attendance": "出席",
-      "customForms": "自訂表單",
-      "details": "詳情",
-      "discipleship": "門徒訓練",
-      "giving": "奉獻",
-      "groups": "小組",
-      "notes": "筆記"
     }
   }
 }

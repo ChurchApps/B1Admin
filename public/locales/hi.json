@@ -59,20 +59,7 @@
       "condition": "शर्त",
       "confirmDelete": "क्या आप वाकई इस लेबल टेम्पलेट को हटाना चाहते हैं?",
       "default": "डिफ़ॉल्ट",
-      "empty": "खाली",
-      "equals": "बराबर है",
       "field": "फ़ील्ड",
-      "fieldChildren": "बच्चे",
-      "fieldChildrenAllergies": "बच्चों की एलर्जी",
-      "fieldChurchName": "चर्च का नाम",
-      "fieldDate": "तारीख",
-      "fieldDisplayName": "नाम",
-      "fieldFirstName": "प्रथम नाम",
-      "fieldLastName": "अंतिम नाम",
-      "fieldNametagNotes": "नेमटैग नोट्स",
-      "fieldNickName": "उपनाम",
-      "fieldSecurityCode": "सुरक्षा कोड",
-      "fieldSessions": "सत्र",
       "fill": "भरें",
       "fontSize": "फ़ॉन्ट आकार",
       "height": "ऊँचाई (इंच)",
@@ -82,8 +69,6 @@
       "nametag": "नेमटैग",
       "noTemplates": "कोई लेबल टेम्पलेट नहीं",
       "noTemplatesDesc": "चेक-इन कियोस्क द्वारा मुद्रित लेबल को अनुकूलित करने के लिए एक लेबल टेम्पलेट बनाएं।",
-      "notEmpty": "खाली नहीं",
-      "notEquals": "बराबर नहीं",
       "opDoesNotEqual": "बराबर नहीं है",
       "opEquals": "बराबर है",
       "opIsBlank": "खाली है",
@@ -140,7 +125,6 @@
   "calendars": {
     "approvals": {
       "approve": "स्वीकृत करें",
-      "approvedToast": "अनुरोध स्वीकृत।",
       "bookingRequests": "कमरा और संसाधन अनुरोध",
       "confirmReject": "क्या आप वाकई इस अनुरोध को अस्वीकार करना चाहते हैं?",
       "conflicts": "विरोध",
@@ -152,7 +136,6 @@
       "noPendingEvents": "कोई लंबित कार्यक्रम अनुरोध नहीं।",
       "reject": "अस्वीकार करें",
       "rejectTitle": "अनुरोध अस्वीकार करें",
-      "rejectedToast": "अनुरोध अस्वीकृत।",
       "roomResource": "कमरा / संसाधन",
       "status": "स्थिति",
       "subtitle": "लंबित कमरा, संसाधन और कार्यक्रम अनुरोधों की समीक्षा करें",
@@ -183,12 +166,10 @@
       "create": "बनाएं",
       "createCalendar": "कैलेंडर बनाएं",
       "delete": "हटाएं",
-      "deleting": "हटाया जा रहा है...",
       "editCalendar": "कैलेंडर संपादित करें",
       "namePlaceholder": "इस कैलेंडर के लिए एक नाम दर्ज करें",
       "nameRequired": "कैलेंडर नाम आवश्यक है",
       "save": "सहेजें",
-      "saving": "सहेजा जा रहा है...",
       "unauthorizedCreate": "कैलेंडर बनाने के लिए अनधिकृत",
       "unauthorizedDelete": "कैलेंडर हटाने के लिए अनधिकृत"
     },
@@ -274,7 +255,6 @@
       "customWindow": "कस्टम आरक्षण विंडो",
       "daily": "दैनिक",
       "description": "विवरण",
-      "doesNotRepeat": "दोहराता नहीं",
       "end": "समाप्ति",
       "eventTitle": "शीर्षक",
       "group": "समूह",
@@ -388,9 +368,6 @@
     },
     "help": "सहायता",
     "iconPicker": {
-      "icons": {
-        "self_improvement": "प्रार्थना"
-      },
       "noResults": "कोई परिणाम नहीं मिला",
       "searchLabel": "आइकन खोजें",
       "searchPlaceholder": "खोजने के लिए टाइप करें (जैसे, व्यक्ति, घर, चर्च)...",
@@ -436,11 +413,7 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez चैट खोलें",
-      "ariaSend": "संदेश भेजें",
-      "errorAnswer": "क्षमा करें, मुझे उत्तर नहीं मिला।",
-      "errorGeneric": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
       "intro": "नमस्ते, मैं Bez हूँ! मैं आपको B1 Admin में नेविगेट करने में मदद कर सकता हूँ। मुझसे पूछने का प्रयास करें:",
-      "placeholderInput": "Bez से प्रश्न पूछें...",
       "sampleCsv": "\"मैं CSV से सदस्यों को कैसे आयात करूं?\"",
       "sampleGiving": "\"मैं ऑनलाइन दान कैसे सेट करूं?\"",
       "sampleGroup": "\"मैं नया समूह कैसे बनाऊं?\"",
@@ -448,12 +421,8 @@
     },
     "docChat": {
       "ariaOpen": "सहायता चैट खोलें",
-      "ariaSend": "संदेश भेजें",
       "composing": "उत्तर लिख रहा है...",
-      "errorAnswer": "क्षमा करें, मुझे उत्तर नहीं मिला।",
-      "errorGeneric": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
       "intro": "B1 Admin के बारे में कोई भी प्रश्न पूछें। उदाहरण के लिए:",
-      "placeholderInput": "एक प्रश्न पूछें...",
       "sampleCsv": "\"मैं CSV से सदस्यों को कैसे आयात करूं?\"",
       "sampleGiving": "\"मैं ऑनलाइन दान कैसे सेट करूं?\"",
       "sampleGroup": "\"मैं नया समूह कैसे बनाऊं?\"",
@@ -496,11 +465,7 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee चैट खोलें",
-      "ariaSend": "संदेश भेजें",
-      "errorAnswer": "कभी-कभी सुपरहीरो भी दीवार से टकराता है। पुनः प्रयास करें!",
-      "errorGeneric": "कुछ गलत हो गया। लेकिन चिंता मत करो — मैं और मजबूत होकर लौटूंगा!",
       "intro": "नमस्कार, चैंपियन! मैं SuperBee हूँ — आपकी B1 Admin पावरहाउस। अपने सबसे कठिन सवालों से मुझे चुनौती दें!",
-      "placeholderInput": "SuperBee से कुछ भी पूछें...",
       "sampleCsv": "\"मैं CSV से सदस्यों को कैसे आयात करूं?\"",
       "sampleGiving": "\"मैं ऑनलाइन दान कैसे सेट करूं?\"",
       "sampleGroup": "\"मैं नया समूह कैसे बनाऊं?\"",
@@ -510,7 +475,6 @@
       "att": "उपस्थिति",
       "dash": "डैशबोर्ड",
       "don": "दान",
-      "form": "फॉर्म",
       "forms": "फॉर्म",
       "groups": "समूह",
       "myWork": "मेरा कार्य",
@@ -520,7 +484,6 @@
       "serving": "सेवा",
       "set": "सेटिंग्स",
       "songs": "गीत",
-      "tasks": "कार्य",
       "teams": "टीमें",
       "workflows": "वर्कफ़्लो"
     }
@@ -782,7 +745,6 @@
       "pending": "लंबित",
       "statements": "दान विवरण",
       "summary": "सारांश",
-      "tableIdent": "पहचान",
       "total": "कुल"
     },
     "donationsPage": {
@@ -847,55 +809,8 @@
       "errAmount": "शून्य से अधिक प्रतिज्ञा राशि दर्ज करें",
       "errPerson": "एक व्यक्ति चुनें"
     },
-    "pledgeStatus": {
-      "beyondPledged": "प्रतिज्ञा से अधिक",
-      "fulfilled": "पूर्ण",
-      "inProgress": "प्रगति में",
-      "nonPledged": "गैर-प्रतिज्ञात",
-      "notStarted": "शुरू नहीं हुआ"
-    },
     "printAllStatementsPage": {
-      "annualStatementTitle": "{year} वार्षिक दान विवरण",
-      "campaign": "अभियान",
-      "contributionDetails": "योगदान विवरण",
-      "disclaimer": "इन योगदानों के बदले {churchName} द्वारा कोई वस्तु या सेवा प्रदान नहीं की गई थी। प्राप्त एकमात्र लाभ एक अमूर्त धार्मिक लाभ था। {churchName} एक गैर-लाभकारी संगठन है।",
-      "donorInformation": "दानकर्ता जानकारी",
-      "fund": "फंड",
-      "fundBreakdown": "फंड ब्रेकडाउन",
-      "given": "दिया गया",
-      "issued": "जारी:",
-      "loadingStatements": "विवरण लोड हो रहे हैं...",
-      "noteLabel": "नोट:",
-      "noteText": "यह विवरण कैलेंडर वर्ष {year} के दौरान {churchName} को किए गए योगदानों का सारांश देता है। कृपया अपने कर रिकॉर्ड के लिए इस दस्तावेज़ को रखें। इस विवरण के बारे में प्रश्नों के लिए, कृपया चर्च कार्यालय से संपर्क करें।",
-      "organization": "संगठन",
-      "period": "अवधि: 1 जनवरी - 31 दिसंबर, {year}",
-      "pledgeProgress": "प्रतिज्ञा अभियान",
-      "pledged": "प्रतिज्ञात",
-      "statementSummary": "विवरण सारांश",
-      "status": "स्थिति",
-      "totalContributions": "कुल योगदान",
-      "totalContributionsLabel": "कुल योगदान:"
-    },
-    "printDonationPage": {
-      "annualStatementTitle": "{year} वार्षिक दान विवरण",
-      "campaign": "अभियान",
-      "contributionDetails": "योगदान विवरण",
-      "disclaimer": "इन योगदानों के बदले {churchName} द्वारा कोई वस्तु या सेवा प्रदान नहीं की गई थी। प्राप्त एकमात्र लाभ एक अमूर्त धार्मिक लाभ था। {churchName} एक गैर-लाभकारी संगठन है।",
-      "donorInformation": "दानकर्ता जानकारी",
-      "fund": "फंड",
-      "fundBreakdown": "फंड ब्रेकडाउन",
-      "given": "दिया गया",
-      "issued": "जारी:",
-      "noteLabel": "नोट:",
-      "noteText": "यह विवरण कैलेंडर वर्ष {year} के दौरान {churchName} को किए गए योगदानों का सारांश देता है। कृपया अपने कर रिकॉर्ड के लिए इस दस्तावेज़ को रखें। इस विवरण के बारे में प्रश्नों के लिए, कृपया चर्च कार्यालय से संपर्क करें।",
-      "organization": "संगठन",
-      "period": "अवधि: 1 जनवरी - 31 दिसंबर, {year}",
-      "pledgeProgress": "प्रतिज्ञा अभियान",
-      "pledged": "प्रतिज्ञात",
-      "statementSummary": "विवरण सारांश",
-      "status": "स्थिति",
-      "totalContributions": "कुल योगदान",
-      "totalContributionsLabel": "कुल योगदान:"
+      "loadingStatements": "विवरण लोड हो रहे हैं..."
     },
     "stripeImportPage": {
       "alreadyImported": "पहले से आयातित",
@@ -927,6 +842,11 @@
       "type": "प्रकार"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "कार्रवाई",
@@ -949,6 +869,9 @@
     "formEdit": {
       "access": "प्रपत्र प्रवेश",
       "accessLevelAria": "पहुँच स्तर",
+      "addToGroup": "Add submitters to a group",
+      "addToGroupHelper": "Submitters are added to this group automatically.",
+      "addToGroupNone": "None",
       "alone": "अकेला खड़ा रहो",
       "associate": "के साथ संबद्ध",
       "autoCreatePerson": "प्रस्तुतियों से व्यक्ति का रिकॉर्ड बनाएं",
@@ -1002,7 +925,6 @@
       "payment": "भुगतान",
       "phoneNum": "फ़ोन नंबर",
       "plcOp": "प्लेसहोल्डर (वैकल्पिक)",
-      "prov": "प्रदाता",
       "questionDescriptionAria": "प्रश्न विवरण",
       "questionEdit": "प्रश्न संपादित करें",
       "questionReq": "प्रश्न आवश्यक है।",
@@ -1065,19 +987,15 @@
       "team": "टीम"
     },
     "groupBanner": {
-      "associatedServices": "संबद्ध सेवाएँ",
       "confirmDuplicate": "इस समूह को डुप्लिकेट करें? सदस्यों की प्रतिलिपि नहीं बनाई जाएगी।",
       "copySuffix": "(प्रतिलिपि)",
       "duplicateTooltip": "इस समूह को डुप्लिकेट करें",
       "emailTooltip": "इस समूह को ईमेल भेजें",
-      "labels": "लेबल",
       "location": "स्थान",
-      "meetingInfo": "बैठक की जानकारी",
       "meetingTime": "मिलने का समय",
       "moreLabels": "अधिक लेबल",
       "parentPickup": "अभिभावक पिकअप",
       "printNametag": "नाम टैग प्रिंट करें",
-      "settings": "सेटिंग्स",
       "team": "टीम",
       "textTooltip": "इस समूह को टेक्स्ट भेजें",
       "trackAttendance": "उपस्थिति ट्रैक करें"
@@ -1096,9 +1014,6 @@
       "noEvents": "अभी कोई कार्यक्रम नहीं। इस समूह की बैठकें शेड्यूल करने के लिए कार्यक्रम जोड़ें का उपयोग करें।",
       "noResponses": "अभी तक कोई प्रतिक्रिया नहीं।",
       "oneTime": "एक बार",
-      "response_maybe": "शायद",
-      "response_no": "नहीं",
-      "response_yes": "हाँ",
       "rosterTitle": "RSVP प्रतिक्रियाएं",
       "rsvpSummary": "{yes} हाँ · {maybe} शायद · {no} नहीं",
       "rsvps": "RSVP",
@@ -1261,8 +1176,7 @@
       "subtitle": {
         "create": "अपना पहला समूह बनाकर आरंभ करें",
         "manage": "अपने चर्च समूहों को व्यवस्थित और प्रबंधित करें"
-      },
-      "totalGroups": "कुल समूह"
+      }
     },
     "membersAdd": {
       "availableMem": "उपलब्ध समूह सदस्य",
@@ -1509,9 +1423,10 @@
       "addToWorkflow": "वर्कफ़्लो में जोड़ें",
       "addToWorkflowPrompt": "{count} चयनित लोगों को वर्कफ़्लो में कार्ड के रूप में जोड़ें।",
       "apply": "लागू करें",
-      "campusTitle": "परिसर असाइन करें",
       "clearSelection": "चयन साफ़ करें",
       "createNewGroup": "नया समूह बनाएं",
+      "customField": "Custom Field",
+      "customFieldTitle": "Set Custom Field",
       "delete": "हटाएं",
       "deleteConfirm": "क्या आप वाकई {count} चयनित लोगों को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।",
       "deleteError": "चयनित लोगों को हटाने में असमर्थ",
@@ -1521,18 +1436,15 @@
       "error": "त्रुटि",
       "fieldPrompt": "{count} चयनित लोगों के लिए फ़ील्ड अपडेट करें।",
       "fieldSuccess": "{count} लोग अपडेट किए गए।",
-      "genderTitle": "लिंग सेट करें",
       "group": "समूह",
-      "maritalStatusTitle": "वैवाहिक स्थिति सेट करें",
-      "membershipStatusTitle": "सदस्यता स्थिति सेट करें",
       "newGroupName": "नए समूह का नाम",
+      "noCustomFields": "No Yes/No custom fields have been set up for people.",
       "optedOutField": "ऑप्ट आउट फ़ील्ड",
       "optedOutNo": "ऑप्ट आउट नहीं",
-      "optedOutTitle": "ऑप्ट आउट सेट करें",
       "optedOutYes": "ऑप्ट आउट हां",
       "removeFromGroup": "समूह से हटाएं",
       "selected": "चयनित",
-      "setCampus": "कैंपस सेट करें",
+      "value": "Value",
       "workflowSuccess": "{count} लोगों को वर्कफ़्लो में जोड़ा गया।"
     },
     "demographics": {
@@ -1743,7 +1655,6 @@
       "family": "परिवार",
       "firstReq": "पहला नाम आवश्यक है",
       "for": "के लिए",
-      "invalForm": "अमान्य प्रारूप",
       "lastReq": "अंतिम नाम आवश्यक है",
       "maritalStatus": "वैवाहिक स्थिति",
       "merge": "मर्ज",
@@ -1770,17 +1681,13 @@
       "donations": "दान",
       "forms": "फ़ॉर्म",
       "groups": "समूह",
-      "notes": "नोट्स",
-      "profile": "प्रोफ़ाइल"
+      "notes": "नोट्स"
     },
     "personPage": {
       "confidentialNotes": "गोपनीय नोट्स",
       "confidentialNotesSuffix": " गोपनीय नोट्स",
       "notesSuffix": " नोट्स",
       "thisPerson": "यह व्यक्ति"
-    },
-    "personProfile": {
-      "railLabel": "प्रोफ़ाइल और फ़ॉर्म"
     },
     "personView": {
       "hasLoginLabel": "लॉगिन है: {email}",
@@ -1819,7 +1726,6 @@
     "campus": "परिसर",
     "city": "शहर",
     "country": "देश",
-    "deceased": "दिवंगत",
     "displayName": "प्रदर्शन नाम",
     "divorced": "तलाकशुदा",
     "email": "ईमेल",
@@ -1827,14 +1733,12 @@
     "firstName": "पहला नाम",
     "gender": "लिंग",
     "grade": "ग्रेड",
-    "inactive": "निष्क्रिय",
     "lastName": "अंतिम नाम",
     "line1": "लाइन 1",
     "line2": "लाइन 2",
     "male": "पुरुष",
     "maritalStatus": "वैवाहिक स्थिति",
     "married": "विवाहित",
-    "member": "सदस्य",
     "membershipStatus": "सदस्यता स्थिति",
     "membershp": "सदस्यता",
     "middleName": "मध्य नाम",
@@ -1843,10 +1747,8 @@
     "person": "व्यक्ति",
     "phone": "फ़ोन",
     "prefix": "उपसर्ग",
-    "regularAttendee": "नियमित उपस्थित",
     "school": "विद्यालय",
     "single": "अकेला",
-    "staff": "कर्मचारी",
     "state": "राज्य/प्रांत",
     "suffix": "प्रत्यय",
     "unknown": "अज्ञात",
@@ -2013,6 +1915,22 @@
       "selectAction": "क्रिया चुनें",
       "selectExternalItem": "बाहरी आइटम चुनें"
     },
+    "applyYearPlan": {
+      "dateTaken": "A plan already exists on this date.",
+      "externalSkipped": "This week is from an external provider and cannot be applied here.",
+      "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Could not load published year plans.",
+      "missingVenue": "Missing program, lesson, or venue.",
+      "nonePublished": "No year plans have been published yet.",
+      "savingFailed": "Failed to create some plans. Please check and try again.",
+      "schedulingProgress": "Scheduling...",
+      "startDate": "First class date",
+      "title": "Apply Year Plan",
+      "week": "Week",
+      "weekCount": "How many weeks",
+      "weeks": "weeks",
+      "yearPlan": "Year plan"
+    },
     "assignment": {
       "addPosition": "स्थिति जोड़ें",
       "autoAssign": "ऑटो आवंटित",
@@ -2157,12 +2075,17 @@
     },
     "planItem": {
       "addItem": "आइटम जोड़ें",
+      "clickToAddText": "Click to add text",
+      "collapseToSection": "Collapse to Section",
+      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
       "duration": "अवधि",
       "editItem": "आइटम संपादित करें",
       "editSection": "अनुभाग संपादित करें",
+      "estimatedDuration": "Estimated Duration",
       "expandToActions": "क्रियाओं में विस्तार करें",
       "externalItem": "बाहरी आइटम",
       "item": "वस्तु",
+      "restoreOriginal": "Restore Original",
       "song": "गाना"
     },
     "planItemEdit": {
@@ -2178,12 +2101,15 @@
       "enterSearch": "खोज शब्द दर्ज करें",
       "includeInServices": "सेवाओं में शामिल करें",
       "minutes": "मिनट",
+      "noPosition": "None",
       "planItemDescriptionAria": "योजना आइटम विवरण",
       "planItemNameAria": "योजना आइटम का नाम",
+      "position": "Position",
       "searchBoxAria": "खोज बॉक्स",
       "seconds": "सेकंड"
     },
     "planList": {
+      "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "सामूहिक शेड्यूल",
       "createFirst": "पहली योजना बनाएं",
       "createPlan": "योजना बनाएं",
@@ -2225,6 +2151,7 @@
       "heading": "संबद्ध समूह",
       "noGroups": "कोई समूह संबद्ध नहीं",
       "noGroupsDescription": "इस योजना प्रकार के साथ समूह संबद्ध करें ताकि सदस्य B1App में अपने समूह के पृष्ठ पर योजनाएं देख सकें।",
+      "parentHint": "Associate a parent group here so members see this week's lesson on the group page. Past is the usual filter for parent groups.",
       "removeConfirm": "यह समूह संबद्धता हटाएं?",
       "selectGroup": "एक समूह चुनें",
       "showsLabel": "दिखाता है",
@@ -2246,22 +2173,6 @@
       "overview": "अवलोकन",
       "planType": "योजना का प्रकार",
       "subtitle": "योजना प्रकार सेटिंग्स कॉन्फ़िगर करें"
-    },
-    "planTypeReminders": {
-      "channels": "चैनल",
-      "day1": "1 दिन पहले",
-      "dayOf": "सेवा का दिन",
-      "days2": "2 दिन पहले",
-      "days3": "3 दिन पहले",
-      "days7": "7 दिन पहले",
-      "enable": "अनुस्मारक भेजें",
-      "message": "संदेश (वैकल्पिक)",
-      "messageHint": "डिफ़ॉल्ट अनुस्मारक संदेश का उपयोग करने के लिए खाली छोड़ दें।",
-      "save": "अनुस्मारक सहेजें",
-      "saved": "अनुस्मारक सहेजा गया।",
-      "timeOfDay": "दिन का समय",
-      "title": "अनुस्मारक",
-      "when": "कब याद दिलाना है (सेवा से पहले)"
     },
     "planValidation": {
       "and": "और",
@@ -2352,6 +2263,7 @@
       "addSection": "अनुभाग जोड़ें",
       "associateError": "संबद्धता त्रुटि",
       "associateLesson": "सहयोगी पाठ",
+      "autoSetTimesError": "Auto Set Times Error",
       "customizeLesson": "अनुकूलित करें",
       "disassociateError": "विसंबद्धता त्रुटि",
       "lessonPreview": "पाठ पूर्वावलोकन",
@@ -2360,8 +2272,7 @@
       "orderOfService": "सेवा का क्रम",
       "previewBanner": "यह संबंधित पाठ का पूर्वावलोकन है। संपादित करने के लिए \"अनुकूलित करें\" पर क्लिक करें।",
       "runTimes": "रन टाइम",
-      "scrollDown": "नीचे स्क्रॉल करें",
-      "scrollUp": "ऊपर स्क्रॉल करें",
+      "settingTimes": "Setting Times",
       "viewingAs": "इस रूप में देख रहे हैं"
     },
     "servingOverviewPage": {
@@ -2387,6 +2298,14 @@
     "servingPage": {
       "showAll": "सभी दिखाएँ",
       "showAllHint": "आपकी मंत्रालयें छिपी हुई हैं क्योंकि आप सदस्य नहीं हैं। उन्हें देखने के लिए ऊपर \"सभी दिखाएँ\" चालू करें।"
+    },
+    "signageFeed": {
+      "button": "Digital Signage",
+      "copy": "Copy",
+      "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
+      "feedUrl": "Feed Url",
+      "instructions": "Instructions for connecting to SignPresenter",
+      "title": "Digital Signage Feed"
     },
     "songDialog": {
       "close": "बंद करें",
@@ -2498,6 +2417,8 @@
       "lightMode": "लाइट मोड",
       "linkedAccounts": "लिंक किए गए खाते",
       "noDirect": "मुझे सदस्य निर्देशिका से छुपाएं",
+      "passCurrent": "Current password",
+      "passCurrentMsg": "Please enter your current password.",
       "passLong": "कृपया कम से कम 8 वर्णों का एक पासवर्ड दर्ज करें।",
       "passMatch": "पासवर्ड मेल नहीं खाते।",
       "passNew": "नया पासवर्ड",
@@ -2550,7 +2471,6 @@
       "selections": "चयन",
       "sort": "क्रमबद्ध करें",
       "startDate": "प्रारंभ तिथि",
-      "total": "कुल",
       "type": "प्रकार",
       "usesSoFar": "उपयोग: {count}",
       "value": "मूल्य"
@@ -2560,10 +2480,6 @@
       "addAttendeeError": "उपस्थित पंजीकृत करने में विफल",
       "cancelConfirm": "इस पंजीकरण को रद्द करें?",
       "cancelRegistration": "पंजीकरण रद्द करें",
-      "csvDate": "तिथि",
-      "csvMembers": "सदस्य",
-      "csvName": "नाम",
-      "csvStatus": "स्थिति",
       "date": "तिथि",
       "deleteConfirm": "इस पंजीकरण को स्थायी रूप से हटाएं?",
       "eventFull": "यह कार्यक्रम अपनी क्षमता तक पहुँच गया है।",
@@ -2874,6 +2790,8 @@
       "churchName": "चर्च का नाम",
       "churches": "चर्चेस",
       "churchesSubtitle": "सभी चर्च खोजें और प्रबंधित करें",
+      "commons": "Commons",
+      "commonsSubtitle": "Moderate community-submitted assets and reports",
       "impersonateSubtitle": "समर्थन के लिए किसी अन्य उपयोगकर्ता के रूप में लॉग इन करें",
       "impersonateUser": "उपयोगकर्ता का प्रतिरूपण करें",
       "jobs": "पृष्ठभूमि नौकरियां",
@@ -2905,6 +2823,82 @@
       "churchNameSearchAria": "चर्च नाम खोज",
       "restoreConfirm": "{name} के लिए पहुंच पुनर्स्थापित करें?",
       "searchChurchesAria": "चर्च खोजें"
+    },
+    "commonsTab": {
+      "allProducts": "All Products",
+      "allStatuses": "All Statuses",
+      "allTypes": "All Types",
+      "approve": "Approve",
+      "approveNote": "Approval note (optional)",
+      "approvedSuffix": "approved",
+      "assetStatus": {
+        "published": "Published"
+      },
+      "assetType": "Asset Type",
+      "badgeEditBy": "Edit by {name}",
+      "badgeEditByAuthor": "Edit by author",
+      "badgeNew": "New",
+      "changes": "Changes",
+      "claim": "Claim",
+      "colActions": "Actions",
+      "colAge": "Age",
+      "colAsset": "Asset",
+      "colChanges": "Changes",
+      "colScore": "Score",
+      "colSubmitter": "Submitter",
+      "colType": "Type",
+      "confirmApprove": "Approve this submission?",
+      "confirmApproveDetail": "{name} · {license}",
+      "confirmReject": "Reject Submission",
+      "copyrightReports": "Copyright",
+      "date": "Date",
+      "detailsUpdated": "Details updated",
+      "download": "Download",
+      "downloads": "Downloads",
+      "feature": "Feature",
+      "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
+      "files": "Files",
+      "firstSubmission": "first submission",
+      "justNow": "just now",
+      "licensePd": "Public domain",
+      "licenseWc": "Free for worship",
+      "lyricsAndChords": "Lyrics and chords",
+      "name": "Name",
+      "noAssets": "No assets found.",
+      "noFieldChanges": "No changes to show.",
+      "noReports": "No reports have been filed.",
+      "noSubmissions": "No submissions are waiting for review.",
+      "note": "Note",
+      "policyReports": "Policy & Other",
+      "possibleDuplicate": "Duplicate?",
+      "product": "Product",
+      "publisher": "Publisher",
+      "reason": "Reason",
+      "recentlyResolved": "Recently Resolved",
+      "reject": "Reject",
+      "remove": "Remove",
+      "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
+      "reporterRole": "Reporter Role",
+      "republish": "Republish",
+      "resolve": "Resolve",
+      "review": "Review",
+      "rights": "Rights",
+      "rightsFlag": "Rights",
+      "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
+      "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
+      "searchAssets": "Search assets",
+      "signature": "Signature",
+      "status": "Status",
+      "submittedBy": "Submitted by",
+      "tabAssets": "Assets",
+      "tabQueue": "Queue",
+      "tabReports": "Reports",
+      "unchangedFiles": "Unchanged files",
+      "unpublish": "Unpublish",
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "आप अपने सत्र से लॉग आउट हो जाएंगे और {email} के रूप में साइन इन होंगे। अपने खाते पर वापस जाने के लिए लॉग आउट करें और वापस लॉग इन करें।",
@@ -3150,7 +3144,6 @@
       "subdomainHelper": "आपकी चर्च का अद्वितीय वेब पता"
     },
     "churchSettingsEdit": {
-      "firstDayOfWeek": "सप्ताह का पहला दिन",
       "address1": "पता पंक्ति 1",
       "address2": "पता पंक्ति 2",
       "addressLine1Aria": "पता पंक्ति 1",
@@ -3160,6 +3153,7 @@
       "churchNameAria": "चर्च का नाम",
       "churchSettings": "चर्च सेटिंग्स",
       "domainsSubtitle": "कस्टम डोमेन कॉन्फ़िगरेशन",
+      "firstDayOfWeek": "सप्ताह का पहला दिन",
       "general": "सामान्य",
       "generalSubtitle": "सहायता संपर्क, निर्देशिका और दृश्यता",
       "givingSubtitle": "भुगतान गेटवे और शुल्क विकल्प",
@@ -3220,15 +3214,11 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "पूर्ण। कृपया इस लिंक को केवल एक बार क्लिक करें।",
       "errorInvalid": "अमान्य प्रारूप। केवल डोमेन दर्ज करें (जैसे, yoursite.com या sub.yoursite.org)। http://, पथ या स्लैश शामिल न करें।"
     },
     "domainSettingsEdit": {
       "domMsg": "आप अपनी B1 वेबसाइट को अपनी इच्छानुसार किसी भी कस्टम डोमेन के लिए उत्तर बना सकते हैं। यहां संबद्ध डोमेन नाम दर्ज करें और फिर अपने DNS में निम्न रिकॉर्ड जोड़ें:",
       "domMsg2": "यदि आपका DNS प्रदाता आपको CNAME रिकॉर्ड जोड़ने की अनुमति नहीं देता है तो आप वैकल्पिक रूप से A रिकॉर्ड का उपयोग कर सकते हैं:",
-      "domMsg3": "यदि DNS एंट्री जोड़ने के बाद आपको SSL त्रुटियां मिलती हैं। यहां क्लिक करें ",
-      "domMsg4": ". इसमें 5 मिनट तक का समय लग सकता है।",
-      "domMsgConnect": "कनेक्ट करें",
       "domain": "डोमेन",
       "domains": "डोमेन्स",
       "mainWebsite": "मुख्य वेबसाइट",
@@ -3288,28 +3278,17 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
-      "clientId": "क्लाइंट आईडी",
-      "clientSecret": "क्लाइंट सीक्रेट",
       "copyWebhookUrl": "वेबहुक URL कॉपी करें",
       "currency": "मुद्रा",
       "currencyHelper": "सुनिश्चित करें कि यह मुद्रा आपके Stripe डैशबोर्ड में भी सक्षम है। यहाँ मुद्रा सक्षम करें:",
       "forceMsg": "स्वचालित रूप से उपयोगकर्ताओं को लेनदेन शुल्क कवर करने के लिए बाध्य करता है",
       "giving": "दान",
-      "kfSetup": "Kingdom Funding डैशबोर्ड से टोकनाइज़ेशन कुंजी और स्रोत कुंजी दर्ज करें। यहाँ से शुरू करें",
-      "kfWebhookInstructions": "ऑनबोर्डिंग के दौरान यह वेबहुक URL अपने Kingdom Funding प्रतिनिधि को प्रदान करें ताकि लेनदेन अपडेट आपकी दान रिपोर्ट में वापस आ सकें:",
       "none": "कोई नहीं",
-      "paypalSetup": "एक PayPal REST ऐप बनाएं और नीचे इसकी Client ID और Secret पेस्ट करें। यहाँ से शुरू करें",
       "privateKeyRequired": "सहेजने से पहले कृपया इस प्रदाता के लिए गुप्त/निजी कुंजी दर्ज करें।",
       "prov": "प्रदाता",
-      "pubKey": "सार्वजनिक कुंजी",
       "saveError": "सेटिंग देते समय सहेजने में विफल",
-      "secKey": "गुप्त कुंजी",
-      "sourceKey": "स्रोत कुंजी",
       "stripeDashboard": "Stripe डैशबोर्ड",
-      "stripeSetup": "Stripe डैशबोर्ड (डेवलपर्स → API कुंजियां) से अपनी प्रकाशनीय और गुप्त कुंजियां कॉपी करें और नीचे पेस्ट करें। खोलें",
-      "tokenizationKey": "टोकनाइज़ेशन कुंजी",
       "transFee": "लेनदेन शुल्क",
-      "webhookKey": "वेबहुक कुंजी",
       "webhookKeyHelper": "Kingdom Funding कंट्रोल पैनल से वेबहुक साइनिंग सीक्रेट। लेनदेन स्थिति अपडेट के लिए आवश्यक।",
       "webhookUrlCopied": "वेबहुक URL क्लिपबोर्ड पर कॉपी हो गया"
     },
@@ -3486,9 +3465,12 @@
     },
     "webhookEdit": {
       "active": "सक्रिय",
+      "apiKeyRequired": "API key is required",
       "attempts": "प्रयास",
+      "audienceIdRequired": "Audience ID is required",
       "close": "बंद करें",
       "connectorDiscord": "Discord",
+      "connectorMailchimp": "Mailchimp",
       "connectorSlack": "Slack",
       "connectorStandard": "मानक (raw JSON)",
       "connectorType": "कनेक्टर प्रकार",
@@ -3502,6 +3484,10 @@
       "event": "कार्यक्रम",
       "events": "कार्यक्रम",
       "eventsRequired": "कम से कम एक कार्यक्रम चुनें",
+      "mailchimpApiKey": "Mailchimp API Key",
+      "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
+      "mailchimpAudienceId": "Audience ID",
+      "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
       "name": "नाम",
       "namePlaceholder": "उदा. Zapier — नए सदस्य",
       "nameRequired": "नाम आवश्यक है",
@@ -3513,6 +3499,7 @@
       "regenerateSecret": "सीक्रेट पुनर्जनन करें",
       "response": "प्रतिक्रिया",
       "responseBody": "प्रतिक्रिया बॉडी",
+      "saveFailed": "Unable to save webhook",
       "secretIntro": "अभी अपना साइनिंग सीक्रेट कॉपी करें — यह दोबारा नहीं दिखाया जाएगा।",
       "secretSignNote": "प्रत्येक डिलीवरी पर X-B1-Signature हेडर सत्यापित करने के लिए इसका उपयोग करें।",
       "secretTitle": "साइनिंग सीक्रेट",
@@ -3542,32 +3529,16 @@
       "buttonTip": "एक्सेसिबिलिटी जांचें",
       "buttonTipIssues": "समीक्षा के लिए {count} एक्सेसिबिलिटी समस्याएं",
       "close": "बंद करें",
-      "contrastLow": "टेक्स्ट {fg} और पृष्ठभूमि {bg} का कंट्रास्ट अनुपात {ratio}:1 है, जो न्यूनतम 4.5:1 से कम है।",
-      "contrastLowHeading": "शीर्षक रंग {fg} और पृष्ठभूमि {bg} का कंट्रास्ट अनुपात {ratio}:1 है, जो न्यूनतम 4.5:1 से कम है।",
-      "emptyButtonText": "यह बटन {url} से लिंक है लेकिन इसमें कोई टेक्स्ट लेबल नहीं है।",
-      "emptyCardText": "यह कार्ड {url} से लिंक है लेकिन इसमें कोई शीर्षक या टेक्स्ट नहीं है।",
-      "emptyLinkAnchor": "एक लिंक में कोई पठनीय टेक्स्ट नहीं है। इसका उद्देश्य स्पष्ट करने के लिए टेक्स्ट जोड़ें।",
-      "errorLabel": "त्रुटि",
-      "headingMultipleH1": "इस पृष्ठ में एक से अधिक H1 शीर्षक हैं। पृष्ठ शीर्षक के रूप में केवल एक H1 का उपयोग करें।",
-      "headingNoH1": "इस पृष्ठ में कोई H1 शीर्षक नहीं है। पृष्ठ शीर्षक के रूप में एक शीर्ष-स्तरीय शीर्षक जोड़ें।",
-      "headingSkipped": "शीर्षक स्तर H{from} से सीधे H{to} पर चला जाता है। शीर्षक स्तरों को एक-एक करके बढ़ाएं।",
       "highlight": "पृष्ठ में दिखाएं",
-      "missingAltGallery": "गैलरी छवि {n} में alt टेक्स्ट नहीं है।",
-      "missingAltImage": "छवि में alt टेक्स्ट नहीं है। स्क्रीन रीडर के लिए विवरण जोड़ें।",
       "noIssues": "कोई एक्सेसिबिलिटी समस्या नहीं मिली",
       "noIssuesDetail": "छवियों में alt टेक्स्ट है, रंग न्यूनतम कंट्रास्ट को पूरा करते हैं, और शीर्षक सही क्रम में हैं।",
       "pageLevel": "संपूर्ण पृष्ठ",
       "panelAria": "एक्सेसिबिलिटी समस्याएं",
-      "rule_contrast": "कम कंट्रास्ट",
-      "rule_emptyLink": "खाली लिंक टेक्स्ट",
-      "rule_headingOrder": "शीर्षक क्रम",
-      "rule_missingAlt": "alt टेक्स्ट गायब है",
       "sectionLabel": "खंड {n}",
       "subtitle": "अपना पृष्ठ प्रकाशित करने से पहले इन्हें ठीक करें",
       "summaryErrors": "{count} त्रुटियां",
       "summaryWarnings": "{count} चेतावनियां",
-      "title": "एक्सेसिबिलिटी",
-      "warningLabel": "चेतावनी"
+      "title": "एक्सेसिबिलिटी"
     },
     "addPage": {
       "aiPlaceholder": "उदाहरण: हमारे चर्च का नाम, मिशन स्टेटमेंट, सेवा समय और दान बटन के साथ एक स्वागत योग्य होमपेज बनाएं",
@@ -3608,10 +3579,6 @@
       "failed": "पुनर्लेखन विफल रहा। कुछ भी नहीं बदला गया।",
       "instruction": "निर्देश",
       "placeholder": "उदा. इसे और अधिक स्वागत योग्य बनाएं और कार्रवाई के लिए एक कॉल जोड़ें",
-      "preset_formal": "अधिक औपचारिक",
-      "preset_grammar": "व्याकरण ठीक करें",
-      "preset_shorter": "छोटा",
-      "preset_warmer": "गर्म",
       "rewrite": "फिर से लिखना",
       "title": "एआई रीराइट",
       "working": "अनुभाग फिर से लिख रहा है..."
@@ -3694,12 +3661,9 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "दिनांक",
       "deleteTitle": "पोस्ट हटाएं",
-      "draft": "प्रारूप",
       "navHint": "आगंतुक /blog पर आपके पोस्ट पढ़ सकते हैं। पेज स्क्रीन पर एक नेविगेशन लिंक जोड़ें ताकि वे इसे खोज सकें:",
       "noPosts": "अभी तक कोई पोस्ट नहीं",
       "posts": "पोस्ट",
-      "published": "प्रकाशित",
-      "scheduled": "अनुसूचित",
       "state": "राज्य",
       "subtitle": "अपनी वेबसाइट के लिए ब्लॉग पोस्ट बनाएं और प्रबंधित करें",
       "title": "ब्लॉग",
@@ -3722,7 +3686,6 @@
       "publishDate": "प्रकाशन तिथि",
       "published": "प्रकाशित",
       "selectImage": "छवि चुनें",
-      "slug": "स्लग",
       "slugHelper": "शीर्षक से स्वत: भरता है जब तक कि आप इसे संपादित न करें। पता:",
       "slugLabel": "वेब पता",
       "tags": "टैग",
@@ -3885,39 +3848,9 @@
       "column": "कॉलम",
       "common": "सामान्य",
       "countdown": "काउंटडाउन",
-      "descBox": "लचीला कंटेनर बॉक्स",
-      "descCalendar": "इवेंट कैलेंडर दृश्य",
-      "descCampaignProgress": "फंड लक्ष्य से जुड़ा धन-संग्रह प्रगति बार।",
-      "descCard": "छवि के साथ सामग्री कार्ड",
-      "descCarousel": "स्लाइडिंग सामग्री गैलरी",
-      "descCountdown": "किसी तारीख़ या साप्ताहिक सेवा के लिए काउंटडाउन टाइमर।",
-      "descDonateLink": "दान लिंक बटन",
-      "descDonation": "दान फॉर्म",
-      "descEmbedPage": "बाहरी पेज एम्बेड करें",
-      "descExpandable": "विस्तारणीय प्रश्नोत्तर अनुभाग",
-      "descForm": "कस्टम फॉर्म बिल्डर",
-      "descGallery": "वैकल्पिक कैप्शन के साथ फ़ोटो की ग्रिड।",
-      "descGroupList": "समूह निर्देशिका",
-      "descHtml": "कस्टम HTML कोड",
-      "descIconFeature": "शीर्षक और संक्षिप्त विवरण के साथ एक आइकन।",
-      "descImage": "कैप्शन के साथ छवि",
-      "descLocation": "इंटरैक्टिव मानचित्र",
-      "descLogo": "चर्च लोगो/ब्रांडिंग",
       "descReusableElement": "पुन: प्रयोज्य तत्व ब्लॉक",
       "descReusableSection": "पुन: प्रयोज्य अनुभाग",
-      "descRow": "क्षैतिज कॉलम लेआउट",
       "descSection": "सामग्री समूहीकरण के लिए कंटेनर",
-      "descSermons": "उपदेश वीडियो गैलरी",
-      "descServiceTimes": "आपके साप्ताहिक सेवा समय की सूची।",
-      "descSocialIcons": "आपकी सोशल मीडिया प्रोफ़ाइल के लिंक।",
-      "descStaffGrid": "तस्वीरों और भूमिकाओं के साथ समूह सदस्यों की ग्रिड।",
-      "descStats": "लेबल के साथ मुख्य संख्याओं को हाइलाइट करें।",
-      "descStream": "लाइव स्ट्रीम एम्बेड",
-      "descTable": "डेटा टेबल लेआउट",
-      "descTestimonial": "लेखक और वैकल्पिक फ़ोटो के साथ सदस्यों के उद्धरण।",
-      "descText": "रिच टेक्स्ट सामग्री",
-      "descTextWithPhoto": "साइड इमेज के साथ टेक्स्ट",
-      "descVideo": "वीडियो एम्बेड या अपलोड",
       "donateLink": "दान लिंक",
       "donation": "दान",
       "embedPage": "पेज एम्बेड करें",
@@ -4062,8 +3995,7 @@
       "name": "नाम",
       "noFilesYet": "अभी तक कोई फ़ाइल अपलोड नहीं की गई",
       "size": "आकार",
-      "storage": "संग्रहण:",
-      "storageLimit": "/ 100MB"
+      "storage": "संग्रहण:"
     },
     "filesPage": {
       "subtitle": "अपनी वेबसाइट के लिए फ़ाइलें और मीडिया प्रबंधित करें",
@@ -4114,14 +4046,7 @@
       "wide": "चौड़ा"
     },
     "generateSite": {
-      "audience_community": "समुदाय",
-      "audience_families": "परिवार",
-      "audience_newcomers": "नए आने वाले",
-      "audience_seniors": "वरिष्ठ",
-      "audience_youngAdults": "युवा वयस्क",
-      "audience_youth": "युवा",
       "audiences": "दर्शकों",
-      "building": "आपकी साइट बना रहा है...",
       "buildingSection": "बना रहा है {title} — अनुभाग {n} में से {total}...",
       "button": "साइट उत्पन्न करें",
       "churchName": "चर्च का नाम",
@@ -4139,11 +4064,7 @@
       "serviceTimes": "सेवा का समय",
       "serviceTimesPlaceholder": "रविवार को सुबह 9 और 11 बजे",
       "title": "AI के साथ साइट उत्पन्न करें",
-      "tone": "स्वर",
-      "tone_casual": "अनौपचारिक",
-      "tone_formal": "औपचारिक",
-      "tone_inspirational": "प्रेरणादायक",
-      "tone_warm": "गर्म"
+      "tone": "स्वर"
     },
     "helpDialog": {
       "addBody": "टूलबार में सामग्री जोड़ें पर क्लिक करें, फिर पृष्ठ पर एक अनुभाग या तत्व खींचें।",
@@ -4420,54 +4341,15 @@
       "dividerNone": "कोई नहीं",
       "dividerShape": "आकार",
       "dividerTop": "ऊपरी डिवाइडर",
-      "divider_curve": "कर्व",
-      "divider_peaks": "पीक्स",
-      "divider_slant": "स्लांट",
-      "divider_triangle": "त्रिकोण",
-      "divider_wave": "वेव",
-      "divider_waves": "वेव्स",
       "dividers": "शेप डिवाइडर",
       "duplicate": "डुप्लिकेट",
       "duplicateSection": "अनुभाग को डुप्लिकेट करें",
       "id": "ID"
     },
     "sectionTemplates": {
-      "aboutSplit": "हमारी कहानी",
       "all": "सभी",
       "blank": "खाली अनुभाग",
-      "category": {
-        "about": "परिचय",
-        "cta": "कॉल टू एक्शन",
-        "giving": "दान",
-        "hero": "हीरो",
-        "media": "मीडिया",
-        "people": "लोग और समूह",
-        "services": "आराधना"
-      },
-      "connectColumns": "संपर्क कॉलम",
-      "ctaBanner": "अगला कदम बैनर",
-      "faqSection": "सामान्य प्रश्न",
-      "findUs": "हमें खोजें",
-      "galleryRow": "फ़ोटो पंक्ति",
-      "givingBanner": "दान बैनर",
-      "givingOptions": "दान करने के तरीके",
-      "groupListSection": "समूह सूची",
-      "groupsBrowser": "समूह ब्राउज़र",
-      "heroCentered": "फ़ोटो हीरो",
-      "heroGradient": "ग्रेडिएंट हीरो",
-      "heroSplit": "स्प्लिट हीरो",
-      "ministriesCards": "सेवकाई कार्ड",
-      "sermonsLatest": "हाल के संदेश",
-      "serviceTimes": "आराधना का समय",
-      "staffGrid": "स्टाफ़ ग्रिड",
-      "storyColumns": "तीन कॉलम",
-      "switchHint": "नए लेआउट में न समाने वाली अतिरिक्त सामग्री हटा दी जाती है। इसे पुनर्स्थापित करने के लिए पूर्ववत करें का उपयोग करें।",
-      "switchTitle": "दूसरा लेआउट आज़माएँ",
-      "testimony": "गवाही उद्धरण",
-      "title": "अनुभाग जोड़ें",
-      "verseBanner": "वचन बैनर",
-      "watchOnline": "ऑनलाइन देखें",
-      "welcome": "स्वागत पाठ"
+      "switchHint": "नए लेआउट में न समाने वाली अतिरिक्त सामग्री हटा दी जाती है। इसे पुनर्स्थापित करने के लिए पूर्ववत करें का उपयोग करें।"
     },
     "sectionToolbar": {
       "aiRewrite": "AI पुनर्लेखन",
@@ -4498,51 +4380,6 @@
     "siteSwitcher": {
       "mainWebsite": "मुख्य वेबसाइट",
       "manageSites": "वेबसाइटों को प्रबंधित करें..."
-    },
-    "siteTemplates": {
-      "back": "वापस",
-      "create": "साइट बनाएं",
-      "creating": "{title} बनाया जा रहा है...",
-      "descriptions": {
-        "classic": "एक स्वागतपूर्ण होम पेज, परिचय पेज और भेंट-योजना पेज के साथ एक संपूर्ण पारंपरिक साइट।",
-        "community": "समूहों और सेवकाइयों को केंद्र में रखती है ताकि लोग जल्दी जुड़ सकें।",
-        "heritage": "स्थापित मंडलियों के लिए एक क्लासिक, वचन-केंद्रित डिज़ाइन।",
-        "media": "मज़बूत ऑनलाइन उपस्थिति वाले चर्चों के लिए आपकी लाइव स्ट्रीम और संदेश संग्रह के इर्द-गिर्द बनाई गई।",
-        "modern": "बोल्ड ग्रेडिएंट, ऑनलाइन आराधना और एक जुड़ें पेज के साथ एक समकालीन रूप।",
-        "simple": "एक साफ़-सुथरी दो-पेज वाली शुरुआती साइट, चर्च प्लांट और छोटी मंडलियों के लिए एकदम सही।",
-        "visitor": "पहली बार आने वाले मेहमान के सवालों का उत्तर उनके आने से पहले ही देने पर केंद्रित।"
-      },
-      "errFailed": "साइट बनाने में विफल। कृपया पुनः प्रयास करें।",
-      "exists": "पहले से मौजूद है",
-      "existsNote": "\"पहले से मौजूद है\" चिह्नित पेज अपरिवर्तित रहेंगे।",
-      "intro": "नीचे एक स्टार्टर साइट चुनें। हम आपके लिए पेज और नेविगेशन लिंक बना देंगे — बाद में सब कुछ संपादित किया जा सकता है।",
-      "names": {
-        "classic": "क्लासिक चर्च",
-        "community": "सामुदायिक जीवन",
-        "heritage": "विरासत",
-        "media": "ऑनलाइन प्रथम",
-        "modern": "आधुनिक स्वागत",
-        "simple": "सरल शुरुआत",
-        "visitor": "आगंतुक केंद्रित"
-      },
-      "nav": {
-        "about": "परिचय",
-        "connect": "जुड़ें",
-        "give": "दान करें",
-        "home": "होम",
-        "live": "लाइव",
-        "sermons": "उपदेश",
-        "visit": "भेंट"
-      },
-      "navLinksNote": "बिल्ट-इन पेजों के लिए नेविगेशन लिंक भी जोड़ता है:",
-      "pageCount": "{count} पेज",
-      "pages": {
-        "about": "हमारे बारे में",
-        "connect": "जुड़ें",
-        "home": "होम",
-        "visit": "अपनी भेंट की योजना बनाएं"
-      },
-      "title": "टेम्पलेट से शुरू करें"
     },
     "siteWidgets": {
       "addAction": "क्रिया जोड़ें",
@@ -4580,20 +4417,13 @@
     "socialIconsEdit": {
       "alignment": "अलाइनमेंट",
       "color": "रंग",
-      "facebook": "Facebook",
       "filled": "भरा हुआ",
       "iconStyle": "आइकन शैली",
-      "instagram": "Instagram",
       "large": "बड़ा",
       "medium": "मध्यम",
       "outlined": "आउटलाइन",
-      "podcast": "Podcast",
       "size": "आकार",
-      "small": "छोटा",
-      "tiktok": "TikTok",
-      "vimeo": "Vimeo",
-      "x": "X (Twitter)",
-      "youtube": "YouTube"
+      "small": "छोटा"
     },
     "spacingScaleEdit": {
       "buttonOne": "बटन 1",
@@ -4692,7 +4522,6 @@
       "yourChurch": "आपका चर्च"
     },
     "tableEdit": {
-      "allowMarkdown": "Markdown की अनुमति दें",
       "columns": "कॉलम",
       "empty": "(खाली)",
       "firstRowHeader": "पहली पंक्ति शीर्षक है",
@@ -4775,12 +4604,19 @@
   "songs": {
     "addSong": "गीत जोड़ें",
     "arrangement": {
+      "chordProHint": "Chord Pro Hint",
       "deleteConfirm": "क्या आप वाकई इस व्यवस्था को हटाना चाहते हैं?",
       "edit": "व्यवस्था संपादित करें",
       "enterLyrics": "मैन्युअल रूप से गीत दर्ज करें या PraiseCharts से आयात करें",
       "lyrics": "गीत",
       "name": "व्यवस्था का नाम",
       "title": "व्यवस्था"
+    },
+    "audio": {
+      "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
+      "tooLarge": "फ़ाइल बहुत बड़ी है। अधिकतम आकार 25 MB है।",
+      "unsupportedFormat": "असमर्थित ऑडियो फ़ॉर्मेट। कृपया MP3, M4A या AAC फ़ाइल अपलोड करें।",
+      "upload": "ऑडियो अपलोड करें"
     },
     "create": {
       "artist": "कलाकार",
@@ -4815,6 +4651,7 @@
       "add": "जोड़ें",
       "addExternalLink": "बाहरी लिंक जोड़ें",
       "addFiles": "फ़ाइलें जोड़ें",
+      "audioTracks": "ऑडियो ट्रैक",
       "availableDownloads": "उपलब्ध डाउनलोड",
       "externalLinks": "बाहरी लिंक",
       "import": "आयात करें",
@@ -4823,7 +4660,6 @@
       "keysTabsAria": "कुंजी टैब",
       "noKeysAvailable": "कोई कुंजी उपलब्ध नहीं। शुरू करने के लिए एक कुंजी जोड़ें।",
       "title": "कुंजियां",
-      "audioTracks": "ऑडियो ट्रैक",
       "uploadAudio": "ऑडियो अपलोड करें"
     },
     "library": {
@@ -4903,13 +4739,7 @@
       "songs": "गीत",
       "subtitle": "अपनी संगीत लाइब्रेरी प्रबंधित करें"
     },
-    "title": "गीत",
-    "audio": {
-      "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
-      "tooLarge": "फ़ाइल बहुत बड़ी है। अधिकतम आकार 25 MB है।",
-      "unsupportedFormat": "असमर्थित ऑडियो फ़ॉर्मेट। कृपया MP3, M4A या AAC फ़ाइल अपलोड करें।",
-      "upload": "ऑडियो अपलोड करें"
-    }
+    "title": "गीत"
   },
   "stockPhotos": {
     "photoBy": "फ़ोटो द्वारा",
@@ -5001,10 +4831,6 @@
       "operator": "ऑपरेटर",
       "pauseAll": "स्वचालन रोकें",
       "paused": "रोका गया",
-      "recur_daily": "दैनिक",
-      "recur_monthly": "मासिक",
-      "recur_weekly": "साप्ताहिक",
-      "recur_yearly": "वार्षिक",
       "recurs": "दोहराता है",
       "resumeAll": "स्वचालन फिर से शुरू करें",
       "runNow": "अभी चलाएं",
@@ -5025,10 +4851,6 @@
       "resume": "फिर से शुरू करें",
       "retry": "पुनः प्रयास करें",
       "statusHeader": "स्थिति",
-      "status_failed": "विफल",
-      "status_paused": "रोका गया",
-      "status_pending": "लंबित",
-      "status_success": "सफल",
       "subject": "व्यक्ति",
       "title": "निष्पादन इतिहास",
       "trigger": "ट्रिगर",
@@ -5055,22 +4877,6 @@
       "taskNotesAria": "कार्य नोट्स",
       "taskTitleAria": "कार्य शीर्षक",
       "titleTask": "कृपया इस कार्य के लिए एक शीर्षक दर्ज करें।"
-    },
-    "reminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "On due date",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "noDueDate": "This task has no due date, so reminders won't send until one is set.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the due date)"
     },
     "requestedChanges": {
       "applied": "परिवर्तन लागू किये गये",
@@ -5137,17 +4943,6 @@
       "taskDescription": "विवरण (वैकल्पिक)",
       "taskTitle": "कार्य शीर्षक",
       "title": "स्वचालित क्रियाएं",
-      "type": {
-        "addNote": "नोट जोड़ें",
-        "addToGroup": "समूह में जोड़ें",
-        "addToWorkflow": "वर्कफ़्लो में जोड़ें",
-        "createTask": "कार्य बनाएं",
-        "delay": "प्रतीक्षा करें",
-        "removeFromGroup": "समूह से हटाएं",
-        "sendEmail": "ईमेल भेजें",
-        "setField": "फ़ील्ड सेट करें",
-        "webhook": "वेबहुक"
-      },
       "value": "मान",
       "webhookUrl": "वेबहुक URL (https)"
     },
@@ -5232,20 +5027,6 @@
       "noWorkflows": "अभी कोई वर्कफ़्लो नहीं। शुरू करने के लिए एक जोड़ें।",
       "subtitle": "लोगों को चरणों की श्रृंखला से गुजारें",
       "title": "वर्कफ़्लो"
-    }
-  },
-  "ui": {
-    "personBanner": {
-      "memberStatus": "सदस्य"
-    },
-    "personNav": {
-      "attendance": "उपस्थिति",
-      "customForms": "कस्टम फ़ॉर्म",
-      "details": "विवरण",
-      "discipleship": "शिष्यत्व",
-      "giving": "दान",
-      "groups": "समूह",
-      "notes": "नोट्स"
     }
   }
 }

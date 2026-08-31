@@ -53,20 +53,7 @@
       "condition": "Condition",
       "confirmDelete": "Are you sure you wish to delete this label template?",
       "default": "Default",
-      "empty": "Empty",
-      "equals": "Equals",
       "field": "Field",
-      "fieldChildren": "Children",
-      "fieldChildrenAllergies": "Children's Allergies",
-      "fieldChurchName": "Church Name",
-      "fieldDate": "Date",
-      "fieldDisplayName": "Name",
-      "fieldFirstName": "First Name",
-      "fieldLastName": "Last Name",
-      "fieldNametagNotes": "Nametag Notes",
-      "fieldNickName": "Nickname",
-      "fieldSecurityCode": "Security Code",
-      "fieldSessions": "Sessions",
       "fill": "Fill",
       "fontSize": "Font Size",
       "height": "Height (in)",
@@ -76,8 +63,6 @@
       "nametag": "Nametag",
       "noTemplates": "No label templates",
       "noTemplatesDesc": "Create a label template to customize the labels printed by check-in kiosks.",
-      "notEmpty": "Not Empty",
-      "notEquals": "Not Equals",
       "opDoesNotEqual": "Does not equal",
       "opEquals": "Equals",
       "operator": "Operator",
@@ -140,7 +125,6 @@
   "calendars": {
     "approvals": {
       "approve": "Approve",
-      "approvedToast": "Request approved.",
       "bookingRequests": "Room & Resource Requests",
       "confirmReject": "Are you sure you wish to reject this request?",
       "conflicts": "Conflicts",
@@ -151,7 +135,6 @@
       "noPendingBookings": "No pending room or resource requests.",
       "noPendingEvents": "No pending event requests.",
       "reject": "Reject",
-      "rejectedToast": "Request rejected.",
       "rejectTitle": "Reject Request",
       "roomResource": "Room / Resource",
       "status": "Status",
@@ -183,12 +166,10 @@
       "create": "Create",
       "createCalendar": "Create Calendar",
       "delete": "Delete",
-      "deleting": "Deleting...",
       "editCalendar": "Edit Calendar",
       "namePlaceholder": "Enter a name for this calendar",
       "nameRequired": "Calendar name is required",
       "save": "Save",
-      "saving": "Saving...",
       "unauthorizedCreate": "Unauthorized to create calendars",
       "unauthorizedDelete": "Unauthorized to delete calendars"
     },
@@ -274,7 +255,6 @@
       "customWindow": "Custom reservation window",
       "daily": "Daily",
       "description": "Description",
-      "doesNotRepeat": "Does not repeat",
       "end": "End",
       "eventTitle": "Title",
       "group": "Group",
@@ -388,9 +368,6 @@
     },
     "help": "Help",
     "iconPicker": {
-      "icons": {
-        "self_improvement": "Prayer"
-      },
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
@@ -436,11 +413,7 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Open Bez chat",
-      "ariaSend": "Send message",
-      "errorAnswer": "I'm sorry, I couldn't find an answer.",
-      "errorGeneric": "Something went wrong. Please try again.",
       "intro": "Hi, I'm Bez! I can help you navigate B1 Admin. Try asking me:",
-      "placeholderInput": "Ask Bez a question...",
       "sampleCsv": "\"How do I import members from a CSV?\"",
       "sampleGiving": "\"How do I set up online giving?\"",
       "sampleGroup": "\"How do I create a new group?\"",
@@ -448,12 +421,8 @@
     },
     "docChat": {
       "ariaOpen": "Open help chat",
-      "ariaSend": "Send message",
       "composing": "Composing answer...",
-      "errorAnswer": "I'm sorry, I couldn't find an answer.",
-      "errorGeneric": "Something went wrong. Please try again.",
       "intro": "Ask any question about B1 Admin. For example:",
-      "placeholderInput": "Ask a question...",
       "sampleCsv": "\"How do I import members from a CSV?\"",
       "sampleGiving": "\"How do I set up online giving?\"",
       "sampleGroup": "\"How do I create a new group?\"",
@@ -496,11 +465,7 @@
     },
     "superBeeChat": {
       "ariaOpen": "Open SuperBee chat",
-      "ariaSend": "Send message",
-      "errorAnswer": "Even a superhero hits a wall sometimes. Try again!",
-      "errorGeneric": "Something went wrong. But don't worry — I'll be back stronger!",
       "intro": "Hey there, champ! I'm SuperBee — your B1 Admin powerhouse. Hit me with your toughest questions!",
-      "placeholderInput": "Ask SuperBee anything...",
       "sampleCsv": "\"How do I import members from a CSV?\"",
       "sampleGiving": "\"How do I set up online giving?\"",
       "sampleGroup": "\"How do I create a new group?\"",
@@ -510,7 +475,6 @@
       "att": "Attendance",
       "dash": "Dashboard",
       "don": "Donations",
-      "form": "Form",
       "forms": "Forms",
       "groups": "Groups",
       "myWork": "My Work",
@@ -520,7 +484,6 @@
       "serving": "Serving",
       "set": "Settings",
       "songs": "Songs",
-      "tasks": "Tasks",
       "teams": "Serving Teams",
       "workflows": "Workflows"
     }
@@ -782,7 +745,6 @@
       "pending": "Pending",
       "statements": "Giving Statements",
       "summary": "Summary",
-      "tableIdent": "Id",
       "total": "Total"
     },
     "donationsPage": {
@@ -847,55 +809,8 @@
       "errAmount": "Enter a pledge amount greater than zero",
       "errPerson": "Select a person"
     },
-    "pledgeStatus": {
-      "beyondPledged": "Beyond Pledged",
-      "fulfilled": "Fulfilled",
-      "inProgress": "In Progress",
-      "nonPledged": "Non-Pledged",
-      "notStarted": "Not Started"
-    },
     "printAllStatementsPage": {
-      "annualStatementTitle": "{year} Annual Giving Statement",
-      "campaign": "Campaign",
-      "contributionDetails": "Contribution Details",
-      "disclaimer": "No goods or services were provided by {churchName} in return for these contributions. The only benefit received was an intangible religious benefit. {churchName} is a non-profit organization.",
-      "donorInformation": "Donor Information",
-      "fund": "Fund",
-      "fundBreakdown": "Fund Breakdown",
-      "given": "Given",
-      "issued": "Issued:",
-      "loadingStatements": "Loading statements...",
-      "noteLabel": "Note:",
-      "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
-      "organization": "Organization",
-      "period": "Period: January 1 - December 31, {year}",
-      "pledgeProgress": "Pledge Campaigns",
-      "pledged": "Pledged",
-      "statementSummary": "Statement Summary",
-      "status": "Status",
-      "totalContributions": "Total Contributions",
-      "totalContributionsLabel": "Total Contributions:"
-    },
-    "printDonationPage": {
-      "annualStatementTitle": "{year} Annual Giving Statement",
-      "campaign": "Campaign",
-      "contributionDetails": "Contribution Details",
-      "disclaimer": "No goods or services were provided by {churchName} in return for these contributions. The only benefit received was an intangible religious benefit. {churchName} is a non-profit organization.",
-      "donorInformation": "Donor Information",
-      "fund": "Fund",
-      "fundBreakdown": "Fund Breakdown",
-      "given": "Given",
-      "issued": "Issued:",
-      "noteLabel": "Note:",
-      "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
-      "organization": "Organization",
-      "period": "Period: January 1 - December 31, {year}",
-      "pledgeProgress": "Pledge Campaigns",
-      "pledged": "Pledged",
-      "statementSummary": "Statement Summary",
-      "status": "Status",
-      "totalContributions": "Total Contributions",
-      "totalContributionsLabel": "Total Contributions:"
+      "loadingStatements": "Loading statements..."
     },
     "stripeImportPage": {
       "alreadyImported": "Already Imported",
@@ -926,6 +841,11 @@
       "totalLabel": "Total:",
       "type": "Type"
     }
+  },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1005,7 +925,6 @@
       "payment": "Payment",
       "phoneNum": "Phone Number",
       "plcOp": "Placeholder (optional)",
-      "prov": "Provider",
       "questionDescriptionAria": "Question description",
       "questionEdit": "Edit Question",
       "questionReq": "Question is required.",
@@ -1068,19 +987,15 @@
       "team": "Team"
     },
     "groupBanner": {
-      "associatedServices": "Associated Services",
       "confirmDuplicate": "Duplicate this group? Members will not be copied.",
       "copySuffix": "(Copy)",
       "duplicateTooltip": "Duplicate this group",
       "emailTooltip": "Email this group",
-      "labels": "Labels",
       "location": "Location",
-      "meetingInfo": "Meeting Information",
       "meetingTime": "Meeting Time",
       "moreLabels": "More Labels",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
-      "settings": "Settings",
       "team": "Team",
       "textTooltip": "Text this group",
       "trackAttendance": "Track Attendance"
@@ -1099,9 +1014,6 @@
       "noEvents": "No events yet. Use Add Events to schedule this group's meetings.",
       "noResponses": "No responses yet.",
       "oneTime": "One time",
-      "response_maybe": "Maybe",
-      "response_no": "No",
-      "response_yes": "Yes",
       "rosterTitle": "RSVP Responses",
       "rsvpSummary": "{yes} yes · {maybe} maybe · {no} no",
       "rsvps": "RSVPs",
@@ -1264,8 +1176,7 @@
       "subtitle": {
         "create": "Get started by creating your first group",
         "manage": "Organize and manage your church groups"
-      },
-      "totalGroups": "Total Groups"
+      }
     },
     "membersAdd": {
       "availableMem": "Available Group Members",
@@ -1512,26 +1423,20 @@
       "addToWorkflow": "Add to Workflow",
       "addToWorkflowPrompt": "Add {count} selected people to a workflow as cards.",
       "apply": "Apply",
-      "campusTitle": "Assign to Campus",
       "clearSelection": "Clear Selection",
       "createNewGroup": "Create New Group",
       "delete": "Delete",
       "error": "Error",
       "fieldPrompt": "Update the field for {count} selected people.",
       "fieldSuccess": "Updated {count} people.",
-      "genderTitle": "Set Gender",
       "group": "Group",
-      "maritalStatusTitle": "Set Marital Status",
-      "membershipStatusTitle": "Set Membership Status",
       "newGroupName": "New Group Name",
       "optedOutField": "Opted Out Field",
       "optedOutNo": "Opted Out No",
-      "optedOutTitle": "Set Opted Out",
       "optedOutYes": "Opted Out Yes",
       "removeFromGroup": "Remove From Group",
       "selected": "Selected",
       "workflowSuccess": "Added {count} people to the workflow.",
-      "setCampus": "Set Campus",
       "deleteSelected": "Delete Selected People",
       "deleteConfirm": "Are you sure you want to delete {count} selected people? This action cannot be undone.",
       "deleting": "Deleting...",
@@ -1750,7 +1655,6 @@
       "family": "family",
       "firstReq": "First name is required",
       "for": "for",
-      "invalForm": "Inval Form",
       "lastReq": "Last name is required",
       "maritalStatus": "Marital Status",
       "merge": "Merge",
@@ -1777,17 +1681,13 @@
       "donations": "Donations",
       "forms": "Forms",
       "groups": "Groups",
-      "notes": "Notes",
-      "profile": "Profile"
+      "notes": "Notes"
     },
     "personPage": {
       "confidentialNotes": "Confidential Notes",
       "confidentialNotesSuffix": " Confidential Notes",
       "notesSuffix": " Notes",
       "thisPerson": "this person"
-    },
-    "personProfile": {
-      "railLabel": "Profile & Forms"
     },
     "personView": {
       "hasLoginLabel": "Has login: {email}",
@@ -1826,7 +1726,6 @@
     "campus": "Campus",
     "city": "City",
     "country": "Country",
-    "deceased": "Deceased",
     "displayName": "Display Name",
     "divorced": "Divorced",
     "email": "Email",
@@ -1834,14 +1733,12 @@
     "firstName": "First Name",
     "gender": "Gender",
     "grade": "Grade",
-    "inactive": "Inactive",
     "lastName": "Last Name",
     "line1": "Line 1",
     "line2": "Line 2",
     "male": "Male",
     "maritalStatus": "Marital Status",
     "married": "Married",
-    "member": "Member",
     "membershipStatus": "Membership Status",
     "membershp": "Membership",
     "middleName": "Middle Name",
@@ -1850,10 +1747,8 @@
     "person": "Person",
     "phone": "Phone",
     "prefix": "Prefix",
-    "regularAttendee": "Regular Attendee",
     "school": "School",
     "single": "Single",
-    "staff": "Staff",
     "state": "State/Province",
     "suffix": "Suffix",
     "unknown": "Unknown",
@@ -2190,7 +2085,8 @@
       "externalItem": "External Item",
       "item": "Item",
       "restoreOriginal": "Restore Original",
-      "song": "Song"
+      "song": "Song",
+      "estimatedDuration": "Estimated Duration"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",
@@ -2277,22 +2173,6 @@
       "overview": "Overview",
       "planType": "Plan Type",
       "subtitle": "Configure plan type settings"
-    },
-    "planTypeReminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "Day of service",
-      "days2": "2 days before",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the service)"
     },
     "planValidation": {
       "and": "and",
@@ -2399,9 +2279,9 @@
       "orderOfService": "Order of Service",
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "runTimes": "Run Times",
-      "scrollDown": "Scroll Down",
-      "scrollUp": "Scroll Up",
-      "viewingAs": "Viewing as"
+      "viewingAs": "Viewing as",
+      "autoSetTimesError": "Auto Set Times Error",
+      "settingTimes": "Setting Times"
     },
     "servingOverviewPage": {
       "autoSchedule": "Auto-schedule",
@@ -2591,7 +2471,6 @@
       "selections": "Selections",
       "sort": "Sort",
       "startDate": "Start Date",
-      "total": "Total",
       "type": "Type",
       "usesSoFar": "Uses: {count}",
       "value": "Value"
@@ -2601,10 +2480,6 @@
       "addAttendeeError": "Failed to register attendee",
       "cancelConfirm": "Cancel this registration?",
       "cancelRegistration": "Cancel Registration",
-      "csvDate": "Date",
-      "csvMembers": "Members",
-      "csvName": "Name",
-      "csvStatus": "Status",
       "date": "Date",
       "deleteConfirm": "Permanently delete this registration?",
       "eventFull": "This event is at capacity.",
@@ -2959,10 +2834,7 @@
       "confirmApprove": "Approve this submission?",
       "confirmApproveDetail": "{name} · {license}",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
@@ -2985,13 +2857,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "name": "Name",
-        "tags": "Themes"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3011,33 +2876,11 @@
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing",
-        "offtopic": "Off-topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "None",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
       "rights": "Rights",
       "rightsFlag": "Rights",
@@ -3052,7 +2895,10 @@
       "tabReports": "Reports",
       "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "field": {
+        "certified": "Certified"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "You will be logged out of your own session and signed in as {email}. To return to your account, log out and back in.",
@@ -3332,15 +3178,11 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "Done.  Please only click this link once.",
       "errorInvalid": "Invalid format. Enter domain only (e.g., yoursite.com or sub.yoursite.org). Do not include http://, paths, or trailing slashes."
     },
     "domainSettingsEdit": {
       "domMsg": "You can make your B1 website answer for any custom domain you wish.  Enter the associated domain name here and then add the following record to your DNS:",
       "domMsg2": "If your DNS provider will not allow you to add a CNAME record you can alternatively use an A record:",
-      "domMsg3": "If you receive SSL errors after adding the DNS entry.  Click here to ",
-      "domMsg4": ".  It can take up to 5 minutes.",
-      "domMsgConnect": "connect",
       "domain": "Domain",
       "domains": "Domains",
       "mainWebsite": "Main Website",
@@ -3400,30 +3242,17 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
-      "clientId": "Client ID",
-      "clientSecret": "Client Secret",
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
-      "kfSetup": "Enter the Tokenization Key and Source Key from your Kingdom Funding dashboard. Get started at",
-      "kfWebhookInstructions": "Provide this webhook URL to your Kingdom Funding representative during onboarding so transaction updates flow back into your giving reports:",
       "none": "None",
-      "paypalSetup": "Create a PayPal REST app and paste its Client ID and Secret below. Get started at",
-      "paystackSetup": "Copy your Public and Secret keys from the Paystack Dashboard (Settings → API Keys & Webhooks) and paste them below. Open the",
-      "paystackWebhookInstructions": "Paste this URL into the Webhook URL field of your Paystack Dashboard (Settings → API Keys & Webhooks) so recurring gifts and mobile money payments are recorded:",
       "privateKeyRequired": "Please enter the secret/private key for this provider before saving.",
       "prov": "Provider",
-      "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",
-      "secKey": "Secret Key",
-      "sourceKey": "Source Key",
       "stripeDashboard": "Stripe Dashboard",
-      "stripeSetup": "Copy your Publishable and Secret keys from the Stripe Dashboard (Developers → API keys) and paste them below. Open the",
-      "tokenizationKey": "Tokenization Key",
       "transFee": "Transaction Fee",
-      "webhookKey": "Webhook Key",
       "webhookKeyHelper": "Webhook signing secret from the Kingdom Funding control panel. Required for transaction status updates.",
       "webhookUrlCopied": "Webhook URL copied to clipboard"
     },
@@ -3700,32 +3529,16 @@
       "buttonTip": "Check accessibility",
       "buttonTipIssues": "{count} accessibility issues to review",
       "close": "Close",
-      "contrastLow": "Text {fg} on background {bg} has a {ratio}:1 contrast ratio, below the 4.5:1 minimum.",
-      "contrastLowHeading": "Heading color {fg} on background {bg} has a {ratio}:1 contrast ratio, below the 4.5:1 minimum.",
-      "emptyButtonText": "This button links to {url} but has no text label.",
-      "emptyCardText": "This card links to {url} but has no title or text.",
-      "emptyLinkAnchor": "A link has no readable text. Add text so its purpose is clear.",
-      "errorLabel": "Error",
-      "headingMultipleH1": "This page has more than one H1 heading. Use a single H1 as the page title.",
-      "headingNoH1": "This page has no H1 heading. Add one top-level heading as the page title.",
-      "headingSkipped": "Heading level jumps from H{from} to H{to}. Increase heading levels one at a time.",
       "highlight": "Show in page",
-      "missingAltGallery": "Gallery image {n} is missing alt text.",
-      "missingAltImage": "Image is missing alt text. Add a description so screen readers can convey it.",
       "noIssues": "No accessibility issues found",
       "noIssuesDetail": "Images have alt text, colors meet contrast minimums, and headings are in order.",
       "pageLevel": "Whole page",
       "panelAria": "Accessibility issues",
-      "rule_contrast": "Low contrast",
-      "rule_emptyLink": "Empty link text",
-      "rule_headingOrder": "Heading order",
-      "rule_missingAlt": "Missing alt text",
       "sectionLabel": "Section {n}",
       "subtitle": "Fix these before publishing your page",
       "summaryErrors": "{count} errors",
       "summaryWarnings": "{count} warnings",
-      "title": "Accessibility",
-      "warningLabel": "Warning"
+      "title": "Accessibility"
     },
     "addPage": {
       "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
@@ -3766,10 +3579,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_formal": "More formal",
-      "preset_grammar": "Fix grammar",
-      "preset_shorter": "Shorter",
-      "preset_warmer": "Warmer",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3852,12 +3661,9 @@
       "confirmDelete": "Delete this post? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "draft": "Draft",
       "navHint": "Visitors can read your posts at /blog. Add a navigation link on the Pages screen so they can find it:",
       "noPosts": "No posts yet",
       "posts": "Posts",
-      "published": "Published",
-      "scheduled": "Scheduled",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
       "title": "Blog",
@@ -3880,7 +3686,6 @@
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
-      "slug": "Slug",
       "slugHelper": "Auto-fills from the title until you edit it. Address:",
       "slugLabel": "Web address",
       "tags": "Tags",
@@ -4043,39 +3848,9 @@
       "column": "Column",
       "common": "Common",
       "countdown": "Countdown",
-      "descBox": "Flexible container box",
-      "descCalendar": "Event calendar view",
-      "descCampaignProgress": "Fundraising progress bar tied to a fund goal.",
-      "descCard": "Content card with image",
-      "descCarousel": "Sliding content gallery",
-      "descCountdown": "A countdown timer to a date or weekly service.",
-      "descDonateLink": "Donation link button",
-      "descDonation": "Donation form",
-      "descEmbedPage": "Embed external page",
-      "descExpandable": "Expandable Q&A section",
-      "descForm": "Custom form builder",
-      "descGallery": "A grid of photos with optional captions.",
-      "descGroupList": "Group directory",
-      "descHtml": "Custom HTML code",
-      "descIconFeature": "An icon with a title and short description.",
-      "descImage": "Image with caption",
-      "descLocation": "Interactive map",
-      "descLogo": "Church logo/branding",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
-      "descRow": "Horizontal column layout",
       "descSection": "Container for grouping content",
-      "descSermons": "Sermon video gallery",
-      "descServiceTimes": "List of your weekly service times.",
-      "descSocialIcons": "Links to your social media profiles.",
-      "descStaffGrid": "Grid of group members with photos and roles.",
-      "descStats": "Highlight key numbers with labels.",
-      "descStream": "Live stream embed",
-      "descTable": "Data table layout",
-      "descTestimonial": "Member quotes with author and optional photo.",
-      "descText": "Rich text content",
-      "descTextWithPhoto": "Text with side image",
-      "descVideo": "Video embed or upload",
       "donateLink": "Donate Link",
       "donation": "Donation",
       "embedPage": "Embed Page",
@@ -4220,8 +3995,7 @@
       "name": "Name",
       "noFilesYet": "No files uploaded yet",
       "size": "Size",
-      "storage": "Storage:",
-      "storageLimit": "/ 100MB"
+      "storage": "Storage:"
     },
     "filesPage": {
       "subtitle": "Manage files and media for your website",
@@ -4272,14 +4046,7 @@
       "wide": "Wide"
     },
     "generateSite": {
-      "audience_community": "Community",
-      "audience_families": "Families",
-      "audience_newcomers": "Newcomers",
-      "audience_seniors": "Seniors",
-      "audience_youngAdults": "Young Adults",
-      "audience_youth": "Youth",
       "audiences": "Audiences",
-      "building": "Building your site...",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
       "churchName": "Church Name",
@@ -4297,11 +4064,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_casual": "Casual",
-      "tone_formal": "Formal",
-      "tone_inspirational": "Inspirational",
-      "tone_warm": "Warm"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Click Add Content in the toolbar, then drag a section or element onto the page.",
@@ -4571,12 +4334,6 @@
       "convertTo": "Convert To",
       "convertToBlock": "Convert To Block",
       "convertToBlockPrompt": "Are you sure you wish to copy this section and all of it's contents to a block?",
-      "divider_curve": "Curve",
-      "divider_peaks": "Peaks",
-      "divider_slant": "Slant",
-      "divider_triangle": "Triangle",
-      "divider_wave": "Wave",
-      "divider_waves": "Waves",
       "dividerBottom": "Bottom Divider",
       "dividerColor": "Color",
       "dividerFlip": "Flip Horizontally",
@@ -4590,42 +4347,9 @@
       "id": "ID"
     },
     "sectionTemplates": {
-      "aboutSplit": "Our Story",
       "all": "All",
       "blank": "Blank Section",
-      "category": {
-        "about": "About",
-        "cta": "Call to Action",
-        "giving": "Giving",
-        "hero": "Hero",
-        "media": "Media",
-        "people": "People & Groups",
-        "services": "Services"
-      },
-      "connectColumns": "Contact Columns",
-      "ctaBanner": "Next Step Banner",
-      "faqSection": "Common Questions",
-      "findUs": "Find Us",
-      "galleryRow": "Photo Row",
-      "givingBanner": "Giving Banner",
-      "givingOptions": "Ways to Give",
-      "groupListSection": "Group List",
-      "groupsBrowser": "Groups Browser",
-      "heroCentered": "Photo Hero",
-      "heroGradient": "Gradient Hero",
-      "heroSplit": "Split Hero",
-      "ministriesCards": "Ministry Cards",
-      "sermonsLatest": "Recent Messages",
-      "serviceTimes": "Service Times",
-      "staffGrid": "Staff Grid",
-      "storyColumns": "Three Columns",
-      "switchHint": "Extra content that doesn't fit the new layout is dropped. Use undo to restore it.",
-      "switchTitle": "Try Another Layout",
-      "testimony": "Testimony Quote",
-      "title": "Add a Section",
-      "verseBanner": "Verse Banner",
-      "watchOnline": "Watch Online",
-      "welcome": "Welcome Text"
+      "switchHint": "Extra content that doesn't fit the new layout is dropped. Use undo to restore it."
     },
     "sectionToolbar": {
       "aiRewrite": "AI rewrite",
@@ -4656,51 +4380,6 @@
     "siteSwitcher": {
       "mainWebsite": "Main Website",
       "manageSites": "Manage websites…"
-    },
-    "siteTemplates": {
-      "back": "Back",
-      "create": "Create Site",
-      "creating": "Creating {title}...",
-      "descriptions": {
-        "classic": "A complete traditional site with a welcoming home page, about page, and plan-your-visit page.",
-        "community": "Puts groups and ministries front and center so people get connected fast.",
-        "heritage": "A classic, scripture-forward design for established congregations.",
-        "media": "Built around your live stream and message archive for churches with a strong online presence.",
-        "modern": "A contemporary look with bold gradients, online services, and a connect page.",
-        "simple": "A clean two-page starter, perfect for church plants and small congregations.",
-        "visitor": "Focused on answering a first-time guest's questions before they arrive."
-      },
-      "errFailed": "Failed to create the site. Please try again.",
-      "exists": "Already exists",
-      "existsNote": "Pages marked \"already exists\" will be left unchanged.",
-      "intro": "Pick a starter site below. We'll create the pages and navigation links for you — everything can be edited afterward.",
-      "names": {
-        "classic": "Classic Church",
-        "community": "Community Life",
-        "heritage": "Heritage",
-        "media": "Online First",
-        "modern": "Modern Welcome",
-        "simple": "Simple Start",
-        "visitor": "Visitor Focus"
-      },
-      "nav": {
-        "about": "About",
-        "connect": "Connect",
-        "give": "Give",
-        "home": "Home",
-        "live": "Live",
-        "sermons": "Sermons",
-        "visit": "Visit"
-      },
-      "navLinksNote": "Also adds navigation links to built-in pages:",
-      "pageCount": "{count} pages",
-      "pages": {
-        "about": "About Us",
-        "connect": "Connect",
-        "home": "Home",
-        "visit": "Plan Your Visit"
-      },
-      "title": "Start From a Template"
     },
     "siteWidgets": {
       "addAction": "Add Action",
@@ -4738,20 +4417,13 @@
     "socialIconsEdit": {
       "alignment": "Alignment",
       "color": "Color",
-      "facebook": "Facebook",
       "filled": "Filled",
       "iconStyle": "Icon Style",
-      "instagram": "Instagram",
       "large": "Large",
       "medium": "Medium",
       "outlined": "Outlined",
-      "podcast": "Podcast",
       "size": "Size",
-      "small": "Small",
-      "tiktok": "TikTok",
-      "vimeo": "Vimeo",
-      "x": "X (Twitter)",
-      "youtube": "YouTube"
+      "small": "Small"
     },
     "spacingScaleEdit": {
       "buttonOne": "Button 1",
@@ -4850,7 +4522,6 @@
       "yourChurch": "Your Church"
     },
     "tableEdit": {
-      "allowMarkdown": "Allow Markdown",
       "columns": "Columns",
       "empty": "(empty)",
       "firstRowHeader": "First Row is Header",
@@ -4938,7 +4609,8 @@
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
       "lyrics": "Lyrics",
       "name": "Arrangement Name",
-      "title": "Arrangement"
+      "title": "Arrangement",
+      "chordProHint": "Chord Pro Hint"
     },
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
@@ -5159,10 +4831,6 @@
       "operator": "Operator",
       "pauseAll": "Pause automation",
       "paused": "Paused",
-      "recur_daily": "Daily",
-      "recur_monthly": "Monthly",
-      "recur_weekly": "Weekly",
-      "recur_yearly": "Yearly",
       "recurs": "Repeats",
       "resumeAll": "Resume automation",
       "runNow": "Run now",
@@ -5183,10 +4851,6 @@
       "resume": "Resume",
       "retry": "Retry",
       "statusHeader": "Status",
-      "status_failed": "Failed",
-      "status_paused": "Paused",
-      "status_pending": "Pending",
-      "status_success": "Success",
       "subject": "Person",
       "title": "Execution History",
       "trigger": "Trigger",
@@ -5243,22 +4907,6 @@
       "tasks": "Tasks",
       "unassigned": "Unassigned"
     },
-    "reminders": {
-      "channels": "Channels",
-      "day1": "1 day before",
-      "dayOf": "On due date",
-      "days3": "3 days before",
-      "days7": "7 days before",
-      "enable": "Send reminders",
-      "message": "Message (optional)",
-      "messageHint": "Leave blank to use a default reminder message.",
-      "noDueDate": "This task has no due date, so reminders won't send until one is set.",
-      "save": "Save Reminder",
-      "saved": "Reminder saved.",
-      "timeOfDay": "Time of day",
-      "title": "Reminders",
-      "when": "When to remind (before the due date)"
-    },
     "taskPage": {
       "ago": "ago",
       "assign": "Assign",
@@ -5295,17 +4943,6 @@
       "taskDescription": "Description (optional)",
       "taskTitle": "Task title",
       "title": "Automated actions",
-      "type": {
-        "addNote": "Add note",
-        "addToGroup": "Add to group",
-        "addToWorkflow": "Add to workflow",
-        "createTask": "Create task",
-        "delay": "Wait",
-        "removeFromGroup": "Remove from group",
-        "sendEmail": "Send email",
-        "setField": "Set field",
-        "webhook": "Webhook"
-      },
       "value": "Value",
       "webhookUrl": "Webhook URL (https)"
     },
@@ -5390,20 +5027,6 @@
       "noWorkflows": "No workflows yet. Add one to get started.",
       "subtitle": "Move people through a series of steps",
       "title": "Workflows"
-    }
-  },
-  "ui": {
-    "personBanner": {
-      "memberStatus": "MEMBER"
-    },
-    "personNav": {
-      "attendance": "Attendance",
-      "customForms": "Custom Forms",
-      "details": "Details",
-      "discipleship": "Discipleship",
-      "giving": "Giving",
-      "groups": "Groups",
-      "notes": "Notes"
     }
   }
 }
