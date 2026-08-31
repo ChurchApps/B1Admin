@@ -27,8 +27,6 @@ export const TimeEdit = (props: Props) => {
     applyWeekStart(firstDayOfWeek);
   }, [firstDayOfWeek]);
   
-  console.log(firstDayOfWeek, "--firstDayOfWeek");
-
   const { control, register, handleSubmit, reset } = useForm<AnyRecord>({
     defaultValues: {
       serviceTimeType: props.time?.serviceTimeType ?? "service",
