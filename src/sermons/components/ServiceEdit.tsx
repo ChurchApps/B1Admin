@@ -158,7 +158,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
       recurs: Boolean(props.currentService?.recurring).toString(),
       sermonId: props.currentService?.sermonId ?? "latest"
     });
-  }, [props.currentService]);
+  }, [props.currentService?.id, reset]);
 
   const watchedServiceTime = watch("serviceTime");
   const watchedChatBefore = watch("chatBefore");
@@ -208,21 +208,24 @@ export const ServiceEdit: React.FC<Props> = (props) => {
               </Stack>
 
               <Stack spacing={2}>
-                <TextField
-                  fullWidth
-                  label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceName")}
-                  data-testid="service-name-input"
-                  placeholder={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNamePlaceholder")}
-                  error={!!e.serviceLabel}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VideoCallIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-                      </InputAdornment>
-                    )
-                  }}
-                  {...register("serviceLabel", { required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNameRequired") })}
-                />
+                <Controller name="serviceLabel" control={control} rules={{ required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNameRequired") }} render={({ field }) => (
+                  <TextField
+                    {...field}
+                    value={field.value ?? ""}
+                    fullWidth
+                    label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceName")}
+                    data-testid="service-name-input"
+                    placeholder={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNamePlaceholder")}
+                    error={!!e.serviceLabel}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <VideoCallIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )} />
 
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, md: 6 }}>

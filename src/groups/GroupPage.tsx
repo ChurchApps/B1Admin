@@ -80,7 +80,7 @@ export const GroupPage = () => {
       />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>
-          <div id="mainContent">{editMode ? <GroupDetailsEdit id="groupDetailsBox" group={groupData} updatedFunction={handleUpdated} /> : getCurrentTab()}</div>
+          <div id="mainContent">{editMode && groupData.id ? <GroupDetailsEdit id="groupDetailsBox" group={groupData} updatedFunction={handleUpdated} /> : getCurrentTab()}</div>
         </Grid>
       </Grid>
     </>

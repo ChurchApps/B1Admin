@@ -246,7 +246,7 @@ export const PlanItemEdit = (props: Props) => {
               id="label"
               name="label"
               type="text"
-              value={planItem?.label}
+              value={planItem?.label ?? ""}
               onChange={handleChange}
               placeholder={Locale.label("placeholders.planItem.label")}
               data-testid="plan-item-name-input"
@@ -261,7 +261,7 @@ export const PlanItemEdit = (props: Props) => {
               id="description"
               name="description"
               type="text"
-              value={planItem?.description}
+              value={planItem?.description ?? ""}
               onChange={handleChange}
               placeholder={Locale.label("placeholders.planItem.description")}
               data-testid="plan-item-description-input"

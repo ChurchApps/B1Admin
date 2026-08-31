@@ -78,7 +78,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
-    if (isMounted() && props.group) {
+    if (isMounted() && props.group?.id) {
       reset({
         name: props.group.name || "",
         categoryName: props.group.categoryName || "",
@@ -109,7 +109,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       setPhotoUrl(props.group.photoUrl || "");
       setLabelArray(props.group.labelArray || []);
     }
-  }, [props.group, isMounted, reset]);
+  }, [props.group?.id, isMounted, reset]);
 
   const handleCancel = () => props.updatedFunction();
 
@@ -268,7 +268,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
             </Grid>
           )}
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth label={Locale.label("groups.groupDetailsEdit.groupName")} type="text" placeholder={Locale.label("placeholders.group.name")} data-testid="group-name-input" aria-label={Locale.label("groups.groupDetailsEdit.groupNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("groups.groupDetailsEdit.groupNameMsg") })} />
+            <Controller name="name" control={control} rules={{ required: Locale.label("groups.groupDetailsEdit.groupNameMsg") }} render={({ field }) => (
+              <TextField {...field} value={field.value ?? ""} fullWidth label={Locale.label("groups.groupDetailsEdit.groupName")} type="text" placeholder={Locale.label("placeholders.group.name")} data-testid="group-name-input" aria-label={Locale.label("groups.groupDetailsEdit.groupNameAria")} error={!!e.name} helperText={e.name?.message} />
+            )} />
           </Grid>
         </Grid>
         <Grid container spacing={3}>

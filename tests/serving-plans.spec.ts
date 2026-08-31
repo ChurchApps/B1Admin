@@ -59,14 +59,14 @@ test.describe.serial("Serving Management - Plans", () => {
       await minBtn.click();
       const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
-      const editBtn = editIconButton(page).first();
+      const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const minName = page.locator('[name="name"]');
+      const minName = page.getByTestId("group-name-input").locator("input");
       await expect(minName).toBeVisible({ timeout: 10000 });
       await minName.fill("Zebedee Ministry");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.locator("#groupDetailsBox button").getByText("Save");
       // Wait for cache invalidation before asserting on the banner.
       const groupPost = page.waitForResponse(
         r => r.url().includes("/membership/groups") && r.request().method() === "POST",
