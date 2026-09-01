@@ -509,7 +509,7 @@ export const ServiceOrder = memo((props: Props) => {
 
   const handleDrop = useCallback(
     (data: any, sort: number) => {
-      const pi = { ...(data.data as PlanItemInterface), sort, parentId: undefined };
+      const pi = { ...(data.data as PlanItemInterface), sort, parentId: null };
       ApiHelper.post("/planItems/sort", pi, "DoingApi").then(() => {
         loadData();
       });
