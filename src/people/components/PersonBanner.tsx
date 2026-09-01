@@ -9,6 +9,7 @@ import {
   Cake as CakeIcon,
   Wc as WcIcon,
   Favorite as FavoriteIcon,
+  Download as DownloadIcon
 } from "@mui/icons-material";
 import { memo, useMemo, useState, useEffect, type ReactNode } from "react";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -16,6 +17,7 @@ import { StatusChip } from "../../components";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { AddToWorkflowDialog } from "./AddToWorkflowDialog";
 import { formattedPhoneNumber } from "./PersonEdit";
+import { downloadPersonData } from "./personDataExport";
 
 interface Props {
   person: PersonInterface;
@@ -31,6 +33,7 @@ export const PersonBanner = memo((props: Props) => {
   const [showTextDialog, setShowTextDialog] = useState(false);
   const [showWorkflowDialog, setShowWorkflowDialog] = useState(false);
   const [hasTextingProvider, setHasTextingProvider] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
@@ -131,6 +134,23 @@ export const PersonBanner = memo((props: Props) => {
       )}
       {canEdit && (
         <AppIconButton label={Locale.label("people.personBanner.addToWorkflow")} icon={<WorkflowIcon />} tone="header" data-testid="add-to-workflow-button" onClick={() => setShowWorkflowDialog(true)} />
+      )}
+      {canEdit && (
+        <AppIconButton
+          label={Locale.label("people.gdprActions.exportData")}
+          icon={<DownloadIcon />}
+          tone="header"
+          disabled={exporting}
+          data-testid="export-person-data-button"
+          onClick={async () => {
+            setExporting(true);
+            try {
+              await downloadPersonData(person.id);
+            } finally {
+              setExporting(false);
+            }
+          }}
+        />
       )}
       {showTextDialog && person?.contactInfo?.mobilePhone && (
         <SendTextDialog
