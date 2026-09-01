@@ -480,3 +480,82 @@ test.describe("Plans page navigation", () => {
   });
 });
 
+// ChurchAppsSupport#1049: the plan service-date and service-time pickers always started the
+// week on Sunday, ignoring the church's First Day of Week setting.
+test.describe.serial("Plan pickers honor First Day of Week", () => {
+  test.describe.configure({ retries: 0 });
+
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  const setFirstDayOfWeek = async (day: "Sunday" | "Monday") => {
+    await page.goto("/settings");
+    await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    const select = page.locator("#firstDayOfWeek");
+    await expect(select).toBeVisible({ timeout: 10000 });
+    await select.click();
+    await page.getByRole("option", { name: day, exact: true }).click();
+    const churchPost = page.waitForResponse(
+      r => r.url().includes("/churches") && r.request().method() === "POST",
+      { timeout: 15000 }
+    ).catch((): null => null);
+    await page.locator("button").getByText("Save").first().click();
+    await churchPost;
+    // ChurchInfoSection only leaves edit mode when the save came back clean.
+    await expect(select).toHaveCount(0, { timeout: 10000 });
+  };
+
+  // Full page loads only: useFirstDayOfWeek re-reads the church record on boot.
+  const openTimePicker = async () => {
+    await page.goto("/serving/plans/PLA00000001");
+    const addTime = page.locator('[data-testid="add-time-button"]');
+    await expect(addTime).toBeVisible({ timeout: 15000 });
+    await addTime.click();
+    await expect(page.locator("input#startTime")).toBeVisible({ timeout: 10000 });
+    await page.locator(".MuiFormControl-root:has(input#startTime) button").first().click();
+  };
+
+  const openServiceDatePicker = async () => {
+    await page.goto("/serving/planTypes/PLT00000001");
+    const addPlan = page.locator('[data-testid="add-plan-button"]').first();
+    await expect(addPlan).toBeVisible({ timeout: 15000 });
+    await addPlan.click();
+    await expect(page.locator("input#serviceDate")).toBeVisible({ timeout: 10000 });
+    await page.locator(".MuiFormControl-root:has(input#serviceDate) button").first().click();
+  };
+
+  const expectFirstWeekDayLabel = async (expected: RegExp) => {
+    const firstHeader = page.locator(".MuiDayCalendar-weekDayLabel").first();
+    await expect(firstHeader).toBeVisible({ timeout: 10000 });
+    await expect(firstHeader).toHaveAttribute("aria-label", expected);
+    await page.keyboard.press("Escape");
+  };
+
+  test("service-time and service-date calendars start on the configured day", async () => {
+    try {
+      await setFirstDayOfWeek("Monday");
+
+      await openTimePicker();
+      await expectFirstWeekDayLabel(/Monday/i);
+      await page.locator("button").getByText("Cancel").first().click();
+
+      await openServiceDatePicker();
+      await expectFirstWeekDayLabel(/Monday/i);
+    } finally {
+      await setFirstDayOfWeek("Sunday");
+    }
+
+    await openServiceDatePicker();
+    await expectFirstWeekDayLabel(/Sunday/i);
+  });
+});
