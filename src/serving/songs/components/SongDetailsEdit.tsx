@@ -4,6 +4,7 @@ import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
 import { Grid, TextField } from "@mui/material";
 import { FormCard } from "../../../components/ui";
+import { AppDatePicker } from "../../../components";
 
 interface Props {
   songDetail: SongDetailInterface;
@@ -22,7 +23,6 @@ const buildDefaults = (sd: SongDetailInterface): AnyRecord => ({
 export const SongDetailsEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset, control } = useForm<AnyRecord>({ defaultValues: buildDefaults(props.songDetail) });
-
   useEffect(() => {
     reset(buildDefaults(props.songDetail));
   }, [props.songDetail, reset]);
@@ -46,7 +46,7 @@ export const SongDetailsEdit = (props: Props) => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Controller name="releaseDate" control={control} render={({ field }) => (
-            <TextField type="date" label={Locale.label("songs.details.releaseDate")} fullWidth size="small" value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} />
+            <AppDatePicker label={Locale.label("songs.details.releaseDate")} fullWidth size="small" value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} />
           )} />
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>

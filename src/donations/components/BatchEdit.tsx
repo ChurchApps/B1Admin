@@ -1,10 +1,11 @@
 import React, { memo, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm , Controller } from "react-hook-form";
 import { ApiHelper, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { Grid, TextField } from "@mui/material";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -57,7 +58,9 @@ export const BatchEdit = memo((props: Props) => {
             <TextField fullWidth data-cy="batch-name" label={Locale.label("donations.batchEdit.opName")} placeholder={Locale.label("placeholders.batch.name")} {...register("name")} name="name" />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField fullWidth type="date" data-cy="batch-date" label={Locale.label("donations.batchEdit.date")} {...register("date")} name="date" />
+            <Controller name="date" control={control} render={({ field }) => (
+    <AppDatePicker fullWidth  data-cy="batch-date" label={Locale.label("donations.batchEdit.date")}  {...field} />
+  )} />
           </Grid>
         </Grid>
       </FormCard>

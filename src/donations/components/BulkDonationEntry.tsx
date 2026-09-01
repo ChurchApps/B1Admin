@@ -3,6 +3,7 @@ import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, PersonHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   batchId: string;
@@ -136,10 +137,10 @@ export const BulkDonationEntry = memo((props: Props) => {
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 3, opacity: 0.7 }}>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <TextField
+            <AppDatePicker
               fullWidth
               label={Locale.label("donations.donationEdit.date")}
-              type="date"
+              
               value={defaultValues.date}
               onChange={(e) => handleDefaultChange("date", e.target.value)}
               onKeyDown={handleKeyDown}

@@ -265,7 +265,7 @@ test.describe.serial("Group Management", () => {
       await sessionsBtn.click();
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
-      const dateBox = page.locator('[type="date"]');
+      const dateBox = page.locator('[data-testid="session-date-input"]');
       await dateBox.fill("2025-09-01");
       const saveBtn = page.locator("button").getByText("Save");
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
@@ -282,7 +282,7 @@ test.describe.serial("Group Management", () => {
       await sessionsBtn.click();
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
-      const dateBox = page.locator('[type="date"]');
+      const dateBox = page.locator('[data-testid="session-date-input"]');
       await dateBox.fill("2025-10-01");
       const saveBtn = page.locator("button").getByText("Save");
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
@@ -305,7 +305,7 @@ test.describe.serial("Group Management", () => {
       await sessionsBtn.click();
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
-      const dateBox = page.locator('[type="date"]');
+      const dateBox = page.locator('[data-testid="session-date-input"]');
       await dateBox.fill("2025-11-01");
       const saveBtn = page.locator("button").getByText("Save");
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });

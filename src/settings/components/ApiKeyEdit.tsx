@@ -3,6 +3,7 @@ import { TextField, FormControlLabel, Checkbox, Box, Typography, Stack, Button, 
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import type { ApiKeyInterface } from "./DeveloperSection";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   onSave: () => void;
@@ -72,7 +73,7 @@ export const ApiKeyEdit: React.FC<Props> = ({ onSave, onCancel }) => {
       <FormCard icon="key" title={Locale.label("settings.apiKeyEdit.newKey")} onSave={handleSave} onCancel={onCancel}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.apiKeyEdit.name")} placeholder={Locale.label("settings.apiKeyEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
-        <TextField fullWidth type="date" label={Locale.label("settings.apiKeyEdit.expires")} InputLabelProps={{ shrink: true }} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} helperText={Locale.label("settings.apiKeyEdit.expiresHelp")} />
+        <AppDatePicker fullWidth  label={Locale.label("settings.apiKeyEdit.expires")} InputLabelProps={{ shrink: true }} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} helperText={Locale.label("settings.apiKeyEdit.expiresHelp")} />
         <Box sx={{ mt: 2 }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.apiKeyEdit.scopes")}</Typography>
           <Stack spacing={1.5}>

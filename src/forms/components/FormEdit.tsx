@@ -5,6 +5,7 @@ import { useMountedState, ApiHelper, DateHelper, Locale, ErrorMessages } from "@
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   formId: string;
@@ -154,10 +155,14 @@ export function FormEdit(props: Props) {
       {showDates && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableStart")} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...register("accessStartTime", { required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false })} />
+            <Controller name="accessStartTime" control={control} rules={{ required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false }} render={({ field }) => (
+    <AppDatePicker fullWidth  label={Locale.label("forms.formEdit.availableStart")} error={!!e.accessStartTime} helperText={e.accessStartTime?.message}  {...field} />
+  )} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableEnd")} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...register("accessEndTime", { required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false })} />
+            <Controller name="accessEndTime" control={control} rules={{ required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false }} render={({ field }) => (
+    <AppDatePicker fullWidth  label={Locale.label("forms.formEdit.availableEnd")} error={!!e.accessEndTime} helperText={e.accessEndTime?.message}  {...field} />
+  )} />
           </Grid>
         </Grid>
       )}

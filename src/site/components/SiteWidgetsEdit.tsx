@@ -5,6 +5,7 @@ import type { GenericSettingInterface } from "@churchapps/helpers";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { ColorPicker } from "../admin/ColorPicker";
 import { IconPicker } from "../../components/iconPicker/IconPicker";
+import { AppDatePicker } from "../../components";
 
 interface BannerData { text?: string; linkUrl?: string; linkText?: string; backgroundColor?: string; textColor?: string; startDate?: string; endDate?: string; }
 interface LauncherAction { label?: string; url?: string; icon?: string; }
@@ -107,10 +108,10 @@ export const SiteWidgetsEdit: React.FC = () => {
               <ColorPicker color={banner.textColor || "#ffffff"} updatedCallback={(c) => updateBanner("textColor", c)} globalStyles={globalStyles as GlobalStyleInterface} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth size="small" type="date" label={Locale.label("site.siteWidgets.startDate")} value={banner.startDate || ""} onChange={(e) => updateBanner("startDate", e.target.value)} InputLabelProps={{ shrink: true }} />
+              <AppDatePicker fullWidth size="small"  label={Locale.label("site.siteWidgets.startDate")} value={banner.startDate || ""} onChange={(e) => updateBanner("startDate", e.target.value)} InputLabelProps={{ shrink: true }} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth size="small" type="date" label={Locale.label("site.siteWidgets.endDate")} value={banner.endDate || ""} onChange={(e) => updateBanner("endDate", e.target.value)} InputLabelProps={{ shrink: true }} />
+              <AppDatePicker fullWidth size="small"  label={Locale.label("site.siteWidgets.endDate")} value={banner.endDate || ""} onChange={(e) => updateBanner("endDate", e.target.value)} InputLabelProps={{ shrink: true }} />
             </Grid>
           </Grid>
         )}

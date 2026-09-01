@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Alert, Box, Checkbox, FormControl, InputLabel, LinearProgress, MenuItem, Select, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Alert, Box, Checkbox, FormControl, InputLabel, LinearProgress, MenuItem, Select, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
+import { AppDatePicker } from "../../components";
 
 interface YearPlanWeek {
   week?: number;
@@ -192,9 +193,9 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
           </Select>
         </FormControl>
 
-        <TextField
+        <AppDatePicker
           fullWidth
-          type="date"
+          
           label={Locale.label("plans.applyYearPlan.startDate") || "First class date"}
           value={DateHelper.formatHtml5Date(startDate)}
           onChange={(e) => setStartDate(DateHelper.toDate(e.target.value))}

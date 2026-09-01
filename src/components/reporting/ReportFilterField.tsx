@@ -3,8 +3,9 @@
 import React from "react";
 import type { ReportInterface, ParameterInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper, Locale } from "../../helpers";
-import { FormControl, InputLabel, Select, type SelectChangeEvent, TextField, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, type SelectChangeEvent, MenuItem } from "@mui/material";
 import { useMountedState } from "@churchapps/apphelper";
+import { AppDatePicker } from "..";
 
 interface Props {
   parameter: ParameterInterface;
@@ -186,8 +187,7 @@ export const ReportFilterField = (props: Props) => {
       break;
     case "date":
       result = (
-        <TextField
-          type="date"
+        <AppDatePicker
           fullWidth
           InputLabelProps={{ shrink: true }}
           label={props.parameter.displayName}
