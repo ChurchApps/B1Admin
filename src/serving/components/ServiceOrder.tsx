@@ -524,7 +524,7 @@ export const ServiceOrder = memo((props: Props) => {
 
   // Section duration that respects per-item exclusions for the selected service time.
   const effectiveSectionDuration = useCallback((item: PlanItemInterface): number => {
-    if (item.itemType !== "header" && isItemExcluded(item.id || "")) return 0;
+    if (isItemExcluded(item.id || "")) return 0;
     let total = item.itemType === "header" ? 0 : estimateSeconds(item, mediaLookup);
     if (item.children) item.children.forEach((c) => { total += effectiveSectionDuration(c); });
     return total;
@@ -536,7 +536,7 @@ export const ServiceOrder = memo((props: Props) => {
 
     planItems.forEach((pi, index) => {
       const sectionStartTime = cumulativeTime;
-      const excluded = pi.itemType !== "header" && isItemExcluded(pi.id || "");
+      const excluded = isItemExcluded(pi.id || "");
 
       result.push(
         <React.Fragment key={pi.id || `temp-${index}`}>
@@ -662,6 +662,7 @@ export const ServiceOrder = memo((props: Props) => {
           onDone={() => {
             setEditPlanItem(null);
             loadData();
+            loadTimesAndExclusions();
           }}
         />
       )}

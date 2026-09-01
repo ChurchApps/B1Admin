@@ -10,6 +10,7 @@ interface Props {
   startTime?: number;
   serviceStartTime?: Date;
   readOnly?: boolean;
+  excluded?: boolean;
   positionLabel?: { text: string; assigned: boolean };
   onAddClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onEditClick: () => void;
@@ -24,6 +25,7 @@ export const PlanItemHeader: React.FC<Props> = ({
   startTime = 0,
   serviceStartTime,
   readOnly,
+  excluded,
   positionLabel,
   onAddClick,
   onEditClick,
@@ -31,12 +33,12 @@ export const PlanItemHeader: React.FC<Props> = ({
   wrapRow
 }) => {
   const sectionDuration = getSectionDuration(planItem);
-  const railLabel = serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime);
+  const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
 
   const headerRow = (
-    <Box className="planItemHeader" sx={{ display: "flex", alignItems: "center" }}>
+    <Box className="planItemHeader" sx={{ display: "flex", alignItems: "center", opacity: excluded ? 0.5 : 1 }}>
       <div className="timeRailCell">
-        <span className="timeRailLabel">{railLabel}</span>
+        <span className="timeRailLabel" style={excluded ? { color: "var(--text-muted)" } : undefined}>{railLabel}</span>
         <span className="timeRailDot" />
         <span className="timeRailLine" />
       </div>

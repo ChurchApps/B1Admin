@@ -89,7 +89,7 @@ export const PlanItemEdit = (props: Props) => {
     try {
       const saved = await ApiHelper.post("/planItems", [planItem], "DoingApi");
       const savedId = (Array.isArray(saved) ? saved[0]?.id : saved?.id) || planItem?.id;
-      if (savedId && planItem?.itemType !== "header") {
+      if (savedId) {
         await persistExclusions(savedId);
       }
       props.onDone();
@@ -324,7 +324,7 @@ export const PlanItemEdit = (props: Props) => {
               </Select>
             </FormControl>
           )}
-          {planItem?.itemType !== "header" && serviceTimes.length > 1 && (
+          {serviceTimes.length > 1 && (
             <Box>
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5 }}>
                 {Locale.label("plans.planItemEdit.includeInServices")}
