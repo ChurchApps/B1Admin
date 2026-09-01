@@ -33,7 +33,7 @@ export function BulkGroupEventsModal(props: Props) {
   const [saving, setSaving] = useState(false);
 
   const firstDayOfWeek = useFirstDayOfWeek();
-  useMemo(() => {
+  useEffect(() => {
     applyWeekStart(firstDayOfWeek);
   }, [firstDayOfWeek]);
 

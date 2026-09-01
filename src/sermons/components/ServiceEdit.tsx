@@ -44,7 +44,7 @@ type AnyRecord = Record<string, any>;
 export const ServiceEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const firstDayOfWeek = useFirstDayOfWeek();
-  React.useMemo(() => {
+  React.useEffect(() => {
     applyWeekStart(firstDayOfWeek);
   }, [firstDayOfWeek]);
   const sermonsQuery = useQuery<SermonInterface[]>({ queryKey: ["/sermons", "ContentApi"], placeholderData: [] });

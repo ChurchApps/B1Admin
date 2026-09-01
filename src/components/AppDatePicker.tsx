@@ -7,7 +7,7 @@ import type { TextFieldProps } from "@mui/material";
 
 export const AppDatePicker = forwardRef((props: TextFieldProps, ref: any) => {
   const firstDayOfWeek = useFirstDayOfWeek();
-  React.useMemo(() => {
+  React.useEffect(() => {
     applyWeekStart(firstDayOfWeek);
   }, [firstDayOfWeek]);
 
@@ -22,7 +22,7 @@ export const AppDatePicker = forwardRef((props: TextFieldProps, ref: any) => {
 
   const restAny = rest as any;
   const testId = restAny["data-testid"] || restAny["data-cy"];
-  
+
   const cleanRest = { ...restAny };
   delete cleanRest["data-testid"];
   delete cleanRest["data-cy"];
