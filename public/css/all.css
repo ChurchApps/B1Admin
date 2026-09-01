@@ -729,6 +729,13 @@ label .description {
 .sectionDivider { position: absolute; left: 0; width: 100%; line-height: 0; pointer-events: none; overflow: hidden; z-index: 1; }
 .sectionDivider svg { display: block; width: 100%; height: 100%; }
 
+/* Section link colors (mirrors apphelper pages.css so they render live in the editor) */
+.linksLight a { color: var(--light); }
+.linksLightAccent a { color: var(--lightAccent); }
+.linksAccent a { color: var(--accent); }
+.linksDarkAccent a { color: var(--darkAccent); }
+.linksDark a { color: var(--dark); }
+
 /* Class for just-dropped elements (to be added dynamically) */
 .element-just-dropped {
   animation: dropBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);

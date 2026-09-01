@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import { downloadPersonData } from "./personDataExport";
 
 interface Props {
   personId: string;
@@ -20,14 +21,7 @@ export const GdprActions: React.FC<Props> = (props) => {
   const handleExport = async () => {
     setExporting(true);
     try {
-      const data = await ApiHelper.get("/gdpr/people/" + props.personId + "/export", "MembershipApi");
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `person-data-${props.personId}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+      await downloadPersonData(props.personId);
     } finally {
       setExporting(false);
     }
@@ -46,6 +40,8 @@ export const GdprActions: React.FC<Props> = (props) => {
       setAnonymizing(false);
     }
   };
+
+  if (!UserHelper.checkAccess(Permissions.membershipApi.people.edit)) return null;
 
   return (
     <>
