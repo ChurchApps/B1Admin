@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert, TextField } from "@mui/material";
-import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon, BookmarkAdd as BookmarkAddIcon } from "@mui/icons-material";
+import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon, BookmarkAdd as BookmarkAddIcon, FormatListBulleted as FormatListBulletedIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface, type PositionInterface, type AssignmentInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, hasPlansEditAccess } from "../../helpers";
@@ -274,6 +274,20 @@ export const ServiceOrder = memo((props: Props) => {
     setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
+  const addItem = useCallback(async () => {
+    if (showPreviewMode) {
+      await handleCustomizeLesson();
+    }
+    setEditPlanItem({ itemType: "item", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+  }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
+
+  const addSong = useCallback(async () => {
+    if (showPreviewMode) {
+      await handleCustomizeLesson();
+    }
+    setEditPlanItem({ itemType: "arrangementKey", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+  }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
+
   const loadContentName = useCallback(async () => {
     if (!hasAssociatedContent) {
       setContentName("");
@@ -474,6 +488,12 @@ export const ServiceOrder = memo((props: Props) => {
               <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
                 <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
               </MenuItem>
+              <MenuItem onClick={() => { setAddMenuAnchor(null); addItem(); }}>
+                <FormatListBulletedIcon sx={{ mr: 1 }} /> {Locale.label("plans.planItem.item")}
+              </MenuItem>
+              <MenuItem onClick={() => { setAddMenuAnchor(null); addSong(); }}>
+                <MusicNoteIcon sx={{ mr: 1 }} /> {Locale.label("plans.planItem.song")}
+              </MenuItem>
               <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddContent(); }}>
                 <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
               </MenuItem>
@@ -483,14 +503,13 @@ export const ServiceOrder = memo((props: Props) => {
       </Stack>
     ),
     [
-      props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedContent, provider?.name, contentName, handleDisassociateContent, handleAddContent
+      props.plan?.id, addHeader, addItem, addSong, canEdit, addMenuAnchor, hasAssociatedContent, provider?.name, contentName, handleDisassociateContent, handleAddContent
     ]
   );
 
   const handleDrop = useCallback(
     (data: any, sort: number) => {
-      const pi = data.data as PlanItemInterface;
-      pi.sort = sort;
+      const pi = { ...(data.data as PlanItemInterface), sort, parentId: null };
       ApiHelper.post("/planItems/sort", pi, "DoingApi").then(() => {
         loadData();
       });
@@ -523,12 +542,12 @@ export const ServiceOrder = memo((props: Props) => {
         <React.Fragment key={pi.id || `temp-${index}`}>
           {canEdit ? (
             <RowDropZone
-              accept="planItemHeader"
+              accept={["planItemHeader", "planItem"]}
               onDrop={(item, position) => {
                 handleDrop(item, index + (position === "before" ? 0.5 : 1.5));
               }}>
               <DraggableWrapper
-                dndType="planItemHeader"
+                dndType={pi.itemType === "header" ? "planItemHeader" : "planItem"}
                 data={pi}
                 handleClassName="dragHandle"
                 draggingCallback={(isDragging) => {
@@ -561,7 +580,7 @@ export const ServiceOrder = memo((props: Props) => {
           ) : (
             <PlanItem
               planItem={pi}
-              setEditPlanItem={() => {}}
+              setEditPlanItem={() => { }}
               showItemDrop={false}
               onDragChange={() => { }}
               onChange={() => { }}
