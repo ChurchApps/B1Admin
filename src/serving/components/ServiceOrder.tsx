@@ -555,6 +555,7 @@ export const ServiceOrder = memo((props: Props) => {
                   excluded={excluded}
                   mediaLookup={mediaLookup}
                   positionLabels={positionLabels}
+                  positions={positions}
                 />
               </DraggableWrapper>
             </RowDropZone>
@@ -576,6 +577,7 @@ export const ServiceOrder = memo((props: Props) => {
               excluded={excluded}
               mediaLookup={mediaLookup}
               positionLabels={positionLabels}
+              positions={positions}
             />
           )}
         </React.Fragment>
