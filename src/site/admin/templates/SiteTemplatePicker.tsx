@@ -167,7 +167,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
       <DialogContent dividers>{selected ? getDetailView() : getListView()}</DialogContent>
       <DialogActions>
         {selected && <Button onClick={() => setSelected(null)} disabled={isSubmitting} data-testid="site-template-back-button">{label("back")}</Button>}
-        <Button onClick={props.onClose} disabled={isSubmitting}>{Locale.label("common.cancel")}</Button>
+        <Button onClick={props.onClose} disabled={isSubmitting}>{label("cancel")}</Button>
         {selected && (
           <Button variant="contained" onClick={handleCreate} disabled={isSubmitting} data-testid="site-template-create-button">
             {label("create")}
