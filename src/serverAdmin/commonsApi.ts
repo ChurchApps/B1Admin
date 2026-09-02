@@ -19,14 +19,14 @@ export const getWorshipCommonsOrigin = (): string => {
 
 export type AssetStatus = "pending" | "published" | "unpublished" | "removed";
 export type FileAction = "add" | "replace" | "remove";
-export type RejectReason = "quality" | "duplicate" | "licensing" | "offtopic" | "incomplete" | "other";
+export type RejectReason = "quality" | "duplicate" | "licensing" | "ccli" | "offtopic" | "incomplete" | "other";
 export type ReportReason = "copyright" | "policy" | "quality" | "other";
 export type ReportStatus = "open" | "reviewing" | "resolved";
 export type ReportResolution = "upheld" | "dismissed" | "duplicate";
 export type ReportAction = "none" | "unpublish" | "remove";
 export type RemovedReason = "copyright" | "policy";
 
-export const REJECT_REASONS: RejectReason[] = ["quality", "duplicate", "licensing", "offtopic", "incomplete", "other"];
+export const REJECT_REASONS: RejectReason[] = ["quality", "duplicate", "licensing", "ccli", "offtopic", "incomplete", "other"];
 export const RESOLUTIONS: ReportResolution[] = ["upheld", "dismissed", "duplicate"];
 export const RESOLVE_ACTIONS: ReportAction[] = ["none", "unpublish", "remove"];
 export const REMOVE_REASONS: RemovedReason[] = ["copyright", "policy"];
