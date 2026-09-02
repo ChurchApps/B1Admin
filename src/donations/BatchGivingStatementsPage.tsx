@@ -131,6 +131,10 @@ export const BatchGivingStatementsPage = () => {
     });
     return total;
   }, [yearFundDonations]);
+  const amountWithCurrency = useMemo(() => {
+    const pairs = yearFundDonations.map((fd) => ({ amount: fd.amount || 0, currency: fd.currency || "usd" }));
+    return pairs;
+  }, [yearFundDonations]);
 
   const totalDonations = yearDonations.length;
 
@@ -212,10 +216,11 @@ export const BatchGivingStatementsPage = () => {
                         {Locale.label("donations.batchStatements.totalAmount") || "Total Amount:"}
                       </Typography>
                       <Typography variant="body1" fontWeight="bold" color="primary">
-                        {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}
+                        {CurrencyHelper.convertDonationTotals(amountWithCurrency, currency)} <span style={{ color: "whitesmoke", fontSize: 12 }}>*</span>
                       </Typography>
                     </Box>
                   </Stack>
+                  <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mt: 1, textAlign: "right" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
                 </CardContent>
               </Card>
 
