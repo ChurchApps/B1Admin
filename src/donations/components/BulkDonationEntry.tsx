@@ -1,7 +1,7 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Card, CardContent, Typography, Button, type SelectChangeEvent } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Card, CardContent, Typography, Button, type SelectChangeEvent, InputAdornment } from "@mui/material";
 import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
-import { ApiHelper, DateHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, CurrencyHelper, DateHelper, PersonHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { AppDatePicker } from "../../components";
 
@@ -10,6 +10,7 @@ interface Props {
   batchDate?: Date;
   funds: FundInterface[];
   updatedFunction: () => void;
+  currency: string;
 }
 
 export const BulkDonationEntry = memo((props: Props) => {
@@ -55,6 +56,7 @@ export const BulkDonationEntry = memo((props: Props) => {
       batchId: props.batchId,
       personId: selectedPerson?.id || "",
       amount: parseFloat(amount),
+      currency: props.currency,
       donationDate: defaultValues.date,
       method: defaultValues.method,
       methodDetails: methodDetails || undefined,
@@ -195,6 +197,7 @@ export const BulkDonationEntry = memo((props: Props) => {
             onChange={(e) => setAmount(e.target.value)}
             onKeyDown={handleKeyDown}
             sx={{ flex: 1, "& .MuiInputBase-input": { fontSize: "1.5rem" } }}
+            slotProps={{ input: { startAdornment: <InputAdornment position="start">{CurrencyHelper.getCurrencySymbol(props.currency)}</InputAdornment> } }}
             autoFocus
             data-testid="bulk-donation-amount"
           />
