@@ -7,6 +7,7 @@ import { FormCard } from "../../components/ui";
 import { GalleryModal } from "../../components/gallery";
 import { PersonAdd } from "../../people/components/PersonAdd";
 import type { PostInterface } from "../../helpers/Interfaces";
+import { AppDatePicker } from "../../components";
 
 type Props = {
   post: PostInterface;
@@ -141,7 +142,7 @@ export function BlogPostEdit(props: Props) {
             <Stack direction="row" spacing={2} alignItems="center">
               <FormControlLabel control={<Switch checked={published} onChange={(ev) => setPublished(ev.target.checked)} data-testid="blog-published-switch" />} label={published ? Locale.label("site.blogEdit.published") : Locale.label("site.blogEdit.draft")} />
               {published && (
-                <TextField size="small" type="date" label={Locale.label("site.blogEdit.publishDate")} value={dateInputValue()} onChange={(ev) => setPost((p) => ({ ...p, publishDate: ev.target.value ? new Date(ev.target.value) : new Date() }))} InputLabelProps={{ shrink: true }} />
+                <AppDatePicker size="small"  label={Locale.label("site.blogEdit.publishDate")} value={dateInputValue()} onChange={(ev) => setPost((p) => ({ ...p, publishDate: ev.target.value ? new Date(ev.target.value) : new Date() }))} InputLabelProps={{ shrink: true }} />
               )}
             </Stack>
           </Grid>

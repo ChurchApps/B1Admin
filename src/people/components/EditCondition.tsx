@@ -16,6 +16,7 @@ import {
 } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   conditionAdded: (condition: any) => void;
@@ -185,10 +186,10 @@ export function EditCondition(props: Props) {
       case "birthDate":
       case "anniversary":
         result = (
-          <TextField
+          <AppDatePicker
             fullWidth
             label={Locale.label("people.editCondition.value")}
-            type="date"
+            
             InputLabelProps={{ shrink: true }}
             style={{ marginBottom: 5 }}
             name="value"
@@ -229,8 +230,8 @@ export function EditCondition(props: Props) {
           <>
             {getValueSelect(options)}
             <Stack direction="row" spacing={2} sx={{ marginTop: "16px", marginBottom: "8px" }}>
-              <TextField fullWidth label={Locale.label("people.editCondition.from")} name="from" type="date" InputLabelProps={{ shrink: true }} onChange={handleChange} />
-              <TextField fullWidth label={Locale.label("people.editCondition.to")} name="to" type="date" InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.from")} name="from"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.to")} name="to"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
             </Stack>
           </>
         );
@@ -299,8 +300,8 @@ export function EditCondition(props: Props) {
           <>
             {getValueSelect(options)}
             <Stack direction="row" spacing={2} sx={{ marginTop: "16px", marginBottom: "8px" }}>
-              <TextField fullWidth label={Locale.label("people.editCondition.from")} name="from" type="date" InputLabelProps={{ shrink: true }} onChange={handleChange} />
-              <TextField fullWidth label={Locale.label("people.editCondition.to")} name="to" type="date" InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.from")} name="from"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.to")} name="to"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
             </Stack>
           </>
         );

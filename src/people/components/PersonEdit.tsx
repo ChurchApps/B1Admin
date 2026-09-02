@@ -17,6 +17,7 @@ import { CampusSelect } from "../../components/CampusSelect";
 import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
 import { parseFieldChoices } from "../../helpers/PersonFieldHelper";
+import { AppDatePicker } from "../../components";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 type AnyRecord = Record<string, any>;
@@ -264,7 +265,9 @@ export const PersonEdit = memo((props: Props) => {
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <TextField fullWidth type="date" id="birthDate" InputLabelProps={{ shrink: true }} label={Locale.label("person.birthDate")} data-testid="birth-date-input" aria-label="Birth date" {...register("birthDate")} />
+            <Controller name="birthDate" control={control} render={({ field }) => (
+    <AppDatePicker fullWidth  id="birthDate" InputLabelProps={{ shrink: true }} label={Locale.label("person.birthDate")} data-testid="birth-date-input" aria-label="Birth date"  {...field} />
+  )} />
           </Grid>
         </Grid>
 
@@ -296,7 +299,9 @@ export const PersonEdit = memo((props: Props) => {
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <TextField fullWidth type="date" id="anniversary" InputLabelProps={{ shrink: true }} label={Locale.label("person.anniversary")} data-testid="anniversary-input" aria-label="Anniversary" {...register("anniversary")} />
+            <Controller name="anniversary" control={control} render={({ field }) => (
+    <AppDatePicker fullWidth  id="anniversary" InputLabelProps={{ shrink: true }} label={Locale.label("person.anniversary")} data-testid="anniversary-input" aria-label="Anniversary"  {...field} />
+  )} />
           </Grid>
         </Grid>
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 
 interface Props {
-  accept: string;
+  accept: string | string[];
   /** "reorder": drop above/below based on cursor half, shown as an insertion line.
    *  "into": whole child is one target (e.g. a section header = add to that section). */
   mode?: "reorder" | "into";

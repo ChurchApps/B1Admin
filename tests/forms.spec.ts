@@ -161,10 +161,12 @@ test.describe.serial("Stand Alone form lifecycle", () => {
     const availabilityFormControl = page.locator("#formBox div.MuiFormControl-root", { hasText: "Set Form Availability Timeframe" });
     await selectMuiOption(page, availabilityFormControl.locator('[role="combobox"]'), "Yes");
 
-    const startInput = page.locator('#formBox input[type="date"]').first();
-    const endInput = page.locator('#formBox input[type="date"]').nth(1);
-    await startInput.fill("2026-01-01");
-    await endInput.fill("2026-12-31");
+    const startPicker = page.getByRole("group", { name: "Availability Start Date" });
+    const endPicker = page.getByRole("group", { name: "Availability End Date" });
+    await startPicker.click();
+    await page.keyboard.type("01012026");
+    await endPicker.click();
+    await page.keyboard.type("12312026");
 
     await saveFormDrawer(page);
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();

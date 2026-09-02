@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import {
-  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination,
-  TextField, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography,
+  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography,
   IconButton, Collapse, CircularProgress
 } from "@mui/material";
 import { Search as SearchIcon, KeyboardArrowDown as ExpandIcon, KeyboardArrowUp as CollapseIcon, History as HistoryIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
+import { AppDatePicker } from "../components";
 
 interface AuditLog {
   id: string;
@@ -278,8 +278,8 @@ export const AuditLogPage: React.FC = () => {
                 {getCategories().map((c) => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
               </Select>
             </FormControl>
-            <TextField size="small" type="date" label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-            <TextField size="small" type="date" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+            <AppDatePicker size="small"  label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+            <AppDatePicker size="small"  label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
             <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
             {logs.length > 0 && (
               <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />

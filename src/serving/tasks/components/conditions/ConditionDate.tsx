@@ -4,6 +4,7 @@ import { Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
 import { ConditionHelper } from "../../../../helpers";
 import { applyConditionChange } from "./conditionHelpers";
+import { AppDatePicker } from "../../../../components";
 
 interface Props {
   condition: ConditionInterface;
@@ -40,9 +41,9 @@ export const ConditionDate = (props: Props) => {
   const getDateField = () => {
     const label = ConditionHelper.getTitleCase(props.condition.field || "");
     return (
-      <TextField
+      <AppDatePicker
         fullWidth
-        type="date"
+        
         label={label}
         value={props.condition.value || ""}
         name="value"

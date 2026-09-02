@@ -527,6 +527,57 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(verifiedAddition).toHaveCount(1, { timeout: 10000 });
     });
 
+    test("should add a root-level item from the add menu", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");
+      await minBtn.click();
+      const plansBtn = page.locator("a").getByText("Apollos Plans");
+      await expect(plansBtn).toBeVisible({ timeout: 10000 });
+      await plansBtn.click();
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      const lesson = page.locator("a").getByText("Zacchaeus Lesson");
+      await expect(lesson).toBeVisible({ timeout: 10000 });
+      await lesson.click();
+      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
+      await expect(servOrder).toBeVisible({ timeout: 10000 });
+      await servOrder.click();
+
+      const dropdown = page.locator("button").filter({ has: page.locator('[data-testid="ArrowDropDownIcon"]') }).first();
+      await expect(dropdown).toBeVisible({ timeout: 10000 });
+      await dropdown.click();
+      await page.getByRole("menuitem", { name: "Item", exact: true }).click();
+      await page.locator('[name="label"]').fill("Root Level Item");
+      await page.locator('[name="minutes"]').fill("3");
+      await page.locator("button").getByText("Save").click();
+      await expect(page.getByText("Root Level Item").first()).toBeVisible({ timeout: 10000 });
+    });
+
+    test("should add a root-level song from the add menu", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");
+      await minBtn.click();
+      const plansBtn = page.locator("a").getByText("Apollos Plans");
+      await expect(plansBtn).toBeVisible({ timeout: 10000 });
+      await plansBtn.click();
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      const lesson = page.locator("a").getByText("Zacchaeus Lesson");
+      await expect(lesson).toBeVisible({ timeout: 10000 });
+      await lesson.click();
+      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
+      await expect(servOrder).toBeVisible({ timeout: 10000 });
+      await servOrder.click();
+
+      const dropdown = page.locator("button").filter({ has: page.locator('[data-testid="ArrowDropDownIcon"]') }).first();
+      await expect(dropdown).toBeVisible({ timeout: 10000 });
+      await dropdown.click();
+      await page.getByRole("menuitem", { name: "Song", exact: true }).click();
+      const searchBar = page.locator('[name="searchText"]');
+      await searchBar.fill("Amazing");
+      await page.locator('[data-testid="song-search-button"]').click();
+      const keySelect = page.getByRole("button", { name: /Traditional key/ });
+      await expect(keySelect).toBeVisible({ timeout: 10000 });
+      await keySelect.click();
+      await expect(page.getByText("Amazing Grace").first()).toBeVisible({ timeout: 10000 });
+    });
+
     test.skip("should delete add-on from service order", async () => {
       const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");
       await minBtn.click();
@@ -549,6 +600,49 @@ test.describe.serial("Serving Management - Lessons", () => {
       await deleteBtn.click();
       const verifiedDeletion = page.locator("div a").getByText("First Add On");
       await expect(verifiedDeletion).toHaveCount(0, { timeout: 10000 });
+    });
+
+    test("header Include-in-services hides the section for an excluded service time", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");
+      await minBtn.click();
+      const plansBtn = page.locator("a").getByText("Apollos Plans");
+      await expect(plansBtn).toBeVisible({ timeout: 10000 });
+      await plansBtn.click();
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      const lesson = page.locator("a").getByText("Zacchaeus Lesson");
+      await expect(lesson).toBeVisible({ timeout: 10000 });
+      await lesson.click();
+
+      const addBtn = page.locator('[data-testid="add-time-button"]');
+      await expect(addBtn).toBeVisible({ timeout: 10000 });
+      await addBtn.click();
+      await page.locator('[name="displayName"]').fill("First Service");
+      await page.locator('[type="checkbox"]').first().click();
+      await page.locator("button").getByText("Save").last().click();
+      await expect(page.locator("td button").getByText("First Service")).toHaveCount(1, { timeout: 10000 });
+
+      await addBtn.click();
+      await page.locator('[name="displayName"]').fill("Second Service");
+      await page.locator('[type="checkbox"]').first().click();
+      await page.locator("button").getByText("Save").last().click();
+      await expect(page.locator("td button").getByText("Second Service")).toHaveCount(1, { timeout: 10000 });
+
+      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
+      await expect(servOrder).toBeVisible({ timeout: 10000 });
+      await servOrder.click();
+
+      await editIconButton(page).first().click();
+      await expect(page.getByText("Include in services")).toBeVisible({ timeout: 10000 });
+      const secondBox = page.getByRole("checkbox", { name: /Second Service/ });
+      await expect(secondBox).toBeChecked();
+      await secondBox.click();
+      await page.getByRole("dialog").getByRole("button", { name: /^Save$/ }).click();
+
+      await page.getByLabel("Viewing as").click();
+      await page.getByRole("option", { name: /Second Service/ }).click();
+      const header = page.locator(".planItemHeader").first();
+      await expect(header).toHaveCSS("opacity", "0.5");
+      await expect(header.locator(".timeRailLabel")).toHaveText("—");
     });
   });
 
