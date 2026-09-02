@@ -2876,11 +2876,34 @@
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
+      "rejectReason": {
+        "quality": "Quality",
+        "duplicate": "Duplicate",
+        "licensing": "Licensing",
+        "ccli": "Copyrighted (CCLI) song",
+        "offtopic": "Off topic",
+        "incomplete": "Incomplete",
+        "other": "Other"
+      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
+      "removeReason": {
+        "copyright": "Copyright",
+        "policy": "Policy"
+      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
+      "resolution": {
+        "upheld": "Upheld",
+        "dismissed": "Dismissed",
+        "duplicate": "Duplicate"
+      },
       "resolve": "Resolve",
+      "resolveAction": {
+        "none": "No action",
+        "unpublish": "Unpublish",
+        "remove": "Remove"
+      },
       "review": "Review",
       "rights": "Rights",
       "rightsFlag": "Rights",
