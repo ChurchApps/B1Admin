@@ -57,7 +57,7 @@ export const FundPage = () => {
         setFundDonations(d);
 
         const totalDonations = d.length;
-        const totalAmount = d.reduce((sum, fd) => sum + (fd.amount || 0), 0);
+        const totalAmount = d.reduce((sum, fd) => sum + (CurrencyHelper.convertAmount(fd.amount || 0, fd.currency || "", currency) || 0), 0);
         const uniqueDonors = new Set(d.map((fd) => fd.donation?.personId).filter((id) => id)).size;
 
         setStats({
@@ -130,7 +130,7 @@ export const FundPage = () => {
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <ReceiptIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+              <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/batches/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
                 {Locale.label("donations.fundsPage.viewBatch")}
               </Typography>
             </Stack>
@@ -138,7 +138,7 @@ export const FundPage = () => {
           {personCol}
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(fd.amount || 0, currency)}
+              {CurrencyHelper.convertAmountWithLocale(fd.amount || 0, fd.currency || "", currency)} {fd.currency !== currency ? <span style={{ color: "whitesmoke" }}>*</span> : ""}
             </Typography>
           </TableCell>
         </TableRow>
@@ -165,7 +165,7 @@ export const FundPage = () => {
     return rows;
   };
 
-  React.useEffect(loadData, [params.id]);
+  React.useEffect(loadData, [params.id, currency]);
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -204,7 +204,7 @@ export const FundPage = () => {
             items={[
               { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: "Donations", minWidth: 80 },
               { icon: <PersonIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.uniqueDonors, label: Locale.label("donations.fundPage.donors"), minWidth: 80 },
-              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.fundPage.totalAmount") }
+              { value: <>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)} <span style={{ color: "whitesmoke" }}>*</span></>, label: Locale.label("donations.fundPage.totalAmount") }
             ]}
           />
         )}
@@ -220,7 +220,6 @@ export const FundPage = () => {
               <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateStart")}
                 name="startDate"
-                
                 data-cy="start-date"
                 value={DateHelper.formatHtml5Date(startDate)}
                 onChange={handleChange}
@@ -230,7 +229,6 @@ export const FundPage = () => {
               <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateEnd")}
                 name="endDate"
-                
                 data-cy="end-date"
                 value={DateHelper.formatHtml5Date(endDate)}
                 onChange={handleChange}
@@ -251,6 +249,7 @@ export const FundPage = () => {
           actions={fundDonations && <ExportButton data={fundDonations} filename="funddonations.csv" text={Locale.label("donations.fundsPage.export")} />}
         >
           {getTable()}
+          <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mt: 1, textAlign: "right" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
         </CardWithHeader>
       </Box>
     </>
