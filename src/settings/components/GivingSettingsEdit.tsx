@@ -1,11 +1,11 @@
 import React from "react";
-import { Alert, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, TextField, Grid, Stack, Switch, Typography } from "@mui/material";
+import { Alert, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, TextField, Grid, Stack, Switch, Typography, FormHelperText } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
 import { listPaymentProviders, getPaymentProvider } from "@churchapps/apphelper/donations";
-import { type ChurchInterface } from "@churchapps/helpers";
+import { type ChurchInterface, CurrencyHelper } from "@churchapps/helpers";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
@@ -73,6 +73,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         if (values.privateKey !== "") gw.privateKey = values.privateKey;
         if (values.webhookKey !== "") gw.webhookKey = values.webhookKey;
         await ApiHelper.post("/gateways", [gw], "GivingApi");
+        CurrencyHelper.initializeExchangeRates();
       }
       setErrors([]);
       props.onSaveComplete?.(true);
@@ -168,6 +169,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
               <Select {...field} label={Locale.label("settings.givingSettingsEdit.currency")}>
                 {currencyOptions.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
               </Select>
+              <FormHelperText>*{Locale.label("settings.givingSettingsEdit.currencyHelperText")}</FormHelperText>
             </FormControl>
           )}
         />

@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
+import { CurrencyHelper, DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
 import { MultiGatewayDonationForm, RecurringDonations, PaymentMethods, SavedPaymentMethod, getPaymentProvider } from "@churchapps/apphelper/donations";
 import type { PaymentGateway } from "@churchapps/apphelper/donations";
-import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
+import { ApiHelper, DateHelper, UniqueIdHelper, Locale } from "../helpers";
 import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
 // import { Link } from "react-router-dom"
-import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem, Typography } from "@mui/material";
 
 interface Props {
   personId: string;
@@ -191,7 +191,7 @@ export const DonationPage: React.FC<Props> = (props) => {
         <TableRow key={i}>
           {appName !== "B1App" && (
             <TableCell>
-              {d.batchId ? <Link href={"/donations/" + d.batchId}>{Locale.label("donation.page.viewBatch")}</Link> : ""}
+              {d.batchId ? <Link href={"/donations/batches/" + d.batchId}>{Locale.label("donation.page.viewBatch")}</Link> : ""}
             </TableCell>
           )}
           <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>
@@ -199,7 +199,7 @@ export const DonationPage: React.FC<Props> = (props) => {
             {d.method} - {d.methodDetails}
           </TableCell>
           <TableCell>{d.fund?.name}</TableCell>
-          <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund?.amount || 0, currency)}</TableCell>
+          <TableCell>{CurrencyHelper.convertAmountWithLocale(d.fund?.amount || 0, d.currency || "", currency)} {d.currency !== currency ? <span style={{ color: "gray" }}>*</span> : ""}</TableCell>
         </TableRow>
       );
     }
@@ -262,6 +262,7 @@ export const DonationPage: React.FC<Props> = (props) => {
           />
           <DisplayBox headerIcon="payments" headerText={Locale.label("donation.donationPage.donations")} editContent={getEditContent()}>
             {getTable()}
+            <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mt: 1, textAlign: "right" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
           </DisplayBox>
           <RecurringDonations customerId={customerId || ""} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
           <PaymentMethods person={person} customerId={customerId || ""} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />

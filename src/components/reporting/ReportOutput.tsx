@@ -10,7 +10,7 @@ import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
 import { TreeReport } from "./TreeReport";
 import { GivingKpiCards, type GivingKpis } from "./GivingKpiCards";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import { Download as DownloadIcon, Print as PrintIcon, Description as DescriptionIcon } from "@mui/icons-material";
 import { useMountedState } from "@churchapps/apphelper";
 import { AppIconButton } from "../ui/AppIconButton";
@@ -126,8 +126,8 @@ export const ReportOutput = (props: Props) => {
 
       if (props.keyName.startsWith("donationDashboard")) {
         const kpiParams = queryParams.filter((p) => !p.startsWith("churchId="));
-        const kpiUrl = "/donations/kpis?" + kpiParams.join("&");
-        ApiHelper.get(kpiUrl, "GivingApi").then((data: GivingKpis) => {
+        const paramsBody = Object.fromEntries(kpiParams.map(item => item.split("=")));
+        ApiHelper.post("/donations/kpis", { rates: CurrencyHelper.rates, currency: currency, ...paramsBody }, "GivingApi").then((data: GivingKpis) => {
           if (isMounted()) setKpis(data);
         });
       }
@@ -186,7 +186,7 @@ export const ReportOutput = (props: Props) => {
     );
   };
 
-  React.useEffect(runReport, [props.report, isMounted]);
+  React.useEffect(runReport, [props.report, isMounted, currency]);
 
   const getEditContent = () => {
     const result: React.ReactElement[] = [];
@@ -273,6 +273,7 @@ export const ReportOutput = (props: Props) => {
           `
           }} />
           {kpis && <GivingKpiCards kpis={kpis} currency={currency} />}
+          <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mb: 1, textAlign: "center" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
           <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
             {getOutputs()}
           </DisplayBox>

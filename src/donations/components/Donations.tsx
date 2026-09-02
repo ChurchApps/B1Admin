@@ -54,7 +54,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   // Memoize the total calculation to avoid recalculating on every render
   const donationsTotal = React.useMemo(() => {
     if (!donations || donations.length === 0) return 0;
-    return donations.reduce((sum, donation) => sum + (donation.amount || 0), 0);
+    return donations.reduce((sum, donation) => sum + CurrencyHelper.convertAmount(donation.amount || 0, donation.currency || "", currency), 0);
   }, [donations]);
 
   const getTableHeader = React.useCallback(() => {
@@ -125,7 +125,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
+              {CurrencyHelper.convertAmountWithLocale(d.amount || 0, d.currency || "", currency)} {d.currency !== currency ? <span style={{ color: "whitesmoke" }}>*</span> : ""}
             </Typography>
           </TableCell>
           {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}
@@ -134,7 +134,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     }
 
     rows.push(
-      <TableRow key="total" sx={{ borderTop: 2, backgroundColor: "grey.50" }}>
+      <TableRow key="total" sx={{ borderTop: 2, backgroundColor: "grey.700" }}>
         <TableCell sx={{ fontWeight: "bold", fontSize: 15 }}>
           <Stack direction="row" spacing={1} alignItems="center">
             <Icon sx={{ color: "primary.main", fontSize: 20 }}>calculate</Icon>
@@ -147,7 +147,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
         <TableCell></TableCell>
         <TableCell align="right">
           <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "success.main" }}>
-            {CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}
+            {CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)} <span style={{ color: "whitesmoke" }}>*</span>
           </Typography>
         </TableCell>
         {canEdit && <TableCell></TableCell>}
@@ -176,6 +176,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           {getTableHeader()}
           <TableBody>{getRows()}</TableBody>
         </Table>
+        <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mt: 1, textAlign: "right" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
       </CardWithHeader>
     );
   }, [donations, getRows, getTableHeader, getHeaderActions]);

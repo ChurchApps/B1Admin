@@ -23,8 +23,8 @@ export const GivingKpiCards = (props: Props) => {
   const formatCurrency = (value: number) => CurrencyHelper.formatCurrencyWithLocale(value || 0, currency, 0);
 
   const cards = [
-    { label: Locale.label("reporting.givingKpiCards.totalGiving"), value: formatCurrency(kpis.totalGiving) },
-    { label: Locale.label("reporting.givingKpiCards.avgGift"), value: formatCurrency(kpis.avgGift) },
+    { label: `${Locale.label("reporting.givingKpiCards.totalGiving")} *`, value: formatCurrency(kpis.totalGiving) },
+    { label: `${Locale.label("reporting.givingKpiCards.avgGift")} *`, value: formatCurrency(kpis.avgGift) },
     { label: Locale.label("reporting.givingKpiCards.donorCount"), value: formatNumber(kpis.donorCount) },
     { label: Locale.label("reporting.givingKpiCards.donationCount"), value: formatNumber(kpis.donationCount) }
   ];
