@@ -156,6 +156,41 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(assetRow.getByText("Published")).toBeVisible();
   });
 
+  test("quick reject offers the CCLI reason and posts reason=ccli", async ({ page, request }) => {
+    const title = `Spec Song CCLI ${Date.now()}`;
+    const { userJwt } = await apiLogin(request);
+    const sub = await seedSongSubmission(request, userJwt, title, false);
+
+    await login(page);
+    await navigateTo(page, "serverAdmin");
+
+    const commonsSection = page.locator('[data-testid="settings-section-commons"]');
+    await expect(commonsSection).toBeVisible();
+    await commonsSection.click();
+    await expect(page).toHaveURL(/[?&]tab=commons/);
+
+    const row = page.locator(`[data-testid="commons-queue-row-${sub.submissionId}"]`);
+    await expect(row).toBeVisible();
+    await row.getByTestId(`commons-reject-${sub.submissionId}`).click();
+
+    // The reason dropdown must render the translated label, not the raw locale key.
+    await page.getByTestId("commons-reject-reason").click();
+    const ccliOption = page.getByRole("option", { name: "Copyrighted (CCLI) song" });
+    await expect(ccliOption).toBeVisible();
+    await expect(page.getByRole("listbox")).not.toContainText("serverAdmin.commonsTab.rejectReason.ccli");
+    await ccliOption.click();
+
+    await page.getByTestId("commons-reject-note").locator("textarea").first().fill("This song is in the CCLI catalog.");
+
+    const rejectRequest = page.waitForRequest((r) => r.method() === "POST" && r.url().includes(`/commons/admin/submissions/${sub.submissionId}/reject`));
+    await page.getByTestId("commons-reject-confirm").click();
+    await expect(row).not.toBeVisible();
+
+    const posted = (await rejectRequest).postDataJSON();
+    expect(posted.reason).toBe("ccli");
+    expect(String(posted.note || "").trim().length).toBeGreaterThan(0);
+  });
+
   test("opens Commons from tab query param", async ({ page }) => {
     await login(page);
     await page.goto("/admin?tab=commons");
