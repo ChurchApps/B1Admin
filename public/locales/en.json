@@ -349,6 +349,7 @@
         "validEmail": "Please enter a valid email address."
       }
     },
+    "currencyRatesInfo": "Converted to the church’s selected currency at current exchange rates.",
     "custom": "Custom",
     "delete": "Delete",
     "done": "Done",
@@ -3245,6 +3246,7 @@
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
+      "currencyHelperText": "Every amount through out the system will be converted to this selected currency at current exchange rates.",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
       "none": "None",
