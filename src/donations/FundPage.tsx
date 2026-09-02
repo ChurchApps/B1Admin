@@ -2,7 +2,7 @@ import React from "react";
 import { ApiHelper, DateHelper, UserHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
-import { Table, TableBody, TableRow, TableCell, TableHead, TextField, Box, Typography, Stack, Button } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack, Button } from "@mui/material";
 import {
   VolunteerActivism as FundIcon,
   FilterAlt as FilterIcon,
@@ -12,6 +12,7 @@ import {
   AccountBalance as AccountBalanceIcon
 } from "@mui/icons-material";
 import { Breadcrumbs, type BreadcrumbItem, CardWithHeader, ExportButton, PageHeaderStats, hoverRowSx } from "../components/ui";
+import { AppDatePicker } from "../components";
 
 export const FundPage = () => {
   const params = useParams();
@@ -216,20 +217,20 @@ export const FundPage = () => {
             title={Locale.label("donations.fundsPage.donFilt")}
           >
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
-              <TextField
+              <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateStart")}
                 name="startDate"
-                type="date"
+                
                 data-cy="start-date"
                 value={DateHelper.formatHtml5Date(startDate)}
                 onChange={handleChange}
                 InputLabelProps={{ shrink: true }}
                 sx={{ minWidth: 200 }}
               />
-              <TextField
+              <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateEnd")}
                 name="endDate"
-                type="date"
+                
                 data-cy="end-date"
                 value={DateHelper.formatHtml5Date(endDate)}
                 onChange={handleChange}

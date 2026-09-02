@@ -272,7 +272,7 @@ export const PrintPlan = () => {
             accumulators[0] += pi.seconds || 0;
           } else {
             serviceTimes.forEach((st, i) => {
-              const excluded = isExcluded(pi.id || "", st.id || "");
+              const excluded = isExcluded(pi.id || "", st.id || "") || (pi.parentId ? isExcluded(pi.parentId, st.id || "") : false);
               if (excluded) {
                 timeCells.push(<td key={st.id} style={{ ...Styles.tableCell, color: "#999" }}>—</td>);
               } else {

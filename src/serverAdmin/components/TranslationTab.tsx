@@ -1,7 +1,8 @@
 import { ApiHelper, DateHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { Button, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import React from "react";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import { AppDatePicker } from "../../components";
 
 export const TranslationTab = () => {
   const [startDate, setStartDate] = React.useState(new Date());
@@ -73,11 +74,11 @@ export const TranslationTab = () => {
                 <p>{Locale.label("serverAdmin.translation.startDate")}</p>
               </Grid>
               <Grid size={{ md: 3 }}>
-                <TextField
+                <AppDatePicker
                   id="start"
                   name="start"
                   value={DateHelper.formatHtml5Date(startDate)}
-                  type="date"
+                  
                   onChange={handleChange}
                   data-testid="translation-start-date-input"
                   aria-label="Start date"
@@ -87,7 +88,7 @@ export const TranslationTab = () => {
                 <p>{Locale.label("serverAdmin.translation.endDate")}</p>
               </Grid>
               <Grid size={{ md: 3 }}>
-                <TextField id="end" name="end" value={DateHelper.formatHtml5Date(endDate)} type="date" onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
+                <AppDatePicker id="end" name="end" value={DateHelper.formatHtml5Date(endDate)}  onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
               </Grid>
               <Grid size={{ md: 1 }}>
                 <Button variant="outlined" style={{ height: 56, width: 200, marginTop: 8 }} onClick={loadData} data-testid="search-translation-stats-button" aria-label={Locale.label("serverAdmin.translationTab.searchTranslationStatsAria")}>

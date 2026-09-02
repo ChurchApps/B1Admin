@@ -14,6 +14,7 @@ import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
 import { Duration } from "./Duration";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   currentSermon: SermonInterface,
@@ -260,7 +261,9 @@ export const SermonEdit: React.FC<Props> = (props) => {
               {!props.currentSermon?.permanentUrl && (
                 <Grid size={{ xs: 6 }}>
                   <label style={{ width: "100%" }}>{Locale.label("sermons.publishDate")}</label>
-                  <TextField fullWidth type="date" data-testid="publish-date-input" aria-label={Locale.label("sermons.sermonEdit.publishDateAria")} {...register("publishDate")} />
+                  <Controller name="publishDate" control={control} render={({ field }) => (
+    <AppDatePicker fullWidth  data-testid="publish-date-input" aria-label={Locale.label("sermons.sermonEdit.publishDateAria")}  {...field} />
+  )} />
                 </Grid>
               )}
               <Grid size={{ xs: 6 }}>

@@ -40,6 +40,7 @@ import {
 } from "@mui/icons-material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
+import { AppDatePicker } from "../../components";
 
 // Maps a first-class custom field's fieldType to a filter config, mirroring the
 // form-question operator sets. Yes/No stores "True"/"False" (form-answer convention).
@@ -728,7 +729,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     if (field.type === "date") {
-      return <TextField size="small" type="date" fullWidth value={activeFilters[field.key].value} onChange={(e) => updateFilterValue(field.key, e.target.value)} InputLabelProps={{ shrink: true }} variant="outlined" sx={styles.inputCommon} />;
+      return <AppDatePicker size="small"  fullWidth value={activeFilters[field.key].value} onChange={(e) => updateFilterValue(field.key, e.target.value)} InputLabelProps={{ shrink: true }} variant="outlined" sx={styles.inputCommon} />;
     }
 
     if (field.type === "number") {
@@ -1079,18 +1080,18 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               )}
 
               <Stack direction="row" spacing={2}>
-                <TextField
+                <AppDatePicker
                   fullWidth
                   label={Locale.label("people.editCondition.from")}
-                  type="date"
+                  
                   InputLabelProps={{ shrink: true }}
                   value={complexConfig?.fromDate || ""}
                   onChange={(e) => setComplexConfig({ ...complexConfig!, fromDate: e.target.value })}
                 />
-                <TextField
+                <AppDatePicker
                   fullWidth
                   label={Locale.label("people.editCondition.to")}
-                  type="date"
+                  
                   InputLabelProps={{ shrink: true }}
                   value={complexConfig?.toDate || ""}
                   onChange={(e) => setComplexConfig({ ...complexConfig!, toDate: e.target.value })}
@@ -1242,18 +1243,18 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             )}
 
             <Stack direction="row" spacing={2}>
-              <TextField
+              <AppDatePicker
                 fullWidth
                 label={Locale.label("people.editCondition.from")}
-                type="date"
+                
                 InputLabelProps={{ shrink: true }}
                 value={complexConfig?.fromDate || ""}
                 onChange={(e) => setComplexConfig({ ...complexConfig!, fromDate: e.target.value })}
               />
-              <TextField
+              <AppDatePicker
                 fullWidth
                 label={Locale.label("people.editCondition.to")}
-                type="date"
+                
                 InputLabelProps={{ shrink: true }}
                 value={complexConfig?.toDate || ""}
                 onChange={(e) => setComplexConfig({ ...complexConfig!, toDate: e.target.value })}

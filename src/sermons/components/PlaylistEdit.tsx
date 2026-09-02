@@ -26,6 +26,7 @@ import type { PlaylistInterface } from "@churchapps/helpers";
 import { useForm, Controller } from "react-hook-form";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   currentPlaylist: PlaylistInterface,
@@ -144,7 +145,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
             </Stack>
 
             <Controller name="publishDate" control={control} render={({ field }) => (
-              <TextField fullWidth type="date" label={Locale.label("sermons.playlists.playlistEdit.publishDate")} data-testid="playlist-publish-date-input" variant="outlined" InputLabelProps={{ shrink: true }} helperText={Locale.label("sermons.playlists.playlistEdit.publishHelp")} value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} name="publishDate" />
+              <AppDatePicker fullWidth  label={Locale.label("sermons.playlists.playlistEdit.publishDate")} data-testid="playlist-publish-date-input" variant="outlined" InputLabelProps={{ shrink: true }} helperText={Locale.label("sermons.playlists.playlistEdit.publishHelp")} value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} name="publishDate" />
             )} />
           </Grid>
 

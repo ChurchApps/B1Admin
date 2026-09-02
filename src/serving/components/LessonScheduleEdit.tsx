@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Typography, Button } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Box, Typography, Button } from "@mui/material";
 import { MenuBook as MenuBookIcon } from "@mui/icons-material";
 import { ApiHelper, DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
 import { LessonSelector } from "./LessonSelector";
+import { AppDatePicker } from "../../components";
 
 interface Props {
   ministryId: string;
@@ -115,10 +116,10 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         onSave={handleSave}
         onCancel={props.onCancel}
       >
-        <TextField
+        <AppDatePicker
           fullWidth
           label={Locale.label("plans.lessonScheduleEdit.scheduledDate") || "Scheduled Date"}
-          type="date"
+          
           value={DateHelper.formatHtml5Date(scheduledDate)}
           onChange={handleDateChange}
           data-testid="scheduled-date-input"

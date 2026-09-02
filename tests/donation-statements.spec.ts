@@ -77,8 +77,8 @@ test.describe("Donation Statements and Stripe Import", () => {
       await page.goto("/donations/stripe-import");
       await expect(page).toHaveURL(/\/donations\/stripe-import/);
 
-      const dateInputs = page.locator('input[type="date"]');
-      await expect(dateInputs).toHaveCount(2, { timeout: 10000 });
+      await expect(page.getByRole("group", { name: "Start Date" })).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole("group", { name: "End Date" })).toBeVisible();
 
       const previewBtn = page.locator("button").filter({ hasText: /^Preview$/ }).first();
       await expect(previewBtn).toBeVisible();

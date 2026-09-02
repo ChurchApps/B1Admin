@@ -1,13 +1,14 @@
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, type PersonInterface } from "@churchapps/apphelper";
 import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
-import { Alert, Box, Button, Card, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from "@mui/material";
+import { Alert, Box, Button, Card, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { Close as CloseIcon, Clear as ClearIcon, Email as EmailIcon, PublishedWithChanges as AutoScheduleIcon, Assignment as AssignmentIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
 import { hasPlansEditAccess } from "../helpers";
 import { AssignmentEdit } from "./components/AssignmentEdit";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { AppDatePicker } from "../components";
 
 interface OverviewRow {
   serviceDate: string;
@@ -251,8 +252,8 @@ export const ServingOverviewPage = () => {
         {/* Filters */}
         <Card sx={{ mb: 3, p: 2 }}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center" useFlexGap flexWrap="wrap">
-            <TextField label={Locale.label("plans.servingOverviewPage.startDate")} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <TextField label={Locale.label("plans.servingOverviewPage.endDate")} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+            <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")}  value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+            <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")}  value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
             <FormControl size="small" sx={{ minWidth: 160 }}>
               <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
               <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">

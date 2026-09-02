@@ -161,7 +161,7 @@ export const PlanItem = React.memo((props: Props) => {
     let cumulativeTime = props.startTime || 0;
     props.planItem.children?.forEach((c, index) => {
       const childStartTime = cumulativeTime;
-      const childExcluded = c.itemType !== "header" && isChildExcluded(c.id || "");
+      const childExcluded = Boolean(props.excluded || isChildExcluded(c.id || ""));
       const childPlanItem = (
         <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} positions={props.positions} />
       );
@@ -199,6 +199,7 @@ export const PlanItem = React.memo((props: Props) => {
       startTime={props.startTime}
       serviceStartTime={props.serviceTime?.startTime}
       readOnly={props.readOnly}
+      excluded={props.excluded}
       positionLabel={activePositionLabel}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}

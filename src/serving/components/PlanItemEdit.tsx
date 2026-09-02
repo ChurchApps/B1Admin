@@ -22,6 +22,7 @@ export const PlanItemEdit = (props: Props) => {
   const [, setErrors] = React.useState<string[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const [searching, setSearching] = React.useState(false);
+  const [hasSearched, setHasSearched] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
@@ -60,7 +61,7 @@ export const PlanItemEdit = (props: Props) => {
       const services = (times || []).filter((t) => (t.serviceTimeType ?? "service") === "service");
       services.sort((a, b) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
       setServiceTimes(services);
-    } catch (e) {
+    } catch {
       setServiceTimes([]);
     }
     if (props.planItem?.id) {
@@ -68,7 +69,7 @@ export const PlanItemEdit = (props: Props) => {
         const exs: PlanItemTimeInterface[] = await ApiHelper.get("/planItemTimes/planItem/" + props.planItem.id, "DoingApi");
         setOriginalExclusions(exs || []);
         setExcludedTimeIds(new Set((exs || []).filter((e) => e.excluded).map((e) => e.timeId || "")));
-      } catch (e) {
+      } catch {
         setOriginalExclusions([]);
         setExcludedTimeIds(new Set());
       }
@@ -98,7 +99,7 @@ export const PlanItemEdit = (props: Props) => {
     try {
       const saved = await ApiHelper.post("/planItems", [planItem], "DoingApi");
       const savedId = (Array.isArray(saved) ? saved[0]?.id : saved?.id) || planItem?.id;
-      if (savedId && planItem?.itemType !== "header") {
+      if (savedId) {
         await persistExclusions(savedId);
       }
       props.onDone();
@@ -137,6 +138,7 @@ export const PlanItemEdit = (props: Props) => {
       return;
     } else {
       setSearching(true);
+      setHasSearched(true);
       ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data: any) => {
         setSongs(data);
         setSearching(false);
@@ -184,6 +186,13 @@ export const PlanItemEdit = (props: Props) => {
 
   const getSongs = () => {
     if (searching) return <CircularProgress size={24} sx={{ display: "block", mx: "auto", my: 2 }} />;
+    if (hasSearched && songs.length === 0) {
+      return (
+        <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
+          {Locale.label("songs.search.noResults") || "No results found"}
+        </Typography>
+      );
+    }
     const songDetails: SongDetailInterface[] = [];
     songs.forEach((song) => {
       if (songDetails.findIndex((sd) => sd.id === song.id) === -1) {
@@ -332,7 +341,7 @@ export const PlanItemEdit = (props: Props) => {
               </Select>
             </FormControl>
           )}
-          {planItem?.itemType !== "header" && serviceTimes.length > 1 && (
+          {serviceTimes.length > 1 && (
             <Box>
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5 }}>
                 {Locale.label("plans.planItemEdit.includeInServices")}
