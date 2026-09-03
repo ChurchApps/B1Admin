@@ -12,7 +12,24 @@ interface ContributionRow {
   method: string | undefined;
   fund: string | undefined;
   amount: number;
+  taxDeductible?: boolean;
 }
+
+export interface StatementSettings {
+  format: string;
+  registrationNumber: string;
+  orgAddress: string;
+  signatory: string;
+  cityOfIssue: string;
+}
+
+export const parseStatementSettings = (raw: Record<string, string> | undefined): StatementSettings => ({
+  format: raw?.statementFormat || "",
+  registrationNumber: raw?.statementRegistrationNumber || "",
+  orgAddress: raw?.statementOrgAddress || "",
+  signatory: raw?.statementSignatory || "",
+  cityOfIssue: raw?.statementCityOfIssue || ""
+});
 
 interface Props {
   labelPrefix: string;
@@ -26,6 +43,7 @@ interface Props {
   pledgeRows: PledgeProgressRowInterface[];
   showPageBreak: boolean;
   showStyles?: boolean;
+  statementSettings?: StatementSettings;
 }
 
 const styleBlock = `
@@ -248,13 +266,88 @@ const styleBlock = `
           .footer-note p {
             margin: 0;
           }
+
+          .legal-block {
+            margin-bottom: 40px;
+            padding: 20px 24px;
+            border: 2px solid #1976D2;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+          }
+
+          .legal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1976D2;
+            margin: 0 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .legal-line {
+            font-size: 13px;
+            color: #333;
+            margin: 4px 0;
+          }
+
+          .legal-eligible {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin: 12px 0 4px 0;
+          }
+
+          .legal-signature {
+            margin-top: 20px;
+            padding-top: 8px;
+            border-top: 1px solid #333;
+            width: 260px;
+            font-size: 12px;
+            color: #666;
+          }
         `;
 
 export const GivingStatementDocument = (props: Props) => {
-  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true } = props;
+  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true, statementSettings } = props;
   const label = (key: string) => Locale.label(labelPrefix + "." + key);
+  const legal = (key: string) => Locale.label("donations.statementLegal." + key);
   const churchName = church?.name || "";
   const formattedTotal = CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency);
+
+  const format = statementSettings?.format || "";
+  const eligibleTotal = contributions.filter((c) => c.taxDeductible !== false).reduce((sum, c) => sum + (c.amount || 0), 0);
+  const nonEligibleTotal = totalContributions - eligibleTotal;
+  const receiptNumber = year + "-" + (person?.id || "");
+  const orgAddress = statementSettings?.orgAddress || [church?.address1, church?.address2, church?.city, church?.country, church?.zip].filter(Boolean).join(", ");
+  const donorAddress = [person?.contactInfo?.address1, person?.contactInfo?.address2, person?.contactInfo?.city, person?.contactInfo?.state, person?.contactInfo?.zip].filter(Boolean).join(", ");
+  const issuedDate = DateHelper.prettyDate(new Date()).toString();
+
+  const legalBlock = !format ? null : (
+    <div className="legal-block" data-testid="statement-legal-block">
+      <h2 className="legal-title">{legal(format + "Title")}</h2>
+      <p className="legal-line">{legal("receiptNumber")}: {receiptNumber}</p>
+      <p className="legal-line">{legal(format === "australia" ? "abn" : format === "canada" ? "craNumber" : "nzNumber")}: {statementSettings?.registrationNumber}</p>
+      <p className="legal-line">{legal("dateIssued")}: {issuedDate}</p>
+      {format === "canada" && <p className="legal-line">{legal("placeOfIssue")}: {statementSettings?.cityOfIssue}</p>}
+      <p className="legal-line">{churchName}{orgAddress ? ", " + orgAddress : ""}</p>
+      <p className="legal-line">{person?.name?.display}{donorAddress ? ", " + donorAddress : ""}</p>
+      {format === "australia" && (
+        <>
+          <p className="legal-line">{legal("dgr").replace("{churchName}", churchName)}</p>
+          <p className="legal-line">{legal("dgrThreshold")}</p>
+        </>
+      )}
+      {format === "newZealand" && <p className="legal-line">{legal("donation")}</p>}
+      <p className="legal-eligible">{legal("eligibleAmount")}: {CurrencyHelper.formatCurrencyWithLocale(eligibleTotal, currency)}</p>
+      {nonEligibleTotal > 0 && (
+        <p className="legal-line">{legal("nonEligible")}: {CurrencyHelper.formatCurrencyWithLocale(nonEligibleTotal, currency)}</p>
+      )}
+      {format !== "australia" && (
+        <div className="legal-signature">{statementSettings?.signatory} — {legal("signature")}</div>
+      )}
+      {format === "canada" && <p className="legal-line" style={{ marginTop: "12px" }}>{legal("cra")}</p>}
+    </div>
+  );
 
   return (
     <div className={showPageBreak ? "page-break" : ""}>
@@ -298,6 +391,8 @@ export const GivingStatementDocument = (props: Props) => {
             </div>
           </div>
         </div>
+
+        {legalBlock}
 
         <div className="section-container">
           <h2 className="section-title">{label("statementSummary")}</h2>
