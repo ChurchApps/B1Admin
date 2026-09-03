@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type PledgeProgressRowInterface } from "../helpers";
-import { GivingStatementDocument } from "./components/GivingStatementDocument";
+import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
 
 export const PrintAllStatementsPage = () => {
   const navigate = useNavigate();
@@ -29,6 +29,12 @@ export const PrintAllStatementsPage = () => {
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
     placeholderData: []
+  });
+
+  const churchSettings = useQuery<Record<string, string>>({
+    queryKey: ["/settings/public/" + context?.userChurch?.church?.id, "MembershipApi"],
+    placeholderData: {},
+    enabled: !!context?.userChurch?.church?.id
   });
 
   const pledgeProgress = useQuery<PledgeProgressRowInterface[]>({
@@ -129,7 +135,8 @@ export const PrintAllStatementsPage = () => {
           date: donation.donationDate,
           method: donation.method,
           fund: fund?.name,
-          amount: fd.amount || 0
+          amount: fd.amount || 0,
+          taxDeductible: fund?.taxDeductible !== false
         });
       }
     });
@@ -162,6 +169,7 @@ export const PrintAllStatementsPage = () => {
           pledgeRows={getPledgeRows(person.id!)}
           showPageBreak={index < people.data!.length - 1}
           showStyles={index === 0}
+          statementSettings={parseStatementSettings(churchSettings.data)}
         />
       ))}
     </>

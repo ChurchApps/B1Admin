@@ -9,6 +9,7 @@ import { type ChurchInterface } from "@churchapps/helpers";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
+import { StatementFormatSettingsEdit } from "./StatementFormatSettingsEdit";
 
 interface Props {
   churchId: string;
@@ -222,6 +223,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         {getCurrency()}
       </Grid>
       <FeeOptionsSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} provider={provider} currency={currency} />
+      <StatementFormatSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} />
       <Snackbar open={copySnackbar} autoHideDuration={2500} onClose={() => setCopySnackbar(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert severity="success" variant="filled" onClose={() => setCopySnackbar(false)}>{Locale.label("settings.givingSettingsEdit.webhookUrlCopied")}</Alert>
       </Snackbar>
