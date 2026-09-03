@@ -18,10 +18,14 @@ test.describe("Lapsed Givers report", () => {
     await expect(downloadOptions).toBeVisible();
     await downloadOptions.click();
 
-    const [download] = await Promise.all([
-      page.waitForEvent("download", { timeout: 15000 }),
-      page.getByRole("menuitem", { name: "Summary" }).click()
-    ]);
+    // ExportLink lazy-loads react-csv; until that chunk resolves the Suspense fallback
+    // renders a look-alike button with no anchor, so wait for the real CSVLink <a>.
+    const summaryLink = page.getByRole("menuitem", { name: "Summary" }).locator("a");
+    await expect(summaryLink).toBeVisible({ timeout: 15000 });
+
+    const downloadPromise = page.waitForEvent("download", { timeout: 15000 });
+    await summaryLink.click();
+    const download = await downloadPromise;
     expect(download.suggestedFilename()).toMatch(/\.csv$/);
   });
 });
