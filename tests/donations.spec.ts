@@ -344,6 +344,24 @@ test.describe("Donations — navigation and listing extras", () => {
     await expect(page.locator("a").getByText("General Fund", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
+  test("Giving Link dialog shows a copyable URL with the fund preselected", async ({ page }) => {
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    await fundsBtn.click();
+    await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
+
+    await page.getByRole("row", { name: /General Fund/ }).getByRole("button", { name: "Giving Link" }).click();
+    const urlField = page.getByTestId("giving-link-url");
+    await expect(urlField).toBeVisible({ timeout: 10000 });
+    await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001/);
+
+    await page.getByTestId("giving-link-amount").fill("50");
+    await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001&amount=50/);
+
+    await page.getByTestId("copy-giving-link").click();
+    await page.getByTestId("close-giving-link").click();
+    await expect(urlField).toHaveCount(0);
+  });
+
   test("Batches list page exposes Add Batch and Stripe import affordances", async ({ page }) => {
     const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches").first();
     await batchesBtn.click();
