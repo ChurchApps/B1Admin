@@ -68,6 +68,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           <TableCell>{Locale.label("donations.donations.method")}</TableCell>
           <TableCell>{Locale.label("common.name")}</TableCell>
           <TableCell>{Locale.label("donations.donations.date")}</TableCell>
+          <TableCell>{Locale.label("donations.donations.notes")}</TableCell>
           <TableCell align="right">{Locale.label("donations.donations.amt")}</TableCell>
           {canEdit && <TableCell align="right" />}
         </TableRow>
@@ -81,7 +82,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     if (props.funds.length === 0) {
       rows.push(
         <TableRow key="0">
-          <EmptyState variant="table" colSpan={5} icon={<DonationIcon />} title={Locale.label("donations.donations.errMsg")} />
+          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={Locale.label("donations.donations.errMsg")} />
         </TableRow>
       );
       return rows;
@@ -90,7 +91,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     if (!donations || donations.length === 0) {
       rows.push(
         <TableRow key="0">
-          <EmptyState variant="table" colSpan={5} icon={<DonationIcon />} title={Locale.label("donations.donations.noDonMsg")} />
+          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={Locale.label("donations.donations.noDonMsg")} />
         </TableRow>
       );
       return rows;
@@ -123,6 +124,14 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
               {d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}
             </IconText>
           </TableCell>
+          <TableCell>
+            <Typography
+              variant="body2"
+              title={d.notes || ""}
+              sx={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "text.secondary" }}>
+              {d.notes || ""}
+            </Typography>
+          </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : "success.main" }}>
               {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
@@ -143,6 +152,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
             </Typography>
           </Stack>
         </TableCell>
+        <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell align="right">
