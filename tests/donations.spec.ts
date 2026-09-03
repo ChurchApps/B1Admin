@@ -1,4 +1,4 @@
-import { type Page } from "@playwright/test";
+import { type Page, type APIRequestContext, request } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
@@ -164,6 +164,7 @@ test.describe.serial("Donations Management", () => {
       await expect(page.locator("table td").getByText("Anonymous")).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("table td").getByText("May 2, 2025")).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("table td").getByText("$")).toHaveCount(2, { timeout: 10000 });
+      await expect(page.locator("table td").getByText("Test Donation Notes")).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should edit a batch donation", async () => {
@@ -344,6 +345,24 @@ test.describe("Donations — navigation and listing extras", () => {
     await expect(page.locator("a").getByText("General Fund", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
+  test("Giving Link dialog shows a copyable URL with the fund preselected", async ({ page }) => {
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    await fundsBtn.click();
+    await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
+
+    await page.getByRole("row", { name: /General Fund/ }).getByRole("button", { name: "Giving Link" }).click();
+    const urlField = page.getByTestId("giving-link-url");
+    await expect(urlField).toBeVisible({ timeout: 10000 });
+    await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001/);
+
+    await page.getByTestId("giving-link-amount").fill("50");
+    await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001&amount=50/);
+
+    await page.getByTestId("copy-giving-link").click();
+    await page.getByTestId("close-giving-link").click();
+    await expect(urlField).toHaveCount(0);
+  });
+
   test("Batches list page exposes Add Batch and Stripe import affordances", async ({ page }) => {
     const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches").first();
     await batchesBtn.click();
@@ -414,5 +433,54 @@ test.describe("Fund visibility", () => {
     await page.locator("#fundsBox").getByRole("button", { name: "Delete" }).click();
     await confirmDelete(page);
     await expect(page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true })).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+// Notes column: seed the batch directly via API (the BatchEdit date field is a
+// known-broken MUI date section input under Playwright, unrelated to this feature)
+// so the UI portion only exercises what's actually under test — bulk entry + list display.
+const API_BASE = "http://localhost:8084";
+const NOTES_BATCH_NAME = "Habakkuk Notes Batch";
+const NOTES_TEXT = "Envelope #42 — pledge campaign gift";
+
+async function apiAuth(ctx: APIRequestContext) {
+  const res = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+}
+
+test.describe("Donations list — notes column", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("a donation's notes show in the batch donations list", async ({ page }) => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: NOTES_BATCH_NAME, batchDate: "2025-11-01" }] });
+    const batches = await batchRes.json();
+    batchId = batches[0].id;
+    await ctx.dispose();
+
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page).toHaveURL(new RegExp(`/donations/batches/${batchId}`));
+
+    const anon = page.locator("button").getByText("Anonymous");
+    await expect(anon).toBeVisible({ timeout: 10000 });
+    await anon.click();
+
+    await page.locator('[data-testid="bulk-donation-notes"] input').fill(NOTES_TEXT);
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("15.00");
+    await page.locator('[data-testid="add-donation-submit"]').click();
+
+    await expect(page.locator("table td").getByText(NOTES_TEXT)).toHaveCount(1, { timeout: 10000 });
   });
 });
