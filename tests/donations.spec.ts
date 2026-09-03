@@ -1,3 +1,4 @@
+import fs from "fs";
 import { type Page, type APIRequestContext, request } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
@@ -433,6 +434,43 @@ test.describe("Fund visibility", () => {
     await page.locator("#fundsBox").getByRole("button", { name: "Delete" }).click();
     await confirmDelete(page);
     await expect(page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true })).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+test.describe("QuickBooks export", () => {
+  test.describe.configure({ retries: 0 });
+
+  // Seed batch "March 2, 2025 Batch" (BAT00000001) already splits 7 donations across 6 funds —
+  // General 1540 / Building 100 / Missions 50 / Youth 90 / Food Pantry 40 / Benevolence 80, total 1900.
+  test("Export for QuickBooks produces a balanced journal entry CSV", async ({ page }) => {
+    await page.goto("/donations/batches/BAT00000001");
+    await expect(page.locator("#page-header-title")).toHaveText("March 2, 2025 Batch", { timeout: 15000 });
+
+    // ExportLink lazy-loads react-csv; wait for the real <a download> wrapper, not the inert Suspense fallback button.
+    const qboLink = page.locator("a").filter({ has: page.getByRole("button", { name: "Export for QuickBooks" }) });
+    await expect(qboLink).toBeVisible({ timeout: 15000 });
+    const [download] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), qboLink.click()]);
+    const filePath = await download.path();
+    const content = fs.readFileSync(filePath!, "utf-8");
+
+    const allLines = content.trim().replace(/^\uFEFF/, "").split("\n").filter((l) => l.length > 0);
+    const parseCsvLine = (line: string) => line.split(",").map((cell) => cell.trim().replace(/^"|"$/g, ""));
+    expect(parseCsvLine(allLines[0])).toEqual(["JournalNo", "JournalDate", "AccountName", "Debits", "Credits", "Description", "Name"]);
+    const rows = allLines.slice(1).map(parseCsvLine);
+    const debitRow = rows.find((r) => r[2] === "Undeposited Funds");
+    const creditRows = rows.filter((r) => r[2] !== "Undeposited Funds");
+
+    expect(debitRow).toBeTruthy();
+    const debitTotal = parseFloat(debitRow![3]);
+    const creditTotal = creditRows.reduce((sum, r) => sum + parseFloat(r[4]), 0);
+    expect(debitTotal).toBeCloseTo(1900, 2);
+    expect(creditTotal).toBeCloseTo(debitTotal, 2);
+    expect(creditRows.some((r) => r[2] === "General Fund" && parseFloat(r[4]) === 1540)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Building Fund" && parseFloat(r[4]) === 100)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Missions Fund" && parseFloat(r[4]) === 50)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Youth Ministry" && parseFloat(r[4]) === 90)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Food Pantry" && parseFloat(r[4]) === 40)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Benevolence Fund" && parseFloat(r[4]) === 80)).toBe(true);
   });
 });
 
