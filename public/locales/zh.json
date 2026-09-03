@@ -178,7 +178,6 @@
       "confirmDelete": "您确定要删除此活动吗？",
       "confirmDeleteSeries": "这是一个重复活动。删除它将移除整个系列及其所有场次。您确定吗？",
       "delete": "删除",
-      "editEvent": "编辑活动",
       "manageRegistrations": "管理报名",
       "noGroups": "未找到组。"
     },
@@ -198,7 +197,6 @@
       "noCalendars": "没有找到日历",
       "status": "状态",
       "subtitleEmpty": "从创建您的第一个日历开始",
-      "subtitleWithCount": "带计数的副标题",
       "title": "日历"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "添加新..."
     },
-    "confirm": "确认",
     "copy": "复制",
     "createPerson": {
-      "confirmDuplicate": "已找到使用此电子邮件的现有人员 '{{existingName}}' ({{existingEmail}})。您确定要添加 '{{firstName}} {{lastName}}' 吗？",
       "validate": {
         "firstName": "请输入名字。",
         "lastName": "请输入姓氏。",
@@ -368,18 +364,14 @@
     },
     "help": "帮助",
     "iconPicker": {
-      "noResults": "未找到结果",
       "searchLabel": "搜索图标",
       "searchPlaceholder": "输入搜索（例如：person、home、church）...",
-      "showingDefault": "正在显示 {{count}} 个默认图标",
-      "showingMatching": "正在显示 {{count}} 个匹配的图标",
       "title": "选择图标",
       "tryDifferent": "尝试不同的搜索词"
     },
     "left": "左",
     "loading": "加载中",
     "mobile": "移动端",
-    "more": "更多",
     "name": "姓名",
     "navigation": "导航",
     "no": "否",
@@ -613,6 +605,7 @@
       "lastYearCsv": "去年 CSV",
       "lastYearPrint": "去年印刷",
       "method": "方法",
+      "notes": "Notes",
       "viewBatch": "查看批次",
       "willAppear": "捐款将在完成后显示在此处。"
     }
@@ -742,6 +735,7 @@
       "funds": "基金",
       "method": "方式",
       "noDonMsg": "尚未追踪任何捐款。输入捐款后，它们将显示在这里。",
+      "notes": "Notes",
       "pending": "待处理",
       "statements": "捐赠报表",
       "summary": "摘要",
@@ -796,6 +790,13 @@
       "totalFunds": "基金总数",
       "viewBatch": "查看批次"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "每月",
       "quarterly": "每季度",
@@ -840,12 +841,11 @@
       "title": "导入 Stripe 交易",
       "totalLabel": "总计：",
       "type": "类型"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "值"
     },
     "aiSearch": {
-      "clearSearch": "清除搜索",
       "exampleMen": "- 显示 30 岁以上、生日在 7 月的男性。",
       "exampleWomen": "- 显示已婚的女性。",
       "examples": "示例：",
@@ -2417,8 +2416,6 @@
       "lightMode": "浅色模式",
       "linkedAccounts": "关联账户",
       "noDirect": "在成员目录中隐藏我",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "请输入至少8个字符的密码。",
       "passMatch": "密码不匹配。",
       "passNew": "新密码",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "管理角色和权限"
     },
     "storageSettingsEdit": {
-      "authFailed": "登录失败，请重试。",
-      "byosHelper": "新上传的文件将存储在您自己的账户中，下载也将从该账户提供。已上传的文件保持原位置不变。",
       "churchAppsFree": "ChurchApps (免费)",
-      "connect": "连接账户",
-      "connectFirst": "请先连接您的账户，然后再保存。",
-      "connected": "账户已连接",
-      "connecting": "等待登录...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "文件将存储在您的 MinistryStuff 存储套餐中，已自动关联到此教会。请前往以下网址管理您的套餐：",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "弹出窗口被阻止。请允许弹出窗口后重试。",
       "provider": "提供商",
-      "reconnect": "重新连接",
-      "s3AccessKey": "访问密钥 ID",
-      "s3Bucket": "存储桶",
-      "s3Endpoint": "端点（AWS 留空）",
-      "s3Helper": "该存储桶必须允许公开读取访问，并允许来自此站点的 CORS PUT 请求。适用于 AWS S3、Cloudflare R2 和 Backblaze B2。",
-      "s3PublicBase": "公共 URL 基址",
-      "s3Region": "区域",
-      "s3Required": "存储桶和公共 URL 基址为必填项。",
-      "s3SecretKey": "私有访问密钥",
       "saveError": "保存存储设置时出错。",
-      "sessionExpired": "登录会话已过期，请重试。",
-      "sessionFailed": "无法启动登录会话。",
       "title": "文件存储",
       "usage": "已使用 {used} GB，共 {quota} GB。"
     },
@@ -3837,49 +3813,18 @@
       "addElements": "添加元素",
       "advanced": "高级",
       "all": "全部",
-      "block": "块",
       "blocks": "块",
-      "box": "盒子",
-      "calendar": "日历",
-      "campaignProgress": "活动进度",
-      "card": "卡片",
-      "carousel": "轮播",
       "church": "教会",
-      "column": "列",
       "common": "常用",
-      "countdown": "倒计时",
       "descReusableElement": "可重用元素块",
       "descReusableSection": "可重用部分",
       "descSection": "用于分组内容的容器",
-      "donateLink": "捐赠链接",
-      "donation": "捐赠",
-      "embedPage": "嵌入页面",
-      "expandable": "可展开",
-      "form": "表单",
-      "gallery": "图库",
-      "groupList": "群组列表",
-      "html": "HTML",
-      "iconFeature": "图标特色",
-      "image": "图片",
-      "location": "位置",
-      "logo": "标志",
       "media": "媒体",
       "noElementsFound": "未找到元素",
-      "row": "行",
       "searchElements": "搜索元素...",
       "section": "部分",
-      "serviceTimes": "礼拜时间",
-      "socialIcons": "社交图标",
-      "staffGrid": "员工网格",
-      "stats": "统计数据",
-      "stream": "直播",
-      "table": "表格",
-      "testimonial": "见证",
-      "text": "文字",
-      "textWithPhoto": "带照片的文字",
       "tryDifferentSearch": "尝试不同的搜索词",
-      "untitledBlock": "无标题块",
-      "video": "视频"
+      "untitledBlock": "无标题块"
     },
     "elementEdit": {
       "enableLightbox": "启用灯箱",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "上传文件"
     },
     "filesManager": {
-      "externalStorage": "存储在您的关联账户中",
       "files": "文件",
       "getStarted": "开始上传您的第一个文件",
       "name": "名称",
@@ -4377,10 +4321,6 @@
       "showCampus": "显示校园",
       "title": "标题"
     },
-    "siteSwitcher": {
-      "mainWebsite": "主网站",
-      "manageSites": "管理网站…"
-    },
     "siteWidgets": {
       "addAction": "添加操作",
       "announcementBar": "公告栏",
@@ -4404,15 +4344,6 @@
       "textColor": "文字颜色",
       "title": "网站小组件",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "添加网站",
-      "deleteConfirm": "删除此网站？其页面、导航和外观设置将被永久删除。其自定义域名将重新分配给主网站。",
-      "empty": "尚无其他网站。",
-      "name": "名称",
-      "subDomain": "子域名",
-      "subDomainHint": "仅限小写字母和数字。将成为 {subdomain}.b1.church",
-      "title": "网站"
     },
     "socialIconsEdit": {
       "alignment": "对齐方式",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "确定要删除此音频文件吗？",
-      "tooLarge": "文件太大。最大大小为 25 MB。",
-      "unsupportedFormat": "不支持的音频格式。请上传 MP3、M4A 或 AAC 文件。",
       "upload": "上传音频"
     },
     "create": {

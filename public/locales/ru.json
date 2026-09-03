@@ -178,7 +178,6 @@
       "confirmDelete": "Вы уверены, что хотите удалить это событие?",
       "confirmDeleteSeries": "Это повторяющееся мероприятие. Удаление приведёт к удалению всей серии и всех её повторений. Вы уверены?",
       "delete": "Удалить",
-      "editEvent": "Редактировать событие",
       "manageRegistrations": "Управление регистрациями",
       "noGroups": "Группы не найдены."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Календари не найдены",
       "status": "Статус",
       "subtitleEmpty": "Начните с создания своего первого календаря",
-      "subtitleWithCount": "Подзаголовок с количеством",
       "title": "Календари"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Добавить новый..."
     },
-    "confirm": "Подтвердить",
     "copy": "Копировать",
     "createPerson": {
-      "confirmDuplicate": "Пользователь '{{existingName}}' ({{existingEmail}}) с таким адресом электронной почты уже существует. Вы действительно хотите добавить '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Пожалуйста, введите имя.",
         "lastName": "Пожалуйста, введите фамилию.",
@@ -368,18 +364,14 @@
     },
     "help": "Помощь",
     "iconPicker": {
-      "noResults": "Ничего не найдено",
       "searchLabel": "Поиск иконок",
       "searchPlaceholder": "Введите для поиска (например, человек, дом, церковь)...",
-      "showingDefault": "Показано {{count}} значков по умолчанию",
-      "showingMatching": "Показано {{count}} подходящих значков",
       "title": "Выберите значок",
       "tryDifferent": "Попробуйте другой поисковый запрос"
     },
     "left": "Слева",
     "loading": "Загрузка",
     "mobile": "Мобильный",
-    "more": "Ещё",
     "name": "Имя",
     "navigation": "Навигация",
     "no": "Нет",
@@ -613,6 +605,7 @@
       "lastYearCsv": "CSV за прошлый год",
       "lastYearPrint": "Распечатка прошлого года",
       "method": "Метод",
+      "notes": "Notes",
       "viewBatch": "Просмотреть партию",
       "willAppear": "Пожертвования будут отображаться здесь после того, как они будут сделаны."
     }
@@ -742,6 +735,7 @@
       "funds": "Фонды",
       "method": "Способ",
       "noDonMsg": "Пожертвования не отслеживались. После ввода пожертвования они появятся здесь.",
+      "notes": "Notes",
       "pending": "В ожидании",
       "statements": "Выписки о пожертвованиях",
       "summary": "Сводка",
@@ -796,6 +790,13 @@
       "totalFunds": "Всего фондов",
       "viewBatch": "Просмотреть партию"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Ежемесячно",
       "quarterly": "Ежеквартально",
@@ -840,12 +841,11 @@
       "title": "Импорт транзакций Stripe",
       "totalLabel": "Всего:",
       "type": "Тип"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Значение"
     },
     "aiSearch": {
-      "clearSearch": "Очистить поиск",
       "exampleMen": "- Покажите мне мужчин старше 30 с днями рождения в июле.",
       "exampleWomen": "- Покажите мне замужних женщин.",
       "examples": "Примеры:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Светлая тема",
       "linkedAccounts": "Связанные учетные записи",
       "noDirect": "Скрыть меня из справочника участников",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Пожалуйста, введите пароль длиной не менее 8 символов.",
       "passMatch": "Пароли не совпадают.",
       "passNew": "Новый пароль",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Управляйте ролями и разрешениями"
     },
     "storageSettingsEdit": {
-      "authFailed": "Не удалось выполнить вход. Попробуйте снова.",
-      "byosHelper": "Новые загрузки сохраняются в вашем собственном аккаунте, и скачивание происходит оттуда. Уже загруженные файлы остаются на прежнем месте.",
       "churchAppsFree": "ChurchApps (Бесплатно)",
-      "connect": "Подключить аккаунт",
-      "connectFirst": "Подключите аккаунт перед сохранением.",
-      "connected": "Аккаунт подключён",
-      "connecting": "Ожидание входа...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Файлы будут храниться в вашем тарифе хранилища MinistryStuff, автоматически привязанном к этой церкви. Управляйте тарифом на",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Всплывающее окно заблокировано. Разрешите всплывающие окна и попробуйте снова.",
       "provider": "Провайдер",
-      "reconnect": "Переподключить",
-      "s3AccessKey": "Идентификатор ключа доступа",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (оставьте пустым для AWS)",
-      "s3Helper": "Bucket должен разрешать публичный доступ на чтение и CORS PUT-запросы с этого сайта. Работает с AWS S3, Cloudflare R2 и Backblaze B2.",
-      "s3PublicBase": "Базовый публичный URL",
-      "s3Region": "Регион",
-      "s3Required": "Bucket и базовый публичный URL обязательны.",
-      "s3SecretKey": "Секретный ключ доступа",
       "saveError": "Ошибка при сохранении настроек хранилища.",
-      "sessionExpired": "Сеанс входа истёк. Попробуйте снова.",
-      "sessionFailed": "Не удалось начать сеанс входа.",
       "title": "Хранилище файлов",
       "usage": "Использовано {used} ГБ из {quota} ГБ."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Добавить Элементы",
       "advanced": "Расширенный",
       "all": "Все",
-      "block": "Блок",
       "blocks": "Блоки",
-      "box": "Блок",
-      "calendar": "Календарь",
-      "campaignProgress": "Прогресс кампании",
-      "card": "Карточка",
-      "carousel": "Карусель",
       "church": "Церковь",
-      "column": "Колонка",
       "common": "Общий",
-      "countdown": "Обратный отсчёт",
       "descReusableElement": "Многоразовый блок элемента",
       "descReusableSection": "Многоразовая секция",
       "descSection": "Контейнер для группировки контента",
-      "donateLink": "Ссылка на Пожертвование",
-      "donation": "Пожертвование",
-      "embedPage": "Встроить Страницу",
-      "expandable": "Раскрывающийся",
-      "form": "Форма",
-      "gallery": "Галерея",
-      "groupList": "Список Групп",
-      "html": "HTML",
-      "iconFeature": "Иконка с описанием",
-      "image": "Изображение",
-      "location": "Местоположение",
-      "logo": "Логотип",
       "media": "Медиа",
       "noElementsFound": "Элементы не найдены",
-      "row": "Строка",
       "searchElements": "Поиск элементов...",
       "section": "Секция",
-      "serviceTimes": "Время служений",
-      "socialIcons": "Иконки соцсетей",
-      "staffGrid": "Сетка команды",
-      "stats": "Статистика",
-      "stream": "Трансляция",
-      "table": "Таблица",
-      "testimonial": "Отзыв",
-      "text": "Текст",
-      "textWithPhoto": "Текст с Фото",
       "tryDifferentSearch": "Попробуйте другой поисковый запрос",
-      "untitledBlock": "Блок без названия",
-      "video": "Видео"
+      "untitledBlock": "Блок без названия"
     },
     "elementEdit": {
       "enableLightbox": "Включить Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Загрузить файлы"
     },
     "filesManager": {
-      "externalStorage": "Хранится в вашем привязанном аккаунте",
       "files": "Файлы",
       "getStarted": "Начните с загрузки первого файла",
       "name": "Название",
@@ -4377,10 +4321,6 @@
       "showCampus": "Показывать кампус",
       "title": "Заголовок"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Основной сайт",
-      "manageSites": "Управление сайтами…"
-    },
     "siteWidgets": {
       "addAction": "Добавить действие",
       "announcementBar": "Панель объявлений",
@@ -4404,15 +4344,6 @@
       "textColor": "Цвет текста",
       "title": "Виджеты сайта",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Добавить сайт",
-      "deleteConfirm": "Удалить этот сайт? Его страницы, навигация и оформление будут безвозвратно удалены. Его пользовательские домены будут переназначены основному сайту.",
-      "empty": "Дополнительных сайтов пока нет.",
-      "name": "Название",
-      "subDomain": "Поддомен",
-      "subDomainHint": "Только строчные буквы и цифры. Станет {subdomain}.b1.church",
-      "title": "Сайты"
     },
     "socialIconsEdit": {
       "alignment": "Выравнивание",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Вы уверены, что хотите удалить этот аудиофайл?",
-      "tooLarge": "Файл слишком большой. Максимальный размер — 25 МБ.",
-      "unsupportedFormat": "Неподдерживаемый формат аудио. Загрузите файл MP3, M4A или AAC.",
       "upload": "Загрузить аудио"
     },
     "create": {

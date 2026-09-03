@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to Xóa this event?",
       "confirmDeleteSeries": "Đây là một sự kiện định kỳ. Việc xóa nó sẽ xóa toàn bộ chuỗi và tất cả các lần lặp lại của nó. Bạn có chắc chắn không?",
       "delete": "Xóa",
-      "editEvent": "Chỉnh sửa sự kiện",
       "manageRegistrations": "Quản lý đăng ký",
       "noGroups": "Không Các nhóm found."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Không calendars found",
       "status": "Trạng thái",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Số lượng",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Thêm Mới..."
     },
-    "confirm": "Xác nhận",
     "copy": "Sao chép",
     "createPerson": {
-      "confirmDuplicate": "Một người dùng '{{existingName}}' ({{existingEmail}}) đã tồn tại với email này. Bạn có chắc chắn muốn thêm '{{firstName}} {{lastName}}' không?",
       "validate": {
         "firstName": "Please enter a first Tên.",
         "lastName": "Please enter a last Tên.",
@@ -368,18 +364,14 @@
     },
     "help": "Trợ giúp",
     "iconPicker": {
-      "noResults": "Không tìm thấy kết quả nào",
       "searchLabel": "Tìm kiếm Icons",
       "searchPlaceholder": "Type to Tìm kiếm (e.g., person, Trang chủ, church)...",
-      "showingDefault": "Đang hiển thị {{count}} biểu tượng mặc định",
-      "showingMatching": "Đang hiển thị {{count}} biểu tượng phù hợp",
       "title": "Select Icon",
       "tryDifferent": "Try a different Tìm kiếm term"
     },
     "left": "Left",
     "loading": "Đang tải",
     "mobile": "Mobile",
-    "more": "Thêm",
     "name": "Tên",
     "navigation": "Navigation",
     "no": "Không",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year In",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "Xem lô",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "Phương thức",
       "noDonMsg": "Không donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Đang chờ",
       "statements": "Giving Statements",
       "summary": "Tóm tắt",
@@ -796,6 +790,13 @@
       "totalFunds": "Tổng số quỹ",
       "viewBatch": "Xem lô"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "Nhập giao dịch Stripe",
       "totalLabel": "Tổng:",
       "type": "Loại"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Xóa tìm kiếm",
       "exampleMen": "- Cho tôi xem những người đàn ông trên 30 tuổi có sinh nhật trong tháng 7.",
       "exampleWomen": "- Cho tôi xem những phụ nữ đã kết hôn.",
       "examples": "Ví dụ:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Chế độ sáng",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a Mật khẩu that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "Mới Mật khẩu",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Quản lý vai trò và quyền hạn"
     },
     "storageSettingsEdit": {
-      "authFailed": "Đăng nhập thất bại. Vui lòng thử lại.",
-      "byosHelper": "Các tệp tải lên mới được lưu trữ trong tài khoản của riêng bạn và các lượt tải xuống được phục vụ từ đó. Các tệp đã tải lên trước đây vẫn giữ nguyên vị trí.",
       "churchAppsFree": "ChurchApps (Miễn phí)",
-      "connect": "Kết nối tài khoản",
-      "connectFirst": "Vui lòng kết nối tài khoản của bạn trước khi lưu.",
-      "connected": "Tài khoản đã được kết nối",
-      "connecting": "Đang chờ đăng nhập...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Tệp sẽ được lưu trữ trên gói lưu trữ MinistryStuff của bạn, được liên kết tự động với nhà thờ này. Quản lý gói của bạn tại",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Cửa sổ bật lên đã bị chặn. Vui lòng cho phép cửa sổ bật lên và thử lại.",
       "provider": "Nhà cung cấp",
-      "reconnect": "Kết nối lại",
-      "s3AccessKey": "Access Key Id",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (để trống cho AWS)",
-      "s3Helper": "Bucket phải cho phép truy cập đọc công khai và các yêu cầu CORS PUT từ trang này. Hoạt động với AWS S3, Cloudflare R2 và Backblaze B2.",
-      "s3PublicBase": "URL công khai cơ sở",
-      "s3Region": "Khu vực",
-      "s3Required": "Bucket và URL công khai cơ sở là bắt buộc.",
-      "s3SecretKey": "Secret Access Key",
       "saveError": "Lỗi khi lưu cài đặt lưu trữ.",
-      "sessionExpired": "Phiên đăng nhập đã hết hạn. Vui lòng thử lại.",
-      "sessionFailed": "Không thể bắt đầu phiên đăng nhập.",
       "title": "Lưu Trữ Tệp",
       "usage": "Đang sử dụng {used} GB trên {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Thêm Elements",
       "advanced": "Advanced",
       "all": "Tất cả",
-      "block": "Khối",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Tiến độ Chiến dịch",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Cột",
       "common": "Phổ biến",
-      "countdown": "Đếm Ngược",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Thư Viện Ảnh",
-      "groupList": "Nhóm Danh sách",
-      "html": "HTML",
-      "iconFeature": "Biểu Tượng Nổi Bật",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Không elements found",
-      "row": "Row",
       "searchElements": "Tìm kiếm Elements",
       "section": "Section",
-      "serviceTimes": "Giờ Thờ Phượng",
-      "socialIcons": "Biểu Tượng Mạng Xã Hội",
-      "staffGrid": "Lưới Nhân sự",
-      "stats": "Số Liệu Thống Kê",
-      "stream": "Stream",
-      "table": "Bảng",
-      "testimonial": "Lời Chứng",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different Tìm kiếm term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Bật Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Tải lên Files"
     },
     "filesManager": {
-      "externalStorage": "Được lưu trữ trong tài khoản đã liên kết của bạn",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Tên",
@@ -4377,10 +4321,6 @@
       "showCampus": "Hiển thị Cơ sở",
       "title": "Tiêu đề"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Trang web chính",
-      "manageSites": "Quản lý trang web…"
-    },
     "siteWidgets": {
       "addAction": "Thêm Hành động",
       "announcementBar": "Thanh Thông báo",
@@ -4404,15 +4344,6 @@
       "textColor": "Màu Văn bản",
       "title": "Tiện ích Trang web",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Thêm trang web",
-      "deleteConfirm": "Xóa trang web này? Các trang, điều hướng và giao diện của nó sẽ bị xóa vĩnh viễn. Các tên miền tùy chỉnh của nó sẽ được chuyển sang trang web chính.",
-      "empty": "Chưa có trang web bổ sung nào.",
-      "name": "Tên",
-      "subDomain": "Tên miền phụ",
-      "subDomainHint": "Chỉ chữ thường và số. Sẽ trở thành {subdomain}.b1.church",
-      "title": "Trang web"
     },
     "socialIconsEdit": {
       "alignment": "Căn Chỉnh",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Bạn có chắc muốn xóa tệp âm thanh này không?",
-      "tooLarge": "Tệp quá lớn. Kích thước tối đa là 25 MB.",
-      "unsupportedFormat": "Định dạng âm thanh không được hỗ trợ. Hãy tải lên tệp MP3, M4A hoặc AAC.",
       "upload": "Tải lên âm thanh"
     },
     "create": {

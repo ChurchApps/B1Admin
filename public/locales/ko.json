@@ -178,7 +178,6 @@
       "confirmDelete": "이 이벤트를 삭제하시겠습니까?",
       "confirmDeleteSeries": "반복 일정입니다. 삭제하면 전체 시리즈와 모든 반복 항목이 제거됩니다. 계속하시겠습니까?",
       "delete": "삭제",
-      "editEvent": "이벤트 편집",
       "manageRegistrations": "등록 관리",
       "noGroups": "그룹을 찾을 수 없습니다."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "캘린더를 찾을 수 없습니다.",
       "status": "상태",
       "subtitleEmpty": "첫 번째 캘린더를 만들어 시작해 보세요.",
-      "subtitleWithCount": "개수가 포함된 부제",
       "title": "달력"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "새로 추가..."
     },
-    "confirm": "확인",
     "copy": "복사",
     "createPerson": {
-      "confirmDuplicate": "이 이메일 주소를 사용하는 기존 사용자 '{{existingName}}' ({{existingEmail}})이(가) 있습니다. 정말로 '{{firstName}} {{lastName}}'을(를) 추가하시겠습니까?",
       "validate": {
         "firstName": "이름을 입력하세요.",
         "lastName": "성을 입력하세요.",
@@ -368,18 +364,14 @@
     },
     "help": "도움말",
     "iconPicker": {
-      "noResults": "결과가 없습니다",
       "searchLabel": "아이콘 검색",
       "searchPlaceholder": "검색어 입력 (예: 사람, 집, 교회)...",
-      "showingDefault": "{{count}}개의 기본 아이콘 표시 중",
-      "showingMatching": "{{count}}개의 일치하는 아이콘 표시 중",
       "title": "아이콘 선택",
       "tryDifferent": "다른 검색어를 사용해 보세요."
     },
     "left": "왼쪽",
     "loading": "로딩 중",
     "mobile": "모바일",
-    "more": "더 보기",
     "name": "이름",
     "navigation": "탐색",
     "no": "아니요",
@@ -613,6 +605,7 @@
       "lastYearCsv": "작년 CSV",
       "lastYearPrint": "작년 인쇄",
       "method": "방법",
+      "notes": "Notes",
       "viewBatch": "배치 보기",
       "willAppear": "기부가 이루어지면 여기에 표시됩니다."
     }
@@ -742,6 +735,7 @@
       "funds": "기금",
       "method": "방법",
       "noDonMsg": "추적된 기부가 없습니다. 기부가 입력되면 여기에 표시됩니다.",
+      "notes": "Notes",
       "pending": "대기 중",
       "statements": "기부 명세서",
       "summary": "요약",
@@ -796,6 +790,13 @@
       "totalFunds": "총 펀드",
       "viewBatch": "배치 보기"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "월간",
       "quarterly": "분기",
@@ -840,12 +841,11 @@
       "title": "Stripe 거래 가져오기",
       "totalLabel": "총계:",
       "type": "유형"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "값"
     },
     "aiSearch": {
-      "clearSearch": "검색 지우기",
       "exampleMen": "- 7월 생일이 있는 30세 이상 남성 보여주기.",
       "exampleWomen": "- 결혼한 여성 보여주기.",
       "examples": "예:",
@@ -2417,8 +2416,6 @@
       "lightMode": "라이트 모드",
       "linkedAccounts": "연결된 계정",
       "noDirect": "회원 명부에서 숨기기",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "비밀번호는 최소 8자 이상이어야 합니다.",
       "passMatch": "비밀번호가 일치하지 않습니다.",
       "passNew": "새 비밀번호",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "역할 및 권한 관리"
     },
     "storageSettingsEdit": {
-      "authFailed": "로그인에 실패했습니다. 다시 시도해 주세요.",
-      "byosHelper": "새로 업로드하는 파일은 사용자의 계정에 저장되고 다운로드도 그곳에서 제공됩니다. 이미 업로드된 파일은 그대로 유지됩니다.",
       "churchAppsFree": "ChurchApps (무료)",
-      "connect": "계정 연결",
-      "connectFirst": "저장하기 전에 계정을 연결하세요.",
-      "connected": "계정이 연결되었습니다",
-      "connecting": "로그인 대기 중...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "파일은 이 교회에 자동으로 연결된 MinistryStuff 저장소 요금제에 저장됩니다. 요금제 관리:",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "팝업이 차단되었습니다. 팝업을 허용한 후 다시 시도해 주세요.",
       "provider": "제공업체",
-      "reconnect": "다시 연결",
-      "s3AccessKey": "액세스 키 ID",
-      "s3Bucket": "버킷",
-      "s3Endpoint": "엔드포인트 (AWS는 비워 둠)",
-      "s3Helper": "버킷은 공개 읽기 액세스와 이 사이트에서의 CORS PUT 요청을 허용해야 합니다. AWS S3, Cloudflare R2, Backblaze B2와 함께 사용할 수 있습니다.",
-      "s3PublicBase": "공개 URL 기본 주소",
-      "s3Region": "리전",
-      "s3Required": "버킷과 공개 URL 기본 주소는 필수입니다.",
-      "s3SecretKey": "보안 액세스 키",
       "saveError": "저장소 설정 저장 중 오류가 발생했습니다.",
-      "sessionExpired": "로그인 세션이 만료되었습니다. 다시 시도해 주세요.",
-      "sessionFailed": "로그인 세션을 시작할 수 없습니다.",
       "title": "파일 저장소",
       "usage": "{quota}GB 중 {used}GB 사용 중."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "요소 추가",
       "advanced": "고급",
       "all": "전체",
-      "block": "블록",
       "blocks": "블록",
-      "box": "박스",
-      "calendar": "캘린더",
-      "campaignProgress": "캠페인 진행률",
-      "card": "카드",
-      "carousel": "캐러셀",
       "church": "교회",
-      "column": "열",
       "common": "공통",
-      "countdown": "카운트다운",
       "descReusableElement": "재사용 가능한 요소 블록",
       "descReusableSection": "재사용 가능한 섹션",
       "descSection": "콘텐츠 그룹화를 위한 컨테이너",
-      "donateLink": "기부 링크",
-      "donation": "기부",
-      "embedPage": "페이지 삽입",
-      "expandable": "확장 가능",
-      "form": "양식",
-      "gallery": "갤러리",
-      "groupList": "그룹 목록",
-      "html": "HTML",
-      "iconFeature": "아이콘 기능",
-      "image": "이미지",
-      "location": "위치",
-      "logo": "로고",
       "media": "미디어",
       "noElementsFound": "요소를 찾을 수 없습니다",
-      "row": "행",
       "searchElements": "요소 검색...",
       "section": "섹션",
-      "serviceTimes": "예배 시간",
-      "socialIcons": "소셜 아이콘",
-      "staffGrid": "스태프 그리드",
-      "stats": "통계",
-      "stream": "스트림",
-      "table": "테이블",
-      "testimonial": "간증",
-      "text": "텍스트",
-      "textWithPhoto": "사진이 있는 텍스트",
       "tryDifferentSearch": "다른 검색어를 시도해 보세요",
-      "untitledBlock": "제목 없는 블록",
-      "video": "비디오"
+      "untitledBlock": "제목 없는 블록"
     },
     "elementEdit": {
       "enableLightbox": "라이트박스 활성화",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "파일 업로드"
     },
     "filesManager": {
-      "externalStorage": "연결된 계정에 저장됨",
       "files": "파일",
       "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
       "name": "이름",
@@ -4377,10 +4321,6 @@
       "showCampus": "캠퍼스 표시",
       "title": "제목"
     },
-    "siteSwitcher": {
-      "mainWebsite": "메인 웹사이트",
-      "manageSites": "웹사이트 관리..."
-    },
     "siteWidgets": {
       "addAction": "작업 추가",
       "announcementBar": "공지 배너",
@@ -4404,15 +4344,6 @@
       "textColor": "텍스트 색상",
       "title": "사이트 위젯",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "웹사이트 추가",
-      "deleteConfirm": "이 웹사이트를 삭제하시겠습니까? 페이지, 내비게이션, 디자인이 영구적으로 삭제됩니다. 사용자 지정 도메인은 메인 웹사이트로 재할당됩니다.",
-      "empty": "아직 추가 웹사이트가 없습니다.",
-      "name": "이름",
-      "subDomain": "서브도메인",
-      "subDomainHint": "소문자와 숫자만 사용할 수 있습니다. {subdomain}.b1.church가 됩니다",
-      "title": "웹사이트"
     },
     "socialIconsEdit": {
       "alignment": "정렬",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "이 오디오 파일을 삭제하시겠습니까?",
-      "tooLarge": "파일이 너무 큽니다. 최대 크기는 25MB입니다.",
-      "unsupportedFormat": "지원되지 않는 오디오 형식입니다. MP3, M4A 또는 AAC 파일을 업로드하세요.",
       "upload": "오디오 업로드"
     },
     "create": {

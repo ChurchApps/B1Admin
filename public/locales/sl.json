@@ -178,7 +178,6 @@
       "confirmDelete": "Ali ste prepričani, da želite izbrisati ta dogodek?",
       "confirmDeleteSeries": "To je ponavljajoči se dogodek. Če ga izbrišete, boste odstranili celotno serijo in vse njene ponovitve. Ali ste prepričani?",
       "delete": "Izbriši",
-      "editEvent": "Uredi dogodek",
       "manageRegistrations": "Upravljaj registracije",
       "noGroups": "Nobene skupina niso bile najdene."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Noben koledar ni bil najden",
       "status": "Stanje",
       "subtitleEmpty": "Začnite z ustvarjanjem prvega koledarja",
-      "subtitleWithCount": "Podnaslov s številom",
       "title": "Koledarji"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Dodaj novo..."
     },
-    "confirm": "Potrdi",
     "copy": "Kopiraj",
     "createPerson": {
-      "confirmDuplicate": "S tem e-poštnim naslovom je že bila najdena oseba '{{existingName}}' ({{existingEmail}}). Ali ste prepričani, da želite dodati '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Prosimo, vnesite ime.",
         "lastName": "Prosimo, vnesite priimek.",
@@ -368,18 +364,14 @@
     },
     "help": "Pomoč",
     "iconPicker": {
-      "noResults": "Ni zadetkov",
       "searchLabel": "Iskanje ikon",
       "searchPlaceholder": "Vnesite za iskanje (npr. oseba, dom, cerkev)...",
-      "showingDefault": "Prikaz {{count}} privzetih ikon",
-      "showingMatching": "Prikaz {{count}} ujemajočih se ikon",
       "title": "Izberite ikono",
       "tryDifferent": "Poskusite drugačen iskalni izraz"
     },
     "left": "Levo",
     "loading": "Nalaganje",
     "mobile": "Mobilni",
-    "more": "Več",
     "name": "Ime",
     "navigation": "Navigacija",
     "no": "Ne",
@@ -613,6 +605,7 @@
       "lastYearCsv": "CSV lanskega leta",
       "lastYearPrint": "Tisk lanskega leta",
       "method": "Metoda",
+      "notes": "Notes",
       "viewBatch": "Ogled serije",
       "willAppear": "Daritve se bodo pojavile tukaj, ko bodo narejene."
     }
@@ -742,6 +735,7 @@
       "funds": "Sredstva",
       "method": "Način",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "V čakanju",
       "statements": "Giving Statements",
       "summary": "Povzetek",
@@ -796,6 +790,13 @@
       "totalFunds": "Skupaj skladov",
       "viewBatch": "Ogled serije"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Mesečno",
       "quarterly": "Četrtletno",
@@ -840,12 +841,11 @@
       "title": "Uvozi Stripe transakcije",
       "totalLabel": "Skupaj:",
       "type": "Tip"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Počisti iskanje",
       "exampleMen": "- Pokaži mi moške nad 30 let z rojstnim dnevom v juliju.",
       "exampleWomen": "- Pokaži mi poročene ženske.",
       "examples": "Primeri:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Svetli način",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Upravljajte vloge in dovoljenja"
     },
     "storageSettingsEdit": {
-      "authFailed": "Prijava ni uspela. Poskusite znova.",
-      "byosHelper": "Nova nalaganja se shranijo v vaš lastni račun, prenosi pa se strežejo iz njega. Že naložene datoteke ostanejo tam, kjer so.",
       "churchAppsFree": "ChurchApps (Brezplačno)",
-      "connect": "Poveži račun",
-      "connectFirst": "Pred shranjevanjem povežite svoj račun.",
-      "connected": "Račun povezan",
-      "connecting": "Čakanje na prijavo ...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Datoteke bodo shranjene v vašem paketu za shranjevanje MinistryStuff, samodejno povezanem s to cerkvijo. Upravljajte svoj paket na",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Pojavno okno je blokirano. Dovolite pojavna okna in poskusite znova.",
       "provider": "Ponudnik",
-      "reconnect": "Ponovno poveži",
-      "s3AccessKey": "ID dostopnega ključa",
-      "s3Bucket": "Vedro",
-      "s3Endpoint": "Končna točka (prazno za AWS)",
-      "s3Helper": "Vedro mora dovoliti javni dostop za branje in CORS PUT zahteve s tega spletnega mesta. Deluje z AWS S3, Cloudflare R2 in Backblaze B2.",
-      "s3PublicBase": "Osnovni URL naslov (javni)",
-      "s3Region": "Regija",
-      "s3Required": "Vedro in osnovni javni URL naslov sta obvezna.",
-      "s3SecretKey": "Skrivni dostopni ključ",
       "saveError": "Napaka pri shranjevanju nastavitev shranjevanja.",
-      "sessionExpired": "Seja za prijavo je potekla. Poskusite znova.",
-      "sessionFailed": "Seje za prijavo ni bilo mogoče začeti.",
       "title": "Shranjevanje datotek",
       "usage": "Uporabljeno {used} GB od {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Blok",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Koledar",
-      "campaignProgress": "Napredek kampanje",
-      "card": "Kartice",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Stolpec",
       "common": "Pogosto",
-      "countdown": "Odštevanje",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Galerija",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Ikona s opisom",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Časi bogoslužij",
-      "socialIcons": "Ikone družbenih omrežij",
-      "staffGrid": "Mreža ekipe",
-      "stats": "Statistika",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Pričevanje",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Poskusite drugačen iskalni izraz",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Omogoči Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Shranjeno v vašem povezanem računu",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Ime",
@@ -4377,10 +4321,6 @@
       "showCampus": "Prikaži kampus",
       "title": "Naslov"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Glavno spletno mesto",
-      "manageSites": "Upravljanje spletnih mest …"
-    },
     "siteWidgets": {
       "addAction": "Dodaj dejanje",
       "announcementBar": "Vrstica z obvestili",
@@ -4404,15 +4344,6 @@
       "textColor": "Barva besedila",
       "title": "Pripomočki spletne strani",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Dodaj spletno mesto",
-      "deleteConfirm": "Izbriši to spletno mesto? Njegove strani, navigacija in videz bodo trajno izbrisani. Njegove domene po meri bodo dodeljene glavnemu spletnemu mestu.",
-      "empty": "Še ni dodatnih spletnih mest.",
-      "name": "Ime",
-      "subDomain": "Poddomena",
-      "subDomainHint": "Samo male črke in številke. Postane {subdomain}.b1.church",
-      "title": "Spletna mesta"
     },
     "socialIconsEdit": {
       "alignment": "Poravnava",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Ali res želite izbrisati to zvočno datoteko?",
-      "tooLarge": "Datoteka je prevelika. Največja velikost je 25 MB.",
-      "unsupportedFormat": "Nepodprta zvočna oblika. Naložite datoteko MP3, M4A ali AAC.",
       "upload": "Naloži zvok"
     },
     "create": {

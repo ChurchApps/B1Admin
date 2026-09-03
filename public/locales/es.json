@@ -178,7 +178,6 @@
       "confirmDelete": "¿Está seguro de que desea eliminar este evento?",
       "confirmDeleteSeries": "Este es un evento recurrente. Eliminarlo eliminará toda la serie y todas sus repeticiones. ¿Está seguro?",
       "delete": "Eliminar",
-      "editEvent": "Editar evento",
       "manageRegistrations": "Gestionar registros",
       "noGroups": "No se encontraron grupos."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No se encontraron calendarios",
       "status": "Estado",
       "subtitleEmpty": "Comience creando su primer calendario",
-      "subtitleWithCount": "Subtitulo con recuento",
       "title": "Calendarios"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Agregar nuevo..."
     },
-    "confirm": "Confirmar",
     "copy": "Copiar",
     "createPerson": {
-      "confirmDuplicate": "Se encontró una persona existente '{{existingName}}' ({{existingEmail}}) con este correo electrónico. ¿Está seguro de que desea agregar a '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Por favor ingrese un nombre.",
         "lastName": "Por favor ingrese un apellido.",
@@ -368,18 +364,14 @@
     },
     "help": "Ayuda",
     "iconPicker": {
-      "noResults": "No se encontraron resultados",
       "searchLabel": "Buscar Iconos",
       "searchPlaceholder": "Escriba para buscar (ej., persona, casa, iglesia)...",
-      "showingDefault": "Mostrando {{count}} iconos predeterminados",
-      "showingMatching": "Mostrando {{count}} iconos coincidentes",
       "title": "Seleccionar icono",
       "tryDifferent": "Pruebe con un término de búsqueda diferente"
     },
     "left": "Izquierda",
     "loading": "Cargando",
     "mobile": "Móvil",
-    "more": "Más",
     "name": "Nombre",
     "navigation": "Navegación",
     "no": "No",
@@ -613,6 +605,7 @@
       "lastYearCsv": "CSV del año pasado",
       "lastYearPrint": "Impresión del año pasado",
       "method": "Método",
+      "notes": "Notes",
       "viewBatch": "Ver lote",
       "willAppear": "Las donaciones aparecerán aquí una vez que se hayan realizado."
     }
@@ -742,6 +735,7 @@
       "funds": "Fondos",
       "method": "Método",
       "noDonMsg": "No se han registrado donaciones. Una vez ingresadas, aparecerán aquí.",
+      "notes": "Notes",
       "pending": "Pendiente",
       "statements": "Declaraciones de donaciones",
       "summary": "Resumen",
@@ -796,6 +790,13 @@
       "totalFunds": "Fondos Totales",
       "viewBatch": "Ver lote"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Mensual",
       "quarterly": "Trimestral",
@@ -840,12 +841,11 @@
       "title": "Importar Transacciones de Stripe",
       "totalLabel": "Total:",
       "type": "Tipo"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Valor"
     },
     "aiSearch": {
-      "clearSearch": "Borrar búsqueda",
       "exampleMen": "- Muéstreme hombres mayores de 30 con cumpleaños en julio.",
       "exampleWomen": "- Muéstreme mujeres casadas.",
       "examples": "Ejemplos:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Modo Claro",
       "linkedAccounts": "Cuentas Vinculadas",
       "noDirect": "Ocultarme del directorio de miembros",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Por favor ingrese una contraseña que tenga al menos 8 caracteres.",
       "passMatch": "Las contraseñas no coinciden.",
       "passNew": "Nueva contraseña",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Gestionar roles y permisos"
     },
     "storageSettingsEdit": {
-      "authFailed": "Error al iniciar sesión. Inténtelo de nuevo.",
-      "byosHelper": "Las nuevas cargas se almacenan en su propia cuenta y las descargas se sirven desde ella. Los archivos ya cargados permanecen donde están.",
       "churchAppsFree": "ChurchApps (Gratis)",
-      "connect": "Conectar cuenta",
-      "connectFirst": "Conecte su cuenta antes de guardar.",
-      "connected": "Cuenta conectada",
-      "connecting": "Esperando el inicio de sesión...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Los archivos se almacenarán en su plan de almacenamiento de MinistryStuff, vinculado automáticamente a esta iglesia. Administre su plan en",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Ventana emergente bloqueada. Permita las ventanas emergentes e inténtelo de nuevo.",
       "provider": "Proveedor",
-      "reconnect": "Reconectar",
-      "s3AccessKey": "ID de clave de acceso",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (en blanco para AWS)",
-      "s3Helper": "El bucket debe permitir acceso de lectura pública y solicitudes CORS PUT desde este sitio. Funciona con AWS S3, Cloudflare R2 y Backblaze B2.",
-      "s3PublicBase": "URL pública base",
-      "s3Region": "Región",
-      "s3Required": "El bucket y la URL pública base son obligatorios.",
-      "s3SecretKey": "Clave de acceso secreta",
       "saveError": "Error al guardar la configuración de almacenamiento.",
-      "sessionExpired": "La sesión de inicio de sesión expiró. Inténtelo de nuevo.",
-      "sessionFailed": "No se pudo iniciar el proceso de inicio de sesión.",
       "title": "Almacenamiento de archivos",
       "usage": "Usando {used} GB de {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Agregar Elementos",
       "advanced": "Avanzado",
       "all": "Todos",
-      "block": "Bloque",
       "blocks": "Bloques",
-      "box": "Caja",
-      "calendar": "Calendario",
-      "campaignProgress": "Progreso de la campaña",
-      "card": "Tarjeta",
-      "carousel": "Carrusel",
       "church": "Iglesia",
-      "column": "Columna",
       "common": "Común",
-      "countdown": "Cuenta regresiva",
       "descReusableElement": "Bloque de elemento reutilizable",
       "descReusableSection": "Sección reutilizable",
       "descSection": "Contenedor para agrupar contenido",
-      "donateLink": "Enlace de Donación",
-      "donation": "Donación",
-      "embedPage": "Incrustar Página",
-      "expandable": "Expandible",
-      "form": "Formulario",
-      "gallery": "Galería",
-      "groupList": "Lista de Grupos",
-      "html": "HTML",
-      "iconFeature": "Icono destacado",
-      "image": "Imagen",
-      "location": "Ubicación",
-      "logo": "Logo",
       "media": "Medios",
       "noElementsFound": "No se encontraron elementos",
-      "row": "Fila",
       "searchElements": "Buscar elementos...",
       "section": "Sección",
-      "serviceTimes": "Horarios de servicio",
-      "socialIcons": "Iconos sociales",
-      "staffGrid": "Cuadrícula de personal",
-      "stats": "Estadísticas",
-      "stream": "Transmisión",
-      "table": "Tabla",
-      "testimonial": "Testimonio",
-      "text": "Texto",
-      "textWithPhoto": "Texto con Foto",
       "tryDifferentSearch": "Intenta con un término diferente",
-      "untitledBlock": "Bloque sin título",
-      "video": "Video"
+      "untitledBlock": "Bloque sin título"
     },
     "elementEdit": {
       "enableLightbox": "Habilitar Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Subir Archivos"
     },
     "filesManager": {
-      "externalStorage": "Almacenado en su cuenta vinculada",
       "files": "Archivos",
       "getStarted": "Comience subiendo su primer archivo",
       "name": "Nombre",
@@ -4377,10 +4321,6 @@
       "showCampus": "Mostrar campus",
       "title": "Título"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Sitio web principal",
-      "manageSites": "Administrar sitios web…"
-    },
     "siteWidgets": {
       "addAction": "Agregar acción",
       "announcementBar": "Barra de anuncios",
@@ -4404,15 +4344,6 @@
       "textColor": "Color del texto",
       "title": "Widgets del sitio",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Agregar sitio web",
-      "deleteConfirm": "¿Eliminar este sitio web? Sus páginas, navegación y apariencia se eliminarán permanentemente. Sus dominios personalizados se reasignarán al sitio web principal.",
-      "empty": "Aún no hay sitios web adicionales.",
-      "name": "Nombre",
-      "subDomain": "Subdominio",
-      "subDomainHint": "Solo letras minúsculas y números. Se convierte en {subdomain}.b1.church",
-      "title": "Sitios web"
     },
     "socialIconsEdit": {
       "alignment": "Alineación",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "¿Seguro que quieres eliminar este archivo de audio?",
-      "tooLarge": "El archivo es demasiado grande. El tamaño máximo es 25 MB.",
-      "unsupportedFormat": "Formato de audio no compatible. Sube un archivo MP3, M4A o AAC.",
       "upload": "Subir audio"
     },
     "create": {

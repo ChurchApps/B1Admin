@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "Toto je opakovaná udalosť. Jej odstránením sa odstráni celá séria a všetky jej výskyty. Naozaj chcete pokračovať?",
       "delete": "Vymazať",
-      "editEvent": "Upraviť udalosť",
       "manageRegistrations": "Spravovať registrácie",
       "noGroups": "No groups found."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "Stav",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "Potvrdiť",
     "copy": "Kopírovať",
     "createPerson": {
-      "confirmDuplicate": "S týmto e-mailom sa našiel existujúci užívateľ '{{existingName}}' ({{existingEmail}}). Naozaj chcete pridať '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -368,18 +364,14 @@
     },
     "help": "Pomoc",
     "iconPicker": {
-      "noResults": "Nenašli sa žiadne výsledky",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "Zobrazených {{count}} predvolených ikon",
-      "showingMatching": "Zobrazených {{count}} zodpovedajúcich ikon",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "Načítava sa",
     "mobile": "Mobilný",
-    "more": "Viac",
     "name": "Názov",
     "navigation": "Navigation",
     "no": "Nie",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "Zobraziť dávku",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "Spôsob",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Čakajúce",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -796,6 +790,13 @@
       "totalFunds": "Celkový počet fondov",
       "viewBatch": "Zobraziť dávku"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "Import transakcií Stripe",
       "totalLabel": "Celkom:",
       "type": "Typ"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Vymazať vyhľadávanie",
       "exampleMen": "- Ukáž mi mužov nad 30 s narodeninami v júli.",
       "exampleWomen": "- Ukáž mi vydaté ženy.",
       "examples": "Príklady:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Svetlý režim",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Spravujte roly a oprávnenia"
     },
     "storageSettingsEdit": {
-      "authFailed": "Prihlásenie zlyhalo. Skúste to prosím znova.",
-      "byosHelper": "Nové nahrávania sa ukladajú vo vašom vlastnom účte a sťahovania sa poskytujú z neho. Už nahraté súbory zostávajú tam, kde sú.",
       "churchAppsFree": "ChurchApps (Zadarmo)",
-      "connect": "Pripojiť účet",
-      "connectFirst": "Pred uložením najprv pripojte svoj účet.",
-      "connected": "Účet pripojený",
-      "connecting": "Čaká sa na prihlásenie...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Súbory budú uložené vo vašom pláne úložiska MinistryStuff, ktorý je automaticky prepojený s touto cirkvou. Svoj plán spravujte na",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Vyskakovacie okno bolo blokované. Povoľte prosím vyskakovacie okná a skúste to znova.",
       "provider": "Poskytovateľ",
-      "reconnect": "Znova pripojiť",
-      "s3AccessKey": "Access Key Id",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (prázdne pre AWS)",
-      "s3Helper": "Bucket musí povoľovať verejný prístup na čítanie a CORS PUT požiadavky z tejto stránky. Funguje s AWS S3, Cloudflare R2 a Backblaze B2.",
-      "s3PublicBase": "Základná verejná URL adresa",
-      "s3Region": "Región",
-      "s3Required": "Bucket a základná verejná URL adresa sú povinné.",
-      "s3SecretKey": "Secret Access Key",
       "saveError": "Chyba pri ukladaní nastavení úložiska.",
-      "sessionExpired": "Platnosť prihlasovacej relácie vypršala. Skúste to prosím znova.",
-      "sessionFailed": "Nepodarilo sa spustiť prihlasovaciu reláciu.",
       "title": "Úložisko súborov",
       "usage": "Používate {used} GB z {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Blok",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Priebeh kampane",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Stĺpec",
       "common": "Bežné",
-      "countdown": "Odpočítavanie",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Galéria",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Ikona s popisom",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Časy bohoslužieb",
-      "socialIcons": "Ikony sociálnych sietí",
-      "staffGrid": "Mriežka tímu",
-      "stats": "Štatistiky",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Referencia",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Povoliť Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Uložené vo vašom prepojenom účte",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Názov",
@@ -4377,10 +4321,6 @@
       "showCampus": "Zobraziť areál",
       "title": "Názov"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Hlavná webová stránka",
-      "manageSites": "Spravovať webové stránky…"
-    },
     "siteWidgets": {
       "addAction": "Pridať akciu",
       "announcementBar": "Panel oznamov",
@@ -4404,15 +4344,6 @@
       "textColor": "Farba textu",
       "title": "Widgety webu",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Pridať webovú stránku",
-      "deleteConfirm": "Odstrániť túto webovú stránku? Jej stránky, navigácia a vzhľad budú trvalo odstránené. Jej vlastné domény budú priradené hlavnej webovej stránke.",
-      "empty": "Zatiaľ žiadne ďalšie webové stránky.",
-      "name": "Názov",
-      "subDomain": "Subdoména",
-      "subDomainHint": "Iba malé písmená a čísla. Stane sa {subdomain}.b1.church",
-      "title": "Webové stránky"
     },
     "socialIconsEdit": {
       "alignment": "Zarovnanie",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Naozaj chcete odstrániť tento zvukový súbor?",
-      "tooLarge": "Súbor je príliš veľký. Maximálna veľkosť je 25 MB.",
-      "unsupportedFormat": "Nepodporovaný zvukový formát. Nahrajte súbor MP3, M4A alebo AAC.",
       "upload": "Nahrať audio"
     },
     "create": {

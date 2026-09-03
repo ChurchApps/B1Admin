@@ -178,7 +178,6 @@
       "confirmDelete": "Ingabe uciniseka kutsi ufuna kususa lomcimbi?",
       "confirmDeleteSeries": "Lona ngumcimbi lophindzaphindzako. Kuwususa kutakususa lonkhe luhlu kanye nato tonkhe tikhatsi lawenteka ngato. Ingabe uciniseka?",
       "delete": "Susa",
-      "editEvent": "Hlela umcimbi",
       "manageRegistrations": "Phatsa Kubhaliswa",
       "noGroups": "Akukho emacembu latfoliwe."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Awekho emakhalenda latfoliwe",
       "status": "Simo",
       "subtitleEmpty": "Cala ngekudala ikhalenda yakho yekucala",
-      "subtitleWithCount": "Sihlokwana Sinelinani",
       "title": "Emakhalenda"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Faka Lokusha..."
     },
-    "confirm": "Chaza",
     "copy": "Kopisha",
     "createPerson": {
-      "confirmDuplicate": "Umuntfu lokhona lonelegama lelitsi '{{existingName}}' ({{existingEmail}}) utfolakele nalelikheli le-imeyili. Uneciniso yekutsi ufuna kufaka '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Sicela ufake ligama lekucala.",
         "lastName": "Sicela ufake sibongo.",
@@ -368,18 +364,14 @@
     },
     "help": "Lusito",
     "iconPicker": {
-      "noResults": "Kute imiphumela etfolakele",
       "searchLabel": "Sesha Emaphawu",
       "searchPlaceholder": "Bhala kute usesha (sibonelo: umuntfu, likhaya, libandla)...",
-      "showingDefault": "Kukhonjiswa {{count}} timphawu letimisiwe",
-      "showingMatching": "Kukhonjiswa {{count}} timphawu letifanako",
       "title": "Khetsa Liphawu",
       "tryDifferent": "Zama ligama lekusesha lelehlukile"
     },
     "left": "Kwesancele",
     "loading": "Iyalayisha",
     "mobile": "Umakhalekhukhwini",
-    "more": "Kunye",
     "name": "Ligama",
     "navigation": "Kuhamba",
     "no": "Cha",
@@ -613,6 +605,7 @@
       "lastYearCsv": "CSV Yanyakenye",
       "lastYearPrint": "Phrinta Yanyakenye",
       "method": "Indlela",
+      "notes": "Notes",
       "viewBatch": "Bona ibhatje",
       "willAppear": "Iminikelo itawubonakala lapha nasesenteka."
     }
@@ -742,6 +735,7 @@
       "funds": "Tikhwama",
       "method": "Indlela",
       "noDonMsg": "Akukho miniko lelandzelelwe. Uma iminikelo ifakiwe itawubonakala lapha.",
+      "notes": "Notes",
       "pending": "Kulindzile",
       "statements": "Imibiko Yemnikelo",
       "summary": "Sifinyeto",
@@ -796,6 +790,13 @@
       "totalFunds": "Tikhwama Tonkhe",
       "viewBatch": "Buka liqoqo"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Ngenyanga",
       "quarterly": "Ngekota",
@@ -840,12 +841,11 @@
       "title": "Ngenisa Tetfulo TeStripe",
       "totalLabel": "Sonkhe:",
       "type": "Luhlobo"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Linani"
     },
     "aiSearch": {
-      "clearSearch": "Sula Kusesha",
       "exampleMen": "- Ngikhombise emadvodza langetulu kweminyaka lengu-30 lanemalanga ekutalwa ngaJulayi.",
       "exampleWomen": "- Ngikhombise bafati labashadile.",
       "examples": "Tibonelo:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Simo Lesikhanyako",
       "linkedAccounts": "Ema-akhawunti Laxhunyiwe",
       "noDirect": "Ngifihle kuluhlu lwemalunga",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Sicela ufake liphasiwedi lelinetinhlamvu letingashona ngaphansi kwa-8.",
       "passMatch": "Emaphasiwedi awafani.",
       "passNew": "Liphasiwedi lelisha",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Phatsa tikhundla nemvumo"
     },
     "storageSettingsEdit": {
-      "authFailed": "Kungena kwehlulekile. Sicela uzame futsi.",
-      "byosHelper": "Kulayishwa lokusha kugcinwa ku-akhawundi yakho matfupha futsi kulandzwa kuvela kuyo. Emafayela lasakalayishiwe ahlala lapho akhona khona.",
       "churchAppsFree": "ChurchApps (Free)",
-      "connect": "Xhumanisa Akhawundi",
-      "connectFirst": "Xhumanisa akhawundi yakho ngembi kwekugcina.",
-      "connected": "Akhawundi ixhunyiwe",
-      "connecting": "Kulindzelwe kungena...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Emafayela atawugcinwa eluhlelweni lwakho lwekugcina lwe-MinistryStuff, lohlotjiswe naleli bandla ngekutitentekela. Phatsa luhlelo lwakho ku",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Liphopu livinjelwe. Sicela uvumele emaphopu bese uzama futsi.",
       "provider": "Umhlinzeki",
-      "reconnect": "Xhumanisa Kabusha",
-      "s3AccessKey": "I-ID Yesikhiya Sekungena",
-      "s3Bucket": "Sikhwama",
-      "s3Endpoint": "Sicu Sekugcina (shiya ingenalutfo uma ku-AWS)",
-      "s3Helper": "Sikhwama kufanele sivumele kufinyelelwa ngumphakatsi nekufundza, kanye netincelo te-CORS PUT letivela kulesi sitfombe. Kusebenta ne-AWS S3, Cloudflare R2 ne-Backblaze B2.",
-      "s3PublicBase": "Sisekelo Se-URL Lesiphelele",
-      "s3Region": "Sifundza",
-      "s3Required": "Sikhwama ne-URL lesiphelele siyadzingeka.",
-      "s3SecretKey": "Sikhiya Lesifihlakele Sekungena",
       "saveError": "Liphutsa lekugcina tilungiselelo tekugcina.",
-      "sessionExpired": "Sigceme sekungena siphelelwe sikhatsi. Sicela uzame futsi.",
-      "sessionFailed": "Kwehlulekile kucala sigceme sekungena.",
       "title": "File Storage",
       "usage": "Kusetjentiswa {used} GB kwa-{quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Engeta Tincenye",
       "advanced": "Lokuphakeme",
       "all": "Konkhe",
-      "block": "I-Block",
       "blocks": "Ema-Block",
-      "box": "Libhokisi",
-      "calendar": "Ikhalenda",
-      "campaignProgress": "Inchubekelo Yemkhankaso",
-      "card": "Likhadi",
-      "carousel": "Sishwibiliko",
       "church": "Libandla",
-      "column": "Likholomu",
       "common": "Lokujwayelekile",
-      "countdown": "Sibalo Sesikhatsi",
       "descReusableElement": "I-block yencenye lesetjentiswa kabuye",
       "descReusableSection": "Ingxenye lesetjentiswa kabuye",
       "descSection": "Sikhungo sekuhlanganisa sichubo",
-      "donateLink": "Sixhumanisi Semnikelo",
-      "donation": "Umnikelo",
-      "embedPage": "Faka Likhasi",
-      "expandable": "Levulekako",
-      "form": "Ifomu",
-      "gallery": "Igalari",
-      "groupList": "Luhlu Lwelicembu",
-      "html": "I-HTML",
-      "iconFeature": "Luphawu Lwe-Ayikhoni",
-      "image": "Sitfombe",
-      "location": "Indzawo",
-      "logo": "Ilogo",
       "media": "Imidiya",
       "noElementsFound": "Akutfolakalanga tincenye",
-      "row": "Umugca",
       "searchElements": "Sesha Tincenye",
       "section": "Ingxenye",
-      "serviceTimes": "Tikhatsi Temkhonto",
-      "socialIcons": "Ema-Ayikhoni Etinkhundla Temphakatsi",
-      "staffGrid": "Igridi Yemalunga",
-      "stats": "Emanani",
-      "stream": "Sitrimu",
-      "table": "Lithebulu",
-      "testimonial": "Bufakazi",
-      "text": "Umbhalo",
-      "textWithPhoto": "Umbhalo Lonesitfombe",
       "tryDifferentSearch": "Zama ligama lelehlukile lekusesha",
-      "untitledBlock": "I-Block Leyingakabi Nasihloko",
-      "video": "Vidiyo"
+      "untitledBlock": "I-Block Leyingakabi Nasihloko"
     },
     "elementEdit": {
       "enableLightbox": "Vulela i-Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Layisha Emafayela"
     },
     "filesManager": {
-      "externalStorage": "Kugcinwe ku-akhawundi yakho lexhunyiwe",
       "files": "Emafayela",
       "getStarted": "Cala ngekulayisha lifayela lakho lekucala",
       "name": "Ligama",
@@ -4377,10 +4321,6 @@
       "showCampus": "Bonisa Ikhampasi",
       "title": "Sihloko"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Iwebhu Sayithi Layinhloko",
-      "manageSites": "Phatsa emawebhu sayithi…"
-    },
     "siteWidgets": {
       "addAction": "Engeta Sento",
       "announcementBar": "Ibha Yesimemetelo",
@@ -4404,15 +4344,6 @@
       "textColor": "Umbala Wembhalo",
       "title": "Tinsimbi Tesayithi",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Engeta Iwebhu Sayithi",
-      "deleteConfirm": "Sula lewebhu sayithi? Emakhasi ayo, imenyu yekuzulazula, kanye nekubukeka kwayo kutakususwa ngalokuphelele. Ema-domain ayo lentelwe atakwabelwa kuwebhu sayithi layinhloko.",
-      "empty": "Akukho mawebhu sayithi lengetiwe okwamanje.",
-      "name": "Ligama",
-      "subDomain": "Sub-Domain",
-      "subDomainHint": "Tinhlamvu letincane netinombolo kuphela. Kuba yi-{subdomain}.b1.church",
-      "title": "Emawebhu Sayithi"
     },
     "socialIconsEdit": {
       "alignment": "Kuhlelwa",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
-      "tooLarge": "File is too large. Maximum size is 25 MB.",
-      "unsupportedFormat": "Unsupported audio format. Please upload an MP3, M4A, or AAC file.",
       "upload": "Upload Audio"
     },
     "create": {
