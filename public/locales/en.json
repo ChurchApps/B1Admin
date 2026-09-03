@@ -732,6 +732,7 @@
       "don": "Donations",
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "Export",
+      "failed": "Failed Gifts",
       "funds": "Funds",
       "method": "Method",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
@@ -747,6 +748,16 @@
       "noBatch": "No batches found.",
       "subtitle": "View donation summaries and analyze giving trends",
       "total": "Total"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "Fund name",
