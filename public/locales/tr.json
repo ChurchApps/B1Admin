@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "Bu, tekrarlayan bir etkinlik. Silmek tüm seriyi ve tüm tekrarlarını kaldıracaktır. Emin misiniz?",
       "delete": "Sil",
-      "editEvent": "Etkinliği Düzenle",
       "manageRegistrations": "Kayıtları Yönet",
       "noGroups": "No groups found."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "Onayla",
     "copy": "Kopyala",
     "createPerson": {
-      "confirmDuplicate": "Bu e-posta adresiyle eşleşen mevcut bir kişi '{{existingName}}' ({{existingEmail}}) bulundu. Yine de '{{firstName}} {{lastName}}' kişisini eklemek istediğinizden emin misiniz?",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -368,18 +364,14 @@
     },
     "help": "Yardım",
     "iconPicker": {
-      "noResults": "Sonuç bulunamadı",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "{{count}} varsayılan simge gösteriliyor",
-      "showingMatching": "{{count}} eşleşen simge gösteriliyor",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "Yükleniyor",
     "mobile": "Mobil",
-    "more": "Daha Fazla",
     "name": "Ad",
     "navigation": "Navigasyon",
     "no": "Hayır",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "Grubu görüntüle",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "Yöntem",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Beklemede",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -796,6 +790,13 @@
       "totalFunds": "Toplam Fonlar",
       "viewBatch": "Grubu görüntüle"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "Stripe İşlemlerini İçe Aktar",
       "totalLabel": "Toplam:",
       "type": "Tür"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Aramayı Temizle",
       "exampleMen": "- Bana Temmuz ayında doğum günü olan 30 yaş üstü erkekleri göster.",
       "exampleWomen": "- Bana evli kadınları göster.",
       "examples": "Örnekler:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Açık Mod",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Rolleri ve izinleri yönetin"
     },
     "storageSettingsEdit": {
-      "authFailed": "Oturum açma başarısız oldu. Lütfen tekrar deneyin.",
-      "byosHelper": "Yeni yüklemeler kendi hesabınızda saklanır ve indirmeler oradan sunulur. Zaten yüklenmiş dosyalar bulundukları yerde kalır.",
       "churchAppsFree": "ChurchApps (Ücretsiz)",
-      "connect": "Hesabı Bağla",
-      "connectFirst": "Kaydetmeden önce hesabınızı bağlayın.",
-      "connected": "Hesap bağlandı",
-      "connecting": "Oturum açılması bekleniyor...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Dosyalar, bu kiliseye otomatik olarak bağlanan MinistryStuff depolama planınızda saklanacaktır. Planınızı şu adresten yönetin:",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Açılır pencere engellendi. Lütfen açılır pencerelere izin verip tekrar deneyin.",
       "provider": "Sağlayıcı",
-      "reconnect": "Yeniden Bağlan",
-      "s3AccessKey": "Erişim Anahtarı Kimliği",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Uç Nokta (AWS için boş bırakın)",
-      "s3Helper": "Bucket, genel okuma erişimine ve bu siteden gelen CORS PUT isteklerine izin vermelidir. AWS S3, Cloudflare R2 ve Backblaze B2 ile çalışır.",
-      "s3PublicBase": "Genel URL Kökü",
-      "s3Region": "Bölge",
-      "s3Required": "Bucket ve genel URL kökü zorunludur.",
-      "s3SecretKey": "Gizli Erişim Anahtarı",
       "saveError": "Depolama ayarları kaydedilirken hata oluştu.",
-      "sessionExpired": "Oturum açma oturumunun süresi doldu. Lütfen tekrar deneyin.",
-      "sessionFailed": "Oturum açma oturumu başlatılamadı.",
       "title": "Dosya Depolama",
       "usage": "{quota} GB üzerinden {used} GB kullanılıyor."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Blok",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Kampanya İlerlemesi",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Sütun",
       "common": "Yaygın",
-      "countdown": "Geri Sayım",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Galeri",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Simge Özelliği",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "İbadet Saatleri",
-      "socialIcons": "Sosyal Medya Simgeleri",
-      "staffGrid": "Personel Izgarası",
-      "stats": "İstatistikler",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Referans",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Lightbox'ı Etkinleştir",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Bağlı hesabınızda saklanıyor",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Ad",
@@ -4377,10 +4321,6 @@
       "showCampus": "Kampüsü Göster",
       "title": "Başlık"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Ana Web Sitesi",
-      "manageSites": "Web sitelerini yönet…"
-    },
     "siteWidgets": {
       "addAction": "Eylem Ekle",
       "announcementBar": "Duyuru Çubuğu",
@@ -4404,15 +4344,6 @@
       "textColor": "Metin Rengi",
       "title": "Site Widget'ları",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Web Sitesi Ekle",
-      "deleteConfirm": "Bu web sitesi silinsin mi? Sayfaları, gezinmesi ve görünümü kalıcı olarak silinecektir. Özel alan adları ana web sitesine yeniden atanacaktır.",
-      "empty": "Henüz ek web sitesi yok.",
-      "name": "Ad",
-      "subDomain": "Alt Alan Adı",
-      "subDomainHint": "Yalnızca küçük harf ve rakam. {subdomain}.b1.church olur",
-      "title": "Web Siteleri"
     },
     "socialIconsEdit": {
       "alignment": "Hizalama",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Bu ses dosyasını silmek istediğinizden emin misiniz?",
-      "tooLarge": "Dosya çok büyük. Maksimum boyut 25 MB.",
-      "unsupportedFormat": "Desteklenmeyen ses formatı. Lütfen bir MP3, M4A veya AAC dosyası yükleyin.",
       "upload": "Ses yükle"
     },
     "create": {

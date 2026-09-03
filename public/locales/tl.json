@@ -178,7 +178,6 @@
       "confirmDelete": "Sigurado ka bang nais mong tanggalin ang kaganapang ito?",
       "confirmDeleteSeries": "Paulit-ulit na kaganapan ito. Kapag tinanggal, aalisin ang buong serye at lahat ng pagkakataong ito. Sigurado ka ba?",
       "delete": "Tanggalin",
-      "editEvent": "I-edit ang Kaganapan",
       "manageRegistrations": "Pamahalaan ang Mga Rehistrasyon",
       "noGroups": "Walang natagpuang grupo."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Walang nahanap na kalendaryo",
       "status": "Katayuan",
       "subtitleEmpty": "Magsimula sa pamamagitan ng paglikha ng iyong unang kalendaryo",
-      "subtitleWithCount": "Subtitle na may bilang",
       "title": "Kalendaryo"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Magdagdag ng bago ..."
     },
-    "confirm": "Kumpirmahin",
     "copy": "Kopyahin",
     "createPerson": {
-      "confirmDuplicate": "May nahanap na umiiral na tao na '{{existingName}}' ({{existingEmail}}) gamit ang email na ito. Sigurado ka bang gusto mong idagdag si '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Mangyaring magpasok ng isang unang pangalan.",
         "lastName": "Mangyaring magpasok ng isang apelyido.",
@@ -368,18 +364,14 @@
     },
     "help": "Tulong",
     "iconPicker": {
-      "noResults": "Walang nahanap na mga resulta",
       "searchLabel": "Maghanap ng mga Icon",
       "searchPlaceholder": "Mag-type upang maghanap (hal., tao, bahay, simbahan)...",
-      "showingDefault": "Ipinapakita ang {{count}} na mga default na icon",
-      "showingMatching": "Ipinapakita ang {{count}} na mga tumutugmang icon",
       "title": "Piliin ang icon",
       "tryDifferent": "Subukan ang ibang term sa paghahanap"
     },
     "left": "Kaliwa",
     "loading": "Naglo-load",
     "mobile": "Mobile",
-    "more": "Higit pa",
     "name": "Pangalan",
     "navigation": "Nabigasyon",
     "no": "Hindi",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Noong nakaraang taon CSV",
       "lastYearPrint": "Noong nakaraang taon print",
       "method": "Paraan",
+      "notes": "Notes",
       "viewBatch": "Tingnan ang batch",
       "willAppear": "Ang mga donasyon ay lilitaw dito kapag ginawa na."
     }
@@ -742,6 +735,7 @@
       "funds": "Mga Pondo",
       "method": "Paraan",
       "noDonMsg": "Walang mga donasyon na naitala. Kapag ang mga donasyon ay naipasok, lalabas ang mga ito dito.",
+      "notes": "Notes",
       "pending": "Nakabinbin",
       "statements": "Mga pahayag ng donasyon",
       "summary": "Buod",
@@ -796,6 +790,13 @@
       "totalFunds": "Kabuuang Pondo",
       "viewBatch": "Tingnan ang batch"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Buwanan",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "I-import ang mga Stripe Transaction",
       "totalLabel": "Kabuuan:",
       "type": "Uri"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Halaga"
     },
     "aiSearch": {
-      "clearSearch": "I-clear ang Paghahanap",
       "exampleMen": "- Ipakita sa akin ang mga lalaki na higit sa 30 na may kaarawan sa Hulyo.",
       "exampleWomen": "- Ipakita sa akin ang mga babaeng kasal.",
       "examples": "Mga halimbawa:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Light Mode",
       "linkedAccounts": "Mga Naka-link na Account",
       "noDirect": "Itago ako mula sa direktoryo ng miyembro",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Mangyaring magpasok ng password na hindi bababa sa 8 karakter.",
       "passMatch": "Hindi tumutugma ang mga password.",
       "passNew": "Bagong Password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Pamahalaan ang mga papel at pahintulot"
     },
     "storageSettingsEdit": {
-      "authFailed": "Nabigo ang pag-sign in. Pakisubukang muli.",
-      "byosHelper": "Ang mga bagong upload ay naka-imbak sa sarili mong account at ang mga download ay galing dito. Ang mga file na naiupload na ay mananatili kung saan naroroon.",
       "churchAppsFree": "ChurchApps (Libre)",
-      "connect": "Ikonekta ang Account",
-      "connectFirst": "Ikonekta muna ang iyong account bago i-save.",
-      "connected": "Nakakonekta ang account",
-      "connecting": "Naghihintay ng sign-in...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Maiimbak ang mga file sa iyong MinistryStuff storage plan, na awtomatikong naka-link sa simbahang ito. Pamahalaan ang iyong plano sa",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Naharang ang popup. Pakipayagan ang mga popup at subukang muli.",
       "provider": "Provider",
-      "reconnect": "Ikonekta Muli",
-      "s3AccessKey": "Access Key Id",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (iwanang blangko para sa AWS)",
-      "s3Helper": "Dapat payagan ng bucket ang public read access at CORS PUT request mula sa site na ito. Gumagana sa AWS S3, Cloudflare R2, at Backblaze B2.",
-      "s3PublicBase": "Public URL Base",
-      "s3Region": "Region",
-      "s3Required": "Kinakailangan ang bucket at public URL base.",
-      "s3SecretKey": "Secret Access Key",
       "saveError": "Error sa pag-save ng mga setting ng storage.",
-      "sessionExpired": "Nag-expire ang sign-in session. Pakisubukang muli.",
-      "sessionFailed": "Hindi masimulan ang sign-in session.",
       "title": "Imbakan ng File",
       "usage": "Ginagamit ang {used} GB mula sa {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Magdagdag ng mga Elemento",
       "advanced": "Advanced",
       "all": "Lahat",
-      "block": "Block",
       "blocks": "Mga Block",
-      "box": "Kahon",
-      "calendar": "Kalendaryo",
-      "campaignProgress": "Progreso ng Kampanya",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Simbahan",
-      "column": "Column",
       "common": "Karaniwan",
-      "countdown": "Countdown",
       "descReusableElement": "Reusable na element block",
       "descReusableSection": "Reusable na seksyon",
       "descSection": "Container para sa pag-grupo ng nilalaman",
-      "donateLink": "Link ng Donasyon",
-      "donation": "Donasyon",
-      "embedPage": "I-embed ang Pahina",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Gallery",
-      "groupList": "Listahan ng Grupo",
-      "html": "HTML",
-      "iconFeature": "Feature na may Icon",
-      "image": "Larawan",
-      "location": "Lokasyon",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Walang nakitang mga elemento",
-      "row": "Hanay",
       "searchElements": "Maghanap ng mga elemento...",
       "section": "Seksyon",
-      "serviceTimes": "Oras ng Serbisyo",
-      "socialIcons": "Mga Social Icon",
-      "staffGrid": "Grid ng Staff",
-      "stats": "Stats",
-      "stream": "Stream",
-      "table": "Talahanayan",
-      "testimonial": "Testimonial",
-      "text": "Teksto",
-      "textWithPhoto": "Teksto na may Larawan",
       "tryDifferentSearch": "Subukan ang ibang termino sa paghahanap",
-      "untitledBlock": "Block na walang pamagat",
-      "video": "Video"
+      "untitledBlock": "Block na walang pamagat"
     },
     "elementEdit": {
       "enableLightbox": "Paganahin ang Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Mag-upload ng mga File"
     },
     "filesManager": {
-      "externalStorage": "Naka-imbak sa iyong naka-link na account",
       "files": "Mga File",
       "getStarted": "Magsimula sa pag-upload ng iyong unang file",
       "name": "Pangalan",
@@ -4377,10 +4321,6 @@
       "showCampus": "Ipakita ang Kampus",
       "title": "Pamagat"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Pangunahing Website",
-      "manageSites": "Pamahalaan ang mga website…"
-    },
     "siteWidgets": {
       "addAction": "Magdagdag ng Aksyon",
       "announcementBar": "Bar ng Anunsyo",
@@ -4404,15 +4344,6 @@
       "textColor": "Kulay ng Teksto",
       "title": "Mga Widget ng Site",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Magdagdag ng Website",
-      "deleteConfirm": "Tanggalin ang website na ito? Permanenteng matatanggal ang mga pahina, navigation, at hitsura nito. Ang mga custom domain nito ay muling itatalaga sa pangunahing website.",
-      "empty": "Wala pang karagdagang website.",
-      "name": "Pangalan",
-      "subDomain": "Subdomain",
-      "subDomainHint": "Maliliit na letra at numero lamang. Magiging {subdomain}.b1.church",
-      "title": "Mga Website"
     },
     "socialIconsEdit": {
       "alignment": "Alignment",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Sigurado ka bang gusto mong tanggalin ang audio file na ito?",
-      "tooLarge": "Masyadong malaki ang file. Ang maximum ay 25 MB.",
-      "unsupportedFormat": "Hindi suportadong audio format. Mag-upload ng MP3, M4A, o AAC file.",
       "upload": "Mag-upload ng audio"
     },
     "create": {

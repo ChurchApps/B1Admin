@@ -178,7 +178,6 @@
       "confirmDelete": "Ar tikrai norite panaikinti šį renginį?",
       "confirmDeleteSeries": "Tai pasikartojantis renginys. Jį ištrynus bus panaikinta visa serija ir visi jos pasikartojimai. Ar tikrai norite tęsti?",
       "delete": "Panaikinti",
-      "editEvent": "Redaguoti įvykį",
       "manageRegistrations": "Tvarkyti registracijas",
       "noGroups": "Grupių nerasta."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "Patvirtinti",
     "copy": "Kopijuoti",
     "createPerson": {
-      "confirmDuplicate": "Šiuo el. paštu jau rasta esama kortelė '{{existingName}}' ({{existingEmail}}). Ar tikrai norite pridėti '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -368,18 +364,14 @@
     },
     "help": "Help",
     "iconPicker": {
-      "noResults": "Rezultatų nerasta",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "Rodoma {{count}} numatytųjų piktogramų",
-      "showingMatching": "Rodoma {{count}} atitinkančių piktogramų",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "Įkeliama",
     "mobile": "Mobile",
-    "more": "Daugiau",
     "name": "Name",
     "navigation": "Navigation",
     "no": "No",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "Peržiūrėti partiją",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "Būdas",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Laukiama",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -796,6 +790,13 @@
       "totalFunds": "Iš viso fondų",
       "viewBatch": "Peržiūrėti partiją"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "Importuoti Stripe operacijas",
       "totalLabel": "Iš viso:",
       "type": "Tipas"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Išvalyti paiešką",
       "exampleMen": "- Parodyk vyrus virš 30 metų, kurių gimtadieniai liepos mėnesį.",
       "exampleWomen": "- Parodyk ištekėjusias moteris.",
       "examples": "Pavyzdžiai:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Šviesus režimas",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Tvarkykite vaidmenis ir teises"
     },
     "storageSettingsEdit": {
-      "authFailed": "Prisijungti nepavyko. Bandykite dar kartą.",
-      "byosHelper": "Nauji įkėlimai saugomi jūsų pačių paskyroje, o atsisiuntimai teikiami iš jos. Jau įkelti failai lieka ten, kur yra.",
       "churchAppsFree": "ChurchApps (Nemokamai)",
-      "connect": "Prijungti paskyrą",
-      "connectFirst": "Prieš išsaugant prijunkite savo paskyrą.",
-      "connected": "Paskyra prijungta",
-      "connecting": "Laukiama prisijungimo...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Failai bus saugomi jūsų MinistryStuff saugyklos plane, automatiškai susietame su šia bažnyčia. Tvarkykite savo planą čia:",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Iškylantis langas užblokuotas. Leiskite iškylančius langus ir bandykite dar kartą.",
       "provider": "Teikėjas",
-      "reconnect": "Prijungti iš naujo",
-      "s3AccessKey": "Prieigos rakto ID",
-      "s3Bucket": "Talpykla",
-      "s3Endpoint": "Galinis taškas (palikite tuščią AWS)",
-      "s3Helper": "Talpykla turi leisti viešą skaitymo prieigą ir CORS PUT užklausas iš šios svetainės. Veikia su AWS S3, Cloudflare R2 ir Backblaze B2.",
-      "s3PublicBase": "Viešo URL bazė",
-      "s3Region": "Regionas",
-      "s3Required": "Būtina nurodyti talpyklą ir viešo URL bazę.",
-      "s3SecretKey": "Slaptasis prieigos raktas",
       "saveError": "Klaida išsaugant saugyklos nustatymus.",
-      "sessionExpired": "Prisijungimo seansas baigėsi. Bandykite dar kartą.",
-      "sessionFailed": "Nepavyko pradėti prisijungimo seanso.",
       "title": "Failų saugykla",
       "usage": "Naudojama {used} GB iš {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Blokas",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Kampanijos eiga",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Stulpelis",
       "common": "Bendras",
-      "countdown": "Atgalinis skaičiavimas",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Galerija",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Piktogramos funkcija",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Pamaldų laikai",
-      "socialIcons": "Socialinių tinklų piktogramos",
-      "staffGrid": "Darbuotojų tinklelis",
-      "stats": "Statistika",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Atsiliepimas",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Įjungti šviesos dėžę",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Saugoma jūsų susietoje paskyroje",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Pavadinimas",
@@ -4377,10 +4321,6 @@
       "showCampus": "Rodyti kampusą",
       "title": "Pavadinimas"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Pagrindinė svetainė",
-      "manageSites": "Tvarkyti svetaines…"
-    },
     "siteWidgets": {
       "addAction": "Pridėti veiksmą",
       "announcementBar": "Pranešimų juosta",
@@ -4404,15 +4344,6 @@
       "textColor": "Teksto spalva",
       "title": "Svetainės valdikliai",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Pridėti svetainę",
-      "deleteConfirm": "Ištrinti šią svetainę? Jos puslapiai, navigacija ir išvaizda bus negrįžtamai ištrinti. Jos pasirinktiniai domenai bus priskirti pagrindinei svetainei.",
-      "empty": "Papildomų svetainių dar nėra.",
-      "name": "Pavadinimas",
-      "subDomain": "Subdomenas",
-      "subDomainHint": "Tik mažosios raidės ir skaičiai. Taps {subdomain}.b1.church",
-      "title": "Svetainės"
     },
     "socialIconsEdit": {
       "alignment": "Lygiuotė",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Ar tikrai norite ištrinti šį garso failą?",
-      "tooLarge": "Failas per didelis. Didžiausias dydis yra 25 MB.",
-      "unsupportedFormat": "Nepalaikomas garso formatas. Įkelkite MP3, M4A arba AAC failą.",
       "upload": "Įkelti garsą"
     },
     "create": {

@@ -178,7 +178,6 @@
       "confirmDelete": "क्या आप वाकई इस इवेंट को हटाना चाहते हैं?",
       "confirmDeleteSeries": "यह एक आवर्ती घटना है। इसे हटाने से पूरी श्रृंखला और इसकी सभी घटनाएं हट जाएंगी। क्या आप सुनिश्चित हैं?",
       "delete": "हटाएं",
-      "editEvent": "ईवेंट संपादित करें",
       "manageRegistrations": "पंजीकरण प्रबंधित करें",
       "noGroups": "कोई समूह नहीं मिला।"
     },
@@ -198,7 +197,6 @@
       "noCalendars": "कोई कैलेंडर नहीं मिला",
       "status": "स्थिति",
       "subtitleEmpty": "अपना पहला कैलेंडर बनाकर आरंभ करें",
-      "subtitleWithCount": "गिनती के साथ उपशीर्षक",
       "title": "CALENDARS"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "नया जोड़ो..."
     },
-    "confirm": "पुष्टि करें",
     "copy": "कॉपी करें",
     "createPerson": {
-      "confirmDuplicate": "इस ईमेल के साथ एक मौजूदा व्यक्ति '{{existingName}}' ({{existingEmail}}) पाया गया था। क्या आप वाकई '{{firstName}} {{lastName}}' जोड़ना चाहते हैं?",
       "validate": {
         "firstName": "कृपया पहला नाम दर्ज करें.",
         "lastName": "कृपया एक अंतिम नाम दर्ज करें.",
@@ -368,18 +364,14 @@
     },
     "help": "सहायता",
     "iconPicker": {
-      "noResults": "कोई परिणाम नहीं मिला",
       "searchLabel": "आइकन खोजें",
       "searchPlaceholder": "खोजने के लिए टाइप करें (जैसे, व्यक्ति, घर, चर्च)...",
-      "showingDefault": "{{count}} डिफ़ॉल्ट आइकन दिखा रहा है",
-      "showingMatching": "{{count}} मिलते-जुलते आइकन दिखाए जा रहे हैं",
       "title": "आइकन चुनें",
       "tryDifferent": "कोई भिन्न खोज शब्द आज़माएँ"
     },
     "left": "बाएं",
     "loading": "लोड हो रहा है",
     "mobile": "मोबाइल",
-    "more": "अधिक",
     "name": "नाम",
     "navigation": "नेविगेशन",
     "no": "नहीं",
@@ -613,6 +605,7 @@
       "lastYearCsv": "पिछले वर्ष सीएसवी",
       "lastYearPrint": "पिछले साल का प्रिंट",
       "method": "तरीका",
+      "notes": "Notes",
       "viewBatch": "बैच देखें",
       "willAppear": "दान किए जाने के बाद यहां दिखाई देंगे।"
     }
@@ -742,6 +735,7 @@
       "funds": "फंड",
       "method": "तरीका",
       "noDonMsg": "कोई दान ट्रैक नहीं किया गया है। दान दर्ज होने के बाद वे यहाँ दिखाई देंगे।",
+      "notes": "Notes",
       "pending": "लंबित",
       "statements": "दान विवरण",
       "summary": "सारांश",
@@ -796,6 +790,13 @@
       "totalFunds": "कुल फंड",
       "viewBatch": "बैच देखें"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "मासिक",
       "quarterly": "त्रैमासिक",
@@ -840,12 +841,11 @@
       "title": "Stripe लेनदेन आयात करें",
       "totalLabel": "कुल:",
       "type": "प्रकार"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "मान"
     },
     "aiSearch": {
-      "clearSearch": "खोज साफ़ करें",
       "exampleMen": "- मुझे जुलाई में जन्मदिन वाले 30 से अधिक उम्र के पुरुष दिखाएं।",
       "exampleWomen": "- मुझे विवाहित महिलाएं दिखाएं।",
       "examples": "उदाहरण:",
@@ -2417,8 +2416,6 @@
       "lightMode": "लाइट मोड",
       "linkedAccounts": "लिंक किए गए खाते",
       "noDirect": "मुझे सदस्य निर्देशिका से छुपाएं",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "कृपया कम से कम 8 वर्णों का एक पासवर्ड दर्ज करें।",
       "passMatch": "पासवर्ड मेल नहीं खाते।",
       "passNew": "नया पासवर्ड",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "भूमिकाएं और अनुमतियां प्रबंधित करें"
     },
     "storageSettingsEdit": {
-      "authFailed": "साइन-इन विफल रहा। कृपया पुनः प्रयास करें।",
-      "byosHelper": "नए अपलोड आपके खाते में संग्रहीत किए जाते हैं और डाउनलोड वहां से प्रस्तुत किए जाते हैं। जो फ़ाइलें पहले से अपलोड हैं वे वहीं रहती हैं।",
       "churchAppsFree": "ChurchApps (निःशुल्क)",
-      "connect": "खाता कनेक्ट करें",
-      "connectFirst": "सहेजने से पहले अपना खाता कनेक्ट करें।",
-      "connected": "खाता कनेक्टेड",
-      "connecting": "साइन-इन की प्रतीक्षा कर रहा है...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "फ़ाइलें आपकी MinistryStuff संग्रहण योजना में संग्रहीत की जाएंगी, जो इस चर्च से स्वचालित रूप से जुड़ी होगी। अपनी योजना को प्रबंधित करें",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "पॉपअप अवरुद्ध हो गया। कृपया पॉपअप की अनुमति दें और पुनः प्रयास करें।",
       "provider": "प्रदाता",
-      "reconnect": "पुनः कनेक्ट करें",
-      "s3AccessKey": "एक्सेस की आईडी",
-      "s3Bucket": "बाल्टी",
-      "s3Endpoint": "एंडपॉइंट (AWS के लिए खाली)",
-      "s3Helper": "बाल्टी को इस साइट से सार्वजनिक पढ़ने की पहुंच और CORS PUT अनुरोधों की अनुमति देनी चाहिए। AWS S3, Cloudflare R2 और Backblaze B2 के साथ काम करता है।",
-      "s3PublicBase": "सार्वजनिक URL बेस",
-      "s3Region": "क्षेत्र",
-      "s3Required": "बाल्टी और सार्वजनिक URL आधार आवश्यक हैं।",
-      "s3SecretKey": "गुप्त एक्सेस कुंजी",
       "saveError": "संग्रहण सेटिंग्स सहेजते समय त्रुटि।",
-      "sessionExpired": "साइन-इन सत्र समाप्त हो गया। कृपया पुनः प्रयास करें।",
-      "sessionFailed": "साइन-इन सत्र प्रारंभ नहीं हो सका।",
       "title": "फ़ाइल संग्रहण",
       "usage": "{quota} GB में से {used} GB का उपयोग कर रहा है।"
     },
@@ -3837,49 +3813,18 @@
       "addElements": "तत्व जोड़ें",
       "advanced": "उन्नत",
       "all": "सभी",
-      "block": "ब्लॉक",
       "blocks": "ब्लॉक",
-      "box": "बॉक्स",
-      "calendar": "कैलेंडर",
-      "campaignProgress": "अभियान प्रगति",
-      "card": "कार्ड",
-      "carousel": "कैरोसेल",
       "church": "चर्च",
-      "column": "कॉलम",
       "common": "सामान्य",
-      "countdown": "काउंटडाउन",
       "descReusableElement": "पुन: प्रयोज्य तत्व ब्लॉक",
       "descReusableSection": "पुन: प्रयोज्य अनुभाग",
       "descSection": "सामग्री समूहीकरण के लिए कंटेनर",
-      "donateLink": "दान लिंक",
-      "donation": "दान",
-      "embedPage": "पेज एम्बेड करें",
-      "expandable": "विस्तारणीय",
-      "form": "फॉर्म",
-      "gallery": "गैलरी",
-      "groupList": "समूह सूची",
-      "html": "HTML",
-      "iconFeature": "आइकन फ़ीचर",
-      "image": "छवि",
-      "location": "स्थान",
-      "logo": "लोगो",
       "media": "मीडिया",
       "noElementsFound": "कोई तत्व नहीं मिला",
-      "row": "पंक्ति",
       "searchElements": "तत्व खोजें...",
       "section": "अनुभाग",
-      "serviceTimes": "सेवा समय",
-      "socialIcons": "सोशल आइकन",
-      "staffGrid": "स्टाफ ग्रिड",
-      "stats": "आँकड़े",
-      "stream": "स्ट्रीम",
-      "table": "टेबल",
-      "testimonial": "प्रशंसापत्र",
-      "text": "टेक्स्ट",
-      "textWithPhoto": "फोटो के साथ टेक्स्ट",
       "tryDifferentSearch": "कोई अलग खोज शब्द आज़माएं",
-      "untitledBlock": "अनाम ब्लॉक",
-      "video": "वीडियो"
+      "untitledBlock": "अनाम ब्लॉक"
     },
     "elementEdit": {
       "enableLightbox": "लाइटबॉक्स सक्षम करें",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "फ़ाइलें अपलोड करें"
     },
     "filesManager": {
-      "externalStorage": "आपके लिंक्ड खाते में संग्रहीत",
       "files": "फ़ाइलें",
       "getStarted": "अपनी पहली फ़ाइल अपलोड करके शुरू करें",
       "name": "नाम",
@@ -4377,10 +4321,6 @@
       "showCampus": "कैंपस दिखाएं",
       "title": "शीर्षक"
     },
-    "siteSwitcher": {
-      "mainWebsite": "मुख्य वेबसाइट",
-      "manageSites": "वेबसाइटों को प्रबंधित करें..."
-    },
     "siteWidgets": {
       "addAction": "क्रिया जोड़ें",
       "announcementBar": "घोषणा बार",
@@ -4404,15 +4344,6 @@
       "textColor": "टेक्स्ट रंग",
       "title": "साइट विजेट्स",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "वेबसाइट जोड़ें",
-      "deleteConfirm": "इस वेबसाइट को हटा दें? इसके पेज, नेविगेशन और स्वरूप को स्थायी रूप से हटा दिया जाएगा। इसके कस्टम डोमेन मुख्य वेबसाइट को फिर से सौंप दिए जाएंगे।",
-      "empty": "अभी तक कोई अतिरिक्त वेबसाइट नहीं है।",
-      "name": "नाम",
-      "subDomain": "उपडोमेन",
-      "subDomainHint": "केवल छोटे अक्षर और संख्याएँ। यह {subdomain}.b1.church बन जाता है",
-      "title": "वेबसाइटें"
     },
     "socialIconsEdit": {
       "alignment": "अलाइनमेंट",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
-      "tooLarge": "फ़ाइल बहुत बड़ी है। अधिकतम आकार 25 MB है।",
-      "unsupportedFormat": "असमर्थित ऑडियो फ़ॉर्मेट। कृपया MP3, M4A या AAC फ़ाइल अपलोड करें।",
       "upload": "ऑडियो अपलोड करें"
     },
     "create": {

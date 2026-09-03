@@ -178,7 +178,6 @@
       "confirmDelete": "Är du säker på att du vill ta bort denna händelse?",
       "confirmDeleteSeries": "Detta är en återkommande händelse. Om du tar bort den tas hela serien och alla dess tillfällen bort. Är du säker?",
       "delete": "Ta bort",
-      "editEvent": "Redigera evenemang",
       "manageRegistrations": "Hantera anmälningar",
       "noGroups": "Inga grupper hittades."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Inga kalendrar hittades",
       "status": "Status",
       "subtitleEmpty": "Kom igång genom att skapa din första kalender",
-      "subtitleWithCount": "Underrubrik med antal",
       "title": "Kalendrar"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Lägg till ny..."
     },
-    "confirm": "Bekräfta",
     "copy": "Kopiera",
     "createPerson": {
-      "confirmDuplicate": "En befintlig person '{{existingName}}' ({{existingEmail}}) hittades med den här e-postadressen. Är du säker på att du vill lägga till '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Vänligen ange ett förnamn.",
         "lastName": "Vänligen ange ett efternamn.",
@@ -368,18 +364,14 @@
     },
     "help": "Hjälp",
     "iconPicker": {
-      "noResults": "Inga resultat hittades",
       "searchLabel": "Sök ikoner",
       "searchPlaceholder": "Skriv för att söka (t.ex. person, hem, kyrka)...",
-      "showingDefault": "Visar {{count}} standardikoner",
-      "showingMatching": "Visar {{count}} matchande ikoner",
       "title": "Välj ikon",
       "tryDifferent": "Prova ett annat sökord"
     },
     "left": "Vänster",
     "loading": "Laddar",
     "mobile": "Mobil",
-    "more": "Mer",
     "name": "Namn",
     "navigation": "Navigering",
     "no": "Nej",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Föregående år CSV",
       "lastYearPrint": "Föregående år utskrift",
       "method": "Metod",
+      "notes": "Notes",
       "viewBatch": "Visa sats",
       "willAppear": "Gåvor visas här när de har registrerats."
     }
@@ -742,6 +735,7 @@
       "funds": "Fonder",
       "method": "Metod",
       "noDonMsg": "Inga gåvor har registrerats. När gåvor läggs in visas de här.",
+      "notes": "Notes",
       "pending": "Väntar",
       "statements": "Givoutdrag",
       "summary": "Sammanfattning",
@@ -796,6 +790,13 @@
       "totalFunds": "Totala fonder",
       "viewBatch": "Visa sats"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Månadsvis",
       "quarterly": "Kvartalsvis",
@@ -840,12 +841,11 @@
       "title": "Importera Stripe-transaktioner",
       "totalLabel": "Totalt:",
       "type": "Typ"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Värde"
     },
     "aiSearch": {
-      "clearSearch": "Rensa sökning",
       "exampleMen": "- Visa mig män över 30 med födelsedagar i juli.",
       "exampleWomen": "- Visa mig kvinnor som är gifta.",
       "examples": "Exempel:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Ljust läge",
       "linkedAccounts": "Länkade konton",
       "noDirect": "Dölj mig från medlemskatalogen",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Vänligen ange ett lösenord som är minst 8 tecken långt.",
       "passMatch": "Lösenorden matchar inte.",
       "passNew": "Nytt lösenord",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Hantera roller och behörigheter"
     },
     "storageSettingsEdit": {
-      "authFailed": "Inloggningen misslyckades. Försök igen.",
-      "byosHelper": "Nya uppladdningar lagras på ditt eget konto och nedladdningar levereras från det. Redan uppladdade filer förblir där de är.",
       "churchAppsFree": "ChurchApps (Gratis)",
-      "connect": "Anslut konto",
-      "connectFirst": "Anslut ditt konto innan du sparar.",
-      "connected": "Konto anslutet",
-      "connecting": "Väntar på inloggning...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Filer lagras på din MinistryStuff-lagringsplan, kopplad till denna kyrka automatiskt. Hantera din plan på",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup blockerad. Tillåt popup-fönster och försök igen.",
       "provider": "Leverantör",
-      "reconnect": "Anslut igen",
-      "s3AccessKey": "Åtkomstnyckel-ID",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Slutpunkt (lämna tomt för AWS)",
-      "s3Helper": "Bucketen måste tillåta offentlig läsåtkomst och CORS PUT-förfrågningar från denna webbplats. Fungerar med AWS S3, Cloudflare R2 och Backblaze B2.",
-      "s3PublicBase": "Offentlig URL-bas",
-      "s3Region": "Region",
-      "s3Required": "Bucket och offentlig URL-bas krävs.",
-      "s3SecretKey": "Hemlig åtkomstnyckel",
       "saveError": "Fel vid sparande av lagringsinställningar.",
-      "sessionExpired": "Inloggningssessionen har gått ut. Försök igen.",
-      "sessionFailed": "Kunde inte starta inloggningssessionen.",
       "title": "Fillagring",
       "usage": "Använder {used} GB av {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Lägg till element",
       "advanced": "Avancerad",
       "all": "Alla",
-      "block": "Block",
       "blocks": "Block",
-      "box": "Ruta",
-      "calendar": "Kalender",
-      "campaignProgress": "Kampanjframsteg",
-      "card": "Kort",
-      "carousel": "Karusell",
       "church": "Kyrka",
-      "column": "Kolumn",
       "common": "Vanlig",
-      "countdown": "Nedräkning",
       "descReusableElement": "Återanvändbart elementblock",
       "descReusableSection": "Återanvändbar sektion",
       "descSection": "Behållare för att gruppera innehåll",
-      "donateLink": "Gåvolänk",
-      "donation": "Gåva",
-      "embedPage": "Bädda in sida",
-      "expandable": "Expanderbar",
-      "form": "Formulär",
-      "gallery": "Galleri",
-      "groupList": "Grupplista",
-      "html": "HTML",
-      "iconFeature": "Ikonfunktion",
-      "image": "Bild",
-      "location": "Plats",
-      "logo": "Logotyp",
       "media": "Media",
       "noElementsFound": "Inga element hittades",
-      "row": "Rad",
       "searchElements": "Sök element",
       "section": "Sektion",
-      "serviceTimes": "Gudstjänsttider",
-      "socialIcons": "Sociala ikoner",
-      "staffGrid": "Personalrutnät",
-      "stats": "Statistik",
-      "stream": "Ström",
-      "table": "Tabell",
-      "testimonial": "Vittnesmål",
-      "text": "Text",
-      "textWithPhoto": "Text med foto",
       "tryDifferentSearch": "Prova ett annat sökord",
-      "untitledBlock": "Namnlöst block",
-      "video": "Video"
+      "untitledBlock": "Namnlöst block"
     },
     "elementEdit": {
       "enableLightbox": "Aktivera Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Ladda upp filer"
     },
     "filesManager": {
-      "externalStorage": "Lagrad på ditt kopplade konto",
       "files": "Filer",
       "getStarted": "Kom igång genom att ladda upp din första fil",
       "name": "Namn",
@@ -4377,10 +4321,6 @@
       "showCampus": "Visa Campus",
       "title": "Titel"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Huvudwebbplats",
-      "manageSites": "Hantera webbplatser…"
-    },
     "siteWidgets": {
       "addAction": "Lägg till åtgärd",
       "announcementBar": "Meddelandefält",
@@ -4404,15 +4344,6 @@
       "textColor": "Textfärg",
       "title": "Webbplatswidgetar",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Lägg till webbplats",
-      "deleteConfirm": "Ta bort denna webbplats? Dess sidor, navigation och utseende tas bort permanent. Dess anpassade domäner tilldelas om till huvudwebbplatsen.",
-      "empty": "Inga ytterligare webbplatser än.",
-      "name": "Namn",
-      "subDomain": "Underdomän",
-      "subDomainHint": "Endast gemener och siffror. Blir {subdomain}.b1.church",
-      "title": "Webbplatser"
     },
     "socialIconsEdit": {
       "alignment": "Justering",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Är du säker på att du vill ta bort den här ljudfilen?",
-      "tooLarge": "Filen är för stor. Maximal storlek är 25 MB.",
-      "unsupportedFormat": "Formatet stöds inte. Ladda upp en MP3-, M4A- eller AAC-fil.",
       "upload": "Ladda upp ljud"
     },
     "create": {
