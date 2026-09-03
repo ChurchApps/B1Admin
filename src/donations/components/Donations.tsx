@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
-import { type DonationInterface, type DonationBatchInterface, type FundInterface } from "@churchapps/helpers";
+import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Chip } from "@mui/material";
 import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
@@ -14,9 +14,40 @@ interface Props {
   currency?: string
 }
 
+const QBO_HEADERS = [
+  { label: "JournalNo", key: "JournalNo" },
+  { label: "JournalDate", key: "JournalDate" },
+  { label: "AccountName", key: "AccountName" },
+  { label: "Debits", key: "Debits" },
+  { label: "Credits", key: "Credits" },
+  { label: "Description", key: "Description" },
+  { label: "Name", key: "Name" }
+];
+
+// QBO Journal Entry import format: one debit line (Undeposited Funds) plus one credit line per fund.
+const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[], fundDonations: FundDonationInterface[], funds: FundInterface[]) => {
+  const journalNo = batch.id || "";
+  const journalDate = batch.batchDate ? batch.batchDate.split("T")[0] : "";
+  const description = "Donation batch: " + (batch.name || journalNo);
+
+  const fundTotals = new Map<string, number>();
+  fundDonations
+    .filter((fd) => donationIds.includes(fd.donationId || ""))
+    .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + (fd.amount || 0)));
+
+  const total = Array.from(fundTotals.values()).reduce((sum, amount) => sum + amount, 0);
+  const rows = [{ JournalNo: journalNo, JournalDate: journalDate, AccountName: "Undeposited Funds", Debits: total.toFixed(2), Credits: "", Description: description, Name: "" }];
+  fundTotals.forEach((amount, fundId) => {
+    const fund = ArrayHelper.getOne(funds, "id", fundId);
+    rows.push({ JournalNo: journalNo, JournalDate: journalDate, AccountName: fund?.name || "Unknown Fund", Debits: "", Credits: amount.toFixed(2), Description: description, Name: "" });
+  });
+  return rows;
+};
+
 export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
   const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
+  const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
 
   // Memoize permission check to avoid repeated calls
   const canEdit = React.useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
@@ -33,13 +64,27 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   }, []);
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/donations?batchId=" + batch?.id, "GivingApi").then((data: any) => populatePeople(data));
+    Promise.all([
+      ApiHelper.get("/donations?batchId=" + batch?.id, "GivingApi"),
+      // ponytail: fetches every fundDonation for the church and filters client-side (matches BatchGivingStatementsPage's existing pattern); add a batchId-filtered endpoint if this gets slow
+      ApiHelper.get("/fundDonations", "GivingApi")
+    ]).then(([donationsData, fundDonationsData]: [DonationInterface[], FundDonationInterface[]]) => {
+      setFundDonations(fundDonationsData || []);
+      populatePeople(donationsData);
+    });
   }, [batch, populatePeople]);
 
   const getHeaderActions = React.useCallback(() => {
     if (funds.length === 0 || !donations) return null;
-    return <ExportButton data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />;
-  }, [funds.length, donations]);
+    const donationIds = donations.map((d) => d.id || "");
+    const qboRows = buildQboJournalRows(batch, donationIds, fundDonations, funds);
+    return (
+      <Stack direction="row" spacing={1}>
+        <ExportButton data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />
+        {qboRows.length > 1 && <ExportButton data={qboRows} filename="qbo-journal-entry.csv" customHeaders={QBO_HEADERS} text={Locale.label("donations.donations.exportQbo")} />}
+      </Stack>
+    );
+  }, [funds, donations, fundDonations, batch]);
 
   const showEditDonation = React.useCallback(
     (e: React.MouseEvent) => {

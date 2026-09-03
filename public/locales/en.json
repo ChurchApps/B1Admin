@@ -732,6 +732,7 @@
       "don": "Donations",
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "Export",
+      "exportQbo": "Export for QuickBooks",
       "failed": "Failed Gifts",
       "funds": "Funds",
       "method": "Method",
