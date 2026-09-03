@@ -613,6 +613,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "View batch",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -743,6 +744,7 @@
       "funds": "Funds",
       "method": "Method",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Pending",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -797,6 +799,14 @@
       "totalFunds": "Total Funds",
       "viewBatch": "View batch"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "copied": "Copied",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -841,6 +851,10 @@
       "title": "Import Stripe Transactions",
       "totalLabel": "Total:",
       "type": "Type"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
   },
   "fileUpload": {
