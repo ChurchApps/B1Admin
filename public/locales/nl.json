@@ -178,7 +178,6 @@
       "confirmDelete": "Weet u zeker dat u dit evenement wilt verwijderen?",
       "confirmDeleteSeries": "Dit is een terugkerend evenement. Als u het verwijdert, wordt de hele reeks en alle bijbehorende voorvallen verwijderd. Weet u het zeker?",
       "delete": "Verwijderen",
-      "editEvent": "Evenement bewerken",
       "manageRegistrations": "Registraties beheren",
       "noGroups": "Geen groepen gevonden."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Geen kalenders gevonden",
       "status": "Status",
       "subtitleEmpty": "Begin met het aanmaken van uw eerste kalender",
-      "subtitleWithCount": "Ondertitel met telling",
       "title": "Kalenders"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Nieuw toevoegen..."
     },
-    "confirm": "Bevestigen",
     "copy": "Kopiëren",
     "createPerson": {
-      "confirmDuplicate": "Er is al een persoon '{{existingName}}' ({{existingEmail}}) met dit e-mailadres gevonden. Weet u zeker dat u '{{firstName}} {{lastName}}' wilt toevoegen?",
       "validate": {
         "firstName": "Voer een voornaam in.",
         "lastName": "Voer een achternaam in.",
@@ -368,18 +364,14 @@
     },
     "help": "Help",
     "iconPicker": {
-      "noResults": "Geen resultaten gevonden",
       "searchLabel": "Pictogrammen zoeken",
       "searchPlaceholder": "Typ om te zoeken (bijv. persoon, huis, kerk)...",
-      "showingDefault": "Toont {{count}} standaard pictogrammen",
-      "showingMatching": "Toont {{count}} overeenkomende pictogrammen",
       "title": "Pictogram selecteren",
       "tryDifferent": "Probeer een andere zoekterm"
     },
     "left": "Links",
     "loading": "Laden",
     "mobile": "Mobiel",
-    "more": "Meer",
     "name": "Naam",
     "navigation": "Navigatie",
     "no": "Nee",
@@ -613,6 +605,7 @@
       "lastYearCsv": "CSV vorig jaar",
       "lastYearPrint": "Afdrukken vorig jaar",
       "method": "Methode",
+      "notes": "Notes",
       "viewBatch": "Batch bekijken",
       "willAppear": "Donaties verschijnen hier zodra ze zijn gedaan."
     }
@@ -742,6 +735,7 @@
       "funds": "Fondsen",
       "method": "Methode",
       "noDonMsg": "Er zijn geen donaties bijgehouden. Zodra donaties worden ingevoerd, verschijnen ze hier.",
+      "notes": "Notes",
       "pending": "In behandeling",
       "statements": "Giftenoverzichten",
       "summary": "Samenvatting",
@@ -796,6 +790,13 @@
       "totalFunds": "Totaal fondsen",
       "viewBatch": "Batch bekijken"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Maandelijks",
       "quarterly": "Per kwartaal",
@@ -840,12 +841,11 @@
       "title": "Stripe-transacties importeren",
       "totalLabel": "Totaal:",
       "type": "Type"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Waarde"
     },
     "aiSearch": {
-      "clearSearch": "Zoekopdracht wissen",
       "exampleMen": "- Toon mij mannen ouder dan 30 met verjaardagen in juli.",
       "exampleWomen": "- Toon mij vrouwen die getrouwd zijn.",
       "examples": "Voorbeelden:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Lichte modus",
       "linkedAccounts": "Gekoppelde accounts",
       "noDirect": "Verberg mij in het ledenregister",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Voer een wachtwoord in van ten minste 8 tekens.",
       "passMatch": "Wachtwoorden komen niet overeen.",
       "passNew": "Nieuw wachtwoord",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Beheer rollen en machtigingen"
     },
     "storageSettingsEdit": {
-      "authFailed": "Aanmelden is mislukt. Probeer het opnieuw.",
-      "byosHelper": "Nieuwe uploads worden opgeslagen in uw eigen account en downloads worden hiervandaan geleverd. Reeds geüploade bestanden blijven waar ze zijn.",
       "churchAppsFree": "ChurchApps (Gratis)",
-      "connect": "Account koppelen",
-      "connectFirst": "Koppel uw account voordat u opslaat.",
-      "connected": "Account gekoppeld",
-      "connecting": "Wachten op aanmelding...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Bestanden worden opgeslagen op uw MinistryStuff-opslagabonnement, automatisch gekoppeld aan deze kerk. Beheer uw abonnement op",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Pop-up geblokkeerd. Sta pop-ups toe en probeer het opnieuw.",
       "provider": "Provider",
-      "reconnect": "Opnieuw koppelen",
-      "s3AccessKey": "Access Key ID",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (leeg laten voor AWS)",
-      "s3Helper": "De bucket moet openbare leestoegang en CORS PUT-verzoeken vanaf deze site toestaan. Werkt met AWS S3, Cloudflare R2 en Backblaze B2.",
-      "s3PublicBase": "Basis-URL (openbaar)",
-      "s3Region": "Regio",
-      "s3Required": "Bucket en openbare basis-URL zijn verplicht.",
-      "s3SecretKey": "Secret Access Key",
       "saveError": "Fout bij het opslaan van opslaginstellingen.",
-      "sessionExpired": "De aanmeldsessie is verlopen. Probeer het opnieuw.",
-      "sessionFailed": "Kan de aanmeldsessie niet starten.",
       "title": "Bestandsopslag",
       "usage": "{used} GB van {quota} GB gebruikt."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Elementen toevoegen",
       "advanced": "Geavanceerd",
       "all": "Alles",
-      "block": "Blok",
       "blocks": "Blokken",
-      "box": "Vak",
-      "calendar": "Kalender",
-      "campaignProgress": "Campagnevoortgang",
-      "card": "Kaart",
-      "carousel": "Carrousel",
       "church": "Kerk",
-      "column": "Kolom",
       "common": "Algemeen",
-      "countdown": "Aftellen",
       "descReusableElement": "Herbruikbaar elementblok",
       "descReusableSection": "Herbruikbare sectie",
       "descSection": "Container voor inhoudsgroepering",
-      "donateLink": "Donatielink",
-      "donation": "Donatie",
-      "embedPage": "Pagina insluiten",
-      "expandable": "Uitklapbaar",
-      "form": "Formulier",
-      "gallery": "Galerij",
-      "groupList": "Groepslijst",
-      "html": "HTML",
-      "iconFeature": "Icoonfunctie",
-      "image": "Afbeelding",
-      "location": "Locatie",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Geen elementen gevonden",
-      "row": "Rij",
       "searchElements": "Elementen zoeken",
       "section": "Sectie",
-      "serviceTimes": "Diensttijden",
-      "socialIcons": "Social-mediaiconen",
-      "staffGrid": "Teamoverzicht",
-      "stats": "Statistieken",
-      "stream": "Stream",
-      "table": "Tabel",
-      "testimonial": "Getuigenis",
-      "text": "Tekst",
-      "textWithPhoto": "Tekst met foto",
       "tryDifferentSearch": "Probeer een andere zoekterm",
-      "untitledBlock": "Naamloos blok",
-      "video": "Video"
+      "untitledBlock": "Naamloos blok"
     },
     "elementEdit": {
       "enableLightbox": "Lightbox inschakelen",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Bestanden uploaden"
     },
     "filesManager": {
-      "externalStorage": "Opgeslagen in uw gekoppelde account",
       "files": "Bestanden",
       "getStarted": "Begin met het uploaden van uw eerste bestand",
       "name": "Naam",
@@ -4377,10 +4321,6 @@
       "showCampus": "Toon locatie",
       "title": "Titel"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Hoofdwebsite",
-      "manageSites": "Websites beheren…"
-    },
     "siteWidgets": {
       "addAction": "Actie toevoegen",
       "announcementBar": "Mededelingenbalk",
@@ -4404,15 +4344,6 @@
       "textColor": "Tekstkleur",
       "title": "Website-widgets",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Website toevoegen",
-      "deleteConfirm": "Deze website verwijderen? De pagina's, navigatie en vormgeving worden permanent verwijderd. De aangepaste domeinen worden opnieuw toegewezen aan de hoofdwebsite.",
-      "empty": "Nog geen extra websites.",
-      "name": "Naam",
-      "subDomain": "Subdomein",
-      "subDomainHint": "Alleen kleine letters en cijfers. Wordt {subdomain}.b1.church",
-      "title": "Websites"
     },
     "socialIconsEdit": {
       "alignment": "Uitlijning",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Weet u zeker dat u dit audiobestand wilt verwijderen?",
-      "tooLarge": "Het bestand is te groot. De maximale grootte is 25 MB.",
-      "unsupportedFormat": "Niet-ondersteund audioformaat. Upload een MP3-, M4A- of AAC-bestand.",
       "upload": "Audio uploaden"
     },
     "create": {

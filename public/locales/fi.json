@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "Tämä on toistuva tapahtuma. Sen poistaminen poistaa koko sarjan ja kaikki sen esiintymät. Haluatko varmasti jatkaa?",
       "delete": "Poista",
-      "editEvent": "Muokkaa tapahtumaa",
       "manageRegistrations": "Hallinnoi ilmoittautumisia",
       "noGroups": "Ryhmiä ei löytynyt."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Kalentereita ei löytynyt",
       "status": "Tila",
       "subtitleEmpty": "Aloita luomalla ensimmäinen kalenteri",
-      "subtitleWithCount": "Alaotsikko laskurilla",
       "title": "Kalenterit"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Lisää uusi..."
     },
-    "confirm": "Vahvista",
     "copy": "Kopioi",
     "createPerson": {
-      "confirmDuplicate": "Tällä sähköpostilla löytyi jo olemassa oleva henkilö '{{existingName}}' ({{existingEmail}}). Haluatko varmasti lisätä henkilön '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Kirjoita etunimi.",
         "lastName": "Kirjoita sukunimi.",
@@ -368,18 +364,14 @@
     },
     "help": "Apu",
     "iconPicker": {
-      "noResults": "Ei tuloksia",
       "searchLabel": "Etsi kuvakkeita",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "Näytetään {{count}} oletuskuvaketta",
-      "showingMatching": "Näytetään {{count}} vastaavaa kuvaketta",
       "title": "Valitse kuvake",
       "tryDifferent": "Try a different search term"
     },
     "left": "Vasemmalle",
     "loading": "Ladataan",
     "mobile": "Matkapuhelin",
-    "more": "Lisää",
     "name": "Nimi",
     "navigation": "Navigointi",
     "no": "Ei",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Viime vuoden CSV",
       "lastYearPrint": "Viime vuoden tulostus",
       "method": "Menetelmä",
+      "notes": "Notes",
       "viewBatch": "Näytä erä",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Rahastot",
       "method": "Menetelmä",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Vireillä",
       "statements": "Lahjoituspäätelmät",
       "summary": "Yhteenveto",
@@ -796,6 +790,13 @@
       "totalFunds": "Rahastoja yhteensä",
       "viewBatch": "Näytä erä"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Kuukausittain",
       "quarterly": "Neljännesvuosittain",
@@ -840,12 +841,11 @@
       "title": "Tuo Stripe-tapahtumat",
       "totalLabel": "Yhteensä:",
       "type": "Tyyppi"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Tyhjennä haku",
       "exampleMen": "- Näytä yli 30-vuotiaat miehet, joiden syntymäpäivä on heinäkuussa.",
       "exampleWomen": "- Näytä naimisissa olevat naiset.",
       "examples": "Esimerkit:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Vaalea tila",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Hallinnoi rooleja ja käyttöoikeuksia"
     },
     "storageSettingsEdit": {
-      "authFailed": "Kirjautuminen epäonnistui. Yritä uudelleen.",
-      "byosHelper": "Uudet lataukset tallennetaan omaan tiliisi, ja lataukset palvellaan sieltä. Jo ladatut tiedostot pysyvät nykyisessä sijainnissaan.",
       "churchAppsFree": "ChurchApps (Ilmainen)",
-      "connect": "Yhdistä tili",
-      "connectFirst": "Yhdistä tilisi ennen tallentamista.",
-      "connected": "Tili yhdistetty",
-      "connecting": "Odotetaan kirjautumista...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Tiedostot tallennetaan MinistryStuff-tallennustilaasi, joka on liitetty tähän seurakuntaan automaattisesti. Hallitse tilaustasi osoitteessa",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Ponnahdusikkuna estetty. Salli ponnahdusikkunat ja yritä uudelleen.",
       "provider": "Palveluntarjoaja",
-      "reconnect": "Yhdistä uudelleen",
-      "s3AccessKey": "Access Key Id",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (tyhjä AWS:lle)",
-      "s3Helper": "Bucketin tulee sallia julkinen lukuoikeus ja CORS PUT -pyynnöt tältä sivustolta. Toimii AWS S3:n, Cloudflare R2:n ja Backblaze B2:n kanssa.",
-      "s3PublicBase": "Julkisen URL-osoitteen perusosa",
-      "s3Region": "Alue",
-      "s3Required": "Bucket ja julkisen URL-osoitteen perusosa vaaditaan.",
-      "s3SecretKey": "Secret Access Key",
       "saveError": "Virhe tallennusasetusten tallentamisessa.",
-      "sessionExpired": "Kirjautumisistunto vanhentui. Yritä uudelleen.",
-      "sessionFailed": "Kirjautumisistuntoa ei voitu käynnistää.",
       "title": "Tiedostojen tallennus",
       "usage": "Käytössä {used} Gt / {quota} Gt."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Lohko",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Kampanjan edistyminen",
-      "card": "Kortti",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Sarake",
       "common": "Yleinen",
-      "countdown": "Lähtölaskenta",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Lomake",
-      "gallery": "Galleria",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Kuvakeominaisuus",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Palvelusajat",
-      "socialIcons": "Sosiaalisen median kuvakkeet",
-      "staffGrid": "Henkilökuntaruudukko",
-      "stats": "Tilastot",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Suositus",
-      "text": "Teksti",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Ota lightbox käyttöön",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Tallennettu yhdistettyyn tiliisi",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Nimi",
@@ -4377,10 +4321,6 @@
       "showCampus": "Näytä toimipiste",
       "title": "Otsikko"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Pääsivusto",
-      "manageSites": "Hallitse sivustoja…"
-    },
     "siteWidgets": {
       "addAction": "Lisää toiminto",
       "announcementBar": "Ilmoituspalkki",
@@ -4404,15 +4344,6 @@
       "textColor": "Tekstin väri",
       "title": "Sivuston widgetit",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Lisää sivusto",
-      "deleteConfirm": "Poistetaanko tämä sivusto? Sen sivut, navigaatio ja ulkoasu poistetaan pysyvästi. Sen mukautetut verkkotunnukset siirretään pääsivustolle.",
-      "empty": "Ei vielä muita sivustoja.",
-      "name": "Nimi",
-      "subDomain": "Aliverkkotunnus",
-      "subDomainHint": "Vain pienet kirjaimet ja numerot. Muodostuu muotoon {subdomain}.b1.church",
-      "title": "Sivustot"
     },
     "socialIconsEdit": {
       "alignment": "Tasaus",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Haluatko varmasti poistaa tämän äänitiedoston?",
-      "tooLarge": "Tiedosto on liian suuri. Enimmäiskoko on 25 Mt.",
-      "unsupportedFormat": "Äänimuotoa ei tueta. Lataa MP3-, M4A- tai AAC-tiedosto.",
       "upload": "Lataa ääni"
     },
     "create": {

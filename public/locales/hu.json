@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "Ez egy ismétlődő esemény. A törlés a teljes sorozatot és annak összes előfordulását eltávolítja. Biztosan folytatja?",
       "delete": "Delete",
-      "editEvent": "Esemény szerkesztése",
       "manageRegistrations": "Regisztrációk kezelése",
       "noGroups": "No groups found."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "Megerősítés",
     "copy": "Másolás",
     "createPerson": {
-      "confirmDuplicate": "Egy létező személyt ('{{existingName}}', {{existingEmail}}) találtunk ezzel az e-mail címmel. Biztosan hozzá akarja adni a következőt: '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -368,18 +364,14 @@
     },
     "help": "Help",
     "iconPicker": {
-      "noResults": "Nincs találat",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "{{count}} alapértelmezett ikon megjelenítése",
-      "showingMatching": "{{count}} egyező ikon megjelenítése",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "Betöltés",
     "mobile": "Mobile",
-    "more": "Több",
     "name": "Name",
     "navigation": "Navigation",
     "no": "No",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "Köteg megtekintése",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "Módszer",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Függőben",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -796,6 +790,13 @@
       "totalFunds": "Összes alap",
       "viewBatch": "Köteg megtekintése"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "Stripe tranzakciók importálása",
       "totalLabel": "Összesen:",
       "type": "Típus"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Keresés törlése",
       "exampleMen": "- Mutasson 30 év feletti férfiakat, akiknek júliusban van a születésnapjuk.",
       "exampleWomen": "- Mutasson nős hölgyeket.",
       "examples": "Példák:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Világos mód",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Szerepkörök és jogosultságok kezelése"
     },
     "storageSettingsEdit": {
-      "authFailed": "A bejelentkezés sikertelen volt. Kérjük, próbálja újra.",
-      "byosHelper": "Az új feltöltések a saját fiókjában tárolódnak, és onnan is töltődnek le. A már feltöltött fájlok a jelenlegi helyükön maradnak.",
       "churchAppsFree": "ChurchApps (Ingyenes)",
-      "connect": "Fiók csatlakoztatása",
-      "connectFirst": "Csatlakoztassa fiókját mentés előtt.",
-      "connected": "Fiók csatlakoztatva",
-      "connecting": "Várakozás bejelentkezésre...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "A fájlok a MinistryStuff tárhelycsomagjában lesznek tárolva, amely automatikusan társítva van ehhez a gyülekezethez. Csomagját itt kezelheti:",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "A felugró ablak blokkolva van. Engedélyezze a felugró ablakokat, és próbálja újra.",
       "provider": "Szolgáltató",
-      "reconnect": "Újracsatlakozás",
-      "s3AccessKey": "Hozzáférési kulcs azonosítója",
-      "s3Bucket": "Tároló",
-      "s3Endpoint": "Végpont (üresen hagyva AWS esetén)",
-      "s3Helper": "A tárolónak engedélyeznie kell a nyilvános olvasási hozzáférést és a CORS PUT-kéréseket erről az oldalról. Működik AWS S3-mal, Cloudflare R2-vel és Backblaze B2-vel.",
-      "s3PublicBase": "Nyilvános URL-alap",
-      "s3Region": "Régió",
-      "s3Required": "A tároló és a nyilvános URL-alap megadása kötelező.",
-      "s3SecretKey": "Titkos hozzáférési kulcs",
       "saveError": "Hiba történt a tárhelybeállítások mentésekor.",
-      "sessionExpired": "A bejelentkezési munkamenet lejárt. Kérjük, próbálja újra.",
-      "sessionFailed": "Nem sikerült elindítani a bejelentkezési munkamenetet.",
       "title": "Fájl tárolás",
       "usage": "{used} GB felhasználva a(z) {quota} GB-ból."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Blokk",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Kampány előrehaladása",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Oszlop",
       "common": "Általános",
-      "countdown": "Visszaszámláló",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Galéria",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Ikonos elem",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Istentiszteleti idők",
-      "socialIcons": "Közösségimédia-ikonok",
-      "staffGrid": "Munkatársak rácsa",
-      "stats": "Statisztikák",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Vélemény",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Lightbox engedélyezése",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "A csatlakoztatott fiókjában tárolva",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Név",
@@ -4377,10 +4321,6 @@
       "showCampus": "Telephely megjelenítése",
       "title": "Cím"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Fő weboldal",
-      "manageSites": "Weboldalak kezelése…"
-    },
     "siteWidgets": {
       "addAction": "Művelet hozzáadása",
       "announcementBar": "Közlemény sáv",
@@ -4404,15 +4344,6 @@
       "textColor": "Szövegszín",
       "title": "Webhely-widgetek",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Weboldal hozzáadása",
-      "deleteConfirm": "Törli ezt a weboldalt? Az oldalai, navigációja és megjelenése véglegesen törlődik. Az egyéni domainjei átkerülnek a fő weboldalhoz.",
-      "empty": "Még nincs további weboldal.",
-      "name": "Név",
-      "subDomain": "Aldomain",
-      "subDomainHint": "Csak kisbetűk és számok. Ez lesz: {subdomain}.b1.church",
-      "title": "Weboldalak"
     },
     "socialIconsEdit": {
       "alignment": "Igazítás",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Biztosan törli ezt a hangfájlt?",
-      "tooLarge": "A fájl túl nagy. A maximális méret 25 MB.",
-      "unsupportedFormat": "Nem támogatott hangformátum. Töltsön fel MP3, M4A vagy AAC fájlt.",
       "upload": "Hang feltöltése"
     },
     "create": {

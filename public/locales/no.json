@@ -178,7 +178,6 @@
       "confirmDelete": "Er du sikker på at du vil slette denne hendelsen?",
       "confirmDeleteSeries": "Dette er et gjentakende arrangement. Hvis du sletter det, fjernes hele serien og alle forekomstene. Er du sikker?",
       "delete": "Slett",
-      "editEvent": "Rediger hendelse",
       "manageRegistrations": "Administrer påmeldinger",
       "noGroups": "Ingen grupper funnet."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Finner ingen kalendere",
       "status": "Status",
       "subtitleEmpty": "Kom i gang ved å lage din første kalender",
-      "subtitleWithCount": "Undertittel med antall",
       "title": "Kalendere"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Legg til ny..."
     },
-    "confirm": "Bekreft",
     "copy": "Kopier",
     "createPerson": {
-      "confirmDuplicate": "En eksisterende person '{{existingName}}' ({{existingEmail}}) ble funnet med denne e-posten. Er du sikker på at du vil legge til '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Vennligst skriv inn et fornavn.",
         "lastName": "Vennligst skriv inn et etternavn.",
@@ -368,18 +364,14 @@
     },
     "help": "Hjelp",
     "iconPicker": {
-      "noResults": "Ingen resultater funnet",
       "searchLabel": "Søk ikoner",
       "searchPlaceholder": "Skriv for å søke (f.eks., person, hjem, kirke)...",
-      "showingDefault": "Viser {{count}} standardikoner",
-      "showingMatching": "Viser {{count}} matchende ikoner",
       "title": "Velg ikon",
       "tryDifferent": "Prøv et annet søkeord"
     },
     "left": "Venstre",
     "loading": "Laster",
     "mobile": "Mobil",
-    "more": "Mer",
     "name": "Navn",
     "navigation": "Navigasjon",
     "no": "Nei",
@@ -613,6 +605,7 @@
       "lastYearCsv": "CSV i fjor",
       "lastYearPrint": "Siste års utskrift",
       "method": "Metode",
+      "notes": "Notes",
       "viewBatch": "Vis batch",
       "willAppear": "Donasjoner vil vises her når de er gjort."
     }
@@ -742,6 +735,7 @@
       "funds": "Fond",
       "method": "Metode",
       "noDonMsg": "Ingen donasjoner er registrert. Når donasjoner er lagt inn, vil de vises her.",
+      "notes": "Notes",
       "pending": "Venter",
       "statements": "Giveoppgaver",
       "summary": "Sammendrag",
@@ -796,6 +790,13 @@
       "totalFunds": "Totale fond",
       "viewBatch": "Vis batch"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Månedlig",
       "quarterly": "Kvartalsvis",
@@ -840,12 +841,11 @@
       "title": "Importer Stripe-transaksjoner",
       "totalLabel": "Totalt:",
       "type": "Type"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Verdi"
     },
     "aiSearch": {
-      "clearSearch": "Fjern søk",
       "exampleMen": "- Vis meg menn over 30 med fødselsdager i juli.",
       "exampleWomen": "- Vis meg gifte kvinner.",
       "examples": "Eksempler:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Lys modus",
       "linkedAccounts": "Tilknyttede kontoer",
       "noDirect": "Skjul meg fra medlemskatalogen",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Vennligst skriv inn et passord som er minst 8 tegn langt.",
       "passMatch": "Passordene stemmer ikke overens.",
       "passNew": "Nytt passord",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Administrer roller og tillatelser"
     },
     "storageSettingsEdit": {
-      "authFailed": "Innlogging mislyktes. Prøv igjen.",
-      "byosHelper": "Nye opplastinger lagres i din egen konto, og nedlastinger leveres derfra. Filer som allerede er lastet opp, blir liggende der de er.",
       "churchAppsFree": "ChurchApps (Gratis)",
-      "connect": "Koble til konto",
-      "connectFirst": "Koble til kontoen din før du lagrer.",
-      "connected": "Konto tilkoblet",
-      "connecting": "Venter på innlogging...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Filer lagres på MinistryStuff-lagringsplanen din, automatisk koblet til denne menigheten. Administrer abonnementet ditt på",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Sprettoppvindu blokkert. Tillat sprettoppvinduer og prøv igjen.",
       "provider": "Leverandør",
-      "reconnect": "Koble til på nytt",
-      "s3AccessKey": "Tilgangsnøkkel-ID",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endepunkt (tomt for AWS)",
-      "s3Helper": "Bucketen må tillate offentlig lesetilgang og CORS PUT-forespørsler fra dette nettstedet. Fungerer med AWS S3, Cloudflare R2 og Backblaze B2.",
-      "s3PublicBase": "Offentlig URL-base",
-      "s3Region": "Region",
-      "s3Required": "Bucket og offentlig URL-base er påkrevd.",
-      "s3SecretKey": "Hemmelig tilgangsnøkkel",
       "saveError": "Feil ved lagring av lagringsinnstillinger.",
-      "sessionExpired": "Innloggingsøkten utløp. Prøv igjen.",
-      "sessionFailed": "Kunne ikke starte innloggingsøkten.",
       "title": "Fillagring",
       "usage": "Bruker {used} GB av {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Legg til Elementer",
       "advanced": "Avansert",
       "all": "Alle",
-      "block": "Blokk",
       "blocks": "Blokker",
-      "box": "Boks",
-      "calendar": "Kalender",
-      "campaignProgress": "Kampanjefremdrift",
-      "card": "Kort",
-      "carousel": "Karusell",
       "church": "Kirke",
-      "column": "Kolonne",
       "common": "Vanlig",
-      "countdown": "Nedtelling",
       "descReusableElement": "Gjenbrukbar elementblokk",
       "descReusableSection": "Gjenbrukbar seksjon",
       "descSection": "Container for gruppering av innhold",
-      "donateLink": "Donasjonslenke",
-      "donation": "Donasjon",
-      "embedPage": "Bygg inn Side",
-      "expandable": "Utvidbar",
-      "form": "Skjema",
-      "gallery": "Galleri",
-      "groupList": "Gruppeliste",
-      "html": "HTML",
-      "iconFeature": "Ikonfunksjon",
-      "image": "Bilde",
-      "location": "Plassering",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Ingen elementer funnet",
-      "row": "Rad",
       "searchElements": "Søk elementer...",
       "section": "Seksjon",
-      "serviceTimes": "Tjenestetider",
-      "socialIcons": "Ikoner for sosiale medier",
-      "staffGrid": "Teamoversikt",
-      "stats": "Statistikk",
-      "stream": "Strøm",
-      "table": "Tabell",
-      "testimonial": "Uttalelse",
-      "text": "Tekst",
-      "textWithPhoto": "Tekst med Bilde",
       "tryDifferentSearch": "Prøv et annet søkeord",
-      "untitledBlock": "Navnløs blokk",
-      "video": "Video"
+      "untitledBlock": "Navnløs blokk"
     },
     "elementEdit": {
       "enableLightbox": "Aktiver Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Last opp filer"
     },
     "filesManager": {
-      "externalStorage": "Lagret i din koblede konto",
       "files": "Filer",
       "getStarted": "Kom i gang ved å laste opp din første fil",
       "name": "Navn",
@@ -4377,10 +4321,6 @@
       "showCampus": "Vis campus",
       "title": "Tittel"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Hovednettsted",
-      "manageSites": "Administrer nettsteder…"
-    },
     "siteWidgets": {
       "addAction": "Legg til handling",
       "announcementBar": "Kunngjøringslinje",
@@ -4404,15 +4344,6 @@
       "textColor": "Tekstfarge",
       "title": "Nettstedswidgets",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Legg til nettsted",
-      "deleteConfirm": "Slette dette nettstedet? Sidene, navigasjonen og utseendet blir permanent slettet. Egendefinerte domener blir omfordelt til hovednettstedet.",
-      "empty": "Ingen ekstra nettsteder ennå.",
-      "name": "Navn",
-      "subDomain": "Underdomene",
-      "subDomainHint": "Kun små bokstaver og tall. Blir {subdomain}.b1.church",
-      "title": "Nettsteder"
     },
     "socialIconsEdit": {
       "alignment": "Justering",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Er du sikker på at du vil slette denne lydfilen?",
-      "tooLarge": "Filen er for stor. Maksimal størrelse er 25 MB.",
-      "unsupportedFormat": "Lydformatet støttes ikke. Last opp en MP3-, M4A- eller AAC-fil.",
       "upload": "Last opp lyd"
     },
     "create": {

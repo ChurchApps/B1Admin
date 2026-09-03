@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "これは定期的なイベントです。削除すると、シリーズ全体とそのすべての開催回が削除されます。よろしいですか？",
       "delete": "削除",
-      "editEvent": "イベントを編集",
       "manageRegistrations": "登録を管理",
       "noGroups": "No groups found."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "ステータス",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "確認",
     "copy": "コピー",
     "createPerson": {
-      "confirmDuplicate": "このメールアドレスを持つ既存の人物 '{{existingName}}' ({{existingEmail}}) が見つかりました。本当に '{{firstName}} {{lastName}}' を追加しますか？",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -368,18 +364,14 @@
     },
     "help": "ヘルプ",
     "iconPicker": {
-      "noResults": "結果が見つかりません",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "{{count}} 個のデフォルトアイコンを表示中",
-      "showingMatching": "{{count}} 個の一致するアイコンを表示中",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "読み込み中",
     "mobile": "Mobile",
-    "more": "もっと見る",
     "name": "名前",
     "navigation": "ナビゲーション",
     "no": "いいえ",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "バッチを表示",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "方法",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "保留中",
       "statements": "Giving Statements",
       "summary": "概要",
@@ -796,6 +790,13 @@
       "totalFunds": "合計ファンド",
       "viewBatch": "バッチを表示"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "Stripeトランザクションをインポート",
       "totalLabel": "合計：",
       "type": "タイプ"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "値"
     },
     "aiSearch": {
-      "clearSearch": "検索をクリア",
       "exampleMen": "- 7月生まれの30歳以上の男性を表示",
       "exampleWomen": "- 結婚している女性を表示",
       "examples": "例：",
@@ -2417,8 +2416,6 @@
       "lightMode": "ライトモード",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "ロールと権限を管理"
     },
     "storageSettingsEdit": {
-      "authFailed": "サインインに失敗しました。もう一度お試しください。",
-      "byosHelper": "新しいアップロードはお客様自身のアカウントに保存され、ダウンロードもそこから提供されます。すでにアップロード済みのファイルはそのままの場所に残ります。",
       "churchAppsFree": "ChurchApps（無料）",
-      "connect": "アカウントを接続",
-      "connectFirst": "保存する前にアカウントを接続してください。",
-      "connected": "アカウントが接続されました",
-      "connecting": "サインインを待っています...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "ファイルは、この教会に自動的にリンクされたMinistryStuffのストレージプランに保存されます。プランの管理はこちら：",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "ポップアップがブロックされました。ポップアップを許可してもう一度お試しください。",
       "provider": "プロバイダー",
-      "reconnect": "再接続",
-      "s3AccessKey": "アクセスキーID",
-      "s3Bucket": "バケット",
-      "s3Endpoint": "エンドポイント（AWSの場合は空欄）",
-      "s3Helper": "バケットはこのサイトからの公開読み取りアクセスとCORS PUTリクエストを許可する必要があります。AWS S3、Cloudflare R2、Backblaze B2で動作します。",
-      "s3PublicBase": "公開URLベース",
-      "s3Region": "リージョン",
-      "s3Required": "バケットと公開URLベースは必須です。",
-      "s3SecretKey": "シークレットアクセスキー",
       "saveError": "ストレージ設定の保存中にエラーが発生しました。",
-      "sessionExpired": "サインインセッションの有効期限が切れました。もう一度お試しください。",
-      "sessionFailed": "サインインセッションを開始できませんでした。",
       "title": "ファイルストレージ",
       "usage": "{quota} GB中{used} GBを使用中。"
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "すべて",
-      "block": "ブロック",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "カレンダー",
-      "campaignProgress": "キャンペーン進捗",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "教会",
-      "column": "カラム",
       "common": "共通",
-      "countdown": "カウントダウン",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "フォーム",
-      "gallery": "ギャラリー",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "アイコン機能",
-      "image": "画像",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "礼拝時間",
-      "socialIcons": "ソーシャルアイコン",
-      "staffGrid": "スタッフグリッド",
-      "stats": "統計",
-      "stream": "Stream",
-      "table": "テーブル",
-      "testimonial": "体験談",
-      "text": "テキスト",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "ビデオ"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "ライトボックスを有効にする",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "リンクされたアカウントに保存",
       "files": "ファイル",
       "getStarted": "Get started by uploading your first file",
       "name": "名前",
@@ -4377,10 +4321,6 @@
       "showCampus": "キャンパスを表示",
       "title": "タイトル"
     },
-    "siteSwitcher": {
-      "mainWebsite": "メインウェブサイト",
-      "manageSites": "ウェブサイトを管理…"
-    },
     "siteWidgets": {
       "addAction": "アクションを追加",
       "announcementBar": "お知らせバー",
@@ -4404,15 +4344,6 @@
       "textColor": "文字色",
       "title": "サイトウィジェット",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "ウェブサイトを追加",
-      "deleteConfirm": "このウェブサイトを削除しますか？そのページ、ナビゲーション、外観は完全に削除されます。カスタムドメインはメインウェブサイトに再割り当てされます。",
-      "empty": "追加のウェブサイトはまだありません。",
-      "name": "名前",
-      "subDomain": "サブドメイン",
-      "subDomainHint": "小文字と数字のみ使用できます。{subdomain}.b1.church になります",
-      "title": "ウェブサイト"
     },
     "socialIconsEdit": {
       "alignment": "配置",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "この音声ファイルを削除してもよろしいですか？",
-      "tooLarge": "ファイルが大きすぎます。最大サイズは 25 MB です。",
-      "unsupportedFormat": "未対応の音声形式です。MP3、M4A、または AAC ファイルをアップロードしてください。",
       "upload": "音声をアップロード"
     },
     "create": {

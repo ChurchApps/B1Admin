@@ -178,7 +178,6 @@
       "confirmDelete": "Ви впевнені, що хочете видалити цю подію?",
       "confirmDeleteSeries": "Це повторювана подія. Її видалення призведе до видалення всієї серії та всіх її повторень. Ви впевнені?",
       "delete": "Видалити",
-      "editEvent": "Редагувати подію",
       "manageRegistrations": "Керувати реєстраціями",
       "noGroups": "Групи не знайдені."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "Календарів не знайдено",
       "status": "Статус",
       "subtitleEmpty": "Почніть зі створення першого календаря",
-      "subtitleWithCount": "Підзаголовок із кількістю",
       "title": "Календарі"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Додати нове..."
     },
-    "confirm": "Підтвердити",
     "copy": "Копіювати",
     "createPerson": {
-      "confirmDuplicate": "Користувач '{{existingName}}' ({{existingEmail}}) з такою електронною адресою вже існує. Ви дійсно хочете додати '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Введіть ім'я.",
         "lastName": "Введіть прізвище.",
@@ -368,18 +364,14 @@
     },
     "help": "Допомога",
     "iconPicker": {
-      "noResults": "Нічого не знайдено",
       "searchLabel": "Пошук іконок",
       "searchPlaceholder": "Почніть друкувати для пошуку (наприклад, особа, дім, церква)...",
-      "showingDefault": "Показано {{count}} значків за замовчуванням",
-      "showingMatching": "Показано {{count}} відповідних значків",
       "title": "Вибрати іконку",
       "tryDifferent": "Спробуйте інший пошуковий запит"
     },
     "left": "Ліво",
     "loading": "Завантаження",
     "mobile": "Мобільний",
-    "more": "Більше",
     "name": "Ім'я",
     "navigation": "Навігація",
     "no": "Ні",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Метод",
+      "notes": "Notes",
       "viewBatch": "Переглянути партію",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Фонди",
       "method": "Метод",
       "noDonMsg": "Пожертви не відстежуються. Після введення пожертви з'являться тут.",
+      "notes": "Notes",
       "pending": "В очікуванні",
       "statements": "Виписки пожертв",
       "summary": "Підсумок",
@@ -796,6 +790,13 @@
       "totalFunds": "Всього фондів",
       "viewBatch": "Переглянути партію"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Щомісяця",
       "quarterly": "Поквартально",
@@ -840,12 +841,11 @@
       "title": "Імпортувати транзакції Stripe",
       "totalLabel": "Всього:",
       "type": "Тип"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Значення"
     },
     "aiSearch": {
-      "clearSearch": "Очистити пошук",
       "exampleMen": "- Покажи чоловіків старше 30 років з днями народження у липні.",
       "exampleWomen": "- Покажи заміжніх жінок.",
       "examples": "Приклади:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Світлий режим",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Керуйте ролями та дозволами"
     },
     "storageSettingsEdit": {
-      "authFailed": "Не вдалося виконати вхід. Спробуйте ще раз.",
-      "byosHelper": "Нові завантаження зберігаються у вашому власному обліковому записі, а завантаження виконуються з нього. Файли, які вже завантажено, залишаються на місці.",
       "churchAppsFree": "ChurchApps (Безкоштовно)",
-      "connect": "Підключити обліковий запис",
-      "connectFirst": "Підключіть свій обліковий запис перед збереженням.",
-      "connected": "Обліковий запис підключено",
-      "connecting": "Очікування входу...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Файли зберігатимуться на вашому тарифі сховища MinistryStuff, автоматично пов'язаному з цією церквою. Керуйте своїм тарифом на",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Спливаюче вікно заблоковано. Дозвольте спливаючі вікна та спробуйте ще раз.",
       "provider": "Постачальник",
-      "reconnect": "Перепідключити",
-      "s3AccessKey": "Ідентифікатор ключа доступу",
-      "s3Bucket": "Бакет",
-      "s3Endpoint": "Кінцева точка (залиште порожнім для AWS)",
-      "s3Helper": "Бакет має дозволяти публічний доступ на читання та CORS PUT-запити з цього сайту. Працює з AWS S3, Cloudflare R2 та Backblaze B2.",
-      "s3PublicBase": "Базова публічна URL-адреса",
-      "s3Region": "Регіон",
-      "s3Required": "Бакет і базова публічна URL-адреса обов'язкові.",
-      "s3SecretKey": "Секретний ключ доступу",
       "saveError": "Помилка збереження налаштувань сховища.",
-      "sessionExpired": "Сеанс входу закінчився. Спробуйте ще раз.",
-      "sessionFailed": "Не вдалося розпочати сеанс входу.",
       "title": "Сховище файлів",
       "usage": "Використано {used} ГБ з {quota} ГБ."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Розширений",
       "all": "Усі",
-      "block": "Блок",
       "blocks": "Блоки",
-      "box": "Box",
-      "calendar": "Календар",
-      "campaignProgress": "Прогрес кампанії",
-      "card": "Картка",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Колонка",
       "common": "Поширені",
-      "countdown": "Зворотний відлік",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Форма",
-      "gallery": "Галерея",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Значок з описом",
-      "image": "Зображення",
-      "location": "Місцезнаходження",
-      "logo": "Логотип",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Секція",
-      "serviceTimes": "Час богослужінь",
-      "socialIcons": "Іконки соцмереж",
-      "staffGrid": "Сітка персоналу",
-      "stats": "Статистика",
-      "stream": "Трансляція",
-      "table": "Table",
-      "testimonial": "Відгук",
-      "text": "Текст",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Спробуйте інший пошуковий запит",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Увімкнути Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Зберігається у вашому пов'язаному обліковому записі",
       "files": "Файли",
       "getStarted": "Get started by uploading your first file",
       "name": "Ім'я",
@@ -4377,10 +4321,6 @@
       "showCampus": "Показувати кампус",
       "title": "Назва"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Основний сайт",
-      "manageSites": "Керувати сайтами…"
-    },
     "siteWidgets": {
       "addAction": "Додати дію",
       "announcementBar": "Панель оголошень",
@@ -4404,15 +4344,6 @@
       "textColor": "Колір тексту",
       "title": "Віджети сайту",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Додати сайт",
-      "deleteConfirm": "Видалити цей сайт? Його сторінки, навігацію та оформлення буде остаточно видалено. Його власні домени буде переприв'язано до основного сайту.",
-      "empty": "Поки що немає додаткових сайтів.",
-      "name": "Назва",
-      "subDomain": "Піддомен",
-      "subDomainHint": "Лише малі літери та цифри. Стане {subdomain}.b1.church",
-      "title": "Сайти"
     },
     "socialIconsEdit": {
       "alignment": "Вирівнювання",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Ви впевнені, що хочете видалити цей аудіофайл?",
-      "tooLarge": "Файл завеликий. Максимальний розмір — 25 МБ.",
-      "unsupportedFormat": "Непідтримуваний формат аудіо. Завантажте файл MP3, M4A або AAC.",
       "upload": "Завантажити аудіо"
     },
     "create": {

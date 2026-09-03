@@ -178,7 +178,6 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "Ini adalah acara berulang. Menghapusnya akan menghapus seluruh seri dan semua kejadiannya. Apakah Anda yakin?",
       "delete": "Hapus",
-      "editEvent": "Edit Acara",
       "manageRegistrations": "Kelola Pendaftaran",
       "noGroups": "Tidak ada grup yang ditemukan."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Kalender"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "Konfirmasi",
     "copy": "Salin",
     "createPerson": {
-      "confirmDuplicate": "Orang dengan email ini sudah ada: '{{existingName}}' ({{existingEmail}}). Apakah Anda yakin ingin menambahkan '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Silakan masukkan nama depan.",
         "lastName": "Silakan masukkan nama belakang.",
@@ -368,18 +364,14 @@
     },
     "help": "Bantuan",
     "iconPicker": {
-      "noResults": "Tidak ada hasil yang ditemukan",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "Menampilkan {{count}} ikon bawaan",
-      "showingMatching": "Menampilkan {{count}} ikon yang cocok",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Kiri",
     "loading": "Memuat",
     "mobile": "Seluler",
-    "more": "Lainnya",
     "name": "Nama",
     "navigation": "Navigasi",
     "no": "Tidak",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Metode",
+      "notes": "Notes",
       "viewBatch": "Lihat batch",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "Metode",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "Tertunda",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -796,6 +790,13 @@
       "totalFunds": "Total Dana",
       "viewBatch": "Lihat batch"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Bulanan",
       "quarterly": "Kuartalan",
@@ -840,12 +841,11 @@
       "title": "Impor Transaksi Stripe",
       "totalLabel": "Total:",
       "type": "Jenis"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Hapus Pencarian",
       "exampleMen": "- Tunjukkan pria di atas 30 tahun dengan ulang tahun di bulan Juli.",
       "exampleWomen": "- Tunjukkan wanita yang sudah menikah.",
       "examples": "Contoh:",
@@ -2417,8 +2416,6 @@
       "lightMode": "Mode Terang",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "Kelola peran dan izin"
     },
     "storageSettingsEdit": {
-      "authFailed": "Gagal masuk. Silakan coba lagi.",
-      "byosHelper": "Unggahan baru disimpan di akun Anda sendiri dan unduhan dilayani darinya. File yang sudah diunggah tetap berada di tempatnya.",
       "churchAppsFree": "ChurchApps (Gratis)",
-      "connect": "Hubungkan Akun",
-      "connectFirst": "Hubungkan akun Anda sebelum menyimpan.",
-      "connected": "Akun terhubung",
-      "connecting": "Menunggu masuk...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "File akan disimpan di paket penyimpanan MinistryStuff Anda, yang terhubung secara otomatis ke gereja ini. Kelola paket Anda di",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup diblokir. Silakan izinkan popup dan coba lagi.",
       "provider": "Penyedia",
-      "reconnect": "Hubungkan Ulang",
-      "s3AccessKey": "ID Kunci Akses",
-      "s3Bucket": "Bucket",
-      "s3Endpoint": "Endpoint (kosongkan untuk AWS)",
-      "s3Helper": "Bucket harus mengizinkan akses baca publik dan permintaan CORS PUT dari situs ini. Berfungsi dengan AWS S3, Cloudflare R2, dan Backblaze B2.",
-      "s3PublicBase": "URL Publik Dasar",
-      "s3Region": "Wilayah",
-      "s3Required": "Bucket dan URL publik dasar wajib diisi.",
-      "s3SecretKey": "Kunci Akses Rahasia",
       "saveError": "Kesalahan saat menyimpan pengaturan penyimpanan.",
-      "sessionExpired": "Sesi masuk telah kedaluwarsa. Silakan coba lagi.",
-      "sessionFailed": "Tidak dapat memulai sesi masuk.",
       "title": "Penyimpanan File",
       "usage": "Menggunakan {used} GB dari {quota} GB."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "Semua",
-      "block": "Blok",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Kalender",
-      "campaignProgress": "Progres Kampanye",
-      "card": "Kartu",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Kolom",
       "common": "Umum",
-      "countdown": "Hitung Mundur",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Formulir",
-      "gallery": "Galeri",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "Fitur Ikon",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Jadwal Ibadah",
-      "socialIcons": "Ikon Sosial",
-      "staffGrid": "Grid Staf",
-      "stats": "Statistik",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Testimoni",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "Aktifkan Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "Disimpan di akun tertaut Anda",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Nama",
@@ -4377,10 +4321,6 @@
       "showCampus": "Tampilkan Kampus",
       "title": "Judul"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Situs Web Utama",
-      "manageSites": "Kelola situs web…"
-    },
     "siteWidgets": {
       "addAction": "Tambah Aksi",
       "announcementBar": "Bilah Pengumuman",
@@ -4404,15 +4344,6 @@
       "textColor": "Warna Teks",
       "title": "Widget Situs",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Tambah Situs Web",
-      "deleteConfirm": "Hapus situs web ini? Halaman, navigasi, dan tampilannya akan dihapus secara permanen. Domain kustomnya akan dialihkan ke situs web utama.",
-      "empty": "Belum ada situs web tambahan.",
-      "name": "Nama",
-      "subDomain": "Subdomain",
-      "subDomainHint": "Hanya huruf kecil dan angka. Akan menjadi {subdomain}.b1.church",
-      "title": "Situs Web"
     },
     "socialIconsEdit": {
       "alignment": "Perataan",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "Yakin ingin menghapus file audio ini?",
-      "tooLarge": "File terlalu besar. Ukuran maksimum 25 MB.",
-      "unsupportedFormat": "Format audio tidak didukung. Unggah file MP3, M4A, atau AAC.",
       "upload": "Unggah audio"
     },
     "create": {

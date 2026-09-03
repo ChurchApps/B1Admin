@@ -178,7 +178,6 @@
       "confirmDelete": "您確定要刪除此活動嗎？",
       "confirmDeleteSeries": "這是一個週期性活動。刪除後將移除整個系列及其所有場次，您確定要繼續嗎？",
       "delete": "刪除",
-      "editEvent": "編輯活動",
       "manageRegistrations": "管理報名",
       "noGroups": "未找到組。"
     },
@@ -198,7 +197,6 @@
       "noCalendars": "沒有找到日曆",
       "status": "狀態",
       "subtitleEmpty": "從建立您的第一個日曆開始",
-      "subtitleWithCount": "帶計數的副標題",
       "title": "日曆"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "新增新..."
     },
-    "confirm": "確認",
     "copy": "複製",
     "createPerson": {
-      "confirmDuplicate": "已找到使用此電子郵件的現有人員 '{{existingName}}' ({{existingEmail}})。您確定要新增 '{{firstName}} {{lastName}}' 嗎？",
       "validate": {
         "firstName": "請輸入名字。",
         "lastName": "請輸入姓氏。",
@@ -368,18 +364,14 @@
     },
     "help": "幫助",
     "iconPicker": {
-      "noResults": "找不到結果",
       "searchLabel": "搜尋圖示",
       "searchPlaceholder": "輸入搜尋（例如：person、home、church）...",
-      "showingDefault": "顯示 {{count}} 個預設圖示",
-      "showingMatching": "顯示 {{count}} 個相符圖示",
       "title": "選擇圖示",
       "tryDifferent": "嘗試不同的搜尋詞"
     },
     "left": "左",
     "loading": "載入中",
     "mobile": "行動裝置",
-    "more": "更多",
     "name": "姓名",
     "navigation": "導航",
     "no": "否",
@@ -613,6 +605,7 @@
       "lastYearCsv": "去年 CSV",
       "lastYearPrint": "去年印刷",
       "method": "方法",
+      "notes": "Notes",
       "viewBatch": "查看批次",
       "willAppear": "捐款將在完成後顯示在此處。"
     }
@@ -742,6 +735,7 @@
       "funds": "基金",
       "method": "方式",
       "noDonMsg": "尚未追蹤任何捐款。輸入捐款後，它們將顯示在這裡。",
+      "notes": "Notes",
       "pending": "待處理",
       "statements": "捐贈報表",
       "summary": "摘要",
@@ -796,6 +790,13 @@
       "totalFunds": "基金總數",
       "viewBatch": "查看批次"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "每月",
       "quarterly": "每季度",
@@ -840,12 +841,11 @@
       "title": "匯入 Stripe 交易",
       "totalLabel": "總計：",
       "type": "型別"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "值"
     },
     "aiSearch": {
-      "clearSearch": "清除搜尋",
       "exampleMen": "- 顯示 30 歲以上、生日在 7 月的男性。",
       "exampleWomen": "- 顯示已婚的女性。",
       "examples": "示例：",
@@ -2417,8 +2416,6 @@
       "lightMode": "淺色模式",
       "linkedAccounts": "關聯帳戶",
       "noDirect": "在成員目錄中隱藏我",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "請輸入至少8個字元的密碼。",
       "passMatch": "密碼不匹配。",
       "passNew": "新密碼",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "管理角色和權限"
     },
     "storageSettingsEdit": {
-      "authFailed": "登入失敗，請再試一次。",
-      "byosHelper": "新上傳的檔案將儲存於您自己的帳號，下載也將由該帳號提供。已上傳的檔案將維持原位置不變。",
       "churchAppsFree": "ChurchApps（免費）",
-      "connect": "連結帳號",
-      "connectFirst": "請先連結您的帳號再儲存。",
-      "connected": "帳號已連結",
-      "connecting": "等待登入中…",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "檔案將儲存於您的 MinistryStuff 儲存方案，並會自動連結至此教會。您可於以下網站管理方案：",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "彈出視窗已被封鎖，請允許彈出視窗後再試一次。",
       "provider": "供應商",
-      "reconnect": "重新連結",
-      "s3AccessKey": "存取金鑰 ID",
-      "s3Bucket": "儲存桶",
-      "s3Endpoint": "端點（AWS 請留空）",
-      "s3Helper": "此儲存桶必須允許公開讀取存取，並允許來自本站的 CORS PUT 請求。支援 AWS S3、Cloudflare R2 與 Backblaze B2。",
-      "s3PublicBase": "公開網址前綴",
-      "s3Region": "區域",
-      "s3Required": "儲存桶與公開網址前綴為必填欄位。",
-      "s3SecretKey": "私密存取金鑰",
       "saveError": "儲存空間設定儲存失敗，請再試一次。",
-      "sessionExpired": "登入工作階段已逾時，請再試一次。",
-      "sessionFailed": "無法啟動登入工作階段。",
       "title": "檔案儲存",
       "usage": "已使用 {used} GB，共 {quota} GB。"
     },
@@ -3837,49 +3813,18 @@
       "addElements": "新增元素",
       "advanced": "高階",
       "all": "全部",
-      "block": "塊",
       "blocks": "塊",
-      "box": "盒子",
-      "calendar": "日曆",
-      "campaignProgress": "活動進度",
-      "card": "卡片",
-      "carousel": "輪播",
       "church": "教會",
-      "column": "列",
       "common": "常用",
-      "countdown": "倒計時",
       "descReusableElement": "可重用元素塊",
       "descReusableSection": "可重用部分",
       "descSection": "用於分組內容的容器",
-      "donateLink": "捐贈連結",
-      "donation": "捐贈",
-      "embedPage": "嵌入頁面",
-      "expandable": "可展開",
-      "form": "表單",
-      "gallery": "相簿",
-      "groupList": "群組列表",
-      "html": "HTML",
-      "iconFeature": "圖示特色",
-      "image": "圖片",
-      "location": "位置",
-      "logo": "標誌",
       "media": "媒體",
       "noElementsFound": "未找到元素",
-      "row": "行",
       "searchElements": "搜尋元素...",
       "section": "部分",
-      "serviceTimes": "禮拜時間",
-      "socialIcons": "社交圖示",
-      "staffGrid": "員工網格",
-      "stats": "統計資料",
-      "stream": "直播",
-      "table": "表格",
-      "testimonial": "見證",
-      "text": "文字",
-      "textWithPhoto": "帶照片的文字",
       "tryDifferentSearch": "嘗試不同的搜尋詞",
-      "untitledBlock": "無標題塊",
-      "video": "影片"
+      "untitledBlock": "無標題塊"
     },
     "elementEdit": {
       "enableLightbox": "啟用燈箱",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "上傳檔案"
     },
     "filesManager": {
-      "externalStorage": "儲存於您連結的帳號中",
       "files": "檔案",
       "getStarted": "開始上傳您的第一個檔案",
       "name": "名稱",
@@ -4377,10 +4321,6 @@
       "showCampus": "顯示校園",
       "title": "標題"
     },
-    "siteSwitcher": {
-      "mainWebsite": "主要網站",
-      "manageSites": "管理網站…"
-    },
     "siteWidgets": {
       "addAction": "新增操作",
       "announcementBar": "公告欄",
@@ -4404,15 +4344,6 @@
       "textColor": "文字顏色",
       "title": "網站小元件",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "新增網站",
-      "deleteConfirm": "要刪除此網站嗎？其頁面、導覽與外觀將被永久刪除，其自訂網域將重新指派給主要網站。",
-      "empty": "尚無其他網站。",
-      "name": "名稱",
-      "subDomain": "子網域",
-      "subDomainHint": "僅限小寫字母與數字，將成為 {subdomain}.b1.church",
-      "title": "網站"
     },
     "socialIconsEdit": {
       "alignment": "對齊方式",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "確定要刪除此音訊檔案嗎？",
-      "tooLarge": "檔案太大。大小上限為 25 MB。",
-      "unsupportedFormat": "不支援的音訊格式。請上傳 MP3、M4A 或 AAC 檔案。",
       "upload": "上傳音訊"
     },
     "create": {

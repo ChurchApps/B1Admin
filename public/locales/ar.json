@@ -178,7 +178,6 @@
       "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الحدث؟",
       "confirmDeleteSeries": "هذا حدث متكرر. سيؤدي حذفه إلى إزالة السلسلة بأكملها وجميع مناسباتها. هل أنت متأكد؟",
       "delete": "حذف",
-      "editEvent": "تحرير الحدث",
       "manageRegistrations": "إدارة التسجيلات",
       "noGroups": "لم يتم العثور على مجموعات."
     },
@@ -198,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "الحالة",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "التقاويس"
     },
     "calendarPage": {
@@ -339,10 +337,8 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "تأكيد",
     "copy": "نسخ",
     "createPerson": {
-      "confirmDuplicate": "تم العثور على شخص موجود بالفعل باسم '{{existingName}}' ({{existingEmail}}) بهذا البريد الإلكتروني. هل أنت متأكد من رغبتك في إضافة '{{firstName}} {{lastName}}'؟",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -368,18 +364,14 @@
     },
     "help": "مساعدة",
     "iconPicker": {
-      "noResults": "لم يتم العثور على نتائج",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "عرض {{count}} من الرموز الافتراضية",
-      "showingMatching": "عرض {{count}} من الرموز المطابقة",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
     "loading": "جارٍ التحميل",
     "mobile": "Mobile",
-    "more": "المزيد",
     "name": "الاسم",
     "navigation": "Navigation",
     "no": "لا",
@@ -613,6 +605,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "notes": "Notes",
       "viewBatch": "عرض الدفعة",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -742,6 +735,7 @@
       "funds": "Funds",
       "method": "الطريقة",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "notes": "Notes",
       "pending": "قيد الانتظار",
       "statements": "Giving Statements",
       "summary": "Summary",
@@ -796,6 +790,13 @@
       "totalFunds": "إجمالي الصناديق",
       "viewBatch": "عرض الدفعة"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -840,12 +841,11 @@
       "title": "استيراد معاملات Stripe",
       "totalLabel": "الإجمالي:",
       "type": "النوع"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
-  },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
   },
   "forms": {
     "choicesEdit": {
@@ -1408,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "مسح البحث",
       "exampleMen": "- أرني الرجال فوق 30 عامًا الذين تقع أعياد ميلادهم في يوليو.",
       "exampleWomen": "- أرني النساء المتزوجات.",
       "examples": "أمثلة:",
@@ -2417,8 +2416,6 @@
       "lightMode": "الوضع الفاتح",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Current password",
-      "passCurrentMsg": "Please enter your current password.",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2857,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3386,30 +3380,12 @@
       "subtitle": "إدارة الأدوار والصلاحيات"
     },
     "storageSettingsEdit": {
-      "authFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
-      "byosHelper": "يتم تخزين الملفات المرفوعة الجديدة في حسابك الخاص، ويتم تقديم التنزيلات منه. تبقى الملفات المرفوعة سابقًا في مكانها.",
       "churchAppsFree": "ChurchApps (مجانًا)",
-      "connect": "ربط الحساب",
-      "connectFirst": "قم بربط حسابك قبل الحفظ.",
-      "connected": "تم ربط الحساب",
-      "connecting": "في انتظار تسجيل الدخول...",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "سيتم تخزين الملفات على خطة تخزين MinistryStuff الخاصة بك، المرتبطة بهذه الكنيسة تلقائيًا. أدر خطتك على",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "تم حظر النافذة المنبثقة. يرجى السماح بالنوافذ المنبثقة والمحاولة مرة أخرى.",
       "provider": "المزوّد",
-      "reconnect": "إعادة الربط",
-      "s3AccessKey": "معرّف مفتاح الوصول",
-      "s3Bucket": "الحاوية",
-      "s3Endpoint": "نقطة النهاية (اتركها فارغة لـ AWS)",
-      "s3Helper": "يجب أن تسمح الحاوية بالوصول العام للقراءة وطلبات CORS PUT من هذا الموقع. يعمل مع AWS S3 وCloudflare R2 وBackblaze B2.",
-      "s3PublicBase": "أساس الرابط العام",
-      "s3Region": "المنطقة",
-      "s3Required": "الحاوية وأساس الرابط العام مطلوبان.",
-      "s3SecretKey": "مفتاح الوصول السري",
       "saveError": "خطأ في حفظ إعدادات التخزين.",
-      "sessionExpired": "انتهت صلاحية جلسة تسجيل الدخول. يرجى المحاولة مرة أخرى.",
-      "sessionFailed": "تعذر بدء جلسة تسجيل الدخول.",
       "title": "تخزين الملفات",
       "usage": "تم استخدام {used} جيجابايت من {quota} جيجابايت."
     },
@@ -3837,49 +3813,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "كتلة",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "التقويم",
-      "campaignProgress": "تقدم الحملة",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "عمود",
       "common": "شائع",
-      "countdown": "العد التنازلي",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "معرض الصور",
-      "groupList": "Group List",
-      "html": "HTML",
-      "iconFeature": "أيقونة ونص",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "أوقات الخدمة",
-      "socialIcons": "أيقونات التواصل الاجتماعي",
-      "staffGrid": "شبكة الموظفين",
-      "stats": "الإحصائيات",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "شهادة",
-      "text": "Text",
-      "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "تمكين Lightbox",
@@ -3989,7 +3934,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "مخزّن في حسابك المرتبط",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "الاسم",
@@ -4377,10 +4321,6 @@
       "showCampus": "إظهار الفرع",
       "title": "العنوان"
     },
-    "siteSwitcher": {
-      "mainWebsite": "الموقع الرئيسي",
-      "manageSites": "إدارة المواقع…"
-    },
     "siteWidgets": {
       "addAction": "إضافة إجراء",
       "announcementBar": "شريط الإعلانات",
@@ -4404,15 +4344,6 @@
       "textColor": "لون النص",
       "title": "أدوات الموقع",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "إضافة موقع",
-      "deleteConfirm": "حذف هذا الموقع؟ سيتم حذف صفحاته وتنقّله ومظهره نهائيًا. سيتم إعادة تعيين نطاقاته المخصصة إلى الموقع الرئيسي.",
-      "empty": "لا توجد مواقع إضافية بعد.",
-      "name": "الاسم",
-      "subDomain": "النطاق الفرعي",
-      "subDomainHint": "أحرف صغيرة وأرقام فقط. يصبح {subdomain}.b1.church",
-      "title": "المواقع"
     },
     "socialIconsEdit": {
       "alignment": "المحاذاة",
@@ -4614,8 +4545,6 @@
     },
     "audio": {
       "deleteConfirm": "هل أنت متأكد من حذف ملف الصوت هذا؟",
-      "tooLarge": "الملف كبير جدًا. الحد الأقصى للحجم هو 25 ميجابايت.",
-      "unsupportedFormat": "تنسيق صوت غير مدعوم. يرجى رفع ملف MP3 أو M4A أو AAC.",
       "upload": "رفع صوت"
     },
     "create": {
