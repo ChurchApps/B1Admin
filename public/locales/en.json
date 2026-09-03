@@ -842,6 +842,10 @@
       "title": "Import Stripe Transactions",
       "totalLabel": "Total:",
       "type": "Type"
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "lapsedGivers": "Lapsed Givers"
     }
   },
   "fileUpload": {

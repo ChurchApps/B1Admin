@@ -95,6 +95,20 @@ export const ReportOutput = (props: Props) => {
     setDetailedPersonSummary(result);
   };
 
+  // Any output column formatted "person" carries a raw personId; resolve it to a display
+  // name in place so TableReport/CSV export need no per-report special-casing.
+  const resolvePeopleColumn = async (data: ReportResultInterface) => {
+    const personColumn = data.outputs?.flatMap((o) => o.columns).find((c) => c.formatter === "person");
+    if (!personColumn || !data.table?.length) return;
+    const ids = ArrayHelper.getUniqueValues(data.table, personColumn.value).filter((id: string) => !!id);
+    if (ids.length === 0) return;
+    const people = await ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi");
+    data.table.forEach((row) => {
+      const person: PersonInterface = ArrayHelper.getOne(people, "id", row[personColumn.value]);
+      row[personColumn.value] = person?.name?.display || Locale.label("donations.donations.anon");
+    });
+  };
+
   const runReport = () => {
     if (props.report) {
       setDetailedPersonSummary(null);
@@ -105,7 +119,8 @@ export const ReportOutput = (props: Props) => {
       let url = "/reports/" + props.report.keyName + "/run";
       if (queryParams.length > 0) url += "?" + queryParams.join("&");
 
-      ApiHelper.get(url, "ReportingApi").then((data: ReportResultInterface) => {
+      ApiHelper.get(url, "ReportingApi").then(async (data: ReportResultInterface) => {
+        await resolvePeopleColumn(data);
         if (isMounted()) {
           setReportResult(data);
         }
