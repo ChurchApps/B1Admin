@@ -798,6 +798,14 @@
       "totalFunds": "Total Funds",
       "viewBatch": "View batch"
     },
+    "givingLink": {
+      "amount": "Amount (optional)",
+      "button": "Giving Link",
+      "copied": "Copied",
+      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "title": "Giving Link",
+      "url": "Link"
+    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
