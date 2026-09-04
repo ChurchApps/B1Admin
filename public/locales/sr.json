@@ -3435,8 +3435,10 @@
       "everyone": "Сви",
       "forceMsg": "Ово ће поставити подразумевану вредност за људе који још нису конфигурисали своја подешавања",
       "groups": "Само групе",
+      "leaders": "My Group Leaders and Staff",
       "members": "Чланови",
       "phoneNum": "Број телефона",
+      "staff": "Staff Only",
       "visibilityPreference": "Преференца видљивости"
     },
     "webhookEdit": {

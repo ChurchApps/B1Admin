@@ -3435,8 +3435,10 @@
       "everyone": "Tutti",
       "forceMsg": "Questo imposterà il valore predefinito per le persone che non hanno ancora configurato le loro impostazioni",
       "groups": "Solo Gruppi",
+      "leaders": "My Group Leaders and Staff",
       "members": "Membri",
       "phoneNum": "Numero di Telefono",
+      "staff": "Staff Only",
       "visibilityPreference": "Preferenza di Visibilità"
     },
     "webhookEdit": {

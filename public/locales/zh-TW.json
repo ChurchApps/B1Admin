@@ -3435,8 +3435,10 @@
       "everyone": "所有人",
       "forceMsg": "這將為尚未配置其設定的人員設定預設值",
       "groups": "僅團體",
+      "leaders": "My Group Leaders and Staff",
       "members": "成員",
       "phoneNum": "電話號碼",
+      "staff": "Staff Only",
       "visibilityPreference": "可見性偏好"
     },
     "webhookEdit": {

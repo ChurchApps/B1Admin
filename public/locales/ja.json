@@ -3527,8 +3527,10 @@
       "everyone": "全員",
       "forceMsg": "まだ設定を行っていない人に適用される既定値です",
       "groups": "グループのみ",
+      "leaders": "My Group Leaders and Staff",
       "members": "メンバー",
       "phoneNum": "電話番号",
+      "staff": "Staff Only",
       "visibilityPreference": "公開範囲の設定"
     },
     "webhookEdit": {

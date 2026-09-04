@@ -3435,8 +3435,10 @@
       "everyone": "सभी",
       "forceMsg": "यह उन लोगों के लिए डिफ़ॉल्ट मान सेट करेगा जिन्होंने अभी तक अपनी सेटिंग्स कॉन्फ़िगर नहीं की हैं",
       "groups": "केवल समूह",
+      "leaders": "My Group Leaders and Staff",
       "members": "सदस्य",
       "phoneNum": "फोन नंबर",
+      "staff": "Staff Only",
       "visibilityPreference": "दृश्यता प्राथमिकता"
     },
     "webhookEdit": {

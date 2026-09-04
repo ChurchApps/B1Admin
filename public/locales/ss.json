@@ -3435,8 +3435,10 @@
       "everyone": "Wonkhe Umuntfu",
       "forceMsg": "Loku kutawubeka linani lelijwayelekile kubantfu labangakabeki tilungiselelo tabo kwakamanje",
       "groups": "Emacembu Kuphela",
+      "leaders": "My Group Leaders and Staff",
       "members": "Emalunga",
       "phoneNum": "Inombolo Yelucingo",
+      "staff": "Staff Only",
       "visibilityPreference": "Sithandvo Sekubonakala"
     },
     "webhookEdit": {
