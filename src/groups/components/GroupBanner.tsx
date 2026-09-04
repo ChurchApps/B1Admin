@@ -64,6 +64,9 @@ export const GroupBanner = memo((props: Props) => {
       campusId: group.campusId,
       joinPolicy: group.joinPolicy
     };
+    // Cast until the published GroupInterface includes the chat feed toggles.
+    (copy as Record<string, any>).discussionsEnabled = (group as Record<string, any>).discussionsEnabled !== false;
+    (copy as Record<string, any>).announcementsEnabled = (group as Record<string, any>).announcementsEnabled !== false;
     ApiHelper.post("/groups", [copy], "MembershipApi").then((result: GroupInterface[]) => {
       if (result?.[0]?.id) navigate("/groups/" + result[0].id);
     });
@@ -112,6 +115,26 @@ export const GroupBanner = memo((props: Props) => {
           sx={{ ...headerChipSx, fontWeight: 500 }}
         />
       ));
+  }, [group, isStandard]);
+
+  // Group chat feed toggles (both default on); only an explicit false means off.
+  const chatChips = useMemo(() => {
+    if (!group || !isStandard) return [] as ReactNode[];
+    const g = group as Record<string, any>;
+    const chipDefs: { key: string; value: boolean; label: string }[] = [
+      { key: "discussions", value: g.discussionsEnabled !== false, label: Locale.label("groups.groupBanner.discussions") },
+      { key: "announcements", value: g.announcementsEnabled !== false, label: Locale.label("groups.groupBanner.announcements") }
+    ];
+    return chipDefs.map((c) => (
+      <Chip
+        key={`chat-${c.key}`}
+        icon={c.value ? <CheckIcon color="success" /> : <CancelIcon color="error" />}
+        label={c.label}
+        size="small"
+        sx={{ ...headerChipSx, fontWeight: 500 }}
+        data-testid={`group-chat-${c.key}-chip`}
+      />
+    ));
   }, [group, isStandard]);
 
   const labelChips = useMemo(() => {
@@ -169,6 +192,7 @@ export const GroupBanner = memo((props: Props) => {
     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
       {groupTypeChip}
       {attendanceChips}
+      {chatChips}
       {labelChips}
       {serviceTimeChips}
     </Box>

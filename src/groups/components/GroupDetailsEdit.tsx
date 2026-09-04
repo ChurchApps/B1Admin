@@ -46,6 +46,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       slug: "",
       campusId: "",
       joinPolicy: "open",
+      discussionsEnabled: "true",
+      announcementsEnabled: "true",
       publicRoster: "false",
       confidential: "false",
       minYears: "",
@@ -91,6 +93,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         slug: props.group.slug || "",
         campusId: props.group.campusId || "",
         joinPolicy: props.group.joinPolicy || "open",
+        // Both chat feeds default on; only an explicit false turns one off.
+        discussionsEnabled: (props.group as AnyRecord).discussionsEnabled === false ? "false" : "true",
+        announcementsEnabled: (props.group as AnyRecord).announcementsEnabled === false ? "false" : "true",
         publicRoster: (props.group as AnyRecord).publicRoster?.toString() || "false",
         confidential: (props.group as AnyRecord).confidential?.toString() || "false",
         minYears: monthsToParts(props.group.minAgeMonths).years,
@@ -138,6 +143,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     // Cast until the published GroupInterface includes attendanceReminders.
     (group as AnyRecord).attendanceReminders = values.attendanceReminders === "true";
     (group as AnyRecord).publicRoster = values.publicRoster === "true";
+    (group as AnyRecord).discussionsEnabled = values.discussionsEnabled === "true";
+    (group as AnyRecord).announcementsEnabled = values.announcementsEnabled === "true";
     // Explicit boolean (never undefined) so the un-set path persists — Kysely drops undefined.
     (group as AnyRecord).confidential = values.confidential === "true";
     (group as AnyRecord).capacity = fieldToNum(values.capacity);
@@ -350,6 +357,30 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                       <MenuItem value="closed">Closed (admin-add only)</MenuItem>
                     </Select>
                   )} />
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>{Locale.label("groups.groupDetailsEdit.discussionsEnabled", "Discussions")}</InputLabel>
+                  <Controller name="discussionsEnabled" control={control} render={({ field }) => (
+                    <Select {...field} value={field.value ?? "true"} label={Locale.label("groups.groupDetailsEdit.discussionsEnabled", "Discussions")} data-testid="discussions-enabled-select">
+                      <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                      <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    </Select>
+                  )} />
+                  <FormHelperText>{Locale.label("groups.groupDetailsEdit.discussionsEnabledHelp")}</FormHelperText>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>{Locale.label("groups.groupDetailsEdit.announcementsEnabled", "Announcements")}</InputLabel>
+                  <Controller name="announcementsEnabled" control={control} render={({ field }) => (
+                    <Select {...field} value={field.value ?? "true"} label={Locale.label("groups.groupDetailsEdit.announcementsEnabled", "Announcements")} data-testid="announcements-enabled-select">
+                      <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                      <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    </Select>
+                  )} />
+                  <FormHelperText>{Locale.label("groups.groupDetailsEdit.announcementsEnabledHelp")}</FormHelperText>
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
