@@ -1065,8 +1065,10 @@
       "team": "Team"
     },
     "groupBanner": {
+      "announcements": "Announcements",
       "confirmDuplicate": "Duplicate this group? Members will not be copied.",
       "copySuffix": "(Copy)",
+      "discussions": "Discussions",
       "duplicateTooltip": "Duplicate this group",
       "emailTooltip": "Email this group",
       "location": "Location",
@@ -1118,6 +1120,8 @@
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
       "ageGrade": "Age & Grade",
+      "announcementsEnabled": "Announcements",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "Archive",
       "archiveAria": "Archive group",
       "attTrack": "Track Attendance",
@@ -1134,6 +1138,8 @@
       "confidentialHelp": "Hide this group and its roster from public pages, the group finder, and non-members.",
       "confirmArchive": "Are you sure you wish to archive this group? It will be hidden from the groups list until restored.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
+      "discussionsEnabled": "Discussions",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Enrollment",
       "groupDesc": "Group Description",
       "groupDet": "Group Details",
