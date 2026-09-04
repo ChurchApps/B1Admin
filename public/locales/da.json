@@ -3435,8 +3435,10 @@
       "everyone": "Alle",
       "forceMsg": "Dette indstiller standardværdien for personer, der endnu ikke har konfigureret deres indstillinger",
       "groups": "Kun grupper",
+      "leaders": "My Group Leaders and Staff",
       "members": "Medlemmer",
       "phoneNum": "Telefonnummer",
+      "staff": "Staff Only",
       "visibilityPreference": "Synlighedspræference"
     },
     "webhookEdit": {

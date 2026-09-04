@@ -3435,8 +3435,10 @@
       "everyone": "Všichni",
       "forceMsg": "Toto nastaví výchozí hodnotu pro osoby, které si ještě nenakonfigurovaly své nastavení",
       "groups": "Pouze skupiny",
+      "leaders": "My Group Leaders and Staff",
       "members": "Členové",
       "phoneNum": "Telefonní číslo",
+      "staff": "Staff Only",
       "visibilityPreference": "Předvolba viditelnosti"
     },
     "webhookEdit": {

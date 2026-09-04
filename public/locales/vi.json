@@ -3435,8 +3435,10 @@
       "everyone": "Everyone",
       "forceMsg": "This will set the default value for people who have not configured their Cài đặt yet",
       "groups": "Các nhóm Only",
+      "leaders": "My Group Leaders and Staff",
       "members": "Members",
       "phoneNum": "Điện thoại Number",
+      "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
     },
     "webhookEdit": {

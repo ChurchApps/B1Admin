@@ -216,3 +216,47 @@ test.describe.serial("Mobile tab ordering", () => {
     }
   });
 });
+
+// ChurchAppsSupport#1058: the church-wide contact visibility defaults on the B1 Mobile page gain
+// two stricter levels, "My Group Leaders and Staff" and "Staff Only", below "Groups Only".
+test.describe("B1 Mobile contact visibility levels", () => {
+  const VISIBILITY_FIELDS = ["Address", "Phone Number", "Email"];
+
+  async function openB1MobileSettings(page: Page) {
+    await page.goto("/mobile/b1-mobile");
+    await page.getByLabel("Address", { exact: true }).first().waitFor({ state: "visible", timeout: 15000 });
+  }
+
+  async function saveSettings(page: Page) {
+    const saved = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByRole("button", { name: /^Save$/ }).click();
+    await saved;
+  }
+
+  test("address, phone and email defaults offer My Group Leaders and Staff and Staff Only", async ({ page }) => {
+    await openB1MobileSettings(page);
+    for (const label of VISIBILITY_FIELDS) {
+      await page.getByLabel(label, { exact: true }).first().click();
+      const listbox = page.locator('[role="listbox"]');
+      await expect(listbox.locator('li[role="option"]', { hasText: /^Groups Only$/ })).toBeVisible({ timeout: 10000 });
+      await expect(listbox.locator('li[role="option"]', { hasText: /^My Group Leaders and Staff$/ })).toBeVisible();
+      await expect(listbox.locator('li[role="option"]', { hasText: /^Staff Only$/ })).toBeVisible();
+      await page.keyboard.press("Escape");
+      await listbox.waitFor({ state: "hidden", timeout: 5000 });
+    }
+  });
+
+  test("saving Staff Only as the email default persists across a reload", async ({ page }) => {
+    await openB1MobileSettings(page);
+    await selectMuiByLabel(page, "Email", "Staff Only");
+    await saveSettings(page);
+    await page.reload();
+    await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Staff Only", { timeout: 15000 });
+
+    // Put the effective default back so directory specs keep seeing member-visible emails.
+    await selectMuiByLabel(page, "Email", "Members");
+    await saveSettings(page);
+    await page.reload();
+    await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Members", { timeout: 15000 });
+  });
+});
