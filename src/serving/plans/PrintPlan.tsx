@@ -8,7 +8,7 @@ import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterfac
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
-import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } from "../components/planItemUtils";
+import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels, resolvePositionForTime } from "../components/planItemUtils";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -232,6 +232,29 @@ export const PrintPlan = () => {
 
   const positionLabels = React.useMemo(() => buildPositionLabels(positions, assignments, people), [positions, assignments, people]);
 
+  const getPrintVolunteerLabel = (positionId: string | undefined): string | null => {
+    if (!positionId) return null;
+    if (serviceTimes.length <= 1) {
+      const resolved = resolvePositionForTime(positionId, serviceTimes[0], positions);
+      const label = (resolved?.id && positionLabels[resolved.id]?.text) || positionLabels[positionId]?.text;
+      return label || null;
+    }
+    // Multiple service times: collect distinct volunteer names across services
+    const perServiceNames = serviceTimes.map((st) => {
+      const resolved = resolvePositionForTime(positionId, st, positions);
+      return {
+        timeName: st.displayName || formatClockTime(st.startTime, 0) || "",
+        label: (resolved?.id && positionLabels[resolved.id]?.text) || positionLabels[positionId]?.text
+      };
+    }).filter((x) => Boolean(x.label));
+
+    const distinctNames = Array.from(new Set(perServiceNames.map((x) => x.label)));
+    if (distinctNames.length === 0) return null;
+    if (distinctNames.length === 1) return distinctNames[0];
+
+    return perServiceNames.map((x) => `${x.label} (${x.timeName})`).join(", ");
+  };
+
   // Per-column accumulators are mutated as the recursive renderer walks the tree.
   // Single-column fallback uses index 0; multi-column uses one entry per service time.
   const renderRows = () => {
@@ -258,13 +281,14 @@ export const PrintPlan = () => {
               }
             });
           }
+          const volunteerText = plan?.showVolunteerNames ? getPrintVolunteerLabel(pi.positionId) : null;
           rows.push(
             <tr key={pi.id}>
               {timeCells}
               <td style={Styles.tableCell}>
                 <b>{pi.label}:</b> {pi.description}
-                {plan?.showVolunteerNames && pi.positionId && positionLabels[pi.positionId]?.text && (
-                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{positionLabels[pi.positionId].text}</span>
+                {volunteerText && (
+                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{volunteerText}</span>
                 )}
               </td>
               <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>

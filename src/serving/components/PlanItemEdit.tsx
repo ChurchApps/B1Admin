@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, ListSubheader, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
@@ -28,6 +28,16 @@ export const PlanItemEdit = (props: Props) => {
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
   const [originalExclusions, setOriginalExclusions] = React.useState<PlanItemTimeInterface[]>([]);
   const [excludedTimeIds, setExcludedTimeIds] = React.useState<Set<string>>(new Set());
+
+  const groupedPositions = React.useMemo(() => {
+    const map = new Map<string, PositionInterface[]>();
+    (props.positions || []).forEach((p) => {
+      const cat = p.categoryName || Locale.label("plans.positionList.team") || "General";
+      if (!map.has(cat)) map.set(cat, []);
+      map.get(cat)!.push(p);
+    });
+    return map;
+  }, [props.positions]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -318,9 +328,16 @@ export const PlanItemEdit = (props: Props) => {
                 data-testid="plan-item-position-select"
               >
                 <MenuItem value="">{Locale.label("plans.planItemEdit.noPosition")}</MenuItem>
-                {(props.positions || []).map((p) => (
-                  <MenuItem key={p.id} value={p.id}>{p.categoryName ? `${p.categoryName} - ${p.name}` : p.name}</MenuItem>
-                ))}
+                {Array.from(groupedPositions.entries()).map(([category, items]) => [
+                  <ListSubheader key={`cat-${category}`} sx={{ fontWeight: "bold", color: "text.secondary", lineHeight: "32px", fontSize: "0.75rem", textTransform: "uppercase" }}>
+                    {category}
+                  </ListSubheader>,
+                  ...items.map((p) => (
+                    <MenuItem key={p.id} value={p.id} sx={{ pl: 3 }}>
+                      {p.name}
+                    </MenuItem>
+                  ))
+                ])}
               </Select>
             </FormControl>
           )}
