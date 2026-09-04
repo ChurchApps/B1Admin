@@ -2,7 +2,7 @@ import React, { memo, useCallback, useMemo } from "react";
 import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Divider, Tabs, Tab } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
-import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { NewTask } from "./";
 import UserContext from "../../../UserContext";
@@ -63,7 +63,6 @@ export const TaskList = memo((props: Props) => {
     placeholderData: [],
     queryFn: async () => {
       if (groupIds.length === 0) return [];
-      const { ApiHelper } = await import("@churchapps/apphelper");
       return ApiHelper.post("/tasks/loadForGroups", { groupIds, status: props.status }, "DoingApi");
     }
   });
