@@ -51,3 +51,9 @@ jobs:
 
       - name: Deploy
         run: yarn deploy-staging
+
+      - name: Install Chromium
+        run: yarn playwright install --with-deps chromium
+
+      - name: Smoke
+        run: node tests/setup/smoke.mjs https://app.staging.chums.org/login --expect dist/index.html
