@@ -665,3 +665,144 @@ test.describe.serial("Service Order bulk delete inside a section", () => {
     await expect(sectionHeader().getByRole("button", { name: /add item/i })).toBeVisible();
   });
 });
+
+// ChurchAppsSupport#1061: the External Item picker closed after every single Add, so importing several
+// cues from a provider meant re-opening and re-navigating the picker for each one. The picker now lets
+// the user tick sections, actions and add-on files, then imports them all with one Import click (a
+// single POST /planItems batch). The provider is mocked at the API proxy: Go Curriculum requires auth,
+// so both browsing and instructions route through DoingApi's providerProxy and no network is needed.
+test.describe.serial("Service Order multi-select import from the External Item picker", () => {
+  test.describe.configure({ retries: 0 });
+
+  const API = "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+  let page: Page;
+
+  const INSTRUCTIONS = {
+    name: "Multi Import Lesson",
+    items: [
+      {
+        id: "MIHEAD1",
+        itemType: "header",
+        relatedId: "MIHEAD1",
+        label: "Multi Import Header",
+        children: [
+          {
+            id: "MISEC1",
+            itemType: "section",
+            relatedId: "MISEC1",
+            label: "Multi Import Section",
+            seconds: 300,
+            children: [
+              { id: "MIACT1", itemType: "action", relatedId: "MIACT1", label: "Multi Import Action One", seconds: 60 },
+              { id: "MIACT2", itemType: "action", relatedId: "MIACT2", label: "Multi Import Action Two", seconds: 120 },
+              { id: "MIACT3", itemType: "action", relatedId: "MIACT3", label: "Multi Import Action Three", seconds: 120 }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  const BROWSE_ROOT = [
+    { type: "folder", id: "MILESSON1", title: "Multi Import Lesson", path: "/MILESSON1", isLeaf: true },
+    { type: "file", id: "MIFILE1", title: "Multi Import Video", mediaType: "video", url: "https://example.com/multi-import.mp4", downloadUrl: "https://example.com/multi-import.mp4", seconds: 90 }
+  ];
+
+  test.beforeAll(async ({ browser }) => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    expect(uc?.jwt).toBeTruthy();
+    jwt = uc.jwt as string;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Multi Import Repro Plan", serviceDate: "2030-06-03", ministryId: "GRP0000000a", planTypeId: "PLT00000001", serviceOrder: true }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    planId = (await planRes.json())[0].id;
+
+    const headerRes = await ctx.post(`${API}/doing/planItems`, { ...auth, data: [{ planId, sort: 1, itemType: "header", label: "Multi Import Target" }] });
+    expect(headerRes.ok()).toBeTruthy();
+
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+
+    // No provider is linked in the local stack; pretend Go Curriculum is, and serve its content from the proxy.
+    await page.route("**/contentProviderAuths/ministry/**", (route) => route.fulfill({ json: [{ id: "MIAUTH1", ministryId: "GRP0000000a", providerId: "gocurriculum" }] }));
+    await page.route("**/providerProxy/browse", (route) => {
+      const body = route.request().postDataJSON() || {};
+      route.fulfill({ json: body.providerId === "gocurriculum" && !body.path ? BROWSE_ROOT : [] });
+    });
+    await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: INSTRUCTIONS }));
+    await page.route("**/lessons.church/**", (route) => route.abort());
+
+    await page.goto(`/serving/plans/${planId}`);
+    await page.getByRole("tab", { name: "Service Order" }).click();
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, { headers: { Authorization: "Bearer " + jwt } });
+    await ctx.dispose();
+  });
+
+  const sectionHeader = () => page.locator(".planItemHeader").filter({ hasText: "Multi Import Target" });
+  const itemRow = (label: string) => page.locator(".planItem").filter({ hasText: label });
+  const picker = () => page.getByRole("dialog").filter({ hasText: "Select External Item" });
+
+  test("ticks several provider items and imports them in one batch", async () => {
+    await expect(sectionHeader()).toHaveCount(1, { timeout: 15000 });
+    await sectionHeader().getByRole("button", { name: /add item/i }).click();
+    await page.getByRole("menuitem", { name: "External Item" }).click();
+    await expect(picker()).toBeVisible({ timeout: 10000 });
+
+    await picker().getByText("Go Curriculum", { exact: true }).click();
+    await picker().getByText("Multi Import Lesson", { exact: true }).click();
+
+    const sectionRow = picker().locator("div").filter({ hasText: /^Multi Import Section/ }).first();
+    await expect(sectionRow).toBeVisible({ timeout: 10000 });
+    await picker().getByRole("button", { name: "Expand" }).first().click();
+
+    // The feature: rows carry checkboxes and the dialog keeps a running Import count.
+    const importBtn = picker().locator('[data-testid="import-selected-button"]');
+    await expect(importBtn).toBeVisible({ timeout: 10000 });
+    await expect(importBtn).toBeDisabled();
+
+    const checkbox = (label: string) => picker().getByRole("checkbox", { name: `Select ${label}` });
+    await checkbox("Multi Import Action One").click();
+    await checkbox("Multi Import Action Three").click();
+    await expect(importBtn).toContainText("2");
+
+    // Selection survives navigating back to the grid, where add-on files can be ticked too.
+    await picker().getByRole("button", { name: "Back" }).click();
+    const fileCard = picker().locator('[data-testid="browse-file-card"]').filter({ hasText: "Multi Import Video" });
+    await expect(fileCard).toBeVisible({ timeout: 10000 });
+    await fileCard.click();
+    await expect(importBtn).toContainText("3");
+
+    // One request creates all three items under the target section.
+    const postReq = page.waitForRequest((r) => r.url().includes("/doing/planItems") && r.method() === "POST", { timeout: 15000 });
+    const reload = page.waitForResponse((r) => r.url().includes("/doing/planItems/plan/") && r.status() === 200, { timeout: 15000 });
+    await importBtn.click();
+    const posted = (await postReq).postDataJSON() as Array<{ label: string; itemType: string; parentId?: string; sort: number }>;
+    await reload;
+    expect(posted.map((p) => p.label)).toEqual(["Multi Import Action One", "Multi Import Action Three", "Multi Import Video"]);
+    expect(posted.map((p) => p.itemType)).toEqual(["providerPresentation", "providerPresentation", "providerFile"]);
+    expect(posted.map((p) => p.sort)).toEqual([1, 2, 3]);
+    expect(new Set(posted.map((p) => p.parentId)).size).toBe(1);
+
+    await expect(picker()).toHaveCount(0);
+    await expect(itemRow("Multi Import Action One")).toHaveCount(1, { timeout: 10000 });
+    await expect(itemRow("Multi Import Action Three")).toHaveCount(1);
+    await expect(itemRow("Multi Import Video")).toHaveCount(1);
+    await expect(itemRow("Multi Import Action Two")).toHaveCount(0);
+  });
+});

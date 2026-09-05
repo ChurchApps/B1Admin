@@ -17,12 +17,12 @@ import { ProviderChipSelector } from "./ProviderChipSelector";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { getProvider, type ContentFile, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-providers";
-import { generatePath, getProviderInstructions, type ActionSelectorProps } from "./ActionSelectorHelpers";
+import { generatePath, getProviderInstructions, selectionKey, type ActionSelectorProps, type ProviderItemSelection } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
 import { BrowseGrid } from "./BrowseGrid";
 import { useProviderBrowser } from "../hooks/useProviderBrowser";
 
-export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, onSelect, contentPath, providerId, ministryId }) => {
+export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, onImport, contentPath, providerId, ministryId }) => {
   const browser = useProviderBrowser({
     ministryId,
     defaultProviderId: providerId || "",
@@ -33,6 +33,19 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
   const [mode, setMode] = useState<"associated" | "browse">(contentPath ? "associated" : "browse");
+  // Items ticked so far this session (ChurchAppsSupport#1061). Kept across folder/provider navigation so
+  // the user can gather cues from several places and import them with one click.
+  const [selections, setSelections] = useState<Map<string, ProviderItemSelection>>(new Map());
+
+  const toggleSelection = useCallback((selection: ProviderItemSelection) => {
+    setSelections(prev => {
+      const next = new Map(prev);
+      const key = selectionKey(selection);
+      if (next.has(key)) next.delete(key);
+      else next.set(key, selection);
+      return next;
+    });
+  }, []);
 
   const loadInstructions = useCallback(async (path: string, provId: string) => {
     const provider = getProvider(provId);
@@ -100,9 +113,8 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
     const downloadUrl = section.downloadUrl;
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", section.thumbnail, downloadUrl, path, contentPathStr);
-    onClose();
-  }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
+    toggleSelection({ actionId: sectionId, actionName: sectionName, seconds: totalSeconds, providerId: provId, itemType: "providerSection", image: section.thumbnail, mediaUrl: downloadUrl, providerPath: path, providerContentPath: contentPathStr });
+  }, [toggleSelection, mode, browser.currentPath, contentPath]);
 
   const handleAddAction = useCallback((action: InstructionItem, provId: string, pathIndices: number[]) => {
     const actionId = action.relatedId || action.id || "";
@@ -119,17 +131,41 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
       const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
       if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
     }
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", thumbnail, downloadUrl, path, contentPathStr);
-    onClose();
-  }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
+    toggleSelection({ actionId, actionName, seconds: action.seconds, providerId: provId, itemType: "providerPresentation", image: thumbnail, mediaUrl: downloadUrl, providerPath: path, providerContentPath: contentPathStr });
+  }, [toggleSelection, mode, browser.currentPath, contentPath]);
 
   const handleAddFile = useCallback((file: ContentFile, provId: string, pathIndices?: number[]) => {
     const downloadUrl = file.downloadUrl || file.url;
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = pathIndices ? generatePath(pathIndices) : undefined;
-    onSelect(file.id, file.title, file.seconds, provId, "providerFile", file.thumbnail, downloadUrl, path, contentPathStr);
-    onClose();
-  }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
+    toggleSelection({ actionId: file.id, actionName: file.title, seconds: file.seconds, providerId: provId, itemType: "providerFile", image: file.thumbnail, mediaUrl: downloadUrl, providerPath: path, providerContentPath: contentPathStr });
+  }, [toggleSelection, mode, browser.currentPath, contentPath]);
+
+  const isItemSelected = useCallback((item: InstructionItem, pathIndices: number[]) => {
+    const isSection = item.itemType === "section" || item.itemType === "header";
+    const path = mode === "browse" ? browser.currentPath : contentPath;
+    return selections.has(selectionKey({
+      actionId: item.relatedId || item.id || "",
+      actionName: "",
+      providerId: mode === "browse" ? browser.selectedProviderId : (providerId || ""),
+      itemType: isSection ? "providerSection" : "providerPresentation",
+      providerPath: path,
+      providerContentPath: generatePath(pathIndices)
+    }));
+  }, [selections, mode, browser.currentPath, browser.selectedProviderId, contentPath, providerId]);
+
+  const isFileSelected = useCallback((file: ContentFile) => {
+    const files = browser.currentFiles;
+    const fileIndex = files.indexOf(file);
+    return selections.has(selectionKey({
+      actionId: file.id,
+      actionName: "",
+      providerId: browser.selectedProviderId,
+      itemType: "providerFile",
+      providerPath: browser.currentPath,
+      providerContentPath: fileIndex >= 0 ? generatePath([0, fileIndex]) : undefined
+    }));
+  }, [selections, browser.currentFiles, browser.selectedProviderId, browser.currentPath]);
 
   const handleProviderChange = useCallback((newProviderId: string) => {
     setInstructions(null);
@@ -148,10 +184,33 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     setMode(contentPath ? "associated" : "browse");
     setInstructions(null);
     setExpandedSections(new Set());
+    setSelections(new Map());
     browser.reset();
     if (providerId) browser.setSelectedProviderId(providerId);
     onClose();
   }, [onClose, contentPath, providerId, browser.reset, browser.setSelectedProviderId]);
+
+  const handleImport = useCallback(() => {
+    const items = Array.from(selections.values());
+    if (items.length === 0) return;
+    onImport(items);
+    handleClose();
+  }, [selections, onImport, handleClose]);
+
+  const selectedCount = selections.size;
+  const importActions = (
+    <DialogActions sx={{ justifyContent: "space-between", px: 3 }}>
+      <Typography variant="body2" color="text.secondary" data-testid="import-selected-count">
+        {(Locale.label("plans.actionSelector.selectedCount") || "{count} selected").replace("{count}", String(selectedCount))}
+      </Typography>
+      <Stack direction="row" spacing={1}>
+        <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
+        <Button variant="contained" onClick={handleImport} disabled={selectedCount === 0} data-testid="import-selected-button">
+          {(Locale.label("plans.actionSelector.importCount") || "Import ({count})").replace("{count}", String(selectedCount))}
+        </Button>
+      </Stack>
+    </DialogActions>
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -203,12 +262,11 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
               onAddSection={handleAddSection}
               onAddAction={handleAddAction}
               excludeHeaders={true}
+              isSelected={isItemSelected}
             />
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
-        </DialogActions>
+        {importActions}
       </Dialog>
     );
   }
@@ -278,6 +336,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
                 onAddSection={handleAddSection}
                 onAddAction={handleAddAction}
                 excludeHeaders={true}
+                isSelected={isItemSelected}
               />
             </Box>
           ) : browser.currentItems.length === 0 && browser.currentFiles.length === 0 ? (
@@ -292,13 +351,12 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
               isLeafFolder={isLeafWithInstructions}
               onFolderClick={handleFolderClick}
               onFileClick={handleAddFile}
+              isFileSelected={isFileSelected}
             />
           )}
         </Stack>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
-      </DialogActions>
+      {importActions}
     </Dialog>
   );
 };
