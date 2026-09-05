@@ -7,6 +7,7 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 
 const DISPOSABLE_PERSON_FORM = "Zacchaeus Test Person Form";
 const DISPOSABLE_STANDALONE_FORM = "Zacchaeus Test Standalone Form";
+const DISPOSABLE_STANDALONE_DESCRIPTION = "Sign up here and a Zacchaeus volunteer will call you back.";
 
 async function selectMuiOption(page: import("@playwright/test").Page, openLocator: ReturnType<import("@playwright/test").Page["locator"]>, optionText: string) {
   await openLocator.click();
@@ -158,6 +159,7 @@ test.describe.serial("Stand Alone form lifecycle", () => {
     await page.locator('[data-testid="form-name-input"] input').fill(DISPOSABLE_STANDALONE_FORM);
     await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "Stand Alone");
     await selectMuiOption(page, page.locator('[data-testid="access-level-select"]'), "Public");
+    await page.locator('[data-testid="form-description-input"] textarea').first().fill(DISPOSABLE_STANDALONE_DESCRIPTION);
     const availabilityFormControl = page.locator("#formBox div.MuiFormControl-root", { hasText: "Set Form Availability Timeframe" });
     await selectMuiOption(page, availabilityFormControl.locator('[role="combobox"]'), "Yes");
 
@@ -172,6 +174,16 @@ test.describe.serial("Stand Alone form lifecycle", () => {
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
     await expect(row).toBeVisible({ timeout: 10000 });
     await expect(row.locator("td a").filter({ hasText: /\/forms\// }).first()).toBeVisible();
+  });
+
+  test("reopens the stand alone form with its description intact", async () => {
+    await openFormsPage(page);
+    const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
+    await row.locator('[data-testid^="edit-form-button-"]').first().click();
+    await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator('[data-testid="form-description-input"] textarea').first()).toHaveValue(DISPOSABLE_STANDALONE_DESCRIPTION, { timeout: 10000 });
+    await page.locator("#formBox button", { hasText: /^Cancel$/ }).click();
+    await page.locator("#formBox").waitFor({ state: "hidden", timeout: 10000 });
   });
 
   test("deletes the stand alone form", async () => {
