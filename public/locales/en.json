@@ -47,6 +47,25 @@
       "volunteer": "Volunteer",
       "volunteers": "volunteers"
     },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
+    },
     "labels": {
       "align": "Align",
       "always": "Always",
@@ -119,7 +138,9 @@
     "tabs": {
       "attTrend": "Attendance Trend",
       "groupAtt": "Group Attendance",
-      "setup": "Setup"
+      "setup": "Setup",
+      "headcounts": "Headcounts",
+      "headcountTrend": "Headcount Trend"
     }
   },
   "calendars": {
