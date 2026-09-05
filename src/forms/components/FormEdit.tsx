@@ -15,6 +15,7 @@ interface Props {
 export interface FormInterface {
   id?: string;
   name?: string;
+  description?: string;
   contentType?: string;
   restricted?: boolean;
   accessStartTime?: Date;
@@ -38,7 +39,7 @@ export function FormEdit(props: Props) {
   const isMounted = useMountedState();
   const queryClient = useQueryClient();
 
-  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { name: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "" } });
+  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "" } });
 
   const e = formState.errors as any;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "accessStartTime", "accessEndTime"]);
@@ -68,6 +69,7 @@ export function FormEdit(props: Props) {
         accessStartTime: data.accessStartTime ? DateHelper.formatHtml5Date(data.accessStartTime) : null,
         accessEndTime: data.accessEndTime ? DateHelper.formatHtml5Date(data.accessEndTime) : null,
         restricted: data.restricted ?? false,
+        description: data.description ?? "",
         displayMode: data.displayMode ?? "standard",
         autoCreatePerson: data.autoCreatePerson ?? false,
         groupId: data.groupId ?? "",
@@ -129,6 +131,9 @@ export function FormEdit(props: Props) {
         </FormControl>
       )}
       {standAloneForm && (
+        <TextField fullWidth multiline minRows={3} label={Locale.label("forms.formEdit.description")} placeholder={Locale.label("placeholders.form.description")} helperText={Locale.label("forms.formEdit.descriptionHelper")} data-testid="form-description-input" {...register("description")} />
+      )}
+      {standAloneForm && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <FormControl fullWidth>
@@ -156,13 +161,13 @@ export function FormEdit(props: Props) {
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller name="accessStartTime" control={control} rules={{ required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false }} render={({ field }) => (
-    <AppDatePicker fullWidth  label={Locale.label("forms.formEdit.availableStart")} error={!!e.accessStartTime} helperText={e.accessStartTime?.message}  {...field} />
-  )} />
+              <AppDatePicker fullWidth label={Locale.label("forms.formEdit.availableStart")} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...field} />
+            )} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller name="accessEndTime" control={control} rules={{ required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false }} render={({ field }) => (
-    <AppDatePicker fullWidth  label={Locale.label("forms.formEdit.availableEnd")} error={!!e.accessEndTime} helperText={e.accessEndTime?.message}  {...field} />
-  )} />
+              <AppDatePicker fullWidth label={Locale.label("forms.formEdit.availableEnd")} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...field} />
+            )} />
           </Grid>
         </Grid>
       )}
