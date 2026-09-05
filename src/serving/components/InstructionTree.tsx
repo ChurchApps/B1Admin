@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Checkbox, Typography, Box } from "@mui/material";
 import { PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -14,6 +14,8 @@ interface InstructionTreeProps {
   onAddAction: (action: InstructionItem, provId: string, pathIndices: number[]) => void;
   excludeHeaders?: boolean;  // When true, skip header items and show their children directly
   excludeActions?: boolean;  // When true, don't show action items (only headers/sections)
+  /** When set, rows show a checkbox that reports through onAddSection/onAddAction instead of an immediate Add button. */
+  isSelected?: (item: InstructionItem, pathIndices: number[]) => boolean;
 }
 
 const InstructionItemRow: React.FC<{
@@ -26,7 +28,8 @@ const InstructionItemRow: React.FC<{
   onAddSection: (section: InstructionItem, provId: string, pathIndices: number[]) => void;
   onAddAction: (action: InstructionItem, provId: string, pathIndices: number[]) => void;
   excludeActions?: boolean;
-}> = ({ item, providerId, depth, pathIndices, expandedSections, onToggleExpanded, onAddSection, onAddAction, excludeActions }) => {
+  isSelected?: (item: InstructionItem, pathIndices: number[]) => boolean;
+}> = ({ item, providerId, depth, pathIndices, expandedSections, onToggleExpanded, onAddSection, onAddAction, excludeActions, isSelected }) => {
   const itemId = item.relatedId || item.id || "";
   const visibleChildren = item.children?.filter(child => {
     if (child.itemType === "file") return false;
@@ -37,6 +40,16 @@ const InstructionItemRow: React.FC<{
   const isExpanded = expandedSections.has(itemId);
   const isSection = item.itemType === "section" || item.itemType === "header";
   const isAction = item.itemType === "action" || item.itemType === "providerPresentation";
+  const handleAdd = () => (isSection ? onAddSection(item, providerId, pathIndices) : onAddAction(item, providerId, pathIndices));
+  const selectCheckbox = isSelected ? (
+    <Checkbox
+      checked={isSelected(item, pathIndices)}
+      onChange={handleAdd}
+      data-testid="instruction-select-checkbox"
+      slotProps={{ input: { "aria-label": (Locale.label("plans.actionSelector.selectItem") || "Select {label}").replace("{label}", item.label || "") } }}
+      sx={{ ml: 1 }}
+    />
+  ) : null;
 
   const fileChild = item.children?.find(child => child.itemType === "file");
   const thumbnail = !isSection
@@ -75,17 +88,19 @@ const InstructionItemRow: React.FC<{
               </Typography>
             )}
           </Box>
-          <Button
-            size="small"
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={() => isSection ? onAddSection(item, providerId, pathIndices) : onAddAction(item, providerId, pathIndices)}
-            sx={{ ml: 1 }}
-          >
-            {isSection
-              ? (Locale.label("plans.actionSelector.addSection") || "Add Section")
-              : (Locale.label("plans.actionSelector.addAction") || "Add")}
-          </Button>
+          {selectCheckbox || (
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<AddIcon />}
+              onClick={handleAdd}
+              sx={{ ml: 1 }}
+            >
+              {isSection
+                ? (Locale.label("plans.actionSelector.addSection") || "Add Section")
+                : (Locale.label("plans.actionSelector.addAction") || "Add")}
+            </Button>
+          )}
         </Box>
         {isExpanded && (
           <Box sx={{ pl: 4 }}>
@@ -104,6 +119,7 @@ const InstructionItemRow: React.FC<{
                   onAddSection={onAddSection}
                   onAddAction={onAddAction}
                   excludeActions={excludeActions}
+                  isSelected={isSelected}
                 />
               );
             })}
@@ -137,15 +153,17 @@ const InstructionItemRow: React.FC<{
             </Typography>
           )}
         </Box>
-        <Button
-          size="small"
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={() => onAddSection(item, providerId, pathIndices)}
-          sx={{ ml: 1 }}
-        >
-          {Locale.label("plans.actionSelector.addSection") || "Add Section"}
-        </Button>
+        {selectCheckbox || (
+          <Button
+            size="small"
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={handleAdd}
+            sx={{ ml: 1 }}
+          >
+            {Locale.label("plans.actionSelector.addSection") || "Add Section"}
+          </Button>
+        )}
       </Box>
     );
   }
@@ -181,12 +199,12 @@ const InstructionItemRow: React.FC<{
           </Typography>
         )}
       </Box>
-      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => onAddAction(item, providerId, pathIndices)} />
+      {selectCheckbox || <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={handleAdd} />}
     </Box>
   );
 };
 
-export const InstructionTree: React.FC<InstructionTreeProps> = ({ items, providerId, expandedSections, onToggleExpanded, onAddSection, onAddAction, excludeHeaders, excludeActions }) => {
+export const InstructionTree: React.FC<InstructionTreeProps> = ({ items, providerId, expandedSections, onToggleExpanded, onAddSection, onAddAction, excludeHeaders, excludeActions, isSelected }) => {
   const itemsToRender: { item: InstructionItem; pathIndices: number[] }[] = [];
 
   if (excludeHeaders) {
@@ -225,6 +243,7 @@ export const InstructionTree: React.FC<InstructionTreeProps> = ({ items, provide
             onAddSection={onAddSection}
             onAddAction={onAddAction}
             excludeActions={excludeActions}
+            isSelected={isSelected}
           />
         ))
       )}

@@ -11,6 +11,7 @@ import { LessonDialog } from "./LessonDialog";
 import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
+import { type ProviderItemSelection } from "./ActionSelectorHelpers";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
 import { usePlanItemExpand } from "./planItem/usePlanItemExpand";
 import { useConfirmDelete } from "../../hooks";
@@ -147,29 +148,32 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(true);
   };
 
-  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => {
+  // Every item ticked in the picker lands under this section in one POST (ChurchAppsSupport#1061).
+  const handleItemsImported = async (items: ProviderItemSelection[]) => {
     setShowActionSelector(false);
-    // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
-    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId;
-    const linkValue = mediaUrl || (itemType === "providerFile" ? image : undefined);
-    // Create new plan item - use provided itemType or default to providerPresentation
-    const newPlanItem: PlanItemInterface = {
-      itemType: itemType || "providerPresentation",
-      planId: props.planItem.planId,
-      sort: getNextChildSort(props.planItem.children),
-      parentId: props.planItem.id,
-      relatedId: actionId,
-      label: actionName,
-      seconds: seconds || 0,
-      providerId: itemProviderId,
-      providerPath: providerPath,
-      providerContentPath: providerContentPath,
-      // Store media URL in link field for direct preview (non-Lessons.church providers)
-      // For file items, use mediaUrl if available, otherwise fall back to image
-      link: linkValue,
-      thumbnailUrl: image
-    };
-    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
+    if (items.length === 0) return;
+    const firstSort = getNextChildSort(props.planItem.children);
+    const newPlanItems: PlanItemInterface[] = items.map((item, index) => {
+      // Use the picked provider if there is one (browse other providers), otherwise the plan's own provider.
+      const itemProviderId = item.providerId || props.planItem.providerId || props.associatedProviderId;
+      // Store the media URL in link for direct preview (non-Lessons.church providers); files fall back to their image.
+      const linkValue = item.mediaUrl || (item.itemType === "providerFile" ? item.image : undefined);
+      return {
+        itemType: item.itemType || "providerPresentation",
+        planId: props.planItem.planId,
+        sort: firstSort + index,
+        parentId: props.planItem.id,
+        relatedId: item.actionId,
+        label: item.actionName,
+        seconds: item.seconds || 0,
+        providerId: itemProviderId,
+        providerPath: item.providerPath,
+        providerContentPath: item.providerContentPath,
+        link: linkValue,
+        thumbnailUrl: item.image
+      };
+    });
+    await ApiHelper.post("/planItems", newPlanItems, "DoingApi");
     if (props.onChange) props.onChange();
   };
 
@@ -378,7 +382,7 @@ export const PlanItem = React.memo((props: Props) => {
         <ActionSelector
           open={showActionSelector}
           onClose={() => setShowActionSelector(false)}
-          onSelect={handleActionSelected}
+          onImport={handleItemsImported}
           contentPath={props.associatedContentPath}
           providerId={props.associatedProviderId}
           ministryId={props.ministryId}
