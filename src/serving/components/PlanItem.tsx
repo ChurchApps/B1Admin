@@ -34,6 +34,10 @@ interface Props {
   /** Set on the first item of a run of actions expanded from one section, enabling the collapse control. */
   collapseItems?: PlanItemInterface[];
   positionLabels?: Record<string, { text: string; assigned: boolean }>;
+  /** Set by the parent section while it is in bulk-select mode. */
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -54,6 +58,55 @@ export const PlanItem = React.memo((props: Props) => {
     onChange: props.onChange
   });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+
+  // Bulk select/delete of a section's direct children (ChurchAppsSupport#1060). Nested headers keep
+  // their own selection so "select all" never reaches past this section.
+  const isHeader = props.planItem.itemType === "header";
+  const [selectMode, setSelectMode] = React.useState(false);
+  const [selected, setSelected] = React.useState<Set<string>>(new Set());
+  const selectableIds = React.useMemo(
+    () => (props.planItem.children || []).filter((c) => c.id && c.itemType !== "header").map((c) => c.id as string),
+    [props.planItem.children]
+  );
+  const selectedIds = React.useMemo(() => selectableIds.filter((id) => selected.has(id)), [selectableIds, selected]);
+  const selecting = isHeader && !props.readOnly && selectMode && selectableIds.length > 0;
+
+  const handleSelectModeChange = (on: boolean) => {
+    setSelectMode(on);
+    if (!on) setSelected(new Set());
+  };
+
+  const toggleSelected = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    setSelected(checked ? new Set(selectableIds) : new Set());
+  };
+
+  const deletingSelected = React.useRef(false);
+  const handleDeleteSelected = async () => {
+    if (deletingSelected.current || selectedIds.length === 0) return;
+    const message = (Locale.label("plans.planItem.deleteSelectedConfirm") || "Delete the {count} selected items? This cannot be undone.").replace("{count}", String(selectedIds.length));
+    const confirmed = await confirm(message, {
+      title: Locale.label("plans.planItem.deleteSelected") || "Delete Selected",
+      "data-testid": "confirm-delete-selected-dialog"
+    });
+    if (!confirmed) return;
+    deletingSelected.current = true;
+    try {
+      await Promise.all(selectedIds.map((id) => ApiHelper.delete("/planItems/" + id, "DoingApi")));
+      setSelected(new Set());
+      props.onChange?.();
+    } finally {
+      deletingSelected.current = false;
+    }
+  };
 
   const showCollapse = canCollapse && !props.readOnly;
   const handleCollapseClick = async () => {
@@ -158,7 +211,7 @@ export const PlanItem = React.memo((props: Props) => {
       const childStartTime = cumulativeTime;
       const childExcluded = Boolean(props.excluded || isChildExcluded(c.id || ""));
       const childPlanItem = (
-        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} />
+        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} selectable={selecting && !!c.id && c.itemType !== "header"} selected={!!c.id && selected.has(c.id)} onToggleSelect={c.id ? () => toggleSelected(c.id as string) : undefined} />
       );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
@@ -198,6 +251,12 @@ export const PlanItem = React.memo((props: Props) => {
       positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      selectMode={selecting}
+      onSelectModeChange={props.readOnly ? undefined : handleSelectModeChange}
+      selectedCount={selectedIds.length}
+      selectableCount={selectableIds.length}
+      onSelectAll={handleSelectAll}
+      onDeleteSelected={handleDeleteSelected}
       wrapRow={props.readOnly ? undefined : (row) => (
         <RowDropZone
           accept="planItem"
@@ -228,6 +287,9 @@ export const PlanItem = React.memo((props: Props) => {
       onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
       positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
+      selectable={props.selectable}
+      selected={props.selected}
+      onToggleSelect={props.onToggleSelect}
     />
   );
 
@@ -261,7 +323,7 @@ export const PlanItem = React.memo((props: Props) => {
   return (
     <>
       {getPlanItem()}
-      {showCollapse && ConfirmDialogElement}
+      {(showCollapse || (isHeader && !props.readOnly)) && ConfirmDialogElement}
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>
