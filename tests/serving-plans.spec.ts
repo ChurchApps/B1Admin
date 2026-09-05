@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { editIconButton, dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -557,5 +557,111 @@ test.describe.serial("Plan pickers honor First Day of Week", () => {
 
     await openServiceDatePicker();
     await expectFirstWeekDayLabel(/Sunday/i);
+  });
+});
+
+// ChurchAppsSupport#1060: operators had to delete nested Service Order items one at a time, or wipe a
+// whole section via its cascade delete. A section can now enter select mode, tick items (or all of
+// them) and delete just those. The plan is seeded through DoingApi and removed afterwards.
+test.describe.serial("Service Order bulk delete inside a section", () => {
+  test.describe.configure({ retries: 0 });
+
+  const API = "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    expect(uc?.jwt).toBeTruthy();
+    jwt = uc.jwt as string;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Bulk Delete Repro Plan", serviceDate: "2030-06-02", ministryId: "GRP0000000a", planTypeId: "PLT00000001", serviceOrder: true }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    planId = (await planRes.json())[0].id;
+
+    const headerRes = await ctx.post(`${API}/doing/planItems`, { ...auth, data: [{ planId, sort: 1, itemType: "header", label: "Bulk Delete Section" }] });
+    expect(headerRes.ok()).toBeTruthy();
+    const headerId = (await headerRes.json())[0].id;
+
+    const itemsRes = await ctx.post(`${API}/doing/planItems`, {
+      ...auth,
+      data: [
+        { planId, parentId: headerId, sort: 1, itemType: "item", label: "Bulk Item One", seconds: 60 },
+        { planId, parentId: headerId, sort: 2, itemType: "item", label: "Bulk Item Two", seconds: 60 },
+        { planId, parentId: headerId, sort: 3, itemType: "item", label: "Bulk Item Three", seconds: 60 }
+      ]
+    });
+    expect(itemsRes.ok()).toBeTruthy();
+
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await page.goto(`/serving/plans/${planId}`);
+    await page.getByRole("tab", { name: "Service Order" }).click();
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, { headers: { Authorization: "Bearer " + jwt } });
+    await ctx.dispose();
+  });
+
+  const sectionHeader = () => page.locator(".planItemHeader").filter({ hasText: "Bulk Delete Section" });
+  const itemRow = (label: string) => page.locator(".planItem").filter({ hasText: label });
+  const confirmBulkDelete = async () => {
+    const dialog = page.locator('[data-testid="confirm-delete-selected-dialog"]');
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+    const reload = page.waitForResponse((r) => r.url().includes("/doing/planItems/plan/") && r.status() === 200, { timeout: 15000 });
+    await dialog.getByRole("button", { name: "Delete" }).click();
+    await reload;
+  };
+
+  test("select mode deletes only the ticked items", async () => {
+    await expect(itemRow("Bulk Item One")).toHaveCount(1, { timeout: 15000 });
+    await expect(itemRow("Bulk Item Three")).toHaveCount(1);
+
+    // The feature: a select-mode toggle on the section header.
+    await sectionHeader().locator('[data-testid="select-items-button"]').click();
+
+    const deleteSelected = sectionHeader().locator('[data-testid="delete-selected-button"]');
+    await expect(deleteSelected).toBeDisabled();
+
+    await itemRow("Bulk Item One").locator('[data-testid="planItem-select-checkbox"]').click();
+    await itemRow("Bulk Item Two").locator('[data-testid="planItem-select-checkbox"]').click();
+    await expect(deleteSelected).toBeEnabled();
+    await expect(deleteSelected).toContainText("2");
+
+    await deleteSelected.click();
+    await confirmBulkDelete();
+
+    await expect(itemRow("Bulk Item One")).toHaveCount(0, { timeout: 10000 });
+    await expect(itemRow("Bulk Item Two")).toHaveCount(0);
+    await expect(itemRow("Bulk Item Three")).toHaveCount(1);
+    await expect(sectionHeader()).toHaveCount(1);
+  });
+
+  test("select all in section deletes the remaining items but keeps the section", async () => {
+    await sectionHeader().locator('[data-testid="section-select-all"]').click();
+    const deleteSelected = sectionHeader().locator('[data-testid="delete-selected-button"]');
+    await expect(deleteSelected).toContainText("1");
+    await deleteSelected.click();
+    await confirmBulkDelete();
+
+    await expect(itemRow("Bulk Item Three")).toHaveCount(0, { timeout: 10000 });
+    // Section-cascade delete is untouched: the header itself survives an empty-selection cleanup.
+    await expect(sectionHeader()).toHaveCount(1);
+    // With nothing left to select, the section leaves select mode and shows its normal controls.
+    await expect(sectionHeader().locator('[data-testid="select-items-button"]')).toHaveCount(0);
+    await expect(sectionHeader().getByRole("button", { name: /add item/i })).toBeVisible();
   });
 });
