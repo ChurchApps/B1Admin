@@ -100,8 +100,12 @@ export const DonationEdit = memo((props: Props) => {
   const handleFundDonationsChange = useCallback((fd: FundDonationInterface[]) => {
     setFundDonations(fd);
     let totalAmount = 0;
-    for (let i = 0; i < fd.length; i++) totalAmount += fd[i].amount || 0;
-    if (totalAmount !== donation.amount) setDonation({ ...donation, amount: totalAmount });
+    let currency = donation.currency;
+    for (let i = 0; i < fd.length; i++) {
+      totalAmount += fd[i].amount || 0;
+      currency = fd[i].currency;
+    };
+    if (totalAmount !== donation.amount) setDonation({ ...donation, amount: totalAmount, currency: currency });
   }, [donation]);
 
   const handlePersonSelect = useCallback((ev: React.MouseEvent) => { ev.preventDefault(); setShowSelectPerson(true); }, []);
