@@ -733,7 +733,11 @@
       "fund": "Fund",
       "inKind": "In-Kind",
       "lastDig": "Last 4 digits",
-      "method": "Method"
+      "method": "Method",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Event: ",
@@ -760,6 +764,7 @@
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "notes": "Notes",
       "pending": "Pending",
+      "refunded": "Refunded",
       "statements": "Giving Statements",
       "summary": "Summary",
       "total": "Total"

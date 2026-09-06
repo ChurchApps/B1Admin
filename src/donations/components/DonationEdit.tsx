@@ -1,9 +1,9 @@
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
+import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
 import React, { memo, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { PersonAdd } from "../../components";
-import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale } from "@churchapps/apphelper";
-import { FormCard } from "../../components/ui";
+import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import { FormCard, LoadingButton } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { FundDonations } from "@churchapps/apphelper/donations";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
@@ -24,6 +24,8 @@ export const DonationEdit = memo((props: Props) => {
   const [donation, setDonation] = React.useState<DonationInterface>({});
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);
+  const [refunding, setRefunding] = React.useState(false);
+  const [refundError, setRefundError] = React.useState("");
 
   const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
   const method = watch("method");
@@ -38,6 +40,33 @@ export const DonationEdit = memo((props: Props) => {
       ApiHelper.delete("/donations/" + donation.id, "GivingApi").then(() => props.updatedFunction());
     }
   }, [donation.id, props.updatedFunction, confirm]);
+
+  const handleRefund = useCallback(async () => {
+    const ok = await confirm(Locale.label("donations.donationEdit.refundConfirm"), { confirmLabel: Locale.label("donations.donationEdit.refundConfirmLabel"), "data-testid": "refund-confirm" });
+    if (!ok) return;
+    setRefunding(true);
+    setRefundError("");
+    try {
+      await ApiHelper.post("/donate/refund/" + donation.id, {}, "GivingApi");
+      props.updatedFunction();
+    } catch (e: any) {
+      // ApiHelper rethrows the raw JSON body as the message, so dig the gateway error out of it.
+      let message = e?.message || "";
+      try { message = JSON.parse(message).error || message; } catch { /* not JSON */ }
+      setRefundError(message || Locale.label("donations.donationEdit.refundFailed"));
+    }
+    setRefunding(false);
+  }, [donation.id, props.updatedFunction, confirm]);
+
+  const refundButton = useMemo(() => {
+    const d = donation as any;
+    if (!UserHelper.checkAccess(Permissions.givingApi.donations.edit) || d.status !== "complete" || !d.transactionId) return null;
+    return (
+      <LoadingButton color="warning" loading={refunding} onClick={handleRefund} data-testid="refund-donation">
+        {Locale.label("donations.donationEdit.refund")}
+      </LoadingButton>
+    );
+  }, [donation, refunding, handleRefund]);
 
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
@@ -134,7 +163,8 @@ export const DonationEdit = memo((props: Props) => {
   return (
     <>
       {ConfirmDialogElement}
-      <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} help="docs/b1-admin/donations/">
+      <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} footerActions={refundButton} help="docs/b1-admin/donations/">
+        {refundError && <Alert severity="error" data-testid="refund-error">{refundError}</Alert>}
         <Box>
           <label>{Locale.label("common.person")}</label>
           {personSection}
