@@ -117,6 +117,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     const last_year = donations && donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === lastY) : [];
     const customHeaders = [
       { label: "amount", key: "amount" },
+      { label: "currency", key: "currency" },
       { label: "donationDate", key: "donationDate" },
       { label: "fundName", key: "fund.name" },
       { label: "method", key: "method" },
@@ -199,7 +200,7 @@ export const DonationPage: React.FC<Props> = (props) => {
             {d.method} - {d.methodDetails}
           </TableCell>
           <TableCell>{d.fund?.name}</TableCell>
-          <TableCell>{CurrencyHelper.convertAmountWithLocale(d.fund?.amount || 0, d.currency || "", currency)} {d.currency !== currency ? <span style={{ color: "gray" }}>*</span> : ""}</TableCell>
+          <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund?.amount || 0, d.currency || "")}</TableCell>
         </TableRow>
       );
     }

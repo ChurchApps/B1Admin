@@ -138,7 +138,7 @@ export const FundPage = () => {
           {personCol}
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.convertAmountWithLocale(fd.amount || 0, fd.currency || "", currency)} {fd.currency !== currency ? <span style={{ color: "whitesmoke" }}>*</span> : ""}
+              {CurrencyHelper.formatCurrencyWithLocale(fd.amount || 0, fd.currency || "")}
             </Typography>
           </TableCell>
         </TableRow>

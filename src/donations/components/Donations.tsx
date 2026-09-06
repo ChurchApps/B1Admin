@@ -125,7 +125,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : "success.main" }}>
-              {CurrencyHelper.convertAmountWithLocale(d.amount || 0, d.currency || "", currency)} {d.currency !== currency ? <span style={{ color: "whitesmoke" }}>*</span> : ""}
+              {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || "")}
             </Typography>
           </TableCell>
           {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}
