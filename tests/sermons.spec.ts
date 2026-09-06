@@ -69,6 +69,30 @@ test.describe("Sermons Management", () => {
       await expect(validatedSermon).toHaveCount(1);
     });
 
+    test("should set a podcast audio url on a sermon", async () => {
+      const sermonRow = page.locator("tr").filter({ hasText: "Zebedee Test Sermon" });
+      await sermonRow.locator('[data-testid^="edit-sermon-"]').click();
+      const audio = page.locator('[name="audioUrl"]');
+      await expect(audio).toBeVisible({ timeout: 10000 });
+      await audio.fill("https://content.churchapps.org/demo/zebedee.mp3");
+      await page.getByRole("button", { name: "Save" }).click();
+      await expect(audio).toHaveCount(0, { timeout: 10000 });
+
+      await sermonRow.locator('[data-testid^="edit-sermon-"]').click();
+      await expect(page.locator('[name="audioUrl"]')).toHaveValue("https://content.churchapps.org/demo/zebedee.mp3", { timeout: 10000 });
+      await page.getByRole("button", { name: "Cancel" }).click();
+    });
+
+    test("should show a copyable podcast feed url", async () => {
+      const feed = page.locator('[data-testid="podcast-feed-url"]');
+      await expect(feed).toBeVisible({ timeout: 10000 });
+      await expect(feed).toContainText("/sermons/rss/");
+      await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+      await page.locator('[data-testid="copy-podcast-feed-url"]').click();
+      await expect(page.getByText("Podcast feed URL copied")).toBeVisible({ timeout: 10000 });
+      await page.screenshot({ path: ".pr-screenshots/podcast-rss-after.png", fullPage: true });
+    });
+
     test("should cancel editing sermon", async () => {
       const sermonRow = page.locator("tr").filter({ hasText: "Zebedee Test Sermon" });
       const editBtn = sermonRow.locator('[data-testid^="edit-sermon-"]');
