@@ -811,7 +811,11 @@
       "errPerson": "Select a person"
     },
     "printAllStatementsPage": {
-      "loadingStatements": "Loading statements..."
+      "loadingStatements": "Loading statements...",
+      "currencyRatesInfo": "Converted to the church’s selected currency at current exchange rates."
+    },
+    "printDonationPage": {
+      "currencyRatesInfo": "Converted to the church’s selected currency at current exchange rates."
     },
     "stripeImportPage": {
       "alreadyImported": "Already Imported",

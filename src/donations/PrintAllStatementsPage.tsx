@@ -104,10 +104,11 @@ export const PrintAllStatementsPage = () => {
       if (donation) {
         const fund = funds.data?.find((f) => f.id === fd.fundId);
         const existing = result.find((r) => r.fund === fund?.name);
+        const amount = CurrencyHelper.convertAmount(fd.amount || 0, fd.currency || "usd", currency);
         if (existing) {
-          existing.total += fd.amount || 0;
+          existing.total += amount;
         } else {
-          result.push({ fund: fund?.name, total: fd.amount || 0 });
+          result.push({ fund: fund?.name, total: amount });
         }
       }
     });
@@ -129,7 +130,8 @@ export const PrintAllStatementsPage = () => {
           date: donation.donationDate,
           method: donation.method,
           fund: fund?.name,
-          amount: fd.amount || 0
+          amount: fd.amount || 0,
+          currency: fd.currency || ""
         });
       }
     });

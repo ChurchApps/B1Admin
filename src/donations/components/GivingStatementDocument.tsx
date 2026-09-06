@@ -12,6 +12,7 @@ interface ContributionRow {
   method: string | undefined;
   fund: string | undefined;
   amount: number;
+  currency: string;
 }
 
 interface Props {
@@ -254,7 +255,7 @@ export const GivingStatementDocument = (props: Props) => {
   const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true } = props;
   const label = (key: string) => Locale.label(labelPrefix + "." + key);
   const churchName = church?.name || "";
-  const formattedTotal = CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency);
+  const formattedTotal = CurrencyHelper.convertDonationTotals(contributions, currency);
 
   return (
     <div className={showPageBreak ? "page-break" : ""}>
@@ -301,11 +302,12 @@ export const GivingStatementDocument = (props: Props) => {
 
         <div className="section-container">
           <h2 className="section-title">{label("statementSummary")}</h2>
+          <h6 style={{ fontStyle: "italic" }}>* {label("currencyRatesInfo")}</h6>
           <div className="summary-grid">
             <div className="summary-column">
               <p className="section-label">{label("totalContributions")}</p>
               <div className="total-box">
-                <div className="total-amount">{formattedTotal}</div>
+                <div className="total-amount">{formattedTotal} *</div>
               </div>
             </div>
 
@@ -322,7 +324,7 @@ export const GivingStatementDocument = (props: Props) => {
                   {fundTotals.map((ft, idx) => (
                     <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
                       <td className="table-cell">{ft.fund}</td>
-                      <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(ft.total, currency)}</td>
+                      <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(ft.total, currency)} *</td>
                     </tr>
                   ))}
                 </tbody>
@@ -350,13 +352,13 @@ export const GivingStatementDocument = (props: Props) => {
                   </td>
                   <td className="table-cell">{detail.method}</td>
                   <td className="table-cell">{detail.fund}</td>
-                  <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(detail.amount, currency)}</td>
+                  <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(detail.amount, detail.currency)}</td>
                 </tr>
               ))}
               <tr className="table-footer-row">
                 <td colSpan={2} className="table-footer-cell"></td>
                 <td className="table-footer-cell" style={{ textAlign: "right" }}>{label("totalContributionsLabel")}</td>
-                <td className="table-footer-cell" style={{ textAlign: "right" }}>{formattedTotal}</td>
+                <td className="table-footer-cell" style={{ textAlign: "right" }}>{formattedTotal} *</td>
               </tr>
             </tbody>
           </table>

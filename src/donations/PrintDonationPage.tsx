@@ -88,19 +88,20 @@ export const PrintDonationPage = () => {
       if (donation) {
         const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
         const existing = ArrayHelper.getOne(result, "fund", fund?.name);
-        if (existing) existing.total += fd.amount || 0;
-        else result.push({ fund: fund?.name, total: fd.amount || 0 });
+        const amount = CurrencyHelper.convertAmount(fd.amount || 0, fd.currency || "", currency);
+        if (existing) existing.total += amount;
+        else result.push({ fund: fund?.name, total: amount });
       }
     });
     return result;
   }, [fundDonations, donations, funds.data]);
 
   const contributions = useMemo(() => {
-    const result: { date: string; method: string | undefined; fund: string | undefined; amount: number }[] = [];
+    const result: { date: string; method: string | undefined; fund: string | undefined; amount: number, currency: string }[] = [];
     fundDonations.forEach((fd) => {
       const donation = ArrayHelper.getOne(donations, "id", fd.donationId);
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
-      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount || 0 });
+      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount || 0, currency: fd.currency || "" });
     });
     return result;
   }, [fundDonations, donations, funds.data]);
