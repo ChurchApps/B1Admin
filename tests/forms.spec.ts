@@ -234,3 +234,104 @@ test.describe("Person form submissions (profile rail)", () => {
     await expect(page.getByText("donald.card@example.com").first()).toBeVisible({ timeout: 10000 });
   });
 });
+
+// Issue #1067: archiving a form used to erase the submissions people had already
+// made against it - the person's Forms tab lost the whole section. Archiving must
+// only stop new submissions, never hide history.
+//
+// Uses its own disposable form rather than archiving the seed "Visitor Information
+// Card": that card is asserted on by people.spec.ts, issue-1014.spec.ts and
+// serving-event-triggers.spec.ts, which run in parallel workers (workers: 4), so
+// archiving it mid-suite would intermittently break those files.
+test.describe.serial("Archived forms keep submission history", () => {
+  const ARCHIVE_FORM = "Zacchaeus Archived History Form";
+  const ANSWER_EMAIL = "zacchaeus.archived@example.com";
+  let page: Page;
+
+  function formRow() {
+    return page.locator("table tbody tr").filter({ hasText: ARCHIVE_FORM }).first();
+  }
+
+  async function openArchivedTab() {
+    await page.locator('button[role="tab"]', { hasText: "Archived Forms" }).first().click();
+  }
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    // Restore (if still archived) and delete the disposable form even on failure.
+    try {
+      await openFormsPage(page);
+      if (await formRow().count() === 0) {
+        await openArchivedTab();
+        await formRow().locator('[data-testid^="restore-form-button-"]').click();
+        await confirmDelete(page);
+        await openFormsPage(page);
+      }
+      await formRow().locator('[data-testid^="edit-form-button-"]').first().click();
+      await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
+      await page.locator("#formBox button", { hasText: /^Delete$/ }).click();
+      await confirmDelete(page);
+      await page.locator("#formBox").waitFor({ state: "hidden", timeout: 15000 });
+    } catch { /* cleanup is best effort */ }
+    await page?.context().close();
+  });
+
+  test("creates a person form with a question", async () => {
+    await openFormsPage(page);
+    await clickAddForm(page);
+    await page.locator('[data-testid="form-name-input"] input').fill(ARCHIVE_FORM);
+    await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "People");
+    await saveFormDrawer(page);
+    await expect(formRow()).toBeVisible({ timeout: 10000 });
+
+    await formRow().locator("a", { hasText: ARCHIVE_FORM }).click();
+    await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
+    await page.locator('button[aria-label="addQuestion"]').click();
+    await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
+    await selectMuiOption(page, page.locator("#questionBox").getByLabel("Field Type"), "Email");
+    await page.locator('[data-testid="question-title-input"] input').fill("Email Address");
+    await page.locator("#questionBox button", { hasText: /^Save$/ }).click();
+    await page.locator("#questionBox").waitFor({ state: "hidden", timeout: 15000 });
+    await expect(page.locator("table tbody tr").filter({ hasText: "Email Address" }).first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test("records a submission for a person", async () => {
+    await navigateToPeople(page);
+    await openPersonRow(page, "Jessica Taylor");
+    await page.getByRole("tab", { name: /^Forms$/ }).click();
+    const railItem = page.getByText(ARCHIVE_FORM, { exact: true }).first();
+    await expect(railItem).toBeVisible({ timeout: 10000 });
+    await railItem.click();
+    await page.locator('button[aria-label="editButton"]').first().click();
+    await expect(page.locator("#formSubmissionBox")).toBeVisible({ timeout: 10000 });
+    await page.getByLabel("Email Address", { exact: true }).fill(ANSWER_EMAIL);
+    const post = page.waitForResponse(r => r.url().includes("/formsubmissions") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.locator("#formSubmissionBox button", { hasText: /^Submit$/ }).click();
+    await post;
+    await expect(page.locator("#formSubmissionBox")).toHaveCount(0, { timeout: 10000 });
+    await expect(page.getByText(ANSWER_EMAIL).first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test("keeps the submitted answers visible after the form is archived", async () => {
+    await openFormsPage(page);
+    await formRow().locator('[data-testid^="archive-form-button-"]').click();
+    await confirmDelete(page);
+    await expect(formRow()).toHaveCount(0, { timeout: 15000 });
+
+    await navigateToPeople(page);
+    await openPersonRow(page, "Jessica Taylor");
+    const formsTab = page.getByRole("tab", { name: /^Forms$/ });
+    await expect(formsTab).toBeVisible({ timeout: 15000 });
+    await formsTab.click();
+
+    const railItem = page.getByText(ARCHIVE_FORM, { exact: true }).first();
+    await expect(railItem).toBeVisible({ timeout: 15000 });
+    await railItem.click();
+    await expect(page.locator('[data-testid="display-box-content"]').getByText(ANSWER_EMAIL)).toBeVisible({ timeout: 15000 });
+  });
+});

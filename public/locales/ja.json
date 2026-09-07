@@ -47,25 +47,6 @@
       "volunteer": "ボランティア",
       "volunteers": "ボランティア"
     },
-    "headcountEntry": {
-      "confirmDelete": "Are you sure you wish to delete this headcount?",
-      "count": "Headcount",
-      "date": "Date",
-      "editTitle": "Edit Headcount",
-      "group": "Group",
-      "noGroup": "No group (whole service)",
-      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
-      "recent": "Recent Headcounts",
-      "service": "Service",
-      "serviceTime": "Service Time",
-      "title": "Enter Headcount",
-      "validate": {
-        "count": "Enter a whole number of zero or more.",
-        "date": "Please choose a date.",
-        "service": "Please select a service."
-      },
-      "wholeService": "All service times"
-    },
     "labels": {
       "align": "配置",
       "always": "常に",
@@ -138,8 +119,6 @@
     "tabs": {
       "attTrend": "出席の推移",
       "groupAtt": "グループの出席",
-      "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "セットアップ"
     }
   },
@@ -199,7 +178,6 @@
       "confirmDelete": "このイベントを削除してもよろしいですか？",
       "confirmDeleteSeries": "これは定期的なイベントです。削除すると、シリーズ全体とそのすべての開催回が削除されます。よろしいですか？",
       "delete": "削除",
-      "editEvent": "Edit Event",
       "manageRegistrations": "登録を管理",
       "noGroups": "グループが見つかりません。"
     },
@@ -219,7 +197,6 @@
       "noCalendars": "カレンダーが見つかりません",
       "status": "ステータス",
       "subtitleEmpty": "最初のカレンダーを作成して始めましょう",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "カレンダー"
     },
     "calendarPage": {
@@ -360,7 +337,6 @@
     "comboBox": {
       "addNew": "新規追加..."
     },
-    "confirm": "Confirm",
     "copy": "コピー",
     "createPerson": {
       "validate": {
@@ -396,7 +372,6 @@
     "left": "左",
     "loading": "読み込み中",
     "mobile": "モバイル",
-    "more": "More",
     "name": "名前",
     "navigation": "ナビゲーション",
     "no": "いいえ",
@@ -737,11 +712,7 @@
       "fund": "献金先",
       "inKind": "現物",
       "lastDig": "下 4 桁",
-      "method": "支払い方法",
-      "refund": "Refund",
-      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
-      "refundConfirmLabel": "Refund",
-      "refundFailed": "The refund could not be processed."
+      "method": "支払い方法"
     },
     "donationEvents": {
       "event": "イベント: ",
@@ -768,7 +739,6 @@
       "noDonMsg": "献金は記録されていません。献金を入力するとここに表示されます。",
       "notes": "メモ",
       "pending": "保留中",
-      "refunded": "Refunded",
       "statements": "献金証明書",
       "summary": "概要",
       "total": "合計"
@@ -852,8 +822,73 @@
       "errAmount": "ゼロより大きい誓約金額を入力してください",
       "errPerson": "人物を選択してください"
     },
+    "pledgeStatus": {
+      "beyondPledged": "誓約額超過",
+      "fulfilled": "達成済み",
+      "inProgress": "進行中",
+      "nonPledged": "誓約なし",
+      "notStarted": "未開始"
+    },
     "printAllStatementsPage": {
-      "loadingStatements": "明細書を読み込んでいます..."
+      "annualStatementTitle": "{year} 年 年間献金証明書",
+      "campaign": "キャンペーン",
+      "contributionDetails": "献金の明細",
+      "disclaimer": "{churchName} は登録された非営利団体です。これらの献金に対して、無形の宗教的益を除き、物品やサービスの提供は行われていません。",
+      "donorInformation": "献金者情報",
+      "fund": "献金先",
+      "fundBreakdown": "献金先の内訳",
+      "given": "献金額",
+      "issued": "発行日:",
+      "loadingStatements": "明細書を読み込んでいます...",
+      "noteLabel": "備考:",
+      "noteText": "この証明書は、{year} 年に {churchName} が受け取ったすべての献金をまとめたものです。",
+      "organization": "団体",
+      "period": "期間: {year} 年 1 月 1 日 〜 12 月 31 日",
+      "pledgeProgress": "誓約の進捗",
+      "pledged": "誓約額",
+      "statementSummary": "証明書の概要",
+      "status": "状態",
+      "totalContributions": "献金合計",
+      "totalContributionsLabel": "献金合計:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "{year} 年 年間献金証明書",
+      "campaign": "キャンペーン",
+      "contributionDetails": "献金の明細",
+      "disclaimer": "{churchName} は登録された非営利団体です。これらの献金に対して、無形の宗教的益を除き、物品やサービスの提供は行われていません。",
+      "donorInformation": "献金者情報",
+      "fund": "献金先",
+      "fundBreakdown": "献金先の内訳",
+      "given": "献金額",
+      "issued": "発行日:",
+      "noteLabel": "備考:",
+      "noteText": "この証明書は、{year} 年に {churchName} が受け取ったすべての献金をまとめたものです。",
+      "organization": "団体",
+      "period": "期間: {year} 年 1 月 1 日 〜 12 月 31 日",
+      "pledgeProgress": "誓約の進捗",
+      "pledged": "誓約額",
+      "statementSummary": "証明書の概要",
+      "status": "状態",
+      "totalContributions": "献金合計",
+      "totalContributionsLabel": "献金合計:"
+    },
+    "statementLegal": {
+      "abn": "ABN（豪州事業者番号）",
+      "australiaTitle": "献金の領収書",
+      "canadaTitle": "所得税申告用 公式領収書",
+      "cra": "カナダ歳入庁: canada.ca/charities-giving",
+      "craNumber": "慈善団体登録番号",
+      "dateIssued": "発行日",
+      "dgr": "{churchName} は控除対象寄付先団体（DGR）として認定されています。",
+      "dgrThreshold": "2 ドル以上の献金は税控除の対象です。",
+      "donation": "献金",
+      "eligibleAmount": "所得税上、控除対象となる献金額",
+      "newZealandTitle": "献金領収書",
+      "nonEligible": "税額控除領収書の対象外の献金",
+      "nzNumber": "慈善団体登録番号",
+      "placeOfIssue": "発行地",
+      "receiptNumber": "領収書番号",
+      "signature": "承認者署名"
     },
     "stripeImportPage": {
       "alreadyImported": "インポート済み",
@@ -889,11 +924,6 @@
       "lapsedGivers": "献金が途絶えた方"
     }
   },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
-  },
   "forms": {
     "choicesEdit": {
       "act": "操作",
@@ -927,8 +957,6 @@
       "availableStart": "公開開始日",
       "confirmMsg": "このフォームを完全に削除してもよろしいですか？",
       "contentTypeAria": "コンテンツタイプ",
-      "description": "Description",
-      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "対話形式（1 問ずつ表示）",
       "displayMode": "表示モード",
       "displayStandard": "標準",
@@ -1036,10 +1064,8 @@
       "team": "チーム"
     },
     "groupBanner": {
-      "announcements": "Announcements",
       "confirmDuplicate": "このグループを複製しますか？メンバーはコピーされません。",
       "copySuffix": "（コピー）",
-      "discussions": "Discussions",
       "duplicateTooltip": "このグループを複製",
       "emailTooltip": "このグループにメールを送信",
       "location": "場所",
@@ -1091,8 +1117,6 @@
     "groupDetailsEdit": {
       "addPhoto": "写真を追加",
       "ageGrade": "年齢と学年",
-      "announcementsEnabled": "Announcements",
-      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "アーカイブ",
       "archiveAria": "グループをアーカイブ",
       "attTrack": "出席を記録",
@@ -1109,8 +1133,6 @@
       "confidentialHelp": "このグループとその名簿を、公開ページ、グループ検索、非メンバーから非表示にします。",
       "confirmArchive": "このグループをアーカイブしてもよろしいですか？復元するまでグループ一覧から非表示になります。",
       "confirmMsg": "このグループを完全に削除してもよろしいですか？",
-      "discussionsEnabled": "Discussions",
-      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "登録",
       "groupDesc": "グループの説明",
       "groupDet": "グループの詳細",
@@ -1463,7 +1485,6 @@
       "valuePlaceholder": "値"
     },
     "aiSearch": {
-      "clearSearch": "Clear Search",
       "exampleMen": "- 7月生まれの30歳以上の男性を表示",
       "exampleWomen": "- 結婚している女性を表示",
       "examples": "例：",
@@ -1515,13 +1536,6 @@
       "title": "人口統計",
       "total": "合計",
       "unassigned": "未割り当て"
-    },
-    "duplicateDialog": {
-      "createAnyway": "Create Anyway",
-      "matchBirthDate": "Birthdate",
-      "message": "One or more people already in your database look like a possible match.",
-      "title": "Possible Duplicate",
-      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "活動",
@@ -1867,7 +1881,6 @@
       "search": "フォントを検索..."
     },
     "form": {
-      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "お問い合わせフォーム",
       "questionDescription": "補足の説明を入力...",
       "questionPlaceholder": "回答を入力...",
@@ -1973,13 +1986,10 @@
       "fallbackLoading": "読み込み中...",
       "fallbackSection": "セクション",
       "fromAssociatedLesson": "関連付けられたレッスンから:",
-      "importCount": "Import ({count})",
       "noActionsAvailable": "利用できるアクションがありません",
       "noContent": "利用可能なコンテンツがありません",
       "selectAction": "アクションを選択",
-      "selectExternalItem": "外部の項目を選択",
-      "selectItem": "Select {label}",
-      "selectedCount": "{count} selected"
+      "selectExternalItem": "外部の項目を選択"
     },
     "applyYearPlan": {
       "dateTaken": "この日付には既にプランがあります。",
@@ -2144,9 +2154,6 @@
       "clickToAddText": "クリックしてテキストを追加",
       "collapseToSection": "セクションにまとめる",
       "collapseToSectionConfirm": "これらのアクションを 1 つのセクションにまとめますか？個々のアクションへの変更は失われます。",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "duration": "再生時間",
       "editItem": "項目を編集",
       "editSection": "セクションを編集",
@@ -2155,9 +2162,6 @@
       "externalItem": "外部の項目",
       "item": "項目",
       "restoreOriginal": "元に戻す",
-      "selectAllInSection": "Select all in section",
-      "selectItem": "Select",
-      "selectItems": "Select Items",
       "song": "曲"
     },
     "planItemEdit": {
@@ -2489,8 +2493,6 @@
       "lightMode": "ライトモード",
       "linkedAccounts": "連携済みアカウント",
       "noDirect": "メンバー名簿に自分を表示しない",
-      "passCurrent": "Pass Current",
-      "passCurrentMsg": "Pass Current Msg",
       "passLong": "8 文字以上のパスワードを入力してください。",
       "passMatch": "パスワードが一致しません。",
       "passNew": "新しいパスワード",
@@ -2805,12 +2807,6 @@
       "searchPlaceholder": "再生リストを検索...",
       "title": "再生リスト"
     },
-    "podcast": {
-      "copyFeedUrl": "Copy podcast feed URL",
-      "feedUrlCopied": "Podcast feed URL copied",
-      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
-      "title": "Podcast Feed"
-    },
     "publishDate": "公開日",
     "searchPlaceholder": "タイトルまたは再生リストで説教を検索...",
     "sermon": "説教",
@@ -2819,8 +2815,6 @@
       "addToAnotherPlaylist": "別の再生リストに追加",
       "addToAnotherPlaylistAria": "別のプレイリストに説教を追加",
       "addToSelectedPlaylistAria": "選択したプレイリストに追加",
-      "audioUrl": "Audio File URL (for podcast)",
-      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "これはチャンネルの URL ではありません - 上のヘルプリンクをご覧ください",
       "currentLiveService": "現在のライブ礼拝",
       "currentYouTubeLiveStream": "現在の YouTube ライブ配信",
@@ -2850,7 +2844,6 @@
       "totalSermonDuration": "説教の総再生時間",
       "unauthorized": "説教を作成する権限がありません",
       "unauthorizedDelete": "説教を削除する権限がありません",
-      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "ビデオIDまたはURL",
       "videoProvider": "動画プロバイダー",
       "vimeo": "Vimeo",
@@ -2938,9 +2931,6 @@
       "downloads": "ダウンロード数",
       "feature": "おすすめにする",
       "featured": "おすすめ",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "ファイル",
       "firstSubmission": "初回投稿",
       "justNow": "たった今",
@@ -3467,41 +3457,27 @@
       "subtitle": "ロールと権限を管理"
     },
     "statementFormat": {
+      "abn": "ABN（豪州事業者番号）",
       "australia": "オーストラリア",
       "canada": "カナダ - CRA 公式領収書",
       "cityOfIssue": "発行地",
+      "craNumber": "CRA 登録番号",
       "format": "証明書の書式",
       "helper": "印刷する献金証明書に、その国で必要とされる法定の領収書欄を追加します。",
       "newZealand": "ニュージーランド",
+      "nzNumber": "ニュージーランド慈善団体登録番号",
       "orgAddress": "団体の住所",
+      "registrationNumber": "登録番号",
       "signatory": "承認者の氏名",
       "standard": "標準"
     },
     "storageSettingsEdit": {
-      "authFailed": "Auth Failed",
-      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps（無料）",
-      "connect": "Connect",
-      "connectFirst": "Connect First",
-      "connected": "Connected",
-      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "ファイルは、この教会に自動的にリンクされたMinistryStuffのストレージプランに保存されます。プランの管理はこちら：",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup Blocked",
       "provider": "プロバイダー",
-      "reconnect": "Reconnect",
-      "s3AccessKey": "S3 Access Key",
-      "s3Bucket": "S3 Bucket",
-      "s3Endpoint": "S3 Endpoint",
-      "s3Helper": "S3 Helper",
-      "s3PublicBase": "S3 Public Base",
-      "s3Region": "S3 Region",
-      "s3Required": "S3 Required",
-      "s3SecretKey": "S3 Secret Key",
       "saveError": "ストレージ設定の保存中にエラーが発生しました。",
-      "sessionExpired": "Session Expired",
-      "sessionFailed": "Session Failed",
       "title": "ファイルストレージ",
       "usage": "{quota} GB中{used} GBを使用中。"
     },
@@ -3673,7 +3649,6 @@
       "failed": "書き換えに失敗しました。変更はありません。",
       "instruction": "指示",
       "placeholder": "例: もっと温かみのある表現にして、行動を促す一文を加えてください",
-      "preset_": "Preset_",
       "rewrite": "書き換える",
       "title": "AI による書き換え",
       "working": "セクションを書き換えています..."
@@ -3932,49 +3907,18 @@
       "addElements": "要素を追加",
       "advanced": "詳細",
       "all": "すべて",
-      "block": "Block",
       "blocks": "ブロック",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Campaign Progress",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "教会",
-      "column": "Column",
       "common": "共通",
-      "countdown": "Countdown",
       "descReusableElement": "再利用できる要素ブロック",
       "descReusableSection": "再利用できるセクション",
       "descSection": "コンテンツをまとめるコンテナ",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Gallery",
-      "groupList": "Group List",
-      "html": "Html",
-      "iconFeature": "Icon Feature",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "メディア",
       "noElementsFound": "要素が見つかりません",
-      "row": "Row",
       "searchElements": "要素を検索",
       "section": "セクション",
-      "serviceTimes": "Service Times",
-      "socialIcons": "Social Icons",
-      "staffGrid": "Staff Grid",
-      "stats": "Stats",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Testimonial",
-      "text": "Text",
-      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "別の検索語をお試しください",
-      "untitledBlock": "無題のブロック",
-      "video": "Video"
+      "untitledBlock": "無題のブロック"
     },
     "elementEdit": {
       "enableLightbox": "ライトボックスを有効にする",
@@ -4084,7 +4028,6 @@
       "uploadFiles": "ファイルをアップロード"
     },
     "filesManager": {
-      "externalStorage": "External Storage",
       "files": "ファイル",
       "getStarted": "最初のファイルをアップロードして始めましょう",
       "name": "名前",
@@ -4141,7 +4084,6 @@
       "wide": "ワイド"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "対象",
       "buildingSection": "{title} を作成中 — セクション {n} / {total}...",
       "button": "サイトを生成",
@@ -4160,8 +4102,7 @@
       "serviceTimes": "礼拝時間",
       "serviceTimesPlaceholder": "毎週日曜 午前9時・11時",
       "title": "AI でサイトを生成",
-      "tone": "トーン",
-      "tone_": "Tone_"
+      "tone": "トーン"
     },
     "helpDialog": {
       "addBody": "ツールバーの「コンテンツを追加」をクリックしてから、セクションまたは要素をページにドラッグします。",
@@ -4438,7 +4379,6 @@
       "dividerNone": "なし",
       "dividerShape": "形状",
       "dividerTop": "上部の区切り",
-      "divider_": "Divider_",
       "dividers": "シェイプディバイダー",
       "duplicate": "複製",
       "duplicateSection": "セクションを複製",
@@ -4475,10 +4415,6 @@
       "showCampus": "キャンパスを表示",
       "title": "タイトル"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Main Website",
-      "manageSites": "Manage Sites"
-    },
     "siteWidgets": {
       "addAction": "アクションを追加",
       "announcementBar": "お知らせバー",
@@ -4502,15 +4438,6 @@
       "textColor": "文字色",
       "title": "サイトウィジェット",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Add",
-      "deleteConfirm": "Delete Confirm",
-      "empty": "Empty",
-      "name": "Name",
-      "subDomain": "Sub Domain",
-      "subDomainHint": "Sub Domain Hint",
-      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "配置",
@@ -4712,8 +4639,6 @@
     },
     "audio": {
       "deleteConfirm": "この音声ファイルを削除してもよろしいですか？",
-      "tooLarge": "Too Large",
-      "unsupportedFormat": "Unsupported Format",
       "upload": "音声をアップロード"
     },
     "create": {
@@ -4929,7 +4854,6 @@
       "operator": "演算子",
       "pauseAll": "オートメーションを一時停止",
       "paused": "一時停止中",
-      "recur_": "Recur_",
       "recurs": "繰り返し",
       "resumeAll": "オートメーションを再開",
       "runNow": "今すぐ実行",
@@ -4950,7 +4874,6 @@
       "resume": "再開",
       "retry": "再試行",
       "statusHeader": "ステータス",
-      "status_": "Status_",
       "subject": "人物",
       "title": "実行履歴",
       "trigger": "トリガー",

@@ -47,25 +47,6 @@
       "volunteer": "متطوع",
       "volunteers": "متطوعون"
     },
-    "headcountEntry": {
-      "confirmDelete": "Are you sure you wish to delete this headcount?",
-      "count": "Headcount",
-      "date": "Date",
-      "editTitle": "Edit Headcount",
-      "group": "Group",
-      "noGroup": "No group (whole service)",
-      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
-      "recent": "Recent Headcounts",
-      "service": "Service",
-      "serviceTime": "Service Time",
-      "title": "Enter Headcount",
-      "validate": {
-        "count": "Enter a whole number of zero or more.",
-        "date": "Please choose a date.",
-        "service": "Please select a service."
-      },
-      "wholeService": "All service times"
-    },
     "labels": {
       "align": "محاذاة",
       "always": "دائمًا",
@@ -138,8 +119,6 @@
     "tabs": {
       "attTrend": "اتجاه الحضور",
       "groupAtt": "حضور المجموعة",
-      "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "الإعداد"
     }
   },
@@ -199,7 +178,6 @@
       "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الحدث؟",
       "confirmDeleteSeries": "هذا حدث متكرر. سيؤدي حذفه إلى إزالة السلسلة بأكملها وجميع مناسباتها. هل أنت متأكد؟",
       "delete": "حذف",
-      "editEvent": "Edit Event",
       "manageRegistrations": "إدارة التسجيلات",
       "noGroups": "لم يتم العثور على مجموعات."
     },
@@ -219,7 +197,6 @@
       "noCalendars": "No calendars found",
       "status": "الحالة",
       "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "التقاويس"
     },
     "calendarPage": {
@@ -360,7 +337,6 @@
     "comboBox": {
       "addNew": "Add New..."
     },
-    "confirm": "Confirm",
     "copy": "نسخ",
     "createPerson": {
       "validate": {
@@ -396,7 +372,6 @@
     "left": "Left",
     "loading": "جارٍ التحميل",
     "mobile": "Mobile",
-    "more": "More",
     "name": "الاسم",
     "navigation": "Navigation",
     "no": "لا",
@@ -737,11 +712,7 @@
       "fund": "Fund",
       "inKind": "In-Kind",
       "lastDig": "Last 4 digits",
-      "method": "Method",
-      "refund": "Refund",
-      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
-      "refundConfirmLabel": "Refund",
-      "refundFailed": "The refund could not be processed."
+      "method": "Method"
     },
     "donationEvents": {
       "event": "Event: ",
@@ -761,14 +732,11 @@
       "don": "Donations",
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "تصدير",
-      "exportQbo": "Export for QuickBooks",
-      "failed": "Failed Gifts",
       "funds": "Funds",
       "method": "الطريقة",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "notes": "Notes",
       "pending": "قيد الانتظار",
-      "refunded": "Refunded",
       "statements": "Giving Statements",
       "summary": "Summary",
       "total": "Total"
@@ -779,16 +747,6 @@
       "noBatch": "No batches found.",
       "subtitle": "View donation summaries and analyze giving trends",
       "total": "Total"
-    },
-    "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
-      "message": "Gateway Message",
-      "none": "No failed recurring gifts.",
-      "retry": "Retry",
-      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
-      "subtitle": "Recurring gifts the gateway could not collect",
-      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "اسم الصندوق",
@@ -889,11 +847,6 @@
       "lapsedGivers": "Lapsed Givers"
     }
   },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
-  },
   "forms": {
     "choicesEdit": {
       "act": "Action",
@@ -927,8 +880,6 @@
       "availableStart": "Availability Start Date",
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
       "contentTypeAria": "نوع المحتوى",
-      "description": "Description",
-      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -1036,10 +987,8 @@
       "team": "Team"
     },
     "groupBanner": {
-      "announcements": "Announcements",
       "confirmDuplicate": "تكرار هذه المجموعة؟ لن يتم نسخ الأعضاء.",
       "copySuffix": "(نسخة)",
-      "discussions": "Discussions",
       "duplicateTooltip": "تكرار هذه المجموعة",
       "emailTooltip": "أرسل بريدًا إلكترونيًا إلى هذه المجموعة",
       "location": "الموقع",
@@ -1091,8 +1040,6 @@
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
       "ageGrade": "العمر والصف",
-      "announcementsEnabled": "Announcements",
-      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "أرشفة",
       "archiveAria": "أرشفة المجموعة",
       "attTrack": "Track Attendance",
@@ -1109,8 +1056,6 @@
       "confidentialHelp": "إخفاء هذه المجموعة وقائمة أعضائها من الصفحات العامة وأداة البحث عن المجموعات وغير الأعضاء.",
       "confirmArchive": "هل أنت متأكد من رغبتك في أرشفة هذه المجموعة؟ ستُخفى من قائمة المجموعات حتى تتم استعادتها.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
-      "discussionsEnabled": "Discussions",
-      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "التسجيل",
       "groupDesc": "Group Description",
       "groupDet": "Group Details",
@@ -1463,7 +1408,6 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
-      "clearSearch": "Clear Search",
       "exampleMen": "- أرني الرجال فوق 30 عامًا الذين تقع أعياد ميلادهم في يوليو.",
       "exampleWomen": "- أرني النساء المتزوجات.",
       "examples": "أمثلة:",
@@ -1515,13 +1459,6 @@
       "title": "البيانات الديموغرافية",
       "total": "الإجمالي",
       "unassigned": "غير معين"
-    },
-    "duplicateDialog": {
-      "createAnyway": "Create Anyway",
-      "matchBirthDate": "Birthdate",
-      "message": "One or more people already in your database look like a possible match.",
-      "title": "Possible Duplicate",
-      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "Activity",
@@ -1867,7 +1804,6 @@
       "search": "Search fonts..."
     },
     "form": {
-      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "Contact Form",
       "questionDescription": "Add additional details...",
       "questionPlaceholder": "Enter your answer...",
@@ -1973,13 +1909,10 @@
       "fallbackLoading": "جارٍ التحميل...",
       "fallbackSection": "قسم",
       "fromAssociatedLesson": "From associated lesson:",
-      "importCount": "Import ({count})",
       "noActionsAvailable": "No actions available",
       "noContent": "لا يوجد محتوى متاح",
       "selectAction": "Select Action",
-      "selectExternalItem": "Select External Item",
-      "selectItem": "Select {label}",
-      "selectedCount": "{count} selected"
+      "selectExternalItem": "Select External Item"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2144,9 +2077,6 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "duration": "المدة",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
@@ -2155,9 +2085,6 @@
       "externalItem": "External Item",
       "item": "Item",
       "restoreOriginal": "Restore Original",
-      "selectAllInSection": "Select all in section",
-      "selectItem": "Select",
-      "selectItems": "Select Items",
       "song": "Song"
     },
     "planItemEdit": {
@@ -2489,8 +2416,6 @@
       "lightMode": "الوضع الفاتح",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
-      "passCurrent": "Pass Current",
-      "passCurrentMsg": "Pass Current Msg",
       "passLong": "Please enter a password that is at least 8 characters long.",
       "passMatch": "Passwords do not match.",
       "passNew": "New password",
@@ -2805,12 +2730,6 @@
       "searchPlaceholder": "Search playlists...",
       "title": "Playlists"
     },
-    "podcast": {
-      "copyFeedUrl": "Copy podcast feed URL",
-      "feedUrlCopied": "Podcast feed URL copied",
-      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
-      "title": "Podcast Feed"
-    },
     "publishDate": "Publish Date",
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
@@ -2819,8 +2738,6 @@
       "addToAnotherPlaylist": "Add to another playlist",
       "addToAnotherPlaylistAria": "إضافة العظة إلى قائمة تشغيل أخرى",
       "addToSelectedPlaylistAria": "إضافة إلى قائمة التشغيل المحددة",
-      "audioUrl": "Audio File URL (for podcast)",
-      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "This is not your channel url - See help link above",
       "currentLiveService": "Current Live Service",
       "currentYouTubeLiveStream": "Current YouTube Live Stream",
@@ -2850,7 +2767,6 @@
       "totalSermonDuration": "Total Sermon Duration",
       "unauthorized": "Unauthorized to create sermons",
       "unauthorizedDelete": "Unauthorized to delete sermons",
-      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "معرّف الفيديو أو URL",
       "videoProvider": "Video Provider",
       "vimeo": "Vimeo",
@@ -2938,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3466,42 +3379,13 @@
     "rolesPage": {
       "subtitle": "إدارة الأدوار والصلاحيات"
     },
-    "statementFormat": {
-      "australia": "Australia",
-      "canada": "Canada - CRA official receipt",
-      "cityOfIssue": "City of Issue",
-      "format": "Statement Format",
-      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
-      "newZealand": "New Zealand",
-      "orgAddress": "Organization Address",
-      "signatory": "Authorized Signatory Name",
-      "standard": "Standard"
-    },
     "storageSettingsEdit": {
-      "authFailed": "Auth Failed",
-      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps (مجانًا)",
-      "connect": "Connect",
-      "connectFirst": "Connect First",
-      "connected": "Connected",
-      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "سيتم تخزين الملفات على خطة تخزين MinistryStuff الخاصة بك، المرتبطة بهذه الكنيسة تلقائيًا. أدر خطتك على",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup Blocked",
       "provider": "المزوّد",
-      "reconnect": "Reconnect",
-      "s3AccessKey": "S3 Access Key",
-      "s3Bucket": "S3 Bucket",
-      "s3Endpoint": "S3 Endpoint",
-      "s3Helper": "S3 Helper",
-      "s3PublicBase": "S3 Public Base",
-      "s3Region": "S3 Region",
-      "s3Required": "S3 Required",
-      "s3SecretKey": "S3 Secret Key",
       "saveError": "خطأ في حفظ إعدادات التخزين.",
-      "sessionExpired": "Session Expired",
-      "sessionFailed": "Session Failed",
       "title": "تخزين الملفات",
       "usage": "تم استخدام {used} جيجابايت من {quota} جيجابايت."
     },
@@ -3673,7 +3557,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3932,49 +3815,18 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
-      "block": "Block",
       "blocks": "Blocks",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Campaign Progress",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Church",
-      "column": "Column",
       "common": "شائع",
-      "countdown": "Countdown",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Gallery",
-      "groupList": "Group List",
-      "html": "Html",
-      "iconFeature": "Icon Feature",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
-      "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
-      "serviceTimes": "Service Times",
-      "socialIcons": "Social Icons",
-      "staffGrid": "Staff Grid",
-      "stats": "Stats",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Testimonial",
-      "text": "Text",
-      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "Try a different search term",
-      "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "untitledBlock": "Untitled Block"
     },
     "elementEdit": {
       "enableLightbox": "تمكين Lightbox",
@@ -4084,7 +3936,6 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "externalStorage": "External Storage",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "الاسم",
@@ -4141,7 +3992,6 @@
       "wide": "عريض"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4160,8 +4010,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "انقر على إضافة محتوى في شريط الأدوات، ثم اسحب قسمًا أو عنصرًا إلى الصفحة.",
@@ -4438,7 +4287,6 @@
       "dividerNone": "بلا",
       "dividerShape": "الشكل",
       "dividerTop": "الفاصل العلوي",
-      "divider_": "Divider_",
       "dividers": "فواصل الشكل",
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
@@ -4475,10 +4323,6 @@
       "showCampus": "إظهار الفرع",
       "title": "العنوان"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Main Website",
-      "manageSites": "Manage Sites"
-    },
     "siteWidgets": {
       "addAction": "إضافة إجراء",
       "announcementBar": "شريط الإعلانات",
@@ -4502,15 +4346,6 @@
       "textColor": "لون النص",
       "title": "أدوات الموقع",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Add",
-      "deleteConfirm": "Delete Confirm",
-      "empty": "Empty",
-      "name": "Name",
-      "subDomain": "Sub Domain",
-      "subDomainHint": "Sub Domain Hint",
-      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "المحاذاة",
@@ -4712,8 +4547,6 @@
     },
     "audio": {
       "deleteConfirm": "هل أنت متأكد من حذف ملف الصوت هذا؟",
-      "tooLarge": "Too Large",
-      "unsupportedFormat": "Unsupported Format",
       "upload": "رفع صوت"
     },
     "create": {
@@ -4929,7 +4762,6 @@
       "operator": "العامل",
       "pauseAll": "إيقاف الأتمتة مؤقتًا",
       "paused": "موقوف مؤقتًا",
-      "recur_": "Recur_",
       "recurs": "التكرار",
       "resumeAll": "استئناف الأتمتة",
       "runNow": "تشغيل الآن",
@@ -4950,7 +4782,6 @@
       "resume": "استئناف",
       "retry": "إعادة المحاولة",
       "statusHeader": "الحالة",
-      "status_": "Status_",
       "subject": "الشخص",
       "title": "سجل التنفيذ",
       "trigger": "المحفز",

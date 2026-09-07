@@ -47,25 +47,6 @@
       "volunteer": "Vrijwilliger",
       "volunteers": "vrijwilligers"
     },
-    "headcountEntry": {
-      "confirmDelete": "Are you sure you wish to delete this headcount?",
-      "count": "Headcount",
-      "date": "Date",
-      "editTitle": "Edit Headcount",
-      "group": "Group",
-      "noGroup": "No group (whole service)",
-      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
-      "recent": "Recent Headcounts",
-      "service": "Service",
-      "serviceTime": "Service Time",
-      "title": "Enter Headcount",
-      "validate": {
-        "count": "Enter a whole number of zero or more.",
-        "date": "Please choose a date.",
-        "service": "Please select a service."
-      },
-      "wholeService": "All service times"
-    },
     "labels": {
       "align": "Uitlijnen",
       "always": "Altijd",
@@ -138,8 +119,6 @@
     "tabs": {
       "attTrend": "Aanwezigheidstrend",
       "groupAtt": "Groepsaanwezigheid",
-      "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "Instellingen"
     }
   },
@@ -199,7 +178,6 @@
       "confirmDelete": "Weet u zeker dat u dit evenement wilt verwijderen?",
       "confirmDeleteSeries": "Dit is een terugkerend evenement. Als u het verwijdert, wordt de hele reeks en alle bijbehorende voorvallen verwijderd. Weet u het zeker?",
       "delete": "Verwijderen",
-      "editEvent": "Edit Event",
       "manageRegistrations": "Registraties beheren",
       "noGroups": "Geen groepen gevonden."
     },
@@ -219,7 +197,6 @@
       "noCalendars": "Geen kalenders gevonden",
       "status": "Status",
       "subtitleEmpty": "Begin met het aanmaken van uw eerste kalender",
-      "subtitleWithCount": "Subtitle With Count",
       "title": "Kalenders"
     },
     "calendarPage": {
@@ -360,7 +337,6 @@
     "comboBox": {
       "addNew": "Nieuw toevoegen..."
     },
-    "confirm": "Confirm",
     "copy": "Kopiëren",
     "createPerson": {
       "validate": {
@@ -396,7 +372,6 @@
     "left": "Links",
     "loading": "Laden",
     "mobile": "Mobiel",
-    "more": "More",
     "name": "Naam",
     "navigation": "Navigatie",
     "no": "Nee",
@@ -737,11 +712,7 @@
       "fund": "Fonds",
       "inKind": "In natura",
       "lastDig": "Laatste 4 cijfers",
-      "method": "Methode",
-      "refund": "Refund",
-      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
-      "refundConfirmLabel": "Refund",
-      "refundFailed": "The refund could not be processed."
+      "method": "Methode"
     },
     "donationEvents": {
       "event": "Evenement: ",
@@ -761,14 +732,11 @@
       "don": "Donaties",
       "errMsg": "Geen fonds gevonden. Maak eerst een fonds aan voordat u een donatie doet",
       "export": "Exporteren",
-      "exportQbo": "Export for QuickBooks",
-      "failed": "Failed Gifts",
       "funds": "Fondsen",
       "method": "Methode",
       "noDonMsg": "Er zijn geen donaties bijgehouden. Zodra donaties worden ingevoerd, verschijnen ze hier.",
       "notes": "Notes",
       "pending": "In behandeling",
-      "refunded": "Refunded",
       "statements": "Giftenoverzichten",
       "summary": "Samenvatting",
       "total": "Totaal"
@@ -779,16 +747,6 @@
       "noBatch": "Geen batches gevonden.",
       "subtitle": "Bekijk donatiesamenvattingen en analyseer giftentrends",
       "total": "Totaal"
-    },
-    "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
-      "message": "Gateway Message",
-      "none": "No failed recurring gifts.",
-      "retry": "Retry",
-      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
-      "subtitle": "Recurring gifts the gateway could not collect",
-      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "Fondsnaam",
@@ -889,11 +847,6 @@
       "lapsedGivers": "Lapsed Givers"
     }
   },
-  "fileUpload": {
-    "chooseFile": "Choose File",
-    "quotaExceeded": "Quota Exceeded",
-    "uploadFailed": "Upload Failed"
-  },
   "forms": {
     "choicesEdit": {
       "act": "Actie",
@@ -927,8 +880,6 @@
       "availableStart": "Startdatum beschikbaarheid",
       "confirmMsg": "Weet u zeker dat u dit formulier permanent wilt verwijderen?",
       "contentTypeAria": "Inhoudstype",
-      "description": "Description",
-      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -1036,10 +987,8 @@
       "team": "Team"
     },
     "groupBanner": {
-      "announcements": "Announcements",
       "confirmDuplicate": "Deze groep dupliceren? Leden worden niet gekopieerd.",
       "copySuffix": "(Kopie)",
-      "discussions": "Discussions",
       "duplicateTooltip": "Dupliceer deze groep",
       "emailTooltip": "E-mail deze groep",
       "location": "Locatie",
@@ -1091,8 +1040,6 @@
     "groupDetailsEdit": {
       "addPhoto": "Foto toevoegen",
       "ageGrade": "Leeftijd en klas",
-      "announcementsEnabled": "Announcements",
-      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "Archiveren",
       "archiveAria": "Groep archiveren",
       "attTrack": "Aanwezigheid bijhouden",
@@ -1109,8 +1056,6 @@
       "confidentialHelp": "Verberg deze groep en de ledenlijst voor openbare pagina's, de groepenzoeker en niet-leden.",
       "confirmArchive": "Weet u zeker dat u deze groep wilt archiveren? Deze wordt verborgen uit de groepenlijst totdat deze wordt hersteld.",
       "confirmMsg": "Weet u zeker dat u deze groep permanent wilt verwijderen?",
-      "discussionsEnabled": "Discussions",
-      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Inschrijving",
       "groupDesc": "Groepsbeschrijving",
       "groupDet": "Groepsgegevens",
@@ -1463,7 +1408,6 @@
       "valuePlaceholder": "Waarde"
     },
     "aiSearch": {
-      "clearSearch": "Clear Search",
       "exampleMen": "- Toon mij mannen ouder dan 30 met verjaardagen in juli.",
       "exampleWomen": "- Toon mij vrouwen die getrouwd zijn.",
       "examples": "Voorbeelden:",
@@ -1515,13 +1459,6 @@
       "title": "Demografische gegevens",
       "total": "Totaal",
       "unassigned": "Niet toegewezen"
-    },
-    "duplicateDialog": {
-      "createAnyway": "Create Anyway",
-      "matchBirthDate": "Birthdate",
-      "message": "One or more people already in your database look like a possible match.",
-      "title": "Possible Duplicate",
-      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "Activiteit",
@@ -1867,7 +1804,6 @@
       "search": "Lettertypen zoeken..."
     },
     "form": {
-      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "Contactformulier",
       "questionDescription": "Voeg aanvullende details toe...",
       "questionPlaceholder": "Voer uw antwoord in...",
@@ -1973,13 +1909,10 @@
       "fallbackLoading": "Laden...",
       "fallbackSection": "Sectie",
       "fromAssociatedLesson": "Van gekoppelde les:",
-      "importCount": "Import ({count})",
       "noActionsAvailable": "Geen acties beschikbaar",
       "noContent": "Geen inhoud beschikbaar",
       "selectAction": "Actie selecteren",
-      "selectExternalItem": "Extern item selecteren",
-      "selectItem": "Select {label}",
-      "selectedCount": "{count} selected"
+      "selectExternalItem": "Extern item selecteren"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2144,9 +2077,6 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "duration": "Duur",
       "editItem": "Item bewerken",
       "editSection": "Sectie bewerken",
@@ -2155,9 +2085,6 @@
       "externalItem": "Extern item",
       "item": "Item",
       "restoreOriginal": "Restore Original",
-      "selectAllInSection": "Select all in section",
-      "selectItem": "Select",
-      "selectItems": "Select Items",
       "song": "Lied"
     },
     "planItemEdit": {
@@ -2489,8 +2416,6 @@
       "lightMode": "Lichte modus",
       "linkedAccounts": "Gekoppelde accounts",
       "noDirect": "Verberg mij in het ledenregister",
-      "passCurrent": "Pass Current",
-      "passCurrentMsg": "Pass Current Msg",
       "passLong": "Voer een wachtwoord in van ten minste 8 tekens.",
       "passMatch": "Wachtwoorden komen niet overeen.",
       "passNew": "Nieuw wachtwoord",
@@ -2805,12 +2730,6 @@
       "searchPlaceholder": "Afspeellijsten zoeken...",
       "title": "Afspeellijsten"
     },
-    "podcast": {
-      "copyFeedUrl": "Copy podcast feed URL",
-      "feedUrlCopied": "Podcast feed URL copied",
-      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
-      "title": "Podcast Feed"
-    },
     "publishDate": "Publicatiedatum",
     "searchPlaceholder": "Preken zoeken op titel of afspeellijst...",
     "sermon": "Preek",
@@ -2819,8 +2738,6 @@
       "addToAnotherPlaylist": "Toevoegen aan een andere afspeellijst",
       "addToAnotherPlaylistAria": "Voeg preek toe aan een andere afspeellijst",
       "addToSelectedPlaylistAria": "Toevoegen aan geselecteerde afspeellijst",
-      "audioUrl": "Audio File URL (for podcast)",
-      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "Dit is niet uw kanaal-URL - zie helplink hierboven",
       "currentLiveService": "Huidige live-dienst",
       "currentYouTubeLiveStream": "Huidige YouTube live-stream",
@@ -2850,7 +2767,6 @@
       "totalSermonDuration": "Totale prekenduur",
       "unauthorized": "Niet gemachtigd om preken aan te maken",
       "unauthorizedDelete": "Niet gemachtigd om preken te verwijderen",
-      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "Video-ID of URL",
       "videoProvider": "Videoprovider",
       "vimeo": "Vimeo",
@@ -2938,9 +2854,6 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
-      "field": {
-        "certified": "Certified"
-      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3466,42 +3379,13 @@
     "rolesPage": {
       "subtitle": "Beheer rollen en machtigingen"
     },
-    "statementFormat": {
-      "australia": "Australia",
-      "canada": "Canada - CRA official receipt",
-      "cityOfIssue": "City of Issue",
-      "format": "Statement Format",
-      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
-      "newZealand": "New Zealand",
-      "orgAddress": "Organization Address",
-      "signatory": "Authorized Signatory Name",
-      "standard": "Standard"
-    },
     "storageSettingsEdit": {
-      "authFailed": "Auth Failed",
-      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps (Gratis)",
-      "connect": "Connect",
-      "connectFirst": "Connect First",
-      "connected": "Connected",
-      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Bestanden worden opgeslagen op uw MinistryStuff-opslagabonnement, automatisch gekoppeld aan deze kerk. Beheer uw abonnement op",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "popupBlocked": "Popup Blocked",
       "provider": "Provider",
-      "reconnect": "Reconnect",
-      "s3AccessKey": "S3 Access Key",
-      "s3Bucket": "S3 Bucket",
-      "s3Endpoint": "S3 Endpoint",
-      "s3Helper": "S3 Helper",
-      "s3PublicBase": "S3 Public Base",
-      "s3Region": "S3 Region",
-      "s3Required": "S3 Required",
-      "s3SecretKey": "S3 Secret Key",
       "saveError": "Fout bij het opslaan van opslaginstellingen.",
-      "sessionExpired": "Session Expired",
-      "sessionFailed": "Session Failed",
       "title": "Bestandsopslag",
       "usage": "{used} GB van {quota} GB gebruikt."
     },
@@ -3673,7 +3557,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3932,49 +3815,18 @@
       "addElements": "Elementen toevoegen",
       "advanced": "Geavanceerd",
       "all": "Alles",
-      "block": "Block",
       "blocks": "Blokken",
-      "box": "Box",
-      "calendar": "Calendar",
-      "campaignProgress": "Campaign Progress",
-      "card": "Card",
-      "carousel": "Carousel",
       "church": "Kerk",
-      "column": "Column",
       "common": "Algemeen",
-      "countdown": "Countdown",
       "descReusableElement": "Herbruikbaar elementblok",
       "descReusableSection": "Herbruikbare sectie",
       "descSection": "Container voor inhoudsgroepering",
-      "donateLink": "Donate Link",
-      "donation": "Donation",
-      "embedPage": "Embed Page",
-      "expandable": "Expandable",
-      "form": "Form",
-      "gallery": "Gallery",
-      "groupList": "Group List",
-      "html": "Html",
-      "iconFeature": "Icon Feature",
-      "image": "Image",
-      "location": "Location",
-      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Geen elementen gevonden",
-      "row": "Row",
       "searchElements": "Elementen zoeken",
       "section": "Sectie",
-      "serviceTimes": "Service Times",
-      "socialIcons": "Social Icons",
-      "staffGrid": "Staff Grid",
-      "stats": "Stats",
-      "stream": "Stream",
-      "table": "Table",
-      "testimonial": "Testimonial",
-      "text": "Text",
-      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "Probeer een andere zoekterm",
-      "untitledBlock": "Naamloos blok",
-      "video": "Video"
+      "untitledBlock": "Naamloos blok"
     },
     "elementEdit": {
       "enableLightbox": "Lightbox inschakelen",
@@ -4084,7 +3936,6 @@
       "uploadFiles": "Bestanden uploaden"
     },
     "filesManager": {
-      "externalStorage": "External Storage",
       "files": "Bestanden",
       "getStarted": "Begin met het uploaden van uw eerste bestand",
       "name": "Naam",
@@ -4141,7 +3992,6 @@
       "wide": "Breed"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4160,8 +4010,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Klik op Inhoud toevoegen in de werkbalk en sleep vervolgens een sectie of element op de pagina.",
@@ -4438,7 +4287,6 @@
       "dividerNone": "Geen",
       "dividerShape": "Vorm",
       "dividerTop": "Bovenscheiding",
-      "divider_": "Divider_",
       "dividers": "Vormscheidingen",
       "duplicate": "Dupliceren",
       "duplicateSection": "Sectie dupliceren",
@@ -4475,10 +4323,6 @@
       "showCampus": "Toon locatie",
       "title": "Titel"
     },
-    "siteSwitcher": {
-      "mainWebsite": "Main Website",
-      "manageSites": "Manage Sites"
-    },
     "siteWidgets": {
       "addAction": "Actie toevoegen",
       "announcementBar": "Mededelingenbalk",
@@ -4502,15 +4346,6 @@
       "textColor": "Tekstkleur",
       "title": "Website-widgets",
       "url": "URL"
-    },
-    "sitesDialog": {
-      "add": "Add",
-      "deleteConfirm": "Delete Confirm",
-      "empty": "Empty",
-      "name": "Name",
-      "subDomain": "Sub Domain",
-      "subDomainHint": "Sub Domain Hint",
-      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "Uitlijning",
@@ -4712,8 +4547,6 @@
     },
     "audio": {
       "deleteConfirm": "Weet u zeker dat u dit audiobestand wilt verwijderen?",
-      "tooLarge": "Too Large",
-      "unsupportedFormat": "Unsupported Format",
       "upload": "Audio uploaden"
     },
     "create": {
@@ -4929,7 +4762,6 @@
       "operator": "Operator",
       "pauseAll": "Automatisering pauzeren",
       "paused": "Gepauzeerd",
-      "recur_": "Recur_",
       "recurs": "Herhaalt",
       "resumeAll": "Automatisering hervatten",
       "runNow": "Nu uitvoeren",
@@ -4950,7 +4782,6 @@
       "resume": "Hervatten",
       "retry": "Opnieuw proberen",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Persoon",
       "title": "Uitvoeringsgeschiedenis",
       "trigger": "Trigger",
