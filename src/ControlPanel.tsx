@@ -1,7 +1,7 @@
 import React from "react";
 import UserContext from "./UserContext";
 
-import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { ApiHelper, CurrencyHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Login } from "./Login";
 import { OAuthCallback } from "./oauth/OAuthCallback";
@@ -39,6 +39,7 @@ export const ControlPanel = () => {
   const redirectingRef = React.useRef(false);
 
   AnalyticsHelper.init();
+  CurrencyHelper.initializeExchangeRates();
   React.useEffect(() => {
     AnalyticsHelper.logPageView();
   }, [location]);

@@ -57,14 +57,14 @@ export const DonationBatchPage = () => {
   React.useEffect(() => {
     if (donations.data) {
       const totalDonations = donations.data.length;
-      const totalAmount = donations.data.reduce((sum, donation) => sum + (donation.amount || 0), 0);
+      const totalAmount = donations.data.reduce((sum, donation) => sum + CurrencyHelper.convertAmount(donation.amount || 0, donation.currency || "", currency), 0);
 
       setStats({
         totalDonations,
         totalAmount
       });
     }
-  }, [donations.data]);
+  }, [donations.data, currency]);
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -98,7 +98,7 @@ export const DonationBatchPage = () => {
             <PageHeaderStats
               items={[
                 { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: Locale.label("donations.donationBatchPage.donations"), minWidth: 80 },
-                { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.donationBatchPage.totalAmount") }
+                { value: <>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)} <span style={{ color: "whitesmoke" }}>*</span></>, label: Locale.label("donations.donationBatchPage.totalAmount") }
               ]}
             />
           )}
@@ -121,6 +121,7 @@ export const DonationBatchPage = () => {
             batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
             funds={funds.data || []}
             updatedFunction={donationUpdated}
+            currency={currency}
           />
         )}
 

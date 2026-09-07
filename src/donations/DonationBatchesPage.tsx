@@ -18,11 +18,11 @@ export const DonationBatchesPage = () => {
   const [currency, setCurrency] = React.useState<string>("usd");
 
   const batches = useQuery<DonationBatchInterface[]>({
-    queryKey: ["/donationbatches", "GivingApi"],
+    queryKey: ["/donationbatches?withCurrency=1", "GivingApi"],
     placeholderData: []
   });
 
-  const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<DonationBatchInterface>(batches.data || [], "", "asc", batchComparators);
+  const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<DonationBatchInterface | any>(batches.data || [], "", "asc", batchComparators);
 
   const refetchBatches = batches.refetch;
   const batchUpdated = React.useCallback(() => {
@@ -47,15 +47,32 @@ export const DonationBatchesPage = () => {
     if (batches.data) {
       const totalBatches = batches.data.length;
       const totalDonations = batches.data.reduce((sum, batch) => sum + (batch.donationCount || 0), 0);
-      const totalAmount = batches.data.reduce((sum, batch) => sum + (batch.totalAmount || 0), 0);
+
+      //Group and sum totals by currency into an object
+      const currencyTotalsObj = batches.data
+      .flatMap((batch: any) => batch.amountsByCurrency)
+      .reduce((totals, item) => {
+        const { currency, amount } = item;
+        totals[currency] = (totals[currency] || 0) + amount;
+        return totals;
+      }, {});
+
+      
+      //Convert the object keys and values into an array of objects
+      const currencyTotalsArray = Object.entries(currencyTotalsObj).map(([currency_name, amount]: any) => ({
+        currency: currency_name,
+        amount: CurrencyHelper.convertAmount(amount, currency_name, currency)
+      }));
+      
+      const totalAmount = currencyTotalsArray.reduce((sum, curr) => sum + (curr.amount), 0).toFixed(2)
 
       setStats({
         totalBatches,
         totalDonations,
-        totalAmount
+        totalAmount: Number(totalAmount)
       });
     }
-  }, [batches.data]);
+  }, [batches.data, currency]);
 
   const editBatch = editBatchId === "notset" ? undefined : editBatchId === "" ? {} : (sortedBatches.find((b) => b.id === editBatchId) || { id: editBatchId });
 
@@ -92,6 +109,7 @@ export const DonationBatchesPage = () => {
 
       const dateObj = b.batchDate ? new Date(b.batchDate.toString().split("T")[0] + "T00:00:00") : new Date();
 
+      const batchTotalAmount = b.amountsByCurrency.reduce((sum: any, batch: any) => sum + CurrencyHelper.convertAmount(batch.amount, batch.currency, currency), 0);
       result.push(
         <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
@@ -116,7 +134,7 @@ export const DonationBatchesPage = () => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}
+              {CurrencyHelper.formatCurrencyWithLocale(batchTotalAmount, currency)} <span style={{ color: "whitesmoke", fontSize: 12 }}>*</span>
             </Typography>
           </TableCell>
           <TableCell align="right" className="rowActions">{editLink}</TableCell>
@@ -151,6 +169,17 @@ export const DonationBatchesPage = () => {
     }
   };
 
+  const exportData = batches?.data?.map((batch: any) => {
+    const amount = CurrencyHelper.convertDonationTotals(batch.amountsByCurrency, currency);
+    return {
+      batchDate: batch.batchDate,
+      donationCount: batch.donationCount,
+      id: batch.id,
+      name: batch.name,
+      totalAmount: amount
+    }
+  });
+
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
       setCurrency(result);
@@ -178,7 +207,7 @@ export const DonationBatchesPage = () => {
               items={[
                 { icon: <DonationIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalBatches, label: Locale.label("donations.donationBatchesPage.batches"), minWidth: 80 },
                 { icon: <Icon sx={{ color: "#FFF", fontSize: 24 }}>receipt</Icon>, value: stats.totalDonations, label: Locale.label("donations.donationBatchesPage.donations"), minWidth: 80 },
-                { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.donationBatchesPage.totalAmount") }
+                { value: <>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)} <span style={{ color: "whitesmoke" }}>*</span></>, label: Locale.label("donations.donationBatchesPage.totalAmount") }
               ]}
             />
           )}
@@ -203,9 +232,10 @@ export const DonationBatchesPage = () => {
           icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
           title={Locale.label("donations.donations.batches")}
           count={sortedBatches.length}
-          actions={batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
+          actions={batches.data && <ExportButton data={exportData || []} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
         >
           {getTable()}
+          <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mt: 1, textAlign: "right" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
         </CardWithHeader>
 
         <Box sx={{ mt: 3 }}>

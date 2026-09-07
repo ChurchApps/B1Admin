@@ -77,7 +77,7 @@ export const BatchGivingStatementsPage = () => {
       const personDonations = yearDonations.filter((d) => d.personId === personId);
 
       const csvRows: string[] = [];
-      csvRows.push("amount,donationDate,fundName,method,methodDetails"); // Header
+      csvRows.push("amount,currency,donationDate,fundName,method,methodDetails"); // Header
 
       personDonations.forEach((donation) => {
         const fundDonationsForThisDonation = yearFundDonations.filter((fd) => fd.donationId === donation.id);
@@ -85,6 +85,7 @@ export const BatchGivingStatementsPage = () => {
         fundDonationsForThisDonation.forEach((fd) => {
           const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
           const amount = fd.amount || 0;
+          const currency = fd.currency || "";
           const donationDate = donation.donationDate || "";
           const fundName = fund?.name || "";
           const method = donation.method || "";
@@ -99,7 +100,7 @@ export const BatchGivingStatementsPage = () => {
           };
 
           csvRows.push(
-            `${escapeCsv(amount)},${escapeCsv(donationDate)},${escapeCsv(fundName)},${escapeCsv(method)},${escapeCsv(methodDetails)}`
+            `${escapeCsv(amount)},${escapeCsv(currency)},${escapeCsv(donationDate)},${escapeCsv(fundName)},${escapeCsv(method)},${escapeCsv(methodDetails)}`
           );
         });
       });
@@ -130,6 +131,10 @@ export const BatchGivingStatementsPage = () => {
       total += fd.amount || 0;
     });
     return total;
+  }, [yearFundDonations]);
+  const amountWithCurrency = useMemo(() => {
+    const pairs = yearFundDonations.map((fd) => ({ amount: fd.amount || 0, currency: fd.currency || "usd" }));
+    return pairs;
   }, [yearFundDonations]);
 
   const totalDonations = yearDonations.length;
@@ -212,10 +217,11 @@ export const BatchGivingStatementsPage = () => {
                         {Locale.label("donations.batchStatements.totalAmount") || "Total Amount:"}
                       </Typography>
                       <Typography variant="body1" fontWeight="bold" color="primary">
-                        {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}
+                        {CurrencyHelper.convertDonationTotals(amountWithCurrency, currency)} <span style={{ color: "whitesmoke", fontSize: 12 }}>*</span>
                       </Typography>
                     </Box>
                   </Stack>
+                  <Typography sx={{ fontSize: 12, fontStyle: "italic", color: "grey", mt: 1, textAlign: "right" }}>*{Locale.label("common.currencyRatesInfo")}</Typography>
                 </CardContent>
               </Card>
 
