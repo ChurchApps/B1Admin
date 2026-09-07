@@ -347,7 +347,7 @@
     "amount": "Amount",
     "appTheme": "App Theme",
     "b1CheckIn": "B1 CheckIn",
-    "b1Mobile": "B1 Mobile",
+    "b1Mobile": "Member portal",
     "back": "Back",
     "bottom": "Bottom",
     "cancel": "Cancel",
@@ -391,6 +391,7 @@
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
+    "labels": "Labels",
     "left": "Left",
     "loading": "Loading",
     "mobile": "Mobile",
@@ -1450,8 +1451,8 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
-      "subtitle": "Configure settings for the B1 Mobile app",
-      "title": "B1 Mobile"
+      "subtitle": "Member directory, visibility, and messaging for the B1.church app",
+      "title": "Portal settings"
     },
     "checkInPage": {
       "copyLink": "Copy link",
@@ -1465,7 +1466,7 @@
         "changeImage": "Change Image",
         "duration": "Duration (s)",
         "enableIdleScreen": "Enable idle screen",
-        "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
+        "headerSubtitle": "Kiosk colors are managed in Mobile > App Theme. Configure background images and idle screen behavior below.",
         "idleScreen": "Idle Screen / Screensaver",
         "sectionTitle": "Kiosk Theme",
         "slides": "Slides",
@@ -3286,6 +3287,7 @@
     "checkinSettingsEdit": {
       "block": "Block (prevent check-in)",
       "help": "Choose how check-in responds when a room is over its volunteer-to-child ratio or below its minimum volunteers.",
+      "kioskLink": "Check-in kiosk, QR, and labels",
       "ratioEnforcement": "Volunteer Ratio Enforcement",
       "title": "Check-In",
       "warn": "Warn (allow with confirmation)"
@@ -3500,8 +3502,9 @@
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
-      "subtitle": "Configure mobile app settings",
-      "title": "Mobile App Settings"
+      "subtitle": "Tabs on the B1.church app",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More.",
+      "title": "Navigation"
     },
     "roleCheck": {
       "permissionAria": "Permission {label}"
@@ -4342,7 +4345,7 @@
       "darkDesc": "Darkest shade — body text",
       "error": "Error",
       "errorDesc": "Errors and destructive actions",
-      "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Settings > App Theme.",
+      "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Mobile > App Theme.",
       "headerTitle": "Color Palette",
       "light": "Light",
       "lightAccent": "Light Accent",

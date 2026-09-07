@@ -34,6 +34,7 @@ type SecondarySection =
   | "campaigns"
   | "statements"
   | "liveStreamTimes"
+  | "labels"
   | "serverAdmin";
 
 export type NavSection = PrimarySection | SecondarySection;
@@ -76,6 +77,7 @@ const SECONDARY_ROUTES: Record<
   campaigns: { parent: "donations", label: "Campaigns", url: /\/donations\/campaigns/ },
   statements: { parent: "donations", label: "Giving Statements", url: /\/donations\/statements/ },
   liveStreamTimes: { parent: "sermons", label: "Live Stream Times", url: /\/sermons\/times/ },
+  labels: { parent: "mobile", label: "Labels", url: /\/mobile\/checkin\/labels/ },
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { Add as AddIcon, PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
 import { useSearchParams } from "react-router-dom";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
@@ -83,6 +83,8 @@ export const MobileAppSettingsPage = () => {
       </PageHeader>
 
       <Box sx={{ p: 3 }}>
+        <Alert severity="info" sx={{ mb: 3 }}>{Locale.label("settings.mobileAppSettings.tabBarNote")}</Alert>
+
         {selectedTab && (
           <Box sx={{ mb: 3 }}>
             <AppEdit
