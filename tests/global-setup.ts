@@ -10,14 +10,14 @@ async function globalSetup(config: FullConfig) {
   await verifyEnv({ fullCheck: true });
 
   const ctx = await request.newContext();
-  const loginRes = await ctx.post("http://localhost:8084/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
+  const loginRes = await ctx.post((process.env.API_BASE || "http://localhost:8084") + "/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
   if (loginRes.ok()) {
     const loginBody = await loginRes.json();
     const uc = (loginBody.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || loginBody.userChurches?.[0];
     const auth = { headers: { Authorization: "Bearer " + uc?.jwt } };
-    const groups = await (await ctx.get("http://localhost:8084/membership/groups", auth)).json();
+    const groups = await (await ctx.get((process.env.API_BASE || "http://localhost:8084") + "/membership/groups", auth)).json();
     const stale = (Array.isArray(groups) ? groups : []).filter((g: any) => /^(Bulk All|Zz Bulk) \d+$/.test(g.name || ""));
-    for (const g of stale) await ctx.delete(`http://localhost:8084/membership/groups/${g.id}`, auth);
+    for (const g of stale) await ctx.delete(`${process.env.API_BASE || "http://localhost:8084"}/membership/groups/${g.id}`, auth);
   }
   await ctx.dispose();
 

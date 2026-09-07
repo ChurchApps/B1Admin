@@ -3,7 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 // Issue #961: an arrangement key with no key signature rendered as "Default ()"
 // in the song picker chip and in the saved plan item description.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 
 const SEARCH_RESULTS = [
   {

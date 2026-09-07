@@ -3,7 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 // Issue #988: order-of-service items can reference one of the plan's positions so the
 // assigned volunteer's name shows beside the item on screen and in the printout.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 const PERSON_ID = "PER00000001";
 const PERSON_NAME = "John Smith";
 

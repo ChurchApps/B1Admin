@@ -7,7 +7,7 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
 
 
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const CALENDAR = "Zacchaeus Registrations Calendar";
 const EVENT_TITLE = "Zacchaeus Registration Test Event";
 const GROUP = "Middle School Youth";

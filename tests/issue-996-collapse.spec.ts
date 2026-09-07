@@ -4,7 +4,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 // Issue #996 (fix 2): "Expand to Actions" permanently rewrote the plan with no way back.
 // The plan is seeded through DoingApi and the provider is mocked at the API proxy, since
 // no content provider is linked in the local stack.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 
 const INSTRUCTIONS = {
   name: "Collapse Repro Lesson",

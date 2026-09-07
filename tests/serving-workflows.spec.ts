@@ -253,7 +253,7 @@ test.describe.serial("Serving Management - Workflows", () => {
   });
 
   test("permission tiers are enforced at the API (view / edit-assigned / admin)", async () => {
-    const API_BASE = "http://localhost:8084";
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
     const ctx = await request.newContext();
     // Log in as the seeded "Workflow Volunteer" — DoingApi/Tasks/View only, person PER00000069.
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "volunteer@b1.church", password: "password" } });
@@ -325,7 +325,7 @@ test.describe.serial("Serving Management - Workflows", () => {
   });
 
   test("a cross-workflow outcome hands the card off to another workflow (API)", async () => {
-    const API_BASE = "http://localhost:8084";
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
     const ctx = await request.newContext();
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
     expect(loginRes.ok()).toBeTruthy();
@@ -351,7 +351,7 @@ test.describe.serial("Serving Management - Workflows", () => {
   });
 
   test("cards stay out of plain-task surfaces and the generic save endpoint (API)", async () => {
-    const API_BASE = "http://localhost:8084";
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
     const ctx = await request.newContext();
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
     expect(loginRes.ok()).toBeTruthy();
@@ -374,7 +374,7 @@ test.describe.serial("Serving Management - Workflows", () => {
   });
 
   test("a manual send-back does not re-trigger the target step onEnter route (API)", async () => {
-    const API_BASE = "http://localhost:8084";
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
     const ctx = await request.newContext();
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
     expect(loginRes.ok()).toBeTruthy();
@@ -397,7 +397,7 @@ test.describe.serial("Serving Management - Workflows", () => {
   });
 
   test("a personMatch route auto-advances a matching card on entry (API)", async () => {
-    const API_BASE = "http://localhost:8084";
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
     const ctx = await request.newContext();
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
     expect(loginRes.ok()).toBeTruthy();
@@ -418,7 +418,7 @@ test.describe.serial("Serving Management - Workflows", () => {
     await ctx.dispose();
   });
 
-  const API_BASE = "http://localhost:8084";
+  const API_BASE = process.env.API_BASE || "http://localhost:8084";
   async function apiAuth(ctx: any) {
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
     expect(loginRes.ok()).toBeTruthy();

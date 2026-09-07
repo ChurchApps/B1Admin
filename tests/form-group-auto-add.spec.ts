@@ -6,7 +6,7 @@ import { navigateToPeople } from "./helpers/navigation";
 
 // Camp-registration flow (#1026): a stand-alone form that creates a person record
 // and drops that person straight onto a group's roster.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 const FORM_NAME = "Zacchaeus Camp Registration";
 const GROUP_NAME = "Vacation Bible School";
 const CAMPER_EMAIL = "zacchaeus.camper@example.com";

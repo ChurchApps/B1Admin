@@ -3,7 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 // Digital signage feed: a plan type acts like a lessons.church classroom — the feed url
 // resolves the current plan and emits the SignPresenter external-playlist format.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 const WORSHIP_MINISTRY_ID = "GRP0000000a";
 // Venue/section on api.lessons.church that the demo data also uses; its "play" actions carry files.
 const VENUE_ID = "keYYf8Z8ZD1";

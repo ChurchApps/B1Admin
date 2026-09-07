@@ -498,18 +498,18 @@ test.describe("Plan type row links to the schedule matrix overview", () => {
 
   test.beforeAll(async () => {
     ctx = await pwRequest.newContext();
-    const loginRes = await ctx.post("http://localhost:8084/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
+    const loginRes = await ctx.post((process.env.API_BASE || "http://localhost:8084") + "/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
     expect(loginRes.ok()).toBeTruthy();
     const body = await loginRes.json();
     const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
     auth = { headers: { Authorization: "Bearer " + uc.jwt } };
-    const typeRes = await ctx.post("http://localhost:8084/doing/planTypes", { ...auth, data: [{ ministryId: WORSHIP_MINISTRY_ID, name: PLAN_TYPE_NAME }] });
+    const typeRes = await ctx.post((process.env.API_BASE || "http://localhost:8084") + "/doing/planTypes", { ...auth, data: [{ ministryId: WORSHIP_MINISTRY_ID, name: PLAN_TYPE_NAME }] });
     expect(typeRes.ok()).toBeTruthy();
     planTypeId = (await typeRes.json())[0].id;
   });
 
   test.afterAll(async () => {
-    if (planTypeId) await ctx.delete(`http://localhost:8084/doing/planTypes/${planTypeId}`, auth);
+    if (planTypeId) await ctx.delete(`${process.env.API_BASE || "http://localhost:8084"}/doing/planTypes/${planTypeId}`, auth);
     await ctx.dispose();
   });
 
@@ -611,7 +611,7 @@ test.describe.serial("Plan pickers honor First Day of Week", () => {
 test.describe.serial("Service Order bulk delete inside a section", () => {
   test.describe.configure({ retries: 0 });
 
-  const API = "http://localhost:8084";
+  const API = process.env.API_BASE || "http://localhost:8084";
   let ctx: APIRequestContext;
   let jwt: string;
   let planId: string;
@@ -719,7 +719,7 @@ test.describe.serial("Service Order bulk delete inside a section", () => {
 test.describe.serial("Service Order multi-select import from the External Item picker", () => {
   test.describe.configure({ retries: 0 });
 
-  const API = "http://localhost:8084";
+  const API = process.env.API_BASE || "http://localhost:8084";
   let ctx: APIRequestContext;
   let jwt: string;
   let planId: string;

@@ -7,7 +7,7 @@ import { recoverFromViteError } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Event-driven workflow triggers fire on back-end mutations via WebhookDispatcher.
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 
 // Open the triggers manager for the seeded workflow's board.
 async function openManager(page: Page) {

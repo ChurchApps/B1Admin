@@ -7,7 +7,7 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Use scope-level reminders (API: /messaging/reminders/scope/plan/{planTypeId})
 // rather than plan-type columns; editor needs plan type to have an id.
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const WORSHIP_MINISTRY_ID = "GRP0000000a";
 // Use a new plan type to avoid offset assertion races with other specs.
 const PLAN_TYPE_NAME = "Zephaniah Reminder Plans";

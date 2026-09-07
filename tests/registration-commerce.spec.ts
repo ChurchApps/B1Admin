@@ -18,7 +18,7 @@ import { confirmDelete } from "./helpers/fixtures";
 // reset-demo. Event A (built through the UI) drives the settings round-trip + waitlist toggle;
 // Event B (built via the API with a tight capacity) drives the roster/paid/waitlist/CSV assertions.
 
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const CALENDAR = "Zacchaeus Commerce Calendar";
 const EVENT_A = "Zacchaeus Commerce Settings Event";
 const EVENT_B = "Zacchaeus Commerce Roster Event";
