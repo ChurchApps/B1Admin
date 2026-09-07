@@ -49,8 +49,8 @@ export const ArrangementEdit = (props: Props) => {
         <TextField label={Locale.label("songs.arrangement.name")} fullWidth placeholder={Locale.label("placeholders.song.arrangementName")} {...register("name")} />
         <TextField label={Locale.label("songs.details.bpm") || "BPM"} type="number" fullWidth {...register("bpm", { valueAsNumber: true })} />
         <TextField label={Locale.label("songs.details.meter") || "Meter"} fullWidth {...register("meter")} />
-        <TextField label={Locale.label("songs.details.length") || "Length"} type="number" placeholder="seconds" fullWidth {...register("seconds", { valueAsNumber: true })} />
-        <TextField label="Sequence" fullWidth placeholder="Verse 1, Chorus, Verse 2, Chorus, Bridge" {...register("sequence")} />
+        <TextField label={Locale.label("songs.details.length") || "Length"} type="number" placeholder={Locale.label("placeholders.song.lengthSeconds")} fullWidth {...register("seconds", { valueAsNumber: true })} />
+        <TextField label={Locale.label("songs.arrangement.sequence")} fullWidth placeholder={Locale.label("placeholders.song.sequence")} {...register("sequence")} />
         <Typography variant="caption" color="text.secondary">
           {Locale.label("songs.arrangement.chordProHint") || "ChordPro format: [G] inline chords, [Verse 1] section headers."}
         </Typography>

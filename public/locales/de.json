@@ -1349,7 +1349,7 @@
         "changeImage": "Bild ändern",
         "duration": "Dauer (s)",
         "enableIdleScreen": "Leerlaufbildschirm aktivieren",
-        "headerSubtitle": "Kiosk-Farben werden unter Einstellungen > App-Design verwaltet. Konfigurieren Sie unten Hintergrundbilder und das Verhalten des Leerlaufbildschirms.",
+        "headerSubtitle": "Kiosk-Farben werden unter Mobil > App-Design verwaltet. Konfigurieren Sie unten Hintergrundbilder und das Verhalten des Leerlaufbildschirms.",
         "idleScreen": "Leerlaufbildschirm / Bildschirmschoner",
         "sectionTitle": "Kiosk-Design",
         "slides": "Folien",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Dunkelster Farbton — Fließtext",
       "error": "Fehler",
       "errorDesc": "Fehler und destruktive Aktionen",
-      "headerSubtitle": "Passen Sie das Farbschema Ihrer Website an. Für mobile App-, Mitgliederportal- und Kiosk-Farben gehen Sie zu Einstellungen > App-Design.",
+      "headerSubtitle": "Passen Sie das Farbschema Ihrer Website an. Für mobile App-, Mitgliederportal- und Kiosk-Farben gehen Sie zu Mobil > App-Design.",
       "headerTitle": "Farbpalette",
       "light": "Hell",
       "lightAccent": "Heller Akzent",
@@ -4545,6 +4545,7 @@
       "name": "Arrangementname",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangements",
     "audio": {
       "deleteConfirm": "Möchten Sie diese Audiodatei wirklich löschen?",
       "upload": "Audio hochladen"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonart"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangements",
-      "editArrangementAria": "Arrangement bearbeiten",
-      "noArrangements": "Keine Arrangements gefunden."
-    },
     "praiseChartsProducts": {
       "close": "Schließen",
       "download": "Herunterladen",
@@ -4677,17 +4673,6 @@
     "providedBy": "Bereitgestellt von"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Überall",
-      "campus": "Campus",
-      "eventType": "Ereignistyp",
-      "group": "Gruppe",
-      "hasAtt": "hat teilgenommen",
-      "hasNoAtt": "hat nicht teilgenommen",
-      "op": "Operator",
-      "serv": "Dienst",
-      "servTime": "Dienstzeit"
-    },
     "conditionDate": {
       "absolute": "Absolut",
       "curMonth": "Aktueller Monat",

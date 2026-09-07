@@ -1349,7 +1349,7 @@
         "changeImage": "Byt bild",
         "duration": "Varaktighet (s)",
         "enableIdleScreen": "Aktivera vilskärm",
-        "headerSubtitle": "Kioskfärger hanteras i Inställningar > Apptema. Konfigurera bakgrundsbilder och vilskärmsbeteende nedan.",
+        "headerSubtitle": "Kioskfärger hanteras i Mobil > Apptema. Konfigurera bakgrundsbilder och vilskärmsbeteende nedan.",
         "idleScreen": "Vilskärm / skärmsläckare",
         "sectionTitle": "Kiosktema",
         "slides": "Bilder",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Mörkaste nyansen — brödtext",
       "error": "Fel",
       "errorDesc": "Fel och destruktiva åtgärder",
-      "headerSubtitle": "Anpassa webbplatsens färgschema. För mobilapp, medlemsportal och kioskfärger, gå till Inställningar > Apptema.",
+      "headerSubtitle": "Anpassa webbplatsens färgschema. För mobilapp, medlemsportal och kioskfärger, gå till Mobil > Apptema.",
       "headerTitle": "Färgpalett",
       "light": "Ljus",
       "lightAccent": "Ljus accent",
@@ -4545,6 +4545,7 @@
       "name": "Arrangemangsnamn",
       "title": "Arrangemang"
     },
+    "arrangements": "Arrangemang",
     "audio": {
       "deleteConfirm": "Är du säker på att du vill ta bort den här ljudfilen?",
       "upload": "Ladda upp ljud"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonart"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangemang",
-      "editArrangementAria": "Redigera arrangemang",
-      "noArrangements": "Inga arrangemang hittades."
-    },
     "praiseChartsProducts": {
       "close": "Stäng",
       "download": "Ladda ner",
@@ -4677,17 +4673,6 @@
     "providedBy": "Tillhandahållet av"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Var som helst",
-      "campus": "Campus",
-      "eventType": "Händelsetyp",
-      "group": "Grupp",
-      "hasAtt": "har deltagit",
-      "hasNoAtt": "har inte deltagit",
-      "op": "Operator",
-      "serv": "Gudstjänst",
-      "servTime": "Gudstjänsttid"
-    },
     "conditionDate": {
       "absolute": "Absolut",
       "curMonth": "Innevarande månad",

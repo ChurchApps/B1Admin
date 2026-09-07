@@ -1426,7 +1426,7 @@
         "changeImage": "画像を変更",
         "duration": "表示時間（秒）",
         "enableIdleScreen": "アイドルスクリーンを有効にする",
-        "headerSubtitle": "キオスクの色は 設定 > アプリテーマ で管理します。以下で背景画像とアイドルスクリーンの動作を設定してください。",
+        "headerSubtitle": "キオスクの色は モバイル > アプリテーマ で管理します。以下で背景画像とアイドルスクリーンの動作を設定してください。",
         "idleScreen": "アイドルスクリーン / スクリーンセーバー",
         "sectionTitle": "キオスクテーマ",
         "slides": "スライド",
@@ -4248,7 +4248,7 @@
       "darkDesc": "最も暗い色調 — 本文テキスト",
       "error": "エラー",
       "errorDesc": "エラーと破壊的な操作",
-      "headerSubtitle": "ウェブサイトの配色をカスタマイズ。モバイルアプリ、メンバーポータル、キオスクの色については、設定 > アプリテーマに移動します。",
+      "headerSubtitle": "ウェブサイトの配色をカスタマイズ。モバイルアプリ、メンバーポータル、キオスクの色については、モバイル > アプリテーマに移動します。",
       "headerTitle": "カラーパレット",
       "light": "ライト",
       "lightAccent": "ライトアクセント",
@@ -4637,6 +4637,7 @@
       "name": "編曲名",
       "title": "編曲"
     },
+    "arrangements": "アレンジメント",
     "audio": {
       "deleteConfirm": "この音声ファイルを削除してもよろしいですか？",
       "upload": "音声をアップロード"
@@ -4703,11 +4704,6 @@
     "oldArrangement": {
       "key": "キー"
     },
-    "oldArrangements": {
-      "arrangements": "アレンジメント",
-      "editArrangementAria": "アレンジメントを編集",
-      "noArrangements": "アレンジメントが見つかりません。"
-    },
     "praiseChartsProducts": {
       "close": "閉じる",
       "download": "ダウンロード",
@@ -4769,17 +4765,6 @@
     "providedBy": "提供元"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "どこでも",
-      "campus": "キャンパス",
-      "eventType": "イベントの種類",
-      "group": "グループ",
-      "hasAtt": "出席した",
-      "hasNoAtt": "出席していない",
-      "op": "条件",
-      "serv": "サービス",
-      "servTime": "礼拝時間"
-    },
     "conditionDate": {
       "absolute": "絶対",
       "curMonth": "今月",

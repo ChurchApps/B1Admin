@@ -1349,7 +1349,7 @@
         "changeImage": "Zmień obraz",
         "duration": "Czas trwania (s)",
         "enableIdleScreen": "Włącz ekran bezczynności",
-        "headerSubtitle": "Kolory kiosku są zarządzane w Ustawieniach > Motyw aplikacji. Skonfiguruj obrazy tła i zachowanie ekranu bezczynności poniżej.",
+        "headerSubtitle": "Kolory kiosku są zarządzane w Mobilny > Motyw aplikacji. Skonfiguruj obrazy tła i zachowanie ekranu bezczynności poniżej.",
         "idleScreen": "Ekran bezczynności / wygaszacz",
         "sectionTitle": "Motyw kiosku",
         "slides": "Slajdy",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Najciemniejszy odcień — tekst główny",
       "error": "Błąd",
       "errorDesc": "Błędy i akcje destrukcyjne",
-      "headerSubtitle": "Dostosuj kolorystykę swojej witryny. Dla aplikacji mobilnej, portalu członków i kolorów kiosku, przejdź do Ustawienia > Motyw aplikacji.",
+      "headerSubtitle": "Dostosuj kolorystykę swojej witryny. Dla aplikacji mobilnej, portalu członków i kolorów kiosku, przejdź do Mobilny > Motyw aplikacji.",
       "headerTitle": "Paleta kolorów",
       "light": "Jasny",
       "lightAccent": "Jasny akcent",
@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aranżacje",
     "audio": {
       "deleteConfirm": "Czy na pewno chcesz usunąć ten plik audio?",
       "upload": "Prześlij audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonacja"
     },
-    "oldArrangements": {
-      "arrangements": "Aranżacje",
-      "editArrangementAria": "Edytuj aranżację",
-      "noArrangements": "Nie znaleziono aranżacji."
-    },
     "praiseChartsProducts": {
       "close": "Zamknij",
       "download": "Pobierz",
@@ -4677,17 +4673,6 @@
     "providedBy": "Dostarczone przez"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Grupa",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Nabożeństwo",
-      "servTime": "Czas nabożeństwa"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

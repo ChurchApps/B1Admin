@@ -1349,7 +1349,7 @@
         "changeImage": "Thay đổi hình ảnh",
         "duration": "Thời lượng (giây)",
         "enableIdleScreen": "Bật màn hình chờ",
-        "headerSubtitle": "Màu sắc kiosk được quản lý trong Cài đặt > Chủ đề ứng dụng. Cấu hình hình nền và hành vi màn hình chờ bên dưới.",
+        "headerSubtitle": "Màu sắc kiosk được quản lý trong Mobile > Chủ đề ứng dụng. Cấu hình hình nền và hành vi màn hình chờ bên dưới.",
         "idleScreen": "Màn hình chờ / Bảo vệ màn hình",
         "sectionTitle": "Chủ đề Kiosk",
         "slides": "Slide",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Sắc tối nhất — văn bản nội dung",
       "error": "Lỗi",
       "errorDesc": "Lỗi và hành động phá hủy",
-      "headerSubtitle": "Tùy chỉnh bảng màu trang web. Đối với màu ứng dụng di động, cổng thành viên và kiosk, đi tới Cài đặt > Chủ đề ứng dụng.",
+      "headerSubtitle": "Tùy chỉnh bảng màu trang web. Đối với màu ứng dụng di động, cổng thành viên và kiosk, đi tới Mobile > Chủ đề ứng dụng.",
       "headerTitle": "Bảng màu",
       "light": "Sáng",
       "lightAccent": "Nhấn sáng",
@@ -4545,6 +4545,7 @@
       "name": "Arrangement Tên",
       "title": "Arrangement"
     },
+    "arrangements": "Bản phối",
     "audio": {
       "deleteConfirm": "Bạn có chắc muốn xóa tệp âm thanh này không?",
       "upload": "Tải lên âm thanh"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Khóa"
     },
-    "oldArrangements": {
-      "arrangements": "Bản phối",
-      "editArrangementAria": "Chỉnh sửa bản phối",
-      "noArrangements": "Không tìm thấy bản phối nào."
-    },
     "praiseChartsProducts": {
       "close": "Đóng",
       "download": "Tải xuống",
@@ -4677,17 +4673,6 @@
     "providedBy": "Cung cấp bởi"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Cơ sở",
-      "eventType": "Event Type",
-      "group": "Nhóm",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Buổi lễ",
-      "servTime": "Buổi lễ Thời gian"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

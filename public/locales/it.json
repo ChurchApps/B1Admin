@@ -1349,7 +1349,7 @@
         "changeImage": "Cambia immagine",
         "duration": "Durata (s)",
         "enableIdleScreen": "Abilita schermo inattivo",
-        "headerSubtitle": "I colori del chiosco sono gestiti in Impostazioni > Tema App. Configura le immagini di sfondo e il comportamento dello schermo inattivo qui sotto.",
+        "headerSubtitle": "I colori del chiosco sono gestiti in Mobile > Tema App. Configura le immagini di sfondo e il comportamento dello schermo inattivo qui sotto.",
         "idleScreen": "Schermo inattivo / Salvaschermo",
         "sectionTitle": "Tema chiosco",
         "slides": "Diapositive",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Tonalità più scura — testo del corpo",
       "error": "Errore",
       "errorDesc": "Errori e azioni distruttive",
-      "headerSubtitle": "Personalizza lo schema di colori del tuo sito web. Per i colori dell'app mobile, del portale dei membri e del chiosco, vai a Impostazioni > Tema App.",
+      "headerSubtitle": "Personalizza lo schema di colori del tuo sito web. Per i colori dell'app mobile, del portale dei membri e del chiosco, vai a Mobile > Tema App.",
       "headerTitle": "Palette di Colori",
       "light": "Chiaro",
       "lightAccent": "Accento Chiaro",
@@ -4545,6 +4545,7 @@
       "name": "Nome Arrangiamento",
       "title": "Arrangiamento"
     },
+    "arrangements": "Arrangiamenti",
     "audio": {
       "deleteConfirm": "Sei sicuro di voler eliminare questo file audio?",
       "upload": "Carica audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Chiave"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangiamenti",
-      "editArrangementAria": "Modifica arrangiamento",
-      "noArrangements": "Nessun arrangiamento trovato."
-    },
     "praiseChartsProducts": {
       "close": "Chiudi",
       "download": "Scarica",
@@ -4677,17 +4673,6 @@
     "providedBy": "Fornita da"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Ovunque",
-      "campus": "Campus",
-      "eventType": "Tipo di Evento",
-      "group": "Gruppo",
-      "hasAtt": "ha partecipato",
-      "hasNoAtt": "non ha partecipato",
-      "op": "Operatore",
-      "serv": "Servizio",
-      "servTime": "Orario di Servizio"
-    },
     "conditionDate": {
       "absolute": "Assoluto",
       "curMonth": "Mese Corrente",

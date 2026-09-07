@@ -341,7 +341,7 @@ export const PagesPage = () => {
               <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "", siteId } as LinkInterface)} data-testid="add-navigation-link" />
             </div>
           </div>
-          <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} siteId={siteId} />
+          <SiteNavigation links={links} refresh={loadData} handleDrop={handleDrop} siteId={siteId} />
         </Grid>
         <Grid size={{ xs: 12, md: 10 }} style={{ position: "relative", zIndex: 1 }}>
           <Box sx={{ p: 3 }}>

@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers/auth";
+import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Editable scheduling matrix (roadmap #5): demo plan PLA00000001 has filled POS1-9,
@@ -86,25 +87,37 @@ test.describe.serial("Serving — Editable Scheduling Matrix", () => {
 
     const del = page.waitForResponse((r) => r.url().includes("/assignments/") && r.request().method() === "DELETE", { timeout: 15000 });
     await removeBtn.click();
+    await confirmDelete(page);
     await del;
 
     await page.getByTestId("matrix-cell-close").click();
     await expect(usherCell()).toHaveText("—", { timeout: 10000 });
   });
 
-  test("cross-plan auto-schedule fills gaps and reports a count", async () => {
+  test("cross-plan auto-schedule requires confirmation, then fills gaps and reports a count", async () => {
     await openOverview();
-    const autofill = page.waitForResponse((r) => r.url().includes("/plans/autofill/") && r.request().method() === "POST", { timeout: 20000 });
     await page.getByTestId("matrix-auto-schedule").click();
+    const autofill = page.waitForResponse((r) => r.url().includes("/plans/autofill/") && r.request().method() === "POST", { timeout: 20000 });
+    await confirmDelete(page);
     await autofill;
     // Snackbar reports at least one plan filled (Usher/Greeter gaps existed).
     await expect(page.getByText(/Auto-scheduled [1-9]/)).toBeVisible({ timeout: 10000 });
   });
 
-  test("'Email Volunteers' posts the consolidated notifyRange request", async () => {
+  test("cancelling the auto-schedule confirmation does not call the API", async () => {
     await openOverview();
-    const notify = page.waitForResponse((r) => r.url().includes("/plans/notifyRange") && r.request().method() === "POST", { timeout: 20000 });
+    await page.getByTestId("matrix-auto-schedule").click();
+    const dialog = page.locator('div[role="dialog"]').last();
+    await expect(dialog).toBeVisible({ timeout: 8000 });
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(dialog).toHaveCount(0);
+  });
+
+  test("'Email Volunteers' requires confirmation, then posts the consolidated notifyRange request", async () => {
+    await openOverview();
     await page.getByTestId("matrix-email-all").click();
+    const notify = page.waitForResponse((r) => r.url().includes("/plans/notifyRange") && r.request().method() === "POST", { timeout: 20000 });
+    await confirmDelete(page);
     const res = await notify;
     expect(res.status()).toBe(200);
     await expect(page.getByText(/Emailed|No assigned/)).toBeVisible({ timeout: 10000 });

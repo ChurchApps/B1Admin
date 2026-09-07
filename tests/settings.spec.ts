@@ -471,4 +471,44 @@ test.describe.serial("Settings Management", () => {
     });
   });
 
+  test.describe("Settings navigation", () => {
+    test.beforeEach(async () => {
+      await navigateToSettings(page);
+      await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 15000 });
+    });
+
+    test("the selected section is kept in the URL hash and survives a reload", async () => {
+      await page.locator('[data-testid="settings-section-developer"]').click();
+      await expect(page).toHaveURL(/#developer$/);
+      await page.reload();
+      await expect(page.locator('[data-testid="settings-section-developer"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });
+    });
+
+    test("Email Templates, Audit Log and Batches are in the settings menu", async () => {
+      const menu = page.locator('[id="secondaryMenu"]');
+      await expect(menu.getByText("Audit Log", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(menu.getByText("Batches", { exact: true })).toBeVisible();
+      await menu.getByText("Email Templates", { exact: true }).click();
+      await expect(page).toHaveURL(/\/settings\/email-templates/);
+    });
+
+    test("the old /settings/campuses route lands on the campuses section", async () => {
+      await page.goto("/settings/campuses");
+      await expect(page).toHaveURL(/\/settings#campuses$/);
+      await expect(page.locator('[data-testid="settings-section-campuses"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });
+    });
+
+    test("role permissions can be filtered", async () => {
+      await page.goto("/settings/role/ROL00000010");
+      const sections = page.locator("#rolePermissionsBox .MuiAccordion-root");
+      await expect(sections.first()).toBeVisible({ timeout: 15000 });
+      const total = await sections.count();
+      const filter = page.getByTestId("role-permission-filter").locator("input");
+      await filter.fill("zzzznomatch");
+      await expect(sections).toHaveCount(0);
+      await filter.fill("");
+      await expect(sections).toHaveCount(total);
+    });
+  });
+
 });

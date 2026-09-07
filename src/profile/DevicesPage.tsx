@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { EmptyState } from "../components/ui";
 
 export interface DeviceInterface {
   id: string;
@@ -68,6 +69,17 @@ export const DevicesPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
+              {(devices.data || []).length === 0 && (
+                <TableRow>
+                  <EmptyState
+                    variant="table"
+                    colSpan={4}
+                    icon={<DevicesIcon />}
+                    title={Locale.label("profile.devices.emptyTitle")}
+                    description={Locale.label("profile.devices.emptyDescription")}
+                  />
+                </TableRow>
+              )}
               {(devices.data || []).map((device) => (
                 <TableRow key={device.id}>
                   <TableCell>{device.label || Locale.label("profile.devices.device")}</TableCell>

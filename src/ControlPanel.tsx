@@ -24,7 +24,9 @@ const isSessionExpired = () => {
   }
 };
 
-export const ControlPanel = () => {
+// Kept out of ControlPanel: re-rendering ControlPanel remounts the whole page tree,
+// so an API error would wipe whatever the user was editing.
+const ApiErrorBanner = () => {
   const [errors, setErrors] = React.useState<string[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,11 +39,6 @@ export const ControlPanel = () => {
   // refires can't spin the handler into an infinite loop.
   const lastErrorRef = React.useRef<{ key: string; time: number }>({ key: "", time: 0 });
   const redirectingRef = React.useRef(false);
-
-  AnalyticsHelper.init();
-  React.useEffect(() => {
-    AnalyticsHelper.logPageView();
-  }, [location]);
 
   // Re-arm the 401 redirect guard once the user lands back on the login screen.
   React.useEffect(() => {
@@ -76,6 +73,8 @@ export const ControlPanel = () => {
           return;
         }
         if (type.startsWith("5")) setErrors([Locale.label("controlPanel.serverError")]);
+        // ErrorHelper puts the request url in `message` and the server's text in `details`.
+        else if (error.details || error.message) setErrors([error.details || error.message]);
       } catch {
         // Never let the error handler throw — that would re-enter error logging.
       }
@@ -84,10 +83,21 @@ export const ControlPanel = () => {
     return () => { ErrorHelper.init(getErrorAppData, () => {}); };
   }, [getErrorAppData]);
 
+  return <ErrorMessages errors={errors} />;
+};
+
+export const ControlPanel = () => {
+  const location = useLocation();
+
+  AnalyticsHelper.init();
+  React.useEffect(() => {
+    AnalyticsHelper.logPageView();
+  }, [location]);
+
   React.useContext(UserContext); //to force rerender on login
   return (
     <>
-      <ErrorMessages errors={errors} />
+      <ApiErrorBanner />
       <Routes>
         <Route path="/pingback" element={<Pingback />} />
         <Route path="/logout" element={<Logout />} />

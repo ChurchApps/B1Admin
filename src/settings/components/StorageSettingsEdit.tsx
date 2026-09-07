@@ -198,7 +198,7 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
             <InputLabel>{Locale.label("settings.storageSettingsEdit.provider")}</InputLabel>
             <Select name="provider" label={Locale.label("settings.storageSettingsEdit.provider")} value={provider || ""} onChange={handleChange}>
               <MenuItem value="">{Locale.label("settings.storageSettingsEdit.churchAppsFree")}</MenuItem>
-              {BYOS_PROVIDERS.map((p) => <MenuItem key={p.id} value={p.id} disabled={p.oauth && !p.clientId}>{p.name}</MenuItem>)}
+              {BYOS_PROVIDERS.filter((p) => !p.oauth || p.clientId).map((p) => <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>)}
               {MINISTRYSTUFF_ENABLED && <MenuItem value="ministrystuff">{Locale.label("settings.storageSettingsEdit.ministryStuff")}</MenuItem>}
             </Select>
           </FormControl>

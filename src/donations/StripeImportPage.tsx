@@ -1,10 +1,11 @@
 import React from "react";
-import { ApiHelper, DateHelper, UserHelper, CurrencyHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, CurrencyHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/apphelper";
 import { Box, Typography, Card, Stack, Button, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
 import { CloudDownload as ImportIcon, Search as PreviewIcon, CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
 import { CardWithHeader, hoverRowSx } from "../components/ui";
 import { AppDatePicker } from "../components";
+import { useRequirePermission } from "../hooks";
 
 interface StripeEventResult {
   eventId: string;
@@ -181,7 +182,8 @@ export const StripeImportPage = () => {
     );
   };
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.edit)) return <></>;
+  const denied = useRequirePermission(Permissions.givingApi.donations.edit);
+  if (denied) return denied;
 
   return (
     <>
@@ -204,7 +206,7 @@ export const StripeImportPage = () => {
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="flex-start">
               <AppDatePicker
                 label="Start Date"
-                
+
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
@@ -212,7 +214,7 @@ export const StripeImportPage = () => {
               />
               <AppDatePicker
                 label="End Date"
-                
+
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}

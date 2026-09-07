@@ -12,7 +12,7 @@ async function openMobileSettings(page: import("@playwright/test").Page) {
   await navigateToMobile(page);
   await page.waitForURL(/\/mobile\/navigation/, { timeout: 15000 });
   // Use #page-header-title to avoid getByRole heading strict-mode collision with subtitle.
-  await page.locator("#page-header-title").filter({ hasText: "Mobile App Settings" })
+  await page.locator("#page-header-title").filter({ hasText: "Navigation" })
     .waitFor({ state: "visible", timeout: 15000 });
 }
 
@@ -40,9 +40,14 @@ async function findTabRow(page: import("@playwright/test").Page, tabName: string
 test.describe("Mobile App Settings page", () => {
   test("renders the page with header, subtitle, and Add Tab button", async ({ page }) => {
     await openMobileSettings(page);
-    await expect(page.locator("#page-header-title")).toContainText("Mobile App Settings");
-    await expect(page.locator("#page-header-subtitle")).toContainText("Configure mobile app settings");
+    await expect(page.locator("#page-header-title")).toContainText("Navigation");
+    await expect(page.locator("#page-header-subtitle")).toContainText("Tabs on the B1.church app");
     await expect(page.getByRole("button", { name: /^Add Tab$/ }).first()).toBeVisible();
+  });
+
+  test("explains the three-tab phone tab bar cap", async ({ page }) => {
+    await openMobileSettings(page);
+    await expect(page.getByText("The first three tabs appear in the phone tab bar; the rest are under More.")).toBeVisible();
   });
 
   test("shows the App Tabs card heading", async ({ page }) => {
@@ -67,6 +72,8 @@ test.describe("Mobile App Settings page", () => {
     await expect(page.locator('li[role="option"]', { hasText: /^Live Stream$/ })).toBeVisible();
     await expect(page.locator('li[role="option"]', { hasText: /^Donation$/ })).toBeVisible();
     await expect(page.locator('li[role="option"]', { hasText: /^External URL$/ })).toBeVisible();
+    await expect(page.locator('li[role="option"]', { hasText: /^Lessons$/ })).toHaveCount(0);
+    await expect(page.locator('li[role="option"]', { hasText: /^Donation Landing$/ })).toHaveCount(0);
     await page.keyboard.press("Escape");
   });
 
@@ -116,7 +123,8 @@ test.describe.serial("Mobile tab lifecycle", () => {
     await selectMuiByLabel(page, "Tab Type", "External URL");
     await page.locator('input[name="url"]').fill("https://example.org");
     await page.getByRole("button", { name: /Save Tab/i }).click();
-    await findTabRow(page, DISPOSABLE_TAB);
+    const row = await findTabRow(page, DISPOSABLE_TAB);
+    await expect(row.getByText("Everyone (including anonymous)", { exact: true })).toBeVisible();
   });
 
   test("opens the existing tab in the edit drawer with delete affordance", async () => {

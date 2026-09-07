@@ -50,8 +50,8 @@ export const AdminWelcome: React.FC = () => {
     {
       label: Locale.label("dashboard.adminWelcome.servingAndContent"),
       items: [
-        { icon: <MusicNote fontSize="small" />, title: Locale.label("dashboard.adminWelcome.freeShowTitle"), onClick: () => handleCardClick("freeshow", hasTeams, "/serving") },
-        { icon: <SmartDisplay fontSize="small" />, title: Locale.label("dashboard.adminWelcome.freePlayTitle"), onClick: () => handleCardClick("freeplay", hasPlanTypes, "/serving") },
+        { icon: <MusicNote fontSize="small" />, title: Locale.label("dashboard.adminWelcome.freeShowTitle"), onClick: () => handleCardClick("freeshow", hasTeams, "/serving/plans") },
+        { icon: <SmartDisplay fontSize="small" />, title: Locale.label("dashboard.adminWelcome.freePlayTitle"), onClick: () => handleCardClick("freeplay", hasPlanTypes, "/serving/plans") },
         { icon: <LiveTv fontSize="small" />, title: Locale.label("dashboard.adminWelcome.uploadSermonTitle"), linkUrl: "/sermons" }
       ]
     },

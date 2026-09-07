@@ -353,7 +353,7 @@
     "amount": "Amount",
     "appTheme": "App Theme",
     "b1CheckIn": "B1 CheckIn",
-    "b1Mobile": "B1 Mobile",
+    "b1Mobile": "Member portal",
     "back": "Back",
     "bottom": "Bottom",
     "cancel": "Cancel",
@@ -374,6 +374,15 @@
       }
     },
     "custom": "Custom",
+    "days": {
+      "friday": "Friday",
+      "monday": "Monday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "thursday": "Thursday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday"
+    },
     "delete": "Delete",
     "done": "Done",
     "duplicate": "Duplicate",
@@ -397,6 +406,7 @@
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
+    "labels": "Labels",
     "left": "Left",
     "loading": "Loading",
     "mobile": "Mobile",
@@ -465,7 +475,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Please contact your church administrator to request access.",
-      "defaultMessage": "You do not have the required permission(s) to access this feature:"
+      "defaultMessage": "You don't have permission to view this page.",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Search for person",
@@ -655,6 +666,7 @@
       "printDescription": "Generate a consolidated document with all giving statements for printing",
       "printStatements": "Printable Statements",
       "selectYear": "Select Year",
+      "statementFormat": "Statement format",
       "subtitle": "Download giving statements for all donors",
       "summary": "Summary",
       "title": "Batch Giving Statements",
@@ -666,8 +678,10 @@
     },
     "bulkEntry": {
       "addDonation": "Add Donation",
+      "fullEditor": "full donation editor",
       "pressEnter": "Press Enter to save and add another donation",
-      "selectPerson": "Select Person or Anonymous"
+      "selectPerson": "Select Person or Anonymous",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Allow donors to pledge",
@@ -1459,8 +1473,8 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
-      "subtitle": "Configure settings for the B1 Mobile app",
-      "title": "B1 Mobile"
+      "subtitle": "Member directory, visibility, and messaging for the B1.church app",
+      "title": "Portal settings"
     },
     "checkInPage": {
       "copyLink": "Copy link",
@@ -1474,7 +1488,7 @@
         "changeImage": "Change Image",
         "duration": "Duration (s)",
         "enableIdleScreen": "Enable idle screen",
-        "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
+        "headerSubtitle": "Kiosk colors are managed in Mobile > App Theme. Configure background images and idle screen behavior below.",
         "idleScreen": "Idle Screen / Screensaver",
         "sectionTitle": "Kiosk Theme",
         "slides": "Slides",
@@ -2015,6 +2029,7 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge",
       "title": "Amazing Grace"
     },
     "task": {
@@ -2418,8 +2433,10 @@
     },
     "servingOverviewPage": {
       "autoSchedule": "Auto-schedule",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
       "autoScheduleResult": "Auto-scheduled {filled} of {total} plans",
       "emailAll": "Email Volunteers",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
       "emailEmpty": "No assigned volunteers in this range to email.",
       "emailResult": "Emailed {sent} volunteers ({failed} failed)",
       "endDate": "End Date",
@@ -2432,6 +2449,7 @@
       "overviewSuffix": "Overview",
       "position": "Position",
       "remove": "Remove",
+      "removeConfirm": "Remove {name} from this assignment?",
       "startDate": "Start Date",
       "subtitle": "Positions by date with assigned volunteers",
       "title": "Serving Overview"
@@ -2527,6 +2545,8 @@
       "addScreen": "Add Screen",
       "device": "Device",
       "editDevice": "Edit Device",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet",
       "label": "Label",
       "lastActiveDate": "Last Active Date",
       "registrationDate": "Registration Date",
@@ -3295,6 +3315,7 @@
     "checkinSettingsEdit": {
       "block": "Block (prevent check-in)",
       "help": "Choose how check-in responds when a room is over its volunteer-to-child ratio or below its minimum volunteers.",
+      "kioskLink": "Check-in kiosk, QR, and labels",
       "ratioEnforcement": "Volunteer Ratio Enforcement",
       "title": "Check-In",
       "warn": "Warn (allow with confirmation)"
@@ -3442,11 +3463,13 @@
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
+      "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
       "kfSetup": "Enter the Tokenization Key and Source Key from your Kingdom Funding dashboard. Get started at",
       "kfWebhookInstructions": "Provide this webhook URL to your Kingdom Funding representative during onboarding so transaction updates flow back into your giving reports:",
       "none": "None",
+      "paymentGatewaySection": "Payment gateway",
       "paypalSetup": "Create a PayPal REST app and paste its Client ID and Secret below. Get started at",
       "paystackSetup": "Copy your Public and Secret keys from the Paystack Dashboard (Settings → API Keys & Webhooks) and paste them below. Open the",
       "paystackWebhookInstructions": "Paste this URL into the Webhook URL field of your Paystack Dashboard (Settings → API Keys & Webhooks) so recurring gifts and mobile money payments are recorded:",
@@ -3507,8 +3530,9 @@
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
-      "subtitle": "Configure mobile app settings",
-      "title": "Mobile App Settings"
+      "subtitle": "Tabs on the B1.church app",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More.",
+      "title": "Navigation"
     },
     "roleCheck": {
       "permissionAria": "Permission {label}"
@@ -3533,6 +3557,7 @@
       "roleEdit": "Edit Role:"
     },
     "rolePermissions": {
+      "filter": "Filter permissions",
       "permEdit": "Edit Permissions"
     },
     "roles": {
@@ -4349,7 +4374,7 @@
       "darkDesc": "Darkest shade — body text",
       "error": "Error",
       "errorDesc": "Errors and destructive actions",
-      "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Settings > App Theme.",
+      "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Mobile > App Theme.",
       "headerTitle": "Color Palette",
       "light": "Light",
       "lightAccent": "Light Accent",
@@ -4744,8 +4769,10 @@
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
       "lyrics": "Lyrics",
       "name": "Arrangement Name",
+      "sequence": "Sequence",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangements",
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
       "upload": "Upload Audio"
@@ -4812,11 +4839,6 @@
     "oldArrangement": {
       "key": "Key"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangements",
-      "editArrangementAria": "Edit arrangement",
-      "noArrangements": "No arrangements found."
-    },
     "praiseChartsProducts": {
       "close": "Close",
       "download": "Download",
@@ -4878,17 +4900,6 @@
     "providedBy": "Provided By"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Group",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Service",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

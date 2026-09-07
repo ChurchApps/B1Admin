@@ -333,10 +333,17 @@ test.describe("Donations summary and fund detail (read-only)", () => {
 
 // Edge-case extensions: gaps from .notes/B1Admin-test-coverage-gaps.md §3 (donations).
 test.describe("Donations — navigation and listing extras", () => {
-  test("Donations primary page exposes Funds, Batches, Statements secondary nav", async ({ page }) => {
+  test("Donations primary page exposes Funds, Batches, Statements, Stripe Import secondary nav", async ({ page }) => {
     await expect(page.locator('[id="secondaryMenu"]').getByText("Funds").first()).toBeVisible({ timeout: 15000 });
     await expect(page.locator('[id="secondaryMenu"]').getByText("Batches").first()).toBeVisible();
     await expect(page.locator('[id="secondaryMenu"]').getByText("Giving Statements").first()).toBeVisible();
+    await expect(page.locator('[id="secondaryMenu"]').getByText("Stripe Import").first()).toBeVisible();
+  });
+
+  test("Stripe Import secondary nav item navigates to /donations/stripe-import", async ({ page }) => {
+    await page.locator('[id="secondaryMenu"]').getByText("Stripe Import").first().click();
+    await page.waitForURL(/\/donations\/stripe-import/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/donations\/stripe-import/);
   });
 
   test("Funds list page shows the seed General Fund", async ({ page }) => {
@@ -381,6 +388,34 @@ test.describe("Donations — navigation and listing extras", () => {
     await expect(page.getByRole("heading", { name: "Filter Report" })).toBeVisible({ timeout: 15000 });
     // Period toggle: Weekly is the default selection.
     await expect(page.getByRole("button", { name: "Weekly" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  // Own batch (not the shared serial-chain fixture) so this doesn't depend on the Batches chain above.
+  test("bulk donation entry: styled Anonymous/Change buttons and a split-funds hint that opens the full editor", async ({ page }) => {
+    const batchName = "Hint Spec Batch " + Date.now().toString().slice(-6);
+    await openBatchesTab(page);
+    await page.locator('[data-testid="add-batch-button"]').click();
+    await page.locator('[name="name"]').fill(batchName);
+    await page.locator("button").getByText("Save").click();
+    await page.locator("a").getByText(batchName, { exact: true }).click();
+    await expect(page).toHaveURL(/\/donations\/batches\//);
+
+    const anon = page.getByRole("button", { name: "Anonymous" });
+    await expect(anon).toBeVisible({ timeout: 10000 });
+    await anon.click();
+
+    const change = page.getByRole("button", { name: "Change" });
+    await expect(change).toBeVisible({ timeout: 10000 });
+    await change.click();
+    await expect(page.getByRole("button", { name: "Anonymous" })).toBeVisible({ timeout: 10000 });
+    await page.getByRole("button", { name: "Anonymous" }).click();
+
+    const hintLink = page.locator('[data-testid="bulk-donation-full-editor"]');
+    await expect(hintLink).toBeVisible({ timeout: 10000 });
+    await hintLink.click();
+
+    await expect(page.locator('[aria-label="add-fund-donation"]')).toBeVisible({ timeout: 10000 });
+    await page.locator("button").getByText("Cancel").click();
   });
 });
 
