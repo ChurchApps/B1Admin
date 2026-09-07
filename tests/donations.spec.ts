@@ -522,3 +522,99 @@ test.describe("Donations list — notes column", () => {
     await expect(page.locator("table td").getByText(NOTES_TEXT)).toHaveCount(1, { timeout: 10000 });
   });
 });
+
+// Refunds: the demo church has no Stripe sandbox, so the button/visibility rules and the list
+// chip run against API-seeded rows and the refund POST itself is route-mocked.
+const REFUND_BATCH_NAME = "Zacchaeus Refund Batch";
+
+test.describe("Donation refunds", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+  let gatewayDonationId: string;
+  let manualDonationId: string;
+  let refundedDonationId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: REFUND_BATCH_NAME, batchDate: "2025-11-02" }] });
+    batchId = (await batchRes.json())[0].id;
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, {
+      ...auth,
+      data: [
+        { batchId, donationDate: "2025-11-02", amount: 25, method: "Card", status: "complete", transactionId: "pi_zacchaeus" },
+        { batchId, donationDate: "2025-11-02", amount: 10, method: "Check", status: "complete" },
+        { batchId, donationDate: "2025-11-02", amount: 40, method: "Card", status: "refunded", transactionId: "pi_zebedee" }
+      ]
+    });
+    const donations = await donationRes.json();
+    [gatewayDonationId, manualDonationId, refundedDonationId] = donations.map((d: any) => d.id);
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  const openDonation = async (page: Page, donationId: string) => {
+    await page.getByTestId("donation-row-" + donationId).getByRole("button", { name: "Edit" }).click();
+  };
+
+  test("Refund is offered on a gateway donation and hidden on a manual one", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(REFUND_BATCH_NAME, { timeout: 15000 });
+
+    await openDonation(page, gatewayDonationId);
+    await expect(page.getByTestId("refund-donation")).toBeVisible({ timeout: 10000 });
+    await page.locator("#donationBox").getByRole("button", { name: "Cancel" }).click();
+
+    await openDonation(page, manualDonationId);
+    await expect(page.locator("#donationBox")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("refund-donation")).toHaveCount(0);
+  });
+
+  test("an already refunded donation shows a Refunded chip and no Refund button", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    const row = page.getByTestId("donation-row-" + refundedDonationId);
+    await expect(row.getByText("Refunded", { exact: true })).toBeVisible({ timeout: 15000 });
+    // 25 + 10 complete, the 40 refunded gift is left out of the batch total.
+    await expect(page.getByRole("row", { name: /Total/ })).toContainText("35.00");
+
+    await openDonation(page, refundedDonationId);
+    await expect(page.locator("#donationBox")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("refund-donation")).toHaveCount(0);
+  });
+
+  test("confirming a refund posts to the gateway and closes the editor", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(REFUND_BATCH_NAME, { timeout: 15000 });
+
+    await page.route("**/donate/refund/**", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ success: true, refundId: "re_1" }) }));
+    const refundPost = page.waitForRequest((r) => r.url().includes("/donate/refund/" + gatewayDonationId) && r.method() === "POST", { timeout: 15000 });
+
+    await openDonation(page, gatewayDonationId);
+    await page.getByTestId("refund-donation").click();
+    await confirmDelete(page);
+
+    await refundPost;
+    await expect(page.locator("#donationBox")).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("a failed refund shows the gateway error and leaves the editor open", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(REFUND_BATCH_NAME, { timeout: 15000 });
+
+    await page.route("**/donate/refund/**", (route) => route.fulfill({ status: 400, contentType: "application/json", body: JSON.stringify({ error: "Charge has already been refunded." }) }));
+
+    await openDonation(page, gatewayDonationId);
+    await page.getByTestId("refund-donation").click();
+    await confirmDelete(page);
+
+    await expect(page.getByTestId("refund-error")).toHaveText("Charge has already been refunded.", { timeout: 10000 });
+    await expect(page.locator("#donationBox")).toBeVisible();
+  });
+});
