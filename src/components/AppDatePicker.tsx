@@ -21,7 +21,8 @@ export const AppDatePicker = forwardRef((props: TextFieldProps, ref: any) => {
   };
 
   const restAny = rest as any;
-  const testId = restAny["data-testid"] || restAny["data-cy"];
+  const testId = restAny["data-testid"];
+  const dataCy = restAny["data-cy"];
 
   const cleanRest = { ...restAny };
   delete cleanRest["data-testid"];
@@ -43,7 +44,9 @@ export const AppDatePicker = forwardRef((props: TextFieldProps, ref: any) => {
             onBlur,
             inputRef: ref || inputRef,
             InputLabelProps: { shrink: true, ...InputLabelProps },
-            inputProps: { ...inputProps, "data-testid": testId },
+            inputProps: { ...inputProps, name },
+            "data-testid": testId,
+            "data-cy": dataCy,
             ...cleanRest
           }
         }}

@@ -70,7 +70,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         gw.provider = values.provider;
         gw.publicKey = values.publicKey;
         gw.payFees = values.payFees;
-        gw.currency = values.currency;
+        gw.currency = String(values.currency || "usd").toLowerCase();
         if (values.privateKey !== "") gw.privateKey = values.privateKey;
         if (values.webhookKey !== "") gw.webhookKey = values.webhookKey;
         await ApiHelper.post("/gateways", [gw], "GivingApi");
@@ -106,7 +106,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         privateKey: "",
         webhookKey: "",
         payFees: gateways[0].payFees || false,
-        currency: gateways[0].currency || "usd"
+        currency: (gateways[0].currency || "usd").toLowerCase()
       });
     }
   };
@@ -166,7 +166,12 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
           render={({ field }) => (
             <FormControl fullWidth>
               <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
-              <Select {...field} label={Locale.label("settings.givingSettingsEdit.currency")}>
+              <Select
+                {...field}
+                value={currencyOptions.includes(String(field.value || "").toLowerCase()) ? String(field.value).toLowerCase() : (currencyOptions[0] || "")}
+                onChange={(e) => field.onChange(e.target.value)}
+                label={Locale.label("settings.givingSettingsEdit.currency")}
+              >
                 {currencyOptions.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
               </Select>
             </FormControl>

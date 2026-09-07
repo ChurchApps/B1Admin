@@ -52,9 +52,7 @@ const MOCK_YEAR_PLANS = [
 
 async function mockYearPlans(page: Page, body: unknown) {
   await page.unroute("**/yearPlans/public**").catch(() => undefined);
-  await page.route("**/yearPlans/public**", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", json: body })
-  );
+  await page.route("**/yearPlans/public**", (route) => route.fulfill({ status: 200, contentType: "application/json", json: body }));
 }
 
 test.describe.serial("Serving Management - Apply Year Plan", () => {
@@ -126,7 +124,7 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
     await openApplyYearPlan();
 
     await expect(page.getByTestId("apply-year-plan-select")).toContainText("Barnabas Year", { timeout: 15000 });
-    await page.getByLabel("First class date").fill(START_DATE);
+    await page.getByTestId("apply-year-plan-start-date").locator("input").fill(START_DATE);
 
     const preview = page.getByTestId("apply-year-plan-preview");
     await expect(preview.getByText("Genesis Stories — Creation")).toBeVisible();
@@ -149,7 +147,7 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
     await gotoPlanType();
     await openApplyYearPlan();
     await expect(page.getByTestId("apply-year-plan-select")).toContainText("Barnabas Year", { timeout: 15000 });
-    await page.getByLabel("First class date").fill(START_DATE);
+    await page.getByTestId("apply-year-plan-start-date").locator("input").fill(START_DATE);
 
     const save = page.getByTestId("apply-year-plan-save");
     await expect(save).toBeEnabled();
@@ -171,7 +169,7 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
     await gotoPlanType();
     await openApplyYearPlan();
     await expect(page.getByTestId("apply-year-plan-select")).toContainText("Barnabas Year", { timeout: 15000 });
-    await page.getByLabel("First class date").fill(START_DATE);
+    await page.getByTestId("apply-year-plan-start-date").locator("input").fill(START_DATE);
 
     await expect(page.getByTestId("apply-year-plan-row-0").getByText("A plan already exists on this date.")).toBeVisible();
     await expect(page.getByTestId("apply-year-plan-row-1").getByText("A plan already exists on this date.")).toBeVisible();
