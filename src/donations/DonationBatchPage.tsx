@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Box, Stack } from "@mui/material";
 import { Receipt as ReceiptIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Breadcrumbs, type BreadcrumbItem, HeaderSecondaryButton, PageHeaderStats } from "../components/ui";
+import { useRequirePermission } from "../hooks";
 
 export const DonationBatchPage = () => {
   const params = useParams();
@@ -72,7 +73,8 @@ export const DonationBatchPage = () => {
     });
   }, []);
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.view)) return <></>;
+  const denied = useRequirePermission(Permissions.givingApi.donations.view);
+  if (denied) return denied;
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },

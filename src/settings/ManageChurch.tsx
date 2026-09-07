@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
 import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
+import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Mail as MailIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { HeaderSecondaryButton } from "../components/ui";
 import { SettingsConfigList, type ConfigSection } from "./components/SettingsConfigList";
@@ -43,7 +43,7 @@ export const ManageChurch = () => {
   const hasAccess = UserHelper.checkAccess(Permissions.membershipApi.settings.edit);
   const hasGiving = UserHelper.checkAccess(Permissions.givingApi.settings.edit);
 
-  const [selected, setSelected] = useState<string>(SECTION_KEYS.includes(hash) ? hash : "church-info");
+  const selected = SECTION_KEYS.includes(hash) ? hash : "church-info";
 
   const church = useQuery<ChurchInterface>({
     queryKey: [`/churches/${churchId}?include=permissions`, "MembershipApi"],
@@ -242,6 +242,11 @@ export const ManageChurch = () => {
       <PageHeader icon={<BusinessIcon />} title={church.data.name || Locale.label("settings.manageChurch.title")} subtitle={church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}>
         <Stack direction="row" spacing={1}>
           {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
+            <HeaderSecondaryButton startIcon={<MailIcon />} onClick={() => navigate("/settings/email-templates")}>
+              {Locale.label("settings.emailTemplatesPage.title")}
+            </HeaderSecondaryButton>
+          )}
+          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
             <HeaderSecondaryButton startIcon={<HistoryIcon />} onClick={() => navigate("/settings/audit-log")}>
               {Locale.label("settings.manageChurch.auditLog")}
             </HeaderSecondaryButton>
@@ -262,7 +267,7 @@ export const ManageChurch = () => {
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 4 }}>
-            <SettingsConfigList sections={sections} selected={activeKey} onSelect={setSelected} />
+            <SettingsConfigList sections={sections} selected={activeKey} onSelect={(key) => navigate({ hash: key }, { replace: true })} />
           </Grid>
           <Grid size={{ xs: 12, md: 8 }}>
             {renderDetail()}

@@ -5,8 +5,6 @@ import { RolesPage } from "./RolesPage";
 import { RolePage } from "./RolePage";
 import { AuditLogPage } from "./AuditLogPage";
 import { BatchesPage } from "./BatchesPage";
-import { CampusesPage } from "./CampusesPage";
-import { CustomFieldsPage } from "./CustomFieldsPage";
 import { PageSkeleton } from "../components/ui/PageSkeleton";
 
 const EmailTemplatesPage = React.lazy(() => import("./EmailTemplatesPage").then((module) => ({ default: module.EmailTemplatesPage })));
@@ -17,8 +15,8 @@ export const Settings: React.FC = () => (
     <Route path="/role/:roleId" element={<RolePage />} />
     <Route path="/audit-log" element={<AuditLogPage />} />
     <Route path="/batches" element={<BatchesPage />} />
-    <Route path="/campuses" element={<CampusesPage />} />
-    <Route path="/custom-fields" element={<CustomFieldsPage />} />
+    <Route path="/campuses" element={<Navigate to="/settings#campuses" replace />} />
+    <Route path="/custom-fields" element={<Navigate to="/settings#custom-fields" replace />} />
     <Route
       path="/email-templates"
       element={(
