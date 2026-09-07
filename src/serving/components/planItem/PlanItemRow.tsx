@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Checkbox } from "@mui/material";
 import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
@@ -26,6 +26,10 @@ interface Props {
   onRestoreOriginal?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
   positionLabel?: { text: string; assigned: boolean };
+  /** Parent section is in bulk-select mode: show a checkbox and make the row toggle selection. */
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
 }
 
 /**
@@ -44,7 +48,10 @@ export const PlanItemRow: React.FC<Props> = ({
   onSaveDescription,
   onRestoreOriginal,
   mediaLookup,
-  positionLabel
+  positionLabel,
+  selectable,
+  selected,
+  onToggleSelect
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
@@ -58,7 +65,8 @@ export const PlanItemRow: React.FC<Props> = ({
   // Script lines edit inline; the row itself no longer opens the read-only dialog.
   const isTextAction = !readOnly && !!onSaveDescription && TEXT_ACTION_TYPES.has(planItem.actionType || "");
   const canRestore = isTextAction && !!onRestoreOriginal && !!planItem.providerId && !!planItem.providerPath && !!planItem.providerContentPath;
-  const rowClick = isTextAction ? undefined : onLabelClick;
+  const selecting = !readOnly && !!selectable && !!onToggleSelect;
+  const rowClick = selecting ? onToggleSelect : (isTextAction ? undefined : onLabelClick);
   return (
     <Box
       className={`planItem${rowClick ? " clickableRow" : ""}`}
@@ -79,6 +87,17 @@ export const PlanItemRow: React.FC<Props> = ({
         >
           <DragIndicatorIcon />
         </Box>
+      )}
+      {selecting && (
+        <Checkbox
+          size="small"
+          checked={!!selected}
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          onChange={() => onToggleSelect?.()}
+          data-testid="planItem-select-checkbox"
+          slotProps={{ input: { "aria-label": `${Locale.label("plans.planItem.selectItem") || "Select"} ${planItem.label || ""}`.trim() } }}
+          sx={{ p: 0.5, mr: 0.5, flexShrink: 0 }}
+        />
       )}
       <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {planItem.thumbnailUrl ? (

@@ -18,6 +18,8 @@ interface FormCardProps {
   deleteText?: string;
   saveTestId?: string;
   deleteTestId?: string;
+  /** Extra footer buttons rendered next to Delete. */
+  footerActions?: ReactNode;
   isSubmitting?: boolean;
   disabled?: boolean;
   headerActions?: ReactNode;
@@ -28,7 +30,7 @@ interface FormCardProps {
 
 export const FormCard: React.FC<FormCardProps> = (props) => {
   const icon = typeof props.icon === "string" ? <Icon sx={{ fontSize: 20, color: "primary.main" }}>{props.icon}</Icon> : props.icon;
-  const hasFooter = props.onSave || props.onCancel || props.onDelete;
+  const hasFooter = props.onSave || props.onCancel || props.onDelete || props.footerActions;
 
   return (
     <Card id={props.id} data-testid={props["data-testid"]} elevation={props.elevation} sx={{ mb: props.elevation === 0 ? 0 : 3, position: "relative" }}>
@@ -52,6 +54,7 @@ export const FormCard: React.FC<FormCardProps> = (props) => {
                 {props.deleteText || Locale.label("common.delete")}
               </Button>
             )}
+            {props.footerActions}
             <Box sx={{ flex: 1 }} />
             {props.onCancel && <Button onClick={props.onCancel}>{props.cancelText || Locale.label("common.cancel")}</Button>}
             {props.onSave && (

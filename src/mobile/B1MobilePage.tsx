@@ -147,6 +147,8 @@ export const B1MobilePage: React.FC = () => {
                   <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
                   <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
                   <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                  <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
+                  <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -157,6 +159,8 @@ export const B1MobilePage: React.FC = () => {
                   <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
                   <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
                   <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                  <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
+                  <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -167,6 +171,8 @@ export const B1MobilePage: React.FC = () => {
                   <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
                   <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
                   <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                  <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
+                  <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

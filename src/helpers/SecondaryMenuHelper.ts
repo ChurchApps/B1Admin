@@ -113,8 +113,10 @@ export class SecondaryMenuHelper {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/funds", label: Locale.label("donations.donations.funds"), icon: "account_balance" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/campaigns", label: Locale.label("donations.donations.campaigns"), icon: "flag" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/statements", label: Locale.label("donations.donations.statements") || "Giving Statements", icon: "description" });
+    if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) menuItems.push({ url: "/donations/failed", label: Locale.label("donations.donations.failed"), icon: "error_outline" });
 
-    if (path.startsWith("/donations/stripe-import")) label = Locale.label("helpers.secondaryMenuHelper.stripeImport");
+    if (path.startsWith("/donations/failed")) label = Locale.label("donations.donations.failed");
+    else if (path.startsWith("/donations/stripe-import")) label = Locale.label("helpers.secondaryMenuHelper.stripeImport");
     else if (path.startsWith("/donations/statements")) label = Locale.label("donations.donations.statements") || "Giving Statements";
     else if (path.startsWith("/donations/campaigns")) label = Locale.label("donations.donations.campaigns");
     else if (path.startsWith("/donations/funds")) label = Locale.label("donations.donations.funds");

@@ -1,11 +1,11 @@
 import React from "react";
-import { FundEdit } from "./components";
+import { FundEdit, GivingLinkDialog } from "./components";
 import { UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon, AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
+import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon, AccountBalance as AccountBalanceIcon, Link as LinkIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
@@ -13,6 +13,7 @@ import { useSortableData } from "../hooks";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
+  const [linkFund, setLinkFund] = React.useState<FundInterface | null>(null);
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
@@ -73,6 +74,15 @@ export const FundsPage = () => {
         <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-${i}`} data-id={f.id} onClick={showEditFund} />
       ) : null;
 
+      const givingLinkButton = canViewFund ? (
+        <AppIconButton
+          label={Locale.label("donations.givingLink.button")}
+          icon={<LinkIcon />}
+          data-testid={`giving-link-${i}`}
+          onClick={() => setLinkFund(f)}
+        />
+      ) : null;
+
       const fundLink = canViewFund ? (
         <Typography component={Link} to={"/donations/funds/" + f.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
           {f.name}
@@ -111,7 +121,7 @@ export const FundsPage = () => {
               )}
             </Stack>
           </TableCell>
-          <TableCell align="right" className="rowActions">{editLink}</TableCell>
+          <TableCell align="right" className="rowActions">{givingLinkButton} {editLink}</TableCell>
         </TableRow>
       );
     }
@@ -181,6 +191,8 @@ export const FundsPage = () => {
           {getTable()}
         </CardWithHeader>
       </Box>
+
+      {linkFund && <GivingLinkDialog fund={linkFund} onClose={() => setLinkFund(null)} />}
     </>
   );
 };

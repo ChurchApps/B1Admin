@@ -90,6 +90,7 @@ const SAMPLE: Record<string, string> = {
   "person.lastName": "Johnson",
   "person.nickName": "Emma",
   "person.nametagNotes": "Peanut allergy",
+  "person.isBirthdayWeek": "true",
   sessions: "9:00 AM: Preschool",
   securityCode: "BXRC",
   date: new Date().toLocaleDateString(),
@@ -98,7 +99,7 @@ const SAMPLE: Record<string, string> = {
   childrenAllergies: "Emma Johnson - Peanut allergy"
 };
 
-const NAMETAG_FIELDS = "person.displayName person.firstName person.lastName person.nickName person.nametagNotes sessions securityCode date churchName".split(" ");
+const NAMETAG_FIELDS = "person.displayName person.firstName person.lastName person.nickName person.nametagNotes person.isBirthdayWeek sessions securityCode date churchName".split(" ");
 const PICKUP_FIELDS = ["children", "childrenAllergies", "securityCode", "date", "churchName"];
 const CANVAS_W = 560;
 
@@ -108,6 +109,7 @@ const FIELD_LABEL_KEYS: Record<string, string> = {
   "person.lastName": "attendance.labels.fieldLastName",
   "person.nickName": "attendance.labels.fieldNickName",
   "person.nametagNotes": "attendance.labels.fieldNametagNotes",
+  "person.isBirthdayWeek": "attendance.labels.fieldIsBirthdayWeek",
   sessions: "attendance.labels.fieldSessions",
   securityCode: "attendance.labels.fieldSecurityCode",
   date: "attendance.labels.fieldDate",

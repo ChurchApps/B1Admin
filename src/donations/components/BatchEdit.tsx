@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from "react";
-import { useForm , Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { ApiHelper, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { Grid, TextField } from "@mui/material";
@@ -17,7 +17,7 @@ type AnyRecord = Record<string, any>;
 export const BatchEdit = memo((props: Props) => {
   "use no memo";
   const batchId = props.batch?.id || "";
-  const { register, handleSubmit } = useForm<AnyRecord>({
+  const { register, handleSubmit, control } = useForm<AnyRecord>({
     defaultValues: {
       name: props.batch?.name || "",
       date: props.batch?.batchDate ? DateHelper.formatHtml5Date(props.batch.batchDate) : DateHelper.formatHtml5Date(new Date())
@@ -59,8 +59,8 @@ export const BatchEdit = memo((props: Props) => {
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller name="date" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth  data-cy="batch-date" label={Locale.label("donations.batchEdit.date")}  {...field} />
-  )} />
+              <AppDatePicker fullWidth data-cy="batch-date" label={Locale.label("donations.batchEdit.date")} {...field} />
+            )} />
           </Grid>
         </Grid>
       </FormCard>

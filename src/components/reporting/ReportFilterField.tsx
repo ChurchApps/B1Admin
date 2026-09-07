@@ -79,6 +79,9 @@ export const ReportFilterField = (props: Props) => {
           if (props.parameter.defaultValue === "yesterday") dt.setDate(dt.getDate() - 1);
           if (props.parameter.defaultValue === "lastYear") dt.setFullYear(dt.getFullYear() - 1);
           if (props.parameter.defaultValue === "lastSunday") dt = DateHelper.getLastSunday();
+          if (props.parameter.defaultValue === "yearStart") dt = new Date(dt.getFullYear(), 0, 1);
+          if (props.parameter.defaultValue === "lastYearStart") dt = new Date(dt.getFullYear() - 1, 0, 1);
+          if (props.parameter.defaultValue === "lastYearEnd") dt = new Date(dt.getFullYear() - 1, 11, 31);
           const p = { ...props.parameter };
           p.value = DateHelper.formatHtml5Date(dt);
           props.onChange(p, []);

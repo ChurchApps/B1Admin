@@ -4,7 +4,7 @@ import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Se
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
 import { CampusSelect } from "../../components/CampusSelect";
@@ -77,7 +77,6 @@ export const PlanEdit = (props: Props) => {
 
   const savePlanMutation = useMutation({
     mutationFn: async (plan: PlanInterface) => {
-      const { ApiHelper } = await import("@churchapps/apphelper");
       // Template: create plan, then apply snapshot.
       if (!plan.id && templateId) {
         const saved = await ApiHelper.post("/plans", [plan], "DoingApi");
@@ -100,7 +99,6 @@ export const PlanEdit = (props: Props) => {
 
   const deletePlanMutation = useMutation({
     mutationFn: async () => {
-      const { ApiHelper } = await import("@churchapps/apphelper");
       return ApiHelper.delete("/plans/" + props.plan.id, "DoingApi");
     },
     onSuccess: () => {

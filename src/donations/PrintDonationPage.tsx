@@ -5,7 +5,7 @@ import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { type PledgeProgressRowInterface } from "../helpers";
-import { GivingStatementDocument } from "./components/GivingStatementDocument";
+import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
 
 export const PrintDonationPage = () => {
   const [currency, setCurrency] = useState<string>("usd");
@@ -34,6 +34,12 @@ export const PrintDonationPage = () => {
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations?personId=" + params.personId, "GivingApi"],
     placeholderData: []
+  });
+
+  const churchSettings = useQuery<Record<string, string>>({
+    queryKey: ["/settings/public/" + context?.userChurch?.church?.id, "MembershipApi"],
+    placeholderData: {},
+    enabled: !!context?.userChurch?.church?.id
   });
 
   const allPledgeProgress = useQuery<PledgeProgressRowInterface[]>({
@@ -97,11 +103,11 @@ export const PrintDonationPage = () => {
   }, [fundDonations, donations, funds.data]);
 
   const contributions = useMemo(() => {
-    const result: { date: string; method: string | undefined; fund: string | undefined; amount: number, currency: string }[] = [];
+    const result: { date: string; method: string | undefined; fund: string | undefined; amount: number; currency: string; taxDeductible?: boolean }[] = [];
     fundDonations.forEach((fd) => {
       const donation = ArrayHelper.getOne(donations, "id", fd.donationId);
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
-      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount || 0, currency: fd.currency || "" });
+      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount || 0, currency: fd.currency || "", taxDeductible: fund?.taxDeductible !== false });
     });
     return result;
   }, [fundDonations, donations, funds.data]);
@@ -118,6 +124,7 @@ export const PrintDonationPage = () => {
       contributions={contributions}
       pledgeRows={pledgeRows}
       showPageBreak={false}
+      statementSettings={parseStatementSettings(churchSettings.data)}
     />
   );
 };

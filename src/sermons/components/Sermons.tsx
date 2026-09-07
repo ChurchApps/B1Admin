@@ -6,8 +6,8 @@ import { DateHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
 import { ImageEditor } from "@churchapps/apphelper";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
-import { Box, Button, Card, CardContent, Grid, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
-import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
+import { Alert, Box, Button, Card, CardContent, Grid, IconButton, InputAdornment, Menu, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, ContentCopy as ContentCopyIcon, Edit as EditIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { SermonEdit } from "./SermonEdit";
@@ -33,6 +33,17 @@ export const Sermons = () => {
   const [photoUrl, setPhotoUrl] = React.useState<string | null>(null);
   const [photoType, setPhotoType] = React.useState<string | null>(null);
   const imageEditorRef = React.useRef<HTMLDivElement>(null);
+  const [copySnackbar, setCopySnackbar] = React.useState(false);
+
+  const podcastFeedUrl = React.useMemo(() => {
+    const base = ApiHelper.getConfig("ContentApi")?.url?.replace(/\/+$/, "") || "";
+    const churchId = UserHelper.currentUserChurch?.church?.id;
+    return (base && churchId) ? base + "/sermons/rss/" + churchId : "";
+  }, []);
+
+  const copyFeedUrl = () => {
+    navigator.clipboard.writeText(podcastFeedUrl).then(() => setCopySnackbar(true)).catch(() => {});
+  };
 
   const handleUpdated = () => { setCurrentSermon(null); loadData(); };
 
@@ -407,6 +418,18 @@ export const Sermons = () => {
                 {getTable()}
               </CardContent>
             </Card>
+            {podcastFeedUrl && (
+              <Box sx={{ mt: 2 }} data-testid="podcast-feed-url">
+                <Typography variant="subtitle2">{Locale.label("sermons.podcast.title")}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <code style={{ wordBreak: "break-all" }}>{podcastFeedUrl}</code>
+                  <IconButton size="small" onClick={copyFeedUrl} aria-label={Locale.label("sermons.podcast.copyFeedUrl")} data-testid="copy-podcast-feed-url" sx={{ ml: 0.5, verticalAlign: "middle" }}>
+                    <ContentCopyIcon fontSize="small" />
+                  </IconButton>
+                </Typography>
+                <Typography variant="caption" color="text.secondary">{Locale.label("sermons.podcast.hint")}</Typography>
+              </Box>
+            )}
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
@@ -486,6 +509,9 @@ export const Sermons = () => {
           </Grid>
         </Grid>
       </Box>
+      <Snackbar open={copySnackbar} autoHideDuration={2500} onClose={() => setCopySnackbar(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert severity="success" variant="filled" onClose={() => setCopySnackbar(false)}>{Locale.label("sermons.podcast.feedUrlCopied")}</Alert>
+      </Snackbar>
     </>
   );
 };

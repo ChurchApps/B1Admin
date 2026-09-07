@@ -1,4 +1,5 @@
-import { type Page } from "@playwright/test";
+import fs from "fs";
+import { type Page, type APIRequestContext, request } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
@@ -164,6 +165,7 @@ test.describe.serial("Donations Management", () => {
       await expect(page.locator("table td").getByText("Anonymous")).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("table td").getByText("May 2, 2025")).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("table td").getByText("$")).toHaveCount(2, { timeout: 10000 });
+      await expect(page.locator("table td").getByText("Test Donation Notes")).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should edit a batch donation", async () => {
@@ -344,6 +346,24 @@ test.describe("Donations — navigation and listing extras", () => {
     await expect(page.locator("a").getByText("General Fund", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
+  test("Giving Link dialog shows a copyable URL with the fund preselected", async ({ page }) => {
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    await fundsBtn.click();
+    await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
+
+    await page.getByRole("row", { name: /General Fund/ }).getByRole("button", { name: "Giving Link" }).click();
+    const urlField = page.getByTestId("giving-link-url");
+    await expect(urlField).toBeVisible({ timeout: 10000 });
+    await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001/);
+
+    await page.getByTestId("giving-link-amount").fill("50");
+    await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001&amount=50/);
+
+    await page.getByTestId("copy-giving-link").click();
+    await page.getByTestId("close-giving-link").click();
+    await expect(urlField).toHaveCount(0);
+  });
+
   test("Batches list page exposes Add Batch and Stripe import affordances", async ({ page }) => {
     const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches").first();
     await batchesBtn.click();
@@ -414,5 +434,187 @@ test.describe("Fund visibility", () => {
     await page.locator("#fundsBox").getByRole("button", { name: "Delete" }).click();
     await confirmDelete(page);
     await expect(page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true })).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+test.describe("QuickBooks export", () => {
+  test.describe.configure({ retries: 0 });
+
+  // Seed batch "March 2, 2025 Batch" (BAT00000001) already splits 7 donations across 6 funds —
+  // General 1540 / Building 100 / Missions 50 / Youth 90 / Food Pantry 40 / Benevolence 80, total 1900.
+  test("Export for QuickBooks produces a balanced journal entry CSV", async ({ page }) => {
+    await page.goto("/donations/batches/BAT00000001");
+    await expect(page.locator("#page-header-title")).toHaveText("March 2, 2025 Batch", { timeout: 15000 });
+
+    // ExportLink lazy-loads react-csv; wait for the real <a download> wrapper, not the inert Suspense fallback button.
+    const qboLink = page.locator("a").filter({ has: page.getByRole("button", { name: "Export for QuickBooks" }) });
+    await expect(qboLink).toBeVisible({ timeout: 15000 });
+    const [download] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), qboLink.click()]);
+    const filePath = await download.path();
+    const content = fs.readFileSync(filePath!, "utf-8");
+
+    const allLines = content.trim().replace(/^\uFEFF/, "").split("\n").filter((l) => l.length > 0);
+    const parseCsvLine = (line: string) => line.split(",").map((cell) => cell.trim().replace(/^"|"$/g, ""));
+    expect(parseCsvLine(allLines[0])).toEqual(["JournalNo", "JournalDate", "AccountName", "Debits", "Credits", "Description", "Name"]);
+    const rows = allLines.slice(1).map(parseCsvLine);
+    const debitRow = rows.find((r) => r[2] === "Undeposited Funds");
+    const creditRows = rows.filter((r) => r[2] !== "Undeposited Funds");
+
+    expect(debitRow).toBeTruthy();
+    const debitTotal = parseFloat(debitRow![3]);
+    const creditTotal = creditRows.reduce((sum, r) => sum + parseFloat(r[4]), 0);
+    expect(debitTotal).toBeCloseTo(1900, 2);
+    expect(creditTotal).toBeCloseTo(debitTotal, 2);
+    expect(creditRows.some((r) => r[2] === "General Fund" && parseFloat(r[4]) === 1540)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Building Fund" && parseFloat(r[4]) === 100)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Missions Fund" && parseFloat(r[4]) === 50)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Youth Ministry" && parseFloat(r[4]) === 90)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Food Pantry" && parseFloat(r[4]) === 40)).toBe(true);
+    expect(creditRows.some((r) => r[2] === "Benevolence Fund" && parseFloat(r[4]) === 80)).toBe(true);
+  });
+});
+
+// Notes column: seed the batch directly via API (the BatchEdit date field is a
+// known-broken MUI date section input under Playwright, unrelated to this feature)
+// so the UI portion only exercises what's actually under test — bulk entry + list display.
+const API_BASE = "http://localhost:8084";
+const NOTES_BATCH_NAME = "Habakkuk Notes Batch";
+const NOTES_TEXT = "Envelope #42 — pledge campaign gift";
+
+async function apiAuth(ctx: APIRequestContext) {
+  const res = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+}
+
+test.describe("Donations list — notes column", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("a donation's notes show in the batch donations list", async ({ page }) => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: NOTES_BATCH_NAME, batchDate: "2025-11-01" }] });
+    const batches = await batchRes.json();
+    batchId = batches[0].id;
+    await ctx.dispose();
+
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page).toHaveURL(new RegExp(`/donations/batches/${batchId}`));
+
+    const anon = page.locator("button").getByText("Anonymous");
+    await expect(anon).toBeVisible({ timeout: 10000 });
+    await anon.click();
+
+    await page.locator('[data-testid="bulk-donation-notes"] input').fill(NOTES_TEXT);
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("15.00");
+    await page.locator('[data-testid="add-donation-submit"]').click();
+
+    await expect(page.locator("table td").getByText(NOTES_TEXT)).toHaveCount(1, { timeout: 10000 });
+  });
+});
+
+// Refunds: the demo church has no Stripe sandbox, so the button/visibility rules and the list
+// chip run against API-seeded rows and the refund POST itself is route-mocked.
+const REFUND_BATCH_NAME = "Zacchaeus Refund Batch";
+
+test.describe("Donation refunds", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+  let gatewayDonationId: string;
+  let manualDonationId: string;
+  let refundedDonationId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: REFUND_BATCH_NAME, batchDate: "2025-11-02" }] });
+    batchId = (await batchRes.json())[0].id;
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, {
+      ...auth,
+      data: [
+        { batchId, donationDate: "2025-11-02", amount: 25, method: "Card", status: "complete", transactionId: "pi_zacchaeus" },
+        { batchId, donationDate: "2025-11-02", amount: 10, method: "Check", status: "complete" },
+        { batchId, donationDate: "2025-11-02", amount: 40, method: "Card", status: "refunded", transactionId: "pi_zebedee" }
+      ]
+    });
+    const donations = await donationRes.json();
+    [gatewayDonationId, manualDonationId, refundedDonationId] = donations.map((d: any) => d.id);
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  const openDonation = async (page: Page, donationId: string) => {
+    await page.getByTestId("donation-row-" + donationId).getByRole("button", { name: "Edit" }).click();
+  };
+
+  test("Refund is offered on a gateway donation and hidden on a manual one", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(REFUND_BATCH_NAME, { timeout: 15000 });
+
+    await openDonation(page, gatewayDonationId);
+    await expect(page.getByTestId("refund-donation")).toBeVisible({ timeout: 10000 });
+    await page.locator("#donationBox").getByRole("button", { name: "Cancel" }).click();
+
+    await openDonation(page, manualDonationId);
+    await expect(page.locator("#donationBox")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("refund-donation")).toHaveCount(0);
+  });
+
+  test("an already refunded donation shows a Refunded chip and no Refund button", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    const row = page.getByTestId("donation-row-" + refundedDonationId);
+    await expect(row.getByText("Refunded", { exact: true })).toBeVisible({ timeout: 15000 });
+    // 25 + 10 complete, the 40 refunded gift is left out of the batch total.
+    await expect(page.getByRole("row", { name: /Total/ })).toContainText("35.00");
+
+    await openDonation(page, refundedDonationId);
+    await expect(page.locator("#donationBox")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("refund-donation")).toHaveCount(0);
+  });
+
+  test("confirming a refund posts to the gateway and closes the editor", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(REFUND_BATCH_NAME, { timeout: 15000 });
+
+    await page.route("**/donate/refund/**", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ success: true, refundId: "re_1" }) }));
+    const refundPost = page.waitForRequest((r) => r.url().includes("/donate/refund/" + gatewayDonationId) && r.method() === "POST", { timeout: 15000 });
+
+    await openDonation(page, gatewayDonationId);
+    await page.getByTestId("refund-donation").click();
+    await confirmDelete(page);
+
+    await refundPost;
+    await expect(page.locator("#donationBox")).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("a failed refund shows the gateway error and leaves the editor open", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(REFUND_BATCH_NAME, { timeout: 15000 });
+
+    await page.route("**/donate/refund/**", (route) => route.fulfill({ status: 400, contentType: "application/json", body: JSON.stringify({ error: "Charge has already been refunded." }) }));
+
+    await openDonation(page, gatewayDonationId);
+    await page.getByTestId("refund-donation").click();
+    await confirmDelete(page);
+
+    await expect(page.getByTestId("refund-error")).toHaveText("Charge has already been refunded.", { timeout: 10000 });
+    await expect(page.locator("#donationBox")).toBeVisible();
   });
 });

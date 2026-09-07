@@ -2,10 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, List, ListItem, ListItemText, MenuItem, Stack, TextField, Typography } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import { useFirstDayOfWeek, applyWeekStart } from "../../hooks";
+import { AppDatePicker } from "../../components/AppDatePicker";
 
 interface Props {
   group: GroupInterface;
@@ -31,11 +28,6 @@ export function BulkGroupEventsModal(props: Props) {
   const [holidays, setHolidays] = useState<{ date: string; name: string }[]>([]);
   const [excluded, setExcluded] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
-
-  const firstDayOfWeek = useFirstDayOfWeek();
-  useEffect(() => {
-    applyWeekStart(firstDayOfWeek);
-  }, [firstDayOfWeek]);
 
   const dates = useMemo(() => {
     if (!firstDate || !lastDate) return [];
@@ -110,20 +102,22 @@ export function BulkGroupEventsModal(props: Props) {
           <TextField fullWidth label={Locale.label("calendars.newEvent.eventTitle")} value={title} onChange={(e) => setTitle(e.target.value)} data-testid="bulk-events-title-input" />
           <TextField fullWidth label={Locale.label("calendars.newEvent.description")} value={description} onChange={(e) => setDescription(e.target.value)} multiline rows={2} data-testid="bulk-events-description-input" />
           <Stack direction="row" spacing={2}>
-            <LocalizationProvider dateAdapter={AdapterDayjs} key={firstDayOfWeek}>
-              <DatePicker
-                label={Locale.label("groups.groupCalendar.firstMeeting")}
-                value={firstDate ? dayjs(firstDate) : null}
-                onChange={(v) => setFirstDate(v && v.isValid() ? v.format("YYYY-MM-DD") : "")}
-                slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true }, inputProps: { "data-testid": "bulk-events-first-date" } } }}
-              />
-              <DatePicker
-                label={Locale.label("groups.groupCalendar.lastMeeting")}
-                value={lastDate ? dayjs(lastDate) : null}
-                onChange={(v) => setLastDate(v && v.isValid() ? v.format("YYYY-MM-DD") : "")}
-                slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true }, inputProps: { "data-testid": "bulk-events-last-date" } } }}
-              />
-            </LocalizationProvider>
+            <AppDatePicker
+              fullWidth
+              label={Locale.label("groups.groupCalendar.firstMeeting")}
+              value={firstDate}
+              onChange={(e) => setFirstDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              data-testid="bulk-events-first-date"
+            />
+            <AppDatePicker
+              fullWidth
+              label={Locale.label("groups.groupCalendar.lastMeeting")}
+              value={lastDate}
+              onChange={(e) => setLastDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              data-testid="bulk-events-last-date"
+            />
           </Stack>
           <Stack direction="row" spacing={2}>
             <TextField fullWidth type="time" label={Locale.label("calendars.newEvent.start")} value={startTime} onChange={(e) => setStartTime(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="bulk-events-start-time" />
