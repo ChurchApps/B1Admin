@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
@@ -218,7 +218,10 @@ export const ManageChurch = () => {
             headerText={Locale.label("settings.checkinSettingsEdit.title")}
             headerIcon="how_to_reg"
             data-testid="settings-check-ins"
-            view={<SummaryRow label={Locale.label("settings.checkinSettingsEdit.ratioEnforcement")} value={checkinsSubtitle} />}
+            view={<>
+              <SummaryRow label={Locale.label("settings.checkinSettingsEdit.ratioEnforcement")} value={checkinsSubtitle} />
+              <Typography component={RouterLink} to="/mobile/checkin" variant="body2" sx={{ display: "inline-block", mt: 1, color: "var(--link)" }}>{Locale.label("settings.checkinSettingsEdit.kioskLink")}</Typography>
+            </>}
             renderEdit={(saveTrigger, onSaveComplete) => <CheckinSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />

@@ -61,15 +61,17 @@ export class SecondaryMenuHelper {
   static getMobileMenu = (path: string) => {
     const menuItems: MenuItem[] = [];
     let label: string = Locale.label("common.mobile");
+    if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/mobile/navigation", label: Locale.label("common.navigation"), icon: "menu" });
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) {
-      menuItems.push({ url: "/mobile/navigation", label: Locale.label("common.navigation"), icon: "menu" });
       menuItems.push({ url: "/mobile/theme", label: Locale.label("common.appTheme"), icon: "palette" });
       menuItems.push({ url: "/mobile/b1-mobile", label: Locale.label("common.b1Mobile"), icon: "phone_android" });
       menuItems.push({ url: "/mobile/checkin", label: Locale.label("common.b1CheckIn"), icon: "qr_code" });
+      menuItems.push({ url: "/mobile/checkin/labels", label: Locale.label("common.labels"), icon: "label" });
     }
 
     if (path.startsWith("/mobile/theme")) label = Locale.label("common.appTheme");
     else if (path.startsWith("/mobile/b1-mobile")) label = Locale.label("common.b1Mobile");
+    else if (path.startsWith("/mobile/checkin/labels")) label = Locale.label("common.labels");
     else if (path.startsWith("/mobile/checkin")) label = Locale.label("common.b1CheckIn");
     else if (path.startsWith("/mobile")) label = Locale.label("common.navigation");
 
