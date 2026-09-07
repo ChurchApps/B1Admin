@@ -109,8 +109,19 @@ export const PersonPage = () => {
 
   // Person forms show for everyone; a stand-alone form only shows for the people it's linked to.
   const visibleForms = useMemo(() => {
-    const submittedFormIds = new Set((person?.formSubmissions || []).map((fs) => fs.formId));
-    return personForms.filter((form) => form.contentType === "person" || submittedFormIds.has(form.id));
+    const submissions = person?.formSubmissions || [];
+    const submittedFormIds = new Set(submissions.map((fs) => fs.formId));
+    const result = personForms.filter((form) => form.contentType === "person" || submittedFormIds.has(form.id));
+    // /forms omits archived forms, but archiving only stops new submissions - a form
+    // the person already filled out has to keep showing its answers, so add it back
+    // from the submission itself.
+    const listedIds = new Set(result.map((form) => form.id));
+    submissions.forEach((fs) => {
+      if (!fs.formId || !fs.form || listedIds.has(fs.formId)) return;
+      listedIds.add(fs.formId);
+      result.push({ id: fs.formId, name: fs.form.name, archived: fs.form.archived, contentType: fs.form.contentType });
+    });
+    return result;
   }, [personForms, person?.formSubmissions]);
 
   const showForms = formPermission && visibleForms.length > 0;
