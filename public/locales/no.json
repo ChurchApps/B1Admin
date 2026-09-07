@@ -47,6 +47,25 @@
       "volunteer": "Frivillig",
       "volunteers": "frivillige"
     },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
+    },
     "labels": {
       "align": "Juster",
       "always": "Alltid",
@@ -119,6 +138,8 @@
     "tabs": {
       "attTrend": "Oppmøtetrend",
       "groupAtt": "Gruppens oppmøte",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts",
       "setup": "Oppsett"
     }
   },
@@ -178,6 +199,7 @@
       "confirmDelete": "Er du sikker på at du vil slette denne hendelsen?",
       "confirmDeleteSeries": "Dette er et gjentakende arrangement. Hvis du sletter det, fjernes hele serien og alle forekomstene. Er du sikker?",
       "delete": "Slett",
+      "editEvent": "Edit Event",
       "manageRegistrations": "Administrer påmeldinger",
       "noGroups": "Ingen grupper funnet."
     },
@@ -197,6 +219,7 @@
       "noCalendars": "Finner ingen kalendere",
       "status": "Status",
       "subtitleEmpty": "Kom i gang ved å lage din første kalender",
+      "subtitleWithCount": "Subtitle With Count",
       "title": "Kalendere"
     },
     "calendarPage": {
@@ -337,6 +360,7 @@
     "comboBox": {
       "addNew": "Legg til ny..."
     },
+    "confirm": "Confirm",
     "copy": "Kopier",
     "createPerson": {
       "validate": {
@@ -372,6 +396,7 @@
     "left": "Venstre",
     "loading": "Laster",
     "mobile": "Mobil",
+    "more": "More",
     "name": "Navn",
     "navigation": "Navigasjon",
     "no": "Nei",
@@ -712,7 +737,11 @@
       "fund": "Fond",
       "inKind": "Naturalytelse",
       "lastDig": "Siste 4 sifre",
-      "method": "Metode"
+      "method": "Metode",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Hendelse: ",
@@ -732,11 +761,14 @@
       "don": "Donasjoner",
       "errMsg": "Ingen fond funnet. Vennligst opprett et fond før du gir en donasjon",
       "export": "Eksporter",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
       "funds": "Fond",
       "method": "Metode",
       "noDonMsg": "Ingen donasjoner er registrert. Når donasjoner er lagt inn, vil de vises her.",
       "notes": "Notes",
       "pending": "Venter",
+      "refunded": "Refunded",
       "statements": "Giveoppgaver",
       "summary": "Sammendrag",
       "total": "Totalt"
@@ -747,6 +779,16 @@
       "noBatch": "Ingen batcher funnet.",
       "subtitle": "Se donasjonssammendrag og analyser givertrender",
       "total": "Totalt"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "Fondsnavn",
@@ -847,6 +889,11 @@
       "lapsedGivers": "Lapsed Givers"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "Handling",
@@ -880,6 +927,8 @@
       "availableStart": "Startdato for tilgjengelighet",
       "confirmMsg": "Er du sikker på at du ønsker å slette dette skjemaet permanent?",
       "contentTypeAria": "Innholdstype",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -987,8 +1036,10 @@
       "team": "Team"
     },
     "groupBanner": {
+      "announcements": "Announcements",
       "confirmDuplicate": "Duplisere denne gruppen? Medlemmer vil ikke bli kopiert.",
       "copySuffix": "(Kopi)",
+      "discussions": "Discussions",
       "duplicateTooltip": "Dupliser denne gruppen",
       "emailTooltip": "Send e-post til denne gruppen",
       "location": "Sted",
@@ -1040,6 +1091,8 @@
     "groupDetailsEdit": {
       "addPhoto": "Legg til bilde",
       "ageGrade": "Alder og klassetrinn",
+      "announcementsEnabled": "Announcements",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "Arkiver",
       "archiveAria": "Arkiver gruppe",
       "attTrack": "Spor oppmøte",
@@ -1056,6 +1109,8 @@
       "confidentialHelp": "Skjul denne gruppen og medlemslisten fra offentlige sider, gruppesøket og ikke-medlemmer.",
       "confirmArchive": "Er du sikker på at du vil arkivere denne gruppen? Den vil bli skjult fra gruppelisten til den gjenopprettes.",
       "confirmMsg": "Er du sikker på at du ønsker å slette denne gruppen permanent?",
+      "discussionsEnabled": "Discussions",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Påmelding",
       "groupDesc": "Gruppens beskrivelse",
       "groupDet": "Gruppedetaljer",
@@ -1408,6 +1463,7 @@
       "valuePlaceholder": "Verdi"
     },
     "aiSearch": {
+      "clearSearch": "Clear Search",
       "exampleMen": "- Vis meg menn over 30 med fødselsdager i juli.",
       "exampleWomen": "- Vis meg gifte kvinner.",
       "examples": "Eksempler:",
@@ -1459,6 +1515,13 @@
       "title": "Demografi",
       "total": "Totalt",
       "unassigned": "Ikke tilordnet"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "Aktivitet",
@@ -1804,6 +1867,7 @@
       "search": "Search fonts..."
     },
     "form": {
+      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "Registreringsskjema",
       "questionDescription": "Hjelp oss med å planlegge arrangementene våre",
       "questionPlaceholder": "Skriv inn svaret ditt her",
@@ -1909,10 +1973,13 @@
       "fallbackLoading": "Laster...",
       "fallbackSection": "Seksjon",
       "fromAssociatedLesson": "Fra tilknyttet leksjon:",
+      "importCount": "Import ({count})",
       "noActionsAvailable": "Ingen handlinger tilgjengelig",
       "noContent": "Ingen innhold tilgjengelig",
       "selectAction": "Velg handling",
-      "selectExternalItem": "Velg eksternt element"
+      "selectExternalItem": "Velg eksternt element",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2077,6 +2144,9 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Varighet",
       "editItem": "Rediger element",
       "editSection": "Rediger seksjon",
@@ -2085,6 +2155,9 @@
       "externalItem": "Eksternt element",
       "item": "Punkt",
       "restoreOriginal": "Restore Original",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items",
       "song": "Sang"
     },
     "planItemEdit": {
@@ -2416,6 +2489,8 @@
       "lightMode": "Lys modus",
       "linkedAccounts": "Tilknyttede kontoer",
       "noDirect": "Skjul meg fra medlemskatalogen",
+      "passCurrent": "Pass Current",
+      "passCurrentMsg": "Pass Current Msg",
       "passLong": "Vennligst skriv inn et passord som er minst 8 tegn langt.",
       "passMatch": "Passordene stemmer ikke overens.",
       "passNew": "Nytt passord",
@@ -2730,6 +2805,12 @@
       "searchPlaceholder": "Søk etter spillelister...",
       "title": "Spillelister"
     },
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    },
     "publishDate": "Publiseringsdato",
     "searchPlaceholder": "Søk etter prekener etter tittel eller spilleliste...",
     "sermon": "Preken",
@@ -2738,6 +2819,8 @@
       "addToAnotherPlaylist": "Legg til en annen spilleliste",
       "addToAnotherPlaylistAria": "Legg preken til en annen spilleliste",
       "addToSelectedPlaylistAria": "Legg til valgt spilleliste",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "Dette er ikke kanal-URLen din - Se hjelpelenken ovenfor",
       "currentLiveService": "Gjeldende direktesendt tjeneste",
       "currentYouTubeLiveStream": "Gjeldende YouTube direktesending",
@@ -2767,6 +2850,7 @@
       "totalSermonDuration": "Total prekenlengde",
       "unauthorized": "Ikke autorisert til å opprette prekener",
       "unauthorizedDelete": "Ikke autorisert til å slette prekener",
+      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "Video-ID eller URL",
       "videoProvider": "Videoleverandør",
       "vimeo": "Vimeo",
@@ -2854,6 +2938,9 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3379,13 +3466,42 @@
     "rolesPage": {
       "subtitle": "Administrer roller og tillatelser"
     },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
+    },
     "storageSettingsEdit": {
+      "authFailed": "Auth Failed",
+      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps (Gratis)",
+      "connect": "Connect",
+      "connectFirst": "Connect First",
+      "connected": "Connected",
+      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Filer lagres på MinistryStuff-lagringsplanen din, automatisk koblet til denne menigheten. Administrer abonnementet ditt på",
       "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup Blocked",
       "provider": "Leverandør",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "S3 Access Key",
+      "s3Bucket": "S3 Bucket",
+      "s3Endpoint": "S3 Endpoint",
+      "s3Helper": "S3 Helper",
+      "s3PublicBase": "S3 Public Base",
+      "s3Region": "S3 Region",
+      "s3Required": "S3 Required",
+      "s3SecretKey": "S3 Secret Key",
       "saveError": "Feil ved lagring av lagringsinnstillinger.",
+      "sessionExpired": "Session Expired",
+      "sessionFailed": "Session Failed",
       "title": "Fillagring",
       "usage": "Bruker {used} GB av {quota} GB."
     },
@@ -3557,6 +3673,7 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3815,18 +3932,49 @@
       "addElements": "Legg til Elementer",
       "advanced": "Avansert",
       "all": "Alle",
+      "block": "Block",
       "blocks": "Blokker",
+      "box": "Box",
+      "calendar": "Calendar",
+      "campaignProgress": "Campaign Progress",
+      "card": "Card",
+      "carousel": "Carousel",
       "church": "Kirke",
+      "column": "Column",
       "common": "Vanlig",
+      "countdown": "Countdown",
       "descReusableElement": "Gjenbrukbar elementblokk",
       "descReusableSection": "Gjenbrukbar seksjon",
       "descSection": "Container for gruppering av innhold",
+      "donateLink": "Donate Link",
+      "donation": "Donation",
+      "embedPage": "Embed Page",
+      "expandable": "Expandable",
+      "form": "Form",
+      "gallery": "Gallery",
+      "groupList": "Group List",
+      "html": "Html",
+      "iconFeature": "Icon Feature",
+      "image": "Image",
+      "location": "Location",
+      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Ingen elementer funnet",
+      "row": "Row",
       "searchElements": "Søk elementer...",
       "section": "Seksjon",
+      "serviceTimes": "Service Times",
+      "socialIcons": "Social Icons",
+      "staffGrid": "Staff Grid",
+      "stats": "Stats",
+      "stream": "Stream",
+      "table": "Table",
+      "testimonial": "Testimonial",
+      "text": "Text",
+      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "Prøv et annet søkeord",
-      "untitledBlock": "Navnløs blokk"
+      "untitledBlock": "Navnløs blokk",
+      "video": "Video"
     },
     "elementEdit": {
       "enableLightbox": "Aktiver Lightbox",
@@ -3936,6 +4084,7 @@
       "uploadFiles": "Last opp filer"
     },
     "filesManager": {
+      "externalStorage": "External Storage",
       "files": "Filer",
       "getStarted": "Kom i gang ved å laste opp din første fil",
       "name": "Navn",
@@ -3992,6 +4141,7 @@
       "wide": "Bred"
     },
     "generateSite": {
+      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4010,7 +4160,8 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_": "Tone_"
     },
     "helpDialog": {
       "addBody": "Klikk på Legg til innhold i verktøylinjen, og dra deretter en seksjon eller et element til siden.",
@@ -4287,6 +4438,7 @@
       "dividerNone": "Ingen",
       "dividerShape": "Form",
       "dividerTop": "Toppdeler",
+      "divider_": "Divider_",
       "dividers": "Formdelere",
       "duplicate": "Dupliser",
       "duplicateSection": "Dupliser seksjon",
@@ -4323,6 +4475,10 @@
       "showCampus": "Vis campus",
       "title": "Tittel"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main Website",
+      "manageSites": "Manage Sites"
+    },
     "siteWidgets": {
       "addAction": "Legg til handling",
       "announcementBar": "Kunngjøringslinje",
@@ -4346,6 +4502,15 @@
       "textColor": "Tekstfarge",
       "title": "Nettstedswidgets",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Add",
+      "deleteConfirm": "Delete Confirm",
+      "empty": "Empty",
+      "name": "Name",
+      "subDomain": "Sub Domain",
+      "subDomainHint": "Sub Domain Hint",
+      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "Justering",
@@ -4547,6 +4712,8 @@
     },
     "audio": {
       "deleteConfirm": "Er du sikker på at du vil slette denne lydfilen?",
+      "tooLarge": "Too Large",
+      "unsupportedFormat": "Unsupported Format",
       "upload": "Last opp lyd"
     },
     "create": {
@@ -4762,6 +4929,7 @@
       "operator": "Operator",
       "pauseAll": "Sett automatisering på pause",
       "paused": "Satt på pause",
+      "recur_": "Recur_",
       "recurs": "Gjentas",
       "resumeAll": "Gjenoppta automatisering",
       "runNow": "Kjør nå",
@@ -4782,6 +4950,7 @@
       "resume": "Gjenoppta",
       "retry": "Prøv igjen",
       "statusHeader": "Status",
+      "status_": "Status_",
       "subject": "Person",
       "title": "Kjøringshistorikk",
       "trigger": "Utløser",

@@ -47,6 +47,25 @@
       "volunteer": "志愿者",
       "volunteers": "志愿者"
     },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
+    },
     "labels": {
       "align": "对齐",
       "always": "始终",
@@ -119,6 +138,8 @@
     "tabs": {
       "attTrend": "出席趋势",
       "groupAtt": "团体出席",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts",
       "setup": "设置"
     }
   },
@@ -178,6 +199,7 @@
       "confirmDelete": "您确定要删除此活动吗？",
       "confirmDeleteSeries": "这是一个重复活动。删除它将移除整个系列及其所有场次。您确定吗？",
       "delete": "删除",
+      "editEvent": "Edit Event",
       "manageRegistrations": "管理报名",
       "noGroups": "未找到组。"
     },
@@ -197,6 +219,7 @@
       "noCalendars": "没有找到日历",
       "status": "状态",
       "subtitleEmpty": "从创建您的第一个日历开始",
+      "subtitleWithCount": "Subtitle With Count",
       "title": "日历"
     },
     "calendarPage": {
@@ -337,6 +360,7 @@
     "comboBox": {
       "addNew": "添加新..."
     },
+    "confirm": "Confirm",
     "copy": "复制",
     "createPerson": {
       "validate": {
@@ -372,6 +396,7 @@
     "left": "左",
     "loading": "加载中",
     "mobile": "移动端",
+    "more": "More",
     "name": "姓名",
     "navigation": "导航",
     "no": "否",
@@ -712,7 +737,11 @@
       "fund": "基金",
       "inKind": "实物捐赠",
       "lastDig": "最后 4 位数字",
-      "method": "方法"
+      "method": "方法",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "事件： ",
@@ -732,11 +761,14 @@
       "don": "捐款",
       "errMsg": "未找到基金。请在捐款前创建一个基金",
       "export": "导出",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
       "funds": "基金",
       "method": "方式",
       "noDonMsg": "尚未追踪任何捐款。输入捐款后，它们将显示在这里。",
       "notes": "Notes",
       "pending": "待处理",
+      "refunded": "Refunded",
       "statements": "捐赠报表",
       "summary": "摘要",
       "total": "总计"
@@ -747,6 +779,16 @@
       "noBatch": "未找到批次。",
       "subtitle": "查看捐赠摘要和分析捐赠趋势",
       "total": "总计"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "基金名称",
@@ -847,6 +889,11 @@
       "lapsedGivers": "Lapsed Givers"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "操作",
@@ -880,6 +927,8 @@
       "availableStart": "可用开始日期",
       "confirmMsg": "您确定要永久删除此表单吗？",
       "contentTypeAria": "内容类型",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -987,8 +1036,10 @@
       "team": "团队"
     },
     "groupBanner": {
+      "announcements": "Announcements",
       "confirmDuplicate": "复制此群组？成员不会被复制。",
       "copySuffix": "(副本)",
+      "discussions": "Discussions",
       "duplicateTooltip": "复制此群组",
       "emailTooltip": "向此小组发送电子邮件",
       "location": "地点",
@@ -1040,6 +1091,8 @@
     "groupDetailsEdit": {
       "addPhoto": "添加照片",
       "ageGrade": "年龄与年级",
+      "announcementsEnabled": "Announcements",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "存档",
       "archiveAria": "存档群组",
       "attTrack": "追踪出席",
@@ -1056,6 +1109,8 @@
       "confidentialHelp": "对公开页面、团体查找器和非成员隐藏此团体及其名册。",
       "confirmArchive": "您确定要存档此群组吗？在恢复之前，它将从群组列表中隐藏。",
       "confirmMsg": "您确定要永久删除此群组吗？",
+      "discussionsEnabled": "Discussions",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "报名",
       "groupDesc": "团体描述",
       "groupDet": "团体详情",
@@ -1408,6 +1463,7 @@
       "valuePlaceholder": "值"
     },
     "aiSearch": {
+      "clearSearch": "Clear Search",
       "exampleMen": "- 显示 30 岁以上、生日在 7 月的男性。",
       "exampleWomen": "- 显示已婚的女性。",
       "examples": "示例：",
@@ -1459,6 +1515,13 @@
       "title": "人口统计",
       "total": "总计",
       "unassigned": "未分配"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "活动",
@@ -1804,6 +1867,7 @@
       "search": "Search fonts..."
     },
     "form": {
+      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "登记表",
       "questionDescription": "帮助我们规划活动",
       "questionPlaceholder": "在此输入您的答案",
@@ -1909,10 +1973,13 @@
       "fallbackLoading": "加载中...",
       "fallbackSection": "部分",
       "fromAssociatedLesson": "来自关联课程：",
+      "importCount": "Import ({count})",
       "noActionsAvailable": "没有可用操作",
       "noContent": "无可用内容",
       "selectAction": "选择操作",
-      "selectExternalItem": "选择外部项目"
+      "selectExternalItem": "选择外部项目",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2077,6 +2144,9 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "持续时间",
       "editItem": "编辑项目",
       "editSection": "编辑部分",
@@ -2085,6 +2155,9 @@
       "externalItem": "外部项目",
       "item": "物品",
       "restoreOriginal": "Restore Original",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items",
       "song": "歌曲"
     },
     "planItemEdit": {
@@ -2416,6 +2489,8 @@
       "lightMode": "浅色模式",
       "linkedAccounts": "关联账户",
       "noDirect": "在成员目录中隐藏我",
+      "passCurrent": "Pass Current",
+      "passCurrentMsg": "Pass Current Msg",
       "passLong": "请输入至少8个字符的密码。",
       "passMatch": "密码不匹配。",
       "passNew": "新密码",
@@ -2730,6 +2805,12 @@
       "searchPlaceholder": "搜索播放列表...",
       "title": "播放列表"
     },
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    },
     "publishDate": "发布日期",
     "searchPlaceholder": "按标题或播放列表搜索讲道...",
     "sermon": "讲道",
@@ -2738,6 +2819,8 @@
       "addToAnotherPlaylist": "添加到另一个播放列表",
       "addToAnotherPlaylistAria": "将讲道添加到另一个播放列表",
       "addToSelectedPlaylistAria": "添加到所选播放列表",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "这不是您的频道网址 - 请参阅上方的帮助链接",
       "currentLiveService": "当前直播服务",
       "currentYouTubeLiveStream": "当前 YouTube 直播",
@@ -2767,6 +2850,7 @@
       "totalSermonDuration": "讲道总时长",
       "unauthorized": "未授权创建讲道",
       "unauthorizedDelete": "未授权删除讲道",
+      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "视频 ID 或 URL",
       "videoProvider": "视频提供商",
       "vimeo": "Vimeo",
@@ -2854,6 +2938,9 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3379,13 +3466,42 @@
     "rolesPage": {
       "subtitle": "管理角色和权限"
     },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
+    },
     "storageSettingsEdit": {
+      "authFailed": "Auth Failed",
+      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps (免费)",
+      "connect": "Connect",
+      "connectFirst": "Connect First",
+      "connected": "Connected",
+      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "文件将存储在您的 MinistryStuff 存储套餐中，已自动关联到此教会。请前往以下网址管理您的套餐：",
       "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup Blocked",
       "provider": "提供商",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "S3 Access Key",
+      "s3Bucket": "S3 Bucket",
+      "s3Endpoint": "S3 Endpoint",
+      "s3Helper": "S3 Helper",
+      "s3PublicBase": "S3 Public Base",
+      "s3Region": "S3 Region",
+      "s3Required": "S3 Required",
+      "s3SecretKey": "S3 Secret Key",
       "saveError": "保存存储设置时出错。",
+      "sessionExpired": "Session Expired",
+      "sessionFailed": "Session Failed",
       "title": "文件存储",
       "usage": "已使用 {used} GB，共 {quota} GB。"
     },
@@ -3557,6 +3673,7 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3815,18 +3932,49 @@
       "addElements": "添加元素",
       "advanced": "高级",
       "all": "全部",
+      "block": "Block",
       "blocks": "块",
+      "box": "Box",
+      "calendar": "Calendar",
+      "campaignProgress": "Campaign Progress",
+      "card": "Card",
+      "carousel": "Carousel",
       "church": "教会",
+      "column": "Column",
       "common": "常用",
+      "countdown": "Countdown",
       "descReusableElement": "可重用元素块",
       "descReusableSection": "可重用部分",
       "descSection": "用于分组内容的容器",
+      "donateLink": "Donate Link",
+      "donation": "Donation",
+      "embedPage": "Embed Page",
+      "expandable": "Expandable",
+      "form": "Form",
+      "gallery": "Gallery",
+      "groupList": "Group List",
+      "html": "Html",
+      "iconFeature": "Icon Feature",
+      "image": "Image",
+      "location": "Location",
+      "logo": "Logo",
       "media": "媒体",
       "noElementsFound": "未找到元素",
+      "row": "Row",
       "searchElements": "搜索元素...",
       "section": "部分",
+      "serviceTimes": "Service Times",
+      "socialIcons": "Social Icons",
+      "staffGrid": "Staff Grid",
+      "stats": "Stats",
+      "stream": "Stream",
+      "table": "Table",
+      "testimonial": "Testimonial",
+      "text": "Text",
+      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "尝试不同的搜索词",
-      "untitledBlock": "无标题块"
+      "untitledBlock": "无标题块",
+      "video": "Video"
     },
     "elementEdit": {
       "enableLightbox": "启用灯箱",
@@ -3936,6 +4084,7 @@
       "uploadFiles": "上传文件"
     },
     "filesManager": {
+      "externalStorage": "External Storage",
       "files": "文件",
       "getStarted": "开始上传您的第一个文件",
       "name": "名称",
@@ -3992,6 +4141,7 @@
       "wide": "宽幅"
     },
     "generateSite": {
+      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4010,7 +4160,8 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_": "Tone_"
     },
     "helpDialog": {
       "addBody": "在工具栏中点击“添加内容”，然后将部分或元素拖到页面上。",
@@ -4287,6 +4438,7 @@
       "dividerNone": "无",
       "dividerShape": "形状",
       "dividerTop": "顶部分隔线",
+      "divider_": "Divider_",
       "dividers": "造型分隔线",
       "duplicate": "复制",
       "duplicateSection": "复制部分",
@@ -4323,6 +4475,10 @@
       "showCampus": "显示校园",
       "title": "标题"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main Website",
+      "manageSites": "Manage Sites"
+    },
     "siteWidgets": {
       "addAction": "添加操作",
       "announcementBar": "公告栏",
@@ -4346,6 +4502,15 @@
       "textColor": "文字颜色",
       "title": "网站小组件",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Add",
+      "deleteConfirm": "Delete Confirm",
+      "empty": "Empty",
+      "name": "Name",
+      "subDomain": "Sub Domain",
+      "subDomainHint": "Sub Domain Hint",
+      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "对齐方式",
@@ -4547,6 +4712,8 @@
     },
     "audio": {
       "deleteConfirm": "确定要删除此音频文件吗？",
+      "tooLarge": "Too Large",
+      "unsupportedFormat": "Unsupported Format",
       "upload": "上传音频"
     },
     "create": {
@@ -4762,6 +4929,7 @@
       "operator": "运算符",
       "pauseAll": "暂停自动化",
       "paused": "已暂停",
+      "recur_": "Recur_",
       "recurs": "重复",
       "resumeAll": "恢复自动化",
       "runNow": "立即运行",
@@ -4782,6 +4950,7 @@
       "resume": "恢复",
       "retry": "重试",
       "statusHeader": "状态",
+      "status_": "Status_",
       "subject": "人员",
       "title": "执行历史",
       "trigger": "触发器",

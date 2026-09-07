@@ -47,6 +47,25 @@
       "volunteer": "स्वयंसेवक",
       "volunteers": "स्वयंसेवक"
     },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
+    },
     "labels": {
       "align": "संरेखित करें",
       "always": "हमेशा",
@@ -119,6 +138,8 @@
     "tabs": {
       "attTrend": "उपस्थिति रुझान",
       "groupAtt": "समूह उपस्थिति",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts",
       "setup": "सेटअप"
     }
   },
@@ -178,6 +199,7 @@
       "confirmDelete": "क्या आप वाकई इस इवेंट को हटाना चाहते हैं?",
       "confirmDeleteSeries": "यह एक आवर्ती घटना है। इसे हटाने से पूरी श्रृंखला और इसकी सभी घटनाएं हट जाएंगी। क्या आप सुनिश्चित हैं?",
       "delete": "हटाएं",
+      "editEvent": "Edit Event",
       "manageRegistrations": "पंजीकरण प्रबंधित करें",
       "noGroups": "कोई समूह नहीं मिला।"
     },
@@ -197,6 +219,7 @@
       "noCalendars": "कोई कैलेंडर नहीं मिला",
       "status": "स्थिति",
       "subtitleEmpty": "अपना पहला कैलेंडर बनाकर आरंभ करें",
+      "subtitleWithCount": "Subtitle With Count",
       "title": "CALENDARS"
     },
     "calendarPage": {
@@ -337,6 +360,7 @@
     "comboBox": {
       "addNew": "नया जोड़ो..."
     },
+    "confirm": "Confirm",
     "copy": "कॉपी करें",
     "createPerson": {
       "validate": {
@@ -372,6 +396,7 @@
     "left": "बाएं",
     "loading": "लोड हो रहा है",
     "mobile": "मोबाइल",
+    "more": "More",
     "name": "नाम",
     "navigation": "नेविगेशन",
     "no": "नहीं",
@@ -712,7 +737,11 @@
       "fund": "फंड",
       "inKind": "वस्तु रूप में",
       "lastDig": "अंतिम 4 अंक",
-      "method": "तरीका"
+      "method": "तरीका",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "घटना: ",
@@ -732,11 +761,14 @@
       "don": "दान",
       "errMsg": "कोई फंड नहीं मिला। कृपया दान करने से पहले एक फंड बनाएं",
       "export": "निर्यात",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
       "funds": "फंड",
       "method": "तरीका",
       "noDonMsg": "कोई दान ट्रैक नहीं किया गया है। दान दर्ज होने के बाद वे यहाँ दिखाई देंगे।",
       "notes": "Notes",
       "pending": "लंबित",
+      "refunded": "Refunded",
       "statements": "दान विवरण",
       "summary": "सारांश",
       "total": "कुल"
@@ -747,6 +779,16 @@
       "noBatch": "कोई बैच नहीं मिला।",
       "subtitle": "दान सारांश देखें और दान प्रवृत्तियों का विश्लेषण करें",
       "total": "कुल"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "फंड का नाम",
@@ -847,6 +889,11 @@
       "lapsedGivers": "Lapsed Givers"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "कार्रवाई",
@@ -880,6 +927,8 @@
       "availableStart": "उपलब्धता प्रारंभ तिथि",
       "confirmMsg": "क्या आप वाकई इस प्रपत्र को स्थायी रूप से हटाना चाहते हैं?",
       "contentTypeAria": "सामग्री प्रकार",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "संवादात्मक (एक बार में एक प्रश्न)",
       "displayMode": "प्रदर्शन मोड",
       "displayStandard": "मानक",
@@ -987,8 +1036,10 @@
       "team": "टीम"
     },
     "groupBanner": {
+      "announcements": "Announcements",
       "confirmDuplicate": "इस समूह को डुप्लिकेट करें? सदस्यों की प्रतिलिपि नहीं बनाई जाएगी।",
       "copySuffix": "(प्रतिलिपि)",
+      "discussions": "Discussions",
       "duplicateTooltip": "इस समूह को डुप्लिकेट करें",
       "emailTooltip": "इस समूह को ईमेल भेजें",
       "location": "स्थान",
@@ -1040,6 +1091,8 @@
     "groupDetailsEdit": {
       "addPhoto": "तस्वीर जोड़ो",
       "ageGrade": "उम्र और ग्रेड",
+      "announcementsEnabled": "Announcements",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "संग्रह",
       "archiveAria": "समूह संग्रहीत करें",
       "attTrack": "उपस्थिति ट्रैक करें",
@@ -1056,6 +1109,8 @@
       "confidentialHelp": "इस समूह और इसके रोस्टर को सार्वजनिक पृष्ठों, समूह खोजक और गैर-सदस्यों से छिपाएं।",
       "confirmArchive": "क्या आप वाकई इस समूह को संग्रहीत करना चाहते हैं? यह पुनर्स्थापित होने तक समूह सूची से छिपा रहेगा।",
       "confirmMsg": "क्या आप वाकई इस समूह को स्थायी रूप से हटाना चाहते हैं?",
+      "discussionsEnabled": "Discussions",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "नामांकन",
       "groupDesc": "समूह विवरण",
       "groupDet": "समूह विवरण",
@@ -1408,6 +1463,7 @@
       "valuePlaceholder": "मान"
     },
     "aiSearch": {
+      "clearSearch": "Clear Search",
       "exampleMen": "- मुझे जुलाई में जन्मदिन वाले 30 से अधिक उम्र के पुरुष दिखाएं।",
       "exampleWomen": "- मुझे विवाहित महिलाएं दिखाएं।",
       "examples": "उदाहरण:",
@@ -1459,6 +1515,13 @@
       "title": "जनसांख्यिकी",
       "total": "कुल",
       "unassigned": "असाइन नहीं किया गया"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "क्रिया",
@@ -1804,6 +1867,7 @@
       "search": "फ़ॉन्ट खोजें..."
     },
     "form": {
+      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "पंजीकरण फॉर्म",
       "questionDescription": "हमारे कार्यक्रमों की योजना में मदद करें",
       "questionPlaceholder": "अपना उत्तर यहां दर्ज करें",
@@ -1909,10 +1973,13 @@
       "fallbackLoading": "लोड हो रहा है...",
       "fallbackSection": "अनुभाग",
       "fromAssociatedLesson": "संबंधित पाठ से:",
+      "importCount": "Import ({count})",
       "noActionsAvailable": "कोई कार्रवाई उपलब्ध नहीं",
       "noContent": "कोई सामग्री उपलब्ध नहीं",
       "selectAction": "क्रिया चुनें",
-      "selectExternalItem": "बाहरी आइटम चुनें"
+      "selectExternalItem": "बाहरी आइटम चुनें",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2077,6 +2144,9 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "अवधि",
       "editItem": "आइटम संपादित करें",
       "editSection": "अनुभाग संपादित करें",
@@ -2085,6 +2155,9 @@
       "externalItem": "बाहरी आइटम",
       "item": "वस्तु",
       "restoreOriginal": "Restore Original",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items",
       "song": "गाना"
     },
     "planItemEdit": {
@@ -2416,6 +2489,8 @@
       "lightMode": "लाइट मोड",
       "linkedAccounts": "लिंक किए गए खाते",
       "noDirect": "मुझे सदस्य निर्देशिका से छुपाएं",
+      "passCurrent": "Pass Current",
+      "passCurrentMsg": "Pass Current Msg",
       "passLong": "कृपया कम से कम 8 वर्णों का एक पासवर्ड दर्ज करें।",
       "passMatch": "पासवर्ड मेल नहीं खाते।",
       "passNew": "नया पासवर्ड",
@@ -2730,6 +2805,12 @@
       "searchPlaceholder": "प्लेलिस्ट खोजें...",
       "title": "प्लेलिस्ट"
     },
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    },
     "publishDate": "प्रकाशन तिथि",
     "searchPlaceholder": "शीर्षक या प्लेलिस्ट से उपदेश खोजें...",
     "sermon": "उपदेश",
@@ -2738,6 +2819,8 @@
       "addToAnotherPlaylist": "किसी अन्य प्लेलिस्ट में जोड़ें",
       "addToAnotherPlaylistAria": "उपदेश को अन्य प्लेलिस्ट में जोड़ें",
       "addToSelectedPlaylistAria": "चयनित प्लेलिस्ट में जोड़ें",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "यह आपका चैनल URL नहीं है - ऊपर सहायता लिंक देखें",
       "currentLiveService": "वर्तमान लाइव सेवा",
       "currentYouTubeLiveStream": "वर्तमान YouTube लाइव स्ट्रीम",
@@ -2767,6 +2850,7 @@
       "totalSermonDuration": "कुल उपदेश अवधि",
       "unauthorized": "उपदेश बनाने के लिए अधिकृत नहीं",
       "unauthorizedDelete": "उपदेश हटाने के लिए अधिकृत नहीं",
+      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "वीडियो ID या URL",
       "videoProvider": "वीडियो प्रदाता",
       "vimeo": "Vimeo",
@@ -2854,6 +2938,9 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3379,13 +3466,42 @@
     "rolesPage": {
       "subtitle": "भूमिकाएं और अनुमतियां प्रबंधित करें"
     },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
+    },
     "storageSettingsEdit": {
+      "authFailed": "Auth Failed",
+      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps (निःशुल्क)",
+      "connect": "Connect",
+      "connectFirst": "Connect First",
+      "connected": "Connected",
+      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "फ़ाइलें आपकी MinistryStuff संग्रहण योजना में संग्रहीत की जाएंगी, जो इस चर्च से स्वचालित रूप से जुड़ी होगी। अपनी योजना को प्रबंधित करें",
       "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup Blocked",
       "provider": "प्रदाता",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "S3 Access Key",
+      "s3Bucket": "S3 Bucket",
+      "s3Endpoint": "S3 Endpoint",
+      "s3Helper": "S3 Helper",
+      "s3PublicBase": "S3 Public Base",
+      "s3Region": "S3 Region",
+      "s3Required": "S3 Required",
+      "s3SecretKey": "S3 Secret Key",
       "saveError": "संग्रहण सेटिंग्स सहेजते समय त्रुटि।",
+      "sessionExpired": "Session Expired",
+      "sessionFailed": "Session Failed",
       "title": "फ़ाइल संग्रहण",
       "usage": "{quota} GB में से {used} GB का उपयोग कर रहा है।"
     },
@@ -3557,6 +3673,7 @@
       "failed": "पुनर्लेखन विफल रहा। कुछ भी नहीं बदला गया।",
       "instruction": "निर्देश",
       "placeholder": "उदा. इसे और अधिक स्वागत योग्य बनाएं और कार्रवाई के लिए एक कॉल जोड़ें",
+      "preset_": "Preset_",
       "rewrite": "फिर से लिखना",
       "title": "एआई रीराइट",
       "working": "अनुभाग फिर से लिख रहा है..."
@@ -3815,18 +3932,49 @@
       "addElements": "तत्व जोड़ें",
       "advanced": "उन्नत",
       "all": "सभी",
+      "block": "Block",
       "blocks": "ब्लॉक",
+      "box": "Box",
+      "calendar": "Calendar",
+      "campaignProgress": "Campaign Progress",
+      "card": "Card",
+      "carousel": "Carousel",
       "church": "चर्च",
+      "column": "Column",
       "common": "सामान्य",
+      "countdown": "Countdown",
       "descReusableElement": "पुन: प्रयोज्य तत्व ब्लॉक",
       "descReusableSection": "पुन: प्रयोज्य अनुभाग",
       "descSection": "सामग्री समूहीकरण के लिए कंटेनर",
+      "donateLink": "Donate Link",
+      "donation": "Donation",
+      "embedPage": "Embed Page",
+      "expandable": "Expandable",
+      "form": "Form",
+      "gallery": "Gallery",
+      "groupList": "Group List",
+      "html": "Html",
+      "iconFeature": "Icon Feature",
+      "image": "Image",
+      "location": "Location",
+      "logo": "Logo",
       "media": "मीडिया",
       "noElementsFound": "कोई तत्व नहीं मिला",
+      "row": "Row",
       "searchElements": "तत्व खोजें...",
       "section": "अनुभाग",
+      "serviceTimes": "Service Times",
+      "socialIcons": "Social Icons",
+      "staffGrid": "Staff Grid",
+      "stats": "Stats",
+      "stream": "Stream",
+      "table": "Table",
+      "testimonial": "Testimonial",
+      "text": "Text",
+      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "कोई अलग खोज शब्द आज़माएं",
-      "untitledBlock": "अनाम ब्लॉक"
+      "untitledBlock": "अनाम ब्लॉक",
+      "video": "Video"
     },
     "elementEdit": {
       "enableLightbox": "लाइटबॉक्स सक्षम करें",
@@ -3936,6 +4084,7 @@
       "uploadFiles": "फ़ाइलें अपलोड करें"
     },
     "filesManager": {
+      "externalStorage": "External Storage",
       "files": "फ़ाइलें",
       "getStarted": "अपनी पहली फ़ाइल अपलोड करके शुरू करें",
       "name": "नाम",
@@ -3992,6 +4141,7 @@
       "wide": "चौड़ा"
     },
     "generateSite": {
+      "audience_": "Audience_",
       "audiences": "दर्शकों",
       "buildingSection": "बना रहा है {title} — अनुभाग {n} में से {total}...",
       "button": "साइट उत्पन्न करें",
@@ -4010,7 +4160,8 @@
       "serviceTimes": "सेवा का समय",
       "serviceTimesPlaceholder": "रविवार को सुबह 9 और 11 बजे",
       "title": "AI के साथ साइट उत्पन्न करें",
-      "tone": "स्वर"
+      "tone": "स्वर",
+      "tone_": "Tone_"
     },
     "helpDialog": {
       "addBody": "टूलबार में सामग्री जोड़ें पर क्लिक करें, फिर पृष्ठ पर एक अनुभाग या तत्व खींचें।",
@@ -4287,6 +4438,7 @@
       "dividerNone": "कोई नहीं",
       "dividerShape": "आकार",
       "dividerTop": "ऊपरी डिवाइडर",
+      "divider_": "Divider_",
       "dividers": "शेप डिवाइडर",
       "duplicate": "डुप्लिकेट",
       "duplicateSection": "अनुभाग को डुप्लिकेट करें",
@@ -4323,6 +4475,10 @@
       "showCampus": "कैंपस दिखाएं",
       "title": "शीर्षक"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main Website",
+      "manageSites": "Manage Sites"
+    },
     "siteWidgets": {
       "addAction": "क्रिया जोड़ें",
       "announcementBar": "घोषणा बार",
@@ -4346,6 +4502,15 @@
       "textColor": "टेक्स्ट रंग",
       "title": "साइट विजेट्स",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Add",
+      "deleteConfirm": "Delete Confirm",
+      "empty": "Empty",
+      "name": "Name",
+      "subDomain": "Sub Domain",
+      "subDomainHint": "Sub Domain Hint",
+      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "अलाइनमेंट",
@@ -4547,6 +4712,8 @@
     },
     "audio": {
       "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
+      "tooLarge": "Too Large",
+      "unsupportedFormat": "Unsupported Format",
       "upload": "ऑडियो अपलोड करें"
     },
     "create": {
@@ -4762,6 +4929,7 @@
       "operator": "ऑपरेटर",
       "pauseAll": "स्वचालन रोकें",
       "paused": "रोका गया",
+      "recur_": "Recur_",
       "recurs": "दोहराता है",
       "resumeAll": "स्वचालन फिर से शुरू करें",
       "runNow": "अभी चलाएं",
@@ -4782,6 +4950,7 @@
       "resume": "फिर से शुरू करें",
       "retry": "पुनः प्रयास करें",
       "statusHeader": "स्थिति",
+      "status_": "Status_",
       "subject": "व्यक्ति",
       "title": "निष्पादन इतिहास",
       "trigger": "ट्रिगर",

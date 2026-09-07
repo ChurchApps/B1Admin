@@ -47,6 +47,25 @@
       "volunteer": "Volontario",
       "volunteers": "volontari"
     },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
+    },
     "labels": {
       "align": "Allineamento",
       "always": "Sempre",
@@ -119,6 +138,8 @@
     "tabs": {
       "attTrend": "Andamento della Partecipazione",
       "groupAtt": "Partecipazione di Gruppo",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts",
       "setup": "Configurazione"
     }
   },
@@ -178,6 +199,7 @@
       "confirmDelete": "È sicuro di voler eliminare questo evento?",
       "confirmDeleteSeries": "Questo è un evento ricorrente. Eliminandolo verranno rimossi l'intera serie e tutte le sue occorrenze. Sei sicuro?",
       "delete": "Elimina",
+      "editEvent": "Edit Event",
       "manageRegistrations": "Gestisci registrazioni",
       "noGroups": "Nessun gruppo trovato."
     },
@@ -197,6 +219,7 @@
       "noCalendars": "Nessun calendario trovato",
       "status": "Stato",
       "subtitleEmpty": "Inizia creando il tuo primo calendario",
+      "subtitleWithCount": "Subtitle With Count",
       "title": "Calendari"
     },
     "calendarPage": {
@@ -337,6 +360,7 @@
     "comboBox": {
       "addNew": "Aggiungi nuovo..."
     },
+    "confirm": "Confirm",
     "copy": "Copia",
     "createPerson": {
       "validate": {
@@ -372,6 +396,7 @@
     "left": "Sinistra",
     "loading": "Caricamento",
     "mobile": "Mobile",
+    "more": "More",
     "name": "Nome",
     "navigation": "Navigazione",
     "no": "No",
@@ -712,7 +737,11 @@
       "fund": "Fondo",
       "inKind": "In Natura",
       "lastDig": "Ultime 4 cifre",
-      "method": "Metodo"
+      "method": "Metodo",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Evento: ",
@@ -732,11 +761,14 @@
       "don": "Donazioni",
       "errMsg": "Nessun fondo trovato. Si prega di creare un fondo prima di effettuare una donazione",
       "export": "Esporta",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
       "funds": "Fondi",
       "method": "Metodo",
       "noDonMsg": "Nessuna donazione è stata tracciata. Una volta inserite, le donazioni appariranno qui.",
       "notes": "Notes",
       "pending": "In sospeso",
+      "refunded": "Refunded",
       "statements": "Estratti conto donazioni",
       "summary": "Riepilogo",
       "total": "Totale"
@@ -747,6 +779,16 @@
       "noBatch": "Nessun lotto trovato.",
       "subtitle": "Visualizza riepiloghi delle donazioni e analizza le tendenze delle donazioni",
       "total": "Totale"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
       "ariaFundName": "Nome del fondo",
@@ -847,6 +889,11 @@
       "lapsedGivers": "Lapsed Givers"
     }
   },
+  "fileUpload": {
+    "chooseFile": "Choose File",
+    "quotaExceeded": "Quota Exceeded",
+    "uploadFailed": "Upload Failed"
+  },
   "forms": {
     "choicesEdit": {
       "act": "Azione",
@@ -880,6 +927,8 @@
       "availableStart": "Data di Inizio Disponibilità",
       "confirmMsg": "Sei sicuro di voler eliminare definitivamente questo modulo?",
       "contentTypeAria": "Tipo di contenuto",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -987,8 +1036,10 @@
       "team": "Squadra"
     },
     "groupBanner": {
+      "announcements": "Announcements",
       "confirmDuplicate": "Duplicare questo gruppo? I membri non verranno copiati.",
       "copySuffix": "(Copia)",
+      "discussions": "Discussions",
       "duplicateTooltip": "Duplica questo gruppo",
       "emailTooltip": "Invia email a questo gruppo",
       "location": "Luogo",
@@ -1040,6 +1091,8 @@
     "groupDetailsEdit": {
       "addPhoto": "Aggiungi foto",
       "ageGrade": "Età e classe",
+      "announcementsEnabled": "Announcements",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "Archivia",
       "archiveAria": "Archivia gruppo",
       "attTrack": "Traccia Partecipazione",
@@ -1056,6 +1109,8 @@
       "confidentialHelp": "Nascondi questo gruppo e il suo elenco membri dalle pagine pubbliche, dal cercatore di gruppi e dai non membri.",
       "confirmArchive": "Sei sicuro di voler archiviare questo gruppo? Sarà nascosto dall'elenco dei gruppi fino al ripristino.",
       "confirmMsg": "Sei sicuro di voler eliminare definitivamente questo gruppo?",
+      "discussionsEnabled": "Discussions",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Iscrizione",
       "groupDesc": "Descrizione del Gruppo",
       "groupDet": "Dettagli del Gruppo",
@@ -1408,6 +1463,7 @@
       "valuePlaceholder": "Valore"
     },
     "aiSearch": {
+      "clearSearch": "Clear Search",
       "exampleMen": "- Mostrami uomini sopra i 30 anni con compleanni a luglio.",
       "exampleWomen": "- Mostrami donne che sono sposate.",
       "examples": "Esempi:",
@@ -1459,6 +1515,13 @@
       "title": "Dati demografici",
       "total": "Totale",
       "unassigned": "Non assegnato"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "Attività",
@@ -1804,6 +1867,7 @@
       "search": "Search fonts..."
     },
     "form": {
+      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "Modulo di Registrazione",
       "questionDescription": "Aiutaci a pianificare i nostri eventi",
       "questionPlaceholder": "Inserisci la tua risposta qui",
@@ -1909,10 +1973,13 @@
       "fallbackLoading": "Caricamento...",
       "fallbackSection": "Sezione",
       "fromAssociatedLesson": "Dalla lezione associata:",
+      "importCount": "Import ({count})",
       "noActionsAvailable": "Nessuna azione disponibile",
       "noContent": "Nessun contenuto disponibile",
       "selectAction": "Seleziona azione",
-      "selectExternalItem": "Seleziona elemento esterno"
+      "selectExternalItem": "Seleziona elemento esterno",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2077,6 +2144,9 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Durata",
       "editItem": "Modifica elemento",
       "editSection": "Modifica sezione",
@@ -2085,6 +2155,9 @@
       "externalItem": "Elemento esterno",
       "item": "Articolo",
       "restoreOriginal": "Restore Original",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items",
       "song": "Canzone"
     },
     "planItemEdit": {
@@ -2416,6 +2489,8 @@
       "lightMode": "Modalità Chiara",
       "linkedAccounts": "Account Collegati",
       "noDirect": "Nascondimi dall'elenco dei membri",
+      "passCurrent": "Pass Current",
+      "passCurrentMsg": "Pass Current Msg",
       "passLong": "Si prega di inserire una password di almeno 8 caratteri.",
       "passMatch": "Le password non corrispondono.",
       "passNew": "Nuova password",
@@ -2730,6 +2805,12 @@
       "searchPlaceholder": "Cerca playlist...",
       "title": "Playlist"
     },
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    },
     "publishDate": "Data di Pubblicazione",
     "searchPlaceholder": "Cerca sermoni per titolo o playlist...",
     "sermon": "Sermone",
@@ -2738,6 +2819,8 @@
       "addToAnotherPlaylist": "Aggiungi ad un'altra playlist",
       "addToAnotherPlaylistAria": "Aggiungi sermone a un'altra playlist",
       "addToSelectedPlaylistAria": "Aggiungi alla playlist selezionata",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "Questo non è l'URL del tuo canale - Vedi il link di aiuto sopra",
       "currentLiveService": "Servizio Live Attuale",
       "currentYouTubeLiveStream": "Diretta YouTube Attuale",
@@ -2767,6 +2850,7 @@
       "totalSermonDuration": "Durata Totale del Sermone",
       "unauthorized": "Non autorizzato a creare sermoni",
       "unauthorizedDelete": "Non autorizzato a eliminare sermoni",
+      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "ID video o URL",
       "videoProvider": "Fornitore Video",
       "vimeo": "Vimeo",
@@ -2854,6 +2938,9 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featured": "Featured",
+      "field": {
+        "certified": "Certified"
+      },
       "files": "Files",
       "firstSubmission": "first submission",
       "justNow": "just now",
@@ -3379,13 +3466,42 @@
     "rolesPage": {
       "subtitle": "Gestisci ruoli e permessi"
     },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
+    },
     "storageSettingsEdit": {
+      "authFailed": "Auth Failed",
+      "byosHelper": "Byos Helper",
       "churchAppsFree": "ChurchApps (Gratuito)",
+      "connect": "Connect",
+      "connectFirst": "Connect First",
+      "connected": "Connected",
+      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "I file verranno archiviati sul tuo piano di archiviazione MinistryStuff, collegato automaticamente a questa chiesa. Gestisci il tuo piano su",
       "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup Blocked",
       "provider": "Provider",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "S3 Access Key",
+      "s3Bucket": "S3 Bucket",
+      "s3Endpoint": "S3 Endpoint",
+      "s3Helper": "S3 Helper",
+      "s3PublicBase": "S3 Public Base",
+      "s3Region": "S3 Region",
+      "s3Required": "S3 Required",
+      "s3SecretKey": "S3 Secret Key",
       "saveError": "Errore durante il salvataggio delle impostazioni di archiviazione.",
+      "sessionExpired": "Session Expired",
+      "sessionFailed": "Session Failed",
       "title": "Archiviazione file",
       "usage": "Utilizzo di {used} GB su {quota} GB."
     },
@@ -3557,6 +3673,7 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3815,18 +3932,49 @@
       "addElements": "Aggiungi Elementi",
       "advanced": "Avanzato",
       "all": "Tutti",
+      "block": "Block",
       "blocks": "Blocchi",
+      "box": "Box",
+      "calendar": "Calendar",
+      "campaignProgress": "Campaign Progress",
+      "card": "Card",
+      "carousel": "Carousel",
       "church": "Chiesa",
+      "column": "Column",
       "common": "Comune",
+      "countdown": "Countdown",
       "descReusableElement": "Blocco elemento riutilizzabile",
       "descReusableSection": "Sezione riutilizzabile",
       "descSection": "Contenitore per raggruppare contenuti",
+      "donateLink": "Donate Link",
+      "donation": "Donation",
+      "embedPage": "Embed Page",
+      "expandable": "Expandable",
+      "form": "Form",
+      "gallery": "Gallery",
+      "groupList": "Group List",
+      "html": "Html",
+      "iconFeature": "Icon Feature",
+      "image": "Image",
+      "location": "Location",
+      "logo": "Logo",
       "media": "Media",
       "noElementsFound": "Nessun elemento trovato",
+      "row": "Row",
       "searchElements": "Cerca elementi...",
       "section": "Sezione",
+      "serviceTimes": "Service Times",
+      "socialIcons": "Social Icons",
+      "staffGrid": "Staff Grid",
+      "stats": "Stats",
+      "stream": "Stream",
+      "table": "Table",
+      "testimonial": "Testimonial",
+      "text": "Text",
+      "textWithPhoto": "Text With Photo",
       "tryDifferentSearch": "Prova un termine di ricerca diverso",
-      "untitledBlock": "Blocco senza titolo"
+      "untitledBlock": "Blocco senza titolo",
+      "video": "Video"
     },
     "elementEdit": {
       "enableLightbox": "Abilita Lightbox",
@@ -3936,6 +4084,7 @@
       "uploadFiles": "Carica File"
     },
     "filesManager": {
+      "externalStorage": "External Storage",
       "files": "File",
       "getStarted": "Inizia caricando il tuo primo file",
       "name": "Nome",
@@ -3992,6 +4141,7 @@
       "wide": "Larga"
     },
     "generateSite": {
+      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4010,7 +4160,8 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_": "Tone_"
     },
     "helpDialog": {
       "addBody": "Clicca su Aggiungi Contenuto nella barra degli strumenti, quindi trascina una sezione o un elemento sulla pagina.",
@@ -4287,6 +4438,7 @@
       "dividerNone": "Nessuno",
       "dividerShape": "Forma",
       "dividerTop": "Divisore superiore",
+      "divider_": "Divider_",
       "dividers": "Divisori sagomati",
       "duplicate": "Duplica",
       "duplicateSection": "Duplica sezione",
@@ -4323,6 +4475,10 @@
       "showCampus": "Mostra Sede",
       "title": "Titolo"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main Website",
+      "manageSites": "Manage Sites"
+    },
     "siteWidgets": {
       "addAction": "Aggiungi Azione",
       "announcementBar": "Barra degli Annunci",
@@ -4346,6 +4502,15 @@
       "textColor": "Colore del Testo",
       "title": "Widget del Sito",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Add",
+      "deleteConfirm": "Delete Confirm",
+      "empty": "Empty",
+      "name": "Name",
+      "subDomain": "Sub Domain",
+      "subDomainHint": "Sub Domain Hint",
+      "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "Allineamento",
@@ -4547,6 +4712,8 @@
     },
     "audio": {
       "deleteConfirm": "Sei sicuro di voler eliminare questo file audio?",
+      "tooLarge": "Too Large",
+      "unsupportedFormat": "Unsupported Format",
       "upload": "Carica audio"
     },
     "create": {
@@ -4762,6 +4929,7 @@
       "operator": "Operatore",
       "pauseAll": "Sospendi automazione",
       "paused": "Sospeso",
+      "recur_": "Recur_",
       "recurs": "Si ripete",
       "resumeAll": "Riprendi automazione",
       "runNow": "Esegui ora",
@@ -4782,6 +4950,7 @@
       "resume": "Riprendi",
       "retry": "Riprova",
       "statusHeader": "Stato",
+      "status_": "Status_",
       "subject": "Persona",
       "title": "Cronologia esecuzioni",
       "trigger": "Trigger",
