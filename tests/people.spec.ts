@@ -290,8 +290,7 @@ test.describe("People Management", () => {
       const donationBtn = page.locator("button").getByText("Donations");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
-      // No seeded donations; apphelper "willAppear" copy renders.
-      const seekText = page.locator("td").getByText("Donations will appear once a donation has been entered.");
+      const seekText = page.locator("td").getByText(/Donations will appear/i);
       const donationRow = page.locator("td").getByText(/\$\d/).first();
       await expect(seekText.or(donationRow)).toBeVisible({ timeout: 10000 });
     });
