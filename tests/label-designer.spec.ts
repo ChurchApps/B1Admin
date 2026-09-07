@@ -46,6 +46,13 @@ test.describe.serial("Check-in label designer", () => {
     await expect(page.locator('[data-testid="prop-x"] input')).toHaveValue("40");
   });
 
+  test("sets a birthday condition on the block", async () => {
+    await page.locator('[data-testid="prop-cond-field"]').getByLabel("Condition").click();
+    await page.getByRole("option", { name: "Birthday This Week" }).click();
+    await page.locator('[data-testid="prop-cond-operator"]').getByLabel("Operator").click();
+    await page.getByRole("option", { name: "Is not blank" }).click();
+  });
+
   test("saves the template and shows it in the list", async () => {
     await page.locator('[data-testid="template-name-input"] input').fill(TEMPLATE);
     const post = labelTemplatesPost(page);
@@ -55,6 +62,15 @@ test.describe.serial("Check-in label designer", () => {
     await expect(row).toBeVisible({ timeout: 15000 });
     await expect(row).toContainText("Nametag");
     await expect(row).toContainText("3.5");
+  });
+
+  test("persists the birthday condition when reopened", async () => {
+    const row = page.locator('[data-testid="labels-table"] tbody tr').filter({ hasText: TEMPLATE });
+    await row.locator('[data-testid^="edit-label-"]').click();
+    await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
+    await expect(page.locator('[data-testid="prop-cond-field"] input')).toHaveValue("person.isBirthdayWeek");
+    await expect(page.locator('[data-testid="prop-cond-operator"] input')).toHaveValue("notEmpty");
+    await page.getByRole("button", { name: "Cancel" }).click();
   });
 
   test("sets the template as the default for its type", async () => {

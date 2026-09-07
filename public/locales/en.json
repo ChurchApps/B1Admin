@@ -79,6 +79,7 @@
       "confirmDelete": "Are you sure you wish to delete this label template?",
       "default": "Default",
       "field": "Field",
+      "fieldIsBirthdayWeek": "Birthday This Week",
       "fill": "Fill",
       "fontSize": "Font Size",
       "height": "Height (in)",
