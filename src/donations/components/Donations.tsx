@@ -2,7 +2,7 @@ import React from "react";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Chip } from "@mui/material";
-import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon, Undo as RefundedIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CardWithHeader, ExportButton, hoverRowSx } from "../../components/ui";
@@ -99,7 +99,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   // Memoize the total calculation to avoid recalculating on every render
   const donationsTotal = React.useMemo(() => {
     if (!donations || donations.length === 0) return 0;
-    return donations.reduce((sum, donation) => sum + (donation.amount || 0), 0);
+    return donations.reduce((sum, donation) => sum + ((donation as any).status === "refunded" ? 0 : donation.amount || 0), 0);
   }, [donations]);
 
   const getTableHeader = React.useCallback(() => {
@@ -149,14 +149,16 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       ) : null;
 
       const isPending = (d as any).status === "pending";
+      const isRefunded = (d as any).status === "refunded";
       rows.push(
-        <TableRow key={i} sx={{ ...hoverRowSx, opacity: isPending ? 0.8 : 1 }}>
+        <TableRow key={i} sx={{ ...hoverRowSx, opacity: isPending || isRefunded ? 0.8 : 1 }} data-testid={"donation-row-" + d.id}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.main" variant="body2">
                 <span style={{ fontWeight: 500, color: "text.primary" }}>{[d.method, d.methodDetails].filter(Boolean).join(" - ") || "—"}</span>
               </IconText>
               {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" />}
+              {isRefunded && <Chip icon={<RefundedIcon />} label={Locale.label("donations.donations.refunded")} size="small" color="default" variant="outlined" />}
             </Stack>
           </TableCell>
           <TableCell>
@@ -178,7 +180,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
             </Typography>
           </TableCell>
           <TableCell align="right">
-            <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : "success.main" }}>
+            <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : isRefunded ? "text.disabled" : "success.main", textDecoration: isRefunded ? "line-through" : undefined }}>
               {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
             </Typography>
           </TableCell>

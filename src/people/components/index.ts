@@ -1,4 +1,5 @@
 export * from "../../components";
+export { DuplicateDialog } from "./DuplicateDialog";
 export { Groups } from "./Groups";
 export { Household } from "./Household";
 export { HouseholdEdit } from "./HouseholdEdit";

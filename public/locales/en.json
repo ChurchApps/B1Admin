@@ -47,6 +47,25 @@
       "volunteer": "Volunteer",
       "volunteers": "volunteers"
     },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
+    },
     "labels": {
       "align": "Align",
       "always": "Always",
@@ -60,6 +79,7 @@
       "confirmDelete": "Are you sure you wish to delete this label template?",
       "default": "Default",
       "field": "Field",
+      "fieldIsBirthdayWeek": "Birthday This Week",
       "fill": "Fill",
       "fontSize": "Font Size",
       "height": "Height (in)",
@@ -119,7 +139,9 @@
     "tabs": {
       "attTrend": "Attendance Trend",
       "groupAtt": "Group Attendance",
-      "setup": "Setup"
+      "setup": "Setup",
+      "headcounts": "Headcounts",
+      "headcountTrend": "Headcount Trend"
     }
   },
   "calendars": {
@@ -712,7 +734,11 @@
       "fund": "Fund",
       "inKind": "In-Kind",
       "lastDig": "Last 4 digits",
-      "method": "Method"
+      "method": "Method",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Event: ",
@@ -739,6 +765,7 @@
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "notes": "Notes",
       "pending": "Pending",
+      "refunded": "Refunded",
       "statements": "Giving Statements",
       "summary": "Summary",
       "total": "Total"
@@ -958,6 +985,8 @@
       "availableStart": "Availability Start Date",
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
       "contentTypeAria": "Content type",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -1065,8 +1094,10 @@
       "team": "Team"
     },
     "groupBanner": {
+      "announcements": "Announcements",
       "confirmDuplicate": "Duplicate this group? Members will not be copied.",
       "copySuffix": "(Copy)",
+      "discussions": "Discussions",
       "duplicateTooltip": "Duplicate this group",
       "emailTooltip": "Email this group",
       "location": "Location",
@@ -1118,6 +1149,8 @@
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
       "ageGrade": "Age & Grade",
+      "announcementsEnabled": "Announcements",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "Archive",
       "archiveAria": "Archive group",
       "attTrack": "Track Attendance",
@@ -1134,6 +1167,8 @@
       "confidentialHelp": "Hide this group and its roster from public pages, the group finder, and non-members.",
       "confirmArchive": "Are you sure you wish to archive this group? It will be hidden from the groups list until restored.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
+      "discussionsEnabled": "Discussions",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Enrollment",
       "groupDesc": "Group Description",
       "groupDet": "Group Details",
@@ -1538,6 +1573,13 @@
       "total": "Total",
       "unassigned": "Unassigned"
     },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
+    },
     "editCondition": {
       "act": "Activity",
       "anniMonth": "Anniversary Month",
@@ -1882,6 +1924,7 @@
       "search": "Search fonts..."
     },
     "form": {
+      "description": "Tell people what this form is for and what happens after they submit it.",
       "name": "Contact Form",
       "questionDescription": "Add additional details...",
       "questionPlaceholder": "Enter your answer...",
@@ -1987,10 +2030,13 @@
       "fallbackLoading": "Loading...",
       "fallbackSection": "Section",
       "fromAssociatedLesson": "From associated lesson:",
+      "importCount": "Import ({count})",
       "noActionsAvailable": "No actions available",
       "noContent": "No content available",
       "selectAction": "Select Action",
-      "selectExternalItem": "Select External Item"
+      "selectExternalItem": "Select External Item",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -2155,6 +2201,9 @@
       "clickToAddText": "Click to add text",
       "collapseToSection": "Collapse to Section",
       "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Duration",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
@@ -2163,6 +2212,9 @@
       "externalItem": "External Item",
       "item": "Item",
       "restoreOriginal": "Restore Original",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items",
       "song": "Song"
     },
     "planItemEdit": {
@@ -2808,6 +2860,12 @@
       "searchPlaceholder": "Search playlists...",
       "title": "Playlists"
     },
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    },
     "publishDate": "Publish Date",
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
@@ -2816,6 +2874,8 @@
       "addToAnotherPlaylist": "Add to another playlist",
       "addToAnotherPlaylistAria": "Add sermon to another playlist",
       "addToSelectedPlaylistAria": "Add to selected playlist",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "This is not your channel url - See help link above",
       "currentLiveService": "Current Live Service",
       "currentYouTubeLiveStream": "Current YouTube Live Stream",
@@ -2845,6 +2905,7 @@
       "totalSermonDuration": "Total Sermon Duration",
       "unauthorized": "Unauthorized to create sermons",
       "unauthorizedDelete": "Unauthorized to delete sermons",
+      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "Video ID or URL",
       "videoProvider": "Video Provider",
       "vimeo": "Vimeo",
@@ -3533,8 +3594,10 @@
       "everyone": "Everyone",
       "forceMsg": "This will set the default value for people who have not configured their settings yet",
       "groups": "Groups Only",
+      "leaders": "My Group Leaders and Staff",
       "members": "Members",
       "phoneNum": "Phone Number",
+      "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
     },
     "webhookEdit": {

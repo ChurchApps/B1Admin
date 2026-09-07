@@ -3435,8 +3435,10 @@
       "everyone": "모든 사람",
       "forceMsg": "아직 설정을 구성하지 않은 사람들을 위한 기본값을 설정합니다",
       "groups": "그룹만",
+      "leaders": "My Group Leaders and Staff",
       "members": "회원",
       "phoneNum": "전화번호",
+      "staff": "Staff Only",
       "visibilityPreference": "가시성 기본 설정"
     },
     "webhookEdit": {

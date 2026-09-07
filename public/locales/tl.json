@@ -3435,8 +3435,10 @@
       "everyone": "Lahat",
       "forceMsg": "Ito ay magtatakda ng default na halaga para sa mga taong hindi pa nakakapag-configure ng kanilang mga setting",
       "groups": "Mga Grupo lamang",
+      "leaders": "My Group Leaders and Staff",
       "members": "Mga Miyembro",
       "phoneNum": "Numero ng telepono",
+      "staff": "Staff Only",
       "visibilityPreference": "Kagustuhan sa pagiging visible"
     },
     "webhookEdit": {

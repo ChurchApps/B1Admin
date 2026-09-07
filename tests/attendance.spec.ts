@@ -213,4 +213,99 @@ test.describe("Attendance Management", () => {
     });
   });
 
+  // Manual headcounts: a single total per service/service time/date, no individual check-ins (issue #1063).
+  test.describe.serial("Headcounts", () => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToAttendance(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    // AppDatePicker renders MM/DD/YYYY spinbutton sections; typing from the Month section auto-advances.
+    const setHeadcountDate = async (mmddyyyy: string) => {
+      const box = page.locator("#headcountBox");
+      await box.getByRole("spinbutton", { name: "Month" }).click();
+      await page.keyboard.type(mmddyyyy);
+      await expect(box.locator('[data-testid="headcount-date-input"]')).toHaveValue(`${mmddyyyy.slice(0, 2)}/${mmddyyyy.slice(2, 4)}/${mmddyyyy.slice(4)}`);
+    };
+
+    const headcountRow = (value: string) => page.locator('[data-testid="headcount-table"] tbody tr').filter({ has: page.locator('[data-testid="headcount-value-cell"]', { hasText: new RegExp(`^${value}$`) }) });
+
+    test("should enter a headcount for a service time", async () => {
+      await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();
+      const box = page.locator("#headcountBox");
+      await expect(box).toBeVisible({ timeout: 10000 });
+
+      await box.locator('[data-testid="headcount-service-select"]').click();
+      await page.getByRole("option", { name: "Sunday Morning Service" }).click();
+      await box.locator('[data-testid="headcount-service-time-select"]').click();
+      await page.getByRole("option", { name: "10:30 AM Service" }).click();
+      await setHeadcountDate("09062026");
+      await box.locator('[data-testid="headcount-value-input"] input').fill("137");
+
+      const resp = page.waitForResponse((r) => r.url().includes("/headcounts") && r.request().method() === "POST" && r.status() === 200);
+      await box.locator('[data-testid="headcount-save-button"]').click();
+      await resp;
+
+      await expect(headcountRow("137")).toHaveCount(1, { timeout: 10000 });
+      await expect(headcountRow("137")).toContainText("Sunday Morning Service");
+      await expect(headcountRow("137")).toContainText("10:30 AM Service");
+      await expect(headcountRow("137")).toContainText("Sep 6, 2026");
+      // Count field clears for the next entry; service/time selections stay put.
+      await expect(box.locator('[data-testid="headcount-value-input"] input')).toHaveValue("");
+    });
+
+    test("should show the headcount in the Headcount Trend report", async () => {
+      await page.locator('button[role="tab"]').getByText("Headcount Trend", { exact: true }).click();
+      const reportRows = page.locator('[id="reportsBox"] table tr');
+      await expect(reportRows.first()).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('[id="reportsBox"] table')).toContainText("137", { timeout: 10000 });
+
+      // Filtering to the service time keeps the total; the report reads the denormalized serviceTimeId.
+      const timeName = page.locator('[id="mui-component-select-serviceTimeId"]');
+      await expect(timeName).toBeVisible({ timeout: 10000 });
+      await timeName.click();
+      await page.locator("li").getByText("10:30 AM Service").click();
+      await page.locator("button").getByText("Run Report").click();
+      await expect(page.locator('[id="reportsBox"] table')).toContainText("137", { timeout: 10000 });
+    });
+
+    test("should edit the headcount", async () => {
+      await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();
+      await expect(headcountRow("137")).toHaveCount(1, { timeout: 10000 });
+      await headcountRow("137").click();
+      const box = page.locator("#headcountBox");
+      await expect(box).toContainText("Edit Headcount");
+      await expect(box.locator('[data-testid="headcount-value-input"] input')).toHaveValue("137");
+      await box.locator('[data-testid="headcount-value-input"] input').fill("142");
+      await box.locator('[data-testid="headcount-save-button"]').click();
+      await expect(headcountRow("142")).toHaveCount(1, { timeout: 10000 });
+      await expect(headcountRow("137")).toHaveCount(0);
+    });
+
+    test("should reject a negative headcount", async () => {
+      const box = page.locator("#headcountBox");
+      await box.locator('[data-testid="headcount-value-input"] input').fill("-5");
+      await box.locator('[data-testid="headcount-save-button"]').click();
+      await expect(box).toContainText("Enter a whole number of zero or more.");
+      await expect(headcountRow("-5")).toHaveCount(0);
+    });
+
+    test("should delete the headcount", async () => {
+      await headcountRow("142").click();
+      const box = page.locator("#headcountBox");
+      await expect(box).toContainText("Edit Headcount");
+      await box.getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
+      await expect(headcountRow("142")).toHaveCount(0, { timeout: 10000 });
+    });
+  });
+
 });

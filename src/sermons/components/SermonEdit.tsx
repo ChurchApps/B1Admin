@@ -15,11 +15,16 @@ import { Duration } from "./Duration";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { AppDatePicker } from "../../components";
+import { CustomFileUpload } from "../../site/components/CustomFileUpload";
+
+const AUDIO_ACCEPT = "audio/mpeg,audio/mp4,audio/x-m4a,.mp3,.m4a";
 
 interface Props {
-  currentSermon: SermonInterface,
+  currentSermon: PodcastSermon,
   updatedFunction?: () => void
 }
+
+type PodcastSermon = SermonInterface & { audioUrl?: string };
 
 type AnyRecord = Record<string, any>;
 
@@ -33,6 +38,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const [additionalPlaylistId, setAdditionalPlaylistId] = React.useState("");
   const [thumbnail, setThumbnail] = React.useState<string>(props.currentSermon?.thumbnail ?? "");
   const [duration, setDuration] = React.useState<number>(props.currentSermon?.duration ?? 0);
+  const [pendingAudioUpload, setPendingAudioUpload] = React.useState(false);
 
   const { control, register, handleSubmit, watch, setValue, reset } = useForm<AnyRecord>({
     defaultValues: {
@@ -41,12 +47,18 @@ export const SermonEdit: React.FC<Props> = (props) => {
       videoData: props.currentSermon?.videoData ?? "",
       publishDate: props.currentSermon?.publishDate ? DateHelper.formatHtml5Date(DateHelper.toDate(props.currentSermon.publishDate)) : "",
       title: props.currentSermon?.title ?? "",
-      description: props.currentSermon?.description ?? ""
+      description: props.currentSermon?.description ?? "",
+      audioUrl: props.currentSermon?.audioUrl ?? ""
     }
   });
 
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentSermon?.id)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction?.(); };
+
+  const handleAudioUploaded = (file: any) => {
+    setPendingAudioUpload(false);
+    if (file?.contentPath) setValue("audioUrl", file.contentPath);
+  };
 
   const handlePhotoUpdated = (dataUrl?: string) => {
     setThumbnail(dataUrl ?? "");
@@ -101,7 +113,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.sermonEdit.unauthorized"));
     if (errs.length > 0) { setErrors(errs); return; }
 
-    const sermon: SermonInterface = {
+    const sermon: PodcastSermon = {
       ...props.currentSermon,
       playlistId: values.playlistId,
       videoType: values.videoType,
@@ -111,6 +123,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
       description: values.description,
       thumbnail,
       duration,
+      audioUrl: values.audioUrl,
       videoUrl: buildVideoUrl(values.videoType, values.videoData)
     };
     ApiHelper.post("/sermons", [sermon], "ContentApi").then(props.updatedFunction);
@@ -121,7 +134,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.sermonEdit.unauthorized"));
     if (errs.length > 0) { setErrors(errs); return; }
 
-    const sermon: SermonInterface = {
+    const sermon: PodcastSermon = {
       ...props.currentSermon,
       playlistId: additionalPlaylistId,
       videoType: values.videoType,
@@ -131,6 +144,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
       description: values.description,
       thumbnail,
       duration,
+      audioUrl: values.audioUrl,
       videoUrl: buildVideoUrl(values.videoType, values.videoData),
       id: undefined
     };
@@ -182,7 +196,8 @@ export const SermonEdit: React.FC<Props> = (props) => {
       videoData: props.currentSermon?.videoData ?? "",
       publishDate: props.currentSermon?.publishDate ? DateHelper.formatHtml5Date(DateHelper.toDate(props.currentSermon.publishDate)) : "",
       title: props.currentSermon?.title ?? "",
-      description: props.currentSermon?.description ?? ""
+      description: props.currentSermon?.description ?? "",
+      audioUrl: props.currentSermon?.audioUrl ?? ""
     });
     setThumbnail(props.currentSermon?.thumbnail ?? "");
     setDuration(props.currentSermon?.duration ?? 0);
@@ -262,8 +277,8 @@ export const SermonEdit: React.FC<Props> = (props) => {
                 <Grid size={{ xs: 6 }}>
                   <label style={{ width: "100%" }}>{Locale.label("sermons.publishDate")}</label>
                   <Controller name="publishDate" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth  data-testid="publish-date-input" aria-label={Locale.label("sermons.sermonEdit.publishDateAria")}  {...field} />
-  )} />
+                    <AppDatePicker fullWidth data-testid="publish-date-input" aria-label={Locale.label("sermons.sermonEdit.publishDateAria")} {...field} />
+                  )} />
                 </Grid>
               )}
               <Grid size={{ xs: 6 }}>
@@ -285,6 +300,16 @@ export const SermonEdit: React.FC<Props> = (props) => {
                 </Box>
               </Grid>
             </Grid>
+
+            <Box sx={{ mt: 2 }}>
+              <TextField fullWidth label={Locale.label("sermons.sermonEdit.audioUrl")} helperText={Locale.label("sermons.sermonEdit.audioUrlHelp")} data-testid="sermon-audio-url-input" {...register("audioUrl")} />
+              {!UniqueIdHelper.isMissing(props.currentSermon?.id) && (
+                <Box sx={{ mt: 1 }}>
+                  <CustomFileUpload contentType="sermon" contentId={props.currentSermon.id} accept={AUDIO_ACCEPT} pendingSave={pendingAudioUpload} saveCallback={handleAudioUploaded} errorCallback={() => setPendingAudioUpload(false)} />
+                  <Button variant="outlined" size="small" sx={{ mt: 1 }} onClick={() => setPendingAudioUpload(true)} data-testid="upload-sermon-audio-button">{Locale.label("sermons.sermonEdit.uploadAudio")}</Button>
+                </Box>
+              )}
+            </Box>
 
             {/* add to another playlist */}
             <div style={{ marginTop: 15 }}>

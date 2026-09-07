@@ -3,6 +3,7 @@ import { Grid, Icon, Card, CardContent } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Group as GroupIcon, EventNote as EventNoteIcon } from "@mui/icons-material";
 import { Locale, ApiHelper, PageHeader } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
+import { HeadcountEntry } from "./components/HeadcountEntry";
 import { AttendanceNavigation } from "./components/AttendanceNavigation";
 import { ReportWithFilter } from "../components/reporting";
 import { PageContainer } from "../components/ui/PageContainer";
@@ -22,7 +23,9 @@ export const AttendancePage = () => {
     let currentTab = null;
     switch (selectedTab) {
       case "setup": currentTab = <AttendanceSetup />; break;
+      case "headcounts": currentTab = <HeadcountEntry />; break;
       case "attendance": currentTab = <ReportWithFilter keyName="attendanceTrend" autoRun={true} />; break;
+      case "headcountTrend": currentTab = <ReportWithFilter keyName="headcountTrend" autoRun={true} />; break;
       case "groups": currentTab = <ReportWithFilter keyName="groupAttendance" autoRun={true} />; break;
     }
     return currentTab;
