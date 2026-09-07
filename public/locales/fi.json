@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Sovitukset",
     "audio": {
       "deleteConfirm": "Haluatko varmasti poistaa tämän äänitiedoston?",
       "upload": "Lataa ääni"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Sävellaji"
     },
-    "oldArrangements": {
-      "arrangements": "Sovitukset",
-      "editArrangementAria": "Muokkaa sovitusta",
-      "noArrangements": "Sovituksia ei löytynyt."
-    },
     "praiseChartsProducts": {
       "close": "Sulje",
       "download": "Lataa",
@@ -4677,17 +4673,6 @@
     "providedBy": "Toimittaja"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampus",
-      "eventType": "Event Type",
-      "group": "Ryhmä",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Palvelu",
-      "servTime": "Palvelun aika"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

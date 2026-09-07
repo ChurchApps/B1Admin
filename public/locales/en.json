@@ -649,6 +649,7 @@
       "printDescription": "Generate a consolidated document with all giving statements for printing",
       "printStatements": "Printable Statements",
       "selectYear": "Select Year",
+      "statementFormat": "Statement format",
       "subtitle": "Download giving statements for all donors",
       "summary": "Summary",
       "title": "Batch Giving Statements",
@@ -660,8 +661,10 @@
     },
     "bulkEntry": {
       "addDonation": "Add Donation",
+      "fullEditor": "full donation editor",
       "pressEnter": "Press Enter to save and add another donation",
-      "selectPerson": "Select Person or Anonymous"
+      "selectPerson": "Select Person or Anonymous",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Allow donors to pledge",
@@ -2003,6 +2006,7 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge",
       "title": "Amazing Grace"
     },
     "task": {
@@ -2406,8 +2410,10 @@
     },
     "servingOverviewPage": {
       "autoSchedule": "Auto-schedule",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
       "autoScheduleResult": "Auto-scheduled {filled} of {total} plans",
       "emailAll": "Email Volunteers",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
       "emailEmpty": "No assigned volunteers in this range to email.",
       "emailResult": "Emailed {sent} volunteers ({failed} failed)",
       "endDate": "End Date",
@@ -2420,6 +2426,7 @@
       "overviewSuffix": "Overview",
       "position": "Position",
       "remove": "Remove",
+      "removeConfirm": "Remove {name} from this assignment?",
       "startDate": "Start Date",
       "subtitle": "Positions by date with assigned volunteers",
       "title": "Serving Overview"
@@ -3426,11 +3433,13 @@
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
+      "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
       "kfSetup": "Enter the Tokenization Key and Source Key from your Kingdom Funding dashboard. Get started at",
       "kfWebhookInstructions": "Provide this webhook URL to your Kingdom Funding representative during onboarding so transaction updates flow back into your giving reports:",
       "none": "None",
+      "paymentGatewaySection": "Payment gateway",
       "paypalSetup": "Create a PayPal REST app and paste its Client ID and Secret below. Get started at",
       "paystackSetup": "Copy your Public and Secret keys from the Paystack Dashboard (Settings → API Keys & Webhooks) and paste them below. Open the",
       "paystackWebhookInstructions": "Paste this URL into the Webhook URL field of your Paystack Dashboard (Settings → API Keys & Webhooks) so recurring gifts and mobile money payments are recorded:",
@@ -4728,8 +4737,10 @@
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
       "lyrics": "Lyrics",
       "name": "Arrangement Name",
+      "sequence": "Sequence",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangements",
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
       "upload": "Upload Audio"
@@ -4796,11 +4807,6 @@
     "oldArrangement": {
       "key": "Key"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangements",
-      "editArrangementAria": "Edit arrangement",
-      "noArrangements": "No arrangements found."
-    },
     "praiseChartsProducts": {
       "close": "Close",
       "download": "Download",
@@ -4862,17 +4868,6 @@
     "providedBy": "Provided By"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Group",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Service",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

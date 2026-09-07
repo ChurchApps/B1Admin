@@ -4545,6 +4545,7 @@
       "name": "Название аранжировки",
       "title": "Аранжировка"
     },
+    "arrangements": "Аранжировки",
     "audio": {
       "deleteConfirm": "Вы уверены, что хотите удалить этот аудиофайл?",
       "upload": "Загрузить аудио"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Тональность"
     },
-    "oldArrangements": {
-      "arrangements": "Аранжировки",
-      "editArrangementAria": "Редактировать аранжировку",
-      "noArrangements": "Аранжировки не найдены."
-    },
     "praiseChartsProducts": {
       "close": "Закрыть",
       "download": "Скачать",
@@ -4677,17 +4673,6 @@
     "providedBy": "Предоставлено:"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Где угодно",
-      "campus": "Кампус",
-      "eventType": "Тип события",
-      "group": "Группа",
-      "hasAtt": "посещал",
-      "hasNoAtt": "не посещал",
-      "op": "Оператор",
-      "serv": "Служение",
-      "servTime": "Время служения"
-    },
     "conditionDate": {
       "absolute": "Абсолютное",
       "curMonth": "Текущий месяц",

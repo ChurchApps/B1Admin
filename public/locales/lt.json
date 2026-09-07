@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aranžuotės",
     "audio": {
       "deleteConfirm": "Ar tikrai norite ištrinti šį garso failą?",
       "upload": "Įkelti garsą"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonacija"
     },
-    "oldArrangements": {
-      "arrangements": "Aranžuotės",
-      "editArrangementAria": "Redaguoti aranžuotę",
-      "noArrangements": "Aranžuočių nerasta."
-    },
     "praiseChartsProducts": {
       "close": "Uždaryti",
       "download": "Atsisiųsti",
@@ -4677,17 +4673,6 @@
     "providedBy": "Pateikta"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Dieginis",
-      "eventType": "Event Type",
-      "group": "Grupė",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Pamaldos",
-      "servTime": "Pamaldų laikas"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

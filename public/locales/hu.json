@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Feldolgozások",
     "audio": {
       "deleteConfirm": "Biztosan törli ezt a hangfájlt?",
       "upload": "Hang feltöltése"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Hangnem"
     },
-    "oldArrangements": {
-      "arrangements": "Feldolgozások",
-      "editArrangementAria": "Feldolgozás szerkesztése",
-      "noArrangements": "Nem találhatók feldolgozások."
-    },
     "praiseChartsProducts": {
       "close": "Bezárás",
       "download": "Letöltés",
@@ -4677,17 +4673,6 @@
     "providedBy": "Biztosítja:"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Group",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Service",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

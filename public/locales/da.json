@@ -4545,6 +4545,7 @@
       "name": "Arrangementsnavn",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangementer",
     "audio": {
       "deleteConfirm": "Er du sikker på, at du vil slette denne lydfil?",
       "upload": "Upload lyd"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Toneart"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangementer",
-      "editArrangementAria": "Rediger arrangement",
-      "noArrangements": "Ingen arrangementer fundet."
-    },
     "praiseChartsProducts": {
       "close": "Luk",
       "download": "Download",
@@ -4677,17 +4673,6 @@
     "providedBy": "Leveret af"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Hvor som helst",
-      "campus": "Lokation",
-      "eventType": "Begivenhedstype",
-      "group": "Gruppe",
-      "hasAtt": "har deltaget",
-      "hasNoAtt": "har ikke deltaget",
-      "op": "Operator",
-      "serv": "Gudstjeneste",
-      "servTime": "Gudstjenestetid"
-    },
     "conditionDate": {
       "absolute": "Absolut",
       "curMonth": "Nuværende måned",

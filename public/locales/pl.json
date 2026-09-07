@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aranżacje",
     "audio": {
       "deleteConfirm": "Czy na pewno chcesz usunąć ten plik audio?",
       "upload": "Prześlij audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonacja"
     },
-    "oldArrangements": {
-      "arrangements": "Aranżacje",
-      "editArrangementAria": "Edytuj aranżację",
-      "noArrangements": "Nie znaleziono aranżacji."
-    },
     "praiseChartsProducts": {
       "close": "Zamknij",
       "download": "Pobierz",
@@ -4677,17 +4673,6 @@
     "providedBy": "Dostarczone przez"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Grupa",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Nabożeństwo",
-      "servTime": "Czas nabożeństwa"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

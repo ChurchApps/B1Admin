@@ -4545,6 +4545,7 @@
       "name": "व्यवस्था का नाम",
       "title": "व्यवस्था"
     },
+    "arrangements": "व्यवस्थाएँ",
     "audio": {
       "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
       "upload": "ऑडियो अपलोड करें"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "कुंजी"
     },
-    "oldArrangements": {
-      "arrangements": "व्यवस्थाएँ",
-      "editArrangementAria": "व्यवस्था संपादित करें",
-      "noArrangements": "कोई व्यवस्था नहीं मिली।"
-    },
     "praiseChartsProducts": {
       "close": "बंद करें",
       "download": "डाउनलोड करें",
@@ -4677,17 +4673,6 @@
     "providedBy": "प्रदान किया गया"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "कहीं भी",
-      "campus": "कैम्पस",
-      "eventType": "घटना प्रकार",
-      "group": "समूह",
-      "hasAtt": "ने भाग लिया है",
-      "hasNoAtt": "ने भाग नहीं लिया है",
-      "op": "ऑपरेटर",
-      "serv": "सेवा",
-      "servTime": "सेवा समय"
-    },
     "conditionDate": {
       "absolute": "पूर्ण",
       "curMonth": "वर्तमान माह",

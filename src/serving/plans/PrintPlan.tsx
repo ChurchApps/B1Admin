@@ -1,7 +1,7 @@
-import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loading } from "@churchapps/apphelper";
-import { Grid } from "@mui/material";
+import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loading, SmallButton } from "@churchapps/apphelper";
+import { Box, Grid } from "@mui/material";
 import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { type PlanItemInterface } from "../../helpers";
 import { formatClockTime } from "../components/PlanUtils";
 import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
@@ -13,6 +13,9 @@ import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } f
 export const PrintPlan = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const autoprint = searchParams.get("autoprint") === "1";
+  const hasPrinted = React.useRef(false);
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
@@ -173,19 +176,25 @@ export const PrintPlan = () => {
     currentFeed = filterFeedByPlanItems(currentFeed, planItemsData || []);
 
     setFeed(currentFeed);
-
-    if (!currentFeed) {
-      setTimeout(() => {
-        window.print();
-      }, 1000);
-    }
-
     setIsLoading(false);
   };
 
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (autoprint && !isLoading && !feed && !hasPrinted.current) {
+      hasPrinted.current = true;
+      window.print();
+    }
+  }, [autoprint, isLoading, feed]);
+
+  useEffect(() => {
+    const handleAfterPrint = () => navigate("/serving/plans/" + params.id);
+    window.addEventListener("afterprint", handleAfterPrint);
+    return () => window.removeEventListener("afterprint", handleAfterPrint);
+  }, [navigate, params.id]);
 
   const isExcluded = (planItemId: string, timeId: string): boolean =>
     exclusions.some((ex) => ex.planItemId === planItemId && ex.timeId === timeId && ex.excluded);
@@ -359,5 +368,14 @@ export const PrintPlan = () => {
     );
   }
 
-  return renderWorshipOrder();
+  return (
+    <>
+      <style>{"@media print { .print-toolbar { display: none !important; } }"}</style>
+      <Box className="print-toolbar" sx={{ display: "flex", justifyContent: "flex-end", gap: 1, p: 2 }}>
+        <SmallButton icon="print" ariaLabel={Locale.label("common.print")} text={Locale.label("common.print")} onClick={() => window.print()} />
+        <SmallButton icon="close" ariaLabel={Locale.label("common.close")} text={Locale.label("common.close")} onClick={() => navigate("/serving/plans/" + params.id)} />
+      </Box>
+      {renderWorshipOrder()}
+    </>
+  );
 };

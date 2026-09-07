@@ -88,7 +88,7 @@ export const DonationBatchPage = () => {
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
       >
         <Stack
-          direction={{ xs: "column", sm: "row" }} 
+          direction={{ xs: "column", sm: "row" }}
           spacing={{ xs: 2 }}
           alignItems={{ xs: "flex-start", sm: "center" }}
           justifyContent={{ sm: "space-between" }}
@@ -121,6 +121,7 @@ export const DonationBatchPage = () => {
             batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
             funds={funds.data || []}
             updatedFunction={donationUpdated}
+            onOpenFullEditor={() => showEditDonation("")}
           />
         )}
 

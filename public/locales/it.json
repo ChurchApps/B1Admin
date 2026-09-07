@@ -4545,6 +4545,7 @@
       "name": "Nome Arrangiamento",
       "title": "Arrangiamento"
     },
+    "arrangements": "Arrangiamenti",
     "audio": {
       "deleteConfirm": "Sei sicuro di voler eliminare questo file audio?",
       "upload": "Carica audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Chiave"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangiamenti",
-      "editArrangementAria": "Modifica arrangiamento",
-      "noArrangements": "Nessun arrangiamento trovato."
-    },
     "praiseChartsProducts": {
       "close": "Chiudi",
       "download": "Scarica",
@@ -4677,17 +4673,6 @@
     "providedBy": "Fornita da"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Ovunque",
-      "campus": "Campus",
-      "eventType": "Tipo di Evento",
-      "group": "Gruppo",
-      "hasAtt": "ha partecipato",
-      "hasNoAtt": "non ha partecipato",
-      "op": "Operatore",
-      "serv": "Servizio",
-      "servTime": "Orario di Servizio"
-    },
     "conditionDate": {
       "absolute": "Assoluto",
       "curMonth": "Mese Corrente",

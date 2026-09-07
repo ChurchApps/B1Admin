@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Priredbe",
     "audio": {
       "deleteConfirm": "Ali res želite izbrisati to zvočno datoteko?",
       "upload": "Naloži zvok"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonaliteta"
     },
-    "oldArrangements": {
-      "arrangements": "Priredbe",
-      "editArrangementAria": "Uredi priredbo",
-      "noArrangements": "Ni najdenih priredb."
-    },
     "praiseChartsProducts": {
       "close": "Zapri",
       "download": "Prenesi",
@@ -4677,17 +4673,6 @@
     "providedBy": "Zagotavlja"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampus",
-      "eventType": "Event Type",
-      "group": "Skupina",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Bogoslužje",
-      "servTime": "Čas bogoslužja"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

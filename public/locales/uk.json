@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Аранжування",
     "audio": {
       "deleteConfirm": "Ви впевнені, що хочете видалити цей аудіофайл?",
       "upload": "Завантажити аудіо"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Ключ"
     },
-    "oldArrangements": {
-      "arrangements": "Аранжування",
-      "editArrangementAria": "Редагувати аранжування",
-      "noArrangements": "Аранжувань не знайдено."
-    },
     "praiseChartsProducts": {
       "close": "Закрити",
       "download": "Завантажити",
@@ -4677,17 +4673,6 @@
     "providedBy": "Надано"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Кампус",
-      "eventType": "Event Type",
-      "group": "Група",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Оператор",
-      "serv": "Служба",
-      "servTime": "Час служби"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

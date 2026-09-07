@@ -4545,6 +4545,7 @@
       "name": "Ligama Lelihlelo",
       "title": "Lihlelo"
     },
+    "arrangements": "Emahlelo",
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
       "upload": "Upload Audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Sikhiya"
     },
-    "oldArrangements": {
-      "arrangements": "Emahlelo",
-      "editArrangementAria": "hlela lihlelo",
-      "noArrangements": "Awekho emahlelo latfoliwe."
-    },
     "praiseChartsProducts": {
       "close": "Vala",
       "download": "Dawunlodwa",
@@ -4677,17 +4673,6 @@
     "providedBy": "Kunikeziwe Ngu"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Nome ngukuphi",
-      "campus": "Ikhempasi",
-      "eventType": "Luhlobo Lomcimbi",
-      "group": "Licembu",
-      "hasAtt": "ubekhona",
-      "hasNoAtt": "abekho",
-      "op": "Umenti",
-      "serv": "Inkhonzo",
-      "servTime": "Sikhatsi Senkhonzo"
-    },
     "conditionDate": {
       "absolute": "Lokucinile",
       "curMonth": "Inyanga Yamanje",
