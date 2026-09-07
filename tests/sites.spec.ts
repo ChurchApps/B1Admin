@@ -82,6 +82,19 @@ test.describe.serial("Multiple Websites", () => {
     await expect(page.locator("td").getByText("Youth Home")).toHaveCount(1, { timeout: 10000 });
   });
 
+  test("loads the Youth site's own global styles in the page editor", async () => {
+    const listUrl = page.url();
+    const row = page.locator("tr").filter({ hasText: "Youth Home" }).first();
+    const stylesRequest = page.waitForRequest(
+      (r) => r.url().includes("/content/globalStyles") && r.url().includes("siteId="),
+      { timeout: 30000 }
+    );
+    await row.locator('[data-testid="edit-content-button"]').click();
+    await stylesRequest;
+    await page.goto(listUrl);
+    await expect(page.locator('[data-testid="site-switcher"]')).toContainText(SITE_NAME, { timeout: 10000 });
+  });
+
   test("hides the Youth page under Main Website", async () => {
     await page.locator('[data-testid="site-switcher"]').click();
     await page.getByRole("option", { name: "Main Website" }).click();

@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Sigurado ka bang nais mong tanggalin",
       "storageInfo": "100 MB ng espasyo sa storage ay ibinibigay nang libre para sa pag-store ng mga PDF at iba pang dokumento na karaniwang kailangan para sa mga website ng simbahan. Inirerekumenda naming gumamit ng Google Drive o Dropbox upang mag-store ng mga file kung kailangan ng karagdagang espasyo.",
-      "upload": "Mag-upload",
       "uploadFiles": "Mag-upload ng mga File"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Walang nahanap na mga pahina",
       "pages": "Mga pahina",
       "path": "Landas",
-      "previewPage": "PREVIEW PAGE",
       "showLogin": "Magpakita ng pag -login",
       "showLoginTooltip": "Ipakita ang pindutan ng pag -login sa nabigasyon bar",
       "startFromTemplate": "Magsimula sa isang Template",
       "subtitle": "Pamahalaan ang iyong mga pahina ng website, nilalaman, at nabigasyon",
       "toggleLoginVisibility": "Toggle Button Button Visibility",
       "totalPages": "Kabuuang mga pahina",
+      "viewLivePage": "PREVIEW PAGE",
       "websitePages": "Mga pahina ng website"
     },
     "paletteEdit": {

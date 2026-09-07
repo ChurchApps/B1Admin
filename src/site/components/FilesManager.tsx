@@ -3,7 +3,7 @@ import type { FileInterface } from "../../helpers/Interfaces";
 import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon, Link as LinkIcon, Check as CheckIcon } from "@mui/icons-material";
 import { CardWithHeader, CountChip, EmptyState, FormCard, hoverRowSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
@@ -12,6 +12,7 @@ import { CustomFileUpload } from "./CustomFileUpload";
 
 export function FilesManager() {
   const [pendingFileSave, setPendingFileSave] = useState(false);
+  const [copiedId, setCopiedId] = useState<string>("");
   const filesQuery = useQuery<FileInterface[]>({ queryKey: ["/files", "ContentApi"], placeholderData: [] });
   const storageStatus = useQuery<{ provider?: string; usedBytes?: number; quotaBytes?: number }>({ queryKey: ["/storage/status", "ContentApi"] });
   const files = filesQuery.data || [];
@@ -31,8 +32,9 @@ export function FilesManager() {
     filesQuery.refetch();
   };
 
-  const handleSave = () => {
-    setPendingFileSave(true);
+  const handleCopyLink = async (file: FileInterface) => {
+    await navigator.clipboard.writeText(file.contentPath || "");
+    setCopiedId(file.id || "");
   };
 
   const handleDelete = async (file: FileInterface) => {
@@ -99,6 +101,12 @@ export function FilesManager() {
           </Typography>
         </TableCell>
         <TableCell align="right" className="rowActions">
+          <AppIconButton
+            label={copiedId === file.id ? Locale.label("site.filesManager.copied") : Locale.label("site.filesManager.copyLink")}
+            icon={copiedId === file.id ? <CheckIcon /> : <LinkIcon />}
+            onClick={() => handleCopyLink(file)}
+            data-testid={`copy-file-${file.id}-link`}
+          />
           <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} />
         </TableCell>
       </TableRow>
@@ -110,7 +118,7 @@ export function FilesManager() {
     );
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box>
       {ConfirmDialogElement}
       <Grid container spacing={3}>
         <Grid size={{ md: 8, xs: 12 }}>
@@ -137,7 +145,7 @@ export function FilesManager() {
           </CardWithHeader>
         </Grid>
         <Grid size={{ md: 4, xs: 12 }}>
-          <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} onSave={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox" isSubmitting={pendingFileSave}>
+          <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} data-testid="file-upload-inputbox">
 
             {getStorage()}
             {!unlimited && providerQuota === 0 && (
@@ -146,7 +154,7 @@ export function FilesManager() {
               </Typography>
             )}
             {(unlimited || usedSpace < quotaLimit) && (
-              <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} />
+              <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} onFileSelected={() => setPendingFileSave(true)} />
             )}
           </FormCard>
         </Grid>

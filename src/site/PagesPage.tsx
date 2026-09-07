@@ -10,18 +10,20 @@ import {
   ExpandMore as ExpandMoreIcon,
   AutoAwesomeMosaic as AutoAwesomeMosaicIcon,
   Public as PublicIcon,
+  Settings as SettingsIcon,
   Transform as TransformIcon,
   Visibility as VisibilityIcon,
   Web as WebIcon
 } from "@mui/icons-material";
-import { ApiHelper, ErrorMessages, PageHeader, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, PageHeader, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useNavigate } from "react-router-dom";
-import { AddPageModal, NavLinkEdit, GenerateSiteModal, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
+import { AddPageModal, NavLinkEdit, GenerateSiteModal, PageLinkEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
 import { SiteTemplatePicker } from "./admin/templates/SiteTemplatePicker";
 import { PageHelper, EnvironmentHelper } from "../helpers";
 import type { PageLink } from "../helpers";
 import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers";
+import type { PageInterface } from "../helpers/Interfaces";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CountChip, HeaderPrimaryButton, HeaderSecondaryButton, hoverRowSx } from "../components/ui";
@@ -40,6 +42,7 @@ export const PagesPage = () => {
   const [showSiteTemplates, setShowSiteTemplates] = useState(false);
   const [showGenerateSite, setShowGenerateSite] = useState(false);
   const [showSites, setShowSites] = useState(false);
+  const [settingsPage, setSettingsPage] = useState<PageInterface | null>(null);
   const { siteId, setSiteId, sites, selectedSite, reloadSites } = useSiteSelection();
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -69,14 +72,22 @@ export const PagesPage = () => {
         <TableRow key={item.url || item.pageId || item.title} sx={hoverRowSx}>
           <TableCell className="rowActions" sx={{ width: 120 }}>
             {item.custom ? (
-              <AppIconButton
-                label={Locale.label("common.edit")}
-                icon={<EditIcon />}
-                onClick={() => {
-                  navigate("/site/pages/preview/" + item.pageId);
-                }}
-                data-testid="edit-page-button"
-              />
+              <Stack direction="row" spacing={0.5}>
+                <AppIconButton
+                  label={Locale.label("site.pagePreview.editContent")}
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    navigate("/site/pages/" + item.pageId);
+                  }}
+                  data-testid="edit-content-button"
+                />
+                <AppIconButton
+                  label={Locale.label("site.pagePreview.pageSettings")}
+                  icon={<SettingsIcon />}
+                  onClick={() => openSettings(item.pageId!)}
+                  data-testid="page-settings-button"
+                />
+              </Stack>
             ) : (
               <Button
                 variant="outlined"
@@ -105,7 +116,7 @@ export const PagesPage = () => {
                 {item.url}
               </Typography>
               <AppIconButton
-                label={Locale.label("site.pagesPage.previewPage")}
+                label={Locale.label("site.pagesPage.viewLivePage")}
                 icon={<VisibilityIcon sx={{ fontSize: 16 }} />}
                 onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain || "") + item.url, "_blank")}
                 sx={{ p: 0.5 }}
@@ -121,6 +132,10 @@ export const PagesPage = () => {
       if (item.expanded && item.children) result.push(...getTreeLevel(item.children, level + 1));
     });
     return result;
+  };
+
+  const openSettings = (pageId: string) => {
+    ApiHelper.get("/pages/" + pageId, "ContentApi").then((data: PageInterface) => setSettingsPage(data));
   };
 
   const loadData = () => {
@@ -218,7 +233,16 @@ export const PagesPage = () => {
   if (denied) return denied;
 
   if (windowWidth < 882) {
-    return <ErrorMessages errors={[Locale.label("site.pagesPage.desktopOnly")]} />;
+    return (
+      <Box data-testid="pages-small-screen" sx={{ minHeight: "calc(100vh - 64px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", px: 3, gap: 1.5 }}>
+        <Icon sx={{ fontSize: 48, color: "text.secondary" }}>devices</Icon>
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>{Locale.label("site.contentEditor.smallScreenTitle")}</Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 360 }}>{Locale.label("site.pagesPage.desktopOnly")}</Typography>
+        <Button variant="contained" disableElevation onClick={() => navigate("/")} sx={{ textTransform: "none", fontWeight: 600, mt: 1 }}>
+          {Locale.label("common.back")}
+        </Button>
+      </Box>
+    );
   }
 
   return (
@@ -265,6 +289,16 @@ export const PagesPage = () => {
           mode={addMode}
           requestedSlug={requestedSlug}
           siteId={siteId}
+        />
+      )}
+      {settingsPage && (
+        <PageLinkEdit
+          page={settingsPage}
+          updatedCallback={() => {
+            setSettingsPage(null);
+            loadData();
+          }}
+          onDone={() => setSettingsPage(null)}
         />
       )}
       {editLink && (

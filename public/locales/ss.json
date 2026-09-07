@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Uneliciniso yini kutsi ufuna kususa",
       "storageInfo": "100 MB yesikhala sekugcina inikelwa mahhala yekugcina ema-PDF nawo onkhe emadokhumende lajwayelekile edzingekako emawebhu sayithi welibandla. Sikweluleka kutsi usebentise i-Google Drive kumbe i-Dropbox kugcina emafayela nangabe kudzingeka sikhala lesengetiwe.",
-      "upload": "Layisha",
       "uploadFiles": "Layisha Emafayela"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Akutfolakalanga emakhasi",
       "pages": "Emakhasi",
       "path": "Indlela",
-      "previewPage": "Buka likhasi ngaphambili",
       "showLogin": "Bonisa Kungena",
       "showLoginTooltip": "Bonisa inkhinobho yekungena ebheni lemenyu yekuzulazula",
       "startFromTemplate": "Cala Ngesakhelo",
       "subtitle": "Phatsa emakhasi ewebhu sayithi yakho, sichubo, nemenyu yekuzulazula",
       "toggleLoginVisibility": "Shintja kubonakala kwenkhinobho yekungena",
       "totalPages": "Emakhasi Lawonkhe",
+      "viewLivePage": "Buka likhasi ngaphambili",
       "websitePages": "Emakhasi Ewebhu Sayithi"
     },
     "paletteEdit": {

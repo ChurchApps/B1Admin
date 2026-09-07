@@ -16,6 +16,7 @@ interface Props {
   saveCallback: (file: any) => void;
   accept?: string;
   errorCallback?: () => void;
+  onFileSelected?: () => void;
 }
 
 export function CustomFileUpload(props: Props) {
@@ -30,6 +31,7 @@ export function CustomFileUpload(props: Props) {
     if (e.target.files && e.target.files.length > 0) {
       setUploadedFile(e.target.files[0]);
       setUploadError("");
+      props.onFileSelected?.();
     }
   };
 

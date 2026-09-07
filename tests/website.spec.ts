@@ -32,9 +32,9 @@ test.describe("Website Management", () => {
       await page?.context().close();
     });
 
-    // Several tests in this chain click "edit-page-button" which navigates to
-    // the page preview view. Re-enter /site/pages before each test so the
-    // pages list (and its edit affordances) is in the DOM. Close any open
+    // Several tests in this chain click "edit-content-button" which navigates to
+    // the page editor. Re-enter /site/pages before each test so the
+    // pages list (and its row actions) is in the DOM. Close any open
     // Page Settings dialog first — "should cancel deleting page" leaves it
     // open, and the dialog blocks pointer events on the primary nav.
     test.beforeEach(async () => {
@@ -70,24 +70,37 @@ test.describe("Website Management", () => {
       await expect(name).toHaveCount(0);
     });
 
+    test("should land /site on the pages list", async () => {
+      await page.goto("/site");
+      await expect(page).toHaveURL(/\/site\/pages/, { timeout: 15000 });
+      await expect(page.locator('[data-testid="add-page-button"]')).toBeVisible({ timeout: 10000 });
+    });
+
+    test("should open the editor and page settings straight from the row", async () => {
+      const row = page.locator("tr").filter({ hasText: "Zacchaeus Test Page" }).first();
+      await expect(row.locator('[data-testid="edit-content-button"]')).toBeVisible({ timeout: 10000 });
+      await row.locator('[data-testid="page-settings-button"]').click();
+      await expect(page.locator('div[role="dialog"]:has-text("Page Settings")')).toBeVisible({ timeout: 10000 });
+      await page.locator("button").getByText("Cancel").click();
+      await expect(page.locator('[name="title"]')).toHaveCount(0);
+      await row.locator('[data-testid="edit-content-button"]').click();
+      await expect(page).toHaveURL(/\/site\/pages\/[^/]+$/, { timeout: 15000 });
+    });
+
     test("should edit page title", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
-      await editBtn.click();
-      const settingsBtn = page.locator("button").getByText("Page Settings");
+      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
       await settingsBtn.click();
       const name = page.locator('[name="title"]');
       await name.fill("Zebedee Test Page");
       const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      // Redesign: the "Previewing: …" banner is now a paragraph, so only the page-card h6 carries the title.
-      const validatedPage = page.locator("h6").getByText("Zebedee Test Page");
-      await expect(validatedPage).toHaveCount(1);
+      // Settings now open over the pages list, so the renamed page lands back in the table.
+      const validatedPage = page.locator("td").getByText("Zebedee Test Page");
+      await expect(validatedPage).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should cancel editing page title", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
-      await editBtn.click();
-      const settingsBtn = page.locator("button").getByText("Page Settings");
+      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
       await settingsBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toHaveCount(1);
@@ -98,8 +111,7 @@ test.describe("Website Management", () => {
 
     test("should set and persist page visibility", async () => {
       const openSettings = async () => {
-        await page.locator('[data-testid="edit-page-button"]').last().click();
-        await page.locator("button").getByText("Page Settings").click();
+        await page.locator('[data-testid="page-settings-button"]').last().click();
         await page.locator('[data-testid="page-visibility-select"]').waitFor({ state: "visible" });
       };
       await openSettings();
@@ -122,10 +134,8 @@ test.describe("Website Management", () => {
     });
 
     test("should edit page content", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const addBtn = page.locator('[data-testid="content-editor-add-button"]');
       // Guard against accidental double-click closing the toggle.
       const ensurePanelOpen = async () => {
@@ -167,10 +177,8 @@ test.describe("Website Management", () => {
     });
 
     test("should add a section from a template", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const addBtn = page.locator('[data-testid="content-editor-add-button"]');
       const ensurePanelOpen = async () => {
         const sectionVisible = await page.locator('[data-testid="draggable-element-section"]')
@@ -198,10 +206,8 @@ test.describe("Website Management", () => {
     });
 
     test("should toggle per-device visibility on an element", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const textElement = page.locator("p").getByText("Zacchaeus Test Text");
       await expect(textElement).toBeVisible({ timeout: 10000 });
       await textElement.click();
@@ -226,10 +232,8 @@ test.describe("Website Management", () => {
     });
 
     test("should publish, discard draft changes, and turn off publishing", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const publishBtn = page.locator('[data-testid="publish-button"]');
       await expect(publishBtn).toBeVisible({ timeout: 10000 });
       const statusPill = page.locator('[data-testid="publish-status-pill"]');
@@ -293,10 +297,8 @@ test.describe("Website Management", () => {
     });
 
     test("should click to add a section via the divider", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const divider = page.locator('[data-testid="add-section-divider"]').first();
       await expect(divider).toBeVisible({ timeout: 10000 });
       await divider.hover();
@@ -313,10 +315,8 @@ test.describe("Website Management", () => {
     });
 
     test("should click an element card to insert it", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       // Select the existing text element so the insert lands right after it.
       const textElement = page.locator("p").getByText("Zacchaeus Test Text").first();
       await expect(textElement).toBeVisible({ timeout: 10000 });
@@ -355,10 +355,8 @@ test.describe("Website Management", () => {
     });
 
     test("should warn before discarding unsaved element edits", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const textElement = page.locator("p").getByText("Zacchaeus Click Added").first();
       await expect(textElement).toBeVisible({ timeout: 10000 });
       // Clean close: no prompt.
@@ -387,10 +385,8 @@ test.describe("Website Management", () => {
     });
 
     test("should manage sections from the hover toolbar", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const sectionWrapper = page.locator(".sectionEditWrapper").filter({ hasText: "Zacchaeus Click Added" }).first();
       await expect(sectionWrapper).toBeVisible({ timeout: 10000 });
       await sectionWrapper.hover();
@@ -421,10 +417,8 @@ test.describe("Website Management", () => {
     });
 
     test("should support keyboard shortcuts", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       const textElement = page.locator("p").getByText("Zacchaeus Click Added").first();
       await expect(textElement).toBeVisible({ timeout: 10000 });
       await textElement.click();
@@ -444,10 +438,8 @@ test.describe("Website Management", () => {
     });
 
     test("should verify done button functionality", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      const contentBtn = page.locator("button").getByText("Edit Content");
-      await contentBtn.click();
       await expect(page).toHaveURL(/\/site\/pages\/[^/]+/);
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await expect(doneBtn).toBeVisible({ timeout: 10000 });
@@ -455,24 +447,27 @@ test.describe("Website Management", () => {
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 10000 });
     });
 
+    test("should explain the publish status pill", async () => {
+      await page.locator('[data-testid="edit-content-button"]').last().click();
+      const pill = page.locator('[data-testid="publish-status-pill"]');
+      await expect(pill).toBeVisible({ timeout: 30000 });
+      await pill.hover();
+      await expect(page.getByRole("tooltip")).toContainText("Edits go live immediately", { timeout: 10000 });
+    });
+
     test("should cancel deleting page", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
-      await editBtn.click();
-      const settingsBtn = page.locator("button").getByText("Page Settings");
+      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
       await settingsBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
       await page.locator('div[role="dialog"]').last().getByRole("button", { name: "Cancel" }).click();
-      // After dismiss, we should still be on the page editor with the renamed page intact.
-      await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/);
-      const stillExists = page.locator("h6").getByText("Zebedee Test Page");
-      await expect(stillExists.first()).toBeVisible();
+      // After dismiss, we should still be on the pages list with the renamed page intact.
+      await expect(page).toHaveURL(/\/site\/pages(\?|$)/);
+      await expect(page.locator("td").getByText("Zebedee Test Page")).toHaveCount(1);
     });
 
     test("should delete page", async () => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
-      await editBtn.click();
-      const settingsBtn = page.locator("button").getByText("Page Settings");
+      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
       await settingsBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
@@ -806,6 +801,12 @@ test.describe("Website Management", () => {
       await cancelBtn.click();
     });
 
+    test("should group the appearance tools under headings", async () => {
+      await expect(page.locator("h6").getByText("Announcement & widgets")).toBeVisible({ timeout: 10000 });
+      await expect(page.locator("h6").getByText("Redirects & analytics")).toBeVisible();
+      await expect(page.locator("h6").getByText("Theme, fonts & footer")).toBeVisible();
+    });
+
     test("should add footer", async () => {
       const footerSettings = page.locator("h6").getByText("Site Footer");
       await footerSettings.click();
@@ -823,6 +824,7 @@ test.describe("Website Management", () => {
 
     test.beforeAll(async ({ browser }) => {
       const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      await context.grantPermissions(["clipboard-read", "clipboard-write"]);
       page = await context.newPage();
       await login(page);
       await navigateToSite(page);
@@ -840,15 +842,22 @@ test.describe("Website Management", () => {
 
     test("should upload file", async () => {
       const chooseFileBtn = page.locator('[id="fileUpload"]');
-      await chooseFileBtn.setInputFiles("public/images/logo.png");
-      const uploadBtn = page.locator("button").getByText("Upload");
       const filesPost = page.waitForResponse(r => r.url().includes("/content/files") && r.request().method() === "POST" && !r.url().includes("postUrl"), { timeout: 30000 });
-      await uploadBtn.click();
+      // Selecting a file uploads it — there is no separate Upload button.
+      await chooseFileBtn.setInputFiles("public/images/logo.png");
       await filesPost;
       // Use exact match: "logo.png" without the church- prefix that's in demo data.
       const validatedUpload = page.locator("td").getByText("logo.png", { exact: true });
       await expect(validatedUpload).toBeVisible({ timeout: 10000 });
       await expect(validatedUpload).toHaveCount(1);
+    });
+
+    test("should copy a file link", async () => {
+      const targetRow = page.locator("tr", { has: page.locator("td").getByText("logo.png", { exact: true }) }).first();
+      const copyBtn = targetRow.locator('[data-testid^="copy-file-"]');
+      await expect(copyBtn).toBeVisible({ timeout: 10000 });
+      await copyBtn.click();
+      await expect(copyBtn).toHaveAttribute("aria-label", "Link copied", { timeout: 10000 });
     });
 
     test("should remove file", async () => {
@@ -1052,6 +1061,17 @@ test.describe("Website Management", () => {
     });
   });
 
+  test.describe("Pages on a small screen", () => {
+    test("offers a way back instead of a bare error string", async ({ page }) => {
+      await page.setViewportSize({ width: 500, height: 900 });
+      await page.goto("/site/pages");
+      const empty = page.locator('[data-testid="pages-small-screen"]');
+      await expect(empty).toBeVisible({ timeout: 20000 });
+      await empty.locator("button").click();
+      await expect(page).not.toHaveURL(/\/site\/pages/, { timeout: 10000 });
+    });
+  });
+
   test.describe("Accessibility Checker", () => {
     test("a11yChecker self-check", async () => {
       const { assertA11ySelfCheck } = await import("../src/site/admin/a11yChecker");
@@ -1120,9 +1140,8 @@ test.describe("Website Management", () => {
       await expect(page.locator("td").getByText("Zacchaeus Layout Page")).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[name="title"]')).toHaveCount(0);
 
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
       await editBtn.click();
-      await page.locator("button").getByText("Edit Content").click();
 
       const addContentBtn = page.locator('[data-testid="content-editor-add-button"]');
       // The content-editor route compiles on first hit; wait it out before interacting.

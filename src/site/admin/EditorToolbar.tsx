@@ -29,6 +29,7 @@ interface EditorToolbarProps {
   onUnpublish?: () => void;
   onShowAccessibility?: () => void;
   accessibilityIssueCount?: number;
+  onEditFooter?: () => void;
 }
 
 function formatRelative(ts: number): string {
@@ -63,7 +64,8 @@ export function EditorToolbar(props: EditorToolbarProps) {
     onDiscardChanges,
     onUnpublish,
     onShowAccessibility,
-    accessibilityIssueCount
+    accessibilityIssueCount,
+    onEditFooter
   } = props;
 
   const publishedAt = isPageMode ? (container as PageInterface)?.publishedAt : null;
@@ -103,6 +105,11 @@ export function EditorToolbar(props: EditorToolbarProps) {
     : pillStatus === "unpublished-changes"
       ? Locale.label("site.editorToolbar.statusUnpublishedChanges")
       : Locale.label("site.editorToolbar.statusLiveOnSave");
+  const pillTooltip = pillStatus === "published"
+    ? Locale.label("site.editorToolbar.statusPublishedTip")
+    : pillStatus === "unpublished-changes"
+      ? Locale.label("site.editorToolbar.statusUnpublishedChangesTip")
+      : Locale.label("site.editorToolbar.statusLiveOnSaveTip");
   const pillSx = pillStatus === "published"
     ? { backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.dark" }
     : pillStatus === "unpublished-changes"
@@ -170,7 +177,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           </Box>
         </Box>
         {isPageMode && container && (
-          <Tooltip title={publishTooltip} placement="bottom">
+          <Tooltip title={pillTooltip} placement="bottom">
             <Chip
               size="small"
               label={pillLabel}
@@ -357,6 +364,20 @@ export function EditorToolbar(props: EditorToolbarProps) {
                 <Icon fontSize="small">public_off</Icon>
               </ListItemIcon>
               <ListItemText>{Locale.label("site.editorToolbar.disablePublish")}</ListItemText>
+            </MenuItem>
+          )}
+          {isPageMode && onEditFooter && (
+            <MenuItem
+              onClick={() => {
+                setMenuAnchor(null);
+                onEditFooter();
+              }}
+              data-testid="edit-site-footer-menu-item"
+            >
+              <ListItemIcon>
+                <Icon fontSize="small">smart_button</Icon>
+              </ListItemIcon>
+              <ListItemText>{Locale.label("site.editorToolbar.editSiteFooter")}</ListItemText>
             </MenuItem>
           )}
           <MenuItem

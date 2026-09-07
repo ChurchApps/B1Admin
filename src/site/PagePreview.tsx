@@ -116,6 +116,11 @@ export const PagePreview: React.FC = () => {
                   : { fontWeight: 600, fontSize: "0.7rem", backgroundColor: "var(--bg-sub)", color: "text.secondary" }}
               />
             </Stack>
+            {pageData.publishedAt && (
+              <Typography variant="caption" component="p" sx={{ display: "block", textAlign: "center", color: "text.secondary", mt: 0.5 }}>
+                {Locale.label("site.pagePreview.showingPublished")}
+              </Typography>
+            )}
           </Box>
 
           <Box sx={{ position: "relative" }}>

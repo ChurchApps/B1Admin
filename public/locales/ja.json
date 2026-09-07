@@ -4024,7 +4024,6 @@
     "files": {
       "confirmDelete": "削除してもよろしいですか:",
       "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
-      "upload": "アップロード",
       "uploadFiles": "ファイルをアップロード"
     },
     "filesManager": {
@@ -4225,13 +4224,13 @@
       "noPagesFound": "ページが見つかりません",
       "pages": "ページ",
       "path": "パス",
-      "previewPage": "ページをプレビュー",
       "showLogin": "ログインを表示",
       "showLoginTooltip": "ナビゲーションバーにログインボタンを表示します",
       "startFromTemplate": "テンプレートから始める",
       "subtitle": "ウェブサイトのページ、コンテンツ、ナビゲーションを管理します",
       "toggleLoginVisibility": "ログインボタンの表示を切り替える",
       "totalPages": "ページ総数",
+      "viewLivePage": "ページをプレビュー",
       "websitePages": "ウェブサイトのページ"
     },
     "paletteEdit": {

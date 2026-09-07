@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Card, Stack, Typography } from "@mui/material";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
 import { StylesManager, SiteWidgetsEdit, RedirectsEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
 import { Palette as PaletteIcon } from "@mui/icons-material";
@@ -26,7 +26,19 @@ export const AppearancePage = () => {
       <Box sx={{ p: 3 }}>
         {UserHelper.currentUserChurch && <SiteWidgetsEdit />}
         {UserHelper.currentUserChurch && <RedirectsEdit />}
-        {UserHelper.currentUserChurch && <StylesManager siteId={siteId} selectedSite={selectedSite} />}
+        {UserHelper.currentUserChurch && (
+          <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }}>
+            <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <PaletteIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("site.appearancePage.themeGroup")}</Typography>
+              </Stack>
+            </Box>
+            <Box sx={{ p: 2 }}>
+              <StylesManager siteId={siteId} selectedSite={selectedSite} />
+            </Box>
+          </Card>
+        )}
       </Box>
     </>
   );

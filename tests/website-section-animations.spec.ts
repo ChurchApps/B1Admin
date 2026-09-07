@@ -24,8 +24,7 @@ test.describe.serial("Section animations", () => {
 
   const openAnimations = async (): Promise<Locator> => {
     await navigateToSite(page);
-    await page.locator('[data-testid="edit-page-button"]').first().click();
-    await page.locator("button").getByText("Edit Content").click();
+    await page.locator('[data-testid="edit-content-button"]').first().click();
     const sectionWrapper = page.locator(".sectionEditWrapper").first();
     await expect(sectionWrapper).toBeVisible({ timeout: 15000 });
     await sectionWrapper.hover();

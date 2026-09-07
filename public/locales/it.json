@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "È sicuro di voler eliminare",
       "storageInfo": "Vengono forniti gratuitamente 100 MB di spazio di archiviazione per memorizzare PDF e altri documenti comunemente necessari per i siti web delle chiese. Si suggerisce di utilizzare Google Drive o Dropbox per archiviare i file se è necessario spazio aggiuntivo.",
-      "upload": "Carica",
       "uploadFiles": "Carica File"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Nessuna pagina trovata",
       "pages": "Pagine",
       "path": "Sentiero",
-      "previewPage": "Pagina di anteprima",
       "showLogin": "Mostra accesso",
       "showLoginTooltip": "Mostra il pulsante di accesso nella barra di navigazione",
       "startFromTemplate": "Inizia da un modello",
       "subtitle": "Gestisci le pagine, i contenuti e la navigazione del tuo sito web",
       "toggleLoginVisibility": "Attiva/disattiva la visibilità del pulsante di accesso",
       "totalPages": "Pagine totali",
+      "viewLivePage": "Pagina di anteprima",
       "websitePages": "Pagine del sito web"
     },
     "paletteEdit": {

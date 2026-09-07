@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Sind Sie sicher, dass Sie löschen möchten",
       "storageInfo": "100 MB Speicherplatz werden kostenlos für die Speicherung von PDFs und anderen Dokumenten bereitgestellt, die häufig für Kirchenwebsites benötigt werden. Wir empfehlen die Verwendung von Google Drive oder Dropbox zur Dateispeicherung, wenn zusätzlicher Speicherplatz benötigt wird.",
-      "upload": "Hochladen",
       "uploadFiles": "Dateien hochladen"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Keine Seiten gefunden",
       "pages": "Seiten",
       "path": "Pfad",
-      "previewPage": "Seite vorschauen",
       "showLogin": "Login anzeigen",
       "showLoginTooltip": "Login-Button in der Navigationsleiste anzeigen",
       "startFromTemplate": "Mit einer Vorlage starten",
       "subtitle": "Verwalten Sie Ihre Webseiten, Inhalte und Navigation",
       "toggleLoginVisibility": "Sichtbarkeit des Login-Buttons umschalten",
       "totalPages": "Seiten gesamt",
+      "viewLivePage": "Seite vorschauen",
       "websitePages": "Webseiten"
     },
     "paletteEdit": {

@@ -87,11 +87,11 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
 
       result.push(<Grid key={img || index} size={{ xs: 12, md: 4 }}>
         <Box sx={{ position: "relative", ":hover #deleteIcon": { visibility: "visible" } }}>
-          <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onSelect(contentRoot + "/" + img); }} aria-label="Select image" data-testid="select-image">
+          <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onSelect(contentRoot + "/" + img); }} aria-label={Locale.label("gallery.selectImage")} data-testid="select-image">
             <Box
               component="img"
               src={contentRoot + "/" + img}
-              alt="custom"
+              alt={Locale.label("gallery.galleryImage")}
               sx={{
                 width: "100%",
                 height: "auto",
@@ -116,7 +116,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
 
   const getDisplayAspect = () => {
     let result = aspectRatio.toString();
-    if (aspectRatio === 0) result = "Free Form";
+    if (aspectRatio === 0) result = Locale.label("gallery.freeForm");
     else if (aspectRatio === 1) result = "1:1";
     else if (aspectRatio === 2) result = "2:1";
     else if (aspectRatio === 3) result = "3:1";
@@ -131,7 +131,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   return (<>
     {ConfirmDialogElement}
     <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>Select a Photo</DialogTitle>
+      <DialogTitle>{Locale.label("gallery.selectAPhoto")}</DialogTitle>
       <DialogContent style={{ overflowX: "hidden" }}>
         <ErrorMessages errors={uploadError} />
         {(props.aspectRatio === 0) && (
@@ -152,9 +152,9 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
         )}
 
         <Tabs variant="fullWidth" value={tabIndex} onChange={handleTabChange}>
-          <Tab label="Gallery" />
-          <Tab label="Upload" />
-          <Tab label="Stock Photos" />
+          <Tab label={Locale.label("gallery.gallery")} />
+          <Tab label={Locale.label("gallery.upload")} />
+          <Tab label={Locale.label("gallery.stockPhotos")} />
         </Tabs>
         <TabPanel value={tabIndex} index={0}>
 
@@ -164,14 +164,14 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
           <div>{Locale.label("gallery.aspectRatio")}: {getDisplayAspect()}</div>
-          {isUploading ? <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}><CircularProgress /></Box> : <ImageEditor onUpdate={handleImageUpdated} photoUrl={editorPhotoUrl} aspectRatio={aspectRatio} outputWidth={1280} outputHeight={768} hideDelete={true} />}
+          {isUploading ? <Box sx={{ display: "flex", justifyContent: "center", p: 5 }}><CircularProgress /></Box> : <ImageEditor onUpdate={handleImageUpdated} photoUrl={editorPhotoUrl} aspectRatio={aspectRatio} outputWidth={1280} outputHeight={768} hideDelete={true} />}
         </TabPanel>
         <TabPanel value={tabIndex} index={2}>
           <StockPhotos aspectRatio={aspectRatio} onSelect={props.onSelect} onStockSelect={handleStockSelect} />
         </TabPanel>
       </DialogContent>
       <DialogActions sx={{ paddingX: "16px", paddingBottom: "12px" }}>
-        <Button variant="outlined" onClick={handleClose}>Close</Button>
+        <Button variant="outlined" onClick={handleClose}>{Locale.label("common.close")}</Button>
       </DialogActions>
     </Dialog>
   </>);

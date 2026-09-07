@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
       "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
-      "upload": "Upload",
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "No pages found",
       "pages": "Pages",
       "path": "Path",
-      "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
       "startFromTemplate": "Pradėti nuo šablono",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
+      "viewLivePage": "Preview page",
       "websitePages": "Website Pages"
     },
     "paletteEdit": {

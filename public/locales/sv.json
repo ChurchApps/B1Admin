@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Är du säker på att du vill ta bort",
       "storageInfo": "100 MB lagringsutrymme tillhandahålls gratis för att lagra PDF-filer och andra dokument som vanligtvis behövs för kyrkowebbplatser. Vi föreslår att du använder Google Drive eller Dropbox för att lagra filer om ytterligare utrymme behövs.",
-      "upload": "Ladda upp",
       "uploadFiles": "Ladda upp filer"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Inga sidor hittades",
       "pages": "Sidor",
       "path": "Sökväg",
-      "previewPage": "Förhandsvisa sida",
       "showLogin": "Visa inloggning",
       "showLoginTooltip": "Visa inloggningsknapp i navigeringsfältet",
       "startFromTemplate": "Börja från en mall",
       "subtitle": "Hantera webbplatsens sidor, innehåll och navigering",
       "toggleLoginVisibility": "Växla synlighet för inloggningsknapp",
       "totalPages": "Totalt antal sidor",
+      "viewLivePage": "Förhandsvisa sida",
       "websitePages": "Webbplatssidor"
     },
     "paletteEdit": {

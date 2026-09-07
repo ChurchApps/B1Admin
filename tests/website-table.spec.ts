@@ -29,10 +29,9 @@ test.describe("Website table element", () => {
 
   test("commits row/column counts on blur or Enter, not per keystroke", async () => {
     // Scope to the Pages table — the Main Navigation sidebar is also a table with a "Home" row.
-    const homeRow = page.locator("tr").filter({ has: page.locator('[data-testid="edit-page-button"]') }).filter({ hasText: "Home" }).first();
+    const homeRow = page.locator("tr").filter({ has: page.locator('[data-testid="edit-content-button"]') }).filter({ hasText: "Home" }).first();
     await expect(homeRow).toBeVisible({ timeout: 15000 });
-    await homeRow.locator('[data-testid="edit-page-button"]').click();
-    await page.locator("button").getByText("Edit Content").click();
+    await homeRow.locator('[data-testid="edit-content-button"]').click();
     const addBtn = page.locator('[data-testid="content-editor-add-button"]');
     await expect(addBtn).toBeVisible({ timeout: 30000 });
 

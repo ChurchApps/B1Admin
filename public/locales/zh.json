@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "您确定要删除",
       "storageInfo": "免费提供100 MB的存储空间用于存储教会网站通常需要的PDF和其他文档。如果需要额外空间，我们建议使用Google Drive或Dropbox存储文件。",
-      "upload": "上传",
       "uploadFiles": "上传文件"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "没有找到页面",
       "pages": "页数",
       "path": "小路",
-      "previewPage": "预览页面",
       "showLogin": "显示登录",
       "showLoginTooltip": "在导航栏中显示登录按钮",
       "startFromTemplate": "从模板开始",
       "subtitle": "管理您的网站页面、内容和导航",
       "toggleLoginVisibility": "切换登录按钮可见性",
       "totalPages": "总页数",
+      "viewLivePage": "预览页面",
       "websitePages": "网站页面"
     },
     "paletteEdit": {
