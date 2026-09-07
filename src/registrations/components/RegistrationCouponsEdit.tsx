@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Box, Stack, TextField, Button, Typography, MenuItem, Chip } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
@@ -8,13 +8,14 @@ import { useEditableRowList, toNum } from "./useEditableRowList";
 
 interface Props {
   event: CommerceEventInterface;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
 const toLocalInput = (d: Date | string | undefined) => (d ? new Date(d).toISOString().slice(0, 16) : "");
 const toDate = (v: string) => (v ? new Date(v) : null);
 
-export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
-  const { rows, saving, error, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationCouponInterface>({
+export const RegistrationCouponsEdit: React.FC<Props> = ({ event, onDirtyChange }) => {
+  const { rows, saving, error, dirty, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationCouponInterface>({
     loadUrl: `/registrations/coupons/event/${event.id}`,
     saveUrl: "/registrations/coupons",
     deleteUrlPrefix: "/registrations/coupons/",
@@ -36,6 +37,8 @@ export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
       active: r.active !== false
     })
   });
+
+  useEffect(() => { onDirtyChange?.(dirty); }, [dirty, onDirtyChange]);
 
   return (
     <Stack spacing={1.5}>

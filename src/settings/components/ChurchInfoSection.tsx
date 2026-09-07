@@ -7,6 +7,9 @@ import { Box, Divider, Grid, Stack, TextField, Typography, MenuItem } from "@mui
 
 type AnyRecord = Record<string, any>;
 
+const DAY_KEYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+const dayLabel = (day: number) => Locale.label("common.days." + DAY_KEYS[day]);
+
 interface Props {
   church: ChurchInterface;
   onSaved: () => void;
@@ -79,13 +82,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField fullWidth select label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} id="firstDayOfWeek" {...register("firstDayOfWeek", { valueAsNumber: true })} defaultValue={(church as any)?.firstDayOfWeek || 0}>
-              <MenuItem value={0}>Sunday</MenuItem>
-              <MenuItem value={1}>Monday</MenuItem>
-              <MenuItem value={2}>Tuesday</MenuItem>
-              <MenuItem value={3}>Wednesday</MenuItem>
-              <MenuItem value={4}>Thursday</MenuItem>
-              <MenuItem value={5}>Friday</MenuItem>
-              <MenuItem value={6}>Saturday</MenuItem>
+              {DAY_KEYS.map((key, i) => <MenuItem key={key} value={i}>{dayLabel(i)}</MenuItem>)}
             </TextField>
           </Grid>
         </Grid>
@@ -109,7 +106,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
         <DisplayRow label={Locale.label("person.state")} value={church?.state} />
         <DisplayRow label={Locale.label("person.zip")} value={church?.zip} />
         <DisplayRow label={Locale.label("person.country")} value={church?.country} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][(church as any)?.firstDayOfWeek || 0]} />
+        <DisplayRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
       </Box>
     </DisplayBox>
   );

@@ -1,15 +1,15 @@
-import { ArrayHelper, CurrencyHelper } from "@churchapps/apphelper";
+import { ArrayHelper, CurrencyHelper, Locale, SmallButton } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Box } from "@mui/material";
 import UserContext from "../UserContext";
 import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
 
 export const PrintDonationPage = () => {
   const [currency, setCurrency] = useState<string>("usd");
-  const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
   const yearParam = searchParams.get("year");
@@ -49,6 +49,9 @@ export const PrintDonationPage = () => {
 
   const pledgeRows = useMemo(() => allPledgeProgress.data?.filter((row) => row.personId === params.personId) || [], [allPledgeProgress.data, params.personId]);
 
+  const autoprint = searchParams.get("autoprint") === "1";
+  const hasPrinted = useRef(false);
+
   const donations = useMemo(() => {
     return (
       allDonations.data?.filter((don) => {
@@ -63,14 +66,20 @@ export const PrintDonationPage = () => {
     return allFundDonations.data?.filter((fundDonation) => donations.some((donation) => donation.id === fundDonation.donationId)) || [];
   }, [allFundDonations.data, donations]);
 
+  const dataLoaded = !!person.data && !!funds.data;
+
   useEffect(() => {
-    if (person.data && funds.data && donations.length >= 0 && fundDonations.length >= 0) {
-      setTimeout(() => {
-        window.print();
-        navigate(-1);
-      }, 1500);
+    if (autoprint && dataLoaded && !hasPrinted.current) {
+      hasPrinted.current = true;
+      window.print();
     }
-  }, [person.data, funds.data, donations, fundDonations, navigate]);
+  }, [autoprint, dataLoaded]);
+
+  useEffect(() => {
+    const handleAfterPrint = () => window.history.back();
+    window.addEventListener("afterprint", handleAfterPrint);
+    return () => window.removeEventListener("afterprint", handleAfterPrint);
+  }, []);
 
   useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -112,18 +121,25 @@ export const PrintDonationPage = () => {
   }, [fundDonations, donations, funds.data]);
 
   return (
-    <GivingStatementDocument
-      labelPrefix="donations.printDonationPage"
-      person={person.data}
-      church={context?.userChurch?.church}
-      year={currYear}
-      currency={currency}
-      totalContributions={totalContributions}
-      fundTotals={fundTotals}
-      contributions={contributions}
-      pledgeRows={pledgeRows}
-      showPageBreak={false}
-      statementSettings={parseStatementSettings(churchSettings.data)}
-    />
+    <>
+      <style>{"@media print { .print-toolbar { display: none !important; } }"}</style>
+      <Box className="print-toolbar" sx={{ display: "flex", justifyContent: "flex-end", gap: 1, p: 2 }}>
+        <SmallButton icon="print" ariaLabel={Locale.label("common.print")} text={Locale.label("common.print")} onClick={() => window.print()} />
+        <SmallButton icon="close" ariaLabel={Locale.label("common.close")} text={Locale.label("common.close")} onClick={() => window.history.back()} />
+      </Box>
+      <GivingStatementDocument
+        labelPrefix="donations.printDonationPage"
+        person={person.data}
+        church={context?.userChurch?.church}
+        year={currYear}
+        currency={currency}
+        totalContributions={totalContributions}
+        fundTotals={fundTotals}
+        contributions={contributions}
+        pledgeRows={pledgeRows}
+        showPageBreak={false}
+        statementSettings={parseStatementSettings(churchSettings.data)}
+      />
+    </>
   );
 };

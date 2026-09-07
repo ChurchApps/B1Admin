@@ -1349,7 +1349,7 @@
         "changeImage": "Keisti paveikslėlį",
         "duration": "Trukmė (s)",
         "enableIdleScreen": "Įjungti neveiklumo ekraną",
-        "headerSubtitle": "Kiosko spalvos valdomos skiltyje Nustatymai > Programos tema. Žemiau sukonfigūruokite fono paveikslėlius ir neveiklumo ekraną.",
+        "headerSubtitle": "Kiosko spalvos valdomos skiltyje Mobile > Programos tema. Žemiau sukonfigūruokite fono paveikslėlius ir neveiklumo ekraną.",
         "idleScreen": "Neveiklumo ekranas / ekrano užsklanda",
         "sectionTitle": "Kiosko tema",
         "slides": "Skaidrės",
@@ -4155,7 +4155,7 @@
       "darkDesc": "Tamsiausias atspalvis — pagrindinio teksto",
       "error": "Klaida",
       "errorDesc": "Klaidos ir naikinimo veiksmai",
-      "headerSubtitle": "Tinkinkite svetainės spalvų schemą. Mobiliosios programėlės, narių portalo ir kiosko spalvas rasite skiltyje Nustatymai > Programos tema.",
+      "headerSubtitle": "Tinkinkite svetainės spalvų schemą. Mobiliosios programėlės, narių portalo ir kiosko spalvas rasite skiltyje Mobile > Programos tema.",
       "headerTitle": "Spalvų paletė",
       "light": "Šviesi",
       "lightAccent": "Šviesus akcentas",
@@ -4544,6 +4544,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aranžuotės",
     "audio": {
       "deleteConfirm": "Ar tikrai norite ištrinti šį garso failą?",
       "upload": "Įkelti garsą"
@@ -4610,11 +4611,6 @@
     "oldArrangement": {
       "key": "Tonacija"
     },
-    "oldArrangements": {
-      "arrangements": "Aranžuotės",
-      "editArrangementAria": "Redaguoti aranžuotę",
-      "noArrangements": "Aranžuočių nerasta."
-    },
     "praiseChartsProducts": {
       "close": "Uždaryti",
       "download": "Atsisiųsti",
@@ -4676,17 +4672,6 @@
     "providedBy": "Pateikta"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Dieginis",
-      "eventType": "Event Type",
-      "group": "Grupė",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Pamaldos",
-      "servTime": "Pamaldų laikas"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

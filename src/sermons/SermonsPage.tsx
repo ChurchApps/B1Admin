@@ -1,9 +1,11 @@
 import { memo } from "react";
-import { UserHelper, Permissions } from "@churchapps/apphelper";
+import { Permissions } from "@churchapps/apphelper";
 import { Sermons } from "./components/Sermons";
+import { useRequirePermission } from "../hooks";
 
 export const SermonsPage = memo(() => {
-  if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) return <></>;
+  const denied = useRequirePermission(Permissions.contentApi.streamingServices.edit);
+  if (denied) return denied;
 
   return (
     <Sermons />

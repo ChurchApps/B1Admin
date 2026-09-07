@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
-import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon, GridOn as GridOnIcon } from "@mui/icons-material";
 import { Locale, Loading } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
@@ -98,6 +98,7 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 600, color: "text.primary" }}>{Locale.label("common.name")}</TableCell>
+                <TableCell align="right" sx={{ width: 50 }}></TableCell>
                 {canEdit && <TableCell align="right" sx={{ width: 50 }}></TableCell>}
               </TableRow>
             </TableHead>
@@ -120,6 +121,13 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
                       }}>
                       {planType.name}
                     </Typography>
+                  </TableCell>
+                  <TableCell align="right" className="rowActions">
+                    <AppIconButton
+                      label={Locale.label("plans.planTypePage.overview")}
+                      icon={<GridOnIcon />}
+                      component={Link}
+                      to={`/serving/overview?planTypeId=${planType.id}&ministryId=${ministry.id}`} />
                   </TableCell>
                   {canEdit && (
                     <TableCell align="right" className="rowActions">

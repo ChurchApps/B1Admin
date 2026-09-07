@@ -10,7 +10,7 @@ export interface ByosProviderDescriptor {
 // TODO owner action: fill these here and in Api ByosAuth.ts — googledrive (pending #944 Google Cloud client),
 // onedrive (new Azure AD confidential app), dropbox (new "app folder" access-type app with files.content.read/write;
 // don't reuse the content-providers serving app 9io0q0q9angdz9j — it's read-scoped and full-Dropbox access type).
-// Options render disabled while their id is empty.
+// Options are hidden while their client id is empty.
 const GOOGLE_CLIENT_ID = "214868247432-hao323qmsfu96h345udaifs8f1nc7i71.apps.googleusercontent.com";
 const ONEDRIVE_CLIENT_ID = "";
 const DROPBOX_CLIENT_ID = "6whskt40gy3ekjo";

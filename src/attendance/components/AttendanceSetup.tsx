@@ -374,9 +374,14 @@ export const AttendanceSetup = memo(() => {
               {Locale.label("attendance.attendancePage.groups")}
             </Typography>
           </Stack>
-          <Button variant="outlined" size="small" component={Link} to="/settings/campuses" startIcon={<Icon>church</Icon>}>
-            {Locale.label("attendance.attendanceSetup.manageCampuses")}
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" size="small" component={Link} to="/mobile/checkin" startIcon={<Icon>how_to_reg</Icon>}>
+              {Locale.label("settings.checkinSettingsEdit.kioskLink")}
+            </Button>
+            <Button variant="outlined" size="small" component={Link} to="/settings/campuses" startIcon={<Icon>church</Icon>}>
+              {Locale.label("attendance.attendanceSetup.manageCampuses")}
+            </Button>
+          </Stack>
         </Stack>
       </Box>
 

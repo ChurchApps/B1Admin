@@ -1349,7 +1349,7 @@
         "changeImage": "Vaihda kuva",
         "duration": "Kesto (s)",
         "enableIdleScreen": "Ota käyttöön lepotila­näyttö",
-        "headerSubtitle": "Kioskin värejä hallitaan kohdassa Asetukset > Sovellusteema. Määritä taustakuvat ja lepotila­näytön toiminta alla.",
+        "headerSubtitle": "Kioskin värejä hallitaan kohdassa Matkapuhelin > Sovellusteema. Määritä taustakuvat ja lepotila­näytön toiminta alla.",
         "idleScreen": "Lepotila­näyttö / Näytönsäästäjä",
         "sectionTitle": "Kioskin teema",
         "slides": "Diat",
@@ -4155,7 +4155,7 @@
       "darkDesc": "Tummin sävy — leipäteksti",
       "error": "Virhe",
       "errorDesc": "Virheet ja tuhoavat toiminnot",
-      "headerSubtitle": "Mukauta verkkosivustosi värimaailmaa. Mobiilisovelluksen, jäsenportaalin ja kioskin värejä varten siirry kohtaan Asetukset > Sovelluksen teema.",
+      "headerSubtitle": "Mukauta verkkosivustosi värimaailmaa. Mobiilisovelluksen, jäsenportaalin ja kioskin värejä varten siirry kohtaan Matkapuhelin > Sovelluksen teema.",
       "headerTitle": "Väripaletti",
       "light": "Vaalea",
       "lightAccent": "Vaalea korostus",
@@ -4544,6 +4544,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Sovitukset",
     "audio": {
       "deleteConfirm": "Haluatko varmasti poistaa tämän äänitiedoston?",
       "upload": "Lataa ääni"
@@ -4610,11 +4611,6 @@
     "oldArrangement": {
       "key": "Sävellaji"
     },
-    "oldArrangements": {
-      "arrangements": "Sovitukset",
-      "editArrangementAria": "Muokkaa sovitusta",
-      "noArrangements": "Sovituksia ei löytynyt."
-    },
     "praiseChartsProducts": {
       "close": "Sulje",
       "download": "Lataa",
@@ -4676,17 +4672,6 @@
     "providedBy": "Toimittaja"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampus",
-      "eventType": "Event Type",
-      "group": "Ryhmä",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Palvelu",
-      "servTime": "Palvelun aika"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

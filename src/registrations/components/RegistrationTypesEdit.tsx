@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Box, Stack, TextField, Button, Typography } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
@@ -8,10 +8,11 @@ import { useEditableRowList, toNum } from "./useEditableRowList";
 
 interface Props {
   event: CommerceEventInterface;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
-export const RegistrationTypesEdit: React.FC<Props> = ({ event }) => {
-  const { rows, saving, error, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationTypeInterface>({
+export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange }) => {
+  const { rows, saving, error, dirty, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationTypeInterface>({
     loadUrl: `/registrations/types/event/${event.id}?churchId=${event.churchId}`,
     saveUrl: "/registrations/types",
     deleteUrlPrefix: "/registrations/types/",
@@ -22,6 +23,8 @@ export const RegistrationTypesEdit: React.FC<Props> = ({ event }) => {
     filter: (r) => !!(r.name || "").trim(),
     coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), capacity: toNum(r.capacity), sort: toNum(r.sort) })
   });
+
+  useEffect(() => { onDirtyChange?.(dirty); }, [dirty, onDirtyChange]);
 
   return (
     <Stack spacing={1.5}>

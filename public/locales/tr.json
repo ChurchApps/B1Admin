@@ -1349,7 +1349,7 @@
         "changeImage": "Resmi Değiştir",
         "duration": "Süre (s)",
         "enableIdleScreen": "Boşta ekranını etkinleştir",
-        "headerSubtitle": "Kiosk renkleri Ayarlar > Uygulama Teması'nda yönetilir. Aşağıda arka plan resimlerini ve boşta ekranı davranışını yapılandırın.",
+        "headerSubtitle": "Kiosk renkleri Mobil > Uygulama Teması'nda yönetilir. Aşağıda arka plan resimlerini ve boşta ekranı davranışını yapılandırın.",
         "idleScreen": "Boşta Ekranı / Ekran Koruyucu",
         "sectionTitle": "Kiosk Teması",
         "slides": "Slaytlar",
@@ -4155,7 +4155,7 @@
       "darkDesc": "En koyu ton — gövde metni",
       "error": "Hata",
       "errorDesc": "Hatalar ve geri alınamaz işlemler",
-      "headerSubtitle": "Web sitenizin renk şemasını özelleştirin. Mobil uygulama, üye portalı ve kiosk renkleri için Ayarlar > Uygulama Teması'na gidin.",
+      "headerSubtitle": "Web sitenizin renk şemasını özelleştirin. Mobil uygulama, üye portalı ve kiosk renkleri için Mobil > Uygulama Teması'na gidin.",
       "headerTitle": "Renk Paleti",
       "light": "Açık",
       "lightAccent": "Açık Vurgu",
@@ -4544,6 +4544,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Düzenlemeler",
     "audio": {
       "deleteConfirm": "Bu ses dosyasını silmek istediğinizden emin misiniz?",
       "upload": "Ses yükle"
@@ -4610,11 +4611,6 @@
     "oldArrangement": {
       "key": "Anahtar"
     },
-    "oldArrangements": {
-      "arrangements": "Düzenlemeler",
-      "editArrangementAria": "Düzenlemeyi düzenle",
-      "noArrangements": "Düzenleme bulunamadı."
-    },
     "praiseChartsProducts": {
       "close": "Kapat",
       "download": "İndir",
@@ -4676,17 +4672,6 @@
     "providedBy": "Sağlayan"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampüs",
-      "eventType": "Event Type",
-      "group": "Grup",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "İbadet",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

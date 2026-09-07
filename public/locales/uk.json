@@ -1349,7 +1349,7 @@
         "changeImage": "Змінити зображення",
         "duration": "Тривалість (с)",
         "enableIdleScreen": "Увімкнути екран очікування",
-        "headerSubtitle": "Кольори кіоску керуються в Параметри > Тема програми. Нижче налаштуйте фонові зображення та поведінку екрана очікування.",
+        "headerSubtitle": "Кольори кіоску керуються в Мобільний > Тема програми. Нижче налаштуйте фонові зображення та поведінку екрана очікування.",
         "idleScreen": "Екран очікування / заставка",
         "sectionTitle": "Тема кіоску",
         "slides": "Слайди",
@@ -4155,7 +4155,7 @@
       "darkDesc": "Найтемніший відтінок — основний текст",
       "error": "Помилка",
       "errorDesc": "Помилки та деструктивні дії",
-      "headerSubtitle": "Налаштуйте кольорову схему вашого сайту. Для кольорів мобільного додатку, порталу учасників і кіоску перейдіть до Параметри > Тема програми.",
+      "headerSubtitle": "Налаштуйте кольорову схему вашого сайту. Для кольорів мобільного додатку, порталу учасників і кіоску перейдіть до Мобільний > Тема програми.",
       "headerTitle": "Палітра кольорів",
       "light": "Світлий",
       "lightAccent": "Світлий акцент",
@@ -4544,6 +4544,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Аранжування",
     "audio": {
       "deleteConfirm": "Ви впевнені, що хочете видалити цей аудіофайл?",
       "upload": "Завантажити аудіо"
@@ -4610,11 +4611,6 @@
     "oldArrangement": {
       "key": "Ключ"
     },
-    "oldArrangements": {
-      "arrangements": "Аранжування",
-      "editArrangementAria": "Редагувати аранжування",
-      "noArrangements": "Аранжувань не знайдено."
-    },
     "praiseChartsProducts": {
       "close": "Закрити",
       "download": "Завантажити",
@@ -4676,17 +4672,6 @@
     "providedBy": "Надано"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Кампус",
-      "eventType": "Event Type",
-      "group": "Група",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Оператор",
-      "serv": "Служба",
-      "servTime": "Час служби"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

@@ -17,7 +17,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Alert
+  Alert,
+  TextField,
+  MenuItem
 } from "@mui/material";
 import {
   HowToReg as RegIcon,
@@ -60,6 +62,7 @@ export const RegistrationDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [showAddAttendee, setShowAddAttendee] = useState(false);
+  const [addAttendeeTypeId, setAddAttendeeTypeId] = useState("");
   const [addError, setAddError] = useState("");
   const [unansweredOnly, setUnansweredOnly] = useState(false);
   const [viewSubmissionId, setViewSubmissionId] = useState("");
@@ -105,7 +108,11 @@ export const RegistrationDetailsPage = () => {
     if (!event) return;
     setAddError("");
     try {
-      await ApiHelper.post("/registrations/register", { churchId: event.churchId, eventId: event.id, personId: person.id }, "ContentApi");
+      const body: Record<string, unknown> = { churchId: event.churchId, eventId: event.id, personId: person.id };
+      if (types.length > 0) {
+        body.members = [{ personId: person.id, firstName: person.name?.first || "", lastName: person.name?.last || "", registrationTypeId: addAttendeeTypeId }];
+      }
+      await ApiHelper.post("/registrations/register", body, "ContentApi");
       setShowAddAttendee(false);
       loadData();
     } catch (err: any) {
@@ -114,6 +121,7 @@ export const RegistrationDetailsPage = () => {
   };
 
   const handlePromote = async (regId: string) => {
+    if (!(await confirm(Locale.label("registrations.commerce.promoteConfirm"), { destructive: false, confirmLabel: Locale.label("registrations.commerce.promote") }))) return;
     await ApiHelper.post("/registrations/" + regId + "/promote", {}, "ContentApi");
     loadData();
   };
@@ -290,7 +298,7 @@ export const RegistrationDetailsPage = () => {
               actions={(
                 <Stack direction="row" spacing={1} alignItems="center">
                   {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-                    <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => setShowAddAttendee(true)}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
+                    <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
                   )}
                   <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
                 </Stack>
@@ -351,7 +359,24 @@ export const RegistrationDetailsPage = () => {
           <DialogTitle>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</DialogTitle>
           <DialogContent>
             {addError && <Alert severity="error" sx={{ mb: 2 }}>{addError}</Alert>}
-            <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddAttendee} />
+            {types.length > 0 && (
+              <TextField
+                select
+                fullWidth
+                label={Locale.label("registrations.commerce.type")}
+                value={addAttendeeTypeId}
+                onChange={(e) => setAddAttendeeTypeId(e.target.value)}
+                sx={{ mb: 2 }}
+                data-testid="add-attendee-type-select"
+              >
+                {types.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+              </TextField>
+            )}
+            {(types.length === 0 || addAttendeeTypeId) ? (
+              <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddAttendee} />
+            ) : (
+              <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.selectTypeFirst")}</Typography>
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setShowAddAttendee(false)}>{Locale.label("common.cancel")}</Button>

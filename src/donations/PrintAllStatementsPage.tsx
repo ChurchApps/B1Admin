@@ -1,7 +1,7 @@
-import { CurrencyHelper, Locale } from "@churchapps/apphelper";
+import { CurrencyHelper, Locale, SmallButton } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { Box, CircularProgress, Typography } from "@mui/material";
@@ -9,7 +9,6 @@ import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
 
 export const PrintAllStatementsPage = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const yearParam = searchParams.get("year");
   const currYear = yearParam ? parseInt(yearParam, 10) : new Date().getFullYear();
@@ -75,14 +74,21 @@ export const PrintAllStatementsPage = () => {
 
   const isLoading = allDonations.isLoading || allFundDonations.isLoading || funds.isLoading || (personIds.length > 0 && people.isLoading);
 
+  const autoprint = searchParams.get("autoprint") === "1";
+  const hasPrinted = useRef(false);
+
   useEffect(() => {
-    if (!isLoading && people.data && people.data.length > 0) {
-      setTimeout(() => {
-        window.print();
-        navigate(-1);
-      }, 1500);
+    if (autoprint && !isLoading && people.data && people.data.length > 0 && !hasPrinted.current) {
+      hasPrinted.current = true;
+      window.print();
     }
-  }, [isLoading, people.data, navigate]);
+  }, [autoprint, isLoading, people.data]);
+
+  useEffect(() => {
+    const handleAfterPrint = () => window.history.back();
+    window.addEventListener("afterprint", handleAfterPrint);
+    return () => window.removeEventListener("afterprint", handleAfterPrint);
+  }, []);
 
   useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -155,6 +161,11 @@ export const PrintAllStatementsPage = () => {
 
   return (
     <>
+      <style>{"@media print { .print-toolbar { display: none !important; } }"}</style>
+      <Box className="print-toolbar" sx={{ display: "flex", justifyContent: "flex-end", gap: 1, p: 2 }}>
+        <SmallButton icon="print" ariaLabel={Locale.label("common.print")} text={Locale.label("common.print")} onClick={() => window.print()} />
+        <SmallButton icon="close" ariaLabel={Locale.label("common.close")} text={Locale.label("common.close")} onClick={() => window.history.back()} />
+      </Box>
       {people.data?.map((person, index) => (
         <GivingStatementDocument
           key={person.id}

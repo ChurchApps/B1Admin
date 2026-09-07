@@ -199,7 +199,10 @@
       "cancel": "Cancel",
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
       "delete": "Delete",
+      "edit": "Edit",
+      "editEvent": "Edit Event",
       "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
     },
@@ -247,14 +250,17 @@
     },
     "eventReminders": {
       "channels": "Channels",
+      "email": "Email",
       "enableReminders": "Enable reminders",
       "maxOffsets": "Maximum of 3 times selected",
       "message": "Message (optional)",
       "messageHint": "Merge field: {{eventTitle}}",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
       "modeAuto": "Auto",
       "modeGroup": "Group members",
       "modeRegistrants": "Registrants only",
       "modeRegistrantsHoh": "Heads / registrants only",
+      "push": "Push",
       "timeOfDay": "Time of day",
       "timeOfDayHint": "Church local time (e.g. 9:00 AM)",
       "title": "Reminders",
@@ -347,7 +353,7 @@
     "amount": "Amount",
     "appTheme": "App Theme",
     "b1CheckIn": "B1 CheckIn",
-    "b1Mobile": "B1 Mobile",
+    "b1Mobile": "Member portal",
     "back": "Back",
     "bottom": "Bottom",
     "cancel": "Cancel",
@@ -368,6 +374,15 @@
       }
     },
     "custom": "Custom",
+    "days": {
+      "friday": "Friday",
+      "monday": "Monday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "thursday": "Thursday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday"
+    },
     "delete": "Delete",
     "done": "Done",
     "duplicate": "Duplicate",
@@ -391,6 +406,7 @@
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
+    "labels": "Labels",
     "left": "Left",
     "loading": "Loading",
     "mobile": "Mobile",
@@ -459,7 +475,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Please contact your church administrator to request access.",
-      "defaultMessage": "You do not have the required permission(s) to access this feature:"
+      "defaultMessage": "You don't have permission to view this page.",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Search for person",
@@ -649,6 +666,7 @@
       "printDescription": "Generate a consolidated document with all giving statements for printing",
       "printStatements": "Printable Statements",
       "selectYear": "Select Year",
+      "statementFormat": "Statement format",
       "subtitle": "Download giving statements for all donors",
       "summary": "Summary",
       "title": "Batch Giving Statements",
@@ -660,8 +678,10 @@
     },
     "bulkEntry": {
       "addDonation": "Add Donation",
+      "fullEditor": "full donation editor",
       "pressEnter": "Press Enter to save and add another donation",
-      "selectPerson": "Select Person or Anonymous"
+      "selectPerson": "Select Person or Anonymous",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Allow donors to pledge",
@@ -974,6 +994,7 @@
     "formEdit": {
       "access": "Form Access",
       "accessLevelAria": "Access level",
+      "addForm": "Add Form",
       "addToGroup": "Add submitters to a group",
       "addToGroupHelper": "Submitters are added to this group automatically.",
       "addToGroupNone": "None",
@@ -1016,6 +1037,8 @@
       "view": "View Only"
     },
     "formPage": {
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found",
       "subtitleConfig": "Form configuration and submissions"
     },
     "formQuestionEdit": {
@@ -1057,12 +1080,15 @@
       "archForms": "Archived Forms",
       "archive": "Archive",
       "archiveFormAria": "Archive form {name}",
+      "confirmDuplicate": "Duplicate this form?",
       "confirmMsg1": "Are you sure you want to archive this form?",
       "confirmMsg2": "Are you sure you want to restore this form?",
       "duplicate": "Duplicate",
+      "duplicated": "Form duplicated",
       "forms": "Forms",
       "noArch": "No archived forms.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "personProfileForm": "Person profile form",
       "restore": "Restore",
       "restoreFormAria": "Restore form {name}",
       "subtitleManage": "Create and manage custom forms",
@@ -1453,8 +1479,8 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
-      "subtitle": "Configure settings for the B1 Mobile app",
-      "title": "B1 Mobile"
+      "subtitle": "Member directory, visibility, and messaging for the B1.church app",
+      "title": "Portal settings"
     },
     "checkInPage": {
       "copyLink": "Copy link",
@@ -1468,7 +1494,7 @@
         "changeImage": "Change Image",
         "duration": "Duration (s)",
         "enableIdleScreen": "Enable idle screen",
-        "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
+        "headerSubtitle": "Kiosk colors are managed in Mobile > App Theme. Configure background images and idle screen behavior below.",
         "idleScreen": "Idle Screen / Screensaver",
         "sectionTitle": "Kiosk Theme",
         "slides": "Slides",
@@ -2009,6 +2035,7 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge",
       "title": "Amazing Grace"
     },
     "task": {
@@ -2412,8 +2439,10 @@
     },
     "servingOverviewPage": {
       "autoSchedule": "Auto-schedule",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
       "autoScheduleResult": "Auto-scheduled {filled} of {total} plans",
       "emailAll": "Email Volunteers",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
       "emailEmpty": "No assigned volunteers in this range to email.",
       "emailResult": "Emailed {sent} volunteers ({failed} failed)",
       "endDate": "End Date",
@@ -2426,6 +2455,7 @@
       "overviewSuffix": "Overview",
       "position": "Position",
       "remove": "Remove",
+      "removeConfirm": "Remove {name} from this assignment?",
       "startDate": "Start Date",
       "subtitle": "Positions by date with assigned volunteers",
       "title": "Serving Overview"
@@ -2521,6 +2551,8 @@
       "addScreen": "Add Screen",
       "device": "Device",
       "editDevice": "Edit Device",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet",
       "label": "Label",
       "lastActiveDate": "Last Active Date",
       "registrationDate": "Registration Date",
@@ -2599,6 +2631,7 @@
       "percent": "Percent",
       "price": "Price",
       "promote": "Promote",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?",
       "registrationDetails": "Registration Details",
       "removeConfirm": "Remove this item? This cannot be undone.",
       "selections": "Selections",
@@ -2629,6 +2662,7 @@
       "name": "Name",
       "noRegistrations": "No registrations yet.",
       "registrations": "Registrations",
+      "selectTypeFirst": "Select an attendee type to continue.",
       "status": "Status",
       "subtitle": "Manage registrations for this event",
       "unansweredOnly": "Unanswered questions only",
@@ -2648,12 +2682,14 @@
       "saveSettings": "Save Settings",
       "tags": "Tags",
       "tagsHelper": "Comma-separated tags for filtering",
-      "tagsPlaceholder": "youth, retreat, vbs"
+      "tagsPlaceholder": "youth, retreat, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Date",
       "enabledEvents": "Events with Registration Enabled",
       "event": "Event",
+      "goToCalendars": "Turn on registration on a calendar event",
       "noEvents": "No events have registration enabled yet.",
       "noEventsHint": "To enable registration, open an event on a calendar and click Manage Registrations.",
       "registered": "registered",
@@ -3285,6 +3321,7 @@
     "checkinSettingsEdit": {
       "block": "Block (prevent check-in)",
       "help": "Choose how check-in responds when a room is over its volunteer-to-child ratio or below its minimum volunteers.",
+      "kioskLink": "Check-in kiosk, QR, and labels",
       "ratioEnforcement": "Volunteer Ratio Enforcement",
       "title": "Check-In",
       "warn": "Warn (allow with confirmation)"
@@ -3432,11 +3469,13 @@
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
+      "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
       "kfSetup": "Enter the Tokenization Key and Source Key from your Kingdom Funding dashboard. Get started at",
       "kfWebhookInstructions": "Provide this webhook URL to your Kingdom Funding representative during onboarding so transaction updates flow back into your giving reports:",
       "none": "None",
+      "paymentGatewaySection": "Payment gateway",
       "paypalSetup": "Create a PayPal REST app and paste its Client ID and Secret below. Get started at",
       "paystackSetup": "Copy your Public and Secret keys from the Paystack Dashboard (Settings → API Keys & Webhooks) and paste them below. Open the",
       "paystackWebhookInstructions": "Paste this URL into the Webhook URL field of your Paystack Dashboard (Settings → API Keys & Webhooks) so recurring gifts and mobile money payments are recorded:",
@@ -3497,8 +3536,9 @@
     },
     "mobileAppSettings": {
       "addTab": "Add Tab",
-      "subtitle": "Configure mobile app settings",
-      "title": "Mobile App Settings"
+      "subtitle": "Tabs on the B1.church app",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More.",
+      "title": "Navigation"
     },
     "roleCheck": {
       "permissionAria": "Permission {label}"
@@ -3523,6 +3563,7 @@
       "roleEdit": "Edit Role:"
     },
     "rolePermissions": {
+      "filter": "Filter permissions",
       "permEdit": "Edit Permissions"
     },
     "roles": {
@@ -4346,7 +4387,7 @@
       "darkDesc": "Darkest shade — body text",
       "error": "Error",
       "errorDesc": "Errors and destructive actions",
-      "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Settings > App Theme.",
+      "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Mobile > App Theme.",
       "headerTitle": "Color Palette",
       "light": "Light",
       "lightAccent": "Light Accent",
@@ -4741,8 +4782,10 @@
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
       "lyrics": "Lyrics",
       "name": "Arrangement Name",
+      "sequence": "Sequence",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangements",
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
       "upload": "Upload Audio"
@@ -4809,11 +4852,6 @@
     "oldArrangement": {
       "key": "Key"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangements",
-      "editArrangementAria": "Edit arrangement",
-      "noArrangements": "No arrangements found."
-    },
     "praiseChartsProducts": {
       "close": "Close",
       "download": "Download",
@@ -4875,17 +4913,6 @@
     "providedBy": "Provided By"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Group",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Service",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

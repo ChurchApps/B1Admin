@@ -6,6 +6,7 @@ import { Alert, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, To
 import { ErrorOutline as FailedIcon, Refresh as RetryIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { CardWithHeader, EmptyState, LoadingButton, PageHeaderStats, hoverRowSx } from "../components/ui";
+import { useRequirePermission } from "../hooks";
 
 interface FailedDonationInterface {
   id?: string;
@@ -91,7 +92,8 @@ export const FailedDonationsPage = () => {
     });
   };
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.view)) return <></>;
+  const denied = useRequirePermission(Permissions.givingApi.donations.view);
+  if (denied) return denied;
 
   return (
     <>

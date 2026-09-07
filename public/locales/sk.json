@@ -1349,7 +1349,7 @@
         "changeImage": "Zmeniť obrázok",
         "duration": "Trvanie (s)",
         "enableIdleScreen": "Povoliť obrazovku nečinnosti",
-        "headerSubtitle": "Farby kiosku sa spravujú v Nastaveniach > Téma aplikácie. Nižšie nastavte obrázky pozadia a správanie obrazovky nečinnosti.",
+        "headerSubtitle": "Farby kiosku sa spravujú v Mobilný > Téma aplikácie. Nižšie nastavte obrázky pozadia a správanie obrazovky nečinnosti.",
         "idleScreen": "Obrazovka nečinnosti / Šetrič obrazovky",
         "sectionTitle": "Téma kiosku",
         "slides": "Snímky",
@@ -4155,7 +4155,7 @@
       "darkDesc": "Najtmavší odtieň — text",
       "error": "Chyba",
       "errorDesc": "Chyby a deštruktívne akcie",
-      "headerSubtitle": "Prispôsobte farebnú schému vašej stránky. Pre mobilnú aplikáciu, členský portál a farby kiosku prejdite do Nastavenia > Téma aplikácie.",
+      "headerSubtitle": "Prispôsobte farebnú schému vašej stránky. Pre mobilnú aplikáciu, členský portál a farby kiosku prejdite do Mobilný > Téma aplikácie.",
       "headerTitle": "Farebná paleta",
       "light": "Svetlá",
       "lightAccent": "Svetlý akcent",
@@ -4544,6 +4544,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aranžmány",
     "audio": {
       "deleteConfirm": "Naozaj chcete odstrániť tento zvukový súbor?",
       "upload": "Nahrať audio"
@@ -4610,11 +4611,6 @@
     "oldArrangement": {
       "key": "Tónina"
     },
-    "oldArrangements": {
-      "arrangements": "Aranžmány",
-      "editArrangementAria": "Upraviť aranžmán",
-      "noArrangements": "Neboli nájdené žiadne aranžmány."
-    },
     "praiseChartsProducts": {
       "close": "Zavrieť",
       "download": "Stiahnuť",
@@ -4676,17 +4672,6 @@
     "providedBy": "Poskytnuté od"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Mestnosť",
-      "eventType": "Event Type",
-      "group": "Skupina",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Bohoslužba",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

@@ -20,6 +20,7 @@ interface EditableRowListOptions<T> {
 export function useEditableRowList<T extends { id?: string }>(options: EditableRowListOptions<T>) {
   const { loadUrl, saveUrl, deleteUrlPrefix, api, newRow, enabled = true, sortBy, filter, coerce } = options;
   const [rows, setRows] = useState<T[]>([]);
+  const [snapshot, setSnapshot] = useState("[]");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -27,7 +28,9 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
   const load = () => {
     ApiHelper.get(loadUrl, api).then((data: T[]) => {
       const list = data || [];
-      setRows(sortBy ? [...list].sort((a, b) => (Number(a[sortBy]) || 0) - (Number(b[sortBy]) || 0)) : list);
+      const sorted = sortBy ? [...list].sort((a, b) => (Number(a[sortBy]) || 0) - (Number(b[sortBy]) || 0)) : list;
+      setRows(sorted);
+      setSnapshot(JSON.stringify(sorted));
     });
   };
 
@@ -65,5 +68,7 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
     }
   };
 
-  return { rows, saving, error, update, addRow, removeRow, save, ConfirmDialogElement };
+  const dirty = JSON.stringify(rows) !== snapshot;
+
+  return { rows, saving, error, dirty, update, addRow, removeRow, save, ConfirmDialogElement };
 }

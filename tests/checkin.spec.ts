@@ -1,4 +1,4 @@
-import { groupsTest as test, expect } from "./helpers/test-fixtures";
+import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { editIconButton } from "./helpers/fixtures";
 
 test.describe("Check-in: group configuration", () => {
@@ -93,5 +93,24 @@ test.describe("Check-in: group configuration", () => {
     await revertPromise;
     await expect(parentPickupCombo).toHaveCount(0, { timeout: 10000 });
     await expect(parentPickupRow.locator('svg[data-testid="CancelIcon"]')).toBeVisible({ timeout: 10000 });
+  });
+});
+
+test.describe("Check-in: kiosk configuration links", () => {
+  loggedInTest("Attendance Setup links to the check-in kiosk, QR and labels page", async ({ page }) => {
+    await page.goto("/attendance");
+    const link = page.getByRole("link", { name: /Check-in kiosk, QR, and labels/ });
+    await link.waitFor({ state: "visible", timeout: 15000 });
+    await link.click();
+    await expect(page).toHaveURL(/\/mobile\/checkin$/, { timeout: 15000 });
+  });
+
+  loggedInTest("Settings Check-In section links to the same page", async ({ page }) => {
+    await page.goto("/settings");
+    await page.locator('[data-testid="settings-section-check-ins"]').click();
+    const link = page.getByRole("link", { name: /Check-in kiosk, QR, and labels/ });
+    await link.waitFor({ state: "visible", timeout: 15000 });
+    await link.click();
+    await expect(page).toHaveURL(/\/mobile\/checkin$/, { timeout: 15000 });
   });
 });
