@@ -47,11 +47,17 @@ export class SecondaryMenuHelper {
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
     if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("settings.roles.roles"), icon: "lock" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) {
+      menuItems.push({ url: "/settings/email-templates", label: Locale.label("settings.emailTemplatesPage.title"), icon: "mail" });
+      menuItems.push({ url: "/settings/audit-log", label: Locale.label("settings.manageChurch.auditLog"), icon: "history" });
+      menuItems.push({ url: "/settings/batches", label: Locale.label("settings.manageChurch.batches"), icon: "layers" });
+    }
     if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) menuItems.push({ url: "/admin", label: Locale.label("components.wrapper.servAdmin"), icon: "admin_panel_settings" });
 
     if (path.startsWith("/settings/roles") || path.startsWith("/settings/role")) label = Locale.label("settings.roles.roles");
-    else if (path.startsWith("/settings/campuses")) label = Locale.label("settings.campuses.campuses");
-    else if (path.startsWith("/settings/custom-fields")) label = Locale.label("settings.customFields.customFields");
+    else if (path.startsWith("/settings/email-templates")) label = Locale.label("settings.emailTemplatesPage.title");
+    else if (path.startsWith("/settings/audit-log")) label = Locale.label("settings.manageChurch.auditLog");
+    else if (path.startsWith("/settings/batches")) label = Locale.label("settings.manageChurch.batches");
     else if (path.startsWith("/settings")) label = Locale.label("components.wrapper.set");
     else if (path.startsWith("/admin")) label = Locale.label("components.wrapper.servAdmin");
 

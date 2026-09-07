@@ -10,6 +10,7 @@ import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as Dat
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
 import { useSortableData } from "../hooks";
+import { useRequirePermission } from "../hooks";
 
 const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate || 0).getTime() - new Date(b.batchDate || 0).getTime() };
 
@@ -157,7 +158,8 @@ export const DonationBatchesPage = () => {
     });
   }, []);
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
+  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
+  if (denied) return denied;
 
   return (
     <>

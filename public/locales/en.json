@@ -368,6 +368,15 @@
       }
     },
     "custom": "Custom",
+    "days": {
+      "friday": "Friday",
+      "monday": "Monday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "thursday": "Thursday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday"
+    },
     "delete": "Delete",
     "done": "Done",
     "duplicate": "Duplicate",
@@ -459,7 +468,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Please contact your church administrator to request access.",
-      "defaultMessage": "You do not have the required permission(s) to access this feature:"
+      "defaultMessage": "You don't have permission to view this page.",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Search for person",
@@ -2515,6 +2525,8 @@
       "addScreen": "Add Screen",
       "device": "Device",
       "editDevice": "Edit Device",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet",
       "label": "Label",
       "lastActiveDate": "Last Active Date",
       "registrationDate": "Registration Date",
@@ -3517,6 +3529,7 @@
       "roleEdit": "Edit Role:"
     },
     "rolePermissions": {
+      "filter": "Filter permissions",
       "permEdit": "Edit Permissions"
     },
     "roles": {

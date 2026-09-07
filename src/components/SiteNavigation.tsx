@@ -10,7 +10,6 @@ import { TableList } from "../sermons/components/TableList";
 interface Props {
   links: LinkInterface[];
   refresh: () => void;
-  select: (link: LinkInterface) => void;
   handleDrop: (index: number, parentId: string, link: LinkInterface) => void;
   siteId?: string;
 }
