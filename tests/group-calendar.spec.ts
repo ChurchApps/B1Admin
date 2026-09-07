@@ -245,3 +245,96 @@ test.describe.serial("New Event modal — Recurring", () => {
     await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
   });
 });
+
+const EDIT_CALENDAR = "Zacchaeus Edit Event Test Calendar";
+const EDIT_EVENT_TITLE = "Zacchaeus Edit Event Test";
+const EDIT_EVENT_TITLE_UPDATED = "Zacchaeus Edit Event Test Updated";
+
+async function findEventBlock(page: Page, title: string) {
+  await page.locator(".rbc-calendar").waitFor({ state: "visible", timeout: 15000 });
+  const block = page.locator(".rbc-event").filter({ hasText: title }).first();
+  try {
+    await block.waitFor({ state: "visible", timeout: 5000 });
+  } catch {
+    await page.locator(".rbc-toolbar").getByRole("button", { name: "Next" }).click();
+    await block.waitFor({ state: "visible", timeout: 10000 });
+  }
+  return block;
+}
+
+test.describe.serial("Editing an existing calendar event", () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+
+    await openCalendarsPage(page);
+    const tlBtn = page.locator('[data-testid="add-calendar"]');
+    const emptyBtn = page.locator('[data-testid="empty-state-add-calendar"]');
+    if (await tlBtn.isVisible().catch(() => false)) await tlBtn.click(); else await emptyBtn.click();
+    await page.locator('[data-testid="calendar-name-input"] input').fill(EDIT_CALENDAR);
+    await page.locator('[data-testid="save-calendar-button"]').click();
+    const row = page.locator("table tbody tr").filter({ hasText: EDIT_CALENDAR }).first();
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.getByRole("link").first().click();
+    await page.waitForURL(/\/calendars\/[\w-]+/, { timeout: 10000 });
+
+    await page.locator('[data-testid="new-event-button"]').click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toBeVisible({ timeout: 10000 });
+    const groupSelect = page.locator('[data-testid="new-event-group-select"] [role="combobox"]');
+    await groupSelect.click();
+    await page.getByRole("option", { name: RECURRING_GROUP }).click();
+    await page.locator('[data-testid="new-event-title-input"] input').fill(EDIT_EVENT_TITLE);
+    const start = new Date();
+    start.setDate(start.getDate() + 14);
+    start.setHours(18, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(19, 0, 0, 0);
+    await page.locator('[data-testid="new-event-start-input"] input').fill(toInputValue(start));
+    await page.locator('[data-testid="new-event-end-input"] input').fill(toInputValue(end));
+    await page.locator('[data-testid="new-event-recurring-checkbox"]').click();
+    await expect(page.locator('[data-testid="recurrence-frequency-select"]')).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+  });
+
+  test.afterAll(async () => {
+    try {
+      await openCalendarsPage(page);
+      const row = page.locator("table tbody tr").filter({ hasText: EDIT_CALENDAR }).first();
+      await row.locator('[data-testid^="edit-calendar-"]').first().click();
+      await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
+      await page.locator('[data-testid="delete-calendar-button"]').click();
+      await confirmDelete(page);
+    } catch { /* ignore */ }
+    await page?.context().close();
+  });
+
+  test("Edit opens EventModal prefilled with the event's data", async () => {
+    const block = await findEventBlock(page, EDIT_EVENT_TITLE);
+    await block.click();
+    const editBtn = page.locator('[data-testid="calendar-event-edit-button"]');
+    await expect(editBtn).toBeVisible({ timeout: 10000 });
+    await editBtn.click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue(EDIT_EVENT_TITLE, { timeout: 10000 });
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
+    await page.locator('[data-testid="calendar-event-cancel-button"]').click();
+  });
+
+  test("warns that saving a recurring event updates the whole series, then persists the edit", async () => {
+    const block = await findEventBlock(page, EDIT_EVENT_TITLE);
+    await block.click();
+    await page.locator('[data-testid="calendar-event-edit-button"]').click();
+    const titleInput = page.locator('[data-testid="new-event-title-input"] input');
+    await expect(titleInput).toBeVisible({ timeout: 10000 });
+    await titleInput.fill(EDIT_EVENT_TITLE_UPDATED);
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    const confirmDialog = page.locator('div[role="dialog"]').last();
+    await expect(confirmDialog).toContainText("update the entire series", { timeout: 10000 });
+    await confirmDelete(page);
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+    await expect(page.locator(".rbc-event").filter({ hasText: EDIT_EVENT_TITLE_UPDATED }).first()).toBeVisible({ timeout: 15000 });
+  });
+});

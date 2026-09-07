@@ -3,8 +3,8 @@ import { FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Delete as DeleteIcon, Undo as UndoIcon, ContentCopy as CopyIcon } from "@mui/icons-material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card, Snackbar } from "@mui/material";
+import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Undo as UndoIcon, ContentCopy as CopyIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ import { useConfirmDelete } from "../hooks";
 export const FormsPage = () => {
   const [selectedFormId, setSelectedFormId] = React.useState("notset");
   const [selectedTab, setSelectedTab] = React.useState("forms");
+  const [showDuplicated, setShowDuplicated] = React.useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
 
@@ -49,14 +50,14 @@ export const FormsPage = () => {
           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setSelectedFormId(form.id || "")} data-testid={`edit-form-button-${form.id}`} />
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain || "") + "/forms/" + form.id;
-      const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
+      const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : <Typography variant="body2" color="text.secondary">{Locale.label("forms.formsPage.personProfileForm")}</Typography>;
       const duplicateLink =
         canEdit && !isArchived ? (
           <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`} />
         ) : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.archive")}</Button>
+          <Button size="small" variant="outlined" startIcon={<ArchiveIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.archive")}</Button>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (
@@ -80,8 +81,12 @@ export const FormsPage = () => {
     return result;
   };
 
-  const handleDuplicate = (formId: string) => {
-    ApiHelper.post("/forms/duplicate/" + formId, {}, "MembershipApi").then(() => { forms.refetch(); });
+  const handleDuplicate = async (formId: string) => {
+    if (!(await confirm(Locale.label("forms.formsPage.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("forms.formsPage.duplicate") }))) return;
+    ApiHelper.post("/forms/duplicate/" + formId, {}, "MembershipApi").then(() => {
+      forms.refetch();
+      setShowDuplicated(true);
+    });
   };
 
   const handleArchiveChange = async (form: FormInterface, archive: boolean) => {
@@ -196,6 +201,13 @@ export const FormsPage = () => {
           </>
         )}
       </Box>
+      <Snackbar
+        open={showDuplicated}
+        onClose={() => setShowDuplicated(false)}
+        autoHideDuration={3000}
+        message={Locale.label("forms.formsPage.duplicated")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      />
     </>
   );
 };

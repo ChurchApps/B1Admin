@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Box, Typography, Stack, TextField, FormControlLabel, Switch, Button, Grid, MenuItem, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Card, Box, Typography, Stack, TextField, FormControlLabel, Switch, Button, Grid, MenuItem, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
 import { Settings as SettingsIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -20,8 +20,20 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [saving, setSaving] = useState(false);
   const [forms, setForms] = useState<FormInterface[]>([]);
+  const [typesDirty, setTypesDirty] = useState(false);
+  const [selectionsDirty, setSelectionsDirty] = useState(false);
+  const [couponsDirty, setCouponsDirty] = useState(false);
 
-  const { register, handleSubmit, reset, control } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
+  const { register, handleSubmit, reset, control, formState: { isDirty } } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
+
+  const anyDirty = isDirty || typesDirty || selectionsDirty || couponsDirty;
+
+  useEffect(() => {
+    if (!anyDirty) return;
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [anyDirty]);
 
   useEffect(() => {
     // GET /forms treats a contentType param as "exclude standalone forms" — filter client-side instead.
@@ -54,6 +66,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
     };
     await ApiHelper.post("/events", [updated], "ContentApi");
     setSaving(false);
+    reset(values);
     onUpdate();
   };
 
@@ -68,6 +81,11 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
         </Stack>
       </Box>
       <Box sx={{ p: 2 }}>
+        {anyDirty && (
+          <Alert severity="warning" sx={{ mb: 2 }} data-testid="registration-unsaved-changes-alert">
+            {Locale.label("registrations.registrationSettingsEdit.unsavedChanges")}
+          </Alert>
+        )}
         <Stack spacing={2}>
           <Controller
             control={control}
@@ -108,7 +126,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
               <Typography sx={{ fontWeight: 600 }}>{Locale.label("registrations.commerce.attendeeTypes")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <RegistrationTypesEdit event={event} />
+              <RegistrationTypesEdit event={event} onDirtyChange={setTypesDirty} />
             </AccordionDetails>
           </Accordion>
           <Accordion disableGutters data-testid="selections-accordion">
@@ -116,7 +134,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
               <Typography sx={{ fontWeight: 600 }}>{Locale.label("registrations.commerce.selections")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <RegistrationSelectionsEdit event={event} />
+              <RegistrationSelectionsEdit event={event} onDirtyChange={setSelectionsDirty} />
             </AccordionDetails>
           </Accordion>
           <Accordion disableGutters data-testid="coupons-accordion">
@@ -124,7 +142,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
               <Typography sx={{ fontWeight: 600 }}>{Locale.label("registrations.commerce.discountCodes")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <RegistrationCouponsEdit event={event} />
+              <RegistrationCouponsEdit event={event} onDirtyChange={setCouponsDirty} />
             </AccordionDetails>
           </Accordion>
         </Box>

@@ -1,20 +1,24 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogActions, Typography, Box, Button } from "@mui/material";
-import { HowToReg as RegIcon } from "@mui/icons-material";
+import { HowToReg as RegIcon, Edit as EditIcon } from "@mui/icons-material";
 import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
 import { EventReminderEdit } from "./EventReminderEdit";
+import { EventModal } from "./EventModal";
 
 interface Props {
   event: CuratedEventWithEventInterface;
   mode: "view" | "edit";
   curatedCalendarId?: string;
+  churchId?: string;
   onDone?: () => void;
 }
 
 export function DisplayCalendarEventModal(props: Props) {
   const navigate = useNavigate();
+  const [editing, setEditing] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const realEventId = (props.event as CuratedEventWithEventInterface & { realEventId?: string }).realEventId || props.event.eventId;
 
@@ -62,6 +66,20 @@ export function DisplayCalendarEventModal(props: Props) {
     );
   };
 
+  if (editing && realEventId) {
+    return (
+      <EventModal
+        churchId={props.churchId || ""}
+        eventId={realEventId}
+        curatedCalendarId={props.curatedCalendarId}
+        onDone={(saved) => {
+          setEditing(false);
+          if (saved && props.onDone) props.onDone();
+        }}
+      />
+    );
+  }
+
   return (
     <>
       {ConfirmDialogElement}
@@ -84,6 +102,11 @@ export function DisplayCalendarEventModal(props: Props) {
           <Button variant="text" onClick={props.onDone} data-testid="calendar-event-cancel-button">
             {Locale.label("calendars.calendarEvent.cancel")}
           </Button>
+          {realEventId && props.mode === "edit" && (
+            <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setEditing(true)} data-testid="calendar-event-edit-button">
+              {Locale.label("calendars.calendarEvent.edit")}
+            </Button>
+          )}
           {realEventId && props.mode === "edit" && (
             <Button variant="outlined" startIcon={<RegIcon />} onClick={() => navigate("/registrations/" + realEventId)} data-testid="calendar-event-registrations-button">
               {Locale.label("calendars.calendarEvent.manageRegistrations")}

@@ -168,7 +168,7 @@ export function CuratedEventCalendar(props: Props) {
         <EditCalendarEventModal onDone={handleDone} churchId={props.churchId || ""} curatedCalendarId={props.curatedCalendarId || ""} firstDayOfWeek={firstDayOfWeek} />
       )}
       {displayCalendarEvent && (
-        <DisplayCalendarEventModal event={displayCalendarEvent} curatedCalendarId={props.curatedCalendarId} mode={props.mode} onDone={handleDone} />
+        <DisplayCalendarEventModal event={displayCalendarEvent} curatedCalendarId={props.curatedCalendarId} churchId={props.churchId} mode={props.mode} onDone={handleDone} />
       )}
       <Snackbar
         open={showCopy}
