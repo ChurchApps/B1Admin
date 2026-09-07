@@ -38,13 +38,12 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
 
   const getVisibilityLabel = (visibility: string) => {
     switch (visibility) {
-      case "everyone": return "everyone";
-      case "visitors": return "logged-in";
-      case "members": return "members";
-      case "staff": return "staff";
-      case "team": return "team";
-      case "groups": return "groups";
-      default: return "everyone";
+      case "visitors": return Locale.label("settings.appEdit.loggedInUsers");
+      case "members": return Locale.label("settings.appEdit.membersStaff");
+      case "staff": return Locale.label("settings.appEdit.staffOnly");
+      case "team": return Locale.label("settings.appEdit.team");
+      case "groups": return Locale.label("settings.appEdit.groups");
+      default: return Locale.label("settings.appEdit.everyone");
     }
   };
 

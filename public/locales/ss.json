@@ -1349,7 +1349,7 @@
         "changeImage": "Shintja Sitfombe",
         "duration": "Sikhatsi (s)",
         "enableIdleScreen": "Vumela sikrini lesingasebenti",
-        "headerSubtitle": "Imibala yekhiyosk iphatfwa ku-Tilungiselelo > Sitayela Se-App. Hlela titfombe tangemuva kanye nekutiphatsa kwesikrini lesingasebenti ngentasi.",
+        "headerSubtitle": "Imibala yekhiyosk iphatfwa ku-Umakhalekhukhwini > Sitayela Se-App. Hlela titfombe tangemuva kanye nekutiphatsa kwesikrini lesingasebenti ngentasi.",
         "idleScreen": "Sikrini Lesingasebenti / Screensaver",
         "sectionTitle": "Sitayela Sekhiyosk",
         "slides": "Tilayidi",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Litfunti lelimnyama kunato tonkhe — umbhalo wemtimba",
       "error": "Liphutsa",
       "errorDesc": "Emaphutsa netento letibhubhisako",
-      "headerSubtitle": "Yentela luhlobo lwemibala yewebhu sayithi yakho. Kwelucingo, kumbe umculo welilunga, nemibala ye-kiosk, hamba ku-Emasethingi > Sitayela Se-App.",
+      "headerSubtitle": "Yentela luhlobo lwemibala yewebhu sayithi yakho. Kwelucingo, kumbe umculo welilunga, nemibala ye-kiosk, hamba ku-Umakhalekhukhwini > Sitayela Se-App.",
       "headerTitle": "I-Palette Yemibala",
       "light": "Lokukhanyako",
       "lightAccent": "Sicwayiso Lesikhanyako",
@@ -4545,6 +4545,7 @@
       "name": "Ligama Lelihlelo",
       "title": "Lihlelo"
     },
+    "arrangements": "Emahlelo",
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
       "upload": "Upload Audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Sikhiya"
     },
-    "oldArrangements": {
-      "arrangements": "Emahlelo",
-      "editArrangementAria": "hlela lihlelo",
-      "noArrangements": "Awekho emahlelo latfoliwe."
-    },
     "praiseChartsProducts": {
       "close": "Vala",
       "download": "Dawunlodwa",
@@ -4677,17 +4673,6 @@
     "providedBy": "Kunikeziwe Ngu"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Nome ngukuphi",
-      "campus": "Ikhempasi",
-      "eventType": "Luhlobo Lomcimbi",
-      "group": "Licembu",
-      "hasAtt": "ubekhona",
-      "hasNoAtt": "abekho",
-      "op": "Umenti",
-      "serv": "Inkhonzo",
-      "servTime": "Sikhatsi Senkhonzo"
-    },
     "conditionDate": {
       "absolute": "Lokucinile",
       "curMonth": "Inyanga Yamanje",

@@ -1349,7 +1349,7 @@
         "changeImage": "Skift billede",
         "duration": "Varighed (s)",
         "enableIdleScreen": "Aktivér tomgangsskærm",
-        "headerSubtitle": "Kiosk-farver administreres i Indstillinger > App-tema. Konfigurer baggrundsbilleder og tomgangsskærmens adfærd nedenfor.",
+        "headerSubtitle": "Kiosk-farver administreres i Mobil > App-tema. Konfigurer baggrundsbilleder og tomgangsskærmens adfærd nedenfor.",
         "idleScreen": "Tomgangsskærm / pauseskærm",
         "sectionTitle": "Kiosk-tema",
         "slides": "Slides",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Mørkeste nuance — brødtekst",
       "error": "Fejl",
       "errorDesc": "Fejl og destruktive handlinger",
-      "headerSubtitle": "Tilpas dit websteds farveskema. For farver til mobilappen, medlemsportalen og kiosk, gå til Indstillinger > App-tema.",
+      "headerSubtitle": "Tilpas dit websteds farveskema. For farver til mobilappen, medlemsportalen og kiosk, gå til Mobil > App-tema.",
       "headerTitle": "Farvepalette",
       "light": "Lys",
       "lightAccent": "Lys accent",
@@ -4545,6 +4545,7 @@
       "name": "Arrangementsnavn",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangementer",
     "audio": {
       "deleteConfirm": "Er du sikker på, at du vil slette denne lydfil?",
       "upload": "Upload lyd"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Toneart"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangementer",
-      "editArrangementAria": "Rediger arrangement",
-      "noArrangements": "Ingen arrangementer fundet."
-    },
     "praiseChartsProducts": {
       "close": "Luk",
       "download": "Download",
@@ -4677,17 +4673,6 @@
     "providedBy": "Leveret af"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Hvor som helst",
-      "campus": "Lokation",
-      "eventType": "Begivenhedstype",
-      "group": "Gruppe",
-      "hasAtt": "har deltaget",
-      "hasNoAtt": "har ikke deltaget",
-      "op": "Operator",
-      "serv": "Gudstjeneste",
-      "servTime": "Gudstjenestetid"
-    },
     "conditionDate": {
       "absolute": "Absolut",
       "curMonth": "Nuværende måned",

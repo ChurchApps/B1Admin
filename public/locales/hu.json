@@ -1349,7 +1349,7 @@
         "changeImage": "Kép módosítása",
         "duration": "Időtartam (mp)",
         "enableIdleScreen": "Tétlenségi képernyő engedélyezése",
-        "headerSubtitle": "A kioszkszínek a Beállítások > Alkalmazás téma menüben kezelhetők. Az alábbiakban konfiguráld a háttérképeket és a tétlenségi képernyő viselkedését.",
+        "headerSubtitle": "A kioszkszínek a Mobile > Alkalmazás téma menüben kezelhetők. Az alábbiakban konfiguráld a háttérképeket és a tétlenségi képernyő viselkedését.",
         "idleScreen": "Tétlenségi képernyő / Képernyővédő",
         "sectionTitle": "Kioszkos téma",
         "slides": "Diák",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Legsötétebb árnyalat — törzsszöveg",
       "error": "Hiba",
       "errorDesc": "Hibák és visszavonhatatlan műveletek",
-      "headerSubtitle": "Szabhatja testre weboldal színsémáját. A mobilalkalmazás, tagi portál és kioszk színeihez menjen a Beállítások > Alkalmazás téma menüpontba.",
+      "headerSubtitle": "Szabhatja testre weboldal színsémáját. A mobilalkalmazás, tagi portál és kioszk színeihez menjen a Mobile > Alkalmazás téma menüpontba.",
       "headerTitle": "Színpaletta",
       "light": "Világos",
       "lightAccent": "Világos kiemelő",
@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Feldolgozások",
     "audio": {
       "deleteConfirm": "Biztosan törli ezt a hangfájlt?",
       "upload": "Hang feltöltése"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Hangnem"
     },
-    "oldArrangements": {
-      "arrangements": "Feldolgozások",
-      "editArrangementAria": "Feldolgozás szerkesztése",
-      "noArrangements": "Nem találhatók feldolgozások."
-    },
     "praiseChartsProducts": {
       "close": "Bezárás",
       "download": "Letöltés",
@@ -4677,17 +4673,6 @@
     "providedBy": "Biztosítja:"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Campus",
-      "eventType": "Event Type",
-      "group": "Group",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Service",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

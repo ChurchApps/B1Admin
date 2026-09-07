@@ -184,6 +184,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   return (
     <>
       {errors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{errors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <Typography variant="subtitle1" fontWeight="bold">{Locale.label("settings.givingSettingsEdit.paymentGatewaySection")}</Typography>
       <Grid container spacing={3} marginBottom={2}>
         <Grid size={{ xs: 12, md: 4 }}>
           <Controller
@@ -227,6 +228,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         {getKeys()}
         {getCurrency()}
       </Grid>
+      <Typography variant="subtitle1" fontWeight="bold" sx={{ mt: 2 }}>{Locale.label("settings.givingSettingsEdit.feesAndStatementsSection")}</Typography>
       <FeeOptionsSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} provider={provider} currency={currency} />
       <StatementFormatSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} />
       <Snackbar open={copySnackbar} autoHideDuration={2500} onClose={() => setCopySnackbar(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>

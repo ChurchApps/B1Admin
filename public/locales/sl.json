@@ -1349,7 +1349,7 @@
         "changeImage": "Spremeni sliko",
         "duration": "Trajanje (s)",
         "enableIdleScreen": "Omogoči zaslon mirovanja",
-        "headerSubtitle": "Barve kioska se upravljajo v Nastavitve > Tema aplikacije. Spodaj konfigurirajte slike ozadja in vedenje zaslona mirovanja.",
+        "headerSubtitle": "Barve kioska se upravljajo v Mobilni > Tema aplikacije. Spodaj konfigurirajte slike ozadja in vedenje zaslona mirovanja.",
         "idleScreen": "Zaslon mirovanja / ohranjevalnik zaslona",
         "sectionTitle": "Tema kioska",
         "slides": "Prosojnice",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Najtemnejši odtenek — besedilo",
       "error": "Napaka",
       "errorDesc": "Napake in uničujoča dejanja",
-      "headerSubtitle": "Prilagodi barvno shemo svoje spletne strani. Za barve mobilne aplikacije, portala članov in kioska pojdite v Nastavitve > Tema aplikacije.",
+      "headerSubtitle": "Prilagodi barvno shemo svoje spletne strani. Za barve mobilne aplikacije, portala članov in kioska pojdite v Mobilni > Tema aplikacije.",
       "headerTitle": "Barvna paleta",
       "light": "Svetlo",
       "lightAccent": "Svetli poudarek",
@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Priredbe",
     "audio": {
       "deleteConfirm": "Ali res želite izbrisati to zvočno datoteko?",
       "upload": "Naloži zvok"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonaliteta"
     },
-    "oldArrangements": {
-      "arrangements": "Priredbe",
-      "editArrangementAria": "Uredi priredbo",
-      "noArrangements": "Ni najdenih priredb."
-    },
     "praiseChartsProducts": {
       "close": "Zapri",
       "download": "Prenesi",
@@ -4677,17 +4673,6 @@
     "providedBy": "Zagotavlja"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampus",
-      "eventType": "Event Type",
-      "group": "Skupina",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Bogoslužje",
-      "servTime": "Čas bogoslužja"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

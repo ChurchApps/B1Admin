@@ -1349,7 +1349,7 @@
         "changeImage": "Endre bilde",
         "duration": "Varighet (s)",
         "enableIdleScreen": "Aktiver hvileskjerm",
-        "headerSubtitle": "Kioskfarger administreres i Innstillinger > Apptema. Konfigurer bakgrunnsbilder og hvileskjermsoppførsel nedenfor.",
+        "headerSubtitle": "Kioskfarger administreres i Mobil > Apptema. Konfigurer bakgrunnsbilder og hvileskjermsoppførsel nedenfor.",
         "idleScreen": "Hvileskjerm / Skjermsparer",
         "sectionTitle": "Kiosktema",
         "slides": "Lysbilder",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Mørkeste nyanse – brødtekst",
       "error": "Feil",
       "errorDesc": "Feil og destruktive handlinger",
-      "headerSubtitle": "Tilpass nettstedets fargeskjema. For mobilapp, medlemsportal og kioskfarger, gå til Innstillinger > Apptema.",
+      "headerSubtitle": "Tilpass nettstedets fargeskjema. For mobilapp, medlemsportal og kioskfarger, gå til Mobil > Apptema.",
       "headerTitle": "Fargepalett",
       "light": "Lys",
       "lightAccent": "Lys aksent",
@@ -4545,6 +4545,7 @@
       "name": "Arrangementnavn",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangementer",
     "audio": {
       "deleteConfirm": "Er du sikker på at du vil slette denne lydfilen?",
       "upload": "Last opp lyd"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Toneart"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangementer",
-      "editArrangementAria": "Rediger arrangement",
-      "noArrangements": "Ingen arrangementer funnet."
-    },
     "praiseChartsProducts": {
       "close": "Lukk",
       "download": "Last ned",
@@ -4677,17 +4673,6 @@
     "providedBy": "Levert av"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Hvor som helst",
-      "campus": "Campus",
-      "eventType": "Hendelsestype",
-      "group": "Gruppe",
-      "hasAtt": "har deltatt",
-      "hasNoAtt": "har ikke deltatt",
-      "op": "Operator",
-      "serv": "Tjeneste",
-      "servTime": "Tjenestetid"
-    },
     "conditionDate": {
       "absolute": "Absolutte verdier",
       "curMonth": "Denne måneden",

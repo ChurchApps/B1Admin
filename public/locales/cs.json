@@ -1349,7 +1349,7 @@
         "changeImage": "Změnit obrázek",
         "duration": "Délka (s)",
         "enableIdleScreen": "Aktivovat obrazovku nečinnosti",
-        "headerSubtitle": "Barvy kiosku se spravují v Nastavení > Motiv aplikace. Níže nastavte obrázky pozadí a chování obrazovky nečinnosti.",
+        "headerSubtitle": "Barvy kiosku se spravují v Mobilní > Motiv aplikace. Níže nastavte obrázky pozadí a chování obrazovky nečinnosti.",
         "idleScreen": "Obrazovka nečinnosti / spořič obrazovky",
         "sectionTitle": "Motiv kiosku",
         "slides": "Snímky",
@@ -4156,7 +4156,7 @@
       "darkDesc": "Nejtmavší odstín — text obsahu",
       "error": "Chyba",
       "errorDesc": "Chyby a destruktivní akce",
-      "headerSubtitle": "Přizpůsobte barevné schéma vašeho webu. Pro mobilní aplikaci, členský portál a barvy kiosku přejděte do Nastavení > Motiv aplikace.",
+      "headerSubtitle": "Přizpůsobte barevné schéma vašeho webu. Pro mobilní aplikaci, členský portál a barvy kiosku přejděte do Mobilní > Motiv aplikace.",
       "headerTitle": "Paleta barev",
       "light": "Světlá",
       "lightAccent": "Světlý akcent",
@@ -4545,6 +4545,7 @@
       "name": "Název aranžmánu",
       "title": "Aranžmán"
     },
+    "arrangements": "Aranžmá",
     "audio": {
       "deleteConfirm": "Opravdu chcete smazat tento zvukový soubor?",
       "upload": "Nahrát audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tónina"
     },
-    "oldArrangements": {
-      "arrangements": "Aranžmá",
-      "editArrangementAria": "Upravit aranžmá",
-      "noArrangements": "Nenalezena žádná aranžmá."
-    },
     "praiseChartsProducts": {
       "close": "Zavřít",
       "download": "Stáhnout",
@@ -4677,17 +4673,6 @@
     "providedBy": "Poskytl:"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Kdekoli",
-      "campus": "Kampus",
-      "eventType": "Typ události",
-      "group": "Skupina",
-      "hasAtt": "navštívil",
-      "hasNoAtt": "nenavštívil",
-      "op": "Operátor",
-      "serv": "Bohoslužba",
-      "servTime": "Čas bohoslužby"
-    },
     "conditionDate": {
       "absolute": "Absolutní",
       "curMonth": "Aktuální měsíc",

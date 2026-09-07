@@ -1349,7 +1349,7 @@
         "changeImage": "更换图片",
         "duration": "时长（秒）",
         "enableIdleScreen": "启用待机屏幕",
-        "headerSubtitle": "自助终端颜色在设置 > 应用主题中管理。在下方配置背景图片和待机屏幕行为。",
+        "headerSubtitle": "自助终端颜色在移动端 > 应用主题中管理。在下方配置背景图片和待机屏幕行为。",
         "idleScreen": "待机屏幕 / 屏保",
         "sectionTitle": "自助终端主题",
         "slides": "幻灯片",
@@ -4156,7 +4156,7 @@
       "darkDesc": "最深色调 — 正文文字",
       "error": "错误",
       "errorDesc": "错误与破坏性操作",
-      "headerSubtitle": "自定义您网站的配色方案。对于移动应用、成员门户和自助终端的颜色，请前往“设置 > 应用主题”。",
+      "headerSubtitle": "自定义您网站的配色方案。对于移动应用、成员门户和自助终端的颜色，请前往“移动端 > 应用主题”。",
       "headerTitle": "调色板",
       "light": "浅色",
       "lightAccent": "浅色强调",
@@ -4545,6 +4545,7 @@
       "name": "编曲名称",
       "title": "编曲"
     },
+    "arrangements": "编排",
     "audio": {
       "deleteConfirm": "确定要删除此音频文件吗？",
       "upload": "上传音频"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "调"
     },
-    "oldArrangements": {
-      "arrangements": "编排",
-      "editArrangementAria": "编辑编排",
-      "noArrangements": "未找到编排。"
-    },
     "praiseChartsProducts": {
       "close": "关闭",
       "download": "下载",
@@ -4677,17 +4673,6 @@
     "providedBy": "提供方："
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "任何地方",
-      "campus": "校园",
-      "eventType": "事件类型",
-      "group": "团体",
-      "hasAtt": "已参加",
-      "hasNoAtt": "未参加",
-      "op": "运算符",
-      "serv": "服务",
-      "servTime": "服务时间"
-    },
     "conditionDate": {
       "absolute": "绝对",
       "curMonth": "当月",
