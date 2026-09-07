@@ -137,8 +137,9 @@ export const TaskList = memo((props: Props) => {
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
                 <CalendarIcon sx={{ fontSize: 16, color: "text.secondary" }} />
                 <Typography variant="caption" color="text.secondary">
-                  #{task.taskNumber} {Locale.label("tasks.taskPage.opened")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")}{" "}
-                  {Locale.label("tasks.taskPage.by")} {task.createdByLabel}
+                  #{task.taskNumber} {Locale.label("tasks.taskPage.opened")}{" "}
+                  {task.dateCreated ? `${DateHelper.getDisplayDuration(new Date(task.dateCreated))} ${Locale.label("tasks.taskPage.ago")}` : ""}
+                  {task.createdByLabel ? ` ${Locale.label("tasks.taskPage.by")} ${task.createdByLabel}` : ` ${Locale.label("tasks.taskPage.by")} ${task.associatedWithLabel}`}
                 </Typography>
               </Stack>
             </Box>

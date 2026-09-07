@@ -100,7 +100,7 @@ export const TaskPage = () => {
         <PageHeader
           icon={<ChecklistIcon />}
           title={`#${task.data.taskNumber} - ${task.data?.title}`}
-          subtitle={`${Locale.label("tasks.taskPage.created")} ${DateHelper.getDisplayDuration(DateHelper.toDate(task.data?.dateCreated))} ${Locale.label("tasks.taskPage.ago")} ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel} • ${Locale.label("tasks.taskPage.associated")}: ${task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
+          subtitle={`${Locale.label("tasks.taskPage.created")} ${task.data?.dateCreated ? `${DateHelper.getDisplayDuration(new Date(task.data.dateCreated))} ${Locale.label("tasks.taskPage.ago")}` : ""}${task.data?.createdByLabel ? ` ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel}` : ""} • ${Locale.label("tasks.taskPage.associated")}: ${task.data?.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data?.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
           <Stack direction="row" spacing={1}>
             <Button
               variant={task.data.status === "Open" ? "contained" : "outlined"}

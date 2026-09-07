@@ -203,7 +203,7 @@ export const GroupJoinRequestTask: React.FC<Props> = ({ task }) => {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                   <CalendarIcon sx={{ color: "text.secondary", fontSize: 20 }} />
                   <Typography variant="body2" color="text.secondary">
-                    {Locale.label("tasks.groupJoinRequest.requestedDate") || "Requested"}: {DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")} ({new Date(task.dateCreated).toLocaleString()})
+                    {Locale.label("tasks.groupJoinRequest.requestedDate") || "Requested"}: {DateHelper.getDisplayDuration(new Date(task.dateCreated))} {Locale.label("tasks.taskPage.ago")} ({new Date(task.dateCreated).toLocaleString()})
                   </Typography>
                 </Box>
               )}
