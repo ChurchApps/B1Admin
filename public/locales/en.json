@@ -1573,6 +1573,13 @@
       "total": "Total",
       "unassigned": "Unassigned"
     },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
+    },
     "editCondition": {
       "act": "Activity",
       "anniMonth": "Anniversary Month",

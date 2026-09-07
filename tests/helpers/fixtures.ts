@@ -6,6 +6,7 @@ import { navigateToPeople, navigateToGroups } from "./navigation";
 // these over "first row" lookups, which are order-dependent.
 export const SEED_PEOPLE = {
   DONALD: "Donald Clark",
+  DONALD_EMAIL: "donald.clark@email.com",
   CAROL: "Carol Clark",
   DOROTHY: "Dorothy Jackson",
   JENNIFER: "Jennifer Williams",
