@@ -248,7 +248,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
                   minRows={2}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder={"Don't miss it! {{eventTitle}} starts soon"}
+                  placeholder={Locale.label("calendars.eventReminders.messagePlaceholder")}
                   helperText={Locale.label("calendars.eventReminders.messageHint")}
                   size="small"
                   data-testid="reminder-message-input"
@@ -261,11 +261,11 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
                   <Stack direction="row">
                     <FormControlLabel
                       control={<Checkbox checked={channels.includes("push")} onChange={() => toggleChannel("push")} size="small" data-testid="reminder-channel-push" />}
-                      label="Push"
+                      label={Locale.label("calendars.eventReminders.push")}
                     />
                     <FormControlLabel
                       control={<Checkbox checked={channels.includes("email")} onChange={() => toggleChannel("email")} size="small" data-testid="reminder-channel-email" />}
-                      label="Email"
+                      label={Locale.label("calendars.eventReminders.email")}
                     />
                   </Stack>
                 </Box>

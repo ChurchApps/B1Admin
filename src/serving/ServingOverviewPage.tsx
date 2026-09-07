@@ -5,6 +5,7 @@ import { Alert, Box, Button, Card, Dialog, DialogContent, DialogTitle, FormContr
 import { Close as CloseIcon, Clear as ClearIcon, Email as EmailIcon, PublishedWithChanges as AutoScheduleIcon, Assignment as AssignmentIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
 import { hasPlansEditAccess } from "../helpers";
+import { useConfirmDelete } from "../hooks";
 import { AssignmentEdit } from "./components/AssignmentEdit";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -84,6 +85,7 @@ export const ServingOverviewPage = () => {
   const [gapsOnly, setGapsOnly] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
   const [snack, setSnack] = React.useState("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const planType = useQuery<{ id: string; name: string }>({
     queryKey: [`/planTypes/${planTypeId}`, "DoingApi"],
@@ -189,12 +191,17 @@ export const ServingOverviewPage = () => {
   const editingRow = editingKey ? rows.find(r => r.position === editingKey.rowKey) : null;
   const editingCell = editingRow && editingKey ? editingRow.cells[editingKey.date] : null;
 
-  const removeAssignment = (assignmentId: string | null) => {
+  const removeAssignment = async (assignmentId: string | null, personName: string) => {
     if (!assignmentId) return;
-    ApiHelper.delete("/assignments/" + assignmentId, "DoingApi").then(() => overviewData.refetch());
+    const ok = await confirm(Locale.label("plans.servingOverviewPage.removeConfirm").replace("{name}", personName), { confirmLabel: Locale.label("plans.servingOverviewPage.remove") });
+    if (!ok) return;
+    await ApiHelper.delete("/assignments/" + assignmentId, "DoingApi");
+    overviewData.refetch();
   };
 
   const handleAutoSchedule = async () => {
+    const ok = await confirm(Locale.label("plans.servingOverviewPage.autoScheduleConfirm"), { destructive: false, confirmLabel: Locale.label("plans.servingOverviewPage.autoSchedule") });
+    if (!ok) return;
     setBusy(true);
     try {
       const planSlots = new Map<string, CellSlot[]>();
@@ -233,6 +240,8 @@ export const ServingOverviewPage = () => {
   };
 
   const handleEmailAll = async () => {
+    const ok = await confirm(Locale.label("plans.servingOverviewPage.emailAllConfirm"), { destructive: false, confirmLabel: Locale.label("plans.servingOverviewPage.emailAll") });
+    if (!ok) return;
     setBusy(true);
     try {
       const res = await ApiHelper.post("/plans/notifyRange", { startDate, endDate, ministryId, planTypeId }, "DoingApi");
@@ -252,8 +261,8 @@ export const ServingOverviewPage = () => {
         {/* Filters */}
         <Card sx={{ mb: 3, p: 2 }}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center" useFlexGap flexWrap="wrap">
-            <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")}  value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")}  value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+            <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+            <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
             <FormControl size="small" sx={{ minWidth: 160 }}>
               <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
               <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">
@@ -344,7 +353,7 @@ export const ServingOverviewPage = () => {
                 <Stack key={a.assignmentId} direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
                   <span>{getDisplayName(a.personId)}</span>
                   <Tooltip title={Locale.label("plans.servingOverviewPage.remove")}>
-                    <IconButton size="small" onClick={() => removeAssignment(a.assignmentId)} data-testid={"matrix-remove-" + a.personId}><ClearIcon fontSize="small" /></IconButton>
+                    <IconButton size="small" onClick={() => removeAssignment(a.assignmentId, getDisplayName(a.personId))} data-testid={"matrix-remove-" + a.personId}><ClearIcon fontSize="small" /></IconButton>
                   </Tooltip>
                 </Stack>
               ))}
@@ -363,6 +372,7 @@ export const ServingOverviewPage = () => {
       <Snackbar open={!!snack} autoHideDuration={4000} onClose={() => setSnack("")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert onClose={() => setSnack("")} severity="info" variant="filled" sx={{ width: "100%" }}>{snack}</Alert>
       </Snackbar>
+      {ConfirmDialogElement}
     </>
   );
 };

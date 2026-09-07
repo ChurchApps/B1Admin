@@ -1349,7 +1349,7 @@
         "changeImage": "Ganti Gambar",
         "duration": "Durasi (d)",
         "enableIdleScreen": "Aktifkan layar idle",
-        "headerSubtitle": "Warna kiosk dikelola di Pengaturan > Tema Aplikasi. Konfigurasikan gambar latar belakang dan perilaku layar idle di bawah.",
+        "headerSubtitle": "Warna kiosk dikelola di Seluler > Tema Aplikasi. Konfigurasikan gambar latar belakang dan perilaku layar idle di bawah.",
         "idleScreen": "Layar Idle / Screensaver",
         "sectionTitle": "Tema Kiosk",
         "slides": "Slide",
@@ -4153,7 +4153,7 @@
       "darkDesc": "Corak paling gelap — teks isi",
       "error": "Kesalahan",
       "errorDesc": "Kesalahan dan aksi destruktif",
-      "headerSubtitle": "Sesuaikan skema warna situs web Anda. Untuk warna aplikasi mobile, portal anggota, dan kios, buka Pengaturan > Tema Aplikasi.",
+      "headerSubtitle": "Sesuaikan skema warna situs web Anda. Untuk warna aplikasi mobile, portal anggota, dan kios, buka Seluler > Tema Aplikasi.",
       "headerTitle": "Palet Warna",
       "light": "Terang",
       "lightAccent": "Aksen Terang",
@@ -4542,6 +4542,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aransemen",
     "audio": {
       "deleteConfirm": "Yakin ingin menghapus file audio ini?",
       "upload": "Unggah audio"
@@ -4608,11 +4609,6 @@
     "oldArrangement": {
       "key": "Nada"
     },
-    "oldArrangements": {
-      "arrangements": "Aransemen",
-      "editArrangementAria": "Edit aransemen",
-      "noArrangements": "Tidak ada aransemen ditemukan."
-    },
     "praiseChartsProducts": {
       "close": "Tutup",
       "download": "Unduh",
@@ -4674,17 +4670,6 @@
     "providedBy": "Disediakan Oleh"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampus",
-      "eventType": "Event Type",
-      "group": "Grup",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Layanan",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

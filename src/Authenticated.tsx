@@ -5,6 +5,7 @@ import { NotificationService, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
+import { hasPlansEditAccess } from "./helpers";
 
 const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) => ({ default: module.PeoplePage })));
 const PersonPage = React.lazy(() => import("./people/PersonPage").then((module) => ({ default: module.PersonPage })));
@@ -142,7 +143,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/serving/planTypes/:id" element={<PlanTypePage />} />
           <Route path="/serving/plans/:id" element={<PlanPage />} />
           <Route path="/serving/plans" element={<ServingPage />} />
-          <Route path="/serving" element={<Navigate to="/serving/tasks" replace />} />
+          <Route path="/serving" element={<Navigate to={hasPlansEditAccess() ? "/serving/plans" : "/serving/tasks"} replace />} />
           <Route path="/serving/songs" element={<SongsPage />} />
           <Route path="/serving/songs/:id" element={<SongPage />} />
           <Route path="/sermons/times" element={<LiveStreamTimesPage />} />

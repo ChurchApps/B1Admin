@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
 import { useSortableData } from "../hooks";
+import { useRequirePermission } from "../hooks";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
@@ -151,7 +152,8 @@ export const FundsPage = () => {
     }
   };
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
+  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
+  if (denied) return denied;
 
   return (
     <>

@@ -135,4 +135,9 @@ test.describe("Secondary Navigation", () => {
     await navigateTo(page, "liveStreamTimes");
     await expect(page).toHaveURL(/\/sermons\/times/);
   });
+
+  test("opens Labels via Mobile", async ({ page }) => {
+    await navigateTo(page, "labels");
+    await expect(page).toHaveURL(/\/mobile\/checkin\/labels/);
+  });
 });

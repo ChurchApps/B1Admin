@@ -2,10 +2,10 @@ import React from "react";
 import { Tabs, FormNavigation, FormEdit } from "./components";
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, Loading, PageHeader } from "@churchapps/apphelper";
-import { useParams, useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { Box, Button } from "@mui/material";
 import { Description as DescriptionIcon, Edit as EditIcon } from "@mui/icons-material";
-import { HeaderPrimaryButton } from "../components/ui";
+import { HeaderPrimaryButton, EmptyState } from "../components/ui";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -66,7 +66,19 @@ export const FormPage = () => {
 
   if (form.isLoading) return <Loading />;
 
-  return form.data?.id ? (
+  if (!form.data?.id) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <EmptyState
+          icon={<DescriptionIcon />}
+          title={Locale.label("forms.formPage.notFound")}
+          action={<Button variant="contained" component={Link} to="/forms">{Locale.label("forms.formPage.backToForms")}</Button>}
+        />
+      </Box>
+    );
+  }
+
+  return (
     <>
       <PageHeader
         title={form.data.name || ""}
@@ -94,7 +106,5 @@ export const FormPage = () => {
         )}
       </Box>
     </>
-  ) : (
-    <></>
   );
 };

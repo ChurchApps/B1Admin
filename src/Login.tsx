@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import { type UserInterface, type LoginUserChurchInterface } from "@churchapps/helpers";
 import UserContext from "./UserContext";
 import { LoginPage } from "@churchapps/apphelper/login";
@@ -33,10 +33,9 @@ export const Login: React.FC = () => {
     }
   }, [forceLogin, context, removeCookie]);
 
-  const defaultRedirect = UserHelper.checkAccess(Permissions.membershipApi.people.view) ? "/people" : "/";
   const fromLocation = location.state?.from;
-  const fromUrl = fromLocation ? (fromLocation.pathname + (fromLocation.search || "")) : null;
-  const returnUrl = search.get("returnUrl") || fromUrl || defaultRedirect;
+  const fromUrl = fromLocation ? (fromLocation.pathname + (fromLocation.search || "") + (fromLocation.hash || "")) : null;
+  const returnUrl = search.get("returnUrl") || fromUrl || "/";
 
   const handleRedirect = (url: string) => {
     navigate(url);

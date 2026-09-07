@@ -478,6 +478,51 @@ test.describe("Plans page navigation", () => {
     await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
     await expect(page).toHaveURL(/\/serving\/tasks/);
   });
+
+  test("/serving redirects a user with plan access to /serving/plans", async ({ page }) => {
+    await page.goto("/serving");
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/serving\/plans/);
+  });
+});
+
+// The schedule matrix used to be reachable only from the Plan Type header button;
+// the plan-type row on the Plans list now links to it too.
+test.describe("Plan type row links to the schedule matrix overview", () => {
+  const WORSHIP_MINISTRY_ID = "GRP0000000a";
+  // Unique per run: a retry re-executes beforeAll in a fresh worker, and a fixed name would duplicate rows.
+  const PLAN_TYPE_NAME = "Overview Row Link Spec " + Date.now().toString().slice(-6);
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let planTypeId: string;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post("http://localhost:8084/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    const typeRes = await ctx.post("http://localhost:8084/doing/planTypes", { ...auth, data: [{ ministryId: WORSHIP_MINISTRY_ID, name: PLAN_TYPE_NAME }] });
+    expect(typeRes.ok()).toBeTruthy();
+    planTypeId = (await typeRes.json())[0].id;
+  });
+
+  test.afterAll(async () => {
+    if (planTypeId) await ctx.delete(`http://localhost:8084/doing/planTypes/${planTypeId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("Overview icon on the plan-type row opens the schedule matrix for that plan type", async ({ page }) => {
+    await page.goto("/serving/plans");
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
+    const worshipTab = page.locator('[role="tab"]').getByText("Worship").first();
+    if (await worshipTab.count() > 0) await worshipTab.click();
+    const row = page.locator("tr", { hasText: PLAN_TYPE_NAME });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.getByRole("link", { name: "Overview", exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/serving/overview\\?planTypeId=${planTypeId}&ministryId=${WORSHIP_MINISTRY_ID}`), { timeout: 10000 });
+  });
 });
 
 // ChurchAppsSupport#1049: the plan service-date and service-time pickers always started the

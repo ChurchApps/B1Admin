@@ -1349,7 +1349,7 @@
         "changeImage": "Afbeelding wijzigen",
         "duration": "Duur (s)",
         "enableIdleScreen": "Rustscherm inschakelen",
-        "headerSubtitle": "Kioskkleuren worden beheerd via Instellingen > App-thema. Configureer achtergrondafbeeldingen en rustschermgedrag hieronder.",
+        "headerSubtitle": "Kioskkleuren worden beheerd via Mobiel > App-thema. Configureer achtergrondafbeeldingen en rustschermgedrag hieronder.",
         "idleScreen": "Rustscherm / Schermbeveiliging",
         "sectionTitle": "Kioskthema",
         "slides": "Dia's",
@@ -4153,7 +4153,7 @@
       "darkDesc": "Donkerste tint — hoofdtekst",
       "error": "Fout",
       "errorDesc": "Fouten en destructieve acties",
-      "headerSubtitle": "Pas het kleurenschema van je website aan. Voor mobiele app-, ledenportaal- en kioskkleuren ga je naar Instellingen > App-thema.",
+      "headerSubtitle": "Pas het kleurenschema van je website aan. Voor mobiele app-, ledenportaal- en kioskkleuren ga je naar Mobiel > App-thema.",
       "headerTitle": "Kleurenpalet",
       "light": "Licht",
       "lightAccent": "Licht accent",
@@ -4542,6 +4542,7 @@
       "name": "Naam bewerking",
       "title": "Bewerking"
     },
+    "arrangements": "Arrangementen",
     "audio": {
       "deleteConfirm": "Weet u zeker dat u dit audiobestand wilt verwijderen?",
       "upload": "Audio uploaden"
@@ -4608,11 +4609,6 @@
     "oldArrangement": {
       "key": "Toonsoort"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangementen",
-      "editArrangementAria": "Arrangement bewerken",
-      "noArrangements": "Geen arrangementen gevonden."
-    },
     "praiseChartsProducts": {
       "close": "Sluiten",
       "download": "Downloaden",
@@ -4674,17 +4670,6 @@
     "providedBy": "Aangeboden door"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Overal",
-      "campus": "Locatie",
-      "eventType": "Evenementtype",
-      "group": "Groep",
-      "hasAtt": "heeft bijgewoond",
-      "hasNoAtt": "heeft niet bijgewoond",
-      "op": "Operator",
-      "serv": "Dienst",
-      "servTime": "Diensttijd"
-    },
     "conditionDate": {
       "absolute": "Absoluut",
       "curMonth": "Huidige maand",

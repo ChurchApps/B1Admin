@@ -35,12 +35,6 @@ export const ProfilePage = () => {
     setEmail(email || "");
   }, []);
 
-  const sendEventToReactNative = (eventName: string, data?: any) => {
-    if ((window as any).ReactNativeWebView) {
-      (window as any).ReactNativeWebView.postMessage(JSON.stringify({ event: eventName, data }));
-    }
-  };
-
   const updateProfileMutation = useMutation({
     mutationFn: async () => {
       const promises: Promise<any>[] = [];
@@ -67,7 +61,6 @@ export const ProfilePage = () => {
       setCurrentPassword("");
       setPassword("");
       setPasswordVerify("");
-      sendEventToReactNative("profile_updated");
     },
     onError: (error) => {
       console.error("Error saving profile:", error);
@@ -78,7 +71,6 @@ export const ProfilePage = () => {
   const deleteAccountMutation = useMutation({
     mutationFn: () => ApiHelper.delete("/users", "MembershipApi"),
     onSuccess: () => {
-      sendEventToReactNative("profile_deleted");
       navigate("/logout", { replace: true });
     }
   });
@@ -132,17 +124,6 @@ export const ProfilePage = () => {
     }
   };
 
-  if (isDemo) {
-    return (
-      <>
-        <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
-        <Box sx={{ p: 3 }}>
-          <Alert severity="info">{Locale.label("profile.profilePage.demoModeAlert")}</Alert>
-        </Box>
-      </>
-    );
-  }
-
   return (
     <>
       {ConfirmDialogElement}
@@ -150,6 +131,8 @@ export const ProfilePage = () => {
 
       <Box sx={{ p: 3 }}>
         <Stack spacing={3}>
+          {isDemo && <Alert severity="info">{Locale.label("profile.profilePage.demoModeAlert")}</Alert>}
+
           {errors.length > 0 && (
             <Alert severity="error">
               <ul style={{ margin: 0, paddingLeft: "20px" }}>
@@ -166,17 +149,17 @@ export const ProfilePage = () => {
 
           {saveMessage && <Alert severity="success">{saveMessage}</Alert>}
 
-          <FormCard title={Locale.label("profile.profilePage.profEdit")} icon="person" onSave={handleSave} saveText={Locale.label("profile.profilePage.saveChanges")} isSubmitting={updateProfileMutation.isPending}>
+          <FormCard title={Locale.label("profile.profilePage.profEdit")} icon="person" onSave={handleSave} saveText={Locale.label("profile.profilePage.saveChanges")} isSubmitting={updateProfileMutation.isPending} disabled={isDemo}>
             <Grid container spacing={2}>
               <Grid size={{ xs: 12 }}>
                 <TextField fullWidth type="email" name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} disabled={isDemo} placeholder={Locale.label("placeholders.person.simpleEmail")} />
               </Grid>
 
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} placeholder={Locale.label("placeholders.person.firstName")} />
+                <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} disabled={isDemo} placeholder={Locale.label("placeholders.person.firstName")} />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} placeholder={Locale.label("placeholders.person.lastName")} />
+                <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} disabled={isDemo} placeholder={Locale.label("placeholders.person.lastName")} />
               </Grid>
 
               <Grid size={{ xs: 12 }}>
@@ -274,7 +257,7 @@ export const ProfilePage = () => {
                 </Typography>
                 <Typography color="text.secondary">{Locale.label("profile.profilePage.permWarn")}</Typography>
                 <Box>
-                  <LoadingButton variant="outlined" loading={deleteAccountMutation.isPending} onClick={handleAccountDelete} data-testid="delete-account-button">
+                  <LoadingButton variant="outlined" loading={deleteAccountMutation.isPending} disabled={isDemo} onClick={handleAccountDelete} data-testid="delete-account-button">
                     {Locale.label("profile.profilePage.delAcc")}
                   </LoadingButton>
                 </Box>

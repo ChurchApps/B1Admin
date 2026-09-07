@@ -1,5 +1,5 @@
 import React from "react";
-import { ApiHelper, DateHelper, UserHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
 import { Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack, Button } from "@mui/material";
@@ -13,6 +13,7 @@ import {
 } from "@mui/icons-material";
 import { Breadcrumbs, type BreadcrumbItem, CardWithHeader, ExportButton, PageHeaderStats, hoverRowSx } from "../components/ui";
 import { AppDatePicker } from "../components";
+import { useRequirePermission } from "../hooks";
 
 export const FundPage = () => {
   const params = useParams();
@@ -183,7 +184,8 @@ export const FundPage = () => {
     );
   };
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.view)) return <></>;
+  const denied = useRequirePermission(Permissions.givingApi.donations.view);
+  if (denied) return denied;
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },
@@ -220,7 +222,7 @@ export const FundPage = () => {
               <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateStart")}
                 name="startDate"
-                
+
                 data-cy="start-date"
                 value={DateHelper.formatHtml5Date(startDate)}
                 onChange={handleChange}
@@ -230,7 +232,7 @@ export const FundPage = () => {
               <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateEnd")}
                 name="endDate"
-                
+
                 data-cy="end-date"
                 value={DateHelper.formatHtml5Date(endDate)}
                 onChange={handleChange}

@@ -10,6 +10,7 @@ interface Props {
   batchDate?: Date;
   funds: FundInterface[];
   updatedFunction: () => void;
+  onOpenFullEditor?: () => void;
 }
 
 export const BulkDonationEntry = memo((props: Props) => {
@@ -107,13 +108,9 @@ export const BulkDonationEntry = memo((props: Props) => {
           </Typography>
           <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
           <Box sx={{ mt: 2 }}>
-            <button
-              type="button"
-              className="text-decoration"
-              onClick={handleAnonymousSelect}
-              style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+            <Button variant="text" size="small" onClick={handleAnonymousSelect} data-testid="bulk-donation-anonymous">
               {Locale.label("donations.donationEdit.anon")}
-            </button>
+            </Button>
           </Box>
         </CardContent>
       </Card>
@@ -127,12 +124,9 @@ export const BulkDonationEntry = memo((props: Props) => {
           <Typography variant="h6">
             {selectedPerson?.name?.display || Locale.label("donations.donationEdit.anon")}
           </Typography>
-          <button
-            type="button"
-            onClick={() => setShowPersonSearch(true)}
-            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", textDecoration: "underline" }}>
+          <Button variant="text" size="small" onClick={() => setShowPersonSearch(true)} data-testid="bulk-donation-change-person">
             {Locale.label("common.change")}
-          </button>
+          </Button>
         </Box>
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 3, opacity: 0.7 }}>
@@ -140,7 +134,7 @@ export const BulkDonationEntry = memo((props: Props) => {
             <AppDatePicker
               fullWidth
               label={Locale.label("donations.donationEdit.date")}
-              
+
               value={defaultValues.date}
               onChange={(e) => handleDefaultChange("date", e.target.value)}
               onKeyDown={handleKeyDown}
@@ -218,6 +212,15 @@ export const BulkDonationEntry = memo((props: Props) => {
             {Locale.label("donations.bulkEntry.addDonation")}
           </Button>
         </Box>
+
+        {props.onOpenFullEditor && (
+          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>
+            {Locale.label("donations.bulkEntry.splitFundsHint")}{" "}
+            <Button variant="text" size="small" onClick={props.onOpenFullEditor} data-testid="bulk-donation-full-editor" sx={{ p: 0, minWidth: 0, verticalAlign: "baseline" }}>
+              {Locale.label("donations.bulkEntry.fullEditor")}
+            </Button>
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );

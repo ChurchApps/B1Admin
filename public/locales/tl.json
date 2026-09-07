@@ -1349,7 +1349,7 @@
         "changeImage": "Baguhin ang Imahe",
         "duration": "Tagal (s)",
         "enableIdleScreen": "Paganahin ang idle screen",
-        "headerSubtitle": "Pinamamahalaan ang mga kulay ng kiosk sa Mga Setting > Tema ng App. I-configure ang mga background image at gawi ng idle screen sa ibaba.",
+        "headerSubtitle": "Pinamamahalaan ang mga kulay ng kiosk sa Mobile > Tema ng App. I-configure ang mga background image at gawi ng idle screen sa ibaba.",
         "idleScreen": "Idle Screen / Screensaver",
         "sectionTitle": "Tema ng Kiosk",
         "slides": "Mga Slide",
@@ -4153,7 +4153,7 @@
       "darkDesc": "Pinakamadilim na kulay — teksto ng body",
       "error": "Error",
       "errorDesc": "Mga error at mapaminsalang aksyon",
-      "headerSubtitle": "I-customize ang color scheme ng iyong website. Para sa mga kulay ng mobile app, member portal, at kiosk, pumunta sa Mga Setting > Tema ng App.",
+      "headerSubtitle": "I-customize ang color scheme ng iyong website. Para sa mga kulay ng mobile app, member portal, at kiosk, pumunta sa Mobile > Tema ng App.",
       "headerTitle": "Color Palette",
       "light": "Light",
       "lightAccent": "Light Accent",
@@ -4542,6 +4542,7 @@
       "name": "Pangalan ng arrangement",
       "title": "Arrangement"
     },
+    "arrangements": "Mga Arrangement",
     "audio": {
       "deleteConfirm": "Sigurado ka bang gusto mong tanggalin ang audio file na ito?",
       "upload": "Mag-upload ng audio"
@@ -4608,11 +4609,6 @@
     "oldArrangement": {
       "key": "Key"
     },
-    "oldArrangements": {
-      "arrangements": "Mga Arrangement",
-      "editArrangementAria": "I-edit ang arrangement",
-      "noArrangements": "Walang nahanap na arrangement."
-    },
     "praiseChartsProducts": {
       "close": "Isara",
       "download": "I-download",
@@ -4674,17 +4670,6 @@
     "providedBy": "Ibinigay ni"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Kahit saan",
-      "campus": "Kampus",
-      "eventType": "Uri ng Kaganapan",
-      "group": "Grupo",
-      "hasAtt": "dumalo",
-      "hasNoAtt": "hindi dumalo",
-      "op": "Operator",
-      "serv": "Serbisyo",
-      "servTime": "Oras ng Serbisyo"
-    },
     "conditionDate": {
       "absolute": "Ganap na Halaga",
       "curMonth": "Kasalukuyang Buwan",

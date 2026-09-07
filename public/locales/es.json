@@ -1349,7 +1349,7 @@
         "changeImage": "Cambiar imagen",
         "duration": "Duración (s)",
         "enableIdleScreen": "Activar pantalla inactiva",
-        "headerSubtitle": "Los colores del quiosco se gestionan en Configuración > Tema de la app. Configure imágenes de fondo y el comportamiento de la pantalla inactiva a continuación.",
+        "headerSubtitle": "Los colores del quiosco se gestionan en Móvil > Tema de la app. Configure imágenes de fondo y el comportamiento de la pantalla inactiva a continuación.",
         "idleScreen": "Pantalla inactiva / Salvapantallas",
         "sectionTitle": "Tema del quiosco",
         "slides": "Diapositivas",
@@ -4153,7 +4153,7 @@
       "darkDesc": "Tono más oscuro: texto del cuerpo",
       "error": "Error",
       "errorDesc": "Errores y acciones destructivas",
-      "headerSubtitle": "Personalice el esquema de colores de su sitio web. Para los colores de la aplicación móvil, portal de miembros y kiosco, vaya a Configuración > Tema de la Aplicación.",
+      "headerSubtitle": "Personalice el esquema de colores de su sitio web. Para los colores de la aplicación móvil, portal de miembros y kiosco, vaya a Móvil > Tema de la Aplicación.",
       "headerTitle": "Paleta de Colores",
       "light": "Claro",
       "lightAccent": "Acento Claro",
@@ -4542,6 +4542,7 @@
       "name": "Nombre del Arreglo",
       "title": "Arreglo"
     },
+    "arrangements": "Arreglos",
     "audio": {
       "deleteConfirm": "¿Seguro que quieres eliminar este archivo de audio?",
       "upload": "Subir audio"
@@ -4608,11 +4609,6 @@
     "oldArrangement": {
       "key": "Tonalidad"
     },
-    "oldArrangements": {
-      "arrangements": "Arreglos",
-      "editArrangementAria": "Editar arreglo",
-      "noArrangements": "No se encontraron arreglos."
-    },
     "praiseChartsProducts": {
       "close": "Cerrar",
       "download": "Descargar",
@@ -4674,17 +4670,6 @@
     "providedBy": "Proporcionada por"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "En cualquier lugar",
-      "campus": "Campus",
-      "eventType": "Tipo de Evento",
-      "group": "Grupo",
-      "hasAtt": "ha asistido",
-      "hasNoAtt": "no ha asistido",
-      "op": "Operador",
-      "serv": "Servicio",
-      "servTime": "Horario de Servicio"
-    },
     "conditionDate": {
       "absolute": "Absoluto",
       "curMonth": "Mes Actual",

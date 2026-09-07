@@ -2,7 +2,6 @@ import { FormControl, InputLabel, ListSubheader, MenuItem, Select, type SelectCh
 import React from "react";
 import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
-import { ConditionAttendance } from "./ConditionAttendance";
 import { ConditionDate } from "./ConditionDate";
 import { ConditionSelect } from "./ConditionSelect";
 import { ConditionText } from "./ConditionText";
@@ -62,9 +61,6 @@ export const ConditionEdit = (props: Props) => {
       case "birthDate":
       case "anniversary":
         result = <ConditionDate condition={condition} onChange={(c) => setCondition(c)} />;
-        break;
-      case "attended":
-        result = <ConditionAttendance condition={condition} onChange={(c) => setCondition(c)} />;
         break;
       case "membershipStatus":
       case "maritalStatus":
@@ -202,8 +198,3 @@ export const ConditionEdit = (props: Props) => {
     </Card>
   );
 };
-/*
-<ListSubheader>Coming Soon</ListSubheader>
-          <MenuItem value="attended">Attended...</MenuItem>
-          <MenuItem value="gave">Gave to...</MenuItem>
-*/
