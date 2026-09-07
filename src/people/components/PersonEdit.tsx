@@ -1,7 +1,7 @@
 import React, { useState, memo, useCallback } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { MuiTelInput } from "mui-tel-input";
-import { B1AdminPersonHelper, UpdateHouseHold } from ".";
+import { B1AdminPersonHelper, DuplicateDialog, UpdateHouseHold } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, DateHelper, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { QuestionEdit } from "@churchapps/apphelper/forms";
@@ -28,6 +28,7 @@ interface Props {
   togglePhotoEditor: (show: boolean, inProgressEditPerson: PersonInterface) => void;
   person: PersonInterface;
   showMergeSearch: () => void;
+  onDuplicateSelected?: (person: PersonInterface) => void;
 }
 
 export function formattedPhoneNumber(value: string) {
@@ -80,6 +81,8 @@ export const PersonEdit = memo((props: Props) => {
   const [customFields, setCustomFields] = useState<PersonFieldInterface[]>([]);
   const [customValues, setCustomValues] = useState<Record<string, string>>({});
   const [saveErrors, setSaveErrors] = useState<string[]>([]);
+  const [duplicates, setDuplicates] = useState<PersonInterface[] | null>(null);
+  const [pendingPerson, setPendingPerson] = useState<PersonInterface | null>(null);
 
   const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person) });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -156,12 +159,37 @@ export const PersonEdit = memo((props: Props) => {
     setIsSubmitting(false);
   }, [props.updatedFunction, saveCustomFields]);
 
+  // Only new people get checked - editing an existing record can't create a duplicate of itself.
+  const checkDuplicates = useCallback(async (p: PersonInterface): Promise<PersonInterface[]> => {
+    if (p.id) return [];
+    const phone = p.contactInfo?.mobilePhone || p.contactInfo?.homePhone || p.contactInfo?.workPhone || undefined;
+    try {
+      return (await ApiHelper.post("/people/duplicates", {
+        email: p.contactInfo?.email || undefined,
+        phone,
+        firstName: p.name?.first || undefined,
+        lastName: p.name?.last || undefined,
+        birthDate: p.birthDate || undefined
+      }, "MembershipApi")) || [];
+    } catch {
+      return [];
+    }
+  }, []);
+
   const onValid = useCallback(async (values: AnyRecord) => {
     setIsSubmitting(true);
     setSaveErrors([]);
     const p = buildPerson(values);
 
     if (B1AdminPersonHelper.getExpandedPersonObject(p).id === context?.person?.id) context?.setPerson(p);
+
+    const matches = await checkDuplicates(p);
+    if (matches.length > 0) {
+      setPendingPerson(p);
+      setDuplicates(matches);
+      setIsSubmitting(false);
+      return;
+    }
 
     if (members && members.length > 1 && PersonHelper.compareAddress(props.person.contactInfo, p.contactInfo)) {
       setModalText(
@@ -172,7 +200,24 @@ export const PersonEdit = memo((props: Props) => {
       return;
     }
     await updatePerson(p);
-  }, [props.person, members, context, updatePerson, buildPerson]);
+  }, [props.person, members, context, updatePerson, buildPerson, checkDuplicates]);
+
+  const handleUseExisting = useCallback((existing: PersonInterface) => {
+    setDuplicates(null);
+    setPendingPerson(null);
+    if (props.onDuplicateSelected) props.onDuplicateSelected(existing);
+    else setRedirect("/people/" + existing.id);
+  }, [props.onDuplicateSelected]);
+
+  const handleCreateAnyway = useCallback(async () => {
+    setDuplicates(null);
+    const p = pendingPerson;
+    setPendingPerson(null);
+    if (p) {
+      setIsSubmitting(true);
+      await updatePerson(p);
+    }
+  }, [pendingPerson, updatePerson]);
 
   const handleDelete = useCallback(async () => {
     if (!props.person?.id) return;
@@ -206,6 +251,14 @@ export const PersonEdit = memo((props: Props) => {
   return (
     <>
       {ConfirmDialogElement}
+      {duplicates && duplicates.length > 0 && (
+        <DuplicateDialog
+          matches={duplicates}
+          onUseExisting={handleUseExisting}
+          onCreateAnyway={handleCreateAnyway}
+          onClose={() => { setDuplicates(null); setPendingPerson(null); }}
+        />
+      )}
       <UpdateHouseHold show={showUpdateAddressModal} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
       <FormCard id={props.id} icon="person" title={Locale.label("people.personEdit.persDet")} onCancel={props.updatedFunction} onDelete={handleDelete} onSave={handleSubmit(onValid)} isSubmitting={isSubmitting}
         headerActions={
@@ -266,8 +319,8 @@ export const PersonEdit = memo((props: Props) => {
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Controller name="birthDate" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth  id="birthDate" InputLabelProps={{ shrink: true }} label={Locale.label("person.birthDate")} data-testid="birth-date-input" aria-label="Birth date"  {...field} />
-  )} />
+              <AppDatePicker fullWidth id="birthDate" InputLabelProps={{ shrink: true }} label={Locale.label("person.birthDate")} data-testid="birth-date-input" aria-label="Birth date" {...field} />
+            )} />
           </Grid>
         </Grid>
 
@@ -300,8 +353,8 @@ export const PersonEdit = memo((props: Props) => {
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Controller name="anniversary" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth  id="anniversary" InputLabelProps={{ shrink: true }} label={Locale.label("person.anniversary")} data-testid="anniversary-input" aria-label="Anniversary"  {...field} />
-  )} />
+              <AppDatePicker fullWidth id="anniversary" InputLabelProps={{ shrink: true }} label={Locale.label("person.anniversary")} data-testid="anniversary-input" aria-label="Anniversary" {...field} />
+            )} />
           </Grid>
         </Grid>
 

@@ -3,7 +3,7 @@ import { PlanTypeList } from "./components/PlanTypeList";
 import { TeamList } from "./components/TeamList";
 import { ContentProviderAuthManager } from "./components/ContentProviderAuthManager";
 import { GroupAdd } from "../groups/components";
-import { Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Button, Grid, FormControlLabel, Switch } from "@mui/material";
 import { Assignment as AssignmentIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
@@ -35,7 +35,6 @@ export const ServingPage = () => {
     placeholderData: [],
     queryFn: async () => {
       if (groupIds.length === 0) return [];
-      const { ApiHelper } = await import("@churchapps/apphelper");
       return ApiHelper.get(`/groupMembers?groupIds=${groupIds}`, "MembershipApi");
     }
   });

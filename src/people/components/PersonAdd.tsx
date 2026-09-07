@@ -120,6 +120,10 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
               }}
               togglePhotoEditor={() => {}}
               showMergeSearch={() => {}}
+              onDuplicateSelected={(person) => {
+                setOpen(false);
+                addFunction(person);
+              }}
             />
           </DialogContent>
         </Dialog>

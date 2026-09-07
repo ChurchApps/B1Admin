@@ -290,8 +290,7 @@ test.describe("People Management", () => {
       const donationBtn = page.locator("button").getByText("Donations");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
-      // No seeded donations; apphelper "willAppear" copy renders.
-      const seekText = page.locator("td").getByText("Donations will appear once a donation has been entered.");
+      const seekText = page.locator("td").getByText(/Donations will appear/i);
       const donationRow = page.locator("td").getByText(/\$\d/).first();
       await expect(seekText.or(donationRow)).toBeVisible({ timeout: 10000 });
     });
@@ -387,6 +386,42 @@ test.describe("People Management", () => {
 
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
       await expect(page.locator("#page-header-title")).toContainText("Zacchaeus", { timeout: 10000 });
+    });
+
+    test("should warn about a possible duplicate when creating a person with an existing email, and allow creating anyway", async ({ page }) => {
+      await page.locator('[name="first"]').fill("Danielle");
+      await page.locator('[name="last"]').fill("Duplicatetest");
+      // Donald Clark's seeded email - triggers the duplicate check.
+      await page.locator('[name="email"]').fill(SEED_PEOPLE.DONALD_EMAIL);
+      await page.locator('[type="submit"]').click();
+
+      const dialog = page.getByTestId("duplicate-dialog");
+      await expect(dialog).toBeVisible({ timeout: 10000 });
+      await expect(dialog).toContainText(SEED_PEOPLE.DONALD);
+
+      await page.getByTestId("duplicate-create-anyway").click();
+      await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+      await expect(page.locator("#page-header-title")).toContainText("Danielle", { timeout: 10000 });
+
+      // Clean up the disposable duplicate-test person.
+      const editBtn = personDetailsEditButton(page);
+      await editBtn.first().click();
+      await page.locator("button").getByText("Delete").click();
+      await confirmDelete(page);
+    });
+
+    test("should navigate to the existing person when Use Existing is chosen from the duplicate dialog", async ({ page }) => {
+      await page.locator('[name="first"]').fill("Danielle");
+      await page.locator('[name="last"]').fill("Duplicatetest2");
+      await page.locator('[name="email"]').fill(SEED_PEOPLE.DONALD_EMAIL);
+      await page.locator('[type="submit"]').click();
+
+      const dialog = page.getByTestId("duplicate-dialog");
+      await expect(dialog).toBeVisible({ timeout: 10000 });
+      await dialog.getByRole("button", { name: "Use Existing" }).click();
+
+      await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+      await expect(page.locator("#page-header-title")).toContainText(SEED_PEOPLE.DONALD, { timeout: 10000 });
     });
 
     test("should cancel editing person household", async ({ page }) => {

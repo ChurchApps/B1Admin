@@ -528,3 +528,74 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toHaveCount(0, { timeout: 10000 });
   });
 });
+
+test.describe.serial("Groups — Chat feed toggles", () => {
+  let page: Page;
+  // Adult Bible Class: a standard group whose chat the B1App specs also exercise.
+  const GROUP_NAME = "Adult Bible Class";
+  // Senior Adults: no spec edits it, so its toggles are still the seed defaults.
+  const UNTOUCHED_GROUP = "Senior Adults";
+  const feedSelect = (name: "discussions" | "announcements") => page.locator(`[data-testid="${name}-enabled-select"]`);
+  const chooseOption = async (name: "discussions" | "announcements", option: "Yes" | "No") => {
+    await feedSelect(name).click();
+    await page.locator('li[role="option"]').filter({ hasText: new RegExp(`^${option}$`) }).click();
+  };
+  const saveGroup = async () => {
+    const savePost = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST");
+    await page.locator("#groupDetailsBox button").filter({ hasText: /^save$/i }).first().click();
+    await savePost;
+  };
+  const expectFeedChip = async (name: "discussions" | "announcements", on: boolean) => {
+    const chip = page.locator(`[data-testid="group-chat-${name}-chip"]`);
+    await expect(chip).toBeVisible({ timeout: 10000 });
+    await expect(chip.locator(`[data-testid="${on ? "CheckCircleIcon" : "CancelIcon"}"]`)).toBeVisible();
+  };
+  const openEdit = async () => {
+    await page.locator('[data-testid="edit-group-button"]').click();
+    await expect(feedSelect("discussions")).toBeVisible({ timeout: 10000 });
+  };
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await navigateToGroups(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test("both chat feeds default to on", async () => {
+    await openSeedGroup(page, UNTOUCHED_GROUP);
+    await expectFeedChip("discussions", true);
+    await expectFeedChip("announcements", true);
+    await openEdit();
+    await expect(feedSelect("discussions")).toContainText(/Yes/);
+    await expect(feedSelect("announcements")).toContainText(/Yes/);
+  });
+
+  test("turning discussions off persists and shows on the details view", async () => {
+    await navigateToGroups(page);
+    await openSeedGroup(page, GROUP_NAME);
+    await openEdit();
+    await chooseOption("discussions", "No");
+    await chooseOption("announcements", "Yes");
+    await saveGroup();
+    await expectFeedChip("discussions", false);
+    await expectFeedChip("announcements", true);
+
+    await page.reload();
+    await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+    await openEdit();
+    await expect(feedSelect("discussions")).toContainText(/No/);
+    await expect(feedSelect("announcements")).toContainText(/Yes/);
+  });
+
+  test("turning discussions back on restores the seed default", async () => {
+    await chooseOption("discussions", "Yes");
+    await saveGroup();
+    await expectFeedChip("discussions", true);
+    await expectFeedChip("announcements", true);
+  });
+});

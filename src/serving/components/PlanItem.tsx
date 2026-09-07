@@ -11,6 +11,7 @@ import { LessonDialog } from "./LessonDialog";
 import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, getPositionLabel, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
+import { type ProviderItemSelection } from "./ActionSelectorHelpers";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
 import { usePlanItemExpand } from "./planItem/usePlanItemExpand";
 import { useConfirmDelete } from "../../hooks";
@@ -35,6 +36,10 @@ interface Props {
   collapseItems?: PlanItemInterface[];
   positionLabels?: Record<string, { text: string; assigned: boolean }>;
   positions?: PositionInterface[];
+  /** Set by the parent section while it is in bulk-select mode. */
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -59,6 +64,55 @@ export const PlanItem = React.memo((props: Props) => {
     onChange: props.onChange
   });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+
+  // Bulk select/delete of a section's direct children (ChurchAppsSupport#1060). Nested headers keep
+  // their own selection so "select all" never reaches past this section.
+  const isHeader = props.planItem.itemType === "header";
+  const [selectMode, setSelectMode] = React.useState(false);
+  const [selected, setSelected] = React.useState<Set<string>>(new Set());
+  const selectableIds = React.useMemo(
+    () => (props.planItem.children || []).filter((c) => c.id && c.itemType !== "header").map((c) => c.id as string),
+    [props.planItem.children]
+  );
+  const selectedIds = React.useMemo(() => selectableIds.filter((id) => selected.has(id)), [selectableIds, selected]);
+  const selecting = isHeader && !props.readOnly && selectMode && selectableIds.length > 0;
+
+  const handleSelectModeChange = (on: boolean) => {
+    setSelectMode(on);
+    if (!on) setSelected(new Set());
+  };
+
+  const toggleSelected = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    setSelected(checked ? new Set(selectableIds) : new Set());
+  };
+
+  const deletingSelected = React.useRef(false);
+  const handleDeleteSelected = async () => {
+    if (deletingSelected.current || selectedIds.length === 0) return;
+    const message = (Locale.label("plans.planItem.deleteSelectedConfirm") || "Delete the {count} selected items? This cannot be undone.").replace("{count}", String(selectedIds.length));
+    const confirmed = await confirm(message, {
+      title: Locale.label("plans.planItem.deleteSelected") || "Delete Selected",
+      "data-testid": "confirm-delete-selected-dialog"
+    });
+    if (!confirmed) return;
+    deletingSelected.current = true;
+    try {
+      await Promise.all(selectedIds.map((id) => ApiHelper.delete("/planItems/" + id, "DoingApi")));
+      setSelected(new Set());
+      props.onChange?.();
+    } finally {
+      deletingSelected.current = false;
+    }
+  };
 
   const showCollapse = canCollapse && !props.readOnly;
   const handleCollapseClick = async () => {
@@ -99,29 +153,32 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(true);
   };
 
-  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => {
+  // Every item ticked in the picker lands under this section in one POST (ChurchAppsSupport#1061).
+  const handleItemsImported = async (items: ProviderItemSelection[]) => {
     setShowActionSelector(false);
-    // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
-    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId;
-    const linkValue = mediaUrl || (itemType === "providerFile" ? image : undefined);
-    // Create new plan item - use provided itemType or default to providerPresentation
-    const newPlanItem: PlanItemInterface = {
-      itemType: itemType || "providerPresentation",
-      planId: props.planItem.planId,
-      sort: getNextChildSort(props.planItem.children),
-      parentId: props.planItem.id,
-      relatedId: actionId,
-      label: actionName,
-      seconds: seconds || 0,
-      providerId: itemProviderId,
-      providerPath: providerPath,
-      providerContentPath: providerContentPath,
-      // Store media URL in link field for direct preview (non-Lessons.church providers)
-      // For file items, use mediaUrl if available, otherwise fall back to image
-      link: linkValue,
-      thumbnailUrl: image
-    };
-    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
+    if (items.length === 0) return;
+    const firstSort = getNextChildSort(props.planItem.children);
+    const newPlanItems: PlanItemInterface[] = items.map((item, index) => {
+      // Use the picked provider if there is one (browse other providers), otherwise the plan's own provider.
+      const itemProviderId = item.providerId || props.planItem.providerId || props.associatedProviderId;
+      // Store the media URL in link for direct preview (non-Lessons.church providers); files fall back to their image.
+      const linkValue = item.mediaUrl || (item.itemType === "providerFile" ? item.image : undefined);
+      return {
+        itemType: item.itemType || "providerPresentation",
+        planId: props.planItem.planId,
+        sort: firstSort + index,
+        parentId: props.planItem.id,
+        relatedId: item.actionId,
+        label: item.actionName,
+        seconds: item.seconds || 0,
+        providerId: itemProviderId,
+        providerPath: item.providerPath,
+        providerContentPath: item.providerContentPath,
+        link: linkValue,
+        thumbnailUrl: item.image
+      };
+    });
+    await ApiHelper.post("/planItems", newPlanItems, "DoingApi");
     if (props.onChange) props.onChange();
   };
 
@@ -163,7 +220,30 @@ export const PlanItem = React.memo((props: Props) => {
       const childStartTime = cumulativeTime;
       const childExcluded = Boolean(props.excluded || isChildExcluded(c.id || ""));
       const childPlanItem = (
-        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} positions={props.positions} />
+        <PlanItem
+          key={c.id}
+          planItem={c}
+          setEditPlanItem={props.setEditPlanItem}
+          readOnly={props.readOnly}
+          showItemDrop={props.showItemDrop}
+          onDragChange={props.onDragChange}
+          onChange={props.onChange}
+          startTime={childStartTime}
+          associatedContentPath={props.associatedContentPath}
+          associatedProviderId={props.associatedProviderId}
+          ministryId={props.ministryId}
+          serviceTime={props.serviceTime}
+          exclusions={props.exclusions}
+          selectedServiceTimeId={props.selectedServiceTimeId}
+          excluded={childExcluded}
+          mediaLookup={props.mediaLookup}
+          collapseItems={expandedRuns.get(c.id || "")}
+          positionLabels={props.positionLabels}
+          positions={props.positions}
+          selectable={selecting && !!c.id && c.itemType !== "header"}
+          selected={!!c.id && selected.has(c.id)}
+          onToggleSelect={c.id ? () => toggleSelected(c.id as string) : undefined}
+        />
       );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
@@ -203,6 +283,12 @@ export const PlanItem = React.memo((props: Props) => {
       positionLabel={activePositionLabel}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      selectMode={selecting}
+      onSelectModeChange={props.readOnly ? undefined : handleSelectModeChange}
+      selectedCount={selectedIds.length}
+      selectableCount={selectableIds.length}
+      onSelectAll={handleSelectAll}
+      onDeleteSelected={handleDeleteSelected}
       wrapRow={props.readOnly ? undefined : (row) => (
         <RowDropZone
           accept="planItem"
@@ -233,6 +319,9 @@ export const PlanItem = React.memo((props: Props) => {
       onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
       positionLabel={activePositionLabel}
+      selectable={props.selectable}
+      selected={props.selected}
+      onToggleSelect={props.onToggleSelect}
     />
   );
 
@@ -266,7 +355,7 @@ export const PlanItem = React.memo((props: Props) => {
   return (
     <>
       {getPlanItem()}
-      {showCollapse && ConfirmDialogElement}
+      {(showCollapse || (isHeader && !props.readOnly)) && ConfirmDialogElement}
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>
@@ -321,7 +410,7 @@ export const PlanItem = React.memo((props: Props) => {
         <ActionSelector
           open={showActionSelector}
           onClose={() => setShowActionSelector(false)}
-          onSelect={handleActionSelected}
+          onImport={handleItemsImported}
           contentPath={props.associatedContentPath}
           providerId={props.associatedProviderId}
           ministryId={props.ministryId}

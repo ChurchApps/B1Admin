@@ -1,3 +1,4 @@
+import { type Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateTo } from "./helpers/navigation";
 
@@ -90,5 +91,64 @@ test.describe("Donation Statements and Stripe Import", () => {
       await expect(importBtn).toBeVisible();
       await expect(importBtn).toBeDisabled();
     });
+  });
+});
+
+// Country receipt formats: the CRA/AU/NZ legal block is driven by church settings and
+// rendered on the printed statement. Demo giving data is 2025; John Smith is PER00000001.
+test.describe.serial("Country statement formats", () => {
+  const REG_NUMBER = "119288945RR0001";
+
+  const setFormat = async (page: Page, formatLabel: string) => {
+    await navigateTo(page, "settings");
+    await page.locator('[data-testid="settings-section-giving"]').click();
+    const section = page.locator('[data-testid="settings-giving"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    const formatSelect = section.locator('[data-testid="statement-format-select"]');
+    await expect(formatSelect).toBeVisible({ timeout: 10000 });
+    await formatSelect.click();
+    await page.getByRole("option", { name: formatLabel, exact: true }).click();
+    if (formatLabel !== "Standard") {
+      await section.getByLabel("CRA Registration Number").fill(REG_NUMBER);
+      await section.getByLabel("Authorized Signatory Name").fill("Pastor Grace Miller");
+      await section.getByLabel("City of Issue").fill("Toronto");
+    }
+    const settingsPost = page.waitForResponse(
+      (r) => r.url().includes("/membership/settings") && r.request().method() === "POST",
+      { timeout: 15000 }
+    );
+    await section.getByRole("button", { name: "Save" }).click();
+    await settingsPost;
+  };
+
+  test.beforeEach(async ({ page }) => {
+    // The print page auto-prints then navigates back after 1.5s; keep it on screen to assert.
+    await page.addInitScript(() => {
+      window.print = () => {};
+      window.history.go = () => {};
+    });
+  });
+
+  test("Canada format prints the CRA official receipt block with a receipt number", async ({ page }) => {
+    await setFormat(page, "Canada - CRA official receipt");
+    await page.goto("/donations/print/PER00000001?year=2025");
+
+    const block = page.locator('[data-testid="statement-legal-block"]');
+    await expect(block).toBeVisible({ timeout: 15000 });
+    await expect(block.getByText("Official Receipt for Income Tax Purposes")).toBeVisible();
+    await expect(block.getByText("Receipt number: 2025-PER00000001")).toBeVisible();
+    await expect(block.getByText("Charity registration number: " + REG_NUMBER)).toBeVisible();
+    await expect(block.getByText("Place of issue: Toronto")).toBeVisible();
+    await expect(block.getByText(/Eligible amount of gift for income tax purposes: \$/)).toBeVisible();
+    await expect(block.getByText("Pastor Grace Miller — Authorized signature")).toBeVisible();
+    await expect(block.getByText("Canada Revenue Agency: canada.ca/charities-giving")).toBeVisible();
+  });
+
+  test("switching back to Standard drops the legal block", async ({ page }) => {
+    await setFormat(page, "Standard");
+    await page.goto("/donations/print/PER00000001?year=2025");
+    await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[data-testid="statement-legal-block"]')).toHaveCount(0);
   });
 });

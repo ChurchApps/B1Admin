@@ -7,7 +7,7 @@ import type { PersonInterface, HouseholdInterface } from "@churchapps/helpers";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import { ErrorMessages } from "@churchapps/apphelper";
 import { useMountedState } from "@churchapps/apphelper";
-import { useConfirmDelete } from "../hooks";
+import { DuplicateDialog } from "../people/components/DuplicateDialog";
 
 interface CommonProps {
   onCreate?: (person: PersonInterface) => void;
@@ -21,8 +21,8 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
   const [person, setPerson] = React.useState<PersonInterface>({ name: { first: "", last: "" }, contactInfo: {} });
   const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [duplicates, setDuplicates] = React.useState<PersonInterface[]>([]);
   const isMounted = useMountedState();
-  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const validate = () => {
     const result = [];
@@ -46,9 +46,21 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const checkExistingEmail = async () => {
-    const result = await ApiHelper.get("/people/search?email=" + person.contactInfo.email, "MembershipApi");
-    return result[0];
+  const checkDuplicates = async (): Promise<PersonInterface[]> => (await ApiHelper.post("/people/duplicates", {
+    email: person.contactInfo.email || undefined,
+    firstName: person.name.first || undefined,
+    lastName: person.name.last || undefined
+  }, "MembershipApi")) || [];
+
+  const handleUseExisting = (existing: PersonInterface) => {
+    setDuplicates([]);
+    onCreate(existing);
+    if (showInModal) props.onClose?.();
+  };
+
+  const handleCreateAnyway = () => {
+    setDuplicates([]);
+    handleSave();
   };
 
   const handleSave = () => {
@@ -76,40 +88,29 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
 
   async function handleSubmit() {
     if (validate()) {
-      if (person.contactInfo.email && (person.contactInfo.email?.trim() !== undefined || person.contactInfo.email?.trim() !== "")) {
+      if (person.contactInfo.email) {
         if (!validateEmail(person.contactInfo.email)) {
           setErrors([Locale.label("common.createPerson.validate.validEmail")]);
-        } else {
-          const existingPerson = await checkExistingEmail();
-          if (existingPerson) {
-            if (
-              await confirm(
-                Locale.t("common.createPerson.confirmDuplicate", {
-                  existingName: existingPerson.name.display,
-                  existingEmail: existingPerson.contactInfo.email,
-                  firstName: person.name.first,
-                  lastName: person.name.last
-                }),
-                { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }
-              )
-            ) {
-              handleSave();
-            }
-          } else {
-            handleSave();
-          }
+          return;
         }
-      } else {
-        handleSave();
+        const matches = await checkDuplicates();
+        if (matches.length > 0) {
+          setDuplicates(matches);
+          return;
+        }
       }
+      handleSave();
     }
   }
 
   if (!UserHelper.checkAccess(Permissions.membershipApi.people.edit)) return null;
+  const duplicateDialog = duplicates.length > 0 && (
+    <DuplicateDialog matches={duplicates} onUseExisting={handleUseExisting} onCreateAnyway={handleCreateAnyway} onClose={() => setDuplicates([])} />
+  );
   if (showInModal) {
     return (
       <>
-        {ConfirmDialogElement}
+        {duplicateDialog}
         <ErrorMessages errors={errors} />
         <Dialog open onClose={props.onClose} fullWidth>
           <DialogTitle>{Locale.label("createPerson.addNewPerson")}</DialogTitle>
@@ -170,7 +171,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
   }
   return (
     <div>
-      {ConfirmDialogElement}
+      {duplicateDialog}
       <p className="pl-1 mb-3 text-dark">
         <b>{Locale.label("createPerson.addNewPerson")}</b>
       </p>

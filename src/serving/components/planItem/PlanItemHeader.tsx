@@ -1,6 +1,6 @@
 import React from "react";
-import { Box } from "@mui/material";
-import { Add as AddIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
+import { Box, Button, Checkbox } from "@mui/material";
+import { Add as AddIcon, Checklist as ChecklistIcon, Close as CloseIcon, Delete as DeleteIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime, getSectionDuration } from "../PlanUtils";
@@ -17,6 +17,13 @@ interface Props {
   children?: React.ReactNode;
   /** Wraps just the header row (not the children), e.g. to make it a drop target. */
   wrapRow?: (row: React.ReactNode) => React.ReactNode;
+  /** Bulk-select mode for the section's direct children. Omit `onSelectModeChange` to hide the control. */
+  selectMode?: boolean;
+  onSelectModeChange?: (on: boolean) => void;
+  selectedCount?: number;
+  selectableCount?: number;
+  onSelectAll?: (checked: boolean) => void;
+  onDeleteSelected?: () => void;
 }
 
 /** Section header row with drag handle, label, action buttons, and duration. */
@@ -30,9 +37,18 @@ export const PlanItemHeader: React.FC<Props> = ({
   onAddClick,
   onEditClick,
   children,
-  wrapRow
+  wrapRow,
+  selectMode,
+  onSelectModeChange,
+  selectedCount = 0,
+  selectableCount = 0,
+  onSelectAll,
+  onDeleteSelected
 }) => {
   const sectionDuration = getSectionDuration(planItem);
+  const canSelect = !readOnly && !!onSelectModeChange && selectableCount > 0;
+  const selecting = canSelect && !!selectMode;
+  const allSelected = selectableCount > 0 && selectedCount >= selectableCount;
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
 
   const headerRow = (
@@ -47,6 +63,17 @@ export const PlanItemHeader: React.FC<Props> = ({
           <DragIndicatorIcon />
         </Box>
       )}
+      {selecting && (
+        <Checkbox
+          size="small"
+          checked={allSelected}
+          indeterminate={!allSelected && selectedCount > 0}
+          onChange={(e) => onSelectAll?.(e.target.checked)}
+          data-testid="section-select-all"
+          slotProps={{ input: { "aria-label": Locale.label("plans.planItem.selectAllInSection") || "Select all in section" } }}
+          sx={{ p: 0.5, mr: 0.5 }}
+        />
+      )}
       <Box component="span" sx={{ flex: 1 }}>{planItem.label}</Box>
       {positionLabel?.text && (
         <Box
@@ -58,8 +85,47 @@ export const PlanItemHeader: React.FC<Props> = ({
         </Box>
       )}
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
-        {!readOnly && (
+        {selecting && (
           <>
+            <Button
+              size="small"
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+              disabled={selectedCount === 0}
+              onClick={onDeleteSelected}
+              data-testid="delete-selected-button"
+              sx={{ textTransform: "none", whiteSpace: "nowrap" }}>
+              {(Locale.label("plans.planItem.deleteSelected") || "Delete Selected") + (selectedCount > 0 ? ` (${selectedCount})` : "")}
+            </Button>
+            <Box
+              component="button"
+              type="button"
+              className="actionButton alwaysVisible"
+              onClick={() => onSelectModeChange?.(false)}
+              data-testid="select-mode-done"
+              aria-label={Locale.label("plans.planItem.doneSelecting") || "Done selecting"}
+              title={Locale.label("plans.planItem.doneSelecting") || "Done selecting"}
+              sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}>
+              <CloseIcon />
+            </Box>
+          </>
+        )}
+        {!readOnly && !selecting && (
+          <>
+            {canSelect && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton alwaysVisible"
+                onClick={() => onSelectModeChange?.(true)}
+                data-testid="select-items-button"
+                aria-label={Locale.label("plans.planItem.selectItems") || "Select items"}
+                title={Locale.label("plans.planItem.selectItems") || "Select items"}
+                sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}>
+                <ChecklistIcon />
+              </Box>
+            )}
             <Box
               component="button"
               type="button"

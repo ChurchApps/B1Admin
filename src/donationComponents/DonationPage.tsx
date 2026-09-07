@@ -120,7 +120,8 @@ export const DonationPage: React.FC<Props> = (props) => {
       { label: "donationDate", key: "donationDate" },
       { label: "fundName", key: "fund.name" },
       { label: "method", key: "method" },
-      { label: "methodDetails", key: "methodDetails" }
+      { label: "methodDetails", key: "methodDetails" },
+      { label: "notes", key: "notes" }
     ];
 
     if (current_year.length > 0 || last_year.length > 0) {
@@ -199,6 +200,11 @@ export const DonationPage: React.FC<Props> = (props) => {
             {d.method} - {d.methodDetails}
           </TableCell>
           <TableCell>{d.fund?.name}</TableCell>
+          <TableCell>
+            <span title={d.notes || ""} style={{ display: "inline-block", maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", verticalAlign: "bottom" }}>
+              {d.notes || ""}
+            </span>
+          </TableCell>
           <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund?.amount || 0, currency)}</TableCell>
         </TableRow>
       );
@@ -216,6 +222,7 @@ export const DonationPage: React.FC<Props> = (props) => {
           <th>{Locale.label("donation.page.date")}</th>
           <th>{Locale.label("donation.page.method")}</th>
           <th>{Locale.label("donation.page.fund")}</th>
+          <th>{Locale.label("donation.page.notes")}</th>
           <th>{Locale.label("donation.page.amount")}</th>
         </TableRow>
       );
