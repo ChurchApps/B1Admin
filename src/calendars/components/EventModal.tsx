@@ -45,6 +45,7 @@ export function EventModal(props: Props) {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!!props.eventId);
   const [existingBookings, setExistingBookings] = useState<any[]>([]);
+  const [hasRegistration, setHasRegistration] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const reminderRef = useRef<EventReminderEditRef>(null);
 
@@ -70,6 +71,7 @@ export function EventModal(props: Props) {
         if (data.end) setEnd(toInputValue(new Date(data.end)));
         if (data.recurrenceRule) setRRule(data.recurrenceRule);
         if (data.visibility) setVisibility(data.visibility);
+        setHasRegistration(!!data.registrationEnabled);
       });
       ApiHelper.get("/eventBookings/event/" + props.eventId, "ContentApi").then((data: any[]) => {
         setExistingBookings(data);
@@ -154,6 +156,10 @@ export function EventModal(props: Props) {
   };
 
   const handleSave = async () => {
+    if (props.eventId && rRule) {
+      const ok = await confirm(Locale.label("calendars.calendarEvent.confirmEditSeries"), { confirmLabel: Locale.label("common.save"), destructive: false });
+      if (!ok) return;
+    }
     setSaving(true);
     try {
       const event: EventInterface = {
@@ -205,7 +211,7 @@ export function EventModal(props: Props) {
     <>
       {ConfirmDialogElement}
       <Dialog open={true} onClose={() => props.onDone(false)} fullWidth scroll="body">
-        <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent", "Edit Event") : Locale.label("calendars.newEvent.title")}</DialogTitle>
+        <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent") : Locale.label("calendars.newEvent.title")}</DialogTitle>
         <DialogContent>
           {loading ? <Loading /> : <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField fullWidth select label={Locale.label("calendars.newEvent.group")} value={groupId} onChange={(e) => setGroupId(e.target.value)} data-testid="new-event-group-select">
@@ -297,7 +303,7 @@ export function EventModal(props: Props) {
                 </Stack>
               </Alert>
             )}
-            <EventReminderEdit ref={reminderRef} eventId={props.eventId} hasRegistration={false} />
+            <EventReminderEdit ref={reminderRef} eventId={props.eventId} hasRegistration={hasRegistration} />
           </Stack>}
         </DialogContent>
         <DialogActions>

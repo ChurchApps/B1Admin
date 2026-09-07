@@ -199,7 +199,10 @@
       "cancel": "Cancel",
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
       "delete": "Delete",
+      "edit": "Edit",
+      "editEvent": "Edit Event",
       "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
     },
@@ -247,14 +250,17 @@
     },
     "eventReminders": {
       "channels": "Channels",
+      "email": "Email",
       "enableReminders": "Enable reminders",
       "maxOffsets": "Maximum of 3 times selected",
       "message": "Message (optional)",
       "messageHint": "Merge field: {{eventTitle}}",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
       "modeAuto": "Auto",
       "modeGroup": "Group members",
       "modeRegistrants": "Registrants only",
       "modeRegistrantsHoh": "Heads / registrants only",
+      "push": "Push",
       "timeOfDay": "Time of day",
       "timeOfDayHint": "Church local time (e.g. 9:00 AM)",
       "title": "Reminders",
@@ -988,6 +994,7 @@
     "formEdit": {
       "access": "Form Access",
       "accessLevelAria": "Access level",
+      "addForm": "Add Form",
       "addToGroup": "Add submitters to a group",
       "addToGroupHelper": "Submitters are added to this group automatically.",
       "addToGroupNone": "None",
@@ -1030,6 +1037,8 @@
       "view": "View Only"
     },
     "formPage": {
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found",
       "subtitleConfig": "Form configuration and submissions"
     },
     "formQuestionEdit": {
@@ -1071,12 +1080,15 @@
       "archForms": "Archived Forms",
       "archive": "Archive",
       "archiveFormAria": "Archive form {name}",
+      "confirmDuplicate": "Duplicate this form?",
       "confirmMsg1": "Are you sure you want to archive this form?",
       "confirmMsg2": "Are you sure you want to restore this form?",
       "duplicate": "Duplicate",
+      "duplicated": "Form duplicated",
       "forms": "Forms",
       "noArch": "No archived forms.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "personProfileForm": "Person profile form",
       "restore": "Restore",
       "restoreFormAria": "Restore form {name}",
       "subtitleManage": "Create and manage custom forms",
@@ -2613,6 +2625,7 @@
       "percent": "Percent",
       "price": "Price",
       "promote": "Promote",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?",
       "registrationDetails": "Registration Details",
       "removeConfirm": "Remove this item? This cannot be undone.",
       "selections": "Selections",
@@ -2643,6 +2656,7 @@
       "name": "Name",
       "noRegistrations": "No registrations yet.",
       "registrations": "Registrations",
+      "selectTypeFirst": "Select an attendee type to continue.",
       "status": "Status",
       "subtitle": "Manage registrations for this event",
       "unansweredOnly": "Unanswered questions only",
@@ -2662,12 +2676,14 @@
       "saveSettings": "Save Settings",
       "tags": "Tags",
       "tagsHelper": "Comma-separated tags for filtering",
-      "tagsPlaceholder": "youth, retreat, vbs"
+      "tagsPlaceholder": "youth, retreat, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Date",
       "enabledEvents": "Events with Registration Enabled",
       "event": "Event",
+      "goToCalendars": "Turn on registration on a calendar event",
       "noEvents": "No events have registration enabled yet.",
       "noEventsHint": "To enable registration, open an event on a calendar and click Manage Registrations.",
       "registered": "registered",

@@ -115,7 +115,7 @@ export function FormEdit(props: Props) {
   }
 
   return (
-    <FormCard id="formBox" icon="format_align_left" title={Locale.label("forms.formEdit.editForm")} onSave={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} onCancel={props.updatedFunction} onDelete={props.formId ? handleDelete : undefined}>
+    <FormCard id="formBox" icon="format_align_left" title={props.formId ? Locale.label("forms.formEdit.editForm") : Locale.label("forms.formEdit.addForm")} onSave={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} onCancel={props.updatedFunction} onDelete={props.formId ? handleDelete : undefined}>
       {ConfirmDialogElement}
       <ErrorMessages errors={summaryErrors} />
       <TextField fullWidth label={Locale.label("forms.formEdit.name")} type="text" placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label={Locale.label("forms.formEdit.formNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("forms.formEdit.nameReqMsg") })} />
@@ -123,7 +123,7 @@ export function FormEdit(props: Props) {
         <FormControl fullWidth>
           <InputLabel id="associate">{Locale.label("forms.formEdit.associate")}</InputLabel>
           <Controller name="contentType" control={control} render={({ field }) => (
-            <Select {...field} value={field.value ?? "person"} labelId="associate" label={Locale.label("forms.formEdit.associate")} data-testid="content-type-select" aria-label={Locale.label("forms.formEdit.contentTypeAria")} onChange={(e) => { field.onChange(e); if (e.target.value === "form") setStandAloneForm(true); }}>
+            <Select {...field} value={field.value ?? "person"} labelId="associate" label={Locale.label("forms.formEdit.associate")} data-testid="content-type-select" aria-label={Locale.label("forms.formEdit.contentTypeAria")} onChange={(e) => { field.onChange(e); setStandAloneForm(e.target.value === "form"); }}>
               <MenuItem value="person">{Locale.label("forms.formEdit.ppl")}</MenuItem>
               <MenuItem value="form">{Locale.label("forms.formEdit.alone")}</MenuItem>
             </Select>

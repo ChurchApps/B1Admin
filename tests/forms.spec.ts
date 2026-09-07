@@ -50,6 +50,28 @@ test.describe("Forms page", () => {
     await page.locator("#formBox button", { hasText: /^Cancel$/ }).click();
     await page.locator("#formBox").waitFor({ state: "hidden", timeout: 10000 });
   });
+
+  test("Add Form title, and switching content type back to People clears the stand-alone fields", async ({ page }) => {
+    await openFormsPage(page);
+    await clickAddForm(page);
+    await expect(page.locator("#formBox").getByText("Add Form", { exact: true })).toBeVisible();
+
+    await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "Stand Alone");
+    await expect(page.locator('[data-testid="form-description-input"]')).toBeVisible({ timeout: 10000 });
+
+    await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "People");
+    await expect(page.locator('[data-testid="form-description-input"]')).toHaveCount(0, { timeout: 10000 });
+
+    await page.locator("#formBox button", { hasText: /^Cancel$/ }).click();
+    await page.locator("#formBox").waitFor({ state: "hidden", timeout: 10000 });
+  });
+
+  test("shows a not-found state for a missing form id", async ({ page }) => {
+    await page.goto("/forms/zzz-does-not-exist");
+    await expect(page.getByText("Form not found")).toBeVisible({ timeout: 15000 });
+    await page.getByRole("link", { name: "Back to Forms" }).click();
+    await expect(page).toHaveURL(/\/forms$/, { timeout: 10000 });
+  });
 });
 
 test.describe.serial("People-associated form lifecycle", () => {
@@ -74,7 +96,7 @@ test.describe.serial("People-associated form lifecycle", () => {
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
     await expect(row).toBeVisible({ timeout: 10000 });
     const urlCell = row.locator("td").nth(1);
-    await expect(urlCell).toHaveText("");
+    await expect(urlCell).toHaveText("Person profile form");
   });
 
   test("opens the form and shows the Add Question button", async () => {
@@ -111,6 +133,8 @@ test.describe.serial("People-associated form lifecycle", () => {
   test("archives, restores, and deletes the form", async () => {
     await openFormsPage(page);
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
+    await expect(row.locator('[data-testid^="archive-form-button-"] svg[data-testid="ArchiveIcon"]')).toBeVisible({ timeout: 10000 });
+    await expect(row.locator('[data-testid^="archive-form-button-"] svg[data-testid="DeleteIcon"]')).toHaveCount(0);
     await row.locator('[data-testid^="archive-form-button-"]').click();
     await confirmDelete(page);
 
@@ -131,6 +155,7 @@ test.describe.serial("People-associated form lifecycle", () => {
 
     await activeRow.locator('[data-testid^="edit-form-button-"]').first().click();
     await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator("#formBox").getByText("Edit Form", { exact: true })).toBeVisible();
     await page.locator("#formBox button", { hasText: /^Delete$/ }).click();
     await confirmDelete(page);
     await page.locator("#formBox").waitFor({ state: "hidden", timeout: 15000 });
@@ -174,6 +199,23 @@ test.describe.serial("Stand Alone form lifecycle", () => {
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
     await expect(row).toBeVisible({ timeout: 10000 });
     await expect(row.locator("td a").filter({ hasText: /\/forms\// }).first()).toBeVisible();
+  });
+
+  test("duplicating a form confirms first and shows a duplicated snackbar", async () => {
+    await openFormsPage(page);
+    const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.locator('[data-testid^="duplicate-form-button-"]').click();
+    await confirmDelete(page);
+    await expect(page.getByText("Form duplicated")).toBeVisible({ timeout: 10000 });
+
+    const copyRow = page.locator("table tbody tr").filter({ hasText: `${DISPOSABLE_STANDALONE_FORM} (Copy)` }).first();
+    await expect(copyRow).toBeVisible({ timeout: 10000 });
+    await copyRow.locator('[data-testid^="edit-form-button-"]').first().click();
+    await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
+    await page.locator("#formBox button", { hasText: /^Delete$/ }).click();
+    await confirmDelete(page);
+    await page.locator("#formBox").waitFor({ state: "hidden", timeout: 15000 });
   });
 
   test("reopens the stand alone form with its description intact", async () => {

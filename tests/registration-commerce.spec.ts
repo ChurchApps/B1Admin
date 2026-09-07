@@ -56,6 +56,8 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
   let staffJwt: string;
   let generalTypeId: string;
   let camperTypeId: string;
+  let adultTypeId: string;
+  let childTypeId: string;
   const regIds: string[] = [];
 
   const authCtx = () => request.newContext();
@@ -172,7 +174,10 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await page.locator('[data-testid="type-capacity"] input').nth(1).fill("10");
     const typesPost = page.waitForResponse((r) => r.url().includes("/registrations/types") && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
     await page.locator('[data-testid="save-registration-types"]').click();
-    await typesPost;
+    const savedTypesA = await (await typesPost).json();
+    adultTypeId = savedTypesA.find((t: any) => t.name === "Adult")?.id;
+    childTypeId = savedTypesA.find((t: any) => t.name === "Child")?.id;
+    expect(adultTypeId && childTypeId, "event A type ids").toBeTruthy();
 
     await page.getByRole("button", { name: "Selections", exact: true }).click();
     await page.locator('[data-testid="add-registration-selection"]').click();
@@ -202,6 +207,59 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
 
     await page.getByRole("button", { name: "Discount Codes", exact: true }).click();
     await expect(page.locator('[data-testid="coupon-code"] input').first()).toHaveValue("EARLYBIRD", { timeout: 10000 });
+  });
+
+  test("Shows an unsaved-changes warning while attendee type edits are unsaved", async () => {
+    await page.goto(`/registrations/${eventAId}`);
+    await expect(page.getByText(EVENT_A, { exact: false }).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[data-testid="registration-unsaved-changes-alert"]')).toHaveCount(0);
+
+    await page.getByRole("button", { name: "Attendee Types", exact: true }).click();
+    await page.locator('[data-testid="add-registration-type"]').click();
+    await expect(page.locator('[data-testid="registration-unsaved-changes-alert"]')).toBeVisible({ timeout: 10000 });
+
+    const typesPost = page.waitForResponse((r) => r.url().includes("/registrations/types") && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+    await page.locator('[data-testid="save-registration-types"]').click();
+    await typesPost;
+    await expect(page.locator('[data-testid="registration-unsaved-changes-alert"]')).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("Add Attendee requires a type pick when attendee types exist", async () => {
+    // Adult/Child both carry a price, which routes register() through the payment-required path.
+    // A free third type isolates the type-pick UI assertion from gateway/payment concerns.
+    const ctx = await authCtx();
+    const freeTypeRes = await ctx.post(`${API_BASE}/content/registrations/types`, { ...auth(), data: [{ eventId: eventAId, name: "Volunteer", price: null, capacity: null, sort: 3, active: true }] });
+    expect(freeTypeRes.ok()).toBeTruthy();
+    const freeTypeId = (await freeTypeRes.json())[0]?.id;
+    expect(freeTypeId, "free type id").toBeTruthy();
+    await ctx.dispose();
+
+    await page.goto(`/registrations/${eventAId}`);
+    await expect(page.getByText(EVENT_A, { exact: false }).first()).toBeVisible({ timeout: 15000 });
+
+    await page.getByRole("button", { name: "Add Attendee" }).click();
+    const dialog = page.locator('div[role="dialog"]').filter({ hasText: "Add Attendee" });
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+
+    const typeSelect = dialog.locator('[data-testid="add-attendee-type-select"]');
+    await expect(typeSelect).toBeVisible({ timeout: 10000 });
+    await typeSelect.locator('[role="combobox"]').click();
+    await page.getByRole("option", { name: "Volunteer" }).click();
+
+    await dialog.locator('input[name="personAddText"]').fill("Demo User");
+    await dialog.locator('[data-testid="search-button"]').click();
+    const addBtn = dialog.locator('[data-testid^="add-person-"]').first();
+    await expect(addBtn).toBeVisible({ timeout: 10000 });
+    const registerPost = page.waitForResponse((r) => r.url().includes("/registrations/register") && r.request().method() === "POST", { timeout: 15000 });
+    await addBtn.click();
+    const regResp = await registerPost;
+    expect(regResp.ok(), "register response ok").toBeTruthy();
+    expect(regResp.request().postDataJSON()?.members?.[0]?.registrationTypeId, "posted registrationTypeId").toBe(freeTypeId);
+    const created = await regResp.json();
+    if (created?.id) regIds.push(created.id);
+
+    await expect(dialog).toHaveCount(0, { timeout: 10000 });
+    await expect(page.getByRole("cell", { name: "Volunteer" })).toBeVisible({ timeout: 10000 });
   });
 
   test("Waitlist toggle round-trips, including the explicit-false un-toggle path", async () => {
@@ -275,5 +333,31 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
       expect(content, `CSV header "${header}"`).toContain(header);
     }
     expect(content, "CSV includes the Camper type").toContain("Camper");
+  });
+
+  test("Promote asks for confirmation before promoting a waitlisted registrant", async () => {
+    // Event B's capacity (1) is already held by the confirmed General registration from beforeAll —
+    // free a spot so the confirmed Promote actually succeeds instead of hitting the capacity guard.
+    const ctx = await authCtx();
+    const capRes = await ctx.post(`${API_BASE}/content/events`, { ...auth(), data: [{ id: eventBId, groupId, title: EVENT_B, start: eventStart, end: eventEnd, allDay: false, visibility: "public", registrationEnabled: true, capacity: 2, waitlistEnabled: true }] });
+    expect(capRes.ok()).toBeTruthy();
+    await ctx.dispose();
+
+    await page.goto(`/registrations/${eventBId}`);
+    const waitRow = page.locator('[data-testid="registration-row"]').filter({ hasText: "Zacchaeus Waitlisted" });
+    await expect(waitRow.locator('button[aria-label="Promote"]')).toBeVisible({ timeout: 15000 });
+    await waitRow.locator('button[aria-label="Promote"]').click();
+
+    const dialog = page.locator('div[role="dialog"]').last();
+    await expect(dialog).toContainText("Promote this waitlisted registrant", { timeout: 10000 });
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(dialog).toHaveCount(0, { timeout: 5000 });
+    await expect(waitRow.getByText("waitlisted", { exact: true })).toBeVisible({ timeout: 10000 });
+
+    await waitRow.locator('button[aria-label="Promote"]').click();
+    const promotePost = page.waitForResponse((r) => /\/registrations\/.+\/promote/.test(r.url()) && r.ok(), { timeout: 15000 });
+    await confirmDelete(page);
+    await promotePost;
+    await expect(waitRow.getByText("pending", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 });

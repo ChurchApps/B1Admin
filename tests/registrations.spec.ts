@@ -37,6 +37,18 @@ async function selectOption(page: Page, selectTestId: string, optionName: string
   await option.click();
 }
 
+test.describe("Registrations list empty state", () => {
+  test("shows guidance and a link to Calendars when no events have registration enabled", async ({ page }) => {
+    await page.route("**/events/registerable", (route) => route.fulfill({ status: 200, contentType: "application/json", body: "[]" }));
+    await navigateToRegistrations(page);
+    await expect(page.getByText("No events have registration enabled yet.")).toBeVisible({ timeout: 15000 });
+    const link = page.getByTestId("empty-state-go-to-calendars");
+    await expect(link).toBeVisible();
+    await link.click();
+    await page.waitForURL(/\/calendars/, { timeout: 10000 });
+  });
+});
+
 test.describe.serial("Registrations — Registration Questions, Add Attendee, filters", () => {
   let page: Page;
   let eventId: string;

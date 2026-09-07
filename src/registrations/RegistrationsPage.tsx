@@ -9,12 +9,13 @@ import {
   TableHead,
   Box,
   Chip,
-  LinearProgress
+  LinearProgress,
+  Button
 } from "@mui/material";
-import { HowToReg as RegIcon } from "@mui/icons-material";
+import { HowToReg as RegIcon, CalendarMonth as CalendarIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, PageHeader, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
-import { CountChip, CardWithHeader } from "../components/ui";
+import { CountChip, CardWithHeader, EmptyState } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 
@@ -85,14 +86,17 @@ export const RegistrationsPage = () => {
           {loading ? (
             <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>
           ) : events.length === 0 ? (
-            <Box sx={{ p: 3, textAlign: "center" }}>
-              <RegIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-              <Typography variant="body2" color="text.secondary">
-                {Locale.label("registrations.registrationsPage.noEvents")}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {Locale.label("registrations.registrationsPage.noEventsHint")}
-              </Typography>
+            <Box sx={{ p: 2 }}>
+              <EmptyState
+                icon={<RegIcon />}
+                title={Locale.label("registrations.registrationsPage.noEvents")}
+                description={Locale.label("registrations.registrationsPage.noEventsHint")}
+                action={
+                  <Button variant="contained" startIcon={<CalendarIcon />} component={Link} to="/calendars" data-testid="empty-state-go-to-calendars">
+                    {Locale.label("registrations.registrationsPage.goToCalendars")}
+                  </Button>
+                }
+              />
             </Box>
           ) : (
             <Table>

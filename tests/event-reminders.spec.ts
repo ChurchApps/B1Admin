@@ -1,9 +1,12 @@
 import type { Page } from "@playwright/test";
+import { request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 
+const API_BASE = "http://localhost:8084";
+const CHURCH_ID = "CHU00000001";
 const CALENDAR = "Zacchaeus Reminder Calendar";
 const EVENT_TITLE = "Zacchaeus Reminder Event";
 const GROUP = "High School Youth";
@@ -165,5 +168,43 @@ test.describe.serial("Event reminders editor", () => {
     await openRegistrationDetails(page, eventId);
     await expect(page.locator('[data-testid="reminder-enabled-toggle"]')).not.toBeChecked();
     await expect(page.locator('[data-testid="reminder-time-input"]')).toHaveCount(0);
+  });
+
+  test("calendar Edit modal defaults the recipient mode to Registrants only once the event has registration enabled", async () => {
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    const loginBody = await loginRes.json();
+    const uc = (loginBody.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID) || loginBody.userChurches?.[0];
+    const jwt = uc?.jwt as string;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+    const current = await (await ctx.get(`${API_BASE}/content/events/${eventId}`, auth)).json();
+    const updateRes = await ctx.post(`${API_BASE}/content/events`, { ...auth, data: [{ ...current, registrationEnabled: true }] });
+    expect(updateRes.ok()).toBeTruthy();
+    await ctx.dispose();
+
+    // Two unrelated GETs race on open (event + bookings); delay bookings so the event fetch (which
+    // carries registrationEnabled) always resolves first and EventReminderEdit mounts already knowing it.
+    await page.route("**/eventBookings/event/**", async (route) => {
+      await new Promise((r) => setTimeout(r, 400));
+      await route.continue();
+    });
+
+    await gotoCalendars(page);
+    const row = page.locator("table tbody tr").filter({ hasText: CALENDAR }).first();
+    await row.getByRole("link").first().click();
+    await page.waitForURL(/\/calendars\/[\w-]+/, { timeout: 10000 });
+
+    const block = page.locator(".rbc-event").filter({ hasText: EVENT_TITLE }).first();
+    await block.waitFor({ state: "visible", timeout: 15000 });
+    await block.click();
+    await page.locator('[data-testid="calendar-event-edit-button"]').click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue(EVENT_TITLE, { timeout: 10000 });
+
+    await expandReminders(page);
+    await setEnabled(page, true);
+    await expect(page.locator('[data-testid="reminder-recipient-mode-select"]')).toContainText("Registrants only", { timeout: 10000 });
+
+    await page.unroute("**/eventBookings/event/**");
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
   });
 });
