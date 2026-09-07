@@ -4545,6 +4545,7 @@
       "name": "Nome do Arranjo",
       "title": "Arranjo"
     },
+    "arrangements": "Arranjos",
     "audio": {
       "deleteConfirm": "Tem certeza de que deseja excluir este arquivo de áudio?",
       "upload": "Enviar áudio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tom"
     },
-    "oldArrangements": {
-      "arrangements": "Arranjos",
-      "editArrangementAria": "Editar arranjo",
-      "noArrangements": "Nenhum arranjo encontrado."
-    },
     "praiseChartsProducts": {
       "close": "Fechar",
       "download": "Baixar",
@@ -4677,17 +4673,6 @@
     "providedBy": "Fornecido por"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Em qualquer lugar",
-      "campus": "Campus",
-      "eventType": "Tipo de Evento",
-      "group": "Grupo",
-      "hasAtt": "participou",
-      "hasNoAtt": "não participou",
-      "op": "Operador",
-      "serv": "Serviço",
-      "servTime": "Horário do Serviço"
-    },
     "conditionDate": {
       "absolute": "Absoluto",
       "curMonth": "Mês Atual",

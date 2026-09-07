@@ -4545,6 +4545,7 @@
       "name": "编曲名称",
       "title": "编曲"
     },
+    "arrangements": "编排",
     "audio": {
       "deleteConfirm": "确定要删除此音频文件吗？",
       "upload": "上传音频"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "调"
     },
-    "oldArrangements": {
-      "arrangements": "编排",
-      "editArrangementAria": "编辑编排",
-      "noArrangements": "未找到编排。"
-    },
     "praiseChartsProducts": {
       "close": "关闭",
       "download": "下载",
@@ -4677,17 +4673,6 @@
     "providedBy": "提供方："
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "任何地方",
-      "campus": "校园",
-      "eventType": "事件类型",
-      "group": "团体",
-      "hasAtt": "已参加",
-      "hasNoAtt": "未参加",
-      "op": "运算符",
-      "serv": "服务",
-      "servTime": "服务时间"
-    },
     "conditionDate": {
       "absolute": "绝对",
       "curMonth": "当月",

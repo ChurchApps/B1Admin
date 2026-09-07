@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "الترتيبات",
     "audio": {
       "deleteConfirm": "هل أنت متأكد من حذف ملف الصوت هذا؟",
       "upload": "رفع صوت"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "المفتاح"
     },
-    "oldArrangements": {
-      "arrangements": "الترتيبات",
-      "editArrangementAria": "تحرير الترتيب",
-      "noArrangements": "لم يتم العثور على ترتيبات."
-    },
     "praiseChartsProducts": {
       "close": "إغلاق",
       "download": "تنزيل",
@@ -4677,17 +4673,6 @@
     "providedBy": "مقدمة من"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "الحرم الجامعي",
-      "eventType": "Event Type",
-      "group": "المجموعة",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "الخدمة",
-      "servTime": "وقت الخدمة"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

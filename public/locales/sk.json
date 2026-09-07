@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aranžmány",
     "audio": {
       "deleteConfirm": "Naozaj chcete odstrániť tento zvukový súbor?",
       "upload": "Nahrať audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tónina"
     },
-    "oldArrangements": {
-      "arrangements": "Aranžmány",
-      "editArrangementAria": "Upraviť aranžmán",
-      "noArrangements": "Neboli nájdené žiadne aranžmány."
-    },
     "praiseChartsProducts": {
       "close": "Zavrieť",
       "download": "Stiahnuť",
@@ -4677,17 +4673,6 @@
     "providedBy": "Poskytnuté od"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Mestnosť",
-      "eventType": "Event Type",
-      "group": "Skupina",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Bohoslužba",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

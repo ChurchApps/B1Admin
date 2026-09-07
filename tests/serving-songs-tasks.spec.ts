@@ -323,6 +323,25 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await expect(validatedLyrics).toHaveCount(1);
     });
 
+    test("arrangement edit shows a localized Sequence field and length placeholder", async () => {
+      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      await songsBtn.click();
+      await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
+      await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
+
+      const song = page.locator("a").getByText("Frolic", { exact: true }).first();
+      await song.click();
+      await expect(page.locator("#page-header-title")).toBeVisible({ timeout: 10000 });
+      const editBtn = page.locator(".MuiCard-root").filter({ has: page.getByRole("heading", { name: /Arrangement -/ }) }).getByRole("button", { name: "Edit" }).first();
+      await editBtn.click();
+
+      await expect(page.getByLabel("Sequence")).toBeVisible({ timeout: 10000 });
+      await expect(page.getByPlaceholder("Verse 1, Chorus, Verse 2, Chorus, Bridge")).toBeVisible();
+      await expect(page.getByPlaceholder("180")).toBeVisible();
+
+      await page.locator("button").getByText("Cancel").click();
+    });
+
     test("should cancel editing lyrics", async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
       await songsBtn.click();

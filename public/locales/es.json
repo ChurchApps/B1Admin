@@ -4545,6 +4545,7 @@
       "name": "Nombre del Arreglo",
       "title": "Arreglo"
     },
+    "arrangements": "Arreglos",
     "audio": {
       "deleteConfirm": "¿Seguro que quieres eliminar este archivo de audio?",
       "upload": "Subir audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonalidad"
     },
-    "oldArrangements": {
-      "arrangements": "Arreglos",
-      "editArrangementAria": "Editar arreglo",
-      "noArrangements": "No se encontraron arreglos."
-    },
     "praiseChartsProducts": {
       "close": "Cerrar",
       "download": "Descargar",
@@ -4677,17 +4673,6 @@
     "providedBy": "Proporcionada por"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "En cualquier lugar",
-      "campus": "Campus",
-      "eventType": "Tipo de Evento",
-      "group": "Grupo",
-      "hasAtt": "ha asistido",
-      "hasNoAtt": "no ha asistido",
-      "op": "Operador",
-      "serv": "Servicio",
-      "servTime": "Horario de Servicio"
-    },
     "conditionDate": {
       "absolute": "Absoluto",
       "curMonth": "Mes Actual",

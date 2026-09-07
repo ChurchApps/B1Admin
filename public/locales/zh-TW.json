@@ -4545,6 +4545,7 @@
       "name": "編曲名稱",
       "title": "編曲"
     },
+    "arrangements": "編排",
     "audio": {
       "deleteConfirm": "確定要刪除此音訊檔案嗎？",
       "upload": "上傳音訊"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "調"
     },
-    "oldArrangements": {
-      "arrangements": "編排",
-      "editArrangementAria": "編輯編排",
-      "noArrangements": "未找到編排。"
-    },
     "praiseChartsProducts": {
       "close": "關閉",
       "download": "下載",
@@ -4677,17 +4673,6 @@
     "providedBy": "提供方："
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "任何地方",
-      "campus": "校園",
-      "eventType": "事件型別",
-      "group": "團體",
-      "hasAtt": "已參加",
-      "hasNoAtt": "未參加",
-      "op": "運算子",
-      "serv": "服務",
-      "servTime": "服務時間"
-    },
     "conditionDate": {
       "absolute": "絕對",
       "curMonth": "當月",

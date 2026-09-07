@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Düzenlemeler",
     "audio": {
       "deleteConfirm": "Bu ses dosyasını silmek istediğinizden emin misiniz?",
       "upload": "Ses yükle"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Anahtar"
     },
-    "oldArrangements": {
-      "arrangements": "Düzenlemeler",
-      "editArrangementAria": "Düzenlemeyi düzenle",
-      "noArrangements": "Düzenleme bulunamadı."
-    },
     "praiseChartsProducts": {
       "close": "Kapat",
       "download": "İndir",
@@ -4677,17 +4673,6 @@
     "providedBy": "Sağlayan"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampüs",
-      "eventType": "Event Type",
-      "group": "Grup",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "İbadet",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

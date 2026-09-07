@@ -4637,6 +4637,7 @@
       "name": "編曲名",
       "title": "編曲"
     },
+    "arrangements": "アレンジメント",
     "audio": {
       "deleteConfirm": "この音声ファイルを削除してもよろしいですか？",
       "upload": "音声をアップロード"
@@ -4703,11 +4704,6 @@
     "oldArrangement": {
       "key": "キー"
     },
-    "oldArrangements": {
-      "arrangements": "アレンジメント",
-      "editArrangementAria": "アレンジメントを編集",
-      "noArrangements": "アレンジメントが見つかりません。"
-    },
     "praiseChartsProducts": {
       "close": "閉じる",
       "download": "ダウンロード",
@@ -4769,17 +4765,6 @@
     "providedBy": "提供元"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "どこでも",
-      "campus": "キャンパス",
-      "eventType": "イベントの種類",
-      "group": "グループ",
-      "hasAtt": "出席した",
-      "hasNoAtt": "出席していない",
-      "op": "条件",
-      "serv": "サービス",
-      "servTime": "礼拝時間"
-    },
     "conditionDate": {
       "absolute": "絶対",
       "curMonth": "今月",

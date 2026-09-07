@@ -62,6 +62,13 @@ test.describe("Donation Statements and Stripe Import", () => {
       const download = await downloadPromise;
       expect(download.suggestedFilename()).toMatch(/giving_statements_2025\.zip/);
     });
+
+    test("Statement format link opens Giving settings", async ({ page }) => {
+      const link = page.locator('[data-testid="statement-format-settings-link"]');
+      await expect(link).toBeVisible({ timeout: 10000 });
+      await link.click();
+      await expect(page).toHaveURL(/\/settings#giving/);
+    });
   });
 
   test.describe("Stripe Import", () => {
@@ -123,7 +130,7 @@ test.describe.serial("Country statement formats", () => {
   };
 
   test.beforeEach(async ({ page }) => {
-    // The print page auto-prints then navigates back after 1.5s; keep it on screen to assert.
+    // Without ?autoprint=1 the page never calls window.print(); stub it defensively.
     await page.addInitScript(() => {
       window.print = () => {};
       window.history.go = () => {};
@@ -150,5 +157,41 @@ test.describe.serial("Country statement formats", () => {
     await page.goto("/donations/print/PER00000001?year=2025");
     await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
     await expect(page.locator('[data-testid="statement-legal-block"]')).toHaveCount(0);
+  });
+});
+
+// Print + Close toolbar replaced the blind auto-print-then-navigate-back behavior.
+test.describe("Statement print pages — Print/Close toolbar", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as any).__printCalls = 0;
+      (window as any).__historyBackCalls = 0;
+      window.print = () => { (window as any).__printCalls++; };
+      const realBack = window.history.back.bind(window.history);
+      window.history.back = () => { (window as any).__historyBackCalls++; realBack(); };
+    });
+  });
+
+  test("single statement does not auto-print without ?autoprint=1, and Close goes back", async ({ page }) => {
+    await page.goto("/donations");
+    await page.goto("/donations/print/PER00000001?year=2025");
+    await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
+    expect(await page.evaluate(() => (window as any).__printCalls)).toBe(0);
+
+    await page.getByRole("button", { name: "Close" }).click();
+    await expect.poll(() => page.evaluate(() => (window as any).__historyBackCalls)).toBeGreaterThan(0);
+  });
+
+  test("single statement auto-prints with ?autoprint=1", async ({ page }) => {
+    await page.goto("/donations/print/PER00000001?year=2025&autoprint=1");
+    await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
+    await expect.poll(() => page.evaluate(() => (window as any).__printCalls)).toBeGreaterThan(0);
+  });
+
+  test("batch statement page shows a Print/Close toolbar and does not auto-print", async ({ page }) => {
+    await page.goto("/donations/print-all?year=2025");
+    await expect(page.getByRole("button", { name: "Print" })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("button", { name: "Close" })).toBeVisible();
+    expect(await page.evaluate(() => (window as any).__printCalls)).toBe(0);
   });
 });

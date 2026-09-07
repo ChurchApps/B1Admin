@@ -98,3 +98,59 @@ test.describe("Serving - Print Plan lesson customizations", () => {
     await expect(dialog.getByText("Big Review")).toHaveCount(0);
   });
 });
+
+// A plan with no lesson/venue content falls back to the worship-order print view
+// (no OlfPrintPreview dialog), which needed its own Print/Close toolbar.
+test.describe("Serving - Print Plan without lesson content", () => {
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    jwt = await apiLogin(ctx);
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Print Worship Order Repro", serviceDate: "2030-04-08" }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    planId = (await planRes.json())[0].id;
+
+    const itemsRes = await ctx.post(`${API}/doing/planItems`, {
+      ...auth,
+      data: [{ planId, sort: 1, itemType: "item", label: "Welcome", description: "Announcements", seconds: 120 }]
+    });
+    expect(itemsRes.ok()).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, { headers: { Authorization: "Bearer " + jwt } });
+    await ctx.dispose();
+  });
+
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as any).__printCalls = 0;
+      window.print = () => { (window as any).__printCalls++; };
+    });
+  });
+
+  test("shows a Print/Close toolbar and does not auto-print without ?autoprint=1", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("button", { name: "Print" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Close" })).toBeVisible();
+    expect(await page.evaluate(() => (window as any).__printCalls)).toBe(0);
+
+    await page.getByRole("button", { name: "Close" }).click();
+    await expect(page).toHaveURL(new RegExp(`/serving/plans/${planId}$`));
+  });
+
+  test("auto-prints with ?autoprint=1", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${planId}?autoprint=1`);
+    await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });
+    await expect.poll(() => page.evaluate(() => (window as any).__printCalls)).toBeGreaterThan(0);
+  });
+});

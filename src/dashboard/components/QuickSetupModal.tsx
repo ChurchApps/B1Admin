@@ -137,7 +137,7 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
     const planType = { name: classroomName.trim(), ministryId };
     await ApiHelper.post("/planTypes", [planType], "DoingApi");
 
-    onComplete("/serving");
+    onComplete("/serving/plans");
   };
 
   const handleWebpageSetup = async () => {

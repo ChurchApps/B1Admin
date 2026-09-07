@@ -4545,6 +4545,7 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
+    "arrangements": "Aransemen",
     "audio": {
       "deleteConfirm": "Yakin ingin menghapus file audio ini?",
       "upload": "Unggah audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Nada"
     },
-    "oldArrangements": {
-      "arrangements": "Aransemen",
-      "editArrangementAria": "Edit aransemen",
-      "noArrangements": "Tidak ada aransemen ditemukan."
-    },
     "praiseChartsProducts": {
       "close": "Tutup",
       "download": "Unduh",
@@ -4677,17 +4673,6 @@
     "providedBy": "Disediakan Oleh"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Anywhere",
-      "campus": "Kampus",
-      "eventType": "Event Type",
-      "group": "Grup",
-      "hasAtt": "has attended",
-      "hasNoAtt": "has not attended",
-      "op": "Operator",
-      "serv": "Layanan",
-      "servTime": "Service Time"
-    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",

@@ -4545,6 +4545,7 @@
       "name": "Arrangemangsnamn",
       "title": "Arrangemang"
     },
+    "arrangements": "Arrangemang",
     "audio": {
       "deleteConfirm": "Är du säker på att du vill ta bort den här ljudfilen?",
       "upload": "Ladda upp ljud"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonart"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangemang",
-      "editArrangementAria": "Redigera arrangemang",
-      "noArrangements": "Inga arrangemang hittades."
-    },
     "praiseChartsProducts": {
       "close": "Stäng",
       "download": "Ladda ner",
@@ -4677,17 +4673,6 @@
     "providedBy": "Tillhandahållet av"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Var som helst",
-      "campus": "Campus",
-      "eventType": "Händelsetyp",
-      "group": "Grupp",
-      "hasAtt": "har deltagit",
-      "hasNoAtt": "har inte deltagit",
-      "op": "Operator",
-      "serv": "Gudstjänst",
-      "servTime": "Gudstjänsttid"
-    },
     "conditionDate": {
       "absolute": "Absolut",
       "curMonth": "Innevarande månad",

@@ -4545,6 +4545,7 @@
       "name": "Naam bewerking",
       "title": "Bewerking"
     },
+    "arrangements": "Arrangementen",
     "audio": {
       "deleteConfirm": "Weet u zeker dat u dit audiobestand wilt verwijderen?",
       "upload": "Audio uploaden"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Toonsoort"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangementen",
-      "editArrangementAria": "Arrangement bewerken",
-      "noArrangements": "Geen arrangementen gevonden."
-    },
     "praiseChartsProducts": {
       "close": "Sluiten",
       "download": "Downloaden",
@@ -4677,17 +4673,6 @@
     "providedBy": "Aangeboden door"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "Overal",
-      "campus": "Locatie",
-      "eventType": "Evenementtype",
-      "group": "Groep",
-      "hasAtt": "heeft bijgewoond",
-      "hasNoAtt": "heeft niet bijgewoond",
-      "op": "Operator",
-      "serv": "Dienst",
-      "servTime": "Diensttijd"
-    },
     "conditionDate": {
       "absolute": "Absoluut",
       "curMonth": "Huidige maand",

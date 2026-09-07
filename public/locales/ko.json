@@ -4545,6 +4545,7 @@
       "name": "편곡 이름",
       "title": "편곡"
     },
+    "arrangements": "편곡",
     "audio": {
       "deleteConfirm": "이 오디오 파일을 삭제하시겠습니까?",
       "upload": "오디오 업로드"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "키"
     },
-    "oldArrangements": {
-      "arrangements": "편곡",
-      "editArrangementAria": "편곡 편집",
-      "noArrangements": "편곡을 찾을 수 없습니다."
-    },
     "praiseChartsProducts": {
       "close": "닫기",
       "download": "다운로드",
@@ -4677,17 +4673,6 @@
     "providedBy": "제공"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "어디에서나",
-      "campus": "캠퍼스",
-      "eventType": "이벤트 유형",
-      "group": "그룹",
-      "hasAtt": "참석함",
-      "hasNoAtt": "참석하지 않음",
-      "op": "연산자",
-      "serv": "서비스",
-      "servTime": "서비스 시간"
-    },
     "conditionDate": {
       "absolute": "절대값",
       "curMonth": "이번 달",

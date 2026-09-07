@@ -42,7 +42,8 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   dashboard: /\/dashboard|\/$/,
   people: /\/people/,
   donations: /\/donations(?!\/)/,
-  serving: /\/serving\/tasks/,
+  // Users with plan access land on /serving/plans; others fall back to /serving/tasks.
+  serving: /\/serving\/(plans|tasks)/,
   sermons: /\/sermons(?!\/)/,
   website: /\/site\/pages/,
   calendars: /\/calendars(?!\/)/,

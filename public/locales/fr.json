@@ -4545,6 +4545,7 @@
       "name": "Nom de l'arrangement",
       "title": "Arrangement"
     },
+    "arrangements": "Arrangements",
     "audio": {
       "deleteConfirm": "Voulez-vous vraiment supprimer ce fichier audio ?",
       "upload": "Importer un audio"
@@ -4611,11 +4612,6 @@
     "oldArrangement": {
       "key": "Tonalité"
     },
-    "oldArrangements": {
-      "arrangements": "Arrangements",
-      "editArrangementAria": "Modifier l'arrangement",
-      "noArrangements": "Aucun arrangement trouvé."
-    },
     "praiseChartsProducts": {
       "close": "Fermer",
       "download": "Télécharger",
@@ -4677,17 +4673,6 @@
     "providedBy": "Fourni par"
   },
   "tasks": {
-    "conditionAttendance": {
-      "anywhere": "N'importe où",
-      "campus": "Campus",
-      "eventType": "Type d'événement",
-      "group": "Groupe",
-      "hasAtt": "a assisté",
-      "hasNoAtt": "n'a pas assisté",
-      "op": "Opérateur",
-      "serv": "Service",
-      "servTime": "Heure de service"
-    },
     "conditionDate": {
       "absolute": "Absolu",
       "curMonth": "Mois en cours",
