@@ -4,7 +4,7 @@ import React from "react";
 
 import { type PersonInterface } from "@churchapps/helpers";
 import { Locale, DisplayBox, PersonHelper } from "@churchapps/apphelper";
-import { PersonAdd } from "./PersonAdd";
+import { PersonAdd } from "../../components";
 import { Button } from "@mui/material";
 import { AdvancedPeopleSearch } from "./AdvancedPeopleSearch";
 import { PersonAddResults } from "./PersonAddResults";

@@ -29,6 +29,12 @@ export const Household: React.FC<Props> = memo((props) => {
   const loadData = () => {
     if (!UniqueIdHelper.isMissing(props.person?.householdId)) {
       ApiHelper.get("/households/" + props?.person.householdId, "MembershipApi").then((data: any) => setHousehold(data));
+    } else if (props.person?.id && UserHelper.checkAccess(Permissions.membershipApi.people.edit)) {
+      // Nobody is allowed to exist without a household, so heal instead of showing an empty box.
+      ApiHelper.post("/households", [{ name: props.person.name?.last || "" }], "MembershipApi").then((data: any) => {
+        props.person.householdId = data[0].id;
+        ApiHelper.post("/people", [props.person], "MembershipApi").then(() => setHousehold(data[0]));
+      });
     }
   };
   const loadMembers = () => {

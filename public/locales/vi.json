@@ -1515,7 +1515,6 @@
       "status": "Trạng thái:"
     },
     "householdEdit": {
-      "addMatch": "Địa chỉ to match",
       "addMember": "Thêm thành viên hộ gia đình",
       "blankMsg": "Please provide a household Tên.",
       "child": "Child",
@@ -1524,8 +1523,7 @@
       "houseName": "Household Tên",
       "householdNameAria": "Tên hộ gia đình",
       "other": "Other",
-      "spouse": "Spouse",
-      "updQuestion": "Would you like to Cập nhật"
+      "spouse": "Spouse"
     },
     "lists": {
       "autoRefresh": "Làm mới hàng đêm",
@@ -1552,8 +1550,7 @@
       "title": "Danh sách đã lưu"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Merge Records"
+      "merge": "merge"
     },
     "mergeModal": {
       "cancel": "Hủy",

@@ -57,7 +57,10 @@ export function HouseholdEdit(props: Props) {
       return;
     }
     setText(
-      `${Locale.label("people.householdEdit.updQuestion")} ${person.name.first}"s ${Locale.label("people.householdEdit.addMatch")} ${props.currentPerson.name.first}"s (${PersonHelper.addressToString(props.currentPerson.contactInfo)})?`
+      Locale.label("people.householdEdit.useAddress")
+        .replace("{first}", props.currentPerson.name.first || "")
+        .replace("{current}", person.name.first || "")
+        .replace("{address}", PersonHelper.addressToString(props.currentPerson.contactInfo) || "")
     );
     setShowUpdateAddressModal(true);
   }

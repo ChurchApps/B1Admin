@@ -1515,7 +1515,6 @@
       "status": "Status:"
     },
     "householdEdit": {
-      "addMatch": "address to match",
       "addMember": "Tambah Anggota Rumah Tangga",
       "blankMsg": "Please provide a household name.",
       "child": "Child",
@@ -1524,8 +1523,7 @@
       "houseName": "Household Name",
       "householdNameAria": "Nama rumah tangga",
       "other": "Other",
-      "spouse": "Spouse",
-      "updQuestion": "Would you like to update"
+      "spouse": "Spouse"
     },
     "lists": {
       "autoRefresh": "Perbarui setiap malam",
@@ -1552,8 +1550,7 @@
       "title": "Daftar Tersimpan"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Merge Records"
+      "merge": "merge"
     },
     "mergeModal": {
       "cancel": "Batal",

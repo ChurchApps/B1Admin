@@ -1515,7 +1515,6 @@
       "status": "狀態："
     },
     "householdEdit": {
-      "addMatch": "要匹配的地址",
       "addMember": "新增家庭成員",
       "blankMsg": "請提供一個家庭名稱。",
       "child": "子女",
@@ -1524,8 +1523,7 @@
       "houseName": "家庭名稱",
       "householdNameAria": "家庭名稱",
       "other": "其他",
-      "spouse": "配偶",
-      "updQuestion": "您想更新嗎"
+      "spouse": "配偶"
     },
     "lists": {
       "autoRefresh": "每晚重新整理",
@@ -1552,8 +1550,7 @@
       "title": "已儲存的列表"
     },
     "merge": {
-      "merge": "合併",
-      "mergeRec": "合併記錄"
+      "merge": "合併"
     },
     "mergeModal": {
       "cancel": "取消",

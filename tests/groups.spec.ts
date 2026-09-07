@@ -57,7 +57,7 @@ test.describe.serial("Group Management", () => {
 
       const searchInput = page.locator('input[name="personAddText"]');
       await searchInput.fill("Demo User");
-      const searchBtn = page.locator('[data-testid="person-add-search-button"]');
+      const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
 
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
@@ -247,6 +247,7 @@ test.describe.serial("Group Management", () => {
 
       const sessionsBtn = page.locator("button").getByText("Sessions");
       await sessionsBtn.click();
+      await expect(page.locator('[data-testid="sessions-setup-hint"]')).toContainText("People → Attendance → Setup", { timeout: 10000 });
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
       const dateEntry = page.locator('[data-testid="session-date-input"]');
@@ -266,7 +267,8 @@ test.describe.serial("Group Management", () => {
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
       const dateBox = page.locator('[data-testid="session-date-input"]');
-      await dateBox.fill("2025-09-01");
+      await dateBox.getByRole("spinbutton", { name: "Month" }).click();
+      await page.keyboard.type("09012025");
       const saveBtn = page.locator("button").getByText("Save");
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
@@ -283,7 +285,8 @@ test.describe.serial("Group Management", () => {
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
       const dateBox = page.locator('[data-testid="session-date-input"]');
-      await dateBox.fill("2025-10-01");
+      await dateBox.getByRole("spinbutton", { name: "Month" }).click();
+      await page.keyboard.type("10012025");
       const saveBtn = page.locator("button").getByText("Save");
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
@@ -306,7 +309,8 @@ test.describe.serial("Group Management", () => {
       const newBtn = page.locator("button").getByText("New").first();
       await newBtn.click();
       const dateBox = page.locator('[data-testid="session-date-input"]');
-      await dateBox.fill("2025-11-01");
+      await dateBox.getByRole("spinbutton", { name: "Month" }).click();
+      await page.keyboard.type("11012025");
       const saveBtn = page.locator("button").getByText("Save");
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
@@ -320,6 +324,7 @@ test.describe.serial("Group Management", () => {
       // with data-testid="remove-session-visitor-button-<id>".
       const removeBtn = page.locator('button[data-testid^="remove-session-visitor-button-"]').first();
       await removeBtn.click();
+      await confirmDelete(page);
       await expect(addedPerson).toHaveCount(0, { timeout: 10000 });
     });
 
@@ -507,6 +512,8 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     const row = page.locator("table tbody tr").filter({ has: page.locator("a").getByText(DUPLICATE_NAME) });
     const restoreResp = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST", { timeout: 15000 });
     await row.locator('[data-testid^="restore-group-"]').click();
+    await expect(page.locator('div[role="dialog"]').last()).toContainText(DUPLICATE_NAME, { timeout: 10000 });
+    await confirmDelete(page);
     await restoreResp;
 
     const toggle = page.locator('[data-testid="show-archived-toggle"] input');

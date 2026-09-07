@@ -256,6 +256,9 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
           <Typography variant="body2" color="text.secondary" gutterBottom>
             {Locale.label("groups.groupSessions.noSesMsg")}
           </Typography>
+          <Typography variant="body2" color="text.secondary" data-testid="sessions-setup-hint">
+            {Locale.label("groups.groupSessions.assignServiceTimeHint")}
+          </Typography>
         </Box>
       ) : filteredSessions.length === 0 ? (
         <Box sx={{ p: 3, textAlign: "center" }}>

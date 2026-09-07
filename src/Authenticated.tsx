@@ -108,7 +108,6 @@ export const Authenticated: React.FC = () => {
         <Route element={<LayoutWithWrapper />}>
           <Route path="/admin/report/:keyName" element={<AdminReportPage />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/people/add" element={<PersonPage />} />
           <Route path="/people/demographics" element={<DemographicsPage />} />
           <Route path="/people/:id" element={<PersonPage />} />
           <Route path="/people" element={<PeoplePage />} />

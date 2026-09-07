@@ -5,12 +5,11 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select } from "@mui/material";
 import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
-import { CreatePerson } from "../components";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
 import { buildRulesFromCriteria } from "./components/listRules";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { People as PeopleIcon, PersonAdd as PersonAddIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon, Close as CloseIcon } from "@mui/icons-material";
+import { People as PeopleIcon, PersonAdd as PersonAddIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CountChip, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
@@ -27,47 +26,12 @@ interface BulkDeleteResponse {
 
 const INITIAL_PAGE_SIZE = 50;
 
-const formatHeader = (key: string): string => {
-  const customMap: Record<string, string> = {
-    address: "Address",
-    address1: "Address 1",
-    address2: "Address 2",
-    age: "Age",
-    anniversary: "Anniversary",
-    birthDate: "Birth Date",
-    campusId: "Campus ID",
-    churchId: "Church ID",
-    city: "City",
-    contactCity: "Contact City",
-    contactEmail: "Contact Email",
-    contactState: "Contact State",
-    contactZip: "Contact Zip",
-    conversationId: "Conversation ID",
-    display: "Display Name",
-    first: "First Name",
-    last: "Last Name",
-    middle: "Middle Name",
-    middleName: "Middle Name",
-    mobilePhone: "Mobile Phone",
-    nametagNotes: "Nametag Notes",
-    nick: "Nick Name",
-    optedOut: "Opted Out",
-    phone: "Phone",
-    photo: "Photo",
-    photoUpdated: "Photo Updated",
-    state: "State",
-    workPhone: "Work Phone",
-    firstName: "First Name",
-    lastName: "Last Name",
-    gender: "Gender",
-    membershipStatus: "Membership Status",
-    id: "ID",
-    householdId: "Household ID"
-  };
+const EXPORT_LABEL_KEYS = [
+  "address", "address1", "address2", "age", "anniversary", "birthDate", "campusId", "churchId", "city", "contactCity", "contactEmail", "contactState", "contactZip", "conversationId", "display", "first", "last", "middle", "middleName", "mobilePhone", "nametagNotes", "nick", "optedOut", "phone", "photo", "photoUpdated", "state", "workPhone", "firstName", "lastName", "gender", "membershipStatus", "id", "householdId"
+];
 
-  if (customMap[key]) {
-    return customMap[key];
-  }
+const formatHeader = (key: string): string => {
+  if (EXPORT_LABEL_KEYS.indexOf(key) > -1) return Locale.label("people.export." + key);
 
   // Programmatic camelCase to spaced Title Case fallback
   const result = key
@@ -102,8 +66,6 @@ export const PeoplePage = memo(() => {
   });
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
   const currentPersonId = UserHelper.currentUserChurch?.person?.id || "";
-  const [showCreatePerson, setShowCreatePerson] = React.useState(false);
-  const createPersonRef = React.useRef<HTMLDivElement>(null);
 
   const peopleQuery = useQuery<PersonInterface[]>({
     queryKey: [loadAll ? "/people/list" : `/people/list?pageSize=${INITIAL_PAGE_SIZE}`, "MembershipApi"],
@@ -114,19 +76,11 @@ export const PeoplePage = memo(() => {
     peopleQuery.refetch();
   }, [peopleQuery]);
 
-  const handlePersonCreated = useCallback((person: PersonInterface) => {
-    setShowCreatePerson(false);
-    navigate("/people/" + person.id);
-  }, [navigate]);
-
-  React.useEffect(() => {
-    if (!showCreatePerson) return;
-    const timer = setTimeout(() => {
-      createPersonRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      (createPersonRef.current?.querySelector("input") as HTMLElement | null)?.focus();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [showCreatePerson]);
+  const scrollToCreatePerson = useCallback(() => {
+    const form = document.getElementById("createPersonForm");
+    form?.scrollIntoView({ behavior: "smooth", block: "start" });
+    (form?.querySelector("input") as HTMLElement | null)?.focus();
+  }, []);
 
   const columns = [
     { key: "photo", label: Locale.label("people.peoplePage.photo"), shortName: "" },
@@ -391,7 +345,7 @@ export const PeoplePage = memo(() => {
           {Locale.label("people.demographics.title")}
         </HeaderSecondaryButton>
         {canEdit && (
-          <HeaderPrimaryButton startIcon={<PersonAddIcon />} onClick={() => setShowCreatePerson(true)} data-testid="add-person-button">
+          <HeaderPrimaryButton startIcon={<PersonAddIcon />} onClick={scrollToCreatePerson} data-testid="add-person-button">
             {Locale.label("people.peoplePage.addPerson")}
           </HeaderPrimaryButton>
         )}
@@ -401,22 +355,6 @@ export const PeoplePage = memo(() => {
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 3 }}>
-            {showCreatePerson && (
-              <Card ref={createPersonRef} sx={{ mb: 3 }} data-testid="create-person-panel">
-                <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <PersonAddIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                      <Typography variant="h6">{Locale.label("people.peoplePage.addPerson")}</Typography>
-                    </Stack>
-                    <AppIconButton label={Locale.label("common.cancel")} icon={<CloseIcon />} tone="card" onClick={() => setShowCreatePerson(false)} data-testid="cancel-create-person" />
-                  </Stack>
-                </Box>
-                <Box sx={{ p: 2 }}>
-                  <CreatePerson onCreate={handlePersonCreated} />
-                </Box>
-              </Card>
-            )}
             <PeopleSearch
               updateSearchResults={(people) => {
                 setSearchResults(people);

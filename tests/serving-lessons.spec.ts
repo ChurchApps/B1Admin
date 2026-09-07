@@ -70,7 +70,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const personSearch = page.locator('[name="personAddText"]');
       await expect(personSearch).toBeVisible({ timeout: 10000 });
       await personSearch.fill("Dorothy");
-      await page.locator('[data-testid="person-add-search-button"]').click();
+      await page.locator('[data-testid="search-button"]').click();
       // Icon-only buttons; text "Add" would substring-match "Add a New Person".
       const addPerson = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addPerson).toBeVisible({ timeout: 10000 });

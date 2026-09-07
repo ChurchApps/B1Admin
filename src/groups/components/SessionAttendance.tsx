@@ -6,6 +6,7 @@ import { Avatar, Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead
 import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   group: GroupInterface;
@@ -29,6 +30,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   // checkinType lives on the visit, but the visitsessions listing doesn't return it —
   // pull it per-person from /visits and key by visitId.
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const loadAttendance = useCallback(() => {
     if (session?.id) {
@@ -63,13 +65,14 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   }, [session?.id]);
 
   const handleRemove = useCallback(
-    (vs: VisitSessionInterface) => {
+    async (vs: VisitSessionInterface) => {
       if (!session?.id) return;
+      if (!(await confirm(Locale.label("groups.groupSessions.confirmRemove")))) return;
       ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + vs.visit?.personId, "AttendanceApi").then(() => {
         loadAttendance();
       });
     },
-    [session?.id, loadAttendance]
+    [session?.id, loadAttendance, confirm]
   );
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit), []);
@@ -156,6 +159,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
 
   return (
     <Paper sx={{ p: 2 }}>
+      {ConfirmDialogElement}
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 2 }}>
         <Box>
           <Stack direction="row" spacing={1} alignItems="center">

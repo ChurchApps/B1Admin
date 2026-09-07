@@ -1,6 +1,6 @@
 import React from "react";
 import { Search, MergeModal } from ".";
-import { type GroupMemberInterface, type VisitInterface, type FormSubmissionInterface } from "@churchapps/helpers";
+import { type ConversationInterface, type GroupMemberInterface, type MessageInterface, type VisitInterface, type FormSubmissionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PersonInterface, type DonationInterface } from "@churchapps/helpers";
@@ -23,10 +23,6 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
   const navigate = useNavigate();
   const isMounted = useMountedState();
   const context = React.useContext(UserContext);
-
-  const handleSave = () => {
-    props.hideMergeBox();
-  };
 
   const handleMerge = (personId: string) => {
     const person: PersonInterface[] = [...(searchResults || [])].filter((p) => p.id === personId);
@@ -62,15 +58,21 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
     }
   };
 
-  /*
-  const fetchNotes = async (contentId: string) => {
-    try {
-      const notes: NoteInterface[] = await ApiHelper.get(`/notes/person/${contentId}`, "MembershipApi");
-      return notes;
-    } catch (err) {
-      console.log("Error in fetching notes: ", err)
+  // Notes are conversation messages, not rows keyed to the person, so they move by
+  // re-posting them into the surviving person's conversation.
+  const transferNotes = async (winner: PersonInterface, loserId: string) => {
+    const conversations: ConversationInterface[] = await ApiHelper.get(`/conversations/messages/person/${loserId}?limit=200`, "MessagingApi");
+    const messages = (conversations || []).flatMap((c) => c.messages || []);
+    // The conflict resolver may already have handed the winner the discarded person's conversation.
+    if (messages.length === 0 || (conversations || []).some((c) => c.id === winner.conversationId)) return winner.conversationId;
+    let conversationId = winner.conversationId;
+    if (!conversationId) {
+      const created: ConversationInterface[] = await ApiHelper.post("/conversations", [{ allowAnonymousPosts: false, contentType: "person", contentId: winner.id, title: winner.name?.display + Locale.label("people.personPage.notesSuffix"), visibility: "hidden" }], "MessagingApi");
+      conversationId = created[0].id;
     }
-  }*/
+    await ApiHelper.post("/messages", messages.map((m: MessageInterface) => ({ ...m, id: undefined, conversationId })), "MessagingApi");
+    return conversationId;
+  };
 
   const fetchVisits = async (personId: string) => {
     try {
@@ -120,10 +122,10 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
       const { id, householdId } = personToRemove;
       const householdMembers = await fetchHouseholdMembers(householdId || "");
       const groupMembers = await fetchGroupMembers(id || "");
-      //const notes = await fetchNotes(id);
       const visits = await fetchVisits(id || "");
       const donations = await fetchDonations(id || "");
       const formSubmission = await fetchFormSubmissions(id || "");
+      person.conversationId = await transferNotes(person, id || "");
       const [winnerFieldValues, loserFieldValues] = await Promise.all([fetchPersonFieldValues(person.id || ""), fetchPersonFieldValues(id || "")]);
 
       const promises = [];
@@ -135,12 +137,6 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
         groupMember.personId = person.id || "";
         promises.push(ApiHelper.post("/groupmembers", [groupMember], "MembershipApi"));
       });
-      /*
-      notes.forEach(note => {
-        note.contentId = person.id;
-        promises.push(ApiHelper.post("/notes", [note], "MembershipApi"));
-      })*/
-
       visits?.forEach((visit) => {
         visit.personId = person.id;
         promises.push(ApiHelper.post(`/visits`, [visit], "AttendanceApi"));
@@ -183,7 +179,7 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <MergeModal show={showMergeModal} onHide={() => setShowMergeModal(false)} person1={person1} person2={personToMerge} merge={merge} mergeInProgress={mergeInProgress} />
-      <FormCard id="mergeBox" icon="person_add" title={Locale.label("people.merge.mergeRec")} onSave={handleSave} onCancel={props.hideMergeBox}>
+      <FormCard id="mergeBox" icon="person_add" title={Locale.label("people.merge.findPerson")} onCancel={props.hideMergeBox} cancelText={Locale.label("common.close")}>
         <ErrorMessages errors={errors} />
         <Search handleSearch={search} searchResults={searchResults || []} buttonText={Locale.label("people.merge.merge")} handleClickAction={handleMerge} />
       </FormCard>

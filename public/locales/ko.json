@@ -1515,7 +1515,6 @@
       "status": "상태:"
     },
     "householdEdit": {
-      "addMatch": "일치하는 주소",
       "addMember": "가구 구성원 추가",
       "blankMsg": "가구 이름을 입력해주세요.",
       "child": "자녀",
@@ -1524,8 +1523,7 @@
       "houseName": "가구 이름",
       "householdNameAria": "가구 이름",
       "other": "기타",
-      "spouse": "배우자",
-      "updQuestion": "업데이트하시겠습니까"
+      "spouse": "배우자"
     },
     "lists": {
       "autoRefresh": "매일 밤 새로 고침",
@@ -1552,8 +1550,7 @@
       "title": "저장된 목록"
     },
     "merge": {
-      "merge": "병합",
-      "mergeRec": "레코드 병합"
+      "merge": "병합"
     },
     "mergeModal": {
       "cancel": "취소",

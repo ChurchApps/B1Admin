@@ -118,7 +118,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           )}
         </TableCell>
         <TableCell>
-          <AppIconButton intent="add" label={actionLabel || Locale.label("common.add")} icon={<PersonAddIcon />} onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`} />
+          <AppIconButton intent="add" label={actionLabel || Locale.label("common.add")} icon={<PersonAddIcon />} onClick={() => handleAdd(sr)} data-testid={`add-person-button-${sr.id || "new"}`} />
         </TableCell>
       </TableRow>
     );

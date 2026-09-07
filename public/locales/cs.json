@@ -1515,7 +1515,6 @@
       "status": "Stav:"
     },
     "householdEdit": {
-      "addMatch": "adresa k přiřazení",
       "addMember": "Přidat člena domácnosti",
       "blankMsg": "Prosím zadejte název domácnosti.",
       "child": "Dítě",
@@ -1524,8 +1523,7 @@
       "houseName": "Název domácnosti",
       "householdNameAria": "Název domácnosti",
       "other": "Ostatní",
-      "spouse": "Manžel/ka",
-      "updQuestion": "Chcete aktualizovat"
+      "spouse": "Manžel/ka"
     },
     "lists": {
       "autoRefresh": "Obnovovat každou noc",
@@ -1552,8 +1550,7 @@
       "title": "Uložené seznamy"
     },
     "merge": {
-      "merge": "sloučit",
-      "mergeRec": "Sloučit záznamy"
+      "merge": "sloučit"
     },
     "mergeModal": {
       "cancel": "Zrušit",

@@ -73,7 +73,7 @@ export const AttendancePage = () => {
         subtitle={Locale.label("attendance.attendancePage.subtitle")}
         statistics={[
           { icon: <Icon>church</Icon>, value: campuses.length.toString(), label: Locale.label("attendance.attendancePage.campuses") },
-          { icon: <CalendarIcon />, value: stats.serviceTimes.toString(), label: Locale.label("attendance.attendancePage.services") },
+          { icon: <CalendarIcon />, value: stats.serviceTimes.toString(), label: Locale.label("attendance.attendancePage.serviceTimes") },
           { icon: <Icon>schedule</Icon>, value: stats.scheduledGroups.toString(), label: Locale.label("attendance.attendancePage.scheduled") },
           { icon: <Icon>groups</Icon>, value: stats.unscheduledGroups.toString(), label: Locale.label("attendance.attendancePage.unscheduled") },
           { icon: <GroupIcon />, value: stats.totalGroups.toString(), label: Locale.label("attendance.attendancePage.totalGroups") }

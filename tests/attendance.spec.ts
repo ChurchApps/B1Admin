@@ -88,6 +88,12 @@ test.describe("Attendance Management", () => {
     });
   });
 
+  test("Setup is titled Service structure and points named attendance at the group's Sessions tab", async ({ page }) => {
+    await expect(page.getByText("Service structure")).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('[data-testid="attendance-setup-helper"]')).toContainText("This page only assigns groups to service times.");
+    await expect(page.getByText("Service times", { exact: true })).toBeVisible();
+  });
+
   test("should view group from attendance homepage", async ({ page }) => {
     const groupBtn = page.locator("a").getByText("Worship").first();
     await groupBtn.click();
@@ -233,10 +239,15 @@ test.describe("Attendance Management", () => {
       const box = page.locator("#headcountBox");
       await box.getByRole("spinbutton", { name: "Month" }).click();
       await page.keyboard.type(mmddyyyy);
-      await expect(box.locator('[data-testid="headcount-date-input"]')).toHaveValue(`${mmddyyyy.slice(0, 2)}/${mmddyyyy.slice(2, 4)}/${mmddyyyy.slice(4)}`);
+      await expect(box.locator('[data-testid="headcount-date-input"]')).toContainText(`${mmddyyyy.slice(0, 2)}/${mmddyyyy.slice(2, 4)}/${mmddyyyy.slice(4)}`);
     };
 
     const headcountRow = (value: string) => page.locator('[data-testid="headcount-table"] tbody tr').filter({ has: page.locator('[data-testid="headcount-value-cell"]', { hasText: new RegExp(`^${value}$`) }) });
+
+    test("headcount form says it is a total, not a named roster", async () => {
+      await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();
+      await expect(page.locator('[data-testid="headcount-hint"]')).toContainText("not a named roster", { timeout: 10000 });
+    });
 
     test("should enter a headcount for a service time", async () => {
       await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();

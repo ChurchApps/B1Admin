@@ -132,7 +132,7 @@ export const PeopleSearch = () => {
 
         {searchResults.data && searchResults.data.length > 0 && (
           <Box sx={{ mt: 2 }}>
-            <PeopleSearchResults people={searchResults.data} columns={columns} selectedColumns={selectedColumns} />
+            <PeopleSearchResults people={searchResults.data} columns={columns} selectedColumns={selectedColumns} showCreatePerson={false} />
           </Box>
         )}
 

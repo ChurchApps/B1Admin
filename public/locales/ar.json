@@ -1515,7 +1515,6 @@
       "status": "الحالة:"
     },
     "householdEdit": {
-      "addMatch": "address to match",
       "addMember": "إضافة فرد من الأسرة",
       "blankMsg": "Please provide a household name.",
       "child": "Child",
@@ -1524,8 +1523,7 @@
       "houseName": "Household Name",
       "householdNameAria": "اسم الأسرة",
       "other": "Other",
-      "spouse": "Spouse",
-      "updQuestion": "Would you like to update"
+      "spouse": "Spouse"
     },
     "lists": {
       "autoRefresh": "تحديث ليلي تلقائي",
@@ -1552,8 +1550,7 @@
       "title": "القوائم المحفوظة"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Merge Records"
+      "merge": "merge"
     },
     "mergeModal": {
       "cancel": "إلغاء",

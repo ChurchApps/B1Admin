@@ -1515,7 +1515,6 @@
       "status": "Status:"
     },
     "householdEdit": {
-      "addMatch": "endereço para corresponder",
       "addMember": "Adicionar Membro à Família",
       "blankMsg": "Por favor, forneça um nome de família.",
       "child": "Criança",
@@ -1524,8 +1523,7 @@
       "houseName": "Nome da Família",
       "householdNameAria": "Nome da família",
       "other": "Outro",
-      "spouse": "Cônjuge",
-      "updQuestion": "Você gostaria de atualizar"
+      "spouse": "Cônjuge"
     },
     "lists": {
       "autoRefresh": "Atualizar diariamente",
@@ -1552,8 +1550,7 @@
       "title": "Listas salvas"
     },
     "merge": {
-      "merge": "mesclar",
-      "mergeRec": "Mesclar Registros"
+      "merge": "mesclar"
     },
     "mergeModal": {
       "cancel": "Cancelar",

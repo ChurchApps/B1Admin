@@ -8,26 +8,14 @@ import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps
 import { Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { CountChip, ExportButton, SortableTableHead, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { useConfirmDelete } from "../hooks";
+
+const EXPORT_LABEL_KEYS = [
+  "id", "churchId", "campusId", "categoryName", "joinPolicy", "labelCount", "memberCount", "meetingLocation", "meetingTime", "name", "labels", "tags"
+];
 
 const formatHeader = (key: string): string => {
-  const customMap: Record<string, string> = {
-    id: "ID",
-    churchId: "Church ID",
-    campusId: "Campus ID",
-    categoryName: "Category Name",
-    joinPolicy: "Join Policy",
-    labelCount: "Label Count",
-    memberCount: "Member Count",
-    meetingLocation: "Meeting Location",
-    meetingTime: "Meeting Time",
-    name: "Name",
-    labels: "Labels",
-    tags: "Tags"
-  };
-
-  if (customMap[key]) {
-    return customMap[key];
-  }
+  if (EXPORT_LABEL_KEYS.indexOf(key) > -1) return Locale.label("groups.export." + key);
 
   const result = key
     .replace(/([A-Z])/g, " $1")
@@ -40,6 +28,7 @@ const GroupsPage = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canEditGroups = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
 
@@ -59,7 +48,8 @@ const GroupsPage = () => {
     groupsQuery.refetch();
   };
 
-  const handleRestore = (g: GroupInterface) => {
+  const handleRestore = async (g: GroupInterface) => {
+    if (!(await confirm(Locale.label("groups.groupsPage.confirmRestore").replace("{name}", g.name || ""), { confirmLabel: Locale.label("groups.groupsPage.restore"), destructive: false }))) return;
     const group: GroupInterface = { ...g, archived: false };
     ApiHelper.post("/groups", [group], "MembershipApi").then(() => groupsQuery.refetch());
   };
@@ -215,6 +205,7 @@ const GroupsPage = () => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader
         icon={<GroupIcon />}
         title={Locale.label("groups.groupsPage.groups")}

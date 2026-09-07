@@ -1515,7 +1515,6 @@
       "status": "Katayuan:"
     },
     "householdEdit": {
-      "addMatch": "address upang tumugma",
       "addMember": "Magdagdag ng Miyembro ng Sambahayan",
       "blankMsg": "Mangyaring magbigay ng pangalan ng sambahayan.",
       "child": "Bata",
@@ -1524,8 +1523,7 @@
       "houseName": "Pangalan ng Sambahayan",
       "householdNameAria": "Pangalan ng sambahayan",
       "other": "Iba Pa",
-      "spouse": "Asawa",
-      "updQuestion": "Nais mo bang i-update"
+      "spouse": "Asawa"
     },
     "lists": {
       "autoRefresh": "I-refresh tuwing gabi",
@@ -1552,8 +1550,7 @@
       "title": "Mga Nakatagong Listahan"
     },
     "merge": {
-      "merge": "pagsamahin",
-      "mergeRec": "Pagsamahin ang mga Rekord"
+      "merge": "pagsamahin"
     },
     "mergeModal": {
       "cancel": "Kanselahin",

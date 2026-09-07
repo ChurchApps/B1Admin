@@ -1515,7 +1515,6 @@
       "status": "Status:"
     },
     "householdEdit": {
-      "addMatch": "adres om overeen te komen",
       "addMember": "Huishoudlid toevoegen",
       "blankMsg": "Voer een huishoudnaam in.",
       "child": "Kind",
@@ -1524,8 +1523,7 @@
       "houseName": "Huishoudnaam",
       "householdNameAria": "Huishoudnaam",
       "other": "Overig",
-      "spouse": "Echtgenoot/Echtgenote",
-      "updQuestion": "Wilt u bijwerken"
+      "spouse": "Echtgenoot/Echtgenote"
     },
     "lists": {
       "autoRefresh": "Nachtelijks vernieuwen",
@@ -1552,8 +1550,7 @@
       "title": "Opgeslagen lijsten"
     },
     "merge": {
-      "merge": "samenvoegen",
-      "mergeRec": "Records samenvoegen"
+      "merge": "samenvoegen"
     },
     "mergeModal": {
       "cancel": "Annuleren",

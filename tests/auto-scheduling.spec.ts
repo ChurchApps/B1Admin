@@ -52,7 +52,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     const personSearch = page.locator('[name="personAddText"]');
     await expect(personSearch).toBeVisible({ timeout: 10000 });
     await personSearch.fill(searchText);
-    await page.locator('[data-testid="person-add-search-button"]').click();
+    await page.locator('[data-testid="search-button"]').click();
     const row = page.locator("tr", { hasText: fullName });
     const addBtn = row.locator('[data-testid^="add-person-button-"]').first();
     await expect(addBtn).toBeVisible({ timeout: 10000 });
