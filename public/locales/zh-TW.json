@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "您確定要刪除",
       "storageInfo": "免費提供100 MB的儲存空間用於儲存教會網站通常需要的PDF和其他文件。如果需要額外空間，我們建議使用Google Drive或Dropbox儲存檔案。",
-      "upload": "上傳",
       "uploadFiles": "上傳檔案"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "沒有找到頁面",
       "pages": "頁數",
       "path": "小路",
-      "previewPage": "預覽頁面",
       "showLogin": "顯示登入",
       "showLoginTooltip": "在導航欄中顯示登入按鈕",
       "startFromTemplate": "從模板開始",
       "subtitle": "管理您的網站頁面、內容和導航",
       "toggleLoginVisibility": "切換登入按鈕可見性",
       "totalPages": "總頁數",
+      "viewLivePage": "預覽頁面",
       "websitePages": "網站頁面"
     },
     "paletteEdit": {

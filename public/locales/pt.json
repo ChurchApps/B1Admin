@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Tem certeza de que deseja excluir",
       "storageInfo": "100 MB de espaço de armazenamento são fornecidos gratuitamente para armazenar PDFs e outros documentos comumente necessários para sites de igrejas. Sugerimos usar o Google Drive ou Dropbox para armazenar arquivos se for necessário espaço adicional.",
-      "upload": "Carregar",
       "uploadFiles": "Carregar Arquivos"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Nenhuma página encontrada",
       "pages": "Páginas",
       "path": "Caminho",
-      "previewPage": "Página de visualização",
       "showLogin": "Mostrar login",
       "showLoginTooltip": "Mostrar botão de login na barra de navegação",
       "startFromTemplate": "Começar com um Modelo",
       "subtitle": "Gerencie as páginas, o conteúdo e a navegação do seu site",
       "toggleLoginVisibility": "Alternar a visibilidade do botão de login",
       "totalPages": "Total de páginas",
+      "viewLivePage": "Página de visualização",
       "websitePages": "Páginas do site"
     },
     "paletteEdit": {

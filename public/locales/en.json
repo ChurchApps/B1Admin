@@ -1105,6 +1105,12 @@
     "aspectRatio": "Aspect Ratio",
     "confirmDelete": "Confirm Delete",
     "freeForm": "Free Form",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload",
     "uploadError": "Image processing completed, but upload failed. The API may not be available in this environment."
   },
   "groups": {
@@ -3822,6 +3828,7 @@
     },
     "appearancePage": {
       "subtitle": "Below is a preview of a sample site with your colors, fonts and logos. This is not your actual site content.",
+      "themeGroup": "Theme, fonts & footer",
       "title": "Site Styles"
     },
     "blockEdit": {
@@ -4011,6 +4018,7 @@
       "disablePublishConfirm": "Turn off publishing for this page? Edits will go live immediately again.",
       "discardChanges": "Discard unpublished changes",
       "discardChangesConfirm": "Discard all changes made since the last publish? The editor will be restored to the live version.",
+      "editSiteFooter": "Edit site footer",
       "exit": "Exit",
       "justNow": "just now",
       "page": "Page",
@@ -4022,8 +4030,11 @@
       "savedAllChanges": "All changes saved",
       "saving": "Saving…",
       "statusLiveOnSave": "Live on save",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
       "statusPublished": "Published",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
       "statusUnpublishedChanges": "Unpublished changes",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes.",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Undo (Ctrl+Z)",
@@ -4150,10 +4161,11 @@
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
       "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. Need more? Link your own Google Drive, Dropbox, OneDrive or S3 bucket under Settings, File Storage.",
-      "upload": "Upload",
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "copied": "Link copied",
+      "copyLink": "Copy link",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Name",
@@ -4330,6 +4342,7 @@
       "loading": "Loading...",
       "pageSettings": "Page Settings",
       "previewOf": "Preview of {title}",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
       "subtitle": "Previewing: {title}",
       "title": "Website Preview"
     },
@@ -4351,13 +4364,13 @@
       "noPagesFound": "No pages found",
       "pages": "Pages",
       "path": "Path",
-      "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
       "startFromTemplate": "Start From a Template",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
+      "viewLivePage": "View live page",
       "websitePages": "Website Pages"
     },
     "paletteEdit": {
@@ -4426,7 +4439,7 @@
       "ga4": "GA4 Measurement ID",
       "ga4Hint": "Format: G-XXXXXXXXXX",
       "normalizeHint": "Paths are normalized: lowercased, with a leading slash and no trailing slash.",
-      "title": "Redirects",
+      "title": "Redirects & analytics",
       "toPath": "To Path"
     },
     "row": {
@@ -4569,7 +4582,7 @@
       "startDate": "Start Date",
       "text": "Text",
       "textColor": "Text Color",
-      "title": "Site Widgets",
+      "title": "Announcement & widgets",
       "url": "URL"
     },
     "sitesDialog": {},
@@ -4666,7 +4679,7 @@
       "fonts": "Fonts",
       "fontsDesc": "Select and customize typography",
       "footer": "Site Footer",
-      "footerDesc": "Customize your site footer",
+      "footerDesc": "Opens the block editor",
       "loadingPreview": "Loading preview...",
       "logo": "Logo",
       "logoDesc": "Upload and manage your logo",

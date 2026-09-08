@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Er du sikker på at du vil slette",
       "storageInfo": "100 MB lagringsplass er tilgjengelig gratis for lagring av PDF-er og andre dokumenter som vanligvis trengs for kirkenettsted. Vi foreslår å bruke Google Drive eller Dropbox for å lagre filer hvis det trengs mer plass.",
-      "upload": "Last opp",
       "uploadFiles": "Last opp filer"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Ingen sider funnet",
       "pages": "Sider",
       "path": "Sti",
-      "previewPage": "Forhåndsvisningsside",
       "showLogin": "Vis pålogging",
       "showLoginTooltip": "Vis påloggingsknapp i navigasjonslinjen",
       "startFromTemplate": "Start fra en mal",
       "subtitle": "Administrer nettsidene dine, innholdet og navigasjonen",
       "toggleLoginVisibility": "Slå påloggingsknappens synlighet",
       "totalPages": "Totalt antall sider",
+      "viewLivePage": "Forhåndsvisningsside",
       "websitePages": "Nettsidesider"
     },
     "paletteEdit": {

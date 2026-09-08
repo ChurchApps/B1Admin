@@ -337,12 +337,11 @@ export function ElementEdit(props: Props) {
     </>
   );
 
-  // TODO: add alt field while saving image and use it here, in image tage.
   const getTextWithPhotoFields = () => (
     <>
       {parsedData.photo && (
         <>
-          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} />
+          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={parsedData.photoAlt || Locale.label("site.elements.imageDescribingTopic")} />
           <br />
         </>
       )}
@@ -390,12 +389,11 @@ export function ElementEdit(props: Props) {
     </>
   );
 
-  // TODO: add alt field while saving image and use it here, in image tage.
   const getCardFields = () => (
     <>
       {parsedData.photo && (
         <>
-          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} />
+          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={parsedData.photoAlt || Locale.label("site.elements.imageDescribingTopic")} />
           <br />
         </>
       )}
@@ -678,7 +676,7 @@ export function ElementEdit(props: Props) {
     <>
       {parsedData.photo && (
         <>
-          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} />
+          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={parsedData.photoAlt || Locale.label("site.elements.imageDescribingTopic")} />
           <br />
         </>
       )}
@@ -857,8 +855,8 @@ export function ElementEdit(props: Props) {
       </FormControl>
       <TextField fullWidth size="small" type="number" label={Locale.label("site.campaignProgressEdit.goalAmount")} name="goalAmount" value={parsedData.goalAmount ?? ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="campaign-goal-input" />
       <TextField fullWidth size="small" label={Locale.label("site.campaignProgressEdit.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-      <AppDatePicker fullWidth size="small"  label={Locale.label("site.campaignProgressEdit.startDate")} name="startDate" value={parsedData.startDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-start-date-input" />
-      <AppDatePicker fullWidth size="small"  label={Locale.label("site.campaignProgressEdit.endDate")} name="endDate" value={parsedData.endDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-end-date-input" />
+      <AppDatePicker fullWidth size="small" label={Locale.label("site.campaignProgressEdit.startDate")} name="startDate" value={parsedData.startDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-start-date-input" />
+      <AppDatePicker fullWidth size="small" label={Locale.label("site.campaignProgressEdit.endDate")} name="endDate" value={parsedData.endDate || ""} onChange={handleChange} InputLabelProps={{ shrink: true }} data-testid="campaign-end-date-input" />
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.showAmounts !== "false" && parsedData.showAmounts !== false} />} name="showAmounts" label={Locale.label("site.campaignProgressEdit.showAmounts")} />
       <TextField fullWidth size="small" label={Locale.label("site.campaignProgressEdit.donateUrl")} name="donateUrl" value={parsedData.donateUrl || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
     </>

@@ -761,12 +761,18 @@ export function ContentEditor(props: Props) {
     }
   };
 
+  const handleEditFooter = async () => {
+    const blocks = await ApiHelper.get("/blocks/blockType/footerBlock", "ContentApi");
+    if (blocks?.[0]?.id) navigate("/site/blocks/" + blocks[0].id);
+    else navigate("/site/appearance");
+  };
+
   const handleDone = () => {
     let url = "";
     if (props.pageId) {
       const page = container as PageInterface;
       if (page.layout === "embed") {
-        if (page.url?.includes("/stream")) url = "/admin/video/settings";
+        if (page.url?.includes("/stream")) url = "/sermons/times";
       }
     }
     if (props.onDone) props.onDone(url);
@@ -1004,6 +1010,7 @@ export function ContentEditor(props: Props) {
           onUnpublish={handleUnpublish}
           onShowAccessibility={() => setShowA11y(true)}
           accessibilityIssueCount={a11yIssueCount}
+          onEditFooter={handleEditFooter}
         />
         <HistoryPanel
           open={showHistory}

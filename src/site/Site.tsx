@@ -19,6 +19,6 @@ export const Site: React.FC = () => (
     <Route path="/blocks" element={<BlocksPage />} />
     <Route path="/appearance" element={<AppearancePage />} />
     <Route path="/files" element={<FilesPage />} />
-    <Route path="/" element={<Navigate to="/pages" replace />} />
+    <Route path="/" element={<Navigate to="pages" replace />} />
   </Routes>
 );

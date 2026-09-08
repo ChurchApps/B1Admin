@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Opravdu chcete smazat",
       "storageInfo": "100 MB úložného prostoru je poskytnuto zdarma pro ukládání PDF a dalších dokumentů běžně potřebných pro webové stránky sborů. Pro ukládání souborů doporučujeme Google Drive nebo Dropbox, pokud potřebujete více místa.",
-      "upload": "Nahrát",
       "uploadFiles": "Nahrát soubory"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Nebyly nalezeny žádné stránky",
       "pages": "Stránky",
       "path": "Cesta",
-      "previewPage": "Náhled stránky",
       "showLogin": "Zobrazit přihlášení",
       "showLoginTooltip": "Zobrazit tlačítko přihlášení v navigačním panelu",
       "startFromTemplate": "Začít ze šablony",
       "subtitle": "Spravujte stránky webu, obsah a navigaci",
       "toggleLoginVisibility": "Přepnout viditelnost tlačítka přihlášení",
       "totalPages": "Celkový počet stránek",
+      "viewLivePage": "Náhled stránky",
       "websitePages": "Stránky webu"
     },
     "paletteEdit": {

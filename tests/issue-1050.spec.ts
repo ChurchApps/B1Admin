@@ -36,8 +36,7 @@ test.describe.serial("Issue 1050 - section link color", () => {
     await expect(page.locator('[name="title"]')).toHaveCount(0);
 
     const row = page.locator("tr").filter({ hasText: PAGE_NAME }).first();
-    await row.locator('[data-testid="edit-page-button"]').click();
-    await page.locator("button").getByText("Edit Content").click();
+    await row.locator('[data-testid="edit-content-button"]').click();
     const addBtn = page.locator('[data-testid="content-editor-add-button"]');
     await expect(addBtn).toBeVisible({ timeout: 30000 });
 

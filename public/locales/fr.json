@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer",
       "storageInfo": "100 Mo d'espace de stockage sont fournis gratuitement pour stocker des PDF et autres documents couramment nécessaires pour les sites web d'église. Nous suggérons d'utiliser Google Drive ou Dropbox pour stocker les fichiers si un espace supplémentaire est nécessaire.",
-      "upload": "Télécharger",
       "uploadFiles": "Télécharger des Fichiers"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Aucune page trouvée",
       "pages": "Pages",
       "path": "Chemin",
-      "previewPage": "Page d'aperçu",
       "showLogin": "Afficher la connexion",
       "showLoginTooltip": "Afficher le bouton de connexion dans la barre de navigation",
       "startFromTemplate": "Commencer à partir d'un modèle",
       "subtitle": "Gérez les pages, le contenu et la navigation de votre site Web",
       "toggleLoginVisibility": "Basculer la visibilité du bouton de connexion",
       "totalPages": "Nombre total de pages",
+      "viewLivePage": "Page d'aperçu",
       "websitePages": "Pages du site Web"
     },
     "paletteEdit": {

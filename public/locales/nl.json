@@ -3932,7 +3932,6 @@
     "files": {
       "confirmDelete": "Weet u zeker dat u wilt verwijderen",
       "storageInfo": "Er is 100 MB opslagruimte gratis beschikbaar voor het opslaan van PDF's en andere documenten die vaak nodig zijn voor kerkwebsites. We raden aan om Google Drive of Dropbox te gebruiken om bestanden op te slaan als er extra ruimte nodig is.",
-      "upload": "Uploaden",
       "uploadFiles": "Bestanden uploaden"
     },
     "filesManager": {
@@ -4133,13 +4132,13 @@
       "noPagesFound": "Geen pagina's gevonden",
       "pages": "Pagina's",
       "path": "Pad",
-      "previewPage": "Pagina voorbeeld",
       "showLogin": "Login tonen",
       "showLoginTooltip": "Toon loginknop in de navigatiebalk",
       "startFromTemplate": "Begin met een sjabloon",
       "subtitle": "Beheer de pagina's, inhoud en navigatie van uw website",
       "toggleLoginVisibility": "Zichtbaarheid loginknop omschakelen",
       "totalPages": "Totaal aantal pagina's",
+      "viewLivePage": "Pagina voorbeeld",
       "websitePages": "Websitepagina's"
     },
     "paletteEdit": {
