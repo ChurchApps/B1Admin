@@ -1515,7 +1515,6 @@
       "status": "Status:"
     },
     "householdEdit": {
-      "addMatch": "adress att matcha",
       "addMember": "Lägg till hushållsmedlem",
       "blankMsg": "Vänligen ange ett hushållsnamn.",
       "child": "Barn",
@@ -1524,8 +1523,7 @@
       "houseName": "Hushållsnamn",
       "householdNameAria": "Hushållsnamn",
       "other": "Övrigt",
-      "spouse": "Make/maka",
-      "updQuestion": "Vill du uppdatera"
+      "spouse": "Make/maka"
     },
     "lists": {
       "autoRefresh": "Uppdatera nightly",
@@ -1552,8 +1550,7 @@
       "title": "Sparade listor"
     },
     "merge": {
-      "merge": "sammanfoga",
-      "mergeRec": "Sammanfoga poster"
+      "merge": "sammanfoga"
     },
     "mergeModal": {
       "cancel": "Avbryt",

@@ -1515,7 +1515,6 @@
       "status": "Statut :"
     },
     "householdEdit": {
-      "addMatch": "adresse à correspondre",
       "addMember": "Ajouter un membre du foyer",
       "blankMsg": "Veuillez fournir un nom de ménage.",
       "child": "Enfant",
@@ -1524,8 +1523,7 @@
       "houseName": "Nom du ménage",
       "householdNameAria": "Nom du foyer",
       "other": "Autre",
-      "spouse": "Conjoint",
-      "updQuestion": "Souhaitez-vous mettre à jour"
+      "spouse": "Conjoint"
     },
     "lists": {
       "autoRefresh": "Actualiser chaque nuit",
@@ -1552,8 +1550,7 @@
       "title": "Listes enregistrées"
     },
     "merge": {
-      "merge": "fusionner",
-      "mergeRec": "Fusionner les enregistrements"
+      "merge": "fusionner"
     },
     "mergeModal": {
       "cancel": "Annuler",

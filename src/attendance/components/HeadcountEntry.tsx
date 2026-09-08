@@ -133,6 +133,7 @@ export const HeadcountEntry: React.FC = () => {
             saveTestId="headcount-save-button"
             help="docs/b1-admin/attendance/">
             <ErrorMessages errors={errors} />
+            <Typography variant="body2" color="text.secondary" data-testid="headcount-hint">{Locale.label("attendance.headcountEntry.totalOnlyHint")}</Typography>
             <FormControl fullWidth>
               <InputLabel id="headcount-service">{Locale.label("attendance.headcountEntry.service")}</InputLabel>
               <Select labelId="headcount-service" label={Locale.label("attendance.headcountEntry.service")} value={current.serviceId || ""} data-testid="headcount-service-select" onChange={(e) => setCurrent({ ...current, serviceId: e.target.value as string })}>

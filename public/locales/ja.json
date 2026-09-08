@@ -1592,7 +1592,6 @@
       "status": "ステータス："
     },
     "householdEdit": {
-      "addMatch": "住所を合わせる",
       "addMember": "世帯メンバーを追加",
       "blankMsg": "世帯名を入力してください。",
       "child": "子ども",
@@ -1601,8 +1600,7 @@
       "houseName": "世帯名",
       "householdNameAria": "世帯名",
       "other": "その他",
-      "spouse": "配偶者",
-      "updQuestion": "更新しますか"
+      "spouse": "配偶者"
     },
     "lists": {
       "autoRefresh": "毎晩更新",
@@ -1629,8 +1627,7 @@
       "title": "保存済みリスト"
     },
     "merge": {
-      "merge": "統合",
-      "mergeRec": "レコードを統合"
+      "merge": "統合"
     },
     "mergeModal": {
       "cancel": "キャンセル",

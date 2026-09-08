@@ -21,14 +21,12 @@ export const PersonNavigation = memo((props: Props) => {
   const { selectedTab, onTabChange, showForms, onHeader } = props;
 
   const tabs: NavigationTab[] = useMemo(() => {
-    const list: NavigationTab[] = [
-      { value: "details", label: Locale.label("people.personNavigation.details"), icon: <PersonIcon /> },
-      { value: "groups", label: Locale.label("people.personNavigation.groups"), icon: <GroupIcon /> },
-      { value: "attendance", label: Locale.label("people.personNavigation.attendance"), icon: <AttendanceIcon /> },
-      { value: "donations", label: Locale.label("people.personNavigation.donations"), icon: <DonationIcon /> }
-    ];
-    if (UserHelper.checkAccess(Permissions.membershipApi.people.edit)) list.splice(1, 0, { value: "notes", label: Locale.label("people.personNavigation.notes"), icon: <NotesIcon /> });
-    if (showForms) list.splice(1, 0, { value: "forms", label: Locale.label("people.personNavigation.forms"), icon: <DescriptionIcon /> });
+    const list: NavigationTab[] = [{ value: "details", label: Locale.label("people.personNavigation.details"), icon: <PersonIcon /> }];
+    if (showForms) list.push({ value: "forms", label: Locale.label("people.personNavigation.forms"), icon: <DescriptionIcon /> });
+    if (UserHelper.checkAccess(Permissions.membershipApi.people.edit)) list.push({ value: "notes", label: Locale.label("people.personNavigation.notes"), icon: <NotesIcon /> });
+    list.push({ value: "groups", label: Locale.label("people.personNavigation.groups"), icon: <GroupIcon /> });
+    if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.view)) list.push({ value: "attendance", label: Locale.label("people.personNavigation.attendance"), icon: <AttendanceIcon /> });
+    if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) list.push({ value: "donations", label: Locale.label("people.personNavigation.donations"), icon: <DonationIcon /> });
     return list;
   }, [showForms]);
 

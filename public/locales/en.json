@@ -30,6 +30,7 @@
       "groups": "Groups",
       "scheduled": "Scheduled",
       "service": "Service",
+      "serviceTimes": "Service times",
       "services": "Services",
       "subtitle": "Track attendance for services and groups",
       "time": "Time",
@@ -38,7 +39,9 @@
     },
     "attendanceSetup": {
       "manageCampuses": "Manage Campuses",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
       "setupMessage": "Set up campuses, services, and service times to begin tracking attendance.",
+      "title": "Service structure",
       "unassigned": "Unassigned"
     },
     "checkinType": {
@@ -59,6 +62,7 @@
       "service": "Service",
       "serviceTime": "Service Time",
       "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
       "validate": {
         "count": "Enter a whole number of zero or more.",
         "date": "Please choose a date.",
@@ -1114,6 +1118,20 @@
     "uploadError": "Image processing completed, but upload failed. The API may not be available in this environment."
   },
   "groups": {
+    "export": {
+      "campusId": "Campus ID",
+      "categoryName": "Category Name",
+      "churchId": "Church ID",
+      "id": "ID",
+      "joinPolicy": "Join Policy",
+      "labelCount": "Label Count",
+      "labels": "Labels",
+      "meetingLocation": "Meeting Location",
+      "meetingTime": "Meeting Time",
+      "memberCount": "Member Count",
+      "name": "Name",
+      "tags": "Tags"
+    },
     "groupAdd": {
       "add": "Add",
       "catName": "Category Name",
@@ -1291,7 +1309,9 @@
     "groupSessions": {
       "addSesMsg": "Please add a new session to continue.",
       "allYears": "All Years",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
       "attFor": "Attendance for",
+      "confirmRemove": "Remove this person from the session's attendance?",
       "new": "New",
       "noAttendance": "No attendance records found",
       "noSesMsg": "There are no sessions.",
@@ -1305,6 +1325,7 @@
     "groupsPage": {
       "addGroup": "Add Group",
       "cat": "Category",
+      "confirmRestore": "Restore {name} from the archive?",
       "export": "Export",
       "groups": "Groups",
       "labels": "Labels",
@@ -1641,6 +1662,42 @@
       "value": "Value",
       "valuePlaceholder": "Value"
     },
+    "export": {
+      "address": "Address",
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "age": "Age",
+      "anniversary": "Anniversary",
+      "birthDate": "Birth Date",
+      "campusId": "Campus ID",
+      "churchId": "Church ID",
+      "city": "City",
+      "contactCity": "Contact City",
+      "contactEmail": "Contact Email",
+      "contactState": "Contact State",
+      "contactZip": "Contact Zip",
+      "conversationId": "Conversation ID",
+      "display": "Display Name",
+      "first": "First Name",
+      "firstName": "First Name",
+      "gender": "Gender",
+      "householdId": "Household ID",
+      "id": "ID",
+      "last": "Last Name",
+      "lastName": "Last Name",
+      "membershipStatus": "Membership Status",
+      "middle": "Middle Name",
+      "middleName": "Middle Name",
+      "mobilePhone": "Mobile Phone",
+      "nametagNotes": "Nametag Notes",
+      "nick": "Nick Name",
+      "optedOut": "Opted Out",
+      "phone": "Phone",
+      "photo": "Photo",
+      "photoUpdated": "Photo Updated",
+      "state": "State",
+      "workPhone": "Work Phone"
+    },
     "gdprActions": {
       "anonymize": "Anonymize",
       "anonymizeConfirmType": "Type \"ANONYMIZE\" to confirm:",
@@ -1667,7 +1724,6 @@
       "status": "Status:"
     },
     "householdEdit": {
-      "addMatch": "address to match",
       "addMember": "Add Household Member",
       "blankMsg": "Please provide a household name.",
       "child": "Child",
@@ -1677,7 +1733,7 @@
       "householdNameAria": "Household name",
       "other": "Other",
       "spouse": "Spouse",
-      "updQuestion": "Would you like to update"
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Refresh nightly",
@@ -1704,8 +1760,8 @@
       "title": "Saved Lists"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Merge Records"
+      "findPerson": "Find person to merge",
+      "merge": "merge"
     },
     "mergeModal": {
       "cancel": "Cancel",

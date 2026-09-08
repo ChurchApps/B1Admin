@@ -16,6 +16,13 @@ test.describe("People Management", () => {
       await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/);
     });
 
+    test("Add Person jumps to the one create form", async ({ page }) => {
+      await page.locator('[data-testid="add-person-button"]').click();
+      await expect(page.locator('[data-testid="create-person-panel"]')).toHaveCount(0);
+      await expect(page.locator("#createPersonForm")).toHaveCount(1);
+      await expect(page.locator("#createPersonForm input[name='first']")).toBeFocused();
+    });
+
     test("should search for people", async ({ page }) => {
       const searchInput = page.locator('input[name="searchText"]');
       await searchInput.fill("Smith");
@@ -570,14 +577,16 @@ test.describe("People Management", () => {
       await expect(page.locator("#homePhone")).toHaveValue("20 7946 0958", { timeout: 10000 });
     });
 
-    test("should cancel merging person details", async ({ page }) => {
+    test("should close the merge card, which offers no dead Save", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       const mergeBtn = page.locator("button").getByText("merge");
       await mergeBtn.click();
-      const cancelBtn = page.locator("button").getByText("Cancel").first();
-      await cancelBtn.click();
+      const mergeBox = page.locator("#mergeBox");
+      await expect(mergeBox).toContainText("Find person to merge");
+      await expect(mergeBox.getByRole("button", { name: "Save" })).toHaveCount(0);
+      await mergeBox.getByRole("button", { name: "Close" }).click();
       await expect(page.locator('[name="personAddText"]')).toHaveCount(0);
     });
 

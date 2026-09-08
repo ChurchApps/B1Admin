@@ -1515,7 +1515,6 @@
       "status": "Tila:"
     },
     "householdEdit": {
-      "addMatch": "address to match",
       "addMember": "Lisää kotitalouden jäsen",
       "blankMsg": "Please provide a household name.",
       "child": "Child",
@@ -1524,8 +1523,7 @@
       "houseName": "Kotitalouden nimi",
       "householdNameAria": "Kotitalouden nimi",
       "other": "Other",
-      "spouse": "Puoliso",
-      "updQuestion": "Would you like to update"
+      "spouse": "Puoliso"
     },
     "lists": {
       "autoRefresh": "Päivitä öisin",
@@ -1552,8 +1550,7 @@
       "title": "Tallennetut listat"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Yhdistä tieteet"
+      "merge": "merge"
     },
     "mergeModal": {
       "cancel": "Peruuta",

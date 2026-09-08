@@ -371,7 +371,7 @@ export const AttendanceSetup = memo(() => {
           <Stack direction="row" spacing={1} alignItems="center">
             <Icon sx={{ color: "primary.main", fontSize: 20 }}>group</Icon>
             <Typography variant="h6">
-              {Locale.label("attendance.attendancePage.groups")}
+              {Locale.label("attendance.attendanceSetup.title")}
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1}>
@@ -383,6 +383,9 @@ export const AttendanceSetup = memo(() => {
             </Button>
           </Stack>
         </Stack>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }} data-testid="attendance-setup-helper">
+          {Locale.label("attendance.attendanceSetup.namedAttendanceHelp")}
+        </Typography>
       </Box>
 
       <Box sx={{ p: 0 }}>{table}</Box>

@@ -22,6 +22,7 @@ interface Props {
   togglePersonSelection?: (personId: string) => void;
   toggleAllVisiblePeople?: () => void;
   currentPersonId?: string;
+  showCreatePerson?: boolean;
 }
 
 const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
@@ -421,11 +422,13 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     <Box>
       {ConfirmDialogElement}
       {getResults()}
-      <Card sx={{ mt: 3 }} id="createPersonForm">
-        <Box sx={{ p: 3 }}>
-          <CreatePerson onCreate={navigateToPersonCreate} />
-        </Box>
-      </Card>
+      {props.showCreatePerson !== false && (
+        <Card sx={{ mt: 3 }} id="createPersonForm">
+          <Box sx={{ p: 3 }}>
+            <CreatePerson onCreate={navigateToPersonCreate} />
+          </Box>
+        </Card>
+      )}
     </Box>
   );
 });

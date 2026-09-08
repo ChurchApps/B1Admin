@@ -1515,7 +1515,6 @@
       "status": "Durum:"
     },
     "householdEdit": {
-      "addMatch": "address to match",
       "addMember": "Hane Üyesi Ekle",
       "blankMsg": "Please provide a household name.",
       "child": "Child",
@@ -1524,8 +1523,7 @@
       "houseName": "Household Name",
       "householdNameAria": "Hane adı",
       "other": "Other",
-      "spouse": "Spouse",
-      "updQuestion": "Would you like to update"
+      "spouse": "Spouse"
     },
     "lists": {
       "autoRefresh": "Her gece yenile",
@@ -1552,8 +1550,7 @@
       "title": "Kayıtlı Listeler"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Merge Records"
+      "merge": "merge"
     },
     "mergeModal": {
       "cancel": "İptal",

@@ -102,7 +102,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const personSearch = page.locator('[name="personAddText"]');
       await expect(personSearch).toBeVisible({ timeout: 10000 });
       await personSearch.fill("Dorothy");
-      const searchBtn = page.locator('[data-testid="person-add-search-button"]');
+      const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
       // Icon-only buttons; text "Add" would substring-match "Add a New Person".
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
@@ -342,7 +342,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const personSearch = page.locator('[name="personAddText"]');
       await expect(personSearch).toBeVisible({ timeout: 10000 });
       await personSearch.fill("Dorothy");
-      const searchBtn = page.locator('[data-testid="person-add-search-button"]');
+      const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });

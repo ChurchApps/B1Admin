@@ -1515,7 +1515,6 @@
       "status": "Status:"
     },
     "householdEdit": {
-      "addMatch": "adresse for å matche",
       "addMember": "Legg til husholdningsmedlem",
       "blankMsg": "Vennligst oppgi et husholdningsnavn.",
       "child": "Barn",
@@ -1524,8 +1523,7 @@
       "houseName": "Husholdningsnavn",
       "householdNameAria": "Husholdningsnavn",
       "other": "Annet",
-      "spouse": "Ektefelle",
-      "updQuestion": "Vil du oppdatere"
+      "spouse": "Ektefelle"
     },
     "lists": {
       "autoRefresh": "Oppdater nattlig",
@@ -1552,8 +1550,7 @@
       "title": "Lagrede lister"
     },
     "merge": {
-      "merge": "slå sammen",
-      "mergeRec": "Slå sammen poster"
+      "merge": "slå sammen"
     },
     "mergeModal": {
       "cancel": "Avbryt",

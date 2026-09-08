@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { GalleryModal } from "../../components/gallery";
-import { PersonAdd } from "./PersonAdd";
+import { PersonAdd } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 import { Delete as DeleteIcon } from "@mui/icons-material";
