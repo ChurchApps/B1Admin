@@ -8,8 +8,7 @@ export const CommonsApi = {
 };
 
 export const getWorshipCommonsOrigin = (): string => {
-  const env = import.meta.env as ImportMetaEnv & Record<string, string | undefined>;
-  const fromEnv = env.REACT_APP_WORSHIPCOMMONS_ORIGIN || env.VITE_WORSHIPCOMMONS_ORIGIN;
+  const fromEnv = (import.meta.env as ImportMetaEnv & Record<string, string | undefined>).VITE_WORSHIPCOMMONS_ORIGIN;
   if (fromEnv) return fromEnv.replace(/\/$/, "");
   return window.location.hostname === "localhost" ? "http://localhost:3104" : "https://worshipcommons.org";
 };
@@ -25,11 +24,76 @@ export type ReportStatus = "open" | "reviewing" | "resolved";
 export type ReportResolution = "upheld" | "dismissed" | "duplicate";
 export type ReportAction = "none" | "unpublish" | "remove";
 export type RemovedReason = "copyright" | "policy";
+export type SubmissionType = "new" | "translation" | "arrangement" | "correction" | "additionalFile" | "removal";
+export type Confidence = "sunday-ready" | "proofread-score" | "converted-from-abc" | "generated-from-midi" | "chart-only" | "lyrics-only";
 
 export const REJECT_REASONS: RejectReason[] = ["quality", "duplicate", "licensing", "ccli", "offtopic", "incomplete", "other"];
 export const RESOLUTIONS: ReportResolution[] = ["upheld", "dismissed", "duplicate"];
 export const RESOLVE_ACTIONS: ReportAction[] = ["none", "unpublish", "remove"];
 export const REMOVE_REASONS: RemovedReason[] = ["copyright", "policy"];
+export const SUBMISSION_TYPES: SubmissionType[] = ["new", "translation", "arrangement", "correction", "additionalFile", "removal"];
+
+// /admin/status: { admin, pendingCount } today; musicEditor arrives with COMMONS_MUSIC_EDITORS.
+export interface CommonsAdminStatus {
+  admin?: boolean;
+  musicEditor?: boolean;
+  pendingCount?: number;
+}
+
+// One row of a package's sources/manifest.json (files[]); the review drawer shows them as "Sources".
+export interface CommonsManifestRow {
+  file: string;
+  url?: string;
+  acquired?: string;
+  sha256?: string;
+  licenseBasis?: string;
+  original?: boolean;
+  submittedBy?: string;
+  submissionId?: string;
+  note?: string;
+}
+
+export interface CommonsManifest {
+  files?: CommonsManifestRow[];
+  sources?: CommonsManifestRow[];
+}
+
+export interface CommonsContributor {
+  name: string;
+  what: string;
+  submissionId?: string;
+  at?: string;
+}
+
+// Song summary rows of GET /songs (subset B1Admin reads) — see the package-model contract.
+export interface CommonsSongSummary {
+  id: string;
+  title: string;
+  writer?: string;
+  license?: string;
+  confidence?: Confidence;
+  sundayReady?: boolean;
+  songKey?: string;
+  hasScore?: boolean;
+  hasChords?: boolean;
+  hasSlides?: boolean;
+  firstLine?: string | null;
+}
+
+// Song detail of GET /songs/:id — the listen-gate fields plus what the summary has.
+export interface CommonsSongDetail extends CommonsSongSummary {
+  publishedKeys?: string[];
+  listenedKeys?: string[];
+  recommendedKey?: string | null;
+  sundayReadyAt?: string | null;
+  sundayReadyBy?: string | null;
+  contributors?: CommonsContributor[];
+}
+
+export interface CommonsDeclinedFile {
+  name: string;
+  reason: string;
+}
 
 export interface CommonsTypeDef {
   key: string;
@@ -90,6 +154,8 @@ export interface CommonsQueueRow {
   filesChanged: CommonsFileSummary[];
   rightsFlag?: boolean;
   possibleDuplicate?: boolean;
+  type?: SubmissionType;
+  confidence?: Confidence;
 }
 
 export interface CommonsSubmissionFile {
@@ -107,6 +173,7 @@ export interface CommonsDiffField {
 }
 
 export interface CommonsPayload {
+  type?: SubmissionType;
   name?: string;
   description?: string;
   tags?: string;
@@ -125,6 +192,9 @@ export interface CommonsLiveAsset {
   files?: CommonsSubmissionFile[];
   fileUrls?: Record<string, string>;
   payload?: CommonsPayload;
+  manifest?: CommonsManifest;
+  contributors?: CommonsContributor[];
+  confidence?: Confidence;
 }
 
 export interface CommonsSubmissionDetail extends CommonsQueueRow {
@@ -135,6 +205,8 @@ export interface CommonsSubmissionDetail extends CommonsQueueRow {
   previewUrl?: string;
   detailFields?: CommonsDetailField[];
   attestations?: CommonsAttestation[];
+  manifest?: CommonsManifest;
+  contributors?: CommonsContributor[];
 }
 
 export interface CommonsReport {
@@ -170,4 +242,7 @@ export interface CommonsAsset {
   removedReason?: RemovedReason;
   publishedAt?: string;
   modifiedAt?: string;
+  confidence?: Confidence;
+  sundayReadyAt?: string | null;
+  sundayReadyBy?: string | null;
 }

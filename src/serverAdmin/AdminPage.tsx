@@ -14,7 +14,7 @@ import { JobsTab } from "./components/JobsTab";
 import { CommonsTab } from "./components/CommonsTab";
 import { SettingsConfigList, type ConfigSection } from "../settings/components/SettingsConfigList";
 import { useRequirePermission } from "../hooks";
-import { CommonsApi } from "./commonsApi";
+import { CommonsApi, type CommonsAdminStatus } from "./commonsApi";
 
 const SECTION_KEYS = [
   "churches",
@@ -30,6 +30,7 @@ const SECTION_KEYS = [
 export const AdminPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [pendingCount, setPendingCount] = React.useState(0);
+  const [commonsStatus, setCommonsStatus] = React.useState<CommonsAdminStatus>({});
   const denied = useRequirePermission(Permissions.membershipApi.server.admin);
 
   const tabParam = searchParams.get("tab") || "";
@@ -46,7 +47,8 @@ export const AdminPage = () => {
     let cancelled = false;
     const load = async () => {
       try {
-        const status = await CommonsApi.get("/admin/status");
+        const status: CommonsAdminStatus = await CommonsApi.get("/admin/status");
+        if (!cancelled && status) setCommonsStatus(status);
         if (typeof status?.pendingCount === "number") {
           if (!cancelled) setPendingCount(status.pendingCount);
           return;
@@ -71,7 +73,7 @@ export const AdminPage = () => {
       case "users": return <UsersTab key="users" />;
       case "impersonate": return <ImpersonateTab key="impersonate" />;
       case "jobs": return <JobsTab key="jobs" />;
-      case "commons": return <CommonsTab key="commons" />;
+      case "commons": return <CommonsTab key="commons" musicEditor={!!commonsStatus.musicEditor && !commonsStatus.admin} />;
       case "usage": return <UsageTrendsTab key="usage" />;
       case "translation": return <TranslationTab key="translation" />;
       case "serverHealth": return <ServerHealthTab key="serverHealth" />;
