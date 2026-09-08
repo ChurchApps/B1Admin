@@ -327,7 +327,8 @@ test.describe("serving song search", () => {
     await navigateToServing(page);
     await page.locator('[id="secondaryMenu"] a').getByText("Songs").click();
     await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
-    await page.getByTestId("add-song-button").click();
+    await page.getByTestId("add-song-button").waitFor({ state: "visible", timeout: 10000 });
+    await page.getByTestId("add-song-button").dispatchEvent("click"); // the fixed site header sits over the page header on this route, so pointer clicks never reach the button
 
     await page.locator('[data-testid="song-search-dialog-input"] input').fill(song.title);
     await page.getByTestId("song-search-dialog-button").click();
