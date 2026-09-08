@@ -1,15 +1,15 @@
 import React from "react";
 import { DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
 import {
-  Alert, Box, Button, Chip, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack,
+  Alert, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Snackbar, Stack,
   Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
 } from "@mui/material";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import {
   CommonsApi, getWorshipCommonsOrigin, REJECT_REASONS, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
-  type CommonsTypeDef, type CommonsQueueRow, type CommonsReport, type CommonsAsset, type CommonsQualityDetail, type CommonsSubmitterStats,
-  type RejectReason, type ReportResolution, type ReportAction, type RemovedReason, type AssetStatus
+  type CommonsTypeDef, type CommonsQueueRow, type CommonsReport, type CommonsAsset, type CommonsQualityDetail, type CommonsSubmitterStats, type CommonsSongDetail,
+  type RejectReason, type ReportResolution, type ReportAction, type RemovedReason, type AssetStatus, type Confidence
 } from "../commonsApi";
 import { CommonsReviewDrawer } from "./CommonsReviewDrawer";
 
@@ -38,6 +38,14 @@ const scoreTooltip = (score: number, detail?: CommonsQualityDetail) => {
   if (detail?.notes) bits.push(detail.notes);
   else if (!detail?.llm) bits.push(Locale.label("serverAdmin.commonsTab.scoreHeuristicOnly"));
   return bits.join(" · ");
+};
+
+const confidenceLabel = (c?: Confidence | string) => (c ? Locale.label(`serverAdmin.commonsTab.confidence.${c}`, c) : "");
+
+const ConfidenceChip = (props: { confidence?: Confidence | string; testId?: string }) => {
+  if (!props.confidence) return null;
+  const ready = props.confidence === "sunday-ready";
+  return <Chip size="small" color={ready ? "success" : "default"} variant={ready ? "filled" : "outlined"} label={confidenceLabel(props.confidence)} data-testid={props.testId} data-confidence={props.confidence} />;
 };
 
 const badgeLabel = (row: CommonsQueueRow) => {
@@ -97,7 +105,7 @@ const RejectDialog = (props: { row: CommonsQueueRow | null; onClose: () => void;
   );
 };
 
-const QueueView = (props: { onPublished?: (assetId: string) => void }) => {
+const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor?: boolean }) => {
   const [types, setTypes] = React.useState<CommonsTypeDef[]>([]);
   const [rows, setRows] = React.useState<CommonsQueueRow[]>([]);
   const [product, setProduct] = React.useState("");
@@ -207,6 +215,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void }) => {
                       {row.possibleDuplicate && (
                         <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
                       )}
+                      <ConfidenceChip confidence={row.confidence} />
                     </Stack>
                   </TableCell>
                   <TableCell>
@@ -248,6 +257,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void }) => {
         <CommonsReviewDrawer
           submissionId={reviewId}
           queueIds={queueIds}
+          musicEditor={props.musicEditor}
           onClose={() => setReviewId(null)}
           onSelect={setReviewId}
           onApproved={(id, assetId) => {
@@ -256,6 +266,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void }) => {
             if (assetId) props.onPublished?.(assetId);
           }}
           onRejected={(id) => { removeRow(id); setReviewId(null); }}
+          onChangesRequested={(id) => { removeRow(id); setReviewId(null); }}
         />
       )}
     </DisplayBox>
@@ -440,11 +451,83 @@ const RemoveAssetDialog = (props: { asset: CommonsAsset | null; onClose: () => v
   );
 };
 
+// Listen gate: tick each published key you listened through; the API flips confidence to sunday-ready
+// once every key is covered and the package has a score, chords and slides.
+const ListenDialog = (props: { asset: CommonsAsset | null; onClose: () => void; onSaved: (id: string, song: CommonsSongDetail) => void }) => {
+  const { asset, onClose, onSaved } = props;
+  const [song, setSong] = React.useState<CommonsSongDetail | null>(null);
+  const [keys, setKeys] = React.useState<string[]>([]);
+  const [error, setError] = React.useState("");
+  const [busy, setBusy] = React.useState(false);
+
+  React.useEffect(() => {
+    setSong(null); setKeys([]); setError("");
+    if (!asset) return;
+    let cancelled = false;
+    CommonsApi.get(`/songs/${asset.id}`).then((data: CommonsSongDetail) => {
+      if (cancelled) return;
+      setSong(data || null);
+      setKeys(Array.isArray(data?.listenedKeys) ? data.listenedKeys : []);
+    }).catch((e) => { if (!cancelled) setError(e instanceof Error ? e.message : String(e)); });
+    return () => { cancelled = true; };
+  }, [asset?.id]);
+
+  const published: string[] = React.useMemo(() => {
+    if (Array.isArray(song?.publishedKeys) && song.publishedKeys.length) return song.publishedKeys;
+    return song?.songKey ? [song.songKey] : [];
+  }, [song]);
+
+  const toggle = (k: string) => setKeys((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
+
+  const save = async () => {
+    if (!asset) return;
+    setBusy(true); setError("");
+    try {
+      const result: CommonsSongDetail = await CommonsApi.post(`/admin/songs/${asset.id}/listen`, { keys });
+      onSaved(asset.id, result || {});
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Dialog open={!!asset} onClose={onClose} fullWidth maxWidth="xs" data-testid="commons-listen-dialog">
+      <DialogTitle>{Locale.label("serverAdmin.commonsTab.listenTitle").replace("{name}", asset?.name || "")}</DialogTitle>
+      <DialogContent>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("serverAdmin.commonsTab.listenHelp")}</Typography>
+        {error && <Alert severity="error" sx={{ mb: 1 }}>{error}</Alert>}
+        {!song && !error && <CircularProgress size={20} />}
+        {song && published.length === 0 && <Typography variant="body2">{Locale.label("serverAdmin.commonsTab.noKeys")}</Typography>}
+        {song && published.map((k) => (
+          <FormControlLabel
+            key={k}
+            control={<Checkbox checked={keys.includes(k)} onChange={() => toggle(k)} inputProps={{ "data-testid": `commons-listen-key-${k}` } as React.InputHTMLAttributes<HTMLInputElement>} />}
+            label={k}
+          />
+        ))}
+        {song && (
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
+            {[song.hasScore ? "score" : null, song.hasChords ? "chords" : null, song.hasSlides ? "slides" : null].filter(Boolean).join(" · ") || "-"}
+            {song.sundayReadyAt ? ` · ${Locale.label("serverAdmin.commonsTab.sundayReady")} ${song.sundayReadyBy || ""} ${DateHelper.prettyDate(DateHelper.toDate(song.sundayReadyAt))}` : ""}
+          </Typography>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>{Locale.label("common.cancel")}</Button>
+        <Button variant="contained" disabled={busy || !song} onClick={save} data-testid="commons-listen-save">{Locale.label("common.save")}</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 const AssetsView = () => {
   const [q, setQ] = React.useState("");
   const [status, setStatus] = React.useState("");
   const [assets, setAssets] = React.useState<CommonsAsset[]>([]);
   const [removeAsset, setRemoveAsset] = React.useState<CommonsAsset | null>(null);
+  const [listenAsset, setListenAsset] = React.useState<CommonsAsset | null>(null);
   const { ConfirmDialogElement } = useConfirmDelete();
 
   const load = React.useCallback(() => {
@@ -505,6 +588,7 @@ const AssetsView = () => {
               <TableCell>{Locale.label("serverAdmin.commonsTab.colType")}</TableCell>
               <TableCell>{Locale.label("serverAdmin.commonsTab.publisher")}</TableCell>
               <TableCell>{Locale.label("serverAdmin.commonsTab.status")}</TableCell>
+              <TableCell>{Locale.label("serverAdmin.commonsTab.colConfidence")}</TableCell>
               <TableCell>{Locale.label("serverAdmin.commonsTab.downloads")}</TableCell>
               <TableCell align="right">{Locale.label("serverAdmin.commonsTab.colActions")}</TableCell>
             </TableRow>
@@ -516,16 +600,30 @@ const AssetsView = () => {
                 <TableCell>{a.typeLabel || a.assetType}</TableCell>
                 <TableCell>{a.publisherName || "-"}</TableCell>
                 <TableCell><Chip size="small" label={Locale.label(`serverAdmin.commonsTab.assetStatus.${a.status}`)} /></TableCell>
+                <TableCell>
+                  {a.confidence === "sunday-ready" ? (
+                    <Tooltip title={`${a.sundayReadyBy || ""} ${a.sundayReadyAt ? DateHelper.prettyDate(DateHelper.toDate(a.sundayReadyAt)) : ""}`.trim()}>
+                      <span><ConfidenceChip confidence={a.confidence} testId={`commons-sunday-ready-${a.id}`} /></span>
+                    </Tooltip>
+                  ) : <ConfidenceChip confidence={a.confidence} testId={`commons-confidence-${a.id}`} />}
+                </TableCell>
                 <TableCell>{a.downloadCount ?? 0}</TableCell>
                 <TableCell align="right">
-                  <Button
-                    size="small"
-                    color={a.featured ? "warning" : "inherit"}
-                    onClick={() => feature(a)}
-                    data-testid={`commons-asset-feature-${a.id}`}
-                  >
-                    {a.featured ? Locale.label("serverAdmin.commonsTab.featured") : Locale.label("serverAdmin.commonsTab.feature")}
-                  </Button>
+                  <Tooltip title={Locale.label("serverAdmin.commonsTab.featureTooltip")}>
+                    <Button
+                      size="small"
+                      color={a.featured ? "warning" : "inherit"}
+                      onClick={() => feature(a)}
+                      data-testid={`commons-asset-feature-${a.id}`}
+                    >
+                      {a.featured ? Locale.label("serverAdmin.commonsTab.featured") : Locale.label("serverAdmin.commonsTab.feature")}
+                    </Button>
+                  </Tooltip>
+                  {a.assetType === "song" && a.status !== "removed" && (
+                    <Button size="small" onClick={() => setListenAsset(a)} data-testid={`commons-asset-listen-${a.id}`}>
+                      {Locale.label("serverAdmin.commonsTab.listened")}
+                    </Button>
+                  )}
                   {a.status === "published" && (
                     <Button size="small" onClick={() => unpublish(a)} data-testid={`commons-asset-unpublish-${a.id}`}>
                       {Locale.label("serverAdmin.commonsTab.unpublish")}
@@ -548,6 +646,15 @@ const AssetsView = () => {
         </Table>
       )}
 
+      <ListenDialog
+        asset={listenAsset}
+        onClose={() => setListenAsset(null)}
+        onSaved={(id, song) => {
+          setAssets((prev) => prev.map((x) => (x.id === id ? { ...x, confidence: song.confidence ?? x.confidence, sundayReadyAt: song.sundayReadyAt ?? null, sundayReadyBy: song.sundayReadyBy ?? null } : x)));
+          setListenAsset(null);
+        }}
+      />
+
       <RemoveAssetDialog
         asset={removeAsset}
         onClose={() => setRemoveAsset(null)}
@@ -560,7 +667,7 @@ const AssetsView = () => {
   );
 };
 
-export const CommonsTab = () => {
+export const CommonsTab = (props: { musicEditor?: boolean }) => {
   const [subTab, setSubTab] = React.useState("queue");
   const [publishedAssetId, setPublishedAssetId] = React.useState<string | null>(null);
 
@@ -574,7 +681,7 @@ export const CommonsTab = () => {
     <>
       <NavigationTabs selectedTab={subTab} onTabChange={setSubTab} tabs={tabs} testId="commonsTabs" />
       <Box sx={{ mt: 2 }}>
-        {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} />}
+        {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} musicEditor={props.musicEditor} />}
         {subTab === "reports" && <ReportsView />}
         {subTab === "assets" && <AssetsView />}
       </Box>

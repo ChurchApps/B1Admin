@@ -1,6 +1,6 @@
-import { test, expect, type APIRequestContext } from "@playwright/test";
+import { test, expect, type APIRequestContext, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { navigateTo } from "./helpers/navigation";
+import { navigateTo, navigateToServing } from "./helpers/navigation";
 
 // Commons is a Domain Admin-only moderation tab. demo@b1.church (USR00000001) is a member of
 // the "Domain Admins" role (Api/tools/dbScripts/membership/demo.sql, RME00000001 -> ROL00000001),
@@ -71,6 +71,27 @@ async function seedOrReusePolicyReport(ctx: APIRequestContext, adminJwt: string,
   return { id: existing!.id, contentText: existing!.contentText || "", status: existing!.status };
 }
 
+async function openCommons(page: Page) {
+  await login(page);
+  await navigateTo(page, "serverAdmin");
+  const commonsSection = page.locator('[data-testid="settings-section-commons"]');
+  await expect(commonsSection).toBeVisible();
+  await commonsSection.click();
+  await expect(page).toHaveURL(/[?&]tab=commons/);
+}
+
+// The listen gate needs a package with a score, chords and slides. The demo catalog (reset-commons)
+// seeds ~200 such songs; pick the first one so the spec does not depend on a specific title.
+type CatalogSong = { id: string; title: string; hasScore?: boolean; hasChords?: boolean; hasSlides?: boolean; confidence?: string };
+async function pickListenableSong(ctx: APIRequestContext): Promise<CatalogSong> {
+  const res = await ctx.get(`${API}/commons/songs`);
+  expect(res.ok()).toBeTruthy();
+  const rows = (await res.json()) as CatalogSong[];
+  const song = rows.find((r) => r.hasScore && r.hasChords && r.hasSlides) || rows.find((r) => r.hasScore);
+  expect(song, "no demo song with a score — run reset-commons first").toBeTruthy();
+  return song!;
+}
+
 test.describe("serverAdmin Commons tab", () => {
   test("moderates submissions, reports and assets end to end", async ({ page, request }) => {
     const suffix = Date.now();
@@ -85,13 +106,7 @@ test.describe("serverAdmin Commons tab", () => {
     const report = await seedOrReusePolicyReport(request, adminJwt, reportMarker);
     const reportId = report.id;
 
-    await login(page);
-    await navigateTo(page, "serverAdmin");
-
-    const commonsSection = page.locator('[data-testid="settings-section-commons"]');
-    await expect(commonsSection).toBeVisible();
-    await commonsSection.click();
-    await expect(page).toHaveURL(/[?&]tab=commons/);
+    await openCommons(page);
 
     // (a) queue shows the seeded submission with the New badge and submitter
     const row1 = page.locator(`[data-testid="commons-queue-row-${sub1.submissionId}"]`);
@@ -100,10 +115,12 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(row1.getByText("New", { exact: true })).toBeVisible();
     await expect(row1.getByText("Demo", { exact: false })).toBeVisible();
 
-    // (b) review drawer: payload fields + file, approve publishes the asset
+    // (b) review drawer: type chip, intake findings, payload fields + file, approve publishes the asset
     await row1.getByTestId(`commons-review-${sub1.submissionId}`).click();
     const drawer = page.getByTestId("commons-drawer");
     await expect(drawer).toBeVisible();
+    await expect(drawer.getByTestId("commons-drawer-type")).toHaveText("New song");
+    await expect(drawer.getByTestId("commons-intake-findings")).toBeVisible();
     await expect(drawer.getByText("Spec Writer")).toBeVisible();
     await expect(drawer.getByText("tune.abc")).toBeVisible();
 
@@ -161,13 +178,7 @@ test.describe("serverAdmin Commons tab", () => {
     const { userJwt } = await apiLogin(request);
     const sub = await seedSongSubmission(request, userJwt, title, false);
 
-    await login(page);
-    await navigateTo(page, "serverAdmin");
-
-    const commonsSection = page.locator('[data-testid="settings-section-commons"]');
-    await expect(commonsSection).toBeVisible();
-    await commonsSection.click();
-    await expect(page).toHaveURL(/[?&]tab=commons/);
+    await openCommons(page);
 
     const row = page.locator(`[data-testid="commons-queue-row-${sub.submissionId}"]`);
     await expect(row).toBeVisible();
@@ -191,9 +202,151 @@ test.describe("serverAdmin Commons tab", () => {
     expect(String(posted.note || "").trim().length).toBeGreaterThan(0);
   });
 
+  test("request changes returns the submission to the submitter as a draft with the note", async ({ page, request }) => {
+    const title = `Spec Song Changes ${Date.now()}`;
+    const note = "Please add the second verse before we publish.";
+    const { userJwt } = await apiLogin(request);
+    const sub = await seedSongSubmission(request, userJwt, title, false);
+
+    await openCommons(page);
+
+    const row = page.locator(`[data-testid="commons-queue-row-${sub.submissionId}"]`);
+    await expect(row).toBeVisible();
+    await row.getByTestId(`commons-review-${sub.submissionId}`).click();
+    const drawer = page.getByTestId("commons-drawer");
+    await expect(drawer).toBeVisible();
+
+    await drawer.getByTestId("commons-drawer-request-changes").click();
+    const confirm = drawer.getByTestId("commons-request-changes-confirm");
+    await expect(confirm).toBeDisabled();
+    await drawer.getByTestId("commons-request-changes-note").locator("textarea").first().fill(note);
+    await expect(confirm).toBeEnabled();
+
+    const changesRequest = page.waitForRequest((r) => r.method() === "POST" && r.url().includes(`/commons/admin/submissions/${sub.submissionId}/request-changes`));
+    await confirm.click();
+    expect((await changesRequest).postDataJSON().note).toBe(note);
+    await expect(row).not.toBeVisible();
+
+    // The submitter sees it back in their drafts with the reviewer's note.
+    const mine = await request.get(`${API}/commons/submissions/mine`, auth(userJwt));
+    expect(mine.ok()).toBeTruthy();
+    const returned = ((await mine.json()) as any[]).find((s) => s.id === sub.submissionId);
+    expect(returned, "submission missing from /commons/submissions/mine").toBeTruthy();
+    expect(returned.status).toBe("draft");
+    expect(returned.reviewNote).toBe(note);
+  });
+
+  test("partial approve declines one proposed file and still publishes the asset", async ({ page, request }) => {
+    const title = `Spec Song Partial ${Date.now()}`;
+    const reason = "ABC does not match the chart";
+    const { userJwt, adminJwt } = await apiLogin(request);
+    const sub = await seedSongSubmission(request, userJwt, title, true);
+
+    await openCommons(page);
+
+    const row = page.locator(`[data-testid="commons-queue-row-${sub.submissionId}"]`);
+    await expect(row).toBeVisible();
+    await row.getByTestId(`commons-review-${sub.submissionId}`).click();
+    const drawer = page.getByTestId("commons-drawer");
+    await expect(drawer).toBeVisible();
+
+    await drawer.getByTestId("commons-file-decline-tune.abc").check();
+    await drawer.getByTestId("commons-file-decline-reason-tune.abc").fill(reason);
+    await drawer.getByTestId("commons-drawer-approve").click();
+
+    // The confirm dialog lists what is being declined.
+    const declinedList = page.getByTestId("commons-approve-declined-list");
+    await expect(declinedList).toBeVisible();
+    await expect(declinedList).toContainText("tune.abc");
+    await expect(declinedList).toContainText(reason);
+
+    const approveRequest = page.waitForRequest((r) => r.method() === "POST" && r.url().includes(`/commons/admin/submissions/${sub.submissionId}/approve`));
+    await page.getByTestId("commons-drawer-approve-confirm").click();
+    const posted = (await approveRequest).postDataJSON();
+    expect(posted.declineFiles).toEqual([{ name: "tune.abc", reason }]);
+    await expect(row).not.toBeVisible();
+
+    const publishedAsset = await request.get(`${API}/commons/assets/${sub.assetId}`, auth(adminJwt));
+    expect(publishedAsset.ok()).toBeTruthy();
+    const asset = await publishedAsset.json();
+    expect(asset.status).toBe("published");
+    const liveFiles: any[] = Array.isArray(asset.files) ? asset.files : [];
+    expect(liveFiles.map((f) => (typeof f === "string" ? f : f.name))).not.toContain("tune.abc");
+  });
+
+  test("listen gate saves listened keys and shows the Sunday-ready chip", async ({ page, request }) => {
+    const song = await pickListenableSong(request);
+
+    await openCommons(page);
+    await page.getByTestId("commons-tab-assets").click();
+    await page.getByTestId("commons-asset-search").fill(song.title);
+    const assetRow = page.getByTestId(`commons-asset-${song.id}`);
+    await expect(assetRow).toBeVisible();
+
+    await assetRow.getByTestId(`commons-asset-listen-${song.id}`).click();
+    const dialog = page.getByTestId("commons-listen-dialog");
+    await expect(dialog).toBeVisible();
+    const boxes = dialog.locator('[data-testid^="commons-listen-key-"]');
+    await expect(boxes.first()).toBeVisible();
+    const count = await boxes.count();
+    for (let i = 0; i < count; i++) await boxes.nth(i).check();
+
+    const listenRequest = page.waitForRequest((r) => r.method() === "POST" && r.url().includes(`/commons/admin/songs/${song.id}/listen`));
+    await dialog.getByTestId("commons-listen-save").click();
+    const posted = (await listenRequest).postDataJSON();
+    expect(posted.keys.length).toBe(count);
+    await expect(dialog).not.toBeVisible();
+
+    const chip = assetRow.getByTestId(`commons-sunday-ready-${song.id}`);
+    await expect(chip).toBeVisible();
+    await expect(chip).toHaveText("Sunday-ready");
+  });
+
   test("opens Commons from tab query param", async ({ page }) => {
     await login(page);
     await page.goto("/admin?tab=commons");
     await expect(page.getByTestId("commons-tab-queue")).toBeVisible();
+  });
+});
+
+test.describe("serving song search", () => {
+  test("shows a WorshipCommons section for Sunday-ready songs and creates the song detail on select", async ({ page, request }) => {
+    const { adminJwt } = await apiLogin(request);
+    const song = await pickListenableSong(request);
+
+    // Make sure the song is Sunday-ready: listen through every published key via the API.
+    const detailRes = await request.get(`${API}/commons/songs/${song.id}`);
+    expect(detailRes.ok()).toBeTruthy();
+    const detail = await detailRes.json();
+    const keys: string[] = Array.isArray(detail.publishedKeys) && detail.publishedKeys.length ? detail.publishedKeys : [detail.songKey].filter(Boolean);
+    const listenRes = await request.post(`${API}/commons/admin/songs/${song.id}/listen`, { ...auth(adminJwt), data: { keys } });
+    expect(listenRes.ok()).toBeTruthy();
+    expect((await listenRes.json()).confidence).toBe("sunday-ready");
+
+    await login(page);
+    await navigateToServing(page);
+    await page.locator('[id="secondaryMenu"] a').getByText("Songs").click();
+    await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
+    await page.getByTestId("add-song-button").waitFor({ state: "visible", timeout: 10000 });
+    await page.getByTestId("add-song-button").dispatchEvent("click"); // the fixed site header sits over the page header on this route, so pointer clicks never reach the button
+
+    await page.locator('[data-testid="song-search-dialog-input"] input').fill(song.title);
+    await page.getByTestId("song-search-dialog-button").click();
+
+    const section = page.getByTestId("song-search-commons-section");
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await expect(section.getByText("WorshipCommons — free")).toBeVisible();
+    const card = section.getByTestId(`song-search-commons-${song.id}`);
+    await expect(card).toBeVisible();
+    await expect(card).toContainText(song.title);
+    await expect(card).toContainText("Sunday-ready");
+    await expect(card.getByRole("link", { name: "View on WorshipCommons" })).toHaveAttribute("href", new RegExp(`/songs/${song.id}$`));
+
+    // Selecting creates the song detail (POST /songDetails) and lands on the new song page.
+    const createRequest = page.waitForRequest((r) => r.method() === "POST" && r.url().includes("/songDetails") && !r.url().includes("/songDetails/create"));
+    await card.click();
+    expect((await createRequest).postDataJSON()[0].title).toBe(song.title);
+    await page.waitForURL(/\/serving\/songs\/[^/]+/, { timeout: 20000 });
+    await expect(page.locator("#page-header-title")).toContainText(song.title);
   });
 });
