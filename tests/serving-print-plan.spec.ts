@@ -5,7 +5,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 // sections/actions must not print; kept sections print as-is). LessonsApi isn't
 // in the local stack, so the venue feed is mocked via route interception and the
 // plan is seeded through DoingApi.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 
 const VENUE_FEED = {
   id: "PRINTVENUE1",

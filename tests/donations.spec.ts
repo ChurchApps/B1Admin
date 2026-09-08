@@ -512,7 +512,7 @@ test.describe("QuickBooks export", () => {
 // Notes column: seed the batch directly via API (the BatchEdit date field is a
 // known-broken MUI date section input under Playwright, unrelated to this feature)
 // so the UI portion only exercises what's actually under test — bulk entry + list display.
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const NOTES_BATCH_NAME = "Habakkuk Notes Batch";
 const NOTES_TEXT = "Envelope #42 — pledge campaign gift";
 

@@ -7,7 +7,7 @@ import { login } from "./helpers/auth";
 // joins. Group membership is JWT-baked at login, so the group + membership are set
 // up BEFORE the browser logs in (a fresh context, not the cached storage state).
 
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 const CHURCH_ID = "CHU00000001";
 
 interface Setup {

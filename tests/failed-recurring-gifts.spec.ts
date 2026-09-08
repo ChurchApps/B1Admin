@@ -3,7 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 // Failed recurring gifts dashboard. The failed donation is seeded through the Api (the gateway
 // webhook that normally creates it can't be fired locally) and verified through B1Admin.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 const DONOR_ID = "PER00000080"; // Donald Clark
 const DONOR_NAME = "Donald Clark";
 

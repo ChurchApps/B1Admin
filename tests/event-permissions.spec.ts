@@ -1,6 +1,6 @@
 import { test, expect, request } from "@playwright/test";
 
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 
 test.describe.serial("Event permission gate (POST /content/events)", () => {
   let ctx: Awaited<ReturnType<typeof request.newContext>>;

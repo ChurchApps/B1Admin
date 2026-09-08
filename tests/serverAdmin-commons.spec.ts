@@ -7,7 +7,7 @@ import { navigateTo } from "./helpers/navigation";
 // which holds a MembershipApi/Domain/Admin rolePermission (RPM00000001). The server expands that
 // into every permission — including Server/Admin — via replaceDomainAdminPermissions/addAllPermissions
 // (Api/src/modules/membership/helpers/UserHelper.ts), so the demo user does have access to this tab.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 
 const auth = (jwt: string) => ({ headers: { Authorization: "Bearer " + jwt } });
 

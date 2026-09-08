@@ -829,13 +829,13 @@ test.describe("People Management", () => {
       await expect(removeDialog).toHaveCount(0, { timeout: 20000 });
 
       const ctx = await request.newContext();
-      const loginRes = await ctx.post("http://localhost:8084/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
+      const loginRes = await ctx.post((process.env.API_BASE || "http://localhost:8084") + "/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
       const loginBody = await loginRes.json();
       const uc = (loginBody.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || loginBody.userChurches?.[0];
       const auth = { headers: { Authorization: "Bearer " + uc?.jwt } };
-      const allGroups = await (await ctx.get("http://localhost:8084/membership/groups", auth)).json();
+      const allGroups = await (await ctx.get((process.env.API_BASE || "http://localhost:8084") + "/membership/groups", auth)).json();
       const leaked = (Array.isArray(allGroups) ? allGroups : []).find((g: any) => g.name === groupName);
-      if (leaked?.id) await ctx.delete(`http://localhost:8084/membership/groups/${leaked.id}`, auth);
+      if (leaked?.id) await ctx.delete(`${process.env.API_BASE || "http://localhost:8084"}/membership/groups/${leaked.id}`, auth);
       await ctx.dispose();
     });
   });

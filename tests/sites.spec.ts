@@ -6,7 +6,7 @@ import { navigateToSite } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
 
-const MEMBERSHIP = "http://localhost:8084/membership";
+const MEMBERSHIP = (process.env.API_BASE || "http://localhost:8084") + "/membership";
 const SITE_NAME = "Youth";
 const SITE_SUBDOMAIN = "youthtest";
 

@@ -6,7 +6,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 // *then* appends "...", so real labels reach 103 chars, overflowing planItems.label varchar(100)
 // under MySQL strict mode. The provider is mocked at the API proxy, as in issue-996-collapse,
 // since no content provider is linked in the local stack.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 
 // 103 chars — exactly what LessonsChurchConverters.truncateForLabel emits for a long "note"
 // action (100 characters of stripped content plus the ellipsis).

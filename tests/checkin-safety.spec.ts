@@ -9,7 +9,7 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 // throwaway person so it never mutates the kiosk agent's seeded rows
 // (GRP00000009, Smith household HOU00000001).
 
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 const TS = Date.now();
 
 let api: APIRequestContext;

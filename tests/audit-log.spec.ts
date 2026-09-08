@@ -4,7 +4,7 @@ import { openKnownPerson, personDetailsEditButton, SEED_PEOPLE } from "./helpers
 
 // Universal audit log + undoable batches. The batch/undo scenarios drive the Api directly
 // (Playwright request context) and verify the outcome through the B1Admin Settings pages.
-const API = "http://localhost:8084";
+const API = process.env.API_BASE || "http://localhost:8084";
 
 async function apiLogin(ctx: APIRequestContext): Promise<string> {
   const res = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });

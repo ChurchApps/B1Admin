@@ -5,7 +5,7 @@ import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 
-const API_BASE = "http://localhost:8084";
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const CHURCH_ID = "CHU00000001";
 const CALENDAR = "Zacchaeus Reminder Calendar";
 const EVENT_TITLE = "Zacchaeus Reminder Event";
