@@ -1,20 +1,19 @@
 import React from "react";
-import { DisplayBox } from "@churchapps/apphelper";
+import { Box } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { verbSx, SectionLabel } from "../plated";
 
 interface Props {
   headerText: string;
   headerIcon: string;
   canEdit?: boolean;
   view: React.ReactNode;
-  // Child fires the real save when `saveTrigger` changes, then reports the outcome
-  // through `onSaveComplete` (true = saved). Children surface their own error UI.
   renderEdit: (saveTrigger: Date | null, onSaveComplete: (ok: boolean) => void) => React.ReactNode;
   onSaved: () => void;
   "data-testid"?: string;
 }
 
-// View↔edit wrapper for sections that save via shared `saveTrigger` pattern.
 export const SettingsToggleSection: React.FC<Props> = (props) => {
   const [editing, setEditing] = React.useState(false);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
@@ -34,7 +33,6 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
     setSaving(true);
     const ok = await new Promise<boolean>((resolve) => {
       pendingResolve.current = resolve;
-      // Safety net: if a child never reports back, stay in edit mode rather than spin forever.
       timeoutRef.current = setTimeout(() => finish(false), 15000);
       setSaveTrigger(new Date());
     });
@@ -59,8 +57,14 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   }
 
   return (
-    <DisplayBox headerText={props.headerText} headerIcon={props.headerIcon} editFunction={props.canEdit === false ? undefined : () => setEditing(true)} data-testid={props["data-testid"]}>
+    <Box data-testid={props["data-testid"]}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 1 }}>
+        <SectionLabel sx={{ mt: 0 }}>{props.headerText}</SectionLabel>
+        {props.canEdit !== false && (
+          <Box component="button" type="button" data-testid="small-button-edit" onClick={() => setEditing(true)} sx={verbSx}>{Locale.label("common.edit")}</Box>
+        )}
+      </Box>
       {props.view}
-    </DisplayBox>
+    </Box>
   );
 };

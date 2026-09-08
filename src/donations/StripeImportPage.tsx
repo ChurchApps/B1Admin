@@ -1,11 +1,12 @@
 import React from "react";
-import { ApiHelper, DateHelper, CurrencyHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, CurrencyHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/apphelper";
-import { Box, Typography, Card, Stack, Button, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
-import { CloudDownload as ImportIcon, Search as PreviewIcon, CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
-import { CardWithHeader, hoverRowSx } from "../components/ui";
+import { Box, Typography, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
+import { CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
+import { hoverRowSx } from "../components/ui";
 import { AppDatePicker } from "../components";
 import { useRequirePermission } from "../hooks";
+import { Verb, VerbRow, SectionTitle, plateSx, plainTableSx, mutedSx } from "./components/plate";
 
 interface StripeEventResult {
   eventId: string;
@@ -55,11 +56,8 @@ export const StripeImportPage = () => {
     setLoading(true);
     try {
       const result = await ApiHelper.post("/donate/replay-stripe-events", { startDate, endDate, dryRun: true }, "GivingApi");
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setImportData(result);
-      }
+      if (result.error) setError(result.error);
+      else setImportData(result);
     } catch (err: any) {
       setError(err.message || Locale.label("donations.stripeImportPage.failedFetch"));
     }
@@ -75,11 +73,8 @@ export const StripeImportPage = () => {
     setLoading(true);
     try {
       const result = await ApiHelper.post("/donate/replay-stripe-events", { startDate, endDate, dryRun: false }, "GivingApi");
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setImportData(result);
-      }
+      if (result.error) setError(result.error);
+      else setImportData(result);
     } catch (err: any) {
       setError(err.message || Locale.label("donations.stripeImportPage.failedImport"));
     }
@@ -101,13 +96,8 @@ export const StripeImportPage = () => {
     if (!importData?.results?.length) {
       return (
         <TableRow>
-          <TableCell colSpan={6} sx={{ textAlign: "center", py: 4 }}>
-            <Stack spacing={2} alignItems="center">
-              <ImportIcon sx={{ fontSize: 48, color: "text.secondary" }} />
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("donations.stripeImportPage.noEvents")}
-              </Typography>
-            </Stack>
+          <TableCell colSpan={6} sx={{ textAlign: "center", py: 4, color: "var(--text-muted)" }}>
+            {Locale.label("donations.stripeImportPage.noEvents")}
           </TableCell>
         </TableRow>
       );
@@ -115,30 +105,12 @@ export const StripeImportPage = () => {
 
     return importData.results.map((event) => (
       <TableRow key={event.eventId} sx={hoverRowSx}>
-        <TableCell>
-          <Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>
-            {event.eventId}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Typography variant="body2">{event.type}</Typography>
-        </TableCell>
-        <TableCell align="right">
-          <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-            {CurrencyHelper.formatCurrencyWithLocale(event.amount, event.currency || "usd")}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Typography variant="body2">{DateHelper.prettyDate(new Date(event.created))}</Typography>
-        </TableCell>
+        <TableCell sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>{event.eventId}</TableCell>
+        <TableCell>{event.type}</TableCell>
+        <TableCell align="right" className="amt">{CurrencyHelper.formatCurrencyWithLocale(event.amount, event.currency || "usd")}</TableCell>
+        <TableCell>{DateHelper.prettyDate(new Date(event.created))}</TableCell>
         <TableCell>{getStatusChip(event.status)}</TableCell>
-        <TableCell>
-          {event.error && (
-            <Typography variant="body2" color="error" sx={{ fontSize: "0.75rem" }}>
-              {event.error}
-            </Typography>
-          )}
-        </TableCell>
+        <TableCell>{event.error && <Box sx={{ color: "warning.main", fontSize: "0.75rem" }}>{event.error}</Box>}</TableCell>
       </TableRow>
     ));
   };
@@ -149,30 +121,14 @@ export const StripeImportPage = () => {
 
     return (
       <Alert severity={dryRun ? "info" : "success"} sx={{ mb: 2 }}>
-        <Stack direction="row" spacing={3} flexWrap="wrap">
-          <Typography variant="body2">
-            <strong>{Locale.label("donations.stripeImportPage.totalLabel")}</strong> {summary.total}
-          </Typography>
-          <Typography variant="body2" color="info.main">
-            <strong>{Locale.label("donations.stripeImportPage.newLabel")}</strong> {summary.new}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>{Locale.label("donations.stripeImportPage.alreadyImportedLabel")}</strong> {summary.alreadyImported}
-          </Typography>
-          {!dryRun && (
-            <Typography variant="body2" color="success.main">
-              <strong>{Locale.label("donations.stripeImportPage.importedLabel")}</strong> {summary.imported}
-            </Typography>
-          )}
-          <Typography variant="body2" color="warning.main">
-            <strong>{Locale.label("donations.stripeImportPage.skippedLabel")}</strong> {summary.skipped}
-          </Typography>
-          {summary.errors > 0 && (
-            <Typography variant="body2" color="error.main">
-              <strong>{Locale.label("donations.stripeImportPage.errorsLabel")}</strong> {summary.errors}
-            </Typography>
-          )}
-        </Stack>
+        <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+          <Typography variant="body2"><strong>{Locale.label("donations.stripeImportPage.totalLabel")}</strong> {summary.total}</Typography>
+          <Typography variant="body2"><strong>{Locale.label("donations.stripeImportPage.newLabel")}</strong> {summary.new}</Typography>
+          <Typography variant="body2"><strong>{Locale.label("donations.stripeImportPage.alreadyImportedLabel")}</strong> {summary.alreadyImported}</Typography>
+          {!dryRun && <Typography variant="body2"><strong>{Locale.label("donations.stripeImportPage.importedLabel")}</strong> {summary.imported}</Typography>}
+          <Typography variant="body2"><strong>{Locale.label("donations.stripeImportPage.skippedLabel")}</strong> {summary.skipped}</Typography>
+          {summary.errors > 0 && <Typography variant="body2"><strong>{Locale.label("donations.stripeImportPage.errorsLabel")}</strong> {summary.errors}</Typography>}
+        </Box>
         {dryRun && summary.new > 0 && (
           <Typography variant="body2" sx={{ mt: 1 }}>
             {Locale.label("donations.stripeImportPage.clickImportMissing").replace("{count}", summary.new.toString())}
@@ -186,92 +142,50 @@ export const StripeImportPage = () => {
   if (denied) return denied;
 
   return (
-    <>
-      <PageHeader
-        icon={<ImportIcon />}
-        title={Locale.label("donations.stripeImportPage.title")}
-        subtitle={Locale.label("donations.stripeImportPage.subtitle")}
-      />
-
-      <Box sx={{ p: 3 }}>
-        <Card sx={{ mb: 3 }}>
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              {Locale.label("donations.stripeImportPage.selectDateRange")}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              {Locale.label("donations.stripeImportPage.dateRangeDescription")}
-            </Typography>
-
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="flex-start">
-              <AppDatePicker
-                label="Start Date"
-
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ minWidth: 200 }}
-              />
-              <AppDatePicker
-                label="End Date"
-
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ minWidth: 200 }}
-              />
-              <Button
-                variant="outlined"
-                startIcon={<PreviewIcon />}
-                onClick={handlePreview}
-                disabled={loading || !startDate || !endDate}
-              >
-                {Locale.label("donations.stripeImportPage.preview")}
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<ImportIcon />}
-                onClick={handleImport}
-                disabled={loading || !startDate || !endDate || !importData?.summary?.new}
-              >
-                {Locale.label("donations.stripeImportPage.importMissing")}
-              </Button>
-            </Stack>
-
-            {error && (
-              <Alert severity="error" sx={{ mt: 2 }}>
-                {error}
-              </Alert>
-            )}
-          </Box>
-        </Card>
-
-        {loading && <Loading />}
-
-        {!loading && importData && (
-          <CardWithHeader
-            icon={<ImportIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-            title={importData.dryRun ? Locale.label("donations.stripeImportPage.previewResults") : Locale.label("donations.stripeImportPage.importResults")}
-            count={importData.results?.length}
-          >
-            {getSummary()}
-            <Table sx={{ minWidth: 650 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("donations.stripeImportPage.eventId")}</TableCell>
-                  <TableCell>{Locale.label("donations.stripeImportPage.type")}</TableCell>
-                  <TableCell align="right">Amount</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>{Locale.label("donations.stripeImportPage.status")}</TableCell>
-                  <TableCell>Notes</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{getRows()}</TableBody>
-            </Table>
-          </CardWithHeader>
-        )}
+    <Box sx={plateSx}>
+      <SectionTitle sx={{ mt: 0 }}>{Locale.label("donations.stripeImportPage.title")}</SectionTitle>
+      <Box sx={{ ...mutedSx, mb: 2 } as object}>{Locale.label("donations.stripeImportPage.dateRangeDescription")}</Box>
+      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center" }}>
+        <AppDatePicker
+          label="Start Date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          sx={{ minWidth: 160 }}
+        />
+        <AppDatePicker
+          label="End Date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          sx={{ minWidth: 160 }}
+        />
       </Box>
-    </>
+      <VerbRow>
+        <Verb onClick={handlePreview} disabled={loading || !startDate || !endDate}>{Locale.label("donations.stripeImportPage.preview")}</Verb>
+        <Verb onClick={handleImport} disabled={loading || !startDate || !endDate || !importData?.summary?.new}>{Locale.label("donations.stripeImportPage.importMissing")}</Verb>
+      </VerbRow>
+      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+      {loading && <Loading />}
+      {!loading && importData && (
+        <Box sx={{ mt: 2 }}>
+          <SectionTitle>{importData.dryRun ? Locale.label("donations.stripeImportPage.previewResults") : Locale.label("donations.stripeImportPage.importResults")}</SectionTitle>
+          {getSummary()}
+          <Table sx={plainTableSx}>
+            <TableHead>
+              <TableRow>
+                <TableCell component="th">{Locale.label("donations.stripeImportPage.eventId")}</TableCell>
+                <TableCell component="th">{Locale.label("donations.stripeImportPage.type")}</TableCell>
+                <TableCell component="th">Amount</TableCell>
+                <TableCell component="th">Date</TableCell>
+                <TableCell component="th">{Locale.label("donations.stripeImportPage.status")}</TableCell>
+                <TableCell component="th">Notes</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
+      )}
+    </Box>
   );
 };

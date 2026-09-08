@@ -1,18 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
-import { ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Permissions, type GroupInterface } from "@churchapps/helpers";
-import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, Paper } from "@mui/material";
-import { Add as AddIcon, Edit as EditIcon, MeetingRoom as RoomIcon } from "@mui/icons-material";
+import { Box, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { MeetingRoom as RoomIcon } from "@mui/icons-material";
 import { useRequirePermission } from "../hooks";
 import { EmptyState } from "../components/ui/EmptyState";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { NavigationTabs } from "../components/ui/NavigationTabs";
-import { HeaderPrimaryButton } from "../components/ui/headerButtons";
 import { RoomEdit } from "./components/RoomEdit";
 import { ResourceEdit } from "./components/ResourceEdit";
 import { BlockoutEdit } from "./components/BlockoutEdit";
 import { TemplateEdit } from "./components/TemplateEdit";
 import { type CalendarBlockoutInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
+import { CalendarChrome } from "./components/CalendarChrome";
+import { AddBlock, FindField, Pills, Verb, plainTableSx } from "./components/plate";
 
 type TabKey = "rooms" | "resources" | "blockouts" | "templates";
 type Editing = { type: TabKey; item: any } | null;
@@ -26,6 +25,7 @@ export const RoomsResourcesPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [editing, setEditing] = useState<Editing>(null);
   const [loading, setLoading] = useState(true);
+  const [find, setFind] = useState("");
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
   const loadData = useCallback(() => {
@@ -62,88 +62,93 @@ export const RoomsResourcesPage = () => {
     return Locale.label("calendars.rooms.allRoomsResources");
   };
 
-  const tableSx = { borderRadius: 2, border: "1px solid", borderColor: "divider" };
+  const q = find.toLowerCase();
+  const match = (s?: string) => !q || (s || "").toLowerCase().includes(q);
 
-  const getRoomsTable = () => (rooms.length === 0
-    ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noRooms")} description={Locale.label("calendars.rooms.noRoomsDesc")} />
-    : (
-      <TableContainer component={Paper} sx={tableSx}>
-        <Table data-testid="rooms-table">
+  const getRoomsTable = () => {
+    const rows = rooms.filter((r) => match(r.name));
+    return rows.length === 0
+      ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noRooms")} description={Locale.label("calendars.rooms.noRoomsDesc")} />
+      : (
+        <Table data-testid="rooms-table" sx={plainTableSx}>
           <TableHead><TableRow><TableCell>{Locale.label("calendars.rooms.roomName")}</TableCell><TableCell align="right">{Locale.label("calendars.rooms.capacity")}</TableCell><TableCell>{Locale.label("calendars.rooms.approvalGroup")}</TableCell><TableCell align="right" /></TableRow></TableHead>
           <TableBody>
-            {rooms.map((r) => (
-              <TableRow key={r.id} hover>
+            {rows.map((r) => (
+              <TableRow key={r.id}>
                 <TableCell>{r.name}</TableCell>
                 <TableCell align="right">{r.capacity ?? ""}</TableCell>
                 <TableCell>{groupName(r.approvalGroupId)}</TableCell>
-                <TableCell align="right" className="rowActions"><AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing({ type: "rooms", item: r })} data-testid={`edit-room-${r.id}`} /></TableCell>
+                <TableCell align="right" className="rowActions"><Verb onClick={() => setEditing({ type: "rooms", item: r })} testId={`edit-room-${r.id}`}>{Locale.label("common.edit")}</Verb></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-    ));
+      );
+  };
 
-  const getResourcesTable = () => (resources.length === 0
-    ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noResources")} description={Locale.label("calendars.rooms.noResourcesDesc")} />
-    : (
-      <TableContainer component={Paper} sx={tableSx}>
-        <Table data-testid="resources-table">
+  const getResourcesTable = () => {
+    const rows = resources.filter((r) => match(r.name));
+    return rows.length === 0
+      ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noResources")} description={Locale.label("calendars.rooms.noResourcesDesc")} />
+      : (
+        <Table data-testid="resources-table" sx={plainTableSx}>
           <TableHead><TableRow><TableCell>{Locale.label("calendars.rooms.resourceName")}</TableCell><TableCell align="right">{Locale.label("calendars.rooms.quantity")}</TableCell><TableCell>{Locale.label("calendars.rooms.approvalGroup")}</TableCell><TableCell align="right" /></TableRow></TableHead>
           <TableBody>
-            {resources.map((r) => (
-              <TableRow key={r.id} hover>
+            {rows.map((r) => (
+              <TableRow key={r.id}>
                 <TableCell>{r.name}</TableCell>
                 <TableCell align="right">{r.quantity ?? 1}</TableCell>
                 <TableCell>{groupName(r.approvalGroupId)}</TableCell>
-                <TableCell align="right" className="rowActions"><AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing({ type: "resources", item: r })} data-testid={`edit-resource-${r.id}`} /></TableCell>
+                <TableCell align="right" className="rowActions"><Verb onClick={() => setEditing({ type: "resources", item: r })} testId={`edit-resource-${r.id}`}>{Locale.label("common.edit")}</Verb></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-    ));
+      );
+  };
 
-  const getBlockoutsTable = () => (blockouts.length === 0
-    ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noBlockouts")} description={Locale.label("calendars.rooms.noBlockoutsDesc")} />
-    : (
-      <TableContainer component={Paper} sx={tableSx}>
-        <Table data-testid="blockouts-table">
+  const getBlockoutsTable = () => {
+    const rows = blockouts.filter((b) => match(targetName(b)) || match(b.reason));
+    return rows.length === 0
+      ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noBlockouts")} description={Locale.label("calendars.rooms.noBlockoutsDesc")} />
+      : (
+        <Table data-testid="blockouts-table" sx={plainTableSx}>
           <TableHead><TableRow><TableCell>{Locale.label("calendars.rooms.blockoutTarget")}</TableCell><TableCell>{Locale.label("calendars.rooms.startTime")}</TableCell><TableCell>{Locale.label("calendars.rooms.endTime")}</TableCell><TableCell>{Locale.label("calendars.rooms.reason")}</TableCell><TableCell align="right" /></TableRow></TableHead>
           <TableBody>
-            {blockouts.map((b) => (
-              <TableRow key={b.id} hover>
+            {rows.map((b) => (
+              <TableRow key={b.id}>
                 <TableCell>{targetName(b)}</TableCell>
                 <TableCell>{b.startTime ? new Date(b.startTime).toLocaleString() : ""}</TableCell>
                 <TableCell>{b.endTime ? new Date(b.endTime).toLocaleString() : ""}</TableCell>
                 <TableCell>{b.reason}</TableCell>
-                <TableCell align="right" className="rowActions"><AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing({ type: "blockouts", item: b })} data-testid={`edit-blockout-${b.id}`} /></TableCell>
+                <TableCell align="right" className="rowActions"><Verb onClick={() => setEditing({ type: "blockouts", item: b })} testId={`edit-blockout-${b.id}`}>{Locale.label("common.edit")}</Verb></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-    ));
+      );
+  };
 
-  const getTemplatesTable = () => (templates.length === 0
-    ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noTemplates")} description={Locale.label("calendars.rooms.noTemplatesDesc")} />
-    : (
-      <TableContainer component={Paper} sx={tableSx}>
-        <Table data-testid="templates-table">
+  const getTemplatesTable = () => {
+    const rows = templates.filter((t) => match(t.name) || match(t.title));
+    return rows.length === 0
+      ? <EmptyState icon={<RoomIcon />} title={Locale.label("calendars.rooms.noTemplates")} description={Locale.label("calendars.rooms.noTemplatesDesc")} />
+      : (
+        <Table data-testid="templates-table" sx={plainTableSx}>
           <TableHead><TableRow><TableCell>{Locale.label("calendars.rooms.templateName")}</TableCell><TableCell>{Locale.label("calendars.rooms.eventTitle")}</TableCell><TableCell align="right">{Locale.label("calendars.rooms.durationMinutes")}</TableCell><TableCell align="right" /></TableRow></TableHead>
           <TableBody>
-            {templates.map((t) => (
-              <TableRow key={t.id} hover>
+            {rows.map((t) => (
+              <TableRow key={t.id}>
                 <TableCell>{t.name}</TableCell>
                 <TableCell>{t.title}</TableCell>
                 <TableCell align="right">{t.durationMinutes ?? ""}</TableCell>
-                <TableCell align="right" className="rowActions"><AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing({ type: "templates", item: t })} data-testid={`edit-template-${t.id}`} /></TableCell>
+                <TableCell align="right" className="rowActions"><Verb onClick={() => setEditing({ type: "templates", item: t })} testId={`edit-template-${t.id}`}>{Locale.label("common.edit")}</Verb></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-    ));
+      );
+  };
 
   if (denied) return denied;
 
@@ -166,43 +171,35 @@ export const RoomsResourcesPage = () => {
     }
   };
 
+  const startAdd = () => setEditing({ type: tab, item: {} });
+
   return (
-    <>
-      <PageHeader
-        icon={<RoomIcon />}
-        title={Locale.label("calendars.rooms.title")}
-        subtitle={Locale.label("calendars.rooms.subtitle")}
-        tabs={(
-          <NavigationTabs
-            selectedTab={tab}
-            onTabChange={(v) => { setTab(v as TabKey); setEditing(null); }}
-            onHeader
-            tabs={[
-              { value: "rooms", label: Locale.label("calendars.rooms.rooms"), testId: "tab-rooms" },
-              { value: "resources", label: Locale.label("calendars.rooms.resources"), testId: "tab-resources" },
-              { value: "blockouts", label: Locale.label("calendars.rooms.blockouts"), testId: "tab-blockouts" },
-              { value: "templates", label: Locale.label("calendars.rooms.templates"), testId: "tab-templates" }
-            ]}
-          />
-        )}
-      >
-        <HeaderPrimaryButton
-          startIcon={<AddIcon />}
-          onClick={() => setEditing({ type: tab, item: {} })}
-          data-testid="add-room-resource"
-        >
-          {Locale.label("common.add")}
-        </HeaderPrimaryButton>
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
-        {loading ? <Loading /> : (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: editing ? 8 : 12 }}>{getTable()}</Grid>
-            {editing && <Grid size={{ xs: 12, md: 4 }}>{getEditCard()}</Grid>}
-          </Grid>
-        )}
-      </Box>
-    </>
+    <CalendarChrome
+      selected="rooms"
+      extraVerbs={<Verb onClick={startAdd} testId="add-room-resource">{Locale.label("common.add")}</Verb>}
+      find={<FindField value={find} onChange={setFind} placeholder={Locale.label("common.search")} />}>
+      <Pills
+        items={[
+          { label: Locale.label("calendars.rooms.rooms"), selected: tab === "rooms", onClick: () => { setTab("rooms"); setEditing(null); }, testId: "tab-rooms" },
+          { label: Locale.label("calendars.rooms.resources"), selected: tab === "resources", onClick: () => { setTab("resources"); setEditing(null); }, testId: "tab-resources" },
+          { label: Locale.label("calendars.rooms.blockouts"), selected: tab === "blockouts", onClick: () => { setTab("blockouts"); setEditing(null); }, testId: "tab-blockouts" },
+          { label: Locale.label("calendars.rooms.templates"), selected: tab === "templates", onClick: () => { setTab("templates"); setEditing(null); }, testId: "tab-templates" }
+        ]}
+      />
+      {loading ? <Loading /> : (
+        <>
+          {editing?.item?.id && <Box sx={{ mb: 3 }}>{getEditCard()}</Box>}
+          {getTable()}
+          {editing && !editing.item?.id ? (
+            <AddBlock>{getEditCard()}</AddBlock>
+          ) : (
+            <AddBlock>
+              <Verb onClick={startAdd}>{Locale.label("common.add")}</Verb>
+            </AddBlock>
+          )}
+        </>
+      )}
+    </CalendarChrome>
   );
 };
 

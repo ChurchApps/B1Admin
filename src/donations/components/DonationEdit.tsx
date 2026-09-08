@@ -172,8 +172,8 @@ export const DonationEdit = memo((props: Props) => {
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller name="date" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth label={Locale.label("donations.donationEdit.date")}  data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")}  {...field} />
-  )} />
+              <AppDatePicker fullWidth label={Locale.label("donations.donationEdit.date")} data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...field} />
+            )} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller

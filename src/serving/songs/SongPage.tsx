@@ -1,18 +1,15 @@
-import React, { memo, useCallback, useMemo } from "react";
-import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import React, { memo, useCallback } from "react";
+import { ApiHelper, ArrayHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button } from "@mui/material";
-import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { Box } from "@mui/material";
 import { Arrangement } from "./components/Arrangement";
-import { EmptyState } from "../../components/ui/EmptyState";
-import { CountChip, HeaderPrimaryButton } from "../../components/ui";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
 import { SongDetailLinksEdit } from "./components/SongDetailLinksEdit";
 import { useConfirmDelete } from "../../hooks";
+import { Dl, Eyebrow, ListPills, Pill, PlatedRecord, RecordTitle, Verb, Verbs, platedColor } from "../plated";
 
 export const SongPage = memo(() => {
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
@@ -34,7 +31,6 @@ export const SongPage = memo(() => {
     enabled: !!params.id
   });
 
-  // If song record is missing/orphaned, fall back to arrangement's songDetailId for the title
   const songDetailId = song.data?.songDetailId || arrangements.data?.[0]?.songDetailId;
 
   const songDetail = useQuery<SongDetailInterface>({
@@ -42,8 +38,6 @@ export const SongPage = memo(() => {
     enabled: !!songDetailId
   });
 
-  // Set selected arrangement when arrangements load; fall back to the first one when
-  // the current selection no longer exists (e.g. deleted, or stale from a kept-alive visit).
   React.useEffect(() => {
     if (!arrangements.data || arrangements.data.length === 0) return;
     const stillExists = selectedArrangement && arrangements.data.some((a) => a.id === selectedArrangement.id);
@@ -90,7 +84,7 @@ export const SongPage = memo(() => {
     if (!song.data?.id) return;
     const a: ArrangementInterface = {
       songId: song.data.id,
-      name: "New Arrangement", // ponytail: default record name, a literal like sibling "(Default)" — not a Locale key (apphelper owns the catalog)
+      name: "New Arrangement",
       lyrics: ""
     };
     const newArrangements = await ApiHelper.post("/arrangements", [a], "ContentApi");
@@ -100,149 +94,76 @@ export const SongPage = memo(() => {
     setSelectedArrangement(newArrangements[0]);
   }, [song.data?.id, songDetail.data?.keySignature, refetch]);
 
-  const arrangementNavigation = useMemo(
-    () => (
-      <Stack spacing={3}>
-        <Card sx={{ height: "fit-content", borderRadius: 2 }}>
-          <CardContent>
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-              <MusicIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("songs.oldArrangements.arrangements")}
-              </Typography>
-              {(arrangements.data?.length ?? 0) > 0 && <CountChip count={arrangements.data?.length ?? 0} />}
-            </Stack>
+  const formatSeconds = (seconds?: number) => {
+    if (!seconds) return "";
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return mins + ":" + (secs < 10 ? "0" : "") + secs;
+  };
 
-            <List sx={{ p: 0 }}>
-              {arrangements.data?.map((arrangement, index) => (
-                <Box key={arrangement.id}>
-                  <ListItem sx={{ px: 0 }}>
-                    <ListItemButton
-                      selected={selectedArrangement?.id === arrangement.id}
-                      onClick={() => selectArrangement(arrangement.id!)}
-                      sx={{
-                        borderRadius: 1,
-                        "&.Mui-selected": {
-                          backgroundColor: "rgba(21, 101, 192, 0.12)", // Lighter primary color opacity
-                          "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.2)" }
-                        },
-                        "&:hover": { backgroundColor: "action.hover" }
-                      }}>
-                      <ListItemIcon sx={{ minWidth: 36 }}>
-                        <ArrangementIcon sx={{ color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.secondary" }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={arrangement.name}
-                        primaryTypographyProps={{
-                          sx: {
-                            fontWeight: selectedArrangement?.id === arrangement.id ? 600 : 400,
-                            color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.primary"
-                          }
-                        }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                  {index < (arrangements.data?.length ?? 0) - 1 && <Divider sx={{ my: 0.5 }} />}
-                </Box>
-              ))}
-            </List>
-
-            {canEdit && (
-              <Button
-                variant="outlined"
-                startIcon={<AddIcon />}
-                onClick={handleAddArrangement}
-                fullWidth
-                sx={{
-                  mt: 2,
-                  borderStyle: "dashed",
-                  color: "text.secondary",
-                  borderColor: "grey.400",
-                  "&:hover": {
-                    borderColor: "primary.main",
-                    color: "primary.main",
-                    backgroundColor: "primary.light"
-                  }
-                }}>
-                {Locale.label("songs.songPage.addArrangement")}
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card sx={{ height: "fit-content", borderRadius: 2 }}>
-          <CardContent>
-            {songDetail.data &&
-              (editLinks && canEdit ? (
-                <SongDetailLinksEdit
-                  songDetailId={songDetail.data.id!}
-                  reload={() => {
-                    setEditLinks(false);
-                    refetch();
-                  }}
-                />
-              ) : (
-                <SongDetailLinks songDetail={songDetail.data} onEdit={canEdit ? () => setEditLinks(true) : undefined} />
-              ))}
-          </CardContent>
-        </Card>
-      </Stack>
-    ),
-    [
-      arrangements.data, selectedArrangement, selectArrangement, songDetail.data, editLinks, refetch, canEdit, handleAddArrangement
-    ]
-  );
-
-  const currentContent = useMemo(() => {
-    if (!selectedArrangement) {
-      return (
-        <EmptyState
-          icon={<ArrangementIcon />}
-          title={Locale.label("songs.songPage.noArrangementSelected")}
-          description={Locale.label("songs.songPage.noArrangementDescription")}
-        />
-      );
-    }
-
-    return <Arrangement arrangement={selectedArrangement} reload={refetch} />;
-  }, [selectedArrangement, refetch]);
+  const sd = songDetail.data;
 
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<MusicIcon />} title={songDetail.data?.title || song.data?.name || Locale.label("songs.songPage.loading")} subtitle={Locale.label("songs.songPage.subtitle")}>
-        {canEdit && (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={() => setEditSongDetails(true)} />
+      <PlatedRecord
+        who={(
+          <>
+            {sd?.thumbnail && (
+              <Box component="img" src={sd.thumbnail} alt="" sx={{ width: { xs: 88, sm: 148 }, height: { xs: 88, sm: 148 }, borderRadius: "8px", objectFit: "cover", mb: "18px", bgcolor: platedColor.lift }} />
+            )}
+            <Eyebrow>{Locale.label("songs.songsPage.songs") || "Song"}</Eyebrow>
+            <RecordTitle>{sd?.title || song.data?.name || Locale.label("songs.songPage.loading")}</RecordTitle>
+            {sd?.artist && <Box sx={{ color: platedColor.mute, mt: "8px", mb: "12px" }}>{sd.artist}</Box>}
+            <Verbs>
+              {canEdit && <Verb onClick={() => setEditSongDetails(!editSongDetails)}>{editSongDetails ? (Locale.label("common.done") || "Done") : Locale.label("common.edit")}</Verb>}
+              {canEdit && <Verb onClick={handleAddArrangement}>{Locale.label("songs.songPage.addArrangement")}</Verb>}
+              <Verb to="/serving/songs">{Locale.label("songs.songsPage.songs") || "Songs"}</Verb>
+            </Verbs>
+            {sd && (
+              <Dl>
+                {sd.album && <><dt>{Locale.label("songs.details.album") || "Album"}</dt><dd>{sd.album}</dd></>}
+                {sd.keySignature && <><dt>{Locale.label("songs.details.keySignature") || "Key"}</dt><dd>{sd.keySignature}</dd></>}
+                {sd.seconds ? <><dt>{Locale.label("songs.details.length") || "Length"}</dt><dd>{formatSeconds(sd.seconds)}</dd></> : null}
+                {sd.bpm ? <><dt>{Locale.label("songs.details.bpm") || "BPM"}</dt><dd>{sd.bpm}</dd></> : null}
+                {sd.meter && <><dt>{Locale.label("songs.details.meter") || "Meter"}</dt><dd>{sd.meter}</dd></>}
+                {sd.language && <><dt>{Locale.label("songs.details.language") || "Language"}</dt><dd>{sd.language}</dd></>}
+              </Dl>
+            )}
+            <ListPills>
+              {(arrangements.data || []).map((arrangement) => (
+                <Pill key={arrangement.id} on={selectedArrangement?.id === arrangement.id} onClick={() => selectArrangement(arrangement.id!)}>
+                  {arrangement.name}
+                </Pill>
+              ))}
+            </ListPills>
+            {sd && (
+              editLinks && canEdit
+                ? <SongDetailLinksEdit songDetailId={sd.id!} reload={() => { setEditLinks(false); refetch(); }} />
+                : <SongDetailLinks songDetail={sd} onEdit={canEdit ? () => setEditLinks(true) : undefined} />
+            )}
+          </>
         )}
-        {canEdit && (
-          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="header" intent="remove" onClick={handleDeleteSong} />
-        )}
-        {canEdit && (
-          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleAddArrangement}>
-            {Locale.label("songs.songPage.addArrangement")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        {editSongDetails && canEdit ? (
-          <SongDetailsEdit
-            songDetail={songDetail.data!}
-            onCancel={() => setEditSongDetails(false)}
-            onSave={() => {
-              setEditSongDetails(false);
-              refetch();
-            }}
-            reload={refetch}
-          />
-        ) : (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 9 }}>{currentContent}</Grid>
-
-            <Grid size={{ xs: 12, md: 3 }}>{arrangementNavigation}</Grid>
-          </Grid>
-        )}
-      </Box>
+        rest={
+          editSongDetails && canEdit
+            ? (
+              <>
+                <SongDetailsEdit
+                  songDetail={sd!}
+                  onCancel={() => setEditSongDetails(false)}
+                  onSave={() => { setEditSongDetails(false); refetch(); }}
+                  reload={refetch}
+                />
+                <Box sx={{ mt: 3 }}>
+                  <Verb onClick={handleDeleteSong}>{Locale.label("common.delete")}</Verb>
+                </Box>
+              </>
+            )
+            : selectedArrangement
+              ? <Arrangement arrangement={selectedArrangement} reload={refetch} />
+              : <p style={{ color: platedColor.mute }}>{Locale.label("songs.songPage.noArrangementSelected")}</p>
+        }
+      />
     </>
   );
 });

@@ -1,11 +1,12 @@
 import React from "react";
 import { type CampusInterface } from "./CampusInterface";
 import { Locale, Loading } from "@churchapps/apphelper";
-import { Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Business as BusinessIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { SectionListCard, clickableRowSx } from "../../components/ui";
+import { clickableRowSx } from "../../components/ui";
 import { CampusEdit } from "./CampusEdit";
+import { addBarSx, verbSx, SectionLabel } from "../plated";
 
 // Campus management (list + inline editor). Shared by the Settings landing's
 // Campuses section and the standalone /settings/campuses page.
@@ -55,25 +56,15 @@ export const CampusesSection: React.FC = () => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: editCampus ? 7 : 12 }}>
-        <SectionListCard
-          icon={<BusinessIcon />}
-          title={Locale.label("settings.campuses.campuses")}
-          count={data.length}
-          onAdd={() => setEditCampus({})}
-          addLabel={Locale.label("settings.campuses.addCampus")}
-          addButtonVariant="outlined"
-          addButtonSize="small"
-          addButtonTestId="add-campus-button"
-          cardSx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}
-          empty={{
-            icon: <BusinessIcon />,
-            title: Locale.label("settings.campuses.none"),
-            action: (
-              <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditCampus({})} data-testid="add-campus-button-empty">
-                {Locale.label("settings.campuses.addCampus")}
-              </Button>
-            )
-          }}>
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("settings.campuses.campuses")}</SectionLabel>
+        {data.length === 0 ? (
+          <Box>
+            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>{Locale.label("settings.campuses.none")}</Typography>
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditCampus({})} data-testid="add-campus-button-empty">
+              {Locale.label("settings.campuses.addCampus")}
+            </Button>
+          </Box>
+        ) : (
           <Table>
             <TableHead>
               <TableRow>
@@ -84,7 +75,12 @@ export const CampusesSection: React.FC = () => {
             </TableHead>
             <TableBody>{rows}</TableBody>
           </Table>
-        </SectionListCard>
+        )}
+        <Box sx={addBarSx}>
+          <Box component="button" type="button" onClick={() => setEditCampus({})} data-testid="add-campus-button" sx={verbSx}>
+            {Locale.label("settings.campuses.addCampus")}
+          </Box>
+        </Box>
       </Grid>
       {selectedCampus && (
         <Grid size={{ xs: 12, md: 5 }}>

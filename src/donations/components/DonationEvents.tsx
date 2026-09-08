@@ -1,10 +1,11 @@
 import { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Accordion, AccordionDetails, AccordionSummary, Button, Icon } from "@mui/material";
-import { DateHelper, ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { Box, Button } from "@mui/material";
+import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { getPaymentProvider } from "@churchapps/apphelper/donations";
 import { type PersonInterface } from "@churchapps/helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { mutedSx, SectionTitle } from "./plate";
 
 export const DonationEvents = memo(() => {
   const queryClient = useQueryClient();
@@ -30,10 +31,6 @@ export const DonationEvents = memo(() => {
     return errorLogs.data.filter((log: any) => !log.resolved).length;
   }, [errorLogs.data]);
 
-  const headerIcon = useMemo(() => {
-    return unresolvedErrorCount > 0 ? "error danger-text" : "error";
-  }, [unresolvedErrorCount]);
-
   const handleClick = useCallback(
     (id: string, resolved: boolean) => {
       resolved = !resolved;
@@ -45,55 +42,40 @@ export const DonationEvents = memo(() => {
   );
 
   const getPersonName = useCallback(
-    (personId: string) => {
-      const person = people.data?.find((person: any) => person.id === personId);
-      return person?.name?.display;
-    },
+    (personId: string) => people.data?.find((person: any) => person.id === personId)?.name?.display,
     [people.data]
   );
-
-  const getErrorLogs = useCallback(() => {
-    return errorLogs.data?.map((log: any) => {
-      const eventType = log.eventType?.replace(".", " ") || "";
-      const eventUrl = getPaymentProvider(log.provider).descriptor.eventUrl?.(log.id);
-      return (
-        <Accordion key={log.id}>
-          <AccordionSummary>
-            <Icon sx={{ marginRight: "5px", color: !log.resolved ? "error.main" : "text.primary" }}>error</Icon>
-            <span className="capitalize">{eventType}</span> - {DateHelper.prettyDate(log.created)}
-          </AccordionSummary>
-          <AccordionDetails>
-            <ul>
-              <li key={`person-${log.id}`}>
-                {Locale.label("common.person")}
-                <Link to={"/people/" + log.personId.toString()}>{getPersonName(log.personId)}</Link>
-              </li>
-              <li key={`event-${log.id}`} className="capitalize">
-                {Locale.label("donations.donationEvents.event")}
-                {eventUrl ? <a href={eventUrl}>{eventType}</a> : eventType}
-              </li>
-              <li key={`message-${log.id}`}>
-                {Locale.label("donations.donationEvents.msg")}
-                {log.message}
-              </li>
-              <li key={`actions-${log.id}`} style={{ float: "right" }}>
-                <Button aria-label="resolve-button" variant={log.resolved ? "outlined" : "contained"} onClick={() => handleClick(log.id, log.resolved)}>
-                  {Locale.label("donations.donationEvents.mark")}
-                  {log.resolved ? Locale.label("donations.donationEvents.unresolved") : Locale.label("donations.donationEvents.resolved")}
-                </Button>
-              </li>
-            </ul>
-          </AccordionDetails>
-        </Accordion>
-      );
-    }) || [];
-  }, [errorLogs.data, getPersonName, handleClick]);
 
   if (!errorLogs.data?.length) return null;
 
   return (
-    <DisplayBox data-cy="eventLogs" headerIcon={headerIcon} headerText={Locale.label("donations.donationEvents.failed") + unresolvedErrorCount + Locale.label("donations.donationEvents.unres")}>
-      {getErrorLogs()}
-    </DisplayBox>
+    <Box data-cy="eventLogs">
+      <SectionTitle>
+        {Locale.label("donations.donationEvents.failed")}{unresolvedErrorCount}{Locale.label("donations.donationEvents.unres")}
+      </SectionTitle>
+      {errorLogs.data.map((log: any) => {
+        const eventType = log.eventType?.replace(".", " ") || "";
+        const eventUrl = getPaymentProvider(log.provider).descriptor.eventUrl?.(log.id);
+        return (
+          <Box key={log.id} sx={{ py: 1.5, borderTop: "1px solid var(--border-main)" }}>
+            <Box sx={{ fontWeight: 500, color: log.resolved ? "var(--text-main)" : "warning.main" }}>
+              <span className="capitalize">{eventType}</span> — {DateHelper.prettyDate(log.created)}
+            </Box>
+            <Box sx={mutedSx}>
+              {Locale.label("common.person")} <Link to={"/people/" + log.personId.toString()}>{getPersonName(log.personId)}</Link>
+            </Box>
+            <Box sx={mutedSx}>
+              {Locale.label("donations.donationEvents.event")}
+              {eventUrl ? <a href={eventUrl}>{eventType}</a> : eventType}
+            </Box>
+            <Box sx={mutedSx}>{Locale.label("donations.donationEvents.msg")}{log.message}</Box>
+            <Button aria-label="resolve-button" variant={log.resolved ? "outlined" : "contained"} size="small" sx={{ mt: 1 }} onClick={() => handleClick(log.id, log.resolved)}>
+              {Locale.label("donations.donationEvents.mark")}
+              {log.resolved ? Locale.label("donations.donationEvents.unresolved") : Locale.label("donations.donationEvents.resolved")}
+            </Button>
+          </Box>
+        );
+      })}
+    </Box>
   );
 });

@@ -6,11 +6,12 @@ import { GroupMembersTab } from "./components/GroupMembersTab";
 import { GroupSessionsTab } from "./components/GroupSessionsTab";
 import { GroupCalendarTab } from "./components/GroupCalendarTab";
 import { GroupHealthTab } from "./components/GroupHealthTab";
-import { Button, Grid } from "@mui/material";
+import { Button } from "@mui/material";
 import { CalendarMonth as AttendanceIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { EmptyState } from "../components/ui/EmptyState";
 import { useQuery } from "@tanstack/react-query";
+import "./omarchy.css";
 
 export const GroupPage = () => {
   const params = useParams();
@@ -70,19 +71,33 @@ export const GroupPage = () => {
     group.refetch();
   };
 
+  const handleTabChange = (tab: string) => {
+    setEditMode(false);
+    setSelectedTab(tab);
+  };
+
   return (
-    <>
+    <div className="og-record">
       <GroupBanner
         group={groupData}
         onEdit={handleEdit}
         editMode={editMode}
-        tabs={<GroupNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} group={groupData} onHeader />}
       />
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>
-          <div id="mainContent">{editMode && groupData.id ? <GroupDetailsEdit id="groupDetailsBox" group={groupData} updatedFunction={handleUpdated} /> : getCurrentTab()}</div>
-        </Grid>
-      </Grid>
-    </>
+      <section className="og-rest">
+        {editMode && groupData.id ? (
+          <div id="mainContent">
+            <GroupDetailsEdit id="groupDetailsBox" group={groupData} updatedFunction={handleUpdated} />
+          </div>
+        ) : (
+          <>
+            {selectedTab !== "members" && (
+              <button type="button" className="og-back" onClick={() => setSelectedTab("members")}>← {groupData.name}</button>
+            )}
+            <GroupNavigation selectedTab={selectedTab} onTabChange={handleTabChange} group={groupData} />
+            <div id="mainContent">{getCurrentTab()}</div>
+          </>
+        )}
+      </section>
+    </div>
   );
 };

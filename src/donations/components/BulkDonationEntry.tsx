@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Card, CardContent, Typography, Button, type SelectChangeEvent } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Typography, Button, type SelectChangeEvent } from "@mui/material";
 import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, PersonHelper, Locale } from "@churchapps/apphelper";
@@ -101,127 +101,123 @@ export const BulkDonationEntry = memo((props: Props) => {
 
   if (showPersonSearch) {
     return (
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            {Locale.label("donations.bulkEntry.selectPerson")}
-          </Typography>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
-          <Box sx={{ mt: 2 }}>
-            <Button variant="text" size="small" onClick={handleAnonymousSelect} data-testid="bulk-donation-anonymous">
-              {Locale.label("donations.donationEdit.anon")}
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
+      <Box sx={{ mb: 3, py: 1 }}>
+        <Typography sx={{ mb: 2, fontWeight: 500 }}>
+          {Locale.label("donations.bulkEntry.selectPerson")}
+        </Typography>
+        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
+        <Box sx={{ mt: 2 }}>
+          <Button variant="text" size="small" onClick={handleAnonymousSelect} data-testid="bulk-donation-anonymous">
+            {Locale.label("donations.donationEdit.anon")}
+          </Button>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <Card sx={{ mb: 3 }}>
-      <CardContent>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-          <Typography variant="h6">
-            {selectedPerson?.name?.display || Locale.label("donations.donationEdit.anon")}
-          </Typography>
-          <Button variant="text" size="small" onClick={() => setShowPersonSearch(true)} data-testid="bulk-donation-change-person">
-            {Locale.label("common.change")}
-          </Button>
-        </Box>
+    <Box sx={{ mb: 3, py: 1 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+        <Typography sx={{ fontWeight: 500 }}>
+          {selectedPerson?.name?.display || Locale.label("donations.donationEdit.anon")}
+        </Typography>
+        <Button variant="text" size="small" onClick={() => setShowPersonSearch(true)} data-testid="bulk-donation-change-person">
+          {Locale.label("common.change")}
+        </Button>
+      </Box>
 
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 3, opacity: 0.7 }}>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <AppDatePicker
-              fullWidth
-              label={Locale.label("donations.donationEdit.date")}
-
-              value={defaultValues.date}
-              onChange={(e) => handleDefaultChange("date", e.target.value)}
-              onKeyDown={handleKeyDown}
-              size="small"
-              data-testid="bulk-donation-date"
-            />
-            <FormControl fullWidth size="small">
-              <InputLabel>{Locale.label("donations.donationEdit.method")}</InputLabel>
-              <Select
-                value={defaultValues.method}
-                label={Locale.label("donations.donationEdit.method")}
-                onChange={(e: SelectChangeEvent) => handleDefaultChange("method", e.target.value)}
-                onKeyDown={handleKeyDown}
-                data-testid="bulk-donation-method">
-                <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
-                <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
-                <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
-                <MenuItem value="In-Kind">{Locale.label("donations.donationEdit.inKind")}</MenuItem>
-              </Select>
-            </FormControl>
-            {props.funds?.length > 1 && (
-              <FormControl fullWidth size="small">
-                <InputLabel>{Locale.label("donations.donationEdit.fund")}</InputLabel>
-                <Select
-                  value={defaultValues.fundId}
-                  label={Locale.label("donations.donationEdit.fund")}
-                  onChange={(e: SelectChangeEvent) => handleDefaultChange("fundId", e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  data-testid="bulk-donation-fund">
-                  {props.funds.map((fund) => (<MenuItem key={fund.id} value={fund.id}>{fund.name}</MenuItem>))}
-                </Select>
-              </FormControl>
-            )}
-          </Box>
-          <TextField
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 3, opacity: 0.7 }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <AppDatePicker
             fullWidth
-            label={Locale.label("common.notes")}
-            value={defaultValues.notes}
-            onChange={(e) => handleDefaultChange("notes", e.target.value)}
+            label={Locale.label("donations.donationEdit.date")}
+
+            value={defaultValues.date}
+            onChange={(e) => handleDefaultChange("date", e.target.value)}
             onKeyDown={handleKeyDown}
             size="small"
-            data-testid="bulk-donation-notes"
+            data-testid="bulk-donation-date"
           />
-        </Box>
-
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <TextField
-            inputRef={amountInputRef}
-            label={Locale.label("common.amount")}
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            onKeyDown={handleKeyDown}
-            sx={{ flex: 1, "& .MuiInputBase-input": { fontSize: "1.5rem" } }}
-            autoFocus
-            data-testid="bulk-donation-amount"
-          />
-          {defaultValues.method !== "Cash" && (
-            <TextField
-              label={methodDetailsLabel}
-              value={methodDetails}
-              onChange={(e) => setMethodDetails(e.target.value)}
+          <FormControl fullWidth size="small">
+            <InputLabel>{Locale.label("donations.donationEdit.method")}</InputLabel>
+            <Select
+              value={defaultValues.method}
+              label={Locale.label("donations.donationEdit.method")}
+              onChange={(e: SelectChangeEvent) => handleDefaultChange("method", e.target.value)}
               onKeyDown={handleKeyDown}
-              sx={{ flex: 1, "& .MuiInputBase-input": { fontSize: "1.5rem" } }}
-              data-testid="bulk-donation-method-details"
-            />
+              data-testid="bulk-donation-method">
+              <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
+              <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
+              <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
+              <MenuItem value="In-Kind">{Locale.label("donations.donationEdit.inKind")}</MenuItem>
+            </Select>
+          </FormControl>
+          {props.funds?.length > 1 && (
+            <FormControl fullWidth size="small">
+              <InputLabel>{Locale.label("donations.donationEdit.fund")}</InputLabel>
+              <Select
+                value={defaultValues.fundId}
+                label={Locale.label("donations.donationEdit.fund")}
+                onChange={(e: SelectChangeEvent) => handleDefaultChange("fundId", e.target.value)}
+                onKeyDown={handleKeyDown}
+                data-testid="bulk-donation-fund">
+                {props.funds.map((fund) => (<MenuItem key={fund.id} value={fund.id}>{fund.name}</MenuItem>))}
+              </Select>
+            </FormControl>
           )}
         </Box>
+        <TextField
+          fullWidth
+          label={Locale.label("common.notes")}
+          value={defaultValues.notes}
+          onChange={(e) => handleDefaultChange("notes", e.target.value)}
+          onKeyDown={handleKeyDown}
+          size="small"
+          data-testid="bulk-donation-notes"
+        />
+      </Box>
 
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
-          <Typography variant="caption" color="text.secondary">
-            {Locale.label("donations.bulkEntry.pressEnter")}
-          </Typography>
-          <Button variant="contained" onClick={handleSave} data-testid="add-donation-submit">
-            {Locale.label("donations.bulkEntry.addDonation")}
-          </Button>
-        </Box>
-
-        {props.onOpenFullEditor && (
-          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>
-            {Locale.label("donations.bulkEntry.splitFundsHint")}{" "}
-            <Button variant="text" size="small" onClick={props.onOpenFullEditor} data-testid="bulk-donation-full-editor" sx={{ p: 0, minWidth: 0, verticalAlign: "baseline" }}>
-              {Locale.label("donations.bulkEntry.fullEditor")}
-            </Button>
-          </Typography>
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <TextField
+          inputRef={amountInputRef}
+          label={Locale.label("common.amount")}
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          onKeyDown={handleKeyDown}
+          sx={{ flex: 1, "& .MuiInputBase-input": { fontSize: "1.5rem" } }}
+          autoFocus
+          data-testid="bulk-donation-amount"
+        />
+        {defaultValues.method !== "Cash" && (
+          <TextField
+            label={methodDetailsLabel}
+            value={methodDetails}
+            onChange={(e) => setMethodDetails(e.target.value)}
+            onKeyDown={handleKeyDown}
+            sx={{ flex: 1, "& .MuiInputBase-input": { fontSize: "1.5rem" } }}
+            data-testid="bulk-donation-method-details"
+          />
         )}
-      </CardContent>
-    </Card>
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
+        <Typography variant="caption" color="text.secondary">
+          {Locale.label("donations.bulkEntry.pressEnter")}
+        </Typography>
+        <Button variant="contained" onClick={handleSave} data-testid="add-donation-submit">
+          {Locale.label("donations.bulkEntry.addDonation")}
+        </Button>
+      </Box>
+
+      {props.onOpenFullEditor && (
+        <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>
+          {Locale.label("donations.bulkEntry.splitFundsHint")}{" "}
+          <Button variant="text" size="small" onClick={props.onOpenFullEditor} data-testid="bulk-donation-full-editor" sx={{ p: 0, minWidth: 0, verticalAlign: "baseline" }}>
+            {Locale.label("donations.bulkEntry.fullEditor")}
+          </Button>
+        </Typography>
+      )}
+    </Box>
   );
 });

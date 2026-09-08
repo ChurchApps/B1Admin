@@ -1,22 +1,23 @@
 import React, { memo, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Permissions, UserHelper, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
+import { Permissions, UserHelper, type PersonInterface, type SearchCondition, type HouseholdInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { PeopleSearchResults, PeopleColumns } from "./components";
-import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select } from "@mui/material";
+import { PeopleColumns } from "./components";
+import { Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
 import { buildRulesFromCriteria } from "./components/listRules";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { People as PeopleIcon, PersonAdd as PersonAddIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { CreatePerson } from "../components";
+import { ExportButton } from "../components/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
 import { type BulkResult } from "./components/bulk/BulkFieldDialog";
+import { DirectoryHouseholds } from "./components/DirectoryHouseholds";
+import { buildHouseholds } from "./buildHouseholds";
+import "./people.css";
 
 interface BulkDeleteResponse {
   success: boolean;
@@ -32,8 +33,6 @@ const EXPORT_LABEL_KEYS = [
 
 const formatHeader = (key: string): string => {
   if (EXPORT_LABEL_KEYS.indexOf(key) > -1) return Locale.label("people.export." + key);
-
-  // Programmatic camelCase to spaced Title Case fallback
   const result = key
     .replace(/([A-Z])/g, " $1")
     .replace(/([0-9]+)/g, " $1")
@@ -46,7 +45,8 @@ export const PeoplePage = memo(() => {
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
   const [selectedListFilters, setSelectedListFilters] = React.useState<Record<string, ActiveFilter> | undefined>(undefined);
-  // Query behind current results; null when not from a search.
+  const [selectedListId, setSelectedListId] = React.useState<string | undefined>(undefined);
+  const [findTerm, setFindTerm] = React.useState("");
   const [saveableCriteria, setSaveableCriteria] = React.useState<ListConditions | null>(null);
   const emptySaveListDialog = { open: false, name: "", category: "", scope: "org", match: "all" as "all" | "any", householdInclusion: "none", autoRefresh: false, notifyOnChange: false, saving: false };
   const [saveListDialog, setSaveListDialog] = React.useState(emptySaveListDialog);
@@ -69,6 +69,11 @@ export const PeoplePage = memo(() => {
 
   const peopleQuery = useQuery<PersonInterface[]>({
     queryKey: [loadAll ? "/people/list" : `/people/list?pageSize=${INITIAL_PAGE_SIZE}`, "MembershipApi"],
+    placeholderData: []
+  });
+
+  const householdRecords = useQuery<HouseholdInterface[]>({
+    queryKey: ["/households", "MembershipApi"],
     placeholderData: []
   });
 
@@ -109,19 +114,14 @@ export const PeoplePage = memo(() => {
   const handleToggleColumn = (key: string) => {
     const sc = [...selectedColumns];
     const index = sc.indexOf(key);
-    if (index === -1) {
-      sc.push(key);
-    } else {
+    if (index === -1) sc.push(key);
+    else {
       if (sc.length === 1) {
         if (key !== "displayName") {
           sc.splice(index, 1);
           sc.push("displayName");
-        } else {
-          return;
-        }
-      } else {
-        sc.splice(index, 1);
-      }
+        } else return;
+      } else sc.splice(index, 1);
     }
     localStorage.setItem("selectedColumns", JSON.stringify(sc));
     setSelectedColumns(sc);
@@ -129,11 +129,8 @@ export const PeoplePage = memo(() => {
 
   React.useEffect(() => {
     const stored = localStorage.getItem("selectedColumns");
-    if (stored) {
-      setSelectedColumns(JSON.parse(stored));
-    } else {
-      localStorage.setItem("selectedColumns", JSON.stringify(["photo", "displayName"]));
-    }
+    if (stored) setSelectedColumns(JSON.parse(stored));
+    else localStorage.setItem("selectedColumns", JSON.stringify(["photo", "displayName"]));
   }, []);
 
   React.useEffect(() => {
@@ -148,6 +145,8 @@ export const PeoplePage = memo(() => {
   const resetSearchResults = useCallback(() => {
     setSearchResults(allPeople);
     setIsSearchPerformed(false);
+    setSelectedListId(undefined);
+    setSelectedListFilters(undefined);
   }, [allPeople]);
 
   React.useEffect(() => {
@@ -163,7 +162,7 @@ export const PeoplePage = memo(() => {
   const handleSelectList = useCallback((list: ListInterface) => {
     const conditions = list.conditions;
     setIsSearchPerformed(true);
-    // Server-eval for match-any and household-inclusion; client-eval for plain all-match.
+    setSelectedListId(list.id);
     const needsServerEval = !!list.id && !!list.rules && (list.rules.match !== "all" || (!!list.householdInclusion && list.householdInclusion !== "none"));
     if (needsServerEval) {
       setSaveableCriteria(null);
@@ -178,7 +177,6 @@ export const PeoplePage = memo(() => {
         setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else {
-      // New ref on re-select to re-seed advanced panel.
       setSaveableCriteria(conditions ?? null);
       setSelectedListFilters({ ...conditions });
     }
@@ -190,14 +188,12 @@ export const PeoplePage = memo(() => {
       handleSelectList({ conditions });
       navigate(location.pathname, { replace: true, state: null });
     }
-
   }, []);
 
   const handleSaveList = useCallback(async () => {
     if (!saveableCriteria || !saveListDialog.name.trim()) return;
     setSaveListDialog((d) => ({ ...d, saving: true }));
     try {
-      // Rules tree is canonical server query; conditions blob allows re-seeding for edit.
       const rules = buildRulesFromCriteria(saveableCriteria, saveListDialog.match);
       await ApiHelper.post("/lists", [
         {
@@ -220,40 +216,27 @@ export const PeoplePage = memo(() => {
 
   React.useEffect(() => {
     if (!searchResults) return;
-
     const visibleIds = new Set(searchResults.map((person) => person.id).filter((id): id is string => !!id));
     setSelectedPersonIds((current) => current.filter((id) => id !== currentPersonId && visibleIds.has(id)));
   }, [currentPersonId, searchResults]);
 
-  const togglePersonSelection = useCallback((personId: string) => {
-    if (personId === currentPersonId) return;
-    setSelectedPersonIds((current) => (current.includes(personId) ? current.filter((id) => id !== personId) : [...current, personId]));
-  }, [currentPersonId]);
-
-  const toggleAllVisiblePeople = useCallback(() => {
-    if (!searchResults) return;
-
-    const visibleIds = searchResults.map((person) => person.id).filter((id): id is string => !!id && id !== currentPersonId);
-    if (visibleIds.length === 0) return;
-
+  const toggleHouseholdSelection = useCallback((members: PersonInterface[]) => {
+    const ids = members.map((m) => m.id).filter((id): id is string => !!id && id !== currentPersonId);
+    if (ids.length === 0) return;
     setSelectedPersonIds((current) => {
-      const allVisibleSelected = visibleIds.every((id) => current.includes(id));
-      if (allVisibleSelected) return current.filter((id) => !visibleIds.includes(id));
-
-      const merged = new Set([...current, ...visibleIds]);
-      return Array.from(merged);
+      const allSelected = ids.every((id) => current.includes(id));
+      if (allSelected) return current.filter((id) => !ids.includes(id));
+      return Array.from(new Set([...current, ...ids]));
     });
-  }, [currentPersonId, searchResults]);
+  }, [currentPersonId]);
 
   const handleBulkDelete = useCallback(async () => {
     if (selectedPersonIds.length === 0) return;
-
     setIsBulkDeleting(true);
     try {
       const response = await ApiHelper.post("/people/bulk-delete", { personIds: selectedPersonIds }, "MembershipApi") as BulkDeleteResponse;
       const deletedIds = response?.deletedIds || selectedPersonIds;
       const deletedIdSet = new Set(deletedIds);
-
       setSearchResults((current) => current?.filter((person) => !person.id || !deletedIdSet.has(person.id)) || []);
       setAllPeople((current) => current.filter((person) => !person.id || !deletedIdSet.has(person.id)));
       setSelectedPersonIds([]);
@@ -277,7 +260,6 @@ export const PeoplePage = memo(() => {
   const handleBulkComplete = useCallback((result: BulkResult) => {
     setToast({ open: true, message: result.message, severity: result.severity });
     if (result.severity !== "success") return;
-
     if (result.fieldUpdates) {
       const selectedSet = new Set(selectedPersonIds);
       setSearchResults((current) => current?.map((person) => (person.id && selectedSet.has(person.id) ? { ...person, ...result.fieldUpdates } : person)) || null);
@@ -286,148 +268,145 @@ export const PeoplePage = memo(() => {
     setSelectedPersonIds([]);
   }, [selectedPersonIds]);
 
-  const getExportData = (people: PersonInterface[]) => {
-    return people.map((person) => {
-      const { name, contactInfo, ...rest } = person;
-      const photoUrl = person.photo ? (person.photo.startsWith("http") ? person.photo : (EnvironmentHelper.Common.ContentRoot + person.photo)) : "";
-
-      const rawExport: any = {
-        ...rest,
-        photo: photoUrl,
-
-        display: name?.display,
-        first: name?.first,
-        last: name?.last,
-        middle: name?.middle,
-        nick: name?.nick,
-        suffix: name?.suffix,
-
-        address1: contactInfo?.address1,
-        address2: contactInfo?.address2,
-        city: contactInfo?.city,
-        state: contactInfo?.state,
-        zip: contactInfo?.zip,
-        email: contactInfo?.email,
-        homePhone: contactInfo?.homePhone,
-        workPhone: contactInfo?.workPhone,
-        mobilePhone: contactInfo?.mobilePhone,
-
-        contactCity: contactInfo?.city,
-        contactState: contactInfo?.state,
-        contactZip: contactInfo?.zip,
-        contactEmail: contactInfo?.email
-      };
-
-      const formattedExport: any = {};
-      Object.keys(rawExport).forEach((key) => {
-        formattedExport[formatHeader(key)] = rawExport[key];
-      });
-
-      return formattedExport;
+  const getExportData = (people: PersonInterface[]) => people.map((person) => {
+    const { name, contactInfo, ...rest } = person;
+    const photoUrl = person.photo ? (person.photo.startsWith("http") ? person.photo : (EnvironmentHelper.Common.ContentRoot + person.photo)) : "";
+    const rawExport: any = {
+      ...rest,
+      photo: photoUrl,
+      display: name?.display,
+      first: name?.first,
+      last: name?.last,
+      middle: name?.middle,
+      nick: name?.nick,
+      suffix: name?.suffix,
+      address1: contactInfo?.address1,
+      address2: contactInfo?.address2,
+      city: contactInfo?.city,
+      state: contactInfo?.state,
+      zip: contactInfo?.zip,
+      email: contactInfo?.email,
+      homePhone: contactInfo?.homePhone,
+      workPhone: contactInfo?.workPhone,
+      mobilePhone: contactInfo?.mobilePhone,
+      contactCity: contactInfo?.city,
+      contactState: contactInfo?.state,
+      contactZip: contactInfo?.zip,
+      contactEmail: contactInfo?.email
+    };
+    const formattedExport: any = {};
+    Object.keys(rawExport).forEach((key) => {
+      formattedExport[formatHeader(key)] = rawExport[key];
     });
-  };
+    return formattedExport;
+  });
+
+  const householdNameById = React.useMemo(() => {
+    const map = new Map<string, string>();
+    (householdRecords.data || []).forEach((h) => {
+      if (h.id && h.name?.trim()) map.set(h.id, h.name.trim());
+    });
+    return map;
+  }, [householdRecords.data]);
+
+  const households = React.useMemo(
+    () => buildHouseholds(searchResults || [], householdNameById),
+    [searchResults, householdNameById]
+  );
+
+  const selectedNames = React.useMemo(() => {
+    const set = new Set(selectedPersonIds);
+    const last = new Set<string>();
+    (searchResults || []).forEach((p) => {
+      if (p.id && set.has(p.id) && p.name?.last) last.add(p.name.last);
+    });
+    return Array.from(last).slice(0, 4).join(", ");
+  }, [searchResults, selectedPersonIds]);
 
   return (
     <>
-      <PageHeader
-        icon={<PeopleIcon />}
-        title={Locale.label("people.peoplePage.searchPpl")}
-        subtitle={
-          searchResults
-            ? isSearchPerformed
-              ? Locale.label("people.peoplePage.peopleFound").replace("{count}", searchResults.length.toString())
-              : Locale.label("people.peoplePage.showingMembers").replace("{count}", searchResults.length.toString())
-            : peopleQuery.isLoading
-              ? Locale.label("people.peoplePage.loading")
-              : Locale.label("people.peoplePage.noPeopleFound")
-        }>
-        <HeaderSecondaryButton startIcon={<BarChartIcon />} onClick={() => navigate("/people/demographics")} data-testid="demographics-button">
-          {Locale.label("people.demographics.title")}
-        </HeaderSecondaryButton>
-        {canEdit && (
-          <HeaderPrimaryButton startIcon={<PersonAddIcon />} onClick={scrollToCreatePerson} data-testid="add-person-button">
-            {Locale.label("people.peoplePage.addPerson")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
+      <main className="omarchy-people">
+        <div className="dir-head">
+          <h1>The church</h1>
+          <div className="dir-verbs">
+            <a href="/people/demographics" data-testid="demographics-button" onClick={(e) => { e.preventDefault(); navigate("/people/demographics"); }}>{Locale.label("people.demographics.title")}</a>
+            <a href="/people/print-directory" onClick={(e) => { e.preventDefault(); window.open("/people/print-directory", "_blank"); }}>{Locale.label("people.peoplePage.printDirectory")}</a>
+            {searchResults && <ExportButton data={getExportData(searchResults || [])} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
+            <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
+            {canEdit && saveableCriteria && isSearchPerformed && searchResults && searchResults.length > 0 && (
+              <button type="button" className="verb" onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })}>{Locale.label("people.lists.saveAs")}</button>
+            )}
+            {canEdit && (
+              <button type="button" className="verb" data-testid="add-person-button" onClick={scrollToCreatePerson}>{Locale.label("people.peoplePage.addPerson")}</button>
+            )}
+          </div>
+        </div>
+        <p className="lede">Households to browse. A person to open. Everything else is a list or a question.</p>
 
-      {/* Main Content */}
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 3 }}>
-            <PeopleSearch
-              updateSearchResults={(people) => {
-                setSearchResults(people);
-                setIsSearchPerformed(true);
-              }}
-              resetSearchResults={resetSearchResults}
-              updatedFunction={refetch}
-              initialFilters={selectedListFilters}
-              onReportCriteria={setSaveableCriteria}
-            />
-            <SavedLists onSelect={handleSelectList} canManage={canEdit} />
-            <AISearch
-              updateSearchResults={(people) => {
-                setSearchResults(people);
-                setIsSearchPerformed(true);
-              }}
-              onReportCriteria={setSaveableCriteria}
-              resetSearchResults={resetSearchResults}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 9 }}>
-            <Card>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <PeopleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("people.peoplePage.allMembers")}</Typography>
-                    {searchResults && searchResults.length > 0 && <CountChip count={searchResults.length} />}
-                  </Stack>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    {canEdit && selectedPersonIds.length > 0 && (
-                      <>
-                        <Typography variant="body2" color="text.secondary">{Locale.label("people.bulk.selected").replace("{count}", selectedPersonIds.length.toString())}</Typography>
-                        <Button size="small" onClick={() => setSelectedPersonIds([])}>{Locale.label("people.bulk.clearSelection")}</Button>
-                        <PeopleBulkActions selectedPersonIds={selectedPersonIds} onComplete={handleBulkComplete} onDeleteClick={() => setShowBulkDeleteConfirm(true)} />
-                      </>
-                    )}
-                    {canEdit && saveableCriteria && isSearchPerformed && searchResults && searchResults.length > 0 && (
-                      <Button size="small" variant="outlined" startIcon={<SaveListIcon />} onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })} sx={{ mr: 1 }}>
-                        {Locale.label("people.lists.saveAs")}
-                      </Button>
-                    )}
-                    {searchResults && <ExportButton data={getExportData(searchResults || [])} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
-                    <AppIconButton label={Locale.label("people.peoplePage.printDirectory")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/people/print-directory", "_blank")} />
-                    <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
-                  </Stack>
-                </Stack>
-              </Box>
-              <Box>
-                <PeopleSearchResults
-                  people={searchResults || []}
-                  columns={columns}
-                  selectedColumns={selectedColumns}
-                  updateSearchResults={(people) => setSearchResults(people)}
-                  updatedFunction={refetch}
-                  canSelectPeople={canEdit}
-                  selectedPersonIds={selectedPersonIds}
-                  togglePersonSelection={togglePersonSelection}
-                  toggleAllVisiblePeople={toggleAllVisiblePeople}
-                  currentPersonId={currentPersonId}
-                />
-                {!isSearchPerformed && !loadAll && maybeMore && allPeople.length > 0 && (
-                  <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-                    <Button variant="outlined" onClick={handleShowAll} disabled={peopleQuery.isFetching} startIcon={peopleQuery.isFetching ? <CircularProgress size={16} /> : null}>
-                      {Locale.label("people.peoplePage.showAll")}
-                    </Button>
-                  </Box>
-                )}
-              </Box>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
+        <SavedLists
+          variant="pills"
+          onSelect={handleSelectList}
+          canManage={canEdit}
+          selectedId={selectedListId}
+          onClear={resetSearchResults}
+        />
+
+        <PeopleSearch
+          updateSearchResults={(people) => {
+            setSearchResults(people);
+            setIsSearchPerformed(true);
+          }}
+          resetSearchResults={resetSearchResults}
+          updatedFunction={refetch}
+          initialFilters={selectedListFilters}
+          onReportCriteria={setSaveableCriteria}
+          onTermChange={setFindTerm}
+        />
+        <AISearch
+          updateSearchResults={(people) => {
+            setSearchResults(people);
+            setIsSearchPerformed(true);
+          }}
+          onReportCriteria={setSaveableCriteria}
+          resetSearchResults={resetSearchResults}
+        />
+
+        <DirectoryHouseholds
+          households={households}
+          canSelect={canEdit}
+          selectedPersonIds={selectedPersonIds}
+          currentPersonId={currentPersonId}
+          searchTerm={findTerm}
+          onOpen={(person) => navigate("/people/" + person.id)}
+          onToggleHousehold={toggleHouseholdSelection}
+        />
+
+        {!isSearchPerformed && !loadAll && maybeMore && allPeople.length > 0 && (
+          <div className="show-all">
+            <button type="button" onClick={handleShowAll} disabled={peopleQuery.isFetching}>
+              {Locale.label("people.peoplePage.showAll")}
+            </button>
+          </div>
+        )}
+
+        {canEdit && (
+          <div className="add" id="createPersonForm">
+            <h2>Add a person</h2>
+            <CreatePerson onCreate={(person) => navigate("/people/" + person.id)} />
+          </div>
+        )}
+
+        <div className={`bulk${selectedPersonIds.length > 0 ? " show" : ""}`}>
+          <div>
+            <b>{Locale.label("people.bulk.selected").replace("{count}", selectedPersonIds.length.toString())}</b>
+            {selectedNames && <span className="sel"> · {selectedNames}</span>}
+            <Button size="small" onClick={() => setSelectedPersonIds([])}>{Locale.label("people.bulk.clearSelection")}</Button>
+          </div>
+          {canEdit && selectedPersonIds.length > 0 && (
+            <PeopleBulkActions selectedPersonIds={selectedPersonIds} onComplete={handleBulkComplete} onDeleteClick={() => setShowBulkDeleteConfirm(true)} />
+          )}
+        </div>
+      </main>
 
       <Dialog open={saveListDialog.open} onClose={() => setSaveListDialog((d) => ({ ...d, open: false }))} maxWidth="xs" fullWidth>
         <DialogTitle>{Locale.label("people.lists.saveAs")}</DialogTitle>

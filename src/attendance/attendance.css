@@ -1,0 +1,111 @@
+.om-record-identity h1 {
+  font-size: 2.1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+
+.om-verbs {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 16px 0 8px;
+}
+
+.om-verbs button,
+.om-verbs a {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1565C0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.om-verbs button:hover,
+.om-verbs a:hover {
+  text-decoration: underline;
+}
+
+.om-back {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #1565C0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.om-back:hover {
+  text-decoration: underline;
+}
+
+.om-record-slice h3 {
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #666666;
+  margin: 0 0 12px;
+}
+
+.om-sundays {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.om-sun {
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  background: transparent;
+  border: 1px solid #dddddd;
+}
+
+.om-sun.on {
+  background: #1565C0;
+  border-color: #1565C0;
+}
+
+.om-sun.today {
+  outline: 2px solid #1565C0;
+  outline-offset: 2px;
+}
+
+.om-kinds {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+}
+
+.om-kinds button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1565C0;
+  cursor: pointer;
+}
+
+.om-kinds button.on,
+.om-kinds button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .om-in-room {
+    font-size: 3.2rem;
+  }
+}

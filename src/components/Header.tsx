@@ -1,11 +1,12 @@
-import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, NavItem, NotificationService, Permissions, PersonHelper, SupportModal, UserHelper, UserMenu } from "@churchapps/apphelper";
 import React, { useEffect, useMemo } from "react";
-
+import { AppBar, Box, Button, ClickAwayListener, Grow, Icon, IconButton, Menu, Paper, Popper, Toolbar } from "@mui/material";
 import { SecondaryMenuHelper } from "../helpers/SecondaryMenuHelper";
 import { hasPlansEditAccess } from "../helpers";
-import { SiteHeader } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { useNavigate } from "react-router-dom";
+import { openCommandPalette } from "../omarchy";
+import "../omarchy/omarchy.css";
 
 export const Header: React.FC = () => {
   const context = React.useContext(UserContext);
@@ -14,6 +15,7 @@ export const Header: React.FC = () => {
   const [donationError, setDonationError] = React.useState<boolean>(false);
   const [isFormMember, setIsFormMember] = React.useState<boolean>(false);
   const [isMinistryMember, setIsMinistryMember] = React.useState<boolean>(false);
+  const [supportOpen, setSupportOpen] = React.useState(false);
 
   useEffect(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) {
@@ -49,17 +51,8 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit) || UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
     else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
-    // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
     return menuItems;
   }, [donationError, formPermission, isFormMember, isMinistryMember]);
-  /*
-  const getSecondaryMenu = () => {
-    const menuItems:{ url: string, label: string }[] = []
-    menuItems.push({url: "/groups", label: Locale.label("components.wrapper.groups")});
-    menuItems.push({url: "/people", label: Locale.label("components.wrapper.ppl")});
-    if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary)) menuItems.push({url:"/attendance", label: Locale.label("components.wrapper.att")});
-    return menuItems;
-  }*/
 
   const getPrimaryLabel = () => {
     const path = window.location.pathname;
@@ -85,6 +78,12 @@ export const Header: React.FC = () => {
   const handleNavigate = (url: string) => {
     navigate(url);
   };
+
+  useEffect(() => {
+    if (context?.person?.id && context?.userChurch?.church?.id) {
+      NotificationService.getInstance().initialize(context).catch(() => undefined);
+    }
+  }, [context?.person?.id, context?.userChurch?.church?.id]);
 
   useEffect(() => {
     const addTestIds = () => {
@@ -113,7 +112,7 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      const scopes = document.querySelectorAll("header, .MuiDrawer-root");
+      const scopes = document.querySelectorAll("header, .MuiDrawer-root, #site-header");
       const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
         const href = link.getAttribute("href");
@@ -156,7 +155,6 @@ export const Header: React.FC = () => {
     };
 
     const timer = setTimeout(addTestIds, 100);
-
     const observer = new MutationObserver(addTestIds);
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -166,16 +164,137 @@ export const Header: React.FC = () => {
     };
   }, [primaryMenu, secondaryMenu]);
 
-  /*<Typography variant="h6" noWrap>{UserHelper.currentUserChurch?.church?.name || ""}</Typography>*/
+  const churchName = UserHelper.currentUserChurch?.church?.name || "B1";
+  const userName = context?.user ? `${context.user.firstName} ${context.user.lastName}` : "";
+  const profilePicture = context?.person ? PersonHelper.getPhotoUrl(context.person) : "";
+
   return (
-    <SiteHeader
-      primaryMenuItems={primaryMenu}
-      primaryMenuLabel={getPrimaryLabel()}
-      secondaryMenuItems={secondaryMenu.menuItems}
-      secondaryMenuLabel={secondaryMenu.label}
-      context={context!}
-      appName={"B1Admin"}
-      onNavigate={handleNavigate}
-    />
+    <div id="site-header">
+      <AppBar
+        id="site-app-bar"
+        position="absolute"
+        elevation={0}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backgroundColor: "var(--c1d3)",
+          boxShadow: "none",
+          fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+          "& .MuiIcon-root": { color: "#FFFFFF" }
+        }}
+      >
+        <Toolbar id="site-toolbar" sx={{ pr: "24px", backgroundColor: "var(--c1d3)", minHeight: "56px !important", gap: 1, color: "#fff" }}>
+          <Box
+            component="a"
+            href="/"
+            onClick={(e: React.MouseEvent) => { e.preventDefault(); handleNavigate("/"); }}
+            sx={{
+              color: "inherit",
+              textDecoration: "none",
+              fontWeight: 600,
+              letterSpacing: "-0.02em",
+              whiteSpace: "nowrap",
+              mr: 1,
+              fontFamily: "Roboto, Helvetica, Arial, sans-serif"
+            }}
+          >
+            {churchName}
+          </Box>
+          <PrimaryNav label={getPrimaryLabel()} menuItems={primaryMenu} onNavigate={handleNavigate} />
+          <SecondaryNav label={secondaryMenu.label} menuItems={secondaryMenu.menuItems} onNavigate={handleNavigate} />
+          <div id="secondary-menu-container" style={{ flex: 1 }}>
+            <SecondaryNavAlt label={secondaryMenu.label} menuItems={secondaryMenu.menuItems} onNavigate={handleNavigate} />
+          </div>
+          <button type="button" className="om-cmd" onClick={openCommandPalette} aria-haspopup="dialog" aria-label="Search or jump">
+            <span className="om-wide">Search or jump </span>
+            <kbd>Ctrl</kbd>
+            <kbd>K</kbd>
+          </button>
+          {context?.user?.id && (
+            <UserMenu
+              profilePicture={profilePicture}
+              userName={userName}
+              context={context!}
+              appName={"B1Admin"}
+              loadCounts={() => NotificationService.getInstance().refresh()}
+              notificationCounts={{ notificationCount: 0, pmCount: 0 }}
+              onNavigate={handleNavigate}
+            />
+          )}
+          <IconButton color="inherit" aria-label="Support" onClick={() => setSupportOpen(true)} size="small">
+            <Icon>help_outline</Icon>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <div id="app-bar-spacer" style={{ height: "56px" }} />
+      {supportOpen && <SupportModal appName="B1Admin" onClose={() => setSupportOpen(false)} />}
+    </div>
+  );
+};
+
+const PrimaryNav: React.FC<{ label: string; menuItems: { url: string; icon: string; label: string }[]; onNavigate: (url: string) => void }> = (props) => {
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
+
+  return (
+    <>
+      <Button ref={anchorRef} onClick={() => setOpen((v) => !v)} color="inherit" endIcon={<Icon>expand_more</Icon>} id="primaryNavButton" sx={{ textTransform: "none" }}>
+        <h2 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 500 }}>{props.label}</h2>
+      </Button>
+      <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" transition disablePortal style={{ zIndex: 1300, color: "#FFF" }}>
+        {({ TransitionProps }) => (
+          <Grow {...TransitionProps}>
+            <Paper elevation={3} sx={{ backgroundColor: "var(--c1)", color: "#FFF", minWidth: 300, paddingY: "10px" }}>
+              <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <Box sx={{ "& a": { color: "#FFF", textDecoration: "none" }, "& a:hover": { color: "rgba(255,255,255,0.75)" } }}>
+                  {props.menuItems.map((item) => (
+                    <NavItem
+                      url={item.url}
+                      label={item.label.toUpperCase()}
+                      icon={item.icon}
+                      key={item.url}
+                      onNavigate={(url) => { setOpen(false); props.onNavigate(url); }}
+                    />
+                  ))}
+                </Box>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </>
+  );
+};
+
+const SecondaryNav: React.FC<{ label: string; menuItems: { url: string; label: string }[]; onNavigate: (url: string) => void }> = (props) => (
+  <div id="secondaryMenu">
+    {props.menuItems.map((item) => (
+      item.label === props.label
+        ? <Box key={item.url} component="span" sx={{ backgroundColor: "rgba(255,255,255,0.16)", color: "#FFF", fontSize: 15, px: 1.25, py: 0.4, borderRadius: 10, mr: 1, cursor: "pointer" }} onClick={() => props.onNavigate(item.url)}>{item.label}</Box>
+        : <a key={item.url} href={item.url} onClick={(e) => { e.preventDefault(); props.onNavigate(item.url); }} style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none", marginLeft: 10, marginRight: 10 }}>{item.label}</a>
+    ))}
+  </div>
+);
+
+const SecondaryNavAlt: React.FC<{ label: string; menuItems: { url: string; label: string }[]; onNavigate: (url: string) => void }> = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  return (
+    <div id="secondaryMenuAlt">
+      <Button
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        color="inherit"
+        endIcon={<Icon>expand_more</Icon>}
+        id="secondaryMenuButton"
+        sx={{ textTransform: "none" }}
+      >
+        <h3 style={{ lineHeight: 1, margin: 0 }}>{props.label}</h3>
+      </Button>
+      <Menu anchorEl={anchorEl} open={anchorEl !== null} onClose={() => setAnchorEl(null)} transformOrigin={{ horizontal: "right", vertical: "top" }} anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          {props.menuItems.map((item) => (
+            <NavItem key={item.url} url={item.url} label={item.label} icon="people" onNavigate={(url) => { setAnchorEl(null); props.onNavigate(url); }} />
+          ))}
+        </Box>
+      </Menu>
+    </div>
   );
 };

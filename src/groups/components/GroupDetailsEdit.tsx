@@ -185,9 +185,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     if (teamMode) return <></>;
     return (
       <>
-        <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
-          <b>{Locale.label("groups.groupDetailsEdit.attendance")}</b>
-        </Box>
+        <h3>{Locale.label("groups.groupDetailsEdit.attendance")}</h3>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack direction={{ xs: "column", md: "row" }}>
@@ -253,7 +251,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     <>
       {ConfirmDialogElement}
       {galleryModal}
-      <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} icon="group" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/"
+      <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} elevation={0} onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/"
         headerActions={
           <Button size="small" onClick={handleArchive} data-testid="archive-group-button" aria-label={Locale.label("groups.groupDetailsEdit.archiveAria")}>
             {Locale.label("groups.groupDetailsEdit.archive")}
@@ -407,9 +405,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
-              <b>{Locale.label("groups.groupDetailsEdit.ageGrade")}</b>
-            </Box>
+            <h3>{Locale.label("common.more", "More")}</h3>
+            <h3>{Locale.label("groups.groupDetailsEdit.ageGrade")}</h3>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="body2" sx={{ mb: 1, color: "text.secondary" }}>{Locale.label("groups.groupDetailsEdit.minAge")}</Typography>
@@ -448,9 +445,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
-              <b>{Locale.label("groups.groupDetailsEdit.checkinCapacity")}</b>
-            </Box>
+            <h3>{Locale.label("groups.groupDetailsEdit.checkinCapacity")}</h3>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField fullWidth type="number" label={Locale.label("groups.groupDetailsEdit.capacity")} slotProps={{ htmlInput: { min: 0 } }} data-testid="capacity-input" {...register("capacity")} />

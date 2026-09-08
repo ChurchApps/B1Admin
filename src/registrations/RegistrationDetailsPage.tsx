@@ -12,7 +12,6 @@ import {
   Chip,
   Button,
   LinearProgress,
-  Grid,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -22,24 +21,22 @@ import {
   MenuItem
 } from "@mui/material";
 import {
-  HowToReg as RegIcon,
   Cancel as CancelIcon,
   Delete as DeleteIcon,
-  Download as DownloadIcon,
-  PersonAdd as PersonAddIcon,
   Description as DescriptionIcon,
   ReceiptLong as ReceiptIcon,
   ArrowUpward as PromoteIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, UserHelper, Permissions, PersonHelper, CurrencyHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonAdd, FormSubmission } from "../components";
 import { useRequirePermission, useConfirmDelete } from "../hooks";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { RegistrationDetailDialog } from "./components/RegistrationDetailDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader } from "../components/ui";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
+import { formatDateSafe } from "../helpers/DateFormatHelper";
+import { PlatedRecord, SectionLabel, Verb, plainTableSx } from "./components/plate";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
 
 const parseErrorMessage = (raw: string) => {
@@ -68,6 +65,7 @@ export const RegistrationDetailsPage = () => {
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
   const [currency, setCurrency] = useState("usd");
+  const [slice, setSlice] = useState<"registrations" | "settings">("registrations");
 
   const loadData = async () => {
     if (!eventId) return;
@@ -285,75 +283,97 @@ export const RegistrationDetailsPage = () => {
 
   const capacityPct = event.capacity ? Math.min((count / event.capacity) * 100, 100) : 0;
 
+  const registrationsSlice = (
+    <>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
+        <Typography sx={{ fontSize: "1.4rem", fontWeight: 500 }}>
+          {Locale.label("registrations.registrationDetailsPage.registrations")} ({count}{event.capacity ? ` / ${event.capacity}` : ""})
+        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+            <Verb onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Verb>
+          )}
+          <Verb onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Verb>
+        </Stack>
+      </Stack>
+      {event.capacity ? (
+        <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} />
+      ) : null}
+      {types.length > 0 && (
+        <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap data-testid="type-counts">
+          {types.map((t) => (
+            <Chip key={t.id} size="small" variant="outlined" label={`${t.name}: ${getTypeCounts().get(t.id as string) || 0}`} />
+          ))}
+        </Stack>
+      )}
+      {event.formId && (
+        <Chip
+          label={Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
+          size="small"
+          color={unansweredOnly ? "primary" : "default"}
+          variant={unansweredOnly ? "filled" : "outlined"}
+          onClick={() => setUnansweredOnly(!unansweredOnly)}
+        />
+      )}
+      {visibleRegistrations.length === 0 ? (
+        <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
+      ) : (
+        <Table size="small" sx={plainTableSx}>
+          <TableHead>
+            <TableRow>
+              <TableCell>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
+              <TableCell align="right">{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>
+              <TableCell>{Locale.label("registrations.commerce.type")}</TableCell>
+              <TableCell align="right">{Locale.label("registrations.commerce.paidTotal")}</TableCell>
+              <TableCell>{Locale.label("registrations.registrationDetailsPage.status")}</TableCell>
+              <TableCell>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>{getRows()}</TableBody>
+        </Table>
+      )}
+    </>
+  );
+
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<RegIcon />} title={event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations")} subtitle={Locale.label("registrations.registrationDetailsPage.subtitle")} />
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <CardWithHeader
-              title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""})`}
-              icon={<RegIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-              actions={(
-                <Stack direction="row" spacing={1} alignItems="center">
-                  {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-                    <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
-                  )}
-                  <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
-                </Stack>
-              )}>
-              {event.capacity ? (
-                <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mb: 1 }} />
-              ) : null}
-              {types.length > 0 && (
-                <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 1 }} data-testid="type-counts">
-                  {types.map((t) => (
-                    <Chip key={t.id} size="small" variant="outlined" label={`${t.name}: ${getTypeCounts().get(t.id as string) || 0}`} />
-                  ))}
-                </Stack>
-              )}
-              {event.formId && (
-                <Chip
-                  label={Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
-                  size="small"
-                  color={unansweredOnly ? "primary" : "default"}
-                  variant={unansweredOnly ? "filled" : "outlined"}
-                  onClick={() => setUnansweredOnly(!unansweredOnly)}
-                  sx={{ mb: 1 }}
-                />
-              )}
-              {visibleRegistrations.length === 0 ? (
-                <Box sx={{ p: 3, textAlign: "center" }}>
-                  <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
-                </Box>
-              ) : (
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
-                      <TableCell align="right">{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>
-                      <TableCell>{Locale.label("registrations.commerce.type")}</TableCell>
-                      <TableCell align="right">{Locale.label("registrations.commerce.paidTotal")}</TableCell>
-                      <TableCell>{Locale.label("registrations.registrationDetailsPage.status")}</TableCell>
-                      <TableCell>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
-                      <TableCell align="right" />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>{getRows()}</TableBody>
-                </Table>
-              )}
-            </CardWithHeader>
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 4 }}>
-            <RegistrationSettingsEdit event={event} onUpdate={loadData} />
-            <Box sx={{ mt: 2 }}>
-              <EventReminderEdit eventId={event.id} hasRegistration={event.registrationEnabled} />
+      <PlatedRecord
+        identity={(
+          <>
+            <Typography id="page-header-title" component="h1" sx={{ fontSize: { xs: "1.8rem", sm: "2.4rem" }, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
+              {event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations")}
+            </Typography>
+            <Typography id="page-header-subtitle" sx={{ color: "text.secondary", mt: 1 }}>
+              {formatDateSafe(event.start)}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1.75, flexWrap: "wrap", mt: 2, mb: 1 }}>
+              <Verb onClick={() => setSlice("registrations")}>{Locale.label("registrations.registrationDetailsPage.registrations")}</Verb>
+              <Verb onClick={() => setSlice("settings")}>{Locale.label("common.edit")}</Verb>
+              <Verb to="/registrations">{Locale.label("common.back")}</Verb>
             </Box>
-          </Grid>
-        </Grid>
-      </Box>
+            {event.capacity ? (
+              <Box sx={{ mt: 2 }}>
+                <Typography variant="body2">{count} / {event.capacity}</Typography>
+                <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 0.5 }} />
+              </Box>
+            ) : (
+              <Typography variant="body2" sx={{ mt: 2 }}>{count} {Locale.label("registrations.registrationsPage.registered")}</Typography>
+            )}
+            {event.tags && (
+              <Box sx={{ mt: 1.5 }}>
+                {event.tags.split(",").map((tag) => (
+                  <Chip key={tag} label={tag.trim()} size="small" sx={{ mr: 0.5, mb: 0.5 }} />
+                ))}
+              </Box>
+            )}
+            <SectionLabel>{Locale.label("calendars.eventReminders.title")}</SectionLabel>
+            <EventReminderEdit eventId={event.id} hasRegistration={event.registrationEnabled} />
+          </>
+        )}
+        slice={slice === "settings" ? <RegistrationSettingsEdit event={event} onUpdate={loadData} /> : registrationsSlice}
+      />
       {showAddAttendee && (
         <Dialog open onClose={() => setShowAddAttendee(false)} maxWidth="sm" fullWidth>
           <DialogTitle>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</DialogTitle>

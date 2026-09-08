@@ -2,10 +2,11 @@ import React from "react";
 import { FormQuestionEdit } from ".";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps/apphelper";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack } from "@mui/material";
 import { ArrowUpward as ArrowUpwardIcon, ArrowDownward as ArrowDownwardIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip, hoverRowSx } from "../../components/ui";
+import { hoverRowSx } from "../../components/ui";
+import { addBarSx, verbSx, SectionLabel } from "../plated";
 
 interface Props {
   id: string;
@@ -144,7 +145,7 @@ export const Form: React.FC<Props> = (props) => {
     let contents = <Loading />;
     if (questions) {
       contents = (
-        <Table sx={{ minWidth: 650 }}>
+        <Table>
           <TableHead>{getTableHeader()}</TableHead>
           <TableBody>{getRows()}</TableBody>
         </Table>
@@ -153,32 +154,20 @@ export const Form: React.FC<Props> = (props) => {
     return (
       <>
         {getSidebarModules()}
-
-        <Card sx={{ width: "100%" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Icon sx={{ color: "primary.main", fontSize: 20 }}>help</Icon>
-                <Typography variant="h6">{Locale.label("forms.form.questions")}</Typography>
-                {questionList.length > 0 && <CountChip count={questionList.length} />}
-              </Stack>
-              {formPermission && (
-                <Button
-                  variant="contained"
-                  startIcon={<Icon>add</Icon>}
-                  onClick={() => {
-                    setEditQuestionId("");
-                  }}
-                  size="small"
-                  aria-label={Locale.label("forms.form.addQuestionAria")}>
-                  {Locale.label("forms.form.addQuestion")}
-                </Button>
-              )}
-            </Stack>
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("forms.form.questions")}</SectionLabel>
+        {contents}
+        {formPermission && (
+          <Box sx={addBarSx}>
+            <Box
+              component="button"
+              type="button"
+              onClick={() => setEditQuestionId("")}
+              aria-label={Locale.label("forms.form.addQuestionAria")}
+              sx={verbSx}>
+              {Locale.label("forms.form.addQuestion")}
+            </Box>
           </Box>
-
-          <Box sx={{ p: 0 }}>{contents}</Box>
-        </Card>
+        )}
       </>
     );
   }

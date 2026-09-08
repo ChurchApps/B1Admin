@@ -1,20 +1,18 @@
 import React, { useContext, useCallback } from "react";
-import { Menu, MenuItem, Box, Stack, Button } from "@mui/material";
-import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { Box } from "@mui/material";
+import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading } from "@churchapps/apphelper";
 import { type TaskInterface, type UserContextInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
-import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../components/ui";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon, Checklist as ChecklistIcon } from "@mui/icons-material";
+import { Dl, Eyebrow, Facts, PlatedRecord, RecordTitle, SectionLabel, Verb, Verbs, platedColor } from "../plated";
 
 export const TaskPage = () => {
   const params = useParams();
   const [modalField, setModalField] = React.useState("");
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const context = useContext(UserContext);
   const queryClient = useQueryClient();
 
@@ -71,10 +69,6 @@ export const TaskPage = () => {
     setModalField("");
   }, []);
 
-  const closeStatusMenu = useCallback(() => {
-    setAnchorEl(null);
-  }, []);
-
   const handleCreateConversation = useCallback(async () => {
     if (!task.data) return;
     const conv: ConversationInterface = {
@@ -93,76 +87,49 @@ export const TaskPage = () => {
 
   if (task.isLoading) return <Loading />;
   if (!task.data) return <></>;
-  else {
-    return (
-      <>
-        <PageHeader
-          icon={<ChecklistIcon />}
-          title={`#${task.data.taskNumber} - ${task.data?.title}`}
-          subtitle={`${Locale.label("tasks.taskPage.created")} ${DateHelper.getDisplayDuration(DateHelper.toDate(task.data?.dateCreated))} ${Locale.label("tasks.taskPage.ago")} ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel} • ${Locale.label("tasks.taskPage.associated")}: ${task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
-          <Stack direction="row" spacing={1}>
-            <Button
-              variant={task.data.status === "Open" ? "contained" : "outlined"}
-              startIcon={task.data.status === "Open" ? <OpenIcon /> : <CompletedIcon />}
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              sx={{
-                color: task.data.status === "Open" ? "#FFF" : "#FFF",
-                backgroundColor: task.data.status === "Open" ? "warning.main" : "transparent",
-                borderColor: task.data.status === "Open" ? "warning.main" : "success.main",
-                "&:hover": {
-                  backgroundColor: task.data.status === "Open" ? "warning.dark" : "rgba(76, 175, 80, 0.2)",
-                  borderColor: task.data.status === "Open" ? "warning.dark" : "success.main"
-                },
-                textTransform: "none",
-                fontWeight: 600
-              }}>
-              {task.data.status}
-            </Button>
-            <HeaderSecondaryButton
-              size="small"
-              startIcon={<GroupIcon />}
-              onClick={() => setModalField("associatedWith")}
-              sx={{ minWidth: "auto" }}
-              title={Locale.label("tasks.taskPage.editAssoc")}>
-              {Locale.label("tasks.taskPage.associate")}
-            </HeaderSecondaryButton>
-            <HeaderPrimaryButton
-              size="small"
-              startIcon={<PersonIcon />}
-              onClick={() => setModalField("assignedTo")}
-              sx={{ minWidth: "auto" }}
-              title={Locale.label("tasks.taskPage.editAssigned")}>
-              {Locale.label("tasks.taskPage.assign")}
-            </HeaderPrimaryButton>
-          </Stack>
-        </PageHeader>
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeStatusMenu}>
-          <MenuItem
-            onClick={() => {
-              handleStatusChange("Open");
-              closeStatusMenu();
-            }}>
-            <OpenIcon sx={{ mr: 1 }} /> {Locale.label("tasks.taskPage.open")}
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleStatusChange("Closed");
-              closeStatusMenu();
-            }}>
-            <CompletedIcon sx={{ mr: 1 }} /> {Locale.label("tasks.taskPage.closed")}
-          </MenuItem>
-        </Menu>
 
-        <Box sx={{ p: 3 }}>
-          {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
-          <Box sx={{ mb: 2 }}>
-            <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
-          </Box>
-          <Notes context={context as UserContextInterface} conversationId={task.data?.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
-        </Box>
+  const open = task.data.status === "Open";
 
-        {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
-      </>
-    );
-  }
+  return (
+    <>
+      <PlatedRecord
+        who={(
+          <>
+            <Eyebrow>#{task.data.taskNumber}</Eyebrow>
+            <RecordTitle>{task.data.title}</RecordTitle>
+            <Facts>
+              <span style={{ color: open ? platedColor.first : platedColor.here, fontWeight: 600 }}>{task.data.status}</span>
+              {" · "}
+              {Locale.label("tasks.taskPage.created")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.data?.dateCreated))} {Locale.label("tasks.taskPage.ago")} {Locale.label("tasks.taskPage.by")} {task.data.createdByLabel}
+            </Facts>
+            <Verbs>
+              <Verb onClick={() => handleStatusChange(open ? "Closed" : "Open")}>
+                {open ? Locale.label("tasks.taskPage.closed") : Locale.label("tasks.taskPage.open")}
+              </Verb>
+              <Verb onClick={() => setModalField("associatedWith")}>{Locale.label("tasks.taskPage.associate")}</Verb>
+              <Verb onClick={() => setModalField("assignedTo")}>{Locale.label("tasks.taskPage.assign")}</Verb>
+              <Verb to="/serving/tasks">{Locale.label("tasks.myWork.title")}</Verb>
+            </Verbs>
+            <Dl>
+              <dt>{Locale.label("tasks.taskPage.associated")}</dt>
+              <dd>{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</dd>
+              <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
+              <dd>{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>
+            </Dl>
+            <Box sx={{ mt: 2 }}>
+              <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
+            </Box>
+          </>
+        )}
+        rest={(
+          <>
+            {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
+            <SectionLabel sx={{ mt: 0 }}>{Locale.label("common.notes") || "Notes"}</SectionLabel>
+            <Notes context={context as UserContextInterface} conversationId={task.data?.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
+          </>
+        )}
+      />
+      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
+    </>
+  );
 };

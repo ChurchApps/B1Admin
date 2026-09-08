@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { DocChatWidget } from "./docChat";
 import { BezChatWidget } from "./bezChat";
 import { SuperBeeChatWidget } from "./superBeeChat";
+import { CommandPalette } from "../omarchy";
 
 interface Props {
   pageTitle?: string;
@@ -20,9 +21,10 @@ export const Wrapper: React.FC<Props> = (props) => {
       {showHeader && <Header />}
 
       <Box sx={{ width: "100%" }}>
-        {showHeader && <div id="appBarSpacer"></div>}
+        {showHeader && <div id="appBarSpacer" style={{ height: 0 }}></div>}
         {props.children}
       </Box>
+      {showHeader && <CommandPalette />}
       {showHeader && (
         process.env.REACT_APP_CHAT_MODE === "superbee" ? <SuperBeeChatWidget />
           : process.env.REACT_APP_CHAT_MODE === "bez" ? <BezChatWidget />

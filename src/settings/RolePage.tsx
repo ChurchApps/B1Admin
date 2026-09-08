@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { UserAdd, RolePermissions, RoleMembers } from "./components";
 import { type RoleInterface, type RoleMemberInterface } from "@churchapps/helpers";
-import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale, PageHeader } from "@churchapps/apphelper";
-import { useParams } from "react-router-dom";
-import { Box, Grid } from "@mui/material";
-import { Security as SecurityIcon } from "@mui/icons-material";
-import { Breadcrumbs, type BreadcrumbItem } from "../components/ui";
+import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { useParams, Link as RouterLink } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
+import { Plate, Record, Verbs, verbSx, h1Sx, ledeSx, SectionLabel } from "./plated";
 
 export const RolePage = () => {
   const params = useParams();
@@ -13,6 +12,7 @@ export const RolePage = () => {
   const [showAdd, setShowAdd] = React.useState<boolean>(false);
   const [selectedRoleMemberId, setSelectedRoleMemberId] = React.useState<string>("");
   const [roleMembers, setRoleMembers] = useState<RoleMemberInterface[]>([]);
+
   const handleShowAdd = () => {
     setShowAdd(true);
   };
@@ -41,52 +41,42 @@ export const RolePage = () => {
     return null;
   };
 
-  const getSidebar = () => {
-    if (!UserHelper.checkAccess(Permissions.membershipApi.roles.edit)) return null;
-    else {
-      if (role.name === "Domain Admins") {
-        return (
-          <>
-            {getAddUser()}
-            <DisplayBox id="rolePermissionsBox" headerText={Locale.label("settings.rolePage.permEdit")} headerIcon="lock">
-              <p>{Locale.label("settings.rolePage.noEditMsg")}</p>
-            </DisplayBox>
-          </>
-        );
-      } else {
-        return (
-          <>
-            {getAddUser()}
-            <RolePermissions role={role} />
-          </>
-        );
-      }
-    }
-  };
+  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
 
   React.useEffect(loadData, [params.roleId]);
   React.useEffect(loadRoleMembers, [params.roleId]);
 
   if (!UserHelper.checkAccess(Permissions.membershipApi.roles.view)) return <></>;
-  else {
-    const breadcrumbItems: BreadcrumbItem[] = [
-      { label: Locale.label("components.wrapper.set"), path: "/settings" },
-      { label: role?.name || "" }
-    ];
-    return (
-      <>
-        <PageHeader icon={<SecurityIcon />} title={`${Locale.label("settings.rolePage.roleEdit")} ${role?.name || ""}`} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />} />
-        <Box id="mainContent" sx={{ p: 3 }}>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 8 }}>
-              <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
-            </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
-              {getSidebar()}
-            </Grid>
-          </Grid>
-        </Box>
-      </>
-    );
-  }
+
+  return (
+    <Plate>
+      <Record
+        who={(
+          <>
+            <Box component="h1" sx={h1Sx}>{role?.name || ""}</Box>
+            <Box sx={ledeSx}>{Locale.label("settings.rolePage.roleEdit")}</Box>
+            <Verbs>
+              <Box component={RouterLink} to="/settings/roles" sx={verbSx}>{Locale.label("settings.roles.roles")}</Box>
+            </Verbs>
+            {role.name === "Domain Admins" && (
+              <Typography variant="body2" sx={{ mt: 2 }}>{Locale.label("settings.rolePage.noEditMsg")}</Typography>
+            )}
+          </>
+        )}
+        rest={(
+          <>
+            {getAddUser()}
+            <SectionLabel sx={{ mt: 0 }}>{Locale.label("settings.roleMembers.mem")}</SectionLabel>
+            <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
+            {canEdit && role.name !== "Domain Admins" && (
+              <>
+                <SectionLabel>{Locale.label("settings.rolePage.permEdit")}</SectionLabel>
+                <RolePermissions role={role} />
+              </>
+            )}
+          </>
+        )}
+      />
+    </Plate>
+  );
 };

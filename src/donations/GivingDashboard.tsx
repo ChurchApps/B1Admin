@@ -1,37 +1,62 @@
 "use client";
 
 import React from "react";
-import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Box } from "@mui/material";
 import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
 import { Locale } from "@churchapps/apphelper";
-import { SmartTabs } from "../components/ui";
+import { Verb, VerbRow, plateSx, SectionTitle } from "./components/plate";
 
 export const GivingDashboard = () => {
   const [period, setPeriod] = React.useState("Weekly");
-
-  const handlePeriodChange = (_event: React.MouseEvent<HTMLElement>, newPeriod: string | null) => {
-    if (newPeriod) setPeriod(newPeriod);
-  };
+  const [view, setView] = React.useState<"dashboard" | "lapsed">("dashboard");
 
   const reportKeyName = "donationDashboard" + period;
+  const periods = ["Weekly", "Monthly", "Quarterly"];
 
-  const dashboardContent = (
-    <>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <ToggleButtonGroup value={period} exclusive onChange={handlePeriodChange} size="small">
-          <ToggleButton value="Weekly">{Locale.label("donations.period.weekly") || "Weekly"}</ToggleButton>
-          <ToggleButton value="Monthly">{Locale.label("donations.period.monthly") || "Monthly"}</ToggleButton>
-          <ToggleButton value="Quarterly">{Locale.label("donations.period.quarterly") || "Quarterly"}</ToggleButton>
-        </ToggleButtonGroup>
+  return (
+    <Box sx={plateSx}>
+      <Box role="tablist" sx={{ mb: 1 }}>
+        <VerbRow>
+          <Verb role="tab" aria-selected={view === "dashboard"} onClick={() => setView("dashboard")}>{Locale.label("donations.tabs.dashboard")}</Verb>
+          <Verb role="tab" aria-selected={view === "lapsed"} onClick={() => setView("lapsed")}>{Locale.label("donations.tabs.lapsedGivers")}</Verb>
+        </VerbRow>
       </Box>
-      <ReportWithFilter keyName={reportKeyName} autoRun={true} />
-    </>
+
+      {view === "dashboard" ? (
+        <>
+          <SectionTitle sx={{ mt: 1 }}>This {period.toLowerCase()}</SectionTitle>
+          <Box sx={{ display: "flex", gap: "6px", flexWrap: "wrap", mb: 2.25 }}>
+            {periods.map((p) => (
+              <Box
+                key={p}
+                component="button"
+                type="button"
+                onClick={() => setPeriod(p)}
+                aria-pressed={period === p}
+                sx={{
+                  background: period === p ? "var(--c1)" : "transparent",
+                  color: period === p ? "#fff" : "var(--text-main)",
+                  border: "1px solid",
+                  borderColor: period === p ? "var(--c1)" : "var(--border-main)",
+                  font: "inherit",
+                  fontSize: "0.82rem",
+                  py: "5px",
+                  px: "10px",
+                  borderRadius: "999px",
+                  cursor: "pointer"
+                }}>
+                {Locale.label("donations.period." + p.toLowerCase()) || p}
+              </Box>
+            ))}
+          </Box>
+          <ReportWithFilter keyName={reportKeyName} autoRun={true} />
+        </>
+      ) : (
+        <>
+          <SectionTitle sx={{ mt: 1 }}>{Locale.label("donations.tabs.lapsedGivers")}</SectionTitle>
+          <ReportWithFilter keyName="lapsedGivers" autoRun={true} />
+        </>
+      )}
+    </Box>
   );
-
-  const tabs = [
-    { key: "dashboard", label: Locale.label("donations.tabs.dashboard"), content: dashboardContent },
-    { key: "lapsedGivers", label: Locale.label("donations.tabs.lapsedGivers"), content: <ReportWithFilter keyName="lapsedGivers" autoRun={true} /> }
-  ];
-
-  return <SmartTabs tabs={tabs} ariaLabel="giving-dashboard-tabs" />;
 };

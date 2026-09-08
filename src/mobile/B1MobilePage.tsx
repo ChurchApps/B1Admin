@@ -1,10 +1,10 @@
 import React from "react";
-import { Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography } from "@mui/material";
-import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import { PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
+import { FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography } from "@mui/material";
+import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface, GroupInterface, VisibilityPreferenceInterface } from "@churchapps/helpers";
 import { FormCard } from "../components/ui/FormCard";
 import { useRequirePermission } from "../hooks";
+import { MobileChrome } from "./components/MobileChrome";
 
 export const B1MobilePage: React.FC = () => {
   const [groups, setGroups] = React.useState<GroupInterface[] | null>(null);
@@ -91,119 +91,116 @@ export const B1MobilePage: React.FC = () => {
   };
 
   return (
-    <>
-      <PageHeader icon={<PhoneIphoneIcon />} title={Locale.label("mobile.b1MobilePage.title")} subtitle={Locale.label("mobile.b1MobilePage.subtitle")} />
-      <Box sx={{ p: 3 }}>
-        <FormCard title={Locale.label("mobile.b1MobilePage.title")} icon="phone_iphone" onSave={handleSave} isSubmitting={saving}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>
-            <Tooltip title={Locale.label("settings.directoryApprovalSettingsEdit.forceMsg")} arrow>
-              <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
-            </Tooltip>
-          </Stack>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="groups">{Locale.label("settings.directoryApprovalSettingsEdit.groups")}</InputLabel>
-                <Select labelId="groups" name="groups" label={Locale.label("settings.directoryApprovalSettingsEdit.groups")} value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
-                  <MenuItem value="">{Locale.label("settings.directoryApprovalSettingsEdit.none")}</MenuItem>
-                  {groups && groups.length > 0 ? (
-                    groups.map(g => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)
-                  ) : (
-                    <MenuItem value="" disabled>{Locale.label("settings.directoryApprovalSettingsEdit.noGroups")}</MenuItem>
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="directoryVisibility">{Locale.label("settings.directoryVisibility.label")}</InputLabel>
-                <Select
-                  fullWidth
-                  labelId="directoryVisibility"
-                  label={Locale.label("settings.directoryVisibility.label")}
-                  name="directoryVisibility"
-                  value={directoryVisibility}
-                  onChange={(e) => setDirectoryVisibility(e.target.value)}>
-                  <MenuItem value="Staff">{Locale.label("settings.directoryVisibility.staff")}</MenuItem>
-                  <MenuItem value="Members">{Locale.label("settings.directoryVisibility.members")}</MenuItem>
-                  <MenuItem value="Regular Attendees">{Locale.label("settings.directoryVisibility.regularAttendees")}</MenuItem>
-                  <MenuItem value="Everyone">{Locale.label("settings.directoryVisibility.everyone")}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+    <MobileChrome selected="portal">
+      <FormCard title={Locale.label("mobile.b1MobilePage.title")} icon="phone_iphone" onSave={handleSave} isSubmitting={saving} elevation={0}>
+        <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>
+          <Tooltip title={Locale.label("settings.directoryApprovalSettingsEdit.forceMsg")} arrow>
+            <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+          </Tooltip>
+        </Stack>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="groups">{Locale.label("settings.directoryApprovalSettingsEdit.groups")}</InputLabel>
+              <Select labelId="groups" name="groups" label={Locale.label("settings.directoryApprovalSettingsEdit.groups")} value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
+                <MenuItem value="">{Locale.label("settings.directoryApprovalSettingsEdit.none")}</MenuItem>
+                {groups && groups.length > 0 ? (
+                  groups.map(g => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)
+                ) : (
+                  <MenuItem value="" disabled>{Locale.label("settings.directoryApprovalSettingsEdit.noGroups")}</MenuItem>
+                )}
+              </Select>
+            </FormControl>
           </Grid>
-          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.visibilityPrefSettingsEdit.visibilityPreference")}</Typography>
-            <Tooltip title={Locale.label("settings.visibilityPrefSettingsEdit.forceMsg")} arrow>
-              <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
-            </Tooltip>
-          </Stack>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 4 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="address">{Locale.label("settings.visibilityPrefSettingsEdit.address")}</InputLabel>
-                <Select fullWidth labelId="address" label={Locale.label("settings.visibilityPrefSettingsEdit.address")} name="address" value={pref.address} defaultValue="" onChange={(e) => handlePrefChange("address", e.target.value)}>
-                  <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
-                  <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
-                  <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
-                  <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
-                  <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="phone">{Locale.label("settings.visibilityPrefSettingsEdit.phoneNum")}</InputLabel>
-                <Select fullWidth labelId="phone" label={Locale.label("settings.visibilityPrefSettingsEdit.phoneNum")} name="phoneNumber" value={pref.phoneNumber} defaultValue="" onChange={(e) => handlePrefChange("phoneNumber", e.target.value)}>
-                  <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
-                  <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
-                  <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
-                  <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
-                  <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="email">{Locale.label("settings.visibilityPrefSettingsEdit.email")}</InputLabel>
-                <Select fullWidth labelId="email" label={Locale.label("settings.visibilityPrefSettingsEdit.email")} name="email" value={pref.email} defaultValue="" onChange={(e) => handlePrefChange("email", e.target.value)}>
-                  <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
-                  <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
-                  <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
-                  <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
-                  <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="directoryVisibility">{Locale.label("settings.directoryVisibility.label")}</InputLabel>
+              <Select
+                fullWidth
+                labelId="directoryVisibility"
+                label={Locale.label("settings.directoryVisibility.label")}
+                name="directoryVisibility"
+                value={directoryVisibility}
+                onChange={(e) => setDirectoryVisibility(e.target.value)}>
+                <MenuItem value="Staff">{Locale.label("settings.directoryVisibility.staff")}</MenuItem>
+                <MenuItem value="Members">{Locale.label("settings.directoryVisibility.members")}</MenuItem>
+                <MenuItem value="Regular Attendees">{Locale.label("settings.directoryVisibility.regularAttendees")}</MenuItem>
+                <MenuItem value="Everyone">{Locale.label("settings.directoryVisibility.everyone")}</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
-          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.messagingMinimumAge.label")}</Typography>
-            <Tooltip title={Locale.label("settings.messagingMinimumAge.helpText")} arrow>
-              <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
-            </Tooltip>
-          </Stack>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="messagingMinimumAge">{Locale.label("settings.messagingMinimumAge.label")}</InputLabel>
-                <Select
-                  fullWidth
-                  labelId="messagingMinimumAge"
-                  label={Locale.label("settings.messagingMinimumAge.label")}
-                  name="messagingMinimumAge"
-                  value={messagingMinimumAge}
-                  onChange={(e) => setMessagingMinimumAge(e.target.value)}>
-                  <MenuItem value="0">{Locale.label("settings.messagingMinimumAge.off")}</MenuItem>
-                  <MenuItem value="13">{Locale.label("settings.messagingMinimumAge.age13")}</MenuItem>
-                  <MenuItem value="16">{Locale.label("settings.messagingMinimumAge.age16")}</MenuItem>
-                  <MenuItem value="18">{Locale.label("settings.messagingMinimumAge.age18")}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+        </Grid>
+        <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.visibilityPrefSettingsEdit.visibilityPreference")}</Typography>
+          <Tooltip title={Locale.label("settings.visibilityPrefSettingsEdit.forceMsg")} arrow>
+            <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+          </Tooltip>
+        </Stack>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="address">{Locale.label("settings.visibilityPrefSettingsEdit.address")}</InputLabel>
+              <Select fullWidth labelId="address" label={Locale.label("settings.visibilityPrefSettingsEdit.address")} name="address" value={pref.address} defaultValue="" onChange={(e) => handlePrefChange("address", e.target.value)}>
+                <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
+                <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
+                <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
+                <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
-        </FormCard>
-      </Box>
-    </>
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="phone">{Locale.label("settings.visibilityPrefSettingsEdit.phoneNum")}</InputLabel>
+              <Select fullWidth labelId="phone" label={Locale.label("settings.visibilityPrefSettingsEdit.phoneNum")} name="phoneNumber" value={pref.phoneNumber} defaultValue="" onChange={(e) => handlePrefChange("phoneNumber", e.target.value)}>
+                <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
+                <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
+                <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
+                <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="email">{Locale.label("settings.visibilityPrefSettingsEdit.email")}</InputLabel>
+              <Select fullWidth labelId="email" label={Locale.label("settings.visibilityPrefSettingsEdit.email")} name="email" value={pref.email} defaultValue="" onChange={(e) => handlePrefChange("email", e.target.value)}>
+                <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
+                <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
+                <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                <MenuItem value="leaders">{Locale.label("settings.visibilityPrefSettingsEdit.leaders")}</MenuItem>
+                <MenuItem value="staff">{Locale.label("settings.visibilityPrefSettingsEdit.staff")}</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.messagingMinimumAge.label")}</Typography>
+          <Tooltip title={Locale.label("settings.messagingMinimumAge.helpText")} arrow>
+            <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+          </Tooltip>
+        </Stack>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="messagingMinimumAge">{Locale.label("settings.messagingMinimumAge.label")}</InputLabel>
+              <Select
+                fullWidth
+                labelId="messagingMinimumAge"
+                label={Locale.label("settings.messagingMinimumAge.label")}
+                name="messagingMinimumAge"
+                value={messagingMinimumAge}
+                onChange={(e) => setMessagingMinimumAge(e.target.value)}>
+                <MenuItem value="0">{Locale.label("settings.messagingMinimumAge.off")}</MenuItem>
+                <MenuItem value="13">{Locale.label("settings.messagingMinimumAge.age13")}</MenuItem>
+                <MenuItem value="16">{Locale.label("settings.messagingMinimumAge.age16")}</MenuItem>
+                <MenuItem value="18">{Locale.label("settings.messagingMinimumAge.age18")}</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </FormCard>
+    </MobileChrome>
   );
 };

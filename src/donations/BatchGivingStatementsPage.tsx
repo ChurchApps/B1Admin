@@ -1,21 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import {
-  Box, Container, Card, CardContent, Typography, Button, FormControl,
-  InputLabel, Select, MenuItem, Alert, CircularProgress, Stack, Divider
-} from "@mui/material";
-import {
-  DownloadOutlined as DownloadIcon,
-  PrintOutlined as PrintIcon,
-  Receipt as ReceiptIcon,
-  SettingsOutlined as SettingsIcon
-} from "@mui/icons-material";
-import { PageHeader, Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@churchapps/apphelper";
+import { Box, FormControl, InputLabel, Select, MenuItem, CircularProgress, Button } from "@mui/material";
+import { Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type PersonInterface, type FundInterface } from "@churchapps/helpers";
 import JSZip from "jszip";
-import { EmptyState } from "../components/ui/EmptyState";
-import { HeaderSecondaryButton } from "../components/ui";
+import { Verb, VerbRow, SectionTitle, plateSx, mutedSx } from "./components/plate";
 
 export const BatchGivingStatementsPage = () => {
   const navigate = useNavigate();
@@ -51,9 +41,7 @@ export const BatchGivingStatementsPage = () => {
   const personIds = useMemo(() => {
     const ids = new Set<string>();
     yearDonations.forEach((donation) => {
-      if (donation.personId) {
-        ids.add(donation.personId);
-      }
+      if (donation.personId) ids.add(donation.personId);
     });
     return Array.from(ids);
   }, [yearDonations]);
@@ -70,8 +58,7 @@ export const BatchGivingStatementsPage = () => {
   }, [allFundDonations.data, yearDonations]);
 
   const handlePrintAll = () => {
-    const url = `/donations/print-all?year=${selectedYear}`;
-    window.location.href = url;
+    window.location.href = `/donations/print-all?year=${selectedYear}`;
   };
 
   const handleDownloadZip = async () => {
@@ -82,7 +69,7 @@ export const BatchGivingStatementsPage = () => {
       const personDonations = yearDonations.filter((d) => d.personId === personId);
 
       const csvRows: string[] = [];
-      csvRows.push("amount,donationDate,fundName,method,methodDetails"); // Header
+      csvRows.push("amount,donationDate,fundName,method,methodDetails");
 
       personDonations.forEach((donation) => {
         const fundDonationsForThisDonation = yearFundDonations.filter((fd) => fd.donationId === donation.id);
@@ -109,12 +96,10 @@ export const BatchGivingStatementsPage = () => {
         });
       });
 
-      const csvContent = csvRows.join("\n");
       const lastName = person?.name?.last || "Unknown";
       const firstName = person?.name?.first || "Unknown";
       const filename = `${lastName}_${firstName}_${selectedYear}_donations.csv`.replace(/[^a-zA-Z0-9_.-]/g, "_");
-
-      zip.file(filename, csvContent);
+      zip.file(filename, csvRows.join("\n"));
     });
 
     const blob = await zip.generateAsync({ type: "blob" });
@@ -131,169 +116,69 @@ export const BatchGivingStatementsPage = () => {
   const totalDonors = personIds.length;
   const totalAmount = useMemo(() => {
     let total = 0;
-    yearFundDonations.forEach((fd) => {
-      total += fd.amount || 0;
-    });
+    yearFundDonations.forEach((fd) => { total += fd.amount || 0; });
     return total;
   }, [yearFundDonations]);
 
   const totalDonations = yearDonations.length;
-
   const isLoading = allDonations.isLoading || allFundDonations.isLoading || (personIds.length > 0 && people.isLoading);
-
   const yearOptions = Array.from({ length: 6 }, (_, i) => currentYear - i);
 
   React.useEffect(() => {
-    CurrencyHelper.loadCurrency().then((result) => {
-      setCurrency(result);
-    });
+    CurrencyHelper.loadCurrency().then((result) => setCurrency(result));
   }, []);
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
 
   return (
-    <>
-      <PageHeader
-        icon={<ReceiptIcon />}
-        title={Locale.label("donations.batchStatements.title")}
-        subtitle={Locale.label("donations.batchStatements.subtitle")}
-      >
-        <HeaderSecondaryButton
-          startIcon={<SettingsIcon />}
-          onClick={() => navigate("/settings#giving")}
-          data-testid="statement-format-settings-link">
-          {Locale.label("donations.batchStatements.statementFormat")}
-        </HeaderSecondaryButton>
-      </PageHeader>
+    <Box sx={plateSx}>
+      <SectionTitle sx={{ mt: 0 }}>{Locale.label("donations.batchStatements.title")}</SectionTitle>
+      <VerbRow>
+        <Verb onClick={() => navigate("/settings#giving")} data-testid="statement-format-settings-link">{Locale.label("donations.batchStatements.statementFormat")}</Verb>
+      </VerbRow>
 
-      <Container maxWidth="lg">
-        <Box sx={{ py: 3 }}>
-          <Card elevation={2} sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                {Locale.label("donations.batchStatements.selectYear")}
-              </Typography>
-              <FormControl fullWidth sx={{ mt: 2 }}>
-                <InputLabel>{Locale.label("donations.batchStatements.year")}</InputLabel>
-                <Select
-                  value={selectedYear}
-                  label={Locale.label("donations.batchStatements.year")}
-                  onChange={(e) => setSelectedYear(Number(e.target.value))}
-                >
-                  {yearOptions.map((year) => (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </CardContent>
-          </Card>
+      <SectionTitle>{Locale.label("donations.batchStatements.selectYear")}</SectionTitle>
+      <FormControl sx={{ minWidth: 160, mt: 1 }}>
+        <InputLabel>{Locale.label("donations.batchStatements.year")}</InputLabel>
+        <Select
+          value={selectedYear}
+          label={Locale.label("donations.batchStatements.year")}
+          onChange={(e) => setSelectedYear(Number(e.target.value))}
+        >
+          {yearOptions.map((year) => (
+            <MenuItem key={year} value={year}>{year}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-          {isLoading ? (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-              <CircularProgress />
-            </Box>
-          ) : (
-            <>
-              <Card elevation={2} sx={{ mb: 3 }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {Locale.label("donations.batchStatements.summary")}
-                  </Typography>
-                  <Divider sx={{ my: 2 }} />
-                  <Stack spacing={2}>
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="body1" color="text.secondary">
-                        {Locale.label("donations.batchStatements.totalDonors")}
-                      </Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        {totalDonors}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="body1" color="text.secondary">
-                        {Locale.label("donations.batchStatements.totalDonations")}
-                      </Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        {totalDonations}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="body1" color="text.secondary">
-                        {Locale.label("donations.batchStatements.totalAmount")}
-                      </Typography>
-                      <Typography variant="body1" fontWeight="bold" color="primary">
-                        {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
-
-              {totalDonors > 0 ? (
-                <Card elevation={2}>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      {Locale.label("donations.batchStatements.downloadOptions")}
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
-
-                    <Stack spacing={2}>
-                      <Box>
-                        <Typography variant="subtitle1" gutterBottom>
-                          {Locale.label("donations.batchStatements.csvDownload")}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                          {Locale.label("donations.batchStatements.csvDescription")}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          startIcon={<DownloadIcon />}
-                          onClick={handleDownloadZip}
-                          fullWidth
-                        >
-                          {Locale.label("donations.batchStatements.downloadZip").replace("{count}", totalDonors.toString())}
-                        </Button>
-                        <Alert severity="info" sx={{ mt: 2 }}>
-                          {Locale.label("donations.batchStatements.zipInfo").replace("{count}", totalDonors.toString())}
-                        </Alert>
-                      </Box>
-
-                      <Divider />
-
-                      <Box>
-                        <Typography variant="subtitle1" gutterBottom>
-                          {Locale.label("donations.batchStatements.printStatements")}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                          {Locale.label("donations.batchStatements.printDescription")}
-                        </Typography>
-                        <Button
-                          variant="outlined"
-                          startIcon={<PrintIcon />}
-                          onClick={handlePrintAll}
-                          fullWidth
-                        >
-                          {Locale.label("donations.batchStatements.printAllStatements").replace("{count}", totalDonors.toString())}
-                        </Button>
-                        <Alert severity="info" sx={{ mt: 2 }}>
-                          {Locale.label("donations.batchStatements.printAllInfo").replace("{count}", totalDonors.toString())}
-                        </Alert>
-                      </Box>
-                    </Stack>
-                  </CardContent>
-                </Card>
-              ) : (
-                <EmptyState
-                  icon={<ReceiptIcon />}
-                  title={Locale.label("donations.batchStatements.noDonations").replace("{year}", selectedYear.toString())}
-                />
-              )}
-            </>
-          )}
+      {isLoading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+          <CircularProgress />
         </Box>
-      </Container>
-    </>
+      ) : (
+        <>
+          <SectionTitle>{Locale.label("donations.batchStatements.summary")}</SectionTitle>
+          <Box sx={mutedSx}>{Locale.label("donations.batchStatements.totalDonors")} {totalDonors}</Box>
+          <Box sx={mutedSx}>{Locale.label("donations.batchStatements.totalDonations")} {totalDonations}</Box>
+          <Box sx={mutedSx}>{Locale.label("donations.batchStatements.totalAmount")} {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}</Box>
+
+          {totalDonors > 0 ? (
+            <>
+              <SectionTitle>{Locale.label("donations.batchStatements.downloadOptions")}</SectionTitle>
+              <Box sx={{ ...mutedSx, mb: 1 } as object}>{Locale.label("donations.batchStatements.csvDescription")}</Box>
+              <Button variant="contained" onClick={handleDownloadZip} sx={{ mb: 2 }}>
+                {Locale.label("donations.batchStatements.downloadZip").replace("{count}", totalDonors.toString())}
+              </Button>
+              <Box sx={{ ...mutedSx, mb: 1 } as object}>{Locale.label("donations.batchStatements.printDescription")}</Box>
+              <Button variant="outlined" onClick={handlePrintAll}>
+                {Locale.label("donations.batchStatements.printAllStatements").replace("{count}", totalDonors.toString())}
+              </Button>
+            </>
+          ) : (
+            <Box sx={{ ...mutedSx, mt: 2 } as object}>{Locale.label("donations.batchStatements.noDonations").replace("{year}", selectedYear.toString())}</Box>
+          )}
+        </>
+      )}
+    </Box>
   );
 };

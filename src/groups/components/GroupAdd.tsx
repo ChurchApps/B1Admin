@@ -54,7 +54,7 @@ export const GroupAdd: React.FC<Props> = (props) => {
   else if (props.tags === "ministry") label = Locale.label("groups.groupAdd.ministry");
 
   return (
-    <FormCard title={Locale.label("groups.groupAdd.new") + label} icon="group" onCancel={handleCancel} onSave={handleSubmit(onValid)} saveText={Locale.label("groups.groupAdd.add")} isSubmitting={isSubmitting}>
+    <FormCard title={Locale.label("groups.groupAdd.new") + label} elevation={0} onCancel={handleCancel} onSave={handleSubmit(onValid)} saveText={Locale.label("groups.groupAdd.add")} isSubmitting={isSubmitting}>
       <ErrorMessages errors={summaryErrors} />
       <Grid container spacing={2}>
         {props.tags === "standard" && (

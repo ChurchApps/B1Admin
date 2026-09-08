@@ -1,12 +1,11 @@
 import React, { useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Permissions, Locale, ApiHelper, Loading } from "@churchapps/apphelper";
 import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
-import { Box, Grid, Stack, Typography } from "@mui/material";
-import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Mail as MailIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
+import { Box, Stack, Typography } from "@mui/material";
+import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { HeaderSecondaryButton } from "../components/ui";
 import { SettingsConfigList, type ConfigSection } from "./components/SettingsConfigList";
 import { ChurchInfoSection } from "./components/ChurchInfoSection";
 import { SettingsToggleSection } from "./components/SettingsToggleSection";
@@ -20,10 +19,13 @@ import { StorageSettingsEdit } from "./components/StorageSettingsEdit";
 import { DomainSettingsEdit } from "./components/DomainSettingsEdit";
 import { GradePromotionSettingsEdit } from "./components/GradePromotionSettingsEdit";
 import { CheckinSettingsEdit } from "./components/CheckinSettingsEdit";
+import { Plate, Record, Verbs, verbSx, h1Sx, ledeSx, DUST } from "./plated";
 
 const SECTION_KEYS = [
-  "church-info", "general", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
+  "church-info", "campuses", "giving", "domains", "general", "texting", "storage", "grade-promotion", "check-ins", "custom-fields", "developer"
 ];
+
+const PRIMARY_KEYS = ["church-info", "campuses", "giving", "domains"];
 
 const SummaryRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
   <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ py: 1 }}>
@@ -106,14 +108,14 @@ export const ManageChurch = () => {
 
   const sections: ConfigSection[] = [
     { key: "church-info", title: Locale.label("settings.churchSettingsEdit.churchInfo"), subtitle: church.data.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle"), icon: <BusinessIcon />, color: "primary" },
-    { key: "general", title: Locale.label("settings.churchSettingsEdit.general"), subtitle: Locale.label("settings.supportContactSettingsEdit.supportContact"), icon: <TuneIcon />, color: "secondary" },
+    { key: "campuses", title: Locale.label("settings.campuses.campuses"), subtitle: campusesSubtitle, icon: <BusinessIcon />, color: "primary" },
     ...(hasGiving ? [{ key: "giving", title: Locale.label("settings.givingSettingsEdit.giving"), subtitle: givingSubtitle, icon: <VolunteerActivismIcon />, color: "success" } as ConfigSection] : []),
+    { key: "domains", title: Locale.label("settings.domainSettingsEdit.domains"), subtitle: domainsSubtitle, icon: <LanguageIcon />, color: "info" },
+    { key: "general", title: Locale.label("settings.churchSettingsEdit.general"), subtitle: Locale.label("settings.supportContactSettingsEdit.supportContact"), icon: <TuneIcon />, color: "secondary" },
     { key: "texting", title: Locale.label("settings.churchSettingsEdit.textingTitle"), subtitle: textingSubtitle, icon: <SmsIcon />, color: "warning" },
     { key: "storage", title: Locale.label("settings.storageSettingsEdit.title"), subtitle: storageSubtitle, icon: <CloudIcon />, color: "info" },
-    { key: "domains", title: Locale.label("settings.domainSettingsEdit.domains"), subtitle: domainsSubtitle, icon: <LanguageIcon />, color: "info" },
     { key: "grade-promotion", title: Locale.label("settings.gradePromotionSettingsEdit.title"), subtitle: gradePromotionSubtitle, icon: <SchoolIcon />, color: "secondary" },
     { key: "check-ins", title: Locale.label("settings.checkinSettingsEdit.title"), subtitle: checkinsSubtitle, icon: <HowToRegIcon />, color: "info" },
-    { key: "campuses", title: Locale.label("settings.campuses.campuses"), subtitle: campusesSubtitle, icon: <BusinessIcon />, color: "primary" },
     { key: "custom-fields", title: Locale.label("settings.customFields.customFields"), subtitle: customFieldsSubtitle, icon: <ListAltIcon />, color: "info" },
     { key: "developer", title: Locale.label("settings.developer.title"), subtitle: Locale.label("settings.landing.developerSubtitle"), icon: <CodeIcon />, color: "secondary" }
   ];
@@ -237,43 +239,45 @@ export const ManageChurch = () => {
     }
   };
 
-  return (
-    <>
-      <PageHeader icon={<BusinessIcon />} title={church.data.name || Locale.label("settings.manageChurch.title")} subtitle={church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}>
-        <Stack direction="row" spacing={1}>
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <HeaderSecondaryButton startIcon={<MailIcon />} onClick={() => navigate("/settings/email-templates")}>
-              {Locale.label("settings.emailTemplatesPage.title")}
-            </HeaderSecondaryButton>
-          )}
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <HeaderSecondaryButton startIcon={<HistoryIcon />} onClick={() => navigate("/settings/audit-log")}>
-              {Locale.label("settings.manageChurch.auditLog")}
-            </HeaderSecondaryButton>
-          )}
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <HeaderSecondaryButton startIcon={<LayersIcon />} onClick={() => navigate("/settings/batches")}>
-              {Locale.label("settings.manageChurch.batches")}
-            </HeaderSecondaryButton>
-          )}
-          <HeaderSecondaryButton
-            {...({ href: `https://transfer.b1.church/login?churchId=${churchId}#jwt=${encodeURIComponent(jwt || "")}`, target: "_blank", rel: "noreferrer noopener" } as any)}
-            startIcon={<PlayArrowIcon />}>
-            {Locale.label("settings.manageChurch.imEx")}
-          </HeaderSecondaryButton>
-        </Stack>
-      </PageHeader>
+  const address = [church.data.address1, church.data.city, church.data.state, church.data.zip].filter(Boolean).join(", ");
 
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SettingsConfigList sections={sections} selected={activeKey} onSelect={(key) => navigate({ hash: key }, { replace: true })} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            {renderDetail()}
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+  return (
+    <Plate>
+      <Record
+        who={(
+          <>
+            <Box component="h1" sx={h1Sx}>{church.data.name || Locale.label("settings.manageChurch.title")}</Box>
+            <Box sx={ledeSx}>{church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}</Box>
+            {address && <Typography variant="body2" sx={{ color: DUST, mb: 1, whiteSpace: "pre-line" }}>{address}</Typography>}
+            <Verbs>
+              {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
+                <Box component={RouterLink} to="/settings/email-templates" sx={verbSx}>{Locale.label("settings.emailTemplatesPage.title")}</Box>
+              )}
+              {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
+                <Box component={RouterLink} to="/settings/audit-log" sx={verbSx}>{Locale.label("settings.manageChurch.auditLog")}</Box>
+              )}
+              {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
+                <Box component={RouterLink} to="/settings/batches" sx={verbSx}>{Locale.label("settings.manageChurch.batches")}</Box>
+              )}
+              <Box
+                component="a"
+                href={`https://transfer.b1.church/login?churchId=${churchId}#jwt=${encodeURIComponent(jwt || "")}`}
+                target="_blank"
+                rel="noreferrer noopener"
+                sx={verbSx}>
+                {Locale.label("settings.manageChurch.imEx")}
+              </Box>
+            </Verbs>
+            <SettingsConfigList
+              sections={sections}
+              selected={activeKey}
+              primaryKeys={PRIMARY_KEYS}
+              onSelect={(key) => navigate({ hash: key }, { replace: true })}
+            />
+          </>
+        )}
+        rest={renderDetail()}
+      />
+    </Plate>
   );
 };

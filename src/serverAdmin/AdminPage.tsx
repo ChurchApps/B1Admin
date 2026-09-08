@@ -1,9 +1,6 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { Locale, Permissions, UserHelper } from "@churchapps/apphelper";
-import { Grid, Box } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon, PersonSearch as UsersIcon, Schedule as JobsIcon, Inventory2 as CommonsIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";
 import { TranslationTab } from "./components/TranslationTab";
@@ -12,9 +9,9 @@ import { ServerHealthTab } from "./components/ServerHealthTab";
 import { UsersTab } from "./components/UsersTab";
 import { JobsTab } from "./components/JobsTab";
 import { CommonsTab } from "./components/CommonsTab";
-import { SettingsConfigList, type ConfigSection } from "../settings/components/SettingsConfigList";
 import { useRequirePermission } from "../hooks";
 import { CommonsApi, type CommonsAdminStatus } from "./commonsApi";
+import { DirectoryPage, type PillItem } from "./components/plate";
 
 const SECTION_KEYS = [
   "churches",
@@ -81,31 +78,24 @@ export const AdminPage = () => {
     }
   };
 
-  const sections: ConfigSection[] = [
-    { key: "churches", title: Locale.label("serverAdmin.adminPage.churches"), subtitle: Locale.label("serverAdmin.adminPage.churchesSubtitle"), icon: <ChurchIcon />, color: "primary" },
-    { key: "users", title: Locale.label("serverAdmin.adminPage.users"), subtitle: Locale.label("serverAdmin.adminPage.usersSubtitle"), icon: <UsersIcon />, color: "primary" },
-    { key: "impersonate", title: Locale.label("serverAdmin.adminPage.impersonateUser"), subtitle: Locale.label("serverAdmin.adminPage.impersonateSubtitle"), icon: <ImpersonateIcon />, color: "secondary" },
-    { key: "jobs", title: Locale.label("serverAdmin.adminPage.jobs"), subtitle: Locale.label("serverAdmin.adminPage.jobsSubtitle"), icon: <JobsIcon />, color: "info" },
-    { key: "commons", title: Locale.label("serverAdmin.adminPage.commons"), subtitle: Locale.label("serverAdmin.adminPage.commonsSubtitle"), icon: <CommonsIcon />, color: "warning", count: pendingCount },
-    { key: "usage", title: Locale.label("serverAdmin.adminPage.usageTrends"), subtitle: Locale.label("serverAdmin.adminPage.usageSubtitle"), icon: <UsageIcon />, color: "info" },
-    { key: "translation", title: Locale.label("serverAdmin.adminPage.translationLookups"), subtitle: Locale.label("serverAdmin.adminPage.translationSubtitle"), icon: <TranslationIcon />, color: "warning" },
-    { key: "serverHealth", title: Locale.label("serverAdmin.adminPage.serverHealth"), subtitle: Locale.label("serverAdmin.adminPage.serverHealthSubtitle"), icon: <HealthIcon />, color: "success" }
+  const pills: PillItem[] = [
+    { label: Locale.label("serverAdmin.adminPage.churches"), selected: selectedTab === "churches", onClick: () => onSelect("churches"), testId: "settings-section-churches" },
+    { label: Locale.label("serverAdmin.adminPage.users"), selected: selectedTab === "users", onClick: () => onSelect("users"), testId: "settings-section-users" },
+    { label: Locale.label("serverAdmin.adminPage.impersonateUser"), selected: selectedTab === "impersonate", onClick: () => onSelect("impersonate"), testId: "settings-section-impersonate" },
+    { label: Locale.label("serverAdmin.adminPage.jobs"), selected: selectedTab === "jobs", onClick: () => onSelect("jobs"), testId: "settings-section-jobs" },
+    { label: Locale.label("serverAdmin.adminPage.commons"), selected: selectedTab === "commons", onClick: () => onSelect("commons"), count: pendingCount, testId: "settings-section-commons" },
+    { label: Locale.label("serverAdmin.adminPage.usageTrends"), selected: selectedTab === "usage", onClick: () => onSelect("usage"), testId: "settings-section-usage" },
+    { label: Locale.label("serverAdmin.adminPage.translationLookups"), selected: selectedTab === "translation", onClick: () => onSelect("translation"), testId: "settings-section-translation" },
+    { label: Locale.label("serverAdmin.adminPage.serverHealth"), selected: selectedTab === "serverHealth", onClick: () => onSelect("serverHealth"), testId: "settings-section-serverHealth" }
   ];
 
   return (
-    <>
-      <PageHeader icon={<AdminIcon />} title={Locale.label("serverAdmin.adminPage.servAdmin")} subtitle={Locale.label("serverAdmin.adminPage.subtitle")} />
-
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SettingsConfigList sections={sections} selected={selectedTab} onSelect={onSelect} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Box>{getCurrentTab()}</Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+    <DirectoryPage
+      title={Locale.label("serverAdmin.adminPage.servAdmin")}
+      lede={Locale.label("serverAdmin.adminPage.subtitle")}
+      pills={pills}
+      wide>
+      {getCurrentTab()}
+    </DirectoryPage>
   );
 };

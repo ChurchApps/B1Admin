@@ -1,8 +1,8 @@
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
-import { Assignment as FormIcon, Group as GroupIcon, Description as DescriptionIcon } from "@mui/icons-material";
 import { memo, useMemo } from "react";
-import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { Box } from "@mui/material";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { pillSx } from "../plated";
 
 interface Props {
   selectedTab: string;
@@ -13,10 +13,10 @@ interface Props {
 }
 
 export const FormNavigation = memo((props: Props) => {
-  const { selectedTab, onTabChange, form, memberPermission, onHeader } = props;
+  const { selectedTab, onTabChange, form, memberPermission } = props;
 
-  const tabs: NavigationTab[] = useMemo(() => {
-    const tabsList = [];
+  const tabs = useMemo(() => {
+    const tabsList: { value: string; label: string }[] = [];
     const formType = form?.contentType;
     const formMemberAction = memberPermission?.action;
     const formAdmin = UserHelper.checkAccess(Permissions.membershipApi.forms.admin);
@@ -25,17 +25,32 @@ export const FormNavigation = memo((props: Props) => {
     const formMemberView = formMemberAction === "view" && formType !== undefined && formType === "form";
 
     if (formAdmin || formEdit || formMemberAdmin) {
-      tabsList.push({ value: "questions", label: Locale.label("forms.tabs.questions"), icon: <DescriptionIcon /> });
+      tabsList.push({ value: "questions", label: Locale.label("forms.tabs.questions") });
     }
     if ((formAdmin || formMemberAdmin) && formType === "form") {
-      tabsList.push({ value: "members", label: Locale.label("forms.tabs.formMem"), icon: <GroupIcon /> });
+      tabsList.push({ value: "members", label: Locale.label("forms.tabs.formMem") });
     }
     if (formAdmin || formMemberAdmin || formMemberView) {
-      tabsList.push({ value: "submissions", label: Locale.label("forms.tabs.formSub"), icon: <FormIcon /> });
+      tabsList.push({ value: "submissions", label: Locale.label("forms.tabs.formSub") });
     }
 
     return tabsList;
   }, [form, memberPermission]);
 
-  return <NavigationTabs selectedTab={selectedTab} onTabChange={onTabChange} tabs={tabs} onHeader={onHeader} />;
+  return (
+    <Box role="tablist" sx={{ display: "flex", gap: 1, flexWrap: { xs: "nowrap", sm: "wrap" }, overflowX: { xs: "auto", sm: "visible" } }}>
+      {tabs.map((tab) => (
+        <Box
+          key={tab.value}
+          component="button"
+          type="button"
+          role="tab"
+          aria-selected={selectedTab === tab.value}
+          onClick={() => onTabChange(tab.value)}
+          sx={pillSx(selectedTab === tab.value)}>
+          {tab.label}
+        </Box>
+      ))}
+    </Box>
+  );
 });

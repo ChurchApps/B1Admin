@@ -8,13 +8,13 @@ import {
 } from "@churchapps/helpers";
 import {
   DateHelper,
-  DisplayBox,
   Locale,
   Loading
 } from "@churchapps/apphelper";
-import { CountChip, ExportButton, hoverRowSx } from "../../components/ui";
+import { ExportButton, hoverRowSx } from "../../components/ui";
 import { useReactToPrint } from "react-to-print";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
+import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack } from "@mui/material";
+import { SectionLabel } from "../plated";
 import { useQuery } from "@tanstack/react-query";
 
 interface Props {
@@ -250,34 +250,22 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     );
   }, [formSubmissions.data, summaryCsv, handleSummaryPrint]);
 
-  const submissionCount = formSubmissions.data?.length || 0;
-
   const formSubmissionsTable = useMemo(
     () => (
-      <Card>
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Icon sx={{ color: "primary.main", fontSize: 20 }}>assignment</Icon>
-              <Typography variant="h6">{Locale.label("forms.formSubmissions.subRes")}</Typography>
-              {submissionCount > 0 && <CountChip count={submissionCount} />}
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {editLinks}
-            </Stack>
-          </Stack>
+      <Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 1 }}>
+          <SectionLabel sx={{ mt: 0 }}>{Locale.label("forms.formSubmissions.subRes")}</SectionLabel>
+          {editLinks}
         </Box>
-        <Box>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
-              <TableRow key="header">{tableHeader}</TableRow>
-            </TableHead>
-            <TableBody>{tableRows}</TableBody>
-          </Table>
-        </Box>
-      </Card>
+        <Table>
+          <TableHead>
+            <TableRow key="header">{tableHeader}</TableRow>
+          </TableHead>
+          <TableBody>{tableRows}</TableBody>
+        </Table>
+      </Box>
     ),
-    [tableHeader, tableRows, editLinks, submissionCount]
+    [tableHeader, tableRows, editLinks]
   );
 
   if (people.isLoading || formSubmissions.isLoading) return <Loading />;
@@ -291,11 +279,10 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
               .no-print, #display-box-actions { display: none !important; }
             }
           `}</style>
-          <DisplayBox headerText={Locale.label("forms.formSubmissions.subSum")} headerIcon="group" editContent={editLinks}>
-            <Grid container spacing={3}>
-              {summaryContent}
-            </Grid>
-          </DisplayBox>
+          <SectionLabel sx={{ mt: 0 }}>{Locale.label("forms.formSubmissions.subSum")}</SectionLabel>
+          <Grid container spacing={3}>
+            {summaryContent}
+          </Grid>
           {formSubmissionsTable}
         </div>
       </Grid>

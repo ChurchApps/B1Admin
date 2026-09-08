@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
-import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem, Chip, LinearProgress } from "@mui/material";
-import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon, Undo as UndoIcon, EditNote as PreparedIcon } from "@mui/icons-material";
+import { TextField, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
+import { Save as SaveIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import { SectionLabel, Verb, Verbs, platedColor } from "../plated";
 import {
   type AssignmentInterface,
   type BlockoutDateInterface,
@@ -24,6 +25,7 @@ import { PlanValidation } from "./PlanValidation";
 
 interface Props {
   plan: PlanInterface;
+  plated?: boolean;
 }
 
 export const Assignment = (props: Props) => {
@@ -49,6 +51,7 @@ export const Assignment = (props: Props) => {
   const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const [plateSlice, setPlateSlice] = React.useState<"serving" | "notes" | "times">("serving");
   // Hoisted: the compiler emits non-optional guard reads (position.count/position.id) for
   // the AssignmentEdit JSX deps, which crash while position is still null.
   const peopleNeededForPosition = position ? (position.count || 0) - ArrayHelper.getAll(assignments, "positionId", position.id).length : 0;
@@ -80,115 +83,46 @@ export const Assignment = (props: Props) => {
     loadData();
   };
 
+  const addPosition = () => {
+    setAssignment(null);
+    setPosition({
+      categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
+      name: "",
+      planId: props.plan?.id,
+      count: 1
+    });
+    setPlateSlice("serving");
+  };
+
   const getAddPositionActions = () => {
     if (!canEdit) return null;
 
     if (positions.length === 0 && previousPlan) {
       return (
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Button
-            variant="outlined"
-            startIcon={<CopyIcon />}
-            endIcon={<ArrowDropDownIcon />}
-            onClick={(e) => setCopyMenuAnchor(e.currentTarget)}
-            size="small"
-            sx={{
-              textTransform: "none",
-              borderRadius: 2,
-              fontWeight: 600
-            }}>
-            {Locale.label("plans.planEdit.copyPrevious") || "Copy from Previous"}
-          </Button>
-          <Menu
-            anchorEl={copyMenuAnchor}
-            open={Boolean(copyMenuAnchor)}
-            onClose={() => setCopyMenuAnchor(null)}
-          >
-            <MenuItem onClick={() => handleCopyClick("positions")}>
-              {Locale.label("plans.planEdit.copyPositions") || "Positions Only"}
-            </MenuItem>
-            <MenuItem onClick={() => handleCopyClick("all")}>
-              {Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}
-            </MenuItem>
+        <>
+          <Verb onClick={(e) => setCopyMenuAnchor(e.currentTarget)}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+              {Locale.label("plans.planEdit.copyPrevious") || "Copy from Previous"}
+              <ArrowDropDownIcon sx={{ fontSize: 16 }} />
+            </span>
+          </Verb>
+          <Menu anchorEl={copyMenuAnchor} open={Boolean(copyMenuAnchor)} onClose={() => setCopyMenuAnchor(null)}>
+            <MenuItem onClick={() => handleCopyClick("positions")}>{Locale.label("plans.planEdit.copyPositions") || "Positions Only"}</MenuItem>
+            <MenuItem onClick={() => handleCopyClick("all")}>{Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}</MenuItem>
           </Menu>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              setAssignment(null);
-              setPosition({
-                categoryName: "Band",
-                name: "",
-                planId: props.plan?.id,
-                count: 1
-              });
-            }}
-            data-testid="add-position-button"
-            size="small"
-            sx={{
-              textTransform: "none",
-              borderRadius: 2,
-              fontWeight: 600
-            }}>
-            {Locale.label("plans.assignment.addPosition")}
-          </Button>
-        </Stack>
+          <Verb onClick={addPosition} testId="add-position-button">{Locale.label("plans.assignment.addPosition")}</Verb>
+        </>
       );
     }
 
     return (
-      <Stack direction="row" spacing={1}>
+      <>
         {plan?.lastAutofillRunId && (
-          <Button
-            variant="outlined"
-            color="warning"
-            startIcon={<UndoIcon />}
-            onClick={handleUndoAutoAssign}
-            data-testid="undo-auto-assign-button"
-            size="small"
-            sx={{
-              textTransform: "none",
-              borderRadius: 2,
-              fontWeight: 600
-            }}>
-            {Locale.label("plans.assignment.undoAutoAssign") || "Undo Auto Assign"}
-          </Button>
+          <Verb onClick={handleUndoAutoAssign} testId="undo-auto-assign-button">{Locale.label("plans.assignment.undoAutoAssign") || "Undo Auto Assign"}</Verb>
         )}
-        <Button
-          variant="outlined"
-          startIcon={<AutoAssignIcon />}
-          onClick={handleAutoAssign}
-          data-testid="auto-assign-button"
-          size="small"
-          sx={{
-            textTransform: "none",
-            borderRadius: 2,
-            fontWeight: 600
-          }}>
-          {Locale.label("plans.assignment.autoAssign")}
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setAssignment(null);
-            setPosition({
-              categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
-              name: "",
-              planId: props.plan?.id,
-              count: 1
-            });
-          }}
-          data-testid="add-position-button"
-          size="small"
-          sx={{
-            textTransform: "none",
-            borderRadius: 2,
-            fontWeight: 600
-          }}>
-          {Locale.label("plans.assignment.addPosition")}
-        </Button>
-      </Stack>
+        <Verb onClick={handleAutoAssign} testId="auto-assign-button">{Locale.label("plans.assignment.autoAssign")}</Verb>
+        <Verb onClick={addPosition} testId="add-position-button">{Locale.label("plans.assignment.addPosition")}</Verb>
+      </>
     );
   };
 
@@ -284,119 +218,62 @@ export const Assignment = (props: Props) => {
   const totalNeeded = positions.reduce((s, p) => s + (p.count || 0), 0);
   const totalFilled = positions.reduce((s, p) => s + Math.min(assignments.filter((a) => a.positionId === p.id).length, p.count || 0), 0);
   const remaining = Math.max(0, totalNeeded - totalFilled);
-  const progress = totalNeeded > 0 ? (totalFilled / totalNeeded) * 100 : 0;
+
+  const filledLabel = remaining > 0
+    ? remaining + " " + Locale.label("plans.assignment.needed")
+    : Locale.label("plans.assignment.fullyStaffed");
 
   return (
-    <Grid container spacing={3}>
-      <Grid size={{ xs: 12, md: 8 }}>
-        <Card
-          sx={{
-            mb: 3,
-            borderRadius: 2,
-            border: "1px solid",
-            borderColor: "divider",
-            transition: "all 0.2s ease-in-out",
-            "&:hover": { boxShadow: 2 }
-          }}>
-          <CardContent>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <AutoAssignIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">
-                  {Locale.label("plans.planPage.assign") || "Serving Team Assignments"}
-                </Typography>
-                {plan?.prepared && (
-                  <Chip
-                    icon={<PreparedIcon />}
-                    label={Locale.label("plans.assignment.penciledIn") || "Penciled In"}
-                    size="small"
-                    color="warning"
-                    variant="outlined"
-                    data-testid="penciled-in-chip"
-                  />
-                )}
-              </Stack>
-              {getAddPositionActions()}
-            </Stack>
-            {positions.length > 0 && (
-              <Stack sx={{ mb: 3 }} spacing={0.5}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography variant="caption" color="text.secondary">
-                    {Locale.label("plans.assignment.positionsFilled").replace("{filled}", totalFilled.toString()).replace("{total}", totalNeeded.toString())}
-                  </Typography>
-                  <Chip
-                    size="small"
-                    variant="outlined"
-                    color={remaining > 0 ? "warning" : "success"}
-                    label={remaining > 0 ? remaining + " " + Locale.label("plans.assignment.needed") : Locale.label("plans.assignment.fullyStaffed")}
-                  />
-                </Stack>
-                <LinearProgress variant="determinate" value={progress} sx={{ height: 8, borderRadius: 4 }} />
-              </Stack>
-            )}
-            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
-          </CardContent>
-        </Card>
+    <>
+      <SectionLabel sx={{ mt: 0 }}>
+        {Locale.label("plans.planPage.assign") || "Serving this hour"}
+        {plan?.prepared && (
+          <span data-testid="penciled-in-chip" style={{ marginLeft: 8, color: platedColor.first, fontWeight: 600, letterSpacing: 0, textTransform: "none" }}>
+            {Locale.label("plans.assignment.penciledIn") || "Penciled In"}
+          </span>
+        )}
+      </SectionLabel>
+      {positions.length > 0 && (
+        <div style={{ color: platedColor.mute, fontSize: "0.92rem" }}>
+          {Locale.label("plans.assignment.positionsFilled").replace("{filled}", totalFilled.toString()).replace("{total}", totalNeeded.toString())}
+          {" · "}
+          <span style={{ color: remaining > 0 ? platedColor.first : platedColor.here }}>{filledLabel}</span>
+        </div>
+      )}
+      <Verbs>
+        {getAddPositionActions()}
+        <Verb onClick={() => setPlateSlice(plateSlice === "notes" ? "serving" : "notes")}>{Locale.label("common.notes") || "Notes"}</Verb>
+        <Verb onClick={() => setPlateSlice(plateSlice === "times" ? "serving" : "times")}>{Locale.label("plans.timeList.times") || "Times"}</Verb>
+      </Verbs>
 
-        <Card
-          sx={{
-            borderRadius: 2,
-            border: "1px solid",
-            borderColor: "divider",
-            transition: "all 0.2s ease-in-out",
-            "&:hover": { boxShadow: 2 }
-          }}>
-          <CardContent>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <NotesIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">
-                  {Locale.label("common.notes") || "Plan Notes"}
-                </Typography>
-              </Stack>
-              {canEdit && (
-                <Button
-                  variant="contained"
-                  startIcon={<SaveIcon />}
-                  onClick={handleSave}
-                  size="small"
-                  sx={{
-                    textTransform: "none",
-                    borderRadius: 2,
-                    fontWeight: 600
-                  }}>
-                  {Locale.label("plans.assignment.saveNotes")}
-                </Button>
-              )}
-            </Stack>
-            <TextField
-              fullWidth
-              multiline
-              rows={4}
-              value={plan?.notes || ""}
-              onChange={canEdit ? (e) => {
-                setPlan({ ...(plan || {}), notes: e.target.value });
-              } : undefined}
-              data-testid="plan-notes-input"
-              aria-label={Locale.label("plans.assignment.planNotesAria")}
-              placeholder={canEdit ? Locale.label("plans.assignment.notesPlaceholder") : Locale.label("plans.assignment.notesPlaceholderReadOnly")}
-              variant="outlined"
-              disabled={!canEdit}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  backgroundColor: canEdit ? "background.subtle" : "background.default",
-                  "&:hover": { backgroundColor: canEdit ? "background.paper" : "background.default" },
-                  "&.Mui-focused": { backgroundColor: canEdit ? "background.paper" : "background.default" }
-                }
-              }}
-            />
-          </CardContent>
-        </Card>
-      </Grid>
+      {plateSlice === "notes" && (
+        <>
+          <TextField
+            fullWidth
+            multiline
+            rows={6}
+            value={plan?.notes || ""}
+            onChange={canEdit ? (e) => { setPlan({ ...(plan || {}), notes: e.target.value }); } : undefined}
+            data-testid="plan-notes-input"
+            aria-label={Locale.label("plans.assignment.planNotesAria")}
+            placeholder={canEdit ? Locale.label("plans.assignment.notesPlaceholder") : Locale.label("plans.assignment.notesPlaceholderReadOnly")}
+            variant="standard"
+            disabled={!canEdit}
+          />
+          {canEdit && (
+            <Verbs>
+              <Verb onClick={handleSave}><SaveIcon sx={{ fontSize: 16, mr: 0.5, verticalAlign: "text-bottom" }} />{Locale.label("plans.assignment.saveNotes")}</Verb>
+            </Verbs>
+          )}
+        </>
+      )}
 
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Stack spacing={3}>
+      {plateSlice === "times" && (
+        <TimeList times={times} positions={positions} plan={plan as PlanInterface} canEdit={canEdit} onUpdate={loadData} />
+      )}
+
+      {plateSlice === "serving" && (
+        <>
           {canEdit && position && !assignment && (
             <PositionEdit
               key={position?.id || position?.name || "new-position"}
@@ -417,25 +294,20 @@ export const Assignment = (props: Props) => {
               updatedFunction={handleAssignmentUpdate}
             />
           )}
-
-          <TimeList times={times} positions={positions} plan={plan as PlanInterface} canEdit={canEdit} onUpdate={loadData} />
+          <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
           <PlanValidation plan={plan as PlanInterface} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
-        </Stack>
-      </Grid>
+        </>
+      )}
 
       <Snackbar
         open={showSuccessMessage}
         autoHideDuration={3000}
         onClose={() => setShowSuccessMessage(false)}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-        <Alert
-          onClose={() => setShowSuccessMessage(false)}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}>
+        <Alert onClose={() => setShowSuccessMessage(false)} severity="success" variant="filled" sx={{ width: "100%" }}>
           {Locale.label("plans.planPage.noteSave") || "Notes saved successfully"}
         </Alert>
       </Snackbar>
-    </Grid>
+    </>
   );
 };

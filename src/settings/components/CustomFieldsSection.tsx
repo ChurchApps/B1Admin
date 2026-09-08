@@ -1,11 +1,12 @@
 import React from "react";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
 import { Locale, Loading } from "@churchapps/apphelper";
-import { Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { ListAlt as ListAltIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { SectionListCard, clickableRowSx } from "../../components/ui";
+import { clickableRowSx } from "../../components/ui";
 import { CustomFieldEdit } from "./CustomFieldEdit";
+import { addBarSx, verbSx, SectionLabel } from "../plated";
 
 // Custom field definition management (list + inline editor). Shared by the Settings
 // landing's Custom Fields section and the standalone /settings/custom-fields page.
@@ -48,25 +49,15 @@ export const CustomFieldsSection: React.FC = () => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: editField ? 7 : 12 }}>
-        <SectionListCard
-          icon={<ListAltIcon />}
-          title={Locale.label("settings.customFields.customFields")}
-          count={data.length}
-          onAdd={() => setEditField({})}
-          addLabel={Locale.label("settings.customFields.addField")}
-          addButtonVariant="outlined"
-          addButtonSize="small"
-          addButtonTestId="add-custom-field-button"
-          cardSx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}
-          empty={{
-            icon: <ListAltIcon />,
-            title: Locale.label("settings.customFields.none"),
-            action: (
-              <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditField({})} data-testid="add-custom-field-button-empty">
-                {Locale.label("settings.customFields.addField")}
-              </Button>
-            )
-          }}>
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("settings.customFields.customFields")}</SectionLabel>
+        {data.length === 0 ? (
+          <Box>
+            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>{Locale.label("settings.customFields.none")}</Typography>
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditField({})} data-testid="add-custom-field-button-empty">
+              {Locale.label("settings.customFields.addField")}
+            </Button>
+          </Box>
+        ) : (
           <Table>
             <TableHead>
               <TableRow>
@@ -76,7 +67,12 @@ export const CustomFieldsSection: React.FC = () => {
             </TableHead>
             <TableBody>{rows}</TableBody>
           </Table>
-        </SectionListCard>
+        )}
+        <Box sx={addBarSx}>
+          <Box component="button" type="button" onClick={() => setEditField({})} data-testid="add-custom-field-button" sx={verbSx}>
+            {Locale.label("settings.customFields.addField")}
+          </Box>
+        </Box>
       </Grid>
       {editField && (
         <Grid size={{ xs: 12, md: 5 }}>

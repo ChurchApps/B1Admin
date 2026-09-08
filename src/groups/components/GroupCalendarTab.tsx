@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
-import { Box, Button, Card, IconButton, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Event as EventIcon, Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { Box, Button, IconButton, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import { SortableTableHead } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { BulkGroupEventsModal } from "./BulkGroupEventsModal";
@@ -100,60 +100,53 @@ export const GroupCalendarTab = (props: Props) => {
   const sorted = [...(events.data || [])].sort((a, b) => new Date(b.start!).getTime() - new Date(a.start!).getTime());
 
   return (
-    <Box sx={{ p: 3 }} data-testid="group-calendar-tab">
+    <Box data-testid="group-calendar-tab">
       {ConfirmDialogElement}
       {showBulkAdd && <BulkGroupEventsModal group={props.group} onDone={handleBulkDone} />}
       {rosterFor && <GroupRsvpRosterDialog event={rosterFor} occurrences={rsvpByEvent[rosterFor.id!] || []} onClose={() => setRosterFor(null)} />}
-      <Card>
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <EventIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">{Locale.label("groups.groupCalendar.events")}</Typography>
-            </Stack>
-            <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={() => setShowBulkAdd(true)} data-testid="bulk-add-events-button">
-              {Locale.label("groups.groupCalendar.addEvents")}
-            </Button>
-          </Stack>
-        </Box>
-        <Box sx={{ overflowX: "auto" }}>
-          <Table>
-            <SortableTableHead
-              columns={[
-                { key: "title", label: Locale.label("calendars.newEvent.eventTitle") },
-                { key: "start", label: Locale.label("calendars.newEvent.start") },
-                { key: "recurrence", label: Locale.label("calendars.newEvent.repeats") },
-                { key: "skipped", label: Locale.label("groups.groupCalendar.skippedDates"), align: "right" as const },
-                { key: "visibility", label: Locale.label("calendars.newEvent.visibility") },
-                { key: "rsvps", label: Locale.label("groups.groupCalendar.rsvps") },
-                { key: "actions", label: "", align: "right" as const }
-              ]}
-            />
-            <TableBody>
-              {sorted.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={7}>{Locale.label("groups.groupCalendar.noEvents")}</TableCell>
-                </TableRow>
-              )}
-              {sorted.map((ev) => (
-                <TableRow key={ev.id} sx={{ whiteSpace: "nowrap" }}>
-                  <TableCell>{ev.title}</TableCell>
-                  <TableCell>{new Date(ev.start!).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
-                  <TableCell>{describeRecurrence(ev.recurrenceRule)}</TableCell>
-                  <TableCell align="right">{(ev as any).exceptionDates?.length || 0}</TableCell>
-                  <TableCell>{ev.visibility === "private" ? Locale.label("calendars.newEvent.private") : Locale.label("calendars.newEvent.public")}</TableCell>
-                  <TableCell>{renderRsvpCell(ev)}</TableCell>
-                  <TableCell align="right" className="rowActions">
-                    <IconButton size="small" onClick={() => handleDelete(ev)} aria-label={Locale.label("common.delete")} data-testid={`delete-event-${ev.id}`}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </Card>
+      <h3 style={{ marginTop: 0 }}>{Locale.label("groups.groupCalendar.events")}</h3>
+      <div className="og-verbs" style={{ marginTop: 0 }}>
+        <button type="button" onClick={() => setShowBulkAdd(true)} data-testid="bulk-add-events-button">
+          {Locale.label("groups.groupCalendar.addEvents")}
+        </button>
+      </div>
+      <Box sx={{ overflowX: "auto" }}>
+        <Table>
+          <SortableTableHead
+            columns={[
+              { key: "title", label: Locale.label("calendars.newEvent.eventTitle") },
+              { key: "start", label: Locale.label("calendars.newEvent.start") },
+              { key: "recurrence", label: Locale.label("calendars.newEvent.repeats") },
+              { key: "skipped", label: Locale.label("groups.groupCalendar.skippedDates"), align: "right" as const },
+              { key: "visibility", label: Locale.label("calendars.newEvent.visibility") },
+              { key: "rsvps", label: Locale.label("groups.groupCalendar.rsvps") },
+              { key: "actions", label: "", align: "right" as const }
+            ]}
+          />
+          <TableBody>
+            {sorted.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={7}>{Locale.label("groups.groupCalendar.noEvents")}</TableCell>
+              </TableRow>
+            )}
+            {sorted.map((ev) => (
+              <TableRow key={ev.id} sx={{ whiteSpace: "nowrap" }}>
+                <TableCell>{ev.title}</TableCell>
+                <TableCell>{new Date(ev.start!).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
+                <TableCell>{describeRecurrence(ev.recurrenceRule)}</TableCell>
+                <TableCell align="right">{(ev as any).exceptionDates?.length || 0}</TableCell>
+                <TableCell>{ev.visibility === "private" ? Locale.label("calendars.newEvent.private") : Locale.label("calendars.newEvent.public")}</TableCell>
+                <TableCell>{renderRsvpCell(ev)}</TableCell>
+                <TableCell align="right" className="rowActions">
+                  <IconButton size="small" onClick={() => handleDelete(ev)} aria-label={Locale.label("common.delete")} data-testid={`delete-event-${ev.id}`}>
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
     </Box>
   );
 };

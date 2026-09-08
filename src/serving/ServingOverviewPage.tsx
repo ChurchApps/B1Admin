@@ -1,8 +1,8 @@
 import React from "react";
-import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, type PersonInterface } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
-import { Alert, Box, Button, Card, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
-import { Close as CloseIcon, Clear as ClearIcon, Email as EmailIcon, PublishedWithChanges as AutoScheduleIcon, Assignment as AssignmentIcon } from "@mui/icons-material";
+import { Alert, Box, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
+import { Close as CloseIcon, Clear as ClearIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
 import { hasPlansEditAccess } from "../helpers";
 import { useConfirmDelete } from "../hooks";
@@ -10,6 +10,7 @@ import { AssignmentEdit } from "./components/AssignmentEdit";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { AppDatePicker } from "../components";
+import { DirectoryPage, ListPills, Pill, Verb, Verbs, platedColor } from "./plated";
 
 interface OverviewRow {
   serviceDate: string;
@@ -256,40 +257,36 @@ export const ServingOverviewPage = () => {
 
   return (
     <>
-      <PageHeader icon={<AssignmentIcon />} title={planType.data?.name ? `${planType.data.name} ${Locale.label("plans.servingOverviewPage.overviewSuffix")}` : Locale.label("plans.servingOverviewPage.title")} subtitle={Locale.label("plans.servingOverviewPage.subtitle")} />
-      <Box sx={{ p: 3 }}>
-        {/* Filters */}
-        <Card sx={{ mb: 3, p: 2 }}>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center" useFlexGap flexWrap="wrap">
-            <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
-              <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">
-                <MenuItem value="">{Locale.label("plans.servingOverviewPage.highlightAll")}</MenuItem>
-                {personIds.map(id => <MenuItem key={id} value={id}>{getDisplayName(id)}</MenuItem>)}
-              </Select>
-            </FormControl>
-            <FormControlLabel control={<Switch checked={gapsOnly} onChange={(e) => setGapsOnly(e.target.checked)} data-testid="gaps-only-toggle" />} label={Locale.label("plans.servingOverviewPage.gapsOnly")} />
-            <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />
-            {canEdit && (
-              <Button variant="outlined" size="small" startIcon={<AutoScheduleIcon />} disabled={busy || rows.length === 0} onClick={handleAutoSchedule} data-testid="matrix-auto-schedule">
-                {Locale.label("plans.servingOverviewPage.autoSchedule")}
-              </Button>
-            )}
-            {canEdit && (
-              <Button variant="outlined" size="small" startIcon={<EmailIcon />} disabled={busy || !ministryId || rows.length === 0} onClick={handleEmailAll} data-testid="matrix-email-all">
-                {Locale.label("plans.servingOverviewPage.emailAll")}
-              </Button>
-            )}
-          </Stack>
-        </Card>
+      <DirectoryPage
+        wide
+        title={planType.data?.name ? `${planType.data.name} ${Locale.label("plans.servingOverviewPage.overviewSuffix")}` : Locale.label("plans.servingOverviewPage.title")}
+        lede={Locale.label("plans.servingOverviewPage.subtitle")}>
+        <Verbs>
+          <Verb to="/serving/plans">{Locale.label("components.wrapper.plans") || "Plans"}</Verb>
+          {canEdit && <Verb onClick={handleAutoSchedule} disabled={busy || rows.length === 0} testId="matrix-auto-schedule">{Locale.label("plans.servingOverviewPage.autoSchedule")}</Verb>}
+          {canEdit && <Verb onClick={handleEmailAll} disabled={busy || !ministryId || rows.length === 0} testId="matrix-email-all">{Locale.label("plans.servingOverviewPage.emailAll")}</Verb>}
+        </Verbs>
+        <ListPills>
+          <Pill on={!gapsOnly} onClick={() => setGapsOnly(false)}>{Locale.label("plans.servingOverviewPage.highlightAll")}</Pill>
+          <Pill on={gapsOnly} onClick={() => setGapsOnly(true)} testId="gaps-only-toggle">{Locale.label("plans.servingOverviewPage.gapsOnly")}</Pill>
+        </ListPills>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ sm: "center" }} useFlexGap flexWrap="wrap" sx={{ mb: 3 }}>
+          <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+          <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+          <FormControl size="small" variant="standard" sx={{ minWidth: 160 }}>
+            <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
+            <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">
+              <MenuItem value="">{Locale.label("plans.servingOverviewPage.highlightAll")}</MenuItem>
+              {personIds.map(id => <MenuItem key={id} value={id}>{getDisplayName(id)}</MenuItem>)}
+            </Select>
+          </FormControl>
+          <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />
+        </Stack>
 
-        {/* Grid Table */}
         {displayRows.length === 0 ? (
-          <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }}>{Locale.label("plans.servingOverviewPage.noData")}</Box>
+          <Box sx={{ py: 2, color: platedColor.mute }}>{Locale.label("plans.servingOverviewPage.noData")}</Box>
         ) : (
-          <Card>
+          <Box sx={{ borderTop: `1px solid ${platedColor.line}` }}>
             <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto" }}>
               <Table size="small">
                 <TableHead sx={{ backgroundColor: "background.subtle" }}>
@@ -337,9 +334,9 @@ export const ServingOverviewPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Card>
+          </Box>
         )}
-      </Box>
+      </DirectoryPage>
 
       <Dialog open={!!editingCell} onClose={() => setEditingKey(null)} maxWidth="xs" fullWidth>
         <DialogTitle>

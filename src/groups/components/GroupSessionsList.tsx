@@ -2,7 +2,7 @@ import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
-import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, Typography } from "@mui/material";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip } from "../../components/ui";
@@ -225,28 +225,25 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
           {filteredSessions.length > 0 && <CountChip count={filteredSessions.length} />}
         </Box>
         {availableYears.length > 0 && (
-          <ToggleButtonGroup
-            value={selectedYear}
-            exclusive
-            size="small"
-            fullWidth
-            onChange={(_, value) => {
-              if (value !== null) {
-                setSelectedYear(value);
-                setCurrentPage(1);
-              }
-            }}>
+          <div className="og-years">
             {availableYears.map((year) => (
-              <ToggleButton key={year} value={year} sx={{ textTransform: "none" }}>
+              <button
+                key={year}
+                type="button"
+                className={selectedYear === year ? "on" : undefined}
+                onClick={() => { setSelectedYear(year); setCurrentPage(1); }}>
                 {year}
-              </ToggleButton>
+              </button>
             ))}
             {availableYears.length > 1 && (
-              <ToggleButton value="all" sx={{ textTransform: "none" }}>
+              <button
+                type="button"
+                className={selectedYear === "all" ? "on" : undefined}
+                onClick={() => { setSelectedYear("all"); setCurrentPage(1); }}>
                 {Locale.label("groups.groupSessions.allYears") || "All"}
-              </ToggleButton>
+              </button>
             )}
-          </ToggleButtonGroup>
+          </div>
         )}
       </Box>
 

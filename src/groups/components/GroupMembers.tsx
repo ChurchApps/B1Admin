@@ -8,7 +8,6 @@ import {
 import { PendingJoinRequests } from "./PendingJoinRequests";
 import {
   ApiHelper,
-  DisplayBox,
   ErrorMessages,
   UserHelper,
   Permissions,
@@ -368,18 +367,10 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   );
 
   const renderTable = () => (
-    <Box
-      sx={{
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: 1.5,
-        overflow: "hidden"
-      }}>
-      <Table id="groupMemberTable" sx={{ "& td, & th": { borderBottomColor: "divider" } }}>
-        <TableHead>{tableHeader}</TableHead>
-        <TableBody>{tableRows}</TableBody>
-      </Table>
-    </Box>
+    <Table id="groupMemberTable">
+      <TableHead>{tableHeader}</TableHead>
+      <TableBody>{tableRows}</TableBody>
+    </Table>
   );
 
   const getTable = () => {
@@ -536,37 +527,29 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   );
 
   return (
-    <DisplayBox id="groupMembersBox" data-cy="group-members-tab" headerText={Locale.label("groups.groupMembers.groupMem")} headerIcon="group" editContent={getEditContent()} help="docs/b1-admin/groups/">
+    <div id="groupMembersBox" data-cy="group-members-tab">
+      <div className="og-verbs" style={{ marginTop: 0 }}>
+        {getEditContent()}
+      </div>
       {showCounts && (
-        <Stack
-          direction="row"
-          spacing={1.25}
-          alignItems="center"
-          sx={{ mt: -0.5, mb: 2, color: "text.secondary" }}>
-          <Typography variant="body2" sx={{ fontVariantNumeric: "tabular-nums" }}>
-            <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{memberCount}</Box>{" "}
-            {memberCount === 1 ? Locale.label("groups.groupMembers.member") : Locale.label("groups.groupMembers.members")}
-          </Typography>
+        <p className="og-muted" style={{ margin: "0 0 12px" }}>
+          <b>{memberCount}</b>{" "}
+          {memberCount === 1 ? Locale.label("groups.groupMembers.member") : Locale.label("groups.groupMembers.members")}
           {leaderCount > 0 && (
             <>
-              <Box sx={{ width: 3, height: 3, borderRadius: "50%", bgcolor: "text.disabled" }} />
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <StarIcon sx={{ fontSize: 14, color: "warning.main" }} />
-                <Typography variant="body2" sx={{ fontVariantNumeric: "tabular-nums" }}>
-                  <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{leaderCount}</Box>{" "}
-                  {leaderCount === 1 ? Locale.label("groups.groupMembers.leaderLower") : Locale.label("groups.groupMembers.leadersLower")}
-                </Typography>
-              </Stack>
+              {" · "}
+              <b>{leaderCount}</b>{" "}
+              {leaderCount === 1 ? Locale.label("groups.groupMembers.leaderLower") : Locale.label("groups.groupMembers.leadersLower")}
             </>
           )}
-        </Stack>
+        </p>
       )}
       {composer}
       <PendingJoinRequests
         requests={pendingRequests.data || []}
         onChanged={() => { pendingRequests.refetch(); groupMembers.refetch(); }}
       />
-      {getTable()}
+      <div data-testid="display-box-content">{getTable()}</div>
       {showInviteDialog && props.addedPerson && (
         <SendInviteDialog
           open={showInviteDialog}
@@ -581,6 +564,6 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       <Snackbar open={sendSuccess} autoHideDuration={4000} onClose={() => setSendSuccess(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert severity="success" variant="filled" onClose={() => setSendSuccess(false)}>{Locale.label("groups.groupMembers.messageSent")}</Alert>
       </Snackbar>
-    </DisplayBox>
+    </div>
   );
 });

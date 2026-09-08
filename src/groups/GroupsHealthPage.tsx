@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Box, Card, Table, TableBody, TableCell, TableRow } from "@mui/material";
-import { MonitorHeart as HealthIcon } from "@mui/icons-material";
-import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Loading, Locale } from "@churchapps/apphelper";
 import { SortableTableHead } from "../components/ui";
 import { useSortableData } from "../hooks";
+import "./omarchy.css";
 
 interface GroupHealthRow {
   groupId: string;
@@ -50,47 +50,43 @@ const GroupsHealthPage = () => {
   ];
 
   return (
-    <>
-      <PageHeader icon={<HealthIcon />} title={Locale.label("groups.groupHealth.title")} subtitle={Locale.label("groups.groupHealth.subtitle")}>
-        <HealthIcon sx={{ fontSize: 32, color: "rgba(255,255,255,0.8)", mr: 2 }} />
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
-        {health.isLoading ? (
-          <Loading />
-        ) : (
-          <Card>
-            <Box sx={{ overflowX: "auto" }}>
-              <Table data-testid="groups-health-table">
-                <SortableTableHead columns={columns} sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
-                <TableBody>
-                  {rows.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={columns.length}>{Locale.label("groups.groupsPage.noGroupMsg")}</TableCell>
-                    </TableRow>
-                  )}
-                  {rows.map((r) => (
-                    <TableRow key={r.groupId} sx={{ whiteSpace: "nowrap" }}>
-                      <TableCell>
-                        <Link to={"/groups/" + r.groupId} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{r.name}</Link>
-                      </TableCell>
-                      <TableCell>{r.categoryName}</TableCell>
-                      <TableCell align="right">{r.memberCount}</TableCell>
-                      <TableCell align="right">{r.joins90}</TableCell>
-                      <TableCell align="right">{r.leaves90}</TableCell>
-                      <TableCell align="right">{r.churnRate90}%</TableCell>
-                      <TableCell align="right">{r.averageAttendance === null ? "-" : r.averageAttendance}</TableCell>
-                      <TableCell align="right">{r.averageAge === null ? "-" : r.averageAge}</TableCell>
-                      <TableCell align="right">{r.femaleCount}</TableCell>
-                      <TableCell align="right">{r.maleCount}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Card>
-        )}
-      </Box>
-    </>
+    <main className="og-page" style={{ width: "min(1100px, calc(100% - 32px))" }}>
+      <div className="og-head-verbs">
+        <Link to="/groups">{Locale.label("groups.groupsPage.groups")}</Link>
+      </div>
+      <h1>{Locale.label("groups.groupHealth.title")}</h1>
+      <p className="og-lede">{Locale.label("groups.groupHealth.subtitle")}</p>
+      {health.isLoading ? (
+        <Loading />
+      ) : (
+        <Table data-testid="groups-health-table">
+          <SortableTableHead columns={columns} sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
+          <TableBody>
+            {rows.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={columns.length}>{Locale.label("groups.groupsPage.noGroupMsg")}</TableCell>
+              </TableRow>
+            )}
+            {rows.map((r) => (
+              <TableRow key={r.groupId}>
+                <TableCell>
+                  <Link to={"/groups/" + r.groupId}>{r.name}</Link>
+                </TableCell>
+                <TableCell>{r.categoryName}</TableCell>
+                <TableCell align="right">{r.memberCount}</TableCell>
+                <TableCell align="right">{r.joins90}</TableCell>
+                <TableCell align="right">{r.leaves90}</TableCell>
+                <TableCell align="right">{r.churnRate90}%</TableCell>
+                <TableCell align="right">{r.averageAttendance === null ? "-" : r.averageAttendance}</TableCell>
+                <TableCell align="right">{r.averageAge === null ? "-" : r.averageAge}</TableCell>
+                <TableCell align="right">{r.femaleCount}</TableCell>
+                <TableCell align="right">{r.maleCount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </main>
   );
 };
 

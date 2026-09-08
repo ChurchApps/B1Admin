@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import {
-  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography,
+  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Stack, Chip, Typography,
   IconButton, Collapse, CircularProgress
 } from "@mui/material";
-import { Search as SearchIcon, KeyboardArrowDown as ExpandIcon, KeyboardArrowUp as CollapseIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Search as SearchIcon, KeyboardArrowDown as ExpandIcon, KeyboardArrowUp as CollapseIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
 import { AppDatePicker } from "../components";
+import { Plate, h1Sx, ledeSx } from "./plated";
 
 interface AuditLog {
   id: string;
@@ -260,101 +261,99 @@ export const AuditLogPage: React.FC = () => {
   if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <></>;
 
   return (
-    <>
-      <PageHeader icon={<HistoryIcon />} title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")} />
-
-      <Box sx={{ p: 3 }}>
-        <Card sx={{ mb: 3, p: 2 }}>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
-            <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel>{Locale.label("settings.auditLogPage.module")}</InputLabel>
-              <Select displayEmpty value={module} label={Locale.label("settings.auditLogPage.module")} onChange={(e) => setModule(e.target.value)}>
-                {getModules().map((m) => <MenuItem key={m.value} value={m.value}>{m.label}</MenuItem>)}
-              </Select>
-            </FormControl>
-            <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel>{Locale.label("settings.auditLogPage.category")}</InputLabel>
-              <Select displayEmpty value={category} label={Locale.label("settings.auditLogPage.category")} onChange={(e) => setCategory(e.target.value)}>
-                {getCategories().map((c) => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
-              </Select>
-            </FormControl>
-            <AppDatePicker size="small"  label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-            <AppDatePicker size="small"  label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-            <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
-            {logs.length > 0 && (
-              <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />
-            )}
-          </Stack>
-        </Card>
-
-        <Card>
-          {loading ? <Loading /> : (
-            <>
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ width: 40 }} />
-                      <TableCell>{Locale.label("settings.auditLogPage.date")}</TableCell>
-                      <TableCell>{Locale.label("settings.auditLogPage.module")}</TableCell>
-                      <TableCell>{Locale.label("settings.auditLogPage.category")}</TableCell>
-                      <TableCell>{Locale.label("settings.auditLogPage.action")}</TableCell>
-                      <TableCell>{Locale.label("settings.auditLogPage.entity")}</TableCell>
-                      <TableCell>{Locale.label("settings.auditLogPage.ipAddress")}</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {logs.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={7} align="center">
-                          <Typography variant="body2" color="text.secondary" sx={{ py: 3 }}>{Locale.label("settings.auditLogPage.noEntries")}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      logs.map((log) => (
-                        <React.Fragment key={log.id}>
-                          <TableRow hover>
-                            <TableCell>
-                              <IconButton size="small" onClick={() => setExpandedId(expandedId === log.id ? null : log.id)} aria-label={Locale.label("settings.auditLogPage.details")}>
-                                {expandedId === log.id ? <CollapseIcon /> : <ExpandIcon />}
-                              </IconButton>
-                            </TableCell>
-                            <TableCell sx={{ whiteSpace: "nowrap" }}>{formatDate(log.created)}</TableCell>
-                            <TableCell>{log.module && <Typography variant="body2">{log.module}</Typography>}</TableCell>
-                            <TableCell><Chip label={log.category} color={categoryColor(log.category)} size="small" /></TableCell>
-                            <TableCell>{formatAction(log.action)}</TableCell>
-                            <TableCell>
-                              {log.entityType && <Typography variant="caption" color="text.secondary">{log.entityType}</Typography>}
-                              {log.entityId && <Typography variant="body2">{log.entityId}</Typography>}
-                            </TableCell>
-                            <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{log.ipAddress}</Typography></TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={7} sx={{ py: 0, borderBottom: expandedId === log.id ? undefined : "none" }}>
-                              <Collapse in={expandedId === log.id} timeout="auto" unmountOnExit>
-                                {expandedId === log.id && <AuditLogDetails log={log} />}
-                              </Collapse>
-                            </TableCell>
-                          </TableRow>
-                        </React.Fragment>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TablePagination
-                component="div"
-                count={totalCount}
-                page={page}
-                onPageChange={handlePageChange}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleRowsPerPageChange}
-                rowsPerPageOptions={[25, 50, 100]}
-              />
-            </>
+    <Plate directory>
+      <Box component="h1" sx={h1Sx}>{Locale.label("settings.auditLogPage.title")}</Box>
+      <Box sx={ledeSx}>{Locale.label("settings.auditLogPage.subtitle")}</Box>
+      <Box sx={{ mb: 3 }}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "stretch", md: "center" }} sx={{ flexWrap: "wrap" }}>
+          <FormControl size="small" sx={{ minWidth: 160 }}>
+            <InputLabel>{Locale.label("settings.auditLogPage.module")}</InputLabel>
+            <Select displayEmpty value={module} label={Locale.label("settings.auditLogPage.module")} onChange={(e) => setModule(e.target.value)}>
+              {getModules().map((m) => <MenuItem key={m.value} value={m.value}>{m.label}</MenuItem>)}
+            </Select>
+          </FormControl>
+          <FormControl size="small" sx={{ minWidth: 160 }}>
+            <InputLabel>{Locale.label("settings.auditLogPage.category")}</InputLabel>
+            <Select displayEmpty value={category} label={Locale.label("settings.auditLogPage.category")} onChange={(e) => setCategory(e.target.value)}>
+              {getCategories().map((c) => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
+            </Select>
+          </FormControl>
+          <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+          <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+          <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
+          {logs.length > 0 && (
+            <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />
           )}
-        </Card>
+        </Stack>
       </Box>
-    </>
+
+      <Box>
+        {loading ? <Loading /> : (
+          <>
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ width: 40 }} />
+                    <TableCell>{Locale.label("settings.auditLogPage.date")}</TableCell>
+                    <TableCell>{Locale.label("settings.auditLogPage.module")}</TableCell>
+                    <TableCell>{Locale.label("settings.auditLogPage.category")}</TableCell>
+                    <TableCell>{Locale.label("settings.auditLogPage.action")}</TableCell>
+                    <TableCell>{Locale.label("settings.auditLogPage.entity")}</TableCell>
+                    <TableCell>{Locale.label("settings.auditLogPage.ipAddress")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {logs.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} align="center">
+                        <Typography variant="body2" color="text.secondary" sx={{ py: 3 }}>{Locale.label("settings.auditLogPage.noEntries")}</Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    logs.map((log) => (
+                      <React.Fragment key={log.id}>
+                        <TableRow hover>
+                          <TableCell>
+                            <IconButton size="small" onClick={() => setExpandedId(expandedId === log.id ? null : log.id)} aria-label={Locale.label("settings.auditLogPage.details")}>
+                              {expandedId === log.id ? <CollapseIcon /> : <ExpandIcon />}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell sx={{ whiteSpace: "nowrap" }}>{formatDate(log.created)}</TableCell>
+                          <TableCell>{log.module && <Typography variant="body2">{log.module}</Typography>}</TableCell>
+                          <TableCell><Chip label={log.category} color={categoryColor(log.category)} size="small" /></TableCell>
+                          <TableCell>{formatAction(log.action)}</TableCell>
+                          <TableCell>
+                            {log.entityType && <Typography variant="caption" color="text.secondary">{log.entityType}</Typography>}
+                            {log.entityId && <Typography variant="body2">{log.entityId}</Typography>}
+                          </TableCell>
+                          <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{log.ipAddress}</Typography></TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={7} sx={{ py: 0, borderBottom: expandedId === log.id ? undefined : "none" }}>
+                            <Collapse in={expandedId === log.id} timeout="auto" unmountOnExit>
+                              {expandedId === log.id && <AuditLogDetails log={log} />}
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </React.Fragment>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              component="div"
+              count={totalCount}
+              page={page}
+              onPageChange={handlePageChange}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleRowsPerPageChange}
+              rowsPerPageOptions={[25, 50, 100]}
+            />
+          </>
+        )}
+      </Box>
+    </Plate>
   );
 };

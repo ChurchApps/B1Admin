@@ -1,9 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
-import { Box, Divider, Grid, Stack, TextField, Typography, MenuItem } from "@mui/material";
+import { Box, Grid, TextField, MenuItem } from "@mui/material";
+import { verbSx, dlRowSx, SectionLabel } from "../plated";
 
 type AnyRecord = Record<string, any>;
 
@@ -15,18 +16,15 @@ interface Props {
   onSaved: () => void;
 }
 
-const DisplayRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
-  <>
-    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ py: 1.5 }}>
-      <Typography variant="body2" color="text.secondary">{label}</Typography>
-      <Typography variant="body2" sx={{ fontWeight: 500, textAlign: "right" }}>{value || "—"}</Typography>
-    </Stack>
-    <Divider />
-  </>
+const Fact: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
+  <Box component="dl" sx={dlRowSx}>
+    <Box component="dt">{label}</Box>
+    <Box component="dd">{value || "—"}</Box>
+  </Box>
 );
 
 export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
-  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
+  "use no memo";
   const [editing, setEditing] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
 
@@ -58,9 +56,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
           </Grid>
         </Grid>
 
-        <Typography variant="subtitle2" sx={{ mt: 3, mb: 2, fontWeight: 600, color: "text.secondary" }}>
-          {Locale.label("person.address")}
-        </Typography>
+        <SectionLabel>{Locale.label("person.address")}</SectionLabel>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField fullWidth label={Locale.label("settings.churchSettingsEdit.address1")} id="address1" data-testid="address1-input" {...register("address1")} />
@@ -91,23 +87,21 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
   }
 
   return (
-    <DisplayBox headerText={Locale.label("settings.churchSettingsEdit.churchInfo")} headerIcon="business" editFunction={() => setEditing(true)}>
-      <Box>
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.churchName")} value={church?.name} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
+    <Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 1 }}>
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("settings.churchSettingsEdit.churchInfo")}</SectionLabel>
+        <Box component="button" type="button" data-testid="small-button-edit" onClick={() => setEditing(true)} sx={verbSx}>{Locale.label("common.edit")}</Box>
       </Box>
-      <Typography variant="subtitle2" sx={{ mt: 2.5, mb: 0.5, fontWeight: 600, color: "text.secondary" }}>
-        {Locale.label("person.address")}
-      </Typography>
-      <Box>
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.address1")} value={church?.address1} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.address2")} value={church?.address2} />
-        <DisplayRow label={Locale.label("person.city")} value={church?.city} />
-        <DisplayRow label={Locale.label("person.state")} value={church?.state} />
-        <DisplayRow label={Locale.label("person.zip")} value={church?.zip} />
-        <DisplayRow label={Locale.label("person.country")} value={church?.country} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
-      </Box>
-    </DisplayBox>
+      <Fact label={Locale.label("settings.churchSettingsEdit.churchName")} value={church?.name} />
+      <Fact label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
+      <SectionLabel>{Locale.label("person.address")}</SectionLabel>
+      <Fact label={Locale.label("settings.churchSettingsEdit.address1")} value={church?.address1} />
+      <Fact label={Locale.label("settings.churchSettingsEdit.address2")} value={church?.address2} />
+      <Fact label={Locale.label("person.city")} value={church?.city} />
+      <Fact label={Locale.label("person.state")} value={church?.state} />
+      <Fact label={Locale.label("person.zip")} value={church?.zip} />
+      <Fact label={Locale.label("person.country")} value={church?.country} />
+      <Fact label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
+    </Box>
   );
 };

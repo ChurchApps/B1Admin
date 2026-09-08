@@ -1,12 +1,10 @@
 import React from "react";
 import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, ErrorMessages, Locale } from "@churchapps/apphelper";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { B1AdminPersonHelper } from "../../helpers";
 
 interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
-  // Reports the AI-generated conditions so the parent can offer "Save as List".
   onReportCriteria?: (criteria: SearchCondition[] | null) => void;
   resetSearchResults?: () => void;
 }
@@ -19,14 +17,11 @@ export const AISearch = (props: Props) => {
 
   const handleSearch = async (e: any) => {
     e.preventDefault();
+    if (!text.trim()) return;
     setIsLoading(true);
     try {
-      // First, get the filters from AskApi
       const filters: SearchCondition[] = await ApiHelper.post("/query/people", { query: text }, "AskApi");
-
-      // Then use those filters to search for people
       const response = await ApiHelper.post("/people/advancedSearch", filters, "MembershipApi");
-
       props.updateSearchResults(response?.map((p: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(p)));
       if (filters?.length) props.onReportCriteria?.(filters);
       setIsSearched(true);
@@ -46,36 +41,36 @@ export const AISearch = (props: Props) => {
     props.resetSearchResults?.();
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSearch(e);
+    }
+  };
+
   return (
-    <DisplayBox headerText={Locale.label("people.aiSearch.title")} headerIcon="person_search">
+    <div id="display-box">
       <ErrorMessages errors={errors} />
-      <TextField
-        fullWidth
-        multiline
-        minRows={4}
-        maxRows={6}
-        placeholder={Locale.label("people.aiSearch.placeholder")}
+      <textarea
+        id="ask"
+        rows={1}
+        placeholder="Or ask: people who gave this year and missed last Sunday"
         value={text}
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={onKeyDown}
+        aria-label="Ask"
       />
-      <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
-        {Locale.label("people.aiSearch.examples")}
-        <br />
-        {Locale.label("people.aiSearch.exampleMen")}
-        <br />{Locale.label("people.aiSearch.exampleWomen")}
-      </Typography>
-      <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-        <Button fullWidth variant="contained" onClick={handleSearch} disabled={isLoading || !text || text === ""} sx={{ flex: 1 }}>
+      <p className="ask-hint">Ask is the advanced search. Save any result as a list.</p>
+      <div className="ask-actions">
+        <button type="button" onClick={handleSearch} disabled={isLoading || !text}>
           {isLoading ? Locale.label("people.aiSearch.searching") : Locale.label("people.aiSearch.search")}
-        </Button>
+        </button>
         {(text || isSearched) && (
-          <Button fullWidth variant="outlined" onClick={handleClear} disabled={isLoading} sx={{ flex: 1 }} data-testid="ai-search-clear">
+          <button type="button" onClick={handleClear} disabled={isLoading} data-testid="ai-search-clear">
             {Locale.label("people.aiSearch.clearSearch", "Clear Search")}
-          </Button>
+          </button>
         )}
-      </Stack>
-    </DisplayBox>
+      </div>
+    </div>
   );
 };

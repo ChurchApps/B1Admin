@@ -3,20 +3,19 @@ import { PlanTypeList } from "./components/PlanTypeList";
 import { TeamList } from "./components/TeamList";
 import { ContentProviderAuthManager } from "./components/ContentProviderAuthManager";
 import { GroupAdd } from "../groups/components";
-import { ApiHelper, Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Box, Button, Grid, FormControlLabel, Switch } from "@mui/material";
-import { Assignment as AssignmentIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
+import { ApiHelper, Locale, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
-import { EmptyState, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
-import { NavigationTabs } from "../components/ui/NavigationTabs";
 import UserContext from "../UserContext";
-import { Link } from "react-router-dom";
+import { AddBlock, DirectoryPage, FindField, ListPills, Pill, Verb, Verbs } from "./plated";
 
 export const ServingPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [selectedMinistryId, setSelectedMinistryId] = React.useState<string | null>(null);
   const [showAllMinistries, setShowAllMinistries] = React.useState(false);
+  const [slice, setSlice] = React.useState<"types" | "teams" | "providers">("types");
+  const [find, setFind] = React.useState("");
   const context = React.useContext(UserContext);
   const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
 
@@ -55,6 +54,12 @@ export const ServingPage = () => {
     })
     : (ministries.data || []);
 
+  const visibleGroups = React.useMemo(() => {
+    const q = find.trim().toLowerCase();
+    if (!q) return groups;
+    return groups.filter((g) => (g.name || "").toLowerCase().includes(q));
+  }, [groups, find]);
+
   const selectedMinistry = groups.find((g) => g.id === selectedMinistryId);
 
   React.useEffect(() => {
@@ -68,105 +73,83 @@ export const ServingPage = () => {
 
   if (ministries.isLoading) return <Loading />;
 
-  if (showAdd) {
-    return (
-      <>
-        <PageHeader icon={<AssignmentIcon />} title={Locale.label("plans.plansPage.addMinistry")} subtitle={Locale.label("plans.plansPage.subtitle")} />
-        <Box sx={{ p: 3 }}>
-          <GroupAdd updatedFunction={handleAddUpdated} tags="ministry" categoryName="Ministry" />
-        </Box>
-      </>
-    );
-  }
-
   const rawMinistryCount = (ministries.data || []).length;
+  const canEditGroups = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
 
-  if (rawMinistryCount === 0) {
+  if (rawMinistryCount === 0 && !showAdd) {
     return (
-      <>
-        <PageHeader icon={<AssignmentIcon />} title={Locale.label("plans.plansPage.selMin")} subtitle={Locale.label("plans.plansPage.subtitle")} />
-        <Box sx={{ p: 3 }}>
-          <EmptyState
-            icon={<AssignmentIcon />}
-            title={Locale.label("plans.ministryList.noMinMsg")}
-            description={Locale.label("plans.ministryList.getStarted")}
-            action={
-              UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-                <Button variant="contained" startIcon={<AddIcon />} onClick={handleShowAdd} sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
-                  {Locale.label("plans.plansPage.addMinistry")}
-                </Button>
-              )
-            }
-          />
-        </Box>
-      </>
+      <DirectoryPage title={Locale.label("components.wrapper.serving")} lede={Locale.label("plans.plansPage.subtitle")}>
+        <p style={{ color: "var(--text-muted)" }}>{Locale.label("plans.ministryList.noMinMsg")}</p>
+        {canEditGroups && (
+          <AddBlock title={Locale.label("plans.plansPage.addMinistry")}>
+            <Button variant="text" onClick={handleShowAdd} sx={{ color: "var(--link)", fontWeight: 600, textTransform: "none" }}>
+              {Locale.label("plans.plansPage.addMinistry")}
+            </Button>
+          </AddBlock>
+        )}
+      </DirectoryPage>
     );
   }
 
   return (
-    <>
-      <PageHeader
-        icon={<AssignmentIcon />}
-        title={selectedMinistry?.name || Locale.label("components.wrapper.serving")}
-        subtitle={Locale.label("plans.ministryPage.subtitle")}
-        tabs={groups.length > 1 && (
-          <NavigationTabs
-            selectedTab={selectedMinistryId || ""}
-            onTabChange={setSelectedMinistryId}
-            tabs={groups.map((g) => ({ value: g.id || "", label: g.name || "" }))}
-            onHeader
-          />
-        )}
-      >
-        {isAdmin && (
-          <FormControlLabel
-            control={
-              <Switch
-                checked={showAllMinistries}
-                onChange={(e) => setShowAllMinistries(e.target.checked)}
-                sx={{ color: "#FFF", "&.Mui-checked": { color: "#FFF" }, "& .MuiSwitch-track": { backgroundColor: "rgba(255,255,255,0.3)" } }}
-              />
-            }
-            label={Locale.label("plans.servingPage.showAll")}
-            sx={{ color: "#FFF", mr: 2 }}
-          />
-        )}
-        {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-          <>
-            {selectedMinistry && (
-              <HeaderSecondaryButton component={Link} startIcon={<EditIcon />} {...({ to: `/groups/${selectedMinistry.id}?tag=ministry` } as any)}>
-                {Locale.label("plans.plansPage.editMinistry")}
-              </HeaderSecondaryButton>
-            )}
-            <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleShowAdd}>
-              {Locale.label("plans.plansPage.addMinistry")}
-            </HeaderPrimaryButton>
-          </>
-        )}
-      </PageHeader>
+    <DirectoryPage title={selectedMinistry?.name || Locale.label("components.wrapper.serving")} lede={Locale.label("plans.ministryPage.subtitle")}>
+      {groups.length > 0 && (
+        <ListPills tablist>
+          {visibleGroups.map((g) => (
+            <Pill key={g.id} tab on={g.id === selectedMinistryId} onClick={() => { setSelectedMinistryId(g.id || null); setSlice("types"); }}>
+              {g.name}
+            </Pill>
+          ))}
+        </ListPills>
+      )}
 
-      <Box sx={{ p: 3 }}>
-        {!selectedMinistry && (
-          <EmptyState
-            icon={<AssignmentIcon />}
-            title={Locale.label("plans.ministryList.noMinMsg")}
-            description={Locale.label("plans.servingPage.showAllHint")}
-          />
+      {(rawMinistryCount > 6 || find) && (
+        <FindField value={find} onChange={setFind} placeholder={Locale.label("common.search") || "Find a ministry"} />
+      )}
+
+      {isAdmin && (
+        <ListPills>
+          <Pill on={!showAllMinistries} onClick={() => setShowAllMinistries(false)}>{Locale.label("plans.servingPage.mine") || "Mine"}</Pill>
+          <Pill on={showAllMinistries} onClick={() => setShowAllMinistries(true)}>{Locale.label("plans.servingPage.showAll")}</Pill>
+        </ListPills>
+      )}
+
+      <Verbs>
+        {selectedMinistry && (
+          <Verb onClick={() => setSlice("types")}>{Locale.label("plans.planTypeList.planTypes")}</Verb>
         )}
         {selectedMinistry && (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, lg: 6 }}>
-              <PlanTypeList ministry={selectedMinistry} />
-            </Grid>
-            <Grid size={{ xs: 12, lg: 6 }}>
-              <TeamList ministry={selectedMinistry} />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <ContentProviderAuthManager key={selectedMinistry.id} ministryId={selectedMinistry.id || ""} />
-            </Grid>
-          </Grid>
+          <Verb onClick={() => setSlice("teams")}>{Locale.label("plans.teamList.teams")}</Verb>
         )}
-      </Box>
-    </>
+        {selectedMinistry && (
+          <Verb onClick={() => setSlice("providers")}>{Locale.label("plans.contentProviderAuth.title") || "Content providers"}</Verb>
+        )}
+        {selectedMinistry && canEditGroups && (
+          <Verb to={`/groups/${selectedMinistry.id}?tag=ministry`}>{Locale.label("plans.plansPage.editMinistry")}</Verb>
+        )}
+      </Verbs>
+
+      {showAdd && canEditGroups && (
+        <AddBlock title={Locale.label("plans.plansPage.addMinistry")}>
+          <GroupAdd updatedFunction={handleAddUpdated} tags="ministry" categoryName="Ministry" />
+        </AddBlock>
+      )}
+
+      {!selectedMinistry && (
+        <p style={{ color: "var(--text-muted)" }}>{Locale.label("plans.servingPage.showAllHint")}</p>
+      )}
+
+      {selectedMinistry && slice === "types" && <PlanTypeList ministry={selectedMinistry} />}
+      {selectedMinistry && slice === "teams" && <TeamList ministry={selectedMinistry} />}
+      {selectedMinistry && slice === "providers" && <ContentProviderAuthManager key={selectedMinistry.id} ministryId={selectedMinistry.id || ""} />}
+
+      {!showAdd && canEditGroups && (
+        <AddBlock title={Locale.label("plans.plansPage.addMinistry")}>
+          <Button onClick={handleShowAdd} sx={{ color: "var(--link)", fontWeight: 600, textTransform: "none" }}>
+            {Locale.label("plans.plansPage.addMinistry")}
+          </Button>
+        </AddBlock>
+      )}
+    </DirectoryPage>
   );
 };

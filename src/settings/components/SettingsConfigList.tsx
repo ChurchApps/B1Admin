@@ -1,8 +1,8 @@
 import React from "react";
-import { Box, Card, List, ListItemButton, Typography, alpha } from "@mui/material";
-import { ChevronRight as ChevronRightIcon } from "@mui/icons-material";
+import { Box, List, ListItemButton, Typography } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { CountChip } from "../../components/ui";
+import { CANDLE, DUST, INK, LINE } from "../plated";
 
 export interface ConfigSection {
   key: string;
@@ -17,51 +17,65 @@ interface Props {
   sections: ConfigSection[];
   selected: string;
   onSelect: (key: string) => void;
-  /** Prefix for each row's data-testid (defaults to "settings-section" for the ManageChurch pattern). */
   testIdPrefix?: string;
-  /** Overrides the header label above the list (defaults to "Configuration"). */
   headerLabel?: string;
+  primaryKeys?: string[];
 }
 
-export const SettingsConfigList: React.FC<Props> = ({ sections, selected, onSelect, testIdPrefix = "settings-section", headerLabel }) => (
-  <Card sx={{ borderRadius: 2, overflow: "hidden", border: "1px solid", borderColor: "grey.200" }}>
-    <Box sx={{ px: 2.5, py: 2, borderBottom: 1, borderColor: "divider" }}>
-      <Typography variant="overline" sx={{ fontWeight: 700, letterSpacing: 1, color: "text.secondary" }}>
-        {headerLabel || Locale.label("settings.landing.configuration")}
-      </Typography>
+export const SettingsConfigList: React.FC<Props> = ({ sections, selected, onSelect, testIdPrefix = "settings-section", headerLabel, primaryKeys }) => {
+  const primary = primaryKeys?.length ? sections.filter((s) => primaryKeys.includes(s.key)) : sections;
+  const more = primaryKeys?.length ? sections.filter((s) => !primaryKeys.includes(s.key)) : [];
+
+  const renderItem = (s: ConfigSection) => {
+    const isSelected = s.key === selected;
+    return (
+      <ListItemButton
+        key={s.key}
+        selected={isSelected}
+        onClick={() => onSelect(s.key)}
+        data-testid={`${testIdPrefix}-${s.key}`}
+        sx={{
+          px: 0,
+          py: 1.1,
+          gap: 1,
+          borderLeft: "2px solid",
+          borderColor: isSelected ? CANDLE : "transparent",
+          pl: 1.5,
+          "&.Mui-selected": { backgroundColor: "transparent" },
+          "&.Mui-selected:hover": { backgroundColor: "transparent" },
+          "&:hover": { backgroundColor: "transparent" }
+        }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography variant="body2" sx={{ fontWeight: isSelected ? 650 : 500, color: isSelected ? CANDLE : INK, lineHeight: 1.2 }}>{s.title}</Typography>
+            {s.count != null && s.count > 0 && <CountChip count={s.count} />}
+          </Box>
+          <Typography variant="caption" sx={{ color: DUST, display: "block" }} noWrap>{s.subtitle}</Typography>
+        </Box>
+      </ListItemButton>
+    );
+  };
+
+  return (
+    <Box>
+      {headerLabel && (
+        <Typography sx={{ fontSize: "0.72rem", fontWeight: 650, letterSpacing: "0.07em", textTransform: "uppercase", color: DUST, mb: 1 }}>
+          {headerLabel}
+        </Typography>
+      )}
+      <List disablePadding>
+        {primary.map(renderItem)}
+      </List>
+      {more.length > 0 && (
+        <Box sx={{ mt: 2, pt: 1.5, borderTop: `1px solid ${LINE}` }}>
+          <Typography sx={{ fontSize: "0.72rem", fontWeight: 650, letterSpacing: "0.07em", textTransform: "uppercase", color: DUST, mb: 0.5 }}>
+            {Locale.label("common.more", "More")}
+          </Typography>
+          <List disablePadding>
+            {more.map(renderItem)}
+          </List>
+        </Box>
+      )}
     </Box>
-    <List disablePadding>
-      {sections.map((s) => {
-        const isSelected = s.key === selected;
-        return (
-          <ListItemButton
-            key={s.key}
-            selected={isSelected}
-            onClick={() => onSelect(s.key)}
-            data-testid={`${testIdPrefix}-${s.key}`}
-            sx={{
-              px: 2.5,
-              py: 1.75,
-              gap: 1.5,
-              borderLeft: "3px solid",
-              borderColor: isSelected ? "primary.main" : "transparent",
-              "&.Mui-selected": { backgroundColor: (t) => alpha(t.palette.primary.main, 0.06) },
-              "&.Mui-selected:hover": { backgroundColor: (t) => alpha(t.palette.primary.main, 0.1) }
-            }}>
-            <Box sx={{ width: 40, height: 40, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", bgcolor: (t) => alpha(t.palette[s.color].main, 0.1), color: `${s.color}.main`, flexShrink: 0 }}>
-              {s.icon}
-            </Box>
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>{s.title}</Typography>
-                {s.count != null && s.count > 0 && <CountChip count={s.count} />}
-              </Box>
-              <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>{s.subtitle}</Typography>
-            </Box>
-            <ChevronRightIcon sx={{ color: "text.disabled" }} />
-          </ListItemButton>
-        );
-      })}
-    </List>
-  </Card>
-);
+  );
+};

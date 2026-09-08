@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Box, Card, Stack, Typography } from "@mui/material";
-import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
+import { Box } from "@mui/material";
+import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { StylesManager, SiteWidgetsEdit, RedirectsEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
-import { Palette as PaletteIcon } from "@mui/icons-material";
 import { PermissionDenied } from "../components";
+import { Plate, Record, h1Sx, ledeSx, SectionLabel } from "./plated";
 
 export const AppearancePage = () => {
   const { siteId, setSiteId, sites, selectedSite, reloadSites } = useSiteSelection();
@@ -12,34 +12,30 @@ export const AppearancePage = () => {
   if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   return (
-    <>
-      <PageHeader
-        icon={<PaletteIcon />}
-        title={Locale.label("site.appearancePage.title")}
-        subtitle={Locale.label("site.appearancePage.subtitle")}
-      >
-        <SiteSwitcher siteId={siteId} onChange={setSiteId} sites={sites} onManage={() => setShowSites(true)} />
-      </PageHeader>
+    <Plate>
       {showSites && (
         <SitesDialog open={showSites} onClose={() => setShowSites(false)} sites={sites} siteId={siteId} onChanged={reloadSites} onSelectSite={setSiteId} />
       )}
-      <Box sx={{ p: 3 }}>
-        {UserHelper.currentUserChurch && <SiteWidgetsEdit />}
-        {UserHelper.currentUserChurch && <RedirectsEdit />}
-        {UserHelper.currentUserChurch && (
-          <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }}>
-            <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <PaletteIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("site.appearancePage.themeGroup")}</Typography>
-              </Stack>
+      <Record
+        who={(
+          <>
+            <Box component="h1" sx={h1Sx}>{Locale.label("site.appearancePage.title")}</Box>
+            <Box sx={ledeSx}>{Locale.label("site.appearancePage.subtitle")}</Box>
+            <Box sx={{ mt: 2 }}>
+              <SiteSwitcher siteId={siteId} onChange={setSiteId} sites={sites} onManage={() => setShowSites(true)} />
             </Box>
-            <Box sx={{ p: 2 }}>
-              <StylesManager siteId={siteId} selectedSite={selectedSite} />
-            </Box>
-          </Card>
+          </>
         )}
-      </Box>
-    </>
+        rest={(
+          <>
+            <SectionLabel sx={{ mt: 0 }}>{Locale.label("site.appearancePage.themeGroup")}</SectionLabel>
+            {UserHelper.currentUserChurch && <StylesManager siteId={siteId} selectedSite={selectedSite} />}
+            <SectionLabel>{Locale.label("common.more", "More")}</SectionLabel>
+            {UserHelper.currentUserChurch && <SiteWidgetsEdit />}
+            {UserHelper.currentUserChurch && <RedirectsEdit />}
+          </>
+        )}
+      />
+    </Plate>
   );
 };

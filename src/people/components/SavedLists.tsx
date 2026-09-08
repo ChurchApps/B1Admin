@@ -28,9 +28,11 @@ export interface ListInterface {
 }
 
 interface Props {
-  // Loads the selected list's saved query; the search then re-runs live.
   onSelect: (list: ListInterface) => void;
   canManage: boolean;
+  variant?: "box" | "pills";
+  selectedId?: string;
+  onClear?: () => void;
 }
 
 export const SavedLists = (props: Props) => {
@@ -65,60 +67,8 @@ export const SavedLists = (props: Props) => {
     return { grouped, categories };
   }, [lists]);
 
-  if (lists.length === 0) {
-    return (
-      <DisplayBox headerText={Locale.label("people.lists.title")} headerIcon="playlist_play">
-        <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
-          {Locale.label("people.lists.empty")}
-        </Typography>
-      </DisplayBox>
-    );
-  }
-
-  return (
-    <DisplayBox headerText={Locale.label("people.lists.title")} headerIcon="playlist_play">
-      <Stack spacing={1.5}>
-        {categories.map((category) => (
-          <Box key={category || "_uncategorized"}>
-            {category && (
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.4 }}>
-                {category}
-              </Typography>
-            )}
-            <Stack spacing={0.5} sx={{ mt: category ? 0.5 : 0 }}>
-              {grouped[category].map((list) => (
-                <Stack key={list.id} direction="row" alignItems="center" spacing={0.5} data-testid="saved-list-row">
-                  <Button
-                    fullWidth
-                    onClick={() => props.onSelect(list)}
-                    startIcon={<ListIcon fontSize="small" />}
-                    sx={{ justifyContent: "flex-start", textTransform: "none", textAlign: "left", flex: 1, minWidth: 0 }}
-                  >
-                    <Box sx={{ minWidth: 0 }}>
-                      <Stack direction="row" alignItems="center" spacing={0.5}>
-                        <Typography variant="body2" noWrap sx={{ fontWeight: 500 }}>{list.name}</Typography>
-                        {list.scope === "private" && <LockIcon sx={{ fontSize: 14, color: "text.secondary" }} />}
-                      </Stack>
-                      {list.createdByPersonName && (
-                        <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
-                          {Locale.label("people.lists.createdBy").replace("{name}", list.createdByPersonName)}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Button>
-                  {props.canManage && (
-                    <>
-                      <AppIconButton label={Locale.label("people.lists.settings")} icon={<SettingsIcon />} onClick={() => setSettingsTarget({ ...list })} />
-                      <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
-                    </>
-                  )}
-                </Stack>
-              ))}
-            </Stack>
-          </Box>
-        ))}
-      </Stack>
-
+  const dialogs = (
+    <>
       <Dialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
         <DialogTitle>{Locale.label("people.lists.delete")}</DialogTitle>
         <DialogContent>
@@ -174,6 +124,88 @@ export const SavedLists = (props: Props) => {
           <Button onClick={handleSaveSettings} variant="contained" disabled={!settingsTarget?.name?.trim()} data-testid="list-settings-save">{Locale.label("common.save")}</Button>
         </DialogActions>
       </Dialog>
+    </>
+  );
+
+  if (props.variant === "pills") {
+    return (
+      <>
+        <div className="lists">
+          <button type="button" className={!props.selectedId ? "on" : ""} onClick={() => props.onClear?.()}>Everyone</button>
+          {lists.map((list) => (
+            <span key={list.id} data-testid="saved-list-row" style={{ display: "inline-flex", alignItems: "center", gap: 2 }}>
+              <button type="button" className={props.selectedId === list.id ? "on" : ""} onClick={() => props.onSelect(list)}>
+                {list.name}
+                {list.scope === "private" ? " ·" : ""}
+              </button>
+              {props.canManage && props.selectedId === list.id && (
+                <span className="list-manage">
+                  <AppIconButton label={Locale.label("people.lists.settings")} icon={<SettingsIcon />} onClick={() => setSettingsTarget({ ...list })} />
+                  <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
+        {dialogs}
+      </>
+    );
+  }
+
+  if (lists.length === 0) {
+    return (
+      <DisplayBox headerText={Locale.label("people.lists.title")} headerIcon="playlist_play">
+        <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
+          {Locale.label("people.lists.empty")}
+        </Typography>
+      </DisplayBox>
+    );
+  }
+
+  return (
+    <DisplayBox headerText={Locale.label("people.lists.title")} headerIcon="playlist_play">
+      <Stack spacing={1.5}>
+        {categories.map((category) => (
+          <Box key={category || "_uncategorized"}>
+            {category && (
+              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.4 }}>
+                {category}
+              </Typography>
+            )}
+            <Stack spacing={0.5} sx={{ mt: category ? 0.5 : 0 }}>
+              {grouped[category].map((list) => (
+                <Stack key={list.id} direction="row" alignItems="center" spacing={0.5} data-testid="saved-list-row">
+                  <Button
+                    fullWidth
+                    onClick={() => props.onSelect(list)}
+                    startIcon={<ListIcon fontSize="small" />}
+                    sx={{ justifyContent: "flex-start", textTransform: "none", textAlign: "left", flex: 1, minWidth: 0 }}
+                  >
+                    <Box sx={{ minWidth: 0 }}>
+                      <Stack direction="row" alignItems="center" spacing={0.5}>
+                        <Typography variant="body2" noWrap sx={{ fontWeight: 500 }}>{list.name}</Typography>
+                        {list.scope === "private" && <LockIcon sx={{ fontSize: 14, color: "text.secondary" }} />}
+                      </Stack>
+                      {list.createdByPersonName && (
+                        <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
+                          {Locale.label("people.lists.createdBy").replace("{name}", list.createdByPersonName)}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Button>
+                  {props.canManage && (
+                    <>
+                      <AppIconButton label={Locale.label("people.lists.settings")} icon={<SettingsIcon />} onClick={() => setSettingsTarget({ ...list })} />
+                      <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
+                    </>
+                  )}
+                </Stack>
+              ))}
+            </Stack>
+          </Box>
+        ))}
+      </Stack>
+      {dialogs}
     </DisplayBox>
   );
 };

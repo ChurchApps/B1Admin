@@ -1,14 +1,12 @@
 import React from "react";
-import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
-import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon, GridOn as GridOnIcon } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
 import { Locale, Loading } from "@churchapps/apphelper";
-import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { PlanTypeEdit } from "./PlanTypeEdit";
-import { CountChip, EmptyState } from "../../components/ui";
 import { Link } from "react-router-dom";
+import { AddBlock, SectionLabel, Verb, platedColor } from "../plated";
 
 interface Props {
   ministry: GroupInterface;
@@ -57,94 +55,37 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <AssignmentIcon sx={{ color: "primary.main", fontSize: 20 }} />
-          <Typography variant="h6">
-            {Locale.label("plans.planTypeList.planTypes")}
-          </Typography>
-          {types.length > 0 && <CountChip count={types.length} />}
-        </Stack>
-        {canEdit && types.length > 0 && (
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleAdd}
-            size="small">
+      <SectionLabel sx={{ mt: 0 }}>{Locale.label("plans.planTypeList.planTypes")}</SectionLabel>
+      {types.length === 0 && (
+        <p style={{ color: platedColor.mute }}>{Locale.label("plans.planTypeList.noPlanTypes")}</p>
+      )}
+      {types.length > 0 && (
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <tbody>
+            {types.map((planType) => (
+              <tr key={planType.id} style={{ borderTop: `1px solid ${platedColor.line}` }}>
+                <td style={{ padding: "11px 0" }}>
+                  <Link to={`/serving/planTypes/${planType.id}`} style={{ color: platedColor.ink, fontWeight: 650, fontSize: "1.12rem", textDecoration: "none" }}>
+                    {planType.name}
+                  </Link>
+                </td>
+                <td style={{ padding: "11px 0", textAlign: "right" }}>
+                  <span style={{ display: "inline-flex", gap: 14 }}>
+                    <Verb to={`/serving/overview?planTypeId=${planType.id}&ministryId=${ministry.id}`}>{Locale.label("plans.planTypePage.overview")}</Verb>
+                    {canEdit && <Verb onClick={() => handleEdit(planType)}>{Locale.label("common.edit")}</Verb>}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {canEdit && (
+        <AddBlock title={Locale.label("plans.planTypeList.addPlanType")}>
+          <Button onClick={handleAdd} sx={{ color: platedColor.accent, fontWeight: 600, textTransform: "none" }}>
             {Locale.label("plans.planTypeList.addPlanType")}
           </Button>
-        )}
-      </Stack>
-
-      {types.length === 0 ? (
-        <EmptyState
-          icon={<AssignmentIcon />}
-          title={Locale.label("plans.planTypeList.noPlanTypes")}
-          description={Locale.label("plans.planTypeList.createPlanTypes")}
-          action={
-            canEdit && (
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={handleAdd}>
-                {Locale.label("plans.planTypeList.createPlanType")}
-              </Button>
-            )
-          }
-        />
-      ) : (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 600, color: "text.primary" }}>{Locale.label("common.name")}</TableCell>
-                <TableCell align="right" sx={{ width: 50 }}></TableCell>
-                {canEdit && <TableCell align="right" sx={{ width: 50 }}></TableCell>}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {types.map((planType) => (
-                <TableRow
-                  key={planType.id}
-                  hover
-                  sx={{ "&:last-child td": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography
-                      component={Link}
-                      to={`/serving/planTypes/${planType.id}`}
-                      sx={{
-                        textDecoration: "none",
-                        color: "var(--link)",
-                        fontWeight: 500,
-                        "&:hover": { textDecoration: "underline" }
-                      }}>
-                      {planType.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right" className="rowActions">
-                    <AppIconButton
-                      label={Locale.label("plans.planTypePage.overview")}
-                      icon={<GridOnIcon />}
-                      component={Link}
-                      to={`/serving/overview?planTypeId=${planType.id}&ministryId=${ministry.id}`} />
-                  </TableCell>
-                  {canEdit && (
-                    <TableCell align="right" className="rowActions">
-                      <AppIconButton
-                        label={Locale.label("common.edit")}
-                        icon={<EditIcon />}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleEdit(planType);
-                        }} />
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
+        </AddBlock>
       )}
     </Box>
   );

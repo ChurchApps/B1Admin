@@ -3,18 +3,18 @@ import { ApiHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { ArrayHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
-import { PageHeader } from "@churchapps/apphelper";
 import { ImageEditor } from "@churchapps/apphelper";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
-import { Alert, Box, Button, Card, CardContent, Grid, IconButton, InputAdornment, Menu, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
-import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, ContentCopy as ContentCopyIcon, Edit as EditIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
+import { Alert, Box, Button, IconButton, InputAdornment, Menu, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, ContentCopy as ContentCopyIcon, Edit as EditIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { SermonEdit } from "./SermonEdit";
 import { PlaylistEdit } from "./PlaylistEdit";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip, HeaderPrimaryButton } from "../../components/ui";
 import { hoverRowSx } from "../../components/ui/tableStyles";
+import { AddBlock, SectionLabel, Verb, plainTableSx } from "./plate";
+import { SermonChrome } from "./SermonChrome";
 
 export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
@@ -72,14 +72,7 @@ export const Sermons = () => {
 
   const getActionButtons = () => (
     <>
-      <HeaderPrimaryButton
-        startIcon={<AddIcon />}
-        endIcon={<ArrowDropDownIcon />}
-        onClick={handleMenuClick}
-        data-testid="add-sermon-button"
-      >
-        {Locale.label("sermons.addSermon")}
-      </HeaderPrimaryButton>
+      <Verb onClick={handleMenuClick} testId="add-sermon-button">{Locale.label("sermons.addSermon")}</Verb>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -251,7 +244,7 @@ export const Sermons = () => {
     if (isLoading) return <Loading data-testid="sermons-loading" />;
     else {
       return (
-        <Table sx={{ minWidth: 650 }}>
+        <Table sx={plainTableSx}>
           <TableHead>
             <TableRow>
               <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.playlist")}</TableCell>
@@ -340,175 +333,113 @@ export const Sermons = () => {
 
   return (
     <>
-      <Box sx={{ mb: 3 }}>
-        <PageHeader
-          icon={<LiveTvIcon />}
-          title={Locale.label("sermons.title")}
-          subtitle={Locale.label("sermons.subtitle")}
-        >
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              flexShrink: 0,
-              justifyContent: { xs: "flex-start", md: "flex-end" },
-              width: { xs: "100%", md: "auto" }
+      <SermonChrome selected="sermons" extraVerbs={getActionButtons()}>
+        {currentSermon !== null && (
+          <Box sx={{ mb: 3 }}>
+            <SermonEdit currentSermon={currentSermon} updatedFunction={handleUpdated} />
+          </Box>
+        )}
+
+        {sermons.length > 0 && (
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
+            <SectionLabel>{Locale.label("sermons.title")}</SectionLabel>
+            <AppIconButton
+              label={Locale.label("common.search")}
+              icon={<SearchIcon />}
+              tone={showSermonSearch ? "card" : "default"}
+              onClick={() => setShowSermonSearch(!showSermonSearch)}
+              data-testid="sermon-search-button"
+            />
+          </Box>
+        )}
+
+        {sermons.length > 0 && showSermonSearch && (
+          <TextField
+            fullWidth
+            size="small"
+            autoFocus
+            variant="standard"
+            placeholder={Locale.label("sermons.searchPlaceholder")}
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon fontSize="small" />
+                </InputAdornment>
+              )
             }}
-          >
-            {getActionButtons()}
-          </Stack>
-        </PageHeader>
-      </Box>
+            sx={{ mb: 2 }}
+          />
+        )}
 
-      {/* Content: sermons (2/3) on the left, playlists (1/3) on the right */}
-      <Box sx={{ px: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            {currentSermon !== null && (
-              <Box sx={{ mb: 3 }}>
-                <SermonEdit currentSermon={currentSermon} updatedFunction={handleUpdated} />
-              </Box>
-            )}
-            <Card sx={{
-              borderRadius: 2,
-              border: "1px solid",
-              borderColor: "divider"
-            }}>
-              {/* Search Bar */}
-              {sermons.length > 0 && (
-                <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <LiveTvIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">
-                      {Locale.label("sermons.title")}
-                    </Typography>
-                    {filteredSermons.length > 0 && <CountChip count={filteredSermons.length} />}
-                  </Stack>
-                  <AppIconButton
-                    label={Locale.label("common.search")}
-                    icon={<SearchIcon />}
-                    tone={showSermonSearch ? "card" : "default"}
-                    onClick={() => setShowSermonSearch(!showSermonSearch)}
-                    data-testid="sermon-search-button"
-                  />
-                </Box>
-              )}
+        {getTable()}
 
-              {sermons.length > 0 && showSermonSearch && (
-                <Box sx={{ p: 1.5, borderBottom: 1, borderColor: "divider" }}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    autoFocus
-                    placeholder={Locale.label("sermons.searchPlaceholder")}
-                    value={searchTerm}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon fontSize="small" />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Box>
-              )}
+        {podcastFeedUrl && (
+          <Box sx={{ mt: 2 }} data-testid="podcast-feed-url">
+            <Typography variant="subtitle2">{Locale.label("sermons.podcast.title")}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              <code style={{ wordBreak: "break-all" }}>{podcastFeedUrl}</code>
+              <IconButton size="small" onClick={copyFeedUrl} aria-label={Locale.label("sermons.podcast.copyFeedUrl")} data-testid="copy-podcast-feed-url" sx={{ ml: 0.5, verticalAlign: "middle" }}>
+                <ContentCopyIcon fontSize="small" />
+              </IconButton>
+            </Typography>
+            <Typography variant="caption" color="text.secondary">{Locale.label("sermons.podcast.hint")}</Typography>
+          </Box>
+        )}
 
-              <CardContent sx={{ p: 0 }}>
-                {getTable()}
-              </CardContent>
-            </Card>
-            {podcastFeedUrl && (
-              <Box sx={{ mt: 2 }} data-testid="podcast-feed-url">
-                <Typography variant="subtitle2">{Locale.label("sermons.podcast.title")}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <code style={{ wordBreak: "break-all" }}>{podcastFeedUrl}</code>
-                  <IconButton size="small" onClick={copyFeedUrl} aria-label={Locale.label("sermons.podcast.copyFeedUrl")} data-testid="copy-podcast-feed-url" sx={{ ml: 0.5, verticalAlign: "middle" }}>
-                    <ContentCopyIcon fontSize="small" />
-                  </IconButton>
-                </Typography>
-                <Typography variant="caption" color="text.secondary">{Locale.label("sermons.podcast.hint")}</Typography>
-              </Box>
-            )}
-          </Grid>
+        <SectionLabel>{Locale.label("sermons.playlists.title")}</SectionLabel>
+        {currentPlaylist !== null && (
+          <Box sx={{ mb: 3 }}>
+            {imageEditor}
+            <PlaylistEdit
+              currentPlaylist={currentPlaylist}
+              updatedFunction={handlePlaylistUpdated}
+              showPhotoEditor={showPhotoEditor}
+              updatedPhoto={(photoType === "playlist" && photoUrl) || null}
+            />
+          </Box>
+        )}
+        <Box data-testid="playlists-panel">
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
+            <Typography variant="body2" color="text.secondary">{playlists.length}</Typography>
+            <Stack direction="row" spacing={2}>
+              <Verb onClick={() => setShowPlaylistSearch(!showPlaylistSearch)} testId="playlist-search-button">{Locale.label("common.search")}</Verb>
+              <Verb onClick={handleAddPlaylist} testId="add-playlist-button">{Locale.label("common.add")}</Verb>
+            </Stack>
+          </Box>
+          {showPlaylistSearch && (
+            <TextField
+              fullWidth
+              size="small"
+              autoFocus
+              variant="standard"
+              placeholder={Locale.label("sermons.playlists.searchPlaceholder")}
+              value={playlistSearch}
+              onChange={(e) => setPlaylistSearch(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon fontSize="small" />
+                  </InputAdornment>
+                )
+              }}
+              sx={{ mb: 2 }}
+            />
+          )}
+          {isLoading ? <Loading /> : (
+            <Table size="small" sx={plainTableSx}>
+              <TableBody>
+                {getPlaylistRows()}
+              </TableBody>
+            </Table>
+          )}
+        </Box>
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            {currentPlaylist !== null && (
-              <Box sx={{ mb: 3 }}>
-                {imageEditor}
-                <PlaylistEdit
-                  currentPlaylist={currentPlaylist}
-                  updatedFunction={handlePlaylistUpdated}
-                  showPhotoEditor={showPhotoEditor}
-                  updatedPhoto={(photoType === "playlist" && photoUrl) || null}
-                />
-              </Box>
-            )}
-            <Card data-testid="playlists-panel" sx={{
-              borderRadius: 2,
-              border: "1px solid",
-              borderColor: "divider"
-            }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <VideoLibraryIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                  <Typography variant="h6">
-                    {Locale.label("sermons.playlists.title")}
-                  </Typography>
-                  {playlists.length > 0 && <CountChip count={playlists.length} />}
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
-                  <AppIconButton
-                    label={Locale.label("common.search")}
-                    icon={<SearchIcon />}
-                    tone={showPlaylistSearch ? "card" : "default"}
-                    onClick={() => setShowPlaylistSearch(!showPlaylistSearch)}
-                    data-testid="playlist-search-button"
-                  />
-                  <AppIconButton
-                    intent="add"
-                    label={Locale.label("common.add")}
-                    icon={<AddIcon />}
-                    tone="card"
-                    onClick={handleAddPlaylist}
-                    data-testid="add-playlist-button"
-                  />
-                </Stack>
-              </Box>
-
-              {showPlaylistSearch && (
-                <Box sx={{ p: 1.5, borderBottom: 1, borderColor: "divider" }}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    autoFocus
-                    placeholder={Locale.label("sermons.playlists.searchPlaceholder")}
-                    value={playlistSearch}
-                    onChange={(e) => setPlaylistSearch(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon fontSize="small" />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </Box>
-              )}
-
-              <CardContent sx={{ p: 0 }}>
-                {isLoading ? <Loading /> : (
-                  <Table size="small">
-                    <TableBody>
-                      {getPlaylistRows()}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
+        <AddBlock>
+          <Verb onClick={() => handleAdd(false)}>{Locale.label("sermons.addFirstSermon")}</Verb>
+        </AddBlock>
+      </SermonChrome>
       <Snackbar open={copySnackbar} autoHideDuration={2500} onClose={() => setCopySnackbar(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert severity="success" variant="filled" onClose={() => setCopySnackbar(false)}>{Locale.label("sermons.podcast.feedUrlCopied")}</Alert>
       </Snackbar>

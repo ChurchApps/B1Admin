@@ -1,0 +1,448 @@
+.og-page {
+  width: min(840px, calc(100% - 64px));
+  margin: 24px auto 96px;
+  padding: 32px 40px 64px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  color: #333;
+}
+
+.og-page h1,
+.og-who h1 {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0;
+  color: #333;
+}
+
+.og-lede {
+  color: #666;
+  margin: 8px 0 28px;
+}
+
+.og-head-verbs {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+}
+
+.og-head-verbs a,
+.og-head-verbs button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1565c0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.og-lists {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.og-lists a,
+.og-lists button,
+.og-lists label {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #333;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.og-lists a.on,
+.og-lists button.on,
+.og-lists label.on {
+  background: #1565c0;
+  color: #fff;
+  border-color: #1565c0;
+}
+
+.og-lists input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.og-find {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  padding: 6px 0 12px;
+  outline: none;
+  margin-bottom: 22px;
+}
+
+.og-find:focus {
+  border-bottom-color: #1565c0;
+}
+
+.og-find::placeholder {
+  color: #999;
+}
+
+.og-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.og-page thead th {
+  text-align: left;
+  color: #666;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0 12px 8px 0;
+}
+
+.og-page td {
+  padding: 11px 12px 11px 0;
+  border-top: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.og-page td:last-child,
+.og-page th:last-child {
+  text-align: right;
+  padding-right: 0;
+}
+
+.og-page a {
+  color: #1565c0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.og-name {
+  font-size: 1.12rem;
+  font-weight: 650;
+  color: #333;
+}
+
+.og-page tbody tr:hover .og-name {
+  color: #1565c0;
+}
+
+.og-who-line {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.og-mark {
+  color: #666;
+  font-size: 0.88rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.og-add {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #ddd;
+}
+
+.og-add > button {
+  background: #1565c0;
+  color: #fff;
+  border: 0;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.og-record {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.2fr);
+  background: #fff;
+  color: #333;
+  min-height: calc(100vh - 64px);
+}
+
+.og-who {
+  padding: 36px 36px 72px;
+  border-right: 1px solid #ddd;
+  position: relative;
+}
+
+.og-who::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 36px;
+  bottom: 72px;
+  width: 2px;
+  background: #1565c0;
+}
+
+.og-photo {
+  width: 148px;
+  height: 148px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 18px;
+  background: #cfd4dc;
+}
+
+.og-ini {
+  width: 148px;
+  height: 148px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #cfd4dc;
+  color: #1565c0;
+  font-size: 3.4rem;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.og-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0 16px;
+}
+
+.og-chip {
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  color: #666;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.og-chip .MuiSvgIcon-root {
+  font-size: 16px;
+}
+
+.og-facts {
+  color: #666;
+  margin: 8px 0 16px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.og-meet {
+  font-size: 1.55rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  display: block;
+  color: #1565c0;
+}
+
+.og-addr {
+  color: #666;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 8px 0 4px;
+}
+
+.og-about {
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 38em;
+  margin: 12px 0 0;
+}
+
+.og-verbs {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 16px 0 8px;
+}
+
+.og-verbs button,
+.og-verbs a {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1565c0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.og-rest {
+  padding: 36px 40px 80px;
+  display: grid;
+  gap: 26px;
+  align-content: start;
+}
+
+.og-rest table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.og-rest h3,
+.og-who h3,
+.og-page h3 {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.og-back {
+  background: none;
+  border: 0;
+  color: #1565c0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.og-years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 18px;
+}
+
+.og-years button {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #333;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.og-years button.on {
+  background: #1565c0;
+  color: #fff;
+  border-color: #1565c0;
+}
+
+.og-muted {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.og-empty {
+  color: #666;
+  text-align: center;
+  padding: 32px 0;
+}
+
+@media (max-width: 900px) {
+  .og-record {
+    grid-template-columns: 1fr;
+  }
+
+  .og-who {
+    border-right: 0;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+@media (max-width: 640px) {
+  .og-page {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    padding: 24px 16px 80px;
+    box-shadow: none;
+  }
+
+  .og-page h1,
+  .og-who h1 {
+    font-size: 1.8rem;
+  }
+
+  .og-lists {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .og-find {
+    font-size: 1.25rem;
+  }
+
+  .og-mark {
+    display: block;
+    text-align: left;
+    padding-top: 0;
+  }
+
+  .og-who,
+  .og-rest {
+    padding: 20px 16px 40px;
+  }
+
+  .og-who::before {
+    top: 20px;
+    bottom: 40px;
+  }
+
+  .og-id-row {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 14px;
+    align-items: start;
+    margin-bottom: 14px;
+  }
+
+  .og-id-row .og-photo,
+  .og-id-row .og-ini {
+    width: 88px;
+    height: 88px;
+    margin-bottom: 0;
+    font-size: 2.2rem;
+  }
+
+  .og-meet {
+    font-size: 1.35rem;
+  }
+
+  .og-years {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

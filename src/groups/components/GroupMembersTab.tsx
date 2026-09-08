@@ -1,8 +1,7 @@
 import React from "react";
 
 import { type GroupInterface, type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Grid } from "@mui/material";
+import { PersonHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { GroupMembers } from "./GroupMembers";
 import { PersonAddAdvanced } from "../../people/components/PersonAddAdvanced";
 
@@ -20,16 +19,11 @@ export const GroupMembersTab = (props: Props) => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <GroupMembers group={props.group} addedPerson={addedPerson} addedCallback={handleAddedCallback} />
-        </Grid>
-        {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
-          <Grid size={{ xs: 12, md: 4 }}>
-            <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
-          </Grid>
-        )}
-      </Grid>
+      <h3 style={{ marginTop: 0 }}>{Locale.label("groups.groupNavigation.members")}</h3>
+      <GroupMembers group={props.group} addedPerson={addedPerson} addedCallback={handleAddedCallback} />
+      {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
+        <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
+      )}
     </>
   );
 };

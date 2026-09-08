@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Alert, Box } from "@mui/material";
-import { Add as AddIcon, PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
+import { Typography } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
+import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { AppTabs, AppEdit } from "../settings/components";
-import { HeaderPrimaryButton } from "../components/ui";
 import { useRequirePermission } from "../hooks";
+import { AddBlock, Verb } from "./components/plate";
+import { MobileChrome } from "./components/MobileChrome";
 
 const ICON_FOR_LINK_TYPE: Record<string, string> = {
   bible: "menu_book",
@@ -71,36 +71,30 @@ export const MobileAppSettingsPage = () => {
   if (denied) return denied;
 
   return (
-    <>
-      <PageHeader
-        icon={<PhoneIphoneIcon />}
-        title={Locale.label("settings.mobileAppSettings.title")}
-        subtitle={Locale.label("settings.mobileAppSettings.subtitle")}
-      >
-        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleAddTab}>
-          {Locale.label("settings.mobileAppSettings.addTab")}
-        </HeaderPrimaryButton>
-      </PageHeader>
+    <MobileChrome
+      selected="navigation"
+      extraVerbs={<Verb onClick={handleAddTab}>{Locale.label("settings.mobileAppSettings.addTab")}</Verb>}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("settings.mobileAppSettings.tabBarNote")}</Typography>
 
-      <Box sx={{ p: 3 }}>
-        <Alert severity="info" sx={{ mb: 3 }}>{Locale.label("settings.mobileAppSettings.tabBarNote")}</Alert>
+      {selectedTab && (
+        <AppEdit
+          currentTab={selectedTab}
+          updatedFunction={handleTabsUpdated}
+        />
+      )}
 
-        {selectedTab && (
-          <Box sx={{ mb: 3 }}>
-            <AppEdit
-              currentTab={selectedTab}
-              updatedFunction={handleTabsUpdated}
-            />
-          </Box>
-        )}
+      {UserHelper.currentUserChurch && (
+        <AppTabs
+          onSelected={(tab: LinkInterface) => setSelectedTab(tab)}
+          refreshKey={refreshKey}
+        />
+      )}
 
-        {UserHelper.currentUserChurch && (
-          <AppTabs
-            onSelected={(tab: LinkInterface) => setSelectedTab(tab)}
-            refreshKey={refreshKey}
-          />
-        )}
-      </Box>
-    </>
+      {!selectedTab && (
+        <AddBlock>
+          <Verb onClick={handleAddTab}>{Locale.label("settings.mobileAppSettings.addTab")}</Verb>
+        </AddBlock>
+      )}
+    </MobileChrome>
   );
 };

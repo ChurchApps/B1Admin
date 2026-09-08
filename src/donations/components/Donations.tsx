@@ -1,11 +1,12 @@
 import React from "react";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
-import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Chip } from "@mui/material";
-import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon, Undo as RefundedIcon } from "@mui/icons-material";
-import { IconText, EmptyState } from "../../components";
+import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Chip } from "@mui/material";
+import { Edit as EditIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon, Undo as RefundedIcon } from "@mui/icons-material";
+import { EmptyState } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CardWithHeader, ExportButton, hoverRowSx } from "../../components/ui";
+import { ExportButton, hoverRowSx } from "../../components/ui";
+import { VerbRow, plainTableSx } from "./plate";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -79,10 +80,10 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     const donationIds = donations.map((d) => d.id || "");
     const qboRows = buildQboJournalRows(batch, donationIds, fundDonations, funds);
     return (
-      <Stack direction="row" spacing={1}>
+      <VerbRow>
         <ExportButton data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />
         {qboRows.length > 1 && <ExportButton data={qboRows} filename="qbo-journal-entry.csv" customHeaders={QBO_HEADERS} text={Locale.label("donations.donations.exportQbo")} />}
-      </Stack>
+      </VerbRow>
     );
   }, [funds, donations, fundDonations, batch]);
 
@@ -153,36 +154,19 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       rows.push(
         <TableRow key={i} sx={{ ...hoverRowSx, opacity: isPending || isRefunded ? 0.8 : 1 }} data-testid={"donation-row-" + d.id}>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.main" variant="body2">
-                <span style={{ fontWeight: 500, color: "text.primary" }}>{[d.method, d.methodDetails].filter(Boolean).join(" - ") || "—"}</span>
-              </IconText>
-              {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" />}
-              {isRefunded && <Chip icon={<RefundedIcon />} label={Locale.label("donations.donations.refunded")} size="small" color="default" variant="outlined" />}
-            </Stack>
+            {[d.method, d.methodDetails].filter(Boolean).join(" - ") || "—"}
+            {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" sx={{ ml: 1 }} />}
+            {isRefunded && <Chip icon={<RefundedIcon />} label={Locale.label("donations.donations.refunded")} size="small" color="default" variant="outlined" sx={{ ml: 1 }} />}
           </TableCell>
+          <TableCell>{d.person?.name.display || Locale.label("donations.donations.anon")}</TableCell>
+          <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>
           <TableCell>
-            <IconText icon={<PersonIcon />} iconSize={18} iconColor="text.secondary" variant="body2">
-              {d.person?.name.display || Locale.label("donations.donations.anon")}
-            </IconText>
-          </TableCell>
-          <TableCell>
-            <IconText icon={<DateIcon />} iconSize={18} iconColor="text.secondary" variant="body2">
-              {d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}
-            </IconText>
-          </TableCell>
-          <TableCell>
-            <Typography
-              variant="body2"
-              title={d.notes || ""}
-              sx={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "text.secondary" }}>
+            <Typography title={d.notes || ""} sx={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "var(--text-muted)", fontSize: "0.92rem" }}>
               {d.notes || ""}
             </Typography>
           </TableCell>
-          <TableCell align="right">
-            <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : isRefunded ? "text.disabled" : "success.main", textDecoration: isRefunded ? "line-through" : undefined }}>
-              {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
-            </Typography>
+          <TableCell className="amt" sx={{ fontWeight: 600, color: isPending ? "warning.main" : isRefunded ? "var(--text-muted)" : "success.main", textDecoration: isRefunded ? "line-through" : undefined }}>
+            {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
           </TableCell>
           {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}
         </TableRow>
@@ -190,23 +174,12 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     }
 
     rows.push(
-      <TableRow key="total" sx={{ borderTop: 2, backgroundColor: "grey.50" }}>
-        <TableCell sx={{ fontWeight: "bold", fontSize: 15 }}>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "primary.main", fontSize: 20 }}>calculate</Icon>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {Locale.label("donations.donations.total")}
-            </Typography>
-          </Stack>
-        </TableCell>
+      <TableRow key="total">
+        <TableCell sx={{ fontWeight: 600 }}>{Locale.label("donations.donations.total")}</TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
-        <TableCell align="right">
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "success.main" }}>
-            {CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}
-          </Typography>
-        </TableCell>
+        <TableCell className="amt" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}</TableCell>
         {canEdit && <TableCell></TableCell>}
       </TableRow>
     );
@@ -223,17 +196,13 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     if (!donations) return <Loading />;
 
     return (
-      <CardWithHeader
-        icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-        title={Locale.label("donations.donations.don")}
-        count={donations?.length}
-        actions={getHeaderActions()}
-      >
-        <Table sx={{ minWidth: 650 }}>
+      <>
+        {getHeaderActions()}
+        <Table sx={plainTableSx}>
           {getTableHeader()}
           <TableBody>{getRows()}</TableBody>
         </Table>
-      </CardWithHeader>
+      </>
     );
   }, [donations, getRows, getTableHeader, getHeaderActions]);
 

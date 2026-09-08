@@ -9,3 +9,5 @@ export { Funds } from "./Funds";
 export { FundEdit } from "./FundEdit";
 export { DonationEvents } from "./DonationEvents";
 export { GivingLinkDialog } from "./GivingLinkDialog";
+export { GiftLogSheet } from "./GiftLogSheet";
+export { YearLedger, YearPills, Verb, VerbRow, SectionTitle } from "./plate";

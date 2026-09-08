@@ -119,11 +119,10 @@ export function EditorToolbar(props: EditorToolbarProps) {
   return (
     <Box
       sx={{
-        backgroundColor: "#FFF",
+        backgroundColor: "background.paper",
         width: "100%",
         zIndex: 1200,
-        borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.04)",
+        borderBottom: "1px solid var(--border-main)",
         display: "flex",
         alignItems: "center",
         gap: 2,
@@ -139,7 +138,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           onClick={onDone}
           startIcon={<Icon>arrow_back</Icon>}
           data-testid="content-editor-done-button"
-          sx={{ textTransform: "none", color: "text.primary", fontWeight: 500 }}
+          sx={{ textTransform: "none", color: "var(--link)", fontWeight: 600 }}
         >
           {Locale.label("site.editorToolbar.exit")}
         </Button>

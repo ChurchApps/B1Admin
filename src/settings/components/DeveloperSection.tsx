@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Stack, Chip } from "@mui/material";
-import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
+import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { NavigationTabs, type NavigationTab, SectionListCard } from "../../components/ui";
+import { SectionListCard } from "../../components/ui";
+import { pillSx } from "../plated";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 import { formatDateSafe } from "../../helpers/DateFormatHelper";
@@ -78,15 +79,24 @@ export const DeveloperSection: React.FC = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <NavigationTabs
-        selectedTab={tab}
-        onTabChange={(v) => setTab(v as DeveloperTab)}
-        tabs={[
-          { value: "apiKeys", label: Locale.label("settings.developer.apiKeys"), icon: <KeyIcon /> },
-          { value: "webhooks", label: Locale.label("settings.webhooksPage.title"), icon: <WebhookIcon /> },
-          { value: "connections", label: Locale.label("settings.developer.connectedApps"), icon: <LinkIcon /> }
-        ] satisfies NavigationTab[]}
-      />
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 1 }}>
+        {([
+          { value: "apiKeys" as DeveloperTab, label: Locale.label("settings.developer.apiKeys") },
+          { value: "webhooks" as DeveloperTab, label: Locale.label("settings.webhooksPage.title") },
+          { value: "connections" as DeveloperTab, label: Locale.label("settings.developer.connectedApps") }
+        ]).map((item) => (
+          <Box
+            key={item.value}
+            component="button"
+            type="button"
+            role="tab"
+            aria-selected={tab === item.value}
+            onClick={() => setTab(item.value)}
+            sx={pillSx(tab === item.value)}>
+            {item.label}
+          </Box>
+        ))}
+      </Stack>
 
       <Box sx={{ pt: 3 }}>
         {tab === "apiKeys" && (showKeyEdit ? (

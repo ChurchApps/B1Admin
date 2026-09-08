@@ -3,19 +3,19 @@ import { FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card, Snackbar } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Undo as UndoIcon, ContentCopy as CopyIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
+import { Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Snackbar } from "@mui/material";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
-import { CountChip, NavigationTabs, HeaderPrimaryButton, type NavigationTab } from "../components/ui";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { useConfirmDelete } from "../hooks";
+import { Plate, h1Sx, ledeSx, pillSx, addBarSx, verbSx, findSx, DUST } from "./plated";
+import { Edit as EditIcon } from "@mui/icons-material";
 
 export const FormsPage = () => {
   const [selectedFormId, setSelectedFormId] = React.useState("notset");
   const [selectedTab, setSelectedTab] = React.useState("forms");
   const [showDuplicated, setShowDuplicated] = React.useState(false);
+  const [query, setQuery] = React.useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
 
@@ -32,7 +32,8 @@ export const FormsPage = () => {
   const getRows = (isArchived: boolean) => {
     const result: JSX.Element[] = [];
     const rawData = isArchived ? archivedForms.data : forms.data;
-    const formData = rawData?.filter(form => isArchived ? form.archived === true : !form.archived);
+    const q = query.trim().toLowerCase();
+    const formData = rawData?.filter(form => (isArchived ? form.archived === true : !form.archived) && (!q || (form.name || "").toLowerCase().includes(q)));
 
     if (!formData?.length) {
       result.push(
@@ -53,27 +54,26 @@ export const FormsPage = () => {
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : <Typography variant="body2" color="text.secondary">{Locale.label("forms.formsPage.personProfileForm")}</Typography>;
       const duplicateLink =
         canEdit && !isArchived ? (
-          <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`} />
+          <Box component="button" type="button" onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`} sx={verbSx}>{Locale.label("forms.formsPage.duplicate")}</Box>
         ) : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" startIcon={<ArchiveIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.archive")}</Button>
+          <Box component="button" type="button" onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")} sx={verbSx}>{Locale.label("forms.formsPage.archive")}</Box>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (
-          <Button size="small" variant="outlined" color="success" startIcon={<UndoIcon />} onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.restore")}</Button>
+          <Box component="button" type="button" onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name || "")} sx={verbSx}>{Locale.label("forms.formsPage.restore")}</Box>
         ) : null;
       result.push(
         <TableRow key={form.id}>
           <TableCell>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Icon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }}>format_align_left</Icon>{" "}
-              <Link to={"/forms/" + form.id} style={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>{form.name}</Link>
-            </Box>
+            <Link to={"/forms/" + form.id} style={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>{form.name}</Link>
           </TableCell>
           <TableCell>{formLink}</TableCell>
           <TableCell align="right" className="rowActions">
-            {archiveLink || unarchiveLink} {duplicateLink} {editLink}
+            <Box sx={{ display: "flex", gap: 1.75, justifyContent: "flex-end", flexWrap: "wrap" }}>
+              {archiveLink || unarchiveLink} {duplicateLink} {editLink}
+            </Box>
           </TableCell>
         </TableRow>
       );
@@ -99,8 +99,6 @@ export const FormsPage = () => {
     });
   };
 
-  const getArchivedRows = () => getRows(true);
-
   const getTableHeader = (isArchived: boolean) => {
     const rows: JSX.Element[] = [];
     const rawData = isArchived ? archivedForms.data : forms.data;
@@ -124,11 +122,6 @@ export const FormsPage = () => {
     setSelectedFormId("notset");
   };
 
-  const getEditSlot = () => {
-    if (selectedFormId === "notset" || selectedTab === "archived") return <></>;
-    if (selectedTab === "forms") return <FormEdit formId={selectedFormId} updatedFunction={handleUpdate}></FormEdit>;
-  };
-
   const formsCount = forms.data?.filter(form => !form.archived)?.length || 0;
   const archivedCount = archivedForms.data?.filter(form => form.archived === true)?.length || 0;
 
@@ -139,68 +132,50 @@ export const FormsPage = () => {
   if (!formPermission) return <PermissionDenied permissions={[Permissions.membershipApi.forms.admin, Permissions.membershipApi.forms.edit]} />;
   if (forms.isLoading || archivedForms.isLoading) return <Loading />;
 
-  const renderTable = (rows: JSX.Element[], isArchived: boolean) => (
-    <Table>
-      <TableHead>{getTableHeader(isArchived)}</TableHead>
-      <TableBody>{rows}</TableBody>
-    </Table>
-  );
-
-  const formsCard = (
-    <Card sx={{ mt: getEditSlot() ? 2 : 0 }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={1} alignItems="center">
-            <DescriptionIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6">{Locale.label("forms.formsPage.forms")}</Typography>
-            {formsCount > 0 && <CountChip count={formsCount} />}
-          </Stack>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 0 }}>{renderTable(getRows(false), false)}</Box>
-    </Card>
-  );
-
-  const archivedCard = (
-    <Card>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={1} alignItems="center">
-            <ArchiveIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6">{Locale.label("forms.formsPage.archForms")}</Typography>
-            {archivedCount > 0 && <CountChip count={archivedCount} />}
-          </Stack>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 0 }}>{renderTable(getArchivedRows(), true)}</Box>
-    </Card>
-  );
-
-  const headerTabs: NavigationTab[] = [{ value: "forms", label: Locale.label("forms.formsPage.forms") }];
-  if (archivedCount > 0) headerTabs.push({ value: "archived", label: Locale.label("forms.formsPage.archForms") });
+  const isArchived = selectedTab === "archived";
 
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader
-        icon={<DescriptionIcon />}
-        title={Locale.label("forms.formsPage.forms")}
-        subtitle={Locale.label("forms.formsPage.subtitleManage")}
-        tabs={<NavigationTabs selectedTab={selectedTab} onTabChange={setSelectedTab} tabs={headerTabs} onHeader />}>
-        {formPermission && selectedTab !== "archived" && (
-          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setSelectedFormId("")} data-testid="add-form-button">
-            {Locale.label("forms.formsPage.addForm")}
-          </HeaderPrimaryButton>
+      <Plate directory>
+        <Box component="h1" sx={h1Sx}>{Locale.label("forms.formsPage.forms")}</Box>
+        <Box sx={ledeSx}>{Locale.label("forms.formsPage.subtitleManage")}</Box>
+
+        <Box sx={{ display: "flex", gap: 1, flexWrap: { xs: "nowrap", sm: "wrap" }, overflowX: { xs: "auto", sm: "visible" }, mb: 2.5 }}>
+          <Box component="button" type="button" onClick={() => setSelectedTab("forms")} sx={pillSx(selectedTab === "forms")}>{Locale.label("forms.formsPage.forms")}</Box>
+          {archivedCount > 0 && (
+            <Box component="button" type="button" onClick={() => setSelectedTab("archived")} sx={pillSx(selectedTab === "archived")}>{Locale.label("forms.formsPage.archForms")}</Box>
+          )}
+        </Box>
+
+        <Box
+          component="input"
+          value={query}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+          placeholder={Locale.label("common.search", "Find")}
+          sx={findSx}
+        />
+        <Box sx={{ color: DUST, fontSize: "0.8rem", mb: 3 }}>{formsCount} {Locale.label("forms.formsPage.forms").toLowerCase()}</Box>
+
+        {selectedFormId !== "notset" && selectedTab === "forms" && (
+          <Box sx={{ mb: 3 }}>
+            <FormEdit formId={selectedFormId} updatedFunction={handleUpdate} />
+          </Box>
         )}
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
-        {selectedTab === "archived" && archivedCount > 0 ? archivedCard : (
-          <>
-            {getEditSlot()}
-            {formsCard}
-          </>
+
+        <Table>
+          <TableHead>{getTableHeader(isArchived)}</TableHead>
+          <TableBody>{getRows(isArchived)}</TableBody>
+        </Table>
+
+        {formPermission && selectedTab !== "archived" && selectedFormId === "notset" && (
+          <Box sx={addBarSx}>
+            <Box component="button" type="button" onClick={() => setSelectedFormId("")} data-testid="add-form-button" sx={verbSx}>
+              {Locale.label("forms.formsPage.addForm")}
+            </Box>
+          </Box>
         )}
-      </Box>
+      </Plate>
       <Snackbar
         open={showDuplicated}
         onClose={() => setShowDuplicated(false)}

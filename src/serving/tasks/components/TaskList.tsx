@@ -1,38 +1,18 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Divider, Tabs, Tab } from "@mui/material";
-import { EmptyState } from "../../../components/ui/EmptyState";
+import { Box, Button } from "@mui/material";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { NewTask } from "./";
 import UserContext from "../../../UserContext";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Assignment as TaskIcon,
-  Person as PersonIcon,
-  Group as GroupIcon,
-  CalendarToday as CalendarIcon,
-  CheckCircle as CompletedIcon,
-  RadioButtonUnchecked as OpenIcon,
-  Add as AddIcon,
-  AssignmentInd as AssignedIcon,
-  AssignmentTurnedIn as CreatedIcon,
-  CheckBoxOutlined as OpenTasksIcon,
-  CheckBox as ClosedTasksIcon
-} from "@mui/icons-material";
+import { AddBlock, ListPills, Pill, platedColor } from "../../plated";
 
 interface Props {
   compact?: boolean;
   status: string;
   onStatusChange?: (status: string) => void;
 }
-
-const taskTabLabel = (text: string, count: number) => (
-  <Stack direction="row" spacing={1} alignItems="center">
-    <span>{text}</span>
-    <Chip label={count} size="small" color="primary" sx={{ height: 20, fontWeight: 600, fontSize: "0.7rem", "& .MuiChip-label": { px: 0.75 } }} />
-  </Stack>
-);
 
 export const TaskList = memo((props: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
@@ -67,23 +47,6 @@ export const TaskList = memo((props: Props) => {
     }
   });
 
-  const editContent = (
-    <Button
-      variant="contained"
-      size="small"
-      startIcon={<AddIcon />}
-      onClick={() => setShowAdd(true)}
-      data-testid="add-task-button"
-      aria-label={Locale.label("tasks.taskList.addTaskAria")}
-      sx={{
-        borderRadius: 2,
-        textTransform: "none",
-        fontWeight: 600
-      }}>
-      {Locale.label("tasks.taskList.addTask")}
-    </Button>
-  );
-
   const refetch = useCallback(() => {
     tasks.refetch();
     groupMembers.refetch();
@@ -95,114 +58,25 @@ export const TaskList = memo((props: Props) => {
       <Box
         key={task.id}
         sx={{
-          mb: 2,
-          p: 2,
-          transition: "all 0.2s ease-in-out",
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
-          backgroundColor: "background.subtle",
-          "&:hover": {
-            backgroundColor: "action.hover",
-            borderColor: "primary.main"
-          },
-          "&:last-child": { mb: 0 }
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr auto" },
+          gap: "8px 18px",
+          padding: "11px 0",
+          borderTop: `1px solid ${platedColor.line}`
         }}>
-        <Stack spacing={2}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: 2
-            }}>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography
-                variant="h6"
-                component={Link}
-                to={`/serving/tasks/${task.id}`}
-                sx={{
-                  fontWeight: 600,
-                  color: "primary.main",
-                  textDecoration: "none",
-                  fontSize: "1.1rem",
-                  wordBreak: "break-word",
-                  "&:hover": { textDecoration: "underline" }
-                }}>
-                {task.title}
-              </Typography>
-
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
-                <CalendarIcon sx={{ fontSize: 16, color: "text.secondary" }} />
-                <Typography variant="caption" color="text.secondary">
-                  #{task.taskNumber} {Locale.label("tasks.taskPage.opened")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")}{" "}
-                  {Locale.label("tasks.taskPage.by")} {task.createdByLabel}
-                </Typography>
-              </Stack>
-            </Box>
-
-            <Chip
-              icon={task.status === "Open" ? <OpenIcon /> : <CompletedIcon />}
-              label={task.status}
-              size="small"
-              sx={{
-                backgroundColor: task.status === "Open" ? "warning.light" : "success.light",
-                color: task.status === "Open" ? "warning.dark" : "success.dark",
-                fontWeight: 600,
-                flexShrink: 0
-              }}
-            />
+        <Box>
+          <Link to={`/serving/tasks/${task.id}`} style={{ color: platedColor.ink, fontWeight: 650, fontSize: "1.12rem", textDecoration: "none" }}>
+            {task.title}
+          </Link>
+          <Box sx={{ color: platedColor.mute, fontSize: "0.9rem", mt: "2px" }}>
+            #{task.taskNumber} {Locale.label("tasks.taskPage.opened")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")} {Locale.label("tasks.taskPage.by")} {task.createdByLabel}
+            {!props.compact && task.assignedToLabel ? ` · ${task.assignedToLabel}` : ""}
           </Box>
-
-          {!props.compact && (
-            <>
-              <Divider />
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <GroupIcon sx={{ fontSize: 18, color: "secondary.main" }} />
-                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                      {Locale.label("tasks.taskList.associatedWith")}:
-                    </Typography>
-                  </Stack>
-                  <Typography variant="body2" color="text.secondary" sx={{ ml: 3 }}>
-                    {task.associatedWithLabel || Locale.label("tasks.taskList.notSpecified")}
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, sm: 6 }}>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <PersonIcon sx={{ fontSize: 18, color: "info.main" }} />
-                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                      {Locale.label("tasks.taskList.assignedTo")}:
-                    </Typography>
-                  </Stack>
-                  <Typography variant="body2" color="text.secondary" sx={{ ml: 3 }}>
-                    {task.assignedToLabel || Locale.label("tasks.taskList.unassigned")}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </>
-          )}
-        </Stack>
+        </Box>
+        <Box sx={{ color: task.status === "Open" ? platedColor.first : platedColor.here, fontSize: "0.88rem" }}>{task.status}</Box>
       </Box>
     ),
     [props.compact]
-  );
-
-  const getSectionHeader = useCallback(
-    (title: string, icon: React.ReactNode, count: number) => (
-      <Box sx={{ mb: 2 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          {icon}
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-            {title}
-          </Typography>
-          <Chip label={count} size="small" color="primary" sx={{ fontWeight: 600, fontSize: "0.75rem" }} />
-        </Stack>
-      </Box>
-    ),
-    []
   );
 
   const assignedToMyGroups = useMemo(() => {
@@ -221,141 +95,66 @@ export const TaskList = memo((props: Props) => {
     return tasks.data && tasks.data.length > 0 ? ArrayHelper.getAll(tasks.data, "createdById", context?.person?.id) : [];
   }, [tasks.data, context?.person?.id]);
 
-  const getAssignedToMyGroups = () => {
-    if (assignedToMyGroups.length === 0) return null;
-    return (
-      <Box sx={{ mb: 4 }}>
-        {getSectionHeader(Locale.label("tasks.taskList.assignGroup"), <GroupIcon />, assignedToMyGroups.length)}
-        <Stack spacing={2}>{assignedToMyGroups.map((t) => getTask(t))}</Stack>
-      </Box>
-    );
-  };
-
-  const getAssignedToMe = () => {
-    if (assignedToMe.length === 0) return null;
-    return (
-      <Box sx={{ mb: 4 }}>
-        {getSectionHeader(Locale.label("tasks.taskList.assignMe"), <AssignedIcon />, assignedToMe.length)}
-        <Stack spacing={2}>{assignedToMe.map((t) => getTask(t))}</Stack>
-      </Box>
-    );
-  };
-
-  const getCreatedByMe = () => {
-    if (createdByMe.length === 0) return null;
-    return (
-      <Box sx={{ mb: 4 }}>
-        {getSectionHeader(Locale.label("tasks.taskList.reqMe"), <CreatedIcon />, createdByMe.length)}
-        <Stack spacing={2}>{createdByMe.map((t) => getTask(t))}</Stack>
-      </Box>
-    );
-  };
-
   const hasAnyTasks = assignedToMe.length > 0 || assignedToMyGroups.length > 0 || createdByMe.length > 0;
+  const active = tab === 0 ? assignedToMe : tab === 1 ? assignedToMyGroups : createdByMe;
 
-  if (tasks.isLoading || groupMembers.isLoading) {
-    return (
-      <Card
-        sx={{
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider"
-        }}>
-        <CardContent>
-          <Loading />
-        </CardContent>
-      </Card>
-    );
-  }
+  if (tasks.isLoading || groupMembers.isLoading) return <Loading />;
 
   return (
     <>
       {showAdd && (
         <NewTask
           compact={props.compact}
-          onCancel={() => {
-            setShowAdd(false);
-          }}
-          onSave={() => {
-            refetch();
-            setShowAdd(false);
-          }}
+          onCancel={() => setShowAdd(false)}
+          onSave={() => { refetch(); setShowAdd(false); }}
         />
       )}
 
-      <Card
-        sx={{
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
-          marginTop: showAdd ? 4 : 0
-        }}>
-        <CardContent>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <TaskIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("tasks.taskList.tasks")}
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {props.onStatusChange &&
-                (props.status === "Open" ? (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<ClosedTasksIcon />}
-                    onClick={() => props.onStatusChange?.("Closed")}
-                    data-testid="show-closed-tasks-button"
-                    aria-label={Locale.label("tasks.taskList.showClosedTasksAria")}
-                    sx={{
-                      textTransform: "none",
-                      fontWeight: 600
-                    }}>
-                    {Locale.label("tasks.tasksPage.showClosed")}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<OpenTasksIcon />}
-                    onClick={() => props.onStatusChange?.("Open")}
-                    data-testid="show-open-tasks-button"
-                    aria-label={Locale.label("tasks.taskList.showOpenTasksAria")}
-                    sx={{
-                      textTransform: "none",
-                      fontWeight: 600
-                    }}>
-                    {Locale.label("tasks.tasksPage.showOpen")}
-                  </Button>
-                ))}
-              {editContent}
-            </Stack>
-          </Stack>
+      <ListPills>
+        {props.onStatusChange && (
+          <>
+            <Pill
+              on={props.status === "Open"}
+              onClick={() => props.onStatusChange?.("Open")}
+              testId="show-open-tasks-button">
+              {Locale.label("tasks.taskPage.open")}
+            </Pill>
+            <Pill
+              on={props.status !== "Open"}
+              onClick={() => props.onStatusChange?.("Closed")}
+              testId="show-closed-tasks-button">
+              {Locale.label("tasks.tasksPage.showClosed")}
+            </Pill>
+          </>
+        )}
+        <Pill on={tab === 0} onClick={() => setTab(0)} testId="tasklist-tab-assigned">{Locale.label("tasks.taskList.assignMe")} {assignedToMe.length}</Pill>
+        <Pill on={tab === 1} onClick={() => setTab(1)} testId="tasklist-tab-groups">{Locale.label("tasks.taskList.assignGroup")} {assignedToMyGroups.length}</Pill>
+        <Pill on={tab === 2} onClick={() => setTab(2)} testId="tasklist-tab-created">{Locale.label("tasks.taskList.reqMe")} {createdByMe.length}</Pill>
+      </ListPills>
 
-          {props.compact ? (
+      {props.compact
+        ? (active.length > 0 ? active.map((t) => getTask(t)) : <p style={{ color: platedColor.mute }}>{Locale.label("tasks.taskList.noTasks")}</p>)
+        : hasAnyTasks
+          ? (
             <>
-              <Tabs value={tab} onChange={(_e, v) => setTab(v)} variant="scrollable" scrollButtons="auto" sx={{ borderBottom: 1, borderColor: "divider", mb: 2, minHeight: 40 }}>
-                <Tab data-testid="tasklist-tab-assigned" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignMe"), assignedToMe.length)} />
-                <Tab data-testid="tasklist-tab-groups" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignGroup"), assignedToMyGroups.length)} />
-                <Tab data-testid="tasklist-tab-created" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.reqMe"), createdByMe.length)} />
-              </Tabs>
-              {(() => {
-                const active = tab === 0 ? assignedToMe : tab === 1 ? assignedToMyGroups : createdByMe;
-                return active.length > 0 ? <Stack spacing={2}>{active.map((t) => getTask(t))}</Stack> : <EmptyState icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />;
-              })()}
+              {assignedToMe.map((t) => getTask(t))}
+              {assignedToMyGroups.map((t) => getTask(t))}
+              {createdByMe.map((t) => getTask(t))}
             </>
-          ) : hasAnyTasks ? (
-            <Stack spacing={4}>
-              {getAssignedToMe()}
-              {getAssignedToMyGroups()}
-              {getCreatedByMe()}
-            </Stack>
-          ) : (
-            <EmptyState icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />
-          )}
-        </CardContent>
-      </Card>
+          )
+          : <p style={{ color: platedColor.mute }}>{Locale.label("tasks.taskList.noTasks")}</p>}
+
+      {!showAdd && (
+        <AddBlock title={Locale.label("tasks.taskList.addTask")}>
+          <Button
+            onClick={() => setShowAdd(true)}
+            data-testid="add-task-button"
+            aria-label={Locale.label("tasks.taskList.addTaskAria")}
+            sx={{ color: platedColor.accent, fontWeight: 600, textTransform: "none" }}>
+            {Locale.label("tasks.taskList.addTask")}
+          </Button>
+        </AddBlock>
+      )}
     </>
   );
 });

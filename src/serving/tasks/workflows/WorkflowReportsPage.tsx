@@ -1,11 +1,10 @@
-import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { Chart } from "react-google-charts";
-import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { Locale, Loading } from "@churchapps/apphelper";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowBack as BackIcon, ViewKanban as WorkflowsIcon } from "@mui/icons-material";
-import { HeaderSecondaryButton } from "../../../components/ui";
 import { type WorkflowStepInterface } from "@churchapps/helpers";
+import { DirectoryPage, SectionLabel, Verb, Verbs, platedColor } from "../../plated";
 
 interface ReportData {
   stepCounts: { stepId: string; count: number }[];
@@ -38,36 +37,24 @@ export const WorkflowReportsPage = () => {
   if (report.isLoading) return <Loading />;
 
   return (
-    <>
-      <PageHeader icon={<WorkflowsIcon />} title={Locale.label("tasks.workflowReports.title")} subtitle={Locale.label("tasks.workflowReports.subtitle")}>
-        <HeaderSecondaryButton startIcon={<BackIcon />} onClick={() => navigate("/serving/tasks/workflows/" + workflowId)}>{Locale.label("common.back")}</HeaderSecondaryButton>
-      </PageHeader>
-      <Box sx={{ p: 3 }} data-testid="workflow-reports">
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Card sx={{ borderRadius: 2 }}><CardContent>
-              <Typography variant="overline" color="text.secondary">{Locale.label("tasks.workflowReports.overdue")}</Typography>
-              <Typography variant="h3" color="error" data-testid="report-overdue-count">{report.data?.overdue?.length || 0}</Typography>
-            </CardContent></Card>
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card sx={{ borderRadius: 2 }}><CardContent>
-              <Typography variant="h6" sx={{ mb: 1 }}>{Locale.label("tasks.workflowReports.perStep")}</Typography>
-              {(report.data?.stepCounts?.length || 0) > 0
-                ? <Chart chartType="ColumnChart" data={perStepData()} width="100%" height="300px" />
-                : <Typography color="text.secondary">{Locale.label("tasks.workflowReports.noData")}</Typography>}
-            </CardContent></Card>
-          </Grid>
-          <Grid size={{ xs: 12 }}>
-            <Card sx={{ borderRadius: 2 }}><CardContent>
-              <Typography variant="h6" sx={{ mb: 1 }}>{Locale.label("tasks.workflowReports.throughput")}</Typography>
-              {(report.data?.throughput?.length || 0) > 0
-                ? <Chart chartType="LineChart" data={throughputData()} width="100%" height="300px" />
-                : <Typography color="text.secondary">{Locale.label("tasks.workflowReports.noData")}</Typography>}
-            </CardContent></Card>
-          </Grid>
-        </Grid>
+    <DirectoryPage title={Locale.label("tasks.workflowReports.title")} lede={Locale.label("tasks.workflowReports.subtitle")} wide>
+      <Verbs>
+        <Verb onClick={() => navigate("/serving/tasks/workflows/" + workflowId)}>{Locale.label("common.back")}</Verb>
+      </Verbs>
+      <Box data-testid="workflow-reports">
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("tasks.workflowReports.overdue")}</SectionLabel>
+        <Box data-testid="report-overdue-count" sx={{ fontSize: "2.2rem", fontWeight: 500, color: platedColor.first, letterSpacing: "-0.03em" }}>
+          {report.data?.overdue?.length || 0}
+        </Box>
+        <SectionLabel>{Locale.label("tasks.workflowReports.perStep")}</SectionLabel>
+        {(report.data?.stepCounts?.length || 0) > 0
+          ? <Chart chartType="ColumnChart" data={perStepData()} width="100%" height="300px" />
+          : <p style={{ color: platedColor.mute }}>{Locale.label("tasks.workflowReports.noData")}</p>}
+        <SectionLabel>{Locale.label("tasks.workflowReports.throughput")}</SectionLabel>
+        {(report.data?.throughput?.length || 0) > 0
+          ? <Chart chartType="LineChart" data={throughputData()} width="100%" height="300px" />
+          : <p style={{ color: platedColor.mute }}>{Locale.label("tasks.workflowReports.noData")}</p>}
       </Box>
-    </>
+    </DirectoryPage>
   );
 };

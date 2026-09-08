@@ -1,12 +1,10 @@
 import React, { useState, useCallback, memo } from "react";
-import { ApiHelper, UserHelper, Loading, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, ArrayHelper, Locale, Permissions, useMountedState } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Box, Typography, Stack, Button, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
-import { Add as AddIcon, People as PeopleIcon } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
 import { type GroupInterface } from "@churchapps/helpers";
-import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { GroupAdd } from "../../groups/components";
-import { CountChip, EmptyState } from "../../components/ui";
+import { AddBlock, SectionLabel, platedColor } from "../plated";
 
 interface Props {
   ministry: GroupInterface;
@@ -44,97 +42,26 @@ export const TeamList = memo((props: Props) => {
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <PeopleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-          <Typography variant="h6">
-            {Locale.label("plans.teamList.teams")}
-          </Typography>
-          {groups.length > 0 && <CountChip count={groups.length} />}
-        </Stack>
-        {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && groups.length > 0 && (
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleAddClick}
-            size="small"
-            data-testid="add-team-button">
+      <SectionLabel sx={{ mt: 0 }}>{Locale.label("plans.teamList.teams")}</SectionLabel>
+      {groups.length === 0 && (
+        <p style={{ color: platedColor.mute }}>{Locale.label("plans.teamList.noTeam")}</p>
+      )}
+      {groups.map((g) => (
+        <Box
+          key={g.id}
+          sx={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "12px", padding: "11px 0", borderTop: `1px solid ${platedColor.line}` }}>
+          <Link to={`/groups/${g.id}?tag=team`} style={{ color: platedColor.ink, fontWeight: 650, fontSize: "1.12rem", textDecoration: "none" }}>
+            {g.name}
+          </Link>
+          <span style={{ color: platedColor.mute, fontSize: "0.88rem" }}>{g.memberCount || 0}</span>
+        </Box>
+      ))}
+      {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+        <AddBlock title={Locale.label("plans.teamList.newTeam")}>
+          <Button onClick={handleAddClick} data-testid="add-team-button" sx={{ color: platedColor.accent, fontWeight: 600, textTransform: "none" }}>
             {Locale.label("plans.teamList.newTeam")}
           </Button>
-        )}
-      </Stack>
-
-      {groups.length === 0 ? (
-        <EmptyState
-          icon={<PeopleIcon />}
-          title={Locale.label("plans.teamList.noTeam")}
-          description={Locale.label("plans.teamList.createTeams")}
-          action={
-            UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={handleAddClick}
-                data-testid="add-team-button">
-                {Locale.label("plans.teamList.createTeam")}
-              </Button>
-            )
-          }
-        />
-      ) : (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 600, color: "text.primary" }}>{Locale.label("common.name")}</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 600, color: "text.primary" }}>{Locale.label("plans.teamList.members")}</TableCell>
-                <TableCell align="right" sx={{ width: 80 }}></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {groups.map((g) => {
-                const memberCount = g.memberCount || 0;
-
-                return (
-                  <TableRow
-                    key={g.id}
-                    hover
-                    sx={{ "&:last-child td": { border: 0 } }}
-                  >
-                    <TableCell>
-                      <Typography
-                        component={Link}
-                        to={`/groups/${g.id}?tag=team`}
-                        sx={{
-                          fontWeight: 500,
-                          color: "var(--link)",
-                          textDecoration: "none",
-                          "&:hover": { textDecoration: "underline" }
-                        }}>
-                        {g.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography variant="body2" color="text.secondary">
-                        {memberCount}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right" className="rowActions">
-                      <Button
-                        size="small"
-                        component={Link}
-                        to={`/groups/${g.id}?tag=team`}
-                        variant="text"
-                        sx={{ color: "primary.main" }}>
-                        {Locale.label("plans.teamList.manage")}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
+        </AddBlock>
       )}
     </Box>
   );

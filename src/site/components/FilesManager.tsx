@@ -4,7 +4,8 @@ import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon, Link as LinkIcon, Check as CheckIcon } from "@mui/icons-material";
-import { CardWithHeader, CountChip, EmptyState, FormCard, hoverRowSx } from "../../components/ui";
+import { EmptyState, hoverRowSx } from "../../components/ui";
+import { SectionLabel, addBarSx } from "../plated";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 import { CustomFileUpload } from "./CustomFileUpload";
@@ -122,31 +123,23 @@ export function FilesManager() {
       {ConfirmDialogElement}
       <Grid container spacing={3}>
         <Grid size={{ md: 8, xs: 12 }}>
-          <CardWithHeader
-            title={Locale.label("site.filesManager.files")}
-            icon={<FileIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-            actions={files?.length > 0 && <CountChip count={files.length} />}>
-            <Table sx={{ minWidth: 650 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.filesManager.name")}</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.filesManager.size")}</Typography>
-                  </TableCell>
-                  <TableCell align="right"></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody data-testid="files-table-body">
-                {fileRows}
-              </TableBody>
-            </Table>
-          </CardWithHeader>
+          <SectionLabel sx={{ mt: 0 }}>{Locale.label("site.filesManager.files")}</SectionLabel>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("site.filesManager.name")}</TableCell>
+                <TableCell align="right">{Locale.label("site.filesManager.size")}</TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody data-testid="files-table-body">
+              {fileRows}
+            </TableBody>
+          </Table>
         </Grid>
         <Grid size={{ md: 4, xs: 12 }}>
-          <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} data-testid="file-upload-inputbox">
-
+          <SectionLabel sx={{ mt: 0 }}>{Locale.label("site.files.uploadFiles")}</SectionLabel>
+          <Box data-testid="file-upload-inputbox">
             {getStorage()}
             {!unlimited && providerQuota === 0 && (
               <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
@@ -154,9 +147,11 @@ export function FilesManager() {
               </Typography>
             )}
             {(unlimited || usedSpace < quotaLimit) && (
-              <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} onFileSelected={() => setPendingFileSave(true)} />
+              <Box sx={addBarSx}>
+                <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} onFileSelected={() => setPendingFileSave(true)} />
+              </Box>
             )}
-          </FormCard>
+          </Box>
         </Grid>
       </Grid>
     </Box>

@@ -5,7 +5,8 @@ import { Info } from "@mui/icons-material";
 import { PersonAdd } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PersonInterface, type MemberPermissionInterface } from "@churchapps/helpers";
-import { DisplayBox, ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { SectionLabel } from "../plated";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
@@ -167,14 +168,12 @@ export const FormMembers: React.FC<Props> = memo((props) => {
     <Grid container spacing={3}>
       {ConfirmDialogElement}
       <Grid size={{ xs: 12, md: 8 }}>
-        <DisplayBox headerText={Locale.label("forms.formMembers.formMem")} headerIcon="group" help="docs/b1-admin/forms/">
-          {getTable()}
-        </DisplayBox>
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("forms.formMembers.formMem")}</SectionLabel>
+        {getTable()}
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        <DisplayBox headerText={Locale.label("forms.formMembers.addPpl")} headerIcon="person_add">
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} filterList={filterList} />
-        </DisplayBox>
+        <SectionLabel sx={{ mt: 0 }}>{Locale.label("forms.formMembers.addPpl")}</SectionLabel>
+        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} filterList={filterList} />
       </Grid>
     </Grid>
   );

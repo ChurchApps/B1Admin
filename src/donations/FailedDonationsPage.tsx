@@ -1,12 +1,13 @@
 import React from "react";
-import { ApiHelper, CurrencyHelper, DateHelper, Loading, Locale, PageHeader, Permissions, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, CurrencyHelper, DateHelper, Loading, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
-import { Alert, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { ErrorOutline as FailedIcon, Refresh as RetryIcon } from "@mui/icons-material";
+import { Alert, Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
+import { ErrorOutline as FailedIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { CardWithHeader, EmptyState, LoadingButton, PageHeaderStats, hoverRowSx } from "../components/ui";
+import { EmptyState, LoadingButton, hoverRowSx } from "../components/ui";
 import { useRequirePermission } from "../hooks";
+import { SectionTitle, plateSx, plainTableSx, mutedSx } from "./components/plate";
 
 interface FailedDonationInterface {
   id?: string;
@@ -64,14 +65,14 @@ export const FailedDonationsPage = () => {
         <TableRow key={d.id} sx={hoverRowSx} data-testid={"failed-donation-" + d.id}>
           <TableCell>
             {d.personId
-              ? <Typography component={Link} to={"/people/" + d.personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>{person?.name?.display || d.personId}</Typography>
-              : <Typography variant="body2">{Locale.label("donations.donations.anon")}</Typography>}
+              ? <Box component={Link} to={"/people/" + d.personId} sx={{ textDecoration: "none", color: "var(--c1)", fontWeight: 500 }}>{person?.name?.display || d.personId}</Box>
+              : Locale.label("donations.donations.anon")}
           </TableCell>
-          <TableCell align="right"><Typography variant="body2" sx={{ fontWeight: 600, color: "error.main" }}>{CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}</Typography></TableCell>
-          <TableCell><Typography variant="body2">{DateHelper.prettyDate(new Date(d.donationDate as any))}</Typography></TableCell>
+          <TableCell align="right" className="amt" sx={{ fontWeight: 600, color: "warning.main" }}>{CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}</TableCell>
+          <TableCell>{DateHelper.prettyDate(new Date(d.donationDate as any))}</TableCell>
           <TableCell>
             <Tooltip title={message}>
-              <Typography variant="body2" noWrap sx={{ maxWidth: 260 }}>{message}</Typography>
+              <Box sx={{ maxWidth: 260, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{message}</Box>
             </Tooltip>
           </TableCell>
           <TableCell align="right">
@@ -79,7 +80,6 @@ export const FailedDonationsPage = () => {
               <LoadingButton
                 size="small"
                 variant="outlined"
-                startIcon={<RetryIcon />}
                 loading={retryingId === d.id}
                 onClick={() => handleRetry(d.id as string)}
                 data-testid={"retry-" + d.id}>
@@ -96,39 +96,28 @@ export const FailedDonationsPage = () => {
   if (denied) return denied;
 
   return (
-    <>
-      <PageHeader icon={<FailedIcon />} title={Locale.label("donations.failedDonations.title")} subtitle={Locale.label("donations.failedDonations.subtitle")}>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} width="100%">
-          {!!donations.data?.length && (
-            <PageHeaderStats
-              items={[
-                { icon: <FailedIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: donations.data.length, label: Locale.label("donations.failedDonations.gifts"), minWidth: 80 },
-                { value: CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency, 0), label: Locale.label("donations.failedDonations.atRisk") }
-              ]}
-            />
-          )}
-        </Stack>
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        {error && <Alert severity="error" sx={{ mb: 2 }} data-testid="retry-error">{error}</Alert>}
-        <CardWithHeader icon={<FailedIcon sx={{ color: "primary.main", fontSize: 20 }} />} title={Locale.label("donations.failedDonations.title")} count={donations.data?.length || 0}>
-          {donations.isLoading ? <Loading /> : (
-            <Table sx={{ minWidth: 650 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("common.person")}</TableCell>
-                  <TableCell align="right">{Locale.label("donations.donations.amt")}</TableCell>
-                  <TableCell>{Locale.label("donations.donations.date")}</TableCell>
-                  <TableCell>{Locale.label("donations.failedDonations.message")}</TableCell>
-                  <TableCell align="right"></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{getRows()}</TableBody>
-            </Table>
-          )}
-        </CardWithHeader>
-      </Box>
-    </>
+    <Box sx={plateSx}>
+      <SectionTitle sx={{ mt: 0 }}>{Locale.label("donations.failedDonations.title")}</SectionTitle>
+      {!!donations.data?.length && (
+        <Box sx={mutedSx}>
+          {donations.data.length} {Locale.label("donations.failedDonations.gifts")?.toLowerCase() || "failed"} · {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency, 0)} {Locale.label("donations.failedDonations.atRisk")?.toLowerCase()}
+        </Box>
+      )}
+      {error && <Alert severity="error" sx={{ my: 2 }} data-testid="retry-error">{error}</Alert>}
+      {donations.isLoading ? <Loading /> : (
+        <Table sx={plainTableSx}>
+          <TableHead>
+            <TableRow>
+              <TableCell component="th">{Locale.label("common.person")}</TableCell>
+              <TableCell component="th">{Locale.label("donations.donations.amt")}</TableCell>
+              <TableCell component="th">{Locale.label("donations.donations.date")}</TableCell>
+              <TableCell component="th">{Locale.label("donations.failedDonations.message")}</TableCell>
+              <TableCell component="th"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>{getRows()}</TableBody>
+        </Table>
+      )}
+    </Box>
   );
 };

@@ -2,20 +2,15 @@ import React, { useEffect, useCallback, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
 import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { FormCard } from "../../components/ui";
-import { TextField, Box, Typography, Stack } from "@mui/material";
 import { AdvancedPeopleSearch, type ActiveFilter } from "./AdvancedPeopleSearch";
-import { Search as SearchIcon } from "@mui/icons-material";
 
 interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
   updatedFunction?: () => void;
   resetSearchResults?: () => void;
-  // Seeds the advanced search from a saved List and auto-expands the panel.
   initialFilters?: Record<string, ActiveFilter>;
-  // Reports the criteria behind the current results so the parent can offer "Save as List":
-  // the advanced filter spec (object) or a simple-search condition (array), null when cleared.
   onReportCriteria?: (criteria: Record<string, ActiveFilter> | SearchCondition[] | null) => void;
+  onTermChange?: (term: string) => void;
 }
 
 export function PeopleSearch(props: Props) {
@@ -23,17 +18,12 @@ export function PeopleSearch(props: Props) {
   const [showAdvanced, setShowAdvanced] = React.useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
 
-  // When a saved list is loaded, reveal the advanced panel so it can seed + run.
   useEffect(() => {
     if (props.initialFilters && Object.keys(props.initialFilters).length > 0) setShowAdvanced(true);
   }, [props.initialFilters]);
 
-  const performSearch = useCallback((term: string, advancedConditions?: SearchCondition[]) => {
-    if (advancedConditions && advancedConditions.length > 0) {
-      ApiHelper.post("/people/advancedSearch", advancedConditions, "MembershipApi").then((data: any) => {
-        props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
-      });
-    } else if (term.trim()) {
+  const performSearch = useCallback((term: string) => {
+    if (term.trim()) {
       const conditions: SearchCondition[] = [{ field: "displayName", operator: "contains", value: term.trim() }];
       props.onReportCriteria?.(conditions);
       ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
@@ -48,83 +38,44 @@ export function PeopleSearch(props: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
     setSearchText(value);
+    props.onTermChange?.(value);
 
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-
-    debounceTimerRef.current = setTimeout(() => {
-      performSearch(value);
-    }, 500); // 500ms debounce
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    debounceTimerRef.current = setTimeout(() => performSearch(value), 500);
   };
 
-  const toggleAdvanced = () => {
-    setShowAdvanced(!showAdvanced);
-  };
+  const toggleAdvanced = () => setShowAdvanced(!showAdvanced);
 
-  useEffect(() => {
-    return () => {
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
-    };
+  useEffect(() => () => {
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
   }, []);
 
   return (
-    <FormCard
-      id="peopleSearch"
-      icon="person"
-      title={Locale.label("people.peopleSearch.simpSearch")}
-      help="docs/b1-admin/people/searching-people"
-    >
-      <Stack spacing={2}>
-        <Box>
-          <TextField
-            fullWidth
-            id="searchText"
-            name="searchText"
-            type="text"
-            placeholder={Locale.label("people.peopleSearch.placeholder")}
-            value={searchText}
-            onChange={handleChange}
-            data-testid="people-search-input"
-            variant="outlined"
-            size="small"
-            InputProps={{ startAdornment: <SearchIcon sx={{ mr: 1, color: "text.secondary" }} /> }}
-          />
-          <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
-            {Locale.label("people.peopleSearch.typeToSearch")}
-          </Typography>
-        </Box>
-
-        <Box>
-          <Typography
-            variant="body2"
-            onClick={toggleAdvanced}
-            sx={{
-              color: "primary.main",
-              cursor: "pointer",
-              fontWeight: 500,
-              display: "inline-flex",
-              alignItems: "center",
-              "&:hover": { textDecoration: "underline" }
-            }}
-          >
-            {showAdvanced ? "▼" : "▶"} {Locale.label("people.peopleSearch.adv")}
-          </Typography>
-        </Box>
-
-        {showAdvanced && (
-          <AdvancedPeopleSearch
-            updateSearchResults={props.updateSearchResults}
-            toggleFunction={toggleAdvanced}
-            updatedFunction={props.updatedFunction}
-            embedded={true}
-            initialFilters={props.initialFilters}
-            onReportCriteria={props.onReportCriteria}
-          />
-        )}
-      </Stack>
-    </FormCard>
+    <div id="peopleSearch">
+      <input
+        id="q"
+        name="searchText"
+        type="text"
+        placeholder="Find a household or a person"
+        value={searchText}
+        onChange={handleChange}
+        data-testid="people-search-input"
+        autoComplete="off"
+        aria-label="Find"
+      />
+      <p className="adv-toggle" onClick={toggleAdvanced}>
+        {showAdvanced ? "▼" : "▶"} {Locale.label("people.peopleSearch.adv")}
+      </p>
+      {showAdvanced && (
+        <AdvancedPeopleSearch
+          updateSearchResults={props.updateSearchResults}
+          toggleFunction={toggleAdvanced}
+          updatedFunction={props.updatedFunction}
+          embedded={true}
+          initialFilters={props.initialFilters}
+          onReportCriteria={props.onReportCriteria}
+        />
+      )}
+    </div>
   );
 }

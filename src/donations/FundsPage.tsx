@@ -1,16 +1,17 @@
 import React from "react";
 import { FundEdit, GivingLinkDialog } from "./components";
-import { UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
-import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon, AccountBalance as AccountBalanceIcon, Link as LinkIcon } from "@mui/icons-material";
+import { Chip, Table, TableBody, TableCell, TableRow, Box } from "@mui/material";
+import { VolunteerActivism as FundIcon, Edit as EditIcon, Link as LinkIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
+import { EmptyState, ExportButton, SortableTableHead, hoverRowSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
+import { Verb, VerbRow, SectionTitle, plateSx, plainTableSx, mutedSx } from "./components/plate";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
@@ -35,24 +36,8 @@ export const FundsPage = () => {
     setEditFundId(id || "");
   };
 
-  const [stats, setStats] = React.useState({ totalFunds: 0 });
-
-  React.useEffect(() => {
-    if (funds.data) {
-      const totalFunds = funds.data.length;
-
-      setStats({ totalFunds });
-    }
-  }, [funds.data]);
-
-  const getSidebarModules = () => {
-    const result = [];
-    if (editFundId !== "notset") {
-      const fund = editFundId === "" ? { id: "", name: "", taxDeductible: true } : (funds.data || []).find((f) => f.id === editFundId) || { id: "", name: "" };
-      result.push(<FundEdit key={result.length - 1} fund={fund} updatedFunction={fundUpdated} />);
-    }
-    return result;
-  };
+  const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+  const canViewFund = UserHelper.checkAccess(Permissions.givingApi.donations.view);
 
   const getRows = () => {
     const result: JSX.Element[] = [];
@@ -65,9 +50,6 @@ export const FundsPage = () => {
       );
       return result;
     }
-
-    const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
-    const canViewFund = UserHelper.checkAccess(Permissions.givingApi.donations.view);
 
     for (let i = 0; i < sortedFunds.length; i++) {
       const f = sortedFunds[i];
@@ -85,42 +67,23 @@ export const FundsPage = () => {
       ) : null;
 
       const fundLink = canViewFund ? (
-        <Typography component={Link} to={"/donations/funds/" + f.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+        <Box component={Link} to={"/donations/funds/" + f.id} sx={{ textDecoration: "none", color: "var(--c1)", fontWeight: 500 }}>
           {f.name}
-        </Typography>
+        </Box>
       ) : (
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-          {f.name}
-        </Typography>
+        <Box sx={{ fontWeight: 500 }}>{f.name}</Box>
       );
 
       result.push(
         <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              {fundLink}
-              {f.visible === false && <Chip label={Locale.label("donations.funds.hidden")} size="small" />}
-            </Stack>
+            {fundLink}
+            {f.visible === false && <Chip label={Locale.label("donations.funds.hidden")} size="small" sx={{ ml: 1 }} />}
           </TableCell>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {f.taxDeductible ? (
-                <>
-                  <Icon sx={{ color: "success.main", fontSize: 18 }}>check_circle</Icon>
-                  <Typography variant="body2" sx={{ color: "success.main", fontWeight: 500 }}>
-                    {Locale.label("donations.fundsPage.taxDeductible")}
-                  </Typography>
-                </>
-              ) : (
-                <>
-                  <Icon sx={{ color: "warning.main", fontSize: 18 }}>info</Icon>
-                  <Typography variant="body2" sx={{ color: "warning.main", fontWeight: 500 }}>
-                    {Locale.label("donations.fundsPage.nonDeductible")}
-                  </Typography>
-                </>
-              )}
-            </Stack>
+            {f.taxDeductible
+              ? Locale.label("donations.fundsPage.taxDeductible")
+              : <Box component="p" sx={{ m: 0 }}>{Locale.label("donations.fundsPage.nonDeductible")}</Box>}
           </TableCell>
           <TableCell align="right" className="rowActions">{givingLinkButton} {editLink}</TableCell>
         </TableRow>
@@ -129,11 +92,23 @@ export const FundsPage = () => {
     return result;
   };
 
-  const getTable = () => {
-    if (funds.isLoading) return <Loading />;
-    else {
-      return (
-        <Table sx={{ minWidth: 650 }}>
+  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
+  if (denied) return denied;
+
+  return (
+    <Box sx={plateSx}>
+      <SectionTitle sx={{ mt: 0 }}>{Locale.label("donations.donations.funds")}</SectionTitle>
+      <Box sx={mutedSx}>{sortedFunds.length} {Locale.label("donations.fundsPage.totalFunds")?.toLowerCase() || "funds"}</Box>
+      {editFundId !== "notset" && (
+        <Box sx={{ mt: 2 }}>
+          <FundEdit
+            fund={editFundId === "" ? { id: "", name: "", taxDeductible: true } : (funds.data || []).find((f) => f.id === editFundId) || { id: "", name: "" }}
+            updatedFunction={fundUpdated}
+          />
+        </Box>
+      )}
+      {funds.isLoading ? <Loading /> : (
+        <Table sx={plainTableSx}>
           {sortedFunds.length > 0 && (
             <SortableTableHead
               columns={[
@@ -148,53 +123,12 @@ export const FundsPage = () => {
           )}
           <TableBody>{getRows()}</TableBody>
         </Table>
-      );
-    }
-  };
-
-  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
-  if (denied) return denied;
-
-  return (
-    <>
-      <PageHeader
-        icon={<AccountBalanceIcon />}
-        title={Locale.label("donations.donations.funds")}
-        subtitle={Locale.label("donations.fundsPage.subtitle")}
-      >
-        {stats.totalFunds > 0 && (
-          <PageHeaderStats
-            spread
-            spacing={{ xs: 2, sm: 2, md: 4 }}
-            items={[{ icon: <FundIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalFunds, label: Locale.label("donations.fundsPage.totalFunds"), minWidth: 80 }]}
-          />
-        )}
-        {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-          <HeaderPrimaryButton
-            startIcon={<AddIcon />}
-            onClick={() => {
-              setEditFundId("");
-            }}
-            data-testid="add-fund-button">
-            {Locale.label("donations.fundsPage.addFund")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        {editFundId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
-
-        <CardWithHeader
-          icon={<FundIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          title={Locale.label("donations.funds.fund")}
-          count={sortedFunds.length}
-          actions={funds.data && <ExportButton data={funds.data} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
-        >
-          {getTable()}
-        </CardWithHeader>
-      </Box>
-
+      )}
+      <VerbRow>
+        {canEdit && <Verb onClick={() => setEditFundId("")} data-testid="add-fund-button">{Locale.label("donations.fundsPage.addFund")}</Verb>}
+        {funds.data && <ExportButton data={funds.data} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
+      </VerbRow>
       {linkFund && <GivingLinkDialog fund={linkFund} onClose={() => setLinkFund(null)} />}
-    </>
+    </Box>
   );
 };

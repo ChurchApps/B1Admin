@@ -1,22 +1,25 @@
 import React from "react";
 import { BatchEdit, DonationEvents } from "./components";
-import { DateHelper, UserHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { DateHelper, UserHelper, Loading, CurrencyHelper, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon, Receipt as ReceiptIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, Box } from "@mui/material";
+import { VolunteerActivism as DonationIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
+import { EmptyState, ExportButton, SortableTableHead, hoverRowSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
+import { Verb, VerbRow, SectionTitle, YearPills, plateSx, plainTableSx, mutedSx, yearsFromDates, withCurrentYear, pickPlateYear } from "./components/plate";
 
 const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate || 0).getTime() - new Date(b.batchDate || 0).getTime() };
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
   const [currency, setCurrency] = React.useState<string>("usd");
+  const [year, setYear] = React.useState<number | null>(null);
+  const [eventsOpen, setEventsOpen] = React.useState(false);
 
   const batches = useQuery<DonationBatchInterface[]>({
     queryKey: ["/donationbatches", "GivingApi"],
@@ -38,101 +41,70 @@ export const DonationBatchesPage = () => {
     setEditBatchId(id || "");
   };
 
-  const [stats, setStats] = React.useState({
-    totalBatches: 0,
-    totalDonations: 0,
-    totalAmount: 0
+  React.useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => setCurrency(result));
+  }, []);
+
+  const dataYears = yearsFromDates((batches.data || []).map((b) => b.batchDate));
+  const years = withCurrentYear(dataYears);
+  const plateYear = year ?? pickPlateYear(dataYears);
+  const yearBatches = sortedBatches.filter((b) => {
+    if (!b.batchDate) return true;
+    return new Date(b.batchDate.toString().split("T")[0] + "T00:00:00").getFullYear() === plateYear;
   });
 
-  React.useEffect(() => {
-    if (batches.data) {
-      const totalBatches = batches.data.length;
-      const totalDonations = batches.data.reduce((sum, batch) => sum + (batch.donationCount || 0), 0);
-      const totalAmount = batches.data.reduce((sum, batch) => sum + (batch.totalAmount || 0), 0);
-
-      setStats({
-        totalBatches,
-        totalDonations,
-        totalAmount
-      });
-    }
-  }, [batches.data]);
+  const totalDonations = yearBatches.reduce((sum, batch) => sum + (batch.donationCount || 0), 0);
+  const totalAmount = yearBatches.reduce((sum, batch) => sum + (batch.totalAmount || 0), 0);
 
   const editBatch = editBatchId === "notset" ? undefined : editBatchId === "" ? {} : (sortedBatches.find((b) => b.id === editBatchId) || { id: editBatchId });
+  const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+  const canViewBatch = UserHelper.checkAccess(Permissions.givingApi.donations.view);
+
+  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
+  if (denied) return denied;
 
   const getRows = () => {
-    const result: JSX.Element[] = [];
-
-    if (sortedBatches.length === 0) {
-      result.push(
+    if (yearBatches.length === 0) {
+      return (
         <TableRow key="0">
           <EmptyState variant="table" colSpan={5} icon={<DonationIcon />} title={Locale.label("donations.donationsPage.noBatch")} />
         </TableRow>
       );
-      return result;
     }
 
-    const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
-    const canViewBatch = UserHelper.checkAccess(Permissions.givingApi.donations.view);
-
-    for (let i = 0; i < sortedBatches.length; i++) {
-      const b = sortedBatches[i];
+    return yearBatches.map((b, i) => {
       const editLink = canEdit ? (
         <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-${i}`} data-id={b.id} onClick={showEditBatch} />
       ) : null;
-
       const batchLink = canViewBatch ? (
-        <Typography component={Link} to={"/donations/batches/" + b.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-          {b.name}
-        </Typography>
+        <Box component={Link} to={"/donations/batches/" + b.id} sx={{ textDecoration: "none", color: "var(--c1)", fontWeight: 500 }}>{b.name}</Box>
       ) : (
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-          {b.name}
-        </Typography>
+        <Box sx={{ fontWeight: 500 }}>{b.name}</Box>
       );
-
       const dateObj = b.batchDate ? new Date(b.batchDate.toString().split("T")[0] + "T00:00:00") : new Date();
-
-      result.push(
-        <TableRow key={i} sx={hoverRowSx}>
-          <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              {batchLink}
-            </Stack>
-          </TableCell>
-          <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <DateIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography variant="body2">{DateHelper.prettyDate(dateObj)}</Typography>
-            </Stack>
-          </TableCell>
-          <TableCell align="right">
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
-              <Icon sx={{ color: "text.secondary", fontSize: 18 }}>receipt</Icon>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {b.donationCount}
-              </Typography>
-            </Stack>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}
-            </Typography>
-          </TableCell>
+      return (
+        <TableRow key={b.id || i} sx={hoverRowSx}>
+          <TableCell>{batchLink}</TableCell>
+          <TableCell><Box component="p" sx={{ m: 0 }}>{DateHelper.prettyDate(dateObj)}</Box></TableCell>
+          <TableCell align="right">{b.donationCount}</TableCell>
+          <TableCell align="right" className="amt">{CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}</TableCell>
           <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
       );
-    }
-    return result;
+    });
   };
 
-  const getTable = () => {
-    if (batches.isLoading) return <Loading />;
-    else {
-      return (
-        <Table sx={{ minWidth: 650 }}>
-          {sortedBatches.length > 0 && (
+  return (
+    <Box sx={plateSx}>
+      <SectionTitle sx={{ mt: 0 }}>{Locale.label("donations.donations.batches")}</SectionTitle>
+      <Box sx={mutedSx}>
+        {yearBatches.length} {Locale.label("donations.donationBatchesPage.batches")?.toLowerCase() || "batches"} · {totalDonations} {Locale.label("donations.donationBatchesPage.donations")?.toLowerCase() || "gifts"} · {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency, 0)}
+      </Box>
+      <YearPills years={years} value={plateYear} onChange={setYear} />
+      {editBatch && <Box sx={{ mt: 2 }}><BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} /></Box>}
+      {batches.isLoading ? <Loading /> : (
+        <Table sx={plainTableSx}>
+          {yearBatches.length > 0 && (
             <SortableTableHead
               columns={[
                 { key: "name", label: Locale.label("common.name"), sortable: true },
@@ -148,80 +120,14 @@ export const DonationBatchesPage = () => {
           )}
           <TableBody>{getRows()}</TableBody>
         </Table>
-      );
-    }
-  };
-
-  React.useEffect(() => {
-    CurrencyHelper.loadCurrency().then((result) => {
-      setCurrency(result);
-    });
-  }, []);
-
-  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
-  if (denied) return denied;
-
-  return (
-    <>
-      <PageHeader
-        icon={<ReceiptIcon />}
-        title={Locale.label("donations.donations.batches")}
-        subtitle={Locale.label("donations.donationBatchesPage.subtitle")}
-      >
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        spacing={2}
-        alignItems={{ xs: "flex-start", sm: "center" }}
-        justifyContent={{ sm: "space-between" }}
-        width="100%"
-        >
-          {stats.totalBatches > 0 && (
-            <PageHeaderStats
-              items={[
-                { icon: <DonationIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalBatches, label: Locale.label("donations.donationBatchesPage.batches"), minWidth: 80 },
-                { icon: <Icon sx={{ color: "#FFF", fontSize: 24 }}>receipt</Icon>, value: stats.totalDonations, label: Locale.label("donations.donationBatchesPage.donations"), minWidth: 80 },
-                { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.donationBatchesPage.totalAmount") }
-              ]}
-            />
-          )}
-          {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-            <HeaderPrimaryButton
-              sx={{ position: { md: "relative" }, ml: { md: "auto" }, zIndex: 1 }}
-              startIcon={<AddIcon />}
-              onClick={() => {
-                setEditBatchId("");
-              }}
-              data-testid="add-batch-button">
-              {Locale.label("donations.donationBatchesPage.addBatch")}
-            </HeaderPrimaryButton>
-          )}
-        </Stack>
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        {editBatch && <Box sx={{ mb: 3 }}><BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} /></Box>}
-
-        <CardWithHeader
-          icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          title={Locale.label("donations.donations.batches")}
-          count={sortedBatches.length}
-          actions={batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
-        >
-          {getTable()}
-        </CardWithHeader>
-
-        <Box sx={{ mt: 3 }}>
-          <DonationEvents />
-        </Box>
-
-        {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-          <Box sx={{ mt: 4, textAlign: "center" }}>
-            <Link to="/donations/stripe-import" style={{ color: "var(--text-muted)", fontSize: "0.85rem", textDecoration: "none" }}>
-              {Locale.label("donations.donationBatchesPage.stripeImportLink")}
-            </Link>
-          </Box>
-        )}
-      </Box>
-    </>
+      )}
+      <VerbRow>
+        {canEdit && <Verb onClick={() => setEditBatchId("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</Verb>}
+        {batches.data && <ExportButton data={yearBatches} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
+        <Verb onClick={() => setEventsOpen(!eventsOpen)}>Failed events</Verb>
+        {canEdit && <Verb href="/donations/stripe-import">{Locale.label("donations.donationBatchesPage.stripeImportLink")}</Verb>}
+      </VerbRow>
+      {eventsOpen && <Box sx={{ mt: 3 }}><DonationEvents /></Box>}
+    </Box>
   );
 };

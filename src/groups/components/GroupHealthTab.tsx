@@ -1,8 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Chart } from "react-google-charts";
-import { Box, Card, CardContent, Grid, Stack, Typography, useTheme } from "@mui/material";
-import { Group as GroupIcon, TrendingUp as TrendingUpIcon, TrendingDown as TrendingDownIcon, Autorenew as ChurnIcon } from "@mui/icons-material";
+import { Box, Card, CardContent, Grid, Typography, useTheme } from "@mui/material";
 import { Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
 import { AgeChart } from "../../people/demographics/components/AgeChart";
@@ -26,16 +25,11 @@ interface Props {
   group: GroupInterface;
 }
 
-const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <Card sx={{ height: "100%" }}>
-    <CardContent>
-      <Stack direction="row" spacing={1} alignItems="center">
-        {icon}
-        <Typography variant="h5" sx={{ fontWeight: 700 }}>{value}</Typography>
-      </Stack>
-      <Typography variant="caption" color="text.secondary" sx={{ textTransform: "uppercase", letterSpacing: 0.5 }}>{label}</Typography>
-    </CardContent>
-  </Card>
+const StatCard = ({ label, value }: { label: string; value: string }) => (
+  <div>
+    <div style={{ fontSize: "1.6rem", fontWeight: 500, letterSpacing: "-0.02em" }}>{value}</div>
+    <div className="og-muted">{label}</div>
+  </div>
 );
 
 export const GroupHealthTab = (props: Props) => {
@@ -74,19 +68,19 @@ export const GroupHealthTab = (props: Props) => {
   };
 
   return (
-    <Box sx={{ p: 3 }} data-testid="group-health-tab">
+    <Box data-testid="group-health-tab">
       <Grid container spacing={3}>
         <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard icon={<GroupIcon color="primary" />} label={Locale.label("groups.groupHealth.members")} value={data.memberCount.toString()} />
+          <StatCard label={Locale.label("groups.groupHealth.members")} value={data.memberCount.toString()} />
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard icon={<TrendingUpIcon color="success" />} label={Locale.label("groups.groupHealth.joined90")} value={data.joins90.toString()} />
+          <StatCard label={Locale.label("groups.groupHealth.joined90")} value={data.joins90.toString()} />
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard icon={<TrendingDownIcon color="error" />} label={Locale.label("groups.groupHealth.left90")} value={data.leaves90.toString()} />
+          <StatCard label={Locale.label("groups.groupHealth.left90")} value={data.leaves90.toString()} />
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard icon={<ChurnIcon color="warning" />} label={Locale.label("groups.groupHealth.churn90")} value={`${data.churnRate90}%`} />
+          <StatCard label={Locale.label("groups.groupHealth.churn90")} value={`${data.churnRate90}%`} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>

@@ -1,8 +1,8 @@
 import React from "react";
 import { type PersonInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, Locale, Permissions, PersonHelper, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Permissions, PersonHelper, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { GalleryModal } from "../../components/gallery";
 import { PersonAdd } from "../../components";
@@ -78,22 +78,25 @@ export const PickupPeople: React.FC<Props> = (props) => {
   ) : undefined;
 
   const rows = people.map((row) => (
-    <Stack key={row.id} direction="row" spacing={2} alignItems="center" sx={{ py: 1, borderBottom: "1px solid", borderColor: "divider" }} data-testid="pickup-row">
-      <Avatar src={row.photoUrl || undefined} sx={{ width: 40, height: 40 }} />
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body1">{row.name}</Typography>
-        {row.relationship && <Typography variant="body2" color="text.secondary">{row.relationship}</Typography>}
-      </Box>
-      <Chip
-        label={row.status === "notAuthorized" ? Locale.label("people.pickup.notAuthorized") : Locale.label("people.pickup.trusted")}
-        color={row.status === "notAuthorized" ? "error" : "success"}
-        size="small"
-        variant="outlined"
-        onClick={canEdit ? () => toggleStatus(row) : undefined}
-        data-testid="pickup-status-chip"
-      />
-      {canEdit && <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(row)} data-testid="pickup-delete-button" />}
-    </Stack>
+    <div key={row.id} className="pick" data-testid="pickup-row">
+      {row.photoUrl ? <img src={row.photoUrl} alt="" /> : <span className="ini">{(row.name || "?").charAt(0)}</span>}
+      <div>
+        <b>{row.name}</b>
+        {row.relationship && <div className="muted">{row.relationship}</div>}
+      </div>
+      <span>
+        <Chip
+          label={row.status === "notAuthorized" ? Locale.label("people.pickup.notAuthorized") : Locale.label("people.pickup.trusted")}
+          color={row.status === "notAuthorized" ? "error" : "success"}
+          size="small"
+          variant="outlined"
+          className={row.status === "notAuthorized" ? "" : "ok"}
+          onClick={canEdit ? () => toggleStatus(row) : undefined}
+          data-testid="pickup-status-chip"
+        />
+        {canEdit && <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(row)} data-testid="pickup-delete-button" />}
+      </span>
+    </div>
   ));
 
   const addForm = adding && (
@@ -128,11 +131,15 @@ export const PickupPeople: React.FC<Props> = (props) => {
     <>
       {ConfirmDialogElement}
       {showGallery && <GalleryModal aspectRatio={1} onSelect={(url) => { setPhotoUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
-      <DisplayBox id="pickupBox" headerIcon="verified_user" headerText={Locale.label("people.pickup.title")} editContent={editContent} data-testid="pickup-box">
-        {people.length === 0 && !adding && <Typography variant="body2" color="text.secondary">{Locale.label("people.pickup.none")}</Typography>}
-        {rows}
+      <div id="pickupBox" data-testid="pickup-box">
+        <h3>
+          {Locale.label("people.pickup.title")}
+          {editContent}
+        </h3>
+        {people.length === 0 && !adding && <p className="muted">{Locale.label("people.pickup.none")}</p>}
+        <div className="pickup">{rows}</div>
         {addForm}
-      </DisplayBox>
+      </div>
     </>
   );
 };

@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
-import { ApiHelper, UserHelper, EventHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, EventHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
-import { Box, MenuItem, Stack, TextField } from "@mui/material";
-import { Add as AddIcon, EventAvailable as AvailabilityIcon } from "@mui/icons-material";
+import { Box, MenuItem, TextField } from "@mui/material";
 import { useRequirePermission, useFirstDayOfWeek, applyWeekStart } from "../hooks";
 import { EventModal } from "./components/EventModal";
-import { HeaderPrimaryButton } from "../components/ui/headerButtons";
 import { type CalendarBlockoutInterface, type EventBookingInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
+import { CalendarChrome } from "./components/CalendarChrome";
+import { Verb } from "./components/plate";
 
 type CalEvent = { title: string; start: Date; end: Date; kind: "approved" | "pending" | "blockout"; eventId?: string; eventTitle?: string; targets?: string[]; };
 
@@ -150,46 +150,25 @@ export const AvailabilityPage = () => {
 
   return (
     <>
-      <PageHeader icon={<AvailabilityIcon />} title={Locale.label("calendars.availability.title")} subtitle={Locale.label("calendars.availability.subtitle")}>
-        <HeaderPrimaryButton
-          startIcon={<AddIcon />}
-          onClick={() => { setBookEventId(undefined); setShowBook(true); }}
-          data-testid="availability-book-button"
-        >
-          {Locale.label("calendars.availability.book")}
-        </HeaderPrimaryButton>
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
-        <Box sx={{
-          bgcolor: "background.paper",
-          p: 2,
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "grey.200",
-          "& .rbc-btn-group button": {
-            color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-          },
-          "& .rbc-btn-group button:hover, & .rbc-btn-group button:focus, & .rbc-btn-group button:active, & .rbc-btn-group button.rbc-active": {
-            color: (theme) => theme.palette.mode === "dark" ? "#000 !important" : "inherit",
-            backgroundColor: (theme) => theme.palette.mode === "dark" ? "#e0e0e0 !important" : undefined
-          },
-          "& .rbc-toolbar-label": {
-            color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-          },
-          "& .rbc-off-range-bg": {
-            backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined
-          },
-          "& .rbc-today": {
-            backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined
-          }
-        }}>
-          <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-            <TextField select size="small" label={Locale.label("calendars.availability.filter")} value={filter} onChange={(e) => setFilter(e.target.value)} sx={{ minWidth: 240 }} data-testid="availability-filter" SelectProps={{ displayEmpty: true }}>
-              <MenuItem value="">{Locale.label("calendars.availability.allRoomsResources")}</MenuItem>
-              {rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
-              {resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}
-            </TextField>
-          </Stack>
+      <CalendarChrome
+        selected="availability"
+        wide
+        extraVerbs={<Verb onClick={() => { setBookEventId(undefined); setShowBook(true); }} testId="availability-book-button">{Locale.label("calendars.availability.book")}</Verb>}>
+        <TextField
+          select
+          size="small"
+          variant="standard"
+          label={Locale.label("calendars.availability.filter")}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          sx={{ minWidth: 240, mb: 2 }}
+          data-testid="availability-filter"
+          SelectProps={{ displayEmpty: true }}>
+          <MenuItem value="">{Locale.label("calendars.availability.allRoomsResources")}</MenuItem>
+          {rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
+          {resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}
+        </TextField>
+        <Box sx={{ "& .rbc-toolbar-label": { color: "text.primary" } }}>
           {loading ? <Loading /> : (
             <Calendar
               localizer={localizer}
@@ -208,7 +187,7 @@ export const AvailabilityPage = () => {
             />
           )}
         </Box>
-      </Box>
+      </CalendarChrome>
       {showBook && (
         <EventModal
           churchId={churchId}

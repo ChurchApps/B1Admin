@@ -1,10 +1,9 @@
 import React, { memo } from "react";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
-import { Box, Typography, Grid, Paper, Stack, Card, CardContent, Button } from "@mui/material";
-import { CloudUpload as CloudUploadIcon, YouTube as YouTubeIcon, VideoLibrary as VimeoIcon, ArrowBack as ArrowBackIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
+import { Box, Typography } from "@mui/material";
 import { YouTubeImport, VimeoImport } from "./components";
-import { AppIconButton } from "../components/ui/AppIconButton";
+import { SermonChrome } from "./components/SermonChrome";
+import { Pills, Verb } from "./components/plate";
 
 export const BulkImportPage = memo(() => {
   const [importType, setImportType] = React.useState<"youtube" | "vimeo" | "">();
@@ -12,169 +11,40 @@ export const BulkImportPage = memo(() => {
   if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) return <></>;
 
   return (
-    <>
-      <Box sx={{ mb: 3 }}>
-        <PageHeader icon={<CloudUploadIcon />} title={Locale.label("sermons.bulkImport.title")} subtitle={Locale.label("sermons.bulkImport.subtitle")}>
-          {importType && (
-            <AppIconButton
-              label={Locale.label("common.back")}
-              icon={<ArrowBackIcon />}
-              tone="header"
-              onClick={() => setImportType("")}
+    <SermonChrome
+      selected="bulk"
+      extraVerbs={importType ? <Verb onClick={() => setImportType("")}>{Locale.label("common.back")}</Verb> : undefined}>
+      {importType
+        ? (importType === "youtube"
+          ? <YouTubeImport handleDone={() => setImportType("")} />
+          : <VimeoImport handleDone={() => setImportType("")} />)
+        : (
+          <>
+            <Typography sx={{ color: "text.secondary", mb: 2 }}>{Locale.label("sermons.bulkImport.chooseSource")}</Typography>
+            <Pills
+              items={[
+                { label: Locale.label("sermons.bulkImport.youtube"), selected: false, onClick: () => setImportType("youtube"), testId: "import-youtube-button" },
+                { label: Locale.label("sermons.bulkImport.vimeo"), selected: false, onClick: () => setImportType("vimeo"), testId: "import-vimeo-button" }
+              ]}
             />
-          )}
-        </PageHeader>
-      </Box>
-
-      <Box sx={{ p: 3 }}>
-        {importType
-          ? (<>
-            {importType === "youtube"
-              ? (<YouTubeImport handleDone={() => setImportType("")} />)
-              : (<VimeoImport handleDone={() => setImportType("")} />)
-            }
-          </>)
-          : (
-            <Box sx={{ maxWidth: 800, mx: "auto" }}>
-              <Card sx={{
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "grey.200"
-              }}>
-                <Box sx={{ p: 3, borderBottom: 1, borderColor: "divider" }}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <CloudUploadIcon sx={{ color: "primary.main" }} />
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                      {Locale.label("sermons.bulkImport.chooseSource")}
-                    </Typography>
-                  </Stack>
+            <Box sx={{ display: "grid", gap: 2, mt: 1 }}>
+              <Box>
+                <Typography sx={{ fontWeight: 600 }}>{Locale.label("sermons.bulkImport.youtube")}</Typography>
+                <Typography variant="body2" color="text.secondary">{Locale.label("sermons.bulkImport.youtubeDescription")}</Typography>
+                <Box sx={{ mt: 1 }}>
+                  <Verb onClick={() => setImportType("youtube")}>{Locale.label("sermons.bulkImport.importFromYouTube")}</Verb>
                 </Box>
-                <CardContent sx={{ p: 4 }}>
-                  <Grid container spacing={3}>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          p: 4,
-                          textAlign: "center",
-                          border: "2px dashed",
-                          borderColor: "grey.300",
-                          borderRadius: 2,
-                          cursor: "pointer",
-                          transition: "all 0.2s ease-in-out",
-                          "&:hover": {
-                            borderColor: "primary.main",
-                            backgroundColor: "primary.50",
-                            transform: "translateY(-2px)",
-                            boxShadow: 2
-                          }
-                        }}
-                        onClick={() => setImportType("youtube")}
-                        data-testid="import-youtube-button"
-                      >
-                        <Stack spacing={2} alignItems="center">
-                          <Box
-                            sx={{
-                              backgroundColor: "#FF0000",
-                              borderRadius: "12px",
-                              p: 2,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <YouTubeIcon sx={{ fontSize: 40, color: "#FFF" }} />
-                          </Box>
-                          <Typography variant="h6" sx={{ fontWeight: 600, color: "text.primary" }}>
-                            {Locale.label("sermons.bulkImport.youtube")}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 200 }}>
-                            {Locale.label("sermons.bulkImport.youtubeDescription")}
-                          </Typography>
-                          <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                              backgroundColor: "#FF0000",
-                              "&:hover": { backgroundColor: "#CC0000" },
-                              textTransform: "none",
-                              fontWeight: 600
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setImportType("youtube");
-                            }}
-                          >
-                            {Locale.label("sermons.bulkImport.importFromYouTube")}
-                          </Button>
-                        </Stack>
-                      </Paper>
-                    </Grid>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          p: 4,
-                          textAlign: "center",
-                          border: "2px dashed",
-                          borderColor: "grey.300",
-                          borderRadius: 2,
-                          cursor: "pointer",
-                          transition: "all 0.2s ease-in-out",
-                          "&:hover": {
-                            borderColor: "primary.main",
-                            backgroundColor: "primary.50",
-                            transform: "translateY(-2px)",
-                            boxShadow: 2
-                          }
-                        }}
-                        onClick={() => setImportType("vimeo")}
-                        data-testid="import-vimeo-button"
-                      >
-                        <Stack spacing={2} alignItems="center">
-                          <Box
-                            sx={{
-                              backgroundColor: "#1AB7EA",
-                              borderRadius: "12px",
-                              p: 2,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <VimeoIcon sx={{ fontSize: 40, color: "#FFF" }} />
-                          </Box>
-                          <Typography variant="h6" sx={{ fontWeight: 600, color: "text.primary" }}>
-                            {Locale.label("sermons.bulkImport.vimeo")}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 200 }}>
-                            {Locale.label("sermons.bulkImport.vimeoDescription")}
-                          </Typography>
-                          <Button
-                            variant="contained"
-                            size="large"
-                            sx={{
-                              backgroundColor: "#1AB7EA",
-                              "&:hover": { backgroundColor: "#1593C4" },
-                              textTransform: "none",
-                              fontWeight: 600
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setImportType("vimeo");
-                            }}
-                          >
-                            {Locale.label("sermons.bulkImport.importFromVimeo")}
-                          </Button>
-                        </Stack>
-                      </Paper>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
+              </Box>
+              <Box>
+                <Typography sx={{ fontWeight: 600 }}>{Locale.label("sermons.bulkImport.vimeo")}</Typography>
+                <Typography variant="body2" color="text.secondary">{Locale.label("sermons.bulkImport.vimeoDescription")}</Typography>
+                <Box sx={{ mt: 1 }}>
+                  <Verb onClick={() => setImportType("vimeo")}>{Locale.label("sermons.bulkImport.importFromVimeo")}</Verb>
+                </Box>
+              </Box>
             </Box>
-          )}
-      </Box>
-    </>
+          </>
+        )}
+    </SermonChrome>
   );
 });

@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { Box, Container, Typography } from "@mui/material";
-import { GridOn as GridOnIcon, Assignment as AssignmentIcon, RssFeed as RssFeedIcon } from "@mui/icons-material";
-import { Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { useParams } from "react-router-dom";
+import { Box } from "@mui/material";
+import { Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../../helpers";
 import { PlanList } from "../components/PlanList";
 import { PlanTypeGroups } from "../components/PlanTypeGroups";
 import { SignageFeedDialog } from "../components/SignageFeedDialog";
-import { Breadcrumbs, type BreadcrumbItem, HeaderSecondaryButton } from "../../components/ui";
+import { DirectoryPage, Verb, Verbs } from "../plated";
 
 export const PlanTypePage = () => {
   const params = useParams();
   const [showSignageFeed, setShowSignageFeed] = useState(false);
+  const [slice, setSlice] = useState<"plans" | "groups">("plans");
 
   const planType = useQuery<PlanTypeInterface>({
     queryKey: [`/planTypes/${params.id}`, "DoingApi"],
@@ -29,50 +29,29 @@ export const PlanTypePage = () => {
 
   if (!planType.data || !ministry.data) {
     return (
-      <Container maxWidth="lg" sx={{ py: 3 }}>
-        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-          <Typography variant="body1" color="text.secondary">
-            {Locale.label("plans.planTypePage.notFound")}
-          </Typography>
-        </Box>
-      </Container>
+      <DirectoryPage title={Locale.label("plans.planTypePage.planType")}>
+        <p>{Locale.label("plans.planTypePage.notFound")}</p>
+      </DirectoryPage>
     );
   }
 
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving/plans" },
-    { label: planType.data.name || "" }
-  ];
-
   return (
-    <>
-      <PageHeader
-        icon={<AssignmentIcon />}
-        title={planType.data.name || Locale.label("plans.planTypePage.planType")}
-        subtitle={Locale.label("plans.planTypePage.subtitle")}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
-      >
-        <HeaderSecondaryButton
-          {...({
-            component: Link,
-            to: `/serving/overview?planTypeId=${planType.data.id}&ministryId=${planType.data.ministryId}`,
-            startIcon: <GridOnIcon />
-          } as any)}
-        >
-          {Locale.label("plans.planTypePage.overview")}
-        </HeaderSecondaryButton>
-        <HeaderSecondaryButton startIcon={<RssFeedIcon />} onClick={() => setShowSignageFeed(true)} data-testid="signage-feed-button">
-          {Locale.label("plans.signageFeed.button") || "Digital Signage"}
-        </HeaderSecondaryButton>
-      </PageHeader>
+    <DirectoryPage title={planType.data.name || Locale.label("plans.planTypePage.planType")} lede={ministry.data.name}>
+      <Verbs>
+        <Verb to="/serving/plans">{Locale.label("components.wrapper.plans") || "Plans"}</Verb>
+        <Verb to={`/serving/overview?planTypeId=${planType.data.id}&ministryId=${planType.data.ministryId}`}>{Locale.label("plans.planTypePage.overview")}</Verb>
+        <Verb onClick={() => setShowSignageFeed(true)} testId="signage-feed-button">{Locale.label("plans.signageFeed.button") || "Digital Signage"}</Verb>
+        <Verb onClick={() => setSlice(slice === "groups" ? "plans" : "groups")}>{Locale.label("plans.planTypeGroups.heading")}</Verb>
+      </Verbs>
       {showSignageFeed && <SignageFeedDialog planTypeId={planType.data.id!} onClose={() => setShowSignageFeed(false)} />}
 
-      <Box sx={{ p: 3 }}>
-        <PlanList key="plans" ministry={ministry.data} planTypeId={planType.data.id} />
-        <Box sx={{ mt: 4 }}>
-          <PlanTypeGroups planTypeId={planType.data.id!} ministryId={planType.data.ministryId} />
-        </Box>
-      </Box>
-    </>
+      {slice === "groups"
+        ? <PlanTypeGroups planTypeId={planType.data.id!} ministryId={planType.data.ministryId} />
+        : (
+          <Box>
+            <PlanList key="plans" ministry={ministry.data} planTypeId={planType.data.id} />
+          </Box>
+        )}
+    </DirectoryPage>
   );
 };

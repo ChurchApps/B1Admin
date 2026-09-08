@@ -1,9 +1,9 @@
-import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
-import { GroupAdd as GroupAddIcon } from "@mui/icons-material";
+import { Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Paper } from "@mui/material";
+import { Link } from "react-router-dom";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
 import { PendingJoinRequests } from "./components/PendingJoinRequests";
+import "./omarchy.css";
 
 const PendingRequestsPage = () => {
   const requests = useQuery<GroupJoinRequestInterface[]>({
@@ -14,24 +14,24 @@ const PendingRequestsPage = () => {
   if (requests.isLoading) return <Loading />;
 
   return (
-    <>
-      <PageHeader icon={<GroupAddIcon />} title={Locale.label("groups.pendingRequestsPage.title")} subtitle={Locale.label("groups.pendingRequestsPage.subtitle")} />
-      <Box sx={{ p: 3 }} data-testid="pending-requests-page">
-        <Paper sx={{ p: 2 }}>
-          {requests.data && requests.data.length > 0 ? (
-            <PendingJoinRequests
-              requests={requests.data}
-              showGroupName
-              onChanged={() => requests.refetch()}
-            />
-          ) : (
-            <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }} data-testid="pending-requests-empty">
-              {Locale.label("groups.pendingRequestsPage.empty")}
-            </Box>
-          )}
-        </Paper>
-      </Box>
-    </>
+    <main className="og-page" data-testid="pending-requests-page">
+      <div className="og-head-verbs">
+        <Link to="/groups">{Locale.label("groups.groupsPage.groups")}</Link>
+      </div>
+      <h1>{Locale.label("groups.pendingRequestsPage.title")}</h1>
+      <p className="og-lede">{Locale.label("groups.pendingRequestsPage.subtitle")}</p>
+      {requests.data && requests.data.length > 0 ? (
+        <PendingJoinRequests
+          requests={requests.data}
+          showGroupName
+          onChanged={() => requests.refetch()}
+        />
+      ) : (
+        <p className="og-empty" data-testid="pending-requests-empty">
+          {Locale.label("groups.pendingRequestsPage.empty")}
+        </p>
+      )}
+    </main>
   );
 };
 
