@@ -27,15 +27,16 @@ const verbSx = {
   "&:disabled": { color: mute, cursor: "default", textDecoration: "none" }
 } as const;
 
-export function DirectoryPage({ title, lede, children, wide }: { title: string; lede?: string; children: React.ReactNode; wide?: boolean }) {
+export function DirectoryPage({ title, lede, children }: { title: string; lede?: string; children: React.ReactNode; wide?: boolean }) {
   return (
     <Box
       sx={{
-        width: wide ? "100%" : "min(840px, 100%)",
-        margin: "0 auto",
+        width: "100%",
+        margin: 0,
         background: surface,
-        padding: { xs: "24px 16px 80px", sm: wide ? "32px 24px 80px" : "40px 24px 96px" },
-        minHeight: "calc(100vh - 64px)",
+        padding: { xs: "24px 16px 80px", sm: "32px 40px 80px" },
+        minHeight: "calc(100vh - 56px)",
+        boxSizing: "border-box",
         "@media (max-width: 640px)": { width: "100%", padding: "24px 16px 80px" }
       }}>
       <Box component="h1" sx={{ m: 0, fontSize: { xs: "1.8rem", sm: "2.5rem" }, fontWeight: 500, letterSpacing: "-0.03em", color: ink, lineHeight: 1.08 }}>
@@ -56,7 +57,7 @@ export function PlatedRecord({ who, rest }: { who: React.ReactNode; rest: React.
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "minmax(280px, 0.9fr) minmax(0, 1.3fr)" },
         background: surface,
-        minHeight: "calc(100vh - 64px)",
+        minHeight: "calc(100vh - 56px)",
         "@media (max-width: 640px)": { gridTemplateColumns: "1fr" }
       }}>
       <Box

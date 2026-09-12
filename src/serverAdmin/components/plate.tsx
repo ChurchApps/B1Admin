@@ -107,19 +107,21 @@ export const DirectoryPage: React.FC<{
   find?: React.ReactNode;
   children: React.ReactNode;
   wide?: boolean;
-}> = ({ title, lede, pills, headerVerbs, find, children, wide }) => (
+}> = ({ title, lede, pills, headerVerbs, find, children }) => (
   <Box
     sx={{
-      width: wide ? "100%" : { xs: "100%", sm: "min(840px, calc(100% - 32px))" },
-      maxWidth: wide ? 1100 : 840,
-      mx: "auto",
-      mt: { xs: 0, sm: 3 },
-      mb: 8,
+      width: "100%",
+      maxWidth: "none",
+      mx: 0,
+      mt: 0,
+      mb: 0,
       px: { xs: 2, sm: 5 },
       py: { xs: 3, sm: 4 },
       bgcolor: "background.paper",
-      borderRadius: { xs: 0, sm: 1 },
-      boxShadow: { xs: "none", sm: "0 2px 8px rgba(0,0,0,0.08)" },
+      borderRadius: 0,
+      boxShadow: "none",
+      minHeight: "calc(100vh - 56px)",
+      boxSizing: "border-box",
       [MOBILE]: { width: "100%", maxWidth: "100%", mt: 0, borderRadius: 0, boxShadow: "none", px: 2, py: 3, mb: 0 }
     }}>
     <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2} sx={{ mb: 0.5 }}>

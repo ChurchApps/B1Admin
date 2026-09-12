@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="b1">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#1976d2" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link
-      href="https://fonts.googleapis.com/css?family=Roboto"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Figtree:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Syne:wght@500;600;700&family=Oswald:wght@500;600;700&family=Montserrat:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/all.css?v=1" />
@@ -17,6 +17,13 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
     <title>B1.church Admin</title>
+    <script>
+      try {
+        var s = localStorage.getItem("b1admin-omarchy-skin");
+        if (s !== "b1" && s !== "harbor" && s !== "ridge" && s !== "tyro" && s !== "lake" && s !== "one") s = "b1";
+        document.documentElement.setAttribute("data-theme", s);
+      } catch (e) {}
+    </script>
     <!-- temp - undo bootstrap  -->
     <style>
       button:focus {

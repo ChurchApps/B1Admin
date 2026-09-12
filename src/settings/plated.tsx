@@ -10,19 +10,15 @@ const PHONE = "@media (max-width: 640px)";
 
 export const plateSx: SxProps<Theme> = {
   bgcolor: "background.paper",
-  borderRadius: "8px",
-  mx: 3,
-  mt: 3,
-  mb: 6,
-  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+  borderRadius: 0,
+  mx: 0,
+  mt: 0,
+  mb: 0,
+  boxShadow: "none",
   overflow: "hidden",
-  [PHONE]: {
-    borderRadius: 0,
-    mx: 0,
-    mt: 0,
-    mb: 0,
-    boxShadow: "none"
-  }
+  width: "100%",
+  minHeight: "calc(100vh - 56px)",
+  boxSizing: "border-box"
 };
 
 export const dirPadSx: SxProps<Theme> = {

@@ -4,7 +4,7 @@ import { type PersonInterface, type ConversationInterface } from "@churchapps/he
 import { ApiHelper, ImageEditor, Locale, Permissions, PersonHelper, SocketHelper, SubscriptionManager, UserHelper } from "@churchapps/apphelper";
 import { useParams, useSearchParams } from "react-router-dom";
 import UserContext from "../UserContext";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PlatedRecord } from "./PlatedRecord";
 import { YearLedger } from "./YearLedger";
 import { NoteThread } from "./NoteThread";
@@ -13,6 +13,7 @@ import { PersonPlate } from "./components/PersonPlate";
 import { LogGiftSheet } from "./components/LogGiftSheet";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../helpers/Interfaces";
 import { useCampuses } from "../hooks/useCampuses";
+import { sortHouseholdMembers } from "./sortHouseholdMembers";
 import "./people.css";
 
 export const PersonPage = () => {
@@ -27,7 +28,6 @@ export const PersonPage = () => {
   const [userEmail, setUserEmail] = React.useState("");
   const [customFields, setCustomFields] = React.useState<PersonFieldInterface[]>([]);
   const [customValues, setCustomValues] = React.useState<Record<string, string>>({});
-  const [householdPeople, setHouseholdPeople] = React.useState<PersonInterface[]>([]);
   const [giftYear, setGiftYear] = React.useState(yearParam);
   const [sundayYear, setSundayYear] = React.useState(yearParam);
 
@@ -60,7 +60,7 @@ export const PersonPage = () => {
   const personData = useQuery<PersonInterface | null>({
     queryKey: ["/people/" + params.id, "MembershipApi"],
     enabled: !!params.id,
-    placeholderData: null
+    placeholderData: keepPreviousData
   });
 
   const refetch = useCallback(() => {
@@ -87,9 +87,22 @@ export const PersonPage = () => {
     };
   }, [params.id, personData.data?.conversationId]);
 
+  const householdId = (personData.data?.id === params.id ? personData.data?.householdId : undefined)
+    || personData.data?.householdId
+    || "";
+
+  const householdQuery = useQuery<PersonInterface[]>({
+    queryKey: ["/people/household/" + householdId, "MembershipApi"],
+    enabled: !!householdId,
+    placeholderData: keepPreviousData
+  });
+
   const person = useMemo<PersonInterface | null>(() => {
-    if (!personData.data) return null;
-    const p: PersonInterface = { ...personData.data };
+    const fromQuery = personData.data?.id === params.id ? personData.data : null;
+    const fromHousehold = (householdQuery.data || []).find((p) => p.id === params.id);
+    const raw = fromQuery || fromHousehold || null;
+    if (!raw) return null;
+    const p: PersonInterface = { ...raw };
     if (!p.contactInfo) p.contactInfo = { homePhone: "", workPhone: "", mobilePhone: "" };
     else {
       if (!p.contactInfo.homePhone) p.contactInfo.homePhone = "";
@@ -97,7 +110,9 @@ export const PersonPage = () => {
       if (!p.contactInfo.workPhone) p.contactInfo.workPhone = "";
     }
     return p;
-  }, [personData.data]);
+  }, [personData.data, householdQuery.data, params.id]);
+
+  const householdPeople = sortHouseholdMembers(householdQuery.data?.length ? householdQuery.data : (person ? [person] : []));
 
   React.useEffect(() => {
     if (!person?.id) return;
@@ -122,13 +137,6 @@ export const PersonPage = () => {
       })
       .catch(() => setCustomValues({}));
   }, [person?.id]);
-
-  React.useEffect(() => {
-    if (!person?.householdId) { setHouseholdPeople(person ? [person] : []); return; }
-    ApiHelper.get("/people/household/" + person.householdId, "MembershipApi")
-      .then((data: PersonInterface[]) => setHouseholdPeople(data || []))
-      .catch(() => setHouseholdPeople(person ? [person] : []));
-  }, [person?.householdId, person?.id]);
 
   const visibleForms = useMemo(() => {
     const submissions = person?.formSubmissions || [];
@@ -180,7 +188,10 @@ export const PersonPage = () => {
     if (!person) return;
     const updated = { ...person, photo: dataUrl };
     if (!dataUrl) updated.photoUpdated = undefined;
-    ApiHelper.post("/people", [updated], "MembershipApi").then(() => refetch());
+    ApiHelper.post("/people", [updated], "MembershipApi").then(() => {
+      refetch();
+      householdQuery.refetch();
+    });
     setInPhotoEditMode(false);
   };
 

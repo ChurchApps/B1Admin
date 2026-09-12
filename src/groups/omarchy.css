@@ -1,11 +1,13 @@
 .og-page {
-  width: min(840px, calc(100% - 64px));
-  margin: 24px auto 96px;
+  width: 100%;
+  margin: 0;
   padding: 32px 40px 64px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  color: #333;
+  background: var(--om-surface, #fff);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--om-ink, #333);
+  min-height: calc(100vh - 56px);
+  box-sizing: border-box;
 }
 
 .og-page h1,
@@ -39,7 +41,7 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #1565c0;
+  color: var(--om-accent);
   cursor: pointer;
   text-decoration: none;
 }
@@ -72,9 +74,9 @@
 .og-lists a.on,
 .og-lists button.on,
 .og-lists label.on {
-  background: #1565c0;
+  background: var(--om-accent);
   color: #fff;
-  border-color: #1565c0;
+  border-color: var(--om-accent);
 }
 
 .og-lists input {
@@ -98,7 +100,7 @@
 }
 
 .og-find:focus {
-  border-bottom-color: #1565c0;
+  border-bottom-color: var(--om-accent);
 }
 
 .og-find::placeholder {
@@ -134,7 +136,7 @@
 }
 
 .og-page a {
-  color: #1565c0;
+  color: var(--om-accent);
   font-weight: 500;
   text-decoration: none;
 }
@@ -146,7 +148,7 @@
 }
 
 .og-page tbody tr:hover .og-name {
-  color: #1565c0;
+  color: var(--om-accent);
 }
 
 .og-who-line {
@@ -169,7 +171,7 @@
 }
 
 .og-add > button {
-  background: #1565c0;
+  background: var(--om-accent);
   color: #fff;
   border: 0;
   font: inherit;
@@ -182,9 +184,10 @@
 .og-record {
   display: grid;
   grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.2fr);
-  background: #fff;
-  color: #333;
-  min-height: calc(100vh - 64px);
+  width: 100%;
+  background: var(--om-surface, #fff);
+  color: var(--om-ink, #333);
+  min-height: calc(100vh - 56px);
 }
 
 .og-who {
@@ -200,7 +203,7 @@
   top: 36px;
   bottom: 72px;
   width: 2px;
-  background: #1565c0;
+  background: var(--om-accent);
 }
 
 .og-photo {
@@ -220,7 +223,7 @@
   display: grid;
   place-items: center;
   background: #cfd4dc;
-  color: #1565c0;
+  color: var(--om-accent);
   font-size: 3.4rem;
   font-weight: 500;
   margin-bottom: 18px;
@@ -244,6 +247,32 @@
   gap: 4px;
 }
 
+.og-chip.on {
+  color: var(--om-accent);
+  border-color: var(--om-accent);
+}
+
+.og-gchip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  padding: 6px 12px;
+  margin: 0 8px 8px 0;
+  font-size: 0.88rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.og-gchip b {
+  font-weight: 650;
+}
+
+.og-gchip span {
+  color: #666;
+}
+
 .og-chip .MuiSvgIcon-root {
   font-size: 16px;
 }
@@ -260,7 +289,7 @@
   font-weight: 500;
   letter-spacing: -0.02em;
   display: block;
-  color: #1565c0;
+  color: var(--om-accent);
 }
 
 .og-addr {
@@ -294,7 +323,7 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #1565c0;
+  color: var(--om-accent);
   cursor: pointer;
   text-decoration: none;
 }
@@ -326,7 +355,7 @@
 .og-back {
   background: none;
   border: 0;
-  color: #1565c0;
+  color: var(--om-accent);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -353,9 +382,9 @@
 }
 
 .og-years button.on {
-  background: #1565c0;
+  background: var(--om-accent);
   color: #fff;
-  border-color: #1565c0;
+  border-color: var(--om-accent);
 }
 
 .og-muted {

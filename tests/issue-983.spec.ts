@@ -55,6 +55,16 @@ test.describe("Issue 983: print directory household names", () => {
     expect(result[0].displayName).toBe("Pat & Alex Crouch");
   });
 
+  test("orders members Head, Spouse, then oldest to youngest", () => {
+    const result = buildHouseholds([
+      person({ id: "c2", first: "Sam", last: "Chen", householdId: "h1", householdRole: "Child", birthDate: "2018-01-01" }),
+      person({ id: "sp", first: "David", last: "Chen", householdId: "h1", householdRole: "Spouse", birthDate: "1988-01-01" }),
+      person({ id: "c1", first: "Ellie", last: "Chen", householdId: "h1", householdRole: "Child", birthDate: "2014-01-01" }),
+      person({ id: "hd", first: "Maya", last: "Chen", householdId: "h1", householdRole: "Head", birthDate: "1990-01-01" })
+    ]);
+    expect(result[0].members.map((m) => m.name?.first)).toEqual(["Maya", "David", "Ellie", "Sam"]);
+  });
+
   test("uses a solo person's own name when householdId is missing", () => {
     const people = [person({ id: "solo1", first: "Jamie", last: "Solo" })];
     const result = buildHouseholds(people, new Map([["other", "Crouch"]]));

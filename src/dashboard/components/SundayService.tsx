@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Locale } from "@churchapps/apphelper";
+import { Locale, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
+import { useQuery } from "@tanstack/react-query";
 import { useSunday } from "../useSunday";
 import { hasPlansEditAccess } from "../../helpers";
 import "../../omarchy/omarchy.css";
@@ -27,15 +29,40 @@ export const SundayService: React.FC = () => {
   const plan = data?.plan;
   const hasAnything = !!(plan || (data?.inRoom || 0) > 0 || (data?.serving.length || 0) > 0 || (data?.guests.length || 0) > 0 || (data?.rooms.length || 0) > 0);
   const canPlans = hasPlansEditAccess();
+  const personId = UserHelper.person?.id || "";
 
-  const title = plan?.name || Locale.label("plans.planPage.servicePlan", "This week");
+  const groupMembers = useQuery<GroupMemberInterface[]>({
+    queryKey: ["/groupmembers?personId=" + personId, "MembershipApi"],
+    enabled: !UniqueIdHelper.isMissing(personId),
+    placeholderData: []
+  });
+
+  const tasksQuery = useQuery<TaskInterface[]>({
+    queryKey: ["/tasks", "DoingApi"],
+    enabled: !UniqueIdHelper.isMissing(personId),
+    placeholderData: []
+  });
+
+  const myGroups = groupMembers.data || [];
+  const myTasks = useMemo(
+    () => (tasksQuery.data || []).filter((t) => t.assignedToId === personId && t.status === "Open").slice(0, 4),
+    [tasksQuery.data, personId]
+  );
+  const hasMine = myTasks.length > 0 || myGroups.length > 0;
+  const hasLive = (data?.inRoom || 0) > 0 || (data?.serving.length || 0) > 0 || (data?.guests.length || 0) > 0 || (data?.rooms.length || 0) > 0;
+
+  const title = plan?.name || Locale.label("plans.planPage.servicePlan", "This Sunday");
   const series = [plan?.providerPlanName, plan?.notes].filter(Boolean).join(" · ");
+  const recap = !!data?.recap;
+  const live = !!data?.live;
+  const servingLabel = live ? "Serving this hour" : "Serving Sunday";
+  const guestLabel = recap ? "First time last Sunday" : "First time";
 
   return (
     <div className="om-sunday">
       <section className="om-bulletin">
-        <p className="om-eyebrow">{prettyWhen(plan?.serviceDate, data?.planStart) || Locale.label("components.wrapper.dash", "Sunday")}</p>
-        <h1 className="om-sermon">{hasAnything ? title : Locale.label("components.wrapper.dash", "Sunday")}</h1>
+        <p className="om-eyebrow">{prettyWhen(plan?.serviceDate || data?.focusDate, data?.planStart) || Locale.label("components.wrapper.dash", "Sunday")}</p>
+        <h1 className="om-sermon">{hasAnything ? title : Locale.label("components.wrapper.dash", "This Sunday")}</h1>
         {series
           ? <p className="om-series">{series}</p>
           : !hasAnything && <p className="om-series">This week's service will live here.</p>}
@@ -68,7 +95,8 @@ export const SundayService: React.FC = () => {
       <section className="om-live">
         {(data?.inRoom || 0) > 0 && (
           <div>
-            {data?.live && <div className="om-pulse"><i /> Live</div>}
+            {live && <div className="om-pulse"><i /> Live</div>}
+            {recap && <p className="om-eyebrow">Last Sunday</p>}
             <div className="om-hero-stats">
               <div className="om-in-room">{data?.inRoom}<span>in the room</span></div>
               {data?.split && <p className="om-split">{data.split}</p>}
@@ -78,7 +106,7 @@ export const SundayService: React.FC = () => {
 
         {(data?.serving.length || 0) > 0 && (
           <div>
-            <h3>Serving this hour</h3>
+            <h3>{servingLabel}</h3>
             <div className="om-people">
               {data!.serving.map((p) => (
                 <div className="om-person" key={p.personId + p.role}>
@@ -92,7 +120,7 @@ export const SundayService: React.FC = () => {
 
         {(data?.guests.length || 0) > 0 && (
           <div>
-            <h3>First time</h3>
+            <h3>{guestLabel}</h3>
             <div className="om-guests">
               {data!.guests.map((g) => (
                 g.href
@@ -122,9 +150,62 @@ export const SundayService: React.FC = () => {
           </div>
         )}
 
-        {!sunday.isLoading && (data?.inRoom || 0) === 0 && (data?.serving.length || 0) === 0 && (data?.guests.length || 0) === 0 && (data?.rooms.length || 0) === 0 && (
-          <p className="om-quiet">Who is in the room, who is serving, and who just walked in will show here when check-in and serving are in use.</p>
+        {!sunday.isLoading && !hasLive && !hasMine && (
+          <p className="om-quiet">
+            {data?.isSunday
+              ? "Who is in the room, who is serving, and who just walked in will show here when check-in and serving are in use."
+              : (
+                <>
+                  Last Sunday's room and first-time households stay here through the week. Who is serving this Sunday will show when a plan is assigned.
+                  {" "}
+                  <Link to="/people">People</Link>
+                  {" · "}
+                  <Link to="/attendance">Attendance</Link>
+                  {canPlans && (
+                    <>
+                      {" · "}
+                      <Link to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
+                    </>
+                  )}
+                </>
+              )}
+          </p>
         )}
+
+        <div>
+          <h3><Link to="/serving/tasks">{Locale.label("tasks.taskList.tasks")}</Link></h3>
+          {myTasks.length === 0 ? (
+            <p className="om-quiet">None open.</p>
+          ) : (
+            <p className="om-mine om-mine-stack">
+              {myTasks.map((t) => (
+                <Link key={t.id} to={"/serving/tasks/" + t.id}>{t.title}</Link>
+              ))}
+            </p>
+          )}
+          <p className="om-quiet" style={{ marginTop: 10 }}>
+            <Link to="/serving/tasks">All tasks</Link>
+          </p>
+        </div>
+
+        <div>
+          <h3><Link to="/groups">{Locale.label("components.wrapper.groups")}</Link></h3>
+          {myGroups.length === 0 ? (
+            <p className="om-quiet">None yet.</p>
+          ) : (
+            <p className="om-mine">
+              {myGroups.map((gm, i) => (
+                <React.Fragment key={gm.id}>
+                  {i > 0 && " · "}
+                  <Link to={"/groups/" + gm.groupId}>{gm.group?.name || Locale.label("people.groups.unknownGroup")}</Link>
+                </React.Fragment>
+              ))}
+            </p>
+          )}
+          <p className="om-quiet" style={{ marginTop: 10 }}>
+            <Link to="/groups">All groups</Link>
+          </p>
+        </div>
       </section>
     </div>
   );

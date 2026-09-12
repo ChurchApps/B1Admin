@@ -70,6 +70,7 @@ export const PersonIdentity = (props: Props) => {
         {person.optedOut && <span className="chip">No direct mail</span>}
         {person.nametagNotes && <span className="chip">{person.nametagNotes}</span>}
       </div>
+      <Household person={person} reload={person?.photoUpdated} />
       {mobile && <a className="phone" href={"tel:" + mobile.replace(/\D/g, "")}>{formattedPhoneNumber(mobile)}</a>}
       {otherPhones && <p className="phones">{otherPhones}</p>}
       {person.contactInfo?.email && <a className="email" href={"mailto:" + person.contactInfo.email}>{person.contactInfo.email}</a>}
@@ -97,7 +98,6 @@ export const PersonIdentity = (props: Props) => {
           </button>
         )}
       </div>
-      <Household person={person} reload={person?.photoUpdated} />
       <PickupPeople person={person} />
       {showTextDialog && mobile && (
         <SendTextDialog personId={person.id} personName={person.name?.display} phoneNumber={mobile} onClose={() => setShowTextDialog(false)} />

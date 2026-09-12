@@ -1,4 +1,5 @@
 import { type PersonInterface } from "@churchapps/helpers";
+import { sortHouseholdMembers } from "./sortHouseholdMembers";
 
 export interface DirectoryHousehold {
   key: string;
@@ -13,14 +14,6 @@ export interface DirectoryHousehold {
   members: PersonInterface[];
 }
 
-const ageFrom = (birthDate?: string): number => {
-  if (!birthDate) return -1;
-  const d = new Date(birthDate);
-  if (Number.isNaN(d.getTime())) return -1;
-  const ms = Date.now() - d.getTime();
-  return ms / (365.25 * 24 * 60 * 60 * 1000);
-};
-
 export const firstName = (p: PersonInterface) => p.name?.nick || p.name?.first || p.name?.display || "";
 
 export const buildHouseholds = (people: PersonInterface[], householdNameById: Map<string, string> = new Map()): DirectoryHousehold[] => {
@@ -33,7 +26,7 @@ export const buildHouseholds = (people: PersonInterface[], householdNameById: Ma
 
   const households: DirectoryHousehold[] = [];
   groups.forEach((members, key) => {
-    const sorted = [...members].sort((a, b) => ageFrom(b.birthDate) - ageFrom(a.birthDate));
+    const sorted = sortHouseholdMembers(members);
     const storedName = (householdNameById.get(key) || "").trim();
     const surnameSource = storedName ? sorted[0] : (members.find((m) => m.householdRole === "Head") || sorted[0]);
     const primary = sorted[0];

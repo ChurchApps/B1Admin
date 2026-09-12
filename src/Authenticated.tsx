@@ -89,7 +89,7 @@ export const Authenticated: React.FC = () => {
   if (!context) return null;
 
   const LayoutWithWrapper: React.FC = () => (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", width: "100%" }}>
       <Wrapper>
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>

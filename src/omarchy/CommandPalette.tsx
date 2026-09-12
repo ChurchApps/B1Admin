@@ -7,6 +7,7 @@ import { CreatePerson } from "../components/CreatePerson";
 import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
 import { hasPlansEditAccess } from "../helpers";
 import { usePendingApprovalsCount, usePendingJoinRequestsCount } from "../hooks";
+import { OMARCHY_SKINS, useThemeMode } from "../ThemeContext";
 import "./omarchy.css";
 
 export const OMARCHY_PALETTE_EVENT = "omarchy-palette";
@@ -41,6 +42,7 @@ export const CommandPalette: React.FC = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const pendingApprovals = usePendingApprovalsCount();
   const pendingJoinRequests = usePendingJoinRequestsCount();
+  const { setSkin } = useThemeMode();
 
   const close = React.useCallback(() => {
     setOpen(false);
@@ -181,6 +183,10 @@ export const CommandPalette: React.FC = () => {
       items.push({ group: "Do", title: Locale.label("dashboard.memberWelcome.downloadAppTitle", "Download the Mobile App"), subtitle: Locale.label("common.mobile", "Mobile"), action: () => go(b1Url + "/mobile/install", true) });
     }
 
+    OMARCHY_SKINS.forEach((s) => {
+      items.push({ group: "Do", title: s.label + " theme", subtitle: "Appearance", action: () => { setSkin(s.id); close(); } });
+    });
+
     items.push({ group: "Jump", title: Locale.label("components.wrapper.dash", "Sunday"), subtitle: "/", action: () => go("/") });
     if (canPeople) items.push({ group: "Jump", title: Locale.label("components.wrapper.ppl", "People"), subtitle: "/people", action: () => go("/people") });
     items.push({ group: "Jump", title: Locale.label("components.wrapper.groups", "Groups"), subtitle: "/groups", action: () => go("/groups") });
@@ -197,7 +203,7 @@ export const CommandPalette: React.FC = () => {
     if (canForms) items.push({ group: "Jump", title: Locale.label("components.wrapper.forms", "Forms"), subtitle: "/forms", action: () => go("/forms") });
 
     return items;
-  }, [go, close, pendingApprovals, pendingJoinRequests]);
+  }, [go, close, pendingApprovals, pendingJoinRequests, setSkin]);
 
   React.useEffect(() => {
     if (!open) return;

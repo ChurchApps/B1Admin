@@ -1,23 +1,23 @@
-import React from "react";
-import { GroupBanner, GroupDetailsEdit, GroupNavigation } from "./components";
+import React, { useCallback } from "react";
+import { GroupBanner, GroupDetailsEdit } from "./components";
 import { type GroupInterface } from "@churchapps/helpers";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { GroupMembersTab } from "./components/GroupMembersTab";
 import { GroupSessionsTab } from "./components/GroupSessionsTab";
 import { GroupCalendarTab } from "./components/GroupCalendarTab";
 import { GroupHealthTab } from "./components/GroupHealthTab";
+import { GroupPlate } from "./components/GroupPlate";
+import { Locale, UserHelper, Permissions, ApiHelper } from "@churchapps/apphelper";
 import { Button } from "@mui/material";
-import { CalendarMonth as AttendanceIcon } from "@mui/icons-material";
-import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { EmptyState } from "../components/ui/EmptyState";
+import { CalendarMonth as AttendanceIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import "./omarchy.css";
 
 export const GroupPage = () => {
   const params = useParams();
-
-  const [selectedTab, setSelectedTab] = React.useState("members");
-  const [editMode, setEditMode] = React.useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const view = searchParams.get("view") || "";
 
   const group = useQuery<GroupInterface>({
     queryKey: [`/groups/${params.id}`, "MembershipApi"],
@@ -25,17 +25,24 @@ export const GroupPage = () => {
   });
   const groupData = group.data as GroupInterface;
 
-  React.useEffect(() => {
-    if (selectedTab === "") {
-      setSelectedTab("members");
-    }
-  }, [selectedTab]);
+  const setView = useCallback((next: string) => {
+    const q = new URLSearchParams();
+    if (next) q.set("view", next);
+    setSearchParams(q, { replace: true });
+  }, [setSearchParams]);
 
   const enableAttendance = () => {
-    ApiHelper.post("/groups", [{ ...groupData, trackAttendance: true }], "MembershipApi").then(() => group.refetch());
+    ApiHelper.post("/groups", [{ ...groupData, trackAttendance: true }], "MembershipApi").then(() => {
+      group.refetch().then(() => setView("sessions"));
+    });
   };
 
-  const getSessionsTab = () => {
+  const handleUpdated = () => {
+    setView("");
+    group.refetch();
+  };
+
+  const sessionsView = () => {
     if (groupData.id && !groupData.trackAttendance) {
       return (
         <EmptyState
@@ -53,51 +60,49 @@ export const GroupPage = () => {
     return <GroupSessionsTab key="sessions" group={groupData} />;
   };
 
-  const getCurrentTab = () => {
-    switch (selectedTab) {
-      case "sessions": return getSessionsTab();
-      case "calendar": return <GroupCalendarTab key="calendar" group={groupData} />;
-      case "health": return <GroupHealthTab key="health" group={groupData} />;
-      default: return <GroupMembersTab key="members" group={groupData} />;
+  const rest = (() => {
+    if (view === "edit" && groupData.id) {
+      return <GroupDetailsEdit id="groupDetailsBox" group={groupData} updatedFunction={handleUpdated} />;
     }
-  };
-
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  const handleUpdated = () => {
-    setEditMode(false);
-    group.refetch();
-  };
-
-  const handleTabChange = (tab: string) => {
-    setEditMode(false);
-    setSelectedTab(tab);
-  };
+    if (view === "members") {
+      return (
+        <>
+          <button type="button" className="og-back" onClick={() => setView("")}>← {groupData.name}</button>
+          <GroupMembersTab key="members" group={groupData} />
+        </>
+      );
+    }
+    if (view === "sessions") {
+      return (
+        <>
+          <button type="button" className="og-back" onClick={() => setView("")}>← {groupData.name}</button>
+          {sessionsView()}
+        </>
+      );
+    }
+    if (view === "calendar") {
+      return (
+        <>
+          <button type="button" className="og-back" onClick={() => setView("")}>← {groupData.name}</button>
+          <GroupCalendarTab key="calendar" group={groupData} />
+        </>
+      );
+    }
+    if (view === "health") {
+      return (
+        <>
+          <button type="button" className="og-back" onClick={() => setView("")}>← {groupData.name}</button>
+          <GroupHealthTab key="health" group={groupData} />
+        </>
+      );
+    }
+    return <GroupPlate group={groupData} onView={setView} onEnableAttendance={enableAttendance} />;
+  })();
 
   return (
     <div className="og-record">
-      <GroupBanner
-        group={groupData}
-        onEdit={handleEdit}
-        editMode={editMode}
-      />
-      <section className="og-rest">
-        {editMode && groupData.id ? (
-          <div id="mainContent">
-            <GroupDetailsEdit id="groupDetailsBox" group={groupData} updatedFunction={handleUpdated} />
-          </div>
-        ) : (
-          <>
-            {selectedTab !== "members" && (
-              <button type="button" className="og-back" onClick={() => setSelectedTab("members")}>← {groupData.name}</button>
-            )}
-            <GroupNavigation selectedTab={selectedTab} onTabChange={handleTabChange} group={groupData} />
-            <div id="mainContent">{getCurrentTab()}</div>
-          </>
-        )}
-      </section>
+      <GroupBanner group={groupData} onEdit={() => setView("edit")} />
+      <section className="og-rest" id="mainContent">{rest}</section>
     </div>
   );
 };

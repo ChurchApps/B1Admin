@@ -12,7 +12,6 @@ import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
 import { CreatePerson } from "../components";
 import { ExportButton } from "../components/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AISearch } from "./components/AISearch";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
 import { type BulkResult } from "./components/bulk/BulkFieldDialog";
 import { DirectoryHouseholds } from "./components/DirectoryHouseholds";
@@ -361,14 +360,6 @@ export const PeoplePage = memo(() => {
           initialFilters={selectedListFilters}
           onReportCriteria={setSaveableCriteria}
           onTermChange={setFindTerm}
-        />
-        <AISearch
-          updateSearchResults={(people) => {
-            setSearchResults(people);
-            setIsSearchPerformed(true);
-          }}
-          onReportCriteria={setSaveableCriteria}
-          resetSearchResults={resetSearchResults}
         />
 
         <DirectoryHouseholds

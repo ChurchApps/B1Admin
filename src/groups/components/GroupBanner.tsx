@@ -1,26 +1,15 @@
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
-import {
-  Edit as EditIcon,
-  CheckCircle as CheckIcon,
-  Cancel as CancelIcon,
-  Sms as SmsIcon,
-  Email as EmailIcon,
-  NotificationsActive as NotificationsActiveIcon,
-  ContentCopy as ContentCopyIcon
-} from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
-import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   group: GroupInterface;
   onEdit?: () => void;
-  editMode?: boolean;
 }
 
 export const GroupBanner = memo((props: Props) => {
@@ -56,8 +45,8 @@ export const GroupBanner = memo((props: Props) => {
       campusId: group.campusId,
       joinPolicy: group.joinPolicy
     };
-    (copy as Record<string, any>).discussionsEnabled = (group as Record<string, any>).discussionsEnabled !== false;
-    (copy as Record<string, any>).announcementsEnabled = (group as Record<string, any>).announcementsEnabled !== false;
+    (copy as Record<string, unknown>).discussionsEnabled = (group as Record<string, unknown>).discussionsEnabled !== false;
+    (copy as Record<string, unknown>).announcementsEnabled = (group as Record<string, unknown>).announcementsEnabled !== false;
     ApiHelper.post("/groups", [copy], "MembershipApi").then((result: GroupInterface[]) => {
       if (result?.[0]?.id) navigate("/groups/" + result[0].id);
     });
@@ -66,7 +55,7 @@ export const GroupBanner = memo((props: Props) => {
   React.useEffect(() => {
     if (canText) {
       ApiHelper.get("/texting/providers", "MessagingApi")
-        .then((data: any[]) => setHasTextingProvider(data?.length > 0))
+        .then((data: unknown[]) => setHasTextingProvider(data?.length > 0))
         .catch(() => setHasTextingProvider(false));
     }
   }, [canText]);
@@ -74,7 +63,7 @@ export const GroupBanner = memo((props: Props) => {
   React.useEffect(() => {
     if (group?.id) {
       ApiHelper.get("/groupservicetimes?groupId=" + group.id, "AttendanceApi")
-        .then((data: any) => setGroupServiceTimes(data))
+        .then((data: GroupServiceTimeInterface[]) => setGroupServiceTimes(data))
         .catch(() => setGroupServiceTimes([]));
     }
   }, [group?.id]);
@@ -82,15 +71,15 @@ export const GroupBanner = memo((props: Props) => {
   const isStandard = useMemo(() => (group?.tags?.indexOf("standard") ?? -1) > -1, [group?.tags]);
 
   const flagChips = useMemo(() => {
-    if (!group || !isStandard) return [] as { key: string; on: boolean; label: string; testId?: string }[];
-    const g = group as Record<string, any>;
-    return [
-      { key: "track", on: !!group.trackAttendance, label: Locale.label("groups.groupBanner.trackAttendance") },
-      { key: "nametag", on: !!group.printNametag, label: Locale.label("groups.groupBanner.printNametag") },
-      { key: "pickup", on: !!group.parentPickup, label: Locale.label("groups.groupBanner.parentPickup") },
-      { key: "discussions", on: g.discussionsEnabled !== false, label: Locale.label("groups.groupBanner.discussions"), testId: "group-chat-discussions-chip" },
-      { key: "announcements", on: g.announcementsEnabled !== false, label: Locale.label("groups.groupBanner.announcements"), testId: "group-chat-announcements-chip" }
-    ];
+    if (!group || !isStandard) return [] as { key: string; label: string; testId?: string }[];
+    const g = group as Record<string, unknown>;
+    const chips: { key: string; label: string; testId?: string }[] = [];
+    if (group.trackAttendance) chips.push({ key: "track", label: Locale.label("groups.groupBanner.trackAttendance") });
+    if (group.printNametag) chips.push({ key: "nametag", label: Locale.label("groups.groupBanner.printNametag") });
+    if (group.parentPickup) chips.push({ key: "pickup", label: Locale.label("groups.groupBanner.parentPickup") });
+    if (g.discussionsEnabled !== false) chips.push({ key: "discussions", label: Locale.label("groups.groupBanner.discussions"), testId: "group-chat-discussions-chip" });
+    if (g.announcementsEnabled !== false) chips.push({ key: "announcements", label: Locale.label("groups.groupBanner.announcements"), testId: "group-chat-announcements-chip" });
+    return chips;
   }, [group, isStandard]);
 
   const labels = (group?.labelArray || []).filter((label) => label && label.trim() !== "");
@@ -120,10 +109,7 @@ export const GroupBanner = memo((props: Props) => {
 
       <div className="og-chips">
         {flagChips.map((c) => (
-          <span key={c.key} className="og-chip" data-testid={c.testId}>
-            {c.on ? <CheckIcon color="success" sx={{ fontSize: 16 }} /> : <CancelIcon color="error" sx={{ fontSize: 16 }} />}
-            <span>{c.label}</span>
-          </span>
+          <span key={c.key} className="og-chip on" data-testid={c.testId}>{c.label}</span>
         ))}
         {labels.map((label, idx) => (
           <span key={`label-${label}-${idx}`} className="og-chip">{label}</span>
@@ -134,18 +120,18 @@ export const GroupBanner = memo((props: Props) => {
       </div>
 
       <div className="og-verbs">
-        <AppIconButton label={Locale.label("groups.groupBanner.emailTooltip")} icon={<EmailIcon />} onClick={() => setShowEmailDialog(true)} />
+        <button type="button" onClick={() => setShowEmailDialog(true)}>Email</button>
         {canSendNotifications && (
-          <AppIconButton label="Send push notification" icon={<NotificationsActiveIcon />} onClick={() => setShowNotificationDialog(true)} />
+          <button type="button" onClick={() => setShowNotificationDialog(true)}>Notify</button>
         )}
         {canText && hasTextingProvider && (
-          <AppIconButton label={Locale.label("groups.groupBanner.textTooltip")} icon={<SmsIcon />} onClick={() => setShowTextDialog(true)} />
+          <button type="button" onClick={() => setShowTextDialog(true)}>Text</button>
         )}
         {canEdit && (
-          <AppIconButton label={Locale.label("groups.groupBanner.duplicateTooltip")} icon={<ContentCopyIcon />} onClick={handleDuplicate} data-testid="duplicate-group-button" />
+          <button type="button" onClick={handleDuplicate} data-testid="duplicate-group-button">Duplicate</button>
         )}
         {canEdit && (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={onEdit} data-testid="edit-group-button" />
+          <button type="button" onClick={onEdit} data-testid="edit-group-button">{Locale.label("common.edit")}</button>
         )}
       </div>
 

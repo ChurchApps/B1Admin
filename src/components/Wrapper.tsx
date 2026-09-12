@@ -20,8 +20,7 @@ export const Wrapper: React.FC<Props> = (props) => {
     <>
       {showHeader && <Header />}
 
-      <Box sx={{ width: "100%" }}>
-        {showHeader && <div id="appBarSpacer" style={{ height: 0 }}></div>}
+      <Box sx={{ width: "100%", minWidth: 0, flex: 1 }}>
         {props.children}
       </Box>
       {showHeader && <CommandPalette />}

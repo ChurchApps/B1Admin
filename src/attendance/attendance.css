@@ -21,7 +21,7 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #1565C0;
+  color: var(--om-accent);
   cursor: pointer;
   text-decoration: none;
 }
@@ -35,7 +35,7 @@
   background: none;
   border: 0;
   padding: 0;
-  color: #1565C0;
+  color: var(--om-accent);
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
@@ -72,12 +72,12 @@
 }
 
 .om-sun.on {
-  background: #1565C0;
-  border-color: #1565C0;
+  background: var(--om-accent);
+  border-color: var(--om-accent);
 }
 
 .om-sun.today {
-  outline: 2px solid #1565C0;
+  outline: 2px solid var(--om-accent);
   outline-offset: 2px;
 }
 
@@ -95,7 +95,7 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #1565C0;
+  color: var(--om-accent);
   cursor: pointer;
 }
 

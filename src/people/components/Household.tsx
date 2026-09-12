@@ -1,20 +1,24 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { HouseholdEdit } from ".";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
-import { ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
-import { useNavigate } from "react-router-dom";
+import { ApiHelper, UserHelper, Permissions, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { useNavigate, useParams } from "react-router-dom";
 import { personInitial, personPhotoUrl } from "../photo";
+import { sortHouseholdMembers } from "../sortHouseholdMembers";
 
 interface Props {
   person: PersonInterface;
-  reload: any;
+  reload?: unknown;
 }
 
 export const Household: React.FC<Props> = memo((props) => {
   const [household, setHousehold] = React.useState<HouseholdInterface | null>(null);
-  const [members, setMembers] = React.useState<PersonInterface[] | null>(null);
+  const [members, setMembers] = React.useState<PersonInterface[]>([]);
   const [mode, setMode] = React.useState("display");
   const navigate = useNavigate();
+  const params = useParams();
+  const selectedId = params.id || props.person.id;
+  const householdId = props.person?.householdId;
 
   const handleEdit = () => setMode("edit");
   const handleUpdate = () => {
@@ -24,10 +28,10 @@ export const Household: React.FC<Props> = memo((props) => {
   };
 
   const loadData = () => {
-    if (!UniqueIdHelper.isMissing(props.person?.householdId)) {
-      ApiHelper.get("/households/" + props?.person.householdId, "MembershipApi").then((data: any) => setHousehold(data));
+    if (!UniqueIdHelper.isMissing(householdId)) {
+      ApiHelper.get("/households/" + householdId, "MembershipApi").then((data: HouseholdInterface) => setHousehold(data));
     } else if (props.person?.id && UserHelper.checkAccess(Permissions.membershipApi.people.edit)) {
-      ApiHelper.post("/households", [{ name: props.person.name?.last || "" }], "MembershipApi").then((data: any) => {
+      ApiHelper.post("/households", [{ name: props.person.name?.last || "" }], "MembershipApi").then((data: HouseholdInterface[]) => {
         props.person.householdId = data[0].id;
         ApiHelper.post("/people", [props.person], "MembershipApi").then(() => setHousehold(data[0]));
       });
@@ -35,19 +39,21 @@ export const Household: React.FC<Props> = memo((props) => {
   };
 
   const loadMembers = () => {
-    if (household != null) {
-      ApiHelper.get("/people/household/" + household.id, "MembershipApi").then((data: any) => setMembers(data));
-    }
+    const id = household?.id || householdId;
+    if (UniqueIdHelper.isMissing(id)) return;
+    ApiHelper.get("/people/household/" + id, "MembershipApi").then((data: PersonInterface[]) => setMembers(sortHouseholdMembers(data || [])));
   };
 
-  React.useEffect(loadData, [props.person]);
-  React.useEffect(loadMembers, [household]);
+  React.useEffect(loadData, [householdId]);
+  React.useEffect(loadMembers, [household?.id, householdId, props.reload]);
+
+  const ordered = useMemo(() => sortHouseholdMembers(members), [members]);
 
   if (mode === "edit") {
-    return <HouseholdEdit household={household!} currentMembers={members} updatedFunction={handleUpdate} currentPerson={props.person} />;
+    return <HouseholdEdit household={household!} currentMembers={ordered} updatedFunction={handleUpdate} currentPerson={props.person} />;
   }
 
-  if (!members) return <Loading size="sm" />;
+  if (ordered.length === 0) return null;
 
   return (
     <div id="householdBox">
@@ -60,11 +66,11 @@ export const Household: React.FC<Props> = memo((props) => {
         )}
       </h3>
       <div className="house">
-        {members.map((m) => {
+        {ordered.map((m) => {
           const src = personPhotoUrl(m);
           const short = m.name?.nick || m.name?.first || m.name?.display || "";
           return (
-            <button key={m.id} className={`face${m.id === props.person.id ? " on" : ""}`} type="button" onClick={() => m.id && navigate("/people/" + m.id)}>
+            <button key={m.id} className={`face${m.id === selectedId ? " on" : ""}`} type="button" onClick={() => m.id && navigate("/people/" + m.id)}>
               {src ? <img src={src} alt="" /> : <span className="ini">{personInitial(m)}</span>}
               <h5>{m.name?.display || short}</h5>
               <span className="role">{m.householdRole}</span>

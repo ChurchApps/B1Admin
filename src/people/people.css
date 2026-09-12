@@ -1,17 +1,19 @@
 .omarchy-people,
 .omarchy-record {
-  color: #333333;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+  color: var(--om-ink);
+  font-family: var(--om-font);
   -webkit-font-smoothing: antialiased;
 }
 
 .omarchy-people {
-  width: min(840px, calc(100% - 64px));
-  margin: 24px auto 96px;
+  width: 100%;
+  margin: 0;
   padding: 32px 40px 64px;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: var(--om-surface, #ffffff);
+  border-radius: 0;
+  box-shadow: none;
+  min-height: calc(100vh - 56px);
+  box-sizing: border-box;
 }
 
 .omarchy-people h1,
@@ -21,7 +23,7 @@
   letter-spacing: -0.01em;
   line-height: 1.05;
   margin: 0;
-  color: #333333;
+  color: var(--om-ink);
 }
 
 .omarchy-people .dir-head {
@@ -47,13 +49,13 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--c1, #1565C0);
+  color: var(--c1, var(--om-accent));
   text-decoration: none;
   cursor: pointer;
 }
 
 .omarchy-people .lede {
-  color: #666666;
+  color: var(--om-mute);
   margin: 8px 0 28px;
 }
 
@@ -67,8 +69,8 @@
 
 .omarchy-people .lists button {
   background: transparent;
-  border: 1px solid #dddddd;
-  color: #333333;
+  border: 1px solid var(--om-line);
+  color: var(--om-ink);
   font: inherit;
   font-size: 0.88rem;
   font-weight: 500;
@@ -78,9 +80,9 @@
 }
 
 .omarchy-people .lists button.on {
-  background: #1565C0;
-  color: #fff;
-  border-color: #1565C0;
+  background: var(--om-accent);
+  color: var(--om-on-accent);
+  border-color: var(--om-accent);
 }
 
 .omarchy-people .list-manage {
@@ -95,11 +97,11 @@
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #dddddd;
-  color: #333333;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+  border-bottom: 1px solid var(--om-line);
+  color: var(--om-ink);
+  font-family: var(--om-font);
   outline: none;
-  caret-color: #1565C0;
+  caret-color: var(--om-accent);
   border-radius: 0;
 }
 
@@ -120,41 +122,42 @@
 .omarchy-people input#q:focus,
 .omarchy-people input#ask:focus,
 .omarchy-people textarea#ask:focus {
-  border-bottom-color: #1565C0;
+  border-bottom-color: var(--om-accent);
 }
 
 .omarchy-people .ask-hint {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.8rem;
-  margin: 6px 0 12px;
+  margin: 0 0 16px;
 }
 
-.omarchy-people .ask-actions {
-  display: flex;
-  gap: 10px;
-  margin: 8px 0 18px;
+.omarchy-people .search-modes {
+  color: var(--om-mute);
+  font-size: 0.88rem;
+  margin: 0 0 16px;
 }
 
-.omarchy-people .ask-actions button {
+.omarchy-people .search-modes button {
   background: none;
   border: 0;
   padding: 0;
   font: inherit;
-  font-weight: 600;
-  color: #1565C0;
+  font-weight: 500;
+  color: var(--om-accent);
   cursor: pointer;
 }
 
-.omarchy-people .adv-toggle {
-  color: #1565C0;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
-  margin: 0 0 16px;
+.omarchy-people .search-modes button.on {
+  color: var(--om-ink);
+}
+
+.omarchy-people .search-modes button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .omarchy-people .letter {
-  color: #1565C0;
+  color: var(--om-accent);
   font-size: 1.1rem;
   font-weight: 500;
   margin: 26px 0 4px;
@@ -173,44 +176,62 @@
 
 .omarchy-people .hh {
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: 24px 148px minmax(0, 1fr) auto;
   gap: 16px 18px;
   align-items: center;
   padding: 11px 0;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--om-line);
   text-decoration: none;
   color: inherit;
   cursor: pointer;
 }
 
 .omarchy-people .hh:hover .name {
-  color: #1565C0;
+  color: var(--om-accent);
 }
 
 .omarchy-people .stack {
   display: flex;
+  align-items: center;
+  width: 148px;
+  min-width: 148px;
+}
+
+.omarchy-people .stack .face-slot {
+  display: block;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  margin-left: -8px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 2px solid var(--om-surface, #ffffff);
+  background: var(--om-lift, #fafafa);
+}
+
+.omarchy-people .stack .face-slot:first-child {
+  margin-left: 0;
 }
 
 .omarchy-people .stack img,
 .omarchy-people .stack .ini {
-  width: 36px;
-  height: 36px;
-  border-radius: 5px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
   object-fit: cover;
-  border: 2px solid #ffffff;
-  margin-left: -8px;
-}
-
-.omarchy-people .stack img:first-child,
-.omarchy-people .stack .ini:first-child {
-  margin-left: 0;
+  border: 0;
+  margin: 0;
 }
 
 .omarchy-people .stack .ini {
   display: grid;
   place-items: center;
-  background: #fafafa;
-  color: #1565C0;
+  background: var(--om-lift, #fafafa);
+  color: var(--om-accent);
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -221,13 +242,13 @@
 }
 
 .omarchy-people .who {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.9rem;
   margin-top: 2px;
 }
 
 .omarchy-people .mark-line {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.88rem;
   text-align: right;
 }
@@ -254,7 +275,7 @@
   gap: 16px;
   flex-wrap: wrap;
   background: #fafafa;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--om-line);
   border-radius: 12px;
   padding: 12px 16px;
   margin-top: 28px;
@@ -270,14 +291,14 @@
 }
 
 .omarchy-people .bulk span.sel {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.88rem;
 }
 
 .omarchy-people .add {
   margin-top: 36px;
   padding-top: 24px;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--om-line);
 }
 
 .omarchy-people .add h2 {
@@ -294,17 +315,17 @@
 
 .omarchy-people .show-all button {
   background: none;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--om-line);
   font: inherit;
   font-weight: 600;
-  color: #1565C0;
+  color: var(--om-accent);
   padding: 8px 16px;
   border-radius: 999px;
   cursor: pointer;
 }
 
 .omarchy-record {
-  background: #ffffff;
+  background: var(--om-surface);
 }
 
 .omarchy-record .plated {
@@ -314,7 +335,7 @@
 
 .omarchy-record .who-col {
   padding: 36px 36px 72px;
-  border-right: 1px solid #dddddd;
+  border-right: 1px solid var(--om-line);
   position: relative;
 }
 
@@ -325,7 +346,7 @@
   top: 36px;
   bottom: 72px;
   width: 2px;
-  background: #1565C0;
+  background: var(--om-accent);
 }
 
 .omarchy-record .rest-col {
@@ -343,13 +364,13 @@
   object-fit: cover;
   display: block;
   margin-bottom: 18px;
-  background: #cfd4dc;
+  background: var(--om-lift);
 }
 
 .omarchy-record .ini-lg {
   display: grid;
   place-items: center;
-  color: #1565C0;
+  color: var(--om-accent);
   font-size: 3.4rem;
   font-weight: 500;
 }
@@ -362,16 +383,16 @@
 }
 
 .omarchy-record .chip {
-  border: 1px solid #dddddd;
+  border: 1px solid var(--om-line);
   border-radius: 999px;
   padding: 3px 10px;
   font-size: 0.75rem;
-  color: #666666;
+  color: var(--om-mute);
 }
 
 .omarchy-record .chip.on {
-  color: #1565C0;
-  border-color: #1565C0;
+  color: var(--om-accent);
+  border-color: var(--om-accent);
 }
 
 .omarchy-record .chip.first {
@@ -380,7 +401,7 @@
 }
 
 .omarchy-record .facts {
-  color: #666666;
+  color: var(--om-mute);
   margin: 8px 0 20px;
   font-size: 0.95rem;
   line-height: 1.55;
@@ -391,32 +412,32 @@
   font-weight: 500;
   letter-spacing: -0.02em;
   text-decoration: none;
-  color: #1565C0;
+  color: var(--om-accent);
   display: block;
 }
 
 .omarchy-record .email {
   display: block;
-  color: #333333;
+  color: var(--om-ink);
   text-decoration: none;
   margin: 8px 0 4px;
 }
 
 .omarchy-record .email:hover,
 .omarchy-record .phone:hover {
-  color: #1565C0;
+  color: var(--om-accent);
   text-decoration: underline;
 }
 
 .omarchy-record .addr,
 .omarchy-record .muted {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.92rem;
   line-height: 1.5;
 }
 
 .omarchy-record .phones {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.88rem;
   margin-top: 4px;
 }
@@ -436,7 +457,7 @@
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #1565C0;
+  color: var(--om-accent);
   cursor: pointer;
   text-decoration: none;
 }
@@ -447,13 +468,21 @@
   font-weight: 650;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #666666;
+  color: var(--om-mute);
   margin: 28px 0 10px;
 }
 
 .omarchy-record .rest-col h3:first-child,
 .omarchy-record .rest-col .sec-h:first-child {
   margin-top: 0;
+}
+
+.omarchy-record #householdBox {
+  margin-top: 8px;
+}
+
+.omarchy-record #householdBox h3 {
+  margin-top: 16px;
 }
 
 .omarchy-record .house {
@@ -468,7 +497,7 @@
   background: none;
   padding: 0;
   cursor: pointer;
-  color: #666666;
+  color: var(--om-mute);
   font: inherit;
   font-size: 0.7rem;
   text-align: center;
@@ -489,25 +518,25 @@
 .omarchy-record .face .ini {
   display: grid;
   place-items: center;
-  background: #cfd4dc;
-  color: #1565C0;
+  background: var(--om-lift);
+  color: var(--om-accent);
   font-size: 1.25rem;
   font-weight: 500;
 }
 
 .omarchy-record .face.on {
-  color: #333333;
+  color: var(--om-ink);
 }
 
 .omarchy-record .face.on img,
 .omarchy-record .face.on .ini {
-  outline-color: #1565C0;
+  outline-color: var(--om-accent);
 }
 
 .omarchy-record .role {
   display: block;
   font-size: 0.65rem;
-  color: #666666;
+  color: var(--om-mute);
 }
 
 .omarchy-record .face h5 {
@@ -530,7 +559,7 @@
   gap: 10px;
   align-items: center;
   padding: 8px 0;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--om-line);
   font-size: 0.9rem;
 }
 
@@ -545,8 +574,8 @@
 .omarchy-record .pick .ini {
   display: grid;
   place-items: center;
-  background: #cfd4dc;
-  color: #1565C0;
+  background: var(--om-lift);
+  color: var(--om-accent);
   font-weight: 500;
 }
 
@@ -561,7 +590,7 @@
   width: 16px;
   height: 16px;
   border-radius: 3px;
-  background: #cfd4dc;
+  background: var(--om-lift);
 }
 
 .omarchy-record .sun.on {
@@ -569,7 +598,7 @@
 }
 
 .omarchy-record .sun.today {
-  outline: 1px solid #1565C0;
+  outline: 1px solid var(--om-accent);
   outline-offset: 1px;
 }
 
@@ -582,7 +611,7 @@
 
 .omarchy-record table.plain th {
   text-align: left;
-  color: #666666;
+  color: var(--om-mute);
   font-weight: 500;
   font-size: 0.72rem;
   letter-spacing: 0.04em;
@@ -592,7 +621,7 @@
 
 .omarchy-record table.plain td {
   padding: 8px 12px 8px 0;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--om-line);
 }
 
 .omarchy-record table.plain td:last-child,
@@ -607,11 +636,11 @@
 
 .omarchy-record .note {
   padding: 12px 0;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--om-line);
 }
 
 .omarchy-record .note .by {
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.8rem;
   margin-bottom: 4px;
 }
@@ -639,7 +668,7 @@
   display: inline-flex;
   gap: 8px;
   align-items: center;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--om-line);
   border-radius: 999px;
   padding: 6px 12px;
   margin: 0 8px 8px 0;
@@ -653,14 +682,14 @@
 }
 
 .omarchy-record .gchip span {
-  color: #666666;
+  color: var(--om-mute);
 }
 
 .omarchy-record .form-row {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid var(--om-line);
   font-size: 0.92rem;
   width: 100%;
   background: none;
@@ -685,7 +714,7 @@
 }
 
 .omarchy-record .dl dt {
-  color: #666666;
+  color: var(--om-mute);
 }
 
 .omarchy-record .years {
@@ -697,8 +726,8 @@
 
 .omarchy-record .years button {
   background: transparent;
-  border: 1px solid #dddddd;
-  color: #333333;
+  border: 1px solid var(--om-line);
+  color: var(--om-ink);
   font: inherit;
   font-size: 0.82rem;
   padding: 5px 10px;
@@ -707,9 +736,9 @@
 }
 
 .omarchy-record .years button.on {
-  background: #1565C0;
-  color: #fff;
-  border-color: #1565C0;
+  background: var(--om-accent);
+  color: var(--om-on-accent);
+  border-color: var(--om-accent);
 }
 
 .omarchy-record .ledger-head {
@@ -728,7 +757,7 @@
 .omarchy-record .back {
   background: none;
   border: 0;
-  color: #1565C0;
+  color: var(--om-accent);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -752,8 +781,8 @@
 
 .omarchy-record .sheet {
   width: min(420px, calc(100% - 32px));
-  background: #ffffff;
-  border: 1px solid #dddddd;
+  background: var(--om-surface);
+  border: 1px solid var(--om-line);
   border-radius: 14px;
   padding: 28px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
@@ -772,7 +801,7 @@
 
 .omarchy-record .sheet label {
   display: block;
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.75rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -784,18 +813,18 @@
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #dddddd;
-  color: #333333;
+  border-bottom: 1px solid var(--om-line);
+  color: var(--om-ink);
   font: inherit;
   font-size: 1.05rem;
   padding: 8px 0;
   outline: none;
-  caret-color: #1565C0;
+  caret-color: var(--om-accent);
 }
 
 .omarchy-record .sheet input:focus,
 .omarchy-record .sheet select:focus {
-  border-bottom-color: #1565C0;
+  border-bottom-color: var(--om-accent);
 }
 
 .omarchy-record .sheet .row2 {
@@ -813,8 +842,8 @@
 
 .omarchy-record .sheet .save,
 .omarchy-record .edit-bar .save {
-  background: #1565C0;
-  color: #fff;
+  background: var(--om-accent);
+  color: var(--om-on-accent);
   border: 0;
   font: inherit;
   font-weight: 700;
@@ -826,7 +855,7 @@
 .omarchy-record .sheet .cancel {
   background: none;
   border: 0;
-  color: #666666;
+  color: var(--om-mute);
   font: inherit;
   cursor: pointer;
 }
@@ -845,7 +874,7 @@
 
 .omarchy-record .fld label {
   display: block;
-  color: #666666;
+  color: var(--om-mute);
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -893,7 +922,7 @@
   margin-top: 8px;
   background: none;
   border: 0;
-  color: #1565C0;
+  color: var(--om-accent);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -907,7 +936,7 @@
 
   .omarchy-record .who-col {
     border-right: 0;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid var(--om-line);
   }
 
   .omarchy-record .who-col::before {
@@ -935,7 +964,7 @@
   }
 
   .omarchy-people .hh {
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: 24px 148px minmax(0, 1fr);
   }
 
   .omarchy-people .mark-line {

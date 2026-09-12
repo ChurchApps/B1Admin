@@ -26,9 +26,12 @@ export const mutedSx: SxProps<Theme> = {
 };
 
 export const plateSx: SxProps<Theme> = {
-  bgcolor: "#fff",
-  color: "var(--text-main)",
-  p: "28px 32px 56px",
+  bgcolor: "var(--om-surface, #fff)",
+  color: "var(--om-ink, var(--text-main))",
+  width: "100%",
+  minHeight: "calc(100vh - 56px)",
+  boxSizing: "border-box",
+  p: "28px 40px 56px",
   [`@media (max-width: ${MOBILE}px)`]: { p: "20px 16px 40px" }
 };
 

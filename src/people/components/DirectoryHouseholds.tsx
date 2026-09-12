@@ -1,6 +1,7 @@
 import { type PersonInterface } from "@churchapps/helpers";
 import { type DirectoryHousehold } from "../buildHouseholds";
 import { personInitial, personPhotoUrl } from "../photo";
+import { sortHouseholdMembers } from "../sortHouseholdMembers";
 
 interface Props {
   households: DirectoryHousehold[];
@@ -14,8 +15,11 @@ interface Props {
 
 const face = (p: PersonInterface) => {
   const src = personPhotoUrl(p);
-  if (src) return <img key={p.id} src={src} alt="" />;
-  return <span key={p.id} className="ini">{personInitial(p)}</span>;
+  return (
+    <span key={p.id} className="face-slot">
+      {src ? <img src={src} alt="" /> : <span className="ini">{personInitial(p)}</span>}
+    </span>
+  );
 };
 
 const markFor = (h: DirectoryHousehold) => {
@@ -56,9 +60,10 @@ export const DirectoryHouseholds = (props: Props) => {
         </tr>
       );
     }
-    const selectable = h.members.filter((m) => m.id && m.id !== props.currentPersonId);
+    const members = sortHouseholdMembers(h.members);
+    const selectable = members.filter((m) => m.id && m.id !== props.currentPersonId);
     const selected = selectable.length > 0 && selectable.every((m) => props.selectedPersonIds.includes(m.id as string));
-    const names = h.members.map((m) => m.name?.display).filter(Boolean).join(", ");
+    const names = members.map((m) => m.name?.display).filter(Boolean).join(", ");
     const mark = markFor(h);
     rows.push(
       <tr key={h.key}>
@@ -75,7 +80,7 @@ export const DirectoryHouseholds = (props: Props) => {
                 />
               </div>
             ) : <span />}
-            <div className="stack">{h.members.slice(0, 5).map(face)}</div>
+            <div className="stack">{members.slice(0, 5).map(face)}</div>
             <div>
               <div className="name">{h.displayName}</div>
               <div className="who">{names}</div>

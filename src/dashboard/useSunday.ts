@@ -33,9 +33,12 @@ export interface RoomCount {
 export interface SundayData {
   plan?: PlanInterface | null;
   planStart?: Date | null;
+  focusDate?: Date | null;
   order: OrderItem[];
   inRoom: number;
   live: boolean;
+  recap: boolean;
+  isSunday: boolean;
   split?: string;
   serving: ServingPerson[];
   guests: GuestChip[];
@@ -64,18 +67,22 @@ const inWindow = (p: PlanInterface, from: Date, to: Date) => {
   return t >= from.getTime() && t <= to.getTime();
 };
 
-const pickPlan = (plans: PlanInterface[], today: Date) => {
+const sundayOnOrBefore = (d: Date) => addDays(d, -d.getDay());
+
+const sundayAhead = (d: Date) => {
+  const last = sundayOnOrBefore(d);
+  return last.getTime() === d.getTime() ? last : addDays(last, 7);
+};
+
+const pickPlan = (plans: PlanInterface[], prefer: Date) => {
   if (!plans.length) return null;
-  const todayT = today.getTime();
+  const preferT = prefer.getTime();
   const scored = [...plans].sort((a, b) => {
-    const da = planTime(a) - todayT;
-    const db = planTime(b) - todayT;
-    const aFuture = da >= 0;
-    const bFuture = db >= 0;
-    if (aFuture !== bFuture) return aFuture ? -1 : 1;
-    if (Math.abs(da) !== Math.abs(db)) return Math.abs(da) - Math.abs(db);
+    const da = Math.abs(planTime(a) - preferT);
+    const db = Math.abs(planTime(b) - preferT);
+    if (da !== db) return da - db;
     if (!!a.serviceOrder !== !!b.serviceOrder) return a.serviceOrder ? -1 : 1;
-    return 0;
+    return planTime(a) - planTime(b);
   });
   return scored[0];
 };
@@ -114,8 +121,11 @@ const safeGet = async <T>(url: string, api: ApiListType, fallback: T): Promise<T
 
 const loadSunday = async (): Promise<SundayData> => {
   const today = startOfDay(new Date());
-  const from = addDays(today, -1);
-  const to = addDays(today, 7);
+  const lastSunday = sundayOnOrBefore(today);
+  const comingSunday = sundayAhead(today);
+  const isSunday = lastSunday.getTime() === today.getTime();
+  const from = lastSunday;
+  const to = comingSunday;
 
   let plans = await safeGet<PlanInterface[]>("/plans/presenter", "DoingApi", []);
   if (!plans.length) {
@@ -125,17 +135,20 @@ const loadSunday = async (): Promise<SundayData> => {
     plans = plans.filter((p) => inWindow(p, from, to));
   }
 
-  const plan = pickPlan(plans, today);
-  const serviceDate = plan?.serviceDate ? startOfDay(new Date(plan.serviceDate)) : today;
-  const dateStr = DateHelper.formatHtml5Date(serviceDate);
+  const upcoming = plans.filter((p) => planTime(p) >= today.getTime());
+  const servingPlan = pickPlan(upcoming, comingSunday);
+  const plan = servingPlan || pickPlan(plans, lastSunday);
+  const attendanceDay = isSunday ? today : lastSunday;
+  const dateStr = DateHelper.formatHtml5Date(attendanceDay);
   const canAttendance = UserHelper.checkAccess(Permissions.attendanceApi.attendance.view);
   const canPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
+  const assignPlan = servingPlan || (isSunday ? plan : null);
 
   const [planItems, times, positions, assignments] = await Promise.all([
     plan?.id ? safeGet<PlanItemInterface[]>("/planItems/plan/" + plan.id, "DoingApi", []) : Promise.resolve([]),
     plan?.id ? safeGet<TimeInterface[]>("/times/plan/" + plan.id, "DoingApi", []) : Promise.resolve([]),
-    plan?.id ? safeGet<PositionInterface[]>("/positions/plan/" + plan.id, "DoingApi", []) : Promise.resolve([]),
-    plan?.id ? safeGet<AssignmentInterface[]>("/assignments/plan/" + plan.id, "DoingApi", []) : Promise.resolve([])
+    assignPlan?.id ? safeGet<PositionInterface[]>("/positions/plan/" + assignPlan.id, "DoingApi", []) : Promise.resolve([]),
+    assignPlan?.id ? safeGet<AssignmentInterface[]>("/assignments/plan/" + assignPlan.id, "DoingApi", []) : Promise.resolve([])
   ]);
   const [visits, groupRows, headcounts, groups] = await Promise.all([
     canAttendance ? safeGet<VisitInterface[]>(`/attendancerecords/search?startDate=${dateStr}&endDate=${dateStr}`, "AttendanceApi", []) : Promise.resolve([]),
@@ -167,8 +180,8 @@ const loadSunday = async (): Promise<SundayData> => {
       .reduce((sum: number, h: any) => sum + (Number(h.value) || 0), 0);
   }
 
-  const isServiceDay = dateStr === DateHelper.formatHtml5Date(today);
-  const live = isServiceDay && inRoom > 0;
+  const live = isSunday && inRoom > 0;
+  const recap = !isSunday && inRoom > 0;
 
   const roomMap = new Map<string, { count: number; name?: string }>();
   (groupRows || []).forEach((row: any) => {
@@ -236,7 +249,8 @@ const loadSunday = async (): Promise<SundayData> => {
     });
   }
 
-  return { plan, planStart, order, inRoom, live, split, serving, guests, rooms };
+  const focusDate = plan?.serviceDate ? startOfDay(new Date(plan.serviceDate)) : comingSunday;
+  return { plan, planStart, focusDate, order, inRoom, live, recap, isSunday, split, serving, guests, rooms };
 };
 
 export const useSunday = () => {
@@ -245,7 +259,7 @@ export const useSunday = () => {
     queryKey: ["omarchy-sunday", churchId],
     queryFn: loadSunday,
     enabled: !!churchId,
-    placeholderData: { plan: null, planStart: null, order: [], inRoom: 0, live: false, serving: [], guests: [], rooms: [] }
+    placeholderData: { plan: null, planStart: null, focusDate: null, order: [], inRoom: 0, live: false, recap: false, isSunday: false, serving: [], guests: [], rooms: [] }
   });
 };
 

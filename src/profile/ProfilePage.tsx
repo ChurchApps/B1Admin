@@ -1,21 +1,19 @@
-import { Grid, Icon, TextField, Typography, InputAdornment, Box, Alert, FormControlLabel, Switch } from "@mui/material";
+import { Grid, Icon, TextField, Typography, InputAdornment, Box, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { LinkedAccounts } from "./components/LinkedAccounts";
-import { DarkMode, LightMode } from "@mui/icons-material";
+import { ThemeSelect } from "../ThemeContext";
 import { LoadingButton } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { useMutation } from "@tanstack/react-query";
-import { useThemeMode } from "../ThemeContext";
+
 import { useConfirmDelete } from "../hooks";
 import { PlatedRecord, SectionLabel, Verb } from "./components/plate";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const isDemo = process.env.REACT_APP_STAGE === "demo";
-  const { mode, toggleTheme } = useThemeMode();
-
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordVerify, setPasswordVerify] = useState<string>("");
@@ -144,18 +142,7 @@ export const ProfilePage = () => {
       </Box>
       <SectionLabel>{Locale.label("profile.profilePage.themePreferences")}</SectionLabel>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <LightMode color={mode === "light" ? "primary" : "disabled"} />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={mode === "dark"}
-              onChange={toggleTheme}
-              data-testid="theme-toggle"
-            />
-          }
-          label={mode === "dark" ? Locale.label("profile.profilePage.darkMode") : Locale.label("profile.profilePage.lightMode")}
-        />
-        <DarkMode color={mode === "dark" ? "primary" : "disabled"} />
+        <ThemeSelect />
       </Box>
       <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
         {Locale.label("profile.profilePage.themePreferencesHelper")}
