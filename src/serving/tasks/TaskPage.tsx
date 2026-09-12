@@ -7,6 +7,7 @@ import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../components/ui"
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
+import { GroupJoinRequestTask } from "./components/GroupJoinRequestTask";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon, Checklist as ChecklistIcon } from "@mui/icons-material";
@@ -99,7 +100,7 @@ export const TaskPage = () => {
         <PageHeader
           icon={<ChecklistIcon />}
           title={`#${task.data.taskNumber} - ${task.data?.title}`}
-          subtitle={`${Locale.label("tasks.taskPage.created")} ${DateHelper.getDisplayDuration(DateHelper.toDate(task.data?.dateCreated))} ${Locale.label("tasks.taskPage.ago")} ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel} • ${Locale.label("tasks.taskPage.associated")}: ${task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
+          subtitle={`${Locale.label("tasks.taskPage.created")} ${task.data?.dateCreated ? `${DateHelper.getDisplayDuration(new Date(task.data.dateCreated))} ${Locale.label("tasks.taskPage.ago")}` : ""}${task.data?.createdByLabel ? ` ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel}` : ""} • ${Locale.label("tasks.taskPage.associated")}: ${task.data?.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data?.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
           <Stack direction="row" spacing={1}>
             <Button
               variant={task.data.status === "Open" ? "contained" : "outlined"}
@@ -155,6 +156,7 @@ export const TaskPage = () => {
 
         <Box sx={{ p: 3 }}>
           {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
+          {task.data.taskType === "groupJoinRequest" && <GroupJoinRequestTask task={task.data} />}
           <Box sx={{ mb: 2 }}>
             <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
           </Box>

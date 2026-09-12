@@ -38,9 +38,11 @@ export const TaskList = memo((props: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [tab, setTab] = React.useState(0);
   const context = React.useContext(UserContext);
+  const isClosed = props.status === "Closed" || props.status === Locale.label("tasks.taskPage.closed");
+  const queryStatus = isClosed ? "Closed" : "Open";
 
   const tasks = useQuery<TaskInterface[]>({
-    queryKey: props.status === Locale.label("tasks.taskPage.closed") ? ["/tasks/closed", "DoingApi"] : ["/tasks", "DoingApi"],
+    queryKey: isClosed ? ["/tasks/closed", "DoingApi"] : ["/tasks", "DoingApi"],
     placeholderData: []
   });
 
@@ -58,12 +60,12 @@ export const TaskList = memo((props: Props) => {
   }, [groupMembers.data]);
 
   const groupTasks = useQuery<TaskInterface[]>({
-    queryKey: ["/tasks/loadForGroups", "DoingApi", groupIds, props.status],
+    queryKey: ["/tasks/loadForGroups", "DoingApi", groupIds, queryStatus],
     enabled: groupIds.length > 0,
     placeholderData: [],
     queryFn: async () => {
       if (groupIds.length === 0) return [];
-      return ApiHelper.post("/tasks/loadForGroups", { groupIds, status: props.status }, "DoingApi");
+      return ApiHelper.post("/tasks/loadForGroups", { groupIds, status: queryStatus }, "DoingApi");
     }
   });
 
@@ -135,8 +137,9 @@ export const TaskList = memo((props: Props) => {
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
                 <CalendarIcon sx={{ fontSize: 16, color: "text.secondary" }} />
                 <Typography variant="caption" color="text.secondary">
-                  #{task.taskNumber} {Locale.label("tasks.taskPage.opened")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")}{" "}
-                  {Locale.label("tasks.taskPage.by")} {task.createdByLabel}
+                  #{task.taskNumber} {Locale.label("tasks.taskPage.opened")}{" "}
+                  {task.dateCreated ? `${DateHelper.getDisplayDuration(new Date(task.dateCreated))} ${Locale.label("tasks.taskPage.ago")}` : ""}
+                  {task.createdByLabel ? ` ${Locale.label("tasks.taskPage.by")} ${task.createdByLabel}` : ` ${Locale.label("tasks.taskPage.by")} ${task.associatedWithLabel}`}
                 </Typography>
               </Stack>
             </Box>

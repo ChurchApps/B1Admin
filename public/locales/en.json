@@ -5155,6 +5155,21 @@
       "trigger": "Trigger",
       "when": "When"
     },
+    "groupJoinRequest": {
+      "title": "Group Join Request",
+      "approve": "Approve",
+      "decline": "Decline",
+      "requester": "Requester",
+      "group": "Group",
+      "requestedDate": "Requested",
+      "message": "Message from requester",
+      "resolved": "This join request task is closed.",
+      "declineTitle": "Decline Join Request",
+      "declinePrompt": "Optionally provide a reason for declining this join request.",
+      "reasonOptional": "Reason (optional)",
+      "approveError": "Unable to approve join request.",
+      "declineError": "Unable to decline join request."
+    },
     "myCards": {
       "noCards": "You have no assigned cards.",
       "title": "My Cards"

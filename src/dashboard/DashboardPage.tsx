@@ -60,7 +60,7 @@ export const DashboardPage = () => {
               <Groups personId={UserHelper.person?.id || ""} title={Locale.label("dashboard.myGroups")} />
             </Grid>
             <Grid size={GRID_SIZES.mainContent}>
-              <TaskList compact={true} status={Locale.label("tasks.taskPage.open")} />
+              <TaskList compact={true} status="Open" />
             </Grid>
           </Grid>
         </Stack>
