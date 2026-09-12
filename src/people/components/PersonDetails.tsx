@@ -20,6 +20,7 @@ export const PersonDetails = memo((props: Props) => {
   const [showExportDialog, setShowExportDialog] = React.useState(false);
   const { inPhotoEditMode, setInPhotoEditMode, editMode, setEditMode } = props;
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
+  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
 
   React.useEffect(() => setPerson(props.person), [props.person]);
 
@@ -71,7 +72,7 @@ export const PersonDetails = memo((props: Props) => {
         <>
           <PersonView
             person={person}
-            editFunction={() => setEditMode("edit")}
+            editFunction={canEdit ? () => setEditMode("edit") : undefined}
             updatedFunction={props.updatedFunction}
             showForms={false}
             headerActions={formPermission ? (

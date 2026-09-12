@@ -103,7 +103,10 @@ export const PeoplePage = memo(() => {
     { key: "maritalStatus", label: Locale.label("person.maritalStatus"), shortName: Locale.label("person.married") },
     { key: "anniversary", label: Locale.label("person.anniversary"), shortName: Locale.label("person.anniversary") },
     { key: "nametagNotes", label: Locale.label("people.peoplePage.nameNote"), shortName: Locale.label("common.notes") },
-    { key: "deleteOption", label: Locale.label("people.peoplePage.deleteOp"), shortName: Locale.label("common.delete") }
+    // Delete is only offered to users who can actually edit people - the Api rejects the
+    // request otherwise. PeopleSearchResults intersects selectedColumns with this list, so
+    // omitting it here also suppresses a stale deleteOption saved in localStorage.
+    ...(canEdit ? [{ key: "deleteOption", label: Locale.label("people.peoplePage.deleteOp"), shortName: Locale.label("common.delete") }] : [])
   ];
 
   const handleToggleColumn = (key: string) => {
