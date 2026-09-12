@@ -4,11 +4,11 @@ import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon,
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
-import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
+import { type TimeInterface, type PlanItemTimeInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, type ProviderMediaInfo } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, getPositionLabel, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { type ProviderItemSelection } from "./ActionSelectorHelpers";
@@ -35,6 +35,7 @@ interface Props {
   /** Set on the first item of a run of actions expanded from one section, enabling the collapse control. */
   collapseItems?: PlanItemInterface[];
   positionLabels?: Record<string, { text: string; assigned: boolean }>;
+  positions?: PositionInterface[];
   /** Set by the parent section while it is in bulk-select mode. */
   selectable?: boolean;
   selected?: boolean;
@@ -48,6 +49,10 @@ export const PlanItem = React.memo((props: Props) => {
   const [actionId, setActionId] = React.useState<string | null>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
   const open = Boolean(anchorEl);
+
+  const activePositionLabel = React.useMemo(() => {
+    return getPositionLabel(props.planItem.positionId, props.serviceTime, props.positions, props.positionLabels);
+  }, [props.planItem.positionId, props.serviceTime, props.positions, props.positionLabels]);
 
   // Use the expand hook for section expansion functionality
   const { handleExpandToActions, canCollapse, handleCollapseToSection, handleSaveDescription, handleRestoreOriginal } = usePlanItemExpand({
@@ -215,7 +220,30 @@ export const PlanItem = React.memo((props: Props) => {
       const childStartTime = cumulativeTime;
       const childExcluded = Boolean(props.excluded || isChildExcluded(c.id || ""));
       const childPlanItem = (
-        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} selectable={selecting && !!c.id && c.itemType !== "header"} selected={!!c.id && selected.has(c.id)} onToggleSelect={c.id ? () => toggleSelected(c.id as string) : undefined} />
+        <PlanItem
+          key={c.id}
+          planItem={c}
+          setEditPlanItem={props.setEditPlanItem}
+          readOnly={props.readOnly}
+          showItemDrop={props.showItemDrop}
+          onDragChange={props.onDragChange}
+          onChange={props.onChange}
+          startTime={childStartTime}
+          associatedContentPath={props.associatedContentPath}
+          associatedProviderId={props.associatedProviderId}
+          ministryId={props.ministryId}
+          serviceTime={props.serviceTime}
+          exclusions={props.exclusions}
+          selectedServiceTimeId={props.selectedServiceTimeId}
+          excluded={childExcluded}
+          mediaLookup={props.mediaLookup}
+          collapseItems={expandedRuns.get(c.id || "")}
+          positionLabels={props.positionLabels}
+          positions={props.positions}
+          selectable={selecting && !!c.id && c.itemType !== "header"}
+          selected={!!c.id && selected.has(c.id)}
+          onToggleSelect={c.id ? () => toggleSelected(c.id as string) : undefined}
+        />
       );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
@@ -252,7 +280,7 @@ export const PlanItem = React.memo((props: Props) => {
       serviceStartTime={props.serviceTime?.startTime}
       readOnly={props.readOnly}
       excluded={props.excluded}
-      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
+      positionLabel={activePositionLabel}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       selectMode={selecting}
@@ -290,7 +318,7 @@ export const PlanItem = React.memo((props: Props) => {
       onSaveDescription={handleSaveDescription}
       onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
-      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
+      positionLabel={activePositionLabel}
       selectable={props.selectable}
       selected={props.selected}
       onToggleSelect={props.onToggleSelect}
