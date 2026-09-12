@@ -2629,9 +2629,11 @@
     "profilePage": {
       "accDel": "Account Deletion",
       "confirmMsg": "Are you sure you wish to permanently delete your account?",
+      "confirmRequestMsg": "Send a request to your church to delete your account? Nothing is removed until they approve it.",
       "darkMode": "Dark Mode",
       "delAcc": "Delete my account",
       "deleteError": "Failed to delete account",
+      "deletionPending": "Your account deletion request is awaiting review by your church. Nothing will be removed until it is approved.",
       "demoModeAlert": "Profile editing is disabled in demo mode.",
       "demoPasswordHelper": "Password changes are disabled in demo mode",
       "emailMsg": "Please enter an email address.",
@@ -2647,9 +2649,11 @@
       "passwordHelper": "Leave blank to keep current password",
       "permWarn": "Careful, these actions are permanent",
       "profEdit": "Edit Account",
+      "reviewWarn": "Your church reviews account deletion requests before anything is removed.",
       "saveChange": "Changes saved.",
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
+      "sendRequest": "Send request",
       "subtitle": "Manage your profile and preferences",
       "themePreferences": "Theme Preferences",
       "themePreferencesHelper": "Your theme preference is saved automatically and will be remembered on this device.",
@@ -3527,7 +3531,7 @@
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
-      "forceMsg": "This group will handle all the member directory updates. Only after their approval, changes will be applied.",
+      "forceMsg": "This group will review member directory updates and account deletion requests. Only after their approval are changes applied.",
       "groups": "Groups",
       "noGroups": "No Groups available",
       "none": "None"
@@ -5056,6 +5060,20 @@
     "providedBy": "Provided By"
   },
   "tasks": {
+    "accountDeletion": {
+      "approve": "Approve deletion",
+      "approveConfirm": "Permanently anonymize {name}'s record and remove their login? This cannot be undone.",
+      "approveError": "The account could not be deleted.",
+      "approved": "Approved: the member's record was anonymized and their login was removed.",
+      "description": "{name} asked to delete their account. Approving anonymizes their record across the church (name, contact details, notes and photo) and removes their login. This cannot be undone. Rejecting leaves everything as it is.",
+      "member": "this member",
+      "needsPeopleEdit": "Approving requires the People > Edit permission.",
+      "reject": "Reject",
+      "rejectError": "The request could not be closed.",
+      "rejected": "Request rejected: nothing was changed and the member keeps their account.",
+      "title": "Account Deletion Request",
+      "viewPerson": "View person"
+    },
     "conditionDate": {
       "absolute": "Absolute",
       "curMonth": "Current Month",
