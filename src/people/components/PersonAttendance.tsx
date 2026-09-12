@@ -94,6 +94,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             {hasCampus && headCell("Campus", "campus")}
             {hasService && headCell("Service", "service")}
             {hasTime && headCell("Time", "time")}
+            {headCell("Check-in Time", "checkinTime")}
             {hasGroup && headCell("Group", "group")}
           </TableRow>
         </TableHead>
@@ -114,6 +115,9 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                   {hasCampus && <TableCell>{campusName ? <Typography variant="body2">{campusName}</Typography> : Dash}</TableCell>}
                   {hasService && <TableCell>{record.service?.name ? <Typography variant="body2">{record.service.name}</Typography> : Dash}</TableCell>}
                   {hasTime && <TableCell>{record.serviceTime?.name ? <Typography variant="body2">{record.serviceTime.name}</Typography> : Dash}</TableCell>}
+                  <TableCell>
+                    {record.visitDate ? <Typography variant="body2">{DateHelper.prettyTime(new Date(record.visitDate))}</Typography> : Dash}
+                  </TableCell>
                   {hasGroup && (
                     <TableCell>
                       {group
