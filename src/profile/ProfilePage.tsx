@@ -8,7 +8,8 @@ import { PageHeader } from "@churchapps/apphelper";
 import { LoadingButton } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { FormCard } from "../components/ui/FormCard";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { type TaskInterface } from "@churchapps/helpers";
 import { useThemeMode } from "../ThemeContext";
 import { useConfirmDelete } from "../hooks";
 
@@ -27,6 +28,15 @@ export const ProfilePage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const queryClient = useQueryClient();
+  const churchId = UserHelper.currentUserChurch?.church?.id || "";
+  const [deletionRequested, setDeletionRequested] = useState(false);
+
+  // Churches with a directory approval group review account deletions instead of the login vanishing on click.
+  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const requiresApproval = !!publicSettings.data?.directoryApprovalGroupId;
+  const myTasks = useQuery<TaskInterface[]>({ queryKey: ["/tasks", "DoingApi"], placeholderData: [] });
+  const pendingDeletion = deletionRequested || !!myTasks.data?.find((t) => t.taskType === "accountDeletion" && t.status === "Open");
 
   React.useEffect(() => {
     const { email, firstName, lastName } = UserHelper.user;
@@ -69,9 +79,21 @@ export const ProfilePage = () => {
   });
 
   const deleteAccountMutation = useMutation({
-    mutationFn: () => ApiHelper.delete("/users", "MembershipApi"),
-    onSuccess: () => {
-      navigate("/logout", { replace: true });
+    mutationFn: async () => {
+      // Re-read the setting on the write path so a stale or failed query can never turn a review church into a direct delete.
+      const settings = churchId ? await ApiHelper.get("/settings/public/" + churchId, "MembershipApi") : null;
+      if (settings?.directoryApprovalGroupId) {
+        await ApiHelper.post("/tasks?type=accountDeletion", [{ title: "Account deletion request" }], "DoingApi");
+        return "requested";
+      }
+      await ApiHelper.delete("/users", "MembershipApi");
+      return "deleted";
+    },
+    onSuccess: (result) => {
+      if (result === "requested") {
+        setDeletionRequested(true);
+        queryClient.invalidateQueries({ queryKey: ["/tasks", "DoingApi"] });
+      } else navigate("/logout", { replace: true });
     }
   });
 
@@ -119,7 +141,9 @@ export const ProfilePage = () => {
   };
 
   const handleAccountDelete = async () => {
-    if (await confirm(Locale.label("profile.profilePage.confirmMsg"))) {
+    const message = requiresApproval ? Locale.label("profile.profilePage.confirmRequestMsg", "Send a request to your church to delete your account? Nothing is removed until they approve it.") : Locale.label("profile.profilePage.confirmMsg");
+    const options = requiresApproval ? { confirmLabel: Locale.label("profile.profilePage.sendRequest", "Send request"), destructive: false } : undefined;
+    if (await confirm(message, options)) {
       deleteAccountMutation.mutate();
     }
   };
@@ -255,9 +279,14 @@ export const ProfilePage = () => {
                 <Typography variant="h6" color="error" gutterBottom>
                   {Locale.label("profile.profilePage.accDel")}
                 </Typography>
-                <Typography color="text.secondary">{Locale.label("profile.profilePage.permWarn")}</Typography>
+                <Typography color="text.secondary">{requiresApproval ? Locale.label("profile.profilePage.reviewWarn", "Your church reviews account deletion requests before anything is removed.") : Locale.label("profile.profilePage.permWarn")}</Typography>
+                {pendingDeletion && (
+                  <Alert severity="info" data-testid="account-deletion-pending">
+                    {Locale.label("profile.profilePage.deletionPending", "Your account deletion request is awaiting review by your church. Nothing will be removed until it is approved.")}
+                  </Alert>
+                )}
                 <Box>
-                  <LoadingButton variant="outlined" loading={deleteAccountMutation.isPending} disabled={isDemo} onClick={handleAccountDelete} data-testid="delete-account-button">
+                  <LoadingButton variant="outlined" loading={deleteAccountMutation.isPending} disabled={isDemo || pendingDeletion} onClick={handleAccountDelete} data-testid="delete-account-button">
                     {Locale.label("profile.profilePage.delAcc")}
                   </LoadingButton>
                 </Box>
