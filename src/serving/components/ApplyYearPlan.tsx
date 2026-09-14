@@ -4,22 +4,14 @@ import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
 import { AppDatePicker } from "../../components";
+import { dateKey, defaultRange, placeYearPlanWeeks, venuePath, type PlacementWeek } from "./yearPlanPlacement";
 
-interface YearPlanWeek {
-  week?: number;
-  lessonId?: string;
-  lessonName?: string;
-  studyId?: string;
-  studyName?: string;
-  programId?: string;
-  venueId?: string;
-  venueName?: string;
-  externalProviderId?: string;
-}
+type YearPlanWeek = PlacementWeek;
 
 interface YearPlan {
   id?: string;
   name?: string;
+  startMonth?: number;
   weeks?: YearPlanWeek[];
 }
 
@@ -31,39 +23,27 @@ interface Props {
   onCancel: () => void;
 }
 
-interface PreviewRow {
-  week: YearPlanWeek;
-  date: Date;
-  included: boolean;
-  skipReason?: string;
-  path?: string;
-}
+const currentYear = () => new Date().getFullYear();
 
-const addWeeks = (start: Date, weeks: number) => {
-  const d = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 12, 0, 0);
-  d.setDate(d.getDate() + (weeks * 7));
-  return d;
-};
-
-const dateKey = (d: Date) => {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-};
-
-const venuePath = (week: YearPlanWeek) => {
-  if (!week.programId || !week.studyId || !week.lessonId || !week.venueId) return "";
-  return `/lessons/${week.programId}/${week.studyId}/${week.lessonId}/${week.venueId}`;
-};
+const placementReasons = () => ({
+  externalSkipped: Locale.label("plans.applyYearPlan.externalSkipped") || "External provider weeks are applied from Lessons.church content only.",
+  missingVenue: Locale.label("plans.applyYearPlan.missingVenue") || "Missing program, lesson, or venue.",
+  dateTaken: Locale.label("plans.applyYearPlan.dateTaken") || "A plan already exists on this date.",
+  anchoredEaster: Locale.label("plans.applyYearPlan.anchoredEaster") || "Anchored to Easter",
+  anchoredChristmas: Locale.label("plans.applyYearPlan.anchoredChristmas") || "Anchored to Christmas",
+  shiftedWeek: Locale.label("plans.applyYearPlan.shiftedWeek") || "Shifted to the next open Sunday",
+  segmentOverflow: Locale.label("plans.applyYearPlan.segmentOverflow") || "Does not fit before the next anchored week."
+});
 
 export const ApplyYearPlan: React.FC<Props> = (props) => {
   const [yearPlans, setYearPlans] = useState<YearPlan[] | null>(null);
   const [planId, setPlanId] = useState("");
+  const [targetYear, setTargetYear] = useState(currentYear);
   const [startDate, setStartDate] = useState<Date>(() => {
     const lastSunday = DateHelper.getLastSunday();
     return new Date(lastSunday.getFullYear(), lastSunday.getMonth(), lastSunday.getDate() + 7, 12, 0, 0);
   });
+  const [endDate, setEndDate] = useState<Date>(() => new Date(currentYear(), 11, 31, 12, 0, 0));
   const [weekCount, setWeekCount] = useState(52);
   const [copyMode, setCopyMode] = useState("all");
   const [saving, setSaving] = useState(false);
@@ -82,6 +62,14 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
   }, []);
 
   const selectedPlan = useMemo(() => (yearPlans || []).find(p => p.id === planId), [yearPlans, planId]);
+  const calendarMode = !!selectedPlan?.startMonth;
+
+  useEffect(() => {
+    if (!selectedPlan?.startMonth) return;
+    const range = defaultRange(selectedPlan.startMonth, targetYear);
+    setStartDate(range.start);
+    setEndDate(range.end);
+  }, [selectedPlan?.id, selectedPlan?.startMonth, targetYear]);
 
   const occupiedDates = useMemo(() => {
     const keys = new Set<string>();
@@ -102,21 +90,19 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
     return withDate[0] || null;
   }, [props.plans]);
 
-  const rows: PreviewRow[] = useMemo(() => {
-    const weeks = (selectedPlan?.weeks || []).slice(0, Math.max(1, weekCount));
-    return weeks.map((week, i) => {
-      const date = addWeeks(startDate, i);
-      const path = venuePath(week);
-      let skipReason = "";
-      if (week.externalProviderId) skipReason = Locale.label("plans.applyYearPlan.externalSkipped") || "External provider weeks are applied from Lessons.church content only.";
-      else if (!path) skipReason = Locale.label("plans.applyYearPlan.missingVenue") || "Missing program, lesson, or venue.";
-      else if (occupiedDates.has(dateKey(date))) skipReason = Locale.label("plans.applyYearPlan.dateTaken") || "A plan already exists on this date.";
-      return { week, date, path: path || undefined, included: !skipReason, skipReason: skipReason || undefined };
-    });
-  }, [selectedPlan, startDate, weekCount, occupiedDates]);
-
   const [excluded, setExcluded] = useState<Set<number>>(new Set());
-  useEffect(() => { setExcluded(new Set()); }, [planId, startDate, weekCount]);
+  useEffect(() => { setExcluded(new Set()); }, [planId, startDate, weekCount, endDate, targetYear]);
+
+  const rows = useMemo(() => placeYearPlanWeeks({
+    weeks: selectedPlan?.weeks || [],
+    startMonth: selectedPlan?.startMonth,
+    startDate,
+    endDate: calendarMode ? endDate : undefined,
+    weekCount,
+    occupiedDates,
+    excluded,
+    reasons: placementReasons()
+  }), [selectedPlan, startDate, endDate, weekCount, occupiedDates, excluded, calendarMode]);
 
   const toSchedule = rows.filter((r, i) => r.included && !excluded.has(i));
 
@@ -138,7 +124,7 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
           notes: "",
           serviceOrder: true,
           providerId: "lessonschurch",
-          providerPlanId: row.path,
+          providerPlanId: row.path || venuePath(row.week),
           providerPlanName: displayName,
           contentType: "provider",
           contentId: row.week.venueId
@@ -158,6 +144,8 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
       setSaving(false);
     }
   };
+
+  const yearOptions = Array.from(new Set([currentYear() - 1, currentYear(), currentYear() + 1, currentYear() + 2, targetYear])).sort();
 
   return (
     <FormCard
@@ -193,9 +181,23 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
           </Select>
         </FormControl>
 
+        {calendarMode && (
+          <FormControl fullWidth>
+            <InputLabel>{Locale.label("plans.applyYearPlan.targetYear") || "Target year"}</InputLabel>
+            <Select
+              label={Locale.label("plans.applyYearPlan.targetYear") || "Target year"}
+              value={targetYear}
+              onChange={(e) => setTargetYear(Number(e.target.value))}
+              disabled={saving}
+              data-testid="apply-year-plan-target-year"
+            >
+              {yearOptions.map(y => <MenuItem key={y} value={y}>{y}</MenuItem>)}
+            </Select>
+          </FormControl>
+        )}
+
         <AppDatePicker
           fullWidth
-          
           label={Locale.label("plans.applyYearPlan.startDate") || "First class date"}
           value={DateHelper.formatHtml5Date(startDate)}
           onChange={(e) => setStartDate(DateHelper.toDate(e.target.value))}
@@ -203,21 +205,34 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
           data-testid="apply-year-plan-start-date"
         />
 
-        <FormControl fullWidth>
-          <InputLabel>{Locale.label("plans.applyYearPlan.weekCount") || "How many weeks"}</InputLabel>
-          <Select
-            label={Locale.label("plans.applyYearPlan.weekCount") || "How many weeks"}
-            value={weekCount}
-            onChange={(e) => setWeekCount(Number(e.target.value))}
+        {calendarMode && (
+          <AppDatePicker
+            fullWidth
+            label={Locale.label("plans.applyYearPlan.endDate") || "Last class date"}
+            value={DateHelper.formatHtml5Date(endDate)}
+            onChange={(e) => setEndDate(DateHelper.toDate(e.target.value))}
             disabled={saving}
-            data-testid="apply-year-plan-week-count"
-          >
-            <MenuItem value={12}>12 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
-            <MenuItem value={24}>24 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
-            <MenuItem value={44}>44 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
-            <MenuItem value={52}>52 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
-          </Select>
-        </FormControl>
+            data-testid="apply-year-plan-end-date"
+          />
+        )}
+
+        {!calendarMode && (
+          <FormControl fullWidth>
+            <InputLabel>{Locale.label("plans.applyYearPlan.weekCount") || "How many weeks"}</InputLabel>
+            <Select
+              label={Locale.label("plans.applyYearPlan.weekCount") || "How many weeks"}
+              value={weekCount}
+              onChange={(e) => setWeekCount(Number(e.target.value))}
+              disabled={saving}
+              data-testid="apply-year-plan-week-count"
+            >
+              <MenuItem value={12}>12 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
+              <MenuItem value={24}>24 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
+              <MenuItem value={44}>44 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
+              <MenuItem value={52}>52 {Locale.label("plans.applyYearPlan.weeks") || "weeks"}</MenuItem>
+            </Select>
+          </FormControl>
+        )}
 
         {previousPlan && (
           <FormControl fullWidth>
@@ -274,6 +289,7 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
                         <TableCell>
                           {row.week.studyName} — {row.week.lessonName}
                           {row.skipReason && <Typography variant="caption" color="text.secondary" display="block">{row.skipReason}</Typography>}
+                          {row.note && !row.skipReason && <Typography variant="caption" color="text.secondary" display="block">{row.note}</Typography>}
                         </TableCell>
                         <TableCell>{row.week.venueName || "—"}</TableCell>
                       </TableRow>
