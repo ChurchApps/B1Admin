@@ -139,6 +139,7 @@ export function ElementAdd(props: Props) {
     map: { icon: "place", labelKey: "site.elementAdd.location", descKey: "site.elementAdd.descLocation" },
     logo: { icon: "church", labelKey: "site.elementAdd.logo", descKey: "site.elementAdd.descLogo" },
     sermons: { icon: "video_library", labelKey: "common.sermons", descKey: "site.elementAdd.descSermons" },
+    podcast: { icon: "podcasts", labelKey: "site.elementAdd.podcast", descKey: "site.elementAdd.descPodcast" },
     stream: { icon: "live_tv", labelKey: "site.elementAdd.stream", descKey: "site.elementAdd.descStream" },
     donation: { icon: "favorite", labelKey: "site.elementAdd.donation", descKey: "site.elementAdd.descDonation" },
     donateLink: { icon: "volunteer_activism", labelKey: "site.elementAdd.donateLink", descKey: "site.elementAdd.descDonateLink" },

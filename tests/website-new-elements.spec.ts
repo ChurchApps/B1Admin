@@ -81,6 +81,50 @@ test.describe.serial("Website new elements", () => {
     await expect(page.locator("h3").getByText("Zacchaeus Icon Title")).toBeVisible({ timeout: 10000 });
   });
 
+  test("adds a Podcast element fed by an external RSS feed", async () => {
+    await openEditor();
+
+    // The Api proxies/normalizes the feed (GET /content/podcast/feed?url=...); stub that one call so the
+    // spec never depends on a third-party feed being online. The Api parser has its own Jest coverage.
+    const feedUrl = "https://feeds.example.com/grace-community-podcast.xml";
+    const feed = {
+      title: "Grace Community Podcast",
+      description: "Weekly conversations from Grace Community Church.",
+      image: "",
+      episodes: [
+        { guid: "ep-2", title: "Walking Through Ruth", pubDate: "2026-09-05T12:00:00.000Z", description: "Donald Clark opens the book of Ruth.", audioUrl: "https://cdn.example.com/audio/ep-2.mp3", audioType: "audio/mpeg", duration: 2853, image: "", episodeNumber: 2 },
+        { guid: "ep-1", title: "Welcome to the Podcast", pubDate: "2026-08-29T12:00:00.000Z", description: "Our very first episode.", audioUrl: "https://cdn.example.com/audio/ep-1.mp3", audioType: "audio/mpeg", duration: 1800, image: "", episodeNumber: 1 }
+      ]
+    };
+    await page.route(/\/content\/podcast\/feed\?/, (route) => route.fulfill({ json: feed }));
+
+    await ensurePanelOpen("draggable-element-podcast");
+    const card = page.locator('[data-testid="draggable-element-podcast"]');
+    await expect(card).toBeVisible({ timeout: 10000 });
+    await card.click();
+
+    const feedInput = page.locator('[data-testid="podcast-feed-url-input"] input');
+    await expect(feedInput).toBeVisible({ timeout: 10000 });
+    await feedInput.fill(feedUrl);
+    const elementPost = page.waitForResponse(r => r.url().endsWith("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator("button").getByText("Save").click();
+    const saved = await elementPost;
+    expect(saved.status()).toBe(200);
+    const savedElements = await saved.json();
+    expect(JSON.parse(savedElements[0].answersJSON).feedUrl).toBe(feedUrl);
+
+    // The editor re-renders the saved element through the shared renderer: header + one player per episode.
+    const list = page.locator('[data-testid="podcast-list"]');
+    await expect(list).toBeVisible({ timeout: 10000 });
+    await expect(page.locator(".podcastTitle").getByText("Grace Community Podcast")).toBeVisible();
+    await expect(list.locator("h3").getByText("Walking Through Ruth")).toBeVisible();
+    await expect(list.getByText("September 5, 2026")).toBeVisible();
+    await expect(list.locator('[data-testid="podcast-episode"]')).toHaveCount(2);
+    await expect(list.locator('[data-testid="podcast-audio"]').first()).toHaveAttribute("src", "https://cdn.example.com/audio/ep-2.mp3");
+    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
+    await page.unroute(/\/content\/podcast\/feed\?/);
+  });
+
   test("sets a bottom wave divider on the section", async () => {
     await openEditor();
 

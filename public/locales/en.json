@@ -4259,6 +4259,7 @@
       "descImage": "A single image, optionally linked.",
       "descLocation": "A map showing your church's address.",
       "descLogo": "Your church logo.",
+      "descPodcast": "Episode list from an external podcast RSS feed, with an audio player per episode",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descRow": "Split a section into side-by-side columns.",
@@ -4288,6 +4289,7 @@
       "logo": "Logo",
       "media": "Media",
       "noElementsFound": "No elements found",
+      "podcast": "Podcast",
       "row": "Row",
       "searchElements": "Search Elements",
       "section": "Section",
@@ -4687,6 +4689,13 @@
       "textColor": "Text Color",
       "youtubeId": "Youtube ID",
       "youtubeVideo": "Youtube Video"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     },
     "redirects": {
       "analytics": "Analytics",

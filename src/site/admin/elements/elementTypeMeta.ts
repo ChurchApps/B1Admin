@@ -27,6 +27,7 @@ const META: Record<string, { getLabel: () => string; icon: string }> = {
   map: { getLabel: () => Locale.label("site.elementAdd.location", "Location"), icon: "place" },
   logo: { getLabel: () => Locale.label("site.elementAdd.logo", "Logo"), icon: "church" },
   sermons: { getLabel: () => Locale.label("common.sermons", "Sermons"), icon: "video_library" },
+  podcast: { getLabel: () => Locale.label("site.elementAdd.podcast", "Podcast"), icon: "podcasts" },
   stream: { getLabel: () => Locale.label("site.elementAdd.stream", "Stream"), icon: "live_tv" },
   donation: { getLabel: () => Locale.label("site.elementAdd.donation", "Donation"), icon: "favorite" },
   donateLink: { getLabel: () => Locale.label("site.elementAdd.donateLink", "Donate Link"), icon: "volunteer_activism" },
