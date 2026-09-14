@@ -17,6 +17,14 @@ interface Props {
 
 const Dash = <Typography component="span" variant="body2" color="text.disabled">—</Typography>;
 
+function formatCheckinTime(record: AttendanceRecordInterface) {
+  const raw = (record as AttendanceRecordInterface & { checkinTime?: Date | string | null }).checkinTime;
+  if (!raw) return "";
+  const d = raw instanceof Date ? raw : new Date(raw);
+  if (isNaN(d.getTime())) return "";
+  return DateHelper.prettyTime(d);
+}
+
 export const PersonAttendance: React.FC<Props> = memo((props) => {
   const [serviceFilter, setServiceFilter] = useState("");
   const [serviceTimeFilter, setServiceTimeFilter] = useState("");
@@ -94,6 +102,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             {hasCampus && headCell("Campus", "campus")}
             {hasService && headCell("Service", "service")}
             {hasTime && headCell("Time", "time")}
+            {headCell("Checked In", "checkinTime")}
             {hasGroup && headCell("Group", "group")}
           </TableRow>
         </TableHead>
@@ -103,6 +112,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             return dateRecords.map((record, index) => {
               const group = ArrayHelper.getOne(groups.data, "id", record.groupId);
               const campusName = resolveCampus(record);
+              const checkinLabel = formatCheckinTime(record);
               return (
                 <TableRow key={`${date}-${index}`} hover sx={{ "& > td": { verticalAlign: "top" } }}>
                   {index === 0 && (
@@ -114,6 +124,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                   {hasCampus && <TableCell>{campusName ? <Typography variant="body2">{campusName}</Typography> : Dash}</TableCell>}
                   {hasService && <TableCell>{record.service?.name ? <Typography variant="body2">{record.service.name}</Typography> : Dash}</TableCell>}
                   {hasTime && <TableCell>{record.serviceTime?.name ? <Typography variant="body2">{record.serviceTime.name}</Typography> : Dash}</TableCell>}
+                  <TableCell>{checkinLabel ? <Typography variant="body2">{checkinLabel}</Typography> : Dash}</TableCell>
                   {hasGroup && (
                     <TableCell>
                       {group

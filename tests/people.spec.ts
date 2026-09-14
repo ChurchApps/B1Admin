@@ -7,6 +7,24 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are test marker names.
 
+function prettyClock(input: string | Date) {
+  const d = new Date(input);
+  const hour = d.getHours();
+  const minute = d.getMinutes();
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minute.toString().padStart(2, "0")} ${hour < 12 ? "AM" : "PM"}`;
+}
+
+async function checkedInCell(page: Page, rowIndex: number) {
+  await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
+  const idx = await page.getByRole("columnheader").evaluateAll(
+    (els, name) => els.findIndex((el) => (el.textContent || "").trim() === name),
+    "Checked In"
+  );
+  expect(idx, "Checked In column index").toBeGreaterThan(-1);
+  return page.locator("table tbody tr").nth(rowIndex).locator("td").nth(idx);
+}
+
 test.describe("People Management", () => {
   test.describe.configure({ mode: "serial" });
 
@@ -290,6 +308,34 @@ test.describe("People Management", () => {
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
       await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+    });
+
+    test("attendance tab shows the stored check-in clock time", async ({ page }) => {
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      const attBtn = page.getByRole("tab", { name: "Attendance" });
+      const recordsPromise = page.waitForResponse((r) => r.url().includes("/attendancerecords") && r.url().includes("personId") && r.status() === 200);
+      await attBtn.click();
+      const records = await (await recordsPromise).json();
+      const withTime = (Array.isArray(records) ? records : []).find((r: { checkinTime?: string }) => r.checkinTime);
+      expect(withTime).toBeTruthy();
+      await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
+      await expect(page.getByRole("cell", { name: prettyClock(withTime.checkinTime) }).first()).toBeVisible();
+      // Service-time name stays in Time; Checked In is the actual arrival clock.
+      await expect(page.getByRole("columnheader", { name: "Time" })).toBeVisible();
+      await expect(page.getByRole("cell", { name: /9:00 AM Service/ }).first()).toBeVisible();
+    });
+
+    test("attendance tab shows a dash when check-in time is missing", async ({ page }) => {
+      await page.route("**/attendancerecords**", async (route) => {
+        const response = await route.fetch();
+        const json = await response.json();
+        const patched = Array.isArray(json) ? json.map((r: object, i: number) => (i === 0 ? { ...r, checkinTime: null } : r)) : json;
+        await route.fulfill({ response, json: patched });
+      });
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      await page.getByRole("tab", { name: "Attendance" }).click();
+      await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
+      await expect(await checkedInCell(page, 0)).toHaveText("—");
     });
 
     test("should open donations tab", async ({ page }) => {
