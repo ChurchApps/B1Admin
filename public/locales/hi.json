@@ -27,10 +27,8 @@
       "category": "वर्ग",
       "group": "समूह",
       "groupAttMsg": "समूह में सत्र जोड़े जाने और लोगों द्वारा उन सत्रों में भाग लेने के बाद समूह की उपस्थिति दिखाई देगी।",
-      "groups": "समूह",
       "scheduled": "अनुसूचित",
       "service": "सेवा",
-      "services": "सेवाएं",
       "subtitle": "सेवाओं और समूहों के लिए उपस्थिति ट्रैक करें",
       "time": "समय",
       "totalGroups": "कुल समूह",
@@ -1275,10 +1273,6 @@
       "description": "इस समूह के लिए सत्रों और चेक-इन को रिकॉर्ड करने के लिए उपस्थिति ट्रैकिंग चालू करें।",
       "enable": "उपस्थिति सक्षम करें",
       "title": "उपस्थिति ट्रैकिंग सक्षम नहीं है"
-    },
-    "tabs": {
-      "mem": "सदस्य",
-      "ses": "सत्र"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "{name} को हटाएं",
       "noResMsg": "कोई परिणाम नहीं मिला। कृपया किसी अन्य नाम की खोज करें या एक नया व्यक्ति जोड़ें"
     },
-    "personAdd": {
-      "createNewPersonAria": "नया व्यक्ति बनाएं",
-      "searchForPersonToAddAria": "जोड़ने के लिए व्यक्ति खोजें"
-    },
     "personAttendance": {
       "noAttMsg": "कोई उपस्थिति रिकॉर्ड नहीं है। समूह सत्र के लिए उपस्थिति ट्रैक किए जाने के बाद उपस्थिति दिखाई देगी।"
     },
@@ -1666,11 +1656,6 @@
       "form": "फॉर्म",
       "notFilledOut": "अभी तक भरा नहीं गया।"
     },
-    "personNav": {
-      "customForms": "कस्टम फॉर्म",
-      "discipleship": "शिष्यत्व",
-      "groups": "समूह"
-    },
     "personNavigation": {
       "attendance": "उपस्थिति",
       "details": "विवरण",
@@ -1706,8 +1691,6 @@
       "trusted": "विश्वसनीय"
     },
     "tabs": {
-      "att": "उपस्थिति",
-      "don": "दान",
       "noImplement": "लागू नहीं किया गया"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "पहला विकल्प",
       "value": "विकल्प ए"
-    },
-    "church": {
-      "address1": "456 मुख्य मार्ग",
-      "address2": "सूट 100",
-      "city": "मुंबई",
-      "country": "USA",
-      "name": "अनुग्रह चर्च",
-      "state": "महाराष्ट्र",
-      "subdomain": "gracechurch",
-      "zip": "400001"
     },
     "device": {
       "label": "लिविंग रूम स्क्रीन"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "चेक इन",
       "deleteTab": "टैब हटाएं",
       "donation": "दान",
-      "donationLanding": "दान लैंडिंग",
       "editTab": "टैब संपादित करें",
       "everyone": "सभी (अनाम सहित)",
       "externalUrl": "बाहरी URL",
       "groups": "विशिष्ट समूह...",
       "internalPage": "आंतरिक पृष्ठ",
-      "lessons": "पाठ",
       "liveStream": "लाइव स्ट्रीम",
       "loggedInUsers": "लॉग-इन उपयोगकर्ता",
       "memberDirectory": "सदस्य निर्देशिका",
@@ -3211,8 +3087,7 @@
       "campus": "परिसर",
       "campuses": "परिसर",
       "location": "स्थान",
-      "none": "अभी तक कोई परिसर नहीं जोड़ा गया है।",
-      "subtitle": "अपने चर्च के भौतिक स्थान प्रबंधित करें"
+      "none": "अभी तक कोई परिसर नहीं जोड़ा गया है।"
     },
     "checkinSettingsEdit": {
       "block": "ब्लॉक (चेक-इन रोकें)",
@@ -3221,28 +3096,17 @@
       "title": "चेक-इन",
       "warn": "चेतावनी दें (पुष्टिकरण के साथ अनुमति दें)"
     },
-    "church": {
-      "subdomainHelper": "आपकी चर्च का अद्वितीय वेब पता"
-    },
     "churchSettingsEdit": {
       "address1": "पता पंक्ति 1",
       "address2": "पता पंक्ति 2",
-      "addressLine1Aria": "पता पंक्ति 1",
       "churchInfo": "चर्च जानकारी",
       "churchInfoSubtitle": "नाम, पता और उपडोमेन",
       "churchName": "चर्च का नाम",
-      "churchNameAria": "चर्च का नाम",
-      "churchSettings": "चर्च सेटिंग्स",
-      "domainsSubtitle": "कस्टम डोमेन कॉन्फ़िगरेशन",
       "firstDayOfWeek": "सप्ताह का पहला दिन",
       "general": "सामान्य",
-      "generalSubtitle": "सहायता संपर्क, निर्देशिका और दृश्यता",
-      "givingSubtitle": "भुगतान गेटवे और शुल्क विकल्प",
       "noNameMsg": "चर्च का नाम रिक्त नहीं हो सकता।",
       "noSubMsg": "उपडोमेन रिक्त नहीं हो सकता।",
       "subdom": "उपडोमेन",
-      "subdomainAria": "उपडोमेन",
-      "textingSubtitle": "SMS मैसेजिंग प्रदाता कॉन्फ़िगर करें",
       "textingTitle": "मैसेजिंग"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "फ़ील्ड जोड़ें",
       "customFields": "कस्टम फ़ील्ड",
       "field": "कस्टम फ़ील्ड",
-      "none": "अभी तक कोई कस्टम फ़ील्ड नहीं जोड़ा गया है।",
-      "subtitle": "लोगों को ट्रैक करने के लिए कस्टम फ़ील्ड परिभाषित करें"
+      "none": "अभी तक कोई कस्टम फ़ील्ड नहीं जोड़ा गया है।"
     },
     "developer": {
       "actions": "क्रियाएं",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "सीक्रेट पुनर्जनन करें",
       "response": "प्रतिक्रिया",
       "responseBody": "प्रतिक्रिया बॉडी",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "अभी अपना साइनिंग सीक्रेट कॉपी करें — यह दोबारा नहीं दिखाया जाएगा।",
       "secretSignNote": "प्रत्येक डिलीवरी पर X-B1-Signature हेडर सत्यापित करने के लिए इसका उपयोग करें।",
       "secretTitle": "साइनिंग सीक्रेट",
@@ -4631,7 +4493,6 @@
       "name": "व्यवस्था का नाम",
       "title": "व्यवस्था"
     },
-    "arrangements": "व्यवस्थाएँ",
     "audio": {
       "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
       "upload": "ऑडियो अपलोड करें"

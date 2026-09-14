@@ -27,10 +27,8 @@
       "category": "Категория",
       "group": "Группа",
       "groupAttMsg": "Посещаемость группы будет отображаться после того, как в группу будут добавлены сессии и люди посетят эти сессии.",
-      "groups": "Группы",
       "scheduled": "Запланировано",
       "service": "Служение",
-      "services": "Служения",
       "subtitle": "Отслеживайте посещаемость услуг и групп",
       "time": "Время",
       "totalGroups": "Всего групп",
@@ -1275,10 +1273,6 @@
       "description": "Включите отслеживание посещаемости, чтобы записывать сессии и регистрации для этой группы.",
       "enable": "Включить учёт посещаемости",
       "title": "Учёт посещаемости не включён"
-    },
-    "tabs": {
-      "mem": "Участники",
-      "ses": "Сессии"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Удалить {name}",
       "noResMsg": "Результатов не найдено. Пожалуйста, выполните поиск по другому имени или добавьте нового человека"
     },
-    "personAdd": {
-      "createNewPersonAria": "Создать нового человека",
-      "searchForPersonToAddAria": "Поиск человека для добавления"
-    },
     "personAttendance": {
       "noAttMsg": "Нет записей о посещаемости. Посещаемость появится после того, как будет отслежена посещаемость групповой сессии."
     },
@@ -1666,11 +1656,6 @@
       "form": "Форма",
       "notFilledOut": "Ещё не заполнено."
     },
-    "personNav": {
-      "customForms": "Пользовательские формы",
-      "discipleship": "Ученичество",
-      "groups": "Группы"
-    },
     "personNavigation": {
       "attendance": "Посещаемость",
       "details": "Подробности",
@@ -1706,8 +1691,6 @@
       "trusted": "Доверенный"
     },
     "tabs": {
-      "att": "Посещаемость",
-      "don": "Пожертвования",
       "noImplement": "Не реализовано"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Первый вариант",
       "value": "Вариант А"
-    },
-    "church": {
-      "address1": "пр. Главный, д. 456",
-      "address2": "офис 100",
-      "city": "Санкт-Петербург",
-      "country": "USA",
-      "name": "Церковь Благодати",
-      "state": "Ленинградская область",
-      "subdomain": "gracechurch",
-      "zip": "190000"
     },
     "device": {
       "label": "Living Room Screen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Регистрироваться",
       "deleteTab": "Удалить Вкладку",
       "donation": "Пожертвование",
-      "donationLanding": "Лендинг для пожертвований",
       "editTab": "Редактировать Вкладку",
       "everyone": "Все (включая анонимных)",
       "externalUrl": "Внешний URL",
       "groups": "Конкретные группы...",
       "internalPage": "Внутренняя страница",
-      "lessons": "Уроки",
       "liveStream": "Прямая трансляция",
       "loggedInUsers": "Авторизованные пользователи",
       "memberDirectory": "Каталог участников",
@@ -3211,8 +3087,7 @@
       "campus": "Кампус",
       "campuses": "Кампусы",
       "location": "Местоположение",
-      "none": "Кампусы ещё не добавлены.",
-      "subtitle": "Управляйте физическими местами расположения вашей церкви"
+      "none": "Кампусы ещё не добавлены."
     },
     "checkinSettingsEdit": {
       "block": "Блокировать (запретить регистрацию)",
@@ -3221,28 +3096,17 @@
       "title": "Регистрация",
       "warn": "Предупреждать (разрешать с подтверждением)"
     },
-    "church": {
-      "subdomainHelper": "Уникальный веб-адрес вашей церкви"
-    },
     "churchSettingsEdit": {
       "address1": "Адресная строка 1",
       "address2": "Адресная строка 2",
-      "addressLine1Aria": "Адрес, строка 1",
       "churchInfo": "Информация о церкви",
       "churchInfoSubtitle": "Название, адрес и поддомен",
       "churchName": "Название церкви",
-      "churchNameAria": "Название церкви",
-      "churchSettings": "Настройки церкви",
-      "domainsSubtitle": "Настройка пользовательского домена",
       "firstDayOfWeek": "Первый день недели",
       "general": "Общее",
-      "generalSubtitle": "Контакт поддержки, каталог и видимость",
-      "givingSubtitle": "Платёжный шлюз и настройки комиссий",
       "noNameMsg": "Название церкви не может быть пустым.",
       "noSubMsg": "Поддомен не может быть пустым.",
       "subdom": "Поддомен",
-      "subdomainAria": "Поддомен",
-      "textingSubtitle": "Настройка SMS-провайдера",
       "textingTitle": "SMS"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Добавить поле",
       "customFields": "Пользовательские поля",
       "field": "Дополнительное поле",
-      "none": "Дополнительные поля пока не добавлены.",
-      "subtitle": "Определите дополнительные поля для отслеживания у людей"
+      "none": "Дополнительные поля пока не добавлены."
     },
     "developer": {
       "actions": "Действия",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Сгенерировать новый секрет",
       "response": "Ответ",
       "responseBody": "Тело ответа",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Скопируйте секрет подписи сейчас — он больше не будет показан.",
       "secretSignNote": "Используйте его для проверки заголовка X-B1-Signature при каждой доставке.",
       "secretTitle": "Секрет подписи",
@@ -4631,7 +4493,6 @@
       "name": "Название аранжировки",
       "title": "Аранжировка"
     },
-    "arrangements": "Аранжировки",
     "audio": {
       "deleteConfirm": "Вы уверены, что хотите удалить этот аудиофайл?",
       "upload": "Загрузить аудио"

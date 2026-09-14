@@ -27,10 +27,8 @@
       "category": "类别",
       "group": "团体",
       "groupAttMsg": "一旦会议被添加到小组并且人们参加了这些会议，小组出席情况就会显示出来。",
-      "groups": "团体",
       "scheduled": "预定",
       "service": "服务",
-      "services": "服务",
       "subtitle": "跟踪服务和团体的出席情况",
       "time": "时间",
       "totalGroups": "总组数",
@@ -1275,10 +1273,6 @@
       "description": "开启出席跟踪以记录此团体的活动场次和签到情况。",
       "enable": "启用出席跟踪",
       "title": "出席跟踪尚未启用"
-    },
-    "tabs": {
-      "mem": "成员",
-      "ses": "会话"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "删除 {name}",
       "noResMsg": "未找到结果。请搜索其他姓名或添加新人"
     },
-    "personAdd": {
-      "createNewPersonAria": "创建新人员",
-      "searchForPersonToAddAria": "搜索要添加的人员"
-    },
     "personAttendance": {
       "noAttMsg": "无出席记录。一旦追踪到团体会话的出席情况，出席记录将显示。"
     },
@@ -1666,11 +1656,6 @@
       "form": "表单",
       "notFilledOut": "尚未填写。"
     },
-    "personNav": {
-      "customForms": "自定义表单",
-      "discipleship": "门徒训练",
-      "groups": "小组"
-    },
     "personNavigation": {
       "attendance": "出席",
       "details": "详情",
@@ -1706,8 +1691,6 @@
       "trusted": "受信任"
     },
     "tabs": {
-      "att": "出席",
-      "don": "捐款",
       "noImplement": "未实现"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "第一选项",
       "value": "选项A"
-    },
-    "church": {
-      "address1": "主大道456号",
-      "address2": "100室",
-      "city": "上海",
-      "country": "USA",
-      "name": "恩典教会",
-      "state": "上海市",
-      "subdomain": "gracechurch",
-      "zip": "200000"
     },
     "device": {
       "label": "Living Room Screen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "报到",
       "deleteTab": "删除标签",
       "donation": "捐款",
-      "donationLanding": "捐款登陆",
       "editTab": "编辑标签",
       "everyone": "所有人（包括匿名用户）",
       "externalUrl": "外部URL",
       "groups": "特定小组...",
       "internalPage": "内部页面",
-      "lessons": "教训",
       "liveStream": "直播",
       "loggedInUsers": "已登录用户",
       "memberDirectory": "会员名录",
@@ -3211,8 +3087,7 @@
       "campus": "堂区",
       "campuses": "堂区",
       "location": "位置",
-      "none": "尚未添加任何堂区。",
-      "subtitle": "管理您教会的实体位置"
+      "none": "尚未添加任何堂区。"
     },
     "checkinSettingsEdit": {
       "block": "阻止（禁止签到）",
@@ -3221,28 +3096,17 @@
       "title": "签到",
       "warn": "警告（确认后允许）"
     },
-    "church": {
-      "subdomainHelper": "您的教会独特的网址"
-    },
     "churchSettingsEdit": {
       "address1": "地址第1行",
       "address2": "地址第2行",
-      "addressLine1Aria": "地址行 1",
       "churchInfo": "教会信息",
       "churchInfoSubtitle": "名称、地址和子域",
       "churchName": "教会名称",
-      "churchNameAria": "教会名称",
-      "churchSettings": "教会设置",
-      "domainsSubtitle": "自定义域名配置",
       "firstDayOfWeek": "每周第一天",
       "general": "常规",
-      "generalSubtitle": "支持联系人、目录和可见性",
-      "givingSubtitle": "支付网关和费用选项",
       "noNameMsg": "教会名称不能为空。",
       "noSubMsg": "子域不能为空。",
       "subdom": "子域",
-      "subdomainAria": "子域名",
-      "textingSubtitle": "配置 SMS 短信提供商",
       "textingTitle": "短信"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "添加字段",
       "customFields": "自定义字段",
       "field": "自定义字段",
-      "none": "尚未添加任何自定义字段。",
-      "subtitle": "定义要在人员记录中跟踪的自定义字段"
+      "none": "尚未添加任何自定义字段。"
     },
     "developer": {
       "actions": "操作",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "重新生成密钥",
       "response": "响应",
       "responseBody": "响应正文",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "立即复制您的签名密钥——它不会再次显示。",
       "secretSignNote": "使用它验证每次推送中的 X-B1-Signature 标头。",
       "secretTitle": "签名密钥",
@@ -4631,7 +4493,6 @@
       "name": "编曲名称",
       "title": "编曲"
     },
-    "arrangements": "编排",
     "audio": {
       "deleteConfirm": "确定要删除此音频文件吗？",
       "upload": "上传音频"

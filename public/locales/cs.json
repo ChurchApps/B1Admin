@@ -27,10 +27,8 @@
       "category": "Kategorie",
       "group": "Skupina",
       "groupAttMsg": "Docházka skupiny se zobrazí, jakmile budou do skupiny přidány relace a lidé se jich zúčastní.",
-      "groups": "Skupiny",
       "scheduled": "Naplánováno",
       "service": "Bohoslužba",
-      "services": "Bohoslužby",
       "subtitle": "Sledujte docházku bohoslužeb a skupin",
       "time": "Čas",
       "totalGroups": "Celkový počet skupin",
@@ -1275,10 +1273,6 @@
       "description": "Zapněte sledování docházky pro zaznamenávání relací a přihlášení v této skupině.",
       "enable": "Zapnout docházku",
       "title": "Sledování docházky není zapnuté"
-    },
-    "tabs": {
-      "mem": "Členové",
-      "ses": "Relace"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Smazat {name}",
       "noResMsg": "Nebyly nalezeny žádné výsledky. Prosím hledejte jiné jméno nebo přidejte novou osobu"
     },
-    "personAdd": {
-      "createNewPersonAria": "Vytvořit novou osobu",
-      "searchForPersonToAddAria": "Vyhledat osobu k přidání"
-    },
     "personAttendance": {
       "noAttMsg": "Žádné záznamy o docházce. Docházka se zobrazí po zaznamenání docházky na relaci skupiny."
     },
@@ -1666,11 +1656,6 @@
       "form": "Formulář",
       "notFilledOut": "Zatím nevyplněno."
     },
-    "personNav": {
-      "customForms": "Vlastní formuláře",
-      "discipleship": "Učednictví",
-      "groups": "Skupiny"
-    },
     "personNavigation": {
       "attendance": "Docházka",
       "details": "Podrobnosti",
@@ -1706,8 +1691,6 @@
       "trusted": "Důvěryhodný"
     },
     "tabs": {
-      "att": "Docházka",
-      "don": "Dary",
       "noImplement": "Neimplementováno"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Možnost 1",
       "value": "option1"
-    },
-    "church": {
-      "address1": "Kostelní 123",
-      "address2": "Přízemí",
-      "city": "Praha",
-      "country": "Česko",
-      "name": "Sbor Milosti",
-      "state": "PR",
-      "subdomain": "sbormilosti",
-      "zip": "11000"
     },
     "device": {
       "label": "Obrazovka v obývacím pokoji"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Příchod",
       "deleteTab": "Smazat záložku",
       "donation": "Dar",
-      "donationLanding": "Úvodní stránka darů",
       "editTab": "Upravit záložku",
       "everyone": "Všichni (včetně anonymních)",
       "externalUrl": "Externí URL",
       "groups": "Konkrétní skupiny...",
       "internalPage": "Interní stránka",
-      "lessons": "Lekce",
       "liveStream": "Živý přenos",
       "loggedInUsers": "Přihlášení uživatelé",
       "memberDirectory": "Adresář členů",
@@ -3211,8 +3087,7 @@
       "campus": "Campus",
       "campuses": "Campusy",
       "location": "Umístění",
-      "none": "Zatím nebyly přidány žádné campusy.",
-      "subtitle": "Spravujte fyzická místa vašeho sboru"
+      "none": "Zatím nebyly přidány žádné campusy."
     },
     "checkinSettingsEdit": {
       "block": "Blokovat (zabránit přihlášení)",
@@ -3221,28 +3096,17 @@
       "title": "Odbavení",
       "warn": "Varovat (povolit s potvrzením)"
     },
-    "church": {
-      "subdomainHelper": "Unikátní webová adresa vašeho sboru"
-    },
     "churchSettingsEdit": {
       "address1": "Adresa řádek 1",
       "address2": "Adresa řádek 2",
-      "addressLine1Aria": "Řádek adresy 1",
       "churchInfo": "Informace o sboru",
       "churchInfoSubtitle": "Název, adresa a subdoména",
       "churchName": "Název sboru",
-      "churchNameAria": "Název církve",
-      "churchSettings": "Nastavení sboru",
-      "domainsSubtitle": "Konfigurace vlastní domény",
       "firstDayOfWeek": "První den v týdnu",
       "general": "Obecné",
-      "generalSubtitle": "Kontakt podpory, adresář a viditelnost",
-      "givingSubtitle": "Platební brána a možnosti poplatků",
       "noNameMsg": "Název sboru nesmí být prázdný.",
       "noSubMsg": "Subdoména nesmí být prázdná.",
       "subdom": "Subdoména",
-      "subdomainAria": "Subdoména",
-      "textingSubtitle": "Konfigurovat poskytovatele SMS",
       "textingTitle": "SMS zprávy"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Přidat pole",
       "customFields": "Vlastní pole",
       "field": "Vlastní pole",
-      "none": "Zatím nebyla přidána žádná vlastní pole.",
-      "subtitle": "Definujte vlastní pole pro sledování u osob"
+      "none": "Zatím nebyla přidána žádná vlastní pole."
     },
     "developer": {
       "actions": "Akce",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Obnovit tajný klíč",
       "response": "Odpověď",
       "responseBody": "Tělo odpovědi",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Zkopírujte svůj podpisový tajný klíč nyní — nebude znovu zobrazen.",
       "secretSignNote": "Použijte ho k ověření záhlaví X-B1-Signature při každém doručení.",
       "secretTitle": "Podpisový tajný klíč",
@@ -4631,7 +4493,6 @@
       "name": "Název aranžmánu",
       "title": "Aranžmán"
     },
-    "arrangements": "Aranžmá",
     "audio": {
       "deleteConfirm": "Opravdu chcete smazat tento zvukový soubor?",
       "upload": "Nahrát audio"

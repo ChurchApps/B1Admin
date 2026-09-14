@@ -27,10 +27,8 @@
       "category": "Kategori",
       "group": "Gruppe",
       "groupAttMsg": "Gruppefremmøde vil blive vist, når sessioner er tilføjet til en gruppe, og folk har deltaget i disse sessioner.",
-      "groups": "Grupper",
       "scheduled": "Planlagt",
       "service": "Gudstjeneste",
-      "services": "Gudstjenester",
       "subtitle": "Spor fremmøde for gudstjenester og grupper",
       "time": "Tid",
       "totalGroups": "Grupper i alt",
@@ -1275,10 +1273,6 @@
       "description": "Slå fremmøderegistrering til for at registrere sessioner og check-in for denne gruppe.",
       "enable": "Aktivér fremmøde",
       "title": "Fremmøderegistrering er ikke aktiveret"
-    },
-    "tabs": {
-      "mem": "Medlemmer",
-      "ses": "Sessioner"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Slet {name}",
       "noResMsg": "Ingen resultater fundet. Søg efter et andet navn eller tilføj en ny person"
     },
-    "personAdd": {
-      "createNewPersonAria": "Opret ny person",
-      "searchForPersonToAddAria": "Søg efter person at tilføje"
-    },
     "personAttendance": {
       "noAttMsg": "Ingen fremmøderegistreringer. Fremmøde vises, når der er registreret fremmøde for en gruppesession."
     },
@@ -1666,11 +1656,6 @@
       "form": "Formular",
       "notFilledOut": "Ikke udfyldt endnu."
     },
-    "personNav": {
-      "customForms": "Brugerdefinerede formularer",
-      "discipleship": "Discipelskab",
-      "groups": "Grupper"
-    },
     "personNavigation": {
       "attendance": "Fremmøde",
       "details": "Detaljer",
@@ -1706,8 +1691,6 @@
       "trusted": "Pålidelig"
     },
     "tabs": {
-      "att": "Fremmøde",
-      "don": "Donationer",
       "noImplement": "Ikke implementeret"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Valgmulighed 1",
       "value": "mulighed1"
-    },
-    "church": {
-      "address1": "Hovedgade 123",
-      "address2": "Suite 100",
-      "city": "København",
-      "country": "Danmark",
-      "name": "Nådens Menighed",
-      "state": "Hovedstaden",
-      "subdomain": "naadenskirke",
-      "zip": "1000"
     },
     "device": {
       "label": "Skærm i stuen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Check-in",
       "deleteTab": "Slet fane",
       "donation": "Donation",
-      "donationLanding": "Donationslandingsside",
       "editTab": "Rediger fane",
       "everyone": "Alle (inklusive anonyme)",
       "externalUrl": "Ekstern URL",
       "groups": "Specifikke grupper...",
       "internalPage": "Intern side",
-      "lessons": "Lektioner",
       "liveStream": "Livestream",
       "loggedInUsers": "Loggede ind-brugere",
       "memberDirectory": "Medlemsregister",
@@ -3211,8 +3087,7 @@
       "campus": "Lokation",
       "campuses": "Lokationer",
       "location": "Adresse",
-      "none": "Der er endnu ikke tilføjet nogen lokationer.",
-      "subtitle": "Administrer din kirkes fysiske lokationer"
+      "none": "Der er endnu ikke tilføjet nogen lokationer."
     },
     "checkinSettingsEdit": {
       "block": "Blokér (forhindre check-in)",
@@ -3221,28 +3096,17 @@
       "title": "Check-in",
       "warn": "Advar (tillad med bekræftelse)"
     },
-    "church": {
-      "subdomainHelper": "Din kirkes unikke webadresse"
-    },
     "churchSettingsEdit": {
       "address1": "Adresselinje 1",
       "address2": "Adresselinje 2",
-      "addressLine1Aria": "Adresselinje 1",
       "churchInfo": "Kirkeoplysninger",
       "churchInfoSubtitle": "Navn, adresse og underdomæne",
       "churchName": "Kirkenavn",
-      "churchNameAria": "Kirkenavn",
-      "churchSettings": "Kirkeindstillinger",
-      "domainsSubtitle": "Konfiguration af tilpasset domæne",
       "firstDayOfWeek": "Første dag i ugen",
       "general": "Generelt",
-      "generalSubtitle": "Supportkontakt, register og synlighed",
-      "givingSubtitle": "Betalingsgateway og gebyrindstillinger",
       "noNameMsg": "Kirkenavn må ikke være tomt.",
       "noSubMsg": "Underdomæne må ikke være tomt.",
       "subdom": "Underdomæne",
-      "subdomainAria": "Underdomæne",
-      "textingSubtitle": "Konfigurer sms-tjenesteudbyder",
       "textingTitle": "Sms"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Tilføj felt",
       "customFields": "Brugerdefinerede felter",
       "field": "Brugerdefineret felt",
-      "none": "Der er endnu ikke tilføjet brugerdefinerede felter.",
-      "subtitle": "Definer brugerdefinerede felter til at spore på personer"
+      "none": "Der er endnu ikke tilføjet brugerdefinerede felter."
     },
     "developer": {
       "actions": "Handlinger",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Regenerér hemmelighed",
       "response": "Svar",
       "responseBody": "Svarindhold",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Kopiér din signeringshemmelighed nu — den vises ikke igen.",
       "secretSignNote": "Brug den til at bekræfte X-B1-Signature-headeren ved hver levering.",
       "secretTitle": "Signeringshemmelighed",
@@ -4631,7 +4493,6 @@
       "name": "Arrangementsnavn",
       "title": "Arrangement"
     },
-    "arrangements": "Arrangementer",
     "audio": {
       "deleteConfirm": "Er du sikker på, at du vil slette denne lydfil?",
       "upload": "Upload lyd"

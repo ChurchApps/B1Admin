@@ -27,10 +27,8 @@
       "category": "Categoría",
       "group": "Grupo",
       "groupAttMsg": "La asistencia del grupo se mostrará una vez que se hayan agregado sesiones a un grupo y las personas hayan asistido a esas sesiones.",
-      "groups": "Grupos",
       "scheduled": "Programado",
       "service": "Servicio",
-      "services": "Servicios",
       "subtitle": "Seguimiento de asistencia a servicios y grupos.",
       "time": "Hora",
       "totalGroups": "Total de grupos",
@@ -1275,10 +1273,6 @@
       "description": "Active el seguimiento de asistencia para registrar sesiones y registros de entrada para este grupo.",
       "enable": "Habilitar asistencia",
       "title": "El seguimiento de asistencia no está habilitado"
-    },
-    "tabs": {
-      "mem": "Miembros",
-      "ses": "Sesiones"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Eliminar a {name}",
       "noResMsg": "No se encontraron resultados. Por favor busque otro nombre o agregue una nueva persona"
     },
-    "personAdd": {
-      "createNewPersonAria": "Crear nueva persona",
-      "searchForPersonToAddAria": "Buscar persona para agregar"
-    },
     "personAttendance": {
       "noAttMsg": "No hay registros de asistencia. La asistencia aparecerá una vez que se haya registrado para una sesión de grupo."
     },
@@ -1666,11 +1656,6 @@
       "form": "Formulario",
       "notFilledOut": "Aún no se ha completado."
     },
-    "personNav": {
-      "customForms": "Formularios Personalizados",
-      "discipleship": "Discipulado",
-      "groups": "Grupos"
-    },
     "personNavigation": {
       "attendance": "Asistencia",
       "details": "Detalles",
@@ -1706,8 +1691,6 @@
       "trusted": "De confianza"
     },
     "tabs": {
-      "att": "Asistencia",
-      "don": "Donaciones",
       "noImplement": "No Implementado"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Primera Opción",
       "value": "Opción A"
-    },
-    "church": {
-      "address1": "Avenida Principal 456",
-      "address2": "Suite 100",
-      "city": "Guadalajara",
-      "country": "USA",
-      "name": "Iglesia de la Gracia",
-      "state": "Jalisco",
-      "subdomain": "gracechurch",
-      "zip": "44100"
     },
     "device": {
       "label": "Living Room Screen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Registrarse",
       "deleteTab": "Eliminar Pestaña",
       "donation": "Donación",
-      "donationLanding": "Aterrizaje de donación",
       "editTab": "Editar Pestaña",
       "everyone": "Todos (incluyendo anónimos)",
       "externalUrl": "URL Externa",
       "groups": "Grupos Específicos...",
       "internalPage": "Página interna",
-      "lessons": "Lecciones",
       "liveStream": "Transmisión en vivo",
       "loggedInUsers": "Usuarios Conectados",
       "memberDirectory": "Directorio de miembros",
@@ -3211,8 +3087,7 @@
       "campus": "Sede",
       "campuses": "Sedes",
       "location": "Ubicación",
-      "none": "Aún no se han agregado sedes.",
-      "subtitle": "Gestione las ubicaciones físicas de su iglesia"
+      "none": "Aún no se han agregado sedes."
     },
     "checkinSettingsEdit": {
       "block": "Bloquear (impedir el registro)",
@@ -3221,28 +3096,17 @@
       "title": "Check-in",
       "warn": "Advertir (permitir con confirmación)"
     },
-    "church": {
-      "subdomainHelper": "La dirección web única de su iglesia"
-    },
     "churchSettingsEdit": {
       "address1": "Dirección Línea 1",
       "address2": "Dirección Línea 2",
-      "addressLine1Aria": "Línea de dirección 1",
       "churchInfo": "Información de la Iglesia",
       "churchInfoSubtitle": "Nombre, dirección y subdominio",
       "churchName": "Nombre de la Iglesia",
-      "churchNameAria": "Nombre de la iglesia",
-      "churchSettings": "Configuraciones de la Iglesia",
-      "domainsSubtitle": "Configuración de dominio personalizado",
       "firstDayOfWeek": "Primer día de la semana",
       "general": "General",
-      "generalSubtitle": "Contacto de soporte, directorio y visibilidad",
-      "givingSubtitle": "Pasarela de pagos y opciones de tarifas",
       "noNameMsg": "El nombre de la iglesia no puede estar en blanco.",
       "noSubMsg": "El subdominio no puede estar en blanco.",
       "subdom": "Subdominio",
-      "subdomainAria": "Subdominio",
-      "textingSubtitle": "Configurar el proveedor de SMS",
       "textingTitle": "Mensajería de Texto"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Agregar campo",
       "customFields": "Campos personalizados",
       "field": "Campo personalizado",
-      "none": "Aún no se han agregado campos personalizados.",
-      "subtitle": "Defina campos personalizados para hacer seguimiento en las personas"
+      "none": "Aún no se han agregado campos personalizados."
     },
     "developer": {
       "actions": "Acciones",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Regenerar secreto",
       "response": "Respuesta",
       "responseBody": "Cuerpo de la respuesta",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Copie su secreto de firma ahora — no se mostrará de nuevo.",
       "secretSignNote": "Úselo para verificar el encabezado X-B1-Signature en cada entrega.",
       "secretTitle": "Secreto de firma",
@@ -4631,7 +4493,6 @@
       "name": "Nombre del Arreglo",
       "title": "Arreglo"
     },
-    "arrangements": "Arreglos",
     "audio": {
       "deleteConfirm": "¿Seguro que quieres eliminar este archivo de audio?",
       "upload": "Subir audio"
