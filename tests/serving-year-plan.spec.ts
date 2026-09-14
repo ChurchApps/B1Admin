@@ -10,6 +10,28 @@ const MINISTRY = `Barnabas YP ${RUN}`;
 const PLAN_TYPE = `Barnabas YP Plans ${RUN}`;
 const START_DATE = "2031-02-02";
 
+const ANCHORED_YEAR_PLANS = [
+  {
+    id: "YPLANCH0001",
+    name: "Ark Elementary Year 2",
+    startMonth: 1,
+    weeks: [
+      { week: 1, programId: "PGM1", studyId: "STU1", lessonId: "LSN1", venueId: "VEN1", studyName: "Psalm 23", lessonName: "Shepherd", venueName: "Elementary" },
+      { week: 2, programId: "PGM1", studyId: "STU1", lessonId: "LSN2", venueId: "VEN1", studyName: "Psalm 23", lessonName: "Protector", venueName: "Elementary" },
+      { week: 3, programId: "PGM1", studyId: "STU2", lessonId: "LSN3", venueId: "VEN1", studyName: "Power Up (Easter Series)", lessonName: "Obey", venueName: "Elementary" },
+      { week: 4, programId: "PGM1", studyId: "STU2", lessonId: "LSN4", venueId: "VEN1", studyName: "Power Up (Easter Series)", lessonName: "Serve", venueName: "Elementary" },
+      { week: 5, programId: "PGM1", studyId: "STU2", lessonId: "LSN5", venueId: "VEN1", studyName: "Power Up (Easter Series)", lessonName: "Humble", venueName: "Elementary" },
+      { week: 6, programId: "PGM1", studyId: "STU2", lessonId: "LSN6", venueId: "VEN1", studyName: "Power Up (Easter Series)", lessonName: "Wise Choices", venueName: "Elementary", anchor: "easter" },
+      { week: 7, programId: "PGM1", studyId: "STU3", lessonId: "LSN7", venueId: "VEN1", studyName: "After Easter", lessonName: "Continue", venueName: "Elementary" },
+      { week: 8, programId: "PGM1", studyId: "STU3", lessonId: "LSN8", venueId: "VEN1", studyName: "After Easter", lessonName: "Keep Going", venueName: "Elementary" },
+      { week: 9, programId: "PGM1", studyId: "STU3", lessonId: "LSN9", venueId: "VEN1", studyName: "After Easter", lessonName: "Finish Strong", venueName: "Elementary" },
+      { week: 10, programId: "PGM1", studyId: "STU4", lessonId: "LSN10", venueId: "VEN1", studyName: "Better to Give (Christmas)", lessonName: "Give", venueName: "Elementary" },
+      { week: 11, programId: "PGM1", studyId: "STU4", lessonId: "LSN11", venueId: "VEN1", studyName: "Better to Give (Christmas)", lessonName: "Room", venueName: "Elementary" },
+      { week: 12, programId: "PGM1", studyId: "STU4", lessonId: "LSN12", venueId: "VEN1", studyName: "Better to Give (Christmas)", lessonName: "Best", venueName: "Elementary", anchor: "christmas" }
+    ]
+  }
+];
+
 const MOCK_YEAR_PLANS = [
   {
     id: "YPLTEST0001",
@@ -92,7 +114,7 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
   test("should create ministry and plan type", async () => {
     await page.goto("/serving/plans");
     await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
-    await page.locator('[role="tab"]').first().waitFor({ state: "visible", timeout: 15000 });
+    await expect(page.locator("button").getByText("Add Ministry")).toBeVisible({ timeout: 15000 });
     await page.locator("button").getByText("Add Ministry").click();
     await page.locator('[name="name"]').fill(MINISTRY);
     await page.locator("button").getByText("Add").first().click();
@@ -175,6 +197,42 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
     await expect(page.getByTestId("apply-year-plan-row-1").getByText("A plan already exists on this date.")).toBeVisible();
     await expect(page.getByText("0 lessons to schedule")).toBeVisible();
     await expect(page.getByTestId("apply-year-plan-save")).toBeDisabled();
+    await page.getByRole("button", { name: /cancel/i }).click();
+  });
+
+  test("places Easter and Christmas studies on the target year calendar", async () => {
+    await mockYearPlans(page, ANCHORED_YEAR_PLANS);
+    await gotoPlanType();
+    await openApplyYearPlan();
+    await expect(page.getByTestId("apply-year-plan-select")).toContainText("Ark Elementary Year 2", { timeout: 15000 });
+    await expect(page.getByTestId("apply-year-plan-target-year")).toBeVisible();
+    await expect(page.getByTestId("apply-year-plan-week-count")).toHaveCount(0);
+    await page.getByTestId("apply-year-plan-target-year").getByRole("combobox").click();
+    await page.getByRole("option", { name: "2026" }).click();
+
+    await expect(page.getByTestId("apply-year-plan-row-5")).toContainText("2026-04-05");
+    await expect(page.getByTestId("apply-year-plan-row-5")).toContainText("Wise Choices");
+    await expect(page.getByTestId("apply-year-plan-row-5")).toContainText("Anchored to Easter");
+    await expect(page.getByTestId("apply-year-plan-row-2")).toContainText("2026-03-15");
+    await expect(page.getByTestId("apply-year-plan-row-11")).toContainText("2026-12-20");
+    await expect(page.getByTestId("apply-year-plan-row-11")).toContainText("Anchored to Christmas");
+    await page.getByRole("button", { name: /cancel/i }).click();
+  });
+
+  test("shifts following weeks when an unanchored week is excluded", async () => {
+    await mockYearPlans(page, ANCHORED_YEAR_PLANS);
+    await gotoPlanType();
+    await openApplyYearPlan();
+    await expect(page.getByTestId("apply-year-plan-select")).toContainText("Ark Elementary Year 2", { timeout: 15000 });
+    await page.getByTestId("apply-year-plan-target-year").getByRole("combobox").click();
+    await page.getByRole("option", { name: "2026" }).click();
+
+    await expect(page.getByTestId("apply-year-plan-row-7")).toContainText("2026-04-19");
+    await expect(page.getByTestId("apply-year-plan-row-8")).toContainText("2026-04-26");
+    await page.getByTestId("apply-year-plan-include-7").locator("input").uncheck();
+    await expect(page.getByTestId("apply-year-plan-row-8")).toContainText("2026-04-19");
+    await expect(page.getByTestId("apply-year-plan-row-5")).toContainText("2026-04-05");
+    await page.getByRole("button", { name: /cancel/i }).click();
   });
 
   test("should delete the test ministry", async () => {

@@ -1,10 +1,10 @@
 import React from "react";
-import { FormEdit, EnvironmentHelper } from "./components";
+import { FormEdit, FormPrintDialog, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card, Snackbar } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Undo as UndoIcon, ContentCopy as CopyIcon } from "@mui/icons-material";
+import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Undo as UndoIcon, ContentCopy as CopyIcon, Print as PrintIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ export const FormsPage = () => {
   const [selectedFormId, setSelectedFormId] = React.useState("notset");
   const [selectedTab, setSelectedTab] = React.useState("forms");
   const [showDuplicated, setShowDuplicated] = React.useState(false);
+  const [printFormId, setPrintFormId] = React.useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
 
@@ -51,6 +52,7 @@ export const FormsPage = () => {
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain || "") + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : <Typography variant="body2" color="text.secondary">{Locale.label("forms.formsPage.personProfileForm")}</Typography>;
+      const printLink = <AppIconButton label={Locale.label("common.print")} icon={<PrintIcon />} onClick={() => setPrintFormId(form.id || "")} data-testid={`print-form-button-${form.id}`} />;
       const duplicateLink =
         canEdit && !isArchived ? (
           <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`} />
@@ -73,7 +75,7 @@ export const FormsPage = () => {
           </TableCell>
           <TableCell>{formLink}</TableCell>
           <TableCell align="right" className="rowActions">
-            {archiveLink || unarchiveLink} {duplicateLink} {editLink}
+            {archiveLink || unarchiveLink} {printLink} {duplicateLink} {editLink}
           </TableCell>
         </TableRow>
       );
@@ -182,6 +184,7 @@ export const FormsPage = () => {
   return (
     <>
       {ConfirmDialogElement}
+      {printFormId && <FormPrintDialog formId={printFormId} onClose={() => setPrintFormId("")} />}
       <PageHeader
         icon={<DescriptionIcon />}
         title={Locale.label("forms.formsPage.forms")}

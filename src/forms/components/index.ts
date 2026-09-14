@@ -6,4 +6,5 @@ export { FormMembers } from "./FormMembers";
 export { FormNavigation } from "./FormNavigation";
 export { FormSubmissions } from "./FormSubmissions";
 export { Form } from "./Form";
+export { FormPrintDialog } from "./FormPrintDialog";
 export { Tabs } from "./Tabs";
