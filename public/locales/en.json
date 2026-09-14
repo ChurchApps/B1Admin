@@ -5060,6 +5060,21 @@
     "providedBy": "Provided By"
   },
   "tasks": {
+    "groupJoinRequest": {
+      "approve": "Approve",
+      "approveError": "Unable to approve join request.",
+      "decline": "Decline",
+      "declineError": "Unable to decline join request.",
+      "declinePrompt": "Optionally provide a reason for declining this join request.",
+      "declineTitle": "Decline Join Request",
+      "description": "{name} asked to join {group}. Approving adds them to the group. Declining leaves them out.",
+      "group": "Group",
+      "message": "Message from requester",
+      "reasonOptional": "Reason (optional)",
+      "requester": "Requester",
+      "resolved": "This join request task is closed.",
+      "title": "Group Join Request"
+    },
     "accountDeletion": {
       "approve": "Approve deletion",
       "approveConfirm": "Permanently anonymize {name}'s record and remove their login? This cannot be undone.",

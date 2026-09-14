@@ -8,6 +8,7 @@ import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
 import { AccountDeletionRequest } from "./components/AccountDeletionRequest";
+import { GroupJoinRequestTask } from "./components/GroupJoinRequestTask";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon, Checklist as ChecklistIcon } from "@mui/icons-material";
@@ -157,6 +158,7 @@ export const TaskPage = () => {
         <Box sx={{ p: 3 }}>
           {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
           {task.data.taskType === "accountDeletion" && <AccountDeletionRequest task={task.data} />}
+          {task.data.taskType === "groupJoinRequest" && <GroupJoinRequestTask task={task.data} />}
           <Box sx={{ mb: 2 }}>
             <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
           </Box>
