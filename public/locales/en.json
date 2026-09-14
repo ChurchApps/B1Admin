@@ -1045,6 +1045,10 @@
       "notFound": "Form not found",
       "subtitleConfig": "Form configuration and submissions"
     },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
+    },
     "formQuestionEdit": {
       "amt": "Amount",
       "ansReq": "Require an answer for this question",
