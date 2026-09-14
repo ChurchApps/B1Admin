@@ -27,10 +27,8 @@
       "category": "Категорија",
       "group": "Група",
       "groupAttMsg": "Присуство групе ће се показати када буду додате сесије групи и када људи присуствују тим сесијама.",
-      "groups": "Групе",
       "scheduled": "Заказано",
       "service": "Служба",
-      "services": "Службе",
       "subtitle": "Пратите присуство за службе и групе",
       "time": "Време",
       "totalGroups": "Укупно група",
@@ -1275,10 +1273,6 @@
       "description": "Укључите праћење присуства да бисте бележили сесије и пријаве за ову групу.",
       "enable": "Омогући присуство",
       "title": "Праћење присуства није омогућено"
-    },
-    "tabs": {
-      "mem": "Чланови",
-      "ses": "Сесије"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Обриши {name}",
       "noResMsg": "Нема пронађених резултата. Молимо претражи другачије име или додај нову особу"
     },
-    "personAdd": {
-      "createNewPersonAria": "Креирај нову особу",
-      "searchForPersonToAddAria": "Претражи особу за додавање"
-    },
     "personAttendance": {
       "noAttMsg": "Нема записа о присуству. Присуство ће се појавити када буде праћено присуство за сесију групе."
     },
@@ -1666,11 +1656,6 @@
       "form": "Образац",
       "notFilledOut": "Још није попуњено."
     },
-    "personNav": {
-      "customForms": "Прилагођени образци",
-      "discipleship": "Ученичество",
-      "groups": "Групе"
-    },
     "personNavigation": {
       "attendance": "Присуство",
       "details": "Детаљи",
@@ -1706,8 +1691,6 @@
       "trusted": "Pouzdan"
     },
     "tabs": {
-      "att": "Присуство",
-      "don": "Донације",
       "noImplement": "Није примењено"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Опција 1",
       "value": "опција1"
-    },
-    "church": {
-      "address1": "Главна 123",
-      "address2": "Локал 100",
-      "city": "Београд",
-      "country": "Србија",
-      "name": "Grace Community Church",
-      "state": "Београд",
-      "subdomain": "gracechurch",
-      "zip": "11000"
     },
     "device": {
       "label": "Екран дневне собе"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Check-in",
       "deleteTab": "Обриши картицу",
       "donation": "Донација",
-      "donationLanding": "Страница донација",
       "editTab": "Уреди картицу",
       "everyone": "Сви (укључујући анонимне)",
       "externalUrl": "Спољни URL",
       "groups": "Одређене групе...",
       "internalPage": "Интерна страница",
-      "lessons": "Лекције",
       "liveStream": "Стрим уживо",
       "loggedInUsers": "Пријављени корисници",
       "memberDirectory": "Именик чланова",
@@ -3211,8 +3087,7 @@
       "campus": "Филијала",
       "campuses": "Филијале",
       "location": "Локација",
-      "none": "Нема додатих филијала.",
-      "subtitle": "Управљајте физичким локацијама ваше цркве"
+      "none": "Нема додатих филијала."
     },
     "checkinSettingsEdit": {
       "block": "Блокирај (спречи пријаву)",
@@ -3221,28 +3096,17 @@
       "title": "Prijava",
       "warn": "Upozori (dozvoli uz potvrdu)"
     },
-    "church": {
-      "subdomainHelper": "Јединствена веб адреса ваше цркве"
-    },
     "churchSettingsEdit": {
       "address1": "Адреса 1",
       "address2": "Адреса 2",
-      "addressLine1Aria": "Адреса 1",
       "churchInfo": "Информације о цркви",
       "churchInfoSubtitle": "Назив, адреса и поддомен",
       "churchName": "Назив цркве",
-      "churchNameAria": "Назив цркве",
-      "churchSettings": "Подешавања цркве",
-      "domainsSubtitle": "Конфигурација прилагођеног домена",
       "firstDayOfWeek": "Први дан у недељи",
       "general": "Опште",
-      "generalSubtitle": "Контакт за подршку, именик и видљивост",
-      "givingSubtitle": "Платна капија и опције накнада",
       "noNameMsg": "Назив цркве не може бити празан.",
       "noSubMsg": "Поддомен не може бити празан.",
       "subdom": "Поддомен",
-      "subdomainAria": "Поддомен",
-      "textingSubtitle": "Конфигуриши SMS провајдера",
       "textingTitle": "СМС поруке"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Додај поље",
       "customFields": "Prilagođena polja",
       "field": "Прилагођено поље",
-      "none": "Још нису додата прилагођена поља.",
-      "subtitle": "Дефиниши прилагођена поља за праћење код особа"
+      "none": "Још нису додата прилагођена поља."
     },
     "developer": {
       "actions": "Радње",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Регенериши тајну",
       "response": "Одговор",
       "responseBody": "Тело одговора",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Копирајте своју тајну за потписивање сада — неће бити поново приказана.",
       "secretSignNote": "Користите је за верификацију X-B1-Signature заглавља на свакој испоруци.",
       "secretTitle": "Тајна за потписивање",
@@ -4631,7 +4493,6 @@
       "name": "Име аранжмана",
       "title": "Аранжман"
     },
-    "arrangements": "Аранжмани",
     "audio": {
       "deleteConfirm": "Да ли сте сигурни да желите да обришете ову аудио датотеку?",
       "upload": "Отпреми аудио"

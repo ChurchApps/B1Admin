@@ -27,10 +27,8 @@
       "category": "범주",
       "group": "그룹",
       "groupAttMsg": "세션이 그룹에 추가되고 사람들이 해당 세션에 참석하면 그룹 출석이 표시됩니다.",
-      "groups": "그룹",
       "scheduled": "예정됨",
       "service": "서비스",
-      "services": "예배",
       "subtitle": "서비스 및 그룹 출석 추적",
       "time": "시간",
       "totalGroups": "총 그룹",
@@ -1275,10 +1273,6 @@
       "description": "이 그룹의 세션 및 체크인을 기록하려면 출석 추적을 켜세요.",
       "enable": "출석 추적 사용",
       "title": "출석 추적이 활성화되어 있지 않습니다"
-    },
-    "tabs": {
-      "mem": "멤버",
-      "ses": "세션"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "{name} 삭제",
       "noResMsg": "검색 결과가 없습니다. 다른 이름으로 검색하거나 새 사람을 추가해주세요"
     },
-    "personAdd": {
-      "createNewPersonAria": "새 사람 만들기",
-      "searchForPersonToAddAria": "추가할 사람 검색"
-    },
     "personAttendance": {
       "noAttMsg": "출석 기록이 없습니다. 그룹 세션에 대한 출석이 추적되면 여기에 표시됩니다."
     },
@@ -1666,11 +1656,6 @@
       "form": "양식",
       "notFilledOut": "아직 작성되지 않았습니다."
     },
-    "personNav": {
-      "customForms": "사용자 정의 양식",
-      "discipleship": "제자도",
-      "groups": "그룹"
-    },
     "personNavigation": {
       "attendance": "출석",
       "details": "세부 정보",
@@ -1706,8 +1691,6 @@
       "trusted": "신뢰할 수 있음"
     },
     "tabs": {
-      "att": "출석",
-      "don": "기부",
       "noImplement": "구현되지 않음"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "첫 번째 옵션",
       "value": "옵션 A"
-    },
-    "church": {
-      "address1": "서울시 강남구 역삼로 456",
-      "address2": "100호",
-      "city": "서울",
-      "country": "USA",
-      "name": "은혜교회",
-      "state": "서울특별시",
-      "subdomain": "gracechurch",
-      "zip": "06241"
     },
     "device": {
       "label": "Living Room Screen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "체크인",
       "deleteTab": "탭 삭제",
       "donation": "기부",
-      "donationLanding": "기부착륙",
       "editTab": "탭 편집",
       "everyone": "모두 (익명 포함)",
       "externalUrl": "외부 URL",
       "groups": "특정 그룹...",
       "internalPage": "내부 페이지",
-      "lessons": "수업",
       "liveStream": "라이브 스트림",
       "loggedInUsers": "로그인한 사용자",
       "memberDirectory": "회원 명부",
@@ -3211,8 +3087,7 @@
       "campus": "캠퍼스",
       "campuses": "캠퍼스",
       "location": "위치",
-      "none": "아직 추가된 캠퍼스가 없습니다.",
-      "subtitle": "교회 실제 위치 관리"
+      "none": "아직 추가된 캠퍼스가 없습니다."
     },
     "checkinSettingsEdit": {
       "block": "차단 (체크인 방지)",
@@ -3221,28 +3096,17 @@
       "title": "체크인",
       "warn": "경고 (확인 후 허용)"
     },
-    "church": {
-      "subdomainHelper": "교회의 고유한 웹 주소"
-    },
     "churchSettingsEdit": {
       "address1": "주소 1",
       "address2": "주소 2",
-      "addressLine1Aria": "주소 1번째 줄",
       "churchInfo": "교회 정보",
       "churchInfoSubtitle": "이름, 주소 및 서브도메인",
       "churchName": "교회 이름",
-      "churchNameAria": "교회 이름",
-      "churchSettings": "교회 설정",
-      "domainsSubtitle": "사용자 정의 도메인 구성",
       "firstDayOfWeek": "주의 첫날",
       "general": "일반",
-      "generalSubtitle": "지원 연락처, 디렉토리 및 가시성",
-      "givingSubtitle": "결제 게이트웨이 및 수수료 옵션",
       "noNameMsg": "교회 이름은 비워둘 수 없습니다.",
       "noSubMsg": "서브도메인은 비워둘 수 없습니다.",
       "subdom": "서브도메인",
-      "subdomainAria": "하위 도메인",
-      "textingSubtitle": "SMS 텍스팅 공급자 구성",
       "textingTitle": "텍스팅"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "필드 추가",
       "customFields": "사용자 정의 필드",
       "field": "사용자 지정 필드",
-      "none": "아직 추가된 사용자 지정 필드가 없습니다.",
-      "subtitle": "사람 항목에서 추적할 사용자 지정 필드를 정의합니다"
+      "none": "아직 추가된 사용자 지정 필드가 없습니다."
     },
     "developer": {
       "actions": "작업",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "시크릿 재생성",
       "response": "응답",
       "responseBody": "응답 본문",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "지금 서명 시크릿을 복사하세요 — 다시 표시되지 않습니다.",
       "secretSignNote": "모든 전송의 X-B1-Signature 헤더를 확인하는 데 사용하세요.",
       "secretTitle": "서명 시크릿",
@@ -4631,7 +4493,6 @@
       "name": "편곡 이름",
       "title": "편곡"
     },
-    "arrangements": "편곡",
     "audio": {
       "deleteConfirm": "이 오디오 파일을 삭제하시겠습니까?",
       "upload": "오디오 업로드"

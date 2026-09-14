@@ -27,10 +27,8 @@
       "category": "Kategorie",
       "group": "Gruppe",
       "groupAttMsg": "Die Gruppenanwesenheit wird angezeigt, sobald Sitzungen zu einer Gruppe hinzugefügt wurden und Personen an diesen Sitzungen teilgenommen haben.",
-      "groups": "Gruppen",
       "scheduled": "Geplant",
       "service": "Dienst",
-      "services": "Gottesdienste",
       "subtitle": "Verfolgen Sie die Anwesenheit von Gottesdiensten und Gruppen",
       "time": "Zeit",
       "totalGroups": "Gesamtzahl der Gruppen",
@@ -1275,10 +1273,6 @@
       "description": "Aktivieren Sie die Anwesenheitserfassung, um Sitzungen und Check-Ins für diese Gruppe zu erfassen.",
       "enable": "Anwesenheit aktivieren",
       "title": "Anwesenheitserfassung ist nicht aktiviert"
-    },
-    "tabs": {
-      "mem": "Mitglieder",
-      "ses": "Sitzungen"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "{name} löschen",
       "noResMsg": "Keine Ergebnisse gefunden. Bitte suchen Sie nach einem anderen Namen oder fügen Sie eine neue Person hinzu"
     },
-    "personAdd": {
-      "createNewPersonAria": "Neue Person erstellen",
-      "searchForPersonToAddAria": "Nach Person zum Hinzufügen suchen"
-    },
     "personAttendance": {
       "noAttMsg": "Keine Anwesenheitsaufzeichnungen. Die Anwesenheit wird angezeigt, sobald die Anwesenheit für eine Gruppensitzung erfasst wurde."
     },
@@ -1666,11 +1656,6 @@
       "form": "Formular",
       "notFilledOut": "Noch nicht ausgefüllt."
     },
-    "personNav": {
-      "customForms": "Benutzerdefinierte Formulare",
-      "discipleship": "Jüngerschaft",
-      "groups": "Gruppen"
-    },
     "personNavigation": {
       "attendance": "Anwesenheit",
       "details": "Details",
@@ -1706,8 +1691,6 @@
       "trusted": "Vertrauenswürdig"
     },
     "tabs": {
-      "att": "Anwesenheit",
-      "don": "Spenden",
       "noImplement": "Nicht implementiert"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Option 1",
       "value": "option1"
-    },
-    "church": {
-      "address1": "Hauptstraße 123",
-      "address2": "Gebäude A",
-      "city": "Berlin",
-      "country": "Deutschland",
-      "name": "Gnadenkirche",
-      "state": "BE",
-      "subdomain": "gnadenkirche",
-      "zip": "10115"
     },
     "device": {
       "label": "Wohnzimmer-Bildschirm"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Einchecken",
       "deleteTab": "Tab löschen",
       "donation": "Spende",
-      "donationLanding": "Spendenlandung",
       "editTab": "Tab bearbeiten",
       "everyone": "Alle (einschließlich anonyme)",
       "externalUrl": "Externe URL",
       "groups": "Bestimmte Gruppen...",
       "internalPage": "Interne Seite",
-      "lessons": "Unterricht",
       "liveStream": "Live-Stream",
       "loggedInUsers": "Angemeldete Benutzer",
       "memberDirectory": "Mitgliederverzeichnis",
@@ -3211,8 +3087,7 @@
       "campus": "Campus",
       "campuses": "Campusse",
       "location": "Standort",
-      "none": "Noch keine Campusse hinzugefügt.",
-      "subtitle": "Physische Standorte Ihrer Kirche verwalten"
+      "none": "Noch keine Campusse hinzugefügt."
     },
     "checkinSettingsEdit": {
       "block": "Blockieren (Check-In verhindern)",
@@ -3221,28 +3096,17 @@
       "title": "Check-In",
       "warn": "Warnen (mit Bestätigung zulassen)"
     },
-    "church": {
-      "subdomainHelper": "Die einzigartige Webadresse Ihrer Kirche"
-    },
     "churchSettingsEdit": {
       "address1": "Adresszeile 1",
       "address2": "Adresszeile 2",
-      "addressLine1Aria": "Adresszeile 1",
       "churchInfo": "Kircheninformationen",
       "churchInfoSubtitle": "Name, Adresse und Subdomain",
       "churchName": "Kirchenname",
-      "churchNameAria": "Kirchenname",
-      "churchSettings": "Kircheneinstellungen",
-      "domainsSubtitle": "Benutzerdefinierte Domainkonfiguration",
       "firstDayOfWeek": "Erster Tag der Woche",
       "general": "Allgemein",
-      "generalSubtitle": "Supportkontakt, Verzeichnis und Sichtbarkeit",
-      "givingSubtitle": "Zahlungsgateway und Gebührenoptionen",
       "noNameMsg": "Kirchenname darf nicht leer sein.",
       "noSubMsg": "Subdomain darf nicht leer sein.",
       "subdom": "Subdomain",
-      "subdomainAria": "Subdomain",
-      "textingSubtitle": "SMS-Anbieter konfigurieren",
       "textingTitle": "SMS-Versand"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Feld hinzufügen",
       "customFields": "Benutzerdefinierte Felder",
       "field": "Benutzerdefiniertes Feld",
-      "none": "Es wurden noch keine benutzerdefinierten Felder hinzugefügt.",
-      "subtitle": "Definieren Sie benutzerdefinierte Felder zur Erfassung bei Personen"
+      "none": "Es wurden noch keine benutzerdefinierten Felder hinzugefügt."
     },
     "developer": {
       "actions": "Aktionen",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Geheimnis neu generieren",
       "response": "Antwort",
       "responseBody": "Antwortinhalt",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Kopieren Sie Ihr Signiergeheimnis jetzt — es wird nicht erneut angezeigt.",
       "secretSignNote": "Verwenden Sie es, um den X-B1-Signature-Header bei jeder Lieferung zu verifizieren.",
       "secretTitle": "Signiergeheimnis",
@@ -4631,7 +4493,6 @@
       "name": "Arrangementname",
       "title": "Arrangement"
     },
-    "arrangements": "Arrangements",
     "audio": {
       "deleteConfirm": "Möchten Sie diese Audiodatei wirklich löschen?",
       "upload": "Audio hochladen"

@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Card, Grid, List, ListItemButton, Stack, Typography } from "@mui/material";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Box, Card, Grid, List, ListItemButton, Stack, Typography } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
   RadioButtonUnchecked as EmptyCircleIcon,
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { type PersonInterface, type FormSubmissionInterface, type QuestionInterface, type AnswerInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, Loading, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, DisplayBox, Loading, Locale, SmallButton } from "@churchapps/apphelper";
+import { useReactToPrint } from "react-to-print";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
-import { Question } from "../../components";
+import { Question, PrintStyles } from "../../components";
 
 export interface PersonFormOption {
   id: string;
@@ -36,6 +37,8 @@ export const PersonForms: React.FC<Props> = (props) => {
   const [selectedFormId, setSelectedFormId] = useState<string>("");
   const [editingFormId, setEditingFormId] = useState<string>("");
   const contentId = person?.id;
+  const printRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: `${forms.find((f) => f.id === selectedFormId)?.name || "Form"} - ${person?.name?.display || ""}` });
 
   const personFormSubmissions = useMemo(
     () => (person?.formSubmissions || []).filter((fs) => fs.form?.contentType === "person" || fs.contentType === "person"),
@@ -137,13 +140,27 @@ export const PersonForms: React.FC<Props> = (props) => {
         </DisplayBox>
       );
     }
+    // DisplayBox renders either editFunction or editContent, so the print button rides
+    // along in editContent next to the same edit button editFunction would have drawn.
+    const actions = (
+      <Stack direction="row" spacing={1} alignItems="center" className="no-print">
+        {submission && <SmallButton icon="print" ariaLabel={Locale.label("common.print")} toolTip={Locale.label("common.print")} onClick={() => handlePrint()} data-testid="print-form-submission-button" />}
+        <SmallButton icon="edit" toolTip={Locale.label("people.personForm.editAria")?.replace("{name}", form.name || "form")} onClick={() => setEditingFormId(form.id)} />
+      </Stack>
+    );
     return (
-      <DisplayBox
-        headerText={headerText}
-        headerIcon="description"
-        editFunction={() => setEditingFormId(form.id)}
-        ariaLabel={Locale.label("people.personForm.editAria")?.replace("{name}", form.name || "form")}>
-        {renderFields(submission, details[form.id])}
+      <DisplayBox headerText={headerText} headerIcon="description" editContent={actions}>
+        <div ref={printRef}>
+          <PrintStyles />
+          {submission && (
+            <Box className="print-only" sx={{ mb: 2 }}>
+              <Typography variant="h5" sx={{ fontWeight: 600 }}>{headerText}</Typography>
+              <Typography variant="body2">{Locale.label("forms.formSubmissions.subFor")}: {person?.name?.display}</Typography>
+              {submission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(submission.submissionDate))}</Typography>}
+            </Box>
+          )}
+          {renderFields(submission, details[form.id])}
+        </div>
       </DisplayBox>
     );
   };

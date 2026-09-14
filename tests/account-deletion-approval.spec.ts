@@ -103,17 +103,29 @@ test.describe("Account deletion approval", () => {
     await page.goto("/serving/tasks/" + request.id);
     await expect(page.getByText("Account Deletion Request", { exact: true })).toBeVisible({ timeout: 15000 });
     await expect(page.getByText("Demo User").first()).toBeVisible();
+    await expect(page.getByTestId("account-deletion-description")).toContainText("30 days");
 
     await page.getByTestId("account-deletion-reject").click();
+    const dialog = page.getByTestId("account-deletion-reject-dialog");
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+    await dialog.getByLabel("Other (explain below)").click();
+    await expect(page.getByTestId("account-deletion-reject-confirm")).toBeDisabled();
+    await page.getByTestId("account-deletion-reject-details").locator("textarea").first().fill("no");
+    await expect(page.getByTestId("account-deletion-reject-confirm")).toBeDisabled();
+    const reason = "We are required by law to keep donation records.";
+    await page.getByTestId("account-deletion-reject-details").locator("textarea").first().fill(reason);
+    await page.getByTestId("account-deletion-reject-confirm").click();
     await page.waitForURL(/\/serving\/tasks$/, { timeout: 15000 });
 
     expect(await openDeletionRequests(ctx, jwt)).toHaveLength(0);
     const closed = await (await ctx.get(`${API}/doing/tasks/${request.id}`, auth(jwt))).json();
     expect(closed.status).toBe("Closed");
     expect(JSON.parse(closed.data || "{}").outcome).toBe("rejected");
+    expect(JSON.parse(closed.data || "{}").reason).toBe(reason);
 
     await page.goto("/serving/tasks/" + request.id);
-    await expect(page.getByTestId("account-deletion-outcome")).toContainText("rejected", { timeout: 15000 });
+    await expect(page.getByTestId("account-deletion-outcome")).toContainText("Declined", { timeout: 15000 });
+    await expect(page.getByTestId("account-deletion-outcome")).toContainText("donation records");
 
     // Rejected means nothing happened: the login still works and the member may ask again.
     await page.goto("/profile");

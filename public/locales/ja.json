@@ -27,10 +27,8 @@
       "category": "カテゴリー",
       "group": "グループ",
       "groupAttMsg": "グループにセッションが追加され、参加者が出席すると、グループの出席状況が表示されます。",
-      "groups": "グループ",
       "scheduled": "予定済み",
       "service": "サービス",
-      "services": "サービス",
       "subtitle": "礼拝とグループの出席を記録します",
       "time": "時刻",
       "totalGroups": "グループ総数",
@@ -822,73 +820,8 @@
       "errAmount": "ゼロより大きい誓約金額を入力してください",
       "errPerson": "人物を選択してください"
     },
-    "pledgeStatus": {
-      "beyondPledged": "誓約額超過",
-      "fulfilled": "達成済み",
-      "inProgress": "進行中",
-      "nonPledged": "誓約なし",
-      "notStarted": "未開始"
-    },
     "printAllStatementsPage": {
-      "annualStatementTitle": "{year} 年 年間献金証明書",
-      "campaign": "キャンペーン",
-      "contributionDetails": "献金の明細",
-      "disclaimer": "{churchName} は登録された非営利団体です。これらの献金に対して、無形の宗教的益を除き、物品やサービスの提供は行われていません。",
-      "donorInformation": "献金者情報",
-      "fund": "献金先",
-      "fundBreakdown": "献金先の内訳",
-      "given": "献金額",
-      "issued": "発行日:",
-      "loadingStatements": "明細書を読み込んでいます...",
-      "noteLabel": "備考:",
-      "noteText": "この証明書は、{year} 年に {churchName} が受け取ったすべての献金をまとめたものです。",
-      "organization": "団体",
-      "period": "期間: {year} 年 1 月 1 日 〜 12 月 31 日",
-      "pledgeProgress": "誓約の進捗",
-      "pledged": "誓約額",
-      "statementSummary": "証明書の概要",
-      "status": "状態",
-      "totalContributions": "献金合計",
-      "totalContributionsLabel": "献金合計:"
-    },
-    "printDonationPage": {
-      "annualStatementTitle": "{year} 年 年間献金証明書",
-      "campaign": "キャンペーン",
-      "contributionDetails": "献金の明細",
-      "disclaimer": "{churchName} は登録された非営利団体です。これらの献金に対して、無形の宗教的益を除き、物品やサービスの提供は行われていません。",
-      "donorInformation": "献金者情報",
-      "fund": "献金先",
-      "fundBreakdown": "献金先の内訳",
-      "given": "献金額",
-      "issued": "発行日:",
-      "noteLabel": "備考:",
-      "noteText": "この証明書は、{year} 年に {churchName} が受け取ったすべての献金をまとめたものです。",
-      "organization": "団体",
-      "period": "期間: {year} 年 1 月 1 日 〜 12 月 31 日",
-      "pledgeProgress": "誓約の進捗",
-      "pledged": "誓約額",
-      "statementSummary": "証明書の概要",
-      "status": "状態",
-      "totalContributions": "献金合計",
-      "totalContributionsLabel": "献金合計:"
-    },
-    "statementLegal": {
-      "abn": "ABN（豪州事業者番号）",
-      "australiaTitle": "献金の領収書",
-      "canadaTitle": "所得税申告用 公式領収書",
-      "cra": "カナダ歳入庁: canada.ca/charities-giving",
-      "craNumber": "慈善団体登録番号",
-      "dateIssued": "発行日",
-      "dgr": "{churchName} は控除対象寄付先団体（DGR）として認定されています。",
-      "dgrThreshold": "2 ドル以上の献金は税控除の対象です。",
-      "donation": "献金",
-      "eligibleAmount": "所得税上、控除対象となる献金額",
-      "newZealandTitle": "献金領収書",
-      "nonEligible": "税額控除領収書の対象外の献金",
-      "nzNumber": "慈善団体登録番号",
-      "placeOfIssue": "発行地",
-      "receiptNumber": "領収書番号",
-      "signature": "承認者署名"
+      "loadingStatements": "明細書を読み込んでいます..."
     },
     "stripeImportPage": {
       "alreadyImported": "インポート済み",
@@ -1352,10 +1285,6 @@
       "description": "このグループのセッションとチェックインを記録するには、出席の追跡をオンにしてください。",
       "enable": "出席を有効にする",
       "title": "出席の追跡が有効になっていません"
-    },
-    "tabs": {
-      "mem": "メンバー",
-      "ses": "セッション"
     }
   },
   "helpers": {
@@ -1702,10 +1631,6 @@
       "deletePersonAria": "{name}を削除",
       "noResMsg": "結果が見つかりません。別の名前で検索するか、新しい人を追加してください"
     },
-    "personAdd": {
-      "createNewPersonAria": "新しい人を作成",
-      "searchForPersonToAddAria": "追加する人を検索"
-    },
     "personAttendance": {
       "noAttMsg": "出席記録がありません。グループのセッションで出席が記録されると表示されます。"
     },
@@ -1743,11 +1668,6 @@
       "form": "フォーム",
       "notFilledOut": "まだ入力されていません。"
     },
-    "personNav": {
-      "customForms": "カスタムフォーム",
-      "discipleship": "弟子訓練",
-      "groups": "グループ"
-    },
     "personNavigation": {
       "attendance": "出席",
       "details": "詳細",
@@ -1783,8 +1703,6 @@
       "trusted": "信頼できる"
     },
     "tabs": {
-      "att": "出席",
-      "don": "献金",
       "noImplement": "未実装"
     },
     "updateHouseHold": {
@@ -1845,16 +1763,6 @@
     "choices": {
       "text": "選択肢 1",
       "value": "option1"
-    },
-    "church": {
-      "address1": "中央区本町1-2-3",
-      "address2": "サンプルビル 100号",
-      "city": "東京都",
-      "country": "日本",
-      "name": "恵み教会",
-      "state": "東京都",
-      "subdomain": "gracechurch",
-      "zip": "100-0001"
     },
     "device": {
       "label": "リビングのモニター"
@@ -2899,162 +2807,67 @@
       "allProducts": "すべての製品",
       "allStatuses": "すべての状態",
       "allTypes": "すべての種類",
-      "approve": "承認",
-      "approveNote": "承認メモ（任意）",
       "approvedSuffix": "を承認しました",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "公開済み",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "公開済み"
       },
       "assetType": "素材の種類",
       "badgeEditBy": "{name} による編集",
       "badgeEditByAuthor": "作成者による編集",
       "badgeNew": "新規",
-      "changes": "変更点",
       "claim": "担当する",
       "colActions": "操作",
       "colAge": "経過",
       "colAsset": "素材",
-      "colBasis": "Basis",
       "colChanges": "変更点",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "スコア",
-      "colSha": "SHA-256",
       "colSubmitter": "投稿者",
       "colType": "種類",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "この投稿を承認しますか？",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "投稿を却下",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "著作権",
       "date": "日付",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "詳細を更新しました",
-      "download": "ダウンロード",
       "downloads": "ダウンロード数",
       "feature": "おすすめにする",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "おすすめ",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "ファイル",
       "firstSubmission": "初回投稿",
-      "intakeFindings": "Intake findings",
       "justNow": "たった今",
       "licensePd": "パブリックドメイン",
       "licenseWc": "礼拝での利用は自由",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "歌詞とコード",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "名前",
       "noAssets": "素材が見つかりません。",
-      "noFieldChanges": "表示する変更点はありません。",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "報告は提出されていません。",
       "noSubmissions": "審査待ちの投稿はありません。",
       "note": "メモ",
-      "original": "original",
       "policyReports": "ポリシー・その他",
       "possibleDuplicate": "重複の可能性",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "製品",
       "publisher": "出版元",
       "reason": "理由",
       "recentlyResolved": "最近解決したもの",
       "reject": "却下",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "削除",
       "removeConfirm": "{name} を削除しますか？以後、誰も利用できなくなります。",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "報告者の役割",
       "republish": "再公開",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "解決済みにする",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "審査",
-      "rights": "権利",
       "rightsFlag": "権利",
       "rightsFlagTooltip": "この曲は著作権管理団体または出版元が管理していると投稿者が申告しています。",
       "scoreHeuristicOnly": "完全性の目安のみ — AI による判断ではありません",
       "searchAssets": "素材を検索",
       "signature": "署名",
-      "sources": "Sources",
       "status": "状態",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "投稿者",
       "sundayReady": "Sunday-ready",
       "tabAssets": "素材",
       "tabQueue": "審査待ち",
       "tabReports": "報告",
-      "triageScore": "Triage score",
-      "unchangedFiles": "変更のないファイル",
       "unpublish": "公開を取り消す",
       "viewOnWorshipCommons": "WorshipCommons で表示"
     },
@@ -3149,13 +2962,11 @@
       "checkin": "チェックイン",
       "deleteTab": "タブを削除",
       "donation": "献金",
-      "donationLanding": "献金トップページ",
       "editTab": "タブを編集",
       "everyone": "全員（匿名を含む）",
       "externalUrl": "外部 URL",
       "groups": "特定のグループ...",
       "internalPage": "内部ページ",
-      "lessons": "レッスン",
       "liveStream": "ライブ配信",
       "loggedInUsers": "ログイン済みユーザー",
       "memberDirectory": "メンバー名簿",
@@ -3288,8 +3099,7 @@
       "campus": "キャンパス",
       "campuses": "キャンパス",
       "location": "所在地",
-      "none": "キャンパスはまだ追加されていません。",
-      "subtitle": "教会の拠点を管理"
+      "none": "キャンパスはまだ追加されていません。"
     },
     "checkinSettingsEdit": {
       "block": "ブロック（チェックインを禁止）",
@@ -3298,28 +3108,17 @@
       "title": "チェックイン",
       "warn": "警告する（確認付きで許可）"
     },
-    "church": {
-      "subdomainHelper": "教会専用のウェブアドレスです"
-    },
     "churchSettingsEdit": {
       "address1": "住所 1",
       "address2": "住所 2",
-      "addressLine1Aria": "住所1行目",
       "churchInfo": "教会の情報",
       "churchInfoSubtitle": "名称、住所、サブドメイン",
       "churchName": "教会名",
-      "churchNameAria": "教会名",
-      "churchSettings": "教会の設定",
-      "domainsSubtitle": "独自ドメインの設定",
       "firstDayOfWeek": "週の最初の日",
       "general": "全般",
-      "generalSubtitle": "サポート窓口、名簿、公開範囲",
-      "givingSubtitle": "決済ゲートウェイと手数料の設定",
       "noNameMsg": "教会名は空にできません。",
       "noSubMsg": "サブドメインは空にできません。",
       "subdom": "サブドメイン",
-      "subdomainAria": "サブドメイン",
-      "textingSubtitle": "SMSテキスティングプロバイダーを設定",
       "textingTitle": "テキスティング"
     },
     "customFieldEdit": {
@@ -3334,8 +3133,7 @@
       "addField": "フィールドを追加",
       "customFields": "カスタムフィールド",
       "field": "カスタムフィールド",
-      "none": "カスタムフィールドはまだ追加されていません。",
-      "subtitle": "人物に紐づけて管理するカスタムフィールドを定義します"
+      "none": "カスタムフィールドはまだ追加されていません。"
     },
     "developer": {
       "actions": "アクション",
@@ -3544,17 +3342,13 @@
       "subtitle": "ロールと権限を管理"
     },
     "statementFormat": {
-      "abn": "ABN（豪州事業者番号）",
       "australia": "オーストラリア",
       "canada": "カナダ - CRA 公式領収書",
       "cityOfIssue": "発行地",
-      "craNumber": "CRA 登録番号",
       "format": "証明書の書式",
       "helper": "印刷する献金証明書に、その国で必要とされる法定の領収書欄を追加します。",
       "newZealand": "ニュージーランド",
-      "nzNumber": "ニュージーランド慈善団体登録番号",
       "orgAddress": "団体の住所",
-      "registrationNumber": "登録番号",
       "signatory": "承認者の氏名",
       "standard": "標準"
     },
@@ -3656,7 +3450,6 @@
       "regenerateSecret": "シークレットを再生成",
       "response": "レスポンス",
       "responseBody": "レスポンス本文",
-      "saveFailed": "Webhook を保存できませんでした",
       "secretIntro": "今すぐ署名シークレットをコピーしてください — 再表示されません。",
       "secretSignNote": "すべての配信でX-B1-Signatureヘッダーを検証するために使用してください。",
       "secretTitle": "署名シークレット",
@@ -4723,7 +4516,6 @@
       "name": "編曲名",
       "title": "編曲"
     },
-    "arrangements": "アレンジメント",
     "audio": {
       "deleteConfirm": "この音声ファイルを削除してもよろしいですか？",
       "upload": "音声をアップロード"

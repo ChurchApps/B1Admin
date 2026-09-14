@@ -74,6 +74,65 @@ test.describe("Forms page", () => {
   });
 });
 
+// Issue #1066: forms could be edited, duplicated and archived but never printed.
+// The list now offers a paper copy of any form (blank answer spaces), and a person's
+// submitted form can be printed from their Forms tab.
+test.describe("Printing forms", () => {
+  test("prints a blank copy of a form from the Forms list", async ({ page }) => {
+    await openFormsPage(page);
+    const row = page.locator("table tbody tr").filter({ hasText: "Visitor Information Card" }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.locator('[data-testid^="print-form-button-"]').click();
+
+    const dialog = page.locator('[data-testid="form-print-dialog"]');
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+    await expect(dialog.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible({ timeout: 10000 });
+    // Required questions carry a marker; the legend explains it.
+    await expect(dialog.getByText("First Name *", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("* Required", { exact: true })).toBeVisible();
+    // Optional questions do not.
+    await expect(dialog.getByText("Phone Number", { exact: true })).toBeVisible();
+    // Multiple choice prints every option so it can be ticked on paper.
+    await expect(dialog.getByText("How did you hear about us?", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("Friend or Family", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("Community Event", { exact: true })).toBeVisible();
+    await expect(dialog.locator('[data-testid="form-print-confirm"]')).toBeEnabled();
+    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
+
+    await dialog.locator('[data-testid="form-print-close"]').click();
+    await expect(dialog).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("a person's submitted form prints with a title, name and submission date", async ({ page }) => {
+    await navigateToPeople(page);
+    await openPersonRow(page, "Brian Harris");
+    await page.getByRole("tab", { name: "Forms" }).click();
+    const railItem = page.getByText("Visitor Information Card", { exact: true }).first();
+    await expect(railItem).toBeVisible({ timeout: 10000 });
+    await railItem.click();
+    const pane = page.locator('[data-testid="display-box-content"]');
+    await expect(pane.getByText("brian.harris@email.com")).toBeVisible({ timeout: 10000 });
+
+    const printBtn = page.locator('[data-testid="print-form-submission-button"]');
+    await expect(printBtn).toBeVisible({ timeout: 10000 });
+    // The edit button keeps its accessible name next to the new print button.
+    await expect(page.locator('button[aria-label="editButton"]').first()).toBeVisible();
+
+    // On screen the paper header stays hidden; under print media it appears and the
+    // buttons disappear, which is exactly what react-to-print sends to the printer.
+    const printHeader = pane.getByText("Submitted For: Brian Harris");
+    await expect(printHeader).toBeHidden();
+    await page.emulateMedia({ media: "print" });
+    await expect(printHeader).toBeVisible({ timeout: 10000 });
+    await expect(pane.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible();
+    await expect(pane.getByText(/Submission Date: /)).toBeVisible();
+    await expect(printBtn).toBeHidden();
+    await page.screenshot({ path: ".pr-screenshots/submission-after.png", fullPage: true });
+    await page.emulateMedia({ media: "screen" });
+    await expect(printBtn).toBeVisible();
+  });
+});
+
 test.describe.serial("People-associated form lifecycle", () => {
   let page: Page;
 

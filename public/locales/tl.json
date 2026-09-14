@@ -27,10 +27,8 @@
       "category": "Kategorya",
       "group": "Grupo",
       "groupAttMsg": "Ang pagdalo ng grupo ay makikita kapag nagdagdag na ng mga sesyon sa isang grupo at may mga taong dumalo sa mga sesyon.",
-      "groups": "Mga Grupo",
       "scheduled": "Naka -iskedyul",
       "service": "Serbisyo",
-      "services": "Mga Serbisyo",
       "subtitle": "Subaybayan ang pagdalo para sa mga serbisyo at grupo",
       "time": "Oras",
       "totalGroups": "Kabuuang mga pangkat",
@@ -1275,10 +1273,6 @@
       "description": "I-on ang pagsubaybay sa pagdalo upang mairehistro ang mga sesyon at check-in para sa grupong ito.",
       "enable": "I-enable ang Pagdalo",
       "title": "Hindi pa naka-enable ang pagsubaybay sa pagdalo"
-    },
-    "tabs": {
-      "mem": "Mga Miyembro",
-      "ses": "Mga Sasyon"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Tanggalin si {name}",
       "noResMsg": "Walang natagpuang resulta. Mangyaring maghanap ng ibang pangalan o magdagdag ng bagong tao"
     },
-    "personAdd": {
-      "createNewPersonAria": "Gumawa ng bagong tao",
-      "searchForPersonToAddAria": "Maghanap ng taong idadagdag"
-    },
     "personAttendance": {
       "noAttMsg": "Walang rekord ng pagdalo. Ang pagdalo ay lilitaw sa sandaling ito ay nasubaybayan para sa isang sesyon ng grupo."
     },
@@ -1666,11 +1656,6 @@
       "form": "Form",
       "notFilledOut": "Hindi pa napupunan."
     },
-    "personNav": {
-      "customForms": "Mga Custom na Form",
-      "discipleship": "Pagdidisipulo",
-      "groups": "Mga Grupo"
-    },
     "personNavigation": {
       "attendance": "Attendance",
       "details": "Mga Detalye",
@@ -1706,8 +1691,6 @@
       "trusted": "Pinagkakatiwalaan"
     },
     "tabs": {
-      "att": "Pagdalo",
-      "don": "Donasyon",
       "noImplement": "Hindi Naipatupad"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Unang Pagpipilian",
       "value": "Pagpipilian A"
-    },
-    "church": {
-      "address1": "456 Pangunahing Abenida",
-      "address2": "Suite 100",
-      "city": "Quezon City",
-      "country": "USA",
-      "name": "Iglesia ng Biyaya",
-      "state": "Metro Manila",
-      "subdomain": "gracechurch",
-      "zip": "1100"
     },
     "device": {
       "label": "Living Room Screen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Check-in",
       "deleteTab": "Tanggalin ang Tab",
       "donation": "Donasyon",
-      "donationLanding": "Donation Landing",
       "editTab": "I-edit ang Tab",
       "everyone": "Lahat (kasama ang anonymous)",
       "externalUrl": "Panlabas na URL",
       "groups": "Mga Tiyak na Grupo...",
       "internalPage": "Panloob na Pahina",
-      "lessons": "Mga aralin",
       "liveStream": "Live stream",
       "loggedInUsers": "Mga Naka-log In na User",
       "memberDirectory": "Direktoryo ng miyembro",
@@ -3211,8 +3087,7 @@
       "campus": "Kampus",
       "campuses": "Mga Kampus",
       "location": "Lokasyon",
-      "none": "Wala pang mga kampus na naidagdag.",
-      "subtitle": "Pamahalaan ang mga pisikal na lokasyon ng inyong simbahan"
+      "none": "Wala pang mga kampus na naidagdag."
     },
     "checkinSettingsEdit": {
       "block": "I-block (pigilan ang check-in)",
@@ -3221,28 +3096,17 @@
       "title": "Check-In",
       "warn": "Magbabala (payagan nang may kumpirmasyon)"
     },
-    "church": {
-      "subdomainHelper": "Ang natatanging web address ng iyong simbahan"
-    },
     "churchSettingsEdit": {
       "address1": "Address Linya 1",
       "address2": "Address Linya 2",
-      "addressLine1Aria": "Address line 1",
       "churchInfo": "Impormasyon ng Simbahan",
       "churchInfoSubtitle": "Pangalan, address at subdomain",
       "churchName": "Pangalan ng Simbahan",
-      "churchNameAria": "Pangalan ng simbahan",
-      "churchSettings": "Mga Setting ng Simbahan",
-      "domainsSubtitle": "Custom domain configuration",
       "firstDayOfWeek": "Unang araw ng linggo",
       "general": "Pangkalahatan",
-      "generalSubtitle": "Kontak ng suporta, direktoryo at visibility",
-      "givingSubtitle": "Payment gateway at mga opsyon sa bayad",
       "noNameMsg": "Hindi maaaring walang laman ang pangalan ng simbahan.",
       "noSubMsg": "Hindi maaaring walang laman ang subdomain.",
       "subdom": "Subdomain",
-      "subdomainAria": "Subdomain",
-      "textingSubtitle": "I-configure ang SMS texting provider",
       "textingTitle": "Texting"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Magdagdag ng Field",
       "customFields": "Mga Custom na Field",
       "field": "Custom Field",
-      "none": "Wala pang naidagdag na custom field.",
-      "subtitle": "Tukuyin ang mga custom field na susubaybayan sa mga tao"
+      "none": "Wala pang naidagdag na custom field."
     },
     "developer": {
       "actions": "Mga Aksyon",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "I-regenerate ang Secret",
       "response": "Tugon",
       "responseBody": "Katawan ng Tugon",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Kopyahin ang iyong signing secret ngayon — hindi na ito ipapakita muli.",
       "secretSignNote": "Gamitin ito upang i-verify ang X-B1-Signature header sa bawat pagpapadala.",
       "secretTitle": "Signing Secret",
@@ -4631,7 +4493,6 @@
       "name": "Pangalan ng arrangement",
       "title": "Arrangement"
     },
-    "arrangements": "Mga Arrangement",
     "audio": {
       "deleteConfirm": "Sigurado ka bang gusto mong tanggalin ang audio file na ito?",
       "upload": "Mag-upload ng audio"

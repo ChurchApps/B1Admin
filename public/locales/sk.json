@@ -27,10 +27,8 @@
       "category": "Category",
       "group": "Skupina",
       "groupAttMsg": "Group attendance will show up once sessions have been added to a group and people have attended those sessions.",
-      "groups": "Groups",
       "scheduled": "Scheduled",
       "service": "Bohoslužba",
-      "services": "Services",
       "subtitle": "Track attendance for services and groups",
       "time": "Čas",
       "totalGroups": "Total Groups",
@@ -1275,10 +1273,6 @@
       "description": "Zapnite sledovanie dochádzky, aby ste mohli zaznamenávať relácie a odbavenia pre túto skupinu.",
       "enable": "Zapnúť dochádzku",
       "title": "Sledovanie dochádzky nie je zapnuté"
-    },
-    "tabs": {
-      "mem": "Members",
-      "ses": "Sessions"
     }
   },
   "helpers": {
@@ -1625,10 +1619,6 @@
       "deletePersonAria": "Odstrániť {name}",
       "noResMsg": "No results found.  Please search for a different name or add a new person"
     },
-    "personAdd": {
-      "createNewPersonAria": "Vytvoriť novú osobu",
-      "searchForPersonToAddAria": "Hľadať osobu na pridanie"
-    },
     "personAttendance": {
       "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
     },
@@ -1666,11 +1656,6 @@
       "form": "Form",
       "notFilledOut": "Zatiaľ nevyplnené."
     },
-    "personNav": {
-      "customForms": "Custom Forms",
-      "discipleship": "Učeníctvo",
-      "groups": "Skupiny"
-    },
     "personNavigation": {
       "attendance": "Účasť",
       "details": "Detaily",
@@ -1706,8 +1691,6 @@
       "trusted": "Dôveryhodný"
     },
     "tabs": {
-      "att": "Dochádzka",
-      "don": "Dary",
       "noImplement": "Not Implemented"
     },
     "updateHouseHold": {
@@ -1768,16 +1751,6 @@
     "choices": {
       "text": "Option 1",
       "value": "option1"
-    },
-    "church": {
-      "address1": "123 Main Street",
-      "address2": "Suite 100",
-      "city": "Springfield",
-      "country": "USA",
-      "name": "Grace Community Church",
-      "state": "IL",
-      "subdomain": "gracechurch",
-      "zip": "62701"
     },
     "device": {
       "label": "Living Room Screen"
@@ -2822,162 +2795,67 @@
       "allProducts": "All Products",
       "allStatuses": "All Statuses",
       "allTypes": "All Types",
-      "approve": "Approve",
-      "approveNote": "Approval note (optional)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "pending": "Pending",
-        "published": "Published",
-        "removed": "Removed",
-        "unpublished": "Unpublished"
+        "published": "Published"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
-      "changes": "Changes",
       "claim": "Claim",
       "colActions": "Actions",
       "colAge": "Age",
       "colAsset": "Asset",
-      "colBasis": "Basis",
       "colChanges": "Changes",
       "colConfidence": "Confidence",
-      "colFile": "File",
       "colScore": "Score",
-      "colSha": "SHA-256",
       "colSubmitter": "Submitter",
       "colType": "Type",
-      "confidence": {
-        "chart-only": "Chart only",
-        "converted-from-abc": "Converted from ABC",
-        "generated-from-midi": "Generated from MIDI",
-        "lyrics-only": "Lyrics only",
-        "proofread-score": "Proofread score",
-        "sunday-ready": "Sunday-ready"
-      },
-      "confirmApprove": "Approve this submission?",
-      "confirmApproveDetail": "{name} · {license}",
       "confirmReject": "Reject Submission",
-      "confirmRequestChanges": "Send back for changes",
-      "contributors": "Contributors",
       "copyrightReports": "Copyright",
       "date": "Date",
-      "declineFile": "Decline",
-      "declineReason": "Reason for declining this file",
-      "declineReasonRequired": "Give a reason for each declined file.",
-      "declinedFiles": "Declined files",
-      "declinedSuffix": "declined",
       "detailsUpdated": "Details updated",
-      "download": "Download",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
-      "field": {
-        "arranger": "Arranger",
-        "bpm": "BPM",
-        "certified": "Writer certifies they hold the rights",
-        "chordPro": "Lyrics and chords",
-        "description": "Description",
-        "language": "Language",
-        "license": "License",
-        "meter": "Meter",
-        "name": "Title",
-        "proAnswer": "Society or publisher",
-        "recordingOwned": "Owns the recording",
-        "scripture": "Scripture",
-        "songKey": "Key",
-        "tags": "Tags",
-        "themes": "Themes",
-        "timeSignature": "Time signature",
-        "translator": "Translator",
-        "tune": "Tune",
-        "writer": "Writer",
-        "year": "Year"
-      },
-      "files": "Files",
       "firstSubmission": "first submission",
-      "intakeFindings": "Intake findings",
       "justNow": "just now",
       "licensePd": "Public domain",
       "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
-      "lyricsAndChords": "Lyrics and chords",
-      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
       "name": "Name",
       "noAssets": "No assets found.",
-      "noFieldChanges": "No changes to show.",
-      "noFindings": "Nothing flagged at intake.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
-      "original": "original",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "product": "Product",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
-      "rejectReason": {
-        "ccli": "Copyrighted (CCLI) song",
-        "duplicate": "Duplicate",
-        "incomplete": "Incomplete",
-        "licensing": "Licensing problem",
-        "offtopic": "Off topic",
-        "other": "Other",
-        "quality": "Quality"
-      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "removeReason": {
-        "copyright": "Copyright",
-        "policy": "Policy"
-      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
-      "requestChanges": "Request changes",
-      "requestChangesNote": "Tell the submitter what to change",
-      "resolution": {
-        "dismissed": "Dismissed",
-        "duplicate": "Duplicate",
-        "upheld": "Upheld"
-      },
       "resolve": "Resolve",
-      "resolveAction": {
-        "none": "No action",
-        "remove": "Remove",
-        "unpublish": "Unpublish"
-      },
       "review": "Review",
-      "rights": "Rights",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
       "signature": "Signature",
-      "sources": "Sources",
       "status": "Status",
-      "submissionType": {
-        "additionalFile": "Additional file",
-        "arrangement": "Arrangement",
-        "correction": "Correction",
-        "new": "New song",
-        "removal": "Removal",
-        "translation": "Translation"
-      },
-      "submittedBy": "Submitted by",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
-      "triageScore": "Triage score",
-      "unchangedFiles": "Unchanged files",
       "unpublish": "Unpublish",
       "viewOnWorshipCommons": "View on WorshipCommons"
     },
@@ -3072,13 +2950,11 @@
       "checkin": "Check-in",
       "deleteTab": "Delete Tab",
       "donation": "Donation",
-      "donationLanding": "Donation Landing",
       "editTab": "Edit Tab",
       "everyone": "Všetci (vrátane anonymných)",
       "externalUrl": "External URL",
       "groups": "Konkrétne skupiny...",
       "internalPage": "Internal Page",
-      "lessons": "Lessons",
       "liveStream": "Live Stream",
       "loggedInUsers": "Prihlásení používatelia",
       "memberDirectory": "Member Directory",
@@ -3211,8 +3087,7 @@
       "campus": "Areál",
       "campuses": "Areály",
       "location": "Poloha",
-      "none": "Zatiaľ neboli pridané žiadne areály.",
-      "subtitle": "Spravujte fyzické pobočky vašej cirkvi"
+      "none": "Zatiaľ neboli pridané žiadne areály."
     },
     "checkinSettingsEdit": {
       "block": "Blokovať (zabrániť odbaveniu)",
@@ -3221,28 +3096,17 @@
       "title": "Odbavenie",
       "warn": "Varovať (povoliť s potvrdením)"
     },
-    "church": {
-      "subdomainHelper": "Your church's unique web address"
-    },
     "churchSettingsEdit": {
       "address1": "Address Line 1",
       "address2": "Address Line 2",
-      "addressLine1Aria": "Adresa, riadok 1",
       "churchInfo": "Church Information",
       "churchInfoSubtitle": "Name, address, and subdomain",
       "churchName": "Church Name",
-      "churchNameAria": "Názov cirkvi",
-      "churchSettings": "Church Settings",
-      "domainsSubtitle": "Custom domain configuration",
       "firstDayOfWeek": "Prvý deň v týždni",
       "general": "General",
-      "generalSubtitle": "Support contact, directory, and visibility",
-      "givingSubtitle": "Payment gateway and fee options",
       "noNameMsg": "Church name cannot be blank.",
       "noSubMsg": "Subdomain cannot be blank.",
       "subdom": "Subdomain",
-      "subdomainAria": "Subdoména",
-      "textingSubtitle": "Nakonfigurujte poskytovateľa SMS",
       "textingTitle": "SMS"
     },
     "customFieldEdit": {
@@ -3257,8 +3121,7 @@
       "addField": "Pridať pole",
       "customFields": "Vlastné polia",
       "field": "Vlastné pole",
-      "none": "Zatiaľ neboli pridané žiadne vlastné polia.",
-      "subtitle": "Definujte vlastné polia na sledovanie u osôb"
+      "none": "Zatiaľ neboli pridané žiadne vlastné polia."
     },
     "developer": {
       "actions": "Akcie",
@@ -3564,7 +3427,6 @@
       "regenerateSecret": "Regenerovať tajný kľúč",
       "response": "Odpoveď",
       "responseBody": "Telo odpovede",
-      "saveFailed": "Unable to save webhook",
       "secretIntro": "Skopírujte si podpisový tajný kľúč teraz — viac sa nezobrazí.",
       "secretSignNote": "Použite ho na overenie hlavičky X-B1-Signature pri každom doručení.",
       "secretTitle": "Podpisový tajný kľúč",
@@ -4631,7 +4493,6 @@
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
-    "arrangements": "Aranžmány",
     "audio": {
       "deleteConfirm": "Naozaj chcete odstrániť tento zvukový súbor?",
       "upload": "Nahrať audio"

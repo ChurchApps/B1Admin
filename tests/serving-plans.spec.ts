@@ -486,6 +486,27 @@ test.describe("Plans page navigation", () => {
   });
 });
 
+// Issue #1082: label keys built from a prefix plus a variable were never harvested by
+// /locale-sync, so Locale.label() returned the key itself. The Edit Plan Type dialog
+// rendered its reminders accordion header as "plans.planTypeReminders.title".
+test.describe("Edit Plan Type locale", () => {
+  test("the reminders section of the Edit Plan Type dialog is localized", async ({ page }) => {
+    await page.goto("/serving/plans");
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
+
+    const row = page.locator("tr", { hasText: "Sunday Service" }).first();
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.locator('button[aria-label="Edit"]').click();
+
+    const dialog = page.locator('[role="dialog"]');
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+    await expect(dialog.getByText("Plan Type Details")).toBeVisible({ timeout: 10000 });
+
+    await expect(dialog).not.toContainText("plans.planTypeReminders.");
+    await expect(dialog.getByText("Reminders", { exact: true })).toBeVisible({ timeout: 10000 });
+  });
+});
+
 // The schedule matrix used to be reachable only from the Plan Type header button;
 // the plan-type row on the Plans list now links to it too.
 test.describe("Plan type row links to the schedule matrix overview", () => {
