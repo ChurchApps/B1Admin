@@ -71,6 +71,7 @@ const APPEARANCE_FIELDS: Record<string, string[]> = {
   countdown: fullAppearance,
   stats: fullAppearance,
   sermons: standardAppearance,
+  podcast: standardAppearance,
   campaignProgress: fullAppearance,
   staffGrid: standardAppearance,
   serviceTimes: fullAppearance
@@ -891,6 +892,16 @@ export function ElementEdit(props: Props) {
     </>
   );
 
+  const getPodcastFields = () => (
+    <>
+      <TextField fullWidth size="small" label={Locale.label("site.podcastEdit.feedUrl")} name="feedUrl" value={parsedData.feedUrl || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder="https://example.com/podcast/feed.xml" data-testid="podcast-feed-url-input" />
+      <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic" }}>{Locale.label("site.podcastEdit.feedUrlHint")}</Typography>
+      <TextField fullWidth size="small" type="number" label={Locale.label("site.podcastEdit.itemCount")} name="itemCount" value={parsedData.itemCount ?? 10} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="podcast-item-count-input" />
+      <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.showDates !== "false" && parsedData.showDates !== false} />} name="showDates" label={Locale.label("site.podcastEdit.showDates")} />
+      <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.showDescriptions !== "false" && parsedData.showDescriptions !== false} />} name="showDescriptions" label={Locale.label("site.podcastEdit.showDescriptions")} />
+    </>
+  );
+
   const getFields = () => {
     let result = getJsonFields();
     switch (element?.elementType) {
@@ -924,6 +935,7 @@ export function ElementEdit(props: Props) {
         break;
       case "map": result = getMapFields(); break;
       case "sermons": result = getSermonsFields(); break;
+      case "podcast": result = getPodcastFields(); break;
       case "iconFeature": result = getIconFeatureFields(); break;
       case "socialIcons": result = getSocialIconsFields(); break;
       case "countdown": result = getCountdownFields(); break;

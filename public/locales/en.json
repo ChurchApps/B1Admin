@@ -4198,11 +4198,13 @@
       "blocks": "Blocks",
       "church": "Church",
       "common": "Common",
+      "descPodcast": "Episode list from an external podcast RSS feed, with an audio player per episode",
       "descReusableElement": "Reusable element block",
       "descReusableSection": "Reusable section",
       "descSection": "Container for grouping content",
       "media": "Media",
       "noElementsFound": "No elements found",
+      "podcast": "Podcast",
       "searchElements": "Search Elements",
       "section": "Section",
       "tryDifferentSearch": "Try a different search term",
@@ -4580,6 +4582,13 @@
       "textColor": "Text Color",
       "youtubeId": "Youtube ID",
       "youtubeVideo": "Youtube Video"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     },
     "redirects": {
       "analytics": "Analytics",
