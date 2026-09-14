@@ -1,9 +1,10 @@
-import React, { memo } from "react";
-import { Question } from "./";
+import React, { memo, useRef } from "react";
+import { Question, PrintStyles } from "./";
 import { Grid, Box, Typography, Stack } from "@mui/material";
-import { Edit as EditIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Print as PrintIcon } from "@mui/icons-material";
+import { useReactToPrint } from "react-to-print";
 import { type FormSubmissionInterface, type AnswerInterface } from "@churchapps/helpers";
-import { Permissions, ApiHelper, UserHelper, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
+import { Permissions, ApiHelper, UserHelper, UniqueIdHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import { AppIconButton } from "./ui/AppIconButton";
 
 interface Props {
@@ -15,12 +16,14 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
   const [formSubmission, setFormSubmission] = React.useState<FormSubmissionInterface | null>(null);
   const [loading, setLoading] = React.useState(true);
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
+  const printRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: formSubmission?.form?.name || Locale.label("forms.formPrint.title") });
 
   const loadData = React.useCallback(async () => {
     if (!UniqueIdHelper.isMissing(props.formSubmissionId)) {
       setLoading(true);
       try {
-        const data = await ApiHelper.get("/formsubmissions/" + props.formSubmissionId + "/?include=questions,answers", "MembershipApi");
+        const data = await ApiHelper.get("/formsubmissions/" + props.formSubmissionId + "/?include=form,questions,answers", "MembershipApi");
         setFormSubmission(data);
       } catch (error) {
         console.error("Failed to load form submission:", error);
@@ -64,19 +67,28 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
 
   return (
     <Box sx={{ position: "relative" }}>
-      {formPermission && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 1
-          }}>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        className="no-print"
+        sx={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          zIndex: 1
+        }}>
+        <AppIconButton label={Locale.label("common.print")} icon={<PrintIcon />} tone="card" onClick={() => handlePrint()} data-testid="print-form-submission-button" />
+        {formPermission && (
           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => props.editFunction(props.formSubmissionId)} data-testid="edit-form-submission-button" />
-        </Box>
-      )}
+        )}
+      </Stack>
 
-      <Box sx={{ pr: formPermission ? 5 : 0 }}>
+      <Box ref={printRef} sx={{ pr: formPermission ? 9 : 5, "@media print": { pr: 0 } }}>
+        <PrintStyles />
+        <Box className="print-only" sx={{ mb: 2 }}>
+          {formSubmission.form?.name && <Typography variant="h5" sx={{ fontWeight: 600 }}>{formSubmission.form.name}</Typography>}
+          {formSubmission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(formSubmission.submissionDate))}</Typography>}
+        </Box>
         {questions.length > 0 ? (
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: questions.length > 1 ? 6 : 12 }}>

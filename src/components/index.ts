@@ -10,6 +10,7 @@ export { AssociatedForms } from "./AssociatedForms";
 export { ComboBox } from "./ComboBox";
 export { FormSubmission } from "./FormSubmission";
 export { Question } from "./Question";
+export { PrintStyles } from "./PrintStyles";
 export { Search } from "./Search";
 export { StateOptions } from "./StateOptions";
 export { Wrapper } from "./Wrapper";
