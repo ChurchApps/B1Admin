@@ -74,7 +74,15 @@ const ApiErrorBanner = () => {
         }
         if (type.startsWith("5")) setErrors([Locale.label("controlPanel.serverError")]);
         // ErrorHelper puts the request url in `message` and the server's text in `details`.
-        else if (error.details || error.message) setErrors([error.details || error.message]);
+        else if (error.details || error.message) {
+          let msg = String(error.details || error.message);
+          try {
+            const parsed = JSON.parse(msg);
+            if (typeof parsed?.error === "string" && parsed.error) msg = parsed.error;
+            else if (Array.isArray(parsed?.errors) && parsed.errors[0]) msg = String(parsed.errors[0]);
+          } catch { /* already a plain string */ }
+          setErrors([msg]);
+        }
       } catch {
         // Never let the error handler throw — that would re-enter error logging.
       }

@@ -87,8 +87,8 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
       // The signing secret is only returned when a webhook is first created.
       if (saved?.secret) setSecret(saved.secret);
       else onSave();
-    } catch (e: any) {
-      setErrors([e?.message || Locale.label("settings.webhookEdit.saveFailed")]);
+    } catch {
+      // ControlPanel ApiErrorBanner already shows the API error.
     }
   };
 
