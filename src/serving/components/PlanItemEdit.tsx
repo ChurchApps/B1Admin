@@ -22,6 +22,7 @@ export const PlanItemEdit = (props: Props) => {
   const [, setErrors] = React.useState<string[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const [searching, setSearching] = React.useState(false);
+  const [searchError, setSearchError] = React.useState("");
   const [hasSearched, setHasSearched] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
@@ -129,10 +130,20 @@ export const PlanItemEdit = (props: Props) => {
     } else {
       setSearching(true);
       setHasSearched(true);
-      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data: any) => {
-        setSongs(data);
-        setSearching(false);
-      });
+      setSearchError("");
+      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi")
+        .then((data: any) => {
+          setSongs(data || []);
+        })
+        .catch(() => {
+          // A slow or failed search used to leave the spinner running forever and
+          // surface a global error toast, so report it inline and allow a retry.
+          setSongs([]);
+          setSearchError(Locale.label("plans.planItemEdit.searchFailed"));
+        })
+        .finally(() => {
+          setSearching(false);
+        });
     }
   };
 
@@ -176,6 +187,13 @@ export const PlanItemEdit = (props: Props) => {
 
   const getSongs = () => {
     if (searching) return <CircularProgress size={24} sx={{ display: "block", mx: "auto", my: 2 }} />;
+    if (searchError) {
+      return (
+        <Typography color="error" sx={{ textAlign: "center", py: 2 }} data-testid="song-search-error">
+          {searchError}
+        </Typography>
+      );
+    }
     if (hasSearched && songs.length === 0) {
       return (
         <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
