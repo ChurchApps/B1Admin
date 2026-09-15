@@ -486,6 +486,63 @@ test.describe("Plans page navigation", () => {
   });
 });
 
+// ChurchAppsSupport#1084: a slow or failing /songs/search left the Service Order song
+// picker spinning forever, recoverable only by closing and reopening the dialog.
+test.describe("Service Order song search error handling", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    expect(uc?.jwt).toBeTruthy();
+    jwt = uc.jwt as string;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Song Search Failure Repro", serviceDate: "2030-06-01", ministryId: "GRP0000000a", planTypeId: "PLT00000001", serviceOrder: true }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    planId = (await planRes.json())[0].id;
+
+    const headerRes = await ctx.post(`${API}/doing/planItems`, { ...auth, data: [{ planId, sort: 1, itemType: "header", label: "Song Search Section" }] });
+    expect(headerRes.ok()).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, { headers: { Authorization: "Bearer " + jwt } });
+    await ctx.dispose();
+  });
+
+  test("a failed song search clears the spinner and reports the failure", async ({ page }) => {
+    const failure = { status: 500, contentType: "application/json", body: JSON.stringify({ errors: ["Search timed out"] }) };
+    await page.route("**/songs/search**", (route) => route.fulfill(failure));
+    await page.goto(`/serving/plans/${planId}`);
+    await page.getByRole("tab", { name: "Service Order" }).click({ timeout: 20000 });
+    await expect(page.getByText("Song Search Section")).toBeVisible({ timeout: 20000 });
+
+    await page.getByRole("button", { name: "Add Item" }).first().click();
+    await page.getByRole("menuitem").filter({ hasText: "Song" }).click();
+
+    const dialog = page.getByRole("dialog");
+    await dialog.getByTestId("song-search-input").locator("input").fill("Issue1084");
+    await dialog.getByTestId("song-search-button").click();
+
+    // The spinner has to stop; leaving it up is the reported "stuck" state.
+    await expect(dialog.locator(".MuiCircularProgress-root")).toHaveCount(0, { timeout: 15000 });
+    await expect(dialog.getByTestId("song-search-error")).toBeVisible({ timeout: 15000 });
+
+    // And the search box stays usable so a retry does not need the dialog reopened.
+    await expect(dialog.getByTestId("song-search-button")).toBeEnabled();
+  });
+});
+
 // Issue #1082: label keys built from a prefix plus a variable were never harvested by
 // /locale-sync, so Locale.label() returned the key itself. The Edit Plan Type dialog
 // rendered its reminders accordion header as "plans.planTypeReminders.title".
