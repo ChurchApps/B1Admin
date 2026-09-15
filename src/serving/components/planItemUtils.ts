@@ -1,6 +1,6 @@
 import { type InstructionItem, type Instructions, type IProvider } from "@churchapps/content-providers";
 import { ApiHelper, type PersonInterface } from "@churchapps/apphelper";
-import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
+import { type AssignmentInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 
 /** Gets instructions from a provider based on its capabilities, proxying through the API when auth is required. */
@@ -347,3 +347,50 @@ export function buildPositionLabels(positions: PositionInterface[], assignments:
   });
   return result;
 }
+
+export function resolvePositionForTime(
+  positionId: string | undefined,
+  serviceTime: TimeInterface | null | undefined,
+  positions: PositionInterface[] | undefined
+): PositionInterface | undefined {
+  if (!positionId || !positions?.length) return undefined;
+  const assigned = positions.find((p) => p.id === positionId);
+  if (!assigned) return undefined;
+  if (!serviceTime?.teams) return assigned;
+
+  const activeTeams = serviceTime.teams
+    .split(",")
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (activeTeams.length === 0) return assigned;
+
+  // If the assigned position's category is already active in this service time, keep it
+  if (assigned.categoryName && activeTeams.includes(assigned.categoryName.trim().toLowerCase())) {
+    return assigned;
+  }
+
+  // Otherwise, find a position with the SAME name under one of the active categories for this service time
+  const matching = positions.find((p) =>
+    p.id !== assigned.id &&
+    p.name?.trim().toLowerCase() === assigned.name?.trim().toLowerCase() &&
+    p.categoryName &&
+    activeTeams.includes(p.categoryName.trim().toLowerCase())
+  );
+
+  return matching || assigned;
+}
+
+/** Resolves the volunteer label for a plan item or heading under a specific service time. */
+export function getPositionLabel(
+  positionId: string | undefined,
+  serviceTime: TimeInterface | null | undefined,
+  positions: PositionInterface[] | undefined,
+  positionLabels: Record<string, PositionLabel> | undefined
+): PositionLabel | undefined {
+  if (!positionId || !positionLabels) return undefined;
+  if (!serviceTime || !positions?.length) return positionLabels[positionId];
+  const resolved = resolvePositionForTime(positionId, serviceTime, positions);
+  return (resolved?.id && positionLabels[resolved.id]) || positionLabels[positionId];
+}
+
