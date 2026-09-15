@@ -6,6 +6,7 @@ import { hasPlansEditAccess } from "../helpers";
 import { SiteHeader } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { useNavigate } from "react-router-dom";
+import { CommandPalette } from "./commandPalette/CommandPalette";
 
 export const Header: React.FC = () => {
   const context = React.useContext(UserContext);
@@ -168,14 +169,17 @@ export const Header: React.FC = () => {
 
   /*<Typography variant="h6" noWrap>{UserHelper.currentUserChurch?.church?.name || ""}</Typography>*/
   return (
-    <SiteHeader
-      primaryMenuItems={primaryMenu}
-      primaryMenuLabel={getPrimaryLabel()}
-      secondaryMenuItems={secondaryMenu.menuItems}
-      secondaryMenuLabel={secondaryMenu.label}
-      context={context!}
-      appName={"B1Admin"}
-      onNavigate={handleNavigate}
-    />
+    <>
+      <SiteHeader
+        primaryMenuItems={primaryMenu}
+        primaryMenuLabel={getPrimaryLabel()}
+        secondaryMenuItems={secondaryMenu.menuItems}
+        secondaryMenuLabel={secondaryMenu.label}
+        context={context!}
+        appName={"B1Admin"}
+        onNavigate={handleNavigate}
+      />
+      <CommandPalette />
+    </>
   );
 };

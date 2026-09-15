@@ -1,0 +1,105 @@
+#secondary-menu-container { display: flex; align-items: center; justify-content: flex-end; }
+
+.om-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  min-width: 260px;
+  padding: 0 10px 0 12px;
+  margin-right: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: text;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.om-search:hover,
+.om-search:focus-visible { background: rgba(255, 255, 255, 0.2); outline: none; }
+
+.om-search span { flex: 1; }
+
+.om-search kbd {
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 899px) { .om-search { display: none; } }
+
+.om-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 61, 134, 0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 14vh;
+  z-index: 2000;
+}
+
+.om-palette {
+  width: min(560px, calc(100% - 32px));
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(16, 14, 12, 0.28);
+  color: #333;
+}
+
+.om-palette input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+  font: inherit;
+  font-size: 1.15rem;
+  padding: 18px 20px;
+  outline: none;
+  caret-color: #1565C0;
+}
+
+.om-palette-results {
+  padding: 8px;
+  max-height: min(52vh, 420px);
+  overflow-y: auto;
+}
+
+.om-group-label {
+  padding: 10px 12px 4px;
+  color: #666;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.om-hit {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+}
+
+.om-hit:hover,
+.om-hit.active { background: #e5e8ee; }
+
+.om-hit small { color: #666; }
