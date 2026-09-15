@@ -154,3 +154,98 @@ test.describe("Serving - Print Plan without lesson content", () => {
     await expect.poll(() => page.evaluate(() => (window as any).__printCalls)).toBeGreaterThan(0);
   });
 });
+
+// Issue #1086: the printed Service Order shows section headers in place (spanning the
+// table) with their assigned position/volunteer, instead of flattening every item
+// into one undivided list.
+test.describe("Serving - Print Plan sections and positions", () => {
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+  let plan: any;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    jwt = await apiLogin(ctx);
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Print Sections Repro", serviceDate: "2030-04-15", serviceOrder: true, showVolunteerNames: true }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    plan = (await planRes.json())[0];
+    planId = plan.id;
+
+    const posRes = await ctx.post(`${API}/doing/positions`, {
+      ...auth,
+      data: [{ planId, categoryName: "Platform", name: "Worship Leader", count: 1 }]
+    });
+    expect(posRes.ok()).toBeTruthy();
+    const positionId = (await posRes.json())[0].id;
+
+    // Donald Clark is a seeded demo member.
+    const assignRes = await ctx.post(`${API}/doing/assignments`, {
+      ...auth,
+      data: [{ positionId, personId: "PER00000080", status: "Accepted" }]
+    });
+    expect(assignRes.ok()).toBeTruthy();
+
+    const headersRes = await ctx.post(`${API}/doing/planItems`, {
+      ...auth,
+      data: [
+        { planId, sort: 1, itemType: "header", label: "Worship Set", positionId },
+        { planId, sort: 2, itemType: "header", label: "Message Time" }
+      ]
+    });
+    expect(headersRes.ok()).toBeTruthy();
+    const [worshipHeader, messageHeader] = await headersRes.json();
+
+    const itemsRes = await ctx.post(`${API}/doing/planItems`, {
+      ...auth,
+      data: [
+        { planId, parentId: worshipHeader.id, sort: 1, itemType: "item", label: "Opening Song", seconds: 240 },
+        { planId, parentId: messageHeader.id, sort: 1, itemType: "item", label: "Sermon Notes", seconds: 1800 }
+      ]
+    });
+    expect(itemsRes.ok()).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, { headers: { Authorization: "Bearer " + jwt } });
+    await ctx.dispose();
+  });
+
+  test("prints section headers in order with their assigned volunteer", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByText("Opening Song")).toBeVisible({ timeout: 15000 });
+
+    const sections = page.locator("tr.printSectionRow");
+    await expect(sections).toHaveCount(2);
+    await expect(sections.nth(0)).toContainText("Worship Set");
+    await expect(sections.nth(0)).toContainText("Donald Clark");
+    await expect(sections.nth(1)).toContainText("Message Time");
+
+    // Each section divider sits directly above the items that belong to it.
+    const texts = await page.locator("table tbody tr").allInnerTexts();
+    const rowOf = (label: string) => texts.findIndex((t) => t.includes(label));
+    expect(rowOf("Worship Set")).toBeGreaterThan(-1);
+    expect(rowOf("Worship Set")).toBeLessThan(rowOf("Opening Song"));
+    expect(rowOf("Opening Song")).toBeLessThan(rowOf("Message Time"));
+    expect(rowOf("Message Time")).toBeLessThan(rowOf("Sermon Notes"));
+  });
+
+  test("hides the section volunteer when the plan does not show volunteer names", async ({ page }) => {
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+    const res = await ctx.post(`${API}/doing/plans`, { ...auth, data: [{ ...plan, showVolunteerNames: false }] });
+    expect(res.ok()).toBeTruthy();
+
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByText("Opening Song")).toBeVisible({ timeout: 15000 });
+
+    const sections = page.locator("tr.printSectionRow");
+    await expect(sections).toHaveCount(2);
+    await expect(sections.nth(0)).toContainText("Worship Set");
+    await expect(sections.nth(0)).not.toContainText("Donald Clark");
+  });
+});
