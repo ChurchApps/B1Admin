@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
@@ -394,6 +394,122 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
   });
 
+  test.describe.serial("Songs - select all", () => {
+    // Seeds its own "Zebedee Bulk" songs over the API and deletes them through
+    // the select-all + Delete Selected flow, so a retry would find stale rows.
+    test.describe.configure({ retries: 0 });
+
+    const API = process.env.API_BASE || "http://localhost:8084";
+    const BULK_SEARCH = "Zebedee Bulk";
+    let ctx: APIRequestContext;
+    let jwt: string;
+    let page: Page;
+    let bulkSongIds: string[] = [];
+
+    const selectAll = () => page.locator('[data-testid="select-all-songs"]');
+    const selectAllInput = () => selectAll().locator("input");
+    const rowCheckboxes = () => page.locator('[data-testid="song-select-checkbox"]');
+    const checkedRows = () => page.locator('[data-testid="song-select-checkbox"] input:checked');
+    const deleteSelected = () => page.locator('[data-testid="delete-selected-button"]');
+
+    const openSongs = async () => {
+      await page.goto("/serving/songs");
+      await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
+      await expect(page.locator('a[href^="/serving/songs/"]').first()).toBeVisible({ timeout: 10000 });
+    };
+
+    test.beforeAll(async ({ browser }) => {
+      ctx = await pwRequest.newContext();
+      const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+      expect(loginRes.ok()).toBeTruthy();
+      const body = await loginRes.json();
+      const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+      expect(uc?.jwt).toBeTruthy();
+      jwt = uc.jwt as string;
+      const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+      const detailsRes = await ctx.post(`${API}/content/songDetails`, {
+        ...auth,
+        data: [
+          { title: BULK_SEARCH + " Song One", artist: "Zebedee", seconds: 0 },
+          { title: BULK_SEARCH + " Song Two", artist: "Zebedee", seconds: 0 }
+        ]
+      });
+      expect(detailsRes.ok()).toBeTruthy();
+      const details = await detailsRes.json();
+      const songsRes = await ctx.post(`${API}/content/songs`, {
+        ...auth,
+        data: details.map((d: any) => ({ name: d.title, songDetailId: d.id, dateAdded: new Date() }))
+      });
+      expect(songsRes.ok()).toBeTruthy();
+      bulkSongIds = (await songsRes.json()).map((s: any) => s.id);
+
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+      for (const id of bulkSongIds) await ctx.delete(`${API}/content/songs/${id}`, { headers: { Authorization: "Bearer " + jwt } }).catch(() => {});
+      await ctx.dispose();
+    });
+
+    test("select all ticks every song on the page, goes indeterminate, and deselect all clears them", async () => {
+      await openSongs();
+      await expect(selectAll()).toBeVisible({ timeout: 10000 });
+      await expect(selectAllInput()).not.toBeChecked();
+      await expect(deleteSelected()).toHaveCount(0);
+
+      const rowCount = await rowCheckboxes().count();
+      expect(rowCount).toBeGreaterThan(1);
+
+      // Select all: every visible row is ticked and the bulk button counts them.
+      await selectAll().click();
+      await expect(selectAllInput()).toBeChecked();
+      await expect(checkedRows()).toHaveCount(rowCount);
+      await expect(deleteSelected()).toContainText(`(${rowCount})`);
+
+      // Unticking one row drops the header to indeterminate.
+      await rowCheckboxes().first().click();
+      await expect(checkedRows()).toHaveCount(rowCount - 1);
+      await expect(selectAll().locator('input[data-indeterminate="true"]')).toHaveCount(1);
+      await expect(deleteSelected()).toContainText(`(${rowCount - 1})`);
+
+      // Clicking an indeterminate header selects everything again.
+      await selectAll().click();
+      await expect(checkedRows()).toHaveCount(rowCount);
+      await expect(selectAllInput()).toBeChecked();
+
+      // Deselect all: nothing ticked, bulk button gone.
+      await selectAll().click();
+      await expect(checkedRows()).toHaveCount(0);
+      await expect(selectAllInput()).not.toBeChecked();
+      await expect(deleteSelected()).toHaveCount(0);
+    });
+
+    test("select all on a filtered list bulk-deletes just those songs", async () => {
+      await openSongs();
+      await page.locator("button").getByText("Search").click();
+      const searchInput = page.locator('input[type="text"]').last();
+      await searchInput.fill(BULK_SEARCH);
+      await expect(rowCheckboxes()).toHaveCount(2, { timeout: 10000 });
+      await expect(page.locator("a").getByText(BULK_SEARCH + " Song One", { exact: true })).toBeVisible();
+
+      await selectAll().click();
+      await expect(checkedRows()).toHaveCount(2);
+      await expect(deleteSelected()).toContainText("(2)");
+
+      await deleteSelected().click();
+      await confirmDelete(page);
+
+      await expect(page.locator("a").getByText(BULK_SEARCH + " Song One", { exact: true })).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("a").getByText(BULK_SEARCH + " Song Two", { exact: true })).toHaveCount(0);
+      await expect(rowCheckboxes()).toHaveCount(0);
+      await expect(deleteSelected()).toHaveCount(0);
+      bulkSongIds = [];
+    });
+  });
   test.describe.serial("Tasks", () => {
     // Tasks tests share data — a retry would create duplicate task/automation
     // rows and break subsequent assertions.
