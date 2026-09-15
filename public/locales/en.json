@@ -5271,8 +5271,10 @@
       "addSongAria": "Add song",
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
+      "deselectAll": "Deselect all",
       "search": "Search",
       "searchSongs": "Search Songs",
+      "selectAll": "Select all",
       "songs": "Songs",
       "subtitle": "Manage your music library"
     },

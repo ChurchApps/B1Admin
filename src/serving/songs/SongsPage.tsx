@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useCallback } from "react";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Link, Navigate } from "react-router-dom";
-import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment, Tooltip, Checkbox, TablePagination } from "@mui/material";
+import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment, Tooltip, Checkbox, FormControlLabel, TablePagination } from "@mui/material";
 import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, PlayCircle as PlayIcon, Timer as TimerIcon, Person as ArtistIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { EmptyState } from "../../components/ui/EmptyState";
@@ -125,6 +125,22 @@ export const SongsPage = memo(() => {
     return unique;
   }, [songs.data?.songDetails]);
 
+  // Select all / deselect all is scoped to the songs on the current page (same as the People list and plan sections).
+  const visibleSongIds = useMemo(() => filteredSongs?.map((song) => (song as any).songId || song.id) ?? [], [filteredSongs]);
+  const visibleSelectedCount = useMemo(() => visibleSongIds.filter((id) => selected.has(id)).length, [visibleSongIds, selected]);
+  const allVisibleSelected = visibleSongIds.length > 0 && visibleSelectedCount === visibleSongIds.length;
+
+  const handleSelectAll = useCallback((checked: boolean) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      visibleSongIds.forEach((id) => {
+        if (checked) next.add(id);
+        else next.delete(id);
+      });
+      return next;
+    });
+  }, [visibleSongIds]);
+
   const songsContent = useMemo(() => {
     if (songs.isLoading) return <Loading size="sm" />;
 
@@ -152,6 +168,25 @@ export const SongsPage = memo(() => {
 
     return (
       <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "divider" } }}>
+        {canEdit && (
+          <FormControlLabel
+            sx={{ ml: 2, mb: 1 }}
+            control={
+              <Checkbox
+                checked={allVisibleSelected}
+                indeterminate={!allVisibleSelected && visibleSelectedCount > 0}
+                onChange={(e) => handleSelectAll(e.target.checked)}
+                data-testid="select-all-songs"
+                slotProps={{ input: { "aria-label": Locale.label("songs.songsPage.selectAll") || "Select all" } }}
+              />
+            }
+            label={
+              <Typography variant="body2" color="text.secondary">
+                {allVisibleSelected ? Locale.label("songs.songsPage.deselectAll") || "Deselect all" : Locale.label("songs.songsPage.selectAll") || "Select all"}
+              </Typography>
+            }
+          />
+        )}
         <Stack spacing={2}>
           {filteredSongs?.map((songDetail) => (
             <Card key={(songDetail as any).songId || songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
@@ -162,6 +197,7 @@ export const SongsPage = memo(() => {
                       checked={selected.has((songDetail as any).songId || songDetail.id)}
                       onChange={() => toggleSelected((songDetail as any).songId || songDetail.id)}
                       aria-label={Locale.label("common.select") || "Select"}
+                      data-testid="song-select-checkbox"
                     />
                   )}
                   <Avatar
@@ -224,8 +260,22 @@ export const SongsPage = memo(() => {
       </Box>
     );
   }, [
-    songs.isLoading, songs.data, filteredSongs, formatSeconds, handleImageError, failedImages, canEdit, selected, toggleSelected,
-    page, rowsPerPage, handlePageChange, handleRowsPerPageChange
+    songs.isLoading,
+    songs.data,
+    filteredSongs,
+    formatSeconds,
+    handleImageError,
+    failedImages,
+    canEdit,
+    selected,
+    toggleSelected,
+    allVisibleSelected,
+    visibleSelectedCount,
+    handleSelectAll,
+    page,
+    rowsPerPage,
+    handlePageChange,
+    handleRowsPerPageChange
   ]);
 
   if (redirect) return <Navigate to={redirect} />;
