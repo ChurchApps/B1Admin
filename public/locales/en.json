@@ -2363,6 +2363,7 @@
       "planItemNameAria": "Plan item name",
       "position": "Position",
       "searchBoxAria": "searchBox",
+      "searchFailed": "Search failed. Please try again.",
       "seconds": "Seconds"
     },
     "planList": {
