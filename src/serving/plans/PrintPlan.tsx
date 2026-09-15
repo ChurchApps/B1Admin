@@ -279,6 +279,21 @@ export const PrintPlan = () => {
               <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
             </tr>
           );
+        } else {
+          // Section headers span every column so the printed sheet shows where each part of
+          // the service begins and who leads it (ChurchAppsSupport#1086).
+          const columnCount = (serviceTimes.length || 1) + 2;
+          const positionText = plan?.showVolunteerNames && pi.positionId ? positionLabels[pi.positionId]?.text : "";
+          rows.push(
+            <tr key={pi.id} className="printSectionRow">
+              <td colSpan={columnCount} style={{ ...Styles.tableCell, fontWeight: "bold", fontSize: "1.1em", borderTop: "2px solid #000", paddingTop: 8 }}>
+                {pi.label}
+                {positionText && (
+                  <span className="printSectionPosition" style={{ float: "right", paddingLeft: 10, fontWeight: "normal", fontSize: "0.9em", color: "#555" }}>{positionText}</span>
+                )}
+              </td>
+            </tr>
+          );
         }
         if (pi.children) rows = rows.concat(walk(pi.children));
       });
