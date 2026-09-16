@@ -67,21 +67,14 @@ export const B1MobilePage: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const approval: GenericSettingInterface = approvalSetting || { churchId, public: 1, keyName: "directoryApprovalGroupId" };
-      approval.value = selectedGroupId;
-
-      const visibility: GenericSettingInterface = visibilitySetting || { churchId, public: 1, keyName: "directoryVisibility" };
-      visibility.value = directoryVisibility;
-
-      const addrSett: GenericSettingInterface = addressSetting || { churchId, public: 1, keyName: "addressVisibility" };
-      addrSett.value = pref.address;
-      const phoneSett: GenericSettingInterface = phoneSetting || { churchId, public: 1, keyName: "phoneVisibility" };
-      phoneSett.value = pref.phoneNumber;
-      const emailSett: GenericSettingInterface = emailSetting || { churchId, public: 1, keyName: "emailVisibility" };
-      emailSett.value = pref.email;
-
-      const msgAge: GenericSettingInterface = msgAgeSetting || { churchId, public: 1, keyName: "messagingMinimumAge" };
-      msgAge.value = messagingMinimumAge;
+      // These are all read through the public settings endpoint, so an existing row must be saved public too.
+      const toSave = (existing: GenericSettingInterface | null, keyName: string, value: string): GenericSettingInterface => ({ ...(existing || { churchId, keyName }), public: 1, value });
+      const approval = toSave(approvalSetting, "directoryApprovalGroupId", selectedGroupId);
+      const visibility = toSave(visibilitySetting, "directoryVisibility", directoryVisibility);
+      const addrSett = toSave(addressSetting, "addressVisibility", pref.address);
+      const phoneSett = toSave(phoneSetting, "phoneVisibility", pref.phoneNumber);
+      const emailSett = toSave(emailSetting, "emailVisibility", pref.email);
+      const msgAge = toSave(msgAgeSetting, "messagingMinimumAge", messagingMinimumAge);
 
       await ApiHelper.post("/settings", [approval, visibility, addrSett, phoneSett, emailSett, msgAge], "MembershipApi");
       await loadData();
