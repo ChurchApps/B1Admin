@@ -19,6 +19,7 @@ export const B1MobilePage: React.FC = () => {
   const [messagingMinimumAge, setMessagingMinimumAge] = React.useState("18");
   const [msgAgeSetting, setMsgAgeSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
 
   const churchId = UserHelper.currentUserChurch?.church?.id;
 
@@ -53,6 +54,7 @@ export const B1MobilePage: React.FC = () => {
 
     const msgAge = allSettings.find(s => s.keyName === "messagingMinimumAge");
     if (msgAge) { setMsgAgeSetting(msgAge); setMessagingMinimumAge(msgAge.value || "18"); }
+    setLoaded(true);
   }, [churchId]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
@@ -87,7 +89,7 @@ export const B1MobilePage: React.FC = () => {
     <>
       <PageHeader icon={<PhoneIphoneIcon />} title={Locale.label("mobile.b1MobilePage.title")} subtitle={Locale.label("mobile.b1MobilePage.subtitle")} />
       <Box sx={{ p: 3 }}>
-        <FormCard title={Locale.label("mobile.b1MobilePage.title")} icon="phone_iphone" onSave={handleSave} isSubmitting={saving}>
+        <FormCard title={Locale.label("mobile.b1MobilePage.title")} icon="phone_iphone" onSave={handleSave} isSubmitting={saving} disabled={!loaded}>
           <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>
             <Tooltip title={Locale.label("settings.directoryApprovalSettingsEdit.forceMsg")} arrow>
