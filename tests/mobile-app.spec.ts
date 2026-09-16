@@ -314,3 +314,27 @@ test.describe("Show in Directory saves as a public setting", () => {
     expect(pub.directoryVisibility).toBe("Regular Attendees");
   });
 });
+
+// Saving before the existing settings load would post every setting without its id and
+// create duplicate rows, so Save stays disabled until the settings GET completes.
+test.describe("B1 Mobile Save waits for settings load", () => {
+  test("Save stays disabled until the existing settings have loaded", async ({ page }) => {
+    let release: () => void = () => { };
+    const held = new Promise<void>((resolve) => { release = resolve; });
+    await page.route((url) => url.pathname.endsWith("/membership/settings"), async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      await held;
+      await route.continue();
+    });
+
+    await page.goto("/mobile/b1-mobile");
+    const save = page.getByRole("button", { name: /^Save$/ });
+    await expect(save).toBeVisible({ timeout: 15000 });
+    await expect(save).toBeDisabled();
+
+    const loaded = page.waitForResponse((r) => r.url().endsWith("/membership/settings") && r.request().method() === "GET");
+    release();
+    await loaded;
+    await expect(save).toBeEnabled();
+  });
+});
