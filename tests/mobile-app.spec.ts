@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToMobile } from "./helpers/navigation";
 import { login } from "./helpers/auth";
@@ -7,6 +7,8 @@ import { confirmDelete } from "./helpers/fixtures";
 
 // Mobile App Settings tests per ChurchAppsSupport/b1Admin/mobile-admin.md.
 const DISPOSABLE_TAB = "Zacchaeus Test Tab";
+const API = process.env.API_BASE || "http://localhost:8084";
+const CHURCH_ID = "CHU00000001";
 
 async function openMobileSettings(page: import("@playwright/test").Page) {
   await navigateToMobile(page);
@@ -28,6 +30,21 @@ async function selectMuiByLabel(page: import("@playwright/test").Page, labelText
   await option.waitFor({ state: "visible", timeout: 10000 });
   await option.click();
   await page.locator('[role="listbox"]').waitFor({ state: "hidden", timeout: 5000 }).catch(() => { });
+}
+
+async function saveSettings(page: Page) {
+  const saved = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+  await page.getByRole("button", { name: /^Save$/ }).click();
+  await saved;
+}
+
+async function apiLogin(ctx: APIRequestContext): Promise<string> {
+  const res = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  expect(res.ok()).toBeTruthy();
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID) || body.userChurches?.[0];
+  expect(uc?.jwt).toBeTruthy();
+  return uc.jwt as string;
 }
 
 async function findTabRow(page: import("@playwright/test").Page, tabName: string) {
@@ -235,12 +252,6 @@ test.describe("B1 Mobile contact visibility levels", () => {
     await page.getByLabel("Address", { exact: true }).first().waitFor({ state: "visible", timeout: 15000 });
   }
 
-  async function saveSettings(page: Page) {
-    const saved = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
-    await page.getByRole("button", { name: /^Save$/ }).click();
-    await saved;
-  }
-
   test("address, phone and email defaults offer My Group Leaders and Staff and Staff Only", async ({ page }) => {
     await openB1MobileSettings(page);
     for (const label of VISIBILITY_FIELDS) {
@@ -266,5 +277,40 @@ test.describe("B1 Mobile contact visibility levels", () => {
     await saveSettings(page);
     await page.reload();
     await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Members", { timeout: 15000 });
+  });
+});
+
+// The directory gate reads directoryVisibility from the public settings endpoint, so a row stored
+// with public = 0 must come back public after saving the B1 Mobile page.
+test.describe("Show in Directory saves as a public setting", () => {
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let original: any;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    auth = { headers: { Authorization: "Bearer " + await apiLogin(ctx) } };
+    const all = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+    original = (all as any[]).find(s => s.keyName === "directoryVisibility");
+    const row = { ...(original || {}), churchId: CHURCH_ID, keyName: "directoryVisibility", value: "Members", public: 0 };
+    const res = await ctx.post(`${API}/membership/settings`, { ...auth, data: [row] });
+    expect(res.ok()).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    // Put the original tier back so directory specs keep their default.
+    const current = ((await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[]).find(s => s.keyName === "directoryVisibility");
+    if (current) await ctx.post(`${API}/membership/settings`, { ...auth, data: [{ ...current, value: original?.value ?? "Members", public: 1 }] });
+    await ctx.dispose();
+  });
+
+  test("saving Regular Attendees is visible to the public settings endpoint", async ({ page }) => {
+    await page.goto("/mobile/b1-mobile");
+    await expect(page.getByLabel("Show in Directory", { exact: true }).first()).toContainText("Members & Staff", { timeout: 15000 });
+    await selectMuiByLabel(page, "Show in Directory", "Regular Attendees & Above");
+    await saveSettings(page);
+
+    const pub = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
+    expect(pub.directoryVisibility).toBe("Regular Attendees");
   });
 });
