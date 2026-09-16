@@ -3213,6 +3213,7 @@
       "recentlyResolved": "Recently Resolved",
       "reject": "Reject",
       "rejectReason": {
+        "ai": "AI-generated words or melody",
         "ccli": "CCLI",
         "duplicate": "Duplicate",
         "incomplete": "Incomplete",
