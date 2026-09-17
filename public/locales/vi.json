@@ -32,12 +32,15 @@
       "subtitle": "Theo dõi Tham dự for Các buổi lễ and Các nhóm",
       "time": "Thời gian",
       "totalGroups": "Tổng cộng Các nhóm",
-      "unscheduled": "Unscheduled"
+      "unscheduled": "Unscheduled",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "Quản lý cơ sở",
       "setupMessage": "Thiết lập các cơ sở, dịch vụ và thời gian dịch vụ để bắt đầu theo dõi điểm danh.",
-      "unassigned": "Chưa được chỉ định"
+      "unassigned": "Chưa được chỉ định",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "Khách",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "Tham dự Trend",
       "groupAtt": "Nhóm Tham dự",
-      "setup": "Thiết lập"
+      "setup": "Thiết lập",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "Đây là một sự kiện định kỳ. Việc xóa nó sẽ xóa toàn bộ chuỗi và tất cả các lần lặp lại của nó. Bạn có chắc chắn không?",
       "delete": "Xóa",
       "manageRegistrations": "Quản lý đăng ký",
-      "noGroups": "Không Các nhóm found."
+      "noGroups": "Không Các nhóm found.",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "Giờ địa phương của nhà thờ (vd: 9:00 sáng)",
       "title": "Lời nhắc",
       "when": "Khi nào (tối đa 3)",
-      "who": "Ai"
+      "who": "Ai",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": "Chọn tệp .ics",
@@ -398,7 +429,8 @@
     "tryAgain": "Try Again",
     "update": "Cập nhật",
     "website": "Website",
-    "yes": "Có"
+    "yes": "Có",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Vui lòng liên hệ với quản trị viên nhà thờ của bạn để yêu cầu quyền truy cập.",
-      "defaultMessage": "Bạn không có quyền truy cập tính năng này:"
+      "defaultMessage": "Bạn không có quyền truy cập tính năng này:",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Tìm kiếm người",
@@ -632,12 +665,15 @@
       "totalDonations": "Tổng cộng Donations:",
       "totalDonors": "Tổng cộng Donors:",
       "year": "Year",
-      "zipInfo": "Thao tác này sẽ tải xuống một tệp ZIP chứa {count} tệp CSV riêng lẻ, mỗi tệp cho một người quyên góp."
+      "zipInfo": "Thao tác này sẽ tải xuống một tệp ZIP chứa {count} tệp CSV riêng lẻ, mỗi tệp cho một người quyên góp.",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "Thêm Donation",
       "pressEnter": "Press Enter to Lưu and Thêm another donation",
-      "selectPerson": "Select Person or Anonymous"
+      "selectPerson": "Select Person or Anonymous",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Cho phép người dâng hiến cam kết",
@@ -710,7 +746,11 @@
       "fund": "Fund",
       "inKind": "In-Kind",
       "lastDig": "Last 4 digits",
-      "method": "Method"
+      "method": "Method",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Event: ",
@@ -737,7 +777,10 @@
       "pending": "Đang chờ",
       "statements": "Giving Statements",
       "summary": "Tóm tắt",
-      "total": "Tổng cộng"
+      "total": "Tổng cộng",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "Ngày",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "Public",
       "restrict": "Restricted",
       "startReqMsg": "Bắt đầu Ngày is required.",
-      "thankYouMessage": "Thank You Message"
+      "thankYouMessage": "Thank You Message",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "Action",
@@ -907,7 +963,9 @@
       "view": "Xem Only"
     },
     "formPage": {
-      "subtitleConfig": "Form Cấu hình and submissions"
+      "subtitleConfig": "Form Cấu hình and submissions",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "Amount",
@@ -957,20 +1015,33 @@
       "restore": "Khôi phục",
       "restoreFormAria": "Khôi phục biểu mẫu {name}",
       "subtitleManage": "Tạo mới and manage custom forms",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "Form Members",
       "formSub": "Form Submissions",
       "questions": "Questions",
       "unAuth": "Unauthorized"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "Tỷ lệ khung hình",
     "confirmDelete": "Xác nhận xóa",
     "freeForm": "Tự do",
-    "uploadError": "Xử lý hình ảnh đã hoàn tất, nhưng tải lên thất bại. API có thể không khả dụng trong môi trường này."
+    "uploadError": "Xử lý hình ảnh đã hoàn tất, nhưng tải lên thất bại. API có thể không khả dụng trong môi trường này.",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "In Nametag",
       "team": "Team",
       "textTooltip": "Nhắn tin cho nhóm này",
-      "trackAttendance": "Theo dõi Tham dự"
+      "trackAttendance": "Theo dõi Tham dự",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "Thêm sự kiện",
@@ -1079,7 +1152,9 @@
       "publicRoster": "Hiển thị danh sách trên trang web",
       "slug": "Slug (key Tên used for urls)",
       "volunteerRatio": "Số trẻ em trên mỗi tình nguyện viên",
-      "years": "Năm"
+      "years": "Năm",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "Điểm danh",
@@ -1153,7 +1228,9 @@
       "session": "Session",
       "sessions": "Sessions",
       "tryAdjusting": "Try adjusting your Tìm kiếm",
-      "upcoming": "sắp tới"
+      "upcoming": "sắp tới",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "Thêm Nhóm",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "Get started by creating your first Nhóm",
         "manage": "Organize and manage your church Các nhóm"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "Available Nhóm Members",
@@ -1517,7 +1595,8 @@
       "houseName": "Household Tên",
       "householdNameAria": "Tên hộ gia đình",
       "other": "Other",
-      "spouse": "Spouse"
+      "spouse": "Spouse",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Làm mới hàng đêm",
@@ -1544,7 +1623,8 @@
       "title": "Danh sách đã lưu"
     },
     "merge": {
-      "merge": "merge"
+      "merge": "merge",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "Hủy",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "Cập nhật Địa chỉ"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "Thêm additional Chi tiết...",
       "questionPlaceholder": "Enter your answer...",
       "questionTitle": "Your question here",
-      "thankYouMessage": "Thank you for submitting the form!"
+      "thankYouMessage": "Thank you for submitting the form!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "General Fund"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "Thêm any notes Về this task...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "Không actions available",
       "noContent": "Không có nội dung",
       "selectAction": "Select Action",
-      "selectExternalItem": "Select External Item"
+      "selectExternalItem": "Select External Item",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "Thêm Position",
@@ -2055,7 +2153,13 @@
       "externalItem": "External Item",
       "item": "Item",
       "restoreOriginal": "Restore Original",
-      "song": "Song"
+      "song": "Song",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "Xác nhận Xóa",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "Tên mục kế hoạch",
       "position": "Position",
       "searchBoxAria": "searchBox",
-      "seconds": "Seconds"
+      "seconds": "Seconds",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "Xóa",
       "startDate": "Ngày bắt đầu",
       "subtitle": "Vị trí theo ngày với tình nguyện viên được phân công",
-      "title": "Tổng quan phục vụ"
+      "title": "Tổng quan phục vụ",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "Hiển thị tất cả",
@@ -2358,7 +2466,9 @@
       "label": "Label",
       "lastActiveDate": "Last Hoạt động Ngày",
       "registrationDate": "Registration Ngày",
-      "title": "Devices"
+      "title": "Devices",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "Link",
@@ -2440,7 +2550,8 @@
       "startDate": "Ngày bắt đầu",
       "type": "Loại",
       "usesSoFar": "Đã sử dụng: {count}",
-      "value": "Giá trị"
+      "value": "Giá trị",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "Thêm người tham dự",
@@ -2462,7 +2573,8 @@
       "subtitle": "Quản lý đăng ký cho sự kiện này",
       "unansweredOnly": "Chỉ các câu hỏi chưa trả lời",
       "unknown": "Không xác định",
-      "viewAnswers": "Xem câu trả lời"
+      "viewAnswers": "Xem câu trả lời",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "Sức chứa",
@@ -2477,7 +2589,8 @@
       "saveSettings": "Lưu cài đặt",
       "tags": "Thẻ",
       "tagsHelper": "Thẻ phân cách bằng dấu phẩy để lọc",
-      "tagsPlaceholder": "youth, retreat, vbs"
+      "tagsPlaceholder": "youth, retreat, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Ngày",
@@ -2489,7 +2602,8 @@
       "registrations": "Đăng ký",
       "subtitle": "Quản lý cài đặt đăng ký sự kiện và xem người đăng ký",
       "tags": "Thẻ",
-      "title": "Đăng ký sự kiện"
+      "title": "Đăng ký sự kiện",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube Channel ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Đây không phải là URL kênh của bạn",
-      "youtubeId": "YouTube ID"
+      "youtubeId": "YouTube ID",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "Manage your sermon library and live streams",
-    "title": "Sermons"
+    "title": "Sermons",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "Chọn cách điểm danh phản hồi khi một phòng vượt quá tỷ lệ tình nguyện viên trên trẻ em hoặc dưới mức tình nguyện viên tối thiểu.",
       "ratioEnforcement": "Áp dụng tỷ lệ tình nguyện viên",
       "title": "Đăng ký (Check-In)",
-      "warn": "Cảnh báo (cho phép với xác nhận)"
+      "warn": "Cảnh báo (cho phép với xác nhận)",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "Địa chỉ Line 1",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "Stripe Bảng điều khiển",
       "transFee": "Transaction Fee",
       "webhookKeyHelper": "Bí mật ký webhook từ bảng điều khiển Kingdom Funding. Bắt buộc để cập nhật trạng thái giao dịch.",
-      "webhookUrlCopied": "Đã sao chép URL webhook vào bộ nhớ tạm"
+      "webhookUrlCopied": "Đã sao chép URL webhook vào bộ nhớ tạm",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "Ngày",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "Thêm Tab",
       "subtitle": "Configure mobile app Cài đặt",
-      "title": "Mobile App Cài đặt"
+      "title": "Mobile App Cài đặt",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "Quyền {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "Chỉnh sửa Role:"
     },
     "rolePermissions": {
-      "permEdit": "Chỉnh sửa Permissions"
+      "permEdit": "Chỉnh sửa Permissions",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "Accounting",
@@ -3449,6 +3577,17 @@
       "status": "Trạng thái",
       "title": "Webhook",
       "url": "URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "Below is a Xem trước of a sample site with your colors, fonts and logos. This is not your actual site content.",
-      "title": "Site Styles"
+      "title": "Site Styles",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "Loại khối",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "Switch to Desktop Xem",
       "switchToMobile": "Switch to Mobile Xem",
       "undoTip": "Hoàn tác (Ctrl+Z)",
-      "viewHistory": "Xem lịch sử"
+      "viewHistory": "Xem lịch sử",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "Thêm Elements",
@@ -3889,7 +4033,9 @@
       "name": "Tên",
       "noFilesYet": "Không files uploaded yet",
       "size": "Kích thước",
-      "storage": "Bộ nhớ:"
+      "storage": "Bộ nhớ:",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "Manage files and media for your website",
@@ -4061,7 +4207,8 @@
       "pageSettings": "Page Cài đặt",
       "previewOf": "Xem trước {title}",
       "subtitle": "Previewing: {title}",
-      "title": "Website Xem trước"
+      "title": "Website Xem trước",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "Convert"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "Hệ số nhân cho mỗi mức tiêu đề (mặc định: 1.25)",
       "smallText": "Văn bản nhỏ - {size}: Văn bản hỗ trợ và chú thích",
       "typographyScale": "Tỷ lệ kiểu chữ"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "Manually enter lyrics or Nhập from PraiseCharts",
       "lyrics": "Lyrics",
       "name": "Arrangement Tên",
-      "title": "Arrangement"
+      "title": "Arrangement",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "Bạn có chắc muốn xóa tệp âm thanh này không?",
@@ -4613,9 +4768,14 @@
       "search": "Tìm kiếm",
       "searchSongs": "Tìm kiếm bài hát",
       "songs": "Songs",
-      "subtitle": "Manage your music library"
+      "subtitle": "Manage your music library",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "Songs"
+    "title": "Songs",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "Ảnh bởi",

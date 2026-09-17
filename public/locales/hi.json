@@ -32,12 +32,15 @@
       "subtitle": "सेवाओं और समूहों के लिए उपस्थिति ट्रैक करें",
       "time": "समय",
       "totalGroups": "कुल समूह",
-      "unscheduled": "अनिर्धारित"
+      "unscheduled": "अनिर्धारित",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "कैंपस प्रबंधित करें",
       "setupMessage": "उपस्थिति को ट्रैक करना शुरू करने के लिए परिसर, सेवाएं और सेवा का समय निर्धारित करें।",
-      "unassigned": "अनिर्दिष्ट"
+      "unassigned": "अनिर्दिष्ट",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "अतिथि",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "उपस्थिति रुझान",
       "groupAtt": "समूह उपस्थिति",
-      "setup": "सेटअप"
+      "setup": "सेटअप",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "यह एक आवर्ती घटना है। इसे हटाने से पूरी श्रृंखला और इसकी सभी घटनाएं हट जाएंगी। क्या आप सुनिश्चित हैं?",
       "delete": "हटाएं",
       "manageRegistrations": "पंजीकरण प्रबंधित करें",
-      "noGroups": "कोई समूह नहीं मिला।"
+      "noGroups": "कोई समूह नहीं मिला।",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "कैलेंडर आपको अपने चर्च के लिए कार्यक्रम आयोजित करने और प्रदर्शित करने की अनुमति देते हैं।",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "चर्च का स्थानीय समय (उदा. सुबह 9:00)",
       "title": "रिमाइंडर",
       "when": "कब (3 तक)",
-      "who": "कौन"
+      "who": "कौन",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": ".ics फ़ाइल चुनें",
@@ -398,7 +429,8 @@
     "tryAgain": "पुनः प्रयास करें",
     "update": "अपडेट करें",
     "website": "वेबसाइट",
-    "yes": "हाँ"
+    "yes": "हाँ",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "कृपया पहुँच का अनुरोध करने के लिए अपने चर्च व्यवस्थापक से संपर्क करें।",
-      "defaultMessage": "इस सुविधा तक पहुँचने के लिए आपके पास आवश्यक अनुमति नहीं है:"
+      "defaultMessage": "इस सुविधा तक पहुँचने के लिए आपके पास आवश्यक अनुमति नहीं है:",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "व्यक्ति खोजें",
@@ -632,12 +665,15 @@
       "totalDonations": "कुल दान:",
       "totalDonors": "कुल दाता:",
       "year": "वर्ष",
-      "zipInfo": "यह प्रत्येक दाता के लिए एक, {count} व्यक्तिगत CSV फाइलों वाली एक ZIP फाइल डाउनलोड करेगा।"
+      "zipInfo": "यह प्रत्येक दाता के लिए एक, {count} व्यक्तिगत CSV फाइलों वाली एक ZIP फाइल डाउनलोड करेगा।",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "दान जोड़ें",
       "pressEnter": "सहेजने और एक और दान जोड़ने के लिए Enter दबाएं",
-      "selectPerson": "व्यक्ति या गुमनाम चुनें"
+      "selectPerson": "व्यक्ति या गुमनाम चुनें",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "दाताओं को प्रतिज्ञा करने की अनुमति दें",
@@ -710,7 +746,11 @@
       "fund": "फंड",
       "inKind": "वस्तु रूप में",
       "lastDig": "अंतिम 4 अंक",
-      "method": "तरीका"
+      "method": "तरीका",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "घटना: ",
@@ -737,7 +777,10 @@
       "pending": "लंबित",
       "statements": "दान विवरण",
       "summary": "सारांश",
-      "total": "कुल"
+      "total": "कुल",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "तारीख",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "सार्वजनिक",
       "restrict": "प्रतिबंधित",
       "startReqMsg": "प्रारंभ तिथि आवश्यक है।",
-      "thankYouMessage": "धन्यवाद संदेश"
+      "thankYouMessage": "धन्यवाद संदेश",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "कार्रवाई",
@@ -907,7 +963,9 @@
       "view": "केवल देखें"
     },
     "formPage": {
-      "subtitleConfig": "फॉर्म कॉन्फ़िगरेशन और सबमिशन"
+      "subtitleConfig": "फॉर्म कॉन्फ़िगरेशन और सबमिशन",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "राशि",
@@ -957,20 +1015,33 @@
       "restore": "पुनर्स्थापित करें",
       "restoreFormAria": "फॉर्म {name} पुनर्स्थापित करें",
       "subtitleManage": "कस्टम फॉर्म बनाएं और प्रबंधित करें",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "प्रपत्र सदस्य",
       "formSub": "प्रपत्र प्रस्तुति",
       "questions": "प्रश्न",
       "unAuth": "अनधिकृत"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "पक्षानुपात",
     "confirmDelete": "हटाने की पुष्टि करें",
     "freeForm": "मुक्त रूप",
-    "uploadError": "छवि प्रसंस्करण पूर्ण हो गया, लेकिन अपलोड विफल रहा। API इस परिवेश में उपलब्ध नहीं हो सकता है।"
+    "uploadError": "छवि प्रसंस्करण पूर्ण हो गया, लेकिन अपलोड विफल रहा। API इस परिवेश में उपलब्ध नहीं हो सकता है।",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "नाम टैग प्रिंट करें",
       "team": "टीम",
       "textTooltip": "इस समूह को टेक्स्ट भेजें",
-      "trackAttendance": "उपस्थिति ट्रैक करें"
+      "trackAttendance": "उपस्थिति ट्रैक करें",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "कार्यक्रम जोड़ें",
@@ -1079,7 +1152,9 @@
       "publicRoster": "वेबसाइट पर रोस्टर दिखाएं",
       "slug": "स्लग (URL के लिए उपयोग किया जाने वाला मुख्य नाम)",
       "volunteerRatio": "प्रति स्वयंसेवक बच्चे",
-      "years": "साल"
+      "years": "साल",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "उपस्थिति",
@@ -1153,7 +1228,9 @@
       "session": "सत्र",
       "sessions": "सत्र",
       "tryAdjusting": "अपनी खोज को समायोजित करने का प्रयास करें",
-      "upcoming": "आगामी"
+      "upcoming": "आगामी",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "समूह जोड़ें",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "अपना पहला समूह बनाकर आरंभ करें",
         "manage": "अपने चर्च समूहों को व्यवस्थित और प्रबंधित करें"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "उपलब्ध समूह सदस्य",
@@ -1517,7 +1595,8 @@
       "houseName": "पारिवारिक नाम",
       "householdNameAria": "घर का नाम",
       "other": "अन्य",
-      "spouse": "जीवनसाथी"
+      "spouse": "जीवनसाथी",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "रात में ताज़ा करें",
@@ -1544,7 +1623,8 @@
       "title": "सहेजी गई सूचियां"
     },
     "merge": {
-      "merge": "मर्ज करें"
+      "merge": "मर्ज करें",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "रद्द करें",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "पता अपडेट करें"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "हमारे कार्यक्रमों की योजना में मदद करें",
       "questionPlaceholder": "अपना उत्तर यहां दर्ज करें",
       "questionTitle": "आपका पसंदीदा भोजन क्या है?",
-      "thankYouMessage": "आपके जवाब के लिए धन्यवाद!"
+      "thankYouMessage": "आपके जवाब के लिए धन्यवाद!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "सामान्य कोष"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "यहाँ गीत दर्ज करें...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "इस कार्य के बारे में कोई भी नोट जोड़ें...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "कोई कार्रवाई उपलब्ध नहीं",
       "noContent": "कोई सामग्री उपलब्ध नहीं",
       "selectAction": "क्रिया चुनें",
-      "selectExternalItem": "बाहरी आइटम चुनें"
+      "selectExternalItem": "बाहरी आइटम चुनें",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "स्थिति जोड़ें",
@@ -2055,7 +2153,13 @@
       "externalItem": "बाहरी आइटम",
       "item": "वस्तु",
       "restoreOriginal": "Restore Original",
-      "song": "गाना"
+      "song": "गाना",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "हटाने की पुष्टि करें",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "योजना आइटम का नाम",
       "position": "Position",
       "searchBoxAria": "खोज बॉक्स",
-      "seconds": "सेकंड"
+      "seconds": "सेकंड",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "हटाएं",
       "startDate": "प्रारंभ तिथि",
       "subtitle": "नियुक्त स्वयंसेवकों के साथ तिथि के अनुसार स्थिति",
-      "title": "सेवा अवलोकन"
+      "title": "सेवा अवलोकन",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "सभी दिखाएँ",
@@ -2358,7 +2466,9 @@
       "label": "लेबल",
       "lastActiveDate": "अंतिम सक्रिय तिथि",
       "registrationDate": "पंजीकरण की तारीख",
-      "title": "डिवाइस"
+      "title": "डिवाइस",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "लिंक",
@@ -2440,7 +2550,8 @@
       "startDate": "प्रारंभ तिथि",
       "type": "प्रकार",
       "usesSoFar": "उपयोग: {count}",
-      "value": "मूल्य"
+      "value": "मूल्य",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "उपस्थित जोड़ें",
@@ -2462,7 +2573,8 @@
       "subtitle": "इस ईवेंट के लिए पंजीकरण प्रबंधित करें",
       "unansweredOnly": "केवल अनुत्तरित प्रश्न",
       "unknown": "अज्ञात",
-      "viewAnswers": "उत्तर देखें"
+      "viewAnswers": "उत्तर देखें",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "क्षमता",
@@ -2477,7 +2589,8 @@
       "saveSettings": "सेटिंग्स सहेजें",
       "tags": "टैग",
       "tagsHelper": "फ़िल्टरिंग के लिए अल्पविराम से अलग किए गए टैग",
-      "tagsPlaceholder": "युवा, रिट्रीट, vbs"
+      "tagsPlaceholder": "युवा, रिट्रीट, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "तिथि",
@@ -2489,7 +2602,8 @@
       "registrations": "पंजीकरण",
       "subtitle": "ईवेंट पंजीकरण सेटिंग्स प्रबंधित करें और पंजीकर्ताओं को देखें",
       "tags": "टैग",
-      "title": "ईवेंट पंजीकरण"
+      "title": "ईवेंट पंजीकरण",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube चैनल ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - यह आपका चैनल URL नहीं है",
-      "youtubeId": "YouTube ID"
+      "youtubeId": "YouTube ID",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "अपने उपदेश पुस्तकालय और लाइव स्ट्रीम प्रबंधित करें",
-    "title": "उपदेश"
+    "title": "उपदेश",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "चुनें कि चेक-इन कैसे प्रतिक्रिया करता है जब एक कमरा अपने स्वयंसेवक-से-बालक अनुपात से अधिक हो या अपने न्यूनतम स्वयंसेवकों से कम हो।",
       "ratioEnforcement": "स्वयंसेवक अनुपात प्रवर्तन",
       "title": "चेक-इन",
-      "warn": "चेतावनी दें (पुष्टिकरण के साथ अनुमति दें)"
+      "warn": "चेतावनी दें (पुष्टिकरण के साथ अनुमति दें)",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "पता पंक्ति 1",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "Stripe डैशबोर्ड",
       "transFee": "लेनदेन शुल्क",
       "webhookKeyHelper": "Kingdom Funding कंट्रोल पैनल से वेबहुक साइनिंग सीक्रेट। लेनदेन स्थिति अपडेट के लिए आवश्यक।",
-      "webhookUrlCopied": "वेबहुक URL क्लिपबोर्ड पर कॉपी हो गया"
+      "webhookUrlCopied": "वेबहुक URL क्लिपबोर्ड पर कॉपी हो गया",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "दिन",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "टैब जोड़ें",
       "subtitle": "मोबाइल ऐप सेटिंग कॉन्फ़िगर करें",
-      "title": "मोबाइल ऐप सेटिंग्स"
+      "title": "मोबाइल ऐप सेटिंग्स",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "अनुमति {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "भूमिका संपादित करें:"
     },
     "rolePermissions": {
-      "permEdit": "अनुमतियाँ संपादित करें"
+      "permEdit": "अनुमतियाँ संपादित करें",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "लेखांकन",
@@ -3449,6 +3577,17 @@
       "status": "स्थिति",
       "title": "वेबहुक",
       "url": "URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "नीचे आपके रंगों, फ़ॉन्ट्स और लोगो के साथ एक नमूना साइट का पूर्वावलोकन है। यह आपकी वास्तविक साइट सामग्री नहीं है।",
-      "title": "साइट शैलियाँ"
+      "title": "साइट शैलियाँ",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "ब्लॉक प्रकार",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "डेस्कटॉप दृश्य पर स्विच करें",
       "switchToMobile": "मोबाइल व्यू पर स्विच करें",
       "undoTip": "पूर्ववत करें (Ctrl+Z)",
-      "viewHistory": "इतिहास देखें"
+      "viewHistory": "इतिहास देखें",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "तत्व जोड़ें",
@@ -3889,7 +4033,9 @@
       "name": "नाम",
       "noFilesYet": "अभी तक कोई फ़ाइल अपलोड नहीं की गई",
       "size": "आकार",
-      "storage": "संग्रहण:"
+      "storage": "संग्रहण:",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "अपनी वेबसाइट के लिए फ़ाइलें और मीडिया प्रबंधित करें",
@@ -4061,7 +4207,8 @@
       "pageSettings": "पेज सेटिंग्स",
       "previewOf": "{title} का पूर्वावलोकन",
       "subtitle": "पूर्वावलोकन: {title}",
-      "title": "वेबसाइट पूर्वावलोकन"
+      "title": "वेबसाइट पूर्वावलोकन",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "कनवर्ट करें"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "प्रत्येक शीर्षक स्तर के लिए गुणक (डिफ़ॉल्ट: 1.25)",
       "smallText": "छोटा टेक्स्ट - {size}: सहायक टेक्स्ट और कैप्शन",
       "typographyScale": "टाइपोग्राफी स्केल"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "मैन्युअल रूप से गीत दर्ज करें या PraiseCharts से आयात करें",
       "lyrics": "गीत",
       "name": "व्यवस्था का नाम",
-      "title": "व्यवस्था"
+      "title": "व्यवस्था",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "क्या आप वाकई इस ऑडियो फ़ाइल को हटाना चाहते हैं?",
@@ -4613,9 +4768,14 @@
       "search": "खोजें",
       "searchSongs": "गीत खोजें",
       "songs": "गीत",
-      "subtitle": "अपनी संगीत लाइब्रेरी प्रबंधित करें"
+      "subtitle": "अपनी संगीत लाइब्रेरी प्रबंधित करें",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "गीत"
+    "title": "गीत",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "फ़ोटो द्वारा",

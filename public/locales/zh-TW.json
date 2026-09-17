@@ -32,12 +32,15 @@
       "subtitle": "跟蹤服務和團體的出席情況",
       "time": "時間",
       "totalGroups": "總組數",
-      "unscheduled": "計劃外"
+      "unscheduled": "計劃外",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "管理堂區",
       "setupMessage": "設定校園、服務和服務時間以開始跟蹤出勤情況。",
-      "unassigned": "未分配"
+      "unassigned": "未分配",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "訪客",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "出席趨勢",
       "groupAtt": "團體出席",
-      "setup": "設定"
+      "setup": "設定",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "這是一個週期性活動。刪除後將移除整個系列及其所有場次，您確定要繼續嗎？",
       "delete": "刪除",
       "manageRegistrations": "管理報名",
-      "noGroups": "未找到組。"
+      "noGroups": "未找到組。",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "日曆允許您組織和顯示教堂的活動。",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "教會當地時間（例如上午9:00）",
       "title": "提醒",
       "when": "時間（最多3個）",
-      "who": "物件"
+      "who": "物件",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": "選擇 .ics 檔案",
@@ -398,7 +429,8 @@
     "tryAgain": "重試",
     "update": "更新",
     "website": "網站",
-    "yes": "是"
+    "yes": "是",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "請聯絡您的教會管理員請求存取權限。",
-      "defaultMessage": "您沒有存取此功能所需的權限："
+      "defaultMessage": "您沒有存取此功能所需的權限：",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "搜尋人員",
@@ -632,12 +665,15 @@
       "totalDonations": "總捐贈數：",
       "totalDonors": "總捐贈者數：",
       "year": "年份",
-      "zipInfo": "這將下載一個包含{count}個單獨CSV檔案的ZIP檔案，每個捐贈者一個。"
+      "zipInfo": "這將下載一個包含{count}個單獨CSV檔案的ZIP檔案，每個捐贈者一個。",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "新增捐款",
       "pressEnter": "按 Enter 鍵儲存並新增另一筆捐款",
-      "selectPerson": "選擇人員或匿名"
+      "selectPerson": "選擇人員或匿名",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "允許捐款人承諾",
@@ -710,7 +746,11 @@
       "fund": "基金",
       "inKind": "實物捐贈",
       "lastDig": "最後 4 位數字",
-      "method": "方法"
+      "method": "方法",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "事件： ",
@@ -737,7 +777,10 @@
       "pending": "待處理",
       "statements": "捐贈報表",
       "summary": "摘要",
-      "total": "總計"
+      "total": "總計",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "日期",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "公開",
       "restrict": "受限",
       "startReqMsg": "開始日期為必填項。",
-      "thankYouMessage": "感謝訊息"
+      "thankYouMessage": "感謝訊息",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "操作",
@@ -907,7 +963,9 @@
       "view": "僅檢視"
     },
     "formPage": {
-      "subtitleConfig": "表單配置和提交"
+      "subtitleConfig": "表單配置和提交",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "金額",
@@ -957,20 +1015,33 @@
       "restore": "恢復",
       "restoreFormAria": "恢復表單 {name}",
       "subtitleManage": "建立和管理自訂表單",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "表單成員",
       "formSub": "表單提交",
       "questions": "問題",
       "unAuth": "未授權"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "寬高比",
     "confirmDelete": "確認刪除",
     "freeForm": "自由形式",
-    "uploadError": "影像處理已完成，但上傳失敗。此環境可能無法使用該 API。"
+    "uploadError": "影像處理已完成，但上傳失敗。此環境可能無法使用該 API。",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "列印名牌",
       "team": "團隊",
       "textTooltip": "向此小組傳送簡訊",
-      "trackAttendance": "追蹤出席"
+      "trackAttendance": "追蹤出席",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "新增活動",
@@ -1079,7 +1152,9 @@
       "publicRoster": "在網站上顯示名單",
       "slug": "簡稱（用於URL的鍵名）",
       "volunteerRatio": "每位志工照顧兒童數",
-      "years": "歲"
+      "years": "歲",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "出勤",
@@ -1153,7 +1228,9 @@
       "session": "會議",
       "sessions": "會話",
       "tryAdjusting": "嘗試調整您的搜尋",
-      "upcoming": "即將到來"
+      "upcoming": "即將到來",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "新增組",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "首先建立您的第一個組",
         "manage": "組織和管理您的教會團體"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "可用的群組成員",
@@ -1517,7 +1595,8 @@
       "houseName": "家庭名稱",
       "householdNameAria": "家庭名稱",
       "other": "其他",
-      "spouse": "配偶"
+      "spouse": "配偶",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "每晚重新整理",
@@ -1544,7 +1623,8 @@
       "title": "已儲存的列表"
     },
     "merge": {
-      "merge": "合併"
+      "merge": "合併",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "取消",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "更新地址"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "幫助我們規劃活動",
       "questionPlaceholder": "在此輸入您的答案",
       "questionTitle": "你最喜歡的食物是什麼?",
-      "thankYouMessage": "感謝您的提交!"
+      "thankYouMessage": "感謝您的提交!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "一般基金"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "Add any notes about this task...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "沒有可用操作",
       "noContent": "無可用內容",
       "selectAction": "選擇操作",
-      "selectExternalItem": "選擇外部專案"
+      "selectExternalItem": "選擇外部專案",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "新增職位",
@@ -2055,7 +2153,13 @@
       "externalItem": "外部專案",
       "item": "物品",
       "restoreOriginal": "Restore Original",
-      "song": "歌曲"
+      "song": "歌曲",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "確認刪除",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "計劃專案名稱",
       "position": "Position",
       "searchBoxAria": "searchBox",
-      "seconds": "秒"
+      "seconds": "秒",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "移除",
       "startDate": "開始日期",
       "subtitle": "按日期顯示已分配志願者的職位",
-      "title": "服事概覽"
+      "title": "服事概覽",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "顯示全部",
@@ -2358,7 +2466,9 @@
       "label": "標籤",
       "lastActiveDate": "最後活躍日期",
       "registrationDate": "報名日期",
-      "title": "裝置"
+      "title": "裝置",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "連結",
@@ -2440,7 +2550,8 @@
       "startDate": "開始日期",
       "type": "類型",
       "usesSoFar": "已使用次數：{count}",
-      "value": "數值"
+      "value": "數值",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "新增參與者",
@@ -2462,7 +2573,8 @@
       "subtitle": "管理此活動的報名",
       "unansweredOnly": "僅未回答的問題",
       "unknown": "未知",
-      "viewAnswers": "檢視答案"
+      "viewAnswers": "檢視答案",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "容量",
@@ -2477,7 +2589,8 @@
       "saveSettings": "儲存設定",
       "tags": "標籤",
       "tagsHelper": "用於篩選的逗號分隔標籤",
-      "tagsPlaceholder": "youth, retreat, vbs"
+      "tagsPlaceholder": "youth, retreat, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "日期",
@@ -2489,7 +2602,8 @@
       "registrations": "報名",
       "subtitle": "管理活動報名設定並檢視報名者",
       "tags": "標籤",
-      "title": "活動報名"
+      "title": "活動報名",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube 頻道 ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - 這不是您的頻道 URL",
-      "youtubeId": "YouTube ID"
+      "youtubeId": "YouTube ID",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "管理您的講道庫和直播",
-    "title": "講道"
+    "title": "講道",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "選擇當房間超過志工對兒童比例上限或低於最少志工人數時，報到系統應如何處理。",
       "ratioEnforcement": "志工比例限制",
       "title": "報到",
-      "warn": "警告（可確認後允許）"
+      "warn": "警告（可確認後允許）",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "地址第1行",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "Stripe儀表板",
       "transFee": "交易費",
       "webhookKeyHelper": "來自 Kingdom Funding 控制面板的 Webhook 簽名金鑰。交易狀態更新所必需。",
-      "webhookUrlCopied": "Webhook URL 已複製到剪貼簿"
+      "webhookUrlCopied": "Webhook URL 已複製到剪貼簿",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "日",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "新增選項卡",
       "subtitle": "配置行動應用程式設定",
-      "title": "行動應用程式設定"
+      "title": "行動應用程式設定",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "權限 {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "編輯角色："
     },
     "rolePermissions": {
-      "permEdit": "編輯權限"
+      "permEdit": "編輯權限",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "會計",
@@ -3449,6 +3577,17 @@
       "status": "狀態",
       "title": "Webhook",
       "url": "URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "以下是使用您的顏色、字型和徽標的示例網站預覽。這不是您網站的實際內容。",
-      "title": "網站樣式"
+      "title": "網站樣式",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "區塊型別",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "切換到桌面檢視",
       "switchToMobile": "切換到行動檢視",
       "undoTip": "撤銷 (Ctrl+Z)",
-      "viewHistory": "檢視歷史"
+      "viewHistory": "檢視歷史",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "新增元素",
@@ -3889,7 +4033,9 @@
       "name": "名稱",
       "noFilesYet": "尚未上傳檔案",
       "size": "大小",
-      "storage": "儲存："
+      "storage": "儲存：",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "管理網站的檔案和媒體",
@@ -4061,7 +4207,8 @@
       "pageSettings": "頁面設定",
       "previewOf": "{title} 的預覽",
       "subtitle": "預覽：{title}",
-      "title": "網站預覽"
+      "title": "網站預覽",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "轉換"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "每個標題級別的乘數（預設：1.25）",
       "smallText": "小文本 - {size}：輔助文字和標題說明",
       "typographyScale": "排版比例"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "手動輸入歌詞或從 PraiseCharts 匯入",
       "lyrics": "歌詞",
       "name": "編曲名稱",
-      "title": "編曲"
+      "title": "編曲",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "確定要刪除此音訊檔案嗎？",
@@ -4613,9 +4768,14 @@
       "search": "搜尋",
       "searchSongs": "搜尋歌曲",
       "songs": "歌曲",
-      "subtitle": "管理您的音樂庫"
+      "subtitle": "管理您的音樂庫",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "歌曲"
+    "title": "歌曲",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "攝影：",

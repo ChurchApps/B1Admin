@@ -32,12 +32,15 @@
       "subtitle": "Spor oppmøte for tjenester og grupper",
       "time": "Tid",
       "totalGroups": "Totale grupper",
-      "unscheduled": "Uplanlagt"
+      "unscheduled": "Uplanlagt",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "Administrer campuser",
       "setupMessage": "Sett opp campuser, tjenester og tjenestetider for å begynne å spore oppmøte.",
-      "unassigned": "Ikke tildelt"
+      "unassigned": "Ikke tildelt",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "Gjest",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "Oppmøtetrend",
       "groupAtt": "Gruppens oppmøte",
-      "setup": "Oppsett"
+      "setup": "Oppsett",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "Dette er et gjentakende arrangement. Hvis du sletter det, fjernes hele serien og alle forekomstene. Er du sikker?",
       "delete": "Slett",
       "manageRegistrations": "Administrer påmeldinger",
-      "noGroups": "Ingen grupper funnet."
+      "noGroups": "Ingen grupper funnet.",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendere lar deg organisere og vise arrangementer for kirken din.",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "Kirkens lokale tid (f.eks. 09:00)",
       "title": "Påminnelser",
       "when": "Når (opptil 3)",
-      "who": "Hvem"
+      "who": "Hvem",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": "Velg .ics-fil",
@@ -398,7 +429,8 @@
     "tryAgain": "Prøv igjen",
     "update": "Oppdater",
     "website": "Nettsted",
-    "yes": "Ja"
+    "yes": "Ja",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Vennligst kontakt menighetsadministratoren for å be om tilgang.",
-      "defaultMessage": "Du har ikke nødvendige tillatelser for å bruke denne funksjonen:"
+      "defaultMessage": "Du har ikke nødvendige tillatelser for å bruke denne funksjonen:",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Søk etter person",
@@ -632,12 +665,15 @@
       "totalDonations": "Totale donasjoner:",
       "totalDonors": "Totalt antall givere:",
       "year": "År",
-      "zipInfo": "Dette vil laste ned en ZIP-fil som inneholder {count} individuelle CSV-filer, en for hver giver."
+      "zipInfo": "Dette vil laste ned en ZIP-fil som inneholder {count} individuelle CSV-filer, en for hver giver.",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "Legg til donasjon",
       "pressEnter": "Trykk Enter for å lagre og legge til en annen donasjon",
-      "selectPerson": "Velg person eller anonym"
+      "selectPerson": "Velg person eller anonym",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "La givere gi løfter",
@@ -710,7 +746,11 @@
       "fund": "Fond",
       "inKind": "Naturalytelse",
       "lastDig": "Siste 4 sifre",
-      "method": "Metode"
+      "method": "Metode",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Hendelse: ",
@@ -737,7 +777,10 @@
       "pending": "Venter",
       "statements": "Giveoppgaver",
       "summary": "Sammendrag",
-      "total": "Totalt"
+      "total": "Totalt",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "Dato",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "Offentlig",
       "restrict": "Begrenset",
       "startReqMsg": "Startdato er påkrevd.",
-      "thankYouMessage": "Takkmelding"
+      "thankYouMessage": "Takkmelding",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "Handling",
@@ -907,7 +963,9 @@
       "view": "Kun visning"
     },
     "formPage": {
-      "subtitleConfig": "Skjemakonfigurasjon og innsendinger"
+      "subtitleConfig": "Skjemakonfigurasjon og innsendinger",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "Beløp",
@@ -957,20 +1015,33 @@
       "restore": "Gjenopprett",
       "restoreFormAria": "Gjenopprett skjema {name}",
       "subtitleManage": "Opprett og administrer tilpassede skjemaer",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "Skjemamedlemmer",
       "formSub": "Skjemainnsendelser",
       "questions": "Spørsmål",
       "unAuth": "Uautorisert"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "Størrelsesforhold",
     "confirmDelete": "Bekreft sletting",
     "freeForm": "Friform",
-    "uploadError": "Bildebehandlingen ble fullført, men opplastingen mislyktes. API-et er kanskje ikke tilgjengelig i dette miljøet."
+    "uploadError": "Bildebehandlingen ble fullført, men opplastingen mislyktes. API-et er kanskje ikke tilgjengelig i dette miljøet.",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "Skriv ut navnelapp",
       "team": "Team",
       "textTooltip": "Send melding til denne gruppen",
-      "trackAttendance": "Spor oppmøte"
+      "trackAttendance": "Spor oppmøte",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "Legg til arrangementer",
@@ -1079,7 +1152,9 @@
       "publicRoster": "Vis medlemsliste på nettsted",
       "slug": "Slug (nøkkelnavn brukt for url-er)",
       "volunteerRatio": "Barn per frivillig",
-      "years": "År"
+      "years": "År",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "Oppmøte",
@@ -1153,7 +1228,9 @@
       "session": "Sesjon",
       "sessions": "Økter",
       "tryAdjusting": "Prøv å justere søket",
-      "upcoming": "kommende"
+      "upcoming": "kommende",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "Legg til gruppe",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "Kom i gang ved å opprette din første gruppe",
         "manage": "Organiser og administrer kirkegruppene dine"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "Tilgjengelige gruppemedlemmer",
@@ -1517,7 +1595,8 @@
       "houseName": "Husholdningsnavn",
       "householdNameAria": "Husholdningsnavn",
       "other": "Annet",
-      "spouse": "Ektefelle"
+      "spouse": "Ektefelle",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Oppdater nattlig",
@@ -1544,7 +1623,8 @@
       "title": "Lagrede lister"
     },
     "merge": {
-      "merge": "slå sammen"
+      "merge": "slå sammen",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "Avbryt",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "Oppdater adresse"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "Hjelp oss med å planlegge arrangementene våre",
       "questionPlaceholder": "Skriv inn svaret ditt her",
       "questionTitle": "Hva er din favorittmat?",
-      "thankYouMessage": "Takk for innsendingen!"
+      "thankYouMessage": "Takk for innsendingen!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "Generelt Fond"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "Add any notes about this task...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "Ingen handlinger tilgjengelig",
       "noContent": "Ingen innhold tilgjengelig",
       "selectAction": "Velg handling",
-      "selectExternalItem": "Velg eksternt element"
+      "selectExternalItem": "Velg eksternt element",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "Legg til posisjon",
@@ -2055,7 +2153,13 @@
       "externalItem": "Eksternt element",
       "item": "Punkt",
       "restoreOriginal": "Restore Original",
-      "song": "Sang"
+      "song": "Sang",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "Bekreft sletting",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "Navn på planelement",
       "position": "Position",
       "searchBoxAria": "searchBox",
-      "seconds": "Sekunder"
+      "seconds": "Sekunder",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "Fjern",
       "startDate": "Startdato",
       "subtitle": "Posisjoner etter dato med tildelte frivillige",
-      "title": "Tjenesteoversikt"
+      "title": "Tjenesteoversikt",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "Vis alle",
@@ -2358,7 +2466,9 @@
       "label": "Etikett",
       "lastActiveDate": "Siste aktive dato",
       "registrationDate": "Registreringsdato",
-      "title": "Enheter"
+      "title": "Enheter",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "Lenke",
@@ -2440,7 +2550,8 @@
       "startDate": "Startdato",
       "type": "Type",
       "usesSoFar": "Brukt: {count}",
-      "value": "Verdi"
+      "value": "Verdi",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "Legg til deltaker",
@@ -2462,7 +2573,8 @@
       "subtitle": "Administrer registreringer for dette arrangementet",
       "unansweredOnly": "Kun ubesvarte spørsmål",
       "unknown": "Ukjent",
-      "viewAnswers": "Vis svar"
+      "viewAnswers": "Vis svar",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "Kapasitet",
@@ -2477,7 +2589,8 @@
       "saveSettings": "Lagre innstillinger",
       "tags": "Etiketter",
       "tagsHelper": "Kommadelte etiketter for filtrering",
-      "tagsPlaceholder": "ungdom, retreat, vbs"
+      "tagsPlaceholder": "ungdom, retreat, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Dato",
@@ -2489,7 +2602,8 @@
       "registrations": "Registreringer",
       "subtitle": "Administrer arrangementsregistreringsinnstillinger og se påmeldte",
       "tags": "Etiketter",
-      "title": "Arrangementsregistreringer"
+      "title": "Arrangementsregistreringer",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube kanal-ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Dette er ikke kanalens URL",
-      "youtubeId": "YouTube-ID"
+      "youtubeId": "YouTube-ID",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "Administrer prekenebiblioteket og direktesendte tjenester",
-    "title": "Prekener"
+    "title": "Prekener",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "Velg hvordan innsjekking reagerer når et rom overskrider forholdet mellom frivillige og barn, eller har færre frivillige enn minimum.",
       "ratioEnforcement": "Håndheving av frivillig-forhold",
       "title": "Innsjekking",
-      "warn": "Advar (tillat med bekreftelse)"
+      "warn": "Advar (tillat med bekreftelse)",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "Adresse linje 1",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "Stripe Dashboard",
       "transFee": "Transaksjonsgebyr",
       "webhookKeyHelper": "Webhook-signeringshemmelighet fra Kingdom Funding-kontrollpanelet. Kreves for oppdateringer av transaksjonsstatus.",
-      "webhookUrlCopied": "Webhook-URL kopiert til utklippstavlen"
+      "webhookUrlCopied": "Webhook-URL kopiert til utklippstavlen",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "Dag",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "Legg til fane",
       "subtitle": "Konfigurer innstillinger for mobilapper",
-      "title": "Innstillinger for mobilapper"
+      "title": "Innstillinger for mobilapper",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "Tillatelse {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "Rediger rolle:"
     },
     "rolePermissions": {
-      "permEdit": "Rediger tillatelser"
+      "permEdit": "Rediger tillatelser",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "Regnskap",
@@ -3449,6 +3577,17 @@
       "status": "Status",
       "title": "Webhooks",
       "url": "URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "Nedenfor er en forhåndsvisning av et eksempelside med dine farger, skrifter og logoer. Dette er ikke ditt faktiske nettstedinnhold.",
-      "title": "Nettstedstiler"
+      "title": "Nettstedstiler",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "Blokktype",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "Bytt til skrivebordsvisning",
       "switchToMobile": "Bytt til mobilvisning",
       "undoTip": "Angre (Ctrl+Z)",
-      "viewHistory": "Vis historikk"
+      "viewHistory": "Vis historikk",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "Legg til Elementer",
@@ -3889,7 +4033,9 @@
       "name": "Navn",
       "noFilesYet": "Ingen filer lastet opp ennå",
       "size": "Størrelse",
-      "storage": "Lagring:"
+      "storage": "Lagring:",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "Administrer filer og medier for nettstedet ditt",
@@ -4061,7 +4207,8 @@
       "pageSettings": "Sideinnstillinger",
       "previewOf": "Forhåndsvisning av {title}",
       "subtitle": "Forhåndsvisning: {title}",
-      "title": "Nettstedsforhåndsvisning"
+      "title": "Nettstedsforhåndsvisning",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "Konverter"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "Multiplikator for hvert overskriftsnivå (standard: 1,25)",
       "smallText": "Liten tekst - {size}: Støttetekst og bildetekster",
       "typographyScale": "Typografiskala"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "Skriv inn tekster manuelt eller importer fra PraiseCharts",
       "lyrics": "Tekster",
       "name": "Arrangementnavn",
-      "title": "Arrangement"
+      "title": "Arrangement",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "Er du sikker på at du vil slette denne lydfilen?",
@@ -4613,9 +4768,14 @@
       "search": "Søk",
       "searchSongs": "Søk sanger",
       "songs": "Sanger",
-      "subtitle": "Administrer musikkbiblioteket ditt"
+      "subtitle": "Administrer musikkbiblioteket ditt",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "Sanger"
+    "title": "Sanger",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto av",

@@ -32,12 +32,15 @@
       "subtitle": "Landzelela bukhona betinkhonzo nemacembu",
       "time": "Sikhatsi",
       "totalGroups": "Emacembu Onkhe",
-      "unscheduled": "Akuhlelwanga"
+      "unscheduled": "Akuhlelwanga",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "Phatha Emakhampasi",
       "setupMessage": "Hlela emakhampasi, tinsita netikhatsi tetinsita kute ucale kulandzelela kubakhona.",
-      "unassigned": "Akayabelwe"
+      "unassigned": "Akayabelwe",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "Simenywa",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "Kutfutfuka Kwebukhona",
       "groupAtt": "Bukhona Belicembu",
-      "setup": "Kulungiselelwa"
+      "setup": "Kulungiselelwa",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "Lona ngumcimbi lophindzaphindzako. Kuwususa kutakususa lonkhe luhlu kanye nato tonkhe tikhatsi lawenteka ngato. Ingabe uciniseka?",
       "delete": "Susa",
       "manageRegistrations": "Phatsa Kubhaliswa",
-      "noGroups": "Akukho emacembu latfoliwe."
+      "noGroups": "Akukho emacembu latfoliwe.",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "Emakhalenda akuvumela kutsi uhlele futsi ubonise imicimbi yebandla lakho.",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "Sikhatsi sendzawo sebandla (sib. 9:00 AM)",
       "title": "Tikhumbuto",
       "when": "Nini (kuya kuma-3)",
-      "who": "Ngubani"
+      "who": "Ngubani",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": "Khetsa lifayela le-.ics",
@@ -398,7 +429,8 @@
     "tryAgain": "Zama Futsi",
     "update": "Buyeketa",
     "website": "Iwebhusayithi",
-    "yes": "Yebo"
+    "yes": "Yebo",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Sicela utsintse umlawuli welibandla lakho kute ucele kufinyelela.",
-      "defaultMessage": "Awunayo imvumo(nemvumo) leyidzingekile kute ufinyelele kulesici:"
+      "defaultMessage": "Awunayo imvumo(nemvumo) leyidzingekile kute ufinyelele kulesici:",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "sesha umuntfu",
@@ -632,12 +665,15 @@
       "totalDonations": "Iminikelo Lonkhe:",
       "totalDonors": "Bamniki Bonkhe:",
       "year": "Umnyaka",
-      "zipInfo": "Loku kutawulayisha lifayela le-ZIP leliphetse emafayela e-CSV lahlukene langu-{count}, linye ngamunye webamniki."
+      "zipInfo": "Loku kutawulayisha lifayela le-ZIP leliphetse emafayela e-CSV lahlukene langu-{count}, linye ngamunye webamniki.",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "Engeta Umnikelo",
       "pressEnter": "Cindzetela i-Enter kute ugcine bese wengeta lomunye umnikelo",
-      "selectPerson": "Khetsa Umuntfu nobe Longaziwa"
+      "selectPerson": "Khetsa Umuntfu nobe Longaziwa",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Vumela bamniki kwenta tetsembiso",
@@ -710,7 +746,11 @@
       "fund": "Sikhwama",
       "inKind": "Ngendlela Yetintfo",
       "lastDig": "Tinombolo Letine Tekugcina",
-      "method": "Indlela"
+      "method": "Indlela",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Umcimbi: ",
@@ -737,7 +777,10 @@
       "pending": "Kulindzile",
       "statements": "Imibiko Yemnikelo",
       "summary": "Sifinyeto",
-      "total": "Simphelele"
+      "total": "Simphelele",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "Lusuku",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "Kuvulekele Wonkhe Umuntfu",
       "restrict": "Kuvinjelwe",
       "startReqMsg": "Lusuku lekucala luyadzingeka.",
-      "thankYouMessage": "Umlayeto Wekubonga"
+      "thankYouMessage": "Umlayeto Wekubonga",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "Sento",
@@ -907,7 +963,9 @@
       "view": "Kubuka Kuphela"
     },
     "formPage": {
-      "subtitleConfig": "Kulungiselelwa kwelifomu kanye netfunyelwe"
+      "subtitleConfig": "Kulungiselelwa kwelifomu kanye netfunyelwe",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "Linani",
@@ -957,20 +1015,33 @@
       "restore": "Buyisela",
       "restoreFormAria": "Buyisela ifomu {name}",
       "subtitleManage": "Akha futsi uphatse emafomu lakhetsekile",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "Emalunga Elifomu",
       "formSub": "Kutfunyelwa Kwemafomu",
       "questions": "Imibuto",
       "unAuth": "Akuvunyelwe"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "Silinganiso Sesitfombe",
     "confirmDelete": "Cinisekisa Kususa",
     "freeForm": "Kwakheka Ngekukhululeka",
-    "uploadError": "Kucutwa kwesitfombe kuphelelwe, kodvwa kulayisha kwehlulekile. I-API kungenteka ingekho kulesi simo."
+    "uploadError": "Kucutwa kwesitfombe kuphelelwe, kodvwa kulayisha kwehlulekile. I-API kungenteka ingekho kulesi simo.",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "Shicilela Lebula Legama",
       "team": "Licembu",
       "textTooltip": "Tfumela umlayeto kulelicembu",
-      "trackAttendance": "Landzelela Bukhona"
+      "trackAttendance": "Landzelela Bukhona",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "Engeta Imicimbi",
@@ -1079,7 +1152,9 @@
       "publicRoster": "Khombisa luhlu lwemalunga kuwebhusayithi",
       "slug": "I-slug (ligama lelisetjentiswa kuma-URL)",
       "volunteerRatio": "Bantfwana Ngelivolontiya",
-      "years": "Iminyaka"
+      "years": "Iminyaka",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "Bukhona",
@@ -1153,7 +1228,9 @@
       "session": "Umhlangano",
       "sessions": "Imihlangano",
       "tryAdjusting": "Zama kulungisa kusesha kwakho",
-      "upcoming": "lokutako"
+      "upcoming": "lokutako",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "Engeta Licembu",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "Chala ngekwakha licembu lakho lekucala",
         "manage": "Hlela futsi uphatse emacembu ebandla lakho"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "Emalunga Elicembu Latfolakalako",
@@ -1517,7 +1595,8 @@
       "houseName": "Ligama Lomndeni",
       "householdNameAria": "Ligama lomndeni",
       "other": "Lokunye",
-      "spouse": "Umtimbeti"
+      "spouse": "Umtimbeti",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Vuselela njalo ebusuku",
@@ -1544,7 +1623,8 @@
       "title": "Tincwadzi Letigciniwe"
     },
     "merge": {
-      "merge": "hlanganisa"
+      "merge": "hlanganisa",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "Khansela",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "Buyeketa Likheli"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "Faka imininingwane leyengetiwe...",
       "questionPlaceholder": "Faka imphendvulo yakho...",
       "questionTitle": "Umbuto wakho lapha",
-      "thankYouMessage": "Siyabonga ngekutfumela ifomu!"
+      "thankYouMessage": "Siyabonga ngekutfumela ifomu!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "Simali Lejikelele"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Faka emavi engoma lapha...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "Faka nayiphi imininingwane ngalomsebenti...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "Ayikho tento letikhona",
       "noContent": "Akukho lokucuketfwe lokukhona",
       "selectAction": "Khetsa Sento",
-      "selectExternalItem": "Khetsa Intfo Yangaphandle"
+      "selectExternalItem": "Khetsa Intfo Yangaphandle",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "Engeta Sikhundla",
@@ -2055,7 +2153,13 @@
       "externalItem": "Intfo Yangaphandle",
       "item": "Intfo",
       "restoreOriginal": "Restore Original",
-      "song": "Ingoma"
+      "song": "Ingoma",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "Cinisekisa Kususa",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "Ligama lentfo yeluhlelo",
       "position": "Position",
       "searchBoxAria": "searchBox",
-      "seconds": "Emasekhondi"
+      "seconds": "Emasekhondi",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "Susa",
       "startDate": "Lusuku Lekucala",
       "subtitle": "Tikhundla ngelusuku kanye nabovolontiya labaphetfwe",
-      "title": "Umbono Wekukhonta"
+      "title": "Umbono Wekukhonta",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "Bonisa Konkhe",
@@ -2358,7 +2466,9 @@
       "label": "Lebula",
       "lastActiveDate": "Lusuku Lekugcina Lusebenta",
       "registrationDate": "Lusuku Lekubhaliswa",
-      "title": "Emadivayisi"
+      "title": "Emadivayisi",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "Xhuma",
@@ -2440,7 +2550,8 @@
       "startDate": "Lusuku Lekucala",
       "type": "Luhlobo",
       "usesSoFar": "Kusetjentiswa: {count}",
-      "value": "Linani"
+      "value": "Linani",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "Faka Sivakashi",
@@ -2462,7 +2573,8 @@
       "subtitle": "Phatsa kubhalisa kwalomcimbi",
       "unansweredOnly": "Kuphela imibuto lengakaphendvulwa",
       "unknown": "Akwatiwa",
-      "viewAnswers": "Bona Timphendvulo"
+      "viewAnswers": "Bona Timphendvulo",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "Emandla",
@@ -2477,7 +2589,8 @@
       "saveSettings": "Gcina Tilungiselelo",
       "tags": "Emathegi",
       "tagsHelper": "Emathegi lahlukaniswe ngesikhala sekusefa",
-      "tagsPlaceholder": "lusha, kuphumula, vbs"
+      "tagsPlaceholder": "lusha, kuphumula, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Lusuku",
@@ -2489,7 +2602,8 @@
       "registrations": "Kubhalisa",
       "subtitle": "Phatsa tilungiselelo tekubhalisa kwemcimbi bese ubona lababhalisile",
       "tags": "Emathegi",
-      "title": "Kubhalisa Kwemcimbi"
+      "title": "Kubhalisa Kwemcimbi",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "i-ID Yeshaneli ye-YouTube",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Lena akusi i-url yakho yeshaneli",
-      "youtubeId": "i-ID ye-YouTube"
+      "youtubeId": "i-ID ye-YouTube",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "Phatsa umtapo wakho wetintshumayelo nekusakatwa kwelayivu",
-    "title": "Tintshumayelo"
+    "title": "Tintshumayelo",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "Khetsa kutsi kungena kuphendvula njani nangabe likamelo lidlulisile emkhawulweni waso wemasiko kubantfwana nome liphansi kwemasiko waso lamancane.",
       "ratioEnforcement": "Kucinisekiswa Kwemasiko Yebasizi",
       "title": "Check-In",
-      "warn": "Warn (allow with confirmation)"
+      "warn": "Warn (allow with confirmation)",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "Umugca Wekheli 1",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "I-Stripe Dashboard",
       "transFee": "Imali Yekutsengiselana",
       "webhookKeyHelper": "I-secret yekusayina ye-webhook kusuka kupheneli yekulawula ye-Kingdom Funding. Iyadzingeka kutfola kushintjwa kwesimo sekutsengiselana.",
-      "webhookUrlCopied": "I-URL ye-webhook ikopishiwe ku-clipboard"
+      "webhookUrlCopied": "I-URL ye-webhook ikopishiwe ku-clipboard",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "Lusuku",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "Engeta Ithebhu",
       "subtitle": "Hlela tilungiselelo te-app yeselula",
-      "title": "Tilungiselelo Te-App Yeselula"
+      "title": "Tilungiselelo Te-App Yeselula",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "Imvumo {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "Hlela Sikhundla:"
     },
     "rolePermissions": {
-      "permEdit": "Hlela Imvumo"
+      "permEdit": "Hlela Imvumo",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "Kubala Timali",
@@ -3449,6 +3577,17 @@
       "status": "Simo",
       "title": "Ema-Webhook",
       "url": "I-URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "Ngentasi kunembonisombonisi wesayithi sesibonelo lesinemibala, emafonti nemalogo akho. Loku akusiyo inchazelo yangempela yesayithi sakho.",
-      "title": "Tinhlobo Tesayithi"
+      "title": "Tinhlobo Tesayithi",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "Luhlobo Lwe-Block",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "Shintjela Kubukwa Kwe-Desktop",
       "switchToMobile": "Shintjela Kubukwa Kwelucingo",
       "undoTip": "Buyisela Emuva (Ctrl+Z)",
-      "viewHistory": "Buka umlandvo"
+      "viewHistory": "Buka umlandvo",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "Engeta Tincenye",
@@ -3889,7 +4033,9 @@
       "name": "Ligama",
       "noFilesYet": "Akukho mafayela lalayishiwe okwamanje",
       "size": "Bukhulu",
-      "storage": "Sikhala:"
+      "storage": "Sikhala:",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "Phatsa emafayela nemidiya yewebhu sayithi yakho",
@@ -4061,7 +4207,8 @@
       "pageSettings": "Emasethingi Ekhasi",
       "previewOf": "Kubukwa Kwe-{title} Ngaphambili",
       "subtitle": "Kubukwa: {title}",
-      "title": "Kubukwa Kwewebhu Sayithi Ngaphambili"
+      "title": "Kubukwa Kwewebhu Sayithi Ngaphambili",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "Guqula"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "Sandziso semazinga wonkhe wesihloko (lokujwayelekile: 1.25)",
       "smallText": "Umbhalo Lomncane - {size}: Umbhalo losekelako netincazelo",
       "typographyScale": "Sikali Sekubhala"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "Faka emavi ngesandla nome ungenisa kusuka ku-PraiseCharts",
       "lyrics": "Emavi",
       "name": "Ligama Lelihlelo",
-      "title": "Lihlelo"
+      "title": "Lihlelo",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
@@ -4613,9 +4768,14 @@
       "search": "Sesha",
       "searchSongs": "Sesha Tingoma",
       "songs": "Tingoma",
-      "subtitle": "Phatsa layibhulari yakho yemculo"
+      "subtitle": "Phatsa layibhulari yakho yemculo",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "Tingoma"
+    "title": "Tingoma",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "Sitfombe Ngu",

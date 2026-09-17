@@ -32,12 +32,15 @@
       "subtitle": "Acompanhe a frequência de serviços e grupos",
       "time": "Tempo",
       "totalGroups": "Total de grupos",
-      "unscheduled": "Não programado"
+      "unscheduled": "Não programado",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "Gerenciar Campi",
       "setupMessage": "Configure os campi, serviços e horários de serviço para começar a registrar a presença.",
-      "unassigned": "Não atribuído"
+      "unassigned": "Não atribuído",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "Convidado",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "Tendência de Presença",
       "groupAtt": "Presença de Grupo",
-      "setup": "Configuração"
+      "setup": "Configuração",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "Este é um evento recorrente. Excluí-lo removerá toda a série e todas as suas ocorrências. Tem certeza?",
       "delete": "Excluir",
       "manageRegistrations": "Gerenciar inscrições",
-      "noGroups": "Nenhum grupo encontrado."
+      "noGroups": "Nenhum grupo encontrado.",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "Os calendários permitem que você organize e exiba eventos da sua igreja.",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "Hora local da igreja (ex.: 9h00)",
       "title": "Lembretes",
       "when": "Quando (até 3)",
-      "who": "Quem"
+      "who": "Quem",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": "Escolher arquivo .ics",
@@ -398,7 +429,8 @@
     "tryAgain": "Tentar novamente",
     "update": "Atualizar",
     "website": "Site",
-    "yes": "Sim"
+    "yes": "Sim",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Por favor, entre em contato com o administrador da sua igreja para solicitar acesso.",
-      "defaultMessage": "Você não tem as permissões necessárias para acessar este recurso:"
+      "defaultMessage": "Você não tem as permissões necessárias para acessar este recurso:",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Pesquisar pessoa",
@@ -632,12 +665,15 @@
       "totalDonations": "Total de doações:",
       "totalDonors": "Total de doadores:",
       "year": "Ano",
-      "zipInfo": "Isso baixará um arquivo ZIP contendo {count} arquivos CSV individuais, um para cada doador."
+      "zipInfo": "Isso baixará um arquivo ZIP contendo {count} arquivos CSV individuais, um para cada doador.",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "Adicionar Doação",
       "pressEnter": "Pressione Enter para salvar e adicionar outra doação",
-      "selectPerson": "Selecione Pessoa ou Anônimo"
+      "selectPerson": "Selecione Pessoa ou Anônimo",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Permitir que doadores façam promessas",
@@ -710,7 +746,11 @@
       "fund": "Fundo",
       "inKind": "Em Espécie",
       "lastDig": "Últimos 4 dígitos",
-      "method": "Método"
+      "method": "Método",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Evento: ",
@@ -737,7 +777,10 @@
       "pending": "Pendente",
       "statements": "Declarações de doações",
       "summary": "Resumo",
-      "total": "Total"
+      "total": "Total",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "Data",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "Público",
       "restrict": "Restrito",
       "startReqMsg": "A data de início é obrigatória.",
-      "thankYouMessage": "Mensagem de Agradecimento"
+      "thankYouMessage": "Mensagem de Agradecimento",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "Ação",
@@ -907,7 +963,9 @@
       "view": "Somente Visualizar"
     },
     "formPage": {
-      "subtitleConfig": "Configuração de formulário e envios"
+      "subtitleConfig": "Configuração de formulário e envios",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "Quantia",
@@ -957,20 +1015,33 @@
       "restore": "Restaurar",
       "restoreFormAria": "Restaurar formulário {name}",
       "subtitleManage": "Criar e gerenciar formulários personalizados",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "Membros do Formulário",
       "formSub": "Submissões de Formulários",
       "questions": "Perguntas",
       "unAuth": "Não Autorizado"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "Proporção",
     "confirmDelete": "Confirmar exclusão",
     "freeForm": "Forma livre",
-    "uploadError": "O processamento da imagem foi concluído, mas o envio falhou. A API pode não estar disponível neste ambiente."
+    "uploadError": "O processamento da imagem foi concluído, mas o envio falhou. A API pode não estar disponível neste ambiente.",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "Imprimir Etiqueta",
       "team": "Equipe",
       "textTooltip": "Enviar mensagem a este grupo",
-      "trackAttendance": "Rastrear Presença"
+      "trackAttendance": "Rastrear Presença",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "Adicionar eventos",
@@ -1079,7 +1152,9 @@
       "publicRoster": "Mostrar lista de membros no site",
       "slug": "Slug (nome chave usado para urls)",
       "volunteerRatio": "Crianças por Voluntário",
-      "years": "Anos"
+      "years": "Anos",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "Presença",
@@ -1153,7 +1228,9 @@
       "session": "Sessão",
       "sessions": "Sessões",
       "tryAdjusting": "Tente ajustar sua pesquisa",
-      "upcoming": "próximos"
+      "upcoming": "próximos",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "Adicionar grupo",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "Comece criando seu primeiro grupo",
         "manage": "Organize e gerencie seus grupos religiosos"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "Membros de Grupo Disponíveis",
@@ -1517,7 +1595,8 @@
       "houseName": "Nome da Família",
       "householdNameAria": "Nome da família",
       "other": "Outro",
-      "spouse": "Cônjuge"
+      "spouse": "Cônjuge",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Atualizar diariamente",
@@ -1544,7 +1623,8 @@
       "title": "Listas salvas"
     },
     "merge": {
-      "merge": "mesclar"
+      "merge": "mesclar",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "Cancelar",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "Atualizar Endereço"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "Ajude-nos a planejar nossos eventos",
       "questionPlaceholder": "Digite sua resposta aqui",
       "questionTitle": "Qual é sua comida favorita?",
-      "thankYouMessage": "Obrigado pelo envio!"
+      "thankYouMessage": "Obrigado pelo envio!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "Fundo Geral"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "Add any notes about this task...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "Nenhuma ação disponível",
       "noContent": "Nenhum conteúdo disponível",
       "selectAction": "Selecionar ação",
-      "selectExternalItem": "Selecionar item externo"
+      "selectExternalItem": "Selecionar item externo",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "Adicionar posição",
@@ -2055,7 +2153,13 @@
       "externalItem": "Item externo",
       "item": "Item",
       "restoreOriginal": "Restore Original",
-      "song": "Canção"
+      "song": "Canção",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "Confirmar exclusão",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "Nome do item do plano",
       "position": "Position",
       "searchBoxAria": "searchBox",
-      "seconds": "Segundos"
+      "seconds": "Segundos",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "Remover",
       "startDate": "Data de Início",
       "subtitle": "Posições por data com voluntários atribuídos",
-      "title": "Visão Geral do Serviço"
+      "title": "Visão Geral do Serviço",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "Mostrar Todos",
@@ -2358,7 +2466,9 @@
       "label": "Rótulo",
       "lastActiveDate": "Última data ativa",
       "registrationDate": "Data de registro",
-      "title": "Dispositivos"
+      "title": "Dispositivos",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "Link",
@@ -2440,7 +2550,8 @@
       "startDate": "Data de Início",
       "type": "Tipo",
       "usesSoFar": "Usos: {count}",
-      "value": "Valor"
+      "value": "Valor",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "Adicionar Participante",
@@ -2462,7 +2573,8 @@
       "subtitle": "Gerenciar inscrições para este evento",
       "unansweredOnly": "Apenas perguntas não respondidas",
       "unknown": "Desconhecido",
-      "viewAnswers": "Ver Respostas"
+      "viewAnswers": "Ver Respostas",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "Capacidade",
@@ -2477,7 +2589,8 @@
       "saveSettings": "Salvar Configurações",
       "tags": "Tags",
       "tagsHelper": "Tags separadas por vírgula para filtragem",
-      "tagsPlaceholder": "jovens, retiro, vbs"
+      "tagsPlaceholder": "jovens, retiro, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Data",
@@ -2489,7 +2602,8 @@
       "registrations": "Inscrições",
       "subtitle": "Gerenciar configurações de inscrição em eventos e visualizar inscritos",
       "tags": "Tags",
-      "title": "Inscrições em Eventos"
+      "title": "Inscrições em Eventos",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "ID do Canal do YouTube",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Esta não é a URL do seu canal",
-      "youtubeId": "ID do YouTube"
+      "youtubeId": "ID do YouTube",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "Gerencie sua biblioteca de sermões e transmissões ao vivo",
-    "title": "Sermões"
+    "title": "Sermões",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "Escolha como o check-in responde quando uma sala está acima da proporção de voluntários por criança ou abaixo do mínimo de voluntários.",
       "ratioEnforcement": "Aplicação da Proporção de Voluntários",
       "title": "Check-in",
-      "warn": "Avisar (permitir com confirmação)"
+      "warn": "Avisar (permitir com confirmação)",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "Endereço Linha 1",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "Painel do Stripe",
       "transFee": "Taxa de Transação",
       "webhookKeyHelper": "Segredo de assinatura do webhook do painel Kingdom Funding. Necessário para atualizações de status de transações.",
-      "webhookUrlCopied": "URL do webhook copiada para a área de transferência"
+      "webhookUrlCopied": "URL do webhook copiada para a área de transferência",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "Dia",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "Adicionar guia",
       "subtitle": "Definir configurações de aplicativos móveis",
-      "title": "Configurações de aplicativos móveis"
+      "title": "Configurações de aplicativos móveis",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "Permissão {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "Editar Papel:"
     },
     "rolePermissions": {
-      "permEdit": "Editar Permissões"
+      "permEdit": "Editar Permissões",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "Contabilidade",
@@ -3449,6 +3577,17 @@
       "status": "Status",
       "title": "Webhooks",
       "url": "URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "Abaixo está uma prévia de um site de exemplo com suas cores, fontes e logotipos. Este não é o conteúdo real do seu site.",
-      "title": "Estilos do site"
+      "title": "Estilos do site",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "Tipo de Bloco",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "Mudar para a visualização da área de trabalho",
       "switchToMobile": "Mudar para visualização móvel",
       "undoTip": "Desfazer (Ctrl+Z)",
-      "viewHistory": "Ver histórico"
+      "viewHistory": "Ver histórico",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "Adicionar Elementos",
@@ -3889,7 +4033,9 @@
       "name": "Nome",
       "noFilesYet": "Nenhum arquivo enviado ainda",
       "size": "Tamanho",
-      "storage": "Armazenamento:"
+      "storage": "Armazenamento:",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "Gerenciar arquivos e mídia para seu site",
@@ -4061,7 +4207,8 @@
       "pageSettings": "Configurações da página",
       "previewOf": "Visualização de {title}",
       "subtitle": "Visualização: {title}",
-      "title": "Visualização do site"
+      "title": "Visualização do site",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "Converter"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "Multiplicador para cada nível de cabeçalho (padrão: 1.25)",
       "smallText": "Texto Pequeno - {size}: Texto de suporte e legendas",
       "typographyScale": "Escala de Tipografia"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "Digite as letras manualmente ou importe do PraiseCharts",
       "lyrics": "Letras",
       "name": "Nome do Arranjo",
-      "title": "Arranjo"
+      "title": "Arranjo",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "Tem certeza de que deseja excluir este arquivo de áudio?",
@@ -4613,9 +4768,14 @@
       "search": "Pesquisar",
       "searchSongs": "Pesquisar Músicas",
       "songs": "Músicas",
-      "subtitle": "Gerencie sua biblioteca de música"
+      "subtitle": "Gerencie sua biblioteca de música",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "Músicas"
+    "title": "Músicas",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "Foto por",

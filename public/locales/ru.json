@@ -32,12 +32,15 @@
       "subtitle": "Отслеживайте посещаемость услуг и групп",
       "time": "Время",
       "totalGroups": "Всего групп",
-      "unscheduled": "Внеплановый"
+      "unscheduled": "Внеплановый",
+      "serviceTimes": "Service times"
     },
     "attendanceSetup": {
       "manageCampuses": "Управление кампусами",
       "setupMessage": "Настройте кампусы, службы и время служб, чтобы начать отслеживать посещаемость.",
-      "unassigned": "Не назначено"
+      "unassigned": "Не назначено",
+      "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
+      "title": "Service structure"
     },
     "checkinType": {
       "guest": "Гость",
@@ -117,7 +120,29 @@
     "tabs": {
       "attTrend": "Тенденция посещаемости",
       "groupAtt": "Групповая посещаемость",
-      "setup": "Настройка"
+      "setup": "Настройка",
+      "headcountTrend": "Headcount Trend",
+      "headcounts": "Headcounts"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "editTitle": "Edit Headcount",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     }
   },
   "calendars": {
@@ -177,7 +202,10 @@
       "confirmDeleteSeries": "Это повторяющееся мероприятие. Удаление приведёт к удалению всей серии и всех её повторений. Вы уверены?",
       "delete": "Удалить",
       "manageRegistrations": "Управление регистрациями",
-      "noGroups": "Группы не найдены."
+      "noGroups": "Группы не найдены.",
+      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
+      "edit": "Edit",
+      "editEvent": "Edit Event"
     },
     "calendarList": {
       "aboutParagraph1": "Календари позволяют вам организовывать и отображать события для вашей церкви.",
@@ -235,7 +263,10 @@
       "timeOfDayHint": "Местное время церкви (напр., 9:00)",
       "title": "Напоминания",
       "when": "Когда (до 3)",
-      "who": "Кто"
+      "who": "Кто",
+      "email": "Email",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
+      "push": "Push"
     },
     "importIcs": {
       "chooseFile": "Выбрать файл .ics",
@@ -398,7 +429,8 @@
     "tryAgain": "Попробовать снова",
     "update": "Обновить",
     "website": "Веб-сайт",
-    "yes": "Да"
+    "yes": "Да",
+    "labels": "Labels"
   },
   "components": {
     "bezChat": {
@@ -435,7 +467,8 @@
     },
     "permissionDenied": {
       "contactAdmin": "Пожалуйста, свяжитесь с администратором вашей церкви, чтобы запросить доступ.",
-      "defaultMessage": "У вас нет необходимых разрешений для доступа к этой функции:"
+      "defaultMessage": "У вас нет необходимых разрешений для доступа к этой функции:",
+      "required": "Permission required"
     },
     "search": {
       "ariaSearchInput": "Поиск человека",
@@ -632,12 +665,15 @@
       "totalDonations": "Всего пожертвований:",
       "totalDonors": "Всего жертвователей:",
       "year": "Год",
-      "zipInfo": "Будет загружен ZIP-файл, содержащий {count} отдельных CSV-файлов, по одному для каждого жертвователя."
+      "zipInfo": "Будет загружен ZIP-файл, содержащий {count} отдельных CSV-файлов, по одному для каждого жертвователя.",
+      "statementFormat": "Statement format"
     },
     "bulkEntry": {
       "addDonation": "Добавить пожертвование",
       "pressEnter": "Нажмите Enter, чтобы сохранить и добавить еще одно пожертвование",
-      "selectPerson": "Выберите человека или Анонимно"
+      "selectPerson": "Выберите человека или Анонимно",
+      "fullEditor": "full donation editor",
+      "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
       "allowSelfPledge": "Разрешить жертвователям делать обещания пожертвований",
@@ -710,7 +746,11 @@
       "fund": "Фонд",
       "inKind": "Натурой",
       "lastDig": "Последние 4 цифры",
-      "method": "Метод"
+      "method": "Метод",
+      "refund": "Refund",
+      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
+      "refundConfirmLabel": "Refund",
+      "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Событие: ",
@@ -737,7 +777,10 @@
       "pending": "В ожидании",
       "statements": "Выписки о пожертвованиях",
       "summary": "Сводка",
-      "total": "Итого"
+      "total": "Итого",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
+      "refunded": "Refunded"
     },
     "donationsPage": {
       "date": "Дата",
@@ -843,6 +886,16 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
     }
   },
   "forms": {
@@ -893,7 +946,10 @@
       "public": "Публичная",
       "restrict": "Ограниченная",
       "startReqMsg": "Укажите дату начала.",
-      "thankYouMessage": "Благодарственное сообщение"
+      "thankYouMessage": "Благодарственное сообщение",
+      "addForm": "Add Form",
+      "description": "Description",
+      "descriptionHelper": "Shown above the questions on the public form page."
     },
     "formMembers": {
       "act": "Действие",
@@ -907,7 +963,9 @@
       "view": "Только просмотр"
     },
     "formPage": {
-      "subtitleConfig": "Настройка формы и отправки"
+      "subtitleConfig": "Настройка формы и отправки",
+      "backToForms": "Back to Forms",
+      "notFound": "Form not found"
     },
     "formQuestionEdit": {
       "amt": "Сумма",
@@ -957,20 +1015,33 @@
       "restore": "Восстановить",
       "restoreFormAria": "Восстановить форму {name}",
       "subtitleManage": "Создавайте и управляйте пользовательскими формами",
-      "url": "URL"
+      "url": "URL",
+      "confirmDuplicate": "Duplicate this form?",
+      "duplicated": "Form duplicated",
+      "personProfileForm": "Person profile form"
     },
     "tabs": {
       "formMem": "Участники формы",
       "formSub": "Отправки форм",
       "questions": "Вопросы",
       "unAuth": "Неавторизовано"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "Соотношение сторон",
     "confirmDelete": "Подтвердить удаление",
     "freeForm": "Произвольная форма",
-    "uploadError": "Обработка изображения завершена, но загрузка не удалась. Возможно, API недоступен в этой среде."
+    "uploadError": "Обработка изображения завершена, но загрузка не удалась. Возможно, API недоступен в этой среде.",
+    "gallery": "Gallery",
+    "galleryImage": "Gallery image",
+    "selectAPhoto": "Select a Photo",
+    "selectImage": "Select image",
+    "stockPhotos": "Stock Photos",
+    "upload": "Upload"
   },
   "groups": {
     "groupAdd": {
@@ -996,7 +1067,9 @@
       "printNametag": "Печать бейджа",
       "team": "Команда",
       "textTooltip": "Отправить SMS этой группе",
-      "trackAttendance": "Отслеживать посещаемость"
+      "trackAttendance": "Отслеживать посещаемость",
+      "announcements": "Announcements",
+      "discussions": "Discussions"
     },
     "groupCalendar": {
       "addEvents": "Добавить события",
@@ -1079,7 +1152,9 @@
       "publicRoster": "Показывать список участников на сайте",
       "slug": "Слаг (ключевое имя для URL-адресов)",
       "volunteerRatio": "Детей на одного волонтёра",
-      "years": "Годы"
+      "years": "Годы",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
+      "discussionsEnabledHelp": "Group chat feed where any member can post."
     },
     "groupHealth": {
       "attendance": "Посещаемость",
@@ -1153,7 +1228,9 @@
       "session": "Сессия",
       "sessions": "Сессии",
       "tryAdjusting": "Попробуйте настроить поиск",
-      "upcoming": "предстоящие"
+      "upcoming": "предстоящие",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
+      "confirmRemove": "Remove this person from the session's attendance?"
     },
     "groupsPage": {
       "addGroup": "Добавить группу",
@@ -1174,7 +1251,8 @@
       "subtitle": {
         "create": "Начните с создания своей первой группы.",
         "manage": "Организуйте и управляйте своими церковными группами"
-      }
+      },
+      "confirmRestore": "Restore {name} from the archive?"
     },
     "membersAdd": {
       "availableMem": "Доступные участники группы",
@@ -1517,7 +1595,8 @@
       "houseName": "Название домохозяйства",
       "householdNameAria": "Название семьи",
       "other": "Другое",
-      "spouse": "Супруг"
+      "spouse": "Супруг",
+      "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Обновлять ежедневно",
@@ -1544,7 +1623,8 @@
       "title": "Сохранённые списки"
     },
     "merge": {
-      "merge": "объединить"
+      "merge": "объединить",
+      "findPerson": "Find person to merge"
     },
     "mergeModal": {
       "cancel": "Отмена",
@@ -1695,6 +1775,13 @@
     },
     "updateHouseHold": {
       "update": "Обновить адрес"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1778,7 +1865,8 @@
       "questionDescription": "Помогите нам спланировать мероприятия",
       "questionPlaceholder": "Введите ваш ответ здесь",
       "questionTitle": "Какая ваша любимая еда?",
-      "thankYouMessage": "Спасибо за отправку!"
+      "thankYouMessage": "Спасибо за отправку!",
+      "description": "Tell people what this form is for and what happens after they submit it."
     },
     "fund": {
       "name": "Общий фонд"
@@ -1852,7 +1940,8 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace"
+      "title": "Amazing Grace",
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
     },
     "task": {
       "notes": "Add any notes about this task...",
@@ -1882,7 +1971,10 @@
       "noActionsAvailable": "Нет доступных действий",
       "noContent": "Контент недоступен",
       "selectAction": "Выбрать действие",
-      "selectExternalItem": "Выбрать внешний элемент"
+      "selectExternalItem": "Выбрать внешний элемент",
+      "importCount": "Import ({count})",
+      "selectItem": "Select {label}",
+      "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
       "dateTaken": "A plan already exists on this date.",
@@ -1898,7 +1990,13 @@
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan"
+      "yearPlan": "Year plan",
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
+      "endDate": "Last class date",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
+      "targetYear": "Target year"
     },
     "assignment": {
       "addPosition": "Добавить позицию",
@@ -2055,7 +2153,13 @@
       "externalItem": "Внешний элемент",
       "item": "Элемент",
       "restoreOriginal": "Restore Original",
-      "song": "Песня"
+      "song": "Песня",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
+      "selectAllInSection": "Select all in section",
+      "selectItem": "Select",
+      "selectItems": "Select Items"
     },
     "planItemEdit": {
       "confirmDelete": "Подтвердить удаление",
@@ -2075,7 +2179,8 @@
       "planItemNameAria": "Название элемента плана",
       "position": "Position",
       "searchBoxAria": "searchBox",
-      "seconds": "Секунды"
+      "seconds": "Секунды",
+      "searchFailed": "Search failed. Please try again."
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2262,7 +2367,10 @@
       "remove": "Удалить",
       "startDate": "Дата начала",
       "subtitle": "Позиции по дате с назначенными волонтёрами",
-      "title": "Обзор служения"
+      "title": "Обзор служения",
+      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
+      "emailAllConfirm": "Email every assigned volunteer in this date range?",
+      "removeConfirm": "Remove {name} from this assignment?"
     },
     "servingPage": {
       "showAll": "Показать все",
@@ -2358,7 +2466,9 @@
       "label": "Метка",
       "lastActiveDate": "Дата последней активности",
       "registrationDate": "Дата регистрации",
-      "title": "Устройства"
+      "title": "Устройства",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet"
     },
     "linkedAccounts": {
       "link": "Ссылка",
@@ -2440,7 +2550,8 @@
       "startDate": "Дата начала",
       "type": "Тип",
       "usesSoFar": "Использований: {count}",
-      "value": "Значение"
+      "value": "Значение",
+      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
     },
     "registrationDetailsPage": {
       "addAttendee": "Добавить посетителя",
@@ -2462,7 +2573,8 @@
       "subtitle": "Управление регистрациями на это событие",
       "unansweredOnly": "Только вопросы без ответа",
       "unknown": "Неизвестно",
-      "viewAnswers": "Просмотр ответов"
+      "viewAnswers": "Просмотр ответов",
+      "selectTypeFirst": "Select an attendee type to continue."
     },
     "registrationSettingsEdit": {
       "capacity": "Вместимость",
@@ -2477,7 +2589,8 @@
       "saveSettings": "Сохранить настройки",
       "tags": "Теги",
       "tagsHelper": "Теги, разделённые запятыми, для фильтрации",
-      "tagsPlaceholder": "молодёжь, ретрит, vbs"
+      "tagsPlaceholder": "молодёжь, ретрит, vbs",
+      "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Дата",
@@ -2489,7 +2602,8 @@
       "registrations": "Регистрации",
       "subtitle": "Управление настройками регистрации на события и просмотр участников",
       "tags": "Теги",
-      "title": "Регистрации на события"
+      "title": "Регистрации на события",
+      "goToCalendars": "Turn on registration on a calendar event"
     }
   },
   "reporting": {
@@ -2744,10 +2858,19 @@
       "youtube": "YouTube",
       "youtubeChannelId": "ID Канала YouTube",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Это не URL вашего канала",
-      "youtubeId": "ID YouTube"
+      "youtubeId": "ID YouTube",
+      "audioUrl": "Audio File URL (for podcast)",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
+      "uploadAudio": "Upload Audio"
     },
     "subtitle": "Управляйте своей библиотекой проповедей и прямыми трансляциями",
-    "title": "Проповеди"
+    "title": "Проповеди",
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    }
   },
   "serverAdmin": {
     "adminPage": {
@@ -3094,7 +3217,8 @@
       "help": "Выберите, как система регистрации реагирует, когда в комнате превышено соотношение волонтёров к детям или недостаточно волонтёров.",
       "ratioEnforcement": "Контроль соотношения волонтёров",
       "title": "Регистрация",
-      "warn": "Предупреждать (разрешать с подтверждением)"
+      "warn": "Предупреждать (разрешать с подтверждением)",
+      "kioskLink": "Check-in kiosk, QR, and labels"
     },
     "churchSettingsEdit": {
       "address1": "Адресная строка 1",
@@ -3234,7 +3358,9 @@
       "stripeDashboard": "Панель Stripe",
       "transFee": "Комиссия за транзакцию",
       "webhookKeyHelper": "Секрет подписи вебхука из панели управления Kingdom Funding. Необходим для обновления статусов транзакций.",
-      "webhookUrlCopied": "URL вебхука скопирован в буфер обмена"
+      "webhookUrlCopied": "URL вебхука скопирован в буфер обмена",
+      "feesAndStatementsSection": "Fees & statements",
+      "paymentGatewaySection": "Payment gateway"
     },
     "gradePromotionSettingsEdit": {
       "day": "День",
@@ -3280,7 +3406,8 @@
     "mobileAppSettings": {
       "addTab": "Добавить вкладку",
       "subtitle": "Настройте параметры мобильного приложения",
-      "title": "Настройки мобильного приложения"
+      "title": "Настройки мобильного приложения",
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
     },
     "roleCheck": {
       "permissionAria": "Разрешение {label}"
@@ -3305,7 +3432,8 @@
       "roleEdit": "Редактировать роль:"
     },
     "rolePermissions": {
-      "permEdit": "Редактировать разрешения"
+      "permEdit": "Редактировать разрешения",
+      "filter": "Filter permissions"
     },
     "roles": {
       "acc": "Бухгалтерия",
@@ -3449,6 +3577,17 @@
       "status": "Статус",
       "title": "Вебхуки",
       "url": "URL"
+    },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
     }
   },
   "site": {
@@ -3553,7 +3692,8 @@
     },
     "appearancePage": {
       "subtitle": "Ниже представлен предварительный просмотр примера сайта с вашими цветами, шрифтами и логотипами. Это не фактическое содержимое вашего сайта.",
-      "title": "Стили сайта"
+      "title": "Стили сайта",
+      "themeGroup": "Theme, fonts & footer"
     },
     "blockEdit": {
       "blockType": "Тип блока",
@@ -3758,7 +3898,11 @@
       "switchToDesktop": "Переключиться в режим рабочего стола",
       "switchToMobile": "Переключиться на мобильный вид",
       "undoTip": "Отменить (Ctrl+Z)",
-      "viewHistory": "Просмотр истории"
+      "viewHistory": "Просмотр истории",
+      "editSiteFooter": "Edit site footer",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
     },
     "elementAdd": {
       "addElements": "Добавить Элементы",
@@ -3889,7 +4033,9 @@
       "name": "Название",
       "noFilesYet": "Файлы еще не загружены",
       "size": "Размер",
-      "storage": "Хранилище:"
+      "storage": "Хранилище:",
+      "copied": "Link copied",
+      "copyLink": "Copy link"
     },
     "filesPage": {
       "subtitle": "Управление файлами и медиа для вашего сайта",
@@ -4061,7 +4207,8 @@
       "pageSettings": "Настройки страницы",
       "previewOf": "Предпросмотр {title}",
       "subtitle": "Предварительный просмотр: {title}",
-      "title": "Предварительный просмотр сайта"
+      "title": "Предварительный просмотр сайта",
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
     },
     "pages": {
       "convert": "Конвертировать"
@@ -4480,6 +4627,13 @@
       "scaleDesc": "Множитель для каждого уровня заголовка (по умолчанию: 1.25)",
       "smallText": "Мелкий текст - {size}: Поддерживающий текст и подписи",
       "typographyScale": "Шкала типографики"
+    },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4491,7 +4645,8 @@
       "enterLyrics": "Введите текст вручную или импортируйте из PraiseCharts",
       "lyrics": "Текст",
       "name": "Название аранжировки",
-      "title": "Аранжировка"
+      "title": "Аранжировка",
+      "sequence": "Sequence"
     },
     "audio": {
       "deleteConfirm": "Вы уверены, что хотите удалить этот аудиофайл?",
@@ -4613,9 +4768,14 @@
       "search": "Поиск",
       "searchSongs": "Поиск песен",
       "songs": "Песни",
-      "subtitle": "Управляйте своей музыкальной библиотекой"
+      "subtitle": "Управляйте своей музыкальной библиотекой",
+      "deselectAll": "Deselect all",
+      "selectAll": "Select all"
     },
-    "title": "Песни"
+    "title": "Песни",
+    "oldArrangements": {
+      "arrangements": "Arrangements"
+    }
   },
   "stockPhotos": {
     "photoBy": "Фото:",
