@@ -2980,7 +2980,16 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "confidence": {
+        "chart-only": "Só cifra",
+        "converted-from-abc": "Partitura",
+        "generated-from-midi": "Gerada do MIDI",
+        "lyrics-only": "Só letra",
+        "proofread-score": "Partitura",
+        "score": "Partitura",
+        "sunday-ready": "Pronta para o domingo"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "Você será desconectado da sua sessão e conectado como {email}. Para retornar à sua conta, saia e entre novamente.",

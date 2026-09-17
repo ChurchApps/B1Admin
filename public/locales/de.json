@@ -2980,7 +2980,16 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "confidence": {
+        "chart-only": "Nur Akkorde",
+        "converted-from-abc": "Partitur",
+        "generated-from-midi": "Aus MIDI erzeugt",
+        "lyrics-only": "Nur Text",
+        "proofread-score": "Partitur",
+        "score": "Partitur",
+        "sunday-ready": "Sonntagsbereit"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "Sie werden von Ihrer eigenen Sitzung abgemeldet und als {email} angemeldet. Um zu Ihrem Konto zurückzukehren, melden Sie sich ab und wieder an.",

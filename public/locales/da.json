@@ -2980,7 +2980,16 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "confidence": {
+        "chart-only": "Chart only",
+        "converted-from-abc": "Score",
+        "generated-from-midi": "Generated from MIDI",
+        "lyrics-only": "Lyrics only",
+        "proofread-score": "Score",
+        "score": "Score",
+        "sunday-ready": "Sunday-ready"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "Du vil blive logget ud af din egen session og logget ind som {email}. For at vende tilbage til din konto skal du logge ud og ind igen.",

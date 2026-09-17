@@ -2980,7 +2980,16 @@
       "tabQueue": "審査待ち",
       "tabReports": "報告",
       "unpublish": "公開を取り消す",
-      "viewOnWorshipCommons": "WorshipCommons で表示"
+      "viewOnWorshipCommons": "WorshipCommons で表示",
+      "confidence": {
+        "chart-only": "Chart only",
+        "converted-from-abc": "Score",
+        "generated-from-midi": "Generated from MIDI",
+        "lyrics-only": "Lyrics only",
+        "proofread-score": "Score",
+        "score": "Score",
+        "sunday-ready": "Sunday-ready"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "現在のセッションからログアウトし、{email}としてサインインします。自分のアカウントに戻るには、一度ログアウトしてから再度ログインしてください。",

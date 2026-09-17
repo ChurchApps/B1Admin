@@ -2980,7 +2980,16 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "confidence": {
+        "chart-only": "Chart only",
+        "converted-from-abc": "Score",
+        "generated-from-midi": "Generated from MIDI",
+        "lyrics-only": "Lyrics only",
+        "proofread-score": "Score",
+        "score": "Score",
+        "sunday-ready": "Sunday-ready"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "Kijelentkezel a saját munkamenetedből, és {email} felhasználóként lépsz be. A saját fiókodhoz való visszatéréshez jelentkezz ki, majd be újra.",

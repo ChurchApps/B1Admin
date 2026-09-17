@@ -2980,7 +2980,16 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "confidence": {
+        "chart-only": "Solo cifrado",
+        "converted-from-abc": "Partitura",
+        "generated-from-midi": "Generada desde MIDI",
+        "lyrics-only": "Solo letra",
+        "proofread-score": "Partitura",
+        "score": "Partitura",
+        "sunday-ready": "Lista para el domingo"
+      }
     },
     "impersonateTab": {
       "confirmMessage": "Se cerrará su sesión actual e iniciará sesión como {email}. Para volver a su cuenta, cierre sesión y vuelva a iniciarla.",
