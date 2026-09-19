@@ -3678,7 +3678,7 @@
       "title": "Accessibility"
     },
     "addPage": {
-      "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
+      "aiPlaceholder": "Example: A home page for new visitors. We are a small Baptist church outside Tahlequah with about 80 people. Sunday School 9:45, worship 11:00 with hymns and piano. Pastor Dale Whitaker has served 22 years. Food pantry open Thursdays.",
       "newLink": "New Link",
       "newPage": "New Page",
       "pageType": "Page Type"
@@ -3686,7 +3686,7 @@
     "addPageModal": {
       "aboutUs": "About Us",
       "blank": "Blank",
-      "describe": "Describe the page you want to create",
+      "describe": "Describe your church and the page you want. Real details (service times, names, ministries, who you want to reach) make the page better; nothing will be invented.",
       "donate": "Donate",
       "errAiPromptTooShort": "Please provide a detailed description (at least 10 characters).",
       "errAllSectionsFailed": "All sections failed to generate. Please try again.",
