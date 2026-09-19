@@ -1,11 +1,11 @@
 import { siteTest as test, expect } from "./helpers/test-fixtures";
 
-// Issue #1099: the "choose a section layout" dialog resolves its heading, its category
-// chips and every template name through concatenated keys, e.g.
+// The "choose a section layout" dialog resolves its heading, its category chips and every
+// template name through concatenated keys, e.g.
 // Locale.label("site.sectionTemplates." + template.key). With those keys missing from
-// en.json, Locale.label echoes the key, so the dialog lists
+// en.json, Locale.label echoes the key, so the dialog would list
 // "site.sectionTemplates.heroCentered" instead of "Centered Hero".
-test.describe("Issue #1099 - section template picker shows raw locale keys", () => {
+test.describe("Section template picker", () => {
   test("section layout dialog renders English names, not placeholder keys", async ({ page }) => {
     const editBtn = page.locator('[data-testid="edit-content-button"]').first();
     await expect(editBtn).toBeVisible({ timeout: 15000 });
