@@ -4274,12 +4274,16 @@
     },
     "pagePreview": {
       "editContent": "Edit Content",
+      "layoutCount": "Layout {current} of {total}",
+      "layoutFailed": "That layout could not be created. Please try another.",
       "loading": "Loading...",
+      "preparingLayout": "Preparing layout...",
       "pageSettings": "Page Settings",
       "previewOf": "Preview of {title}",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
       "subtitle": "Previewing: {title}",
-      "title": "Website Preview"
+      "title": "Website Preview",
+      "tryAnotherLayout": "Try another layout"
     },
     "pages": {
       "convert": "Convert"

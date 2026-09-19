@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Chip, Stack, Typography, Paper } from "@mui/material";
-import { Edit as EditIcon, Settings as SettingsIcon, Web as WebIcon } from "@mui/icons-material";
+import { Alert, Box, Button, Chip, CircularProgress, Stack, Typography, Paper } from "@mui/material";
+import { AutoAwesome as AutoAwesomeIcon, Edit as EditIcon, Settings as SettingsIcon, Web as WebIcon } from "@mui/icons-material";
 import { ApiHelper, PageHeader, Locale } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
@@ -9,6 +9,8 @@ import type { PageInterface, SiteInterface } from "../helpers/Interfaces";
 import type { LinkInterface } from "@churchapps/helpers";
 import { PageLinkEdit } from "./components/PageLinkEdit";
 import { Breadcrumbs, type BreadcrumbItem, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { getAiPageSession, toSnapshot } from "./aiPageCandidates";
+import { clearSiteCache } from "./siteCache";
 
 export const PagePreview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +21,33 @@ export const PagePreview: React.FC = () => {
   const [link, setLink] = useState<LinkInterface | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [siteSubDomain, setSiteSubDomain] = useState<string>("");
+  const aiSession = getAiPageSession(id);
+  const [aiShown, setAiShown] = useState<number>(aiSession?.shown ?? 0);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiError, setAiError] = useState(false);
+  const [previewVersion, setPreviewVersion] = useState(0);
+
+  // Swaps the page content for the next generated candidate. The candidate is only written when first asked for.
+  const handleTryAnotherLayout = async () => {
+    if (!aiSession || !id) return;
+    const next = (aiShown + 1) % aiSession.candidates.length;
+    setAiBusy(true);
+    setAiError(false);
+    try {
+      const candidate = await aiSession.load(next);
+      await ApiHelper.post("/pageHistory/restoreSnapshot", { pageId: id, snapshot: toSnapshot(id, candidate.sections || []) }, "ContentApi");
+      clearSiteCache(siteSubDomain || undefined);
+      aiSession.shown = next;
+      setAiShown(next);
+      setPreviewVersion((v) => v + 1);
+      const candidates = aiSession.candidates.map((c) => ({ layout: c.layout, layoutScore: c.layoutScore, score: c.score }));
+      ApiHelper.post("/website/feedback", { event: "switchLayout", pageType: aiSession.pageType, shown: next, candidates }, "AskApi").catch((): null => null);
+    } catch {
+      setAiError(true);
+    } finally {
+      setAiBusy(false);
+    }
+  };
 
   const loadData = () => {
     if (!id) return;
@@ -81,7 +110,7 @@ export const PagePreview: React.FC = () => {
   }
 
   const previewSubDomain = siteSubDomain || context?.userChurch?.church?.subDomain || "";
-  const previewUrl = EnvironmentHelper.B1Url.replace("{subdomain}", previewSubDomain) + pageData.url + "?t=" + Date.now();
+  const previewUrl = EnvironmentHelper.B1Url.replace("{subdomain}", previewSubDomain) + pageData.url + "?t=" + Date.now() + "&v=" + previewVersion;
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("helpers.secondaryMenuHelper.site"), path: "/site" },
@@ -121,6 +150,17 @@ export const PagePreview: React.FC = () => {
                 {Locale.label("site.pagePreview.showingPublished")}
               </Typography>
             )}
+            {aiSession && aiSession.candidates.length > 1 && (
+              <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.5} sx={{ mt: 1.5 }}>
+                <Typography variant="body2" color="text.secondary" data-testid="ai-layout-count">
+                  {Locale.label("site.pagePreview.layoutCount").replace("{current}", (aiShown + 1).toString()).replace("{total}", aiSession.candidates.length.toString())}
+                </Typography>
+                <Button size="small" variant="outlined" startIcon={aiBusy ? <CircularProgress size={14} /> : <AutoAwesomeIcon />} disabled={aiBusy} onClick={handleTryAnotherLayout} data-testid="ai-try-another-layout">
+                  {aiBusy ? Locale.label("site.pagePreview.preparingLayout") : Locale.label("site.pagePreview.tryAnotherLayout")}
+                </Button>
+              </Stack>
+            )}
+            {aiError && <Alert severity="warning" sx={{ mt: 1 }}>{Locale.label("site.pagePreview.layoutFailed")}</Alert>}
           </Box>
 
           <Box sx={{ position: "relative" }}>
