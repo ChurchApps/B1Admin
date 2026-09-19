@@ -4404,9 +4404,42 @@
       "id": "ID"
     },
     "sectionTemplates": {
+      "aboutSplit": "About Us",
       "all": "All",
       "blank": "Blank Section",
-      "switchHint": "Extra content that doesn't fit the new layout is dropped. Use undo to restore it."
+      "category": {
+        "about": "About",
+        "cta": "Call to Action",
+        "giving": "Giving",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "People",
+        "services": "Services"
+      },
+      "connectColumns": "Connect",
+      "ctaBanner": "Call to Action",
+      "faqSection": "FAQ",
+      "findUs": "Find Us",
+      "galleryRow": "Photo Gallery",
+      "givingBanner": "Giving Banner",
+      "givingOptions": "Ways to Give",
+      "groupListSection": "Group List",
+      "groupsBrowser": "Browse Groups",
+      "heroCentered": "Centered Hero",
+      "heroGradient": "Gradient Hero",
+      "heroSplit": "Split Hero",
+      "ministriesCards": "Ministries",
+      "sermonsLatest": "Latest Sermons",
+      "serviceTimes": "Service Times",
+      "staffGrid": "Meet the Team",
+      "storyColumns": "Our Story",
+      "switchHint": "Extra content that doesn't fit the new layout is dropped. Use undo to restore it.",
+      "switchTitle": "Switch Section Layout",
+      "testimony": "Testimony",
+      "title": "Choose a Section Layout",
+      "verseBanner": "Verse Banner",
+      "watchOnline": "Watch Online",
+      "welcome": "Welcome"
     },
     "sectionToolbar": {
       "aiRewrite": "AI rewrite",
