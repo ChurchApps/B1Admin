@@ -4,6 +4,7 @@ import { FormCard } from "../../components/ui";
 import { Permissions, type LinkInterface } from "@churchapps/helpers";
 import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField, Typography, CircularProgress, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { type AiCandidate, gatherChurchFacts, resolvePhotos, setAiPageSession } from "../aiPageCandidates";
 
 type Props = {
   mode: string,
@@ -97,27 +98,46 @@ export function AddPageModal(props: Props) {
 
     try {
       const church = UserHelper.currentUserChurch.church;
-      const globalStyles = await ApiHelper.get("/globalStyles", "ContentApi");
+      const [globalStyles, records, existingPages] = await Promise.all([
+        ApiHelper.get("/globalStyles", "ContentApi"),
+        gatherChurchFacts(church.id),
+        ApiHelper.get("/pages", "ContentApi").catch((): any[] => [])
+      ]);
       const palette = typeof globalStyles?.palette === "string" ? JSON.parse(globalStyles.palette || "{}") : globalStyles?.palette;
       const address = [church.address1, church.city, church.state].filter(Boolean).join(", ");
-      const request = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette } } };
+      const request = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, ...records } };
 
       // Each phase is its own request so every call stays inside the API gateway timeout.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusPlanning"));
       const plan = await ApiHelper.post("/website/planPage", request, "AskApi");
       if (!plan?.candidates?.length) throw new Error(plan?.error || Locale.label("site.addPageModal.errOutlineFailed"));
 
-      // Write every candidate layout in parallel and keep the best-scoring page.
+      // A brand-new site has no look of its own yet, so it takes the suggested palette and fonts. Existing sites keep theirs.
+      if (Array.isArray(existingPages) && existingPages.length === 0 && plan.suggestedStyle?.palette) {
+        const merged = { ...globalStyles, fonts: JSON.stringify(plan.suggestedStyle.fonts), palette: JSON.stringify({ ...palette, ...plan.suggestedStyle.palette }) };
+        await ApiHelper.post("/globalStyles", [merged], "ContentApi").catch((): null => null);
+        request.churchContext.theme = { palette: { ...palette, ...plan.suggestedStyle.palette } };
+      }
+
+      // Candidates are written lazily and memoized. The two best start now and whichever finishes first is shown;
+      // the rest wait behind "try another layout" on the preview, so an unseen layout is never paid for.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusGenerating").replace("{count}", plan.candidates[0].layout.length.toString()));
-      const written = await Promise.allSettled(plan.candidates.map((c: { layout: string[] }) => ApiHelper.post("/website/writePage", { ...request, layout: c.layout, tone: plan.tone }, "AskApi")));
-      const pages = written.flatMap((r) => (r.status === "fulfilled" && r.value?.sections?.length ? [r.value] : []));
-      if (pages.length === 0) throw new Error(Locale.label("site.addPageModal.errAllSectionsFailed"));
-      const best = pages.reduce((a, b) => (b.score > a.score ? b : a));
+      const candidates: AiCandidate[] = plan.candidates.map((c: { layout: string[]; score: number }) => ({ layout: c.layout, layoutScore: c.score }));
+      const started: Record<number, Promise<AiCandidate>> = {};
+      const load = (index: number) => (started[index] ??= (async () => {
+        const result = await ApiHelper.post("/website/writePage", { ...request, layout: candidates[index].layout, tone: plan.tone }, "AskApi");
+        if (!result?.sections?.length) throw new Error(result?.error || Locale.label("site.addPageModal.errAllSectionsFailed"));
+        candidates[index].score = result.score;
+        candidates[index].sections = await resolvePhotos(result.sections);
+        return candidates[index];
+      })());
+      const first = await Promise.any(candidates.slice(0, 2).map((_c, i) => load(i))).catch(() => { throw new Error(Locale.label("site.addPageModal.errAllSectionsFailed")); });
 
       setAiGenerationStatus(Locale.label("site.addPageModal.statusCreatingSections"));
       const title = page.title;
       const url = props.requestedSlug || SlugHelper.slugifyString("/" + title.toLowerCase().replace(/\s+/g, "-"), "urlPath") || "/untitled";
-      const savedPage = await ApiHelper.post("/pages/importTree", { title, url, layout: "headerFooter", siteId: props.siteId || undefined, sections: best.sections }, "ContentApi");
+      const savedPage = await ApiHelper.post("/pages/importTree", { title, url, layout: "headerFooter", siteId: props.siteId || undefined, sections: first.sections }, "ContentApi");
+      setAiPageSession(savedPage.id, { pageType: plan.pageType, shown: candidates.indexOf(first), candidates, load });
 
       setAiGenerationStatus(Locale.label("site.addPageModal.statusOpening"));
       props.updatedCallback();
