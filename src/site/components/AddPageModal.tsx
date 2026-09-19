@@ -105,7 +105,7 @@ export function AddPageModal(props: Props) {
       ]);
       const palette = typeof globalStyles?.palette === "string" ? JSON.parse(globalStyles.palette || "{}") : globalStyles?.palette;
       const address = [church.address1, church.city, church.state].filter(Boolean).join(", ");
-      const request = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, ...records } };
+      const request = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, resolvesPhotos: true, ...records } };
 
       // Each phase is its own request so every call stays inside the API gateway timeout.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusPlanning"));
