@@ -3685,6 +3685,7 @@
     },
     "addPageModal": {
       "aboutUs": "About Us",
+      "aiQuestionsIntro": "A few details would make this page much fuller. Answer what you can (leave the rest blank), then click Save again.",
       "blank": "Blank",
       "describe": "Describe your church and the page you want. Real details (service times, names, ministries, who you want to reach) make the page better; nothing will be invented.",
       "donate": "Donate",
@@ -4274,16 +4275,12 @@
     },
     "pagePreview": {
       "editContent": "Edit Content",
-      "layoutCount": "Layout {current} of {total}",
-      "layoutFailed": "That layout could not be created. Please try another.",
       "loading": "Loading...",
-      "preparingLayout": "Preparing layout...",
       "pageSettings": "Page Settings",
       "previewOf": "Preview of {title}",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
       "subtitle": "Previewing: {title}",
-      "title": "Website Preview",
-      "tryAnotherLayout": "Try another layout"
+      "title": "Website Preview"
     },
     "pages": {
       "convert": "Convert"
