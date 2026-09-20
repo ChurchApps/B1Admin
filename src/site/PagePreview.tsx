@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Chip, Stack, Typography, Paper } from "@mui/material";
+import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { Alert, Box, Chip, Stack, Typography, Paper } from "@mui/material";
 import { Edit as EditIcon, Settings as SettingsIcon, Web as WebIcon } from "@mui/icons-material";
 import { ApiHelper, PageHeader, Locale } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
@@ -19,6 +19,8 @@ export const PagePreview: React.FC = () => {
   const [link, setLink] = useState<LinkInterface | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [siteSubDomain, setSiteSubDomain] = useState<string>("");
+  // set by the AI page dialog: the details the writer filled in because the user did not give them
+  const [aiAssumed, setAiAssumed] = useState<string[]>((useLocation().state as { aiAssumed?: string[] } | null)?.aiAssumed || []);
 
   const loadData = () => {
     if (!id) return;
@@ -101,6 +103,12 @@ export const PagePreview: React.FC = () => {
       {showSettings && (<PageLinkEdit link={link || undefined} page={pageData} updatedCallback={handlePageUpdated} onDone={() => setShowSettings(false)} />)}
 
       <Box sx={{ p: 3 }}>
+        {aiAssumed.length > 0 && (
+          <Alert severity="info" onClose={() => setAiAssumed([])} sx={{ mb: 2 }} data-testid="ai-review-notice">
+            {Locale.label("site.pagePreview.aiReviewNotice")}
+            <ul style={{ margin: "6px 0 0", paddingLeft: 20 }}>{aiAssumed.map((d) => <li key={d}>{d}</li>)}</ul>
+          </Alert>
+        )}
         <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden", border: "1px solid", borderColor: "grey.200" }}>
           <Box sx={{ backgroundColor: "grey.50", p: 2, borderBottom: "1px solid", borderColor: "divider" }}>
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.5}>
