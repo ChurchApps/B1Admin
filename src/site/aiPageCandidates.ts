@@ -1,22 +1,6 @@
 import { ApiHelper } from "@churchapps/apphelper";
 
-// Generated page candidates live only for the current session: the Add Page dialog registers them and the page
-// preview offers "try another layout" while they are still in memory.
-
-export interface AiCandidate { layout: string[]; layoutScore: number; score?: number; sections?: any[] }
-
-interface AiPageSession {
-  pageType: string;
-  shown: number;
-  candidates: AiCandidate[];
-  // Lazily started and memoized, so a layout nobody asks to see is never paid for.
-  load: (index: number) => Promise<AiCandidate>;
-}
-
-const sessions: Record<string, AiPageSession> = {};
-
-export const setAiPageSession = (pageId: string, session: AiPageSession) => { sessions[pageId] = session; };
-export const getAiPageSession = (pageId?: string) => (pageId ? sessions[pageId] : undefined);
+// Client-side helpers for AI page generation: church records for the request, and stock photos for the result.
 
 const FALLBACK_PHOTO = "/tempLibrary/backgrounds/worship.jpg";
 
@@ -39,16 +23,6 @@ export const resolvePhotos = async (sections: any[]): Promise<any[]> => {
   }));
   terms.forEach((term, i) => { json = json.split(`pexels:${term}`).join(urls[i]); });
   return JSON.parse(json);
-};
-
-/** pageHistory/restoreSnapshot links children through ids, so give the nested tree temporary ids and parentIds. */
-export const toSnapshot = (pageId: string, sections: any[]) => {
-  let next = 0;
-  const flatten = (elements: any[], parentId?: string): any[] => (elements || []).map((e) => {
-    const id = `tmp${next++}`;
-    return { ...e, id, parentId, elements: flatten(e.elements, id) };
-  });
-  return { sections: sections.map((s) => ({ ...s, pageId, elements: flatten(s.elements) })) };
 };
 
 const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
