@@ -122,8 +122,7 @@ export function AddPageModal(props: Props) {
       // Only the best-ranked layout is written; the runner-up is a fallback if that write fails.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusGenerating").replace("{count}", plan.candidates[0].layout.length.toString()));
       // the details the request left out were decided once while planning, so every section tells the same story
-      const details: string[] = Array.isArray(plan.assumedDetails) ? plan.assumedDetails : [];
-      (request.churchContext as any).assumedDetails = details;
+      (request.churchContext as any).assumedDetails = Array.isArray(plan.assumedDetails) ? plan.assumedDetails : [];
       let first: { sections: any[] } | null = null;
       for (const candidate of plan.candidates.slice(0, 2)) {
         const result = await ApiHelper.post("/website/writePage", { ...request, layout: candidate.layout, tone: plan.tone, pageType: plan.pageType }, "AskApi").catch((): null => null);
@@ -138,8 +137,7 @@ export function AddPageModal(props: Props) {
 
       setAiGenerationStatus(Locale.label("site.addPageModal.statusOpening"));
       props.updatedCallback();
-      // the preview lists what was filled in, so the user knows exactly what to double-check
-      navigate(`/site/pages/preview/${savedPage.id}`, { state: { aiAssumed: details } });
+      navigate(`/site/pages/preview/${savedPage.id}`);
 
     } catch (error) {
       setAiErrors([(error as Error)?.message || Locale.label("site.addPageModal.errFailedGenerate")]);
