@@ -125,7 +125,7 @@ export function AddPageModal(props: Props) {
       const candidates: AiCandidate[] = plan.candidates.map((c: { layout: string[]; score: number }) => ({ layout: c.layout, layoutScore: c.score }));
       const started: Record<number, Promise<AiCandidate>> = {};
       const load = (index: number) => (started[index] ??= (async () => {
-        const result = await ApiHelper.post("/website/writePage", { ...request, layout: candidates[index].layout, tone: plan.tone }, "AskApi");
+        const result = await ApiHelper.post("/website/writePage", { ...request, layout: candidates[index].layout, tone: plan.tone, pageType: plan.pageType }, "AskApi");
         if (!result?.sections?.length) throw new Error(result?.error || Locale.label("site.addPageModal.errAllSectionsFailed"));
         candidates[index].score = result.score;
         candidates[index].sections = await resolvePhotos(result.sections);
