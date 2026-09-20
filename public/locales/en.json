@@ -3685,9 +3685,8 @@
     },
     "addPageModal": {
       "aboutUs": "About Us",
-      "aiQuestionsIntro": "A few details would make this page much fuller. Answer what you can (leave the rest blank), then click Save again.",
       "blank": "Blank",
-      "describe": "Describe your church and the page you want. Real details (service times, names, ministries, who you want to reach) make the page better; nothing will be invented.",
+      "describe": "Describe the page you want. Real details (dates, times, names, who it is for) make it better. Anything you leave out will be filled in with a reasonable guess for you to edit.",
       "donate": "Donate",
       "errAiPromptTooShort": "Please provide a detailed description (at least 10 characters).",
       "errAllSectionsFailed": "All sections failed to generate. Please try again.",
@@ -4274,6 +4273,7 @@
       "visibility": "Visibility"
     },
     "pagePreview": {
+      "aiReviewNotice": "To make this page complete, AI filled in a few details you didn't provide. Check them, and edit the page if any are wrong, before you share it:",
       "editContent": "Edit Content",
       "loading": "Loading...",
       "pageSettings": "Page Settings",

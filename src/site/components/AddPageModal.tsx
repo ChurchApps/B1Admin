@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { ErrorMessages, UserHelper, SlugHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { Permissions, type LinkInterface } from "@churchapps/helpers";
@@ -32,10 +32,6 @@ export function AddPageModal(props: Props) {
   const [aiPrompt, setAiPrompt] = useState<string>("");
   const [aiErrors, setAiErrors] = useState<string[]>([]);
   const [aiGenerationStatus, setAiGenerationStatus] = useState<string>("");
-  // null until a plan has come back; then the (possibly empty) follow-up questions for a short request
-  const [aiQuestions, setAiQuestions] = useState<{ key: string; question: string }[] | null>(null);
-  const [aiAnswers, setAiAnswers] = useState<Record<string, string>>({});
-  const aiPlan = useRef<any>(null);
 
   const handleCancel = () => props.onDone();
   const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
@@ -109,22 +105,12 @@ export function AddPageModal(props: Props) {
       ]);
       const palette = typeof globalStyles?.palette === "string" ? JSON.parse(globalStyles.palette || "{}") : globalStyles?.palette;
       const address = [church.address1, church.city, church.state].filter(Boolean).join(", ");
-      const details = (aiQuestions || []).filter((q) => aiAnswers[q.key]?.trim()).map((q) => `- ${q.question} ${aiAnswers[q.key].trim()}`);
-      const prompt = aiPrompt.trim() + (details.length > 0 ? "\n\nMore details from the church:\n" + details.join("\n") : "");
-      const request = { prompt, churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, resolvesPhotos: true, askedQuestions: aiQuestions !== null, ...records } };
+      const request = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, resolvesPhotos: true, ...records } };
 
       // Each phase is its own request so every call stays inside the API gateway timeout.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusPlanning"));
-      // the first plan is reused when the follow-up questions were left blank; new details deserve a new plan
-      const plan = (aiQuestions !== null && details.length === 0 && aiPlan.current) || await ApiHelper.post("/website/planPage", request, "AskApi");
+      const plan = await ApiHelper.post("/website/planPage", request, "AskApi");
       if (!plan?.candidates?.length) throw new Error(plan?.error || Locale.label("site.addPageModal.errOutlineFailed"));
-      aiPlan.current = plan;
-
-      // A short request makes a thin page, so offer the few questions it leaves open before writing anything.
-      if (aiQuestions === null && plan.questions?.length > 0) {
-        setAiQuestions(plan.questions);
-        return;
-      }
 
       // A brand-new site has no look of its own yet, so it takes the suggested palette and fonts. Existing sites keep theirs.
       if (Array.isArray(existingPages) && existingPages.length === 0 && plan.suggestedStyle?.palette) {
@@ -135,6 +121,9 @@ export function AddPageModal(props: Props) {
 
       // Only the best-ranked layout is written; the runner-up is a fallback if that write fails.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusGenerating").replace("{count}", plan.candidates[0].layout.length.toString()));
+      // the details the request left out were decided once while planning, so every section tells the same story
+      const details: string[] = Array.isArray(plan.assumedDetails) ? plan.assumedDetails : [];
+      (request.churchContext as any).assumedDetails = details;
       let first: { sections: any[] } | null = null;
       for (const candidate of plan.candidates.slice(0, 2)) {
         const result = await ApiHelper.post("/website/writePage", { ...request, layout: candidate.layout, tone: plan.tone, pageType: plan.pageType }, "AskApi").catch((): null => null);
@@ -149,7 +138,8 @@ export function AddPageModal(props: Props) {
 
       setAiGenerationStatus(Locale.label("site.addPageModal.statusOpening"));
       props.updatedCallback();
-      navigate(`/site/pages/preview/${savedPage.id}`);
+      // the preview lists what was filled in, so the user knows exactly what to double-check
+      navigate(`/site/pages/preview/${savedPage.id}`, { state: { aiAssumed: details } });
 
     } catch (error) {
       setAiErrors([(error as Error)?.message || Locale.label("site.addPageModal.errFailedGenerate")]);
@@ -277,14 +267,6 @@ export function AddPageModal(props: Props) {
                 disabled={isSubmitting}
                 data-testid="ai-prompt-input"
               />
-              {aiQuestions && aiQuestions.length > 0 && (
-                <Box sx={{ mt: 2 }} data-testid="ai-questions">
-                  <Typography sx={{ mb: 1, fontWeight: 500 }}>{Locale.label("site.addPageModal.aiQuestionsIntro")}</Typography>
-                  {aiQuestions.map((q) => (
-                    <TextField key={q.key} size="small" fullWidth sx={{ mb: 1.5 }} label={q.question} value={aiAnswers[q.key] || ""} onChange={(e) => setAiAnswers({ ...aiAnswers, [q.key]: e.target.value })} disabled={isSubmitting} data-testid={`ai-question-${q.key}`} />
-                  ))}
-                </Box>
-              )}
               <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
                 {Locale.label("site.addPageModal.examples")}
                 <br />• {Locale.label("site.addPageModal.exampleHomepage")}
