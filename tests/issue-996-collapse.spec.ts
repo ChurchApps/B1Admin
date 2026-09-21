@@ -109,9 +109,7 @@ test.describe("issue-996 collapse expanded actions back to a section", () => {
 
     const sectionRow = page.locator(".planItem").filter({ hasText: "Collapse Repro Section" });
     await expect(sectionRow).toHaveCount(1, { timeout: 15000 });
-    await sectionRow.click();
-
-    await page.getByRole("button", { name: "Expand to Actions" }).click();
+    await sectionRow.locator('[data-testid="fold-toggle-button"]').click();
 
     const actionOne = page.locator(".planItem").filter({ hasText: "Collapse Repro Action One" });
     const actionTwo = page.locator(".planItem").filter({ hasText: "Collapse Repro Action Two" });
@@ -119,12 +117,13 @@ test.describe("issue-996 collapse expanded actions back to a section", () => {
     await expect(actionTwo).toHaveCount(1);
     await expect(page.locator(".planItem").filter({ hasText: "Collapse Repro Section" })).toHaveCount(0);
 
-    // The bug: expansion was one-way, with no control anywhere to undo it.
-    const collapseButton = actionOne.locator('[data-testid="collapse-to-section-button"]');
-    await expect(collapseButton).toBeVisible({ timeout: 10000 });
-    await collapseButton.click();
+    // The bug: expansion was one-way, with no control anywhere to undo it. The way back now
+    // lives in the section editor (#980): fold the rows, open the section, restore it.
+    await actionOne.locator('[data-testid="fold-toggle-button"]').click();
+    await page.locator(".planItem").filter({ hasText: "Collapse Repro Section" }).click();
+    await page.locator('[data-testid="section-restore-original"]').click();
 
-    await page.locator('[data-testid="confirm-collapse-dialog"]').getByRole("button", { name: "Collapse to Section" }).click();
+    await page.locator('[data-testid="confirm-collapse-dialog"]').getByRole("button", { name: "Restore original section" }).click();
 
     await expect(page.locator(".planItem").filter({ hasText: "Collapse Repro Section" })).toHaveCount(1, { timeout: 15000 });
     await expect(actionOne).toHaveCount(0);

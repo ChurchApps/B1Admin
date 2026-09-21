@@ -11,6 +11,7 @@ export interface ProviderContentChild {
   seconds?: number;
   downloadUrl?: string;
   thumbnailUrl?: string;
+  actionType?: string;
 }
 
 export interface ProviderContent {
@@ -182,7 +183,8 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
                 description: child.content,
                 seconds: child.seconds,
                 downloadUrl: childDownloadUrl,
-                thumbnailUrl: childThumbnail
+                thumbnailUrl: childThumbnail,
+                actionType: child.actionType
               };
             });
             setContent({

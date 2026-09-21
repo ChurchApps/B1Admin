@@ -16,7 +16,7 @@ import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
 import { formatTime } from "./PlanUtils";
-import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, buildPositionLabels, type ProviderMediaInfo } from "./planItemUtils";
+import { findThumbnailRecursive, buildProviderMediaLookup, buildSectionLabels, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, buildPositionLabels, type ProviderMediaInfo, type SectionLabel } from "./planItemUtils";
 
 interface Props {
   plan: PlanInterface;
@@ -79,6 +79,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [selectedServiceTimeId, setSelectedServiceTimeId] = React.useState<string>("");
   const [showSaveTemplate, setShowSaveTemplate] = React.useState(false);
   const [mediaLookup, setMediaLookup] = React.useState<Record<string, ProviderMediaInfo>>({});
+  const [sectionLabels, setSectionLabels] = React.useState<Record<string, SectionLabel>>({});
   const [settingTimes, setSettingTimes] = React.useState(false);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [positionLabels, setPositionLabels] = React.useState<Record<string, { text: string; assigned: boolean }>>({});
@@ -325,6 +326,7 @@ export const ServiceOrder = memo((props: Props) => {
         const instructions = await getProviderInstructions(provider, contentPath, props.plan?.ministryId, currentProviderId);
 
         setMediaLookup(instructions?.items ? buildProviderMediaLookup(instructions.items) : {});
+        setSectionLabels(instructions?.items ? buildSectionLabels(instructions.items) : {});
 
         if (instructions?.items && planItems.length === 0) {
           // Convert InstructionItems to PlanItemInterface for preview with providerId and providerPath
@@ -573,6 +575,7 @@ export const ServiceOrder = memo((props: Props) => {
                   selectedServiceTimeId={selectedServiceTimeId}
                   excluded={excluded}
                   mediaLookup={mediaLookup}
+                  sectionLabels={sectionLabels}
                   positionLabels={positionLabels}
                 />
               </DraggableWrapper>
@@ -594,6 +597,7 @@ export const ServiceOrder = memo((props: Props) => {
               selectedServiceTimeId={selectedServiceTimeId}
               excluded={excluded}
               mediaLookup={mediaLookup}
+              sectionLabels={sectionLabels}
               positionLabels={positionLabels}
             />
           )}
