@@ -2236,6 +2236,8 @@
       "planItemDescriptionAria": "Plan item description",
       "planItemNameAria": "Plan item name",
       "position": "Position",
+      "positionForService": "Position for this service",
+      "sameAsDefault": "Same as above",
       "searchBoxAria": "searchBox",
       "searchFailed": "Search failed. Please try again.",
       "seconds": "Seconds"

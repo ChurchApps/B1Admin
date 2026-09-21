@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
-import { type TimeInterface, type PlanItemTimeInterface, type PositionInterface } from "@churchapps/helpers";
+import { type PlanItemInterface, type PlanItemTimeInterface, type SongDetailInterface } from "../../helpers";
+import { type TimeInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { shouldShowLabel, shouldShowDescription, shouldShowDuration, duplicatePlanItem } from "./planItemUtils";
 
@@ -14,6 +14,27 @@ interface Props {
 }
 
 const keyLabel = (shortDescription?: string, keySignature?: string) => (keySignature ? `${shortDescription || ""} (${keySignature})` : shortDescription || "");
+
+/** Per-service-time settings for one plan item: hide it, and/or show a different position for it. */
+interface TimeSettings {
+  excluded: boolean;
+  positionId?: string;
+}
+
+const buildTimeSettings = (rows: PlanItemTimeInterface[]): Record<string, TimeSettings> => {
+  const result: Record<string, TimeSettings> = {};
+  rows.forEach((row) => {
+    if (row.timeId) result[row.timeId] = { excluded: !!row.excluded, positionId: row.positionId || undefined };
+  });
+  return result;
+};
+
+/** Positions whose category is on this service time's team list come first, since that is the likely pick. */
+const sortPositionsForTime = (positions: PositionInterface[], time: TimeInterface) => {
+  const teams = (time.teams || "").split(",").map((t) => t.trim()).filter(Boolean);
+  if (teams.length === 0) return positions;
+  return [...positions].sort((a, b) => Number(teams.includes(b.categoryName || "")) - Number(teams.includes(a.categoryName || "")));
+};
 
 export const PlanItemEdit = (props: Props) => {
   const [planItem, setPlanItem] = React.useState<PlanItemInterface | null>(null);
@@ -28,7 +49,7 @@ export const PlanItemEdit = (props: Props) => {
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
   const [originalExclusions, setOriginalExclusions] = React.useState<PlanItemTimeInterface[]>([]);
-  const [excludedTimeIds, setExcludedTimeIds] = React.useState<Set<string>>(new Set());
+  const [timeSettings, setTimeSettings] = React.useState<Record<string, TimeSettings>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -59,28 +80,39 @@ export const PlanItemEdit = (props: Props) => {
       try {
         const exs: PlanItemTimeInterface[] = await ApiHelper.get("/planItemTimes/planItem/" + props.planItem.id, "DoingApi");
         setOriginalExclusions(exs || []);
-        setExcludedTimeIds(new Set((exs || []).filter((e) => e.excluded).map((e) => e.timeId || "")));
+        setTimeSettings(buildTimeSettings(exs || []));
       } catch {
         setOriginalExclusions([]);
-        setExcludedTimeIds(new Set());
+        setTimeSettings({});
       }
     } else {
       setOriginalExclusions([]);
-      setExcludedTimeIds(new Set());
+      setTimeSettings({});
     }
   }, [props.planItem]);
 
+  // A row exists for (planItem, time) only while that time is excluded or has a position override;
+  // when the editor clears both, the row is deleted so the table stays sparse.
   const persistExclusions = async (planItemId: string) => {
     if (serviceTimes.length === 0) return;
-    const originalExcludedTimeIds = new Set(originalExclusions.filter((e) => e.excluded).map((e) => e.timeId || ""));
-    const toAdd: PlanItemTimeInterface[] = [];
-    excludedTimeIds.forEach((tid) => {
-      if (!originalExcludedTimeIds.has(tid)) toAdd.push({ planItemId, timeId: tid, excluded: true });
+    const toSave: PlanItemTimeInterface[] = [];
+    const toDelete: PlanItemTimeInterface[] = [];
+    serviceTimes.forEach((st) => {
+      const timeId = st.id || "";
+      if (!timeId) return;
+      const desired = timeSettings[timeId] || { excluded: false };
+      const existing = originalExclusions.find((e) => e.timeId === timeId);
+      if (!desired.excluded && !desired.positionId) {
+        if (existing?.id) toDelete.push(existing);
+      } else if (!existing) {
+        toSave.push({ planItemId, timeId, excluded: desired.excluded, positionId: desired.positionId });
+      } else if (!!existing.excluded !== desired.excluded || (existing.positionId || undefined) !== desired.positionId) {
+        toSave.push({ id: existing.id, planItemId, timeId, excluded: desired.excluded, positionId: desired.positionId });
+      }
     });
-    const toDelete: PlanItemTimeInterface[] = originalExclusions.filter((e) => e.excluded && !excludedTimeIds.has(e.timeId || ""));
 
     const ops: Promise<any>[] = [];
-    if (toAdd.length > 0) ops.push(ApiHelper.post("/planItemTimes", toAdd, "DoingApi"));
+    if (toSave.length > 0) ops.push(ApiHelper.post("/planItemTimes", toSave, "DoingApi"));
     toDelete.forEach((e) => { if (e.id) ops.push(ApiHelper.delete("/planItemTimes/" + e.id, "DoingApi")); });
     await Promise.all(ops);
   };
@@ -100,10 +132,16 @@ export const PlanItemEdit = (props: Props) => {
   };
 
   const toggleExclusion = (timeId: string) => {
-    setExcludedTimeIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(timeId)) next.delete(timeId); else next.add(timeId);
-      return next;
+    setTimeSettings((prev) => {
+      const current = prev[timeId] || { excluded: false };
+      return { ...prev, [timeId]: { ...current, excluded: !current.excluded } };
+    });
+  };
+
+  const setTimePosition = (timeId: string, positionId: string) => {
+    setTimeSettings((prev) => {
+      const current = prev[timeId] || { excluded: false };
+      return { ...prev, [timeId]: { ...current, positionId: positionId || undefined } };
     });
   };
 
@@ -349,14 +387,36 @@ export const PlanItemEdit = (props: Props) => {
               </Typography>
               <FormGroup>
                 {serviceTimes.map((st) => {
-                  const checked = !excludedTimeIds.has(st.id || "");
+                  const timeId = st.id || "";
+                  const settings = timeSettings[timeId] || { excluded: false };
+                  const checked = !settings.excluded;
                   const label = st.startTime ? `${st.displayName || ""} · ${new Date(st.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : (st.displayName || "");
+                  const timePositions = sortPositionsForTime(props.positions || [], st);
                   return (
-                    <FormControlLabel
-                      key={st.id}
-                      control={<Checkbox checked={checked} onChange={() => toggleExclusion(st.id || "")} data-testid={`include-service-${st.id}`} />}
-                      label={label}
-                    />
+                    <Stack key={st.id} className="serviceTimeSettingRow" direction="row" alignItems="center" spacing={1}>
+                      <FormControlLabel
+                        sx={{ flex: 1, mr: 0 }}
+                        control={<Checkbox checked={checked} onChange={() => toggleExclusion(timeId)} data-testid={`include-service-${timeId}`} />}
+                        label={label}
+                      />
+                      {checked && timePositions.length > 0 && (
+                        <FormControl size="small" sx={{ minWidth: 190 }}>
+                          <InputLabel id={`positionFor-${timeId}-label`}>{Locale.label("plans.planItemEdit.positionForService")}</InputLabel>
+                          <Select
+                            labelId={`positionFor-${timeId}-label`}
+                            label={Locale.label("plans.planItemEdit.positionForService")}
+                            value={timePositions.some((pos) => pos.id === settings.positionId) ? settings.positionId || "" : ""}
+                            onChange={(e) => setTimePosition(timeId, e.target.value)}
+                            data-testid={`position-for-service-${timeId}`}
+                          >
+                            <MenuItem value="">{Locale.label("plans.planItemEdit.sameAsDefault")}</MenuItem>
+                            {timePositions.map((pos) => (
+                              <MenuItem key={pos.id} value={pos.id}>{pos.categoryName ? `${pos.categoryName} - ${pos.name}` : pos.name}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    </Stack>
                   );
                 })}
               </FormGroup>

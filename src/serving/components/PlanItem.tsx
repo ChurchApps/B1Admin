@@ -1,10 +1,10 @@
 import React from "react";
 import { Menu, MenuItem } from "@mui/material";
 import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
-import { type PlanItemInterface } from "../../helpers";
+import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
-import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
+import { type TimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
@@ -198,6 +198,16 @@ export const PlanItem = React.memo((props: Props) => {
     }
   };
 
+  // A planItemTimes row may override which position this item shows for the service time
+  // being viewed; fall back to the item's own position when there is no override.
+  const effectivePositionId = React.useMemo(() => {
+    if (!props.selectedServiceTimeId) return props.planItem.positionId;
+    const override = (props.exclusions || []).find((ex) => ex.planItemId === props.planItem.id && ex.timeId === props.selectedServiceTimeId);
+    return override?.positionId || props.planItem.positionId;
+  }, [props.exclusions, props.selectedServiceTimeId, props.planItem.id, props.planItem.positionId]);
+
+  const positionLabel = effectivePositionId ? props.positionLabels?.[effectivePositionId] : undefined;
+
   const isChildExcluded = (childId: string): boolean => {
     if (!props.selectedServiceTimeId) return false;
     return (props.exclusions || []).some((ex) => ex.planItemId === childId && ex.timeId === props.selectedServiceTimeId && ex.excluded);
@@ -252,7 +262,7 @@ export const PlanItem = React.memo((props: Props) => {
       serviceStartTime={props.serviceTime?.startTime}
       readOnly={props.readOnly}
       excluded={props.excluded}
-      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
+      positionLabel={positionLabel}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       selectMode={selecting}
@@ -290,7 +300,7 @@ export const PlanItem = React.memo((props: Props) => {
       onSaveDescription={handleSaveDescription}
       onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
-      positionLabel={props.planItem.positionId ? props.positionLabels?.[props.planItem.positionId] : undefined}
+      positionLabel={positionLabel}
       selectable={props.selectable}
       selected={props.selected}
       onToggleSelect={props.onToggleSelect}
