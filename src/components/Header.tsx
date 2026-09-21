@@ -44,12 +44,7 @@ export const Header: React.FC = () => {
     if (canViewPlans) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
     else menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
 
-    if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) menuItems.push({ url: "/sermons", label: Locale.label("common.sermons"), icon: "live_tv" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/site/pages", label: Locale.label("common.website"), icon: "language" });
-    if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
-    if (UserHelper.checkAccess(Permissions.contentApi.content.edit) || UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
-    if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
-    else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
     // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
     return menuItems;
   }, [donationError, formPermission, isFormMember, isMinistryMember]);
@@ -90,7 +85,7 @@ export const Header: React.FC = () => {
   useEffect(() => {
     const addTestIds = () => {
       const urlToTestId: Record<string, string> = {
-        "/": "nav-item-quick-actions",
+        "/": "nav-item-dashboard",
         "/dashboard": "nav-item-dashboard",
         "/people": "nav-item-people",
         "/groups": "nav-item-groups",
@@ -126,6 +121,7 @@ export const Header: React.FC = () => {
         if (text) {
           const textToTestId: Record<string, string> = {
             dashboard: "nav-item-dashboard",
+            sunday: "nav-item-dashboard",
             people: "nav-item-people",
             groups: "nav-item-groups",
             donations: "nav-item-donations",

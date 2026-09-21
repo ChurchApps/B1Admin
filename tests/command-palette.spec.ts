@@ -12,6 +12,16 @@ test.describe("Command palette", () => {
     await expect(page).toHaveURL(/\/donations$/);
   });
 
+  test("tasks alias opens My Work", async ({ page }) => {
+    await page.goto("/");
+    await page.getByTestId("command-palette-open").click();
+    const palette = page.getByTestId("command-palette");
+    await palette.getByRole("textbox").fill("tasks");
+    await expect(palette.getByRole("button", { name: /My Work/ })).toBeVisible();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/serving\/tasks/);
+  });
+
   test("Ctrl+K finds a person and Escape closes", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("command-palette-open")).toBeVisible();

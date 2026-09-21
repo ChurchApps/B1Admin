@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSettings, navigateToRoles, navigateToForms } from "./helpers/navigation";
+import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -188,13 +188,7 @@ test.describe.serial("Settings Management", () => {
     test.describe.configure({ retries: 0 });
 
     test.beforeEach(async () => {
-      // Navigate via primary nav (Mobile is not in settings secondary menu).
-      const menuBtn = page.locator('[id="primaryNavButton"]').getByText("expand_more");
-      await menuBtn.click();
-      const mobileLink = page.locator('[data-testid="nav-item-mobile"]');
-      await expect(mobileLink).toBeVisible({ timeout: 10000 });
-      await mobileLink.click();
-      await expect(page).toHaveURL(/\/mobile/);
+      await navigateTo(page, "mobile");
       await expect(page.locator("button").getByText("Add Tab")).toBeVisible({ timeout: 10000 });
     });
 

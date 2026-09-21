@@ -6,16 +6,16 @@ import { navigateTo, openPrimaryNav } from "./helpers/navigation";
 // defined in helpers/navigation.ts so any addition there gets a smoke test here.
 //
 // Primary nav items for the demo user (from Header.tsx primaryMenu):
-//   Dashboard, People, Donations, Serving, Sermons, Website, Mobile, Settings.
-// Tasks is intentionally a SECONDARY item under Serving for users with plans
-// access (the demo user); the primary "Tasks" entry only renders for users
-// without plans access.
+//   Sunday, People, Donations, Serving, Website.
+// Sermons, Calendars, Mobile, Settings are reached via the command palette.
+// Tasks is a SECONDARY item under Serving (and also on Sunday's secondary bar).
 // Server Admin is gated on Permissions.membershipApi.server.admin and is not
 // available to the demo user, so it is not exercised here.
 test.describe("Primary Navigation", () => {
-  test("opens Dashboard", async ({ page }) => {
+  test("opens Sunday", async ({ page }) => {
     await navigateTo(page, "dashboard");
     await expect(page).toHaveURL(/\/dashboard|\/$/);
+    await expect(page.getByTestId("sunday-home")).toBeVisible();
   });
 
   test("opens People", async ({ page }) => {

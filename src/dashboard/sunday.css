@@ -1,0 +1,267 @@
+.om-sunday {
+  --om-ink: #333333;
+  --om-mute: #666666;
+  --om-line: #dddddd;
+  --om-accent: #1565C0;
+  --om-live: #2e7d32;
+  --om-guest: #ed6c02;
+  --om-lift: #e5e8ee;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  width: 100%;
+  color: var(--om-ink);
+  background: #fff;
+  border: 1px solid var(--om-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.om-sunday.has-live {
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+}
+
+.om-bulletin {
+  padding: 32px 36px 40px;
+  position: relative;
+}
+
+.om-sunday.has-live .om-bulletin {
+  border-right: 1px solid var(--om-line);
+}
+
+.om-bulletin::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 32px;
+  bottom: 40px;
+  width: 2px;
+  background: var(--om-accent);
+}
+
+.om-eyebrow {
+  color: var(--om-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0 0 10px;
+}
+
+.om-sermon {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+
+.om-sermon a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.om-sermon a:hover {
+  color: var(--om-accent);
+}
+
+.om-series {
+  color: var(--om-mute);
+  margin: 0 0 28px;
+}
+
+.om-order {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.om-order li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 16px;
+  padding: 11px 0;
+  border-top: 1px solid var(--om-line);
+  font-size: 1.02rem;
+}
+
+.om-order li:last-child {
+  border-bottom: 1px solid var(--om-line);
+}
+
+.om-mm {
+  color: var(--om-mute);
+  font-variant-numeric: tabular-nums;
+}
+
+.om-order .now .om-mm,
+.om-order .now .om-what {
+  color: var(--om-live);
+}
+
+.om-live {
+  padding: 32px 36px 40px;
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.om-in-room {
+  font-size: 4.2rem;
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.om-in-room span {
+  display: block;
+  font-size: 0.85rem;
+  letter-spacing: 0;
+  color: var(--om-mute);
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.om-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--om-live);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.om-pulse i {
+  width: 8px;
+  height: 8px;
+  background: var(--om-live);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .om-pulse i { animation: om-pulse 2.2s ease-in-out infinite; }
+}
+
+@keyframes om-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.om-split {
+  color: var(--om-mute);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin: 8px 0 0;
+}
+
+.om-sunday h3 {
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--om-mute);
+  margin: 0 0 12px;
+}
+
+.om-people {
+  display: grid;
+  gap: 0;
+}
+
+.om-person {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--om-line);
+  font-size: 0.98rem;
+}
+
+.om-person:last-child { border-bottom: 0; }
+
+.om-person a {
+  color: var(--om-accent);
+  text-decoration: none;
+}
+
+.om-person a:hover { text-decoration: underline; }
+
+.om-role { color: var(--om-mute); }
+
+.om-guests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.om-chip {
+  border: 1px solid var(--om-line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  color: var(--om-ink);
+  text-decoration: none;
+}
+
+.om-chip.first {
+  border-color: var(--om-guest);
+  color: var(--om-guest);
+}
+
+.om-rooms {
+  display: grid;
+  gap: 12px;
+}
+
+.om-room {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.om-bar {
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--om-lift);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.om-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--om-accent);
+}
+
+.om-quiet {
+  color: var(--om-mute);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 28em;
+  margin: 0;
+}
+
+.om-quiet a {
+  color: var(--om-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.om-quiet a:hover { text-decoration: underline; }
+
+@media (max-width: 899px) {
+  .om-sunday.has-live { grid-template-columns: 1fr; }
+  .om-sunday.has-live .om-bulletin {
+    border-right: 0;
+    border-bottom: 1px solid var(--om-line);
+  }
+  .om-bulletin,
+  .om-live { padding: 24px 20px 32px; }
+  .om-bulletin::before { top: 24px; bottom: 32px; }
+  .om-sermon { font-size: 1.85rem; }
+  .om-in-room { font-size: 3.2rem; }
+}

@@ -81,13 +81,38 @@ const SECONDARY_ROUTES: Record<
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 
+const PALETTE_PRIMARY: Partial<Record<PrimarySection, string>> = {
+  sermons: "Sermons",
+  calendars: "Calendars",
+  mobile: "Mobile",
+  settings: "Settings"
+};
+
 export async function openPrimaryNav(page: Page) {
   const menuBtn = page.locator("#primaryNavButton");
   await menuBtn.waitFor({ state: "visible", timeout: 15000 });
   await menuBtn.click();
 }
 
+async function jumpTo(page: Page, name: string, url: RegExp) {
+  const open = page.getByTestId("command-palette-open");
+  if (await open.isVisible()) await open.click();
+  else await page.keyboard.press("Control+k");
+  const palette = page.getByTestId("command-palette");
+  await palette.waitFor({ state: "visible", timeout: 10000 });
+  await palette.getByRole("textbox").fill(name);
+  const hit = palette.getByRole("button", { name: new RegExp("^" + name + "\\b") }).first();
+  await hit.waitFor({ state: "visible", timeout: 10000 });
+  await hit.click();
+  await page.waitForURL(url, { timeout: 15000 });
+}
+
 async function clickPrimary(page: Page, section: PrimarySection) {
+  const paletteName = PALETTE_PRIMARY[section];
+  if (paletteName) {
+    await jumpTo(page, paletteName, PRIMARY_URL_PATTERNS[section]);
+    return;
+  }
   await openPrimaryNav(page);
   const item = page.locator(`.MuiListItemButton-root[data-testid="nav-item-${section}"]`);
   await item.waitFor({ state: "visible", timeout: 10000 });

@@ -43,6 +43,6 @@ anonTest.describe("Login landing", () => {
     await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 30000 });
     await expect(page).toHaveURL(/\/$|\/\?/);
     await expect(page).not.toHaveURL(/\/people/);
-    await expect(page.getByText("Welcome to B1.church!")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("sunday-home")).toBeVisible({ timeout: 15000 });
   });
 });

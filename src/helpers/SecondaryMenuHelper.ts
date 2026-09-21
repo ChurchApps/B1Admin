@@ -138,7 +138,8 @@ export class SecondaryMenuHelper {
   static getDashboardMenu = () => {
     const menuItems: MenuItem[] = [];
     const label: string = Locale.label("components.wrapper.dash");
-    menuItems.push({ url: "/", label, icon: "dashboard" });
+    menuItems.push({ url: "/", label, icon: "home" });
+    menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.myWork"), icon: "list_alt" });
 
     return { menuItems, label };
   };

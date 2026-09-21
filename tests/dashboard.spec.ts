@@ -1,20 +1,15 @@
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
-// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
-test.describe("Dashboard Management", () => {
+test.describe("Sunday home", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/dashboard");
-    // Wait for the dashboard to render (welcome greeting — now a paragraph, not a heading).
-    await expect(page.getByText(/Welcome to/).first()).toBeVisible({ timeout: 15000 });
-    // Wait for the People search card to render — it's the first thing in the main column.
-    await expect(page.locator("#searchText")).toBeVisible({ timeout: 15000 });
+    await page.goto("/");
+    await expect(page.getByTestId("sunday-home")).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[data-testid="add-task-button"]')).toBeVisible({ timeout: 15000 });
   });
 
-  test("should render dashboard widgets", async ({ page }) => {
-    await expect(page.locator("#searchText")).toBeVisible();
-    await expect(page.locator('[data-testid="dashboard-search-button"]')).toBeVisible();
-    await expect(page.locator('[data-testid="dashboard-search-button"]')).toBeDisabled();
-
+  test("should render sunday, groups, and tasks", async ({ page }) => {
+    await expect(page.getByTestId("sunday-home")).toBeVisible();
+    await expect(page.locator("#searchText")).toHaveCount(0);
     await expect(page.locator('[data-testid="add-task-button"]')).toBeVisible();
 
     const groupLinks = page.locator('a[href^="/groups/GRP"]');
@@ -22,66 +17,25 @@ test.describe("Dashboard Management", () => {
     expect(await groupLinks.count()).toBeGreaterThan(0);
   });
 
+  test("My Work from Sunday opens tasks", async ({ page }) => {
+    const myWork = page.locator('[id="secondaryMenu"]').getByText("My Work", { exact: true }).first();
+    await expect(myWork).toBeVisible({ timeout: 10000 });
+    await myWork.click();
+    await expect(page).toHaveURL(/\/serving\/tasks/, { timeout: 10000 });
+  });
+
   test("should load group from dashboard", async ({ page }) => {
-    // Click the actual group link rather than the nested h6 — h6 may have
-    // pointer-events suppressed inside the MUI ListItemButton.
     const firstGroupLink = page.locator('a[href^="/groups/GRP"]').first();
     await expect(firstGroupLink).toBeVisible({ timeout: 10000 });
     await firstGroupLink.click();
     await expect(page).toHaveURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000 });
   });
 
-  test("should search people from dashboard", async ({ page }) => {
-    const searchBox = page.locator("#searchText");
-    await searchBox.fill("Dorothy Jackson");
-    const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
-    await expect(searchBtn).toBeEnabled();
-    await searchBtn.click();
-    const results = page.getByRole("link", { name: "Dorothy Jackson" }).first();
-    await expect(results).toBeVisible({ timeout: 10000 });
-    await results.click();
-    await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000 });
-    await expect(page.getByRole("heading", { name: "Dorothy Jackson" }).first()).toBeVisible();
-  });
-
-  test("should show empty state when no people match search", async ({ page }) => {
-    const searchBox = page.locator("#searchText");
-    await searchBox.fill("Zacchaeus-NoSuchPerson");
-    const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
-    await searchBtn.click();
-    await expect(page.getByText("No people found matching your search criteria.")).toBeVisible({ timeout: 10000 });
-  });
-
-  test("should clear the people search", async ({ page }) => {
-    const searchBox = page.locator("#searchText");
-    const clearBtn = page.locator('[data-testid="dashboard-clear-button"]');
-    // Hidden while the field is empty
-    await expect(clearBtn).toHaveCount(0);
-    // Appears once there is text
-    await searchBox.fill("Dorothy Jackson");
-    await expect(clearBtn).toBeVisible();
-    // Run the search, then clear it
-    await page.locator('[data-testid="dashboard-search-button"]').click();
-    await expect(page.getByRole("link", { name: "Dorothy Jackson" }).first()).toBeVisible({ timeout: 10000 });
-    await clearBtn.click();
-    // Input, button, and results all reset
-    await expect(searchBox).toHaveValue("");
-    await expect(clearBtn).toHaveCount(0);
-    await expect(page.getByRole("link", { name: "Dorothy Jackson" })).toHaveCount(0);
-  });
-
   test.describe.serial("Dashboard Task lifecycle", () => {
     test("should add task from dashboard", async ({ page }) => {
-      // Note: this spec runs in parallel with serving-songs-tasks.spec, which also
-      // creates a task assigned to Demo User. We use a distinct name here so the
-      // two specs don't collide on count assertions. We also can't assert on the
-      // "No tasks found" empty state for the same reason.
-
       const addBtn = page.locator('[data-testid="add-task-button"]');
       await addBtn.click();
 
-      // Use the data-testid for the assignee field rather than input.nth(2),
-      // which depends on the order/count of inputs on the page.
       const assignInput = page.locator('[data-testid="assign-to-input"]');
       await expect(assignInput).toBeVisible({ timeout: 10000 });
       await assignInput.click();
@@ -90,7 +44,6 @@ test.describe("Dashboard Management", () => {
       await personSearch.fill("Demo User");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      // Result rows render an icon-only AppIconButton (aria-label "Select").
       const selectBtn = page.locator('[data-testid^="add-person-"]').first();
       await selectBtn.click();
 
@@ -103,8 +56,6 @@ test.describe("Dashboard Management", () => {
       await expect(saveBtn).toBeVisible();
       await saveBtn.click();
 
-      // The dashboard TaskList is tabbed; the new task is assigned to Demo User,
-      // so it shows under the active "Assigned to Me" tab → 1 link copy.
       const validatedTask = page.locator("a").getByText("Dashboard Task");
       await expect(validatedTask).toHaveCount(1, { timeout: 15000 });
     });
@@ -126,5 +77,4 @@ test.describe("Dashboard Management", () => {
     await cancelBtn.click();
     await expect(assignInput).toHaveCount(0, { timeout: 10000 });
   });
-
 });

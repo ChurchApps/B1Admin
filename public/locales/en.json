@@ -496,7 +496,7 @@
     },
     "wrapper": {
       "att": "Attendance",
-      "dash": "Dashboard",
+      "dash": "Sunday",
       "don": "Donations",
       "forms": "Forms",
       "groups": "Groups",
@@ -540,7 +540,21 @@
       "yourProfile": "Your Profile"
     },
     "dashboardPage": {
-      "dash": "Dashboard"
+      "dash": "Sunday"
+    },
+    "sunday": {
+      "firstTime": "First time",
+      "firstTimeLastSunday": "First time last Sunday",
+      "inTheRoom": "in the room",
+      "lastSunday": "Last Sunday",
+      "live": "Live",
+      "noOrder": "No order of service on this plan.",
+      "noPlan": "No service planned this week.",
+      "rooms": "Rooms",
+      "servingSunday": "Serving Sunday",
+      "servingThisHour": "Serving this hour",
+      "thisSunday": "This Sunday",
+      "thisWeeksService": "This week's service will live here."
     },
     "memberWelcome": {
       "downloadAppTitle": "Download the Mobile App",
