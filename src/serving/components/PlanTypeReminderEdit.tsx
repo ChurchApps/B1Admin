@@ -30,11 +30,11 @@ interface Props {
 }
 
 const OFFSET_PRESETS = [
-  { key: "days7", minutes: 10080 },
-  { key: "days3", minutes: 4320 },
-  { key: "days2", minutes: 2880 },
-  { key: "day1", minutes: 1440 },
-  { key: "dayOf", minutes: 0 }
+  { minutes: 10080, label: () => Locale.label("plans.planTypeReminders.days7") },
+  { minutes: 4320, label: () => Locale.label("plans.planTypeReminders.days3") },
+  { minutes: 2880, label: () => Locale.label("plans.planTypeReminders.days2") },
+  { minutes: 1440, label: () => Locale.label("plans.planTypeReminders.day1") },
+  { minutes: 0, label: () => Locale.label("plans.planTypeReminders.dayOf") }
 ] as const;
 const MAX_OFFSETS = 3;
 
@@ -90,28 +90,26 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
     }
   };
 
-  const l = (k: string) => Locale.label("plans.planTypeReminders." + k);
-
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography variant="subtitle1" fontWeight={600}>{l("title")}</Typography>
+        <Typography variant="subtitle1" fontWeight={600}>{Locale.label("plans.planTypeReminders.title")}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Stack spacing={2}>
           <FormControlLabel
             control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSaved(false); }} data-testid="plan-type-reminder-enabled-toggle" />}
-            label={l("enable")}
+            label={Locale.label("plans.planTypeReminders.enable")}
           />
           {enabled && (
             <>
               <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{l("when")}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("plans.planTypeReminders.when")}</Typography>
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {OFFSET_PRESETS.map((p) => (
                     <Chip
                       key={p.minutes}
-                      label={l(p.key)}
+                      label={p.label()}
                       clickable
                       color={offsets.includes(p.minutes) ? "primary" : "default"}
                       onClick={() => toggleOffset(p.minutes)}
@@ -122,7 +120,7 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
                 </Stack>
               </Box>
               <TextField
-                label={l("timeOfDay")}
+                label={Locale.label("plans.planTypeReminders.timeOfDay")}
                 type="time"
                 value={sendLocalTime}
                 onChange={(e) => setSendLocalTime(e.target.value)}
@@ -132,17 +130,17 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
                 data-testid="plan-type-reminder-time-input"
               />
               <TextField
-                label={l("message")}
+                label={Locale.label("plans.planTypeReminders.message")}
                 multiline
                 minRows={2}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                helperText={l("messageHint")}
+                helperText={Locale.label("plans.planTypeReminders.messageHint")}
                 size="small"
                 data-testid="plan-type-reminder-message-input"
               />
               <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>{l("channels")}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>{Locale.label("plans.planTypeReminders.channels")}</Typography>
                 <Stack direction="row">
                   <FormControlLabel control={<Checkbox checked={channels.includes("push")} onChange={() => toggleChannel("push")} size="small" data-testid="plan-type-reminder-channel-push" />} label="Push" />
                   <FormControlLabel control={<Checkbox checked={channels.includes("email")} onChange={() => toggleChannel("email")} size="small" data-testid="plan-type-reminder-channel-email" />} label="Email" />
@@ -152,9 +150,9 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
           )}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
             <Button variant="contained" size="small" onClick={handleSave} disabled={saving || (enabled && offsets.length === 0)} data-testid="plan-type-reminder-save-button">
-              {saving ? Locale.label("common.saving") : l("save")}
+              {saving ? Locale.label("common.saving") : Locale.label("plans.planTypeReminders.save")}
             </Button>
-            {saved && <Typography variant="body2" color="success.main">{l("saved")}</Typography>}
+            {saved && <Typography variant="body2" color="success.main">{Locale.label("plans.planTypeReminders.saved")}</Typography>}
           </Box>
         </Stack>
       </AccordionDetails>

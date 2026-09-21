@@ -375,6 +375,15 @@
       }
     },
     "custom": "Custom",
+    "days": {
+      "friday": "Friday",
+      "monday": "Monday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "thursday": "Thursday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday"
+    },
     "delete": "Delete",
     "done": "Done",
     "duplicate": "Duplicate",
@@ -875,6 +884,13 @@
       "editPledge": "Edit Pledge",
       "errAmount": "Enter a pledge amount greater than zero",
       "errPerson": "Select a person"
+    },
+    "pledgeStatus": {
+      "beyondPledged": "Beyond Pledged",
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "nonPledged": "Non-Pledged",
+      "notStarted": "Not Started"
     },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
@@ -2331,6 +2347,22 @@
       "planType": "Plan Type",
       "subtitle": "Configure plan type settings"
     },
+    "planTypeReminders": {
+      "channels": "Send By",
+      "day1": "1 day before",
+      "dayOf": "Day of",
+      "days2": "2 days before",
+      "days3": "3 days before",
+      "days7": "7 days before",
+      "enable": "Send reminders for plans of this type",
+      "message": "Message",
+      "messageHint": "Optional. Leave blank to use the default reminder wording.",
+      "save": "Save Reminders",
+      "saved": "Saved",
+      "timeOfDay": "Time of Day",
+      "title": "Reminders",
+      "when": "When should reminders go out?"
+    },
     "planValidation": {
       "and": "and",
       "between": "between",
@@ -2623,6 +2655,7 @@
       "paid": "Paid",
       "paidTotal": "Paid / Total",
       "payments": "Payments",
+      "total": "Total",
       "percent": "Percent",
       "price": "Price",
       "promote": "Promote",
@@ -2641,6 +2674,10 @@
       "addAttendeeError": "Failed to register attendee",
       "cancelConfirm": "Cancel this registration?",
       "cancelRegistration": "Cancel Registration",
+      "csvDate": "Date",
+      "csvMembers": "Members",
+      "csvName": "Name",
+      "csvStatus": "Status",
       "date": "Date",
       "deleteConfirm": "Permanently delete this registration?",
       "eventFull": "This event is at capacity.",

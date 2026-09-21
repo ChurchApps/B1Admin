@@ -276,7 +276,7 @@ test.describe("Attendance Management", () => {
       await page.locator('button[role="tab"]').getByText("Headcount Trend", { exact: true }).click();
       const reportRows = page.locator('[id="reportsBox"] table tr');
       await expect(reportRows.first()).toBeVisible({ timeout: 15000 });
-      await expect(page.locator('[id="reportsBox"] table')).toContainText("137", { timeout: 10000 });
+      await expect(page.locator('[id="reportsBox"]')).toContainText("137", { timeout: 10000 });
 
       // Filtering to the service time keeps the total; the report reads the denormalized serviceTimeId.
       const timeName = page.locator('[id="mui-component-select-serviceTimeId"]');
@@ -284,7 +284,7 @@ test.describe("Attendance Management", () => {
       await timeName.click();
       await page.locator("li").getByText("10:30 AM Service").click();
       await page.locator("button").getByText("Run Report").click();
-      await expect(page.locator('[id="reportsBox"] table')).toContainText("137", { timeout: 10000 });
+      await expect(page.locator('[id="reportsBox"]')).toContainText("137", { timeout: 10000 });
     });
 
     test("should edit the headcount", async () => {

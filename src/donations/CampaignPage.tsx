@@ -18,6 +18,17 @@ const statusColors: Record<PledgeStatus, "default" | "info" | "success" | "warni
   nonPledged: "warning"
 };
 
+const pledgeStatusLabel = (status: PledgeStatus | undefined) => {
+  switch (status) {
+    case "notStarted": return Locale.label("donations.pledgeStatus.notStarted");
+    case "inProgress": return Locale.label("donations.pledgeStatus.inProgress");
+    case "fulfilled": return Locale.label("donations.pledgeStatus.fulfilled");
+    case "beyondPledged": return Locale.label("donations.pledgeStatus.beyondPledged");
+    case "nonPledged": return Locale.label("donations.pledgeStatus.nonPledged");
+    default: return status || "";
+  }
+};
+
 export const CampaignPage = () => {
   const params = useParams();
   const [editMode, setEditMode] = React.useState<"none" | "campaign" | "pledge">("none");
@@ -119,7 +130,7 @@ export const CampaignPage = () => {
           <TableCell align="right"><Typography variant="body2">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</Typography></TableCell>
           <TableCell align="right"><Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</Typography></TableCell>
           <TableCell>
-            <Chip size="small" label={Locale.label("donations.pledgeStatus." + row.status)} color={(row.status && statusColors[row.status]) || "default"} data-testid={`pledge-status-${i}`} />
+            <Chip size="small" label={pledgeStatusLabel(row.status)} color={(row.status && statusColors[row.status]) || "default"} data-testid={`pledge-status-${i}`} />
           </TableCell>
           <TableCell align="right" className="rowActions">
             {canEdit && row.pledgeId && <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => handleEditPledge(row)} data-testid={`edit-pledge-${i}`} />}

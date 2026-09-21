@@ -37,7 +37,7 @@ test.describe("issue-996 serving dialogs scroll their content", () => {
   test("the lesson children list adds no clipping container of its own", () => {
     const source = read("serving/components/LessonDialog.tsx");
     const childrenBranch = source.slice(source.indexOf("if (hasChildren)"), source.indexOf("plans.lessonDialog.previewUnavailable"));
-    expect(childrenBranch, "children branch not located").toContain("ContentItemRow");
+    expect(childrenBranch, "children branch not located").toContain("content.children");
     expect(childrenBranch).not.toMatch(/overflow(Y)?:\s*["']hidden["']/);
     expect(childrenBranch).not.toMatch(/maxHeight/);
   });

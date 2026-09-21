@@ -10,6 +10,7 @@ export const AppDatePicker = forwardRef((props: TextFieldProps, ref: any) => {
       InputLabelProps={{ shrink: true, ...InputLabelProps }}
       inputRef={ref || inputRef}
       {...rest}
+      value={rest.value ?? ""}
     />
   );
 });

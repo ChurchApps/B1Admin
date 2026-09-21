@@ -384,7 +384,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
 
-      const searchBtn = page.locator("button").getByText("Search");
+      const searchBtn = page.getByRole("button", { name: "Search", exact: true });
       await searchBtn.click();
       const searchInput = page.locator('input[type="text"]').last();
       await searchInput.fill("Amazing Grace");
@@ -490,7 +490,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
 
     test("select all on a filtered list bulk-deletes just those songs", async () => {
       await openSongs();
-      await page.locator("button").getByText("Search").click();
+      await page.getByRole("button", { name: "Search", exact: true }).click();
       const searchInput = page.locator('input[type="text"]').last();
       await searchInput.fill(BULK_SEARCH);
       await expect(rowCheckboxes()).toHaveCount(2, { timeout: 10000 });

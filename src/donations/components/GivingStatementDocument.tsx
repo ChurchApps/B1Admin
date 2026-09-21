@@ -1,6 +1,17 @@
 import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type ChurchInterface, type PersonInterface } from "@churchapps/helpers";
-import { type PledgeProgressRowInterface } from "../../helpers";
+import { type PledgeProgressRowInterface, type PledgeStatus } from "../../helpers";
+
+const pledgeStatusLabel = (status: PledgeStatus | undefined) => {
+  switch (status) {
+    case "notStarted": return Locale.label("donations.pledgeStatus.notStarted");
+    case "inProgress": return Locale.label("donations.pledgeStatus.inProgress");
+    case "fulfilled": return Locale.label("donations.pledgeStatus.fulfilled");
+    case "beyondPledged": return Locale.label("donations.pledgeStatus.beyondPledged");
+    case "nonPledged": return Locale.label("donations.pledgeStatus.nonPledged");
+    default: return status || "";
+  }
+};
 
 interface FundTotal {
   fund: string | undefined;
@@ -475,7 +486,7 @@ export const GivingStatementDocument = (props: Props) => {
                     <td className="table-cell">{row.campaignName}</td>
                     <td className="table-cell align-right">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</td>
                     <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</td>
-                    <td className="table-cell">{Locale.label("donations.pledgeStatus." + row.status)}</td>
+                    <td className="table-cell">{pledgeStatusLabel(row.status)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -40,7 +40,7 @@ async function auditSearch(page: Page, filters: { module?: string; category?: st
   if (filters.module) await selectMuiOption(page, "Module", filters.module);
   if (filters.category) await selectMuiOption(page, "Category", filters.category);
   const resp = page.waitForResponse((r) => r.url().includes("/auditlogs") && r.request().method() === "GET" && r.status() === 200, { timeout: 15000 });
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
   await resp;
 }
 

@@ -168,17 +168,16 @@ export const RegistrationDetailsPage = () => {
       }
     }));
 
-    const L = (k: string) => Locale.label("registrations." + k);
     const header = [
-      L("registrationDetailsPage.csvName"),
-      L("registrationDetailsPage.csvMembers"),
-      L("commerce.attendeeTypes"),
-      L("commerce.selections"),
-      L("commerce.paid"),
-      L("commerce.total"),
-      L("commerce.balance"),
-      L("registrationDetailsPage.csvStatus"),
-      L("registrationDetailsPage.csvDate"),
+      Locale.label("registrations.registrationDetailsPage.csvName"),
+      Locale.label("registrations.registrationDetailsPage.csvMembers"),
+      Locale.label("registrations.commerce.attendeeTypes"),
+      Locale.label("registrations.commerce.selections"),
+      Locale.label("registrations.commerce.paid"),
+      Locale.label("registrations.commerce.total"),
+      Locale.label("registrations.commerce.balance"),
+      Locale.label("registrations.registrationDetailsPage.csvStatus"),
+      Locale.label("registrations.registrationDetailsPage.csvDate"),
       ...questionTitles
     ];
     const rows = [header];
