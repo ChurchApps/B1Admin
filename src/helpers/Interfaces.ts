@@ -160,6 +160,16 @@ export interface PlanItemInterface {
   children?: PlanItemInterface[];
 }
 
+/** Local copy of the helpers interface, widened with the per-service position override. */
+export interface PlanItemTimeInterface {
+  id?: string;
+  churchId?: string;
+  planItemId?: string;
+  timeId?: string;
+  excluded?: boolean;
+  positionId?: string;
+}
+
 export interface PlanTypeInterface {
   id?: string;
   churchId?: string;

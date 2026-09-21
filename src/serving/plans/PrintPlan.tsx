@@ -2,9 +2,9 @@ import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loadi
 import { Box, Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { type PlanItemInterface } from "../../helpers";
+import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
 import { formatClockTime } from "../components/PlanUtils";
-import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
+import { type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
@@ -241,6 +241,26 @@ export const PrintPlan = () => {
 
   const positionLabels = React.useMemo(() => buildPositionLabels(positions, assignments, people), [positions, assignments, people]);
 
+  // An item can point at a different position per service time, so the printed sheet shows every
+  // distinct name it resolves to across the services it appears in (ChurchAppsSupport#1045).
+  const getPositionText = (pi: PlanItemInterface): string => {
+    if (!plan?.showVolunteerNames) return "";
+    const texts: string[] = [];
+    const add = (positionId?: string) => {
+      const text = positionId ? positionLabels[positionId]?.text : "";
+      if (text && !texts.includes(text)) texts.push(text);
+    };
+    if (serviceTimes.length === 0) add(pi.positionId);
+    else {
+      serviceTimes.forEach((st) => {
+        if (isExcluded(pi.id || "", st.id || "")) return;
+        const override = exclusions.find((ex) => ex.planItemId === pi.id && ex.timeId === st.id);
+        add(override?.positionId || pi.positionId);
+      });
+    }
+    return texts.join(" / ");
+  };
+
   // Per-column accumulators are mutated as the recursive renderer walks the tree.
   // Single-column fallback uses index 0; multi-column uses one entry per service time.
   const renderRows = () => {
@@ -272,8 +292,8 @@ export const PrintPlan = () => {
               {timeCells}
               <td style={Styles.tableCell}>
                 <b>{pi.label}:</b> {pi.description}
-                {plan?.showVolunteerNames && pi.positionId && positionLabels[pi.positionId]?.text && (
-                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{positionLabels[pi.positionId].text}</span>
+                {getPositionText(pi) && (
+                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{getPositionText(pi)}</span>
                 )}
               </td>
               <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
@@ -283,7 +303,7 @@ export const PrintPlan = () => {
           // Section headers span every column so the printed sheet shows where each part of
           // the service begins and who leads it (ChurchAppsSupport#1086).
           const columnCount = (serviceTimes.length || 1) + 2;
-          const positionText = plan?.showVolunteerNames && pi.positionId ? positionLabels[pi.positionId]?.text : "";
+          const positionText = getPositionText(pi);
           rows.push(
             <tr key={pi.id} className="printSectionRow">
               <td colSpan={columnCount} style={{ ...Styles.tableCell, fontWeight: "bold", fontSize: "1.1em", borderTop: "2px solid #000", paddingTop: 8 }}>
