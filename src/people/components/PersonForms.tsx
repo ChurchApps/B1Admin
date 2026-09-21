@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Box, Card, Grid, List, ListItemButton, Stack, Typography } from "@mui/material";
+import { Box, Card, Chip, Grid, List, ListItemButton, Stack, Typography } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
   RadioButtonUnchecked as EmptyCircleIcon,
@@ -29,6 +29,12 @@ interface Props {
   updatedFunction: () => void;
 }
 
+const submissionTime = (fs: FormSubmissionInterface) => (fs.submissionDate ? new Date(fs.submissionDate).getTime() : 0);
+
+// Details are cached per submission, since the same form can hold several of them.
+// Forms with nothing submitted yet cache their blank question list under the form id.
+const detailKey = (formId: string, submissionId?: string) => (submissionId ? `fs-${submissionId}` : `form-${formId}`);
+
 // The "Forms" tab: a list of the person's person-contentType forms with a completion
 // dot each, plus the selected form's view/edit pane. Replaces the old profile left rail.
 export const PersonForms: React.FC<Props> = (props) => {
@@ -36,6 +42,8 @@ export const PersonForms: React.FC<Props> = (props) => {
   const [details, setDetails] = useState<Record<string, FormDetail>>({});
   const [selectedFormId, setSelectedFormId] = useState<string>("");
   const [editingFormId, setEditingFormId] = useState<string>("");
+  // Per form, which of its submissions is on screen. Absent means "the newest one".
+  const [selectedSubmissionIds, setSelectedSubmissionIds] = useState<Record<string, string>>({});
   const contentId = person?.id;
   const printRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: `${forms.find((f) => f.id === selectedFormId)?.name || "Form"} - ${person?.name?.display || ""}` });
@@ -45,17 +53,35 @@ export const PersonForms: React.FC<Props> = (props) => {
     [person?.formSubmissions]
   );
 
-  const submissionByFormId = useMemo(() => {
-    const map: Record<string, FormSubmissionInterface> = {};
-    personFormSubmissions.forEach((fs) => { if (fs.formId) map[fs.formId] = fs; });
+  // A person can fill the same form out more than once, so every submission is kept.
+  // Keying by form id alone used to drop all but the last one the Api happened to return.
+  const submissionsByFormId = useMemo(() => {
+    const map: Record<string, FormSubmissionInterface[]> = {};
+    personFormSubmissions.forEach((fs) => {
+      if (!fs.formId) return;
+      (map[fs.formId] ||= []).push(fs);
+    });
+    // Newest first, so the pane opens on the most recent submission whatever order the Api sent.
+    Object.values(map).forEach((list) => list.sort((a, b) => submissionTime(b) - submissionTime(a)));
     return map;
   }, [personFormSubmissions]);
+
+  const selectedSubmissionFor = (formId: string) => {
+    const submissions = submissionsByFormId[formId] || [];
+    return submissions.find((fs) => fs.id === selectedSubmissionIds[formId]) || submissions[0];
+  };
 
   useEffect(() => {
     if (forms.length > 0 && !forms.some((f) => f.id === selectedFormId)) setSelectedFormId(forms[0].id);
   }, [forms, selectedFormId]);
 
-  // Load questions + answers for each form; submitted forms return answers, unsubmitted return blank questions.
+  // The person reloads after a submission is saved, and an edit keeps the same submission
+  // id, so the cache has to be dropped here rather than served for a stale answer set.
+  useEffect(() => { setDetails({}); }, [personFormSubmissions]);
+
+  // Load questions + answers for the submission on screen for each form; submitted forms
+  // return answers, unsubmitted return blank questions. Switching between two submissions
+  // of the same form fetches the other one once and then reads it from the cache.
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -63,23 +89,30 @@ export const PersonForms: React.FC<Props> = (props) => {
         setDetails({});
         return;
       }
-      const entries = await Promise.all(forms.map(async (form): Promise<[string, FormDetail]> => {
-        const submission = submissionByFormId[form.id];
+      const wanted = forms.map((form) => {
+        const submission = selectedSubmissionFor(form.id);
+        return { form, submission, key: detailKey(form.id, submission?.id) };
+      }).filter(({ key }) => !details[key]);
+      if (wanted.length === 0) return;
+
+      const entries = await Promise.all(wanted.map(async ({ form, submission, key }): Promise<[string, FormDetail]> => {
         if (submission) {
           const detail = await ApiHelper.get(`/formsubmissions/${submission.id}/?include=questions,answers`, "MembershipApi");
-          return [form.id, { questions: detail?.questions || [], answers: detail?.answers || [] }];
+          return [key, { questions: detail?.questions || [], answers: detail?.answers || [] }];
         }
         const questions = await ApiHelper.get(`/questions/?formId=${form.id}`, "MembershipApi");
-        return [form.id, { questions: questions || [], answers: [] }];
+        return [key, { questions: questions || [], answers: [] }];
       }));
       if (cancelled) return;
-      const map: Record<string, FormDetail> = {};
-      entries.forEach(([id, detail]) => { map[id] = detail; });
-      setDetails(map);
+      setDetails((prev) => {
+        const map = { ...prev };
+        entries.forEach(([key, detail]) => { map[key] = detail; });
+        return map;
+      });
     };
     void load();
     return () => { cancelled = true; };
-  }, [forms, submissionByFormId]);
+  }, [forms, submissionsByFormId, selectedSubmissionIds, details]);
 
   const handleSaved = () => {
     setEditingFormId("");
@@ -121,8 +154,30 @@ export const PersonForms: React.FC<Props> = (props) => {
     );
   };
 
+  // One chip per submission when the person filled the same form out more than once,
+  // so the earlier ones are reachable instead of hidden behind the newest.
+  const renderSubmissionPicker = (form: PersonFormOption, submissions: FormSubmissionInterface[], selected: FormSubmissionInterface | undefined) => {
+    if (submissions.length < 2) return null;
+    return (
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 2 }} className="no-print" data-testid="submission-picker">
+        {submissions.map((fs, index) => (
+          <Chip
+            key={fs.id}
+            size="small"
+            data-testid={`submission-option-${index}`}
+            label={fs.submissionDate ? DateHelper.prettyDate(new Date(fs.submissionDate)) : `#${submissions.length - index}`}
+            color={fs.id === selected?.id ? "primary" : "default"}
+            variant={fs.id === selected?.id ? "filled" : "outlined"}
+            onClick={() => setSelectedSubmissionIds((prev) => ({ ...prev, [form.id]: fs.id || "" }))}
+          />
+        ))}
+      </Stack>
+    );
+  };
+
   const renderFormPane = (form: PersonFormOption) => {
-    const submission = submissionByFormId[form.id];
+    const submissions = submissionsByFormId[form.id] || [];
+    const submission = selectedSubmissionFor(form.id);
     const headerText = form.name || Locale.label("people.personForm.form") || "Form";
     if (editingFormId === form.id) {
       return (
@@ -152,6 +207,7 @@ export const PersonForms: React.FC<Props> = (props) => {
       <DisplayBox headerText={headerText} headerIcon="description" editContent={actions}>
         <div ref={printRef}>
           <PrintStyles />
+          {renderSubmissionPicker(form, submissions, submission)}
           {submission && (
             <Box className="print-only" sx={{ mb: 2 }}>
               <Typography variant="h5" sx={{ fontWeight: 600 }}>{headerText}</Typography>
@@ -159,7 +215,7 @@ export const PersonForms: React.FC<Props> = (props) => {
               {submission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(submission.submissionDate))}</Typography>}
             </Box>
           )}
-          {renderFields(submission, details[form.id])}
+          {renderFields(submission, details[detailKey(form.id, submission?.id)])}
         </div>
       </DisplayBox>
     );
@@ -182,7 +238,7 @@ export const PersonForms: React.FC<Props> = (props) => {
                 <Typography sx={{ flex: 1, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {form.name || Locale.label("people.personForm.form") || "Form"}
                 </Typography>
-                {submissionByFormId[form.id]
+                {(submissionsByFormId[form.id]?.length || 0) > 0
                   ? <CheckCircleIcon sx={{ fontSize: 18, color: "success.main" }} />
                   : <EmptyCircleIcon sx={{ fontSize: 18, color: "text.disabled" }} />}
               </ListItemButton>
