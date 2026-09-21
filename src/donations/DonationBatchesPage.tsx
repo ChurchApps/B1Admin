@@ -18,7 +18,8 @@ export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
   const [currency, setCurrency] = React.useState<string>("usd");
 
-  const batches = useQuery<DonationBatchInterface[]>({
+  // Each batch's totalAmount arrives already converted into the church currency by the Api, so they can be added up.
+  const batches = useQuery<(DonationBatchInterface & { isConverted?: boolean })[]>({
     queryKey: ["/donationbatches", "GivingApi"],
     placeholderData: []
   });
@@ -116,7 +117,7 @@ export const DonationBatchesPage = () => {
             </Stack>
           </TableCell>
           <TableCell align="right">
-            <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
+            <Typography variant="body2" data-testid="batch-row-total" sx={{ fontWeight: 600, color: "success.main" }}>
               {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}
             </Typography>
           </TableCell>
@@ -180,7 +181,11 @@ export const DonationBatchesPage = () => {
               items={[
                 { icon: <DonationIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalBatches, label: Locale.label("donations.donationBatchesPage.batches"), minWidth: 80 },
                 { icon: <Icon sx={{ color: "#FFF", fontSize: 24 }}>receipt</Icon>, value: stats.totalDonations, label: Locale.label("donations.donationBatchesPage.donations"), minWidth: 80 },
-                { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.donationBatchesPage.totalAmount") }
+                {
+                  value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0),
+                  label: Locale.label("donations.donationBatchesPage.totalAmount"),
+                  note: batches.data?.some((b) => b.isConverted) ? Locale.label("donations.donations.convertedNote") : undefined
+                }
               ]}
             />
           )}

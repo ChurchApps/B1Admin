@@ -48,6 +48,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
   const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
+  const [rates, setRates] = React.useState<Record<string, number>>({});
 
   // Memoize permission check to avoid repeated calls
   const canEdit = React.useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
@@ -67,8 +68,11 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     Promise.all([
       ApiHelper.get("/donations?batchId=" + batch?.id, "GivingApi"),
       // ponytail: fetches every fundDonation for the church and filters client-side (matches BatchGivingStatementsPage's existing pattern); add a batchId-filtered endpoint if this gets slow
-      ApiHelper.get("/fundDonations", "GivingApi")
-    ]).then(([donationsData, fundDonationsData]: [DonationInterface[], FundDonationInterface[]]) => {
+      ApiHelper.get("/fundDonations", "GivingApi"),
+      // Server-owned exchange rates for the church currency; the total row converts gifts made in other currencies.
+      ApiHelper.get("/donations/exchange-rates", "GivingApi").catch(() => null)
+    ]).then(([donationsData, fundDonationsData, rateTable]: [DonationInterface[], FundDonationInterface[], { rates?: Record<string, number> } | null]) => {
+      setRates(rateTable?.rates || {});
       setFundDonations(fundDonationsData || []);
       populatePeople(donationsData);
     });
@@ -99,8 +103,16 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   // Memoize the total calculation to avoid recalculating on every render
   const donationsTotal = React.useMemo(() => {
     if (!donations || donations.length === 0) return 0;
-    return donations.reduce((sum, donation) => sum + ((donation as any).status === "refunded" ? 0 : donation.amount || 0), 0);
-  }, [donations]);
+    return donations.reduce((sum, donation) => {
+      if ((donation as any).status === "refunded") return sum;
+      return sum + CurrencyHelper.convertAmount(donation.amount || 0, donation.currency || currency, currency, rates);
+    }, 0);
+  }, [donations, currency, rates]);
+
+  const isConverted = React.useMemo(
+    () => (donations || []).some((d) => d.currency && d.currency.toLowerCase() !== currency.toLowerCase() && !!rates[d.currency.toUpperCase()]),
+    [donations, currency, rates]
+  );
 
   const getTableHeader = React.useCallback(() => {
     if (props.funds.length === 0 || !donations || donations.length === 0) {
@@ -181,7 +193,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : isRefunded ? "text.disabled" : "success.main", textDecoration: isRefunded ? "line-through" : undefined }}>
-              {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
+              {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}
             </Typography>
           </TableCell>
           {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}
@@ -206,13 +218,14 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "success.main" }}>
             {CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}
           </Typography>
+          {isConverted && <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>{Locale.label("donations.donations.convertedNote")}</Typography>}
         </TableCell>
         {canEdit && <TableCell></TableCell>}
       </TableRow>
     );
 
     return rows;
-  }, [donations, props.funds.length, canEdit, showEditDonation, donationsTotal]);
+  }, [donations, props.funds.length, canEdit, showEditDonation, donationsTotal, isConverted, currency]);
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.batch?.id)) loadData();
