@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "返回",
       "close": "关闭",
+      "editHint": "使用 × 可从您的计划中移除任何内容，或点击任何文本以重新编写。原始内容永远不会更改。",
       "fallbackTitle": "课程部分",
       "noPreviewItem": "此项目无可用预览。",
-      "previewUnavailable": "此部分无可用预览。"
+      "previewUnavailable": "此部分无可用预览。",
+      "putBack": "放回",
+      "restoreSection": "还原原始部分",
+      "restoreSectionConfirm": "要将此部分还原为课程原本的写法吗？您在其中移除或重新编写的所有内容都会被撤销。",
+      "restoreText": "已编辑 — 还原原始文字",
+      "takeOut": "从我的计划中移除",
+      "text": "文本"
     },
     "lessonHeaderSelector": {
       "description": "选择要添加到计划中的标题或部分。其子项将作为计划项添加。",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "添加项目",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "持续时间",
       "editItem": "编辑项目",
       "editSection": "编辑部分",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "展开为操作",
       "externalItem": "外部项目",
+      "hideRows": "折叠回一行",
       "item": "物品",
+      "itemsCount": "{count} 个项目",
+      "itemsOfTotal": "共 {total} 个项目中的 {count} 个",
       "restoreOriginal": "Restore Original",
-      "song": "歌曲",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "显示为单独的行",
+      "song": "歌曲"
     },
     "planItemEdit": {
       "confirmDelete": "确认删除",

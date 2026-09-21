@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Назад",
       "close": "Затвори",
+      "editHint": "Користите × да бисте уклонили нешто из свог плана, или кликните на било који текст да га преформулишете. Оригинал се никада не мења.",
       "fallbackTitle": "Део лекције",
       "noPreviewItem": "Преглед није доступан за ову ставку.",
-      "previewUnavailable": "Преглед није доступан за овај део."
+      "previewUnavailable": "Преглед није доступан за овај део.",
+      "putBack": "Врати назад",
+      "restoreSection": "Врати оригиналну секцију",
+      "restoreSectionConfirm": "Вратити ову секцију онако како ју је написала лекција? Све што сте уклонили или преформулисали у њој биће поништено.",
+      "restoreText": "Измењено — врати оригиналну формулацију",
+      "takeOut": "Уклони из мог плана",
+      "text": "Текст"
     },
     "lessonHeaderSelector": {
       "description": "Изаберите заглавље или део за додавање у план. Његова деца ће бити додата као ставке плана.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Додај ставку",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Трајање",
       "editItem": "Уреди ставку",
       "editSection": "Уреди део",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Прошири на акције",
       "externalItem": "Спољна ставка",
+      "hideRows": "Врати назад у један ред",
       "item": "Ставка",
+      "itemsCount": "{count} ставки",
+      "itemsOfTotal": "{count} од {total} ставки",
       "restoreOriginal": "Restore Original",
-      "song": "Песма",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Прикажи као засебне редове",
+      "song": "Песма"
     },
     "planItemEdit": {
       "confirmDelete": "Потврди брисање",

@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Terug",
       "close": "Sluiten",
+      "editHint": "Gebruik × om iets uit je plan te verwijderen, of klik op tekst om deze te herschrijven. Het origineel wordt nooit gewijzigd.",
       "fallbackTitle": "Lesgedeelte",
       "noPreviewItem": "Geen voorbeeld beschikbaar voor dit item.",
-      "previewUnavailable": "Voorbeeld niet beschikbaar voor dit gedeelte."
+      "previewUnavailable": "Voorbeeld niet beschikbaar voor dit gedeelte.",
+      "putBack": "Terugzetten",
+      "restoreSection": "Oorspronkelijke sectie herstellen",
+      "restoreSectionConfirm": "Deze sectie terugzetten zoals de les hem schreef? Alles wat je eruit hebt gehaald of herschreven, wordt ongedaan gemaakt.",
+      "restoreText": "Bewerkt — oorspronkelijke tekst herstellen",
+      "takeOut": "Uit mijn plan verwijderen",
+      "text": "Tekst"
     },
     "lessonHeaderSelector": {
       "description": "Selecteer een kop of sectie om aan uw plan toe te voegen. De onderliggende items worden toegevoegd als planitems.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Item toevoegen",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Duur",
       "editItem": "Item bewerken",
       "editSection": "Sectie bewerken",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Uitvouwen naar acties",
       "externalItem": "Extern item",
+      "hideRows": "Weer samenvoegen tot één rij",
       "item": "Item",
+      "itemsCount": "{count} items",
+      "itemsOfTotal": "{count} van {total} items",
       "restoreOriginal": "Restore Original",
-      "song": "Lied",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Als aparte rijen weergeven",
+      "song": "Lied"
     },
     "planItemEdit": {
       "confirmDelete": "Verwijderen bevestigen",

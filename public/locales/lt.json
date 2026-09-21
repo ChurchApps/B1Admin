@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Atgal",
       "close": "Uždaryti",
+      "editHint": "Naudokite ×, kad ką nors pašalintumėte iš savo plano, arba spustelėkite bet kurį tekstą, kad jį perrašytumėte. Originalas niekada nekeičiamas.",
       "fallbackTitle": "Pamokos skiltis",
       "noPreviewItem": "Nėra šios prekės peržiūros.",
-      "previewUnavailable": "Šios skilties peržiūra neprieinama."
+      "previewUnavailable": "Šios skilties peržiūra neprieinama.",
+      "putBack": "Grąžinti",
+      "restoreSection": "Atkurti originalią skiltį",
+      "restoreSectionConfirm": "Grąžinti šią skiltį tokią, kokią parašė pamoka? Viskas, ką pašalinote ar perrašėte joje, bus anuliuota.",
+      "restoreText": "Redaguota — atkurti originalų tekstą",
+      "takeOut": "Pašalinti iš mano plano",
+      "text": "Tekstas"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Trukmė",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Sulankstyti atgal į vieną eilutę",
       "item": "Item",
+      "itemsCount": "{count} elementų",
+      "itemsOfTotal": "{count} iš {total} elementų",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Rodyti kaip atskiras eilutes",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Patvirtinti panaikinimą",

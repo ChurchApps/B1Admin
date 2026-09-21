@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "뒤로",
       "close": "닫기",
+      "editHint": "×를 사용해 계획에서 항목을 제거하거나, 텍스트를 클릭해 다시 작성하세요. 원본은 절대 변경되지 않습니다.",
       "fallbackTitle": "수업 섹션",
       "noPreviewItem": "이 항목에 대한 미리 보기를 사용할 수 없습니다.",
-      "previewUnavailable": "이 섹션에 대한 미리 보기를 사용할 수 없습니다."
+      "previewUnavailable": "이 섹션에 대한 미리 보기를 사용할 수 없습니다.",
+      "putBack": "다시 넣기",
+      "restoreSection": "원래 섹션으로 복원",
+      "restoreSectionConfirm": "이 섹션을 수업에 작성된 대로 되돌리시겠습니까? 제거하거나 다시 작성한 내용이 모두 취소됩니다.",
+      "restoreText": "수정됨 — 원본 문구로 복원",
+      "takeOut": "내 계획에서 제거",
+      "text": "텍스트"
     },
     "lessonHeaderSelector": {
       "description": "플랜에 추가할 헤더 또는 섹션을 선택하세요. 하위 항목이 플랜 항목으로 추가됩니다.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "항목 추가",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "지속 시간",
       "editItem": "항목 편집",
       "editSection": "섹션 편집",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "작업으로 확장",
       "externalItem": "외부 항목",
+      "hideRows": "한 행으로 다시 접기",
       "item": "목",
+      "itemsCount": "{count}개 항목",
+      "itemsOfTotal": "{total}개 중 {count}개",
       "restoreOriginal": "Restore Original",
-      "song": "노래",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "별도의 행으로 표시",
+      "song": "노래"
     },
     "planItemEdit": {
       "confirmDelete": "삭제 확인",

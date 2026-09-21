@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "वापस",
       "close": "बंद करें",
+      "editHint": "अपनी योजना से कुछ भी हटाने के लिए × का उपयोग करें, या किसी भी टेक्स्ट को दोबारा लिखने के लिए उस पर क्लिक करें। मूल कभी नहीं बदलता।",
       "fallbackTitle": "पाठ अनुभाग",
       "noPreviewItem": "इस आइटम के लिए कोई पूर्वावलोकन उपलब्ध नहीं है।",
-      "previewUnavailable": "इस अनुभाग के लिए पूर्वावलोकन उपलब्ध नहीं है।"
+      "previewUnavailable": "इस अनुभाग के लिए पूर्वावलोकन उपलब्ध नहीं है।",
+      "putBack": "वापस रखें",
+      "restoreSection": "मूल अनुभाग पुनर्स्थापित करें",
+      "restoreSectionConfirm": "इस अनुभाग को वैसा ही वापस करें जैसा पाठ में लिखा था? इसमें आपके द्वारा हटाया या दोबारा लिखा गया सब कुछ पूर्ववत हो जाएगा।",
+      "restoreText": "संपादित — मूल शब्दांकन पुनर्स्थापित करें",
+      "takeOut": "मेरी योजना से हटाएं",
+      "text": "टेक्स्ट"
     },
     "lessonHeaderSelector": {
       "description": "अपनी योजना में जोड़ने के लिए एक शीर्षक या अनुभाग चुनें। इसके चाइल्ड आइटम योजना आइटम के रूप में जोड़े जाएंगे।",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "आइटम जोड़ें",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "अवधि",
       "editItem": "आइटम संपादित करें",
       "editSection": "अनुभाग संपादित करें",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "क्रियाओं में विस्तार करें",
       "externalItem": "बाहरी आइटम",
+      "hideRows": "एक पंक्ति में वापस मोड़ें",
       "item": "वस्तु",
+      "itemsCount": "{count} आइटम",
+      "itemsOfTotal": "{total} में से {count} आइटम",
       "restoreOriginal": "Restore Original",
-      "song": "गाना",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "अलग-अलग पंक्तियों के रूप में दिखाएं",
+      "song": "गाना"
     },
     "planItemEdit": {
       "confirmDelete": "हटाने की पुष्टि करें",
