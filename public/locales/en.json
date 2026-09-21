@@ -2143,9 +2143,16 @@
     "lessonDialog": {
       "back": "Back",
       "close": "Close",
+      "editHint": "Use × to take anything out of your plan, or click any text to reword it. The original is never changed.",
       "fallbackTitle": "Lesson Section",
       "noPreviewItem": "No preview available for this item.",
-      "previewUnavailable": "Preview not available for this section."
+      "previewUnavailable": "Preview not available for this section.",
+      "putBack": "Put back",
+      "restoreSection": "Restore original section",
+      "restoreSectionConfirm": "Put this section back the way the lesson wrote it? Anything you took out or reworded in it will be undone.",
+      "restoreText": "Edited — restore original wording",
+      "takeOut": "Take out of my plan",
+      "text": "Text"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2202,8 +2209,6 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
       "doneSelecting": "Done selecting",
@@ -2211,13 +2216,16 @@
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Fold back into one row",
       "item": "Item",
+      "itemsCount": "{count} items",
+      "itemsOfTotal": "{count} of {total} items",
       "restoreOriginal": "Restore Original",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
       "selectItems": "Select Items",
+      "showRows": "Show as separate rows",
       "song": "Song"
     },
     "planItemEdit": {

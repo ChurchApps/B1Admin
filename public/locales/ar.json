@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "رجوع",
       "close": "إغلاق",
+      "editHint": "استخدم × لإزالة أي شيء من خطتك، أو انقر على أي نص لإعادة صياغته. الأصل لا يتغير أبدًا.",
       "fallbackTitle": "قسم الدرس",
       "noPreviewItem": "لا توجد معاينة لهذا العنصر.",
-      "previewUnavailable": "المعاينة غير متاحة لهذا القسم."
+      "previewUnavailable": "المعاينة غير متاحة لهذا القسم.",
+      "putBack": "إعادة",
+      "restoreSection": "استعادة القسم الأصلي",
+      "restoreSectionConfirm": "هل تريد إعادة هذا القسم كما كتبه الدرس؟ سيتم التراجع عن كل ما أزلته أو أعدت صياغته فيه.",
+      "restoreText": "معدّل — استعادة الصياغة الأصلية",
+      "takeOut": "إزالة من خطتي",
+      "text": "النص"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "المدة",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "دمج في صف واحد",
       "item": "Item",
+      "itemsCount": "{count} عناصر",
+      "itemsOfTotal": "{count} من {total} عناصر",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "عرض كصفوف منفصلة",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",

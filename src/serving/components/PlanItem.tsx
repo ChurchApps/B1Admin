@@ -8,13 +8,15 @@ import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/help
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, type ProviderMediaInfo } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, duplicatePlanItem, findExpandedRuns, getExpandedSectionPath, buildSectionLabels, type ProviderMediaInfo, type SectionLabel } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { type ProviderItemSelection } from "./ActionSelectorHelpers";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
 import { usePlanItemExpand } from "./planItem/usePlanItemExpand";
 import { useConfirmDelete } from "../../hooks";
+import { useQuery } from "@tanstack/react-query";
+import { type Instructions } from "@churchapps/content-providers";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -35,6 +37,12 @@ interface Props {
   /** Set on the first item of a run of actions expanded from one section, enabling the collapse control. */
   collapseItems?: PlanItemInterface[];
   positionLabels?: Record<string, { text: string; assigned: boolean }>;
+  sectionLabels?: Record<string, SectionLabel>;
+  /** Tells the parent this section was deliberately expanded, so its rows stay visible instead of folding. */
+  onExpanded?: (runKey: string) => void;
+  /** This item starts an expanded run that is shown as one section row; the rest of the run is hidden. */
+  folded?: boolean;
+  onToggleFold?: () => void;
   /** Set by the parent section while it is in bulk-select mode. */
   selectable?: boolean;
   selected?: boolean;
@@ -50,7 +58,7 @@ export const PlanItem = React.memo((props: Props) => {
   const open = Boolean(anchorEl);
 
   // Use the expand hook for section expansion functionality
-  const { handleExpandToActions, canCollapse, handleCollapseToSection, handleSaveDescription, handleRestoreOriginal } = usePlanItemExpand({
+  const { canExpand, handleExpandToActions, canCollapse, handleCollapseToSection, handleSaveDescription, handleRestoreOriginal, handleSaveSectionEdits } = usePlanItemExpand({
     planItem: props.planItem,
     associatedProviderId: props.associatedProviderId,
     associatedContentPath: props.associatedContentPath,
@@ -111,9 +119,9 @@ export const PlanItem = React.memo((props: Props) => {
 
   const showCollapse = canCollapse && !props.readOnly;
   const handleCollapseClick = async () => {
-    const confirmed = await confirm(Locale.label("plans.planItem.collapseToSectionConfirm"), {
-      title: Locale.label("plans.planItem.collapseToSection"),
-      confirmLabel: Locale.label("plans.planItem.collapseToSection"),
+    const confirmed = await confirm(Locale.label("plans.lessonDialog.restoreSectionConfirm"), {
+      title: Locale.label("plans.lessonDialog.restoreSection"),
+      confirmLabel: Locale.label("plans.lessonDialog.restoreSection"),
       "data-testid": "confirm-collapse-dialog"
     });
     if (confirmed) await handleCollapseToSection();
@@ -174,15 +182,31 @@ export const PlanItem = React.memo((props: Props) => {
       };
     });
     await ApiHelper.post("/planItems", newPlanItems, "DoingApi");
+    // Items the user just picked one by one stay visible rather than folding under their section.
+    newPlanItems.forEach((pi) => toggleFold(runKey(pi), true));
     if (props.onChange) props.onChange();
   };
 
-  const handleDrop = (data: any, sort: number) => {
-    const pi = data.data as PlanItemInterface;
+  const handleDrop = async (data: any, sort: number) => {
+    const pi = { ...data.data } as PlanItemInterface & { runItems?: PlanItemInterface[] };
+    // A folded section moves as a block: park the rest of its rows just after the first, then renumber once.
+    const rest = (pi.runItems || []).slice(1).map((r, i) => ({ ...r, parentId: props.planItem.id, sort: sort + (i + 1) * 0.001 }));
+    delete pi.runItems;
     pi.sort = sort;
     pi.parentId = props.planItem.id;
-    ApiHelper.post("/planItems/sort", pi, "DoingApi").then(() => {
-      if (props.onChange) props.onChange();
+    if (rest.length > 0) await ApiHelper.post("/planItems", rest, "DoingApi");
+    await ApiHelper.post("/planItems/sort", pi, "DoingApi");
+    if (props.onChange) props.onChange();
+  };
+
+  const [unfolded, setUnfolded] = React.useState<Set<string>>(new Set());
+  const runKey = (pi: PlanItemInterface) => `${pi.providerPath}|${getExpandedSectionPath(pi)}`;
+  const toggleFold = (key: string, forceOpen?: boolean) => {
+    setUnfolded((prev) => {
+      const next = new Set(prev);
+      if (next.has(key) && !forceOpen) next.delete(key);
+      else next.add(key);
+      return next;
     });
   };
 
@@ -211,11 +235,19 @@ export const PlanItem = React.memo((props: Props) => {
   const getChildren = () => {
     const result: JSX.Element[] = [];
     let cumulativeTime = props.startTime || 0;
+    const hidden = new Set<string>();
     props.planItem.children?.forEach((c, index) => {
       const childStartTime = cumulativeTime;
       const childExcluded = Boolean(props.excluded || isChildExcluded(c.id || ""));
+      if (hidden.has(c.id || "")) {
+        if (!childExcluded) cumulativeTime += estimateSeconds(c, props.mediaLookup);
+        return;
+      }
+      const run = expandedRuns.get(c.id || "");
+      const folded = !!run && !selecting && !unfolded.has(runKey(run[0]));
+      if (run && folded) run.slice(1).forEach((r) => hidden.add(r.id || ""));
       const childPlanItem = (
-        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} collapseItems={expandedRuns.get(c.id || "")} positionLabels={props.positionLabels} selectable={selecting && !!c.id && c.itemType !== "header"} selected={!!c.id && selected.has(c.id)} onToggleSelect={c.id ? () => toggleSelected(c.id as string) : undefined} />
+        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} sectionLabels={props.sectionLabels} collapseItems={run} folded={folded} onToggleFold={run ? () => toggleFold(runKey(run[0])) : undefined} onExpanded={(key) => toggleFold(key, true)} positionLabels={props.positionLabels} selectable={selecting && !!c.id && c.itemType !== "header"} selected={!!c.id && selected.has(c.id)} onToggleSelect={c.id ? () => toggleSelected(c.id as string) : undefined} />
       );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
@@ -229,7 +261,7 @@ export const PlanItem = React.memo((props: Props) => {
               }}>
               <DraggableWrapper
                 dndType="planItem"
-                data={c}
+                data={folded ? { ...c, runItems: run } : c}
                 handleClassName="dragHandle"
                 draggingCallback={(isDragging) => {
                   if (props.onDragChange) props.onDragChange(isDragging);
@@ -276,9 +308,44 @@ export const PlanItem = React.memo((props: Props) => {
     </PlanItemHeader>
   );
 
+  const runItems = props.collapseItems || [];
+  const runSectionPath = runItems.length > 0 ? getExpandedSectionPath(runItems[0]) : null;
+  const isFolded = !!props.folded && !!runSectionPath;
+  // Sections that came from somewhere other than the plan's own lesson aren't in the plan-level
+  // lookup; fetch their provider tree once (shared across rows by the query key) to name them.
+  const knownSection = runSectionPath ? props.sectionLabels?.[runSectionPath] : undefined;
+  const runProvider = { ministryId: props.ministryId, providerId: props.planItem.providerId, path: props.planItem.providerPath };
+  const runInstructions = useQuery<Instructions>({
+    queryKey: ["providerInstructions", runProvider.ministryId, runProvider.providerId, runProvider.path],
+    queryFn: () => ApiHelper.post("/providerProxy/getInstructions", runProvider, "DoingApi"),
+    enabled: isFolded && !knownSection && !!runProvider.ministryId && !!runProvider.providerId && !!runProvider.path,
+    staleTime: 300_000
+  });
+  const runSection = knownSection || (runSectionPath && runInstructions.data?.items ? buildSectionLabels(runInstructions.data.items)[runSectionPath] : undefined);
+  const runLabel = runSection?.label || `${props.planItem.label || ""}…`;
+  const foldedItem: PlanItemInterface = {
+    ...props.planItem,
+    itemType: "providerSection",
+    actionType: undefined,
+    label: runLabel,
+    description: "",
+    thumbnailUrl: runItems.find((r) => r.thumbnailUrl)?.thumbnailUrl,
+    seconds: runItems.reduce((sum, r) => sum + estimateSeconds(r, props.mediaLookup), 0)
+  };
+
+  // An untouched section offers the same chevron; opening it is what turns the section into rows.
+  const isUntouchedSection = !props.readOnly && canExpand && ["providerSection", "lessonSection", "section"].includes(props.planItem.itemType || "");
+  const handleShowRows = async () => {
+    props.onExpanded?.(`${props.planItem.providerPath}|${props.planItem.providerContentPath}`);
+    await handleExpandToActions();
+  };
+
   const getGenericRow = (onLabelClick?: () => void) => (
     <PlanItemRow
-      planItem={props.planItem}
+      planItem={isFolded ? foldedItem : props.planItem}
+      fold={props.onToggleFold && runSectionPath
+        ? { folded: isFolded, count: runItems.length, total: runSection?.count, onToggle: props.onToggleFold }
+        : (isUntouchedSection ? { folded: true, onToggle: handleShowRows } : undefined)}
       startTime={props.startTime}
       serviceStartTime={props.serviceTime?.startTime}
       excluded={props.excluded}
@@ -286,7 +353,6 @@ export const PlanItem = React.memo((props: Props) => {
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       onDuplicateClick={handleDuplicate}
-      onCollapseClick={showCollapse ? handleCollapseClick : undefined}
       onSaveDescription={handleSaveDescription}
       onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
@@ -298,6 +364,7 @@ export const PlanItem = React.memo((props: Props) => {
   );
 
   const getPlanItem = () => {
+    if (isFolded) return getGenericRow(() => setLessonSectionId("run"));
     switch (props.planItem.itemType) {
       case "header": return getHeaderRow();
       case "song":
@@ -342,22 +409,26 @@ export const PlanItem = React.memo((props: Props) => {
         </Menu>
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
-      {lessonSectionId && (
+      {lessonSectionId && isFolded && (
+        <LessonDialog
+          sectionId={lessonSectionId}
+          sectionName={runLabel}
+          onClose={() => setLessonSectionId(null)}
+          providerId={props.planItem.providerId}
+          providerPath={props.planItem.providerPath}
+          providerContentPath={runSectionPath || undefined}
+          ministryId={props.ministryId}
+          rows={runItems}
+          onSaveEdits={handleSaveSectionEdits}
+          onRestoreSection={showCollapse ? () => { setLessonSectionId(null); handleCollapseClick(); } : undefined}
+        />
+      )}
+      {lessonSectionId && !isFolded && (
         <LessonDialog
           sectionId={lessonSectionId}
           sectionName={props.planItem.label}
           onClose={() => setLessonSectionId(null)}
-          onExpandToActions={
-            !props.readOnly && (
-              (props.associatedContentPath && props.planItem.relatedId) ||
-              (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
-            )
-              ? async () => {
-                setLessonSectionId(null);
-                await handleExpandToActions();
-              }
-              : undefined
-          }
+          onSaveEdits={isUntouchedSection ? handleSaveSectionEdits : undefined}
           providerId={props.planItem.providerId}
           downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}

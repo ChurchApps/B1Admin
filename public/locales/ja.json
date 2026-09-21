@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "戻る",
       "close": "閉じる",
+      "editHint": "×でプランから項目を取り除けます。テキストをクリックすると書き換えられます。元のデータは変更されません。",
       "fallbackTitle": "レッスンセクション",
       "noPreviewItem": "このアイテムのプレビューはありません。",
-      "previewUnavailable": "このセクションのプレビューは利用できません。"
+      "previewUnavailable": "このセクションのプレビューは利用できません。",
+      "putBack": "戻す",
+      "restoreSection": "元のセクションに戻す",
+      "restoreSectionConfirm": "このセクションをレッスンが書いた通りに戻しますか？取り除いたり書き換えたりした内容はすべて元に戻ります。",
+      "restoreText": "編集済み — 元の文言に戻す",
+      "takeOut": "プランから取り除く",
+      "text": "テキスト"
     },
     "lessonHeaderSelector": {
       "description": "プランに追加する見出しまたはセクションを選択してください。その配下の項目がプランの項目として追加されます。",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "項目を追加",
       "clickToAddText": "クリックしてテキストを追加",
-      "collapseToSection": "セクションにまとめる",
-      "collapseToSectionConfirm": "これらのアクションを 1 つのセクションにまとめますか？個々のアクションへの変更は失われます。",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "再生時間",
       "editItem": "項目を編集",
       "editSection": "セクションを編集",
       "estimatedDuration": "想定所要時間",
-      "expandToActions": "アクションに展開",
       "externalItem": "外部の項目",
+      "hideRows": "1行にまとめる",
       "item": "項目",
+      "itemsCount": "{count}件",
+      "itemsOfTotal": "{total}件中{count}件",
       "restoreOriginal": "元に戻す",
-      "song": "曲",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "個別の行として表示",
+      "song": "曲"
     },
     "planItemEdit": {
       "confirmDelete": "削除の確認",

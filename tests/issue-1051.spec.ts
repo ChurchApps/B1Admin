@@ -114,9 +114,7 @@ test.describe("issue-1051 expand a lessons.church section whose action labels hi
 
     const sectionRow = page.locator(".planItem").filter({ hasText: "Overflow Repro Section" });
     await expect(sectionRow).toHaveCount(1, { timeout: 15000 });
-    await sectionRow.click();
-
-    await page.getByRole("button", { name: "Expand to Actions" }).click();
+    await sectionRow.locator('[data-testid="fold-toggle-button"]').click();
 
     // The bug: POST /doing/planItems 500s on the 103-char label, so nothing is written, the
     // global error banner appears and the page remounts back onto the Assignments tab.

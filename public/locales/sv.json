@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Tillbaka",
       "close": "Stäng",
+      "editHint": "Använd × för att ta bort något från din plan, eller klicka på valfri text för att omformulera den. Originalet ändras aldrig.",
       "fallbackTitle": "Lektionsavsnitt",
       "noPreviewItem": "Ingen förhandsgranskning tillgänglig för detta objekt.",
-      "previewUnavailable": "Förhandsgranskning är inte tillgänglig för detta avsnitt."
+      "previewUnavailable": "Förhandsgranskning är inte tillgänglig för detta avsnitt.",
+      "putBack": "Lägg tillbaka",
+      "restoreSection": "Återställ ursprungligt avsnitt",
+      "restoreSectionConfirm": "Återställ det här avsnittet till hur lektionen skrev det? Allt du tagit bort eller omformulerat i det kommer att ångras.",
+      "restoreText": "Redigerad — återställ ursprunglig text",
+      "takeOut": "Ta bort från min plan",
+      "text": "Text"
     },
     "lessonHeaderSelector": {
       "description": "Välj en rubrik eller sektion att lägga till i din plan. Dess underobjekt läggs till som planobjekt.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Lägg till objekt",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Varaktighet",
       "editItem": "Redigera objekt",
       "editSection": "Redigera sektion",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expandera till åtgärder",
       "externalItem": "Externt objekt",
+      "hideRows": "Vik tillbaka till en rad",
       "item": "Objekt",
+      "itemsCount": "{count} objekt",
+      "itemsOfTotal": "{count} av {total} objekt",
       "restoreOriginal": "Restore Original",
-      "song": "Sång",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Visa som separata rader",
+      "song": "Sång"
     },
     "planItemEdit": {
       "confirmDelete": "Bekräfta borttagning",

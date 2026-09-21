@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Назад",
       "close": "Закрыть",
+      "editHint": "Используйте ×, чтобы убрать что-либо из плана, или нажмите на любой текст, чтобы изменить формулировку. Оригинал никогда не меняется.",
       "fallbackTitle": "Раздел урока",
       "noPreviewItem": "Предпросмотр недоступен для этого элемента.",
-      "previewUnavailable": "Предпросмотр недоступен для этого раздела."
+      "previewUnavailable": "Предпросмотр недоступен для этого раздела.",
+      "putBack": "Вернуть",
+      "restoreSection": "Восстановить исходный раздел",
+      "restoreSectionConfirm": "Вернуть этот раздел в том виде, в каком его написал урок? Всё, что вы убрали или переформулировали в нём, будет отменено.",
+      "restoreText": "Изменено — восстановить исходную формулировку",
+      "takeOut": "Убрать из моего плана",
+      "text": "Текст"
     },
     "lessonHeaderSelector": {
       "description": "Выберите заголовок или раздел для добавления в ваш план. Дочерние элементы будут добавлены как элементы плана.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Добавить элемент",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Продолжительность",
       "editItem": "Редактировать элемент",
       "editSection": "Редактировать раздел",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Развернуть в действия",
       "externalItem": "Внешний элемент",
+      "hideRows": "Свернуть обратно в одну строку",
       "item": "Элемент",
+      "itemsCount": "{count} элементов",
+      "itemsOfTotal": "{count} из {total} элементов",
       "restoreOriginal": "Restore Original",
-      "song": "Песня",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Показать как отдельные строки",
+      "song": "Песня"
     },
     "planItemEdit": {
       "confirmDelete": "Подтвердить удаление",

@@ -1,16 +1,13 @@
 import React from "react";
-import { Box, Checkbox } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, UnfoldLess as UnfoldLessIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
+import { Box, Checkbox, Chip } from "@mui/material";
+import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
 import { InlineEditableText } from "./InlineEditableText";
-import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds } from "../planItemUtils";
-
-// Script lines (spoken/read text), as opposed to slide/media action types.
-const TEXT_ACTION_TYPES = new Set(["say", "do", "note"]);
+import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, isAudioMedia, estimateSeconds, TEXT_ACTION_TYPES } from "../planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -21,11 +18,12 @@ interface Props {
   onLabelClick?: () => void;
   onEditClick: () => void;
   onDuplicateClick?: () => void;
-  onCollapseClick?: () => void;
   onSaveDescription?: (text: string) => void;
   onRestoreOriginal?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
   positionLabel?: { text: string; assigned: boolean };
+  /** Row starts a customized section: folded it stands in for the whole run, unfolded it offers to fold back. */
+  fold?: { folded: boolean; count?: number; total?: number; onToggle: () => void };
   /** Parent section is in bulk-select mode: show a checkbox and make the row toggle selection. */
   selectable?: boolean;
   selected?: boolean;
@@ -44,11 +42,11 @@ export const PlanItemRow: React.FC<Props> = ({
   onLabelClick,
   onEditClick,
   onDuplicateClick,
-  onCollapseClick,
   onSaveDescription,
   onRestoreOriginal,
   mediaLookup,
   positionLabel,
+  fold,
   selectable,
   selected,
   onToggleSelect
@@ -63,7 +61,14 @@ export const PlanItemRow: React.FC<Props> = ({
   const estimatedSeconds = storedSeconds === 0 ? estimateSeconds(planItem, mediaLookup) : 0;
   const isEstimate = estimatedSeconds > 0;
   // Script lines edit inline; the row itself no longer opens the read-only dialog.
-  const isTextAction = !readOnly && !!onSaveDescription && TEXT_ACTION_TYPES.has(planItem.actionType || "");
+  const isTextLine = TEXT_ACTION_TYPES.has(planItem.actionType || "");
+  const isTextAction = !readOnly && !!onSaveDescription && isTextLine;
+  const isFolded = !!fold?.folded;
+  const foldChip = fold?.total
+    ? (Locale.label("plans.planItem.itemsOfTotal") || "{count} of {total} items").replace("{count}", String(fold.count)).replace("{total}", String(fold.total))
+    : (Locale.label("plans.planItem.itemsCount") || "{count} items").replace("{count}", String(fold?.count));
+  const showFoldChip = isFolded && fold?.count !== undefined;
+  const foldLabel = isFolded ? (Locale.label("plans.planItem.showRows") || "Show as separate rows") : (Locale.label("plans.planItem.hideRows") || "Fold back into one row");
   const canRestore = isTextAction && !!onRestoreOriginal && !!planItem.providerId && !!planItem.providerPath && !!planItem.providerContentPath;
   const selecting = !readOnly && !!selectable && !!onToggleSelect;
   const rowClick = selecting ? onToggleSelect : (isTextAction ? undefined : onLabelClick);
@@ -99,7 +104,12 @@ export const PlanItemRow: React.FC<Props> = ({
           sx={{ p: 0.5, mr: 0.5, flexShrink: 0 }}
         />
       )}
-      <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {isTextLine && (
+        <Box sx={{ width: 80, mr: 1, flexShrink: 0, textAlign: "right", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "text.secondary" }}>
+          {planItem.actionType}
+        </Box>
+      )}
+      <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: isTextLine ? "none" : "flex", alignItems: "center", justifyContent: "center" }}>
         {planItem.thumbnailUrl ? (
           <Box
             component="img"
@@ -166,7 +176,12 @@ export const PlanItemRow: React.FC<Props> = ({
         </Box>
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <div>{planItem.label}</div>
+        {!(isTextLine && planItem.description) && (
+          <div>
+            {planItem.label}
+            {showFoldChip && <Chip size="small" variant="outlined" color="primary" label={foldChip} sx={{ ml: 1 }} data-testid="customized-chip" />}
+          </div>
+        )}
         {isTextAction ? (
           <Box className="planItemDescription" sx={{ clear: "both", width: "100%", pt: 0.5, fontSize: "0.9rem" }}>
             <InlineEditableText
@@ -200,7 +215,21 @@ export const PlanItemRow: React.FC<Props> = ({
         </Box>
       )}
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
-        {!readOnly && (
+        {fold && !readOnly && (
+          <Box
+            component="button"
+            type="button"
+            className="actionButton"
+            data-testid="fold-toggle-button"
+            onClick={(e: React.MouseEvent) => { e.stopPropagation(); fold.onToggle(); }}
+            aria-label={foldLabel}
+            title={foldLabel}
+            sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
+          >
+            {isFolded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+          </Box>
+        )}
+        {!readOnly && !showFoldChip && (
           <>
             {canRestore && (
               <Box
@@ -214,20 +243,6 @@ export const PlanItemRow: React.FC<Props> = ({
                 sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
               >
                 <RestartAltIcon />
-              </Box>
-            )}
-            {onCollapseClick && (
-              <Box
-                component="button"
-                type="button"
-                className="actionButton rowControl"
-                data-testid="collapse-to-section-button"
-                onClick={(e: React.MouseEvent) => { e.stopPropagation(); onCollapseClick(); }}
-                aria-label={Locale.label("plans.planItem.collapseToSection")}
-                title={Locale.label("plans.planItem.collapseToSection")}
-                sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
-              >
-                <UnfoldLessIcon />
               </Box>
             )}
             <Box

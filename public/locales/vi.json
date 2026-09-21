@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Quay lại",
       "close": "Đóng",
+      "editHint": "Dùng × để loại bỏ bất cứ điều gì khỏi kế hoạch của bạn, hoặc nhấp vào văn bản bất kỳ để viết lại. Bản gốc không bao giờ bị thay đổi.",
       "fallbackTitle": "Phần bài học",
       "noPreviewItem": "Không có xem trước cho mục này.",
-      "previewUnavailable": "Không có xem trước cho phần này."
+      "previewUnavailable": "Không có xem trước cho phần này.",
+      "putBack": "Đặt lại",
+      "restoreSection": "Khôi phục phần gốc",
+      "restoreSectionConfirm": "Đặt phần này trở lại như bài học đã viết? Mọi thứ bạn đã loại bỏ hoặc viết lại trong đó sẽ được hoàn tác.",
+      "restoreText": "Đã chỉnh sửa — khôi phục nội dung gốc",
+      "takeOut": "Loại bỏ khỏi kế hoạch của tôi",
+      "text": "Văn bản"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to Thêm to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Thêm Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Thời lượng",
       "editItem": "Chỉnh sửa Item",
       "editSection": "Chỉnh sửa Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Mở rộng to Actions",
       "externalItem": "External Item",
+      "hideRows": "Gộp lại thành một hàng",
       "item": "Item",
+      "itemsCount": "{count} mục",
+      "itemsOfTotal": "{count} trong {total} mục",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Hiển thị thành các hàng riêng biệt",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Xác nhận Xóa",

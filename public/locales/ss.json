@@ -2086,7 +2086,9 @@
       "close": "Vala",
       "fallbackTitle": "Incenye Yesifundvo",
       "noPreviewItem": "Akukho kubuka kucala lokutfolakalako kulentfo.",
-      "previewUnavailable": "Kubuka kucala akutfoleki kulencenye."
+      "previewUnavailable": "Kubuka kucala akutfoleki kulencenye.",
+      "putBack": "Buyisela",
+      "text": "Umbhalo"
     },
     "lessonHeaderSelector": {
       "description": "Khetsa sihloko noma incenye lotawuyengeta eluhlelweni lwakho. Tintfo letiphansi kwako titawungetwa njengetintfo teluhlelo.",
@@ -2143,23 +2145,21 @@
     "planItem": {
       "addItem": "Engeta Intfo",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Sikhatsi Lesitsatfwako",
       "editItem": "Hlela Intfo",
       "editSection": "Hlela Incenye",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Nweba Kuya Etentweni",
       "externalItem": "Intfo Yangaphandle",
       "item": "Intfo",
+      "itemsCount": "{count} tintfo",
       "restoreOriginal": "Restore Original",
-      "song": "Ingoma",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "song": "Ingoma"
     },
     "planItemEdit": {
       "confirmDelete": "Cinisekisa Kususa",

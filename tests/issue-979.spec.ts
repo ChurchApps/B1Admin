@@ -80,6 +80,17 @@ test.describe("Issue 979: lesson print formats honor plan customizations", () =>
     expect(story?.actions?.map((a) => a.content)).toEqual(["Read the story"]);
   });
 
+  test("prints the church's wording for a script line they reworded", () => {
+    const feed = lessonFeed();
+    feed.sections![2].actions = [{ id: "a5", actionType: "say", content: "Read the story" }, { id: "a6", actionType: "play", content: "Story Video" }];
+    const planItems: PlanItemInterface[] = [
+      { id: "pi3", itemType: "providerPresentation", relatedId: "a5", actionType: "say", label: "Read the story", description: "Tell the story in your own words" },
+      { id: "pi4", itemType: "providerPresentation", relatedId: "a6", actionType: "play", label: "Story Video", description: "" }
+    ];
+    const story = filterFeedByPlanItems(feed, planItems)?.sections?.find((s) => s.id === "s3");
+    expect(story?.actions?.map((a) => a.content)).toEqual(["Tell the story in your own words", "Story Video"]);
+  });
+
   test("does not mutate the feed it was handed", () => {
     const feed = lessonFeed();
     filterFeedByPlanItems(feed, customizedPlanItems());

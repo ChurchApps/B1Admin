@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Bumalik",
       "close": "Isara",
+      "editHint": "Gamitin ang × para alisin ang kahit ano sa iyong plano, o i-click ang alinmang teksto para baguhin ang pagkakasulat nito. Hindi kailanman nagbabago ang orihinal.",
       "fallbackTitle": "Lesson Section",
       "noPreviewItem": "Walang available na preview para sa item na ito.",
-      "previewUnavailable": "Walang available na preview para sa seksyong ito."
+      "previewUnavailable": "Walang available na preview para sa seksyong ito.",
+      "putBack": "Ibalik",
+      "restoreSection": "Ibalik ang orihinal na seksyon",
+      "restoreSectionConfirm": "Ibalik ang seksyong ito sa paraang isinulat ito ng aralin? Ang anumang inalis o binago mo rito ay ikakansela.",
+      "restoreText": "Na-edit — ibalik ang orihinal na pananalita",
+      "takeOut": "Alisin sa aking plano",
+      "text": "Teksto"
     },
     "lessonHeaderSelector": {
       "description": "Pumili ng header o seksyon upang idagdag sa iyong plano. Ang mga child item nito ay idadagdag bilang mga item ng plano.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Magdagdag ng item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Tagal",
       "editItem": "I-edit ang item",
       "editSection": "I-edit ang seksyon",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Palawakin sa mga aksyon",
       "externalItem": "Panlabas na item",
+      "hideRows": "Tiklupin pabalik sa isang hilera",
       "item": "Item",
+      "itemsCount": "{count} na item",
+      "itemsOfTotal": "{count} sa {total} na item",
       "restoreOriginal": "Restore Original",
-      "song": "Kanta",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Ipakita bilang magkahiwalay na hilera",
+      "song": "Kanta"
     },
     "planItemEdit": {
       "confirmDelete": "Kumpirmahin ang pagtanggal",
