@@ -72,6 +72,12 @@ export function findExpandedRuns(items: PlanItemInterface[]): Map<string, PlanIt
   return runs;
 }
 
+/** The plan row generated from a section's child: stable id first, stored index path as the
+ * fallback for providers that have no ids. */
+export function findRowForChild(rows: PlanItemInterface[], childId: string | undefined, sectionPath: string, index: number): PlanItemInterface | undefined {
+  return (childId ? rows.find((r) => r.relatedId === childId) : undefined) || rows.find((r) => r.providerContentPath === `${sectionPath}.${index}`);
+}
+
 /** Handles undefined/null children arrays to avoid NaN. */
 export function getNextChildSort(children: PlanItemInterface[] | undefined | null): number {
   return (children?.length ?? 0) + 1;
@@ -191,6 +197,28 @@ export function buildProviderMediaLookup(items: InstructionItem[]): Record<strin
   return lookup;
 }
 
+export interface SectionLabel {
+  label: string;
+  count: number;
+}
+
+/** Name and child count of every item that has children, keyed by dot-notation path, so a run of
+ * expanded rows can be shown under its section's name. */
+export function buildSectionLabels(items: InstructionItem[]): Record<string, SectionLabel> {
+  const labels: Record<string, SectionLabel> = {};
+  const walk = (list: InstructionItem[], indices: number[]) => {
+    list.forEach((item, i) => {
+      const path = [...indices, i];
+      if (item.children?.length) {
+        labels[path.join(".")] = { label: item.label || "", count: item.children.length };
+        walk(item.children, path);
+      }
+    });
+  };
+  walk(items, []);
+  return labels;
+}
+
 /** Item types: reads accept legacy aliases; writes emit current types only.
  * Mappings: lessonSection/section→providerSection, lessonAction/action→providerPresentation, lessonAddOn/addon/file→providerFile, song→arrangementKey. */
 export const ITEM_TYPES = {
@@ -293,6 +321,9 @@ function flattenPlanItems(items: PlanItemInterface[]): PlanItemInterface[] {
   return result;
 }
 
+/** Script lines (spoken/read text), as opposed to slide/media action types. */
+export const TEXT_ACTION_TYPES = new Set(["say", "do", "note"]);
+
 /**
  * Reconciles pristine lesson/provider content against the (possibly customized) plan items, so
  * every print format matches the Service Order. Sections still in the plan print in full;
@@ -322,7 +353,13 @@ export function filterFeedByPlanItems(feed: FeedVenueInterface | null, planItems
       if (sectionInPlan(s)) return s;
       // id-less actions fall back to exact normalized name match — plan-global, so scope
       // per-section if duplicate action text ever misprints.
-      const actions = (s.actions || []).filter((a: FeedActionInterface) => (a.id ? actionIds.has(a.id) : !!a.content && actionNames.has(norm(a.content))));
+      const actions = (s.actions || [])
+        .filter((a: FeedActionInterface) => (a.id ? actionIds.has(a.id) : !!a.content && actionNames.has(norm(a.content))))
+        .map((a: FeedActionInterface) => {
+          // A script line the church reworded prints their wording, not the provider's.
+          const row = a.id && TEXT_ACTION_TYPES.has((a.actionType || "").toLowerCase()) ? actionItems.find(pi => pi.relatedId === a.id) : undefined;
+          return row?.description && row.description !== a.content ? { ...a, content: row.description } : a;
+        });
       return { ...s, actions };
     })
     .filter((s: FeedSectionInterface) => sectionInPlan(s) || !!s.actions?.length);

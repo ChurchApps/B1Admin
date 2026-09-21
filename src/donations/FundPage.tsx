@@ -30,6 +30,7 @@ export const FundPage = () => {
     totalAmount: 0,
     uniqueDonors: 0
   });
+  const [isConverted, setIsConverted] = React.useState(false);
   const [currency, setCurrency] = React.useState<string>("usd");
   // Hoisted to avoid compiler emitting non-optional guard reads on null fundDonations
   const donationList = fundDonations || [];
@@ -42,6 +43,12 @@ export const FundPage = () => {
   };
 
   const loadDonations = () => {
+    const dateFilter = "&startDate=" + DateHelper.formatHtml5Date(startDate) + "&endDate=" + DateHelper.formatHtml5Date(endDate);
+    // Gifts can be in different currencies, so the Api totals them in the church currency with its own exchange rates.
+    ApiHelper.get("/funddonations/totals?fundId=" + params.id + dateFilter, "GivingApi").then((totals: { totalAmount: number; isConverted: boolean }) => {
+      setStats((prev) => ({ ...prev, totalAmount: totals?.totalAmount || 0 }));
+      setIsConverted(!!totals?.isConverted);
+    });
     ApiHelper.get("/funddonations?fundId=" + params.id + "&startDate=" + DateHelper.formatHtml5Date(startDate) + "&endDate=" + DateHelper.formatHtml5Date(endDate), "GivingApi").then(
       (d: FundDonationInterface[]) => {
         const peopleIds = ArrayHelper.getUniqueValues(d, "donation.personId").filter((f) => f !== null);
@@ -58,14 +65,9 @@ export const FundPage = () => {
         setFundDonations(d);
 
         const totalDonations = d.length;
-        const totalAmount = d.reduce((sum, fd) => sum + (fd.amount || 0), 0);
         const uniqueDonors = new Set(d.map((fd) => fd.donation?.personId).filter((id) => id)).size;
 
-        setStats({
-          totalDonations,
-          totalAmount,
-          uniqueDonors
-        });
+        setStats((prev) => ({ ...prev, totalDonations, uniqueDonors }));
       }
     );
   };
@@ -139,7 +141,7 @@ export const FundPage = () => {
           {personCol}
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(fd.amount || 0, currency)}
+              {CurrencyHelper.formatCurrencyWithLocale(fd.amount || 0, fd.donation?.currency || currency)}
             </Typography>
           </TableCell>
         </TableRow>
@@ -206,7 +208,11 @@ export const FundPage = () => {
             items={[
               { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: "Donations", minWidth: 80 },
               { icon: <PersonIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.uniqueDonors, label: Locale.label("donations.fundPage.donors"), minWidth: 80 },
-              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.fundPage.totalAmount") }
+              {
+                value: <span data-testid="fund-total-amount">{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</span>,
+                label: Locale.label("donations.fundPage.totalAmount"),
+                note: isConverted ? Locale.label("donations.donations.convertedNote") : undefined
+              }
             ]}
           />
         )}

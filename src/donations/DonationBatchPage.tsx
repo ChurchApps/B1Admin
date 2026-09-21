@@ -16,7 +16,8 @@ export const DonationBatchPage = () => {
   const [donationsKey, setDonationsKey] = React.useState(0);
   const [currency, setCurrency] = React.useState<string>("usd");
 
-  const batch = useQuery<DonationBatchInterface>({ queryKey: ["/donationbatches/" + params.id, "GivingApi"] });
+  // totalAmount arrives already converted into the church currency by the Api (server-side exchange rates).
+  const batch = useQuery<DonationBatchInterface & { isConverted?: boolean }>({ queryKey: ["/donationbatches/" + params.id, "GivingApi"] });
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
@@ -50,22 +51,10 @@ export const DonationBatchPage = () => {
     return result;
   };
 
-  const [stats, setStats] = React.useState({
-    totalDonations: 0,
-    totalAmount: 0
-  });
-
-  React.useEffect(() => {
-    if (donations.data) {
-      const totalDonations = donations.data.length;
-      const totalAmount = donations.data.reduce((sum, donation) => sum + (donation.amount || 0), 0);
-
-      setStats({
-        totalDonations,
-        totalAmount
-      });
-    }
-  }, [donations.data]);
+  const stats = {
+    totalDonations: donations.data?.length || 0,
+    totalAmount: batch.data?.totalAmount || 0
+  };
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -100,7 +89,11 @@ export const DonationBatchPage = () => {
             <PageHeaderStats
               items={[
                 { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: Locale.label("donations.donationBatchPage.donations"), minWidth: 80 },
-                { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.donationBatchPage.totalAmount") }
+                {
+                  value: <span data-testid="batch-total-amount">{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</span>,
+                  label: Locale.label("donations.donationBatchPage.totalAmount"),
+                  note: batch.data?.isConverted ? Locale.label("donations.donations.convertedNote") : undefined
+                }
               ]}
             />
           )}

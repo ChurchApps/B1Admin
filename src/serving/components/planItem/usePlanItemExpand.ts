@@ -2,7 +2,13 @@ import { useState, useCallback } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
 import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-providers";
 import { type PlanItemInterface } from "../../../helpers";
-import { findThumbnailRecursive, findByRelatedId, getExpandedSectionPath } from "../planItemUtils";
+import { findThumbnailRecursive, findByRelatedId, getExpandedSectionPath, findRowForChild } from "../planItemUtils";
+
+/** Changes made in the section dialog, keyed by the child's index in the provider section. */
+export interface SectionEdits {
+  removed: number[];
+  texts: Record<number, string>;
+}
 
 interface ExpandOptions {
   planItem: PlanItemInterface;
@@ -23,6 +29,7 @@ interface ExpandResult {
   handleCollapseToSection: () => Promise<void>;
   handleSaveDescription: (text: string) => Promise<void>;
   handleRestoreOriginal: () => Promise<void>;
+  handleSaveSectionEdits: (edits: SectionEdits) => Promise<void>;
 }
 
 /** Expand a section plan item into its child action items via provider or plan-level association. */
@@ -223,6 +230,62 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     }
   }, [planItem, ministryId, onChange, onError]);
 
+  /** Saves the section dialog's edits. An untouched section becomes action rows minus the removed
+   * lines; a section that is already rows gets only the differences written. */
+  const handleSaveSectionEdits = useCallback(async (edits: SectionEdits) => {
+    const first = collapseItems?.[0];
+    const source = first || planItem;
+    const providerId = source.providerId || associatedProviderId;
+    const providerPath = source.providerPath || associatedContentPath;
+    if (!providerId || !providerPath || !ministryId) return;
+
+    try {
+      const instructions: Instructions = await ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId, path: providerPath }, "DoingApi");
+      if (!instructions?.items) return;
+
+      const found = !first && planItem.relatedId ? findByRelatedId(instructions.items, planItem.relatedId) : null;
+      const sectionPath = first ? getExpandedSectionPath(first) : (found?.path || planItem.providerContentPath);
+      const section = found?.item || (sectionPath ? navigateToPath(instructions, sectionPath) : null);
+      if (!section?.children?.length || !sectionPath) return;
+
+      const removed = new Set(edits.removed);
+      const all = createActionItems(section, sectionPath, providerId, providerPath, planItem.sort || 1)
+        .map((item, i) => (edits.texts[i] !== undefined ? { ...item, description: edits.texts[i] } : item));
+
+      if (!first) {
+        const keep = all.filter((_, i) => !removed.has(i));
+        if (keep.length > 0) await replaceSectionWith(keep);
+      } else {
+        const rows = collapseItems || [];
+        const toSave: Partial<PlanItemInterface>[] = [];
+        let anchor = (first.sort || 1) - 1;
+        let offset = 0;
+        for (let i = 0; i < all.length; i++) {
+          const row = findRowForChild(rows, section.children[i].relatedId || section.children[i].id, sectionPath, i);
+          if (row && removed.has(i)) await ApiHelper.delete(`/planItems/${row.id}`, "DoingApi");
+          else if (row) {
+            anchor = row.sort || anchor;
+            offset = 0;
+            if (edits.texts[i] !== undefined && edits.texts[i] !== row.description) toSave.push({ ...row, description: edits.texts[i] });
+          } else if (!removed.has(i)) {
+            offset += 0.01;
+            toSave.push({ ...all[i], parentId: first.parentId, sort: anchor + 0.5 + offset });
+          }
+        }
+        if (toSave.length > 0) {
+          const saved = await ApiHelper.post("/planItems", toSave, "DoingApi");
+          if (saved?.[0]) await ApiHelper.post("/planItems/sort", saved[0], "DoingApi");
+        }
+      }
+      if (onChange) onChange();
+    } catch (error) {
+      console.error("Error saving section edits:", error);
+      if (onError) onError("Failed to save section changes");
+    }
+  }, [
+    planItem, collapseItems, associatedProviderId, associatedContentPath, ministryId, createActionItems, replaceSectionWith, onChange, onError
+  ]);
+
   return {
     isExpanding,
     canExpand,
@@ -230,6 +293,7 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     canCollapse,
     handleCollapseToSection,
     handleSaveDescription,
-    handleRestoreOriginal
+    handleRestoreOriginal,
+    handleSaveSectionEdits
   };
 }

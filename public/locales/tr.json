@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Geri",
       "close": "Kapat",
+      "editHint": "Planınızdan bir şeyi çıkarmak için × kullanın veya yeniden yazmak için herhangi bir metne tıklayın. Orijinal asla değiştirilmez.",
       "fallbackTitle": "Ders Bölümü",
       "noPreviewItem": "Bu öğe için önizleme mevcut değil.",
-      "previewUnavailable": "Bu bölüm için önizleme mevcut değil."
+      "previewUnavailable": "Bu bölüm için önizleme mevcut değil.",
+      "putBack": "Geri koy",
+      "restoreSection": "Orijinal bölümü geri yükle",
+      "restoreSectionConfirm": "Bu bölüm dersin yazdığı haline geri döndürülsün mü? İçinden çıkardığınız veya yeniden yazdığınız her şey geri alınacak.",
+      "restoreText": "Düzenlendi — orijinal ifadeyi geri yükle",
+      "takeOut": "Planımdan çıkar",
+      "text": "Metin"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Süre",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Tek satıra geri katla",
       "item": "Item",
+      "itemsCount": "{count} öğe",
+      "itemsOfTotal": "{total} öğeden {count}",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Ayrı satırlar olarak göster",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",

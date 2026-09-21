@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Vissza",
       "close": "Bezárás",
+      "editHint": "Használja a ×-et bármi eltávolításához a tervéből, vagy kattintson bármely szövegre az átfogalmazásához. Az eredeti soha nem változik.",
       "fallbackTitle": "Lecke szekció",
       "noPreviewItem": "Nincs előnézet ehhez az elemhez.",
-      "previewUnavailable": "Előnézet nem érhető el ehhez a szekcióhoz."
+      "previewUnavailable": "Előnézet nem érhető el ehhez a szekcióhoz.",
+      "putBack": "Visszatesz",
+      "restoreSection": "Eredeti szekció visszaállítása",
+      "restoreSectionConfirm": "Visszaállítja ezt a szekciót olyanra, amilyennek a lecke írta? Minden, amit eltávolított vagy átfogalmazott benne, vissza lesz vonva.",
+      "restoreText": "Szerkesztve — eredeti szöveg visszaállítása",
+      "takeOut": "Eltávolítás a tervemből",
+      "text": "Szöveg"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Időtartam",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Visszacsukás egy sorba",
       "item": "Item",
+      "itemsCount": "{count} elem",
+      "itemsOfTotal": "{count}/{total} elem",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Megjelenítés külön sorokként",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",

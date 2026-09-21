@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Назад",
       "close": "Закрити",
+      "editHint": "Використовуйте ×, щоб прибрати щось зі свого плану, або натисніть на будь-який текст, щоб переформулювати його. Оригінал ніколи не змінюється.",
       "fallbackTitle": "Секція уроку",
       "noPreviewItem": "Попередній перегляд недоступний для цього елемента.",
-      "previewUnavailable": "Попередній перегляд недоступний для цієї секції."
+      "previewUnavailable": "Попередній перегляд недоступний для цієї секції.",
+      "putBack": "Повернути",
+      "restoreSection": "Відновити початкову секцію",
+      "restoreSectionConfirm": "Повернути цю секцію такою, якою її написав урок? Усе, що ви прибрали або переформулювали в ній, буде скасовано.",
+      "restoreText": "Змінено — відновити початкове формулювання",
+      "takeOut": "Прибрати з мого плану",
+      "text": "Текст"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Додати елемент",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Тривалість",
       "editItem": "Редагувати елемент",
       "editSection": "Редагувати секцію",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Розгорнути до дій",
       "externalItem": "Зовнішній елемент",
+      "hideRows": "Згорнути назад в один рядок",
       "item": "Елемент",
+      "itemsCount": "{count} елементів",
+      "itemsOfTotal": "{count} з {total} елементів",
       "restoreOriginal": "Restore Original",
-      "song": "Пісня",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Показати як окремі рядки",
+      "song": "Пісня"
     },
     "planItemEdit": {
       "confirmDelete": "Підтвердити видалення",

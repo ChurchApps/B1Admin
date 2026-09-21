@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Tilbage",
       "close": "Luk",
+      "editHint": "Brug × til at fjerne noget fra din plan, eller klik på en tekst for at omformulere den. Originalen ændres aldrig.",
       "fallbackTitle": "Lektionsafsnit",
       "noPreviewItem": "Ingen forhåndsvisning tilgængelig for dette element.",
-      "previewUnavailable": "Forhåndsvisning ikke tilgængelig for dette afsnit."
+      "previewUnavailable": "Forhåndsvisning ikke tilgængelig for dette afsnit.",
+      "putBack": "Sæt tilbage",
+      "restoreSection": "Gendan oprindelig sektion",
+      "restoreSectionConfirm": "Sæt denne sektion tilbage, som lektionen skrev den? Alt, du har fjernet eller omformuleret i den, bliver fortrudt.",
+      "restoreText": "Redigeret — gendan oprindelig ordlyd",
+      "takeOut": "Fjern fra min plan",
+      "text": "Tekst"
     },
     "lessonHeaderSelector": {
       "description": "Vælg en overskrift eller sektion for at tilføje til din plan. Dens underordnede vil blive tilføjet som planelementer.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Tilføj element",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Varighed",
       "editItem": "Rediger element",
       "editSection": "Rediger sektion",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Udvid til handlinger",
       "externalItem": "Eksternt element",
+      "hideRows": "Fold tilbage til én række",
       "item": "Element",
+      "itemsCount": "{count} elementer",
+      "itemsOfTotal": "{count} af {total} elementer",
       "restoreOriginal": "Restore Original",
-      "song": "Sang",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Vis som separate rækker",
+      "song": "Sang"
     },
     "planItemEdit": {
       "confirmDelete": "Bekræft sletning",

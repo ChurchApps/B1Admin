@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Kembali",
       "close": "Tutup",
+      "editHint": "Gunakan × untuk mengeluarkan apa pun dari rencana Anda, atau klik teks apa pun untuk mengubah kata-katanya. Aslinya tidak pernah berubah.",
       "fallbackTitle": "Bagian Pelajaran",
       "noPreviewItem": "Tidak ada pratinjau yang tersedia untuk item ini.",
-      "previewUnavailable": "Pratinjau tidak tersedia untuk bagian ini."
+      "previewUnavailable": "Pratinjau tidak tersedia untuk bagian ini.",
+      "putBack": "Kembalikan",
+      "restoreSection": "Pulihkan bagian asli",
+      "restoreSectionConfirm": "Kembalikan bagian ini seperti yang ditulis pelajaran? Semua yang Anda keluarkan atau ubah kata-katanya di dalamnya akan dibatalkan.",
+      "restoreText": "Diedit — pulihkan kata-kata asli",
+      "takeOut": "Keluarkan dari rencana saya",
+      "text": "Teks"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Durasi",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Lipat kembali menjadi satu baris",
       "item": "Item",
+      "itemsCount": "{count} item",
+      "itemsOfTotal": "{count} dari {total} item",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Tampilkan sebagai baris terpisah",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",

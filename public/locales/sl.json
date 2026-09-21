@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Nazaj",
       "close": "Zapri",
+      "editHint": "Uporabite × za odstranitev česar koli iz svojega načrta, ali kliknite besedilo, da ga preoblikujete. Izvirnik se nikoli ne spremeni.",
       "fallbackTitle": "Razdelek lekcije",
       "noPreviewItem": "Predogled za ta element ni na voljo.",
-      "previewUnavailable": "Predogled za ta razdelek ni na voljo."
+      "previewUnavailable": "Predogled za ta razdelek ni na voljo.",
+      "putBack": "Vrni nazaj",
+      "restoreSection": "Obnovi izvirni razdelek",
+      "restoreSectionConfirm": "Ali želite ta razdelek vrniti v obliko, kot ga je napisala lekcija? Vse, kar ste v njem odstranili ali preoblikovali, bo razveljavljeno.",
+      "restoreText": "Urejeno — obnovi izvirno besedilo",
+      "takeOut": "Odstrani iz mojega načrta",
+      "text": "Besedilo"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Trajanje",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Zloži nazaj v eno vrstico",
       "item": "Item",
+      "itemsCount": "{count} elementov",
+      "itemsOfTotal": "{count} od {total} elementov",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Prikaži kot ločene vrstice",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",

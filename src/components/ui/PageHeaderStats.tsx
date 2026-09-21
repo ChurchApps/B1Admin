@@ -6,6 +6,7 @@ export interface PageHeaderStat {
   value: ReactNode;
   label: string;
   minWidth?: number;
+  note?: string;
 }
 
 interface Props {
@@ -34,6 +35,7 @@ export const PageHeaderStats: React.FC<Props> = ({ items, spacing = { xs: 2, sm:
           <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{item.value}</Typography>
         </Stack>
         <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{item.label}</Typography>
+        {item.note && <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.75)", fontSize: "0.7rem", textAlign: "center" }}>{item.note}</Typography>}
       </Stack>
     ))}
   </Stack>

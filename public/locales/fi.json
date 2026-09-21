@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Takaisin",
       "close": "Sulje",
+      "editHint": "Poista mitä tahansa suunnitelmastasi ×-merkillä tai muokkaa mitä tahansa tekstiä napsauttamalla sitä. Alkuperäistä ei koskaan muuteta.",
       "fallbackTitle": "Oppitunnin osio",
       "noPreviewItem": "Tälle kohteelle ei ole esikatselua.",
-      "previewUnavailable": "Esikatselu ei ole saatavilla tälle osiolle."
+      "previewUnavailable": "Esikatselu ei ole saatavilla tälle osiolle.",
+      "putBack": "Palauta",
+      "restoreSection": "Palauta alkuperäinen osio",
+      "restoreSectionConfirm": "Palautetaanko tämä osio sellaiseksi kuin oppitunti sen kirjoitti? Kaikki poistamasi tai muokkaamasi kohdat perutaan.",
+      "restoreText": "Muokattu — palauta alkuperäinen sanamuoto",
+      "takeOut": "Poista suunnitelmastani",
+      "text": "Teksti"
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Add Item",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Kesto",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Expand to Actions",
       "externalItem": "External Item",
+      "hideRows": "Yhdistä takaisin yhdeksi riviksi",
       "item": "Item",
+      "itemsCount": "{count} kohdetta",
+      "itemsOfTotal": "{count}/{total} kohdetta",
       "restoreOriginal": "Restore Original",
-      "song": "Song",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Näytä erillisinä riveinä",
+      "song": "Song"
     },
     "planItemEdit": {
       "confirmDelete": "Confirm Delete",

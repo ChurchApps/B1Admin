@@ -2084,9 +2084,16 @@
     "lessonDialog": {
       "back": "Indietro",
       "close": "Chiudi",
+      "editHint": "Usa × per togliere qualcosa dal tuo piano, oppure clicca su un testo per riformularlo. L'originale non viene mai modificato.",
       "fallbackTitle": "Sezione Lezione",
       "noPreviewItem": "Nessuna anteprima disponibile per questo elemento.",
-      "previewUnavailable": "Anteprima non disponibile per questa sezione."
+      "previewUnavailable": "Anteprima non disponibile per questa sezione.",
+      "putBack": "Rimetti",
+      "restoreSection": "Ripristina sezione originale",
+      "restoreSectionConfirm": "Ripristinare questa sezione come l'ha scritta la lezione? Tutto ciò che hai tolto o riformulato al suo interno verrà annullato.",
+      "restoreText": "Modificato — ripristina il testo originale",
+      "takeOut": "Togli dal mio piano",
+      "text": "Testo"
     },
     "lessonHeaderSelector": {
       "description": "Seleziona un'intestazione o una sezione da aggiungere al tuo piano. I suoi elementi figlio verranno aggiunti come elementi del piano.",
@@ -2143,23 +2150,24 @@
     "planItem": {
       "addItem": "Aggiungi elemento",
       "clickToAddText": "Click to add text",
-      "collapseToSection": "Collapse to Section",
-      "collapseToSectionConfirm": "Collapse these actions back into a single section? Any changes made to the individual actions will be lost.",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
+      "doneSelecting": "Done selecting",
       "duration": "Durata",
       "editItem": "Modifica elemento",
       "editSection": "Modifica sezione",
       "estimatedDuration": "Estimated Duration",
-      "expandToActions": "Espandi in azioni",
       "externalItem": "Elemento esterno",
+      "hideRows": "Richiudi in un'unica riga",
       "item": "Articolo",
+      "itemsCount": "{count} elementi",
+      "itemsOfTotal": "{count} di {total} elementi",
       "restoreOriginal": "Restore Original",
-      "song": "Canzone",
-      "deleteSelected": "Delete Selected",
-      "deleteSelectedConfirm": "Delete the {count} selected items? This cannot be undone.",
-      "doneSelecting": "Done selecting",
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
-      "selectItems": "Select Items"
+      "selectItems": "Select Items",
+      "showRows": "Mostra come righe separate",
+      "song": "Canzone"
     },
     "planItemEdit": {
       "confirmDelete": "Conferma eliminazione",
