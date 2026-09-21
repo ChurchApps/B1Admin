@@ -653,3 +653,89 @@ test.describe("Donation refunds", () => {
     await expect(page.locator("#donationBox")).toBeVisible();
   });
 });
+
+// Mixed-currency totals: gifts keep their own currency, but every dashboard total is converted into the
+// church currency (USD on the demo church) by the Api with its own cached exchange rates. The expected
+// figure is rebuilt here from the Api's read-only rate table, so the spec follows the live rate.
+const MIXED_BATCH_NAME = "Zacchaeus Euro Batch";
+const DONALD_CLARK_ID = "PER00000080";
+const GENERAL_FUND_ID = "FUN00000001";
+const CONVERTED_NOTE = "Converted at current exchange rates";
+
+test.describe("Mixed-currency giving totals", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+  let expectedTotal: string; // header stats round to whole units: "$ 215"
+  let expectedExact: string; // list rows keep cents: "$ 214.60"
+
+  // February 2024 holds no seed gifts, so date filters isolate these two: €100 from Donald Clark + $100 anonymous.
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: MIXED_BATCH_NAME, batchDate: "2024-02-04" }] });
+    batchId = (await batchRes.json())[0].id;
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, {
+      ...auth,
+      data: [
+        { batchId, personId: DONALD_CLARK_ID, donationDate: "2024-02-04", amount: 100, currency: "eur", method: "Check", status: "complete" },
+        { batchId, donationDate: "2024-02-04", amount: 100, currency: "usd", method: "Cash", status: "complete" }
+      ]
+    });
+    const donations = await donationRes.json();
+    await ctx.post(`${API_BASE}/giving/funddonations`, { ...auth, data: donations.map((d: any) => ({ donationId: d.id, fundId: GENERAL_FUND_ID, amount: 100 })) });
+
+    const ratesRes = await ctx.get(`${API_BASE}/giving/donations/exchange-rates`, auth);
+    const table = await ratesRes.json();
+    expect(table.base).toBe("usd");
+    expect(table.rates?.EUR, "Api could not load EUR rates from frankfurter").toBeGreaterThan(0);
+    const total = 100 + Number((100 / table.rates.EUR).toFixed(2));
+    expect(Math.round(total)).not.toBe(200);
+    expectedTotal = "$ " + Math.round(total).toLocaleString("en-US");
+    expectedExact = "$ " + total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("batch page totals the euro gift in the church currency and labels it", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.getByTestId("batch-total-amount")).toHaveText(expectedTotal, { timeout: 15000 });
+    await expect(page.getByText(CONVERTED_NOTE).first()).toBeVisible();
+    // The gift itself stays in euros.
+    await expect(page.locator('[data-testid^="donation-row-"]').filter({ hasText: "Donald Clark" })).toContainText("€ 100.00");
+  });
+
+  test("batches list shows the converted batch total", async ({ page }) => {
+    await page.goto("/donations/batches");
+    const row = page.locator("table tbody tr").filter({ hasText: MIXED_BATCH_NAME });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await expect(row.getByTestId("batch-row-total")).toHaveText(expectedExact);
+    await expect(page.getByText(CONVERTED_NOTE).first()).toBeVisible();
+  });
+
+  test("fund page total for the period is converted", async ({ page }) => {
+    await page.goto(`/donations/funds/${GENERAL_FUND_ID}`);
+    await page.locator('[data-cy="start-date"] input').fill("2024-02-01");
+    await page.locator('[data-cy="end-date"] input').fill("2024-02-29");
+    await page.locator("button").filter({ hasText: /^Filter$/ }).click();
+    await expect(page.getByTestId("fund-total-amount")).toHaveText(expectedTotal, { timeout: 15000 });
+    await expect(page.getByText(CONVERTED_NOTE)).toBeVisible();
+  });
+
+  test("Giving Dashboard KPI cards report Total Giving in the church currency", async ({ page }) => {
+    const startDate = page.locator('[name="startDate"]');
+    await expect(startDate).toBeVisible({ timeout: 15000 });
+    await startDate.fill("2024-02-01");
+    await page.locator('[name="endDate"]').fill("2024-02-29");
+    await page.locator("button").getByText("Run Report").click();
+
+    await expect(page.getByTestId("kpi-total-giving")).toHaveText(expectedTotal, { timeout: 20000 });
+    await expect(page.getByText(CONVERTED_NOTE)).toBeVisible();
+  });
+});

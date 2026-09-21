@@ -766,6 +766,7 @@
       "anon": "Anonymous",
       "batches": "Batches",
       "campaigns": "Campaigns",
+      "convertedNote": "Converted at current exchange rates",
       "date": "Date",
       "don": "Donations",
       "errMsg": "No fund found. Please create a fund before making a donation",
@@ -2669,6 +2670,7 @@
     "downloadOptions": "Download Options",
     "givingKpiCards": {
       "avgGift": "Average Gift",
+      "convertedNote": "Converted at current exchange rates",
       "donationCount": "Total Donations",
       "donorCount": "Unique Donors",
       "totalGiving": "Total Giving"
