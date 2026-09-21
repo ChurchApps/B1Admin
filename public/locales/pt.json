@@ -2,7 +2,6 @@
   "app": {
     "login": {
       "demoCredentials": "Use o e-mail \"{email}\" e a senha \"{password}\".",
-      "demoLabel": "Demonstração:",
       "demoMessage": "Este é o ambiente de demonstração. Todos os dados são apagados todas as noites.",
       "demoTestChurch": "Você pode entrar em uma igreja de teste \"Grace Community Church\""
     },
@@ -29,24 +28,43 @@
       "groupAttMsg": "A presença do grupo aparecerá uma vez que as sessões tenham sido adicionadas a um grupo e as pessoas tenham participado dessas sessões.",
       "scheduled": "Agendado",
       "service": "Serviço",
+      "serviceTimes": "Service times",
       "subtitle": "Acompanhe a frequência de serviços e grupos",
       "time": "Tempo",
       "totalGroups": "Total de grupos",
-      "unscheduled": "Não programado",
-      "serviceTimes": "Service times"
+      "unscheduled": "Não programado"
     },
     "attendanceSetup": {
       "manageCampuses": "Gerenciar Campi",
-      "setupMessage": "Configure os campi, serviços e horários de serviço para começar a registrar a presença.",
-      "unassigned": "Não atribuído",
       "namedAttendanceHelp": "To take named attendance, open the group → Sessions. This page only assigns groups to service times.",
-      "title": "Service structure"
+      "setupMessage": "Configure os campi, serviços e horários de serviço para começar a registrar a presença.",
+      "title": "Service structure",
+      "unassigned": "Não atribuído"
     },
     "checkinType": {
       "guest": "Convidado",
       "header": "Tipo",
       "volunteer": "Voluntário",
       "volunteers": "voluntários"
+    },
+    "headcountEntry": {
+      "confirmDelete": "Are you sure you wish to delete this headcount?",
+      "count": "Headcount",
+      "date": "Date",
+      "group": "Group",
+      "noGroup": "No group (whole service)",
+      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
+      "recent": "Recent Headcounts",
+      "service": "Service",
+      "serviceTime": "Service Time",
+      "title": "Enter Headcount",
+      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "validate": {
+        "count": "Enter a whole number of zero or more.",
+        "date": "Please choose a date.",
+        "service": "Please select a service."
+      },
+      "wholeService": "All service times"
     },
     "labels": {
       "align": "Alinhar",
@@ -68,7 +86,6 @@
       "left": "Esquerda",
       "name": "Nome",
       "nametag": "Crachá",
-      "noTemplates": "Nenhum modelo de etiqueta",
       "noTemplatesDesc": "Crie um modelo de etiqueta para personalizar as etiquetas impressas pelos quiosques de check-in.",
       "opDoesNotEqual": "Diferente de",
       "opEquals": "Igual a",
@@ -98,8 +115,6 @@
       "campus": "Campus",
       "campusAria": "Selecionar campus",
       "confirmDelete": "Tem certeza de que deseja excluir permanentemente este serviço?",
-      "name": "Nome do Serviço",
-      "nameAria": "Nome do culto",
       "validate": {
         "campus": "Por favor, selecione um campus.",
         "name": "O nome do serviço é obrigatório."
@@ -107,9 +122,6 @@
     },
     "serviceTimeEdit": {
       "confirmDelete": "Tem certeza de que deseja excluir permanentemente este horário de serviço?",
-      "name": "Horário do Serviço",
-      "nameAria": "Nome do horário do culto",
-      "namePlaceholder": "8:00",
       "service": "Serviço",
       "serviceAria": "Selecionar culto",
       "validate": {
@@ -120,29 +132,9 @@
     "tabs": {
       "attTrend": "Tendência de Presença",
       "groupAtt": "Presença de Grupo",
-      "setup": "Configuração",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts"
-    },
-    "headcountEntry": {
-      "confirmDelete": "Are you sure you wish to delete this headcount?",
-      "count": "Headcount",
-      "date": "Date",
-      "editTitle": "Edit Headcount",
-      "group": "Group",
-      "noGroup": "No group (whole service)",
-      "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
-      "recent": "Recent Headcounts",
-      "service": "Service",
-      "serviceTime": "Service Time",
-      "title": "Enter Headcount",
-      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
-      "validate": {
-        "count": "Enter a whole number of zero or more.",
-        "date": "Please choose a date.",
-        "service": "Please select a service."
-      },
-      "wholeService": "All service times"
+      "headcounts": "Headcounts",
+      "setup": "Configuração"
     }
   },
   "calendars": {
@@ -161,16 +153,14 @@
       "rejectTitle": "Rejeitar Solicitação",
       "roomResource": "Sala / Recurso",
       "status": "Status",
-      "subtitle": "Revise solicitações pendentes de salas, recursos e eventos",
-      "title": "Aprovações"
+      "subtitle": "Revise solicitações pendentes de salas, recursos e eventos"
     },
     "availability": {
       "allRoomsResources": "Todas as salas e recursos",
       "blocked": "Bloqueado",
       "book": "Reservar",
       "filter": "Sala / Recurso",
-      "subtitle": "Veja o que está reservado em salas e recursos",
-      "title": "Disponibilidade"
+      "subtitle": "Veja o que está reservado em salas e recursos"
     },
     "calendar": {
       "copiedToClipboard": "Copiado para a área de transferência",
@@ -186,8 +176,6 @@
       "calendarNameAria": "Nome do Calendário",
       "cancel": "Cancelar",
       "confirmDelete": "Tem certeza de que deseja excluir esta agenda?",
-      "create": "Criar",
-      "createCalendar": "Criar calendário",
       "delete": "Excluir",
       "editCalendar": "Editar calendário",
       "namePlaceholder": "Digite um nome para este calendário",
@@ -199,13 +187,10 @@
     "calendarEvent": {
       "cancel": "Cancelar",
       "confirmDelete": "Tem certeza de que deseja excluir este evento?",
-      "confirmDeleteSeries": "Este é um evento recorrente. Excluí-lo removerá toda a série e todas as suas ocorrências. Tem certeza?",
       "delete": "Excluir",
-      "manageRegistrations": "Gerenciar inscrições",
-      "noGroups": "Nenhum grupo encontrado.",
-      "confirmEditSeries": "This is a recurring event. Saving changes will update the entire series and all of its occurrences. Continue?",
       "edit": "Edit",
-      "editEvent": "Edit Event"
+      "manageRegistrations": "Gerenciar inscrições",
+      "noGroups": "Nenhum grupo encontrado."
     },
     "calendarList": {
       "aboutParagraph1": "Os calendários permitem que você organize e exiba eventos da sua igreja.",
@@ -251,22 +236,22 @@
     },
     "eventReminders": {
       "channels": "Canais",
+      "email": "Email",
       "enableReminders": "Ativar lembretes",
       "maxOffsets": "Máximo de 3 horários selecionados",
       "message": "Mensagem (opcional)",
       "messageHint": "Campo de mesclagem: {{eventTitle}}",
+      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
       "modeAuto": "Automático",
       "modeGroup": "Membros do grupo",
       "modeRegistrants": "Somente inscritos",
       "modeRegistrantsHoh": "Somente responsáveis / inscritos",
+      "push": "Push",
       "timeOfDay": "Hora do dia",
       "timeOfDayHint": "Hora local da igreja (ex.: 9h00)",
       "title": "Lembretes",
       "when": "Quando (até 3)",
-      "who": "Quem",
-      "email": "Email",
-      "messagePlaceholder": "Don't miss it! {{eventTitle}} starts soon",
-      "push": "Push"
+      "who": "Quem"
     },
     "importIcs": {
       "chooseFile": "Escolher arquivo .ics",
@@ -304,10 +289,6 @@
       "weekly": "Semanal"
     },
     "rooms": {
-      "addBlockout": "Adicionar bloqueio",
-      "addResource": "Adicionar recurso",
-      "addRoom": "Adicionar sala",
-      "addTemplate": "Adicionar modelo",
       "allRoomsResources": "Todas as salas e recursos",
       "approvalGroup": "Grupo de aprovação",
       "approvalGroupHint": "Solicitações são aprovadas automaticamente para membros deste grupo; os demais precisam de aprovação.",
@@ -328,13 +309,9 @@
       "eventDescription": "Descrição do evento",
       "eventTitle": "Título do evento",
       "noApprovalNeeded": "Sem necessidade de aprovação",
-      "noBlockouts": "Nenhum bloqueio ainda",
       "noBlockoutsDesc": "Bloqueie datas em que salas ou recursos estão indisponíveis.",
-      "noResources": "Nenhum recurso ainda",
       "noResourcesDesc": "Adicione recursos compartilhados (projetores, mesas, vans) com quantidades.",
-      "noRooms": "Nenhuma sala ainda",
       "noRoomsDesc": "Adicione salas para que eventos possam reservá-las e conflitos sejam detectados.",
-      "noTemplates": "Nenhum modelo ainda",
       "noTemplatesDesc": "Modelos preenchem novos eventos com título, duração, salas e recursos.",
       "quantity": "Quantidade",
       "reason": "Motivo",
@@ -360,12 +337,12 @@
     "cancel": "Cancelar",
     "center": "Centro",
     "change": "Mudar",
-    "changePhoto": "Mudar Foto",
     "close": "Fechar",
     "collapse": "Recolher",
     "comboBox": {
       "addNew": "Adicionar novo..."
     },
+    "confirm": "Confirm",
     "copy": "Copiar",
     "createPerson": {
       "validate": {
@@ -375,6 +352,15 @@
       }
     },
     "custom": "Personalizado",
+    "days": {
+      "friday": "Friday",
+      "monday": "Monday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "thursday": "Thursday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday"
+    },
     "delete": "Excluir",
     "done": "Concluído",
     "duplicate": "Duplicar",
@@ -398,9 +384,11 @@
       "title": "Selecione o ícone",
       "tryDifferent": "Experimente um termo de pesquisa diferente"
     },
+    "labels": "Labels",
     "left": "Esquerda",
     "loading": "Carregando",
     "mobile": "Celular",
+    "more": "More",
     "name": "Nome",
     "navigation": "Navegação",
     "no": "Não",
@@ -409,9 +397,6 @@
     "person": "Pessoa",
     "print": "Imprimir",
     "remove": "Remover",
-    "reportFilter": {
-      "title": "Filtrar relatório"
-    },
     "reportFilterField": {
       "any": "Qualquer"
     },
@@ -421,16 +406,13 @@
     "saveError": "Não foi possível salvar. Tente novamente.",
     "saving": "Salvando...",
     "search": "Pesquisar",
-    "searching": "Pesquisando...",
     "select": "Select",
     "sermons": "Sermões",
     "title": "Título",
     "top": "Superior",
     "tryAgain": "Tentar novamente",
-    "update": "Atualizar",
     "website": "Site",
-    "yes": "Sim",
-    "labels": "Labels"
+    "yes": "Sim"
   },
   "components": {
     "bezChat": {
@@ -467,7 +449,6 @@
     },
     "permissionDenied": {
       "contactAdmin": "Por favor, entre em contato com o administrador da sua igreja para solicitar acesso.",
-      "defaultMessage": "Você não tem as permissões necessárias para acessar este recurso:",
       "required": "Permission required"
     },
     "search": {
@@ -533,8 +514,6 @@
       "peopleAndGroups": "Pessoas e Grupos",
       "servingAndContent": "Serviço e Conteúdo",
       "setAvatarTitle": "Defina Seu Avatar",
-      "subtitle": "Vamos configurar sua igreja. Aqui estão algumas coisas que você provavelmente vai querer fazer primeiro.",
-      "title": "Bem-vindo ao B1.church!",
       "uploadSermonTitle": "Envie um Sermão",
       "yourChurch": "Sua Igreja",
       "yourProfile": "Seu Perfil"
@@ -544,13 +523,10 @@
     },
     "memberWelcome": {
       "downloadAppTitle": "Baixe o Aplicativo Móvel",
-      "fallbackChurchName": "sua igreja",
       "findPeopleTitle": "Encontre Pessoas que Você Conhece",
       "joinGroupTitle": "Junte-se a um Grupo",
       "onlineGivingTitle": "Configurar Doações Online",
       "setPhotoTitle": "Adicione Sua Foto",
-      "subtitle": "Aqui estão algumas coisas que você pode fazer para se conectar.",
-      "title": "Bem-vindo a {churchName}!",
       "upcomingEventsTitle": "Veja o que Está Acontecendo"
     },
     "myGroups": "Meus Grupos",
@@ -559,19 +535,9 @@
       "joinRequests": "{count} solicitações de participação em grupo pendentes",
       "title": "Precisa de atenção"
     },
-    "peopleSearch": {
-      "ariaSearch": "Pesquisar pessoas",
-      "ariaSearchBox": "searchBox",
-      "clearSearch": "Limpar Busca",
-      "display": "Exibir",
-      "noResults": "Nenhuma pessoa encontrada correspondente aos critérios de pesquisa.",
-      "photo": "Foto",
-      "ppl": "Pessoas"
-    },
     "quickSetupModal": {
       "classroomName": "Nome da Sala de Aula",
       "createContinue": "Criar e Continuar",
-      "creating": "Criando...",
       "errorBothMinistryClassroom": "Por favor, insira um nome de ministério e um nome de sala de aula.",
       "errorBothMinistryTeam": "Por favor, insira um nome de ministério e um nome de equipe.",
       "errorGeneric": "Algo deu errado. Por favor, tente novamente.",
@@ -592,6 +558,18 @@
       "teamName": "Nome da Equipe",
       "webpageDescription": "Insira um título para sua primeira página. Você será redirecionado para o editor de páginas para adicionar conteúdo.",
       "webpageTitle": "Crie Sua Primeira Página"
+    },
+    "sunday": {
+      "firstTime": "First time",
+      "inTheRoom": "in the room",
+      "lastSunday": "Last Sunday",
+      "live": "Live",
+      "noOrder": "No order of service on this plan.",
+      "noPlan": "No service planned this week.",
+      "rooms": "Rooms",
+      "servingSunday": "Serving Sunday",
+      "thisSunday": "This Sunday",
+      "thisWeeksService": "This week's service will live here."
     }
   },
   "device": {
@@ -605,7 +583,6 @@
       "continue": "Continuar",
       "denied": "Autorização do dispositivo negada",
       "deny": "Negar",
-      "deviceAuthorizedAlert": "DISPOSITIVO AUTORIZADO",
       "deviceAuthorizedHeading": "Dispositivo Autorizado!",
       "deviceAuthorizedMessage": "Agora você pode voltar para sua TV. O dispositivo se conectará automaticamente.",
       "deviceCodeLabel": "Código do dispositivo:",
@@ -644,8 +621,7 @@
   "donations": {
     "batchEdit": {
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente este lote e todas as doações dentro dele?",
-      "date": "Data",
-      "opName": "Nome (opcional)"
+      "date": "Data"
     },
     "batchStatements": {
       "csvDescription": "Baixe um arquivo ZIP contendo arquivos CSV individuais para cada doador com seus registros detalhados de doações",
@@ -658,6 +634,7 @@
       "printDescription": "Gere um documento consolidado com todas as declarações de doações para impressão",
       "printStatements": "Declarações imprimíveis",
       "selectYear": "Selecionar ano",
+      "statementFormat": "Statement format",
       "subtitle": "Baixe declarações de doações para todos os doadores",
       "summary": "Resumo",
       "title": "Declarações de doações em lote",
@@ -665,14 +642,13 @@
       "totalDonations": "Total de doações:",
       "totalDonors": "Total de doadores:",
       "year": "Ano",
-      "zipInfo": "Isso baixará um arquivo ZIP contendo {count} arquivos CSV individuais, um para cada doador.",
-      "statementFormat": "Statement format"
+      "zipInfo": "Isso baixará um arquivo ZIP contendo {count} arquivos CSV individuais, um para cada doador."
     },
     "bulkEntry": {
       "addDonation": "Adicionar Doação",
+      "fullEditor": "full donation editor",
       "pressEnter": "Pressione Enter para salvar e adicionar outra doação",
       "selectPerson": "Selecione Pessoa ou Anônimo",
-      "fullEditor": "full donation editor",
       "splitFundsHint": "Need a split across funds? Use the"
     },
     "campaignEdit": {
@@ -716,7 +692,6 @@
       "totalCampaigns": "Total de campanhas"
     },
     "donationBatchPage": {
-      "batchDate": "Data do lote:",
       "donations": "Doações",
       "editBatch": "Editar Lote",
       "subtitle": "Gerenciar doações neste lote",
@@ -740,7 +715,6 @@
       "card": "Cartão",
       "cash": "Dinheiro",
       "check": "Cheque",
-      "checkNum": "Cheque #",
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente esta doação?",
       "date": "Data",
       "fund": "Fundo",
@@ -748,39 +722,37 @@
       "lastDig": "Últimos 4 dígitos",
       "method": "Método",
       "refund": "Refund",
-      "refundConfirm": "Refund this donation in full through the payment gateway? This cannot be undone.",
       "refundConfirmLabel": "Refund",
       "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Evento: ",
-      "failed": "Doações Falhadas - ",
       "mark": "Marcar como ",
       "msg": "Mensagem: ",
       "resolved": "Resolvido",
-      "unres": " não resolvido",
-      "unresolved": "Não resolvido"
+      "unres": " não resolvido"
     },
     "donations": {
       "amt": "Quantia",
       "anon": "Anônimo",
       "batches": "Lotes",
       "campaigns": "Campanhas",
+      "convertedNote": "Converted at current exchange rates",
       "date": "Data",
       "don": "Doações",
       "errMsg": "Nenhum fundo encontrado. Por favor, crie um fundo antes de fazer uma doação",
       "export": "Exportar",
+      "exportQbo": "Export for QuickBooks",
+      "failed": "Failed Gifts",
       "funds": "Fundos",
       "method": "Método",
       "noDonMsg": "Nenhuma doação foi registrada. Uma vez que as doações são inseridas, elas aparecerão aqui.",
       "notes": "Notes",
       "pending": "Pendente",
+      "refunded": "Refunded",
       "statements": "Declarações de doações",
       "summary": "Resumo",
-      "total": "Total",
-      "exportQbo": "Export for QuickBooks",
-      "failed": "Failed Gifts",
-      "refunded": "Refunded"
+      "total": "Total"
     },
     "donationsPage": {
       "date": "Data",
@@ -789,14 +761,22 @@
       "subtitle": "Visualize resumos de doações e analise tendências de doações",
       "total": "Total"
     },
+    "failedDonations": {
+      "atRisk": "At Risk",
+      "gifts": "Failed",
+      "message": "Gateway Message",
+      "none": "No failed recurring gifts.",
+      "retry": "Retry",
+      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
+      "subtitle": "Recurring gifts the gateway could not collect",
+      "title": "Failed Recurring Gifts"
+    },
     "fundEdit": {
-      "ariaFundName": "Nome do fundo",
       "ariaTaxDeductible": "Dedutível de impostos",
       "ariaVisible": "Visível para doadores",
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente este fundo e todas as doações dentro dele?",
       "errBlank": "Insira um nome de fundo",
       "taxDeductible": "Dedutível de Impostos",
-      "trackDonations": "Rastreia doações.",
       "trackNonDonations": "Rastreia transações não-doações como inscrições em acampamentos, camisetas, ingressos para eventos, etc.",
       "visible": "Visível para Doadores"
     },
@@ -847,9 +827,15 @@
       "addPledge": "Adicionar promessa",
       "amount": "Valor da promessa",
       "confirmMsg": "Tem certeza que deseja excluir permanentemente esta promessa?",
-      "editPledge": "Editar promessa",
       "errAmount": "Informe um valor de promessa maior que zero",
       "errPerson": "Selecione uma pessoa"
+    },
+    "pledgeStatus": {
+      "beyondPledged": "Beyond Pledged",
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "nonPledged": "Non-Pledged",
+      "notStarted": "Not Started"
     },
     "printAllStatementsPage": {
       "loadingStatements": "Carregando declarações..."
@@ -873,7 +859,6 @@
       "newLabel": "Novo:",
       "noEvents": "Nenhum evento encontrado. Selecione um intervalo de datas e clique em Visualizar.",
       "preview": "Visualizar",
-      "previewResults": "Resultados da Visualização",
       "selectDateRange": "Selecionar Intervalo de Datas",
       "skipped": "Ignorado",
       "skippedLabel": "Ignorado:",
@@ -886,17 +871,12 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
-    },
-    "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
-      "message": "Gateway Message",
-      "none": "No failed recurring gifts.",
-      "retry": "Retry",
-      "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
-      "subtitle": "Recurring gifts the gateway could not collect",
-      "title": "Failed Recurring Gifts"
     }
+  },
+  "fileUpload": {
+    "chooseFile": "Choose file",
+    "quotaExceeded": "Quota exceeded",
+    "uploadFailed": "Upload failed"
   },
   "forms": {
     "choicesEdit": {
@@ -920,6 +900,7 @@
     "formEdit": {
       "access": "Acesso ao Formulário",
       "accessLevelAria": "Nível de acesso",
+      "addForm": "Add Form",
       "addToGroup": "Add submitters to a group",
       "addToGroupHelper": "Submitters are added to this group automatically.",
       "addToGroupNone": "None",
@@ -931,6 +912,7 @@
       "availableStart": "Data de Início da Disponibilidade",
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente este formulário?",
       "contentTypeAria": "Tipo de conteúdo",
+      "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
@@ -939,17 +921,11 @@
       "followUpBody": "Follow-up Email Body",
       "followUpHelper": "You can use {firstName} and {churchName} tokens.",
       "followUpSubject": "Follow-up Email Subject",
-      "formNameAria": "Nome do formulário",
-      "name": "Nome do Formulário",
       "nameReqMsg": "O nome do formulário é obrigatório.",
       "ppl": "Pessoas",
       "public": "Público",
       "restrict": "Restrito",
-      "startReqMsg": "A data de início é obrigatória.",
-      "thankYouMessage": "Mensagem de Agradecimento",
-      "addForm": "Add Form",
-      "description": "Description",
-      "descriptionHelper": "Shown above the questions on the public form page."
+      "startReqMsg": "A data de início é obrigatória."
     },
     "formMembers": {
       "act": "Ação",
@@ -963,9 +939,13 @@
       "view": "Somente Visualizar"
     },
     "formPage": {
-      "subtitleConfig": "Configuração de formulário e envios",
       "backToForms": "Back to Forms",
-      "notFound": "Form not found"
+      "notFound": "Form not found",
+      "subtitleConfig": "Configuração de formulário e envios"
+    },
+    "formPrint": {
+      "requiredNote": "* Required",
+      "title": "Print Form"
     },
     "formQuestionEdit": {
       "amt": "Quantia",
@@ -974,18 +954,14 @@
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente esta pergunta?",
       "date": "Data",
       "decNum": "Decimal",
-      "desc": "Descrição",
       "fieldType": "Tipo de Campo",
       "fund": "Fundo",
       "multiChoice": "Escolha Múltipla",
       "payment": "Pagamento",
       "phoneNum": "Número de Telefone",
-      "plcOp": "Espaço Reservado (opcional)",
       "questionDescriptionAria": "Descrição da pergunta",
       "questionEdit": "Editar Pergunta",
       "questionReq": "A pergunta é obrigatória.",
-      "questionRequiredAria": "Pergunta obrigatória",
-      "questionTitleAria": "Título da pergunta",
       "textArea": "Área de Texto",
       "textBox": "Caixa de Texto",
       "wholeNum": "Número Inteiro",
@@ -1005,43 +981,34 @@
       "addForm": "Adicionar Formulário",
       "archForms": "Formulários Arquivados",
       "archive": "Arquivar",
-      "archiveFormAria": "Arquivar formulário {name}",
-      "confirmMsg1": "Tem certeza de que deseja arquivar este formulário?",
       "confirmMsg2": "Tem certeza de que deseja restaurar este formulário?",
       "duplicate": "Duplicar",
-      "forms": "Formulários",
-      "noArch": "Nenhum formulário arquivado.",
-      "noCustomMsg": "Nenhum formulário personalizado foi criado ainda. Eles aparecerão aqui quando adicionados.",
-      "restore": "Restaurar",
-      "restoreFormAria": "Restaurar formulário {name}",
-      "subtitleManage": "Criar e gerenciar formulários personalizados",
-      "url": "URL",
-      "confirmDuplicate": "Duplicate this form?",
       "duplicated": "Form duplicated",
-      "personProfileForm": "Person profile form"
+      "forms": "Formulários",
+      "noCustomMsg": "Nenhum formulário personalizado foi criado ainda. Eles aparecerão aqui quando adicionados.",
+      "personProfileForm": "Person profile form",
+      "restore": "Restaurar",
+      "subtitleManage": "Criar e gerenciar formulários personalizados",
+      "url": "URL"
     },
     "tabs": {
       "formMem": "Membros do Formulário",
       "formSub": "Submissões de Formulários",
       "questions": "Perguntas",
       "unAuth": "Não Autorizado"
-    },
-    "formPrint": {
-      "requiredNote": "* Required",
-      "title": "Print Form"
     }
   },
   "gallery": {
     "aspectRatio": "Proporção",
     "confirmDelete": "Confirmar exclusão",
     "freeForm": "Forma livre",
-    "uploadError": "O processamento da imagem foi concluído, mas o envio falhou. A API pode não estar disponível neste ambiente.",
     "gallery": "Gallery",
     "galleryImage": "Gallery image",
     "selectAPhoto": "Select a Photo",
     "selectImage": "Select image",
     "stockPhotos": "Stock Photos",
-    "upload": "Upload"
+    "upload": "Upload",
+    "uploadError": "O processamento da imagem foi concluído, mas o envio falhou. A API pode não estar disponível neste ambiente."
   },
   "groups": {
     "groupAdd": {
@@ -1049,15 +1016,14 @@
       "catName": "Nome da Categoria",
       "catReq": "O nome da categoria é obrigatório.",
       "group": "Grupo",
-      "groupNameAria": "Nome do grupo",
       "groupReq": "O nome do grupo é obrigatório.",
       "ministry": "Ministério",
-      "new": "Novo ",
       "team": "Equipe"
     },
     "groupBanner": {
-      "confirmDuplicate": "Duplicar este grupo? Os membros não serão copiados.",
+      "announcements": "Announcements",
       "copySuffix": "(Cópia)",
+      "discussions": "Discussions",
       "duplicateTooltip": "Duplicar este grupo",
       "emailTooltip": "Enviar e-mail a este grupo",
       "location": "Local",
@@ -1067,9 +1033,7 @@
       "printNametag": "Imprimir Etiqueta",
       "team": "Equipe",
       "textTooltip": "Enviar mensagem a este grupo",
-      "trackAttendance": "Rastrear Presença",
-      "announcements": "Announcements",
-      "discussions": "Discussions"
+      "trackAttendance": "Rastrear Presença"
     },
     "groupCalendar": {
       "addEvents": "Adicionar eventos",
@@ -1097,20 +1061,19 @@
       "about": "Sobre",
       "attendanceSettings": "Configurações de presença",
       "labels": "Etiquetas",
-      "locationPlaceholder": "Casa do Johnson",
       "meetingInfo": "Informações sobre reuniões",
       "meetingLocation": "Local de Reunião",
       "meetingTime": "Horário de Reunião",
-      "meetingTimePlaceholder": "Terças-feiras às 19h",
       "noPhoto": "Nenhuma foto disponível",
       "parentPickup": "Retirada pelos Pais",
       "printNametag": "Imprimir Etiqueta",
-      "slugPlaceholder": "nome-do-grupo",
       "trackAttendance": "Rastrear Presença"
     },
     "groupDetailsEdit": {
       "addPhoto": "Adicionar foto",
       "ageGrade": "Idade e Série",
+      "announcementsEnabled": "Announcements enabled",
+      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
       "archive": "Arquivar",
       "archiveAria": "Arquivar grupo",
       "attTrack": "Rastrear Presença",
@@ -1125,12 +1088,12 @@
       "clickToAddPhoto": "Clique para adicionar foto",
       "confidential": "Grupo confidencial",
       "confidentialHelp": "Ocultar este grupo e sua lista de membros das páginas públicas, do localizador de grupos e de não membros.",
-      "confirmArchive": "Tem certeza de que deseja arquivar este grupo? Ele ficará oculto da lista de grupos até ser restaurado.",
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente este grupo?",
+      "discussionsEnabled": "Discussions enabled",
+      "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Inscrição",
       "groupDesc": "Descrição do Grupo",
       "groupDet": "Detalhes do Grupo",
-      "groupName": "Nome do Grupo",
       "groupNameAria": "Nome do grupo",
       "groupNameMsg": "Por favor, insira um nome de grupo.",
       "groupPhotoAlt": "grupo",
@@ -1138,9 +1101,7 @@
       "guestCapacity": "Capacidade de Convidados",
       "maxAge": "Idade Máxima",
       "maxGrade": "Série Máxima",
-      "meetingLocation": "Local de Reunião",
       "meetingLocationAria": "Local da reunião",
-      "meetingTime": "Horário de Reunião",
       "meetingTimeAria": "Horário da reunião",
       "minAge": "Idade Mínima",
       "minGrade": "Série Mínima",
@@ -1150,11 +1111,8 @@
       "parPick": "Retirada pelos Pais",
       "prinName": "Imprimir Etiqueta",
       "publicRoster": "Mostrar lista de membros no site",
-      "slug": "Slug (nome chave usado para urls)",
       "volunteerRatio": "Crianças por Voluntário",
-      "years": "Anos",
-      "announcementsEnabledHelp": "Group chat feed where only leaders post; members read and react.",
-      "discussionsEnabledHelp": "Group chat feed where any member can post."
+      "years": "Anos"
     },
     "groupHealth": {
       "attendance": "Presença",
@@ -1162,16 +1120,13 @@
       "avgAge": "Idade média",
       "avgAttendance": "Presença média",
       "churn90": "Rotatividade (90d)",
-      "joined": "Ingressaram",
       "joined90": "Ingressaram (90d)",
       "left": "Saíram",
       "left90": "Saíram (90d)",
       "members": "Membros",
       "membershipChanges": "Mudanças de membros (12 meses)",
-      "month": "Mês",
       "subtitle": "Compare crescimento, rotatividade e presença entre grupos",
-      "title": "Saúde do grupo",
-      "week": "Semana"
+      "title": "Saúde do grupo"
     },
     "groupLabelsEdit": {
       "addNewLabel": "Adicionar novo rótulo",
@@ -1182,10 +1137,8 @@
     "groupMembers": {
       "groupMem": "Membros do Grupo",
       "leader": "Líder",
-      "leaderLower": "líder",
       "leadersLower": "líderes",
       "makeLeader": "Tornar líder",
-      "member": "membro",
       "members": "membros",
       "messagePlaceholder": "Escreva uma mensagem para enviar a todos os membros do grupo…",
       "messageSent": "Mensagem enviada.",
@@ -1219,7 +1172,9 @@
     "groupSessions": {
       "addSesMsg": "Por favor, adicione uma nova sessão para continuar.",
       "allYears": "Todos os anos",
+      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
       "attFor": "Presença para",
+      "confirmRemove": "Remove this person from the session's attendance?",
       "new": "Novo",
       "noAttendance": "Nenhum registro de presença encontrado",
       "noSesMsg": "Não há sessões.",
@@ -1228,9 +1183,7 @@
       "session": "Sessão",
       "sessions": "Sessões",
       "tryAdjusting": "Tente ajustar sua pesquisa",
-      "upcoming": "próximos",
-      "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
-      "confirmRemove": "Remove this person from the session's attendance?"
+      "upcoming": "próximos"
     },
     "groupsPage": {
       "addGroup": "Adicionar grupo",
@@ -1239,20 +1192,16 @@
       "groups": "Grupos",
       "labels": "Etiquetas",
       "noGroupMsg": "Nenhum grupo encontrado. Por favor, crie um grupo.",
-      "noMatchMsg": "Nenhum grupo corresponde à sua busca.",
       "pendingRequestSingular": "{count} solicitação pendente",
       "pendingRequests": "{count} solicitações pendentes",
-      "pers": "1 pessoa",
       "ppl": "Pessoas",
       "restore": "Restaurar",
       "searchPlaceholder": "Buscar grupos...",
       "showArchived": "Mostrar arquivados",
       "spPpl": " pessoas",
       "subtitle": {
-        "create": "Comece criando seu primeiro grupo",
-        "manage": "Organize e gerencie seus grupos religiosos"
-      },
-      "confirmRestore": "Restore {name} from the archive?"
+        "create": "Comece criando seu primeiro grupo"
+      }
     },
     "membersAdd": {
       "availableMem": "Membros de Grupo Disponíveis",
@@ -1261,8 +1210,7 @@
     },
     "pendingRequestsPage": {
       "empty": "Nenhuma solicitação pendente.",
-      "subtitle": "Aprove ou recuse solicitações iniciadas por membros em todos os grupos.",
-      "title": "Solicitações de Participação Pendentes"
+      "subtitle": "Aprove ou recuse solicitações iniciadas por membros em todos os grupos."
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Inserir campo de mesclagem no corpo:",
@@ -1300,7 +1248,6 @@
       "eligibleSummary": "{eligibleCount} de {totalMembers} membros receberão esta mensagem.",
       "eligibleSummarySingular": "{eligibleCount} de {totalMembers} membro receberá esta mensagem.",
       "fallbackError": "Falha ao enviar mensagem de texto.",
-      "insufficientCredits": "Sua igreja está sem créditos de mensagens de texto para este ciclo de cobrança. Nenhuma mensagem foi enviada. Faça upgrade ou aguarde a renovação dos seus créditos em",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Carregando destinatários...",
       "messageLabel": "Mensagem",
@@ -1314,7 +1261,6 @@
       "sendDefault": "Isso enviará um SMS aos membros elegíveis do grupo.",
       "sendFailedDetail": "{count} falharam ao enviar.",
       "sending": "Enviando...",
-      "sendingTo": "Enviando para {phoneNumber}.",
       "sentSummary": "Enviado para {successCount} de {recipientCount} destinatários elegíveis.",
       "sentSummarySingular": "Enviado para {successCount} de {recipientCount} destinatário elegível.",
       "textGroupTitle": "Mensagem para grupo: {groupName}",
@@ -1329,8 +1275,6 @@
     },
     "sessionAdd": {
       "invDate": "Data Inválida",
-      "sesAdd": "Adicionar uma Sessão",
-      "sesDate": "Data da Sessão",
       "sessionDateAria": "Data da sessão",
       "srvTime": "Horário do Serviço"
     },
@@ -1340,7 +1284,6 @@
       "invalidDate": "Data Inválida",
       "noDate": "Sem Data",
       "people": "pessoas",
-      "person": "pessoa",
       "view": "Visualizar"
     },
     "sessionEdit": {
@@ -1385,7 +1328,6 @@
       "liveStreamTimes": "Horários de Transmissão ao Vivo",
       "pages": "Páginas",
       "profile": "Perfil",
-      "quickActions": "Ações Rápidas",
       "registrations": "Inscrições",
       "roomsResources": "Salas e recursos",
       "sermons": "Sermões",
@@ -1402,8 +1344,7 @@
       "resetDefaults": "Restaurar Padrões"
     },
     "appThemePage": {
-      "subtitle": "Personalize as cores usadas pelo aplicativo móvel, portal do membro e quiosque de check-in",
-      "title": "Tema do Aplicativo"
+      "subtitle": "Personalize as cores usadas pelo aplicativo móvel, portal do membro e quiosque de check-in"
     },
     "b1MobilePage": {
       "subtitle": "Configure as definições do aplicativo B1 Mobile",
@@ -1413,12 +1354,10 @@
       "copyLink": "Copiar link",
       "disabled": "Desativado",
       "downloadQr": "Baixar PNG",
-      "enabled": "Ativado — O código QR aparecerá no quiosque",
       "kiosk": {
         "addSlide": "Adicionar slide",
         "backgroundImage": "Imagem de fundo",
         "backgroundImageDesc": "Imagem de fundo opcional para a tela de busca/boas-vindas. Recomendado: 1920x1080.",
-        "changeImage": "Alterar imagem",
         "duration": "Duração (s)",
         "enableIdleScreen": "Habilitar tela de espera",
         "headerSubtitle": "As cores do quiosque são gerenciadas em Celular > Tema do aplicativo. Configure imagens de fundo e o comportamento da tela de espera abaixo.",
@@ -1429,7 +1368,6 @@
         "upload": "Enviar",
         "uploadImage": "Enviar imagem"
       },
-      "linkCopied": "Copiado!",
       "manageLabels": "Projetar etiquetas",
       "qrGuestRegistration": "Registro de Visitantes por QR",
       "qrShareDescription": "Imprima este código QR em flyers, boletins ou sinalizações. Os visitantes podem escaneá-lo para se registrar pelo celular. Também aparecerá no aplicativo.",
@@ -1437,8 +1375,7 @@
       "qrTooltip": "Exibir um código QR no quiosque de check-in para que os visitantes possam se registrar pelo celular",
       "registrationUrl": "Link de inscrição",
       "saveToActivate": "Salve suas alterações para ativar este link.",
-      "subtitle": "Configure as definições do aplicativo de quiosque B1 CheckIn",
-      "title": "B1 CheckIn"
+      "subtitle": "Configure as definições do aplicativo de quiosque B1 CheckIn"
     }
   },
   "month": {
@@ -1480,12 +1417,12 @@
       "valuePlaceholder": "Valor"
     },
     "aiSearch": {
+      "clearSearch": "Clear search",
       "exampleMen": "- Mostre-me homens com mais de 30 anos com aniversários em julho.",
       "exampleWomen": "- Mostre-me mulheres que são casadas.",
       "examples": "Exemplos:",
       "placeholder": "Mostre-me homens acima de 30 anos com aniversários em julho",
       "search": "Pesquisar",
-      "searching": "Pesquisando...",
       "title": "Pesquisa por IA"
     },
     "bulk": {
@@ -1503,7 +1440,6 @@
       "deleteError": "Não foi possível excluir as pessoas selecionadas",
       "deleteSelected": "Excluir Pessoas Selecionadas",
       "deleteSuccess": "{count} pessoas excluídas com sucesso",
-      "deleting": "Excluindo...",
       "error": "Erro",
       "fieldPrompt": "Atualizar o campo para {count} pessoas selecionadas.",
       "fieldSuccess": "{count} pessoas atualizadas.",
@@ -1531,6 +1467,13 @@
       "title": "Dados demográficos",
       "total": "Total",
       "unassigned": "Não atribuído"
+    },
+    "duplicateDialog": {
+      "createAnyway": "Create Anyway",
+      "matchBirthDate": "Birthdate",
+      "message": "One or more people already in your database look like a possible match.",
+      "title": "Possible Duplicate",
+      "useExisting": "Use Existing"
     },
     "editCondition": {
       "act": "Atividade",
@@ -1567,11 +1510,9 @@
       "anonymizeDescription": "Isso substituirá todas as informações pessoais por valores genéricos e removerá a pessoa de grupos, formulários e mensagens. Os valores das doações e datas de presença serão preservados para fins de relatório, mas desvinculados desta pessoa. Isso não pode ser desfeito.",
       "anonymizePlaceholder": "ANONYMIZE",
       "anonymizeTitle": "Anonimizar {personName}?",
-      "anonymizing": "Anonimizando...",
       "dataManagement": "Gerenciamento de Dados",
       "description": "Exporte ou anonimize os dados desta pessoa para conformidade com o GDPR.",
-      "exportData": "Exportar Dados",
-      "exporting": "Exportando..."
+      "exportData": "Exportar Dados"
     },
     "groups": {
       "leader": "Líder",
@@ -1592,15 +1533,12 @@
       "child": "Criança",
       "head": "Chefe",
       "house": " Família",
-      "houseName": "Nome da Família",
-      "householdNameAria": "Nome da família",
       "other": "Outro",
       "spouse": "Cônjuge",
       "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Atualizar diariamente",
-      "category": "Categoria",
       "categoryPlaceholder": "Opcional — agrupe listas relacionadas",
       "confirmDelete": "Excluir a lista \"{name}\"? Esta ação não pode ser desfeita.",
       "createdBy": "por {name}",
@@ -1623,8 +1561,7 @@
       "title": "Listas salvas"
     },
     "merge": {
-      "merge": "mesclar",
-      "findPerson": "Find person to merge"
+      "merge": "mesclar"
     },
     "mergeModal": {
       "cancel": "Cancelar",
@@ -1634,7 +1571,6 @@
       "householdId": "ID da Família",
       "id": "ID",
       "merge": "Mesclando...",
-      "mergeQuestion": "Mesclar",
       "name": "Nome",
       "profile": "Perfil",
       "selMsg": "Por favor, selecione um valor para todos os campos",
@@ -1652,22 +1588,16 @@
       "addPerson": "Adicionar pessoa",
       "allMembers": "Todos os membros",
       "bDay": "Aniversário",
-      "bDayNo": "Aniversário (Sem Ano)",
-      "deleteOp": "Opção de Exclusão",
       "export": "Exportar",
       "first": "Primeiro",
       "last": "Último",
       "loading": "Carregando pessoas...",
       "middle": "Nome do Meio",
-      "nameNote": "Notas da Etiqueta de Nome",
       "noPeopleFound": "Nenhuma pessoa encontrada",
       "peopleFound": "Encontradas {count} pessoas",
       "photo": "Foto",
-      "primEmail": "Email Principal",
-      "primPhone": "Telefone Principal",
       "printDirectory": "Imprimir diretório",
       "searchPpl": "Pesquisar Pessoas",
-      "searchResults": "Resultados da Pesquisa",
       "showAll": "Mostrar todos os membros",
       "showingMembers": "Exibindo {count} membros"
     },
@@ -1712,23 +1642,18 @@
       "sendTextMessage": "Enviar mensagem de texto"
     },
     "personEdit": {
-      "applyQuestion": "Você gostaria de aplicar isso a toda",
       "cannotDeleteSelf": "Você não pode excluir seu próprio registro de pessoa.",
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente este registro de pessoa?",
       "customFields": "Campos Personalizados",
-      "donorNumber": "Número de Doador",
       "exten": "Extensão",
       "family": "família",
       "firstReq": "O primeiro nome é obrigatório",
-      "for": "para",
       "lastReq": "O sobrenome é obrigatório",
       "maritalStatus": "Estado Civil",
       "merge": "Mesclar",
       "mergePersonAria": "Mesclar pessoa",
-      "nameNote": "Notas da Etiqueta de Nome",
       "noCampus": "Sem campus",
       "persDet": "Detalhes Pessoais",
-      "upAddress": "Você atualizou o endereço para",
       "valEmail": "Por favor, insira um endereço de email válido."
     },
     "personForm": {
@@ -1775,13 +1700,6 @@
     },
     "updateHouseHold": {
       "update": "Atualizar Endereço"
-    },
-    "duplicateDialog": {
-      "createAnyway": "Create Anyway",
-      "matchBirthDate": "Birthdate",
-      "message": "One or more people already in your database look like a possible match.",
-      "title": "Possible Duplicate",
-      "useExisting": "Use Existing"
     }
   },
   "person": {
@@ -1800,8 +1718,6 @@
     "gender": "Gênero",
     "grade": "Grau",
     "lastName": "Sobrenome",
-    "line1": "Linha 1",
-    "line2": "Linha 2",
     "male": "Masculino",
     "maritalStatus": "Estado Civil",
     "married": "Casado",
@@ -1832,20 +1748,12 @@
     "batch": {
       "name": "Ofertas de Domingo"
     },
-    "block": {
-      "name": "Seção de Boas-vindas"
-    },
     "choices": {
       "text": "Primeira Opção",
       "value": "Opção A"
     },
-    "device": {
-      "label": "Living Room Screen"
-    },
     "donation": {
-      "checkNumber": "1234",
-      "lastDigits": "4242",
-      "notes": "Dízimo mensal da família Silva"
+      "lastDigits": "4242"
     },
     "element": {
       "buttonText": "Click Here",
@@ -1861,41 +1769,24 @@
       "search": "Search fonts..."
     },
     "form": {
-      "name": "Formulário de Cadastro",
-      "questionDescription": "Ajude-nos a planejar nossos eventos",
       "questionPlaceholder": "Digite sua resposta aqui",
-      "questionTitle": "Qual é sua comida favorita?",
-      "thankYouMessage": "Obrigado pelo envio!",
-      "description": "Tell people what this form is for and what happens after they submit it."
-    },
-    "fund": {
-      "name": "Fundo Geral"
+      "thankYouMessage": "Obrigado pelo envio!"
     },
     "giving": {
       "publicKey": "pk_live_..."
     },
     "group": {
-      "category": "Comunidade, Estudo Bíblico, Ministério",
-      "name": "Estudo Bíblico Adultos"
-    },
-    "household": {
-      "name": "Família Silva"
+      "category": "Comunidade, Estudo Bíblico, Ministério"
     },
     "page": {
       "linkText": "Read More",
-      "linkUrl": "https://example.com",
-      "title": "Sobre Nós",
-      "urlPath": "/about-us"
-    },
-    "pairScreen": {
-      "code": "ABC123"
+      "linkUrl": "https://example.com"
     },
     "person": {
       "address1": "Rua Principal 123",
       "address2": "Apto 4B",
       "city": "São Paulo",
       "donorNumber": "DN-12345",
-      "email": "joao@exemplo.com.br",
       "firstName": "João",
       "lastName": "Silva",
       "middleName": "Carlos",
@@ -1906,29 +1797,16 @@
       "state": "SP",
       "zip": "01310-100"
     },
-    "plan": {
-      "name": "Sunday Service - Jan 5"
-    },
     "planItem": {
       "description": "Brief description...",
       "label": "Momento de Louvor"
     },
-    "planType": {
-      "name": "Culto Dominical"
-    },
     "position": {
-      "count": "2",
-      "name": "Vocalista Principal"
-    },
-    "role": {
-      "name": "Voluntário"
+      "count": "2"
     },
     "sermon": {
       "description": "Série sobre viver nossa fé diariamente",
       "title": "Caminhando na Fé"
-    },
-    "service": {
-      "name": "Culto de Domingo"
     },
     "song": {
       "album": "Album Name",
@@ -1940,20 +1818,12 @@
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
       "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace",
-      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge"
+      "sequence": "Verse 1, Chorus, Verse 2, Chorus, Bridge",
+      "title": "Amazing Grace"
     },
     "task": {
       "notes": "Add any notes about this task...",
       "title": "Prepare worship slides"
-    },
-    "time": {
-      "displayName": "Sunday Morning"
-    },
-    "user": {
-      "email": "joao@exemplo.com.br",
-      "firstName": "João",
-      "lastName": "Silva"
     }
   },
   "plans": {
@@ -1968,16 +1838,19 @@
       "fallbackLoading": "Carregando...",
       "fallbackSection": "Seção",
       "fromAssociatedLesson": "Da lição associada:",
+      "importCount": "Import ({count})",
       "noActionsAvailable": "Nenhuma ação disponível",
       "noContent": "Nenhum conteúdo disponível",
       "selectAction": "Selecionar ação",
       "selectExternalItem": "Selecionar item externo",
-      "importCount": "Import ({count})",
       "selectItem": "Select {label}",
       "selectedCount": "{count} selected"
     },
     "applyYearPlan": {
+      "anchoredChristmas": "Anchored to Christmas",
+      "anchoredEaster": "Anchored to Easter",
       "dateTaken": "A plan already exists on this date.",
+      "endDate": "Last class date",
       "externalSkipped": "This week is from an external provider and cannot be applied here.",
       "lessonsToSchedule": "lessons to schedule",
       "loadFailed": "Could not load published year plans.",
@@ -1985,25 +1858,20 @@
       "nonePublished": "No year plans have been published yet.",
       "savingFailed": "Failed to create some plans. Please check and try again.",
       "schedulingProgress": "Scheduling...",
+      "segmentOverflow": "Does not fit before the next anchored week.",
+      "shiftedWeek": "Shifted to the next open Sunday",
       "startDate": "First class date",
+      "targetYear": "Target year",
       "title": "Apply Year Plan",
       "week": "Week",
       "weekCount": "How many weeks",
       "weeks": "weeks",
-      "yearPlan": "Year plan",
-      "anchoredChristmas": "Anchored to Christmas",
-      "anchoredEaster": "Anchored to Easter",
-      "endDate": "Last class date",
-      "segmentOverflow": "Does not fit before the next anchored week.",
-      "shiftedWeek": "Shifted to the next open Sunday",
-      "targetYear": "Target year"
+      "yearPlan": "Year plan"
     },
     "assignment": {
       "addPosition": "Adicionar posição",
       "autoAssign": "Atribuição automática",
       "fullyStaffed": "Totalmente preenchido",
-      "needed": "necessário",
-      "notesPlaceholder": "Adicionar notas para este plano de culto...",
       "notesPlaceholderReadOnly": "Notas do plano (somente leitura)",
       "penciledIn": "Esboçado",
       "planNotesAria": "Notas do plano",
@@ -2015,7 +1883,6 @@
       "assignPos": "Atribuir Posição",
       "confirmDelete": "Tem certeza de que deseja remover a atribuição deste voluntário?",
       "done": "Concluído",
-      "editAssign": "Editar Atribuição",
       "noMem": "Nenhum membro do grupo encontrado."
     },
     "browseGrid": {
@@ -2082,13 +1949,11 @@
       "videoUnsupported": "Seu navegador não suporta a tag de vídeo."
     },
     "lessonDialog": {
-      "back": "Voltar",
       "close": "Fechar",
       "editHint": "Use × para remover algo do seu plano, ou clique em qualquer texto para reformulá-lo. O original nunca é alterado.",
       "fallbackTitle": "Seção da Lição",
       "noPreviewItem": "Nenhuma visualização disponível para este item.",
       "previewUnavailable": "Visualização não disponível para esta seção.",
-      "putBack": "Recolocar",
       "restoreSection": "Restaurar seção original",
       "restoreSectionConfirm": "Restaurar esta seção como a lição a escreveu? Tudo o que você removeu ou reformulou nela será desfeito.",
       "restoreText": "Editado — restaurar texto original",
@@ -2136,15 +2001,12 @@
       "copyPrevious": "Copiar do Plano Anterior",
       "copyServiceOrder": "Copiar Ordem do Culto",
       "planAdd": "Adicionar um Plano",
-      "planEdit": "Editar Plano",
-      "planNameAria": "Nome do plano",
       "planReq": "Nome do plano é obrigatório.",
       "prepared": "Esboçado (ocultar atribuições dos voluntários até publicar)",
       "servDate": "Data do Serviço",
       "servReq": "Data do serviço é obrigatória.",
       "serviceDateAria": "Data do culto",
       "showVolunteerNames": "Mostrar nomes dos voluntários na página de inscrição",
-      "signupDeadline": "Prazo de Inscrição (horas antes do culto)",
       "signupDeadlineHelper": "Deixe em branco para não ter prazo"
     },
     "planItem": {
@@ -2166,7 +2028,6 @@
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
       "selectItems": "Select Items",
-      "showRows": "Mostrar como linhas separadas",
       "song": "Canção"
     },
     "planItemEdit": {
@@ -2186,9 +2047,11 @@
       "planItemDescriptionAria": "Descrição do item do plano",
       "planItemNameAria": "Nome do item do plano",
       "position": "Position",
+      "positionForService": "Position for this service",
+      "sameAsDefault": "Same as above",
       "searchBoxAria": "searchBox",
-      "seconds": "Segundos",
-      "searchFailed": "Search failed. Please try again."
+      "searchFailed": "Search failed. Please try again.",
+      "seconds": "Segundos"
     },
     "planList": {
       "applyYearPlan": "Apply Year Plan",
@@ -2218,14 +2081,11 @@
       "details": "Detalhes do Tipo de Plano"
     },
     "planTypeEdit": {
-      "add": "Adicionar",
       "confirmDelete": "Confirmar exclusão",
-      "edit": "Editar",
       "errorDeleting": "Erro ao excluir",
       "errorSaving": "Erro ao salvar o tipo de plano",
       "nameRequired": "O nome do tipo de plano é obrigatório",
-      "planType": "Tipo de plano",
-      "planTypeName": "Nome do tipo de plano"
+      "planType": "Tipo de plano"
     },
     "planTypeGroups": {
       "addGroup": "Adicionar grupo",
@@ -2256,19 +2116,29 @@
       "planType": "Tipo de plano",
       "subtitle": "Definir configurações de tipo de plano"
     },
+    "planTypeReminders": {
+      "channels": "Send By",
+      "day1": "1 day before",
+      "dayOf": "Day of",
+      "days2": "2 days before",
+      "days3": "3 days before",
+      "days7": "7 days before",
+      "enable": "Send reminders for plans of this type",
+      "message": "Message",
+      "messageHint": "Optional. Leave blank to use the default reminder wording.",
+      "save": "Save Reminders",
+      "saved": "Saved",
+      "timeOfDay": "Time of Day",
+      "title": "Reminders",
+      "when": "When should reminders go out?"
+    },
     "planValidation": {
       "and": "e",
       "between": "entre",
-      "blockCon": "Conflito de data bloqueada de",
       "cons": "Conflitos",
       "during": "durante",
-      "householdApart": "prefere não servir no mesmo dia que",
-      "more": "mais",
       "needed": "necessário.",
-      "notify": "Notificar",
-      "overMaxPerMonth": "está agendado",
       "penciledIn": "Esboçado — os voluntários ainda não podem ver estas atribuições.",
-      "person": "pessoa",
       "pleaseConfirm": "Por favor, faça login e confirme.",
       "ppl": "pessoas",
       "prefTimeMismatch": "prefere servir às",
@@ -2276,22 +2146,17 @@
       "publishConfirm": "Publicar este plano para que os voluntários possam ver suas atribuições?",
       "publishConfirmLabel": "Publicar",
       "publishConfirmTitle": "Publicar Plano",
-      "publishNotify": "Publicar e notificar",
       "publishNotifyConfirm": "Publicar este plano e notificar {count} voluntários sobre suas atribuições? As notificações são enviadas imediatamente.",
-      "timeCon": "Conflito de horário entre",
-      "timeCon2": "Conflito de horário às",
       "timesThisMonth": "vezes neste mês, acima do máximo preferido de",
       "to": "para",
       "val": "Validação",
       "valPlan": "O plano é válido.",
       "vol": "voluntário(s)",
-      "volNotif": "Todos os voluntários notificados.",
-      "volReq": "Solicitações de Voluntários: "
+      "volNotif": "Todos os voluntários notificados."
     },
     "plansPage": {
       "addMinistry": "Adicionar Ministério",
       "editMinistry": "Editar Ministério",
-      "selMin": "Selecione um Ministério",
       "subtitle": "Gerenciar ministérios e planos de serviço"
     },
     "positionEdit": {
@@ -2299,17 +2164,13 @@
       "catName": "Nome da Categoria",
       "catNameReq": "O nome da categoria é obrigatório.",
       "confirmDelete": "Tem certeza de que deseja excluir esta posição? Qualquer pessoa atualmente atribuída a ela ficará sem agendamento.",
-      "description": "Descrição",
       "descriptionHelper": "Mostrado aos voluntários ao navegar pelas oportunidades de inscrição",
       "nameReq": "O nome é obrigatório",
       "posAdd": "Adicionar uma Posição",
-      "posEdit": "Editar Posição",
-      "volCount": "Contagem de Voluntários",
       "volGroup": "Grupo de Voluntários"
     },
     "positionList": {
       "load": "Carregando...",
-      "persNeed": "1 Pessoa Necessária",
       "pos": "Posição",
       "ppl": "Pessoas",
       "pplNeed": " Pessoas Necessárias",
@@ -2365,20 +2226,14 @@
       "emailResult": "E-mail enviado a {sent} voluntários ({failed} falharam)",
       "endDate": "Data de Término",
       "exportCsv": "Exportar CSV",
-      "filename": "visao-geral-servico.csv",
       "gapsOnly": "Somente não preenchidos",
       "highlightAll": "Todos",
       "highlightPerson": "Destacar",
       "noData": "Nenhum dado de serviço encontrado para o intervalo de datas selecionado.",
-      "overviewSuffix": "Visão Geral",
       "position": "Posição",
       "remove": "Remover",
       "startDate": "Data de Início",
-      "subtitle": "Posições por data com voluntários atribuídos",
-      "title": "Visão Geral do Serviço",
-      "autoScheduleConfirm": "Auto-schedule volunteers into every open slot in this date range?",
-      "emailAllConfirm": "Email every assigned volunteer in this date range?",
-      "removeConfirm": "Remove {name} from this assignment?"
+      "subtitle": "Posições por data com voluntários atribuídos"
     },
     "servingPage": {
       "showAll": "Mostrar Todos",
@@ -2432,7 +2287,6 @@
     },
     "timeEdit": {
       "confirmDelete": "Tem certeza de que deseja excluir este horário?",
-      "disName": "Nome de Exibição",
       "disNameReq": "O nome de exibição é obrigatório.",
       "endReq": "O horário de término é obrigatório",
       "endTimeAria": "Horário de término",
@@ -2442,12 +2296,9 @@
       "teamNeed": "Equipes Necessárias",
       "teamPrefix": "Equipe",
       "timeAdd": "Adicionar um Horário",
-      "timeDisplayNameAria": "Nome de exibição do horário",
-      "timeEdit": "Editar Horário",
       "timeEnd": "Horário de Término",
       "timeStart": "Horário de Início",
       "tip": "Dica",
-      "type": "Tipo",
       "typeAria": "Tipo de horário do serviço",
       "typeOther": "Outro",
       "typeRehearsal": "Ensaio",
@@ -2464,19 +2315,18 @@
       "associatedContent": "Conteúdo associado"
     },
     "deviceEdit": {
-      "label": "Rótulo",
       "labelRequired": "O rótulo é obrigatório"
     },
     "devices": {
       "addScreen": "Adicionar Tela",
       "device": "Dispositivo",
       "editDevice": "Editar Dispositivo",
+      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
+      "emptyTitle": "No paired screens yet",
       "label": "Rótulo",
       "lastActiveDate": "Última data ativa",
       "registrationDate": "Data de registro",
-      "title": "Dispositivos",
-      "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
-      "emptyTitle": "No paired screens yet"
+      "title": "Dispositivos"
     },
     "linkedAccounts": {
       "link": "Link",
@@ -2486,34 +2336,34 @@
     "pairScreen": {
       "codeRequired": "O código de pareamento é obrigatório",
       "invalidCode": "Código de pareamento inválido",
-      "pairingCode": "Código de emparelhamento",
       "planType": "Mostrar Planos Para",
       "planTypeNone": "Nenhum (somente notificações)"
     },
     "profilePage": {
       "accDel": "Exclusão de Conta",
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente sua conta?",
-      "darkMode": "Modo Escuro",
       "delAcc": "Excluir minha conta",
       "deleteError": "Falha ao excluir conta",
+      "deletionPending": "Deletion pending",
       "demoModeAlert": "A edição de perfil está desabilitada no modo de demonstração.",
-      "demoPasswordHelper": "Alterações de senha estão desabilitadas no modo de demonstração",
       "emailMsg": "Por favor, insira um endereço de email.",
       "firstMsg": "Por favor, insira o primeiro nome",
       "lastMsg": "Por favor, insira o sobrenome",
       "lightMode": "Modo Claro",
       "linkedAccounts": "Contas Vinculadas",
       "noDirect": "Ocultar-me do diretório de membros",
+      "passCurrent": "Pass current",
+      "passCurrentMsg": "Pass current msg",
       "passLong": "Por favor, insira uma senha com pelo menos 8 caracteres.",
       "passMatch": "As senhas não coincidem.",
       "passNew": "Nova senha",
       "passVer": "Verificar senha",
       "passwordHelper": "Deixe em branco para manter a senha atual",
       "permWarn": "Cuidado, estas ações são permanentes",
-      "profEdit": "Editar Conta",
       "saveChange": "Alterações salvas.",
       "saveChanges": "Salvar alterações",
       "saveError": "Falha ao salvar as alterações",
+      "sendRequest": "Send request",
       "subtitle": "Gerencie seu perfil e preferências",
       "themePreferences": "Preferências de Tema",
       "themePreferencesHelper": "Sua preferência de tema é salva automaticamente e será lembrada neste dispositivo.",
@@ -2556,36 +2406,37 @@
       "selections": "Seleções",
       "sort": "Ordenar",
       "startDate": "Data de Início",
+      "total": "Total",
       "type": "Tipo",
       "usesSoFar": "Usos: {count}",
-      "value": "Valor",
-      "promoteConfirm": "Promote this waitlisted registrant to confirmed?"
+      "value": "Valor"
     },
     "registrationDetailsPage": {
       "addAttendee": "Adicionar Participante",
       "addAttendeeError": "Falha ao registrar participante",
-      "cancelConfirm": "Cancelar esta inscrição?",
       "cancelRegistration": "Cancelar Inscrição",
+      "csvDate": "Date",
+      "csvMembers": "Members",
+      "csvName": "Name",
+      "csvStatus": "Status",
       "date": "Data",
       "deleteConfirm": "Excluir permanentemente esta inscrição?",
       "eventFull": "Este evento atingiu a capacidade máxima.",
       "eventNotFound": "Evento não encontrado",
-      "eventRegistrations": "Inscrições do Evento",
       "exportCsv": "Exportar CSV",
       "guest": "Convidado",
       "members": "Membros",
       "name": "Nome",
       "noRegistrations": "Nenhuma inscrição ainda.",
       "registrations": "Inscrições",
+      "selectTypeFirst": "Select an attendee type to continue.",
       "status": "Status",
       "subtitle": "Gerenciar inscrições para este evento",
       "unansweredOnly": "Apenas perguntas não respondidas",
       "unknown": "Desconhecido",
-      "viewAnswers": "Ver Respostas",
-      "selectTypeFirst": "Select an attendee type to continue."
+      "viewAnswers": "Ver Respostas"
     },
     "registrationSettingsEdit": {
-      "capacity": "Capacidade",
       "capacityPlaceholder": "Deixe vazio para ilimitado",
       "enableRegistration": "Ativar Inscrição",
       "enableWaitlist": "Ativar Lista de Espera",
@@ -2595,23 +2446,20 @@
       "registrationQuestions": "Perguntas de Inscrição",
       "registrationSettings": "Configurações de Inscrição",
       "saveSettings": "Salvar Configurações",
-      "tags": "Tags",
       "tagsHelper": "Tags separadas por vírgula para filtragem",
-      "tagsPlaceholder": "jovens, retiro, vbs",
       "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
       "date": "Data",
       "enabledEvents": "Eventos com Inscrição Ativada",
       "event": "Evento",
+      "goToCalendars": "Turn on registration on a calendar event",
       "noEvents": "Nenhum evento tem inscrição ativada ainda.",
       "noEventsHint": "Ative a inscrição em um evento através das configurações de edição do evento.",
       "registered": "inscritos",
       "registrations": "Inscrições",
       "subtitle": "Gerenciar configurações de inscrição em eventos e visualizar inscritos",
-      "tags": "Tags",
-      "title": "Inscrições em Eventos",
-      "goToCalendars": "Turn on registration on a calendar event"
+      "tags": "Tags"
     }
   },
   "reporting": {
@@ -2619,6 +2467,7 @@
     "downloadOptions": "Opções de Download",
     "givingKpiCards": {
       "avgGift": "Doação Média",
+      "convertedNote": "Converted at current exchange rates",
       "donationCount": "Total de Doações",
       "donorCount": "Doadores Únicos",
       "totalGiving": "Total de Doações"
@@ -2642,11 +2491,9 @@
     "addFirstSermon": "Adicionar Primeiro Sermão",
     "addPermanentLiveUrl": "Adicionar URL de Transmissão Permanente",
     "addSermon": "Adicionar Sermão",
-    "adjustSearchTerms": "Tente ajustar seus termos de pesquisa",
     "bulkImport": {
       "chooseSource": "Escolha a Fonte de Importação",
       "fetch": "Buscar",
-      "fetching": "Buscando...",
       "import": "Importar",
       "importFromVimeo": "Importar do Vimeo",
       "importFromYouTube": "Importar do YouTube",
@@ -2655,11 +2502,9 @@
       "subtitle": "Importe vídeos de plataformas externas em massa",
       "title": "Importação em Massa",
       "vimeo": "Vimeo",
-      "vimeoChannelId": "ID do Canal do Vimeo",
       "vimeoChannelPlaceholder": "staffpicks",
       "vimeoDescription": "Importe vídeos da sua conta ou showcases do Vimeo",
       "youtube": "YouTube",
-      "youtubeChannelId": "ID do Canal do YouTube",
       "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
       "youtubeDescription": "Importe vídeos do seu canal ou playlists do YouTube"
     },
@@ -2683,10 +2528,8 @@
         "deleteConfirm": "Tem certeza de que deseja excluir este link de navegação? Esta ação não pode ser desfeita.",
         "deleteLink": "Excluir Link",
         "deleteNestedLinksFirst": "Este link tem sublinks aninhados. Por favor exclua-os primeiro.",
-        "deleting": "Excluindo...",
         "displayText": "Texto de Exibição",
         "displayTextPlaceholder": "Digite o texto a ser exibido na navegação",
-        "editNavigationLink": "Editar Link de Navegação",
         "errors": {
           "deleteFailed": "Falha ao excluir o link. Por favor tente novamente.",
           "deleteNestedFirst": "Exclua primeiro os links aninhados",
@@ -2704,7 +2547,6 @@
         "menuOrganization": "Organização do Menu",
         "optionalSubmenuMessage": "Opcionalmente organize este link sob um submenu existente:",
         "saveLink": "Salvar Link",
-        "saving": "Salvando...",
         "submenuMessage": "Este link será colocado sob o submenu:",
         "submenuUnderAria": "Definir como submenu sob {text}"
       },
@@ -2714,7 +2556,6 @@
         "title": "Links de Navegação"
       },
       "serviceEdit": {
-        "addNewService": "Adicionar Novo Serviço",
         "auto": "Automático",
         "basicInformation": "Informações Básicas",
         "chatSettings": "Configurações do Chat",
@@ -2761,8 +2602,6 @@
         "delete": "Excluir",
         "deleteConfirm": "Tem certeza de que deseja excluir esta aba? Esta ação não pode ser desfeita.",
         "deleteTab": "Excluir Aba",
-        "deleting": "Excluindo...",
-        "editTab": "Editar Aba",
         "errors": {
           "deleteFailed": "Falha ao excluir a aba. Por favor tente novamente.",
           "saveFailed": "Falha ao salvar a aba. Por favor tente novamente.",
@@ -2782,7 +2621,6 @@
         },
         "prayer": "Oração",
         "saveTab": "Salvar Aba",
-        "saving": "Salvando...",
         "tabDisplay": "Exibição da Aba",
         "tabText": "Texto da Aba",
         "tabTextPlaceholder": "Digite o texto de exibição da aba"
@@ -2790,27 +2628,21 @@
       "title": "Horários de Transmissão Ao Vivo"
     },
     "noPlaylist": "Nenhuma Playlist",
-    "noSermonsFound": "Nenhum sermão encontrado",
     "noSermonsYet": "Nenhum sermão ainda",
     "notScheduled": "Não agendado",
     "playlist": "Playlist",
     "playlists": {
       "createFirstPlaylist": "Criar Primeira Playlist",
       "noPlaylistsFound": "Nenhuma playlist encontrada",
-      "noPlaylistsMatch": "Nenhuma playlist corresponde à sua pesquisa",
       "playlistEdit": {
         "addThumbnail": "Adicionar Miniatura",
         "basicInformation": "Informações Básicas",
-        "changeThumbnail": "Alterar Miniatura",
-        "createNew": "Criar Nova Playlist",
         "deleteConfirm": "Tem certeza de que deseja excluir esta playlist?",
         "describePlaylist": "Descreva esta playlist...",
         "description": "Descrição",
         "editPlaylist": "Editar Playlist",
         "enterTitle": "Digite o título da playlist...",
         "newPlaylist": "Nova Playlist",
-        "playlistTitle": "Título da Playlist",
-        "publishDate": "Data de Publicação",
         "publishHelp": "Quando esta playlist deve estar disponível para os espectadores?",
         "publishingSchedule": "Publicação e Agendamento",
         "recommendedSize": "Tamanho recomendado: 1280x720 pixels (proporção 16:9)",
@@ -2822,27 +2654,28 @@
       "searchPlaceholder": "Pesquisar playlists...",
       "title": "Playlists"
     },
+    "podcast": {
+      "copyFeedUrl": "Copy podcast feed URL",
+      "feedUrlCopied": "Podcast feed URL copied",
+      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
+      "title": "Podcast Feed"
+    },
     "publishDate": "Data de Publicação",
     "searchPlaceholder": "Pesquisar sermões por título ou playlist...",
     "sermon": "Sermão",
     "sermonEdit": {
       "add": "adicionar",
       "addToAnotherPlaylist": "Adicionar a outra playlist",
-      "addToAnotherPlaylistAria": "Adicionar sermão a outra playlist",
-      "addToSelectedPlaylistAria": "Adicionar à playlist selecionada",
+      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "Este não é o URL do seu canal - Veja o link de ajuda acima",
       "currentLiveService": "Serviço Ao Vivo Atual",
       "currentYouTubeLiveStream": "Transmissão Ao Vivo Atual do YouTube",
       "customEmbedUrl": "URL de Incorporação Personalizada",
       "deleteConfirm": "Tem certeza de que deseja excluir este sermão?",
-      "description": "Descrição",
-      "editPermanentLiveUrl": "Editar URL de Transmissão Permanente",
       "editSermon": "Editar Sermão",
       "editThumbnailAria": "Editar miniatura do sermão",
       "facebook": "Facebook",
       "fetch": "Buscar",
-      "fetchVimeoAria": "Buscar detalhes do vídeo Vimeo",
-      "fetchYouTubeAria": "Buscar detalhes do vídeo YouTube",
       "getYourChannelId": "Obtenha Seu ID de Canal",
       "newSermon": "Novo Sermão",
       "none": "Nenhum",
@@ -2850,49 +2683,35 @@
       "selectAdditionalPlaylistAria": "Selecionar playlist adicional",
       "selectPlaylistAria": "Selecionar playlist",
       "selectVideoProviderAria": "Selecionar provedor de vídeo",
-      "sermonDescriptionAria": "Descrição do sermão",
       "sermonEmbedUrl": "URL de Incorporação do Sermão",
       "sermonId": "ID do Sermão",
-      "sermonTitleAria": "Título do sermão",
       "thumbnailAlt": "Miniatura do sermão",
       "title": "Título",
       "totalSermonDuration": "Duração Total do Sermão",
       "unauthorized": "Não autorizado a criar sermões",
       "unauthorizedDelete": "Não autorizado a excluir sermões",
+      "uploadAudio": "Upload Audio",
       "videoIdOrUrlAria": "ID ou URL do vídeo",
       "videoProvider": "Provedor de Vídeo",
       "vimeo": "Vimeo",
       "vimeoId": "ID do Vimeo",
       "youtube": "YouTube",
-      "youtubeChannelId": "ID do Canal do YouTube",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Esta não é a URL do seu canal",
-      "youtubeId": "ID do YouTube",
-      "audioUrl": "Audio File URL (for podcast)",
-      "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
-      "uploadAudio": "Upload Audio"
+      "youtubeId": "ID do YouTube"
     },
     "subtitle": "Gerencie sua biblioteca de sermões e transmissões ao vivo",
-    "title": "Sermões",
-    "podcast": {
-      "copyFeedUrl": "Copy podcast feed URL",
-      "feedUrlCopied": "Podcast feed URL copied",
-      "hint": "Submit this URL to Apple Podcasts / Spotify. Only sermons with an audio or video file are included.",
-      "title": "Podcast Feed"
-    }
+    "title": "Sermões"
   },
   "serverAdmin": {
     "adminPage": {
       "act": "Ativo",
-      "arch": "Arquivado",
       "church": "Igreja",
       "churchName": "Nome da Igreja",
       "churches": "Igrejas",
       "churchesSubtitle": "Busque e gerencie todas as igrejas",
-      "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
       "impersonateSubtitle": "Entre como outro usuário para suporte",
       "impersonateUser": "Representar usuário",
-      "jobs": "Trabalhos em Segundo Plano",
       "jobsSubtitle": "Última execução e falhas dos trabalhos agendados",
       "location": "Localização",
       "noChurch": "Nenhuma igreja encontrada. Por favor, pesquise um nome diferente.",
@@ -2904,20 +2723,14 @@
       "notes": "Notas",
       "regist": "Registrado",
       "searchResults": "Resultados da pesquisa",
-      "servAdmin": "Admin do Servidor",
-      "serverHealth": "Saúde do servidor",
       "serverHealthSubtitle": "Verifique a saúde dos serviços de back-end",
       "subtitle": "Gerenciar configurações e igrejas em todo o servidor",
-      "translationLookups": "Pesquisas de tradução",
       "translationSubtitle": "Consulte strings de localização traduzidas",
       "usageSubtitle": "Veja tendências de uso do servidor",
-      "usageTrends": "Tendências de Uso",
-      "users": "Usuários",
       "usersSubtitle": "Consulte qualquer conta de usuário para suporte",
       "valueNotes": "Notas sobre Como os Valores são Calculados"
     },
     "churchesTab": {
-      "archiveConfirm": "Arquivar {name}? Os membros perderão o acesso até que seja restaurada.",
       "churchNameSearchAria": "Pesquisa de nome da igreja",
       "restoreConfirm": "Restaurar o acesso de {name}?",
       "searchChurchesAria": "Pesquisar igrejas"
@@ -2950,11 +2763,9 @@
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
-      "featured": "Featured",
       "firstSubmission": "first submission",
       "justNow": "just now",
       "licensePd": "Public domain",
-      "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
@@ -2988,16 +2799,7 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons",
-      "confidence": {
-        "chart-only": "Só cifra",
-        "converted-from-abc": "Partitura",
-        "generated-from-midi": "Gerada do MIDI",
-        "lyrics-only": "Só letra",
-        "proofread-score": "Partitura",
-        "score": "Partitura",
-        "sunday-ready": "Pronta para o domingo"
-      }
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "Você será desconectado da sua sessão e conectado como {email}. Para retornar à sua conta, saia e entre novamente.",
@@ -3017,7 +2819,6 @@
       "noRuns": "Nenhuma execução de trabalho registrada ainda.",
       "recentFailures": "Falhas Recentes",
       "subtitle": "Última execução de cada trabalho agendado. As execuções são registradas pelos manipuladores de temporizador e mantidas por 30 dias.",
-      "success": "Sucesso",
       "title": "Trabalhos em Segundo Plano"
     },
     "reportPage": {
@@ -3032,8 +2833,7 @@
       "setting": "Configuração",
       "status": "Status",
       "subtitle": "Indica se cada configuração da API está configurada. Os valores não são exibidos.",
-      "title": "Saúde do servidor",
-      "yes": "Sim"
+      "title": "Saúde do servidor"
     },
     "translation": {
       "abbreviations": "Abreviações",
@@ -3064,14 +2864,11 @@
   "settings": {
     "apiKeyEdit": {
       "close": "Fechar",
-      "copied": "Copiado",
       "copy": "Copiar",
-      "expires": "Expira em",
       "expiresHelp": "Deixe em branco para uma chave que nunca expira.",
       "generalScopes": "geral",
       "keyIntro": "Copie sua chave de API agora — ela não será mostrada novamente.",
       "keyTitle": "Chave de API",
-      "name": "Nome",
       "namePlaceholder": "Ex: integração Zapier",
       "nameRequired": "O nome é obrigatório",
       "newKey": "Nova chave de API",
@@ -3084,9 +2881,7 @@
       "urlHelper": "Digite a URL completa (ex., https://example.com)"
     },
     "appEdit": {
-      "addTab": "Adicionar guia",
       "bible": "Bíblia",
-      "changeImage": "Alterar imagem",
       "checkin": "Check-in",
       "deleteTab": "Excluir Aba",
       "donation": "Doação",
@@ -3104,7 +2899,6 @@
       "page": "Página",
       "plans": "Planos de serviço",
       "saveTab": "Salvar Aba",
-      "saving": "Salvando...",
       "selectGroups": "Selecionar Grupos:",
       "selectImage": "Selecionar imagem",
       "sermons": "Sermões",
@@ -3113,7 +2907,6 @@
       "tabName": "Nome da guia",
       "tabType": "Tipo de guia",
       "team": "Membros da Equipe (equipes de serviço)",
-      "url": "URL",
       "verseOfDay": "Versículo do dia",
       "visibility": "Visibilidade",
       "volunteerOpportunities": "Oportunidades de Voluntariado"
@@ -3179,7 +2972,6 @@
       "search": "Buscar",
       "startDate": "Data de Início",
       "subtitle": "Rastreie mudanças e atividades em sua igreja",
-      "title": "Log de Auditoria",
       "truncated": "Os detalhes foram truncados e esta entrada não pode ser desfeita."
     },
     "batches": {
@@ -3202,13 +2994,11 @@
       "source": "Origem",
       "status": "Status",
       "subtitle": "Revise e desfaça importações e ações em massa",
-      "title": "Lotes",
       "undo": "Desfazer",
       "undoConfirm": "Desfazer o lote \"{label}\"? Isso restaurará os registros afetados ao estado anterior ao lote.",
       "undoError": "A solicitação de desfazer falhou.",
       "undoTitle": "Desfazer Lote",
       "undoWarning": "Registros modificados desde a criação deste lote serão ignorados. Isso não pode ser revertido.",
-      "undoing": "Desfazendo…",
       "viewResults": "Ver Resultados"
     },
     "campusEdit": {
@@ -3232,10 +3022,10 @@
     "checkinSettingsEdit": {
       "block": "Bloquear (impedir check-in)",
       "help": "Escolha como o check-in responde quando uma sala está acima da proporção de voluntários por criança ou abaixo do mínimo de voluntários.",
+      "kioskLink": "Check-in kiosk, QR, and labels",
       "ratioEnforcement": "Aplicação da Proporção de Voluntários",
       "title": "Check-in",
-      "warn": "Avisar (permitir com confirmação)",
-      "kioskLink": "Check-in kiosk, QR, and labels"
+      "warn": "Avisar (permitir com confirmação)"
     },
     "churchSettingsEdit": {
       "address1": "Endereço Linha 1",
@@ -3279,9 +3069,7 @@
       "noKeys": "Nenhuma chave de API ainda.",
       "prefix": "Chave",
       "revoke": "Revogar",
-      "revokeConfirm": "Revogar acesso de \"{name}\"?",
-      "scopes": "Escopos",
-      "title": "Desenvolvedor"
+      "scopes": "Escopos"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Grupo de Aprovação do Diretório",
@@ -3314,7 +3102,6 @@
       "category": "Categoria",
       "close": "Fechar",
       "composePlaceholder": "Componha seu modelo de e-mail aqui...",
-      "editTemplate": "Editar Modelo",
       "emailPreview": "Visualização do E-mail",
       "insertMergeBody": "Inserir campo de mesclagem no corpo:",
       "insertMergeSubject": "Inserir campo de mesclagem no assunto:",
@@ -3332,8 +3119,6 @@
       "subject": "Assunto",
       "subjectPlaceholder": "ex: Olá {firstName}, bem-vindo a {churchName}",
       "subjectRequired": "O assunto é obrigatório.",
-      "templateName": "Nome do Modelo",
-      "templateNamePlaceholder": "ex: E-mail de Boas-vindas, Lembrete de Evento",
       "yourChurch": "Sua Igreja"
     },
     "emailTemplatesPage": {
@@ -3366,23 +3151,22 @@
       "copyWebhookUrl": "Copiar URL do webhook",
       "currency": "Moeda",
       "currencyHelper": "Certifique-se de que esta moeda também esteja ativada no seu Stripe Dashboard. Ative a moeda aqui:",
+      "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Força automaticamente os usuários a cobrir as taxas de transação",
       "giving": "Doação",
       "none": "Nenhum",
+      "paymentGatewaySection": "Payment gateway",
       "privateKeyRequired": "Insira a chave secreta/privada deste provedor antes de salvar.",
       "prov": "Fornecedor",
       "saveError": "Falha ao salvar as configurações",
       "stripeDashboard": "Painel do Stripe",
       "transFee": "Taxa de Transação",
       "webhookKeyHelper": "Segredo de assinatura do webhook do painel Kingdom Funding. Necessário para atualizações de status de transações.",
-      "webhookUrlCopied": "URL do webhook copiada para a área de transferência",
-      "feesAndStatementsSection": "Fees & statements",
-      "paymentGatewaySection": "Payment gateway"
+      "webhookUrlCopied": "URL do webhook copiada para a área de transferência"
     },
     "gradePromotionSettingsEdit": {
       "day": "Dia",
       "disabled": "Desativado",
-      "enabled": "Ativado",
       "help": "Nesta data, todos os anos, todos com uma série são promovidos automaticamente para a série seguinte (o 12º ano se torna Formado). Deixe desativado para desligar a promoção automática.",
       "month": "Mês",
       "title": "Promoção de grau"
@@ -3409,8 +3193,7 @@
       "batches": "Lotes",
       "imEx": "Importar/Exportar",
       "noData": "Não há dados da igreja disponíveis",
-      "subtitle": "Definir configurações e preferências da igreja",
-      "title": "Gerenciar Igreja"
+      "subtitle": "Definir configurações e preferências da igreja"
     },
     "messagingMinimumAge": {
       "age13": "13 anos ou mais",
@@ -3423,8 +3206,8 @@
     "mobileAppSettings": {
       "addTab": "Adicionar guia",
       "subtitle": "Definir configurações de aplicativos móveis",
-      "title": "Configurações de aplicativos móveis",
-      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More."
+      "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More.",
+      "title": "Configurações de aplicativos móveis"
     },
     "roleCheck": {
       "permissionAria": "Permissão {label}"
@@ -3432,12 +3215,9 @@
     "roleEdit": {
       "confirmMsg": "Tem certeza de que deseja excluir permanentemente este papel?",
       "roleEdit": "Editar Papel",
-      "roleName": "Nome do Papel",
-      "roleNameAria": "Nome do papel",
       "valMsg": "Por favor, insira um nome de papel válido."
     },
     "roleMembers": {
-      "addRoleMemberAria": "Adicionar membro do papel",
       "confirmMsg": "Tem certeza de que deseja excluir este usuário de",
       "lastAdminWarning": "Pelo menos um Domain Admin é obrigatório. Adicione outro administrador antes de remover este.",
       "mem": "Membros",
@@ -3449,38 +3229,64 @@
       "roleEdit": "Editar Papel:"
     },
     "rolePermissions": {
-      "permEdit": "Editar Permissões",
-      "filter": "Filter permissions"
+      "filter": "Filter permissions",
+      "permEdit": "Editar Permissões"
     },
     "roles": {
       "acc": "Contabilidade",
       "accDesc": "Tem acesso para visualizar e gerenciar doações.",
       "addCustomRoleAria": "Adicionar papel personalizado",
       "addPredefinedRoleAria": "Adicionar papel {name}",
-      "canEdit": "Pode editar a maioria dos dados em ",
       "churchDesc": " incluindo pessoas, grupos, presença e formulários.",
       "churchStaff": "Equipe da Igreja",
       "contAdmin": "Admin de Conteúdo",
       "contAdminDesc": "Pode editar conteúdo do site, conteúdo móvel e sermões.",
       "custAdd": "Adicionar Papel Personalizado",
       "everyone": "Todos",
-      "itMsg": "? ",
       "lesAdmin": "Admin de Lições",
       "lesAdminDesc": "Pode configurar salas de aula e agendar lições em ",
       "role": "Papel",
-      "roleCreate": "Você deseja criar um novo papel de ",
       "roles": "Papéis"
     },
     "rolesPage": {
       "subtitle": "Gerenciar funções e permissões"
     },
+    "statementFormat": {
+      "australia": "Australia",
+      "canada": "Canada - CRA official receipt",
+      "cityOfIssue": "City of Issue",
+      "format": "Statement Format",
+      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
+      "newZealand": "New Zealand",
+      "orgAddress": "Organization Address",
+      "signatory": "Authorized Signatory Name",
+      "standard": "Standard"
+    },
     "storageSettingsEdit": {
+      "authFailed": "Auth failed",
+      "byosHelper": "Byos helper",
       "churchAppsFree": "ChurchApps (Gratuito)",
+      "connect": "Connect",
+      "connectFirst": "Connect first",
+      "connected": "Connected",
+      "connecting": "Connecting",
       "ministryStuff": "MinistryStuff",
       "ministryStuffHelper": "Os arquivos serão armazenados no seu plano de armazenamento do MinistryStuff, vinculado automaticamente a esta igreja. Gerencie seu plano em",
       "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup blocked",
       "provider": "Provedor",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "S3 access key",
+      "s3Bucket": "S3 bucket",
+      "s3Endpoint": "S3 endpoint",
+      "s3Helper": "S3 helper",
+      "s3PublicBase": "S3 public base",
+      "s3Region": "S3 region",
+      "s3Required": "S3 required",
+      "s3SecretKey": "S3 secret key",
       "saveError": "Erro ao salvar as configurações de armazenamento.",
+      "sessionExpired": "Session expired",
+      "sessionFailed": "Session failed",
       "title": "Armazenamento de arquivos",
       "usage": "Usando {used} GB de {quota} GB."
     },
@@ -3494,8 +3300,6 @@
       "apiKey": "Chave API",
       "apiSecret": "Segredo API",
       "clearstream": "Clearstream",
-      "clearstreamHelper": "Crie uma Chave API em suas",
-      "clearstreamHelperLink": "Configurações da Conta Clearstream",
       "clearstreamHelperSuffix": "em API Keys.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Sua assinatura de mensagens de texto do MinistryStuff está ativa com {} créditos restantes neste ciclo.",
@@ -3505,8 +3309,6 @@
       "provider": "Provedor",
       "saveError": "Erro ao salvar configurações de SMS.",
       "textInChurch": "Texto na Igreja",
-      "textInChurchHelper": "Visite",
-      "textInChurchHelperLink": "Suporte do Text In Church",
       "textInChurchHelperSuffix": "para solicitar acesso à API de desenvolvedor. Após aprovado, crie uma Chave API em sua seção Account Settings > Developer API."
     },
     "userAdd": {
@@ -3547,28 +3349,22 @@
       "connectorSlack": "Slack",
       "connectorStandard": "Padrão (JSON bruto)",
       "connectorType": "Tipo de conector",
-      "copied": "Copiado",
       "copy": "Copiar",
       "date": "Data",
       "deliveries": "Entregas recentes",
       "deliveryDetail": "Detalhe da entrega",
       "discordUrlHelp": "Cole o URL do Incoming Webhook do canal Discord. Os eventos são entregues como mensagens legíveis no chat.",
-      "editWebhook": "Editar webhook",
       "event": "Evento",
       "events": "Eventos",
       "eventsRequired": "Selecione pelo menos um evento",
-      "mailchimpApiKey": "Mailchimp API Key",
       "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
-      "mailchimpAudienceId": "Audience ID",
       "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
-      "name": "Nome",
       "namePlaceholder": "Ex: Zapier — novos membros",
       "nameRequired": "O nome é obrigatório",
       "newWebhook": "Novo webhook",
       "noDeliveries": "Nenhuma entrega ainda.",
       "payload": "Payload",
       "redeliver": "Reenviar",
-      "regenerateConfirm": "Regenerar o segredo de assinatura? O segredo atual para de funcionar imediatamente.",
       "regenerateSecret": "Regenerar segredo",
       "response": "Resposta",
       "responseBody": "Corpo da resposta",
@@ -3576,14 +3372,9 @@
       "secretSignNote": "Use-o para verificar o cabeçalho X-B1-Signature em cada entrega.",
       "secretTitle": "Segredo de assinatura",
       "sendTest": "Enviar evento de teste",
-      "sendingTest": "Enviando…",
-      "slackUrlHelp": "Cole o URL do Incoming Webhook do canal Slack. Os eventos são entregues como mensagens legíveis no chat.",
-      "url": "URL do payload",
-      "urlPlaceholder": "https://exemplo.com/webhooks/b1",
       "urlRequired": "O URL é obrigatório"
     },
     "webhooksPage": {
-      "active": "Ativo",
       "deleteConfirm": "Excluir webhook \"{name}\"?",
       "disabled": "Desativado",
       "emptyDescription": "Crie um webhook para notificar ferramentas externas quando pessoas, grupos ou domicílios mudarem.",
@@ -3594,17 +3385,6 @@
       "status": "Status",
       "title": "Webhooks",
       "url": "URL"
-    },
-    "statementFormat": {
-      "australia": "Australia",
-      "canada": "Canada - CRA official receipt",
-      "cityOfIssue": "City of Issue",
-      "format": "Statement Format",
-      "helper": "Adds the legal receipt block your country requires to printed giving statements.",
-      "newZealand": "New Zealand",
-      "orgAddress": "Organization Address",
-      "signatory": "Authorized Signatory Name",
-      "standard": "Standard"
     }
   },
   "site": {
@@ -3625,7 +3405,6 @@
     },
     "addPage": {
       "aiPlaceholder": "Exemplo: Crie uma página inicial acolhedora com o nome da nossa igreja, declaração de missão, horários dos cultos e um botão de doação",
-      "newLink": "Novo Link",
       "newPage": "Nova Página",
       "pageType": "Tipo de Página"
     },
@@ -3645,11 +3424,8 @@
       "exampleHomepage": "Crie uma página inicial acolhedora com o nome da nossa igreja, declaração de missão, horários de cultos e um botão de doação",
       "exampleMinistries": "Crie uma página de ministérios mostrando nosso grupo de jovens, equipe de adoração e ação comunitária com fotos",
       "examples": "Exemplos:",
-      "linkText": "Texto do Link",
       "linkType": "Link",
-      "linkUrl": "URL do Link",
       "location": "Localização",
-      "pageTitle": "Título da Página",
       "statusCreatingSections": "Criando seções e elementos da página...",
       "statusGatheringInfo": "Coletando informações da igreja...",
       "statusGenerating": "Gerando {count} seções...",
@@ -3660,8 +3436,8 @@
     "aiRewrite": {
       "description": "Rewrite this section's text with AI. Layout and images are preserved.",
       "failed": "The rewrite failed. Nothing was changed.",
-      "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -3689,34 +3465,27 @@
       "appSettings": "Configurações do aplicativo",
       "branding": "Logo e Marca",
       "brandingDescription": "Envie e gerencie os logotipos e ativos de marca da sua organização",
-      "edit": "Editar",
-      "favicon": "Favicon",
       "faviconDesc": "Ícone quadrado para abas do navegador. Tamanho ideal: 400×400px",
-      "logoDark": "Logo para Fundo Escuro",
       "logoDarkDesc": "Logo horizontal para fundos escuros. Tamanho ideal: 1280×320px",
-      "logoLight": "Logo para Fundo Claro",
       "logoLightDesc": "Logo horizontal para fundos claros. Tamanho ideal: 1280×320px",
       "logoManagement": "Gerenciamento de logotipo",
       "logoUploadDescription": "Envie seus logotipos para diferentes contextos. Todas as imagens devem ter fundos transparentes para melhores resultados.",
       "mainLogos": "Logotipos Principais",
       "noImage": "Nenhuma imagem",
-      "ogImage": "Imagem para Redes Sociais",
       "ogImageDesc": "Usada para compartilhamento social e SEO. Tamanho ideal: 1200×630px",
-      "pwaShortName": "Nome curto do PWA (máx. 12 caracteres)",
       "pwaShortNameHelper": "Usado como nome do ícone do aplicativo na tela inicial do dispositivo.",
       "seoAssets": "SEO e Recursos do Navegador",
       "upload": "Enviar"
     },
     "appearancePage": {
       "subtitle": "Abaixo está uma prévia de um site de exemplo com suas cores, fontes e logotipos. Este não é o conteúdo real do seu site.",
-      "title": "Estilos do site",
-      "themeGroup": "Theme, fonts & footer"
+      "themeGroup": "Theme, fonts & footer",
+      "title": "Estilos do site"
     },
     "blockEdit": {
       "blockType": "Tipo de Bloco",
       "elementBlock": "Elemento(s)",
       "errName": "Por favor, insira um nome.",
-      "name": "Nome",
       "sectionBlock": "Seção(ões)",
       "unauthorizedCreate": "Não autorizado a criar blocos",
       "unauthorizedDelete": "Não autorizado a excluir blocos"
@@ -3730,7 +3499,6 @@
       "addBlock": "Adicionar bloco",
       "blocks": "Blocos",
       "createFirstBlock": "Crie o primeiro bloco",
-      "elements": "Elemento(s)",
       "getStarted": "Comece criando seu primeiro bloco reutilizável",
       "noBlocksFound": "Nenhum bloco encontrado",
       "rename": "Renomear",
@@ -3745,11 +3513,9 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
-      "navHint": "Os visitantes podem ler suas postagens em /blog. Adicione um link de navegação na tela Páginas para que eles possam encontrá-lo:",
       "noPosts": "No posts yet",
       "posts": "Posts",
       "state": "State",
-      "subtitle": "Create and manage blog posts for your website",
       "title": "Blog",
       "view": "Ver no Site"
     },
@@ -3758,7 +3524,6 @@
       "category": "Category",
       "content": "Conteúdo",
       "draft": "Draft",
-      "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
       "errSlugTaken": "Este endereço já está sendo usado por outra postagem.",
@@ -3768,11 +3533,8 @@
       "newPost": "New Post",
       "preview": "Visualizar",
       "publishDate": "Publish Date",
-      "published": "Published",
       "selectImage": "Select Image",
       "slugHelper": "Preenchido automaticamente a partir do título até que você o edite. Endereço:",
-      "slugLabel": "Endereço da página",
-      "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
     },
@@ -3783,7 +3545,6 @@
       "selectCalendar": "Selecionar Calendário"
     },
     "campaignProgressEdit": {
-      "donateUrl": "URL de Doação",
       "endDate": "Data de Término",
       "fund": "Fundo",
       "goalAmount": "Valor da Meta",
@@ -3793,7 +3554,6 @@
       "title": "Título"
     },
     "colorPicker": {
-      "color": "Cor",
       "placeholder": "#FF0000"
     },
     "contentEditor": {
@@ -3803,7 +3563,6 @@
       "discard": "Descartar",
       "discardElementMessage": "Descartar as alterações não salvas deste elemento?",
       "discardElementTitle": "Descartar alterações?",
-      "discardSectionMessage": "Descartar as alterações não salvas desta seção?",
       "dropToAddElement": "Solte aqui para adicionar elemento",
       "dropToAddSection": "Solte aqui para adicionar seção",
       "keepEditing": "Continuar editando",
@@ -3825,7 +3584,6 @@
       "weekly": "Culto Semanal"
     },
     "cssEdit": {
-      "advancedFeature": "Recurso Avançado:",
       "advancedFeatureDescription": "CSS e JavaScript personalizados podem afetar a funcionalidade do seu site. Por favor, teste as alterações cuidadosamente e certifique-se de ter um backup de suas configurações atuais.",
       "commonCssExamples": "Exemplos Comuns de CSS",
       "commonJsExamples": "Exemplos Comuns de JavaScript",
@@ -3842,10 +3600,8 @@
       "exampleLinkColors": "Alterar cores dos links",
       "headerSubtitle": "Adicione estilos e scripts personalizados ao seu site",
       "headerTitle": "CSS e JavaScript",
-      "proTip": "Dica Pro:",
       "proTipDescription": "Use as ferramentas de desenvolvedor do seu navegador (F12) para testar alterações de CSS antes de aplicá-las aqui. O código JavaScript será adicionado a cada página do seu site.",
-      "saveChanges": "Salvar Alterações",
-      "saving": "Salvando..."
+      "saveChanges": "Salvar Alterações"
     },
     "customFontModal": {
       "all": "Todos",
@@ -3857,13 +3613,11 @@
       "sample": "Amostra",
       "sampleText": "A rápida raposa marrom salta sobre o cão preguiçoso.",
       "sansSerif": "Sans Serif",
-      "search": "Pesquisar",
       "selectFont": "Selecionar uma Fonte",
       "serif": "Serif"
     },
     "donateLink": {
       "add": "Adicionar",
-      "addAmount": "Adicione o valor da doação",
       "amount": "Quantia",
       "amountPlaceholder": "10",
       "donationAmount": "Valor da doação",
@@ -3873,11 +3627,7 @@
       "maxAmountsAlert": "Você só pode adicionar cinco valores de doação.",
       "noFunds": "Sem Fundos",
       "selectFund": "Selecione o fundo de doação",
-      "textHelper": "Ex: (Doe agora), (Sim, vou ajudar!), (Doe R$10 para Acampamento de Jovens), etc..",
-      "textLabel": "Texto",
-      "urlHelper": "Dica: você deve vincular a página do construtor de sites que tem o elemento de doação.",
-      "urlLabel": "Url",
-      "urlPlaceholder": "/doar"
+      "urlLabel": "Url"
     },
     "donationEdit": {
       "allowRecurring": "Permitir doações recorrentes",
@@ -3899,10 +3649,10 @@
       "disablePublishConfirm": "Desativar a publicação desta página? As edições voltarão a entrar no ar imediatamente.",
       "discardChanges": "Descartar alterações não publicadas",
       "discardChangesConfirm": "Descartar todas as alterações feitas desde a última publicação? O editor será restaurado para a versão publicada.",
+      "editSiteFooter": "Edit site footer",
       "exit": "Sair",
       "justNow": "agora mesmo",
       "page": "Página",
-      "publish": "Publicar",
       "publishOffTip": "No momento, as edições entram no ar imediatamente. Publique para salvar uma versão ao vivo e manter as próximas edições privadas até a próxima publicação.",
       "publishedLabel": "Publicado",
       "redoTip": "Refazer (Ctrl+Shift+Z)",
@@ -3910,33 +3660,62 @@
       "savedAllChanges": "Todas as alterações salvas",
       "saving": "Salvando…",
       "statusLiveOnSave": "No ar ao salvar",
+      "statusLiveOnSaveTip": "Edits go live immediately.",
       "statusPublished": "Publicado",
+      "statusPublishedTip": "The published version is live; the editor matches it.",
       "statusUnpublishedChanges": "Alterações não publicadas",
+      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes.",
       "switchToDesktop": "Mudar para a visualização da área de trabalho",
       "switchToMobile": "Mudar para visualização móvel",
       "undoTip": "Desfazer (Ctrl+Z)",
-      "viewHistory": "Ver histórico",
-      "editSiteFooter": "Edit site footer",
-      "statusLiveOnSaveTip": "Edits go live immediately.",
-      "statusPublishedTip": "The published version is live; the editor matches it.",
-      "statusUnpublishedChangesTip": "The published version is live; the editor has unpublished changes."
+      "viewHistory": "Ver histórico"
     },
     "elementAdd": {
       "addElements": "Adicionar Elementos",
       "advanced": "Avançado",
       "all": "Todos",
+      "block": "Block",
       "blocks": "Blocos",
+      "box": "Box",
+      "calendar": "Calendar",
+      "campaignProgress": "Campaign progress",
+      "card": "Card",
+      "carousel": "Carousel",
       "church": "Igreja",
+      "column": "Column",
       "common": "Comum",
+      "countdown": "Countdown",
       "descReusableElement": "Bloco de elemento reutilizável",
-      "descReusableSection": "Seção reutilizável",
       "descSection": "Contêiner para agrupar conteúdo",
+      "donateLink": "Donate link",
+      "donation": "Donation",
+      "embedPage": "Embed page",
+      "expandable": "Expandable",
+      "form": "Form",
+      "gallery": "Gallery",
+      "groupList": "Group list",
+      "html": "Html",
+      "iconFeature": "Icon feature",
+      "image": "Image",
+      "location": "Location",
+      "logo": "Logo",
       "media": "Mídia",
       "noElementsFound": "Nenhum elemento encontrado",
+      "podcast": "Podcast",
+      "row": "Row",
       "searchElements": "Pesquisar elementos...",
       "section": "Seção",
+      "serviceTimes": "Service times",
+      "socialIcons": "Social icons",
+      "staffGrid": "Staff grid",
+      "stats": "Stats",
+      "stream": "Stream",
+      "table": "Table",
+      "testimonial": "Testimonial",
+      "text": "Text",
+      "textWithPhoto": "Text with photo",
       "tryDifferentSearch": "Tente um termo de pesquisa diferente",
-      "untitledBlock": "Bloco sem título"
+      "video": "Video"
     },
     "elementEdit": {
       "enableLightbox": "Ativar Lightbox",
@@ -3962,7 +3741,6 @@
       "categoriesHelper": "ex: Pequenos Grupos, Escola Dominical",
       "color": "Cor",
       "confirmDelete": "Tem certeza de que deseja excluir permanentemente este elemento?",
-      "confirmDuplicate": "Tem certeza de que deseja fazer uma cópia deste elemento e todos os seus filhos?",
       "contained": "Preenchido",
       "deleteElementBody": "Este elemento será removido da página. Você pode desfazer isso com Ctrl+Z.",
       "deleteElementTitle": "Excluir elemento?",
@@ -3975,7 +3753,6 @@
       "heightPx": "Altura (px)",
       "hide": "Ocultar",
       "htmlContent": "Conteúdo HTML",
-      "id": "ID",
       "idExample": "ex: dQw4w9WgXcQ",
       "idExampleVimeo": "ex: 76979871",
       "imageAlignment": "Alinhamento da imagem",
@@ -4007,20 +3784,14 @@
       "slide": "Deslizar",
       "slides": "Slides",
       "slidesIntervalSeconds": "Intervalo de slides (segundos)",
-      "source": "Fonte",
       "success": "Sucesso",
-      "text": "Texto",
       "textAlignment": "Alinhamento de texto",
-      "title": "Título",
       "titleAlignment": "Alinhamento de título",
       "translucent": "Translúcido",
       "type": "Tipo",
-      "url": "URL",
       "variant": "Variante",
       "videoAndInteraction": "Vídeo e Interação",
       "videoOnly": "Apenas Vídeo",
-      "videoUrlVimeo": "Encontre o ID na URL do vídeo: vimeo.com/[id]",
-      "videoUrlYoutube": "Encontre o ID na URL do vídeo: youtube.com/watch?v=[id]",
       "vimeo": "Vimeo",
       "warning": "Aviso",
       "youtube": "YouTube",
@@ -4036,8 +3807,7 @@
       "heading": "Cabeçalho",
       "headingType": "Tipo de Cabeçalho",
       "iconColor": "Cor do Ícone",
-      "link": "Link",
-      "title": "Título"
+      "link": "Link"
     },
     "files": {
       "confirmDelete": "Tem certeza de que deseja excluir",
@@ -4045,14 +3815,13 @@
       "uploadFiles": "Carregar Arquivos"
     },
     "filesManager": {
+      "copyLink": "Copy link",
+      "externalStorage": "External storage",
       "files": "Arquivos",
       "getStarted": "Comece enviando seu primeiro arquivo",
       "name": "Nome",
-      "noFilesYet": "Nenhum arquivo enviado ainda",
       "size": "Tamanho",
-      "storage": "Armazenamento:",
-      "copied": "Link copied",
-      "copyLink": "Copy link"
+      "storage": "Armazenamento:"
     },
     "filesPage": {
       "subtitle": "Gerenciar arquivos e mídia para seu site",
@@ -4073,7 +3842,6 @@
       "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
       "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
       "saveFonts": "Salvar Fontes",
-      "saving": "Salvando...",
       "secondaryHeading": "Cabeçalho Secundário",
       "typographyPreview": "Visualização de tipografia"
     },
@@ -4103,13 +3871,12 @@
       "wide": "Largo"
     },
     "generateSite": {
+      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
       "churchName": "Church Name",
-      "createPlan": "Create Plan",
       "creatingPage": "Creating {title} ({n} of {total})...",
-      "describe": "Describe your church",
       "describePlaceholder": "Tell us about your church, your mission, and what makes you unique",
       "done": "Your site is ready.",
       "errDescription": "Please describe your church (at least 10 characters).",
@@ -4118,10 +3885,10 @@
       "pageFailed": "Could not create the {title} page — skipped.",
       "planIntro": "Choose which pages to generate:",
       "sectionSkipped": "{title}: section {n} was skipped.",
-      "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_": "Tone_"
     },
     "helpDialog": {
       "addBody": "Clique em Adicionar Conteúdo na barra de ferramentas e arraste uma seção ou elemento para a página.",
@@ -4153,12 +3920,10 @@
       "title": "Título"
     },
     "navLink": {
-      "addLink": "Adicionar Link",
-      "linkSettings": "Configurações do Link"
+      "addLink": "Adicionar Link"
     },
     "navLinkEdit": {
       "errLinkText": "Por favor, insira o texto do link",
-      "linkText": "Texto do Link",
       "noParent": "(nenhum)",
       "parentPage": "Página pai",
       "unauthorizedCreate": "Não autorizado a criar páginas",
@@ -4181,12 +3946,8 @@
       "unset": "Padrão"
     },
     "pageLink": {
-      "check": "Verificar",
       "confirmDelete": "Tem certeza de que deseja excluir permanentemente esta página?",
-      "confirmDuplicate": "Tem certeza de que deseja fazer uma cópia desta página e todo o seu conteúdo?",
-      "linkSettings": "Configurações do Link",
-      "pageSettings": "Configurações da Página",
-      "urlHelper": "ex: /inscricao-acampamento  (**Certifique-se de verificar antes de salvar)"
+      "linkSettings": "Configurações do Link"
     },
     "pageLinkEdit": {
       "cleanCentered": "Conteúdo Centralizado Limpo",
@@ -4199,7 +3960,6 @@
       "groups": "Grupos Específicos",
       "headerFooter": "Cabeçalho e Rodapé",
       "layout": "Layout",
-      "linkText": "Texto do Link",
       "loggedInUsers": "Usuários Conectados",
       "membersStaff": "Membros e Equipe",
       "metaDescription": "Meta Description",
@@ -4208,14 +3968,11 @@
       "metaGenerateFailed": "Could not generate a description. Please try again.",
       "metaNoContent": "Add some page content before generating a description.",
       "noGroupsFound": "Nenhum grupo encontrado",
-      "pageTitle": "Título da Página",
       "selectGroups": "Selecionar Grupos",
       "staffOnly": "Apenas Equipe",
       "team": "Membros da Equipe",
       "unauthorizedCreate": "Não autorizado a criar páginas",
       "unauthorizedDelete": "Não autorizado a excluir páginas",
-      "url": "URL",
-      "urlPath": "Caminho da URL",
       "visibility": "Visibilidade"
     },
     "pagePreview": {
@@ -4223,9 +3980,8 @@
       "loading": "Carregando...",
       "pageSettings": "Configurações da página",
       "previewOf": "Visualização de {title}",
-      "subtitle": "Visualização: {title}",
-      "title": "Visualização do site",
-      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown."
+      "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
+      "subtitle": "Visualização: {title}"
     },
     "pages": {
       "convert": "Converter"
@@ -4235,7 +3991,6 @@
       "addFirstPage": "Adicionar primeira página",
       "addPage": "Adicionar página",
       "autoGenerated": "Gerado automaticamente",
-      "confirmConvert": "Você gostaria de converter esta página gerada automaticamente em uma página personalizada?",
       "customPages": "Páginas personalizadas",
       "description": "Abaixo está uma lista de páginas personalizadas e geradas automaticamente. Você pode adicionar novas páginas, editar as existentes ou converter páginas geradas automaticamente em páginas personalizadas.",
       "desktopOnly": "O editor de páginas está disponível apenas no modo desktop",
@@ -4255,37 +4010,27 @@
       "websitePages": "Páginas do site"
     },
     "paletteEdit": {
-      "accent": "Destaque",
       "accentDesc": "Destaque principal — botões e realces",
       "applyPaletteAria": "Aplicar paleta de cores sugerida",
       "applySuggested": "Clique em qualquer paleta para aplicá-la instantaneamente",
       "baseColors": "Cores Base",
       "colorCombinationsPreview": "Visualização de combinações de cores",
       "colorValues": "Valores de cor",
-      "dark": "Escuro",
-      "darkAccent": "Destaque Escuro",
       "darkAccentDesc": "Destaque escuro — títulos e links",
       "darkDesc": "Tom mais escuro — texto do corpo",
-      "error": "Erro",
       "errorDesc": "Erros e ações destrutivas",
       "headerSubtitle": "Personalize o esquema de cores do seu site. Para o aplicativo móvel, portal de membros e cores do quiosque, vá para Celular > Tema do Aplicativo.",
       "headerTitle": "Paleta de Cores",
-      "light": "Claro",
-      "lightAccent": "Destaque Claro",
       "lightAccentDesc": "Destaque suave — fundos discretos",
       "lightDesc": "Tom mais claro — fundos de seção",
       "palette": "Paleta",
       "previewWorkTogether": "Visualize como suas cores funcionam juntas",
-      "primary": "Primário",
       "primaryDesc": "Botões e links primários",
       "savePalette": "Salvar paleta",
-      "secondary": "Secundário",
       "secondaryDesc": "Botões e destaques secundários",
       "semanticColors": "Cores Semânticas",
-      "success": "Sucesso",
       "successDesc": "Mensagens de sucesso e confirmações",
       "suggestedPalettes": "Paletas sugeridas",
-      "warning": "Aviso",
       "warningDesc": "Avisos e alertas"
     },
     "pickColors": {
@@ -4311,13 +4056,19 @@
       "youtubeId": "ID do Youtube",
       "youtubeVideo": "Vídeo do Youtube"
     },
+    "podcastEdit": {
+      "feedUrl": "Podcast RSS Feed URL",
+      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
+      "itemCount": "Episodes to show",
+      "showDates": "Show Dates",
+      "showDescriptions": "Show Descriptions"
+    },
     "redirects": {
       "analytics": "Analytics",
       "analyticsDesc": "Connect Google Analytics 4 to track visits to your website.",
       "description": "Send visitors from old URLs to new ones.",
       "errSave": "Failed to save redirect.",
       "fromPath": "From Path",
-      "ga4": "GA4 Measurement ID",
       "ga4Hint": "Format: G-XXXXXXXXXX",
       "normalizeHint": "Paths are normalized: lowercased, with a leading slash and no trailing slash.",
       "title": "Redirects",
@@ -4331,7 +4082,6 @@
       "halves": "Metades",
       "hideMobileOrder": "Ocultar pedido móvel",
       "hideMobileSizes": "Ocultar tamanhos de celular",
-      "preview": "Visualizar",
       "previewHelper": "Os números representam duodécimos da página",
       "quarters": "Trimestres",
       "remove": "Remover",
@@ -4379,7 +4129,6 @@
     },
     "section": {
       "confirmDelete": "Tem certeza de que deseja excluir permanentemente esta seção?",
-      "confirmDuplicate": "Tem certeza de que deseja fazer uma cópia desta seção e todo o seu conteúdo?",
       "deleteSectionBody": "Isso exclui permanentemente a seção e tudo o que está nela. Você pode desfazer com Ctrl+Z.",
       "deleteSectionTitle": "Excluir seção?",
       "editSection": "Editar Seção",
@@ -4390,8 +4139,6 @@
       "block": "Bloco",
       "blockNamePromptDefault": "Nome do Bloco",
       "convertTo": "Converter para",
-      "convertToBlock": "Converter para bloco",
-      "convertToBlockPrompt": "Tem certeza de que deseja copiar esta seção e todo o seu conteúdo para um bloco?",
       "dividerBottom": "Divisor Inferior",
       "dividerColor": "Cor",
       "dividerFlip": "Inverter Horizontalmente",
@@ -4399,9 +4146,9 @@
       "dividerNone": "Nenhum",
       "dividerShape": "Forma",
       "dividerTop": "Divisor Superior",
+      "divider_": "Divider_",
       "dividers": "Divisores de Forma",
       "duplicate": "Duplicar",
-      "duplicateSection": "Duplicar seção",
       "id": "ID"
     },
     "sectionTemplates": {
@@ -4435,6 +4182,10 @@
       "showCampus": "Mostrar Campus",
       "title": "Título"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main website",
+      "manageSites": "Manage sites"
+    },
     "siteWidgets": {
       "addAction": "Adicionar Ação",
       "announcementBar": "Barra de Avisos",
@@ -4459,6 +4210,14 @@
       "title": "Widgets do Site",
       "url": "URL"
     },
+    "sitesDialog": {
+      "add": "Add",
+      "deleteConfirm": "Delete confirm",
+      "empty": "Empty",
+      "name": "Name",
+      "subDomainHint": "Sub domain hint",
+      "title": "Title"
+    },
     "socialIconsEdit": {
       "alignment": "Alinhamento",
       "color": "Cor",
@@ -4477,9 +4236,7 @@
       "cardWithContent": "Cartão com Conteúdo",
       "dramaticSection": "Seção Dramática",
       "dramaticSectionDesc": "Usa preenchimento vertical xxl ({value}px) para máximo impacto",
-      "extraLarge": "Extra Grande",
       "extraLargeDesc": "Grandes espaços entre seções principais",
-      "extraSmall": "Extra Pequeno",
       "extraSmallDesc": "Espaçamento apertado para layouts compactos",
       "fullWidthBanner": "Banner de Largura Total",
       "headerSubtitle": "Configure valores de espaçamento consistentes",
@@ -4488,18 +4245,14 @@
       "heroSectionDesc": "Usa preenchimento vertical xl ({xl}px) e horizontal lg ({lg}px)",
       "iconRow": "Linha de Ícones",
       "iconRowDesc": "Ícones usam espaçamento xs ({value}px) entre eles",
-      "large": "Grande",
       "largeDesc": "Layouts e seções espaçosos",
-      "medium": "Médio",
       "mediumDesc": "Espaçamento padrão para a maioria dos layouts",
       "pageSection": "Seção da Página",
       "practicalExamples": "Exemplos Práticos",
       "practicalExamplesDesc": "Veja como seus valores de espaçamento afetam elementos reais da UI",
       "saveSpacing": "Salvar Espaçamento",
-      "small": "Pequeno",
       "smallDesc": "Pequenos espaços entre elementos relacionados",
       "spacingValues": "Valores de Espaçamento",
-      "twoXLarge": "2X Grande",
       "twoXLargeDesc": "Espaçamento máximo para layouts dramáticos"
     },
     "staffGridEdit": {
@@ -4579,9 +4332,6 @@
       "textFormatting": "Formatação de texto",
       "yes": "Sim"
     },
-    "templates": {
-      "viewSermons": "Ver Sermões"
-    },
     "testimonialEdit": {
       "addQuote": "Adicionar Citação",
       "author": "Autor",
@@ -4644,13 +4394,6 @@
       "scaleDesc": "Multiplicador para cada nível de cabeçalho (padrão: 1.25)",
       "smallText": "Texto Pequeno - {size}: Texto de suporte e legendas",
       "typographyScale": "Escala de Tipografia"
-    },
-    "podcastEdit": {
-      "feedUrl": "Podcast RSS Feed URL",
-      "feedUrlHint": "Paste the RSS feed URL of your podcast (from Apple Podcasts, Spotify for Creators, Buzzsprout, etc.). Episodes are pulled in automatically.",
-      "itemCount": "Episodes to show",
-      "showDates": "Show Dates",
-      "showDescriptions": "Show Descriptions"
     }
   },
   "songs": {
@@ -4660,18 +4403,15 @@
       "deleteConfirm": "Tem certeza que deseja excluir este arranjo?",
       "edit": "Editar Arranjo",
       "enterLyrics": "Digite as letras manualmente ou importe do PraiseCharts",
-      "lyrics": "Letras",
-      "name": "Nome do Arranjo",
-      "title": "Arranjo",
-      "sequence": "Sequence"
+      "title": "Arranjo"
     },
     "audio": {
       "deleteConfirm": "Tem certeza de que deseja excluir este arquivo de áudio?",
+      "tooLarge": "Too large",
+      "unsupportedFormat": "Unsupported format",
       "upload": "Enviar áudio"
     },
     "create": {
-      "artist": "Artista",
-      "songTitle": "Título da Música",
       "title": "Criar Música"
     },
     "deleteSong": {
@@ -4681,22 +4421,18 @@
       "album": "Álbum",
       "artist": "Artista",
       "bpm": "BPM",
-      "key": "Tom",
       "keySignature": "Tom",
       "keys": "Tons",
       "language": "Idioma",
       "length": "Duração",
       "meter": "Compasso",
-      "releaseDate": "Data de Lançamento",
-      "seconds": "Segundos"
+      "releaseDate": "Data de Lançamento"
     },
     "key": {
       "default": "Padrão",
       "defaultLabel": "Tom do John",
       "deleteConfirm": "Tem certeza que deseja excluir este tom?",
-      "edit": "Editar Tom",
-      "labelOptional": "Rótulo (opcional)",
-      "signature": "Tom"
+      "edit": "Editar Tom"
     },
     "keys": {
       "add": "Adicionar",
@@ -4724,20 +4460,19 @@
     "link": {
       "chordChart": "Gráfico de Acordes",
       "deleteConfirm": "Tem certeza que deseja excluir este link?",
-      "edit": "Editar Link",
-      "text": "Texto",
-      "url": "Url"
+      "edit": "Editar Link"
     },
     "oldArrangement": {
       "key": "Tom"
+    },
+    "oldArrangements": {
+      "arrangements": "Arrangements"
     },
     "praiseChartsProducts": {
       "close": "Fechar",
       "download": "Baixar",
       "free": "Gratuito",
-      "linkAccountPrefix": "Você não tem uma conta PraiseCharts vinculada. Vá para seu",
       "linkAccountSuffix": "para vincular uma conta.",
-      "profile": "perfil",
       "title": "Adicionar Produtos do PraiseCharts"
     },
     "search": {
@@ -4768,7 +4503,6 @@
     },
     "songPage": {
       "addArrangement": "Adicionar Arranjo",
-      "loading": "Carregando...",
       "noArrangementDescription": "Selecione um arranjo na barra lateral para começar.",
       "noArrangementSelected": "Nenhum Arranjo Selecionado",
       "subtitle": "Gerencie detalhes e arranjos das músicas"
@@ -4784,14 +4518,417 @@
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "search": "Pesquisar",
       "searchSongs": "Pesquisar Músicas",
-      "songs": "Músicas",
-      "subtitle": "Gerencie sua biblioteca de música",
-      "deselectAll": "Deselect all",
-      "selectAll": "Select all"
+      "selectAll": "Select all",
+      "subtitle": "Gerencie sua biblioteca de música"
+    }
+  },
+  "src/calendars/ApprovalsPage": {
+    "tsx:    setSnack(Locale": {
+      "label(action === \"approve\" ? \"calendars": {
+        "approvals": {
+          "approvedToast\" : \"calendars": {
+            "approvals": {
+              "rejectedToast\"));": "Rejected toast\"));"
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/components/chatShared/ChatPanel": {
+    "tsx:            placeholder={Locale": {
+      "label(`${labelPrefix}": {
+        "placeholderInput`)}": "Placeholder input`)}"
+      }
     },
-    "title": "Músicas",
-    "oldArrangements": {
-      "arrangements": "Arrangements"
+    "tsx:          <AppIconButton label={Locale": {
+      "label(`${labelPrefix}": {
+        "ariaSend`)} icon={<SendIcon />} tone=\"card\" onClick={handleSend} disabled={isLoading || !input": {
+          "trim()} />": "Trim()} />"
+        }
+      }
+    }
+  },
+  "src/components/chatShared/useChat": {
+    "ts:      setMessages([": {
+      "": {
+        "": {
+          "updatedMessages, { role: \"assistant\", content: Locale": {
+            "label(`${labelPrefix}": {
+              "errorGeneric`) }]);": "Error generic`) }]);"
+            }
+          },
+          "updatedMessages, { role: \"assistant\", content: response": {
+            "answer || Locale": {
+              "label(`${labelPrefix}": {
+                "errorAnswer`) }]);": "Error answer`) }]);"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/components/iconPicker/IconPicker": {
+    "tsx:                        {Locale": {
+      "label(`common": {
+        "iconPicker": {
+          "icons": {
+            "${iconName}`, iconName": "${icon name}`, icon name"
+          }
+        }
+      }
+    }
+  },
+  "src/donations/components/GivingStatementDocument": {
+    "tsx:  const label = (key: string) => Locale": {
+      "label(labelPrefix + \"": {
+        "\" + key);": "\" + key);"
+      }
+    }
+  },
+  "src/groups/components/GroupRsvpRosterDialog": {
+    "tsx:                      {Locale": {
+      "label(`groups": {
+        "groupCalendar": {
+          "response_${resp}`)} ({people": {
+            "length})": "Length})"
+          }
+        }
+      }
+    }
+  },
+  "src/mobile/LabelsPage": {
+    "tsx:                          <TableCell>{Locale": {
+      "label(t": {
+        "labelType === \"pickup\" ? \"attendance": {
+          "labels": {
+            "pickup\" : \"attendance": {
+              "labels": {
+                "nametag\")}</TableCell>": "Nametag\")}</ table cell>"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/mobile/components/LabelEditor": {
+    "tsx:const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale": {
+      "label(FIELD_LABEL_KEYS[f]) : f);": "Label( f i e l d_ l a b e l_ k e y s[f]) : f);"
+    }
+  },
+  "src/people/components/PersonEdit": {
+    "tsx:                  <MuiTelInput fullWidth id={field} label={Locale": {
+      "label(labelKey)} value={f": {
+        "value?": {
+          "split(\"x\")[0] ?? \"\"} onChange={(v) => { const ext = f": {
+            "value?": {
+              "split(\"x\")[1] ?? \"\"; f": {
+                "onChange(ext ? v + \"x\" + ext : v); }} defaultCountry=\"US\" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />": "On change(ext ? v + \"x\" + ext : v); }} default country=\" u s\" force calling code focus on select country slot props={phone slot props}  menu props={phone menu props} />"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/people/components/bulk/BulkGroupDialog": {
+    "tsx:        <Typography sx={{ mb: 2 }}>{Locale": {
+      "label(isAdd ? \"people": {
+        "bulk": {
+          "addToGroupPrompt\" : \"people": {
+            "bulk": {
+              "removeFromGroupPrompt\")": {
+                "replace(\"{count}\", count": {
+                  "toString())}</Typography>": "To string())}</ typography>"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tsx:        message: Locale": {
+      "label(messageKey)": {
+        "replace(\"{count}\", affected": {
+          "toString())": {
+            "replace(\"{group}\", targetGroup": {
+              "name || \"\"),": "Name || \"\"),"
+            }
+          }
+        }
+      }
+    },
+    "tsx:      <DialogTitle>{Locale": {
+      "label(isAdd ? \"people": {
+        "bulk": {
+          "addToGroupTitle\" : \"people": {
+            "bulk": {
+              "removeFromGroupTitle\")}</DialogTitle>": "Remove from group title\")}</ dialog title>"
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/people/components/bulk/PeopleBulkActions": {
+    "tsx:            <ListItemText>{Locale": {
+      "label(menuLabels[config": {
+        "field])}</ListItemText>": "Field])}</ list item text>"
+      }
+    },
+    "tsx:          title={Locale": {
+      "label(fieldConfig": {
+        "titleKey)}": "Title key)}"
+      }
+    }
+  },
+  "src/people/helpers/MembershipStatusOptions": {
+    "ts:    const label = Locale": {
+      "label(status": {
+        "labelKey);": "Label key);"
+      }
+    },
+    "ts:    label: Locale": {
+      "label(status": {
+        "labelKey)": "Label key)"
+      }
+    }
+  },
+  "src/serverAdmin/components/CommonsReviewDrawer": {
+    "tsx:const label = (key: string, fallback?: string) => Locale": {
+      "label(`serverAdmin": {
+        "commonsTab": {
+          "${key}`, fallback);": "${key}`, fallback);"
+        }
+      }
+    }
+  },
+  "src/serverAdmin/components/CommonsTab": {
+    "tsx:                    {RESOLUTIONS": {
+      "map((res) => <MenuItem key={res} value={res}>{Locale": {
+        "label(`serverAdmin": {
+          "commonsTab": {
+            "resolution": {
+              "${res}`)}</MenuItem>)}": "${res}`)}</ menu item>)}"
+            }
+          }
+        }
+      }
+    },
+    "tsx:                    {RESOLVE_ACTIONS": {
+      "map((a) => <MenuItem key={a} value={a}>{Locale": {
+        "label(`serverAdmin": {
+          "commonsTab": {
+            "resolveAction": {
+              "${a}`)}</MenuItem>)}": "${a}`)}</ menu item>)}"
+            }
+          }
+        }
+      }
+    },
+    "tsx:                  <TableCell>{r": {
+      "resolution ? Locale": {
+        "label(`serverAdmin": {
+          "commonsTab": {
+            "resolution": {
+              "${r": {
+                "resolution}`) : \"-\"}</TableCell>": "Resolution}`) : \"-\"}</ table cell>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "tsx:                <TableCell><Chip size=\"small\" label={Locale": {
+      "label(`serverAdmin": {
+        "commonsTab": {
+          "assetStatus": {
+            "${a": {
+              "status}`)} /></TableCell>": "Status}`)} /></ table cell>"
+            }
+          }
+        }
+      }
+    },
+    "tsx:              {REJECT_REASONS": {
+      "map((r) => <MenuItem key={r} value={r}>{Locale": {
+        "label(`serverAdmin": {
+          "commonsTab": {
+            "rejectReason": {
+              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
+            }
+          }
+        }
+      }
+    },
+    "tsx:            {ASSET_STATUSES": {
+      "map((s) => <MenuItem key={s} value={s}>{Locale": {
+        "label(`serverAdmin": {
+          "commonsTab": {
+            "assetStatus": {
+              "${s}`)}</MenuItem>)}": "${s}`)}</ menu item>)}"
+            }
+          }
+        }
+      }
+    },
+    "tsx:            {REMOVE_REASONS": {
+      "map((r) => <MenuItem key={r} value={r}>{Locale": {
+        "label(`serverAdmin": {
+          "commonsTab": {
+            "removeReason": {
+              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
+            }
+          }
+        }
+      }
+    },
+    "tsx:const confidenceLabel = (c?: Confidence | string) => (c ? Locale": {
+      "label(`serverAdmin": {
+        "commonsTab": {
+          "confidence": {
+            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
+          }
+        }
+      }
+    }
+  },
+  "src/serving/components/PlanTypeGroups": {
+    "tsx:            <Typography variant=\"body2\">{Locale": {
+      "label(`plans": {
+        "planTypeGroups": {
+          "timeFilter": {
+            "${filter}`)}</Typography>": "${filter}`)}</ typography>"
+          }
+        }
+      }
+    }
+  },
+  "src/serving/songs/SongSearchDialog": {
+    "tsx:const confidenceLabel = (c?: string) => (c ? Locale": {
+      "label(`serverAdmin": {
+        "commonsTab": {
+          "confidence": {
+            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
+          }
+        }
+      }
+    }
+  },
+  "src/settings/components/GivingSettingsEdit": {
+    "tsx:                {Locale": {
+      "label(descriptor": {
+        "webhookInstructionsKey || \"settings": {
+          "givingSettingsEdit": {
+            "kfWebhookInstructions\")} <code style={{ wordBreak: \"break-all\" }}>{webhookUrl}</code>": "Kf webhook instructions\")} <code style={{ word break: \"break-all\" }}>{webhook url}</code>"
+          }
+        }
+      }
+    },
+    "tsx:              {descriptor": {
+      "setupInstructionsKey ? Locale": {
+        "label(descriptor": {
+          "setupInstructionsKey) : \"\"}": "Setup instructions key) : \"\"}"
+        }
+      }
+    },
+    "tsx:    const privateLabel = Locale": {
+      "label(descriptor": {
+        "keyLabels": {
+          "private);": "Private);"
+        }
+      }
+    },
+    "tsx:    const publicLabel = Locale": {
+      "label(descriptor": {
+        "keyLabels": {
+          "public);": "Public);"
+        }
+      }
+    }
+  },
+  "src/settings/components/StatementFormatSettingsEdit": {
+    "tsx:            <TextField fullWidth label={Locale": {
+      "label(registrationLabelKey(format))} {": {
+        "": {
+          "": {
+            "register(\"statementRegistrationNumber\")} />": "Register(\"statement registration number\")} />"
+          }
+        }
+      }
+    }
+  },
+  "src/site/admin/A11yPanel": {
+    "tsx:                        <Chip size=\"small\" label={Locale": {
+      "label(RULE_LABEL_KEY[issue": {
+        "rule])} sx={{ mb: 0": {
+          "5, height: 20, fontSize: \"0": {
+            "68rem\" }} />": "68rem\" }} />"
+          }
+        }
+      }
+    },
+    "tsx:                      <Icon sx={{ mt: 0": {
+      "25, color: issue": {
+        "severity === \"error\" ? \"error": {
+          "main\" : \"warning": {
+            "main\" }} aria-label={Locale": {
+              "label(issue": {
+                "severity === \"error\" ? \"site": {
+                  "a11y": {
+                    "errorLabel\" : \"site": {
+                      "a11y": {
+                        "warningLabel\")}>": "Warning label\")}>"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/site/admin/elements/ElementAdd": {
+    "tsx:        description: ui?": {
+      "description || (ui?": {
+        "descKey ? Locale": {
+          "label(ui": {
+            "descKey) : def": {
+              "label),": "Label),"
+            }
+          }
+        }
+      }
+    },
+    "tsx:        label: ui?": {
+      "label || (ui?": {
+        "labelKey ? Locale": {
+          "label(ui": {
+            "labelKey) : def": {
+              "label),": "Label),"
+            }
+          }
+        }
+      }
+    }
+  },
+  "src/site/admin/templates/SectionTemplatePicker": {
+    "tsx:      <DialogTitle>{Locale": {
+      "label(props": {
+        "switchMode ? \"site": {
+          "sectionTemplates": {
+            "switchTitle\" : \"site": {
+              "sectionTemplates": {
+                "title\")}</DialogTitle>": "Title\")}</ dialog title>"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "stockPhotos": {
@@ -4799,6 +4936,28 @@
     "providedBy": "Fornecido por"
   },
   "tasks": {
+    "accountDeletion": {
+      "approve": "Approve",
+      "approveConfirm": "Approve confirm",
+      "approveError": "Approve error",
+      "approved": "Approved",
+      "description": "Description",
+      "member": "Member",
+      "needsPeopleEdit": "Needs people edit",
+      "reasonClaim": "Reason claim",
+      "reasonDetails": "Reason details",
+      "reasonOther": "Reason other",
+      "reasonRetention": "Reason retention",
+      "reject": "Reject",
+      "rejectConfirm": "Reject confirm",
+      "rejectError": "Reject error",
+      "rejectHelp": "Reject help",
+      "rejectReasonLabel": "Reject reason label",
+      "rejectTitle": "Reject title",
+      "rejected": "Rejected",
+      "title": "Title",
+      "viewPerson": "View person"
+    },
     "conditionDate": {
       "absolute": "Absoluto",
       "curMonth": "Mês Atual",
@@ -4858,7 +5017,6 @@
       "addCondition": "Adicionar condição",
       "addTrigger": "Adicionar gatilho",
       "conditions": "Somente se",
-      "editTrigger": "Editar gatilho",
       "event": "Quando isso acontecer",
       "field": "Campo",
       "firstStep": "Primeira etapa",
@@ -4871,8 +5029,8 @@
       "noTriggers": "Nenhum gatilho de evento configurado.",
       "oncePerSubject": "Apenas uma vez por pessoa",
       "operator": "Operador",
-      "pauseAll": "Pausar automação",
       "paused": "Pausado",
+      "recur_": "Recur_",
       "recurs": "Repete",
       "resumeAll": "Retomar automação",
       "runNow": "Executar agora",
@@ -4893,18 +5051,33 @@
       "resume": "Retomar",
       "retry": "Tentar novamente",
       "statusHeader": "Status",
+      "status_": "Status_",
       "subject": "Pessoa",
       "title": "Histórico de execuções",
       "trigger": "Gatilho",
       "when": "Quando"
+    },
+    "groupJoinRequest": {
+      "approve": "Approve",
+      "approveError": "Approve error",
+      "decline": "Decline",
+      "declineError": "Decline error",
+      "declinePrompt": "Decline prompt",
+      "declineTitle": "Decline title",
+      "description": "Description",
+      "group": "Group",
+      "message": "Message",
+      "reasonOptional": "Reason optional",
+      "requester": "Requester",
+      "resolved": "Resolved",
+      "title": "Title"
     },
     "myCards": {
       "noCards": "Você não tem cartões atribuídos.",
       "title": "Meus cartões"
     },
     "myWork": {
-      "subtitle": "Seus cartões e tarefas de fluxo de trabalho",
-      "title": "Meu trabalho"
+      "subtitle": "Seus cartões e tarefas de fluxo de trabalho"
     },
     "newTask": {
       "assignPers": "Por favor, atribua esta tarefa a uma pessoa.",
@@ -4914,7 +5087,6 @@
       "associateW": "Associar com",
       "associateWithAria": "Associar com",
       "newAssign": "Nova tarefa",
-      "saving": "Salvando...",
       "taskNew": "Nova Tarefa",
       "taskNotesAria": "Notas da tarefa",
       "taskTitleAria": "Título da tarefa",
@@ -4930,7 +5102,6 @@
     },
     "selectGroup": {
       "group": "Grupo",
-      "noResults": "Nenhum grupo encontrado correspondente à sua pesquisa",
       "searchPrompt": "Pesquise um grupo para selecionar",
       "selectGroupAria": "Selecionar grupo"
     },
@@ -4952,17 +5123,12 @@
     "taskPage": {
       "ago": "atrás",
       "assign": "Atribuir",
-      "assigned": "Atribuído",
       "associate": "Associado",
-      "associated": "Associado",
       "by": "por",
       "closed": "Fechado",
-      "created": "Criado",
       "editAssigned": "Editar atribuído",
       "editAssoc": "Editar associado",
-      "notSpec": "Não especificado",
       "open": "Aberto",
-      "opened": "Aberto",
       "unassigned": "Não atribuído"
     },
     "tasksPage": {
@@ -5001,7 +5167,6 @@
     },
     "workflowCard": {
       "assign": "Atribuir",
-      "assignedTo": "Atribuído a",
       "complete": "Concluir",
       "history": "Atividade",
       "outcome": "Resultado",
@@ -5023,7 +5188,6 @@
       "uncategorized": "Sem categoria"
     },
     "workflowEdit": {
-      "active": "Ativo",
       "confirmDelete": "Tem certeza de que deseja excluir este fluxo de trabalho?",
       "editWorkflow": "Editar fluxo de trabalho",
       "inactive": "Inativo",
@@ -5056,8 +5220,6 @@
     },
     "workflowStepEdit": {
       "confirmDelete": "Tem certeza de que deseja excluir esta etapa?",
-      "defaultAssignee": "Responsável padrão",
-      "dueDays": "Prazo em (dias)",
       "dueDaysHelp": "Define um prazo quando um cartão entra nesta etapa",
       "editStep": "Editar etapa",
       "stepName": "Nome da etapa"
