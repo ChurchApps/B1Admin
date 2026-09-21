@@ -6,8 +6,7 @@ import { navigateTo, openPrimaryNav } from "./helpers/navigation";
 // defined in helpers/navigation.ts so any addition there gets a smoke test here.
 //
 // Primary nav items for the demo user (from Header.tsx primaryMenu):
-//   Sunday, People, Donations, Serving, Website.
-// Sermons, Calendars, Mobile, Settings are reached via the command palette.
+//   Sunday, People, Donations, Serving, Sermons, Website, Calendars, Mobile, Settings.
 // Tasks is a SECONDARY item under Serving (and also on Sunday's secondary bar).
 // Server Admin is gated on Permissions.membershipApi.server.admin and is not
 // available to the demo user, so it is not exercised here.
