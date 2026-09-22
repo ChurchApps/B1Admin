@@ -68,6 +68,7 @@ services:
       DOING_CONNECTION_STRING: mysql://root:${MYSQL_ROOT_PASSWORD:-churchapps}@mysql:3306/doing
       DOING_MEMBERSHIP_CONNECTION_STRING: mysql://root:${MYSQL_ROOT_PASSWORD:-churchapps}@mysql:3306/membership
       REPORTING_CONNECTION_STRING: mysql://root:${MYSQL_ROOT_PASSWORD:-churchapps}@mysql:3306/reporting
+      COMMONS_CONNECTION_STRING: mysql://root:${MYSQL_ROOT_PASSWORD:-churchapps}@mysql:3306/commons
     volumes:
       - api-content:/app/content
     restart: unless-stopped
