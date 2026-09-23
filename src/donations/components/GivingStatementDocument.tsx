@@ -2,6 +2,115 @@ import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type ChurchInterface, type PersonInterface } from "@churchapps/helpers";
 import { type PledgeProgressRowInterface, type PledgeStatus } from "../../helpers";
 
+// Every locale key below is written out in full. Building them from the labelPrefix prop at
+// runtime hid them from locale-sync's static scan, which then pruned the whole set out of
+// en.json and left the printed statement showing raw keys (issue 1098).
+interface StatementLabels {
+  annualStatementTitle: string;
+  campaign: string;
+  contributionDetails: string;
+  disclaimer: string;
+  donorInformation: string;
+  fund: string;
+  fundBreakdown: string;
+  given: string;
+  issued: string;
+  noteLabel: string;
+  noteText: string;
+  organization: string;
+  period: string;
+  pledgeProgress: string;
+  pledged: string;
+  statementSummary: string;
+  status: string;
+  totalContributions: string;
+  totalContributionsLabel: string;
+}
+
+const printAllStatementsLabels = (): StatementLabels => ({
+  annualStatementTitle: Locale.label("donations.printAllStatementsPage.annualStatementTitle"),
+  campaign: Locale.label("donations.printAllStatementsPage.campaign"),
+  contributionDetails: Locale.label("donations.printAllStatementsPage.contributionDetails"),
+  disclaimer: Locale.label("donations.printAllStatementsPage.disclaimer"),
+  donorInformation: Locale.label("donations.printAllStatementsPage.donorInformation"),
+  fund: Locale.label("donations.printAllStatementsPage.fund"),
+  fundBreakdown: Locale.label("donations.printAllStatementsPage.fundBreakdown"),
+  given: Locale.label("donations.printAllStatementsPage.given"),
+  issued: Locale.label("donations.printAllStatementsPage.issued"),
+  noteLabel: Locale.label("donations.printAllStatementsPage.noteLabel"),
+  noteText: Locale.label("donations.printAllStatementsPage.noteText"),
+  organization: Locale.label("donations.printAllStatementsPage.organization"),
+  period: Locale.label("donations.printAllStatementsPage.period"),
+  pledgeProgress: Locale.label("donations.printAllStatementsPage.pledgeProgress"),
+  pledged: Locale.label("donations.printAllStatementsPage.pledged"),
+  statementSummary: Locale.label("donations.printAllStatementsPage.statementSummary"),
+  status: Locale.label("donations.printAllStatementsPage.status"),
+  totalContributions: Locale.label("donations.printAllStatementsPage.totalContributions"),
+  totalContributionsLabel: Locale.label("donations.printAllStatementsPage.totalContributionsLabel")
+});
+
+const printDonationLabels = (): StatementLabels => ({
+  annualStatementTitle: Locale.label("donations.printDonationPage.annualStatementTitle"),
+  campaign: Locale.label("donations.printDonationPage.campaign"),
+  contributionDetails: Locale.label("donations.printDonationPage.contributionDetails"),
+  disclaimer: Locale.label("donations.printDonationPage.disclaimer"),
+  donorInformation: Locale.label("donations.printDonationPage.donorInformation"),
+  fund: Locale.label("donations.printDonationPage.fund"),
+  fundBreakdown: Locale.label("donations.printDonationPage.fundBreakdown"),
+  given: Locale.label("donations.printDonationPage.given"),
+  issued: Locale.label("donations.printDonationPage.issued"),
+  noteLabel: Locale.label("donations.printDonationPage.noteLabel"),
+  noteText: Locale.label("donations.printDonationPage.noteText"),
+  organization: Locale.label("donations.printDonationPage.organization"),
+  period: Locale.label("donations.printDonationPage.period"),
+  pledgeProgress: Locale.label("donations.printDonationPage.pledgeProgress"),
+  pledged: Locale.label("donations.printDonationPage.pledged"),
+  statementSummary: Locale.label("donations.printDonationPage.statementSummary"),
+  status: Locale.label("donations.printDonationPage.status"),
+  totalContributions: Locale.label("donations.printDonationPage.totalContributions"),
+  totalContributionsLabel: Locale.label("donations.printDonationPage.totalContributionsLabel")
+});
+
+const statementLabels = (labelPrefix: string): StatementLabels => (labelPrefix === "donations.printDonationPage" ? printDonationLabels() : printAllStatementsLabels());
+
+interface LegalLabels {
+  abn: string;
+  australiaTitle: string;
+  canadaTitle: string;
+  cra: string;
+  craNumber: string;
+  dateIssued: string;
+  dgr: string;
+  dgrThreshold: string;
+  donation: string;
+  eligibleAmount: string;
+  newZealandTitle: string;
+  nonEligible: string;
+  nzNumber: string;
+  placeOfIssue: string;
+  receiptNumber: string;
+  signature: string;
+}
+
+const legalLabels = (): LegalLabels => ({
+  abn: Locale.label("donations.statementLegal.abn"),
+  australiaTitle: Locale.label("donations.statementLegal.australiaTitle"),
+  canadaTitle: Locale.label("donations.statementLegal.canadaTitle"),
+  cra: Locale.label("donations.statementLegal.cra"),
+  craNumber: Locale.label("donations.statementLegal.craNumber"),
+  dateIssued: Locale.label("donations.statementLegal.dateIssued"),
+  dgr: Locale.label("donations.statementLegal.dgr"),
+  dgrThreshold: Locale.label("donations.statementLegal.dgrThreshold"),
+  donation: Locale.label("donations.statementLegal.donation"),
+  eligibleAmount: Locale.label("donations.statementLegal.eligibleAmount"),
+  newZealandTitle: Locale.label("donations.statementLegal.newZealandTitle"),
+  nonEligible: Locale.label("donations.statementLegal.nonEligible"),
+  nzNumber: Locale.label("donations.statementLegal.nzNumber"),
+  placeOfIssue: Locale.label("donations.statementLegal.placeOfIssue"),
+  receiptNumber: Locale.label("donations.statementLegal.receiptNumber"),
+  signature: Locale.label("donations.statementLegal.signature")
+});
+
 const pledgeStatusLabel = (status: PledgeStatus | undefined) => {
   switch (status) {
     case "notStarted": return Locale.label("donations.pledgeStatus.notStarted");
@@ -320,8 +429,8 @@ const styleBlock = `
 
 export const GivingStatementDocument = (props: Props) => {
   const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true, statementSettings } = props;
-  const label = (key: string) => Locale.label(labelPrefix + "." + key);
-  const legal = (key: string) => Locale.label("donations.statementLegal." + key);
+  const labels = statementLabels(labelPrefix);
+  const legal = legalLabels();
   const churchName = church?.name || "";
   const formattedTotal = CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency);
 
@@ -333,30 +442,33 @@ export const GivingStatementDocument = (props: Props) => {
   const donorAddress = [person?.contactInfo?.address1, person?.contactInfo?.address2, person?.contactInfo?.city, person?.contactInfo?.state, person?.contactInfo?.zip].filter(Boolean).join(", ");
   const issuedDate = DateHelper.prettyDate(new Date()).toString();
 
+  const legalTitle = format === "australia" ? legal.australiaTitle : format === "canada" ? legal.canadaTitle : legal.newZealandTitle;
+  const registrationLabel = format === "australia" ? legal.abn : format === "canada" ? legal.craNumber : legal.nzNumber;
+
   const legalBlock = !format ? null : (
     <div className="legal-block" data-testid="statement-legal-block">
-      <h2 className="legal-title">{legal(format + "Title")}</h2>
-      <p className="legal-line">{legal("receiptNumber")}: {receiptNumber}</p>
-      <p className="legal-line">{legal(format === "australia" ? "abn" : format === "canada" ? "craNumber" : "nzNumber")}: {statementSettings?.registrationNumber}</p>
-      <p className="legal-line">{legal("dateIssued")}: {issuedDate}</p>
-      {format === "canada" && <p className="legal-line">{legal("placeOfIssue")}: {statementSettings?.cityOfIssue}</p>}
+      <h2 className="legal-title">{legalTitle}</h2>
+      <p className="legal-line">{legal.receiptNumber}: {receiptNumber}</p>
+      <p className="legal-line">{registrationLabel}: {statementSettings?.registrationNumber}</p>
+      <p className="legal-line">{legal.dateIssued}: {issuedDate}</p>
+      {format === "canada" && <p className="legal-line">{legal.placeOfIssue}: {statementSettings?.cityOfIssue}</p>}
       <p className="legal-line">{churchName}{orgAddress ? ", " + orgAddress : ""}</p>
       <p className="legal-line">{person?.name?.display}{donorAddress ? ", " + donorAddress : ""}</p>
       {format === "australia" && (
         <>
-          <p className="legal-line">{legal("dgr").replace("{churchName}", churchName)}</p>
-          <p className="legal-line">{legal("dgrThreshold")}</p>
+          <p className="legal-line">{legal.dgr.replace("{churchName}", churchName)}</p>
+          <p className="legal-line">{legal.dgrThreshold}</p>
         </>
       )}
-      {format === "newZealand" && <p className="legal-line">{legal("donation")}</p>}
-      <p className="legal-eligible">{legal("eligibleAmount")}: {CurrencyHelper.formatCurrencyWithLocale(eligibleTotal, currency)}</p>
+      {format === "newZealand" && <p className="legal-line">{legal.donation}</p>}
+      <p className="legal-eligible">{legal.eligibleAmount}: {CurrencyHelper.formatCurrencyWithLocale(eligibleTotal, currency)}</p>
       {nonEligibleTotal > 0 && (
-        <p className="legal-line">{legal("nonEligible")}: {CurrencyHelper.formatCurrencyWithLocale(nonEligibleTotal, currency)}</p>
+        <p className="legal-line">{legal.nonEligible}: {CurrencyHelper.formatCurrencyWithLocale(nonEligibleTotal, currency)}</p>
       )}
       {format !== "australia" && (
-        <div className="legal-signature">{statementSettings?.signatory} — {legal("signature")}</div>
+        <div className="legal-signature">{statementSettings?.signatory} — {legal.signature}</div>
       )}
-      {format === "canada" && <p className="legal-line" style={{ marginTop: "12px" }}>{legal("cra")}</p>}
+      {format === "canada" && <p className="legal-line" style={{ marginTop: "12px" }}>{legal.cra}</p>}
     </div>
   );
 
@@ -367,16 +479,16 @@ export const GivingStatementDocument = (props: Props) => {
         <div className="header-bar"></div>
 
         <div className="title-section">
-          <h1 className="page-title">{label("annualStatementTitle").replace("{year}", year.toString())}</h1>
-          <p className="subtitle">{label("period").replace("{year}", year.toString())}</p>
-          <p className="meta-text">{label("issued")} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
+          <h1 className="page-title">{labels.annualStatementTitle.replace("{year}", year.toString())}</h1>
+          <p className="subtitle">{labels.period.replace("{year}", year.toString())}</p>
+          <p className="meta-text">{labels.issued} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
         </div>
 
         <div className="gradient-divider"></div>
 
         <div className="info-section">
           <div className="info-column">
-            <h2 className="section-label">{label("donorInformation")}</h2>
+            <h2 className="section-label">{labels.donorInformation}</h2>
             <div className="info-card">
               <p className="info-name">{person?.name?.display}</p>
               {person?.contactInfo?.address1 && <p className="info-detail">{person.contactInfo.address1}</p>}
@@ -387,7 +499,7 @@ export const GivingStatementDocument = (props: Props) => {
           </div>
 
           <div className="info-column">
-            <h2 className="section-label">{label("organization")}</h2>
+            <h2 className="section-label">{labels.organization}</h2>
             <div className="info-card">
               <p className="info-name">{church?.name}</p>
               {church?.address1 && <p className="info-detail">{church.address1}</p>}
@@ -406,21 +518,21 @@ export const GivingStatementDocument = (props: Props) => {
         {legalBlock}
 
         <div className="section-container">
-          <h2 className="section-title">{label("statementSummary")}</h2>
+          <h2 className="section-title">{labels.statementSummary}</h2>
           <div className="summary-grid">
             <div className="summary-column">
-              <p className="section-label">{label("totalContributions")}</p>
+              <p className="section-label">{labels.totalContributions}</p>
               <div className="total-box">
                 <div className="total-amount">{formattedTotal}</div>
               </div>
             </div>
 
             <div className="summary-column">
-              <p className="section-label">{label("fundBreakdown")}</p>
+              <p className="section-label">{labels.fundBreakdown}</p>
               <table className="data-table">
                 <thead className="table-header">
                   <tr>
-                    <th>{label("fund")}</th>
+                    <th>{labels.fund}</th>
                     <th className="align-right">Amount</th>
                   </tr>
                 </thead>
@@ -438,13 +550,13 @@ export const GivingStatementDocument = (props: Props) => {
         </div>
 
         <div className="section-container">
-          <h2 className="section-title">{label("contributionDetails")}</h2>
+          <h2 className="section-title">{labels.contributionDetails}</h2>
           <table className="data-table">
             <thead className="table-header">
               <tr>
                 <th>Date</th>
                 <th>Method</th>
-                <th>{label("fund")}</th>
+                <th>{labels.fund}</th>
                 <th className="align-right">Amount</th>
               </tr>
             </thead>
@@ -461,7 +573,7 @@ export const GivingStatementDocument = (props: Props) => {
               ))}
               <tr className="table-footer-row">
                 <td colSpan={2} className="table-footer-cell"></td>
-                <td className="table-footer-cell" style={{ textAlign: "right" }}>{label("totalContributionsLabel")}</td>
+                <td className="table-footer-cell" style={{ textAlign: "right" }}>{labels.totalContributionsLabel}</td>
                 <td className="table-footer-cell" style={{ textAlign: "right" }}>{formattedTotal}</td>
               </tr>
             </tbody>
@@ -470,14 +582,14 @@ export const GivingStatementDocument = (props: Props) => {
 
         {pledgeRows.length > 0 && (
           <div className="section-container">
-            <h2 className="section-title">{label("pledgeProgress")}</h2>
+            <h2 className="section-title">{labels.pledgeProgress}</h2>
             <table className="data-table">
               <thead className="table-header">
                 <tr>
-                  <th>{label("campaign")}</th>
-                  <th className="align-right">{label("pledged")}</th>
-                  <th className="align-right">{label("given")}</th>
-                  <th>{label("status")}</th>
+                  <th>{labels.campaign}</th>
+                  <th className="align-right">{labels.pledged}</th>
+                  <th className="align-right">{labels.given}</th>
+                  <th>{labels.status}</th>
                 </tr>
               </thead>
               <tbody>
@@ -496,12 +608,12 @@ export const GivingStatementDocument = (props: Props) => {
 
         <div className="footer-note">
           <p>
-            <strong>{label("noteLabel")}</strong> {label("noteText")
+            <strong>{labels.noteLabel}</strong> {labels.noteText
               .replace("{churchName}", churchName)
               .replace("{year}", year.toString())}
           </p>
           <p style={{ fontSize: "10px", marginTop: "4px" }}>
-            {label("disclaimer").split("{churchName}").join(churchName)}
+            {labels.disclaimer.split("{churchName}").join(churchName)}
           </p>
         </div>
       </div>
