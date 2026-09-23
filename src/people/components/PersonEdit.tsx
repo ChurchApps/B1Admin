@@ -232,14 +232,14 @@ export const PersonEdit = memo((props: Props) => {
 
   const handleYes = useCallback(async () => {
     setShowUpdateAddressModal(false);
+    setIsSubmitting(true);
     const p = buildPerson(getValues());
-    await Promise.all((members || []).map(async (member) => {
-      member.contactInfo = PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo);
-      try { await ApiHelper.post("/people", [member], "MembershipApi"); } catch (error) { console.log(`error in updating ${p.name.display}"s address`, error); }
+    await Promise.all((members || []).filter((member) => member.id !== p.id).map(async (member) => {
+      const updated = { ...member, contactInfo: PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo) };
+      try { await ApiHelper.post("/people", [updated], "MembershipApi"); } catch (error) { console.log(`error in updating ${member.name?.display}'s address`, error); }
     }));
-    await saveCustomFields();
-    props.updatedFunction();
-  }, [members, getValues, buildPerson, props.updatedFunction, saveCustomFields]);
+    await updatePerson(p);
+  }, [members, getValues, buildPerson, updatePerson]);
 
   const handleNo = useCallback(() => {
     setShowUpdateAddressModal(false);

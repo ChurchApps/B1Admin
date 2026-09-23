@@ -40,23 +40,9 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
     }
   };
 
-  const fetchHouseholdMembers = async (householdId: string) => {
-    try {
-      const members: PersonInterface[] = await ApiHelper.get("/people/household/" + householdId, "MembershipApi");
-      return members;
-    } catch (error) {
-      console.log("Error occured in fetching household members: ", error);
-    }
-  };
+  const fetchHouseholdMembers = (householdId: string): Promise<PersonInterface[]> => ApiHelper.get("/people/household/" + householdId, "MembershipApi");
 
-  const fetchGroupMembers = async (personId: string) => {
-    try {
-      const groups: GroupMemberInterface[] = await ApiHelper.get(`/groupmembers?personId=${personId}`, "MembershipApi");
-      return groups;
-    } catch (error) {
-      console.log("Error in fetching group's data: ", error);
-    }
-  };
+  const fetchGroupMembers = (personId: string): Promise<GroupMemberInterface[]> => ApiHelper.get(`/groupmembers?personId=${personId}`, "MembershipApi");
 
   // Notes are conversation messages, not rows keyed to the person, so they move by
   // re-posting them into the surviving person's conversation.
@@ -74,41 +60,13 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
     return conversationId;
   };
 
-  const fetchVisits = async (personId: string) => {
-    try {
-      const visits: VisitInterface[] = await ApiHelper.get(`/visits?personId=${personId}`, "AttendanceApi");
-      return visits;
-    } catch (error) {
-      console.log("Error in fetching visits: ", error);
-    }
-  };
+  const fetchVisits = (personId: string): Promise<VisitInterface[]> => ApiHelper.get(`/visits?personId=${personId}`, "AttendanceApi");
 
-  const fetchDonations = async (personId: string) => {
-    try {
-      const donations: DonationInterface[] = await ApiHelper.get(`/donations?personId=${personId}`, "GivingApi");
-      return donations;
-    } catch (error) {
-      console.log("Error in fetching donations: ", error);
-    }
-  };
+  const fetchDonations = (personId: string): Promise<DonationInterface[]> => ApiHelper.get(`/donations?personId=${personId}`, "GivingApi");
 
-  const fetchFormSubmissions = async (personId: string) => {
-    try {
-      const formSubmissions: FormSubmissionInterface[] = await ApiHelper.get(`/formsubmissions?personId=${personId}`, "MembershipApi");
-      return formSubmissions;
-    } catch (error) {
-      console.log("Error in fetching form submissions: ", error);
-    }
-  };
+  const fetchFormSubmissions = (personId: string): Promise<FormSubmissionInterface[]> => ApiHelper.get(`/formsubmissions?personId=${personId}`, "MembershipApi");
 
-  const fetchPersonFieldValues = async (personId: string) => {
-    try {
-      const values: PersonFieldValueInterface[] = await ApiHelper.get(`/personfieldvalues/person/${personId}`, "MembershipApi");
-      return values || [];
-    } catch {
-      return [];
-    }
-  };
+  const fetchPersonFieldValues = async (personId: string): Promise<PersonFieldValueInterface[]> => (await ApiHelper.get(`/personfieldvalues/person/${personId}`, "MembershipApi")) || [];
 
   const merge = async (person: PersonInterface, personToRemove: PersonInterface) => {
     if (personToRemove.id === context?.person?.id) {
@@ -120,22 +78,27 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
     try {
       setMergeInProgress(true);
       const { id, householdId } = personToRemove;
-      const householdMembers = await fetchHouseholdMembers(householdId || "");
-      const groupMembers = await fetchGroupMembers(id || "");
-      const visits = await fetchVisits(id || "");
-      const donations = await fetchDonations(id || "");
-      const formSubmission = await fetchFormSubmissions(id || "");
+      const [householdMembers, groupMembers, winnerGroupMembers, visits, donations, formSubmission] = await Promise.all([
+        fetchHouseholdMembers(householdId || ""),
+        fetchGroupMembers(id || ""),
+        fetchGroupMembers(person.id || ""),
+        fetchVisits(id || ""),
+        fetchDonations(id || ""),
+        fetchFormSubmissions(id || "")
+      ]);
       person.conversationId = await transferNotes(person, id || "");
       const [winnerFieldValues, loserFieldValues] = await Promise.all([fetchPersonFieldValues(person.id || ""), fetchPersonFieldValues(id || "")]);
 
-      const promises = [];
+      const promises: Promise<unknown>[] = [];
       householdMembers?.forEach((member) => {
+        if (member.id === id || member.id === person.id) return;
         member.householdId = person.householdId;
         promises.push(ApiHelper.post("/people", [member], "MembershipApi"));
       });
+      const winnerGroupIds = new Set((winnerGroupMembers || []).map((gm) => gm.groupId));
       groupMembers?.forEach((groupMember) => {
-        groupMember.personId = person.id || "";
-        promises.push(ApiHelper.post("/groupmembers", [groupMember], "MembershipApi"));
+        if (winnerGroupIds.has(groupMember.groupId)) promises.push(ApiHelper.delete(`/groupmembers/${groupMember.id}`, "MembershipApi"));
+        else promises.push(ApiHelper.post("/groupmembers", [{ ...groupMember, personId: person.id || "" }], "MembershipApi"));
       });
       visits?.forEach((visit) => {
         visit.personId = person.id;
@@ -160,8 +123,9 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
       });
       if (fieldValueChanges.length > 0) promises.push(ApiHelper.post("/personfieldvalues", fieldValueChanges, "MembershipApi"));
       promises.push(ApiHelper.post(`/people`, [person], "MembershipApi"));
-      promises.push(ApiHelper.delete(`/people/${id}`, "MembershipApi"));
       await Promise.all(promises);
+      // Only delete once everything has been reassigned, so a failure never orphans the loser's records.
+      await ApiHelper.delete(`/people/${id}`, "MembershipApi");
       if (isMounted()) {
         setShowMergeModal(false);
       }
@@ -171,6 +135,8 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
       }
     } catch (error) {
       setMergeInProgress(false);
+      setShowMergeModal(false);
+      setErrors([Locale.label("common.saveError")]);
       console.log("Error in merging records...!!", error);
     }
   };

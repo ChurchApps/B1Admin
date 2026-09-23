@@ -541,7 +541,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         case "groupMember":
           const members: GroupMemberInterface[] = await ApiHelper.get(`/groupmembers?groupId=${filter.value}`, "MembershipApi");
           const peopleIds = ArrayHelper.getIds(members, "personId");
-          result.push({ field: "id", operator: "in", value: peopleIds.join(",") });
+          // The Api's "notIn" on id ORs per-value notEqual checks, so exclude one id per condition instead.
+          if (filter.operator === "notIn") peopleIds.forEach((pid) => result.push({ field: "id", operator: "notEqual", value: pid }));
+          else result.push({ field: "id", operator: "in", value: peopleIds.join(",") });
           break;
         case "memberDonations":
           const fundVal = JSON.parse(filter.value);
@@ -729,7 +731,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     if (field.type === "date") {
-      return <AppDatePicker size="small"  fullWidth value={activeFilters[field.key].value} onChange={(e) => updateFilterValue(field.key, e.target.value)} InputLabelProps={{ shrink: true }} variant="outlined" sx={styles.inputCommon} />;
+      return <AppDatePicker size="small" fullWidth value={activeFilters[field.key].value} onChange={(e) => updateFilterValue(field.key, e.target.value)} InputLabelProps={{ shrink: true }} variant="outlined" sx={styles.inputCommon} />;
     }
 
     if (field.type === "number") {
@@ -940,7 +942,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         </Stack>
                         {activeFilters[field.key] && (
                           <Stack direction="row" spacing={0.75} sx={{ pl: 3.5, alignItems: "center" }}>
-                            {field.type !== "complex" && field.type !== "select" && (
+                            {field.type !== "complex" && (field.type !== "select" || field.key === "groupMember") && (
                               <Box sx={{ flexShrink: 0 }}>
                                 {renderOperatorSelect(field)}
                               </Box>
@@ -1083,7 +1085,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 <AppDatePicker
                   fullWidth
                   label={Locale.label("people.editCondition.from")}
-                  
+
                   InputLabelProps={{ shrink: true }}
                   value={complexConfig?.fromDate || ""}
                   onChange={(e) => setComplexConfig({ ...complexConfig!, fromDate: e.target.value })}
@@ -1091,7 +1093,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 <AppDatePicker
                   fullWidth
                   label={Locale.label("people.editCondition.to")}
-                  
+
                   InputLabelProps={{ shrink: true }}
                   value={complexConfig?.toDate || ""}
                   onChange={(e) => setComplexConfig({ ...complexConfig!, toDate: e.target.value })}
@@ -1246,7 +1248,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               <AppDatePicker
                 fullWidth
                 label={Locale.label("people.editCondition.from")}
-                
+
                 InputLabelProps={{ shrink: true }}
                 value={complexConfig?.fromDate || ""}
                 onChange={(e) => setComplexConfig({ ...complexConfig!, fromDate: e.target.value })}
@@ -1254,7 +1256,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               <AppDatePicker
                 fullWidth
                 label={Locale.label("people.editCondition.to")}
-                
+
                 InputLabelProps={{ shrink: true }}
                 value={complexConfig?.toDate || ""}
                 onChange={(e) => setComplexConfig({ ...complexConfig!, toDate: e.target.value })}
