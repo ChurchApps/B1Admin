@@ -16,7 +16,7 @@ interface Props {
 
 export const RoleMembers: React.FC<Props> = memo((props) => {
   const { roleMembers } = props;
-  const isRoleEveryone = props.role.id === null;
+  const isRoleEveryone = !props.role.id && !!props.role.name;
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleAdd = useCallback(
