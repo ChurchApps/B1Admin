@@ -682,6 +682,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      await confirmDelete(page);
       const verifiedEdit = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(verifiedEdit).toHaveCount(0, { timeout: 10000 });
     });

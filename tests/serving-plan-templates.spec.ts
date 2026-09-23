@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
+import { confirmDelete } from "./helpers/fixtures";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
@@ -103,6 +104,7 @@ test.describe.serial("Serving Management - Plan Templates", () => {
     await card.getByRole("button", { name: "Edit" }).click();
     // FormCard's delete carries id="delete"; scope to it.
     await page.locator("#delete").click();
+    await confirmDelete(page);
     await expect(page.getByRole("link", { name: NEW_PLAN, exact: true })).toHaveCount(0, { timeout: 10000 });
 
     await gotoPlanList();

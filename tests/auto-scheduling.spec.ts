@@ -227,6 +227,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
     await page.locator('button[aria-label="Edit"]').first().click();
     await page.locator("button").getByText("Delete").click();
+    await confirmDelete(page);
     await expect(page.locator("a").getByText("Jethro Service")).toHaveCount(0, { timeout: 10000 });
 
     page.once("dialog", async dialog => { await dialog.accept(); });
