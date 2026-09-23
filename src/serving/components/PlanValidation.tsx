@@ -16,6 +16,8 @@ interface Props {
   onUpdate: () => void;
 }
 
+const servesTime = (t: TimeInterface, categoryName?: string) => !!categoryName && (t?.teams || "").split(",").includes(categoryName);
+
 export const PlanValidation = (props: Props) => {
   const [errors, setErrors] = React.useState<JSX.Element[]>([]);
   const { canEdit } = props;
@@ -36,7 +38,7 @@ export const PlanValidation = (props: Props) => {
 
       const times: TimeInterface[] = [];
       positions.forEach((p) => {
-        const posTimes = props.times.filter((t) => (t?.teams || "").indexOf(p.categoryName || "") > -1);
+        const posTimes = props.times.filter((t) => servesTime(t, p.categoryName));
         times.push(...posTimes);
       });
 
@@ -83,7 +85,7 @@ export const PlanValidation = (props: Props) => {
     assignments.forEach((a) => {
       const position = props.positions.find((p) => p.id === a.positionId);
       if (position) {
-        const posTimes = props.times.filter((t) => (t?.teams || "").indexOf(position.categoryName || "") > -1);
+        const posTimes = props.times.filter((t) => servesTime(t, position.categoryName));
         duties.push({ position, times: posTimes });
       }
     });
@@ -121,7 +123,7 @@ export const PlanValidation = (props: Props) => {
         const a = duties[i];
         const plan = plans.find((p) => p.id === a.position.planId);
         planTimeConflicts.forEach((tc) => {
-          const filtered = tc.overlapingTimes.filter((ot) => a.position.planId === ot.planId && (ot.teams || "").indexOf(a.position.categoryName || "") > -1);
+          const filtered = tc.overlapingTimes.filter((ot) => a.position.planId === ot.planId && servesTime(ot, a.position.categoryName));
           if (filtered.length > 0) {
             issues.push(
               <>
@@ -233,10 +235,18 @@ export const PlanValidation = (props: Props) => {
     }
   };
 
+  const clearExternal = () => {
+    setPlans([]);
+    setPlanTimeConflicts([]);
+    setExternalAssignments([]);
+    setExternalPositions([]);
+  };
+
   const getAll = async () => {
     if (props.assignments.length > 0) {
       const data = await ApiHelper.get(`/times/all`, "DoingApi");
-      if (data.length > 0) {
+      if (!data?.length) clearExternal();
+      else {
         let filteredTimes: any[] = [];
         let timeConflicts: any[] = [];
         for (const t of props.times) {
@@ -248,27 +258,24 @@ export const PlanValidation = (props: Props) => {
         }
         setPlanTimeConflicts(timeConflicts);
         if (filteredTimes.length > 0) {
-          const allPlans: PlanInterface[] = await ApiHelper.get("/plans", "DoingApi");
-          setPlans(allPlans);
           const planIds = ArrayHelper.getIds(filteredTimes, "planId");
+          const allPlans: PlanInterface[] = await ApiHelper.get("/plans/ids?ids=" + planIds.join(","), "DoingApi");
+          setPlans(allPlans);
           const allPositions: PositionInterface[] = await ApiHelper.get("/positions/plan/ids?planIds=" + planIds, "DoingApi");
           setExternalPositions(allPositions);
           const allAssignments: AssignmentInterface[] = await ApiHelper.get("/assignments/plan/ids?planIds=" + planIds, "DoingApi");
           setExternalAssignments(allAssignments);
+        } else {
+          setPlans([]);
+          setExternalAssignments([]);
+          setExternalPositions([]);
         }
       }
-    } else {
-      setPlans([]);
-      setPlanTimeConflicts([]);
-      setExternalAssignments([]);
-      setExternalPositions([]);
-    }
+    } else clearExternal();
   };
 
   useEffect(() => {
-    if ((externalPositions?.length || 0) > 0 && (externalAssignments?.length || 0) > 0) {
-      validate();
-    }
+    validate();
   }, [externalPositions, externalAssignments]);
 
   useEffect(() => {
@@ -297,23 +304,26 @@ export const PlanValidation = (props: Props) => {
     return pending;
   };
 
+  const notifying = React.useRef(false);
   const notify = () => {
+    if (notifying.current) return;
+    notifying.current = true;
     const pending = getPendingNotifications();
     const promises: Promise<any>[] = [];
     pending.forEach((a) => {
-      const position: PositionInterface = ArrayHelper.getOne(props.positions, "id", a.positionId);
+      const position: PositionInterface | null = ArrayHelper.getOne(props.positions, "id", a.positionId);
       a.notified = new Date();
       const data: any = {
         peopleIds: [a.personId],
         contentType: "assignment",
         contentId: props.plan.id,
-        message: Locale.label("plans.planValidation.volReq") + props.plan.name + " - " + position.name + "." + Locale.label("plans.planValidation.pleaseConfirm"),
+        message: Locale.label("plans.planValidation.volReq") + props.plan.name + (position?.name ? " - " + position.name : "") + "." + Locale.label("plans.planValidation.pleaseConfirm"),
         link: CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain || "") + "/mobile/plans/" + props.plan.id
       };
       promises.push(ApiHelper.post("/notifications/create", data, "MessagingApi"));
     });
     promises.push(ApiHelper.post("/assignments", pending, "DoingApi"));
-    Promise.all(promises).then(props.onUpdate);
+    Promise.all(promises).then(props.onUpdate).finally(() => { notifying.current = false; });
   };
 
   const publish = () => {

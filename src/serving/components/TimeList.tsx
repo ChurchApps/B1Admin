@@ -48,11 +48,7 @@ export const TimeList = (props: Props) => {
   };
 
   const handleSelect = (t: TimeInterface) => {
-    t.startTime = new Date(t.startTime || new Date());
-    t.endTime = new Date(t.endTime || new Date());
-    t.startTime.setMinutes(t.startTime.getMinutes() - t.startTime.getTimezoneOffset());
-    t.endTime.setMinutes(t.endTime.getMinutes() - t.endTime.getTimezoneOffset());
-    setTime(t);
+    setTime({ ...t, startTime: new Date(t.startTime || new Date()), endTime: new Date(t.endTime || new Date()) });
   };
 
   const getAddTimeLink = () => canEdit ? (

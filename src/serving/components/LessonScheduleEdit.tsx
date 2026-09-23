@@ -22,6 +22,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
     return new Date(lastSunday.getFullYear(), lastSunday.getMonth(), lastSunday.getDate() + 7, 12, 0, 0);
   });
   const [errors, setErrors] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
   const [copyMode, setCopyMode] = useState<string>("all"); // "none" | "positions" | "all"
 
   // Selected lesson state
@@ -73,7 +74,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   };
 
   const handleSave = async () => {
-    if (validate()) {
+    if (!saving && validate()) {
       const formattedDate = DateHelper.prettyDate(scheduledDate);
       const displayName = selectedLessonName || selectedVenueName || Locale.label("plans.lessonScheduleEdit.fallbackLesson");
 
@@ -93,16 +94,23 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         contentId: selectedVenueId
       };
 
-      let savedPlan: PlanInterface;
-      if (copyMode === "none" || !previousPlan) {
-        const savedPlans = await ApiHelper.post("/plans", [newPlan], "DoingApi");
-        savedPlan = savedPlans?.[0];
-      } else {
-        savedPlan = await ApiHelper.post("/plans/copy/" + previousPlan.id, { ...newPlan, copyMode }, "DoingApi");
-      }
+      setSaving(true);
+      try {
+        let savedPlan: PlanInterface;
+        if (copyMode === "none" || !previousPlan) {
+          const savedPlans = await ApiHelper.post("/plans", [newPlan], "DoingApi");
+          savedPlan = savedPlans?.[0];
+        } else {
+          savedPlan = await ApiHelper.post("/plans/copy/" + previousPlan.id, { ...newPlan, copyMode }, "DoingApi");
+        }
 
-      if (savedPlan) {
-        props.onSave(savedPlan);
+        if (savedPlan) {
+          props.onSave(savedPlan);
+        }
+      } catch {
+        setErrors([Locale.label("common.saveError")]);
+      } finally {
+        setSaving(false);
       }
     }
   };
@@ -115,11 +123,13 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         icon="menu_book"
         onSave={handleSave}
         onCancel={props.onCancel}
+        isSubmitting={saving}
+        disabled={saving}
       >
         <AppDatePicker
           fullWidth
           label={Locale.label("plans.lessonScheduleEdit.scheduledDate") || "Scheduled Date"}
-          
+
           value={DateHelper.formatHtml5Date(scheduledDate)}
           onChange={handleDateChange}
           data-testid="scheduled-date-input"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, MenuItem } from "@mui/material";
+import { Alert, Menu, MenuItem, Snackbar } from "@mui/material";
 import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
@@ -55,6 +55,7 @@ export const PlanItem = React.memo((props: Props) => {
   const [lessonSectionId, setLessonSectionId] = React.useState<string | null>(null);
   const [actionId, setActionId] = React.useState<string | null>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const open = Boolean(anchorEl);
 
   // Use the expand hook for section expansion functionality
@@ -64,7 +65,8 @@ export const PlanItem = React.memo((props: Props) => {
     associatedContentPath: props.associatedContentPath,
     ministryId: props.ministryId,
     collapseItems: props.collapseItems,
-    onChange: props.onChange
+    onChange: props.onChange,
+    onError: setErrorMessage
   });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -109,7 +111,8 @@ export const PlanItem = React.memo((props: Props) => {
     if (!confirmed) return;
     deletingSelected.current = true;
     try {
-      await Promise.all(selectedIds.map((id) => ApiHelper.delete("/planItems/" + id, "DoingApi")));
+      const results = await Promise.allSettled(selectedIds.map((id) => ApiHelper.delete("/planItems/" + id, "DoingApi")));
+      if (results.some((res) => res.status === "rejected")) setErrorMessage(Locale.label("common.saveError"));
       setSelected(new Set());
       props.onChange?.();
     } finally {
@@ -346,8 +349,8 @@ export const PlanItem = React.memo((props: Props) => {
   // An untouched section offers the same chevron; opening it is what turns the section into rows.
   const isUntouchedSection = !props.readOnly && canExpand && ["providerSection", "lessonSection", "section"].includes(props.planItem.itemType || "");
   const handleShowRows = async () => {
-    props.onExpanded?.(`${props.planItem.providerPath}|${props.planItem.providerContentPath}`);
-    await handleExpandToActions();
+    const first = await handleExpandToActions();
+    if (first) props.onExpanded?.(`${first.providerPath}|${getExpandedSectionPath(first as PlanItemInterface)}`);
   };
 
   const getGenericRow = (onLabelClick?: () => void) => (
@@ -404,6 +407,11 @@ export const PlanItem = React.memo((props: Props) => {
   return (
     <>
       {getPlanItem()}
+      {errorMessage && (
+        <Snackbar open autoHideDuration={6000} onClose={() => setErrorMessage(null)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+          <Alert severity="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
+        </Snackbar>
+      )}
       {(showCollapse || (isHeader && !props.readOnly)) && ConfirmDialogElement}
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>

@@ -24,7 +24,7 @@ export const SongsPage = memo(() => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const songs = useQuery<{ songDetails: SongDetailInterface[], count: number }>({
-    queryKey: [`/songDetails?limit=${rowsPerPage}&offset=${page * rowsPerPage}&search=${searchFilter}`, "ContentApi"],
+    queryKey: [`/songDetails?limit=${rowsPerPage}&offset=${page * rowsPerPage}&search=${encodeURIComponent(searchFilter)}`, "ContentApi"],
     placeholderData: { songDetails: [], count: 0 }
   });
 
@@ -221,7 +221,7 @@ export const SongsPage = memo(() => {
                         <Chip icon={<ArtistIcon />} label={songDetail.artist} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" }} />
                       )}
 
-                      {songDetail.seconds && (
+                      {!!songDetail.seconds && (
                         <Chip
                           icon={<TimerIcon />}
                           label={formatSeconds(songDetail.seconds)}

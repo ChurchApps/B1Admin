@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -114,6 +114,7 @@ test.describe.serial("Assignment stale position form (PR #457)", () => {
     await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
     await page.locator('button[aria-label="Edit"]').first().click();
     await page.locator("button").getByText("Delete").click();
+    await confirmDelete(page);
     await expect(page.locator("a").getByText("Obadiah Service")).toHaveCount(0, { timeout: 10000 });
 
     page.once("dialog", async dialog => { await dialog.accept(); });

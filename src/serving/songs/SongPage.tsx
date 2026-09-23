@@ -204,7 +204,7 @@ export const SongPage = memo(() => {
       );
     }
 
-    return <Arrangement arrangement={selectedArrangement} reload={refetch} />;
+    return <Arrangement key={selectedArrangement.id} arrangement={selectedArrangement} reload={refetch} />;
   }, [selectedArrangement, refetch]);
 
   return (

@@ -105,6 +105,7 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
   }), [selectedPlan, startDate, endDate, weekCount, occupiedDates, excluded, calendarMode]);
 
   const toSchedule = rows.filter((r, i) => r.included && !excluded.has(i));
+  const createdDates = React.useRef<Set<string>>(new Set());
 
   const handleSave = async () => {
     if (toSchedule.length === 0) return;
@@ -115,6 +116,7 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
       let copySourceId: string | undefined = previousPlan?.id;
       for (let i = 0; i < toSchedule.length; i++) {
         const row = toSchedule[i];
+        if (createdDates.current.has(dateKey(row.date))) continue;
         const displayName = row.week.lessonName || row.week.studyName || Locale.label("plans.lessonScheduleEdit.fallbackLesson") || "Lesson";
         const newPlan: PlanInterface = {
           ministryId: props.ministryId,
@@ -135,6 +137,7 @@ export const ApplyYearPlan: React.FC<Props> = (props) => {
         } else {
           await ApiHelper.post("/plans", [newPlan], "DoingApi");
         }
+        createdDates.current.add(dateKey(row.date));
         setSaveProgress(Math.round(((i + 1) / toSchedule.length) * 100));
       }
       props.onSave();

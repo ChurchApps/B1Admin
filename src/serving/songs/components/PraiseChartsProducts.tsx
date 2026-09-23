@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ApiHelper, CurrencyHelper, Locale } from "@churchapps/apphelper";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
 import { Download as DownloadIcon, ExpandLess as ExpandLessIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
@@ -46,7 +46,7 @@ export const PraiseChartsProducts = (props: Props) => {
 
   const buildTree = (allProducts: any[]) => {
     const rootExcludedSkus: string[] = [];
-    products.forEach((product: any) => {
+    allProducts.forEach((product: any) => {
       if (product.child_products) {
         product.child_products.forEach((child: any) => {
           rootExcludedSkus.push(child.sku);
@@ -70,6 +70,13 @@ export const PraiseChartsProducts = (props: Props) => {
     loadData();
   }, [props.praiseChartsId, props.keySignature]);
 
+  const messageListener = useRef<((event: MessageEvent) => void) | null>(null);
+  const removeMessageListener = () => {
+    if (messageListener.current) window.removeEventListener("message", messageListener.current);
+    messageListener.current = null;
+  };
+  useEffect(() => removeMessageListener, []);
+
   const download = async (product: any) => {
     PraiseChartsHelper.download(product.sku, product.file_name, "");
   };
@@ -79,11 +86,14 @@ export const PraiseChartsProducts = (props: Props) => {
     const purchaseUrl = `https://www.praisecharts.com/buynow?sku=${sku}&XID=churchapps&return_url=${encodeURIComponent(returnUrl)}`;
     const popup = window.open(purchaseUrl, "oauth", "width=600,height=700");
 
-    window.addEventListener("message", async (event) => {
+    removeMessageListener();
+    messageListener.current = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
+      removeMessageListener();
       popup?.close();
       loadData();
-    });
+    };
+    window.addEventListener("message", messageListener.current);
   };
 
   const getPriceButton = (product: any) => {

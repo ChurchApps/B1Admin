@@ -47,6 +47,8 @@ export const Assignment = (props: Props) => {
   const [times, setTimes] = React.useState<TimeInterface[]>([]);
   const [blockoutDates, setBlockoutDates] = React.useState<BlockoutDateInterface[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const notesDirty = React.useRef(false);
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
   // Hoisted: the compiler emits non-optional guard reads (position.count/position.id) for
@@ -206,10 +208,11 @@ export const Assignment = (props: Props) => {
   };
 
   const loadData = useCallback(async () => {
-    setPlan(props.plan);
+    const keepNotes = (next: PlanInterface) => (prev: PlanInterface | null) => (notesDirty.current && prev ? { ...next, notes: prev.notes } : next);
+    setPlan(keepNotes(props.plan));
     // Refresh the plan row itself — autofill/undo/publish mutate prepared and lastAutofillRunId.
     ApiHelper.get("/plans/" + props.plan?.id, "DoingApi").then((data: PlanInterface) => {
-      if (data?.id) setPlan(data);
+      if (data?.id) setPlan(keepNotes(data));
     });
     const positionsData = await ApiHelper.get("/positions/plan/" + props.plan?.id, "DoingApi");
     setPositions(positionsData);
@@ -239,21 +242,26 @@ export const Assignment = (props: Props) => {
 
   const handleSave = () => {
     ApiHelper.post("/plans", [plan], "DoingApi").then(() => {
+      notesDirty.current = false;
       setShowSuccessMessage(true);
     });
   };
 
   const handleAutoAssign = async () => {
-    const groupIds = ArrayHelper.getUniqueValues(positions, "groupId");
-    const groupMembers = await ApiHelper.get("/groupMembers/?groupIds=" + groupIds.join(","), "MembershipApi");
-    const teams: { positionId: string; personIds: string[] }[] = [];
-    positions.forEach((p) => {
-      const filteredMembers = ArrayHelper.getAll(groupMembers, "groupId", p.groupId);
-      teams.push({ positionId: p.id || "", personIds: filteredMembers.map((m) => m.personId) || [] });
-    });
-    ApiHelper.post("/plans/autofill/" + props.plan.id, { teams }, "DoingApi").then(() => {
+    try {
+      const withGroup = positions.filter((p) => p.groupId);
+      const groupIds = ArrayHelper.getUniqueValues(withGroup, "groupId");
+      const groupMembers = groupIds.length > 0 ? await ApiHelper.get("/groupMembers/?groupIds=" + groupIds.join(","), "MembershipApi") : [];
+      const teams: { positionId: string; personIds: string[] }[] = [];
+      withGroup.forEach((p) => {
+        const filteredMembers = ArrayHelper.getAll(groupMembers, "groupId", p.groupId);
+        teams.push({ positionId: p.id || "", personIds: filteredMembers.map((m) => m.personId) || [] });
+      });
+      await ApiHelper.post("/plans/autofill/" + props.plan.id, { teams }, "DoingApi");
       loadData();
-    });
+    } catch {
+      setErrorMessage(Locale.label("common.saveError"));
+    }
   };
 
   const handleUndoAutoAssign = async () => {
@@ -375,6 +383,7 @@ export const Assignment = (props: Props) => {
               rows={4}
               value={plan?.notes || ""}
               onChange={canEdit ? (e) => {
+                notesDirty.current = true;
                 setPlan({ ...(plan || {}), notes: e.target.value });
               } : undefined}
               data-testid="plan-notes-input"
@@ -434,6 +443,11 @@ export const Assignment = (props: Props) => {
           variant="filled"
           sx={{ width: "100%" }}>
           {Locale.label("plans.planPage.noteSave") || "Notes saved successfully"}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={() => setErrorMessage(null)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{ width: "100%" }}>
+          {errorMessage}
         </Alert>
       </Snackbar>
     </Grid>

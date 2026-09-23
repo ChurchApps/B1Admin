@@ -291,6 +291,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const verifiedPlan = page.locator("a").getByText("Mar 1, 2030");
       await expect(verifiedPlan).toHaveCount(0, { timeout: 10000 });
     });

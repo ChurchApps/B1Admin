@@ -2254,6 +2254,7 @@
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
       "copyPrevious": "Copy from Previous Plan",
+      "confirmDelete": "Delete this plan, including its positions, assignments and order of service?",
       "copyServiceOrder": "Copy Order of Service",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",

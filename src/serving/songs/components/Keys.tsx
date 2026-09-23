@@ -58,11 +58,15 @@ export const Keys = memo((props: Props) => {
     [keys, props.arrangement.id]
   );
 
-  const loadData = useCallback(async () => {
+  const loadData = useCallback(async (selectId?: string) => {
     if (props.arrangement) {
-      const keys = await ApiHelper.get("/arrangementKeys/arrangement/" + props.arrangement.id, "ContentApi");
+      const keys: ArrangementKeyInterface[] = await ApiHelper.get("/arrangementKeys/arrangement/" + props.arrangement.id, "ContentApi");
       setKeys(keys);
-      if (keys.length > 0) setSelectedKey(keys[0]);
+      setSelectedKey((prev) => keys.find((k) => k.id === (selectId || prev?.id)) || keys[0] || null);
+      if (keys.length === 0) {
+        setLinks([]);
+        setProducts([]);
+      }
     }
   }, [props.arrangement]);
 
@@ -260,9 +264,9 @@ export const Keys = memo((props: Props) => {
     return (
       <KeyEdit
         arrangementKey={editKey}
-        onSave={() => {
+        onSave={(saved) => {
           setEditKey(null);
-          loadData();
+          loadData(saved?.id);
         }}
         onCancel={() => setEditKey(null)}
       />
@@ -348,6 +352,7 @@ export const Keys = memo((props: Props) => {
           {Locale.label("songs.keys.importFromPraiseCharts") || "Import from PraiseCharts"}
         </MenuItem>
         <MenuItem
+          disabled={!selectedKey}
           onClick={() => {
             handleClose();
             setEditLink({

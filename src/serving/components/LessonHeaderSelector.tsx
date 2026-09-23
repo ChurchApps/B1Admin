@@ -247,6 +247,10 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
   }, [onClose, hasAssociatedLesson, providerId, browser.reset, browser.setSelectedProviderId]);
 
   useEffect(() => {
+    if (!open) setMode(hasAssociatedLesson ? "associated" : "browse");
+  }, [hasAssociatedLesson]);
+
+  useEffect(() => {
     if (!open) return;
     browser.loadLinkedProviders();
     if (mode === "associated" && providerPath && providerId) {

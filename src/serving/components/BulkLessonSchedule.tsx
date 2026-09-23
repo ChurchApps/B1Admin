@@ -83,6 +83,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (!selectedContentPath || !selectedProviderId) return;
+    let cancelled = false;
 
     const loadSeries = async () => {
       setLoadingEntries(true);
@@ -100,6 +101,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         const selectedLessonId = segments[3];
 
         const allLessons = await browseAt(studyLevelPath, selectedProviderId);
+        if (cancelled) return;
 
         const selectedIndex = allLessons.findIndex(l => {
           const s = l.path.replace(/^\//, "").split("/").filter(Boolean);
@@ -137,16 +139,18 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
           })
         );
 
-        setEntries(newEntries);
+        if (!cancelled) setEntries(newEntries);
       } catch (err) {
+        if (cancelled) return;
         console.error("Error loading bulk schedule data:", err);
         setError(Locale.label("plans.bulkLessonSchedule.loadFailed"));
       } finally {
-        setLoadingEntries(false);
+        if (!cancelled) setLoadingEntries(false);
       }
     };
 
     loadSeries();
+    return () => { cancelled = true; };
   }, [selectedContentPath, selectedProviderId]);
 
   useEffect(() => {
@@ -166,10 +170,12 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
   const includedCount = entries.filter(e => e.included && e.venue).length;
 
   const handleSave = async () => {
+    if (saving) return;
     setSaving(true);
     setSaveProgress(0);
 
     const toSchedule = entries.filter(e => e.included && e.venue);
+    const created = new Set<ScheduleEntry>();
     try {
       // Chain each new plan from the prior one to keep diffs small.
       let copySourceId: string | undefined = previousPlan?.id;
@@ -192,11 +198,12 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         };
 
         if (copyMode !== "none" && copySourceId) {
-          const created = await ApiHelper.post("/plans/copy/" + copySourceId, { ...newPlan, copyMode }, "DoingApi");
-          if (created?.id) copySourceId = created.id;
+          const copied = await ApiHelper.post("/plans/copy/" + copySourceId, { ...newPlan, copyMode }, "DoingApi");
+          if (copied?.id) copySourceId = copied.id;
         } else {
           await ApiHelper.post("/plans", [newPlan], "DoingApi");
         }
+        created.add(entry);
 
         setSaveProgress(Math.round(((i + 1) / toSchedule.length) * 100));
       }
@@ -204,6 +211,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
     } catch (err) {
       console.error("Error creating bulk plans:", err);
       setError(Locale.label("plans.bulkLessonSchedule.savingFailed"));
+      setEntries(prev => prev.map(e => (created.has(e) ? { ...e, included: false } : e)));
       setSaving(false);
     }
   };
@@ -215,6 +223,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         icon="calendar_month"
         onSave={handleSave}
         onCancel={props.onCancel}
+        disabled={saving}
         saveText={saving ? `${Locale.label("plans.bulkLessonSchedule.schedulingProgress")} ${saveProgress}%` : undefined}
       >
         {saving && <LinearProgress variant="determinate" value={saveProgress} sx={{ mb: 2 }} />}
@@ -267,7 +276,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
           <AppDatePicker
             fullWidth
             label={Locale.label("plans.bulkLessonSchedule.startDate") || "Start Date"}
-            
+
             value={DateHelper.formatHtml5Date(startDate)}
             onChange={(e) => setStartDate(DateHelper.toDate(e.target.value))}
             disabled={saving}

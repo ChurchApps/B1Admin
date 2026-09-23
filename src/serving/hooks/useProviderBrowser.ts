@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
 import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
@@ -18,7 +18,14 @@ interface UseProviderBrowserOptions {
 export function useProviderBrowser(options: UseProviderBrowserOptions) {
   const { ministryId, defaultProviderId, providerFilter = SERVING_PROVIDER_IDS, includeFiles = false, autoLoad = true } = options;
 
-  const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "");
+  const [selectedProviderId, setSelectedProviderIdState] = useState<string>(defaultProviderId || "");
+  // Mirrors selectedProviderId synchronously so loads started before the next render use the new provider.
+  const providerRef = useRef<string>(defaultProviderId || "");
+  const setSelectedProviderId = useCallback((id: string) => {
+    providerRef.current = id;
+    setSelectedProviderIdState(id);
+  }, []);
+  const loadSeq = useRef(0);
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [showAllProviders, setShowAllProviders] = useState(false);
 
@@ -66,10 +73,12 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
   }, [ministryId]);
 
   const loadContent = useCallback(async (path: string, provId?: string) => {
-    const pid = provId || selectedProviderId;
+    const pid = provId || providerRef.current;
+    const seq = ++loadSeq.current;
     setLoading(true);
     try {
       const items = await browseRaw(path, pid);
+      if (seq !== loadSeq.current) return;
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
       setCurrentItems(folders);
       if (includeFiles) {
@@ -77,17 +86,19 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
         setCurrentFiles(files);
       }
     } catch (error) {
+      if (seq !== loadSeq.current) return;
       console.error("Error loading browse content:", error);
       setCurrentItems([]);
       if (includeFiles) setCurrentFiles([]);
     } finally {
-      setLoading(false);
+      if (seq === loadSeq.current) setLoading(false);
     }
-  }, [selectedProviderId, includeFiles, browseRaw]);
+  }, [includeFiles, browseRaw]);
 
   const navigateToPath = useCallback(async (targetPath: string, provId?: string): Promise<ContentFolder[]> => {
-    const pid = provId || selectedProviderId;
-    if (pid !== selectedProviderId) setSelectedProviderId(pid);
+    const pid = provId || providerRef.current;
+    if (pid !== providerRef.current) setSelectedProviderId(pid);
+    const seq = ++loadSeq.current;
 
     const segments = targetPath.replace(/^\//, "").split("/").filter(Boolean);
     if (segments.length === 0) {
@@ -116,6 +127,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
 
       const targetItems = await browseRaw(targetPath, pid);
       const targetFolders = targetItems.filter((item): item is ContentFolder => item.type === "folder");
+      if (seq !== loadSeq.current) return targetFolders;
 
       setCurrentPath(targetPath);
       setBreadcrumbTitles(titles);
@@ -123,12 +135,12 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
       return targetFolders;
     } catch (error) {
       console.error("Error navigating to path:", error);
-      setCurrentItems([]);
+      if (seq === loadSeq.current) setCurrentItems([]);
       return [];
     } finally {
-      setLoading(false);
+      if (seq === loadSeq.current) setLoading(false);
     }
-  }, [selectedProviderId, browseRaw]);
+  }, [browseRaw, setSelectedProviderId]);
 
   const navigateToFolder = useCallback((folder: ContentFolder) => {
     setCurrentPath(folder.path);
@@ -169,7 +181,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
     if (autoLoad) {
       await loadContent("", newProviderId);
     }
-  }, [includeFiles, autoLoad, loadContent]);
+  }, [includeFiles, autoLoad, loadContent, setSelectedProviderId]);
 
   const reset = useCallback(() => {
     setCurrentPath("");
@@ -178,7 +190,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
     if (includeFiles) setCurrentFiles([]);
     setShowAllProviders(false);
     if (defaultProviderId) setSelectedProviderId(defaultProviderId);
-  }, [includeFiles, defaultProviderId]);
+  }, [includeFiles, defaultProviderId, setSelectedProviderId]);
 
   const isLeafFolder = useCallback((folder: ContentFolder): boolean => {
     return !!folder.isLeaf;
@@ -198,7 +210,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
       const firstImplemented = availableProviders.find(p => p.implemented);
       if (firstImplemented) setSelectedProviderId(firstImplemented.id);
     }
-  }, [selectedProviderId, availableProviders]);
+  }, [selectedProviderId, availableProviders, setSelectedProviderId]);
 
   return {
     selectedProviderId,

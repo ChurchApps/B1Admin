@@ -17,7 +17,7 @@ export function OlfPrint(props: Props) {
             <tbody>
               <tr>
                 <td style={{ verticalAlign: "top", width: "100px", fontWeight: "bold" }}>
-                  {b.actions[0].actionType.toUpperCase()}
+                  {(b.actions[0].actionType || "").toUpperCase()}
                 </td>
                 <td>
                   <ul style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
