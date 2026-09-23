@@ -898,7 +898,65 @@
       "notStarted": "Not Started"
     },
     "printAllStatementsPage": {
-      "loadingStatements": "Loading statements..."
+      "annualStatementTitle": "{year} Annual Giving Statement",
+      "campaign": "Campaign",
+      "contributionDetails": "Contribution Details",
+      "disclaimer": "{churchName} is a registered non-profit organization. No goods or services were provided in exchange for these contributions other than intangible religious benefits.",
+      "donorInformation": "Donor Information",
+      "fund": "Fund",
+      "fundBreakdown": "Fund Breakdown",
+      "given": "Given",
+      "issued": "Issued:",
+      "loadingStatements": "Loading statements...",
+      "noteLabel": "Note:",
+      "noteText": "This statement summarizes all contributions received by {churchName} during {year}.",
+      "organization": "Organization",
+      "period": "Period: Jan 1 - Dec 31, {year}",
+      "pledgeProgress": "Pledge Progress",
+      "pledged": "Pledged",
+      "statementSummary": "Statement Summary",
+      "status": "Status",
+      "totalContributions": "Total Contributions",
+      "totalContributionsLabel": "Total Contributions:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "{year} Annual Giving Statement",
+      "campaign": "Campaign",
+      "contributionDetails": "Contribution Details",
+      "disclaimer": "{churchName} is a registered non-profit organization. No goods or services were provided in exchange for these contributions other than intangible religious benefits.",
+      "donorInformation": "Donor Information",
+      "fund": "Fund",
+      "fundBreakdown": "Fund Breakdown",
+      "given": "Given",
+      "issued": "Issued:",
+      "noteLabel": "Note:",
+      "noteText": "This statement summarizes all contributions received by {churchName} during {year}.",
+      "organization": "Organization",
+      "period": "Period: Jan 1 - Dec 31, {year}",
+      "pledgeProgress": "Pledge Progress",
+      "pledged": "Pledged",
+      "statementSummary": "Statement Summary",
+      "status": "Status",
+      "totalContributions": "Total Contributions",
+      "totalContributionsLabel": "Total Contributions:"
+    },
+    "statementLegal": {
+      "abn": "ABN",
+      "australiaTitle": "Receipt for Donation",
+      "canadaTitle": "Official Receipt for Income Tax Purposes",
+      "cra": "Canada Revenue Agency: canada.ca/charities-giving",
+      "craNumber": "Charity registration number",
+      "dateIssued": "Date issued",
+      "dgr": "{churchName} is endorsed as a Deductible Gift Recipient.",
+      "dgrThreshold": "Donations of $2 or more are tax deductible.",
+      "donation": "Donation",
+      "eligibleAmount": "Eligible amount of gift for income tax purposes",
+      "newZealandTitle": "Donation Receipt",
+      "nonEligible": "Gifts not eligible for a tax receipt",
+      "nzNumber": "Charity registration number",
+      "placeOfIssue": "Place of issue",
+      "receiptNumber": "Receipt number",
+      "signature": "Authorized signature"
     },
     "stripeImportPage": {
       "alreadyImported": "Already Imported",
@@ -5047,13 +5105,6 @@
             "${iconName}`, iconName": "${icon name}`, icon name"
           }
         }
-      }
-    }
-  },
-  "src/donations/components/GivingStatementDocument": {
-    "tsx:  const label = (key: string) => Locale": {
-      "label(labelPrefix + \"": {
-        "\" + key);": "\" + key);"
       }
     }
   },
