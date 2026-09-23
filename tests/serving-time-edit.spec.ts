@@ -58,7 +58,7 @@ test.describe.serial("Service time edit keeps the stored time", () => {
     await expect(page.locator("input#endTime")).toHaveValue(/11:45/);
 
     const saved = page.waitForResponse((r) => r.url().includes("/doing/times") && r.request().method() === "POST", { timeout: 15000 });
-    await page.getByRole("button", { name: "Save" }).click();
+    await page.getByRole("button", { name: "Save", exact: true }).click();
     await saved;
 
     const timesRes = await ctx.get(`${API}/doing/times/plan/${planId}`, auth);
