@@ -25,7 +25,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
   };
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/rolepermissions/roles/" + (props.role.id ?? "null"), "MembershipApi").then((data: any) => setRolePermissions(data));
+    ApiHelper.get("/rolepermissions/roles/" + props.role.id, "MembershipApi").then((data: any) => setRolePermissions(data));
   }, [props.role]);
   const loadPermissions = useCallback(() => {
     ApiHelper.get("/permissions", "MembershipApi").then((data: any) => setPermissions(data));
@@ -58,17 +58,17 @@ export const RolePermissions: React.FC<Props> = (props) => {
     const result: JSX.Element[] = [];
     visible.forEach((p, index) => {
       if (p.displaySection === displaySection) {
-        result.push(<RoleCheck key={index} roleId={props.role.id} rolePermissions={rolePermissions} apiName={p.apiName || ""} contentType={p.section || ""} action={p.action || ""} label={p.displayAction || ""} />);
+        result.push(<RoleCheck key={index} roleId={props.role.id || ""} rolePermissions={rolePermissions} apiName={p.apiName || ""} contentType={p.section || ""} action={p.action || ""} label={p.displayAction || ""} />);
       }
     });
     return result;
   };
 
   React.useEffect(() => {
-    if (props.role?.name) loadData();
+    if (props.role?.id !== undefined) loadData();
   }, [props.role, loadData]);
   React.useEffect(() => {
-    if (props.role?.name) loadPermissions();
+    if (props.role?.id !== undefined) loadPermissions();
   }, [props.role, loadPermissions]);
 
   return (
