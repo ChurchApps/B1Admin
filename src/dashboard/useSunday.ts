@@ -58,7 +58,7 @@ const addDays = (d: Date, n: number) => {
 };
 
 const planTime = (p: PlanInterface) => {
-  const t = p.serviceDate ? new Date(p.serviceDate).getTime() : NaN;
+  const t = p.serviceDate ? DateHelper.toDate(p.serviceDate).getTime() : NaN;
   return Number.isNaN(t) ? 0 : startOfDay(new Date(t)).getTime();
 };
 
@@ -159,7 +159,7 @@ const loadSunday = async (): Promise<SundayData> => {
 
   const serviceTimes = (times || []).filter((t) => (t.serviceTimeType ?? "service") === "service");
   serviceTimes.sort((a, b) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
-  const planStart = serviceTimes[0]?.startTime ? new Date(serviceTimes[0].startTime) : (plan?.serviceDate ? new Date(plan.serviceDate) : null);
+  const planStart = serviceTimes[0]?.startTime ? new Date(serviceTimes[0].startTime) : (plan?.serviceDate ? DateHelper.toDate(plan.serviceDate) : null);
 
   const rawOrder = flattenOrder(planItems || []);
   const nowMs = Date.now();
@@ -249,7 +249,7 @@ const loadSunday = async (): Promise<SundayData> => {
     });
   }
 
-  const focusDate = plan?.serviceDate ? startOfDay(new Date(plan.serviceDate)) : comingSunday;
+  const focusDate = plan?.serviceDate ? startOfDay(DateHelper.toDate(plan.serviceDate)) : comingSunday;
   return { plan, planStart, focusDate, order, inRoom, live, recap, isSunday, split, serving, guests, rooms };
 };
 

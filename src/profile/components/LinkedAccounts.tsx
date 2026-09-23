@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { type SettingInterface } from "@churchapps/helpers";
 import { Locale, ApiHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +9,7 @@ import { CardWithHeader } from "../../components/ui";
 export const LinkedAccounts = () => {
   const settingsQuery = useQuery<SettingInterface[]>({ queryKey: ["/settings/my", "ContentApi"], placeholderData: [] });
   const settings = settingsQuery.data || [];
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   const unlinkPraiseCharts = async () => {
     const token = settings.find((s) => s.keyName === "praiseChartsAccessToken");
@@ -21,12 +23,14 @@ export const LinkedAccounts = () => {
     const returnUrl = window.location.origin + "/pingback";
     const { authUrl, oauthToken, oauthTokenSecret } = await ApiHelper.get("/praiseCharts/authUrl?returnUrl=" + encodeURIComponent(returnUrl), "ContentApi");
 
+    cleanupRef.current?.();
     const popup = window.open(authUrl, "oauth", "width=600,height=700");
 
     const handleMessage = async (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      if (event.origin !== window.location.origin || !popup || event.source !== popup || !event.data?.oauth_verifier) return;
       const { oauth_verifier } = event.data;
-      if (popup) popup.close();
+      cleanup();
+      popup.close();
 
       try {
         await ApiHelper.get(
@@ -37,10 +41,17 @@ export const LinkedAccounts = () => {
         console.error("Failed to complete OAuth flow:", error);
       }
       settingsQuery.refetch();
-      window.removeEventListener("message", handleMessage);
     };
 
-    // Listen for message from popup
+    const closeWatch = setInterval(() => {
+      if (!popup || popup.closed) setTimeout(cleanup, 2000);
+    }, 1000);
+    const cleanup = () => {
+      clearInterval(closeWatch);
+      window.removeEventListener("message", handleMessage);
+      if (cleanupRef.current === cleanup) cleanupRef.current = null;
+    };
+    cleanupRef.current = cleanup;
     window.addEventListener("message", handleMessage);
   };
 

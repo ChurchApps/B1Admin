@@ -60,7 +60,7 @@ export const YouTubeImport = (props: Props) => {
 
   const handleFetch = () => {
     setIsFetching(true);
-    ApiHelper.get("/sermons/youtubeImport/" + channelId, "ContentApi").then((data: any) => { setSermons(data); setIsFetching(false); });
+    ApiHelper.get("/sermons/youtubeImport/" + encodeURIComponent(channelId), "ContentApi").then((data: any) => { setSermons(data); setIsFetching(false); }).catch(() => setIsFetching(false));
   };
 
   const handleSave = () => {

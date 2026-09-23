@@ -32,7 +32,6 @@ export const AvailabilityPage = () => {
   }, [firstDayOfWeek]);
 
   const loadBookings = useCallback(() => {
-    setLoading(true);
     const start = new Date();
     start.setMonth(start.getMonth() - 1);
     const end = new Date();
@@ -166,22 +165,14 @@ export const AvailabilityPage = () => {
           borderRadius: 2,
           border: "1px solid",
           borderColor: "grey.200",
-          "& .rbc-btn-group button": {
-            color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-          },
+          "& .rbc-btn-group button": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
           "& .rbc-btn-group button:hover, & .rbc-btn-group button:focus, & .rbc-btn-group button:active, & .rbc-btn-group button.rbc-active": {
             color: (theme) => theme.palette.mode === "dark" ? "#000 !important" : "inherit",
             backgroundColor: (theme) => theme.palette.mode === "dark" ? "#e0e0e0 !important" : undefined
           },
-          "& .rbc-toolbar-label": {
-            color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-          },
-          "& .rbc-off-range-bg": {
-            backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined
-          },
-          "& .rbc-today": {
-            backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined
-          }
+          "& .rbc-toolbar-label": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
+          "& .rbc-off-range-bg": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined },
+          "& .rbc-today": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined }
         }}>
           <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
             <TextField select size="small" label={Locale.label("calendars.availability.filter")} value={filter} onChange={(e) => setFilter(e.target.value)} sx={{ minWidth: 240 }} data-testid="availability-filter" SelectProps={{ displayEmpty: true }}>

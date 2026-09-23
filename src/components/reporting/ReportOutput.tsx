@@ -126,10 +126,12 @@ export const ReportOutput = (props: Props) => {
         }
       });
 
-      const donationUrl = "/donations/summary?type=person&" + queryParams.join("&");
-      ApiHelper.get(donationUrl, "GivingApi").then((data: any) => {
-        populatePeople(data);
-      });
+      if (props.keyName === "donationSummary") {
+        const donationUrl = "/donations/summary?type=person&" + queryParams.join("&");
+        ApiHelper.get(donationUrl, "GivingApi").then((data: any) => {
+          if (Array.isArray(data)) populatePeople(data);
+        }).catch(() => {});
+      }
 
       if (props.keyName === "groupAttendance") {
         let url = "/reports/groupAttendanceDownload/run";

@@ -5,6 +5,7 @@ import { AuthShell } from "./components/AuthShell";
 
 export const OAuthPage: React.FC = () => {
   const [clientName, setClientName] = React.useState<string>("");
+  const [clientRedirectUris, setClientRedirectUris] = React.useState<string | string[]>("");
 
   const search = new URLSearchParams(window.location.search);
   const clientId = search.get("client_id");
@@ -16,8 +17,11 @@ export const OAuthPage: React.FC = () => {
   React.useEffect(() => {
     if (clientId) {
       ApiHelper.get(`/oauth/clients/clientId/${clientId}`, "MembershipApi").then((client: any) => {
-        if (client) setClientName(client.name);
-      });
+        if (client) {
+          setClientName(client.name);
+          setClientRedirectUris(client.redirectUris || "");
+        }
+      }).catch(() => setClientName(clientId));
     }
   }, [clientId]);
 
@@ -68,6 +72,13 @@ export const OAuthPage: React.FC = () => {
               fullWidth
               variant="contained"
               onClick={() => {
+                if (redirectUri && clientRedirectUris?.includes(redirectUri)) {
+                  const denyUrl = new URL(redirectUri);
+                  denyUrl.searchParams.append("error", "access_denied");
+                  if (state) denyUrl.searchParams.append("state", state);
+                  window.location.href = denyUrl.toString();
+                  return;
+                }
                 const target = redirectUri || "/";
                 const isSafeRelative = target.startsWith("/") && !target.startsWith("//");
                 window.location.href = isSafeRelative ? target : "/";

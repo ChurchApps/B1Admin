@@ -482,14 +482,16 @@ const AssetsView = () => {
   const [listenAsset, setListenAsset] = React.useState<CommonsAsset | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const load = React.useCallback(() => {
+  React.useEffect(() => {
+    let cancelled = false;
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     if (status) params.set("status", status);
-    CommonsApi.get(`/admin/assets?${params.toString()}`).then((data: CommonsAsset[]) => setAssets(data || []));
+    const timer = setTimeout(() => {
+      CommonsApi.get(`/admin/assets?${params.toString()}`).then((data: CommonsAsset[]) => { if (!cancelled) setAssets(data || []); });
+    }, 250);
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [q, status]);
-
-  React.useEffect(() => { load(); }, [load]);
 
   const unpublish = async (a: CommonsAsset) => {
     const ok = await confirm(Locale.label("serverAdmin.commonsTab.unpublishConfirm").replace("{name}", a.name || ""), { title: Locale.label("serverAdmin.commonsTab.unpublish"), confirmLabel: Locale.label("serverAdmin.commonsTab.unpublish"), destructive: true, "data-testid": "commons-unpublish-dialog" });

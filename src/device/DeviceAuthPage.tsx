@@ -150,11 +150,14 @@ export const DeviceAuthPage: React.FC = () => {
   const handleDeny = async () => {
     setLoading(true);
     try {
-      await ApiHelper.post("/oauth/device/deny", { user_code: userCode }, "MembershipApi");
+      await ApiHelper.post("/oauth/device/deny", { user_code: userCode.replace(/-/g, "").toUpperCase() }, "MembershipApi");
       setError(Locale.label("device.deviceAuthPage.denied"));
       setStep("code");
       setDeviceInfo(null);
       setUserCode("");
+    } catch (err) {
+      console.error("Device deny error:", err);
+      setError(Locale.label("device.deviceAuthPage.authorizationFailed"));
     } finally {
       setLoading(false);
     }

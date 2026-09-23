@@ -14,6 +14,7 @@ export function ImportIcsModal(props: Props) {
   const [importedCount, setImportedCount] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [importing, setImporting] = useState(false);
+  const [lastImported, setLastImported] = useState("");
 
   useEffect(() => {
     ApiHelper.get("/groups/tag/standard", "MembershipApi").then(setGroups);
@@ -31,7 +32,10 @@ export function ImportIcsModal(props: Props) {
     ApiHelper.post("/events/ical", { ics: icsText, groupId }, "ContentApi").then((data: any[]) => {
       setImporting(false);
       if (!data || data.length === 0) setError(Locale.label("calendars.importIcs.noEventsFound"));
-      else setImportedCount(data.length);
+      else {
+        setImportedCount(data.length);
+        setLastImported(groupId + "|" + icsText);
+      }
     }).catch(() => {
       setImporting(false);
       setError(Locale.label("calendars.importIcs.failed"));
@@ -69,7 +73,7 @@ export function ImportIcsModal(props: Props) {
       </DialogContent>
       <DialogActions>
         <Button variant="text" onClick={() => props.onDone(importedCount !== null)} data-testid="import-ics-close-button">{Locale.label("common.close")}</Button>
-        <Button variant="contained" onClick={handleImport} disabled={!groupId || !icsText.trim() || importing} data-testid="import-ics-submit">
+        <Button variant="contained" onClick={handleImport} disabled={!groupId || !icsText.trim() || importing || lastImported === groupId + "|" + icsText} data-testid="import-ics-submit">
           {Locale.label("calendars.importIcs.import")}
         </Button>
       </DialogActions>

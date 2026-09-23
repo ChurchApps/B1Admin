@@ -61,7 +61,7 @@ export const VimeoImport = (props: Props) => {
 
   const handleFetch = () => {
     setIsFetching(true);
-    ApiHelper.get("/sermons/vimeoImport/" + channelId, "ContentApi").then((data: any) => { setSermons(data); setIsFetching(false); });
+    ApiHelper.get("/sermons/vimeoImport/" + encodeURIComponent(channelId), "ContentApi").then((data: any) => { setSermons(data); setIsFetching(false); }).catch(() => setIsFetching(false));
   };
 
   const handleSave = () => {

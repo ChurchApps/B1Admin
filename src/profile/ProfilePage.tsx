@@ -47,26 +47,22 @@ export const ProfilePage = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: async () => {
-      const promises: Promise<any>[] = [];
-
       if (password.length >= 8) {
-        promises.push(ApiHelper.post("/users/updatePassword", { currentPassword, newPassword: password }, "MembershipApi"));
+        await ApiHelper.post("/users/updatePassword", { currentPassword, newPassword: password }, "MembershipApi");
       }
 
       if (areNamesChanged()) {
-        promises.push(ApiHelper.post("/users/setDisplayName", { firstName, lastName }, "MembershipApi"));
+        await ApiHelper.post("/users/setDisplayName", { firstName, lastName }, "MembershipApi");
+        UserHelper.user.firstName = firstName;
+        UserHelper.user.lastName = lastName;
       }
 
       if (email !== UserHelper.user.email) {
-        promises.push(ApiHelper.post("/users/updateEmail", { email }, "MembershipApi"));
+        await ApiHelper.post("/users/updateEmail", { email }, "MembershipApi");
+        UserHelper.user.email = email;
       }
-
-      await Promise.all(promises);
     },
     onSuccess: () => {
-      UserHelper.user.firstName = firstName;
-      UserHelper.user.lastName = lastName;
-      UserHelper.user.email = email;
       setSaveMessage(Locale.label("profile.profilePage.saveChange"));
       setCurrentPassword("");
       setPassword("");

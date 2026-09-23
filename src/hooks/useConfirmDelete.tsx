@@ -28,6 +28,7 @@ export const useConfirmDelete = (defaults?: ConfirmOptions): UseConfirmDeleteRes
   defaultsRef.current = defaults;
 
   const confirm = useCallback((message: string, options?: ConfirmOptions) => {
+    resolveRef.current?.(false);
     setState({ open: true, message, ...defaultsRef.current, ...options });
     return new Promise<boolean>((resolve) => { resolveRef.current = resolve; });
   }, []);

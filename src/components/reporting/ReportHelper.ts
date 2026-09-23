@@ -12,13 +12,19 @@ export class ReportHelper {
 
     switch (column.formatter) {
       case "date":
-        const dt = new Date(result);
-        result = DateHelper.prettyDate(dt);
+        if (result) {
+          const dt = new Date(result);
+          result = isNaN(dt.getTime()) ? "" : DateHelper.prettyDate(dt);
+        }
         break;
       case "number":
         try {
           const num = parseFloat(result);
-          result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          if (isNaN(num)) result = "";
+          else {
+            const [whole, fraction] = num.toString().split(".");
+            result = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (fraction ? "." + fraction : "");
+          }
         } catch {
           //do nothing
         }

@@ -54,7 +54,7 @@ export const TreeReport = (props: Props) => {
   const getGroupingRows = (previousData: any, data: any, rowIdx: number) => {
     const result: React.ReactElement[] = [];
     const firstGroupModified = getFirstGroupModified(previousData, data);
-    for (let i = firstGroupModified; i <= groupings.length; i++) {
+    for (let i = firstGroupModified; i < groupings.length; i++) {
       result.push(getGroupingRow(data, i, rowIdx));
     }
     return result;
@@ -89,8 +89,7 @@ export const TreeReport = (props: Props) => {
 
     let firstGroupModified = groupings.length;
     for (let i = groupings.length - 1; i >= 0; i--) {
-      const totalColumns = getPreviousGroupingCount(i);
-      if (totalColumns >= firstColumnModified) firstGroupModified = i;
+      if (getPreviousGroupingCount(i + 1) > firstColumnModified) firstGroupModified = i;
     }
 
     return firstGroupModified;

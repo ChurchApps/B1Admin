@@ -9,7 +9,7 @@ export const Duration: React.FC<Props> = (props) => {
   let sec = props.totalSeconds - (min * 60);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.currentTarget.value);
+    const val = parseInt(e.currentTarget.value) || 0;
     switch (e.currentTarget.name) {
       case "min": min = val; break;
       case "sec": sec = val; break;

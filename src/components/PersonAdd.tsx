@@ -36,6 +36,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
   };
 
   const filterListString = filterList.join(",");
+  const latestTermRef = React.useRef("");
 
   React.useEffect(() => {
     if (!searchText.trim()) {
@@ -49,9 +50,11 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
     setHasSearched(false);
     const value = e.currentTarget.value;
     setSearchText(value);
+    latestTermRef.current = value.trim();
     if (autoSearch && value.trim().length >= 2) {
       const term = value.trim();
       ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
+        if (term !== latestTermRef.current) return;
         setHasSearched(true);
         const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
         setSearchResults(filteredResult);

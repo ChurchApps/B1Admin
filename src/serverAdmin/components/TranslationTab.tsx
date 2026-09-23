@@ -17,8 +17,8 @@ export const TranslationTab = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     switch (e.target.name) {
-      case "start": setStartDate(new Date(value)); break;
-      case "end": setEndDate(new Date(value)); break;
+      case "start": if (value) setStartDate(DateHelper.toDate(value)); break;
+      case "end": if (value) setEndDate(DateHelper.toDate(value)); break;
     }
   };
 
@@ -78,7 +78,7 @@ export const TranslationTab = () => {
                   id="start"
                   name="start"
                   value={DateHelper.formatHtml5Date(startDate)}
-                  
+
                   onChange={handleChange}
                   data-testid="translation-start-date-input"
                   aria-label="Start date"
@@ -88,7 +88,7 @@ export const TranslationTab = () => {
                 <p>{Locale.label("serverAdmin.translation.endDate")}</p>
               </Grid>
               <Grid size={{ md: 3 }}>
-                <AppDatePicker id="end" name="end" value={DateHelper.formatHtml5Date(endDate)}  onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
+                <AppDatePicker id="end" name="end" value={DateHelper.formatHtml5Date(endDate)} onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
               </Grid>
               <Grid size={{ md: 1 }}>
                 <Button variant="outlined" style={{ height: 56, width: 200, marginTop: 8 }} onClick={loadData} data-testid="search-translation-stats-button" aria-label={Locale.label("serverAdmin.translationTab.searchTranslationStatsAria")}>

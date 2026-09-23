@@ -66,6 +66,18 @@ const Mobile = React.lazy(() => import("./mobile").then((module) => ({ default: 
 
 const LoadingFallback: React.FC = () => <PageSkeleton />;
 
+const LayoutWithWrapper: React.FC = () => (
+  <Box sx={{ display: "flex" }}>
+    <Wrapper>
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingFallback />}>
+          <Outlet />
+        </Suspense>
+      </ErrorBoundary>
+    </Wrapper>
+  </Box>
+);
+
 export const Authenticated: React.FC = () => {
   const navigate = useNavigate();
 
@@ -86,24 +98,17 @@ export const Authenticated: React.FC = () => {
     });
   }, [context?.person?.id, context?.userChurch?.church?.id]);
 
+  React.useEffect(() => {
+    if (UserHelper.churchChanged) {
+      UserHelper.churchChanged = false;
+      navigate("/");
+    }
+  });
+
   if (!context) return null;
 
-  const LayoutWithWrapper: React.FC = () => (
-    <Box sx={{ display: "flex" }}>
-      <Wrapper>
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingFallback />}>
-            <Outlet />
-          </Suspense>
-        </ErrorBoundary>
-      </Wrapper>
-    </Box>
-  );
-
-  if (UserHelper.churchChanged) {
-    UserHelper.churchChanged = false;
-    navigate("/");
-  } else {
+  if (UserHelper.churchChanged) return null;
+  else {
     return (
       <Routes>
         <Route element={<LayoutWithWrapper />}>

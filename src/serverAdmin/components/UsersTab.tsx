@@ -25,7 +25,7 @@ export const UsersTab = () => {
   const [, , removeCookie] = useCookies(["jwt"]);
 
   const loadData = () => {
-    const term = escape(searchText.trim());
+    const term = encodeURIComponent(searchText.trim());
     if (term) ApiHelper.get("/users/search?term=" + term, "MembershipApi").then((data: UserSearchResult[]) => setUsers(data));
   };
 

@@ -383,7 +383,9 @@ export const CommonsReviewDrawer = (props: Props) => {
     setChangesNote("");
     setDeclined({});
     setError("");
-    CommonsApi.get(`/admin/submissions/${submissionId}`).then(setDetail).catch((e) => setError(errorText(e)));
+    let cancelled = false;
+    CommonsApi.get(`/admin/submissions/${submissionId}`).then((d) => { if (!cancelled) setDetail(d); }).catch((e) => { if (!cancelled) setError(errorText(e)); });
+    return () => { cancelled = true; };
   }, [submissionId]);
 
   const declineFiles: CommonsDeclinedFile[] = React.useMemo(() => Object.entries(declined).map(([name, reason]) => ({ name, reason: reason.trim() })), [declined]);

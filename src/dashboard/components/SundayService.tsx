@@ -38,7 +38,7 @@ export const SundayService: React.FC = () => {
   return (
     <div className={"om-sunday" + (hasLive ? " has-live" : "")} data-testid="sunday-home">
       <section className="om-bulletin">
-        <p className="om-eyebrow">{prettyWhen(plan?.serviceDate || data?.focusDate, data?.planStart) || Locale.label("components.wrapper.dash", "Sunday")}</p>
+        <p className="om-eyebrow">{prettyWhen(data?.focusDate, data?.planStart) || Locale.label("components.wrapper.dash", "Sunday")}</p>
         <h1 className="om-sermon">
           {plan?.id
             ? <Link to={"/serving/plans/" + plan.id}>{title}</Link>

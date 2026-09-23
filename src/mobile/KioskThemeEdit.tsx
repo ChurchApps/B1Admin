@@ -83,31 +83,39 @@ export const KioskThemeEdit: React.FC = () => {
 
   const handleBackgroundImageUpdate = async (dataUrl?: string) => {
     if (!dataUrl) { setEditingImage(null); return; }
-    const imgSetting: GenericSettingInterface = { keyName: "checkinSettings_bg", value: dataUrl, public: 1 };
-    const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
-    const result = saved?.checkinSettings_bg || saved?.find?.((s: any) => s.keyName === "checkinSettings_bg");
-    if (result?.value) {
-      setConfig(prev => ({ ...prev, backgroundImage: result.value }));
+    try {
+      const imgSetting: GenericSettingInterface = { keyName: "checkinSettings_bg", value: dataUrl, public: 1 };
+      const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
+      const result = saved?.checkinSettings_bg || saved?.find?.((s: any) => s.keyName === "checkinSettings_bg");
+      if (result?.value) {
+        setConfig(prev => ({ ...prev, backgroundImage: result.value }));
+      }
+    } catch (error) {
+      console.error("Error saving background image:", error);
     }
     setEditingImage(null);
   };
 
   const handleSlideImageUpdate = async (dataUrl?: string) => {
     if (!dataUrl) { setEditingImage(null); return; }
-    const slideKey = "checkinSettings_slide_" + editingSlideIndex;
-    const imgSetting: GenericSettingInterface = { keyName: slideKey, value: dataUrl, public: 1 };
-    const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
-    const result = saved?.[slideKey] || saved?.find?.((s: any) => s.keyName === slideKey);
-    if (result?.value) {
-      setConfig(prev => {
-        const slides = [...prev.idleScreen.slides];
-        if (editingSlideIndex < slides.length) {
-          slides[editingSlideIndex] = { ...slides[editingSlideIndex], imageUrl: result.value };
-        } else {
-          slides.push({ imageUrl: result.value, durationSeconds: 10, sort: slides.length + 1 });
-        }
-        return { ...prev, idleScreen: { ...prev.idleScreen, slides } };
-      });
+    try {
+      const slideKey = "checkinSettings_slide_" + Date.now().toString(36);
+      const imgSetting: GenericSettingInterface = { keyName: slideKey, value: dataUrl, public: 1 };
+      const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
+      const result = saved?.[slideKey] || saved?.find?.((s: any) => s.keyName === slideKey);
+      if (result?.value) {
+        setConfig(prev => {
+          const slides = [...prev.idleScreen.slides];
+          if (editingSlideIndex < slides.length) {
+            slides[editingSlideIndex] = { ...slides[editingSlideIndex], imageUrl: result.value };
+          } else {
+            slides.push({ imageUrl: result.value, durationSeconds: 10, sort: slides.length + 1 });
+          }
+          return { ...prev, idleScreen: { ...prev.idleScreen, slides } };
+        });
+      }
+    } catch (error) {
+      console.error("Error saving slide image:", error);
     }
     setEditingImage(null);
   };
