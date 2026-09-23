@@ -46,15 +46,21 @@ export const WebhooksSection: React.FC = () => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleDelete = async (webhook: WebhookInterface) => {
-    if (!(await confirm(Locale.label("settings.webhooksPage.deleteConfirm").replace("{name}", webhook.name || "")))) return;
+    if (!(await confirm(Locale.label("settings.webhooksPage.deleteConfirm").replace("{name}", webhook.name || "")))) return false;
     await ApiHelper.delete("/webhooks/" + webhook.id, "MembershipApi");
     webhooksQuery.refetch();
+    return true;
   };
 
   const handleSaved = () => { setEditWebhook(null); webhooksQuery.refetch(); };
 
   if (editWebhook !== null) {
-    return <WebhookEdit webhook={editWebhook} onSave={handleSaved} onCancel={() => setEditWebhook(null)} onDelete={editWebhook.id ? () => { handleDelete(editWebhook); setEditWebhook(null); } : undefined} />;
+    return (
+      <>
+        {ConfirmDialogElement}
+        <WebhookEdit webhook={editWebhook} onSave={handleSaved} onCancel={() => setEditWebhook(null)} onDelete={editWebhook.id ? async () => { if (await handleDelete(editWebhook)) setEditWebhook(null); } : undefined} />
+      </>
+    );
   }
 
   return (

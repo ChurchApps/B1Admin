@@ -47,8 +47,12 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
     setSaving(true);
     const { churchName, ...rest } = values;
     const updated: ChurchInterface = { ...church, ...rest, name: churchName };
-    const resp = await ApiHelper.post("/churches", [updated], "MembershipApi");
-    setSaving(false);
+    let resp;
+    try {
+      resp = await ApiHelper.post("/churches", [updated], "MembershipApi");
+    } finally {
+      setSaving(false);
+    }
     if (resp?.errors !== undefined) return;
     setEditing(false);
     onSaved();

@@ -16,6 +16,11 @@ interface Props {
 
 type AnyRecord = Record<string, any>;
 
+const toLocalInput = (d: Date | string) => {
+  const dt = new Date(d);
+  return new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+};
+
 export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [saving, setSaving] = useState(false);
@@ -24,7 +29,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   const [selectionsDirty, setSelectionsDirty] = useState(false);
   const [couponsDirty, setCouponsDirty] = useState(false);
 
-  const { register, handleSubmit, reset, control, formState: { isDirty } } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
+  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
 
   const anyDirty = isDirty || typesDirty || selectionsDirty || couponsDirty;
 
@@ -45,8 +50,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
       registrationEnabled: event.registrationEnabled || false,
       waitlistEnabled: event.waitlistEnabled || false,
       capacity: event.capacity?.toString() || "",
-      registrationOpenDate: event.registrationOpenDate ? new Date(event.registrationOpenDate).toISOString().slice(0, 16) : "",
-      registrationCloseDate: event.registrationCloseDate ? new Date(event.registrationCloseDate).toISOString().slice(0, 16) : "",
+      registrationOpenDate: event.registrationOpenDate ? toLocalInput(event.registrationOpenDate) : "",
+      registrationCloseDate: event.registrationCloseDate ? toLocalInput(event.registrationCloseDate) : "",
       tags: event.tags || "",
       formId: event.formId || ""
     });
@@ -64,8 +69,11 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
       tags: values.tags,
       formId: values.formId || null
     };
-    await ApiHelper.post("/events", [updated], "ContentApi");
-    setSaving(false);
+    try {
+      await ApiHelper.post("/events", [updated], "ContentApi");
+    } finally {
+      setSaving(false);
+    }
     reset(values);
     onUpdate();
   };
@@ -111,7 +119,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
             </Grid>
           </Grid>
           <TextField label={Locale.label("registrations.registrationSettingsEdit.tags")} placeholder={Locale.label("registrations.registrationSettingsEdit.tagsPlaceholder")} helperText={Locale.label("registrations.registrationSettingsEdit.tagsHelper")} size="small" fullWidth {...register("tags")} />
-          <TextField select label={Locale.label("registrations.registrationSettingsEdit.registrationQuestions")} size="small" fullWidth {...register("formId")}>
+          <TextField select label={Locale.label("registrations.registrationSettingsEdit.registrationQuestions")} size="small" fullWidth value={watch("formId") || ""} {...register("formId")}>
             <MenuItem value="">{Locale.label("registrations.registrationSettingsEdit.none")}</MenuItem>
             {forms.map((f) => <MenuItem key={f.id} value={f.id}>{f.name}</MenuItem>)}
           </TextField>

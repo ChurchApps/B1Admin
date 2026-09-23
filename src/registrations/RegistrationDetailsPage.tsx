@@ -69,7 +69,7 @@ export const RegistrationDetailsPage = () => {
   const [viewDetailId, setViewDetailId] = useState("");
   const [currency, setCurrency] = useState("usd");
 
-  const loadData = async () => {
+  const loadData = async (refreshEvent = true) => {
     if (!eventId) return;
     setLoading(true);
     const eventData: CommerceEventInterface = await ApiHelper.get("/events/" + eventId, "ContentApi");
@@ -78,7 +78,7 @@ export const RegistrationDetailsPage = () => {
       ApiHelper.get(`/registrations/types/event/${eventId}?churchId=${eventData.churchId}`, "ContentApi"),
       ApiHelper.get(`/registrations/selections/event/${eventId}?churchId=${eventData.churchId}`, "ContentApi")
     ]);
-    setEvent(eventData);
+    if (refreshEvent) setEvent(eventData);
     setRegistrations(regsData || []);
     setTypes(typesData || []);
     setSelections(selData || []);
@@ -95,13 +95,13 @@ export const RegistrationDetailsPage = () => {
   const handleCancel = async (regId: string) => {
     if (!(await confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
     await ApiHelper.post("/registrations/" + regId + "/cancel", {}, "ContentApi");
-    loadData();
+    loadData(false);
   };
 
   const handleDelete = async (regId: string) => {
     if (!(await confirm(Locale.label("registrations.registrationDetailsPage.deleteConfirm")))) return;
     await ApiHelper.delete("/registrations/" + regId, "ContentApi");
-    loadData();
+    loadData(false);
   };
 
   const handleAddAttendee = async (person: PersonInterface) => {
@@ -114,7 +114,7 @@ export const RegistrationDetailsPage = () => {
       }
       await ApiHelper.post("/registrations/register", body, "ContentApi");
       setShowAddAttendee(false);
-      loadData();
+      loadData(false);
     } catch (err: any) {
       setAddError(parseErrorMessage(err?.message || "") || Locale.label("registrations.registrationDetailsPage.addAttendeeError"));
     }
@@ -123,7 +123,7 @@ export const RegistrationDetailsPage = () => {
   const handlePromote = async (regId: string) => {
     if (!(await confirm(Locale.label("registrations.commerce.promoteConfirm"), { destructive: false, confirmLabel: Locale.label("registrations.commerce.promote") }))) return;
     await ApiHelper.post("/registrations/" + regId + "/promote", {}, "ContentApi");
-    loadData();
+    loadData(false);
   };
 
   const money = (n: number | null | undefined) => CurrencyHelper.formatCurrencyWithLocale(Number(n) || 0, currency);
@@ -153,6 +153,9 @@ export const RegistrationDetailsPage = () => {
     const answerMap = new Map<string, Record<string, string>>();
     const questionTitles: string[] = [];
     const seenQ = new Set<string>();
+    const personIds = [...new Set(registrations.map((r) => r.personId).filter(Boolean))];
+    const people: PersonInterface[] = personIds.length ? await ApiHelper.get("/people/ids?ids=" + personIds.join(","), "MembershipApi").catch(() => []) : [];
+    const nameMap = new Map<string, string>(people.map((p) => [p.id as string, p.name?.display || ""]));
     await Promise.all(registrations.map(async (reg) => {
       const detail = await ApiHelper.get(`/registrations/${reg.id}`, "ContentApi").catch(() => null);
       if (detail) detailMap.set(reg.id as string, detail);
@@ -192,7 +195,7 @@ export const RegistrationDetailsPage = () => {
       const paid = Number(reg.amountPaid) || 0;
       const answers = answerMap.get(reg.id as string) || {};
       rows.push([
-        reg.personId || Locale.label("registrations.registrationDetailsPage.guest"),
+        (reg.personId && (nameMap.get(reg.personId) || reg.personId)) || Locale.label("registrations.registrationDetailsPage.guest"),
         members,
         getTypeNames(reg),
         selText,
@@ -279,7 +282,7 @@ export const RegistrationDetailsPage = () => {
   });
 
   if (denied) return denied;
-  if (loading) return <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>;
+  if (loading && !event) return <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>;
   if (!event) return <Typography>{Locale.label("registrations.registrationDetailsPage.eventNotFound")}</Typography>;
 
   const capacityPct = event.capacity ? Math.min((count / event.capacity) * 100, 100) : 0;
@@ -346,7 +349,7 @@ export const RegistrationDetailsPage = () => {
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <RegistrationSettingsEdit event={event} onUpdate={loadData} />
+            <RegistrationSettingsEdit event={event} onUpdate={() => loadData()} />
             <Box sx={{ mt: 2 }}>
               <EventReminderEdit eventId={event.id} hasRegistration={event.registrationEnabled} />
             </Box>

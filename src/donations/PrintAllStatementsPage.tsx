@@ -1,4 +1,4 @@
-import { CurrencyHelper, Locale, SmallButton } from "@churchapps/apphelper";
+import { ApiHelper, CurrencyHelper, Locale, SmallButton } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -62,17 +62,31 @@ export const PrintAllStatementsPage = () => {
   }, [yearDonations]);
 
   const people = useQuery<PersonInterface[]>({
-    queryKey: ["/people/ids?ids=" + personIds.join(","), "MembershipApi"],
+    queryKey: ["statementPeople", personIds],
+    queryFn: async () => {
+      const chunks: string[][] = [];
+      for (let i = 0; i < personIds.length; i += 200) chunks.push(personIds.slice(i, i + 200));
+      const results = await Promise.all(chunks.map((ids) => ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi")));
+      return results.flat();
+    },
     placeholderData: [],
     enabled: personIds.length > 0
   });
 
-  const yearFundDonations = useMemo(() => {
-    return allFundDonations.data?.filter((fundDonation) =>
-      yearDonations.some((donation) => donation.id === fundDonation.donationId)) || [];
+  const fundDonationsByPerson = useMemo(() => {
+    const donationsById = new Map(yearDonations.map((d) => [d.id, d]));
+    const result = new Map<string, { fd: FundDonationInterface; donation: DonationInterface }[]>();
+    allFundDonations.data?.forEach((fd) => {
+      const donation = donationsById.get(fd.donationId);
+      if (!donation?.personId) return;
+      const list = result.get(donation.personId) || [];
+      list.push({ fd, donation });
+      result.set(donation.personId, list);
+    });
+    return result;
   }, [allFundDonations.data, yearDonations]);
 
-  const isLoading = allDonations.isLoading || allFundDonations.isLoading || funds.isLoading || (personIds.length > 0 && people.isLoading);
+  const isLoading = allDonations.isPlaceholderData || allFundDonations.isPlaceholderData || funds.isPlaceholderData || (personIds.length > 0 && people.isPlaceholderData);
 
   const autoprint = searchParams.get("autoprint") === "1";
   const hasPrinted = useRef(false);
@@ -98,29 +112,19 @@ export const PrintAllStatementsPage = () => {
 
   const getTotalContributions = (personId: string) => {
     let result = 0;
-    yearFundDonations.forEach((fd) => {
-      const donation = yearDonations.find((d) => d.id === fd.donationId && d.personId === personId);
-      if (donation) {
-        result += fd.amount || 0;
-      }
-    });
+    fundDonationsByPerson.get(personId)?.forEach(({ fd }) => { result += fd.amount || 0; });
     return result;
   };
 
   const getFundTotals = (personId: string) => {
     const result: any[] = [];
-    const personDonations = yearDonations.filter((d) => d.personId === personId);
-
-    yearFundDonations.forEach((fd) => {
-      const donation = personDonations.find((d) => d.id === fd.donationId);
-      if (donation) {
-        const fund = funds.data?.find((f) => f.id === fd.fundId);
-        const existing = result.find((r) => r.fund === fund?.name);
-        if (existing) {
-          existing.total += fd.amount || 0;
-        } else {
-          result.push({ fund: fund?.name, total: fd.amount || 0 });
-        }
+    fundDonationsByPerson.get(personId)?.forEach(({ fd }) => {
+      const fund = funds.data?.find((f) => f.id === fd.fundId);
+      const existing = result.find((r) => r.fund === fund?.name);
+      if (existing) {
+        existing.total += fd.amount || 0;
+      } else {
+        result.push({ fund: fund?.name, total: fd.amount || 0 });
       }
     });
 
@@ -131,20 +135,15 @@ export const PrintAllStatementsPage = () => {
 
   const getDonationDetails = (personId: string) => {
     const result: any[] = [];
-    const personDonations = yearDonations.filter((d) => d.personId === personId);
-
-    yearFundDonations.forEach((fd) => {
-      const donation = personDonations.find((d) => d.id === fd.donationId);
-      if (donation) {
-        const fund = funds.data?.find((f) => f.id === fd.fundId);
-        result.push({
-          date: donation.donationDate,
-          method: donation.method,
-          fund: fund?.name,
-          amount: fd.amount || 0,
-          taxDeductible: fund?.taxDeductible !== false
-        });
-      }
+    fundDonationsByPerson.get(personId)?.forEach(({ fd, donation }) => {
+      const fund = funds.data?.find((f) => f.id === fd.fundId);
+      result.push({
+        date: donation.donationDate,
+        method: donation.method,
+        fund: fund?.name,
+        amount: fd.amount || 0,
+        taxDeductible: fund?.taxDeductible !== false
+      });
     });
 
     return result.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

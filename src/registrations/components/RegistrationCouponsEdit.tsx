@@ -11,7 +11,11 @@ interface Props {
   onDirtyChange?: (dirty: boolean) => void;
 }
 
-const toLocalInput = (d: Date | string | undefined) => (d ? new Date(d).toISOString().slice(0, 16) : "");
+const toLocalInput = (d: Date | string | undefined) => {
+  if (!d) return "";
+  const dt = new Date(d);
+  return new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+};
 const toDate = (v: string) => (v ? new Date(v) : null);
 
 export const RegistrationCouponsEdit: React.FC<Props> = ({ event, onDirtyChange }) => {

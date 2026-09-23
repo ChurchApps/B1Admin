@@ -199,11 +199,13 @@ export const AuditLogPage: React.FC = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const appliedFilters = React.useRef({ category: "", module: "", startDate: "", endDate: "" });
 
   const fetchLogs = useCallback(async (pageNum: number, limit: number) => {
     setLoading(true);
     setExpandedId(null);
     try {
+      const { category, module, startDate, endDate } = appliedFilters.current;
       const params = new URLSearchParams();
       if (category) params.set("category", category);
       if (module) params.set("module", module);
@@ -222,12 +224,13 @@ export const AuditLogPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [category, module, startDate, endDate]);
+  }, []);
 
   const handleSearch = useCallback(() => {
+    appliedFilters.current = { category, module, startDate, endDate };
     setPage(0);
     fetchLogs(0, rowsPerPage);
-  }, [fetchLogs, rowsPerPage]);
+  }, [fetchLogs, rowsPerPage, category, module, startDate, endDate]);
 
   const handlePageChange = useCallback((_: unknown, newPage: number) => {
     setPage(newPage);
@@ -278,8 +281,8 @@ export const AuditLogPage: React.FC = () => {
                 {getCategories().map((c) => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
               </Select>
             </FormControl>
-            <AppDatePicker size="small"  label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-            <AppDatePicker size="small"  label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+            <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+            <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
             <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
             {logs.length > 0 && (
               <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />

@@ -26,19 +26,21 @@ export const RegistrationsPage = () => {
 
   const loadData = async () => {
     setLoading(true);
-    const data: EventInterface[] = await ApiHelper.get("/events/registerable", "ContentApi");
-    setEvents(data || []);
+    try {
+      const data: EventInterface[] = await ApiHelper.get("/events/registerable", "ContentApi");
+      setEvents(data || []);
 
-    // Load registration counts for each event
-    const countMap: Record<string, number> = {};
-    if (data?.length > 0) {
-      await Promise.all(data.map(async (event) => {
-        const result = await ApiHelper.get("/registrations/event/" + event.id + "/count?churchId=" + event.churchId, "ContentApi");
-        countMap[event.id || ""] = result?.count || 0;
-      }));
+      const countMap: Record<string, number> = {};
+      if (data?.length > 0) {
+        await Promise.all(data.map(async (event) => {
+          const result = await ApiHelper.get("/registrations/event/" + event.id + "/count?churchId=" + event.churchId, "ContentApi").catch(() => null);
+          countMap[event.id || ""] = result?.count || 0;
+        }));
+      }
+      setCounts(countMap);
+    } finally {
+      setLoading(false);
     }
-    setCounts(countMap);
-    setLoading(false);
   };
 
   useEffect(() => { loadData(); }, []);

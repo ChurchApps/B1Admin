@@ -46,7 +46,14 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
     const row = rows[i];
     if (row.id) {
       if (!(await confirm(Locale.label("registrations.commerce.removeConfirm")))) return;
-      await ApiHelper.delete(`${deleteUrlPrefix}${row.id}`, api);
+      setError(null);
+      try {
+        await ApiHelper.delete(`${deleteUrlPrefix}${row.id}`, api);
+      } catch (e: any) {
+        setError(e?.message || Locale.label("common.saveError"));
+        return;
+      }
+      setSnapshot((prev) => JSON.stringify((JSON.parse(prev) as T[]).filter((r) => r.id !== row.id)));
     }
     setRows((prev) => prev.filter((_, idx) => idx !== i));
   };

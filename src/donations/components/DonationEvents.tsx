@@ -16,7 +16,7 @@ export const DonationEvents = memo(() => {
 
   const personIds = useMemo(() => {
     if (!errorLogs.data?.length) return "";
-    return errorLogs.data.map((log: any) => log.personId).join(",");
+    return [...new Set(errorLogs.data.map((log: any) => log.personId).filter(Boolean))].join(",");
   }, [errorLogs.data]);
 
   const people = useQuery<PersonInterface[]>({
@@ -66,7 +66,7 @@ export const DonationEvents = memo(() => {
             <ul>
               <li key={`person-${log.id}`}>
                 {Locale.label("common.person")}
-                <Link to={"/people/" + log.personId.toString()}>{getPersonName(log.personId)}</Link>
+                {log.personId ? <Link to={"/people/" + log.personId}>{getPersonName(log.personId)}</Link> : null}
               </li>
               <li key={`event-${log.id}`} className="capitalize">
                 {Locale.label("donations.donationEvents.event")}

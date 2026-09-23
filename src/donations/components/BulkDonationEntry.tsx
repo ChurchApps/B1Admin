@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Card, CardContent, Typography, Button, type SelectChangeEvent } from "@mui/material";
 import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
-import { ApiHelper, DateHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, ErrorMessages, PersonHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { AppDatePicker } from "../../components";
 
@@ -20,6 +20,8 @@ export const BulkDonationEntry = memo((props: Props) => {
   const [methodDetails, setMethodDetails] = React.useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
+  const savingRef = useRef(false);
+  const [errors, setErrors] = React.useState<string[]>([]);
 
   const [defaultValues, setDefaultValues] = React.useState({
     date: DateHelper.formatHtml5Date(props.batchDate || new Date()),
@@ -51,6 +53,9 @@ export const BulkDonationEntry = memo((props: Props) => {
 
   const handleSave = useCallback(async () => {
     if (!amount || parseFloat(amount) <= 0) return;
+    if (savingRef.current) return;
+    savingRef.current = true;
+    setErrors([]);
 
     const donation: DonationInterface = {
       batchId: props.batchId,
@@ -62,16 +67,28 @@ export const BulkDonationEntry = memo((props: Props) => {
       notes: defaultValues.notes || undefined
     };
 
-    const savedDonations = await ApiHelper.post("/donations", [donation], "GivingApi");
-    const donationId = savedDonations[0].id;
+    try {
+      const savedDonations = await ApiHelper.post("/donations", [donation], "GivingApi");
+      const donationId = savedDonations[0].id;
 
-    const fundDonation: FundDonationInterface = {
-      donationId,
-      fundId: defaultValues.fundId,
-      amount: parseFloat(amount)
-    };
+      const fundDonation: FundDonationInterface = {
+        donationId,
+        fundId: defaultValues.fundId,
+        amount: parseFloat(amount)
+      };
 
-    await ApiHelper.post("/funddonations", [fundDonation], "GivingApi");
+      try {
+        await ApiHelper.post("/funddonations", [fundDonation], "GivingApi");
+      } catch (e) {
+        await ApiHelper.delete("/donations/" + donationId, "GivingApi").catch(() => {});
+        throw e;
+      }
+    } catch {
+      setErrors([Locale.label("common.saveError")]);
+      return;
+    } finally {
+      savingRef.current = false;
+    }
 
     setSelectedPerson(null);
     setShowPersonSearch(true);
@@ -120,6 +137,7 @@ export const BulkDonationEntry = memo((props: Props) => {
   return (
     <Card sx={{ mb: 3 }}>
       <CardContent>
+        <ErrorMessages errors={errors} />
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
           <Typography variant="h6">
             {selectedPerson?.name?.display || Locale.label("donations.donationEdit.anon")}

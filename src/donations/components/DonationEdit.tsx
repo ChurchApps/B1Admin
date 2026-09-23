@@ -26,6 +26,7 @@ export const DonationEdit = memo((props: Props) => {
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);
   const [refunding, setRefunding] = React.useState(false);
   const [refundError, setRefundError] = React.useState("");
+  const [saveError, setSaveError] = React.useState("");
 
   const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
   const method = watch("method");
@@ -70,7 +71,7 @@ export const DonationEdit = memo((props: Props) => {
 
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = async (values: AnyRecord) => {
     const donationToSave: DonationInterface = {
       ...donation,
       donationDate: values.date ? DateHelper.formatHtml5Date(values.date) : undefined,
@@ -78,20 +79,24 @@ export const DonationEdit = memo((props: Props) => {
       methodDetails: values.methodDetails,
       notes: values.notes
     };
-    ApiHelper.post("/donations", [donationToSave], "GivingApi").then((data: any) => {
+    setSaveError("");
+    try {
+      const data = await ApiHelper.post("/donations", [donationToSave], "GivingApi");
       const id = data[0].id;
+      setDonation((prev) => ({ ...prev, id }));
       const promises = [];
-      const fDonations = [...fundDonations];
-      for (let i = fDonations.length - 1; i >= 0; i--) {
-        const fd = fundDonations[i];
+      const fDonations: FundDonationInterface[] = [];
+      fundDonations.forEach((fd) => {
         if (fd.amount === undefined || fd.amount === 0) {
           if (!UniqueIdHelper.isMissing(fd.id)) promises.push(ApiHelper.delete("/funddonations/" + fd.id, "GivingApi"));
-          fDonations.splice(i, 1);
-        } else fd.donationId = id;
-      }
+        } else fDonations.push({ ...fd, donationId: id });
+      });
       if (fDonations.length > 0) promises.push(ApiHelper.post("/funddonations", fDonations, "GivingApi"));
-      Promise.all(promises).then(() => props.updatedFunction());
-    });
+      await Promise.all(promises);
+      props.updatedFunction();
+    } catch {
+      setSaveError(Locale.label("common.saveError"));
+    }
   };
 
   const loadData = useCallback(() => {
@@ -165,6 +170,7 @@ export const DonationEdit = memo((props: Props) => {
       {ConfirmDialogElement}
       <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} footerActions={refundButton} help="docs/b1-admin/donations/">
         {refundError && <Alert severity="error" data-testid="refund-error">{refundError}</Alert>}
+        {saveError && <Alert severity="error">{saveError}</Alert>}
         <Box>
           <label>{Locale.label("common.person")}</label>
           {personSection}
@@ -172,7 +178,7 @@ export const DonationEdit = memo((props: Props) => {
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller name="date" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth label={Locale.label("donations.donationEdit.date")}  data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")}  {...field} />
+    <AppDatePicker fullWidth label={Locale.label("donations.donationEdit.date")} data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...field} />
   )} />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>

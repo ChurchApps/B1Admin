@@ -17,6 +17,8 @@ import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
+const yesNoChoice: Record<string, string> = { True: "Yes", False: "No" };
+
 interface Props {
   formId: string;
   memberPermissions: MemberPermissionInterface;
@@ -33,6 +35,11 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     ],
     []
   );
+  const displayValue = useCallback((question: QuestionInterface, answer?: AnswerInterface | null) => {
+    const value = answer?.value || "";
+    if (question.fieldType === "Yes/No") return (yesNoMap as Record<string, string>)[value] ?? value;
+    return value;
+  }, [yesNoMap]);
   const contentRef: any = useRef<HTMLDivElement>(null);
   const handleSummaryPrint = useReactToPrint({ contentRef });
 
@@ -114,9 +121,9 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         csvData["For"] = submittedBy?.name?.display || Locale.label("forms.formSubmissions.anon");
         formSubmission = setFormSubmissionData(people.data, formSubmission);
         formSubmission.questions.forEach((question: QuestionInterface) => {
-          const answer = formSubmission.answers.find((answer: AnswerInterface) => answer.questionId === question.id) || null;
-          const answerValue = answer?.value || "";
-          if (question.fieldType === "Yes/No" && answer?.value) answer.value = (yesNoMap as Record<string, string>)[answer.value];
+          let answer = formSubmission.answers.find((answer: AnswerInterface) => answer.questionId === question.id) || null;
+          const answerValue = displayValue(question, answer);
+          if (question.fieldType === "Yes/No" && answer?.value) answer = { ...answer, value: yesNoChoice[answer.value] ?? answer.value };
           csvData[question.title || ""] = answerValue;
           formSubmission.csvData.push({ [question.title || ""]: answerValue });
           if (question.fieldType === "Multiple Choice" || question.fieldType === "Yes/No" || question.fieldType === "Checkbox") {
@@ -129,7 +136,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       setSummary(summaryData);
       setSummaryCsv(csv);
     }
-  }, [people.data, formSubmissions.data, yesNoMap, getPerson, setFormSubmissionData, setSummaryResultData, setSummaryResultDefault]);
+  }, [people.data, formSubmissions.data, displayValue, getPerson, setFormSubmissionData, setSummaryResultData, setSummaryResultDefault]);
 
   const getResultCount = useCallback((summaryValues: any[]) => {
     const results: JSX.Element[] = [];
@@ -175,12 +182,12 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       const answer = formSubmission.answers?.find((answer: AnswerInterface) => answer.questionId === question.id);
       rows.push(
         <TableCell key={question.id}>
-          <Typography variant="body2">{answer?.value || "-"}</Typography>
+          <Typography variant="body2">{displayValue(question, answer) || "-"}</Typography>
         </TableCell>
       );
     });
     return rows;
-  }, []);
+  }, [displayValue]);
 
   const tableRows = useMemo(() => {
     const rows: JSX.Element[] = [];

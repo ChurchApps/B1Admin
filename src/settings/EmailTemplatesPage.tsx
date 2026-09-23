@@ -27,9 +27,10 @@ export const EmailTemplatesPage: React.FC = () => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleDelete = async (template: EmailTemplateInterface) => {
-    if (!(await confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name || "")))) return;
+    if (!(await confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name || "")))) return false;
     await ApiHelper.delete("/emailTemplates/" + UserHelper.currentUserChurch.church.id + "/" + template.id, "MessagingApi");
     templatesQuery.refetch();
+    return true;
   };
 
   const handleEdit = (template: EmailTemplateInterface) => {
@@ -62,7 +63,7 @@ export const EmailTemplatesPage: React.FC = () => {
       <Box sx={{ p: 2 }}>
         {editTemplate !== null && (
           <Box sx={{ mb: 3 }}>
-            <EmailTemplateEdit template={editTemplate} onSave={handleSaved} onCancel={() => setEditTemplate(null)} onDelete={editTemplate.id ? () => { handleDelete(editTemplate); setEditTemplate(null); } : undefined} />
+            <EmailTemplateEdit template={editTemplate} onSave={handleSaved} onCancel={() => setEditTemplate(null)} onDelete={editTemplate.id ? async () => { if (await handleDelete(editTemplate)) setEditTemplate(null); } : undefined} />
           </Box>
         )}
 
