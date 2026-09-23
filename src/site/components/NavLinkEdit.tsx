@@ -83,8 +83,8 @@ export function NavLinkEdit(props: Props) {
 
   useEffect(() => {
     const category = props.link?.category || "website";
-    ApiHelper.get("/links?category=" + category, "ContentApi").then((data: LinkInterface[]) => { setAllLinks(data || []); });
-  }, [props.link?.category]);
+    ApiHelper.get("/links?category=" + category + "&siteId=" + encodeURIComponent(props.siteId || ""), "ContentApi").then((data: LinkInterface[]) => { setAllLinks(data || []); });
+  }, [props.link?.category, props.siteId]);
 
   if (!props.link) return <></>;
   return (

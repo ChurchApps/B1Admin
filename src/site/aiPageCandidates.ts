@@ -21,7 +21,7 @@ export const resolvePhotos = async (sections: any[]): Promise<any[]> => {
       return FALLBACK_PHOTO;
     }
   }));
-  terms.forEach((term, i) => { json = json.split(`pexels:${term}`).join(urls[i]); });
+  json = json.replace(/pexels:([a-z ]+)/g, (match, term) => urls[terms.indexOf(term)] ?? match);
   return JSON.parse(json);
 };
 

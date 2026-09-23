@@ -35,7 +35,13 @@ export function SitesDialog(props: Props) {
 
   const handleDelete = async (site: SiteInterface) => {
     if (!(await confirm(Locale.label("site.sitesDialog.deleteConfirm", "Delete this website? Its pages, navigation and appearance will be permanently deleted. Its custom domains will be reassigned to the main website.")))) return;
-    await ApiHelper.delete("/sites/" + site.id, "MembershipApi");
+    setErrors([]);
+    try {
+      await ApiHelper.delete("/sites/" + site.id, "MembershipApi");
+    } catch (e: any) {
+      setErrors([e?.message || e?.toString() || "Error"]);
+      return;
+    }
     if (props.siteId === site.id) props.onSelectSite("");
     props.onChanged();
   };

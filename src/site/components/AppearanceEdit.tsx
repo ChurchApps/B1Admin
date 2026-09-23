@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Resizer from "react-image-file-resizer";
 import { Box, Typography, Stack, Button, Card, CardContent, alpha, TextField } from "@mui/material";
 import { Image as ImageIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon } from "@mui/icons-material";
-import { ArrayHelper, ApiHelper, ImageEditor, Locale } from "@churchapps/apphelper";
+import { ArrayHelper, ApiHelper, ErrorMessages, ImageEditor, Locale } from "@churchapps/apphelper";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
@@ -13,12 +13,13 @@ interface Props {
 
 function getOgImage(img: any) {
   return new Promise<string>((resolve) => {
+    img.onerror = () => resolve(img.src);
     img.onload = function () {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       canvas.width = 1200;
       canvas.height = 630;
-      if (!ctx) return;
+      if (!ctx) return resolve(img.src);
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 15, 15);
@@ -66,6 +67,7 @@ export function AppearanceEdit(props: Props) {
   const [currentEditLogo, setCurrentEditLogo] = useState<string>("");
   const [currentUrl, setCurrentUrl] = useState<string | null>("about:blank");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const editorRef = useRef<HTMLDivElement>(null);
 
   const init = () => {
@@ -199,9 +201,13 @@ export function AppearanceEdit(props: Props) {
 
   const handleSave = () => {
     setIsSubmitting(true);
+    setErrors([]);
     ApiHelper.post("/settings", currentSettings, "MembershipApi").then(() => {
       props.updatedFunction?.();
       setIsSubmitting(false);
+    }).catch((e: any) => {
+      setIsSubmitting(false);
+      setErrors([e?.message || Locale.label("common.error")]);
     });
   };
   const handleCancel = () => { props.updatedFunction?.(); };
@@ -210,6 +216,7 @@ export function AppearanceEdit(props: Props) {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
+      <ErrorMessages errors={errors} />
       <Box ref={editorRef}>{getLogoEditor(currentEditLogo)}</Box>
 
       <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>

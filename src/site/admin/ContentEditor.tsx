@@ -257,6 +257,7 @@ export function ContentEditor(props: Props) {
       if (snapshot && snapshot.sections) {
         const restored = { ...container, sections: snapshot.sections };
         setContainer(restored);
+        setHasUnpublishedChanges(true);
       }
     };
 
@@ -546,7 +547,7 @@ export function ContentEditor(props: Props) {
             onElementDelete={handleElementDelete}
             onElementDuplicate={handleElementDuplicate}
             onElementMove={handleElementMove}
-            onElementUpdate={handleRealtimeChange}
+            onElementUpdate={handleSpacingUpdate}
             onSectionClick={(s) => handleSectionEdit(s, null)}
             onSectionMove={handleSectionMove}
             onSectionDuplicate={handleSectionDuplicate}
@@ -841,6 +842,15 @@ export function ContentEditor(props: Props) {
     }, 150);
   }, []);
 
+  const handleSpacingUpdate = (element: ElementInterface) => {
+    if (!container) return;
+    const c = { ...container, sections: (container.sections || []).map((s) => ({ ...s, elements: replaceElementImmutable(s.elements || [], element) })) };
+    saveSnapshot(container, "Before adjusting spacing");
+    setContainer(c);
+    setHasUnpublishedChanges(true);
+    saveSnapshot(c, "After adjusting spacing");
+  };
+
   const replaceElementImmutable = (elements: ElementInterface[], target: ElementInterface): ElementInterface[] =>
     elements.map((el) => {
       if (el.id === target.id) return target;
@@ -849,19 +859,6 @@ export function ContentEditor(props: Props) {
       }
       return el;
     });
-
-  const realtimeUpdateElement = (element: ElementInterface, elements: ElementInterface[]) => {
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].id === element.id) {
-        elements[i] = element;
-        return;
-      }
-      const childElements = elements[i].elements;
-      if (childElements && childElements.length > 0) {
-        realtimeUpdateElement(element, childElements);
-      }
-    }
-  };
 
   const previewTheme = useMemo(() => {
     const base = {
@@ -1134,7 +1131,7 @@ export function ContentEditor(props: Props) {
                       width: "min(600px, 80%)",
                       maxWidth: "600px"
                     }}>
-                    <DroppableScroll key={"scrollDown"} text={Locale.label("site.contentEditor.scrollDown")} direction="down" />
+                    <DroppableScroll key={"scrollDown"} text={Locale.label("site.contentEditor.scrollDown")} direction="down" scrollRef={contentRef} />
                   </div>
                   <div
                     style={{
@@ -1146,7 +1143,7 @@ export function ContentEditor(props: Props) {
                       width: "min(600px, 80%)",
                       maxWidth: "600px"
                     }}>
-                    <DroppableScroll key={"scrollUp"} text={Locale.label("site.contentEditor.scrollUp")} direction="up" />
+                    <DroppableScroll key={"scrollUp"} text={Locale.label("site.contentEditor.scrollUp")} direction="up" scrollRef={contentRef} />
                   </div>
                 </>
               )}
@@ -1190,10 +1187,7 @@ export function ContentEditor(props: Props) {
                     const isNewElement = !editElement.id;
                     if (isNewElement) loadDataInternal("After adding element");
                     else {
-                      const c = { ...container };
-                      c.sections?.forEach((s) => {
-                        realtimeUpdateElement(updatedElement, s.elements || []);
-                      });
+                      const c = { ...container, sections: (container?.sections || []).map((s) => ({ ...s, elements: replaceElementImmutable(s.elements || [], updatedElement) })) };
                       setContainer(c);
                       setHasUnpublishedChanges(true);
                       saveSnapshot(c, "After editing element");

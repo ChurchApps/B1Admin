@@ -147,6 +147,13 @@ test.describe.serial("Website undo/redo", () => {
     await page.keyboard.press("Control+z");
     expect((await restore).status()).toBe(200);
     await expect(sections()).toHaveCount(before, { timeout: 10000 });
+
+    // The undo leaves the hook flagged as restoring for ~100ms.
+    await page.waitForTimeout(300);
+    const redoRestore = page.waitForResponse(r => r.url().includes("/content/pageHistory/restore") && r.request().method() === "POST", { timeout: 15000 });
+    await page.keyboard.press("Control+Shift+Z");
+    expect((await redoRestore).status()).toBe(200);
+    await expect(sections()).toHaveCount(before + 1, { timeout: 10000 });
   });
 
   test("should leave Ctrl+Z to the focused text field", async () => {

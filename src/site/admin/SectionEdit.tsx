@@ -238,7 +238,7 @@ export function SectionEdit(props: Props) {
     e.preventDefault();
     const name = window.prompt(Locale.label("site.sectionEdit.convertToBlockPrompt"), Locale.label("site.sectionEdit.blockNamePromptDefault"));
     if (name !== null) {
-      trackSave(ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${name.toString()}`, {}, "ContentApi")).then((data: any) => {
+      trackSave(ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${encodeURIComponent(name.toString())}`, {}, "ContentApi")).then((data: any) => {
         props.updatedCallback(data);
       });
     }

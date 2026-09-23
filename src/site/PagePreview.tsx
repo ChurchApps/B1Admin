@@ -19,12 +19,14 @@ export const PagePreview: React.FC = () => {
   const [link, setLink] = useState<LinkInterface | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [siteSubDomain, setSiteSubDomain] = useState<string>("");
+  const [loadedAt, setLoadedAt] = useState<number>(0);
 
   const loadData = () => {
     if (!id) return;
 
     ApiHelper.get("/pages/" + id, "ContentApi").then((data: PageInterface) => {
       setPageData(data);
+      setLoadedAt(Date.now());
     });
 
     const linkId = searchParams.get("linkId");
@@ -81,7 +83,7 @@ export const PagePreview: React.FC = () => {
   }
 
   const previewSubDomain = siteSubDomain || context?.userChurch?.church?.subDomain || "";
-  const previewUrl = EnvironmentHelper.B1Url.replace("{subdomain}", previewSubDomain) + pageData.url + "?t=" + Date.now();
+  const previewUrl = EnvironmentHelper.B1Url.replace("{subdomain}", previewSubDomain) + pageData.url + "?t=" + loadedAt;
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("helpers.secondaryMenuHelper.site"), path: "/site" },
