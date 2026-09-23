@@ -74,8 +74,8 @@ export const FundPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.name) {
-      case "startDate": setStartDate(new Date(e.target.value)); break;
-      case "endDate": setEndDate(new Date(e.target.value)); break;
+      case "startDate": setStartDate(new Date(e.target.value + "T00:00:00")); break;
+      case "endDate": setEndDate(new Date(e.target.value + "T00:00:00")); break;
     }
   };
 
@@ -133,7 +133,7 @@ export const FundPage = () => {
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <ReceiptIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+              <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/batches/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
                 {Locale.label("donations.fundsPage.viewBatch")}
               </Typography>
             </Stack>

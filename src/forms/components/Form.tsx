@@ -15,6 +15,7 @@ export const Form: React.FC<Props> = (props) => {
   const [form, setForm] = React.useState<FormInterface>({} as FormInterface);
   const [questions, setQuestions] = React.useState<QuestionInterface[] | null>(null);
   const [editQuestionId, setEditQuestionId] = React.useState("notset");
+  const sortQueue = React.useRef<Promise<unknown>>(Promise.resolve());
   const questionList = questions || []; // Hoisted to avoid guard reads on closure deps while questions is undefined
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
   const questionUpdated = () => {
@@ -26,6 +27,9 @@ export const Form: React.FC<Props> = (props) => {
     loadQuestions();
   };
   const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data: any) => setQuestions(data));
+  const sendSort = (questionId: string, direction: "up" | "down") => {
+    sortQueue.current = sortQueue.current.then(() => ApiHelper.get("/questions/sort/" + questionId + "/" + direction, "MembershipApi")).catch(() => loadQuestions());
+  };
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;
@@ -42,7 +46,7 @@ export const Form: React.FC<Props> = (props) => {
     const question = tmpQuestions.splice(idx, 1)[0];
     tmpQuestions.splice(idx - 1, 0, question);
     setQuestions(tmpQuestions);
-    ApiHelper.get("/questions/sort/" + question.id + "/up", "MembershipApi");
+    sendSort(question.id || "", "up");
   };
   const moveDown = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -53,7 +57,7 @@ export const Form: React.FC<Props> = (props) => {
     const question = tmpQuestions.splice(idx, 1)[0];
     tmpQuestions.splice(idx + 1, 0, question);
     setQuestions(tmpQuestions);
-    ApiHelper.get("/questions/sort/" + question.id + "/down", "MembershipApi");
+    sendSort(question.id || "", "down");
   };
   const getRows = () => {
     const rows: JSX.Element[] = [];

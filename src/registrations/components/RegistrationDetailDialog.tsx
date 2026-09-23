@@ -18,7 +18,7 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
   const [currency, setCurrency] = useState("usd");
 
   useEffect(() => {
-    ApiHelper.get(`/registrations/${registrationId}`, "ContentApi").then((data) => { setReg(data); setLoading(false); });
+    ApiHelper.get(`/registrations/${registrationId}`, "ContentApi").then((data) => setReg(data)).catch(() => setReg(null)).finally(() => setLoading(false));
   }, [registrationId]);
   useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
 

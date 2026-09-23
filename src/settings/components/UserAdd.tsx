@@ -32,6 +32,7 @@ export const UserAdd = (props: Props) => {
   const [invitePersonName, setInvitePersonName] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [savedPersonId, setSavedPersonId] = useState<string>("");
+  const [unlinked, setUnlinked] = useState<{ personId: string; userId: string } | null>(null);
 
   const showInviteOrFinish = (emailAddr: string, personName: string) => {
     if (!emailAddr) {
@@ -48,11 +49,10 @@ export const UserAdd = (props: Props) => {
       await ApiHelper.post(`/users/setDisplayName`, { firstName, lastName, userId: fetchedUser?.id }, "MembershipApi");
       try {
         await ApiHelper.post(`/users/updateEmail`, { email, userId: fetchedUser?.id }, "MembershipApi");
-        const person = { ...linkedPerson! };
-        person.contactInfo.email = email;
-        person.name.first = firstName;
-        person.name.last = lastName;
-        await ApiHelper.post("/people", [person], "MembershipApi");
+        if (linkedPerson) {
+          const person = { ...linkedPerson, contactInfo: { ...linkedPerson.contactInfo, email }, name: { ...linkedPerson.name, first: firstName, last: lastName } };
+          await ApiHelper.post("/people", [person], "MembershipApi");
+        }
         showInviteOrFinish(email, firstName);
       } catch {
         setErrors([Locale.label("settings.userAdd.errAnother")]);
@@ -79,18 +79,20 @@ export const UserAdd = (props: Props) => {
     if (selectedPerson.id && selectedPerson.id === savedPersonId) return;
     const { first, last } = selectedPerson.name;
     const userEmail = showEmailField ? email : (selectedPerson.contactInfo.email || "");
-    const user = await createUserAndToGroup(first || "", last || "", userEmail);
+    const userId = (unlinked?.personId === selectedPerson.id) ? unlinked.userId : (await createUserAndToGroup(first || "", last || "", userEmail)).id || "";
     try {
-      await linkUserAndPerson(user.id || "", selectedPerson.id || "");
+      await linkUserAndPerson(userId, selectedPerson.id || "");
 
       if (showEmailField) {
-        const person = { ...selectedPerson };
-        person.contactInfo.email = email;
+        const person = { ...selectedPerson, contactInfo: { ...selectedPerson.contactInfo, email } };
         await ApiHelper.post("/people", [person], "MembershipApi");
       }
     } catch {
+      setUnlinked({ personId: selectedPerson.id || "", userId });
       setErrors([Locale.label("settings.userAdd.errDiff")]);
+      return;
     }
+    setUnlinked(null);
 
     showInviteOrFinish(userEmail, first || "");
   };
@@ -172,6 +174,7 @@ export const UserAdd = (props: Props) => {
       try {
         await linkUserAndPerson(user.id || "", person.id || "");
       } catch {
+        setUnlinked({ personId: person.id || "", userId: user.id || "" });
         setErrors([Locale.label("settings.userAdd.errDiff")]);
         return;
       }

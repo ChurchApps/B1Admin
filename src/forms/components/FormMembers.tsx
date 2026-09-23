@@ -26,6 +26,17 @@ export const FormMembers: React.FC<Props> = memo((props) => {
     });
   }, [props.formId]);
 
+  const updateFilterList = useCallback(
+    (id: string, action: string) => {
+      setFilterList((prev) => {
+        if (action === "add") return [...prev, id];
+        if (action === "remove") return prev.filter((memberId) => memberId !== id);
+        return prev;
+      });
+    },
+    []
+  );
+
   const addPerson = useCallback(
     (p: PersonInterface) => {
       const newMember = {
@@ -36,23 +47,11 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         personName: p.name.display
       };
       ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result: any) => {
-        const fm = [...formMembers];
-        fm.push(result[0]);
-        setFormMembers(fm);
+        setFormMembers((prev) => [...prev, result[0]]);
       });
       updateFilterList(p.id || "", "add");
     },
-    [props.formId, formMembers]
-  );
-
-  const updateFilterList = useCallback(
-    (id: string, action: string) => {
-      let fl = [...filterList];
-      if (action === "add") fl.push(id);
-      if (action === "remove") fl = fl.filter((memberId) => memberId !== id);
-      setFilterList(fl);
-    },
-    [filterList]
+    [props.formId, updateFilterList]
   );
 
   const handleActionChange = useCallback(

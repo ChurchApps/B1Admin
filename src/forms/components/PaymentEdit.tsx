@@ -21,15 +21,9 @@ export const PaymentEdit: React.FC<Props> = (props) => {
       case "fundId": setFundId(e.target.value); break;
       case "amount": setAmount(Number(e.target.value)); break;
     }
-    const q = { ...props.question };
-    if (e.target.name === "fundId" && q.choices) {
-      const fundIndex = q.choices.findIndex((c: any) => c.text === "FundId");
-      q.choices[fundIndex].value = e.target.value;
-    } else if (e.target.name === "amount" && q.choices) {
-      const amountIndex = q.choices.findIndex((c: any) => c.text === "Amount");
-      q.choices[amountIndex].value = e.target.value.toString();
-    }
-    props.updatedFunction(q);
+    const newFundId = e.target.name === "fundId" ? e.target.value : fundId;
+    const newAmount = e.target.name === "amount" ? e.target.value.toString() : String(amount);
+    props.updatedFunction({ ...props.question, choices: [{ value: newFundId, text: "FundId" }, { value: newAmount, text: "Amount" }] });
   };
 
   React.useEffect(() => {
@@ -37,15 +31,10 @@ export const PaymentEdit: React.FC<Props> = (props) => {
       setFunds(data);
       if (fundId === "" && data.length > 0) {
         setFundId(data[0].id);
-        const q = { ...props.question };
-        if (!q.choices) {
-          q.choices = [{ value: data[0].id, text: "FundId" }];
-          q.choices.push({ value: "0", text: "Amount" });
-        }
-        props.updatedFunction(q);
+        props.updatedFunction({ ...props.question, choices: [{ value: data[0].id, text: "FundId" }, { value: String(amount), text: "Amount" }] });
       }
     });
-  }, [fundId, props.question, props.updatedFunction]);
+  }, []);
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {

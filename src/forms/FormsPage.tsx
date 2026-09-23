@@ -94,8 +94,7 @@ export const FormsPage = () => {
   const handleArchiveChange = async (form: FormInterface, archive: boolean) => {
     const message = archive ? Locale.label("forms.formsPage.confirmMsg1") : Locale.label("forms.formsPage.confirmMsg2");
     if (!(await confirm(message, { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
-    form.archived = archive;
-    ApiHelper.post("/forms", [form], "MembershipApi").then(() => {
+    ApiHelper.post("/forms", [{ ...form, archived: archive }], "MembershipApi").then(() => {
       forms.refetch();
       archivedForms.refetch();
     });

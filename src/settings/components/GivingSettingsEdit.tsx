@@ -28,6 +28,8 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const [gateway, setGateway] = React.useState<PaymentGatewaysInterface | null>(null);
   const [errors, setErrors] = React.useState<string[]>([]);
   const [copySnackbar, setCopySnackbar] = React.useState(false);
+  const feeSaveRef = React.useRef<(() => Promise<void>) | null>(null);
+  const statementSaveRef = React.useRef<(() => Promise<void>) | null>(null);
 
   const { register, reset, control, watch, getValues } = useForm<AnyRecord>({ defaultValues: { provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: "usd" } });
   const provider = watch("provider");
@@ -75,6 +77,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         if (values.webhookKey !== "") gw.webhookKey = values.webhookKey;
         await ApiHelper.post("/gateways", [gw], "GivingApi");
       }
+      await Promise.all([feeSaveRef.current?.(), statementSaveRef.current?.()]);
       setErrors([]);
       props.onSaveComplete?.(true);
     } catch (error: any) {
@@ -229,8 +232,8 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         {getCurrency()}
       </Grid>
       <Typography variant="subtitle1" fontWeight="bold" sx={{ mt: 2 }}>{Locale.label("settings.givingSettingsEdit.feesAndStatementsSection")}</Typography>
-      <FeeOptionsSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} provider={provider} currency={currency} />
-      <StatementFormatSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} />
+      <FeeOptionsSettingsEdit churchId={props.churchId} saveRef={feeSaveRef} provider={provider} currency={currency} />
+      <StatementFormatSettingsEdit churchId={props.churchId} saveRef={statementSaveRef} />
       <Snackbar open={copySnackbar} autoHideDuration={2500} onClose={() => setCopySnackbar(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert severity="success" variant="filled" onClose={() => setCopySnackbar(false)}>{Locale.label("settings.givingSettingsEdit.webhookUrlCopied")}</Alert>
       </Snackbar>

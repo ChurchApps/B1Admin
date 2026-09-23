@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 interface Props {
   churchId: string;
-  saveTrigger: Date | null;
+  saveRef: React.Ref<() => Promise<void>>;
   provider?: string;
   currency?: string;
 }
@@ -74,7 +74,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     setHasLoadedData(true);
   };
 
-  const save = () => {
+  const save = async () => {
     const values = getValues();
     const flatRateCCSett: GenericSettingInterface = flatRateCC === null ? { churchId: props.churchId, public: 1, keyName: "flatRateCC" } : flatRateCC;
     flatRateCCSett.value = values.flatRateCC;
@@ -100,7 +100,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     const transFeeKFSett: GenericSettingInterface = transFeeKF === null ? { churchId: props.churchId, public: 1, keyName: "transFeeKF" } : transFeeKF;
     transFeeKFSett.value = values.transFeeKF;
 
-    ApiHelper.post("/settings", [
+    await ApiHelper.post("/settings", [
       flatRateCCSett, transFeeCCSett, flatRateACHSett, hardLimitACHSett, flatRatePayPalSett, transFeePayPalSett, flatRateKFSett, transFeeKFSett
     ], "MembershipApi");
   };
@@ -109,9 +109,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
 
-  React.useEffect(() => {
-    if (props.saveTrigger !== null) save();
-  }, [props.saveTrigger]);
+  React.useImperativeHandle(props.saveRef, () => save);
 
   React.useEffect(() => {
     if (!hasLoadedData) return;

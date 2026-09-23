@@ -192,7 +192,7 @@ export const DonationPage: React.FC<Props> = (props) => {
         <TableRow key={i}>
           {appName !== "B1App" && (
             <TableCell>
-              {d.batchId ? <Link href={"/donations/" + d.batchId}>{Locale.label("donation.page.viewBatch")}</Link> : ""}
+              {d.batchId ? <Link href={"/donations/batches/" + d.batchId}>{Locale.label("donation.page.viewBatch")}</Link> : ""}
             </TableCell>
           )}
           <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>

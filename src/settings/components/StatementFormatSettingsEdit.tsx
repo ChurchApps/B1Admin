@@ -6,7 +6,7 @@ import { type GenericSettingInterface } from "@churchapps/helpers";
 
 interface Props {
   churchId: string;
-  saveTrigger: Date | null;
+  saveRef: React.Ref<() => Promise<void>>;
 }
 
 type AnyRecord = Record<string, any>;
@@ -44,23 +44,21 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
     reset(next);
   };
 
-  const save = () => {
+  const save = async () => {
     const values = getValues();
     const settings = KEYS.map((key) => {
       const setting: GenericSettingInterface = existing[key] || { churchId: props.churchId, public: 1, keyName: key };
       setting.value = values[key] || "";
       return setting;
     });
-    ApiHelper.post("/settings", settings, "MembershipApi");
+    await ApiHelper.post("/settings", settings, "MembershipApi");
   };
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
 
-  React.useEffect(() => {
-    if (props.saveTrigger !== null) save();
-  }, [props.saveTrigger]);
+  React.useImperativeHandle(props.saveRef, () => save);
 
   return (
     <Grid container spacing={2} marginTop={1}>

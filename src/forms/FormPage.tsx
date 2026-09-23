@@ -64,7 +64,7 @@ export const FormPage = () => {
     if (!result.data?.id) navigate("/forms");
   };
 
-  if (form.isLoading) return <Loading />;
+  if (form.isLoading || form.isPlaceholderData) return <Loading />;
 
   if (!form.data?.id) {
     return (

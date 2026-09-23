@@ -25,7 +25,7 @@ const QBO_HEADERS = [
 ];
 
 // QBO Journal Entry import format: one debit line (Undeposited Funds) plus one credit line per fund.
-const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[], fundDonations: FundDonationInterface[], funds: FundInterface[]) => {
+const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[], fundDonations: FundDonationInterface[], funds: FundInterface[], currency: string, rates: Record<string, number>) => {
   const journalNo = batch.id || "";
   const journalDate = batch.batchDate ? batch.batchDate.split("T")[0] : "";
   const description = "Donation batch: " + (batch.name || journalNo);
@@ -33,7 +33,7 @@ const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[
   const fundTotals = new Map<string, number>();
   fundDonations
     .filter((fd) => donationIds.includes(fd.donationId || ""))
-    .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + (fd.amount || 0)));
+    .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + CurrencyHelper.convertAmount(fd.amount || 0, (fd as any).currency || currency, currency, rates)));
 
   const total = Array.from(fundTotals.values()).reduce((sum, amount) => sum + amount, 0);
   const rows = [{ JournalNo: journalNo, JournalDate: journalDate, AccountName: "Undeposited Funds", Debits: total.toFixed(2), Credits: "", Description: description, Name: "" }];
@@ -80,15 +80,15 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
 
   const getHeaderActions = React.useCallback(() => {
     if (funds.length === 0 || !donations) return null;
-    const donationIds = donations.map((d) => d.id || "");
-    const qboRows = buildQboJournalRows(batch, donationIds, fundDonations, funds);
+    const donationIds = donations.filter((d) => (d as any).status !== "refunded").map((d) => d.id || "");
+    const qboRows = buildQboJournalRows(batch, donationIds, fundDonations, funds, currency, rates);
     return (
       <Stack direction="row" spacing={1}>
         <ExportButton data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />
         {qboRows.length > 1 && <ExportButton data={qboRows} filename="qbo-journal-entry.csv" customHeaders={QBO_HEADERS} text={Locale.label("donations.donations.exportQbo")} />}
       </Stack>
     );
-  }, [funds, donations, fundDonations, batch]);
+  }, [funds, donations, fundDonations, batch, currency, rates]);
 
   const showEditDonation = React.useCallback(
     (e: React.MouseEvent) => {

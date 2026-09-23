@@ -37,10 +37,12 @@ export const CampaignsPage = () => {
     };
   }, [progress.data]);
 
+  const newCampaign = React.useMemo<CampaignInterface>(() => ({ name: "", startDate: DateHelper.formatHtml5Date(new Date()) }), [editCampaignId]);
+
   const getEditContent = () => {
     if (editCampaignId === "notset") return null;
     const campaign: CampaignInterface = editCampaignId === ""
-      ? { name: "", startDate: DateHelper.formatHtml5Date(new Date()) }
+      ? newCampaign
       : (progress.data || []).find((c) => c.campaign?.id === editCampaignId)?.campaign || {};
     return <CampaignEdit campaign={campaign} funds={funds.data || []} updatedFunction={campaignUpdated} />;
   };

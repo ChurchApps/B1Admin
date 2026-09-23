@@ -75,7 +75,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   };
 
   const handleGroupChange = (groupId: string, checked: boolean) => {
-    let ids: string[] = groupIdsJson ? JSON.parse(groupIdsJson) : [];
+    let ids: string[] = getSelectedGroupIds();
     if (checked) { if (!ids.includes(groupId)) ids.push(groupId); } else ids = ids.filter(id => id !== groupId);
     setGroupIdsJson(ids.length > 0 ? JSON.stringify(ids) : "");
   };

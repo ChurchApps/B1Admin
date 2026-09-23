@@ -24,6 +24,7 @@ export const FailedDonationsPage = () => {
   const [error, setError] = React.useState<string>("");
 
   const donations = useQuery<FailedDonationInterface[]>({ queryKey: ["/donations/failed", "GivingApi"], placeholderData: [] });
+  const rateTable = useQuery<{ rates?: Record<string, number> }>({ queryKey: ["/donations/exchange-rates", "GivingApi"], placeholderData: {} });
 
   const personIds = React.useMemo(() => (donations.data || []).map((d) => d.personId).filter(Boolean).join(","), [donations.data]);
   const people = useQuery<PersonInterface[]>({ queryKey: ["/people/ids?ids=" + personIds, "MembershipApi"], placeholderData: [], enabled: !!personIds });
@@ -45,7 +46,7 @@ export const FailedDonationsPage = () => {
     setRetryingId("");
   }, [refetch]);
 
-  const totalAmount = (donations.data || []).reduce((sum, d) => sum + (d.amount || 0), 0);
+  const totalAmount = (donations.data || []).reduce((sum, d) => sum + CurrencyHelper.convertAmount(d.amount || 0, d.currency || currency, currency, rateTable.data?.rates || {}), 0);
   const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
 
   const getRows = () => {

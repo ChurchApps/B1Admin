@@ -29,7 +29,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "" } });
+  const { register, handleSubmit, reset, formState, watch } = useForm<AnyRecord>({ defaultValues: { name: "" } });
   const e = formState.errors as any;
   const summaryErrors = useErrorSummary(formState.errors, ["name"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -96,7 +96,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
           <TextField fullWidth label={Locale.label("person.zip")} id="zip" type="text" {...register("zip")} />
         </Grid>
       </Grid>
-      <TextField fullWidth select label={Locale.label("settings.campusEdit.timezone")} id="timezone" defaultValue="" {...register("timezone")} sx={{ mb: 1 }}>
+      <TextField fullWidth select label={Locale.label("settings.campusEdit.timezone")} id="timezone" value={watch("timezone") || ""} {...register("timezone")} sx={{ mb: 1 }}>
         <MenuItem value="">{Locale.label("settings.campusEdit.noTimezone")}</MenuItem>
         {TIMEZONES.map((tz) => <MenuItem key={tz} value={tz}>{tz}</MenuItem>)}
       </TextField>

@@ -181,6 +181,7 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
   React.useEffect(checkSave, [props.saveTrigger]);
+  React.useEffect(() => () => { pollGenerationRef.current++; }, []);
 
   const gb = (bytes: number) => (bytes / 1073741824).toFixed(2);
   const s3Field = (label: string, value: string, onChange: (val: string) => void, type: string = "text") => (

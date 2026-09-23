@@ -34,8 +34,7 @@ interface ImportResponse {
 const getDefaultDates = () => {
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 1);
-  const formatDate = (d: Date) => d.toISOString().split("T")[0];
-  return { start: formatDate(startOfYear), end: formatDate(now) };
+  return { start: DateHelper.formatHtml5Date(startOfYear), end: DateHelper.formatHtml5Date(now) };
 };
 
 export const StripeImportPage = () => {

@@ -8,7 +8,7 @@ interface Props {
   contentType: string;
   action: string;
   label: string;
-  roleId: string;
+  roleId?: string;
   rolePermissions: RolePermissionInterface[];
 }
 

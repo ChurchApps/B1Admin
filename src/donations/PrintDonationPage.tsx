@@ -66,7 +66,7 @@ export const PrintDonationPage = () => {
     return allFundDonations.data?.filter((fundDonation) => donations.some((donation) => donation.id === fundDonation.donationId)) || [];
   }, [allFundDonations.data, donations]);
 
-  const dataLoaded = !!person.data && !!funds.data;
+  const dataLoaded = !!person.data && !funds.isPlaceholderData && !allDonations.isPlaceholderData && !allFundDonations.isPlaceholderData && !allPledgeProgress.isPlaceholderData;
 
   useEffect(() => {
     if (autoprint && dataLoaded && !hasPrinted.current) {
