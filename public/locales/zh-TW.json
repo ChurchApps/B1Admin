@@ -2799,7 +2799,9 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "featured": "Featured",
+      "licenseWc": "Free for worship"
     },
     "impersonateTab": {
       "confirmMessage": "您將退出自己的會話並以 {email} 身份登入。要返回您的帳戶，請退出後重新登入。",

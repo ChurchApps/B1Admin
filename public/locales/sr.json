@@ -2799,7 +2799,9 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "featured": "Featured",
+      "licenseWc": "Free for worship"
     },
     "impersonateTab": {
       "confirmMessage": "Бићете одјављени са свог налога и пријављени као {email}. Да бисте се вратили на свој налог, одјавите се и поново пријавите.",

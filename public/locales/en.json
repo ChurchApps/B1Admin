@@ -3078,7 +3078,10 @@
       "allTypes": "All Types",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "published": "Published"
+        "published": "Published",
+        "pending": "Pending",
+        "removed": "Removed",
+        "unpublished": "Unpublished"
       },
       "assetType": "Asset Type",
       "badgeEditBy": "Edit by {name}",
@@ -3138,7 +3141,116 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "approve": "Approve",
+      "approveNote": "Note to the writer (optional — shown on their submissions page)",
+      "changes": "Changes",
+      "colBasis": "Basis",
+      "colFile": "File",
+      "colSha": "SHA-256",
+      "confidence": {
+        "chart-only": "Chart only",
+        "converted-from-abc": "Converted from ABC",
+        "generated-from-midi": "Generated from MIDI",
+        "lyrics-only": "Lyrics only",
+        "proofread-score": "Proofread score",
+        "sunday-ready": "Sunday-ready"
+      },
+      "confirmApprove": "Approve this submission?",
+      "confirmApproveDetail": "Publish {name} under {license}. Churches can use it right away.",
+      "confirmRequestChanges": "Send back for changes",
+      "contributors": "Contributors",
+      "declineFile": "Decline",
+      "declineReason": "Reason for declining this file",
+      "declineReasonRequired": "Give a reason for each declined file.",
+      "declinedFiles": "Declined files",
+      "declinedSuffix": "declined",
+      "download": "Download",
+      "field": {
+        "certified": "Writer certifies they hold the rights",
+        "name": "Title",
+        "description": "Description",
+        "tags": "Themes",
+        "language": "Language",
+        "license": "License"
+      },
+      "files": "Files",
+      "intakeFindings": "Intake findings",
+      "lyricsAndChords": "Lyrics and chords",
+      "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
+      "noFieldChanges": "No changes to show.",
+      "noFindings": "Nothing flagged at intake.",
+      "original": "original",
+      "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
+      "rejectReason": {
+        "ai": "AI-generated words or melody",
+        "ccli": "Copyrighted (CCLI) song",
+        "duplicate": "Duplicate",
+        "incomplete": "Incomplete",
+        "licensing": "Licensing problem",
+        "offtopic": "Off topic",
+        "other": "Other",
+        "quality": "Quality"
+      },
+      "removeReason": {
+        "copyright": "Copyright",
+        "policy": "Policy"
+      },
+      "requestChanges": "Request changes",
+      "requestChangesNote": "Tell the submitter what to change",
+      "resolution": {
+        "dismissed": "Dismissed",
+        "duplicate": "Duplicate",
+        "upheld": "Upheld"
+      },
+      "resolveAction": {
+        "none": "No action",
+        "remove": "Remove",
+        "unpublish": "Unpublish"
+      },
+      "rights": "Rights",
+      "sources": "Sources",
+      "submissionType": {
+        "additionalFile": "Additional file",
+        "arrangement": "Arrangement",
+        "correction": "Correction",
+        "new": "New song",
+        "removal": "Removal",
+        "translation": "Translation",
+        "recording": "Master recording"
+      },
+      "submittedBy": "Submitted by",
+      "triageScore": "Triage score",
+      "unchangedFiles": "Unchanged files",
+      "reportReason": {
+        "copyright": "Copyright",
+        "ai": "AI-generated",
+        "policy": "Policy",
+        "quality": "Quality",
+        "other": "Other"
+      },
+      "reportStatus": {
+        "open": "Open",
+        "reviewing": "Reviewing",
+        "resolved": "Resolved"
+      },
+      "grant": {
+        "adult": "18 or older",
+        "wrote": "Wrote it or controls its copyright — words, music and every file",
+        "cowriters": "Every co-writer agreed in writing",
+        "clear": "No publisher, collecting society or admin blocks the grant",
+        "forever": "Understands worship use is forever",
+        "human": "Words and melody written by people, not AI"
+      },
+      "attested": "Confirmed",
+      "masterLicense": "Master recording",
+      "contributionAgreed": "Proposer confirmed the change is accurate and given under the song's license",
+      "recordingOwned": "Owns the recording (or has the owner's permission)",
+      "shortcuts": "Keys: J / K next / previous · A focus Approve · R reject",
+      "newNoFiles": "Lyrics and details, no files",
+      "possibleDuplicateTooltip": "The file or title matches a song already in the library — check it in the review before approving",
+      "chooseOutcome": "Choose an outcome…",
+      "unpublishConfirm": "Unpublish {name}? Churches stop finding it until you republish it."
     },
     "impersonateTab": {
       "confirmMessage": "You will be logged out of your own session and signed in as {email}. To return to your account, log out and back in.",

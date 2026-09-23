@@ -2799,7 +2799,9 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "featured": "Featured",
+      "licenseWc": "Free for worship"
     },
     "impersonateTab": {
       "confirmMessage": "U wordt uitgelogd uit uw eigen sessie en aangemeld als {email}. Om terug te keren naar uw account, logt u uit en weer in.",

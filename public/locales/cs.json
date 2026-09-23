@@ -2799,7 +2799,9 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "featured": "Featured",
+      "licenseWc": "Free for worship"
     },
     "impersonateTab": {
       "confirmMessage": "Budete odhlášeni z vlastní relace a přihlášeni jako {email}. Pro návrat k vlastnímu účtu se odhlaste a znovu přihlaste.",

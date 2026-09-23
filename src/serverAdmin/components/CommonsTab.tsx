@@ -7,11 +7,12 @@ import {
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import {
-  CommonsApi, getWorshipCommonsOrigin, REJECT_REASONS, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
+  CommonsApi, getWorshipCommonsOrigin, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
   type CommonsTypeDef, type CommonsQueueRow, type CommonsReport, type CommonsAsset, type CommonsQualityDetail, type CommonsSubmitterStats, type CommonsSongDetail,
-  type RejectReason, type ReportResolution, type ReportAction, type RemovedReason, type AssetStatus, type Confidence
+  type ReportResolution, type ReportAction, type RemovedReason, type AssetStatus, type Confidence
 } from "../commonsApi";
 import { CommonsReviewDrawer } from "./CommonsReviewDrawer";
+import { assetStatusLabel, confidenceLabel, removeReasonLabel, reportReasonLabel, reportStatusLabel, resolutionLabel, resolveActionLabel } from "../commonsLabels";
 
 const OVERDUE_MS = 72 * 60 * 60 * 1000;
 
@@ -40,7 +41,6 @@ const scoreTooltip = (score: number, detail?: CommonsQualityDetail) => {
   return bits.join(" · ");
 };
 
-const confidenceLabel = (c?: Confidence | string) => (c ? Locale.label(`serverAdmin.commonsTab.confidence.${c}`, c) : "");
 
 const ConfidenceChip = (props: { confidence?: Confidence | string; testId?: string }) => {
   if (!props.confidence) return null;
@@ -54,64 +54,12 @@ const badgeLabel = (row: CommonsQueueRow) => {
   return Locale.label("serverAdmin.commonsTab.badgeEditByAuthor");
 };
 
-const RejectDialog = (props: { row: CommonsQueueRow | null; onClose: () => void; onRejected: (id: string) => void }) => {
-  const { row, onClose, onRejected } = props;
-  const [reason, setReason] = React.useState<RejectReason>("quality");
-  const [note, setNote] = React.useState("");
-
-  React.useEffect(() => { setReason("quality"); setNote(""); }, [row?.id]);
-
-  const submit = async () => {
-    if (!row || !note.trim()) return;
-    await CommonsApi.post(`/admin/submissions/${row.id}/reject`, { reason, note: note.trim() });
-    onRejected(row.id);
-  };
-
-  return (
-    <Dialog open={!!row} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>{Locale.label("serverAdmin.commonsTab.confirmReject")}</DialogTitle>
-      <DialogContent>
-        <Stack spacing={2} sx={{ mt: 1 }}>
-          <FormControl size="small">
-            <InputLabel id="commons-quick-reject-reason-label">{Locale.label("serverAdmin.commonsTab.reason")}</InputLabel>
-            <Select
-              labelId="commons-quick-reject-reason-label"
-              label={Locale.label("serverAdmin.commonsTab.reason")}
-              value={reason}
-              onChange={(e) => setReason(e.target.value as RejectReason)}
-              data-testid="commons-reject-reason"
-            >
-              {REJECT_REASONS.map((r) => <MenuItem key={r} value={r}>{Locale.label(`serverAdmin.commonsTab.rejectReason.${r}`)}</MenuItem>)}
-            </Select>
-          </FormControl>
-          <TextField
-            size="small"
-            multiline
-            minRows={2}
-            label={Locale.label("serverAdmin.commonsTab.note")}
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            data-testid="commons-reject-note"
-          />
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>{Locale.label("common.cancel")}</Button>
-        <Button variant="contained" color="error" disabled={!note.trim()} onClick={submit} data-testid="commons-reject-confirm">
-          {Locale.label("serverAdmin.commonsTab.reject")}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
-
 const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor?: boolean }) => {
   const [types, setTypes] = React.useState<CommonsTypeDef[]>([]);
   const [rows, setRows] = React.useState<CommonsQueueRow[]>([]);
   const [product, setProduct] = React.useState("");
   const [assetType, setAssetType] = React.useState("");
   const [reviewId, setReviewId] = React.useState<string | null>(null);
-  const [rejectRow, setRejectRow] = React.useState<CommonsQueueRow | null>(null);
 
   React.useEffect(() => { CommonsApi.get("/admin/types").then((data: CommonsTypeDef[]) => setTypes(data || [])); }, []);
 
@@ -135,14 +83,14 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
   const removeRow = (id: string) => setRows((prev) => prev.filter((r) => r.id !== id));
 
   const changesSummary = (row: CommonsQueueRow) => {
-    if (!row.filesChanged?.length) return Locale.label("serverAdmin.commonsTab.detailsUpdated");
+    if (!row.filesChanged?.length) return row.isNewAsset ? Locale.label("serverAdmin.commonsTab.newNoFiles") : Locale.label("serverAdmin.commonsTab.detailsUpdated");
     return row.filesChanged.map((f) => `${changeSymbol(f.action)}${f.name}`).join(" ");
   };
 
   return (
     <DisplayBox headerIcon="inventory_2" headerText={Locale.label("serverAdmin.commonsTab.tabQueue")}>
-      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <FormControl size="small" sx={{ minWidth: 220, "& .MuiInputLabel-root": { overflow: "visible" } }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 2, pt: 1 }}>
+        {products.length > 1 && <FormControl size="small" sx={{ minWidth: 220, "& .MuiInputLabel-root": { overflow: "visible" } }}>
           <InputLabel id="commons-product-label" shrink>{Locale.label("serverAdmin.commonsTab.product")}</InputLabel>
           <Select
             labelId="commons-product-label"
@@ -156,7 +104,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
             <MenuItem value="">{Locale.label("serverAdmin.commonsTab.allProducts")}</MenuItem>
             {products.map(([key, label]) => <MenuItem key={key} value={key}>{label}</MenuItem>)}
           </Select>
-        </FormControl>
+        </FormControl>}
         <FormControl size="small" sx={{ minWidth: 240, "& .MuiInputLabel-root": { overflow: "visible" } }}>
           <InputLabel id="commons-type-label" shrink>{Locale.label("serverAdmin.commonsTab.assetType")}</InputLabel>
           <Select
@@ -213,7 +161,9 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
                         </Tooltip>
                       )}
                       {row.possibleDuplicate && (
-                        <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
+                        <Tooltip title={Locale.label("serverAdmin.commonsTab.possibleDuplicateTooltip")}>
+                          <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
+                        </Tooltip>
                       )}
                       <ConfidenceChip confidence={row.confidence} />
                     </Stack>
@@ -228,7 +178,10 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
                     )}
                   </TableCell>
                   <TableCell>{changesSummary(row)}</TableCell>
-                  <TableCell sx={overdue ? { color: "error.main" } : undefined}>{age}</TableCell>
+                  <TableCell sx={overdue ? { color: "error.main" } : undefined}>
+                    {age}
+                    {submittedDate && <Typography variant="caption" color="text.secondary" display="block">{DateHelper.prettyDate(submittedDate)}</Typography>}
+                  </TableCell>
                   <TableCell>
                     {score == null ? "-" : (
                       <Tooltip title={scoreTooltip(score, row.qualityDetail)}>
@@ -240,9 +193,6 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
                     <Button size="small" onClick={() => setReviewId(row.id)} data-testid={`commons-review-${row.id}`}>
                       {Locale.label("serverAdmin.commonsTab.review")}
                     </Button>
-                    <Button size="small" color="error" onClick={() => setRejectRow(row)} data-testid={`commons-reject-${row.id}`}>
-                      {Locale.label("serverAdmin.commonsTab.reject")}
-                    </Button>
                   </TableCell>
                 </TableRow>
               );
@@ -250,8 +200,6 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
           </TableBody>
         </Table>
       )}
-
-      <RejectDialog row={rejectRow} onClose={() => setRejectRow(null)} onRejected={(id) => { removeRow(id); setRejectRow(null); }} />
 
       {reviewId && (
         <CommonsReviewDrawer
@@ -276,6 +224,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
 const ReportsView = () => {
   const [reports, setReports] = React.useState<CommonsReport[]>([]);
   const [expanded, setExpanded] = React.useState<string | null>(null);
+  // no default outcome: resolving without choosing would silently dismiss the report
   const [resolution, setResolution] = React.useState<Record<string, ReportResolution>>({});
   const [resolveAction, setResolveAction] = React.useState<Record<string, ReportAction>>({});
   const [resolveNote, setResolveNote] = React.useState<Record<string, string>>({});
@@ -289,7 +238,8 @@ const ReportsView = () => {
   };
 
   const resolve = async (r: CommonsReport) => {
-    const res = resolution[r.id] || "dismissed";
+    const res = resolution[r.id];
+    if (!res) return;
     const action = resolveAction[r.id] || "none";
     const note = resolveNote[r.id] || "";
     await CommonsApi.post(`/admin/reports/${r.id}/resolve`, { resolution: res, action, note });
@@ -312,8 +262,8 @@ const ReportsView = () => {
         data-testid={`commons-report-${r.id}`}
       >
         <TableCell>{r.assetName || "-"}</TableCell>
-        <TableCell>{r.reason}</TableCell>
-        <TableCell><Chip size="small" label={r.status} color={r.status === "open" ? "warning" : "info"} /></TableCell>
+        <TableCell>{reportReasonLabel(r.reason)}</TableCell>
+        <TableCell><Chip size="small" label={reportStatusLabel(r.status)} color={r.status === "open" ? "warning" : "info"} /></TableCell>
         <TableCell>{DateHelper.prettyDate(DateHelper.toDate(r.createdAt))}</TableCell>
       </TableRow>
       <TableRow>
@@ -334,11 +284,13 @@ const ReportsView = () => {
                 )}
                 <FormControl size="small" sx={{ minWidth: 140 }}>
                   <Select
-                    value={resolution[r.id] || "dismissed"}
+                    displayEmpty
+                    value={resolution[r.id] || ""}
                     onChange={(e) => setResolution((p) => ({ ...p, [r.id]: e.target.value as ReportResolution }))}
                     data-testid={`commons-resolution-${r.id}`}
                   >
-                    {RESOLUTIONS.map((res) => <MenuItem key={res} value={res}>{Locale.label(`serverAdmin.commonsTab.resolution.${res}`)}</MenuItem>)}
+                    <MenuItem value="" disabled>{Locale.label("serverAdmin.commonsTab.chooseOutcome")}</MenuItem>
+                    {RESOLUTIONS.map((res) => <MenuItem key={res} value={res}>{resolutionLabel(res)}</MenuItem>)}
                   </Select>
                 </FormControl>
                 <FormControl size="small" sx={{ minWidth: 140 }}>
@@ -347,7 +299,7 @@ const ReportsView = () => {
                     onChange={(e) => setResolveAction((p) => ({ ...p, [r.id]: e.target.value as ReportAction }))}
                     data-testid={`commons-resolve-action-${r.id}`}
                   >
-                    {RESOLVE_ACTIONS.map((a) => <MenuItem key={a} value={a}>{Locale.label(`serverAdmin.commonsTab.resolveAction.${a}`)}</MenuItem>)}
+                    {RESOLVE_ACTIONS.map((a) => <MenuItem key={a} value={a}>{resolveActionLabel(a)}</MenuItem>)}
                   </Select>
                 </FormControl>
                 <TextField
@@ -357,7 +309,7 @@ const ReportsView = () => {
                   onChange={(e) => setResolveNote((p) => ({ ...p, [r.id]: e.target.value }))}
                   data-testid={`commons-resolve-note-${r.id}`}
                 />
-                <Button size="small" variant="contained" onClick={() => resolve(r)} data-testid={`commons-resolve-${r.id}`}>
+                <Button size="small" variant="contained" disabled={!resolution[r.id]} onClick={() => resolve(r)} data-testid={`commons-resolve-${r.id}`}>
                   {Locale.label("serverAdmin.commonsTab.resolve")}
                 </Button>
               </Stack>
@@ -399,8 +351,8 @@ const ReportsView = () => {
               {resolved.map((r) => (
                 <TableRow key={r.id} data-testid={`commons-report-resolved-${r.id}`}>
                   <TableCell>{r.assetName || r.contentText || "-"}</TableCell>
-                  <TableCell>{r.reason}</TableCell>
-                  <TableCell>{r.resolution ? Locale.label(`serverAdmin.commonsTab.resolution.${r.resolution}`) : "-"}</TableCell>
+                  <TableCell>{reportReasonLabel(r.reason)}</TableCell>
+                  <TableCell>{r.resolution ? resolutionLabel(r.resolution) : "-"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -437,7 +389,7 @@ const RemoveAssetDialog = (props: { asset: CommonsAsset | null; onClose: () => v
             onChange={(e) => setReason(e.target.value as RemovedReason)}
             data-testid="commons-asset-remove-reason"
           >
-            {REMOVE_REASONS.map((r) => <MenuItem key={r} value={r}>{Locale.label(`serverAdmin.commonsTab.removeReason.${r}`)}</MenuItem>)}
+            {REMOVE_REASONS.map((r) => <MenuItem key={r} value={r}>{removeReasonLabel(r)}</MenuItem>)}
           </Select>
         </FormControl>
       </DialogContent>
@@ -528,7 +480,7 @@ const AssetsView = () => {
   const [assets, setAssets] = React.useState<CommonsAsset[]>([]);
   const [removeAsset, setRemoveAsset] = React.useState<CommonsAsset | null>(null);
   const [listenAsset, setListenAsset] = React.useState<CommonsAsset | null>(null);
-  const { ConfirmDialogElement } = useConfirmDelete();
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const load = React.useCallback(() => {
     const params = new URLSearchParams();
@@ -540,6 +492,8 @@ const AssetsView = () => {
   React.useEffect(() => { load(); }, [load]);
 
   const unpublish = async (a: CommonsAsset) => {
+    const ok = await confirm(Locale.label("serverAdmin.commonsTab.unpublishConfirm").replace("{name}", a.name || ""), { title: Locale.label("serverAdmin.commonsTab.unpublish"), confirmLabel: Locale.label("serverAdmin.commonsTab.unpublish"), destructive: true, "data-testid": "commons-unpublish-dialog" });
+    if (!ok) return;
     await CommonsApi.post(`/admin/assets/${a.id}/unpublish`, {});
     setAssets((prev) => prev.map((x) => (x.id === a.id ? { ...x, status: "unpublished" } : x)));
   };
@@ -573,7 +527,7 @@ const AssetsView = () => {
             data-testid="commons-filter-status"
           >
             <MenuItem value="">{Locale.label("serverAdmin.commonsTab.allStatuses")}</MenuItem>
-            {ASSET_STATUSES.map((s) => <MenuItem key={s} value={s}>{Locale.label(`serverAdmin.commonsTab.assetStatus.${s}`)}</MenuItem>)}
+            {ASSET_STATUSES.map((s) => <MenuItem key={s} value={s}>{assetStatusLabel(s)}</MenuItem>)}
           </Select>
         </FormControl>
       </Stack>
@@ -599,7 +553,7 @@ const AssetsView = () => {
                 <TableCell>{a.name}</TableCell>
                 <TableCell>{a.typeLabel || a.assetType}</TableCell>
                 <TableCell>{a.publisherName || "-"}</TableCell>
-                <TableCell><Chip size="small" label={Locale.label(`serverAdmin.commonsTab.assetStatus.${a.status}`)} /></TableCell>
+                <TableCell><Chip size="small" label={assetStatusLabel(a.status)} /></TableCell>
                 <TableCell>
                   {a.confidence === "sunday-ready" ? (
                     <Tooltip title={`${a.sundayReadyBy || ""} ${a.sundayReadyAt ? DateHelper.prettyDate(DateHelper.toDate(a.sundayReadyAt)) : ""}`.trim()}>

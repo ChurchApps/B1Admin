@@ -123,6 +123,12 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(drawer.getByTestId("commons-intake-findings")).toBeVisible();
     await expect(drawer.getByText("Spec Writer")).toBeVisible();
     await expect(drawer.getByText("tune.abc")).toBeVisible();
+    // every label resolves: locale-sync has pruned built keys before
+    await expect(drawer).not.toContainText("serverAdmin.commonsTab");
+    await expect(drawer.getByTestId("commons-rights")).toContainText("Free for worship");
+    // the close button sits below the app header, not under it
+    await expect(drawer.getByRole("button", { name: "Close" })).toBeInViewport();
+    await drawer.getByRole("button", { name: "Close" }).click({ trial: true });
 
     await drawer.getByTestId("commons-drawer-approve").click();
     await page.getByTestId("commons-drawer-approve-confirm").click();
@@ -132,10 +138,12 @@ test.describe("serverAdmin Commons tab", () => {
     expect(publishedAsset.ok()).toBeTruthy();
     expect((await publishedAsset.json()).status).toBe("published");
 
-    // (c) quick reject requires a note before it will submit
+    // (c) reject happens in the drawer, after looking, and requires a note
     const row2 = page.locator(`[data-testid="commons-queue-row-${sub2.submissionId}"]`);
     await expect(row2).toBeVisible();
-    await row2.getByTestId(`commons-reject-${sub2.submissionId}`).click();
+    await expect(row2.getByTestId(`commons-reject-${sub2.submissionId}`)).toHaveCount(0);
+    await row2.getByTestId(`commons-review-${sub2.submissionId}`).click();
+    await page.getByTestId("commons-drawer-reject").click();
     const confirmBtn = page.getByTestId("commons-reject-confirm");
     await expect(confirmBtn).toBeVisible();
     await expect(confirmBtn).toBeDisabled();
@@ -151,8 +159,11 @@ test.describe("serverAdmin Commons tab", () => {
     await reportRow.click();
     await expect(page.getByText(report.contentText, { exact: false })).toBeVisible();
     await page.getByTestId(`commons-claim-${reportId}`).click();
-    await expect(reportRow.getByText("reviewing")).toBeVisible();
+    await expect(reportRow.getByText("Reviewing")).toBeVisible();
 
+    await expect(page.getByTestId(`commons-resolve-${reportId}`)).toBeDisabled();
+    await page.getByTestId(`commons-resolution-${reportId}`).click();
+    await page.getByRole("option", { name: "Dismissed" }).click();
     await page.getByTestId(`commons-resolve-${reportId}`).click();
     await expect(reportRow).not.toBeVisible();
     const resolvedRow = page.getByTestId(`commons-report-resolved-${reportId}`);
@@ -167,13 +178,14 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(assetRow.getByText("Published")).toBeVisible();
 
     await assetRow.getByTestId(`commons-asset-unpublish-${sub1.assetId}`).click();
+    await page.getByTestId("commons-unpublish-dialog").getByRole("button", { name: "Unpublish" }).click();
     await expect(assetRow.getByText("Unpublished")).toBeVisible();
 
     await assetRow.getByTestId(`commons-asset-republish-${sub1.assetId}`).click();
     await expect(assetRow.getByText("Published")).toBeVisible();
   });
 
-  test("quick reject offers the CCLI reason and posts reason=ccli", async ({ page, request }) => {
+  test("reject offers the CCLI reason and posts reason=ccli", async ({ page, request }) => {
     const title = `Spec Song CCLI ${Date.now()}`;
     const { userJwt } = await apiLogin(request);
     const sub = await seedSongSubmission(request, userJwt, title, false);
@@ -182,7 +194,8 @@ test.describe("serverAdmin Commons tab", () => {
 
     const row = page.locator(`[data-testid="commons-queue-row-${sub.submissionId}"]`);
     await expect(row).toBeVisible();
-    await row.getByTestId(`commons-reject-${sub.submissionId}`).click();
+    await row.getByTestId(`commons-review-${sub.submissionId}`).click();
+    await page.getByTestId("commons-drawer-reject").click();
 
     // The reason dropdown must render the translated label, not the raw locale key.
     await page.getByTestId("commons-reject-reason").click();

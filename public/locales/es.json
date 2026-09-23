@@ -2799,7 +2799,9 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "featured": "Featured",
+      "licenseWc": "Free for worship"
     },
     "impersonateTab": {
       "confirmMessage": "Se cerrará su sesión actual e iniciará sesión como {email}. Para volver a su cuenta, cierre sesión y vuelva a iniciarla.",

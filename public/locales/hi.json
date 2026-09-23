@@ -2799,7 +2799,9 @@
       "tabQueue": "Queue",
       "tabReports": "Reports",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons"
+      "viewOnWorshipCommons": "View on WorshipCommons",
+      "featured": "Featured",
+      "licenseWc": "Free for worship"
     },
     "impersonateTab": {
       "confirmMessage": "आप अपने सत्र से लॉग आउट हो जाएंगे और {email} के रूप में साइन इन होंगे। अपने खाते पर वापस जाने के लिए लॉग आउट करें और वापस लॉग इन करें।",

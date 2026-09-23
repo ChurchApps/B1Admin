@@ -24,7 +24,7 @@ export type ReportStatus = "open" | "reviewing" | "resolved";
 export type ReportResolution = "upheld" | "dismissed" | "duplicate";
 export type ReportAction = "none" | "unpublish" | "remove";
 export type RemovedReason = "copyright" | "policy";
-export type SubmissionType = "new" | "translation" | "arrangement" | "correction" | "additionalFile" | "removal";
+export type SubmissionType = "new" | "translation" | "arrangement" | "correction" | "additionalFile" | "recording" | "removal";
 export type Confidence = "sunday-ready" | "score" | "generated-from-midi" | "chart-only" | "lyrics-only";
 
 export const REJECT_REASONS: RejectReason[] = ["quality", "duplicate", "licensing", "ccli", "ai", "offtopic", "incomplete", "other"];
@@ -179,6 +179,9 @@ export interface CommonsPayload {
   tags?: string;
   language?: string;
   license?: string;
+  licenseVersion?: string;
+  attestationVersion?: string;
+  attestedAt?: string;
   publisherChurchId?: string;
   detail?: Record<string, unknown>;
   qualityDetail?: CommonsQualityDetail;

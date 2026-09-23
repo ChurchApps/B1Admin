@@ -2799,7 +2799,9 @@
       "tabQueue": "審査待ち",
       "tabReports": "報告",
       "unpublish": "公開を取り消す",
-      "viewOnWorshipCommons": "WorshipCommons で表示"
+      "viewOnWorshipCommons": "WorshipCommons で表示",
+      "featured": "おすすめ",
+      "licenseWc": "礼拝での利用は自由"
     },
     "impersonateTab": {
       "confirmMessage": "現在のセッションからログアウトし、{email}としてサインインします。自分のアカウントに戻るには、一度ログアウトしてから再度ログインしてください。",
