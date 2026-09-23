@@ -32,9 +32,10 @@ export function CustomFontModal(props: Props) {
       .then((response: any) => response.json())
       .then((data: any) => {
         const result: { category: string; family: string }[] = [];
-        data.items.forEach((item: any) => { result.push({ family: item.family, category: item.category }); });
+        (data?.items || []).forEach((item: any) => { result.push({ family: item.family, category: item.category }); });
         setFonts(result);
-      });
+      })
+      .catch((err) => console.error("Failed to load Google fonts:", err));
   };
 
   const loadFonts = (fontList: { category: string; family: string }[]) => {

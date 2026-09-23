@@ -154,7 +154,7 @@ export function FilesManager() {
               </Typography>
             )}
             {(unlimited || usedSpace < quotaLimit) && (
-              <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} onFileSelected={() => setPendingFileSave(true)} />
+              <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} errorCallback={() => setPendingFileSave(false)} onFileSelected={() => setPendingFileSave(true)} />
             )}
           </FormCard>
         </Grid>

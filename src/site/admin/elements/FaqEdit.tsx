@@ -9,9 +9,10 @@ type Props = {
   parsedData: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
   handleHtmlChange: (field: string, newValue: string) => void;
+  handleEditorHtmlChange: (field: string, newValue: string) => void;
 };
 
-export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange }: Props) => (
+export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange, handleEditorHtmlChange }: Props) => (
   <>
     <FormControl fullWidth>
       <InputLabel>{Locale.label("site.faqEdit.headingType")}</InputLabel>
@@ -24,7 +25,7 @@ export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange }: Props) =
     <Box sx={{ marginTop: 2 }}>
       <HtmlEditor
         value={parsedData.description || ""}
-        onChange={(val) => handleHtmlChange("description", val)}
+        onChange={(val) => handleEditorHtmlChange("description", val)}
         style={{ maxHeight: 200, overflowY: "scroll" }}
       />
     </Box>

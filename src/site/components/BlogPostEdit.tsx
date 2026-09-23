@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Autocomplete, Box, Button, Dialog, FormControlLabel, Grid, Icon, Stack, Switch, TextField, Typography } from "@mui/material";
 import { ApiHelper, UserHelper, Locale, PersonHelper } from "@churchapps/apphelper";
 import { MarkdownEditor, MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
-import { Permissions, type PersonInterface } from "@churchapps/helpers";
+import { DateHelper, Permissions, type PersonInterface } from "@churchapps/helpers";
 import { FormCard } from "../../components/ui";
 import { GalleryModal } from "../../components/gallery";
 import { PersonAdd } from "../../components";
@@ -50,11 +50,16 @@ export function BlogPostEdit(props: Props) {
     setPost((p) => ({ ...p, title: value, slug: slugTouched ? p.slug : kebab(value) }));
   };
 
+  const parseLocalDate = (value: string): Date => {
+    const [y, m, d] = value.split("-").map((n) => parseInt(n, 10));
+    return new Date(y, m - 1, d);
+  };
+
   const dateInputValue = (): string => {
     if (!published) return "";
     const d = post.publishDate ? new Date(post.publishDate) : new Date();
     if (isNaN(d.getTime())) return "";
-    return d.toISOString().substring(0, 10);
+    return DateHelper.formatHtml5Date(d);
   };
 
   const validate = (): string[] => {
@@ -142,7 +147,7 @@ export function BlogPostEdit(props: Props) {
             <Stack direction="row" spacing={2} alignItems="center">
               <FormControlLabel control={<Switch checked={published} onChange={(ev) => setPublished(ev.target.checked)} data-testid="blog-published-switch" />} label={published ? Locale.label("site.blogEdit.published") : Locale.label("site.blogEdit.draft")} />
               {published && (
-                <AppDatePicker size="small" label={Locale.label("site.blogEdit.publishDate")} value={dateInputValue()} onChange={(ev) => setPost((p) => ({ ...p, publishDate: ev.target.value ? new Date(ev.target.value) : new Date() }))} InputLabelProps={{ shrink: true }} />
+                <AppDatePicker size="small" label={Locale.label("site.blogEdit.publishDate")} value={dateInputValue()} onChange={(ev) => setPost((p) => ({ ...p, publishDate: ev.target.value ? parseLocalDate(ev.target.value) : new Date() }))} InputLabelProps={{ shrink: true }} />
               )}
             </Stack>
           </Grid>

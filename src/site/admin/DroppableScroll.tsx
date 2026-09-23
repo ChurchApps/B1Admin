@@ -9,6 +9,7 @@ type Props = {
   text?: string
   dndDeps?: any
   acceptTypes?: string[]
+  scrollRef?: React.RefObject<HTMLElement | null>
 };
 
 export function DroppableScroll(props: Props) {
@@ -27,20 +28,25 @@ export function DroppableScroll(props: Props) {
     }), [props?.dndDeps, props.acceptTypes]
   );
 
+  React.useEffect(() => () => handleMouseOut(), []);
+
+  const getScrollTop = () => props.scrollRef?.current ? props.scrollRef.current.scrollTop : window.scrollY;
+  const scrollToY = (top: number) => (props.scrollRef?.current || window).scrollTo({ top, behavior: "auto" });
+
   const scrollUp = () => {
     stepsRef.current++;
     const acceleration = Math.min(10 + stepsRef.current * 2, 100);
-    const newY = window.scrollY - acceleration;
+    const newY = getScrollTop() - acceleration;
     if (newY < 0 && intervalIdRef.current) clearInterval(intervalIdRef.current);
-    else window.scrollTo({ top: newY, behavior: "auto" });
+    else scrollToY(newY);
     if (stepsRef.current > 100) handleMouseOut();
   };
 
   const scrollDown = () => {
     stepsRef.current++;
     const acceleration = Math.min(10 + stepsRef.current * 2, 100);
-    const newY = window.scrollY + acceleration;
-    window.scrollTo({ top: newY, behavior: "auto" });
+    const newY = getScrollTop() + acceleration;
+    scrollToY(newY);
     if (stepsRef.current > 100) handleMouseOut();
   };
 

@@ -71,6 +71,9 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
 
   // Load existing history from server on mount
   useEffect(() => {
+    let cancelled = false;
+    setUndoStack([]);
+    setRedoStack([]);
     const loadHistory = async () => {
       if (!pageId && !blockId) return;
 
@@ -79,13 +82,14 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
           ? `/pageHistory/page/${pageId}`
           : `/pageHistory/block/${blockId}`;
         const serverHistory = await ApiHelper.get(endpoint, "ContentApi");
+        if (cancelled) return;
 
         if (serverHistory && serverHistory.length > 0) {
           // Convert server history to local format (newest first from server, we need oldest first for undo stack)
           const entries: HistoryEntry[] = serverHistory
             .reverse() // Server returns newest first, we want oldest first
             .map((h: any) => ({ id: h.id, snapshot: JSON.parse(h.snapshotJSON), description: h.description, timestamp: new Date(h.createdDate).getTime() }));
-          setUndoStack(entries);
+          setUndoStack(prev => [...entries.filter(e => !prev.some(p => p.id && p.id === e.id)), ...prev]);
         }
       } catch (err) {
         console.error("Failed to load history from server:", err);
@@ -93,6 +97,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     };
 
     loadHistory();
+    return () => { cancelled = true; };
   }, [pageId, blockId]);
 
   // Server-side restore function using history ID
@@ -211,7 +216,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
       const ae = document.activeElement as HTMLElement | null;
       if (ae && (["INPUT", "TEXTAREA", "SELECT"].includes(ae.tagName) || ae.isContentEditable)) return;
       // Ctrl+Z or Cmd+Z for undo
-      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && !e.shiftKey) {
         e.preventDefault();
         const snapshot = await performUndoInternal();
         if (snapshot) {
@@ -219,7 +224,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
         }
       }
       // Ctrl+Shift+Z or Cmd+Shift+Z for redo (also Ctrl+Y)
-      if (((e.ctrlKey || e.metaKey) && e.key === "z" && e.shiftKey) ||
+      if (((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && e.shiftKey) ||
           ((e.ctrlKey || e.metaKey) && e.key === "y")) {
         e.preventDefault();
         const snapshot = await performRedoInternal();

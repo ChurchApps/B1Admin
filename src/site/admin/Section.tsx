@@ -65,6 +65,20 @@ export const Section: React.FC<Props> = props => {
     return null;
   };
 
+  const rawHtmlKey = (() => {
+    const parts: string[] = [];
+    const walk = (elements: ElementInterface[]) => {
+      elements.forEach(el => {
+        const type = (el.elementType || "").toLowerCase();
+        if (type === "rawhtml" || type === "html" || type === "embed") parts.push((el.id || "") + ":" + (el.answersJSON || JSON.stringify(el.answers || {})));
+        if (el.elements?.length) walk(el.elements);
+      });
+    };
+    walk(props.section?.elements || []);
+    return parts.join("|");
+  })();
+  const isEditing = !!props.onEdit;
+
   useEffect(() => {
     if (!sectionContentRef.current) return;
 
@@ -127,7 +141,7 @@ export const Section: React.FC<Props> = props => {
       syncRawHtmlJavascript(element);
     });
 
-    if (!props.onEdit) return;
+    if (!isEditing) return;
 
     const iframes = Array.from(
       sectionContentRef.current.querySelectorAll(".elementWrapper.rawHTML iframe")
@@ -145,7 +159,7 @@ export const Section: React.FC<Props> = props => {
         if (element?.id) document.getElementById("script-" + element.id)?.remove();
       });
     };
-  }, [props.onEdit, props.section]);
+  }, [isEditing, rawHtmlKey]);
 
   // Stamp type labels onto wrappers so the hover CSS chip (content: attr(data-el-label)) can render them.
   useEffect(() => {

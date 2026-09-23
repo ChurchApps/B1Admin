@@ -50,10 +50,16 @@ export function PageLinkEdit(props: Props) {
     }
 
     let pageData = (props.page ? { ...props.page, title: values.title, url: values.url, layout: values.layout, visibility: values.visibility, metaDescription: values.metaDescription || null, groupIds: values.visibility === "groups" ? (groupIdsJson || null) : null } : null) as PageInterface | null;
-    let linkData = props.link ? { ...props.link, text: values.linkText, url: values.linkUrl || values.url } : null;
+    const linkFollowsPage = !!props.page && (!props.link?.url || props.link.url === props.page.url);
+    let linkData = props.link ? { ...props.link, text: values.linkText, url: linkFollowsPage ? values.url : (values.linkUrl || values.url) } : null;
 
-    if (pageData) { [pageData] = await ApiHelper.post("/pages", [pageData], "ContentApi"); }
-    if (linkData) { [linkData] = await ApiHelper.post("/links", [linkData], "ContentApi"); }
+    try {
+      if (pageData) { [pageData] = await ApiHelper.post("/pages", [pageData], "ContentApi"); }
+      if (linkData) { [linkData] = await ApiHelper.post("/links", [linkData], "ContentApi"); }
+    } catch (err: any) {
+      setError("root", { message: err?.message || Locale.label("common.error") });
+      return;
+    }
 
     props.updatedCallback(pageData, linkData);
   };

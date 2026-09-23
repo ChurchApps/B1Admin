@@ -26,16 +26,20 @@ export const BlockEditPage: React.FC = () => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/globalStyles", "ContentApi").then((gs: any) => {
-      if (gs) {
-        setConfig({
-          globalStyles: gs,
-          appearance: (context?.userChurch as any)?.settings,
-          church: context?.userChurch?.church
-        });
-      }
+    if (!id) return;
+    ApiHelper.get("/blocks/" + id, "ContentApi").then((block: any) => {
+      const siteId = block?.siteId || "";
+      ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: any) => {
+        if (gs) {
+          setConfig({
+            globalStyles: gs,
+            appearance: (context?.userChurch as any)?.settings,
+            church: context?.userChurch?.church
+          });
+        }
+      });
     });
-  }, [context?.userChurch]);
+  }, [context?.userChurch, id]);
 
   return (
     <ContentEditor

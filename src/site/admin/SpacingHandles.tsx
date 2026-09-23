@@ -101,9 +101,13 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
 
     const handleMouseUp = () => {
       if (draggingRef.current && localStylesRef.current) {
-        const updatedElement = { ...elementRef.current, stylesJSON: JSON.stringify(localStylesRef.current) };
-        trackSave(ApiHelper.post("/elements", [updatedElement], "ContentApi"));
-        onUpdateRef.current(updatedElement);
+        const stylesJSON = JSON.stringify(localStylesRef.current);
+        const original = elementRef.current?.stylesJSON;
+        if (stylesJSON !== (original ? JSON.stringify(JSON.parse(original)) : "{}")) {
+          const updatedElement = { ...elementRef.current, stylesJSON };
+          trackSave(ApiHelper.post("/elements", [updatedElement], "ContentApi"));
+          onUpdateRef.current(updatedElement);
+        }
         localStylesRef.current = null;
         setLocalStyles(null);
       }

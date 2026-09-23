@@ -201,8 +201,8 @@ export function PickColors(props: Props) {
 
   const enoughContrast = (rgb1: any, rgb2: any) => {
     const contrastR = Math.abs(rgb1.r - rgb2.r);
-    const contrastG = Math.abs(rgb1.r - rgb2.r);
-    const contrastB = Math.abs(rgb1.r - rgb2.r);
+    const contrastG = Math.abs(rgb1.g - rgb2.g);
+    const contrastB = Math.abs(rgb1.b - rgb2.b);
     return contrastR + contrastG + contrastB > 250;
   };
 
@@ -219,11 +219,14 @@ export function PickColors(props: Props) {
   };
 
   const getSuggestedColors = () => {
-    const colors = JSON.parse(props.globalStyles.palette);
+    if (!props.globalStyles?.palette) return null;
+    let colors: any;
+    try { colors = JSON.parse(props.globalStyles.palette); } catch { return null; }
     const pairings: any[] = [];
     const names = ["light", "lightAccent", "accent", "darkAccent", "dark"];
     names.forEach((nb) => {
       names.forEach((nt) => {
+        if (!colors?.[nb] || !colors?.[nt]) return;
         const rgbB = getRGB(colors[nb]);
         const rgbT = getRGB(colors[nt]);
         if (enoughContrast(rgbB, rgbT)) {

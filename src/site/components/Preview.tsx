@@ -17,8 +17,8 @@ export function Preview(props: Props) {
 
   return (
     <>
-      {props.globalStyle.customCss && <style>{props.globalStyle.customCss}</style>}
-      <div style={{ fontFamily: fonts.body }}>
+      {props.globalStyle.customCss && <style>{`@scope (.site-appearance-preview) {\n${props.globalStyle.customCss}\n}`}</style>}
+      <div className="site-appearance-preview" style={{ fontFamily: fonts.body }}>
         <div style={{ backgroundColor: palette.light, color: palette.darkAccent, padding: 20, borderRadius: 5 }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 4 }}>
