@@ -59,8 +59,8 @@ export const PlanItemEdit = (props: Props) => {
     switch (e.target.name) {
       case "label": pi.label = value; break;
       case "description": pi.description = value; break;
-      case "minutes": pi.seconds = parseInt(value) * 60 + ((pi.seconds || 0) % 60); break;
-      case "seconds": pi.seconds = Math.floor((pi.seconds || 0) / 60) * 60 + parseInt(value); break;
+      case "minutes": pi.seconds = (parseInt(value) || 0) * 60 + ((pi.seconds || 0) % 60); break;
+      case "seconds": pi.seconds = Math.floor((pi.seconds || 0) / 60) * 60 + (parseInt(value) || 0); break;
     }
     setPlanItem(pi);
   };
@@ -117,11 +117,11 @@ export const PlanItemEdit = (props: Props) => {
     await Promise.all(ops);
   };
 
-  const handleSave = async () => {
+  const saveItem = async (item: PlanItemInterface | null) => {
     setIsSaving(true);
     try {
-      const saved = await ApiHelper.post("/planItems", [planItem], "DoingApi");
-      const savedId = (Array.isArray(saved) ? saved[0]?.id : saved?.id) || planItem?.id;
+      const saved = await ApiHelper.post("/planItems", [item], "DoingApi");
+      const savedId = (Array.isArray(saved) ? saved[0]?.id : saved?.id) || item?.id;
       if (savedId) {
         await persistExclusions(savedId);
       }
@@ -130,6 +130,8 @@ export const PlanItemEdit = (props: Props) => {
       setIsSaving(false);
     }
   };
+
+  const handleSave = () => saveItem(planItem);
 
   const toggleExclusion = (timeId: string) => {
     setTimeSettings((prev) => {
@@ -218,9 +220,7 @@ export const PlanItemEdit = (props: Props) => {
     };
     setPlanItem(pi);
     setSongs([]);
-    ApiHelper.post("/planItems", [pi], "DoingApi").then(() => {
-      props.onDone();
-    });
+    saveItem(pi).catch(() => setSearchError(Locale.label("common.saveError")));
   };
 
   const getSongs = () => {

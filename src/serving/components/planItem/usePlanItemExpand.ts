@@ -24,7 +24,7 @@ interface ExpandOptions {
 interface ExpandResult {
   isExpanding: boolean;
   canExpand: boolean;
-  handleExpandToActions: () => Promise<void>;
+  handleExpandToActions: () => Promise<Partial<PlanItemInterface> | null>;
   canCollapse: boolean;
   handleCollapseToSection: () => Promise<void>;
   handleSaveDescription: (text: string) => Promise<void>;
@@ -80,7 +80,7 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
 
   const expandViaProvider = useCallback(async () => {
     const { providerId, providerPath, providerContentPath, sort } = planItem;
-    if (!providerId || !providerPath || !providerContentPath || !ministryId) return;
+    if (!providerId || !providerPath || !providerContentPath || !ministryId) return null;
 
     const instructions: Instructions = await ApiHelper.post(
       "/providerProxy/getInstructions",
@@ -88,13 +88,13 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       "DoingApi"
     );
 
-    if (!instructions?.items) return;
+    if (!instructions?.items) return null;
 
     // Prefer relatedId (stable across provider edits); the stored index path may be stale.
     const found = planItem.relatedId ? findByRelatedId(instructions.items, planItem.relatedId) : null;
     const section = found?.item || navigateToPath(instructions, providerContentPath);
     const pathPrefix = found?.path || providerContentPath;
-    if (!section?.children || section.children.length === 0) return;
+    if (!section?.children || section.children.length === 0) return null;
 
     const actionItems = createActionItems(
       section,
@@ -104,11 +104,13 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       sort || 1
     );
 
-    if (actionItems.length > 0) await replaceSectionWith(actionItems);
+    if (actionItems.length === 0) return null;
+    await replaceSectionWith(actionItems);
+    return actionItems[0];
   }, [planItem, ministryId, createActionItems, replaceSectionWith]);
 
   const expandViaPlan = useCallback(async () => {
-    if (!associatedProviderId || !associatedContentPath || !ministryId || !planItem.relatedId) return;
+    if (!associatedProviderId || !associatedContentPath || !ministryId || !planItem.relatedId) return null;
 
     const instructions: Instructions = await ApiHelper.post(
       "/providerProxy/getInstructions",
@@ -116,10 +118,10 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       "DoingApi"
     );
 
-    if (!instructions?.items) return;
+    if (!instructions?.items) return null;
 
     const found = findByRelatedId(instructions.items, planItem.relatedId);
-    if (!found || !found.item.children || found.item.children.length === 0) return;
+    if (!found || !found.item.children || found.item.children.length === 0) return null;
 
     const actionItems = createActionItems(
       found.item,
@@ -129,26 +131,26 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       planItem.sort || 1
     );
 
-    if (actionItems.length > 0) await replaceSectionWith(actionItems);
+    if (actionItems.length === 0) return null;
+    await replaceSectionWith(actionItems);
+    return actionItems[0];
   }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems, replaceSectionWith]);
 
   const handleExpandToActions = useCallback(async () => {
     if (!canExpand) {
       console.warn("Cannot expand section: no provider path available");
-      return;
+      return null;
     }
 
     setIsExpanding(true);
     try {
-      if (canExpandViaProvider) {
-        await expandViaProvider();
-      } else {
-        await expandViaPlan();
-      }
+      const first = canExpandViaProvider ? await expandViaProvider() : await expandViaPlan();
       if (onChange) onChange();
+      return first;
     } catch (error) {
       console.error("Error expanding section:", error);
       if (onError) onError("Failed to expand section");
+      return null;
     } finally {
       setIsExpanding(false);
     }

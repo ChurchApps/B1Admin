@@ -73,6 +73,8 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
     );
   }
 
+  if (url && !/^https?:\/\//i.test(url)) url = undefined;
+
   // No URL - show text content or "not available" message
   if (!url) {
     // If we have description/markdown content, show it

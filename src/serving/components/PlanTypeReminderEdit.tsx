@@ -50,6 +50,7 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
   const [channels, setChannels] = useState<string[]>(["push", "email"]);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
 
   useEffect(() => {
     if (!planTypeId) return;
@@ -75,6 +76,7 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
   const handleSave = async () => {
     setSaving(true);
     setSaved(false);
+    setSaveFailed(false);
     try {
       if (!enabled && defId) {
         await ApiHelper.delete("/reminders/" + defId, "MessagingApi");
@@ -85,6 +87,8 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
         if (savedDef?.id) setDefId(savedDef.id);
       }
       setSaved(true);
+    } catch {
+      setSaveFailed(true);
     } finally {
       setSaving(false);
     }
@@ -149,10 +153,11 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
             </>
           )}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <Button variant="contained" size="small" onClick={handleSave} disabled={saving || (enabled && offsets.length === 0)} data-testid="plan-type-reminder-save-button">
+            <Button variant="contained" size="small" onClick={handleSave} disabled={saving || (enabled && (offsets.length === 0 || channels.length === 0))} data-testid="plan-type-reminder-save-button">
               {saving ? Locale.label("common.saving") : Locale.label("plans.planTypeReminders.save")}
             </Button>
             {saved && <Typography variant="body2" color="success.main">{Locale.label("plans.planTypeReminders.saved")}</Typography>}
+            {saveFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}
           </Box>
         </Stack>
       </AccordionDetails>

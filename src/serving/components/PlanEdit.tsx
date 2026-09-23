@@ -10,7 +10,7 @@ import { type PlanInterface } from "../../helpers";
 import { CampusSelect } from "../../components/CampusSelect";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
-import { useFirstDayOfWeek, applyWeekStart } from "../../hooks";
+import { useConfirmDelete, useFirstDayOfWeek, applyWeekStart } from "../../hooks";
 
 interface Props {
   plan: PlanInterface;
@@ -24,6 +24,7 @@ export const PlanEdit = (props: Props) => {
   const [copyMode, setCopyMode] = React.useState<string>("all");
   const [copyServiceOrder, setCopyServiceOrder] = React.useState<boolean>(false);
   const [templateId, setTemplateId] = React.useState<string>("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const firstDayOfWeek = useFirstDayOfWeek();
   applyWeekStart(firstDayOfWeek);
@@ -119,21 +120,26 @@ export const PlanEdit = (props: Props) => {
       autoReplaceOnDecline: values.autoReplaceOnDecline
     };
     plan.campusId = values.campusId || null;
+    if (savePlanMutation.isPending) return;
     savePlanMutation.mutate(plan);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    if (!(await confirm(Locale.label("plans.planEdit.confirmDelete")))) return;
     deletePlanMutation.mutate();
   };
 
   return (
     <>
+      {ConfirmDialogElement}
       <ErrorMessages errors={summaryErrors} />
       <FormCard
         title={props.plan?.id ? Locale.label("plans.planEdit.planEdit") : Locale.label("plans.planEdit.planAdd")}
         icon="assignment"
         onSave={handleSubmit(onValid)}
         onCancel={props.updatedFunction}
+        isSubmitting={savePlanMutation.isPending}
+        disabled={savePlanMutation.isPending || deletePlanMutation.isPending}
         onDelete={props.plan?.id ? handleDelete : undefined}>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>

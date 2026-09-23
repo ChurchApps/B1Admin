@@ -48,7 +48,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
     setIsSearching(true);
     const commons = searchWorshipCommons(searchText.trim());
     try {
-      const data = await ApiHelper.get("/praiseCharts/search?q=" + searchText, "ContentApi");
+      const data = await ApiHelper.get("/praiseCharts/search?q=" + encodeURIComponent(searchText), "ContentApi");
       setSongDetails(data);
     } catch (error) {
       console.error("Search failed:", error);

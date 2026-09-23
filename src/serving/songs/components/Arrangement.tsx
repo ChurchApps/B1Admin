@@ -55,9 +55,10 @@ export const Arrangement = memo((props: Props) => {
     if (props.arrangement?.songDetailId) {
       const sd: SongDetailInterface = await ApiHelper.get("/songDetails/" + props.arrangement.songDetailId, "ContentApi");
       setSongDetail(sd);
-      if (!props.arrangement?.lyrics && sd?.praiseChartsId) setCanImportLyrics(true);
+      setCanImportLyrics(!props.arrangement?.lyrics && !!sd?.praiseChartsId);
     } else {
       setSongDetail(null);
+      setCanImportLyrics(false);
     }
   }, [props.arrangement]);
 

@@ -201,7 +201,7 @@ export const ServiceOrder = memo((props: Props) => {
 
   const showPreviewMode = hasAssociatedContent && planItems.length === 0 && previewLessonItems.length > 0;
 
-  const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string): Promise<void> => {
+  const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string, startSort = 0): Promise<void> => {
     if (!items || items.length === 0) return;
 
     // Prepare top-level items for this batch
@@ -212,7 +212,7 @@ export const ServiceOrder = memo((props: Props) => {
         ...cleanItem,
         planId: props.plan.id,
         parentId,
-        sort: index + 1,
+        sort: startSort + index + 1,
         children: undefined // Remove children for the API call
       };
     });
@@ -233,12 +233,13 @@ export const ServiceOrder = memo((props: Props) => {
   };
 
   // Import only sections (not actions/presentations) as editable plan items
-  const handleCustomizeLesson = useCallback(async () => {
-    if (!hasAssociatedContent || !provider) return;
-
+  const customizingRef = React.useRef(false);
+  const handleCustomizeLesson = useCallback(async (): Promise<number> => {
+    if (!hasAssociatedContent || !provider || customizingRef.current) return 0;
+    customizingRef.current = true;
     try {
       const contentPath = getContentPath();
-      if (!contentPath) return;
+      if (!contentPath) return 0;
 
       const currentProviderId = props.plan?.providerId;
       const instructions = await getProviderInstructions(provider, contentPath, props.plan?.ministryId, currentProviderId);
@@ -257,36 +258,31 @@ export const ServiceOrder = memo((props: Props) => {
           }))
         }));
         await saveHierarchicalItems(sectionsOnly);
-        setPreviewLessonItems([]); // Clear preview
         loadData();
+        return sectionsOnly.length;
       }
     } catch (error) {
       console.error("Error customizing lesson:", error);
+    } finally {
+      customizingRef.current = false;
     }
+    return 0;
   }, [hasAssociatedContent, getContentPath, provider, props.plan?.providerId, props.plan?.ministryId, loadData]);
 
   const addHeader = useCallback(async () => {
     // If in preview mode, first customize (import sections only), then add header
-    if (showPreviewMode) {
-      await handleCustomizeLesson();
-      // After customizing, the planItems will be reloaded, so we need to add at the end
-      // The sort will be recalculated after loadData completes
-    }
-    setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+    const imported = showPreviewMode ? await handleCustomizeLesson() : 0;
+    setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: (planItems?.length || 0) + imported + 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
   const addItem = useCallback(async () => {
-    if (showPreviewMode) {
-      await handleCustomizeLesson();
-    }
-    setEditPlanItem({ itemType: "item", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+    const imported = showPreviewMode ? await handleCustomizeLesson() : 0;
+    setEditPlanItem({ itemType: "item", planId: props.plan.id, sort: (planItems?.length || 0) + imported + 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
   const addSong = useCallback(async () => {
-    if (showPreviewMode) {
-      await handleCustomizeLesson();
-    }
-    setEditPlanItem({ itemType: "arrangementKey", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+    const imported = showPreviewMode ? await handleCustomizeLesson() : 0;
+    setEditPlanItem({ itemType: "arrangementKey", planId: props.plan.id, sort: (planItems?.length || 0) + imported + 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
   const loadContentName = useCallback(async () => {
@@ -328,7 +324,7 @@ export const ServiceOrder = memo((props: Props) => {
         setMediaLookup(instructions?.items ? buildProviderMediaLookup(instructions.items) : {});
         setSectionLabels(instructions?.items ? buildSectionLabels(instructions.items) : {});
 
-        if (instructions?.items && planItems.length === 0) {
+        if (instructions?.items) {
           // Convert InstructionItems to PlanItemInterface for preview with providerId and providerPath
           const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
           setPreviewLessonItems(planItemsFromInstructions);
@@ -344,7 +340,7 @@ export const ServiceOrder = memo((props: Props) => {
       setPreviewLessonItems([]);
       setMediaLookup({});
     }
-  }, [hasAssociatedContent, planItems.length, getContentPath, provider, props.plan?.providerId, props.plan?.ministryId]);
+  }, [hasAssociatedContent, getContentPath, provider, props.plan?.providerId, props.plan?.ministryId]);
 
   // Videos still at 0:00 get their real length saved; images intentionally stay at 0
   // (playback leaves the volunteer in control — the plan shows a ~5:00 estimate instead).
@@ -404,10 +400,10 @@ export const ServiceOrder = memo((props: Props) => {
   // Handle selection from LessonHeaderSelector
   const handleLessonHeaderSelect = useCallback(async (items: PlanItemInterface[]) => {
     if (items.length > 0) {
-      await saveHierarchicalItems(items);
+      await saveHierarchicalItems(items, undefined, planItems.length);
       loadData();
     }
-  }, [loadData]);
+  }, [loadData, planItems.length]);
 
   const editContent = useMemo(
     () => (
@@ -514,7 +510,7 @@ export const ServiceOrder = memo((props: Props) => {
       const pi = { ...(data.data as PlanItemInterface), sort, parentId: null };
       ApiHelper.post("/planItems/sort", pi, "DoingApi").then(() => {
         loadData();
-      });
+      }).catch(() => setErrorMessage(Locale.label("common.saveError")));
     },
     [loadData]
   );

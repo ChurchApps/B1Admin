@@ -111,7 +111,16 @@ export const PrintPlan = () => {
   };
   const loadData = async () => {
     setIsLoading(true);
+    try {
+      await fetchPrintData();
+    } catch (error) {
+      console.error("Failed to load print plan:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  const fetchPrintData = async () => {
     const promises = [
       ApiHelper.get("/plans/" + params.id, "DoingApi"),
       ApiHelper.get("/positions/plan/" + params.id, "DoingApi"),
@@ -176,7 +185,6 @@ export const PrintPlan = () => {
     currentFeed = filterFeedByPlanItems(currentFeed, planItemsData || []);
 
     setFeed(currentFeed);
-    setIsLoading(false);
   };
 
   useEffect(() => {

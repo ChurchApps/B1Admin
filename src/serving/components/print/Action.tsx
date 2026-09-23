@@ -63,7 +63,7 @@ export function Action(props: Props) {
               <img src={thumbnail} alt={props.action.content || ""} width={128} height={72} style={{ height: 72, float: "left", borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} />
             )}
             <a
-              href={f.url}
+              href={/^https?:\/\//i.test(f.url || "") ? f.url : "#"}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {

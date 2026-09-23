@@ -32,6 +32,7 @@ export const RowDropZone: React.FC<Props> = ({ accept, mode = "reorder", onDrop,
       if (mode === "reorder") setHoverHalf(getHalf(monitor));
     },
     drop: (item: any, monitor: any) => {
+      if (monitor.didDrop()) return;
       onDrop(item, mode === "reorder" ? getHalf(monitor) : "after");
     },
     collect: (monitor) => ({ isOver: !!monitor.isOver({ shallow: true }) })

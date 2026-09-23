@@ -40,7 +40,7 @@ export const TaskList = memo((props: Props) => {
   const context = React.useContext(UserContext);
 
   const tasks = useQuery<TaskInterface[]>({
-    queryKey: props.status === Locale.label("tasks.taskPage.closed") ? ["/tasks/closed", "DoingApi"] : ["/tasks", "DoingApi"],
+    queryKey: props.status === "Closed" ? ["/tasks/closed", "DoingApi"] : ["/tasks", "DoingApi"],
     placeholderData: []
   });
 

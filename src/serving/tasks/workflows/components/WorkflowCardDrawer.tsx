@@ -75,10 +75,11 @@ export const WorkflowCardDrawer = (props: Props) => {
       visibility: "hidden"
     };
     const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
-    card.conversationId = result[0].id;
-    await ApiHelper.post("/tasks", [card], "DoingApi");
+    const fresh: TaskInterface = await ApiHelper.get("/tasks/" + card.id, "DoingApi");
+    const conversationId = result[0].id;
+    await ApiHelper.post("/tasks", [{ ...(fresh?.id ? fresh : card), conversationId }], "DoingApi");
     props.onChanged();
-    return card.conversationId;
+    return conversationId;
   };
 
   return (

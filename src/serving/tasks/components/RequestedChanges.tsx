@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
@@ -19,7 +20,15 @@ interface Props {
 }
 
 export const RequestedChanges = (props: Props) => {
-  const requestedChanges: { field: string; label: string; value: string }[] = JSON.parse(props.task?.data || "[]");
+  const requestedChanges: { field: string; label: string; value: string }[] = React.useMemo(() => {
+    try {
+      const parsed = JSON.parse(props.task?.data || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }, [props.task?.data]);
+  const [applying, setApplying] = React.useState(false);
   const navigate = useNavigate();
 
   const getFieldIcon = (field: string) => {
@@ -79,9 +88,19 @@ export const RequestedChanges = (props: Props) => {
   };
 
   const handleApply = async () => {
+    if (applying || props.task.status === "Closed") return;
+    setApplying(true);
+    try {
+      await applyChanges();
+    } finally {
+      setApplying(false);
+    }
+  };
+
+  const applyChanges = async () => {
     const task: TaskInterface = { ...props.task, status: "Closed", dateClosed: new Date() };
     const person = await ApiHelper.get("/people/" + props.task.associatedWithId, "MembershipApi");
-    const p = { ...person } as PersonInterface;
+    const p = { ...person, name: { ...(person?.name || {}) }, contactInfo: { ...(person?.contactInfo || {}) } } as PersonInterface;
     const peopleArray = [p];
 
     requestedChanges.forEach((change) => {
@@ -138,11 +157,12 @@ export const RequestedChanges = (props: Props) => {
               </Typography>
               {(requestedChanges?.length || 0) > 0 && <CountChip count={requestedChanges.length} />}
             </Stack>
-            {props.task.status !== Locale.label("tasks.taskPage.closed") && (
+            {props.task.status !== "Closed" && (
               <Button
                 variant="contained"
                 startIcon={<ApplyIcon />}
                 onClick={handleApply}
+                disabled={applying}
                 sx={{
                   borderRadius: 2,
                   textTransform: "none",
@@ -170,7 +190,7 @@ export const RequestedChanges = (props: Props) => {
             </Table>
           </Paper>
 
-          {props.task.status === Locale.label("tasks.taskPage.closed") && (
+          {props.task.status === "Closed" && (
             <Box
               sx={{
                 p: 2,

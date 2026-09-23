@@ -45,8 +45,9 @@ export const WorkflowStepActions = (props: Props) => {
 
   const saveAction = async (index: number) => {
     const action = { ...actions[index], stepId: props.stepId };
-    await ApiHelper.post("/workflowStepActions", [action], "DoingApi");
-    load();
+    const saved: WorkflowStepActionInterface[] = await ApiHelper.post("/workflowStepActions", [action], "DoingApi");
+    if (saved?.[0]) setActions((prev) => prev.map((a, i) => (i === index ? { ...a, ...saved[0] } : a)));
+    else load();
   };
 
   const deleteAction = async (index: number) => {

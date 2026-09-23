@@ -26,6 +26,7 @@ export const OlfPrintPreview: React.FC<Props> = (props: Props) => {
         sections.push(
           <Section
             section={s}
+            lessonId={props.feed.lessonId}
             key={s.name}
           />
         );

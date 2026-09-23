@@ -104,7 +104,7 @@ export const PlanList = memo((props: Props) => {
       <BulkLessonSchedule
         ministryId={props.ministry.id || ""}
         planTypeId={props.planTypeId}
-        plans={plans}
+        plans={allPlans}
         onSave={handleUpdated}
         onCancel={() => setShowBulkSchedule(false)}
       />
@@ -116,7 +116,7 @@ export const PlanList = memo((props: Props) => {
       <ApplyYearPlan
         ministryId={props.ministry.id || ""}
         planTypeId={props.planTypeId}
-        plans={plans}
+        plans={allPlans}
         onSave={handleUpdated}
         onCancel={() => setShowApplyYearPlan(false)}
       />
@@ -128,7 +128,7 @@ export const PlanList = memo((props: Props) => {
       <LessonScheduleEdit
         ministryId={props.ministry.id || ""}
         planTypeId={props.planTypeId}
-        plans={plans}
+        plans={allPlans}
         onSave={handleUpdated}
         onCancel={() => setShowLessonSchedule(false)}
       />
@@ -143,7 +143,7 @@ export const PlanList = memo((props: Props) => {
     return <Loading />;
   }
 
-  const hasPastPlans = !showPast && plans.length === 0 && (plansQuery.data || []).length > 0;
+  const hasPastPlans = !showPast && plans.length === 0 && allPlans.length > 0;
 
   if (plans.length === 0 && !hasPastPlans) {
     return (

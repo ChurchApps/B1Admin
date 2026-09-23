@@ -91,16 +91,21 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
       return;
     }
 
+    let cancelled = false;
+    const setContentIfCurrent: typeof setContent = (v) => { if (!cancelled) setContent(v); };
+    const setErrorIfCurrent: typeof setError = (v) => { if (!cancelled) setError(v); };
+    const setLoadingIfCurrent: typeof setLoading = (v) => { if (!cancelled) setLoading(v); };
+
     // Fetch content from provider
     const fetchContent = async () => {
-      setLoading(true);
-      setError(null);
+      setLoadingIfCurrent(true);
+      setErrorIfCurrent(null);
 
       try {
         const provider = getProvider(providerId);
         if (!provider) {
-          setError(`Provider ${providerId} not found`);
-          setLoading(false);
+          setErrorIfCurrent(`Provider ${providerId} not found`);
+          setLoadingIfCurrent(false);
           return;
         }
 
@@ -115,7 +120,11 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
 
         // Try to get instructions from provider directly (client-side)
         if (provider.capabilities.instructions && provider.getInstructions) {
-          instructions = await provider.getInstructions(providerPath, auth);
+          try {
+            instructions = await provider.getInstructions(providerPath, auth);
+          } catch (clientError) {
+            if (!ministryId) throw clientError;
+          }
         }
 
         // If client-side fails and we have ministryId, try the API proxy
@@ -132,8 +141,8 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
         }
 
         if (!instructions) {
-          setError("Could not load content from provider");
-          setLoading(false);
+          setErrorIfCurrent("Could not load content from provider");
+          setLoadingIfCurrent(false);
           return;
         }
 
@@ -158,7 +167,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
           }
 
           if (downloadUrl && !isSection) {
-            setContent({
+            setContentIfCurrent({
               url: downloadUrl,
               mediaType: detectMediaType(downloadUrl),
               description: item.content,
@@ -187,31 +196,32 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
                 actionType: child.actionType
               };
             });
-            setContent({
+            setContentIfCurrent({
               description: item.content,
               label: item.label,
               children
             });
           } else {
             // Item exists but has no downloadUrl and no children - show as text content
-            setContent({
+            setContentIfCurrent({
               description: item.content,
               label: item.label,
               mediaType: "text"
             });
           }
         } else {
-          setError("Content not found at specified path");
+          setErrorIfCurrent("Content not found at specified path");
         }
       } catch (err) {
         console.error("Error fetching provider content:", err);
-        setError(err instanceof Error ? err.message : "Failed to load content");
+        setErrorIfCurrent(err instanceof Error ? err.message : "Failed to load content");
       } finally {
-        setLoading(false);
+        setLoadingIfCurrent(false);
       }
     };
 
     fetchContent();
+    return () => { cancelled = true; };
   }, [providerId, providerPath, providerContentPath, relatedId, ministryId, fallbackUrl, hasFallback]);
 
   return { content, loading, error };

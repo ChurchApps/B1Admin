@@ -48,6 +48,7 @@ export const WorkflowBoardPage = () => {
   };
 
   const handleDropCard = async (cardId: string, stepId: string) => {
+    if (board.data?.cards?.find((c) => c.id === cardId)?.stepId === stepId) return;
     await ApiHelper.post("/tasks/" + cardId + "/moveStep", { stepId }, "DoingApi");
     refetch();
   };
@@ -199,7 +200,7 @@ export const WorkflowBoardPage = () => {
         </Box>
       )}
 
-      {openCard && <WorkflowCardDrawer card={openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
+      {openCard && <WorkflowCardDrawer card={cards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
       {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
     </>
   );
