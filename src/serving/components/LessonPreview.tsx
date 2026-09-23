@@ -9,7 +9,7 @@ import { type ProviderMediaInfo } from "./planItemUtils";
 interface Props {
   lessonItems: PlanItemInterface[];
   contentName: string;
-  onCustomize: () => void;
+  onCustomize?: () => void;
   associatedProviderId?: string;
   associatedContentPath?: string;
   ministryId?: string;
@@ -58,18 +58,20 @@ export const LessonPreview = memo((props: Props) => {
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {Locale.label("plans.serviceOrder.lessonPreview") || "Lesson Preview"}: {props.contentName}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={props.onCustomize}
-          sx={{
-            textTransform: "none",
-            fontWeight: 600
-          }}
-        >
-          {Locale.label("plans.serviceOrder.customizeLesson") || "Customize"}
-        </Button>
+        {props.onCustomize && (
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={props.onCustomize}
+            sx={{
+              textTransform: "none",
+              fontWeight: 600
+            }}
+          >
+            {Locale.label("plans.serviceOrder.customizeLesson") || "Customize"}
+          </Button>
+        )}
       </Box>
 
       <Box sx={{ textAlign: "center", py: 1, px: 2, bgcolor: "info.light", borderRadius: 1, mb: 1 }}>

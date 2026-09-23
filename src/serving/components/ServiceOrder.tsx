@@ -750,7 +750,7 @@ export const ServiceOrder = memo((props: Props) => {
               <LessonPreview
                 lessonItems={previewLessonItems}
                 contentName={contentName}
-                onCustomize={handleCustomizeLesson}
+                onCustomize={canEdit ? handleCustomizeLesson : undefined}
                 associatedProviderId={props.plan?.providerId}
                 associatedContentPath={getContentPath() || undefined}
                 ministryId={props.plan?.ministryId}
