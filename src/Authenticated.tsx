@@ -66,18 +66,6 @@ const Mobile = React.lazy(() => import("./mobile").then((module) => ({ default: 
 
 const LoadingFallback: React.FC = () => <PageSkeleton />;
 
-const LayoutWithWrapper: React.FC = () => (
-  <Box sx={{ display: "flex" }}>
-    <Wrapper>
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingFallback />}>
-          <Outlet />
-        </Suspense>
-      </ErrorBoundary>
-    </Wrapper>
-  </Box>
-);
-
 export const Authenticated: React.FC = () => {
   const navigate = useNavigate();
 
@@ -106,6 +94,18 @@ export const Authenticated: React.FC = () => {
   });
 
   if (!context) return null;
+
+  const LayoutWithWrapper: React.FC = () => (
+    <Box sx={{ display: "flex" }}>
+      <Wrapper>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingFallback />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
+      </Wrapper>
+    </Box>
+  );
 
   if (UserHelper.churchChanged) return null;
   else {
