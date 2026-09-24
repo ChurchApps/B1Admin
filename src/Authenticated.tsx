@@ -86,6 +86,13 @@ export const Authenticated: React.FC = () => {
     });
   }, [context?.person?.id, context?.userChurch?.church?.id]);
 
+  React.useEffect(() => {
+    if (UserHelper.churchChanged) {
+      UserHelper.churchChanged = false;
+      navigate("/");
+    }
+  });
+
   if (!context) return null;
 
   const LayoutWithWrapper: React.FC = () => (
@@ -100,10 +107,8 @@ export const Authenticated: React.FC = () => {
     </Box>
   );
 
-  if (UserHelper.churchChanged) {
-    UserHelper.churchChanged = false;
-    navigate("/");
-  } else {
+  if (UserHelper.churchChanged) return null;
+  else {
     return (
       <Routes>
         <Route element={<LayoutWithWrapper />}>

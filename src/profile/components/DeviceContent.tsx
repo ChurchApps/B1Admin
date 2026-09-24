@@ -36,6 +36,7 @@ export const DeviceContent = (props: Props) => {
       });
     } else {
       const existing = ArrayHelper.getOne(contents, "contentId", e.target.value);
+      if (!existing?.id) return;
       ApiHelper.delete("/deviceContents/" + existing.id, "MessagingApi").then(() => {
         loadData();
       });
@@ -54,7 +55,7 @@ export const DeviceContent = (props: Props) => {
               <Checkbox
                 value={c.id}
                 onChange={handleChange}
-                defaultChecked={ArrayHelper.getOne(contents, "contentId", c.id) !== null}
+                checked={!!ArrayHelper.getOne(contents, "contentId", c.id)}
                 data-testid={`classroom-checkbox-${c.id}`}
                 aria-label={`Classroom ${c.name}`}
               />

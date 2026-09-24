@@ -3,8 +3,8 @@ import { EnvironmentHelper } from "./EnvironmentHelper";
 
 export class PraiseChartsHelper {
   static async download(sku: string, fileName: string, keys: string) {
-    let url = `/praiseCharts/download?skus=${sku}&keys=${keys}&file_name=${encodeURIComponent(fileName)}`;
-    if (keys) url += "&keys=" + keys;
+    let url = `/praiseCharts/download?skus=${encodeURIComponent(sku)}&file_name=${encodeURIComponent(fileName)}`;
+    if (keys) url += "&keys=" + encodeURIComponent(keys);
     const data = await ApiHelper.get(url, "ContentApi");
     let redirectUrl = data.redirectUrl;
 

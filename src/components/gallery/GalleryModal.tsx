@@ -53,13 +53,8 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
       const params = { folder: aspectRatio.toString(), fileName, contentType: blob.type, size: blob.size };
 
       const presigned = await ApiHelper.post("/gallery/requestUpload", params, "ContentApi");
-      const doUpload = presigned.key !== undefined;
-
-      if (doUpload) {
-        await FileHelper.postPresignedFile(presigned, file, () => { });
-      } else {
-        console.warn("Upload failed - no presigned key received");
-      }
+      if (presigned?.key === undefined) throw new Error("Upload failed - no presigned key received");
+      await FileHelper.postPresignedFile(presigned, file, () => { });
 
       setTabIndex(0);
       loadData();

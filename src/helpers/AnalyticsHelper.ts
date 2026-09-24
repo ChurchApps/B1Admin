@@ -4,9 +4,8 @@ import { CommonEnvironmentHelper, UserHelper } from "@churchapps/helpers";
 export class AnalyticsHelper {
 
   static init = () => {
-    if (CommonEnvironmentHelper.GoogleAnalyticsTag !== "" && typeof(window) !== "undefined") {
+    if (CommonEnvironmentHelper.GoogleAnalyticsTag !== "" && typeof(window) !== "undefined" && !ReactGA4.isInitialized) {
       ReactGA4.initialize(CommonEnvironmentHelper.GoogleAnalyticsTag);
-      AnalyticsHelper.logPageView();
     }
   };
 

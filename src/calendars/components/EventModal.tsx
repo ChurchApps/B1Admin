@@ -48,6 +48,7 @@ export function EventModal(props: Props) {
   const [hasRegistration, setHasRegistration] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const reminderRef = useRef<EventReminderEditRef>(null);
+  const savedRef = useRef<{ eventId?: string; bookings: boolean; curated: boolean }>({ bookings: false, curated: false });
 
   const toInt = (v: string) => (v.trim() ? parseInt(v, 10) || 0 : 0);
 
@@ -142,7 +143,9 @@ export function EventModal(props: Props) {
     if (template.description) setDescription(template.description);
     if (template.visibility) setVisibility(template.visibility);
     if (template.roomIds) setRoomIds(template.roomIds.split(",").filter((r) => r));
-    if (template.resourcesJson) setResourceIds(JSON.parse(template.resourcesJson).map((r: any) => r.resourceId));
+    if (template.resourcesJson) {
+      try { setResourceIds(JSON.parse(template.resourcesJson).map((r: any) => r.resourceId)); } catch { /* malformed template JSON */ }
+    }
     if (template.durationMinutes && start) {
       const startDate = new Date(start);
       setEnd(toInputValue(new Date(startDate.getTime() + template.durationMinutes * 60 * 1000)));
@@ -163,7 +166,7 @@ export function EventModal(props: Props) {
     setSaving(true);
     try {
       const event: EventInterface = {
-        id: props.eventId,
+        id: props.eventId || savedRef.current.eventId,
         groupId,
         title,
         description,
@@ -175,6 +178,7 @@ export function EventModal(props: Props) {
       } as EventInterface;
       const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
       const eventId = savedEvents[0].id;
+      savedRef.current.eventId = eventId;
       const window = customWindow && windowStart && windowEnd
         ? { startTime: new Date(windowStart), endTime: new Date(windowEnd), setupMinutes: null, teardownMinutes: null }
         : { setupMinutes: toInt(setupMinutes) || null, teardownMinutes: toInt(teardownMinutes) || null, startTime: null, endTime: null };
@@ -192,12 +196,17 @@ export function EventModal(props: Props) {
 
       const toDelete = existingBookings.filter(b => !roomIds.includes(b.roomId) && !resourceIds.includes(b.resourceId));
 
-      for (const b of toDelete) {
-        if (b.id) await ApiHelper.delete("/eventBookings/" + b.id, "ContentApi");
+      if (!savedRef.current.bookings) {
+        for (const b of toDelete) {
+          if (b.id) await ApiHelper.delete("/eventBookings/" + b.id, "ContentApi");
+        }
+        if (bookings.length > 0) await ApiHelper.post("/eventBookings", bookings, "ContentApi");
+        savedRef.current.bookings = true;
       }
-
-      if (bookings.length > 0) await ApiHelper.post("/eventBookings", bookings, "ContentApi");
-      if (props.curatedCalendarId && !props.eventId) await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
+      if (props.curatedCalendarId && !props.eventId && !savedRef.current.curated) {
+        await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
+        savedRef.current.curated = true;
+      }
       await reminderRef.current?.save(eventId);
       props.onDone(true);
     } catch {
@@ -311,8 +320,10 @@ export function EventModal(props: Props) {
           {props.eventId && (
             <Button variant="contained" color="error" onClick={async () => {
               if (await confirm(rRule ? Locale.label("calendars.calendarEvent.confirmDeleteSeries", "This is a recurring event. Deleting it will remove the entire series. Are you sure?") : Locale.label("calendars.calendarEvent.confirmDelete", "Are you sure?"))) {
-                await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
-                props.onDone(true);
+                try {
+                  await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
+                  props.onDone(true);
+                } catch { /* surfaced by ErrorHelper */ }
               }
             }} data-testid="event-delete-button">
               {Locale.label("common.delete")}

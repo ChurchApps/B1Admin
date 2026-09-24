@@ -15,7 +15,7 @@ export const ChurchesTab = () => {
   const context = React.useContext(UserContext);
 
   const loadData = () => {
-    const term = escape(searchText.trim());
+    const term = encodeURIComponent(searchText.trim());
     ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: any) => setChurches(data));
   };
 
@@ -24,13 +24,10 @@ export const ChurchesTab = () => {
     const msg = (isArchiving ? Locale.label("serverAdmin.churchesTab.archiveConfirm") : Locale.label("serverAdmin.churchesTab.restoreConfirm")).replace("{name}", church.name || "");
     if (!(await confirm(msg, { destructive: isArchiving, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
 
-    const tmpChurches = [...churches];
-    const c = ArrayHelper.getOne(tmpChurches, "id", church.id);
-    c.archivedDate = isArchiving ? new Date() : null;
-
-    ApiHelper.post("/churches/" + church.id + "/archive", { archived: c.archivedDate !== null }, "MembershipApi");
-
-    setChurches(tmpChurches);
+    try {
+      await ApiHelper.post("/churches/" + church.id + "/archive", { archived: isArchiving }, "MembershipApi");
+      setChurches((prev) => prev.map((c) => (c.id === church.id ? { ...c, archivedDate: isArchiving ? new Date() : undefined } : c)));
+    } catch { /* surfaced by ErrorHelper */ }
   };
 
   const getLocation = (church: ChurchInterface) => {
@@ -64,7 +61,11 @@ export const ChurchesTab = () => {
   };
 
   const handleEditAccess = async (churchId: string) => {
-    const result = await ApiHelper.get("/churches/" + churchId + "/impersonate", "MembershipApi");
+    let result: any;
+    try {
+      result = await ApiHelper.get("/churches/" + churchId + "/impersonate", "MembershipApi");
+    } catch { return; }
+    if (!result?.userChurches?.length) return;
 
     const idx = ArrayHelper.getIndex(UserHelper.userChurches, "church.id", churchId);
     if (idx > -1) UserHelper.userChurches.splice(idx, 1);

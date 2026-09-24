@@ -20,7 +20,10 @@ export function TemplateEdit(props: Props) {
   useEffect(() => setTemplate(props.template), [props.template]);
 
   const roomIds = template.roomIds ? template.roomIds.split(",").filter((r) => r) : [];
-  const resourceIds: string[] = template.resourcesJson ? JSON.parse(template.resourcesJson).map((r: any) => r.resourceId) : [];
+  let resourceIds: string[] = [];
+  try {
+    if (template.resourcesJson) resourceIds = JSON.parse(template.resourcesJson).map((r: any) => r.resourceId);
+  } catch { /* malformed template JSON */ }
 
   const handleSave = () => {
     setSaving(true);

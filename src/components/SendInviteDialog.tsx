@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, CircularProgress, Alert } from "@mui/material";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 
@@ -14,6 +14,15 @@ export const SendInviteDialog: React.FC<Props> = (props) => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (props.open) {
+      setSent(false);
+      setError("");
+    }
+    return () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
+  }, [props.open, props.personEmail]);
 
   const handleSend = async () => {
     setSending(true);
@@ -26,7 +35,7 @@ export const SendInviteDialog: React.FC<Props> = (props) => {
         churchName: UserHelper.currentUserChurch?.church?.name || ""
       }, "MembershipApi");
       setSent(true);
-      setTimeout(() => props.onClose(), 1500);
+      closeTimer.current = setTimeout(() => props.onClose(), 1500);
     } catch (err: any) {
       setError(err?.message || Locale.label("components.sendInviteDialog.errorFailed"));
     } finally {

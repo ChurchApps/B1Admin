@@ -33,8 +33,8 @@ export function DisplayCalendarEventModal(props: Props) {
       const prettyStart = DateHelper.prettyDateTime(props.event.start!);
       const prettyEnd = DateHelper.prettyDateTime(props.event.end!);
       const prettyEndTime = DateHelper.prettyTime(props.event.end!);
-      const startDate = DateHelper.prettyDate(new Date(prettyStart));
-      const endDate = DateHelper.prettyDate(new Date(prettyEnd));
+      const startDate = DateHelper.prettyDate(new Date(props.event.start!));
+      const endDate = DateHelper.prettyDate(new Date(props.event.end!));
       if (startDate === endDate) result = `${prettyStart} - ${prettyEndTime}`;
       else result = `${prettyStart} - ${prettyEnd}`;
     }

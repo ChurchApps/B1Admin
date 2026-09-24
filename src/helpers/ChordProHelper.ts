@@ -35,14 +35,7 @@ export class ChordProHelper {
   };
 
   static transposeChords = (line: string, halfSteps: number) => {
-    const chords = line.match(/\[[A-G][#b]?[^/\]]*(\/[A-G][#b]?)?\]/g);
-    if (chords) {
-      chords.forEach((chord) => {
-        const newChord = this.transposeChord(chord.substring(1, chord.length - 1), halfSteps);
-        line = line.replace(chord, "[" + newChord + "]");
-      });
-    }
-    return line;
+    return line.replace(/\[[A-G][#b]?[^/\]]*(\/[A-G][#b]?)?\]/g, (chord) => "[" + this.transposeChord(chord.substring(1, chord.length - 1), halfSteps) + "]");
   };
 
   static transposeChord = (chord: string, steps: number) => {

@@ -15,11 +15,11 @@ interface Props {
 export function CuratedCalendar(props: Props) {
   const [events, setEvents] = useState<CuratedEventWithEventInterface[]>([]);
 
-  const loadData = () => {
+  const loadData = (notify = false) => {
     if (ApiHelper.isAuthenticated) {
       ApiHelper.get("/curatedEvents/calendar/" + props.curatedCalendarId, "ContentApi").then((data: CuratedEventWithEventInterface[]) => {
         setEvents(data);
-        if (props.updatedCallback) props.updatedCallback();
+        if (notify && props.updatedCallback) props.updatedCallback();
       });
     } else {
       ApiHelper.getAnonymous("/curatedEvents/public/calendar/" + props.churchId + "/" + props.curatedCalendarId, "ContentApi").then((data: CuratedEventWithEventInterface[]) => {
@@ -37,7 +37,7 @@ export function CuratedCalendar(props: Props) {
       events={events}
       curatedCalendarId={props.curatedCalendarId}
       churchId={props.churchId}
-      onRequestRefresh={loadData}
+      onRequestRefresh={() => loadData(true)}
       mode={props.mode}
       data-testid={props["data-testid"]}
     />

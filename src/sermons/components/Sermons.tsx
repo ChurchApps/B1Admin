@@ -119,25 +119,25 @@ export const Sermons = () => {
     ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
     ApiHelper.get("/sermons", "ContentApi").then((data: any) => {
       setSermons(data);
-      setFilteredSermons(data);
+      setFilteredSermons(filterSermons(data, searchTerm));
       setIsLoading(false);
+    });
+  };
+
+  const filterSermons = (list: any[], value: string) => {
+    if (value === "") return list;
+    return list.filter((sermon: any) => {
+      const playlistTitle = getPlaylistTitle(sermon.playlistId) || "";
+      return (
+        (sermon.title || "").toLowerCase().includes(value.toLowerCase())
+        || playlistTitle.toLowerCase().includes(value.toLowerCase())
+      );
     });
   };
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    if (value === "") {
-      setFilteredSermons(sermons);
-    } else {
-      const filtered = sermons.filter((sermon: any) => {
-        const playlistTitle = getPlaylistTitle(sermon.playlistId);
-        return (
-          sermon.title.toLowerCase().includes(value.toLowerCase())
-          || playlistTitle.toLowerCase().includes(value.toLowerCase())
-        );
-      });
-      setFilteredSermons(filtered);
-    }
+    setFilteredSermons(filterSermons(sermons, value));
   };
 
   const handleAdd = (permanentUrl: boolean) => {

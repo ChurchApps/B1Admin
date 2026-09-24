@@ -97,8 +97,8 @@ const ApiErrorBanner = () => {
 export const ControlPanel = () => {
   const location = useLocation();
 
-  AnalyticsHelper.init();
   React.useEffect(() => {
+    AnalyticsHelper.init();
     AnalyticsHelper.logPageView();
   }, [location]);
 

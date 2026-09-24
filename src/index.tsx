@@ -30,6 +30,9 @@ window.addEventListener("vite:preloadError", (e) => {
     window.location.reload();
   }
 });
+setTimeout(() => {
+  try { sessionStorage.removeItem("preload-error-reloaded"); } catch { /* storage unavailable */ }
+}, 10000);
 
 Sentry.init({
   dsn: "https://0fa8dbad4eea6ffc6b2ffc157c43cff2@o4510432524107776.ingest.us.sentry.io/4510432531251200",

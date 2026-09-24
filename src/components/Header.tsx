@@ -157,9 +157,14 @@ export const Header: React.FC = () => {
       });
     };
 
-    const timer = setTimeout(addTestIds, 100);
+    let timer = setTimeout(addTestIds, 100);
+    let pending = false;
 
-    const observer = new MutationObserver(addTestIds);
+    const observer = new MutationObserver(() => {
+      if (pending) return;
+      pending = true;
+      timer = setTimeout(() => { pending = false; addTestIds(); }, 250);
+    });
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
