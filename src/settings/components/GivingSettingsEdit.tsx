@@ -75,7 +75,10 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         gw.currency = String(values.currency || "usd").toLowerCase();
         if (values.privateKey !== "") gw.privateKey = values.privateKey;
         if (values.webhookKey !== "") gw.webhookKey = values.webhookKey;
-        await ApiHelper.post("/gateways", [gw], "GivingApi");
+        const gatewayChanged = gateway === null || providerChanged || values.privateKey !== "" || values.webhookKey !== ""
+          || (gateway.publicKey || "") !== (values.publicKey || "") || !!gateway.payFees !== !!values.payFees
+          || String(gateway.currency || "usd").toLowerCase() !== gw.currency;
+        if (gatewayChanged) await ApiHelper.post("/gateways", [gw], "GivingApi");
       }
       await Promise.all([feeSaveRef.current?.(), statementSaveRef.current?.()]);
       setErrors([]);
