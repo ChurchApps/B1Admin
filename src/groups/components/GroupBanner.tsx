@@ -67,6 +67,12 @@ export const GroupBanner = memo((props: Props) => {
     // Cast until the published GroupInterface includes the chat feed toggles.
     (copy as Record<string, any>).discussionsEnabled = (group as Record<string, any>).discussionsEnabled !== false;
     (copy as Record<string, any>).announcementsEnabled = (group as Record<string, any>).announcementsEnabled !== false;
+    [
+      "confidential", "publicRoster", "minAgeMonths", "maxAgeMonths", "minGrade", "maxGrade", "capacity", "guestCapacity", "checkinClosed", "volunteerRatio", "minVolunteers"
+    ].forEach((key) => {
+      const value = (group as Record<string, any>)[key];
+      if (value !== undefined) (copy as Record<string, any>)[key] = value;
+    });
     ApiHelper.post("/groups", [copy], "MembershipApi").then((result: GroupInterface[]) => {
       if (result?.[0]?.id) navigate("/groups/" + result[0].id);
     });
