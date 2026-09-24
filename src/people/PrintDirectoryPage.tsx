@@ -7,7 +7,7 @@ import { Locale, PersonHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { buildHouseholds, firstName } from "./buildHouseholds";
 
-const EXCLUDED_STATUSES = new Set(["Inactive", "Visitor"]);
+const EXCLUDED_STATUSES = new Set(["Inactive", "Visitor", "Deceased"]);
 
 const formatDate = (date?: string): string => {
   if (!date) return "";

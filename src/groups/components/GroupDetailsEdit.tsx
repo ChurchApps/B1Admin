@@ -26,6 +26,7 @@ interface Props {
 export const GroupDetailsEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [redirect, setRedirect] = React.useState("");
+  const [saveErrors, setSaveErrors] = React.useState<string[]>([]);
   const [showGalleryModal, setShowGalleryModal] = React.useState(false);
   // Non-RHF state for external widgets
   const [about, setAbout] = React.useState("");
@@ -152,21 +153,22 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     (group as AnyRecord).checkinClosed = values.checkinClosed === "true";
     (group as AnyRecord).volunteerRatio = fieldToNum(values.volunteerRatio);
     (group as AnyRecord).minVolunteers = fieldToNum(values.minVolunteers);
+    setSaveErrors([]);
     ApiHelper.post("/groups", [group], "MembershipApi").then(() => {
       props.updatedFunction();
-    });
+    }).catch(() => setSaveErrors([Locale.label("common.saveError")]));
   };
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("groups.groupDetailsEdit.confirmMsg"))) {
-      ApiHelper.delete("/groups/" + props.group.id!.toString(), "MembershipApi").then(() => setRedirect("/groups"));
+      ApiHelper.delete("/groups/" + props.group.id!.toString(), "MembershipApi").then(() => setRedirect("/groups")).catch(() => setSaveErrors([Locale.label("common.error")]));
     }
   };
 
   const handleArchive = async () => {
     if (await confirm(Locale.label("groups.groupDetailsEdit.confirmArchive"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
       const group: GroupInterface = { ...props.group, archived: true };
-      ApiHelper.post("/groups", [group], "MembershipApi").then(() => setRedirect("/groups"));
+      ApiHelper.post("/groups", [group], "MembershipApi").then(() => setRedirect("/groups")).catch(() => setSaveErrors([Locale.label("common.saveError")]));
     }
   };
 
@@ -179,7 +181,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     setShowGalleryModal(show);
   };
 
-  const teamMode = props.group?.tags?.indexOf("team") !== -1;
+  const teamMode = (props.group?.tags?.indexOf("team") ?? -1) !== -1;
 
   const getAttendance = () => {
     if (teamMode) return <></>;
@@ -259,7 +261,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
             {Locale.label("groups.groupDetailsEdit.archive")}
           </Button>
         }>
-        <ErrorMessages errors={summaryErrors} />
+        <ErrorMessages errors={[...summaryErrors, ...saveErrors]} />
         <Grid container spacing={3}>
           {!teamMode && (
             <Grid size={{ xs: 12, md: 6 }}>

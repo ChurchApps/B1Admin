@@ -28,6 +28,8 @@ export function BulkGroupEventsModal(props: Props) {
   const [holidays, setHolidays] = useState<{ date: string; name: string }[]>([]);
   const [excluded, setExcluded] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const [savedEventId, setSavedEventId] = useState<string | null>(null);
 
   const dates = useMemo(() => {
     if (!firstDate || !lastDate) return [];
@@ -63,6 +65,7 @@ export function BulkGroupEventsModal(props: Props) {
 
   const handleSave = async () => {
     setSaving(true);
+    setSaveError(false);
     try {
       const event: EventInterface = {
         groupId: props.group.id,
@@ -74,20 +77,26 @@ export function BulkGroupEventsModal(props: Props) {
         visibility,
         recurrenceRule: dates.length > 1
           // Explicit BYDAY anchors the series to the actual selected weekday instead of an implicit parse-time default.
-          ? `FREQ=WEEKLY;INTERVAL=${interval};BYDAY=${["SU", "MO", "TU", "WE", "TH", "FR", "SA"][new Date(dates[0] + "T12:00:00").getDay()]};UNTIL=${lastDate.replace(/-/g, "")}T235959Z`
+          ? `FREQ=WEEKLY;INTERVAL=${interval};BYDAY=${["SU", "MO", "TU", "WE", "TH", "FR", "SA"][new Date(dates[0] + "T12:00:00").getDay()]};UNTIL=${new Date(`${lastDate}T23:59:59`).toISOString().replace(/[-:]/g, "").split(".")[0]}Z`
           : undefined
       } as EventInterface;
       // Explicit boolean (never undefined) so Kysely persists the disabled flag on the created event.
       (event as any).rsvpDisabled = !allowRsvps;
-      const saved = await ApiHelper.post("/events", [event], "ContentApi");
+      let eventId = savedEventId;
+      if (!eventId) {
+        const saved = await ApiHelper.post("/events", [event], "ContentApi");
+        eventId = saved[0].id as string;
+        setSavedEventId(eventId);
+      }
       if (excluded.length > 0) {
         // Noon keeps the calendar date stable across client/server timezones.
-        const exceptions = excluded.map((d) => ({ eventId: saved[0].id, exceptionDate: new Date(`${d}T12:00:00`) }));
+        const exceptions = excluded.map((d) => ({ eventId, exceptionDate: new Date(`${d}T12:00:00`) }));
         await ApiHelper.post("/eventExceptions", exceptions, "ContentApi");
       }
       props.onDone(true);
     } catch {
       setSaving(false);
+      setSaveError(true);
     }
   };
 
@@ -157,6 +166,7 @@ export function BulkGroupEventsModal(props: Props) {
             </>
           )}
           {dates.length === 0 && firstDate && lastDate && <Alert severity="warning">{Locale.label("groups.groupCalendar.noDates")}</Alert>}
+          {saveError && <Alert severity="error">{Locale.label("common.saveError")}</Alert>}
         </Stack>
       </DialogContent>
       <DialogActions>

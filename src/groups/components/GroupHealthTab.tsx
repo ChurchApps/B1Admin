@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Chart } from "react-google-charts";
 import { Box, Card, CardContent, Grid, Stack, Typography, useTheme } from "@mui/material";
 import { Group as GroupIcon, TrendingUp as TrendingUpIcon, TrendingDown as TrendingDownIcon, Autorenew as ChurnIcon } from "@mui/icons-material";
-import { Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
+import { DateHelper, Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
 import { AgeChart } from "../../people/demographics/components/AgeChart";
 import { DonutChart } from "../../people/demographics/components/DonutChart";
@@ -62,7 +62,7 @@ export const GroupHealthTab = (props: Props) => {
   const hasChanges = data.monthly?.some((m) => m.joins > 0 || m.leaves > 0);
 
   const trendData: any[] = [[Locale.label("groups.groupHealth.week"), Locale.label("groups.groupHealth.attendance")]];
-  (trend.data || []).forEach((r) => trendData.push([new Date(r.week).toLocaleDateString(), Number(r.visits)]));
+  (trend.data || []).forEach((r) => trendData.push([DateHelper.toDate(r.week).toLocaleDateString(), Number(r.visits)]));
 
   const chartOptions = {
     legend: { position: "bottom", textStyle: chartTheme.textStyle },

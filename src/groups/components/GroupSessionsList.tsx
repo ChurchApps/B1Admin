@@ -1,7 +1,7 @@
 import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
-import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -69,7 +69,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     const years = new Set<string>();
     sessions.forEach((session) => {
       if (session.sessionDate) {
-        const y = new Date(session.sessionDate).getFullYear();
+        const y = DateHelper.toDate(session.sessionDate).getFullYear();
         if (!isNaN(y)) years.add(String(y));
       } else if (session.displayName) {
         const yearMatch = session.displayName.match(/\b(20\d{2})\b/);
@@ -79,9 +79,11 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     return Array.from(years).sort((a, b) => b.localeCompare(a));
   }, [sessions]);
 
+  const yearDefaultedRef = React.useRef(false);
   React.useEffect(() => {
-    if (availableYears.length > 0 && selectedYear === "all") {
-      setSelectedYear(availableYears[0]);
+    if (availableYears.length > 0 && !yearDefaultedRef.current) {
+      yearDefaultedRef.current = true;
+      if (selectedYear === "all") setSelectedYear(availableYears[0]);
     }
   }, [availableYears, selectedYear]);
 
@@ -89,7 +91,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     if (selectedYear === "all") return [...sessions];
     return sessions.filter((s) => {
       if (s.sessionDate) {
-        const y = new Date(s.sessionDate).getFullYear();
+        const y = DateHelper.toDate(s.sessionDate).getFullYear();
         return String(y) === selectedYear;
       }
       if (!s.displayName) return false;
@@ -104,7 +106,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
       today.setHours(0, 0, 0, 0);
       const nonFuture = filteredSessions.find((s) => {
         if (!s.sessionDate) return true;
-        const d = new Date(s.sessionDate);
+        const d = DateHelper.toDate(s.sessionDate);
         d.setHours(0, 0, 0, 0);
         return d.getTime() <= today.getTime();
       });
@@ -136,7 +138,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
 
   const renderRow = (session: SessionInterface) => {
     const isSelected = selectedSession?.id === session.id;
-    const date = session.sessionDate ? new Date(session.sessionDate) : null;
+    const date = session.sessionDate ? DateHelper.toDate(session.sessionDate) : null;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const dayStart = date ? new Date(date) : null;

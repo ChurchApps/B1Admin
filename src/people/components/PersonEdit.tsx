@@ -149,6 +149,7 @@ export const PersonEdit = memo((props: Props) => {
   const updatePerson = useCallback(async (p: PersonInterface) => {
     try {
       await ApiHelper.post("/people/", [p], "MembershipApi");
+      if (B1AdminPersonHelper.getExpandedPersonObject(p).id === context?.person?.id) context?.setPerson(p);
       await saveCustomFields();
       setSaveErrors([]);
       props.updatedFunction();
@@ -157,7 +158,7 @@ export const PersonEdit = memo((props: Props) => {
       setSaveErrors([Locale.label("common.saveError")]);
     }
     setIsSubmitting(false);
-  }, [props.updatedFunction, saveCustomFields]);
+  }, [props.updatedFunction, saveCustomFields, context]);
 
   // Only new people get checked - editing an existing record can't create a duplicate of itself.
   const checkDuplicates = useCallback(async (p: PersonInterface): Promise<PersonInterface[]> => {
@@ -180,8 +181,6 @@ export const PersonEdit = memo((props: Props) => {
     setIsSubmitting(true);
     setSaveErrors([]);
     const p = buildPerson(values);
-
-    if (B1AdminPersonHelper.getExpandedPersonObject(p).id === context?.person?.id) context?.setPerson(p);
 
     const matches = await checkDuplicates(p);
     if (matches.length > 0) {

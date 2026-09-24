@@ -18,6 +18,7 @@ interface Props {
 
 export const GroupAdd: React.FC<Props> = (props) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [saveErrors, setSaveErrors] = React.useState<string[]>([]);
   const context = React.useContext(UserContext);
 
   const { control, register, handleSubmit } = useForm<AnyRecord>({ defaultValues: { categoryName: props.categoryName || "", name: "" } });
@@ -32,6 +33,7 @@ export const GroupAdd: React.FC<Props> = (props) => {
 
   const onValid = async (values: AnyRecord) => {
     setIsSubmitting(true);
+    setSaveErrors([]);
     try {
       const group: GroupInterface = { categoryName: values.categoryName, name: values.name, tags: props.tags };
       const result = await ApiHelper.post("/groups", [group], "MembershipApi");
@@ -43,9 +45,11 @@ export const GroupAdd: React.FC<Props> = (props) => {
         };
         await ApiHelper.post("/groupMembers", [groupMember], "MembershipApi");
       }
+      props.updatedFunction();
+    } catch {
+      setSaveErrors([Locale.label("common.saveError")]);
     } finally {
       setIsSubmitting(false);
-      props.updatedFunction();
     }
   };
 
@@ -55,7 +59,7 @@ export const GroupAdd: React.FC<Props> = (props) => {
 
   return (
     <FormCard title={Locale.label("groups.groupAdd.new") + label} icon="group" onCancel={handleCancel} onSave={handleSubmit(onValid)} saveText={Locale.label("groups.groupAdd.add")} isSubmitting={isSubmitting}>
-      <ErrorMessages errors={summaryErrors} />
+      <ErrorMessages errors={[...summaryErrors, ...saveErrors]} />
       <Grid container spacing={2}>
         {props.tags === "standard" && (
           <Grid size={{ xs: 12, sm: 6 }}>

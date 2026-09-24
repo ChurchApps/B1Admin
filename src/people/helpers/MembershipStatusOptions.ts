@@ -24,9 +24,3 @@ export const getMembershipStatusOptions = (): MembershipStatusOption[] =>
     value: status.value,
     label: Locale.label(status.labelKey)
   }));
-
-export const getLocalizedMembershipStatusOptions = (): MembershipStatusOption[] =>
-  membershipStatusDefinitions.map((status) => {
-    const label = Locale.label(status.labelKey);
-    return { value: label, label };
-  });

@@ -163,8 +163,8 @@ export const PersonExportDialog: React.FC<Props> = memo((props) => {
     { section: "Person", form: "", question: "Membership Status", answer: props.person?.membershipStatus || "" },
     { section: "Person", form: "", question: "Gender", answer: props.person?.gender || "" },
     { section: "Person", form: "", question: "Marital Status", answer: props.person?.maritalStatus || "" },
-    { section: "Person", form: "", question: "Birth Date", answer: props.person?.birthDate ? new Date(props.person.birthDate).toISOString().split("T")[0] : "" },
-    { section: "Person", form: "", question: "Anniversary", answer: props.person?.anniversary ? new Date(props.person.anniversary).toISOString().split("T")[0] : "" },
+    { section: "Person", form: "", question: "Birth Date", answer: DateHelper.formatHtml5Date(props.person?.birthDate) },
+    { section: "Person", form: "", question: "Anniversary", answer: DateHelper.formatHtml5Date(props.person?.anniversary) },
     { section: "Person", form: "", question: "Address 1", answer: props.person?.contactInfo?.address1 || "" },
     { section: "Person", form: "", question: "Address 2", answer: props.person?.contactInfo?.address2 || "" },
     { section: "Person", form: "", question: "City", answer: props.person?.contactInfo?.city || "" },
@@ -347,7 +347,7 @@ function formatAnswerValue(fieldType: string, value: string) {
   }
   if (fieldType === "Date") {
     try {
-      const parsed = new Date(value);
+      const parsed = DateHelper.toDate(value);
       if (!Number.isNaN(parsed.getTime())) return DateHelper.getShortDate(parsed);
     } catch {
       return value;

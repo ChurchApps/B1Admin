@@ -131,7 +131,14 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     if (getMemberByPersonId(person.id!) === null) {
       addedPersonIdRef.current = person.id!;
       const gm = { groupId: props.group.id, personId: person.id, person } as GroupMemberInterface;
-      await ApiHelper.post("/groupmembers", [gm], "MembershipApi");
+      try {
+        await ApiHelper.post("/groupmembers", [gm], "MembershipApi");
+      } catch {
+        addedPersonIdRef.current = null;
+        setSendErrors([Locale.label("common.saveError")]);
+        props.addedCallback?.();
+        return;
+      }
       groupMembers.refetch();
       if (person.contactInfo?.email) {
         setShowInviteDialog(true);
@@ -342,7 +349,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   React.useEffect(() => {
     if (props.addedPerson?.id !== undefined) {
       handleAdd();
-    }
+    } else addedPersonIdRef.current = null;
   }, [props.addedPerson, handleAdd]);
 
   const renderSkeleton = () => (

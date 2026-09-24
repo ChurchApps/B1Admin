@@ -27,6 +27,7 @@ export function HouseholdEdit(props: Props) {
   const [text, setText] = React.useState("");
   const [selectedPerson, setSelectedPerson] = React.useState<PersonInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [saveErrors, setSaveErrors] = React.useState<string[]>([]);
 
   const { control, register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: props.household?.name || "" } });
 
@@ -46,7 +47,7 @@ export function HouseholdEdit(props: Props) {
 
   function handleChangeRole(e: SelectChangeEvent, index: number) {
     const m = [...members];
-    m[index].householdRole = e.target.value;
+    m[index] = { ...m[index], householdRole: e.target.value };
     setMembers(m);
   }
 
@@ -66,12 +67,10 @@ export function HouseholdEdit(props: Props) {
   }
 
   function addPerson(person?: PersonInterface) {
-    const addPerson: PersonInterface | null = person || selectedPerson;
-    if (!addPerson || !props.household?.id) return;
-    addPerson.householdId = props.household.id;
-    addPerson.householdRole = "Other";
+    const toAdd: PersonInterface | null = person || selectedPerson;
+    if (!toAdd || !props.household?.id) return;
     const m = [...members];
-    m.push(addPerson);
+    m.push({ ...toAdd, householdId: props.household.id, householdRole: "Other" });
     setMembers(m);
     setShowAdd(false);
   }
@@ -79,12 +78,14 @@ export function HouseholdEdit(props: Props) {
   const onValid = (values: AnyRecord) => {
     if (!props.household?.id) return;
     setIsSubmitting(true);
+    setSaveErrors([]);
     const household: HouseholdInterface = { ...props.household, name: values.name };
     const promises = [];
     promises.push(ApiHelper.post("/households", [household], "MembershipApi"));
     promises.push(ApiHelper.post("/people/household/" + household.id, members, "MembershipApi"));
     Promise.all(promises)
       .then(() => props.updatedFunction())
+      .catch(() => setSaveErrors([Locale.label("common.saveError")]))
       .finally(() => setIsSubmitting(false));
   };
 
@@ -154,7 +155,7 @@ export function HouseholdEdit(props: Props) {
         isSubmitting={isSubmitting}
         onSave={handleSubmit(onValid)}
         onCancel={props.updatedFunction}>
-        <ErrorMessages errors={summaryErrors} />
+        <ErrorMessages errors={[...summaryErrors, ...saveErrors]} />
         <TextField fullWidth id="name" type="text" label={Locale.label("people.householdEdit.houseName")} placeholder={Locale.label("placeholders.household.name")} data-testid="household-name-input" aria-label={Locale.label("people.householdEdit.householdNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("people.householdEdit.blankMsg") })} />
         <Table size="small" id="householdMemberTable">
           <TableBody>

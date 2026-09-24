@@ -70,7 +70,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const getAnswerValue = useCallback(
     (personId: string, questionId: string): string => {
       for (const fs of formSubmissions) {
-        if (fs.submittedBy === personId) {
+        if (fs.contentId === personId) {
           const answer = ArrayHelper.getOne(fs.answers, "questionId", questionId);
           if (answer) return answer.value || "";
         }
@@ -224,12 +224,20 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         if (personForms.length > 0) {
           personForms.forEach((f: any) => {
             ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: any) => setOptionalColumns((prevState) => [...prevState, ...q]));
-            ApiHelper.get(`/formsubmissions/formId/${f.id}/?include=questions,answers`, "MembershipApi").then((fs: any) => setFormSubmissions((prevState) => [...prevState, ...fs]));
           });
         }
       } else setOptionalColumns([]);
     });
   }, []);
+
+  const loadedSubmissionFormIds = React.useRef<Set<string>>(new Set());
+  useEffect(() => {
+    optionalColumns.forEach((c) => {
+      if (selectedColumns.indexOf(c.id) === -1 || !c.formId || loadedSubmissionFormIds.current.has(c.formId)) return;
+      loadedSubmissionFormIds.current.add(c.formId);
+      ApiHelper.get(`/formsubmissions/formId/${c.formId}/?include=questions,answers`, "MembershipApi").then((fs: any) => setFormSubmissions((prevState) => [...prevState, ...(fs || [])]));
+    });
+  }, [optionalColumns, selectedColumns]);
 
   const sortTableByKey = useCallback(
     (key: string) => {
@@ -256,7 +264,13 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           return 0;
         }
 
-        if (a[key] === null) return Infinity; // if value is null push to the end of array
+        if (key !== "birthDay") {
+          const nullA = a[key] === null || a[key] === undefined || a[key] === "";
+          const nullB = b[key] === null || b[key] === undefined || b[key] === "";
+          if (nullA && nullB) return 0;
+          if (nullA) return 1;
+          if (nullB) return -1;
+        }
         if (key === "birthDay") {
           //there's no 'birthDay' property in the people object; instead use birthDate to sort
           if (a["birthDate"] === null && b["birthDate"] === null) return 0;
@@ -281,13 +295,14 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           }
         }
 
-        const parsedNum = parseInt(a[key]);
-        if (!isNaN(parsedNum)) {
-          return asc ? a[key] - b[key] : b[key] - a[key];
+        const numA = Number(a[key]);
+        const numB = Number(b[key]);
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return asc ? numA - numB : numB - numA;
         }
 
-        const valA = a[key]?.toUpperCase();
-        const valB = b[key]?.toUpperCase();
+        const valA = String(a[key]).toUpperCase();
+        const valB = String(b[key]).toUpperCase();
         if (valA < valB) return asc ? 1 : -1;
         if (valA > valB) return asc ? -1 : 1;
         // equal

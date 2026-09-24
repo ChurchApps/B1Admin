@@ -20,6 +20,7 @@ export const AISearch = (props: Props) => {
   const handleSearch = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrors([]);
     try {
       // First, get the filters from AskApi
       const filters: SearchCondition[] = await ApiHelper.post("/query/people", { query: text }, "AskApi");

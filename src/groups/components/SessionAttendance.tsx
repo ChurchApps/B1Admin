@@ -27,26 +27,26 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const [visitSessions, setVisitSessions] = React.useState<VisitSessionInterface[]>([]);
   const [people, setPeople] = React.useState<PersonInterface[]>([]);
   const [downloadData, setDownloadData] = React.useState<any[]>([]);
-  // checkinType lives on the visit, but the visitsessions listing doesn't return it —
-  // pull it per-person from /visits and key by visitId.
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const loadSeqRef = React.useRef(0);
 
   const loadAttendance = useCallback(() => {
+    const seq = ++loadSeqRef.current;
     if (session?.id) {
       ApiHelper.get("/visitsessions?sessionId=" + session.id, "AttendanceApi").then((vs: VisitSessionInterface[]) => {
+        if (seq !== loadSeqRef.current) return;
         setVisitSessions(vs);
+        const map: Record<string, string> = {};
+        vs.forEach((v) => { if (v.visitId && v.visit?.checkinType) map[v.visitId] = v.visit.checkinType; });
+        setCheckinTypes(map);
         const peopleIds = ArrayHelper.getUniqueValues(vs, "visit.personId");
         if (peopleIds.length > 0) {
-          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: any) => setPeople(data));
-          Promise.all(peopleIds.map((pid: string) => ApiHelper.get("/visits?personId=" + pid, "AttendanceApi").catch(() => []))).then((results: any[]) => {
-            const map: Record<string, string> = {};
-            results.flat().forEach((v: any) => { if (v?.id && v.checkinType) map[v.id] = v.checkinType; });
-            setCheckinTypes(map);
+          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: any) => {
+            if (seq === loadSeqRef.current) setPeople(data);
           });
         } else {
           setPeople([]);
-          setCheckinTypes({});
         }
         setHiddenPeople?.(peopleIds);
       });
@@ -129,13 +129,14 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   }, [loadDownloadData]);
 
   React.useEffect(() => {
-    if (addedPerson?.id && session?.id) {
+    if (!addedPerson?.id) return;
+    if (session?.id) {
       const v = { checkinTime: new Date(), personId: addedPerson.id, visitSessions: [{ sessionId: session.id }] } as VisitInterface;
       ApiHelper.post("/visitsessions/log", v, "AttendanceApi").then(() => {
         loadAttendance();
       });
-      addedCallback?.(v.personId!);
     }
+    addedCallback?.(addedPerson.id);
   }, [addedPerson?.id, session?.id, loadAttendance, addedCallback]);
 
   const customHeaders = [

@@ -286,14 +286,14 @@ export const AttendanceSetup = memo(() => {
       </TableRow>
     );
 
-    const servicesByCampus: { [campusId: string]: { [serviceName: string]: { service: any; serviceTimes: any[] } } } = {};
+    const servicesByCampus: { [campusId: string]: { [serviceKey: string]: { service: any; serviceTimes: any[] } } } = {};
     (attendance.data || []).forEach((a) => {
       if (!a.service) return; // campus-only tree row; the campus comes from the membership list below
       const cid = a.campus?.id || "";
       if (!servicesByCampus[cid]) servicesByCampus[cid] = {};
-      const serviceName = a.service?.name || "Unknown";
-      if (!servicesByCampus[cid][serviceName]) servicesByCampus[cid][serviceName] = { service: a.service, serviceTimes: [] };
-      servicesByCampus[cid][serviceName].serviceTimes.push(a);
+      const serviceKey = a.service?.id || a.service?.name || "Unknown";
+      if (!servicesByCampus[cid][serviceKey]) servicesByCampus[cid][serviceKey] = { service: a.service, serviceTimes: [] };
+      servicesByCampus[cid][serviceKey].serviceTimes.push(a);
     });
 
     // Canonical campus list = membership campuses, plus any campus id that still

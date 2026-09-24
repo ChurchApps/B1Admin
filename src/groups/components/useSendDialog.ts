@@ -44,8 +44,8 @@ export function useSendDialog<TPreview = any, TResult = any>(options: UseSendDia
     setError("");
     try {
       const resp = await ApiHelper.post(sendUrl, payload, apiName);
-      if (resp.error) setError(resp.error);
-      else setResult(resp);
+      if (resp?.error) setError(resp.error);
+      else setResult(resp ?? ({} as TResult));
     } catch (err: any) {
       setError(buildError ? buildError(err) : (err?.message || fallbackError));
     } finally {

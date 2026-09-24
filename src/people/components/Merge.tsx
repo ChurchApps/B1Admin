@@ -141,7 +141,7 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
     }
   };
 
-  const person1 = { ...props.person };
+  const person1 = React.useMemo(() => ({ ...props.person }), [props.person]);
   return (
     <>
       <MergeModal show={showMergeModal} onHide={() => setShowMergeModal(false)} person1={person1} person2={personToMerge} merge={merge} mergeInProgress={mergeInProgress} />

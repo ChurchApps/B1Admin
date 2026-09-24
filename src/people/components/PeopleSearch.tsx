@@ -119,6 +119,7 @@ export function PeopleSearch(props: Props) {
             updateSearchResults={props.updateSearchResults}
             toggleFunction={toggleAdvanced}
             updatedFunction={props.updatedFunction}
+            resetSearchResults={props.resetSearchResults}
             embedded={true}
             initialFilters={props.initialFilters}
             onReportCriteria={props.onReportCriteria}
