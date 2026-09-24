@@ -123,7 +123,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
         </DialogContent>
         <DialogActions>
           <Button onClick={() => { setDeclineTarget(null); setDeclineReason(""); }}>Cancel</Button>
-          <Button onClick={handleDeclineSubmit} variant="contained" color="error" data-testid="decline-confirm">
+          <Button onClick={handleDeclineSubmit} disabled={!!declineTarget && working === declineTarget.id} variant="contained" color="error" data-testid="decline-confirm">
             Decline
           </Button>
         </DialogActions>

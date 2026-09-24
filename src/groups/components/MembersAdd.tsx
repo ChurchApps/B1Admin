@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { type GroupInterface, type GroupMemberInterface, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, Loading, Locale, PersonAvatar } from "@churchapps/apphelper";
@@ -14,15 +14,6 @@ interface Props {
 
 export const MembersAdd: React.FC<Props> = (props) => {
   const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
-  const isSubscribed = useRef(true);
-
-  const loadData = React.useCallback(() => {
-    ApiHelper.get("/groupmembers?groupId=" + props.group.id, "MembershipApi").then((data: any) => {
-      if (isSubscribed.current) {
-        setGroupMembers(data);
-      }
-    });
-  }, [props.group, isSubscribed]);
   const addMember = (gm: GroupMemberInterface) => {
     const members = groupMembers;
     const idx = members.indexOf(gm);
@@ -81,11 +72,15 @@ export const MembersAdd: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    if (props.group !== null) loadData();
+    if (!props.group?.id) return;
+    let cancelled = false;
+    ApiHelper.get("/groupmembers?groupId=" + props.group.id, "MembershipApi").then((data: any) => {
+      if (!cancelled) setGroupMembers(data);
+    });
     return () => {
-      isSubscribed.current = false;
+      cancelled = true;
     };
-  }, [props.group, loadData]);
+  }, [props.group?.id]);
 
   let content = <Loading />;
   if (groupMembers) {

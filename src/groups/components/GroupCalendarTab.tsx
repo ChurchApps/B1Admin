@@ -62,13 +62,16 @@ export const GroupCalendarTab = (props: Props) => {
     if (!rule) return Locale.label("groups.groupCalendar.oneTime");
     const freq = /FREQ=(\w+)/.exec(rule)?.[1];
     const interval = parseInt(/INTERVAL=(\d+)/.exec(rule)?.[1] || "1", 10);
-    const until = /UNTIL=(\d{4})(\d{2})(\d{2})/.exec(rule);
+    const until = /UNTIL=(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})Z)?/.exec(rule);
     let label: string;
     if (freq === "WEEKLY") label = interval === 2 ? Locale.label("groups.groupCalendar.everyTwoWeeks") : Locale.label("calendars.newEvent.weekly");
     else if (freq === "DAILY") label = Locale.label("calendars.newEvent.daily");
     else if (freq === "MONTHLY") label = Locale.label("calendars.newEvent.monthly");
     else label = rule;
-    if (until) label += ` ${Locale.label("groups.groupCalendar.until")} ${new Date(`${until[1]}-${until[2]}-${until[3]}T12:00:00`).toLocaleDateString()}`;
+    if (until) {
+      const untilDate = until[4] ? new Date(`${until[1]}-${until[2]}-${until[3]}T${until[4]}:${until[5]}:${until[6]}Z`) : new Date(`${until[1]}-${until[2]}-${until[3]}T12:00:00`);
+      label += ` ${Locale.label("groups.groupCalendar.until")} ${untilDate.toLocaleDateString()}`;
+    }
     return label;
   };
 

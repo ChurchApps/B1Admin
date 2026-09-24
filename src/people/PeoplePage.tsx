@@ -163,23 +163,27 @@ export const PeoplePage = memo(() => {
     setLoadAll(true);
   }, []);
 
+  const listRequestRef = React.useRef(0);
   const handleSelectList = useCallback((list: ListInterface) => {
     const conditions = list.conditions;
+    const requestId = ++listRequestRef.current;
+    const showResults = (data: PersonInterface[]) => {
+      if (requestId === listRequestRef.current) setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
+    };
+    const showError = () => {
+      if (requestId === listRequestRef.current) setToast({ open: true, message: Locale.label("common.error"), severity: "error" });
+    };
     setIsSearchPerformed(true);
     // Server-eval for match-any and household-inclusion; client-eval for plain all-match.
     const needsServerEval = !!list.id && !!list.rules && (list.rules.match !== "all" || (!!list.householdInclusion && list.householdInclusion !== "none"));
     if (needsServerEval) {
       setSaveableCriteria(null);
       setSelectedListFilters(undefined);
-      ApiHelper.get(`/lists/${list.id}/people`, "MembershipApi").then((data: any) => {
-        setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
-      });
+      ApiHelper.get(`/lists/${list.id}/people`, "MembershipApi").then(showResults).catch(showError);
     } else if (Array.isArray(conditions)) {
       setSaveableCriteria(conditions);
       setSelectedListFilters(undefined);
-      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
-        setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
-      });
+      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then(showResults).catch(showError);
     } else {
       // New ref on re-select to re-seed advanced panel.
       setSaveableCriteria(conditions ?? null);

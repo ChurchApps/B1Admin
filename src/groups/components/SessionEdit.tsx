@@ -76,7 +76,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
       ApiHelper.get("/sessions/" + props.session.id, "AttendanceApi")
         .then((data: any) => {
           const sessionDate = data?.sessionDate && !isNaN(new Date(data.sessionDate).getTime())
-            ? DateHelper.formatHtml5Date(new Date(data.sessionDate))
+            ? DateHelper.formatHtml5Date(data.sessionDate)
             : DateHelper.formatHtml5Date(new Date());
           reset({
             sessionDate,

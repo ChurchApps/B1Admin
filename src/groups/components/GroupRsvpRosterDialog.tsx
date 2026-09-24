@@ -42,7 +42,7 @@ export const GroupRsvpRosterDialog = (props: Props) => {
         people.forEach((p) => { if (p.id) map[p.id] = p.name?.display || `${p.name?.first || ""} ${p.name?.last || ""}`.trim(); });
       }
       if (!cancelled) { setNames(map); setSections(results); setLoading(false); }
-    })();
+    })().catch(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [props.event.id]);
 

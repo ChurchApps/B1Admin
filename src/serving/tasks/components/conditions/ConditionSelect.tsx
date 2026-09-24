@@ -3,7 +3,7 @@ import React from "react";
 import { ConditionHelper } from "../../../../helpers";
 import { Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
-import { getLocalizedMembershipStatusOptions } from "../../../../people/helpers/MembershipStatusOptions";
+import { getMembershipStatusOptions } from "../../../../people/helpers/MembershipStatusOptions";
 import { applyConditionChange } from "./conditionHelpers";
 
 interface Props {
@@ -59,7 +59,7 @@ export const ConditionSelect = (props: Props) => {
     <FormControl fullWidth variant="outlined">
       <InputLabel>{Locale.label("person.membershipStatus")}</InputLabel>
       <Select label={Locale.label("person.membershipStatus")} value={props.condition.value || "Visitor"} name="value" onChange={handleChange}>
-        {getLocalizedMembershipStatusOptions().map((option) => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
+        {getMembershipStatusOptions().map((option) => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
       </Select>
     </FormControl>
   );

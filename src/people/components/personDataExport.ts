@@ -7,6 +7,8 @@ export const downloadPersonData = async (personId: string) => {
   const a = document.createElement("a");
   a.href = url;
   a.download = `person-data-${personId}.json`;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 };

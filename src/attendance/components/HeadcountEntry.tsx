@@ -62,7 +62,7 @@ export const HeadcountEntry: React.FC = () => {
 
   const select = (h: HeadcountInterface) => {
     setErrors([]);
-    setCurrent({ ...h, serviceId: h.serviceId || "", serviceTimeId: h.serviceTimeId || "", groupId: h.groupId || "", headcountDate: DateHelper.formatHtml5Date(new Date(h.headcountDate || "")) });
+    setCurrent({ ...h, serviceId: h.serviceId || "", serviceTimeId: h.serviceTimeId || "", groupId: h.groupId || "", headcountDate: DateHelper.formatHtml5Date(h.headcountDate) });
     setValueText(h.value === undefined || h.value === null ? "" : String(h.value));
   };
 
@@ -97,19 +97,22 @@ export const HeadcountEntry: React.FC = () => {
     };
     ApiHelper.post("/headcounts", [payload], "AttendanceApi")
       .then(() => { reset(); loadHeadcounts(); })
+      .catch(() => { if (isMounted()) setErrors([Locale.label("common.saveError")]); })
       .finally(() => { if (isMounted()) setIsSubmitting(false); });
   };
 
   const handleDelete = async () => {
     if (!current.id) return;
     if (await confirm(Locale.label("attendance.headcountEntry.confirmDelete"))) {
-      ApiHelper.delete("/headcounts/" + current.id, "AttendanceApi").then(() => { reset(); loadHeadcounts(); });
+      ApiHelper.delete("/headcounts/" + current.id, "AttendanceApi")
+        .then(() => { reset(); loadHeadcounts(); })
+        .catch(() => setErrors([Locale.label("common.error")]));
     }
   };
 
   const rows = (headcounts || []).map((h) => (
     <TableRow key={h.id} data-testid={"headcount-row-" + h.id} sx={{ ...hoverRowSx, cursor: "pointer" }} onClick={() => select(h)}>
-      <TableCell>{DateHelper.prettyDate(new Date(h.headcountDate || ""))}</TableCell>
+      <TableCell>{DateHelper.prettyDate(DateHelper.toDate(h.headcountDate || ""))}</TableCell>
       <TableCell>{h.serviceName || ""}</TableCell>
       <TableCell>{h.serviceTimeName || ""}</TableCell>
       <TableCell>{groupName(h.groupId)}</TableCell>

@@ -67,6 +67,7 @@ interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
   toggleFunction?: () => void;
   updatedFunction?: () => void;
+  resetSearchResults?: () => void;
   embedded?: boolean;
   // Seeds search with saved List filter spec.
   initialFilters?: Record<string, ActiveFilter>;
@@ -174,6 +175,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const [complexFilterDialog, setComplexFilterDialog] = useState<{ open: boolean; field: string | null }>({ open: false, field: null });
   const [complexConfig, setComplexConfig] = useState<ComplexFilterConfig | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
+  const searchSeqRef = useRef(0);
+  const hadFiltersRef = useRef(false);
 
   // Lazy-loaded options
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -314,8 +317,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 type = "select";
                 operators = ["equals"];
                 options = [
-                  { value: "Yes", label: Locale.label("common.yes") },
-                  { value: "No", label: Locale.label("common.no") }
+                  { value: "True", label: Locale.label("common.yes") },
+                  { value: "False", label: Locale.label("common.no") }
                 ];
                 break;
               case "Multiple Choice":
@@ -468,7 +471,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const updateFilterOperator = (field: string, operator: string) => {
     const filters = { ...activeFilters };
     if (filters[field]) {
-      filters[field].operator = operator;
+      filters[field] = { ...filters[field], operator };
       setActiveFilters(filters);
     }
   };
@@ -476,29 +479,35 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const updateFilterValue = (field: string, value: string) => {
     const filters = { ...activeFilters };
     if (filters[field]) {
-      filters[field].value = value;
+      filters[field] = { ...filters[field], value };
       setActiveFilters(filters);
     }
   };
 
   // Auto-search on filter change; report spec for "Save as List" offer.
+  // customFieldQuestions is a dep so a seeded customField_ filter re-runs once its questions load.
   useEffect(() => {
+    const seq = ++searchSeqRef.current;
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
     if (Object.keys(activeFilters).length > 0) {
+      hadFiltersRef.current = true;
       props.onReportCriteria?.(activeFilters);
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
-
       debounceTimerRef.current = setTimeout(async () => {
         const postConditions = await convertConditions();
-        ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data: any) => {
-          props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
-        });
+        const data: any = await ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi");
+        if (seq !== searchSeqRef.current) return;
+        props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       }, 500);
     } else {
       props.onReportCriteria?.(null);
+      if (hadFiltersRef.current) {
+        hadFiltersRef.current = false;
+        props.resetSearchResults?.();
+      }
     }
-  }, [activeFilters]);
+  }, [activeFilters, customFieldQuestions]);
 
   const handleComplexFilterSave = () => {
     if (!complexFilterDialog.field || !complexConfig) return;
@@ -658,11 +667,12 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   }, [activeFilters, customFieldQuestions]);
 
   const handleAdvancedSearch = useCallback(async () => {
+    const seq = ++searchSeqRef.current;
     props.onReportCriteria?.(activeFilters);
     const postConditions = await convertConditions();
-    ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data: any) => {
-      props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
-    });
+    const data: any = await ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi");
+    if (seq !== searchSeqRef.current) return;
+    props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
   }, [convertConditions, props.updateSearchResults, activeFilters]);
 
   const clearAllFilters = () => {
