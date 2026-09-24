@@ -11,6 +11,14 @@ test.describe.serial("Paystack giving settings", () => {
   test.beforeAll(async ({ browser }) => {
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
     page = await context.newPage();
+    // Other specs save fee settings; hide them so the per-currency defaults apply as for a new church.
+    const feeKeys = ["flatRateCC", "transFeeCC"];
+    await page.route(/\/membership\/settings$/, async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      const res = await route.fetch();
+      const rows = await res.json();
+      await route.fulfill({ response: res, json: Array.isArray(rows) ? rows.filter((r: any) => !feeKeys.includes(r.keyName)) : rows });
+    });
     await login(page);
     await navigateToSettings(page);
   });
