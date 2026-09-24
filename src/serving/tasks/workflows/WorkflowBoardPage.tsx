@@ -48,6 +48,7 @@ export const WorkflowBoardPage = () => {
   };
 
   const handleDropCard = async (cardId: string, stepId: string) => {
+    if (!canEdit) return;
     if (board.data?.cards?.find((c) => c.id === cardId)?.stepId === stepId) return;
     await ApiHelper.post("/tasks/" + cardId + "/moveStep", { stepId }, "DoingApi");
     refetch();
