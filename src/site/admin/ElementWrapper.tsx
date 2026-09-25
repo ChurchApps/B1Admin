@@ -1,5 +1,6 @@
 import React from "react";
 import { Element } from "@churchapps/apphelper/website";
+import "./elements/SafeRawHTMLElement";
 import type { ElementInterface } from "../../helpers";
 import type { ChurchInterface } from "@churchapps/helpers";
 

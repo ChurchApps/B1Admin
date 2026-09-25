@@ -936,7 +936,7 @@ export function ContentEditor(props: Props) {
     return (
       <ThemeProvider theme={lightEditorTheme}>
         <CssBaseline />
-        <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
+        <Theme globalStyles={props.config?.globalStyles && { ...props.config.globalStyles, customJS: "" }} appearance={props.config?.appearance} />
         <EditorToolbar
           onDone={handleDone}
           container={container}
@@ -979,7 +979,7 @@ export function ContentEditor(props: Props) {
     <ThemeProvider theme={lightEditorTheme}>
       <CssBaseline />
       <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "var(--bg-main)" }}>
-        <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
+        <Theme globalStyles={props.config?.globalStyles && { ...props.config.globalStyles, customJS: "" }} appearance={props.config?.appearance} />
         {fontUrls.map((url) => <link key={url} rel="stylesheet" href={url} precedence="default" />)}
         <style>{css}</style>
         <style>{hoverCss}</style>
