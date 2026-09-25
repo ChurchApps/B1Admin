@@ -4411,6 +4411,7 @@
       "positionPhotoTop": "Top",
       "primary": "Primary",
       "roundedCorners": "Rounded Corners",
+      "scriptsPublishedOnly": "Scripts run on the published site only.",
       "secondary": "Secondary",
       "selectPhoto": "Select Photo",
       "selectPhotoPosition": "Select photo position",

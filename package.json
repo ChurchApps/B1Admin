@@ -18,6 +18,7 @@
     "axios": "^1.16.0",
     "cropperjs": "^1.6.2",
     "dayjs": "^1.11.20",
+    "dompurify": "^3.4.12",
     "i18next-browser-languagedetector": "^8.2.1",
     "jszip": "^3.10.1",
     "mui-tel-input": "^9.0.1",

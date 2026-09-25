@@ -2928,6 +2928,7 @@ __metadata:
     copyfiles: "npm:^2.4.1"
     cropperjs: "npm:^1.6.2"
     dayjs: "npm:^1.11.20"
+    dompurify: "npm:^3.4.12"
     esbuild: "npm:^0.28.0"
     eslint: "npm:^10.3.0"
     eslint-plugin-react-hooks: "npm:^7.1.1"
