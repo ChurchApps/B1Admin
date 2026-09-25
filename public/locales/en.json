@@ -3299,7 +3299,9 @@
       "newNoFiles": "Lyrics and details, no files",
       "possibleDuplicateTooltip": "The file or title matches a song already in the library — check it in the review before approving",
       "chooseOutcome": "Choose an outcome…",
-      "unpublishConfirm": "Unpublish {name}? Churches stop finding it until you republish it."
+      "unpublishConfirm": "Unpublish {name}? Churches stop finding it until you republish it.",
+      "songKey": "Key {key}",
+      "bpm": "{bpm} BPM"
     },
     "impersonateTab": {
       "confirmMessage": "You will be logged out of your own session and signed in as {email}. To return to your account, log out and back in.",

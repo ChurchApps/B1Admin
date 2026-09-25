@@ -27,7 +27,9 @@ export type RemovedReason = "copyright" | "policy";
 export type SubmissionType = "new" | "translation" | "arrangement" | "correction" | "additionalFile" | "recording" | "removal";
 export type Confidence = "sunday-ready" | "score" | "generated-from-midi" | "chart-only" | "lyrics-only";
 
-export const REJECT_REASONS: RejectReason[] = ["quality", "duplicate", "licensing", "ccli", "ai", "offtopic", "incomplete", "other"];
+export const REJECT_REASONS: RejectReason[] = [
+  "quality", "duplicate", "licensing", "ccli", "ai", "offtopic", "incomplete", "other"
+];
 export const RESOLUTIONS: ReportResolution[] = ["upheld", "dismissed", "duplicate"];
 export const RESOLVE_ACTIONS: ReportAction[] = ["none", "unpublish", "remove"];
 export const REMOVE_REASONS: RemovedReason[] = ["copyright", "policy"];
@@ -156,6 +158,7 @@ export interface CommonsQueueRow {
   possibleDuplicate?: boolean;
   type?: SubmissionType;
   confidence?: Confidence;
+  song?: { writer?: string; songKey?: string; bpm?: number; firstLine?: string };
 }
 
 export interface CommonsSubmissionFile {
