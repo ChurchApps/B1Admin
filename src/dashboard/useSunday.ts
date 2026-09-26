@@ -74,7 +74,7 @@ const sundayAhead = (d: Date) => {
   return last.getTime() === d.getTime() ? last : addDays(last, 7);
 };
 
-const pickPlan = (plans: PlanInterface[], prefer: Date) => {
+const pickPlan = (plans: PlanInterface[], prefer: Date, planTimes?: Map<string, number>) => {
   if (!plans.length) return null;
   const preferT = prefer.getTime();
   const scored = [...plans].sort((a, b) => {
@@ -82,6 +82,12 @@ const pickPlan = (plans: PlanInterface[], prefer: Date) => {
     const db = Math.abs(planTime(b) - preferT);
     if (da !== db) return da - db;
     if (!!a.serviceOrder !== !!b.serviceOrder) return a.serviceOrder ? -1 : 1;
+    // When on same day, use earliest service time
+    if (planTimes && a.id && b.id) {
+      const ta = planTimes.get(a.id) ?? Infinity;
+      const tb = planTimes.get(b.id) ?? Infinity;
+      if (ta !== tb) return ta - tb;
+    }
     return planTime(a) - planTime(b);
   });
   return scored[0];
@@ -135,9 +141,22 @@ const loadSunday = async (): Promise<SundayData> => {
     plans = plans.filter((p) => inWindow(p, from, to));
   }
 
+  // Load times for all plans to pick earliest service on same day
+  const planTimes = new Map<string, number>();
+  await Promise.all(plans.map(async (p) => {
+    if (!p.id) return;
+    const times = await safeGet<TimeInterface[]>("/times/plan/" + p.id, "DoingApi", []);
+    const serviceTimes = times.filter((t) => (t.serviceTimeType ?? "service") === "service");
+    if (serviceTimes.length > 0) {
+      serviceTimes.sort((a, b) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
+      const earliest = serviceTimes[0].startTime;
+      if (earliest) planTimes.set(p.id, new Date(earliest).getTime());
+    }
+  }));
+
   const upcoming = plans.filter((p) => planTime(p) >= today.getTime());
-  const servingPlan = pickPlan(upcoming, comingSunday);
-  const plan = servingPlan || pickPlan(plans, lastSunday);
+  const servingPlan = pickPlan(upcoming, comingSunday, planTimes);
+  const plan = servingPlan || pickPlan(plans, lastSunday, planTimes);
   const attendanceDay = isSunday ? today : lastSunday;
   const dateStr = DateHelper.formatHtml5Date(attendanceDay);
   const canAttendance = UserHelper.checkAccess(Permissions.attendanceApi.attendance.view);
