@@ -538,6 +538,58 @@ export const CommonsReviewDrawer = (props: Props) => {
           {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")} data-testid="commons-drawer-error">{error}</Alert>}
           {approveBlocked && <Alert severity="warning" sx={{ mb: 2 }} data-testid="commons-drawer-rights-blocked">{Locale.label("serverAdmin.commonsTab.musicEditorRightsBlocked")}</Alert>}
 
+          {changesOpen && (
+            <Stack spacing={1.5} sx={{ mt: 2, p: 2, backgroundColor: "action.hover", borderRadius: 1 }} data-testid="commons-request-changes">
+              <TextField
+                size="small"
+                multiline
+                minRows={2}
+                label={Locale.label("serverAdmin.commonsTab.requestChangesNote")}
+                value={changesNote}
+                onChange={(e) => setChangesNote(e.target.value)}
+                autoFocus
+                data-testid="commons-request-changes-note"
+              />
+              <Box>
+                <Button variant="contained" color="warning" disabled={busy || !changesNote.trim()} onClick={requestChanges} data-testid="commons-request-changes-confirm">
+                  {Locale.label("serverAdmin.commonsTab.confirmRequestChanges")}
+                </Button>
+              </Box>
+            </Stack>
+          )}
+
+          {rejectOpen && (
+            <Stack spacing={1.5} sx={{ mt: 2, p: 2, backgroundColor: "action.hover", borderRadius: 1 }}>
+              <FormControl size="small">
+                <InputLabel id="commons-drawer-reject-reason-label">{Locale.label("serverAdmin.commonsTab.reason")}</InputLabel>
+                <Select
+                  labelId="commons-drawer-reject-reason-label"
+                  label={Locale.label("serverAdmin.commonsTab.reason")}
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value as RejectReason)}
+                  data-testid="commons-reject-reason"
+                >
+                  {REJECT_REASONS.map((r) => <MenuItem key={r} value={r}>{rejectReasonLabel(r)}</MenuItem>)}
+                </Select>
+              </FormControl>
+              <TextField
+                size="small"
+                multiline
+                minRows={2}
+                label={Locale.label("serverAdmin.commonsTab.note")}
+                value={rejectNote}
+                onChange={(e) => setRejectNote(e.target.value)}
+                autoFocus
+                data-testid="commons-reject-note"
+              />
+              <Box>
+                <Button variant="contained" color="error" disabled={busy || !rejectNote.trim()} onClick={reject} data-testid="commons-reject-confirm">
+                  {Locale.label("serverAdmin.commonsTab.confirmReject")}
+                </Button>
+              </Box>
+            </Stack>
+          )}
+
           <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" useFlexGap sx={{ position: "sticky", bottom: 0, zIndex: 1, bgcolor: "background.paper", py: 1.5, borderTop: 1, borderColor: "divider" }} data-testid="commons-drawer-actions">
             {!approveBlocked && (
               <>
@@ -578,55 +630,6 @@ export const CommonsReviewDrawer = (props: Props) => {
             </DialogActions>
           </Dialog>
 
-          {changesOpen && (
-            <Stack spacing={1.5} sx={{ mt: 2, p: 2, backgroundColor: "action.hover", borderRadius: 1 }} data-testid="commons-request-changes">
-              <TextField
-                size="small"
-                multiline
-                minRows={2}
-                label={Locale.label("serverAdmin.commonsTab.requestChangesNote")}
-                value={changesNote}
-                onChange={(e) => setChangesNote(e.target.value)}
-                data-testid="commons-request-changes-note"
-              />
-              <Box>
-                <Button variant="contained" color="warning" disabled={busy || !changesNote.trim()} onClick={requestChanges} data-testid="commons-request-changes-confirm">
-                  {Locale.label("serverAdmin.commonsTab.confirmRequestChanges")}
-                </Button>
-              </Box>
-            </Stack>
-          )}
-
-          {rejectOpen && (
-            <Stack spacing={1.5} sx={{ mt: 2, p: 2, backgroundColor: "action.hover", borderRadius: 1 }}>
-              <FormControl size="small">
-                <InputLabel id="commons-drawer-reject-reason-label">{Locale.label("serverAdmin.commonsTab.reason")}</InputLabel>
-                <Select
-                  labelId="commons-drawer-reject-reason-label"
-                  label={Locale.label("serverAdmin.commonsTab.reason")}
-                  value={rejectReason}
-                  onChange={(e) => setRejectReason(e.target.value as RejectReason)}
-                  data-testid="commons-reject-reason"
-                >
-                  {REJECT_REASONS.map((r) => <MenuItem key={r} value={r}>{rejectReasonLabel(r)}</MenuItem>)}
-                </Select>
-              </FormControl>
-              <TextField
-                size="small"
-                multiline
-                minRows={2}
-                label={Locale.label("serverAdmin.commonsTab.note")}
-                value={rejectNote}
-                onChange={(e) => setRejectNote(e.target.value)}
-                data-testid="commons-reject-note"
-              />
-              <Box>
-                <Button variant="contained" color="error" disabled={busy || !rejectNote.trim()} onClick={reject} data-testid="commons-reject-confirm">
-                  {Locale.label("serverAdmin.commonsTab.confirmReject")}
-                </Button>
-              </Box>
-            </Stack>
-          )}
         </Box>
       )}
     </Drawer>
