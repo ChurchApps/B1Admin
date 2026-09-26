@@ -6,9 +6,11 @@ import UserContext from "../../UserContext";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
 
+type ChurchRow = ChurchInterface & { emailApprovedDate?: Date };
+
 export const ChurchesTab = () => {
   const [searchText, setSearchText] = React.useState<string>("");
-  const [churches, setChurches] = React.useState<ChurchInterface[]>([]);
+  const [churches, setChurches] = React.useState<ChurchRow[]>([]);
   const [redirectUrl, setRedirectUrl] = React.useState<string>("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -30,6 +32,17 @@ export const ChurchesTab = () => {
     } catch { /* surfaced by ErrorHelper */ }
   };
 
+  const handleEmailApproval = async (church: ChurchRow) => {
+    const approving = !church.emailApprovedDate;
+    const msg = (approving ? Locale.label("serverAdmin.churchesTab.emailApproveConfirm") : Locale.label("serverAdmin.churchesTab.emailRevokeConfirm")).replace("{name}", church.name || "");
+    if (!(await confirm(msg, { destructive: !approving, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
+
+    try {
+      const updated: ChurchRow = await ApiHelper.post("/churches/" + church.id + "/emailApproval", { approved: approving }, "MembershipApi");
+      setChurches((prev) => prev.map((c) => (c.id === church.id ? { ...c, emailApprovedDate: updated?.emailApprovedDate } : c)));
+    } catch { /* surfaced by ErrorHelper */ }
+  };
+
   const getLocation = (church: ChurchInterface) => {
     const parts = [church.city, church.state, church.country].filter(part => part && part.trim());
     return parts.length > 0 ? parts.join(", ") : "-";
@@ -46,6 +59,17 @@ export const ChurchesTab = () => {
         </TableCell>
         <TableCell>{getLocation(c)}</TableCell>
         <TableCell>{DateHelper.prettyDate(DateHelper.toDate(c.registrationDate))}</TableCell>
+        <TableCell>
+          <Chip
+            label={c.emailApprovedDate ? Locale.label("serverAdmin.churchesTab.emailApproved") : Locale.label("serverAdmin.churchesTab.emailNotApproved")}
+            color={c.emailApprovedDate ? "success" : "default"}
+            variant={c.emailApprovedDate ? "filled" : "outlined"}
+            size="small"
+            onClick={() => handleEmailApproval(c)}
+            data-testid={`toggle-church-email-${c.id}`}
+            sx={{ cursor: "pointer" }}
+          />
+        </TableCell>
         <TableCell align="right">
           <Chip
             label={c.archivedDate ? Locale.label("serverAdmin.adminPage.arch") : Locale.label("serverAdmin.adminPage.act")}
@@ -120,6 +144,7 @@ export const ChurchesTab = () => {
                   <TableCell>{Locale.label("serverAdmin.adminPage.church")}</TableCell>
                   <TableCell>{Locale.label("serverAdmin.adminPage.location")}</TableCell>
                   <TableCell>{Locale.label("serverAdmin.adminPage.regist")}</TableCell>
+                  <TableCell>{Locale.label("serverAdmin.churchesTab.groupEmail")}</TableCell>
                   <TableCell align="right">{Locale.label("serverAdmin.adminPage.act")}</TableCell>
                 </TableRow>
               </TableHead>

@@ -1407,7 +1407,14 @@
       "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "subject": "Subject",
       "subjectMergeFieldHint": "Insert merge field into subject:",
-      "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}"
+      "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}",
+      "reviewTitle": "Group email needs a quick review",
+      "reviewBody": "To keep every church's email out of spam folders, we review each church once before it can send group email. Request a review and our team will turn it on, usually within one business day.",
+      "reviewRequestedTitle": "Review requested",
+      "reviewRequestedBody": "Thanks! Our team has been notified and will turn on group email for your church shortly. You can close this window.",
+      "reviewWhy": "Emails from B1 share one sending reputation, so this step protects your messages from being flagged as spam.",
+      "requestReview": "Request review",
+      "pausedNotice": "Group email is paused because recent messages bounced or were reported as spam. Please contact support."
     },
     "sendTextDialog": {
       "characterCount": "{count} characters in {segments} segment(s).",
@@ -3118,6 +3125,11 @@
     "churchesTab": {
       "archiveConfirm": "Archive {name}? Members will lose access until it is restored.",
       "churchNameSearchAria": "Church name search",
+      "emailApproveConfirm": "Allow {name} to send group email?",
+      "emailApproved": "Approved",
+      "emailNotApproved": "Not approved",
+      "emailRevokeConfirm": "Stop {name} from sending group email?",
+      "groupEmail": "Group Email",
       "restoreConfirm": "Restore access for {name}?",
       "searchChurchesAria": "Search churches"
     },

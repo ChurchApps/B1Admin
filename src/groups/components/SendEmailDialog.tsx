@@ -1,5 +1,6 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab, Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+import { MarkEmailRead as MarkEmailReadIcon, VerifiedUser as VerifiedUserIcon } from "@mui/icons-material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, UserHelper } from "@churchapps/apphelper";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
@@ -58,6 +59,13 @@ interface SendResult {
   noEmailCount: number;
 }
 
+interface SendStatus {
+  approved: boolean;
+  paused: boolean;
+  remaining: number;
+  requested?: boolean;
+}
+
 interface Props {
   groupId: string;
   groupName: string;
@@ -72,6 +80,8 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [loadingTemplates, setLoadingTemplates] = React.useState(true);
   const [bodyEditorKey, setBodyEditorKey] = React.useState(0);
   const [showPreview, setShowPreview] = React.useState(false);
+  const [sendStatus, setSendStatus] = React.useState<SendStatus | null>(null);
+  const [requesting, setRequesting] = React.useState(false);
 
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
     previewUrl: props.groupId ? "/emailTemplates/preview/" + props.groupId : null,
@@ -96,10 +106,10 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     previewHtml = previewHtml.replace(/\{\{displayName\}\}/g, "John Smith");
     previewHtml = previewHtml.replace(/\{\{email\}\}/g, "john@example.com");
     previewHtml = previewHtml.replace(/\{\{churchName\}\}/g, churchName);
-    
+
     const isDarkTheme = document.body.classList.contains("dark-theme");
     const styleInjection = isDarkTheme ? "<style>body { color: white; font-family: sans-serif; }</style>" : "<style>body { font-family: sans-serif; }</style>";
-    
+
     return previewHtml + styleInjection;
   };
 
@@ -112,6 +122,19 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     previewSubject = previewSubject.replace(/\{\{email\}\}/g, "john@example.com");
     previewSubject = previewSubject.replace(/\{\{churchName\}\}/g, churchName);
     return previewSubject;
+  };
+
+  React.useEffect(() => {
+    ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi").then((data: SendStatus) => setSendStatus(data)).catch(() => { /* send still enforces the limit server-side */ });
+  }, []);
+
+  const handleRequestReview = async () => {
+    setRequesting(true);
+    try {
+      await ApiHelper.post("/emailTemplates/requestApproval", {}, "MessagingApi");
+      setSendStatus((prev) => (prev ? { ...prev, requested: true } : prev));
+    } catch { /* surfaced by ErrorHelper */ }
+    setRequesting(false);
   };
 
   React.useEffect(() => {
@@ -174,6 +197,35 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     );
   };
 
+  if (sendStatus && !sendStatus.approved) {
+    return (
+      <Dialog open onClose={props.onClose} maxWidth="sm" fullWidth>
+        <DialogContent>
+          <Box sx={{ textAlign: "center", py: 3, px: { xs: 1, sm: 3 } }}>
+            <Box sx={{ width: 72, height: 72, borderRadius: "50%", mx: "auto", mb: 2, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "primary.main", color: "primary.contrastText" }}>
+              {sendStatus.requested ? <MarkEmailReadIcon sx={{ fontSize: 36 }} /> : <VerifiedUserIcon sx={{ fontSize: 36 }} />}
+            </Box>
+            <Typography variant="h6" sx={{ mb: 1 }}>
+              {sendStatus.requested ? Locale.label("groups.sendEmailDialog.reviewRequestedTitle") : Locale.label("groups.sendEmailDialog.reviewTitle")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
+              {sendStatus.requested ? Locale.label("groups.sendEmailDialog.reviewRequestedBody") : Locale.label("groups.sendEmailDialog.reviewBody")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">{Locale.label("groups.sendEmailDialog.reviewWhy")}</Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.onClose}>{Locale.label("common.close")}</Button>
+          {!sendStatus.requested && (
+            <Button variant="contained" onClick={handleRequestReview} disabled={requesting} data-testid="request-email-review">
+              {Locale.label("groups.sendEmailDialog.requestReview")}
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
   const canSend = !sending && subject.trim().length > 0 && htmlContent.trim().length > 0 && (!preview || preview.eligibleCount > 0);
 
   return (
@@ -191,6 +243,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       sendLabel={Locale.label("groups.sendEmailDialog.send")}
       sendingLabel={Locale.label("groups.sendEmailDialog.sending")}
     >
+      {sendStatus?.paused && <Alert severity="warning" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.pausedNotice")}</Alert>}
       {renderPreview()}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
