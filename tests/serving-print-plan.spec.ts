@@ -155,6 +155,46 @@ test.describe("Serving - Print Plan without lesson content", () => {
   });
 });
 
+// Issue #1127: when the per-service exclusions lookup (/planItemTimes/plan/:id) fails,
+// the print page must still print the service order instead of a blank sheet.
+test.describe("Serving - Print Plan with a failed exclusions lookup", () => {
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    jwt = await apiLogin(ctx);
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Print Exclusions Failure Repro", serviceDate: "2030-05-05" }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    planId = (await planRes.json())[0].id;
+
+    const itemsRes = await ctx.post(`${API}/doing/planItems`, {
+      ...auth,
+      data: [{ planId, sort: 1, itemType: "item", label: "Opening Hymn", description: "Congregation stands", seconds: 240 }]
+    });
+    expect(itemsRes.ok()).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, { headers: { Authorization: "Bearer " + jwt } });
+    await ctx.dispose();
+  });
+
+  test("prints the service order when /planItemTimes fails", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.route("**/doing/planItemTimes/plan/**", (route) => route.fulfill({ status: 500, json: { errors: ["Unknown column 'positionId'"] } }));
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByRole("button", { name: "Print" })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Opening Hymn")).toBeVisible({ timeout: 15000 });
+  });
+});
+
 // Issue #1086: the printed Service Order shows section headers in place (spanning the
 // table) with their assigned position/volunteer, instead of flattening every item
 // into one undivided list.

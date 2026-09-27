@@ -126,7 +126,8 @@ export const PrintPlan = () => {
       ApiHelper.get("/positions/plan/" + params.id, "DoingApi"),
       ApiHelper.get("/planItems/plan/" + params.id?.toString(), "DoingApi"),
       ApiHelper.get("/times/plan/" + params.id, "DoingApi"),
-      ApiHelper.get("/planItemTimes/plan/" + params.id, "DoingApi"),
+      // Per-service exclusions are optional; a failed lookup should not blank the printout.
+      ApiHelper.get("/planItemTimes/plan/" + params.id, "DoingApi").catch((error: any) => { console.error("Failed to load plan item exclusions:", error); return []; }),
       ApiHelper.get("/assignments/plan/" + params.id, "DoingApi")
     ];
 
