@@ -1,20 +1,20 @@
 import { request as pwRequest, type APIRequestContext } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
-// Issue 1135: Forms > Submissions crashed with "(d.choices || i).forEach is not a function"
+// Forms > Submissions crashed with "(d.choices || i).forEach is not a function"
 // for some forms. Forms copied before the #1097 duplicate fix hold their answer choices
 // JSON-encoded twice, so the API parsed them back into a string instead of an array.
 // Sending choices as a JSON string through the questions endpoint writes the same
 // double-encoded value, which is how this spec recreates one of those forms.
 const API = process.env.API_BASE || "http://localhost:8084";
-const FORM_NAME = "Issue 1135 Copied Survey";
+const FORM_NAME = "Copied Survey With Encoded Choices";
 const DONALD_CLARK = "PER00000080";
 const choices = [
   { value: "Sunday Morning", text: "Sunday Morning" },
   { value: "Wednesday Night", text: "Wednesday Night" }
 ];
 
-test.describe.serial("Issue 1135 - form submissions with double-encoded choices", () => {
+test.describe.serial("Form submissions with double-encoded choices", () => {
   let ctx: APIRequestContext;
   let auth: { headers: { Authorization: string } };
   let formId = "";
