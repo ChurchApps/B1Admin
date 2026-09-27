@@ -1,4 +1,5 @@
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
+import { openPrimaryNav } from "./helpers/navigation";
 
 test.describe("Sunday home", () => {
   test.beforeEach(async ({ page }) => {
@@ -15,6 +16,28 @@ test.describe("Sunday home", () => {
     const groupLinks = page.locator('a[href^="/groups/GRP"]');
     await expect(groupLinks.first()).toBeVisible({ timeout: 10000 });
     expect(await groupLinks.count()).toBeGreaterThan(0);
+  });
+
+  // #1126: the dashboard header and primary nav item read "Dashboard", not "Sunday".
+  // The shell renders getPrimaryLabel() (dashboard.dashboardPage.dash) into #primaryNavButton h2;
+  // there is no #page-header-title on this route.
+  test("dashboard header and nav item read Dashboard, not Sunday", async ({ page }) => {
+    await expect(page.locator("#primaryNavButton h2")).toHaveText("Dashboard", { timeout: 10000 });
+
+    // Header.tsx stamps nav-item-dashboard on the item labelled components.wrapper.dash,
+    // which only exists once the primary drawer is open.
+    const navItem = page.locator('[data-testid="nav-item-dashboard"]');
+    if (!(await navItem.first().isVisible().catch(() => false))) await openPrimaryNav(page);
+    await expect(navItem.first()).toBeVisible({ timeout: 10000 });
+    await expect(navItem.first().locator(".MuiListItemText-primary")).toHaveText(/^dashboard$/i);
+
+    // The bulletin eyebrow stays a calendar line; it must not collapse to the nav label.
+    const eyebrow = page.locator('[data-testid="sunday-home"] .om-eyebrow');
+    await expect(eyebrow).toBeVisible();
+    await expect(eyebrow).toHaveText(
+      /^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday) · (January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}/
+    );
+    expect((await eyebrow.textContent())?.trim()).not.toBe("Dashboard");
   });
 
   test("My Work from Sunday opens tasks", async ({ page }) => {
