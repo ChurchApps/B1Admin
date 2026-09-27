@@ -1,10 +1,10 @@
 import React from "react";
 import { DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
 import {
-  Alert, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Snackbar, Stack,
+  Alert, Avatar, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Paper, Select, Snackbar, Stack, Tab, Tabs,
   Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
 } from "@mui/material";
-import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { CountChip, NavigationTabs, type NavigationTab } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import {
   CommonsApi, getWorshipCommonsOrigin, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
@@ -54,151 +54,154 @@ const badgeLabel = (row: CommonsQueueRow) => {
   return Locale.label("serverAdmin.commonsTab.badgeEditByAuthor");
 };
 
+const fileIcon = (name: string) => {
+  const ext = name.split(".").pop()?.toLowerCase() || "";
+  if (["mp3", "wav", "m4a", "ogg", "flac"].includes(ext)) return "graphic_eq";
+  if (ext === "pdf") return "picture_as_pdf";
+  if (["png", "jpg", "jpeg", "webp", "gif", "tif"].includes(ext)) return "image";
+  if ([
+    "mid", "midi", "abc", "musicxml", "xml", "mxl", "mscz", "ly"
+  ].includes(ext)) return "music_note";
+  if (ext === "zip") return "folder_zip";
+  return "description";
+};
+
+const fileChipColor = (action: string) => (action === "add" ? "success" : action === "remove" ? "error" : "info");
+
+const QueueCard = (props: { row: CommonsQueueRow; onReview: () => void }) => {
+  const { row } = props;
+  const submittedDate = row.submittedAt ? DateHelper.toDate(row.submittedAt) : null;
+  const overdue = !!submittedDate && Date.now() - submittedDate.getTime() > OVERDUE_MS;
+  const score = row.triageScore;
+  const songMeta = [
+    row.song?.writer,
+    row.song?.songKey && Locale.label("serverAdmin.commonsTab.songKey").replace("{key}", row.song.songKey),
+    row.song?.bpm && Locale.label("serverAdmin.commonsTab.bpm").replace("{bpm}", String(row.song.bpm))
+  ].filter(Boolean).join(" · ");
+
+  return (
+    <Paper
+      variant="outlined"
+      onClick={props.onReview}
+      data-testid={`commons-queue-row-${row.id}`}
+      sx={{ p: 2, display: "flex", gap: 2, alignItems: "flex-start", cursor: "pointer", transition: "border-color .15s, box-shadow .15s", "&:hover": { borderColor: "primary.main", boxShadow: 1 } }}
+    >
+      <Avatar variant="rounded" sx={{ width: 48, height: 48, bgcolor: "primary.main", display: { xs: "none", sm: "flex" } }}>
+        <Icon>{row.assetType === "song" ? "music_note" : "description"}</Icon>
+      </Avatar>
+
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.3 }}>{row.assetName || "-"}</Typography>
+          <Chip size="small" label={badgeLabel(row)} color={row.isNewAsset ? "primary" : "default"} variant="outlined" />
+          {row.possibleDuplicate && (
+            <Tooltip title={Locale.label("serverAdmin.commonsTab.possibleDuplicateTooltip")}>
+              <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
+            </Tooltip>
+          )}
+          {row.rightsFlag && (
+            <Tooltip title={Locale.label("serverAdmin.commonsTab.rightsFlagTooltip")}>
+              <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.rightsFlag")} />
+            </Tooltip>
+          )}
+          <ConfidenceChip confidence={row.confidence} />
+        </Stack>
+        {songMeta && <Typography variant="body2" color="text.secondary">{songMeta}</Typography>}
+        {row.song?.firstLine && (
+          <Typography variant="body2" color="text.secondary" noWrap sx={{ fontStyle: "italic", mt: 0.25 }}>“{row.song.firstLine}”</Typography>
+        )}
+
+        <Stack direction="row" spacing={0.75} flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
+          {row.filesChanged?.length ? row.filesChanged.map((f) => (
+            <Chip
+              key={f.name}
+              size="small"
+              variant="outlined"
+              color={fileChipColor(f.action)}
+              icon={<Icon sx={{ fontSize: 16 }}>{fileIcon(f.name)}</Icon>}
+              label={`${changeSymbol(f.action)}${f.name}`}
+              sx={f.action === "remove" ? { textDecoration: "line-through" } : undefined}
+            />
+          )) : (
+            <Typography variant="caption" color="text.secondary">
+              {row.isNewAsset ? Locale.label("serverAdmin.commonsTab.newNoFiles") : Locale.label("serverAdmin.commonsTab.detailsUpdated")}
+            </Typography>
+          )}
+        </Stack>
+
+        <Typography variant="caption" color="text.secondary" component="div" sx={{ mt: 1 }}>
+          <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{row.submittedByName || "-"}</Box>
+          {row.submitterStats && <> · {submitterRecord(row.submitterStats)}</>}
+          {submittedDate && (
+            <>
+              {" · "}
+              <Tooltip title={DateHelper.prettyDate(submittedDate)}>
+                <Box component="span" sx={overdue ? { color: "error.main", fontWeight: 600 } : undefined}>{queueAge(submittedDate)}</Box>
+              </Tooltip>
+            </>
+          )}
+        </Typography>
+      </Box>
+
+      <Stack alignItems="flex-end" spacing={1} sx={{ flexShrink: 0 }}>
+        {score != null && (
+          <Tooltip title={scoreTooltip(score, row.qualityDetail)}>
+            <Chip size="small" label={`${Locale.label("serverAdmin.commonsTab.colScore")} ${score}`} sx={{ fontWeight: 600, cursor: "help" }} />
+          </Tooltip>
+        )}
+        <Button size="small" variant="contained" onClick={(e) => { e.stopPropagation(); props.onReview(); }} data-testid={`commons-review-${row.id}`}>
+          {Locale.label("serverAdmin.commonsTab.review")}
+        </Button>
+      </Stack>
+    </Paper>
+  );
+};
+
 const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor?: boolean }) => {
   const [types, setTypes] = React.useState<CommonsTypeDef[]>([]);
-  const [rows, setRows] = React.useState<CommonsQueueRow[]>([]);
-  const [product, setProduct] = React.useState("");
+  const [rows, setRows] = React.useState<CommonsQueueRow[] | null>(null);
   const [assetType, setAssetType] = React.useState("");
   const [reviewId, setReviewId] = React.useState<string | null>(null);
 
-  React.useEffect(() => { CommonsApi.get("/admin/types").then((data: CommonsTypeDef[]) => setTypes(data || [])); }, []);
+  React.useEffect(() => {
+    CommonsApi.get("/admin/types").then((data: CommonsTypeDef[]) => setTypes(data || []));
+    CommonsApi.get("/admin/submissions?status=pending").then((data: CommonsQueueRow[]) => setRows(data || []));
+  }, []);
 
-  const load = React.useCallback(() => {
-    const params = new URLSearchParams({ status: "pending" });
-    if (assetType) params.set("assetType", assetType);
-    if (product) params.set("product", product);
-    CommonsApi.get(`/admin/submissions?${params.toString()}`).then((data: CommonsQueueRow[]) => setRows(data || []));
-  }, [assetType, product]);
+  const counts = React.useMemo(() => {
+    const c: Record<string, number> = {};
+    (rows || []).forEach((r) => { c[r.assetType] = (c[r.assetType] || 0) + 1; });
+    return c;
+  }, [rows]);
+  const tabTypes = types.filter((t) => counts[t.key]);
+  const selected = counts[assetType] ? assetType : tabTypes[0]?.key || "";
+  const visible = React.useMemo(() => (rows || []).filter((r) => r.assetType === selected), [rows, selected]);
+  const queueIds = React.useMemo(() => visible.map((r) => r.id), [visible]);
 
-  React.useEffect(() => { load(); }, [load]);
-
-  const products = React.useMemo(() => {
-    const seen = new Map<string, string>();
-    types.forEach((t) => seen.set(t.product, t.productLabel));
-    return Array.from(seen.entries());
-  }, [types]);
-  const typesForProduct = React.useMemo(() => types.filter((t) => !product || t.product === product), [types, product]);
-  const queueIds = React.useMemo(() => rows.map((r) => r.id), [rows]);
-
-  const removeRow = (id: string) => setRows((prev) => prev.filter((r) => r.id !== id));
-
-  const changesSummary = (row: CommonsQueueRow) => {
-    if (!row.filesChanged?.length) return row.isNewAsset ? Locale.label("serverAdmin.commonsTab.newNoFiles") : Locale.label("serverAdmin.commonsTab.detailsUpdated");
-    return row.filesChanged.map((f) => `${changeSymbol(f.action)}${f.name}`).join(" ");
-  };
+  const removeRow = (id: string) => setRows((prev) => (prev || []).filter((r) => r.id !== id));
 
   return (
     <DisplayBox headerIcon="inventory_2" headerText={Locale.label("serverAdmin.commonsTab.tabQueue")}>
-      <Stack direction="row" spacing={2} sx={{ mb: 2, pt: 1 }}>
-        {products.length > 1 && <FormControl size="small" sx={{ minWidth: 220, "& .MuiInputLabel-root": { overflow: "visible" } }}>
-          <InputLabel id="commons-product-label" shrink>{Locale.label("serverAdmin.commonsTab.product")}</InputLabel>
-          <Select
-            labelId="commons-product-label"
-            label={Locale.label("serverAdmin.commonsTab.product")}
-            displayEmpty
-            notched
-            value={product}
-            onChange={(e) => { setProduct(e.target.value); setAssetType(""); }}
-            data-testid="commons-filter-product"
-          >
-            <MenuItem value="">{Locale.label("serverAdmin.commonsTab.allProducts")}</MenuItem>
-            {products.map(([key, label]) => <MenuItem key={key} value={key}>{label}</MenuItem>)}
-          </Select>
-        </FormControl>}
-        <FormControl size="small" sx={{ minWidth: 240, "& .MuiInputLabel-root": { overflow: "visible" } }}>
-          <InputLabel id="commons-type-label" shrink>{Locale.label("serverAdmin.commonsTab.assetType")}</InputLabel>
-          <Select
-            labelId="commons-type-label"
-            label={Locale.label("serverAdmin.commonsTab.assetType")}
-            displayEmpty
-            notched
-            value={assetType}
-            onChange={(e) => setAssetType(e.target.value)}
-            data-testid="commons-filter-type"
-          >
-            <MenuItem value="">{Locale.label("serverAdmin.commonsTab.allTypes")}</MenuItem>
-            {typesForProduct.map((t) => <MenuItem key={t.key} value={t.key}>{t.label}</MenuItem>)}
-          </Select>
-        </FormControl>
-      </Stack>
+      {tabTypes.length > 0 && (
+        <Tabs value={selected} onChange={(_, v) => setAssetType(v)} variant="scrollable" sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }} data-testid="commons-type-tabs">
+          {tabTypes.map((t) => (
+            <Tab
+              key={t.key}
+              value={t.key}
+              data-testid={`commons-type-tab-${t.key}`}
+              sx={{ textTransform: "none", fontWeight: 600 }}
+              label={<Stack direction="row" spacing={1} alignItems="center"><span>{t.label}</span><CountChip count={counts[t.key] || 0} /></Stack>}
+            />
+          ))}
+        </Tabs>
+      )}
 
-      {rows.length === 0 ? (
+      {rows === null ? <CircularProgress size={24} /> : visible.length === 0 ? (
         <Typography variant="body2">{Locale.label("serverAdmin.commonsTab.noSubmissions")}</Typography>
       ) : (
-        <Table size="small" id="commonsQueueTable">
-          <TableHead>
-            <TableRow>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.colType")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.colAsset")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.colSubmitter")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.colChanges")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.colAge")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.colScore")}</TableCell>
-              <TableCell align="right">{Locale.label("serverAdmin.commonsTab.colActions")}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => {
-              const submittedDate = row.submittedAt ? DateHelper.toDate(row.submittedAt) : null;
-              const age = submittedDate ? queueAge(submittedDate) : "-";
-              const overdue = !!submittedDate && Date.now() - submittedDate.getTime() > OVERDUE_MS;
-              const score = row.triageScore;
-              return (
-                <TableRow key={row.id} data-testid={`commons-queue-row-${row.id}`}>
-                  <TableCell>
-                    {row.typeLabel}
-                    <br />
-                    <Chip size="small" label={row.productLabel} />
-                  </TableCell>
-                  <TableCell sx={{ whiteSpace: "normal", wordBreak: "break-word", maxWidth: 280 }}>
-                    {row.assetName}
-                    <br />
-                    <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
-                      <Chip size="small" label={badgeLabel(row)} />
-                      {row.rightsFlag && (
-                        <Tooltip title={Locale.label("serverAdmin.commonsTab.rightsFlagTooltip")}>
-                          <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.rightsFlag")} />
-                        </Tooltip>
-                      )}
-                      {row.possibleDuplicate && (
-                        <Tooltip title={Locale.label("serverAdmin.commonsTab.possibleDuplicateTooltip")}>
-                          <Chip size="small" color="warning" label={Locale.label("serverAdmin.commonsTab.possibleDuplicate")} />
-                        </Tooltip>
-                      )}
-                      <ConfidenceChip confidence={row.confidence} />
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    {row.submittedByName || "-"}
-                    {row.submitterStats && (
-                      <>
-                        <br />
-                        <Typography variant="caption" color="text.secondary">{submitterRecord(row.submitterStats)}</Typography>
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell>{changesSummary(row)}</TableCell>
-                  <TableCell sx={overdue ? { color: "error.main" } : undefined}>
-                    {age}
-                    {submittedDate && <Typography variant="caption" color="text.secondary" display="block">{DateHelper.prettyDate(submittedDate)}</Typography>}
-                  </TableCell>
-                  <TableCell>
-                    {score == null ? "-" : (
-                      <Tooltip title={scoreTooltip(score, row.qualityDetail)}>
-                        <Typography variant="body2" component="span" sx={{ borderBottom: "1px dotted", cursor: "help" }}>{score}</Typography>
-                      </Tooltip>
-                    )}
-                  </TableCell>
-                  <TableCell align="right">
-                    <Button size="small" onClick={() => setReviewId(row.id)} data-testid={`commons-review-${row.id}`}>
-                      {Locale.label("serverAdmin.commonsTab.review")}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <Stack spacing={1.5} id="commonsQueueTable">
+          {visible.map((row) => <QueueCard key={row.id} row={row} onReview={() => setReviewId(row.id)} />)}
+        </Stack>
       )}
 
       {reviewId && (
