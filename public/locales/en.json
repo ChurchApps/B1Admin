@@ -524,7 +524,7 @@
     },
     "wrapper": {
       "att": "Attendance",
-      "dash": "Sunday",
+      "dash": "Dashboard",
       "don": "Donations",
       "forms": "Forms",
       "groups": "Groups",
@@ -566,7 +566,7 @@
       "yourProfile": "Your Profile"
     },
     "dashboardPage": {
-      "dash": "Sunday"
+      "dash": "Dashboard"
     },
     "memberWelcome": {
       "downloadAppTitle": "Download the Mobile App",
