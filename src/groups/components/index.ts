@@ -8,7 +8,6 @@ export { GroupMembers } from "./GroupMembers";
 export { PendingJoinRequests } from "./PendingJoinRequests";
 export { GroupNavigation } from "./GroupNavigation";
 export { GroupSessions } from "./GroupSessions";
-export { MembersAdd } from "./MembersAdd";
 export { ServiceTimes } from "./ServiceTimes";
 export { ServiceTimesEdit } from "./ServiceTimesEdit";
 export { SessionEdit } from "./SessionEdit";

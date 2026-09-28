@@ -46,6 +46,7 @@ import {
   EditNote as EditNoteIcon,
   Groups as GroupsIcon,
   PersonRemove as PersonRemoveIcon,
+  Print as PrintIcon,
   Send as SendIcon,
   Star as StarIcon,
   StarBorder as StarBorderIcon
@@ -328,6 +329,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <AppIconButton label={Locale.label("groups.groupMembers.sendMemMsg")} icon={<EditNoteIcon />} tone="card" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" />
       )}
+      <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/groups/print-roster?groupId=" + props.group.id + "&autoprint=1", "_blank")} data-testid="print-roster-button" />
       <ExportButton data={exportData} filename="groupmembers.csv" text={Locale.label("groups.groupsPage.export")} />
     </Stack>
   );

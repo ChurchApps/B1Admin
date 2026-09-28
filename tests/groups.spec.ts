@@ -5,6 +5,33 @@ import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
+async function openSessionOn(page: Page, date: string) {
+  await openSeedGroup(page, SESSION_GROUP);
+  await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
+  await page.locator("button").getByText("Sessions").click();
+  await page.locator("button").getByText("New").first().click();
+  await page.locator('[data-testid="session-date-input"] input').fill(date);
+  const saveBtn = page.getByRole("button", { name: "Save", exact: true });
+  await expect(saveBtn).toBeEnabled({ timeout: 10000 });
+  await saveBtn.click();
+  await selectSession(page, date);
+}
+
+// Session list labels are MM/DD/YYYY.
+async function selectSession(page: Page, date: string) {
+  const [y, m, d] = date.split("-");
+  const label = `${m}/${d}/${y}`;
+  const item = page.getByRole("button").filter({ hasText: label }).first();
+  await item.click({ timeout: 10000 });
+  await expect(item).toContainText("Active", { timeout: 10000 });
+  await expect(page.locator('[data-cy="session-present-msg"]')).toBeVisible({ timeout: 10000 });
+}
+
+async function saveAttendance(page: Page) {
+  await page.locator('[data-testid="save-attendance-button"]').click();
+  await expect(page.locator('[data-testid="attendance-save-message"]')).toHaveText("Attendance saved.", { timeout: 10000 });
+}
+
 test.describe.serial("Group Management", () => {
   let page: Page;
 
@@ -268,7 +295,7 @@ test.describe.serial("Group Management", () => {
       await newBtn.click();
       const dateBox = page.locator('[data-testid="session-date-input"]');
       await dateBox.locator("input").fill("2025-09-01");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.getByRole("button", { name: "Save", exact: true });
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
       const sessionCard = page.locator("span").getByText("Active");
@@ -276,53 +303,56 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should add person to session", async () => {
-      await openSeedGroup(page, SESSION_GROUP);
-      await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
-
-      const sessionsBtn = page.locator("button").getByText("Sessions");
-      await sessionsBtn.click();
-      const newBtn = page.locator("button").getByText("New").first();
-      await newBtn.click();
-      const dateBox = page.locator('[data-testid="session-date-input"]');
-      await dateBox.locator("input").fill("2025-10-01");
-      const saveBtn = page.locator("button").getByText("Save");
-      await expect(saveBtn).toBeEnabled({ timeout: 10000 });
-      await saveBtn.click();
-      // New sessions UI: most recent past session auto-selects on save —
-      // SessionAttendance panel renders "Attendance for ..." once selected.
-      const attendanceHeader = page.locator('[data-cy="session-present-msg"]');
-      await expect(attendanceHeader).toBeVisible({ timeout: 10000 });
-      const addBtn = page.locator('button[data-testid="add-member-button"]').first();
-      await addBtn.click();
-      const addedPerson = page.locator('[id="groupMemberTable"] td a.personName');
-      await expect(addedPerson).toHaveCount(1, { timeout: 10000 });
+      await openSessionOn(page, "2025-10-01");
+      await page.getByRole("checkbox", { name: "William Anderson" }).check();
+      await saveAttendance(page);
+      await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("1 of 3 present");
+      await expect(page.getByRole("checkbox", { name: "William Anderson" })).toBeChecked();
     });
 
     test("should remove person from session", async () => {
-      await openSeedGroup(page, SESSION_GROUP);
-      await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
+      await openSessionOn(page, "2025-11-01");
+      const william = page.getByRole("checkbox", { name: "William Anderson" });
+      await william.check();
+      await saveAttendance(page);
+      await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("1 of 3 present");
+      await william.uncheck();
+      await saveAttendance(page);
+      await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("0 of 3 present");
+      await expect(william).not.toBeChecked();
+    });
 
-      const sessionsBtn = page.locator("button").getByText("Sessions");
-      await sessionsBtn.click();
-      const newBtn = page.locator("button").getByText("New").first();
-      await newBtn.click();
-      const dateBox = page.locator('[data-testid="session-date-input"]');
-      await dateBox.locator("input").fill("2025-11-01");
-      const saveBtn = page.locator("button").getByText("Save");
-      await expect(saveBtn).toBeEnabled({ timeout: 10000 });
-      await saveBtn.click();
-      const attendanceHeader = page.locator('[data-cy="session-present-msg"]');
-      await expect(attendanceHeader).toBeVisible({ timeout: 10000 });
-      const addBtn = page.locator('button[data-testid="add-member-button"]').first();
-      await addBtn.click();
-      const addedPerson = page.locator('[id="groupMemberTable"] td a.personName');
-      await expect(addedPerson).toHaveCount(1, { timeout: 10000 });
-      // Session attendance row's remove control is an icon-only IconButton
-      // with data-testid="remove-session-visitor-button-<id>".
-      const removeBtn = page.locator('button[data-testid^="remove-session-visitor-button-"]').first();
-      await removeBtn.click();
-      await confirmDelete(page);
-      await expect(addedPerson).toHaveCount(0, { timeout: 10000 });
+    test("records the whole class roster with one Save", async () => {
+      await openSessionOn(page, "2025-12-07");
+      const rows = page.locator('[data-testid="session-roster-row"]');
+      await expect(rows).toHaveCount(3, { timeout: 10000 });
+      await page.locator('[data-testid="attendance-select-all"]').click();
+      await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("3 of 3 present");
+      await page.getByRole("checkbox", { name: "George Thompson" }).uncheck();
+      await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("2 of 3 present");
+      await saveAttendance(page);
+
+      // Reload: the saved state comes back from the API, not local state.
+      await page.reload();
+      await page.locator("button").getByText("Sessions").click();
+      await selectSession(page, "2025-12-07");
+      await expect(page.getByRole("checkbox", { name: "William Anderson" })).toBeChecked({ timeout: 10000 });
+      await expect(page.getByRole("checkbox", { name: "Margaret Thompson" })).toBeChecked();
+      await expect(page.getByRole("checkbox", { name: "George Thompson" })).not.toBeChecked();
+      await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("2 of 3 present");
+    });
+
+    test("prints a class roll sheet for the group", async () => {
+      await openSeedGroup(page, SESSION_GROUP);
+      await expect(page.locator('[data-testid="print-roster-button"]')).toBeVisible({ timeout: 10000 });
+      const groupId = new URL(page.url()).pathname.split("/").pop();
+      await page.goto("/groups/print-roster?groupId=" + groupId + "&date=2025-12-07");
+      await expect(page.locator("h1.roster-title")).toHaveText(SESSION_GROUP, { timeout: 10000 });
+      await expect(page.locator('[data-testid="roster-member"]')).toHaveText(["William Anderson", "George Thompson", "Margaret Thompson"]);
+      await expect(page.locator('[data-testid="roster-date"]')).toContainText("December 7, 2025");
+      // The print route has no app chrome; go back so later tests can use the nav.
+      await page.goBack();
+      await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 15000 });
     });
 
     test("should cancel adding group", async () => {
