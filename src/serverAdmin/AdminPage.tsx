@@ -2,7 +2,7 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { Grid, Box } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon, PersonSearch as UsersIcon, Schedule as JobsIcon, Inventory2 as CommonsIcon } from "@mui/icons-material";
+import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon, PersonSearch as UsersIcon, Schedule as JobsIcon, Inventory2 as CommonsIcon, Storage as MigrationsIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";
@@ -12,6 +12,7 @@ import { ServerHealthTab } from "./components/ServerHealthTab";
 import { UsersTab } from "./components/UsersTab";
 import { JobsTab } from "./components/JobsTab";
 import { CommonsTab } from "./components/CommonsTab";
+import { MigrationsTab } from "./components/MigrationsTab";
 import { SettingsConfigList, type ConfigSection } from "../settings/components/SettingsConfigList";
 import { useRequirePermission } from "../hooks";
 import { CommonsApi, type CommonsAdminStatus } from "./commonsApi";
@@ -24,7 +25,8 @@ const SECTION_KEYS = [
   "commons",
   "usage",
   "translation",
-  "serverHealth"
+  "serverHealth",
+  "migrations"
 ] as const;
 
 export const AdminPage = () => {
@@ -77,6 +79,7 @@ export const AdminPage = () => {
       case "usage": return <UsageTrendsTab key="usage" />;
       case "translation": return <TranslationTab key="translation" />;
       case "serverHealth": return <ServerHealthTab key="serverHealth" />;
+      case "migrations": return <MigrationsTab key="migrations" />;
       default: return <div></div>;
     }
   };
@@ -89,7 +92,8 @@ export const AdminPage = () => {
     { key: "commons", title: Locale.label("serverAdmin.adminPage.commons"), subtitle: Locale.label("serverAdmin.adminPage.commonsSubtitle"), icon: <CommonsIcon />, color: "warning", count: pendingCount },
     { key: "usage", title: Locale.label("serverAdmin.adminPage.usageTrends"), subtitle: Locale.label("serverAdmin.adminPage.usageSubtitle"), icon: <UsageIcon />, color: "info" },
     { key: "translation", title: Locale.label("serverAdmin.adminPage.translationLookups"), subtitle: Locale.label("serverAdmin.adminPage.translationSubtitle"), icon: <TranslationIcon />, color: "warning" },
-    { key: "serverHealth", title: Locale.label("serverAdmin.adminPage.serverHealth"), subtitle: Locale.label("serverAdmin.adminPage.serverHealthSubtitle"), icon: <HealthIcon />, color: "success" }
+    { key: "serverHealth", title: Locale.label("serverAdmin.adminPage.serverHealth"), subtitle: Locale.label("serverAdmin.adminPage.serverHealthSubtitle"), icon: <HealthIcon />, color: "success" },
+    { key: "migrations", title: Locale.label("serverAdmin.adminPage.migrations"), subtitle: Locale.label("serverAdmin.adminPage.migrationsSubtitle"), icon: <MigrationsIcon />, color: "warning" }
   ];
 
   return (
