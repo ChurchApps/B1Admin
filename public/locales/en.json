@@ -3355,8 +3355,10 @@
       "noHistoryNote": "No migration history for: {modules}. Use Check Schema to see which migrations are already in place and record them; only the missing ones will then be run.",
       "noneApplied": "nothing applied",
       "nothingPending": "Every module is up to date.",
+      "partialNote": "A partly applied migration stopped part way. If it is written to be re-run safely (read it first), tick Re-run to leave it pending so it runs again from the top.",
       "pending": "Pending",
       "pendingCount": "{count} pending",
+      "rerun": "Re-run",
       "run": "Run Pending Migrations",
       "running": "Running {module}…",
       "state_applied": "Already applied",
@@ -3365,7 +3367,8 @@
       "state_unknown": "Data only",
       "subtitle": "Deploys do not change the database. After a release that adds a migration, run it here — the Api applies it from inside its own network.",
       "title": "Database Migrations",
-      "upToDate": "Up to date"
+      "upToDate": "Up to date",
+      "willRerun": "Will re-run"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
