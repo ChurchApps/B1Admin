@@ -36,7 +36,11 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
   const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
   const [currentFiles, setCurrentFiles] = useState<ContentFile[]>([]);
 
-  const availableProviders = useMemo(() => getAvailableProviders(providerFilter), [providerFilter]);
+  // getAvailableProviders returns registry (alphabetical) order; keep the filter's order so the default is the curated first choice.
+  const availableProviders = useMemo(
+    () => getAvailableProviders(providerFilter).sort((a, b) => providerFilter.indexOf(a.id) - providerFilter.indexOf(b.id)),
+    [providerFilter]
+  );
 
   const currentProviderInfo = useMemo(
     () => availableProviders.find(p => p.id === selectedProviderId),
