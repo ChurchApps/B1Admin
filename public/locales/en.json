@@ -797,6 +797,7 @@
     "donations": {
       "amt": "Amount",
       "anon": "Anonymous",
+      "batchTotal": "Batch Total",
       "batches": "Batches",
       "campaigns": "Campaigns",
       "convertedNote": "Converted at current exchange rates",
@@ -806,6 +807,7 @@
       "export": "Export",
       "exportQbo": "Export for QuickBooks",
       "failed": "Failed Gifts",
+      "fundSubtotals": "Fund Subtotals",
       "funds": "Funds",
       "method": "Method",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
