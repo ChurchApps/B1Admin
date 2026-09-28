@@ -2,6 +2,7 @@
   "app": {
     "login": {
       "demoCredentials": "メール \"{email}\" とパスワード \"{password}\" を使用してください。",
+      "demoLabel": "デモ:",
       "demoMessage": "これはデモ環境です。すべてのデータは毎晩削除されます。",
       "demoTestChurch": "テスト教会「Grace Community Church」にログインできます"
     },
@@ -51,6 +52,7 @@
       "confirmDelete": "Are you sure you wish to delete this headcount?",
       "count": "Headcount",
       "date": "Date",
+      "editTitle": "人数を編集",
       "group": "Group",
       "noGroup": "No group (whole service)",
       "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
@@ -79,6 +81,18 @@
       "confirmDelete": "このラベルテンプレートを削除してもよろしいですか？",
       "default": "デフォルト",
       "field": "フィールド",
+      "fieldChildren": "子供",
+      "fieldChildrenAllergies": "子供とアレルギー",
+      "fieldChurchName": "教会名",
+      "fieldDate": "日付",
+      "fieldDisplayName": "表示名",
+      "fieldFirstName": "名",
+      "fieldIsBirthdayWeek": "今週誕生日",
+      "fieldLastName": "姓",
+      "fieldNametagNotes": "名札メモ",
+      "fieldNickName": "ニックネーム",
+      "fieldSecurityCode": "セキュリティコード",
+      "fieldSessions": "セッション",
       "fill": "塗りつぶし",
       "fontSize": "フォントサイズ",
       "height": "高さ（インチ）",
@@ -86,6 +100,7 @@
       "left": "左",
       "name": "名前",
       "nametag": "名札",
+      "noTemplates": "ラベルテンプレートがありません",
       "noTemplatesDesc": "ラベルテンプレートを作成して、チェックインキオスクで印刷されるラベルをカスタマイズしてください。",
       "opDoesNotEqual": "等しくない",
       "opEquals": "等しい",
@@ -115,6 +130,8 @@
       "campus": "キャンパス",
       "campusAria": "キャンパスを選択",
       "confirmDelete": "この礼拝を完全に削除してもよろしいですか？",
+      "name": "礼拝名",
+      "nameAria": "礼拝名",
       "validate": {
         "campus": "キャンパスを選択してください。",
         "name": "礼拝名は必須です。"
@@ -122,6 +139,9 @@
     },
     "serviceTimeEdit": {
       "confirmDelete": "この礼拝時間を完全に削除してもよろしいですか？",
+      "name": "礼拝時間",
+      "nameAria": "礼拝時間名",
+      "namePlaceholder": "午前8:00",
       "service": "サービス",
       "serviceAria": "礼拝を選択",
       "validate": {
@@ -140,6 +160,7 @@
   "calendars": {
     "approvals": {
       "approve": "承認",
+      "approvedToast": "予約が承認されました。",
       "bookingRequests": "部屋・リソースのリクエスト",
       "confirmReject": "このリクエストを拒否してもよろしいですか？",
       "conflicts": "競合",
@@ -151,16 +172,19 @@
       "noPendingEvents": "保留中のイベントリクエストはありません。",
       "reject": "却下",
       "rejectTitle": "リクエストを拒否",
+      "rejectedToast": "予約が拒否されました。",
       "roomResource": "部屋 / リソース",
       "status": "ステータス",
-      "subtitle": "保留中の部屋・リソース・イベントリクエストを確認"
+      "subtitle": "保留中の部屋・リソース・イベントリクエストを確認",
+      "title": "承認"
     },
     "availability": {
       "allRoomsResources": "すべての部屋とリソース",
       "blocked": "ブロック済み",
       "book": "予約",
       "filter": "部屋 / リソース",
-      "subtitle": "部屋とリソースの予約状況を確認"
+      "subtitle": "部屋とリソースの予約状況を確認",
+      "title": "空き状況"
     },
     "calendar": {
       "copiedToClipboard": "クリップボードにコピーしました",
@@ -176,6 +200,8 @@
       "calendarNameAria": "カレンダー名",
       "cancel": "キャンセル",
       "confirmDelete": "このカレンダーを削除してもよろしいですか？",
+      "create": "作成",
+      "createCalendar": "カレンダーを作成",
       "delete": "削除",
       "editCalendar": "カレンダーを編集",
       "namePlaceholder": "このカレンダーの名前を入力してください",
@@ -187,8 +213,11 @@
     "calendarEvent": {
       "cancel": "キャンセル",
       "confirmDelete": "このイベントを削除してもよろしいですか？",
+      "confirmDeleteSeries": "これは定期的なイベントです。削除すると、シリーズ全体とすべての回が削除されます。よろしいですか?",
+      "confirmEditSeries": "これは定期的なイベントです。変更を保存すると、シリーズ全体とすべての回が更新されます。続行しますか?",
       "delete": "削除",
       "edit": "Edit",
+      "editEvent": "イベントを編集",
       "manageRegistrations": "登録を管理",
       "noGroups": "グループが見つかりません。"
     },
@@ -208,6 +237,7 @@
       "noCalendars": "カレンダーが見つかりません",
       "status": "ステータス",
       "subtitleEmpty": "最初のカレンダーを作成して始めましょう",
+      "subtitleWithCount": "件数を含むサブタイトル",
       "title": "カレンダー"
     },
     "calendarPage": {
@@ -289,6 +319,10 @@
       "weekly": "毎週"
     },
     "rooms": {
+      "addBlockout": "使用不可期間を追加",
+      "addResource": "リソースを追加",
+      "addRoom": "部屋を追加",
+      "addTemplate": "テンプレートを追加",
       "allRoomsResources": "すべての部屋・リソース",
       "approvalGroup": "承認グループ",
       "approvalGroupHint": "このグループのメンバーのリクエストは自動承認されます。それ以外は承認が必要です。",
@@ -309,9 +343,13 @@
       "eventDescription": "イベントの説明",
       "eventTitle": "イベントタイトル",
       "noApprovalNeeded": "承認不要",
+      "noBlockouts": "使用不可期間はまだありません",
       "noBlockoutsDesc": "部屋やリソースが利用できない日程をブロックアウトしてください。",
+      "noResources": "リソースはまだありません",
       "noResourcesDesc": "プロジェクター・テーブル・バンなどの共有リソースを数量とともに追加してください。",
+      "noRooms": "部屋はまだありません",
       "noRoomsDesc": "部屋を追加して、イベントの予約と競合の検出を可能にしてください。",
+      "noTemplates": "テンプレートはまだありません",
       "noTemplatesDesc": "テンプレートを使うと、タイトル・所要時間・部屋・リソースを新しいイベントに自動入力できます。",
       "quantity": "数量",
       "reason": "理由",
@@ -337,6 +375,7 @@
     "cancel": "キャンセル",
     "center": "中央",
     "change": "変更",
+    "changePhoto": "写真を変更",
     "close": "閉じる",
     "collapse": "折りたたむ",
     "comboBox": {
@@ -379,8 +418,11 @@
     },
     "help": "ヘルプ",
     "iconPicker": {
+      "noResults": "「{{searchText}}」に一致するアイコンがありません。",
       "searchLabel": "アイコンを検索",
       "searchPlaceholder": "入力して検索（例: 人、家、教会）...",
+      "showingDefault": "人気のアイコンを{{count}}件表示しています",
+      "showingMatching": "「{{searchText}}」に一致するアイコンを{{count}}件表示しています",
       "title": "アイコンを選択",
       "tryDifferent": "別の検索語をお試しください"
     },
@@ -397,6 +439,9 @@
     "person": "人物",
     "print": "印刷",
     "remove": "削除",
+    "reportFilter": {
+      "title": "レポートを絞り込む"
+    },
     "reportFilterField": {
       "any": "すべて"
     },
@@ -411,6 +456,7 @@
     "title": "タイトル",
     "top": "上",
     "tryAgain": "再試行",
+    "update": "更新",
     "website": "ウェブサイト",
     "yes": "はい"
   },
@@ -449,6 +495,7 @@
     },
     "permissionDenied": {
       "contactAdmin": "アクセスを要求するには、教会の管理者に連絡してください。",
+      "defaultMessage": "このページを表示する権限がありません。",
       "required": "Permission required"
     },
     "search": {
@@ -538,6 +585,7 @@
     "quickSetupModal": {
       "classroomName": "教室名",
       "createContinue": "作成して続行",
+      "creating": "作成中...",
       "errorBothMinistryClassroom": "ミニストリー名と教室名の両方を入力してください。",
       "errorBothMinistryTeam": "ミニストリー名とチーム名の両方を入力してください。",
       "errorGeneric": "問題が発生しました。もう一度お試しください。",
@@ -561,6 +609,7 @@
     },
     "sunday": {
       "firstTime": "First time",
+      "firstTimeLastSunday": "先週の日曜日が初来会",
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
@@ -568,6 +617,7 @@
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
       "servingSunday": "Serving Sunday",
+      "servingThisHour": "この時間の奉仕",
       "thisSunday": "This Sunday",
       "thisWeeksService": "This week's service will live here."
     }
@@ -583,6 +633,7 @@
       "continue": "続ける",
       "denied": "デバイスの認証が拒否されました",
       "deny": "拒否",
+      "deviceAuthorizedAlert": "デバイスが認証されました",
       "deviceAuthorizedHeading": "デバイスが認証されました！",
       "deviceAuthorizedMessage": "TVに戻ることができます。デバイスは自動的に接続されます。",
       "deviceCodeLabel": "デバイスコード：",
@@ -621,7 +672,8 @@
   "donations": {
     "batchEdit": {
       "confirmMsg": "このバッチと、その中のすべての献金を完全に削除してもよろしいですか？",
-      "date": "日付"
+      "date": "日付",
+      "opName": "名前(任意)"
     },
     "batchStatements": {
       "csvDescription": "献金者ごとの詳細な献金記録を含む個別の CSV ファイルを ZIP でダウンロードします",
@@ -692,6 +744,7 @@
       "totalCampaigns": "キャンペーン合計"
     },
     "donationBatchPage": {
+      "batchDate": "バッチ日:",
       "donations": "献金",
       "editBatch": "バッチを編集",
       "subtitle": "このバッチ内の献金を管理します",
@@ -715,6 +768,7 @@
       "card": "カード",
       "cash": "現金",
       "check": "小切手",
+      "checkNum": "小切手番号",
       "confirmMsg": "この献金を完全に削除してもよろしいですか？",
       "date": "日付",
       "fund": "献金先",
@@ -722,15 +776,18 @@
       "lastDig": "下 4 桁",
       "method": "支払い方法",
       "refund": "Refund",
+      "refundConfirm": "この献金を決済ゲートウェイを通じて全額返金しますか?この操作は元に戻せません。",
       "refundConfirmLabel": "Refund",
       "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "イベント: ",
+      "failed": "失敗した献金 - ",
       "mark": "次として記録: ",
       "msg": "メッセージ: ",
       "resolved": "解決済み",
-      "unres": " 件が未解決"
+      "unres": " 件が未解決",
+      "unresolved": "未解決"
     },
     "donations": {
       "amt": "金額",
@@ -772,11 +829,13 @@
       "title": "失敗した継続献金"
     },
     "fundEdit": {
+      "ariaFundName": "基金名",
       "ariaTaxDeductible": "税控除対象",
       "ariaVisible": "献金者に表示",
       "confirmMsg": "この献金先と、その中のすべての献金を完全に削除してもよろしいですか？",
       "errBlank": "献金先の名前を入力してください",
       "taxDeductible": "税控除対象",
+      "trackDonations": "献金を記録します。",
       "trackNonDonations": "キャンプの参加費、Tシャツ、イベントチケットなど、献金以外の取引を記録します。",
       "visible": "献金者に表示"
     },
@@ -827,6 +886,7 @@
       "addPledge": "誓約を追加",
       "amount": "誓約金額",
       "confirmMsg": "この誓約を完全に削除してもよろしいですか？",
+      "editPledge": "誓約を編集",
       "errAmount": "ゼロより大きい誓約金額を入力してください",
       "errPerson": "人物を選択してください"
     },
@@ -838,7 +898,65 @@
       "notStarted": "Not Started"
     },
     "printAllStatementsPage": {
-      "loadingStatements": "明細書を読み込んでいます..."
+      "annualStatementTitle": "{year}年 年間献金明細書",
+      "campaign": "キャンペーン",
+      "contributionDetails": "献金の詳細",
+      "disclaimer": "{churchName}は登録された非営利団体です。これらの献金と引き換えに、無形の宗教的便益以外の物品またはサービスは提供されていません。",
+      "donorInformation": "献金者情報",
+      "fund": "基金",
+      "fundBreakdown": "基金別内訳",
+      "given": "献金額",
+      "issued": "発行日:",
+      "loadingStatements": "明細書を読み込んでいます...",
+      "noteLabel": "注記:",
+      "noteText": "この明細書は、{year}年に{churchName}が受け取ったすべての献金をまとめたものです。",
+      "organization": "団体",
+      "period": "期間: {year}年1月1日〜12月31日",
+      "pledgeProgress": "誓約の進捗状況",
+      "pledged": "誓約額",
+      "statementSummary": "明細書の概要",
+      "status": "ステータス",
+      "totalContributions": "献金合計",
+      "totalContributionsLabel": "献金合計:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "{year}年 年間献金明細書",
+      "campaign": "キャンペーン",
+      "contributionDetails": "献金の詳細",
+      "disclaimer": "{churchName}は登録された非営利団体です。これらの献金と引き換えに、無形の宗教的便益以外の物品またはサービスは提供されていません。",
+      "donorInformation": "献金者情報",
+      "fund": "基金",
+      "fundBreakdown": "基金別内訳",
+      "given": "献金額",
+      "issued": "発行日:",
+      "noteLabel": "注記:",
+      "noteText": "この明細書は、{year}年に{churchName}が受け取ったすべての献金をまとめたものです。",
+      "organization": "団体",
+      "period": "期間: {year}年1月1日〜12月31日",
+      "pledgeProgress": "誓約の進捗状況",
+      "pledged": "誓約額",
+      "statementSummary": "明細書の概要",
+      "status": "ステータス",
+      "totalContributions": "献金合計",
+      "totalContributionsLabel": "献金合計:"
+    },
+    "statementLegal": {
+      "abn": "ABN",
+      "australiaTitle": "寄付領収書",
+      "canadaTitle": "所得税用公式領収書",
+      "cra": "カナダ歳入庁: canada.ca/charities-giving",
+      "craNumber": "慈善団体登録番号",
+      "dateIssued": "発行日",
+      "dgr": "{churchName}は税控除対象寄付受領団体(Deductible Gift Recipient)として認定されています。",
+      "dgrThreshold": "2ドル以上の寄付は税控除の対象となります。",
+      "donation": "寄付",
+      "eligibleAmount": "所得税上の控除対象となる寄付金額",
+      "newZealandTitle": "寄付領収書",
+      "nonEligible": "税務領収書の対象外の寄付",
+      "nzNumber": "慈善団体登録番号",
+      "placeOfIssue": "発行地",
+      "receiptNumber": "領収書番号",
+      "signature": "正式署名"
     },
     "stripeImportPage": {
       "alreadyImported": "インポート済み",
@@ -859,6 +977,7 @@
       "newLabel": "新規：",
       "noEvents": "イベントが見つかりません。日付範囲を選択し、プレビューをクリックしてください。",
       "preview": "プレビュー",
+      "previewResults": "結果をプレビュー",
       "selectDateRange": "日付範囲を選択",
       "skipped": "スキップ",
       "skippedLabel": "スキップ：",
@@ -912,6 +1031,7 @@
       "availableStart": "公開開始日",
       "confirmMsg": "このフォームを完全に削除してもよろしいですか？",
       "contentTypeAria": "コンテンツタイプ",
+      "description": "説明",
       "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "対話形式（1 問ずつ表示）",
       "displayMode": "表示モード",
@@ -921,11 +1041,14 @@
       "followUpBody": "フォローアップメールの本文",
       "followUpHelper": "{firstName} と {churchName} のトークンを使用できます。",
       "followUpSubject": "フォローアップメールの件名",
+      "formNameAria": "フォーム名",
+      "name": "フォーム名",
       "nameReqMsg": "フォーム名は必須です。",
       "ppl": "人々",
       "public": "公開",
       "restrict": "制限あり",
-      "startReqMsg": "開始日は必須です。"
+      "startReqMsg": "開始日は必須です。",
+      "thankYouMessage": "お礼メッセージ"
     },
     "formMembers": {
       "act": "操作",
@@ -954,14 +1077,18 @@
       "confirmMsg": "この質問を完全に削除してもよろしいですか？",
       "date": "日付",
       "decNum": "小数",
+      "desc": "説明",
       "fieldType": "フィールドの種類",
       "fund": "献金先",
       "multiChoice": "選択式",
       "payment": "支払い",
       "phoneNum": "電話番号",
+      "plcOp": "プレースホルダー(任意)",
       "questionDescriptionAria": "質問の説明",
       "questionEdit": "質問を編集",
       "questionReq": "質問は必須です。",
+      "questionRequiredAria": "質問を必須にする",
+      "questionTitleAria": "質問タイトル",
       "textArea": "テキストエリア",
       "textBox": "テキストボックス",
       "wholeNum": "整数",
@@ -981,13 +1108,18 @@
       "addForm": "フォームを追加",
       "archForms": "アーカイブ済みのフォーム",
       "archive": "アーカイブ",
+      "archiveFormAria": "フォーム{name}をアーカイブ",
+      "confirmDuplicate": "このフォームを複製しますか?",
+      "confirmMsg1": "このフォームをアーカイブしてもよろしいですか?",
       "confirmMsg2": "このフォームを復元してもよろしいですか？",
       "duplicate": "複製",
       "duplicated": "Form duplicated",
       "forms": "フォーム",
+      "noArch": "アーカイブされたフォームはありません。",
       "noCustomMsg": "カスタムフォームはまだ作成されていません。追加するとここに表示されます。",
       "personProfileForm": "Person profile form",
       "restore": "復元",
+      "restoreFormAria": "フォーム{name}を復元",
       "subtitleManage": "カスタムフォームを作成・管理します",
       "url": "URL"
     },
@@ -1011,17 +1143,34 @@
     "uploadError": "画像処理は完了しましたが、アップロードに失敗しました。この環境ではAPIが利用できない可能性があります。"
   },
   "groups": {
+    "export": {
+      "campusId": "キャンパスID",
+      "categoryName": "カテゴリー",
+      "churchId": "教会ID",
+      "id": "ID",
+      "joinPolicy": "参加ポリシー",
+      "labelCount": "ラベル数",
+      "labels": "ラベル",
+      "meetingLocation": "集会場所",
+      "meetingTime": "集会時間",
+      "memberCount": "メンバー数",
+      "name": "名前",
+      "tags": "タグ"
+    },
     "groupAdd": {
       "add": "追加",
       "catName": "カテゴリ名",
       "catReq": "カテゴリ名は必須です。",
       "group": "グループ",
+      "groupNameAria": "グループ名",
       "groupReq": "グループ名は必須です。",
       "ministry": "ミニストリー",
+      "new": "新規 ",
       "team": "チーム"
     },
     "groupBanner": {
       "announcements": "Announcements",
+      "confirmDuplicate": "このグループを複製しますか?メンバーはコピーされません。",
       "copySuffix": "（コピー）",
       "discussions": "Discussions",
       "duplicateTooltip": "このグループを複製",
@@ -1061,12 +1210,15 @@
       "about": "概要",
       "attendanceSettings": "出席の設定",
       "labels": "ラベル",
+      "locationPlaceholder": "山田さんの自宅",
       "meetingInfo": "集会の情報",
       "meetingLocation": "集会場所",
       "meetingTime": "集会時間",
+      "meetingTimePlaceholder": "火曜日 午後7時",
       "noPhoto": "写真がありません",
       "parentPickup": "保護者のお迎え",
       "printNametag": "名札を印刷",
+      "slugPlaceholder": "group-name",
       "trackAttendance": "出席を記録"
     },
     "groupDetailsEdit": {
@@ -1088,12 +1240,14 @@
       "clickToAddPhoto": "クリックして写真を追加",
       "confidential": "非公開グループ",
       "confidentialHelp": "このグループとその名簿を、公開ページ、グループ検索、非メンバーから非表示にします。",
+      "confirmArchive": "このグループをアーカイブしてもよろしいですか?復元するまでグループ一覧から非表示になります。",
       "confirmMsg": "このグループを完全に削除してもよろしいですか？",
       "discussionsEnabled": "Discussions enabled",
       "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "登録",
       "groupDesc": "グループの説明",
       "groupDet": "グループの詳細",
+      "groupName": "グループ名",
       "groupNameAria": "グループ名",
       "groupNameMsg": "グループ名を入力してください。",
       "groupPhotoAlt": "グループ",
@@ -1101,7 +1255,9 @@
       "guestCapacity": "ゲスト収容人数",
       "maxAge": "最大年齢",
       "maxGrade": "最大学年",
+      "meetingLocation": "集会場所",
       "meetingLocationAria": "会合場所",
+      "meetingTime": "集会時間",
       "meetingTimeAria": "会合時間",
       "minAge": "最小年齢",
       "minGrade": "最小学年",
@@ -1111,6 +1267,7 @@
       "parPick": "保護者のお迎え",
       "prinName": "名札を印刷",
       "publicRoster": "ウェブサイトに名簿を表示",
+      "slug": "スラッグ(URLに使用するキー名)",
       "volunteerRatio": "ボランティア1人あたりの子供数",
       "years": "歳"
     },
@@ -1120,13 +1277,16 @@
       "avgAge": "平均年齢",
       "avgAttendance": "平均出席者数",
       "churn90": "離脱率（90日）",
+      "joined": "参加日",
       "joined90": "参加（90日）",
       "left": "離脱",
       "left90": "離脱（90日）",
       "members": "メンバー",
       "membershipChanges": "メンバーシップ変動（12ヶ月）",
+      "month": "月",
       "subtitle": "グループ間の成長・離脱・出席を比較",
-      "title": "グループ健全性"
+      "title": "グループ健全性",
+      "week": "週"
     },
     "groupLabelsEdit": {
       "addNewLabel": "ラベルを追加",
@@ -1137,8 +1297,10 @@
     "groupMembers": {
       "groupMem": "グループのメンバー",
       "leader": "リーダー",
+      "leaderLower": "リーダー",
       "leadersLower": "リーダー",
       "makeLeader": "リーダーに設定",
+      "member": "メンバー",
       "members": "メンバー",
       "messagePlaceholder": "グループ全メンバーへのメッセージを入力…",
       "messageSent": "メッセージを送信しました。",
@@ -1174,11 +1336,16 @@
       "allYears": "すべての年",
       "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
       "attFor": "出席対象:",
-      "confirmRemove": "Remove this person from the session's attendance?",
+      "attendanceSaveFailed": "出席を保存できませんでした。もう一度お試しください。",
+      "attendanceSaved": "出席を保存しました。",
       "new": "新規",
       "noAttendance": "出席記録が見つかりません",
       "noSesMsg": "セッションがありません。",
       "noSessionsFound": "セッションが見つかりません",
+      "presentOf": "{total}人中{present}人が出席",
+      "saveAttendance": "出席を保存",
+      "selectAll": "すべて選択",
+      "selectNone": "選択解除",
       "selectSession": "セッションを選択",
       "session": "セッション",
       "sessions": "セッション",
@@ -1188,29 +1355,39 @@
     "groupsPage": {
       "addGroup": "グループを追加",
       "cat": "カテゴリー",
+      "confirmRestore": "アーカイブから{name}を復元しますか?",
       "export": "エクスポート",
       "groups": "グループ",
       "labels": "ラベル",
       "noGroupMsg": "グループが見つかりません。グループを作成してください。",
+      "noMatchMsg": "検索に一致するグループがありません。",
       "pendingRequestSingular": "{count}件の保留中のリクエスト",
       "pendingRequests": "{count}件の保留中のリクエスト",
+      "pers": "1人",
       "ppl": "人々",
       "restore": "復元",
       "searchPlaceholder": "グループを検索...",
       "showArchived": "アーカイブ済みを表示",
       "spPpl": " 人",
       "subtitle": {
-        "create": "最初のグループを作成して始めましょう"
+        "create": "最初のグループを作成して始めましょう",
+        "manage": "教会のグループを整理・管理します"
       }
-    },
-    "membersAdd": {
-      "availableMem": "追加できるグループメンバー",
-      "noMem": "追加できるグループメンバーはいません。",
-      "unknown": "不明"
     },
     "pendingRequestsPage": {
       "empty": "保留中のリクエストはありません。",
-      "subtitle": "すべてのグループにおけるメンバーからのリクエストを承認または却下します。"
+      "subtitle": "すべてのグループにおけるメンバーからのリクエストを承認または却下します。",
+      "title": "参加申請の保留中"
+    },
+    "printRoster": {
+      "absent": "欠席",
+      "date": "日付",
+      "noGroups": "印刷できるクラスが見つかりません。",
+      "present": "出席",
+      "print": "出席簿を印刷",
+      "printAll": "すべてのクラスを印刷",
+      "teacherNotes": "教師 / メモ",
+      "visitors": "訪問者"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "本文にマージフィールドを挿入：",
@@ -1231,7 +1408,14 @@
       "noEmailNoticeSingular": "{count}人がメールアドレスを登録していません。",
       "noEmailSkipped": "{count}人をスキップ（メールアドレスなし）。",
       "none": "なし",
+      "pausedNotice": "最近のメッセージがバウンドまたはスパムとして報告されたため、グループメールは一時停止されています。サポートにお問い合わせください。",
       "permissionError": "グループメールを送信する権限がありません。",
+      "requestReview": "レビューをリクエスト",
+      "reviewBody": "すべての教会のメールがスパムフォルダーに振り分けられないよう、グループメールを送信できるようにする前に各教会を一度審査しています。レビューをリクエストすると、通常1営業日以内に弊社チームが有効化します。",
+      "reviewRequestedBody": "ありがとうございます!弊社チームに通知されましたので、まもなく貴教会のグループメールが有効化されます。このウィンドウは閉じていただいて構いません。",
+      "reviewRequestedTitle": "レビューをリクエストしました",
+      "reviewTitle": "グループメールには簡単な審査が必要です",
+      "reviewWhy": "B1からのメールは送信元の評判を共有しているため、この手順によってメッセージがスパムと判定されるのを防ぎます。",
       "send": "メールを送信",
       "sendDefault": "これにより、対象となるグループメンバーにメールが送信されます。",
       "sendFailedDetail": "{count}件の送信に失敗。",
@@ -1248,6 +1432,7 @@
       "eligibleSummary": "{eligibleCount}/{totalMembers}人のメンバーがこのテキストを受け取ります。",
       "eligibleSummarySingular": "{eligibleCount}/{totalMembers}人のメンバーがこのテキストを受け取ります。",
       "fallbackError": "テキストメッセージの送信に失敗しました。",
+      "insufficientCredits": "貴教会は今回の請求サイクルのテキストクレジットを使い切りました。メッセージは送信されていません。アップグレードするか、クレジットが更新されるまでお待ちください:",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "受信者を読み込んでいます...",
       "messageLabel": "メッセージ",
@@ -1261,6 +1446,7 @@
       "sendDefault": "これにより、対象となるグループメンバーにSMSが送信されます。",
       "sendFailedDetail": "{count}件の送信に失敗。",
       "sending": "送信中...",
+      "sendingTo": "{phoneNumber}に送信中です。",
       "sentSummary": "対象受信者{recipientCount}人中{successCount}人に送信。",
       "sentSummarySingular": "対象受信者{recipientCount}人中{successCount}人に送信。",
       "textGroupTitle": "グループにテキスト：{groupName}",
@@ -1275,6 +1461,8 @@
     },
     "sessionAdd": {
       "invDate": "無効な日付",
+      "sesAdd": "セッションを追加",
+      "sesDate": "セッション日",
       "sessionDateAria": "セッション日",
       "srvTime": "礼拝時間"
     },
@@ -1284,6 +1472,7 @@
       "invalidDate": "無効な日付",
       "noDate": "日付なし",
       "people": "人",
+      "person": "人",
       "view": "表示"
     },
     "sessionEdit": {
@@ -1344,7 +1533,8 @@
       "resetDefaults": "既定値に戻す"
     },
     "appThemePage": {
-      "subtitle": "モバイルアプリ、メンバーポータル、チェックインキオスクで使用される色をカスタマイズします"
+      "subtitle": "モバイルアプリ、メンバーポータル、チェックインキオスクで使用される色をカスタマイズします",
+      "title": "アプリテーマ"
     },
     "b1MobilePage": {
       "subtitle": "B1 Mobile アプリの設定を行います",
@@ -1354,10 +1544,12 @@
       "copyLink": "リンクをコピー",
       "disabled": "無効",
       "downloadQr": "PNGをダウンロード",
+      "enabled": "有効 — QRコードがキオスクに表示されます",
       "kiosk": {
         "addSlide": "スライドを追加",
         "backgroundImage": "背景画像",
         "backgroundImageDesc": "検索・ウェルカム画面の背景画像（任意）。推奨サイズ：1920x1080。",
+        "changeImage": "画像を変更",
         "duration": "表示時間（秒）",
         "enableIdleScreen": "アイドルスクリーンを有効にする",
         "headerSubtitle": "キオスクの色は モバイル > アプリテーマ で管理します。以下で背景画像とアイドルスクリーンの動作を設定してください。",
@@ -1368,6 +1560,7 @@
         "upload": "アップロード",
         "uploadImage": "画像をアップロード"
       },
+      "linkCopied": "コピーしました!",
       "manageLabels": "ラベルをデザイン",
       "qrGuestRegistration": "QR ゲスト登録",
       "qrShareDescription": "このQRコードをチラシ・週報・サイネージに印刷してください。ゲストがスキャンするとスマートフォンから登録できます。アプリにも表示されます。",
@@ -1375,7 +1568,8 @@
       "qrTooltip": "チェックインキオスクに QR コードを表示し、ゲストが自分のスマートフォンで登録できるようにします",
       "registrationUrl": "登録リンク",
       "saveToActivate": "変更を保存してこのリンクを有効にしてください。",
-      "subtitle": "B1 CheckIn キオスクアプリの設定を行います"
+      "subtitle": "B1 CheckIn キオスクアプリの設定を行います",
+      "title": "B1 CheckIn"
     }
   },
   "month": {
@@ -1423,14 +1617,19 @@
       "examples": "例：",
       "placeholder": "7月生まれの30歳以上の男性を表示して",
       "search": "検索",
+      "searching": "検索中...",
       "title": "AI 検索"
     },
     "bulk": {
       "actions": "アクション",
+      "addSuccess": "{count}人を{group}に追加しました。",
       "addToGroup": "グループに追加",
+      "addToGroupPrompt": "選択した{count}人をグループに追加します。",
+      "addToGroupTitle": "グループに追加",
       "addToWorkflow": "ワークフローに追加",
       "addToWorkflowPrompt": "選択した{count}人をカードとしてワークフローに追加します。",
       "apply": "適用",
+      "campusTitle": "キャンパスを設定",
       "clearSelection": "選択を解除",
       "createNewGroup": "新しいグループを作成",
       "customField": "カスタム項目",
@@ -1440,17 +1639,26 @@
       "deleteError": "選択した人を削除できませんでした",
       "deleteSelected": "選択した人を削除",
       "deleteSuccess": "{count}人が正常に削除されました",
+      "deleting": "削除中...",
       "error": "エラー",
       "fieldPrompt": "選択した{count}人のフィールドを更新します。",
       "fieldSuccess": "{count}人を更新しました。",
+      "genderTitle": "性別を設定",
       "group": "グループ",
+      "maritalStatusTitle": "婚姻状況を設定",
+      "membershipStatusTitle": "会員ステータスを設定",
       "newGroupName": "新しいグループ名",
       "noCustomFields": "人物用の「はい / いいえ」のカスタム項目が設定されていません。",
       "optedOutField": "オプトアウトフィールド",
       "optedOutNo": "オプトアウトしない",
+      "optedOutTitle": "名簿オプトアウトを設定",
       "optedOutYes": "オプトアウトする",
       "removeFromGroup": "グループから削除",
+      "removeFromGroupPrompt": "選択した{count}人をグループから削除します。",
+      "removeFromGroupTitle": "グループから削除",
+      "removeSuccess": "{count}人を{group}から削除しました。",
       "selected": "選択中",
+      "setCampus": "キャンパスを設定",
       "value": "値",
       "workflowSuccess": "{count}人をワークフローに追加しました。"
     },
@@ -1504,15 +1712,53 @@
       "value": "値",
       "valuePlaceholder": "値"
     },
+    "export": {
+      "address": "住所",
+      "address1": "住所1",
+      "address2": "住所2",
+      "age": "年齢",
+      "anniversary": "記念日",
+      "birthDate": "生年月日",
+      "campusId": "キャンパスID",
+      "churchId": "教会ID",
+      "city": "市区町村",
+      "contactCity": "市区町村",
+      "contactEmail": "メールアドレス",
+      "contactState": "都道府県/州",
+      "contactZip": "郵便番号",
+      "conversationId": "会話ID",
+      "display": "表示名",
+      "first": "名",
+      "firstName": "名",
+      "gender": "性別",
+      "householdId": "世帯ID",
+      "id": "ID",
+      "last": "姓",
+      "lastName": "姓",
+      "membershipStatus": "会員ステータス",
+      "middle": "ミドルネーム",
+      "middleName": "ミドルネーム",
+      "mobilePhone": "携帯電話",
+      "nametagNotes": "名札メモ",
+      "nick": "ニックネーム",
+      "optedOut": "名簿オプトアウト済み",
+      "phone": "自宅電話",
+      "photo": "写真",
+      "photoUpdated": "写真更新日時",
+      "state": "都道府県/州",
+      "workPhone": "勤務先電話"
+    },
     "gdprActions": {
       "anonymize": "匿名化",
       "anonymizeConfirmType": "確認のために「ANONYMIZE」と入力してください：",
       "anonymizeDescription": "これにより、すべての個人情報が一般的な値に置き換えられ、グループ、フォーム、メッセージングからこの人物が削除されます。寄付額と出席日はレポート用に保存されますが、この人物からはリンク解除されます。これは元に戻せません。",
       "anonymizePlaceholder": "ANONYMIZE",
       "anonymizeTitle": "{personName}を匿名化しますか？",
+      "anonymizing": "匿名化中...",
       "dataManagement": "データ管理",
       "description": "GDPRコンプライアンスのためにこの人物のデータをエクスポートまたは匿名化します。",
-      "exportData": "データをエクスポート"
+      "exportData": "データをエクスポート",
+      "exporting": "エクスポート中..."
     },
     "groups": {
       "leader": "リーダー",
@@ -1533,12 +1779,15 @@
       "child": "子ども",
       "head": "世帯主",
       "house": " 世帯",
+      "houseName": "世帯名",
+      "householdNameAria": "世帯名",
       "other": "その他",
       "spouse": "配偶者",
       "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "毎晩更新",
+      "category": "カテゴリー",
       "categoryPlaceholder": "任意 — 関連リストをグループ化",
       "confirmDelete": "リスト「{name}」を削除しますか？この操作は元に戻せません。",
       "createdBy": "{name}作成",
@@ -1561,6 +1810,7 @@
       "title": "保存済みリスト"
     },
     "merge": {
+      "findPerson": "統合する人を検索",
       "merge": "統合"
     },
     "mergeModal": {
@@ -1571,6 +1821,7 @@
       "householdId": "世帯 ID",
       "id": "ID",
       "merge": "統合しています...",
+      "mergeQuestion": "統合",
       "name": "名前",
       "profile": "プロフィール",
       "selMsg": "すべての項目について値を選択してください",
@@ -1588,16 +1839,22 @@
       "addPerson": "人を追加",
       "allMembers": "全メンバー",
       "bDay": "誕生日",
+      "bDayNo": "誕生日(年なし)",
+      "deleteOp": "削除オプション",
       "export": "エクスポート",
       "first": "最初",
       "last": "最後",
       "loading": "人々を読み込んでいます...",
       "middle": "ミドルネーム",
+      "nameNote": "名札メモ",
       "noPeopleFound": "人が見つかりません",
       "peopleFound": "{count}人が見つかりました",
       "photo": "写真",
+      "primEmail": "メインメールアドレス",
+      "primPhone": "メイン電話番号",
       "printDirectory": "名簿を印刷",
       "searchPpl": "人を検索",
+      "searchResults": "検索結果",
       "showAll": "全メンバーを表示",
       "showingMembers": "{count}人のメンバーを表示中"
     },
@@ -1642,9 +1899,11 @@
       "sendTextMessage": "テキストメッセージを送信"
     },
     "personEdit": {
+      "applyQuestion": "これを全体に適用しますか",
       "cannotDeleteSelf": "自分自身の人物レコードは削除できません。",
       "confirmMsg": "この人物レコードを完全に削除してもよろしいですか？",
       "customFields": "カスタムフィールド",
+      "donorNumber": "献金者番号",
       "exten": "内線",
       "family": "家族",
       "firstReq": "名は必須です",
@@ -1652,8 +1911,10 @@
       "maritalStatus": "配偶者の有無",
       "merge": "統合",
       "mergePersonAria": "人を結合",
+      "nameNote": "名札メモ",
       "noCampus": "キャンパスなし",
       "persDet": "個人情報",
+      "upAddress": "住所を次のように更新しました:",
       "valEmail": "有効なメールアドレスを入力してください。"
     },
     "personForm": {
@@ -1710,6 +1971,7 @@
     "campus": "キャンパス",
     "city": "市",
     "country": "国",
+    "deceased": "故人",
     "displayName": "表示名",
     "divorced": "離婚",
     "email": "メール",
@@ -1717,10 +1979,14 @@
     "firstName": "名",
     "gender": "性別",
     "grade": "学年",
+    "inactive": "非アクティブ",
     "lastName": "姓",
+    "line1": "1行目",
+    "line2": "2行目",
     "male": "男性",
     "maritalStatus": "配偶者の有無",
     "married": "既婚",
+    "member": "メンバー",
     "membershipStatus": "会員資格の状態",
     "membershp": "会員資格",
     "middleName": "ミドルネーム",
@@ -1729,8 +1995,10 @@
     "person": "人物",
     "phone": "電話",
     "prefix": "敬称（前）",
+    "regularAttendee": "常連出席者",
     "school": "学校",
     "single": "独身",
+    "staff": "スタッフ",
     "state": "都道府県 / 州",
     "suffix": "敬称（後）",
     "unknown": "不明",
@@ -1748,12 +2016,20 @@
     "batch": {
       "name": "主日献金 - 1月5日"
     },
+    "block": {
+      "name": "ヒーローセクション"
+    },
     "choices": {
       "text": "選択肢 1",
       "value": "option1"
     },
+    "device": {
+      "label": "リビングの画面"
+    },
     "donation": {
-      "lastDigits": "4242"
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "この献金についてのメモを入力..."
     },
     "element": {
       "buttonText": "こちらをクリック",
@@ -1769,24 +2045,41 @@
       "search": "フォントを検索..."
     },
     "form": {
+      "description": "このフォームの目的と、送信後に何が起こるかを説明してください。",
+      "name": "お問い合わせフォーム",
+      "questionDescription": "追加の詳細を入力...",
       "questionPlaceholder": "回答を入力...",
+      "questionTitle": "ここに質問を入力",
       "thankYouMessage": "フォームを送信いただきありがとうございます。"
+    },
+    "fund": {
+      "name": "一般基金"
     },
     "giving": {
       "publicKey": "pk_live_..."
     },
     "group": {
-      "category": "聖書クラス、教会学校、ミニストリー"
+      "category": "聖書クラス、教会学校、ミニストリー",
+      "name": "ライフグループA"
+    },
+    "household": {
+      "name": "スミス家"
     },
     "page": {
       "linkText": "続きを読む",
-      "linkUrl": "https://example.com"
+      "linkUrl": "https://example.com",
+      "title": "私たちについて",
+      "urlPath": "/about-us"
+    },
+    "pairScreen": {
+      "code": "ABC123"
     },
     "person": {
       "address1": "中央区本町1-2-3",
       "address2": "サンプルマンション 4B",
       "city": "東京都",
       "donorNumber": "DN-12345",
+      "email": "john.smith@example.com",
       "firstName": "太郎",
       "lastName": "山田",
       "middleName": "健",
@@ -1797,16 +2090,29 @@
       "state": "東京都",
       "zip": "100-0001"
     },
+    "plan": {
+      "name": "主日礼拝 - 1月5日"
+    },
     "planItem": {
       "description": "簡単な説明...",
       "label": "開会の賛美"
     },
+    "planType": {
+      "name": "主日礼拝"
+    },
     "position": {
-      "count": "2"
+      "count": "2",
+      "name": "受付係"
+    },
+    "role": {
+      "name": "ミニストリーリーダー"
     },
     "sermon": {
       "description": "説教の説明を入力...",
       "title": "主日メッセージ"
+    },
+    "service": {
+      "name": "日曜朝礼拝"
     },
     "song": {
       "album": "アルバム名",
@@ -1824,6 +2130,14 @@
     "task": {
       "notes": "このタスクについてのメモを入力...",
       "title": "賛美のスライドを準備する"
+    },
+    "time": {
+      "displayName": "日曜の朝"
+    },
+    "user": {
+      "email": "john@example.com",
+      "firstName": "John",
+      "lastName": "Smith"
     }
   },
   "plans": {
@@ -1872,6 +2186,8 @@
       "addPosition": "ポジションを追加",
       "autoAssign": "自動割り当て",
       "fullyStaffed": "全員配置済み",
+      "needed": "必要",
+      "notesPlaceholder": "この奉仕プランのメモを入力...",
       "notesPlaceholderReadOnly": "プランメモ（読み取り専用）",
       "penciledIn": "仮登録",
       "planNotesAria": "プランメモ",
@@ -1883,7 +2199,9 @@
       "assignPos": "ポジションを割り当てる",
       "confirmDelete": "このボランティアの割り当てを削除してもよろしいですか？",
       "done": "完了",
-      "noMem": "グループのメンバーが見つかりません。"
+      "editAssign": "割り当てを編集",
+      "noMem": "グループのメンバーが見つかりません。",
+      "searchAnyone": "教会内の誰でも検索"
     },
     "browseGrid": {
       "addOn": "アドオン"
@@ -1949,11 +2267,13 @@
       "videoUnsupported": "お使いのブラウザはvideoタグをサポートしていません。"
     },
     "lessonDialog": {
+      "back": "戻る",
       "close": "閉じる",
       "editHint": "×でプランから項目を取り除けます。テキストをクリックすると書き換えられます。元のデータは変更されません。",
       "fallbackTitle": "レッスンセクション",
       "noPreviewItem": "このアイテムのプレビューはありません。",
       "previewUnavailable": "このセクションのプレビューは利用できません。",
+      "putBack": "元に戻す",
       "restoreSection": "元のセクションに戻す",
       "restoreSectionConfirm": "このセクションをレッスンが書いた通りに戻しますか？取り除いたり書き換えたりした内容はすべて元に戻ります。",
       "restoreText": "編集済み — 元の文言に戻す",
@@ -1995,18 +2315,22 @@
     },
     "planEdit": {
       "autoReplaceOnDecline": "ボランティアが辞退した場合に代替者を自動的にスケジュール",
+      "confirmDelete": "ポジション、割り当て、礼拝順序を含め、このプランを削除しますか?",
       "copyAll": "ポジションと割り当て",
       "copyNothing": "コピーしない",
       "copyPositions": "ポジションのみ",
       "copyPrevious": "前回のプランからコピー",
       "copyServiceOrder": "式次第をコピー",
       "planAdd": "プランを追加",
+      "planEdit": "プランを編集",
+      "planNameAria": "プラン名",
       "planReq": "プラン名は必須です。",
       "prepared": "仮登録（公開するまでボランティアには表示されません）",
       "servDate": "礼拝日",
       "servReq": "礼拝日は必須です。",
       "serviceDateAria": "礼拝日",
       "showVolunteerNames": "サインアップページにボランティア名を表示",
+      "signupDeadline": "申し込み締め切り(礼拝の何時間前)",
       "signupDeadlineHelper": "締切なしの場合は空欄"
     },
     "planItem": {
@@ -2028,6 +2352,7 @@
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
       "selectItems": "Select Items",
+      "showRows": "別々の行として表示",
       "song": "曲"
     },
     "planItemEdit": {
@@ -2081,11 +2406,14 @@
       "details": "プランタイプの詳細"
     },
     "planTypeEdit": {
+      "add": "追加",
       "confirmDelete": "削除の確認",
+      "edit": "編集",
       "errorDeleting": "削除エラー",
       "errorSaving": "プランタイプの保存中にエラーが発生しました",
       "nameRequired": "プランタイプ名は必須です",
-      "planType": "プランタイプ"
+      "planType": "プランタイプ",
+      "planTypeName": "プランタイプ名"
     },
     "planTypeGroups": {
       "addGroup": "グループを追加",
@@ -2135,10 +2463,16 @@
     "planValidation": {
       "and": "と",
       "between": "の間",
+      "blockCon": "使用不可日の競合:",
       "cons": "重複",
       "during": "の間",
+      "householdApart": "同じ日に奉仕しないことを希望しています:",
+      "more": "他",
       "needed": "名が必要です。",
+      "notify": "通知",
+      "overMaxPerMonth": "予定されています",
       "penciledIn": "仮登録 — ボランティアにはまだ表示されていません。",
+      "person": "人",
       "pleaseConfirm": "ログインして確認してください。",
       "ppl": "人",
       "prefTimeMismatch": "希望する奉仕時間",
@@ -2146,17 +2480,22 @@
       "publishConfirm": "ボランティアが自分の割り当てを確認できるように、このプランを公開しますか？",
       "publishConfirmLabel": "公開",
       "publishConfirmTitle": "プランを公開",
+      "publishNotify": "公開して通知",
       "publishNotifyConfirm": "このプランを公開し、{count}人のボランティアに割り当てを通知しますか？通知はすぐに送信されます。",
+      "timeCon": "時間の競合:",
+      "timeCon2": "時間の競合(場所):",
       "timesThisMonth": "今月の回数が希望する上限を超えています",
       "to": "〜",
       "val": "検証",
       "valPlan": "プランに問題はありません。",
       "vol": "名の奉仕者",
-      "volNotif": "すべての奉仕者に通知しました。"
+      "volNotif": "すべての奉仕者に通知しました。",
+      "volReq": "ボランティア募集: "
     },
     "plansPage": {
       "addMinistry": "ミニストリーを追加",
       "editMinistry": "ミニストリーを編集",
+      "selMin": "ミニストリーを選択",
       "subtitle": "ミニストリーと礼拝プランを管理します"
     },
     "positionEdit": {
@@ -2164,13 +2503,19 @@
       "catName": "カテゴリ名",
       "catNameReq": "カテゴリ名は必須です。",
       "confirmDelete": "このポジションを削除してもよろしいですか？現在割り当てられている人はスケジュールから外れます。",
+      "description": "説明",
       "descriptionHelper": "ボランティアが申込の機会を閲覧する際に表示",
       "nameReq": "名前は必須です",
+      "noGroup": "なし",
       "posAdd": "ポジションを追加",
-      "volGroup": "奉仕者グループ"
+      "posEdit": "ポジションを編集",
+      "volCount": "ボランティア人数",
+      "volGroup": "奉仕者グループ",
+      "volGroupHelper": "空欄のままにすると、教会内の誰でも直接割り当てられます"
     },
     "positionList": {
       "load": "読み込んでいます...",
+      "persNeed": "1人必要",
       "pos": "ポジション",
       "ppl": "人々",
       "pplNeed": " 名必要",
@@ -2220,20 +2565,26 @@
     },
     "servingOverviewPage": {
       "autoSchedule": "自動スケジュール",
+      "autoScheduleConfirm": "この期間内のすべての空き枠にボランティアを自動でスケジュールしますか?",
       "autoScheduleResult": "{total}件中{filled}件のプランを自動スケジュール",
       "emailAll": "ボランティアにメール送信",
+      "emailAllConfirm": "この期間内に割り当てられたすべてのボランティアにメールを送信しますか?",
       "emailEmpty": "この期間内にメール送信対象の割り当て済みボランティアがいません。",
       "emailResult": "{sent}人のボランティアにメール送信済み（{failed}件失敗）",
       "endDate": "終了日",
       "exportCsv": "CSVをエクスポート",
+      "filename": "serving-overview.csv",
       "gapsOnly": "未充足のみ",
       "highlightAll": "全員",
       "highlightPerson": "ハイライト",
       "noData": "選択した日付範囲の奉仕データが見つかりません。",
+      "overviewSuffix": "概要",
       "position": "ポジション",
       "remove": "削除",
+      "removeConfirm": "この割り当てから{name}を削除しますか?",
       "startDate": "開始日",
-      "subtitle": "割り当てられたボランティアの日付別ポジション"
+      "subtitle": "割り当てられたボランティアの日付別ポジション",
+      "title": "奉仕概要"
     },
     "servingPage": {
       "showAll": "すべて表示",
@@ -2287,6 +2638,7 @@
     },
     "timeEdit": {
       "confirmDelete": "この時間を削除してもよろしいですか？",
+      "disName": "表示名",
       "disNameReq": "表示名は必須です。",
       "endReq": "終了時刻は必須です",
       "endTimeAria": "終了時刻",
@@ -2296,9 +2648,12 @@
       "teamNeed": "Needed Teams",
       "teamPrefix": "チーム",
       "timeAdd": "時間を追加",
+      "timeDisplayNameAria": "時間の表示名",
+      "timeEdit": "時間を編集",
       "timeEnd": "終了時刻",
       "timeStart": "開始時刻",
       "tip": "ヒント",
+      "type": "種類",
       "typeAria": "礼拝時間の種類",
       "typeOther": "その他",
       "typeRehearsal": "リハーサル",
@@ -2315,6 +2670,7 @@
       "associatedContent": "関連付けられたコンテンツ"
     },
     "deviceEdit": {
+      "label": "ラベル",
       "labelRequired": "ラベルは必須です"
     },
     "devices": {
@@ -2336,16 +2692,20 @@
     "pairScreen": {
       "codeRequired": "ペアリングコードは必須です",
       "invalidCode": "ペアリングコードが正しくありません",
+      "pairingCode": "ペアリングコード",
       "planType": "プランの表示対象",
       "planTypeNone": "なし（通知のみ）"
     },
     "profilePage": {
       "accDel": "アカウントの削除",
       "confirmMsg": "アカウントを完全に削除してもよろしいですか？",
+      "confirmRequestMsg": "アカウント削除を教会にリクエストしますか?承認されるまで何も削除されません。",
+      "darkMode": "ダークモード",
       "delAcc": "アカウントを削除する",
       "deleteError": "アカウントを削除できませんでした",
       "deletionPending": "Deletion pending",
       "demoModeAlert": "デモモードではプロフィール編集は無効です。",
+      "demoPasswordHelper": "デモモードではパスワードの変更はできません",
       "emailMsg": "メールアドレスを入力してください。",
       "firstMsg": "名を入力してください",
       "lastMsg": "姓を入力してください",
@@ -2360,6 +2720,8 @@
       "passVer": "パスワードの確認",
       "passwordHelper": "現在のパスワードを変更しない場合は空欄のままにしてください",
       "permWarn": "ご注意ください。これらの操作は取り消せません",
+      "profEdit": "アカウントを編集",
+      "reviewWarn": "削除される前に、教会がアカウント削除リクエストを確認します。",
       "saveChange": "変更を保存しました。",
       "saveChanges": "変更を保存",
       "saveError": "変更を保存できませんでした",
@@ -2401,6 +2763,7 @@
       "percent": "パーセント",
       "price": "価格",
       "promote": "繰り上げ",
+      "promoteConfirm": "このキャンセル待ちの登録者を確定に昇格させますか?",
       "registrationDetails": "登録の詳細",
       "removeConfirm": "この項目を削除しますか？この操作は元に戻せません。",
       "selections": "選択項目",
@@ -2414,6 +2777,7 @@
     "registrationDetailsPage": {
       "addAttendee": "参加者を追加",
       "addAttendeeError": "参加者の登録に失敗しました",
+      "cancelConfirm": "この登録をキャンセルしますか?",
       "cancelRegistration": "登録をキャンセル",
       "csvDate": "Date",
       "csvMembers": "Members",
@@ -2423,6 +2787,7 @@
       "deleteConfirm": "この登録を完全に削除しますか？",
       "eventFull": "このイベントは定員に達しています。",
       "eventNotFound": "イベントが見つかりません",
+      "eventRegistrations": "イベント登録",
       "exportCsv": "CSVをエクスポート",
       "guest": "ゲスト",
       "members": "メンバー",
@@ -2437,6 +2802,7 @@
       "viewAnswers": "回答を表示"
     },
     "registrationSettingsEdit": {
+      "capacity": "定員",
       "capacityPlaceholder": "無制限の場合は空欄",
       "enableRegistration": "登録を有効にする",
       "enableWaitlist": "キャンセル待ちを有効にする",
@@ -2446,7 +2812,9 @@
       "registrationQuestions": "登録の質問",
       "registrationSettings": "登録設定",
       "saveSettings": "設定を保存",
+      "tags": "タグ",
       "tagsHelper": "フィルタリング用のカンマ区切りタグ",
+      "tagsPlaceholder": "youth, retreat, vbs",
       "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
@@ -2459,7 +2827,8 @@
       "registered": "登録済み",
       "registrations": "登録",
       "subtitle": "イベント登録設定を管理し、登録者を表示",
-      "tags": "タグ"
+      "tags": "タグ",
+      "title": "イベント登録"
     }
   },
   "reporting": {
@@ -2491,9 +2860,11 @@
     "addFirstSermon": "最初の説教を追加",
     "addPermanentLiveUrl": "固定のライブ URL を追加",
     "addSermon": "説教を追加",
+    "adjustSearchTerms": "検索条件を調整してみてください",
     "bulkImport": {
       "chooseSource": "取り込み元を選択",
       "fetch": "取得",
+      "fetching": "取得中...",
       "import": "インポート",
       "importFromVimeo": "Vimeo から取り込む",
       "importFromYouTube": "YouTube から取り込む",
@@ -2502,9 +2873,11 @@
       "subtitle": "外部プラットフォームから動画をまとめて取り込みます",
       "title": "一括取り込み",
       "vimeo": "Vimeo",
+      "vimeoChannelId": "Vimeoチャンネル ID",
       "vimeoChannelPlaceholder": "staffpicks",
       "vimeoDescription": "Vimeo アカウントやショーケースから動画を取り込みます",
       "youtube": "YouTube",
+      "youtubeChannelId": "YouTubeチャンネル ID",
       "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
       "youtubeDescription": "YouTube チャンネルや再生リストから動画を取り込みます"
     },
@@ -2528,8 +2901,10 @@
         "deleteConfirm": "このナビゲーションリンクを削除してもよろしいですか？この操作は元に戻せません。",
         "deleteLink": "リンクを削除",
         "deleteNestedLinksFirst": "このリンクにはサブリンクがあります。先にそれらを削除してください。",
+        "deleting": "削除中...",
         "displayText": "表示テキスト",
         "displayTextPlaceholder": "ナビゲーションに表示するテキストを入力",
+        "editNavigationLink": "ナビゲーションリンクを編集",
         "errors": {
           "deleteFailed": "リンクを削除できませんでした。もう一度お試しください。",
           "deleteNestedFirst": "先にサブリンクを削除してください",
@@ -2547,6 +2922,7 @@
         "menuOrganization": "メニューの構成",
         "optionalSubmenuMessage": "必要に応じて、このリンクを既存のサブメニューの下に配置できます:",
         "saveLink": "リンクを保存",
+        "saving": "保存中...",
         "submenuMessage": "このリンクは次のサブメニューの下に配置されます:",
         "submenuUnderAria": "{text}の下のサブメニューとして設定"
       },
@@ -2556,6 +2932,7 @@
         "title": "ナビゲーションリンク"
       },
       "serviceEdit": {
+        "addNewService": "新しい礼拝を追加",
         "auto": "自動",
         "basicInformation": "基本情報",
         "chatSettings": "チャットの設定",
@@ -2602,6 +2979,8 @@
         "delete": "削除",
         "deleteConfirm": "このタブを削除してもよろしいですか？この操作は元に戻せません。",
         "deleteTab": "タブを削除",
+        "deleting": "削除中...",
+        "editTab": "タブを編集",
         "errors": {
           "deleteFailed": "タブを削除できませんでした。もう一度お試しください。",
           "saveFailed": "タブを保存できませんでした。もう一度お試しください。",
@@ -2621,6 +3000,7 @@
         },
         "prayer": "祈り",
         "saveTab": "タブを保存",
+        "saving": "保存中...",
         "tabDisplay": "タブの表示",
         "tabText": "タブのテキスト",
         "tabTextPlaceholder": "タブに表示するテキストを入力"
@@ -2628,21 +3008,27 @@
       "title": "ライブ配信の時間"
     },
     "noPlaylist": "再生リストなし",
+    "noSermonsFound": "説教が見つかりません",
     "noSermonsYet": "説教はまだありません",
     "notScheduled": "予定なし",
     "playlist": "再生リスト",
     "playlists": {
       "createFirstPlaylist": "最初の再生リストを作成",
       "noPlaylistsFound": "再生リストが見つかりません",
+      "noPlaylistsMatch": "検索に一致するプレイリストがありません",
       "playlistEdit": {
         "addThumbnail": "サムネイルを追加",
         "basicInformation": "基本情報",
+        "changeThumbnail": "サムネイルを変更",
+        "createNew": "新しいプレイリストを作成",
         "deleteConfirm": "この再生リストを削除してもよろしいですか？",
         "describePlaylist": "この再生リストの説明...",
         "description": "説明",
         "editPlaylist": "再生リストを編集",
         "enterTitle": "再生リストのタイトルを入力...",
         "newPlaylist": "新しい再生リスト",
+        "playlistTitle": "プレイリストタイトル",
+        "publishDate": "公開日",
         "publishHelp": "この再生リストをいつから視聴できるようにしますか？",
         "publishingSchedule": "公開と予定",
         "recommendedSize": "推奨サイズ: 1280x720 ピクセル（16:9）",
@@ -2666,16 +3052,23 @@
     "sermonEdit": {
       "add": "追加",
       "addToAnotherPlaylist": "別の再生リストに追加",
+      "addToAnotherPlaylistAria": "説教を別のプレイリストに追加",
+      "addToSelectedPlaylistAria": "選択したプレイリストに追加",
+      "audioUrl": "音声ファイルURL(ポッドキャスト用)",
       "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "これはチャンネルの URL ではありません - 上のヘルプリンクをご覧ください",
       "currentLiveService": "現在のライブ礼拝",
       "currentYouTubeLiveStream": "現在の YouTube ライブ配信",
       "customEmbedUrl": "カスタム埋め込み URL",
       "deleteConfirm": "この説教を削除してもよろしいですか？",
+      "description": "説明",
+      "editPermanentLiveUrl": "常設ライブURLを編集",
       "editSermon": "説教を編集",
       "editThumbnailAria": "説教のサムネイルを編集",
       "facebook": "Facebook",
       "fetch": "取得",
+      "fetchVimeoAria": "Vimeo動画の詳細を取得",
+      "fetchYouTubeAria": "YouTube動画の詳細を取得",
       "getYourChannelId": "チャンネル ID を取得する",
       "newSermon": "新しい説教",
       "none": "なし",
@@ -2683,8 +3076,10 @@
       "selectAdditionalPlaylistAria": "追加のプレイリストを選択",
       "selectPlaylistAria": "プレイリストを選択",
       "selectVideoProviderAria": "ビデオプロバイダーを選択",
+      "sermonDescriptionAria": "説教の説明",
       "sermonEmbedUrl": "説教の埋め込み URL",
       "sermonId": "説教 ID",
+      "sermonTitleAria": "説教タイトル",
       "thumbnailAlt": "説教のサムネイル",
       "title": "タイトル",
       "totalSermonDuration": "説教の総再生時間",
@@ -2696,6 +3091,7 @@
       "vimeo": "Vimeo",
       "vimeoId": "Vimeo ID",
       "youtube": "YouTube",
+      "youtubeChannelId": "YouTubeチャンネル ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - これはチャンネルURLではありません",
       "youtubeId": "YouTube ID"
     },
@@ -2705,15 +3101,20 @@
   "serverAdmin": {
     "adminPage": {
       "act": "アクティブ",
+      "arch": "アーカイブ済み",
       "church": "教会",
       "churchName": "教会名",
       "churches": "教会",
       "churchesSubtitle": "すべての教会を検索・管理",
+      "commons": "Commons",
       "commonsSubtitle": "コミュニティから投稿された素材と報告を審査します",
       "impersonateSubtitle": "サポートのために他のユーザーとしてログイン",
       "impersonateUser": "ユーザーとして操作",
+      "jobs": "バックグラウンドジョブ",
       "jobsSubtitle": "スケジュールされたジョブの最終実行と失敗",
       "location": "所在地",
+      "migrations": "データベースマイグレーション",
+      "migrationsSubtitle": "この環境に保留中のスキーマ変更を適用します",
       "noChurch": "教会が見つかりません。別の名前で検索してください。",
       "noUsers": "ユーザーが見つかりません。別の名前またはメールアドレスで検索してください。",
       "noteFour": "比較対象のソフトウェアは ProPresenter です。サイトライセンスで 399 ドルです。平均的な教会が 3 台のコンピューターにインストールすると想定し、総インストール数を 3 で割って教会数を求めました。また、教会は平均して 5 年ごとに新しいバージョンへ更新すると想定しています。したがって 399 ドル ÷ 5 年 ÷ 3 台 = 1 台あたり年間 26.60 ドルとなります。これらの前提を数値化できる場合は、この数字を更新すべきです。",
@@ -2723,85 +3124,203 @@
       "notes": "備考",
       "regist": "登録日",
       "searchResults": "検索結果",
+      "servAdmin": "サーバー管理",
+      "serverHealth": "サーバーの状態",
       "serverHealthSubtitle": "バックエンドサービスの状態を確認",
       "subtitle": "サーバー全体の設定と教会を管理します",
+      "translationLookups": "翻訳検索",
       "translationSubtitle": "翻訳されたロケール文字列を検索",
       "usageSubtitle": "サーバー使用状況の傾向を表示",
+      "usageTrends": "利用状況の推移",
+      "users": "ユーザー",
       "usersSubtitle": "サポートのために任意のユーザーアカウントを検索",
       "valueNotes": "数値の算出方法に関する注記"
     },
     "churchesTab": {
+      "archiveConfirm": "{name}をアーカイブしますか?復元するまでメンバーはアクセスできなくなります。",
       "churchNameSearchAria": "教会名検索",
+      "emailApproveConfirm": "{name}がグループメールを送信できるようにしますか?",
+      "emailApproved": "承認済み",
+      "emailNotApproved": "未承認",
+      "emailRevokeConfirm": "{name}がグループメールを送信できないようにしますか?",
+      "groupEmail": "グループメール",
       "restoreConfirm": "{name}のアクセスを復元しますか？",
       "searchChurchesAria": "教会を検索"
     },
     "commonsTab": {
-      "allProducts": "すべての製品",
       "allStatuses": "すべての状態",
-      "allTypes": "すべての種類",
+      "approve": "承認",
+      "approveNote": "作者へのメモ(任意 — 投稿ページに表示されます)",
       "approvedSuffix": "を承認しました",
       "assetStatus": {
-        "published": "公開済み"
+        "pending": "保留中",
+        "published": "公開済み",
+        "removed": "削除済み",
+        "unpublished": "非公開"
       },
-      "assetType": "素材の種類",
+      "attested": "確認済み",
       "badgeEditBy": "{name} による編集",
       "badgeEditByAuthor": "作成者による編集",
       "badgeNew": "新規",
+      "bpm": "{bpm} BPM",
+      "changes": "変更内容",
+      "chooseOutcome": "結果を選択…",
       "claim": "担当する",
       "colActions": "操作",
-      "colAge": "経過",
       "colAsset": "素材",
-      "colChanges": "変更点",
+      "colBasis": "根拠",
       "colConfidence": "Confidence",
+      "colFile": "ファイル",
       "colScore": "スコア",
-      "colSubmitter": "投稿者",
+      "colSha": "SHA-256",
       "colType": "種類",
+      "confidence": {
+        "chart-only": "チャートのみ",
+        "converted-from-abc": "ABCから変換",
+        "generated-from-midi": "MIDIから生成",
+        "lyrics-only": "歌詞のみ",
+        "proofread-score": "校正スコア",
+        "sunday-ready": "礼拝ですぐ使用可能"
+      },
+      "confirmApprove": "この投稿を承認しますか?",
+      "confirmApproveDetail": "{name}を{license}のもとで公開します。教会はすぐに利用できるようになります。",
       "confirmReject": "投稿を却下",
+      "confirmRequestChanges": "修正のため差し戻す",
+      "contributionAgreed": "提案者は、変更内容が正確であり、この曲のライセンスのもとで提供されていることを確認しました",
+      "contributors": "貢献者",
       "copyrightReports": "著作権",
       "date": "日付",
+      "declineFile": "却下",
+      "declineReason": "このファイルを却下する理由",
+      "declineReasonRequired": "却下する各ファイルに理由を入力してください。",
+      "declinedFiles": "却下されたファイル",
+      "declinedSuffix": "却下済み",
       "detailsUpdated": "詳細を更新しました",
+      "download": "ダウンロード",
       "downloads": "ダウンロード数",
       "feature": "おすすめにする",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
+      "featured": "おすすめ",
+      "field": {
+        "certified": "作者が権利を保有していることを証明します",
+        "description": "説明",
+        "language": "言語",
+        "license": "ライセンス",
+        "name": "タイトル",
+        "tags": "テーマ"
+      },
+      "files": "ファイル",
       "firstSubmission": "初回投稿",
+      "grant": {
+        "adult": "18歳以上",
+        "clear": "出版社、著作権管理団体、管理者のいずれもこの許諾を妨げていません",
+        "cowriters": "すべての共作者が書面で同意しています",
+        "forever": "礼拝での使用が永続的であることを理解しています",
+        "human": "歌詞とメロディーはAIではなく人によって作られたものです",
+        "wrote": "作詞・作曲を行った、またはその著作権(歌詞、楽曲、すべてのファイル)を管理しています"
+      },
+      "intakeFindings": "受付時の確認結果",
       "justNow": "たった今",
       "licensePd": "パブリックドメイン",
+      "licenseWc": "礼拝での利用は自由",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
+      "lyricsAndChords": "歌詞とコード",
+      "masterLicense": "マスター音源",
+      "musicEditorRightsBlocked": "この提案は権利(ライセンスまたは所有権)を変更します。サーバー管理者のみが承認できます。",
       "name": "名前",
+      "newNoFiles": "歌詞と詳細情報のみ、ファイルなし",
       "noAssets": "素材が見つかりません。",
+      "noFieldChanges": "表示する変更はありません。",
+      "noFindings": "受付時に問題は検出されませんでした。",
       "noKeys": "No published keys yet.",
       "noReports": "報告は提出されていません。",
       "noSubmissions": "審査待ちの投稿はありません。",
       "note": "メモ",
+      "original": "オリジナル",
       "policyReports": "ポリシー・その他",
       "possibleDuplicate": "重複の可能性",
-      "product": "製品",
+      "possibleDuplicateSearch": "WorshipCommonsで類似タイトルを検索",
+      "possibleDuplicateTooltip": "このファイルまたはタイトルはライブラリ内の既存の曲と一致しています — 承認前にレビューで確認してください",
       "publisher": "出版元",
       "reason": "理由",
       "recentlyResolved": "最近解決したもの",
+      "recordingOwned": "録音を所有している(または所有者の許可を得ている)",
       "reject": "却下",
+      "rejectReason": {
+        "ai": "AI生成の歌詞またはメロディー",
+        "ccli": "著作権保護された(CCLI)楽曲",
+        "duplicate": "重複",
+        "incomplete": "不完全",
+        "licensing": "ライセンスの問題",
+        "offtopic": "対象外",
+        "other": "その他",
+        "quality": "品質"
+      },
       "remove": "削除",
       "removeConfirm": "{name} を削除しますか？以後、誰も利用できなくなります。",
+      "removeReason": {
+        "copyright": "著作権",
+        "policy": "ポリシー"
+      },
+      "reportReason": {
+        "ai": "AI生成",
+        "copyright": "著作権",
+        "other": "その他",
+        "policy": "ポリシー",
+        "quality": "品質"
+      },
+      "reportStatus": {
+        "open": "未対応",
+        "resolved": "解決済み",
+        "reviewing": "レビュー中"
+      },
       "reporterRole": "報告者の役割",
       "republish": "再公開",
+      "requestChanges": "修正を依頼",
+      "requestChangesNote": "投稿者に変更内容を伝えてください",
+      "resolution": {
+        "dismissed": "却下",
+        "duplicate": "重複",
+        "upheld": "支持"
+      },
       "resolve": "解決済みにする",
+      "resolveAction": {
+        "none": "対応なし",
+        "remove": "削除",
+        "unpublish": "非公開にする"
+      },
       "review": "審査",
+      "rights": "権利",
       "rightsFlag": "権利",
       "rightsFlagTooltip": "この曲は著作権管理団体または出版元が管理していると投稿者が申告しています。",
       "scoreHeuristicOnly": "完全性の目安のみ — AI による判断ではありません",
       "searchAssets": "素材を検索",
+      "shortcuts": "キー: J/K 次へ/前へ・A 承認にフォーカス・R 却下",
       "signature": "署名",
+      "songKey": "キー {key}",
+      "sources": "出典",
       "status": "状態",
+      "submissionType": {
+        "additionalFile": "追加ファイル",
+        "arrangement": "編曲",
+        "correction": "修正",
+        "new": "新曲",
+        "recording": "マスター音源",
+        "removal": "削除申請",
+        "translation": "翻訳"
+      },
+      "submittedBy": "投稿者",
       "sundayReady": "Sunday-ready",
       "tabAssets": "素材",
       "tabQueue": "審査待ち",
       "tabReports": "報告",
+      "triageScore": "トリアージスコア",
+      "unchangedFiles": "変更なしのファイル",
       "unpublish": "公開を取り消す",
-      "viewOnWorshipCommons": "WorshipCommons で表示",
-      "featured": "おすすめ",
-      "licenseWc": "礼拝での利用は自由"
+      "unpublishConfirm": "{name}を非公開にしますか?再公開するまで教会は見つけられなくなります。",
+      "viewOnWorshipCommons": "WorshipCommons で表示"
     },
     "impersonateTab": {
       "confirmMessage": "現在のセッションからログアウトし、{email}としてサインインします。自分のアカウントに戻るには、一度ログアウトしてから再度ログインしてください。",
@@ -2821,7 +3340,40 @@
       "noRuns": "ジョブの実行記録はまだありません。",
       "recentFailures": "最近の失敗",
       "subtitle": "各スケジュールジョブの最新の実行状況です。実行記録はタイマーハンドラーによって記録され、30日間保持されます。",
+      "success": "成功",
       "title": "バックグラウンドジョブ"
+    },
+    "migrationsTab": {
+      "applied": "適用済み",
+      "baseline": "適用済みとして記録",
+      "baselineConfirm": "{count}件の{module}マイグレーションを{environment}上で適用済みとして記録しますか?何も実行されません。残りのマイグレーションを実行できるよう、履歴のみが記録されます。",
+      "checkSchema": "スキーマを確認",
+      "confirm": "{count}件の保留中のマイグレーションを{environment}のデータベースに適用しますか?各モジュールのマイグレーションは順番に実行され、最初の失敗で停止します。",
+      "detectSubtitle": "各マイグレーションのテーブル、カラム、インデックスがこのデータベースと照合されました。何も変更されていません。",
+      "detectSummary": "{count}件のマイグレーションは既に適用されており、適用済みとして記録されます。{pending}件は保留のままとなり、後で実行できます。",
+      "detectTitle": "検出されたマイグレーション: {module}",
+      "error": "エラー",
+      "lastApplied": "最終適用日",
+      "loadError": "マイグレーションの状態を読み込めませんでした。",
+      "module": "モジュール",
+      "noHistory": "履歴なし",
+      "noHistoryNote": "{modules}のマイグレーション履歴がありません。「スキーマを確認」を使用して、既に適用されているマイグレーションを確認・記録してください。その後、不足しているものだけが実行されます。",
+      "noneApplied": "未適用",
+      "nothingPending": "すべてのモジュールが最新です。",
+      "partialNote": "一部適用されたマイグレーションは途中で停止しました。安全に再実行できるように書かれている場合(まず内容を確認してください)、「再実行」にチェックを入れると保留状態に戻り、最初から再実行されます。",
+      "pending": "保留中",
+      "pendingCount": "{count}件保留中",
+      "rerun": "再実行",
+      "run": "保留中のマイグレーションを実行",
+      "running": "{module}を実行中…",
+      "state_applied": "適用済み",
+      "state_missing": "未適用",
+      "state_partial": "一部適用済み",
+      "state_unknown": "データのみ",
+      "subtitle": "デプロイではデータベースは変更されません。マイグレーションを追加するリリースの後、ここで実行してください — APIが自身のネットワーク内から適用します。",
+      "title": "データベースマイグレーション",
+      "upToDate": "最新",
+      "willRerun": "再実行されます"
     },
     "reportPage": {
       "adminOnly": "管理者のみ",
@@ -2835,7 +3387,8 @@
       "setting": "設定",
       "status": "ステータス",
       "subtitle": "各API設定が構成されているかどうかを示します。値は表示されません。",
-      "title": "サーバー健全性"
+      "title": "サーバー健全性",
+      "yes": "はい"
     },
     "translation": {
       "abbreviations": "略称",
@@ -2866,11 +3419,14 @@
   "settings": {
     "apiKeyEdit": {
       "close": "閉じる",
+      "copied": "コピーしました",
       "copy": "コピー",
+      "expires": "有効期限",
       "expiresHelp": "有効期限なしのキーにするには空白のままにしてください。",
       "generalScopes": "一般",
       "keyIntro": "今すぐAPIキーをコピーしてください — 再表示されません。",
       "keyTitle": "APIキー",
+      "name": "名前",
       "namePlaceholder": "例：Zapier連携",
       "nameRequired": "名前は必須です",
       "newKey": "新しいAPIキー",
@@ -2883,7 +3439,9 @@
       "urlHelper": "完全な URL を入力してください（例: https://example.com）"
     },
     "appEdit": {
+      "addTab": "タブを追加",
       "bible": "聖書",
+      "changeImage": "画像を変更",
       "checkin": "チェックイン",
       "deleteTab": "タブを削除",
       "donation": "献金",
@@ -2901,6 +3459,7 @@
       "page": "ページ",
       "plans": "奉仕プラン",
       "saveTab": "タブを保存",
+      "saving": "保存中...",
       "selectGroups": "グループを選択：",
       "selectImage": "画像を選択",
       "sermons": "説教",
@@ -2909,6 +3468,7 @@
       "tabName": "タブ名",
       "tabType": "タブの種類",
       "team": "チームメンバー（奉仕チーム）",
+      "url": "URL",
       "verseOfDay": "今日の聖句",
       "visibility": "表示",
       "volunteerOpportunities": "ボランティアの機会"
@@ -2974,6 +3534,7 @@
       "search": "検索",
       "startDate": "開始日",
       "subtitle": "教会の変更とアクティビティを追跡する",
+      "title": "監査ログ",
       "truncated": "詳細が切り捨てられ、このエントリは元に戻せません。"
     },
     "batches": {
@@ -2996,11 +3557,13 @@
       "source": "ソース",
       "status": "ステータス",
       "subtitle": "一括インポートと操作を確認し、取り消します",
+      "title": "バッチ",
       "undo": "元に戻す",
       "undoConfirm": "バッチ「{label}」を元に戻しますか？影響を受けたレコードはバッチ実行前の状態に復元されます。",
       "undoError": "元に戻すリクエストが失敗しました。",
       "undoTitle": "バッチを元に戻す",
       "undoWarning": "このバッチ作成後に変更されたレコードはスキップされます。この操作は取り消せません。",
+      "undoing": "元に戻しています…",
       "viewResults": "結果を表示"
     },
     "campusEdit": {
@@ -3071,7 +3634,9 @@
       "noKeys": "APIキーはまだありません。",
       "prefix": "キー",
       "revoke": "取り消す",
-      "scopes": "スコープ"
+      "revokeConfirm": "「{name}」のアクセス権を取り消しますか?",
+      "scopes": "スコープ",
+      "title": "開発者"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "名簿の承認グループ",
@@ -3104,6 +3669,7 @@
       "category": "カテゴリ",
       "close": "閉じる",
       "composePlaceholder": "ここにメールテンプレートを作成...",
+      "editTemplate": "テンプレートを編集",
       "emailPreview": "メールプレビュー",
       "insertMergeBody": "本文にマージフィールドを挿入：",
       "insertMergeSubject": "件名にマージフィールドを挿入：",
@@ -3121,6 +3687,8 @@
       "subject": "件名",
       "subjectPlaceholder": "例：こんにちは{firstName}さん、{churchName}へようこそ",
       "subjectRequired": "件名は必須です。",
+      "templateName": "テンプレート名",
+      "templateNamePlaceholder": "例: ウェルカムメール、イベントリマインダー",
       "yourChurch": "あなたの教会"
     },
     "emailTemplatesPage": {
@@ -3150,25 +3718,39 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
+      "clientId": "クライアントID",
+      "clientSecret": "クライアントシークレット",
       "copyWebhookUrl": "Webhook URLをコピー",
       "currency": "通貨",
       "currencyHelper": "このリ通貨がStripeダッシュボードでも有効になっていることを確認してください。ここで通貨を有効にする：",
       "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "取引手数料を利用者に自動的に負担してもらいます",
       "giving": "献金",
+      "kfSetup": "Kingdom Fundingダッシュボードのトークン化キーとソースキーを入力してください。開始はこちら:",
+      "kfWebhookInstructions": "決済プロバイダーのダッシュボードで、このURLをWebhookエンドポイントとして追加してください:",
       "none": "なし",
       "paymentGatewaySection": "Payment gateway",
+      "paypalSetup": "PayPal RESTアプリを作成し、そのクライアントIDとシークレットを以下に貼り付けてください。開始はこちら:",
+      "paystackSetup": "Paystackダッシュボード(Settings→API Keys & Webhooks)から公開鍵とシークレットキーをコピーし、以下に貼り付けてください。開く:",
+      "paystackWebhookInstructions": "定期献金とモバイルマネー決済が記録されるよう、このURLをPaystackダッシュボード(Settings→API Keys & Webhooks)のWebhook URL欄に貼り付けてください:",
       "privateKeyRequired": "保存する前に、このプロバイダーのシークレット/プライベートキーを入力してください。",
       "prov": "プロバイダー",
+      "pubKey": "公開鍵",
       "saveError": "献金の設定を保存できませんでした",
+      "secKey": "シークレットキー",
+      "sourceKey": "ソースキー",
       "stripeDashboard": "Stripe ダッシュボード",
+      "stripeSetup": "Stripeダッシュボード(Developers→API keys)から公開可能キーとシークレットキーをコピーし、以下に貼り付けてください。開く:",
+      "tokenizationKey": "トークン化キー",
       "transFee": "取引手数料",
+      "webhookKey": "Webhookキー",
       "webhookKeyHelper": "Kingdom Fundingコントロールパネルのウェブフック署名シークレット。取引ステータスの更新に必要です。",
       "webhookUrlCopied": "Webhook URLをクリップボードにコピーしました"
     },
     "gradePromotionSettingsEdit": {
       "day": "日",
       "disabled": "無効",
+      "enabled": "有効",
       "help": "毎年この日付になると、学年が設定されている全員が自動的に次の学年に進級します（12年生は卒業になります）。自動進級をオフにするには無効のままにしてください。",
       "month": "月",
       "title": "進級"
@@ -3195,7 +3777,8 @@
       "batches": "バッチ",
       "imEx": "インポート / エクスポート",
       "noData": "教会のデータがありません",
-      "subtitle": "教会の設定を行います"
+      "subtitle": "教会の設定を行います",
+      "title": "教会を管理"
     },
     "messagingMinimumAge": {
       "age13": "13歳以上",
@@ -3217,9 +3800,12 @@
     "roleEdit": {
       "confirmMsg": "この役割を完全に削除してもよろしいですか？",
       "roleEdit": "役割を編集",
+      "roleName": "ロール名",
+      "roleNameAria": "ロール名",
       "valMsg": "有効な役割名を入力してください。"
     },
     "roleMembers": {
+      "addRoleMemberAria": "ロールメンバーを追加",
       "confirmMsg": "このユーザーを次から削除してもよろしいですか:",
       "lastAdminWarning": "少なくとも1人のドメイン管理者が必要です。これを削除する前に別の管理者を追加してください。",
       "mem": "メンバー",
@@ -3239,6 +3825,7 @@
       "accDesc": "献金の閲覧と管理ができます。",
       "addCustomRoleAria": "カスタムロールを追加",
       "addPredefinedRoleAria": "{name}ロールを追加",
+      "canEdit": "内のほとんどのデータを編集できます ",
       "churchDesc": "（人物、グループ、出席、フォームを含みます）。",
       "churchStaff": "教会スタッフ",
       "contAdmin": "コンテンツ管理者",
@@ -3248,19 +3835,24 @@
       "lesAdmin": "レッスン管理者",
       "lesAdminDesc": "次でクラスを設定し、レッスンを予定に追加できます: ",
       "role": "ロール",
+      "roleCreate": "次の新しいロールを作成しますか: ",
       "roles": "ロール"
     },
     "rolesPage": {
       "subtitle": "ロールと権限を管理"
     },
     "statementFormat": {
+      "abn": "ABN",
       "australia": "オーストラリア",
       "canada": "カナダ - CRA 公式領収書",
       "cityOfIssue": "発行地",
+      "craNumber": "CRA登録番号",
       "format": "証明書の書式",
       "helper": "印刷する献金証明書に、その国で必要とされる法定の領収書欄を追加します。",
       "newZealand": "ニュージーランド",
+      "nzNumber": "NZ慈善団体登録番号",
       "orgAddress": "団体の住所",
+      "registrationNumber": "登録番号",
       "signatory": "承認者の氏名",
       "standard": "標準"
     },
@@ -3302,6 +3894,8 @@
       "apiKey": "APIキー",
       "apiSecret": "APIシークレット",
       "clearstream": "Clearstream",
+      "clearstreamHelper": "以下でAPIキーを作成してください: ",
+      "clearstreamHelperLink": "Clearstreamアカウント設定",
       "clearstreamHelperSuffix": "「APIキー」の下にあります。",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "MinistryStuffのテキストメッセージ契約が有効で、今サイクルの残りクレジットは{}件です。",
@@ -3311,6 +3905,8 @@
       "provider": "プロバイダー",
       "saveError": "テキスティング設定の保存中にエラーが発生しました。",
       "textInChurch": "教会でのテキスト",
+      "textInChurchHelper": "こちらへアクセス: ",
+      "textInChurchHelperLink": "Text In Churchサポート",
       "textInChurchHelperSuffix": "開発者APIアクセスをリクエストするため。承認されたら、アカウント設定 > 開発者APIセクションでAPIキーを作成してください。"
     },
     "userAdd": {
@@ -3351,22 +3947,28 @@
       "connectorSlack": "Slack",
       "connectorStandard": "標準（生JSON）",
       "connectorType": "コネクタ種別",
+      "copied": "コピーしました",
       "copy": "コピー",
       "date": "日時",
       "deliveries": "最近の配信",
       "deliveryDetail": "配信詳細",
       "discordUrlHelp": "DiscordチャンネルのIncoming Webhook URLを貼り付けてください。イベントは読みやすいチャットメッセージとして配信されます。",
+      "editWebhook": "Webhookを編集",
       "event": "イベント",
       "events": "イベント",
       "eventsRequired": "少なくとも1つのイベントを選択してください",
+      "mailchimpApiKey": "Mailchimp APIキー",
       "mailchimpApiKeyHelp": "Mailchimp の「Account > Extras > API keys」で確認できます。暗号化して保存されます。",
+      "mailchimpAudienceId": "オーディエンスID",
       "mailchimpAudienceIdHelp": "Mailchimp の「Audience > Settings > Audience name and defaults」で確認できます。",
+      "name": "名前",
       "namePlaceholder": "例：Zapier — 新規メンバー",
       "nameRequired": "名前は必須です",
       "newWebhook": "新しいWebhook",
       "noDeliveries": "配信履歴はまだありません。",
       "payload": "ペイロード",
       "redeliver": "再配信",
+      "regenerateConfirm": "署名シークレットを再生成しますか?現在のシークレットは即座に無効になります。",
       "regenerateSecret": "シークレットを再生成",
       "response": "レスポンス",
       "responseBody": "レスポンス本文",
@@ -3374,9 +3976,14 @@
       "secretSignNote": "すべての配信でX-B1-Signatureヘッダーを検証するために使用してください。",
       "secretTitle": "署名シークレット",
       "sendTest": "テストイベントを送信",
+      "sendingTest": "送信中…",
+      "slackUrlHelp": "SlackチャンネルのIncoming Webhook URLを貼り付けてください。イベントは読みやすいチャットメッセージとして配信されます。",
+      "url": "ペイロードURL",
+      "urlPlaceholder": "https://example.com/webhooks/b1",
       "urlRequired": "URLは必須です"
     },
     "webhooksPage": {
+      "active": "有効",
       "deleteConfirm": "Webhook「{name}」を削除しますか？",
       "disabled": "無効",
       "emptyDescription": "人物・グループ・世帯が変更されたときに外部ツールへ通知するWebhookを作成してください。",
@@ -3394,19 +4001,26 @@
       "buttonTip": "アクセシビリティを確認",
       "buttonTipIssues": "確認が必要なアクセシビリティの問題が{count}件あります",
       "close": "閉じる",
+      "errorLabel": "エラー",
       "highlight": "ページ内で表示",
       "noIssues": "アクセシビリティの問題は見つかりませんでした",
       "noIssuesDetail": "画像にはalt属性のテキストがあり、色は最低限のコントラスト基準を満たし、見出しは正しい順序になっています。",
       "pageLevel": "ページ全体",
       "panelAria": "アクセシビリティの問題",
+      "rule_contrast": "コントラスト不足",
+      "rule_emptyLink": "リンクテキストが空です",
+      "rule_headingOrder": "見出しの順序",
+      "rule_missingAlt": "代替テキストがありません",
       "sectionLabel": "セクション{n}",
       "subtitle": "ページを公開する前にこれらを修正してください",
       "summaryErrors": "{count}件のエラー",
       "summaryWarnings": "{count}件の警告",
-      "title": "アクセシビリティ"
+      "title": "アクセシビリティ",
+      "warningLabel": "警告"
     },
     "addPage": {
       "aiPlaceholder": "例: 教会名、宣教方針、礼拝時間、献金ボタンを備えた、温かみのあるホームページを作成してください",
+      "newLink": "新規リンク",
       "newPage": "新しいページ",
       "pageType": "ページの種類"
     },
@@ -3426,8 +4040,11 @@
       "exampleHomepage": "教会名、使命宣言、礼拝時間、献金ボタンを含む歓迎的なホームページを作成",
       "exampleMinistries": "ユースグループ、ワーシップチーム、地域奉仕活動を写真と共に紹介するミニストリーページを作成",
       "examples": "例：",
+      "linkText": "リンクテキスト",
       "linkType": "リンク",
+      "linkUrl": "リンクURL",
       "location": "場所",
+      "pageTitle": "ページタイトル",
       "statusCreatingSections": "ページのセクションと要素を作成中...",
       "statusGatheringInfo": "教会情報を収集中...",
       "statusGenerating": "{count}個のセクションを生成中...",
@@ -3438,6 +4055,7 @@
     "aiRewrite": {
       "description": "このセクションのテキストを AI で書き換えます。レイアウトと画像はそのまま保持されます。",
       "failed": "書き換えに失敗しました。変更はありません。",
+      "instruction": "指示",
       "placeholder": "例: もっと温かみのある表現にして、行動を促す一文を加えてください",
       "preset_": "Preset_",
       "rewrite": "書き換える",
@@ -3467,14 +4085,20 @@
       "appSettings": "アプリ設定",
       "branding": "ロゴとブランディング",
       "brandingDescription": "組織のロゴとブランディング資産をアップロードおよび管理",
+      "edit": "編集",
+      "favicon": "ファビコン",
       "faviconDesc": "ブラウザタブ用の正方形アイコン。理想的なサイズ：400×400px",
+      "logoDark": "ダーク背景用ロゴ",
       "logoDarkDesc": "暗い背景用の水平ロゴ。理想的なサイズ：1280×320px",
+      "logoLight": "ライト背景用ロゴ",
       "logoLightDesc": "明るい背景用の水平ロゴ。理想的なサイズ：1280×320px",
       "logoManagement": "ロゴの管理",
       "logoUploadDescription": "さまざまなコンテキスト用のロゴをアップロードします。最良の結果を得るには、すべての画像に透明な背景を使用してください。",
       "mainLogos": "メインロゴ",
       "noImage": "画像なし",
+      "ogImage": "SNS画像",
       "ogImageDesc": "ソーシャル共有とSEOに使用。理想的なサイズ：1200×630px",
+      "pwaShortName": "PWAショートネーム(最大12文字)",
       "pwaShortNameHelper": "デバイスのホーム画面のアプリアイコン名に使用されます。",
       "seoAssets": "SEOおよびブラウザ資産",
       "upload": "アップロード"
@@ -3488,6 +4112,7 @@
       "blockType": "ブロックタイプ",
       "elementBlock": "要素",
       "errName": "名前を入力してください。",
+      "name": "名前",
       "sectionBlock": "セクション",
       "unauthorizedCreate": "ブロックを作成する権限がありません",
       "unauthorizedDelete": "ブロックを削除する権限がありません"
@@ -3501,6 +4126,7 @@
       "addBlock": "ブロックを追加",
       "blocks": "ブロック",
       "createFirstBlock": "最初のブロックを作成",
+      "elements": "要素",
       "getStarted": "最初の再利用ブロックを作成して始めましょう",
       "noBlocksFound": "ブロックが見つかりません",
       "rename": "名前を変更",
@@ -3515,9 +4141,14 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "日付",
       "deleteTitle": "記事を削除",
+      "draft": "下書き",
+      "navHint": "訪問者は/blogで投稿を読むことができます。見つけられるように、ページ画面でナビゲーションリンクを追加してください:",
       "noPosts": "記事はまだありません",
       "posts": "記事",
+      "published": "公開済み",
+      "scheduled": "予約済み",
       "state": "状態",
+      "subtitle": "ウェブサイトのブログ投稿を作成・管理します",
       "title": "ブログ",
       "view": "サイトで表示"
     },
@@ -3526,6 +4157,7 @@
       "category": "カテゴリ",
       "content": "コンテンツ",
       "draft": "下書き",
+      "editPost": "投稿を編集",
       "errSave": "記事を保存できませんでした。",
       "errSlug": "スラッグを入力してください。",
       "errSlugTaken": "そのウェブアドレスは別の投稿ですでに使用されています。",
@@ -3535,8 +4167,11 @@
       "newPost": "新しい記事",
       "preview": "プレビュー",
       "publishDate": "公開日",
+      "published": "公開済み",
       "selectImage": "画像を選択",
       "slugHelper": "編集するまでタイトルから自動入力されます。アドレス：",
+      "slugLabel": "ウェブアドレス",
+      "tags": "タグ",
       "tagsHelper": "カンマ区切り",
       "title": "タイトル"
     },
@@ -3547,6 +4182,7 @@
       "selectCalendar": "カレンダーを選択"
     },
     "campaignProgressEdit": {
+      "donateUrl": "献金URL",
       "endDate": "終了日",
       "fund": "ファンド",
       "goalAmount": "目標金額",
@@ -3556,6 +4192,7 @@
       "title": "タイトル"
     },
     "colorPicker": {
+      "color": "色",
       "placeholder": "#FF0000"
     },
     "contentEditor": {
@@ -3565,6 +4202,7 @@
       "discard": "破棄",
       "discardElementMessage": "この要素の未保存の変更を破棄しますか？",
       "discardElementTitle": "変更を破棄しますか？",
+      "discardSectionMessage": "このセクションの未保存の変更を破棄しますか?",
       "dropToAddElement": "ここにドロップして要素を追加",
       "dropToAddSection": "ここにドロップしてセクションを追加",
       "keepEditing": "編集を続ける",
@@ -3586,6 +4224,7 @@
       "weekly": "毎週の礼拝"
     },
     "cssEdit": {
+      "advancedFeature": "高度な機能:",
       "advancedFeatureDescription": "カスタムCSSおよびJavaScriptはサイトの機能に影響を与える可能性があります。変更を十分にテストし、現在の設定のバックアップを確保してください。",
       "commonCssExamples": "一般的なCSSの例",
       "commonJsExamples": "一般的なJavaScriptの例",
@@ -3602,8 +4241,10 @@
       "exampleLinkColors": "リンクの色を変更",
       "headerSubtitle": "サイトにカスタムスタイルとスクリプトを追加",
       "headerTitle": "CSSとJavaScript",
+      "proTip": "プロのヒント:",
       "proTipDescription": "ブラウザの開発者ツール（F12）を使用して、ここで適用する前にCSSの変更をテストしてください。JavaScriptコードはサイトの各ページに追加されます。",
-      "saveChanges": "変更を保存"
+      "saveChanges": "変更を保存",
+      "saving": "保存中..."
     },
     "customFontModal": {
       "all": "すべて",
@@ -3615,11 +4256,13 @@
       "sample": "サンプル",
       "sampleText": "素早い茶色のキツネは怠惰な犬を飛び越えます。",
       "sansSerif": "サンセリフ",
+      "search": "検索",
       "selectFont": "フォントを選択",
       "serif": "セリフ"
     },
     "donateLink": {
       "add": "追加",
+      "addAmount": "金額を追加",
       "amount": "金額",
       "amountPlaceholder": "金額のプレースホルダー",
       "donationAmount": "献金額",
@@ -3629,7 +4272,11 @@
       "maxAmountsAlert": "献金額の候補は 5 件まで追加できます。",
       "noFunds": "献金先なし",
       "selectFund": "献金先を選択",
-      "urlLabel": "URL"
+      "textHelper": "例: (今すぐ献金する)、(はい、協力します!)、(ユースキャンプに10ドル献金する)など",
+      "textLabel": "テキスト",
+      "urlHelper": "ヒント: 献金要素があるウェブサイトビルダーのページをリンクする必要があります。",
+      "urlLabel": "URL",
+      "urlPlaceholder": "/donate"
     },
     "donationEdit": {
       "allowRecurring": "定期献金を許可",
@@ -3655,6 +4302,7 @@
       "exit": "終了",
       "justNow": "たった今",
       "page": "ページ",
+      "publish": "公開",
       "publishOffTip": "現在、編集内容は即時に反映されます。公開すると公開バージョンが保存され、次の公開まで今後の編集は非公開のままになります。",
       "publishedLabel": "公開済み",
       "redoTip": "やり直し (Ctrl+Shift+Z)",
@@ -3687,8 +4335,40 @@
       "column": "Column",
       "common": "共通",
       "countdown": "Countdown",
+      "descBox": "要素をスタイル付きのコンテナにまとめます。",
+      "descCalendar": "カレンダーの今後のイベント。",
+      "descCampaignProgress": "献金キャンペーンの進捗バー。",
+      "descCard": "画像とリンク付きのタイトル付きカード。",
+      "descCarousel": "全幅スライドを順に切り替えます。",
+      "descCountdown": "特定の日付までのカウントダウンタイマー。",
+      "descDonateLink": "献金ページを開くボタン。",
+      "descDonation": "完全な献金フォーム。",
+      "descEmbedPage": "別のページをフレームに埋め込みます。",
+      "descExpandable": "クリックすると回答が表示される質問。",
+      "descForm": "フォームの1つを埋め込みます。",
+      "descGallery": "ファイル内の写真のグリッド。",
+      "descGroupList": "参加者が閲覧・参加できるグループ一覧。",
+      "descHtml": "独自のHTMLコード。",
+      "descIconFeature": "短い見出しと説明付きのアイコン。",
+      "descImage": "1枚の画像(リンク設定可)。",
+      "descLocation": "教会の住所を示す地図。",
+      "descLogo": "教会のロゴ。",
+      "descPodcast": "外部ポッドキャストRSSフィードからのエピソード一覧(各エピソードに音声プレーヤー付き)",
       "descReusableElement": "再利用できる要素ブロック",
+      "descReusableSection": "再利用可能なセクション",
+      "descRow": "セクションを左右のカラムに分割します。",
       "descSection": "コンテンツをまとめるコンテナ",
+      "descSermons": "ライブラリの最新の説教。",
+      "descServiceTimes": "礼拝の日時と場所。",
+      "descSocialIcons": "教会のSNSアカウントへのリンク。",
+      "descStaffGrid": "スタッフの写真とプロフィール。",
+      "descStats": "重要な数値をいくつか強調表示します。",
+      "descStream": "ライブ配信プレーヤーとチャット。",
+      "descTable": "シンプルなデータの表。",
+      "descTestimonial": "出典付きの引用文。",
+      "descText": "書式付きテキストブロック。",
+      "descTextWithPhoto": "画像とテキストを並べて表示。",
+      "descVideo": "YouTubeまたはVimeoの動画を埋め込みます。",
       "donateLink": "Donate link",
       "donation": "Donation",
       "embedPage": "Embed page",
@@ -3717,6 +4397,7 @@
       "text": "Text",
       "textWithPhoto": "Text with photo",
       "tryDifferentSearch": "別の検索語をお試しください",
+      "untitledBlock": "無題のブロック",
       "video": "Video"
     },
     "elementEdit": {
@@ -3743,6 +4424,7 @@
       "categoriesHelper": "例: 小グループ, 教会学校",
       "color": "色",
       "confirmDelete": "この要素を完全に削除してもよろしいですか？",
+      "confirmDuplicate": "この要素とすべての子要素をコピーしてもよろしいですか?",
       "contained": "塗りつぶし",
       "deleteElementBody": "この要素はページから削除されます。Ctrl+Zで元に戻せます。",
       "deleteElementTitle": "要素を削除しますか？",
@@ -3755,6 +4437,7 @@
       "heightPx": "高さ（px）",
       "hide": "非表示",
       "htmlContent": "HTML コンテンツ",
+      "id": "ID",
       "idExample": "例: dQw4w9WgXcQ",
       "idExampleVimeo": "例: 76979871",
       "imageAlignment": "画像の配置",
@@ -3780,20 +4463,27 @@
       "positionPhotoTop": "上",
       "primary": "プライマリ",
       "roundedCorners": "角を丸くする",
+      "scriptsPublishedOnly": "スクリプトは公開されたサイトでのみ実行されます。",
       "secondary": "セカンダリ",
       "selectPhoto": "写真を選択",
       "selectPhotoPosition": "写真の位置を選択",
       "slide": "スライド",
       "slides": "スライド",
       "slidesIntervalSeconds": "スライドの切り替え間隔（秒）",
+      "source": "ソース",
       "success": "成功",
+      "text": "テキスト",
       "textAlignment": "テキストの配置",
+      "title": "タイトル",
       "titleAlignment": "タイトルの配置",
       "translucent": "半透明",
       "type": "タイプ",
+      "url": "URL",
       "variant": "スタイル",
       "videoAndInteraction": "動画と操作",
       "videoOnly": "動画のみ",
+      "videoUrlVimeo": "動画URLでIDを確認してください: vimeo.com/[id]",
+      "videoUrlYoutube": "動画URLでIDを確認してください: youtube.com/watch?v=[id]",
       "vimeo": "Vimeo",
       "warning": "警告",
       "youtube": "YouTube",
@@ -3809,7 +4499,8 @@
       "heading": "見出し",
       "headingType": "見出しタイプ",
       "iconColor": "アイコンの色",
-      "link": "リンク"
+      "link": "リンク",
+      "title": "タイトル"
     },
     "files": {
       "confirmDelete": "削除してもよろしいですか:",
@@ -3817,11 +4508,13 @@
       "uploadFiles": "ファイルをアップロード"
     },
     "filesManager": {
+      "copied": "リンクをコピーしました",
       "copyLink": "Copy link",
       "externalStorage": "External storage",
       "files": "ファイル",
       "getStarted": "最初のファイルをアップロードして始めましょう",
       "name": "名前",
+      "noFilesYet": "アップロードされたファイルはまだありません",
       "size": "サイズ",
       "storage": "ストレージ："
     },
@@ -3844,6 +4537,7 @@
       "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
       "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
       "saveFonts": "フォントを保存",
+      "saving": "保存中...",
       "secondaryHeading": "セカンダリ見出し",
       "typographyPreview": "書体のプレビュー"
     },
@@ -3878,7 +4572,9 @@
       "buildingSection": "{title} を作成中 — セクション {n} / {total}...",
       "button": "サイトを生成",
       "churchName": "教会名",
+      "createPlan": "プランを作成",
       "creatingPage": "{title} を作成しています（{n} / {total}）...",
+      "describe": "教会について説明してください",
       "describePlaceholder": "教会のこと、宣教の方針、教会ならではの特色などをお書きください",
       "done": "サイトが完成しました。",
       "errDescription": "教会について 10 文字以上で入力してください。",
@@ -3887,6 +4583,7 @@
       "pageFailed": "{title} のページを作成できなかったため、スキップしました。",
       "planIntro": "生成するページを選択してください:",
       "sectionSkipped": "{title}: セクション {n} はスキップされました。",
+      "serviceTimes": "礼拝時間",
       "serviceTimesPlaceholder": "毎週日曜 午前9時・11時",
       "title": "AI でサイトを生成",
       "tone": "トーン",
@@ -3922,10 +4619,12 @@
       "title": "タイトル"
     },
     "navLink": {
-      "addLink": "リンクを追加"
+      "addLink": "リンクを追加",
+      "linkSettings": "リンク設定"
     },
     "navLinkEdit": {
       "errLinkText": "リンクテキストを入力してください",
+      "linkText": "リンクテキスト",
       "noParent": "（なし）",
       "parentPage": "親ページ",
       "unauthorizedCreate": "ページを作成する権限がありません",
@@ -3948,8 +4647,12 @@
       "unset": "デフォルト"
     },
     "pageLink": {
+      "check": "確認",
       "confirmDelete": "このページを完全に削除してもよろしいですか？",
-      "linkSettings": "リンクの設定"
+      "confirmDuplicate": "このページとすべてのコンテンツをコピーしてもよろしいですか?",
+      "linkSettings": "リンクの設定",
+      "pageSettings": "ページ設定",
+      "urlHelper": "例: /camper-registration (**保存前に必ず確認してください)"
     },
     "pageLinkEdit": {
       "cleanCentered": "クリーンなセンター配置コンテンツ",
@@ -3962,6 +4665,7 @@
       "groups": "特定のグループ",
       "headerFooter": "ヘッダーとフッター",
       "layout": "レイアウト",
+      "linkText": "リンクテキスト",
       "loggedInUsers": "ログイン済みユーザー",
       "membersStaff": "メンバー & スタッフ",
       "metaDescription": "メタディスクリプション",
@@ -3970,11 +4674,14 @@
       "metaGenerateFailed": "説明文を生成できませんでした。もう一度お試しください。",
       "metaNoContent": "説明文を生成する前に、ページに内容を追加してください。",
       "noGroupsFound": "グループが見つかりません",
+      "pageTitle": "ページタイトル",
       "selectGroups": "グループを選択",
       "staffOnly": "スタッフのみ",
       "team": "チームメンバー",
       "unauthorizedCreate": "ページを作成する権限がありません",
       "unauthorizedDelete": "ページを削除する権限がありません",
+      "url": "URL",
+      "urlPath": "URLパス",
       "visibility": "表示範囲"
     },
     "pagePreview": {
@@ -3983,7 +4690,8 @@
       "pageSettings": "ページの設定",
       "previewOf": "{title}のプレビュー",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "プレビュー中: {title}"
+      "subtitle": "プレビュー中: {title}",
+      "title": "ウェブサイトプレビュー"
     },
     "pages": {
       "convert": "変換"
@@ -3993,6 +4701,7 @@
       "addFirstPage": "最初のページを追加",
       "addPage": "ページを追加",
       "autoGenerated": "自動生成",
+      "confirmConvert": "この自動生成されたページをカスタムページに変換しますか?",
       "customPages": "カスタムページ",
       "description": "以下はカスタムページと自動生成ページの一覧です。ページを追加したり、既存のページを編集したり、自動生成ページをカスタムページに変換したりできます。",
       "desktopOnly": "ページエディターはデスクトップ表示でのみ利用できます",
@@ -4012,27 +4721,37 @@
       "websitePages": "ウェブサイトのページ"
     },
     "paletteEdit": {
+      "accent": "アクセント",
       "accentDesc": "メインアクセント — ボタンとハイライト",
       "applyPaletteAria": "提案されたカラーパレットを適用",
       "applySuggested": "任意のパレットをクリックすると即座に適用されます",
       "baseColors": "ベースカラー",
       "colorCombinationsPreview": "配色の組み合わせプレビュー",
       "colorValues": "色の値",
+      "dark": "ダーク",
+      "darkAccent": "ダークアクセント",
       "darkAccentDesc": "ディープアクセント — 見出しとリンク",
       "darkDesc": "最も暗い色調 — 本文テキスト",
+      "error": "エラー",
       "errorDesc": "エラーと破壊的な操作",
       "headerSubtitle": "ウェブサイトの配色をカスタマイズ。モバイルアプリ、メンバーポータル、キオスクの色については、モバイル > アプリテーマに移動します。",
       "headerTitle": "カラーパレット",
+      "light": "ライト",
+      "lightAccent": "ライトアクセント",
       "lightAccentDesc": "ソフトアクセント — 控えめな背景",
       "lightDesc": "最も明るい色調 — セクションの背景",
       "palette": "パレット",
       "previewWorkTogether": "色がどのように連携するかをプレビュー",
+      "primary": "プライマリ",
       "primaryDesc": "プライマリボタンとリンク",
       "savePalette": "パレットを保存",
+      "secondary": "セカンダリ",
       "secondaryDesc": "セカンダリボタンとアクセント",
       "semanticColors": "セマンティックカラー",
+      "success": "成功",
       "successDesc": "成功メッセージと確認",
       "suggestedPalettes": "おすすめのパレット",
+      "warning": "警告",
       "warningDesc": "警告と注意"
     },
     "pickColors": {
@@ -4071,6 +4790,7 @@
       "description": "古い URL への訪問者を新しい URL に転送します。",
       "errSave": "リダイレクトを保存できませんでした。",
       "fromPath": "転送元のパス",
+      "ga4": "GA4測定ID",
       "ga4Hint": "形式: G-XXXXXXXXXX",
       "normalizeHint": "パスは正規化されます（小文字、先頭にスラッシュ、末尾のスラッシュなし）。",
       "title": "リダイレクト",
@@ -4084,6 +4804,7 @@
       "halves": "2 分割",
       "hideMobileOrder": "モバイルの並び順を隠す",
       "hideMobileSizes": "モバイルの幅を隠す",
+      "preview": "プレビュー",
       "previewHelper": "数値はページ幅の 12 分の 1 を表します",
       "quarters": "4 分割",
       "remove": "削除",
@@ -4131,6 +4852,7 @@
     },
     "section": {
       "confirmDelete": "このセクションを完全に削除してもよろしいですか？",
+      "confirmDuplicate": "このセクションとすべてのコンテンツをコピーしてもよろしいですか?",
       "deleteSectionBody": "セクションとその中のすべてのコンテンツが完全に削除されます。Ctrl+Z で元に戻せます。",
       "deleteSectionTitle": "セクションを削除しますか？",
       "editSection": "セクションを編集",
@@ -4141,6 +4863,8 @@
       "block": "ブロック",
       "blockNamePromptDefault": "ブロック名",
       "convertTo": "変換先",
+      "convertToBlock": "ブロックに変換",
+      "convertToBlockPrompt": "このセクションとすべてのコンテンツをブロックにコピーしてもよろしいですか?",
       "dividerBottom": "下部の区切り",
       "dividerColor": "色",
       "dividerFlip": "左右反転",
@@ -4148,15 +4872,54 @@
       "dividerNone": "なし",
       "dividerShape": "形状",
       "dividerTop": "上部の区切り",
-      "divider_": "Divider_",
+      "divider_curve": "カーブ",
+      "divider_peaks": "ピーク",
+      "divider_slant": "斜め",
+      "divider_triangle": "三角形",
+      "divider_wave": "波",
+      "divider_waves": "波(複数)",
       "dividers": "シェイプディバイダー",
       "duplicate": "複製",
+      "duplicateSection": "セクションを複製",
       "id": "ID"
     },
     "sectionTemplates": {
+      "aboutSplit": "私たちについて",
       "all": "すべて",
       "blank": "空白セクション",
-      "switchHint": "新しいレイアウトに収まらないコンテンツは削除されます。元に戻すで復元できます。"
+      "category": {
+        "about": "About",
+        "cta": "行動喚起",
+        "giving": "献金",
+        "hero": "ヒーロー",
+        "media": "メディア",
+        "people": "人物",
+        "services": "礼拝"
+      },
+      "connectColumns": "つながる",
+      "ctaBanner": "行動喚起バナー",
+      "faqSection": "よくある質問",
+      "findUs": "アクセス",
+      "galleryRow": "フォトギャラリー",
+      "givingBanner": "献金バナー",
+      "givingOptions": "献金方法",
+      "groupListSection": "グループ一覧",
+      "groupsBrowser": "グループを見る",
+      "heroCentered": "中央揃えヒーロー",
+      "heroGradient": "グラデーションヒーロー",
+      "heroSplit": "分割ヒーロー",
+      "ministriesCards": "ミニストリー",
+      "sermonsLatest": "最新の説教",
+      "serviceTimes": "礼拝時間",
+      "staffGrid": "スタッフ紹介",
+      "storyColumns": "私たちの歩み",
+      "switchHint": "新しいレイアウトに収まらないコンテンツは削除されます。元に戻すで復元できます。",
+      "switchTitle": "セクションレイアウトを切り替え",
+      "testimony": "証し",
+      "title": "セクションレイアウトを選択",
+      "verseBanner": "聖句バナー",
+      "watchOnline": "オンライン視聴",
+      "welcome": "ようこそ"
     },
     "sectionToolbar": {
       "aiRewrite": "AI で書き換え",
@@ -4188,6 +4951,51 @@
       "mainWebsite": "Main website",
       "manageSites": "Manage sites"
     },
+    "siteTemplates": {
+      "back": "戻る",
+      "create": "サイトを作成",
+      "creating": "{title}を作成中...",
+      "descriptions": {
+        "classic": "伝統的なセリフ体と深いネイビーのカラーパレット。",
+        "community": "温かみのあるグリーンで、グループを前面に押し出したデザイン。",
+        "heritage": "歴史ある教会にふさわしい、温かみのあるニュートラルカラーとクラシックな書体。",
+        "media": "説教と配信を中心にした、力強くダークなデザイン。",
+        "modern": "丸みを帯びたカードと明るいインディゴのカラーパレット。",
+        "simple": "すっきりとしたシンプルなページで、読み込みも高速です。",
+        "visitor": "初来会の計画を中心に構成されています。"
+      },
+      "errFailed": "このテンプレートからサイトを作成できませんでした。もう一度お試しください。",
+      "exists": "既に存在します",
+      "existsNote": "既にあるページは変更されません。",
+      "intro": "出発点を選んでください。ページとナビゲーションを自動作成し、後で自由に変更できます。",
+      "names": {
+        "classic": "クラシック",
+        "community": "コミュニティ",
+        "heritage": "ヘリテージ",
+        "media": "メディアファースト",
+        "modern": "モダン",
+        "simple": "シンプル",
+        "visitor": "訪問者重視"
+      },
+      "nav": {
+        "about": "About",
+        "connect": "つながる",
+        "give": "献金",
+        "home": "ホーム",
+        "live": "ライブ",
+        "sermons": "説教",
+        "visit": "訪問"
+      },
+      "navLinksNote": "これらのリンクはナビゲーションメニューに追加されます。",
+      "pageCount": "{count}ページ",
+      "pages": {
+        "about": "私たちについて",
+        "connect": "つながる",
+        "home": "ホーム",
+        "visit": "訪問を計画する"
+      },
+      "title": "テンプレートから始める"
+    },
     "siteWidgets": {
       "addAction": "アクションを追加",
       "announcementBar": "お知らせバー",
@@ -4217,19 +5025,27 @@
       "deleteConfirm": "Delete confirm",
       "empty": "Empty",
       "name": "Name",
+      "subDomain": "サブドメイン",
       "subDomainHint": "Sub domain hint",
       "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "配置",
       "color": "色",
+      "facebook": "Facebook",
       "filled": "塗りつぶし",
       "iconStyle": "アイコンスタイル",
+      "instagram": "Instagram",
       "large": "大",
       "medium": "中",
       "outlined": "アウトライン",
+      "podcast": "ポッドキャスト",
       "size": "サイズ",
-      "small": "小"
+      "small": "小",
+      "tiktok": "TikTok",
+      "vimeo": "Vimeo",
+      "x": "X",
+      "youtube": "YouTube"
     },
     "spacingScaleEdit": {
       "buttonOne": "ボタン1",
@@ -4238,7 +5054,9 @@
       "cardWithContent": "コンテンツ付きカード",
       "dramaticSection": "ドラマティックセクション",
       "dramaticSectionDesc": "最大のインパクトのためにxxl ({value}px)の垂直パディングを使用",
+      "extraLarge": "特大",
       "extraLargeDesc": "主要セクション間の大きな間隔",
+      "extraSmall": "極小",
       "extraSmallDesc": "コンパクトなレイアウトの狭い間隔",
       "fullWidthBanner": "全幅バナー",
       "headerSubtitle": "一貫した間隔値を設定",
@@ -4247,14 +5065,18 @@
       "heroSectionDesc": "xl ({xl}px)の垂直パディングとlg ({lg}px)の水平パディングを使用",
       "iconRow": "アイコン行",
       "iconRowDesc": "アイコン間にxs ({value}px)のギャップを使用",
+      "large": "大",
       "largeDesc": "広々としたレイアウトとセクション",
+      "medium": "中",
       "mediumDesc": "ほとんどのレイアウトの標準間隔",
       "pageSection": "ページセクション",
       "practicalExamples": "実用的な例",
       "practicalExamplesDesc": "間隔値が実際のUI要素にどのように影響するかを確認",
       "saveSpacing": "間隔を保存",
+      "small": "小",
       "smallDesc": "関連要素間の小さな間隔",
       "spacingValues": "間隔値",
+      "twoXLarge": "2倍特大",
       "twoXLargeDesc": "ドラマティックなレイアウトの最大間隔"
     },
     "staffGridEdit": {
@@ -4334,6 +5156,9 @@
       "textFormatting": "テキストの書式設定",
       "yes": "はい"
     },
+    "templates": {
+      "viewSermons": "説教を見る"
+    },
     "testimonialEdit": {
       "addQuote": "引用を追加",
       "author": "投稿者",
@@ -4405,6 +5230,9 @@
       "deleteConfirm": "この編曲を削除してもよろしいですか？",
       "edit": "編曲を編集",
       "enterLyrics": "歌詞を手入力するか、PraiseCharts から取り込みます",
+      "lyrics": "歌詞",
+      "name": "編曲名",
+      "sequence": "構成順序",
       "title": "編曲"
     },
     "audio": {
@@ -4414,6 +5242,8 @@
       "upload": "音声をアップロード"
     },
     "create": {
+      "artist": "アーティスト",
+      "songTitle": "曲名",
       "title": "曲を作成"
     },
     "deleteSong": {
@@ -4423,18 +5253,22 @@
       "album": "アルバム",
       "artist": "アーティスト",
       "bpm": "BPM",
+      "key": "キー",
       "keySignature": "調号",
       "keys": "キー",
       "language": "言語",
       "length": "長さ",
       "meter": "拍子",
-      "releaseDate": "リリース日"
+      "releaseDate": "リリース日",
+      "seconds": "秒"
     },
     "key": {
       "default": "既定",
       "defaultLabel": "ジョンのキー",
       "deleteConfirm": "このキーを削除してもよろしいですか？",
-      "edit": "キーを編集"
+      "edit": "キーを編集",
+      "labelOptional": "ラベル(任意)",
+      "signature": "調号"
     },
     "keys": {
       "add": "追加",
@@ -4462,7 +5296,9 @@
     "link": {
       "chordChart": "コード譜",
       "deleteConfirm": "このリンクを削除してもよろしいですか？",
-      "edit": "リンクを編集"
+      "edit": "リンクを編集",
+      "text": "テキスト",
+      "url": "URL"
     },
     "oldArrangement": {
       "key": "キー"
@@ -4474,7 +5310,9 @@
       "close": "閉じる",
       "download": "ダウンロード",
       "free": "無料",
+      "linkAccountPrefix": "PraiseChartsアカウントが連携されていません。次にアクセスしてください: ",
       "linkAccountSuffix": "に移動してアカウントをリンクします。",
+      "profile": "プロフィール",
       "title": "PraiseChartsから商品を追加"
     },
     "search": {
@@ -4505,6 +5343,7 @@
     },
     "songPage": {
       "addArrangement": "アレンジメントを追加",
+      "loading": "読み込み中...",
       "noArrangementDescription": "サイドバーからアレンジメントを選択して開始します。",
       "noArrangementSelected": "アレンジメントが選択されていません",
       "subtitle": "曲の詳細と編曲を管理します"
@@ -4518,420 +5357,14 @@
       "addSongAria": "曲を追加",
       "deleteSelected": "選択した曲を削除",
       "deleteSelectedConfirm": "選択した曲を削除しますか？この操作は元に戻せません。",
+      "deselectAll": "すべて選択解除",
       "search": "検索",
       "searchSongs": "曲を検索",
       "selectAll": "Select all",
+      "songs": "曲",
       "subtitle": "音楽ライブラリを管理します"
-    }
-  },
-  "src/calendars/ApprovalsPage": {
-    "tsx:    setSnack(Locale": {
-      "label(action === \"approve\" ? \"calendars": {
-        "approvals": {
-          "approvedToast\" : \"calendars": {
-            "approvals": {
-              "rejectedToast\"));": "Rejected toast\"));"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/components/chatShared/ChatPanel": {
-    "tsx:            placeholder={Locale": {
-      "label(`${labelPrefix}": {
-        "placeholderInput`)}": "Placeholder input`)}"
-      }
     },
-    "tsx:          <AppIconButton label={Locale": {
-      "label(`${labelPrefix}": {
-        "ariaSend`)} icon={<SendIcon />} tone=\"card\" onClick={handleSend} disabled={isLoading || !input": {
-          "trim()} />": "Trim()} />"
-        }
-      }
-    }
-  },
-  "src/components/chatShared/useChat": {
-    "ts:      setMessages([": {
-      "": {
-        "": {
-          "updatedMessages, { role: \"assistant\", content: Locale": {
-            "label(`${labelPrefix}": {
-              "errorGeneric`) }]);": "Error generic`) }]);"
-            }
-          },
-          "updatedMessages, { role: \"assistant\", content: response": {
-            "answer || Locale": {
-              "label(`${labelPrefix}": {
-                "errorAnswer`) }]);": "Error answer`) }]);"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/components/iconPicker/IconPicker": {
-    "tsx:                        {Locale": {
-      "label(`common": {
-        "iconPicker": {
-          "icons": {
-            "${iconName}`, iconName": "${icon name}`, icon name"
-          }
-        }
-      }
-    }
-  },
-  "src/donations/components/GivingStatementDocument": {
-    "tsx:  const label = (key: string) => Locale": {
-      "label(labelPrefix + \"": {
-        "\" + key);": "\" + key);"
-      }
-    }
-  },
-  "src/groups/components/GroupRsvpRosterDialog": {
-    "tsx:                      {Locale": {
-      "label(`groups": {
-        "groupCalendar": {
-          "response_${resp}`)} ({people": {
-            "length})": "Length})"
-          }
-        }
-      }
-    }
-  },
-  "src/mobile/LabelsPage": {
-    "tsx:                          <TableCell>{Locale": {
-      "label(t": {
-        "labelType === \"pickup\" ? \"attendance": {
-          "labels": {
-            "pickup\" : \"attendance": {
-              "labels": {
-                "nametag\")}</TableCell>": "Nametag\")}</ table cell>"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/mobile/components/LabelEditor": {
-    "tsx:const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale": {
-      "label(FIELD_LABEL_KEYS[f]) : f);": "Label( f i e l d_ l a b e l_ k e y s[f]) : f);"
-    }
-  },
-  "src/people/components/PersonEdit": {
-    "tsx:                  <MuiTelInput fullWidth id={field} label={Locale": {
-      "label(labelKey)} value={f": {
-        "value?": {
-          "split(\"x\")[0] ?? \"\"} onChange={(v) => { const ext = f": {
-            "value?": {
-              "split(\"x\")[1] ?? \"\"; f": {
-                "onChange(ext ? v + \"x\" + ext : v); }} defaultCountry=\"US\" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />": "On change(ext ? v + \"x\" + ext : v); }} default country=\" u s\" force calling code focus on select country slot props={phone slot props}  menu props={phone menu props} />"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/people/components/bulk/BulkGroupDialog": {
-    "tsx:        <Typography sx={{ mb: 2 }}>{Locale": {
-      "label(isAdd ? \"people": {
-        "bulk": {
-          "addToGroupPrompt\" : \"people": {
-            "bulk": {
-              "removeFromGroupPrompt\")": {
-                "replace(\"{count}\", count": {
-                  "toString())}</Typography>": "To string())}</ typography>"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "tsx:        message: Locale": {
-      "label(messageKey)": {
-        "replace(\"{count}\", affected": {
-          "toString())": {
-            "replace(\"{group}\", targetGroup": {
-              "name || \"\"),": "Name || \"\"),"
-            }
-          }
-        }
-      }
-    },
-    "tsx:      <DialogTitle>{Locale": {
-      "label(isAdd ? \"people": {
-        "bulk": {
-          "addToGroupTitle\" : \"people": {
-            "bulk": {
-              "removeFromGroupTitle\")}</DialogTitle>": "Remove from group title\")}</ dialog title>"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/people/components/bulk/PeopleBulkActions": {
-    "tsx:            <ListItemText>{Locale": {
-      "label(menuLabels[config": {
-        "field])}</ListItemText>": "Field])}</ list item text>"
-      }
-    },
-    "tsx:          title={Locale": {
-      "label(fieldConfig": {
-        "titleKey)}": "Title key)}"
-      }
-    }
-  },
-  "src/people/helpers/MembershipStatusOptions": {
-    "ts:    const label = Locale": {
-      "label(status": {
-        "labelKey);": "Label key);"
-      }
-    },
-    "ts:    label: Locale": {
-      "label(status": {
-        "labelKey)": "Label key)"
-      }
-    }
-  },
-  "src/serverAdmin/components/CommonsReviewDrawer": {
-    "tsx:const label = (key: string, fallback?: string) => Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "${key}`, fallback);": "${key}`, fallback);"
-        }
-      }
-    }
-  },
-  "src/serverAdmin/components/CommonsTab": {
-    "tsx:                    {RESOLUTIONS": {
-      "map((res) => <MenuItem key={res} value={res}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolution": {
-              "${res}`)}</MenuItem>)}": "${res}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:                    {RESOLVE_ACTIONS": {
-      "map((a) => <MenuItem key={a} value={a}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolveAction": {
-              "${a}`)}</MenuItem>)}": "${a}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:                  <TableCell>{r": {
-      "resolution ? Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolution": {
-              "${r": {
-                "resolution}`) : \"-\"}</TableCell>": "Resolution}`) : \"-\"}</ table cell>"
-              }
-            }
-          }
-        }
-      }
-    },
-    "tsx:                <TableCell><Chip size=\"small\" label={Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "assetStatus": {
-            "${a": {
-              "status}`)} /></TableCell>": "Status}`)} /></ table cell>"
-            }
-          }
-        }
-      }
-    },
-    "tsx:              {REJECT_REASONS": {
-      "map((r) => <MenuItem key={r} value={r}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "rejectReason": {
-              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:            {ASSET_STATUSES": {
-      "map((s) => <MenuItem key={s} value={s}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "assetStatus": {
-              "${s}`)}</MenuItem>)}": "${s}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:            {REMOVE_REASONS": {
-      "map((r) => <MenuItem key={r} value={r}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "removeReason": {
-              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:const confidenceLabel = (c?: Confidence | string) => (c ? Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "confidence": {
-            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
-          }
-        }
-      }
-    }
-  },
-  "src/serving/components/PlanTypeGroups": {
-    "tsx:            <Typography variant=\"body2\">{Locale": {
-      "label(`plans": {
-        "planTypeGroups": {
-          "timeFilter": {
-            "${filter}`)}</Typography>": "${filter}`)}</ typography>"
-          }
-        }
-      }
-    }
-  },
-  "src/serving/songs/SongSearchDialog": {
-    "tsx:const confidenceLabel = (c?: string) => (c ? Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "confidence": {
-            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
-          }
-        }
-      }
-    }
-  },
-  "src/settings/components/GivingSettingsEdit": {
-    "tsx:                {Locale": {
-      "label(descriptor": {
-        "webhookInstructionsKey || \"settings": {
-          "givingSettingsEdit": {
-            "kfWebhookInstructions\")} <code style={{ wordBreak: \"break-all\" }}>{webhookUrl}</code>": "Kf webhook instructions\")} <code style={{ word break: \"break-all\" }}>{webhook url}</code>"
-          }
-        }
-      }
-    },
-    "tsx:              {descriptor": {
-      "setupInstructionsKey ? Locale": {
-        "label(descriptor": {
-          "setupInstructionsKey) : \"\"}": "Setup instructions key) : \"\"}"
-        }
-      }
-    },
-    "tsx:    const privateLabel = Locale": {
-      "label(descriptor": {
-        "keyLabels": {
-          "private);": "Private);"
-        }
-      }
-    },
-    "tsx:    const publicLabel = Locale": {
-      "label(descriptor": {
-        "keyLabels": {
-          "public);": "Public);"
-        }
-      }
-    }
-  },
-  "src/settings/components/StatementFormatSettingsEdit": {
-    "tsx:            <TextField fullWidth label={Locale": {
-      "label(registrationLabelKey(format))} {": {
-        "": {
-          "": {
-            "register(\"statementRegistrationNumber\")} />": "Register(\"statement registration number\")} />"
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/A11yPanel": {
-    "tsx:                        <Chip size=\"small\" label={Locale": {
-      "label(RULE_LABEL_KEY[issue": {
-        "rule])} sx={{ mb: 0": {
-          "5, height: 20, fontSize: \"0": {
-            "68rem\" }} />": "68rem\" }} />"
-          }
-        }
-      }
-    },
-    "tsx:                      <Icon sx={{ mt: 0": {
-      "25, color: issue": {
-        "severity === \"error\" ? \"error": {
-          "main\" : \"warning": {
-            "main\" }} aria-label={Locale": {
-              "label(issue": {
-                "severity === \"error\" ? \"site": {
-                  "a11y": {
-                    "errorLabel\" : \"site": {
-                      "a11y": {
-                        "warningLabel\")}>": "Warning label\")}>"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/elements/ElementAdd": {
-    "tsx:        description: ui?": {
-      "description || (ui?": {
-        "descKey ? Locale": {
-          "label(ui": {
-            "descKey) : def": {
-              "label),": "Label),"
-            }
-          }
-        }
-      }
-    },
-    "tsx:        label: ui?": {
-      "label || (ui?": {
-        "labelKey ? Locale": {
-          "label(ui": {
-            "labelKey) : def": {
-              "label),": "Label),"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/templates/SectionTemplatePicker": {
-    "tsx:      <DialogTitle>{Locale": {
-      "label(props": {
-        "switchMode ? \"site": {
-          "sectionTemplates": {
-            "switchTitle\" : \"site": {
-              "sectionTemplates": {
-                "title\")}</DialogTitle>": "Title\")}</ dialog title>"
-              }
-            }
-          }
-        }
-      }
-    }
+    "title": "曲"
   },
   "stockPhotos": {
     "photoBy": "写真提供",
@@ -5019,6 +5452,7 @@
       "addCondition": "条件を追加",
       "addTrigger": "トリガーを追加",
       "conditions": "条件",
+      "editTrigger": "トリガーを編集",
       "event": "発生するイベント",
       "field": "フィールド",
       "firstStep": "最初のステップ",
@@ -5031,6 +5465,7 @@
       "noTriggers": "イベントトリガーが設定されていません。",
       "oncePerSubject": "1人につき1回のみ",
       "operator": "演算子",
+      "pauseAll": "自動化を一時停止",
       "paused": "一時停止中",
       "recur_": "Recur_",
       "recurs": "繰り返し",
@@ -5079,7 +5514,8 @@
       "title": "マイカード"
     },
     "myWork": {
-      "subtitle": "自分のワークフローカードとタスク"
+      "subtitle": "自分のワークフローカードとタスク",
+      "title": "マイワーク"
     },
     "newTask": {
       "assignPers": "このタスクを担当者に割り当ててください。",
@@ -5089,10 +5525,27 @@
       "associateW": "関連付け先",
       "associateWithAria": "関連付け",
       "newAssign": "新しい割り当て",
+      "saving": "保存中...",
       "taskNew": "新しいタスク",
       "taskNotesAria": "タスクメモ",
       "taskTitleAria": "タスクタイトル",
       "titleTask": "このタスクのタイトルを入力してください。"
+    },
+    "reminders": {
+      "channels": "送信方法",
+      "day1": "1日前",
+      "dayOf": "当日",
+      "days3": "3日前",
+      "days7": "7日前",
+      "enable": "このタスクのリマインダーを送信",
+      "message": "メッセージ",
+      "messageHint": "任意です。空欄の場合、デフォルトのリマインダー文言が使用されます。",
+      "noDueDate": "このタスクには期限が設定されていないため、設定されるまでリマインダーは送信されません。",
+      "save": "リマインダーを保存",
+      "saved": "保存しました",
+      "timeOfDay": "時刻",
+      "title": "リマインダー",
+      "when": "いつリマインダーを送信しますか?"
     },
     "requestedChanges": {
       "applied": "変更を適用しました",
@@ -5104,6 +5557,7 @@
     },
     "selectGroup": {
       "group": "グループ",
+      "noResults": "検索に一致するグループが見つかりません",
       "searchPrompt": "選択するグループを検索してください",
       "selectGroupAria": "グループを選択"
     },
@@ -5125,12 +5579,17 @@
     "taskPage": {
       "ago": "前",
       "assign": "割り当て",
+      "assigned": "担当者",
       "associate": "関連付け",
+      "associated": "関連",
       "by": "実行者:",
       "closed": "クローズ",
+      "created": "作成日",
       "editAssigned": "担当者を編集",
       "editAssoc": "関連付けを編集",
+      "notSpec": "指定なし",
       "open": "オープン",
+      "opened": "開始日",
       "unassigned": "未割り当て"
     },
     "tasksPage": {
@@ -5153,6 +5612,17 @@
       "taskDescription": "説明（任意）",
       "taskTitle": "タスクタイトル",
       "title": "自動アクション",
+      "type": {
+        "addNote": "メモを追加",
+        "addToGroup": "グループに追加",
+        "addToWorkflow": "ワークフローに追加",
+        "createTask": "タスクを作成",
+        "delay": "待機",
+        "removeFromGroup": "グループから削除",
+        "sendEmail": "メールを送信",
+        "setField": "フィールドを設定",
+        "webhook": "Webhookを呼び出す"
+      },
       "value": "値",
       "webhookUrl": "Webhook URL（https）"
     },
@@ -5169,6 +5639,7 @@
     },
     "workflowCard": {
       "assign": "割り当て",
+      "assignedTo": "担当:",
       "complete": "完了",
       "history": "アクティビティ",
       "outcome": "結果",
@@ -5190,6 +5661,7 @@
       "uncategorized": "未分類"
     },
     "workflowEdit": {
+      "active": "有効",
       "confirmDelete": "このワークフローを削除してもよろしいですか？",
       "editWorkflow": "ワークフローを編集",
       "inactive": "無効",
@@ -5222,6 +5694,8 @@
     },
     "workflowStepEdit": {
       "confirmDelete": "このステップを削除してもよろしいですか？",
+      "defaultAssignee": "デフォルトの担当者",
+      "dueDays": "期限(日数)",
       "dueDaysHelp": "カードがこのステップに入ったときに期限日を設定します",
       "editStep": "ステップを編集",
       "stepName": "ステップ名"

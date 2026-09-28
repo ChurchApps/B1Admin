@@ -2,6 +2,7 @@
   "app": {
     "login": {
       "demoCredentials": "Naudokite el. paštą \"{email}\" ir slaptažodį \"{password}\".",
+      "demoLabel": "Demo:",
       "demoMessage": "Tai yra demonstracinė aplinka. Visi duomenys naikinami kas naktį.",
       "demoTestChurch": "Galite prisijungti prie testinės bažnyčios „Grace Community Church\""
     },
@@ -51,6 +52,7 @@
       "confirmDelete": "Are you sure you wish to delete this headcount?",
       "count": "Headcount",
       "date": "Date",
+      "editTitle": "Redaguoti žmonių skaičių",
       "group": "Group",
       "noGroup": "No group (whole service)",
       "none": "No headcounts have been entered yet. Use the form to record how many people attended a service.",
@@ -79,6 +81,18 @@
       "confirmDelete": "Ar tikrai norite ištrinti šį etikečių šabloną?",
       "default": "Numatytasis",
       "field": "Laukas",
+      "fieldChildren": "Vaikai",
+      "fieldChildrenAllergies": "Vaikai ir alergijos",
+      "fieldChurchName": "Bažnyčios pavadinimas",
+      "fieldDate": "Data",
+      "fieldDisplayName": "Rodomas vardas",
+      "fieldFirstName": "Vardas",
+      "fieldIsBirthdayWeek": "Gimtadienis šią savaitę",
+      "fieldLastName": "Pavardė",
+      "fieldNametagNotes": "Vardo kortelės pastabos",
+      "fieldNickName": "Slapyvardis",
+      "fieldSecurityCode": "Saugos kodas",
+      "fieldSessions": "Sesijos",
       "fill": "Užpildymas",
       "fontSize": "Šrifto dydis",
       "height": "Aukštis (col.)",
@@ -86,6 +100,7 @@
       "left": "Kairė",
       "name": "Pavadinimas",
       "nametag": "Vardinė etiketė",
+      "noTemplates": "Nėra etikečių šablonų",
       "noTemplatesDesc": "Sukurkite etikečių šabloną, kad pritaikytumėte registracijos kioskų spausdinamas etiketes.",
       "opDoesNotEqual": "Nelygu",
       "opEquals": "Lygu",
@@ -115,6 +130,8 @@
       "campus": "Dieginis",
       "campusAria": "Pasirinkti miestelį",
       "confirmDelete": "Ar tikrai norite visam laikui panaikinti šias pamalas?",
+      "name": "Pamaldų pavadinimas",
+      "nameAria": "Pamaldų pavadinimas",
       "validate": {
         "campus": "Pasirinkite dieglinį.",
         "name": "Pamaldų pavadinimas yra būtinas."
@@ -122,6 +139,9 @@
     },
     "serviceTimeEdit": {
       "confirmDelete": "Ar tikrai norite visam laikui panaikinti šį pamaldų laiką?",
+      "name": "Pamaldų laikas",
+      "nameAria": "Pamaldų laiko pavadinimas",
+      "namePlaceholder": "8:00",
       "service": "Pamaldos",
       "serviceAria": "Pasirinkti pamaldas",
       "validate": {
@@ -140,6 +160,7 @@
   "calendars": {
     "approvals": {
       "approve": "Patvirtinti",
+      "approvedToast": "Rezervacija patvirtinta.",
       "bookingRequests": "Patalpų ir išteklių prašymai",
       "confirmReject": "Ar tikrai norite atmesti šį prašymą?",
       "conflicts": "Konfliktai",
@@ -151,16 +172,19 @@
       "noPendingEvents": "Nėra laukiančių renginių prašymų.",
       "reject": "Atmesti",
       "rejectTitle": "Atmesti prašymą",
+      "rejectedToast": "Rezervacija atmesta.",
       "roomResource": "Patalpa / išteklius",
       "status": "Būsena",
-      "subtitle": "Peržiūrėkite laukiančius patalpų, išteklių ir renginių prašymus"
+      "subtitle": "Peržiūrėkite laukiančius patalpų, išteklių ir renginių prašymus",
+      "title": "Patvirtinimai"
     },
     "availability": {
       "allRoomsResources": "Visos patalpos ir ištekliai",
       "blocked": "Užblokuota",
       "book": "Rezervuoti",
       "filter": "Patalpa / išteklius",
-      "subtitle": "Peržiūrėkite rezervacijas visose patalpose ir ištekliuose"
+      "subtitle": "Peržiūrėkite rezervacijas visose patalpose ir ištekliuose",
+      "title": "Prieinamumas"
     },
     "calendar": {
       "copiedToClipboard": "Nukopijuota į iškarpą",
@@ -176,6 +200,8 @@
       "calendarNameAria": "Kalendoriaus pavadinimas",
       "cancel": "Atšaukti",
       "confirmDelete": "Ar tikrai norite panaikinti šį kalendorių?",
+      "create": "Sukurti",
+      "createCalendar": "Sukurti kalendorių",
       "delete": "Panaikinti",
       "editCalendar": "Redaguoti kalendorių",
       "namePlaceholder": "Įveskite šio kalendoriaus pavadinimą",
@@ -187,8 +213,11 @@
     "calendarEvent": {
       "cancel": "Atšaukti",
       "confirmDelete": "Ar tikrai norite panaikinti šį renginį?",
+      "confirmDeleteSeries": "Tai pasikartojantis įvykis. Jį ištrynus bus pašalinta visa serija ir visi jos pasikartojimai. Ar tikrai norite tęsti?",
+      "confirmEditSeries": "Tai pasikartojantis įvykis. Išsaugoję pakeitimus atnaujinsite visą seriją ir visus jos pasikartojimus. Tęsti?",
       "delete": "Panaikinti",
       "edit": "Edit",
+      "editEvent": "Redaguoti įvykį",
       "manageRegistrations": "Tvarkyti registracijas",
       "noGroups": "Grupių nerasta."
     },
@@ -208,6 +237,7 @@
       "noCalendars": "No calendars found",
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
+      "subtitleWithCount": "Paantraštė su skaičiumi",
       "title": "Calendars"
     },
     "calendarPage": {
@@ -289,6 +319,10 @@
       "weekly": "Kas savaitę"
     },
     "rooms": {
+      "addBlockout": "Pridėti blokavimą",
+      "addResource": "Pridėti išteklių",
+      "addRoom": "Pridėti patalpą",
+      "addTemplate": "Pridėti šabloną",
       "allRoomsResources": "Visos patalpos ir ištekliai",
       "approvalGroup": "Tvirtinimo grupė",
       "approvalGroupHint": "Šios grupės nariams prašymai tvirtinami automatiškai; visiems kitiems reikalingas patvirtinimas.",
@@ -309,9 +343,13 @@
       "eventDescription": "Renginio aprašymas",
       "eventTitle": "Renginio pavadinimas",
       "noApprovalNeeded": "Patvirtinimo nereikia",
+      "noBlockouts": "Kol kas nėra blokavimų",
       "noBlockoutsDesc": "Blokuokite datas, kai patalpos ar ištekliai nepasiekiami.",
+      "noResources": "Kol kas nėra išteklių",
       "noResourcesDesc": "Pridėkite bendrus išteklius (projektorius, stalus, autobusus) nurodydami kiekius.",
+      "noRooms": "Kol kas nėra patalpų",
       "noRoomsDesc": "Pridėkite patalpas, kad renginiai galėtų jas rezervuoti ir būtų aptikti konfliktai.",
+      "noTemplates": "Kol kas nėra šablonų",
       "noTemplatesDesc": "Šablonai iš anksto užpildo naujų renginių pavadinimą, trukmę, patalpas ir išteklius.",
       "quantity": "Kiekis",
       "reason": "Priežastis",
@@ -337,6 +375,7 @@
     "cancel": "Atšaukti",
     "center": "Center",
     "change": "Change",
+    "changePhoto": "Keisti nuotrauką",
     "close": "Close",
     "collapse": "Sutraukti",
     "comboBox": {
@@ -379,8 +418,11 @@
     },
     "help": "Help",
     "iconPicker": {
+      "noResults": "Nerasta piktogramų, atitinkančių „{{searchText}}“.",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
+      "showingDefault": "Rodoma {{count}} populiarių piktogramų",
+      "showingMatching": "Rodoma {{count}} piktogramų, atitinkančių „{{searchText}}“",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
@@ -397,6 +439,9 @@
     "person": "Person",
     "print": "Spausdinti",
     "remove": "Remove",
+    "reportFilter": {
+      "title": "Filtruoti ataskaitą"
+    },
     "reportFilterField": {
       "any": "Any"
     },
@@ -411,6 +456,7 @@
     "title": "Title",
     "top": "Top",
     "tryAgain": "Try Again",
+    "update": "Atnaujinti",
     "website": "Website",
     "yes": "Yes"
   },
@@ -449,6 +495,7 @@
     },
     "permissionDenied": {
       "contactAdmin": "Susisiekite su bažnyčios administratoriumi, kad gautumėte prieigą.",
+      "defaultMessage": "Neturite leidimo peržiūrėti šį puslapį.",
       "required": "Permission required"
     },
     "search": {
@@ -538,6 +585,7 @@
     "quickSetupModal": {
       "classroomName": "Klasės pavadinimas",
       "createContinue": "Sukurti ir tęsti",
+      "creating": "Kuriama...",
       "errorBothMinistryClassroom": "Įveskite ir tarnystės pavadinimą, ir klasės pavadinimą.",
       "errorBothMinistryTeam": "Įveskite ir tarnystės pavadinimą, ir komandos pavadinimą.",
       "errorGeneric": "Kažkas nutiko. Bandykite dar kartą.",
@@ -561,6 +609,7 @@
     },
     "sunday": {
       "firstTime": "First time",
+      "firstTimeLastSunday": "Pirmą kartą praėjusį sekmadienį",
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
@@ -568,6 +617,7 @@
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
       "servingSunday": "Serving Sunday",
+      "servingThisHour": "Tarnauja šią valandą",
       "thisSunday": "This Sunday",
       "thisWeeksService": "This week's service will live here."
     }
@@ -583,6 +633,7 @@
       "continue": "Tęsti",
       "denied": "Įrenginio autorizacija atmesta",
       "deny": "Atmesti",
+      "deviceAuthorizedAlert": "ĮRENGINYS AUTORIZUOTAS",
       "deviceAuthorizedHeading": "Įrenginys autorizuotas!",
       "deviceAuthorizedMessage": "Dabar galite grįžti prie TV. Įrenginys prisijungs automatiškai.",
       "deviceCodeLabel": "Įrenginio kodas:",
@@ -621,7 +672,8 @@
   "donations": {
     "batchEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this batch and all donations within it?",
-      "date": "Date"
+      "date": "Date",
+      "opName": "Pavadinimas (neprivaloma)"
     },
     "batchStatements": {
       "csvDescription": "Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
@@ -692,6 +744,7 @@
       "totalCampaigns": "Iš viso kampanijų"
     },
     "donationBatchPage": {
+      "batchDate": "Partijos data:",
       "donations": "Aukos",
       "editBatch": "Redaguoti partiją",
       "subtitle": "Manage donations in this batch",
@@ -715,6 +768,7 @@
       "card": "Card",
       "cash": "Cash",
       "check": "Check",
+      "checkNum": "Čekio nr.",
       "confirmMsg": "Ar tikrai norite visam laikui ištrinti šią auką?",
       "date": "Date",
       "fund": "Fund",
@@ -722,15 +776,18 @@
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
+      "refundConfirm": "Grąžinti visą šią auką per mokėjimų sistemą? Šio veiksmo atšaukti negalėsite.",
       "refundConfirmLabel": "Refund",
       "refundFailed": "The refund could not be processed."
     },
     "donationEvents": {
       "event": "Event: ",
+      "failed": "Nepavykusios aukos - ",
       "mark": "Mark as ",
       "msg": "Message: ",
       "resolved": "Išspręsta",
-      "unres": " unresolved"
+      "unres": " unresolved",
+      "unresolved": "Neišspręsta"
     },
     "donations": {
       "amt": "Amount",
@@ -772,11 +829,13 @@
       "title": "Failed Recurring Gifts"
     },
     "fundEdit": {
+      "ariaFundName": "Fondo pavadinimas",
       "ariaTaxDeductible": "Atskaitoma nuo mokesčių",
       "ariaVisible": "Matoma aukotojams",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
+      "trackDonations": "Seka aukas.",
       "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
       "visible": "Matoma aukotojams"
     },
@@ -827,6 +886,7 @@
       "addPledge": "Pridėti pasižadėjimą",
       "amount": "Pasižadėjimo suma",
       "confirmMsg": "Ar tikrai norite visam laikui ištrinti šį pasižadėjimą?",
+      "editPledge": "Redaguoti įsipareigojimą",
       "errAmount": "Įveskite pasižadėjimo sumą, didesnę nei nulis",
       "errPerson": "Pasirinkite asmenį"
     },
@@ -838,7 +898,65 @@
       "notStarted": "Not Started"
     },
     "printAllStatementsPage": {
-      "loadingStatements": "Įkeliamos ataskaitos..."
+      "annualStatementTitle": "{year} m. metinė aukų ataskaita",
+      "campaign": "Kampanija",
+      "contributionDetails": "Įnašų informacija",
+      "disclaimer": "{churchName} yra registruota ne pelno organizacija. Už šiuos įnašus nebuvo suteikta jokių prekių ar paslaugų, išskyrus nematerialią religinę naudą.",
+      "donorInformation": "Aukotojo informacija",
+      "fund": "Fondas",
+      "fundBreakdown": "Fondų suskirstymas",
+      "given": "Suaukota",
+      "issued": "Išduota:",
+      "loadingStatements": "Įkeliamos ataskaitos...",
+      "noteLabel": "Pastaba:",
+      "noteText": "Šioje ataskaitoje apibendrinami visi {churchName} gauti įnašai per {year} m.",
+      "organization": "Organizacija",
+      "period": "Laikotarpis: sausio 1 d. - gruodžio 31 d., {year}",
+      "pledgeProgress": "Įsipareigojimo eiga",
+      "pledged": "Įsipareigota",
+      "statementSummary": "Ataskaitos santrauka",
+      "status": "Būsena",
+      "totalContributions": "Iš viso įnašų",
+      "totalContributionsLabel": "Iš viso įnašų:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "{year} m. metinė aukų ataskaita",
+      "campaign": "Kampanija",
+      "contributionDetails": "Įnašų informacija",
+      "disclaimer": "{churchName} yra registruota ne pelno organizacija. Už šiuos įnašus nebuvo suteikta jokių prekių ar paslaugų, išskyrus nematerialią religinę naudą.",
+      "donorInformation": "Aukotojo informacija",
+      "fund": "Fondas",
+      "fundBreakdown": "Fondų suskirstymas",
+      "given": "Suaukota",
+      "issued": "Išduota:",
+      "noteLabel": "Pastaba:",
+      "noteText": "Šioje ataskaitoje apibendrinami visi {churchName} gauti įnašai per {year} m.",
+      "organization": "Organizacija",
+      "period": "Laikotarpis: sausio 1 d. - gruodžio 31 d., {year}",
+      "pledgeProgress": "Įsipareigojimo eiga",
+      "pledged": "Įsipareigota",
+      "statementSummary": "Ataskaitos santrauka",
+      "status": "Būsena",
+      "totalContributions": "Iš viso įnašų",
+      "totalContributionsLabel": "Iš viso įnašų:"
+    },
+    "statementLegal": {
+      "abn": "ABN",
+      "australiaTitle": "Aukos kvitas",
+      "canadaTitle": "Oficialus kvitas pajamų mokesčio tikslais",
+      "cra": "Kanados mokesčių agentūra: canada.ca/charities-giving",
+      "craNumber": "Labdaros registracijos numeris",
+      "dateIssued": "Išdavimo data",
+      "dgr": "{churchName} yra patvirtinta kaip organizacija, priimanti atskaitomas dovanas.",
+      "dgrThreshold": "Aukos nuo 2 USD yra atskaitomos iš mokesčių.",
+      "donation": "Auka",
+      "eligibleAmount": "Dovanos suma, tinkama pajamų mokesčio tikslais",
+      "newZealandTitle": "Aukos kvitas",
+      "nonEligible": "Dovanos, netinkamos mokesčių kvitui",
+      "nzNumber": "Labdaros registracijos numeris",
+      "placeOfIssue": "Išdavimo vieta",
+      "receiptNumber": "Kvito numeris",
+      "signature": "Įgaliotas parašas"
     },
     "stripeImportPage": {
       "alreadyImported": "Jau importuota",
@@ -859,6 +977,7 @@
       "newLabel": "Nauja:",
       "noEvents": "Nerasta įvykių. Pasirinkite datų intervalą ir spustelėkite Peržiūra.",
       "preview": "Peržiūra",
+      "previewResults": "Peržiūrėti rezultatus",
       "selectDateRange": "Pasirinkite datų intervalą",
       "skipped": "Praleista",
       "skippedLabel": "Praleista:",
@@ -912,6 +1031,7 @@
       "availableStart": "Availability Start Date",
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
       "contentTypeAria": "Turinio tipas",
+      "description": "Aprašymas",
       "descriptionHelper": "Shown above the questions on the public form page.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
@@ -921,11 +1041,14 @@
       "followUpBody": "Follow-up Email Body",
       "followUpHelper": "You can use {firstName} and {churchName} tokens.",
       "followUpSubject": "Follow-up Email Subject",
+      "formNameAria": "Formos pavadinimas",
+      "name": "Formos pavadinimas",
       "nameReqMsg": "Form name is required.",
       "ppl": "People",
       "public": "Public",
       "restrict": "Restricted",
-      "startReqMsg": "Start date is required."
+      "startReqMsg": "Start date is required.",
+      "thankYouMessage": "Padėkos pranešimas"
     },
     "formMembers": {
       "act": "Action",
@@ -954,14 +1077,18 @@
       "confirmMsg": "Are you sure you wish to permanently delete this question?",
       "date": "Date",
       "decNum": "Decimal",
+      "desc": "Aprašymas",
       "fieldType": "Lauko tipas",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
       "phoneNum": "Phone Number",
+      "plcOp": "Vietos rezervavimo tekstas (neprivaloma)",
       "questionDescriptionAria": "Klausimo aprašymas",
       "questionEdit": "Edit Question",
       "questionReq": "Question is required.",
+      "questionRequiredAria": "Klausimas privalomas",
+      "questionTitleAria": "Klausimo pavadinimas",
       "textArea": "Text Area",
       "textBox": "Textbox",
       "wholeNum": "Whole Number",
@@ -981,13 +1108,18 @@
       "addForm": "Add Form",
       "archForms": "Archived Forms",
       "archive": "Archyvuoti",
+      "archiveFormAria": "Archyvuoti formą {name}",
+      "confirmDuplicate": "Dubliuoti šią formą?",
+      "confirmMsg1": "Ar tikrai norite archyvuoti šią formą?",
       "confirmMsg2": "Are you sure you want to restore this form?",
       "duplicate": "Dubliuoti",
       "duplicated": "Form duplicated",
       "forms": "Forms",
+      "noArch": "Nėra archyvuotų formų.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
       "personProfileForm": "Person profile form",
       "restore": "Atkurti",
+      "restoreFormAria": "Atkurti formą {name}",
       "subtitleManage": "Create and manage custom forms",
       "url": "URL"
     },
@@ -1011,17 +1143,34 @@
     "uploadError": "Vaizdo apdorojimas baigtas, tačiau įkėlimas nepavyko. Galbūt API šioje aplinkoje nepasiekiamas."
   },
   "groups": {
+    "export": {
+      "campusId": "Skyriaus ID",
+      "categoryName": "Kategorija",
+      "churchId": "Bažnyčios ID",
+      "id": "ID",
+      "joinPolicy": "Prisijungimo taisyklė",
+      "labelCount": "Etikečių skaičius",
+      "labels": "Etiketės",
+      "meetingLocation": "Susitikimo vieta",
+      "meetingTime": "Susitikimo laikas",
+      "memberCount": "Narių skaičius",
+      "name": "Pavadinimas",
+      "tags": "Žymos"
+    },
     "groupAdd": {
       "add": "Pridėti",
       "catName": "Category Name",
       "catReq": "Category name is required.",
       "group": "Grupė",
+      "groupNameAria": "Grupės pavadinimas",
       "groupReq": "Group name is required.",
       "ministry": "Ministry",
+      "new": "Nauja ",
       "team": "Team"
     },
     "groupBanner": {
       "announcements": "Announcements",
+      "confirmDuplicate": "Dubliuoti šią grupę? Nariai nebus nukopijuoti.",
       "copySuffix": "(Kopija)",
       "discussions": "Discussions",
       "duplicateTooltip": "Dubliuoti šią grupę",
@@ -1061,12 +1210,15 @@
       "about": "About",
       "attendanceSettings": "Attendance Settings",
       "labels": "Labels",
+      "locationPlaceholder": "Petraičių namai",
       "meetingInfo": "Meeting Information",
       "meetingLocation": "Meeting Location",
       "meetingTime": "Meeting Time",
+      "meetingTimePlaceholder": "Antradieniais 19 val.",
       "noPhoto": "No photo available",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
+      "slugPlaceholder": "grupes-pavadinimas",
       "trackAttendance": "Track Attendance"
     },
     "groupDetailsEdit": {
@@ -1088,12 +1240,14 @@
       "clickToAddPhoto": "Click to add photo",
       "confidential": "Konfidenciali grupė",
       "confidentialHelp": "Slėpti šią grupę ir jos narių sąrašą viešuose puslapiuose, grupių paieškoje ir nuo narių nepriklausančių asmenų.",
+      "confirmArchive": "Ar tikrai norite archyvuoti šią grupę? Ji bus paslėpta iš grupių sąrašo, kol nebus atkurta.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "discussionsEnabled": "Discussions enabled",
       "discussionsEnabledHelp": "Group chat feed where any member can post.",
       "enrollment": "Įtraukimas",
       "groupDesc": "Group Description",
       "groupDet": "Group Details",
+      "groupName": "Grupės pavadinimas",
       "groupNameAria": "Grupės pavadinimas",
       "groupNameMsg": "Please enter a group name.",
       "groupPhotoAlt": "grupė",
@@ -1101,7 +1255,9 @@
       "guestCapacity": "Svečių talpa",
       "maxAge": "Didžiausias amžius",
       "maxGrade": "Aukščiausia klasė",
+      "meetingLocation": "Susitikimo vieta",
       "meetingLocationAria": "Susitikimo vieta",
+      "meetingTime": "Susitikimo laikas",
       "meetingTimeAria": "Susitikimo laikas",
       "minAge": "Mažiausias amžius",
       "minGrade": "Žemiausia klasė",
@@ -1111,6 +1267,7 @@
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "publicRoster": "Rodyti sąrašą svetainėje",
+      "slug": "Trumpinys (naudojamas URL adresuose)",
       "volunteerRatio": "Vaikų vienam savanoriui",
       "years": "Metai"
     },
@@ -1120,13 +1277,16 @@
       "avgAge": "Vid. amžius",
       "avgAttendance": "Vid. lankomumas",
       "churn90": "Išėjimai (90d)",
+      "joined": "Prisijungė",
       "joined90": "Prisijungė (90d)",
       "left": "Išėjo",
       "left90": "Išėjo (90d)",
       "members": "Nariai",
       "membershipChanges": "Narystės pokyčiai (12 mėnesių)",
+      "month": "Mėnuo",
       "subtitle": "Palyginkite augimą, išėjimus ir lankomumą grupėse",
-      "title": "Grupės sveikata"
+      "title": "Grupės sveikata",
+      "week": "Savaitė"
     },
     "groupLabelsEdit": {
       "addNewLabel": "Add New Label",
@@ -1137,8 +1297,10 @@
     "groupMembers": {
       "groupMem": "Group Members",
       "leader": "Vadovas",
+      "leaderLower": "vadovas",
       "leadersLower": "vadovai",
       "makeLeader": "Padaryti vadovu",
+      "member": "narys",
       "members": "nariai",
       "messagePlaceholder": "Parašykite žinutę visiems grupės nariams…",
       "messageSent": "Žinutė išsiųsta.",
@@ -1174,11 +1336,16 @@
       "allYears": "All Years",
       "assignServiceTimeHint": "Assign this group to a service time under People → Attendance → Setup.",
       "attFor": "Attendance for",
-      "confirmRemove": "Remove this person from the session's attendance?",
+      "attendanceSaveFailed": "Nepavyko išsaugoti lankomumo. Bandykite dar kartą.",
+      "attendanceSaved": "Lankomumas išsaugotas.",
       "new": "New",
       "noAttendance": "No attendance records found",
       "noSesMsg": "There are no sessions.",
       "noSessionsFound": "No sessions found",
+      "presentOf": "{present} iš {total} dalyvauja",
+      "saveAttendance": "Išsaugoti lankomumą",
+      "selectAll": "Pažymėti visus",
+      "selectNone": "Nežymėti nieko",
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Sessions",
@@ -1188,29 +1355,39 @@
     "groupsPage": {
       "addGroup": "Add Group",
       "cat": "Kategorija",
+      "confirmRestore": "Atkurti {name} iš archyvo?",
       "export": "Eksportuoti",
       "groups": "Grupės",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
+      "noMatchMsg": "Nėra grupių, atitinkančių jūsų paiešką.",
       "pendingRequestSingular": "{count} laukiantis prašymas",
       "pendingRequests": "{count} laukiančių prašymų",
+      "pers": "1 asmuo",
       "ppl": "People",
       "restore": "Atkurti",
       "searchPlaceholder": "Ieškoti grupių...",
       "showArchived": "Rodyti archyvuotas grupes",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "Tvarkykite ir valdykite savo bažnyčios grupes"
       }
-    },
-    "membersAdd": {
-      "availableMem": "Available Group Members",
-      "noMem": "No group members available.",
-      "unknown": "Nežinoma"
     },
     "pendingRequestsPage": {
       "empty": "Nėra laukiančių prašymų.",
-      "subtitle": "Patvirtinkite arba atmeskite narių pateiktus prašymus visose grupėse."
+      "subtitle": "Patvirtinkite arba atmeskite narių pateiktus prašymus visose grupėse.",
+      "title": "Laukiantys prašymai prisijungti"
+    },
+    "printRoster": {
+      "absent": "Nedalyvavo",
+      "date": "Data",
+      "noGroups": "Nerasta klasių spausdinimui.",
+      "present": "Dalyvavo",
+      "print": "Spausdinti dalyvių sąrašą",
+      "printAll": "Spausdinti visas klases",
+      "teacherNotes": "Mokytojas / pastabos",
+      "visitors": "Svečiai"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Įterpti suliejimo lauką į turinį:",
@@ -1231,7 +1408,14 @@
       "noEmailNoticeSingular": "{count} neturi el. pašto adreso.",
       "noEmailSkipped": "{count} praleista (nėra el. pašto adreso).",
       "none": "Nėra",
+      "pausedNotice": "Grupės el. laiškų siuntimas sustabdytas, nes pastarieji laiškai negrįžo arba buvo pažymėti kaip šlamštas. Susisiekite su pagalbos komanda.",
       "permissionError": "Neturite leidimo siųsti grupinių el. laiškų.",
+      "requestReview": "Prašyti peržiūros",
+      "reviewBody": "Kad kiekvienos bažnyčios laiškai nepatektų į šlamšto aplankus, prieš leisdami siųsti grupės laiškus, kiekvieną bažnyčią peržiūrime vieną kartą. Paprašykite peržiūros, ir mūsų komanda tai įjungs, paprastai per vieną darbo dieną.",
+      "reviewRequestedBody": "Ačiū! Mūsų komanda informuota ir netrukus įjungs grupės el. laiškus jūsų bažnyčiai. Šį langą galite uždaryti.",
+      "reviewRequestedTitle": "Peržiūra užsakyta",
+      "reviewTitle": "Grupės el. laiškams reikia trumpos peržiūros",
+      "reviewWhy": "Visi B1 siunčiami laiškai turi bendrą siuntėjo reputaciją, todėl šis žingsnis apsaugo jūsų laiškus nuo pažymėjimo kaip šlamštas.",
       "send": "Siųsti el. laišką",
       "sendDefault": "Tai išsiųs el. laišką tinkamiems grupės nariams.",
       "sendFailedDetail": "{count} nepavyko išsiųsti.",
@@ -1248,6 +1432,7 @@
       "eligibleSummary": "{eligibleCount} iš {totalMembers} narių gaus šią SMS.",
       "eligibleSummarySingular": "{eligibleCount} iš {totalMembers} nario gaus šią SMS.",
       "fallbackError": "Nepavyko išsiųsti SMS.",
+      "insufficientCredits": "Jūsų bažnyčia neturi SMS kreditų šiam atsiskaitymo ciklui. Žinutės nebuvo išsiųstos. Atnaujinkite planą arba palaukite, kol kreditai bus atnaujinti",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Įkeliami gavėjai...",
       "messageLabel": "Žinutė",
@@ -1261,6 +1446,7 @@
       "sendDefault": "Tai išsiųs SMS tinkamiems grupės nariams.",
       "sendFailedDetail": "{count} nepavyko išsiųsti.",
       "sending": "Siunčiama...",
+      "sendingTo": "Siunčiama {phoneNumber}.",
       "sentSummary": "Išsiųsta {successCount} iš {recipientCount} tinkamų gavėjų.",
       "sentSummarySingular": "Išsiųsta {successCount} iš {recipientCount} tinkamo gavėjo.",
       "textGroupTitle": "Siųsti SMS grupei: {groupName}",
@@ -1275,6 +1461,8 @@
     },
     "sessionAdd": {
       "invDate": "Invalid Date",
+      "sesAdd": "Pridėti sesiją",
+      "sesDate": "Sesijos data",
       "sessionDateAria": "Sesijos data",
       "srvTime": "Pamaldų laikas"
     },
@@ -1284,6 +1472,7 @@
       "invalidDate": "Neteisinga data",
       "noDate": "Nėra datos",
       "people": "people",
+      "person": "asmuo",
       "view": "View"
     },
     "sessionEdit": {
@@ -1344,7 +1533,8 @@
       "resetDefaults": "Reset to Defaults"
     },
     "appThemePage": {
-      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk"
+      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk",
+      "title": "Programos tema"
     },
     "b1MobilePage": {
       "subtitle": "Configure settings for the B1 Mobile app",
@@ -1354,10 +1544,12 @@
       "copyLink": "Kopijuoti nuorodą",
       "disabled": "Disabled",
       "downloadQr": "Atsisiųsti PNG",
+      "enabled": "Įjungta — QR kodas bus rodomas terminale",
       "kiosk": {
         "addSlide": "Pridėti skaidrę",
         "backgroundImage": "Fono paveikslėlis",
         "backgroundImageDesc": "Pasirenkamas paieškos / pasveikinimo ekrano fonas. Rekomenduojama: 1920x1080.",
+        "changeImage": "Keisti vaizdą",
         "duration": "Trukmė (s)",
         "enableIdleScreen": "Įjungti neveiklumo ekraną",
         "headerSubtitle": "Kiosko spalvos valdomos skiltyje Mobile > Programos tema. Žemiau sukonfigūruokite fono paveikslėlius ir neveiklumo ekraną.",
@@ -1368,6 +1560,7 @@
         "upload": "Įkelti",
         "uploadImage": "Įkelti paveikslėlį"
       },
+      "linkCopied": "Nukopijuota!",
       "manageLabels": "Kurti etiketes",
       "qrGuestRegistration": "QR Guest Registration",
       "qrShareDescription": "Išspausdinkite šį QR kodą ant skrajalape, biuletenių ar iškabų. Svečiai gali jį nuskaityti ir užsiregistruoti savo telefonu. Jis taip pat rodomas programoje.",
@@ -1375,7 +1568,8 @@
       "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
       "registrationUrl": "Registracijos nuoroda",
       "saveToActivate": "Išsaugokite pakeitimus, kad suaktyvintumėte šią nuorodą.",
-      "subtitle": "Configure settings for the B1 CheckIn kiosk app"
+      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
+      "title": "B1 CheckIn"
     }
   },
   "month": {
@@ -1423,14 +1617,19 @@
       "examples": "Pavyzdžiai:",
       "placeholder": "Show me men over 30 with birthdays in July",
       "search": "Ieškoti",
+      "searching": "Ieškoma...",
       "title": "AI Search"
     },
     "bulk": {
       "actions": "Veiksmai",
+      "addSuccess": "Pridėta {count} žmonių į {group}.",
       "addToGroup": "Pridėti į grupę",
+      "addToGroupPrompt": "Pridėti {count} pasirinktus žmones į grupę.",
+      "addToGroupTitle": "Pridėti į grupę",
       "addToWorkflow": "Pridėti į darbo eigą",
       "addToWorkflowPrompt": "Pridėti {count} pasirinktus žmones į darbo eigą kaip korteles.",
       "apply": "Taikyti",
+      "campusTitle": "Nustatyti skyrių",
       "clearSelection": "Panaikinti pasirinkimą",
       "createNewGroup": "Sukurti naują grupę",
       "customField": "Custom Field",
@@ -1440,17 +1639,26 @@
       "deleteError": "Nepavyko ištrinti pasirinktų žmonių",
       "deleteSelected": "Ištrinti pasirinktus žmones",
       "deleteSuccess": "{count} žmonių sėkmingai ištrinta",
+      "deleting": "Trinama...",
       "error": "Klaida",
       "fieldPrompt": "Atnaujinti lauką {count} pasirinktiems žmonėms.",
       "fieldSuccess": "Atnaujinta {count} žmonių.",
+      "genderTitle": "Nustatyti lytį",
       "group": "Grupė",
+      "maritalStatusTitle": "Nustatyti šeiminę padėtį",
+      "membershipStatusTitle": "Nustatyti narystės statusą",
       "newGroupName": "Naujos grupės pavadinimas",
       "noCustomFields": "No Yes/No custom fields have been set up for people.",
       "optedOutField": "Atsisakymo laukas",
       "optedOutNo": "Atsisakymas ne",
+      "optedOutTitle": "Nustatyti pašalinimą iš katalogo",
       "optedOutYes": "Atsisakymas taip",
       "removeFromGroup": "Pašalinti iš grupės",
+      "removeFromGroupPrompt": "Pašalinti {count} pasirinktus žmones iš grupės.",
+      "removeFromGroupTitle": "Pašalinti iš grupės",
+      "removeSuccess": "Pašalinta {count} žmonių iš {group}.",
       "selected": "Pasirinkta",
+      "setCampus": "Nustatyti skyrių",
       "value": "Value",
       "workflowSuccess": "Pridėta {count} žmonių į darbo eigą."
     },
@@ -1504,15 +1712,53 @@
       "value": "Value",
       "valuePlaceholder": "Value"
     },
+    "export": {
+      "address": "Adresas",
+      "address1": "Adreso 1 eilutė",
+      "address2": "Adreso 2 eilutė",
+      "age": "Amžius",
+      "anniversary": "Jubiliejus",
+      "birthDate": "Gimimo data",
+      "campusId": "Skyriaus ID",
+      "churchId": "Bažnyčios ID",
+      "city": "Miestas",
+      "contactCity": "Miestas",
+      "contactEmail": "El. paštas",
+      "contactState": "Valstija/regionas",
+      "contactZip": "Pašto kodas",
+      "conversationId": "Pokalbio ID",
+      "display": "Rodomas vardas",
+      "first": "Vardas",
+      "firstName": "Vardas",
+      "gender": "Lytis",
+      "householdId": "Namų ūkio ID",
+      "id": "ID",
+      "last": "Pavardė",
+      "lastName": "Pavardė",
+      "membershipStatus": "Narystės statusas",
+      "middle": "Antrasis vardas",
+      "middleName": "Antrasis vardas",
+      "mobilePhone": "Mobilusis telefonas",
+      "nametagNotes": "Vardo kortelės pastabos",
+      "nick": "Slapyvardis",
+      "optedOut": "Pašalintas iš katalogo",
+      "phone": "Namų telefonas",
+      "photo": "Nuotrauka",
+      "photoUpdated": "Nuotrauka atnaujinta",
+      "state": "Valstija/regionas",
+      "workPhone": "Darbo telefonas"
+    },
     "gdprActions": {
       "anonymize": "Anoniminti",
       "anonymizeConfirmType": "Įveskite „ANONYMIZE\", kad patvirtintumėte:",
       "anonymizeDescription": "Tai pakeis visą asmeninę informaciją bendromis reikšmėmis ir pašalins asmenį iš grupių, formų ir žinučių. Aukų sumos ir lankomumo datos bus išsaugotos ataskaitoms, bet atskirtos nuo šio asmens. To nebus galima atšaukti.",
       "anonymizePlaceholder": "ANONYMIZE",
       "anonymizeTitle": "Anoniminti {personName}?",
+      "anonymizing": "Anonimizuojama...",
       "dataManagement": "Duomenų valdymas",
       "description": "Eksportuokite arba anonimkite šio asmens duomenis pagal BDAR reikalavimus.",
-      "exportData": "Eksportuoti duomenis"
+      "exportData": "Eksportuoti duomenis",
+      "exporting": "Eksportuojama..."
     },
     "groups": {
       "leader": "Vadovas",
@@ -1533,12 +1779,15 @@
       "child": "Child",
       "head": "Head",
       "house": " Household",
+      "houseName": "Namų ūkio pavadinimas",
+      "householdNameAria": "Namų ūkio pavadinimas",
       "other": "Other",
       "spouse": "Spouse",
       "useAddress": "Use {first}'s address ({address}) for {current}'s household?"
     },
     "lists": {
       "autoRefresh": "Atnaujinti kas naktį",
+      "category": "Kategorija",
       "categoryPlaceholder": "Neprivaloma — grupuoti susijusius sąrašus",
       "confirmDelete": "Ištrinti sąrašą \"{name}\"? Šio veiksmo negalima atšaukti.",
       "createdBy": "sukūrė {name}",
@@ -1561,6 +1810,7 @@
       "title": "Išsaugoti sąrašai"
     },
     "merge": {
+      "findPerson": "Rasti asmenį sujungimui",
       "merge": "merge"
     },
     "mergeModal": {
@@ -1571,6 +1821,7 @@
       "householdId": "Household ID",
       "id": "ID",
       "merge": "Merging...",
+      "mergeQuestion": "Sujungti",
       "name": "Name",
       "profile": "Profile",
       "selMsg": "Please select a value for all fields",
@@ -1588,16 +1839,22 @@
       "addPerson": "Add Person",
       "allMembers": "Visi nariai",
       "bDay": "Birthday",
+      "bDayNo": "Gimtadienis (be metų)",
+      "deleteOp": "Trinti pasirinkimą",
       "export": "Eksportuoti",
       "first": "First",
       "last": "Last",
       "loading": "Įkeliami žmonės...",
       "middle": "Middle",
+      "nameNote": "Vardo kortelės pastabos",
       "noPeopleFound": "Žmonių nerasta",
       "peopleFound": "Rasta {count} žmonių",
       "photo": "Photo",
+      "primEmail": "Pagrindinis el. paštas",
+      "primPhone": "Pagrindinis telefonas",
       "printDirectory": "Spausdinti katalogą",
       "searchPpl": "Search People",
+      "searchResults": "Paieškos rezultatai",
       "showAll": "Rodyti visus narius",
       "showingMembers": "Rodoma {count} narių"
     },
@@ -1642,18 +1899,23 @@
       "sendTextMessage": "Siųsti SMS"
     },
     "personEdit": {
+      "applyQuestion": "Ar norite tai pritaikyti visai",
       "cannotDeleteSelf": "You cannot delete your own person record.",
       "confirmMsg": "Are you sure you wish to permanently delete this person record?",
       "customFields": "Pasirinktiniai laukai",
+      "donorNumber": "Aukotojo numeris",
       "exten": "Extension",
       "family": "family",
       "firstReq": "First name is required",
+      "for": "už",
       "lastReq": "Last name is required",
       "maritalStatus": "Marital Status",
       "merge": "Merge",
       "mergePersonAria": "Sujungti asmenis",
+      "nameNote": "Vardo kortelės pastabos",
       "noCampus": "Be miestelio",
       "persDet": "Personal Details",
+      "upAddress": "Atnaujinote adresą į",
       "valEmail": "Please enter a valid email address."
     },
     "personForm": {
@@ -1710,6 +1972,7 @@
     "campus": "Miestelis",
     "city": "City",
     "country": "Country",
+    "deceased": "Miręs",
     "displayName": "Display Name",
     "divorced": "Divorced",
     "email": "Email",
@@ -1717,10 +1980,14 @@
     "firstName": "First Name",
     "gender": "Gender",
     "grade": "Klasė",
+    "inactive": "Neaktyvus",
     "lastName": "Last Name",
+    "line1": "1 eilutė",
+    "line2": "2 eilutė",
     "male": "Male",
     "maritalStatus": "Marital Status",
     "married": "Married",
+    "member": "Narys",
     "membershipStatus": "Membership Status",
     "membershp": "Membership",
     "middleName": "Middle Name",
@@ -1729,8 +1996,10 @@
     "person": "Person",
     "phone": "Phone",
     "prefix": "Prefix",
+    "regularAttendee": "Nuolatinis lankytojas",
     "school": "Mokykla",
     "single": "Single",
+    "staff": "Darbuotojas",
     "state": "State/Province",
     "suffix": "Suffix",
     "unknown": "Unknown",
@@ -1748,12 +2017,20 @@
     "batch": {
       "name": "Sunday Offering - Jan 5"
     },
+    "block": {
+      "name": "Pagrindinė sekcija"
+    },
     "choices": {
       "text": "Option 1",
       "value": "option1"
     },
+    "device": {
+      "label": "Svetainės ekranas"
+    },
     "donation": {
-      "lastDigits": "4242"
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "Įrašykite pastabas apie šią auką..."
     },
     "element": {
       "buttonText": "Click Here",
@@ -1769,24 +2046,41 @@
       "search": "Search fonts..."
     },
     "form": {
+      "description": "Paaiškinkite žmonėms, kam skirta ši forma ir kas vyksta ją pateikus.",
+      "name": "Kontaktų forma",
+      "questionDescription": "Pridėkite papildomos informacijos...",
       "questionPlaceholder": "Enter your answer...",
+      "questionTitle": "Jūsų klausimas čia",
       "thankYouMessage": "Thank you for submitting the form!"
+    },
+    "fund": {
+      "name": "Bendrasis fondas"
     },
     "giving": {
       "publicKey": "pk_live_..."
     },
     "group": {
-      "category": "ABF, Sunday School, Ministry"
+      "category": "ABF, Sunday School, Ministry",
+      "name": "Namų grupė A"
+    },
+    "household": {
+      "name": "Petraičių šeima"
     },
     "page": {
       "linkText": "Read More",
-      "linkUrl": "https://example.com"
+      "linkUrl": "https://example.com",
+      "title": "Apie mus",
+      "urlPath": "/apie-mus"
+    },
+    "pairScreen": {
+      "code": "ABC123"
     },
     "person": {
       "address1": "123 Main Street",
       "address2": "Apt 4B",
       "city": "Nashville",
       "donorNumber": "DN-12345",
+      "email": "jonas.jonaitis@example.com",
       "firstName": "John",
       "lastName": "Smith",
       "middleName": "David",
@@ -1797,16 +2091,29 @@
       "state": "TN",
       "zip": "37201"
     },
+    "plan": {
+      "name": "Sekmadienio pamaldos - sausio 5 d."
+    },
     "planItem": {
       "description": "Brief description...",
       "label": "Opening Song"
     },
+    "planType": {
+      "name": "Sekmadienio pamaldos"
+    },
     "position": {
-      "count": "2"
+      "count": "2",
+      "name": "Sutikėjas"
+    },
+    "role": {
+      "name": "Tarnystės vadovas"
     },
     "sermon": {
       "description": "Enter sermon description...",
       "title": "Sunday Message"
+    },
+    "service": {
+      "name": "Sekmadienio ryto pamaldos"
     },
     "song": {
       "album": "Album Name",
@@ -1824,6 +2131,14 @@
     "task": {
       "notes": "Add any notes about this task...",
       "title": "Prepare worship slides"
+    },
+    "time": {
+      "displayName": "Sekmadienio rytas"
+    },
+    "user": {
+      "email": "jonas@example.com",
+      "firstName": "Jonas",
+      "lastName": "Jonaitis"
     }
   },
   "plans": {
@@ -1872,6 +2187,8 @@
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
       "fullyStaffed": "Visiškai sukomplektuota",
+      "needed": "reikia",
+      "notesPlaceholder": "Įrašykite pastabas šiam pamaldų planui...",
       "notesPlaceholderReadOnly": "Plano pastabos (tik skaitymui)",
       "penciledIn": "Preliminariai įrašyta",
       "planNotesAria": "Plano pastabos",
@@ -1883,7 +2200,9 @@
       "assignPos": "Assign Position",
       "confirmDelete": "Ar tikrai norite pašalinti šio savanorio priskyrimą?",
       "done": "Done",
-      "noMem": "No group members found."
+      "editAssign": "Redaguoti paskyrimą",
+      "noMem": "No group members found.",
+      "searchAnyone": "Ieškoti bet kurio žmogaus jūsų bažnyčioje"
     },
     "browseGrid": {
       "addOn": "Priedas"
@@ -1949,11 +2268,13 @@
       "videoUnsupported": "Jūsų naršyklė nepalaiko video žymos."
     },
     "lessonDialog": {
+      "back": "Atgal",
       "close": "Uždaryti",
       "editHint": "Naudokite ×, kad ką nors pašalintumėte iš savo plano, arba spustelėkite bet kurį tekstą, kad jį perrašytumėte. Originalas niekada nekeičiamas.",
       "fallbackTitle": "Pamokos skiltis",
       "noPreviewItem": "Nėra šios prekės peržiūros.",
       "previewUnavailable": "Šios skilties peržiūra neprieinama.",
+      "putBack": "Grąžinti",
       "restoreSection": "Atkurti originalią skiltį",
       "restoreSectionConfirm": "Grąžinti šią skiltį tokią, kokią parašė pamoka? Viskas, ką pašalinote ar perrašėte joje, bus anuliuota.",
       "restoreText": "Redaguota — atkurti originalų tekstą",
@@ -1995,18 +2316,22 @@
     },
     "planEdit": {
       "autoReplaceOnDecline": "Automatiškai suplanuoti pakaitinį savanorį, kai savanorис atsisako",
+      "confirmDelete": "Ištrinti šį planą kartu su jo pareigybėmis, paskyrimais ir pamaldų tvarka?",
       "copyAll": "Positions and Assignments",
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
       "copyPrevious": "Copy from Previous Plan",
       "copyServiceOrder": "Copy Order of Service",
       "planAdd": "Add a Plan",
+      "planEdit": "Redaguoti planą",
+      "planNameAria": "Plano pavadinimas",
       "planReq": "Plan name is required.",
       "prepared": "Preliminariai įrašyta (slėpti užduotis nuo savanorių iki paskelbimo)",
       "servDate": "Service Date",
       "servReq": "Service date is required.",
       "serviceDateAria": "Pamaldų data",
       "showVolunteerNames": "Rodyti savanorių vardus registracijos puslapyje",
+      "signupDeadline": "Registracijos terminas (valandomis iki pamaldų)",
       "signupDeadlineHelper": "Palikite tuščią, jei termino nėra"
     },
     "planItem": {
@@ -2028,6 +2353,7 @@
       "selectAllInSection": "Select all in section",
       "selectItem": "Select",
       "selectItems": "Select Items",
+      "showRows": "Rodyti kaip atskiras eilutes",
       "song": "Song"
     },
     "planItemEdit": {
@@ -2081,11 +2407,14 @@
       "details": "Plan Type Details"
     },
     "planTypeEdit": {
+      "add": "Pridėti",
       "confirmDelete": "Patvirtinti trynimą",
+      "edit": "Redaguoti",
       "errorDeleting": "Klaida trinant",
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
-      "planType": "Plan Type"
+      "planType": "Plan Type",
+      "planTypeName": "Plano tipo pavadinimas"
     },
     "planTypeGroups": {
       "addGroup": "Pridėti grupę",
@@ -2135,10 +2464,16 @@
     "planValidation": {
       "and": "and",
       "between": "between",
+      "blockCon": "Blokuotos datos konfliktas su",
       "cons": "Conflicts",
       "during": "during",
+      "householdApart": "pageidauja netarnauti tą pačią dieną kaip",
+      "more": "daugiau",
       "needed": "needed.",
+      "notify": "Pranešti",
+      "overMaxPerMonth": "yra suplanuota(s)",
       "penciledIn": "Preliminariai įrašyta — savanoriai dar nemato šių užduočių.",
+      "person": "asmuo",
       "pleaseConfirm": "Please log in and confirm.",
       "ppl": "people",
       "prefTimeMismatch": "pageidauja tarnauti",
@@ -2146,17 +2481,22 @@
       "publishConfirm": "Paskelbti šį planą, kad savanoriai matytų savo priskyrimus?",
       "publishConfirmLabel": "Paskelbti",
       "publishConfirmTitle": "Paskelbti planą",
+      "publishNotify": "Publikuoti ir pranešti",
       "publishNotifyConfirm": "Paskelbti šį planą ir pranešti {count} savanoriams apie jų priskyrimus? Pranešimai bus išsiųsti nedelsiant.",
+      "timeCon": "Laiko konfliktas tarp",
+      "timeCon2": "Laiko konfliktas ties",
       "timesThisMonth": "kartų šį mėnesį, viršijant jų pageidaujamą maksimumą",
       "to": "to",
       "val": "Validation",
       "valPlan": "Plan is valid.",
       "vol": "volunteer(s)",
-      "volNotif": "All volunteers notified."
+      "volNotif": "All volunteers notified.",
+      "volReq": "Savanorių prašymai: "
     },
     "plansPage": {
       "addMinistry": "Add Ministry",
       "editMinistry": "Edit Ministry",
+      "selMin": "Pasirinkite tarnystę",
       "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
@@ -2164,13 +2504,19 @@
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
       "confirmDelete": "Ar tikrai norite ištrinti šią pareigybę? Visi jai šiuo metu priskirti asmenys bus atšaukti iš tvarkaraščio.",
+      "description": "Aprašymas",
       "descriptionHelper": "Rodoma savanoriams, kai jie naršo registracijos galimybes",
       "nameReq": "Name is required",
+      "noGroup": "Nėra",
       "posAdd": "Add a Position",
-      "volGroup": "Volunteer Group"
+      "posEdit": "Redaguoti pareigybę",
+      "volCount": "Savanorių skaičius",
+      "volGroup": "Volunteer Group",
+      "volGroupHelper": "Palikite tuščią, kad galėtumėte tiesiogiai paskirti bet ką iš savo bažnyčios"
     },
     "positionList": {
       "load": "Loading...",
+      "persNeed": "Reikalingas 1 asmuo",
       "pos": "Position",
       "ppl": "People",
       "pplNeed": " People Needed",
@@ -2220,20 +2566,26 @@
     },
     "servingOverviewPage": {
       "autoSchedule": "Automatinis planavimas",
+      "autoScheduleConfirm": "Automatiškai suplanuoti savanorius į visas laisvas vietas šiuo laikotarpiu?",
       "autoScheduleResult": "Automatiškai suplanuota {filled} iš {total} planų",
       "emailAll": "Siųsti el. laišką savanoriams",
+      "emailAllConfirm": "Siųsti el. laišką visiems paskirtiems savanoriams šiuo laikotarpiu?",
       "emailEmpty": "Šiame laikotarpyje nėra paskirtų savanorių, kuriems siųsti el. laišką.",
       "emailResult": "Išsiųsta {sent} savanoriams ({failed} nepavyko)",
       "endDate": "Pabaigos data",
       "exportCsv": "Eksportuoti CSV",
+      "filename": "serving-overview.csv",
       "gapsOnly": "Tik neužpildytos",
       "highlightAll": "Visi",
       "highlightPerson": "Paryškinti",
       "noData": "Pasirinktame datų intervale tarnystės duomenų nerasta.",
+      "overviewSuffix": "Apžvalga",
       "position": "Pozicija",
       "remove": "Pašalinti",
+      "removeConfirm": "Pašalinti {name} iš šio paskyrimo?",
       "startDate": "Pradžios data",
-      "subtitle": "Pozicijos pagal datą su priskirtais savanoriais"
+      "subtitle": "Pozicijos pagal datą su priskirtais savanoriais",
+      "title": "Tarnystės apžvalga"
     },
     "servingPage": {
       "showAll": "Rodyti viską",
@@ -2287,6 +2639,7 @@
     },
     "timeEdit": {
       "confirmDelete": "Ar tikrai norite ištrinti šį laiką?",
+      "disName": "Rodomas vardas",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
       "endTimeAria": "Pabaigos laikas",
@@ -2296,9 +2649,12 @@
       "teamNeed": "Needed Teams",
       "teamPrefix": "Komanda",
       "timeAdd": "Add a Time",
+      "timeDisplayNameAria": "Laiko rodomas pavadinimas",
+      "timeEdit": "Redaguoti laiką",
       "timeEnd": "End Time",
       "timeStart": "Start Time",
       "tip": "Tip",
+      "type": "Tipas",
       "typeAria": "Pamaldų laiko tipas",
       "typeOther": "Kita",
       "typeRehearsal": "Repeticija",
@@ -2315,6 +2671,7 @@
       "associatedContent": "Associated Content"
     },
     "deviceEdit": {
+      "label": "Pavadinimas",
       "labelRequired": "Label is required"
     },
     "devices": {
@@ -2336,16 +2693,20 @@
     "pairScreen": {
       "codeRequired": "Pairing code is required",
       "invalidCode": "Invalid pairing code",
+      "pairingCode": "Susiejimo kodas",
       "planType": "Rodyti planus, skirtus",
       "planTypeNone": "Nėra (tik pranešimai)"
     },
     "profilePage": {
       "accDel": "Account Deletion",
       "confirmMsg": "Are you sure you wish to permanently delete your account?",
+      "confirmRequestMsg": "Siųsti bažnyčiai prašymą ištrinti jūsų paskyrą? Niekas nebus pašalinta, kol jie to nepatvirtins.",
+      "darkMode": "Tamsus režimas",
       "delAcc": "Delete my account",
       "deleteError": "Failed to delete account",
       "deletionPending": "Deletion pending",
       "demoModeAlert": "Profilio redagavimas išjungtas demo režime.",
+      "demoPasswordHelper": "Slaptažodžio keitimas išjungtas demonstracinėje versijoje",
       "emailMsg": "Please enter an email address.",
       "firstMsg": "Please enter firstname",
       "lastMsg": "Please enter lastname",
@@ -2360,6 +2721,8 @@
       "passVer": "Verify password",
       "passwordHelper": "Leave blank to keep current password",
       "permWarn": "Careful, these actions are permanent",
+      "profEdit": "Redaguoti paskyrą",
+      "reviewWarn": "Jūsų bažnyčia peržiūri paskyros ištrynimo prašymus prieš ką nors pašalindama.",
       "saveChange": "Changes saved.",
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
@@ -2401,6 +2764,7 @@
       "percent": "Procentai",
       "price": "Kaina",
       "promote": "Reklamuoti",
+      "promoteConfirm": "Perkelti šį laukiančiojo sąraše dalyvį į patvirtintus?",
       "registrationDetails": "Registracijos informacija",
       "removeConfirm": "Pašalinti šį elementą? Šio veiksmo negalima anuliuoti.",
       "selections": "Pasirinkimai",
@@ -2414,6 +2778,7 @@
     "registrationDetailsPage": {
       "addAttendee": "Pridėti dalyvį",
       "addAttendeeError": "Nepavyko užregistruoti dalyvio",
+      "cancelConfirm": "Atšaukti šią registraciją?",
       "cancelRegistration": "Atšaukti registraciją",
       "csvDate": "Date",
       "csvMembers": "Members",
@@ -2423,6 +2788,7 @@
       "deleteConfirm": "Visam laikui ištrinti šią registraciją?",
       "eventFull": "Šis renginys jau pilnas.",
       "eventNotFound": "Renginys nerastas",
+      "eventRegistrations": "Renginio registracijos",
       "exportCsv": "Eksportuoti CSV",
       "guest": "Svečias",
       "members": "Nariai",
@@ -2437,6 +2803,7 @@
       "viewAnswers": "Peržiūrėti atsakymus"
     },
     "registrationSettingsEdit": {
+      "capacity": "Talpa",
       "capacityPlaceholder": "Palikite tuščią, jei neribota",
       "enableRegistration": "Įjungti registraciją",
       "enableWaitlist": "Įjungti laukiančiųjų sąrašą",
@@ -2446,7 +2813,9 @@
       "registrationQuestions": "Registracijos klausimai",
       "registrationSettings": "Registracijos nustatymai",
       "saveSettings": "Išsaugoti nustatymus",
+      "tags": "Žymos",
       "tagsHelper": "Kableliais atskirtos žymos filtravimui",
+      "tagsPlaceholder": "jaunimas, rekolekcijos, vaikų stovykla",
       "unsavedChanges": "You have unsaved type, selection, or discount code changes. Save each section before leaving this page."
     },
     "registrationsPage": {
@@ -2459,7 +2828,8 @@
       "registered": "užregistruota",
       "registrations": "Registracijos",
       "subtitle": "Tvarkykite renginių registracijos nustatymus ir peržiūrėkite užsiregistravusiuosius",
-      "tags": "Žymos"
+      "tags": "Žymos",
+      "title": "Renginio registracijos"
     }
   },
   "reporting": {
@@ -2491,9 +2861,11 @@
     "addFirstSermon": "Add First Sermon",
     "addPermanentLiveUrl": "Add Permanent Live URL",
     "addSermon": "Add Sermon",
+    "adjustSearchTerms": "Pabandykite pakeisti paieškos žodžius",
     "bulkImport": {
       "chooseSource": "Choose Import Source",
       "fetch": "Fetch",
+      "fetching": "Gaunama...",
       "import": "Import",
       "importFromVimeo": "Import from Vimeo",
       "importFromYouTube": "Import from YouTube",
@@ -2502,9 +2874,11 @@
       "subtitle": "Import videos from external platforms in bulk",
       "title": "Bulk Import",
       "vimeo": "Vimeo",
+      "vimeoChannelId": "Vimeo kanalo ID",
       "vimeoChannelPlaceholder": "staffpicks",
       "vimeoDescription": "Import videos from your Vimeo account or showcases",
       "youtube": "YouTube",
+      "youtubeChannelId": "YouTube kanalo ID",
       "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
       "youtubeDescription": "Import videos from your YouTube channel or playlists"
     },
@@ -2528,8 +2902,10 @@
         "deleteConfirm": "Are you sure you want to delete this navigation link? This action cannot be undone.",
         "deleteLink": "Delete Link",
         "deleteNestedLinksFirst": "This link has nested sublinks. Please delete those first.",
+        "deleting": "Trinama...",
         "displayText": "Display Text",
         "displayTextPlaceholder": "Enter text to display in navigation",
+        "editNavigationLink": "Redaguoti naršymo nuorodą",
         "errors": {
           "deleteFailed": "Failed to delete link. Please try again.",
           "deleteNestedFirst": "Delete nested links first",
@@ -2547,6 +2923,7 @@
         "menuOrganization": "Menu Organization",
         "optionalSubmenuMessage": "Optionally organize this link under an existing submenu:",
         "saveLink": "Save Link",
+        "saving": "Išsaugoma...",
         "submenuMessage": "This link will be placed under submenu:",
         "submenuUnderAria": "Nustatyti kaip submeniu po {text}"
       },
@@ -2556,6 +2933,7 @@
         "title": "Navigation Links"
       },
       "serviceEdit": {
+        "addNewService": "Pridėti naujas pamaldas",
         "auto": "Auto",
         "basicInformation": "Basic Information",
         "chatSettings": "Chat Settings",
@@ -2602,6 +2980,8 @@
         "delete": "Panaikinti",
         "deleteConfirm": "Are you sure you want to delete this tab? This action cannot be undone.",
         "deleteTab": "Delete Tab",
+        "deleting": "Trinama...",
+        "editTab": "Redaguoti skirtuką",
         "errors": {
           "deleteFailed": "Failed to delete tab. Please try again.",
           "saveFailed": "Failed to save tab. Please try again.",
@@ -2621,6 +3001,7 @@
         },
         "prayer": "Prayer",
         "saveTab": "Save Tab",
+        "saving": "Išsaugoma...",
         "tabDisplay": "Tab Display",
         "tabText": "Tab Text",
         "tabTextPlaceholder": "Enter tab display text"
@@ -2628,21 +3009,27 @@
       "title": "Live Stream Times"
     },
     "noPlaylist": "No Playlist",
+    "noSermonsFound": "Nerasta pamokslų",
     "noSermonsYet": "No sermons yet",
     "notScheduled": "Not scheduled",
     "playlist": "Playlist",
     "playlists": {
       "createFirstPlaylist": "Create First Playlist",
       "noPlaylistsFound": "No playlists found",
+      "noPlaylistsMatch": "Nėra grojaraščių, atitinkančių jūsų paiešką",
       "playlistEdit": {
         "addThumbnail": "Add Thumbnail",
         "basicInformation": "Basic Information",
+        "changeThumbnail": "Keisti miniatiūrą",
+        "createNew": "Sukurti naują grojaraštį",
         "deleteConfirm": "Are you sure you wish to delete this playlist?",
         "describePlaylist": "Describe this playlist...",
         "description": "Description",
         "editPlaylist": "Edit Playlist",
         "enterTitle": "Enter playlist title...",
         "newPlaylist": "New Playlist",
+        "playlistTitle": "Grojaraščio pavadinimas",
+        "publishDate": "Publikavimo data",
         "publishHelp": "When should this playlist be available to viewers?",
         "publishingSchedule": "Publishing & Schedule",
         "recommendedSize": "Recommended size: 1280x720 pixels (16:9 aspect ratio)",
@@ -2666,16 +3053,23 @@
     "sermonEdit": {
       "add": "add",
       "addToAnotherPlaylist": "Add to another playlist",
+      "addToAnotherPlaylistAria": "Pridėti pamokslą į kitą grojaraštį",
+      "addToSelectedPlaylistAria": "Pridėti į pasirinktą grojaraštį",
+      "audioUrl": "Garso failo URL (podcast'ui)",
       "audioUrlHelp": "Sermons with an audio or video file appear in your podcast feed.",
       "channelIdPlaceholder": "This is not your channel url - See help link above",
       "currentLiveService": "Current Live Service",
       "currentYouTubeLiveStream": "Current YouTube Live Stream",
       "customEmbedUrl": "Custom Embed Url",
       "deleteConfirm": "Are you sure you wish to delete this sermon?",
+      "description": "Aprašymas",
+      "editPermanentLiveUrl": "Redaguoti nuolatinę tiesioginės transliacijos nuorodą",
       "editSermon": "Edit Sermon",
       "editThumbnailAria": "Redaguoti pamokslo miniatiūrą",
       "facebook": "Facebook",
       "fetch": "Fetch",
+      "fetchVimeoAria": "Gauti Vimeo vaizdo įrašo informaciją",
+      "fetchYouTubeAria": "Gauti YouTube vaizdo įrašo informaciją",
       "getYourChannelId": "Get Your Channel Id",
       "newSermon": "New Sermon",
       "none": "None",
@@ -2683,8 +3077,10 @@
       "selectAdditionalPlaylistAria": "Pasirinkti papildomą grojaraštį",
       "selectPlaylistAria": "Pasirinkti grojaraštį",
       "selectVideoProviderAria": "Pasirinkti vaizdo įrašų teikėją",
+      "sermonDescriptionAria": "Pamokslo aprašymas",
       "sermonEmbedUrl": "Sermon Embed Url",
       "sermonId": "Sermon ID",
+      "sermonTitleAria": "Pamokslo pavadinimas",
       "thumbnailAlt": "Pamokslo miniatiūra",
       "title": "Title",
       "totalSermonDuration": "Total Sermon Duration",
@@ -2696,6 +3092,7 @@
       "vimeo": "Vimeo",
       "vimeoId": "Vimeo ID",
       "youtube": "YouTube",
+      "youtubeChannelId": "YouTube kanalo ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Tai nėra jūsų kanalo URL",
       "youtubeId": "YouTube ID"
     },
@@ -2705,15 +3102,20 @@
   "serverAdmin": {
     "adminPage": {
       "act": "Active",
+      "arch": "Archyvuota",
       "church": "Church",
       "churchName": "Church Name",
       "churches": "Churches",
       "churchesSubtitle": "Ieškokite ir tvarkykite visas bažnyčias",
+      "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
       "impersonateSubtitle": "Prisijunkite kaip kitas naudotojas, kad suteiktumėte pagalbą",
       "impersonateUser": "Apsimesti vartotoju",
+      "jobs": "Foniniai darbai",
       "jobsSubtitle": "Suplanuotų darbų paskutinis vykdymas ir triktys",
       "location": "Location",
+      "migrations": "Duomenų bazės migracijos",
+      "migrationsSubtitle": "Pritaikyti laukiančius schemos pakeitimus šiai aplinkai",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
       "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
@@ -2723,85 +3125,203 @@
       "notes": "Notes",
       "regist": "Registered",
       "searchResults": "Search Results",
+      "servAdmin": "Serverio administravimas",
+      "serverHealth": "Serverio būklė",
       "serverHealthSubtitle": "Patikrinkite serverio paslaugų būklę",
       "subtitle": "Manage server-wide settings and churches",
+      "translationLookups": "Vertimų paieškos",
       "translationSubtitle": "Ieškokite išverstų lokalizacijos eilučių",
       "usageSubtitle": "Peržiūrėkite serverio naudojimo tendencijas",
+      "usageTrends": "Naudojimo tendencijos",
+      "users": "Vartotojai",
       "usersSubtitle": "Suraskite bet kurią naudotojo paskyrą, kad suteiktumėte pagalbą",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
+      "archiveConfirm": "Archyvuoti {name}? Nariai neteks prieigos, kol tai nebus atkurta.",
       "churchNameSearchAria": "Bažnyčios pavadinimo paieška",
+      "emailApproveConfirm": "Leisti {name} siųsti grupės el. laiškus?",
+      "emailApproved": "Patvirtinta",
+      "emailNotApproved": "Nepatvirtinta",
+      "emailRevokeConfirm": "Uždrausti {name} siųsti grupės el. laiškus?",
+      "groupEmail": "Grupės el. laiškai",
       "restoreConfirm": "Atkurti prieigą {name}?",
       "searchChurchesAria": "Ieškoti bažnyčių"
     },
     "commonsTab": {
-      "allProducts": "All Products",
       "allStatuses": "All Statuses",
-      "allTypes": "All Types",
+      "approve": "Patvirtinti",
+      "approveNote": "Pastaba autoriui (neprivaloma — rodoma jo pateikimų puslapyje)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "published": "Published"
+        "pending": "Laukiama",
+        "published": "Published",
+        "removed": "Pašalinta",
+        "unpublished": "Nepublikuota"
       },
-      "assetType": "Asset Type",
+      "attested": "Patvirtinta",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
+      "bpm": "{bpm} BPM",
+      "changes": "Pakeitimai",
+      "chooseOutcome": "Pasirinkite rezultatą…",
       "claim": "Claim",
       "colActions": "Actions",
-      "colAge": "Age",
       "colAsset": "Asset",
-      "colChanges": "Changes",
+      "colBasis": "Pagrindas",
       "colConfidence": "Confidence",
+      "colFile": "Failas",
       "colScore": "Score",
-      "colSubmitter": "Submitter",
+      "colSha": "SHA-256",
       "colType": "Type",
+      "confidence": {
+        "chart-only": "Tik natos",
+        "converted-from-abc": "Konvertuota iš ABC",
+        "generated-from-midi": "Sugeneruota iš MIDI",
+        "lyrics-only": "Tik žodžiai",
+        "proofread-score": "Korektūros įvertis",
+        "sunday-ready": "Paruošta sekmadieniui"
+      },
+      "confirmApprove": "Patvirtinti šį pateikimą?",
+      "confirmApproveDetail": "Publikuoti {name} pagal {license} licenciją. Bažnyčios galės tuoj pat tai naudoti.",
       "confirmReject": "Reject Submission",
+      "confirmRequestChanges": "Grąžinti taisyti",
+      "contributionAgreed": "Siūlytojas patvirtino, kad pakeitimas yra tikslus ir pateiktas pagal dainos licenciją",
+      "contributors": "Prisidėjusieji",
       "copyrightReports": "Copyright",
       "date": "Date",
+      "declineFile": "Atmesti",
+      "declineReason": "Šio failo atmetimo priežastis",
+      "declineReasonRequired": "Nurodykite kiekvieno atmesto failo priežastį.",
+      "declinedFiles": "Atmesti failai",
+      "declinedSuffix": "atmesta",
       "detailsUpdated": "Details updated",
+      "download": "Atsisiųsti",
       "downloads": "Downloads",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
+      "featured": "Featured",
+      "field": {
+        "certified": "Autorius patvirtina, kad turi teises",
+        "description": "Aprašymas",
+        "language": "Kalba",
+        "license": "Licencija",
+        "name": "Pavadinimas",
+        "tags": "Temos"
+      },
+      "files": "Failai",
       "firstSubmission": "first submission",
+      "grant": {
+        "adult": "18 metų ar vyresnis",
+        "clear": "Nei leidėjas, nei autorių teisių agentūra, nei administratorius neblokuoja šios teisės suteikimo",
+        "cowriters": "Visi bendraautoriai sutiko raštu",
+        "forever": "Supranta, kad naudojimas garbinimui yra visam laikui",
+        "human": "Žodžius ir melodiją sukūrė žmonės, ne DI",
+        "wrote": "Parašė tai arba valdo autorių teises — žodžius, muziką ir kiekvieną failą"
+      },
+      "intakeFindings": "Priėmimo išvados",
       "justNow": "just now",
       "licensePd": "Public domain",
+      "licenseWc": "Free for worship",
       "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
       "listenTitle": "Listened keys for {name}",
       "listened": "Listened",
+      "lyricsAndChords": "Žodžiai ir akordai",
+      "masterLicense": "Pagrindinis įrašas",
+      "musicEditorRightsBlocked": "Šis pasiūlymas keičia teises (licenciją ar nuosavybę). Jį gali patvirtinti tik serverio administratorius.",
       "name": "Name",
+      "newNoFiles": "Žodžiai ir informacija, be failų",
       "noAssets": "No assets found.",
+      "noFieldChanges": "Nėra pakeitimų, kuriuos būtų galima rodyti.",
+      "noFindings": "Priėmimo metu nieko nepažymėta.",
       "noKeys": "No published keys yet.",
       "noReports": "No reports have been filed.",
       "noSubmissions": "No submissions are waiting for review.",
       "note": "Note",
+      "original": "originalas",
       "policyReports": "Policy & Other",
       "possibleDuplicate": "Duplicate?",
-      "product": "Product",
+      "possibleDuplicateSearch": "Ieškoti panašių pavadinimų WorshipCommons",
+      "possibleDuplicateTooltip": "Failas ar pavadinimas sutampa su jau bibliotekoje esančia daina — patikrinkite tai peržiūros metu prieš patvirtindami",
       "publisher": "Publisher",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
+      "recordingOwned": "Yra įrašo savininkas (arba turi savininko leidimą)",
       "reject": "Reject",
+      "rejectReason": {
+        "ai": "DI sukurti žodžiai ar melodija",
+        "ccli": "Autorių teisių saugoma (CCLI) daina",
+        "duplicate": "Dublikatas",
+        "incomplete": "Nepilna",
+        "licensing": "Licencijavimo problema",
+        "offtopic": "Ne pagal temą",
+        "other": "Kita",
+        "quality": "Kokybė"
+      },
       "remove": "Remove",
       "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
+      "removeReason": {
+        "copyright": "Autorių teisės",
+        "policy": "Taisyklės"
+      },
+      "reportReason": {
+        "ai": "Sukurta DI",
+        "copyright": "Autorių teisės",
+        "other": "Kita",
+        "policy": "Taisyklės",
+        "quality": "Kokybė"
+      },
+      "reportStatus": {
+        "open": "Atvira",
+        "resolved": "Išspręsta",
+        "reviewing": "Peržiūrima"
+      },
       "reporterRole": "Reporter Role",
       "republish": "Republish",
+      "requestChanges": "Prašyti pakeitimų",
+      "requestChangesNote": "Nurodykite pateikėjui, ką reikia pakeisti",
+      "resolution": {
+        "dismissed": "Atmesta",
+        "duplicate": "Dublikatas",
+        "upheld": "Patvirtinta"
+      },
       "resolve": "Resolve",
+      "resolveAction": {
+        "none": "Jokio veiksmo",
+        "remove": "Pašalinti",
+        "unpublish": "Nebepublikuoti"
+      },
       "review": "Review",
+      "rights": "Teisės",
       "rightsFlag": "Rights",
       "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
       "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
       "searchAssets": "Search assets",
+      "shortcuts": "Klavišai: J / K kitas / ankstesnis · A patvirtinimo laukas · R atmesti",
       "signature": "Signature",
+      "songKey": "Tonacija {key}",
+      "sources": "Šaltiniai",
       "status": "Status",
+      "submissionType": {
+        "additionalFile": "Papildomas failas",
+        "arrangement": "Aranžuotė",
+        "correction": "Pataisymas",
+        "new": "Nauja daina",
+        "recording": "Pagrindinis įrašas",
+        "removal": "Pašalinimas",
+        "translation": "Vertimas"
+      },
+      "submittedBy": "Pateikė",
       "sundayReady": "Sunday-ready",
       "tabAssets": "Assets",
       "tabQueue": "Queue",
       "tabReports": "Reports",
+      "triageScore": "Prioritetų įvertis",
+      "unchangedFiles": "Nepakeisti failai",
       "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons",
-      "featured": "Featured",
-      "licenseWc": "Free for worship"
+      "unpublishConfirm": "Nebepublikuoti {name}? Bažnyčios nebematys jos, kol iš naujo nepublikuosite.",
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "Būsite atjungtas iš savo sesijos ir prisijungta kaip {email}. Norėdami grįžti į savo paskyrą, atsijunkite ir prisijunkite iš naujo.",
@@ -2821,7 +3341,40 @@
       "noRuns": "Kol kas nėra įrašytų darbų vykdymų.",
       "recentFailures": "Paskutinės triktys",
       "subtitle": "Paskutinis kiekvieno suplanuoto darbo vykdymas. Vykdymai registruojami laikmačio apdorojiklių ir saugomi 30 dienų.",
+      "success": "Sėkmingai",
       "title": "Foniniai darbai"
+    },
+    "migrationsTab": {
+      "applied": "Pritaikyta",
+      "baseline": "Pažymėti kaip jau pritaikytą",
+      "baselineConfirm": "Pažymėti {count} {module} migraciją(-as) kaip jau pritaikytą(-as) {environment} aplinkoje? Niekas nevykdoma; tai tik įrašo migracijų istoriją, kad likusias būtų galima paleisti.",
+      "checkSchema": "Tikrinti schemą",
+      "confirm": "Pritaikyti {count} laukiančią(-ias) migraciją(-as) {environment} duomenų bazėms? Kiekvieno modulio migracijos vykdomos eilės tvarka ir sustoja įvykus pirmai klaidai.",
+      "detectSubtitle": "Kiekvienos migracijos lentelės, stulpeliai ir indeksai buvo patikrinti šioje duomenų bazėje. Niekas nebuvo pakeista.",
+      "detectSummary": "{count} migracija(-os) jau yra ir bus pažymėta(-os) kaip pritaikyta(-os). {pending} liks laukiančios ir vėliau galės būti paleistos.",
+      "detectTitle": "Aptiktos migracijos: {module}",
+      "error": "Klaida",
+      "lastApplied": "Paskutinį kartą pritaikyta",
+      "loadError": "Nepavyko įkelti migracijų būsenos.",
+      "module": "Modulis",
+      "noHistory": "Nėra istorijos",
+      "noHistoryNote": "Nėra migracijų istorijos: {modules}. Naudokite „Tikrinti schemą“, kad pamatytumėte, kurios migracijos jau yra, ir jas pažymėtumėte; tada bus paleistos tik trūkstamos.",
+      "noneApplied": "nieko nepritaikyta",
+      "nothingPending": "Visi moduliai yra atnaujinti.",
+      "partialNote": "Iš dalies pritaikyta migracija sustojo pusiaukelėje. Jei ji parašyta taip, kad ją būtų saugu paleisti iš naujo (pirmiau perskaitykite), pažymėkite „Paleisti iš naujo“, kad ji liktų laukianti ir būtų vykdoma nuo pradžios.",
+      "pending": "Laukiama",
+      "pendingCount": "{count} laukiama",
+      "rerun": "Paleisti iš naujo",
+      "run": "Paleisti laukiančias migracijas",
+      "running": "Vykdoma {module}…",
+      "state_applied": "Jau pritaikyta",
+      "state_missing": "Trūksta",
+      "state_partial": "Iš dalies pritaikyta",
+      "state_unknown": "Tik duomenys",
+      "subtitle": "Diegimai nekeičia duomenų bazės. Po leidimo, kuriame pridedama migracija, paleiskite ją čia — Api ją pritaiko iš savo pačios tinklo.",
+      "title": "Duomenų bazės migracijos",
+      "upToDate": "Atnaujinta",
+      "willRerun": "Bus paleista iš naujo"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2835,7 +3388,8 @@
       "setting": "Nustatymas",
       "status": "Būsena",
       "subtitle": "Rodo, ar kiekvienas API nustatymas sukonfigūruotas. Reikšmės nerodomos.",
-      "title": "Serverio būklė"
+      "title": "Serverio būklė",
+      "yes": "Taip"
     },
     "translation": {
       "abbreviations": "Abbreviations",
@@ -2866,11 +3420,14 @@
   "settings": {
     "apiKeyEdit": {
       "close": "Uždaryti",
+      "copied": "Nukopijuota",
       "copy": "Kopijuoti",
+      "expires": "Galioja iki",
       "expiresHelp": "Palikite tuščią, jei raktas negalioja neribotą laiką.",
       "generalScopes": "bendrasis",
       "keyIntro": "Nukopijuokite savo API raktą dabar — jis nebus rodomas dar kartą.",
       "keyTitle": "API raktas",
+      "name": "Pavadinimas",
       "namePlaceholder": "pvz. Zapier integracija",
       "nameRequired": "Pavadinimas yra privalomas",
       "newKey": "Naujas API raktas",
@@ -2883,7 +3440,9 @@
       "urlHelper": "Enter the full URL (e.g., https://example.com)"
     },
     "appEdit": {
+      "addTab": "Pridėti skirtuką",
       "bible": "Bible",
+      "changeImage": "Keisti vaizdą",
       "checkin": "Check-in",
       "deleteTab": "Delete Tab",
       "donation": "Donation",
@@ -2901,6 +3460,7 @@
       "page": "Page",
       "plans": "Tarnavimo planai",
       "saveTab": "Save Tab",
+      "saving": "Išsaugoma...",
       "selectGroups": "Pasirinkite grupes:",
       "selectImage": "Select Image",
       "sermons": "Pamokslai",
@@ -2909,6 +3469,7 @@
       "tabName": "Tab Name",
       "tabType": "Tab Type",
       "team": "Komandos nariai (tarnystės komandos)",
+      "url": "URL",
       "verseOfDay": "Verse of the Day",
       "visibility": "Matomumas",
       "volunteerOpportunities": "Savanorystės galimybės"
@@ -2974,6 +3535,7 @@
       "search": "Ieškoti",
       "startDate": "Pradžios data",
       "subtitle": "Stebėkite pakeitimus ir veiklą savo bažnyčioje",
+      "title": "Audito žurnalas",
       "truncated": "Išsami informacija buvo sutrumpinta ir šio įrašo negalima anuliuoti."
     },
     "batches": {
@@ -2996,11 +3558,13 @@
       "source": "Šaltinis",
       "status": "Būsena",
       "subtitle": "Peržiūrėkite ir anuliuokite masinius importus bei veiksmus",
+      "title": "Partijos",
       "undo": "Anuliuoti",
       "undoConfirm": "Anuliuoti partiją „{label}“? Tai atkurs paveiktus įrašus į jų būseną prieš partiją.",
       "undoError": "Anuliavimo užklausa nepavyko.",
       "undoTitle": "Anuliuoti partiją",
       "undoWarning": "Įrašai, pakeisti po šios partijos sukūrimo, bus praleisti. Šio veiksmo negalima grąžinti.",
+      "undoing": "Atšaukiama…",
       "viewResults": "Peržiūrėti rezultatus"
     },
     "campusEdit": {
@@ -3071,7 +3635,9 @@
       "noKeys": "API raktų dar nėra.",
       "prefix": "Raktas",
       "revoke": "Atšaukti",
-      "scopes": "Apimtys"
+      "revokeConfirm": "Atšaukti prieigą „{name}“?",
+      "scopes": "Apimtys",
+      "title": "Kūrėjas"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
@@ -3104,6 +3670,7 @@
       "category": "Kategorija",
       "close": "Uždaryti",
       "composePlaceholder": "Rašykite el. laiško šabloną čia...",
+      "editTemplate": "Redaguoti šabloną",
       "emailPreview": "El. laiško peržiūra",
       "insertMergeBody": "Įterpti suliejimo lauką į turinį:",
       "insertMergeSubject": "Įterpti suliejimo lauką į temą:",
@@ -3121,6 +3688,8 @@
       "subject": "Tema",
       "subjectPlaceholder": "pvz. Sveiki {firstName}, sveiki atvykę į {churchName}",
       "subjectRequired": "Tema privaloma.",
+      "templateName": "Šablono pavadinimas",
+      "templateNamePlaceholder": "pvz., pasveikinimo laiškas, priminimas apie renginį",
       "yourChurch": "Jūsų bažnyčia"
     },
     "emailTemplatesPage": {
@@ -3150,25 +3719,39 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
+      "clientId": "Kliento ID",
+      "clientSecret": "Kliento paslaptis",
       "copyWebhookUrl": "Kopijuoti webhook URL",
       "currency": "Valiuta",
       "currencyHelper": "Įsitikinkite, kad ši valiuta įjungta jūsų Stripe valdymo skydelyje. Įjungti valiutą čia:",
       "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
+      "kfSetup": "Įveskite tokenizavimo raktą ir šaltinio raktą iš savo „Kingdom Funding“ skydelio. Pradėkite",
+      "kfWebhookInstructions": "Pridėkite šį URL kaip webhook adresą savo mokėjimų teikėjo skydelyje:",
       "none": "None",
       "paymentGatewaySection": "Payment gateway",
+      "paypalSetup": "Sukurkite PayPal REST programėlę ir žemiau įklijuokite jos Client ID ir Secret. Pradėkite",
+      "paystackSetup": "Nukopijuokite savo viešąjį ir slaptąjį raktus iš Paystack skydelio (Settings → API Keys & Webhooks) ir įklijuokite juos žemiau. Atidarykite",
+      "paystackWebhookInstructions": "Įklijuokite šį URL į Webhook URL lauką savo Paystack skydelyje (Settings → API Keys & Webhooks), kad būtų registruojamos pasikartojančios aukos ir mobiliojo pinigų mokėjimai:",
       "privateKeyRequired": "Prieš išsaugodami įveskite šio teikėjo slaptąjį / privatųjį raktą.",
       "prov": "Provider",
+      "pubKey": "Viešasis raktas",
       "saveError": "Failed to save giving settings",
+      "secKey": "Slaptasis raktas",
+      "sourceKey": "Šaltinio raktas",
       "stripeDashboard": "Stripe Dashboard",
+      "stripeSetup": "Nukopijuokite savo viešinamą ir slaptąjį raktus iš Stripe skydelio (Developers → API keys) ir įklijuokite juos žemiau. Atidarykite",
+      "tokenizationKey": "Tokenizavimo raktas",
       "transFee": "Transaction Fee",
+      "webhookKey": "Webhook raktas",
       "webhookKeyHelper": "Webhook pasirašymo paslaptis iš Kingdom Funding valdymo skydelio. Reikalinga sandorių būsenos atnaujinimams.",
       "webhookUrlCopied": "Webhook URL nukopijuotas į iškarpinę"
     },
     "gradePromotionSettingsEdit": {
       "day": "Diena",
       "disabled": "Išjungta",
+      "enabled": "Įjungta",
       "help": "Šią dieną kiekvienais metais visi turintys klasę automatiškai perkeliami į kitą klasę (12 klasė tampa „Baigė mokyklą“). Palikite išjungtą, jei norite išjungti automatinį perkėlimą.",
       "month": "Mėnuo",
       "title": "Klasės perkėlimas"
@@ -3195,7 +3778,8 @@
       "batches": "Partijos",
       "imEx": "Import/Export",
       "noData": "No church data available",
-      "subtitle": "Configure church settings and preferences"
+      "subtitle": "Configure church settings and preferences",
+      "title": "Valdyti bažnyčią"
     },
     "messagingMinimumAge": {
       "age13": "13 metų ir vyresni",
@@ -3217,9 +3801,12 @@
     "roleEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this role?",
       "roleEdit": "Edit Role",
+      "roleName": "Vaidmens pavadinimas",
+      "roleNameAria": "Vaidmens pavadinimas",
       "valMsg": "Please enter a valid role name."
     },
     "roleMembers": {
+      "addRoleMemberAria": "Pridėti vaidmens narį",
       "confirmMsg": "Are you sure you wish to delete this user from",
       "lastAdminWarning": "Reikalingas bent vienas Domeno administratorius. Prieš pašalindami šį, pridėkite kitą administratorių.",
       "mem": "Members",
@@ -3239,28 +3826,35 @@
       "accDesc": "Has access to view and manage donations.",
       "addCustomRoleAria": "Pridėti pasirinktinį vaidmenį",
       "addPredefinedRoleAria": "Pridėti {name} vaidmenį",
+      "canEdit": "Gali redaguoti didžiąją dalį duomenų ",
       "churchDesc": " including people, groups, attendance and forms.",
       "churchStaff": "Church Staff",
       "contAdmin": "Content Admin",
       "contAdminDesc": "Can edit website content, mobile content and sermons.",
       "custAdd": "Add Custom Role",
       "everyone": "Everyone",
+      "itMsg": "? Tai ",
       "lesAdmin": "Lessons Admin",
       "lesAdminDesc": "Can set up classrooms and schedule lessons on ",
       "role": "Role",
+      "roleCreate": "Ar norite sukurti naują vaidmenį ",
       "roles": "Roles"
     },
     "rolesPage": {
       "subtitle": "Tvarkykite vaidmenis ir teises"
     },
     "statementFormat": {
+      "abn": "ABN",
       "australia": "Australia",
       "canada": "Canada - CRA official receipt",
       "cityOfIssue": "City of Issue",
+      "craNumber": "CRA registracijos numeris",
       "format": "Statement Format",
       "helper": "Adds the legal receipt block your country requires to printed giving statements.",
       "newZealand": "New Zealand",
+      "nzNumber": "NZ labdaros registracijos numeris",
       "orgAddress": "Organization Address",
+      "registrationNumber": "Registracijos numeris",
       "signatory": "Authorized Signatory Name",
       "standard": "Standard"
     },
@@ -3302,6 +3896,8 @@
       "apiKey": "API raktas",
       "apiSecret": "API paslaptis",
       "clearstream": "Clearstream",
+      "clearstreamHelper": "Sukurkite API raktą savo",
+      "clearstreamHelperLink": "Clearstream paskyros nustatymuose",
       "clearstreamHelperSuffix": "skiltyje API raktai.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Jūsų MinistryStuff SMS žinučių prenumerata yra aktyvi, likę {} kreditų šiam ciklui.",
@@ -3311,6 +3907,8 @@
       "provider": "Teikėjas",
       "saveError": "Klaida išsaugant SMS žinučių nustatymus.",
       "textInChurch": "Tekstas bažnyčioje",
+      "textInChurchHelper": "Apsilankykite",
+      "textInChurchHelperLink": "Text In Church pagalboje",
       "textInChurchHelperSuffix": "kad paprašytumėte kūrėjo API prieigos. Patvirtinus, sukurkite API raktą savo Paskyros nustatymai > Kūrėjo API skiltyje."
     },
     "userAdd": {
@@ -3351,22 +3949,28 @@
       "connectorSlack": "Slack",
       "connectorStandard": "Standartinis (neapdorotas JSON)",
       "connectorType": "Jungties tipas",
+      "copied": "Nukopijuota",
       "copy": "Kopijuoti",
       "date": "Data",
       "deliveries": "Naujausi pristatymai",
       "deliveryDetail": "Pristatymo detalė",
       "discordUrlHelp": "Įklijuokite Discord kanalo gaunamojo Webhook URL. Įvykiai pristatomi kaip skaitomos pokalbio žinutės.",
+      "editWebhook": "Redaguoti webhook",
       "event": "Įvykis",
       "events": "Įvykiai",
       "eventsRequired": "Pasirinkite bent vieną įvykį",
+      "mailchimpApiKey": "Mailchimp API raktas",
       "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
+      "mailchimpAudienceId": "Auditorijos ID",
       "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
+      "name": "Pavadinimas",
       "namePlaceholder": "pvz. Zapier — nauji nariai",
       "nameRequired": "Pavadinimas yra privalomas",
       "newWebhook": "Naujas Webhook",
       "noDeliveries": "Pristatymų dar nėra.",
       "payload": "Duomenų paketas",
       "redeliver": "Pristatyti iš naujo",
+      "regenerateConfirm": "Sugeneruoti naują pasirašymo paslaptį? Dabartinė paslaptis nustos veikti iš karto.",
       "regenerateSecret": "Regeneruoti paslaptį",
       "response": "Atsakymas",
       "responseBody": "Atsakymo turinys",
@@ -3374,9 +3978,14 @@
       "secretSignNote": "Naudokite ją X-B1-Signature antraštei tikrinti kiekviename pristatyme.",
       "secretTitle": "Pasirašymo paslaptis",
       "sendTest": "Siųsti bandomąjį įvykį",
+      "sendingTest": "Siunčiama…",
+      "slackUrlHelp": "Įklijuokite Slack kanalo Incoming Webhook URL. Įvykiai pristatomi kaip skaitomi pokalbių pranešimai.",
+      "url": "Duomenų URL",
+      "urlPlaceholder": "https://example.com/webhooks/b1",
       "urlRequired": "URL yra privalomas"
     },
     "webhooksPage": {
+      "active": "Aktyvus",
       "deleteConfirm": "Ištrinti Webhook \"{name}\"?",
       "disabled": "Išjungtas",
       "emptyDescription": "Sukurkite Webhook, kad praneštumėte išorinėms priemonėms apie žmonių, grupių ar namų ūkių pokyčius.",
@@ -3394,19 +4003,26 @@
       "buttonTip": "Tikrinti prieinamumą",
       "buttonTipIssues": "{count} prieinamumo problemos, kurias reikia peržiūrėti",
       "close": "Uždaryti",
+      "errorLabel": "Klaida",
       "highlight": "Rodyti puslapyje",
       "noIssues": "Prieinamumo problemų nerasta",
       "noIssuesDetail": "Vaizdai turi alt tekstą, spalvos atitinka minimalų kontrastą, o antraštės išdėstytos teisinga tvarka.",
       "pageLevel": "Visas puslapis",
       "panelAria": "Prieinamumo problemos",
+      "rule_contrast": "Mažas kontrastas",
+      "rule_emptyLink": "Tuščias nuorodos tekstas",
+      "rule_headingOrder": "Antraščių tvarka",
+      "rule_missingAlt": "Trūksta alternatyvaus teksto",
       "sectionLabel": "{n} skyrius",
       "subtitle": "Ištaisykite tai prieš publikuodami puslapį",
       "summaryErrors": "{count} klaidos",
       "summaryWarnings": "{count} įspėjimai",
-      "title": "Prieinamumas"
+      "title": "Prieinamumas",
+      "warningLabel": "Įspėjimas"
     },
     "addPage": {
       "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
+      "newLink": "Nauja nuoroda",
       "newPage": "New Page",
       "pageType": "Page Type"
     },
@@ -3426,8 +4042,11 @@
       "exampleHomepage": "Sukurkite svetingą pradinį puslapį su mūsų bažnyčios pavadinimu, misijos pareiškimu, pamaldų laikais ir aukojimo mygtuku",
       "exampleMinistries": "Sukurkite tarnysčių puslapį, parodantį mūsų jaunimo grupę, šlovinimo komandą ir bendruomenės veiklą su nuotraukomis",
       "examples": "Pavyzdžiai:",
+      "linkText": "Nuorodos tekstas",
       "linkType": "Nuoroda",
+      "linkUrl": "Nuorodos URL",
       "location": "Vieta",
+      "pageTitle": "Puslapio pavadinimas",
       "statusCreatingSections": "Kuriamos puslapio skiltys ir elementai...",
       "statusGatheringInfo": "Renkama bažnyčios informacija...",
       "statusGenerating": "Generuojama {count} skilčių...",
@@ -3438,6 +4057,7 @@
     "aiRewrite": {
       "description": "Rewrite this section's text with AI. Layout and images are preserved.",
       "failed": "The rewrite failed. Nothing was changed.",
+      "instruction": "Instrukcijos",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
       "preset_": "Preset_",
       "rewrite": "Rewrite",
@@ -3467,14 +4087,20 @@
       "appSettings": "Programos nustatymai",
       "branding": "Logotipas ir prekės ženklas",
       "brandingDescription": "Įkelkite ir tvarkykite organizacijos logotipus ir prekės ženklo išteklius",
+      "edit": "Redaguoti",
+      "favicon": "Favicon",
       "faviconDesc": "Kvadratinė piktograma naršyklės kortelėms. Idealus dydis: 400×400 piks.",
+      "logoDark": "Logotipas tamsiam fonui",
       "logoDarkDesc": "Horizontalus logotipas tamsiems fonams. Idealus dydis: 1280×320 piks.",
+      "logoLight": "Logotipas šviesiam fonui",
       "logoLightDesc": "Horizontalus logotipas šviesiems fonams. Idealus dydis: 1280×320 piks.",
       "logoManagement": "Logo Management",
       "logoUploadDescription": "Įkelkite logotipus skirtingiems kontekstams. Geriausiems rezultatams visi paveikslėliai turėtų turėti skaidrius fonus.",
       "mainLogos": "Pagrindiniai logotipai",
       "noImage": "Nėra paveikslėlio",
+      "ogImage": "Socialinių tinklų vaizdas",
       "ogImageDesc": "Naudojama dalijimuisi socialiniuose tinkluose ir SEO. Idealus dydis: 1200×630 piks.",
+      "pwaShortName": "PWA trumpas pavadinimas (iki 12 simbolių)",
       "pwaShortNameHelper": "Naudojamas kaip programos piktogramos pavadinimas įrenginio pradžios ekrane.",
       "seoAssets": "SEO ir naršyklės ištekliai",
       "upload": "Įkelti"
@@ -3488,6 +4114,7 @@
       "blockType": "Bloko tipas",
       "elementBlock": "Elementas (-ai)",
       "errName": "Įveskite pavadinimą.",
+      "name": "Pavadinimas",
       "sectionBlock": "Skiltis (-ys)",
       "unauthorizedCreate": "Neturite leidimo kurti blokų",
       "unauthorizedDelete": "Neturite leidimo ištrinti blokų"
@@ -3501,6 +4128,7 @@
       "addBlock": "Add Block",
       "blocks": "Blocks",
       "createFirstBlock": "Create First Block",
+      "elements": "Elementas(-ai)",
       "getStarted": "Get started by creating your first reusable block",
       "noBlocksFound": "No blocks found",
       "rename": "Pervadinti",
@@ -3515,9 +4143,14 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
+      "draft": "Juodraštis",
+      "navHint": "Lankytojai gali skaityti jūsų įrašus adresu /blog. Pridėkite naršymo nuorodą Puslapių ekrane, kad jie galėtų ją rasti:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Publikuota",
+      "scheduled": "Suplanuota",
       "state": "State",
+      "subtitle": "Kurkite ir tvarkykite savo svetainės tinklaraščio įrašus",
       "title": "Blog",
       "view": "Žiūrėti svetainėje"
     },
@@ -3526,6 +4159,7 @@
       "category": "Category",
       "content": "Turinys",
       "draft": "Draft",
+      "editPost": "Redaguoti įrašą",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
       "errSlugTaken": "Šį web adresą jau naudoja kitas įrašas.",
@@ -3535,8 +4169,11 @@
       "newPost": "New Post",
       "preview": "Peržiūra",
       "publishDate": "Publish Date",
+      "published": "Publikuota",
       "selectImage": "Select Image",
       "slugHelper": "Automatiškai užpildoma pagal pavadinimą, kol jo neredaguojate. Adresas:",
+      "slugLabel": "Interneto adresas",
+      "tags": "Žymos",
       "tagsHelper": "Comma-separated",
       "title": "Title"
     },
@@ -3547,6 +4184,7 @@
       "selectCalendar": "Pasirinkti kalendorių"
     },
     "campaignProgressEdit": {
+      "donateUrl": "Aukojimo URL",
       "endDate": "Pabaigos data",
       "fund": "Fondas",
       "goalAmount": "Tikslo suma",
@@ -3556,6 +4194,7 @@
       "title": "Pavadinimas"
     },
     "colorPicker": {
+      "color": "Spalva",
       "placeholder": "#FF0000"
     },
     "contentEditor": {
@@ -3565,6 +4204,7 @@
       "discard": "Atmesti",
       "discardElementMessage": "Atmesti neišsaugotus šio elemento pakeitimus?",
       "discardElementTitle": "Atmesti pakeitimus?",
+      "discardSectionMessage": "Atmesti neišsaugotus šios sekcijos pakeitimus?",
       "dropToAddElement": "Numeskite čia, kad pridėtumėte elementą",
       "dropToAddSection": "Numeskite čia, kad pridėtumėte skiltį",
       "keepEditing": "Tęsti redagavimą",
@@ -3586,6 +4226,7 @@
       "weekly": "Savaitinės pamaldos"
     },
     "cssEdit": {
+      "advancedFeature": "Papildoma funkcija:",
       "advancedFeatureDescription": "Tinkintas CSS ir JavaScript gali paveikti svetainės funkcionalumą. Atidžiai patikrinkite pakeitimus ir įsitikinkite, kad turite atsarginę dabartinių nustatymų kopiją.",
       "commonCssExamples": "Dažni CSS pavyzdžiai",
       "commonJsExamples": "Dažni JavaScript pavyzdžiai",
@@ -3602,8 +4243,10 @@
       "exampleLinkColors": "Keisti nuorodų spalvas",
       "headerSubtitle": "Pridėkite pasirinktinius stilius ir scenarijus į svetainę",
       "headerTitle": "CSS ir JavaScript",
+      "proTip": "Patarimas:",
       "proTipDescription": "Naudokite naršyklės kūrėjo įrankius (F12), kad išbandytumėte CSS pakeitimus prieš juos pritaikydami. JavaScript kodas bus pridėtas į kiekvieną svetainės puslapį.",
-      "saveChanges": "Išsaugoti pakeitimus"
+      "saveChanges": "Išsaugoti pakeitimus",
+      "saving": "Išsaugoma..."
     },
     "customFontModal": {
       "all": "Visi",
@@ -3615,11 +4258,13 @@
       "sample": "Pavyzdys",
       "sampleText": "Greitas rudas lapė šokinėja per tingų šunį.",
       "sansSerif": "Sans Serif",
+      "search": "Paieška",
       "selectFont": "Pasirinkite šriftą",
       "serif": "Serif"
     },
     "donateLink": {
       "add": "Pridėti",
+      "addAmount": "Pridėti sumą",
       "amount": "Amount",
       "amountPlaceholder": "Amount Placeholder",
       "donationAmount": "Donation Amount",
@@ -3629,7 +4274,11 @@
       "maxAmountsAlert": "You are only allowed to add five donation amounts.",
       "noFunds": "No Funds",
       "selectFund": "Select donation fund",
-      "urlLabel": "Url"
+      "textHelper": "Pvz.: (Aukoti dabar), (Taip, padėsiu!), (Aukoti 10 USD jaunimo stovyklai) ir pan..",
+      "textLabel": "Tekstas",
+      "urlHelper": "Patarimas: turite susieti puslapį iš svetainės kūrėjo, kuriame yra aukojimo elementas.",
+      "urlLabel": "Url",
+      "urlPlaceholder": "/aukoti"
     },
     "donationEdit": {
       "allowRecurring": "Leisti pasikartojančias aukas",
@@ -3655,6 +4304,7 @@
       "exit": "Išeiti",
       "justNow": "ką tik",
       "page": "Page",
+      "publish": "Publikuoti",
       "publishOffTip": "Šiuo metu pakeitimai skelbiami iš karto. Publikuokite, kad išsaugotumėte paskelbtą versiją, o būsimi pakeitimai liktų privatūs iki kito publikavimo.",
       "publishedLabel": "Publikuota",
       "redoTip": "Pakartoti (Ctrl+Shift+Z)",
@@ -3687,8 +4337,40 @@
       "column": "Column",
       "common": "Bendras",
       "countdown": "Countdown",
+      "descBox": "Sugrupuokite elementus stilizuotame konteineryje.",
+      "descCalendar": "Artėjantys įvykiai iš jūsų kalendorių.",
+      "descCampaignProgress": "Aukojimo kampanijos eigos juosta.",
+      "descCard": "Kortelė su pavadinimu, vaizdu ir nuoroda.",
+      "descCarousel": "Slenkanti pilno pločio skaidrių serija.",
+      "descCountdown": "Laikmatis, skaičiuojantis laiką iki datos.",
+      "descDonateLink": "Mygtukas, atidarantis jūsų aukojimo puslapį.",
+      "descDonation": "Pilna aukojimo forma.",
+      "descEmbedPage": "Įterpti kitą puslapį rėmelyje.",
+      "descExpandable": "Klausimai, kurie išsiplečia atskleisdami atsakymus.",
+      "descForm": "Įterpti vieną iš savo formų.",
+      "descGallery": "Nuotraukų tinklelis iš jūsų failų.",
+      "descGroupList": "Grupės, kurias žmonės gali naršyti ir prie jų prisijungti.",
+      "descHtml": "Jūsų pačių HTML kodas.",
+      "descIconFeature": "Piktograma su trumpa antrašte ir aprašymu.",
+      "descImage": "Vienas vaizdas, pasirinktinai su nuoroda.",
+      "descLocation": "Žemėlapis, rodantis jūsų bažnyčios adresą.",
+      "descLogo": "Jūsų bažnyčios logotipas.",
+      "descPodcast": "Epizodų sąrašas iš išorinio podcast'o RSS kanalo, su garso grotuvu kiekvienam epizodui",
       "descReusableElement": "Reusable element block",
+      "descReusableSection": "Daugkartinio naudojimo sekcija",
+      "descRow": "Padalyti sekciją į greta esančius stulpelius.",
       "descSection": "Container for grouping content",
+      "descSermons": "Naujausi pamokslai iš jūsų bibliotekos.",
+      "descServiceTimes": "Kada ir kur vyksta jūsų pamaldos.",
+      "descSocialIcons": "Nuorodos į jūsų bažnyčios socialinius tinklus.",
+      "descStaffGrid": "Jūsų darbuotojų nuotraukos ir aprašymai.",
+      "descStats": "Pabrėžkite kelis svarbius skaičius.",
+      "descStream": "Jūsų tiesioginės transliacijos grotuvas ir pokalbiai.",
+      "descTable": "Paprastų duomenų eilutės ir stulpeliai.",
+      "descTestimonial": "Citata su nuoroda į autorių.",
+      "descText": "Formatuoto teksto blokas.",
+      "descTextWithPhoto": "Tekstas šalia vaizdo.",
+      "descVideo": "Įterpti vaizdo įrašą iš YouTube ar Vimeo.",
       "donateLink": "Donate link",
       "donation": "Donation",
       "embedPage": "Embed page",
@@ -3717,6 +4399,7 @@
       "text": "Text",
       "textWithPhoto": "Text with photo",
       "tryDifferentSearch": "Try a different search term",
+      "untitledBlock": "Bevardis blokas",
       "video": "Video"
     },
     "elementEdit": {
@@ -3743,6 +4426,7 @@
       "categoriesHelper": "ex: Small Groups, Sunday School",
       "color": "Color",
       "confirmDelete": "Are you sure you wish to permanently delete this element?",
+      "confirmDuplicate": "Ar tikrai norite padaryti šio elemento ir visų jo antrinių elementų kopiją?",
       "contained": "Contained",
       "deleteElementBody": "Šis elementas bus pašalintas iš puslapio. Galite atšaukti su Ctrl+Z.",
       "deleteElementTitle": "Pašalinti elementą?",
@@ -3755,6 +4439,7 @@
       "heightPx": "Height (px)",
       "hide": "Hide",
       "htmlContent": "HTML Content",
+      "id": "ID",
       "idExample": "ex: dQw4w9WgXcQ",
       "idExampleVimeo": "ex: 76979871",
       "imageAlignment": "Image Alignment",
@@ -3780,20 +4465,27 @@
       "positionPhotoTop": "Top",
       "primary": "Primary",
       "roundedCorners": "Rounded Corners",
+      "scriptsPublishedOnly": "Skriptai veikia tik publikuotoje svetainėje.",
       "secondary": "Secondary",
       "selectPhoto": "Select Photo",
       "selectPhotoPosition": "Select photo position",
       "slide": "Slide",
       "slides": "Slides",
       "slidesIntervalSeconds": "Slide Interval (seconds)",
+      "source": "Šaltinis",
       "success": "Success",
+      "text": "Tekstas",
       "textAlignment": "Text Alignment",
+      "title": "Pavadinimas",
       "titleAlignment": "Title Alignment",
       "translucent": "Translucent",
       "type": "Type",
+      "url": "URL",
       "variant": "Variant",
       "videoAndInteraction": "Video and Interaction",
       "videoOnly": "Video Only",
+      "videoUrlVimeo": "Raskite ID vaizdo įrašo URL: vimeo.com/[id]",
+      "videoUrlYoutube": "Raskite ID vaizdo įrašo URL: youtube.com/watch?v=[id]",
       "vimeo": "Vimeo",
       "warning": "Warning",
       "youtube": "YouTube",
@@ -3809,7 +4501,8 @@
       "heading": "Antraštė",
       "headingType": "Antraštės tipas",
       "iconColor": "Piktogramos spalva",
-      "link": "Nuoroda"
+      "link": "Nuoroda",
+      "title": "Pavadinimas"
     },
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
@@ -3817,11 +4510,13 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "copied": "Nuoroda nukopijuota",
       "copyLink": "Copy link",
       "externalStorage": "External storage",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Pavadinimas",
+      "noFilesYet": "Kol kas neįkelta jokių failų",
       "size": "Dydis",
       "storage": "Saugykla:"
     },
@@ -3844,6 +4539,7 @@
       "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
       "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
       "saveFonts": "Išsaugoti šriftus",
+      "saving": "Išsaugoma...",
       "secondaryHeading": "Antrinė antraštė",
       "typographyPreview": "Typography Preview"
     },
@@ -3878,7 +4574,9 @@
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
       "churchName": "Church Name",
+      "createPlan": "Sukurti planą",
       "creatingPage": "Creating {title} ({n} of {total})...",
+      "describe": "Aprašykite savo bažnyčią",
       "describePlaceholder": "Tell us about your church, your mission, and what makes you unique",
       "done": "Your site is ready.",
       "errDescription": "Please describe your church (at least 10 characters).",
@@ -3887,6 +4585,7 @@
       "pageFailed": "Could not create the {title} page — skipped.",
       "planIntro": "Choose which pages to generate:",
       "sectionSkipped": "{title}: section {n} was skipped.",
+      "serviceTimes": "Pamaldų laikai",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
       "tone": "Tone",
@@ -3922,10 +4621,12 @@
       "title": "Pavadinimas"
     },
     "navLink": {
-      "addLink": "Add Link"
+      "addLink": "Add Link",
+      "linkSettings": "Nuorodos nustatymai"
     },
     "navLinkEdit": {
       "errLinkText": "Įveskite nuorodos tekstą",
+      "linkText": "Nuorodos tekstas",
       "noParent": "(nėra)",
       "parentPage": "Pirminis puslapis",
       "unauthorizedCreate": "Neturite leidimo kurti puslapių",
@@ -3948,8 +4649,12 @@
       "unset": "Numatytasis"
     },
     "pageLink": {
+      "check": "Tikrinti",
       "confirmDelete": "Are you sure you wish to permanently delete this page?",
-      "linkSettings": "Link Settings"
+      "confirmDuplicate": "Ar tikrai norite padaryti šio puslapio ir viso jo turinio kopiją?",
+      "linkSettings": "Link Settings",
+      "pageSettings": "Puslapio nustatymai",
+      "urlHelper": "pvz.: /stovyklos-registracija  (**Prieš išsaugodami būtinai patikrinkite)"
     },
     "pageLinkEdit": {
       "cleanCentered": "Tvarkingas centruotas turinys",
@@ -3962,6 +4667,7 @@
       "groups": "Konkrečios grupės",
       "headerFooter": "Antraštė ir poraštė",
       "layout": "Išdėstymas",
+      "linkText": "Nuorodos tekstas",
       "loggedInUsers": "Prisijungę vartotojai",
       "membersStaff": "Nariai ir darbuotojai",
       "metaDescription": "Meta Description",
@@ -3970,11 +4676,14 @@
       "metaGenerateFailed": "Could not generate a description. Please try again.",
       "metaNoContent": "Add some page content before generating a description.",
       "noGroupsFound": "Grupių nerasta",
+      "pageTitle": "Puslapio pavadinimas",
       "selectGroups": "Pasirinkti grupes",
       "staffOnly": "Tik darbuotojams",
       "team": "Komandos nariai",
       "unauthorizedCreate": "Neturite leidimo kurti puslapių",
       "unauthorizedDelete": "Neturite leidimo ištrinti puslapių",
+      "url": "URL",
+      "urlPath": "URL kelias",
       "visibility": "Matomumas"
     },
     "pagePreview": {
@@ -3983,7 +4692,8 @@
       "pageSettings": "Page Settings",
       "previewOf": "{title} peržiūra",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "Previewing: {title}"
+      "subtitle": "Previewing: {title}",
+      "title": "Svetainės peržiūra"
     },
     "pages": {
       "convert": "Convert"
@@ -3993,6 +4703,7 @@
       "addFirstPage": "Add First Page",
       "addPage": "Add Page",
       "autoGenerated": "Auto-generated",
+      "confirmConvert": "Ar norite paversti šį automatiškai sugeneruotą puslapį pritaikytu puslapiu?",
       "customPages": "Custom Pages",
       "description": "Below is a list of custom and auto-generated pages. You can add new pages, edit existing ones, or convert auto-generated pages to custom pages.",
       "desktopOnly": "Page editor is only available in desktop mode",
@@ -4012,27 +4723,37 @@
       "websitePages": "Website Pages"
     },
     "paletteEdit": {
+      "accent": "Akcentas",
       "accentDesc": "Pagrindinis akcentas — mygtukai ir paryškinimai",
       "applyPaletteAria": "Taikyti siūlomą spalvų paletę",
       "applySuggested": "Spustelėkite bet kurią paletę, kad iškart pritaikytumėte",
       "baseColors": "Pagrindinės spalvos",
       "colorCombinationsPreview": "Color Combinations Preview",
       "colorValues": "Color Values",
+      "dark": "Tamsi",
+      "darkAccent": "Tamsus akcentas",
       "darkAccentDesc": "Tamsus akcentas — antraštės ir nuorodos",
       "darkDesc": "Tamsiausias atspalvis — pagrindinio teksto",
+      "error": "Klaida",
       "errorDesc": "Klaidos ir naikinimo veiksmai",
       "headerSubtitle": "Tinkinkite svetainės spalvų schemą. Mobiliosios programėlės, narių portalo ir kiosko spalvas rasite skiltyje Mobile > Programos tema.",
       "headerTitle": "Spalvų paletė",
+      "light": "Šviesi",
+      "lightAccent": "Šviesus akcentas",
       "lightAccentDesc": "Švelnus akcentas — subtilūs fonai",
       "lightDesc": "Šviesiausias atspalvis — skyrių fonai",
       "palette": "Paletė",
       "previewWorkTogether": "Peržiūrėkite, kaip jūsų spalvos dera tarpusavyje",
+      "primary": "Pagrindinė",
       "primaryDesc": "Pagrindiniai mygtukai ir nuorodos",
       "savePalette": "Save Palette",
+      "secondary": "Antrinė",
       "secondaryDesc": "Antriniai mygtukai ir akcentai",
       "semanticColors": "Semantinės spalvos",
+      "success": "Sėkmė",
       "successDesc": "Sėkmės pranešimai ir patvirtinimai",
       "suggestedPalettes": "Suggested Palettes",
+      "warning": "Įspėjimas",
       "warningDesc": "Įspėjimai ir perspėjimai"
     },
     "pickColors": {
@@ -4071,6 +4792,7 @@
       "description": "Send visitors from old URLs to new ones.",
       "errSave": "Failed to save redirect.",
       "fromPath": "From Path",
+      "ga4": "GA4 matavimo ID",
       "ga4Hint": "Format: G-XXXXXXXXXX",
       "normalizeHint": "Paths are normalized: lowercased, with a leading slash and no trailing slash.",
       "title": "Redirects",
@@ -4084,6 +4806,7 @@
       "halves": "Halves",
       "hideMobileOrder": "Hide Mobile Order",
       "hideMobileSizes": "Hide Mobile Sizes",
+      "preview": "Peržiūra",
       "previewHelper": "Numbers represent twelfths of page",
       "quarters": "Quarters",
       "remove": "Remove",
@@ -4131,6 +4854,7 @@
     },
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
+      "confirmDuplicate": "Ar tikrai norite padaryti šios sekcijos ir viso jos turinio kopiją?",
       "deleteSectionBody": "Tai visam laikui ištrina skiltį ir visą jos turinį. Tai galite atšaukti su Ctrl+Z.",
       "deleteSectionTitle": "Ištrinti skiltį?",
       "editSection": "Edit Section",
@@ -4141,6 +4865,8 @@
       "block": "Blokas",
       "blockNamePromptDefault": "Bloko pavadinimas",
       "convertTo": "Convert To",
+      "convertToBlock": "Paversti bloku",
+      "convertToBlockPrompt": "Ar tikrai norite nukopijuoti šią sekciją ir visą jos turinį į bloką?",
       "dividerBottom": "Apatinis skirtukas",
       "dividerColor": "Spalva",
       "dividerFlip": "Apversti horizontaliai",
@@ -4148,15 +4874,54 @@
       "dividerNone": "Nėra",
       "dividerShape": "Forma",
       "dividerTop": "Viršutinis skirtukas",
-      "divider_": "Divider_",
+      "divider_curve": "Kreivė",
+      "divider_peaks": "Viršūnės",
+      "divider_slant": "Įstrižainė",
+      "divider_triangle": "Trikampis",
+      "divider_wave": "Banga",
+      "divider_waves": "Bangos",
       "dividers": "Formos skirtukai",
       "duplicate": "Duplicate",
+      "duplicateSection": "Dubliuoti sekciją",
       "id": "ID"
     },
     "sectionTemplates": {
+      "aboutSplit": "Apie mus",
       "all": "Visi",
       "blank": "Tuščia skiltis",
-      "switchHint": "Turinys, kuris netelpa naujame išdėstyme, pašalinamas. Norėdami jį atkurti, naudokite anuliavimą."
+      "category": {
+        "about": "Apie",
+        "cta": "Raginimas veikti",
+        "giving": "Aukojimas",
+        "hero": "Pagrindinė sekcija",
+        "media": "Medija",
+        "people": "Žmonės",
+        "services": "Pamaldos"
+      },
+      "connectColumns": "Susisiekite",
+      "ctaBanner": "Raginimas veikti",
+      "faqSection": "DUK",
+      "findUs": "Mus rasite",
+      "galleryRow": "Nuotraukų galerija",
+      "givingBanner": "Aukojimo baneris",
+      "givingOptions": "Aukojimo būdai",
+      "groupListSection": "Grupių sąrašas",
+      "groupsBrowser": "Naršyti grupes",
+      "heroCentered": "Centruota pagrindinė sekcija",
+      "heroGradient": "Pagrindinė sekcija su gradientu",
+      "heroSplit": "Padalinta pagrindinė sekcija",
+      "ministriesCards": "Tarnystės",
+      "sermonsLatest": "Naujausi pamokslai",
+      "serviceTimes": "Pamaldų laikai",
+      "staffGrid": "Susipažinkite su komanda",
+      "storyColumns": "Mūsų istorija",
+      "switchHint": "Turinys, kuris netelpa naujame išdėstyme, pašalinamas. Norėdami jį atkurti, naudokite anuliavimą.",
+      "switchTitle": "Keisti sekcijos išdėstymą",
+      "testimony": "Liudijimas",
+      "title": "Pasirinkite sekcijos išdėstymą",
+      "verseBanner": "Eilutės baneris",
+      "watchOnline": "Žiūrėti internetu",
+      "welcome": "Pasveikinimas"
     },
     "sectionToolbar": {
       "aiRewrite": "AI rewrite",
@@ -4188,6 +4953,51 @@
       "mainWebsite": "Main website",
       "manageSites": "Manage sites"
     },
+    "siteTemplates": {
+      "back": "Atgal",
+      "create": "Sukurti svetainę",
+      "creating": "Kuriama {title}...",
+      "descriptions": {
+        "classic": "Tradicinis serifinis šriftas ir tamsiai mėlyna paletė.",
+        "community": "Šilta ir žalia, su grupėmis dėmesio centre.",
+        "heritage": "Šiltos neutralios spalvos ir klasikinis šriftas nusistovėjusiai bažnyčiai.",
+        "media": "Ryškus ir tamsus, sukurtas apie pamokslus ir transliacijas.",
+        "modern": "Apvalintos kortelės ir ryški indigo paletė.",
+        "simple": "Švarūs, netrikdantys puslapiai, kurie greitai užsikrauna.",
+        "visitor": "Sukurta apie pirmojo apsilankymo planavimą."
+      },
+      "errFailed": "Nepavyko sukurti svetainės iš šio šablono. Bandykite dar kartą.",
+      "exists": "Jau egzistuoja",
+      "existsNote": "Puslapiai, kuriuos jau turite, lieka nepakeisti.",
+      "intro": "Pasirinkite pradžios tašką. Mes sukursime puslapius ir naršymą už jus, o vėliau galėsite bet ką keisti.",
+      "names": {
+        "classic": "Klasikinis",
+        "community": "Bendruomenė",
+        "heritage": "Paveldas",
+        "media": "Medija pirmiausia",
+        "modern": "Modernus",
+        "simple": "Paprastas",
+        "visitor": "Orientuotas į lankytojus"
+      },
+      "nav": {
+        "about": "Apie",
+        "connect": "Susisiekite",
+        "give": "Aukoti",
+        "home": "Pradžia",
+        "live": "Tiesiogiai",
+        "sermons": "Pamokslai",
+        "visit": "Apsilankyti"
+      },
+      "navLinksNote": "Šios nuorodos bus pridėtos į jūsų naršymo meniu.",
+      "pageCount": "{count} puslapiai",
+      "pages": {
+        "about": "Apie mus",
+        "connect": "Susisiekite",
+        "home": "Pradžia",
+        "visit": "Suplanuokite apsilankymą"
+      },
+      "title": "Pradėti nuo šablono"
+    },
     "siteWidgets": {
       "addAction": "Pridėti veiksmą",
       "announcementBar": "Pranešimų juosta",
@@ -4217,19 +5027,27 @@
       "deleteConfirm": "Delete confirm",
       "empty": "Empty",
       "name": "Name",
+      "subDomain": "Subdomenas",
       "subDomainHint": "Sub domain hint",
       "title": "Title"
     },
     "socialIconsEdit": {
       "alignment": "Lygiuotė",
       "color": "Spalva",
+      "facebook": "Facebook",
       "filled": "Užpildyta",
       "iconStyle": "Piktogramos stilius",
+      "instagram": "Instagram",
       "large": "Didelis",
       "medium": "Vidutinis",
       "outlined": "Kontūrinė",
+      "podcast": "Podcast",
       "size": "Dydis",
-      "small": "Mažas"
+      "small": "Mažas",
+      "tiktok": "TikTok",
+      "vimeo": "Vimeo",
+      "x": "X",
+      "youtube": "YouTube"
     },
     "spacingScaleEdit": {
       "buttonOne": "Mygtukas 1",
@@ -4238,7 +5056,9 @@
       "cardWithContent": "Kortelė su turiniu",
       "dramaticSection": "Dramatiška skiltis",
       "dramaticSectionDesc": "Naudoja xxl ({value}px) vertikalų užpildymą didžiausiam poveikiui",
+      "extraLarge": "Ypač didelis",
       "extraLargeDesc": "Dideli tarpai tarp pagrindinių skilčių",
+      "extraSmall": "Ypač mažas",
       "extraSmallDesc": "Glaustas tarpas kompaktiškiems išdėstymams",
       "fullWidthBanner": "Viso pločio reklamjuostė",
       "headerSubtitle": "Konfigūruoti nuoseklias tarpų reikšmes",
@@ -4247,14 +5067,18 @@
       "heroSectionDesc": "Naudoja xl ({xl}px) vertikalų ir lg ({lg}px) horizontalų užpildymą",
       "iconRow": "Piktogramų eilė",
       "iconRowDesc": "Piktogramos naudoja xs ({value}px) tarpą tarpusavyje",
+      "large": "Didelis",
       "largeDesc": "Erdvūs išdėstymai ir skiltys",
+      "medium": "Vidutinis",
       "mediumDesc": "Standartinis tarpas daugumai išdėstymų",
       "pageSection": "Puslapio skiltis",
       "practicalExamples": "Praktiniai pavyzdžiai",
       "practicalExamplesDesc": "Pažiūrėkite, kaip jūsų tarpų reikšmės veikia tikrus UI elementus",
       "saveSpacing": "Išsaugoti tarpus",
+      "small": "Mažas",
       "smallDesc": "Maži tarpai tarp susijusių elementų",
       "spacingValues": "Tarpų reikšmės",
+      "twoXLarge": "2X didelis",
       "twoXLargeDesc": "Maksimalus tarpas dramatiškiems išdėstymams"
     },
     "staffGridEdit": {
@@ -4334,6 +5158,9 @@
       "textFormatting": "Teksto formatavimas",
       "yes": "Taip"
     },
+    "templates": {
+      "viewSermons": "Žiūrėti pamokslus"
+    },
     "testimonialEdit": {
       "addQuote": "Pridėti citatą",
       "author": "Autorius",
@@ -4405,6 +5232,9 @@
       "deleteConfirm": "Are you sure you want to delete this arrangement?",
       "edit": "Edit Arrangement",
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
+      "lyrics": "Žodžiai",
+      "name": "Aranžuotės pavadinimas",
+      "sequence": "Seka",
       "title": "Arrangement"
     },
     "audio": {
@@ -4414,6 +5244,8 @@
       "upload": "Įkelti garsą"
     },
     "create": {
+      "artist": "Atlikėjas",
+      "songTitle": "Dainos pavadinimas",
       "title": "Create Song"
     },
     "deleteSong": {
@@ -4423,18 +5255,22 @@
       "album": "Album",
       "artist": "Artist",
       "bpm": "BPM",
+      "key": "Tonacija",
       "keySignature": "Key Signature",
       "keys": "Keys",
       "language": "Language",
       "length": "Length",
       "meter": "Meter",
-      "releaseDate": "Release Date"
+      "releaseDate": "Release Date",
+      "seconds": "Sekundės"
     },
     "key": {
       "default": "Default",
       "defaultLabel": "John's Key",
       "deleteConfirm": "Are you sure you want to delete this key?",
-      "edit": "Edit Key"
+      "edit": "Edit Key",
+      "labelOptional": "Pavadinimas (neprivaloma)",
+      "signature": "Tonacija"
     },
     "keys": {
       "add": "Pridėti",
@@ -4462,7 +5298,9 @@
     "link": {
       "chordChart": "Chord Chart",
       "deleteConfirm": "Are you sure you want to delete this link?",
-      "edit": "Edit Link"
+      "edit": "Edit Link",
+      "text": "Tekstas",
+      "url": "URL"
     },
     "oldArrangement": {
       "key": "Tonacija"
@@ -4474,7 +5312,9 @@
       "close": "Uždaryti",
       "download": "Atsisiųsti",
       "free": "Nemokama",
+      "linkAccountPrefix": "Neturite susietos PraiseCharts paskyros. Eikite į savo",
       "linkAccountSuffix": "kad susietumėte paskyrą.",
+      "profile": "profilį",
       "title": "Pridėti produktus iš PraiseCharts"
     },
     "search": {
@@ -4505,6 +5345,7 @@
     },
     "songPage": {
       "addArrangement": "Pridėti aranžuotę",
+      "loading": "Kraunama...",
       "noArrangementDescription": "Pasirinkite aranžuotę iš šoninės juostos, kad pradėtumėte.",
       "noArrangementSelected": "Aranžuotė nepasirinkta",
       "subtitle": "Manage song details and arrangements"
@@ -4518,420 +5359,14 @@
       "addSongAria": "Pridėti dainą",
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
+      "deselectAll": "Panaikinti visų žymėjimą",
       "search": "Ieškoti",
       "searchSongs": "Ieškoti dainų",
       "selectAll": "Select all",
+      "songs": "Dainos",
       "subtitle": "Manage your music library"
-    }
-  },
-  "src/calendars/ApprovalsPage": {
-    "tsx:    setSnack(Locale": {
-      "label(action === \"approve\" ? \"calendars": {
-        "approvals": {
-          "approvedToast\" : \"calendars": {
-            "approvals": {
-              "rejectedToast\"));": "Rejected toast\"));"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/components/chatShared/ChatPanel": {
-    "tsx:            placeholder={Locale": {
-      "label(`${labelPrefix}": {
-        "placeholderInput`)}": "Placeholder input`)}"
-      }
     },
-    "tsx:          <AppIconButton label={Locale": {
-      "label(`${labelPrefix}": {
-        "ariaSend`)} icon={<SendIcon />} tone=\"card\" onClick={handleSend} disabled={isLoading || !input": {
-          "trim()} />": "Trim()} />"
-        }
-      }
-    }
-  },
-  "src/components/chatShared/useChat": {
-    "ts:      setMessages([": {
-      "": {
-        "": {
-          "updatedMessages, { role: \"assistant\", content: Locale": {
-            "label(`${labelPrefix}": {
-              "errorGeneric`) }]);": "Error generic`) }]);"
-            }
-          },
-          "updatedMessages, { role: \"assistant\", content: response": {
-            "answer || Locale": {
-              "label(`${labelPrefix}": {
-                "errorAnswer`) }]);": "Error answer`) }]);"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/components/iconPicker/IconPicker": {
-    "tsx:                        {Locale": {
-      "label(`common": {
-        "iconPicker": {
-          "icons": {
-            "${iconName}`, iconName": "${icon name}`, icon name"
-          }
-        }
-      }
-    }
-  },
-  "src/donations/components/GivingStatementDocument": {
-    "tsx:  const label = (key: string) => Locale": {
-      "label(labelPrefix + \"": {
-        "\" + key);": "\" + key);"
-      }
-    }
-  },
-  "src/groups/components/GroupRsvpRosterDialog": {
-    "tsx:                      {Locale": {
-      "label(`groups": {
-        "groupCalendar": {
-          "response_${resp}`)} ({people": {
-            "length})": "Length})"
-          }
-        }
-      }
-    }
-  },
-  "src/mobile/LabelsPage": {
-    "tsx:                          <TableCell>{Locale": {
-      "label(t": {
-        "labelType === \"pickup\" ? \"attendance": {
-          "labels": {
-            "pickup\" : \"attendance": {
-              "labels": {
-                "nametag\")}</TableCell>": "Nametag\")}</ table cell>"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/mobile/components/LabelEditor": {
-    "tsx:const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale": {
-      "label(FIELD_LABEL_KEYS[f]) : f);": "Label( f i e l d_ l a b e l_ k e y s[f]) : f);"
-    }
-  },
-  "src/people/components/PersonEdit": {
-    "tsx:                  <MuiTelInput fullWidth id={field} label={Locale": {
-      "label(labelKey)} value={f": {
-        "value?": {
-          "split(\"x\")[0] ?? \"\"} onChange={(v) => { const ext = f": {
-            "value?": {
-              "split(\"x\")[1] ?? \"\"; f": {
-                "onChange(ext ? v + \"x\" + ext : v); }} defaultCountry=\"US\" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />": "On change(ext ? v + \"x\" + ext : v); }} default country=\" u s\" force calling code focus on select country slot props={phone slot props}  menu props={phone menu props} />"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/people/components/bulk/BulkGroupDialog": {
-    "tsx:        <Typography sx={{ mb: 2 }}>{Locale": {
-      "label(isAdd ? \"people": {
-        "bulk": {
-          "addToGroupPrompt\" : \"people": {
-            "bulk": {
-              "removeFromGroupPrompt\")": {
-                "replace(\"{count}\", count": {
-                  "toString())}</Typography>": "To string())}</ typography>"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "tsx:        message: Locale": {
-      "label(messageKey)": {
-        "replace(\"{count}\", affected": {
-          "toString())": {
-            "replace(\"{group}\", targetGroup": {
-              "name || \"\"),": "Name || \"\"),"
-            }
-          }
-        }
-      }
-    },
-    "tsx:      <DialogTitle>{Locale": {
-      "label(isAdd ? \"people": {
-        "bulk": {
-          "addToGroupTitle\" : \"people": {
-            "bulk": {
-              "removeFromGroupTitle\")}</DialogTitle>": "Remove from group title\")}</ dialog title>"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/people/components/bulk/PeopleBulkActions": {
-    "tsx:            <ListItemText>{Locale": {
-      "label(menuLabels[config": {
-        "field])}</ListItemText>": "Field])}</ list item text>"
-      }
-    },
-    "tsx:          title={Locale": {
-      "label(fieldConfig": {
-        "titleKey)}": "Title key)}"
-      }
-    }
-  },
-  "src/people/helpers/MembershipStatusOptions": {
-    "ts:    const label = Locale": {
-      "label(status": {
-        "labelKey);": "Label key);"
-      }
-    },
-    "ts:    label: Locale": {
-      "label(status": {
-        "labelKey)": "Label key)"
-      }
-    }
-  },
-  "src/serverAdmin/components/CommonsReviewDrawer": {
-    "tsx:const label = (key: string, fallback?: string) => Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "${key}`, fallback);": "${key}`, fallback);"
-        }
-      }
-    }
-  },
-  "src/serverAdmin/components/CommonsTab": {
-    "tsx:                    {RESOLUTIONS": {
-      "map((res) => <MenuItem key={res} value={res}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolution": {
-              "${res}`)}</MenuItem>)}": "${res}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:                    {RESOLVE_ACTIONS": {
-      "map((a) => <MenuItem key={a} value={a}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolveAction": {
-              "${a}`)}</MenuItem>)}": "${a}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:                  <TableCell>{r": {
-      "resolution ? Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolution": {
-              "${r": {
-                "resolution}`) : \"-\"}</TableCell>": "Resolution}`) : \"-\"}</ table cell>"
-              }
-            }
-          }
-        }
-      }
-    },
-    "tsx:                <TableCell><Chip size=\"small\" label={Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "assetStatus": {
-            "${a": {
-              "status}`)} /></TableCell>": "Status}`)} /></ table cell>"
-            }
-          }
-        }
-      }
-    },
-    "tsx:              {REJECT_REASONS": {
-      "map((r) => <MenuItem key={r} value={r}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "rejectReason": {
-              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:            {ASSET_STATUSES": {
-      "map((s) => <MenuItem key={s} value={s}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "assetStatus": {
-              "${s}`)}</MenuItem>)}": "${s}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:            {REMOVE_REASONS": {
-      "map((r) => <MenuItem key={r} value={r}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "removeReason": {
-              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:const confidenceLabel = (c?: Confidence | string) => (c ? Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "confidence": {
-            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
-          }
-        }
-      }
-    }
-  },
-  "src/serving/components/PlanTypeGroups": {
-    "tsx:            <Typography variant=\"body2\">{Locale": {
-      "label(`plans": {
-        "planTypeGroups": {
-          "timeFilter": {
-            "${filter}`)}</Typography>": "${filter}`)}</ typography>"
-          }
-        }
-      }
-    }
-  },
-  "src/serving/songs/SongSearchDialog": {
-    "tsx:const confidenceLabel = (c?: string) => (c ? Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "confidence": {
-            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
-          }
-        }
-      }
-    }
-  },
-  "src/settings/components/GivingSettingsEdit": {
-    "tsx:                {Locale": {
-      "label(descriptor": {
-        "webhookInstructionsKey || \"settings": {
-          "givingSettingsEdit": {
-            "kfWebhookInstructions\")} <code style={{ wordBreak: \"break-all\" }}>{webhookUrl}</code>": "Kf webhook instructions\")} <code style={{ word break: \"break-all\" }}>{webhook url}</code>"
-          }
-        }
-      }
-    },
-    "tsx:              {descriptor": {
-      "setupInstructionsKey ? Locale": {
-        "label(descriptor": {
-          "setupInstructionsKey) : \"\"}": "Setup instructions key) : \"\"}"
-        }
-      }
-    },
-    "tsx:    const privateLabel = Locale": {
-      "label(descriptor": {
-        "keyLabels": {
-          "private);": "Private);"
-        }
-      }
-    },
-    "tsx:    const publicLabel = Locale": {
-      "label(descriptor": {
-        "keyLabels": {
-          "public);": "Public);"
-        }
-      }
-    }
-  },
-  "src/settings/components/StatementFormatSettingsEdit": {
-    "tsx:            <TextField fullWidth label={Locale": {
-      "label(registrationLabelKey(format))} {": {
-        "": {
-          "": {
-            "register(\"statementRegistrationNumber\")} />": "Register(\"statement registration number\")} />"
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/A11yPanel": {
-    "tsx:                        <Chip size=\"small\" label={Locale": {
-      "label(RULE_LABEL_KEY[issue": {
-        "rule])} sx={{ mb: 0": {
-          "5, height: 20, fontSize: \"0": {
-            "68rem\" }} />": "68rem\" }} />"
-          }
-        }
-      }
-    },
-    "tsx:                      <Icon sx={{ mt: 0": {
-      "25, color: issue": {
-        "severity === \"error\" ? \"error": {
-          "main\" : \"warning": {
-            "main\" }} aria-label={Locale": {
-              "label(issue": {
-                "severity === \"error\" ? \"site": {
-                  "a11y": {
-                    "errorLabel\" : \"site": {
-                      "a11y": {
-                        "warningLabel\")}>": "Warning label\")}>"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/elements/ElementAdd": {
-    "tsx:        description: ui?": {
-      "description || (ui?": {
-        "descKey ? Locale": {
-          "label(ui": {
-            "descKey) : def": {
-              "label),": "Label),"
-            }
-          }
-        }
-      }
-    },
-    "tsx:        label: ui?": {
-      "label || (ui?": {
-        "labelKey ? Locale": {
-          "label(ui": {
-            "labelKey) : def": {
-              "label),": "Label),"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/templates/SectionTemplatePicker": {
-    "tsx:      <DialogTitle>{Locale": {
-      "label(props": {
-        "switchMode ? \"site": {
-          "sectionTemplates": {
-            "switchTitle\" : \"site": {
-              "sectionTemplates": {
-                "title\")}</DialogTitle>": "Title\")}</ dialog title>"
-              }
-            }
-          }
-        }
-      }
-    }
+    "title": "Dainos"
   },
   "stockPhotos": {
     "photoBy": "Nuotrauka",
@@ -5019,6 +5454,7 @@
       "addCondition": "Pridėti sąlygą",
       "addTrigger": "Pridėti paleidiklį",
       "conditions": "Tik jei",
+      "editTrigger": "Redaguoti trigerį",
       "event": "Kai tai vyksta",
       "field": "Laukas",
       "firstStep": "Pirmas žingsnis",
@@ -5031,6 +5467,7 @@
       "noTriggers": "Nėra sukonfigūruotų įvykių paleidiklių.",
       "oncePerSubject": "Tik vieną kartą kiekvienam asmeniui",
       "operator": "Operatorius",
+      "pauseAll": "Pristabdyti automatizaciją",
       "paused": "Pristabdyta",
       "recur_": "Recur_",
       "recurs": "Kartojasi",
@@ -5079,7 +5516,8 @@
       "title": "Mano kortelės"
     },
     "myWork": {
-      "subtitle": "Jūsų darbo eigos kortelės ir užduotys"
+      "subtitle": "Jūsų darbo eigos kortelės ir užduotys",
+      "title": "Mano darbai"
     },
     "newTask": {
       "assignPers": "Please assign this task to a person.",
@@ -5089,10 +5527,27 @@
       "associateW": "Associate with",
       "associateWithAria": "Susieti su",
       "newAssign": "New Assignment",
+      "saving": "Išsaugoma...",
       "taskNew": "New Task",
       "taskNotesAria": "Užduoties pastabos",
       "taskTitleAria": "Užduoties pavadinimas",
       "titleTask": "Please enter a title for this task."
+    },
+    "reminders": {
+      "channels": "Siųsti per",
+      "day1": "Likus 1 dienai",
+      "dayOf": "Tą pačią dieną",
+      "days3": "Likus 3 dienoms",
+      "days7": "Likus 7 dienoms",
+      "enable": "Siųsti priminimus apie šią užduotį",
+      "message": "Pranešimas",
+      "messageHint": "Neprivaloma. Palikite tuščią, kad būtų naudojamas numatytasis priminimo tekstas.",
+      "noDueDate": "Ši užduotis neturi termino, todėl priminimai nebus siunčiami, kol jis nebus nustatytas.",
+      "save": "Išsaugoti priminimus",
+      "saved": "Išsaugota",
+      "timeOfDay": "Paros laikas",
+      "title": "Priminimai",
+      "when": "Kada turėtų būti siunčiami priminimai?"
     },
     "requestedChanges": {
       "applied": "Changes applied",
@@ -5104,6 +5559,7 @@
     },
     "selectGroup": {
       "group": "Grupė",
+      "noResults": "Nerasta grupių, atitinkančių jūsų paiešką",
       "searchPrompt": "Search for a group to select",
       "selectGroupAria": "Pasirinkti grupę"
     },
@@ -5125,12 +5581,17 @@
     "taskPage": {
       "ago": "ago",
       "assign": "Assign",
+      "assigned": "Priskirta",
       "associate": "Associate",
+      "associated": "Susieta",
       "by": "by",
       "closed": "Closed",
+      "created": "Sukurta",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notSpec": "Nenurodyta",
       "open": "Open",
+      "opened": "Atverta",
       "unassigned": "Nepriskirta"
     },
     "tasksPage": {
@@ -5153,6 +5614,17 @@
       "taskDescription": "Aprašymas (neprivaloma)",
       "taskTitle": "Užduoties pavadinimas",
       "title": "Automatiniai veiksmai",
+      "type": {
+        "addNote": "Pridėti pastabą",
+        "addToGroup": "Pridėti į grupę",
+        "addToWorkflow": "Pridėti į darbo eigą",
+        "createTask": "Sukurti užduotį",
+        "delay": "Laukti",
+        "removeFromGroup": "Pašalinti iš grupės",
+        "sendEmail": "Siųsti el. laišką",
+        "setField": "Nustatyti lauką",
+        "webhook": "Kviesti webhook"
+      },
       "value": "Reikšmė",
       "webhookUrl": "Webhook URL (https)"
     },
@@ -5169,6 +5641,7 @@
     },
     "workflowCard": {
       "assign": "Priskirti",
+      "assignedTo": "Priskirta",
       "complete": "Baigti",
       "history": "Veikla",
       "outcome": "Rezultatas",
@@ -5190,6 +5663,7 @@
       "uncategorized": "Nekategorizuota"
     },
     "workflowEdit": {
+      "active": "Aktyvus",
       "confirmDelete": "Ar tikrai norite ištrinti šią darbo eigą?",
       "editWorkflow": "Redaguoti darbo eigą",
       "inactive": "Neaktyvus",
@@ -5222,6 +5696,8 @@
     },
     "workflowStepEdit": {
       "confirmDelete": "Ar tikrai norite ištrinti šį žingsnį?",
+      "defaultAssignee": "Numatytasis vykdytojas",
+      "dueDays": "Terminas (dienomis)",
       "dueDaysHelp": "Nustato terminą, kai kortelė patenka į šį žingsnį",
       "editStep": "Redaguoti žingsnį",
       "stepName": "Žingsnio pavadinimas"
