@@ -239,7 +239,42 @@ test.describe.serial("Rooms, resources & approvals", () => {
   test("approving the booking clears it from the inbox", async () => {
     const pendingRow = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: "Zacchaeus Event C" });
     await pendingRow.locator('[data-testid^="approve-booking-"]').click();
+    await expect(page.locator('[data-testid="approve-booking-dialog"]')).toBeVisible();
+    await expect(page.locator('[data-testid="approve-booking-publish"] input')).not.toBeChecked();
+    await page.locator('[data-testid="approve-booking-confirm"]').click();
     await expect(page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: "Zacchaeus Event C" })).toHaveCount(0, { timeout: 15000 });
+  });
+
+  test("approving a private booking with publish puts it on the chosen curated calendar", async () => {
+    await navigateToAvailability(page);
+    await page.locator('[data-testid="availability-book-button"]').click();
+    await selectOption(page, "new-event-group-select", APPROVAL_GROUP);
+    await page.locator('[data-testid="new-event-title-input"] input').fill("Zacchaeus Event D");
+    const start = new Date(eventStart);
+    start.setDate(start.getDate() + 2);
+    const end = new Date(eventEnd);
+    end.setDate(end.getDate() + 2);
+    await page.locator('[data-testid="new-event-start-input"] input').fill(toInput(start));
+    await page.locator('[data-testid="new-event-end-input"] input').fill(toInput(end));
+    await selectOption(page, "new-event-visibility-select", "Private");
+    await selectOption(page, "new-event-rooms-select", RESTRICTED_ROOM, true);
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+
+    await navigateToApprovals(page);
+    const pendingRow = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: "Zacchaeus Event D" });
+    await expect(pendingRow).toBeVisible({ timeout: 15000 });
+    await pendingRow.locator('[data-testid^="approve-booking-"]').click();
+    await expect(page.locator('[data-testid="approve-booking-dialog"]')).toBeVisible();
+    await page.locator('[data-testid="approve-booking-publish"] input').check();
+    await selectOption(page, "approve-booking-calendar", CALENDAR);
+    await page.locator('[data-testid="approve-booking-confirm"]').click();
+    await expect(page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: "Zacchaeus Event D" })).toHaveCount(0, { timeout: 15000 });
+
+    await navigateToCalendars(page);
+    await page.locator("table tbody tr").filter({ hasText: CALENDAR }).first().locator("a").first().click();
+    await page.waitForURL(/\/calendars\/[\w-]+/, { timeout: 10000 });
+    await expect(await findAvailabilityBlock(page, "Zacchaeus Event D")).toBeVisible();
   });
 
   test("clicking an availability block opens the edit modal pre-populated", async () => {
