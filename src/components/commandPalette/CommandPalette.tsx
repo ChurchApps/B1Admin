@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@mui/material";
 import { CreatePerson } from "../CreatePerson";
+import { QuickSetupModal, type WizardType } from "../../dashboard/components/QuickSetupModal";
 import "./CommandPalette.css";
 
 interface PaletteItem { n: string; a?: string[]; t: "do" | "person" | "group" | "plan" | "fund" | "jump"; u: string }
@@ -30,6 +31,7 @@ export const CommandPalette: React.FC = () => {
   const [query, setQuery] = React.useState("");
   const [active, setActive] = React.useState(0);
   const [addPerson, setAddPerson] = React.useState(false);
+  const [wizard, setWizard] = React.useState<WizardType | null>(null);
   const [slot, setSlot] = React.useState<HTMLElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -68,6 +70,7 @@ export const CommandPalette: React.FC = () => {
   const run = React.useCallback((item: PaletteItem) => {
     close();
     if (item.u === "#addPerson") setAddPerson(true);
+    else if (item.u.startsWith("#wizard:")) setWizard(item.u.slice(8) as WizardType);
     else navigate(item.u);
   }, [close, navigate]);
 
@@ -121,6 +124,7 @@ export const CommandPalette: React.FC = () => {
       {addPerson && (
         <CreatePerson showInModal onClose={() => setAddPerson(false)} onCreate={(person) => { setAddPerson(false); navigate(person?.id ? "/people/" + person.id : "/people"); }} />
       )}
+      {wizard && <QuickSetupModal wizardType={wizard} open onClose={() => setWizard(null)} onComplete={(url) => { setWizard(null); navigate(url); }} />}
     </>
   );
 };
