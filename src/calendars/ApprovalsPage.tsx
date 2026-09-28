@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
-import { Permissions, type EventInterface } from "@churchapps/helpers";
-import { Box, Card, Chip, Grid, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { Permissions, type CuratedCalendarInterface, type EventInterface } from "@churchapps/helpers";
+import { Box, Button, Card, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, Grid, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { Check as ApproveIcon, Close as RejectIcon, EventAvailable as ApprovalsIcon, WarningAmber as ConflictIcon } from "@mui/icons-material";
 import { PermissionDenied } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
@@ -16,9 +16,14 @@ export const ApprovalsPage = () => {
   const [events, setEvents] = useState<EventInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [snack, setSnack] = useState("");
+  const [approvingId, setApprovingId] = useState("");
+  const [publish, setPublish] = useState(false);
+  const [curatedCalendarId, setCuratedCalendarId] = useState("");
+  const [curatedCalendars, setCuratedCalendars] = useState<CuratedCalendarInterface[] | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const canResolve = UserHelper.checkAccess(Permissions.contentApi.content.edit) || UserHelper.checkAccess(calendarsAdmin as any);
+  const canEditContent = UserHelper.checkAccess(Permissions.contentApi.content.edit);
+  const canResolve = canEditContent || UserHelper.checkAccess(calendarsAdmin as any);
 
   const loadData = useCallback(() => {
     setLoading(true);
@@ -48,6 +53,20 @@ export const ApprovalsPage = () => {
   const resolveBooking = async (id: string, action: "approve" | "reject") => {
     if (!(await confirmReject(action))) return;
     ApiHelper.post("/eventBookings/" + id + "/" + action, {}, "ContentApi").then(() => { notifyResolved(action); loadData(); });
+  };
+
+  const openApproveBooking = (id: string) => {
+    setPublish(false);
+    setCuratedCalendarId("");
+    setApprovingId(id);
+    if (canEditContent && curatedCalendars === null) ApiHelper.get("/curatedCalendars", "ContentApi").then((data: CuratedCalendarInterface[]) => setCuratedCalendars(data || []));
+  };
+
+  const approveBooking = () => {
+    const id = approvingId;
+    setApprovingId("");
+    const body = { publish, curatedCalendarId: publish ? curatedCalendarId || undefined : undefined };
+    ApiHelper.post("/eventBookings/" + id + "/approve", body, "ContentApi").then(() => { notifyResolved("approve"); loadData(); });
   };
 
   const resolveEvent = async (id: string, action: "approve" | "reject") => {
@@ -109,7 +128,7 @@ export const ApprovalsPage = () => {
                           </TableCell>
                           <TableCell align="right" className="rowActions">
                             <Stack direction="row" spacing={1} justifyContent="flex-end">
-                              <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => resolveBooking(b.id || "", "approve")} data-testid={`approve-booking-${b.id}`} />
+                              <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => openApproveBooking(b.id || "")} data-testid={`approve-booking-${b.id}`} />
                               <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveBooking(b.id || "", "reject")} data-testid={`reject-booking-${b.id}`} />
                             </Stack>
                           </TableCell>
@@ -166,6 +185,26 @@ export const ApprovalsPage = () => {
           </Grid>
         )}
       </Box>
+      <Dialog open={!!approvingId} onClose={() => setApprovingId("")} fullWidth maxWidth="xs" data-testid="approve-booking-dialog">
+        <DialogTitle>{Locale.label("calendars.approvals.approveBookingTitle")}</DialogTitle>
+        <DialogContent>
+          <FormControlLabel
+            control={<Checkbox checked={publish} onChange={(e) => setPublish(e.target.checked)} data-testid="approve-booking-publish" />}
+            label={Locale.label("calendars.approvals.publishToCalendar")}
+          />
+          <FormHelperText sx={{ mt: 0, mb: 2 }}>{Locale.label("calendars.approvals.publishHelp")}</FormHelperText>
+          {publish && canEditContent && (
+            <TextField fullWidth select label={Locale.label("calendars.approvals.curatedCalendar")} value={curatedCalendarId} onChange={(e) => setCuratedCalendarId(e.target.value)} data-testid="approve-booking-calendar" SelectProps={{ displayEmpty: true }} InputLabelProps={{ shrink: true }}>
+              <MenuItem value="">{Locale.label("calendars.approvals.none")}</MenuItem>
+              {(curatedCalendars || []).map((c) => <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>)}
+            </TextField>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={() => setApprovingId("")} data-testid="approve-booking-cancel">{Locale.label("common.cancel")}</Button>
+          <Button variant="contained" onClick={approveBooking} data-testid="approve-booking-confirm">{Locale.label("calendars.approvals.approve")}</Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar
         open={!!snack}
         onClose={() => setSnack("")}
