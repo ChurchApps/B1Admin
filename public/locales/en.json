@@ -3345,6 +3345,8 @@
       "lastApplied": "Last Applied",
       "loadError": "Unable to load migration status.",
       "module": "Module",
+      "noHistory": "No history",
+      "noHistoryNote": "No migration history for: {modules}. Their tables were created some other way, so this page will not run anything for them. Record which migrations are already applied (yarn migrate) before running any.",
       "noneApplied": "nothing applied",
       "nothingPending": "Every module is up to date.",
       "pending": "Pending",

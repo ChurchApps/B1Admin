@@ -9,6 +9,7 @@ interface ModuleStatus {
   applied: number;
   pending: string[];
   lastApplied?: { name: string; at: string };
+  noHistory?: boolean;
   error?: string;
 }
 
@@ -32,7 +33,10 @@ export const MigrationsTab = () => {
   const [running, setRunning] = React.useState<string | null>(null);
   const [runs, setRuns] = React.useState<ModuleRun[]>([]);
 
-  const pendingModules = (data?.modules || []).filter((m) => m.pending.length > 0);
+  // A module with no migration history is never run from here: its "pending" list is every
+  // migration since the initial schema, and the Api refuses it too.
+  const pendingModules = (data?.modules || []).filter((m) => m.pending.length > 0 && !m.noHistory && !m.error);
+  const untracked = (data?.modules || []).filter((m) => m.noHistory);
   const pendingCount = pendingModules.reduce((n, m) => n + m.pending.length, 0);
 
   const runAll = async () => {
@@ -60,6 +64,7 @@ export const MigrationsTab = () => {
 
   const statusCell = (m: ModuleStatus) => {
     if (m.error) return <Chip label={Locale.label("serverAdmin.migrationsTab.error")} size="small" color="error" />;
+    if (m.noHistory) return <Chip label={Locale.label("serverAdmin.migrationsTab.noHistory")} size="small" color="default" variant="outlined" />;
     if (m.pending.length === 0) return <Chip label={Locale.label("serverAdmin.migrationsTab.upToDate")} size="small" color="success" />;
     return <Chip label={Locale.label("serverAdmin.migrationsTab.pendingCount").replace("{count}", String(m.pending.length))} size="small" color="warning" />;
   };
@@ -91,7 +96,7 @@ export const MigrationsTab = () => {
                     <TableCell>{m.module}</TableCell>
                     <TableCell>{statusCell(m)}</TableCell>
                     <TableCell>{m.applied}</TableCell>
-                    <TableCell sx={{ fontFamily: "monospace", fontSize: 12 }}>{m.error || m.pending.join(", ") || "—"}</TableCell>
+                    <TableCell sx={{ fontFamily: "monospace", fontSize: 12 }}>{m.error || (m.noHistory ? "—" : m.pending.join(", ")) || "—"}</TableCell>
                     <TableCell sx={{ color: "text.secondary" }}>
                       {m.lastApplied ? m.lastApplied.name + " · " + DateHelper.prettyDateTime(new Date(m.lastApplied.at)) : "—"}
                     </TableCell>
@@ -100,6 +105,11 @@ export const MigrationsTab = () => {
               </TableBody>
             </Table>
           </Paper>
+          {untracked.length > 0 && (
+            <Alert severity="warning" data-testid="migrations-no-history">
+              {Locale.label("serverAdmin.migrationsTab.noHistoryNote").replace("{modules}", untracked.map((m) => m.module).join(", "))}
+            </Alert>
+          )}
           <Stack direction="row" spacing={2} alignItems="center">
             <Button variant="contained" color="warning" disabled={pendingCount === 0 || !!running} onClick={runAll} data-testid="run-migrations-button">
               {running ? Locale.label("serverAdmin.migrationsTab.running").replace("{module}", running) : Locale.label("serverAdmin.migrationsTab.run")}
