@@ -274,7 +274,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
             </Stack>
           </Stack>
         </Box>
-        <Box>
+        {/* Card clips overflow; one column per question needs its own horizontal scroll. */}
+        <Box className="form-submissions-scroll" sx={{ overflowX: "auto" }}>
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow key="header">{tableHeader}</TableRow>
@@ -296,6 +297,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           <style>{`
             @media print {
               .no-print, #display-box-actions { display: none !important; }
+              .form-submissions-scroll { overflow: visible !important; }
+              .form-submissions-scroll table { min-width: 0 !important; }
             }
           `}</style>
           <DisplayBox headerText={Locale.label("forms.formSubmissions.subSum")} headerIcon="group" editContent={editLinks}>
