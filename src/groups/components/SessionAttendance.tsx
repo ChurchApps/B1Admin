@@ -1,20 +1,21 @@
 import React, { useCallback, memo, useMemo } from "react";
-import { type GroupInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupMemberInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { ApiHelper, ArrayHelper, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
-import { Avatar, Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
+import { Alert, Avatar, Box, Button, Checkbox, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton } from "../../components/ui";
-import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   group: GroupInterface;
   session: SessionInterface | null;
   addedPerson?: PersonInterface;
   addedCallback?: (personId: string) => void;
-  setHiddenPeople?: (peopleIds: string[]) => void;
+  onSaved?: () => void;
 }
+
+type AttendanceMap = Record<string, boolean>;
 
 const checkinTypeChip = (type?: string) => {
   if (type === "volunteer") return <Chip label={Locale.label("attendance.checkinType.volunteer")} color="info" size="small" variant="outlined" data-testid="checkin-type-chip" />;
@@ -22,24 +23,67 @@ const checkinTypeChip = (type?: string) => {
   return null;
 };
 
+// Group member payloads only carry name.display, so fall back to its last word for the surname.
+const sortKey = (p?: PersonInterface) => {
+  const display = (p?.name?.display || "").trim();
+  const last = (p?.name?.last || display.split(" ").pop() || "").toLowerCase();
+  const first = (p?.name?.first || display).toLowerCase();
+  return `${last}|${first}`;
+};
+
+const toDateParam = (date?: Date | string) => {
+  if (!date) return "";
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toISOString().split("T")[0];
+};
+
 export const SessionAttendance: React.FC<Props> = memo((props) => {
-  const { group, session, addedPerson, addedCallback, setHiddenPeople } = props;
+  const { group, session, addedPerson, addedCallback, onSaved } = props;
+  const [members, setMembers] = React.useState<GroupMemberInterface[]>([]);
   const [visitSessions, setVisitSessions] = React.useState<VisitSessionInterface[]>([]);
   const [people, setPeople] = React.useState<PersonInterface[]>([]);
+  const [extraPeople, setExtraPeople] = React.useState<PersonInterface[]>([]);
+  const [attendance, setAttendance] = React.useState<AttendanceMap>({});
+  const [originalAttendance, setOriginalAttendance] = React.useState<AttendanceMap>({});
+  const [saving, setSaving] = React.useState(false);
+  const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
   const [downloadData, setDownloadData] = React.useState<any[]>([]);
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
-  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const loadSeqRef = React.useRef(0);
+
+  const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit), []);
+
+  React.useEffect(() => {
+    if (!group?.id) return;
+    let cancelled = false;
+    ApiHelper.get("/groupmembers?groupId=" + group.id, "MembershipApi").then((data: GroupMemberInterface[]) => {
+      if (!cancelled) setMembers(data || []);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [group?.id]);
 
   const loadAttendance = useCallback(() => {
     const seq = ++loadSeqRef.current;
+    setExtraPeople([]);
+    setMessage(null);
     if (session?.id) {
       ApiHelper.get("/visitsessions?sessionId=" + session.id, "AttendanceApi").then((vs: VisitSessionInterface[]) => {
         if (seq !== loadSeqRef.current) return;
         setVisitSessions(vs);
-        const map: Record<string, string> = {};
-        vs.forEach((v) => { if (v.visitId && v.visit?.checkinType) map[v.visitId] = v.visit.checkinType; });
-        setCheckinTypes(map);
+        const types: Record<string, string> = {};
+        const present: AttendanceMap = {};
+        vs.forEach((v) => {
+          const personId = v.visit?.personId;
+          if (!personId) return;
+          present[personId] = true;
+          if (v.visit?.checkinType) types[personId] = v.visit.checkinType;
+        });
+        setCheckinTypes(types);
+        setAttendance(present);
+        setOriginalAttendance(present);
         const peopleIds = ArrayHelper.getUniqueValues(vs, "visit.personId");
         if (peopleIds.length > 0) {
           ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: any) => {
@@ -48,77 +92,21 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         } else {
           setPeople([]);
         }
-        setHiddenPeople?.(peopleIds);
       });
     } else {
       setVisitSessions([]);
       setPeople([]);
       setCheckinTypes({});
-      setHiddenPeople?.([]);
+      setAttendance({});
+      setOriginalAttendance({});
     }
-  }, [session?.id, setHiddenPeople]);
+  }, [session?.id]);
 
   const loadDownloadData = useCallback(() => {
     if (session?.id) {
       ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: any) => setDownloadData(data));
     }
   }, [session?.id]);
-
-  const handleRemove = useCallback(
-    async (vs: VisitSessionInterface) => {
-      if (!session?.id) return;
-      if (!(await confirm(Locale.label("groups.groupSessions.confirmRemove")))) return;
-      ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + vs.visit?.personId, "AttendanceApi").then(() => {
-        loadAttendance();
-      });
-    },
-    [session?.id, loadAttendance, confirm]
-  );
-
-  const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit), []);
-
-  const tableRows = useMemo(() => {
-    const sortKey = (p?: PersonInterface) => {
-      const last = (p?.name?.last || "").toLowerCase();
-      const first = (p?.name?.first || p?.name?.display || "").toLowerCase();
-      return `${last}|${first}`;
-    };
-    const rows = visitSessions
-      .map((vs) => ({ vs, person: ArrayHelper.getOne(people, "id", vs.visit?.personId) as PersonInterface | undefined }))
-      .filter((r) => !!r.person)
-      .sort((a, b) => sortKey(a.person).localeCompare(sortKey(b.person)));
-
-    return rows.map(({ vs, person }) => {
-      const editLink = canEdit ? (
-        <AppIconButton
-          intent="remove"
-          label={Locale.label("common.remove")}
-          icon={<PersonRemoveIcon />}
-          onClick={() => handleRemove(vs)}
-          data-testid={`remove-session-visitor-button-${vs.id}`}
-        />
-      ) : (
-        <></>
-      );
-      const checkinType = checkinTypes[vs.visitId || ""];
-      return (
-        <TableRow key={vs.id}>
-          <TableCell>
-            <Avatar src={PersonHelper.getPhotoUrl(person!)} sx={{ width: 48, height: 48 }} />
-          </TableCell>
-          <TableCell>
-            <Link className="personName" to={"/people/" + vs.visit?.personId}>
-              {person?.name?.display}
-            </Link>
-          </TableCell>
-          <TableCell>{checkinTypeChip(checkinType)}</TableCell>
-          <TableCell align="right" className="rowActions">{editLink}</TableCell>
-        </TableRow>
-      );
-    });
-  }, [visitSessions, people, canEdit, handleRemove, checkinTypes]);
-
-  const volunteerCount = useMemo(() => visitSessions.filter((vs) => checkinTypes[vs.visitId || ""] === "volunteer").length, [visitSessions, checkinTypes]);
 
   React.useEffect(() => {
     loadAttendance();
@@ -128,16 +116,89 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     loadDownloadData();
   }, [loadDownloadData]);
 
+  // Full roster: every group member, plus anyone already marked present or added
+  // from the search who isn't a member (visitors).
+  const roster = useMemo(() => {
+    const byId = new Map<string, PersonInterface>();
+    members.forEach((gm) => { if (gm.person?.id) byId.set(gm.person.id, gm.person); });
+    const memberIds = new Set(byId.keys());
+    [...people, ...extraPeople].forEach((p) => { if (p?.id && !byId.has(p.id)) byId.set(p.id, p); });
+    return Array.from(byId.values())
+      .map((person) => ({ person, isMember: memberIds.has(person.id!) }))
+      .sort((a, b) => sortKey(a.person).localeCompare(sortKey(b.person)));
+  }, [members, people, extraPeople]);
+
+  // A person picked from the search is ticked locally; the Save button records it.
   React.useEffect(() => {
     if (!addedPerson?.id) return;
-    if (session?.id) {
-      const v = { checkinTime: new Date(), personId: addedPerson.id, visitSessions: [{ sessionId: session.id }] } as VisitInterface;
-      ApiHelper.post("/visitsessions/log", v, "AttendanceApi").then(() => {
-        loadAttendance();
-      });
+    const person = addedPerson;
+    setExtraPeople((prev) => (prev.some((p) => p.id === person.id) ? prev : [...prev, person]));
+    setAttendance((prev) => ({ ...prev, [person.id!]: true }));
+    addedCallback?.(person.id!);
+  }, [addedPerson, addedCallback]);
+
+  const toggle = useCallback((personId: string) => {
+    setAttendance((prev) => ({ ...prev, [personId]: !prev[personId] }));
+  }, []);
+
+  const selectAll = useCallback(() => {
+    setAttendance((prev) => {
+      const next = { ...prev };
+      roster.forEach((r) => { next[r.person.id!] = true; });
+      return next;
+    });
+  }, [roster]);
+
+  const selectNone = useCallback(() => setAttendance({}), []);
+
+  const changes = useMemo(() => {
+    const toAdd: string[] = [];
+    const toRemove: string[] = [];
+    const ids = new Set([...Object.keys(attendance), ...Object.keys(originalAttendance)]);
+    ids.forEach((id) => {
+      const now = !!attendance[id];
+      const was = !!originalAttendance[id];
+      if (now && !was) toAdd.push(id);
+      else if (!now && was) toRemove.push(id);
+    });
+    return { toAdd, toRemove };
+  }, [attendance, originalAttendance]);
+
+  const hasChanges = changes.toAdd.length > 0 || changes.toRemove.length > 0;
+  const presentCount = roster.filter((r) => attendance[r.person.id!]).length;
+
+  const handleSave = useCallback(async () => {
+    if (!session?.id) return;
+    setSaving(true);
+    setMessage(null);
+    try {
+      for (const personId of changes.toAdd) {
+        const v = { checkinTime: new Date(), personId, visitSessions: [{ sessionId: session.id }] } as VisitInterface;
+        await ApiHelper.post("/visitsessions/log", v, "AttendanceApi");
+      }
+      for (const personId of changes.toRemove) {
+        await ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + personId, "AttendanceApi");
+      }
+      loadAttendance();
+      loadDownloadData();
+      onSaved?.();
+      setMessage({ type: "success", text: Locale.label("groups.groupSessions.attendanceSaved") });
+    } catch {
+      setMessage({ type: "error", text: Locale.label("groups.groupSessions.attendanceSaveFailed") });
+    } finally {
+      setSaving(false);
     }
-    addedCallback?.(addedPerson.id);
-  }, [addedPerson?.id, session?.id, loadAttendance, addedCallback]);
+  }, [session?.id, changes, loadAttendance, loadDownloadData, onSaved]);
+
+  const openRoster = useCallback(
+    (query: string) => {
+      const date = toDateParam(session?.sessionDate);
+      window.open("/groups/print-roster?" + query + (date ? "&date=" + date : "") + "&autoprint=1", "_blank");
+    },
+    [session?.sessionDate]
+  );
+
+  const volunteerCount = useMemo(() => Object.values(checkinTypes).filter((t) => t === "volunteer").length, [checkinTypes]);
 
   const customHeaders = [
     { label: "id", key: "id" },
@@ -158,9 +219,38 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     );
   }
 
+  const tableRows = roster.map(({ person, isMember }) => {
+    const personId = person.id!;
+    const checked = !!attendance[personId];
+    return (
+      <TableRow key={personId} data-testid="session-roster-row">
+        <TableCell padding="checkbox">
+          <Checkbox
+            checked={checked}
+            disabled={!canEdit || saving}
+            onChange={() => toggle(personId)}
+            inputProps={{ "aria-label": person.name?.display || "" }}
+            data-testid={`attendance-checkbox-${personId}`}
+          />
+        </TableCell>
+        <TableCell>
+          <Avatar src={PersonHelper.getPhotoUrl(person)} sx={{ width: 40, height: 40 }} />
+        </TableCell>
+        <TableCell>
+          <Link className="personName" to={"/people/" + personId}>
+            {person.name?.display}
+          </Link>
+        </TableCell>
+        <TableCell>
+          {checkinTypeChip(checkinTypes[personId])}
+          {!isMember && !checkinTypes[personId] && <Chip label={Locale.label("attendance.checkinType.guest")} size="small" variant="outlined" />}
+        </TableCell>
+      </TableRow>
+    );
+  });
+
   return (
     <Paper sx={{ p: 2 }}>
-      {ConfirmDialogElement}
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 2 }}>
         <Box>
           <Stack direction="row" spacing={1} alignItems="center">
@@ -175,27 +265,58 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
             {(session as any).serviceTime?.name && ` • ${(session as any).serviceTime.name}`}
           </Typography>
         </Box>
-        {downloadData && downloadData.length > 0 && (
-          <ExportButton data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />
-        )}
+        <Stack direction="row" spacing={1} alignItems="center">
+          <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id)} data-testid="session-print-roster-button" />
+          {session.serviceTimeId && (
+            <Button size="small" onClick={() => openRoster("serviceTimeId=" + session.serviceTimeId)} data-testid="session-print-all-rosters-button">
+              {Locale.label("groups.printRoster.printAll")}
+            </Button>
+          )}
+          {downloadData && downloadData.length > 0 && (
+            <ExportButton data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />
+          )}
+        </Stack>
       </Stack>
 
-      {visitSessions.length === 0 ? (
+      {roster.length === 0 ? (
         <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 4 }}>
           {Locale.label("groups.groupSessions.noAttendance")}
         </Typography>
       ) : (
-        <Table id="groupMemberTable">
-          <TableHead>
-            <TableRow>
-              <th></th>
-              <th>{Locale.label("common.name")}</th>
-              <th>{Locale.label("attendance.checkinType.header")}</th>
-              <th></th>
-            </TableRow>
-          </TableHead>
-          <TableBody>{tableRows}</TableBody>
-        </Table>
+        <>
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+            <Typography variant="body2" sx={{ flexGrow: 1 }} data-testid="session-present-count">
+              {Locale.label("groups.groupSessions.presentOf").replace("{present}", String(presentCount)).replace("{total}", String(roster.length))}
+            </Typography>
+            {canEdit && (
+              <>
+                <Button size="small" onClick={selectAll} disabled={saving} data-testid="attendance-select-all">{Locale.label("groups.groupSessions.selectAll")}</Button>
+                <Button size="small" onClick={selectNone} disabled={saving} data-testid="attendance-select-none">{Locale.label("groups.groupSessions.selectNone")}</Button>
+              </>
+            )}
+          </Stack>
+          <Table id="groupMemberTable" size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell padding="checkbox" />
+                <TableCell />
+                <TableCell>{Locale.label("common.name")}</TableCell>
+                <TableCell>{Locale.label("attendance.checkinType.header")}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{tableRows}</TableBody>
+          </Table>
+        </>
+      )}
+
+      {message && <Alert severity={message.type} sx={{ mt: 2 }} data-testid="attendance-save-message">{message.text}</Alert>}
+
+      {canEdit && roster.length > 0 && (
+        <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
+          <Button variant="contained" onClick={handleSave} disabled={!hasChanges || saving} data-testid="save-attendance-button">
+            {saving ? Locale.label("common.saving") : Locale.label("groups.groupSessions.saveAttendance")}
+          </Button>
+        </Stack>
       )}
     </Paper>
   );

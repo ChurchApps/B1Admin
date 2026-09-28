@@ -6,7 +6,6 @@ import { Grid } from "@mui/material";
 import { PersonAddAdvanced } from "../../people/components/PersonAddAdvanced";
 import { GroupSessionsList } from "./GroupSessionsList";
 import { SessionAttendance } from "./SessionAttendance";
-import { MembersAdd } from "./MembersAdd";
 import { SessionEdit } from "./SessionEdit";
 
 interface Props {
@@ -20,7 +19,6 @@ export const GroupSessionsTab = (props: Props) => {
   const [editSessionVisible, setEditSessionVisible] = React.useState(false);
   const [editingSession, setEditingSession] = React.useState<SessionInterface | null>(null);
   const [selectedSession, setSelectedSession] = React.useState<SessionInterface | null>(null);
-  const [hiddenPeople, setHiddenPeople] = React.useState([] as string[]);
 
   const addPerson = React.useCallback((p: PersonInterface) => setAddedPerson(p), []);
 
@@ -45,6 +43,10 @@ export const GroupSessionsTab = (props: Props) => {
     setAddSessionVisible(false);
   }, []);
 
+  const handleAttendanceSaved = React.useCallback(() => {
+    if (selectedSession) setAddedSession({ ...selectedSession, _updateTimestamp: Date.now() } as SessionInterface);
+  }, [selectedSession]);
+
   const handleShowAddSession = React.useCallback(() => {
     setAddSessionVisible(true);
     setEditSessionVisible(false);
@@ -62,23 +64,20 @@ export const GroupSessionsTab = (props: Props) => {
           addedSession={addedSession}
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
+      <Grid size={{ xs: 12, md: 5 }}>
         <SessionAttendance
           group={props.group}
           session={selectedSession}
           addedPerson={addedPerson}
           addedCallback={handleAddedCallback}
-          setHiddenPeople={setHiddenPeople}
+          onSaved={handleAttendanceSaved}
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
+      <Grid size={{ xs: 12, md: 3 }}>
         {addSessionVisible && <SessionEdit key="sessionAdd" group={props.group} updatedFunction={handleSessionAdd} />}
         {editSessionVisible && editingSession && <SessionEdit key="sessionEdit" group={props.group} session={editingSession} updatedFunction={handleSessionUpdated} />}
         {!addSessionVisible && !editSessionVisible && UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
-          <>
-            <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
-            <MembersAdd key="membersAdd" group={props.group} addFunction={addPerson} hiddenPeople={hiddenPeople} />
-          </>
+          <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
         )}
       </Grid>
     </Grid>
