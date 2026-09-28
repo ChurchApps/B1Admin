@@ -424,6 +424,7 @@ export const Assignment = (props: Props) => {
               assignment={assignment}
               peopleNeeded={peopleNeededForPosition}
               updatedFunction={handleAssignmentUpdate}
+              assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId)}
             />
           )}
 

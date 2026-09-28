@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, Grid, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
@@ -82,11 +82,12 @@ export const PositionEdit = (props: Props) => {
     }
   };
 
-  const getGroupOptions = () => {
-    return groups.map((g, i) => (
+  const getGroupOptions = () => [
+    <MenuItem key="none" value="">{Locale.label("plans.positionEdit.noGroup")}</MenuItem>,
+    ...groups.map((g, i) => (
       <MenuItem key={i} value={g.id}>{g.name}</MenuItem>
-    ));
-  };
+    ))
+  ];
 
   const onValid = (values: AnyRecord) => {
     const p: PositionInterface = {
@@ -152,6 +153,7 @@ export const PositionEdit = (props: Props) => {
               {getGroupOptions()}
             </Select>
           )} />
+          <FormHelperText>{Locale.label("plans.positionEdit.volGroupHelper")}</FormHelperText>
         </FormControl>
         <FormControlLabel
           control={<Checkbox checked={allowSelfSignup} onChange={(ev) => setAllowSelfSignup(ev.target.checked)} />}

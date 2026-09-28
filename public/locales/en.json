@@ -2207,7 +2207,8 @@
       "confirmDelete": "Are you sure you wish to remove this volunteer's assignment?",
       "done": "Done",
       "editAssign": "Edit Assignment",
-      "noMem": "No group members found."
+      "noMem": "No group members found.",
+      "searchAnyone": "Search for anyone in your church"
     },
     "browseGrid": {
       "addOn": "Add-On"
@@ -2512,10 +2513,12 @@
       "description": "Description",
       "descriptionHelper": "Shown to volunteers when browsing signup opportunities",
       "nameReq": "Name is required",
+      "noGroup": "None",
       "posAdd": "Add a Position",
       "posEdit": "Edit Position",
       "volCount": "Volunteer Count",
-      "volGroup": "Volunteer Group"
+      "volGroup": "Volunteer Group",
+      "volGroupHelper": "Leave empty to assign anyone in your church directly"
     },
     "positionList": {
       "load": "Loading...",
