@@ -48,6 +48,7 @@ const DevicesPage = React.lazy(() => import("./profile/DevicesPage").then((modul
 const PrintDonationPage = React.lazy(() => import("./donations/PrintDonationPage").then((module) => ({ default: module.PrintDonationPage })));
 const PrintAllStatementsPage = React.lazy(() => import("./donations/PrintAllStatementsPage").then((module) => ({ default: module.PrintAllStatementsPage })));
 const PrintDirectoryPage = React.lazy(() => import("./people/PrintDirectoryPage").then((module) => ({ default: module.PrintDirectoryPage })));
+const PrintRosterPage = React.lazy(() => import("./groups/PrintRosterPage").then((module) => ({ default: module.PrintRosterPage })));
 const BatchGivingStatementsPage = React.lazy(() => import("./donations/BatchGivingStatementsPage").then((module) => ({ default: module.BatchGivingStatementsPage })));
 const OAuthPage = React.lazy(() => import("./OAuth").then((module) => ({ default: module.OAuthPage })));
 const DeviceAuthPage = React.lazy(() => import("./device/DeviceAuthPage").then((module) => ({ default: module.DeviceAuthPage })));
@@ -205,6 +206,14 @@ export const Authenticated: React.FC = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <PrintDirectoryPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/groups/print-roster"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <PrintRosterPage />
             </Suspense>
           }
         />
