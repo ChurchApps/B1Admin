@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, Stack, Button, Typography, Chip } from "@mui/material";
 import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader, UserHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Loading, UserHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { EmptyState, HeaderPrimaryButton } from "../components/ui";
+import { EmptyState } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
+import { SettingsHeader } from "./components/SettingsHeader";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 
 export interface EmailTemplateInterface {
@@ -54,13 +55,13 @@ export const EmailTemplatesPage: React.FC = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<EmailIcon />} title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
-        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleNew}>
+      <SettingsHeader backTo="/settings" title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>
           {Locale.label("settings.emailTemplatesPage.newTemplate")}
-        </HeaderPrimaryButton>
-      </PageHeader>
+        </Button>
+      </SettingsHeader>
 
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: { xs: 2, md: 4 } }}>
         {editTemplate !== null && (
           <Box sx={{ mb: 3 }}>
             <EmailTemplateEdit template={editTemplate} onSave={handleSaved} onCancel={() => setEditTemplate(null)} onDelete={editTemplate.id ? async () => { if (await handleDelete(editTemplate)) setEditTemplate(null); } : undefined} />

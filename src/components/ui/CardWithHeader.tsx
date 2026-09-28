@@ -12,16 +12,16 @@ interface CardWithHeaderProps {
 
 export const CardWithHeader: React.FC<CardWithHeaderProps> = ({ title, icon, actions, count, children }) => (
   <Card>
-    <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+    <Box className="om-head" sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Stack direction="row" spacing={1} alignItems="center">
-          {icon}
-          <Typography variant="h6">{title}</Typography>
+          {icon && <Box className="om-icon" sx={{ display: "flex" }}>{icon}</Box>}
+          <Typography className="om-title" variant="h6">{title}</Typography>
           {count !== undefined && count > 0 && <CountChip count={count} />}
         </Stack>
         {actions}
       </Stack>
     </Box>
-    <Box sx={{ p: 2 }}>{children}</Box>
+    <Box className="om-body" sx={{ p: 2 }}>{children}</Box>
   </Card>
 );

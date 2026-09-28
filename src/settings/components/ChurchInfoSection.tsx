@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
-import { Box, Divider, Grid, Stack, TextField, Typography, MenuItem } from "@mui/material";
+import { Grid, TextField, Typography, MenuItem } from "@mui/material";
+import { EditVerb, SettingsRow } from "./SettingsPage";
 
 type AnyRecord = Record<string, any>;
 
@@ -22,16 +23,6 @@ interface Props {
   church: ChurchInterface;
   onSaved: () => void;
 }
-
-const DisplayRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
-  <>
-    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ py: 1.5 }}>
-      <Typography variant="body2" color="text.secondary">{label}</Typography>
-      <Typography variant="body2" sx={{ fontWeight: 500, textAlign: "right" }}>{value || "—"}</Typography>
-    </Stack>
-    <Divider />
-  </>
-);
 
 export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -102,24 +93,14 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
     );
   }
 
+  const address = [church?.address1, church?.address2, [church?.city, church?.state].filter(Boolean).join(", "), church?.zip, church?.country].filter(Boolean).join(" · ");
+
   return (
-    <DisplayBox headerText={Locale.label("settings.churchSettingsEdit.churchInfo")} headerIcon="business" editFunction={() => setEditing(true)}>
-      <Box>
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.churchName")} value={church?.name} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
-      </Box>
-      <Typography variant="subtitle2" sx={{ mt: 2.5, mb: 0.5, fontWeight: 600, color: "text.secondary" }}>
-        {Locale.label("person.address")}
-      </Typography>
-      <Box>
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.address1")} value={church?.address1} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.address2")} value={church?.address2} />
-        <DisplayRow label={Locale.label("person.city")} value={church?.city} />
-        <DisplayRow label={Locale.label("person.state")} value={church?.state} />
-        <DisplayRow label={Locale.label("person.zip")} value={church?.zip} />
-        <DisplayRow label={Locale.label("person.country")} value={church?.country} />
-        <DisplayRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
-      </Box>
+    <DisplayBox headerText={Locale.label("settings.churchSettingsEdit.churchInfo")} headerIcon="business" editContent={<EditVerb onClick={() => setEditing(true)} />}>
+      <SettingsRow label={Locale.label("settings.churchSettingsEdit.churchName")} value={church?.name} />
+      <SettingsRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
+      <SettingsRow label={Locale.label("person.address")} value={address} />
+      <SettingsRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
     </DisplayBox>
   );
 };

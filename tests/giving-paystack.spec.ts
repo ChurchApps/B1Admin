@@ -31,7 +31,7 @@ test.describe.serial("Paystack giving settings", () => {
     await page.locator('[data-testid="settings-section-giving"]').click();
     const section = page.locator('[data-testid="settings-giving"]');
     await expect(section).toBeVisible({ timeout: 15000 });
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.locator('[data-testid="settings-giving"] [data-testid="small-button-edit"]').dispatchEvent("click");
     const provider = section.getByRole("combobox").first();
     await expect(provider).toBeVisible({ timeout: 10000 });
     await provider.click();

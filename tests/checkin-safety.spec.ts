@@ -156,7 +156,7 @@ test.describe.serial("Check-Ins child safety", () => {
     await page.goto("/settings");
     await page.locator('[data-testid="settings-section-check-ins"]').click();
     await page.locator('[data-testid="settings-check-ins"]').waitFor({ state: "visible", timeout: 10000 });
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.locator('[data-testid="settings-check-ins"] [data-testid="small-button-edit"]').dispatchEvent("click");
 
     await page.locator('[data-testid="ratio-enforcement-select"]').waitFor({ state: "visible", timeout: 10000 });
     await page.locator('[data-testid="ratio-enforcement-select"]').click();

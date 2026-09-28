@@ -184,7 +184,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   return (
     <>
       {ConfirmDialogElement}
-      <DisplayBox id="rolesBox" headerText={Locale.label("settings.roles.roles")} headerIcon="lock" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
+      <DisplayBox id="rolesBox" headerText={Locale.label("settings.roles.roles")} editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
         <Table id="roleMemberTable">
           <TableHead>
             <TableRow>

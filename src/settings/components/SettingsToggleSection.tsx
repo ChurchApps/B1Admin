@@ -1,6 +1,7 @@
 import React from "react";
 import { DisplayBox } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { EditVerb } from "./SettingsPage";
 
 interface Props {
   headerText: string;
@@ -59,7 +60,7 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   }
 
   return (
-    <DisplayBox headerText={props.headerText} headerIcon={props.headerIcon} editFunction={props.canEdit === false ? undefined : () => setEditing(true)} data-testid={props["data-testid"]}>
+    <DisplayBox headerText={props.headerText} headerIcon={props.headerIcon} editContent={props.canEdit === false ? undefined : <EditVerb onClick={() => setEditing(true)} />} data-testid={props["data-testid"]}>
       {props.view}
     </DisplayBox>
   );

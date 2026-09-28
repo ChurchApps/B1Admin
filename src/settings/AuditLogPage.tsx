@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography,
   IconButton, Collapse, CircularProgress
 } from "@mui/material";
-import { Search as SearchIcon, KeyboardArrowDown as ExpandIcon, KeyboardArrowUp as CollapseIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Search as SearchIcon, KeyboardArrowDown as ExpandIcon, KeyboardArrowUp as CollapseIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
+import { SettingsHeader } from "./components/SettingsHeader";
 import { AppDatePicker } from "../components";
 
 interface AuditLog {
@@ -264,9 +265,9 @@ export const AuditLogPage: React.FC = () => {
 
   return (
     <>
-      <PageHeader icon={<HistoryIcon />} title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")} />
+      <SettingsHeader backTo="/settings" title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")} />
 
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: { xs: 2, md: 4 } }}>
         <Card sx={{ mb: 3, p: 2 }}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
             <FormControl size="small" sx={{ minWidth: 160 }}>

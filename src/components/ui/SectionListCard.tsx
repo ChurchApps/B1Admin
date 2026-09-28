@@ -30,10 +30,10 @@ interface SectionListCardProps {
 
 export const SectionListCard: React.FC<SectionListCardProps> = ({ icon, title, count, onAdd, addLabel, addButtonVariant = "contained", addButtonSize = "medium", addButtonTestId, loading, empty, cardSx, children }) => (
   <Card sx={cardSx}>
-    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+    <Stack className="om-head" direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
       <Stack direction="row" spacing={1} alignItems="center">
-        {React.cloneElement(icon as React.ReactElement<any>, { sx: { color: "primary.main", fontSize: 20 } })}
-        <Typography variant="h6">{title}</Typography>
+        {React.cloneElement(icon as React.ReactElement<any>, { className: "om-icon", sx: { color: "primary.main", fontSize: 20 } })}
+        <Typography className="om-title" variant="h6">{title}</Typography>
         {count > 0 && <CountChip count={count} />}
       </Stack>
       {onAdd && (

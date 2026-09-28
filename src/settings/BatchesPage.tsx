@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Button, Card, Chip, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Alert
 } from "@mui/material";
-import { Undo as UndoIcon, Visibility as VisibilityIcon, Receipt as ReceiptIcon } from "@mui/icons-material";
+import { Undo as UndoIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
+import { SettingsHeader } from "./components/SettingsHeader";
 import { PermissionDenied } from "../components";
 
 interface Batch {
@@ -117,9 +118,9 @@ export const BatchesPage: React.FC = () => {
 
   return (
     <>
-      <PageHeader icon={<ReceiptIcon />} title={Locale.label("settings.batches.title")} subtitle={Locale.label("settings.batches.subtitle")} />
+      <SettingsHeader backTo="/settings" title={Locale.label("settings.batches.title")} subtitle={Locale.label("settings.batches.subtitle")} />
 
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: { xs: 2, md: 4 } }}>
         <Card>
           {loading ? <Loading /> : (
             <TableContainer>

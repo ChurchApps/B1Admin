@@ -11,6 +11,7 @@ export interface ConfigSection {
   icon: React.ReactNode;
   color: "primary" | "secondary" | "success" | "info" | "warning" | "error";
   count?: number;
+  status?: "ok" | "todo";
 }
 
 interface Props {

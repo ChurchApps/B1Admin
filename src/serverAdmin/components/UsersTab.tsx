@@ -64,7 +64,6 @@ export const UsersTab = () => {
         </Typography>
         <TextField
           fullWidth
-          variant="outlined"
           name="searchText"
           label={Locale.label("serverAdmin.usersTab.searchLabel")}
           value={searchText}

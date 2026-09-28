@@ -118,7 +118,6 @@ export const ChurchesTab = () => {
         <DisplayBox headerIcon="church" headerText={Locale.label("serverAdmin.adminPage.churches")}>
           <TextField
             fullWidth
-            variant="outlined"
             name="searchText"
             label={Locale.label("serverAdmin.adminPage.churchName")}
             value={searchText}

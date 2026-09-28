@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { UserAdd, RolePermissions, RoleMembers } from "./components";
 import { type RoleInterface, type RoleMemberInterface } from "@churchapps/helpers";
-import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
-import { Security as SecurityIcon } from "@mui/icons-material";
-import { Breadcrumbs, type BreadcrumbItem } from "../components/ui";
+import { SettingsHeader } from "./components/SettingsHeader";
 
 export const RolePage = () => {
   const params = useParams();
@@ -69,14 +68,10 @@ export const RolePage = () => {
 
   if (!UserHelper.checkAccess(Permissions.membershipApi.roles.view)) return <></>;
   else {
-    const breadcrumbItems: BreadcrumbItem[] = [
-      { label: Locale.label("components.wrapper.set"), path: "/settings" },
-      { label: role?.name || "" }
-    ];
     return (
       <>
-        <PageHeader icon={<SecurityIcon />} title={`${Locale.label("settings.rolePage.roleEdit")} ${role?.name || ""}`} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />} />
-        <Box id="mainContent" sx={{ p: 3 }}>
+        <SettingsHeader backTo="/settings/roles" backLabel={Locale.label("settings.roles.roles")} title={role?.name || ""} />
+        <Box sx={{ p: { xs: 2, md: 4 } }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 8 }}>
               <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />

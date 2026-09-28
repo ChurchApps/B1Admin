@@ -59,7 +59,6 @@ export const ImpersonateTab = () => {
         </Typography>
         <TextField
           fullWidth
-          variant="outlined"
           name="searchText"
           type="email"
           label={Locale.label("serverAdmin.impersonateTab.searchLabel")}

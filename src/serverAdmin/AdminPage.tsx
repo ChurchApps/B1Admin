@@ -1,9 +1,7 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { Locale, Permissions, UserHelper } from "@churchapps/apphelper";
-import { Grid, Box } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon, PersonSearch as UsersIcon, Schedule as JobsIcon, Inventory2 as CommonsIcon, Storage as MigrationsIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
+import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, PersonSearch as UsersIcon, Schedule as JobsIcon, Inventory2 as CommonsIcon, Storage as MigrationsIcon } from "@mui/icons-material";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";
 import { TranslationTab } from "./components/TranslationTab";
@@ -13,7 +11,9 @@ import { UsersTab } from "./components/UsersTab";
 import { JobsTab } from "./components/JobsTab";
 import { CommonsTab } from "./components/CommonsTab";
 import { MigrationsTab } from "./components/MigrationsTab";
-import { SettingsConfigList, type ConfigSection } from "../settings/components/SettingsConfigList";
+import { type ConfigSection } from "../settings/components/SettingsConfigList";
+import { SectionNav } from "../settings/components/SectionNav";
+import { SettingsLayout, SettingsPage } from "../settings/components/SettingsPage";
 import { useRequirePermission } from "../hooks";
 import { CommonsApi, type CommonsAdminStatus } from "./commonsApi";
 
@@ -97,19 +97,13 @@ export const AdminPage = () => {
   ];
 
   return (
-    <>
-      <PageHeader icon={<AdminIcon />} title={Locale.label("serverAdmin.adminPage.servAdmin")} subtitle={Locale.label("serverAdmin.adminPage.subtitle")} />
-
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SettingsConfigList sections={sections} selected={selectedTab} onSelect={onSelect} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Box>{getCurrentTab()}</Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+    <SettingsPage>
+      <SettingsLayout
+        title={Locale.label("serverAdmin.adminPage.servAdmin")}
+        subtitle={Locale.label("serverAdmin.adminPage.subtitle")}
+        nav={<SectionNav sections={sections} selected={selectedTab} onSelect={onSelect} />}>
+        {getCurrentTab()}
+      </SettingsLayout>
+    </SettingsPage>
   );
 };

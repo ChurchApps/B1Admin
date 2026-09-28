@@ -36,18 +36,18 @@ export const FormCard: React.FC<FormCardProps> = (props) => {
     <Card id={props.id} data-testid={props["data-testid"]} elevation={props.elevation} sx={{ mb: props.elevation === 0 ? 0 : 3, position: "relative" }}>
 
       {props.help && <HelpIcon article={props.help} />}
-      <Box sx={{ p: 2, borderBottom: "1px solid var(--border-light)" }}>
+      <Box className="om-head" sx={{ p: 2, borderBottom: "1px solid var(--border-light)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            {icon}
-            <Typography variant="h6" component="h2">{props.title}</Typography>
+            {icon && <Box className="om-icon" sx={{ display: "flex" }}>{icon}</Box>}
+            <Typography className="om-title" variant="h6" component="h2">{props.title}</Typography>
           </Stack>
           {props.headerActions}
         </Stack>
       </Box>
-      <Box sx={{ p: 2, "& > *:not(:last-child)": { mb: 2 } }}>{props.children}</Box>
+      <Box className="om-body" sx={{ p: 2, "& > *:not(:last-child)": { mb: 2 } }}>{props.children}</Box>
       {hasFooter && (
-        <Box sx={{ p: 2, borderTop: "1px solid var(--border-light)", ...(props.stickyFooter ? { position: "sticky", bottom: 0, backgroundColor: "background.paper", zIndex: 2 } : {}) }}>
+        <Box className="om-foot" sx={{ p: 2, borderTop: "1px solid var(--border-light)", ...(props.stickyFooter ? { position: "sticky", bottom: 0, backgroundColor: "background.paper", zIndex: 2 } : {}) }}>
           <Stack direction="row" spacing={1} alignItems="center">
             {props.onDelete && (
               <Button id="delete" color="error" onClick={props.onDelete} data-testid={props.deleteTestId} aria-label={props.deleteText || Locale.label("common.delete")}>
