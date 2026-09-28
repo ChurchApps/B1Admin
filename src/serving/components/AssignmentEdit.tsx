@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Table, TableCell, TableRow, Avatar, IconButton, Tooltip } from "@mui/material";
+import { Table, TableCell, TableRow, Avatar, IconButton, Tooltip, Typography } from "@mui/material";
 import { Tune as TuneIcon } from "@mui/icons-material";
 import { type AssignmentInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { PersonAdd } from "../../components";
 import { useConfirmDelete } from "../../hooks";
 import { SchedulingPreferenceEdit } from "./SchedulingPreferenceEdit";
 
@@ -12,12 +13,15 @@ interface Props {
   position: PositionInterface;
   peopleNeeded: number;
   updatedFunction: (done: boolean) => void;
+  assignedPersonIds?: string[];
 }
 
 export const AssignmentEdit = (props: Props) => {
   const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
   const [preferencePerson, setPreferencePerson] = React.useState<{ id: string; name: string } | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  // Positions without a Volunteer Group can be filled by anyone in the church.
+  const useSearch = !props.position?.groupId;
 
   const handleSave = () => {
     props.updatedFunction(true);
@@ -35,13 +39,15 @@ export const AssignmentEdit = (props: Props) => {
     });
   };
 
-  const selectPerson = (gm: GroupMemberInterface) => {
+  const selectPersonId = (personId: string) => {
     const a = { ...props.assignment } as AssignmentInterface;
-    a.personId = gm.personId;
+    a.personId = personId;
     ApiHelper.post("/assignments", [a], "DoingApi").then(() => {
       props.updatedFunction(props.peopleNeeded <= 1);
     });
   };
+
+  const selectPerson = (gm: GroupMemberInterface) => selectPersonId(gm.personId);
 
   const getMembers = () => {
     const rows: JSX.Element[] = [];
@@ -101,7 +107,19 @@ export const AssignmentEdit = (props: Props) => {
         onCancel={() => props.updatedFunction(true)}
         onDelete={props.assignment.id ? handleDelete : undefined}
         saveText={Locale.label("plans.assignmentEdit.done")}>
-        <Table size="small">{getMembers()}</Table>
+        {useSearch ? (
+          <>
+            <Typography variant="body2" sx={{ color: "var(--text-muted)", mb: 1 }}>{Locale.label("plans.assignmentEdit.searchAnyone")}</Typography>
+            <PersonAdd
+              getPhotoUrl={PersonHelper.getPhotoUrl}
+              addFunction={(p) => selectPersonId(p.id!)}
+              actionLabel={Locale.label("plans.assignmentEdit.assignPos")}
+              filterList={props.assignedPersonIds || []}
+            />
+          </>
+        ) : (
+          <Table size="small">{getMembers()}</Table>
+        )}
       </FormCard>
       {preferencePerson && <SchedulingPreferenceEdit personId={preferencePerson?.id} personName={preferencePerson?.name} onClose={() => setPreferencePerson(null)} />}
     </>

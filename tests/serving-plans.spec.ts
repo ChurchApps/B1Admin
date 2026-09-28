@@ -1029,3 +1029,94 @@ test.describe.serial("Service Order heading position per service time", () => {
     await expect(worshipHeader.locator(".planItemPosition")).toHaveText(DEFAULT_VOLUNTEER, { timeout: 15000 });
   });
 });
+
+// ChurchAppsSupport#1128: a position with no Volunteer Group left the assignment panel on
+// "No group members found." with no way forward, so one-person roles (preacher, host) needed a
+// single-member team first. Groupless positions now get a whole-church person search, and a
+// linked Volunteer Group can be cleared back to None.
+test.describe.serial("Assign a position directly to a person", () => {
+  test.describe.configure({ retries: 0 });
+
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const DEMO_PLAN = "/serving/plans/PLA00000001";
+  const CATEGORY = "Zephaniah";
+  const GROUPLESS = "Zephaniah Preacher";
+  const GROUPED = "Zephaniah Host";
+  // Demo seed "Band Members" team.
+  const TEAM_ID = "GRP0000000b";
+  const TEAM_NAME = "Band Members";
+
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let page: Page;
+  const positionIds: string[] = [];
+
+  test.beforeAll(async ({ browser }) => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    expect(uc?.jwt).toBeTruthy();
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+
+    const res = await ctx.post(`${API}/doing/positions`, {
+      ...auth,
+      data: [
+        { planId: "PLA00000001", categoryName: CATEGORY, name: GROUPLESS, count: 1, groupId: "" },
+        { planId: "PLA00000001", categoryName: CATEGORY, name: GROUPED, count: 1, groupId: TEAM_ID }
+      ]
+    });
+    expect(res.ok()).toBeTruthy();
+    for (const p of await res.json()) positionIds.push(p.id);
+
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+    for (const id of positionIds) await ctx.delete(`${API}/doing/positions/${id}`, auth);
+    await ctx.dispose();
+  });
+
+  const positionRow = (name: string) => page.locator("tr:not(:has(tr))").filter({ has: page.locator("button", { hasText: name }) });
+
+  test("a position with no Volunteer Group can be assigned to anyone in the church", async () => {
+    await page.goto(DEMO_PLAN);
+    const row = positionRow(GROUPLESS);
+    await expect(row).toHaveCount(1, { timeout: 15000 });
+    await row.getByRole("button", { name: /1 person needed/i }).click();
+
+    const search = page.locator('[data-testid="person-search-input"] input');
+    await expect(search).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("No group members found.")).toHaveCount(0);
+    await search.fill("Donald");
+    await page.locator('[data-testid="search-button"]').click();
+    await page.getByRole("button", { name: "Donald Clark", exact: true }).click();
+
+    await expect(row.getByRole("button", { name: /Donald Clark/ })).toBeVisible({ timeout: 15000 });
+    await expect(row.getByText("1/1")).toBeVisible();
+  });
+
+  test("a linked Volunteer Group can be cleared back to None", async () => {
+    await page.goto(DEMO_PLAN);
+    const row = positionRow(GROUPED);
+    await expect(row).toHaveCount(1, { timeout: 15000 });
+    await row.getByRole("button", { name: GROUPED }).click();
+
+    const groupSelect = page.locator(".MuiFormControl-root").filter({ has: page.locator("label", { hasText: "Volunteer Group" }) }).getByRole("combobox");
+    await expect(groupSelect).toHaveText(TEAM_NAME, { timeout: 15000 });
+    await groupSelect.click();
+    await page.getByRole("option", { name: "None", exact: true }).click();
+    await page.locator("button").getByText("Save").last().click();
+
+    // Back to direct assignment: the panel offers the whole-church search, not the team roster.
+    await positionRow(GROUPED).getByRole("button", { name: /1 person needed/i }).click();
+    await expect(page.locator('[data-testid="person-search-input"] input')).toBeVisible({ timeout: 15000 });
+    const res = await ctx.get(`${API}/doing/positions/${positionIds[1]}`, auth);
+    expect(res.ok()).toBeTruthy();
+    expect((await res.json()).groupId || "").toBe("");
+  });
+});
