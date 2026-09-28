@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiHelper, DateHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { Alert, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Alert, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useConfirmDelete } from "../../hooks";
 
 interface ModuleStatus {
@@ -50,14 +50,17 @@ export const MigrationsTab = () => {
   const [detection, setDetection] = React.useState<ModuleDetection | null>(null);
   const [detecting, setDetecting] = React.useState<string | null>(null);
   const [baselineError, setBaselineError] = React.useState("");
+  const [rerun, setRerun] = React.useState<string[]>([]);
 
   // A module with no history: compare each migration's fingerprint with the live schema
   // (read-only), then record the ones that are provably there so only real gaps stay pending.
-  const checkSchema = async (moduleName: string) => {
+  const checkSchema = async (moduleName: string, rerunNames: string[] = []) => {
     setDetecting(moduleName);
     setBaselineError("");
+    setRerun(rerunNames);
     try {
-      setDetection(await ApiHelper.get("/serverHealth/migrations/" + moduleName + "/detect", "MembershipApi"));
+      const q = rerunNames.length ? "?rerun=" + encodeURIComponent(rerunNames.join(",")) : "";
+      setDetection(await ApiHelper.get("/serverHealth/migrations/" + moduleName + "/detect" + q, "MembershipApi"));
     } catch (e: any) {
       setDetection({ module: moduleName, migrations: [], suggested: [], error: e?.message || String(e) });
     }
@@ -72,7 +75,7 @@ export const MigrationsTab = () => {
       .replace("{environment}", data?.environment || "");
     if (!(await confirm(msg, { title: Locale.label("serverAdmin.migrationsTab.baseline"), confirmLabel: Locale.label("serverAdmin.migrationsTab.baseline") }))) return;
     try {
-      const result: { recorded: string[]; error?: string } = await ApiHelper.post("/serverHealth/migrations/" + detection.module + "/baseline", { names: detection.suggested }, "MembershipApi");
+      const result: { recorded: string[]; error?: string } = await ApiHelper.post("/serverHealth/migrations/" + detection.module + "/baseline", { names: detection.suggested, rerun }, "MembershipApi");
       if (result.error) { setBaselineError(result.error); return; }
       setDetection(null);
       await refetch();
@@ -192,15 +195,30 @@ export const MigrationsTab = () => {
               <Stack spacing={2}>
                 <Typography variant="body2" color="text.secondary">{Locale.label("serverAdmin.migrationsTab.detectSubtitle")}</Typography>
                 {detection.error && <Alert severity="error">{detection.error}</Alert>}
-                {detection.blocked && <Alert severity="error">{detection.blocked}</Alert>}
+                {detection.blocked && <Alert severity="error">{detection.blocked}. {Locale.label("serverAdmin.migrationsTab.partialNote")}</Alert>}
                 {baselineError && <Alert severity="error">{baselineError}</Alert>}
                 <Table size="small">
                   <TableBody>
                     {detection.migrations.map((d) => (
                       <TableRow key={d.name} data-testid={"detect-row-" + d.name}>
                         <TableCell sx={{ fontFamily: "monospace", fontSize: 12 }}>{d.name}</TableCell>
-                        <TableCell>{stateChip(d)}</TableCell>
-                        <TableCell sx={{ color: "text.secondary", fontSize: 12 }}>{d.failing.join("; ")}</TableCell>
+                        <TableCell>{rerun.includes(d.name) ? <Chip label={Locale.label("serverAdmin.migrationsTab.willRerun")} size="small" color="warning" /> : stateChip(d)}</TableCell>
+                        <TableCell sx={{ color: "text.secondary", fontSize: 12 }}>
+                          {d.failing.join("; ")}
+                          {d.state === "partial" && (
+                            <Stack direction="row" alignItems="center" sx={{ color: "text.primary" }}>
+                              <Checkbox
+                                size="small"
+                                checked={rerun.includes(d.name)}
+                                disabled={!!detecting}
+                                onChange={(e) => checkSchema(detection.module, e.target.checked ? [...rerun, d.name] : rerun.filter((r) => r !== d.name))}
+                                inputProps={{ "aria-label": Locale.label("serverAdmin.migrationsTab.rerun") }}
+                                data-testid={"rerun-" + d.name}
+                              />
+                              <Typography variant="caption">{Locale.label("serverAdmin.migrationsTab.rerun")}</Typography>
+                            </Stack>
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
