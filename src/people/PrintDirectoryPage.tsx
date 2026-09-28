@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
-import { Locale, PersonHelper } from "@churchapps/apphelper";
+import { Locale, PersonHelper, DateHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { buildHouseholds, firstName } from "./buildHouseholds";
 
@@ -13,7 +13,7 @@ const formatDate = (date?: string): string => {
   if (!date) return "";
   const d = new Date(date.toString().split("T")[0] + "T00:00:00");
   if (Number.isNaN(d.getTime())) return "";
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return d.toLocaleDateString(DateHelper.locale, { month: "short", day: "numeric" });
 };
 
 const memberBirthdays = (members: PersonInterface[]) => {
@@ -91,7 +91,7 @@ export const PrintDirectoryPage = () => {
     ? [church.city, church.state].filter(Boolean).join(", ")
     : "";
   const year = new Date().getFullYear();
-  const printedOn = new Date().toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
+  const printedOn = new Date().toLocaleDateString(DateHelper.locale, { month: "long", day: "numeric", year: "numeric" });
 
   let currentLetter = "";
 

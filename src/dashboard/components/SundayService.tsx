@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Locale } from "@churchapps/apphelper";
+import { Locale, DateHelper } from "@churchapps/apphelper";
 import { useSunday } from "../useSunday";
 import { hasPlansEditAccess } from "../../helpers";
 import "../sunday.css";
@@ -9,14 +9,14 @@ const clock = (start: Date | null | undefined, extraSeconds: number) => {
   if (!start || Number.isNaN(start.getTime())) return "";
   const d = new Date(start);
   d.setSeconds(d.getSeconds() + extraSeconds);
-  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  return d.toLocaleTimeString(DateHelper.locale, { hour: "numeric", minute: "2-digit" });
 };
 
 const prettyWhen = (date?: Date | string | null, start?: Date | null) => {
   const d = date ? new Date(date) : new Date();
   if (Number.isNaN(d.getTime())) return "";
-  const weekday = d.toLocaleDateString(undefined, { weekday: "long" });
-  const rest = d.toLocaleDateString(undefined, { month: "long", day: "numeric" });
+  const weekday = d.toLocaleDateString(DateHelper.locale, { weekday: "long" });
+  const rest = d.toLocaleDateString(DateHelper.locale, { month: "long", day: "numeric" });
   const time = start && !Number.isNaN(start.getTime()) ? clock(start, 0) : "";
   return [weekday, rest, time].filter(Boolean).join(" · ");
 };

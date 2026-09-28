@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface, type EventInterface } from "@churchapps/helpers";
 import { Box, Button, Card, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, Grid, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { Check as ApproveIcon, Close as RejectIcon, EventAvailable as ApprovalsIcon, WarningAmber as ConflictIcon } from "@mui/icons-material";
@@ -111,7 +111,7 @@ export const ApprovalsPage = () => {
                         <TableRow key={b.id} hover>
                           <TableCell>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>{b.eventTitle}</Typography>
-                            <Typography variant="caption" color="text.secondary">{b.eventStart ? new Date(b.eventStart).toLocaleString() : ""}</Typography>
+                            <Typography variant="caption" color="text.secondary">{b.eventStart ? new Date(b.eventStart).toLocaleString(DateHelper.locale) : ""}</Typography>
                           </TableCell>
                           <TableCell>
                             {b.roomName || b.resourceName}
@@ -166,7 +166,7 @@ export const ApprovalsPage = () => {
                         <TableRow key={e.id} hover>
                           <TableCell>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>{e.title}</Typography>
-                            <Typography variant="caption" color="text.secondary">{e.start ? new Date(e.start).toLocaleString() : ""}</Typography>
+                            <Typography variant="caption" color="text.secondary">{e.start ? new Date(e.start).toLocaleString(DateHelper.locale) : ""}</Typography>
                           </TableCell>
                           <TableCell>{e.description}</TableCell>
                           <TableCell align="right" className="rowActions">

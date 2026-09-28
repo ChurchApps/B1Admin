@@ -2,6 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import type { SongDetailInterface } from "../../helpers/Interfaces";
 import { SongDetailLinks } from "./SongDetailLinks";
+import { DateHelper } from "@churchapps/apphelper";
 
 interface Props {
   songDetail: SongDetailInterface;
@@ -25,7 +26,7 @@ export const SongDetails: React.FC<Props> = (props) => {
     if (props.songDetail.artist) result.push(<TableRow key="artist"><TableCell><strong>Artist</strong></TableCell><TableCell>{props.songDetail.artist}</TableCell></TableRow>);
     if (props.songDetail.releaseDate) {
       const d = new Date(props.songDetail.releaseDate);
-      result.push(<TableRow key="releaseDate"><TableCell><strong>Release Date</strong></TableCell><TableCell>{d.toLocaleDateString()}</TableCell></TableRow>);
+      result.push(<TableRow key="releaseDate"><TableCell><strong>Release Date</strong></TableCell><TableCell>{d.toLocaleDateString(DateHelper.locale)}</TableCell></TableRow>);
     }
     if (props.songDetail.album) result.push(<TableRow key="album"><TableCell><strong>Album</strong></TableCell><TableCell>{props.songDetail.album}</TableCell></TableRow>);
     if (props.songDetail.language) result.push(<TableRow key="language"><TableCell><strong>Language</strong></TableCell><TableCell>{props.songDetail.language}</TableCell></TableRow>);

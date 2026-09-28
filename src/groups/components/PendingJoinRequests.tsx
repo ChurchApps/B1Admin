@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, TextField, Typography } from "@mui/material";
 import { CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
-import { ApiHelper, PersonAvatar } from "@churchapps/apphelper";
+import { ApiHelper, PersonAvatar, DateHelper } from "@churchapps/apphelper";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -74,7 +74,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
                 )}
                 {req.requestDate && (
                   <Typography variant="caption" sx={{ color: "text.disabled" }}>
-                    {new Date(req.requestDate).toLocaleString()}
+                    {new Date(req.requestDate).toLocaleString(DateHelper.locale)}
                   </Typography>
                 )}
               </Box>

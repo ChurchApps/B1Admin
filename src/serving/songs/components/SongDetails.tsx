@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Locale } from "@churchapps/apphelper";
+import { Locale, DateHelper } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
 import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
@@ -63,7 +63,7 @@ export const SongDetails = memo((props: Props) => {
       items.push({
         icon: <DateIcon />,
         label: Locale.label("songs.details.releaseDate") || "Release Date",
-        value: d.toLocaleDateString(),
+        value: d.toLocaleDateString(DateHelper.locale),
         color: "info.main"
       });
     }

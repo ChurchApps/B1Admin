@@ -83,8 +83,8 @@ export const DevicesPage = () => {
               {(devices.data || []).map((device) => (
                 <TableRow key={device.id}>
                   <TableCell>{device.label || Locale.label("profile.devices.device")}</TableCell>
-                  <TableCell>{DateHelper.toDate(device.registrationDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{DateHelper.toDate(device.lastActiveDate).toLocaleDateString()}</TableCell>
+                  <TableCell>{DateHelper.toDate(device.registrationDate).toLocaleDateString(DateHelper.locale)}</TableCell>
+                  <TableCell>{DateHelper.toDate(device.lastActiveDate).toLocaleDateString(DateHelper.locale)}</TableCell>
                   <TableCell align="right" className="rowActions">
                     <AppIconButton
                       label={Locale.label("common.edit")}

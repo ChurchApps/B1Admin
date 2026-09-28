@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Box, Button, Card, IconButton, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { Event as EventIcon, Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
@@ -70,7 +70,7 @@ export const GroupCalendarTab = (props: Props) => {
     else label = rule;
     if (until) {
       const untilDate = until[4] ? new Date(`${until[1]}-${until[2]}-${until[3]}T${until[4]}:${until[5]}:${until[6]}Z`) : new Date(`${until[1]}-${until[2]}-${until[3]}T12:00:00`);
-      label += ` ${Locale.label("groups.groupCalendar.until")} ${untilDate.toLocaleDateString()}`;
+      label += ` ${Locale.label("groups.groupCalendar.until")} ${untilDate.toLocaleDateString(DateHelper.locale)}`;
     }
     return label;
   };
@@ -141,7 +141,7 @@ export const GroupCalendarTab = (props: Props) => {
               {sorted.map((ev) => (
                 <TableRow key={ev.id} sx={{ whiteSpace: "nowrap" }}>
                   <TableCell>{ev.title}</TableCell>
-                  <TableCell>{new Date(ev.start!).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
+                  <TableCell>{new Date(ev.start!).toLocaleString(DateHelper.locale, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
                   <TableCell>{describeRecurrence(ev.recurrenceRule)}</TableCell>
                   <TableCell align="right">{(ev as any).exceptionDates?.length || 0}</TableCell>
                   <TableCell>{ev.visibility === "private" ? Locale.label("calendars.newEvent.private") : Locale.label("calendars.newEvent.public")}</TableCell>

@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader, DateHelper } from "@churchapps/apphelper";
 import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Mail as MailIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
+import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Mail as MailIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { HeaderSecondaryButton } from "../components/ui";
 import { SettingsConfigList, type ConfigSection } from "./components/SettingsConfigList";
@@ -20,9 +20,10 @@ import { StorageSettingsEdit } from "./components/StorageSettingsEdit";
 import { DomainSettingsEdit } from "./components/DomainSettingsEdit";
 import { GradePromotionSettingsEdit } from "./components/GradePromotionSettingsEdit";
 import { CheckinSettingsEdit } from "./components/CheckinSettingsEdit";
+import { RegionSettingsEdit, regionName, regionSample } from "./components/RegionSettingsEdit";
 
 const SECTION_KEYS = [
-  "church-info", "general", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
+  "church-info", "general", "region", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
 ];
 
 const SummaryRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
@@ -71,6 +72,8 @@ export const ManageChurch = () => {
   if (!church.data) return <div>{Locale.label("settings.manageChurch.noData")}</div>;
 
   const supportContact = (settingsQ.data || []).find((s) => s.keyName === "supportContact")?.value;
+  const region = DateHelper.normalizeLocale((settingsQ.data || []).find((s) => s.keyName === "region")?.value);
+  const regionSubtitle = regionName(region);
   const gateway = (gateways.data || [])[0];
   const textingProvider = (texting.data || [])[0]?.provider;
   const domainList = domains.data || [];
@@ -80,7 +83,7 @@ export const ManageChurch = () => {
   const ratioEnforcement = (settingsQ.data || []).find((s) => s.keyName === "ratioEnforcement")?.value === "block" ? "block" : "warn";
   const checkinsSubtitle = Locale.label("settings.checkinSettingsEdit." + ratioEnforcement);
   const gradePromotionSubtitle = gradePromotionDate
-    ? Locale.label("settings.landing.gradePromotionOn").replace("{date}", new Date(2000, Number(gradePromotionDate.split("-")[0]) - 1, Number(gradePromotionDate.split("-")[1])).toLocaleDateString(undefined, { month: "long", day: "numeric" }))
+    ? Locale.label("settings.landing.gradePromotionOn").replace("{date}", new Date(2000, Number(gradePromotionDate.split("-")[0]) - 1, Number(gradePromotionDate.split("-")[1])).toLocaleDateString(DateHelper.locale, { month: "long", day: "numeric" }))
     : Locale.label("settings.landing.gradePromotionOff");
 
   const domainsSubtitle = domainList.length === 0
@@ -107,6 +110,7 @@ export const ManageChurch = () => {
   const sections: ConfigSection[] = [
     { key: "church-info", title: Locale.label("settings.churchSettingsEdit.churchInfo"), subtitle: church.data.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle"), icon: <BusinessIcon />, color: "primary" },
     { key: "general", title: Locale.label("settings.churchSettingsEdit.general"), subtitle: Locale.label("settings.supportContactSettingsEdit.supportContact"), icon: <TuneIcon />, color: "secondary" },
+    { key: "region", title: Locale.label("settings.regionSettingsEdit.title"), subtitle: regionSubtitle, icon: <PublicIcon />, color: "info" },
     ...(hasGiving ? [{ key: "giving", title: Locale.label("settings.givingSettingsEdit.giving"), subtitle: givingSubtitle, icon: <VolunteerActivismIcon />, color: "success" } as ConfigSection] : []),
     { key: "texting", title: Locale.label("settings.churchSettingsEdit.textingTitle"), subtitle: textingSubtitle, icon: <SmsIcon />, color: "warning" },
     { key: "storage", title: Locale.label("settings.storageSettingsEdit.title"), subtitle: storageSubtitle, icon: <CloudIcon />, color: "info" },
@@ -154,6 +158,22 @@ export const ManageChurch = () => {
             data-testid="settings-general"
             view={<SummaryRow label={Locale.label("settings.supportContactSettingsEdit.supportContact")} value={supportContact || Locale.label("settings.landing.notSet")} />}
             renderEdit={(saveTrigger, onSaveComplete) => <SupportContactSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
+            onSaved={handleSaved}
+          />
+        );
+      case "region":
+        return (
+          <SettingsToggleSection
+            headerText={Locale.label("settings.regionSettingsEdit.title")}
+            headerIcon="public"
+            data-testid="settings-region"
+            view={(
+              <Box>
+                <SummaryRow label={Locale.label("settings.regionSettingsEdit.region")} value={regionSubtitle} />
+                <SummaryRow label={Locale.label("settings.regionSettingsEdit.dateFormat")} value={regionSample(region)} />
+              </Box>
+            )}
+            renderEdit={(saveTrigger, onSaveComplete) => <RegionSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );

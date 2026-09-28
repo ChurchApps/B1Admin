@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Button, Card, Chip, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Alert
@@ -34,7 +34,7 @@ interface UndoResult {
 
 const formatDate = (dateStr?: string) => {
   if (!dateStr) return "";
-  return new Date(dateStr).toLocaleString();
+  return new Date(dateStr).toLocaleString(DateHelper.locale);
 };
 
 const formatAction = (action: string) => (action || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { type EventInterface, type PersonInterface } from "@churchapps/helpers";
 import { Box, CircularProgress, Dialog, DialogContent, DialogTitle, Stack, Typography } from "@mui/material";
 
@@ -57,7 +57,7 @@ export const GroupRsvpRosterDialog = (props: Props) => {
         {!loading && sections.filter((s) => s.rows.length > 0).map((sec) => (
           <Box key={new Date(sec.occurrenceStart).getTime()} sx={{ mb: 2 }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              {new Date(sec.occurrenceStart).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
+              {new Date(sec.occurrenceStart).toLocaleString(DateHelper.locale, { dateStyle: "medium", timeStyle: "short" })}
             </Typography>
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
               {RESPONSES.map((resp) => {

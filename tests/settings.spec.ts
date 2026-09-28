@@ -505,4 +505,44 @@ test.describe.serial("Settings Management", () => {
     });
   });
 
+  test.describe.serial("Region", () => {
+    test.describe.configure({ retries: 0 });
+
+    const MONTH = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)";
+    const DAY_FIRST = new RegExp(`^\\d{1,2} ${MONTH} \\d{4}$`);
+    const MONTH_FIRST = new RegExp(`^${MONTH} \\d{1,2}, \\d{4}$`);
+
+    const chooseRegion = async (region: string) => {
+      await page.goto("/settings#region");
+      const section = page.locator('[data-testid="settings-section-region"]');
+      await expect(section).toHaveClass(/Mui-selected/, { timeout: 15000 });
+      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await page.locator('[data-testid="region-select"]').click();
+      await page.locator(`[data-testid="region-option-${region}"]`).click();
+      await page.locator("button").getByText("Save").click();
+      await expect(page.locator('[data-testid="region-select"]')).toHaveCount(0, { timeout: 10000 });
+    };
+
+    const batchDates = () => page.locator("table tbody tr td:nth-child(2) p");
+
+    test("a UK region shows batch dates day-first, and switching back to US restores month-first", async () => {
+      try {
+        await chooseRegion("en-GB");
+        await expect(page.locator('[data-testid="settings-section-region"]')).toContainText("United Kingdom");
+        await expect(page.locator('[data-testid="settings-region"]')).toContainText("28/09/2026");
+
+        await page.goto("/donations/batches");
+        await expect(batchDates().first()).toHaveText(DAY_FIRST, { timeout: 15000 });
+
+        // Survives a full reload (setting is read back at startup).
+        await page.reload();
+        await expect(batchDates().first()).toHaveText(DAY_FIRST, { timeout: 15000 });
+      } finally {
+        await chooseRegion("en-US");
+      }
+      await page.goto("/donations/batches");
+      await expect(batchDates().first()).toHaveText(MONTH_FIRST, { timeout: 15000 });
+    });
+  });
+
 });

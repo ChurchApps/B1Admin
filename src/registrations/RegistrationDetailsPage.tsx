@@ -31,7 +31,7 @@ import {
   ReceiptLong as ReceiptIcon,
   ArrowUpward as PromoteIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonAdd, FormSubmission } from "../components";
 import { useRequirePermission, useConfirmDelete } from "../hooks";
@@ -203,7 +203,7 @@ export const RegistrationDetailsPage = () => {
         money(total),
         money(Math.max(0, total - paid)),
         reg.status || "",
-        reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : "",
+        reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString(DateHelper.locale) : "",
         ...questionTitles.map((t) => answers[t] || "")
       ]);
     });
@@ -259,7 +259,7 @@ export const RegistrationDetailsPage = () => {
             )}
           </Stack>
         </TableCell>
-        <TableCell>{reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : ""}</TableCell>
+        <TableCell>{reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString(DateHelper.locale) : ""}</TableCell>
         <TableCell align="right" className="rowActions">
           <AppIconButton label={Locale.label("registrations.commerce.registrationDetails")} icon={<ReceiptIcon />} onClick={() => setViewDetailId(reg.id || "")} />
           {event?.formId && reg.formSubmissionId && (

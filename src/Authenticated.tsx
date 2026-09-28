@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Routes, Route, useNavigate, Navigate, Outlet } from "react-router-dom";
 import { Wrapper, ErrorBoundary, NotFound } from "./components";
-import { NotificationService, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, NotificationService, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
@@ -79,6 +79,19 @@ export const Authenticated: React.FC = () => {
     UserHelper.person = context.person;
   }
 
+  // Dates follow the church's region setting; hold rendering until it is known so pages don't flash US formats.
+  const churchId = context?.userChurch?.church?.id;
+  const [regionChurchId, setRegionChurchId] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    if (!churchId) return;
+    let cancelled = false;
+    ApiHelper.getAnonymous("/settings/public/" + churchId, "MembershipApi")
+      .then((settings: { region?: string }) => { if (!cancelled) DateHelper.setLocale(settings?.region); })
+      .catch(() => { if (!cancelled) DateHelper.setLocale(null); })
+      .finally(() => { if (!cancelled) setRegionChurchId(churchId); });
+    return () => { cancelled = true; };
+  }, [churchId]);
+
   // One WebSocket per tab drives real-time refresh and unread bell count.
   React.useEffect(() => {
     if (!context?.person?.id || !context?.userChurch?.church?.id) return;
@@ -95,6 +108,7 @@ export const Authenticated: React.FC = () => {
   });
 
   if (!context) return null;
+  if (churchId && regionChurchId !== churchId) return <PageSkeleton />;
 
   const LayoutWithWrapper: React.FC = () => (
     <Box sx={{ display: "flex" }}>

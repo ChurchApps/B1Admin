@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography,
   IconButton, Collapse, CircularProgress
@@ -55,7 +55,7 @@ const getModules = () => [
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
   const d = new Date(dateStr);
-  return d.toLocaleString();
+  return d.toLocaleString(DateHelper.locale);
 };
 
 const formatAction = (action: string) => action.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());

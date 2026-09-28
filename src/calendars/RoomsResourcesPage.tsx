@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
 import { Permissions, type GroupInterface } from "@churchapps/helpers";
 import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, Paper } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, MeetingRoom as RoomIcon } from "@mui/icons-material";
@@ -114,8 +114,8 @@ export const RoomsResourcesPage = () => {
             {blockouts.map((b) => (
               <TableRow key={b.id} hover>
                 <TableCell>{targetName(b)}</TableCell>
-                <TableCell>{b.startTime ? new Date(b.startTime).toLocaleString() : ""}</TableCell>
-                <TableCell>{b.endTime ? new Date(b.endTime).toLocaleString() : ""}</TableCell>
+                <TableCell>{b.startTime ? new Date(b.startTime).toLocaleString(DateHelper.locale) : ""}</TableCell>
+                <TableCell>{b.endTime ? new Date(b.endTime).toLocaleString(DateHelper.locale) : ""}</TableCell>
                 <TableCell>{b.reason}</TableCell>
                 <TableCell align="right" className="rowActions"><AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing({ type: "blockouts", item: b })} data-testid={`edit-blockout-${b.id}`} /></TableCell>
               </TableRow>
