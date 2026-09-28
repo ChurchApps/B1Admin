@@ -641,6 +641,63 @@ test.describe("Website Management", () => {
 
   });
 
+  test.describe.serial("Public website switch", () => {
+    test.describe.configure({ retries: 0 });
+    let page: Page;
+
+    const settingsPost = (p: Page) => p.waitForResponse(r => /\/content\/settings$/.test(r.url()) && r.request().method() === "POST", { timeout: 15000 });
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToSite(page);
+    });
+
+    test.afterAll(async () => {
+      // Leave the demo church's public site on for every other spec.
+      const toggle = page?.locator('[data-testid="hide-public-site-switch"] input');
+      if (toggle && await toggle.isChecked().catch(() => false)) {
+        const saved = settingsPost(page);
+        await toggle.click();
+        await saved;
+      }
+      await page?.context().close();
+    });
+
+    test("should disable the public website and hide the generated pages", async () => {
+      await expect(page.locator("td").getByText("Verse of the Day")).toHaveCount(1, { timeout: 15000 });
+      const toggle = page.locator('[data-testid="hide-public-site-switch"] input');
+      await expect(toggle).not.toBeChecked();
+      const saved = settingsPost(page);
+      await toggle.click();
+      const res = await saved;
+      const body = res.request().postDataJSON();
+      expect(body[0]).toMatchObject({ keyName: "hidePublicSite", value: "true" });
+      expect([1, true]).toContain(body[0].public);
+      await expect(toggle).toBeChecked();
+      await expect(page.locator('[data-testid="hide-public-site-warning"]')).toBeVisible();
+      await expect(page.locator("td").getByText("Verse of the Day")).toHaveCount(0);
+      await expect(page.getByText("Auto-generated", { exact: true })).toHaveCount(0);
+    });
+
+    test("should keep the public website disabled after reload", async () => {
+      await page.reload();
+      await expect(page.locator('[data-testid="hide-public-site-switch"] input')).toBeChecked({ timeout: 15000 });
+      await expect(page.locator("td").getByText("Verse of the Day")).toHaveCount(0);
+    });
+
+    test("should re-enable the public website", async () => {
+      const toggle = page.locator('[data-testid="hide-public-site-switch"] input');
+      const saved = settingsPost(page);
+      await toggle.click();
+      const body = (await saved).request().postDataJSON();
+      expect(body[0]).toMatchObject({ keyName: "hidePublicSite", value: "false" });
+      await expect(page.locator('[data-testid="hide-public-site-warning"]')).toHaveCount(0);
+      await expect(page.locator("td").getByText("Verse of the Day")).toHaveCount(1, { timeout: 15000 });
+    });
+  });
+
   test.describe.serial("Appearance", () => {
     let page: Page;
 

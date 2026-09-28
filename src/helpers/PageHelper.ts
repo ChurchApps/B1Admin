@@ -14,16 +14,17 @@ export class PageHelper {
     });
   }
 
-  static loadPageTree = async (siteId: string = "") => {
+  // hidePublicSite: the built-in pages are not served, so only the church's own pages are listed.
+  static loadPageTree = async (siteId: string = "", hidePublicSite: boolean = false) => {
     const customPages = await ApiHelper.get("/pages" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").catch(() => []);
-    const templatePages: PageLink[] = await PageHelper.getTemplatePages();
+    const templatePages: PageLink[] = hidePublicSite ? [] : await PageHelper.getTemplatePages();
     let result: PageLink[] = [...templatePages];
 
-    const groupPage = result.find((p) => p.url === "/groups")!;
+    const groupPage = result.find((p) => p.url === "/groups");
     (Array.isArray(customPages) ? customPages : []).forEach((p: any) => {
       const url = p.url || "";
       const page: PageLink = { pageId: p.id, title: p.title, url: url, custom: true };
-      if (url.indexOf("/groups") === -1) {
+      if (!groupPage || url.indexOf("/groups") === -1) {
         const existing = result.find((r) => r.url === p.url);
         if (existing) { existing.title = p.title; existing.custom = true; existing.pageId = p.id; } else result.push(page);
       } else {
@@ -31,7 +32,7 @@ export class PageHelper {
         if (existing) { existing.title = p.title; existing.custom = true; existing.pageId = p.id; } else groupPage.children!.push(page);
       }
     });
-    groupPage.children = PageHelper.sortLevel(groupPage.children!);
+    if (groupPage) groupPage.children = PageHelper.sortLevel(groupPage.children!);
     result = PageHelper.sortLevel(result);
     return result;
   };
