@@ -739,3 +739,40 @@ test.describe("Mixed-currency giving totals", () => {
     await expect(page.getByText(CONVERTED_NOTE)).toBeVisible();
   });
 });
+
+// Issue #1141: counters print a batch to check it against the cash and checks.
+// Seed batch BAT00000001 (March 2, 2025) has 7 gifts split across six funds.
+test.describe("Donation batch print", () => {
+  test.beforeEach(async ({ page }) => {
+    // react-to-print copies the report into a hidden iframe, calls print() there, then removes it.
+    // Capture the iframe's text as it is removed so the spec sees exactly what was sent to the printer.
+    await page.addInitScript(() => {
+      (window as any).__printedText = null;
+      const removeChild = Node.prototype.removeChild;
+      Node.prototype.removeChild = function <T extends Node>(this: Node, child: T): T {
+        const el = child as unknown as HTMLIFrameElement;
+        if (el?.id === "printWindow") (window as any).__printedText = el.contentDocument?.body?.textContent || "";
+        return removeChild.call(this, child) as T;
+      };
+    });
+  });
+
+  test("Print sends the batch's gifts, fund subtotals and total to the printer", async ({ page }) => {
+    await page.goto("/donations/batches/BAT00000001");
+    await expect(page.locator('[data-testid^="donation-row-"]')).toHaveCount(7, { timeout: 15000 });
+
+    await page.getByRole("button", { name: "Print", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => (window as any).__printedText), { timeout: 15000 }).not.toBeNull();
+    const printed: string = await page.evaluate(() => (window as any).__printedText);
+
+    expect(printed).toContain("March 2, 2025 Batch");
+    expect(printed).toContain("John Smith");
+    expect(printed).toContain("Miguel Hernandez");
+    expect(printed).toContain("Fund Subtotals");
+    expect(printed).toMatch(/General Fund\s*\$\s*1,540\.00/);
+    expect(printed).toMatch(/Building Fund\s*\$\s*100\.00/);
+    expect(printed).toMatch(/Youth Ministry\s*\$\s*90\.00/);
+    expect(printed).toMatch(/Benevolence Fund\s*\$\s*80\.00/);
+    expect(printed).toMatch(/Batch Total\s*\$\s*1,900\.00/);
+  });
+});
