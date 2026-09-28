@@ -708,3 +708,22 @@ test.describe.serial("Serving Management - Lessons", () => {
     });
   });
 });
+
+// With no earlier plan that has a lesson, the Associate Lesson picker must open on
+// Lessons.church, not the first registry provider (Dropbox, unlinked).
+// Demo plan type PLT00000002 (Wednesday Night Service) has no plans and the demo
+// church has no linked providers.
+test.describe("Serving Management - Lesson picker default provider", () => {
+  test("Bulk Schedule's Select Lesson opens on Lessons.church", async ({ page }) => {
+    await page.goto("/serving/planTypes/PLT00000002");
+
+    await page.getByRole("button", { name: "Schedule Lesson" }).first().click();
+    await page.getByRole("menuitem", { name: "Bulk Schedule" }).click();
+    await page.getByRole("button", { name: "Select Lesson" }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("heading", { name: "Associate Lesson" })).toBeVisible({ timeout: 10000 });
+    await expect(dialog.locator(".MuiChip-filled")).toHaveText("Lessons.church", { timeout: 10000 });
+    await expect(dialog.getByText("Provider Not Linked")).toHaveCount(0);
+  });
+});
