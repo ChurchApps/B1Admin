@@ -3101,6 +3101,8 @@
       "jobs": "Background Jobs",
       "jobsSubtitle": "Last run and failures for scheduled jobs",
       "location": "Location",
+      "migrations": "Database Migrations",
+      "migrationsSubtitle": "Apply pending schema changes to this environment",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
       "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
@@ -3335,6 +3337,23 @@
       "subtitle": "Latest run of each scheduled job. Runs are recorded by the timer handlers and kept for 30 days.",
       "success": "Success",
       "title": "Background Jobs"
+    },
+    "migrationsTab": {
+      "applied": "Applied",
+      "confirm": "Apply {count} pending migration(s) to the {environment} databases? Each module's migrations run in order and stop at the first failure.",
+      "error": "Error",
+      "lastApplied": "Last Applied",
+      "loadError": "Unable to load migration status.",
+      "module": "Module",
+      "noneApplied": "nothing applied",
+      "nothingPending": "Every module is up to date.",
+      "pending": "Pending",
+      "pendingCount": "{count} pending",
+      "run": "Run Pending Migrations",
+      "running": "Running {module}…",
+      "subtitle": "Deploys do not change the database. After a release that adds a migration, run it here — the Api applies it from inside its own network.",
+      "title": "Database Migrations",
+      "upToDate": "Up to date"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
