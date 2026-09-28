@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, List, ListItem, ListItemButton, ListItemText, Typography, Box } from "@mui/material";
 import { Icon } from "@mui/material";
 import { Close as CloseIcon, Restore as RestoreIcon } from "@mui/icons-material";
-import { Locale } from "@churchapps/apphelper";
+import { Locale, DateHelper } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface HistoryEntry {
@@ -20,7 +20,7 @@ interface HistoryPanelProps {
 export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }: HistoryPanelProps) {
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    return date.toLocaleTimeString(DateHelper.locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   };
 
   const handleRestore = (index: number) => {

@@ -1,4 +1,5 @@
 import { PlanHelper } from "@churchapps/helpers";
+import { DateHelper } from "@churchapps/apphelper";
 
 // Re-export lesson interfaces from @churchapps/helpers for convenience
 export {
@@ -22,5 +23,5 @@ export const formatClockTime = (startTime: Date | string | undefined, totalSecs:
   const d = new Date(startTime);
   if (isNaN(d.getTime())) return "";
   d.setSeconds(d.getSeconds() + totalSecs);
-  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  return d.toLocaleTimeString(DateHelper.locale, { hour: "numeric", minute: "2-digit" });
 };

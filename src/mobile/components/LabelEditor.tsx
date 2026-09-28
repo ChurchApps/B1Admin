@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { Box, Button, Checkbox, Divider, FormControlLabel, Grid, Icon, MenuItem, Paper, Stack, TextField, Typography } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { QRCodeSVG } from "qrcode.react";
@@ -93,7 +93,7 @@ const SAMPLE: Record<string, string> = {
   "person.isBirthdayWeek": "true",
   sessions: "9:00 AM: Preschool",
   securityCode: "BXRC",
-  date: new Date().toLocaleDateString(),
+  date: new Date().toLocaleDateString(DateHelper.locale),
   churchName: "Grace Community Church",
   children: "Emma Johnson - 9:00 AM: Preschool\nNoah Johnson - 9:00 AM: Elementary",
   childrenAllergies: "Emma Johnson - Peanut allergy"

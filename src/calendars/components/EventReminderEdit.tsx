@@ -19,7 +19,7 @@ import {
   Button
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import type { SelectChangeEvent } from "@mui/material/Select";
 
 export interface ReminderDefinition {
@@ -70,7 +70,7 @@ function formatLocalTime(raw: string): string {
 
 function formatFireTime(iso: string): string {
   try {
-    return new Date(iso).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    return new Date(iso).toLocaleString(DateHelper.locale, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   } catch {
     return iso;
   }

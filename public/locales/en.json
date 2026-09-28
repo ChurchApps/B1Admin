@@ -3815,6 +3815,12 @@
       "tabBarNote": "The first three tabs appear in the phone tab bar; the rest are under More.",
       "title": "Navigation"
     },
+    "regionSettingsEdit": {
+      "dateFormat": "Date format",
+      "helperText": "Dates and times across B1 follow this region's format.",
+      "region": "Region",
+      "title": "Region"
+    },
     "roleCheck": {
       "permissionAria": "Permission {label}"
     },

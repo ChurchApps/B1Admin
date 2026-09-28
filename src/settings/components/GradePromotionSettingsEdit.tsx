@@ -1,6 +1,6 @@
 import React from "react";
 import { type GenericSettingInterface } from "@churchapps/helpers";
-import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Switch, Typography } from "@mui/material";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 const MONTHS = [
   "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"
 ];
-const monthLabel = (m: string) => new Date(2000, Number(m) - 1, 1).toLocaleString(undefined, { month: "long" });
+const monthLabel = (m: string) => new Date(2000, Number(m) - 1, 1).toLocaleString(DateHelper.locale, { month: "long" });
 const daysInMonth = (m: string) => new Date(2001, Number(m), 0).getDate();
 
 export const GradePromotionSettingsEdit: React.FC<Props> = (props) => {

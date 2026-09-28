@@ -117,7 +117,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                 <TableRow key={`${date}-${index}`} hover sx={{ "& > td": { verticalAlign: "top" } }}>
                   {index === 0 && (
                     <TableCell rowSpan={dateRecords.length} sx={{ whiteSpace: "nowrap", borderRight: "1px solid", borderColor: "divider", verticalAlign: "top" }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{day.toLocaleDateString(undefined, { weekday: "long" })}</Typography>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{day.toLocaleDateString(DateHelper.locale, { weekday: "long" })}</Typography>
                       <Typography variant="caption" color="text.secondary">{DateHelper.prettyDate(day)}</Typography>
                     </TableCell>
                   )}

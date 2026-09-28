@@ -55,7 +55,7 @@ interface GridRow {
 
 const formatShortDate = (dateStr: string) => {
   if (!dateStr) return "";
-  return DateHelper.toDate(dateStr).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return DateHelper.toDate(dateStr).toLocaleDateString(DateHelper.locale, { month: "short", day: "numeric" });
 };
 
 const cellFilled = (cell: GridCell) => cell.slots.reduce((s, slot) => s + slot.assignments.length, 0);

@@ -4,7 +4,7 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PlanItemInterface, type PlanItemTimeInterface, type SongDetailInterface } from "../../helpers";
 import { type TimeInterface, type PositionInterface } from "@churchapps/helpers";
-import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { shouldShowLabel, shouldShowDescription, shouldShowDuration, duplicatePlanItem } from "./planItemUtils";
 
 interface Props {
@@ -390,7 +390,7 @@ export const PlanItemEdit = (props: Props) => {
                   const timeId = st.id || "";
                   const settings = timeSettings[timeId] || { excluded: false };
                   const checked = !settings.excluded;
-                  const label = st.startTime ? `${st.displayName || ""} · ${new Date(st.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : (st.displayName || "");
+                  const label = st.startTime ? `${st.displayName || ""} · ${new Date(st.startTime).toLocaleTimeString(DateHelper.locale, { hour: "numeric", minute: "2-digit" })}` : (st.displayName || "");
                   const timePositions = sortPositionsForTime(props.positions || [], st);
                   return (
                     <Stack key={st.id} className="serviceTimeSettingRow" direction="row" alignItems="center" spacing={1}>

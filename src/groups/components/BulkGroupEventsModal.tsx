@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, List, ListItem, ListItemText, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { AppDatePicker } from "../../components/AppDatePicker";
@@ -159,7 +159,7 @@ export function BulkGroupEventsModal(props: Props) {
                 {dates.map((d) => (
                   <ListItem key={d} disablePadding secondaryAction={holidayNames[d] ? <Chip size="small" color="warning" variant="outlined" label={holidayNames[d]} /> : undefined}>
                     <Checkbox checked={!excluded.includes(d)} onChange={() => toggleDate(d)} size="small" />
-                    <ListItemText primary={new Date(d + "T12:00:00").toLocaleDateString(undefined, { weekday: "short", year: "numeric", month: "short", day: "numeric" })} />
+                    <ListItemText primary={new Date(d + "T12:00:00").toLocaleDateString(DateHelper.locale, { weekday: "short", year: "numeric", month: "short", day: "numeric" })} />
                   </ListItem>
                 ))}
               </List>

@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 
 interface GroupServiceTimeRow { groupId?: string; serviceTimeId?: string; serviceTimeName?: string }
@@ -28,7 +28,7 @@ const formatSheetDate = (date: string | null): string => {
   if (!date) return "";
   const d = new Date(date + "T00:00:00");
   if (Number.isNaN(d.getTime())) return "";
-  return d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  return d.toLocaleDateString(DateHelper.locale, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 };
 
 const loadSheet = async (group: GroupInterface, serviceTimeId: string | null): Promise<RosterSheet> => {

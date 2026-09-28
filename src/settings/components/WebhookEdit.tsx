@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
-import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale, DateHelper } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import type { WebhookInterface, WebhookDeliveryInterface } from "./WebhooksSection";
@@ -187,7 +187,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
                     <TableCell><Chip size="small" color={statusColor(d.status)} label={d.status} /></TableCell>
                     <TableCell align="right">{d.attemptCount}</TableCell>
                     <TableCell>{d.responseStatus || "—"}</TableCell>
-                    <TableCell>{d.dateCreated ? new Date(d.dateCreated).toLocaleString() : ""}</TableCell>
+                    <TableCell>{d.dateCreated ? new Date(d.dateCreated).toLocaleString(DateHelper.locale) : ""}</TableCell>
                     <TableCell align="right" className="rowActions">
                       <Button size="small" onClick={(e) => { e.stopPropagation(); handleRedeliver(d); }}>{Locale.label("settings.webhookEdit.redeliver")}</Button>
                     </TableCell>

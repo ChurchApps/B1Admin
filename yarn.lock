@@ -377,8 +377,8 @@ __metadata:
   linkType: hard
 
 "@churchapps/apphelper@npm:^1.7.2":
-  version: 1.7.2
-  resolution: "@churchapps/apphelper@npm:1.7.2"
+  version: 1.7.3
+  resolution: "@churchapps/apphelper@npm:1.7.3"
   dependencies:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
@@ -440,7 +440,7 @@ __metadata:
       optional: true
     react-google-recaptcha:
       optional: true
-  checksum: 10c0/bd81f1d96d4b3b6f985fbb30c4e66817efabb7e8acecd157dcab8b5e9158b8343579d7c23824b33a6e84953b37bb3e036d2cad1f60091b37c5640db1483d46fd
+  checksum: 10c0/8c59422dc4198d3dbb80b35af083a70236f7bc2a5741a42486a9be1aa508c6d3f9d35003c66d8dccb6ffecdb258619f476d8037a57c35728939b9f403c32c18a
   languageName: node
   linkType: hard
 
@@ -452,8 +452,8 @@ __metadata:
   linkType: hard
 
 "@churchapps/helpers@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "@churchapps/helpers@npm:2.5.0"
+  version: 2.6.0
+  resolution: "@churchapps/helpers@npm:2.6.0"
   dependencies:
     dayjs: "npm:^1.11.20"
   peerDependencies:
@@ -461,7 +461,7 @@ __metadata:
   peerDependenciesMeta:
     rrule:
       optional: true
-  checksum: 10c0/4b16d8aa7fd8603fafed25d669a442ecd67e79ed39b7642839ee4c4e175d6d71d373145880feeb77da8b931321520b77cbc26e3ebc1e908d54e4c1d63092f38c
+  checksum: 10c0/ab5511849130c4adf0d86ee7fdfd2018fa355806e3da11d841743439eb2f61d2113ef3575f9a82d01d5c1210200cba180cc3e805c55b71c04d56c4698e01d22b
   languageName: node
   linkType: hard
 

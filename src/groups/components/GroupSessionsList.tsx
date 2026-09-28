@@ -151,8 +151,8 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     if (isFuture) dotColor = "grey.400";
     else if (isToday || isSelected) dotColor = "success.main";
 
-    const dateLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : session.displayName || "";
-    const dayLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString("en-US", { weekday: "short" }) : "";
+    const dateLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString(DateHelper.locale, { month: "2-digit", day: "2-digit", year: "numeric" }) : session.displayName || "";
+    const dayLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString(DateHelper.locale, { weekday: "short" }) : "";
     const timeLabel = session.serviceTime?.name || "";
     const count = sessionAttendanceCounts[session.id!];
 

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { Box, Button, Card, CardContent, CircularProgress, Stack, Typography } from "@mui/material";
 import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { getProvider, getAvailableProviders, type IProvider, type DeviceAuthorizationResponse } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
@@ -451,7 +451,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
                       {linkedAuth?.expiresAt && (
                         <Typography variant="caption" color="text.secondary">
                           {new Date(linkedAuth.expiresAt) > new Date()
-                            ? `${Locale.label("plans.contentProviderAuth.expiresPrefix")} ${new Date(linkedAuth.expiresAt).toLocaleDateString()}`
+                            ? `${Locale.label("plans.contentProviderAuth.expiresPrefix")} ${new Date(linkedAuth.expiresAt).toLocaleDateString(DateHelper.locale)}`
                             : Locale.label("plans.contentProviderAuth.tokenExpired")}
                         </Typography>
                       )}

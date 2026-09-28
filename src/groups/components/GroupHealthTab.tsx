@@ -62,7 +62,7 @@ export const GroupHealthTab = (props: Props) => {
   const hasChanges = data.monthly?.some((m) => m.joins > 0 || m.leaves > 0);
 
   const trendData: any[] = [[Locale.label("groups.groupHealth.week"), Locale.label("groups.groupHealth.attendance")]];
-  (trend.data || []).forEach((r) => trendData.push([DateHelper.toDate(r.week).toLocaleDateString(), Number(r.visits)]));
+  (trend.data || []).forEach((r) => trendData.push([DateHelper.toDate(r.week).toLocaleDateString(DateHelper.locale), Number(r.visits)]));
 
   const chartOptions = {
     legend: { position: "bottom", textStyle: chartTheme.textStyle },

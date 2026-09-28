@@ -4,7 +4,7 @@ import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as Men
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PositionInterface, type AssignmentInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, type PlanItemTimeInterface, hasPlansEditAccess } from "../../helpers";
-import { ApiHelper, ArrayHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, Locale, type PersonInterface, DateHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { getProvider, type InstructionItem, type IProvider } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
@@ -735,7 +735,7 @@ export const ServiceOrder = memo((props: Props) => {
                 >
                   {serviceTimes.map((st) => (
                     <MenuItem key={st.id} value={st.id}>
-                      {st.displayName} {st.startTime ? `· ${new Date(st.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : ""}
+                      {st.displayName} {st.startTime ? `· ${new Date(st.startTime).toLocaleTimeString(DateHelper.locale, { hour: "numeric", minute: "2-digit" })}` : ""}
                     </MenuItem>
                   ))}
                   <MenuItem value="elapsed">{Locale.label("plans.serviceOrder.runTimes")}</MenuItem>
