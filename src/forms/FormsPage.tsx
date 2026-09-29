@@ -3,13 +3,10 @@ import { FormEdit, FormPrintDialog, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card, Snackbar } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Undo as UndoIcon, ContentCopy as CopyIcon, Print as PrintIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
+import { Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Snackbar, Link as MuiLink } from "@mui/material";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
-import { CountChip, NavigationTabs, HeaderPrimaryButton, type NavigationTab } from "../components/ui";
-import { AppIconButton } from "../components/ui/AppIconButton";
+import { AddBar, PageHeader, PageContainer, PillTabs, SearchField, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
 
 export const FormsPage = () => {
@@ -17,6 +14,7 @@ export const FormsPage = () => {
   const [selectedTab, setSelectedTab] = React.useState("forms");
   const [showDuplicated, setShowDuplicated] = React.useState(false);
   const [printFormId, setPrintFormId] = React.useState("");
+  const [query, setQuery] = React.useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
 
@@ -30,15 +28,23 @@ export const FormsPage = () => {
     placeholderData: []
   });
 
+  const listFor = (isArchived: boolean) => {
+    const rawData = isArchived ? archivedForms.data : forms.data;
+    return rawData?.filter(form => isArchived ? form.archived === true : !form.archived) || [];
+  };
+
   const getRows = (isArchived: boolean) => {
     const result: JSX.Element[] = [];
-    const rawData = isArchived ? archivedForms.data : forms.data;
-    const formData = rawData?.filter(form => isArchived ? form.archived === true : !form.archived);
+    const term = query.trim().toLowerCase();
+    const formData = listFor(isArchived).filter((form) => !term || (form.name || "").toLowerCase().includes(term));
 
-    if (!formData?.length) {
+    if (!formData.length) {
+      const empty = term
+        ? Locale.label("forms.formsPage.noMatches", "No forms match your search.")
+        : isArchived ? Locale.label("forms.formsPage.noArch") : Locale.label("forms.formsPage.noCustomMsg");
       result.push(
         <TableRow key="0">
-          <TableCell>{isArchived ? Locale.label("forms.formsPage.noArch") : Locale.label("forms.formsPage.noCustomMsg")}</TableCell>
+          <TableCell colSpan={3}>{empty}</TableCell>
         </TableRow>
       );
       return result;
@@ -46,36 +52,33 @@ export const FormsPage = () => {
     formData.forEach((form: FormInterface) => {
       const canEdit =
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
-      const editLink =
-        canEdit && !isArchived ? (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setSelectedFormId(form.id || "")} data-testid={`edit-form-button-${form.id}`} />
-        ) : null;
+      const editable = canEdit && !isArchived;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain || "") + "/forms/" + form.id;
-      const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : <Typography variant="body2" color="text.secondary">{Locale.label("forms.formsPage.personProfileForm")}</Typography>;
-      const printLink = <AppIconButton label={Locale.label("common.print")} icon={<PrintIcon />} onClick={() => setPrintFormId(form.id || "")} data-testid={`print-form-button-${form.id}`} />;
-      const duplicateLink =
-        canEdit && !isArchived ? (
-          <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`} />
-        ) : null;
-      const archiveLink =
-        canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" startIcon={<ArchiveIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.archive")}</Button>
-        ) : null;
-      const unarchiveLink =
-        canEdit && isArchived ? (
-          <Button size="small" variant="outlined" color="success" startIcon={<UndoIcon />} onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.restore")}</Button>
-        ) : null;
+      const formLink = form.contentType === "form"
+        ? <MuiLink href={formUrl} underline="hover" sx={{ overflowWrap: "anywhere" }}>{formUrl}</MuiLink>
+        : <Typography variant="body2" color="text.secondary">{Locale.label("forms.formsPage.personProfileForm")}</Typography>;
       result.push(
         <TableRow key={form.id}>
           <TableCell>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Icon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }}>format_align_left</Icon>{" "}
-              <Link to={"/forms/" + form.id} style={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>{form.name}</Link>
-            </Box>
+            <MuiLink component={Link} to={"/forms/" + form.id} underline="hover" sx={{ fontWeight: 600 }}>{form.name}</MuiLink>
           </TableCell>
           <TableCell>{formLink}</TableCell>
           <TableCell align="right" className="rowActions">
-            {archiveLink || unarchiveLink} {printLink} {duplicateLink} {editLink}
+            <VerbRow sx={{ justifyContent: "flex-end" }}>
+              {editable && <TextAction small onClick={() => setSelectedFormId(form.id || "")} data-testid={`edit-form-button-${form.id}`}>{Locale.label("common.edit")}</TextAction>}
+              <TextAction small onClick={() => setPrintFormId(form.id || "")} data-testid={`print-form-button-${form.id}`}>{Locale.label("common.print")}</TextAction>
+              {editable && <TextAction small onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`}>{Locale.label("forms.formsPage.duplicate")}</TextAction>}
+              {editable && (
+                <TextAction small onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>
+                  {Locale.label("forms.formsPage.archive")}
+                </TextAction>
+              )}
+              {canEdit && isArchived && (
+                <TextAction small onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name || "")}>
+                  {Locale.label("forms.formsPage.restore")}
+                </TextAction>
+              )}
+            </VerbRow>
           </TableCell>
         </TableRow>
       );
@@ -100,23 +103,15 @@ export const FormsPage = () => {
     });
   };
 
-  const getArchivedRows = () => getRows(true);
-
   const getTableHeader = (isArchived: boolean) => {
-    const rows: JSX.Element[] = [];
-    const rawData = isArchived ? archivedForms.data : forms.data;
-    const formData = rawData?.filter(form => isArchived ? form.archived === true : !form.archived);
-    if (!formData?.length) {
-      return rows;
-    }
-    rows.push(
-      <TableRow key="header">
+    if (!listFor(isArchived).length) return null;
+    return (
+      <TableRow>
         <TableCell>{Locale.label("common.name")}</TableCell>
         <TableCell>{Locale.label("forms.formsPage.url")}</TableCell>
         <TableCell></TableCell>
       </TableRow>
     );
-    return rows;
   };
 
   const handleUpdate = () => {
@@ -125,13 +120,8 @@ export const FormsPage = () => {
     setSelectedFormId("notset");
   };
 
-  const getEditSlot = () => {
-    if (selectedFormId === "notset" || selectedTab === "archived") return <></>;
-    if (selectedTab === "forms") return <FormEdit formId={selectedFormId} updatedFunction={handleUpdate}></FormEdit>;
-  };
-
-  const formsCount = forms.data?.filter(form => !form.archived)?.length || 0;
-  const archivedCount = archivedForms.data?.filter(form => form.archived === true)?.length || 0;
+  const formsCount = listFor(false).length;
+  const archivedCount = listFor(true).length;
 
   React.useEffect(() => {
     if (selectedTab === "archived" && archivedCount === 0) setSelectedTab("forms");
@@ -140,69 +130,59 @@ export const FormsPage = () => {
   if (!formPermission) return <PermissionDenied permissions={[Permissions.membershipApi.forms.admin, Permissions.membershipApi.forms.edit]} />;
   if (forms.isLoading || archivedForms.isLoading) return <Loading />;
 
-  const renderTable = (rows: JSX.Element[], isArchived: boolean) => (
-    <Table>
-      <TableHead>{getTableHeader(isArchived)}</TableHead>
-      <TableBody>{rows}</TableBody>
-    </Table>
-  );
+  const isArchived = selectedTab === "archived" && archivedCount > 0;
+  const editing = selectedFormId !== "notset" && !isArchived;
+  const adding = editing && selectedFormId === "";
+  const listLabel = isArchived ? Locale.label("forms.formsPage.archForms") : Locale.label("forms.formsPage.forms");
 
-  const formsCard = (
-    <Card sx={{ mt: getEditSlot() ? 2 : 0 }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={1} alignItems="center">
-            <DescriptionIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6">{Locale.label("forms.formsPage.forms")}</Typography>
-            {formsCount > 0 && <CountChip count={formsCount} />}
-          </Stack>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 0 }}>{renderTable(getRows(false), false)}</Box>
-    </Card>
-  );
-
-  const archivedCard = (
-    <Card>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={1} alignItems="center">
-            <ArchiveIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6">{Locale.label("forms.formsPage.archForms")}</Typography>
-            {archivedCount > 0 && <CountChip count={archivedCount} />}
-          </Stack>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 0 }}>{renderTable(getArchivedRows(), true)}</Box>
-    </Card>
-  );
-
-  const headerTabs: NavigationTab[] = [{ value: "forms", label: Locale.label("forms.formsPage.forms") }];
-  if (archivedCount > 0) headerTabs.push({ value: "archived", label: Locale.label("forms.formsPage.archForms") });
+  const pills = [{ value: "forms", label: Locale.label("forms.formsPage.forms"), "data-testid": "pill-forms" }];
+  if (archivedCount > 0) pills.push({ value: "archived", label: Locale.label("forms.formsPage.archForms"), "data-testid": "pill-archived-forms" });
 
   return (
     <>
       {ConfirmDialogElement}
       {printFormId && <FormPrintDialog formId={printFormId} onClose={() => setPrintFormId("")} />}
       <PageHeader
-        icon={<DescriptionIcon />}
         title={Locale.label("forms.formsPage.forms")}
         subtitle={Locale.label("forms.formsPage.subtitleManage")}
-        tabs={<NavigationTabs selectedTab={selectedTab} onTabChange={setSelectedTab} tabs={headerTabs} onHeader />}>
-        {formPermission && selectedTab !== "archived" && (
-          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setSelectedFormId("")} data-testid="add-form-button">
-            {Locale.label("forms.formsPage.addForm")}
-          </HeaderPrimaryButton>
+        tabs={pills.length > 1 && (
+          <PillTabs
+            tabs
+            options={pills}
+            value={isArchived ? "archived" : "forms"}
+            onChange={(v) => { setSelectedTab(v); setSelectedFormId("notset"); }}
+            aria-label={Locale.label("forms.formsPage.forms")}
+          />
         )}
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
-        {selectedTab === "archived" && archivedCount > 0 ? archivedCard : (
-          <>
-            {getEditSlot()}
-            {formsCard}
-          </>
+      />
+      <PageContainer>
+        {editing && !adding && (
+          <Box sx={{ mb: 3 }}>
+            <FormEdit formId={selectedFormId} updatedFunction={handleUpdate} />
+          </Box>
         )}
-      </Box>
+        <Surface disablePadding>
+          <Box sx={{ p: { xs: 2, md: 3 }, pb: { xs: 1, md: 2 } }}>
+            <SearchField value={query} onChange={setQuery} label={Locale.label("forms.formsPage.find", "Find a form")} data-testid="forms-find" sx={{ maxWidth: 420 }} />
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }} data-testid="forms-count">
+              {(isArchived ? archivedCount : formsCount) + " " + listLabel.toLowerCase()}
+            </Typography>
+          </Box>
+          <Box sx={tableScrollSx} role="region" aria-label={listLabel} tabIndex={0}>
+            <Table>
+              <TableHead>{getTableHeader(isArchived)}</TableHead>
+              <TableBody>{getRows(isArchived)}</TableBody>
+            </Table>
+          </Box>
+        </Surface>
+        {!isArchived && (!editing || adding) && (
+          <AddBar>
+            {adding
+              ? <FormEdit formId="" updatedFunction={handleUpdate} />
+              : <TextAction onClick={() => setSelectedFormId("")} data-testid="add-form-button">{Locale.label("forms.formsPage.addForm")}</TextAction>}
+          </AddBar>
+        )}
+      </PageContainer>
       <Snackbar
         open={showDuplicated}
         onClose={() => setShowDuplicated(false)}

@@ -1,7 +1,7 @@
 import React from "react";
 import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, ErrorMessages, Locale } from "@churchapps/apphelper";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { B1AdminPersonHelper } from "../../helpers";
 
 interface Props {
@@ -17,7 +17,7 @@ export const AISearch = (props: Props) => {
   const [isSearched, setIsSearched] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<string[]>([]);
 
-  const handleSearch = async (e: any) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrors([]);
@@ -48,35 +48,33 @@ export const AISearch = (props: Props) => {
   };
 
   return (
-    <DisplayBox headerText={Locale.label("people.aiSearch.title")} headerIcon="person_search">
+    <Box component="form" onSubmit={handleSearch} id="aiSearch" sx={{ maxWidth: 720 }}>
       <ErrorMessages errors={errors} />
       <TextField
         fullWidth
         multiline
-        minRows={4}
+        minRows={2}
         maxRows={6}
+        id="aiSearchText"
+        label={Locale.label("people.aiSearch.title")}
         placeholder={Locale.label("people.aiSearch.placeholder")}
         value={text}
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
+        onChange={(e) => setText(e.target.value)}
+        autoFocus
       />
-      <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
-        {Locale.label("people.aiSearch.examples")}
-        <br />
-        {Locale.label("people.aiSearch.exampleMen")}
-        <br />{Locale.label("people.aiSearch.exampleWomen")}
+      <Typography variant="caption" color="text.secondary" component="p" sx={{ my: 1 }}>
+        {Locale.label("people.aiSearch.examples")} {Locale.label("people.aiSearch.exampleMen").replace(/^- /, "")} {Locale.label("people.aiSearch.exampleWomen").replace(/^- /, "")}
       </Typography>
-      <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-        <Button fullWidth variant="contained" onClick={handleSearch} disabled={isLoading || !text || text === ""} sx={{ flex: 1 }}>
+      <Stack direction="row" spacing={1}>
+        <Button type="submit" variant="contained" disabled={isLoading || !text}>
           {isLoading ? Locale.label("people.aiSearch.searching") : Locale.label("people.aiSearch.search")}
         </Button>
         {(text || isSearched) && (
-          <Button fullWidth variant="outlined" onClick={handleClear} disabled={isLoading} sx={{ flex: 1 }} data-testid="ai-search-clear">
+          <Button variant="outlined" onClick={handleClear} disabled={isLoading} data-testid="ai-search-clear">
             {Locale.label("people.aiSearch.clearSearch", "Clear Search")}
           </Button>
         )}
       </Stack>
-    </DisplayBox>
+    </Box>
   );
 };

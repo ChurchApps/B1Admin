@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, Locale } from "@churchapps/apphelper";
+import { UserHelper, ApiHelper, Permissions, type ChurchInterface, Locale } from "@churchapps/apphelper";
 import { type RoleInterface, type RolePermissionInterface } from "@churchapps/helpers";
-import { Divider, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Box, Divider, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, Groups as GroupsIcon, Lock as LockIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { SettingsPanel } from "./SettingsPanel";
 
 interface Props {
   selectRoleId: (id: string) => void;
@@ -184,17 +186,19 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   return (
     <>
       {ConfirmDialogElement}
-      <DisplayBox id="rolesBox" headerText={Locale.label("settings.roles.roles")} editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
-        <Table id="roleMemberTable">
-          <TableHead>
-            <TableRow>
-              <TableCell>{Locale.label("common.name")}</TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{rows}</TableBody>
-        </Table>
-      </DisplayBox>
+      <SettingsPanel id="rolesBox" headerText={Locale.label("settings.roles.roles")} editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("settings.roles.roles")} tabIndex={0}>
+          <Table id="roleMemberTable">
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("common.name")}</TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{rows}</TableBody>
+          </Table>
+        </Box>
+      </SettingsPanel>
     </>
   );
 });

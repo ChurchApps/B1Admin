@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Typography } from "@mui/material";
 import { CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
 import { ApiHelper, PersonAvatar, DateHelper } from "@churchapps/apphelper";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
@@ -55,7 +55,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
       {error && <Alert severity="error" sx={{ mb: 1 }} onClose={() => setError("")}>{error}</Alert>}
       <Stack spacing={1}>
         {requests.map((req) => (
-          <Paper key={req.id} variant="outlined" sx={{ p: 1.5 }} data-testid={`pending-request-${req.id}`}>
+          <Box key={req.id} sx={{ p: 2, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)" }} data-testid={`pending-request-${req.id}`}>
             <Stack direction="row" spacing={2} alignItems="center">
               <PersonAvatar person={req.person!} size="small" />
               <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -98,7 +98,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
                 Decline
               </Button>
             </Stack>
-          </Paper>
+          </Box>
         ))}
       </Stack>
 

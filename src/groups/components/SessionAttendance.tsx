@@ -2,10 +2,10 @@ import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface, type GroupMemberInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { ApiHelper, ArrayHelper, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
-import { Alert, Avatar, Box, Button, Checkbox, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Checkbox, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip, ExportButton } from "../../components/ui";
+import { CountChip, ExportButton, Surface } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -211,11 +211,11 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
 
   if (!session) {
     return (
-      <Paper sx={{ p: 4, textAlign: "center" }}>
+      <Surface sx={{ textAlign: "center" }}>
         <Typography variant="body1" color="text.secondary">
           {Locale.label("groups.groupSessions.selectSession")}
         </Typography>
-      </Paper>
+      </Surface>
     );
   }
 
@@ -250,11 +250,11 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   });
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Surface>
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 2 }}>
         <Box>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="h6" component="div" data-cy="session-present-msg">
+            <Typography variant="h3" component="h2" data-cy="session-present-msg">
               {Locale.label("groups.groupSessions.attFor")} {group.name}
             </Typography>
             {visitSessions.length > 0 && <CountChip count={visitSessions.length} />}
@@ -318,6 +318,6 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           </Button>
         </Stack>
       )}
-    </Paper>
+    </Surface>
   );
 });

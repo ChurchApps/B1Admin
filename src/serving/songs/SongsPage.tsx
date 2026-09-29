@@ -1,11 +1,11 @@
 import React, { memo, useMemo, useCallback } from "react";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Link, Navigate } from "react-router-dom";
-import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment, Tooltip, Checkbox, FormControlLabel, TablePagination } from "@mui/material";
-import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, PlayCircle as PlayIcon, Timer as TimerIcon, Person as ArtistIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { ApiHelper, Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
+import { Link as RouterLink, Navigate } from "react-router-dom";
+import { Button, Box, Stack, Avatar, Link, Table, TableBody, TableCell, TableHead, TableRow, Checkbox, TablePagination, Typography } from "@mui/material";
+import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { EmptyState } from "../../components/ui/EmptyState";
-import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../components/ui";
+import { AddBar, BulkBar, PageContainer, PageHeader, SearchField, Surface, TextAction, tableScrollSx } from "../../components/ui";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useConfirmDelete } from "../../hooks";
@@ -15,7 +15,6 @@ export const SongsPage = memo(() => {
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const [redirect, setRedirect] = React.useState("");
   const [searchFilter, setSearchFilter] = React.useState("");
-  const [showSearchField, setShowSearchField] = React.useState(false);
   const [failedImages, setFailedImages] = React.useState<Set<string>>(new Set());
   const [selected, setSelected] = React.useState<Set<string>>(new Set());
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -146,107 +145,84 @@ export const SongsPage = memo(() => {
 
     if ((songs.data?.songDetails?.length ?? 0) === 0) {
       if (searchFilter.trim()) {
-        return <EmptyState icon={<SearchIcon />} title={Locale.label("songs.library.noResults") || "No songs match your search criteria."} />;
+        return <EmptyState variant="plain" icon={<SearchIcon />} title={Locale.label("songs.library.noResults") || "No songs match your search criteria."} />;
       }
       return (
         <EmptyState
+          variant="plain"
           icon={<LibraryIcon />}
           title={Locale.label("songs.library.empty.title") || "No Songs Found"}
           description={Locale.label("songs.library.empty.message") || "Get started by adding your first song to the library."}
-          action={canEdit && (
-            <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={() => setShowSearch(true)} size="large">
-              {Locale.label("songs.library.empty.action") || "Add First Song"}
-            </Button>
-          )}
         />
       );
     }
 
     if (filteredSongs && filteredSongs.length === 0) {
-      return <EmptyState icon={<SearchIcon />} title={Locale.label("songs.library.noResults") || "No songs match your search criteria."} />;
+      return <EmptyState variant="plain" icon={<SearchIcon />} title={Locale.label("songs.library.noResults") || "No songs match your search criteria."} />;
     }
 
     return (
-      <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "divider" } }}>
-        {canEdit && (
-          <FormControlLabel
-            sx={{ ml: 2, mb: 1 }}
-            control={
-              <Checkbox
-                checked={allVisibleSelected}
-                indeterminate={!allVisibleSelected && visibleSelectedCount > 0}
-                onChange={(e) => handleSelectAll(e.target.checked)}
-                data-testid="select-all-songs"
-                slotProps={{ input: { "aria-label": Locale.label("songs.songsPage.selectAll") || "Select all" } }}
-              />
-            }
-            label={
-              <Typography variant="body2" color="text.secondary">
-                {allVisibleSelected ? Locale.label("songs.songsPage.deselectAll") || "Deselect all" : Locale.label("songs.songsPage.selectAll") || "Select all"}
-              </Typography>
-            }
-          />
-        )}
-        <Stack spacing={2}>
-          {filteredSongs?.map((songDetail) => (
-            <Card key={(songDetail as any).songId || songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
-              <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  {canEdit && (
+      <>
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("songs.title") || "Songs"} tabIndex={0}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {canEdit && (
+                  <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selected.has((songDetail as any).songId || songDetail.id)}
-                      onChange={() => toggleSelected((songDetail as any).songId || songDetail.id)}
-                      aria-label={Locale.label("common.select") || "Select"}
-                      data-testid="song-select-checkbox"
+                      checked={allVisibleSelected}
+                      indeterminate={!allVisibleSelected && visibleSelectedCount > 0}
+                      onChange={(e) => handleSelectAll(e.target.checked)}
+                      data-testid="select-all-songs"
+                      slotProps={{ input: { "aria-label": allVisibleSelected ? Locale.label("songs.songsPage.deselectAll") || "Deselect all" : Locale.label("songs.songsPage.selectAll") || "Select all" } }}
                     />
-                  )}
-                  <Avatar
-                    src={songDetail.thumbnail && !failedImages.has(songDetail.thumbnail) ? songDetail.thumbnail : undefined}
-                    sx={{ width: 60, height: 60, bgcolor: "primary.light" }}
-                    onError={handleImageError}>
-                    <MusicIcon sx={{ fontSize: 28, color: "primary.main" }} />
-                  </Avatar>
-
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography
-                      variant="h6"
-                      component={Link}
-                      to={`/serving/songs/${(songDetail as any).songId}`}
-                      sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600, fontSize: "1.1rem", "&:hover": { textDecoration: "underline" }, display: "block", mb: 0.5 }}>
-                      {songDetail.title}
-                    </Typography>
-
-                    <Stack direction="row" spacing={2} flexWrap="wrap" alignItems="center">
-                      {songDetail.artist && (
-                        <Chip icon={<ArtistIcon />} label={songDetail.artist} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" }} />
-                      )}
-
-                      {!!songDetail.seconds && (
-                        <Chip
-                          icon={<TimerIcon />}
-                          label={formatSeconds(songDetail.seconds)}
-                          variant="outlined"
-                          size="small"
-                          sx={{ color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" }}
+                  </TableCell>
+                )}
+                <TableCell>{Locale.label("songs.songsPage.songs") || "Song"}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredSongs?.map((songDetail) => {
+                const songId = (songDetail as any).songId || songDetail.id;
+                return (
+                  <TableRow key={songId}>
+                    {canEdit && (
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={selected.has(songId)}
+                          onChange={() => toggleSelected(songId)}
+                          aria-label={Locale.label("common.select") || "Select"}
+                          data-testid="song-select-checkbox"
                         />
-                      )}
-                    </Stack>
-                  </Box>
-
-                  <Tooltip title={`Play ${songDetail.title}`}>
-                    <IconButton
-                      component={Link}
-                      to={`/serving/songs/${(songDetail as any).songId}`}
-                      sx={{ color: "primary.main", "&:hover": { backgroundColor: "primary.light", color: "primary.dark" } }}
-                      aria-label={`Play ${songDetail.title}`}>
-                      <PlayIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              </CardContent>
-            </Card>
-          ))}
-        </Stack>
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Avatar
+                          variant="rounded"
+                          src={songDetail.thumbnail && !failedImages.has(songDetail.thumbnail) ? songDetail.thumbnail : undefined}
+                          sx={{ width: 40, height: 40, bgcolor: "var(--b1-selected)", color: "var(--b1-on-selected)" }}
+                          onError={handleImageError}>
+                          <MusicIcon />
+                        </Avatar>
+                        <Box sx={{ minWidth: 0 }}>
+                          <Link component={RouterLink} to={`/serving/songs/${(songDetail as any).songId}`} underline="hover" sx={{ fontWeight: 600 }}>
+                            {songDetail.title}
+                          </Link>
+                          {(songDetail.artist || songDetail.seconds) && (
+                            <Typography variant="body2" color="text.secondary">
+                              {[songDetail.artist, songDetail.seconds ? formatSeconds(songDetail.seconds) : ""].filter(Boolean).join(" · ")}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Box>
         <TablePagination
           component="div"
           count={songs.data?.count ?? 0}
@@ -255,9 +231,8 @@ export const SongsPage = memo(() => {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleRowsPerPageChange}
           rowsPerPageOptions={[10, 25, 50]}
-          sx={{ mt: 2 }}
         />
-      </Box>
+      </>
     );
   }, [
     songs.isLoading,
@@ -280,64 +255,44 @@ export const SongsPage = memo(() => {
 
   if (redirect) return <Navigate to={redirect} />;
 
+  const selectedNames = (filteredSongs || []).filter((sd) => selected.has((sd as any).songId || sd.id)).slice(0, 3).map((sd) => sd.title).join(", ");
+
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<MusicIcon />} title={Locale.label("songs.title") || Locale.label("songs.songsPage.songs")} subtitle={Locale.label("songs.songsPage.subtitle")}>
-        <HeaderSecondaryButton startIcon={<SearchIcon />} onClick={() => setShowSearchField(!showSearchField)}>
-          {Locale.label("songs.songsPage.search")}
-        </HeaderSecondaryButton>
-        {canEdit && selected.size > 0 && (
-          <HeaderSecondaryButton onClick={handleBulkDelete} startIcon={<DeleteIcon />} data-testid="delete-selected-button">
-            {(Locale.label("songs.songsPage.deleteSelected") || "Delete Selected") + " (" + selected.size + ")"}
-          </HeaderSecondaryButton>
-        )}
+      <PageHeader title={Locale.label("songs.title") || Locale.label("songs.songsPage.songs")} subtitle={Locale.label("songs.songsPage.subtitle")} />
+
+      <PageContainer>
+        <Stack spacing={2}>
+          <SearchField
+            label={Locale.label("songs.songsPage.searchSongs")}
+            placeholder={Locale.label("songs.search.placeholder") || "Search songs by title or artist..."}
+            value={searchFilter}
+            onChange={(v) => {
+              setSearchFilter(v);
+              setPage(0);
+            }}
+          />
+          <Surface disablePadding>{songsContent}</Surface>
+        </Stack>
+
         {canEdit && (
-          <HeaderPrimaryButton
-            onClick={() => setShowSearch(true)}
-            startIcon={<AddIcon />}
-            data-testid="add-song-button"
-            aria-label={Locale.label("songs.songsPage.addSongAria")}>
-            {Locale.label("songs.addSong") || "Add Song"}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        {(showSearchField || searchFilter) && songs.data && ((songs.data.songDetails?.length ?? 0) > 0 || searchFilter) && (
-          <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-            <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                <SearchIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">
-                  {Locale.label("songs.songsPage.searchSongs")}
-                </Typography>
-              </Stack>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder={Locale.label("songs.search.placeholder") || "Search songs by title or artist..."}
-                value={searchFilter}
-                onChange={(e) => {
-                  setSearchFilter(e.target.value);
-                  setPage(0);
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon color="action" />
-                    </InputAdornment>
-                  )
-                }}
-                autoFocus={showSearchField}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2, backgroundColor: "background.subtle", "&:hover": { backgroundColor: "background.paper" }, "&.Mui-focused": { backgroundColor: "background.paper" } } }}
-              />
-            </CardContent>
-          </Card>
+          <AddBar>
+            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowSearch(true)} data-testid="add-song-button" aria-label={Locale.label("songs.songsPage.addSongAria")}>
+              {Locale.label("songs.addSong") || "Add Song"}
+            </Button>
+          </AddBar>
         )}
 
-        {songsContent}
-      </Box>
+        {canEdit && (
+          <BulkBar count={selected.size} names={selectedNames} data-testid="songs-bulk-bar">
+            <TextAction small onClick={handleBulkDelete} data-testid="delete-selected-button">
+              {(Locale.label("songs.songsPage.deleteSelected") || "Delete Selected") + " (" + selected.size + ")"}
+            </TextAction>
+            <TextAction small onClick={() => setSelected(new Set())}>{Locale.label("common.clear", "Clear")}</TextAction>
+          </BulkBar>
+        )}
+      </PageContainer>
 
       {showSearch && canEdit && <SongSearchDialog onClose={() => setShowSearch(false)} onSelect={handleAdd} />}
     </>

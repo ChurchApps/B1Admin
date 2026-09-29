@@ -9,8 +9,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Divider,
-  Icon,
-  Chip
+  Icon
 } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -20,7 +19,7 @@ import {
 } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
-import { CardWithHeader, EmptyState } from "../../components/ui";
+import { CardWithHeader, EmptyState, StatusBadge } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useReorderableLinks } from "../../hooks";
 
@@ -54,7 +53,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
           {(tab as any)?.photo ? (
             <Box
               sx={{
-                borderRadius: "8px",
+                borderRadius: "var(--b1-radius-control)",
                 overflow: "hidden",
                 width: 71,
                 height: 40,
@@ -72,14 +71,14 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
           ) : (
             <Box
               sx={{
-                backgroundColor: "primary.main",
-                borderRadius: "8px",
+                backgroundColor: "action.hover",
+                borderRadius: "var(--b1-radius-control)",
                 width: 71,
                 height: 40,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "white"
+                color: "text.secondary"
               }}
             >
               <Icon sx={{ fontSize: 20 }}>{tab.icon}</Icon>
@@ -89,14 +88,10 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
         <ListItemText
           primary={
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              <Typography variant="body1" component="h3" sx={{ fontWeight: 600 }}>
                 {tab.text || Locale.label("settings.appTabs.untitled")}
               </Typography>
-              <Chip
-                label={getVisibilityLabel((tab as any).visibility)}
-                size="small"
-                sx={{ fontSize: "0.7rem", height: 20 }}
-              />
+              <StatusBadge>{getVisibilityLabel((tab as any).visibility)}</StatusBadge>
             </Stack>
           }
           secondary={

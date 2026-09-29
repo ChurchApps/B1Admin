@@ -1,5 +1,5 @@
-import { Button, Typography, Stack, Chip } from "@mui/material";
-import { Add as AddIcon, Edit as EditIcon, VideoCall as VideoCallIcon } from "@mui/icons-material";
+import { Button, Typography, Stack } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
@@ -8,6 +8,7 @@ import { DisplayBox } from "@churchapps/apphelper";
 import type { StreamingServiceInterface } from "@churchapps/helpers";
 import { ServiceEdit } from "./ServiceEdit";
 import { TableList } from "./TableList";
+import { StatusBadge } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Services: React.FC = () => {
@@ -22,10 +23,6 @@ export const Services: React.FC = () => {
       startIcon={<AddIcon />}
       onClick={handleAdd}
       data-testid="add-service-button"
-      sx={{
-        textTransform: "none",
-        fontWeight: 600
-      }}
     >
       {Locale.label("sermons.liveStreamTimes.servicesTab.addService")}
     </Button>
@@ -64,16 +61,11 @@ export const Services: React.FC = () => {
         <tr key={service.id}>
           <td>
             <Stack direction="row" spacing={1} alignItems="center">
-              <VideoCallIcon sx={{ fontSize: 20, color: "primary.main" }} />
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 {service.label}
               </Typography>
               {!!service.recurring && (
-                <Chip
-                  label={Locale.label("sermons.liveStreamTimes.servicesTab.weekly")}
-                  size="small"
-                  sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }}
-                />
+                <StatusBadge tone="success">{Locale.label("sermons.liveStreamTimes.servicesTab.weekly")}</StatusBadge>
               )}
             </Stack>
           </td>

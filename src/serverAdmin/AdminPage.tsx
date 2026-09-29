@@ -96,12 +96,18 @@ export const AdminPage = () => {
     { key: "migrations", title: Locale.label("serverAdmin.adminPage.migrations"), subtitle: Locale.label("serverAdmin.adminPage.migrationsSubtitle"), icon: <MigrationsIcon />, color: "warning" }
   ];
 
+  const groups = [
+    { label: Locale.label("serverAdmin.adminPage.groupDirectory", "Directory"), keys: ["churches", "users", "impersonate"] },
+    { label: Locale.label("serverAdmin.adminPage.groupOperations", "Operations"), keys: ["jobs", "commons", "usage"] },
+    { label: Locale.label("serverAdmin.adminPage.groupSystem", "System"), keys: ["translation", "serverHealth", "migrations"] }
+  ];
+
   return (
     <SettingsPage>
       <SettingsLayout
         title={Locale.label("serverAdmin.adminPage.servAdmin")}
         subtitle={Locale.label("serverAdmin.adminPage.subtitle")}
-        nav={<SectionNav sections={sections} selected={selectedTab} onSelect={onSelect} />}>
+        nav={<SectionNav sections={sections} selected={selectedTab} onSelect={onSelect} groups={groups} hideSubtitles />}>
         {getCurrentTab()}
       </SettingsLayout>
     </SettingsPage>

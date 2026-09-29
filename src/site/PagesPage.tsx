@@ -1,23 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, Button, Card, Chip, Grid, Icon, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import {
-  Add as AddIcon,
-  Article as ArticleIcon,
-  ChevronRight as ChevronRightIcon,
-  Description as DescriptionIcon,
-  Edit as EditIcon,
-  ExpandMore as ExpandMoreIcon,
-  AutoAwesomeMosaic as AutoAwesomeMosaicIcon,
-  Public as PublicIcon,
-  Settings as SettingsIcon,
-  Transform as TransformIcon,
-  Visibility as VisibilityIcon,
-  Web as WebIcon
-} from "@mui/icons-material";
-import { ApiHelper, PageHeader, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
+import { Alert, Box, Button, Icon, Link as MuiLink, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { ChevronRight as ChevronRightIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { ApiHelper, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AddPageModal, NavLinkEdit, GenerateSiteModal, PageLinkEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
 import { SiteTemplatePicker } from "./admin/templates/SiteTemplatePicker";
 import { PageHelper, EnvironmentHelper } from "../helpers";
@@ -26,12 +12,11 @@ import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers
 import type { PageInterface } from "../helpers/Interfaces";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, HeaderPrimaryButton, HeaderSecondaryButton, hoverRowSx } from "../components/ui";
+import { AddBar, PageContainer, PageHeader, RecordHeading, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { clearSiteCache } from "./siteCache";
 import { useConfirmDelete, useRequirePermission } from "../hooks";
 
 export const PagesPage = () => {
-  const theme = useTheme();
   const windowWidth = useWindowWidth();
   const navigate = useNavigate();
   const [pageTree, setPageTree] = useState<PageLink[]>([]);
@@ -71,63 +56,38 @@ export const PagesPage = () => {
     const result: React.ReactElement[] = [];
     items.forEach((item) => {
       result.push(
-        <TableRow key={item.url || item.pageId || item.title} sx={hoverRowSx}>
-          <TableCell className="rowActions" sx={{ width: 120 }}>
+        <TableRow key={item.url || item.pageId || item.title}>
+          <TableCell>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              {getExpandControl(item, level)}
+              <MuiLink href={liveUrl(item.url)} target="_blank" rel="noopener noreferrer" underline="hover" title={Locale.label("site.pagesPage.viewLivePage")} sx={{ typography: "body2", fontWeight: 600 }}>
+                {item.url}
+              </MuiLink>
+              {!item.custom && <StatusBadge>{Locale.label("site.pagesPage.generated")}</StatusBadge>}
+            </Stack>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2">{item.title}</Typography>
+          </TableCell>
+          <TableCell align="right">
             {item.custom ? (
-              <Stack direction="row" spacing={0.5}>
-                <AppIconButton
-                  label={Locale.label("site.pagePreview.editContent")}
-                  icon={<EditIcon />}
-                  onClick={() => {
-                    navigate("/site/pages/" + item.pageId);
-                  }}
-                  data-testid="edit-content-button"
-                />
-                <AppIconButton
-                  label={Locale.label("site.pagePreview.pageSettings")}
-                  icon={<SettingsIcon />}
-                  onClick={() => openSettings(item.pageId!)}
-                  data-testid="page-settings-button"
-                />
-              </Stack>
+              <VerbRow sx={{ justifyContent: "flex-end", flexWrap: "nowrap" }}>
+                <TextAction small to={"/site/pages/" + item.pageId} component={Link} data-testid="edit-content-button">{Locale.label("site.pagePreview.editContent")}</TextAction>
+                <TextAction small onClick={() => openSettings(item.pageId!)} data-testid="page-settings-button">{Locale.label("site.pagePreview.pageSettings")}</TextAction>
+              </VerbRow>
             ) : (
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<TransformIcon />}
+              <TextAction
+                small
                 onClick={async () => {
                   if (await confirm(Locale.label("site.pagesPage.confirmConvert"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
                     setRequestedSlug(item.url);
                     setAddMode("unlinked");
                   }
                 }}
-                color="secondary"
-                data-testid="convert-page-button"
-                sx={{ textTransform: "none", minWidth: "auto", fontSize: "0.75rem" }}>
+                data-testid="convert-page-button">
                 {Locale.label("site.pages.convert")}
-              </Button>
+              </TextAction>
             )}
-          </TableCell>
-          <TableCell>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              {getExpandControl(item, level)}
-              <Typography
-                variant="body2"
-                sx={{ fontFamily: "monospace", cursor: "pointer", color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}
-                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain || "") + item.url, "_blank")}>
-                {item.url}
-              </Typography>
-              <AppIconButton
-                label={Locale.label("site.pagesPage.viewLivePage")}
-                icon={<VisibilityIcon sx={{ fontSize: 16 }} />}
-                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain || "") + item.url, "_blank")}
-                sx={{ p: 0.5 }}
-              />
-              {!item.custom && <Chip label={Locale.label("site.pagesPage.generated")} size="small" color="default" sx={{ fontSize: "0.7rem", height: 18 }} />}
-            </Stack>
-          </TableCell>
-          <TableCell>
-            <Typography variant="body2">{item.title}</Typography>
           </TableCell>
         </TableRow>
       );
@@ -135,6 +95,8 @@ export const PagesPage = () => {
     });
     return result;
   };
+
+  const liveUrl = (path: string) => EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain || "") + path;
 
   const openSettings = (pageId: string) => {
     ApiHelper.get("/pages/" + pageId, "ContentApi").then((data: PageInterface) => setSettingsPage(data));
@@ -214,38 +176,17 @@ export const PagesPage = () => {
     }
   };
 
+  const newNavLink = () => ({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "", siteId } as LinkInterface);
+
   const addLinkCallback = () => {
     loadData();
     setEditLink(null);
-  };
-
-  const getPageStats = () => {
-    const countPages = (items: PageLink[]): { custom: number; auto: number; total: number } => {
-      let custom = 0;
-      let auto = 0;
-
-      items.forEach((item) => {
-        if (item.custom) custom++;
-        else auto++;
-
-        if (item.children) {
-          const childStats = countPages(item.children);
-          custom += childStats.custom;
-          auto += childStats.auto;
-        }
-      });
-
-      return { custom, auto, total: custom + auto };
-    };
-
-    return countPages(pageTree);
   };
 
   useEffect(() => {
     loadData();
   }, [siteId]);
 
-  const pageStats = getPageStats();
   const checked = showLogin?.value === "true" ? true : false;
   const publicSiteHidden = hidePublicSite?.value === "true";
 
@@ -255,9 +196,9 @@ export const PagesPage = () => {
     return (
       <Box data-testid="pages-small-screen" sx={{ minHeight: "calc(100vh - 64px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", px: 3, gap: 1.5 }}>
         <Icon sx={{ fontSize: 48, color: "text.secondary" }}>devices</Icon>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>{Locale.label("site.contentEditor.smallScreenTitle")}</Typography>
+        <Typography variant="h3" component="h1">{Locale.label("site.contentEditor.smallScreenTitle")}</Typography>
         <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 360 }}>{Locale.label("site.pagesPage.desktopOnly")}</Typography>
-        <Button variant="contained" disableElevation onClick={() => navigate("/")} sx={{ textTransform: "none", fontWeight: 600, mt: 1 }}>
+        <Button variant="contained" onClick={() => navigate("/")} sx={{ mt: 1 }}>
           {Locale.label("common.back")}
         </Button>
       </Box>
@@ -330,169 +271,90 @@ export const PagesPage = () => {
           siteId={siteId}
         />
       )}
-      <PageHeader
-        icon={<WebIcon />}
-        title={Locale.label("site.pagesPage.websitePages")}
-        subtitle={Locale.label("site.pagesPage.subtitle")}
-        statistics={[
-          { icon: <DescriptionIcon />, value: pageStats.total.toString(), label: Locale.label("site.pagesPage.totalPages") },
-          { icon: <EditIcon />, value: pageStats.custom.toString(), label: Locale.label("site.pagesPage.customPages") },
-          ...(publicSiteHidden ? [] : [{ icon: <PublicIcon />, value: pageStats.auto.toString(), label: Locale.label("site.pagesPage.autoGenerated") }])
-        ]}>
+      <PageHeader title={Locale.label("site.pagesPage.websitePages")} subtitle={Locale.label("site.pagesPage.subtitle")}>
         <SiteSwitcher siteId={siteId} onChange={setSiteId} sites={sites} onManage={() => setShowSites(true)} />
-        <HeaderSecondaryButton
-          startIcon={<AutoAwesomeMosaicIcon />}
-          onClick={() => {
-            setShowSiteTemplates(true);
-          }}
-          data-testid="start-from-template-button">
-          {Locale.label("site.pagesPage.startFromTemplate")}
-        </HeaderSecondaryButton>
-        {/* ponytail: AI website builder temporarily disabled — restore this button to re-enable
-        <HeaderSecondaryButton
-          startIcon={<AutoAwesomeIcon />}
-          onClick={() => {
-            setShowGenerateSite(true);
-          }}
-          data-testid="generate-site-button">
-          {Locale.label("site.generateSite.button")}
-        </HeaderSecondaryButton>
-        */}
-        <HeaderPrimaryButton
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setAddMode("unlinked");
-          }}
-          data-testid="add-page-button">
-          {Locale.label("site.pagesPage.addPage")}
-        </HeaderPrimaryButton>
       </PageHeader>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.background.paper, paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
-          <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
-          <div>
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Typography sx={{ fontSize: "13.5px", fontStyle: "italic" }}>{Locale.label("site.pagesPage.showLogin")}</Typography>
-                <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
-                  <Icon color="primary" sx={{ fontSize: 18, cursor: "pointer" }}>
-                    info
-                  </Icon>
-                </Tooltip>
-              </Stack>
-              <Switch
-                onChange={handleSwitchChange}
-                checked={showLogin ? checked : true}
-                slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
-                data-testid="show-login-switch"
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Typography sx={{ fontSize: "13.5px", fontStyle: "italic" }}>{Locale.label("site.pagesPage.hidePublicSite")}</Typography>
-                <Tooltip title={Locale.label("site.pagesPage.hidePublicSiteTooltip")} arrow>
-                  <Icon color="primary" sx={{ fontSize: 18, cursor: "pointer" }}>
-                    info
-                  </Icon>
-                </Tooltip>
-              </Stack>
-              <Switch
-                onChange={handleHidePublicSiteChange}
-                checked={publicSiteHidden}
-                slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.hidePublicSite") } }}
-                data-testid="hide-public-site-switch"
-              />
-            </Stack>
-            {publicSiteHidden && (
-              <Alert severity="warning" sx={{ mb: 2, fontSize: "12.5px" }} data-testid="hide-public-site-warning">
-                {Locale.label("site.pagesPage.hidePublicSiteWarning")}
-              </Alert>
-            )}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
-            <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
-            <div style={{ flexShrink: 0, marginLeft: 8 }}>
-              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "", siteId } as LinkInterface)} data-testid="add-navigation-link" />
-            </div>
-          </div>
-          <SiteNavigation links={links} refresh={loadData} handleDrop={handleDrop} siteId={siteId} />
-        </Grid>
-        <Grid size={{ xs: 12, md: 10 }} style={{ position: "relative", zIndex: 1 }}>
-          <Box sx={{ p: 3 }}>
-            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <ArticleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">
-                      {Locale.label("site.pagesPage.pages")}
-                    </Typography>
-                    {pageStats.total > 0 && <CountChip count={pageStats.total} />}
-                  </Stack>
-                </Stack>
-              </Box>
-              <Box sx={{ p: 2 }}>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  {Locale.label("site.pagesPage.description")}
-                </Typography>
+      <PageContainer>
+        <VerbRow sx={{ mb: 3 }}>
+          <TextAction onClick={() => setShowSiteTemplates(true)} data-testid="start-from-template-button">{Locale.label("site.pagesPage.startFromTemplate")}</TextAction>
+          {/* ponytail: AI website builder temporarily disabled — restore this verb to re-enable
+          <TextAction onClick={() => setShowGenerateSite(true)} data-testid="generate-site-button">{Locale.label("site.generateSite.button")}</TextAction>
+          */}
+        </VerbRow>
 
-                {pageTree.length === 0 ? (
-                  <Box sx={{ textAlign: "center", py: 8 }}>
-                    <ArticleIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
-                    <Typography variant="h6" color="text.secondary" gutterBottom>
-                      {Locale.label("site.pagesPage.noPagesFound")}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                      {Locale.label("site.pagesPage.getStarted")}
-                    </Typography>
-                    <Stack direction="row" spacing={2} justifyContent="center">
-                      <Button
-                        variant="contained"
-                        startIcon={<AutoAwesomeMosaicIcon />}
-                        onClick={() => {
-                          setShowSiteTemplates(true);
-                        }}>
-                        {Locale.label("site.pagesPage.startFromTemplate")}
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        startIcon={<AddIcon />}
-                        onClick={() => {
-                          setAddMode("unlinked");
-                        }}>
-                        {Locale.label("site.pagesPage.addFirstPage")}
-                      </Button>
-                    </Stack>
-                  </Box>
-                ) : (
-                  <Table sx={{ minWidth: 650 }}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                            {Locale.label("site.pagesPage.actions")}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                            {Locale.label("site.pagesPage.path")}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                            {Locale.label("common.title")}
-                          </Typography>
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>{getTreeLevel(pageTree, 0)}</TableBody>
-                  </Table>
-                )}
-              </Box>
-            </Card>
+        <Surface disablePadding>
+          {pageTree.length === 0 ? (
+            <Box sx={{ p: 3 }}>
+              <Typography variant="body2" color="text.secondary">
+                {Locale.label("site.pagesPage.noPagesFound")} {Locale.label("site.pagesPage.getStarted")}
+              </Typography>
+            </Box>
+          ) : (
+            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.pagesPage.pages")} tabIndex={0}>
+              <Table sx={{ minWidth: 650 }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{Locale.label("site.pagesPage.path")}</TableCell>
+                    <TableCell>{Locale.label("common.title")}</TableCell>
+                    <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>{getTreeLevel(pageTree, 0)}</TableBody>
+              </Table>
+            </Box>
+          )}
+        </Surface>
+
+        <AddBar>
+          <TextAction onClick={() => setAddMode("unlinked")} data-testid="add-page-button">{Locale.label("site.pagesPage.addPage")}</TextAction>
+        </AddBar>
+
+        <Box component="section" aria-labelledby="pages-main-navigation" sx={{ mt: 6 }}>
+          <RecordHeading id="pages-main-navigation" label={Locale.label("site.pagesPage.mainNavigation")}>
+            <TextAction small onClick={() => setEditLink(newNavLink())} aria-label={Locale.label("common.add")} data-testid="add-navigation-link">{Locale.label("common.add")}</TextAction>
+          </RecordHeading>
+          <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) minmax(260px, 360px)" }, alignItems: "start" }}>
+            <Surface>
+              <SiteNavigation links={links} refresh={loadData} handleDrop={handleDrop} siteId={siteId} />
+            </Surface>
+            <Stack spacing={1}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <Typography variant="body2">{Locale.label("site.pagesPage.showLogin")}</Typography>
+                  <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
+                    <Icon sx={{ fontSize: 18, cursor: "pointer", color: "text.secondary" }}>info</Icon>
+                  </Tooltip>
+                </Stack>
+                <Switch
+                  onChange={handleSwitchChange}
+                  checked={showLogin ? checked : true}
+                  slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
+                  data-testid="show-login-switch"
+                />
+              </Stack>
+              <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <Typography variant="body2">{Locale.label("site.pagesPage.hidePublicSite")}</Typography>
+                  <Tooltip title={Locale.label("site.pagesPage.hidePublicSiteTooltip")} arrow>
+                    <Icon sx={{ fontSize: 18, cursor: "pointer", color: "text.secondary" }}>info</Icon>
+                  </Tooltip>
+                </Stack>
+                <Switch
+                  onChange={handleHidePublicSiteChange}
+                  checked={publicSiteHidden}
+                  slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.hidePublicSite") } }}
+                  data-testid="hide-public-site-switch"
+                />
+              </Stack>
+              {publicSiteHidden && (
+                <Alert severity="warning" data-testid="hide-public-site-warning">
+                  {Locale.label("site.pagesPage.hidePublicSiteWarning")}
+                </Alert>
+              )}
+            </Stack>
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </PageContainer>
     </>
   );
 };

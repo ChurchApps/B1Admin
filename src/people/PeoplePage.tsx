@@ -1,20 +1,19 @@
 import React, { memo, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Permissions, UserHelper, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
+import { Permissions, UserHelper, type HouseholdInterface, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
-import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, Typography, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, Link, MenuItem, Select, Skeleton } from "@mui/material";
 import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
 import { buildRulesFromCriteria } from "./components/listRules";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { People as PeopleIcon, PersonAdd as PersonAddIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
-import { PageHeader } from "@churchapps/apphelper";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { PersonSearch as PersonSearchIcon } from "@mui/icons-material";
+import { EmptyState, ExportButton, PageContainer, PageHeader, Surface } from "../components/ui";
+import { CreatePerson } from "../components";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AISearch } from "./components/AISearch";
+import { DirectoryHouseholds, groupHouseholds } from "./components/DirectoryHouseholds";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
 import { type BulkResult } from "./components/bulk/BulkFieldDialog";
 
@@ -46,6 +45,12 @@ export const PeoplePage = memo(() => {
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
   const [selectedListFilters, setSelectedListFilters] = React.useState<Record<string, ActiveFilter> | undefined>(undefined);
+  const [selectedListId, setSelectedListId] = React.useState<string | undefined>(undefined);
+  // Remounts PeopleSearch so "Everyone" / list picks start from a clean field and panels.
+  const [searchKey, setSearchKey] = React.useState(0);
+  const [view, setView] = React.useState<"households" | "table">(() => {
+    try { return localStorage.getItem("people.view") === "table" ? "table" : "households"; } catch { return "households"; }
+  });
   // Query behind current results; null when not from a search.
   const [saveableCriteria, setSaveableCriteria] = React.useState<ListConditions | null>(null);
   const emptySaveListDialog = { open: false, name: "", category: "", scope: "org", match: "all" as "all" | "any", householdInclusion: "none", autoRefresh: false, notifyOnChange: false, saving: false };
@@ -71,6 +76,14 @@ export const PeoplePage = memo(() => {
     queryKey: [loadAll ? "/people/list" : `/people/list?pageSize=${INITIAL_PAGE_SIZE}`, "MembershipApi"],
     placeholderData: []
   });
+
+  const listRequestRef = React.useRef(0);
+  const householdsQuery = useQuery<HouseholdInterface[]>({ queryKey: ["/households", "MembershipApi"], placeholderData: [] });
+
+  const changeView = useCallback((next: "households" | "table") => {
+    setView(next);
+    try { localStorage.setItem("people.view", next); } catch { /* storage unavailable */ }
+  }, []);
 
   const refetch = useCallback(() => {
     peopleQuery.refetch();
@@ -128,6 +141,7 @@ export const PeoplePage = memo(() => {
     }
     localStorage.setItem("selectedColumns", JSON.stringify(sc));
     setSelectedColumns(sc);
+    changeView("table");
   };
 
   React.useEffect(() => {
@@ -153,6 +167,19 @@ export const PeoplePage = memo(() => {
     setIsSearchPerformed(false);
   }, [allPeople]);
 
+  const clearAll = useCallback(() => {
+    listRequestRef.current++;
+    setSelectedListId(undefined);
+    setSelectedListFilters(undefined);
+    setSaveableCriteria(null);
+    resetSearchResults();
+  }, [resetSearchResults]);
+
+  const handleEveryone = useCallback(() => {
+    clearAll();
+    setSearchKey((k) => k + 1);
+  }, [clearAll]);
+
   React.useEffect(() => {
     if (isSearchPerformed) return;
     if (allPeople.length === 0 && peopleQuery.isFetching) return;
@@ -163,7 +190,6 @@ export const PeoplePage = memo(() => {
     setLoadAll(true);
   }, []);
 
-  const listRequestRef = React.useRef(0);
   const handleSelectList = useCallback((list: ListInterface) => {
     const conditions = list.conditions;
     const requestId = ++listRequestRef.current;
@@ -174,6 +200,8 @@ export const PeoplePage = memo(() => {
       if (requestId === listRequestRef.current) setToast({ open: true, message: Locale.label("common.error"), severity: "error" });
     };
     setIsSearchPerformed(true);
+    setSelectedListId(list.id);
+    setSearchKey((k) => k + 1);
     // Server-eval for match-any and household-inclusion; client-eval for plain all-match.
     const needsServerEval = !!list.id && !!list.rules && (list.rules.match !== "all" || (!!list.householdInclusion && list.householdInclusion !== "none"));
     if (needsServerEval) {
@@ -235,6 +263,12 @@ export const PeoplePage = memo(() => {
   const togglePersonSelection = useCallback((personId: string) => {
     if (personId === currentPersonId) return;
     setSelectedPersonIds((current) => (current.includes(personId) ? current.filter((id) => id !== personId) : [...current, personId]));
+  }, [currentPersonId]);
+
+  const toggleHouseholdSelection = useCallback((members: PersonInterface[]) => {
+    const ids = members.map((m) => m.id).filter((id): id is string => !!id && id !== currentPersonId);
+    if (ids.length === 0) return;
+    setSelectedPersonIds((current) => (ids.every((id) => current.includes(id)) ? current.filter((id) => !ids.includes(id)) : Array.from(new Set([...current, ...ids]))));
   }, [currentPersonId]);
 
   const toggleAllVisiblePeople = useCallback(() => {
@@ -334,107 +368,171 @@ export const PeoplePage = memo(() => {
     });
   };
 
+  const householdNames = React.useMemo(() => {
+    const map = new Map<string, string>();
+    (householdsQuery.data || []).forEach((h) => { if (h.id && h.name?.trim()) map.set(h.id, h.name.trim()); });
+    return map;
+  }, [householdsQuery.data]);
+
+  const households = React.useMemo(() => groupHouseholds(searchResults || [], householdNames), [searchResults, householdNames]);
+
+  const isLoading = !searchResults || (peopleQuery.isLoading && !isSearchPerformed && allPeople.length === 0);
+  const canSaveList = canEdit && !!saveableCriteria && isSearchPerformed && !!searchResults && searchResults.length > 0;
+  const visibleSelectableIds = (searchResults || []).map((p) => p.id).filter((id): id is string => !!id && id !== currentPersonId);
+  const allVisibleSelected = visibleSelectableIds.length > 0 && visibleSelectableIds.every((id) => selectedPersonIds.includes(id));
+  const someVisibleSelected = visibleSelectableIds.some((id) => selectedPersonIds.includes(id));
+
+  const verbSx = { fontWeight: 600, px: 1, minWidth: 0 };
+
+  const viewLink = (value: "households" | "table", label: string) => (
+    <Link component="button" type="button" variant="body2" underline="hover" onClick={() => changeView(value)} aria-pressed={view === value} data-testid={`people-view-${value}`}
+      sx={{ fontWeight: view === value ? 700 : 400, color: view === value ? "text.primary" : "primary.main" }}>
+      {label}
+    </Link>
+  );
+
+  const getResults = () => {
+    if (isLoading || !searchResults) {
+      return (
+        <Stack spacing={2} sx={{ py: 3 }} aria-busy="true" aria-label={Locale.label("people.peoplePage.loading")}>
+          {[0, 1, 2, 3].map((i) => (
+            <Stack key={i} direction="row" spacing={2} alignItems="center">
+              <Skeleton variant="circular" width={40} height={40} />
+              <Box sx={{ flex: 1 }}>
+                <Skeleton variant="text" width="30%" />
+                <Skeleton variant="text" width="55%" />
+              </Box>
+            </Stack>
+          ))}
+        </Stack>
+      );
+    }
+    if (searchResults.length === 0) {
+      return isSearchPerformed
+        ? <EmptyState variant="plain" icon={<PersonSearchIcon />} title={Locale.label("people.directory.noMatch")} description={Locale.label("people.directory.noMatchHint")} />
+        : <EmptyState variant="plain" title={Locale.label("people.directory.noPeople")} description={canEdit ? Locale.label("people.directory.noPeopleHint") : undefined} />;
+    }
+    if (view === "table") {
+      return (
+        <PeopleSearchResults
+          people={searchResults}
+          columns={columns}
+          selectedColumns={selectedColumns}
+          updateSearchResults={(people) => setSearchResults(people)}
+          updatedFunction={refetch}
+          canSelectPeople={canEdit}
+          selectedPersonIds={selectedPersonIds}
+          togglePersonSelection={togglePersonSelection}
+          toggleAllVisiblePeople={toggleAllVisiblePeople}
+          currentPersonId={currentPersonId}
+          showCreatePerson={false}
+        />
+      );
+    }
+    return (
+      <DirectoryHouseholds
+        households={households}
+        canSelect={canEdit}
+        selectedPersonIds={selectedPersonIds}
+        currentPersonId={currentPersonId}
+        onOpen={(person) => navigate("/people/" + person.id)}
+        onToggleHousehold={toggleHouseholdSelection}
+      />
+    );
+  };
+
   return (
     <>
-      <PageHeader
-        icon={<PeopleIcon />}
-        title={Locale.label("people.peoplePage.searchPpl")}
-        subtitle={
-          searchResults
-            ? isSearchPerformed
-              ? Locale.label("people.peoplePage.peopleFound").replace("{count}", searchResults.length.toString())
-              : Locale.label("people.peoplePage.showingMembers").replace("{count}", searchResults.length.toString())
-            : peopleQuery.isLoading
-              ? Locale.label("people.peoplePage.loading")
-              : Locale.label("people.peoplePage.noPeopleFound")
-        }>
-        <HeaderSecondaryButton startIcon={<BarChartIcon />} onClick={() => navigate("/people/demographics")} data-testid="demographics-button">
+      <PageHeader title={Locale.label("people.directory.title")} subtitle={Locale.label("people.directory.subtitle")}>
+        <Button variant="text" sx={verbSx} onClick={() => navigate("/people/demographics")} data-testid="demographics-button">
           {Locale.label("people.demographics.title")}
-        </HeaderSecondaryButton>
+        </Button>
+        <Button variant="text" sx={verbSx} onClick={() => window.open("/people/print-directory", "_blank")} data-testid="print-directory-button">
+          {Locale.label("people.peoplePage.printDirectory")}
+        </Button>
+        {searchResults && <ExportButton data={getExportData(searchResults)} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
+        <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
+        {canSaveList && (
+          <Button variant="text" sx={verbSx} onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })}>
+            {Locale.label("people.lists.saveAs")}
+          </Button>
+        )}
         {canEdit && (
-          <HeaderPrimaryButton startIcon={<PersonAddIcon />} onClick={scrollToCreatePerson} data-testid="add-person-button">
+          <Button variant="text" sx={verbSx} onClick={scrollToCreatePerson} data-testid="add-person-button">
             {Locale.label("people.peoplePage.addPerson")}
-          </HeaderPrimaryButton>
+          </Button>
         )}
       </PageHeader>
 
-      {/* Main Content */}
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 3 }}>
+      <PageContainer>
+        <Surface>
+          <Stack spacing={3}>
+            <SavedLists onSelect={handleSelectList} onClear={handleEveryone} selectedId={selectedListId} canManage={canEdit} />
+
             <PeopleSearch
+              key={searchKey}
               updateSearchResults={(people) => {
                 setSearchResults(people);
                 setIsSearchPerformed(true);
               }}
               resetSearchResults={resetSearchResults}
+              onClear={clearAll}
               updatedFunction={refetch}
               initialFilters={selectedListFilters}
               onReportCriteria={setSaveableCriteria}
             />
-            <SavedLists onSelect={handleSelectList} canManage={canEdit} />
-            <AISearch
-              updateSearchResults={(people) => {
-                setSearchResults(people);
-                setIsSearchPerformed(true);
-              }}
-              onReportCriteria={setSaveableCriteria}
-              resetSearchResults={resetSearchResults}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 9 }}>
-            <Card>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <PeopleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("people.peoplePage.allMembers")}</Typography>
-                    {searchResults && searchResults.length > 0 && <CountChip count={searchResults.length} />}
+
+            <Box>
+              <Stack direction="row" justifyContent="space-between" alignItems="center" useFlexGap flexWrap="wrap" spacing={1} sx={{ minHeight: 40 }} data-testid="people-results-bar">
+                {canEdit && selectedPersonIds.length > 0 ? (
+                  <Stack direction="row" spacing={1} alignItems="center" useFlexGap flexWrap="wrap">
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>{Locale.label("people.directory.selectedCount").replace("{count}", selectedPersonIds.length.toString())}</Typography>
+                    <Button size="small" onClick={() => setSelectedPersonIds([])}>{Locale.label("people.bulk.clearSelection")}</Button>
+                    <PeopleBulkActions selectedPersonIds={selectedPersonIds} onComplete={handleBulkComplete} onDeleteClick={() => setShowBulkDeleteConfirm(true)} />
                   </Stack>
+                ) : (
                   <Stack direction="row" spacing={1} alignItems="center">
-                    {canEdit && selectedPersonIds.length > 0 && (
-                      <>
-                        <Typography variant="body2" color="text.secondary">{Locale.label("people.bulk.selected").replace("{count}", selectedPersonIds.length.toString())}</Typography>
-                        <Button size="small" onClick={() => setSelectedPersonIds([])}>{Locale.label("people.bulk.clearSelection")}</Button>
-                        <PeopleBulkActions selectedPersonIds={selectedPersonIds} onComplete={handleBulkComplete} onDeleteClick={() => setShowBulkDeleteConfirm(true)} />
-                      </>
+                    {canEdit && view === "households" && visibleSelectableIds.length > 0 && (
+                      <Checkbox
+                        size="small"
+                        checked={allVisibleSelected}
+                        indeterminate={!allVisibleSelected && someVisibleSelected}
+                        onChange={toggleAllVisiblePeople}
+                        slotProps={{ input: { "aria-label": Locale.label("people.directory.selectAll") } }}
+                      />
                     )}
-                    {canEdit && saveableCriteria && isSearchPerformed && searchResults && searchResults.length > 0 && (
-                      <Button size="small" variant="outlined" startIcon={<SaveListIcon />} onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })} sx={{ mr: 1 }}>
-                        {Locale.label("people.lists.saveAs")}
-                      </Button>
-                    )}
-                    {searchResults && <ExportButton data={getExportData(searchResults || [])} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
-                    <AppIconButton label={Locale.label("people.peoplePage.printDirectory")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/people/print-directory", "_blank")} />
-                    <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
+                    <Typography variant="body2" color="text.secondary">
+                      {!isLoading && Locale.label("people.directory.countHouseholds").replace("{households}", households.length.toString()).replace("{people}", (searchResults?.length || 0).toString())}
+                    </Typography>
                   </Stack>
-                </Stack>
-              </Box>
-              <Box>
-                <PeopleSearchResults
-                  people={searchResults || []}
-                  columns={columns}
-                  selectedColumns={selectedColumns}
-                  updateSearchResults={(people) => setSearchResults(people)}
-                  updatedFunction={refetch}
-                  canSelectPeople={canEdit}
-                  selectedPersonIds={selectedPersonIds}
-                  togglePersonSelection={togglePersonSelection}
-                  toggleAllVisiblePeople={toggleAllVisiblePeople}
-                  currentPersonId={currentPersonId}
-                />
-                {!isSearchPerformed && !loadAll && maybeMore && allPeople.length > 0 && (
-                  <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-                    <Button variant="outlined" onClick={handleShowAll} disabled={peopleQuery.isFetching} startIcon={peopleQuery.isFetching ? <CircularProgress size={16} /> : null}>
-                      {Locale.label("people.peoplePage.showAll")}
-                    </Button>
-                  </Box>
                 )}
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Typography variant="body2" color="text.secondary">{Locale.label("people.directory.viewAs")}</Typography>
+                  {viewLink("households", Locale.label("people.directory.households"))}
+                  <Typography component="span" variant="body2" color="text.secondary" aria-hidden>·</Typography>
+                  {viewLink("table", Locale.label("people.directory.table"))}
+                </Stack>
+              </Stack>
+
+              {getResults()}
+
+              {!isSearchPerformed && !loadAll && maybeMore && allPeople.length > 0 && (
+                <Box sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
+                  <Button variant="outlined" onClick={handleShowAll} disabled={peopleQuery.isFetching} startIcon={peopleQuery.isFetching ? <CircularProgress size={16} /> : null}>
+                    {Locale.label("people.peoplePage.showAll")}
+                  </Button>
+                </Box>
+              )}
+            </Box>
+
+            {canEdit && (
+              <Box id="createPersonForm" sx={{ borderTop: 1, borderColor: "divider", pt: 3 }}>
+                <CreatePerson onCreate={(person) => navigate("/people/" + person.id)} />
               </Box>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
+            )}
+          </Stack>
+        </Surface>
+      </PageContainer>
 
       <Dialog open={saveListDialog.open} onClose={() => setSaveListDialog((d) => ({ ...d, open: false }))} maxWidth="xs" fullWidth>
         <DialogTitle>{Locale.label("people.lists.saveAs")}</DialogTitle>

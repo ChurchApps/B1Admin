@@ -105,7 +105,7 @@ test.describe("issue-996 collapse expanded actions back to a section", () => {
     await page.route("**/lessons.church/**", (route) => route.abort());
 
     await page.goto(`/serving/plans/${planId}`);
-    await page.getByRole("tab", { name: "Service Order" }).click();
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
 
     const sectionRow = page.locator(".planItem").filter({ hasText: "Collapse Repro Section" });
     await expect(sectionRow).toHaveCount(1, { timeout: 15000 });

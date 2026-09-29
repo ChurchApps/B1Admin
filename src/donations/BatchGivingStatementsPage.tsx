@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
-  Box, Container, Card, CardContent, Typography, Button, FormControl,
+  Box, Typography, Button, FormControl,
   InputLabel, Select, MenuItem, Alert, CircularProgress, Stack, Divider
 } from "@mui/material";
 import {
@@ -11,11 +11,11 @@ import {
   Receipt as ReceiptIcon,
   SettingsOutlined as SettingsIcon
 } from "@mui/icons-material";
-import { PageHeader, Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@churchapps/apphelper";
+import { Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type PersonInterface, type FundInterface } from "@churchapps/helpers";
 import JSZip from "jszip";
 import { EmptyState } from "../components/ui/EmptyState";
-import { HeaderSecondaryButton } from "../components/ui";
+import { PageHeader, PageContainer, Surface, HeaderSecondaryButton } from "../components/ui";
 
 export const BatchGivingStatementsPage = () => {
   const navigate = useNavigate();
@@ -154,7 +154,6 @@ export const BatchGivingStatementsPage = () => {
   return (
     <>
       <PageHeader
-        icon={<ReceiptIcon />}
         title={Locale.label("donations.batchStatements.title")}
         subtitle={Locale.label("donations.batchStatements.subtitle")}
       >
@@ -166,29 +165,27 @@ export const BatchGivingStatementsPage = () => {
         </HeaderSecondaryButton>
       </PageHeader>
 
-      <Container maxWidth="lg">
-        <Box sx={{ py: 3 }}>
-          <Card elevation={2} sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                {Locale.label("donations.batchStatements.selectYear")}
-              </Typography>
-              <FormControl fullWidth sx={{ mt: 2 }}>
-                <InputLabel>{Locale.label("donations.batchStatements.year")}</InputLabel>
-                <Select
-                  value={selectedYear}
-                  label={Locale.label("donations.batchStatements.year")}
-                  onChange={(e) => setSelectedYear(Number(e.target.value))}
-                >
-                  {yearOptions.map((year) => (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </CardContent>
-          </Card>
+      <PageContainer maxWidth="md">
+        <Stack spacing={3}>
+          <Surface>
+            <Typography variant="h3" component="h2" gutterBottom>
+              {Locale.label("donations.batchStatements.selectYear")}
+            </Typography>
+            <FormControl fullWidth sx={{ mt: 1 }}>
+              <InputLabel>{Locale.label("donations.batchStatements.year")}</InputLabel>
+              <Select
+                value={selectedYear}
+                label={Locale.label("donations.batchStatements.year")}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+              >
+                {yearOptions.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Surface>
 
           {isLoading ? (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
@@ -196,94 +193,88 @@ export const BatchGivingStatementsPage = () => {
             </Box>
           ) : (
             <>
-              <Card elevation={2} sx={{ mb: 3 }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {Locale.label("donations.batchStatements.summary")}
-                  </Typography>
-                  <Divider sx={{ my: 2 }} />
-                  <Stack spacing={2}>
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="body1" color="text.secondary">
-                        {Locale.label("donations.batchStatements.totalDonors")}
-                      </Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        {totalDonors}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="body1" color="text.secondary">
-                        {Locale.label("donations.batchStatements.totalDonations")}
-                      </Typography>
-                      <Typography variant="body1" fontWeight="bold">
-                        {totalDonations}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between">
-                      <Typography variant="body1" color="text.secondary">
-                        {Locale.label("donations.batchStatements.totalAmount")}
-                      </Typography>
-                      <Typography variant="body1" fontWeight="bold" color="primary">
-                        {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
+              <Surface>
+                <Typography variant="h3" component="h2">
+                  {Locale.label("donations.batchStatements.summary")} ({selectedYear})
+                </Typography>
+                <Divider sx={{ my: 2 }} />
+                <Stack spacing={2}>
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography variant="body1" color="text.secondary">
+                      {Locale.label("donations.batchStatements.totalDonors")}
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
+                      {totalDonors}
+                    </Typography>
+                  </Box>
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography variant="body1" color="text.secondary">
+                      {Locale.label("donations.batchStatements.totalDonations")}
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
+                      {totalDonations}
+                    </Typography>
+                  </Box>
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography variant="body1" color="text.secondary">
+                      {Locale.label("donations.batchStatements.totalAmount")}
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
+                      {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Surface>
 
               {totalDonors > 0 ? (
-                <Card elevation={2}>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      {Locale.label("donations.batchStatements.downloadOptions")}
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
+                <Surface>
+                  <Typography variant="h3" component="h2">
+                    {Locale.label("donations.batchStatements.downloadOptions")}
+                  </Typography>
+                  <Divider sx={{ my: 2 }} />
 
-                    <Stack spacing={2}>
-                      <Box>
-                        <Typography variant="subtitle1" gutterBottom>
-                          {Locale.label("donations.batchStatements.csvDownload")}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                          {Locale.label("donations.batchStatements.csvDescription")}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          startIcon={<DownloadIcon />}
-                          onClick={handleDownloadZip}
-                          fullWidth
-                        >
-                          {Locale.label("donations.batchStatements.downloadZip").replace("{count}", totalDonors.toString())}
-                        </Button>
-                        <Alert severity="info" sx={{ mt: 2 }}>
-                          {Locale.label("donations.batchStatements.zipInfo").replace("{count}", totalDonors.toString())}
-                        </Alert>
-                      </Box>
+                  <Stack spacing={3}>
+                    <Box>
+                      <Typography variant="body1" sx={{ fontWeight: 600 }} gutterBottom>
+                        {Locale.label("donations.batchStatements.csvDownload")}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        {Locale.label("donations.batchStatements.csvDescription")}
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        startIcon={<DownloadIcon />}
+                        onClick={handleDownloadZip}
+                      >
+                        {Locale.label("donations.batchStatements.downloadZip").replace("{count}", totalDonors.toString())}
+                      </Button>
+                      <Alert severity="info" sx={{ mt: 2 }}>
+                        {Locale.label("donations.batchStatements.zipInfo").replace("{count}", totalDonors.toString())}
+                      </Alert>
+                    </Box>
 
-                      <Divider />
+                    <Divider />
 
-                      <Box>
-                        <Typography variant="subtitle1" gutterBottom>
-                          {Locale.label("donations.batchStatements.printStatements")}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                          {Locale.label("donations.batchStatements.printDescription")}
-                        </Typography>
-                        <Button
-                          variant="outlined"
-                          startIcon={<PrintIcon />}
-                          onClick={handlePrintAll}
-                          fullWidth
-                        >
-                          {Locale.label("donations.batchStatements.printAllStatements").replace("{count}", totalDonors.toString())}
-                        </Button>
-                        <Alert severity="info" sx={{ mt: 2 }}>
-                          {Locale.label("donations.batchStatements.printAllInfo").replace("{count}", totalDonors.toString())}
-                        </Alert>
-                      </Box>
-                    </Stack>
-                  </CardContent>
-                </Card>
+                    <Box>
+                      <Typography variant="body1" sx={{ fontWeight: 600 }} gutterBottom>
+                        {Locale.label("donations.batchStatements.printStatements")}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        {Locale.label("donations.batchStatements.printDescription")}
+                      </Typography>
+                      <Button
+                        variant="outlined"
+                        startIcon={<PrintIcon />}
+                        onClick={handlePrintAll}
+                      >
+                        {Locale.label("donations.batchStatements.printAllStatements").replace("{count}", totalDonors.toString())}
+                      </Button>
+                      <Alert severity="info" sx={{ mt: 2 }}>
+                        {Locale.label("donations.batchStatements.printAllInfo").replace("{count}", totalDonors.toString())}
+                      </Alert>
+                    </Box>
+                  </Stack>
+                </Surface>
               ) : (
                 <EmptyState
                   icon={<ReceiptIcon />}
@@ -292,8 +283,8 @@ export const BatchGivingStatementsPage = () => {
               )}
             </>
           )}
-        </Box>
-      </Container>
+        </Stack>
+      </PageContainer>
     </>
   );
 };

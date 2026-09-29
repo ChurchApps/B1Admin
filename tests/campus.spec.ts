@@ -2,7 +2,7 @@ import type { Page, Locator } from "@playwright/test";
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToPeople, navigateToGroups } from "./helpers/navigation";
-import { openKnownPerson, openSeedGroup, editIconButton, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
+import { openKnownPerson, openSeedGroup, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 const MAIN = "Main Campus";
@@ -102,8 +102,7 @@ test.describe.serial("Campus multi-site", () => {
 
   test("filters people by the belongs-to-campus condition", async () => {
     await navigateToPeople(page);
-    // Match arrow to avoid SavedLists "advanced search" copy.
-    await page.locator("p").getByText(/[▶▼] Advanced/).click();
+    await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
     const membership = page.locator(".MuiAccordion-root").filter({ hasText: "Membership & Groups" });
     await membership.getByText("Membership & Groups").click();
     // Use label-relative xpath to survive field reordering.
@@ -135,12 +134,12 @@ test.describe.serial("Campus multi-site", () => {
   test("assigns a group to a campus and persists", async () => {
     await navigateToGroups(page);
     await openSeedGroup(page);
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
     const select = page.getByTestId("group-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, NORTH);
     await expectResponse("/membership/groups", clickSave);
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
     await expect(page.getByTestId("group-campus-select")).toContainText(NORTH, { timeout: 10000 });
   });
 

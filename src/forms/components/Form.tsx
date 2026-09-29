@@ -2,10 +2,10 @@ import React from "react";
 import { FormQuestionEdit } from ".";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps/apphelper";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button } from "@mui/material";
 import { ArrowUpward as ArrowUpwardIcon, ArrowDownward as ArrowDownwardIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip, hoverRowSx } from "../../components/ui";
+import { CardWithHeader, hoverRowSx, tableScrollSx } from "../../components/ui";
 
 interface Props {
   id: string;
@@ -65,12 +65,9 @@ export const Form: React.FC<Props> = (props) => {
       rows.push(
         <TableRow key="0">
           <TableCell colSpan={4} sx={{ textAlign: "center", py: 4 }}>
-            <Stack spacing={2} alignItems="center">
-              <Icon sx={{ fontSize: 48, color: "text.secondary" }}>help</Icon>
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("forms.form.noCustomMsg")}
-              </Typography>
-            </Stack>
+            <Typography variant="body1" color="text.secondary">
+              {Locale.label("forms.form.noCustomMsg")}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -99,7 +96,7 @@ export const Form: React.FC<Props> = (props) => {
               component="button"
               type="button"
               onClick={handleClick}
-              sx={{ background: "none", border: 0, p: 0, color: "var(--link)", cursor: "pointer", fontWeight: 500 }}>
+              sx={{ background: "none", border: 0, p: 0, color: "primary.main", cursor: "pointer", fontWeight: 600, font: "inherit", textAlign: "left" }}>
               {questionList[i].title}
             </Box>
           </TableCell>
@@ -148,41 +145,35 @@ export const Form: React.FC<Props> = (props) => {
     let contents = <Loading />;
     if (questions) {
       contents = (
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead>{getTableHeader()}</TableHead>
-          <TableBody>{getRows()}</TableBody>
-        </Table>
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("forms.form.questions")} tabIndex={0}>
+          <Table sx={{ minWidth: 650 }}>
+            <TableHead>{getTableHeader()}</TableHead>
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
       );
     }
     return (
       <>
         {getSidebarModules()}
 
-        <Card sx={{ width: "100%" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Icon sx={{ color: "primary.main", fontSize: 20 }}>help</Icon>
-                <Typography variant="h6">{Locale.label("forms.form.questions")}</Typography>
-                {questionList.length > 0 && <CountChip count={questionList.length} />}
-              </Stack>
-              {formPermission && (
-                <Button
-                  variant="contained"
-                  startIcon={<Icon>add</Icon>}
-                  onClick={() => {
-                    setEditQuestionId("");
-                  }}
-                  size="small"
-                  aria-label={Locale.label("forms.form.addQuestionAria")}>
-                  {Locale.label("forms.form.addQuestion")}
-                </Button>
-              )}
-            </Stack>
-          </Box>
-
-          <Box sx={{ p: 0 }}>{contents}</Box>
-        </Card>
+        <CardWithHeader
+          title={Locale.label("forms.form.questions")}
+          count={questionList.length}
+          actions={formPermission && (
+            <Button
+              variant="contained"
+              startIcon={<Icon>add</Icon>}
+              onClick={() => {
+                setEditQuestionId("");
+              }}
+              size="small"
+              aria-label={Locale.label("forms.form.addQuestionAria")}>
+              {Locale.label("forms.form.addQuestion")}
+            </Button>
+          )}>
+          {contents}
+        </CardWithHeader>
       </>
     );
   }

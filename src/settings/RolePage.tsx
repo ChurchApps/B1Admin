@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { UserAdd, RolePermissions, RoleMembers } from "./components";
 import { type RoleInterface, type RoleMemberInterface } from "@churchapps/helpers";
-import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
-import { Box, Grid } from "@mui/material";
+import { Stack } from "@mui/material";
+import { PageContainer } from "../components/ui";
 import { SettingsHeader } from "./components/SettingsHeader";
+import { SettingsPanel } from "./components/SettingsPanel";
 
 export const RolePage = () => {
   const params = useParams();
@@ -40,27 +42,18 @@ export const RolePage = () => {
     return null;
   };
 
-  const getSidebar = () => {
-    if (!UserHelper.checkAccess(Permissions.membershipApi.roles.edit)) return null;
-    else {
-      if (role.name === "Domain Admins") {
-        return (
-          <>
-            {getAddUser()}
-            <DisplayBox id="rolePermissionsBox" headerText={Locale.label("settings.rolePage.permEdit")} headerIcon="lock">
-              <p>{Locale.label("settings.rolePage.noEditMsg")}</p>
-            </DisplayBox>
-          </>
-        );
-      } else {
-        return (
-          <>
-            {getAddUser()}
-            <RolePermissions role={role} />
-          </>
-        );
-      }
+  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
+
+  const getPermissions = () => {
+    if (!canEdit) return null;
+    if (role.name === "Domain Admins") {
+      return (
+        <SettingsPanel id="rolePermissionsBox" headerText={Locale.label("settings.rolePage.permEdit")} headerIcon="lock">
+          <p>{Locale.label("settings.rolePage.noEditMsg")}</p>
+        </SettingsPanel>
+      );
     }
+    return <RolePermissions role={role} />;
   };
 
   React.useEffect(loadData, [params.roleId]);
@@ -71,16 +64,13 @@ export const RolePage = () => {
     return (
       <>
         <SettingsHeader backTo="/settings/roles" backLabel={Locale.label("settings.roles.roles")} title={role?.name || ""} />
-        <Box sx={{ p: { xs: 2, md: 4 } }}>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 8 }}>
-              <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
-            </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
-              {getSidebar()}
-            </Grid>
-          </Grid>
-        </Box>
+        <PageContainer py={3}>
+          <Stack spacing={3} sx={{ maxWidth: 960 }}>
+            {canEdit && getAddUser()}
+            <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
+            {getPermissions()}
+          </Stack>
+        </PageContainer>
       </>
     );
   }

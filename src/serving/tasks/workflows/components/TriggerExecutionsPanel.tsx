@@ -1,6 +1,7 @@
 import React from "react";
 import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
-import { Box, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { StatusBadge, Surface, type StatusTone } from "../../../../components/ui";
+import { Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { Refresh as RefreshIcon, Replay as RetryIcon, Pause as PauseIcon, PlayArrow as ResumeIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { type WorkflowTriggerInterface } from "./TriggerEditDialog";
@@ -28,7 +29,7 @@ interface Props {
   refreshKey?: number;
 }
 
-const STATUS_COLORS: Record<string, "success" | "warning" | "error" | "default"> = { success: "success", pending: "warning", failed: "error", paused: "default" };
+const STATUS_TONES: Record<string, StatusTone> = { success: "success", pending: "warning", failed: "danger", paused: "neutral" };
 
 export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
   const [executions, setExecutions] = React.useState<AutomationExecutionInterface[]>([]);
@@ -48,20 +49,20 @@ export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
   };
 
   const statusChip = (e: AutomationExecutionInterface) => {
-    const chip = <Chip size="small" label={Locale.label("tasks.executions.status_" + e.status) || e.status} color={STATUS_COLORS[e.status ?? ""] || "default"} data-testid={"execution-status-" + e.id} />;
-    return e.lastError ? <Tooltip title={e.lastError}>{chip}</Tooltip> : chip;
+    const chip = <StatusBadge tone={STATUS_TONES[e.status ?? ""] || "neutral"} data-testid={"execution-status-" + e.id}>{Locale.label("tasks.executions.status_" + e.status) || e.status}</StatusBadge>;
+    return e.lastError ? <Tooltip title={e.lastError}><span>{chip}</span></Tooltip> : chip;
   };
 
   return (
-    <Box sx={{ mt: 3, backgroundColor: "background.paper", padding: 2, borderRadius: 2 }} data-testid="trigger-executions-panel">
+    <Surface sx={{ mt: 3 }} data-testid="trigger-executions-panel">
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-        <Typography variant="subtitle2">{Locale.label("tasks.executions.title")}</Typography>
+        <Typography variant="h3" component="h2">{Locale.label("tasks.executions.title")}</Typography>
         <AppIconButton label={Locale.label("tasks.executions.refresh")} icon={<RefreshIcon />} data-testid="refresh-executions" onClick={load} />
       </Stack>
       {executions.length === 0 ? (
         <Typography variant="body2" color="text.secondary">{Locale.label("tasks.executions.noExecutions")}</Typography>
       ) : (
-        <Table size="small">
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>{Locale.label("tasks.executions.when")}</TableCell>
@@ -94,6 +95,6 @@ export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
           </TableBody>
         </Table>
       )}
-    </Box>
+    </Surface>
   );
 };

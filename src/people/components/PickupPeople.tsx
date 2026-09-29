@@ -1,6 +1,6 @@
 import React from "react";
 import { type PersonInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, Locale, Permissions, PersonHelper, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Permissions, PersonHelper, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
@@ -8,6 +8,7 @@ import { GalleryModal } from "../../components/gallery";
 import { PersonAdd } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
+import { RecordHeading, TextAction } from "../../components/ui";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 
 interface PickupInterface {
@@ -72,38 +73,40 @@ export const PickupPeople: React.FC<Props> = (props) => {
   };
 
   const editContent = canEdit ? (
-    <Button size="small" onClick={() => setAdding((a) => !a)} data-testid="pickup-add-toggle">
+    <TextAction small onClick={() => setAdding((a) => !a)} data-testid="pickup-add-toggle">
       {adding ? Locale.label("common.cancel") : Locale.label("people.pickup.add")}
-    </Button>
+    </TextAction>
   ) : undefined;
 
   const rows = people.map((row) => (
-    <Stack key={row.id} direction="row" spacing={2} alignItems="center" sx={{ py: 1, borderBottom: "1px solid", borderColor: "divider" }} data-testid="pickup-row">
-      <Avatar src={row.photoUrl || undefined} sx={{ width: 40, height: 40 }} />
+    <Stack component="li" key={row.id} direction="row" spacing={1.5} alignItems="flex-start" sx={{ py: 1 }} data-testid="pickup-row">
+      <Avatar src={row.photoUrl || undefined} alt="" sx={{ width: 32, height: 32, mt: 0.25 }} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body1">{row.name}</Typography>
-        {row.relationship && <Typography variant="body2" color="text.secondary">{row.relationship}</Typography>}
+        <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: "break-word" }}>{row.name}</Typography>
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
+          <Chip
+            label={row.status === "notAuthorized" ? Locale.label("people.pickup.notAuthorized") : Locale.label("people.pickup.trusted")}
+            color={row.status === "notAuthorized" ? "error" : "success"}
+            size="small"
+            variant="outlined"
+            onClick={canEdit ? () => toggleStatus(row) : undefined}
+            data-testid="pickup-status-chip"
+          />
+          {row.relationship && <Typography variant="caption" color="text.secondary">{row.relationship}</Typography>}
+        </Stack>
       </Box>
-      <Chip
-        label={row.status === "notAuthorized" ? Locale.label("people.pickup.notAuthorized") : Locale.label("people.pickup.trusted")}
-        color={row.status === "notAuthorized" ? "error" : "success"}
-        size="small"
-        variant="outlined"
-        onClick={canEdit ? () => toggleStatus(row) : undefined}
-        data-testid="pickup-status-chip"
-      />
       {canEdit && <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(row)} data-testid="pickup-delete-button" />}
     </Stack>
   ));
 
   const addForm = adding && (
-    <Box sx={{ mt: 2, p: 2, backgroundColor: "action.hover", borderRadius: 1 }}>
+    <Box sx={{ mt: 2, p: 2, backgroundColor: "var(--b1-canvas)", borderRadius: "var(--b1-radius-control)" }}>
       <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddPerson} showCreatePersonOnNotFound={true} />
       <Typography variant="body2" color="text.secondary" sx={{ my: 1 }}>{Locale.label("people.pickup.orAddByName")}</Typography>
       <Stack spacing={2}>
         <TextField fullWidth size="small" label={Locale.label("people.pickup.name")} value={name} onChange={(e) => setName(e.target.value)} data-testid="pickup-name-input" />
         <TextField fullWidth size="small" label={Locale.label("people.pickup.relationship")} value={relationship} onChange={(e) => setRelationship(e.target.value)} data-testid="pickup-relationship-input" />
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack spacing={2}>
           <FormControl size="small" fullWidth>
             <InputLabel>{Locale.label("people.pickup.status")}</InputLabel>
             <Select value={status} label={Locale.label("people.pickup.status")} onChange={(e) => setStatus(e.target.value as "trusted" | "notAuthorized")} data-testid="pickup-status-select">
@@ -111,7 +114,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
               <MenuItem value="notAuthorized">{Locale.label("people.pickup.notAuthorized")}</MenuItem>
             </Select>
           </FormControl>
-          <Button variant="outlined" size="small" startIcon={<PhotoCameraIcon />} onClick={() => setShowGallery(true)} data-testid="pickup-photo-button">
+          <Button variant="outlined" size="small" startIcon={<PhotoCameraIcon />} sx={{ alignSelf: "flex-start" }} onClick={() => setShowGallery(true)} data-testid="pickup-photo-button">
             {photoUrl ? Locale.label("common.changePhoto") : Locale.label("groups.groupDetailsEdit.addPhoto")}
           </Button>
         </Stack>
@@ -128,11 +131,12 @@ export const PickupPeople: React.FC<Props> = (props) => {
     <>
       {ConfirmDialogElement}
       {showGallery && <GalleryModal aspectRatio={1} onSelect={(url) => { setPhotoUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
-      <DisplayBox id="pickupBox" headerIcon="verified_user" headerText={Locale.label("people.pickup.title")} editContent={editContent} data-testid="pickup-box">
+      <Box component="section" id="pickupBox" data-testid="pickup-box" aria-labelledby="pickup-heading">
+        <RecordHeading id="pickup-heading" label={Locale.label("people.pickup.title")}>{editContent}</RecordHeading>
         {people.length === 0 && !adding && <Typography variant="body2" color="text.secondary">{Locale.label("people.pickup.none")}</Typography>}
-        {rows}
+        {rows.length > 0 && <Box component="ul" sx={{ listStyle: "none", m: 0, p: 0 }}>{rows}</Box>}
         {addForm}
-      </DisplayBox>
+      </Box>
     </>
   );
 };

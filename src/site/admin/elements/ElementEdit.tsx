@@ -305,10 +305,11 @@ export function ElementEdit(props: Props) {
       sx={{
         mt: 2,
         "& .editor-container": {
-          border: "1px solid var(--border-main)",
-          borderRadius: 1,
+          border: 1,
+          borderColor: "divider",
+          borderRadius: "var(--b1-radius-control)",
           overflow: "hidden",
-          backgroundColor: "#fff"
+          backgroundColor: "background.paper"
         },
         "& .toolbar": {
           p: 1,
@@ -1087,7 +1088,7 @@ export function ElementEdit(props: Props) {
   }, [element?.elementType]);
 
   const groupSummarySx = { "& .MuiAccordionSummary-content": { my: 1 } };
-  const groupTitleSx = { fontWeight: 600, fontSize: "0.9rem" };
+  const groupTitleSx = { fontWeight: 600, fontSize: 16 };
 
   const getStandardFields = () => {
     const appearanceFields = APPEARANCE_FIELDS[element?.elementType || ""];
@@ -1095,7 +1096,7 @@ export function ElementEdit(props: Props) {
       <>
         <ErrorMessages errors={errors} />
         {appearanceFields && <VisibilityToggles styles={parsedStyles} onChange={handleStyleChange} />}
-        <Accordion defaultExpanded disableGutters data-testid="element-group-content" sx={{ boxShadow: "none", border: "1px solid var(--border-light)" }}>
+        <Accordion defaultExpanded disableGutters data-testid="element-group-content" sx={{ boxShadow: "none", border: 1, borderColor: "divider" }}>
           <AccordionSummary expandIcon={<Icon>expand_more</Icon>} sx={groupSummarySx}>
             <Typography sx={groupTitleSx}>{Locale.label("site.elementEdit.groupContent")}</Typography>
           </AccordionSummary>
@@ -1103,7 +1104,7 @@ export function ElementEdit(props: Props) {
         </Accordion>
         {appearanceFields && (
           <>
-            <Accordion disableGutters data-testid="element-group-style" sx={{ boxShadow: "none", border: "1px solid var(--border-light)" }}>
+            <Accordion disableGutters data-testid="element-group-style" sx={{ boxShadow: "none", border: 1, borderColor: "divider" }}>
               <AccordionSummary expandIcon={<Icon>expand_more</Icon>} sx={groupSummarySx}>
                 <Typography sx={groupTitleSx}>{Locale.label("site.elementEdit.groupStyle")}</Typography>
               </AccordionSummary>
@@ -1125,7 +1126,7 @@ export function ElementEdit(props: Props) {
                 <StyleList fields={appearanceFields} styles={parsedStyles} onChange={handleStyleChange} />
               </AccordionDetails>
             </Accordion>
-            <Accordion disableGutters data-testid="element-group-animation" sx={{ boxShadow: "none", border: "1px solid var(--border-light)" }}>
+            <Accordion disableGutters data-testid="element-group-animation" sx={{ boxShadow: "none", border: 1, borderColor: "divider" }}>
               <AccordionSummary expandIcon={<Icon>expand_more</Icon>} sx={groupSummarySx}>
                 <Typography sx={groupTitleSx}>{Locale.label("site.elementEdit.groupAnimation")}</Typography>
               </AccordionSummary>

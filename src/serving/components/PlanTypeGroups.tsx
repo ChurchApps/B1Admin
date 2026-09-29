@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead, Select, MenuItem, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { Box, Button, Typography, Table, TableBody, TableCell, TableRow, TableHead, Select, MenuItem, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { Add as AddIcon, Groups as GroupsIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type AssociatedGroupInterface, hasPlansEditAccess } from "../../helpers";
-import { CountChip, EmptyState } from "../../components/ui";
+import { CardWithHeader, EmptyState, tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
@@ -83,9 +83,9 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
     const group = assoc.groupId ? groupById.get(assoc.groupId) : null;
     const filter = (assoc.settings as TimeFilter) || "both";
     return (
-      <TableRow key={assoc.id} hover sx={{ "&:last-child td": { border: 0 } }}>
+      <TableRow key={assoc.id}>
         <TableCell>
-          <Typography sx={{ fontWeight: 500 }}>{group?.name || assoc.groupId}</Typography>
+          <Typography sx={{ fontWeight: 600 }}>{group?.name || assoc.groupId}</Typography>
           {group?.categoryName && (
             <Typography variant="body2" color="text.secondary">{group.categoryName}</Typography>
           )}
@@ -116,22 +116,16 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
   };
 
   return (
-    <Box>
+    <CardWithHeader
+      title={Locale.label("plans.planTypeGroups.heading")}
+      icon={<GroupsIcon />}
+      count={associationsList.length}
+      actions={canEdit && associationsList.length > 0 && availableGroups.length > 0 && (
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowPicker(true)}>
+          {Locale.label("plans.planTypeGroups.addGroup")}
+        </Button>
+      )}>
       {ConfirmDialogElement}
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <GroupsIcon sx={{ color: "primary.main", fontSize: 20 }} />
-          <Typography variant="h6">
-            {Locale.label("plans.planTypeGroups.heading")}
-          </Typography>
-          {associationsList.length > 0 && <CountChip count={associationsList.length} />}
-        </Stack>
-        {canEdit && associationsList.length > 0 && availableGroups.length > 0 && (
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowPicker(true)} size="small">
-            {Locale.label("plans.planTypeGroups.addGroup")}
-          </Button>
-        )}
-      </Stack>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
         {Locale.label("plans.planTypeGroups.description")}
       </Typography>
@@ -141,6 +135,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
 
       {associationsList.length === 0 ? (
         <EmptyState
+          variant="plain"
           icon={<GroupsIcon />}
           title={Locale.label("plans.planTypeGroups.noGroups")}
           description={Locale.label("plans.planTypeGroups.noGroupsDescription")}
@@ -151,12 +146,12 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
           )}
         />
       ) : (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <Table size="small">
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("plans.planTypeGroups.heading")} tabIndex={0}>
+          <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 600 }}>{Locale.label("common.name")}</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>{Locale.label("plans.planTypeGroups.showsLabel")}</TableCell>
+                <TableCell>{Locale.label("common.name")}</TableCell>
+                <TableCell>{Locale.label("plans.planTypeGroups.showsLabel")}</TableCell>
                 {canEdit && <TableCell align="right" sx={{ width: 50 }} />}
               </TableRow>
             </TableHead>
@@ -164,7 +159,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
               {associationsList.map(renderRow)}
             </TableBody>
           </Table>
-        </Paper>
+        </Box>
       )}
 
       <Dialog open={showPicker} onClose={() => { setShowPicker(false); setPickerValue(null); }} maxWidth="sm" fullWidth>
@@ -192,6 +187,6 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </CardWithHeader>
   );
 });

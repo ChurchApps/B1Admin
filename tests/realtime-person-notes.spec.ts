@@ -30,7 +30,7 @@ async function signIn(page: Page, email: string) {
 
 async function openPersonNotes(page: Page) {
   await page.goto(`/people/${TARGET_PERSON_ID}`, { timeout: 60000 });
-  const notesTab = page.getByRole("tab", { name: /Notes/i });
+  const notesTab = page.getByTestId("person-notes-all");
   await notesTab.waitFor({ state: "visible", timeout: 30000 });
   await notesTab.click();
   const notesBox = page.locator('[data-testid="notes-box"]');

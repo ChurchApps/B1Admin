@@ -1,29 +1,22 @@
 import React from "react";
-import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
-import { Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack, Button } from "@mui/material";
-import {
-  VolunteerActivism as FundIcon,
-  FilterAlt as FilterIcon,
-  CalendarMonth as DateIcon,
-  Person as PersonIcon,
-  Receipt as ReceiptIcon,
-  AccountBalance as AccountBalanceIcon
-} from "@mui/icons-material";
-import { Breadcrumbs, type BreadcrumbItem, CardWithHeader, ExportButton, PageHeaderStats, hoverRowSx } from "../components/ui";
+import { Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack } from "@mui/material";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, RecordHeading, Surface, TextAction, VerbRow, YearPills, hoverRowSx, numericCellSx, recentYears, tableScrollSx } from "../components/ui";
+import { CsvVerb } from "./components/GivingParts";
 import { AppDatePicker } from "../components";
 import { useRequirePermission } from "../hooks";
 
 export const FundPage = () => {
   const params = useParams();
-  const initialDate = new Date();
-  initialDate.setDate(initialDate.getDate() - 7);
+  const thisYear = new Date().getFullYear();
 
   const [fund, setFund] = React.useState<DonationBatchInterface>({});
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[] | null>(null);
-  const [startDate, setStartDate] = React.useState<Date>(initialDate);
-  const [endDate, setEndDate] = React.useState<Date>(new Date());
+  const [year, setYear] = React.useState<number | null>(thisYear);
+  const [startDate, setStartDate] = React.useState<Date>(new Date(thisYear, 0, 1));
+  const [endDate, setEndDate] = React.useState<Date>(new Date(thisYear, 11, 31));
   const [people, setPeople] = React.useState<{ [key: string]: string }>({});
   const [stats, setStats] = React.useState({
     totalDonations: 0,
@@ -31,6 +24,7 @@ export const FundPage = () => {
     uniqueDonors: 0
   });
   const [isConverted, setIsConverted] = React.useState(false);
+  const [period, setPeriod] = React.useState("");
   const [currency, setCurrency] = React.useState<string>("usd");
   // Hoisted to avoid compiler emitting non-optional guard reads on null fundDonations
   const donationList = fundDonations || [];
@@ -42,14 +36,15 @@ export const FundPage = () => {
     loadDonations();
   };
 
-  const loadDonations = () => {
-    const dateFilter = "&startDate=" + DateHelper.formatHtml5Date(startDate) + "&endDate=" + DateHelper.formatHtml5Date(endDate);
+  const loadDonations = (start: Date = startDate, end: Date = endDate) => {
+    const dateFilter = "&startDate=" + DateHelper.formatHtml5Date(start) + "&endDate=" + DateHelper.formatHtml5Date(end);
+    setPeriod(DateHelper.formatHtml5Date(start) + " - " + DateHelper.formatHtml5Date(end));
     // Gifts can be in different currencies, so the Api totals them in the church currency with its own exchange rates.
     ApiHelper.get("/funddonations/totals?fundId=" + params.id + dateFilter, "GivingApi").then((totals: { totalAmount: number; isConverted: boolean }) => {
       setStats((prev) => ({ ...prev, totalAmount: totals?.totalAmount || 0 }));
       setIsConverted(!!totals?.isConverted);
     });
-    ApiHelper.get("/funddonations?fundId=" + params.id + "&startDate=" + DateHelper.formatHtml5Date(startDate) + "&endDate=" + DateHelper.formatHtml5Date(endDate), "GivingApi").then(
+    ApiHelper.get("/funddonations?fundId=" + params.id + dateFilter, "GivingApi").then(
       (d: FundDonationInterface[]) => {
         const peopleIds = ArrayHelper.getUniqueValues(d, "donation.personId").filter((f) => f !== null);
         if (peopleIds.length > 0) {
@@ -72,7 +67,18 @@ export const FundPage = () => {
     );
   };
 
+  const handleYear = (y: number | null) => {
+    if (y === null) return;
+    const start = new Date(y, 0, 1);
+    const end = new Date(y, 11, 31);
+    setYear(y);
+    setStartDate(start);
+    setEndDate(end);
+    loadDonations(start, end);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setYear(null);
     switch (e.target.name) {
       case "startDate": setStartDate(new Date(e.target.value + "T00:00:00")); break;
       case "endDate": setEndDate(new Date(e.target.value + "T00:00:00")); break;
@@ -86,12 +92,9 @@ export const FundPage = () => {
       result.push(
         <TableRow key="0">
           <TableCell colSpan={4} sx={{ textAlign: "center", py: 4 }}>
-            <Stack spacing={2} alignItems="center">
-              <FundIcon sx={{ fontSize: 48, color: "text.secondary" }} />
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("donations.fundsPage.noDon")}
-              </Typography>
-            </Stack>
+            <Typography variant="body1" color="text.secondary">
+              {Locale.label("donations.fundsPage.noDon")}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -104,43 +107,31 @@ export const FundPage = () => {
 
       const personCol = isAnonymous ? (
         <TableCell>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <PersonIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-            <Typography variant="body2" color="text.secondary">
-              {Locale.label("donations.fundsPage.anon")}
-            </Typography>
-          </Stack>
+          <Typography variant="body2" color="text.secondary">
+            {Locale.label("donations.fundsPage.anon")}
+          </Typography>
         </TableCell>
       ) : (
         <TableCell>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <PersonIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-            <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-              {people[fd.donation?.personId || ""] || Locale.label("donations.fundsPage.anon")}
-            </Typography>
-          </Stack>
+          <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
+            {people[fd.donation?.personId || ""] || Locale.label("donations.fundsPage.anon")}
+          </Typography>
         </TableCell>
       );
 
       result.push(
         <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <DateIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography variant="body2">{DateHelper.formatHtml5Date(fd.donation?.donationDate)}</Typography>
-            </Stack>
+            <Typography variant="body2">{DateHelper.formatHtml5Date(fd.donation?.donationDate)}</Typography>
           </TableCell>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <ReceiptIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/batches/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-                {Locale.label("donations.fundsPage.viewBatch")}
-              </Typography>
-            </Stack>
+            <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/batches/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
+              {Locale.label("donations.fundsPage.viewBatch")}
+            </Typography>
           </TableCell>
           {personCol}
-          <TableCell align="right">
-            <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
+          <TableCell align="right" sx={numericCellSx}>
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>
               {CurrencyHelper.formatCurrencyWithLocale(fd.amount || 0, fd.donation?.currency || currency)}
             </Typography>
           </TableCell>
@@ -162,7 +153,7 @@ export const FundPage = () => {
         <TableCell>{Locale.label("donations.fundsPage.date")}</TableCell>
         <TableCell>{Locale.label("donations.fundsPage.batch")}</TableCell>
         <TableCell>{Locale.label("donations.fundsPage.donor")}</TableCell>
-        <TableCell align="right">{Locale.label("donations.fundsPage.amt")}</TableCell>
+        <TableCell align="right" sx={numericCellSx}>{Locale.label("donations.fundsPage.amt")}</TableCell>
       </TableRow>
     );
     return rows;
@@ -179,10 +170,12 @@ export const FundPage = () => {
   const getTable = () => {
     if (!fundDonations) return <Loading />;
     return (
-      <Table sx={{ minWidth: 650 }}>
-        <TableHead>{getTableHeader()}</TableHead>
-        <TableBody>{getRows()}</TableBody>
-      </Table>
+      <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.fundsPage.don")} tabIndex={0}>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead>{getTableHeader()}</TableHead>
+          <TableBody>{getRows()}</TableBody>
+        </Table>
+      </Box>
     );
   };
 
@@ -194,41 +187,34 @@ export const FundPage = () => {
     { label: fund.name || "" }
   ];
 
+  const lede = stats.totalDonations > 0 ? (
+    <>
+      {Locale.label("donations.fundPage.giftCount", "{count} gifts").replace("{count}", stats.totalDonations.toString())}
+      {" · "}
+      {Locale.label("donations.fundPage.donorCount", "{count} donors").replace("{count}", stats.uniqueDonors.toString())}
+      {" · "}
+      <span data-testid="fund-total-amount">{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</span>
+      {" (" + period + ")"}
+      {isConverted && " · " + Locale.label("donations.donations.convertedNote")}
+    </>
+  ) : Locale.label("donations.fundPage.subtitle");
+
   return (
     <>
       <PageHeader
-        icon={<AccountBalanceIcon />}
-        title={`${fund.name} ${Locale.label("donations.fundsPage.don")}`}
-        subtitle={Locale.label("donations.fundPage.subtitle")}
+        title={`${fund.name || ""} ${Locale.label("donations.fundsPage.don")}`}
+        subtitle={lede}
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
-      >
-        {stats.totalDonations > 0 && (
-          <PageHeaderStats
-            spread
-            items={[
-              { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: "Donations", minWidth: 80 },
-              { icon: <PersonIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.uniqueDonors, label: Locale.label("donations.fundPage.donors"), minWidth: 80 },
-              {
-                value: <span data-testid="fund-total-amount">{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</span>,
-                label: Locale.label("donations.fundPage.totalAmount"),
-                note: isConverted ? Locale.label("donations.donations.convertedNote") : undefined
-              }
-            ]}
-          />
-        )}
-      </PageHeader>
+      />
 
-      <Box sx={{ p: 3 }}>
-        <Box sx={{ mb: 3 }}>
-          <CardWithHeader
-            icon={<FilterIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-            title={Locale.label("donations.fundsPage.donFilt")}
-          >
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
+      <PageContainer>
+        <Surface>
+          <Stack spacing={2} sx={{ mb: 3 }}>
+            <YearPills years={recentYears(10)} value={year} onChange={handleYear} />
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "stretch", sm: "center" }}>
               <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateStart")}
                 name="startDate"
-
                 data-cy="start-date"
                 value={DateHelper.formatHtml5Date(startDate)}
                 onChange={handleChange}
@@ -238,29 +224,24 @@ export const FundPage = () => {
               <AppDatePicker
                 label={Locale.label("donations.fundsPage.dateEnd")}
                 name="endDate"
-
                 data-cy="end-date"
                 value={DateHelper.formatHtml5Date(endDate)}
                 onChange={handleChange}
                 InputLabelProps={{ shrink: true }}
                 sx={{ minWidth: 200 }}
               />
-              <Button variant="contained" onClick={loadDonations} startIcon={<FilterIcon />} sx={{ minWidth: 120 }}>
-                {Locale.label("donations.fundPage.filter")}
-              </Button>
+              <Box><TextAction onClick={() => loadDonations()}>{Locale.label("donations.fundPage.filter")}</TextAction></Box>
             </Stack>
-          </CardWithHeader>
-        </Box>
+          </Stack>
 
-        <CardWithHeader
-          icon={<FundIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          title={Locale.label("donations.fundsPage.don")}
-          count={fundDonations?.length}
-          actions={fundDonations && <ExportButton data={fundDonations} filename="funddonations.csv" text={Locale.label("donations.fundsPage.export")} />}
-        >
+          <RecordHeading label={Locale.label("donations.fundsPage.don") + (fundDonations ? " (" + fundDonations.length + ")" : "")}>
+            <VerbRow>
+              {donationList.length > 0 && <CsvVerb data={donationList} filename="funddonations.csv" text={Locale.label("donations.fundsPage.export")} />}
+            </VerbRow>
+          </RecordHeading>
           {getTable()}
-        </CardWithHeader>
-      </Box>
+        </Surface>
+      </PageContainer>
     </>
   );
 };

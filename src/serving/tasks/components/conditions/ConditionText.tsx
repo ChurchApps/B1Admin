@@ -40,7 +40,6 @@ export const ConditionText = (props: Props) => {
         data-testid="condition-value-input"
         aria-label={Locale.label("tasks.conditionText.conditionValueAria")}
         variant="outlined"
-        sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
     );
   };

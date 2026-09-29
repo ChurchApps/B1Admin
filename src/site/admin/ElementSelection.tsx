@@ -55,13 +55,12 @@ export const ElementSelection: React.FC<Props> = ({
               right: 0,
               display: "flex",
               gap: 0,
-              backgroundColor: "rgba(255, 255, 255, 0.96)",
-              borderRadius: "4px",
-              border: "1px solid var(--border-main)",
+              backgroundColor: "background.paper",
+              borderRadius: "var(--b1-radius-control)",
+              border: 1,
+              borderColor: "divider",
               padding: "1px",
-              zIndex: 1002,
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)"
+              zIndex: 1002
             }}
           >
             <AppIconButton label={Locale.label("common.duplicate")} icon={<ContentCopy sx={{ fontSize: 14 }} />} onClick={onDuplicate} sx={actionButtonSx} />

@@ -58,10 +58,10 @@ export function A11yPanel(props: Props) {
   return (
     <Drawer anchor="right" open={props.open} onClose={props.onClose} aria-label={Locale.label("site.a11y.panelAria")}>
       <Box sx={{ width: 400, maxWidth: "100vw", display: "flex", flexDirection: "column", height: "100%" }} data-testid="a11y-panel">
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 2, py: 1.5, borderBottom: "1px solid var(--border-main)" }}>
-          <Icon sx={{ color: "primary.main" }}>accessibility_new</Icon>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 2, py: 1.5, borderBottom: 1, borderColor: "divider" }}>
+          <Icon sx={{ color: "text.secondary" }}>accessibility_new</Icon>
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography sx={{ fontWeight: 600, lineHeight: 1.2 }}>{Locale.label("site.a11y.title")}</Typography>
+            <Typography variant="h3" component="h2">{Locale.label("site.a11y.title")}</Typography>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>{Locale.label("site.a11y.subtitle")}</Typography>
           </Box>
           <IconButton onClick={props.onClose} aria-label={Locale.label("site.a11y.close")} size="small"><Icon>close</Icon></IconButton>
@@ -70,17 +70,17 @@ export function A11yPanel(props: Props) {
         {issues.length === 0 ? (
           <Box data-testid="a11y-empty" sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 1, px: 4 }}>
             <Icon sx={{ fontSize: 48, color: "success.main" }}>check_circle</Icon>
-            <Typography sx={{ fontWeight: 600, color: "success.dark" }}>{Locale.label("site.a11y.noIssues")}</Typography>
+            <Typography sx={{ fontWeight: 600, color: "success.main" }}>{Locale.label("site.a11y.noIssues")}</Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>{Locale.label("site.a11y.noIssuesDetail")}</Typography>
           </Box>
         ) : (
           <>
-            <Box sx={{ display: "flex", gap: 2, px: 2, py: 1, backgroundColor: "var(--bg-sub)" }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: "error.main", fontSize: "0.8rem", fontWeight: 600 }}>
+            <Box sx={{ display: "flex", gap: 2, px: 2, py: 1, backgroundColor: "background.default" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: "error.main", fontSize: 14, fontWeight: 600 }}>
                 <Icon fontSize="inherit" sx={{ fontSize: "1rem" }}>error</Icon>
                 <span>{Locale.label("site.a11y.summaryErrors").replace("{count}", String(errorCount))}</span>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: "warning.dark", fontSize: "0.8rem", fontWeight: 600 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: "warning.main", fontSize: 14, fontWeight: 600 }}>
                 <Icon fontSize="inherit" sx={{ fontSize: "1rem" }}>warning</Icon>
                 <span>{Locale.label("site.a11y.summaryWarnings").replace("{count}", String(warningCount))}</span>
               </Box>
@@ -89,7 +89,7 @@ export function A11yPanel(props: Props) {
               {groups.map((group) => (
                 <Box key={group.sectionId || "page"}>
                   <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 2, pt: 1.5, pb: 0.5 }}>
-                    <Typography variant="overline" sx={{ color: "text.secondary", fontWeight: 700 }}>{groupLabel(group.sectionId)}</Typography>
+                    <Typography variant="overline" sx={{ color: "text.secondary" }}>{groupLabel(group.sectionId)}</Typography>
                     {group.sectionId !== "" && (
                       <IconButton
                         size="small"
@@ -107,7 +107,7 @@ export function A11yPanel(props: Props) {
                         {issue.severity === "error" ? "error" : "warning"}
                       </Icon>
                       <Box sx={{ minWidth: 0 }}>
-                        <Chip size="small" label={Locale.label(RULE_LABEL_KEY[issue.rule])} sx={{ mb: 0.5, height: 20, fontSize: "0.68rem" }} />
+                        <Chip size="small" label={Locale.label(RULE_LABEL_KEY[issue.rule])} sx={{ mb: 0.5 }} />
                         <Typography variant="body2">{localizeMessage(issue)}</Typography>
                       </Box>
                     </Box>

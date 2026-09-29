@@ -72,7 +72,7 @@ export const GradePromotionSettingsEdit: React.FC<Props> = (props) => {
 
   return (
     <Box>
-      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
         {Locale.label("settings.gradePromotionSettingsEdit.help")}
       </Typography>

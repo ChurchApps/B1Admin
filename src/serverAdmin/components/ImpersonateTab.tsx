@@ -1,7 +1,9 @@
 import React from "react";
 import { useCookies } from "react-cookie";
-import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { TextField, Button, Box, Typography, List, ListItem, ListItemButton, ListItemText, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Button, Box, Stack, Typography, List, ListItem, ListItemButton, ListItemText, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import { EmptyState, SearchField } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
 
 interface UserSearchResult {
   id: string;
@@ -17,19 +19,10 @@ export const ImpersonateTab = () => {
   const [submitting, setSubmitting] = React.useState<boolean>(false);
   const [, , removeCookie] = useCookies(["jwt"]);
 
-  const loadData = () => {
-    const term = encodeURIComponent(searchText.trim());
+  const loadData = (override?: string) => {
+    const term = encodeURIComponent((override ?? searchText).trim());
     if (term) {
       ApiHelper.get("/users/search?term=" + term, "MembershipApi").then((data: UserSearchResult[]) => setUsers(data));
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
-
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      loadData();
     }
   };
 
@@ -53,61 +46,39 @@ export const ImpersonateTab = () => {
 
   return (
     <>
-      <DisplayBox headerIcon="switch_account" headerText={Locale.label("serverAdmin.adminPage.impersonateUser")}>
-        <Typography variant="body2" sx={{ mb: 2 }} color="text.secondary">
-          {Locale.label("serverAdmin.impersonateTab.description")}
-        </Typography>
-        <TextField
-          fullWidth
-          name="searchText"
-          type="email"
-          label={Locale.label("serverAdmin.impersonateTab.searchLabel")}
-          value={searchText}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          placeholder={Locale.label("serverAdmin.impersonateTab.searchPlaceholder")}
-          data-testid="impersonate-search-input"
-          aria-label={Locale.label("serverAdmin.impersonateTab.searchAria")}
-          InputProps={{
-            endAdornment: (
-              <Button
-                variant="contained"
-                disableElevation
-                onClick={loadData}
-                data-testid="impersonate-search-button"
-                aria-label={Locale.label("serverAdmin.impersonateTab.searchAria")}
-              >
-                {Locale.label("common.search")}
-              </Button>
-            )
-          }}
-        />
-        <br />
+      <AdminPanel headerText={Locale.label("serverAdmin.adminPage.impersonateUser")} subtitle={Locale.label("serverAdmin.impersonateTab.description")}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "flex-start" }} sx={{ mb: 3 }}>
+          <SearchField
+            label={Locale.label("serverAdmin.impersonateTab.searchLabel")}
+            placeholder={Locale.label("serverAdmin.impersonateTab.searchPlaceholder")}
+            value={searchText}
+            onChange={setSearchText}
+            onSearch={(term) => loadData(term)}
+            data-testid="impersonate-search-input" />
+          <Button variant="contained" disableElevation onClick={() => loadData()} data-testid="impersonate-search-button" aria-label={Locale.label("serverAdmin.impersonateTab.searchAria")} sx={{ flexShrink: 0, minHeight: 56 }}>
+            {Locale.label("common.search")}
+          </Button>
+        </Stack>
 
-        {users.length === 0 && searchText && (
-          <Typography>{Locale.label("serverAdmin.adminPage.noUsers")}</Typography>
-        )}
+        {users.length === 0 && searchText && <EmptyState variant="plain" title={Locale.label("serverAdmin.adminPage.noUsers")} />}
 
         {users.length > 0 && (
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="h6" sx={{ mb: 1 }}>
+          <Box>
+            <Typography variant="h3" component="h3" sx={{ mb: 1 }}>
               {Locale.label("serverAdmin.adminPage.searchResults")}
             </Typography>
-            <List sx={{ bgcolor: "background.paper", borderRadius: 1 }}>
+            <List disablePadding sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
               {users.map((user) => (
                 <ListItem key={user.id} disablePadding>
                   <ListItemButton onClick={() => setConfirmTarget(user)}>
-                    <ListItemText
-                      primary={getUserDisplayName(user)}
-                      secondary={user.email}
-                    />
+                    <ListItemText primary={getUserDisplayName(user)} secondary={user.email} />
                   </ListItemButton>
                 </ListItem>
               ))}
             </List>
           </Box>
         )}
-      </DisplayBox>
+      </AdminPanel>
 
       <Dialog open={confirmTarget !== null} onClose={() => !submitting && setConfirmTarget(null)}>
         <DialogTitle>{Locale.label("serverAdmin.impersonateTab.confirmTitle")}</DialogTitle>

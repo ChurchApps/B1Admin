@@ -3,10 +3,11 @@ import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, DateHelper } from "@churchapps/apphelper";
 import { useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Link as MuiLink, Typography } from "@mui/material";
+import { TextAction, VerbRow } from "../components/ui";
 import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { SettingsLayout, SettingsRow, eyebrowSx, verbSx } from "./components/SettingsPage";
+import { SettingsLayout, SettingsRow, eyebrowSx } from "./components/SettingsPage";
 import { type ConfigSection } from "./components/SettingsConfigList";
 import { SectionNav } from "./components/SectionNav";
 import { ChurchInfoSection } from "./components/ChurchInfoSection";
@@ -257,14 +258,27 @@ export const ManageChurch = () => {
     }
   };
 
+  const address = [church.data.address1, church.data.address2, church.data.city, [church.data.state, church.data.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ");
   const importExportUrl = `https://transfer.b1.church/login?churchId=${churchId}#jwt=${encodeURIComponent(jwt || "")}`;
 
   return (
     <SettingsLayout
       eyebrow={Locale.label("components.wrapper.set")}
       title={church.data.name || Locale.label("settings.manageChurch.title")}
-      subtitle={church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}
-      verbs={<Button size="small" href={importExportUrl} target="_blank" rel="noreferrer noopener" sx={verbSx}>{Locale.label("settings.manageChurch.imEx")}</Button>}
+      subtitle={(
+        <>
+          {church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}
+          {address && <Box component="span" data-testid="church-address" sx={{ display: "block", mt: 0.5 }}>{address}</Box>}
+        </>
+      )}
+      verbs={(
+        <VerbRow>
+          <TextAction small to="/settings/email-templates" component={RouterLink} data-testid="settings-verb-email-templates">{Locale.label("settings.emailTemplatesPage.title")}</TextAction>
+          <TextAction small to="/settings/audit-log" component={RouterLink} data-testid="settings-verb-audit-log">{Locale.label("settings.manageChurch.auditLog")}</TextAction>
+          <TextAction small to="/settings/batches" component={RouterLink} data-testid="settings-verb-batches">{Locale.label("settings.manageChurch.batches")}</TextAction>
+          <MuiLink href={importExportUrl} target="_blank" rel="noreferrer noopener" underline="hover" sx={{ typography: "body2", fontWeight: 600 }}>{Locale.label("settings.manageChurch.imEx")}</MuiLink>
+        </VerbRow>
+      )}
       nav={<SectionNav hideOnMobile label={Locale.label("settings.landing.configuration")} sections={sections} selected={activeKey} onSelect={selectSection} />}>
       {sections.map((s) => (
         <Box key={s.key} id={`section-${s.key}`} className="om-section" sx={{ scrollMarginTop: 24, mb: { xs: 5, md: 7 } }}>

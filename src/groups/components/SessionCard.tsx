@@ -1,5 +1,6 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Box, Chip, Avatar } from "@mui/material";
+import { Typography, Button, Box, Chip, Avatar } from "@mui/material";
+import { Surface } from "../../components/ui";
 import { Visibility as VisibilityIcon, Edit as EditIcon } from "@mui/icons-material";
 import { type SessionInterface } from "../../helpers";
 import { DateHelper, Locale } from "@churchapps/apphelper";
@@ -41,30 +42,19 @@ export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelec
   };
 
   return (
-    <Card
-      sx={{
-        height: "100%",
-        cursor: "pointer",
-        border: isSelected ? 2 : 1,
-        borderColor: isSelected ? "primary.main" : "divider",
-        boxShadow: isSelected ? 3 : 1,
-        "&:hover": {
-          boxShadow: 3,
-          transform: "translateY(-2px)"
-        },
-        transition: "all 0.2s ease-in-out"
-      }}
+    <Surface
+      sx={{ height: "100%", cursor: "pointer", borderColor: isSelected ? "primary.main" : "divider", "&:hover": { bgcolor: "action.hover" } }}
       onClick={() => onView(session)}>
-      <CardContent>
+      <Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2 }}>
-          <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h3" component="h2">
             {getSessionTitle()}
           </Typography>
           {isSelected && <Chip label={Locale.label("groups.sessionCard.active")} color="primary" size="small" variant="outlined" />}
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <Avatar sx={{ width: 24, height: 24, mr: 1, fontSize: "12px" }}>{getAttendanceIcon(attendanceCount)}</Avatar>
+          <Avatar sx={{ width: 24, height: 24, mr: 1 }}>{getAttendanceIcon(attendanceCount)}</Avatar>
           <Typography variant="body2" color="text.secondary">
             {attendanceCount} {attendanceCount === 1 ? Locale.label("groups.sessionCard.person") : Locale.label("groups.sessionCard.people")}
           </Typography>
@@ -102,7 +92,7 @@ export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelec
             </Button>
           )}
         </Box>
-      </CardContent>
-    </Card>
+      </Box>
+    </Surface>
   );
 };

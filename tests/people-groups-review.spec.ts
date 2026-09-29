@@ -44,15 +44,16 @@ test("group sessions: All years stays selected and UTC-midnight dates show the s
   ]);
 
   await page.goto(`/groups/${group.id}`);
-  await page.locator("button").getByText("Sessions").click();
-  const yearButtons = page.locator(".MuiToggleButtonGroup-root button");
+  await page.getByTestId("group-all-sessions").click();
+  const yearButtons = page.locator('[data-testid^="year-pill-"]');
   await expect(yearButtons).toHaveCount(3, { timeout: 15000 });
   await expect(yearButtons.getByText("2025", { exact: true })).toBeVisible();
 
-  await yearButtons.last().click();
-  await expect(yearButtons.last()).toHaveAttribute("aria-pressed", "true");
+  const allYears = page.getByTestId("year-pill-all");
+  await allYears.click();
+  await expect(allYears).toHaveAttribute("aria-pressed", "true");
   await page.waitForTimeout(500);
-  await expect(yearButtons.last()).toHaveAttribute("aria-pressed", "true");
+  await expect(allYears).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByText("06/07/2026", { exact: true })).toBeVisible();
   await expect(page.getByText("01/01/2025", { exact: true })).toBeVisible();
 });

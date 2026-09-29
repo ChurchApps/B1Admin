@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Box, Card, Stack, Typography } from "@mui/material";
-import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
+import { Stack } from "@mui/material";
+import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { CardWithHeader, PageHeader, PageContainer } from "../components/ui";
 import { StylesManager, SiteWidgetsEdit, RedirectsEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
-import { Palette as PaletteIcon } from "@mui/icons-material";
 import { PermissionDenied } from "../components";
 
 export const AppearancePage = () => {
@@ -14,7 +14,6 @@ export const AppearancePage = () => {
   return (
     <>
       <PageHeader
-        icon={<PaletteIcon />}
         title={Locale.label("site.appearancePage.title")}
         subtitle={Locale.label("site.appearancePage.subtitle")}
       >
@@ -23,23 +22,17 @@ export const AppearancePage = () => {
       {showSites && (
         <SitesDialog open={showSites} onClose={() => setShowSites(false)} sites={sites} siteId={siteId} onChanged={reloadSites} onSelectSite={setSiteId} />
       )}
-      <Box sx={{ p: 3 }}>
-        {UserHelper.currentUserChurch && <SiteWidgetsEdit />}
-        {UserHelper.currentUserChurch && <RedirectsEdit />}
-        {UserHelper.currentUserChurch && (
-          <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }}>
-            <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <PaletteIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("site.appearancePage.themeGroup")}</Typography>
-              </Stack>
-            </Box>
-            <Box sx={{ p: 2 }}>
+      <PageContainer>
+        <Stack spacing={3}>
+          {UserHelper.currentUserChurch && (
+            <CardWithHeader title={Locale.label("site.appearancePage.themeGroup")}>
               <StylesManager siteId={siteId} selectedSite={selectedSite} />
-            </Box>
-          </Card>
-        )}
-      </Box>
+            </CardWithHeader>
+          )}
+          {UserHelper.currentUserChurch && <SiteWidgetsEdit />}
+          {UserHelper.currentUserChurch && <RedirectsEdit />}
+        </Stack>
+      </PageContainer>
     </>
   );
 };

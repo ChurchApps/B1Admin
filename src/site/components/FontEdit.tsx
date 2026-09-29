@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button, Grid, Box, Typography, Card, CardContent, Stack, alpha } from "@mui/material";
+import { Button, Grid, Box, Typography, Stack } from "@mui/material";
 import { TextFields as TextFieldsIcon, Visibility as VisibilityIcon, FormatSize as FormatSizeIcon, Style as StyleIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import { CustomFontModal } from "./CustomFontModal";
+import { StyleEditHeader } from "./StyleEditHeader";
 
 interface Props {
   globalStyle?: GlobalStyleInterface | null;
@@ -51,20 +52,20 @@ export function FontEdit(props: Props) {
     <Grid container spacing={2}>
       {fontList.map(heading => (
         <Grid size={{ xs: 12, md: 6 }} key={heading}>
-          <Card sx={{ border: "1px solid", borderColor: "grey.200", borderRadius: 2, overflow: "hidden" }}>
-            <Box sx={{ p: 2, backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.04), borderBottom: "1px solid", borderColor: "divider" }}>
-              <Typography variant="h6" sx={{ fontFamily: heading, fontWeight: 600, color: "primary.main", fontSize: "1.125rem" }}>{heading}</Typography>
+          <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", overflow: "hidden" }}>
+            <Box sx={{ p: 2, backgroundColor: "var(--b1-canvas)", borderBottom: "1px solid", borderColor: "divider" }}>
+              <Typography variant="h3" component="p" sx={{ fontFamily: heading }}>{heading}</Typography>
             </Box>
-            <CardContent sx={{ p: 1.5 }}>
+            <Box sx={{ p: 1.5 }}>
               <Stack spacing={1}>
                 {fontList.map(body => (
-                  <Box key={`${heading}-${body}`} onClick={() => setFonts({ body, heading })} sx={{ p: 1.5, borderRadius: 1, cursor: "pointer", border: "1px solid", borderColor: "transparent", transition: "all 0.2s ease-in-out", "&:hover": { backgroundColor: "action.hover", borderColor: "primary.main", transform: "translateY(-1px)" } }}>
+                  <Box key={`${heading}-${body}`} onClick={() => setFonts({ body, heading })} sx={{ p: 1.5, borderRadius: "var(--b1-radius-control)", cursor: "pointer", border: "1px solid", borderColor: "transparent", transition: "background-color 140ms", "&:hover": { backgroundColor: "action.hover", borderColor: "primary.main" } }}>
                     <Typography variant="body2" sx={{ fontFamily: body, color: "text.primary", fontSize: "0.875rem" }}>{heading} heading with {body} body</Typography>
                   </Box>
                 ))}
               </Stack>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
         </Grid>
       ))}
     </Grid>
@@ -80,25 +81,11 @@ export function FontEdit(props: Props) {
     <Box sx={{ maxWidth: 1200 }}>
       {getFont()}
 
-      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <TextFieldsIcon sx={{ fontSize: 24, color: "#FFF" }} />
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.fontEdit.headerTitle")}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.fontEdit.headerSubtitle")}</Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.fontEdit.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-fonts-button">{Locale.label("site.fontEdit.saveFonts")}</LoadingButton>
-          </Stack>
-        </Stack>
-      </Box>
+      <StyleEditHeader title={Locale.label("site.fontEdit.headerTitle")} subtitle={Locale.label("site.fontEdit.headerSubtitle")} onCancel={() => props.updatedFunction?.(null)} saveButton={
+        <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.fontEdit.saving")} variant="contained" onClick={handleSave} data-testid="save-fonts-button">{Locale.label("site.fontEdit.saveFonts")}</LoadingButton>
+      } />
 
-      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ display: "grid", gap: 3 }}>
         <CardWithHeader title={Locale.label("site.fontEdit.fontSelection")} icon={<StyleIcon />}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>
@@ -120,7 +107,7 @@ export function FontEdit(props: Props) {
 
         <Box sx={{ mt: 3 }}>
           <CardWithHeader title={Locale.label("site.fontEdit.typographyPreview")} icon={<VisibilityIcon />}>
-            <Box sx={{ p: 3, backgroundColor: "var(--bg-sub)", borderRadius: 2 }}>
+            <Box sx={{ p: 3, backgroundColor: "var(--b1-canvas)", borderRadius: "var(--b1-radius-panel)" }}>
               <Typography variant="h4" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.fontEdit.mainHeadingPreview")}</Typography>
               <Typography variant="body1" sx={{ fontFamily: fonts?.body || "Roboto", mb: 3, lineHeight: 1.6, color: "text.primary" }}>{Locale.label("site.fontEdit.previewBody")}</Typography>
               <Typography variant="h6" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.fontEdit.secondaryHeading")}</Typography>

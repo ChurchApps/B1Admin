@@ -1,10 +1,11 @@
-import { Grid, TextField, Card, CardContent, Typography, Stack, Box, Button, InputAdornment } from "@mui/material";
+import { Grid, TextField, Typography, Stack, Button, InputAdornment } from "@mui/material";
+import { Surface } from "../../../components/ui";
 import React from "react";
 import { ApiHelper, ArrayHelper, type ConversationInterface, ErrorMessages, Locale, type MessageInterface, UserHelper } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
 import { ContentPicker } from "./ContentPicker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Assignment as TaskIcon, Search as SearchIcon, Cancel as CancelIcon, Save as SaveIcon } from "@mui/icons-material";
+import { Search as SearchIcon, Cancel as CancelIcon, Save as SaveIcon } from "@mui/icons-material";
 
 interface Props {
   onCancel: () => void;
@@ -140,134 +141,106 @@ export const NewTask = (props: Props) => {
   };
 
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        border: "1px solid",
-        borderColor: "grey.200",
-        transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 }
-      }}>
-      <CardContent>
-        <Stack spacing={3}>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <TaskIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                {Locale.label("tasks.newTask.taskNew")}
-              </Typography>
-            </Stack>
-          </Box>
+    <Surface>
+      <Stack spacing={3}>
+        <Typography variant="h3" component="h2">
+          {Locale.label("tasks.newTask.taskNew")}
+        </Typography>
 
-          {errors.length > 0 && <ErrorMessages errors={errors} />}
+        {errors.length > 0 && <ErrorMessages errors={errors} />}
 
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6, md: props.compact ? 6 : 4 }}>
-              <TextField
-                fullWidth
-                label={Locale.label("tasks.newTask.associateW")}
-                value={task.associatedWithLabel}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon sx={{ color: "action.active" }} />
-                    </InputAdornment>
-                  ),
-                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
-                }}
-                onFocus={(e) => {
-                  e.target.blur();
-                  setModalField("associatedWith");
-                }}
-                data-testid="associate-with-input"
-                aria-label={Locale.label("tasks.newTask.associateWithAria")}
-                variant="outlined"
-                sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: props.compact ? 6 : 4 }}>
-              <TextField
-                fullWidth
-                label={Locale.label("tasks.newTask.assignTo")}
-                value={task.assignedToLabel || ""}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon sx={{ color: "action.active" }} />
-                    </InputAdornment>
-                  ),
-                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
-                }}
-                onFocus={(e) => {
-                  e.target.blur();
-                  setModalField("assignedTo");
-                }}
-                data-testid="assign-to-input"
-                aria-label={Locale.label("tasks.newTask.assignToAria")}
-                variant="outlined"
-                sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: props.compact ? 12 : 4 }}>
-              <TextField
-                fullWidth
-                label={Locale.label("common.title")}
-                value={task.title || ""}
-                name="title"
-                onChange={handleChange}
-                placeholder={Locale.label("placeholders.task.title")}
-                data-testid="task-title-input"
-                aria-label={Locale.label("tasks.newTask.taskTitleAria")}
-                variant="outlined"
-                sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-              />
-            </Grid>
-          </Grid>
-
-          <TextField
-            fullWidth
-            label={Locale.label("common.notes")}
-            value={message.content}
-            name="note"
-            onChange={handleChange}
-            multiline
-            rows={4}
-            placeholder={Locale.label("placeholders.task.notes")}
-            data-testid="task-notes-input"
-            aria-label={Locale.label("tasks.newTask.taskNotesAria")}
-            variant="outlined"
-            sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-          />
-
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6, md: props.compact ? 6 : 4 }}>
+            <TextField
+              fullWidth
+              label={Locale.label("tasks.newTask.associateW")}
+              value={task.associatedWithLabel}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon sx={{ color: "action.active" }} />
+                  </InputAdornment>
+                ),
+                sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
+              }}
+              onFocus={(e) => {
+                e.target.blur();
+                setModalField("associatedWith");
+              }}
+              data-testid="associate-with-input"
+              aria-label={Locale.label("tasks.newTask.associateWithAria")}
               variant="outlined"
-              startIcon={<CancelIcon />}
-              onClick={props.onCancel}
-              sx={{
-                borderRadius: 2,
-                textTransform: "none",
-                fontWeight: 600
-              }}>
-              {Locale.label("common.cancel")}
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<SaveIcon />}
-              onClick={handleSave}
-              disabled={createTaskMutation.isPending}
-              sx={{
-                borderRadius: 2,
-                textTransform: "none",
-                fontWeight: 600
-              }}>
-              {createTaskMutation.isPending ? Locale.label("tasks.newTask.saving") : Locale.label("common.save")}
-            </Button>
-          </Stack>
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: props.compact ? 6 : 4 }}>
+            <TextField
+              fullWidth
+              label={Locale.label("tasks.newTask.assignTo")}
+              value={task.assignedToLabel || ""}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon sx={{ color: "action.active" }} />
+                  </InputAdornment>
+                ),
+                sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
+              }}
+              onFocus={(e) => {
+                e.target.blur();
+                setModalField("assignedTo");
+              }}
+              data-testid="assign-to-input"
+              aria-label={Locale.label("tasks.newTask.assignToAria")}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: props.compact ? 12 : 4 }}>
+            <TextField
+              fullWidth
+              label={Locale.label("common.title")}
+              value={task.title || ""}
+              name="title"
+              onChange={handleChange}
+              placeholder={Locale.label("placeholders.task.title")}
+              data-testid="task-title-input"
+              aria-label={Locale.label("tasks.newTask.taskTitleAria")}
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+
+        <TextField
+          fullWidth
+          label={Locale.label("common.notes")}
+          value={message.content}
+          name="note"
+          onChange={handleChange}
+          multiline
+          rows={4}
+          placeholder={Locale.label("placeholders.task.notes")}
+          data-testid="task-notes-input"
+          aria-label={Locale.label("tasks.newTask.taskNotesAria")}
+          variant="outlined"
+        />
+
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          <Button
+            variant="outlined"
+            startIcon={<CancelIcon />}
+            onClick={props.onCancel}>
+            {Locale.label("common.cancel")}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={handleSave}
+            disabled={createTaskMutation.isPending}>
+            {createTaskMutation.isPending ? Locale.label("tasks.newTask.saving") : Locale.label("common.save")}
+          </Button>
         </Stack>
-      </CardContent>
+      </Stack>
 
       {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
-    </Card>
+    </Surface>
   );
 };

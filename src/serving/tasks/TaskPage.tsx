@@ -1,9 +1,9 @@
 import React, { useContext, useCallback } from "react";
-import { Menu, MenuItem, Box, Stack, Button } from "@mui/material";
-import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { Box, Stack, Typography } from "@mui/material";
+import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading } from "@churchapps/apphelper";
 import { type TaskInterface, type UserContextInterface } from "@churchapps/helpers";
-import { useParams } from "react-router-dom";
-import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../components/ui";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import { PageContainer, RecordLayout, StatusBadge, TextAction, VerbRow, eyebrowSx } from "../../components/ui";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
@@ -11,12 +11,10 @@ import { AccountDeletionRequest } from "./components/AccountDeletionRequest";
 import { GroupJoinRequestTask } from "./components/GroupJoinRequestTask";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon, Checklist as ChecklistIcon } from "@mui/icons-material";
 
 export const TaskPage = () => {
   const params = useParams();
   const [modalField, setModalField] = React.useState("");
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const context = useContext(UserContext);
   const queryClient = useQueryClient();
 
@@ -73,10 +71,6 @@ export const TaskPage = () => {
     setModalField("");
   }, []);
 
-  const closeStatusMenu = useCallback(() => {
-    setAnchorEl(null);
-  }, []);
-
   const handleCreateConversation = useCallback(async () => {
     if (!task.data) return;
     const conv: ConversationInterface = {
@@ -95,78 +89,49 @@ export const TaskPage = () => {
 
   if (task.isLoading) return <Loading />;
   if (!task.data) return <></>;
-  else {
-    return (
-      <>
-        <PageHeader
-          icon={<ChecklistIcon />}
-          title={`#${task.data.taskNumber} - ${task.data?.title}`}
-          subtitle={`${Locale.label("tasks.taskPage.created")} ${DateHelper.getDisplayDuration(DateHelper.toDate(task.data?.dateCreated))} ${Locale.label("tasks.taskPage.ago")} ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel} • ${Locale.label("tasks.taskPage.associated")}: ${task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
-          <Stack direction="row" spacing={1}>
-            <Button
-              variant={task.data.status === "Open" ? "contained" : "outlined"}
-              startIcon={task.data.status === "Open" ? <OpenIcon /> : <CompletedIcon />}
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              sx={{
-                color: task.data.status === "Open" ? "#FFF" : "#FFF",
-                backgroundColor: task.data.status === "Open" ? "warning.main" : "transparent",
-                borderColor: task.data.status === "Open" ? "warning.main" : "success.main",
-                "&:hover": {
-                  backgroundColor: task.data.status === "Open" ? "warning.dark" : "rgba(76, 175, 80, 0.2)",
-                  borderColor: task.data.status === "Open" ? "warning.dark" : "success.main"
-                },
-                textTransform: "none",
-                fontWeight: 600
-              }}>
-              {task.data.status}
-            </Button>
-            <HeaderSecondaryButton
-              size="small"
-              startIcon={<GroupIcon />}
-              onClick={() => setModalField("associatedWith")}
-              sx={{ minWidth: "auto" }}
-              title={Locale.label("tasks.taskPage.editAssoc")}>
-              {Locale.label("tasks.taskPage.associate")}
-            </HeaderSecondaryButton>
-            <HeaderPrimaryButton
-              size="small"
-              startIcon={<PersonIcon />}
-              onClick={() => setModalField("assignedTo")}
-              sx={{ minWidth: "auto" }}
-              title={Locale.label("tasks.taskPage.editAssigned")}>
-              {Locale.label("tasks.taskPage.assign")}
-            </HeaderPrimaryButton>
-          </Stack>
-        </PageHeader>
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeStatusMenu}>
-          <MenuItem
-            onClick={() => {
-              handleStatusChange("Open");
-              closeStatusMenu();
-            }}>
-            <OpenIcon sx={{ mr: 1 }} /> {Locale.label("tasks.taskPage.open")}
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleStatusChange("Closed");
-              closeStatusMenu();
-            }}>
-            <CompletedIcon sx={{ mr: 1 }} /> {Locale.label("tasks.taskPage.closed")}
-          </MenuItem>
-        </Menu>
 
-        <Box sx={{ p: 3 }}>
-          {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
-          {task.data.taskType === "accountDeletion" && <AccountDeletionRequest task={task.data} />}
-          {task.data.taskType === "groupJoinRequest" && <GroupJoinRequestTask task={task.data} />}
-          <Box sx={{ mb: 2 }}>
-            <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
-          </Box>
-          <Notes context={context as UserContextInterface} conversationId={task.data?.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
-        </Box>
+  const open = task.data.status === "Open";
+  const quiet = { typography: "body2", color: "text.secondary", overflowWrap: "anywhere" } as const;
 
-        {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
-      </>
-    );
-  }
+  const identity = (
+    <Box component="aside" data-testid="task-identity" sx={{ minWidth: 0 }}>
+      <Typography sx={eyebrowSx}>#{task.data.taskNumber}</Typography>
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ mt: 0.5, overflowWrap: "anywhere" }}>{task.data.title}</Typography>
+      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 1.5 }}>
+        <StatusBadge tone={open ? "warning" : "success"} data-testid="task-status">{task.data.status}</StatusBadge>
+        <Typography sx={quiet}>
+          {Locale.label("tasks.taskPage.created")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.data.dateCreated))} {Locale.label("tasks.taskPage.ago")} {Locale.label("tasks.taskPage.by")} {task.data.createdByLabel}
+        </Typography>
+      </Stack>
+      <VerbRow sx={{ mt: 2 }}>
+        <TextAction onClick={() => handleStatusChange(open ? "Closed" : "Open")} data-testid="task-status-toggle">
+          {open ? Locale.label("tasks.taskPage.closeTask", "Close task") : Locale.label("tasks.taskPage.reopenTask", "Reopen task")}
+        </TextAction>
+        <TextAction onClick={() => setModalField("associatedWith")} aria-label={Locale.label("tasks.taskPage.editAssoc")} data-testid="task-associate">{Locale.label("tasks.taskPage.associate")}</TextAction>
+        <TextAction onClick={() => setModalField("assignedTo")} aria-label={Locale.label("tasks.taskPage.editAssigned")} data-testid="task-assign">{Locale.label("tasks.taskPage.assign")}</TextAction>
+        <TextAction to="/serving/tasks" component={RouterLink}>{Locale.label("tasks.myWork.title")}</TextAction>
+      </VerbRow>
+      <Box component="dl" sx={{ mt: 3, mb: 0, display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 2, rowGap: 1, typography: "body2", "& dt": { color: "text.secondary", m: 0 }, "& dd": { m: 0, overflowWrap: "anywhere" } }}>
+        <dt>{Locale.label("tasks.taskPage.associated")}</dt>
+        <dd data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</dd>
+        <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
+        <dd data-testid="task-assigned-label">{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>
+      </Box>
+      <Box sx={{ mt: 3, "& .MuiAccordion-root": { boxShadow: "none", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", "&::before": { display: "none" } } }}>
+        <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
+      </Box>
+    </Box>
+  );
+
+  return (
+    <PageContainer>
+      <RecordLayout identity={identity} spacing={3} data-testid="task-record">
+        {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
+        {task.data.taskType === "accountDeletion" && <AccountDeletionRequest task={task.data} />}
+        {task.data.taskType === "groupJoinRequest" && <GroupJoinRequestTask task={task.data} />}
+        <Notes context={context as UserContextInterface} conversationId={task.data.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
+      </RecordLayout>
+      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
+    </PageContainer>
+  );
 };

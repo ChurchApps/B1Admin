@@ -1,18 +1,22 @@
-import React, { memo, useCallback, useMemo } from "react";
-import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { memo, useCallback } from "react";
+import { ApiHelper, ArrayHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { Link as RouterLink, useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button } from "@mui/material";
-import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { Box, Button, Typography } from "@mui/material";
+import { QueueMusic as ArrangementIcon } from "@mui/icons-material";
 import { Arrangement } from "./components/Arrangement";
-import { EmptyState } from "../../components/ui/EmptyState";
-import { CountChip, HeaderPrimaryButton } from "../../components/ui";
+import { EmptyState, PageContainer, PillTabs, RecordHeading, RecordLayout, TextAction, VerbRow, eyebrowSx } from "../../components/ui";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
 import { SongDetailLinksEdit } from "./components/SongDetailLinksEdit";
 import { useConfirmDelete } from "../../hooks";
+
+const formatSeconds = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return mins + ":" + (secs < 10 ? "0" : "") + secs;
+};
 
 export const SongPage = memo(() => {
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
@@ -100,134 +104,79 @@ export const SongPage = memo(() => {
     setSelectedArrangement(newArrangements[0]);
   }, [song.data?.id, songDetail.data?.keySignature, refetch]);
 
-  const arrangementNavigation = useMemo(
-    () => (
-      <Stack spacing={3}>
-        <Card sx={{ height: "fit-content", borderRadius: 2 }}>
-          <CardContent>
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-              <MusicIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("songs.oldArrangements.arrangements")}
-              </Typography>
-              {(arrangements.data?.length ?? 0) > 0 && <CountChip count={arrangements.data?.length ?? 0} />}
-            </Stack>
+  const sd = songDetail.data;
+  const title = sd?.title || song.data?.name || Locale.label("songs.songPage.loading");
+  const editing = editSongDetails && canEdit && !!sd;
 
-            <List sx={{ p: 0 }}>
-              {arrangements.data?.map((arrangement, index) => (
-                <Box key={arrangement.id}>
-                  <ListItem sx={{ px: 0 }}>
-                    <ListItemButton
-                      selected={selectedArrangement?.id === arrangement.id}
-                      onClick={() => selectArrangement(arrangement.id!)}
-                      sx={{
-                        borderRadius: 1,
-                        "&.Mui-selected": {
-                          backgroundColor: "rgba(21, 101, 192, 0.12)", // Lighter primary color opacity
-                          "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.2)" }
-                        },
-                        "&:hover": { backgroundColor: "action.hover" }
-                      }}>
-                      <ListItemIcon sx={{ minWidth: 36 }}>
-                        <ArrangementIcon sx={{ color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.secondary" }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={arrangement.name}
-                        primaryTypographyProps={{
-                          sx: {
-                            fontWeight: selectedArrangement?.id === arrangement.id ? 600 : 400,
-                            color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.primary"
-                          }
-                        }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                  {index < (arrangements.data?.length ?? 0) - 1 && <Divider sx={{ my: 0.5 }} />}
-                </Box>
-              ))}
-            </List>
+  const facts = sd
+    ? [
+      { label: Locale.label("songs.details.album"), value: sd.album },
+      { label: Locale.label("songs.details.key"), value: sd.keySignature },
+      { label: Locale.label("songs.details.length"), value: sd.seconds ? formatSeconds(sd.seconds) : "" },
+      { label: Locale.label("songs.details.bpm"), value: sd.bpm ? sd.bpm.toString() : "" },
+      { label: Locale.label("songs.details.meter"), value: sd.meter },
+      { label: Locale.label("songs.details.language"), value: sd.language }
+    ].filter((f) => f.value)
+    : [];
 
-            {canEdit && (
-              <Button
-                variant="outlined"
-                startIcon={<AddIcon />}
-                onClick={handleAddArrangement}
-                fullWidth
-                sx={{
-                  mt: 2,
-                  borderStyle: "dashed",
-                  color: "text.secondary",
-                  borderColor: "grey.400",
-                  "&:hover": {
-                    borderColor: "primary.main",
-                    color: "primary.main",
-                    backgroundColor: "primary.light"
-                  }
-                }}>
-                {Locale.label("songs.songPage.addArrangement")}
-              </Button>
-            )}
-          </CardContent>
-        </Card>
+  const identity = (
+    <Box component="aside" data-testid="song-identity" sx={{ minWidth: 0 }}>
+      {sd?.thumbnail && (
+        <Box component="img" src={sd.thumbnail} alt="" sx={{ width: 88, height: 88, borderRadius: "var(--b1-radius-panel)", objectFit: "cover", display: "block", mb: 2 }} />
+      )}
+      <Typography component="p" sx={eyebrowSx}>{Locale.label("songs.songsPage.songs")}</Typography>
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{title}</Typography>
+      {sd?.artist && <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>{sd.artist}</Typography>}
+      <VerbRow sx={{ mt: 2 }}>
+        {canEdit && (
+          <TextAction onClick={() => setEditSongDetails(!editSongDetails)} data-testid="song-edit-button">
+            {editing ? Locale.label("common.done") : Locale.label("common.edit")}
+          </TextAction>
+        )}
+        {canEdit && <TextAction onClick={handleAddArrangement} data-testid="add-arrangement-button">{Locale.label("songs.songPage.addArrangement")}</TextAction>}
+        <TextAction to="/serving/songs" component={RouterLink}>{Locale.label("songs.songsPage.songs")}</TextAction>
+      </VerbRow>
 
-        <Card sx={{ height: "fit-content", borderRadius: 2 }}>
-          <CardContent>
-            {songDetail.data &&
-              (editLinks && canEdit ? (
-                <SongDetailLinksEdit
-                  songDetailId={songDetail.data.id!}
-                  reload={() => {
-                    setEditLinks(false);
-                    refetch();
-                  }}
-                />
-              ) : (
-                <SongDetailLinks songDetail={songDetail.data} onEdit={canEdit ? () => setEditLinks(true) : undefined} />
-              ))}
-          </CardContent>
-        </Card>
-      </Stack>
-    ),
-    [
-      arrangements.data, selectedArrangement, selectArrangement, songDetail.data, editLinks, refetch, canEdit, handleAddArrangement
-    ]
+      {facts.length > 0 && (
+        <Box component="dl" data-testid="song-facts" sx={{ display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 2, rowGap: 0.5, typography: "body2", mt: 3, mb: 0, "& dt": { color: "text.secondary", m: 0 }, "& dd": { m: 0, overflowWrap: "anywhere" } }}>
+          {facts.map((f) => (
+            <React.Fragment key={f.label}>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </React.Fragment>
+          ))}
+        </Box>
+      )}
+
+      {(arrangements.data?.length ?? 0) > 0 && (
+        <Box sx={{ mt: 3 }}>
+          <RecordHeading label={Locale.label("songs.oldArrangements.arrangements")} />
+          <PillTabs
+            aria-label={Locale.label("songs.oldArrangements.arrangements")}
+            value={selectedArrangement?.id || ""}
+            onChange={selectArrangement}
+            options={(arrangements.data || []).map((a) => ({ value: a.id!, label: a.name, "data-testid": "arrangement-pill-" + a.id }))}
+            sx={{ flexWrap: "wrap", overflowX: "visible" }}
+          />
+        </Box>
+      )}
+
+      {sd && (
+        <Box sx={{ mt: 3 }}>
+          {editLinks && canEdit
+            ? <SongDetailLinksEdit songDetailId={sd.id!} reload={() => { setEditLinks(false); refetch(); }} />
+            : <SongDetailLinks songDetail={sd} onEdit={canEdit ? () => setEditLinks(true) : undefined} />}
+        </Box>
+      )}
+    </Box>
   );
 
-  const currentContent = useMemo(() => {
-    if (!selectedArrangement) {
+  const slice = () => {
+    if (editing) {
       return (
-        <EmptyState
-          icon={<ArrangementIcon />}
-          title={Locale.label("songs.songPage.noArrangementSelected")}
-          description={Locale.label("songs.songPage.noArrangementDescription")}
-        />
-      );
-    }
-
-    return <Arrangement key={selectedArrangement.id} arrangement={selectedArrangement} reload={refetch} />;
-  }, [selectedArrangement, refetch]);
-
-  return (
-    <>
-      {ConfirmDialogElement}
-      <PageHeader icon={<MusicIcon />} title={songDetail.data?.title || song.data?.name || Locale.label("songs.songPage.loading")} subtitle={Locale.label("songs.songPage.subtitle")}>
-        {canEdit && (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={() => setEditSongDetails(true)} />
-        )}
-        {canEdit && (
-          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="header" intent="remove" onClick={handleDeleteSong} />
-        )}
-        {canEdit && (
-          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleAddArrangement}>
-            {Locale.label("songs.songPage.addArrangement")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        {editSongDetails && canEdit ? (
+        <>
           <SongDetailsEdit
-            songDetail={songDetail.data!}
+            songDetail={sd!}
             onCancel={() => setEditSongDetails(false)}
             onSave={() => {
               setEditSongDetails(false);
@@ -235,14 +184,33 @@ export const SongPage = memo(() => {
             }}
             reload={refetch}
           />
-        ) : (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 9 }}>{currentContent}</Grid>
+          <Box>
+            <Button color="error" variant="text" onClick={handleDeleteSong} data-testid="delete-song-button">
+              {Locale.label("serving.songPage.deleteSong", "Delete song")}
+            </Button>
+          </Box>
+        </>
+      );
+    }
+    if (!selectedArrangement) {
+      return (
+        <EmptyState
+          variant="plain"
+          icon={<ArrangementIcon />}
+          title={Locale.label("songs.songPage.noArrangementSelected")}
+          description={Locale.label("songs.songPage.noArrangementDescription")}
+        />
+      );
+    }
+    return <Arrangement key={selectedArrangement.id} arrangement={selectedArrangement} reload={refetch} />;
+  };
 
-            <Grid size={{ xs: 12, md: 3 }}>{arrangementNavigation}</Grid>
-          </Grid>
-        )}
-      </Box>
-    </>
+  return (
+    <PageContainer>
+      {ConfirmDialogElement}
+      <RecordLayout identity={identity} spacing={3} data-testid="song-record">
+        {slice()}
+      </RecordLayout>
+    </PageContainer>
   );
 });

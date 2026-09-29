@@ -1,19 +1,19 @@
 .om-sunday {
-  --om-ink: #333333;
-  --om-mute: #666666;
-  --om-line: #dddddd;
-  --om-accent: #1565C0;
-  --om-live: #2e7d32;
-  --om-guest: #ed6c02;
-  --om-lift: #e5e8ee;
+  --om-ink: var(--b1-text);
+  --om-mute: var(--b1-muted);
+  --om-line: var(--b1-border);
+  --om-accent: var(--b1-primary);
+  --om-live: var(--b1-success);
+  --om-guest: var(--b1-warning);
+  --om-lift: var(--b1-neutral-bg);
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
   width: 100%;
   color: var(--om-ink);
-  background: #fff;
+  background: var(--b1-surface);
   border: 1px solid var(--om-line);
-  border-radius: 10px;
+  border-radius: var(--b1-radius-panel);
   overflow: hidden;
 }
 
@@ -30,16 +30,6 @@
   border-right: 1px solid var(--om-line);
 }
 
-.om-bulletin::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 32px;
-  bottom: 40px;
-  width: 2px;
-  background: var(--om-accent);
-}
-
 .om-eyebrow {
   color: var(--om-accent);
   font-size: 0.8rem;
@@ -49,10 +39,9 @@
 }
 
 .om-sermon {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.25;
   margin: 0 0 8px;
 }
 
@@ -107,10 +96,10 @@
 }
 
 .om-in-room {
-  font-size: 4.2rem;
-  font-weight: 500;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .om-in-room span {
@@ -157,11 +146,9 @@
 }
 
 .om-sunday h3 {
-  font-size: 0.78rem;
-  font-weight: 650;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--om-mute);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--om-ink);
   margin: 0 0 12px;
 }
 
@@ -198,7 +185,7 @@
 
 .om-chip {
   border: 1px solid var(--om-line);
-  border-radius: 999px;
+  border-radius: var(--b1-radius-pill);
   padding: 6px 12px;
   font-size: 0.9rem;
   color: var(--om-ink);
@@ -261,7 +248,4 @@
   }
   .om-bulletin,
   .om-live { padding: 24px 20px 32px; }
-  .om-bulletin::before { top: 24px; bottom: 32px; }
-  .om-sermon { font-size: 1.85rem; }
-  .om-in-room { font-size: 3.2rem; }
 }

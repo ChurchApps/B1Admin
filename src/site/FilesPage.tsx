@@ -1,6 +1,5 @@
-import { Box } from "@mui/material";
-import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
-import { Folder as FolderIcon } from "@mui/icons-material";
+import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { PageHeader, PageContainer } from "../components/ui";
 import { FilesManager } from "./components";
 import { PermissionDenied } from "../components";
 
@@ -10,13 +9,12 @@ export const FilesPage = () => {
   return (
     <>
       <PageHeader
-        icon={<FolderIcon />}
         title={Locale.label("site.filesPage.title")}
         subtitle={Locale.label("site.filesPage.subtitle")}
       />
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         {UserHelper.currentUserChurch && <FilesManager />}
-      </Box>
+      </PageContainer>
     </>
   );
 };

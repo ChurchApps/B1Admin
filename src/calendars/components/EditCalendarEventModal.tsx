@@ -95,8 +95,8 @@ export function EditCalendarEventModal(props: Props) {
 
   const selectedEventStyle = (event: EventInterface) => {
     const id = eventIdsList.find((id) => id === event.id);
-    const backgroundColor = id ? "green" : "#3174ad";
-    const borderColor = id ? "white" : "#3174ad";
+    const backgroundColor = id ? "var(--b1-success)" : "var(--c1)";
+    const borderColor = id ? "white" : "var(--c1)";
     return {
       style: {
         backgroundColor,
@@ -179,7 +179,7 @@ export function EditCalendarEventModal(props: Props) {
         )}
         {addType === "events" && groupEvents.length > 0 && (
           <div style={{ marginTop: 11 }}>
-            <Typography align="center" fontSize="15px" fontStyle="italic" marginBottom={3} color="#757575">
+            <Typography align="center" fontStyle="italic" marginBottom={3} color="text.secondary">
               {Locale.label("calendars.editEvent.clickToAdd")}
             </Typography>
             <Calendar

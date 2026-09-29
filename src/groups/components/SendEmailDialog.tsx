@@ -202,10 +202,10 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       <Dialog open onClose={props.onClose} maxWidth="sm" fullWidth>
         <DialogContent>
           <Box sx={{ textAlign: "center", py: 3, px: { xs: 1, sm: 3 } }}>
-            <Box sx={{ width: 72, height: 72, borderRadius: "50%", mx: "auto", mb: 2, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "primary.main", color: "primary.contrastText" }}>
-              {sendStatus.requested ? <MarkEmailReadIcon sx={{ fontSize: 36 }} /> : <VerifiedUserIcon sx={{ fontSize: 36 }} />}
+            <Box sx={{ mb: 2, color: "primary.main" }}>
+              {sendStatus.requested ? <MarkEmailReadIcon fontSize="large" /> : <VerifiedUserIcon fontSize="large" />}
             </Box>
-            <Typography variant="h6" sx={{ mb: 1 }}>
+            <Typography variant="h3" component="h2" sx={{ mb: 1 }}>
               {sendStatus.requested ? Locale.label("groups.sendEmailDialog.reviewRequestedTitle") : Locale.label("groups.sendEmailDialog.reviewTitle")}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
@@ -311,7 +311,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
               ))}
             </Stack>
           </Box>
-          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1 }}>
+          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1 }}>
             <HtmlEditor
               key={bodyEditorKey}
               value={htmlContent}
@@ -326,7 +326,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewSubject")}</Typography>
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
-          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "var(--bg-sub)" }}>
+          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 2, bgcolor: "var(--b1-canvas)" }}>
             <iframe
               sandbox=""
               srcDoc={getPreviewHtml()}

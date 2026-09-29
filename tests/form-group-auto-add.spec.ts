@@ -107,13 +107,14 @@ test.describe("Form-linked group auto-add", () => {
     await anon.dispose();
 
     await openSeedGroup(page, GROUP_NAME);
+    await page.getByTestId("group-all-members").click();
     await expect(page.locator("#groupMembersBox")).toContainText(CAMPER_NAME, { timeout: 15000 });
   });
 
-  test("the submission shows on the new person's Forms tab", async ({ page }) => {
+  test("the submission shows in the new person's Forms section", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, CAMPER_NAME);
-    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByTestId("person-forms-all").click();
     const railItem = page.getByText(FORM_NAME, { exact: true }).first();
     await expect(railItem).toBeVisible({ timeout: 15000 });
     await railItem.click();

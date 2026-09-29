@@ -2,6 +2,7 @@ import React from "react";
 import { Breadcrumbs as MuiBreadcrumbs, Link, Typography } from "@mui/material";
 import { NavigateNext as NavigateNextIcon, Home as HomeIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useHeaderTone } from "./headerTone";
 
 export interface BreadcrumbItem {
   label: string;
@@ -14,8 +15,14 @@ interface BreadcrumbsProps {
   showHome?: boolean;
 }
 
+const linkReset = { display: "flex", alignItems: "center", textDecoration: "none", cursor: "pointer", border: "none", background: "none", padding: 0, font: "inherit", fontSize: "0.875rem" } as const;
+
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true }) => {
   const navigate = useNavigate();
+  const light = useHeaderTone() === "light";
+  const c = light
+    ? { sep: "text.secondary", text: "text.secondary", link: "primary.main", current: "text.primary", hover: "primary.dark" }
+    : { sep: "rgba(255,255,255,0.7)", text: "rgba(255,255,255,0.9)", link: "rgba(255,255,255,0.9)", current: "#FFF", hover: "#FFF" };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, path?: string) => {
     event.preventDefault();
@@ -24,30 +31,11 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
 
   return (
     <MuiBreadcrumbs
-      separator={<NavigateNextIcon fontSize="small" sx={{ color: "rgba(255,255,255,0.7)" }} />}
-      sx={{
-        color: "rgba(255,255,255,0.9)",
-        fontSize: "0.875rem",
-        "& .MuiBreadcrumbs-separator": { mx: 0.5 }
-      }}
+      separator={<NavigateNextIcon fontSize="small" sx={{ color: c.sep }} />}
+      sx={{ color: c.text, fontSize: "0.875rem", "& .MuiBreadcrumbs-separator": { mx: 0.5 } }}
     >
       {showHome && (
-        <Link
-          component="button"
-          onClick={(e) => handleClick(e, "/")}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            color: "rgba(255,255,255,0.9)",
-            textDecoration: "none",
-            cursor: "pointer",
-            "&:hover": { color: "#FFF", textDecoration: "underline" },
-            border: "none",
-            background: "none",
-            padding: 0,
-            font: "inherit"
-          }}
-        >
+        <Link component="button" onClick={(e) => handleClick(e, "/")} aria-label="Home" sx={{ ...linkReset, color: c.link, "&:hover": { color: c.hover, textDecoration: "underline" } }}>
           <HomeIcon sx={{ fontSize: 18, mr: 0.5 }} />
         </Link>
       )}
@@ -57,16 +45,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
 
         if (isLast || !item.path) {
           return (
-            <Typography
-              key={index}
-              sx={{
-                color: "#FFF",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                display: "flex",
-                alignItems: "center"
-              }}
-            >
+            <Typography key={index} aria-current={isLast ? "page" : undefined} sx={{ color: c.current, fontSize: "0.875rem", fontWeight: 500, display: "flex", alignItems: "center" }}>
               {item.icon && <span style={{ display: "flex", marginRight: 4 }}>{item.icon}</span>}
               {item.label}
             </Typography>
@@ -74,24 +53,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
         }
 
         return (
-          <Link
-            key={index}
-            component="button"
-            onClick={(e) => handleClick(e, item.path)}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              color: "rgba(255,255,255,0.9)",
-              textDecoration: "none",
-              cursor: "pointer",
-              "&:hover": { color: "#FFF", textDecoration: "underline" },
-              border: "none",
-              background: "none",
-              padding: 0,
-              font: "inherit",
-              fontSize: "0.875rem"
-            }}
-          >
+          <Link key={index} component="button" onClick={(e) => handleClick(e, item.path)} sx={{ ...linkReset, color: c.link, "&:hover": { color: c.hover, textDecoration: "underline" } }}>
             {item.icon && <span style={{ display: "flex", marginRight: 4 }}>{item.icon}</span>}
             {item.label}
           </Link>

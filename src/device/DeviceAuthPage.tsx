@@ -174,7 +174,7 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon sx={{ fontSize: 120, mt: 3.75, color: "success.main" }}>check_circle</Icon>
+            <Icon sx={{ fontSize: 56, mt: 3, color: "success.main" }}>check_circle</Icon>
             <h2>{Locale.label("device.deviceAuthPage.deviceAuthorizedHeading")}</h2>
             <p>{Locale.label("device.deviceAuthPage.deviceAuthorizedMessage")}</p>
           </div>
@@ -186,7 +186,7 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>tv</Icon>
+            <Icon sx={{ fontSize: 56, mt: 3, color: "text.secondary" }}>tv</Icon>
             <h2>{Locale.label("device.deviceAuthPage.title")}</h2>
             <p>{Locale.label("device.deviceAuthPage.enterCodePrompt")}</p>
           </div>
@@ -216,7 +216,7 @@ export const DeviceAuthPage: React.FC = () => {
               )}
             </Box>
           </div>
-          <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
+          <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2 }}>
             <Button
               fullWidth
               variant="contained"
@@ -235,7 +235,7 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
+            <Icon sx={{ fontSize: 56, mt: 3, color: "text.secondary" }}>lock</Icon>
             <h2>{clientName || Locale.label("device.deviceAuthPage.loading")}</h2>
             <p>
               {Locale.label("device.deviceAuthPage.confirmPrompt").split("<b>{churchName}</b>").map((part, i, arr) => (
@@ -275,12 +275,12 @@ export const DeviceAuthPage: React.FC = () => {
               </Alert>
             )}
           </div>
-          <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
+          <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2 }}>
             <Grid container spacing={2}>
               <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
                 <Button
                   fullWidth
-                  variant="contained"
+                  variant="outlined"
                   onClick={handleDeny}
                   disabled={loading}
                 >
@@ -309,7 +309,7 @@ export const DeviceAuthPage: React.FC = () => {
 
   return (
     <AuthShell logoAlt={Locale.label("device.deviceAuthPage.altLogo")}>
-      <Alert severity="info" style={{ fontWeight: "bold" }}>
+      <Alert severity="info">
         {success ? Locale.label("device.deviceAuthPage.deviceAuthorizedAlert") : Locale.label("device.deviceAuthPage.authorizationRequired")}
       </Alert>
       {renderContent()}

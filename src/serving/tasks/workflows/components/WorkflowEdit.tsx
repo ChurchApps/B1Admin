@@ -1,7 +1,8 @@
-import { Card, CardContent, Typography, Stack, Box, Button, TextField, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
+import { Surface } from "../../../../components/ui";
+import { Typography, Stack, Button, TextField, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { ViewKanban as WorkflowsIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../../../hooks";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
@@ -88,88 +89,81 @@ export const WorkflowEdit = (props: Props) => {
   };
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", "&:hover": { boxShadow: 2 } }}>
+    <Surface>
       {ConfirmDialogElement}
-      <CardContent>
-        <Stack spacing={3}>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <WorkflowsIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                {Locale.label("tasks.workflowEdit.editWorkflow")}
-              </Typography>
+      <Stack spacing={3}>
+        <Typography variant="h3" component="h2">
+          {Locale.label("tasks.workflowEdit.editWorkflow")}
+        </Typography>
+
+        <Stack spacing={2}>
+          <TextField
+            fullWidth
+            label={Locale.label("tasks.workflowEdit.name")}
+            value={workflow?.name || ""}
+            name="name"
+            onChange={handleChange}
+            data-testid="workflow-name-input"
+            aria-label={Locale.label("tasks.workflowEdit.name")}
+            variant="outlined"
+          />
+
+          {addingCategory || editingCategory ? (
+            <Stack direction="row" spacing={1} alignItems="center">
+              <TextField
+                fullWidth
+                autoFocus
+                label={editingCategory ? Locale.label("tasks.workflowCategories.title") : Locale.label("tasks.workflowCategories.newCategory")}
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); if (editingCategory) handleRenameCategory(); else handleAddCategory(); } }}
+                data-testid="new-category-input"
+                variant="outlined"
+              />
+              <AppIconButton label={Locale.label("common.save")} icon={<CheckIcon />} onClick={editingCategory ? handleRenameCategory : handleAddCategory} data-testid="new-category-save" />
+              <AppIconButton label={Locale.label("common.cancel")} icon={<CancelIcon />} onClick={cancelAddCategory} data-testid="new-category-cancel" />
             </Stack>
-          </Box>
+          ) : (
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>{Locale.label("tasks.workflowCategories.title")}</InputLabel>
+              <Select displayEmpty label={Locale.label("tasks.workflowCategories.title")} value={workflow?.categoryId || ""} name="categoryId" onChange={handleChange} data-testid="workflow-category-select">
+                <MenuItem value="">{Locale.label("tasks.workflowCategories.uncategorized")}</MenuItem>
+                {categories.map((c) => (
+                  <MenuItem key={c.id} value={c.id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 1 }}>
+                    {c.name}
+                    <AppIconButton
+                      label={Locale.label("common.edit")}
+                      icon={<EditIcon />}
+                      onClick={(e) => { e.stopPropagation(); setEditingCategory(c); setNewCategoryName(c.name || ""); }}
+                      data-testid={`workflow-category-edit-${c.id}`}
+                    />
+                  </MenuItem>
+                ))}
+                <MenuItem value={ADD_CATEGORY} data-testid="workflow-category-add">+ {Locale.label("tasks.workflowCategories.addCategory")}</MenuItem>
+              </Select>
+            </FormControl>
+          )}
 
-          <Stack spacing={2}>
-            <TextField
-              fullWidth
-              label={Locale.label("tasks.workflowEdit.name")}
-              value={workflow?.name || ""}
-              name="name"
-              onChange={handleChange}
-              data-testid="workflow-name-input"
-              aria-label={Locale.label("tasks.workflowEdit.name")}
-              variant="outlined"
-            />
-
-            {addingCategory || editingCategory ? (
-              <Stack direction="row" spacing={1} alignItems="center">
-                <TextField
-                  fullWidth
-                  autoFocus
-                  label={editingCategory ? Locale.label("tasks.workflowCategories.title") : Locale.label("tasks.workflowCategories.newCategory")}
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); if (editingCategory) handleRenameCategory(); else handleAddCategory(); } }}
-                  data-testid="new-category-input"
-                  variant="outlined"
-                />
-                <AppIconButton label={Locale.label("common.save")} icon={<CheckIcon />} onClick={editingCategory ? handleRenameCategory : handleAddCategory} data-testid="new-category-save" />
-                <AppIconButton label={Locale.label("common.cancel")} icon={<CancelIcon />} onClick={cancelAddCategory} data-testid="new-category-cancel" />
-              </Stack>
-            ) : (
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>{Locale.label("tasks.workflowCategories.title")}</InputLabel>
-                <Select displayEmpty label={Locale.label("tasks.workflowCategories.title")} value={workflow?.categoryId || ""} name="categoryId" onChange={handleChange} data-testid="workflow-category-select">
-                  <MenuItem value="">{Locale.label("tasks.workflowCategories.uncategorized")}</MenuItem>
-                  {categories.map((c) => (
-                    <MenuItem key={c.id} value={c.id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 1 }}>
-                      {c.name}
-                      <AppIconButton
-                        label={Locale.label("common.edit")}
-                        icon={<EditIcon />}
-                        onClick={(e) => { e.stopPropagation(); setEditingCategory(c); setNewCategoryName(c.name || ""); }}
-                        data-testid={`workflow-category-edit-${c.id}`}
-                      />
-                    </MenuItem>
-                  ))}
-                  <MenuItem value={ADD_CATEGORY} data-testid="workflow-category-add">+ {Locale.label("tasks.workflowCategories.addCategory")}</MenuItem>
-                </Select>
-              </FormControl>
-            )}
-
-            <FormControlLabel
-              control={<Switch checked={workflow?.active ?? true} onChange={(e) => { if (workflow) setWorkflow({ ...workflow, active: e.target.checked }); }} color="primary" />}
-              label={<Typography variant="body1">{workflow?.active ?? true ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</Typography>}
-            />
-          </Stack>
-
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            {workflowId && (
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} data-testid="workflow-delete-button" sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600 }}>
-                {Locale.label("common.delete")}
-              </Button>
-            )}
-            <Button variant="outlined" startIcon={<CancelIcon />} onClick={props.onCancel} sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600 }}>
-              {Locale.label("common.cancel")}
-            </Button>
-            <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSave} data-testid="workflow-save-button" sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600 }}>
-              {Locale.label("common.save")}
-            </Button>
-          </Stack>
+          <FormControlLabel
+            control={<Switch checked={workflow?.active ?? true} onChange={(e) => { if (workflow) setWorkflow({ ...workflow, active: e.target.checked }); }} color="primary" />}
+            label={<Typography variant="body1">{workflow?.active ?? true ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</Typography>}
+          />
         </Stack>
-      </CardContent>
-    </Card>
+
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          {workflowId && (
+            <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} data-testid="workflow-delete-button">
+              {Locale.label("common.delete")}
+            </Button>
+          )}
+          <Button variant="outlined" startIcon={<CancelIcon />} onClick={props.onCancel}>
+            {Locale.label("common.cancel")}
+          </Button>
+          <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSave} data-testid="workflow-save-button">
+            {Locale.label("common.save")}
+          </Button>
+        </Stack>
+      </Stack>
+    </Surface>
   );
 };

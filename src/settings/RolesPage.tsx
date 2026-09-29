@@ -1,9 +1,9 @@
 import React from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, Loading } from "@churchapps/apphelper";
-import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { PermissionDenied } from "../components";
+import { PageContainer } from "../components/ui";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { RolesTab } from "./components";
 
@@ -22,9 +22,9 @@ export const RolesPage: React.FC = () => {
   return (
     <>
       <SettingsHeader backTo="/settings" title={Locale.label("settings.roles.roles")} subtitle={Locale.label("settings.rolesPage.subtitle")} />
-      <Box sx={{ p: { xs: 2, md: 4 } }}>
+      <PageContainer py={3}>
         <RolesTab church={church.data || null} />
-      </Box>
+      </PageContainer>
     </>
   );
 };

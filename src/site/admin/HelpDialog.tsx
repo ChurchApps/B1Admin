@@ -52,9 +52,10 @@ export function HelpDialog(props: HelpDialogProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          fontSize: "1.05rem",
+          fontSize: 18,
           fontWeight: 600,
-          borderBottom: "1px solid var(--border-main)"
+          borderBottom: 1,
+          borderColor: "divider"
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -67,25 +68,12 @@ export function HelpDialog(props: HelpDialogProps) {
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 3 }}>
           {tips.map((tip, i) => (
             <Box key={i} sx={{ display: "flex", gap: 1.5 }}>
-              <Box
-                sx={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: "8px",
-                  background: "var(--bg-sub)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0
-                }}
-              >
-                <Icon sx={{ color: "text.primary", fontSize: 20 }}>{tip.icon}</Icon>
-              </Box>
+              <Icon sx={{ color: "text.secondary", fontSize: 20, mt: 0.25, flexShrink: 0 }}>{tip.icon}</Icon>
               <Box>
-                <Box sx={{ fontWeight: 600, color: "text.primary", fontSize: "0.9rem", mb: 0.25 }}>
+                <Box sx={{ fontWeight: 600, color: "text.primary", fontSize: 14, mb: 0.5 }}>
                   {tip.title}
                 </Box>
-                <Box sx={{ color: "text.secondary", fontSize: "0.825rem", lineHeight: 1.45 }}>
+                <Box sx={{ color: "text.secondary", fontSize: 14, lineHeight: "21px" }}>
                   {tip.body}
                 </Box>
               </Box>
@@ -93,7 +81,7 @@ export function HelpDialog(props: HelpDialogProps) {
           ))}
         </Box>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2, borderTop: "1px solid var(--border-main)", justifyContent: "space-between" }}>
+      <DialogActions sx={{ px: 3, pb: 2, borderTop: 1, borderColor: "divider", justifyContent: "space-between" }}>
         <Button
           variant="text"
           color="primary"
@@ -101,16 +89,13 @@ export function HelpDialog(props: HelpDialogProps) {
           target="_blank"
           rel="noopener noreferrer"
           endIcon={<Icon fontSize="small">open_in_new</Icon>}
-          sx={{ textTransform: "none" }}
         >
           {Locale.label("site.helpDialog.fullDocs")}
         </Button>
         <Button
           variant="contained"
           color="primary"
-          disableElevation
           onClick={onClose}
-          sx={{ textTransform: "none" }}
         >
           {Locale.label("common.close")}
         </Button>

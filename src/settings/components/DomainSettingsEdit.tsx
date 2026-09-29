@@ -148,7 +148,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
     domains.forEach((d) => {
       const index = idx;
       result.push(
-        <TableRow key={index} sx={{ "&:hover": { bgcolor: "action.hover" } }}>
+        <TableRow key={index}>
           <TableCell sx={{ py: 1.5 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <LinkIcon sx={{ color: "text.disabled", fontSize: 18 }} />
@@ -186,19 +186,19 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
         p: 2,
         mb: 2,
         bgcolor: "action.hover",
-        borderRadius: 2,
+        borderRadius: "var(--b1-radius-control)",
         border: "1px solid",
         borderColor: "divider"
       }}>
         <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-          {Locale.label("settings.domainSettingsEdit.domMsg")} <code style={{ backgroundColor: "rgba(0,0,0,0.08)", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>CNAME: proxy.b1.church</code>
-          {Locale.label("settings.domainSettingsEdit.domMsg2")} <code style={{ backgroundColor: "rgba(0,0,0,0.08)", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>A: 3.23.251.61</code>
+          {Locale.label("settings.domainSettingsEdit.domMsg")} <Box component="code" sx={{ bgcolor: "action.selected", px: 0.75, py: 0.25, borderRadius: "var(--b1-radius-control)", fontFamily: "monospace" }}>CNAME: proxy.b1.church</Box>
+          {Locale.label("settings.domainSettingsEdit.domMsg2")} <Box component="code" sx={{ bgcolor: "action.selected", px: 0.75, py: 0.25, borderRadius: "var(--b1-radius-control)", fontFamily: "monospace" }}>A: 3.23.251.61</Box>
         </Typography>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-      <Table size="small" sx={{ "& .MuiTableCell-root": { borderColor: "divider" } }}>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell sx={{ py: 1.5 }}>{Locale.label("settings.domainSettingsEdit.domain")}</TableCell>
@@ -218,7 +218,6 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
                 onChange={handleChange}
                 placeholder={Locale.label("settings.domain.domainPlaceholder")}
                 error={!!error}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1.5 } }}
               />
             </TableCell>
             {sites.length > 0 && <TableCell sx={{ py: 1 }} />}

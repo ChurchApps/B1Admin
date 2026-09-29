@@ -183,7 +183,7 @@ export function GenerateSiteModal(props: Props) {
           <Box>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("site.generateSite.planIntro")}</Typography>
             {plan.map((page, i) => (
-              <Box key={i} sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1.5, mb: 1 }}>
+              <Box key={i} sx={{ border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1.5, mb: 1 }}>
                 <FormControlLabel control={<Checkbox checked={includes[i]} onChange={(e) => setIncludes((inc) => inc.map((v, idx) => (idx === i ? e.target.checked : v)))} data-testid={"gs-include-" + i} />} label={<Typography sx={{ fontWeight: 600 }}>{page.title}</Typography>} />
                 <List dense disablePadding sx={{ pl: 4 }}>
                   {page.sections.map((s) => <ListItem key={s.id} disableGutters sx={{ py: 0 }}><ListItemText primaryTypographyProps={{ variant: "body2", color: "text.secondary" }} primary={"• " + s.purpose} /></ListItem>)}

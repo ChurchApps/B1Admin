@@ -185,9 +185,9 @@ export function SectionEdit(props: Props) {
     {getAppearanceFields([
       "border", "color", "font", "height", "line", "margin", "padding", "width"
     ])}
-    <Accordion disableGutters sx={{ boxShadow: "none", border: "1px solid var(--border-light)", mt: 2 }} data-testid="section-dividers-accordion">
+    <Accordion disableGutters sx={{ boxShadow: "none", border: 1, borderColor: "divider", mt: 2 }} data-testid="section-dividers-accordion">
       <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
-        <Typography sx={{ fontWeight: 600, fontSize: "0.9rem" }}>{Locale.label("site.sectionEdit.dividers")}</Typography>
+        <Typography variant="h3" component="h3">{Locale.label("site.sectionEdit.dividers")}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         {getDividerFields("dividerTop", Locale.label("site.sectionEdit.dividerTop"))}

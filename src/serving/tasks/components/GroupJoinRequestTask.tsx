@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
-import { Card, CardContent, Typography, Stack, Box, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
-import { GroupAdd as JoinRequestIcon, CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
+import { Typography, Stack, Box, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
+import { CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
+import { Surface } from "../../../components/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -78,61 +79,56 @@ export const GroupJoinRequestTask = (props: Props) => {
   };
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }} data-testid="group-join-request-task">
-      <CardContent>
-        <Stack spacing={2}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <JoinRequestIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6">{Locale.label("tasks.groupJoinRequest.title", "Group Join Request")}</Typography>
-          </Stack>
+    <Surface sx={{ mb: 3 }} data-testid="group-join-request-task">
+      <Stack spacing={2}>
+        <Typography variant="h3" component="h2">{Locale.label("tasks.groupJoinRequest.title", "Group Join Request")}</Typography>
 
-          <Typography variant="body2" color="text.secondary">
-            {Locale.label("tasks.groupJoinRequest.description", "{name} asked to join {group}. Approving adds them to the group. Declining leaves them out.").replace("{name}", personName).replace("{group}", groupName)}
+        <Typography variant="body2" color="text.secondary">
+          {Locale.label("tasks.groupJoinRequest.description", "{name} asked to join {group}. Approving adds them to the group. Declining leaves them out.").replace("{name}", personName).replace("{group}", groupName)}
+        </Typography>
+
+        <Box>
+          <Typography variant="body2">
+            {Locale.label("tasks.groupJoinRequest.requester", "Requester")}:{" "}
+            {data.personId
+              ? <Typography component={Link} to={"/people/" + data.personId} sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600, "&:hover": { textDecoration: "underline" } }}>{personName}</Typography>
+              : personName}
           </Typography>
+          <Typography variant="body2">
+            {Locale.label("tasks.groupJoinRequest.group", "Group")}:{" "}
+            {data.groupId
+              ? <Typography component={Link} to={"/groups/" + data.groupId} sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600, "&:hover": { textDecoration: "underline" } }}>{groupName}</Typography>
+              : groupName}
+          </Typography>
+        </Box>
 
-          <Box>
-            <Typography variant="body2">
-              {Locale.label("tasks.groupJoinRequest.requester", "Requester")}:{" "}
-              {data.personId
-                ? <Typography component={Link} to={"/people/" + data.personId} sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600 }}>{personName}</Typography>
-                : personName}
-            </Typography>
-            <Typography variant="body2">
-              {Locale.label("tasks.groupJoinRequest.group", "Group")}:{" "}
-              {data.groupId
-                ? <Typography component={Link} to={"/groups/" + data.groupId} sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600 }}>{groupName}</Typography>
-                : groupName}
-            </Typography>
-          </Box>
-
-          {data.message
-            ? (
-              <Alert severity="info" icon={false} data-testid="group-join-request-message">
-                {Locale.label("tasks.groupJoinRequest.message", "Message from requester")}: "{data.message}"
-              </Alert>
-            )
-            : null}
-
-          {error && <Alert severity="error" onClose={() => setError("")}>{error}</Alert>}
-
-          {isOpen && (
-            <Stack direction="row" spacing={1}>
-              <Button variant="contained" color="success" startIcon={<ApproveIcon />} onClick={handleApprove} disabled={busy} data-testid="group-join-request-approve" sx={{ textTransform: "none", fontWeight: 600 }}>
-                {Locale.label("tasks.groupJoinRequest.approve", "Approve")}
-              </Button>
-              <Button variant="outlined" color="error" startIcon={<DeclineIcon />} onClick={() => setDeclineOpen(true)} disabled={busy} data-testid="group-join-request-decline" sx={{ textTransform: "none", fontWeight: 600 }}>
-                {Locale.label("tasks.groupJoinRequest.decline", "Decline")}
-              </Button>
-            </Stack>
-          )}
-
-          {!isOpen && (
-            <Alert severity="info" data-testid="group-join-request-resolved">
-              {Locale.label("tasks.groupJoinRequest.resolved", "This join request task is closed.")}
+        {data.message
+          ? (
+            <Alert severity="info" icon={false} data-testid="group-join-request-message">
+              {Locale.label("tasks.groupJoinRequest.message", "Message from requester")}: "{data.message}"
             </Alert>
-          )}
-        </Stack>
-      </CardContent>
+          )
+          : null}
+
+        {error && <Alert severity="error" onClose={() => setError("")}>{error}</Alert>}
+
+        {isOpen && (
+          <Stack direction="row" spacing={1}>
+            <Button variant="contained" startIcon={<ApproveIcon />} onClick={handleApprove} disabled={busy} data-testid="group-join-request-approve">
+              {Locale.label("tasks.groupJoinRequest.approve", "Approve")}
+            </Button>
+            <Button variant="outlined" color="error" startIcon={<DeclineIcon />} onClick={() => setDeclineOpen(true)} disabled={busy} data-testid="group-join-request-decline">
+              {Locale.label("tasks.groupJoinRequest.decline", "Decline")}
+            </Button>
+          </Stack>
+        )}
+
+        {!isOpen && (
+          <Alert severity="info" data-testid="group-join-request-resolved">
+            {Locale.label("tasks.groupJoinRequest.resolved", "This join request task is closed.")}
+          </Alert>
+        )}
+      </Stack>
 
       <Dialog open={declineOpen} onClose={() => setDeclineOpen(false)} fullWidth maxWidth="sm" data-testid="group-join-request-decline-dialog">
         <DialogTitle>{Locale.label("tasks.groupJoinRequest.declineTitle", "Decline Join Request")}</DialogTitle>
@@ -160,6 +156,6 @@ export const GroupJoinRequestTask = (props: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Card>
+    </Surface>
   );
 };

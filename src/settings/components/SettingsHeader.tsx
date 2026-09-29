@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { Locale } from "@churchapps/apphelper";
-import { labelSx, titleSx, verbSx } from "./SettingsPage";
+import { b1Layout } from "../../helpers/Themes";
+import { labelSx, titleSx } from "./SettingsPage";
 
 interface Props {
   title: string;
@@ -14,14 +16,18 @@ interface Props {
 }
 
 export const SettingsHeader: React.FC<Props> = ({ title, subtitle, eyebrow, backTo, backLabel, children }) => (
-  <Box sx={{ px: { xs: 2, md: 4 }, pt: { xs: 3, md: 5 }, pb: 3 }}>
+  <Box sx={{ maxWidth: b1Layout.contentMax, mx: "auto", px: { xs: 2, md: 3, lg: 4 }, pt: { xs: 2, md: 3, lg: 4 }, pb: { xs: 2, md: 3 } }}>
     {backTo ? (
-      <Button size="small" component={RouterLink} to={backTo} sx={{ ...verbSx, mb: 1.5 }}>
-        ← {backLabel || Locale.label("components.wrapper.set")}
+      <Button size="small" component={RouterLink} to={backTo} startIcon={<ArrowBackIcon />} sx={{ mb: 1.5, ml: -1 }}>
+        {backLabel || Locale.label("components.wrapper.set")}
       </Button>
-    ) : eyebrow && <Typography sx={{ ...labelSx, mb: 1.5 }}>{eyebrow}</Typography>}
-    <Typography id="page-header-title" component="h1" sx={titleSx}>{title}</Typography>
-    {subtitle && <Typography sx={{ color: "text.secondary", mt: 1 }}>{subtitle}</Typography>}
-    {children && <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center", mt: 2.5 }}>{children}</Box>}
+    ) : eyebrow && <Typography sx={{ ...labelSx, mb: 1 }}>{eyebrow}</Typography>}
+    <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 3 }} justifyContent="space-between" alignItems="flex-start">
+      <Box sx={{ minWidth: 0 }}>
+        <Typography id="page-header-title" component="h1" sx={{ ...titleSx, overflowWrap: "anywhere" }}>{title}</Typography>
+        {subtitle && <Typography sx={{ color: "text.secondary", mt: 1 }}>{subtitle}</Typography>}
+      </Box>
+      {children && <Stack direction="row" spacing={1.5} useFlexGap flexWrap="wrap" alignItems="center" sx={{ flexShrink: 0 }}>{children}</Stack>}
+    </Stack>
   </Box>
 );

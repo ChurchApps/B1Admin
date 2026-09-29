@@ -2,11 +2,11 @@ import React from "react";
 import { useReactToPrint } from "react-to-print";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
-import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Chip } from "@mui/material";
-import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon, Undo as RefundedIcon, Print as PrintIcon } from "@mui/icons-material";
-import { IconText, EmptyState } from "../../components";
-import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CardWithHeader, ExportButton, hoverRowSx } from "../../components/ui";
+import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack } from "@mui/material";
+import { VolunteerActivism as DonationIcon } from "@mui/icons-material";
+import { EmptyState } from "../../components";
+import { RecordHeading, StatusBadge, TextAction, VerbRow, hoverRowSx, numericCellSx, tableScrollSx } from "../../components/ui";
+import { CsvVerb } from "./GivingParts";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -98,23 +98,13 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     const donationIds = donations.filter((d) => (d as any).status !== "refunded").map((d) => d.id || "");
     const qboRows = buildQboJournalRows(batch, donationIds, fundDonations, funds, currency, rates);
     return (
-      <Stack direction="row" spacing={1}>
-        {donations.length > 0 && <AppIconButton key="print" label={Locale.label("common.print")} icon={<PrintIcon />} tone="card" onClick={() => setPrinting(true)} />}
-        <ExportButton data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />
-        {qboRows.length > 1 && <ExportButton data={qboRows} filename="qbo-journal-entry.csv" customHeaders={QBO_HEADERS} text={Locale.label("donations.donations.exportQbo")} />}
-      </Stack>
+      <VerbRow>
+        {donations.length > 0 && <TextAction small onClick={() => setPrinting(true)}>{Locale.label("common.print")}</TextAction>}
+        {donations.length > 0 && <CsvVerb data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />}
+        {qboRows.length > 1 && <CsvVerb data={qboRows} filename="qbo-journal-entry.csv" customHeaders={QBO_HEADERS} text={Locale.label("donations.donations.exportQbo")} />}
+      </VerbRow>
     );
   }, [funds, donations, fundDonations, batch, currency, rates]);
-
-  const showEditDonation = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      const button = e.currentTarget as HTMLButtonElement;
-      const id = button.getAttribute("data-id");
-      editFunction(id || "");
-    },
-    [editFunction]
-  );
 
   // Memoize the total calculation to avoid recalculating on every render
   const donationsTotal = React.useMemo(() => {
@@ -142,7 +132,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           <TableCell>{Locale.label("common.name")}</TableCell>
           <TableCell>{Locale.label("donations.donations.date")}</TableCell>
           <TableCell>{Locale.label("donations.donations.notes")}</TableCell>
-          <TableCell align="right">{Locale.label("donations.donations.amt")}</TableCell>
+          <TableCell align="right" sx={numericCellSx}>{Locale.label("donations.donations.amt")}</TableCell>
           {canEdit && <TableCell align="right" />}
         </TableRow>
       </TableHead>
@@ -173,7 +163,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     for (let i = 0; i < donations.length; i++) {
       const d = donations[i];
       const editButton = canEdit ? (
-        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-link-${i}`} data-id={d.id} onClick={showEditDonation} />
+        <TextAction small data-cy={`edit-link-${i}`} onClick={() => editFunction(d.id || "")}>{Locale.label("common.edit")}</TextAction>
       ) : null;
 
       const isPending = (d as any).status === "pending";
@@ -182,22 +172,16 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
         <TableRow key={i} sx={{ ...hoverRowSx, opacity: isPending || isRefunded ? 0.8 : 1 }} data-testid={"donation-row-" + d.id}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.main" variant="body2">
-                <span style={{ fontWeight: 500, color: "text.primary" }}>{[d.method, d.methodDetails].filter(Boolean).join(" - ") || "—"}</span>
-              </IconText>
-              {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" />}
-              {isRefunded && <Chip icon={<RefundedIcon />} label={Locale.label("donations.donations.refunded")} size="small" color="default" variant="outlined" />}
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>{[d.method, d.methodDetails].filter(Boolean).join(" - ") || "—"}</Typography>
+              {isPending && <StatusBadge tone="warning">{Locale.label("donations.donations.pending")}</StatusBadge>}
+              {isRefunded && <StatusBadge>{Locale.label("donations.donations.refunded")}</StatusBadge>}
             </Stack>
           </TableCell>
           <TableCell>
-            <IconText icon={<PersonIcon />} iconSize={18} iconColor="text.secondary" variant="body2">
-              {d.person?.name.display || Locale.label("donations.donations.anon")}
-            </IconText>
+            <Typography variant="body2">{d.person?.name.display || Locale.label("donations.donations.anon")}</Typography>
           </TableCell>
           <TableCell>
-            <IconText icon={<DateIcon />} iconSize={18} iconColor="text.secondary" variant="body2">
-              {d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}
-            </IconText>
+            <Typography variant="body2">{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</Typography>
           </TableCell>
           <TableCell>
             <Typography
@@ -207,8 +191,8 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
               {d.notes || ""}
             </Typography>
           </TableCell>
-          <TableCell align="right">
-            <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : isRefunded ? "text.disabled" : "success.main", textDecoration: isRefunded ? "line-through" : undefined }}>
+          <TableCell align="right" sx={numericCellSx}>
+            <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : isRefunded ? "text.disabled" : "text.primary", textDecoration: isRefunded ? "line-through" : undefined }}>
               {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}
             </Typography>
           </TableCell>
@@ -218,20 +202,17 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     }
 
     rows.push(
-      <TableRow key="total" sx={{ borderTop: 2, backgroundColor: "grey.50" }}>
-        <TableCell sx={{ fontWeight: "bold", fontSize: 15 }}>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "primary.main", fontSize: 20 }}>calculate</Icon>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {Locale.label("donations.donations.total")}
-            </Typography>
-          </Stack>
+      <TableRow key="total" sx={{ borderTop: 2, borderColor: "divider" }}>
+        <TableCell>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            {Locale.label("donations.donations.total")}
+          </Typography>
         </TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
-        <TableCell align="right">
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "success.main" }}>
+        <TableCell align="right" sx={numericCellSx}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             {CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}
           </Typography>
           {isConverted && <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>{Locale.label("donations.donations.convertedNote")}</Typography>}
@@ -241,7 +222,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     );
 
     return rows;
-  }, [donations, props.funds.length, canEdit, showEditDonation, donationsTotal, isConverted, currency]);
+  }, [donations, props.funds.length, canEdit, editFunction, donationsTotal, isConverted, currency]);
 
   // Paper copy for the counting team: every gift, a subtotal per fund, and the batch total.
   const getPrintContent = React.useCallback(() => {
@@ -315,18 +296,16 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     if (!donations) return <Loading />;
 
     return (
-      <CardWithHeader
-        icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-        title={Locale.label("donations.donations.don")}
-        count={donations?.length}
-        actions={getHeaderActions()}
-      >
-        <Table sx={{ minWidth: 650 }}>
-          {getTableHeader()}
-          <TableBody>{getRows()}</TableBody>
-        </Table>
+      <Box>
+        <RecordHeading label={Locale.label("donations.donations.don") + " (" + donations.length + ")"}>{getHeaderActions()}</RecordHeading>
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.donations.don")} tabIndex={0}>
+          <Table sx={{ minWidth: 650 }}>
+            {getTableHeader()}
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
         {getPrintContent()}
-      </CardWithHeader>
+      </Box>
     );
   }, [donations, getRows, getTableHeader, getHeaderActions, getPrintContent]);
 

@@ -76,7 +76,7 @@ test.describe("Forms page", () => {
 
 // Issue #1066: forms could be edited, duplicated and archived but never printed.
 // The list now offers a paper copy of any form (blank answer spaces), and a person's
-// submitted form can be printed from their Forms tab.
+// submitted form can be printed from their Forms section.
 test.describe("Printing forms", () => {
   test("prints a blank copy of a form from the Forms list", async ({ page }) => {
     await openFormsPage(page);
@@ -106,7 +106,7 @@ test.describe("Printing forms", () => {
   test("a person's submitted form prints with a title, name and submission date", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, "Brian Harris");
-    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByTestId("person-forms-all").click();
     const railItem = page.getByText("Visitor Information Card", { exact: true }).first();
     await expect(railItem).toBeVisible({ timeout: 10000 });
     await railItem.click();
@@ -192,8 +192,7 @@ test.describe.serial("People-associated form lifecycle", () => {
   test("archives, restores, and deletes the form", async () => {
     await openFormsPage(page);
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
-    await expect(row.locator('[data-testid^="archive-form-button-"] svg[data-testid="ArchiveIcon"]')).toBeVisible({ timeout: 10000 });
-    await expect(row.locator('[data-testid^="archive-form-button-"] svg[data-testid="DeleteIcon"]')).toHaveCount(0);
+    await expect(row.locator('[data-testid^="archive-form-button-"]')).toHaveText("Archive", { timeout: 10000 });
     await row.locator('[data-testid^="archive-form-button-"]').click();
     await confirmDelete(page);
 
@@ -303,7 +302,7 @@ test.describe("Person form submissions (profile rail)", () => {
   test("a seeded submission renders its stored answers", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, "Brian Harris");
-    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByTestId("person-forms-all").click();
     const railItem = page.getByText("Visitor Information Card", { exact: true }).first();
     await expect(railItem).toBeVisible({ timeout: 10000 });
     await railItem.click();
@@ -315,7 +314,7 @@ test.describe("Person form submissions (profile rail)", () => {
   test("submitting a person form stores and re-renders the answers", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, SEED_PEOPLE.DONALD);
-    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByTestId("person-forms-all").click();
     const railItem = page.getByText("Visitor Information Card", { exact: true }).first();
     await expect(railItem).toBeVisible({ timeout: 10000 });
     await railItem.click();
@@ -335,7 +334,7 @@ test.describe("Person form submissions (profile rail)", () => {
 });
 
 // Issue #1108: a person who filled the same form out more than once only ever had one
-// of those submissions rendered on their Forms tab. The Api returns every submission -
+// of those submissions rendered on their Forms section. The Api returns every submission -
 // PersonForms collapsed them into a map keyed by formId, so each one overwrote the last.
 //
 // The extra submission is deliberately dated *before* the seeded card. The chromium
@@ -394,10 +393,10 @@ test.describe.serial("Repeated submissions of the same form stay reachable", () 
     await ctx?.dispose();
   });
 
-  test("both Visitor Information Card submissions are reachable from the person's Forms tab", async ({ page }) => {
+  test("both Visitor Information Card submissions are reachable from the person's Forms section", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, "Brian Harris");
-    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByTestId("person-forms-all").click();
 
     const railItem = page.getByText("Visitor Information Card", { exact: true }).first();
     await expect(railItem).toBeVisible({ timeout: 10000 });
@@ -417,7 +416,7 @@ test.describe.serial("Repeated submissions of the same form stay reachable", () 
 });
 
 // Issue #1067: archiving a form used to erase the submissions people had already
-// made against it - the person's Forms tab lost the whole section. Archiving must
+// made against it - the person's Forms section lost the whole section. Archiving must
 // only stop new submissions, never hide history.
 //
 // Uses its own disposable form rather than archiving the seed "Visitor Information
@@ -484,7 +483,7 @@ test.describe.serial("Archived forms keep submission history", () => {
   test("records a submission for a person", async () => {
     await navigateToPeople(page);
     await openPersonRow(page, "Jessica Taylor");
-    await page.getByRole("tab", { name: /^Forms$/ }).click();
+    await page.getByTestId("person-forms-all").click();
     const railItem = page.getByText(ARCHIVE_FORM, { exact: true }).first();
     await expect(railItem).toBeVisible({ timeout: 10000 });
     await railItem.click();
@@ -506,7 +505,7 @@ test.describe.serial("Archived forms keep submission history", () => {
 
     await navigateToPeople(page);
     await openPersonRow(page, "Jessica Taylor");
-    const formsTab = page.getByRole("tab", { name: /^Forms$/ });
+    const formsTab = page.getByTestId("person-forms-all");
     await expect(formsTab).toBeVisible({ timeout: 15000 });
     await formsTab.click();
 

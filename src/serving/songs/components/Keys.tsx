@@ -2,8 +2,9 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface } from "../../../helpers";
 import { type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, Chip } from "@mui/material";
+import { Box, Button, Menu, MenuItem, Typography, Stack, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon, AudioFile as AudioFileIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { PillTabs, RecordHeading, TextAction } from "../../../components/ui";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { PraiseChartsProducts } from "./PraiseChartsProducts";
 import { KeyEdit } from "./KeyEdit";
@@ -42,7 +43,7 @@ export const Keys = memo((props: Props) => {
   }, []);
 
   const handleTabChange = useCallback(
-    (_event: React.SyntheticEvent, newValue: string) => {
+    (newValue: string) => {
       if (newValue === "add") {
         setEditKey({
           arrangementId: props.arrangement.id,
@@ -141,11 +142,8 @@ export const Keys = memo((props: Props) => {
             <ListItem key={`${p.name}-${i}`} sx={{ px: 0, py: 0.5 }}>
               <ListItemButton
                 onClick={() => download(p)}
-                sx={{
-                  borderRadius: 1,
-                  "&:hover": { backgroundColor: "action.hover" }
-                }}>
-                <DownloadIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
+                sx={{ borderRadius: "var(--b1-radius-control)" }}>
+                <DownloadIcon fontSize="small" color="action" sx={{ mr: 1 }} />
                 <ListItemText
                   primary={p.name}
                   primaryTypographyProps={{
@@ -181,12 +179,8 @@ export const Keys = memo((props: Props) => {
                   href={/^https?:\/\//i.test(l.url || "") || /^mailto:/i.test(l.url || "") ? l.url : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  sx={{
-                    borderRadius: 1,
-                    flex: 1,
-                    "&:hover": { backgroundColor: "action.hover" }
-                  }}>
-                  <LinkIcon sx={{ mr: 1, fontSize: 18, color: "secondary.main" }} />
+                  sx={{ borderRadius: "var(--b1-radius-control)", flex: 1 }}>
+                  <LinkIcon fontSize="small" color="action" sx={{ mr: 1 }} />
                   <ListItemText
                     primary={l.text}
                     primaryTypographyProps={{
@@ -225,7 +219,7 @@ export const Keys = memo((props: Props) => {
           {audioFiles.map((f) => (
             <ListItem key={f.id} sx={{ px: 0, py: 0.5 }}>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
-                <AudioFileIcon sx={{ fontSize: 18, color: "primary.main" }} />
+                <AudioFileIcon fontSize="small" color="action" />
                 <Stack sx={{ flex: 1, minWidth: 0 }}>
                   <ListItemText primary={f.fileName} primaryTypographyProps={{ variant: "body2", fontWeight: 500 }} />
                   <Box component="audio" controls preload="none" src={f.contentPath} sx={{ width: "100%", maxWidth: 420 }} />
@@ -241,22 +235,8 @@ export const Keys = memo((props: Props) => {
     );
   }, [audioFiles, canEdit, handleDeleteAudio]);
 
-  const tabsComponent = useMemo(
-    () =>
-      keys.map((k) => (
-        <Tab
-          key={k.id}
-          value={k.id}
-          label={
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {k.shortDescription}
-              </Typography>
-              <Chip label={k.keySignature} size="small" variant="outlined" sx={{ fontSize: "0.75rem", height: 20 }} />
-            </Stack>
-          }
-        />
-      )),
+  const keyOptions = useMemo(
+    () => keys.map((k) => ({ value: k.id || "", label: `${k.shortDescription} · ${k.keySignature}`, "data-testid": "key-pill-" + k.id })),
     [keys]
   );
 
@@ -275,72 +255,34 @@ export const Keys = memo((props: Props) => {
 
   return (
     <>
-      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-        <CardContent>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <KeyIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("songs.keys.title") || "Keys & Downloads"}
-              </Typography>
-            </Stack>
-            {selectedKey && canEdit && (
-              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEditKey(selectedKey)} />
+      <Box>
+        <RecordHeading label={Locale.label("songs.keys.title")}>
+          {selectedKey && canEdit && <TextAction small onClick={() => setEditKey(selectedKey)} data-testid="key-edit-button">{Locale.label("common.edit")}</TextAction>}
+          {canEdit && <TextAction small onClick={() => handleTabChange("add")} data-testid="add-key-button">{Locale.label("serving.keys.addKey", "Add key")}</TextAction>}
+        </RecordHeading>
+
+        {keys.length > 0 && (
+          <PillTabs tabs aria-label={Locale.label("songs.keys.keysTabsAria")} value={selectedKey?.id || ""} onChange={handleTabChange} options={keyOptions} sx={{ mb: 2 }} />
+        )}
+
+        {selectedKey ? (
+          <Box>
+            {productsList}
+            {linksList}
+            {audioFilesList}
+
+            {canEdit && (
+              <Box sx={{ mt: 2 }}>
+                <Button id="addBtnGroup" variant="outlined" startIcon={<AddIcon />} onClick={handleClick}>
+                  {Locale.label("songs.keys.addFiles") || "Add Files"}
+                </Button>
+              </Box>
             )}
-          </Stack>
-
-          <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-            <Tabs value={selectedKey?.id || (canEdit ? "add" : false)} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" aria-label={Locale.label("songs.keys.keysTabsAria")}>
-              {tabsComponent}
-              {canEdit && (
-                <Tab
-                  value="add"
-                  label={
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <AddIcon fontSize="small" />
-                      <Typography variant="body2">{Locale.label("songs.keys.add") || "Add Key"}</Typography>
-                    </Stack>
-                  }
-                />
-              )}
-            </Tabs>
           </Box>
-
-          {selectedKey ? (
-            <Box>
-              {productsList}
-              {linksList}
-              {audioFilesList}
-
-              {canEdit && (
-                <Box
-                  sx={{
-                    mt: 3,
-                    pt: 2,
-                    borderTop: "1px solid",
-                    borderColor: "divider"
-                  }}>
-                  <Button
-                    id="addBtnGroup"
-                    variant="outlined"
-                    startIcon={<AddIcon />}
-                    onClick={handleClick}
-                    sx={{
-                      borderStyle: "dashed",
-                      color: "primary.main",
-                      borderColor: "primary.main",
-                      "&:hover": { backgroundColor: "primary.light" }
-                    }}>
-                    {Locale.label("songs.keys.addFiles") || "Add Files"}
-                  </Button>
-                </Box>
-              )}
-            </Box>
-          ) : (
-            <EmptyState icon={<KeyIcon />} title={Locale.label("songs.keys.noKeysAvailable")} />
-          )}
-        </CardContent>
-      </Card>
+        ) : (
+          <EmptyState variant="plain" icon={<KeyIcon />} title={Locale.label("songs.keys.noKeysAvailable")} />
+        )}
+      </Box>
 
       <Menu id="add-menu" anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{ "aria-labelledby": "addBtnGroup" }}>
         <MenuItem
@@ -348,7 +290,7 @@ export const Keys = memo((props: Props) => {
             handleClose();
             setShowImport(true);
           }}>
-          <ImportIcon sx={{ mr: 2, color: "primary.main" }} />
+          <ImportIcon color="action" sx={{ mr: 2 }} />
           {Locale.label("songs.keys.importFromPraiseCharts") || "Import from PraiseCharts"}
         </MenuItem>
         <MenuItem
@@ -363,7 +305,7 @@ export const Keys = memo((props: Props) => {
               icon: ""
             });
           }}>
-          <LinkIcon sx={{ mr: 2, color: "secondary.main" }} />
+          <LinkIcon color="action" sx={{ mr: 2 }} />
           {Locale.label("songs.keys.addExternalLink") || "Add External Link"}
         </MenuItem>
         <MenuItem
@@ -371,7 +313,7 @@ export const Keys = memo((props: Props) => {
             handleClose();
             setShowAudioUpload(true);
           }}>
-          <AudioFileIcon sx={{ mr: 2, color: "primary.main" }} />
+          <AudioFileIcon color="action" sx={{ mr: 2 }} />
           {Locale.label("songs.keys.uploadAudio") || "Upload Audio"}
         </MenuItem>
       </Menu>

@@ -15,14 +15,16 @@ export const ExportButton: React.FC<Props> = (props) => (
     sx={{
       "& a": { textDecoration: "none" },
       "& .MuiButton-root": {
-        border: "1px solid",
-        borderColor: "primary.main",
-        color: "primary.main",
-        borderRadius: "6px",
-        fontWeight: 500,
-        fontSize: "0.8125rem",
-        padding: "3px 12px",
-        minWidth: 0
+        border: "1px solid var(--b1-control-border)",
+        backgroundColor: "background.paper",
+        color: "text.primary",
+        borderRadius: "var(--b1-radius-control)",
+        fontWeight: 600,
+        fontSize: "0.875rem",
+        minHeight: 36,
+        padding: "6px 14px",
+        minWidth: 0,
+        "&:hover": { backgroundColor: "var(--b1-hover)" }
       },
       "& .MuiIcon-root": { fontSize: 18 }
     }}>

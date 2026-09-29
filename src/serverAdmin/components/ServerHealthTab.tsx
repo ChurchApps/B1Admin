@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { DisplayBox, Locale } from "@churchapps/apphelper";
-import { Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { CheckCircle as YesIcon, Cancel as NoIcon } from "@mui/icons-material";
+import { Locale } from "@churchapps/apphelper";
+import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { StatusBadge, tableScrollSx } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
 
 interface ConfigItem {
   key: string;
@@ -24,62 +25,57 @@ export const ServerHealthTab = () => {
   const { data, isLoading: loading } = useQuery<ServerHealthResponse>({ queryKey: ["/serverHealth", "MembershipApi"] });
 
   const renderStatus = (configured: boolean) => (
-    <Chip
-      icon={configured ? <YesIcon fontSize="small" /> : <NoIcon fontSize="small" />}
-      label={configured ? Locale.label("serverAdmin.serverHealth.yes") : Locale.label("serverAdmin.serverHealth.no")}
-      size="small"
-      color={configured ? "success" : "default"}
-      variant={configured ? "filled" : "outlined"}
-    />
+    <StatusBadge variant="dot" tone={configured ? "success" : "neutral"}>
+      {configured ? Locale.label("serverAdmin.serverHealth.yes") : Locale.label("serverAdmin.serverHealth.no")}
+    </StatusBadge>
   );
 
   const renderGroup = (group: ConfigGroup) => {
     const configuredCount = group.items.filter((i) => i.configured).length;
     return (
-      <Paper key={group.group} sx={{ width: "100%", overflowX: "auto", mb: 2 }}>
-        <Box sx={{ p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{group.group}</Typography>
+      <Box key={group.group}>
+        <Box sx={{ pb: 1, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Typography variant="h3" component="h3">{group.group}</Typography>
           <Typography variant="caption" color="text.secondary">{configuredCount} / {group.items.length}</Typography>
         </Box>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>{Locale.label("serverAdmin.serverHealth.setting")}</TableCell>
-              <TableCell sx={{ width: 120 }}>{Locale.label("serverAdmin.serverHealth.status")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.serverHealth.detail")}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {group.items.map((item) => (
-              <TableRow key={item.key}>
-                <TableCell>{item.label}</TableCell>
-                <TableCell>{renderStatus(item.configured)}</TableCell>
-                <TableCell sx={{ color: "text.secondary" }}>{item.detail || ""}</TableCell>
+        <Box sx={tableScrollSx} role="region" aria-label={group.group} tabIndex={0}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("serverAdmin.serverHealth.setting")}</TableCell>
+                <TableCell sx={{ width: 120 }}>{Locale.label("serverAdmin.serverHealth.status")}</TableCell>
+                <TableCell>{Locale.label("serverAdmin.serverHealth.detail")}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+            </TableHead>
+            <TableBody>
+              {group.items.map((item) => (
+                <TableRow key={item.key}>
+                  <TableCell>{item.label}</TableCell>
+                  <TableCell>{renderStatus(item.configured)}</TableCell>
+                  <TableCell sx={{ color: "text.secondary" }}>{item.detail || ""}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+      </Box>
     );
   };
 
   return (
-    <DisplayBox headerIcon="health_and_safety" headerText={Locale.label("serverAdmin.serverHealth.title")}>
+    <AdminPanel headerText={Locale.label("serverAdmin.serverHealth.title")} subtitle={data ? Locale.label("serverAdmin.serverHealth.subtitle") : undefined}>
       {loading && <Typography>{Locale.label("common.loading")}</Typography>}
       {!loading && !data && <Typography color="error">{Locale.label("serverAdmin.serverHealth.loadError")}</Typography>}
       {!loading && data && (
-        <Stack spacing={1}>
-          <Box sx={{ mb: 1 }}>
+        <Stack spacing={3}>
+          <Box>
             <Typography variant="body2" color="text.secondary">
               {Locale.label("serverAdmin.serverHealth.environment")}: <strong>{data.environment || "—"}</strong>
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {Locale.label("serverAdmin.serverHealth.subtitle")}
             </Typography>
           </Box>
           {data.groups.map(renderGroup)}
         </Stack>
       )}
-    </DisplayBox>
+    </AdminPanel>
   );
 };

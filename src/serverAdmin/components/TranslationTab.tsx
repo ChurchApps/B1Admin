@@ -1,8 +1,10 @@
-import { ApiHelper, DateHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { Button, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import React from "react";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import { AppDatePicker } from "../../components";
+import { numericCellSx, tableScrollSx } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
 
 export const TranslationTab = () => {
   const [startDate, setStartDate] = React.useState(new Date());
@@ -27,7 +29,7 @@ export const TranslationTab = () => {
     rows.push(
       <TableRow key="header">
         <TableCell>{Locale.label("serverAdmin.translation.abbreviations")}</TableCell>
-        <TableCell align="right">{Locale.label("serverAdmin.translation.lookups")}</TableCell>
+        <TableCell sx={numericCellSx}>{Locale.label("serverAdmin.translation.lookups")}</TableCell>
       </TableRow>
     );
     return rows;
@@ -41,7 +43,7 @@ export const TranslationTab = () => {
       rows.push(
         <TableRow key={keyVal.toString()}>
           <TableCell>{r.abbreviation}</TableCell>
-          <TableCell align="right">{r.lookups}</TableCell>
+          <TableCell sx={numericCellSx}>{r.lookups}</TableCell>
         </TableRow>
       );
       keyVal += 1;
@@ -54,53 +56,36 @@ export const TranslationTab = () => {
       return;
     } else {
       return (
-        <Paper sx={{ width: "100%", overflowX: "auto" }}>
-          <Table size="small">
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("serverAdmin.translation.title")} tabIndex={0}>
+          <Table>
             <TableHead>{getTableHeader()}</TableHead>
             <TableBody sx={{ whiteSpace: "nowrap" }}>{getRows()}</TableBody>
           </Table>
-        </Paper>
+        </Box>
       );
     }
   };
 
   return (
     <>
-      <DisplayBox headerIcon="summarize" headerText={Locale.label("serverAdmin.translation.title")}>
-        <div>
-          <div style={{ fontSize: 18, marginBottom: 15 }}>
-            <Grid container alignItems="center">
-              <Grid size={{ md: 1 }}>
-                <p>{Locale.label("serverAdmin.translation.startDate")}</p>
-              </Grid>
-              <Grid size={{ md: 3 }}>
-                <AppDatePicker
-                  id="start"
-                  name="start"
-                  value={DateHelper.formatHtml5Date(startDate)}
-
-                  onChange={handleChange}
-                  data-testid="translation-start-date-input"
-                  aria-label="Start date"
-                />
-              </Grid>
-              <Grid size={{ md: 1 }}>
-                <p>{Locale.label("serverAdmin.translation.endDate")}</p>
-              </Grid>
-              <Grid size={{ md: 3 }}>
-                <AppDatePicker id="end" name="end" value={DateHelper.formatHtml5Date(endDate)} onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
-              </Grid>
-              <Grid size={{ md: 1 }}>
-                <Button variant="outlined" style={{ height: 56, width: 200, marginTop: 8 }} onClick={loadData} data-testid="search-translation-stats-button" aria-label={Locale.label("serverAdmin.translationTab.searchTranslationStatsAria")}>
-                  <ManageSearchIcon fontSize="small" />
-                  &nbsp;{Locale.label("serverAdmin.translation.search")}
-                </Button>
-              </Grid>
-            </Grid>
-          </div>
-          {getTable()}
-        </div>
-      </DisplayBox>
+      <AdminPanel headerText={Locale.label("serverAdmin.translation.title")} subtitle={Locale.label("serverAdmin.adminPage.translationSubtitle")}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ sm: "center" }} useFlexGap flexWrap="wrap" sx={{ mb: 3 }}>
+          <AppDatePicker
+            id="start"
+            name="start"
+            label={Locale.label("serverAdmin.translation.startDate")}
+            value={DateHelper.formatHtml5Date(startDate)}
+            onChange={handleChange}
+            data-testid="translation-start-date-input"
+            aria-label="Start date"
+          />
+          <AppDatePicker id="end" name="end" label={Locale.label("serverAdmin.translation.endDate")} value={DateHelper.formatHtml5Date(endDate)} onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
+          <Button variant="contained" startIcon={<ManageSearchIcon />} onClick={loadData} data-testid="search-translation-stats-button" aria-label={Locale.label("serverAdmin.translationTab.searchTranslationStatsAria")}>
+            {Locale.label("serverAdmin.translation.search")}
+          </Button>
+        </Stack>
+        {getTable()}
+      </AdminPanel>
     </>
   );
 };

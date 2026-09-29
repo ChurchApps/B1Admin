@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert, TextField } from "@mui/material";
-import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon, BookmarkAdd as BookmarkAddIcon, FormatListBulleted as FormatListBulletedIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { Stack, Box, Menu, MenuItem, Snackbar, Alert, TextField, Typography } from "@mui/material";
+import { Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, FormatListBulleted as FormatListBulletedIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
+import { EmptyState, RecordHeading, TextAction, VerbRow } from "../../components/ui";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PositionInterface, type AssignmentInterface } from "@churchapps/helpers";
 import { type PlanItemInterface, type PlanItemTimeInterface, hasPlansEditAccess } from "../../helpers";
 import { ApiHelper, ArrayHelper, Locale, type PersonInterface, DateHelper } from "@churchapps/apphelper";
@@ -71,6 +71,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [showAssociateLessonSelector, setShowAssociateLessonSelector] = React.useState(false);
   const [showLessonHeaderSelector, setShowLessonHeaderSelector] = React.useState(false);
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const addMenuButtonRef = React.useRef<HTMLSpanElement>(null);
   const [contentName, setContentName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -406,103 +407,42 @@ export const ServiceOrder = memo((props: Props) => {
   }, [loadData, planItems.length]);
 
   const editContent = useMemo(
-    () => (
-      <Stack direction="row" spacing={1} alignItems="center">
-        <AppIconButton
-          label={Locale.label("common.print")}
-          icon={<PrintIcon />}
-          tone="card"
-          onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, "_blank")} />
-        {canEdit && (
-          <>
-            <AppIconButton
-              label={Locale.label("plans.templates.saveTitle") || "Save as Template"}
-              icon={<BookmarkAddIcon />}
-              tone="card"
-              onClick={() => setShowSaveTemplate(true)} />
-            {hasAssociatedContent ? (
-              <Chip
-                icon={<MenuBookIcon sx={{ fontSize: 18 }} />}
-                label={contentName || "Loading..."}
-                onDelete={handleDisassociateContent}
-                deleteIcon={<CloseIcon sx={{ fontSize: 16 }} />}
-                size="small"
-                sx={{
-                  backgroundColor: "rgba(25, 118, 210, 0.08)",
-                  borderColor: "primary.main",
-                  "& .MuiChip-label": { fontWeight: 500 },
-                  "& .MuiChip-deleteIcon": {
-                    color: "text.secondary",
-                    "&:hover": { color: "error.main" }
-                  }
-                }}
-                variant="outlined"
-              />
-            ) : (
-              <Chip
-                icon={<LinkIcon sx={{ fontSize: 18 }} />}
-                label={Locale.label("plans.serviceOrder.associateLesson") || "Link Lesson"}
-                onClick={() => setShowAssociateLessonSelector(true)}
-                size="small"
-                sx={{
-                  backgroundColor: "rgba(0, 0, 0, 0.04)",
-                  borderColor: "divider",
-                  cursor: "pointer",
-                  "& .MuiChip-label": { fontWeight: 500 },
-                  "&:hover": {
-                    backgroundColor: "rgba(25, 118, 210, 0.08)",
-                    borderColor: "primary.main"
-                  }
-                }}
-                variant="outlined"
-              />
-            )}
-            <ButtonGroup variant="contained" size="small">
-              <Button
-                startIcon={<AddIcon />}
-                onClick={addHeader}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px 0 0 8px",
-                  fontWeight: 600
-                }}>
-                {Locale.label("plans.serviceOrder.addSection")}
-              </Button>
-              <Button
-                onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                sx={{
-                  borderRadius: "0 8px 8px 0",
-                  minWidth: 32,
-                  px: 0.5
-                }}>
-                <ArrowDropDownIcon />
-              </Button>
-            </ButtonGroup>
-            <Menu
-              anchorEl={addMenuAnchor}
-              open={Boolean(addMenuAnchor)}
-              onClose={() => setAddMenuAnchor(null)}
-            >
-              <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
-                <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
-              </MenuItem>
-              <MenuItem onClick={() => { setAddMenuAnchor(null); addItem(); }}>
-                <FormatListBulletedIcon sx={{ mr: 1 }} /> {Locale.label("plans.planItem.item")}
-              </MenuItem>
-              <MenuItem onClick={() => { setAddMenuAnchor(null); addSong(); }}>
-                <MusicNoteIcon sx={{ mr: 1 }} /> {Locale.label("plans.planItem.song")}
-              </MenuItem>
-              <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddContent(); }}>
-                <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
-              </MenuItem>
-            </Menu>
-          </>
-        )}
-      </Stack>
+    () => canEdit && (
+      <>
+        <VerbRow>
+          <TextAction small onClick={addHeader}>{Locale.label("plans.serviceOrder.addSection")}</TextAction>
+          <TextAction small onClick={() => addMenuButtonRef.current && setAddMenuAnchor(addMenuButtonRef.current)} aria-label={Locale.label("serving.planPage.addMenu", "More ways to add")}>
+            <Box component="span" ref={addMenuButtonRef} sx={{ display: "inline-flex", alignItems: "center" }}>
+              {Locale.label("common.add")}
+              <ArrowDropDownIcon sx={{ fontSize: 18 }} />
+            </Box>
+          </TextAction>
+          {!hasAssociatedContent && (
+            <TextAction small onClick={() => setShowAssociateLessonSelector(true)}>{Locale.label("plans.serviceOrder.associateLesson") || "Link Lesson"}</TextAction>
+          )}
+          <TextAction small onClick={() => setShowSaveTemplate(true)}>{Locale.label("plans.templates.saveTitle") || "Save as Template"}</TextAction>
+        </VerbRow>
+        <Menu
+          anchorEl={addMenuAnchor}
+          open={Boolean(addMenuAnchor)}
+          onClose={() => setAddMenuAnchor(null)}
+        >
+          <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
+            <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
+          </MenuItem>
+          <MenuItem onClick={() => { setAddMenuAnchor(null); addItem(); }}>
+            <FormatListBulletedIcon sx={{ mr: 1 }} /> {Locale.label("plans.planItem.item")}
+          </MenuItem>
+          <MenuItem onClick={() => { setAddMenuAnchor(null); addSong(); }}>
+            <MusicNoteIcon sx={{ mr: 1 }} /> {Locale.label("plans.planItem.song")}
+          </MenuItem>
+          <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddContent(); }}>
+            <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
+          </MenuItem>
+        </Menu>
+      </>
     ),
-    [
-      props.plan?.id, addHeader, addItem, addSong, canEdit, addMenuAnchor, hasAssociatedContent, provider?.name, contentName, handleDisassociateContent, handleAddContent
-    ]
+    [addHeader, addItem, addSong, canEdit, addMenuAnchor, hasAssociatedContent, handleAddContent]
   );
 
   const handleDrop = useCallback(
@@ -689,89 +629,59 @@ export const ServiceOrder = memo((props: Props) => {
         <SaveTemplateDialog plan={props.plan} onClose={() => setShowSaveTemplate(false)} />
       )}
 
-      <Card
-        sx={{
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
-          transition: "all 0.2s ease-in-out",
-          "&:hover": { boxShadow: 2 }
-        }}>
-        <CardContent>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <AlbumIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">
-                  {Locale.label("plans.serviceOrder.orderOfService")}
-                </Typography>
-              </Stack>
-              {totalDuration > 0 && (
-                <Chip
-                  icon={<ScheduleIcon sx={{ fontSize: 18 }} />}
-                  label={formatTime(totalDuration)}
-                  size="small"
-                  variant="outlined"
-                  sx={{ fontWeight: 500 }}
-                />
-              )}
-              {settingTimes && (
-                <Chip
-                  icon={<ScheduleIcon sx={{ fontSize: 18 }} />}
-                  label={Locale.label("plans.serviceOrder.settingTimes") || "Detecting video times..."}
-                  size="small"
-                  variant="outlined"
-                  sx={{ fontWeight: 500 }}
-                />
-              )}
-              {serviceTimes.length > 0 && (
-                <TextField
-                  select
-                  size="small"
-                  label={Locale.label("plans.serviceOrder.viewingAs")}
-                  value={selectedServiceTimeId}
-                  onChange={(e) => setSelectedServiceTimeId(e.target.value)}
-                  sx={{ minWidth: 180 }}
-                >
-                  {serviceTimes.map((st) => (
-                    <MenuItem key={st.id} value={st.id}>
-                      {st.displayName} {st.startTime ? `· ${new Date(st.startTime).toLocaleTimeString(DateHelper.locale, { hour: "numeric", minute: "2-digit" })}` : ""}
-                    </MenuItem>
-                  ))}
-                  <MenuItem value="elapsed">{Locale.label("plans.serviceOrder.runTimes")}</MenuItem>
-                </TextField>
-              )}
-            </Stack>
-            {editContent}
-          </Stack>
-
-          {planItems.length === 0 ? (
-            showPreviewMode ? (
-              <LessonPreview
-                lessonItems={previewLessonItems}
-                contentName={contentName}
-                onCustomize={canEdit ? handleCustomizeLesson : undefined}
-                associatedProviderId={props.plan?.providerId}
-                associatedContentPath={getContentPath() || undefined}
-                ministryId={props.plan?.ministryId}
-                mediaLookup={mediaLookup}
-              />
-            ) : (
-              <Box
-                sx={{
-                  textAlign: "center",
-                  py: 4,
-                  color: "text.secondary"
-                }}>
-                <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
-                <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
-              </Box>
-            )
-          ) : (
-            renderPlanItems()
+      <Box component="section" aria-labelledby="service-order-heading" data-testid="service-order">
+        <RecordHeading id="service-order-heading" label={Locale.label("plans.serviceOrder.orderOfService")}>
+          {totalDuration > 0 && <Typography variant="body2" color="text.secondary">{formatTime(totalDuration)}</Typography>}
+          {settingTimes && <Typography variant="body2" color="text.secondary">{Locale.label("plans.serviceOrder.settingTimes") || "Detecting video times..."}</Typography>}
+        </RecordHeading>
+        {hasAssociatedContent && (
+          <VerbRow sx={{ mb: 1 }}>
+            <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, color: "text.primary" }} data-testid="linked-lesson">
+              <MenuBookIcon aria-hidden sx={{ fontSize: 18, color: "text.secondary" }} />
+              {contentName || Locale.label("common.loading", "Loading...")}
+            </Box>
+            {canEdit && <TextAction small onClick={handleDisassociateContent} data-testid="unlink-lesson-button">{Locale.label("plans.contentProviderAuth.unlink")}</TextAction>}
+          </VerbRow>
+        )}
+        <Stack direction="row" alignItems="center" spacing={2} useFlexGap flexWrap="wrap" sx={{ mb: 2 }}>
+          {editContent}
+          {serviceTimes.length > 0 && (
+            <TextField
+              select
+              size="small"
+              label={Locale.label("plans.serviceOrder.viewingAs")}
+              value={selectedServiceTimeId}
+              onChange={(e) => setSelectedServiceTimeId(e.target.value)}
+              sx={{ minWidth: 180, ml: { sm: "auto" } }}
+            >
+              {serviceTimes.map((st) => (
+                <MenuItem key={st.id} value={st.id}>
+                  {st.displayName} {st.startTime ? `· ${new Date(st.startTime).toLocaleTimeString(DateHelper.locale, { hour: "numeric", minute: "2-digit" })}` : ""}
+                </MenuItem>
+              ))}
+              <MenuItem value="elapsed">{Locale.label("plans.serviceOrder.runTimes")}</MenuItem>
+            </TextField>
           )}
-        </CardContent>
-      </Card>
+        </Stack>
+
+        {planItems.length === 0 ? (
+          showPreviewMode ? (
+            <LessonPreview
+              lessonItems={previewLessonItems}
+              contentName={contentName}
+              onCustomize={canEdit ? handleCustomizeLesson : undefined}
+              associatedProviderId={props.plan?.providerId}
+              associatedContentPath={getContentPath() || undefined}
+              ministryId={props.plan?.ministryId}
+              mediaLookup={mediaLookup}
+            />
+          ) : (
+            <EmptyState variant="plain" icon={<AlbumIcon />} title={Locale.label("plans.serviceOrder.noItems")} />
+          )
+        ) : (
+          renderPlanItems()
+        )}
+      </Box>
       <Snackbar
         open={!!errorMessage}
         autoHideDuration={6000}

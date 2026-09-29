@@ -18,13 +18,12 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           padding: "16px",
           borderBottom: "1px solid",
           borderColor: "divider",
-          backgroundColor: "background.subtle",
-          borderRadius: "8px",
+          backgroundColor: "var(--b1-canvas)",
+          borderRadius: "var(--b1-radius-panel)",
           "&:last-child": { borderBottom: "none" }
         },
         "& .note .postedBy": {
           color: "text.secondary",
-          fontSize: "0.875rem",
           marginBottom: "8px",
           display: "flex",
           alignItems: "center",
@@ -38,7 +37,6 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           objectFit: "cover"
         },
         "& .note-contents": {
-          fontSize: "0.95rem",
           lineHeight: 1.5,
           color: "text.primary"
         },
@@ -50,8 +48,8 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
         "& .addNote": {
           marginTop: "16px",
           padding: "16px",
-          backgroundColor: "background.subtle",
-          borderRadius: "8px"
+          backgroundColor: "var(--b1-canvas)",
+          borderRadius: "var(--b1-radius-panel)"
         },
         "& .addNote textarea": {
           width: "100%",
@@ -59,23 +57,21 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           padding: "12px",
           border: "1px solid",
           borderColor: "divider",
-          borderRadius: "4px",
-          fontSize: "0.95rem",
+          borderRadius: "var(--b1-radius-control)",
           fontFamily: "inherit",
           resize: "vertical",
           "&:focus": {
             outline: "none",
             borderColor: "primary.main",
-            boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)"
+            boxShadow: "0 0 0 2px var(--b1-focus)"
           }
         },
         "& .btn": {
           backgroundColor: "primary.main",
-          color: "white",
+          color: "primary.contrastText",
           border: "none",
           padding: "8px 16px",
-          borderRadius: "4px",
-          fontSize: "0.875rem",
+          borderRadius: "var(--b1-radius-control)",
           cursor: "pointer",
           marginTop: "8px",
           "&:hover": { backgroundColor: "primary.dark" }

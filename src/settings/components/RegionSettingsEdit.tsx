@@ -65,7 +65,7 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
 
   return (
     <Box>
-      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <FormControl fullWidth size="small">
         <InputLabel id="region-select-label">{Locale.label("settings.regionSettingsEdit.region")}</InputLabel>
         <Select

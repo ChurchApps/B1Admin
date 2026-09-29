@@ -1,8 +1,10 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ApiHelper, DateHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { Alert, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useConfirmDelete } from "../../hooks";
+import { StatusBadge, tableScrollSx, numericCellSx, type StatusTone } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
 
 interface ModuleStatus {
   module: string;
@@ -85,8 +87,8 @@ export const MigrationsTab = () => {
   };
 
   const stateChip = (d: DetectedMigration) => {
-    const color = d.state === "applied" ? "success" : d.state === "missing" ? "warning" : d.state === "partial" ? "error" : "default";
-    return <Chip label={Locale.label("serverAdmin.migrationsTab.state_" + d.state)} size="small" color={color} variant={d.state === "unknown" ? "outlined" : "filled"} />;
+    const tone: StatusTone = d.state === "applied" ? "success" : d.state === "missing" ? "warning" : d.state === "partial" ? "danger" : "neutral";
+    return <StatusBadge tone={tone}>{Locale.label("serverAdmin.migrationsTab.state_" + d.state)}</StatusBadge>;
   };
 
   // A module with no migration history is never run from here: its "pending" list is every
@@ -119,29 +121,26 @@ export const MigrationsTab = () => {
   };
 
   const statusCell = (m: ModuleStatus) => {
-    if (m.error) return <Chip label={Locale.label("serverAdmin.migrationsTab.error")} size="small" color="error" />;
-    if (m.noHistory) return <Chip label={Locale.label("serverAdmin.migrationsTab.noHistory")} size="small" color="default" variant="outlined" />;
-    if (m.pending.length === 0) return <Chip label={Locale.label("serverAdmin.migrationsTab.upToDate")} size="small" color="success" />;
-    return <Chip label={Locale.label("serverAdmin.migrationsTab.pendingCount").replace("{count}", String(m.pending.length))} size="small" color="warning" />;
+    if (m.error) return <StatusBadge tone="danger">{Locale.label("serverAdmin.migrationsTab.error")}</StatusBadge>;
+    if (m.noHistory) return <StatusBadge>{Locale.label("serverAdmin.migrationsTab.noHistory")}</StatusBadge>;
+    if (m.pending.length === 0) return <StatusBadge tone="success">{Locale.label("serverAdmin.migrationsTab.upToDate")}</StatusBadge>;
+    return <StatusBadge tone="warning">{Locale.label("serverAdmin.migrationsTab.pendingCount").replace("{count}", String(m.pending.length))}</StatusBadge>;
   };
 
   return (
-    <DisplayBox headerIcon="storage" headerText={Locale.label("serverAdmin.migrationsTab.title")}>
+    <AdminPanel headerText={Locale.label("serverAdmin.migrationsTab.title")} subtitle={data ? <>{Locale.label("serverAdmin.serverHealth.environment")}: <strong>{data.environment || "—"}</strong>. {Locale.label("serverAdmin.migrationsTab.subtitle")}</> : undefined}>
       {ConfirmDialogElement}
       {loading && <Typography>{Locale.label("common.loading")}</Typography>}
       {!loading && !data && <Typography color="error">{Locale.label("serverAdmin.migrationsTab.loadError")}</Typography>}
       {!loading && data && (
         <Stack spacing={2}>
-          <Typography variant="body2" color="text.secondary">
-            {Locale.label("serverAdmin.serverHealth.environment")}: <strong>{data.environment || "—"}</strong>. {Locale.label("serverAdmin.migrationsTab.subtitle")}
-          </Typography>
-          <Paper sx={{ width: "100%", overflowX: "auto" }}>
-            <Table size="small" id="adminMigrationsTable">
+          <Box sx={tableScrollSx} role="region" aria-label={Locale.label("serverAdmin.migrationsTab.title")} tabIndex={0}>
+            <Table id="adminMigrationsTable">
               <TableHead>
                 <TableRow>
                   <TableCell>{Locale.label("serverAdmin.migrationsTab.module")}</TableCell>
                   <TableCell>{Locale.label("serverAdmin.serverHealth.status")}</TableCell>
-                  <TableCell>{Locale.label("serverAdmin.migrationsTab.applied")}</TableCell>
+                  <TableCell sx={numericCellSx}>{Locale.label("serverAdmin.migrationsTab.applied")}</TableCell>
                   <TableCell>{Locale.label("serverAdmin.migrationsTab.pending")}</TableCell>
                   <TableCell>{Locale.label("serverAdmin.migrationsTab.lastApplied")}</TableCell>
                 </TableRow>
@@ -158,8 +157,8 @@ export const MigrationsTab = () => {
                         </Button>
                       )}
                     </TableCell>
-                    <TableCell>{m.applied}</TableCell>
-                    <TableCell sx={{ fontFamily: "monospace", fontSize: 12 }}>{m.error || (m.noHistory ? "—" : m.pending.join(", ")) || "—"}</TableCell>
+                    <TableCell sx={numericCellSx}>{m.applied}</TableCell>
+                    <TableCell sx={{ fontFamily: "monospace", typography: "caption" }}>{m.error || (m.noHistory ? "—" : m.pending.join(", ")) || "—"}</TableCell>
                     <TableCell sx={{ color: "text.secondary" }}>
                       {m.lastApplied ? m.lastApplied.name + " · " + DateHelper.prettyDateTime(new Date(m.lastApplied.at)) : "—"}
                     </TableCell>
@@ -167,7 +166,7 @@ export const MigrationsTab = () => {
                 ))}
               </TableBody>
             </Table>
-          </Paper>
+          </Box>
           {untracked.length > 0 && (
             <Alert severity="warning" data-testid="migrations-no-history">
               {Locale.label("serverAdmin.migrationsTab.noHistoryNote").replace("{modules}", untracked.map((m) => m.module).join(", "))}
@@ -201,9 +200,9 @@ export const MigrationsTab = () => {
                   <TableBody>
                     {detection.migrations.map((d) => (
                       <TableRow key={d.name} data-testid={"detect-row-" + d.name}>
-                        <TableCell sx={{ fontFamily: "monospace", fontSize: 12 }}>{d.name}</TableCell>
-                        <TableCell>{rerun.includes(d.name) ? <Chip label={Locale.label("serverAdmin.migrationsTab.willRerun")} size="small" color="warning" /> : stateChip(d)}</TableCell>
-                        <TableCell sx={{ color: "text.secondary", fontSize: 12 }}>
+                        <TableCell sx={{ fontFamily: "monospace", typography: "caption" }}>{d.name}</TableCell>
+                        <TableCell>{rerun.includes(d.name) ? <StatusBadge tone="warning">{Locale.label("serverAdmin.migrationsTab.willRerun")}</StatusBadge> : stateChip(d)}</TableCell>
+                        <TableCell sx={{ color: "text.secondary", typography: "caption" }}>
                           {d.failing.join("; ")}
                           {d.state === "partial" && (
                             <Stack direction="row" alignItems="center" sx={{ color: "text.primary" }}>
@@ -241,6 +240,6 @@ export const MigrationsTab = () => {
           </>
         )}
       </Dialog>
-    </DisplayBox>
+    </AdminPanel>
   );
 };

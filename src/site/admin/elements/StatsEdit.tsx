@@ -38,7 +38,7 @@ export function StatsEdit({ parsedData, handleChange, handleHtmlChange }: Props)
       <Typography variant="subtitle2" sx={{ mt: 1 }}>{Locale.label("site.statsEdit.items")}</Typography>
       {items.length === 0 && <Typography variant="body2" color="text.secondary">{Locale.label("site.statsEdit.noItems")}</Typography>}
       {items.map((item, index) => (
-        <Box key={index} sx={{ border: "1px solid var(--border-light)", borderRadius: 1, p: 1, mb: 1 }} data-testid={`stats-item-${index}`}>
+        <Box key={index} sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1, mb: 1 }} data-testid={`stats-item-${index}`}>
           <Grid container spacing={1}>
             <Grid size={{ xs: 3 }}>
               <TextField fullWidth size="small" label={Locale.label("site.statsEdit.prefix")} value={item.prefix || ""} onChange={(e) => updateItem(index, "prefix", e.target.value)} />

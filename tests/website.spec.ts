@@ -492,7 +492,7 @@ test.describe("Website Management", () => {
       expect((await treePost).status()).toBe(200);
       // Creation finishes by opening the only newly-created page (Visit) in the preview.
       await page.waitForURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 30000 });
-      await expect(page.locator("h6").getByText("Plan Your Visit").first()).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText("Plan Your Visit", { exact: true }).first()).toBeVisible({ timeout: 10000 });
       // The new Visit page now exists; the pre-existing Home/About pages were left untouched.
       await navigateToSite(page);
       await expect(page.locator("td").getByText("Plan Your Visit")).toHaveCount(1, { timeout: 10000 });
@@ -719,7 +719,7 @@ test.describe("Website Management", () => {
     });
 
     test("should change color palette", async () => {
-      const colorSettings = page.locator("h6").getByText("Color Palette");
+      const colorSettings = page.getByText("Color Palette", { exact: true });
       await colorSettings.click();
       const palettePreset = page.locator("span").getByText("Palette 16");
       await palettePreset.click();
@@ -730,7 +730,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel changing color palette", async () => {
-      const colorSettings = page.locator("h6").getByText("Color Palette");
+      const colorSettings = page.getByText("Color Palette", { exact: true });
       await colorSettings.click();
       const palettePreset = page.locator("span").getByText("Palette 16");
       await expect(palettePreset).toHaveCount(1);
@@ -740,7 +740,7 @@ test.describe("Website Management", () => {
     });
 
     test("should change font", async () => {
-      const fontSettings = page.locator("h6").getByText("Fonts").last();
+      const fontSettings = page.getByText("Fonts", { exact: true }).last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await headerFontSelect.click();
@@ -754,7 +754,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel changing font", async () => {
-      const fontSettings = page.locator("h6").getByText("Fonts").last();
+      const fontSettings = page.getByText("Fonts", { exact: true }).last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await expect(headerFontSelect).toHaveCount(1);
@@ -764,7 +764,7 @@ test.describe("Website Management", () => {
     });
 
     test("should add custom CSS", async () => {
-      const stylesheetSettings = page.locator("h6").getByText("CSS & Javascript");
+      const stylesheetSettings = page.getByText("CSS & Javascript", { exact: true });
       await stylesheetSettings.click();
       // Scope to the named CSS field — page-level `textarea` also matches the
       // SuperBee chat widget's hidden textarea, which never unmounts.
@@ -777,7 +777,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel adding custom CSS", async () => {
-      const stylesheetSettings = page.locator("h6").getByText("CSS & Javascript");
+      const stylesheetSettings = page.getByText("CSS & Javascript", { exact: true });
       await stylesheetSettings.click();
       const cssBox = page.locator('textarea[name="css"]');
       await expect(cssBox).toHaveCount(1);
@@ -859,13 +859,13 @@ test.describe("Website Management", () => {
     });
 
     test("should group the appearance tools under headings", async () => {
-      await expect(page.locator("h6").getByText("Announcement & widgets")).toBeVisible({ timeout: 10000 });
-      await expect(page.locator("h6").getByText("Redirects & analytics")).toBeVisible();
-      await expect(page.locator("h6").getByText("Theme, fonts & footer")).toBeVisible();
+      await expect(page.getByText("Announcement & widgets", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText("Redirects & analytics", { exact: true })).toBeVisible();
+      await expect(page.getByText("Theme, fonts & footer", { exact: true })).toBeVisible();
     });
 
     test("should add footer", async () => {
-      const footerSettings = page.locator("h6").getByText("Site Footer");
+      const footerSettings = page.getByText("Site Footer", { exact: true });
       await footerSettings.click();
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/, { timeout: 10000 });
     });
@@ -1029,7 +1029,7 @@ test.describe("Website Management", () => {
       const deleteBtn = page.locator('[data-testid="delete-calendar-button"]');
       await deleteBtn.click();
       await confirmDelete(page);
-      const validatedDeletion = page.locator("h6").getByText("Zebedee Test Calendar");
+      const validatedDeletion = page.getByText("Zebedee Test Calendar");
       await expect(validatedDeletion).toHaveCount(0);
     });
 

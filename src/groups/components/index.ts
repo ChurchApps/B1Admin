@@ -6,7 +6,6 @@ export { GroupDetails } from "./GroupDetails";
 export { GroupDetailsEdit } from "./GroupDetailsEdit";
 export { GroupMembers } from "./GroupMembers";
 export { PendingJoinRequests } from "./PendingJoinRequests";
-export { GroupNavigation } from "./GroupNavigation";
 export { GroupSessions } from "./GroupSessions";
 export { ServiceTimes } from "./ServiceTimes";
 export { ServiceTimesEdit } from "./ServiceTimesEdit";

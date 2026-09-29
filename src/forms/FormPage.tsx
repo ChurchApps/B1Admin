@@ -1,19 +1,18 @@
 import React from "react";
-import { Tabs, FormNavigation, FormEdit } from "./components";
+import { Tabs, FormNavigation, FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
-import { UserHelper, Permissions, Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Permissions, Locale, Loading } from "@churchapps/apphelper";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Box, Button } from "@mui/material";
-import { Description as DescriptionIcon, Edit as EditIcon } from "@mui/icons-material";
-import { HeaderPrimaryButton, EmptyState } from "../components/ui";
+import { Box, Button, Link as MuiLink, Stack, Typography } from "@mui/material";
+import { Description as DescriptionIcon } from "@mui/icons-material";
+import { BackVerb, PageContainer, EmptyState, Pill, RecordLayout, TextAction, VerbRow, useRecordView } from "../components/ui";
 
 import { useQuery } from "@tanstack/react-query";
 
 export const FormPage = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [selectedTab, setSelectedTab] = React.useState("");
-  const [editingSettings, setEditingSettings] = React.useState(false);
+  const { view: requestedView, setView } = useRecordView("view", { replace: true });
 
   const form = useQuery<FormInterface>({
     queryKey: ["/forms/" + params.id, "MembershipApi"],
@@ -34,32 +33,16 @@ export const FormPage = () => {
   const formMemberView = formMemberAction === "view" && formType !== undefined && formType === "form";
   const canEditSettings = formAdmin || formEdit || formMemberAdmin;
 
-  const getAvailableTabs = () => {
-    const tabs = [];
+  const availableTabs: string[] = [];
+  if (formAdmin || formEdit || formMemberAdmin) availableTabs.push("questions");
+  if ((formAdmin || formMemberAdmin) && formType === "form") availableTabs.push("members");
+  if (formAdmin || formMemberAdmin || formMemberView) availableTabs.push("submissions");
 
-    if (formAdmin || formEdit || formMemberAdmin) {
-      tabs.push({ key: "questions", label: Locale.label("forms.tabs.questions") });
-    }
-    if ((formAdmin || formMemberAdmin) && formType === "form") {
-      tabs.push({ key: "members", label: Locale.label("forms.tabs.formMem") });
-    }
-    if (formAdmin || formMemberAdmin || formMemberView) {
-      tabs.push({ key: "submissions", label: Locale.label("forms.tabs.formSub") });
-    }
-
-    return tabs;
-  };
-
-  const availableTabs = getAvailableTabs();
-
-  React.useEffect(() => {
-    if (selectedTab === "" && availableTabs.length > 0) {
-      setSelectedTab(availableTabs[0].key);
-    }
-  }, [availableTabs, selectedTab]);
+  const editing = requestedView === "edit" && canEditSettings;
+  const selectedTab = availableTabs.includes(requestedView) ? requestedView : availableTabs[0] || "";
 
   const handleSettingsSaved = async () => {
-    setEditingSettings(false);
+    setView("");
     const result = await form.refetch();
     if (!result.data?.id) navigate("/forms");
   };
@@ -68,43 +51,60 @@ export const FormPage = () => {
 
   if (!form.data?.id) {
     return (
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         <EmptyState
           icon={<DescriptionIcon />}
           title={Locale.label("forms.formPage.notFound")}
           action={<Button variant="contained" component={Link} to="/forms">{Locale.label("forms.formPage.backToForms")}</Button>}
         />
-      </Box>
+      </PageContainer>
     );
   }
 
-  return (
-    <>
-      <PageHeader
-        title={form.data.name || ""}
-        subtitle={Locale.label("forms.formPage.subtitleConfig")}
-        icon={<DescriptionIcon />}
-        tabs={<FormNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} form={form.data} memberPermission={memberPermission.data || { personName: "" }} onHeader />}>
-        {canEditSettings && (
-          <HeaderPrimaryButton startIcon={<EditIcon />} onClick={() => setEditingSettings(true)} data-testid="edit-form-settings-button">
-            {Locale.label("forms.formEdit.editForm")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
+  const data = form.data as FormInterface & { description?: string };
+  const standAlone = data.contentType === "form";
+  const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain || "") + "/forms/" + data.id;
+  const memberPermissionData = memberPermission.data || { personName: "" };
 
-      <Box sx={{ p: 3 }}>
-        {editingSettings ? (
-          <FormEdit formId={form.data.id} updatedFunction={handleSettingsSaved} />
-        ) : (
-          <Box
-            sx={{
-              "& > *:first-of-type": { mb: 2 },
-              "& > *:not(:first-of-type)": { mt: 0 }
-            }}>
-            <Tabs form={form.data} memberPermission={memberPermission.data || { personName: "" }} selectedTab={selectedTab} onTabChange={setSelectedTab} />
-          </Box>
+  const identity = (
+    <Box component="aside" data-testid="form-identity">
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{data.name || ""}</Typography>
+      <Typography id="page-header-subtitle" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("forms.formPage.subtitleConfig")}</Typography>
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 2 }}>
+        <Pill tone="primary">{standAlone ? Locale.label("forms.formEdit.alone") : Locale.label("forms.formEdit.ppl")}</Pill>
+        {standAlone && <Pill>{data.restricted ? Locale.label("forms.formEdit.restrict") : Locale.label("forms.formEdit.public")}</Pill>}
+        {data.archived && <Pill tone="warning">{Locale.label("forms.formsPage.archived", "Archived")}</Pill>}
+      </Stack>
+      {standAlone && (
+        <MuiLink href={formUrl} target="_blank" rel="noopener noreferrer" underline="hover" data-testid="form-public-url" sx={{ display: "block", mt: 2, typography: "body2", overflowWrap: "anywhere" }}>
+          {formUrl}
+        </MuiLink>
+      )}
+      {data.description && <Typography variant="body2" color="text.secondary" sx={{ mt: 2, whiteSpace: "pre-line" }}>{data.description}</Typography>}
+      <VerbRow sx={{ mt: 3 }}>
+        <TextAction to="/forms" component={Link} data-testid="form-back-to-forms">{Locale.label("forms.formsPage.forms")}</TextAction>
+        {canEditSettings && !editing && (
+          <TextAction onClick={() => setView("edit")} data-testid="edit-form-settings-button">{Locale.label("forms.formEdit.editForm")}</TextAction>
         )}
-      </Box>
-    </>
+      </VerbRow>
+    </Box>
+  );
+
+  return (
+    <PageContainer>
+      <RecordLayout identity={identity} spacing={3} data-testid="form-record">
+        {editing ? (
+          <>
+            <Box><BackVerb name={data.name || ""} onClick={() => setView("")} data-testid="form-record-back" /></Box>
+            <FormEdit formId={data.id} updatedFunction={handleSettingsSaved} />
+          </>
+        ) : (
+          <>
+            <FormNavigation selectedTab={selectedTab} onTabChange={setView} form={data} memberPermission={memberPermissionData} />
+            <Tabs form={data} memberPermission={memberPermissionData} selectedTab={selectedTab} onTabChange={setView} />
+          </>
+        )}
+      </RecordLayout>
+    </PageContainer>
   );
 };

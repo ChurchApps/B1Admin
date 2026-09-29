@@ -1,5 +1,5 @@
 import React from "react";
-import { ListItemButton, ListItemIcon, ListItemText, alpha } from "@mui/material";
+import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -24,12 +24,11 @@ export const QuickActionItem: React.FC<Props> = ({ icon, title, linkUrl, externa
   };
 
   return (
-    <ListItemButton onClick={handleClick} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
-      <ListItemIcon
-        sx={(theme) => ({ minWidth: 0, mr: 1.5, color: "primary.main", display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 1, backgroundColor: alpha(theme.palette.primary.main, 0.08) })}>
+    <ListItemButton onClick={handleClick} sx={{ borderRadius: "var(--b1-radius-control)", py: 1, px: 1 }}>
+      <ListItemIcon sx={{ minWidth: 0, mr: 1.5, color: "text.secondary", display: "flex", alignItems: "center" }}>
         {icon}
       </ListItemIcon>
-      <ListItemText primary={title} slotProps={{ primary: { variant: "body2", fontWeight: 500, noWrap: true } }} />
+      <ListItemText primary={title} slotProps={{ primary: { variant: "body2", noWrap: true } }} />
     </ListItemButton>
   );
 };

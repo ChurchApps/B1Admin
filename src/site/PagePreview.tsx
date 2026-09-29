@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Chip, Stack, Typography, Paper } from "@mui/material";
-import { Edit as EditIcon, Settings as SettingsIcon, Web as WebIcon } from "@mui/icons-material";
-import { ApiHelper, PageHeader, Locale } from "@churchapps/apphelper";
+import { Link as RouterLink, useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { Box, Stack, Typography } from "@mui/material";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
 import type { PageInterface, SiteInterface } from "../helpers/Interfaces";
 import type { LinkInterface } from "@churchapps/helpers";
 import { PageLinkEdit } from "./components/PageLinkEdit";
-import { Breadcrumbs, type BreadcrumbItem, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { PageContainer, RecordLayout, StatusBadge, TextAction, VerbRow } from "../components/ui";
 
 export const PagePreview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -54,10 +53,6 @@ export const PagePreview: React.FC = () => {
     }
   };
 
-  const handleEditContent = () => {
-    if (pageData?.id) navigate(`/site/pages/${pageData.id}`);
-  };
-
   useEffect(() => {
     loadData();
   }, [id, searchParams]);
@@ -85,51 +80,35 @@ export const PagePreview: React.FC = () => {
   const previewSubDomain = siteSubDomain || context?.userChurch?.church?.subDomain || "";
   const previewUrl = EnvironmentHelper.B1Url.replace("{subdomain}", previewSubDomain) + pageData.url + "?t=" + loadedAt;
 
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { label: Locale.label("helpers.secondaryMenuHelper.site"), path: "/site" },
-    { label: Locale.label("helpers.secondaryMenuHelper.pages"), path: "/site/pages" },
-    { label: pageData.title || "" }
-  ];
-
   return (
     <>
-      <PageHeader icon={<WebIcon />} title={Locale.label("site.pagePreview.title")} subtitle={Locale.label("site.pagePreview.subtitle").replace("{title}", pageData.title || "")} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: { xs: "100%", sm: "auto" } }}>
-          <HeaderSecondaryButton startIcon={<EditIcon />} onClick={handleEditContent}>{Locale.label("site.pagePreview.editContent")}</HeaderSecondaryButton>
-          <HeaderPrimaryButton startIcon={<SettingsIcon />} onClick={() => setShowSettings(true)}>{Locale.label("site.pagePreview.pageSettings")}</HeaderPrimaryButton>
-        </Stack>
-      </PageHeader>
-
       {showSettings && (<PageLinkEdit link={link || undefined} page={pageData} updatedCallback={handlePageUpdated} onDone={() => setShowSettings(false)} />)}
 
-      <Box sx={{ p: 3 }}>
-        <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden", border: "1px solid", borderColor: "grey.200" }}>
-          <Box sx={{ backgroundColor: "grey.50", p: 2, borderBottom: "1px solid", borderColor: "divider" }}>
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.5}>
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                {pageData.title}
-              </Typography>
-              <Chip
-                size="small"
-                data-testid="preview-publish-status"
-                label={pageData.publishedAt ? Locale.label("site.editorToolbar.statusPublished") : Locale.label("site.editorToolbar.statusLiveOnSave")}
-                sx={pageData.publishedAt
-                  ? { fontWeight: 600, fontSize: "0.7rem", backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.dark" }
-                  : { fontWeight: 600, fontSize: "0.7rem", backgroundColor: "var(--bg-sub)", color: "text.secondary" }}
-              />
+      <PageContainer>
+        <RecordLayout
+          identity={(
+            <Stack spacing={1.5} alignItems="flex-start">
+              <Typography id="page-header-title" variant="h1" sx={{ overflowWrap: "anywhere" }}>{pageData.title}</Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ overflowWrap: "anywhere" }}>{pageData.url}</Typography>
+              <StatusBadge tone={pageData.publishedAt ? "success" : "neutral"} data-testid="preview-publish-status">
+                {pageData.publishedAt ? Locale.label("site.editorToolbar.statusPublished") : Locale.label("site.editorToolbar.statusLiveOnSave")}
+              </StatusBadge>
+              {pageData.publishedAt && (
+                <Typography variant="caption" component="p" color="text.secondary">
+                  {Locale.label("site.pagePreview.showingPublished")}
+                </Typography>
+              )}
+              <VerbRow sx={{ pt: 1 }}>
+                <TextAction to="/site/pages" component={RouterLink}>{Locale.label("helpers.secondaryMenuHelper.pages")}</TextAction>
+                <TextAction to={`/site/pages/${pageData.id}`} component={RouterLink}>{Locale.label("site.pagePreview.editContent")}</TextAction>
+                <TextAction onClick={() => setShowSettings(true)}>{Locale.label("site.pagePreview.pageSettings")}</TextAction>
+              </VerbRow>
             </Stack>
-            {pageData.publishedAt && (
-              <Typography variant="caption" component="p" sx={{ display: "block", textAlign: "center", color: "text.secondary", mt: 0.5 }}>
-                {Locale.label("site.pagePreview.showingPublished")}
-              </Typography>
-            )}
-          </Box>
-
-          <Box sx={{ position: "relative" }}>
-            <iframe src={previewUrl} style={{ width: "100%", height: "80vh", minHeight: "600px", border: "none", display: "block" }} title={Locale.label("site.pagePreview.previewOf").replace("{title}", pageData.title || "")} />
-          </Box>
-        </Paper>
-      </Box>
+          )}
+          sliceSx={{ p: { xs: 0, md: 0 } }}>
+          <Box component="iframe" src={previewUrl} title={Locale.label("site.pagePreview.previewOf").replace("{title}", pageData.title || "")} sx={{ width: "100%", height: "80vh", minHeight: 600, border: 0, display: "block", borderRadius: { md: "0 var(--b1-radius-panel) var(--b1-radius-panel) 0" } }} />
+        </RecordLayout>
+      </PageContainer>
     </>
   );
 };

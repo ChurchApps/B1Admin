@@ -1,6 +1,7 @@
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Alert, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography, Chip } from "@mui/material";
+import { Alert, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from "@mui/material";
+import { StatusBadge } from "../../../../components/ui";
 import { Bolt as TriggerIcon, Schedule as ScheduleIcon, Add as AddIcon, Delete as DeleteIcon, Pause as PauseIcon, PlayArrow as ResumeIcon, PlaylistPlay as RunNowIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { TriggerEditDialog, type WorkflowTriggerInterface } from "./TriggerEditDialog";
@@ -112,38 +113,24 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
             sx={{
               display: "flex",
               alignItems: "center",
-              borderRadius: 2,
-              mb: 1.25,
+              borderRadius: "var(--b1-radius-control)",
+              mb: 1,
               border: "1px solid",
-              borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.08)" : "#e2e8f0",
-              backgroundColor: "background.paper",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
-              transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-              "&:hover": {
-                boxShadow: "0 6px 12px rgba(0,0,0,0.05)",
-                transform: "translateY(-1px)",
-              }
+              borderColor: "var(--b1-border)",
+              backgroundColor: "background.paper"
             }}
           >
             <ListItemButton
               data-testid={"event-trigger-row-" + t.id}
               onClick={() => props.canManage && setEditing(t)}
-              sx={{
-                borderRadius: 2,
-                flexGrow: 1,
-                pr: 2,
-                backgroundColor: "transparent",
-                "&:hover": {
-                  backgroundColor: "transparent"
-                }
-              }}
+              sx={{ borderRadius: "var(--b1-radius-control)", flexGrow: 1, pr: 2 }}
             >
-              <ListItemIcon>{isSchedule(t) ? <ScheduleIcon sx={{ color: t.active ? "primary.main" : "grey.400" }} /> : <TriggerIcon sx={{ color: t.active ? "primary.main" : "grey.400" }} />}</ListItemIcon>
+              <ListItemIcon>{isSchedule(t) ? <ScheduleIcon color={t.active ? "primary" : "disabled"} /> : <TriggerIcon color={t.active ? "primary" : "disabled"} />}</ListItemIcon>
               <ListItemText
-                primary={<Typography variant="body1" sx={{ fontWeight: 600, color: "text.primary" }}>{t.name}</Typography>}
+                primary={<Typography variant="body1" sx={{ fontWeight: 600 }}>{t.name}</Typography>}
                 secondary={<Typography variant="body2" sx={{ color: "text.secondary", mt: 0.25 }}>{descriptor(t)}</Typography>}
               />
-              {!t.active && <Chip size="small" label={Locale.label("tasks.eventTriggers.paused")} sx={{ fontWeight: 500, ml: 1, flexShrink: 0 }} />}
+              {!t.active && <Box sx={{ ml: 1, flexShrink: 0 }}><StatusBadge tone="neutral">{Locale.label("tasks.eventTriggers.paused")}</StatusBadge></Box>}
             </ListItemButton>
             {props.canManage && (
               <Box sx={{ pr: 2, pl: 1, flexShrink: 0 }}>

@@ -74,7 +74,7 @@ export const AdminWelcome: React.FC = () => {
       <Grid container spacing={2}>
         {sections.map((section) => (
           <Grid key={section.label} size={GRID_SIZES.fourColumn}>
-            <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>{section.label}</Typography>
+            <Typography variant="h3" component="h3">{section.label}</Typography>
             <Stack sx={{ mt: 0.5 }}>
               {section.items.map((item) => (
                 <QuickActionItem key={item.title} icon={item.icon} title={item.title} linkUrl={item.linkUrl} external={item.external} onClick={item.onClick} />

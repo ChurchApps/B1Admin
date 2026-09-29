@@ -1,10 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { Grid, TextField, Typography, MenuItem } from "@mui/material";
 import { EditVerb, SettingsRow } from "./SettingsPage";
+import { SettingsPanel } from "./SettingsPanel";
 
 type AnyRecord = Record<string, any>;
 
@@ -96,11 +97,11 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
   const address = [church?.address1, church?.address2, [church?.city, church?.state].filter(Boolean).join(", "), church?.zip, church?.country].filter(Boolean).join(" · ");
 
   return (
-    <DisplayBox headerText={Locale.label("settings.churchSettingsEdit.churchInfo")} headerIcon="business" editContent={<EditVerb onClick={() => setEditing(true)} />}>
+    <SettingsPanel headerText={Locale.label("settings.churchSettingsEdit.churchInfo")} headerIcon="business" editContent={<EditVerb onClick={() => setEditing(true)} />}>
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.churchName")} value={church?.name} />
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
       <SettingsRow label={Locale.label("person.address")} value={address} />
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
-    </DisplayBox>
+    </SettingsPanel>
   );
 };

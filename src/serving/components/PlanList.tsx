@@ -1,10 +1,8 @@
 import React, { useCallback, memo } from "react";
-import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText, FormControlLabel, Switch } from "@mui/material";
-import { EmptyState } from "../../components/ui/EmptyState";
-import { CountChip } from "../../components/ui";
-import { AppIconButton } from "../../components/ui/AppIconButton";
-import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon, Bookmarks as BookmarksIcon } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Box, Typography, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { AddBar, PillTabs, Surface, TextAction, VerbRow, srOnlySx, tableScrollSx } from "../../components/ui";
+import { CalendarMonth as CalendarIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface, hasPlansEditAccess } from "../../helpers";
 import { ArrayHelper, DateHelper, Locale, Loading } from "@churchapps/apphelper";
@@ -21,8 +19,6 @@ interface Props {
   planTypeId?: string;
 }
 
-
-
 export const PlanList = memo((props: Props) => {
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [showPast, setShowPast] = React.useState(false);
@@ -31,6 +27,7 @@ export const PlanList = memo((props: Props) => {
   const [showApplyYearPlan, setShowApplyYearPlan] = React.useState(false);
   const [showTemplates, setShowTemplates] = React.useState(false);
   const [lessonMenuAnchor, setLessonMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const lessonAnchorRef = React.useRef<HTMLSpanElement>(null);
   const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
@@ -143,218 +140,120 @@ export const PlanList = memo((props: Props) => {
     return <Loading />;
   }
 
+  const lessonMenu = (
+    <Menu anchorEl={lessonMenuAnchor} open={Boolean(lessonMenuAnchor)} onClose={() => setLessonMenuAnchor(null)}>
+      <MenuItem onClick={() => { setLessonMenuAnchor(null); handleScheduleLesson(); }}>
+        <ListItemIcon><MenuBookIcon fontSize="small" /></ListItemIcon>
+        <ListItemText>{Locale.label("plans.planList.scheduleLesson", "Schedule Lesson")}</ListItemText>
+      </MenuItem>
+      <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowBulkSchedule(true); }}>
+        <ListItemIcon><DateRangeIcon fontSize="small" /></ListItemIcon>
+        <ListItemText>{Locale.label("plans.planList.bulkSchedule", "Bulk Schedule")}</ListItemText>
+      </MenuItem>
+      <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowApplyYearPlan(true); }} data-testid="apply-year-plan-menu">
+        <ListItemIcon><CalendarIcon fontSize="small" /></ListItemIcon>
+        <ListItemText>{Locale.label("plans.planList.applyYearPlan", "Apply Year Plan")}</ListItemText>
+      </MenuItem>
+    </Menu>
+  );
+
+  const scheduleLessonVerb = (
+    <Box component="span" ref={lessonAnchorRef}>
+      <TextAction onClick={() => setLessonMenuAnchor(lessonAnchorRef.current)} data-testid="schedule-lesson-button">
+        {Locale.label("plans.planList.scheduleLesson", "Schedule Lesson")}
+      </TextAction>
+    </Box>
+  );
+
   const hasPastPlans = !showPast && plans.length === 0 && allPlans.length > 0;
 
   if (plans.length === 0 && !hasPastPlans) {
     return (
-      <Box>
-        <Box sx={{ mb: 3 }}>
-          <EmptyState
-            icon={<EventNoteIcon />}
-            title={Locale.label("plans.planList.noPlans")}
-            description={Locale.label("plans.planList.createFirst")}
-            action={canEdit && (
-              <Stack direction="row" spacing={2} justifyContent="center">
-                <Button variant="contained" size="large" startIcon={<AddIcon />} onClick={addPlan} data-testid="add-plan-button" sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
-                  {Locale.label("plans.planList.createPlan")}
-                </Button>
-                <Button variant="contained" size="large" startIcon={<MenuBookIcon />} endIcon={<ArrowDropDownIcon />} onClick={(e) => setLessonMenuAnchor(e.currentTarget)} data-testid="schedule-lesson-button" sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
-                  {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
-                </Button>
-              </Stack>
-            )}
-          />
-        </Box>
-
-        <Menu
-          anchorEl={lessonMenuAnchor}
-          open={Boolean(lessonMenuAnchor)}
-          onClose={() => setLessonMenuAnchor(null)}
-        >
-          <MenuItem onClick={() => { setLessonMenuAnchor(null); handleScheduleLesson(); }}>
-            <ListItemIcon><MenuBookIcon fontSize="small" /></ListItemIcon>
-            <ListItemText>{Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowBulkSchedule(true); }}>
-            <ListItemIcon><DateRangeIcon fontSize="small" /></ListItemIcon>
-            <ListItemText>{Locale.label("plans.planList.bulkSchedule") || "Bulk Schedule"}</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowApplyYearPlan(true); }} data-testid="apply-year-plan-menu">
-            <ListItemIcon><CalendarIcon fontSize="small" /></ListItemIcon>
-            <ListItemText>{Locale.label("plans.planList.applyYearPlan") || "Apply Year Plan"}</ListItemText>
-          </MenuItem>
-        </Menu>
-      </Box>
+      <Surface>
+        <Typography variant="h3" component="h2" sx={{ mb: 1 }}>{Locale.label("plans.planList.plans")}</Typography>
+        <Typography color="text.secondary">{Locale.label("plans.planList.noPlans")}</Typography>
+        {canEdit && (
+          <AddBar sx={{ mt: 2, pt: 2 }}>
+            <VerbRow sx={{ typography: "body1" }}>
+              <TextAction onClick={addPlan} data-testid="add-plan-button">{Locale.label("plans.planList.createPlan")}</TextAction>
+              {scheduleLessonVerb}
+            </VerbRow>
+          </AddBar>
+        )}
+        {lessonMenu}
+      </Surface>
     );
   }
 
   return (
-    <Box sx={{ position: "relative" }}>
-      <Box sx={{ mb: 3 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: 2 }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <AssignmentIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6">
-              {Locale.label("plans.planList.plans")}
-            </Typography>
-            {plans.length > 0 && <CountChip count={plans.length} />}
-            <FormControlLabel
-              control={<Switch size="small" checked={showPast} onChange={(e) => setShowPast(e.target.checked)} />}
-              label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">{Locale.label("plans.planList.showPast")}</Typography></Stack>}
-              sx={{ ml: 2 }}
-            />
-          </Stack>
-          {canEdit && (
-            <Stack direction="row" spacing={1}>
-              <Button
-                variant="contained"
-                size="medium"
-                startIcon={<AddIcon />}
-                onClick={addPlan}
-                data-testid="add-plan-button">
-                {Locale.label("plans.planList.newPlan")}
-              </Button>
-              <Button
-                variant="contained"
-                size="medium"
-                startIcon={<MenuBookIcon />}
-                endIcon={<ArrowDropDownIcon />}
-                onClick={(e) => setLessonMenuAnchor(e.currentTarget)}
-                data-testid="schedule-lesson-button">
-                {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
-              </Button>
-              <Button
-                variant="outlined"
-                size="medium"
-                startIcon={<BookmarksIcon />}
-                onClick={() => setShowTemplates(true)}>
-                {Locale.label("plans.templates.button") || "Templates"}
-              </Button>
-            </Stack>
-          )}
-        </Stack>
-      </Box>
+    <Surface>
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent="space-between" sx={{ mb: 2 }}>
+        <Typography variant="h3" component="h2">{Locale.label("plans.planList.plans")}</Typography>
+        {canEdit && (
+          <VerbRow>
+            {scheduleLessonVerb}
+            <TextAction onClick={() => setShowTemplates(true)} data-testid="plan-templates-button">{Locale.label("plans.templates.button", "Templates")}</TextAction>
+          </VerbRow>
+        )}
+      </Stack>
+      <PillTabs
+        aria-label={Locale.label("plans.planList.plans")}
+        value={showPast ? "past" : "upcoming"}
+        onChange={(v) => setShowPast(v === "past")}
+        options={[
+          { value: "upcoming", label: Locale.label("plans.planList.upcoming", "Upcoming"), "data-testid": "plans-upcoming-pill" },
+          { value: "past", label: Locale.label("plans.planList.past", "Past"), "data-testid": "plans-past-pill" }
+        ]}
+        sx={{ mb: 2 }}
+      />
 
-      {hasPastPlans && (
-        <Box sx={{ mb: 3 }}>
-          <EmptyState
-            icon={<EventNoteIcon />}
-            title={Locale.label("plans.planList.noUpcomingPlans")}
-            description={Locale.label("plans.planList.noUpcomingPlansDescription")}
-          />
+      {hasPastPlans ? (
+        <Typography color="text.secondary">
+          {Locale.label("plans.planList.noUpcomingHint", "Nothing is scheduled from today on. Choose \"Past\" to see earlier plans.")}
+        </Typography>
+      ) : (
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("plans.planList.plans")} tabIndex={0}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("common.name")}</TableCell>
+                {canEdit && <TableCell align="right"><Box component="span" sx={srOnlySx}>{Locale.label("plans.servingPage.actions", "Actions")}</Box></TableCell>}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {plans.map((p) => (
+                <TableRow key={p.id}>
+                  <TableCell>
+                    <Link component={RouterLink} to={`/serving/plans/${p.id}`} underline="hover" sx={{ fontWeight: 600 }}>
+                      {p.name}
+                    </Link>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontVariantNumeric: "tabular-nums" }}>
+                      {[p.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(p.serviceDate)) : "", p.serviceOrder ? Locale.label("plans.planList.serviceOrder") : ""].filter(Boolean).join(" · ")}
+                    </Typography>
+                  </TableCell>
+                  {canEdit && (
+                    <TableCell align="right">
+                      <TextAction small onClick={() => setPlan(p)} aria-label={Locale.label("common.edit")}>{Locale.label("common.edit")}</TextAction>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Box>
       )}
 
-      <Stack spacing={2} sx={{ mb: 4 }}>
-        {plans.map((p) => (
-          <Card
-            key={p.id}
-            sx={{
-              transition: "all 0.2s ease-in-out",
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 2,
-              "&:hover": {
-                transform: "translateY(-2px)",
-                boxShadow: 3,
-                borderColor: "primary.main"
-              }
-            }}>
-            <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
-              <Stack direction="row" alignItems="flex-start" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1}>
-                <Stack direction="row" alignItems="center" spacing={2} sx={{ flex: 1, minWidth: 0 }}>
-                  <Avatar
-                    sx={{
-                      bgcolor: "primary.main",
-                      width: 48,
-                      height: 48,
-                      flexShrink: 0
-                    }}>
-                    <CalendarIcon />
-                  </Avatar>
+      {canEdit && (
+        <AddBar sx={{ mt: 2, pt: 2 }}>
+          <TextAction onClick={addPlan} data-testid="add-plan-button">{Locale.label("plans.planList.newPlan")}</TextAction>
+        </AddBar>
+      )}
 
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography
-                      variant="h6"
-                      component={Link}
-                      to={`/serving/plans/${p.id}`}
-                      sx={{
-                        fontWeight: 600,
-                        color: "primary.main",
-                        textDecoration: "none",
-                        fontSize: "1.1rem",
-                        "&:hover": { textDecoration: "underline" },
-                        display: "block",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap"
-                      }}>
-                      {p.name}
-                    </Typography>
-
-                    <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
-                      {p.serviceDate && (
-                        <Chip
-                          icon={<CalendarIcon />}
-                          label={DateHelper.formatHtml5Date(p.serviceDate)}
-                          variant="outlined"
-                          size="small"
-                          sx={{
-                            color: "text.secondary",
-                            borderColor: "divider",
-                            fontSize: "0.75rem"
-                          }}
-                        />
-                      )}
-                      {p.serviceOrder && (
-                        <Chip
-                          label={Locale.label("plans.planList.serviceOrder")}
-                          variant="outlined"
-                          size="small"
-                          sx={{
-                            color: "success.main",
-                            borderColor: "success.main",
-                            fontSize: "0.75rem"
-                          }}
-                        />
-                      )}
-                    </Stack>
-                  </Box>
-                </Stack>
-
-                {canEdit && (
-                  <Box sx={{ flexShrink: 0 }}>
-                    <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setPlan(p)} />
-                  </Box>
-                )}
-              </Stack>
-            </CardContent>
-          </Card>
-        ))}
-      </Stack>
-
-      <Menu
-        anchorEl={lessonMenuAnchor}
-        open={Boolean(lessonMenuAnchor)}
-        onClose={() => setLessonMenuAnchor(null)}
-      >
-        <MenuItem onClick={() => { setLessonMenuAnchor(null); handleScheduleLesson(); }}>
-          <ListItemIcon><MenuBookIcon fontSize="small" /></ListItemIcon>
-          <ListItemText>{Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowBulkSchedule(true); }}>
-          <ListItemIcon><DateRangeIcon fontSize="small" /></ListItemIcon>
-          <ListItemText>{Locale.label("plans.planList.bulkSchedule") || "Bulk Schedule"}</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => { setLessonMenuAnchor(null); setShowApplyYearPlan(true); }} data-testid="apply-year-plan-menu">
-          <ListItemIcon><CalendarIcon fontSize="small" /></ListItemIcon>
-          <ListItemText>{Locale.label("plans.planList.applyYearPlan") || "Apply Year Plan"}</ListItemText>
-        </MenuItem>
-      </Menu>
+      {lessonMenu}
 
       {showTemplates && canEdit && (
         <PlanTemplateManager ministryId={props.ministry.id || ""} plans={plans} onClose={() => setShowTemplates(false)} />
       )}
-    </Box>
+    </Surface>
   );
 });

@@ -8,14 +8,15 @@ import {
   TableCell,
   TableHead,
   Box,
-  Chip,
+  Stack,
+  Link as MuiLink,
   LinearProgress,
   Button
 } from "@mui/material";
 import { HowToReg as RegIcon, CalendarMonth as CalendarIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
-import { CountChip, CardWithHeader, EmptyState } from "../components/ui";
+import { AddBar, EmptyState, PageContainer, PageHeader, SearchField, StatusBadge, Surface, TextAction, tableScrollSx } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 
@@ -23,6 +24,7 @@ export const RegistrationsPage = () => {
   const [events, setEvents] = useState<EventInterface[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const loadData = async () => {
     setLoading(true);
@@ -60,18 +62,21 @@ export const RegistrationsPage = () => {
     );
   };
 
-  const getRows = () => events.map((event) => (
-    <TableRow key={event.id} hover>
+  const query = search.trim().toLowerCase();
+  const visibleEvents = query ? events.filter((e) => (e.title || "").toLowerCase().includes(query) || (e.tags || "").toLowerCase().includes(query)) : events;
+
+  const getRows = () => visibleEvents.map((event) => (
+    <TableRow key={event.id}>
       <TableCell>
-        <Typography component={Link} to={"/registrations/" + event.id} variant="body2" fontWeight={500} sx={{ textDecoration: "none", color: "var(--link)" }}>
+        <MuiLink component={Link} to={"/registrations/" + event.id} underline="hover" sx={{ fontWeight: 600 }}>
           {event.title}
-        </Typography>
+        </MuiLink>
       </TableCell>
       <TableCell>{formatDateSafe(event.start)}</TableCell>
       <TableCell>{getCapacityDisplay(event)}</TableCell>
       <TableCell>
         {event.tags && event.tags.split(",").map((tag) => (
-          <Chip key={tag} label={tag.trim()} size="small" sx={{ mr: 0.5 }} />
+          <Box key={tag} component="span" sx={{ mr: 0.5 }}><StatusBadge>{tag.trim()}</StatusBadge></Box>
         ))}
       </TableCell>
     </TableRow>
@@ -79,42 +84,53 @@ export const RegistrationsPage = () => {
 
   return (
     <>
-      <PageHeader icon={<RegIcon />} title={Locale.label("registrations.registrationsPage.title")} subtitle={Locale.label("registrations.registrationsPage.subtitle")} />
-      <Box sx={{ p: 3 }}>
-        <CardWithHeader
-          title={Locale.label("registrations.registrationsPage.enabledEvents")}
-          icon={<RegIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          actions={events.length > 0 ? <CountChip count={events.length} /> : undefined}>
-          {loading ? (
-            <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>
-          ) : events.length === 0 ? (
-            <Box sx={{ p: 2 }}>
-              <EmptyState
-                icon={<RegIcon />}
-                title={Locale.label("registrations.registrationsPage.noEvents")}
-                description={Locale.label("registrations.registrationsPage.noEventsHint")}
-                action={
-                  <Button variant="contained" startIcon={<CalendarIcon />} component={Link} to="/calendars" data-testid="empty-state-go-to-calendars">
-                    {Locale.label("registrations.registrationsPage.goToCalendars")}
-                  </Button>
-                }
-              />
-            </Box>
-          ) : (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("registrations.registrationsPage.event")}</TableCell>
-                  <TableCell>{Locale.label("registrations.registrationsPage.date")}</TableCell>
-                  <TableCell>{Locale.label("registrations.registrationsPage.registrations")}</TableCell>
-                  <TableCell>{Locale.label("registrations.registrationsPage.tags")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{getRows()}</TableBody>
-            </Table>
-          )}
-        </CardWithHeader>
-      </Box>
+      <PageHeader title={Locale.label("registrations.registrationsPage.title")} subtitle={Locale.label("registrations.registrationsPage.subtitle")}>
+        <TextAction to="/calendars" component={Link} data-testid="registrations-calendars-link">{Locale.label("helpers.secondaryMenuHelper.calendars", "Calendars")}</TextAction>
+      </PageHeader>
+      <PageContainer>
+        {loading ? (
+          <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>
+        ) : events.length === 0 ? (
+          <EmptyState
+            icon={<RegIcon />}
+            title={Locale.label("registrations.registrationsPage.noEvents")}
+            description={Locale.label("registrations.registrationsPage.noEventsHint")}
+            action={
+              <Button variant="contained" startIcon={<CalendarIcon />} component={Link} to="/calendars" data-testid="empty-state-go-to-calendars">
+                {Locale.label("registrations.registrationsPage.goToCalendars")}
+              </Button>
+            }
+          />
+        ) : (
+          <Stack spacing={2}>
+            <SearchField value={search} onChange={setSearch} data-testid="registrations-search" />
+            <Typography variant="body2" color="text.secondary" aria-live="polite">
+              {Locale.label("registrations.registrationsPage.enabledEvents")}: {visibleEvents.length}
+            </Typography>
+            <Surface disablePadding>
+              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("registrations.registrationsPage.enabledEvents")} tabIndex={0}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{Locale.label("registrations.registrationsPage.event")}</TableCell>
+                      <TableCell>{Locale.label("registrations.registrationsPage.date")}</TableCell>
+                      <TableCell>{Locale.label("registrations.registrationsPage.registrations")}</TableCell>
+                      <TableCell>{Locale.label("registrations.registrationsPage.tags")}</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>{getRows()}</TableBody>
+                </Table>
+              </Box>
+            </Surface>
+          </Stack>
+        )}
+        {!loading && events.length > 0 && (
+          <AddBar>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("registrations.registrationsPage.noEventsHint")}</Typography>
+            <TextAction to="/calendars" component={Link} data-testid="registrations-add-from-calendars">{Locale.label("registrations.registrationsPage.goToCalendars")}</TextAction>
+          </AddBar>
+        )}
+      </PageContainer>
     </>
   );
 };

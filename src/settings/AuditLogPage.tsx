@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { UserHelper, Permissions, ApiHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import {
-  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography,
+  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Stack, Typography,
   IconButton, Collapse, CircularProgress
 } from "@mui/material";
 import { Search as SearchIcon, KeyboardArrowDown as ExpandIcon, KeyboardArrowUp as CollapseIcon } from "@mui/icons-material";
-import { ExportButton } from "../components/ui";
+import { ExportButton, PageContainer, Surface, StatusBadge, tableScrollSx, type StatusTone } from "../components/ui";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { AppDatePicker } from "../components";
 
@@ -61,16 +61,14 @@ const formatDate = (dateStr: string) => {
 
 const formatAction = (action: string) => action.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-const categoryColor = (category: string): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+const categoryTone = (category: string): StatusTone => {
   switch (category) {
     case "login": return "info";
-    case "permission": return "error";
+    case "permission": return "danger";
     case "donation": return "success";
-    case "person": return "primary";
-    case "group": return "secondary";
+    case "person": return "info";
     case "form": return "warning";
-    case "settings": return "default";
-    default: return "default";
+    default: return "neutral";
   }
 };
 
@@ -267,8 +265,8 @@ export const AuditLogPage: React.FC = () => {
     <>
       <SettingsHeader backTo="/settings" title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")} />
 
-      <Box sx={{ p: { xs: 2, md: 4 } }}>
-        <Card sx={{ mb: 3, p: 2 }}>
+      <PageContainer py={3}>
+        <Surface sx={{ mb: 3 }}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
             <FormControl size="small" sx={{ minWidth: 160 }}>
               <InputLabel>{Locale.label("settings.auditLogPage.module")}</InputLabel>
@@ -289,12 +287,12 @@ export const AuditLogPage: React.FC = () => {
               <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />
             )}
           </Stack>
-        </Card>
+        </Surface>
 
-        <Card>
+        <Surface disablePadding>
           {loading ? <Loading /> : (
             <>
-              <TableContainer>
+              <TableContainer sx={tableScrollSx} role="region" aria-label={Locale.label("settings.auditLogPage.title")} tabIndex={0}>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
@@ -325,13 +323,13 @@ export const AuditLogPage: React.FC = () => {
                             </TableCell>
                             <TableCell sx={{ whiteSpace: "nowrap" }}>{formatDate(log.created)}</TableCell>
                             <TableCell>{log.module && <Typography variant="body2">{log.module}</Typography>}</TableCell>
-                            <TableCell><Chip label={log.category} color={categoryColor(log.category)} size="small" /></TableCell>
+                            <TableCell><StatusBadge tone={categoryTone(log.category)}>{log.category}</StatusBadge></TableCell>
                             <TableCell>{formatAction(log.action)}</TableCell>
                             <TableCell>
                               {log.entityType && <Typography variant="caption" color="text.secondary">{log.entityType}</Typography>}
                               {log.entityId && <Typography variant="body2">{log.entityId}</Typography>}
                             </TableCell>
-                            <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{log.ipAddress}</Typography></TableCell>
+                            <TableCell><Typography variant="caption" sx={{ fontFamily: "monospace" }}>{log.ipAddress}</Typography></TableCell>
                           </TableRow>
                           <TableRow>
                             <TableCell colSpan={7} sx={{ py: 0, borderBottom: expandedId === log.id ? undefined : "none" }}>
@@ -357,8 +355,8 @@ export const AuditLogPage: React.FC = () => {
               />
             </>
           )}
-        </Card>
-      </Box>
+        </Surface>
+      </PageContainer>
     </>
   );
 };

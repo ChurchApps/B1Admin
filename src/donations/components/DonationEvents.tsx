@@ -1,7 +1,8 @@
 import { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Accordion, AccordionDetails, AccordionSummary, Button, Icon } from "@mui/material";
-import { DateHelper, ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { Box, Typography } from "@mui/material";
+import { RecordHeading, TextAction } from "../../components/ui";
+import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { getPaymentProvider } from "@churchapps/apphelper/donations";
 import { type PersonInterface } from "@churchapps/helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,10 +31,6 @@ export const DonationEvents = memo(() => {
     return errorLogs.data.filter((log: any) => !log.resolved).length;
   }, [errorLogs.data]);
 
-  const headerIcon = useMemo(() => {
-    return unresolvedErrorCount > 0 ? "error danger-text" : "error";
-  }, [unresolvedErrorCount]);
-
   const handleClick = useCallback(
     (id: string, resolved: boolean) => {
       resolved = !resolved;
@@ -52,48 +49,36 @@ export const DonationEvents = memo(() => {
     [people.data]
   );
 
-  const getErrorLogs = useCallback(() => {
-    return errorLogs.data?.map((log: any) => {
-      const eventType = log.eventType?.replace(".", " ") || "";
-      const eventUrl = getPaymentProvider(log.provider).descriptor.eventUrl?.(log.id);
-      return (
-        <Accordion key={log.id}>
-          <AccordionSummary>
-            <Icon sx={{ marginRight: "5px", color: !log.resolved ? "error.main" : "text.primary" }}>error</Icon>
-            <span className="capitalize">{eventType}</span> - {DateHelper.prettyDate(log.created)}
-          </AccordionSummary>
-          <AccordionDetails>
-            <ul>
-              <li key={`person-${log.id}`}>
-                {Locale.label("common.person")}
-                {log.personId ? <Link to={"/people/" + log.personId}>{getPersonName(log.personId)}</Link> : null}
-              </li>
-              <li key={`event-${log.id}`} className="capitalize">
-                {Locale.label("donations.donationEvents.event")}
-                {eventUrl ? <a href={eventUrl}>{eventType}</a> : eventType}
-              </li>
-              <li key={`message-${log.id}`}>
-                {Locale.label("donations.donationEvents.msg")}
-                {log.message}
-              </li>
-              <li key={`actions-${log.id}`} style={{ float: "right" }}>
-                <Button aria-label="resolve-button" variant={log.resolved ? "outlined" : "contained"} onClick={() => handleClick(log.id, log.resolved)}>
-                  {Locale.label("donations.donationEvents.mark")}
-                  {log.resolved ? Locale.label("donations.donationEvents.unresolved") : Locale.label("donations.donationEvents.resolved")}
-                </Button>
-              </li>
-            </ul>
-          </AccordionDetails>
-        </Accordion>
-      );
-    }) || [];
-  }, [errorLogs.data, getPersonName, handleClick]);
-
   if (!errorLogs.data?.length) return null;
 
   return (
-    <DisplayBox data-cy="eventLogs" headerIcon={headerIcon} headerText={Locale.label("donations.donationEvents.failed") + unresolvedErrorCount + Locale.label("donations.donationEvents.unres")}>
-      {getErrorLogs()}
-    </DisplayBox>
+    <Box data-cy="eventLogs">
+      <RecordHeading label={Locale.label("donations.donationEvents.failed") + unresolvedErrorCount + Locale.label("donations.donationEvents.unres")} />
+      {errorLogs.data.map((log: any) => {
+        const eventType = log.eventType?.replace(".", " ") || "";
+        const eventUrl = getPaymentProvider(log.provider).descriptor.eventUrl?.(log.id);
+        return (
+          <Box key={log.id} sx={{ py: 1.5, borderTop: 1, borderColor: "divider" }}>
+            <Typography variant="body1" sx={{ fontWeight: 600, color: log.resolved ? "text.primary" : "error.main" }}>
+              <span className="capitalize">{eventType}</span> · {DateHelper.prettyDate(log.created)}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {Locale.label("common.person")} {log.personId ? <Link to={"/people/" + log.personId}>{getPersonName(log.personId)}</Link> : null}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" className="capitalize">
+              {Locale.label("donations.donationEvents.event")}
+              {eventUrl ? <a href={eventUrl}>{eventType}</a> : eventType}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">{Locale.label("donations.donationEvents.msg")}{log.message}</Typography>
+            <Box sx={{ mt: 0.5 }}>
+              <TextAction small aria-label="resolve-button" onClick={() => handleClick(log.id, log.resolved)}>
+                {Locale.label("donations.donationEvents.mark")}
+                {log.resolved ? Locale.label("donations.donationEvents.unresolved") : Locale.label("donations.donationEvents.resolved")}
+              </TextAction>
+            </Box>
+          </Box>
+        );
+      })}
+    </Box>
   );
 });

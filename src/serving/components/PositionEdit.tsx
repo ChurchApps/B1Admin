@@ -31,7 +31,7 @@ const selectStyles = {
   option: (base: AnyRecord, state: { isSelected: boolean; isFocused: boolean }) => ({
     ...base,
     backgroundColor: state.isSelected ? "var(--c1)" : state.isFocused ? "var(--bg-sub)" : "transparent",
-    color: state.isSelected ? "#FFFFFF" : "var(--text-main)"
+    color: state.isSelected ? "var(--b1-on-primary)" : "var(--text-main)"
   })
 };
 

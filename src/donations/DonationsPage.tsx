@@ -1,9 +1,6 @@
 import { memo } from "react";
 import { Locale, Permissions } from "@churchapps/apphelper";
-import { Box } from "@mui/material";
-import { VolunteerActivism as DonationIcon } from "@mui/icons-material";
-
-import { PageHeader } from "@churchapps/apphelper";
+import { PageHeader, PageContainer } from "../components/ui";
 import { GivingDashboard } from "./GivingDashboard";
 import { useRequirePermission } from "../hooks";
 
@@ -13,11 +10,11 @@ export const DonationsPage = memo(() => {
 
   return (
     <>
-      <PageHeader icon={<DonationIcon />} title={Locale.label("donations.donationsPage.don")} subtitle={Locale.label("donations.donationsPage.subtitle")} />
+      <PageHeader title={Locale.label("donations.donationsPage.don")} subtitle={Locale.label("donations.donationsPage.subtitle")} />
 
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         <GivingDashboard />
-      </Box>
+      </PageContainer>
     </>
   );
 });

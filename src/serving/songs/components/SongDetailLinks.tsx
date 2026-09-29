@@ -1,7 +1,7 @@
 import React, { useEffect, memo, useMemo } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
-import { Stack, Box, Card, CardContent, Typography, Avatar, Button } from "@mui/material";
+import { Stack, Box, Typography, Avatar, Button } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { Link as LinkIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
@@ -36,20 +36,6 @@ export const SongDetailLinks = memo((props: Props) => {
     []
   );
 
-  const serviceColors: { [key: string]: string } = useMemo(
-    () => ({
-      PraiseCharts: "#4f46e5",
-      Spotify: "#1db954",
-      Apple: "#fc3c44",
-      YouTube: "#ff0000",
-      CCLI: "#2563eb",
-      Genius: "#ffff64",
-      Hymnary: "#8b5cf6",
-      MusicBrainz: "#ba68c8"
-    }),
-    []
-  );
-
   const allLinks = useMemo(() => {
     const links = [...songDetailLinks];
 
@@ -67,64 +53,34 @@ export const SongDetailLinks = memo((props: Props) => {
   const linkCards = useMemo(() => {
     return allLinks.map((link, index) => {
       const logo = serviceLogos[link.service ?? ""];
-      const color = serviceColors[link.service ?? ""] || "primary.main";
 
       return (
-        <Card
+        <Box
           key={link.id || index}
-          sx={{
-            flex: "0 0 calc(50% - 8px)",
-            minHeight: 64,
-            maxHeight: 64,
-            transition: "all 0.2s ease-in-out",
-            cursor: "pointer",
-            "&:hover": {
-              transform: "translateY(-2px)",
-              boxShadow: 2
-            },
-            backgroundColor: "#FFF"
-          }}
           component="a"
           href={/^https?:\/\//i.test(link.url || "") || /^mailto:/i.test(link.url || "") ? link.url : "#"}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}>
-          <CardContent sx={{ p: 2, textAlign: "center", "&:last-child": { pb: 2 }, display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
-            {logo ? (
-              <img
-                src={logo}
-                alt={link.service}
-                style={{
-                  maxHeight: 40,
-                  maxWidth: 60,
-                  objectFit: "contain"
-                }}
-              />
-            ) : (
-              <Avatar
-                sx={{
-                  bgcolor: color,
-                  width: 40,
-                  height: 40
-                }}>
-                <LinkIcon sx={{ color: "white", fontSize: 24 }} />
-              </Avatar>
-            )}
-          </CardContent>
-        </Card>
+          aria-label={link.service}
+          sx={{ flex: "0 0 calc(50% - 8px)", minHeight: 64, display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", bgcolor: "common.white", textDecoration: "none", "&:hover": { borderColor: "var(--b1-control-border)" } }}>
+          {logo ? (
+            <img src={logo} alt={link.service} style={{ maxHeight: 40, maxWidth: 60, objectFit: "contain" }} />
+          ) : (
+            <Avatar sx={{ bgcolor: "var(--b1-neutral)", width: 40, height: 40 }}>
+              <LinkIcon />
+            </Avatar>
+          )}
+        </Box>
       );
     });
-  }, [allLinks, serviceLogos, serviceColors]);
+  }, [allLinks, serviceLogos]);
 
   return (
     <Box>
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
-          <Typography variant="h6">
-            {Locale.label("songs.songDetailLinks.externalLinks")}
-          </Typography>
-        </Stack>
+        <Typography variant="h3" component="h2">
+          {Locale.label("songs.songDetailLinks.externalLinks")}
+        </Typography>
         {props.onEdit && (
           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={props.onEdit} />
         )}
@@ -132,6 +88,7 @@ export const SongDetailLinks = memo((props: Props) => {
 
       {!allLinks || allLinks.length === 0 ? (
         <EmptyState
+          variant="plain"
           icon={<LinkIcon />}
           title={Locale.label("songs.songDetailLinks.noLinksYet")}
           action={props.onEdit && (

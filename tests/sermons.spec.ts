@@ -180,7 +180,7 @@ test.describe("Sermons Management", () => {
     });
 
     const panel = () => page.locator('[data-testid="playlists-panel"]');
-    const panelEditButton = () => panel().locator('button:has(svg[data-testid="EditIcon"])').first();
+    const panelEditButton = () => panel().locator('[data-testid^="edit-playlist-"]').first();
 
     test("should add playlist", async () => {
       const addBtn = panel().locator('[data-testid="add-playlist-button"]');

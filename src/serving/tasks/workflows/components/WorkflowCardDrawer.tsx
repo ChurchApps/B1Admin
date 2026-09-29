@@ -113,7 +113,7 @@ export const WorkflowCardDrawer = (props: Props) => {
               <Button variant="outlined" size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
               <Button variant="outlined" size="small" startIcon={<SnoozeIcon />} data-testid="card-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
               {outcomes.length === 0 && (
-                <Button variant="contained" size="small" color="success" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={() => complete()}>{Locale.label("tasks.workflowCard.complete")}</Button>
+                <Button variant="contained" size="small" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={() => complete()}>{Locale.label("tasks.workflowCard.complete")}</Button>
               )}
             </Stack>
           )}
@@ -123,7 +123,7 @@ export const WorkflowCardDrawer = (props: Props) => {
               <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowCard.outcome")}</Typography>
               <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 0.5 }}>
                 {outcomes.map((o) => (
-                  <Button key={o.id} variant="contained" size="small" color="success" startIcon={<CompleteIcon />} data-testid={"card-outcome-" + o.id} onClick={() => complete(o.id)}>{o.label}</Button>
+                  <Button key={o.id} variant="contained" size="small" startIcon={<CompleteIcon />} data-testid={"card-outcome-" + o.id} onClick={() => complete(o.id)}>{o.label}</Button>
                 ))}
               </Stack>
             </Box>

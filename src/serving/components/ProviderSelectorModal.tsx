@@ -43,11 +43,7 @@ export const ProviderSelectorModal: React.FC<Props> = ({ open, onClose, provider
                 textAlign: "center",
                 p: 2,
                 cursor: "pointer",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  transform: "translateY(-4px)",
-                  boxShadow: 4
-                }
+                "&:hover": { bgcolor: "action.hover", borderColor: "var(--b1-control-border)" }
               }}
               onClick={() => onSelectProvider(providerInfo.id)}
             >

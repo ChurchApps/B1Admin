@@ -2,10 +2,10 @@ import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
 import { ApiHelper, DateHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
-import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Typography } from "@mui/material";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip } from "../../components/ui";
+import { CountChip, Surface, YearPills } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -148,7 +148,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     const isToday = date ? isSameDay(date, new Date()) : false;
 
     let dotColor = "primary.main";
-    if (isFuture) dotColor = "grey.400";
+    if (isFuture) dotColor = "text.disabled";
     else if (isToday || isSelected) dotColor = "success.main";
 
     const dateLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString(DateHelper.locale, { month: "2-digit", day: "2-digit", year: "numeric" }) : session.displayName || "";
@@ -218,43 +218,28 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
   if (sessions === null) return <Loading />;
 
   return (
-    <Paper sx={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <Surface disablePadding sx={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
       <Box sx={{ p: 2, pb: 1 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1.5 }}>
-          <Typography variant="h6" component="div">
+          <Typography variant="h3" component="h2">
             {Locale.label("groups.groupSessions.sessions")}
           </Typography>
           {filteredSessions.length > 0 && <CountChip count={filteredSessions.length} />}
         </Box>
         {availableYears.length > 0 && (
-          <ToggleButtonGroup
-            value={selectedYear}
-            exclusive
-            size="small"
-            fullWidth
-            onChange={(_, value) => {
-              if (value !== null) {
-                setSelectedYear(value);
-                setCurrentPage(1);
-              }
-            }}>
-            {availableYears.map((year) => (
-              <ToggleButton key={year} value={year} sx={{ textTransform: "none" }}>
-                {year}
-              </ToggleButton>
-            ))}
-            {availableYears.length > 1 && (
-              <ToggleButton value="all" sx={{ textTransform: "none" }}>
-                {Locale.label("groups.groupSessions.allYears") || "All"}
-              </ToggleButton>
-            )}
-          </ToggleButtonGroup>
+          <YearPills
+            years={availableYears.map(Number)}
+            value={selectedYear === "all" ? null : Number(selectedYear)}
+            onChange={(y) => { setSelectedYear(y === null ? "all" : String(y)); setCurrentPage(1); }}
+            allLabel={availableYears.length > 1 ? Locale.label("groups.groupSessions.allYears") || "All" : undefined}
+            data-testid="session-year-pills"
+          />
         )}
       </Box>
 
       {sessions.length === 0 ? (
         <Box sx={{ p: 3, textAlign: "center" }}>
-          <Icon sx={{ fontSize: 40, color: "text.secondary", mb: 1 }}>calendar_month</Icon>
+          <Icon sx={{ color: "text.secondary", mb: 1 }}>calendar_month</Icon>
           <Typography variant="body2" color="text.secondary" gutterBottom>
             {Locale.label("groups.groupSessions.noSesMsg")}
           </Typography>
@@ -264,7 +249,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
         </Box>
       ) : filteredSessions.length === 0 ? (
         <Box sx={{ p: 3, textAlign: "center" }}>
-          <Icon sx={{ fontSize: 40, color: "text.secondary", mb: 1 }}>search_off</Icon>
+          <Icon sx={{ color: "text.secondary", mb: 1 }}>search_off</Icon>
           <Typography variant="body2" color="text.secondary">
             {Locale.label("groups.groupSessions.noSessionsFound")}
           </Typography>
@@ -290,6 +275,6 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
           </Button>
         </Box>
       )}
-    </Paper>
+    </Surface>
   );
 });

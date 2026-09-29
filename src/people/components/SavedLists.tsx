@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import { PlaylistPlay as ListIcon, Delete as DeleteIcon, Settings as SettingsIcon, Lock as LockIcon } from "@mui/icons-material";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Delete as DeleteIcon, Settings as SettingsIcon, Lock as LockIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { FilterChip } from "../../components/ui";
 import { type SearchCondition } from "@churchapps/helpers";
 import { type ActiveFilter } from "./AdvancedPeopleSearch";
 import { type ListRuleGroup } from "./listRules";
@@ -30,6 +31,8 @@ export interface ListInterface {
 interface Props {
   // Loads the selected list's saved query; the search then re-runs live.
   onSelect: (list: ListInterface) => void;
+  onClear: () => void;
+  selectedId?: string;
   canManage: boolean;
 }
 
@@ -44,6 +47,7 @@ export const SavedLists = (props: Props) => {
   const handleDelete = async () => {
     if (!deleteTarget?.id) return;
     await ApiHelper.delete("/lists/" + deleteTarget.id, "MembershipApi");
+    if (deleteTarget.id === props.selectedId) props.onClear();
     setDeleteTarget(null);
     invalidate();
   };
@@ -65,59 +69,34 @@ export const SavedLists = (props: Props) => {
     return { grouped, categories };
   }, [lists]);
 
-  if (lists.length === 0) {
-    return (
-      <DisplayBox headerText={Locale.label("people.lists.title")} headerIcon="playlist_play">
-        <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
-          {Locale.label("people.lists.empty")}
-        </Typography>
-      </DisplayBox>
-    );
-  }
-
   return (
-    <DisplayBox headerText={Locale.label("people.lists.title")} headerIcon="playlist_play">
-      <Stack spacing={1.5}>
-        {categories.map((category) => (
-          <Box key={category || "_uncategorized"}>
-            {category && (
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.4 }}>
-                {category}
-              </Typography>
-            )}
-            <Stack spacing={0.5} sx={{ mt: category ? 0.5 : 0 }}>
-              {grouped[category].map((list) => (
-                <Stack key={list.id} direction="row" alignItems="center" spacing={0.5} data-testid="saved-list-row">
-                  <Button
-                    fullWidth
-                    onClick={() => props.onSelect(list)}
-                    startIcon={<ListIcon fontSize="small" />}
-                    sx={{ justifyContent: "flex-start", textTransform: "none", textAlign: "left", flex: 1, minWidth: 0 }}
-                  >
-                    <Box sx={{ minWidth: 0 }}>
-                      <Stack direction="row" alignItems="center" spacing={0.5}>
-                        <Typography variant="body2" noWrap sx={{ fontWeight: 500 }}>{list.name}</Typography>
-                        {list.scope === "private" && <LockIcon sx={{ fontSize: 14, color: "text.secondary" }} />}
-                      </Stack>
-                      {list.createdByPersonName && (
-                        <Typography variant="caption" color="text.secondary" noWrap sx={{ display: "block" }}>
-                          {Locale.label("people.lists.createdBy").replace("{name}", list.createdByPersonName)}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Button>
-                  {props.canManage && (
-                    <>
-                      <AppIconButton label={Locale.label("people.lists.settings")} icon={<SettingsIcon />} onClick={() => setSettingsTarget({ ...list })} />
-                      <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
-                    </>
-                  )}
-                </Stack>
-              ))}
-            </Stack>
-          </Box>
-        ))}
-      </Stack>
+    <>
+      {lists.length > 0 && (
+        <Stack direction="row" useFlexGap flexWrap="wrap" alignItems="center" spacing={1} role="group" aria-label={Locale.label("people.directory.savedLists")}>
+          <FilterChip selected={!props.selectedId} onClick={props.onClear} data-testid="saved-list-everyone">
+            {Locale.label("people.directory.everyone")}
+          </FilterChip>
+          {categories.flatMap((category) => [
+            category ? <Typography key={"cat-" + category} variant="caption" color="text.secondary" sx={{ fontWeight: 600, ml: 1 }}>{category}</Typography> : null,
+            ...grouped[category].map((list) => (
+              <Stack key={list.id} direction="row" alignItems="center" spacing={0.5} data-testid="saved-list-row">
+                <FilterChip selected={props.selectedId === list.id} onClick={() => props.onSelect(list)}>
+                  <Stack direction="row" alignItems="center" spacing={0.5} component="span">
+                    <span>{list.name}</span>
+                    {list.scope === "private" && <LockIcon sx={{ fontSize: 14, color: "text.secondary" }} />}
+                  </Stack>
+                </FilterChip>
+                {props.canManage && props.selectedId === list.id && (
+                  <>
+                    <AppIconButton label={Locale.label("people.lists.settings")} icon={<SettingsIcon />} onClick={() => setSettingsTarget({ ...list })} />
+                    <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
+                  </>
+                )}
+              </Stack>
+            ))
+          ])}
+        </Stack>
+      )}
 
       <Dialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
         <DialogTitle>{Locale.label("people.lists.delete")}</DialogTitle>
@@ -174,6 +153,6 @@ export const SavedLists = (props: Props) => {
           <Button onClick={handleSaveSettings} variant="contained" disabled={!settingsTarget?.name?.trim()} data-testid="list-settings-save">{Locale.label("common.save")}</Button>
         </DialogActions>
       </Dialog>
-    </DisplayBox>
+    </>
   );
 };

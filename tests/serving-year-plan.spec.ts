@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { confirmDelete, editIconButton } from "./helpers/fixtures";
+import { confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -246,7 +246,7 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
     const minBtn = page.locator('[role="tab"]').getByText(MINISTRY);
     await minBtn.click();
     await page.locator("a").getByText("Edit Ministry").click();
-    const editBtn = editIconButton(page).first();
+    const editBtn = page.getByTestId("edit-group-button");
     await expect(editBtn).toBeVisible({ timeout: 10000 });
     await editBtn.click();
     const deleteBtn = page.locator("button").getByText("Delete");

@@ -124,6 +124,9 @@ test.describe.serial("Serving Management - Workflows", () => {
     await stepName.waitFor({ state: "visible", timeout: 10000 });
     await stepName.fill("Greet");
     await page.locator('[data-testid="step-save-button"]').click();
+    // A new step keeps its editor open (for actions); the editor replaces the board until Board is clicked.
+    await expect(page.locator('[data-testid="step-delete-button"]')).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="board-tab"]').click();
     await expect(page.locator('[data-testid="workflow-board"]').getByText("Greet").first()).toBeVisible({ timeout: 10000 });
   });
 

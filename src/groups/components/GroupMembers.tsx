@@ -17,17 +17,16 @@ import {
   PersonAvatar
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Alert,
   Box,
   Button,
-  Chip,
   Divider,
   FormControl,
   InputLabel,
+  Link,
   MenuItem,
-  Paper,
   Select,
   Skeleton,
   Snackbar,
@@ -54,7 +53,7 @@ import {
 import { SendInviteDialog } from "../../components";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { ExportButton, hoverRowSx } from "../../components/ui";
+import { ExportButton, StatusBadge } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
@@ -151,39 +150,14 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
 
-  const bodyCellSx = {
-    borderBottom: "1px solid",
-    borderColor: "divider",
-    py: 1.5,
-    "&&:first-of-type": { pl: 2.5 },
-    "&&:last-of-type": { pr: 1.5 }
-  } as const;
-
   const tableRows = useMemo(() => {
     const rows: JSX.Element[] = [];
 
     for (let i = 0; i < members.length; i++) {
       const gm = members[i];
       const personName = gm.person?.name?.display || Locale.label("groups.groupMembers.unknown");
-      const isLast = i === members.length - 1;
-      const cellSx = isLast ? { ...bodyCellSx, borderBottom: 0 } : bodyCellSx;
 
-      const roleCell = gm.leader ? (
-        <Chip
-          size="small"
-          variant="filled"
-          color="warning"
-          icon={<StarIcon sx={{ fontSize: 14 }} />}
-          label={Locale.label("groups.groupMembers.leader")}
-          sx={{
-            fontWeight: 600,
-            letterSpacing: "0.02em",
-            height: 22,
-            "& .MuiChip-icon": { ml: 0.75, mr: -0.25 },
-            "& .MuiChip-label": { px: 1 }
-          }}
-        />
-      ) : null;
+      const roleCell = gm.leader ? <StatusBadge tone="warning"><StarIcon sx={{ fontSize: 14 }} />{Locale.label("groups.groupMembers.leader")}</StatusBadge> : null;
 
       let leaderToggle: JSX.Element | null = null;
       if (canEdit) {
@@ -193,11 +167,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             icon={<StarIcon />}
             onClick={() => handleToggleLeader(gm)}
             data-testid={`remove-leader-button-${gm.id}`}
-            sx={{
-              color: "warning.main",
-              transition: "background-color 0.15s",
-              "&:hover": { bgcolor: "warning.50" }
-            }}
+            sx={{ color: "warning.main" }}
           />
         ) : (
           <AppIconButton
@@ -205,11 +175,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             icon={<StarBorderIcon />}
             onClick={() => handleToggleLeader(gm)}
             data-testid={`promote-leader-button-${gm.id}`}
-            sx={{
-              color: "text.disabled",
-              transition: "color 0.15s, background-color 0.15s",
-              "&:hover": { color: "warning.main", bgcolor: "warning.50" }
-            }}
+            sx={{ color: "text.secondary", "&:hover": { color: "warning.main" } }}
           />
         );
       }
@@ -225,29 +191,17 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       ) : null;
 
       rows.push(
-        <TableRow
-          key={gm.id}
-          sx={hoverRowSx}>
-          <TableCell sx={{ ...cellSx, width: 56 }}>
+        <TableRow key={gm.id}>
+          <TableCell sx={{ width: 56 }}>
             <PersonAvatar person={gm.person as PersonInterface} size="small" />
           </TableCell>
-          <TableCell sx={cellSx}>
-            <Link
-              to={"/people/" + gm.personId}
-              style={{ textDecoration: "none" }}>
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{
-                  fontWeight: 500,
-                  color: "var(--link)"
-                }}>
-                {personName}
-              </Typography>
+          <TableCell>
+            <Link component={RouterLink} to={"/people/" + gm.personId} underline="hover" sx={{ fontWeight: 600 }}>
+              {personName}
             </Link>
           </TableCell>
-          <TableCell sx={{ ...cellSx, width: 120 }}>{roleCell}</TableCell>
-          <TableCell align="right" className="rowActions" sx={{ ...cellSx, width: 110, whiteSpace: "nowrap" }}>
+          <TableCell sx={{ width: 120 }}>{roleCell}</TableCell>
+          <TableCell align="right" className="rowActions" sx={{ width: 110, whiteSpace: "nowrap" }}>
             {canEdit && (
               <Stack
                 direction="row"
@@ -272,20 +226,14 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     return rows;
   }, [members, canEdit, handleToggleLeader, handleRemove]);
 
-  const headerCellSx = {
-    py: 1,
-    "&&:first-of-type": { pl: 2.5 },
-    "&&:last-of-type": { pr: 1.5 }
-  } as const;
-
   const tableHeader = useMemo(() => {
     if (members.length === 0) return null;
     return (
       <TableRow>
-        <TableCell sx={{ ...headerCellSx, width: 56 }} />
-        <TableCell sx={headerCellSx}>{Locale.label("common.name")}</TableCell>
-        <TableCell sx={{ ...headerCellSx, width: 120 }}>{Locale.label("groups.groupMembers.role")}</TableCell>
-        <TableCell sx={{ ...headerCellSx, width: 110, textAlign: "right" }} />
+        <TableCell sx={{ width: 56 }} />
+        <TableCell>{Locale.label("common.name")}</TableCell>
+        <TableCell sx={{ width: 120 }}>{Locale.label("groups.groupMembers.role")}</TableCell>
+        <TableCell sx={{ width: 110, textAlign: "right" }} />
       </TableRow>
     );
   }, [members.length]);
@@ -355,7 +303,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   }, [props.addedPerson, handleAdd]);
 
   const renderSkeleton = () => (
-    <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1.5, overflow: "hidden" }}>
+    <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", overflow: "hidden" }}>
       <Stack divider={<Divider />}>
         {[0, 1, 2].map((i) => (
           <Stack
@@ -377,14 +325,8 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   );
 
   const renderTable = () => (
-    <Box
-      sx={{
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: 1.5,
-        overflow: "hidden"
-      }}>
-      <Table id="groupMemberTable" sx={{ "& td, & th": { borderBottomColor: "divider" } }}>
+    <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", overflow: "hidden" }}>
+      <Table id="groupMemberTable">
         <TableHead>{tableHeader}</TableHead>
         <TableBody>{tableRows}</TableBody>
       </Table>
@@ -433,21 +375,12 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   };
 
   const composer = show && (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2.25,
-        mt: 0.5,
-        mb: 2.5,
-        borderRadius: 1.5,
-        borderColor: "divider",
-        bgcolor: (theme) => theme.palette.mode === "dark" ? "background.default" : "grey.50"
-      }}>
-      <Stack spacing={1.75}>
+    <Box sx={{ p: 2, mt: 0.5, mb: 3, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", bgcolor: "var(--b1-canvas)" }}>
+      <Stack spacing={2}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography
             variant="subtitle2"
-            sx={{ fontWeight: 600, color: "text.primary", letterSpacing: "0.01em" }}>
+            sx={{ fontWeight: 600 }}>
             {Locale.label("groups.groupMembers.sendMemMsg")}
           </Typography>
           <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={closeComposer} />
@@ -475,15 +408,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             variant="text"
             startIcon={<AutoAwesomeIcon sx={{ fontSize: 16 }} />}
             onClick={() => setShowTemplates(true)}
-            sx={{
-              alignSelf: "flex-start",
-              textTransform: "none",
-              fontWeight: 500,
-              color: "text.secondary",
-              px: 1,
-              py: 0.25,
-              "&:hover": { bgcolor: "action.hover", color: "primary.main" }
-            }}>
+            sx={{ alignSelf: "flex-start" }}>
             {Locale.label("groups.groupMembers.showTemplates")}
           </Button>
         )}
@@ -507,7 +432,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
                   display: "block",
                   textAlign: "right",
                   fontVariantNumeric: "tabular-nums",
-                  color: count >= 140 ? "warning.main" : count >= 120 ? "warning.dark" : "text.disabled",
+                  color: count >= 120 ? "warning.main" : "text.secondary",
                   fontWeight: count >= 120 ? 600 : 400
                 }}>
                 {count} / 140
@@ -524,9 +449,8 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
         <Stack direction="row" spacing={1} justifyContent="flex-end">
           <Button
             size="small"
-            variant="text"
-            onClick={closeComposer}
-            sx={{ textTransform: "none", color: "text.secondary" }}>
+            variant="outlined"
+            onClick={closeComposer}>
             {Locale.label("common.cancel")}
           </Button>
           <Button
@@ -535,13 +459,12 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             disableElevation
             endIcon={<SendIcon fontSize="small" />}
             disabled={!message.trim() || sending}
-            onClick={onSend}
-            sx={{ textTransform: "none", fontWeight: 600, px: 2 }}>
+            onClick={onSend}>
             {Locale.label("groups.groupMembers.send")}
           </Button>
         </Stack>
       </Stack>
-    </Paper>
+    </Box>
   );
 
   return (

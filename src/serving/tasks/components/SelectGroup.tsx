@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
-import { TextField, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, TableContainer, Paper } from "@mui/material";
+import { TextField, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, TableContainer } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { Search as SearchIcon, Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
@@ -74,7 +74,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
         onClick={() => handleAdd(sr)}>
         <TableCell>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <GroupIcon sx={{ color: "text.secondary", fontSize: 20 }} />
+            <GroupIcon color="action" />
             <Typography variant="body2" sx={{ fontWeight: 500 }}>
               {sr.name}
             </Typography>
@@ -111,16 +111,10 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
             </InputAdornment>
           )
         }}
-        sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
 
       {searchResults.length > 0 ? (
-        <TableContainer
-          component={Paper}
-          sx={{
-            boxShadow: 'none',
-            maxHeight: 500,
-          }}>
+        <TableContainer sx={{ maxHeight: 500 }}>
           <Table size="small" stickyHeader>
             <TableBody>{rows}</TableBody>
           </Table>

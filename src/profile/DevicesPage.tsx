@@ -1,13 +1,12 @@
-import { TableHead, Table, TableCell, TableRow, TableBody } from "@mui/material";
-import { Add as AddIcon, Edit as EditIcon, Devices as DevicesIcon } from "@mui/icons-material";
+import { TableHead, Table, TableCell, TableRow, TableBody, Typography, Box } from "@mui/material";
+import { Devices as DevicesIcon } from "@mui/icons-material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ErrorMessages, DisplayBox, DateHelper, Locale, PageHeader } from "@churchapps/apphelper";
-import { Box } from "@mui/material";
+import { ErrorMessages, DateHelper, Locale, UserHelper } from "@churchapps/apphelper";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { EmptyState } from "../components/ui";
+import { AddBar, BackVerb, EmptyState, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 
 export interface DeviceInterface {
   id: string;
@@ -32,73 +31,78 @@ export const DevicesPage = () => {
     select: (data) => (data || []).filter((d: DeviceInterface) => d.appName === "ChurchAppsPlayer" || d.appName === "FreePlay")
   });
 
-  const editContent = (
-    <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-device-button" />
+  const displayName = [UserHelper.user?.firstName, UserHelper.user?.lastName].filter(Boolean).join(" ") || Locale.label("profile.profilePage.profEdit");
+  const devicesLabel = Locale.label("profile.devices.title");
+  const backToList = () => { setShowAdd(false); setEditDevice(null); };
+  const done = () => { backToList(); devices.refetch(); };
+
+  const identity = (
+    <Box component="aside" data-testid="profile-identity">
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{displayName}</Typography>
+      {UserHelper.user?.email && <Typography color="text.secondary" sx={{ mt: 0.5, overflowWrap: "anywhere" }}>{UserHelper.user.email}</Typography>}
+      <VerbRow sx={{ mt: 2 }}>
+        <TextAction to="/profile" component={Link} data-testid="devices-profile-link">{Locale.label("helpers.secondaryMenuHelper.profile")}</TextAction>
+      </VerbRow>
+    </Box>
   );
 
-  return (
-    <>
-      <PageHeader icon={<DevicesIcon />} title={Locale.label("profile.devices.title")} />
-      <Box id="mainContent" sx={{ p: 3 }}>
-        {showAdd && (
-          <PairScreen
-            updatedFunction={() => {
-              setShowAdd(false);
-              devices.refetch();
-            }}
-          />
-        )}
-        {editDevice && (
-          <DeviceEdit
-            device={editDevice}
-            updatedFunction={() => {
-              setEditDevice(null);
-              devices.refetch();
-            }}
-          />
-        )}
-        <ErrorMessages errors={errors} />
-        <DisplayBox headerText={Locale.label("profile.devices.title")} headerIcon="tv" editContent={editContent}>
-          <Table>
-            <TableHead>
+  const list = (
+    <Box id="mainContent">
+      <ErrorMessages errors={errors} />
+      <RecordHeading label={devicesLabel} />
+      <Box sx={tableScrollSx} role="region" aria-label={devicesLabel} tabIndex={0}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>{Locale.label("profile.devices.label")}</TableCell>
+              <TableCell>{Locale.label("profile.devices.registrationDate")}</TableCell>
+              <TableCell>{Locale.label("profile.devices.lastActiveDate")}</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(devices.data || []).length === 0 && (
               <TableRow>
-                <TableCell>{Locale.label("profile.devices.label")}</TableCell>
-                <TableCell>{Locale.label("profile.devices.registrationDate")}</TableCell>
-                <TableCell>{Locale.label("profile.devices.lastActiveDate")}</TableCell>
-                <TableCell align="right"></TableCell>
+                <EmptyState
+                  variant="table"
+                  colSpan={4}
+                  icon={<DevicesIcon />}
+                  title={Locale.label("profile.devices.emptyTitle")}
+                  description={Locale.label("profile.devices.emptyDescription")}
+                />
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {(devices.data || []).length === 0 && (
-                <TableRow>
-                  <EmptyState
-                    variant="table"
-                    colSpan={4}
-                    icon={<DevicesIcon />}
-                    title={Locale.label("profile.devices.emptyTitle")}
-                    description={Locale.label("profile.devices.emptyDescription")}
-                  />
-                </TableRow>
-              )}
-              {(devices.data || []).map((device) => (
-                <TableRow key={device.id}>
-                  <TableCell>{device.label || Locale.label("profile.devices.device")}</TableCell>
-                  <TableCell>{DateHelper.toDate(device.registrationDate).toLocaleDateString(DateHelper.locale)}</TableCell>
-                  <TableCell>{DateHelper.toDate(device.lastActiveDate).toLocaleDateString(DateHelper.locale)}</TableCell>
-                  <TableCell align="right" className="rowActions">
-                    <AppIconButton
-                      label={Locale.label("common.edit")}
-                      icon={<EditIcon />}
-                      onClick={() => setEditDevice(device)}
-                      data-testid={`edit-device-button-${device.id}`}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </DisplayBox>
+            )}
+            {(devices.data || []).map((device) => (
+              <TableRow key={device.id}>
+                <TableCell>{device.label || Locale.label("profile.devices.device")}</TableCell>
+                <TableCell>{DateHelper.toDate(device.registrationDate).toLocaleDateString(DateHelper.locale)}</TableCell>
+                <TableCell>{DateHelper.toDate(device.lastActiveDate).toLocaleDateString(DateHelper.locale)}</TableCell>
+                <TableCell align="right" className="rowActions">
+                  <TextAction small onClick={() => setEditDevice(device)} data-testid={`edit-device-button-${device.id}`}>{Locale.label("common.edit")}</TextAction>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Box>
-    </>
+      <AddBar>
+        <TextAction onClick={() => setShowAdd(true)} data-testid="add-device-button">{Locale.label("profile.devices.addScreen")}</TextAction>
+      </AddBar>
+    </Box>
+  );
+
+  const slice = showAdd
+    ? <PairScreen updatedFunction={done} />
+    : editDevice
+      ? <DeviceEdit device={editDevice} updatedFunction={done} />
+      : list;
+
+  return (
+    <PageContainer>
+      <RecordLayout identity={identity} spacing={3} data-testid="devices-record">
+        {(showAdd || editDevice) && <Box><BackVerb name={devicesLabel} onClick={backToList} data-testid="devices-back" /></Box>}
+        {slice}
+      </RecordLayout>
+    </PageContainer>
   );
 };

@@ -88,8 +88,8 @@ export const AuthFlowDialog: React.FC<Props> = ({
                 justifyContent: "center",
                 gap: 1,
                 p: 2,
-                bgcolor: "grey.100",
-                borderRadius: 2
+                bgcolor: "var(--b1-canvas)",
+                borderRadius: "var(--b1-radius-control)"
               }}
             >
               <Typography variant="h4" fontFamily="monospace" fontWeight={700}>

@@ -1,4 +1,5 @@
-import { Box, Typography, Chip, Button, Stack } from "@mui/material";
+import { Box, Typography, Button, Stack } from "@mui/material";
+import { StatusBadge } from "../../../../components/ui";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Edit as EditIcon, Add as AddIcon, CheckCircleOutline as OutcomeIcon, CallSplit as AutoIcon, ArrowRightAlt as ArrowIcon, Bolt as ActionIcon } from "@mui/icons-material";
@@ -64,44 +65,29 @@ export const WorkflowStepColumn = (props: Props) => {
         minWidth: 290,
         width: 290,
         flexShrink: 0,
-        backgroundColor: (theme) => theme.palette.mode === "dark" ? "background.paper" : "#f8fafc",
-        backgroundImage: (theme) => theme.palette.mode === "dark" ? "linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03))" : "none",
-        borderRadius: 3,
+        backgroundColor: "var(--b1-hover)",
+        borderRadius: "var(--b1-radius-panel)",
         p: 2,
-        mr: 2.5,
+        mr: 2,
         border: "1px solid",
-        borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.06)" : "#e2e8f0",
-        boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)"
+        borderColor: "var(--b1-border)"
       }}
     >
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1.5, px: 0.5 }}>
         <Stack direction="row" alignItems="center" spacing={1.25}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: "0.95rem", color: "text.primary" }}>{step.name}</Typography>
-          <Chip
-            size="small"
-            label={cards.length}
-            data-testid={"step-count-" + step.id}
-            sx={{
-              fontWeight: 700,
-              fontSize: "0.75rem",
-              height: 20,
-              minWidth: 20,
-              backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0, 0, 0, 0.06)",
-              color: "text.primary",
-              "& .MuiChip-label": { px: 1 }
-            }}
-          />
+          <Typography variant="h3" component="h3">{step.name}</Typography>
+          <StatusBadge tone="neutral" data-testid={"step-count-" + step.id}>{cards.length}</StatusBadge>
         </Stack>
         {props.canManage && (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon sx={{ fontSize: 18 }} />} onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} />
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} />
         )}
       </Stack>
 
       {actions.length > 0 && (
         <Stack direction="row" alignItems="center" spacing={0.5} flexWrap="wrap" data-testid={"step-actions-" + step.id} sx={{ mb: 1.5, px: 0.5, color: "text.secondary" }}>
-          <ActionIcon sx={{ fontSize: 13 }} />
+          <ActionIcon fontSize="small" />
           {actions.map((a) => (
-            <Chip key={a.id} size="small" variant="outlined" label={Locale.label("tasks.workflowActions.type." + a.actionType)} sx={{ height: 18, fontSize: 11 }} />
+            <StatusBadge key={a.id} tone="neutral">{Locale.label("tasks.workflowActions.type." + a.actionType)}</StatusBadge>
           ))}
         </Stack>
       )}
@@ -120,16 +106,16 @@ export const WorkflowStepColumn = (props: Props) => {
                 py: 0.5,
                 px: 1,
                 mb: 0.5,
-                borderRadius: 1,
-                backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.02)" : "rgba(0, 0, 0, 0.02)",
+                borderRadius: "var(--b1-radius-control)",
+                backgroundColor: "background.paper",
                 border: "1px solid",
-                borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.04)" : "rgba(0, 0, 0, 0.04)"
+                borderColor: "var(--b1-border)"
               }}
             >
               {r.trigger === "onComplete" ? <OutcomeIcon sx={{ fontSize: 14, color: "success.main" }} /> : <AutoIcon sx={{ fontSize: 14, color: "info.main" }} />}
-              <Typography variant="caption" noWrap sx={{ fontWeight: 600, fontSize: "0.7rem" }}>{routeSource(r)}</Typography>
+              <Typography variant="caption" noWrap sx={{ fontWeight: 600 }}>{routeSource(r)}</Typography>
               <ArrowIcon sx={{ fontSize: 12, color: "text.disabled" }} />
-              <Typography variant="caption" noWrap sx={{ fontStyle: r.targetStepId ? "normal" : "italic", fontSize: "0.7rem", color: "text.primary", fontWeight: 500 }}>
+              <Typography variant="caption" noWrap sx={{ fontStyle: r.targetStepId ? "normal" : "italic", color: "text.primary" }}>
                 {routeTarget(r)}
               </Typography>
             </Stack>
@@ -160,21 +146,7 @@ export const WorkflowStepColumn = (props: Props) => {
           startIcon={<AddIcon />}
           data-testid={"add-card-" + step.id}
           onClick={() => setShowPicker(true)}
-          sx={{
-            mt: 1.5,
-            py: 0.75,
-            textTransform: "none",
-            fontWeight: 500,
-            borderRadius: 2,
-            color: "primary.main",
-            backgroundColor: "transparent",
-            border: "1px dashed",
-            borderColor: "rgba(25, 118, 210, 0.3)",
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(25, 118, 210, 0.08)" : "rgba(25, 118, 210, 0.04)",
-              borderColor: "primary.main"
-            }
-          }}
+          sx={{ mt: 1.5 }}
         >
           {Locale.label("tasks.workflowBoard.addCard")}
         </Button>

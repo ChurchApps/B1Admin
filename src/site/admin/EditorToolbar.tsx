@@ -111,19 +111,19 @@ export function EditorToolbar(props: EditorToolbarProps) {
       ? Locale.label("site.editorToolbar.statusUnpublishedChangesTip")
       : Locale.label("site.editorToolbar.statusLiveOnSaveTip");
   const pillSx = pillStatus === "published"
-    ? { backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.dark" }
+    ? { backgroundColor: "var(--b1-success-bg)", color: "success.main" }
     : pillStatus === "unpublished-changes"
-      ? { backgroundColor: "rgba(237, 108, 2, 0.12)", color: "warning.dark" }
-      : { backgroundColor: "var(--bg-sub)", color: "text.secondary" };
+      ? { backgroundColor: "var(--b1-warning-bg)", color: "warning.main" }
+      : { backgroundColor: "var(--b1-neutral-bg)", color: "text.secondary" };
 
   return (
     <Box
       sx={{
-        backgroundColor: "#FFF",
+        backgroundColor: "background.paper",
         width: "100%",
         zIndex: 1200,
-        borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.04)",
+        borderBottom: 1,
+        borderColor: "divider",
         display: "flex",
         alignItems: "center",
         gap: 2,
@@ -139,7 +139,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           onClick={onDone}
           startIcon={<Icon>arrow_back</Icon>}
           data-testid="content-editor-done-button"
-          sx={{ textTransform: "none", color: "text.primary", fontWeight: 500 }}
+          sx={{ color: "text.primary" }}
         >
           {Locale.label("site.editorToolbar.exit")}
         </Button>
@@ -148,7 +148,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           <Box
             component="span"
             sx={{
-              fontSize: "0.65rem",
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
@@ -163,8 +163,8 @@ export function EditorToolbar(props: EditorToolbarProps) {
           <Box
             component="span"
             sx={{
-              fontSize: "0.95rem",
-              fontWeight: 500,
+              fontSize: 16,
+              fontWeight: 600,
               color: "text.primary",
               lineHeight: 1.3,
               whiteSpace: "nowrap",
@@ -183,7 +183,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
               label={pillLabel}
               data-testid="publish-status-pill"
               data-status={pillStatus}
-              sx={{ fontWeight: 600, fontSize: "0.7rem", ...pillSx }}
+              sx={{ fontWeight: 600, fontSize: 12, ...pillSx }}
             />
           </Tooltip>
         )}
@@ -212,7 +212,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
             alignItems: "center",
             gap: 0.5,
             color: savedColor,
-            fontSize: "0.8rem",
+            fontSize: 14,
             fontWeight: 500,
             whiteSpace: "nowrap",
             "@keyframes saveSpin": { from: { transform: "rotate(0deg)" }, to: { transform: "rotate(360deg)" } }
@@ -231,12 +231,9 @@ export function EditorToolbar(props: EditorToolbarProps) {
             <Button
               variant={needsPublish ? "contained" : "outlined"}
               color={needsPublish ? "success" : "inherit"}
-              disableElevation
               onClick={onPublish}
               startIcon={<Icon>{needsPublish ? "publish" : "check"}</Icon>}
-              sx={needsPublish
-                ? { textTransform: "none", fontWeight: 600 }
-                : { textTransform: "none", fontWeight: 600, color: "text.secondary", borderColor: "var(--border-main)", opacity: 0.85 }}
+              sx={needsPublish ? undefined : { color: "text.secondary" }}
               data-testid="publish-button"
             >
               {needsPublish ? Locale.label("site.editorToolbar.publish") : Locale.label("site.editorToolbar.publishedLabel")}
@@ -254,13 +251,14 @@ export function EditorToolbar(props: EditorToolbarProps) {
           data-testid="device-type-toggle"
           sx={{
             "& .MuiToggleButton-root": {
-              border: "1px solid var(--border-main)",
+              border: 1,
+              borderColor: "divider",
               color: "text.secondary",
               px: 1,
               "&.Mui-selected": {
-                backgroundColor: "var(--c1l7)",
-                color: "primary.main",
-                "&:hover": { backgroundColor: "var(--c1l6)" }
+                backgroundColor: "var(--b1-selected)",
+                color: "var(--b1-on-selected)",
+                "&:hover": { backgroundColor: "var(--b1-selected)" }
               }
             }
           }}
@@ -282,13 +280,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           color="primary"
           onClick={onToggleAdd}
           startIcon={<Icon>add</Icon>}
-          disableElevation
-          sx={{
-            textTransform: "none",
-            fontWeight: 600,
-            backgroundColor: showAdd ? "primary.dark" : "primary.main",
-            "&:hover": { backgroundColor: "primary.dark" }
-          }}
+          sx={showAdd ? { backgroundColor: "primary.dark" } : undefined}
           data-testid="content-editor-add-button"
         >
           {Locale.label("site.editorToolbar.addContent")}

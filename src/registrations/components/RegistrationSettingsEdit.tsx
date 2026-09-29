@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Card, Box, Typography, Stack, TextField, FormControlLabel, Switch, Button, Grid, MenuItem, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
-import { Settings as SettingsIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { Box, Typography, Stack, TextField, FormControlLabel, Switch, Button, Grid, MenuItem, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
+import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type FormInterface } from "@churchapps/helpers";
+import { CardWithHeader } from "../../components/ui";
 import { type CommerceEventInterface } from "../registrationCommerce";
 import { RegistrationTypesEdit } from "./RegistrationTypesEdit";
 import { RegistrationSelectionsEdit } from "./RegistrationSelectionsEdit";
@@ -79,16 +80,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   };
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <SettingsIcon sx={{ color: "primary.main" }} />
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-            {Locale.label("registrations.registrationSettingsEdit.registrationSettings")}
-          </Typography>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 2 }}>
+    <CardWithHeader title={Locale.label("registrations.registrationSettingsEdit.registrationSettings")}>
+      <Box>
         {anyDirty && (
           <Alert severity="warning" sx={{ mb: 2 }} data-testid="registration-unsaved-changes-alert">
             {Locale.label("registrations.registrationSettingsEdit.unsavedChanges")}
@@ -155,6 +148,6 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
           </Accordion>
         </Box>
       </Box>
-    </Card>
+    </CardWithHeader>
   );
 };

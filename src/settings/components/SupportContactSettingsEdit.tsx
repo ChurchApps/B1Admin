@@ -47,7 +47,7 @@ export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
 
   return (
     <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider", "&:last-child": { borderBottom: "none", mb: 0, pb: 0 } }}>
-      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <Stack direction="row" alignItems="center" sx={{ mb: 1.5 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("settings.supportContactSettingsEdit.supportContact")}</Typography>
         <Tooltip arrow title={Locale.label("settings.supportContactSettingsEdit.forceMsg")}>

@@ -1,10 +1,10 @@
 import React from "react";
-import { DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
+import { DateHelper, Locale } from "@churchapps/apphelper";
 import {
-  Alert, Avatar, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Paper, Select, Snackbar, Stack, Tab, Tabs,
+  Alert, Avatar, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Paper, Select, Snackbar, Stack,
   Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
 } from "@mui/material";
-import { CountChip, NavigationTabs, type NavigationTab } from "../../components/ui";
+import { CountChip, FilterChip, NavigationTabs, numericCellSx, type NavigationTab } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import {
   CommonsApi, getWorshipCommonsOrigin, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
@@ -13,6 +13,7 @@ import {
 } from "../commonsApi";
 import { CommonsReviewDrawer } from "./CommonsReviewDrawer";
 import { assetStatusLabel, confidenceLabel, removeReasonLabel, reportReasonLabel, reportStatusLabel, resolutionLabel, resolveActionLabel } from "../commonsLabels";
+import { SettingsPanel } from "../../settings/components/SettingsPanel";
 
 const OVERDUE_MS = 72 * 60 * 60 * 1000;
 
@@ -84,9 +85,9 @@ const QueueCard = (props: { row: CommonsQueueRow; onReview: () => void }) => {
       variant="outlined"
       onClick={props.onReview}
       data-testid={`commons-queue-row-${row.id}`}
-      sx={{ p: 2, display: "flex", gap: 2, alignItems: "flex-start", cursor: "pointer", transition: "border-color .15s, box-shadow .15s", "&:hover": { borderColor: "primary.main", boxShadow: 1 } }}
+      sx={{ p: 2, display: "flex", gap: 2, alignItems: "flex-start", cursor: "pointer", transition: "background-color 140ms", "&:hover": { bgcolor: "action.hover" } }}
     >
-      <Avatar variant="rounded" sx={{ width: 48, height: 48, bgcolor: "primary.main", display: { xs: "none", sm: "flex" } }}>
+      <Avatar variant="rounded" sx={{ width: 48, height: 48, bgcolor: "var(--b1-selected)", color: "var(--b1-on-selected)", display: { xs: "none", sm: "flex" } }}>
         <Icon>{row.assetType === "song" ? "music_note" : "description"}</Icon>
       </Avatar>
 
@@ -181,19 +182,15 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
   const removeRow = (id: string) => setRows((prev) => (prev || []).filter((r) => r.id !== id));
 
   return (
-    <DisplayBox headerIcon="inventory_2" headerText={Locale.label("serverAdmin.commonsTab.tabQueue")}>
+    <SettingsPanel headerIcon="inventory_2" headerText={Locale.label("serverAdmin.commonsTab.tabQueue")}>
       {tabTypes.length > 0 && (
-        <Tabs value={selected} onChange={(_, v) => setAssetType(v)} variant="scrollable" sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }} data-testid="commons-type-tabs">
+        <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" role="group" aria-label={Locale.label("serverAdmin.commonsTab.tabQueue")} sx={{ mb: 2 }} data-testid="commons-type-tabs">
           {tabTypes.map((t) => (
-            <Tab
-              key={t.key}
-              value={t.key}
-              data-testid={`commons-type-tab-${t.key}`}
-              sx={{ textTransform: "none", fontWeight: 600 }}
-              label={<Stack direction="row" spacing={1} alignItems="center"><span>{t.label}</span><CountChip count={counts[t.key] || 0} /></Stack>}
-            />
+            <FilterChip key={t.key} selected={selected === t.key} onClick={() => setAssetType(t.key)} data-testid={`commons-type-tab-${t.key}`}>
+              <Stack direction="row" spacing={1} alignItems="center"><span>{t.label}</span><CountChip count={counts[t.key] || 0} /></Stack>
+            </FilterChip>
           ))}
-        </Tabs>
+        </Stack>
       )}
 
       {rows === null ? <CircularProgress size={24} /> : visible.length === 0 ? (
@@ -220,7 +217,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
           onChangesRequested={(id) => { removeRow(id); setReviewId(null); }}
         />
       )}
-    </DisplayBox>
+    </SettingsPanel>
   );
 };
 
@@ -341,14 +338,14 @@ const ReportsView = () => {
 
   return (
     <>
-      <DisplayBox headerIcon="copyright" headerText={Locale.label("serverAdmin.commonsTab.copyrightReports")}>
+      <SettingsPanel headerIcon="copyright" headerText={Locale.label("serverAdmin.commonsTab.copyrightReports")}>
         {reportsTable(copyright)}
-      </DisplayBox>
-      <DisplayBox headerIcon="flag" headerText={Locale.label("serverAdmin.commonsTab.policyReports")}>
+      </SettingsPanel>
+      <SettingsPanel headerIcon="flag" headerText={Locale.label("serverAdmin.commonsTab.policyReports")}>
         {reportsTable(other)}
-      </DisplayBox>
+      </SettingsPanel>
       {resolved.length > 0 && (
-        <DisplayBox headerIcon="history" headerText={Locale.label("serverAdmin.commonsTab.recentlyResolved")}>
+        <SettingsPanel headerIcon="history" headerText={Locale.label("serverAdmin.commonsTab.recentlyResolved")}>
           <Table size="small">
             <TableBody>
               {resolved.map((r) => (
@@ -360,7 +357,7 @@ const ReportsView = () => {
               ))}
             </TableBody>
           </Table>
-        </DisplayBox>
+        </SettingsPanel>
       )}
     </>
   );
@@ -512,7 +509,7 @@ const AssetsView = () => {
   };
 
   return (
-    <DisplayBox headerIcon="library_books" headerText={Locale.label("serverAdmin.commonsTab.tabAssets")}>
+    <SettingsPanel headerIcon="library_books" headerText={Locale.label("serverAdmin.commonsTab.tabAssets")}>
       {ConfirmDialogElement}
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
         <TextField
@@ -548,7 +545,7 @@ const AssetsView = () => {
               <TableCell>{Locale.label("serverAdmin.commonsTab.publisher")}</TableCell>
               <TableCell>{Locale.label("serverAdmin.commonsTab.status")}</TableCell>
               <TableCell>{Locale.label("serverAdmin.commonsTab.colConfidence")}</TableCell>
-              <TableCell>{Locale.label("serverAdmin.commonsTab.downloads")}</TableCell>
+              <TableCell sx={numericCellSx}>{Locale.label("serverAdmin.commonsTab.downloads")}</TableCell>
               <TableCell align="right">{Locale.label("serverAdmin.commonsTab.colActions")}</TableCell>
             </TableRow>
           </TableHead>
@@ -566,7 +563,7 @@ const AssetsView = () => {
                     </Tooltip>
                   ) : <ConfidenceChip confidence={a.confidence} testId={`commons-confidence-${a.id}`} />}
                 </TableCell>
-                <TableCell>{a.downloadCount ?? 0}</TableCell>
+                <TableCell sx={numericCellSx}>{a.downloadCount ?? 0}</TableCell>
                 <TableCell align="right">
                   <Tooltip title={Locale.label("serverAdmin.commonsTab.featureTooltip")}>
                     <Button
@@ -622,7 +619,7 @@ const AssetsView = () => {
           setRemoveAsset(null);
         }}
       />
-    </DisplayBox>
+    </SettingsPanel>
   );
 };
 
@@ -638,6 +635,10 @@ export const CommonsTab = (props: { musicEditor?: boolean }) => {
 
   return (
     <>
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="h1" component="h2">{Locale.label("serverAdmin.adminPage.commons")}</Typography>
+        <Typography sx={{ color: "text.secondary", mt: 0.5 }}>{Locale.label("serverAdmin.adminPage.commonsSubtitle")}</Typography>
+      </Box>
       <NavigationTabs selectedTab={subTab} onTabChange={setSubTab} tabs={tabs} testId="commonsTabs" />
       <Box sx={{ mt: 2 }}>
         {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} musicEditor={props.musicEditor} />}

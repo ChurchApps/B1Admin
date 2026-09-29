@@ -2,9 +2,8 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type SongDetailInterface } from "../../../helpers";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Card, CardContent, Typography, Stack, Box, Alert, Button, Chip, FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
-import { Edit as EditIcon, QueueMusic as ArrangementIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../../components/ui/AppIconButton";
+import { Stack, Box, Alert, Button, FormControl, InputLabel, MenuItem, Select, Typography, type SelectChangeEvent } from "@mui/material";
+import { RecordHeading, TextAction } from "../../../components/ui";
 import { Keys } from "./Keys";
 import { ArrangementEdit } from "./ArrangementEdit";
 
@@ -107,78 +106,69 @@ export const Arrangement = memo((props: Props) => {
 
   const arrangementCard = useMemo(
     () => (
-      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-        <CardContent>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <ArrangementIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("songs.arrangement.title") || "Arrangement"} - {props.arrangement?.name}
-              </Typography>
-            </Stack>
-            {canEdit && (
-              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEdit(true)} />
-            )}
-          </Stack>
+      <Box data-testid="arrangement-view">
+        <RecordHeading label={`${Locale.label("songs.arrangement.title")} · ${props.arrangement?.name}`}>
+          {canEdit && <TextAction small onClick={() => setEdit(true)} data-testid="arrangement-edit-button">{Locale.label("common.edit")}</TextAction>}
+        </RecordHeading>
 
-          {(props.arrangement?.bpm || props.arrangement?.seconds || props.arrangement?.meter || props.arrangement?.sequence) && (
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 2 }}>
-              {props.arrangement?.bpm ? <Chip size="small" variant="outlined" label={`${props.arrangement.bpm} ${Locale.label("songs.details.bpm") || "BPM"}`} /> : null}
-              {props.arrangement?.meter ? <Chip size="small" variant="outlined" label={props.arrangement.meter} /> : null}
-              {props.arrangement?.seconds ? <Chip size="small" variant="outlined" label={formatSeconds(props.arrangement.seconds)} /> : null}
-              {props.arrangement?.sequence ? <Chip size="small" variant="outlined" label={props.arrangement.sequence} /> : null}
-            </Stack>
-          )}
+        {(props.arrangement?.bpm || props.arrangement?.seconds || props.arrangement?.meter || props.arrangement?.sequence) && (
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {[
+              props.arrangement?.bpm ? `${props.arrangement.bpm} ${Locale.label("songs.details.bpm")}` : "",
+              props.arrangement?.meter,
+              props.arrangement?.seconds ? formatSeconds(props.arrangement.seconds) : "",
+              props.arrangement?.sequence
+            ].filter(Boolean).join(" · ")}
+          </Typography>
+        )}
 
-          {canImportLyrics && canEdit && (
-            <Alert
-              severity="success"
-              sx={{ mb: 2 }}
-              action={
-                <Button
-                  onClick={importLyrics}
-                  variant="contained"
-                  color="success"
-                  size="small">
-                  {Locale.label("songs.keys.import") || "Import"}
-                </Button>
-              }>
-              {Locale.label("songs.keys.importPrompt") || "Lyrics are available for import from PraiseCharts."}
-            </Alert>
-          )}
+        {canImportLyrics && canEdit && (
+          <Alert
+            severity="success"
+            sx={{ mb: 2 }}
+            action={
+              <Button
+                onClick={importLyrics}
+                variant="contained"
+                size="small">
+                {Locale.label("songs.keys.import") || "Import"}
+              </Button>
+            }>
+            {Locale.label("songs.keys.importPrompt") || "Lyrics are available for import from PraiseCharts."}
+          </Alert>
+        )}
 
-          {getKeySelect()}
+        {getKeySelect()}
 
-          <Box
-            className="chordPro"
-            sx={{
-              backgroundColor: "background.subtle",
-              color: "text.primary",
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 1,
-              p: 2,
-              minHeight: 200,
-              maxHeight: 600,
-              overflowY: "auto",
-              fontFamily: "monospace",
-              fontSize: "0.875rem",
-              lineHeight: 1.6,
-              "& pre": {
-                margin: 0,
-                whiteSpace: "pre-wrap"
-              }
-            }}
-            dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(props.arrangement?.lyrics || Locale.label("songs.arrangement.enterLyrics") || "Enter lyrics...", keyOffset) }}
-          />
-        </CardContent>
-      </Card>
+        <Box
+          className="chordPro"
+          sx={{
+            backgroundColor: "var(--b1-canvas)",
+            color: "text.primary",
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: "var(--b1-radius-control)",
+            p: 2,
+            minHeight: 200,
+            maxHeight: 600,
+            overflowY: "auto",
+            fontFamily: "monospace",
+            fontSize: "0.875rem",
+            lineHeight: 1.6,
+            "& pre": {
+              margin: 0,
+              whiteSpace: "pre-wrap"
+            }
+          }}
+          dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(props.arrangement?.lyrics || Locale.label("songs.arrangement.enterLyrics") || "Enter lyrics...", keyOffset) }}
+        />
+      </Box>
     ),
     [props.arrangement, canEdit, canImportLyrics, importLyrics, formatSeconds, keyOffset, getKeySelect]
   );
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={5}>
       {!edit || !canEdit ? arrangementCard : <ArrangementEdit arrangement={props.arrangement} onSave={handleSave} onCancel={() => setEdit(false)} />}
       <Keys arrangement={props.arrangement} songDetail={songDetail} />
     </Stack>

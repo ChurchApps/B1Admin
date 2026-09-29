@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { type SettingInterface } from "@churchapps/helpers";
 import { Locale, ApiHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Card, CardContent, CardMedia, Grid } from "@mui/material";
+import { Box, Button, CardMedia, Grid } from "@mui/material";
 import { Link as LinkIcon } from "@mui/icons-material";
 import { CardWithHeader } from "../../components/ui";
 
@@ -61,35 +61,32 @@ export const LinkedAccounts = () => {
     <CardWithHeader title={Locale.label("profile.profilePage.linkedAccounts")} icon={<LinkIcon />}>
       <Grid container spacing={3}>
         <Grid size={{ sm: 3 }}>
-          <Card>
-            <CardContent sx={{ textAlign: "center", backgroundColor: "#FFF" }}>
-              <CardMedia component="img" image="/images/praisecharts.png" alt="Praise Charts" />
-              <br />
+          <Box sx={{ textAlign: "center" }}>
+            <CardMedia component="img" image="/images/praisecharts.png" alt="Praise Charts" />
+            <br />
 
-              {!praiseChartsAccessToken && (
-                <>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      const newWindow = window.open("https://www.praisecharts.com/?XID=churchapps", "_blank");
-                      if (newWindow) newWindow.opener = null;
-                    }}>
-                    {Locale.label("profile.linkedAccounts.signUp")}
-                  </Button>
-                  &nbsp;
-                  <Button variant="contained" color="success" onClick={() => openOAuthPopup()}>
-                    {Locale.label("profile.linkedAccounts.link")}
-                  </Button>
-                </>
-              )}
-              {praiseChartsAccessToken && (
-                <Button variant="contained" onClick={unlinkPraiseCharts}>
-                  {Locale.label("profile.linkedAccounts.unlink")}
+            {!praiseChartsAccessToken && (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    const newWindow = window.open("https://www.praisecharts.com/?XID=churchapps", "_blank");
+                    if (newWindow) newWindow.opener = null;
+                  }}>
+                  {Locale.label("profile.linkedAccounts.signUp")}
                 </Button>
-              )}
-            </CardContent>
-          </Card>
+                  &nbsp;
+                <Button variant="contained" onClick={() => openOAuthPopup()}>
+                  {Locale.label("profile.linkedAccounts.link")}
+                </Button>
+              </>
+            )}
+            {praiseChartsAccessToken && (
+              <Button variant="outlined" onClick={unlinkPraiseCharts}>
+                {Locale.label("profile.linkedAccounts.unlink")}
+              </Button>
+            )}
+          </Box>
         </Grid>
       </Grid>
     </CardWithHeader>

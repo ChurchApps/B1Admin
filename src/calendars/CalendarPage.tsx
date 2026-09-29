@@ -1,27 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import {
-  Typography,
-  Grid,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Card,
-  Box,
-  Stack,
-  TableHead
-} from "@mui/material";
-import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon, Add as AddIcon, Print as PrintIcon, UploadFile as ImportIcon, EventAvailable as ApprovalsIcon } from "@mui/icons-material";
-import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from "@churchapps/apphelper";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Typography, Box, Stack } from "@mui/material";
+import { ApiHelper, UserHelper, Loading, Locale, Permissions } from "@churchapps/apphelper";
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
 import { useConfirmDelete, useRequirePermission, usePendingApprovalsCount } from "../hooks";
 import { CuratedCalendar } from "./components/CuratedCalendar";
 import { EventModal } from "./components/EventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, EmptyState } from "../components/ui";
-import { HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui/headerButtons";
+import { CalendarEdit } from "./components/CalendarEdit";
+import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, eyebrowSx, useRecordView } from "../components/ui";
 
 const printStyles = `@media print {
   body * { visibility: hidden; }
@@ -34,6 +21,8 @@ const printStyles = `@media print {
 
 export const CalendarPage = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const { view: requestedView, setView } = useRecordView("view", { replace: ["edit"] });
   const [currentCalendar, setCurrentCalendar] = useState<CuratedCalendarInterface | null>(null);
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [isLoadingGroups, setIsLoadingGroups] = useState<boolean>(false);
@@ -83,125 +72,89 @@ export const CalendarPage = () => {
   if (!curatedCalendarId) return null;
   if (denied) return denied;
 
+  const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
+  const view = requestedView === "edit" && canEdit && currentCalendar ? "edit" : "";
+  const name = currentCalendar?.name || Locale.label("calendars.calendarPage.calendar");
+
+  const identity = (
+    <Box component="aside" data-testid="calendar-identity">
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{name}</Typography>
+      <Typography id="page-header-subtitle" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("calendars.calendarPage.subtitle")}</Typography>
+      <VerbRow sx={{ mt: 2 }}>
+        <TextAction onClick={() => setShowNewEvent(true)} data-testid="new-event-button">{Locale.label("calendars.calendarPage.newEvent")}</TextAction>
+        <TextAction onClick={() => setShowImport(true)} data-testid="import-ics-button">{Locale.label("calendars.calendarPage.importIcs")}</TextAction>
+        <TextAction onClick={() => window.print()} data-testid="print-calendar-button">{Locale.label("calendars.calendarPage.print")}</TextAction>
+        {canEdit && view !== "edit" && <TextAction onClick={() => setView("edit")} data-testid="edit-calendar-button">{Locale.label("common.edit")}</TextAction>}
+      </VerbRow>
+      {pendingApprovals > 0 && (
+        <Box sx={{ mt: 1 }}>
+          <TextAction small to="/calendars/approvals" component={Link} data-testid="pending-approvals-link">
+            {Locale.label("calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
+          </TextAction>
+        </Box>
+      )}
+
+      <Box sx={{ mt: 4 }}>
+        <RecordHeading label={Locale.label("calendars.calendarPage.groupsInCalendar")} />
+        {isLoadingGroups ? (
+          <Loading data-testid="groups-loading" />
+        ) : addedGroups.length === 0 ? (
+          <>
+            <Typography variant="body2">{Locale.label("calendars.calendarPage.noGroupsAdded")}</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("calendars.calendarPage.addEventsHint")}</Typography>
+          </>
+        ) : (
+          <Stack component="ul" spacing={1} sx={{ listStyle: "none", p: 0, m: 0 }}>
+            {addedGroups.map((g) => (
+              <Stack component="li" key={g.id} direction="row" spacing={2} justifyContent="space-between" alignItems="baseline">
+                <Typography variant="body2" sx={{ fontWeight: 500, minWidth: 0, overflowWrap: "anywhere" }}>{g.name}</Typography>
+                {canEdit && (
+                  <TextAction small onClick={() => handleGroupDelete(g.id || "")} data-testid={`remove-group-${g.id}-button`}>{Locale.label("common.remove")}</TextAction>
+                )}
+              </Stack>
+            ))}
+          </Stack>
+        )}
+      </Box>
+    </Box>
+  );
+
   return (
     <>
       {ConfirmDialogElement}
       <style>{printStyles}</style>
-      <PageHeader
-        icon={<CalendarIcon />}
-        title={currentCalendar?.name || Locale.label("calendars.calendarPage.calendar")}
-        subtitle={Locale.label("calendars.calendarPage.subtitle")}
-      >
-        {pendingApprovals > 0 && (
-          <HeaderSecondaryButton startIcon={<ApprovalsIcon />} {...({ component: Link, to: "/calendars/approvals" } as any)} data-testid="pending-approvals-link">
-            {Locale.label("calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
-          </HeaderSecondaryButton>
-        )}
-        <HeaderSecondaryButton startIcon={<ImportIcon />} onClick={() => setShowImport(true)} data-testid="import-ics-button">
-          {Locale.label("calendars.calendarPage.importIcs")}
-        </HeaderSecondaryButton>
-        <HeaderSecondaryButton startIcon={<PrintIcon />} onClick={() => window.print()} data-testid="print-calendar-button">
-          {Locale.label("calendars.calendarPage.print")}
-        </HeaderSecondaryButton>
-        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setShowNewEvent(true)} data-testid="new-event-button">
-          {Locale.label("calendars.calendarPage.newEvent")}
-        </HeaderPrimaryButton>
-      </PageHeader>
-
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card
-              className="print-area"
-              sx={{
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "grey.200"
-              }}
-            >
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <CalendarIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                  <Typography variant="h6">
-                    {Locale.label("calendars.calendarPage.calendarEvents")}
-                  </Typography>
-                </Stack>
-              </Box>
-              <Box sx={{ p: 2 }}>
-                <CuratedCalendar
-                  curatedCalendarId={curatedCalendarId}
-                  churchId={UserHelper.currentUserChurch?.church?.id || ""}
-                  mode="edit"
-                  updatedCallback={loadData}
-                  refresh={refresh}
-                  data-testid="curated-calendar"
-                />
-              </Box>
-            </Card>
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Card
-              sx={{
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "grey.200"
-              }}
-            >
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <GroupsIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                  <Typography variant="h6">
-                    {Locale.label("calendars.calendarPage.groupsInCalendar")}
-                  </Typography>
-                  {addedGroups.length > 0 && <CountChip count={addedGroups.length} />}
-                </Stack>
-              </Box>
-              <Box>
-                {isLoadingGroups ? (
-                  <Box sx={{ p: 3, textAlign: "center" }}>
-                    <Loading data-testid="groups-loading" />
-                  </Box>
-                ) : addedGroups.length === 0 ? (
-                  <Box sx={{ p: 2 }}>
-                    <EmptyState
-                      variant="card"
-                      icon={<GroupsIcon />}
-                      title={Locale.label("calendars.calendarPage.noGroupsAdded")}
-                      description={Locale.label("calendars.calendarPage.addEventsHint")}
-                    />
-                  </Box>
-                ) : (
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>
-                          {Locale.label("calendars.calendarPage.groupName")}
-                        </TableCell>
-                        <TableCell align="right" />
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {addedGroups.map((g) => (
-                        <TableRow key={g.id}>
-                          <TableCell>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>{g.name}</Typography>
-                          </TableCell>
-                          {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-                            <TableCell align="right" className="rowActions">
-                              <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={() => handleGroupDelete(g.id || "")} data-testid={`remove-group-${g.id}-button`} />
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </Box>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
+      <PageContainer>
+        <RecordLayout identity={identity} spacing={3} data-testid="calendar-record">
+          {view === "edit" && currentCalendar ? (
+            <>
+              <Box><BackVerb name={name} onClick={() => setView("")} data-testid="calendar-record-back" /></Box>
+              <CalendarEdit
+                calendar={currentCalendar}
+                updatedCallback={(cal) => {
+                  if (cal === null) {
+                    navigate("/calendars");
+                    return;
+                  }
+                  setView("");
+                  loadData();
+                }}
+              />
+            </>
+          ) : (
+            <Box className="print-area">
+              <Typography component="h2" sx={{ ...eyebrowSx, mb: 1.5 }} className="no-print">{Locale.label("calendars.calendarPage.calendarEvents")}</Typography>
+              <CuratedCalendar
+                curatedCalendarId={curatedCalendarId}
+                churchId={UserHelper.currentUserChurch?.church?.id || ""}
+                mode="edit"
+                updatedCallback={loadData}
+                refresh={refresh}
+                data-testid="curated-calendar"
+              />
+            </Box>
+          )}
+        </RecordLayout>
+      </PageContainer>
       {showNewEvent && (
         <EventModal
           churchId={UserHelper.currentUserChurch?.church?.id || ""}

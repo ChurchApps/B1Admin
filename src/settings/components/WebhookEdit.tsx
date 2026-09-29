@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { ApiHelper, ErrorMessages, Locale, DateHelper } from "@churchapps/apphelper";
-import { FormCard } from "../../components/ui";
+import { FormCard, StatusBadge, numericCellSx, tableScrollSx, type StatusTone } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import type { WebhookInterface, WebhookDeliveryInterface } from "./WebhooksSection";
 
@@ -12,11 +12,11 @@ interface Props {
   onDelete?: () => void;
 }
 
-const statusColor = (status?: string): "success" | "warning" | "error" | "default" => {
+const statusTone = (status?: string): StatusTone => {
   if (status === "succeeded") return "success";
   if (status === "failed" || status === "pending") return "warning";
-  if (status === "exhausted") return "error";
-  return "default";
+  if (status === "exhausted") return "danger";
+  return "neutral";
 };
 
 const MAILCHIMP_EVENTS = ["person.created", "person.updated", "person.destroyed", "group.member.added", "group.member.removed", "list.member.added", "list.member.removed"];
@@ -25,7 +25,7 @@ const parseConfig = (raw?: string): { apiKey?: string; audienceId?: string } => 
   try { return raw ? JSON.parse(raw) : {}; } catch { return {}; }
 };
 
-const codeBox = { backgroundColor: "#fafafa", border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1, mb: 2, overflow: "auto", maxHeight: 240, fontSize: 12, whiteSpace: "pre-wrap", wordBreak: "break-all" } as const;
+const codeBox = { backgroundColor: "var(--b1-canvas)", border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1.5, mb: 2, overflow: "auto", maxHeight: 240, typography: "caption", fontFamily: "monospace", whiteSpace: "pre-wrap", wordBreak: "break-all" } as const;
 
 export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDelete }) => {
   const [name, setName] = useState(webhook.name || "");
@@ -165,36 +165,38 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
 
       {webhook.id && (
         <Box sx={{ mt: 2 }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>{Locale.label("settings.webhookEdit.deliveries")}</Typography>
+          <Typography variant="h3" component="h2" sx={{ mb: 1.5 }}>{Locale.label("settings.webhookEdit.deliveries")}</Typography>
           {deliveries.length === 0 ? (
             <Typography variant="body2" color="text.secondary">{Locale.label("settings.webhookEdit.noDeliveries")}</Typography>
           ) : (
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("settings.webhookEdit.event")}</TableCell>
-                  <TableCell>{Locale.label("settings.webhooksPage.status")}</TableCell>
-                  <TableCell align="right">{Locale.label("settings.webhookEdit.attempts")}</TableCell>
-                  <TableCell>{Locale.label("settings.webhookEdit.response")}</TableCell>
-                  <TableCell>{Locale.label("settings.webhookEdit.date")}</TableCell>
-                  <TableCell align="right" />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {deliveries.map((d) => (
-                  <TableRow key={d.id} hover sx={{ cursor: "pointer" }} onClick={() => setDetail(d)}>
-                    <TableCell>{d.event}</TableCell>
-                    <TableCell><Chip size="small" color={statusColor(d.status)} label={d.status} /></TableCell>
-                    <TableCell align="right">{d.attemptCount}</TableCell>
-                    <TableCell>{d.responseStatus || "—"}</TableCell>
-                    <TableCell>{d.dateCreated ? new Date(d.dateCreated).toLocaleString(DateHelper.locale) : ""}</TableCell>
-                    <TableCell align="right" className="rowActions">
-                      <Button size="small" onClick={(e) => { e.stopPropagation(); handleRedeliver(d); }}>{Locale.label("settings.webhookEdit.redeliver")}</Button>
-                    </TableCell>
+            <Box sx={tableScrollSx} role="region" tabIndex={0} aria-label={Locale.label("settings.webhookEdit.deliveries")}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{Locale.label("settings.webhookEdit.event")}</TableCell>
+                    <TableCell>{Locale.label("settings.webhooksPage.status")}</TableCell>
+                    <TableCell sx={numericCellSx}>{Locale.label("settings.webhookEdit.attempts")}</TableCell>
+                    <TableCell>{Locale.label("settings.webhookEdit.response")}</TableCell>
+                    <TableCell>{Locale.label("settings.webhookEdit.date")}</TableCell>
+                    <TableCell align="right" />
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {deliveries.map((d) => (
+                    <TableRow key={d.id} sx={{ cursor: "pointer" }} onClick={() => setDetail(d)}>
+                      <TableCell>{d.event}</TableCell>
+                      <TableCell><StatusBadge tone={statusTone(d.status)}>{d.status}</StatusBadge></TableCell>
+                      <TableCell sx={numericCellSx}>{d.attemptCount}</TableCell>
+                      <TableCell>{d.responseStatus || "—"}</TableCell>
+                      <TableCell>{d.dateCreated ? new Date(d.dateCreated).toLocaleString(DateHelper.locale) : ""}</TableCell>
+                      <TableCell align="right" className="rowActions">
+                        <Button size="small" onClick={(e) => { e.stopPropagation(); handleRedeliver(d); }}>{Locale.label("settings.webhookEdit.redeliver")}</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
           )}
         </Box>
       )}

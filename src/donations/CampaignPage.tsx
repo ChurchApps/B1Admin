@@ -1,17 +1,17 @@
 import React from "react";
-import { CurrencyHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { CurrencyHelper, Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
-import { Box, Card, Chip, Icon, LinearProgress, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Flag as CampaignIcon, Add as AddIcon, Edit as EditIcon, Person as PersonIcon } from "@mui/icons-material";
+import { Box, LinearProgress, Link as MuiLink, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Flag as CampaignIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface, type PledgeInterface, type PledgeProgressRowInterface, type PledgeStatus } from "../helpers";
 import { CampaignEdit, PledgeEdit } from "./components";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { Breadcrumbs, type BreadcrumbItem, CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, HeaderSecondaryButton, hoverRowSx, type SortDirection } from "../components/ui";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, AddBar, EmptyState, RecordHeading, StatusBadge, type StatusTone, Surface, SortableTableHead, TextAction, VerbRow, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
+import { CsvVerb } from "./components/GivingParts";
 
-const statusColors: Record<PledgeStatus, "default" | "info" | "success" | "warning"> = {
-  notStarted: "default",
+const statusColors: Record<PledgeStatus, StatusTone> = {
+  notStarted: "neutral",
   inProgress: "info",
   fulfilled: "success",
   beyondPledged: "success",
@@ -112,9 +112,9 @@ export const CampaignPage = () => {
 
     sortedRows.forEach((row, i) => {
       const personCell = row.personId ? (
-        <Typography component={Link} to={"/people/" + row.personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+        <MuiLink component={Link} to={"/people/" + row.personId} underline="hover" variant="body2" sx={{ fontWeight: 600 }}>
           {peopleNames[row.personId] || Locale.label("donations.campaignPage.unknownPerson")}
-        </Typography>
+        </MuiLink>
       ) : (
         <Typography variant="body2" color="text.secondary">{Locale.label("donations.campaignPage.anon")}</Typography>
       );
@@ -122,18 +122,15 @@ export const CampaignPage = () => {
       result.push(
         <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <PersonIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              {personCell}
-            </Stack>
+            {personCell}
           </TableCell>
-          <TableCell align="right"><Typography variant="body2">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</Typography></TableCell>
-          <TableCell align="right"><Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</Typography></TableCell>
+          <TableCell align="right" sx={numericCellSx}><Typography variant="body2">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</Typography></TableCell>
+          <TableCell align="right" sx={numericCellSx}><Typography variant="body2" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</Typography></TableCell>
           <TableCell>
-            <Chip size="small" label={pledgeStatusLabel(row.status)} color={(row.status && statusColors[row.status]) || "default"} data-testid={`pledge-status-${i}`} />
+            <StatusBadge tone={(row.status && statusColors[row.status]) || "neutral"} data-testid={`pledge-status-${i}`}>{pledgeStatusLabel(row.status)}</StatusBadge>
           </TableCell>
-          <TableCell align="right" className="rowActions">
-            {canEdit && row.pledgeId && <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => handleEditPledge(row)} data-testid={`edit-pledge-${i}`} />}
+          <TableCell align="right">
+            {canEdit && row.pledgeId && <TextAction small onClick={() => handleEditPledge(row)} data-testid={`edit-pledge-${i}`}>{Locale.label("common.edit")}</TextAction>}
           </TableCell>
         </TableRow>
       );
@@ -144,23 +141,25 @@ export const CampaignPage = () => {
   const getTable = () => {
     if (progress.isLoading) return <Loading />;
     return (
-      <Table sx={{ minWidth: 650 }}>
-        {sortedRows.length > 0 && (
-          <SortableTableHead
-            columns={[
-              { key: "person", label: Locale.label("donations.campaignPage.donor"), sortable: true },
-              { key: "pledgedAmount", label: Locale.label("donations.campaignsPage.pledged"), align: "right", sortable: true },
-              { key: "givenAmount", label: Locale.label("donations.campaignsPage.given"), align: "right", sortable: true },
-              { key: "status", label: Locale.label("donations.campaignPage.status") },
-              { key: "edit", label: "", align: "right" }
-            ]}
-            sortBy={sortBy}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-          />
-        )}
-        <TableBody>{getRows()}</TableBody>
-      </Table>
+      <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.campaignPage.pledges")} tabIndex={0}>
+        <Table sx={{ minWidth: 650 }}>
+          {sortedRows.length > 0 && (
+            <SortableTableHead
+              columns={[
+                { key: "person", label: Locale.label("donations.campaignPage.donor"), sortable: true },
+                { key: "pledgedAmount", label: Locale.label("donations.campaignsPage.pledged"), align: "right", sortable: true },
+                { key: "givenAmount", label: Locale.label("donations.campaignsPage.given"), align: "right", sortable: true },
+                { key: "status", label: Locale.label("donations.campaignPage.status") },
+                { key: "edit", label: "", align: "right" }
+              ]}
+              sortBy={sortBy}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+            />
+          )}
+          <TableBody>{getRows()}</TableBody>
+        </Table>
+      </Box>
     );
   };
 
@@ -178,62 +177,45 @@ export const CampaignPage = () => {
     { label: campaign?.name || "" }
   ];
 
+  const lede = progress.data ? [
+    ...(campaign?.goalAmount ? [Locale.label("donations.campaignPage.goalAmount", "{amount} goal").replace("{amount}", CurrencyHelper.formatCurrencyWithLocale(campaign.goalAmount, currency, 0))] : []),
+    Locale.label("donations.campaignsPage.pledgedAmount", "{amount} pledged").replace("{amount}", CurrencyHelper.formatCurrencyWithLocale(progress.data.totalPledged || 0, currency, 0)),
+    Locale.label("donations.campaignsPage.givenAmount", "{amount} given").replace("{amount}", CurrencyHelper.formatCurrencyWithLocale(progress.data.totalGiven || 0, currency, 0))
+  ].join(" · ") : Locale.label("donations.campaignPage.subtitle");
+
+  const exportRows = getExportData();
+
   return (
     <>
-      <PageHeader icon={<CampaignIcon />} title={campaign?.name || ""} subtitle={Locale.label("donations.campaignPage.subtitle")}>
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent={{ sm: "space-between" }} width="100%">
-        {progress.data && (
-          <PageHeaderStats
-            spread
-            items={[
-              ...(campaign?.goalAmount > 0 ? [{ value: CurrencyHelper.formatCurrencyWithLocale(campaign.goalAmount, currency, 0), label: Locale.label("donations.campaignsPage.goal") }] : []),
-              { value: CurrencyHelper.formatCurrencyWithLocale(progress.data.totalPledged || 0, currency, 0), label: Locale.label("donations.campaignsPage.pledged") },
-              { value: CurrencyHelper.formatCurrencyWithLocale(progress.data.totalGiven || 0, currency, 0), label: Locale.label("donations.campaignsPage.given") }
-            ]}
-          />
-        )}
-        {canEdit && (
-          <Stack direction="row" spacing={1}>
-            <HeaderSecondaryButton
-              startIcon={<EditIcon />}
-              onClick={() => setEditMode("campaign")}
-              data-testid="edit-campaign-button">
-              {Locale.label("donations.campaignPage.editCampaign")}
-            </HeaderSecondaryButton>
-            <HeaderPrimaryButton
-              startIcon={<AddIcon />}
-              onClick={() => { setEditPledge(null); setEditMode("pledge"); }}
-              data-testid="add-pledge-button">
-              {Locale.label("donations.campaignPage.addPledge")}
-            </HeaderPrimaryButton>
-          </Stack>
-        )}
-      </Stack>
+      <PageHeader title={campaign?.name || ""} subtitle={lede} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
+        {canEdit && <TextAction onClick={() => setEditMode("campaign")} data-testid="edit-campaign-button">{Locale.label("donations.campaignPage.editCampaign")}</TextAction>}
       </PageHeader>
 
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         {editMode !== "none" && <Box sx={{ mb: 3 }}>{getEditContent()}</Box>}
 
-        {percent !== null && (
-          <Card sx={{ mb: 3 }}>
-            <Box sx={{ p: 3 }}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <LinearProgress variant="determinate" value={percent} sx={{ flex: 1, height: 12, borderRadius: 6 }} data-testid="campaign-progress-bar" />
-                <Typography variant="h6">{percent}% {Locale.label("donations.campaignPage.ofGoal")}</Typography>
-              </Stack>
+        <Surface>
+          {percent !== null && (
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h1" component="p" sx={{ fontVariantNumeric: "tabular-nums" }}>{percent}% <Typography component="span" variant="body1" color="text.secondary">{Locale.label("donations.campaignPage.ofGoal")}</Typography></Typography>
+              <LinearProgress variant="determinate" value={percent} sx={{ mt: 1.5, height: 8, borderRadius: "var(--b1-radius-pill)" }} data-testid="campaign-progress-bar" />
             </Box>
-          </Card>
-        )}
+          )}
 
-        <CardWithHeader
-          icon={<CampaignIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          title={Locale.label("donations.campaignPage.pledges")}
-          count={sortedRows.length}
-          actions={progress.data?.rows && <ExportButton data={getExportData()} filename="pledges.csv" text={Locale.label("donations.campaignsPage.export")} />}
-        >
+          <RecordHeading label={Locale.label("donations.campaignPage.pledges") + " (" + sortedRows.length + ")"}>
+            <VerbRow>
+              {exportRows.length > 0 && <CsvVerb data={exportRows} filename="pledges.csv" text={Locale.label("donations.campaignsPage.export")} />}
+            </VerbRow>
+          </RecordHeading>
           {getTable()}
-        </CardWithHeader>
-      </Box>
+
+          {canEdit && (
+            <AddBar>
+              <TextAction onClick={() => { setEditPledge(null); setEditMode("pledge"); }} data-testid="add-pledge-button">{Locale.label("donations.campaignPage.addPledge")}</TextAction>
+            </AddBar>
+          )}
+        </Surface>
+      </PageContainer>
     </>
   );
 };

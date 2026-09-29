@@ -16,7 +16,7 @@ export const AuthShell: React.FC<AuthShellProps> = ({ logoAlt, children }) => (
           backgroundColor: "background.paper",
           border: "1px solid",
           borderColor: "divider",
-          borderRadius: "5px",
+          borderRadius: "var(--b1-radius-panel)",
           padding: "10px"
         }}
         px="16px"

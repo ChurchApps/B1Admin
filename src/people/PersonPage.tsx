@@ -1,26 +1,45 @@
 import React, { useContext, useCallback, useMemo } from "react";
-import { Groups, PersonAttendance, PersonNotes, PersonDonations, PersonForms, type PersonFormOption } from "./components";
+import { HouseholdEdit, Merge, PersonAttendance, PersonDonations, PersonEdit, PersonExportDialog, PersonForms, PersonNotes, type PersonFormOption } from "./components";
 import { type PersonInterface, type ConversationInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale, Permissions, SocketHelper, SubscriptionManager, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, ImageEditor, Locale, Permissions, PersonHelper, SocketHelper, SubscriptionManager, UserHelper } from "@churchapps/apphelper";
+import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { PersonBanner } from "./components/PersonBanner";
-import { PersonNavigation } from "./components/PersonNavigation";
-import { PersonDetails } from "./components/PersonDetails";
-import { Breadcrumbs, type BreadcrumbItem } from "../components/ui";
+import { BackVerb, PageContainer, RecordLayout, TextAction, VerbRow, useRecordView } from "../components/ui";
 import UserContext from "../UserContext";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { PersonIdentity } from "./components/PersonIdentity";
+import { useHousehold } from "./components/Household";
+import { PersonAttendanceSummary, PersonFormsSummary, PersonGivingSummary, PersonGroupsSummary, PersonNotesSummary } from "./components/PersonSummaries";
+import { LogGiftDialog } from "../donations/components/LogGiftDialog";
+
+const FORM_VIEWS = ["edit", "household"];
 
 export const PersonPage = () => {
-  const [selectedTab, setSelectedTab] = React.useState("");
   const context = useContext(UserContext);
   const params = useParams();
+  // Forms (edit, household) replace history so Back doesn't reopen a finished form.
+  const { view: requestedView, setView, searchParams } = useRecordView("view", { replace: FORM_VIEWS });
   const [inPhotoEditMode, setInPhotoEditMode] = React.useState<boolean>(false);
-  const [editMode, setEditMode] = React.useState<string>("display");
+  const [showMergeSearch, setShowMergeSearch] = React.useState(false);
+  const [showExportDialog, setShowExportDialog] = React.useState(false);
   const [personForms, setPersonForms] = React.useState<PersonFormOption[]>([]);
+  const [editPerson, setEditPerson] = React.useState<PersonInterface | null>(null);
 
+  const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
+  const canViewAttendance = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.view), []);
+  const canViewGiving = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.view), []);
+  const canLogGift = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
+  const [showLogGift, setShowLogGift] = React.useState(false);
+  const [giftVersion, setGiftVersion] = React.useState(0);
+  const queryClient = useQueryClient();
   const formPermission = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit), []);
   const canViewConfidentialNotes = useMemo(() => UserHelper.checkAccess({ api: "MembershipApi", contentType: "People", action: "View Confidential Notes" }), []);
   const [confidentialConversationId, setConfidentialConversationId] = React.useState("");
+
+  React.useEffect(() => {
+    setShowMergeSearch(false);
+    setInPhotoEditMode(false);
+  }, [params.id]);
 
   React.useEffect(() => {
     if (!canViewConfidentialNotes || !params.id) return;
@@ -79,6 +98,10 @@ export const PersonPage = () => {
     return p;
   }, [personData.data]);
 
+  React.useEffect(() => setEditPerson(person), [person]);
+
+  const household = useHousehold(person);
+
   // Person forms show for everyone; a stand-alone form only shows for the people it's linked to.
   const visibleForms = useMemo(() => {
     const submissions = person?.formSubmissions || [];
@@ -97,6 +120,16 @@ export const PersonPage = () => {
   }, [personForms, person?.formSubmissions]);
 
   const showForms = formPermission && visibleForms.length > 0;
+
+  const allowedViews: Record<string, boolean> = {
+    edit: canEdit,
+    household: canEdit && !!household.household && household.members !== null,
+    attendance: canViewAttendance,
+    giving: canViewGiving,
+    notes: canEdit,
+    forms: showForms
+  };
+  const view = allowedViews[requestedView] ? requestedView : "";
 
   const handleCreateConversation = async () => {
     if (!person) return "";
@@ -129,79 +162,136 @@ export const PersonPage = () => {
     return result[0].id || "";
   };
 
-  const defaultTab: string = "details";
-
-  React.useEffect(() => {
-    if (selectedTab === "" && defaultTab !== "") {
-      setSelectedTab(defaultTab);
+  const handlePhotoUpdated = (dataUrl?: string) => {
+    if (!editPerson) return;
+    const updatedPerson = { ...editPerson, photo: dataUrl };
+    if (!dataUrl) updatedPerson.photoUpdated = undefined;
+    setEditPerson(updatedPerson);
+    setInPhotoEditMode(false);
+    // Edit mode saves the photo with the form; otherwise nothing else will persist it.
+    if (view !== "edit" && updatedPerson.id) {
+      const toSave = { ...updatedPerson, photo: dataUrl ?? null, photoUpdated: dataUrl ? updatedPerson.photoUpdated : null } as unknown as PersonInterface;
+      ApiHelper.post("/people", [toSave], "MembershipApi").then(() => refetch()).catch((error) => console.error("Error saving photo:", error));
     }
-  }, [selectedTab, defaultTab]);
-
-  const getCurrentTab = () => {
-    let currentTab: JSX.Element;
-    // Guard against null person during query refetches.
-    if (!person) {
-      return <div key="loading" />;
-    }
-    if (selectedTab !== "details" && !person.id) {
-      return <div key="loading" />;
-    }
-    switch (selectedTab) {
-      case "details":
-        currentTab = (
-          <PersonDetails
-            key="details"
-            person={person}
-            updatedFunction={refetch}
-            inPhotoEditMode={inPhotoEditMode}
-            setInPhotoEditMode={setInPhotoEditMode}
-            editMode={editMode}
-            setEditMode={setEditMode}
-          />
-        );
-        break;
-      case "notes":
-        currentTab = (
-          <React.Fragment key={`notes-${person?.conversationId || "new"}-${confidentialConversationId || "new"}`}>
-            <PersonNotes context={context} conversationId={person.conversationId || ""} createConversation={handleCreateConversation} />
-            {canViewConfidentialNotes && (
-              <PersonNotes
-                title={Locale.label("people.personPage.confidentialNotes")}
-                context={context}
-                conversationId={confidentialConversationId}
-                createConversation={handleCreateConfidentialConversation}
-              />
-            )}
-          </React.Fragment>
-        );
-        break;
-      case "attendance": currentTab = <PersonAttendance key="attendance" personId={person.id!} personName={person.name?.display} updatedFunction={refetch} />; break;
-      case "donations": currentTab = <PersonDonations key="donations" personId={person.id!} />; break;
-      case "forms": currentTab = <PersonForms key="forms" person={person} forms={visibleForms} updatedFunction={refetch} />; break;
-      case "groups": currentTab = <Groups key="groups" personId={person.id!} updatedFunction={refetch} />; break;
-      default: currentTab = <div key="default">{Locale.label("people.tabs.noImplement")}</div>; break;
-    }
-    return currentTab;
   };
 
-  if (!person) return null;
+  const togglePhotoEditor = (show: boolean, updatedPerson?: PersonInterface) => {
+    setInPhotoEditMode(show);
+    if (updatedPerson) setEditPerson(updatedPerson);
+  };
 
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { label: Locale.label("components.wrapper.ppl"), path: "/people" },
-    { label: person.name?.display || "" }
-  ];
+  if (!person || !editPerson) return null;
+
+  const backButton = (
+    <Box>
+      <BackVerb name={person.name?.display || ""} onClick={() => setView("")} labelKey="people.personRecord.backTo" data-testid="person-record-back" />
+    </Box>
+  );
+
+  const notes = (
+    <React.Fragment key={`notes-${person.conversationId || "new"}-${confidentialConversationId || "new"}`}>
+      <PersonNotes context={context} conversationId={person.conversationId || ""} createConversation={handleCreateConversation} />
+      {canViewConfidentialNotes && (
+        <PersonNotes
+          title={Locale.label("people.personPage.confidentialNotes")}
+          context={context}
+          conversationId={confidentialConversationId}
+          createConversation={handleCreateConfidentialConversation}
+        />
+      )}
+    </React.Fragment>
+  );
+
+  const detailColumn = () => {
+    switch (view) {
+      case "edit":
+        return (
+          <PersonEdit
+            id="personDetailsBox"
+            person={editPerson}
+            updatedFunction={() => { setView(""); refetch(); }}
+            togglePhotoEditor={togglePhotoEditor}
+            showMergeSearch={() => setShowMergeSearch(true)}
+          />
+        );
+      case "household":
+        return (
+          <HouseholdEdit
+            household={household.household!}
+            currentMembers={household.members}
+            currentPerson={person}
+            updatedFunction={() => { household.reload(); setView(""); }}
+          />
+        );
+      case "attendance":
+        return <>{backButton}<PersonAttendance personId={person.id!} personName={person.name?.display} updatedFunction={refetch} autoPrint={searchParams.get("print") === "1"} /></>;
+      case "giving":
+        return (
+          <>
+            <VerbRow plain>
+              <BackVerb name={person.name?.display || ""} onClick={() => setView("")} labelKey="people.personRecord.backTo" data-testid="person-record-back" />
+              {canLogGift && <TextAction onClick={() => setShowLogGift(true)} data-testid="person-log-gift">{Locale.label("donations.logGift.title", "Log a gift")}</TextAction>}
+            </VerbRow>
+            <PersonDonations key={giftVersion} personId={person.id!} />
+          </>
+        );
+      case "notes":
+        return <>{backButton}{notes}</>;
+      case "forms":
+        return <>{backButton}<PersonForms person={person} forms={visibleForms} initialFormId={searchParams.get("form") || ""} updatedFunction={refetch} /></>;
+      default:
+        return (
+          <>
+            {canViewAttendance && <PersonAttendanceSummary personId={person.id!} onViewAll={() => setView("attendance")} onPrint={() => setView("attendance", { print: "1" })} />}
+            {canViewGiving && <PersonGivingSummary personId={person.id!} householdMembers={household.members} onViewAll={() => setView("giving")} onLogGift={canLogGift ? () => setShowLogGift(true) : undefined} />}
+            <PersonGroupsSummary personId={person.id!} />
+            {canEdit && <PersonNotesSummary conversationId={person.conversationId || ""} onViewAll={() => setView("notes")} />}
+            {showForms && <PersonFormsSummary person={person} forms={visibleForms} onOpen={(formId) => setView("forms", { form: formId || "" })} />}
+          </>
+        );
+    }
+  };
+
+  const archive = view !== "";
 
   return (
-    <>
-      <PersonBanner
-        person={person}
-        togglePhotoEditor={setInPhotoEditMode}
-        tabs={<PersonNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} showForms={showForms} onHeader />}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
-      />
-      <div style={{ padding: "24px" }}>
-        {getCurrentTab()}
-      </div>
-    </>
+    <PageContainer>
+      <RecordLayout
+        spacing={archive ? 3 : 5}
+        data-testid="person-record-details"
+        identity={(
+          <PersonIdentity
+            person={editPerson}
+            household={household.household}
+            householdMembers={household.members}
+            view={view}
+            onEdit={() => setView("edit")}
+            onEditHousehold={() => setView("household")}
+            onMerge={() => setShowMergeSearch(true)}
+            onExport={() => setShowExportDialog(true)}
+            onPhoto={() => setInPhotoEditMode(true)}
+          />
+        )}>
+        {showMergeSearch && <Merge hideMergeBox={() => setShowMergeSearch(false)} person={person} />}
+        {inPhotoEditMode && (
+          <ImageEditor aspectRatio={4 / 3} photoUrl={PersonHelper.getPhotoUrl(editPerson)} onCancel={() => togglePhotoEditor(false)} onUpdate={handlePhotoUpdated} />
+        )}
+        {detailColumn()}
+      </RecordLayout>
+      <PersonExportDialog open={showExportDialog} onClose={() => setShowExportDialog(false)} person={person} />
+      {canLogGift && (
+        <LogGiftDialog
+          open={showLogGift}
+          person={person}
+          onClose={() => setShowLogGift(false)}
+          onSaved={() => {
+            setShowLogGift(false);
+            queryClient.invalidateQueries({ queryKey: ["/donations?personId=" + person.id, "GivingApi"] });
+            setGiftVersion((v) => v + 1);
+            setView("giving");
+          }}
+        />
+      )}
+    </PageContainer>
   );
 };

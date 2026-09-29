@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, Stack, Button, Typography, Chip } from "@mui/material";
-import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, Typography } from "@mui/material";
+import { Email as EmailIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, UserHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { EmptyState } from "../components/ui";
+import { AddBar, EmptyState, PageContainer, Surface, StatusBadge, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
@@ -55,13 +54,9 @@ export const EmailTemplatesPage: React.FC = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <SettingsHeader backTo="/settings" title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>
-          {Locale.label("settings.emailTemplatesPage.newTemplate")}
-        </Button>
-      </SettingsHeader>
+      <SettingsHeader backTo="/settings" title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")} />
 
-      <Box sx={{ p: { xs: 2, md: 4 } }}>
+      <PageContainer py={3}>
         {editTemplate !== null && (
           <Box sx={{ mb: 3 }}>
             <EmailTemplateEdit template={editTemplate} onSave={handleSaved} onCancel={() => setEditTemplate(null)} onDelete={editTemplate.id ? async () => { if (await handleDelete(editTemplate)) setEditTemplate(null); } : undefined} />
@@ -72,38 +67,47 @@ export const EmailTemplatesPage: React.FC = () => {
           <EmptyState
             icon={<EmailIcon />}
             title={Locale.label("settings.emailTemplatesPage.emptyTitle")}
-            description={Locale.label("settings.emailTemplatesPage.emptyDescription")}
-            action={<Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>{Locale.label("settings.emailTemplatesPage.createTemplate")}</Button>} />
+            description={Locale.label("settings.emailTemplatesPage.emptyDescription")} />
         ) : (
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>{Locale.label("settings.emailTemplatesPage.name")}</TableCell>
-                <TableCell>{Locale.label("settings.emailTemplatesPage.subject")}</TableCell>
-                <TableCell>{Locale.label("settings.emailTemplatesPage.category")}</TableCell>
-                <TableCell>{Locale.label("settings.emailTemplatesPage.modified")}</TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {templates.map((t) => (
-                <TableRow key={t.id} hover>
-                  <TableCell><Typography fontWeight={600}>{t.name}</Typography></TableCell>
-                  <TableCell>{t.subject}</TableCell>
-                  <TableCell>{t.category && <Chip label={t.category} size="small" />}</TableCell>
-                  <TableCell>{formatDateSafe(t.dateModified)}</TableCell>
-                  <TableCell align="right" className="rowActions">
-                    <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                      <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => handleEdit(t)} />
-                      <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDelete(t)} />
-                    </Stack>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <Surface disablePadding>
+            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("settings.emailTemplatesPage.title")} tabIndex={0}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.name")}</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.subject")}</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.category")}</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.modified")}</TableCell>
+                    <TableCell align="right"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {templates.map((t) => (
+                    <TableRow key={t.id}>
+                      <TableCell><Typography variant="body1" fontWeight={600}>{t.name}</Typography></TableCell>
+                      <TableCell>{t.subject}</TableCell>
+                      <TableCell>{t.category && <StatusBadge>{t.category}</StatusBadge>}</TableCell>
+                      <TableCell>{formatDateSafe(t.dateModified)}</TableCell>
+                      <TableCell align="right">
+                        <VerbRow sx={{ justifyContent: "flex-end", flexWrap: "nowrap" }}>
+                          <TextAction small onClick={() => handleEdit(t)} aria-label={Locale.label("common.edit")}>{Locale.label("common.edit")}</TextAction>
+                          <TextAction small onClick={() => handleDelete(t)} aria-label={Locale.label("common.delete")}>{Locale.label("common.delete")}</TextAction>
+                        </VerbRow>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </Surface>
         )}
-      </Box>
+
+        {editTemplate === null && (
+          <AddBar>
+            <TextAction onClick={handleNew} data-testid="new-email-template-button">{Locale.label("settings.emailTemplatesPage.newTemplate")}</TextAction>
+          </AddBar>
+        )}
+      </PageContainer>
     </>
   );
 };

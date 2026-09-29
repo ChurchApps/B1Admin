@@ -14,8 +14,6 @@ import {
   DialogActions,
   Typography,
   Box,
-  Card,
-  CardContent,
   type SelectChangeEvent
 } from "@mui/material";
 import { Close as CloseIcon, Delete as DeleteIcon, Save as SaveIcon } from "@mui/icons-material";
@@ -123,164 +121,129 @@ export const TabEdit: React.FC<Props> = (props) => {
         onClose={() => props.updatedFunction?.()}
         maxWidth="md"
         fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: 2,
-            minHeight: "400px"
-          }
-        }}
       >
-        <DialogTitle sx={{
-          backgroundColor: "primary.main",
-          color: "#FFF",
-          p: 3
-        }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Box
-                sx={{
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                  borderRadius: "12px",
-                  p: 1.5,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Icon sx={{ fontSize: 24, color: "#FFF" }}>folder</Icon>
-              </Box>
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  {currentTab?.id ? Locale.label("sermons.liveStreamTimes.tabEdit.editTab") : Locale.label("sermons.liveStreamTimes.tabEdit.createNewTab")}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>
-                  {Locale.label("sermons.liveStreamTimes.tabEdit.configureSettings")}
-                </Typography>
-              </Box>
-            </Stack>
+        <DialogTitle sx={{ pb: 1 }}>
+          <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+            <Box>
+              <Typography variant="h2" component="span" sx={{ display: "block" }}>
+                {currentTab?.id ? Locale.label("sermons.liveStreamTimes.tabEdit.editTab") : Locale.label("sermons.liveStreamTimes.tabEdit.createNewTab")}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 400 }}>
+                {Locale.label("sermons.liveStreamTimes.tabEdit.configureSettings")}
+              </Typography>
+            </Box>
             <AppIconButton
               label={Locale.label("common.close")}
               icon={<CloseIcon />}
-              tone="header"
               onClick={() => props.updatedFunction?.()}
             />
           </Stack>
         </DialogTitle>
 
-        <DialogContent sx={{ p: 3 }}>
+        <DialogContent>
           <ErrorMessages errors={errors} />
 
           <Stack spacing={3} sx={{ mt: 2 }}>
-            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <CardContent>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>visibility</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                    {Locale.label("sermons.liveStreamTimes.tabEdit.tabDisplay")}
-                  </Typography>
-                </Stack>
+            <Box>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                {Locale.label("sermons.liveStreamTimes.tabEdit.tabDisplay")}
+              </Typography>
 
-                <Stack direction="row" spacing={2} alignItems="start">
-                  <Box sx={{ flex: 1 }}>
-                    <TextField
-                      fullWidth
-                      label={Locale.label("sermons.liveStreamTimes.tabEdit.tabText")}
-                      name="text"
-                      type="text"
-                      value={currentTab?.text || ""}
-                      onChange={handleChange}
-                      placeholder={Locale.label("sermons.liveStreamTimes.tabEdit.tabTextPlaceholder")}
-                      size="small"
-                      sx={{ mb: 2 }}
-                    />
+              <Stack direction="row" spacing={2} alignItems="start">
+                <Box sx={{ flex: 1 }}>
+                  <TextField
+                    fullWidth
+                    label={Locale.label("sermons.liveStreamTimes.tabEdit.tabText")}
+                    name="text"
+                    type="text"
+                    value={currentTab?.text || ""}
+                    onChange={handleChange}
+                    placeholder={Locale.label("sermons.liveStreamTimes.tabEdit.tabTextPlaceholder")}
+                    size="small"
+                    sx={{ mb: 2 }}
+                  />
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: "text.secondary", display: "block" }}>
+                    {Locale.label("sermons.liveStreamTimes.tabEdit.icon")}
+                  </Typography>
+                  <Box
+                    onClick={() => setIconPickerOpen(true)}
+                    sx={{
+                      minWidth: 60,
+                      height: 40,
+                      borderRadius: "var(--b1-radius-control)",
+                      border: 1,
+                      borderColor: "var(--b1-control-border)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "primary.main",
+                      backgroundColor: "background.paper",
+                      cursor: "pointer",
+                      "&:hover": {
+                        borderColor: "primary.main",
+                        backgroundColor: "var(--bg-sub)"
+                      }
+                    }}
+                  >
+                    <Icon>{currentTab?.icon || "link"}</Icon>
                   </Box>
-                  <Box>
-                    <Typography variant="caption" sx={{ color: "text.secondary", display: "block" }}>
-                      {Locale.label("sermons.liveStreamTimes.tabEdit.icon")}
+                </Box>
+              </Stack>
+            </Box>
+
+            <Box>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                {Locale.label("sermons.liveStreamTimes.tabEdit.linkConfiguration")}
+              </Typography>
+
+              <Stack spacing={2}>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="type">{Locale.label("sermons.liveStreamTimes.tabEdit.linkType")}</InputLabel>
+                  <Select
+                    labelId="type"
+                    label={Locale.label("sermons.liveStreamTimes.tabEdit.linkType")}
+                    name="type"
+                    value={currentTab?.linkType || ""}
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="url">
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Icon sx={{ fontSize: 18 }}>open_in_new</Icon>
+                        <Typography>{Locale.label("sermons.liveStreamTimes.tabEdit.externalUrl")}</Typography>
+                      </Stack>
+                    </MenuItem>
+                    <MenuItem value="chat">
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Icon sx={{ fontSize: 18 }}>chat</Icon>
+                        <Typography>{Locale.label("sermons.liveStreamTimes.tabEdit.chat")}</Typography>
+                      </Stack>
+                    </MenuItem>
+                    <MenuItem value="prayer">
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Icon sx={{ fontSize: 18 }}>favorite</Icon>
+                        <Typography>{Locale.label("sermons.liveStreamTimes.tabEdit.prayer")}</Typography>
+                      </Stack>
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+
+                {getUrl()}
+
+                <Box sx={{ mt: 1 }}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Icon sx={{ fontSize: 16, color: "text.secondary" }}>info</Icon>
+                    <Typography variant="caption" color="text.secondary">
+                      {currentTab?.linkType === "url" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.url")}
+                      {currentTab?.linkType === "chat" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.chat")}
+                      {currentTab?.linkType === "prayer" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.prayer")}
+                      {!currentTab?.linkType && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.none")}
                     </Typography>
-                    <Box
-                      onClick={() => setIconPickerOpen(true)}
-                      sx={{
-                        minWidth: 60,
-                        height: 40,
-                        borderRadius: 1,
-                        border: "1px solid",
-                        borderColor: "grey.400",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "primary.main",
-                        backgroundColor: "background.paper",
-                        cursor: "pointer",
-                        "&:hover": {
-                          borderColor: "primary.main",
-                          backgroundColor: "var(--bg-sub)"
-                        }
-                      }}
-                    >
-                      <Icon>{currentTab?.icon || "link"}</Icon>
-                    </Box>
-                  </Box>
-                </Stack>
-              </CardContent>
-            </Card>
-
-            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <CardContent>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>settings</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                    {Locale.label("sermons.liveStreamTimes.tabEdit.linkConfiguration")}
-                  </Typography>
-                </Stack>
-
-                <Stack spacing={2}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="type">{Locale.label("sermons.liveStreamTimes.tabEdit.linkType")}</InputLabel>
-                    <Select
-                      labelId="type"
-                      label={Locale.label("sermons.liveStreamTimes.tabEdit.linkType")}
-                      name="type"
-                      value={currentTab?.linkType || ""}
-                      onChange={handleChange}
-                    >
-                      <MenuItem value="url">
-                        <Stack direction="row" alignItems="center" spacing={1}>
-                          <Icon sx={{ fontSize: 18 }}>open_in_new</Icon>
-                          <Typography>{Locale.label("sermons.liveStreamTimes.tabEdit.externalUrl")}</Typography>
-                        </Stack>
-                      </MenuItem>
-                      <MenuItem value="chat">
-                        <Stack direction="row" alignItems="center" spacing={1}>
-                          <Icon sx={{ fontSize: 18 }}>chat</Icon>
-                          <Typography>{Locale.label("sermons.liveStreamTimes.tabEdit.chat")}</Typography>
-                        </Stack>
-                      </MenuItem>
-                      <MenuItem value="prayer">
-                        <Stack direction="row" alignItems="center" spacing={1}>
-                          <Icon sx={{ fontSize: 18 }}>favorite</Icon>
-                          <Typography>{Locale.label("sermons.liveStreamTimes.tabEdit.prayer")}</Typography>
-                        </Stack>
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-
-                  {getUrl()}
-
-                  <Box sx={{ mt: 1 }}>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Icon sx={{ fontSize: 16, color: "text.secondary" }}>info</Icon>
-                      <Typography variant="caption" color="text.secondary">
-                        {currentTab?.linkType === "url" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.url")}
-                        {currentTab?.linkType === "chat" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.chat")}
-                        {currentTab?.linkType === "prayer" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.prayer")}
-                        {!currentTab?.linkType && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.none")}
-                      </Typography>
-                    </Stack>
-                  </Box>
-                </Stack>
-              </CardContent>
-            </Card>
+                  </Stack>
+                </Box>
+              </Stack>
+            </Box>
           </Stack>
         </DialogContent>
 
@@ -292,10 +255,6 @@ export const TabEdit: React.FC<Props> = (props) => {
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}
-                sx={{
-                  textTransform: "none",
-                  fontWeight: 500
-                }}
               >
                 {Locale.label("sermons.liveStreamTimes.tabEdit.delete")}
               </Button>
@@ -305,10 +264,6 @@ export const TabEdit: React.FC<Props> = (props) => {
               variant="outlined"
               onClick={() => props.updatedFunction?.()}
               disabled={isLoading}
-              sx={{
-                textTransform: "none",
-                fontWeight: 500
-              }}
             >
               {Locale.label("sermons.liveStreamTimes.tabEdit.cancel")}
             </Button>
@@ -317,11 +272,6 @@ export const TabEdit: React.FC<Props> = (props) => {
               startIcon={isLoading ? null : <SaveIcon />}
               onClick={handleSave}
               disabled={isLoading}
-              sx={{
-                textTransform: "none",
-                fontWeight: 600,
-                minWidth: 100
-              }}
             >
               {isLoading ? Locale.label("sermons.liveStreamTimes.tabEdit.saving") : Locale.label("sermons.liveStreamTimes.tabEdit.saveTab")}
             </Button>
@@ -333,7 +283,7 @@ export const TabEdit: React.FC<Props> = (props) => {
         <DialogTitle>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Icon sx={{ color: "error.main" }}>warning</Icon>
-            <Typography variant="h6">{Locale.label("sermons.liveStreamTimes.tabEdit.deleteTab")}</Typography>
+            <Typography variant="h3" component="span">{Locale.label("sermons.liveStreamTimes.tabEdit.deleteTab")}</Typography>
           </Stack>
         </DialogTitle>
         <DialogContent>
@@ -345,7 +295,6 @@ export const TabEdit: React.FC<Props> = (props) => {
           <Button
             onClick={() => setDeleteDialogOpen(false)}
             disabled={isLoading}
-            sx={{ textTransform: "none" }}
           >
             {Locale.label("sermons.liveStreamTimes.tabEdit.cancel")}
           </Button>
@@ -354,7 +303,6 @@ export const TabEdit: React.FC<Props> = (props) => {
             color="error"
             variant="contained"
             disabled={isLoading}
-            sx={{ textTransform: "none" }}
           >
             {isLoading ? Locale.label("sermons.liveStreamTimes.tabEdit.deleting") : Locale.label("sermons.liveStreamTimes.tabEdit.delete")}
           </Button>

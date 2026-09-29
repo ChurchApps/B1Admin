@@ -3,7 +3,7 @@ import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Table, Tab
 import { type GroupInterface, type ServiceInterface, type ServiceTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, DisplayBox, ErrorMessages, Loading, Locale, useMountedState } from "@churchapps/apphelper";
 import { AppDatePicker } from "../../components";
-import { FormCard, hoverRowSx } from "../../components/ui";
+import { FormCard, hoverRowSx, numericCellSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 
 export interface HeadcountInterface {
@@ -116,7 +116,7 @@ export const HeadcountEntry: React.FC = () => {
       <TableCell>{h.serviceName || ""}</TableCell>
       <TableCell>{h.serviceTimeName || ""}</TableCell>
       <TableCell>{groupName(h.groupId)}</TableCell>
-      <TableCell align="right" data-testid="headcount-value-cell">{h.value}</TableCell>
+      <TableCell sx={numericCellSx} data-testid="headcount-value-cell">{h.value}</TableCell>
     </TableRow>
   ));
 
@@ -166,7 +166,7 @@ export const HeadcountEntry: React.FC = () => {
             {headcounts === null ? <Loading /> : rows.length === 0 ? (
               <Box sx={{ textAlign: "center", py: 4 }}>
                 <Stack spacing={1} alignItems="center">
-                  <Icon sx={{ fontSize: 48, color: "var(--text-muted)" }}>groups</Icon>
+                  <Icon sx={{ color: "text.secondary" }}>groups</Icon>
                   <Typography variant="body1" color="text.secondary">{Locale.label("attendance.headcountEntry.none")}</Typography>
                 </Stack>
               </Box>
@@ -178,7 +178,7 @@ export const HeadcountEntry: React.FC = () => {
                     <TableCell>{Locale.label("attendance.headcountEntry.service")}</TableCell>
                     <TableCell>{Locale.label("attendance.headcountEntry.serviceTime")}</TableCell>
                     <TableCell>{Locale.label("attendance.headcountEntry.group")}</TableCell>
-                    <TableCell align="right">{Locale.label("attendance.headcountEntry.count")}</TableCell>
+                    <TableCell sx={numericCellSx}>{Locale.label("attendance.headcountEntry.count")}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>{rows}</TableBody>

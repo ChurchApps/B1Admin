@@ -38,7 +38,7 @@ test.describe.serial("Group Health & Calendar", () => {
 
   test("group health tab shows stats and demographics", async () => {
     await openFirstGroup();
-    await page.getByRole("tab", { name: "Health" }).click();
+    await page.getByTestId("group-see-health").click();
     const tab = page.locator("[data-testid=\"group-health-tab\"]");
     await expect(tab).toBeVisible();
     await expect(tab).toContainText("Members");
@@ -50,7 +50,7 @@ test.describe.serial("Group Health & Calendar", () => {
 
   test("bulk-adds weekly events and skips a holiday", async () => {
     await openFirstGroup();
-    await page.getByRole("tab", { name: "Calendar" }).click();
+    await page.getByTestId("group-all-events").click();
     await expect(page.locator("[data-testid=\"group-calendar-tab\"]")).toBeVisible();
 
     await page.locator("[data-testid=\"bulk-add-events-button\"]").click();
@@ -76,7 +76,7 @@ test.describe.serial("Group Health & Calendar", () => {
 
   test("deletes the bulk-created event", async () => {
     await openFirstGroup();
-    await page.getByRole("tab", { name: "Calendar" }).click();
+    await page.getByTestId("group-all-events").click();
     const row = page.locator("[data-testid=\"group-calendar-tab\"] tbody tr", { hasText: "Weekly Gathering" });
     await expect(row).toBeVisible();
     await row.locator("[data-testid^=\"delete-event-\"]").click();

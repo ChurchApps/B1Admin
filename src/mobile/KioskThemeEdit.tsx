@@ -157,7 +157,7 @@ export const KioskThemeEdit: React.FC = () => {
 
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="subtitle1" fontWeight={600}>{Locale.label("mobile.checkInPage.kiosk.backgroundImage")}</Typography>
+          <Typography variant="h3">{Locale.label("mobile.checkInPage.kiosk.backgroundImage")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -165,7 +165,7 @@ export const KioskThemeEdit: React.FC = () => {
           </Typography>
           {config.backgroundImage && (
             <Box sx={{ mb: 2 }}>
-              <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid var(--border-main)" }} />
+              <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: "var(--b1-radius-control)", border: "1px solid var(--b1-border)" }} />
             </Box>
           )}
           <Stack direction="row" spacing={2}>
@@ -183,7 +183,7 @@ export const KioskThemeEdit: React.FC = () => {
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="subtitle1" fontWeight={600}>{Locale.label("mobile.checkInPage.kiosk.idleScreen")}</Typography>
+          <Typography variant="h3">{Locale.label("mobile.checkInPage.kiosk.idleScreen")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FormControlLabel
@@ -207,9 +207,9 @@ export const KioskThemeEdit: React.FC = () => {
 
           <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("mobile.checkInPage.kiosk.slides")}</Typography>
           {config.idleScreen.slides.map((slide, index) => (
-            <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: "1px solid var(--border-main)", borderRadius: 2 }}>
+            <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
               {slide.imageUrl && (
-                <img src={slide.imageUrl} alt={`${Locale.label("mobile.checkInPage.kiosk.slides")} ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: 4 }} />
+                <img src={slide.imageUrl} alt={`${Locale.label("mobile.checkInPage.kiosk.slides")} ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: "var(--b1-radius-control)" }} />
               )}
               <Button size="small" variant="outlined" onClick={() => { setEditingSlideIndex(index); setEditingImage("slide"); }}>
                 {slide.imageUrl ? Locale.label("common.change") : Locale.label("mobile.checkInPage.kiosk.upload")}

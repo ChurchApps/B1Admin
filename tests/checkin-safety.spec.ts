@@ -1,6 +1,6 @@
 import { test, expect, request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { confirmDelete, editIconButton, openKnownPerson, SEED_PEOPLE } from "./helpers/fixtures";
+import { confirmDelete, openKnownPerson, SEED_PEOPLE } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Phase 3 — Check-Ins child safety (B1Admin side). Covers the Check-In Capacity
@@ -55,7 +55,7 @@ test.describe.serial("Check-Ins child safety", () => {
   test("Check-In Capacity fields round-trip and clear on a group", async () => {
     const group = await createGroup(`Checkin Capacity ${TS}`);
     await page.goto(`/groups/${group.id}`);
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
     await page.locator('[data-testid="capacity-input"]').waitFor({ state: "visible", timeout: 10000 });
 
     await page.locator('[data-testid="capacity-input"] input, input[name="capacity"]').first().fill("10");
@@ -77,7 +77,7 @@ test.describe.serial("Check-Ins child safety", () => {
     expect(saved.checkinClosed).toBeTruthy();
 
     // Clear the capacity field — explicit null must persist through the save.
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
     await page.locator('input[name="capacity"]').waitFor({ state: "visible", timeout: 10000 });
     await page.locator('input[name="capacity"]').fill("");
     const save2 = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST" && r.status() === 200);
@@ -146,7 +146,7 @@ test.describe.serial("Check-Ins child safety", () => {
     });
 
     await page.goto(`/groups/${group.id}`);
-    await page.getByRole("tab", { name: "Sessions" }).click();
+    await page.getByTestId("group-all-sessions").click();
     await expect(page.locator("#groupMemberTable a.personName").first()).toBeVisible({ timeout: 20000 });
     await expect(page.locator('[data-testid="checkin-type-chip"]').first()).toHaveText("Volunteer", { timeout: 20000 });
     await expect(page.locator('[data-testid="volunteer-count-chip"]')).toBeVisible();

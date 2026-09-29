@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Stack, Typography, Chip } from "@mui/material";
+import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Stack, Typography } from "@mui/material";
 import { Webhook as WebhookIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { WebhookEdit } from "./WebhookEdit";
-import { SectionListCard } from "../../components/ui";
+import { SectionListCard, StatusBadge, numericCellSx, tableScrollSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 
@@ -78,24 +78,24 @@ export const WebhooksSection: React.FC = () => {
           title: Locale.label("settings.webhooksPage.emptyTitle"),
           description: Locale.label("settings.webhooksPage.emptyDescription")
         }}>
-        <TableContainer>
+        <TableContainer sx={tableScrollSx} role="region" tabIndex={0} aria-label={Locale.label("settings.webhooksPage.title")}>
           <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell>{Locale.label("settings.webhooksPage.name")}</TableCell>
                 <TableCell>{Locale.label("settings.webhooksPage.url")}</TableCell>
-                <TableCell align="right">{Locale.label("settings.webhooksPage.events")}</TableCell>
+                <TableCell sx={numericCellSx}>{Locale.label("settings.webhooksPage.events")}</TableCell>
                 <TableCell>{Locale.label("settings.webhooksPage.status")}</TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {webhooks.map((w) => (
-                <TableRow key={w.id} hover sx={{ cursor: "pointer" }} onClick={() => setEditWebhook(w)}>
+                <TableRow key={w.id} sx={{ cursor: "pointer" }} onClick={() => setEditWebhook(w)}>
                   <TableCell><Typography fontWeight={600}>{w.name}</Typography></TableCell>
                   <TableCell><Typography variant="body2" sx={{ maxWidth: 280, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w.url}</Typography></TableCell>
-                  <TableCell align="right">{w.events?.length || 0}</TableCell>
-                  <TableCell><Chip size="small" color={w.active ? "success" : "default"} label={w.active ? Locale.label("settings.webhooksPage.active") : Locale.label("settings.webhooksPage.disabled")} /></TableCell>
+                  <TableCell sx={numericCellSx}>{w.events?.length || 0}</TableCell>
+                  <TableCell><StatusBadge variant="dot" tone={w.active ? "success" : "neutral"}>{w.active ? Locale.label("settings.webhooksPage.active") : Locale.label("settings.webhooksPage.disabled")}</StatusBadge></TableCell>
                   <TableCell align="right" className="rowActions">
                     <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                       <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); setEditWebhook(w); }} />

@@ -58,7 +58,7 @@ export const Login: React.FC = () => {
   return (
     <div className="split-login-page" style={{ display: "flex", minHeight: "100vh" }}>
       <LoginHeroPanel />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", backgroundColor: "white" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", backgroundColor: "var(--b1-surface)" }}>
         {process.env.REACT_APP_STAGE === "demo" && (
           <Alert severity="error" style={{ margin: "16px 16px 0" }}>
             <b>{Locale.label("app.login.demoLabel")}</b> {Locale.label("app.login.demoMessage")}

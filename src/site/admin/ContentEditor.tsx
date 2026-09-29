@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skel
 import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface, SiteInterface } from "../../helpers/Interfaces";
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
 import { Permissions } from "@churchapps/helpers";
+import { Themes } from "../../helpers/Themes";
 import { Section } from "./Section";
 import React from "react";
 import { Theme, DroppableArea } from "@churchapps/apphelper/website";
@@ -38,8 +39,7 @@ import { WEBSITE_ELEMENT_TYPES } from "./websiteContent";
 import { A11yPanel } from "./A11yPanel";
 import { checkPageAccessibility } from "./a11yChecker";
 
-const lightEditorTheme = createTheme({
-  palette: { mode: "light", background: { default: "#e5e8ee", paper: "#ffffff" } },
+const lightEditorTheme = createTheme(Themes.BaseTheme, {
   components: {
     MuiTextField: { defaultProps: { margin: "normal" } },
     MuiFormControl: { defaultProps: { margin: "normal" } },
@@ -918,13 +918,13 @@ export function ContentEditor(props: Props) {
             textAlign: "center",
             px: 3,
             gap: 1.5,
-            backgroundColor: "var(--bg-main)"
+            backgroundColor: "background.default"
           }}
         >
           <Icon sx={{ fontSize: 48, color: "text.secondary" }}>devices</Icon>
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>{Locale.label("site.contentEditor.smallScreenTitle")}</Typography>
+          <Typography variant="h3" component="h1">{Locale.label("site.contentEditor.smallScreenTitle")}</Typography>
           <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 360 }}>{Locale.label("site.contentEditor.smallScreenMessage")}</Typography>
-          <Button variant="contained" disableElevation onClick={() => navigate("/site")} sx={{ textTransform: "none", fontWeight: 600, mt: 1 }}>
+          <Button variant="contained" onClick={() => navigate("/site")} sx={{ mt: 1 }}>
             {Locale.label("site.contentEditor.backToSite")}
           </Button>
         </Box>
@@ -967,9 +967,9 @@ export function ContentEditor(props: Props) {
           onRestore={handleHistoryRestore}
         />
         <Container sx={{ mt: 5 }}>
-          <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: 2 }} animation="wave" />
-          <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: 2 }} animation="wave" />
-          <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: 2 }} animation="wave" />
+          <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: "var(--b1-radius-panel)" }} animation="wave" />
+          <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: "var(--b1-radius-panel)" }} animation="wave" />
+          <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: "var(--b1-radius-panel)" }} animation="wave" />
         </Container>
       </ThemeProvider>
     );
@@ -978,7 +978,7 @@ export function ContentEditor(props: Props) {
   return (
     <ThemeProvider theme={lightEditorTheme}>
       <CssBaseline />
-      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "var(--bg-main)" }}>
+      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: lightEditorTheme.palette.background.default }}>
         <Theme globalStyles={props.config?.globalStyles && { ...props.config.globalStyles, customJS: "" }} appearance={props.config?.appearance} />
         {fontUrls.map((url) => <link key={url} rel="stylesheet" href={url} precedence="default" />)}
         <style>{css}</style>

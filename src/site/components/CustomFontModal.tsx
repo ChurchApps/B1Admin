@@ -90,9 +90,9 @@ export function CustomFontModal(props: Props) {
   useEffect(loadData, []);
 
   return (
-    <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="md" scroll="body" PaperProps={{ sx: { borderRadius: 2, minHeight: "70vh" } }}>
-      <DialogTitle sx={{ backgroundColor: "primary.light", color: "primary.contrastText", borderRadius: "8px 8px 0 0" }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>{Locale.label("site.customFontModal.selectFont")}</Typography>
+    <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="md" scroll="body" PaperProps={{ sx: { borderRadius: "var(--b1-radius-panel)", minHeight: "70vh" } }}>
+      <DialogTitle>
+        <Typography variant="h3" component="span">{Locale.label("site.customFontModal.selectFont")}</Typography>
       </DialogTitle>
       <DialogContent sx={{ p: 3 }}>
         <Box sx={{ mb: 3 }}>

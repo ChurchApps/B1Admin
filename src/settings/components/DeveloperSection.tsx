@@ -3,7 +3,7 @@ import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, 
 import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { NavigationTabs, type NavigationTab, SectionListCard } from "../../components/ui";
+import { NavigationTabs, type NavigationTab, SectionListCard, tableScrollSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 import { formatDateSafe } from "../../helpers/DateFormatHelper";
@@ -40,7 +40,7 @@ const renderScopes = (scopes?: string) => {
   return (
     <Stack direction="row" flexWrap="wrap" gap={0.5} sx={{ maxWidth: 440 }}>
       {list.map((s) => (
-        <Chip key={s} label={s} size="small" variant="outlined" sx={{ height: 22, fontFamily: "monospace", fontSize: "0.72rem", "& .MuiChip-label": { px: 0.75 } }} />
+        <Chip key={s} label={s} size="small" variant="outlined" sx={{ fontFamily: "monospace" }} />
       ))}
     </Stack>
   );
@@ -100,7 +100,7 @@ export const DeveloperSection: React.FC = () => {
             addLabel={Locale.label("settings.developer.newKey")}
             loading={loading}
             empty={{ icon: <KeyIcon />, title: Locale.label("settings.developer.noKeys") }}>
-            <TableContainer>
+            <TableContainer sx={tableScrollSx} role="region" tabIndex={0} aria-label={Locale.label("settings.developer.title")}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -114,7 +114,7 @@ export const DeveloperSection: React.FC = () => {
                 </TableHead>
                 <TableBody>
                   {apiKeys.map((k) => (
-                    <TableRow key={k.id} hover>
+                    <TableRow key={k.id}>
                       <TableCell><Typography fontWeight={600}>{k.name}</Typography></TableCell>
                       <TableCell><Typography variant="body2" fontFamily="monospace">cak_{k.prefix}…</Typography></TableCell>
                       <TableCell>{renderScopes(k.scopes)}</TableCell>
@@ -140,7 +140,7 @@ export const DeveloperSection: React.FC = () => {
             count={connections.length}
             loading={loading}
             empty={{ icon: <LinkIcon />, title: Locale.label("settings.developer.noConnections") }}>
-            <TableContainer>
+            <TableContainer sx={tableScrollSx} role="region" tabIndex={0} aria-label={Locale.label("settings.developer.title")}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -153,7 +153,7 @@ export const DeveloperSection: React.FC = () => {
                 </TableHead>
                 <TableBody>
                   {connections.map((c) => (
-                    <TableRow key={c.id} hover>
+                    <TableRow key={c.id}>
                       <TableCell><Typography fontWeight={600}>{c.clientName}</Typography></TableCell>
                       <TableCell>{renderScopes(c.scopes)}</TableCell>
                       <TableCell>{fmtDate(c.createdAt)}</TableCell>

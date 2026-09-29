@@ -5,6 +5,13 @@ import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
+// /attendance opens on this week; Setup, Headcounts and All years are verbs, and the reports are pills (role=tab) inside All years.
+const openSetup = (page: Page) => page.getByTestId("attendance-verb-setup").click();
+async function openReport(page: Page, name: string) {
+  await page.getByTestId("attendance-verb-years").click();
+  await page.locator('button[role="tab"]').getByText(name, { exact: true }).click();
+}
+
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Attendance Management", () => {
 
@@ -17,6 +24,7 @@ test.describe("Attendance Management", () => {
       page = await context.newPage();
       await login(page);
       await navigateToAttendance(page);
+      await openSetup(page);
     });
 
     test.afterAll(async () => {
@@ -89,12 +97,14 @@ test.describe("Attendance Management", () => {
   });
 
   test("Setup is titled Service structure and points named attendance at the group's Sessions tab", async ({ page }) => {
+    await openSetup(page);
     await expect(page.getByText("Service structure")).toBeVisible({ timeout: 10000 });
     await expect(page.locator('[data-testid="attendance-setup-helper"]')).toContainText("This page only assigns groups to service times.");
     await expect(page.getByText("Service times", { exact: true })).toBeVisible();
   });
 
   test("should view group from attendance homepage", async ({ page }) => {
+    await openSetup(page);
     const groupBtn = page.locator("a").getByText("Worship").first();
     await groupBtn.click();
     await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
@@ -102,8 +112,7 @@ test.describe("Attendance Management", () => {
 
   test.describe("Trends", () => {
     test("should filter attendance trends", async ({ page }) => {
-      const trendTab = page.locator('button[role="tab"]').getByText("Attendance Trend");
-      await trendTab.click();
+      await openReport(page, "Attendance Trend");
 
       const campusName = page.locator('[id="mui-component-select-campusId"]');
       await expect(campusName).toBeVisible({ timeout: 10000 });
@@ -133,8 +142,7 @@ test.describe("Attendance Management", () => {
     });
 
     test("should display group attendance", async ({ page }) => {
-      const trendTab = page.locator('button[role="tab"]').getByText("Group Attendance");
-      await trendTab.click();
+      await openReport(page, "Group Attendance");
 
       const campusName = page.locator('[id="mui-component-select-campusId"]');
       await expect(campusName).toBeVisible({ timeout: 10000 });
@@ -156,18 +164,15 @@ test.describe("Attendance Management", () => {
 
   test.describe("Reports & navigation extras", () => {
     test("switching between Attendance Trend and Group Attendance tabs preserves filters", async ({ page }) => {
-      const trendTab = page.locator('button[role="tab"]').getByText("Attendance Trend");
-      await trendTab.click();
+      await openReport(page, "Attendance Trend");
       await expect(page.locator('[id="mui-component-select-campusId"]')).toBeVisible({ timeout: 10000 });
-      const groupTab = page.locator('button[role="tab"]').getByText("Group Attendance");
-      await groupTab.click();
+      await openReport(page, "Group Attendance");
       await expect(page.locator('[id="mui-component-select-campusId"]')).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[name="week"]')).toBeVisible();
     });
 
     test("Group Attendance report shows results for a week with seed visits", async ({ page }) => {
-      const groupTab = page.locator('button[role="tab"]').getByText("Group Attendance");
-      await groupTab.click();
+      await openReport(page, "Group Attendance");
       const campusName = page.locator('[id="mui-component-select-campusId"]');
       await campusName.click();
       await page.locator("li").getByText("Main Campus").click();
@@ -184,8 +189,7 @@ test.describe("Attendance Management", () => {
     });
 
     test("Attendance Trend Run Report enabled only after selecting filters", async ({ page }) => {
-      const trendTab = page.locator('button[role="tab"]').getByText("Attendance Trend");
-      await trendTab.click();
+      await openReport(page, "Attendance Trend");
       // Run Report button is not gated on selections.
       const runBtn = page.locator("button").getByText("Run Report");
       await expect(runBtn).toBeVisible({ timeout: 10000 });
@@ -244,12 +248,12 @@ test.describe("Attendance Management", () => {
     const headcountRow = (value: string) => page.locator('[data-testid="headcount-table"] tbody tr').filter({ has: page.locator('[data-testid="headcount-value-cell"]', { hasText: new RegExp(`^${value}$`) }) });
 
     test("headcount form says it is a total, not a named roster", async () => {
-      await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();
+      await page.getByTestId("attendance-tab-headcounts").click();
       await expect(page.locator('[data-testid="headcount-hint"]')).toContainText("not a named roster", { timeout: 10000 });
     });
 
     test("should enter a headcount for a service time", async () => {
-      await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();
+      await page.getByTestId("attendance-tab-headcounts").click();
       const box = page.locator("#headcountBox");
       await expect(box).toBeVisible({ timeout: 10000 });
 
@@ -273,7 +277,7 @@ test.describe("Attendance Management", () => {
     });
 
     test("should show the headcount in the Headcount Trend report", async () => {
-      await page.locator('button[role="tab"]').getByText("Headcount Trend", { exact: true }).click();
+      await openReport(page, "Headcount Trend");
       const reportRows = page.locator('[id="reportsBox"] table tr');
       await expect(reportRows.first()).toBeVisible({ timeout: 15000 });
       await expect(page.locator('[id="reportsBox"]')).toContainText("137", { timeout: 10000 });
@@ -288,7 +292,7 @@ test.describe("Attendance Management", () => {
     });
 
     test("should edit the headcount", async () => {
-      await page.locator('button[role="tab"]').getByText("Headcounts", { exact: true }).click();
+      await page.getByTestId("attendance-tab-headcounts").click();
       await expect(headcountRow("137")).toHaveCount(1, { timeout: 10000 });
       await headcountRow("137").click();
       const box = page.locator("#headcountBox");

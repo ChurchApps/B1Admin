@@ -270,7 +270,7 @@ export const PersonEdit = memo((props: Props) => {
         <Grid container spacing={3}>
           <Grid size={{ sm: 3 }} className="my-auto">
             <Box sx={{ textAlign: "center" }}>
-              <div style={{ border: "3px solid #fff", borderRadius: "50%", boxShadow: "0 2px 4px rgba(0,0,0,0.2)", display: "inline-block" }}>
+              <div style={{ display: "inline-block" }}>
                 <PersonAvatar person={props.person} size="xxlarge" onClick={() => props.togglePhotoEditor(true, buildPerson(getValues()))} />
               </div>
             </Box>

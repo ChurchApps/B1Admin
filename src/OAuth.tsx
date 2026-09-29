@@ -47,12 +47,12 @@ export const OAuthPage: React.FC = () => {
 
   return (
     <AuthShell logoAlt={Locale.label("app.oauth.logoAlt")}>
-      <Alert severity="info" style={{ fontWeight: "bold" }}>
+      <Alert severity="info">
         {Locale.label("app.oauth.authorizationRequired")}
       </Alert>
       <div style={{ marginLeft: 50, marginRight: 50 }}>
         <div style={{ textAlign: "center" }}>
-          <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
+          <Icon sx={{ fontSize: 56, mt: 3, color: "text.secondary" }}>lock</Icon>
           <h2>{clientName || Locale.label("app.oauth.loading")}</h2>
           <p>
             {Locale.label("app.oauth.promptAccess").split("{churchName}").map((part, i, arr) => (
@@ -65,12 +65,12 @@ export const OAuthPage: React.FC = () => {
           <li>{Locale.label("app.oauth.permissionPlans")}</li>
         </ul>
       </div>
-      <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
+      <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2 }}>
         <Grid container spacing={2}>
           <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
             <Button
               fullWidth
-              variant="contained"
+              variant="outlined"
               onClick={() => {
                 if (redirectUri && clientRedirectUris?.includes(redirectUri)) {
                   const denyUrl = new URL(redirectUri);

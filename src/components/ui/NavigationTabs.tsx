@@ -1,6 +1,7 @@
 import { Tabs, Tab, Menu, MenuItem, Stack, useTheme } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import React, { memo, useState } from "react";
+import { useHeaderTone } from "./headerTone";
 
 export interface NavigationTab {
   value: string;
@@ -30,12 +31,14 @@ interface Props {
 
 // Shared with SmartTabs so every page/local tab bar renders identically.
 export const navigationTabsSx = {
-  minHeight: 48,
+  minHeight: 44,
   "& .MuiTab-root": {
-    minHeight: 48,
+    minHeight: 44,
     textTransform: "none",
-    fontSize: "0.95rem",
-    fontWeight: 700
+    fontSize: "0.875rem",
+    fontWeight: 600,
+    color: "text.secondary",
+    "&.Mui-selected": { color: "primary.main" }
   }
 };
 
@@ -63,6 +66,8 @@ export const NavigationTabs = memo((props: Props) => {
   const { selectedTab, onTabChange, tabs, dropdown, testId, onHeader } = props;
   const [dropdownAnchor, setDropdownAnchor] = useState<null | HTMLElement>(null);
   const theme = useTheme();
+  const headerTone = useHeaderTone();
+  const onDarkHeader = onHeader && headerTone === "dark";
 
   const handleDropdownOpen = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -86,7 +91,7 @@ export const NavigationTabs = memo((props: Props) => {
   };
 
   const containerStyle: React.CSSProperties = onHeader
-    ? { backgroundColor: "transparent" }
+    ? { backgroundColor: "transparent", ...(onDarkHeader ? {} : { borderBottom: `1px solid ${theme.palette.divider}` }) }
     : { backgroundColor: theme.palette.background.paper, borderBottom: `1px solid ${theme.palette.divider}` };
 
   return (
@@ -97,7 +102,7 @@ export const NavigationTabs = memo((props: Props) => {
         variant="scrollable"
         scrollButtons="auto"
         allowScrollButtonsMobile
-        sx={onHeader ? headerTabsSx : navigationTabsSx}
+        sx={onDarkHeader ? headerTabsSx : navigationTabsSx}
         data-testid={testId}>
         {tabs.map((tab) => (
           <Tab

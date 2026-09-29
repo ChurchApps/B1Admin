@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { Box, Card, Table, TableBody, TableCell, TableRow } from "@mui/material";
-import { MonitorHeart as HealthIcon } from "@mui/icons-material";
-import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
-import { SortableTableHead } from "../components/ui";
+import { Link as RouterLink } from "react-router-dom";
+import { Box, Link, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Loading, Locale } from "@churchapps/apphelper";
+import { PageContainer, PageHeader, SortableTableHead, Surface, TextAction, numericCellSx, tableScrollSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 
 interface GroupHealthRow {
@@ -51,15 +50,16 @@ const GroupsHealthPage = () => {
 
   return (
     <>
-      <PageHeader icon={<HealthIcon />} title={Locale.label("groups.groupHealth.title")} subtitle={Locale.label("groups.groupHealth.subtitle")}>
-        <HealthIcon sx={{ fontSize: 32, color: "rgba(255,255,255,0.8)", mr: 2 }} />
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
+      <PageHeader title={Locale.label("groups.groupHealth.title")} subtitle={Locale.label("groups.groupHealth.subtitle")} />
+      <PageContainer>
+        <Box sx={{ mb: 3 }}>
+          <TextAction to="/groups" component={RouterLink} data-testid="groups-back">{"← " + Locale.label("common.backTo", "Back to {name}").replace("{name}", Locale.label("groups.groupsPage.groups"))}</TextAction>
+        </Box>
         {health.isLoading ? (
           <Loading />
         ) : (
-          <Card>
-            <Box sx={{ overflowX: "auto" }}>
+          <Surface disablePadding>
+            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("groups.groupHealth.title")} tabIndex={0}>
               <Table data-testid="groups-health-table">
                 <SortableTableHead columns={columns} sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
                 <TableBody>
@@ -71,25 +71,25 @@ const GroupsHealthPage = () => {
                   {rows.map((r) => (
                     <TableRow key={r.groupId} sx={{ whiteSpace: "nowrap" }}>
                       <TableCell>
-                        <Link to={"/groups/" + r.groupId} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{r.name}</Link>
+                        <Link component={RouterLink} to={"/groups/" + r.groupId} underline="hover" sx={{ fontWeight: 600 }}>{r.name}</Link>
                       </TableCell>
                       <TableCell>{r.categoryName}</TableCell>
-                      <TableCell align="right">{r.memberCount}</TableCell>
-                      <TableCell align="right">{r.joins90}</TableCell>
-                      <TableCell align="right">{r.leaves90}</TableCell>
-                      <TableCell align="right">{r.churnRate90}%</TableCell>
-                      <TableCell align="right">{r.averageAttendance === null ? "-" : r.averageAttendance}</TableCell>
-                      <TableCell align="right">{r.averageAge === null ? "-" : r.averageAge}</TableCell>
-                      <TableCell align="right">{r.femaleCount}</TableCell>
-                      <TableCell align="right">{r.maleCount}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.memberCount}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.joins90}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.leaves90}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.churnRate90}%</TableCell>
+                      <TableCell sx={numericCellSx}>{r.averageAttendance === null ? "-" : r.averageAttendance}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.averageAge === null ? "-" : r.averageAge}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.femaleCount}</TableCell>
+                      <TableCell sx={numericCellSx}>{r.maleCount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </Box>
-          </Card>
+          </Surface>
         )}
-      </Box>
+      </PageContainer>
     </>
   );
 };

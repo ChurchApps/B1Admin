@@ -1,14 +1,14 @@
 import React from "react";
 import { FundEdit, GivingLinkDialog } from "./components";
-import { UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
-import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon, AccountBalance as AccountBalanceIcon, Link as LinkIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Typography, Stack } from "@mui/material";
+import { VolunteerActivism as FundIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
+import { PageHeader, PageContainer, Surface, AddBar, EmptyState, StatusBadge, SortableTableHead, TextAction, VerbRow, hoverRowSx, tableScrollSx } from "../components/ui";
+import { CsvVerb, Lede } from "./components/GivingParts";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
 
@@ -27,23 +27,6 @@ export const FundsPage = () => {
     setEditFundId("notset");
     funds.refetch();
   };
-
-  const showEditFund = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const anchor = e.currentTarget as HTMLAnchorElement;
-    const id = anchor.getAttribute("data-id");
-    setEditFundId(id || "");
-  };
-
-  const [stats, setStats] = React.useState({ totalFunds: 0 });
-
-  React.useEffect(() => {
-    if (funds.data) {
-      const totalFunds = funds.data.length;
-
-      setStats({ totalFunds });
-    }
-  }, [funds.data]);
 
   const getSidebarModules = () => {
     const result = [];
@@ -71,23 +54,10 @@ export const FundsPage = () => {
 
     for (let i = 0; i < sortedFunds.length; i++) {
       const f = sortedFunds[i];
-      const editLink = canEdit ? (
-        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-${i}`} data-id={f.id} onClick={showEditFund} />
-      ) : null;
-
-      const givingLinkButton = canViewFund ? (
-        <AppIconButton
-          label={Locale.label("donations.givingLink.button")}
-          icon={<LinkIcon />}
-          data-testid={`giving-link-${i}`}
-          onClick={() => setLinkFund(f)}
-        />
-      ) : null;
-
       const fundLink = canViewFund ? (
-        <Typography component={Link} to={"/donations/funds/" + f.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+        <MuiLink component={Link} to={"/donations/funds/" + f.id} underline="hover" variant="body2" sx={{ fontWeight: 600 }}>
           {f.name}
-        </Typography>
+        </MuiLink>
       ) : (
         <Typography variant="body2" sx={{ fontWeight: 500 }}>
           {f.name}
@@ -98,31 +68,25 @@ export const FundsPage = () => {
         <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
               {fundLink}
-              {f.visible === false && <Chip label={Locale.label("donations.funds.hidden")} size="small" />}
+              {f.visible === false && <StatusBadge>{Locale.label("donations.funds.hidden")}</StatusBadge>}
             </Stack>
           </TableCell>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Box component="p" sx={{ m: 0 }}>
               {f.taxDeductible ? (
-                <>
-                  <Icon sx={{ color: "success.main", fontSize: 18 }}>check_circle</Icon>
-                  <Typography variant="body2" sx={{ color: "success.main", fontWeight: 500 }}>
-                    {Locale.label("donations.fundsPage.taxDeductible")}
-                  </Typography>
-                </>
+                <StatusBadge tone="success" variant="dot">{Locale.label("donations.fundsPage.taxDeductible")}</StatusBadge>
               ) : (
-                <>
-                  <Icon sx={{ color: "warning.main", fontSize: 18 }}>info</Icon>
-                  <Typography variant="body2" sx={{ color: "warning.main", fontWeight: 500 }}>
-                    {Locale.label("donations.fundsPage.nonDeductible")}
-                  </Typography>
-                </>
+                <StatusBadge tone="neutral" variant="dot">{Locale.label("donations.fundsPage.nonDeductible")}</StatusBadge>
               )}
-            </Stack>
+            </Box>
           </TableCell>
-          <TableCell align="right" className="rowActions">{givingLinkButton} {editLink}</TableCell>
+          <TableCell align="right">
+            <VerbRow sx={{ justifyContent: "flex-end" }}>
+              {canViewFund && <TextAction small data-testid={`giving-link-${i}`} onClick={() => setLinkFund(f)}>{Locale.label("donations.givingLink.button")}</TextAction>}
+              {canEdit && <TextAction small data-cy={`edit-${i}`} onClick={() => setEditFundId(f.id || "")}>{Locale.label("common.edit")}</TextAction>}
+            </VerbRow>
+          </TableCell>
         </TableRow>
       );
     }
@@ -133,21 +97,23 @@ export const FundsPage = () => {
     if (funds.isLoading) return <Loading />;
     else {
       return (
-        <Table sx={{ minWidth: 650 }}>
-          {sortedFunds.length > 0 && (
-            <SortableTableHead
-              columns={[
-                { key: "name", label: Locale.label("common.name"), sortable: true },
-                { key: "taxDeductible", label: Locale.label("donations.fundsPage.taxStatus") },
-                { key: "edit", label: "", align: "right" }
-              ]}
-              sortBy={sortBy}
-              sortDirection={sortDirection}
-              onSort={handleSort}
-            />
-          )}
-          <TableBody>{getRows()}</TableBody>
-        </Table>
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.funds.fund")} tabIndex={0}>
+          <Table sx={{ minWidth: 650 }}>
+            {sortedFunds.length > 0 && (
+              <SortableTableHead
+                columns={[
+                  { key: "name", label: Locale.label("common.name"), sortable: true },
+                  { key: "taxDeductible", label: Locale.label("donations.fundsPage.taxStatus") },
+                  { key: "edit", label: "", align: "right" }
+                ]}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                onSort={handleSort}
+              />
+            )}
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
       );
     }
   };
@@ -155,44 +121,28 @@ export const FundsPage = () => {
   const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
   if (denied) return denied;
 
+  const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+
   return (
     <>
-      <PageHeader
-        icon={<AccountBalanceIcon />}
-        title={Locale.label("donations.donations.funds")}
-        subtitle={Locale.label("donations.fundsPage.subtitle")}
-      >
-        {stats.totalFunds > 0 && (
-          <PageHeaderStats
-            spread
-            spacing={{ xs: 2, sm: 2, md: 4 }}
-            items={[{ icon: <FundIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalFunds, label: Locale.label("donations.fundsPage.totalFunds"), minWidth: 80 }]}
-          />
-        )}
-        {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-          <HeaderPrimaryButton
-            startIcon={<AddIcon />}
-            onClick={() => {
-              setEditFundId("");
-            }}
-            data-testid="add-fund-button">
-            {Locale.label("donations.fundsPage.addFund")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
+      <PageHeader title={Locale.label("donations.donations.funds")} subtitle={Locale.label("donations.fundsPage.subtitle")} />
 
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         {editFundId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
 
-        <CardWithHeader
-          icon={<FundIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          title={Locale.label("donations.funds.fund")}
-          count={sortedFunds.length}
-          actions={funds.data && <ExportButton data={funds.data} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
-        >
+        <Surface>
+          {!funds.isLoading && (
+            <Lede sx={{ mb: 2 }}>{Locale.label("donations.fundsPage.fundCount", "{count} funds").replace("{count}", sortedFunds.length.toString())}</Lede>
+          )}
           {getTable()}
-        </CardWithHeader>
-      </Box>
+          <AddBar>
+            <VerbRow>
+              {canEdit && <TextAction onClick={() => setEditFundId("")} data-testid="add-fund-button">{Locale.label("donations.fundsPage.addFund")}</TextAction>}
+              {(funds.data?.length || 0) > 0 && <CsvVerb data={funds.data || []} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
+            </VerbRow>
+          </AddBar>
+        </Surface>
+      </PageContainer>
 
       {linkFund && <GivingLinkDialog fund={linkFund} onClose={() => setLinkFund(null)} />}
     </>

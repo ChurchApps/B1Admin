@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, Checkbox, FormControl, FormControlLabel, Grid, Icon, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, Icon, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { ColorPicker } from "../admin/ColorPicker";
 import { IconPicker } from "../../components/iconPicker/IconPicker";
 import { AppDatePicker } from "../../components";
+import { CardWithHeader } from "../../components/ui";
 
 interface BannerData { text?: string; linkUrl?: string; linkText?: string; backgroundColor?: string; textColor?: string; startDate?: string; endDate?: string; }
 interface LauncherAction { label?: string; url?: string; icon?: string; }
@@ -77,15 +78,9 @@ export const SiteWidgetsEdit: React.FC = () => {
   const canAddAction = (launcher.actions || []).length < 5;
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Icon sx={{ color: "primary.main", fontSize: 20 }}>widgets</Icon>
-          <Typography variant="h6">{Locale.label("site.siteWidgets.title")}</Typography>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("site.siteWidgets.announcementBar")}</Typography>
+    <CardWithHeader title={Locale.label("site.siteWidgets.title")}>
+      <Box>
+        <Typography variant="h3" component="h3">{Locale.label("site.siteWidgets.announcementBar")}</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("site.siteWidgets.announcementDesc")}</Typography>
         <FormControlLabel control={<Checkbox checked={bannerEnabled} onChange={(e) => setBannerEnabled(e.target.checked)} data-testid="banner-enabled-checkbox" />} label={Locale.label("site.siteWidgets.enabled")} />
         {bannerEnabled && (
@@ -100,24 +95,24 @@ export const SiteWidgetsEdit: React.FC = () => {
               <TextField fullWidth size="small" label={Locale.label("site.siteWidgets.linkText")} value={banner.linkText || ""} onChange={(e) => updateBanner("linkText", e.target.value)} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <InputLabel sx={{ fontSize: "0.85rem" }}>{Locale.label("site.siteWidgets.backgroundColor")}</InputLabel>
+              <InputLabel>{Locale.label("site.siteWidgets.backgroundColor")}</InputLabel>
               <ColorPicker color={banner.backgroundColor || "#1565c0"} updatedCallback={(c) => updateBanner("backgroundColor", c)} globalStyles={globalStyles as GlobalStyleInterface} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <InputLabel sx={{ fontSize: "0.85rem" }}>{Locale.label("site.siteWidgets.textColor")}</InputLabel>
+              <InputLabel>{Locale.label("site.siteWidgets.textColor")}</InputLabel>
               <ColorPicker color={banner.textColor || "#ffffff"} updatedCallback={(c) => updateBanner("textColor", c)} globalStyles={globalStyles as GlobalStyleInterface} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <AppDatePicker fullWidth size="small"  label={Locale.label("site.siteWidgets.startDate")} value={banner.startDate || ""} onChange={(e) => updateBanner("startDate", e.target.value)} InputLabelProps={{ shrink: true }} />
+              <AppDatePicker fullWidth size="small" label={Locale.label("site.siteWidgets.startDate")} value={banner.startDate || ""} onChange={(e) => updateBanner("startDate", e.target.value)} InputLabelProps={{ shrink: true }} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <AppDatePicker fullWidth size="small"  label={Locale.label("site.siteWidgets.endDate")} value={banner.endDate || ""} onChange={(e) => updateBanner("endDate", e.target.value)} InputLabelProps={{ shrink: true }} />
+              <AppDatePicker fullWidth size="small" label={Locale.label("site.siteWidgets.endDate")} value={banner.endDate || ""} onChange={(e) => updateBanner("endDate", e.target.value)} InputLabelProps={{ shrink: true }} />
             </Grid>
           </Grid>
         )}
 
-        <Box sx={{ borderTop: "1px solid var(--border-light)", mt: 2, pt: 2 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("site.siteWidgets.launcher")}</Typography>
+        <Box sx={{ borderTop: 1, borderColor: "divider", mt: 2, pt: 2 }}>
+          <Typography variant="h3" component="h3">{Locale.label("site.siteWidgets.launcher")}</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("site.siteWidgets.launcherDesc")}</Typography>
           <FormControlLabel control={<Checkbox checked={launcherEnabled} onChange={(e) => setLauncherEnabled(e.target.checked)} data-testid="launcher-enabled-checkbox" />} label={Locale.label("site.siteWidgets.enabled")} />
           {launcherEnabled && (
@@ -150,7 +145,7 @@ export const SiteWidgetsEdit: React.FC = () => {
                   </FormControl>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
-                  <InputLabel sx={{ fontSize: "0.85rem" }}>{Locale.label("site.siteWidgets.color")}</InputLabel>
+                  <InputLabel>{Locale.label("site.siteWidgets.color")}</InputLabel>
                   <ColorPicker color={launcher.color || "#1565c0"} updatedCallback={(c) => setLauncher((l) => ({ ...l, color: c }))} globalStyles={globalStyles as GlobalStyleInterface} />
                 </Grid>
               </Grid>
@@ -167,6 +162,6 @@ export const SiteWidgetsEdit: React.FC = () => {
       {iconPickerIndex !== null && (
         <IconPicker currentIcon={(launcher.actions || [])[iconPickerIndex]?.icon} onUpdate={(icon) => { updateAction(iconPickerIndex, "icon", icon); }} onClose={() => setIconPickerIndex(null)} />
       )}
-    </Card>
+    </CardWithHeader>
   );
 };

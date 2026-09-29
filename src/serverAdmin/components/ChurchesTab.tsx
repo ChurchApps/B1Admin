@@ -1,10 +1,14 @@
 import React from "react";
-import { ApiHelper, DisplayBox, UserHelper, DateHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, DateHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
-import { TextField, Button, Chip, Link, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Box, Button, ButtonBase, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import UserContext from "../../UserContext";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
+import { EmptyState, SearchField, StatusBadge, tableScrollSx } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
+
+const toggleSx = { borderRadius: "var(--b1-radius-pill)", "&:hover": { opacity: 0.8 }, "&.Mui-focusVisible": { outline: "2px solid var(--b1-focus)", outlineOffset: 2 } } as const;
 
 type ChurchRow = ChurchInterface & { emailApprovedDate?: Date };
 
@@ -16,8 +20,8 @@ export const ChurchesTab = () => {
 
   const context = React.useContext(UserContext);
 
-  const loadData = () => {
-    const term = encodeURIComponent(searchText.trim());
+  const loadData = (override?: string) => {
+    const term = encodeURIComponent((override ?? searchText).trim());
     ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: any) => setChurches(data));
   };
 
@@ -53,32 +57,25 @@ export const ChurchesTab = () => {
     return churches.map((c) => (
       <TableRow key={c.id}>
         <TableCell>
-          <Link component="button" type="button" underline="hover" onClick={() => handleEditAccess(c.id || "")} data-testid={`church-link-${c.id}`}>
+          <Link component="button" type="button" underline="hover" onClick={() => handleEditAccess(c.id || "")} data-testid={`church-link-${c.id}`} sx={{ fontWeight: 600, textAlign: "left" }}>
             {c.name}
           </Link>
         </TableCell>
         <TableCell>{getLocation(c)}</TableCell>
         <TableCell>{DateHelper.prettyDate(DateHelper.toDate(c.registrationDate))}</TableCell>
         <TableCell>
-          <Chip
-            label={c.emailApprovedDate ? Locale.label("serverAdmin.churchesTab.emailApproved") : Locale.label("serverAdmin.churchesTab.emailNotApproved")}
-            color={c.emailApprovedDate ? "success" : "default"}
-            variant={c.emailApprovedDate ? "filled" : "outlined"}
-            size="small"
-            onClick={() => handleEmailApproval(c)}
-            data-testid={`toggle-church-email-${c.id}`}
-            sx={{ cursor: "pointer" }}
-          />
+          <ButtonBase onClick={() => handleEmailApproval(c)} data-testid={`toggle-church-email-${c.id}`} sx={toggleSx}>
+            <StatusBadge tone={c.emailApprovedDate ? "success" : "neutral"}>
+              {c.emailApprovedDate ? Locale.label("serverAdmin.churchesTab.emailApproved") : Locale.label("serverAdmin.churchesTab.emailNotApproved")}
+            </StatusBadge>
+          </ButtonBase>
         </TableCell>
-        <TableCell align="right">
-          <Chip
-            label={c.archivedDate ? Locale.label("serverAdmin.adminPage.arch") : Locale.label("serverAdmin.adminPage.act")}
-            color={c.archivedDate ? "error" : "success"}
-            size="small"
-            onClick={() => handleArchive(c)}
-            data-testid={`toggle-church-status-${c.id}`}
-            sx={{ cursor: "pointer" }}
-          />
+        <TableCell>
+          <ButtonBase onClick={() => handleArchive(c)} data-testid={`toggle-church-status-${c.id}`} sx={toggleSx}>
+            <StatusBadge variant="dot" tone={c.archivedDate ? "danger" : "success"}>
+              {c.archivedDate ? Locale.label("serverAdmin.adminPage.arch") : Locale.label("serverAdmin.adminPage.act")}
+            </StatusBadge>
+          </ButtonBase>
         </TableCell>
       </TableRow>
     ));
@@ -99,58 +96,48 @@ export const ChurchesTab = () => {
     setRedirectUrl(`/settings`);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
-
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      loadData();
-    }
-  };
-
-  React.useEffect(loadData, []);
+  React.useEffect(() => loadData(), []);
 
   if (redirectUrl !== "") return <Navigate to={redirectUrl}></Navigate>;
   else {
     return (
       <>
         {ConfirmDialogElement}
-        <DisplayBox headerIcon="church" headerText={Locale.label("serverAdmin.adminPage.churches")}>
-          <TextField
-            fullWidth
-            name="searchText"
-            label={Locale.label("serverAdmin.adminPage.churchName")}
-            value={searchText}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            data-testid="church-search-input"
-            aria-label={Locale.label("serverAdmin.churchesTab.churchNameSearchAria")}
-            InputProps={{
-              endAdornment: (
-                <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={loadData} data-testid="search-churches-button" aria-label={Locale.label("serverAdmin.churchesTab.searchChurchesAria")}>
-                  {Locale.label("common.search")}
-                </Button>
-              )
-            }}
-          />
-          <br />
+        <AdminPanel
+          headerText={Locale.label("serverAdmin.adminPage.churches")}
+          subtitle={Locale.label("serverAdmin.adminPage.churchesSubtitle")}
+          aside={churches.length > 0 ? Locale.label("serverAdmin.adminPage.churchCount", "{count} churches").replace("{count}", String(churches.length)) : undefined}>
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "flex-start" }} sx={{ mb: 3 }}>
+            <SearchField
+              label={Locale.label("serverAdmin.adminPage.churchName")}
+              placeholder={Locale.label("serverAdmin.churchesTab.churchNameSearchAria")}
+              value={searchText}
+              onChange={setSearchText}
+              onSearch={(term) => loadData(term)}
+              data-testid="church-search-input" />
+            <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={() => loadData()} data-testid="search-churches-button" aria-label={Locale.label("serverAdmin.churchesTab.searchChurchesAria")} sx={{ flexShrink: 0, minHeight: 56 }}>
+              {Locale.label("common.search")}
+            </Button>
+          </Stack>
           {churches.length === 0 ? (
-            <>{Locale.label("serverAdmin.adminPage.noChurch")}</>
+            <EmptyState variant="plain" title={Locale.label("serverAdmin.adminPage.noChurch")} />
           ) : (
-            <Table size="small" id="adminChurchesTable">
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("serverAdmin.adminPage.church")}</TableCell>
-                  <TableCell>{Locale.label("serverAdmin.adminPage.location")}</TableCell>
-                  <TableCell>{Locale.label("serverAdmin.adminPage.regist")}</TableCell>
-                  <TableCell>{Locale.label("serverAdmin.churchesTab.groupEmail")}</TableCell>
-                  <TableCell align="right">{Locale.label("serverAdmin.adminPage.act")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{getChurchRows()}</TableBody>
-            </Table>
+            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("serverAdmin.adminPage.churches")} tabIndex={0}>
+              <Table id="adminChurchesTable">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{Locale.label("serverAdmin.adminPage.church")}</TableCell>
+                    <TableCell>{Locale.label("serverAdmin.adminPage.location")}</TableCell>
+                    <TableCell>{Locale.label("serverAdmin.adminPage.regist")}</TableCell>
+                    <TableCell>{Locale.label("serverAdmin.churchesTab.groupEmail")}</TableCell>
+                    <TableCell>{Locale.label("serverAdmin.adminPage.status", "Status")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>{getChurchRows()}</TableBody>
+              </Table>
+            </Box>
           )}
-        </DisplayBox>
+        </AdminPanel>
       </>
     );
   }

@@ -1,7 +1,9 @@
 import React from "react";
 import { useCookies } from "react-cookie";
-import { ApiHelper, DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
-import { TextField, Button, Chip, Link, Table, TableBody, TableCell, TableHead, TableRow, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Stack } from "@mui/material";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { Box, Button, Link, Table, TableBody, TableCell, TableHead, TableRow, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Stack } from "@mui/material";
+import { EmptyState, SearchField, StatusBadge, tableScrollSx } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
 
 interface UserSearchResult {
   id: string;
@@ -24,20 +26,13 @@ export const UsersTab = () => {
   const [submitting, setSubmitting] = React.useState<boolean>(false);
   const [, , removeCookie] = useCookies(["jwt"]);
 
-  const loadData = () => {
-    const term = encodeURIComponent(searchText.trim());
+  const loadData = (override?: string) => {
+    const term = encodeURIComponent((override ?? searchText).trim());
     if (term) ApiHelper.get("/users/search?term=" + term, "MembershipApi").then((data: UserSearchResult[]) => setUsers(data));
   };
 
   const loadDetails = (userId: string) => {
     ApiHelper.get("/users/" + userId + "/details", "MembershipApi").then((data: UserDetails) => setDetails(data));
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      loadData();
-    }
   };
 
   const handleImpersonate = async () => {
@@ -58,56 +53,48 @@ export const UsersTab = () => {
 
   return (
     <>
-      <DisplayBox headerIcon="person_search" headerText={Locale.label("serverAdmin.usersTab.title")}>
-        <Typography variant="body2" sx={{ mb: 2 }} color="text.secondary">
-          {Locale.label("serverAdmin.usersTab.description")}
-        </Typography>
-        <TextField
-          fullWidth
-          name="searchText"
-          label={Locale.label("serverAdmin.usersTab.searchLabel")}
-          value={searchText}
-          onChange={(e) => setSearchText(e.currentTarget.value)}
-          onKeyDown={handleKeyDown}
-          data-testid="admin-users-search-input"
-          aria-label={Locale.label("serverAdmin.usersTab.searchAria")}
-          InputProps={{
-            endAdornment: (
-              <Button variant="contained" disableElevation onClick={loadData} data-testid="admin-users-search-button" aria-label={Locale.label("serverAdmin.usersTab.searchAria")}>
-                {Locale.label("common.search")}
-              </Button>
-            )
-          }}
-        />
-        <br />
-        {users.length === 0 && searchText && <Typography sx={{ mt: 2 }}>{Locale.label("serverAdmin.adminPage.noUsers")}</Typography>}
+      <AdminPanel headerText={Locale.label("serverAdmin.usersTab.title")} subtitle={Locale.label("serverAdmin.usersTab.description")}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "flex-start" }} sx={{ mb: 3 }}>
+          <SearchField
+            label={Locale.label("serverAdmin.usersTab.searchLabel")}
+            value={searchText}
+            onChange={setSearchText}
+            onSearch={(term) => loadData(term)}
+            data-testid="admin-users-search-input" />
+          <Button variant="contained" disableElevation onClick={() => loadData()} data-testid="admin-users-search-button" aria-label={Locale.label("serverAdmin.usersTab.searchAria")} sx={{ flexShrink: 0, minHeight: 56 }}>
+            {Locale.label("common.search")}
+          </Button>
+        </Stack>
+        {users.length === 0 && searchText && <EmptyState variant="plain" title={Locale.label("serverAdmin.adminPage.noUsers")} />}
         {users.length > 0 && (
-          <Table size="small" id="adminUsersTable">
-            <TableHead>
-              <TableRow>
-                <TableCell>{Locale.label("serverAdmin.usersTab.name")}</TableCell>
-                <TableCell>{Locale.label("serverAdmin.usersTab.email")}</TableCell>
-                <TableCell>{Locale.label("serverAdmin.usersTab.lastLogin")}</TableCell>
-                <TableCell>{Locale.label("serverAdmin.adminPage.regist")}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.map((u) => (
-                <TableRow key={u.id}>
-                  <TableCell>
-                    <Link component="button" type="button" underline="hover" onClick={() => loadDetails(u.id)} data-testid={`admin-user-link-${u.id}`}>
-                      {getName(u)}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{u.email}</TableCell>
-                  <TableCell>{prettyDate(u.lastLogin)}</TableCell>
-                  <TableCell>{prettyDate(u.registrationDate)}</TableCell>
+          <Box sx={tableScrollSx} role="region" aria-label={Locale.label("serverAdmin.usersTab.title")} tabIndex={0}>
+            <Table id="adminUsersTable">
+              <TableHead>
+                <TableRow>
+                  <TableCell>{Locale.label("serverAdmin.usersTab.name")}</TableCell>
+                  <TableCell>{Locale.label("serverAdmin.usersTab.email")}</TableCell>
+                  <TableCell>{Locale.label("serverAdmin.usersTab.lastLogin")}</TableCell>
+                  <TableCell>{Locale.label("serverAdmin.adminPage.regist")}</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {users.map((u) => (
+                  <TableRow key={u.id}>
+                    <TableCell>
+                      <Link component="button" type="button" underline="hover" onClick={() => loadDetails(u.id)} data-testid={`admin-user-link-${u.id}`} sx={{ fontWeight: 600, textAlign: "left" }}>
+                        {getName(u)}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{u.email}</TableCell>
+                    <TableCell>{prettyDate(u.lastLogin)}</TableCell>
+                    <TableCell>{prettyDate(u.registrationDate)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
         )}
-      </DisplayBox>
+      </AdminPanel>
 
       <Dialog open={details !== null} onClose={() => !submitting && setDetails(null)} fullWidth maxWidth="sm">
         <DialogTitle>{details ? getName(details) === "-" ? details.email : getName(details) : ""}</DialogTitle>
@@ -136,8 +123,8 @@ export const UsersTab = () => {
                         <TableCell>{c.subDomain}</TableCell>
                         <TableCell>
                           <Stack direction="row" spacing={0.5}>
-                            {c.viaMembership && <Chip label={Locale.label("serverAdmin.usersTab.member")} size="small" />}
-                            {c.viaRoles && <Chip label={Locale.label("serverAdmin.usersTab.staff")} size="small" color="primary" />}
+                            {c.viaMembership && <StatusBadge>{Locale.label("serverAdmin.usersTab.member")}</StatusBadge>}
+                            {c.viaRoles && <StatusBadge tone="info">{Locale.label("serverAdmin.usersTab.staff")}</StatusBadge>}
                           </Stack>
                         </TableCell>
                       </TableRow>

@@ -2,7 +2,7 @@ import { peopleTest as test, expect } from "./helpers/test-fixtures";
 import { SEED_PEOPLE, openPersonRow } from "./helpers/fixtures";
 
 test.describe("Person data export", () => {
-  test("downloads the full data packet from the person banner", async ({ page }) => {
+  test("downloads the full data packet from the record actions", async ({ page }) => {
     await openPersonRow(page, SEED_PEOPLE.DONALD);
 
     const exportButton = page.locator('[data-testid="export-person-data-button"]');
@@ -18,7 +18,9 @@ test.describe("Person data export", () => {
 
     const packet = await response.json();
     expect(packet.exportedAt).toBeTruthy();
-    for (const key of ["person", "groups", "notes", "formSubmissions", "customFieldValues", "tasks", "subscriptions", "eventRsvps"]) {
+    for (const key of [
+      "person", "groups", "notes", "formSubmissions", "customFieldValues", "tasks", "subscriptions", "eventRsvps"
+    ]) {
       expect(packet).toHaveProperty(key);
     }
   });

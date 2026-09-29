@@ -1,12 +1,10 @@
-import { Stack, Grid, Box } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import { NotificationsActive as AttentionIcon, EventAvailable as ApprovalsIcon, GroupAdd as JoinRequestIcon } from "@mui/icons-material";
-import { TaskList } from "../serving/tasks/components/TaskList";
 import { QuickActionItem, SundayService } from "./components";
-import { Groups } from "../people/components";
-import { UserHelper, Locale } from "@churchapps/apphelper";
+import { MyWork } from "./components/MyWork";
+import { Locale } from "@churchapps/apphelper";
 import { PageContainer } from "../components/ui/PageContainer";
 import { CardWithHeader } from "../components/ui/CardWithHeader";
-import { GRID_SIZES } from "../components/ui/layoutPresets";
 import { usePendingApprovalsCount, usePendingJoinRequestsCount } from "../hooks";
 
 export const DashboardPage = () => {
@@ -21,7 +19,7 @@ export const DashboardPage = () => {
 
         {needsAttention && (
           <Box data-testid="needs-attention">
-            <CardWithHeader title={Locale.label("dashboard.needsAttention.title")} icon={<AttentionIcon sx={{ color: "warning.main", fontSize: 20 }} />}>
+            <CardWithHeader title={Locale.label("dashboard.needsAttention.title")} icon={<AttentionIcon />}>
               <Stack>
                 {pendingApprovals > 0 && (
                   <QuickActionItem icon={<ApprovalsIcon fontSize="small" />} title={Locale.label("dashboard.needsAttention.approvals").replace("{count}", String(pendingApprovals))} linkUrl="/calendars/approvals" />
@@ -34,14 +32,9 @@ export const DashboardPage = () => {
           </Box>
         )}
 
-        <Grid container spacing={3}>
-          <Grid size={GRID_SIZES.sidebar}>
-            <Groups personId={UserHelper.person?.id || ""} title={Locale.label("dashboard.myGroups")} />
-          </Grid>
-          <Grid size={GRID_SIZES.mainContent}>
-            <TaskList compact={true} status={Locale.label("tasks.taskPage.open")} />
-          </Grid>
-        </Grid>
+        <Box sx={{ pt: 1 }}>
+          <MyWork />
+        </Box>
       </Stack>
     </PageContainer>
   );

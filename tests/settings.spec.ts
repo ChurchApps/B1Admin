@@ -202,7 +202,7 @@ test.describe.serial("Settings Management", () => {
       await url.fill("https://pony.town/");
       const saveBtn = page.locator("button").getByText("Save Tab");
       await saveBtn.click();
-      const validatedTab = page.locator("h6").getByText("Zacchaeus Settings Tab");
+      const validatedTab = page.locator("h3").getByText("Zacchaeus Settings Tab");
       await expect(validatedTab).toHaveCount(1);
     });
 
@@ -214,7 +214,7 @@ test.describe.serial("Settings Management", () => {
       await tabName.fill("Zebedee Settings Tab");
       const saveBtn = page.locator("button").getByText("Save Tab");
       await saveBtn.click();
-      const validatedTab = page.locator("h6").getByText("Zebedee Settings Tab");
+      const validatedTab = page.locator("h3").getByText("Zebedee Settings Tab");
       await expect(validatedTab).toHaveCount(1);
     });
 
@@ -234,7 +234,7 @@ test.describe.serial("Settings Management", () => {
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
       await confirmDelete(page);
-      const validatedDeletion = page.locator("h6").getByText("Zebedee Settings Tab");
+      const validatedDeletion = page.locator("h3").getByText("Zebedee Settings Tab");
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
@@ -516,7 +516,7 @@ test.describe.serial("Settings Management", () => {
       await page.goto("/settings#region");
       const section = page.locator('[data-testid="settings-section-region"]');
       await expect(section).toHaveClass(/Mui-selected/, { timeout: 15000 });
-      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await page.locator('[data-testid="settings-region"] [data-testid="small-button-edit"]').dispatchEvent("click");
       await page.locator('[data-testid="region-select"]').click();
       await page.locator(`[data-testid="region-option-${region}"]`).click();
       await page.locator("button").getByText("Save").click();

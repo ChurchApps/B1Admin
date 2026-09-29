@@ -2,9 +2,9 @@ import React, { useState, useCallback } from "react";
 import { UserHelper, Permissions, ApiHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Button, Card, Chip, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Alert
+  Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Alert
 } from "@mui/material";
-import { Undo as UndoIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
+import { PageContainer, Surface, StatusBadge, TextAction, VerbRow, tableScrollSx, numericCellSx, type StatusTone } from "../components/ui";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { PermissionDenied } from "../components";
 
@@ -40,14 +40,14 @@ const formatDate = (dateStr?: string) => {
 
 const formatAction = (action: string) => (action || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-const statusColor = (status?: string): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+const statusTone = (status?: string): StatusTone => {
   switch (status) {
     case "open": return "info";
-    case "completed": return "primary";
+    case "completed": return "info";
     case "undone": return "success";
     case "partial": return "warning";
-    case "failed": return "error";
-    default: return "default";
+    case "failed": return "danger";
+    default: return "neutral";
   }
 };
 
@@ -120,17 +120,17 @@ export const BatchesPage: React.FC = () => {
     <>
       <SettingsHeader backTo="/settings" title={Locale.label("settings.batches.title")} subtitle={Locale.label("settings.batches.subtitle")} />
 
-      <Box sx={{ p: { xs: 2, md: 4 } }}>
-        <Card>
+      <PageContainer py={3}>
+        <Surface disablePadding>
           {loading ? <Loading /> : (
-            <TableContainer>
+            <TableContainer sx={tableScrollSx} role="region" aria-label={Locale.label("settings.batches.title")} tabIndex={0}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>{Locale.label("settings.batches.label")}</TableCell>
                     <TableCell>{Locale.label("settings.batches.source")}</TableCell>
                     <TableCell>{Locale.label("settings.batches.status")}</TableCell>
-                    <TableCell align="right">{Locale.label("settings.batches.items")}</TableCell>
+                    <TableCell sx={numericCellSx}>{Locale.label("settings.batches.items")}</TableCell>
                     <TableCell>{Locale.label("settings.batches.created")}</TableCell>
                     <TableCell>{Locale.label("settings.batches.creator")}</TableCell>
                     <TableCell align="right">{Locale.label("settings.batches.actions")}</TableCell>
@@ -148,13 +148,15 @@ export const BatchesPage: React.FC = () => {
                       <TableRow key={batch.id} hover>
                         <TableCell>{batch.label || "—"}</TableCell>
                         <TableCell>{batch.source || "—"}</TableCell>
-                        <TableCell><Chip label={batch.status} color={statusColor(batch.status)} size="small" /></TableCell>
-                        <TableCell align="right">{batch.itemCount ?? 0}</TableCell>
+                        <TableCell><StatusBadge tone={statusTone(batch.status)}>{batch.status}</StatusBadge></TableCell>
+                        <TableCell sx={numericCellSx}>{batch.itemCount ?? 0}</TableCell>
                         <TableCell sx={{ whiteSpace: "nowrap" }}>{formatDate(batch.created)}</TableCell>
-                        <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{batch.userId}</Typography></TableCell>
-                        <TableCell align="right" className="rowActions">
-                          <Button size="small" startIcon={<VisibilityIcon />} onClick={() => openResults(batch)}>{Locale.label("settings.batches.viewResults")}</Button>
-                          <Button size="small" color="warning" startIcon={<UndoIcon />} disabled={batch.status !== "completed"} onClick={() => setUndoBatch(batch)}>{Locale.label("settings.batches.undo")}</Button>
+                        <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace" }}>{batch.userId}</Typography></TableCell>
+                        <TableCell align="right">
+                          <VerbRow sx={{ justifyContent: "flex-end", flexWrap: "nowrap" }}>
+                            <TextAction small onClick={() => openResults(batch)}>{Locale.label("settings.batches.viewResults")}</TextAction>
+                            {batch.status === "completed" && <TextAction small onClick={() => setUndoBatch(batch)}>{Locale.label("settings.batches.undo")}</TextAction>}
+                          </VerbRow>
                         </TableCell>
                       </TableRow>
                     ))
@@ -163,8 +165,8 @@ export const BatchesPage: React.FC = () => {
               </Table>
             </TableContainer>
           )}
-        </Card>
-      </Box>
+        </Surface>
+      </PageContainer>
 
       <Dialog open={!!resultsBatch} onClose={() => setResultsBatch(null)} maxWidth="md" fullWidth>
         <DialogTitle>{Locale.label("settings.batches.resultsTitle")}{resultsBatch?.label ? `: ${resultsBatch.label}` : ""}</DialogTitle>
@@ -188,7 +190,7 @@ export const BatchesPage: React.FC = () => {
                       <TableCell sx={{ whiteSpace: "nowrap" }}>{formatDate(row.created)}</TableCell>
                       <TableCell>{formatAction(row.action)}</TableCell>
                       <TableCell>{row.entityType}</TableCell>
-                      <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{row.entityId}</Typography></TableCell>
+                      <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace" }}>{row.entityId}</Typography></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -214,7 +216,7 @@ export const BatchesPage: React.FC = () => {
                   <Typography variant="subtitle2">{Locale.label("settings.batches.skipped").replace("{count}", String(undoReport.skippedConflicts.length))}</Typography>
                   <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>{Locale.label("settings.batches.skippedHelp")}</Typography>
                   {undoReport.skippedConflicts.map((s, i) => (
-                    <Typography key={i} variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{s.entityType} {s.entityId}</Typography>
+                    <Typography key={i} variant="body2" sx={{ fontFamily: "monospace" }}>{s.entityType} {s.entityId}</Typography>
                   ))}
                 </Box>
               )}
@@ -222,7 +224,7 @@ export const BatchesPage: React.FC = () => {
                 <Box>
                   <Typography variant="subtitle2" color="error">{Locale.label("settings.batches.failed").replace("{count}", String(undoReport.failed.length))}</Typography>
                   {undoReport.failed.map((f, i) => (
-                    <Typography key={i} variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{f.entityType} {f.entityId} — {f.reason}</Typography>
+                    <Typography key={i} variant="body2" sx={{ fontFamily: "monospace" }}>{f.entityType} {f.entityId} — {f.reason}</Typography>
                   ))}
                 </Box>
               )}

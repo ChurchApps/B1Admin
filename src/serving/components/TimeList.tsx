@@ -1,6 +1,5 @@
 import React from "react";
-import { Icon } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Box, Icon } from "@mui/material";
 import {
   type PlanInterface,
   type PositionInterface,
@@ -9,10 +8,9 @@ import {
 import {
   ArrayHelper,
   DateHelper,
-  DisplayBox,
   Locale
 } from "@churchapps/apphelper";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { RecordHeading, TextAction } from "../../components/ui";
 import { TimeEdit } from "./TimeEdit";
 
 interface Props {
@@ -52,7 +50,7 @@ export const TimeList = (props: Props) => {
   };
 
   const getAddTimeLink = () => canEdit ? (
-    <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" intent="add" id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button" />
+    <TextAction small onClick={handleAdd} data-testid="add-time-button">{Locale.label("plans.timeList.addTime", "Add time")}</TextAction>
   ) : null;
 
   const getRows = () => {
@@ -79,18 +77,18 @@ export const TimeList = (props: Props) => {
               <button
                 type="button"
                 onClick={() => handleSelect(t)}
-                style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+                style={{ background: "none", border: 0, padding: 0, color: "var(--b1-primary)", cursor: "pointer" }}>
                 {t.displayName}
               </button>
             ) : (
               <span>{t.displayName}</span>
             )}
-            <span style={{ marginLeft: 8, fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase" }}>{typeLabel}</span>
+            <span style={{ marginLeft: 8, fontSize: 11, color: "var(--b1-muted)", textTransform: "uppercase" }}>{typeLabel}</span>
             <div style={{ fontSize: 12 }}>
               {DateHelper.prettyDateTime(startTime)}
               {t.endTime ? " - " + DateHelper.prettyTime(endTime) : ""}
               <br />
-              <i style={{ color: "var(--text-muted)" }}>{teamList.join(", ")}</i>
+              <i style={{ color: "var(--b1-muted)" }}>{teamList.join(", ")}</i>
             </div>
           </td>
         </tr>
@@ -120,9 +118,10 @@ export const TimeList = (props: Props) => {
     );
   } else {
     return (
-      <DisplayBox headerText={Locale.label("plans.timeList.times")} headerIcon="schedule" editContent={getAddTimeLink()}>
+      <Box component="section" data-testid="plan-times">
+        <RecordHeading label={Locale.label("plans.timeList.times")}>{getAddTimeLink()}</RecordHeading>
         <table style={{ width: "100%" }}><tbody>{getRows()}</tbody></table>
-      </DisplayBox>
+      </Box>
     );
   }
 };

@@ -194,7 +194,12 @@ test.describe.serial("Event reminders editor", () => {
     await row.getByRole("link").first().click();
     await page.waitForURL(/\/calendars\/[\w-]+/, { timeout: 10000 });
 
+    // The event is three weeks out, so late in the month it lands on the next month's page.
     const block = page.locator(".rbc-event").filter({ hasText: EVENT_TITLE }).first();
+    await page.locator(".rbc-calendar").waitFor({ state: "visible", timeout: 15000 });
+    if (!(await block.isVisible({ timeout: 5000 }).catch(() => false))) {
+      await page.locator(".rbc-toolbar").getByRole("button", { name: "Next" }).click();
+    }
     await block.waitFor({ state: "visible", timeout: 15000 });
     await block.click();
     await page.locator('[data-testid="calendar-event-edit-button"]').click();

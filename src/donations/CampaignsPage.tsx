@@ -1,14 +1,14 @@
 import React from "react";
-import { CurrencyHelper, DateHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { CurrencyHelper, DateHelper, Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
-import { Box, LinearProgress, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Flag as CampaignIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Box, LinearProgress, Link as MuiLink, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Flag as CampaignIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface } from "../helpers";
 import { CampaignEdit } from "./components";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx, type SortDirection } from "../components/ui";
+import { PageHeader, PageContainer, Surface, AddBar, EmptyState, SortableTableHead, TextAction, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
+import { Lede } from "./components/GivingParts";
 
 export const CampaignsPage = () => {
   const [editCampaignId, setEditCampaignId] = React.useState("notset");
@@ -85,28 +85,25 @@ export const CampaignsPage = () => {
       result.push(
         <TableRow key={c.id || i} sx={hoverRowSx}>
           <TableCell>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <CampaignIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography component={Link} to={"/donations/campaigns/" + c.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-                {c.name}
-              </Typography>
-            </Stack>
+            <MuiLink component={Link} to={"/donations/campaigns/" + c.id} underline="hover" variant="body2" sx={{ fontWeight: 600 }}>
+              {c.name}
+            </MuiLink>
           </TableCell>
           <TableCell><Typography variant="body2">{fund?.name}</Typography></TableCell>
           <TableCell><Typography variant="body2">{dates}</Typography></TableCell>
-          <TableCell align="right"><Typography variant="body2">{c.goalAmount ? CurrencyHelper.formatCurrencyWithLocale(c.goalAmount, currency) : "-"}</Typography></TableCell>
-          <TableCell align="right"><Typography variant="body2">{CurrencyHelper.formatCurrencyWithLocale(cp.totalPledged || 0, currency)}</Typography></TableCell>
-          <TableCell align="right"><Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>{CurrencyHelper.formatCurrencyWithLocale(cp.totalGiven || 0, currency)}</Typography></TableCell>
+          <TableCell align="right" sx={numericCellSx}><Typography variant="body2">{c.goalAmount ? CurrencyHelper.formatCurrencyWithLocale(c.goalAmount, currency) : "-"}</Typography></TableCell>
+          <TableCell align="right" sx={numericCellSx}><Typography variant="body2">{CurrencyHelper.formatCurrencyWithLocale(cp.totalPledged || 0, currency)}</Typography></TableCell>
+          <TableCell align="right" sx={numericCellSx}><Typography variant="body2" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(cp.totalGiven || 0, currency)}</Typography></TableCell>
           <TableCell>
             {percent !== null && (
               <Stack direction="row" spacing={1} alignItems="center">
-                <LinearProgress variant="determinate" value={percent} sx={{ width: 80, height: 8, borderRadius: 4 }} />
+                <LinearProgress variant="determinate" value={percent} sx={{ width: 80, height: 8 }} />
                 <Typography variant="body2">{percent}%</Typography>
               </Stack>
             )}
           </TableCell>
-          <TableCell align="right" className="rowActions">
-            {canEdit && <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-id={c.id} onClick={() => setEditCampaignId(c.id || "")} />}
+          <TableCell align="right">
+            {canEdit && <TextAction small onClick={() => setEditCampaignId(c.id || "")}>{Locale.label("common.edit")}</TextAction>}
           </TableCell>
         </TableRow>
       );
@@ -117,66 +114,56 @@ export const CampaignsPage = () => {
   const getTable = () => {
     if (progress.isLoading) return <Loading />;
     return (
-      <Table sx={{ minWidth: 650 }}>
-        {sortedCampaigns.length > 0 && (
-          <SortableTableHead
-            columns={[
-              { key: "name", label: Locale.label("common.name"), sortable: true },
-              { key: "fund", label: Locale.label("donations.campaignsPage.fund") },
-              { key: "startDate", label: Locale.label("donations.campaignsPage.dates"), sortable: true },
-              { key: "goal", label: Locale.label("donations.campaignsPage.goal"), align: "right" },
-              { key: "pledged", label: Locale.label("donations.campaignsPage.pledged"), align: "right" },
-              { key: "given", label: Locale.label("donations.campaignsPage.given"), align: "right" },
-              { key: "progress", label: Locale.label("donations.campaignsPage.progress") },
-              { key: "edit", label: "", align: "right" }
-            ]}
-            sortBy={sortBy}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-          />
-        )}
-        <TableBody>{getRows()}</TableBody>
-      </Table>
+      <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.campaignsPage.campaigns")} tabIndex={0}>
+        <Table sx={{ minWidth: 650 }}>
+          {sortedCampaigns.length > 0 && (
+            <SortableTableHead
+              columns={[
+                { key: "name", label: Locale.label("common.name"), sortable: true },
+                { key: "fund", label: Locale.label("donations.campaignsPage.fund") },
+                { key: "startDate", label: Locale.label("donations.campaignsPage.dates"), sortable: true },
+                { key: "goal", label: Locale.label("donations.campaignsPage.goal"), align: "right" },
+                { key: "pledged", label: Locale.label("donations.campaignsPage.pledged"), align: "right" },
+                { key: "given", label: Locale.label("donations.campaignsPage.given"), align: "right" },
+                { key: "progress", label: Locale.label("donations.campaignsPage.progress") },
+                { key: "edit", label: "", align: "right" }
+              ]}
+              sortBy={sortBy}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+            />
+          )}
+          <TableBody>{getRows()}</TableBody>
+        </Table>
+      </Box>
     );
   };
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
 
+  const lede = [
+    Locale.label("donations.campaignsPage.campaignCount", "{count} campaigns").replace("{count}", stats.totalCampaigns.toString()),
+    Locale.label("donations.campaignsPage.pledgedAmount", "{amount} pledged").replace("{amount}", CurrencyHelper.formatCurrencyWithLocale(stats.totalPledged, currency, 0)),
+    Locale.label("donations.campaignsPage.givenAmount", "{amount} given").replace("{amount}", CurrencyHelper.formatCurrencyWithLocale(stats.totalGiven, currency, 0))
+  ].join(" · ");
+
   return (
     <>
-      <PageHeader icon={<CampaignIcon />} title={Locale.label("donations.campaignsPage.campaigns")} subtitle={Locale.label("donations.campaignsPage.subtitle")}>
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent={{ sm: "space-between" }} width="100%">
-        {stats.totalCampaigns > 0 && (
-          <PageHeaderStats
-            items={[
-              { icon: <CampaignIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalCampaigns, label: Locale.label("donations.campaignsPage.totalCampaigns"), minWidth: 80 },
-              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalPledged, currency, 0), label: Locale.label("donations.campaignsPage.pledged") },
-              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalGiven, currency, 0), label: Locale.label("donations.campaignsPage.given") }
-            ]}
-          />
-        )}
-        {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-          <HeaderPrimaryButton
-            startIcon={<AddIcon />}
-            onClick={() => setEditCampaignId("")}
-            data-testid="add-campaign-button">
-            {Locale.label("donations.campaignsPage.addCampaign")}
-          </HeaderPrimaryButton>
-        )}
-      </Stack>
-      </PageHeader>
+      <PageHeader title={Locale.label("donations.campaignsPage.campaigns")} subtitle={Locale.label("donations.campaignsPage.subtitle")} />
 
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         {editCampaignId !== "notset" && <Box sx={{ mb: 3 }}>{getEditContent()}</Box>}
 
-        <CardWithHeader
-          icon={<CampaignIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-          title={Locale.label("donations.campaignsPage.campaigns")}
-          count={sortedCampaigns.length}
-        >
+        <Surface>
+          {!progress.isLoading && stats.totalCampaigns > 0 && <Lede sx={{ mb: 2 }}>{lede}</Lede>}
           {getTable()}
-        </CardWithHeader>
-      </Box>
+          {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
+            <AddBar>
+              <TextAction onClick={() => setEditCampaignId("")} data-testid="add-campaign-button">{Locale.label("donations.campaignsPage.addCampaign")}</TextAction>
+            </AddBar>
+          )}
+        </Surface>
+      </PageContainer>
     </>
   );
 };

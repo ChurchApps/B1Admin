@@ -60,7 +60,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(addTeamBtn).toBeVisible({ timeout: 10000 });
       await addTeamBtn.click();
       await page.locator('[name="name"]').fill("Apollos Team");
-      await page.locator("button").getByText("Add").last().click();
+      await page.getByRole("button", { name: "Add", exact: true }).click();
       const teamLink = page.locator("a").getByText("Apollos Team");
       await expect(teamLink).toHaveCount(1, { timeout: 10000 });
 
@@ -113,7 +113,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await plansBtn.click();
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = editIconButton(page).last();
+      const editBtn = page.getByRole("button", { name: "Edit", exact: true }).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const date = page.locator('[id="name"]');
@@ -218,6 +218,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
+      await page.getByTestId("plan-times-toggle").click();
       const addBtn = page.locator('[data-testid="add-time-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -242,6 +243,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
+      await page.getByTestId("plan-times-toggle").click();
       const time = page.locator("td button").getByText("Zacchaeus Service");
       await expect(time).toBeVisible({ timeout: 10000 });
       await time.click();
@@ -264,6 +266,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
+      await page.getByTestId("plan-times-toggle").click();
       const time = page.locator("td button").getByText("Zebedee Service");
       await expect(time).toBeVisible({ timeout: 10000 });
       await time.click();
@@ -286,9 +289,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       const addBtn = page.locator("button").getByText("Add Section");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
@@ -311,9 +312,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -336,9 +335,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       // "Add Item" on the section row opens a menu with Song/Item/Lesson Action/Add-On options.
       const addBtn = page.getByRole("button", { name: "Add Item" }).first();
@@ -368,9 +365,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       // Section "Add Item" opens menu with Song/Item/Lesson Action/Add-On options.
       const addBtn = page.getByRole("button", { name: "Add Item" }).first();
@@ -398,9 +393,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -423,9 +416,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       // Rows at this point in the chain: [Amazing Grace, Zebedee Item].
       const rows = page.locator(".planItem");
@@ -449,9 +440,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       // Zebedee Item is the last row; its edit icon is the last on the page.
       const editBtn = editIconButton(page).last();
@@ -478,9 +467,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       // "Add Item" on the section row opens a menu with Song/Item/Lesson Action/Add-On options.
       const addBtn = page.getByRole("button", { name: "Add Item" }).first();
@@ -505,9 +492,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       // Section "Add Item" opens menu with Song/Item/Lesson Action/Add-On options.
       const addBtn = page.getByRole("button", { name: "Add Item" }).first();
@@ -537,9 +522,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       const dropdown = page.locator("button").filter({ has: page.locator('[data-testid="ArrowDropDownIcon"]') }).first();
       await expect(dropdown).toBeVisible({ timeout: 10000 });
@@ -561,9 +544,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       const dropdown = page.locator("button").filter({ has: page.locator('[data-testid="ArrowDropDownIcon"]') }).first();
       await expect(dropdown).toBeVisible({ timeout: 10000 });
@@ -588,9 +569,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -613,6 +592,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
+      await page.getByTestId("plan-times-toggle").click();
       const addBtn = page.locator('[data-testid="add-time-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -627,9 +607,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await page.locator("button").getByText("Save").last().click();
       await expect(page.locator("td button").getByText("Second Service")).toHaveCount(1, { timeout: 10000 });
 
-      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
-      await expect(servOrder).toBeVisible({ timeout: 10000 });
-      await servOrder.click();
+      await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 10000 });
 
       await editIconButton(page).first().click();
       await expect(page.getByText("Include in services")).toBeVisible({ timeout: 10000 });
@@ -676,7 +654,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await plansBtn.click();
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = editIconButton(page).last();
+      const editBtn = page.getByRole("button", { name: "Edit", exact: true }).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const deleteBtn = page.locator('[id="delete"]');
@@ -697,7 +675,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await minBtn.click();
       const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
-      const editBtn = editIconButton(page).first();
+      const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");

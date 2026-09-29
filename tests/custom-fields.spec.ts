@@ -65,7 +65,7 @@ test.describe.serial("Custom Fields (P-2)", () => {
 
   test("advanced search filters people by the custom field", async () => {
     await navigateToPeople(page);
-    await page.locator("text=Advanced").first().click();
+    await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
 
     // Expand the Custom Fields accordion so its filter list (incl. the new field) loads.
     await page.getByRole("button", { name: /Custom Fields/ }).click();

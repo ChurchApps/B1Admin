@@ -85,7 +85,7 @@ export function DisplayCalendarEventModal(props: Props) {
       {ConfirmDialogElement}
       <Dialog open={true} onClose={props.onDone} fullWidth scroll="body">
         <DialogContent>
-          <Box borderLeft={5} borderRadius={1} borderColor="#1976d2" padding={2} paddingBottom={0}>
+          <Box borderLeft={5} borderRadius={1} borderColor="primary.main" padding={2} paddingBottom={0}>
             <Typography variant="h5" fontWeight={550} marginBottom={1}>
               {props.event.title}
             </Typography>

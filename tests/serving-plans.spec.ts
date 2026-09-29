@@ -1,6 +1,6 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { editIconButton, dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -82,7 +82,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await minBtn.click();
       const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
-      const editBtn = editIconButton(page).first();
+      const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -193,7 +193,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
 
-      const editBtn = editIconButton(page).last();
+      const editBtn = page.locator("tr", { hasText: "Zacchaeus Plans" }).getByRole("button", { name: "Edit", exact: true });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const typeName = page.locator('[name="name"]');
@@ -209,7 +209,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
 
-      const editBtn = editIconButton(page).last();
+      const editBtn = page.locator("tr", { hasText: "Zebedee Plans" }).getByRole("button", { name: "Edit", exact: true });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const typeName = page.locator('[name="name"]');
@@ -307,7 +307,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await addBtn.click();
       const teamName = page.locator('[name="name"]');
       await teamName.fill("Zacchaeus Team");
-      const saveBtn = page.locator("button").getByText("Add").last();
+      const saveBtn = page.getByRole("button", { name: "Add", exact: true });
       await saveBtn.click();
       const verifiedTeam = page.locator("a").getByText("Zacchaeus Team");
       await expect(verifiedTeam).toHaveCount(1, { timeout: 10000 });
@@ -320,7 +320,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
       await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
-      const editBtn = editIconButton(page).first();
+      const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -426,7 +426,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
       await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
-      const editBtn = editIconButton(page).first();
+      const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -449,7 +449,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await minBtn.click();
       const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
-      const editBtn = editIconButton(page).first();
+      const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -525,7 +525,7 @@ test.describe("Service Order song search error handling", () => {
     const failure = { status: 500, contentType: "application/json", body: JSON.stringify({ errors: ["Search timed out"] }) };
     await page.route("**/songs/search**", (route) => route.fulfill(failure));
     await page.goto(`/serving/plans/${planId}`);
-    await page.getByRole("tab", { name: "Service Order" }).click({ timeout: 20000 });
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await expect(page.getByText("Song Search Section")).toBeVisible({ timeout: 20000 });
 
     await page.getByRole("button", { name: "Add Item" }).first().click();
@@ -642,6 +642,7 @@ test.describe.serial("Plan pickers honor First Day of Week", () => {
   // Full page loads only: useFirstDayOfWeek re-reads the church record on boot.
   const openTimePicker = async () => {
     await page.goto("/serving/plans/PLA00000001");
+    await page.getByTestId("plan-times-toggle").click();
     const addTime = page.locator('[data-testid="add-time-button"]');
     await expect(addTime).toBeVisible({ timeout: 15000 });
     await addTime.click();
@@ -731,7 +732,7 @@ test.describe.serial("Service Order bulk delete inside a section", () => {
     page = await context.newPage();
     await login(page);
     await page.goto(`/serving/plans/${planId}`);
-    await page.getByRole("tab", { name: "Service Order" }).click();
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
   });
 
   test.afterAll(async () => {
@@ -869,7 +870,7 @@ test.describe.serial("Service Order multi-select import from the External Item p
     await page.route("**/lessons.church/**", (route) => route.abort());
 
     await page.goto(`/serving/plans/${planId}`);
-    await page.getByRole("tab", { name: "Service Order" }).click();
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
   });
 
   test.afterAll(async () => {
@@ -986,6 +987,7 @@ test.describe.serial("Service Order heading position per service time", () => {
 
     // The demo plan ships with one service time; a second one is what makes the
     // per-service choice meaningful (and is what the "Include in services" list needs).
+    await page.getByTestId("plan-times-toggle").click();
     const addTime = page.locator('[data-testid="add-time-button"]');
     await expect(addTime).toBeVisible({ timeout: 15000 });
     await addTime.click();
@@ -993,9 +995,7 @@ test.describe.serial("Service Order heading position per service time", () => {
     await page.locator("button").getByText("Save").last().click();
     await expect(page.locator("td button").getByText("Second Service")).toHaveCount(1, { timeout: 15000 });
 
-    const serviceOrderTab = page.locator('[role="tab"]').getByText("Service Order");
-    await expect(serviceOrderTab).toBeVisible({ timeout: 15000 });
-    await serviceOrderTab.click();
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 15000 });
 
     const worshipHeader = page.locator(".planItemHeader").filter({ hasText: "Worship" }).first();
     await expect(worshipHeader).toBeVisible({ timeout: 15000 });

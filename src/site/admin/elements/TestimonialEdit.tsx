@@ -40,7 +40,7 @@ export function TestimonialEdit({ parsedData, handleChange, handleHtmlChange }: 
       <Typography variant="subtitle2" sx={{ mt: 1 }}>{Locale.label("site.testimonialEdit.quotes")}</Typography>
       {quotes.length === 0 && <Typography variant="body2" color="text.secondary">{Locale.label("site.testimonialEdit.noQuotes")}</Typography>}
       {quotes.map((quote, index) => (
-        <Box key={index} sx={{ border: "1px solid var(--border-light)", borderRadius: 1, p: 1, mb: 1 }} data-testid={`testimonial-quote-${index}`}>
+        <Box key={index} sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1, mb: 1 }} data-testid={`testimonial-quote-${index}`}>
           <Grid container spacing={1} alignItems="center">
             <Grid size={{ xs: 10 }}>
               <Button size="small" variant="outlined" onClick={() => setPickIndex(index)} data-testid={`testimonial-select-photo-${index}`}>{Locale.label("site.testimonialEdit.selectPhoto")}</Button>

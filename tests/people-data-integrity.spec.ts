@@ -147,7 +147,7 @@ test("group 'is not member of' filter excludes the group's members", async ({ pa
   await addToGroup(group.id, member.id);
 
   await page.goto("/people");
-  await page.locator("p").getByText(/[▶▼] Advanced/).click();
+  await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
   await page.locator("#peopleSearch").getByText("Membership & Groups").click();
   const label = page.locator("#peopleSearch").getByText("Group Member", { exact: true });
   await label.locator("xpath=..").locator('input[type="checkbox"]').check();

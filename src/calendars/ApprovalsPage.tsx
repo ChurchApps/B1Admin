@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { ApiHelper, UserHelper, Loading, PageHeader, Locale, DateHelper } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface, type EventInterface } from "@churchapps/helpers";
-import { Box, Button, Card, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, Grid, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
-import { Check as ApproveIcon, Close as RejectIcon, EventAvailable as ApprovalsIcon, WarningAmber as ConflictIcon } from "@mui/icons-material";
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { PermissionDenied } from "../components";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip } from "../components/ui";
+import { CountChip, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
+import { CalendarChrome } from "./components/CalendarChrome";
 import { type EventBookingInterface } from "./interfaces";
 
 const calendarsAdmin = { api: "ContentApi", contentType: "Calendars", action: "Admin" };
@@ -76,28 +75,32 @@ export const ApprovalsPage = () => {
 
   if (!canResolve) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
+  const sectionHead = (title: string, count: number) => (
+    <Stack direction="row" spacing={1} alignItems="center" sx={{ px: { xs: 2, md: 3 }, pt: { xs: 2, md: 3 }, pb: 2 }}>
+      <Typography variant="h3" component="h2">{title}</Typography>
+      <CountChip count={count} />
+    </Stack>
+  );
+
+  const emptyLine = (text: string, testId: string) => (
+    <Box sx={{ px: { xs: 2, md: 3 }, pb: 3 }} data-testid={testId}>
+      <Typography variant="body2" color="text.secondary">{text}</Typography>
+    </Box>
+  );
+
+  const when = (d?: Date | string) => (d ? new Date(d).toLocaleString(DateHelper.locale) : "");
+
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<ApprovalsIcon />} title={Locale.label("calendars.approvals.title")} subtitle={Locale.label("calendars.approvals.subtitle")} />
-      <Box sx={{ p: 3 }}>
+      <CalendarChrome selected="approvals" subtitle={Locale.label("calendars.approvals.subtitle")}>
         {loading ? <Loading /> : (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, lg: 7 }}>
-              <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-                <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <ApprovalsIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">{Locale.label("calendars.approvals.bookingRequests")}</Typography>
-                    {bookings.length > 0 && <CountChip count={bookings.length} />}
-                  </Stack>
-                </Box>
-                {bookings.length === 0 ? (
-                  <Box sx={{ p: 3, textAlign: "center" }} data-testid="no-pending-bookings">
-                    <Typography variant="body2" color="text.secondary">{Locale.label("calendars.approvals.noPendingBookings")}</Typography>
-                  </Box>
-                ) : (
-                  <Table size="small" data-testid="pending-bookings-table">
+          <Stack spacing={3}>
+            <Surface disablePadding>
+              {sectionHead(Locale.label("calendars.approvals.bookingRequests"), bookings.length)}
+              {bookings.length === 0 ? emptyLine(Locale.label("calendars.approvals.noPendingBookings"), "no-pending-bookings") : (
+                <Box sx={tableScrollSx} role="region" aria-label={Locale.label("calendars.approvals.bookingRequests")} tabIndex={0}>
+                  <Table data-testid="pending-bookings-table">
                     <TableHead>
                       <TableRow>
                         <TableCell>{Locale.label("calendars.approvals.event")}</TableCell>
@@ -111,7 +114,7 @@ export const ApprovalsPage = () => {
                         <TableRow key={b.id} hover>
                           <TableCell>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>{b.eventTitle}</Typography>
-                            <Typography variant="caption" color="text.secondary">{b.eventStart ? new Date(b.eventStart).toLocaleString(DateHelper.locale) : ""}</Typography>
+                            <Typography variant="caption" color="text.secondary">{when(b.eventStart)}</Typography>
                           </TableCell>
                           <TableCell>
                             {b.roomName || b.resourceName}
@@ -120,40 +123,33 @@ export const ApprovalsPage = () => {
                           <TableCell>
                             {(b.conflicts?.length || 0) > 0 ? (
                               <Tooltip title={<>{(b.conflicts || []).map((c, i) => <div key={i}>{c.message}</div>)}</>}>
-                                <Chip icon={<ConflictIcon />} label={Locale.label("calendars.approvals.conflicts")} size="small" color="warning" data-testid={`booking-conflicts-${b.id}`} />
+                                <Box component="span" tabIndex={0} data-testid={`booking-conflicts-${b.id}`}>
+                                  <StatusBadge tone="warning">{Locale.label("calendars.approvals.conflicts")}</StatusBadge>
+                                </Box>
                               </Tooltip>
                             ) : (
-                              <Chip label={Locale.label("calendars.approvals.noConflicts")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.main" }} />
+                              <StatusBadge tone="success">{Locale.label("calendars.approvals.noConflicts")}</StatusBadge>
                             )}
                           </TableCell>
                           <TableCell align="right" className="rowActions">
-                            <Stack direction="row" spacing={1} justifyContent="flex-end">
-                              <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => openApproveBooking(b.id || "")} data-testid={`approve-booking-${b.id}`} />
-                              <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveBooking(b.id || "", "reject")} data-testid={`reject-booking-${b.id}`} />
-                            </Stack>
+                            <VerbRow sx={{ justifyContent: "flex-end" }}>
+                              <TextAction small onClick={() => openApproveBooking(b.id || "")} data-testid={`approve-booking-${b.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>
+                              <TextAction small onClick={() => resolveBooking(b.id || "", "reject")} data-testid={`reject-booking-${b.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
+                            </VerbRow>
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                )}
-              </Card>
-            </Grid>
-            <Grid size={{ xs: 12, lg: 5 }}>
-              <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-                <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <ApprovalsIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">{Locale.label("calendars.approvals.eventRequests")}</Typography>
-                    {events.length > 0 && <CountChip count={events.length} />}
-                  </Stack>
                 </Box>
-                {events.length === 0 ? (
-                  <Box sx={{ p: 3, textAlign: "center" }} data-testid="no-pending-events">
-                    <Typography variant="body2" color="text.secondary">{Locale.label("calendars.approvals.noPendingEvents")}</Typography>
-                  </Box>
-                ) : (
-                  <Table size="small" data-testid="pending-events-table">
+              )}
+            </Surface>
+
+            <Surface disablePadding>
+              {sectionHead(Locale.label("calendars.approvals.eventRequests"), events.length)}
+              {events.length === 0 ? emptyLine(Locale.label("calendars.approvals.noPendingEvents"), "no-pending-events") : (
+                <Box sx={tableScrollSx} role="region" aria-label={Locale.label("calendars.approvals.eventRequests")} tabIndex={0}>
+                  <Table data-testid="pending-events-table">
                     <TableHead>
                       <TableRow>
                         <TableCell>{Locale.label("calendars.approvals.event")}</TableCell>
@@ -166,25 +162,25 @@ export const ApprovalsPage = () => {
                         <TableRow key={e.id} hover>
                           <TableCell>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>{e.title}</Typography>
-                            <Typography variant="caption" color="text.secondary">{e.start ? new Date(e.start).toLocaleString(DateHelper.locale) : ""}</Typography>
+                            <Typography variant="caption" color="text.secondary">{when(e.start)}</Typography>
                           </TableCell>
                           <TableCell>{e.description}</TableCell>
                           <TableCell align="right" className="rowActions">
-                            <Stack direction="row" spacing={1} justifyContent="flex-end">
-                              <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`} />
-                              <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`} />
-                            </Stack>
+                            <VerbRow sx={{ justifyContent: "flex-end" }}>
+                              <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>
+                              <TextAction small onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
+                            </VerbRow>
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                )}
-              </Card>
-            </Grid>
-          </Grid>
+                </Box>
+              )}
+            </Surface>
+          </Stack>
         )}
-      </Box>
+      </CalendarChrome>
       <Dialog open={!!approvingId} onClose={() => setApprovingId("")} fullWidth maxWidth="xs" data-testid="approve-booking-dialog">
         <DialogTitle>{Locale.label("calendars.approvals.approveBookingTitle")}</DialogTitle>
         <DialogContent>
@@ -201,7 +197,7 @@ export const ApprovalsPage = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={() => setApprovingId("")} data-testid="approve-booking-cancel">{Locale.label("common.cancel")}</Button>
+          <Button variant="outlined" onClick={() => setApprovingId("")} data-testid="approve-booking-cancel">{Locale.label("common.cancel")}</Button>
           <Button variant="contained" onClick={approveBooking} data-testid="approve-booking-confirm">{Locale.label("calendars.approvals.approve")}</Button>
         </DialogActions>
       </Dialog>

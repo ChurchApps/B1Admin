@@ -11,3 +11,14 @@ export const GRID_SIZES = {
   /** Main content (2/3) — pair with `sidebar`. */
   mainContent: { xs: 12, md: 8 }
 } as const;
+
+/** Recipe B record/profile: 304px identity column (280px medium) + flexible detail stack; stacks on small screens. */
+export const profileLayoutSx = {
+  display: "grid",
+  gridTemplateColumns: { xs: "minmax(0,1fr)", md: "280px minmax(0,1fr)", lg: "304px minmax(0,1fr)" },
+  gap: 3,
+  alignItems: "start"
+} as const;
+
+/** Recipe D: readable single-column form width. */
+export const formWidthSx = { maxWidth: 640 } as const;

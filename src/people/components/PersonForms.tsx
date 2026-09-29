@@ -26,6 +26,7 @@ interface FormDetail {
 interface Props {
   person: PersonInterface;
   forms: PersonFormOption[];
+  initialFormId?: string;
   updatedFunction: () => void;
 }
 
@@ -35,12 +36,12 @@ const submissionTime = (fs: FormSubmissionInterface) => (fs.submissionDate ? new
 // Forms with nothing submitted yet cache their blank question list under the form id.
 const detailKey = (formId: string, submissionId?: string) => (submissionId ? `fs-${submissionId}` : `form-${formId}`);
 
-// The "Forms" tab: a list of the person's person-contentType forms with a completion
+// The "All forms" view: a list of the person's person-contentType forms with a completion
 // dot each, plus the selected form's view/edit pane. Replaces the old profile left rail.
 export const PersonForms: React.FC<Props> = (props) => {
   const { person, forms } = props;
   const [details, setDetails] = useState<Record<string, FormDetail>>({});
-  const [selectedFormId, setSelectedFormId] = useState<string>("");
+  const [selectedFormId, setSelectedFormId] = useState<string>(props.initialFormId || "");
   const [editingFormId, setEditingFormId] = useState<string>("");
   // Per form, which of its submissions is on screen. Absent means "the newest one".
   const [selectedSubmissionIds, setSelectedSubmissionIds] = useState<Record<string, string>>({});
@@ -235,7 +236,7 @@ export const PersonForms: React.FC<Props> = (props) => {
             {forms.map((form) => (
               <ListItemButton key={form.id} selected={form.id === selectedForm.id} onClick={() => setSelectedFormId(form.id)}>
                 <DescriptionIcon sx={{ fontSize: 20, mr: 1.5, color: "text.secondary" }} />
-                <Typography sx={{ flex: 1, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <Typography variant="body2" sx={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {form.name || Locale.label("people.personForm.form") || "Form"}
                 </Typography>
                 {(submissionsByFormId[form.id]?.length || 0) > 0

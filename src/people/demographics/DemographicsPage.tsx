@@ -2,9 +2,9 @@ import { memo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { type SearchCondition } from "@churchapps/helpers";
-import { Box, GlobalStyles, Grid } from "@mui/material";
-import { BarChart as BarChartIcon } from "@mui/icons-material";
-import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { GlobalStyles, Grid } from "@mui/material";
+import { Loading, Locale } from "@churchapps/apphelper";
+import { PageContainer, PageHeader } from "../../components/ui";
 import { AgeChart } from "./components/AgeChart";
 import { DonutChart } from "./components/DonutChart";
 
@@ -57,13 +57,11 @@ export const DemographicsPage = memo(() => {
     <>
       <GlobalStyles styles={googleChartTooltipStyles} />
       <PageHeader
-        icon={<BarChartIcon />}
         title={Locale.label("people.demographics.title")}
         subtitle={data ? `${Locale.label("people.demographics.total")}: ${data.total.toLocaleString()}` : Locale.label("people.demographics.subtitle")}>
-        <BarChartIcon sx={{ fontSize: 32, color: "rgba(255,255,255,0.8)", mr: 2 }} />
       </PageHeader>
 
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         {query.isLoading ? (
           <Loading />
         ) : data ? (
@@ -87,7 +85,7 @@ export const DemographicsPage = memo(() => {
             )}
           </Grid>
         ) : null}
-      </Box>
+      </PageContainer>
     </>
   );
 });

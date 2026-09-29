@@ -1,46 +1,17 @@
 import React from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
-import { ThemeProvider, createTheme, type Theme } from "@mui/material/styles";
+import { b1Layout } from "../../helpers/Themes";
 
-export const labelSx = { fontSize: "0.72rem", fontWeight: 650, letterSpacing: "0.07em", textTransform: "uppercase", color: "text.secondary" } as const;
-export const eyebrowSx = { fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.02em", lineHeight: 1.4, color: "var(--c1)" } as const;
-export const titleSx = { fontSize: { xs: "2rem", md: "2.4rem" }, fontWeight: 500, letterSpacing: "-0.03em", lineHeight: 1.08, color: "text.primary" } as const;
-export const verbSx = { fontWeight: 600, textTransform: "none", minWidth: 0, p: 0, "&:hover": { bgcolor: "transparent", textDecoration: "underline" } } as const;
-
-const plateTheme = (outer: Theme) => createTheme(outer, {
-  components: {
-    MuiTextField: { defaultProps: { variant: "standard" } },
-    MuiFormControl: { defaultProps: { variant: "standard" } },
-    MuiInputLabel: { styleOverrides: { root: { textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500 } } },
-    MuiButton: { defaultProps: { disableElevation: true }, styleOverrides: { root: { fontWeight: 600 } } },
-    MuiChip: { defaultProps: { variant: "outlined" } }
-  }
-});
-
-// Flattens the shared card chrome (DisplayBox ids, om-* classes on FormCard/SectionListCard/CardWithHeader) into the omarchy plate.
-const plateSx = {
-  bgcolor: "background.paper",
-  minHeight: "calc(100vh - 64px)",
-  "& .MuiCard-root, & .MuiPaper-root:not(.MuiAlert-root)": { boxShadow: "none", border: 0, borderRadius: 0, bgcolor: "transparent" },
-  "& .MuiCard-root": { p: 0 },
-  "& .MuiPaper-outlined": { borderBottom: "1px solid", borderColor: "divider" },
-  "& .MuiPaper-root:has(> #display-box-header)": { p: 0, mb: { xs: 4, md: 6 } },
-  "& .om-section > .MuiPaper-root": { mb: 0 },
-  "& .om-head, & #display-box-header": { px: 0, pt: 0, pb: 1, border: 0, minHeight: 32 },
-  "& .om-title, & #display-box-title": { ...eyebrowSx, m: 0 },
-  "& .om-icon, & #display-box-icon": { display: "none" },
-  "& #display-box-content": { mt: 0 },
-  "& .om-body": { px: 0 },
-  "& .om-foot": { px: 0, border: 0 },
-  "& .MuiTableCell-root:first-of-type": { pl: 0 },
-  "& .MuiTableCell-root:last-of-type": { pr: 0 }
-} as const;
+export const labelSx = { fontSize: "0.75rem", lineHeight: "18px", fontWeight: 650, letterSpacing: "0.07em", textTransform: "uppercase", color: "text.secondary" } as const;
+export const eyebrowSx = { fontSize: "1.125rem", lineHeight: "25px", fontWeight: 600, color: "text.primary" } as const;
+export const titleSx = { fontSize: { xs: "1.625rem", md: "1.875rem" }, lineHeight: { xs: "32px", md: "36px" }, fontWeight: 650, letterSpacing: "-0.02em", color: "text.primary" } as const;
+export const sidebarTitleSx = { fontSize: "1.375rem", lineHeight: "29px", fontWeight: 650, color: "text.primary" } as const;
+export const verbSx = { fontWeight: 600, textTransform: "none", minWidth: 0, minHeight: 0, px: 0.5, "&:hover": { bgcolor: "transparent", textDecoration: "underline" } } as const;
+export const srOnlySx = { position: "absolute", width: "1px", height: "1px", p: 0, m: "-1px", overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 } as const;
 
 export const SettingsPage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ThemeProvider theme={plateTheme}>
-    <Box sx={plateSx}>{children}</Box>
-  </ThemeProvider>
+  <Box sx={{ bgcolor: "background.default", minHeight: `calc(100vh - ${b1Layout.headerHeight}px)`, "& .om-section > .MuiPaper-root": { mb: 0 } }}>{children}</Box>
 );
 
 export const SettingsRow: React.FC<{ label: string; value?: React.ReactNode }> = ({ label, value }) => (
@@ -63,20 +34,22 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-// The record shape from the mockups: who (identity + index) on the left, the living slice on the right.
+// Recipe A shell: pale-blue local navigation (title, intro, grouped links) beside the content-sized work area.
 export const SettingsLayout: React.FC<LayoutProps> = ({ eyebrow, title, subtitle, verbs, nav, children }) => (
-  <Grid container>
-    <Grid size={{ xs: 12, md: 4 }} sx={{ borderRight: { md: "1px solid" }, borderColor: { md: "divider" } }}>
-      <Box sx={{ px: { xs: 2, md: 4 }, pt: { xs: 3, md: 5 }, pb: { xs: 1, md: 5 }, position: { md: "sticky" }, top: { md: 0 } }}>
-        {eyebrow && <Typography sx={{ ...labelSx, mb: 1.5 }}>{eyebrow}</Typography>}
-        <Typography id="page-header-title" component="h1" sx={titleSx}>{title}</Typography>
-        {subtitle && <Typography sx={{ color: "text.secondary", mt: 1 }}>{subtitle}</Typography>}
-        {verbs && <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 2 }}>{verbs}</Box>}
-        <Box sx={{ mt: 4 }}>{nav}</Box>
+  <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0,1fr)", md: `${b1Layout.sidebarWidthMedium}px minmax(0,1fr)`, lg: `${b1Layout.sidebarWidth}px minmax(0,1fr)` }, minHeight: `calc(100vh - ${b1Layout.headerHeight}px)` }}>
+    <Box component="aside" sx={{ bgcolor: "var(--b1-sidebar)", px: 2, py: { xs: 2, md: 3.5 }, minWidth: 0 }}>
+      <Box sx={{ position: { md: "sticky" }, top: { md: 16 } }}>
+        <Box sx={{ px: 1.5, pb: 3 }}>
+          {eyebrow && <Typography sx={{ ...labelSx, mb: 1 }}>{eyebrow}</Typography>}
+          <Typography id="page-header-title" component="h1" sx={{ ...sidebarTitleSx, overflowWrap: "anywhere" }}>{title}</Typography>
+          {subtitle && <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>{subtitle}</Typography>}
+          {verbs && <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 1.5 }}>{verbs}</Box>}
+        </Box>
+        {nav}
       </Box>
-    </Grid>
-    <Grid size={{ xs: 12, md: 8 }} sx={{ px: { xs: 2, md: 5 }, pt: { xs: 2, md: 5 }, pb: 8, minWidth: 0 }}>
+    </Box>
+    <Box sx={{ minWidth: 0, width: "100%", maxWidth: b1Layout.contentMax, mx: "auto", p: { xs: 2, md: 3, lg: 4 } }}>
       {children}
-    </Grid>
-  </Grid>
+    </Box>
+  </Box>
 );

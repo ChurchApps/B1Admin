@@ -28,7 +28,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [loading, setLoading] = React.useState(!isAdd);
 
-  const { control, register, handleSubmit, reset, setValue } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "" } });
+  const { control, handleSubmit, reset, setValue } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "" } });
 
   const { errors } = useFormState({ control });
   const e = errors as any;

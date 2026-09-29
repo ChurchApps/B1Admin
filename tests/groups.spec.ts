@@ -1,14 +1,23 @@
 import type { Page } from "@playwright/test";
 import { groupsTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
+// The group record opens on its summary plate; members and sessions are ?view= slices.
+async function openSeedMembers(page: Page, name?: string) {
+  await openSeedGroup(page, name);
+  await page.getByTestId("group-all-members").click();
+  await expect(page.locator("#groupMembersBox")).toBeVisible({ timeout: 10000 });
+}
+
+const editGroupButton = (page: Page) => page.getByTestId("edit-group-button");
+
 async function openSessionOn(page: Page, date: string) {
   await openSeedGroup(page, SESSION_GROUP);
   await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
-  await page.locator("button").getByText("Sessions").click();
+  await page.getByTestId("group-all-sessions").click();
   await page.locator("button").getByText("New").first().click();
   await page.locator('[data-testid="session-date-input"] input').fill(date);
   const saveBtn = page.getByRole("button", { name: "Save", exact: true });
@@ -69,7 +78,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should view person details from group", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const firstPerson = page.locator('[id="groupMemberTable"] a').first();
@@ -79,7 +88,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should add person to group", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const searchInput = page.locator('input[name="personAddText"]');
@@ -96,7 +105,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should advanced add people", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const advBtn = page.locator("button").getByText("Advanced");
@@ -126,7 +135,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should delete advanced add conditions", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const advBtn = page.locator("button").getByText("Advanced");
@@ -151,7 +160,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should remove person from group", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
@@ -162,7 +171,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should toggle member leader status", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const memberTable = page.locator("#groupMemberTable");
@@ -191,7 +200,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should expose member export link", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const exportLink = page.locator("#groupMembersBox a[download]");
@@ -221,7 +230,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should show templates above group message sender", async () => {
-      await openSeedGroup(page);
+      await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
       const messageBtn = page.locator('[data-testid="send-message-button"]').first();
@@ -237,7 +246,7 @@ test.describe.serial("Group Management", () => {
       await openSeedGroup(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
-      const editBtn = editIconButton(page);
+      const editBtn = editGroupButton(page);
       await editBtn.click();
       const nameEdit = page.locator('[name="name"]');
       await expect(nameEdit).toHaveCount(1);
@@ -250,7 +259,7 @@ test.describe.serial("Group Management", () => {
       await openSeedGroup(page, "Elementary (3-5)");
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
-      const editBtn = editIconButton(page);
+      const editBtn = editGroupButton(page);
       await editBtn.click();
       const nameEdit = page.locator('[name="name"]');
       await expect(nameEdit).toBeVisible({ timeout: 10000 });
@@ -259,7 +268,7 @@ test.describe.serial("Group Management", () => {
       await saveBtn.click();
       const title = page.locator("#page-header-title");
       await expect(title).toContainText("Elementary (2-5)", { timeout: 10000 });
-      await editIconButton(page).click();
+      await editGroupButton(page).click();
       await expect(page.locator('[name="name"]')).toBeVisible({ timeout: 10000 });
       await page.locator('[name="name"]').fill("Elementary (3-5)");
       await page.locator("button").getByText("Save").click();
@@ -272,7 +281,7 @@ test.describe.serial("Group Management", () => {
       await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
-      const sessionsBtn = page.locator("button").getByText("Sessions");
+      const sessionsBtn = page.getByTestId("group-all-sessions");
       await sessionsBtn.click();
       await expect(page.locator('[data-testid="sessions-setup-hint"]')).toContainText("People → Attendance → Setup", { timeout: 10000 });
       const newBtn = page.locator("button").getByText("New").first();
@@ -288,7 +297,7 @@ test.describe.serial("Group Management", () => {
       await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
-      const sessionsBtn = page.locator("button").getByText("Sessions");
+      const sessionsBtn = page.getByTestId("group-all-sessions");
       await expect(sessionsBtn).toBeVisible({ timeout: 10000 });
       await sessionsBtn.click();
       const newBtn = page.locator("button").getByText("New").first();
@@ -333,8 +342,8 @@ test.describe.serial("Group Management", () => {
       await saveAttendance(page);
 
       // Reload: the saved state comes back from the API, not local state.
+      // ?view=sessions survives the reload.
       await page.reload();
-      await page.locator("button").getByText("Sessions").click();
       await selectSession(page, "2025-12-07");
       await expect(page.getByRole("checkbox", { name: "William Anderson" })).toBeChecked({ timeout: 10000 });
       await expect(page.getByRole("checkbox", { name: "Margaret Thompson" })).toBeChecked();
@@ -343,7 +352,7 @@ test.describe.serial("Group Management", () => {
     });
 
     test("prints a class roll sheet for the group", async () => {
-      await openSeedGroup(page, SESSION_GROUP);
+      await openSeedMembers(page, SESSION_GROUP);
       await expect(page.locator('[data-testid="print-roster-button"]')).toBeVisible({ timeout: 10000 });
       const groupId = new URL(page.url()).pathname.split("/").pop();
       await page.goto("/groups/print-roster?groupId=" + groupId + "&date=2025-12-07");
@@ -385,7 +394,7 @@ test.describe.serial("Group Management", () => {
       await categorySelect.click();
       const newCat = page.locator('li[data-value="__ADD_NEW__"]');
       await newCat.click();
-      const categoryInput = page.locator("input").first();
+      const categoryInput = page.getByTestId("add-group-bar").locator("input").first();
       await categoryInput.fill("Test Category");
       const nameInput = page.locator('[name="name"]');
       await nameInput.fill("Zacchaeus Test Group");
@@ -399,7 +408,7 @@ test.describe.serial("Group Management", () => {
       await openSeedGroup(page, "Zacchaeus Test Group");
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
-      const editBtn = editIconButton(page);
+      const editBtn = editGroupButton(page);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
@@ -414,23 +423,23 @@ test.describe.serial("Group Management", () => {
 
 test.describe("Group communication and roster controls", () => {
   test("group detail page exposes Send Message affordance", async ({ page }) => {
-    await openSeedGroup(page);
+    await openSeedMembers(page);
     await expect(page.locator('[data-testid="send-message-button"]')).toBeVisible({ timeout: 10000 });
   });
 
   test("group detail page exposes a roster CSV download link", async ({ page }) => {
-    await openSeedGroup(page);
+    await openSeedMembers(page);
     await expect(page.locator('a[download="groupmembers.csv"]')).toBeVisible({ timeout: 10000 });
   });
 
   test("clicking Send Message opens the message composer", async ({ page }) => {
-    await openSeedGroup(page);
+    await openSeedMembers(page);
     await page.locator('[data-testid="send-message-button"]').click();
     await expect(page.locator("#groupMembersBox textarea").first()).toBeVisible({ timeout: 10000 });
   });
 
   test("promotes a group member to leader and back", async ({ page }) => {
-    await openSeedGroup(page);
+    await openSeedMembers(page);
 
     const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
     if (!(await promoteBtn.isVisible().catch(() => false))) {
@@ -452,7 +461,7 @@ test.describe("Group service times (optional) field", () => {
   test("lists available service times and assigns one to a group", async ({ page }) => {
     await openSeedGroup(page, "Women's Bible Study");
 
-    await editIconButton(page).first().click();
+    await editGroupButton(page).first().click();
     const box = page.locator("#groupDetailsBox");
     await expect(box).toBeVisible({ timeout: 10000 });
 
@@ -516,7 +525,7 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
 
   test("archives the duplicated group from the GroupDetailsEdit header", async () => {
     // Still on the duplicate's detail page from the previous test.
-    const editBtn = editIconButton(page).first();
+    const editBtn = editGroupButton(page).first();
     await editBtn.click();
     const archiveBtn = page.locator('[data-testid="archive-group-button"]');
     await expect(archiveBtn).toBeVisible({ timeout: 10000 });
@@ -552,7 +561,7 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     const groupLink = page.locator("table tbody tr a").getByText(DUPLICATE_NAME, { exact: true });
     await groupLink.click();
     await page.waitForURL(/\/groups\/[\w-]+$/, { timeout: 10000 });
-    const editBtn = editIconButton(page).first();
+    const editBtn = editGroupButton(page).first();
     await editBtn.click();
     const deleteBtn = page.locator("button").getByText("Delete");
     await expect(deleteBtn).toBeVisible({ timeout: 10000 });

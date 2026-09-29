@@ -33,7 +33,7 @@ export const AddToWorkflowDialog: React.FC<Props> = (props) => {
   };
 
   return (
-    <Dialog open={true} onClose={props.onClose} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+    <Dialog open={true} onClose={props.onClose} maxWidth="sm" fullWidth>
       <DialogTitle>{Locale.label("people.personBanner.addToWorkflow")}</DialogTitle>
       <DialogContent>
         {done ? (

@@ -13,6 +13,7 @@ interface Props {
   personId: string;
   personName?: string;
   updatedFunction?: () => void;
+  autoPrint?: boolean;
 }
 
 const Dash = <Typography component="span" variant="body2" color="text.disabled">—</Typography>;
@@ -128,7 +129,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                   {hasGroup && (
                     <TableCell>
                       {group
-                        ? <Box component={Link} to={`/groups/${group.id}`} sx={{ color: "primary.main", fontWeight: 500, textDecoration: "none", fontSize: "0.875rem", "&:hover": { textDecoration: "underline" } }}>{group.name}</Box>
+                        ? <Box component={Link} to={`/groups/${group.id}`} sx={{ color: "primary.main", fontWeight: 600, textDecoration: "none", typography: "body2", "&:hover": { textDecoration: "underline" } }}>{group.name}</Box>
                         : Dash}
                     </TableCell>
                   )}
@@ -159,7 +160,15 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
       </FormControl>
     ));
 
-  if (attendanceRecords.isLoading || groups.isLoading) return <Loading size="sm" />;
+  const loaded = !attendanceRecords.isLoading && !groups.isLoading;
+  const printedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (!props.autoPrint || !loaded || printedRef.current) return;
+    const t = setTimeout(() => { printedRef.current = true; window.print(); }, 300);
+    return () => clearTimeout(t);
+  }, [props.autoPrint, loaded]);
+
+  if (!loaded) return <Loading size="sm" />;
 
   return (
     <Box className="attendance-print">
@@ -177,11 +186,10 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
         {props.personName ? `${props.personName} — Attendance` : "Attendance"}
       </Typography>
       <Card>
-        <Box className="attendance-no-print" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+        <Box className="attendance-no-print" sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <EventIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">Attendance</Typography>
+              <Typography variant="h3" component="h2">Attendance</Typography>
               {records.length > 0 && <CountChip count={records.length} />}
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>

@@ -231,7 +231,7 @@ export function PageLinkEdit(props: Props) {
             </FormControl>
           </Grid>}
           {props.page && visibility === "groups" && <Grid size={{ xs: 12 }}>
-            <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2 }}>
+            <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 2 }}>
               <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("site.pageLinkEdit.selectGroups")}</Typography>
               <FormGroup>
                 {groups.map((group) => (

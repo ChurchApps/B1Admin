@@ -138,22 +138,14 @@ export function CuratedEventCalendar(props: Props) {
         )}
       </Stack>
       <Box sx={{
-        "& .rbc-btn-group button": {
-          color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-        },
+        "& .rbc-btn-group button": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
         "& .rbc-btn-group button:hover, & .rbc-btn-group button:focus, & .rbc-btn-group button:active, & .rbc-btn-group button.rbc-active": {
-          color: (theme) => theme.palette.mode === "dark" ? "#000 !important" : "inherit",
-          backgroundColor: (theme) => theme.palette.mode === "dark" ? "#e0e0e0 !important" : undefined
+          color: (theme) => theme.palette.mode === "dark" ? `${theme.palette.common.black} !important` : "inherit",
+          backgroundColor: (theme) => theme.palette.mode === "dark" ? `${theme.palette.grey[300]} !important` : undefined
         },
-        "& .rbc-toolbar-label": {
-          color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-        },
-        "& .rbc-off-range-bg": {
-          backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined
-        },
-        "& .rbc-today": {
-          backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined
-        }
+        "& .rbc-toolbar-label": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
+        "& .rbc-off-range-bg": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined },
+        "& .rbc-today": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined }
       }}>
         <Calendar
           localizer={localizer}
@@ -176,7 +168,7 @@ export function CuratedEventCalendar(props: Props) {
         autoHideDuration={2000}
         message={Locale.label("calendars.calendar.copiedToClipboard")}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        ContentProps={{ sx: { background: "green" } }}
+        ContentProps={{ sx: { background: "var(--b1-success)" } }}
       />
     </div>
   );

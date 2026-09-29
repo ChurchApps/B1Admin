@@ -124,7 +124,7 @@ export const AppThemeEdit: React.FC = () => {
   const modeSection = (mode: "light" | "dark", title: string) => (
     <Accordion defaultExpanded={mode === "light"}>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography variant="subtitle1" fontWeight={600}>{title}</Typography>
+        <Typography variant="h3" component="h3">{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={2} sx={{ mb: 3 }}>

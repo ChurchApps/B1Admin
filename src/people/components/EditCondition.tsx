@@ -189,7 +189,7 @@ export function EditCondition(props: Props) {
           <AppDatePicker
             fullWidth
             label={Locale.label("people.editCondition.value")}
-            
+
             InputLabelProps={{ shrink: true }}
             style={{ marginBottom: 5 }}
             name="value"
@@ -230,8 +230,8 @@ export function EditCondition(props: Props) {
           <>
             {getValueSelect(options)}
             <Stack direction="row" spacing={2} sx={{ marginTop: "16px", marginBottom: "8px" }}>
-              <AppDatePicker fullWidth label={Locale.label("people.editCondition.from")} name="from"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
-              <AppDatePicker fullWidth label={Locale.label("people.editCondition.to")} name="to"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.from")} name="from" InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.to")} name="to" InputLabelProps={{ shrink: true }} onChange={handleChange} />
             </Stack>
           </>
         );
@@ -300,8 +300,8 @@ export function EditCondition(props: Props) {
           <>
             {getValueSelect(options)}
             <Stack direction="row" spacing={2} sx={{ marginTop: "16px", marginBottom: "8px" }}>
-              <AppDatePicker fullWidth label={Locale.label("people.editCondition.from")} name="from"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
-              <AppDatePicker fullWidth label={Locale.label("people.editCondition.to")} name="to"  InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.from")} name="from" InputLabelProps={{ shrink: true }} onChange={handleChange} />
+              <AppDatePicker fullWidth label={Locale.label("people.editCondition.to")} name="to" InputLabelProps={{ shrink: true }} onChange={handleChange} />
             </Stack>
           </>
         );

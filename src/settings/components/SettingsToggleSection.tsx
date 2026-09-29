@@ -1,7 +1,7 @@
 import React from "react";
-import { DisplayBox } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { EditVerb } from "./SettingsPage";
+import { SettingsPanel } from "./SettingsPanel";
 
 interface Props {
   headerText: string;
@@ -60,8 +60,8 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   }
 
   return (
-    <DisplayBox headerText={props.headerText} headerIcon={props.headerIcon} editContent={props.canEdit === false ? undefined : <EditVerb onClick={() => setEditing(true)} />} data-testid={props["data-testid"]}>
+    <SettingsPanel headerText={props.headerText} headerIcon={props.headerIcon} editContent={props.canEdit === false ? undefined : <EditVerb onClick={() => setEditing(true)} />} data-testid={props["data-testid"]}>
       {props.view}
-    </DisplayBox>
+    </SettingsPanel>
   );
 };

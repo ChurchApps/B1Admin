@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Typography,
   Table,
@@ -12,7 +12,6 @@ import {
   Chip,
   Button,
   LinearProgress,
-  Grid,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -22,7 +21,6 @@ import {
   MenuItem
 } from "@mui/material";
 import {
-  HowToReg as RegIcon,
   Cancel as CancelIcon,
   Delete as DeleteIcon,
   Download as DownloadIcon,
@@ -31,14 +29,15 @@ import {
   ReceiptLong as ReceiptIcon,
   ArrowUpward as PromoteIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, UserHelper, Permissions, PersonHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonAdd, FormSubmission } from "../components";
 import { useRequirePermission, useConfirmDelete } from "../hooks";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { RegistrationDetailDialog } from "./components/RegistrationDetailDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader } from "../components/ui";
+import { BackVerb, CardWithHeader, FilterChip, PageContainer, Pill, RecordLayout, StatusBadge, TextAction, VerbRow, numericCellSx, tableScrollSx, useRecordView } from "../components/ui";
+import { formatDateSafe } from "../helpers/DateFormatHelper";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
 
@@ -68,6 +67,9 @@ export const RegistrationDetailsPage = () => {
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
   const [currency, setCurrency] = useState("usd");
+  const { view: requestedView, setView } = useRecordView("view", { replace: ["settings"] });
+  const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
+  const view = requestedView === "settings" && canEdit ? "settings" : "";
 
   const loadData = async (refreshEvent = true) => {
     if (!eventId) return;
@@ -218,13 +220,13 @@ export const RegistrationDetailsPage = () => {
   };
 
   const getStatusChip = (status: string) => {
-    const colorMap: Record<string, "success" | "warning" | "error" | "default"> = {
+    const toneMap: Record<string, "success" | "warning" | "danger" | "neutral"> = {
       confirmed: "success",
       pending: "warning",
-      cancelled: "error",
-      waitlisted: "default"
+      cancelled: "danger",
+      waitlisted: "neutral"
     };
-    return <Chip label={status} size="small" color={colorMap[status] || "default"} />;
+    return <StatusBadge tone={toneMap[status] || "neutral"}>{status}</StatusBadge>;
   };
 
   const visibleRegistrations = event?.formId && unansweredOnly ? registrations.filter((r) => !r.formSubmissionId) : registrations;
@@ -241,13 +243,13 @@ export const RegistrationDetailsPage = () => {
             : reg.personId || Locale.label("registrations.registrationDetailsPage.unknown")
           }
         </TableCell>
-        <TableCell align="right">{reg.members?.length || 0}</TableCell>
+        <TableCell sx={numericCellSx}>{reg.members?.length || 0}</TableCell>
         <TableCell>{getTypeNames(reg)}</TableCell>
-        <TableCell align="right">
+        <TableCell sx={numericCellSx}>
           {total > 0 ? (
             <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="flex-end">
               <Typography variant="body2">{money(paid)} / {money(total)}</Typography>
-              {balance > 0 && <Chip size="small" color="warning" label={money(balance)} />}
+              {balance > 0 && <StatusBadge tone="warning">{money(balance)}</StatusBadge>}
             </Stack>
           ) : ""}
         </TableCell>
@@ -286,76 +288,104 @@ export const RegistrationDetailsPage = () => {
   if (!event) return <Typography>{Locale.label("registrations.registrationDetailsPage.eventNotFound")}</Typography>;
 
   const capacityPct = event.capacity ? Math.min((count / event.capacity) * 100, 100) : 0;
+  const title = event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations");
+  const tags = (event.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
+
+  const identity = (
+    <Box component="aside" data-testid="registration-identity">
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{title}</Typography>
+      <Typography id="page-header-subtitle" color="text.secondary" sx={{ mt: 0.5 }}>
+        {formatDateSafe(event.start) || Locale.label("registrations.registrationDetailsPage.subtitle")}
+      </Typography>
+      <VerbRow sx={{ mt: 2 }}>
+        {view === "settings" && <TextAction onClick={() => setView("")} data-testid="registration-roster-button">{Locale.label("registrations.registrationDetailsPage.registrations")}</TextAction>}
+        {canEdit && view !== "settings" && <TextAction onClick={() => setView("settings")} data-testid="registration-settings-button">{Locale.label("registrations.registrationDetailsPage.editSettings", "Edit settings")}</TextAction>}
+        <TextAction to="/registrations" component={Link} data-testid="registration-back-to-list">{Locale.label("registrations.registrationsPage.title")}</TextAction>
+      </VerbRow>
+
+      <Box sx={{ mt: 3 }} data-testid="registration-capacity">
+        <Typography variant="h3" component="p" sx={{ fontVariantNumeric: "tabular-nums" }}>
+          {count}{event.capacity ? ` / ${event.capacity}` : ""}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationsPage.registered")}</Typography>
+        {event.capacity ? <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 1 }} /> : null}
+      </Box>
+
+      {tags.length > 0 && (
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 2 }}>
+          {tags.map((tag) => <Pill key={tag}>{tag}</Pill>)}
+        </Stack>
+      )}
+
+      <Box sx={{ mt: 3, "& > .MuiPaper-root": { border: 0, boxShadow: "none", bgcolor: "transparent", "&::before": { display: "none" } }, "& .MuiAccordionSummary-root, & .MuiAccordionDetails-root": { px: 0 } }}>
+        <EventReminderEdit eventId={event.id} hasRegistration={event.registrationEnabled} />
+      </Box>
+    </Box>
+  );
+
+  const roster = (
+    <CardWithHeader
+      title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""})`}
+      actions={(
+        <Stack direction="row" spacing={1} alignItems="center">
+          {canEdit && (
+            <Button startIcon={<PersonAddIcon />} variant="outlined" onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
+          )}
+          <Button startIcon={<DownloadIcon />} onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
+        </Stack>
+      )}>
+      {types.length > 0 && (
+        <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 1 }} data-testid="type-counts">
+          {types.map((t) => (
+            <Chip key={t.id} size="small" variant="outlined" label={`${t.name}: ${getTypeCounts().get(t.id as string) || 0}`} />
+          ))}
+        </Stack>
+      )}
+      {event.formId && (
+        <Box sx={{ mb: 1 }}>
+          <FilterChip selected={unansweredOnly} onClick={() => setUnansweredOnly(!unansweredOnly)}>
+            {Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
+          </FilterChip>
+        </Box>
+      )}
+      {visibleRegistrations.length === 0 ? (
+        <Box sx={{ p: 3, textAlign: "center" }}>
+          <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
+        </Box>
+      ) : (
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("registrations.registrationDetailsPage.registrations")} tabIndex={0}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
+                <TableCell sx={numericCellSx}>{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>
+                <TableCell>{Locale.label("registrations.commerce.type")}</TableCell>
+                <TableCell sx={numericCellSx}>{Locale.label("registrations.commerce.paidTotal")}</TableCell>
+                <TableCell>{Locale.label("registrations.registrationDetailsPage.status")}</TableCell>
+                <TableCell>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
+                <TableCell align="right" />
+              </TableRow>
+            </TableHead>
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
+      )}
+    </CardWithHeader>
+  );
 
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<RegIcon />} title={event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations")} subtitle={Locale.label("registrations.registrationDetailsPage.subtitle")} />
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <CardWithHeader
-              title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""})`}
-              icon={<RegIcon sx={{ color: "primary.main", fontSize: 20 }} />}
-              actions={(
-                <Stack direction="row" spacing={1} alignItems="center">
-                  {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-                    <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
-                  )}
-                  <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
-                </Stack>
-              )}>
-              {event.capacity ? (
-                <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mb: 1 }} />
-              ) : null}
-              {types.length > 0 && (
-                <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 1 }} data-testid="type-counts">
-                  {types.map((t) => (
-                    <Chip key={t.id} size="small" variant="outlined" label={`${t.name}: ${getTypeCounts().get(t.id as string) || 0}`} />
-                  ))}
-                </Stack>
-              )}
-              {event.formId && (
-                <Chip
-                  label={Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
-                  size="small"
-                  color={unansweredOnly ? "primary" : "default"}
-                  variant={unansweredOnly ? "filled" : "outlined"}
-                  onClick={() => setUnansweredOnly(!unansweredOnly)}
-                  sx={{ mb: 1 }}
-                />
-              )}
-              {visibleRegistrations.length === 0 ? (
-                <Box sx={{ p: 3, textAlign: "center" }}>
-                  <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
-                </Box>
-              ) : (
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
-                      <TableCell align="right">{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>
-                      <TableCell>{Locale.label("registrations.commerce.type")}</TableCell>
-                      <TableCell align="right">{Locale.label("registrations.commerce.paidTotal")}</TableCell>
-                      <TableCell>{Locale.label("registrations.registrationDetailsPage.status")}</TableCell>
-                      <TableCell>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
-                      <TableCell align="right" />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>{getRows()}</TableBody>
-                </Table>
-              )}
-            </CardWithHeader>
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 4 }}>
-            <RegistrationSettingsEdit event={event} onUpdate={() => loadData()} />
-            <Box sx={{ mt: 2 }}>
-              <EventReminderEdit eventId={event.id} hasRegistration={event.registrationEnabled} />
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+      <PageContainer>
+        <RecordLayout identity={identity} spacing={3} data-testid="registration-record">
+          {view === "settings" ? (
+            <>
+              <Box><BackVerb name={Locale.label("registrations.registrationDetailsPage.registrations")} onClick={() => setView("")} data-testid="registration-record-back" /></Box>
+              <RegistrationSettingsEdit event={event} onUpdate={() => { setView(""); loadData(); }} />
+            </>
+          ) : roster}
+        </RecordLayout>
+      </PageContainer>
       {showAddAttendee && (
         <Dialog open onClose={() => setShowAddAttendee(false)} maxWidth="sm" fullWidth>
           <DialogTitle>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</DialogTitle>
@@ -404,3 +434,4 @@ export const RegistrationDetailsPage = () => {
 };
 
 export default RegistrationDetailsPage;
+

@@ -54,8 +54,7 @@ test.describe("People Management", () => {
     });
 
     test("should advance search for people", async ({ page }) => {
-      // Match specific "▶ Advanced" / "▼ Advanced" toggle (avoid SavedLists copy).
-      const advBtn = page.locator("p").getByText(/[▶▼] Advanced/);
+      const advBtn = page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true });
       await advBtn.click();
       // Names accordion is expanded by default; first filter is First Name.
       const firstCheck = page.locator('div input[type="checkbox"]').first();
@@ -74,13 +73,12 @@ test.describe("People Management", () => {
       );
       const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
       await expect(donaldRow).toBeVisible({ timeout: 10000 });
-      await donaldRow.click();
+      await donaldRow.getByRole("link", { name: "Donald Clark", exact: true }).click();
       await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
     test("should delete advance search conditions", async ({ page }) => {
-      // Match specific "▶ Advanced" / "▼ Advanced" toggle (avoid SavedLists copy).
-      const advBtn = page.locator("p").getByText(/[▶▼] Advanced/);
+      const advBtn = page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true });
       await advBtn.click();
       const firstCheck = page.locator('div input[type="checkbox"]').first();
       await expect(firstCheck).toBeVisible({ timeout: 10000 });
@@ -103,9 +101,10 @@ test.describe("People Management", () => {
 
     // Skipped: AI Search requires AskApi (separate service, not in local stack).
     test.skip("should AI search for people", async ({ page }) => {
-      const searchInput = page.locator('[id="display-box"] textarea').first();
+      await page.locator("#peopleSearch").getByRole("button", { name: "Ask", exact: true }).click();
+      const searchInput = page.locator("#aiSearchText");
       await searchInput.fill("Show me married men");
-      const searchBtn = page.locator("button").getByText("Search").last();
+      const searchBtn = page.locator("#aiSearch").getByRole("button", { name: "Search", exact: true });
       await expect(searchBtn).toBeEnabled();
       await searchBtn.click();
 
@@ -136,10 +135,11 @@ test.describe("People Management", () => {
         });
       });
 
-      const searchInput = page.locator('[id="display-box"] textarea').first();
+      await page.locator("#peopleSearch").getByRole("button", { name: "Ask", exact: true }).click();
+      const searchInput = page.locator("#aiSearchText");
       await searchInput.fill("show me users that contain 'gol'");
 
-      const searchBtn = page.locator('[id="display-box"] button').getByText("Search").first();
+      const searchBtn = page.locator("#aiSearch").getByRole("button", { name: "Search", exact: true });
       await expect(searchBtn).toBeEnabled();
       await searchBtn.click();
 
@@ -159,9 +159,9 @@ test.describe("People Management", () => {
       await expect(searchInput).toHaveValue("");
     });
 
-    test("should open notes tab", async ({ page }) => {
+    test("should open all notes", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const notesBtn = page.locator("button").getByText("Notes");
+      const notesBtn = page.getByTestId("person-notes-all");
       await notesBtn.click();
       // AddNote textarea renders once initial messages load. Scope to the standard
       // notes box: admins also see a Confidential Notes box with its own composer.
@@ -171,7 +171,7 @@ test.describe("People Management", () => {
 
     test("should add a confidential note as admin", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      await page.locator("button").getByText("Notes").click();
+      await page.getByTestId("person-notes-all").click();
       // Domain admins hold People/View Confidential Notes, so the section renders.
       const confBox = page.getByTestId("confidential-notes-box");
       const composer = confBox.locator('[name="noteText"]');
@@ -207,7 +207,7 @@ test.describe("People Management", () => {
         // Donald Clark has no seeded notes and is reliably in the "25 most recent"
         // landing list, so openPersonRow can find him without a search.
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const notesBtn = page.locator("button").getByText("Notes");
+        const notesBtn = page.getByTestId("person-notes-all");
         await notesBtn.click();
         const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
@@ -220,7 +220,7 @@ test.describe("People Management", () => {
 
       test("should edit a note from people notes tab", async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const notesBtn = page.locator("button").getByText("Notes");
+        const notesBtn = page.getByTestId("person-notes-all");
         await notesBtn.click();
         // Add a note first so the edit affordance definitely exists for this person.
         const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
@@ -246,7 +246,7 @@ test.describe("People Management", () => {
 
       test("should delete a note from people notes tab", async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const notesBtn = page.locator("button").getByText("Notes");
+        const notesBtn = page.getByTestId("person-notes-all");
         await notesBtn.click();
         // Seed a note for delete target.
         const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
@@ -267,20 +267,18 @@ test.describe("People Management", () => {
       });
     });
 
-    test("should open groups tab", async ({ page }) => {
+    test("should show the groups section", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const groupsBtn = page.locator("button").getByText("Groups");
-      await groupsBtn.click();
+      // Groups is an always-visible section on the record, not a tab.
+      await expect(page.getByRole("heading", { name: "Groups", exact: true })).toBeVisible({ timeout: 10000 });
       // ListItemButton component={Link}; no <li> wrapper.
       const seekText = page.locator("p").getByText("Not currently a member of any groups.");
       const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekText.or(seekGroup)).toBeVisible({ timeout: 10000 });
     });
 
-    test("should open group from people groups tab", async ({ page }) => {
+    test("should open group from people groups section", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const groupsBtn = page.locator("button").getByText("Groups");
-      await groupsBtn.click();
       const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
@@ -289,7 +287,7 @@ test.describe("People Management", () => {
 
     test("should open attendance tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.locator("button").getByText("Attendance");
+      const attBtn = page.getByTestId("person-attendance-all");
       await expect(attBtn).toBeVisible({ timeout: 10000 });
       await attBtn.click();
       // Renders Table or EmptyState <h6>; match on text, not tag.
@@ -301,7 +299,7 @@ test.describe("People Management", () => {
     test("should open group from people attendance", async ({ page }) => {
       // Donald Clark has seeded attendance records (demo.sql).
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.locator("button").getByText("Attendance");
+      const attBtn = page.getByTestId("person-attendance-all");
       await attBtn.click();
       // Link inside row's Group cell navigates to group.
       const seekGroup = page.locator('table a[href^="/groups/"]').first();
@@ -310,11 +308,11 @@ test.describe("People Management", () => {
       await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
-    test("attendance tab shows the stored check-in clock time", async ({ page }) => {
-      await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.getByRole("tab", { name: "Attendance" });
+    test("all attendance shows the stored check-in clock time", async ({ page }) => {
+      // The record's Attendance section fetches the records on load; the full view reuses that cache.
       const recordsPromise = page.waitForResponse((r) => r.url().includes("/attendancerecords") && r.url().includes("personId") && r.status() === 200);
-      await attBtn.click();
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      await page.getByTestId("person-attendance-all").click();
       const records = await (await recordsPromise).json();
       const withTime = (Array.isArray(records) ? records : []).find((r: { checkinTime?: string }) => r.checkinTime);
       expect(withTime).toBeTruthy();
@@ -325,7 +323,7 @@ test.describe("People Management", () => {
       await expect(page.getByRole("cell", { name: /9:00 AM Service/ }).first()).toBeVisible();
     });
 
-    test("attendance tab shows a dash when check-in time is missing", async ({ page }) => {
+    test("all attendance shows a dash when check-in time is missing", async ({ page }) => {
       await page.route("**/attendancerecords**", async (route) => {
         const response = await route.fetch();
         const json = await response.json();
@@ -333,14 +331,14 @@ test.describe("People Management", () => {
         await route.fulfill({ response, json: patched });
       });
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      await page.getByRole("tab", { name: "Attendance" }).click();
+      await page.getByTestId("person-attendance-all").click();
       await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
       await expect(await checkedInCell(page, 0)).toHaveText("—");
     });
 
-    test("should open donations tab", async ({ page }) => {
+    test("should open all giving", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator("button").getByText("Donations");
+      const donationBtn = page.getByTestId("person-giving-all");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
       const seekText = page.locator("td").getByText(/Donations will appear/i);
@@ -351,8 +349,9 @@ test.describe("People Management", () => {
     // Skipped: Stripe fields in iframe inaccessible to Playwright.
     test.skip("should add card from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator("button").getByText("Donations");
+      const donationBtn = page.getByTestId("person-giving-all");
       await donationBtn.click();
+      await page.getByTestId("giving-payment-methods").click();
       const addBtn = page.locator('[id="addBtnGroup"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -368,9 +367,10 @@ test.describe("People Management", () => {
 
     test("should cancel adding card from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator("button").getByText("Donations");
+      const donationBtn = page.getByTestId("person-giving-all");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
+      await page.getByTestId("giving-payment-methods").click();
       const addBtn = page.locator('[id="addBtnGroup"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -385,8 +385,9 @@ test.describe("People Management", () => {
     // Skipped: Stripe fields in iframe inaccessible to Playwright.
     test.skip("should add bank account from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator("button").getByText("Donations");
+      const donationBtn = page.getByTestId("person-giving-all");
       await donationBtn.click();
+      await page.getByTestId("giving-payment-methods").click();
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
       const addBankBtn = page.locator('[aria-labelledby="addBtnGroup"] li').last();
@@ -399,9 +400,10 @@ test.describe("People Management", () => {
 
     test("should cancel adding bank from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator("button").getByText("Donations");
+      const donationBtn = page.getByTestId("person-giving-all");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
+      await page.getByTestId("giving-payment-methods").click();
       const addBtn = page.locator('[id="addBtnGroup"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -415,10 +417,10 @@ test.describe("People Management", () => {
       await expect(addBtn).toBeVisible({ timeout: 10000 });
     });
 
-    test("should open a person form from the Forms tab", async ({ page }) => {
-      // Person-contentType forms now live under a dedicated "Forms" navigation tab.
+    test("should open a person form from the Forms section", async ({ page }) => {
+      // Person-contentType forms are a section on the record; "All forms" opens the full view in place.
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const formsTab = page.locator("button").getByText("Forms", { exact: true });
+      const formsTab = page.getByTestId("person-forms-all");
       await expect(formsTab).toBeVisible({ timeout: 10000 });
       await formsTab.click();
       const formItem = page.getByText("Visitor Information Card", { exact: true }).first();
@@ -479,7 +481,7 @@ test.describe("People Management", () => {
 
     test("should cancel editing person household", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      // Icon-only Edit button in DisplayBox.
+      // Household section Edit button (aria-label "Edit").
       const editBtn = page.locator('#householdBox button[aria-label="Edit"]');
       await editBtn.first().click();
       const cancelBtn = page.locator("button").getByText("Cancel");
@@ -546,7 +548,7 @@ test.describe("People Management", () => {
         const saveBtn = page.locator("button").getByText("Save");
         await expect(saveBtn).toBeVisible({ timeout: 10000 });
         await saveBtn.click();
-        const validatedAddition = page.locator('[id="householdBox"] h5').getByText("Carol Clark");
+        const validatedAddition = page.locator("#householdBox").getByRole("link", { name: "Carol Clark" });
         await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
       });
     });
@@ -889,7 +891,7 @@ test.describe("People Management", () => {
   test.describe("People — edge-case affordances", () => {
     test("person profile exposes a top-level Edit button for contact info", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      // Personal Details box exposes Edit button for people with edit permission.
+      // The identity panel exposes Edit profile for people with edit permission.
       await expect(personDetailsEditButton(page).first()).toBeVisible({ timeout: 10000 });
     });
 
@@ -904,9 +906,9 @@ test.describe("People Management", () => {
       await expect(page.locator("table tbody tr").filter({ hasText: "Zzzzz" })).toHaveCount(0);
     });
 
-    test("person attendance tab is accessible and shows visit history container", async ({ page }) => {
+    test("person all-attendance view is accessible and shows visit history container", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.locator("button").getByText("Attendance");
+      const attBtn = page.getByTestId("person-attendance-all");
       await attBtn.click();
       // Renders Table or empty-state <h6>.
       const rows = page.locator("table tbody tr").first();

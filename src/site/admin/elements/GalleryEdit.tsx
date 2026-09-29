@@ -58,12 +58,12 @@ export function GalleryEdit({ parsedData, handleChange, handleHtmlChange }: Prop
       <Typography variant="subtitle2" sx={{ mt: 1 }}>{Locale.label("site.galleryEdit.photos")}</Typography>
       {photos.length === 0 && <Typography variant="body2" color="text.secondary">{Locale.label("site.galleryEdit.noPhotos")}</Typography>}
       {photos.map((photo, index) => (
-        <Box key={index} sx={{ border: "1px solid var(--border-light)", borderRadius: 1, p: 1, mb: 1 }} data-testid={`gallery-photo-${index}`}>
+        <Box key={index} sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1, mb: 1 }} data-testid={`gallery-photo-${index}`}>
           <Grid container spacing={1} alignItems="center">
             <Grid size={{ xs: 3 }}>
               {photo.url
                 ? <img src={photo.url} style={{ maxHeight: 48, maxWidth: "100%", width: "auto", display: "block" }} alt={photo.alt || ""} />
-                : <Box sx={{ height: 48, background: "var(--bg-sub)", borderRadius: 1 }} />}
+                : <Box sx={{ height: 48, bgcolor: "background.default", borderRadius: "var(--b1-radius-control)" }} />}
             </Grid>
             <Grid size={{ xs: 7 }}>
               <Button size="small" variant="outlined" onClick={() => setPickIndex(index)} data-testid={`gallery-select-image-${index}`}>{Locale.label("site.galleryEdit.selectImage")}</Button>

@@ -1,38 +1,26 @@
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
-import { UserHelper, Permissions, ApiHelper, Locale, PageHeader } from "@churchapps/apphelper";
-import { Box, Chip } from "@mui/material";
-import {
-  Edit as EditIcon,
-  Schedule as ScheduleIcon,
-  LocationOn as LocationIcon,
-  Group as GroupIcon,
-  CheckCircle as CheckIcon,
-  Cancel as CancelIcon,
-  Event as CalendarIcon,
-  Sms as SmsIcon,
-  Email as EmailIcon,
-  NotificationsActive as NotificationsActiveIcon,
-  ContentCopy as ContentCopyIcon
-} from "@mui/icons-material";
-import React, { memo, useMemo, type ReactNode } from "react";
+import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
+import { Box, Chip, Stack, Typography } from "@mui/material";
+import { Group as GroupIcon, CheckCircle as CheckIcon, Cancel as CancelIcon } from "@mui/icons-material";
+import React, { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { Pill, TextAction, VerbRow } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   group: GroupInterface;
   onEdit?: () => void;
   editMode?: boolean;
-  tabs?: ReactNode;
 }
 
-const headerChipSx = { backgroundColor: "rgba(255,255,255,0.2)", color: "#fff", fontWeight: 600, fontSize: "0.8125rem" };
+const flagChipSx = { fontWeight: 500, bgcolor: "transparent" };
 
+// Identity column of the group record: who the group is, when/where it meets, and its verbs.
 export const GroupBanner = memo((props: Props) => {
-  const { group, onEdit, tabs } = props;
+  const { group, onEdit, editMode } = props;
   const navigate = useNavigate();
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
@@ -95,132 +83,105 @@ export const GroupBanner = memo((props: Props) => {
   }, [group?.id]);
 
   const isStandard = useMemo(() => (group?.tags?.indexOf("standard") ?? -1) > -1, [group?.tags]);
+  const isTeam = (group?.tags?.indexOf("team") ?? -1) > -1;
 
-  const groupTypeChip = useMemo(() => {
-    if (!group?.tags) return null;
-    if (group.tags.indexOf("team") > -1) return <Chip label={Locale.label("groups.groupBanner.team")} size="small" sx={headerChipSx} />;
-    if (group.categoryName) return <Chip label={group.categoryName} size="small" sx={headerChipSx} />;
-    return null;
-  }, [group?.tags, group?.categoryName]);
-
-  const attendanceChips = useMemo(() => {
-    if (!group || !isStandard) return [] as ReactNode[];
-    const chipDefs: { key: string; value: boolean | undefined; label: string }[] = [
+  // Off states stay visible so staff can see a feed or check-in flag is turned off.
+  const flags = useMemo(() => {
+    if (!group || !isStandard) return [] as { key: string; value: boolean; label: string; testId?: string }[];
+    const g = group as Record<string, any>;
+    const list: { key: string; value: boolean | undefined; label: string; testId?: string }[] = [
       { key: "track", value: group.trackAttendance, label: Locale.label("groups.groupBanner.trackAttendance") },
       { key: "nametag", value: group.printNametag, label: Locale.label("groups.groupBanner.printNametag") },
-      { key: "pickup", value: group.parentPickup, label: Locale.label("groups.groupBanner.parentPickup") }
+      { key: "pickup", value: group.parentPickup, label: Locale.label("groups.groupBanner.parentPickup") },
+      { key: "discussions", value: g.discussionsEnabled !== false, label: Locale.label("groups.groupBanner.discussions"), testId: "group-chat-discussions-chip" },
+      { key: "announcements", value: g.announcementsEnabled !== false, label: Locale.label("groups.groupBanner.announcements"), testId: "group-chat-announcements-chip" }
     ];
-    return chipDefs
-      .filter((c) => c.value !== undefined)
-      .map((c) => (
-        <Chip
-          key={`attendance-${c.key}`}
-          icon={c.value ? <CheckIcon color="success" /> : <CancelIcon color="error" />}
-          label={c.label}
-          size="small"
-          sx={{ ...headerChipSx, fontWeight: 500 }}
-        />
-      ));
-  }, [group, isStandard]);
-
-  // Group chat feed toggles (both default on); only an explicit false means off.
-  const chatChips = useMemo(() => {
-    if (!group || !isStandard) return [] as ReactNode[];
-    const g = group as Record<string, any>;
-    const chipDefs: { key: string; value: boolean; label: string }[] = [
-      { key: "discussions", value: g.discussionsEnabled !== false, label: Locale.label("groups.groupBanner.discussions") },
-      { key: "announcements", value: g.announcementsEnabled !== false, label: Locale.label("groups.groupBanner.announcements") }
-    ];
-    return chipDefs.map((c) => (
-      <Chip
-        key={`chat-${c.key}`}
-        icon={c.value ? <CheckIcon color="success" /> : <CancelIcon color="error" />}
-        label={c.label}
-        size="small"
-        sx={{ ...headerChipSx, fontWeight: 500 }}
-        data-testid={`group-chat-${c.key}-chip`}
-      />
-    ));
-  }, [group, isStandard]);
-
-  const labelChips = useMemo(() => {
-    const validLabels = group?.labelArray?.filter((label) => label && typeof label === "string" && label.trim() !== "") || [];
-    if (validLabels.length === 0) return [] as ReactNode[];
-    const chips: ReactNode[] = validLabels.slice(0, 4).map((label, idx) => (
-      <Chip key={`label-${label.trim()}-${idx}`} label={label.trim()} size="small" sx={{ ...headerChipSx, fontWeight: 400, fontSize: "0.75rem" }} />
-    ));
-    if (validLabels.length > 4) {
-      chips.push(
-        <Chip
-          key="label-more"
-          label={Locale.label("groups.groupBanner.moreLabels").replace("{count}", (validLabels.length - 4).toString())}
-          size="small"
-          sx={{ backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", fontSize: "0.75rem" }}
-        />
-      );
-    }
-    return chips;
-  }, [group?.labelArray]);
-
-  const serviceTimeChips = useMemo(() => (
-    groupServiceTimes.filter((gst) => gst.serviceTime).map((gst, idx) => (
-      <Chip
-        key={`servicetime-${gst.serviceTime!.name}-${idx}`}
-        icon={<CalendarIcon />}
-        label={gst.serviceTime!.name}
-        size="small"
-        sx={{ ...headerChipSx, fontWeight: 400, "& .MuiChip-icon": { color: "#FFF" } }}
-      />
-    ))
-  ), [groupServiceTimes]);
-
-  const statistics = useMemo(() => {
-    if (!group) return [];
-    const stats: { icon: ReactNode; value: string; label: string }[] = [];
-    if (isStandard && group.meetingTime) stats.push({ icon: <ScheduleIcon />, value: group.meetingTime, label: Locale.label("groups.groupBanner.meetingTime") });
-    if (group.meetingLocation) stats.push({ icon: <LocationIcon />, value: group.meetingLocation, label: Locale.label("groups.groupBanner.location") });
-    return stats;
+    return list.filter((f) => f.value !== undefined) as { key: string; value: boolean; label: string; testId?: string }[];
   }, [group, isStandard]);
 
   if (!group) return null;
 
+  const labels = (group.labelArray || []).filter((label) => label && typeof label === "string" && label.trim() !== "");
+  const serviceTimes = groupServiceTimes.filter((gst) => gst.serviceTime);
+  const facts = [isTeam ? Locale.label("groups.groupBanner.team") : group.categoryName].filter(Boolean).join(" · ");
+  const about = isStandard && group.about ? group.about.replace(/[#*_`]/g, "") : "";
+
   const avatar = group.photoUrl ? (
-    <Box sx={{ width: 56, height: 56, borderRadius: 2, overflow: "hidden", border: "2px solid #FFF" }}>
+    <Box sx={{ width: 88, height: 88, borderRadius: "var(--b1-radius-panel)", overflow: "hidden", border: 1, borderColor: "divider" }}>
       <img src={group.photoUrl} alt={group.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
     </Box>
   ) : (
-    <Box sx={{ width: 56, height: 56, borderRadius: 2, border: "2px solid #FFF", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.1)" }}>
-      <GroupIcon sx={{ fontSize: 32, color: "rgba(255,255,255,0.7)" }} />
+    <Box sx={{ width: 88, height: 88, borderRadius: "var(--b1-radius-panel)", display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "var(--b1-selected)" }}>
+      <GroupIcon sx={{ fontSize: 40, color: "var(--b1-on-selected)" }} />
     </Box>
   );
-
-  const chips = (
-    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
-      {groupTypeChip}
-      {attendanceChips}
-      {chatChips}
-      {labelChips}
-      {serviceTimeChips}
-    </Box>
-  );
-
-  const subtitle = isStandard && group.about ? group.about.replace(/[#*_`]/g, "") : undefined;
 
   return (
-    <PageHeader avatar={avatar} title={group.name || ""} subtitle={subtitle} chips={chips} statistics={statistics} tabs={tabs}>
-      <AppIconButton label={Locale.label("groups.groupBanner.emailTooltip")} icon={<EmailIcon />} tone="header" onClick={() => setShowEmailDialog(true)} />
-      {canSendNotifications && (
-        <AppIconButton label="Send push notification" icon={<NotificationsActiveIcon />} tone="header" onClick={() => setShowNotificationDialog(true)} />
+    <Box component="aside" data-testid="group-identity" sx={{ minWidth: 0 }}>
+      {avatar}
+      <Typography id="page-header-title" variant="h1" component="h1" sx={{ mt: 2, overflowWrap: "anywhere" }}>{group.name || ""}</Typography>
+      {facts && <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>{facts}</Typography>}
+
+      {((isStandard && group.meetingTime) || group.meetingLocation) && (
+        <Stack spacing={0.5} sx={{ mt: 2 }}>
+          {isStandard && group.meetingTime && (
+            <Typography variant="h3" component="p" sx={{ fontWeight: 500 }} aria-label={Locale.label("groups.groupBanner.meetingTime") + " " + group.meetingTime}>{group.meetingTime}</Typography>
+          )}
+          {group.meetingLocation && (
+            <Typography variant="body2" color="text.secondary" aria-label={Locale.label("groups.groupBanner.location") + " " + group.meetingLocation}>{group.meetingLocation}</Typography>
+          )}
+        </Stack>
       )}
-      {canText && hasTextingProvider && (
-        <AppIconButton label={Locale.label("groups.groupBanner.textTooltip")} icon={<SmsIcon />} tone="header" onClick={() => setShowTextDialog(true)} />
+
+      {about && <Typography variant="body2" color="text.secondary" sx={{ mt: 2, whiteSpace: "pre-line", overflowWrap: "anywhere" }}>{about}</Typography>}
+
+      {flags.length > 0 && (
+        <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: 2 }}>
+          {flags.map((f) => (
+            <Chip
+              key={f.key}
+              icon={f.value ? <CheckIcon color="success" /> : <CancelIcon color="disabled" />}
+              label={f.label}
+              size="small"
+              variant="outlined"
+              sx={[flagChipSx, !f.value && { color: "text.secondary" }]}
+              data-testid={f.testId}
+            />
+          ))}
+        </Stack>
       )}
-      {canEdit && (
-        <AppIconButton label={Locale.label("groups.groupBanner.duplicateTooltip")} icon={<ContentCopyIcon />} tone="header" onClick={handleDuplicate} data-testid="duplicate-group-button" />
+
+      {(labels.length > 0 || serviceTimes.length > 0) && (
+        <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: 1.5 }}>
+          {labels.map((label, idx) => <Pill key={`label-${label.trim()}-${idx}`}>{label.trim()}</Pill>)}
+          {serviceTimes.map((gst, idx) => <Pill key={`st-${gst.serviceTime!.name}-${idx}`} tone="primary">{gst.serviceTime!.name}</Pill>)}
+        </Stack>
       )}
-      {canEdit && (
-        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={onEdit} data-testid="edit-group-button" />
+
+      {!editMode && (
+        <VerbRow plain sx={{ mt: 3 }}>
+          {canEdit && <TextAction onClick={onEdit} data-testid="edit-group-button">{Locale.label("common.edit")}</TextAction>}
+          <TextAction onClick={() => setShowEmailDialog(true)} aria-label={Locale.label("groups.groupBanner.emailTooltip")} data-testid="email-group-button">
+            {Locale.label("groups.groupBanner.email", "Email")}
+          </TextAction>
+          {canSendNotifications && (
+            <TextAction onClick={() => setShowNotificationDialog(true)} aria-label={Locale.label("groups.groupBanner.notifyTooltip", "Send push notification")} data-testid="notify-group-button">
+              {Locale.label("groups.groupBanner.notify", "Notify")}
+            </TextAction>
+          )}
+          {canText && hasTextingProvider && (
+            <TextAction onClick={() => setShowTextDialog(true)} aria-label={Locale.label("groups.groupBanner.textTooltip")} data-testid="text-group-button">
+              {Locale.label("groups.groupBanner.text", "Text")}
+            </TextAction>
+          )}
+          {canEdit && (
+            <TextAction onClick={handleDuplicate} aria-label={Locale.label("groups.groupBanner.duplicateTooltip")} data-testid="duplicate-group-button">
+              {Locale.label("groups.groupBanner.duplicate", "Duplicate")}
+            </TextAction>
+          )}
+        </VerbRow>
       )}
+
       {ConfirmDialogElement}
       {showTextDialog && (
         <SendTextDialog groupId={group?.id} groupName={group?.name} onClose={() => setShowTextDialog(false)} />
@@ -231,6 +192,6 @@ export const GroupBanner = memo((props: Props) => {
       {showNotificationDialog && (
         <SendNotificationDialog groupId={group.id || ""} groupName={group.name || ""} onClose={() => setShowNotificationDialog(false)} />
       )}
-    </PageHeader>
+    </Box>
   );
 });

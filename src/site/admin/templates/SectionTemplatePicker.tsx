@@ -20,12 +20,12 @@ export const SectionTemplatePicker: React.FC<Props> = (props) => {
   const cardSx = {
     border: "1px solid",
     borderColor: "divider",
-    borderRadius: "8px",
+    borderRadius: "var(--b1-radius-panel)",
     padding: "8px",
     cursor: "pointer",
     height: "100%",
-    transition: "border-color 0.15s, box-shadow 0.15s",
-    "&:hover": { borderColor: "primary.main", boxShadow: 2 }
+    transition: "border-color 140ms, background-color 140ms",
+    "&:hover": { borderColor: "primary.main", backgroundColor: "action.hover" }
   };
 
   return (
@@ -33,7 +33,7 @@ export const SectionTemplatePicker: React.FC<Props> = (props) => {
       <DialogTitle>{Locale.label(props.switchMode ? "site.sectionTemplates.switchTitle" : "site.sectionTemplates.title")}</DialogTitle>
       <DialogContent dividers>
         {props.switchMode && (
-          <Typography sx={{ fontSize: "0.85rem", color: "text.secondary", marginBottom: 2 }} data-testid="switch-layout-hint">
+          <Typography sx={{ fontSize: 14, color: "text.secondary", marginBottom: 2 }} data-testid="switch-layout-hint">
             {Locale.label("site.sectionTemplates.switchHint")}
           </Typography>
         )}
@@ -72,7 +72,7 @@ export const SectionTemplatePicker: React.FC<Props> = (props) => {
                 >
                   <Icon>add</Icon>
                 </Box>
-                <Typography sx={{ fontSize: "0.85rem", fontWeight: 500, marginTop: "6px", textAlign: "center" }}>
+                <Typography sx={{ fontSize: 14, fontWeight: 600, marginTop: "8px", textAlign: "center" }}>
                   {Locale.label("site.sectionTemplates.blank")}
                 </Typography>
               </Box>
@@ -82,7 +82,7 @@ export const SectionTemplatePicker: React.FC<Props> = (props) => {
             <Grid size={{ xs: 6, sm: 4, md: 3 }} key={template.key}>
               <Box sx={cardSx} onClick={() => props.onSelectTemplate(template)} data-testid={"template-" + template.key}>
                 <TemplatePreview template={template} />
-                <Typography sx={{ fontSize: "0.85rem", fontWeight: 500, marginTop: "6px", textAlign: "center" }}>
+                <Typography sx={{ fontSize: 14, fontWeight: 600, marginTop: "8px", textAlign: "center" }}>
                   {Locale.label("site.sectionTemplates." + template.key)}
                 </Typography>
               </Box>
