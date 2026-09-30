@@ -44,6 +44,7 @@ export const GradePromotionSettingsEdit: React.FC<Props> = (props) => {
         await ApiHelper.post("/settings", [s], "MembershipApi");
       } else if (setting?.id) {
         await ApiHelper.delete("/settings/" + setting.id, "MembershipApi");
+        setSetting(null);
       }
       setError("");
       props.onSaveComplete?.(true);
