@@ -14,6 +14,7 @@ import {
 import { memo, useMemo, useState, useEffect, type ReactNode } from "react";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { StatusChip } from "../../components";
+import { SendEmailDialog } from "../../groups/components/SendEmailDialog";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { AddToWorkflowDialog } from "./AddToWorkflowDialog";
 import { formattedPhoneNumber } from "./PersonEdit";
@@ -30,11 +31,13 @@ export const PersonBanner = memo((props: Props) => {
   const { person, togglePhotoEditor, tabs, breadcrumbs } = props;
 
   const [userEmail, setUserEmail] = useState<string>("");
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
   const [showTextDialog, setShowTextDialog] = useState(false);
   const [showWorkflowDialog, setShowWorkflowDialog] = useState(false);
   const [hasTextingProvider, setHasTextingProvider] = useState(false);
   const [exporting, setExporting] = useState(false);
 
+  const canEmail = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
 
@@ -127,7 +130,7 @@ export const PersonBanner = memo((props: Props) => {
   return (
     <PageHeader avatar={avatar} title={person?.name?.display || ""} subtitle={subtitle as any} chips={chips} statistics={statistics} tabs={tabs} breadcrumbs={breadcrumbs}>
       {person.contactInfo?.email && (
-        <AppIconButton label={Locale.label("people.personBanner.emailPerson")} icon={<EmailIcon />} tone="header" onClick={() => (window.location.href = `mailto:${person.contactInfo?.email}`)} />
+        <AppIconButton label={Locale.label("people.personBanner.emailPerson")} icon={<EmailIcon />} tone="header" data-testid="email-person-button" onClick={() => (canEmail ? setShowEmailDialog(true) : (window.location.href = `mailto:${person.contactInfo?.email}`))} />
       )}
       {hasMobile && canText && hasTextingProvider && (
         <AppIconButton label={Locale.label("people.personBanner.sendTextMessage")} icon={<SmsIcon />} tone="header" onClick={() => setShowTextDialog(true)} />
@@ -150,6 +153,14 @@ export const PersonBanner = memo((props: Props) => {
               setExporting(false);
             }
           }}
+        />
+      )}
+      {showEmailDialog && person?.contactInfo?.email && (
+        <SendEmailDialog
+          personId={person.id}
+          personName={person.name?.display}
+          email={person.contactInfo.email}
+          onClose={() => setShowEmailDialog(false)}
         />
       )}
       {showTextDialog && person?.contactInfo?.mobilePhone && (
