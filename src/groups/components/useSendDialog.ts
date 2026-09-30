@@ -37,9 +37,14 @@ export function useSendDialog<TPreview = any, TResult = any>(options: UseSendDia
       .finally(() => setLoadingPreview(false));
   }, [previewUrl, apiName]);
 
+  // State alone lets a fast double-click through before the disabled button re-renders.
+  const sendingRef = React.useRef(false);
+
   const handleSend = async () => {
+    if (sendingRef.current) return;
     const payload = buildPayload();
     if (!payload) return;
+    sendingRef.current = true;
     setSending(true);
     setError("");
     try {
@@ -49,6 +54,7 @@ export function useSendDialog<TPreview = any, TResult = any>(options: UseSendDia
     } catch (err: any) {
       setError(buildError ? buildError(err) : (err?.message || fallbackError));
     } finally {
+      sendingRef.current = false;
       setSending(false);
     }
   };
