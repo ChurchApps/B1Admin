@@ -1103,13 +1103,16 @@
     },
     "formSubmissions": {
       "anon": "Anonymous",
+      "changePerson": "Change person",
+      "moveTo": "Move to this person",
       "noSubmissions": "No form submissions found",
       "printSummaryAria": "print-summary",
       "subBy": "Submitted By",
       "subDate": "Submission Date",
       "subFor": "Submitted For",
       "subRes": "Form Submission Results",
-      "subSum": "Form Submission Summary"
+      "subSum": "Form Submission Summary",
+      "unlink": "Unlink (Anonymous)"
     },
     "formsPage": {
       "addForm": "Add Form",
