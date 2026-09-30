@@ -109,8 +109,7 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
         promises.push(ApiHelper.post("/donations", [donation], "GivingApi"));
       });
       formSubmission?.forEach((form) => {
-        form.contentId = person.id;
-        promises.push(ApiHelper.post("/formsubmissions", { formSubmissions: [form] }, "MembershipApi"));
+        promises.push(ApiHelper.post(`/formsubmissions/${form.id}/person`, { personId: person.id }, "MembershipApi"));
       });
       // Custom field values: winner's own values win; copy the loser's only where the winner
       // has none, then blank the loser's rows so they don't orphan after the delete below.

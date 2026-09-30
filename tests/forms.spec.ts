@@ -586,3 +586,84 @@ loggedInTest.describe.serial("Form submissions table with many questions", () =>
     await expect(card.getByRole("cell", { name: "Answer for " + wideTitleFor(WIDE_QUESTION_COUNT) })).toBeVisible();
   });
 });
+
+// A submission can land on the wrong person (two people sharing an email) or on nobody
+// (the person was deleted). Staff can relink it from the form's Submissions table, or
+// from the person's Forms tab, or unlink it back to Anonymous.
+loggedInTest.describe.serial("Relinking a form submission to another person", () => {
+  const RELINK_FORM_NAME = "Zacchaeus Relink Form";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let formId = "";
+  let submissionId = "";
+
+  loggedInTest.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${WIDE_API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+
+    const formRes = await ctx.post(`${WIDE_API}/membership/forms`, { ...auth, data: [{ name: RELINK_FORM_NAME, contentType: "person" }] });
+    expect(formRes.ok()).toBeTruthy();
+    formId = (await formRes.json())?.[0]?.id;
+    const qRes = await ctx.post(`${WIDE_API}/membership/questions`, { ...auth, data: [{ formId, title: "Relink Note", fieldType: "Textbox", sort: 1 }] });
+    const questionId = (await qRes.json())?.[0]?.id;
+    const donaldRes = await ctx.get(`${WIDE_API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DONALD)}`, auth);
+    const donald = ((await donaldRes.json()) as any[]).find((p) => p.name?.display === SEED_PEOPLE.DONALD);
+    expect(donald?.id).toBeTruthy();
+    const subRes = await ctx.post(`${WIDE_API}/membership/formsubmissions`, {
+      ...auth,
+      data: [{ formId, contentType: "person", contentId: donald.id, submittedBy: donald.id, submissionDate: new Date().toISOString(), answers: [{ questionId, value: "Wrong person" }] }]
+    });
+    expect(subRes.ok()).toBeTruthy();
+    submissionId = (await subRes.json())?.[0]?.id;
+    expect(submissionId).toBeTruthy();
+  });
+
+  loggedInTest.afterAll(async () => {
+    if (formId) await ctx.delete(`${WIDE_API}/membership/forms/${formId}`, auth);
+    await ctx?.dispose();
+  });
+
+  async function openSubmissions(page: Page) {
+    await page.goto(`/forms/${formId}`);
+    await page.getByText("Form Submissions", { exact: true }).first().click();
+    await expect(page.getByText("Form Submission Results")).toBeVisible({ timeout: 15000 });
+  }
+
+  async function pickPerson(page: Page, name: string) {
+    const dialog = page.getByRole("dialog");
+    await dialog.locator('[data-testid="person-search-input"] input, input[name="personAddText"]').first().fill(name);
+    await dialog.locator('[data-testid="search-button"]').click();
+    await dialog.getByRole("row").filter({ hasText: name }).locator('[data-testid^="add-person-button-"]').first().click();
+    await expect(dialog).toHaveCount(0, { timeout: 10000 });
+  }
+
+  loggedInTest("moves a submission to another person from the Submissions table", async ({ page }) => {
+    await openSubmissions(page);
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toBeVisible();
+    await page.locator(`[data-testid="submission-change-person-${submissionId}"]`).click();
+    await pickPerson(page, SEED_PEOPLE.CAROL);
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.CAROL })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toHaveCount(0);
+  });
+
+  loggedInTest("the moved submission shows on the new person's Forms tab and can be unlinked there", async ({ page }) => {
+    await navigateToPeople(page);
+    await openPersonRow(page, SEED_PEOPLE.CAROL);
+    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByText(RELINK_FORM_NAME, { exact: true }).first().click();
+    const pane = page.locator('[data-testid="display-box-content"]');
+    await expect(pane.getByText("Wrong person")).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="submission-change-person"]').click();
+    await page.getByRole("dialog").getByRole("button", { name: "Unlink (Anonymous)" }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0, { timeout: 10000 });
+    await expect(pane.getByText("Wrong person")).toHaveCount(0, { timeout: 10000 });
+
+    await openSubmissions(page);
+    await expect(page.getByRole("cell", { name: "Anonymous" })).toBeVisible();
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.CAROL })).toHaveCount(0);
+  });
+});
