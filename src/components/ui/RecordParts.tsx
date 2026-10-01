@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Link, Stack, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material";
 
-export const eyebrowSx = { typography: "overline", fontWeight: 600, letterSpacing: "0.08em", color: "text.secondary", m: 0 } as const;
+export const eyebrowSx = { typography: "overline", fontWeight: 600, letterSpacing: "0.08em", color: "var(--b1-eyebrow)", m: 0 } as const;
 
 interface HeadProps {
   id?: string;
@@ -13,7 +13,18 @@ interface HeadProps {
 // Eyebrow section heading with trailing text-link verbs on the same line.
 export const RecordHeading: React.FC<HeadProps> = ({ id, label, children }) => (
   <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1.5, minHeight: 24 }}>
-    <Typography id={id} component="h2" sx={eyebrowSx}>{label}</Typography>
+    <Typography
+      id={id}
+      component="h2"
+      sx={{
+        ...eyebrowSx,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "var(--b1-tick-gap)",
+        "&::before": { content: '""', width: "var(--b1-tick-width)", height: 14, borderRadius: "2px", bgcolor: "var(--b1-tick)", flexShrink: 0 }
+      }}>
+      {label}
+    </Typography>
     {children}
   </Stack>
 );
@@ -38,7 +49,7 @@ export const TextAction: React.FC<ActionProps> = ({ onClick, href, to, disabled,
     p: 0,
     bgcolor: "transparent",
     cursor: disabled ? "default" : "pointer",
-    color: disabled ? "text.disabled" : "primary.main",
+    color: disabled ? "text.disabled" : "var(--b1-link)",
     fontFamily: "inherit",
     verticalAlign: "baseline"
   };
@@ -70,9 +81,9 @@ export const VerbRow: React.FC<{ children: React.ReactNode; sx?: SxProps<Theme>;
 type PillTone = "primary" | "neutral" | "warning";
 
 const pillTone: Record<PillTone, object> = {
-  primary: { borderColor: "primary.main", color: "primary.main" },
-  neutral: { borderColor: "var(--b1-border)", color: "text.secondary" },
-  warning: { borderColor: "warning.main", color: "var(--b1-warning)", bgcolor: "var(--b1-warning-bg)" }
+  primary: { bgcolor: "var(--b1-pill-bg)", color: "var(--b1-pill-fg)", borderColor: "var(--b1-pill-border)" },
+  neutral: { borderColor: "var(--b1-border)", color: "text.secondary", bgcolor: "transparent" },
+  warning: { borderColor: "transparent", color: "var(--b1-on-chip-alt)", bgcolor: "var(--b1-chip-alt)" }
 };
 
 export const Pill: React.FC<{ tone?: PillTone; children: React.ReactNode; title?: string; "data-testid"?: string }> = ({ tone = "neutral", children, ...rest }) => (

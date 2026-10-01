@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Box, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { Check as CheckIcon, CheckCircle as CheckCircleIcon, RadioButtonUnchecked as EmptyCircleIcon } from "@mui/icons-material";
+import { CheckCircle as CheckCircleIcon, RadioButtonUnchecked as EmptyCircleIcon } from "@mui/icons-material";
 import { type AttendanceRecordInterface, type DonationInterface, type GroupInterface, type GroupMemberInterface, type MessageInterface, type PersonInterface } from "@churchapps/helpers";
 import { ArrayHelper, ConversationStore, CurrencyHelper, DateHelper, Loading, Locale, UniqueIdHelper, filterVisibleMessages } from "@churchapps/apphelper";
 import { RecordHeading, TextAction, VerbRow, numericCellSx, tableScrollSx } from "../../components/ui";
@@ -102,6 +102,7 @@ export const PersonAttendanceSummary: React.FC<AttendanceProps> = ({ personId, o
           {here.length > 0
             ? Locale.label("people.personRecord.hereThisWeek", "Here this week") + (where.length ? ` · ${where.join(", ")}` : "")
             : Locale.label("people.personRecord.lastAttended", "Last attended {date}").replace("{date}", pretty(summary.dated[0].day))}
+          <Box component="span" aria-hidden sx={{ display: "inline-block", width: 8, height: 8, ml: 1, borderRadius: "50%", bgcolor: "success.main", verticalAlign: "1px" }} />
         </Typography>
         <Box component="ul" aria-label={Locale.label("people.personRecord.weeklyAttendance", "Weekly attendance")} sx={{ display: "flex", flexWrap: "wrap", gap: { xs: 0.5, sm: 0.75 }, listStyle: "none", m: 0, p: 0 }}>
           {summary.weeks.map((start, i) => {
@@ -115,19 +116,12 @@ export const PersonAttendanceSummary: React.FC<AttendanceProps> = ({ personId, o
                 aria-label={label}
                 title={label}
                 sx={{
-                  width: { xs: 18, sm: 20 },
-                  height: { xs: 18, sm: 20 },
+                  width: 22,
+                  height: 18,
                   borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  ...(summary.present[i]
-                    ? { bgcolor: "primary.main", color: "primary.contrastText" }
-                    : { bgcolor: "var(--b1-neutral-bg)" }),
+                  bgcolor: summary.present[i] ? "var(--b1-mark)" : "var(--b1-mark-empty)",
                   ...(i === WEEKS - 1 ? { outline: "1px solid", outlineColor: "var(--b1-control-border)", outlineOffset: 1 } : {})
-                }}>
-                {summary.present[i] && <CheckIcon aria-hidden sx={{ fontSize: 14 }} />}
-              </Box>
+                }} />
             );
           })}
         </Box>
@@ -213,12 +207,14 @@ export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, household
     if (yearRows.length === 0) {
       return (
         <Stack spacing={1}>
-          <Muted>
-            {(household
-              ? Locale.label("people.personRecord.noHouseholdGiftsYear", "No household gifts recorded in {year}.")
-              : Locale.label("people.personRecord.noGiftsYear", "No gifts recorded in {year}.")).replace("{year}", String(year))}
-            {lastGift && " " + Locale.label("people.personRecord.lastGift", "Last gift {date}.").replace("{date}", pretty(lastGift))}
-          </Muted>
+          <Box sx={{ bgcolor: "var(--b1-wash)", borderRadius: "var(--b1-radius-control)", px: 2, py: 1.5 }}>
+            <Muted>
+              {(household
+                ? Locale.label("people.personRecord.noHouseholdGiftsYear", "No household gifts recorded in {year}.")
+                : Locale.label("people.personRecord.noGiftsYear", "No gifts recorded in {year}.")).replace("{year}", String(year))}
+              {lastGift && " " + Locale.label("people.personRecord.lastGift", "Last gift {date}.").replace("{date}", pretty(lastGift))}
+            </Muted>
+          </Box>
           <VerbRow>{logVerb}{allVerb}</VerbRow>
         </Stack>
       );
@@ -282,22 +278,25 @@ export const PersonGroupsSummary: React.FC<{ personId: string }> = ({ personId }
     if (list.length === 0) return <Muted>{Locale.label("people.groups.notMemMsg")}</Muted>;
     return (
       <Box component="ul" sx={{ display: "flex", flexWrap: "wrap", gap: 1, listStyle: "none", m: 0, p: 0 }}>
-        {list.map((gm) => (
-          <li key={gm.id}>
-            <Link
-              component={RouterLink}
-              to={`/groups/${gm.groupId}`}
-              underline="none"
-              sx={{ display: "inline-flex", alignItems: "baseline", gap: 0.75, border: 1, borderColor: "var(--b1-border)", borderRadius: "var(--b1-radius-pill)", px: 2, py: 0.75, color: "text.primary", fontWeight: 600, typography: "body2", "&:hover": { borderColor: "primary.main", bgcolor: "var(--b1-hover)" } }}>
-              {gm.group?.name || Locale.label("people.groups.unknownGroup")}
-              {(gm.group?.categoryName || gm.leader) && (
-                <Box component="span" sx={{ color: "text.secondary", fontWeight: 400 }}>
-                  {[gm.group?.categoryName, gm.leader ? Locale.label("people.groups.leader") : ""].filter(Boolean).join(" · ")}
-                </Box>
-              )}
-            </Link>
-          </li>
-        ))}
+        {list.map((gm, i) => {
+          const alt = i % 2 === 1;
+          const fg = alt ? "var(--b1-on-chip-alt)" : "var(--b1-on-chip)";
+          return (
+            <li key={gm.id}>
+              <Box sx={{ display: "inline-flex", alignItems: "baseline", gap: 1, maxWidth: "100%" }}>
+                <Link
+                  component={RouterLink}
+                  to={`/groups/${gm.groupId}`}
+                  underline="none"
+                  sx={{ borderRadius: "var(--b1-radius-pill)", px: 1.5, py: 0.5, bgcolor: alt ? "var(--b1-chip-alt)" : "var(--b1-chip)", color: fg, fontWeight: 600, typography: "body2", "&:hover": { filter: "brightness(0.97)" } }}>
+                  {gm.group?.name || Locale.label("people.groups.unknownGroup")}
+                </Link>
+                {gm.leader && <Box component="span" sx={{ color: fg, fontWeight: 600, typography: "body2" }}>{Locale.label("people.groups.leader")}</Box>}
+                {gm.group?.categoryName && <Box component="span" sx={{ color: "text.secondary", typography: "body2" }}>{gm.group.categoryName}</Box>}
+              </Box>
+            </li>
+          );
+        })}
       </Box>
     );
   };
@@ -344,7 +343,9 @@ export const PersonNotesSummary: React.FC<NotesProps> = ({ conversationId, onVie
     if (!latest) {
       return (
         <Stack spacing={1}>
-          <Muted>{Locale.label("people.personRecord.noNotes", "No notes yet.")}</Muted>
+          <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", px: 2, py: 1.5 }}>
+            <Muted>{Locale.label("people.personRecord.noNotes", "No notes yet.")}</Muted>
+          </Box>
           <VerbRow>{allVerb}</VerbRow>
         </Stack>
       );

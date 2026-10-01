@@ -64,7 +64,7 @@ export const Household: React.FC<Props> = ({ person, household, members, editing
     const name = m.name?.display || "";
     const face = (
       <>
-        <PersonAvatar person={m} sx={{ width: 64, height: 64, fontSize: 20, borderRadius: "var(--b1-radius-panel)", outline: isSelf ? "2px solid" : "none", outlineColor: "primary.main", outlineOffset: 2 }} />
+        <PersonAvatar person={m} sx={{ width: 56, height: 56, fontSize: 18, fontWeight: 700, borderRadius: "var(--b1-radius-avatar)", bgcolor: m.householdRole === "Child" ? "var(--b1-accent)" : "var(--b1-avatar)", color: m.householdRole === "Child" ? "var(--b1-on-accent)" : "var(--b1-on-avatar)", outline: isSelf ? "2px solid" : "none", outlineColor: "primary.main", outlineOffset: 2 }} />
         <Typography variant="caption" component="span" noWrap sx={{ display: "block", mt: 0.75, color: isSelf ? "text.primary" : "inherit", fontWeight: isSelf ? 600 : 400 }}>{name}</Typography>
         {m.householdRole && <Typography variant="caption" component="span" noWrap sx={{ display: "block", color: "text.secondary" }}>{m.householdRole}</Typography>}
       </>

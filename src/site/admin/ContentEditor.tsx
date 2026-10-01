@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skel
 import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface, SiteInterface } from "../../helpers/Interfaces";
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
 import { Permissions } from "@churchapps/helpers";
-import { Themes } from "../../helpers/Themes";
+import { createAppTheme, type ThemeId } from "../../helpers/Themes";
 import { Section } from "./Section";
 import React from "react";
 import { Theme, DroppableArea } from "@churchapps/apphelper/website";
@@ -39,7 +39,7 @@ import { WEBSITE_ELEMENT_TYPES } from "./websiteContent";
 import { A11yPanel } from "./A11yPanel";
 import { checkPageAccessibility } from "./a11yChecker";
 
-const lightEditorTheme = createTheme(Themes.BaseTheme, {
+const editorTheme = (themeId: ThemeId) => createTheme(createAppTheme("light", themeId), {
   components: {
     MuiTextField: { defaultProps: { margin: "normal" } },
     MuiFormControl: { defaultProps: { margin: "normal" } },
@@ -118,8 +118,9 @@ export function ContentEditor(props: Props) {
     }
   };
 
-  // Force light mode while editor is mounted so preview matches the public website
-  useThemeMode();
+  // Light mode so the preview matches the public site. Color theme stays the one the user picked.
+  const { themeId } = useThemeMode();
+  const lightEditorTheme = useMemo(() => editorTheme(themeId), [themeId]);
   useEffect(() => {
     const wasInDarkMode = document.body.classList.contains("dark-theme");
     if (wasInDarkMode) {

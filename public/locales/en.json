@@ -2908,8 +2908,11 @@
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
       "subtitle": "Manage your profile and preferences",
+      "colorTheme": "Color theme",
       "themePreferences": "Theme Preferences",
-      "themePreferencesHelper": "Your theme preference is saved automatically and will be remembered on this device.",
+      "themePreferencesHelper": "Your color theme and light or dark setting are saved on this device.",
+      "themeSoft": "Soft Blue",
+      "themeWarm": "Warm",
       "togglePasswordVisibility": "toggle password visibility",
       "valEmail": "Please enter a valid email address."
     }

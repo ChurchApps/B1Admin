@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, Locale, Permissions, PersonAvatar, PersonHelper, UserHelper } from "@churchapps/apphelper";
-import { Box, ButtonBase, Link, Stack, Typography } from "@mui/material";
+import { Box, ButtonBase, Icon, Link, Stack, Typography } from "@mui/material";
 import { WarningAmber as WarningIcon } from "@mui/icons-material";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
@@ -111,7 +111,10 @@ export const PersonIdentity: React.FC<Props> = (props) => {
     }
   };
 
-  const avatar = <PersonAvatar person={person} sx={{ width: 88, height: 88, fontSize: 30, borderRadius: "var(--b1-radius-panel)" }} />;
+  const faceFill = person.householdRole === "Child"
+    ? { bgcolor: "var(--b1-accent)", color: "var(--b1-on-accent)" }
+    : { bgcolor: "var(--b1-avatar)", color: "var(--b1-on-avatar)" };
+  const avatar = <PersonAvatar person={person} sx={{ width: 88, height: 88, fontSize: 30, fontWeight: 700, borderRadius: "var(--b1-radius-avatar)", ...faceFill }} />;
   const quiet = { typography: "body2", color: "text.secondary", overflowWrap: "anywhere" } as const;
   const strong = { color: "text.primary" } as const;
 
@@ -143,24 +146,38 @@ export const PersonIdentity: React.FC<Props> = (props) => {
       )}
 
       {(contact.email || phones.length > 0 || addressLines.length > 0 || userEmail || person.donorNumber || extraFields.length > 0) && (
-        <Stack spacing={0.5} sx={{ mt: 2 }} data-testid="person-contact">
+        <Stack spacing={1} sx={{ mt: 2 }} data-testid="person-contact">
           {contact.mobilePhone && (
-            <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 500, color: "text.primary", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone)}`}>
-              {formattedPhoneNumber(contact.mobilePhone)}
-            </Link>
+            <Stack direction="row" spacing={1.25} alignItems="center">
+              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)" }}>smartphone</Icon>
+              <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 500, color: "var(--b1-link)", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone)}`}>
+                {formattedPhoneNumber(contact.mobilePhone)}
+              </Link>
+            </Stack>
           )}
           {phones.filter((p) => p.key !== "mobile").map((p) => (
-            <Typography key={p.key} sx={quiet}>
-              {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={strong}>{formattedPhoneNumber(p.value || "")}</Box></CopyableText>
-            </Typography>
+            <Stack key={p.key} direction="row" spacing={1.25} alignItems="flex-start">
+              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)", mt: "2px" }}>{p.key === "home" ? "home" : "call"}</Icon>
+              <Typography sx={quiet}>
+                {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={{ color: "var(--b1-link)" }}>{formattedPhoneNumber(p.value || "")}</Box></CopyableText>
+              </Typography>
+            </Stack>
           ))}
-          {contact.email && <Typography sx={quiet}><Link href={"mailto:" + contact.email}>{contact.email}</Link></Typography>}
+          {contact.email && (
+            <Stack direction="row" spacing={1.25} alignItems="flex-start">
+              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)", mt: "2px" }}>email</Icon>
+              <Typography sx={quiet}><Link href={"mailto:" + contact.email} sx={{ color: "var(--b1-link)" }}>{contact.email}</Link></Typography>
+            </Stack>
+          )}
           {addressLines.length > 0 && (
-            <Typography sx={quiet}>
-              <CopyableText text={addressLines.join(", ")}>
-                <Box component="span" sx={strong}>{addressLines.map((l, i) => <React.Fragment key={i}>{l}{i < addressLines.length - 1 && <br />}</React.Fragment>)}</Box>
-              </CopyableText>
-            </Typography>
+            <Stack direction="row" spacing={1.25} alignItems="flex-start">
+              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)", mt: "2px" }}>place</Icon>
+              <Typography sx={quiet}>
+                <CopyableText text={addressLines.join(", ")}>
+                  <Box component="span" sx={{ color: "var(--b1-link)" }}>{addressLines.map((l, i) => <React.Fragment key={i}>{l}{i < addressLines.length - 1 && <br />}</React.Fragment>)}</Box>
+                </CopyableText>
+              </Typography>
+            </Stack>
           )}
           {person.donorNumber && <Typography sx={quiet}>{Locale.label("people.personEdit.donorNumber")} <Box component="span" sx={strong}>{person.donorNumber}</Box></Typography>}
           {userEmail && <Typography sx={quiet}>{Locale.label("people.personView.hasLoginLabel").replace("{email}", userEmail)}</Typography>}

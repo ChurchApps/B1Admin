@@ -1,4 +1,4 @@
-import { Grid, Icon, TextField, Typography, InputAdornment, Box, Alert, FormControlLabel, Switch } from "@mui/material";
+import { Grid, Icon, TextField, Typography, InputAdornment, Box, Alert, FormControlLabel, Switch, ButtonBase, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -11,6 +11,7 @@ import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, VerbR
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { type TaskInterface } from "@churchapps/helpers";
 import { useThemeMode } from "../ThemeContext";
+import { themeCatalog, type ThemeId } from "../helpers/Themes";
 import { useConfirmDelete } from "../hooks";
 
 export const ProfilePage = () => {
@@ -18,7 +19,7 @@ export const ProfilePage = () => {
   const { view, setView } = useRecordView("view", { replace: ["edit"] });
   const editing = view === "edit";
   const isDemo = process.env.REACT_APP_STAGE === "demo";
-  const { mode, toggleTheme } = useThemeMode();
+  const { mode, toggleTheme, themeId, setTheme } = useThemeMode();
 
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -166,7 +167,41 @@ export const ProfilePage = () => {
 
       <Box sx={{ mt: 4 }}>
         <RecordHeading label={Locale.label("profile.profilePage.themePreferences")} />
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+        <Stack direction="row" spacing={1.5} role="group" aria-label={Locale.label("profile.profilePage.colorTheme", "Color theme")} sx={{ mt: 0.5 }}>
+          {themeCatalog.map((choice) => {
+            const selected = themeId === choice.id;
+            const label = choice.id === "warm"
+              ? Locale.label("profile.profilePage.themeWarm", "Warm")
+              : Locale.label("profile.profilePage.themeSoft", "Soft Blue");
+            return (
+              <ButtonBase
+                key={choice.id}
+                onClick={() => setTheme(choice.id as ThemeId)}
+                aria-pressed={selected}
+                data-testid={`theme-${choice.id}`}
+                sx={{
+                  width: 148,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "stretch",
+                  textAlign: "left",
+                  borderRadius: "var(--b1-radius-panel)",
+                  border: "2px solid",
+                  borderColor: selected ? "primary.main" : "divider",
+                  overflow: "hidden"
+                }}>
+                <Box sx={{ height: 36, bgcolor: choice.header, display: "flex", alignItems: "center", gap: 0.75, px: 1.25 }}>
+                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: choice.primary }} />
+                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: choice.accent }} />
+                </Box>
+                <Box sx={{ px: 1.25, py: 1, bgcolor: choice.canvas }}>
+                  <Typography variant="body2" sx={{ fontWeight: 650, color: choice.ink }}>{label}</Typography>
+                </Box>
+              </ButtonBase>
+            );
+          })}
+        </Stack>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mt: 2 }}>
           <LightMode color={mode === "light" ? "primary" : "disabled"} />
           <FormControlLabel
             sx={{ mr: 0 }}
