@@ -13,10 +13,10 @@ import {
   LinearProgress,
   Button
 } from "@mui/material";
-import { HowToReg as RegIcon, CalendarMonth as CalendarIcon } from "@mui/icons-material";
+import { Add as AddIcon, HowToReg as RegIcon, CalendarMonth as CalendarIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
-import { AddBar, EmptyState, PageContainer, PageHeader, SearchField, StatusBadge, Surface, TextAction, tableScrollSx } from "../components/ui";
+import { EmptyState, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, SearchField, StatusBadge, Surface, tableScrollSx } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 
@@ -85,29 +85,36 @@ export const RegistrationsPage = () => {
   return (
     <>
       <PageHeader title={Locale.label("registrations.registrationsPage.title")} subtitle={Locale.label("registrations.registrationsPage.subtitle")}>
-        <TextAction to="/calendars" component={Link} data-testid="registrations-calendars-link">{Locale.label("helpers.secondaryMenuHelper.calendars", "Calendars")}</TextAction>
+        <HeaderTextButton component={Link} to="/calendars" data-testid="registrations-calendars-link">{Locale.label("helpers.secondaryMenuHelper.calendars", "Calendars")}</HeaderTextButton>
+        <HeaderPrimaryButton component={Link} to="/calendars" startIcon={<AddIcon />} title={Locale.label("registrations.registrationsPage.noEventsHint")} data-testid="registrations-add-from-calendars">
+          {Locale.label("registrations.registrationsPage.turnOnRegistration", "Turn on registration")}
+        </HeaderPrimaryButton>
       </PageHeader>
       <PageContainer>
-        {loading ? (
-          <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>
-        ) : events.length === 0 ? (
-          <EmptyState
-            icon={<RegIcon />}
-            title={Locale.label("registrations.registrationsPage.noEvents")}
-            description={Locale.label("registrations.registrationsPage.noEventsHint")}
-            action={
-              <Button variant="contained" startIcon={<CalendarIcon />} component={Link} to="/calendars" data-testid="empty-state-go-to-calendars">
-                {Locale.label("registrations.registrationsPage.goToCalendars")}
-              </Button>
-            }
-          />
-        ) : (
-          <Stack spacing={2}>
-            <SearchField value={search} onChange={setSearch} data-testid="registrations-search" />
-            <Typography variant="body2" color="text.secondary" aria-live="polite">
-              {Locale.label("registrations.registrationsPage.enabledEvents")}: {visibleEvents.length}
-            </Typography>
-            <Surface disablePadding>
+        <Surface>
+          {loading ? (
+            <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>
+          ) : events.length === 0 ? (
+            <EmptyState
+              variant="plain"
+              icon={<RegIcon />}
+              title={Locale.label("registrations.registrationsPage.noEvents")}
+              description={Locale.label("registrations.registrationsPage.noEventsHint")}
+              action={
+                <Button variant="outlined" startIcon={<CalendarIcon />} component={Link} to="/calendars" data-testid="empty-state-go-to-calendars">
+                  {Locale.label("registrations.registrationsPage.goToCalendars")}
+                </Button>
+              }
+            />
+          ) : (
+            <Stack spacing={3}>
+              <SearchField value={search} onChange={setSearch} label={Locale.label("registrations.registrationsPage.search", "Search events")} data-testid="registrations-search" />
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("registrations.registrationsPage.enabledEvents")}: {visibleEvents.length}
+                </Typography>
+                {query && <Button size="small" onClick={() => setSearch("")}>{Locale.label("common.clear", "Clear")}</Button>}
+              </ResultsBar>
               <Box sx={tableScrollSx} role="region" aria-label={Locale.label("registrations.registrationsPage.enabledEvents")} tabIndex={0}>
                 <Table>
                   <TableHead>
@@ -121,15 +128,9 @@ export const RegistrationsPage = () => {
                   <TableBody>{getRows()}</TableBody>
                 </Table>
               </Box>
-            </Surface>
-          </Stack>
-        )}
-        {!loading && events.length > 0 && (
-          <AddBar>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("registrations.registrationsPage.noEventsHint")}</Typography>
-            <TextAction to="/calendars" component={Link} data-testid="registrations-add-from-calendars">{Locale.label("registrations.registrationsPage.goToCalendars")}</TextAction>
-          </AddBar>
-        )}
+            </Stack>
+          )}
+        </Surface>
       </PageContainer>
     </>
   );

@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as FundIcon } from "@mui/icons-material";
+import { Add as AddIcon, VolunteerActivism as FundIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { PageHeader, PageContainer, Surface, AddBar, EmptyState, StatusBadge, SortableTableHead, TextAction, VerbRow, hoverRowSx, tableScrollSx } from "../components/ui";
-import { CsvVerb, Lede } from "./components/GivingParts";
+import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, ResultsBar, StatusBadge, SortableTableHead, TextAction, VerbRow, hoverRowSx, tableScrollSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
 
@@ -22,6 +21,11 @@ export const FundsPage = () => {
   });
 
   const { sorted: sortedFunds, sortBy, sortDirection, handleSort } = useSortableData<FundInterface>(funds.data || []);
+
+  const openFund = (id: string) => {
+    setEditFundId(id);
+    setTimeout(() => document.getElementById("edit-fund-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
 
   const fundUpdated = () => {
     setEditFundId("notset");
@@ -84,7 +88,7 @@ export const FundsPage = () => {
           <TableCell align="right">
             <VerbRow sx={{ justifyContent: "flex-end" }}>
               {canViewFund && <TextAction small data-testid={`giving-link-${i}`} onClick={() => setLinkFund(f)}>{Locale.label("donations.givingLink.button")}</TextAction>}
-              {canEdit && <TextAction small data-cy={`edit-${i}`} onClick={() => setEditFundId(f.id || "")}>{Locale.label("common.edit")}</TextAction>}
+              {canEdit && <TextAction small data-cy={`edit-${i}`} onClick={() => openFund(f.id || "")}>{Locale.label("common.edit")}</TextAction>}
             </VerbRow>
           </TableCell>
         </TableRow>
@@ -125,22 +129,24 @@ export const FundsPage = () => {
 
   return (
     <>
-      <PageHeader title={Locale.label("donations.donations.funds")} subtitle={Locale.label("donations.fundsPage.subtitle")} />
+      <PageHeader title={Locale.label("donations.donations.funds")} subtitle={Locale.label("donations.fundsPage.subtitle")}>
+        {(funds.data?.length || 0) > 0 && <ExportButton data={funds.data || []} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
+        {canEdit && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openFund("")} data-testid="add-fund-button">{Locale.label("donations.fundsPage.addFund")}</HeaderPrimaryButton>}
+      </PageHeader>
 
       <PageContainer>
-        {editFundId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
-
         <Surface>
-          {!funds.isLoading && (
-            <Lede sx={{ mb: 2 }}>{Locale.label("donations.fundsPage.fundCount", "{count} funds").replace("{count}", sortedFunds.length.toString())}</Lede>
+          <Stack spacing={3}>
+            {!funds.isLoading && (
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary">{Locale.label("donations.fundsPage.fundCount", "{count} funds").replace("{count}", sortedFunds.length.toString())}</Typography>
+              </ResultsBar>
+            )}
+            {getTable()}
+          </Stack>
+          {editFundId !== "notset" && (
+            <Box id="edit-fund-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>{getSidebarModules()}</Box>
           )}
-          {getTable()}
-          <AddBar>
-            <VerbRow>
-              {canEdit && <TextAction onClick={() => setEditFundId("")} data-testid="add-fund-button">{Locale.label("donations.fundsPage.addFund")}</TextAction>}
-              {(funds.data?.length || 0) > 0 && <CsvVerb data={funds.data || []} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
-            </VerbRow>
-          </AddBar>
         </Surface>
       </PageContainer>
 

@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { ApiHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import { Permissions, type GroupInterface } from "@churchapps/helpers";
-import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
-import { MeetingRoom as RoomIcon } from "@mui/icons-material";
+import { Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Add as AddIcon, MeetingRoom as RoomIcon } from "@mui/icons-material";
 import { useRequirePermission } from "../hooks";
-import { AddBar, EmptyState, PillTabs, SearchField, Surface, TextAction, tableScrollSx } from "../components/ui";
+import { EmptyState, HeaderPrimaryButton, PillTabs, ResultsBar, SearchField, Surface, TextAction, tableScrollSx } from "../components/ui";
 import { CalendarChrome } from "./components/CalendarChrome";
 import { RoomEdit } from "./components/RoomEdit";
 import { ResourceEdit } from "./components/ResourceEdit";
@@ -191,24 +191,51 @@ export const RoomsResourcesPage = () => {
     templates: Locale.label("calendars.rooms.addTemplate")
   };
   const adding = !!editing && !editing.item?.id;
+  const totals: Record<TabKey, [number, number]> = {
+    rooms: [shownRooms.length, rooms.length],
+    resources: [shownResources.length, resources.length],
+    blockouts: [shownBlockouts.length, blockouts.length],
+    templates: [shownTemplates.length, templates.length]
+  };
+  const [shown, total] = totals[tab];
+
+  const openAdd = () => {
+    setEditing({ type: tab, item: {} });
+    setTimeout(() => document.getElementById("add-room-resource-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
 
   return (
-    <CalendarChrome selected="rooms" subtitle={Locale.label("calendars.rooms.subtitle")}>
-      <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "stretch", md: "center" }} justifyContent="space-between" sx={{ mb: 3 }}>
-        <PillTabs options={tabs} value={tab} onChange={(v) => { setTab(v as TabKey); setEditing(null); }} aria-label={Locale.label("calendars.rooms.title")} />
-        <SearchField value={find} onChange={setFind} label={Locale.label("calendars.rooms.find", "Find")} data-testid="rooms-find" sx={{ maxWidth: { md: 320 } }} />
-      </Stack>
-      {loading ? <Loading /> : (
-        <>
-          {editing?.item?.id && <Box sx={{ mb: 3 }}>{getEditCard()}</Box>}
-          <Surface disablePadding>{getTable()}</Surface>
-          <AddBar>
-            {adding
-              ? getEditCard()
-              : <TextAction onClick={() => setEditing({ type: tab, item: {} })} data-testid="add-room-resource">{addLabels[tab]}</TextAction>}
-          </AddBar>
-        </>
-      )}
+    <CalendarChrome
+      selected="rooms"
+      subtitle={Locale.label("calendars.rooms.subtitle")}
+      actions={(
+        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={openAdd} disabled={loading} data-testid="add-room-resource">{addLabels[tab]}</HeaderPrimaryButton>
+      )}>
+      {editing?.item?.id && <Box sx={{ mb: 3 }}>{getEditCard()}</Box>}
+      <Surface>
+        <Stack spacing={3}>
+          <SearchField value={find} onChange={setFind} label={Locale.label("calendars.rooms.find", "Find")} data-testid="rooms-find" />
+          <PillTabs options={tabs} value={tab} onChange={(v) => { setTab(v as TabKey); setEditing(null); }} aria-label={Locale.label("calendars.rooms.title")} />
+          {loading ? <Loading /> : (
+            <>
+              {total > 0 && (
+                <ResultsBar>
+                  <Typography variant="body2" color="text.secondary">
+                    {Locale.label("calendars.rooms.resultCount", "{shown} of {total} {items}").replace("{shown}", shown.toString()).replace("{total}", total.toString()).replace("{items}", (tabs.find((t) => t.value === tab)?.label || "").toLowerCase())}
+                  </Typography>
+                  {q && <Button size="small" onClick={() => setFind("")}>{Locale.label("common.clear", "Clear")}</Button>}
+                </ResultsBar>
+              )}
+              <Box>{getTable()}</Box>
+            </>
+          )}
+        </Stack>
+        {adding && (
+          <Box id="add-room-resource-bar" data-testid="add-room-resource-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
+            {getEditCard()}
+          </Box>
+        )}
+      </Surface>
     </CalendarChrome>
   );
 };

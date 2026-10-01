@@ -3,14 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Permissions, UserHelper, type HouseholdInterface, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
-import { Box, Typography, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, Link, MenuItem, Select, Skeleton } from "@mui/material";
+import { Box, Typography, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Skeleton } from "@mui/material";
 import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
 import { buildRulesFromCriteria } from "./components/listRules";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { PersonSearch as PersonSearchIcon } from "@mui/icons-material";
-import { EmptyState, ExportButton, PageContainer, PageHeader, Surface } from "../components/ui";
+import { Add as AddIcon, HomeOutlined as HouseholdsIcon, PersonSearch as PersonSearchIcon, TableRowsOutlined as TableIcon } from "@mui/icons-material";
+import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, Surface, ViewToggle } from "../components/ui";
 import { CreatePerson } from "../components";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DirectoryHouseholds, groupHouseholds } from "./components/DirectoryHouseholds";
@@ -382,15 +382,6 @@ export const PeoplePage = memo(() => {
   const allVisibleSelected = visibleSelectableIds.length > 0 && visibleSelectableIds.every((id) => selectedPersonIds.includes(id));
   const someVisibleSelected = visibleSelectableIds.some((id) => selectedPersonIds.includes(id));
 
-  const verbSx = { fontWeight: 600, px: 1, minWidth: 0 };
-
-  const viewLink = (value: "households" | "table", label: string) => (
-    <Link component="button" type="button" variant="body2" underline="hover" onClick={() => changeView(value)} aria-pressed={view === value} data-testid={`people-view-${value}`}
-      sx={{ fontWeight: view === value ? 700 : 400, color: view === value ? "text.primary" : "primary.main" }}>
-      {label}
-    </Link>
-  );
-
   const getResults = () => {
     if (isLoading || !searchResults) {
       return (
@@ -444,23 +435,23 @@ export const PeoplePage = memo(() => {
   return (
     <>
       <PageHeader title={Locale.label("people.directory.title")} subtitle={Locale.label("people.directory.subtitle")}>
-        <Button variant="text" sx={verbSx} onClick={() => navigate("/people/demographics")} data-testid="demographics-button">
+        <HeaderTextButton onClick={() => navigate("/people/demographics")} data-testid="demographics-button">
           {Locale.label("people.demographics.title")}
-        </Button>
-        <Button variant="text" sx={verbSx} onClick={() => window.open("/people/print-directory", "_blank")} data-testid="print-directory-button">
+        </HeaderTextButton>
+        <HeaderTextButton onClick={() => window.open("/people/print-directory", "_blank")} data-testid="print-directory-button">
           {Locale.label("people.peoplePage.printDirectory")}
-        </Button>
+        </HeaderTextButton>
         {searchResults && <ExportButton data={getExportData(searchResults)} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
         <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
         {canSaveList && (
-          <Button variant="text" sx={verbSx} onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })}>
+          <HeaderTextButton onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })}>
             {Locale.label("people.lists.saveAs")}
-          </Button>
+          </HeaderTextButton>
         )}
         {canEdit && (
-          <Button variant="text" sx={verbSx} onClick={scrollToCreatePerson} data-testid="add-person-button">
+          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={scrollToCreatePerson} data-testid="add-person-button">
             {Locale.label("people.peoplePage.addPerson")}
-          </Button>
+          </HeaderPrimaryButton>
         )}
       </PageHeader>
 
@@ -506,12 +497,15 @@ export const PeoplePage = memo(() => {
                     </Typography>
                   </Stack>
                 )}
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography variant="body2" color="text.secondary">{Locale.label("people.directory.viewAs")}</Typography>
-                  {viewLink("households", Locale.label("people.directory.households"))}
-                  <Typography component="span" variant="body2" color="text.secondary" aria-hidden>·</Typography>
-                  {viewLink("table", Locale.label("people.directory.table"))}
-                </Stack>
+                <ViewToggle
+                  label={Locale.label("people.directory.viewAs")}
+                  value={view}
+                  onChange={changeView}
+                  options={[
+                    { value: "households", label: Locale.label("people.directory.households"), icon: <HouseholdsIcon />, "data-testid": "people-view-households" },
+                    { value: "table", label: Locale.label("people.directory.table"), icon: <TableIcon />, "data-testid": "people-view-table" }
+                  ]}
+                />
               </Stack>
 
               {getResults()}

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { useSearchParams } from "react-router-dom";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { AppTabs, AppEdit } from "../settings/components";
 import { useRequirePermission } from "../hooks";
-import { AddBar, TextAction } from "../components/ui";
 import { MobileChrome } from "./components/MobileChrome";
+import { HeaderPrimaryButton } from "../components/ui";
 
 const ICON_FOR_LINK_TYPE: Record<string, string> = {
   bible: "menu_book",
@@ -73,7 +74,8 @@ export const MobileAppSettingsPage = () => {
   return (
     <MobileChrome
       title={Locale.label("settings.mobileAppSettings.title")}
-      subtitle={Locale.label("settings.mobileAppSettings.subtitle")}>
+      subtitle={Locale.label("settings.mobileAppSettings.subtitle")}
+      actions={!selectedTab && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleAddTab} data-testid="add-tab-button">{Locale.label("settings.mobileAppSettings.addTab")}</HeaderPrimaryButton>}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("settings.mobileAppSettings.tabBarNote")}</Typography>
 
       {selectedTab && (
@@ -90,12 +92,6 @@ export const MobileAppSettingsPage = () => {
           onSelected={(tab: LinkInterface) => setSelectedTab(tab)}
           refreshKey={refreshKey}
         />
-      )}
-
-      {!selectedTab && (
-        <AddBar>
-          <TextAction onClick={handleAddTab} data-testid="add-tab-button">{Locale.label("settings.mobileAppSettings.addTab")}</TextAction>
-        </AddBar>
       )}
     </MobileChrome>
   );

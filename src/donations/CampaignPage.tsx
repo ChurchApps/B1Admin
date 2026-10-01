@@ -3,12 +3,11 @@ import { CurrencyHelper, Loading, Locale, UserHelper, Permissions } from "@churc
 import { type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
 import { Box, LinearProgress, Link as MuiLink, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Flag as CampaignIcon } from "@mui/icons-material";
+import { Add as AddIcon, Edit as EditIcon, Flag as CampaignIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface, type PledgeInterface, type PledgeProgressRowInterface, type PledgeStatus } from "../helpers";
 import { CampaignEdit, PledgeEdit } from "./components";
-import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, AddBar, EmptyState, RecordHeading, StatusBadge, type StatusTone, Surface, SortableTableHead, TextAction, VerbRow, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
-import { CsvVerb } from "./components/GivingParts";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, RecordHeading, StatusBadge, type StatusTone, Surface, SortableTableHead, TextAction, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
 
 const statusColors: Record<PledgeStatus, StatusTone> = {
   notStarted: "neutral",
@@ -61,6 +60,12 @@ export const CampaignPage = () => {
     CurrencyHelper.loadCurrency().then((result) => setCurrency(result));
   }, []);
 
+  const openEditor = (mode: "campaign" | "pledge", pledge: PledgeInterface | null = null) => {
+    setEditPledge(pledge);
+    setEditMode(mode);
+    setTimeout(() => document.getElementById("edit-campaign-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
+
   const updated = () => {
     setEditMode("none");
     setEditPledge(null);
@@ -72,8 +77,7 @@ export const CampaignPage = () => {
   const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
 
   const handleEditPledge = (row: PledgeProgressRowInterface) => {
-    setEditPledge({ id: row.pledgeId, campaignId: params.id, personId: row.personId, amount: row.pledgedAmount });
-    setEditMode("pledge");
+    openEditor("pledge", { id: row.pledgeId, campaignId: params.id, personId: row.personId, amount: row.pledgedAmount });
   };
 
   const sortedRows = React.useMemo(() => {
@@ -188,12 +192,12 @@ export const CampaignPage = () => {
   return (
     <>
       <PageHeader title={campaign?.name || ""} subtitle={lede} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
-        {canEdit && <TextAction onClick={() => setEditMode("campaign")} data-testid="edit-campaign-button">{Locale.label("donations.campaignPage.editCampaign")}</TextAction>}
+        {exportRows.length > 0 && <ExportButton data={exportRows} filename="pledges.csv" text={Locale.label("donations.campaignsPage.export")} />}
+        {canEdit && <HeaderSecondaryButton startIcon={<EditIcon />} onClick={() => openEditor("campaign")} data-testid="edit-campaign-button">{Locale.label("donations.campaignPage.editCampaign")}</HeaderSecondaryButton>}
+        {canEdit && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openEditor("pledge")} data-testid="add-pledge-button">{Locale.label("donations.campaignPage.addPledge")}</HeaderPrimaryButton>}
       </PageHeader>
 
       <PageContainer>
-        {editMode !== "none" && <Box sx={{ mb: 3 }}>{getEditContent()}</Box>}
-
         <Surface>
           {percent !== null && (
             <Box sx={{ mb: 4 }}>
@@ -202,17 +206,11 @@ export const CampaignPage = () => {
             </Box>
           )}
 
-          <RecordHeading label={Locale.label("donations.campaignPage.pledges") + " (" + sortedRows.length + ")"}>
-            <VerbRow>
-              {exportRows.length > 0 && <CsvVerb data={exportRows} filename="pledges.csv" text={Locale.label("donations.campaignsPage.export")} />}
-            </VerbRow>
-          </RecordHeading>
+          <RecordHeading label={Locale.label("donations.campaignPage.pledges") + " (" + sortedRows.length + ")"} />
           {getTable()}
 
-          {canEdit && (
-            <AddBar>
-              <TextAction onClick={() => { setEditPledge(null); setEditMode("pledge"); }} data-testid="add-pledge-button">{Locale.label("donations.campaignPage.addPledge")}</TextAction>
-            </AddBar>
+          {editMode !== "none" && (
+            <Box id="edit-campaign-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>{getEditContent()}</Box>
           )}
         </Surface>
       </PageContainer>

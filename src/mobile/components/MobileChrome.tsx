@@ -17,12 +17,14 @@ interface Props {
   title: string;
   subtitle?: string;
   verbs?: React.ReactNode;
+  /** Page-header actions; the primary one (a HeaderPrimaryButton) goes last. */
+  actions?: React.ReactNode;
   maxWidth?: "md" | "lg" | false;
   children: React.ReactNode;
 }
 
 // Shared shell for the five mobile pages: title, section pills (same gates as the secondary menu), then the page.
-export const MobileChrome: React.FC<Props> = ({ title, subtitle, verbs, maxWidth, children }) => {
+export const MobileChrome: React.FC<Props> = ({ title, subtitle, verbs, actions, maxWidth, children }) => {
   const location = useLocation();
   const { menuItems } = SecondaryMenuHelper.getMobileMenu(location.pathname);
   const current = menuItems.map((m) => m.url).filter((u) => location.pathname.startsWith(u)).sort((a, b) => b.length - a.length)[0];
@@ -39,7 +41,7 @@ export const MobileChrome: React.FC<Props> = ({ title, subtitle, verbs, maxWidth
 
   return (
     <>
-      <PageHeader title={title} subtitle={subtitle} tabs={pills || undefined} />
+      <PageHeader title={title} subtitle={subtitle} tabs={pills || undefined}>{actions}</PageHeader>
       <PageContainer maxWidth={maxWidth}>
         {verbs && <VerbRow sx={{ mb: 3 }}>{verbs}</VerbRow>}
         {children}

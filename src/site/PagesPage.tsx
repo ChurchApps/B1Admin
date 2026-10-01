@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Box, Button, Icon, Link as MuiLink, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { ChevronRight as ChevronRightIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { Add as AddIcon, ChevronRight as ChevronRightIcon, ExpandMore as ExpandMoreIcon, ViewQuiltOutlined as TemplateIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers
 import type { PageInterface } from "../helpers/Interfaces";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { AddBar, PageContainer, PageHeader, RecordHeading, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, RecordHeading, ResultsBar, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { clearSiteCache } from "./siteCache";
 import { useConfirmDelete, useRequirePermission } from "../hooks";
 
@@ -51,6 +51,8 @@ export const PagesPage = () => {
       );
     } else return <Box sx={{ width: 32, ml: level * 2 }}></Box>;
   };
+
+  const countPages = (items: PageLink[]): number => items.reduce((sum, item) => sum + 1 + countPages(item.children || []), 0);
 
   const getTreeLevel = (items: PageLink[], level: number) => {
     const result: React.ReactElement[] = [];
@@ -273,41 +275,40 @@ export const PagesPage = () => {
       )}
       <PageHeader title={Locale.label("site.pagesPage.websitePages")} subtitle={Locale.label("site.pagesPage.subtitle")}>
         <SiteSwitcher siteId={siteId} onChange={setSiteId} sites={sites} onManage={() => setShowSites(true)} />
+        <HeaderTextButton startIcon={<TemplateIcon />} onClick={() => setShowSiteTemplates(true)} data-testid="start-from-template-button">{Locale.label("site.pagesPage.startFromTemplate")}</HeaderTextButton>
+        {/* ponytail: AI website builder temporarily disabled — restore this button to re-enable
+        <HeaderTextButton onClick={() => setShowGenerateSite(true)} data-testid="generate-site-button">{Locale.label("site.generateSite.button")}</HeaderTextButton>
+        */}
+        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setAddMode("unlinked")} data-testid="add-page-button">{Locale.label("site.pagesPage.addPage")}</HeaderPrimaryButton>
       </PageHeader>
       <PageContainer>
-        <VerbRow sx={{ mb: 3 }}>
-          <TextAction onClick={() => setShowSiteTemplates(true)} data-testid="start-from-template-button">{Locale.label("site.pagesPage.startFromTemplate")}</TextAction>
-          {/* ponytail: AI website builder temporarily disabled — restore this verb to re-enable
-          <TextAction onClick={() => setShowGenerateSite(true)} data-testid="generate-site-button">{Locale.label("site.generateSite.button")}</TextAction>
-          */}
-        </VerbRow>
-
-        <Surface disablePadding>
-          {pageTree.length === 0 ? (
-            <Box sx={{ p: 3 }}>
+        <Surface>
+          <Stack spacing={3}>
+            {pageTree.length > 0 && (
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary">{Locale.label("site.pagesPage.pageCount", "{count} pages").replace("{count}", countPages(pageTree).toString())}</Typography>
+              </ResultsBar>
+            )}
+            {pageTree.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
                 {Locale.label("site.pagesPage.noPagesFound")} {Locale.label("site.pagesPage.getStarted")}
               </Typography>
-            </Box>
-          ) : (
-            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.pagesPage.pages")} tabIndex={0}>
-              <Table sx={{ minWidth: 650 }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{Locale.label("site.pagesPage.path")}</TableCell>
-                    <TableCell>{Locale.label("common.title")}</TableCell>
-                    <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>{getTreeLevel(pageTree, 0)}</TableBody>
-              </Table>
-            </Box>
-          )}
+            ) : (
+              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.pagesPage.pages")} tabIndex={0}>
+                <Table sx={{ minWidth: 650 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{Locale.label("site.pagesPage.path")}</TableCell>
+                      <TableCell>{Locale.label("common.title")}</TableCell>
+                      <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>{getTreeLevel(pageTree, 0)}</TableBody>
+                </Table>
+              </Box>
+            )}
+          </Stack>
         </Surface>
-
-        <AddBar>
-          <TextAction onClick={() => setAddMode("unlinked")} data-testid="add-page-button">{Locale.label("site.pagesPage.addPage")}</TextAction>
-        </AddBar>
 
         <Box component="section" aria-labelledby="pages-main-navigation" sx={{ mt: 6 }}>
           <RecordHeading id="pages-main-navigation" label={Locale.label("site.pagesPage.mainNavigation")}>

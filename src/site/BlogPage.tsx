@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Link as MuiLink, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Link as MuiLink, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { BlogPostEdit } from "./components";
 import { clearSiteCache } from "./siteCache";
-import { AddBar, PageContainer, PageHeader, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { HeaderPrimaryButton, PageContainer, PageHeader, ResultsBar, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { ConfirmDialog } from "../components/ui/ConfirmDialog";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
@@ -48,56 +49,66 @@ export const BlogPage = () => {
         onConfirm={handleDelete}
         onCancel={() => setDeletePost(null)}
       />
-      <PageHeader title={Locale.label("site.blog.title")} subtitle={Locale.label("site.blog.subtitle")} />
+      <PageHeader title={Locale.label("site.blog.title")} subtitle={Locale.label("site.blog.subtitle")}>
+        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setEditPost({})} data-testid="add-post-button">{Locale.label("site.blog.addPost")}</HeaderPrimaryButton>
+      </PageHeader>
       <PageContainer>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-          {Locale.label("site.blog.navHint")} <MuiLink component={Link} to="/site/pages">{Locale.label("helpers.secondaryMenuHelper.pages")}</MuiLink>
-        </Typography>
-        <Surface disablePadding>
-          {posts.length === 0 ? (
-            <Box sx={{ p: 3 }}>
-              <Typography variant="body2" color="text.secondary">{Locale.label("site.blog.noPosts")}</Typography>
-            </Box>
-          ) : (
-            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.blog.title")} tabIndex={0}>
-              <Table sx={{ minWidth: 640 }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{Locale.label("common.title")}</TableCell>
-                    <TableCell>{Locale.label("site.blog.state")}</TableCell>
-                    <TableCell>{Locale.label("site.blog.date")}</TableCell>
-                    <TableCell>{Locale.label("site.blogEdit.category")}</TableCell>
-                    <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {posts.map((post) => (
-                    <TableRow key={post.id}>
-                      <TableCell><Typography variant="body2" sx={{ fontWeight: 600 }}>{post.title}</Typography></TableCell>
-                      <TableCell>
-                        <StatusBadge tone={{ draft: "neutral", scheduled: "warning", published: "success" }[postState(post)] as "neutral" | "warning" | "success"}>{Locale.label("site.blog." + postState(post))}</StatusBadge>
-                      </TableCell>
-                      <TableCell><Typography variant="body2">{formatDateSafe(post.publishDate)}</Typography></TableCell>
-                      <TableCell><Typography variant="body2">{post.category}</Typography></TableCell>
-                      <TableCell align="right">
-                        <VerbRow sx={{ justifyContent: "flex-end", flexWrap: "nowrap" }}>
-                          <TextAction small onClick={() => setEditPost(post)} data-testid="edit-post-button">{Locale.label("common.edit")}</TextAction>
-                          {postState(post) === "published" && (
-                            <MuiLink href={EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch?.church?.subDomain || "") + "/blog/" + post.slug} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ typography: "body2", fontWeight: 600 }} data-testid="view-post-button">{Locale.label("site.blog.view")}</MuiLink>
-                          )}
-                          <TextAction small onClick={() => setDeletePost(post)} data-testid="delete-post-button">{Locale.label("common.delete")}</TextAction>
-                        </VerbRow>
-                      </TableCell>
+        <Surface>
+          <Stack spacing={3}>
+            {posts.length > 0 && (
+              <ResultsBar end={
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("site.blog.navHint")} <MuiLink component={Link} to="/site/pages">{Locale.label("helpers.secondaryMenuHelper.pages")}</MuiLink>
+                </Typography>
+              }>
+                <Typography variant="body2" color="text.secondary">{Locale.label("site.blog.postCount", "{count} posts").replace("{count}", posts.length.toString())}</Typography>
+              </ResultsBar>
+            )}
+            {posts.length === 0 ? (
+              <Stack spacing={1}>
+                <Typography variant="body2" color="text.secondary">{Locale.label("site.blog.noPosts")}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("site.blog.navHint")} <MuiLink component={Link} to="/site/pages">{Locale.label("helpers.secondaryMenuHelper.pages")}</MuiLink>
+                </Typography>
+              </Stack>
+            ) : (
+              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.blog.title")} tabIndex={0}>
+                <Table sx={{ minWidth: 640 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{Locale.label("common.title")}</TableCell>
+                      <TableCell>{Locale.label("site.blog.state")}</TableCell>
+                      <TableCell>{Locale.label("site.blog.date")}</TableCell>
+                      <TableCell>{Locale.label("site.blogEdit.category")}</TableCell>
+                      <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          )}
+                  </TableHead>
+                  <TableBody>
+                    {posts.map((post) => (
+                      <TableRow key={post.id}>
+                        <TableCell><Typography variant="body2" sx={{ fontWeight: 600 }}>{post.title}</Typography></TableCell>
+                        <TableCell>
+                          <StatusBadge tone={{ draft: "neutral", scheduled: "warning", published: "success" }[postState(post)] as "neutral" | "warning" | "success"}>{Locale.label("site.blog." + postState(post))}</StatusBadge>
+                        </TableCell>
+                        <TableCell><Typography variant="body2">{formatDateSafe(post.publishDate)}</Typography></TableCell>
+                        <TableCell><Typography variant="body2">{post.category}</Typography></TableCell>
+                        <TableCell align="right">
+                          <VerbRow sx={{ justifyContent: "flex-end", flexWrap: "nowrap" }}>
+                            <TextAction small onClick={() => setEditPost(post)} data-testid="edit-post-button">{Locale.label("common.edit")}</TextAction>
+                            {postState(post) === "published" && (
+                              <MuiLink href={EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch?.church?.subDomain || "") + "/blog/" + post.slug} target="_blank" rel="noopener noreferrer" underline="hover" sx={{ typography: "body2", fontWeight: 600 }} data-testid="view-post-button">{Locale.label("site.blog.view")}</MuiLink>
+                            )}
+                            <TextAction small onClick={() => setDeletePost(post)} data-testid="delete-post-button">{Locale.label("common.delete")}</TextAction>
+                          </VerbRow>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            )}
+          </Stack>
         </Surface>
-        <AddBar>
-          <TextAction onClick={() => setEditPost({})} data-testid="add-post-button">{Locale.label("site.blog.addPost")}</TextAction>
-        </AddBar>
       </PageContainer>
     </>
   );

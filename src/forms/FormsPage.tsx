@@ -3,10 +3,11 @@ import { FormEdit, FormPrintDialog, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Snackbar, Link as MuiLink } from "@mui/material";
+import { Table, TableBody, TableCell, TableRow, TableHead, Box, Button, Stack, Typography, Snackbar, Link as MuiLink } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
-import { AddBar, PageHeader, PageContainer, PillTabs, SearchField, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { HeaderPrimaryButton, PageHeader, PageContainer, PillTabs, ResultsBar, SearchField, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
 
 export const FormsPage = () => {
@@ -135,6 +136,12 @@ export const FormsPage = () => {
   const adding = editing && selectedFormId === "";
   const listLabel = isArchived ? Locale.label("forms.formsPage.archForms") : Locale.label("forms.formsPage.forms");
 
+  const openAdd = () => {
+    setSelectedTab("forms");
+    setSelectedFormId("");
+    setTimeout(() => document.getElementById("add-form-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
+
   const pills = [{ value: "forms", label: Locale.label("forms.formsPage.forms"), "data-testid": "pill-forms" }];
   if (archivedCount > 0) pills.push({ value: "archived", label: Locale.label("forms.formsPage.archForms"), "data-testid": "pill-archived-forms" });
 
@@ -142,46 +149,46 @@ export const FormsPage = () => {
     <>
       {ConfirmDialogElement}
       {printFormId && <FormPrintDialog formId={printFormId} onClose={() => setPrintFormId("")} />}
-      <PageHeader
-        title={Locale.label("forms.formsPage.forms")}
-        subtitle={Locale.label("forms.formsPage.subtitleManage")}
-        tabs={pills.length > 1 && (
-          <PillTabs
-            tabs
-            options={pills}
-            value={isArchived ? "archived" : "forms"}
-            onChange={(v) => { setSelectedTab(v); setSelectedFormId("notset"); }}
-            aria-label={Locale.label("forms.formsPage.forms")}
-          />
-        )}
-      />
+      <PageHeader title={Locale.label("forms.formsPage.forms")} subtitle={Locale.label("forms.formsPage.subtitleManage")}>
+        <HeaderPrimaryButton startIcon={<AddIcon />} onClick={openAdd} data-testid="add-form-button">{Locale.label("forms.formsPage.addForm")}</HeaderPrimaryButton>
+      </PageHeader>
       <PageContainer>
         {editing && !adding && (
           <Box sx={{ mb: 3 }}>
             <FormEdit formId={selectedFormId} updatedFunction={handleUpdate} />
           </Box>
         )}
-        <Surface disablePadding>
-          <Box sx={{ p: { xs: 2, md: 3 }, pb: { xs: 1, md: 2 } }}>
-            <SearchField value={query} onChange={setQuery} label={Locale.label("forms.formsPage.find", "Find a form")} data-testid="forms-find" sx={{ maxWidth: 420 }} />
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }} data-testid="forms-count">
-              {(isArchived ? archivedCount : formsCount) + " " + listLabel.toLowerCase()}
-            </Typography>
-          </Box>
-          <Box sx={tableScrollSx} role="region" aria-label={listLabel} tabIndex={0}>
-            <Table>
-              <TableHead>{getTableHeader(isArchived)}</TableHead>
-              <TableBody>{getRows(isArchived)}</TableBody>
-            </Table>
-          </Box>
+        <Surface>
+          <Stack spacing={3}>
+            <SearchField value={query} onChange={setQuery} label={Locale.label("forms.formsPage.find", "Find a form")} data-testid="forms-find" />
+            {pills.length > 1 && (
+              <PillTabs
+                tabs
+                options={pills}
+                value={isArchived ? "archived" : "forms"}
+                onChange={(v) => { setSelectedTab(v); setSelectedFormId("notset"); }}
+                aria-label={Locale.label("forms.formsPage.forms")}
+              />
+            )}
+            <ResultsBar>
+              <Typography variant="body2" color="text.secondary" data-testid="forms-count">
+                {(isArchived ? archivedCount : formsCount) + " " + listLabel.toLowerCase()}
+              </Typography>
+              {query.trim() && <Button size="small" onClick={() => setQuery("")}>{Locale.label("common.clear", "Clear")}</Button>}
+            </ResultsBar>
+            <Box sx={tableScrollSx} role="region" aria-label={listLabel} tabIndex={0}>
+              <Table>
+                <TableHead>{getTableHeader(isArchived)}</TableHead>
+                <TableBody>{getRows(isArchived)}</TableBody>
+              </Table>
+            </Box>
+          </Stack>
+          {adding && (
+            <Box id="add-form-bar" data-testid="add-form-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
+              <FormEdit formId="" updatedFunction={handleUpdate} />
+            </Box>
+          )}
         </Surface>
-        {!isArchived && (!editing || adding) && (
-          <AddBar>
-            {adding
-              ? <FormEdit formId="" updatedFunction={handleUpdate} />
-              : <TextAction onClick={() => setSelectedFormId("")} data-testid="add-form-button">{Locale.label("forms.formsPage.addForm")}</TextAction>}
-          </AddBar>
-        )}
       </PageContainer>
       <Snackbar
         open={showDuplicated}

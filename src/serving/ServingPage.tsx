@@ -5,9 +5,10 @@ import { ContentProviderAuthManager } from "./components/ContentProviderAuthMana
 import { GroupAdd } from "../groups/components";
 import { ApiHelper, Locale, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
-import { AddBar, PageContainer, PageHeader, PillTabs, SearchField, TextAction, VerbRow } from "../components/ui";
+import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, SearchField } from "../components/ui";
 import UserContext from "../UserContext";
 import { Link } from "react-router-dom";
 
@@ -40,6 +41,11 @@ export const ServingPage = () => {
       return ApiHelper.get(`/groupMembers?groupIds=${groupIds}`, "MembershipApi");
     }
   });
+
+  const openAdd = () => {
+    setShowAdd(true);
+    setTimeout(() => document.getElementById("add-ministry-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
 
   const handleAddUpdated = () => {
     setShowAdd(false);
@@ -76,52 +82,65 @@ export const ServingPage = () => {
 
   const rawMinistryCount = (ministries.data || []).length;
 
-  const addBar = canEditGroups && (
-    <AddBar title={showAdd ? undefined : Locale.label("plans.plansPage.addMinistry")} data-testid="add-ministry-bar">
-      {showAdd
-        ? <GroupAdd updatedFunction={handleAddUpdated} tags="ministry" categoryName="Ministry" />
-        : (
-          <TextAction onClick={() => setShowAdd(true)} data-testid="add-ministry-button">
-            {Locale.label("plans.plansPage.addMinistry")}
-          </TextAction>
-        )}
-    </AddBar>
+  // Hidden while its form is open, like the inline add it replaced.
+  const addButton = canEditGroups && !showAdd && (
+    <HeaderPrimaryButton startIcon={<AddIcon />} onClick={openAdd} data-testid="add-ministry-button">
+      {Locale.label("plans.plansPage.addMinistry")}
+    </HeaderPrimaryButton>
+  );
+
+  const addForm = canEditGroups && showAdd && (
+    <Box id="add-ministry-bar" data-testid="add-ministry-bar" sx={{ mt: selectedMinistry ? 0 : 3 }}>
+      <GroupAdd updatedFunction={handleAddUpdated} tags="ministry" categoryName="Ministry" />
+    </Box>
   );
 
   if (rawMinistryCount === 0) {
     return (
       <>
-        <PageHeader title={Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.plansPage.subtitle")} />
+        <PageHeader title={Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.plansPage.subtitle")}>{addButton}</PageHeader>
         <PageContainer>
           <Typography color="text.secondary">{Locale.label("plans.ministryList.noMinMsg")}</Typography>
-          {addBar}
+          {addForm}
         </PageContainer>
       </>
     );
   }
 
-  const ministryPills = (
+  const ministryPicker = (
     <Stack spacing={2}>
       {(rawMinistryCount > FIND_THRESHOLD || find) && (
-        <Box sx={{ maxWidth: 360 }}>
+        <Box sx={{ maxWidth: 560 }}>
           <SearchField
             value={find}
             onChange={setFind}
-            size="small"
             label={Locale.label("plans.servingPage.findMinistry", "Find a ministry")}
             data-testid="find-ministry-input"
           />
         </Box>
       )}
-      {visibleGroups.length > 0 && (
-        <PillTabs
-          tabs
-          aria-label={Locale.label("plans.servingPage.ministries", "Ministries")}
-          value={selectedMinistryId || ""}
-          onChange={(id) => { setSelectedMinistryId(id); setShowAdd(false); }}
-          options={visibleGroups.map((g) => ({ value: g.id || "", label: g.name || "" }))}
-        />
-      )}
+      <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "flex-start", md: "center" }} justifyContent="space-between">
+        {visibleGroups.length > 0 && (
+          <PillTabs
+            tabs
+            aria-label={Locale.label("plans.servingPage.ministries", "Ministries")}
+            value={selectedMinistryId || ""}
+            onChange={(id) => { setSelectedMinistryId(id); setShowAdd(false); }}
+            options={visibleGroups.map((g) => ({ value: g.id || "", label: g.name || "" }))}
+          />
+        )}
+        {isAdmin && (
+          <PillTabs
+            aria-label={Locale.label("plans.servingPage.whichMinistries", "Which ministries")}
+            value={showAllMinistries ? "all" : "mine"}
+            onChange={(v) => setShowAllMinistries(v === "all")}
+            options={[
+              { value: "mine", label: Locale.label("plans.servingPage.mine", "Mine"), "data-testid": "ministries-mine-pill" },
+              { value: "all", label: Locale.label("plans.servingPage.all", "All"), "data-testid": "ministries-all-pill" }
+            ]}
+          />
+        )}
+      </Stack>
     </Stack>
   );
 
@@ -130,31 +149,16 @@ export const ServingPage = () => {
       <PageHeader
         title={selectedMinistry?.name || Locale.label("components.wrapper.serving")}
         subtitle={Locale.label("plans.ministryPage.subtitle")}
-        tabs={ministryPills}
-      />
+        tabs={ministryPicker}>
+        {selectedMinistry && canEditGroups && (
+          <HeaderTextButton component={Link} to={`/groups/${selectedMinistry.id}?tag=ministry`} data-testid="edit-ministry-link">
+            {Locale.label("plans.plansPage.editMinistry")}
+          </HeaderTextButton>
+        )}
+        {addButton}
+      </PageHeader>
 
       <PageContainer>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent="space-between" sx={{ mb: 3 }}>
-          <VerbRow>
-            {selectedMinistry && canEditGroups && (
-              <TextAction component={Link} to={`/groups/${selectedMinistry.id}?tag=ministry`} data-testid="edit-ministry-link">
-                {Locale.label("plans.plansPage.editMinistry")}
-              </TextAction>
-            )}
-          </VerbRow>
-          {isAdmin && (
-            <PillTabs
-              aria-label={Locale.label("plans.servingPage.whichMinistries", "Which ministries")}
-              value={showAllMinistries ? "all" : "mine"}
-              onChange={(v) => setShowAllMinistries(v === "all")}
-              options={[
-                { value: "mine", label: Locale.label("plans.servingPage.mine", "Mine"), "data-testid": "ministries-mine-pill" },
-                { value: "all", label: Locale.label("plans.servingPage.all", "All"), "data-testid": "ministries-all-pill" }
-              ]}
-            />
-          )}
-        </Stack>
-
         {!selectedMinistry && (
           <Typography color="text.secondary">
             {Locale.label("plans.servingPage.allHint", "Your ministries are hidden because you're not a member. Choose \"All\" above to see them.")}
@@ -174,7 +178,7 @@ export const ServingPage = () => {
             </Grid>
           </Grid>
         )}
-        {addBar}
+        {addForm}
       </PageContainer>
     </>
   );

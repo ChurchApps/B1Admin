@@ -55,7 +55,7 @@ export const ImpersonateTab = () => {
             onChange={setSearchText}
             onSearch={(term) => loadData(term)}
             data-testid="impersonate-search-input" />
-          <Button variant="contained" disableElevation onClick={() => loadData()} data-testid="impersonate-search-button" aria-label={Locale.label("serverAdmin.impersonateTab.searchAria")} sx={{ flexShrink: 0, minHeight: 56 }}>
+          <Button variant="contained" disableElevation onClick={() => loadData()} data-testid="impersonate-search-button" aria-label={Locale.label("serverAdmin.impersonateTab.searchAria")} sx={{ flexShrink: 0, minHeight: 52 }}>
             {Locale.label("common.search")}
           </Button>
         </Stack>

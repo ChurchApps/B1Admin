@@ -115,7 +115,7 @@ export const ChurchesTab = () => {
               onChange={setSearchText}
               onSearch={(term) => loadData(term)}
               data-testid="church-search-input" />
-            <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={() => loadData()} data-testid="search-churches-button" aria-label={Locale.label("serverAdmin.churchesTab.searchChurchesAria")} sx={{ flexShrink: 0, minHeight: 56 }}>
+            <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={() => loadData()} data-testid="search-churches-button" aria-label={Locale.label("serverAdmin.churchesTab.searchChurchesAria")} sx={{ flexShrink: 0, minHeight: 52 }}>
               {Locale.label("common.search")}
             </Button>
           </Stack>

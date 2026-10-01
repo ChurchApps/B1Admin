@@ -121,7 +121,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
       icon={<GroupsIcon />}
       count={associationsList.length}
       actions={canEdit && associationsList.length > 0 && availableGroups.length > 0 && (
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowPicker(true)}>
+        <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setShowPicker(true)}>
           {Locale.label("plans.planTypeGroups.addGroup")}
         </Button>
       )}>
@@ -140,7 +140,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
           title={Locale.label("plans.planTypeGroups.noGroups")}
           description={Locale.label("plans.planTypeGroups.noGroupsDescription")}
           action={canEdit && availableGroups.length > 0 && (
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowPicker(true)}>
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setShowPicker(true)}>
               {Locale.label("plans.planTypeGroups.addGroup")}
             </Button>
           )}

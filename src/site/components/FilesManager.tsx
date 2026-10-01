@@ -1,9 +1,9 @@
 import { useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
+import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { InsertDriveFile as FileIcon } from "@mui/icons-material";
+import { CloudUpload as UploadIcon, InsertDriveFile as FileIcon } from "@mui/icons-material";
 import { AddBar, Surface, TextAction, VerbRow, tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { CustomFileUpload } from "./CustomFileUpload";
@@ -29,6 +29,13 @@ export function FilesManager() {
   const handleFileSaved = () => {
     setPendingFileSave(false);
     filesQuery.refetch();
+  };
+
+  const canUpload = unlimited || usedSpace < quotaLimit;
+
+  const openUpload = () => {
+    document.querySelector("[data-testid='file-upload-inputbox']")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("fileUpload")?.click();
   };
 
   const handleCopyLink = async (file: FileInterface) => {
@@ -120,6 +127,11 @@ export function FilesManager() {
   return (
     <Box>
       {ConfirmDialogElement}
+      {canUpload && (
+        <Stack direction="row" justifyContent="flex-end" sx={{ mb: 3 }}>
+          <Button variant="contained" startIcon={<UploadIcon />} onClick={openUpload} data-testid="upload-file-button">{Locale.label("site.files.uploadFiles")}</Button>
+        </Stack>
+      )}
       <Surface disablePadding>
         <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.filesManager.files")} tabIndex={0}>
           <Table sx={{ minWidth: 560 }}>
@@ -143,7 +155,7 @@ export function FilesManager() {
             {Locale.label("site.files.storageInfo")}
           </Typography>
         )}
-        {(unlimited || usedSpace < quotaLimit) && (
+        {canUpload && (
           <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} errorCallback={() => setPendingFileSave(false)} onFileSelected={() => setPendingFileSave(true)} />
         )}
       </AddBar>

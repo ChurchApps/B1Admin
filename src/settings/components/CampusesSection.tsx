@@ -4,7 +4,7 @@ import { Locale, Loading } from "@churchapps/apphelper";
 import { Box, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Business as BusinessIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { AddBar, SectionListCard, TextAction, clickableRowSx, tableScrollSx } from "../../components/ui";
+import { SectionListCard, clickableRowSx, tableScrollSx } from "../../components/ui";
 import { CampusEdit } from "./CampusEdit";
 
 // Campus management (list + inline editor). Shared by the Settings landing's
@@ -59,6 +59,9 @@ export const CampusesSection: React.FC = () => {
           icon={<BusinessIcon />}
           title={Locale.label("settings.campuses.campuses")}
           count={data.length}
+          onAdd={() => setEditCampus({})}
+          addLabel={Locale.label("settings.campuses.addCampus")}
+          addButtonTestId="add-campus-button"
           empty={{ icon: <BusinessIcon />, title: Locale.label("settings.campuses.none") }}>
           <Box sx={tableScrollSx} role="region" aria-label={Locale.label("settings.campuses.campuses")} tabIndex={0}>
             <Table>
@@ -73,11 +76,6 @@ export const CampusesSection: React.FC = () => {
             </Table>
           </Box>
         </SectionListCard>
-        <AddBar>
-          <Box component="span" data-testid={data.length === 0 ? "add-campus-button-empty" : undefined}>
-            <TextAction onClick={() => setEditCampus({})} data-testid="add-campus-button">{Locale.label("settings.campuses.addCampus")}</TextAction>
-          </Box>
-        </AddBar>
       </Grid>
       {selectedCampus && (
         <Grid size={{ xs: 12, md: 5 }}>

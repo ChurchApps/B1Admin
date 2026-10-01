@@ -6,11 +6,11 @@ import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Stack } from "@mui/material";
-import { VolunteerActivism as DonationIcon } from "@mui/icons-material";
-import { PageHeader, PageContainer, Surface, EmptyState, SortableTableHead, AddBar, TextAction, VerbRow, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
+import { Add as AddIcon, ErrorOutline as FailedIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
+import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, ResultsBar, SortableTableHead, TextAction, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
-import { CsvVerb, Lede } from "./components/GivingParts";
+import { Lede } from "./components/GivingParts";
 
 type BatchRow = DonationBatchInterface & { isConverted?: boolean };
 
@@ -32,6 +32,11 @@ export const DonationBatchesPage = () => {
   const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<BatchRow>(batches.data || [], "", "asc", batchComparators);
 
   const refetchBatches = batches.refetch;
+  const openBatch = (id: string) => {
+    setEditBatchId(id);
+    setTimeout(() => document.getElementById("edit-batch-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
+
   const batchUpdated = React.useCallback(() => {
     setEditBatchId("notset");
     refetchBatches();
@@ -82,7 +87,7 @@ export const DonationBatchesPage = () => {
             <Box component="span" data-testid="batch-row-total" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}</Box>
           </TableCell>
           <TableCell align="right">
-            {canEdit && <TextAction small data-cy={`edit-${i}`} onClick={() => setEditBatchId(b.id || "")}>{Locale.label("common.edit")}</TextAction>}
+            {canEdit && <TextAction small data-cy={`edit-${i}`} onClick={() => openBatch(b.id || "")}>{Locale.label("common.edit")}</TextAction>}
           </TableCell>
         </TableRow>
       );
@@ -97,53 +102,57 @@ export const DonationBatchesPage = () => {
 
   return (
     <>
-      <PageHeader title={Locale.label("donations.donations.batches")} subtitle={Locale.label("donations.donationBatchesPage.subtitle")} />
+      <PageHeader title={Locale.label("donations.donations.batches")} subtitle={Locale.label("donations.donationBatchesPage.subtitle")}>
+        {canEdit && <HeaderTextButton component={Link} to="/donations/stripe-import">{Locale.label("donations.donationBatchesPage.stripeImportLink")}</HeaderTextButton>}
+        {(eventLogs.data?.length || 0) > 0 && (
+          <HeaderTextButton startIcon={<FailedIcon />} onClick={() => setEventsOpen(!eventsOpen)} data-testid="failed-events-verb">
+            {Locale.label("donations.donationBatchesPage.failedEvents", "Failed events ({count})").replace("{count}", unresolvedEvents.toString())}
+          </HeaderTextButton>
+        )}
+        {yearBatches.length > 0 && <ExportButton data={yearBatches} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
+        {canEdit && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openBatch("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</HeaderPrimaryButton>}
+      </PageHeader>
 
       <PageContainer>
-        {editBatch && <Box sx={{ mb: 3 }}><BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} /></Box>}
-
         <Surface>
-          <Stack spacing={2} sx={{ mb: 2 }}>
-            {!batches.isLoading && <Lede data-testid="batches-lede">{lede}</Lede>}
+          <Stack spacing={3}>
             <YearPills years={years} value={year} onChange={setYear} allLabel={Locale.label("donations.donationBatchesPage.allYears", "All")} />
+            {!batches.isLoading && (
+              <ResultsBar>
+                <Lede data-testid="batches-lede">{lede}</Lede>
+              </ResultsBar>
+            )}
+
+            {batches.isLoading ? <Loading /> : (
+              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.donations.batches")} tabIndex={0}>
+                <Table sx={{ minWidth: 650 }}>
+                  {yearBatches.length > 0 && (
+                    <SortableTableHead
+                      columns={[
+                        { key: "name", label: Locale.label("common.name"), sortable: true },
+                        { key: "batchDate", label: Locale.label("donations.donationsPage.date"), sortable: true },
+                        { key: "donationCount", label: Locale.label("donations.donationsPage.don"), align: "right" },
+                        { key: "totalAmount", label: Locale.label("donations.donationsPage.total"), align: "right" },
+                        { key: "edit", label: "", align: "right" }
+                      ]}
+                      sortBy={sortBy}
+                      sortDirection={sortDirection}
+                      onSort={handleSort}
+                    />
+                  )}
+                  <TableBody>{getRows()}</TableBody>
+                </Table>
+              </Box>
+            )}
           </Stack>
 
-          {batches.isLoading ? <Loading /> : (
-            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.donations.batches")} tabIndex={0}>
-              <Table sx={{ minWidth: 650 }}>
-                {yearBatches.length > 0 && (
-                  <SortableTableHead
-                    columns={[
-                      { key: "name", label: Locale.label("common.name"), sortable: true },
-                      { key: "batchDate", label: Locale.label("donations.donationsPage.date"), sortable: true },
-                      { key: "donationCount", label: Locale.label("donations.donationsPage.don"), align: "right" },
-                      { key: "totalAmount", label: Locale.label("donations.donationsPage.total"), align: "right" },
-                      { key: "edit", label: "", align: "right" }
-                    ]}
-                    sortBy={sortBy}
-                    sortDirection={sortDirection}
-                    onSort={handleSort}
-                  />
-                )}
-                <TableBody>{getRows()}</TableBody>
-              </Table>
+          {eventsOpen && <Box sx={{ mt: 3 }}><DonationEvents /></Box>}
+
+          {editBatch && (
+            <Box id="edit-batch-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
+              <BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} />
             </Box>
           )}
-
-          <AddBar>
-            <VerbRow>
-              {canEdit && <TextAction onClick={() => setEditBatchId("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</TextAction>}
-              {yearBatches.length > 0 && <CsvVerb data={yearBatches} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
-              {(eventLogs.data?.length || 0) > 0 && (
-                <TextAction onClick={() => setEventsOpen(!eventsOpen)} data-testid="failed-events-verb">
-                  {Locale.label("donations.donationBatchesPage.failedEvents", "Failed events ({count})").replace("{count}", unresolvedEvents.toString())}
-                </TextAction>
-              )}
-              {canEdit && <TextAction to="/donations/stripe-import" component={Link}>{Locale.label("donations.donationBatchesPage.stripeImportLink")}</TextAction>}
-            </VerbRow>
-          </AddBar>
-
-          {eventsOpen && <Box sx={{ mt: 3 }}><DonationEvents /></Box>}
         </Surface>
       </PageContainer>
     </>

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, Typography } from "@mui/material";
-import { Email as EmailIcon } from "@mui/icons-material";
+import { Box, Button, Table, TableHead, TableRow, TableCell, TableBody, Typography } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, UserHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
-import { AddBar, EmptyState, PageContainer, Surface, StatusBadge, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { PageContainer, Surface, StatusBadge, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
@@ -54,7 +54,11 @@ export const EmailTemplatesPage: React.FC = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <SettingsHeader backTo="/settings" title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")} />
+      <SettingsHeader backTo="/settings" title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
+        {editTemplate === null && (
+          <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew} data-testid="new-email-template-button">{Locale.label("settings.emailTemplatesPage.newTemplate")}</Button>
+        )}
+      </SettingsHeader>
 
       <PageContainer py={3}>
         {editTemplate !== null && (
@@ -64,10 +68,10 @@ export const EmailTemplatesPage: React.FC = () => {
         )}
 
         {templates.length === 0 ? (
-          <EmptyState
-            icon={<EmailIcon />}
-            title={Locale.label("settings.emailTemplatesPage.emptyTitle")}
-            description={Locale.label("settings.emailTemplatesPage.emptyDescription")} />
+          <Box>
+            <Typography color="text.secondary">{Locale.label("settings.emailTemplatesPage.emptyTitle")}</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("settings.emailTemplatesPage.emptyDescription")}</Typography>
+          </Box>
         ) : (
           <Surface disablePadding>
             <Box sx={tableScrollSx} role="region" aria-label={Locale.label("settings.emailTemplatesPage.title")} tabIndex={0}>
@@ -100,12 +104,6 @@ export const EmailTemplatesPage: React.FC = () => {
               </Table>
             </Box>
           </Surface>
-        )}
-
-        {editTemplate === null && (
-          <AddBar>
-            <TextAction onClick={handleNew} data-testid="new-email-template-button">{Locale.label("settings.emailTemplatesPage.newTemplate")}</TextAction>
-          </AddBar>
         )}
       </PageContainer>
     </>

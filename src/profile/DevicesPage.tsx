@@ -1,12 +1,12 @@
-import { TableHead, Table, TableCell, TableRow, TableBody, Typography, Box } from "@mui/material";
-import { Devices as DevicesIcon } from "@mui/icons-material";
+import { TableHead, Table, TableCell, TableRow, TableBody, Typography, Box, Button } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ErrorMessages, DateHelper, Locale, UserHelper } from "@churchapps/apphelper";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
-import { AddBar, BackVerb, EmptyState, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 
 export interface DeviceInterface {
   id: string;
@@ -49,7 +49,11 @@ export const DevicesPage = () => {
   const list = (
     <Box id="mainContent">
       <ErrorMessages errors={errors} />
-      <RecordHeading label={devicesLabel} />
+      <RecordHeading label={devicesLabel}>
+        <Box sx={{ ml: "auto !important" }}>
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowAdd(true)} data-testid="add-device-button">{Locale.label("profile.devices.addScreen")}</Button>
+        </Box>
+      </RecordHeading>
       <Box sx={tableScrollSx} role="region" aria-label={devicesLabel} tabIndex={0}>
         <Table>
           <TableHead>
@@ -63,13 +67,10 @@ export const DevicesPage = () => {
           <TableBody>
             {(devices.data || []).length === 0 && (
               <TableRow>
-                <EmptyState
-                  variant="table"
-                  colSpan={4}
-                  icon={<DevicesIcon />}
-                  title={Locale.label("profile.devices.emptyTitle")}
-                  description={Locale.label("profile.devices.emptyDescription")}
-                />
+                <TableCell colSpan={4}>
+                  <Typography color="text.secondary">{Locale.label("profile.devices.emptyTitle")}</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("profile.devices.emptyDescription")}</Typography>
+                </TableCell>
               </TableRow>
             )}
             {(devices.data || []).map((device) => (
@@ -85,9 +86,6 @@ export const DevicesPage = () => {
           </TableBody>
         </Table>
       </Box>
-      <AddBar>
-        <TextAction onClick={() => setShowAdd(true)} data-testid="add-device-button">{Locale.label("profile.devices.addScreen")}</TextAction>
-      </AddBar>
     </Box>
   );
 

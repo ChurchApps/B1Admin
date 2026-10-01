@@ -4,7 +4,7 @@ import { Locale, Loading } from "@churchapps/apphelper";
 import { Box, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { ListAlt as ListAltIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { AddBar, SectionListCard, TextAction, clickableRowSx, tableScrollSx } from "../../components/ui";
+import { SectionListCard, clickableRowSx, tableScrollSx } from "../../components/ui";
 import { CustomFieldEdit } from "./CustomFieldEdit";
 
 // Custom field definition management (list + inline editor). Shared by the Settings
@@ -52,6 +52,9 @@ export const CustomFieldsSection: React.FC = () => {
           icon={<ListAltIcon />}
           title={Locale.label("settings.customFields.customFields")}
           count={data.length}
+          onAdd={() => setEditField({})}
+          addLabel={Locale.label("settings.customFields.addField")}
+          addButtonTestId="add-custom-field-button"
           empty={{ icon: <ListAltIcon />, title: Locale.label("settings.customFields.none") }}>
           <Box sx={tableScrollSx} role="region" aria-label={Locale.label("settings.customFields.customFields")} tabIndex={0}>
             <Table>
@@ -65,11 +68,6 @@ export const CustomFieldsSection: React.FC = () => {
             </Table>
           </Box>
         </SectionListCard>
-        <AddBar>
-          <Box component="span" data-testid={data.length === 0 ? "add-custom-field-button-empty" : undefined}>
-            <TextAction onClick={() => setEditField({})} data-testid="add-custom-field-button">{Locale.label("settings.customFields.addField")}</TextAction>
-          </Box>
-        </AddBar>
       </Grid>
       {editField && (
         <Grid size={{ xs: 12, md: 5 }}>

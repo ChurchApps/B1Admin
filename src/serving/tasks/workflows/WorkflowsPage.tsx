@@ -1,7 +1,7 @@
-import { Typography, Box, Button, Link as MuiLink, Menu, MenuItem, Stack } from "@mui/material";
+import { Typography, Box, Link as MuiLink, Menu, MenuItem, Stack } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
-import { AddBar, EmptyState, PageContainer, PageHeader, PillTabs, StatusBadge, Surface, TextAction, VerbRow } from "../../../components/ui";
+import { EmptyState, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, ResultsBar, StatusBadge, Surface, TextAction } from "../../../components/ui";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +23,12 @@ export const WorkflowsPage = () => {
   const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [], enabled: canView });
   const categories = useQuery<WorkflowCategoryInterface[]>({ queryKey: ["/workflowCategories", "DoingApi"], placeholderData: [], enabled: canView });
   const templates = useQuery<TemplateInterface[]>({ queryKey: ["/workflows/templates", "DoingApi"], placeholderData: [], enabled: canManage });
+
+  const startBlank = () => {
+    setAddAnchor(null);
+    setShowAdd(true);
+    setTimeout(() => document.getElementById("add-workflow-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
 
   const handleAdded = (workflow: WorkflowInterface) => {
     setShowAdd(false);
@@ -77,42 +83,48 @@ export const WorkflowsPage = () => {
 
   return (
     <>
-      <PageHeader title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")} />
+      <PageHeader title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")}>
+        <HeaderTextButton component={RouterLink} to="/serving/tasks" data-testid="workflows-my-cards-link">{Locale.label("tasks.myCards.title")}</HeaderTextButton>
+        {canManage && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)}>
+            {Locale.label("tasks.workflowsPage.addWorkflow")}
+          </HeaderPrimaryButton>
+        )}
+      </PageHeader>
       <PageContainer>
         <Surface sx={{ maxWidth: 880 }}>
-          <VerbRow sx={{ mb: 2 }}>
-            <TextAction to="/serving/tasks" component={RouterLink} data-testid="workflows-my-cards-link">{Locale.label("tasks.myCards.title")}</TextAction>
-          </VerbRow>
-          {usedCategories.length > 0 && (
-            <PillTabs
-              aria-label={Locale.label("tasks.workflowsPage.categories", "Workflow categories")}
-              value={category}
-              onChange={setCategory}
-              sx={{ mb: 2 }}
-              options={[
-                { value: "all", label: Locale.label("common.all", "All"), "data-testid": "workflow-category-all" },
-                ...usedCategories.map((c) => ({ value: c.id || "", label: c.name, "data-testid": "workflow-category-" + c.id }))
-              ]}
-            />
-          )}
-          <Box data-testid="workflow-list">{getList()}</Box>
+          <Stack spacing={3}>
+            {usedCategories.length > 0 && (
+              <PillTabs
+                aria-label={Locale.label("tasks.workflowsPage.categories", "Workflow categories")}
+                value={category}
+                onChange={setCategory}
+                options={[
+                  { value: "all", label: Locale.label("common.all", "All"), "data-testid": "workflow-category-all" },
+                  ...usedCategories.map((c) => ({ value: c.id || "", label: c.name, "data-testid": "workflow-category-" + c.id }))
+                ]}
+              />
+            )}
+            {!workflows.isLoading && (
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("tasks.workflowsPage.workflowCount", "{count} workflows").replace("{count}", list.length.toString())}
+                </Typography>
+              </ResultsBar>
+            )}
+            <Box data-testid="workflow-list">{getList()}</Box>
+          </Stack>
 
-          {canManage && (
-            <AddBar>
-              {showAdd
-                ? <WorkflowEdit workflow={{ name: "", active: true }} categories={categories.data} onCancel={() => setShowAdd(false)} onSave={handleAdded} onCategoriesChanged={() => categories.refetch()} />
-                : (
-                  <Button startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)}>
-                    {Locale.label("tasks.workflowsPage.addWorkflow")}
-                  </Button>
-                )}
-            </AddBar>
+          {canManage && showAdd && (
+            <Box id="add-workflow-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
+              <WorkflowEdit workflow={{ name: "", active: true }} categories={categories.data} onCancel={() => setShowAdd(false)} onSave={handleAdded} onCategoriesChanged={() => categories.refetch()} />
+            </Box>
           )}
         </Surface>
       </PageContainer>
 
       <Menu anchorEl={addAnchor} open={Boolean(addAnchor)} onClose={() => setAddAnchor(null)}>
-        <MenuItem data-testid="add-workflow-blank" onClick={() => { setAddAnchor(null); setShowAdd(true); }}>{Locale.label("tasks.workflowsPage.blankWorkflow")}</MenuItem>
+        <MenuItem data-testid="add-workflow-blank" onClick={startBlank}>{Locale.label("tasks.workflowsPage.blankWorkflow")}</MenuItem>
         {(templates.data || []).map((t) => (
           <MenuItem key={t.key} data-testid={"add-workflow-template-" + t.key} onClick={() => createFromTemplate(t.key)}>{t.name}</MenuItem>
         ))}

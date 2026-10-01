@@ -3,12 +3,11 @@ import { CurrencyHelper, DateHelper, Loading, Locale, UserHelper, Permissions } 
 import { type FundInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { Box, LinearProgress, Link as MuiLink, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Flag as CampaignIcon } from "@mui/icons-material";
+import { Add as AddIcon, Flag as CampaignIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface } from "../helpers";
 import { CampaignEdit } from "./components";
-import { PageHeader, PageContainer, Surface, AddBar, EmptyState, SortableTableHead, TextAction, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
-import { Lede } from "./components/GivingParts";
+import { PageHeader, PageContainer, Surface, EmptyState, HeaderPrimaryButton, ResultsBar, SortableTableHead, TextAction, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
 
 export const CampaignsPage = () => {
   const [editCampaignId, setEditCampaignId] = React.useState("notset");
@@ -22,6 +21,11 @@ export const CampaignsPage = () => {
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => setCurrency(result));
   }, []);
+
+  const openCampaign = (id: string) => {
+    setEditCampaignId(id);
+    setTimeout(() => document.getElementById("edit-campaign-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
 
   const campaignUpdated = () => {
     setEditCampaignId("notset");
@@ -103,7 +107,7 @@ export const CampaignsPage = () => {
             )}
           </TableCell>
           <TableCell align="right">
-            {canEdit && <TextAction small onClick={() => setEditCampaignId(c.id || "")}>{Locale.label("common.edit")}</TextAction>}
+            {canEdit && <TextAction small onClick={() => openCampaign(c.id || "")}>{Locale.label("common.edit")}</TextAction>}
           </TableCell>
         </TableRow>
       );
@@ -147,20 +151,26 @@ export const CampaignsPage = () => {
     Locale.label("donations.campaignsPage.givenAmount", "{amount} given").replace("{amount}", CurrencyHelper.formatCurrencyWithLocale(stats.totalGiven, currency, 0))
   ].join(" · ");
 
+  const canAdd = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+
   return (
     <>
-      <PageHeader title={Locale.label("donations.campaignsPage.campaigns")} subtitle={Locale.label("donations.campaignsPage.subtitle")} />
+      <PageHeader title={Locale.label("donations.campaignsPage.campaigns")} subtitle={Locale.label("donations.campaignsPage.subtitle")}>
+        {canAdd && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openCampaign("")} data-testid="add-campaign-button">{Locale.label("donations.campaignsPage.addCampaign")}</HeaderPrimaryButton>}
+      </PageHeader>
 
       <PageContainer>
-        {editCampaignId !== "notset" && <Box sx={{ mb: 3 }}>{getEditContent()}</Box>}
-
         <Surface>
-          {!progress.isLoading && stats.totalCampaigns > 0 && <Lede sx={{ mb: 2 }}>{lede}</Lede>}
-          {getTable()}
-          {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-            <AddBar>
-              <TextAction onClick={() => setEditCampaignId("")} data-testid="add-campaign-button">{Locale.label("donations.campaignsPage.addCampaign")}</TextAction>
-            </AddBar>
+          <Stack spacing={3}>
+            {!progress.isLoading && stats.totalCampaigns > 0 && (
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary" sx={{ fontVariantNumeric: "tabular-nums" }}>{lede}</Typography>
+              </ResultsBar>
+            )}
+            {getTable()}
+          </Stack>
+          {editCampaignId !== "notset" && (
+            <Box id="edit-campaign-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>{getEditContent()}</Box>
           )}
         </Surface>
       </PageContainer>

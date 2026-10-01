@@ -1,7 +1,7 @@
 import React, { useCallback, memo } from "react";
-import { Box, Typography, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
-import { AddBar, PillTabs, Surface, TextAction, VerbRow, srOnlySx, tableScrollSx } from "../../components/ui";
-import { CalendarMonth as CalendarIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { Box, Button, Typography, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { PillTabs, Surface, TextAction, VerbRow, srOnlySx, tableScrollSx } from "../../components/ui";
+import { Add as AddIcon, CalendarMonth as CalendarIcon, ContentCopyOutlined as TemplatesIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface, hasPlansEditAccess } from "../../helpers";
@@ -13,6 +13,8 @@ import { BulkLessonSchedule } from "./BulkLessonSchedule";
 import { ApplyYearPlan } from "./ApplyYearPlan";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
+
+const toolLinkSx = { display: "inline-flex", alignItems: "center", gap: 0.5, "& .MuiSvgIcon-root": { fontSize: 18 } };
 
 interface Props {
   ministry: GroupInterface;
@@ -160,9 +162,13 @@ export const PlanList = memo((props: Props) => {
   const scheduleLessonVerb = (
     <Box component="span" ref={lessonAnchorRef}>
       <TextAction onClick={() => setLessonMenuAnchor(lessonAnchorRef.current)} data-testid="schedule-lesson-button">
-        {Locale.label("plans.planList.scheduleLesson", "Schedule Lesson")}
+        <Box component="span" sx={toolLinkSx}><MenuBookIcon />{Locale.label("plans.planList.scheduleLesson", "Schedule Lesson")}</Box>
       </TextAction>
     </Box>
+  );
+
+  const addPlanButton = (label: string) => (
+    <Button variant="contained" startIcon={<AddIcon />} onClick={addPlan} data-testid="add-plan-button" sx={{ flexShrink: 0 }}>{label}</Button>
   );
 
   const hasPastPlans = !showPast && plans.length === 0 && allPlans.length > 0;
@@ -170,16 +176,12 @@ export const PlanList = memo((props: Props) => {
   if (plans.length === 0 && !hasPastPlans) {
     return (
       <Surface>
-        <Typography variant="h3" component="h2" sx={{ mb: 1 }}>{Locale.label("plans.planList.plans")}</Typography>
+        <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" useFlexGap flexWrap="wrap" sx={{ mb: 1 }}>
+          <Typography variant="h3" component="h2">{Locale.label("plans.planList.plans")}</Typography>
+          {canEdit && addPlanButton(Locale.label("plans.planList.createPlan"))}
+        </Stack>
         <Typography color="text.secondary">{Locale.label("plans.planList.noPlans")}</Typography>
-        {canEdit && (
-          <AddBar sx={{ mt: 2, pt: 2 }}>
-            <VerbRow sx={{ typography: "body1" }}>
-              <TextAction onClick={addPlan} data-testid="add-plan-button">{Locale.label("plans.planList.createPlan")}</TextAction>
-              {scheduleLessonVerb}
-            </VerbRow>
-          </AddBar>
-        )}
+        {canEdit && <VerbRow sx={{ mt: 1 }}>{scheduleLessonVerb}</VerbRow>}
         {lessonMenu}
       </Surface>
     );
@@ -190,10 +192,15 @@ export const PlanList = memo((props: Props) => {
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent="space-between" sx={{ mb: 2 }}>
         <Typography variant="h3" component="h2">{Locale.label("plans.planList.plans")}</Typography>
         {canEdit && (
-          <VerbRow>
-            {scheduleLessonVerb}
-            <TextAction onClick={() => setShowTemplates(true)} data-testid="plan-templates-button">{Locale.label("plans.templates.button", "Templates")}</TextAction>
-          </VerbRow>
+          <Stack direction="row" spacing={3} alignItems="center" useFlexGap flexWrap="wrap">
+            <VerbRow plain>
+              {scheduleLessonVerb}
+              <TextAction onClick={() => setShowTemplates(true)} data-testid="plan-templates-button">
+                <Box component="span" sx={toolLinkSx}><TemplatesIcon />{Locale.label("plans.templates.button", "Templates")}</Box>
+              </TextAction>
+            </VerbRow>
+            {addPlanButton(Locale.label("plans.planList.newPlan"))}
+          </Stack>
         )}
       </Stack>
       <PillTabs
@@ -241,12 +248,6 @@ export const PlanList = memo((props: Props) => {
             </TableBody>
           </Table>
         </Box>
-      )}
-
-      {canEdit && (
-        <AddBar sx={{ mt: 2, pt: 2 }}>
-          <TextAction onClick={addPlan} data-testid="add-plan-button">{Locale.label("plans.planList.newPlan")}</TextAction>
-        </AddBar>
       )}
 
       {lessonMenu}

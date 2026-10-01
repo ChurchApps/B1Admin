@@ -1,12 +1,12 @@
 import React, { useState, useCallback, memo } from "react";
 import { ApiHelper, UserHelper, Loading, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Box, Link as MuiLink, Table, TableBody, TableCell, TableRow, TableHead, Typography } from "@mui/material";
-import { People as PeopleIcon } from "@mui/icons-material";
+import { Box, Button, Link as MuiLink, Table, TableBody, TableCell, TableRow, TableHead, Typography } from "@mui/material";
+import { Add as AddIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { GroupAdd } from "../../groups/components";
-import { AddBar, CardWithHeader, TextAction, numericCellSx, tableScrollSx } from "../../components/ui";
+import { CardWithHeader, numericCellSx, tableScrollSx } from "../../components/ui";
 
 interface Props {
   ministry: GroupInterface;
@@ -45,7 +45,15 @@ export const TeamList = memo((props: Props) => {
   const canAdd = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
 
   return (
-    <CardWithHeader title={Locale.label("plans.teamList.teams")} icon={<PeopleIcon />} count={groups.length}>
+    <CardWithHeader
+      title={Locale.label("plans.teamList.teams")}
+      icon={<PeopleIcon />}
+      count={groups.length}
+      actions={canAdd && (
+        <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClick} data-testid="add-team-button" sx={{ flexShrink: 0 }}>
+          {Locale.label(groups.length === 0 ? "plans.teamList.createTeam" : "plans.teamList.newTeam")}
+        </Button>
+      )}>
       {groups.length === 0 ? (
         <Typography color="text.secondary">{Locale.label("plans.teamList.noTeam")}</Typography>
       ) : (
@@ -71,13 +79,6 @@ export const TeamList = memo((props: Props) => {
             </TableBody>
           </Table>
         </Box>
-      )}
-      {canAdd && (
-        <AddBar sx={{ mt: 2, pt: 2 }}>
-          <TextAction onClick={handleAddClick} data-testid="add-team-button">
-            {Locale.label(groups.length === 0 ? "plans.teamList.createTeam" : "plans.teamList.newTeam")}
-          </TextAction>
-        </AddBar>
       )}
     </CardWithHeader>
   );

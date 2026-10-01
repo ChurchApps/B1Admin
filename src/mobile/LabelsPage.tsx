@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
-import { Box, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
-import { Label as LabelIcon } from "@mui/icons-material";
-import { EmptyState } from "../components/ui/EmptyState";
-import { AddBar, StatusBadge, Surface, TextAction, VerbRow } from "../components/ui";
+import { Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+import { HeaderPrimaryButton, StatusBadge, Surface, TextAction, VerbRow } from "../components/ui";
 import { useConfirmDelete, useRequirePermission } from "../hooks";
 import { LabelEditor, newBlockId, type LabelTemplateInterface } from "./components/LabelEditor";
 import { MobileChrome } from "./components/MobileChrome";
@@ -39,8 +38,6 @@ const starterPickup = (): LabelTemplateInterface => ({
 export const LabelsPage = () => {
   const [editing, setEditing] = useState<LabelTemplateInterface | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const addRef = useRef<HTMLElement>(null);
-  const headerAddRef = useRef<HTMLElement>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const templatesQuery = useQuery<LabelTemplateInterface[]>({ queryKey: ["/labeltemplates", "AttendanceApi"], placeholderData: [] });
@@ -73,7 +70,7 @@ export const LabelsPage = () => {
       <MobileChrome
         title={Locale.label("attendance.labels.title")}
         subtitle={Locale.label("attendance.labels.subtitle")}
-        verbs={!editing && <Box ref={headerAddRef} component="span"><TextAction onClick={() => setMenuAnchor(headerAddRef.current)} data-testid="add-label">{Locale.label("common.add")}</TextAction></Box>}>
+        actions={!editing && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={(e) => setMenuAnchor(e.currentTarget)} data-testid="add-label">{Locale.label("attendance.labels.addLabel", "Add label")}</HeaderPrimaryButton>}>
         <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
           <MenuItem onClick={() => startCreate(starterNametag())} data-testid="add-nametag-starter">{Locale.label("attendance.labels.starterNametag")}</MenuItem>
           <MenuItem onClick={() => startCreate(starterPickup())} data-testid="add-pickup-starter">{Locale.label("attendance.labels.starterPickup")}</MenuItem>
@@ -84,7 +81,12 @@ export const LabelsPage = () => {
           : templatesQuery.isLoading
             ? <Loading />
             : templates.length === 0
-              ? <EmptyState icon={<LabelIcon />} title={Locale.label("attendance.labels.noTemplates")} description={Locale.label("attendance.labels.noTemplatesDesc")} />
+              ? (
+                <Stack spacing={0.5}>
+                  <Typography color="text.secondary">{Locale.label("attendance.labels.noTemplates")}</Typography>
+                  <Typography variant="body2" color="text.secondary">{Locale.label("attendance.labels.noTemplatesDesc")}</Typography>
+                </Stack>
+              )
               : (
                 <Surface disablePadding sx={{ overflowX: "auto" }}>
                   <Table data-testid="labels-table">
@@ -117,13 +119,6 @@ export const LabelsPage = () => {
                   </Table>
                 </Surface>
               )}
-        {!editing && (
-          <AddBar>
-            <Box ref={addRef} component="span">
-              <TextAction onClick={() => setMenuAnchor(addRef.current)} data-testid="add-label-bottom">{Locale.label("common.add")}</TextAction>
-            </Box>
-          </AddBar>
-        )}
       </MobileChrome>
     </>
   );

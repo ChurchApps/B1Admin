@@ -61,7 +61,7 @@ export const UsersTab = () => {
             onChange={setSearchText}
             onSearch={(term) => loadData(term)}
             data-testid="admin-users-search-input" />
-          <Button variant="contained" disableElevation onClick={() => loadData()} data-testid="admin-users-search-button" aria-label={Locale.label("serverAdmin.usersTab.searchAria")} sx={{ flexShrink: 0, minHeight: 56 }}>
+          <Button variant="contained" disableElevation onClick={() => loadData()} data-testid="admin-users-search-button" aria-label={Locale.label("serverAdmin.usersTab.searchAria")} sx={{ flexShrink: 0, minHeight: 52 }}>
             {Locale.label("common.search")}
           </Button>
         </Stack>

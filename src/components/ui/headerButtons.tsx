@@ -48,3 +48,8 @@ export const HeaderSecondaryButton: React.FC<ButtonProps> = ({ sx, ...props }) =
     />
   );
 };
+
+// Low-emphasis page-header verb (Demographics, Print, Health…); the primary action stays a HeaderPrimaryButton.
+export const HeaderTextButton: React.FC<ButtonProps> = ({ sx, ...props }) => (
+  <Button variant="text" {...props} sx={[{ fontWeight: 600, px: 1, minWidth: 0 }, ...(Array.isArray(sx) ? sx : [sx])]} />
+);

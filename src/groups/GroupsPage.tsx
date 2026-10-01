@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import { GroupAdd } from "./components";
-import { ApiHelper, UserHelper, Loading, Locale, ExportLink } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Link as RouterLink } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow, Box, Button, Stack, Typography, Link, Menu, MenuItem } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { Add as AddIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { AddBar, FilterChip, PageContainer, PageHeader, SearchField, SortableTableHead, Surface, TextAction, VerbRow, filterChipSx, numericCellSx, tableScrollSx } from "../components/ui";
+import { ExportButton, FilterChip, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, SearchField, SortableTableHead, Surface, TextAction, filterChipSx, numericCellSx, tableScrollSx } from "../components/ui";
 import { useConfirmDelete, useSortableData } from "../hooks";
 
 const EXPORT_LABEL_KEYS = [
@@ -25,14 +25,6 @@ const formatHeader = (key: string): string => {
     .trim();
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
-
-// ExportLink renders a Button inside an <a download>; flatten it to a text-link verb.
-const exportVerbSx = {
-  display: "inline-flex",
-  "& a": { textDecoration: "none" },
-  "& .MuiButton-root": { p: 0, minWidth: 0, minHeight: 0, typography: "body1", fontWeight: 600, textTransform: "none", color: "primary.main", bgcolor: "transparent", border: 0, "&:hover": { bgcolor: "transparent", textDecoration: "underline" } },
-  "& .MuiIcon-root, & .MuiButton-startIcon": { display: "none" }
-} as const;
 
 const GroupsPage = () => {
   const [showAdd, setShowAdd] = useState(false);
@@ -78,6 +70,11 @@ const GroupsPage = () => {
   const selectList = (next: string) => {
     setCategory(next);
     setShowArchived(false);
+  };
+
+  const openAdd = () => {
+    setShowAdd(true);
+    setTimeout(() => document.getElementById("add-group-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
   };
 
   const handleAddUpdated = () => {
@@ -164,10 +161,10 @@ const GroupsPage = () => {
   const getTable = () => {
     if (groupsQuery.isLoading) return <Loading />;
     return (
-      <Stack spacing={2}>
+      <Stack spacing={3}>
         {(groups.length > 0 || showArchived) && (
           <Box data-testid="groups-search">
-            <SearchField value={searchText} onChange={setSearchText} placeholder={Locale.label("groups.groupsPage.searchPlaceholder")} />
+            <SearchField value={searchText} onChange={setSearchText} label={Locale.label("groups.groupsPage.searchPlaceholder")} />
           </Box>
         )}
         {(categoryNames.length > 1 || canEditGroups) && (
@@ -199,14 +196,14 @@ const GroupsPage = () => {
           </Stack>
         )}
         {groups.length > 0 && (
-          <Stack direction="row" spacing={2} alignItems="center" aria-live="polite">
+          <ResultsBar>
             <Typography variant="body2" color="text.secondary">
               {Locale.label("groups.groupsPage.resultCount", "{shown} of {total} groups").replace("{shown}", visibleGroups.length.toString()).replace("{total}", groups.length.toString())}
             </Typography>
             {filtersActive && <Button size="small" onClick={clearFilters}>{Locale.label("groups.groupsPage.clearFilters", "Clear filters")}</Button>}
-          </Stack>
+          </ResultsBar>
         )}
-        <Surface disablePadding>
+        <Box>
           <Box sx={tableScrollSx} role="region" aria-label={Locale.label("groups.groupsPage.groups")} tabIndex={0}>
             <Table>
               {groups.length > 0 && (
@@ -224,7 +221,7 @@ const GroupsPage = () => {
               <TableBody>{getRows()}</TableBody>
             </Table>
           </Box>
-        </Surface>
+        </Box>
       </Stack>
     );
   };
@@ -234,35 +231,32 @@ const GroupsPage = () => {
       {ConfirmDialogElement}
       <PageHeader
         title={Locale.label("groups.groupsPage.groups")}
-        subtitle={groups.length > 0 ? Locale.label("groups.groupsPage.subtitle.manage").replace("{count}", groups.length.toString()) : Locale.label("groups.groupsPage.subtitle.create")}
-      />
+        subtitle={groups.length > 0 ? Locale.label("groups.groupsPage.subtitle.manage").replace("{count}", groups.length.toString()) : Locale.label("groups.groupsPage.subtitle.create")}>
+        {canViewHealth && (
+          <HeaderTextButton component={RouterLink} to="/groups/health" data-testid="group-health-link">{Locale.label("groups.groupHealth.title")}</HeaderTextButton>
+        )}
+        {canApproveRequests && pendingCount > 0 && (
+          <HeaderTextButton component={RouterLink} to="/groups/pending" data-testid="pending-requests-link">
+            {pendingCount === 1
+              ? Locale.label("groups.groupsPage.pendingRequestSingular").replace("{count}", pendingCount.toString())
+              : Locale.label("groups.groupsPage.pendingRequests").replace("{count}", pendingCount.toString())}
+          </HeaderTextButton>
+        )}
+        {groups.length > 0 && canEditGroups && <ExportButton data={exportData} filename="groups.csv" text={Locale.label("groups.groupsPage.export")} />}
+        {canEditGroups && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={openAdd} data-testid="add-group-button">{Locale.label("groups.groupsPage.addGroup")}</HeaderPrimaryButton>
+        )}
+      </PageHeader>
 
       <PageContainer>
-        <VerbRow sx={{ mb: 3 }}>
-          {canViewHealth && (
-            <TextAction to="/groups/health" component={RouterLink} data-testid="group-health-link">{Locale.label("groups.groupHealth.title")}</TextAction>
-          )}
-          {canApproveRequests && pendingCount > 0 && (
-            <TextAction to="/groups/pending" component={RouterLink} data-testid="pending-requests-link">
-              {pendingCount === 1
-                ? Locale.label("groups.groupsPage.pendingRequestSingular").replace("{count}", pendingCount.toString())
-                : Locale.label("groups.groupsPage.pendingRequests").replace("{count}", pendingCount.toString())}
-            </TextAction>
-          )}
-          {groups.length > 0 && canEditGroups && (
-            <Box sx={exportVerbSx}>
-              <ExportLink data={exportData} filename="groups.csv" text={Locale.label("groups.groupsPage.export")} />
+        <Surface>
+          {getTable()}
+          {canEditGroups && showAdd && (
+            <Box id="add-group-bar" data-testid="add-group-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
+              <GroupAdd updatedFunction={handleAddUpdated} tags="standard" />
             </Box>
           )}
-        </VerbRow>
-        {getTable()}
-        {canEditGroups && (
-          <AddBar data-testid="add-group-bar">
-            {showAdd
-              ? <GroupAdd updatedFunction={handleAddUpdated} tags="standard" />
-              : <TextAction onClick={() => setShowAdd(true)} data-testid="add-group-button">{"+ " + Locale.label("groups.groupsPage.addGroup")}</TextAction>}
-          </AddBar>
-        )}
+        </Surface>
       </PageContainer>
     </>
   );

@@ -14,7 +14,8 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, action, variant = "card", colSpan = 5 }) => {
   const inRecord = React.useContext(InRecordContext);
-  if (inRecord && variant !== "table") {
+  // Inside a panel or record, empty is one quiet line plus its verbs, not a centered hero.
+  if ((inRecord && variant !== "table") || variant === "plain") {
     return (
       <Stack spacing={1} alignItems="flex-start">
         <Typography variant="body1" color="text.secondary">{title}</Typography>

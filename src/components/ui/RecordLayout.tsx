@@ -27,6 +27,7 @@ export const RecordLayout: React.FC<Props> = ({ identity, children, spacing = 5,
         {
           p: { xs: 2, md: 4 },
           minWidth: 0,
+          "&& section + section": { mt: 4, pt: 4, borderTop: 1, borderColor: "divider" },
           // Slices often reuse boxed components; flatten their outer card so the record stays one surface.
           "& > .MuiPaper-root, & > * > .MuiPaper-root": { border: 0, boxShadow: "none", bgcolor: "transparent", "& > .MuiCardContent-root, & > div": { px: 0 } }
         },

@@ -2,8 +2,9 @@ import React, { useEffect, useCallback, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
 import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Box, InputBase, Link, Stack, Typography } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
+import { Box, Link, Stack, Typography } from "@mui/material";
+import { AutoAwesomeOutlined as AskIcon, TuneOutlined as AdvancedIcon } from "@mui/icons-material";
+import { SearchField } from "../../components/ui";
 import { AdvancedPeopleSearch, type ActiveFilter } from "./AdvancedPeopleSearch";
 import { AISearch } from "./AISearch";
 
@@ -64,8 +65,9 @@ export function PeopleSearch(props: Props) {
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
   }, []);
 
-  const modeLink = (p: Panel, label: string) => (
-    <Link component="button" type="button" variant="body2" underline="hover" onClick={() => togglePanel(p)} aria-expanded={panel === p} aria-controls={`peopleSearch-${p}`} sx={{ fontWeight: panel === p ? 700 : 600 }}>
+  const modeLink = (p: Panel, label: string, icon: React.ReactNode) => (
+    <Link component="button" type="button" variant="body2" underline="hover" onClick={() => togglePanel(p)} aria-expanded={panel === p} aria-controls={`peopleSearch-${p}`} sx={{ fontWeight: panel === p ? 700 : 600, display: "inline-flex", alignItems: "center", gap: 0.5, "& .MuiSvgIcon-root": { fontSize: 18 } }}>
+      {icon}
       {label}
     </Link>
   );
@@ -74,24 +76,11 @@ export function PeopleSearch(props: Props) {
 
   return (
     <Box id="peopleSearch">
-      <Box component="label" htmlFor="searchText" sx={{ display: "flex", alignItems: "center", gap: 1.5, borderBottom: 1, borderColor: "var(--b1-control-border)", pb: 0.5, transition: "border-color 140ms", "&:focus-within": { borderColor: "primary.main", boxShadow: (theme) => `0 1px 0 ${theme.palette.primary.main}` } }}>
-        <SearchIcon sx={{ color: "text.secondary" }} aria-hidden />
-        <Box component="span" sx={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap" }}>
-          {Locale.label("people.directory.searchLabel")}
-        </Box>
-        <InputBase
-          fullWidth
-          value={searchText}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder={Locale.label("people.directory.searchLabel")}
-          sx={{ typography: "h2", fontWeight: 400, py: 0.5 }}
-          inputProps={{ id: "searchText", name: "searchText", type: "search", autoComplete: "off", "data-testid": "people-search-input" }}
-        />
-      </Box>
-      <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
-        {modeLink("ask", Locale.label("people.directory.ask"))}
+      <SearchField id="searchText" value={searchText} onChange={handleChange} label={Locale.label("people.directory.searchLabel")} data-testid="people-search-input" />
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1.5 }}>
+        {modeLink("ask", Locale.label("people.directory.ask"), <AskIcon aria-hidden />)}
         {dot}
-        {modeLink("advanced", Locale.label("people.peopleSearch.adv"))}
+        {modeLink("advanced", Locale.label("people.peopleSearch.adv"), <AdvancedIcon aria-hidden />)}
         {dot}
         <Link component="button" type="button" variant="body2" underline="hover" onClick={handleClear} sx={{ fontWeight: 600 }} data-testid="people-search-clear">
           {Locale.label("people.directory.clear")}

@@ -5,7 +5,7 @@ import { Button, Box, Stack, Avatar, Link, Table, TableBody, TableCell, TableHea
 import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { EmptyState } from "../../components/ui/EmptyState";
-import { AddBar, BulkBar, PageContainer, PageHeader, SearchField, Surface, TextAction, tableScrollSx } from "../../components/ui";
+import { BulkBar, HeaderPrimaryButton, PageContainer, PageHeader, ResultsBar, SearchField, Surface, TextAction, tableScrollSx } from "../../components/ui";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useConfirmDelete } from "../../hooks";
@@ -260,29 +260,39 @@ export const SongsPage = memo(() => {
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader title={Locale.label("songs.title") || Locale.label("songs.songsPage.songs")} subtitle={Locale.label("songs.songsPage.subtitle")} />
+      <PageHeader title={Locale.label("songs.title") || Locale.label("songs.songsPage.songs")} subtitle={Locale.label("songs.songsPage.subtitle")}>
+        {canEdit && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setShowSearch(true)} data-testid="add-song-button" aria-label={Locale.label("songs.songsPage.addSongAria")}>
+            {Locale.label("songs.addSong") || "Add Song"}
+          </HeaderPrimaryButton>
+        )}
+      </PageHeader>
 
       <PageContainer>
-        <Stack spacing={2}>
-          <SearchField
-            label={Locale.label("songs.songsPage.searchSongs")}
-            placeholder={Locale.label("songs.search.placeholder") || "Search songs by title or artist..."}
-            value={searchFilter}
-            onChange={(v) => {
-              setSearchFilter(v);
-              setPage(0);
-            }}
-          />
-          <Surface disablePadding>{songsContent}</Surface>
-        </Stack>
-
-        {canEdit && (
-          <AddBar>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowSearch(true)} data-testid="add-song-button" aria-label={Locale.label("songs.songsPage.addSongAria")}>
-              {Locale.label("songs.addSong") || "Add Song"}
-            </Button>
-          </AddBar>
-        )}
+        <Surface>
+          <Stack spacing={3}>
+            <SearchField
+              label={Locale.label("songs.songsPage.searchSongs")}
+              placeholder={Locale.label("songs.search.placeholder") || "Search songs by title or artist..."}
+              value={searchFilter}
+              onChange={(v) => {
+                setSearchFilter(v);
+                setPage(0);
+              }}
+            />
+            {!songs.isLoading && (songs.data?.count ?? 0) > 0 && (
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("songs.songsPage.resultCount", "{count} songs").replace("{count}", (songs.data?.count ?? 0).toString())}
+                </Typography>
+                {searchFilter.trim() && (
+                  <Button size="small" onClick={() => { setSearchFilter(""); setPage(0); }}>{Locale.label("common.clear", "Clear")}</Button>
+                )}
+              </ResultsBar>
+            )}
+            <Box>{songsContent}</Box>
+          </Stack>
+        </Surface>
 
         {canEdit && (
           <BulkBar count={selected.size} names={selectedNames} data-testid="songs-bulk-bar">

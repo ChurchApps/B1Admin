@@ -2,7 +2,7 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Locale } from "@churchapps/apphelper";
 import { usePendingApprovalsCount } from "../../hooks";
-import { PageContainer, PageHeader, TextAction } from "../../components/ui";
+import { HeaderTextButton, PageContainer, PageHeader } from "../../components/ui";
 import { SectionPills } from "./SectionPills";
 
 type CalendarSection = "calendars" | "approvals" | "rooms" | "availability";
@@ -38,9 +38,9 @@ export const CalendarChrome: React.FC<Props> = ({ selected, subtitle, actions, c
         title={Locale.label(titles[selected])}
         subtitle={subtitle}
         tabs={<SectionPills items={pills} aria-label={Locale.label("calendars.chrome.sections", "Calendar sections")} />}>
-        <TextAction to="/registrations" component={RouterLink} data-testid="calendars-registrations-link">
+        <HeaderTextButton component={RouterLink} to="/registrations" data-testid="calendars-registrations-link">
           {Locale.label("helpers.secondaryMenuHelper.registrations")}
-        </TextAction>
+        </HeaderTextButton>
         {actions}
       </PageHeader>
       <PageContainer>{children}</PageContainer>

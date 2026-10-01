@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Link, Stack, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material";
+import { InRecordContext } from "./RecordLayout";
 
 export const eyebrowSx = { typography: "overline", fontWeight: 600, letterSpacing: "0.08em", color: "var(--b1-eyebrow)", m: 0 } as const;
 
@@ -10,24 +11,25 @@ interface HeadProps {
   children?: React.ReactNode;
 }
 
-// Eyebrow section heading with trailing text-link verbs on the same line.
-export const RecordHeading: React.FC<HeadProps> = ({ id, label, children }) => (
-  <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1.5, minHeight: 24 }}>
-    <Typography
-      id={id}
-      component="h2"
-      sx={{
-        ...eyebrowSx,
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "var(--b1-tick-gap)",
-        "&::before": { content: '""', width: "var(--b1-tick-width)", height: 14, borderRadius: "2px", bgcolor: "var(--b1-tick)", flexShrink: 0 }
-      }}>
-      {label}
-    </Typography>
-    {children}
-  </Stack>
-);
+// Section heading with trailing text-link verbs on the same line: a full title inside a record slice, an eyebrow elsewhere.
+export const RecordHeading: React.FC<HeadProps> = ({ id, label, children }) => {
+  const inRecord = React.useContext(InRecordContext);
+  const labelSx = inRecord
+    ? { typography: "h2", color: "text.primary", m: 0 }
+    : {
+      ...eyebrowSx,
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "var(--b1-tick-gap)",
+      "&::before": { content: '""', width: "var(--b1-tick-width)", height: 14, borderRadius: "2px", bgcolor: "var(--b1-tick)", flexShrink: 0 }
+    };
+  return (
+    <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: inRecord ? 2 : 1.5, minHeight: 24 }}>
+      <Typography id={id} component="h2" sx={labelSx}>{label}</Typography>
+      {children}
+    </Stack>
+  );
+};
 
 interface ActionProps {
   onClick?: () => void;

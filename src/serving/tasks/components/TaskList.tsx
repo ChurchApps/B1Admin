@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Grid, Typography, Stack, Box, Button, Link as MuiLink } from "@mui/material";
-import { AddBar, CardWithHeader, EmptyState, PillTabs, StatusBadge, Surface } from "../../../components/ui";
+import { AddBar, CardWithHeader, PillTabs, StatusBadge, Surface } from "../../../components/ui";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
@@ -118,7 +118,7 @@ export const TaskList = memo((props: Props) => {
     return props.plain ? <Loading /> : <Surface><Loading /></Surface>;
   }
 
-  const noTasks = <EmptyState variant="plain" icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />;
+  const noTasks = <Typography color="text.secondary">{Locale.label("tasks.taskList.noTasks")}</Typography>;
   const countLabel = (text: string, count: number) => `${text} ${count}`;
 
   const statusPills = props.onStatusChange && (
@@ -160,11 +160,16 @@ export const TaskList = memo((props: Props) => {
     />
   );
 
-  const addButton = (variant: "contained" | "text") => (
+  const openAdd = () => {
+    setShowAdd(true);
+    if (props.plain) setTimeout(() => document.getElementById("add-task-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
+
+  const addButton = () => (
     <Button
-      variant={variant}
+      variant="contained"
       startIcon={<AddIcon />}
-      onClick={() => setShowAdd(true)}
+      onClick={openAdd}
       data-testid="add-task-button"
       aria-label={Locale.label("tasks.taskList.addTaskAria")}>
       {Locale.label("tasks.taskList.addTask")}
@@ -175,11 +180,14 @@ export const TaskList = memo((props: Props) => {
     return (
       <Box data-testid="task-list">
         <Stack spacing={1.5} sx={{ mb: 2 }}>
-          {statusPills}
+          <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" useFlexGap flexWrap="wrap">
+            {statusPills || <span />}
+            {addButton()}
+          </Stack>
           {props.compact && filterPills}
         </Stack>
         {list}
-        <AddBar>{showAdd ? newTask : addButton("text")}</AddBar>
+        {showAdd && <AddBar data-testid="add-task-bar" sx={{ scrollMarginTop: 24 }}><Box id="add-task-bar">{newTask}</Box></AddBar>}
       </Box>
     );
   }
@@ -191,7 +199,7 @@ export const TaskList = memo((props: Props) => {
         <CardWithHeader
           title={Locale.label("tasks.taskList.tasks")}
           icon={<TaskIcon />}
-          actions={addButton("contained")}>
+          actions={addButton()}>
           {statusPills && <Box sx={{ mb: 1.5 }}>{statusPills}</Box>}
           {props.compact && <Box sx={{ mb: 2 }}>{filterPills}</Box>}
           {list}
