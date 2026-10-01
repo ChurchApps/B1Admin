@@ -79,7 +79,30 @@ export const PrintRosterPage = () => {
   }, [autoprint, sheets.isLoading, sheets.data]);
 
   const churchName = context?.userChurch?.church?.name || "";
-  const visitorLines = useMemo(() => Array.from({ length: VISITOR_LINES }, (_, i) => i), []);
+  const visitorRows = useMemo(() => Array.from({ length: Math.ceil(VISITOR_LINES / 2) }, (_, i) => i), []);
+
+  // Two columns per row: read down the left column, then the right.
+  const splitColumns = (members: GroupMemberInterface[]) => {
+    const half = Math.ceil(members.length / 2);
+    const left = members.slice(0, half);
+    const right = members.slice(half);
+    return left.map((gm, i) => [gm, right[i]] as const);
+  };
+
+  const boxCells = () => (
+    <>
+      <td className="roster-box-cell"><span className="roster-box" /></td>
+      <td className="roster-box-cell"><span className="roster-box" /></td>
+    </>
+  );
+
+  const headerCells = (split: boolean) => (
+    <>
+      <th className={split ? "roster-name-cell roster-split" : "roster-name-cell"}>{Locale.label("common.name")}</th>
+      <th className="roster-box-cell">{Locale.label("groups.printRoster.present")}</th>
+      <th className="roster-box-cell">{Locale.label("groups.printRoster.absent")}</th>
+    </>
+  );
 
   if (sheets.isLoading) {
     return (
@@ -137,6 +160,13 @@ export const PrintRosterPage = () => {
             margin: 4px 0;
           }
 
+          .roster-date {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1A2332;
+            margin: 2px 0 6px;
+          }
+
           .roster-meta {
             display: flex;
             justify-content: space-between;
@@ -151,8 +181,11 @@ export const PrintRosterPage = () => {
           .roster-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             font-size: 13px;
           }
+
+          .roster-table .roster-split { border-left: 1.5px solid #9CA3AF; }
 
           .roster-table th {
             text-align: left;
@@ -170,7 +203,9 @@ export const PrintRosterPage = () => {
             height: 18px;
           }
 
-          .roster-box-cell { width: 70px; text-align: center; }
+          .roster-name-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+          .roster-box-cell { width: 0.6in; text-align: center; }
 
           .roster-box {
             display: inline-block;
@@ -205,37 +240,44 @@ export const PrintRosterPage = () => {
           <div className="roster-sheet" key={sheet.group.id} data-testid="roster-sheet">
             {churchName && <div className="roster-church">{churchName}</div>}
             <h1 className="roster-title">{sheet.group.name}</h1>
+            <div className="roster-date" data-testid="roster-date">
+              {Locale.label("groups.printRoster.date")}: {sheetDate || "________________________"}
+            </div>
             <div className="roster-meta">
               <span>{sheet.serviceTimeName}</span>
-              <span data-testid="roster-date">
-                {Locale.label("groups.printRoster.date")}: {sheetDate || "________________________"}
-              </span>
             </div>
 
             <table className="roster-table">
               <thead>
                 <tr>
-                  <th>{Locale.label("common.name")}</th>
-                  <th className="roster-box-cell">{Locale.label("groups.printRoster.present")}</th>
-                  <th className="roster-box-cell">{Locale.label("groups.printRoster.absent")}</th>
+                  {headerCells(false)}
+                  {headerCells(true)}
                 </tr>
               </thead>
               <tbody>
-                {sheet.members.map((gm) => (
-                  <tr key={gm.id || gm.personId}>
-                    <td data-testid="roster-member">{gm.person?.name?.display}</td>
-                    <td className="roster-box-cell"><span className="roster-box" /></td>
-                    <td className="roster-box-cell"><span className="roster-box" /></td>
+                {splitColumns(sheet.members).map(([left, right]) => (
+                  <tr key={left.id || left.personId}>
+                    <td className="roster-name-cell" data-testid="roster-member">{left.person?.name?.display}</td>
+                    {boxCells()}
+                    {right ? (
+                      <>
+                        <td className="roster-name-cell roster-split" data-testid="roster-member">{right.person?.name?.display}</td>
+                        {boxCells()}
+                      </>
+                    ) : (
+                      <td colSpan={3} className="roster-split"></td>
+                    )}
                   </tr>
                 ))}
                 <tr>
-                  <td colSpan={3} className="roster-section">{Locale.label("groups.printRoster.visitors")}</td>
+                  <td colSpan={6} className="roster-section">{Locale.label("groups.printRoster.visitors")}</td>
                 </tr>
-                {visitorLines.map((i) => (
+                {visitorRows.map((i) => (
                   <tr key={"visitor-" + i}>
                     <td></td>
-                    <td className="roster-box-cell"><span className="roster-box" /></td>
-                    <td className="roster-box-cell"><span className="roster-box" /></td>
+                    {boxCells()}
+                    <td className="roster-split"></td>
+                    {boxCells()}
                   </tr>
                 ))}
               </tbody>

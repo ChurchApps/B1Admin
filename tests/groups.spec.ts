@@ -348,8 +348,12 @@ test.describe.serial("Group Management", () => {
       const groupId = new URL(page.url()).pathname.split("/").pop();
       await page.goto("/groups/print-roster?groupId=" + groupId + "&date=2025-12-07");
       await expect(page.locator("h1.roster-title")).toHaveText(SESSION_GROUP, { timeout: 10000 });
-      await expect(page.locator('[data-testid="roster-member"]')).toHaveText(["William Anderson", "George Thompson", "Margaret Thompson"]);
-      await expect(page.locator('[data-testid="roster-date"]')).toContainText("December 7, 2025");
+      // Two columns: read down the left column, then the right.
+      await expect(page.locator('[data-testid="roster-member"]')).toHaveCount(3);
+      await expect(page.locator('td[data-testid="roster-member"]:not(.roster-split)')).toHaveText(["William Anderson", "George Thompson"]);
+      await expect(page.locator('td.roster-split[data-testid="roster-member"]')).toHaveText(["Margaret Thompson"]);
+      // The session date sits on its own line right under the group name.
+      await expect(page.locator('h1.roster-title + [data-testid="roster-date"]')).toContainText("December 7, 2025");
       // The print route has no app chrome; go back so later tests can use the nav.
       await page.goBack();
       await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 15000 });
