@@ -1,3 +1,4 @@
+import fs from "fs";
 import type { Page } from "@playwright/test";
 import { attendanceTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
@@ -145,8 +146,8 @@ test.describe("Attendance Management", () => {
       await serviceName.click();
       const serviceSel = page.locator("li").getByText("Sunday Morning Service");
       await serviceSel.click();
-      const weekBox = page.locator('[name="week"]');
-      await weekBox.fill("2024-03-03");
+      await page.locator('[name="startDate"]').fill("2024-03-03");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
       const runBtn = page.locator("button").getByText("Run Report");
       await runBtn.click();
       const report = page.locator("td").getByText("10:30 AM Service");
@@ -162,7 +163,8 @@ test.describe("Attendance Management", () => {
       const groupTab = page.locator('button[role="tab"]').getByText("Group Attendance");
       await groupTab.click();
       await expect(page.locator('[id="mui-component-select-campusId"]')).toBeVisible({ timeout: 10000 });
-      await expect(page.locator('[name="week"]')).toBeVisible();
+      await expect(page.locator('[name="startDate"]')).toBeVisible();
+      await expect(page.locator('[name="endDate"]')).toBeVisible();
     });
 
     test("Group Attendance report shows results for a week with seed visits", async ({ page }) => {
@@ -174,13 +176,41 @@ test.describe("Attendance Management", () => {
       const serviceName = page.locator('[id="mui-component-select-serviceId"]');
       await serviceName.click();
       await page.locator("li").getByText("Sunday Morning Service").click();
-      const weekBox = page.locator('[name="week"]');
-      await weekBox.fill("2024-03-03");
+      await page.locator('[name="startDate"]').fill("2024-03-03");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
       const runBtn = page.locator("button").getByText("Run Report");
       await runBtn.click();
       const reportRows = page.locator('[id="reportsBox"] table tr');
       await expect(reportRows.first()).toBeVisible({ timeout: 10000 });
       expect(await reportRows.count()).toBeGreaterThan(1);
+    });
+
+    test("Group Attendance covers a date range and downloads one dated column per session", async ({ page }) => {
+      await page.locator('button[role="tab"]').getByText("Group Attendance").click();
+      await page.locator('[id="mui-component-select-campusId"]').click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill("2024-03-09");
+      await page.locator('[name="endDate"]').fill("2024-03-17");
+      await page.locator("button").getByText("Run Report").click();
+      const reportsBox = page.locator('[id="reportsBox"]');
+      await expect(reportsBox.locator("td").getByText("2024-03-09", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(reportsBox.locator("td").getByText("2024-03-17", { exact: true })).toBeVisible();
+
+      await page.getByRole("button", { name: "Download Options" }).click();
+      const downloadPromise = page.waitForEvent("download");
+      // CSVLink is lazy-loaded; click the real download link, not the Suspense fallback
+      await page.getByRole("menuitem").locator("a[download]").filter({ hasText: "Summary" }).click();
+      const download = await downloadPromise;
+      const csv = fs.readFileSync(await download.path(), "utf8").replace(/^\uFEFF/, "");
+      const header = csv.split(/\r?\n/)[0];
+      expect(header.startsWith('"displayName","groupName",')).toBe(true);
+      expect(header.endsWith('"personId","groupId"')).toBe(true);
+      expect(header).toContain('"Sunday Morning Service - 9:00 AM Service (2024-03-09)"');
+      expect(header).toContain('"Sunday Morning Service - 9:00 AM Service (2024-03-16)"');
+      expect(header).toContain('"Sunday Morning Service - 9:00 AM Service (2024-03-17)"');
+      expect(csv).toContain("present");
     });
 
     test("Attendance Trend Run Report enabled only after selecting filters", async ({ page }) => {

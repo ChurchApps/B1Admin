@@ -170,6 +170,7 @@ export const ReportOutput = (props: Props) => {
               <ExportLink
                 data={(props.keyName === "groupAttendance" ? downloadData?.table : reportTable) || []}
                 filename={(props.report?.displayName || "").replace(" ", "_") + ".csv"}
+                customHeaders={props.keyName === "groupAttendance" && downloadData?.table?.length ? Object.keys(downloadData.table[0]).map((key) => ({ label: key, key })) : undefined}
                 text={Locale.label("reporting.summary")}
                 icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"}
               />
