@@ -1,10 +1,19 @@
 import fs from "fs";
-import type { Page } from "@playwright/test";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { attendanceTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
+
+const API = process.env.API_BASE || "http://localhost:8084";
+
+async function apiLogin(api: APIRequestContext) {
+  const res = await api.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
+}
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Attendance Management", () => {
@@ -152,6 +161,42 @@ test.describe("Attendance Management", () => {
       await runBtn.click();
       const report = page.locator("td").getByText("10:30 AM Service");
       await expect(report).toBeVisible({ timeout: 10000 });
+    });
+  });
+
+  test.describe("Report dates", () => {
+    // The Api returns the week's Sunday as a UTC-midnight date; a US browser must still show that calendar day.
+    test.use({ timezoneId: "America/Chicago", locale: "en-US" });
+
+    test.beforeAll(async () => {
+      const api = await pwRequest.newContext();
+      const auth = await apiLogin(api);
+      // Wednesday Prayer Service session on Wed 9/30/2026 with one visit.
+      const sRes = await api.post(`${API}/attendance/sessions`, { ...auth, data: [{ groupId: "GRP00000003", serviceTimeId: "SST00000004", sessionDate: "2026-09-30T19:00:00" }] });
+      const session = (await sRes.json())[0];
+      await api.post(`${API}/attendance/visitsessions/log`, { ...auth, data: { personId: "PER00000001", visitSessions: [{ sessionId: session.id }] } });
+      await api.dispose();
+    });
+
+    test("Attendance Trend labels a Wednesday visit with that week's Sunday", async ({ page }) => {
+      // Production's Api runs in UTC and sends each week as YYYY-MM-DDT00:00:00.000Z. The local Api
+      // runs in this machine's zone, so rewrite its dates into the production shape.
+      await page.route("**/reporting/reports/attendanceTrend/run**", async (route) => {
+        const response = await route.fetch();
+        const body = await response.json();
+        const pad = (n: number) => String(n).padStart(2, "0");
+        body.table = (body.table || []).map((row: any) => {
+          const d = new Date(row.week);
+          return { ...row, week: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T00:00:00.000Z` };
+        });
+        await route.fulfill({ response, json: body });
+      });
+      await page.locator('button[role="tab"]').getByText("Attendance Trend").click();
+      await page.locator("button").getByText("Run Report").click();
+
+      const table = page.locator('[id="reportsBox"] table');
+      await expect(table.locator("td").getByText("Sep 27, 2026", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(table.locator("td").getByText("Sep 26, 2026", { exact: true })).toHaveCount(0);
     });
   });
 
