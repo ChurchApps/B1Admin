@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Box, Button, Typography } from "@mui/material";
 import { QueueMusic as ArrangementIcon } from "@mui/icons-material";
 import { Arrangement } from "./components/Arrangement";
-import { EmptyState, PageContainer, PillTabs, RecordHeading, RecordLayout, TextAction, VerbRow, eyebrowSx } from "../../components/ui";
+import { EmptyState, PageContainer, PillTabs, RecordHeading, RecordLayout, TextAction, eyebrowSx, RecordActions } from "../../components/ui";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
 import { SongDetailLinksEdit } from "./components/SongDetailLinksEdit";
@@ -127,15 +127,16 @@ export const SongPage = memo(() => {
       <Typography component="p" sx={eyebrowSx}>{Locale.label("songs.songsPage.songs")}</Typography>
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{title}</Typography>
       {sd?.artist && <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>{sd.artist}</Typography>}
-      <VerbRow sx={{ mt: 2 }}>
-        {canEdit && (
-          <TextAction onClick={() => setEditSongDetails(!editSongDetails)} data-testid="song-edit-button">
+      <RecordActions
+        sx={{ mt: 2 }}
+        buttons={canEdit && <>
+          <Button variant="contained" onClick={() => setEditSongDetails(!editSongDetails)} data-testid="song-edit-button">
             {editing ? Locale.label("common.done") : Locale.label("common.edit")}
-          </TextAction>
-        )}
-        {canEdit && <TextAction onClick={handleAddArrangement} data-testid="add-arrangement-button">{Locale.label("songs.songPage.addArrangement")}</TextAction>}
-        <TextAction to="/serving/songs" component={RouterLink}>{Locale.label("songs.songsPage.songs")}</TextAction>
-      </VerbRow>
+          </Button>
+          <Button variant="outlined" onClick={handleAddArrangement} data-testid="add-arrangement-button">{Locale.label("songs.songPage.addArrangement")}</Button>
+        </>}>
+        <TextAction small to="/serving/songs" component={RouterLink}>{Locale.label("songs.songsPage.songs")}</TextAction>
+      </RecordActions>
 
       {facts.length > 0 && (
         <Box component="dl" data-testid="song-facts" sx={{ display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 2, rowGap: 0.5, typography: "body2", mt: 3, mb: 0, "& dt": { color: "text.secondary", m: 0 }, "& dd": { m: 0, overflowWrap: "anywhere" } }}>

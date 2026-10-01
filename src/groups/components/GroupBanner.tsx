@@ -1,13 +1,13 @@
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
-import { Box, Chip, Stack, Typography } from "@mui/material";
-import { Group as GroupIcon, CheckCircle as CheckIcon, Cancel as CancelIcon } from "@mui/icons-material";
+import { Box, Chip, Stack, Typography, Button } from "@mui/material";
+import { Group as GroupIcon, CheckCircle as CheckIcon, Cancel as CancelIcon, ChatBubbleOutline as TextIcon, MailOutline as MailIcon } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
-import { Pill, TextAction, VerbRow } from "../../components/ui";
+import { Pill, TextAction, RecordActions } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
@@ -159,27 +159,29 @@ export const GroupBanner = memo((props: Props) => {
       )}
 
       {!editMode && (
-        <VerbRow plain sx={{ mt: 3 }}>
-          {canEdit && <TextAction onClick={onEdit} data-testid="edit-group-button">{Locale.label("common.edit")}</TextAction>}
-          <TextAction onClick={() => setShowEmailDialog(true)} aria-label={Locale.label("groups.groupBanner.emailTooltip")} data-testid="email-group-button">
-            {Locale.label("groups.groupBanner.email", "Email")}
-          </TextAction>
+        <RecordActions
+          buttons={<>
+            {canEdit && <Button variant="contained" onClick={onEdit} data-testid="edit-group-button">{Locale.label("common.edit")}</Button>}
+            <Button variant="outlined" startIcon={<MailIcon />} onClick={() => setShowEmailDialog(true)} aria-label={Locale.label("groups.groupBanner.emailTooltip")} data-testid="email-group-button">
+              {Locale.label("groups.groupBanner.email", "Email")}
+            </Button>
+            {canText && hasTextingProvider && (
+              <Button variant="outlined" startIcon={<TextIcon />} onClick={() => setShowTextDialog(true)} aria-label={Locale.label("groups.groupBanner.textTooltip")} data-testid="text-group-button">
+                {Locale.label("groups.groupBanner.text", "Text")}
+              </Button>
+            )}
+          </>}>
           {canSendNotifications && (
-            <TextAction onClick={() => setShowNotificationDialog(true)} aria-label={Locale.label("groups.groupBanner.notifyTooltip", "Send push notification")} data-testid="notify-group-button">
+            <TextAction small onClick={() => setShowNotificationDialog(true)} aria-label={Locale.label("groups.groupBanner.notifyTooltip", "Send push notification")} data-testid="notify-group-button">
               {Locale.label("groups.groupBanner.notify", "Notify")}
             </TextAction>
           )}
-          {canText && hasTextingProvider && (
-            <TextAction onClick={() => setShowTextDialog(true)} aria-label={Locale.label("groups.groupBanner.textTooltip")} data-testid="text-group-button">
-              {Locale.label("groups.groupBanner.text", "Text")}
-            </TextAction>
-          )}
           {canEdit && (
-            <TextAction onClick={handleDuplicate} aria-label={Locale.label("groups.groupBanner.duplicateTooltip")} data-testid="duplicate-group-button">
+            <TextAction small onClick={handleDuplicate} aria-label={Locale.label("groups.groupBanner.duplicateTooltip")} data-testid="duplicate-group-button">
               {Locale.label("groups.groupBanner.duplicate", "Duplicate")}
             </TextAction>
           )}
-        </VerbRow>
+        </RecordActions>
       )}
 
       {ConfirmDialogElement}

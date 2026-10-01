@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, Locale, Permissions, PersonAvatar, PersonHelper, UserHelper } from "@churchapps/apphelper";
-import { Box, ButtonBase, Icon, Link, Stack, Typography } from "@mui/material";
-import { WarningAmber as WarningIcon } from "@mui/icons-material";
+import { Box, Button, ButtonBase, Link, Stack, Typography } from "@mui/material";
+import { ChatBubbleOutline as TextIcon, MailOutline as MailIcon, WarningAmber as WarningIcon } from "@mui/icons-material";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
 import { formatFieldValue } from "../../helpers/PersonFieldHelper";
@@ -13,7 +13,7 @@ import { Household } from "./Household";
 import { PickupPeople } from "./PickupPeople";
 import { formattedPhoneNumber } from "./PersonEdit";
 import { downloadPersonData } from "./personDataExport";
-import { Pill, TextAction, VerbRow, srOnlySx } from "../../components/ui";
+import { Pill, RecordActions, TextAction, srOnlySx } from "../../components/ui";
 
 interface Props {
   person: PersonInterface;
@@ -148,36 +148,22 @@ export const PersonIdentity: React.FC<Props> = (props) => {
       {(contact.email || phones.length > 0 || addressLines.length > 0 || userEmail || person.donorNumber || extraFields.length > 0) && (
         <Stack spacing={1} sx={{ mt: 2 }} data-testid="person-contact">
           {contact.mobilePhone && (
-            <Stack direction="row" spacing={1.25} alignItems="center">
-              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)" }}>smartphone</Icon>
-              <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 500, color: "var(--b1-link)", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone)}`}>
-                {formattedPhoneNumber(contact.mobilePhone)}
-              </Link>
-            </Stack>
+            <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 600, color: "text.primary", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone)}`}>
+              {formattedPhoneNumber(contact.mobilePhone)}
+            </Link>
           )}
           {phones.filter((p) => p.key !== "mobile").map((p) => (
-            <Stack key={p.key} direction="row" spacing={1.25} alignItems="flex-start">
-              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)", mt: "2px" }}>{p.key === "home" ? "home" : "call"}</Icon>
-              <Typography sx={quiet}>
-                {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={{ color: "var(--b1-link)" }}>{formattedPhoneNumber(p.value || "")}</Box></CopyableText>
-              </Typography>
-            </Stack>
+            <Typography key={p.key} sx={quiet}>
+              {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={strong}>{formattedPhoneNumber(p.value || "")}</Box></CopyableText>
+            </Typography>
           ))}
-          {contact.email && (
-            <Stack direction="row" spacing={1.25} alignItems="flex-start">
-              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)", mt: "2px" }}>email</Icon>
-              <Typography sx={quiet}><Link href={"mailto:" + contact.email} sx={{ color: "var(--b1-link)" }}>{contact.email}</Link></Typography>
-            </Stack>
-          )}
+          {contact.email && <Typography sx={quiet}><Link href={"mailto:" + contact.email} sx={{ color: "var(--b1-link)" }}>{contact.email}</Link></Typography>}
           {addressLines.length > 0 && (
-            <Stack direction="row" spacing={1.25} alignItems="flex-start">
-              <Icon aria-hidden sx={{ fontSize: 18, color: "var(--b1-link)", mt: "2px" }}>place</Icon>
-              <Typography sx={quiet}>
-                <CopyableText text={addressLines.join(", ")}>
-                  <Box component="span" sx={{ color: "var(--b1-link)" }}>{addressLines.map((l, i) => <React.Fragment key={i}>{l}{i < addressLines.length - 1 && <br />}</React.Fragment>)}</Box>
-                </CopyableText>
-              </Typography>
-            </Stack>
+            <Typography sx={quiet}>
+              <CopyableText text={addressLines.join(", ")}>
+                <Box component="span" sx={strong}>{addressLines.map((l, i) => <React.Fragment key={i}>{l}{i < addressLines.length - 1 && <br />}</React.Fragment>)}</Box>
+              </CopyableText>
+            </Typography>
           )}
           {person.donorNumber && <Typography sx={quiet}>{Locale.label("people.personEdit.donorNumber")} <Box component="span" sx={strong}>{person.donorNumber}</Box></Typography>}
           {userEmail && <Typography sx={quiet}>{Locale.label("people.personView.hasLoginLabel").replace("{email}", userEmail)}</Typography>}
@@ -192,19 +178,21 @@ export const PersonIdentity: React.FC<Props> = (props) => {
       </Box>
 
       {!editing && (
-        <VerbRow plain sx={{ mt: 3 }}>
-          {canEdit && <TextAction onClick={props.onEdit} data-testid="edit-person-button">{Locale.label("common.edit")}</TextAction>}
-          {contact.email && <TextAction href={"mailto:" + contact.email} aria-label={Locale.label("people.personBanner.emailPerson")}>{Locale.label("people.personRecord.email", "Email")}</TextAction>}
-          {canEdit && <TextAction onClick={() => setShowWorkflowDialog(true)} data-testid="add-to-workflow-button">{Locale.label("people.personRecord.workflow", "Workflow")}</TextAction>}
-          {canSendText && <TextAction onClick={() => setShowTextDialog(true)} aria-label={Locale.label("people.personBanner.sendTextMessage")}>{Locale.label("people.personRecord.text", "Text")}</TextAction>}
-          {canEdit && <TextAction onClick={props.onMerge} data-testid="person-merge-action">{Locale.label("people.personEdit.merge")}</TextAction>}
-          {formPermission && <TextAction onClick={props.onExport}>{Locale.label("people.peoplePage.export")}</TextAction>}
+        <RecordActions
+          buttons={<>
+            {canEdit && <Button variant="contained" onClick={props.onEdit} data-testid="edit-person-button">{Locale.label("common.edit")}</Button>}
+            {contact.email && <Button variant="outlined" href={"mailto:" + contact.email} startIcon={<MailIcon />} aria-label={Locale.label("people.personBanner.emailPerson")}>{Locale.label("people.personRecord.email", "Email")}</Button>}
+            {canSendText && <Button variant="outlined" onClick={() => setShowTextDialog(true)} startIcon={<TextIcon />} aria-label={Locale.label("people.personBanner.sendTextMessage")}>{Locale.label("people.personRecord.text", "Text")}</Button>}
+          </>}>
+          {canEdit && <TextAction small onClick={() => setShowWorkflowDialog(true)} data-testid="add-to-workflow-button">{Locale.label("people.personRecord.workflow", "Workflow")}</TextAction>}
+          {canEdit && <TextAction small onClick={props.onMerge} data-testid="person-merge-action">{Locale.label("people.personEdit.merge")}</TextAction>}
+          {formPermission && <TextAction small onClick={props.onExport}>{Locale.label("people.peoplePage.export")}</TextAction>}
           {canEdit && (
-            <TextAction onClick={handleExportData} disabled={exporting} data-testid="export-person-data-button">
+            <TextAction small onClick={handleExportData} disabled={exporting} data-testid="export-person-data-button">
               {exporting ? Locale.label("people.gdprActions.exporting") : Locale.label("people.gdprActions.exportData")}
             </TextAction>
           )}
-        </VerbRow>
+        </RecordActions>
       )}
 
       {!!person.householdId && (

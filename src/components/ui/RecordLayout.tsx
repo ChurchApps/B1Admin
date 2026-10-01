@@ -12,6 +12,9 @@ interface Props {
   sliceSx?: SxProps<Theme>;
 }
 
+// Lets slice content (EmptyState) drop its own panel styling so the record stays one surface.
+export const InRecordContext = React.createContext(false);
+
 // One white record surface: identity column | 1px rule | the current slice. Stacks below md.
 export const RecordLayout: React.FC<Props> = ({ identity, children, spacing = 5, sliceSx, ...rest }) => (
   <Box sx={{ ...profileLayoutSx, gap: 0, alignItems: "stretch", bgcolor: "background.paper", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)" }}>
@@ -30,7 +33,7 @@ export const RecordLayout: React.FC<Props> = ({ identity, children, spacing = 5,
         ...(Array.isArray(sliceSx) ? sliceSx : [sliceSx])
       ]}
       data-testid={rest["data-testid"]}>
-      {children}
+      <InRecordContext.Provider value={true}>{children}</InRecordContext.Provider>
     </Stack>
   </Box>
 );

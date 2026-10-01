@@ -207,14 +207,12 @@ export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, household
     if (yearRows.length === 0) {
       return (
         <Stack spacing={1}>
-          <Box sx={{ bgcolor: "var(--b1-wash)", borderRadius: "var(--b1-radius-control)", px: 2, py: 1.5 }}>
-            <Muted>
-              {(household
-                ? Locale.label("people.personRecord.noHouseholdGiftsYear", "No household gifts recorded in {year}.")
-                : Locale.label("people.personRecord.noGiftsYear", "No gifts recorded in {year}.")).replace("{year}", String(year))}
-              {lastGift && " " + Locale.label("people.personRecord.lastGift", "Last gift {date}.").replace("{date}", pretty(lastGift))}
-            </Muted>
-          </Box>
+          <Muted>
+            {(household
+              ? Locale.label("people.personRecord.noHouseholdGiftsYear", "No household gifts recorded in {year}.")
+              : Locale.label("people.personRecord.noGiftsYear", "No gifts recorded in {year}.")).replace("{year}", String(year))}
+            {lastGift && " " + Locale.label("people.personRecord.lastGift", "Last gift {date}.").replace("{date}", pretty(lastGift))}
+          </Muted>
           <VerbRow>{logVerb}{allVerb}</VerbRow>
         </Stack>
       );
@@ -278,25 +276,19 @@ export const PersonGroupsSummary: React.FC<{ personId: string }> = ({ personId }
     if (list.length === 0) return <Muted>{Locale.label("people.groups.notMemMsg")}</Muted>;
     return (
       <Box component="ul" sx={{ display: "flex", flexWrap: "wrap", gap: 1, listStyle: "none", m: 0, p: 0 }}>
-        {list.map((gm, i) => {
-          const alt = i % 2 === 1;
-          const fg = alt ? "var(--b1-on-chip-alt)" : "var(--b1-on-chip)";
-          return (
-            <li key={gm.id}>
-              <Box sx={{ display: "inline-flex", alignItems: "baseline", gap: 1, maxWidth: "100%" }}>
-                <Link
-                  component={RouterLink}
-                  to={`/groups/${gm.groupId}`}
-                  underline="none"
-                  sx={{ borderRadius: "var(--b1-radius-pill)", px: 1.5, py: 0.5, bgcolor: alt ? "var(--b1-chip-alt)" : "var(--b1-chip)", color: fg, fontWeight: 600, typography: "body2", "&:hover": { filter: "brightness(0.97)" } }}>
-                  {gm.group?.name || Locale.label("people.groups.unknownGroup")}
-                </Link>
-                {gm.leader && <Box component="span" sx={{ color: fg, fontWeight: 600, typography: "body2" }}>{Locale.label("people.groups.leader")}</Box>}
-                {gm.group?.categoryName && <Box component="span" sx={{ color: "text.secondary", typography: "body2" }}>{gm.group.categoryName}</Box>}
-              </Box>
-            </li>
-          );
-        })}
+        {list.map((gm) => (
+          <li key={gm.id}>
+            <Link
+              component={RouterLink}
+              to={`/groups/${gm.groupId}`}
+              underline="none"
+              sx={{ display: "inline-flex", alignItems: "baseline", gap: 1, maxWidth: "100%", borderRadius: "var(--b1-radius-pill)", px: 1.5, py: 0.5, bgcolor: "var(--b1-chip)", color: "var(--b1-on-chip)", fontWeight: 600, typography: "body2", "&:hover": { filter: "brightness(0.97)" } }}>
+              {gm.group?.name || Locale.label("people.groups.unknownGroup")}
+              {gm.leader && <Box component="span" sx={{ fontWeight: 400, opacity: 0.75 }}>{Locale.label("people.groups.leader")}</Box>}
+            </Link>
+            {gm.group?.categoryName && <Box component="span" sx={{ ml: 1, color: "text.secondary", typography: "body2" }}>{gm.group.categoryName}</Box>}
+          </li>
+        ))}
       </Box>
     );
   };
@@ -343,9 +335,7 @@ export const PersonNotesSummary: React.FC<NotesProps> = ({ conversationId, onVie
     if (!latest) {
       return (
         <Stack spacing={1}>
-          <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", px: 2, py: 1.5 }}>
-            <Muted>{Locale.label("people.personRecord.noNotes", "No notes yet.")}</Muted>
-          </Box>
+          <Muted>{Locale.label("people.personRecord.noNotes", "No notes yet.")}</Muted>
           <VerbRow>{allVerb}</VerbRow>
         </Stack>
       );

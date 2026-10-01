@@ -36,7 +36,7 @@ import { useRequirePermission, useConfirmDelete } from "../hooks";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { RegistrationDetailDialog } from "./components/RegistrationDetailDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { BackVerb, CardWithHeader, FilterChip, PageContainer, Pill, RecordLayout, StatusBadge, TextAction, VerbRow, numericCellSx, tableScrollSx, useRecordView } from "../components/ui";
+import { BackVerb, CardWithHeader, FilterChip, PageContainer, Pill, RecordLayout, StatusBadge, TextAction, numericCellSx, tableScrollSx, useRecordView, RecordActions } from "../components/ui";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
@@ -297,11 +297,10 @@ export const RegistrationDetailsPage = () => {
       <Typography id="page-header-subtitle" color="text.secondary" sx={{ mt: 0.5 }}>
         {formatDateSafe(event.start) || Locale.label("registrations.registrationDetailsPage.subtitle")}
       </Typography>
-      <VerbRow sx={{ mt: 2 }}>
-        {view === "settings" && <TextAction onClick={() => setView("")} data-testid="registration-roster-button">{Locale.label("registrations.registrationDetailsPage.registrations")}</TextAction>}
-        {canEdit && view !== "settings" && <TextAction onClick={() => setView("settings")} data-testid="registration-settings-button">{Locale.label("registrations.registrationDetailsPage.editSettings", "Edit settings")}</TextAction>}
-        <TextAction to="/registrations" component={Link} data-testid="registration-back-to-list">{Locale.label("registrations.registrationsPage.title")}</TextAction>
-      </VerbRow>
+      <RecordActions sx={{ mt: 2 }} buttons={canEdit && view !== "settings" && <Button variant="contained" onClick={() => setView("settings")} data-testid="registration-settings-button">{Locale.label("registrations.registrationDetailsPage.editSettings", "Edit settings")}</Button>}>
+        {view === "settings" && <TextAction small onClick={() => setView("")} data-testid="registration-roster-button">{Locale.label("registrations.registrationDetailsPage.registrations")}</TextAction>}
+        <TextAction small to="/registrations" component={Link} data-testid="registration-back-to-list">{Locale.label("registrations.registrationsPage.title")}</TextAction>
+      </RecordActions>
 
       <Box sx={{ mt: 3 }} data-testid="registration-capacity">
         <Typography variant="h3" component="p" sx={{ fontVariantNumeric: "tabular-nums" }}>

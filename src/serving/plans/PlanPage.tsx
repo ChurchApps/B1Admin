@@ -3,12 +3,12 @@ import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type PlanInterface, type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { type GroupInterface } from "@churchapps/helpers";
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { Assignment } from "../components/Assignment";
 import { ServiceOrder } from "../components/ServiceOrder";
 import { PlanEdit } from "../components/PlanEdit";
-import { BackVerb, PageContainer, RecordLayout, TextAction, VerbRow, eyebrowSx, useRecordView } from "../../components/ui";
+import { BackVerb, PageContainer, RecordLayout, TextAction, eyebrowSx, useRecordView, RecordActions } from "../../components/ui";
 
 const SERVING_VIEWS = ["notes", "times"];
 
@@ -89,18 +89,19 @@ export const PlanPage = () => {
       {eyebrow && <Typography component="p" sx={{ ...eyebrowSx, mb: 1 }}>{eyebrow}</Typography>}
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{planName}</Typography>
       {dateLabel && <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>{dateLabel}</Typography>}
-      <VerbRow sx={{ mt: 2 }}>
-        {canEdit && (
-          <TextAction onClick={() => setView(editing ? "" : "edit")} data-testid="edit-plan-button">
-            {editing ? Locale.label("common.done") : Locale.label("common.edit")}
-          </TextAction>
-        )}
-        <Link href={`/serving/plans/print/${plan.id}`} target="_blank" rel="noopener" underline="hover" sx={{ typography: "body1", fontWeight: 600 }} data-testid="print-plan-link">
-          {Locale.label("common.print")}
-        </Link>
-        {planType?.id && <TextAction to={`/serving/planTypes/${planType.id}`} component={RouterLink}>{planType.name}</TextAction>}
-        <TextAction to="/serving/plans" component={RouterLink} data-testid="plan-plans-link">{Locale.label("plans.planList.plans")}</TextAction>
-      </VerbRow>
+      <RecordActions
+        sx={{ mt: 2 }}
+        buttons={<>
+          {canEdit && (
+            <Button variant="contained" onClick={() => setView(editing ? "" : "edit")} data-testid="edit-plan-button">
+              {editing ? Locale.label("common.done") : Locale.label("common.edit")}
+            </Button>
+          )}
+          <Button variant="outlined" href={`/serving/plans/print/${plan.id}`} target="_blank" rel="noopener" data-testid="print-plan-link">{Locale.label("common.print")}</Button>
+        </>}>
+        {planType?.id && <TextAction small to={`/serving/planTypes/${planType.id}`} component={RouterLink}>{planType.name}</TextAction>}
+        <TextAction small to="/serving/plans" component={RouterLink} data-testid="plan-plans-link">{Locale.label("plans.planList.plans")}</TextAction>
+      </RecordActions>
     </Box>
   );
 

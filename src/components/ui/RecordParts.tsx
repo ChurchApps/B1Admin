@@ -78,6 +78,22 @@ export const VerbRow: React.FC<{ children: React.ReactNode; sx?: SxProps<Theme>;
   );
 };
 
+const flatten = (nodes: React.ReactNode): React.ReactNode[] =>
+  React.Children.toArray(nodes).flatMap((n) => (React.isValidElement(n) && n.type === React.Fragment ? flatten((n.props as { children?: React.ReactNode }).children) : [n]));
+
+// Record verbs: one contained primary plus outlined secondaries, then everything else as small text links under a rule.
+export const RecordActions: React.FC<{ buttons?: React.ReactNode; children?: React.ReactNode; sx?: SxProps<Theme> }> = ({ buttons, children, sx }) => {
+  const btns = flatten(buttons);
+  const links = flatten(children);
+  if (btns.length === 0 && links.length === 0) return null;
+  return (
+    <Box sx={[{ mt: 3 }, ...(Array.isArray(sx) ? sx : [sx])]} data-testid="record-actions">
+      {btns.length > 0 && <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ "& .MuiButton-root": { minWidth: 0, px: 1.75 }, "& .MuiButton-startIcon": { mr: 0.75 } }}>{btns}</Stack>}
+      {links.length > 0 && <VerbRow plain sx={btns.length > 0 ? { mt: 2, pt: 2, borderTop: 1, borderColor: "divider" } : undefined}>{links}</VerbRow>}
+    </Box>
+  );
+};
+
 type PillTone = "primary" | "neutral" | "warning";
 
 const pillTone: Record<PillTone, object> = {

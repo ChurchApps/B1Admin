@@ -1,9 +1,9 @@
 import React, { useContext, useCallback } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading } from "@churchapps/apphelper";
 import { type TaskInterface, type UserContextInterface } from "@churchapps/helpers";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import { PageContainer, RecordLayout, StatusBadge, TextAction, VerbRow, eyebrowSx } from "../../components/ui";
+import { PageContainer, RecordLayout, StatusBadge, TextAction, eyebrowSx, RecordActions } from "../../components/ui";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
@@ -103,14 +103,17 @@ export const TaskPage = () => {
           {Locale.label("tasks.taskPage.created")} {DateHelper.getDisplayDuration(DateHelper.toDate(task.data.dateCreated))} {Locale.label("tasks.taskPage.ago")} {Locale.label("tasks.taskPage.by")} {task.data.createdByLabel}
         </Typography>
       </Stack>
-      <VerbRow sx={{ mt: 2 }}>
-        <TextAction onClick={() => handleStatusChange(open ? "Closed" : "Open")} data-testid="task-status-toggle">
-          {open ? Locale.label("tasks.taskPage.closeTask", "Close task") : Locale.label("tasks.taskPage.reopenTask", "Reopen task")}
-        </TextAction>
-        <TextAction onClick={() => setModalField("associatedWith")} aria-label={Locale.label("tasks.taskPage.editAssoc")} data-testid="task-associate">{Locale.label("tasks.taskPage.associate")}</TextAction>
-        <TextAction onClick={() => setModalField("assignedTo")} aria-label={Locale.label("tasks.taskPage.editAssigned")} data-testid="task-assign">{Locale.label("tasks.taskPage.assign")}</TextAction>
-        <TextAction to="/serving/tasks" component={RouterLink}>{Locale.label("tasks.myWork.title")}</TextAction>
-      </VerbRow>
+      <RecordActions
+        sx={{ mt: 2 }}
+        buttons={<>
+          <Button variant="contained" onClick={() => handleStatusChange(open ? "Closed" : "Open")} data-testid="task-status-toggle">
+            {open ? Locale.label("tasks.taskPage.closeTask", "Close task") : Locale.label("tasks.taskPage.reopenTask", "Reopen task")}
+          </Button>
+          <Button variant="outlined" onClick={() => setModalField("assignedTo")} aria-label={Locale.label("tasks.taskPage.editAssigned")} data-testid="task-assign">{Locale.label("tasks.taskPage.assign")}</Button>
+        </>}>
+        <TextAction small onClick={() => setModalField("associatedWith")} aria-label={Locale.label("tasks.taskPage.editAssoc")} data-testid="task-associate">{Locale.label("tasks.taskPage.associate")}</TextAction>
+        <TextAction small to="/serving/tasks" component={RouterLink}>{Locale.label("tasks.myWork.title")}</TextAction>
+      </RecordActions>
       <Box component="dl" sx={{ mt: 3, mb: 0, display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 2, rowGap: 1, typography: "body2", "& dt": { color: "text.secondary", m: 0 }, "& dd": { m: 0, overflowWrap: "anywhere" } }}>
         <dt>{Locale.label("tasks.taskPage.associated")}</dt>
         <dd data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</dd>

@@ -31,7 +31,7 @@ export { ConfirmDialog } from "./ConfirmDialog";
 export { AppIconButton } from "./AppIconButton";
 export { hoverRowSx, clickableRowSx, numericCellSx, tableScrollSx } from "./tableStyles";
 export { GRID_SIZES, profileLayoutSx, formWidthSx } from "./layoutPresets";
-export { RecordHeading, TextAction, VerbRow, Pill, eyebrowSx, srOnlySx } from "./RecordParts";
+export { RecordActions, RecordHeading, TextAction, VerbRow, Pill, eyebrowSx, srOnlySx } from "./RecordParts";
 export { RecordLayout } from "./RecordLayout";
 export { useRecordView, BackVerb } from "./useRecordView";
 export { Sheet } from "./Sheet";

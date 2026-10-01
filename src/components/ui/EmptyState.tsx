@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { Box, Stack, Typography, TableCell } from "@mui/material";
+import { InRecordContext } from "./RecordLayout";
 
 interface EmptyStateProps {
   icon?: ReactNode;
@@ -12,6 +13,17 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, action, variant = "card", colSpan = 5 }) => {
+  const inRecord = React.useContext(InRecordContext);
+  if (inRecord && variant !== "table") {
+    return (
+      <Stack spacing={1} alignItems="flex-start">
+        <Typography variant="body1" color="text.secondary">{title}</Typography>
+        {description && <Typography variant="body2" color="text.secondary">{description}</Typography>}
+        {action}
+      </Stack>
+    );
+  }
+
   const content = (
     <Stack spacing={1} alignItems="center" sx={{ maxWidth: 480, mx: "auto" }}>
       {React.isValidElement(icon) && React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: 32, color: "text.secondary", mb: 0.5 }, "aria-hidden": true })}

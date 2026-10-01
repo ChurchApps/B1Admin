@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link as RouterLink, useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
 import type { PageInterface, SiteInterface } from "../helpers/Interfaces";
 import type { LinkInterface } from "@churchapps/helpers";
 import { PageLinkEdit } from "./components/PageLinkEdit";
-import { PageContainer, RecordLayout, StatusBadge, TextAction, VerbRow } from "../components/ui";
+import { PageContainer, RecordLayout, StatusBadge, TextAction, RecordActions } from "../components/ui";
 
 export const PagePreview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -98,11 +98,14 @@ export const PagePreview: React.FC = () => {
                   {Locale.label("site.pagePreview.showingPublished")}
                 </Typography>
               )}
-              <VerbRow sx={{ pt: 1 }}>
-                <TextAction to="/site/pages" component={RouterLink}>{Locale.label("helpers.secondaryMenuHelper.pages")}</TextAction>
-                <TextAction to={`/site/pages/${pageData.id}`} component={RouterLink}>{Locale.label("site.pagePreview.editContent")}</TextAction>
-                <TextAction onClick={() => setShowSettings(true)}>{Locale.label("site.pagePreview.pageSettings")}</TextAction>
-              </VerbRow>
+              <RecordActions
+                sx={{ mt: 1 }}
+                buttons={<>
+                  <Button variant="contained" component={RouterLink} to={`/site/pages/${pageData.id}`}>{Locale.label("site.pagePreview.editContent")}</Button>
+                  <Button variant="outlined" onClick={() => setShowSettings(true)}>{Locale.label("site.pagePreview.pageSettings")}</Button>
+                </>}>
+                <TextAction small to="/site/pages" component={RouterLink}>{Locale.label("helpers.secondaryMenuHelper.pages")}</TextAction>
+              </RecordActions>
             </Stack>
           )}
           sliceSx={{ p: { xs: 0, md: 0 } }}>

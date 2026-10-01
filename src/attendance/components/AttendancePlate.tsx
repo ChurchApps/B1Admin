@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Box, Link, Stack, Typography } from "@mui/material";
 import { ArrayHelper, DateHelper, Loading, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type GroupInterface, type PersonInterface, type ServiceInterface } from "@churchapps/helpers";
-import { RecordHeading, TextAction, VerbRow, eyebrowSx, filterChipSx, numericCellSx } from "../../components/ui";
+import { RecordHeading, TextAction, VerbRow, eyebrowSx, filterChipSx, numericCellSx, RecordActions } from "../../components/ui";
 import { type HeadcountInterface } from "./HeadcountEntry";
 import { addDays, isoDate, parseDate, startOfSundayWeek } from "../week";
 
@@ -191,12 +191,12 @@ export const AttendanceIdentity = (props: IdentityProps) => {
           </Box>
         )
       )}
-      <VerbRow plain sx={{ mt: 3 }}>
-        {props.canSetup && <TextAction onClick={() => props.onView("setup")} data-testid="attendance-verb-setup">{Locale.label("attendance.tabs.setup")}</TextAction>}
-        {props.canKiosk && <TextAction onClick={() => props.onView("kiosk")} data-testid="attendance-verb-kiosk">{Locale.label("attendance.plate.kiosk", "Kiosk")}</TextAction>}
-        {props.canHeadcount && <TextAction onClick={() => props.onView("headcount")} data-testid="attendance-tab-headcounts">{Locale.label("attendance.tabs.headcounts")}</TextAction>}
-        {props.canYears && <TextAction onClick={() => props.onView("years")} data-testid="attendance-verb-years">{Locale.label("attendance.plate.allYears", "All years")}</TextAction>}
-      </VerbRow>
+      <RecordActions>
+        {props.canSetup && <TextAction small onClick={() => props.onView("setup")} data-testid="attendance-verb-setup">{Locale.label("attendance.tabs.setup")}</TextAction>}
+        {props.canKiosk && <TextAction small onClick={() => props.onView("kiosk")} data-testid="attendance-verb-kiosk">{Locale.label("attendance.plate.kiosk", "Kiosk")}</TextAction>}
+        {props.canHeadcount && <TextAction small onClick={() => props.onView("headcount")} data-testid="attendance-tab-headcounts">{Locale.label("attendance.tabs.headcounts")}</TextAction>}
+        {props.canYears && <TextAction small onClick={() => props.onView("years")} data-testid="attendance-verb-years">{Locale.label("attendance.plate.allYears", "All years")}</TextAction>}
+      </RecordActions>
     </Box>
   );
 };

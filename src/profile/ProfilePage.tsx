@@ -1,4 +1,4 @@
-import { Grid, Icon, TextField, Typography, InputAdornment, Box, Alert, FormControlLabel, Switch, ButtonBase, Stack } from "@mui/material";
+import { Grid, Icon, TextField, Typography, InputAdornment, Box, Alert, FormControlLabel, Switch, ButtonBase, Stack, Button } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -7,7 +7,7 @@ import { DarkMode, LightMode } from "@mui/icons-material";
 import { LoadingButton } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { FormCard } from "../components/ui/FormCard";
-import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, useRecordView } from "../components/ui";
+import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, useRecordView, RecordActions } from "../components/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { type TaskInterface } from "@churchapps/helpers";
 import { useThemeMode } from "../ThemeContext";
@@ -160,10 +160,9 @@ export const ProfilePage = () => {
     <Box component="aside" data-testid="profile-identity">
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{displayName}</Typography>
       {UserHelper.user?.email && <Typography color="text.secondary" sx={{ mt: 0.5, overflowWrap: "anywhere" }}>{UserHelper.user.email}</Typography>}
-      <VerbRow sx={{ mt: 2 }}>
-        {!editing && <TextAction onClick={() => { setSaveMessage(""); setView("edit"); }} data-testid="profile-edit-button">{Locale.label("common.edit")}</TextAction>}
-        <TextAction to="/profile/devices" component={Link} data-testid="profile-devices-link">{Locale.label("profile.devices.title", "Devices")}</TextAction>
-      </VerbRow>
+      <RecordActions sx={{ mt: 2 }} buttons={!editing && <Button variant="contained" onClick={() => { setSaveMessage(""); setView("edit"); }} data-testid="profile-edit-button">{Locale.label("common.edit")}</Button>}>
+        <TextAction small to="/profile/devices" component={Link} data-testid="profile-devices-link">{Locale.label("profile.devices.title", "Devices")}</TextAction>
+      </RecordActions>
 
       <Box sx={{ mt: 4 }}>
         <RecordHeading label={Locale.label("profile.profilePage.themePreferences")} />

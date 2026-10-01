@@ -5,7 +5,7 @@ import { UserHelper, Permissions, Locale, Loading } from "@churchapps/apphelper"
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Box, Button, Link as MuiLink, Stack, Typography } from "@mui/material";
 import { Description as DescriptionIcon } from "@mui/icons-material";
-import { BackVerb, PageContainer, EmptyState, Pill, RecordLayout, TextAction, VerbRow, useRecordView } from "../components/ui";
+import { BackVerb, PageContainer, EmptyState, Pill, RecordLayout, TextAction, useRecordView, RecordActions } from "../components/ui";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -81,12 +81,9 @@ export const FormPage = () => {
         </MuiLink>
       )}
       {data.description && <Typography variant="body2" color="text.secondary" sx={{ mt: 2, whiteSpace: "pre-line" }}>{data.description}</Typography>}
-      <VerbRow sx={{ mt: 3 }}>
-        <TextAction to="/forms" component={Link} data-testid="form-back-to-forms">{Locale.label("forms.formsPage.forms")}</TextAction>
-        {canEditSettings && !editing && (
-          <TextAction onClick={() => setView("edit")} data-testid="edit-form-settings-button">{Locale.label("forms.formEdit.editForm")}</TextAction>
-        )}
-      </VerbRow>
+      <RecordActions buttons={canEditSettings && !editing && <Button variant="contained" onClick={() => setView("edit")} data-testid="edit-form-settings-button">{Locale.label("forms.formEdit.editForm")}</Button>}>
+        <TextAction small to="/forms" component={Link} data-testid="form-back-to-forms">{Locale.label("forms.formsPage.forms")}</TextAction>
+      </RecordActions>
     </Box>
   );
 

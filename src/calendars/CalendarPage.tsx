@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack, Button } from "@mui/material";
 import { ApiHelper, UserHelper, Loading, Locale, Permissions } from "@churchapps/apphelper";
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
 import { useConfirmDelete, useRequirePermission, usePendingApprovalsCount } from "../hooks";
@@ -8,7 +8,7 @@ import { CuratedCalendar } from "./components/CuratedCalendar";
 import { EventModal } from "./components/EventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
 import { CalendarEdit } from "./components/CalendarEdit";
-import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, eyebrowSx, useRecordView } from "../components/ui";
+import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, eyebrowSx, useRecordView, RecordActions } from "../components/ui";
 
 const printStyles = `@media print {
   body * { visibility: hidden; }
@@ -80,12 +80,15 @@ export const CalendarPage = () => {
     <Box component="aside" data-testid="calendar-identity">
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{name}</Typography>
       <Typography id="page-header-subtitle" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("calendars.calendarPage.subtitle")}</Typography>
-      <VerbRow sx={{ mt: 2 }}>
-        <TextAction onClick={() => setShowNewEvent(true)} data-testid="new-event-button">{Locale.label("calendars.calendarPage.newEvent")}</TextAction>
-        <TextAction onClick={() => setShowImport(true)} data-testid="import-ics-button">{Locale.label("calendars.calendarPage.importIcs")}</TextAction>
-        <TextAction onClick={() => window.print()} data-testid="print-calendar-button">{Locale.label("calendars.calendarPage.print")}</TextAction>
-        {canEdit && view !== "edit" && <TextAction onClick={() => setView("edit")} data-testid="edit-calendar-button">{Locale.label("common.edit")}</TextAction>}
-      </VerbRow>
+      <RecordActions
+        sx={{ mt: 2 }}
+        buttons={<>
+          <Button variant="contained" onClick={() => setShowNewEvent(true)} data-testid="new-event-button">{Locale.label("calendars.calendarPage.newEvent")}</Button>
+          {canEdit && view !== "edit" && <Button variant="outlined" onClick={() => setView("edit")} data-testid="edit-calendar-button">{Locale.label("common.edit")}</Button>}
+        </>}>
+        <TextAction small onClick={() => setShowImport(true)} data-testid="import-ics-button">{Locale.label("calendars.calendarPage.importIcs")}</TextAction>
+        <TextAction small onClick={() => window.print()} data-testid="print-calendar-button">{Locale.label("calendars.calendarPage.print")}</TextAction>
+      </RecordActions>
       {pendingApprovals > 0 && (
         <Box sx={{ mt: 1 }}>
           <TextAction small to="/calendars/approvals" component={Link} data-testid="pending-approvals-link">
