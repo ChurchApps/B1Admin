@@ -163,8 +163,10 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           }}
           onCreate={(person) => {
             setSearchText("");
-            setSearchResults([person]);
-            if (onCreate) onCreate(person);
+            if (onCreate) {
+              setSearchResults([]);
+              onCreate(person);
+            } else setSearchResults([person]);
           }}
         />
       )}

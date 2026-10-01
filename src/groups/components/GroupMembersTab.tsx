@@ -26,7 +26,7 @@ export const GroupMembersTab = (props: Props) => {
         </Grid>
         {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
           <Grid size={{ xs: 12, md: 4 }}>
-            <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
+            <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} onCreate={addPerson} showCreatePersonOnNotFound />
           </Grid>
         )}
       </Grid>

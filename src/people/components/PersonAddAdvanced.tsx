@@ -18,6 +18,7 @@ interface Props {
   includeEmail?: boolean;
   actionLabel?: string;
   showCreatePersonOnNotFound?: boolean;
+  onCreate?: (person: PersonInterface) => void;
 }
 
 export const PersonAddAdvanced: React.FC<Props> = (props: Props) => {
@@ -54,7 +55,7 @@ export const PersonAddAdvanced: React.FC<Props> = (props: Props) => {
 
     return (
       <DisplayBox key="displayBox" id="personAddBox" headerIcon="person" headerText={Locale.label("groups.groupPage.addPpl")} editContent={toggleButton}>
-        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={props.addFunction} showCreatePersonOnNotFound />
+        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={props.addFunction} showCreatePersonOnNotFound={props.showCreatePersonOnNotFound} onCreate={props.onCreate} />
       </DisplayBox>
     );
   }
