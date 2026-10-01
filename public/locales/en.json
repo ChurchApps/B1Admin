@@ -5630,6 +5630,7 @@
       "days": "Wait days",
       "noAssignee": "Unassigned",
       "noGroup": "No group selected",
+      "noTextingProvider": "No texting provider is set up. Add one in Settings → Texting or texts will not send.",
       "note": "Note",
       "pickAssignee": "Pick assignee",
       "pickGroup": "Pick group",
@@ -5640,6 +5641,8 @@
       "subjectOverride": "Subject (optional)",
       "taskDescription": "Description (optional)",
       "taskTitle": "Task title",
+      "textMergeHint": "Use {{firstName}}, {{lastName}}, {{displayName}} or {{churchName}}. Opted-out people are skipped.",
+      "textMessage": "Text message",
       "title": "Automated actions",
       "type": {
         "addNote": "Add Note",
@@ -5649,6 +5652,7 @@
         "delay": "Wait",
         "removeFromGroup": "Remove from Group",
         "sendEmail": "Send Email",
+        "sendText": "Send Text",
         "setField": "Set Field",
         "webhook": "Call Webhook"
       },

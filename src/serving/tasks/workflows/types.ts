@@ -14,7 +14,7 @@ declare module "@churchapps/helpers" {
 }
 
 export const ACTION_TYPES = [
-  "delay", "sendEmail", "addToGroup", "removeFromGroup", "addToWorkflow", "addNote", "setField", "webhook", "createTask"
+  "delay", "sendEmail", "sendText", "addToGroup", "removeFromGroup", "addToWorkflow", "addNote", "setField", "webhook", "createTask"
 ] as const;
 export type ActionType = (typeof ACTION_TYPES)[number];
 
