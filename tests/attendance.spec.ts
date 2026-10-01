@@ -1,10 +1,19 @@
 import fs from "fs";
-import type { Page } from "@playwright/test";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { attendanceTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
+
+const API = process.env.API_BASE || "http://localhost:8084";
+
+async function apiLogin(api: APIRequestContext) {
+  const res = await api.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
+}
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Attendance Management", () => {
@@ -220,6 +229,55 @@ test.describe("Attendance Management", () => {
       const runBtn = page.locator("button").getByText("Run Report");
       await expect(runBtn).toBeVisible({ timeout: 10000 });
       await expect(runBtn).toBeEnabled();
+    });
+  });
+
+  test.describe("Group Attendance order", () => {
+    const WEEK = "2026-09-27";
+
+    test.beforeAll(async () => {
+      const api = await pwRequest.newContext();
+      const auth = await apiLogin(api);
+      // Two classes in the same service time, attendance taken alternately.
+      const sRes = await api.post(`${API}/attendance/sessions`, {
+        ...auth,
+        data: [
+          { groupId: "GRP00000004", serviceTimeId: "SST00000001", sessionDate: `${WEEK}T09:00:00` },
+          { groupId: "GRP00000005", serviceTimeId: "SST00000001", sessionDate: `${WEEK}T09:00:00` }
+        ]
+      });
+      const sessions = await sRes.json();
+      for (let i = 1; i <= 12; i++) {
+        const personId = "PER" + i.toString().padStart(8, "0");
+        await api.post(`${API}/attendance/visitsessions/log`, { ...auth, data: { personId, visitSessions: [{ sessionId: sessions[i % 2].id }] } });
+      }
+      await api.dispose();
+    });
+
+    test("Group Attendance lists each group once with members in name order", async ({ page }) => {
+      await page.locator('button[role="tab"]').getByText("Group Attendance").click();
+      await page.locator('[id="mui-component-select-campusId"]').click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill(WEEK);
+      await page.locator('[name="endDate"]').fill("2026-10-03");
+      await page.locator("button").getByText("Run Report").click();
+
+      const report = page.locator('[id="reportsBox"] table');
+      // Session Date and Service Time are the outer groupings, so the group is the third heading level.
+      await expect(report.locator("td.heading3").first()).toBeVisible({ timeout: 10000 });
+      await expect(report.locator("td.heading3", { hasText: "Adult Bible Class" })).toHaveCount(1);
+      await expect(report.locator("td.heading3", { hasText: "Young Adults Class" })).toHaveCount(1);
+
+      const rows = await report.locator("tbody tr").evaluateAll((trs) => trs.map((tr) => ({ heading: !!tr.querySelector("td[class*='heading']"), text: tr.querySelector("td:not([class*='heading'])")?.textContent?.trim() || "" })));
+      const groups: string[][] = [];
+      rows.forEach((r) => {
+        if (r.heading) groups.push([]);
+        else groups[groups.length - 1]?.push(r.text);
+      });
+      expect(groups.flat().length).toBeGreaterThan(0);
+      groups.forEach((names) => expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b))));
     });
   });
 
