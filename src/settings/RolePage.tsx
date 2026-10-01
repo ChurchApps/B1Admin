@@ -3,7 +3,7 @@ import { UserAdd, RolePermissions, RoleMembers } from "./components";
 import { type RoleInterface, type RoleMemberInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
-import { Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { PageContainer } from "../components/ui";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsPanel } from "./components/SettingsPanel";
@@ -65,11 +65,15 @@ export const RolePage = () => {
       <>
         <SettingsHeader backTo="/settings/roles" backLabel={Locale.label("settings.roles.roles")} title={role?.name || ""} />
         <PageContainer py={3}>
-          <Stack spacing={3} sx={{ maxWidth: 960 }}>
-            {canEdit && getAddUser()}
-            <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
-            {getPermissions()}
-          </Stack>
+          <Grid container spacing={3} alignItems="flex-start">
+            <Grid size={{ xs: 12, lg: canEdit ? 5 : 12 }}>
+              <Stack spacing={3}>
+                {canEdit && getAddUser()}
+                <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
+              </Stack>
+            </Grid>
+            {canEdit && <Grid size={{ xs: 12, lg: 7 }}>{getPermissions()}</Grid>}
+          </Grid>
         </PageContainer>
       </>
     );

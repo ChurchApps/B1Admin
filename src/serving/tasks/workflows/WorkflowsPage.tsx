@@ -1,7 +1,7 @@
-import { Typography, Box, Link as MuiLink, Menu, MenuItem, Stack } from "@mui/material";
+import { Typography, Box, Link as MuiLink, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
-import { EmptyState, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, ResultsBar, StatusBadge, Surface, TextAction } from "../../../components/ui";
+import { EmptyState, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, ResultsBar, StatusBadge, Surface, TextAction, tableScrollSx } from "../../../components/ui";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -56,29 +56,40 @@ export const WorkflowsPage = () => {
   const getList = () => {
     if (workflows.isLoading) return <Loading />;
     if (list.length === 0) return <EmptyState variant="plain" icon={<WorkflowsIcon />} title={Locale.label("tasks.workflowsPage.noWorkflows")} />;
-    return list.map((workflow) => (
-      <Box
-        key={workflow.id}
-        data-testid={"workflow-row-" + workflow.id}
-        onClick={() => navigate("/serving/tasks/workflows/" + workflow.id)}
-        sx={{ display: "flex", alignItems: "center", gap: 2, py: 1.5, minHeight: 56, borderTop: 1, borderColor: "divider", cursor: "pointer", "&:first-of-type": { borderTop: 0 }, "&:hover": { bgcolor: "action.hover" } }}>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <MuiLink component={RouterLink} to={"/serving/tasks/workflows/" + workflow.id} underline="hover" onClick={(e) => e.stopPropagation()} sx={{ fontWeight: 600, color: "text.primary", overflowWrap: "anywhere" }}>
-            {workflow.name}
-          </MuiLink>
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.25, color: "text.secondary", typography: "body2" }}>
-            <span>{catName(workflow.categoryId)}</span>
-            <span aria-hidden>·</span>
-            <StatusBadge tone={workflow.active ? "success" : "neutral"} variant="dot">{workflow.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>
-          </Stack>
-        </Box>
-        {canManage && (
-          <Box onClick={(e) => e.stopPropagation()}>
-            <TextAction small onClick={() => duplicate(workflow.id || "")} data-testid={"duplicate-workflow-" + workflow.id}>{Locale.label("common.duplicate")}</TextAction>
-          </Box>
-        )}
+    return (
+      <Box sx={tableScrollSx} role="region" aria-label={Locale.label("tasks.workflowsPage.title")} tabIndex={0}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>{Locale.label("common.name")}</TableCell>
+              <TableCell>{Locale.label("tasks.workflowsPage.category", "Category")}</TableCell>
+              <TableCell>{Locale.label("tasks.workflowsPage.status", "Status")}</TableCell>
+              {canManage && <TableCell />}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.map((workflow) => (
+              <TableRow key={workflow.id} hover data-testid={"workflow-row-" + workflow.id} onClick={() => navigate("/serving/tasks/workflows/" + workflow.id)} sx={{ cursor: "pointer" }}>
+                <TableCell sx={{ py: 1.5 }}>
+                  <MuiLink component={RouterLink} to={"/serving/tasks/workflows/" + workflow.id} underline="hover" onClick={(e) => e.stopPropagation()} sx={{ fontWeight: 600, color: "text.primary", overflowWrap: "anywhere" }}>
+                    {workflow.name}
+                  </MuiLink>
+                </TableCell>
+                <TableCell sx={{ color: "text.secondary" }}>{catName(workflow.categoryId)}</TableCell>
+                <TableCell>
+                  <StatusBadge tone={workflow.active ? "success" : "neutral"} variant="dot">{workflow.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>
+                </TableCell>
+                {canManage && (
+                  <TableCell align="right" className="rowActions" onClick={(e) => e.stopPropagation()}>
+                    <TextAction small onClick={() => duplicate(workflow.id || "")} data-testid={"duplicate-workflow-" + workflow.id}>{Locale.label("common.duplicate")}</TextAction>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Box>
-    ));
+    );
   };
 
   return (
@@ -92,7 +103,7 @@ export const WorkflowsPage = () => {
         )}
       </PageHeader>
       <PageContainer>
-        <Surface sx={{ maxWidth: 880 }}>
+        <Surface>
           <Stack spacing={3}>
             {usedCategories.length > 0 && (
               <PillTabs

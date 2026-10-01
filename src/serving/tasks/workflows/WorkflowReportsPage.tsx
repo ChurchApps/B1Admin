@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import { ArrowBack as BackIcon } from "@mui/icons-material";
 import { Chart } from "react-google-charts";
 import { Locale, Loading } from "@churchapps/apphelper";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { PageContainer, PageHeader, RecordHeading, Surface, TextAction, VerbRow } from "../../../components/ui";
+import { HeaderTextButton, PageContainer, PageHeader, Surface } from "../../../components/ui";
 import { type WorkflowStepInterface } from "@churchapps/helpers";
 
 interface ReportData {
@@ -36,30 +37,33 @@ export const WorkflowReportsPage = () => {
 
   if (report.isLoading) return <Loading />;
 
-  const section = (title: string, hasData: boolean, chart: () => React.ReactNode) => (
-    <Box component="section">
-      <RecordHeading label={title} />
+  const chartPanel = (title: string, hasData: boolean, chart: () => React.ReactNode) => (
+    <Surface sx={{ height: "100%" }}>
+      <Typography variant="h3" component="h2" sx={{ mb: 2 }}>{title}</Typography>
       {hasData ? chart() : <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowReports.noData")}</Typography>}
-    </Box>
+    </Surface>
   );
 
   return (
     <>
-      <PageHeader title={Locale.label("tasks.workflowReports.title")} subtitle={Locale.label("tasks.workflowReports.subtitle")} />
+      <PageHeader title={Locale.label("tasks.workflowReports.title")} subtitle={Locale.label("tasks.workflowReports.subtitle")}>
+        <HeaderTextButton component={RouterLink} to={"/serving/tasks/workflows/" + workflowId} startIcon={<BackIcon />} data-testid="workflow-reports-back">{Locale.label("common.back")}</HeaderTextButton>
+      </PageHeader>
       <PageContainer>
-        <Surface sx={{ maxWidth: 960 }}>
-          <Stack spacing={4} data-testid="workflow-reports">
-            <VerbRow>
-              <TextAction to={"/serving/tasks/workflows/" + workflowId} component={RouterLink} data-testid="workflow-reports-back">{"← " + Locale.label("common.back")}</TextAction>
-            </VerbRow>
-            <Box component="section">
-              <RecordHeading label={Locale.label("tasks.workflowReports.overdue")} />
-              <Typography variant="h1" component="p" color="error" sx={{ fontVariantNumeric: "tabular-nums" }} data-testid="report-overdue-count">{report.data?.overdue?.length || 0}</Typography>
-            </Box>
-            {section(Locale.label("tasks.workflowReports.perStep"), (report.data?.stepCounts?.length || 0) > 0, () => <Chart chartType="ColumnChart" data={perStepData()} width="100%" height="300px" />)}
-            {section(Locale.label("tasks.workflowReports.throughput"), (report.data?.throughput?.length || 0) > 0, () => <Chart chartType="LineChart" data={throughputData()} width="100%" height="300px" />)}
-          </Stack>
-        </Surface>
+        <Grid container spacing={3} data-testid="workflow-reports">
+          <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+            <Surface sx={{ height: "100%" }}>
+              <Typography variant="h3" component="h2" sx={{ mb: 1 }}>{Locale.label("tasks.workflowReports.overdue")}</Typography>
+              <Typography variant="h1" component="p" color={report.data?.overdue?.length ? "error" : "text.primary"} sx={{ fontSize: 48, lineHeight: 1.1, fontVariantNumeric: "tabular-nums" }} data-testid="report-overdue-count">{report.data?.overdue?.length || 0}</Typography>
+            </Surface>
+          </Grid>
+          <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+            {chartPanel(Locale.label("tasks.workflowReports.perStep"), (report.data?.stepCounts?.length || 0) > 0, () => <Chart chartType="ColumnChart" data={perStepData()} width="100%" height="300px" />)}
+          </Grid>
+          <Grid size={12}>
+            {chartPanel(Locale.label("tasks.workflowReports.throughput"), (report.data?.throughput?.length || 0) > 0, () => <Chart chartType="LineChart" data={throughputData()} width="100%" height="300px" />)}
+          </Grid>
+        </Grid>
       </PageContainer>
     </>
   );
