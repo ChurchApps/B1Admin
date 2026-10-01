@@ -4,6 +4,7 @@ import React, { useEffect, useMemo } from "react";
 import { SecondaryMenuHelper } from "../helpers/SecondaryMenuHelper";
 import { hasPlansEditAccess } from "../helpers";
 import { SiteHeader } from "@churchapps/apphelper";
+import { ThemeMenuControls } from "./ThemeMenuControls";
 import UserContext from "../UserContext";
 import { useNavigate } from "react-router-dom";
 import { CommandPalette } from "./commandPalette/CommandPalette";
@@ -205,6 +206,7 @@ export const Header: React.FC = () => {
         context={context!}
         appName={"B1Admin"}
         onNavigate={handleNavigate}
+        userMenuExtras={<ThemeMenuControls />}
       />
       <CommandPalette />
     </>
