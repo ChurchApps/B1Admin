@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Stack, Chip } from "@mui/material";
-import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
+import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { NavigationTabs, type NavigationTab, SectionListCard, tableScrollSx } from "../../components/ui";
+import { PillTabs, SectionListCard, tableScrollSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 import { formatDateSafe } from "../../helpers/DateFormatHelper";
@@ -78,14 +78,16 @@ export const DeveloperSection: React.FC = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <NavigationTabs
-        selectedTab={tab}
-        onTabChange={(v) => setTab(v as DeveloperTab)}
-        tabs={[
-          { value: "apiKeys", label: Locale.label("settings.developer.apiKeys"), icon: <KeyIcon /> },
-          { value: "webhooks", label: Locale.label("settings.webhooksPage.title"), icon: <WebhookIcon /> },
-          { value: "connections", label: Locale.label("settings.developer.connectedApps"), icon: <LinkIcon /> }
-        ] satisfies NavigationTab[]}
+      <PillTabs
+        tabs
+        aria-label={Locale.label("settings.developer.title")}
+        value={tab}
+        onChange={(v) => setTab(v as DeveloperTab)}
+        options={[
+          { value: "apiKeys", label: Locale.label("settings.developer.apiKeys") },
+          { value: "webhooks", label: Locale.label("settings.webhooksPage.title") },
+          { value: "connections", label: Locale.label("settings.developer.connectedApps") }
+        ]}
       />
 
       <Box sx={{ pt: 3 }}>

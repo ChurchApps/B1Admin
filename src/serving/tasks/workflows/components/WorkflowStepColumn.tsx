@@ -62,13 +62,13 @@ export const WorkflowStepColumn = (props: Props) => {
     <Box
       data-testid={"workflow-column-" + step.id}
       sx={{
+        flex: "1 0 290px",
         minWidth: 290,
-        width: 290,
-        flexShrink: 0,
+        maxWidth: 480,
         backgroundColor: "var(--b1-hover)",
         borderRadius: "var(--b1-radius-panel)",
         p: 2,
-        mr: 2,
+        "&:not(:last-child)": { mr: 2 },
         border: "1px solid",
         borderColor: "var(--b1-border)"
       }}

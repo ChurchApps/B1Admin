@@ -3,7 +3,6 @@ import { useReactToPrint } from "react-to-print";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as DonationIcon } from "@mui/icons-material";
 import { EmptyState } from "../../components";
 import { RecordHeading, StatusBadge, TextAction, VerbRow, hoverRowSx, numericCellSx, tableScrollSx } from "../../components/ui";
 import { CsvVerb } from "./GivingParts";
@@ -142,23 +141,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const getRows = React.useCallback(() => {
     const rows: React.ReactNode[] = [];
 
-    if (props.funds.length === 0) {
-      rows.push(
-        <TableRow key="0">
-          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={Locale.label("donations.donations.errMsg")} />
-        </TableRow>
-      );
-      return rows;
-    }
-
-    if (!donations || donations.length === 0) {
-      rows.push(
-        <TableRow key="0">
-          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={Locale.label("donations.donations.noDonMsg")} />
-        </TableRow>
-      );
-      return rows;
-    }
+    if (props.funds.length === 0 || !donations || donations.length === 0) return rows;
 
     for (let i = 0; i < donations.length; i++) {
       const d = donations[i];
@@ -298,16 +281,20 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     return (
       <Box>
         <RecordHeading label={Locale.label("donations.donations.don") + " (" + donations.length + ")"}>{getHeaderActions()}</RecordHeading>
-        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.donations.don")} tabIndex={0}>
-          <Table sx={{ minWidth: 650 }}>
-            {getTableHeader()}
-            <TableBody>{getRows()}</TableBody>
-          </Table>
-        </Box>
+        {props.funds.length === 0 || donations.length === 0
+          ? <EmptyState variant="plain" title={Locale.label(props.funds.length === 0 ? "donations.donations.errMsg" : "donations.donations.noDonMsg")} />
+          : (
+            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.donations.don")} tabIndex={0}>
+              <Table sx={{ minWidth: 650 }}>
+                {getTableHeader()}
+                <TableBody>{getRows()}</TableBody>
+              </Table>
+            </Box>
+          )}
         {getPrintContent()}
       </Box>
     );
-  }, [donations, getRows, getTableHeader, getHeaderActions, getPrintContent]);
+  }, [donations, props.funds.length, getRows, getTableHeader, getHeaderActions, getPrintContent]);
 
   return tableContent;
 };

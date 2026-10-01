@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Card, List, ListItemButton, Typography } from "@mui/material";
+import { Box, List, ListItemButton, Typography } from "@mui/material";
 import { ChevronRight as ChevronRightIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { CountChip } from "../../components/ui";
@@ -26,11 +26,11 @@ interface Props {
 }
 
 export const SettingsConfigList: React.FC<Props> = ({ sections, selected, onSelect, testIdPrefix = "settings-section", headerLabel }) => (
-  <Card sx={{ overflow: "hidden" }}>
-    <Box sx={{ px: 2.5, py: 2, borderBottom: 1, borderColor: "divider" }}>
+  <Box>
+    <Box sx={{ px: 1.5, pb: 1 }}>
       <Typography sx={labelSx}>{headerLabel || Locale.label("settings.landing.configuration")}</Typography>
     </Box>
-    <List disablePadding sx={{ p: 1 }}>
+    <List disablePadding>
       {sections.map((s) => {
         const isSelected = s.key === selected;
         return (
@@ -56,5 +56,5 @@ export const SettingsConfigList: React.FC<Props> = ({ sections, selected, onSele
         );
       })}
     </List>
-  </Card>
+  </Box>
 );

@@ -1,8 +1,9 @@
 import { Loading, Locale } from "@churchapps/apphelper";
 import { Link as RouterLink } from "react-router-dom";
-import { PageContainer, PageHeader, Surface, TextAction } from "../components/ui";
+import { HeaderTextButton, PageContainer, PageHeader, Surface } from "../components/ui";
 import { useQuery } from "@tanstack/react-query";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { ArrowBack as BackIcon } from "@mui/icons-material";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
 import { PendingJoinRequests } from "./components/PendingJoinRequests";
 
@@ -16,11 +17,10 @@ const PendingRequestsPage = () => {
 
   return (
     <>
-      <PageHeader title={Locale.label("groups.pendingRequestsPage.title")} subtitle={Locale.label("groups.pendingRequestsPage.subtitle")} />
+      <PageHeader title={Locale.label("groups.pendingRequestsPage.title")} subtitle={Locale.label("groups.pendingRequestsPage.subtitle")}>
+        <HeaderTextButton component={RouterLink} to="/groups" startIcon={<BackIcon />} data-testid="groups-back">{Locale.label("groups.groupsPage.groups")}</HeaderTextButton>
+      </PageHeader>
       <PageContainer>
-        <Box sx={{ mb: 3 }}>
-          <TextAction to="/groups" component={RouterLink} data-testid="groups-back">{"← " + Locale.label("common.backTo", "Back to {name}").replace("{name}", Locale.label("groups.groupsPage.groups"))}</TextAction>
-        </Box>
         <Box data-testid="pending-requests-page">
           <Surface>
             {requests.data && requests.data.length > 0 ? (
@@ -30,9 +30,9 @@ const PendingRequestsPage = () => {
                 onChanged={() => requests.refetch()}
               />
             ) : (
-              <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }} data-testid="pending-requests-empty">
+              <Typography color="text.secondary" data-testid="pending-requests-empty">
                 {Locale.label("groups.pendingRequestsPage.empty")}
-              </Box>
+              </Typography>
             )}
           </Surface>
         </Box>

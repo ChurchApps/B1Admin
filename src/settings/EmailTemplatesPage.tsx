@@ -54,7 +54,7 @@ export const EmailTemplatesPage: React.FC = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <SettingsHeader backTo="/settings" title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
+      <SettingsHeader title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
         {editTemplate === null && (
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew} data-testid="new-email-template-button">{Locale.label("settings.emailTemplatesPage.newTemplate")}</Button>
         )}

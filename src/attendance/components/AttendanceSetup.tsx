@@ -165,7 +165,7 @@ export const AttendanceSetup = memo(() => {
         service === undefined || (service?.name === lastService && !campusChanged) ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 2 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
             <Icon fontSize="small" sx={{ color: "text.secondary" }}>calendar_month</Icon>
             <Button
               variant="text"
@@ -187,7 +187,7 @@ export const AttendanceSetup = memo(() => {
         serviceTime === undefined || (serviceTime?.name === lastServiceTime && !campusChanged && !serviceChanged) ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 4 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
             <Icon fontSize="small" sx={{ color: "text.secondary" }}>schedule</Icon>
             <Button
               variant="text"
@@ -209,7 +209,7 @@ export const AttendanceSetup = memo(() => {
         group === undefined || group?.categoryName === lastCategory ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 6 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
             <Icon fontSize="small" sx={{ color: "text.secondary" }}>folder</Icon>
             <Typography variant="body2" color="text.secondary">
               {group.categoryName}
@@ -221,7 +221,7 @@ export const AttendanceSetup = memo(() => {
         group === undefined ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 8 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
             <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600, "&:hover": { textDecoration: "underline" } }}>
               {group.name}
             </Typography>
@@ -254,7 +254,7 @@ export const AttendanceSetup = memo(() => {
             icon={<AddIcon />}
             data-testid={"add-service-button-" + campus.id}
             onClick={() => selectService({ id: "", campusId: campus.id, name: "" })}
-            sx={{ ml: 2 }}
+            sx={{ ml: -1 }}
           />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
@@ -273,7 +273,7 @@ export const AttendanceSetup = memo(() => {
             icon={<AddIcon />}
             data-testid={"add-service-time-button-" + service.id}
             onClick={() => selectServiceTime({ id: "", serviceId: service.id, name: "" })}
-            sx={{ ml: 4 }}
+            sx={{ ml: -1 }}
           />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
@@ -340,7 +340,7 @@ export const AttendanceSetup = memo(() => {
     if (attendance.isLoading) return <Loading />;
     return (
       <Box sx={tableScrollSx} role="region" aria-label={Locale.label("attendance.attendanceSetup.title")} tabIndex={0}>
-        <Table size="medium">
+        <Table size="small">
           <TableHead>{tableHeader}</TableHead>
           <TableBody sx={{ whiteSpace: "nowrap" }}>{getRows()}</TableBody>
         </Table>

@@ -4,8 +4,8 @@ import { UserHelper, Permissions, Locale, ApiHelper, Loading, DateHelper } from 
 import { useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
-import { TextAction, VerbRow } from "../components/ui";
-import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon } from "@mui/icons-material";
+import { VerbRow } from "../components/ui";
+import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon, ImportExport as ImportExportIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { SettingsLayout, SettingsRow, eyebrowSx } from "./components/SettingsPage";
 import { type ConfigSection } from "./components/SettingsConfigList";
@@ -273,15 +273,12 @@ export const ManageChurch = () => {
       )}
       verbs={(
         <VerbRow>
-          <TextAction small to="/settings/email-templates" component={RouterLink} data-testid="settings-verb-email-templates">{Locale.label("settings.emailTemplatesPage.title")}</TextAction>
-          <TextAction small to="/settings/audit-log" component={RouterLink} data-testid="settings-verb-audit-log">{Locale.label("settings.manageChurch.auditLog")}</TextAction>
-          <TextAction small to="/settings/batches" component={RouterLink} data-testid="settings-verb-batches">{Locale.label("settings.manageChurch.batches")}</TextAction>
-          <MuiLink href={importExportUrl} target="_blank" rel="noreferrer noopener" underline="hover" sx={{ typography: "body2", fontWeight: 600 }}>{Locale.label("settings.manageChurch.imEx")}</MuiLink>
+          <MuiLink href={importExportUrl} target="_blank" rel="noreferrer noopener" underline="hover" sx={{ typography: "body2", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 0.75 }}><ImportExportIcon sx={{ fontSize: 18 }} />{Locale.label("settings.manageChurch.imEx")}</MuiLink>
         </VerbRow>
       )}
       nav={<SectionNav hideOnMobile label={Locale.label("settings.landing.configuration")} sections={sections} selected={activeKey} onSelect={selectSection} />}>
       {sections.map((s) => (
-        <Box key={s.key} id={`section-${s.key}`} className="om-section" sx={{ scrollMarginTop: 24, mb: { xs: 5, md: 7 } }}>
+        <Box key={s.key} id={`section-${s.key}`} className="om-section" sx={{ scrollMarginTop: 24, mb: 3 }}>
           {s.key === "developer" && <Typography sx={{ ...eyebrowSx, mb: 1 }}>{s.title}</Typography>}
           {renderSection(s.key)}
         </Box>

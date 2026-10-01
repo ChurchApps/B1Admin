@@ -2,9 +2,9 @@ import { useRef } from "react";
 import { type SettingInterface } from "@churchapps/helpers";
 import { Locale, ApiHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Button, CardMedia, Grid } from "@mui/material";
-import { Link as LinkIcon } from "@mui/icons-material";
-import { CardWithHeader } from "../../components/ui";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { Link as LinkIcon, LinkOff as UnlinkIcon } from "@mui/icons-material";
+import { RecordHeading, TextAction } from "../../components/ui";
 
 export const LinkedAccounts = () => {
   const settingsQuery = useQuery<SettingInterface[]>({ queryKey: ["/settings/my", "ContentApi"], placeholderData: [] });
@@ -58,37 +58,36 @@ export const LinkedAccounts = () => {
   const praiseChartsAccessToken = settings.find((s) => s.keyName === "praiseChartsAccessToken")?.value;
 
   return (
-    <CardWithHeader title={Locale.label("profile.profilePage.linkedAccounts")} icon={<LinkIcon />}>
-      <Grid container spacing={3}>
-        <Grid size={{ sm: 3 }}>
-          <Box sx={{ textAlign: "center" }}>
-            <CardMedia component="img" image="/images/praisecharts.png" alt="Praise Charts" />
-            <br />
-
-            {!praiseChartsAccessToken && (
-              <>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    const newWindow = window.open("https://www.praisecharts.com/?XID=churchapps", "_blank");
-                    if (newWindow) newWindow.opener = null;
-                  }}>
-                  {Locale.label("profile.linkedAccounts.signUp")}
-                </Button>
-                  &nbsp;
-                <Button variant="contained" onClick={() => openOAuthPopup()}>
-                  {Locale.label("profile.linkedAccounts.link")}
-                </Button>
-              </>
-            )}
-            {praiseChartsAccessToken && (
-              <Button variant="outlined" onClick={unlinkPraiseCharts}>
-                {Locale.label("profile.linkedAccounts.unlink")}
+    <Box component="section" data-testid="linked-accounts">
+      <RecordHeading label={Locale.label("profile.profilePage.linkedAccounts")} />
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={3} alignItems={{ xs: "flex-start", sm: "center" }} useFlexGap flexWrap="wrap">
+        <Box component="img" src="/images/praisecharts.png" alt="PraiseCharts" sx={{ height: 36, width: "auto", display: "block" }} />
+        <Typography variant="body2" color="text.secondary" sx={{ flex: 1, minWidth: 0 }}>
+          {praiseChartsAccessToken ? Locale.label("profile.linkedAccounts.linked", "Linked") : Locale.label("profile.linkedAccounts.notLinked", "Not linked")}
+        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          {!praiseChartsAccessToken && (
+            <>
+              <TextAction
+                small
+                onClick={() => {
+                  const newWindow = window.open("https://www.praisecharts.com/?XID=churchapps", "_blank");
+                  if (newWindow) newWindow.opener = null;
+                }}>
+                {Locale.label("profile.linkedAccounts.signUp")}
+              </TextAction>
+              <Button variant="outlined" startIcon={<LinkIcon />} onClick={() => openOAuthPopup()}>
+                {Locale.label("profile.linkedAccounts.link")}
               </Button>
-            )}
-          </Box>
-        </Grid>
-      </Grid>
-    </CardWithHeader>
+            </>
+          )}
+          {praiseChartsAccessToken && (
+            <Button variant="outlined" startIcon={<UnlinkIcon />} onClick={unlinkPraiseCharts}>
+              {Locale.label("profile.linkedAccounts.unlink")}
+            </Button>
+          )}
+        </Stack>
+      </Stack>
+    </Box>
   );
 };

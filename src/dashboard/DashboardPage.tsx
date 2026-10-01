@@ -5,6 +5,7 @@ import { MyWork } from "./components/MyWork";
 import { Locale } from "@churchapps/apphelper";
 import { PageContainer } from "../components/ui/PageContainer";
 import { CardWithHeader } from "../components/ui/CardWithHeader";
+import { Surface } from "../components/ui/Surface";
 import { usePendingApprovalsCount, usePendingJoinRequestsCount } from "../hooks";
 
 export const DashboardPage = () => {
@@ -32,9 +33,9 @@ export const DashboardPage = () => {
           </Box>
         )}
 
-        <Box sx={{ pt: 1 }}>
+        <Surface>
           <MyWork />
-        </Box>
+        </Surface>
       </Stack>
     </PageContainer>
   );

@@ -120,7 +120,7 @@ export const TaskPage = () => {
         <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
         <dd data-testid="task-assigned-label">{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>
       </Box>
-      <Box sx={{ mt: 3, "& .MuiAccordion-root": { boxShadow: "none", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", "&::before": { display: "none" } } }}>
+      <Box sx={{ mt: 3 }}>
         <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
       </Box>
     </Box>

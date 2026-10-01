@@ -365,6 +365,8 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
           "#primaryNavButton + .MuiPopper-root a.selected .MuiListItemButton-root": { backgroundColor: t.selected, color: t.onSelected },
           "#primaryNavButton + .MuiPopper-root .MuiListItemIcon-root": { minWidth: 40, color: t.muted },
           "#primaryNavButton + .MuiPopper-root a.selected .MuiListItemIcon-root": { color: t.onSelected },
+          // The header renders these icons white for the dark bar; inside the light menu they follow the row color.
+          "#primaryNavButton + .MuiPopper-root .MuiListItemIcon-root .MuiIcon-root, #primaryNavButton + .MuiPopper-root .MuiListItemIcon-root .MuiSvgIcon-root": { color: "inherit" },
           "#primaryNavButton + .MuiPopper-root .MuiListItemText-primary": { fontSize: "0.9375rem", fontWeight: 600, letterSpacing: 0, lineHeight: "22px" },
           "#display-box-icon, #input-box-icon": { color: t.muted, fontSize: 20 },
           "#input-box-buttons .MuiButton-outlinedWarning": { color: t.text, borderColor: t.controlBorder },

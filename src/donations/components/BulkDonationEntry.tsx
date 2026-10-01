@@ -119,7 +119,7 @@ export const BulkDonationEntry = memo((props: Props) => {
 
   if (showPersonSearch) {
     return (
-      <Surface sx={{ mb: 3 }}>
+      <Surface>
         <Typography variant="h3" component="h2" sx={{ mb: 2 }}>
           {Locale.label("donations.bulkEntry.selectPerson")}
         </Typography>
@@ -134,7 +134,7 @@ export const BulkDonationEntry = memo((props: Props) => {
   }
 
   return (
-    <Surface sx={{ mb: 3 }}>
+    <Surface>
       <ErrorMessages errors={errors} />
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <Typography variant="h3" component="h2">

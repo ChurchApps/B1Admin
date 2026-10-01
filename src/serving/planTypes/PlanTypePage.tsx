@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Add as AddIcon, ArrowBack as BackIcon, ConnectedTv as SignageIcon } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import { Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
-import { type PlanTypeInterface } from "../../helpers";
+import { type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { PlanList } from "../components/PlanList";
 import { PlanTypeGroups } from "../components/PlanTypeGroups";
 import { SignageFeedDialog } from "../components/SignageFeedDialog";
-import { PageContainer, PageHeader, TextAction, VerbRow } from "../../components/ui";
+import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader } from "../../components/ui";
 
 export const PlanTypePage = () => {
   const params = useParams();
   const [showSignageFeed, setShowSignageFeed] = useState(false);
+  const [addRequest, setAddRequest] = useState(0);
+  const hasPlansEdit = hasPlansEditAccess();
 
   const planType = useQuery<PlanTypeInterface>({
     queryKey: [`/planTypes/${params.id}`, "DoingApi"],
@@ -23,6 +26,13 @@ export const PlanTypePage = () => {
     queryKey: [`/groups/${planType.data?.ministryId}`, "MembershipApi"],
     enabled: !!planType.data?.ministryId
   });
+
+  const myMinistries = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    enabled: !hasPlansEdit,
+    placeholderData: []
+  });
+  const canEdit = hasPlansEdit || (myMinistries.data || []).some((g) => g.id === ministry.data?.id);
 
   if (planType.isLoading || ministry.isLoading) return <Loading />;
 
@@ -42,21 +52,25 @@ export const PlanTypePage = () => {
 
   return (
     <>
-      <PageHeader title={planType.data.name || Locale.label("plans.planTypePage.planType")} subtitle={ministry.data.name} />
+      <PageHeader title={planType.data.name || Locale.label("plans.planTypePage.planType")} subtitle={ministry.data.name}>
+        <HeaderTextButton component={Link} to="/serving/plans" startIcon={<BackIcon />} data-testid="plan-type-plans-link">{Locale.label("components.wrapper.plans", "Plans")}</HeaderTextButton>
+        <HeaderTextButton component={Link} to={`/serving/overview?planTypeId=${planType.data.id}&ministryId=${planType.data.ministryId}`} data-testid="plan-type-overview-link">
+          {Locale.label("plans.planTypePage.overview")}
+        </HeaderTextButton>
+        <HeaderTextButton onClick={scrollToGroups} data-testid="plan-type-groups-link">{Locale.label("plans.planTypeGroups.heading")}</HeaderTextButton>
+        <HeaderTextButton startIcon={<SignageIcon />} onClick={() => setShowSignageFeed(true)} data-testid="signage-feed-button">
+          {Locale.label("plans.signageFeed.button", "Digital Signage")}
+        </HeaderTextButton>
+        {canEdit && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setAddRequest((n) => n + 1)} data-testid="add-plan-button">
+            {Locale.label("plans.planList.newPlan")}
+          </HeaderPrimaryButton>
+        )}
+      </PageHeader>
       {showSignageFeed && <SignageFeedDialog planTypeId={planType.data.id!} onClose={() => setShowSignageFeed(false)} />}
 
       <PageContainer>
-        <VerbRow sx={{ mb: 3, typography: "body1" }}>
-          <TextAction component={Link} to="/serving/plans" data-testid="plan-type-plans-link">{"← " + Locale.label("components.wrapper.plans", "Plans")}</TextAction>
-          <TextAction component={Link} to={`/serving/overview?planTypeId=${planType.data.id}&ministryId=${planType.data.ministryId}`} data-testid="plan-type-overview-link">
-            {Locale.label("plans.planTypePage.overview")}
-          </TextAction>
-          <TextAction onClick={() => setShowSignageFeed(true)} data-testid="signage-feed-button">
-            {Locale.label("plans.signageFeed.button", "Digital Signage")}
-          </TextAction>
-          <TextAction onClick={scrollToGroups} data-testid="plan-type-groups-link">{Locale.label("plans.planTypeGroups.heading")}</TextAction>
-        </VerbRow>
-        <PlanList key="plans" ministry={ministry.data} planTypeId={planType.data.id} />
+        <PlanList key="plans" ministry={ministry.data} planTypeId={planType.data.id} addRequest={addRequest} />
         <Box id="plan-type-groups" sx={{ mt: 4, scrollMarginTop: 80 }}>
           <PlanTypeGroups planTypeId={planType.data.id!} ministryId={planType.data.ministryId} />
         </Box>

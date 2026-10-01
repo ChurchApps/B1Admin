@@ -1,10 +1,9 @@
 import React, { useEffect, memo, useMemo } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
-import { Stack, Box, Typography, Avatar, Button } from "@mui/material";
-import { EmptyState } from "../../../components/ui/EmptyState";
-import { Link as LinkIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../../components/ui/AppIconButton";
+import { Stack, Box, Avatar } from "@mui/material";
+import { EmptyState, RecordHeading, TextAction } from "../../../components/ui";
+import { Link as LinkIcon } from "@mui/icons-material";
 
 interface Props {
   songDetail: SongDetailInterface;
@@ -77,14 +76,9 @@ export const SongDetailLinks = memo((props: Props) => {
 
   return (
     <Box>
-      <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="h3" component="h2">
-          {Locale.label("songs.songDetailLinks.externalLinks")}
-        </Typography>
-        {props.onEdit && (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={props.onEdit} />
-        )}
-      </Stack>
+      <RecordHeading label={Locale.label("songs.songDetailLinks.externalLinks")}>
+        {props.onEdit && allLinks.length > 0 && <TextAction small onClick={props.onEdit} data-testid="song-links-edit">{Locale.label("common.edit")}</TextAction>}
+      </RecordHeading>
 
       {!allLinks || allLinks.length === 0 ? (
         <EmptyState
@@ -92,9 +86,7 @@ export const SongDetailLinks = memo((props: Props) => {
           icon={<LinkIcon />}
           title={Locale.label("songs.songDetailLinks.noLinksYet")}
           action={props.onEdit && (
-            <Button variant="contained" startIcon={<AddIcon />} onClick={props.onEdit} size="small">
-              {Locale.label("songs.songDetailLinks.addFirstLink")}
-            </Button>
+            <TextAction small onClick={props.onEdit}>{Locale.label("songs.songDetailLinks.addFirstLink")}</TextAction>
           )}
         />
       ) : (

@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { Button, Card, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { Loading } from "@churchapps/apphelper";
@@ -43,7 +43,9 @@ export const SectionListCard: React.FC<SectionListCardProps> = ({ icon, title, c
       )}
     </Stack>
     {loading ? <Loading /> : count === 0 ? (
-      <EmptyState variant="plain" icon={empty.icon} title={empty.title} description={empty.description} action={empty.action} />
+      <Box sx={{ px: { xs: 2, md: 3 }, pb: { xs: 2, md: 3 } }}>
+        <EmptyState variant="plain" icon={empty.icon} title={empty.title} description={empty.description} action={empty.action} />
+      </Box>
     ) : children}
   </Card>
 );

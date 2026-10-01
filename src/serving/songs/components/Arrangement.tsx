@@ -106,7 +106,7 @@ export const Arrangement = memo((props: Props) => {
 
   const arrangementCard = useMemo(
     () => (
-      <Box data-testid="arrangement-view">
+      <Box component="section" data-testid="arrangement-view">
         <RecordHeading label={`${Locale.label("songs.arrangement.title")} · ${props.arrangement?.name}`}>
           {canEdit && <TextAction small onClick={() => setEdit(true)} data-testid="arrangement-edit-button">{Locale.label("common.edit")}</TextAction>}
         </RecordHeading>

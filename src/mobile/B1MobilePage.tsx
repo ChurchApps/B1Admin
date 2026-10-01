@@ -86,7 +86,7 @@ export const B1MobilePage: React.FC = () => {
   };
 
   return (
-    <MobileChrome title={Locale.label("mobile.b1MobilePage.title")} subtitle={Locale.label("mobile.b1MobilePage.subtitle")} maxWidth="md">
+    <MobileChrome title={Locale.label("mobile.b1MobilePage.title")} subtitle={Locale.label("mobile.b1MobilePage.subtitle")}>
       <FormCard title={Locale.label("mobile.b1MobilePage.title")} icon="phone_iphone" onSave={handleSave} isSubmitting={saving} disabled={!loaded}>
         <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
           <Typography variant="h3">{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>

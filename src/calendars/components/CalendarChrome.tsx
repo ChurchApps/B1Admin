@@ -1,9 +1,6 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { Locale } from "@churchapps/apphelper";
-import { usePendingApprovalsCount } from "../../hooks";
-import { HeaderTextButton, PageContainer, PageHeader } from "../../components/ui";
-import { SectionPills } from "./SectionPills";
+import { PageContainer, PageHeader } from "../../components/ui";
 
 type CalendarSection = "calendars" | "approvals" | "rooms" | "availability";
 
@@ -21,29 +18,10 @@ interface Props {
   children: React.ReactNode;
 }
 
-// Shared header for the four calendar pages: section pills plus a Registrations cross-link.
-export const CalendarChrome: React.FC<Props> = ({ selected, subtitle, actions, children }) => {
-  const pending = usePendingApprovalsCount();
-
-  const pills = [
-    { label: Locale.label("calendars.calendarList.title"), to: "/calendars", selected: selected === "calendars", "data-testid": "pill-calendars" },
-    { label: Locale.label("calendars.approvals.title"), to: "/calendars/approvals", selected: selected === "approvals", count: pending, "data-testid": "pill-approvals" },
-    { label: Locale.label("calendars.rooms.title"), to: "/calendars/rooms", selected: selected === "rooms", "data-testid": "pill-rooms" },
-    { label: Locale.label("calendars.availability.title"), to: "/calendars/availability", selected: selected === "availability", "data-testid": "pill-availability" }
-  ];
-
-  return (
-    <>
-      <PageHeader
-        title={Locale.label(titles[selected])}
-        subtitle={subtitle}
-        tabs={<SectionPills items={pills} aria-label={Locale.label("calendars.chrome.sections", "Calendar sections")} />}>
-        <HeaderTextButton component={RouterLink} to="/registrations" data-testid="calendars-registrations-link">
-          {Locale.label("helpers.secondaryMenuHelper.registrations")}
-        </HeaderTextButton>
-        {actions}
-      </PageHeader>
-      <PageContainer>{children}</PageContainer>
-    </>
-  );
-};
+// Shared header for the four calendar pages; section switching lives in the main menu.
+export const CalendarChrome: React.FC<Props> = ({ selected, subtitle, actions, children }) => (
+  <>
+    <PageHeader title={Locale.label(titles[selected])} subtitle={subtitle}>{actions}</PageHeader>
+    <PageContainer>{children}</PageContainer>
+  </>
+);

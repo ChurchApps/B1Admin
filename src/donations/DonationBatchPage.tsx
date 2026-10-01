@@ -4,8 +4,9 @@ import { UserHelper, Permissions, DateHelper, Locale, CurrencyHelper } from "@ch
 import { type DonationBatchInterface, type FundInterface, type DonationInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box } from "@mui/material";
-import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, Surface, TextAction } from "../components/ui";
+import { Box, Grid, Stack } from "@mui/material";
+import { Add as AddIcon, EditOutlined as EditIcon } from "@mui/icons-material";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, Surface, HeaderPrimaryButton, HeaderTextButton } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 
 export const DonationBatchPage = () => {
@@ -74,8 +75,19 @@ export const DonationBatchPage = () => {
     </>
   ) : Locale.label("donations.donationBatchPage.subtitle");
 
+  const hasFunds = (funds.data?.length ?? 0) > 0;
+  const showBulk = editDonationId === "notset" && canEdit && hasFunds;
+  const showSide = showBulk || editDonationId !== "notset" || editBatch;
+  const startAdd = () => {
+    if (!showBulk) { showEditDonation(""); return; }
+    const entry = document.getElementById("batch-entry");
+    entry?.scrollIntoView({ behavior: "smooth", block: "start" });
+    (entry?.querySelector("input") as HTMLElement | null)?.focus();
+  };
+
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: Locale.label("donations.donationBatchesPage.batches"), path: "/donations/batches" },
     { label: batch.data?.name || Locale.label("donations.donationBatchPage.title") }
   ];
 
@@ -86,26 +98,37 @@ export const DonationBatchPage = () => {
         subtitle={lede}
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
         {canEdit && (
-          <TextAction onClick={() => setEditBatch(true)} data-testid="edit-batch-button">{Locale.label("donations.donationBatchPage.editBatch")}</TextAction>
+          <HeaderTextButton startIcon={<EditIcon />} onClick={() => setEditBatch(true)} data-testid="edit-batch-button">{Locale.label("donations.donationBatchPage.editBatch")}</HeaderTextButton>
+        )}
+        {canEdit && hasFunds && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={startAdd} data-testid="batch-add-donation-button">{Locale.label("donations.bulkEntry.addDonation")}</HeaderPrimaryButton>
         )}
       </PageHeader>
 
       <PageContainer>
-        {editDonationId === "notset" && canEdit && (funds.data?.length ?? 0) > 0 && (
-          <BulkDonationEntry
-            batchId={batch.data?.id || ""}
-            batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
-            funds={funds.data || []}
-            updatedFunction={donationUpdated}
-            onOpenFullEditor={() => showEditDonation("")}
-          />
-        )}
-
-        {(editDonationId !== "notset" || editBatch) && <Box sx={{ mb: 3 }}>{getEditModules()}</Box>}
-
-        <Surface>
-          <Donations key={donationsKey} batch={batch.data || {}} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
-        </Surface>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, lg: showSide ? 8 : 12 }} sx={{ order: { xs: 2, lg: 1 } }}>
+            <Surface>
+              <Donations key={donationsKey} batch={batch.data || {}} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
+            </Surface>
+          </Grid>
+          {showSide && (
+            <Grid size={{ xs: 12, lg: 4 }} sx={{ order: { xs: 1, lg: 2 } }} id="batch-entry">
+              <Stack spacing={3}>
+                {showBulk && (
+                  <BulkDonationEntry
+                    batchId={batch.data?.id || ""}
+                    batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
+                    funds={funds.data || []}
+                    updatedFunction={donationUpdated}
+                    onOpenFullEditor={() => showEditDonation("")}
+                  />
+                )}
+                {(editDonationId !== "notset" || editBatch) && <Box>{getEditModules()}</Box>}
+              </Stack>
+            </Grid>
+          )}
+        </Grid>
       </PageContainer>
     </>
   );

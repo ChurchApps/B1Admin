@@ -36,8 +36,12 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description
 
   if (variant === "table") {
     return (
-      <TableCell colSpan={colSpan} sx={{ textAlign: "center", py: 4 }}>
-        {content}
+      <TableCell colSpan={colSpan} sx={{ py: 2.5, borderBottom: 0 }}>
+        <Stack spacing={1} alignItems="flex-start">
+          <Typography variant="body1" color="text.secondary">{title}</Typography>
+          {description && <Typography variant="body2" color="text.secondary">{description}</Typography>}
+          {action}
+        </Stack>
       </TableCell>
     );
   }

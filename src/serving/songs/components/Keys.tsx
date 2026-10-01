@@ -255,7 +255,7 @@ export const Keys = memo((props: Props) => {
 
   return (
     <>
-      <Box>
+      <Box component="section">
         <RecordHeading label={Locale.label("songs.keys.title")}>
           {selectedKey && canEdit && <TextAction small onClick={() => setEditKey(selectedKey)} data-testid="key-edit-button">{Locale.label("common.edit")}</TextAction>}
           {canEdit && <TextAction small onClick={() => handleTabChange("add")} data-testid="add-key-button">{Locale.label("serving.keys.addKey", "Add key")}</TextAction>}

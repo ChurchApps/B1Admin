@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography, Icon } from "@mui/material";
+import { FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { type GroupInterface, type ServiceInterface, type ServiceTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, DisplayBox, ErrorMessages, Loading, Locale, useMountedState } from "@churchapps/apphelper";
 import { AppDatePicker } from "../../components";
@@ -164,12 +164,7 @@ export const HeadcountEntry: React.FC = () => {
         <Grid size={{ xs: 12, md: 8 }}>
           <DisplayBox id="headcountList" headerIcon="groups" headerText={Locale.label("attendance.headcountEntry.recent")}>
             {headcounts === null ? <Loading /> : rows.length === 0 ? (
-              <Box sx={{ textAlign: "center", py: 4 }}>
-                <Stack spacing={1} alignItems="center">
-                  <Icon sx={{ color: "text.secondary" }}>groups</Icon>
-                  <Typography variant="body1" color="text.secondary">{Locale.label("attendance.headcountEntry.none")}</Typography>
-                </Stack>
-              </Box>
+              <Typography variant="body1" color="text.secondary">{Locale.label("attendance.headcountEntry.none")}</Typography>
             ) : (
               <Table size="small" data-testid="headcount-table">
                 <TableHead>

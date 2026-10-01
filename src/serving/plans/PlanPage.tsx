@@ -5,6 +5,7 @@ import { type PlanInterface, type PlanTypeInterface, hasPlansEditAccess } from "
 import { type GroupInterface } from "@churchapps/helpers";
 import { Box, Button, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { PrintOutlined as PrintIcon } from "@mui/icons-material";
 import { Assignment } from "../components/Assignment";
 import { ServiceOrder } from "../components/ServiceOrder";
 import { PlanEdit } from "../components/PlanEdit";
@@ -97,7 +98,7 @@ export const PlanPage = () => {
               {editing ? Locale.label("common.done") : Locale.label("common.edit")}
             </Button>
           )}
-          <Button variant="outlined" href={`/serving/plans/print/${plan.id}`} target="_blank" rel="noopener" data-testid="print-plan-link">{Locale.label("common.print")}</Button>
+          <Button variant="outlined" startIcon={<PrintIcon />} href={`/serving/plans/print/${plan.id}`} target="_blank" rel="noopener" data-testid="print-plan-link">{Locale.label("common.print")}</Button>
         </>}>
         {planType?.id && <TextAction small to={`/serving/planTypes/${planType.id}`} component={RouterLink}>{planType.name}</TextAction>}
         <TextAction small to="/serving/plans" component={RouterLink} data-testid="plan-plans-link">{Locale.label("plans.planList.plans")}</TextAction>
@@ -107,7 +108,7 @@ export const PlanPage = () => {
 
   return (
     <PageContainer>
-      <RecordLayout identity={identity} spacing={editing ? 3 : 5} data-testid="plan-record">
+      <RecordLayout identity={identity} spacing={editing ? 3 : 5} sliceSx={{ "&& > * + section": { mt: 4, pt: 4, borderTop: 1, borderColor: "divider" } }} data-testid="plan-record">
         {editing
           ? (
             <>

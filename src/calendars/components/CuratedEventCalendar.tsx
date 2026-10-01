@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import { Button, Icon, Snackbar, Stack, Menu, MenuItem, Box } from "@mui/material";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../components/ui/AppIconButton";
 import { EventHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 import { EditCalendarEventModal } from "./EditCalendarEventModal";
@@ -109,7 +108,7 @@ export function CuratedEventCalendar(props: Props) {
             endIcon={<ArrowDropDownIcon />}
             title={Locale.label("calendars.calendar.subscribeTitle")}
             size="small"
-            variant="contained"
+            variant="outlined"
             onClick={handleSubscribeClick}
             data-testid="calendar-subscribe-button"
           >
@@ -127,14 +126,9 @@ export function CuratedEventCalendar(props: Props) {
           </Menu>
         </div>
         {props.mode === "edit" && (
-          <AppIconButton
-            tone="card"
-            intent="add"
-            label={Locale.label("common.add")}
-            icon={<AddIcon />}
-            onClick={() => setOpen(true)}
-            data-testid="calendar-add-event-button"
-          />
+          <Button size="small" startIcon={<AddIcon />} onClick={() => setOpen(true)} data-testid="calendar-add-event-button">
+            {Locale.label("calendars.editEvent.addGroup")}
+          </Button>
         )}
       </Stack>
       <Box sx={{

@@ -2,8 +2,8 @@ import React from "react";
 import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
-import { Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack } from "@mui/material";
-import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, RecordHeading, Surface, TextAction, VerbRow, YearPills, hoverRowSx, numericCellSx, recentYears, tableScrollSx } from "../components/ui";
+import { Table, TableBody, TableRow, TableCell, TableHead, Box, Button, Typography, Stack } from "@mui/material";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, RecordHeading, Surface, VerbRow, YearPills, hoverRowSx, numericCellSx, recentYears, tableScrollSx } from "../components/ui";
 import { CsvVerb } from "./components/GivingParts";
 import { AppDatePicker } from "../components";
 import { useRequirePermission } from "../hooks";
@@ -91,7 +91,7 @@ export const FundPage = () => {
     if (donationList.length === 0) {
       result.push(
         <TableRow key="0">
-          <TableCell colSpan={4} sx={{ textAlign: "center", py: 4 }}>
+          <TableCell colSpan={4} sx={{ borderBottom: 0, px: 0 }}>
             <Typography variant="body1" color="text.secondary">
               {Locale.label("donations.fundsPage.noDon")}
             </Typography>
@@ -184,6 +184,7 @@ export const FundPage = () => {
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: Locale.label("donations.donations.funds"), path: "/donations/funds" },
     { label: fund.name || "" }
   ];
 
@@ -230,7 +231,7 @@ export const FundPage = () => {
                 InputLabelProps={{ shrink: true }}
                 sx={{ minWidth: 200 }}
               />
-              <Box><TextAction onClick={() => loadDonations()}>{Locale.label("donations.fundPage.filter")}</TextAction></Box>
+              <Box><Button variant="outlined" onClick={() => loadDonations()}>{Locale.label("donations.fundPage.filter")}</Button></Box>
             </Stack>
           </Stack>
 

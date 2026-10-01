@@ -10,6 +10,8 @@ interface Props {
   id?: string;
   sx?: SxProps<Theme>;
   "data-testid"?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 }
 
 // The white work panel: 1px divider border, 10px radius, no shadow. Sized to its content.
@@ -18,6 +20,8 @@ export const Surface: React.FC<Props> = ({ children, disablePadding, component =
     component={component}
     id={id}
     data-testid={rest["data-testid"]}
+    aria-label={rest["aria-label"]}
+    aria-labelledby={rest["aria-labelledby"]}
     sx={[
       { bgcolor: "background.paper", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", minWidth: 0, p: disablePadding ? 0 : { xs: 2, md: 3 } },
       ...(Array.isArray(sx) ? sx : [sx])

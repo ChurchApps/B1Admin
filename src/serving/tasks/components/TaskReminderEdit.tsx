@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Typography,
   Stack,
   FormControlLabel,
@@ -14,8 +11,8 @@ import {
   Button,
   Alert
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { RecordHeading, TextAction } from "../../../components/ui";
 
 interface ReminderDefinition {
   id?: string;
@@ -52,6 +49,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!taskId) return;
@@ -97,12 +95,19 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
 
   const l = (k: string) => Locale.label("tasks.reminders." + k);
 
+  const summary = defId && enabled
+    ? [OFFSET_PRESETS.filter((p) => offsets.includes(p.minutes)).map((p) => l(p.key)).join(", "), sendLocalTime].filter(Boolean).join(" · ")
+    : Locale.label("tasks.reminders.none", "No reminders set.");
+
   return (
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography variant="subtitle1" fontWeight={600}>{l("title")}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
+    <Box component="section" data-testid="task-reminders">
+      <RecordHeading label={l("title")}>
+        <TextAction small onClick={() => setOpen(!open)} data-testid="task-reminders-toggle">
+          {open ? Locale.label("common.close") : Locale.label("common.edit")}
+        </TextAction>
+      </RecordHeading>
+      {!open && <Typography variant="body2" color="text.secondary">{summary}</Typography>}
+      {open && (
         <Stack spacing={2}>
           {enabled && !dueDate && <Alert severity="warning">{l("noDueDate")}</Alert>}
           <FormControlLabel
@@ -161,7 +166,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
             {saveFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}
           </Box>
         </Stack>
-      </AccordionDetails>
-    </Accordion>
+      )}
+    </Box>
   );
 };

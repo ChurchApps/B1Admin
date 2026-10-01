@@ -39,11 +39,11 @@ export const ServerHealthTab = () => {
           <Typography variant="caption" color="text.secondary">{configuredCount} / {group.items.length}</Typography>
         </Box>
         <Box sx={tableScrollSx} role="region" aria-label={group.group} tabIndex={0}>
-          <Table>
+          <Table sx={{ tableLayout: "fixed" }}>
             <TableHead>
               <TableRow>
-                <TableCell>{Locale.label("serverAdmin.serverHealth.setting")}</TableCell>
-                <TableCell sx={{ width: 120 }}>{Locale.label("serverAdmin.serverHealth.status")}</TableCell>
+                <TableCell sx={{ width: "45%" }}>{Locale.label("serverAdmin.serverHealth.setting")}</TableCell>
+                <TableCell sx={{ width: 96 }}>{Locale.label("serverAdmin.serverHealth.status")}</TableCell>
                 <TableCell>{Locale.label("serverAdmin.serverHealth.detail")}</TableCell>
               </TableRow>
             </TableHead>
@@ -52,7 +52,7 @@ export const ServerHealthTab = () => {
                 <TableRow key={item.key}>
                   <TableCell>{item.label}</TableCell>
                   <TableCell>{renderStatus(item.configured)}</TableCell>
-                  <TableCell sx={{ color: "text.secondary" }}>{item.detail || ""}</TableCell>
+                  <TableCell sx={{ color: "text.secondary", overflowWrap: "anywhere" }}>{item.detail || ""}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -73,7 +73,9 @@ export const ServerHealthTab = () => {
               {Locale.label("serverAdmin.serverHealth.environment")}: <strong>{data.environment || "—"}</strong>
             </Typography>
           </Box>
-          {data.groups.map(renderGroup)}
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0,1fr)", lg: "repeat(2, minmax(0,1fr))" }, columnGap: 4, rowGap: 3, alignItems: "start" }}>
+            {data.groups.map(renderGroup)}
+          </Box>
         </Stack>
       )}
     </AdminPanel>

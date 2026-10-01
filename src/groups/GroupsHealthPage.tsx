@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Link, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { Loading, Locale } from "@churchapps/apphelper";
-import { PageContainer, PageHeader, SortableTableHead, Surface, TextAction, numericCellSx, tableScrollSx } from "../components/ui";
+import { ArrowBack as BackIcon } from "@mui/icons-material";
+import { HeaderTextButton, PageContainer, PageHeader, SortableTableHead, Surface, numericCellSx, tableScrollSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 
 interface GroupHealthRow {
@@ -50,11 +51,10 @@ const GroupsHealthPage = () => {
 
   return (
     <>
-      <PageHeader title={Locale.label("groups.groupHealth.title")} subtitle={Locale.label("groups.groupHealth.subtitle")} />
+      <PageHeader title={Locale.label("groups.groupHealth.title")} subtitle={Locale.label("groups.groupHealth.subtitle")}>
+        <HeaderTextButton component={RouterLink} to="/groups" startIcon={<BackIcon />} data-testid="groups-back">{Locale.label("groups.groupsPage.groups")}</HeaderTextButton>
+      </PageHeader>
       <PageContainer>
-        <Box sx={{ mb: 3 }}>
-          <TextAction to="/groups" component={RouterLink} data-testid="groups-back">{"← " + Locale.label("common.backTo", "Back to {name}").replace("{name}", Locale.label("groups.groupsPage.groups"))}</TextAction>
-        </Box>
         {health.isLoading ? (
           <Loading />
         ) : (

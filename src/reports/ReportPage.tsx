@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useParams } from "react-router-dom";
 import { Locale } from "@churchapps/apphelper";
 import { BarChart as BarChartIcon } from "@mui/icons-material";
-import { Box, Skeleton, Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { PageContainer, PageHeader, Surface } from "../components/ui";
 import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
@@ -25,24 +25,20 @@ export const ReportPage = memo(() => {
       />
 
       <PageContainer>
-        <Surface disablePadding sx={{ minHeight: 400 }}>
-          {report.isLoading ? (
-            <Box sx={{ p: 4 }}>
-              <Stack spacing={3}>
-                <Skeleton variant="rectangular" height={60} />
-                <Skeleton variant="rectangular" height={200} />
-                <Stack direction="row" spacing={2}>
-                  <Skeleton variant="rectangular" width={120} height={40} />
-                  <Skeleton variant="rectangular" width={120} height={40} />
-                </Stack>
+        {report.isLoading ? (
+          <Surface sx={{ minHeight: 400 }}>
+            <Stack spacing={3}>
+              <Skeleton variant="rectangular" height={60} />
+              <Skeleton variant="rectangular" height={200} />
+              <Stack direction="row" spacing={2}>
+                <Skeleton variant="rectangular" width={120} height={40} />
+                <Skeleton variant="rectangular" width={120} height={40} />
               </Stack>
-            </Box>
-          ) : (
-            <Box sx={{ "& .report-container": { p: 0 } }}>
-              <ReportWithFilter keyName={params.keyName || ""} autoRun={false} />
-            </Box>
-          )}
-        </Surface>
+            </Stack>
+          </Surface>
+        ) : (
+          <ReportWithFilter keyName={params.keyName || ""} autoRun={false} />
+        )}
       </PageContainer>
     </>
   );

@@ -4,7 +4,8 @@ import {
   Alert, Avatar, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Paper, Select, Snackbar, Stack,
   Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
 } from "@mui/material";
-import { CountChip, FilterChip, NavigationTabs, numericCellSx, type NavigationTab } from "../../components/ui";
+import { CountChip, FilterChip, PillTabs, numericCellSx, type PillOption } from "../../components/ui";
+import { AdminPanel } from "./AdminPanel";
 import { useConfirmDelete } from "../../hooks";
 import {
   CommonsApi, getWorshipCommonsOrigin, RESOLUTIONS, RESOLVE_ACTIONS, REMOVE_REASONS,
@@ -182,7 +183,7 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
   const removeRow = (id: string) => setRows((prev) => (prev || []).filter((r) => r.id !== id));
 
   return (
-    <SettingsPanel headerIcon="inventory_2" headerText={Locale.label("serverAdmin.commonsTab.tabQueue")}>
+    <SettingsPanel flat headerText="">
       {tabTypes.length > 0 && (
         <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" role="group" aria-label={Locale.label("serverAdmin.commonsTab.tabQueue")} sx={{ mb: 2 }} data-testid="commons-type-tabs">
           {tabTypes.map((t) => (
@@ -338,10 +339,10 @@ const ReportsView = () => {
 
   return (
     <>
-      <SettingsPanel headerIcon="copyright" headerText={Locale.label("serverAdmin.commonsTab.copyrightReports")}>
+      <SettingsPanel flat headerIcon="copyright" headerText={Locale.label("serverAdmin.commonsTab.copyrightReports")}>
         {reportsTable(copyright)}
       </SettingsPanel>
-      <SettingsPanel headerIcon="flag" headerText={Locale.label("serverAdmin.commonsTab.policyReports")}>
+      <SettingsPanel flat headerIcon="flag" headerText={Locale.label("serverAdmin.commonsTab.policyReports")}>
         {reportsTable(other)}
       </SettingsPanel>
       {resolved.length > 0 && (
@@ -509,7 +510,7 @@ const AssetsView = () => {
   };
 
   return (
-    <SettingsPanel headerIcon="library_books" headerText={Locale.label("serverAdmin.commonsTab.tabAssets")}>
+    <SettingsPanel flat headerText="">
       {ConfirmDialogElement}
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
         <TextField
@@ -627,24 +628,22 @@ export const CommonsTab = (props: { musicEditor?: boolean }) => {
   const [subTab, setSubTab] = React.useState("queue");
   const [publishedAssetId, setPublishedAssetId] = React.useState<string | null>(null);
 
-  const tabs: NavigationTab[] = [
-    { value: "queue", label: Locale.label("serverAdmin.commonsTab.tabQueue"), testId: "commons-tab-queue" },
-    { value: "reports", label: Locale.label("serverAdmin.commonsTab.tabReports"), testId: "commons-tab-reports" },
-    { value: "assets", label: Locale.label("serverAdmin.commonsTab.tabAssets"), testId: "commons-tab-assets" }
+  const tabs: PillOption[] = [
+    { value: "queue", label: Locale.label("serverAdmin.commonsTab.tabQueue"), "data-testid": "commons-tab-queue" },
+    { value: "reports", label: Locale.label("serverAdmin.commonsTab.tabReports"), "data-testid": "commons-tab-reports" },
+    { value: "assets", label: Locale.label("serverAdmin.commonsTab.tabAssets"), "data-testid": "commons-tab-assets" }
   ];
 
   return (
     <>
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="h1" component="h2">{Locale.label("serverAdmin.adminPage.commons")}</Typography>
-        <Typography sx={{ color: "text.secondary", mt: 0.5 }}>{Locale.label("serverAdmin.adminPage.commonsSubtitle")}</Typography>
-      </Box>
-      <NavigationTabs selectedTab={subTab} onTabChange={setSubTab} tabs={tabs} testId="commonsTabs" />
-      <Box sx={{ mt: 2 }}>
-        {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} musicEditor={props.musicEditor} />}
-        {subTab === "reports" && <ReportsView />}
-        {subTab === "assets" && <AssetsView />}
-      </Box>
+      <AdminPanel headerText={Locale.label("serverAdmin.adminPage.commons")} subtitle={Locale.label("serverAdmin.adminPage.commonsSubtitle")}>
+        <PillTabs tabs options={tabs} value={subTab} onChange={setSubTab} aria-label={Locale.label("serverAdmin.adminPage.commons")} data-testid="commonsTabs" />
+        <Box sx={{ mt: 3 }}>
+          {subTab === "queue" && <QueueView onPublished={setPublishedAssetId} musicEditor={props.musicEditor} />}
+          {subTab === "reports" && <ReportsView />}
+          {subTab === "assets" && <AssetsView />}
+        </Box>
+      </AdminPanel>
       <Snackbar
         open={!!publishedAssetId}
         autoHideDuration={6000}

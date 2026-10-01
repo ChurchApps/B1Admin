@@ -1,7 +1,7 @@
 import React, { useCallback, memo } from "react";
-import { Box, Button, Typography, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Box, Typography, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { PillTabs, Surface, TextAction, VerbRow, srOnlySx, tableScrollSx } from "../../components/ui";
-import { Add as AddIcon, CalendarMonth as CalendarIcon, ContentCopyOutlined as TemplatesIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { CalendarMonth as CalendarIcon, ContentCopyOutlined as TemplatesIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface, hasPlansEditAccess } from "../../helpers";
@@ -19,6 +19,7 @@ const toolLinkSx = { display: "inline-flex", alignItems: "center", gap: 0.5, "& 
 interface Props {
   ministry: GroupInterface;
   planTypeId?: string;
+  addRequest?: number;
 }
 
 export const PlanList = memo((props: Props) => {
@@ -79,6 +80,8 @@ export const PlanList = memo((props: Props) => {
       serviceOrder: true
     });
   }, [props.ministry.id, props.planTypeId]);
+
+  React.useEffect(() => { if (props.addRequest && canEdit) addPlan(); }, [props.addRequest]);
 
   const handleUpdated = useCallback(() => {
     setPlan(null);
@@ -167,10 +170,6 @@ export const PlanList = memo((props: Props) => {
     </Box>
   );
 
-  const addPlanButton = (label: string) => (
-    <Button variant="contained" startIcon={<AddIcon />} onClick={addPlan} data-testid="add-plan-button" sx={{ flexShrink: 0 }}>{label}</Button>
-  );
-
   const hasPastPlans = !showPast && plans.length === 0 && allPlans.length > 0;
 
   if (plans.length === 0 && !hasPastPlans) {
@@ -178,7 +177,6 @@ export const PlanList = memo((props: Props) => {
       <Surface>
         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" useFlexGap flexWrap="wrap" sx={{ mb: 1 }}>
           <Typography variant="h3" component="h2">{Locale.label("plans.planList.plans")}</Typography>
-          {canEdit && addPlanButton(Locale.label("plans.planList.createPlan"))}
         </Stack>
         <Typography color="text.secondary">{Locale.label("plans.planList.noPlans")}</Typography>
         {canEdit && <VerbRow sx={{ mt: 1 }}>{scheduleLessonVerb}</VerbRow>}
@@ -192,15 +190,12 @@ export const PlanList = memo((props: Props) => {
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent="space-between" sx={{ mb: 2 }}>
         <Typography variant="h3" component="h2">{Locale.label("plans.planList.plans")}</Typography>
         {canEdit && (
-          <Stack direction="row" spacing={3} alignItems="center" useFlexGap flexWrap="wrap">
-            <VerbRow plain>
-              {scheduleLessonVerb}
-              <TextAction onClick={() => setShowTemplates(true)} data-testid="plan-templates-button">
-                <Box component="span" sx={toolLinkSx}><TemplatesIcon />{Locale.label("plans.templates.button", "Templates")}</Box>
-              </TextAction>
-            </VerbRow>
-            {addPlanButton(Locale.label("plans.planList.newPlan"))}
-          </Stack>
+          <VerbRow plain>
+            {scheduleLessonVerb}
+            <TextAction onClick={() => setShowTemplates(true)} data-testid="plan-templates-button">
+              <Box component="span" sx={toolLinkSx}><TemplatesIcon />{Locale.label("plans.templates.button", "Templates")}</Box>
+            </TextAction>
+          </VerbRow>
         )}
       </Stack>
       <PillTabs
@@ -224,6 +219,8 @@ export const PlanList = memo((props: Props) => {
             <TableHead>
               <TableRow>
                 <TableCell>{Locale.label("common.name")}</TableCell>
+                <TableCell>{Locale.label("plans.planList.serviceDate", "Service date")}</TableCell>
+                <TableCell>{Locale.label("plans.planList.serviceOrder")}</TableCell>
                 {canEdit && <TableCell align="right"><Box component="span" sx={srOnlySx}>{Locale.label("plans.servingPage.actions", "Actions")}</Box></TableCell>}
               </TableRow>
             </TableHead>
@@ -234,10 +231,9 @@ export const PlanList = memo((props: Props) => {
                     <Link component={RouterLink} to={`/serving/plans/${p.id}`} underline="hover" sx={{ fontWeight: 600 }}>
                       {p.name}
                     </Link>
-                    <Typography variant="body2" color="text.secondary" sx={{ fontVariantNumeric: "tabular-nums" }}>
-                      {[p.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(p.serviceDate)) : "", p.serviceOrder ? Locale.label("plans.planList.serviceOrder") : ""].filter(Boolean).join(" · ")}
-                    </Typography>
                   </TableCell>
+                  <TableCell sx={{ fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{p.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(p.serviceDate)) : ""}</TableCell>
+                  <TableCell sx={{ color: "text.secondary" }}>{p.serviceOrder ? Locale.label("common.yes", "Yes") : Locale.label("common.no", "No")}</TableCell>
                   {canEdit && (
                     <TableCell align="right">
                       <TextAction small onClick={() => setPlan(p)} aria-label={Locale.label("common.edit")}>{Locale.label("common.edit")}</TextAction>

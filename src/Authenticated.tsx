@@ -54,6 +54,7 @@ const OAuthPage = React.lazy(() => import("./OAuth").then((module) => ({ default
 const DeviceAuthPage = React.lazy(() => import("./device/DeviceAuthPage").then((module) => ({ default: module.DeviceAuthPage })));
 const SermonsPage = React.lazy(() => import("./sermons/SermonsPage").then((module) => ({ default: module.SermonsPage })));
 const LiveStreamTimesPage = React.lazy(() => import("./sermons/LiveStreamTimesPage").then((module) => ({ default: module.LiveStreamTimesPage })));
+const StreamSettingsPage = React.lazy(() => import("./sermons/StreamSettingsPage").then((module) => ({ default: module.StreamSettingsPage })));
 const BulkImportPage = React.lazy(() => import("./sermons/BulkImportPage").then((module) => ({ default: module.BulkImportPage })));
 const CalendarsPage = React.lazy(() => import("./calendars/CalendarsPage").then((module) => ({ default: module.CalendarsPage })));
 const CalendarPage = React.lazy(() => import("./calendars/CalendarPage").then((module) => ({ default: module.CalendarPage })));
@@ -167,6 +168,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/serving/songs" element={<SongsPage />} />
           <Route path="/serving/songs/:id" element={<SongPage />} />
           <Route path="/sermons/times" element={<LiveStreamTimesPage />} />
+          <Route path="/sermons/settings" element={<StreamSettingsPage />} />
           <Route path="/sermons/bulk" element={<BulkImportPage />} />
           <Route path="/sermons" element={<SermonsPage />} />
           <Route path="/registrations/:eventId" element={<RegistrationDetailsPage />} />

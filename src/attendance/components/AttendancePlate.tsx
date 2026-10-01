@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
-import { Box, Link, Stack, Typography } from "@mui/material";
+import { Box, Button, Link, Stack, Typography } from "@mui/material";
+import { TuneOutlined as SetupIcon } from "@mui/icons-material";
 import { ArrayHelper, DateHelper, Loading, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type GroupInterface, type PersonInterface, type ServiceInterface } from "@churchapps/helpers";
 import { RecordHeading, TextAction, VerbRow, eyebrowSx, filterChipSx, numericCellSx, RecordActions } from "../../components/ui";
@@ -191,10 +192,12 @@ export const AttendanceIdentity = (props: IdentityProps) => {
           </Box>
         )
       )}
-      <RecordActions>
-        {props.canSetup && <TextAction small onClick={() => props.onView("setup")} data-testid="attendance-verb-setup">{Locale.label("attendance.tabs.setup")}</TextAction>}
+      <RecordActions
+        buttons={<>
+          {props.canHeadcount && <Button variant="contained" onClick={() => props.onView("headcount")} data-testid="attendance-tab-headcounts">{Locale.label("attendance.plate.enterHeadcount", "Enter headcount")}</Button>}
+          {props.canSetup && <Button variant="outlined" startIcon={<SetupIcon />} onClick={() => props.onView("setup")} data-testid="attendance-verb-setup">{Locale.label("attendance.tabs.setup")}</Button>}
+        </>}>
         {props.canKiosk && <TextAction small onClick={() => props.onView("kiosk")} data-testid="attendance-verb-kiosk">{Locale.label("attendance.plate.kiosk", "Kiosk")}</TextAction>}
-        {props.canHeadcount && <TextAction small onClick={() => props.onView("headcount")} data-testid="attendance-tab-headcounts">{Locale.label("attendance.tabs.headcounts")}</TextAction>}
         {props.canYears && <TextAction small onClick={() => props.onView("years")} data-testid="attendance-verb-years">{Locale.label("attendance.plate.allYears", "All years")}</TextAction>}
       </RecordActions>
     </Box>

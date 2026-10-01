@@ -1,12 +1,11 @@
 import { TableHead, Table, TableCell, TableRow, TableBody, Typography, Box, Button } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ErrorMessages, DateHelper, Locale, UserHelper } from "@churchapps/apphelper";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
-import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, tableScrollSx } from "../components/ui";
 
 export interface DeviceInterface {
   id: string;
@@ -40,14 +39,11 @@ export const DevicesPage = () => {
     <Box component="aside" data-testid="profile-identity">
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{displayName}</Typography>
       {UserHelper.user?.email && <Typography color="text.secondary" sx={{ mt: 0.5, overflowWrap: "anywhere" }}>{UserHelper.user.email}</Typography>}
-      <VerbRow sx={{ mt: 2 }}>
-        <TextAction to="/profile" component={Link} data-testid="devices-profile-link">{Locale.label("helpers.secondaryMenuHelper.profile")}</TextAction>
-      </VerbRow>
     </Box>
   );
 
   const list = (
-    <Box id="mainContent">
+    <Box id="mainContent" style={{ padding: 0 }}>
       <ErrorMessages errors={errors} />
       <RecordHeading label={devicesLabel}>
         <Box sx={{ ml: "auto !important" }}>

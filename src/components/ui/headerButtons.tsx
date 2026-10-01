@@ -3,8 +3,11 @@ import { Button } from "@mui/material";
 import type { ButtonProps } from "@mui/material/Button";
 import { useHeaderTone } from "./headerTone";
 
+// Header buttons are often links: `component={RouterLink} to=…` or `href` + `target`.
+type HeaderButtonProps = ButtonProps & { component?: React.ElementType; to?: string; target?: string; rel?: string };
+
 // Page-header CTA: solid primary under ui/PageHeader; white pill on the legacy blue apphelper banner.
-export const HeaderPrimaryButton: React.FC<ButtonProps> = ({ sx, ...props }) => {
+export const HeaderPrimaryButton: React.FC<HeaderButtonProps> = ({ sx, ...props }) => {
   const tone = useHeaderTone();
   if (tone === "light") return <Button variant="contained" {...props} sx={sx} />;
   return (
@@ -28,7 +31,7 @@ export const HeaderPrimaryButton: React.FC<ButtonProps> = ({ sx, ...props }) => 
 };
 
 // Secondary page-header action: outlined secondary under ui/PageHeader; white ghost on the legacy banner.
-export const HeaderSecondaryButton: React.FC<ButtonProps> = ({ sx, ...props }) => {
+export const HeaderSecondaryButton: React.FC<HeaderButtonProps> = ({ sx, ...props }) => {
   const tone = useHeaderTone();
   if (tone === "light") return <Button variant="outlined" {...props} sx={sx} />;
   return (
@@ -50,6 +53,6 @@ export const HeaderSecondaryButton: React.FC<ButtonProps> = ({ sx, ...props }) =
 };
 
 // Low-emphasis page-header verb (Demographics, Print, Health…); the primary action stays a HeaderPrimaryButton.
-export const HeaderTextButton: React.FC<ButtonProps> = ({ sx, ...props }) => (
+export const HeaderTextButton: React.FC<HeaderButtonProps> = ({ sx, ...props }) => (
   <Button variant="text" {...props} sx={[{ fontWeight: 600, px: 1, minWidth: 0 }, ...(Array.isArray(sx) ? sx : [sx])]} />
 );

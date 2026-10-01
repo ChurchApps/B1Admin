@@ -226,7 +226,7 @@ export const RegistrationDetailsPage = () => {
       cancelled: "danger",
       waitlisted: "neutral"
     };
-    return <StatusBadge tone={toneMap[status] || "neutral"}>{status}</StatusBadge>;
+    return <Box component="span" sx={{ textTransform: "capitalize" }}><StatusBadge tone={toneMap[status] || "neutral"}>{status}</StatusBadge></Box>;
   };
 
   const visibleRegistrations = event?.formId && unansweredOnly ? registrations.filter((r) => !r.formSubmissionId) : registrations;
@@ -348,9 +348,7 @@ export const RegistrationDetailsPage = () => {
         </Box>
       )}
       {visibleRegistrations.length === 0 ? (
-        <Box sx={{ p: 3, textAlign: "center" }}>
-          <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
-        </Box>
+        <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
       ) : (
         <Box sx={tableScrollSx} role="region" aria-label={Locale.label("registrations.registrationDetailsPage.registrations")} tabIndex={0}>
           <Table size="small">

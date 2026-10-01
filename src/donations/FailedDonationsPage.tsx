@@ -3,7 +3,7 @@ import { ApiHelper, CurrencyHelper, DateHelper, Loading, Locale, Permissions, Us
 import { type PersonInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { Alert, Box, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { ErrorOutline as FailedIcon, Refresh as RetryIcon } from "@mui/icons-material";
+import { Refresh as RetryIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { PageHeader, PageContainer, Surface, EmptyState, LoadingButton, hoverRowSx, numericCellSx, tableScrollSx } from "../components/ui";
 import { useRequirePermission } from "../hooks";
@@ -50,15 +50,7 @@ export const FailedDonationsPage = () => {
   const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
 
   const getRows = () => {
-    if (!donations.data?.length) {
-      return (
-        <TableRow>
-          <EmptyState variant="table" colSpan={5} icon={<FailedIcon />} title={Locale.label("donations.failedDonations.none")} />
-        </TableRow>
-      );
-    }
-
-    return donations.data.map((d) => {
+    return (donations.data || []).map((d) => {
       const person = people.data?.find((p) => p.id === d.personId);
       const message = d.gatewayMessage || "";
       return (
@@ -72,7 +64,7 @@ export const FailedDonationsPage = () => {
           <TableCell><Typography variant="body2">{DateHelper.prettyDate(new Date(d.donationDate as any))}</Typography></TableCell>
           <TableCell>
             <Tooltip title={message}>
-              <Typography variant="body2" noWrap sx={{ maxWidth: 260 }}>{message}</Typography>
+              <Typography variant="body2" noWrap sx={{ maxWidth: { xs: 260, lg: 560 } }}>{message}</Typography>
             </Tooltip>
           </TableCell>
           <TableCell align="right">
@@ -106,24 +98,28 @@ export const FailedDonationsPage = () => {
 
       <PageContainer>
         {error && <Alert severity="error" sx={{ mb: 2 }} data-testid="retry-error">{error}</Alert>}
-        <Surface disablePadding>
-          {donations.isLoading ? <Loading /> : (
-            <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.failedDonations.title")} tabIndex={0}>
-              <Table sx={{ minWidth: 650 }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{Locale.label("common.person")}</TableCell>
-                    <TableCell align="right" sx={numericCellSx}>{Locale.label("donations.donations.amt")}</TableCell>
-                    <TableCell>{Locale.label("donations.donations.date")}</TableCell>
-                    <TableCell>{Locale.label("donations.failedDonations.message")}</TableCell>
-                    <TableCell align="right"></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>{getRows()}</TableBody>
-              </Table>
-            </Box>
-          )}
-        </Surface>
+        {!donations.isLoading && !donations.data?.length ? (
+          <Surface><EmptyState variant="plain" title={Locale.label("donations.failedDonations.none")} /></Surface>
+        ) : (
+          <Surface disablePadding>
+            {donations.isLoading ? <Loading /> : (
+              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donations.failedDonations.title")} tabIndex={0}>
+                <Table sx={{ minWidth: 650 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{Locale.label("common.person")}</TableCell>
+                      <TableCell align="right" sx={numericCellSx}>{Locale.label("donations.donations.amt")}</TableCell>
+                      <TableCell>{Locale.label("donations.donations.date")}</TableCell>
+                      <TableCell>{Locale.label("donations.failedDonations.message")}</TableCell>
+                      <TableCell align="right"></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>{getRows()}</TableBody>
+                </Table>
+              </Box>
+            )}
+          </Surface>
+        )}
       </PageContainer>
     </>
   );

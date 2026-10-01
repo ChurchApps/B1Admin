@@ -122,7 +122,7 @@ export const SongPage = memo(() => {
   const identity = (
     <Box component="aside" data-testid="song-identity" sx={{ minWidth: 0 }}>
       {sd?.thumbnail && (
-        <Box component="img" src={sd.thumbnail} alt="" sx={{ width: 88, height: 88, borderRadius: "var(--b1-radius-panel)", objectFit: "cover", display: "block", mb: 2 }} />
+        <Box component="img" src={sd.thumbnail} alt="" onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.style.display = "none"; }} sx={{ width: 88, height: 88, borderRadius: "var(--b1-radius-panel)", objectFit: "cover", display: "block", mb: 2 }} />
       )}
       <Typography component="p" sx={eyebrowSx}>{Locale.label("songs.songsPage.songs")}</Typography>
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{title}</Typography>

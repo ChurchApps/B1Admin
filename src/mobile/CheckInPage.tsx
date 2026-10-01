@@ -71,8 +71,7 @@ export const CheckInPage: React.FC = () => {
   return (
     <MobileChrome
       title={Locale.label("mobile.checkInPage.title")}
-      subtitle={Locale.label("mobile.checkInPage.subtitle")}
-      maxWidth="md">
+      subtitle={Locale.label("mobile.checkInPage.subtitle")}>
       <FormCard title={Locale.label("mobile.checkInPage.qrGuestRegistration")} icon="qr_code_2" onSave={handleSave} isSubmitting={saving}>
         <Typography variant="body2" color="text.secondary">{Locale.label("mobile.checkInPage.qrTooltip")}</Typography>
         <Stack direction="row" alignItems="center">

@@ -9,7 +9,7 @@ export const AppThemePage: React.FC = () => {
   if (denied) return denied;
 
   return (
-    <MobileChrome title={Locale.label("mobile.appThemePage.title")} subtitle={Locale.label("mobile.appThemePage.subtitle")} maxWidth="md">
+    <MobileChrome title={Locale.label("mobile.appThemePage.title")} subtitle={Locale.label("mobile.appThemePage.subtitle")}>
       <AppThemeEdit />
     </MobileChrome>
   );

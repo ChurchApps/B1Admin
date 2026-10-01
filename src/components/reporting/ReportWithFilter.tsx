@@ -70,6 +70,8 @@ export const ReportWithFilter = (props: Props) => {
   if (!report) return <Loading />;
   if (!checkAccess()) return <></>;
   else {
+    // No parameters means no filter panel: give the report the full width.
+    if (!report.parameters?.length) return <ReportOutput keyName={props.keyName} report={reportToRun} />;
     return (
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
-import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { CloudUpload as UploadIcon, InsertDriveFile as FileIcon } from "@mui/icons-material";
-import { AddBar, Surface, TextAction, VerbRow, tableScrollSx } from "../../components/ui";
+import { HeaderPrimaryButton, PageContainer, PageHeader, Surface, TextAction, VerbRow, tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { CustomFileUpload } from "./CustomFileUpload";
 
@@ -119,46 +119,55 @@ export function FilesManager() {
     : (
       <TableRow>
         <TableCell colSpan={3}>
-          <Typography variant="body2" color="text.secondary">{Locale.label("site.filesManager.noFilesYet")} {Locale.label("site.filesManager.getStarted")}</Typography>
+          <Typography variant="body2" color="text.secondary">{Locale.label("site.filesManager.noFilesYet")}. {Locale.label("site.filesManager.getStarted")}</Typography>
         </TableCell>
       </TableRow>
     );
 
   return (
-    <Box>
+    <>
       {ConfirmDialogElement}
-      {canUpload && (
-        <Stack direction="row" justifyContent="flex-end" sx={{ mb: 3 }}>
-          <Button variant="contained" startIcon={<UploadIcon />} onClick={openUpload} data-testid="upload-file-button">{Locale.label("site.files.uploadFiles")}</Button>
-        </Stack>
-      )}
-      <Surface disablePadding>
-        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.filesManager.files")} tabIndex={0}>
-          <Table sx={{ minWidth: 560 }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>{Locale.label("site.filesManager.name")}</TableCell>
-                <TableCell align="right">{Locale.label("site.filesManager.size")}</TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody data-testid="files-table-body">
-              {fileRows}
-            </TableBody>
-          </Table>
-        </Box>
-      </Surface>
-      <AddBar title={Locale.label("site.files.uploadFiles")} data-testid="file-upload-inputbox" sx={{ maxWidth: 640 }}>
-        {getStorage()}
-        {!unlimited && providerQuota === 0 && (
-          <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
-            {Locale.label("site.files.storageInfo")}
-          </Typography>
-        )}
+      <PageHeader title={Locale.label("site.filesPage.title")} subtitle={Locale.label("site.filesPage.subtitle")}>
         {canUpload && (
-          <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} errorCallback={() => setPendingFileSave(false)} onFileSelected={() => setPendingFileSave(true)} />
+          <HeaderPrimaryButton startIcon={<UploadIcon />} onClick={openUpload} data-testid="upload-file-button">{Locale.label("site.files.uploadFiles")}</HeaderPrimaryButton>
         )}
-      </AddBar>
-    </Box>
+      </PageHeader>
+      <PageContainer>
+        <Grid container spacing={3} alignItems="flex-start">
+          <Grid size={{ xs: 12, lg: 8 }}>
+            <Surface disablePadding>
+              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.filesManager.files")} tabIndex={0}>
+                <Table sx={{ minWidth: 560 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{Locale.label("site.filesManager.name")}</TableCell>
+                      <TableCell align="right">{Locale.label("site.filesManager.size")}</TableCell>
+                      <TableCell align="right"></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody data-testid="files-table-body">
+                    {fileRows}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Surface>
+          </Grid>
+          <Grid size={{ xs: 12, lg: 4 }}>
+            <Surface data-testid="file-upload-inputbox">
+              <Typography variant="h3" component="h2" sx={{ mb: 2 }}>{Locale.label("site.files.uploadFiles")}</Typography>
+              {getStorage()}
+              {!unlimited && providerQuota === 0 && (
+                <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
+                  {Locale.label("site.files.storageInfo")}
+                </Typography>
+              )}
+              {canUpload && (
+                <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} errorCallback={() => setPendingFileSave(false)} onFileSelected={() => setPendingFileSave(true)} />
+              )}
+            </Surface>
+          </Grid>
+        </Grid>
+      </PageContainer>
+    </>
   );
 }

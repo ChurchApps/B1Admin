@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, Button, Icon, Link as MuiLink, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Button, Divider, Grid, Icon, Link as MuiLink, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { Add as AddIcon, ChevronRight as ChevronRightIcon, ExpandMore as ExpandMoreIcon, ViewQuiltOutlined as TemplateIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
@@ -282,79 +282,83 @@ export const PagesPage = () => {
         <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setAddMode("unlinked")} data-testid="add-page-button">{Locale.label("site.pagesPage.addPage")}</HeaderPrimaryButton>
       </PageHeader>
       <PageContainer>
-        <Surface>
-          <Stack spacing={3}>
-            {pageTree.length > 0 && (
-              <ResultsBar>
-                <Typography variant="body2" color="text.secondary">{Locale.label("site.pagesPage.pageCount", "{count} pages").replace("{count}", countPages(pageTree).toString())}</Typography>
-              </ResultsBar>
-            )}
-            {pageTree.length === 0 ? (
-              <Typography variant="body2" color="text.secondary">
-                {Locale.label("site.pagesPage.noPagesFound")} {Locale.label("site.pagesPage.getStarted")}
-              </Typography>
-            ) : (
-              <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.pagesPage.pages")} tabIndex={0}>
-                <Table sx={{ minWidth: 650 }}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>{Locale.label("site.pagesPage.path")}</TableCell>
-                      <TableCell>{Locale.label("common.title")}</TableCell>
-                      <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>{getTreeLevel(pageTree, 0)}</TableBody>
-                </Table>
-              </Box>
-            )}
-          </Stack>
-        </Surface>
-
-        <Box component="section" aria-labelledby="pages-main-navigation" sx={{ mt: 6 }}>
-          <RecordHeading id="pages-main-navigation" label={Locale.label("site.pagesPage.mainNavigation")}>
-            <TextAction small onClick={() => setEditLink(newNavLink())} aria-label={Locale.label("common.add")} data-testid="add-navigation-link">{Locale.label("common.add")}</TextAction>
-          </RecordHeading>
-          <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) minmax(260px, 360px)" }, alignItems: "start" }}>
+        <Grid container spacing={3} alignItems="flex-start">
+          <Grid size={{ xs: 12, lg: 8 }}>
             <Surface>
-              <SiteNavigation links={links} refresh={loadData} handleDrop={handleDrop} siteId={siteId} />
+              <Stack spacing={3}>
+                {pageTree.length > 0 && (
+                  <ResultsBar>
+                    <Typography variant="body2" color="text.secondary">{Locale.label("site.pagesPage.pageCount", "{count} pages").replace("{count}", countPages(pageTree).toString())}</Typography>
+                  </ResultsBar>
+                )}
+                {pageTree.length === 0 ? (
+                  <Typography variant="body2" color="text.secondary">
+                    {Locale.label("site.pagesPage.noPagesFound")} {Locale.label("site.pagesPage.getStarted")}
+                  </Typography>
+                ) : (
+                  <Box sx={tableScrollSx} role="region" aria-label={Locale.label("site.pagesPage.pages")} tabIndex={0}>
+                    <Table sx={{ minWidth: 650 }}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>{Locale.label("site.pagesPage.path")}</TableCell>
+                          <TableCell>{Locale.label("common.title")}</TableCell>
+                          <TableCell align="right">{Locale.label("site.pagesPage.actions")}</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>{getTreeLevel(pageTree, 0)}</TableBody>
+                    </Table>
+                  </Box>
+                )}
+              </Stack>
             </Surface>
-            <Stack spacing={1}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <Typography variant="body2">{Locale.label("site.pagesPage.showLogin")}</Typography>
-                  <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
-                    <Icon sx={{ fontSize: 18, cursor: "pointer", color: "text.secondary" }}>info</Icon>
-                  </Tooltip>
+          </Grid>
+          <Grid size={{ xs: 12, lg: 4 }}>
+            <Surface component="div">
+              <Box component="section" aria-labelledby="pages-main-navigation">
+                <RecordHeading id="pages-main-navigation" label={Locale.label("site.pagesPage.mainNavigation")}>
+                  <TextAction small onClick={() => setEditLink(newNavLink())} aria-label={Locale.label("common.add")} data-testid="add-navigation-link">{Locale.label("common.add")}</TextAction>
+                </RecordHeading>
+                <SiteNavigation links={links} refresh={loadData} handleDrop={handleDrop} siteId={siteId} />
+                <Divider sx={{ my: 3 }} />
+                <Stack spacing={1}>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack direction="row" alignItems="center" spacing={0.5}>
+                      <Typography variant="body2">{Locale.label("site.pagesPage.showLogin")}</Typography>
+                      <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
+                        <Icon sx={{ fontSize: 18, cursor: "pointer", color: "text.secondary" }}>info</Icon>
+                      </Tooltip>
+                    </Stack>
+                    <Switch
+                      onChange={handleSwitchChange}
+                      checked={showLogin ? checked : true}
+                      slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
+                      data-testid="show-login-switch"
+                    />
+                  </Stack>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack direction="row" alignItems="center" spacing={0.5}>
+                      <Typography variant="body2">{Locale.label("site.pagesPage.hidePublicSite")}</Typography>
+                      <Tooltip title={Locale.label("site.pagesPage.hidePublicSiteTooltip")} arrow>
+                        <Icon sx={{ fontSize: 18, cursor: "pointer", color: "text.secondary" }}>info</Icon>
+                      </Tooltip>
+                    </Stack>
+                    <Switch
+                      onChange={handleHidePublicSiteChange}
+                      checked={publicSiteHidden}
+                      slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.hidePublicSite") } }}
+                      data-testid="hide-public-site-switch"
+                    />
+                  </Stack>
+                  {publicSiteHidden && (
+                    <Alert severity="warning" data-testid="hide-public-site-warning">
+                      {Locale.label("site.pagesPage.hidePublicSiteWarning")}
+                    </Alert>
+                  )}
                 </Stack>
-                <Switch
-                  onChange={handleSwitchChange}
-                  checked={showLogin ? checked : true}
-                  slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
-                  data-testid="show-login-switch"
-                />
-              </Stack>
-              <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <Typography variant="body2">{Locale.label("site.pagesPage.hidePublicSite")}</Typography>
-                  <Tooltip title={Locale.label("site.pagesPage.hidePublicSiteTooltip")} arrow>
-                    <Icon sx={{ fontSize: 18, cursor: "pointer", color: "text.secondary" }}>info</Icon>
-                  </Tooltip>
-                </Stack>
-                <Switch
-                  onChange={handleHidePublicSiteChange}
-                  checked={publicSiteHidden}
-                  slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.hidePublicSite") } }}
-                  data-testid="hide-public-site-switch"
-                />
-              </Stack>
-              {publicSiteHidden && (
-                <Alert severity="warning" data-testid="hide-public-site-warning">
-                  {Locale.label("site.pagesPage.hidePublicSiteWarning")}
-                </Alert>
-              )}
-            </Stack>
-          </Box>
-        </Box>
+              </Box>
+            </Surface>
+          </Grid>
+        </Grid>
       </PageContainer>
     </>
   );

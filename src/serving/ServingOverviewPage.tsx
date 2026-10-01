@@ -2,8 +2,8 @@ import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
 import { Alert, Box, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
-import { Close as CloseIcon, Clear as ClearIcon } from "@mui/icons-material";
-import { EmptyState, ExportButton, PageContainer, PageHeader, PillTabs, Surface, TextAction, VerbRow } from "../components/ui";
+import { ArrowBack as BackIcon, AutoFixHigh as AutoIcon, Close as CloseIcon, Clear as ClearIcon, MailOutline as EmailIcon } from "@mui/icons-material";
+import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, Surface } from "../components/ui";
 import { hasPlansEditAccess } from "../helpers";
 import { useConfirmDelete } from "../hooks";
 import { AssignmentEdit } from "./components/AssignmentEdit";
@@ -256,99 +256,96 @@ export const ServingOverviewPage = () => {
 
   return (
     <>
-      <PageHeader title={planType.data?.name ? `${planType.data.name} ${Locale.label("plans.servingOverviewPage.overviewSuffix")}` : Locale.label("plans.servingOverviewPage.title")} subtitle={Locale.label("plans.servingOverviewPage.subtitle")} />
+      <PageHeader title={planType.data?.name ? `${planType.data.name} ${Locale.label("plans.servingOverviewPage.overviewSuffix")}` : Locale.label("plans.servingOverviewPage.title")} subtitle={Locale.label("plans.servingOverviewPage.subtitle")}>
+        <HeaderTextButton component={Link} to={planTypeId ? `/serving/planTypes/${planTypeId}` : "/serving/plans"} startIcon={<BackIcon />} data-testid="overview-back-link">
+          {planType.data?.name || Locale.label("components.wrapper.plans", "Plans")}
+        </HeaderTextButton>
+        {rows.length > 0 && <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />}
+        {canEdit && (
+          <HeaderSecondaryButton startIcon={<EmailIcon />} disabled={busy || !ministryId || rows.length === 0} onClick={handleEmailAll} data-testid="matrix-email-all">
+            {Locale.label("plans.servingOverviewPage.emailAll")}
+          </HeaderSecondaryButton>
+        )}
+        {canEdit && (
+          <HeaderPrimaryButton startIcon={<AutoIcon />} disabled={busy || rows.length === 0} onClick={handleAutoSchedule} data-testid="matrix-auto-schedule">
+            {Locale.label("plans.servingOverviewPage.autoSchedule")}
+          </HeaderPrimaryButton>
+        )}
+      </PageHeader>
       <PageContainer>
-        <Stack spacing={3}>
-          <VerbRow sx={{ typography: "body1" }}>
-            <TextAction component={Link} to={planTypeId ? `/serving/planTypes/${planTypeId}` : "/serving/plans"} data-testid="overview-back-link">
-              {"← " + (planType.data?.name || Locale.label("components.wrapper.plans", "Plans"))}
-            </TextAction>
-            {canEdit && (
-              <TextAction disabled={busy || rows.length === 0} onClick={handleAutoSchedule} data-testid="matrix-auto-schedule">
-                {Locale.label("plans.servingOverviewPage.autoSchedule")}
-              </TextAction>
-            )}
-            {canEdit && (
-              <TextAction disabled={busy || !ministryId || rows.length === 0} onClick={handleEmailAll} data-testid="matrix-email-all">
-                {Locale.label("plans.servingOverviewPage.emailAll")}
-              </TextAction>
-            )}
-          </VerbRow>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "stretch", md: "center" }} useFlexGap flexWrap="wrap">
-            <PillTabs
-              aria-label={Locale.label("plans.servingOverviewPage.gapsOnly")}
-              value={gapsOnly ? "gaps" : "all"}
-              onChange={(v) => setGapsOnly(v === "gaps")}
-              options={[
-                { value: "all", label: Locale.label("plans.servingOverviewPage.allPositions", "All positions"), "data-testid": "all-positions-toggle" },
-                { value: "gaps", label: Locale.label("plans.servingOverviewPage.gapsOnly"), "data-testid": "gaps-only-toggle" }
-              ]}
-            />
-            <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
-              <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">
-                <MenuItem value="">{Locale.label("plans.servingOverviewPage.highlightAll")}</MenuItem>
-                {personIds.map(id => <MenuItem key={id} value={id}>{getDisplayName(id)}</MenuItem>)}
-              </Select>
-            </FormControl>
-            <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />
+        <Surface disablePadding>
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "stretch", md: "center" }} useFlexGap flexWrap="wrap">
+              <PillTabs
+                aria-label={Locale.label("plans.servingOverviewPage.gapsOnly")}
+                value={gapsOnly ? "gaps" : "all"}
+                onChange={(v) => setGapsOnly(v === "gaps")}
+                options={[
+                  { value: "all", label: Locale.label("plans.servingOverviewPage.allPositions", "All positions"), "data-testid": "all-positions-toggle" },
+                  { value: "gaps", label: Locale.label("plans.servingOverviewPage.gapsOnly"), "data-testid": "gaps-only-toggle" }
+                ]}
+              />
+              <AppDatePicker label={Locale.label("plans.servingOverviewPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+              <AppDatePicker label={Locale.label("plans.servingOverviewPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+              <FormControl size="small" sx={{ minWidth: 160 }}>
+                <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
+                <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">
+                  <MenuItem value="">{Locale.label("plans.servingOverviewPage.highlightAll")}</MenuItem>
+                  {personIds.map(id => <MenuItem key={id} value={id}>{getDisplayName(id)}</MenuItem>)}
+                </Select>
+              </FormControl>
+            </Stack>
+            {displayRows.length === 0 && <EmptyState variant="plain" title={Locale.label("plans.servingOverviewPage.noData")} />}
           </Stack>
-
-          {displayRows.length === 0 ? (
-            <EmptyState variant="card" title={Locale.label("plans.servingOverviewPage.noData")} />
-          ) : (
-            <Surface disablePadding>
-              <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto" }}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ position: "sticky", left: 0, zIndex: 3, backgroundColor: "var(--b1-canvas)", minWidth: 200 }}>{Locale.label("plans.servingOverviewPage.position")}</TableCell>
-                      {dates.map(d => (
-                        <TableCell key={d} sx={{ textAlign: "center", whiteSpace: "nowrap" }}>{formatShortDate(d)}</TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {displayRows.map(row => (
-                      <TableRow key={row.position}>
-                        <TableCell sx={{ fontWeight: 600, position: "sticky", left: 0, backgroundColor: "background.paper", zIndex: 1 }}>
-                          <span style={{ color: "var(--b1-muted)" }}>{row.categoryName ? row.categoryName + ": " : ""}</span>{row.positionName}
-                        </TableCell>
-                        {dates.map(d => {
-                          const cell = row.cells[d];
-                          const isActive = row.activeDates.has(d);
-                          const filled = cell ? cellFilled(cell) : 0;
-                          const isGap = isActive && cell && filled < cell.needed;
-                          const ids = cell ? cellPersonIds(cell) : [];
-                          const isHighlight = !!highlightPersonId && ids.includes(highlightPersonId);
-                          const content = isActive ? (ids.map(id => getDisplayName(id)).join(", ") || "—") : "";
-                          return (
-                            <TableCell
-                              key={d}
-                              onClick={isActive && canEdit ? () => setEditingKey({ rowKey: row.position, date: d }) : undefined}
-                              data-testid={isActive ? `matrix-cell-${row.position}-${d}` : undefined}
-                              sx={{
-                                textAlign: "center",
-                                backgroundColor: isHighlight ? "var(--b1-warning-bg)" : isGap ? "var(--b1-danger-bg)" : undefined,
-                                color: isHighlight ? "var(--b1-warning)" : isGap ? "var(--b1-danger)" : undefined,
-                                whiteSpace: "nowrap",
-                                cursor: isActive && canEdit ? "pointer" : undefined
-                              }}
-                            >
-                              {content}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
+          {displayRows.length > 0 && (
+            <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto", borderTop: 1, borderColor: "divider" }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ position: "sticky", left: 0, zIndex: 3, backgroundColor: "background.paper", minWidth: 200 }}>{Locale.label("plans.servingOverviewPage.position")}</TableCell>
+                    {dates.map(d => (
+                      <TableCell key={d} sx={{ textAlign: "center", whiteSpace: "nowrap" }}>{formatShortDate(d)}</TableCell>
                     ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Surface>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {displayRows.map(row => (
+                    <TableRow key={row.position}>
+                      <TableCell sx={{ fontWeight: 600, position: "sticky", left: 0, backgroundColor: "background.paper", zIndex: 1 }}>
+                        <span style={{ color: "var(--b1-muted)" }}>{row.categoryName ? row.categoryName + ": " : ""}</span>{row.positionName}
+                      </TableCell>
+                      {dates.map(d => {
+                        const cell = row.cells[d];
+                        const isActive = row.activeDates.has(d);
+                        const filled = cell ? cellFilled(cell) : 0;
+                        const isGap = isActive && cell && filled < cell.needed;
+                        const ids = cell ? cellPersonIds(cell) : [];
+                        const isHighlight = !!highlightPersonId && ids.includes(highlightPersonId);
+                        const content = isActive ? (ids.map(id => getDisplayName(id)).join(", ") || "—") : "";
+                        return (
+                          <TableCell
+                            key={d}
+                            onClick={isActive && canEdit ? () => setEditingKey({ rowKey: row.position, date: d }) : undefined}
+                            data-testid={isActive ? `matrix-cell-${row.position}-${d}` : undefined}
+                            sx={{
+                              textAlign: "center",
+                              backgroundColor: isHighlight ? "var(--b1-warning-bg)" : isGap ? "var(--b1-danger-bg)" : undefined,
+                              color: isHighlight ? "var(--b1-warning)" : isGap ? "var(--b1-danger)" : undefined,
+                              whiteSpace: "nowrap",
+                              cursor: isActive && canEdit ? "pointer" : undefined
+                            }}
+                          >
+                            {content}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           )}
-        </Stack>
+        </Surface>
       </PageContainer>
 
       <Dialog open={!!editingCell} onClose={() => setEditingKey(null)} maxWidth="xs" fullWidth>

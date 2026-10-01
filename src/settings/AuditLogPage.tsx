@@ -263,11 +263,13 @@ export const AuditLogPage: React.FC = () => {
 
   return (
     <>
-      <SettingsHeader backTo="/settings" title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")} />
+      <SettingsHeader title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")}>
+        {logs.length > 0 && <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />}
+      </SettingsHeader>
 
       <PageContainer py={3}>
-        <Surface sx={{ mb: 3 }}>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
+        <Surface disablePadding>
+          <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "stretch", md: "center" }} useFlexGap flexWrap="wrap" sx={{ p: { xs: 2, md: 3 }, borderBottom: 1, borderColor: "divider" }}>
             <FormControl size="small" sx={{ minWidth: 160 }}>
               <InputLabel>{Locale.label("settings.auditLogPage.module")}</InputLabel>
               <Select displayEmpty value={module} label={Locale.label("settings.auditLogPage.module")} onChange={(e) => setModule(e.target.value)}>
@@ -283,13 +285,7 @@ export const AuditLogPage: React.FC = () => {
             <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
             <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
             <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
-            {logs.length > 0 && (
-              <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />
-            )}
           </Stack>
-        </Surface>
-
-        <Surface disablePadding>
           {loading ? <Loading /> : (
             <>
               <TableContainer sx={tableScrollSx} role="region" aria-label={Locale.label("settings.auditLogPage.title")} tabIndex={0}>
@@ -308,8 +304,8 @@ export const AuditLogPage: React.FC = () => {
                   <TableBody>
                     {logs.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} align="center">
-                          <Typography variant="body2" color="text.secondary" sx={{ py: 3 }}>{Locale.label("settings.auditLogPage.noEntries")}</Typography>
+                        <TableCell colSpan={7} sx={{ borderBottom: 0 }}>
+                          <Typography variant="body1" color="text.secondary" sx={{ py: 1 }}>{Locale.label("settings.auditLogPage.noEntries")}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -331,13 +327,15 @@ export const AuditLogPage: React.FC = () => {
                             </TableCell>
                             <TableCell><Typography variant="caption" sx={{ fontFamily: "monospace" }}>{log.ipAddress}</Typography></TableCell>
                           </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={7} sx={{ py: 0, borderBottom: expandedId === log.id ? undefined : "none" }}>
-                              <Collapse in={expandedId === log.id} timeout="auto" unmountOnExit>
-                                {expandedId === log.id && <AuditLogDetails log={log} />}
-                              </Collapse>
-                            </TableCell>
-                          </TableRow>
+                          {expandedId === log.id && (
+                            <TableRow sx={{ height: "auto" }}>
+                              <TableCell colSpan={7} sx={{ py: 0 }}>
+                                <Collapse in appear timeout="auto">
+                                  <AuditLogDetails log={log} />
+                                </Collapse>
+                              </TableCell>
+                            </TableRow>
+                          )}
                         </React.Fragment>
                       ))
                     )}

@@ -118,7 +118,7 @@ export const BatchesPage: React.FC = () => {
 
   return (
     <>
-      <SettingsHeader backTo="/settings" title={Locale.label("settings.batches.title")} subtitle={Locale.label("settings.batches.subtitle")} />
+      <SettingsHeader title={Locale.label("settings.batches.title")} subtitle={Locale.label("settings.batches.subtitle")} />
 
       <PageContainer py={3}>
         <Surface disablePadding>

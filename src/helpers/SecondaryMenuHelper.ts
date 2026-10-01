@@ -193,10 +193,12 @@ export class SecondaryMenuHelper {
     if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) {
       menuItems.push({ url: "/sermons", label: Locale.label("helpers.secondaryMenuHelper.sermons"), icon: "live_tv" });
       menuItems.push({ url: "/sermons/times", label: Locale.label("helpers.secondaryMenuHelper.liveStreamTimes"), icon: "schedule" });
+      menuItems.push({ url: "/sermons/settings", label: Locale.label("helpers.secondaryMenuHelper.streamSettings", "Settings"), icon: "settings" });
     }
 
     if (path.startsWith("/sermons/bulk")) label = Locale.label("helpers.secondaryMenuHelper.bulkImport");
     else if (path.startsWith("/sermons/times")) label = Locale.label("helpers.secondaryMenuHelper.liveStreamTimes");
+    else if (path.startsWith("/sermons/settings")) label = Locale.label("helpers.secondaryMenuHelper.streamSettings", "Settings");
     else if (path.startsWith("/sermons")) label = Locale.label("helpers.secondaryMenuHelper.sermons");
 
     return { menuItems, label };

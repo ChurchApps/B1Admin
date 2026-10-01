@@ -1,16 +1,16 @@
-import { Box, Button, Stack, Typography, Select, MenuItem, Menu } from "@mui/material";
+import { Box, Button, Typography, Select, MenuItem, Menu } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Add as AddIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon } from "@mui/icons-material";
+import { Add as AddIcon, ArrowBack as BackIcon, Bolt as TriggersIcon, CheckCircle as CompleteIcon, EditOutlined as EditIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, ViewKanbanOutlined as BoardIcon } from "@mui/icons-material";
 import { WorkflowStepColumn } from "./components/WorkflowStepColumn";
 import { WorkflowStepEdit } from "./components/WorkflowStepEdit";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
 import { WorkflowTriggersManager } from "./components/WorkflowTriggersManager";
 import { ContentPicker } from "../components/ContentPicker";
-import { BulkBar, PageContainer, StatusBadge, Surface, TextAction, VerbRow, eyebrowSx, formWidthSx } from "../../../components/ui";
+import { BulkBar, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, StatusBadge, ViewToggle, formWidthSx } from "../../../components/ui";
 import { type WorkflowBoardInterface, type WorkflowStepInterface, type TaskInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
 
@@ -155,46 +155,58 @@ export const WorkflowBoardPage = () => {
   const selectedNames = cards.filter((c) => c.id && selectedIds.has(c.id)).slice(0, 3).map((c) => c.title).filter(Boolean).join(", ");
 
   return (
-    <PageContainer>
-      <Surface sx={{ mb: 3 }} data-testid="workflow-identity">
-        <Typography sx={eyebrowSx}>{Locale.label("tasks.workflowsPage.title")}</Typography>
-        <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
-          <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{wf?.name || Locale.label("tasks.workflowsPage.title")}</Typography>
-          {wf && <StatusBadge tone={wf.active ? "success" : "neutral"} variant="dot">{wf.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>}
-        </Stack>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{Locale.label("tasks.workflowBoard.subtitle")}</Typography>
-        <VerbRow sx={{ mt: 2 }}>
-          <TextAction to="/serving/tasks/workflows" component={RouterLink} data-testid="board-workflows-link">{Locale.label("tasks.workflowsPage.title")}</TextAction>
-          <TextAction onClick={showBoard} disabled={onBoard} data-testid="board-tab">{Locale.label("tasks.workflowBoard.boardTab")}</TextAction>
-          <TextAction onClick={showTriggers} disabled={tab === "triggers"} data-testid="board-triggers-tab">{Locale.label("tasks.eventTriggers.title")}</TextAction>
-          {canManage && <TextAction onClick={handleEditWorkflow} data-testid="edit-workflow-button">{Locale.label("tasks.workflowEdit.editWorkflow")}</TextAction>}
-          <TextAction to={"/serving/tasks/workflows/" + workflowId + "/reports"} component={RouterLink} data-testid="board-reports-button">{Locale.label("tasks.workflowReports.title")}</TextAction>
-          {canManage && <TextAction onClick={handleAddStep} data-testid="add-step-button">{Locale.label("tasks.workflowBoard.addStep")}</TextAction>}
-        </VerbRow>
-      </Surface>
+    <>
+      <PageHeader
+        title={wf?.name || Locale.label("tasks.workflowsPage.title")}
+        subtitle={Locale.label("tasks.workflowBoard.subtitle")}
+        chips={wf && <StatusBadge tone={wf.active ? "success" : "neutral"} variant="dot">{wf.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>}>
+        <HeaderTextButton component={RouterLink} to="/serving/tasks/workflows" startIcon={<BackIcon />} data-testid="board-workflows-link">{Locale.label("tasks.workflowsPage.title")}</HeaderTextButton>
+        <HeaderTextButton component={RouterLink} to={"/serving/tasks/workflows/" + workflowId + "/reports"} data-testid="board-reports-button">{Locale.label("tasks.workflowReports.title")}</HeaderTextButton>
+        {canManage && <HeaderSecondaryButton startIcon={<EditIcon />} onClick={handleEditWorkflow} data-testid="edit-workflow-button">{Locale.label("tasks.workflowEdit.editWorkflow")}</HeaderSecondaryButton>}
+        {canManage && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-step-button">{Locale.label("tasks.workflowBoard.addStep")}</HeaderPrimaryButton>}
+      </PageHeader>
+      <PageContainer>
+        <Box sx={{ mb: 2 }} data-testid="workflow-identity">
+          <ResultsBar
+            end={
+              <ViewToggle<"board" | "triggers">
+                value={(tab === "triggers" ? "triggers" : onBoard ? "board" : "") as "board" | "triggers"}
+                onChange={(v) => (v === "triggers" ? showTriggers() : showBoard())}
+                options={[
+                  { value: "board", label: Locale.label("tasks.workflowBoard.boardTab"), icon: <BoardIcon />, "data-testid": "board-tab" },
+                  { value: "triggers", label: Locale.label("tasks.eventTriggers.title"), icon: <TriggersIcon />, "data-testid": "board-triggers-tab" }
+                ]}
+              />
+            }>
+            <Typography variant="body2" color="text.secondary">
+              {steps.length} {Locale.label("tasks.workflowBoard.stepsCount", "steps")} · {cards.length} {Locale.label("tasks.workflowBoard.cardsCount", "cards")}
+            </Typography>
+          </ResultsBar>
+        </Box>
 
-      {getSlice()}
+        {getSlice()}
 
-      {onBoard && (
-        <BulkBar count={selectedIds.size} names={selectedNames} data-testid="bulk-action-bar">
-          <Button size="small" variant="contained" startIcon={<CompleteIcon />} data-testid="bulk-complete-button" onClick={bulkComplete}>{Locale.label("tasks.workflowCard.complete")}</Button>
-          <Button size="small" startIcon={<SnoozeIcon />} data-testid="bulk-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
-          <Button size="small" startIcon={<PersonIcon />} data-testid="bulk-reassign-button" onClick={() => setShowBulkReassign(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
-          <Select size="small" displayEmpty value="" data-testid="bulk-move-select" onChange={(e) => e.target.value && bulkMove(e.target.value)} sx={{ minWidth: 160, bgcolor: "background.paper" }}>
-            <MenuItem value="" disabled>{Locale.label("tasks.workflowBoard.moveTo")}</MenuItem>
-            {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
-          </Select>
-          <Button size="small" startIcon={<ClearIcon />} data-testid="bulk-clear-button" onClick={clearSelection}>{Locale.label("tasks.workflowBoard.clearSelection")}</Button>
-        </BulkBar>
-      )}
-      <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
-        <MenuItem onClick={() => bulkSnooze(1)}>{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
-        <MenuItem onClick={() => bulkSnooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
-        <MenuItem onClick={() => bulkSnooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
-      </Menu>
+        {onBoard && (
+          <BulkBar count={selectedIds.size} names={selectedNames} data-testid="bulk-action-bar">
+            <Button size="small" variant="contained" startIcon={<CompleteIcon />} data-testid="bulk-complete-button" onClick={bulkComplete}>{Locale.label("tasks.workflowCard.complete")}</Button>
+            <Button size="small" startIcon={<SnoozeIcon />} data-testid="bulk-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
+            <Button size="small" startIcon={<PersonIcon />} data-testid="bulk-reassign-button" onClick={() => setShowBulkReassign(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
+            <Select size="small" displayEmpty value="" data-testid="bulk-move-select" onChange={(e) => e.target.value && bulkMove(e.target.value)} sx={{ minWidth: 160, bgcolor: "background.paper" }}>
+              <MenuItem value="" disabled>{Locale.label("tasks.workflowBoard.moveTo")}</MenuItem>
+              {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
+            </Select>
+            <Button size="small" startIcon={<ClearIcon />} data-testid="bulk-clear-button" onClick={clearSelection}>{Locale.label("tasks.workflowBoard.clearSelection")}</Button>
+          </BulkBar>
+        )}
+        <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
+          <MenuItem onClick={() => bulkSnooze(1)}>{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
+          <MenuItem onClick={() => bulkSnooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
+          <MenuItem onClick={() => bulkSnooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
+        </Menu>
 
-      {openCard && <WorkflowCardDrawer card={cards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
-      {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
-    </PageContainer>
+        {openCard && <WorkflowCardDrawer card={cards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
+        {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
+      </PageContainer>
+    </>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { CardWithHeader, PageHeader, PageContainer } from "../components/ui";
 import { StylesManager, SiteWidgetsEdit, RedirectsEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
@@ -29,8 +29,12 @@ export const AppearancePage = () => {
               <StylesManager siteId={siteId} selectedSite={selectedSite} />
             </CardWithHeader>
           )}
-          {UserHelper.currentUserChurch && <SiteWidgetsEdit />}
-          {UserHelper.currentUserChurch && <RedirectsEdit />}
+          {UserHelper.currentUserChurch && (
+            <Grid container spacing={3} alignItems="stretch">
+              <Grid size={{ xs: 12, lg: 6 }} sx={{ display: "flex", "& > *": { flexGrow: 1 } }}><SiteWidgetsEdit /></Grid>
+              <Grid size={{ xs: 12, lg: 6 }} sx={{ display: "flex", "& > *": { flexGrow: 1 } }}><RedirectsEdit /></Grid>
+            </Grid>
+          )}
         </Stack>
       </PageContainer>
     </>
