@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
@@ -8,6 +8,15 @@ import UserContext from "../UserContext";
 import { buildHouseholds, firstName } from "./buildHouseholds";
 
 const EXCLUDED_STATUSES = new Set(["Inactive", "Visitor", "Deceased"]);
+
+const readSearchIds = (): Set<string> => {
+  try {
+    const ids = JSON.parse(localStorage.getItem("printDirectoryPersonIds") || "[]");
+    return new Set(Array.isArray(ids) ? ids : []);
+  } catch {
+    return new Set();
+  }
+};
 
 const formatDate = (date?: string): string => {
   if (!date) return "";
@@ -40,6 +49,8 @@ const memberAnniversaries = (members: PersonInterface[]) => {
 export const PrintDirectoryPage = () => {
   const navigate = useNavigate();
   const context = useContext(UserContext);
+  const [searchParams] = useSearchParams();
+  const searchIds = useMemo(() => (searchParams.get("scope") === "search" ? readSearchIds() : null), [searchParams]);
 
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people", "MembershipApi"],
@@ -61,9 +72,12 @@ export const PrintDirectoryPage = () => {
 
   const households = useMemo(() => {
     if (!people.data) return [];
-    const eligible = people.data.filter((p) => !p.optedOut && !EXCLUDED_STATUSES.has(p.membershipStatus || ""));
+    // A search print keeps whoever the user searched for, regardless of membership status.
+    const eligible = searchIds
+      ? people.data.filter((p) => !p.optedOut && searchIds.has(p.id))
+      : people.data.filter((p) => !p.optedOut && !EXCLUDED_STATUSES.has(p.membershipStatus || ""));
     return buildHouseholds(eligible, householdNameById);
-  }, [people.data, householdNameById]);
+  }, [people.data, householdNameById, searchIds]);
 
   const isLoading = people.isLoading || householdRecords.isLoading;
 
