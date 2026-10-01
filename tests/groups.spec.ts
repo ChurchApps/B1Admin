@@ -124,6 +124,26 @@ test.describe.serial("Group Management", () => {
       await expect(validatedPerson).toHaveCount(1);
     });
 
+    test("adds a newly created person straight to the group", async () => {
+      await openSeedGroup(page);
+      await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
+
+      const last = `Newcomer${Date.now()}`;
+      await page.locator('input[name="personAddText"]').fill(`Zelda ${last}`);
+      await page.locator('[data-testid="search-button"]').click();
+      await page.locator("#personAddBox").getByRole("button", { name: /Add (a )?New Person/ }).click();
+
+      const dialog = page.getByRole("dialog").filter({ hasText: /Add (a )?New Person/ });
+      await dialog.locator('input[name="first"]').fill("Zelda");
+      await dialog.locator('input[name="last"]').fill(last);
+      const memberSaved = page.waitForResponse((r) => r.url().includes("/groupmembers") && r.request().method() === "POST");
+      await dialog.getByRole("button", { name: "Add", exact: true }).click();
+      await expect(dialog).toBeHidden();
+      expect((await memberSaved).ok()).toBeTruthy();
+
+      await expect(page.locator("#groupMemberTable").getByText(`Zelda ${last}`)).toHaveCount(1);
+    });
+
     test("should advanced add people", async () => {
       await openSeedGroup(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
