@@ -1479,6 +1479,7 @@
       "srvTimeOp": "Service Times (optional)"
     },
     "sessionAdd": {
+      "allGroups": "Also add for the other {count} groups in {serviceTime}",
       "invDate": "Invalid Date",
       "sesAdd": "Add a Session",
       "sesDate": "Session Date",
