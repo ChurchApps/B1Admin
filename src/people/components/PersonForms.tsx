@@ -9,7 +9,7 @@ import { type PersonInterface, type FormSubmissionInterface, type QuestionInterf
 import { ApiHelper, DateHelper, DisplayBox, Loading, Locale, SmallButton } from "@churchapps/apphelper";
 import { useReactToPrint } from "react-to-print";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
-import { Question, PrintStyles } from "../../components";
+import { Question, PrintStyles, SubmissionPersonDialog } from "../../components";
 
 export interface PersonFormOption {
   id: string;
@@ -42,6 +42,7 @@ export const PersonForms: React.FC<Props> = (props) => {
   const [details, setDetails] = useState<Record<string, FormDetail>>({});
   const [selectedFormId, setSelectedFormId] = useState<string>("");
   const [editingFormId, setEditingFormId] = useState<string>("");
+  const [changePersonId, setChangePersonId] = useState<string>("");
   // Per form, which of its submissions is on screen. Absent means "the newest one".
   const [selectedSubmissionIds, setSelectedSubmissionIds] = useState<Record<string, string>>({});
   const contentId = person?.id;
@@ -200,6 +201,7 @@ export const PersonForms: React.FC<Props> = (props) => {
     const actions = (
       <Stack direction="row" spacing={1} alignItems="center" className="no-print">
         {submission && <SmallButton icon="print" ariaLabel={Locale.label("common.print")} toolTip={Locale.label("common.print")} onClick={() => handlePrint()} data-testid="print-form-submission-button" />}
+        {submission && <SmallButton icon="swap_horiz" ariaLabel={Locale.label("forms.formSubmissions.changePerson")} toolTip={Locale.label("forms.formSubmissions.changePerson")} onClick={() => setChangePersonId(submission.id || "")} data-testid="submission-change-person" />}
         <SmallButton icon="edit" toolTip={Locale.label("people.personForm.editAria")?.replace("{name}", form.name || "form")} onClick={() => setEditingFormId(form.id)} />
       </Stack>
     );
@@ -217,6 +219,7 @@ export const PersonForms: React.FC<Props> = (props) => {
           )}
           {renderFields(submission, details[detailKey(form.id, submission?.id)])}
         </div>
+        {changePersonId && <SubmissionPersonDialog formSubmissionId={changePersonId} onClose={() => setChangePersonId("")} onUpdated={props.updatedFunction} />}
       </DisplayBox>
     );
   };

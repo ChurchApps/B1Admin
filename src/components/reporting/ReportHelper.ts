@@ -13,7 +13,9 @@ export class ReportHelper {
     switch (column.formatter) {
       case "date":
         if (result) {
-          const dt = new Date(result);
+          // Date-only values arrive as UTC midnight; read them as calendar dates so US browsers don't show the day before.
+          const dateOnly = result.match(/^(\d{4})-(\d{2})-(\d{2})(T00:00:00(\.000)?Z)?$/);
+          const dt = dateOnly ? new Date(+dateOnly[1], +dateOnly[2] - 1, +dateOnly[3]) : new Date(result);
           result = isNaN(dt.getTime()) ? "" : DateHelper.prettyDate(dt);
         }
         break;

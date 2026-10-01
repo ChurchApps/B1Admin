@@ -1,9 +1,19 @@
-import type { Page } from "@playwright/test";
+import fs from "fs";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { attendanceTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
+
+const API = process.env.API_BASE || "http://localhost:8084";
+
+async function apiLogin(api: APIRequestContext) {
+  const res = await api.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
+}
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Attendance Management", () => {
@@ -145,12 +155,48 @@ test.describe("Attendance Management", () => {
       await serviceName.click();
       const serviceSel = page.locator("li").getByText("Sunday Morning Service");
       await serviceSel.click();
-      const weekBox = page.locator('[name="week"]');
-      await weekBox.fill("2024-03-03");
+      await page.locator('[name="startDate"]').fill("2024-03-03");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
       const runBtn = page.locator("button").getByText("Run Report");
       await runBtn.click();
       const report = page.locator("td").getByText("10:30 AM Service");
       await expect(report).toBeVisible({ timeout: 10000 });
+    });
+  });
+
+  test.describe("Report dates", () => {
+    // The Api returns the week's Sunday as a UTC-midnight date; a US browser must still show that calendar day.
+    test.use({ timezoneId: "America/Chicago", locale: "en-US" });
+
+    test.beforeAll(async () => {
+      const api = await pwRequest.newContext();
+      const auth = await apiLogin(api);
+      // Wednesday Prayer Service session on Wed 9/30/2026 with one visit.
+      const sRes = await api.post(`${API}/attendance/sessions`, { ...auth, data: [{ groupId: "GRP00000003", serviceTimeId: "SST00000004", sessionDate: "2026-09-30T19:00:00" }] });
+      const session = (await sRes.json())[0];
+      await api.post(`${API}/attendance/visitsessions/log`, { ...auth, data: { personId: "PER00000001", visitSessions: [{ sessionId: session.id }] } });
+      await api.dispose();
+    });
+
+    test("Attendance Trend labels a Wednesday visit with that week's Sunday", async ({ page }) => {
+      // Production's Api runs in UTC and sends each week as YYYY-MM-DDT00:00:00.000Z. The local Api
+      // runs in this machine's zone, so rewrite its dates into the production shape.
+      await page.route("**/reporting/reports/attendanceTrend/run**", async (route) => {
+        const response = await route.fetch();
+        const body = await response.json();
+        const pad = (n: number) => String(n).padStart(2, "0");
+        body.table = (body.table || []).map((row: any) => {
+          const d = new Date(row.week);
+          return { ...row, week: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T00:00:00.000Z` };
+        });
+        await route.fulfill({ response, json: body });
+      });
+      await page.locator('button[role="tab"]').getByText("Attendance Trend").click();
+      await page.locator("button").getByText("Run Report").click();
+
+      const table = page.locator('[id="reportsBox"] table');
+      await expect(table.locator("td").getByText("Sep 27, 2026", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(table.locator("td").getByText("Sep 26, 2026", { exact: true })).toHaveCount(0);
     });
   });
 
@@ -162,7 +208,8 @@ test.describe("Attendance Management", () => {
       const groupTab = page.locator('button[role="tab"]').getByText("Group Attendance");
       await groupTab.click();
       await expect(page.locator('[id="mui-component-select-campusId"]')).toBeVisible({ timeout: 10000 });
-      await expect(page.locator('[name="week"]')).toBeVisible();
+      await expect(page.locator('[name="startDate"]')).toBeVisible();
+      await expect(page.locator('[name="endDate"]')).toBeVisible();
     });
 
     test("Group Attendance report shows results for a week with seed visits", async ({ page }) => {
@@ -174,13 +221,41 @@ test.describe("Attendance Management", () => {
       const serviceName = page.locator('[id="mui-component-select-serviceId"]');
       await serviceName.click();
       await page.locator("li").getByText("Sunday Morning Service").click();
-      const weekBox = page.locator('[name="week"]');
-      await weekBox.fill("2024-03-03");
+      await page.locator('[name="startDate"]').fill("2024-03-03");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
       const runBtn = page.locator("button").getByText("Run Report");
       await runBtn.click();
       const reportRows = page.locator('[id="reportsBox"] table tr');
       await expect(reportRows.first()).toBeVisible({ timeout: 10000 });
       expect(await reportRows.count()).toBeGreaterThan(1);
+    });
+
+    test("Group Attendance covers a date range and downloads one dated column per session", async ({ page }) => {
+      await page.locator('button[role="tab"]').getByText("Group Attendance").click();
+      await page.locator('[id="mui-component-select-campusId"]').click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill("2024-03-09");
+      await page.locator('[name="endDate"]').fill("2024-03-17");
+      await page.locator("button").getByText("Run Report").click();
+      const reportsBox = page.locator('[id="reportsBox"]');
+      await expect(reportsBox.locator("td").getByText("2024-03-09", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(reportsBox.locator("td").getByText("2024-03-17", { exact: true })).toBeVisible();
+
+      await page.getByRole("button", { name: "Download Options" }).click();
+      const downloadPromise = page.waitForEvent("download");
+      // CSVLink is lazy-loaded; click the real download link, not the Suspense fallback
+      await page.getByRole("menuitem").locator("a[download]").filter({ hasText: "Summary" }).click();
+      const download = await downloadPromise;
+      const csv = fs.readFileSync(await download.path(), "utf8").replace(/^\uFEFF/, "");
+      const header = csv.split(/\r?\n/)[0];
+      expect(header.startsWith('"displayName","groupName",')).toBe(true);
+      expect(header.endsWith('"personId","groupId"')).toBe(true);
+      expect(header).toContain('"Sunday Morning Service - 9:00 AM Service (2024-03-09)"');
+      expect(header).toContain('"Sunday Morning Service - 9:00 AM Service (2024-03-16)"');
+      expect(header).toContain('"Sunday Morning Service - 9:00 AM Service (2024-03-17)"');
+      expect(csv).toContain("present");
     });
 
     test("Attendance Trend Run Report enabled only after selecting filters", async ({ page }) => {
@@ -190,6 +265,55 @@ test.describe("Attendance Management", () => {
       const runBtn = page.locator("button").getByText("Run Report");
       await expect(runBtn).toBeVisible({ timeout: 10000 });
       await expect(runBtn).toBeEnabled();
+    });
+  });
+
+  test.describe("Group Attendance order", () => {
+    const WEEK = "2026-09-27";
+
+    test.beforeAll(async () => {
+      const api = await pwRequest.newContext();
+      const auth = await apiLogin(api);
+      // Two classes in the same service time, attendance taken alternately.
+      const sRes = await api.post(`${API}/attendance/sessions`, {
+        ...auth,
+        data: [
+          { groupId: "GRP00000004", serviceTimeId: "SST00000001", sessionDate: `${WEEK}T09:00:00` },
+          { groupId: "GRP00000005", serviceTimeId: "SST00000001", sessionDate: `${WEEK}T09:00:00` }
+        ]
+      });
+      const sessions = await sRes.json();
+      for (let i = 1; i <= 12; i++) {
+        const personId = "PER" + i.toString().padStart(8, "0");
+        await api.post(`${API}/attendance/visitsessions/log`, { ...auth, data: { personId, visitSessions: [{ sessionId: sessions[i % 2].id }] } });
+      }
+      await api.dispose();
+    });
+
+    test("Group Attendance lists each group once with members in name order", async ({ page }) => {
+      await page.locator('button[role="tab"]').getByText("Group Attendance").click();
+      await page.locator('[id="mui-component-select-campusId"]').click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill(WEEK);
+      await page.locator('[name="endDate"]').fill("2026-10-03");
+      await page.locator("button").getByText("Run Report").click();
+
+      const report = page.locator('[id="reportsBox"] table');
+      // Session Date and Service Time are the outer groupings, so the group is the third heading level.
+      await expect(report.locator("td.heading3").first()).toBeVisible({ timeout: 10000 });
+      await expect(report.locator("td.heading3", { hasText: "Adult Bible Class" })).toHaveCount(1);
+      await expect(report.locator("td.heading3", { hasText: "Young Adults Class" })).toHaveCount(1);
+
+      const rows = await report.locator("tbody tr").evaluateAll((trs) => trs.map((tr) => ({ heading: !!tr.querySelector("td[class*='heading']"), text: tr.querySelector("td:not([class*='heading'])")?.textContent?.trim() || "" })));
+      const groups: string[][] = [];
+      rows.forEach((r) => {
+        if (r.heading) groups.push([]);
+        else groups[groups.length - 1]?.push(r.text);
+      });
+      expect(groups.flat().length).toBeGreaterThan(0);
+      groups.forEach((names) => expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b))));
     });
   });
 

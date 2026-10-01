@@ -13,6 +13,9 @@ import {
   Loading
 } from "@churchapps/apphelper";
 import { CountChip, ExportButton, hoverRowSx } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
+import { SubmissionPersonDialog } from "../../components/SubmissionPersonDialog";
+import { SwapHoriz as SwapHorizIcon } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -27,6 +30,7 @@ interface Props {
 export const FormSubmissions: React.FC<Props> = memo((props) => {
   const [summary, setSummary] = useState<any>([]);
   const [summaryCsv, setSummaryCsv] = useState<any>([]);
+  const [changePersonId, setChangePersonId] = useState("");
   const yesNoMap = useMemo(() => ({ True: Locale.label("common.yes"), False: Locale.label("common.no") }), []);
   const yesNoDefault = useMemo(
     () => [
@@ -221,15 +225,24 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           key={i}
           sx={hoverRowSx}>
           <TableCell key="personName">
-            {personId ? (
-              <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-                {personName}
-              </Typography>
-            ) : (
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {personName}
-              </Typography>
-            )}
+            <Stack direction="row" spacing={0.5} alignItems="center">
+              {personId ? (
+                <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+                  {personName}
+                </Typography>
+              ) : (
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  {personName}
+                </Typography>
+              )}
+              <AppIconButton
+                className="no-print"
+                label={Locale.label("forms.formSubmissions.changePerson")}
+                icon={<SwapHorizIcon />}
+                onClick={() => setChangePersonId(processedSubmission.id)}
+                data-testid={`submission-change-person-${processedSubmission.id}`}
+              />
+            </Stack>
           </TableCell>
           <TableCell key="subDate">
             <Typography variant="body2">{DateHelper.prettyDate(new Date(processedSubmission.submissionDate))}</Typography>
@@ -288,6 +301,9 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     [tableHeader, tableRows, editLinks, submissionCount]
   );
 
+  const refetchSubmissions = formSubmissions.refetch;
+  const handlePersonChanged = useCallback(() => { void refetchSubmissions(); }, [refetchSubmissions]);
+
   if (people.isLoading || formSubmissions.isLoading) return <Loading />;
 
   return (
@@ -308,6 +324,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           </DisplayBox>
           {formSubmissionsTable}
         </div>
+        {changePersonId && <SubmissionPersonDialog formSubmissionId={changePersonId} onClose={() => setChangePersonId("")} onUpdated={handlePersonChanged} />}
       </Grid>
     </Grid>
   );
