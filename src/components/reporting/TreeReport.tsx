@@ -32,11 +32,23 @@ export const TreeReport = (props: Props) => {
     return result;
   };
 
+  // Sort by each grouping column, then the first leaf column, so every heading appears once with its rows in order.
+  const getSortedTable = () => {
+    const sortColumns = props.output.columns.slice(0, totalGroupings + 1);
+    return [...props.reportResult.table].sort((a, b) => {
+      for (const c of sortColumns) {
+        const diff = ReportHelper.getField(c, a).localeCompare(ReportHelper.getField(c, b));
+        if (diff !== 0) return diff;
+      }
+      return 0;
+    });
+  };
+
   const getRows = () => {
     const result: React.ReactElement[] = [];
     const columns = props.output.columns;
     let previousData = {};
-    props.reportResult.table.forEach((d, rowIdx) => {
+    getSortedTable().forEach((d, rowIdx) => {
       const row: React.ReactElement[] = [];
       const groupingRows: React.ReactElement[] = getGroupingRows(previousData, d, rowIdx);
       groupingRows.forEach((gr) => result.push(gr));
