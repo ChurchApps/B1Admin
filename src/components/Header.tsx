@@ -119,6 +119,22 @@ export const Header: React.FC = () => {
         else el.removeAttribute("aria-current");
       });
 
+      const currentSection = document.querySelector("#primaryNavButton h2")?.textContent?.trim().toLowerCase();
+      document.getElementById("primaryNavButton")?.nextElementSibling?.querySelectorAll(".MuiListItemText-primary").forEach((el) => {
+        const source = el.getAttribute("data-raw-label") || el.textContent || "";
+        if (!el.getAttribute("data-raw-label")) el.setAttribute("data-raw-label", source);
+        const lower = source.toLowerCase();
+        const sentence = lower ? lower.charAt(0).toUpperCase() + lower.slice(1) : source;
+        if (el.textContent !== sentence) el.textContent = sentence;
+        const on = sentence.toLowerCase() === currentSection;
+        const link = el.closest("a");
+        link?.classList.toggle("selected", on);
+        link?.querySelectorAll("[title], [aria-label]").forEach((node) => {
+          if (node.getAttribute("title")?.toLowerCase() === lower) node.setAttribute("title", sentence);
+          if (node.getAttribute("aria-label")?.toLowerCase() === lower) node.setAttribute("aria-label", sentence);
+        });
+      });
+
       const scopes = document.querySelectorAll("header, .MuiDrawer-root");
       const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
