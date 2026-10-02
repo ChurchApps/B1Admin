@@ -28,7 +28,7 @@ const getInitialTheme = (): ThemeId => {
   if (typeof window === "undefined") return "soft";
   try {
     const stored = localStorage.getItem(THEME_ID_KEY);
-    if (stored === "soft" || stored === "warm") return stored;
+    if (stored === "soft" || stored === "warm" || stored === "plum") return stored;
   } catch { /* storage unavailable */ }
   return "soft";
 };
@@ -49,8 +49,7 @@ export const ThemeContextProvider = ({ children }: Props) => {
   useEffect(() => {
     try { localStorage.setItem(THEME_ID_KEY, themeId); } catch { /* storage unavailable */ }
     document.body.dataset.b1Theme = themeId;
-    document.body.classList.toggle("theme-warm", themeId === "warm");
-    document.body.classList.toggle("theme-soft", themeId === "soft");
+    (["soft", "warm", "plum"] as ThemeId[]).forEach((id) => document.body.classList.toggle("theme-" + id, themeId === id));
   }, [themeId]);
 
   const toggleTheme = () => {

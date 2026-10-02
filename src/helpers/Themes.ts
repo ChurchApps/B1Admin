@@ -17,12 +17,13 @@ declare module "@mui/material/styles" {
 }
 
 // Semantic tokens, exposed to page code as var(--b1-<kebab-name>). `soft` is the default;
-// `warm` matches the cream / navy / teal reference. Both modes of a theme share one key set.
-export type ThemeId = "soft" | "warm";
+// `warm` matches the cream / navy / teal reference; `plum` is aubergine / lilac / coral. Both modes of a theme share one key set.
+export type ThemeId = "soft" | "warm" | "plum";
 
 export const themeCatalog: { id: ThemeId; header: string; canvas: string; primary: string; accent: string; ink: string }[] = [
   { id: "soft", header: "#102E59", canvas: "#F3F7FC", primary: "#1765C1", accent: "#D9A441", ink: "#172B45" },
-  { id: "warm", header: "#082239", canvas: "#F7F3EC", primary: "#0F7478", accent: "#C4A15A", ink: "#2A2926" }
+  { id: "warm", header: "#082239", canvas: "#F7F3EC", primary: "#0F7478", accent: "#C4A15A", ink: "#2A2926" },
+  { id: "plum", header: "#2B1640", canvas: "#F6F4F9", primary: "#6B3FA0", accent: "#E07A5F", ink: "#251E2E" }
 ];
 
 interface ThemeShape {
@@ -38,7 +39,8 @@ interface ThemeShape {
 
 export const themeShape: Record<ThemeId, ThemeShape> = {
   soft: { radius: 6, avatar: "10px", tick: "0px", tickGap: "0px", panel: "10px", control: "6px", shadow: "rgba(16, 46, 89, 0.12)", dialog: "rgba(16, 46, 89, 0.2)" },
-  warm: { radius: 8, avatar: "999px", tick: "3px", tickGap: "8px", panel: "16px", control: "8px", shadow: "rgba(36, 28, 16, 0.10)", dialog: "rgba(36, 28, 16, 0.18)" }
+  warm: { radius: 8, avatar: "999px", tick: "3px", tickGap: "8px", panel: "16px", control: "8px", shadow: "rgba(36, 28, 16, 0.10)", dialog: "rgba(36, 28, 16, 0.18)" },
+  plum: { radius: 8, avatar: "12px", tick: "0px", tickGap: "0px", panel: "14px", control: "8px", shadow: "rgba(43, 22, 64, 0.12)", dialog: "rgba(43, 22, 64, 0.22)" }
 };
 
 export const b1Tokens = {
@@ -241,6 +243,106 @@ export const b1Tokens = {
       pillFg: "#FFFFFF",
       pillBorder: "#0F7478"
     }
+  },
+  plum: {
+    light: {
+      canvas: "#F6F4F9",
+      surface: "#FFFFFF",
+      sidebar: "#F0ECF6",
+      header: "#2B1640",
+      headerHover: "#43275E",
+      onHeader: "#FFFFFF",
+      headerMuted: "#D8CCE6",
+      primary: "#6B3FA0",
+      primaryHover: "#5A3388",
+      primaryPressed: "#4B2A72",
+      onPrimary: "#FFFFFF",
+      selected: "#EBE1F7",
+      onSelected: "#4F2A7A",
+      hover: "#F3EEF9",
+      text: "#251E2E",
+      muted: "#6B6178",
+      border: "#E4DEEC",
+      controlBorder: "#8E84A0",
+      focus: "#7C4DD8",
+      success: "#2F7A4D",
+      successBg: "#E6F3EA",
+      warning: "#8A5A00",
+      warningBg: "#FBEED3",
+      danger: "#B42F45",
+      dangerBg: "#FCEDF0",
+      neutral: "#574E66",
+      neutralBg: "#F0EDF4",
+      disabledBg: "#ECE8F1",
+      disabledText: "#7A7088",
+      link: "#6B3FA0",
+      accent: "#E07A5F",
+      onAccent: "#4A1E10",
+      accentBg: "#FCE6DF",
+      mark: "#B79BDB",
+      markEmpty: "#EEE8F6",
+      wash: "#F1ECF8",
+      tick: "transparent",
+      avatar: "#6B3FA0",
+      onAvatar: "#FFFFFF",
+      chip: "#EBE1F7",
+      onChip: "#4F2A7A",
+      chipAlt: "#FCE6DF",
+      onChipAlt: "#8A3A22",
+      eyebrow: "#6B3FA0",
+      pillBg: "#EBE1F7",
+      pillFg: "#4F2A7A",
+      pillBorder: "transparent"
+    },
+    dark: {
+      canvas: "#16121C",
+      surface: "#201A29",
+      sidebar: "#1B1623",
+      header: "#120A1C",
+      headerHover: "#2E1F42",
+      onHeader: "#FFFFFF",
+      headerMuted: "#D8CCE6",
+      primary: "#B794E6",
+      primaryHover: "#C8ADEC",
+      primaryPressed: "#D7C3F1",
+      onPrimary: "#20103A",
+      selected: "#352650",
+      onSelected: "#E6DAF7",
+      hover: "#2A2235",
+      text: "#ECE7F2",
+      muted: "#B3A8C2",
+      border: "#342B40",
+      controlBorder: "#7E7290",
+      focus: "#C3A4F0",
+      success: "#86CFA0",
+      successBg: "#17301F",
+      warning: "#F0C070",
+      warningBg: "#3A2C10",
+      danger: "#F29AA8",
+      dangerBg: "#3D1C24",
+      neutral: "#C2B8D0",
+      neutralBg: "#2B2436",
+      disabledBg: "#2A2333",
+      disabledText: "#857A94",
+      link: "#C3A4F0",
+      accent: "#F0A08A",
+      onAccent: "#3A1408",
+      accentBg: "#3D2018",
+      mark: "#8A6BC0",
+      markEmpty: "#2C2438",
+      wash: "#261E33",
+      tick: "transparent",
+      avatar: "#6B3FA0",
+      onAvatar: "#FFFFFF",
+      chip: "#352650",
+      onChip: "#E6DAF7",
+      chipAlt: "#3D2018",
+      onChipAlt: "#F5C2B3",
+      eyebrow: "#C3A4F0",
+      pillBg: "#352650",
+      pillFg: "#E6DAF7",
+      pillBorder: "transparent"
+    }
   }
 } as const;
 
@@ -300,7 +402,7 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
   const dialogShadow = `0 16px 48px ${shape.dialog}`;
   // Panels are bordered, not shadowed; only floating layers (menus, popovers, dialogs: elevation >= 8) cast a shadow.
   const shadows = Array.from({ length: 25 }, (_, i) => (i === 0 || i < 8 ? "none" : i >= 16 ? dialogShadow : popoverShadow)) as Shadows;
-  const primaryLight = themeId === "warm" ? (mode === "light" ? "#5EBEBE" : "#8EDDD8") : (mode === "light" ? "#4A8BD6" : "#9CC4F6");
+  const primaryLight = { soft: mode === "light" ? "#4A8BD6" : "#9CC4F6", warm: mode === "light" ? "#5EBEBE" : "#8EDDD8", plum: mode === "light" ? "#9A72CC" : "#D7C3F1" }[themeId];
   return {
     palette: {
       mode,
