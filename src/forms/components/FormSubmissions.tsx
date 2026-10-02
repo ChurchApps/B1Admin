@@ -96,9 +96,6 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       formSubmission.person = { name: submittedBy?.name?.display || Locale.label("forms.formSubmissions.anon"), id: submittedBy?.id || null };
       formSubmission.mappedQA = [];
       formSubmission.csvData = [];
-      if (formSubmission.questions) {
-        formSubmission.questions = formSubmission.questions.sort((a: QuestionInterface, b: QuestionInterface) => ((a.title || "") > (b.title || "") ? 1 : -1));
-      }
       return formSubmission;
     },
     [getPerson]
@@ -173,8 +170,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         </TableCell>
       );
       result.push(<TableCell key="submissionDate">{Locale.label("forms.formSubmissions.subDate")}</TableCell>);
-      [...formSubmissions.data[0].questions].sort((a: QuestionInterface, b: QuestionInterface) => ((a.title || "") > (b.title || "") ? 1 : -1)).forEach((question: QuestionInterface) =>
-        result.push(<TableCell key={question.id}>{question.title}</TableCell>));
+      formSubmissions.data[0].questions.forEach((question: QuestionInterface) => result.push(<TableCell key={question.id}>{question.title}</TableCell>));
     }
     return result;
   }, [formSubmissions.data]);
