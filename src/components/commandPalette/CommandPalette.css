@@ -71,7 +71,7 @@
 
 .om-palette-results {
   padding: 8px;
-  max-height: min(52vh, 420px);
+  max-height: min(70vh, 560px);
   overflow-y: auto;
 }
 
@@ -103,3 +103,24 @@
 .om-hit.active { background: #e5e8ee; }
 
 .om-hit small { color: #666; }
+
+.om-hit span { display: flex; align-items: center; gap: 10px; }
+
+.om-hit span .MuiIcon-root { color: #1565C0; }
+
+.om-hit small { display: flex; align-items: center; }
+
+.om-crumb {
+  display: inline-flex;
+  align-items: center;
+  margin: 12px 0 0 12px;
+  padding: 2px 10px 2px 4px;
+  border: 0;
+  border-radius: 999px;
+  background: #e3edf9;
+  color: #1565C0;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}

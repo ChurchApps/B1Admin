@@ -84,6 +84,8 @@ export const Header: React.FC = () => {
 
   const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search, isMinistryMember });
 
+  const paletteMenu = useMemo(() => primaryMenu.map((m) => ({ ...m, children: SecondaryMenuHelper.getSecondaryMenu(m.url, { formPermission, search: "", isMinistryMember }).menuItems })), [primaryMenu, formPermission, isMinistryMember]);
+
   const handleNavigate = (url: string) => {
     navigate(url);
   };
@@ -208,7 +210,7 @@ export const Header: React.FC = () => {
         onNavigate={handleNavigate}
         userMenuExtras={<ThemeMenuControls />}
       />
-      <CommandPalette />
+      <CommandPalette menu={paletteMenu} />
     </>
   );
 };
