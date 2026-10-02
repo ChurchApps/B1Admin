@@ -1,6 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@mui/material";
 import { CreatePerson } from "../CreatePerson";
@@ -27,7 +27,7 @@ const isTypingTarget = (el: EventTarget | null) => el instanceof HTMLElement && 
 
 const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
 
-export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) => {
+export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }> = ({ menu, label }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = React.useState(false);
@@ -41,8 +41,8 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) 
 
   const catalog = useQuery<{ items: PaletteItem[] }>({ queryKey: ["/palette", "MembershipApi"], enabled: open, staleTime: 30_000 });
 
-  // ponytail: SiteHeader (apphelper) has no slot yet; portal into its flex spacer. Replace with a prop once apphelper exposes one.
-  React.useEffect(() => { setSlot(document.getElementById("secondary-menu-container")); }, []);
+  // ponytail: SiteHeader (apphelper) has no slot yet, so portal into its toolbar (CSS order puts it first) and hide its primary dropdown in CSS. Replace with a prop once apphelper exposes one.
+  React.useEffect(() => { setSlot(document.getElementById("site-toolbar")); }, [location.pathname]);
 
   const items = React.useMemo(() => {
     const server = catalog.data?.items || [];
@@ -69,7 +69,14 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) 
   }, [items, location.pathname]);
 
   const close = React.useCallback(() => { setOpen(false); setQuery(""); setActive(0); setSection(null); }, []);
-  const openPalette = React.useCallback(() => { setOpen(true); setQuery(""); setActive(current); setSection(null); }, [current]);
+  const openPalette = React.useCallback(() => {
+    // Phones have no sibling tabs, so open inside the current section there.
+    const here = window.matchMedia("(max-width: 740px)").matches && items[current]?.k ? items[current] : null;
+    setOpen(true);
+    setQuery("");
+    setSection(here);
+    setActive(here ? Math.max(0, here.k!.findIndex((c) => c.u === location.pathname)) : current);
+  }, [current, items, location.pathname]);
   const enter = (next: PaletteItem | null) => { setSection(next); setQuery(""); setActive(Math.max(0, next ? (next.k || []).findIndex((c) => c.u === location.pathname) : items.indexOf(section!))); };
 
   React.useEffect(() => {
@@ -128,11 +135,14 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) 
   };
 
   const field = slot && createPortal(
-    <button type="button" className="om-search" onClick={openPalette} data-testid="command-palette-open" aria-label="Search or jump">
-      <Icon fontSize="small">search</Icon>
-      <span>Search or jump…</span>
-      <kbd>{isMac ? "⌘" : "Ctrl"} K</kbd>
-    </button>,
+    <div className="om-nav">
+      <RouterLink to="/" className="om-logo" aria-label="Dashboard"><img src="/images/logo-icon.png" alt="" /></RouterLink>
+      <button type="button" className="om-search" onClick={openPalette} data-testid="command-palette-open" aria-label={"Search or jump, current section " + label} title={"Search or jump (" + (isMac ? "⌘" : "Ctrl") + " K)"}>
+        <Icon fontSize="small">search</Icon>
+        <span className="om-search-label" data-testid="command-palette-section">{label}</span>
+        <kbd>{isMac ? "⌘" : "Ctrl"} K</kbd>
+      </button>
+    </div>,
     slot
   );
 

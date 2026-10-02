@@ -81,15 +81,32 @@ const SECONDARY_ROUTES: Record<
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 
+// The header's search/jump bar is the main menu; its section rows carry the same labels as the old dropdown.
+const PRIMARY_LABELS: Record<PrimarySection, string> = {
+  dashboard: "Dashboard",
+  people: "People",
+  donations: "Donations",
+  serving: "Serving",
+  sermons: "Sermons",
+  website: "Website",
+  calendars: "Calendars",
+  mobile: "Mobile",
+  settings: "Settings"
+};
+
 export async function openPrimaryNav(page: Page) {
-  const menuBtn = page.locator("#primaryNavButton");
+  const menuBtn = page.getByTestId("command-palette-open");
   await menuBtn.waitFor({ state: "visible", timeout: 15000 });
   await menuBtn.click();
+  await page.getByTestId("command-palette").waitFor({ state: "visible", timeout: 10000 });
 }
 
 async function clickPrimary(page: Page, section: PrimarySection) {
   await openPrimaryNav(page);
-  const item = page.locator(`.MuiListItemButton-root[data-testid="nav-item-${section}"]`);
+  const palette = page.getByTestId("command-palette");
+  // Typing makes Enter/click jump to the section's page instead of drilling into its submenu.
+  await palette.getByRole("textbox").fill(PRIMARY_LABELS[section]);
+  const item = palette.getByRole("button", { name: PRIMARY_LABELS[section], exact: true }).first();
   await item.waitFor({ state: "visible", timeout: 10000 });
   await item.click();
   await page.waitForURL(PRIMARY_URL_PATTERNS[section], { timeout: 15000 });
