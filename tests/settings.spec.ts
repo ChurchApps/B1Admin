@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo } from "./helpers/navigation";
+import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -460,7 +460,7 @@ test.describe.serial("Settings Management", () => {
     test("Settings landing shows the configuration list and Roles in the secondary nav", async () => {
       await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[data-testid="settings-section-campuses"]')).toBeVisible();
-      const rolesNav = page.locator('[id="secondaryMenu"]').getByText("Roles", { exact: true });
+      const rolesNav = (await siblingNav(page)).getByText("Roles", { exact: true });
       await expect(rolesNav).toBeVisible({ timeout: 10000 });
     });
   });
@@ -479,7 +479,7 @@ test.describe.serial("Settings Management", () => {
     });
 
     test("Email Templates, Audit Log and Batches are in the settings menu", async () => {
-      const menu = page.locator('[id="secondaryMenu"]');
+      const menu = await siblingNav(page);
       await expect(menu.getByText("Audit Log", { exact: true })).toBeVisible({ timeout: 10000 });
       await expect(menu.getByText("Batches", { exact: true })).toBeVisible();
       await menu.getByText("Email Templates", { exact: true }).click();

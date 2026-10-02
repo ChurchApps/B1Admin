@@ -249,7 +249,7 @@ test.describe.serial("Serving Management - Apply Year Plan", () => {
     const editBtn = page.getByTestId("edit-group-button");
     await expect(editBtn).toBeVisible({ timeout: 10000 });
     await editBtn.click();
-    const deleteBtn = page.locator("button").getByText("Delete");
+    const deleteBtn = page.getByRole("button", { name: "Delete", exact: true });
     await expect(deleteBtn).toBeVisible({ timeout: 10000 });
     await deleteBtn.click();
     await confirmDelete(page).catch(() => undefined);

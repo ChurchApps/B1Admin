@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 import { sermonsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSermons } from "./helpers/navigation";
+import { navigateToSermons, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
 
@@ -250,7 +250,7 @@ test.describe("Sermons Management", () => {
     });
 
     test.beforeEach(async () => {
-      const streamHomeBtn = page.locator('[id="secondaryMenu"]').getByText("Live Stream Times");
+      const streamHomeBtn = (await siblingNav(page)).getByText("Live Stream Times");
       await streamHomeBtn.click();
     });
 
@@ -319,7 +319,7 @@ test.describe("Sermons Management", () => {
 
     test("should show settings tab with sidebar tabs section and view stream link", async () => {
       await expect(page.getByRole("link", { name: "View Your Stream" })).toBeVisible({ timeout: 10000 });
-      await page.locator('[id="secondaryMenu"]').getByText("Settings", { exact: true }).first().click();
+      await (await siblingNav(page)).getByText("Settings", { exact: true }).first().click();
       await expect(page.getByRole("heading", { name: "Content Tabs" })).toBeVisible({ timeout: 10000 });
     });
 

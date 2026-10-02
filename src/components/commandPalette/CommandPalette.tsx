@@ -5,9 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Icon } from "@mui/material";
 import { CreatePerson } from "../CreatePerson";
 import { QuickSetupModal, type WizardType } from "../../dashboard/components/QuickSetupModal";
+import { useQuickActions } from "./useQuickActions";
 import "./CommandPalette.css";
 
-interface PaletteItem { n: string; a?: string[]; t: "nav" | "do" | "person" | "group" | "plan" | "fund" | "jump"; u: string; i?: string; k?: PaletteItem[] }
+interface PaletteItem { n: string; a?: string[]; t: "nav" | "do" | "person" | "group" | "plan" | "fund" | "jump"; u: string; i?: string; k?: PaletteItem[]; p?: string }
 export interface PaletteMenuItem { url: string; icon?: string; label: string; children?: PaletteMenuItem[] }
 
 const GROUP: Record<PaletteItem["t"], string> = { nav: "Menu", do: "Do", person: "People", group: "Groups", plan: "Plans", fund: "Funds", jump: "Jump" };
@@ -27,19 +28,21 @@ const isTypingTarget = (el: EventTarget | null) => el instanceof HTMLElement && 
 
 const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
 
-export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }> = ({ menu, label }) => {
+export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; page?: string }> = ({ menu, label, page }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
-  const [section, setSection] = React.useState<PaletteItem | null>(null);
+  const [expanded, setExpanded] = React.useState<string[]>([]);
   const [active, setActive] = React.useState(0);
   const [addPerson, setAddPerson] = React.useState(false);
   const [wizard, setWizard] = React.useState<WizardType | null>(null);
   const [slot, setSlot] = React.useState<HTMLElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const resultsRef = React.useRef<HTMLDivElement>(null);
 
   const catalog = useQuery<{ items: PaletteItem[] }>({ queryKey: ["/palette", "MembershipApi"], enabled: open, staleTime: 30_000 });
+  const quickActions = useQuickActions(open);
 
   // ponytail: SiteHeader (apphelper) has no slot yet, so portal into its toolbar (CSS order puts it first) and hide its primary dropdown in CSS. Replace with a prop once apphelper exposes one.
   React.useEffect(() => { setSlot(document.getElementById("site-toolbar")); }, [location.pathname]);
@@ -51,10 +54,12 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }
       const k = m.children && m.children.length > 1 ? m.children.map((c): PaletteItem => ({ n: c.label, t: "jump", u: c.url, i: c.icon })) : undefined;
       return { n: m.label, a: dup ? [dup.n, ...(dup.a || [])] : undefined, t: "nav", u: m.url, i: m.icon, k };
     });
-    const create = server.filter((s) => s.t === "do");
-    if (create.length) nav.push({ n: "Create", a: ["add", "new", "set up"], t: "nav", u: "#create", i: "add", k: create });
+    if (quickActions.length) {
+      const k = quickActions.map((q): PaletteItem => ({ n: q.label, t: "do", u: q.url, i: q.icon }));
+      nav.push({ n: "Quick Actions", a: ["create", "add", "new", "set up", "get started"], t: "nav", u: "#quick", i: "bolt", k });
+    }
     return [...nav, ...server.filter((s) => !menu.some((m) => m.url === s.u))];
-  }, [catalog.data, menu]);
+  }, [catalog.data, menu, quickActions]);
 
   const current = React.useMemo(() => {
     const path = location.pathname;
@@ -68,20 +73,25 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }
     return best;
   }, [items, location.pathname]);
 
-  const close = React.useCallback(() => { setOpen(false); setQuery(""); setActive(0); setSection(null); }, []);
+  const close = React.useCallback(() => { setOpen(false); setQuery(""); setActive(0); setExpanded([]); }, []);
   const openPalette = React.useCallback(() => {
-    // Phones have no sibling tabs, so open inside the current section there.
-    const here = window.matchMedia("(max-width: 740px)").matches && items[current]?.k ? items[current] : null;
+    // Open the full menu with the current section expanded and the current page highlighted; sections come first in items.
+    const here = items[current]?.k ? items[current] : null;
+    const child = here ? here.k!.findIndex((c) => c.u === location.pathname) : -1;
     setOpen(true);
     setQuery("");
-    setSection(here);
-    setActive(here ? Math.max(0, here.k!.findIndex((c) => c.u === location.pathname)) : current);
+    setExpanded(here ? [here.u] : []);
+    setActive(child >= 0 ? current + 1 + child : current);
   }, [current, items, location.pathname]);
-  const enter = (next: PaletteItem | null) => { setSection(next); setQuery(""); setActive(Math.max(0, next ? (next.k || []).findIndex((c) => c.u === location.pathname) : items.indexOf(section!))); };
+  // One section open at a time; with the others collapsed the section's row index equals its index in items.
+  const toggle = (u: string) => {
+    setExpanded((e) => (e.includes(u) ? [] : [u]));
+    setActive(items.findIndex((i) => i.t === "nav" && i.u === u));
+  };
 
   React.useEffect(() => {
     if (open) inputRef.current?.focus();
-  }, [open, section]);
+  }, [open]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -102,18 +112,34 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }
   }, [open, close, openPalette]);
 
   const shown = React.useMemo(() => {
-    if (!section) return filterItems(items, query);
-    const q = query.trim().toLowerCase();
-    return (section.k || []).filter((i) => !q || matches(i, q));
-  }, [items, query, section]);
+    if (query.trim()) return filterItems(items, query);
+    const rows: PaletteItem[] = [];
+    items.filter((i) => i.t === "nav").forEach((n) => {
+      rows.push(n);
+      if (n.k && expanded.includes(n.u)) n.k.forEach((c) => rows.push({ ...c, p: n.u }));
+    });
+    return rows;
+  }, [items, query, expanded]);
+
+  // Bring a newly expanded section's pages into view; the active-row effect below then keeps the highlighted row visible.
+  React.useEffect(() => { Array.from(resultsRef.current?.querySelectorAll(".om-child") || []).pop()?.scrollIntoView({ block: "nearest" }); }, [expanded]);
+  React.useEffect(() => { resultsRef.current?.querySelector(".om-hit.active")?.scrollIntoView({ block: "nearest" }); }, [active, shown]);
 
   const run = React.useCallback((item: PaletteItem) => {
-    if (item.k && (!query || item.u.startsWith("#"))) { enter(item); return; }
+    if (item.k && !query) { toggle(item.u); return; }
+    if (item.k && item.u.startsWith("#")) {
+      // Searching "quick" lands on a section with no page of its own: show it expanded in the menu instead.
+      setQuery("");
+      setExpanded([item.u]);
+      setActive(items.indexOf(item));
+      return;
+    }
     close();
     if (item.u === "#addPerson") setAddPerson(true);
     else if (item.u.startsWith("#wizard:")) setWizard(item.u.slice(8) as WizardType);
+    else if (/^https?:/.test(item.u)) window.open(item.u, "_blank", "noopener");
     else navigate(item.u);
-  }, [close, navigate, query]);
+  }, [close, navigate, query, items]);
 
   const onInputKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
@@ -122,15 +148,19 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActive((i) => Math.max(0, i - 1));
-    } else if (e.key === "ArrowRight" && shown[active]?.k) {
-      e.preventDefault();
-      enter(shown[active]);
     } else if (e.key === "Enter" && shown[active]) {
       e.preventDefault();
       run(shown[active]);
-    } else if (section && !query && (e.key === "Backspace" || e.key === "ArrowLeft")) {
+    } else if (!query && e.key === "ArrowRight" && shown[active]?.k && !expanded.includes(shown[active].u)) {
       e.preventDefault();
-      enter(null);
+      toggle(shown[active].u);
+    } else if (!query && e.key === "ArrowLeft" && shown[active]) {
+      const row = shown[active];
+      const parent = row.p || (row.k && expanded.includes(row.u) ? row.u : null);
+      if (parent) {
+        e.preventDefault();
+        toggle(parent);
+      }
     }
   };
 
@@ -139,7 +169,10 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }
       <RouterLink to="/" className="om-logo" aria-label="Dashboard"><img src="/images/logo-icon.png" alt="" /></RouterLink>
       <button type="button" className="om-search" onClick={openPalette} data-testid="command-palette-open" aria-label={"Search or jump, current section " + label} title={"Search or jump (" + (isMac ? "⌘" : "Ctrl") + " K)"}>
         <Icon fontSize="small">search</Icon>
-        <span className="om-search-label" data-testid="command-palette-section">{label}</span>
+        <span className="om-search-label">
+          <span data-testid="command-palette-section">{label}</span>
+          {page && page !== label && <><span className="om-search-sep">›</span><span className="om-search-page" data-testid="command-palette-page">{page}</span></>}
+        </span>
         <kbd>{isMac ? "⌘" : "Ctrl"} K</kbd>
       </button>
     </div>,
@@ -149,16 +182,23 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string }
   const palette = open && createPortal(
     <div className="om-overlay" role="dialog" aria-modal="true" aria-label="Command palette" data-testid="command-palette" onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}>
       <div className="om-palette">
-        {section && <button type="button" className="om-crumb" onClick={() => enter(null)} aria-label="Back to menu"><Icon fontSize="small">chevron_left</Icon>{section.n}</button>}
-        <input ref={inputRef} value={query} onChange={(e) => { setQuery(e.target.value); setActive(0); }} onKeyDown={onInputKey} placeholder={section ? "Filter " + section.n.toLowerCase() + "…" : "Add a person, find a family, jump…"} autoComplete="off" aria-label="Search or jump" />
-        <div className="om-palette-results">
+        <input ref={inputRef} value={query} onChange={(e) => { setQuery(e.target.value); setActive(0); }} onKeyDown={onInputKey} placeholder="Add a person, find a family, jump…" autoComplete="off" aria-label="Search or jump" />
+        <div className="om-palette-results" ref={resultsRef}>
           {shown.length === 0 && <div className="om-group-label">{catalog.isLoading ? "Loading…" : "Nothing for that."}</div>}
           {shown.map((item, idx) => (
-            <React.Fragment key={item.t + item.u}>
-              {!section && query && item.t !== shown[idx - 1]?.t && <div className="om-group-label">{GROUP[item.t]}</div>}
-              <button type="button" className={"om-hit" + (idx === active ? " active" : "")} onMouseEnter={() => setActive(idx)} onClick={() => run(item)}>
-                <span>{item.i && <Icon fontSize="small">{item.i}</Icon>}{item.n}</span>
-                <small>{item.k && !query ? <Icon fontSize="small">chevron_right</Icon> : item.t === "do" || item.t === "nav" || section ? "" : item.u}</small>
+            <React.Fragment key={(item.p || "") + item.t + item.u}>
+              {query && item.t !== shown[idx - 1]?.t && <div className="om-group-label">{GROUP[item.t]}</div>}
+              <button
+                type="button"
+                className={"om-hit" + (item.p ? " om-child" : "") + (idx === active ? " active" : "")}
+                aria-expanded={item.k && !query ? expanded.includes(item.u) : undefined}
+                aria-current={item.p && item.u === location.pathname ? "page" : undefined}
+                onMouseMove={() => { if (idx !== active) setActive(idx); }}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => run(item)}
+              >
+                <span>{item.i && <Icon fontSize="small">{item.i}</Icon>}<span>{item.n}</span></span>
+                <small>{item.k && !query ? <Icon fontSize="small">{expanded.includes(item.u) ? "expand_less" : "expand_more"}</Icon> : item.t === "do" || item.t === "nav" || item.p ? "" : item.u}</small>
               </button>
             </React.Fragment>
           ))}

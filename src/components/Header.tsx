@@ -117,11 +117,6 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      document.querySelectorAll("#secondaryMenu > *").forEach((el) => {
-        if (el.classList.contains("MuiChip-root")) el.setAttribute("aria-current", "page");
-        else el.removeAttribute("aria-current");
-      });
-
       const scopes = document.querySelectorAll("header:not(#page-header), .MuiDrawer-root");
       const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
@@ -187,14 +182,14 @@ export const Header: React.FC = () => {
       <SiteHeader
         primaryMenuItems={primaryMenu}
         primaryMenuLabel={getPrimaryLabel()}
-        secondaryMenuItems={secondaryMenu.menuItems}
+        secondaryMenuItems={[]}
         secondaryMenuLabel={secondaryMenu.label}
         context={context!}
         appName={"B1Admin"}
         onNavigate={handleNavigate}
         userMenuExtras={<ThemeMenuControls />}
       />
-      <CommandPalette menu={paletteMenu} label={getPrimaryLabel()} />
+      <CommandPalette menu={paletteMenu} label={getPrimaryLabel()} page={secondaryMenu.label} />
     </>
   );
 };

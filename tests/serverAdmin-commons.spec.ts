@@ -1,6 +1,6 @@
 import { test, expect, type APIRequestContext, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { navigateTo, navigateToServing } from "./helpers/navigation";
+import { navigateTo, navigateToServing, siblingNav } from "./helpers/navigation";
 
 // Commons is a Domain Admin-only moderation tab. demo@b1.church (USR00000001) is a member of
 // the "Domain Admins" role (Api/tools/dbScripts/membership/demo.sql, RME00000001 -> ROL00000001),
@@ -26,7 +26,7 @@ async function apiLogin(ctx: APIRequestContext): Promise<{ userJwt: string; admi
 // so clear "Spec Song" leftovers from earlier interrupted runs (not this run's) before seeding.
 async function clearStaleSpecSubmissions(ctx: APIRequestContext, userJwt: string) {
   const mine = await (await ctx.get(`${API}/commons/submissions/mine?status=pending`, auth(userJwt))).json();
-  const stale = (m: any) => String(m.payload?.name || "").startsWith("Spec Song") && Date.now() - new Date(m.submittedAt).getTime() > 10 * 60 * 1000;
+  const stale = (m: any) => String(m.payload?.name || "").startsWith("Spec Song") && Date.now() - new Date(m.submittedAt).getTime() > 3 * 60 * 1000;
   for (const sub of (mine as any[]).filter(stale)) {
     await ctx.post(`${API}/commons/submissions/${sub.id}/withdraw`, { ...auth(userJwt), data: {} });
     await ctx.delete(`${API}/commons/submissions/${sub.id}`, auth(userJwt));
@@ -350,7 +350,7 @@ test.describe("serving song search", () => {
 
     await login(page);
     await navigateToServing(page);
-    await page.locator('[id="secondaryMenu"] a').getByText("Songs").click();
+    await (await siblingNav(page)).getByText("Songs").click();
     await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
     await page.getByTestId("add-song-button").waitFor({ state: "visible", timeout: 10000 });
     await page.getByTestId("add-song-button").dispatchEvent("click"); // the fixed site header sits over the page header on this route, so pointer clicks never reach the button

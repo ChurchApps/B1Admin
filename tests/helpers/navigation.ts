@@ -53,7 +53,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
 };
 
 // For each secondary section: the primary parent to open first, the text label in
-// the #secondaryMenu, and the URL pattern to wait for after clicking.
+// the header jump menu, and the URL pattern to wait for after clicking.
 const SECONDARY_ROUTES: Record<
   SecondarySection,
   { parent: PrimarySection; label: string; url: RegExp }
@@ -81,6 +81,19 @@ const SECONDARY_ROUTES: Record<
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 
+// Exact landing pages, so "already here" never matches a sub-page like /settings/email-templates.
+const PRIMARY_LANDING: Record<PrimarySection, RegExp> = {
+  dashboard: /^\/(dashboard)?$/,
+  people: /^\/people$/,
+  donations: /^\/donations$/,
+  serving: /^\/serving\/(plans|tasks)$/,
+  sermons: /^\/sermons$/,
+  website: /^\/site\/pages$/,
+  calendars: /^\/calendars$/,
+  mobile: /^\/mobile(\/navigation)?$/,
+  settings: /^\/settings$/
+};
+
 // The header's search/jump bar is the main menu; its section rows carry the same labels as the old dropdown.
 const PRIMARY_LABELS: Record<PrimarySection, string> = {
   dashboard: "Dashboard",
@@ -103,8 +116,7 @@ export async function openPrimaryNav(page: Page) {
 
 async function clickPrimary(page: Page, section: PrimarySection) {
   // Jumping to the page you're already on doesn't change the URL, so a test could fill a form the page then re-renders; reload for a clean page instead.
-  const here = new URL(page.url());
-  if (PRIMARY_URL_PATTERNS[section].test(here.pathname + here.search)) {
+  if (PRIMARY_LANDING[section].test(new URL(page.url()).pathname.replace(/(.)\/$/, "$1"))) {
     await page.reload();
     await page.getByTestId("command-palette-open").waitFor({ state: "visible", timeout: 15000 });
     return;
@@ -120,8 +132,17 @@ async function clickPrimary(page: Page, section: PrimarySection) {
   await page.waitForURL(PRIMARY_URL_PATTERNS[section], { timeout: 15000 });
 }
 
+// Sibling pages live in the header's jump menu, which opens with the current section expanded; returns its page rows.
+export async function siblingNav(page: Page) {
+  const palette = page.getByTestId("command-palette");
+  if (!(await palette.isVisible())) await page.getByTestId("command-palette-open").click();
+  const rows = palette.locator(".om-child");
+  await rows.first().waitFor({ state: "visible", timeout: 10000 });
+  return rows;
+}
+
 async function clickSecondary(page: Page, label: string, url: RegExp) {
-  const item = page.locator('[id="secondaryMenu"]').getByText(label, { exact: true }).first();
+  const item = (await siblingNav(page)).getByText(label, { exact: true }).first();
   await item.waitFor({ state: "visible", timeout: 10000 });
   await item.click();
   await page.waitForURL(url, { timeout: 15000 });
