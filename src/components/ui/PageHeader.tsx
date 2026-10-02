@@ -1,9 +1,10 @@
 import React, { type ReactNode } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { HeaderToneContext } from "./headerTone";
+import { useThemeMode } from "../../ThemeContext";
 
 export interface PageHeaderProps {
-  /** Accepted for drop-in parity with the apphelper PageHeader; Soft Blue page titles don't show a module icon. */
+  /** Shown only by the Classic theme's banner, like the old apphelper PageHeader; other themes don't show a module icon. */
   icon?: ReactNode;
   avatar?: ReactNode;
   title: string;
@@ -15,13 +16,20 @@ export interface PageHeaderProps {
   tabs?: ReactNode;
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ avatar, title, subtitle, breadcrumbs, chips, children, statistics, tabs }) => (
-  <HeaderToneContext.Provider value="light">
+export const PageHeader: React.FC<PageHeaderProps> = (props) => {
+  const banner = useThemeMode().themeId === "classic";
+  const header = <PageHeaderContent {...props} banner={banner} />;
+  return banner ? <Box className="b1-banner">{header}</Box> : header;
+};
+
+const PageHeaderContent: React.FC<PageHeaderProps & { banner: boolean }> = ({ icon, avatar, title, subtitle, breadcrumbs, chips, children, statistics, tabs, banner }) => (
+  <HeaderToneContext.Provider value={banner ? "dark" : "light"}>
     <Box id="page-header" component="header" sx={{ maxWidth: "var(--b1-content-max)", mx: "auto", px: { xs: 2, md: 3, lg: 4 }, pt: { xs: 2, md: 3, lg: 4 } }}>
       {breadcrumbs && <Box id="page-header-breadcrumbs" sx={{ mb: 2 }}>{breadcrumbs}</Box>}
       <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 3 }} alignItems={{ xs: "flex-start", md: "flex-start" }} justifyContent="space-between">
         <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: 0 }}>
           {avatar && <Box id="page-header-avatar" sx={{ flexShrink: 0, display: "flex" }}>{avatar}</Box>}
+          {!avatar && banner && icon && <Box className="b1-banner-icon">{icon}</Box>}
           <Box id="page-header-text" sx={{ minWidth: 0 }}>
             <Stack direction="row" spacing={1.5} alignItems="center" useFlexGap flexWrap="wrap">
               <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{title}</Typography>

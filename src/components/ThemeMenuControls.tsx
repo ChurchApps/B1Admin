@@ -15,7 +15,7 @@ export const ThemeMenuControls: React.FC = () => {
       <Stack direction="row" spacing={1} alignItems="center" useFlexGap flexWrap="wrap">
         {themeCatalog.map((choice) => {
           const selected = themeId === choice.id;
-          const label = { soft: Locale.label("profile.profilePage.themeSoft", "Soft Blue"), warm: Locale.label("profile.profilePage.themeWarm", "Warm"), plum: Locale.label("profile.profilePage.themePlum", "Plum") }[choice.id];
+          const label = { soft: Locale.label("profile.profilePage.themeSoft", "Soft Blue"), warm: Locale.label("profile.profilePage.themeWarm", "Warm"), plum: Locale.label("profile.profilePage.themePlum", "Plum"), classic: Locale.label("profile.profilePage.themeClassic", "Classic") }[choice.id];
           return (
             <ButtonBase
               key={choice.id}

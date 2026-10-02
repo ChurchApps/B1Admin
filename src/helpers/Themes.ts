@@ -17,13 +17,15 @@ declare module "@mui/material/styles" {
 }
 
 // Semantic tokens, exposed to page code as var(--b1-<kebab-name>). `soft` is the default;
-// `warm` matches the cream / navy / teal reference; `plum` is aubergine / lilac / coral. Both modes of a theme share one key set.
-export type ThemeId = "soft" | "warm" | "plum";
+// `warm` matches the cream / navy / teal reference; `plum` is aubergine / lilac / coral; `classic` recreates the pre-redesign
+// look (gradient page banner, shadowed cards, grey canvas). Both modes of a theme share one key set.
+export type ThemeId = "soft" | "warm" | "plum" | "classic";
 
 export const themeCatalog: { id: ThemeId; header: string; canvas: string; primary: string; accent: string; ink: string }[] = [
   { id: "soft", header: "#102E59", canvas: "#F3F7FC", primary: "#1765C1", accent: "#D9A441", ink: "#172B45" },
   { id: "warm", header: "#082239", canvas: "#F7F3EC", primary: "#0F7478", accent: "#C4A15A", ink: "#2A2926" },
-  { id: "plum", header: "#2B1640", canvas: "#F6F4F9", primary: "#6B3FA0", accent: "#E07A5F", ink: "#251E2E" }
+  { id: "plum", header: "#2B1640", canvas: "#F6F4F9", primary: "#6B3FA0", accent: "#E07A5F", ink: "#251E2E" },
+  { id: "classic", header: "#09245F", canvas: "#E5E8EE", primary: "#1565C0", accent: "#3578CC", ink: "#212121" }
 ];
 
 interface ThemeShape {
@@ -40,7 +42,8 @@ interface ThemeShape {
 export const themeShape: Record<ThemeId, ThemeShape> = {
   soft: { radius: 6, avatar: "10px", tick: "0px", tickGap: "0px", panel: "10px", control: "6px", shadow: "rgba(16, 46, 89, 0.12)", dialog: "rgba(16, 46, 89, 0.2)" },
   warm: { radius: 8, avatar: "999px", tick: "3px", tickGap: "8px", panel: "16px", control: "8px", shadow: "rgba(36, 28, 16, 0.10)", dialog: "rgba(36, 28, 16, 0.18)" },
-  plum: { radius: 8, avatar: "12px", tick: "0px", tickGap: "0px", panel: "14px", control: "8px", shadow: "rgba(43, 22, 64, 0.12)", dialog: "rgba(43, 22, 64, 0.22)" }
+  plum: { radius: 8, avatar: "12px", tick: "0px", tickGap: "0px", panel: "14px", control: "8px", shadow: "rgba(43, 22, 64, 0.12)", dialog: "rgba(43, 22, 64, 0.22)" },
+  classic: { radius: 6, avatar: "999px", tick: "0px", tickGap: "0px", panel: "8px", control: "6px", shadow: "rgba(0, 0, 0, 0.14)", dialog: "rgba(0, 0, 0, 0.24)" }
 };
 
 export const b1Tokens = {
@@ -343,6 +346,106 @@ export const b1Tokens = {
       pillFg: "#E6DAF7",
       pillBorder: "transparent"
     }
+  },
+  classic: {
+    light: {
+      canvas: "#E5E8EE",
+      surface: "#FFFFFF",
+      sidebar: "#F5F7FA",
+      header: "#09245F",
+      headerHover: "#114A99",
+      onHeader: "#FFFFFF",
+      headerMuted: "#C9D8EC",
+      primary: "#1565C0",
+      primaryHover: "#1358AD",
+      primaryPressed: "#114A99",
+      onPrimary: "#FFFFFF",
+      selected: "#E3EDF9",
+      onSelected: "#114A99",
+      hover: "#F5F5F5",
+      text: "#212121",
+      muted: "#666666",
+      border: "#E0E0E0",
+      controlBorder: "#B0B0B0",
+      focus: "#1565C0",
+      success: "#2E7D32",
+      successBg: "#E8F5E9",
+      warning: "#805000",
+      warningBg: "#FFF3D6",
+      danger: "#AC2834",
+      dangerBg: "#FDEDEF",
+      neutral: "#555555",
+      neutralBg: "#EEEEEE",
+      disabledBg: "#EEEEEE",
+      disabledText: "#757575",
+      link: "#1565C0",
+      accent: "#D9A441",
+      onAccent: "#3E2C08",
+      accentBg: "#FFF3D6",
+      mark: "#90B8E8",
+      markEmpty: "#ECEFF3",
+      wash: "#EEF3FA",
+      tick: "transparent",
+      avatar: "#BDBDBD",
+      onAvatar: "#FFFFFF",
+      chip: "#E3EDF9",
+      onChip: "#114A99",
+      chipAlt: "#F8E7C0",
+      onChipAlt: "#7A5410",
+      eyebrow: "#1565C0",
+      pillBg: "#E3EDF9",
+      pillFg: "#114A99",
+      pillBorder: "transparent"
+    },
+    dark: {
+      canvas: "#121212",
+      surface: "#1E1E1E",
+      sidebar: "#181818",
+      header: "#09245F",
+      headerHover: "#114A99",
+      onHeader: "#FFFFFF",
+      headerMuted: "#C9D8EC",
+      primary: "#64A3EA",
+      primaryHover: "#8AB9F0",
+      primaryPressed: "#A6CAF4",
+      onPrimary: "#0B1F3D",
+      selected: "#1E3550",
+      onSelected: "#CFE2FB",
+      hover: "#262626",
+      text: "#EDEDED",
+      muted: "#A8A8A8",
+      border: "#333333",
+      controlBorder: "#6B6B6B",
+      focus: "#7AAEFF",
+      success: "#80D0A0",
+      successBg: "#16301F",
+      warning: "#F2C063",
+      warningBg: "#3A2C0E",
+      danger: "#F2939B",
+      dangerBg: "#3D1A1E",
+      neutral: "#B4C2D2",
+      neutralBg: "#243142",
+      disabledBg: "#232E3C",
+      disabledText: "#7F8FA2",
+      link: "#7DB3EF",
+      accent: "#E2C27A",
+      onAccent: "#2A220C",
+      accentBg: "#3A2C0E",
+      mark: "#3D7EBE",
+      markEmpty: "#243044",
+      wash: "#1A2C40",
+      tick: "transparent",
+      avatar: "#5A5A5A",
+      onAvatar: "#FFFFFF",
+      chip: "#1E3A5F",
+      onChip: "#CFE2FB",
+      chipAlt: "#3A2C0E",
+      onChipAlt: "#F2C063",
+      eyebrow: "#8EBEFA",
+      pillBg: "#1E3A5F",
+      pillFg: "#CFE2FB",
+      pillBorder: "transparent"
+    }
   }
 } as const;
 
@@ -395,14 +498,39 @@ const cssVars = (t: B1Tokens, shape: ThemeShape) => {
   return vars;
 };
 
+// Classic-only global rules: the old full-width gradient page banner (ui/PageHeader renders .b1-banner), shadowed panels and plainer links.
+const classicCss = (cardShadow: string) => ({
+  ".b1-banner": {
+    position: "relative",
+    overflow: "hidden",
+    paddingBottom: 28,
+    color: "#FFFFFF",
+    background: "linear-gradient(180deg, #09245F 0%, #114A99 55%, #3578CC 100%)",
+    "&::before": { content: '""', position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "rgba(255, 255, 255, 0.04)", pointerEvents: "none" }
+  },
+  ".b1-banner #page-header": { position: "relative" },
+  ".b1-banner #page-header-title": { color: "#FFFFFF", fontSize: "1.25rem", lineHeight: "28px" },
+  ".b1-banner #page-header-subtitle, .b1-banner #page-header-statistics .MuiTypography-caption": { color: "rgba(255, 255, 255, 0.75) !important" },
+  ".b1-banner #page-header-statistics, .b1-banner #page-header-chips": { color: "#FFFFFF" },
+  ".b1-banner .MuiButton-text, .b1-banner .MuiIconButton-root, .b1-banner .MuiButton-text .MuiSvgIcon-root": { color: "#FFFFFF" },
+  ".b1-banner .MuiButton-text:hover, .b1-banner .MuiIconButton-root:hover": { backgroundColor: "rgba(255, 255, 255, 0.12)" },
+  ".b1-banner .MuiButton-outlined": { color: "#FFFFFF !important", borderColor: "rgba(255, 255, 255, 0.55) !important", backgroundColor: "transparent !important" },
+  ".b1-banner .MuiButton-outlined:hover": { borderColor: "rgba(255, 255, 255, 0.8)", backgroundColor: "rgba(255, 255, 255, 0.12)" },
+  ".b1-banner-icon": { width: 56, height: 56, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, backgroundColor: "rgba(255, 255, 255, 0.18)", color: "#FFFFFF", "& .MuiSvgIcon-root, & .material-icons": { fontSize: 32, color: "#FFFFFF" } },
+  ".b1-surface": { borderColor: "transparent !important", boxShadow: cardShadow, borderRadius: 8 },
+  "td a, td .MuiLink-root, td .MuiTypography-root a": { fontWeight: 400 }
+});
+
 const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions => {
   const t: B1Tokens = b1Tokens[themeId][mode];
   const shape = themeShape[themeId];
   const popoverShadow = `0 8px 24px ${shape.shadow}`;
   const dialogShadow = `0 16px 48px ${shape.dialog}`;
-  // Panels are bordered, not shadowed; only floating layers (menus, popovers, dialogs: elevation >= 8) cast a shadow.
-  const shadows = Array.from({ length: 25 }, (_, i) => (i === 0 || i < 8 ? "none" : i >= 16 ? dialogShadow : popoverShadow)) as Shadows;
-  const primaryLight = { soft: mode === "light" ? "#4A8BD6" : "#9CC4F6", warm: mode === "light" ? "#5EBEBE" : "#8EDDD8", plum: mode === "light" ? "#9A72CC" : "#D7C3F1" }[themeId];
+  const classic = themeId === "classic";
+  // Panels are bordered, not shadowed (Classic keeps the old soft card shadow); floating layers (menus, popovers, dialogs: elevation >= 8) cast a bigger one.
+  const cardShadow = classic ? (mode === "light" ? "0 2px 8px rgba(0, 0, 0, 0.1)" : "0 2px 8px rgba(0, 0, 0, 0.4)") : "none";
+  const shadows = Array.from({ length: 25 }, (_, i) => (i === 0 ? "none" : i < 8 ? cardShadow : i >= 16 ? dialogShadow : popoverShadow)) as Shadows;
+  const primaryLight = { soft: mode === "light" ? "#4A8BD6" : "#9CC4F6", warm: mode === "light" ? "#5EBEBE" : "#8EDDD8", plum: mode === "light" ? "#9A72CC" : "#D7C3F1", classic: mode === "light" ? "#3578CC" : "#9CC4F6" }[themeId];
   return {
     palette: {
       mode,
@@ -422,9 +550,9 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
     shadows,
     typography: {
       fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-      h1: { fontSize: "1.875rem", lineHeight: "36px", fontWeight: 650, letterSpacing: "-0.02em" },
-      h2: { fontSize: "1.375rem", lineHeight: "29px", fontWeight: 650 },
-      h3: { fontSize: "1.125rem", lineHeight: "25px", fontWeight: 600 },
+      h1: classic ? { fontSize: "1.5rem", lineHeight: "32px", fontWeight: 650 } : { fontSize: "1.875rem", lineHeight: "36px", fontWeight: 650, letterSpacing: "-0.02em" },
+      h2: classic ? { fontSize: "1.25rem", lineHeight: "28px", fontWeight: 500 } : { fontSize: "1.375rem", lineHeight: "29px", fontWeight: 650 },
+      h3: classic ? { fontSize: "1.25rem", lineHeight: "28px", fontWeight: 400 } : { fontSize: "1.125rem", lineHeight: "25px", fontWeight: 600 },
       h4: { fontSize: "1.375rem", lineHeight: "29px", fontWeight: 650 },
       h5: { fontSize: "1.125rem", lineHeight: "25px", fontWeight: 600 },
       h6: { fontSize: "1.125rem", lineHeight: "25px", fontWeight: 600 },
@@ -451,7 +579,8 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
           ".google-visualization-tooltip, .google-visualization-tooltip *": { pointerEvents: "none" },
           ".rowActions .MuiIconButton-root": { opacity: 0.45, transition: "opacity 0.12s" },
           "tr:hover .rowActions .MuiIconButton-root, .rowActions .MuiIconButton-root:focus-visible": { opacity: 1 },
-          "@media (prefers-reduced-motion: reduce)": { ".rowActions .MuiIconButton-root, .MuiButton-root, .MuiTableRow-root": { transition: "none" } }
+          "@media (prefers-reduced-motion: reduce)": { ".rowActions .MuiIconButton-root, .MuiButton-root, .MuiTableRow-root": { transition: "none" } },
+          ...(classic ? classicCss(cardShadow) : {})
         }
       },
       MuiButton: {
@@ -493,12 +622,12 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
       MuiLink: { defaultProps: { underline: "hover" }, styleOverrides: { root: { textUnderlineOffset: 3, color: t.link } } },
       MuiCard: {
         defaultProps: { elevation: 0 },
-        styleOverrides: { root: { borderRadius: 10, border: `1px solid ${t.border}`, boxShadow: "none", backgroundImage: "none" } }
+        styleOverrides: { root: classic ? { borderRadius: 8, border: "none", boxShadow: cardShadow, backgroundImage: "none" } : { borderRadius: 10, border: `1px solid ${t.border}`, boxShadow: "none", backgroundImage: "none" } }
       },
       MuiPaper: {
         styleOverrides: {
           root: { backgroundImage: "none" },
-          elevation1: { border: `1px solid ${t.border}`, "&.MuiPaper-rounded": { borderRadius: 10 } }
+          elevation1: classic ? { "&.MuiPaper-rounded": { borderRadius: 8 } } : { border: `1px solid ${t.border}`, "&.MuiPaper-rounded": { borderRadius: 10 } }
         }
       },
       MuiAccordion: { styleOverrides: { root: { "&.MuiPaper-rounded": { borderRadius: 6 }, "&::before": { display: "none" } } } },
@@ -544,7 +673,7 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
       MuiTableCell: {
         styleOverrides: {
           root: { padding: "12px 16px", borderBottom: `1px solid ${t.border}` },
-          head: { fontSize: "0.75rem", lineHeight: "18px", fontWeight: 600, color: t.muted, backgroundColor: "transparent" },
+          head: { fontSize: "0.75rem", lineHeight: "18px", fontWeight: 600, color: t.muted, backgroundColor: "transparent", ...(classic ? { textTransform: "uppercase", letterSpacing: "0.06em", fontSize: "0.6875rem" } : {}) },
           body: { fontSize: "0.875rem", lineHeight: "21px", height: 56, fontVariantNumeric: "tabular-nums" },
           sizeSmall: { padding: "8px 12px", "&.MuiTableCell-body": { height: 44 } }
         }

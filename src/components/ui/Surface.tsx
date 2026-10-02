@@ -19,6 +19,7 @@ export const Surface: React.FC<Props> = ({ children, disablePadding, component =
   <Box
     component={component}
     id={id}
+    className="b1-surface"
     data-testid={rest["data-testid"]}
     aria-label={rest["aria-label"]}
     aria-labelledby={rest["aria-labelledby"]}
