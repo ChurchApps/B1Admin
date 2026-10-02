@@ -846,11 +846,12 @@ test.describe("People Management", () => {
 
       const selectMatchingPeople = async () => {
         await navigateToPeople(page);
-        await page.locator('input[name="searchText"]').fill(sharedLastName);
-        await page.waitForResponse(
+        const searched = page.waitForResponse(
           (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
           { timeout: 20000 }
         );
+        await page.locator('input[name="searchText"]').fill(sharedLastName);
+        await searched;
         const rows = page.locator("table tbody tr").filter({ hasText: sharedLastName });
         await expect(rows).toHaveCount(2, { timeout: 20000 });
         for (const person of peopleToCreate) {

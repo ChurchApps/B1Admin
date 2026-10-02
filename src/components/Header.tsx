@@ -138,7 +138,7 @@ export const Header: React.FC = () => {
         });
       });
 
-      const scopes = document.querySelectorAll("header, .MuiDrawer-root");
+      const scopes = document.querySelectorAll("header:not(#page-header), .MuiDrawer-root");
       const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
         const href = link.getAttribute("href");

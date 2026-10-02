@@ -22,7 +22,19 @@ async function apiLogin(ctx: APIRequestContext): Promise<{ userJwt: string; admi
   return { userJwt, adminJwt: uc.jwt as string };
 }
 
+// The Api caps pending submissions per user at 5 and reset-demo does not reset the commons DB,
+// so clear "Spec Song" leftovers from earlier interrupted runs (not this run's) before seeding.
+async function clearStaleSpecSubmissions(ctx: APIRequestContext, userJwt: string) {
+  const mine = await (await ctx.get(`${API}/commons/submissions/mine?status=pending`, auth(userJwt))).json();
+  const stale = (m: any) => String(m.payload?.name || "").startsWith("Spec Song") && Date.now() - new Date(m.submittedAt).getTime() > 10 * 60 * 1000;
+  for (const sub of (mine as any[]).filter(stale)) {
+    await ctx.post(`${API}/commons/submissions/${sub.id}/withdraw`, { ...auth(userJwt), data: {} });
+    await ctx.delete(`${API}/commons/submissions/${sub.id}`, auth(userJwt));
+  }
+}
+
 async function seedSongSubmission(ctx: APIRequestContext, userJwt: string, name: string, withFile: boolean): Promise<{ submissionId: string; assetId: string }> {
+  await clearStaleSpecSubmissions(ctx, userJwt);
   const createRes = await ctx.post(`${API}/commons/submissions`, {
     ...auth(userJwt),
     data: {
@@ -32,7 +44,7 @@ async function seedSongSubmission(ctx: APIRequestContext, userJwt: string, name:
         license: "WC",
         tags: "Praise",
         language: "English",
-        detail: { writer: "Spec Writer", chordPro: "Verse 1\n[G]Sing", songKey: "G", certified: true }
+        detail: { writer: "Spec Writer", chordPro: "Verse 1\n[G]Sing", songKey: "G", certified: true, videoUrl: "https://example.com/melody" }
       }
     }
   });

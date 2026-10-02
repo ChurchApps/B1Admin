@@ -22,6 +22,25 @@ test.describe("Command palette", () => {
     await expect(page).toHaveURL(/\/serving\/tasks/);
   });
 
+  test("opens on the current section and drills into its sibling pages", async ({ page }) => {
+    await page.goto("/donations/batches");
+    await page.getByTestId("command-palette-open").click();
+    const palette = page.getByTestId("command-palette");
+    await expect(palette.locator(".om-hit.active")).toHaveText(/Donations/);
+    await page.keyboard.press("Enter");
+    await expect(palette.locator(".om-crumb")).toHaveText(/Donations/);
+    await expect(palette.locator(".om-hit.active")).toHaveText(/Batches/);
+    await page.keyboard.press("Backspace");
+    await expect(palette.locator(".om-crumb")).toHaveCount(0);
+    await expect(palette.locator(".om-hit.active")).toHaveText(/Donations/);
+    await page.keyboard.press("ArrowRight");
+    await expect(palette.locator(".om-crumb")).toHaveText(/Donations/);
+    await palette.getByRole("textbox").fill("funds");
+    await expect(palette.locator(".om-hit.active")).toHaveText(/Funds$/);
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/donations\/funds$/);
+  });
+
   test("Ctrl+K finds a person and Escape closes", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("command-palette-open")).toBeVisible();

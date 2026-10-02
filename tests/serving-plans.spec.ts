@@ -328,7 +328,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await teamName.fill("Zebedee Team");
       const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      const verifiedHeader = page.locator("p").getByText("Zebedee Team");
+      const verifiedHeader = page.getByRole("heading", { level: 1, name: "Zebedee Team" });
       await expect(verifiedHeader).toHaveCount(1, { timeout: 10000 });
     });
 

@@ -101,12 +101,12 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) 
   }, [items, query, section]);
 
   const run = React.useCallback((item: PaletteItem) => {
-    if (item.k) { enter(item); return; }
+    if (item.k && (!query || item.u.startsWith("#"))) { enter(item); return; }
     close();
     if (item.u === "#addPerson") setAddPerson(true);
     else if (item.u.startsWith("#wizard:")) setWizard(item.u.slice(8) as WizardType);
     else navigate(item.u);
-  }, [close, navigate]);
+  }, [close, navigate, query]);
 
   const onInputKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
@@ -115,7 +115,10 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) 
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActive((i) => Math.max(0, i - 1));
-    } else if ((e.key === "Enter" || (e.key === "ArrowRight" && shown[active]?.k)) && shown[active]) {
+    } else if (e.key === "ArrowRight" && shown[active]?.k) {
+      e.preventDefault();
+      enter(shown[active]);
+    } else if (e.key === "Enter" && shown[active]) {
       e.preventDefault();
       run(shown[active]);
     } else if (section && !query && (e.key === "Backspace" || e.key === "ArrowLeft")) {
@@ -145,7 +148,7 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[] }> = ({ menu }) 
               {!section && query && item.t !== shown[idx - 1]?.t && <div className="om-group-label">{GROUP[item.t]}</div>}
               <button type="button" className={"om-hit" + (idx === active ? " active" : "")} onMouseEnter={() => setActive(idx)} onClick={() => run(item)}>
                 <span>{item.i && <Icon fontSize="small">{item.i}</Icon>}{item.n}</span>
-                <small>{item.k ? <Icon fontSize="small">chevron_right</Icon> : item.t === "do" || item.t === "nav" || section ? "" : item.u}</small>
+                <small>{item.k && !query ? <Icon fontSize="small">chevron_right</Icon> : item.t === "do" || item.t === "nav" || section ? "" : item.u}</small>
               </button>
             </React.Fragment>
           ))}

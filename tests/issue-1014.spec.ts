@@ -3,10 +3,10 @@ import { login } from "./helpers/auth";
 import { openKnownPerson } from "./helpers/fixtures";
 
 const test = base.extend({
-  page: async ({ page }, use) => {
+  page: async ({ page }, provide) => {
     await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
     await login(page);
-    await use(page);
+    await provide(page);
   }
 });
 
@@ -19,7 +19,7 @@ function luminance(rgb: string) {
 
 test("person form results are not a light card in dark mode", async ({ page }) => {
   await openKnownPerson(page, "Jessica Taylor");
-  await page.locator("button").getByText("Forms", { exact: true }).click();
+  await page.getByTestId("person-forms-all").click();
   await page.getByText("Visitor Information Card", { exact: true }).first().click();
   const title = page.getByText("First Name", { exact: true });
   await expect(title).toBeVisible({ timeout: 15000 });

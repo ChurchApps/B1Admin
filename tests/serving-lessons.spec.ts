@@ -296,7 +296,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await addBtn.click();
       const name = page.locator('[id="label"]');
       await name.fill("Zacchaeus Section");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.getByRole("button", { name: "Save", exact: true });
       await saveBtn.click();
       const verifiedSection = page.locator("div span").getByText("Zacchaeus Section");
       await expect(verifiedSection).toHaveCount(1, { timeout: 10000 });
@@ -319,7 +319,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await editBtn.click();
       const name = page.locator('[id="label"]');
       await name.fill("Zebedee Section");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.getByRole("button", { name: "Save", exact: true });
       await saveBtn.click();
       const verifiedSection = page.locator("div span").getByText("Zebedee Section");
       await expect(verifiedSection).toHaveCount(1, { timeout: 10000 });
@@ -377,7 +377,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await name.fill("Zacchaeus Item");
       const minutes = page.locator('[name="minutes"]');
       await minutes.fill("5");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.getByRole("button", { name: "Save", exact: true });
       await saveBtn.click();
       const verifiedItem = page.getByText("Zacchaeus Item").first();
       await expect(verifiedItem).toBeVisible({ timeout: 10000 });
@@ -400,7 +400,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await editBtn.click();
       const name = page.locator('[name="label"]');
       await name.fill("Zebedee Item");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.getByRole("button", { name: "Save", exact: true });
       await saveBtn.click();
       const verifiedEdit = page.locator("div").getByText("Zebedee Item");
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
@@ -530,7 +530,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await page.getByRole("menuitem", { name: "Item", exact: true }).click();
       await page.locator('[name="label"]').fill("Root Level Item");
       await page.locator('[name="minutes"]').fill("3");
-      await page.locator("button").getByText("Save").click();
+      await page.getByRole("button", { name: "Save", exact: true }).click();
       await expect(page.getByText("Root Level Item").first()).toBeVisible({ timeout: 10000 });
     });
 

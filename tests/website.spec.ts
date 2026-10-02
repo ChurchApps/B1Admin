@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { siteTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { trashIconButton, confirmDelete } from "./helpers/fixtures";
+import { confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSite, navigateToCalendars } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -983,9 +983,17 @@ test.describe("Website Management", () => {
       await expect(validatedCalendar).toHaveCount(1);
     });
 
+    const calendarRow = (name: string) => page.locator("tr").filter({ hasText: name }).first();
+    const manageEvents = async (name: string) => {
+      await calendarRow(name).locator('[data-testid^="manage-calendar-"]').click();
+      await expect(page.locator('[data-testid="calendar-identity"]')).toBeVisible({ timeout: 10000 });
+    };
+    const editCalendar = async (name: string) => {
+      await calendarRow(name).locator('[data-testid^="edit-calendar-"]').click();
+    };
+
     test("should add group events to calendar", async () => {
-      const editBtn = page.locator('[aria-label="Manage Events"]').last();
-      await editBtn.click();
+      await manageEvents("Zacchaeus Test Calendar");
       const addBtn = page.locator('[data-testid="calendar-add-event-button"]');
       await addBtn.click();
       const groupSelectBox = page.locator('[role="combobox"]');
@@ -994,7 +1002,7 @@ test.describe("Website Management", () => {
       await groupSelect.click();
       const saveBtn = page.locator('[data-testid="calendar-edit-save-button"]');
       await saveBtn.click();
-      const validatedGroup = page.locator("td").getByText("Adult Bible Class");
+      const validatedGroup = page.locator('[data-testid="calendar-identity"] li').getByText("Adult Bible Class");
       await expect(validatedGroup).toBeVisible({ timeout: 10000 });
       await expect(validatedGroup).toHaveCount(1);
       const agendaBtn = page.locator("button").getByText("Agenda");
@@ -1004,8 +1012,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel adding group events to calendar", async () => {
-      const editBtn = page.locator('[aria-label="Manage Events"]').last();
-      await editBtn.click();
+      await manageEvents("Zacchaeus Test Calendar");
       const addBtn = page.locator('[data-testid="calendar-add-event-button"]');
       await addBtn.click();
       const groupSelectBox = page.locator('[role="combobox"]');
@@ -1016,18 +1023,16 @@ test.describe("Website Management", () => {
     });
 
     test("should remove group events from calendar", async () => {
-      const editBtn = page.locator('[aria-label="Manage Events"]').last();
-      await editBtn.click();
-      const removeBtn = trashIconButton(page).first();
+      await manageEvents("Zacchaeus Test Calendar");
+      const removeBtn = page.locator('[data-testid^="remove-group-"]').first();
       await removeBtn.click();
       await confirmDelete(page);
-      const validatedDeletion = page.locator("td").getByText("Adult Bible Class");
+      const validatedDeletion = page.locator('[data-testid="calendar-identity"] li').getByText("Adult Bible Class");
       await expect(validatedDeletion).toHaveCount(0);
     });
 
     test("should edit calendar", async () => {
-      const editBtn = page.locator('[aria-label="Edit"]').last();
-      await editBtn.click();
+      await editCalendar("Zacchaeus Test Calendar");
       const name = page.locator('[name="name"]');
       await name.fill("Zebedee Test Calendar");
       const saveBtn = page.locator('[data-testid="save-calendar-button"]');
@@ -1037,8 +1042,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel editing calendar", async () => {
-      const editBtn = page.locator('[aria-label="Edit"]').last();
-      await editBtn.click();
+      await editCalendar("Zebedee Test Calendar");
       const name = page.locator('[name="name"]');
       await expect(name).toHaveCount(1);
       const cancelBtn = page.locator("button").getByText("Cancel");
@@ -1047,8 +1051,7 @@ test.describe("Website Management", () => {
     });
 
     test("should delete calendar", async () => {
-      const editBtn = page.locator('[aria-label="Edit"]').last();
-      await editBtn.click();
+      await editCalendar("Zebedee Test Calendar");
       const deleteBtn = page.locator('[data-testid="delete-calendar-button"]');
       await deleteBtn.click();
       await confirmDelete(page);

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -120,7 +120,7 @@ test.describe.serial("Assignment stale position form (PR #457)", () => {
     page.once("dialog", async dialog => { await dialog.accept(); });
     await openMinistryTab();
     await page.locator("a").getByText("Edit Ministry").click();
-    const minEditBtn = editIconButton(page).first();
+    const minEditBtn = page.getByTestId("edit-group-button");
     await expect(minEditBtn).toBeVisible({ timeout: 10000 });
     await minEditBtn.click();
     const deleteBtn = page.locator("button").getByText("Delete");

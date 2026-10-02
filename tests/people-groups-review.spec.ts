@@ -54,8 +54,8 @@ test("group sessions: All years stays selected and UTC-midnight dates show the s
   await expect(allYears).toHaveAttribute("aria-pressed", "true");
   await page.waitForTimeout(500);
   await expect(allYears).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByText("06/07/2026", { exact: true })).toBeVisible();
-  await expect(page.getByText("01/01/2025", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^06\/07\/2026/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^01\/01\/2025/ })).toBeVisible();
 });
 
 test("print directory leaves out deceased people", async ({ page }) => {

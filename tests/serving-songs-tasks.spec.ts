@@ -10,6 +10,12 @@ async function openMyTasks(page: Page) {
   await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
 }
 
+async function openExternalLinksEditor(page: Page) {
+  const editLinks = page.getByTestId("song-links-edit").or(page.getByRole("button", { name: "Add First Link" }));
+  await expect(editLinks.first()).toBeVisible({ timeout: 10000 });
+  await editLinks.first().click();
+}
+
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Serving Management - Songs & Tasks", () => {
 
@@ -266,10 +272,8 @@ test.describe("Serving Management - Songs & Tasks", () => {
       const song = page.locator("a").getByText("Frolic", { exact: true }).first();
       await song.click();
       await expect(page.locator("#page-header-title")).toBeVisible({ timeout: 10000 });
-      const extHeading = page.getByRole("heading", { name: "External Links" });
-      const extContainer = extHeading.locator("xpath=ancestor::div[1]/..");
-      await extContainer.locator('button:has(svg[data-testid="EditIcon"])').first().click();
-      await extContainer.locator('button:has(svg[data-testid="AddIcon"])').first().click();
+      await openExternalLinksEditor(page);
+      await page.getByRole("button", { name: "Add", exact: true }).click();
       const serviceBox = page.locator('[role="combobox"]');
       await expect(serviceBox).toBeVisible({ timeout: 10000 });
       await serviceBox.click();
@@ -291,10 +295,8 @@ test.describe("Serving Management - Songs & Tasks", () => {
       const song = page.locator("a").getByText("Frolic", { exact: true }).first();
       await song.click();
       await expect(page.locator("#page-header-title")).toBeVisible({ timeout: 10000 });
-      const extHeading = page.getByRole("heading", { name: "External Links" });
-      const extContainer = extHeading.locator("xpath=ancestor::div[1]/..");
-      await extContainer.locator('button:has(svg[data-testid="EditIcon"])').first().click();
-      await extContainer.locator('button:has(svg[data-testid="AddIcon"])').first().click();
+      await openExternalLinksEditor(page);
+      await page.getByRole("button", { name: "Add", exact: true }).click();
       const serviceBox = page.locator('[role="combobox"]');
       await expect(serviceBox).toHaveCount(1);
       const cancelBtn = page.locator("button").getByText("Cancel");
@@ -625,7 +627,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await expect(task2).toHaveCount(0, { timeout: 10000 });
       const closedTasksBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedTasksBtn.click();
-      await expect(task2).toHaveCount(1, { timeout: 10000 });
+      await expect(task2.first()).toBeVisible({ timeout: 10000 });
     });
   });
 

@@ -91,8 +91,7 @@ test.describe.serial("Bulk custom field (#1015)", () => {
       await page.waitForResponse((r) => r.url().includes("/people/advancedSearch") && r.status() === 200, { timeout: 20000 });
       await page.locator("table tbody tr").filter({ hasText: `${person.first} ${LAST_NAME}` }).first().getByRole("link").first().click();
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 20000 });
-      await expect(page.getByText(FIELD_NAME, { exact: true })).toBeVisible({ timeout: 20000 });
-      await expect(page.getByText(FIELD_NAME, { exact: true }).locator("xpath=following-sibling::b[1]")).toHaveText("Yes", { timeout: 20000 });
+      await expect(page.getByText(`${FIELD_NAME}: Yes`, { exact: true })).toBeVisible({ timeout: 20000 });
     }
   });
 });

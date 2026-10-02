@@ -1,5 +1,4 @@
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { editIconButton } from "./helpers/fixtures";
 
 test.describe("Check-in: group configuration", () => {
   test("opens a seeded group detail page from the list", async ({ page }) => {
@@ -20,7 +19,7 @@ test.describe("Check-in: group configuration", () => {
     await page.getByRole("link", { name: "Sunday Morning Service", exact: true }).click();
     await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
 
     await expect(page.locator('[data-cy="select-attendance-type"]')).toBeVisible({ timeout: 10000 });
     await expect(page.locator('[name="parentPickup"]')).toBeVisible();
@@ -42,7 +41,7 @@ test.describe("Check-in: group configuration", () => {
     await page.getByRole("link", { name: "Sunday Morning Service", exact: true }).click();
     await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
 
     const select = page.locator('[data-cy="choose-service-time"]');
     await expect(select).toBeVisible({ timeout: 10000 });
@@ -63,7 +62,7 @@ test.describe("Check-in: group configuration", () => {
     // Target role=combobox, not [name="parentPickup"] (hidden native input).
     const parentPickupCombo = page.locator("#mui-component-select-parentPickup");
 
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
     await expect(parentPickupCombo).toBeVisible({ timeout: 10000 });
     await parentPickupCombo.click();
     await page.getByRole("option", { name: "Yes", exact: true }).click();
@@ -81,7 +80,7 @@ test.describe("Check-in: group configuration", () => {
     await expect(parentPickupRow.locator('svg[data-testid="CheckCircleIcon"]')).toBeVisible({ timeout: 10000 });
 
     // Restore seed state for parallel/subsequent runs.
-    await editIconButton(page).first().click();
+    await page.getByTestId("edit-group-button").click();
     await expect(parentPickupCombo).toBeVisible({ timeout: 10000 });
     await parentPickupCombo.click();
     await page.getByRole("option", { name: "No", exact: true }).click();
@@ -99,7 +98,8 @@ test.describe("Check-in: group configuration", () => {
 test.describe("Check-in: kiosk configuration links", () => {
   loggedInTest("Attendance Setup links to the check-in kiosk, QR and labels page", async ({ page }) => {
     await page.goto("/attendance");
-    const link = page.getByRole("link", { name: /Check-in kiosk, QR, and labels/ });
+    await page.getByTestId("attendance-verb-setup").click();
+    const link = page.locator("a, button").filter({ hasText: "Check-in kiosk, QR, and labels" }).first();
     await link.waitFor({ state: "visible", timeout: 15000 });
     await link.click();
     await expect(page).toHaveURL(/\/mobile\/checkin$/, { timeout: 15000 });

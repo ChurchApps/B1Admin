@@ -299,6 +299,25 @@ test.describe.serial("Stand Alone form lifecycle", () => {
 });
 
 test.describe("Person form submissions (profile rail)", () => {
+  async function clearDonaldSubmissions() {
+    const API = process.env.API_BASE || "http://localhost:8084";
+    const ctx = await pwRequest.newContext();
+    try {
+      const login = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+      const uc = ((await login.json()).userChurches || []).find((c: any) => c.church?.id === "CHU00000001");
+      const auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+      const found = await (await ctx.get(`${API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DONALD)}`, auth)).json();
+      const donald = (found as any[]).find((p) => p.name?.display === SEED_PEOPLE.DONALD);
+      const person = await (await ctx.get(`${API}/membership/people/${donald.id}`, auth)).json();
+      for (const fs of person.formSubmissions || []) await ctx.delete(`${API}/membership/formsubmissions/${fs.id}`, auth);
+    } finally {
+      await ctx.dispose();
+    }
+  }
+
+  test.beforeAll(clearDonaldSubmissions);
+  test.afterAll(clearDonaldSubmissions);
+
   test("a seeded submission renders its stored answers", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, "Brian Harris");
@@ -652,7 +671,7 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
   loggedInTest("the moved submission shows on the new person's Forms tab and can be unlinked there", async ({ page }) => {
     await navigateToPeople(page);
     await openPersonRow(page, SEED_PEOPLE.CAROL);
-    await page.getByRole("tab", { name: "Forms" }).click();
+    await page.getByTestId("person-forms-all").click();
     await page.getByText(RELINK_FORM_NAME, { exact: true }).first().click();
     const pane = page.locator('[data-testid="display-box-content"]');
     await expect(pane.getByText("Wrong person")).toBeVisible({ timeout: 10000 });
