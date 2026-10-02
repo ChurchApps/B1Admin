@@ -363,6 +363,37 @@ test.describe.serial("Group Management", () => {
       await expect.poll(() => wednesdaySessionCounts(date)).toEqual(afterFirst.map((c, i) => (i === 2 ? c + 1 : c)));
     });
 
+    test("lists which groups at the service time still need attendance", async () => {
+      // Wednesday Prayer Service has attendance on 3/11/2026; the other four Wednesday classes have none.
+      const apiBase = process.env.API_BASE || "http://localhost:8084";
+      const ctx = await request.newContext();
+      const loginRes = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const jwt = loginRes.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+      const headers = { Authorization: "Bearer " + jwt };
+      const sRes = await ctx.post(`${apiBase}/attendance/sessions`, { headers, data: [{ groupId: "GRP00000003", serviceTimeId: "SST00000004", sessionDate: "2026-03-11" }] });
+      const session = (await sRes.json())[0];
+      await ctx.post(`${apiBase}/attendance/visitsessions/log`, { headers, data: { personId: "PER00000001", visitSessions: [{ sessionId: session.id }] } });
+      await ctx.dispose();
+
+      await openSeedGroup(page, "Wednesday Prayer Service");
+      await page.locator("button").getByText("Sessions").click();
+      await page.getByRole("button", { name: "2026", exact: true }).click();
+      await selectSession(page, "2026-03-11");
+      await page.locator('[data-testid="session-attendance-status-button"]').click();
+      const dialog = page.getByRole("dialog");
+      await expect(dialog).toContainText("Who still needs attendance");
+      await expect(dialog.locator('[data-testid="session-status-summary"]')).toHaveText("1 of 5 groups entered", { timeout: 10000 });
+      const rows = dialog.locator('[data-testid="session-status-row"]');
+      await expect(rows).toHaveCount(5);
+      // Not-entered groups come first, then the ones already done.
+      await expect(rows.first()).toContainText("Not entered");
+      await expect(rows.filter({ hasText: "Nursery (0-2)" })).toContainText("Not entered");
+      await expect(rows.last()).toContainText("Wednesday Prayer Service");
+      await expect(rows.last()).toContainText("Entered (1)");
+      await dialog.getByRole("button", { name: "Close" }).click();
+      await expect(dialog).toHaveCount(0);
+    });
+
     test("should add person to session", async () => {
       await openSessionOn(page, "2025-10-01");
       await page.getByRole("checkbox", { name: "William Anderson" }).check();

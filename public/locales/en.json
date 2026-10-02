@@ -1359,6 +1359,11 @@
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Sessions",
+      "statusButton": "Who Still Needs Attendance",
+      "statusEntered": "Entered ({count})",
+      "statusNotEntered": "Not entered",
+      "statusSummary": "{entered} of {total} groups entered",
+      "statusTitle": "Who still needs attendance",
       "tryAdjusting": "Try adjusting your search",
       "upcoming": "upcoming"
     },
