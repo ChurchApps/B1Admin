@@ -457,7 +457,8 @@ test.describe("People Management", () => {
     test("should add people", async ({ page }) => {
       await page.locator('[name="first"]').fill("Zacchaeus");
       await page.locator('[name="last"]').fill("Tester");
-      await page.locator('[name="email"]').fill("zacchaeustester@gmail.com");
+      // Unique email so a leftover Zacchaeus from an earlier run doesn't trigger the duplicate warning.
+      await page.locator('[name="email"]').fill(`zacchaeustester${Date.now()}@example.com`);
       await page.locator('[type="submit"]').click();
 
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
@@ -748,11 +749,12 @@ test.describe("People Management", () => {
 
       await navigateToPeople(page);
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill(sharedLastName);
-      await page.waitForResponse(
+      const searched = page.waitForResponse(
         (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
         { timeout: 20000 }
       );
+      await searchInput.fill(sharedLastName);
+      await searched;
 
       const matchingRows = page.locator("table tbody tr").filter({ hasText: sharedLastName });
       await expect(matchingRows).toHaveCount(2, { timeout: 20000 });

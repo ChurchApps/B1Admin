@@ -41,7 +41,7 @@ export type NavSection = PrimarySection | SecondarySection;
 
 const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   dashboard: /\/dashboard|\/$/,
-  people: /\/people/,
+  people: /\/people\/?(\?|$)/,
   donations: /\/donations(?!\/)/,
   // Users with plan access land on /serving/plans; others fall back to /serving/tasks.
   serving: /\/serving\/(plans|tasks)/,
@@ -102,6 +102,13 @@ export async function openPrimaryNav(page: Page) {
 }
 
 async function clickPrimary(page: Page, section: PrimarySection) {
+  // Jumping to the page you're already on doesn't change the URL, so a test could fill a form the page then re-renders; reload for a clean page instead.
+  const here = new URL(page.url());
+  if (PRIMARY_URL_PATTERNS[section].test(here.pathname + here.search)) {
+    await page.reload();
+    await page.getByTestId("command-palette-open").waitFor({ state: "visible", timeout: 15000 });
+    return;
+  }
   await openPrimaryNav(page);
   const palette = page.getByTestId("command-palette");
   // Typing makes Enter/click jump to the section's page instead of drilling into its submenu.
@@ -109,6 +116,7 @@ async function clickPrimary(page: Page, section: PrimarySection) {
   const item = palette.getByRole("button", { name: PRIMARY_LABELS[section], exact: true }).first();
   await item.waitFor({ state: "visible", timeout: 10000 });
   await item.click();
+  await palette.waitFor({ state: "hidden", timeout: 10000 });
   await page.waitForURL(PRIMARY_URL_PATTERNS[section], { timeout: 15000 });
 }
 
