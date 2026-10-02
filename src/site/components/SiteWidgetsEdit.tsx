@@ -7,6 +7,7 @@ import { ColorPicker } from "../admin/ColorPicker";
 import { IconPicker } from "../../components/iconPicker/IconPicker";
 import { AppDatePicker } from "../../components";
 import { CardWithHeader } from "../../components/ui";
+import { clearSiteCache } from "../siteCache";
 
 interface BannerData { text?: string; linkUrl?: string; linkText?: string; backgroundColor?: string; textColor?: string; startDate?: string; endDate?: string; }
 interface LauncherAction { label?: string; url?: string; icon?: string; }
@@ -57,6 +58,7 @@ export const SiteWidgetsEdit: React.FC = () => {
         });
         return next;
       });
+      clearSiteCache();
       setSaved(true);
       window.setTimeout(() => setSaved(false), 2500);
     });

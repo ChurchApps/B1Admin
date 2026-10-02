@@ -1174,13 +1174,16 @@
     },
     "formSubmissions": {
       "anon": "Anonymous",
+      "changePerson": "Change person",
+      "moveTo": "Move to this person",
       "noSubmissions": "No form submissions found",
       "printSummaryAria": "print-summary",
       "subBy": "Submitted By",
       "subDate": "Submission Date",
       "subFor": "Submitted For",
       "subRes": "Form Submission Results",
-      "subSum": "Form Submission Summary"
+      "subSum": "Form Submission Summary",
+      "unlink": "Unlink (Anonymous)"
     },
     "formsPage": {
       "addForm": "Add Form",
@@ -1424,7 +1427,6 @@
       "attFor": "Attendance for",
       "attendanceSaveFailed": "Attendance could not be saved. Please try again.",
       "attendanceSaved": "Attendance saved.",
-      "confirmRemove": "Remove this person from the session's attendance?",
       "new": "New",
       "noAttendance": "No attendance records found",
       "noSesMsg": "There are no sessions.",
@@ -1436,6 +1438,11 @@
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Sessions",
+      "statusButton": "Who Still Needs Attendance",
+      "statusEntered": "Entered ({count})",
+      "statusNotEntered": "Not entered",
+      "statusSummary": "{entered} of {total} groups entered",
+      "statusTitle": "Who still needs attendance",
       "tryAdjusting": "Try adjusting your search",
       "upcoming": "upcoming"
     },
@@ -1465,11 +1472,6 @@
         "manage": "Organize and manage your church groups"
       }
     },
-    "membersAdd": {
-      "availableMem": "Available Group Members",
-      "noMem": "No group members available.",
-      "unknown": "Unknown"
-    },
     "pendingRequestsPage": {
       "empty": "No pending requests.",
       "subtitle": "Approve or decline member-initiated requests across all groups.",
@@ -1491,6 +1493,7 @@
       "eligibleSummary": "{eligibleCount} of {totalMembers} members will receive this email.",
       "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this email.",
       "emailGroupTitle": "Email Group: {groupName}",
+      "emailPersonTitle": "Email {personName}",
       "fallbackError": "Failed to send email.",
       "loadTemplate": "Load Template (optional)",
       "loadingRecipients": "Loading recipients...",
@@ -1504,23 +1507,25 @@
       "noEmailNoticeSingular": "{count} member has no email address on file and will be skipped.",
       "noEmailSkipped": "{count} skipped (no email address on file).",
       "none": "None",
+      "openMailApp": "Open in my email app",
+      "pausedNotice": "Group email is paused because recent messages bounced or were reported as spam. Please contact support.",
       "permissionError": "You do not have permission to send group emails.",
+      "requestReview": "Request review",
+      "reviewBody": "To keep every church's email out of spam folders, we review each church once before it can send group email. Request a review and our team will turn it on, usually within one business day.",
+      "reviewRequestedBody": "Thanks! Our team has been notified and will turn on group email for your church shortly. You can close this window.",
+      "reviewRequestedTitle": "Review requested",
+      "reviewTitle": "Group email needs a quick review",
+      "reviewWhy": "Emails from B1 share one sending reputation, so this step protects your messages from being flagged as spam.",
       "send": "Send Email",
       "sendDefault": "This will send an email to eligible group members.",
       "sendFailedDetail": "{count} failed to send.",
       "sending": "Sending...",
+      "sendingTo": "Sending to {email}",
       "sentSummary": "Sent to {successCount} of {recipientCount} recipients.",
       "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "subject": "Subject",
       "subjectMergeFieldHint": "Insert merge field into subject:",
-      "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}",
-      "reviewTitle": "Group email needs a quick review",
-      "reviewBody": "To keep every church's email out of spam folders, we review each church once before it can send group email. Request a review and our team will turn it on, usually within one business day.",
-      "reviewRequestedTitle": "Review requested",
-      "reviewRequestedBody": "Thanks! Our team has been notified and will turn on group email for your church shortly. You can close this window.",
-      "reviewWhy": "Emails from B1 share one sending reputation, so this step protects your messages from being flagged as spam.",
-      "requestReview": "Request review",
-      "pausedNotice": "Group email is paused because recent messages bounced or were reported as spam. Please contact support."
+      "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}"
     },
     "sendTextDialog": {
       "characterCount": "{count} characters in {segments} segment(s).",
@@ -1556,6 +1561,7 @@
       "srvTimeOp": "Service Times (optional)"
     },
     "sessionAdd": {
+      "allGroups": "Also add for the other {count} groups in {serviceTime}",
       "invDate": "Invalid Date",
       "sesAdd": "Add a Session",
       "sesDate": "Session Date",
@@ -1986,6 +1992,7 @@
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
       "printDirectory": "Print Directory",
+      "printResults": "Print Results",
       "searchPpl": "Search People",
       "searchResults": "Search Results",
       "showAll": "Show All Members",
@@ -2483,11 +2490,11 @@
     },
     "planEdit": {
       "autoReplaceOnDecline": "Automatically schedule a replacement when a volunteer declines",
+      "confirmDelete": "Delete this plan, including its positions, assignments and order of service?",
       "copyAll": "Positions and Assignments",
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
       "copyPrevious": "Copy from Previous Plan",
-      "confirmDelete": "Delete this plan, including its positions, assignments and order of service?",
       "copyServiceOrder": "Copy Order of Service",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",
@@ -3343,81 +3350,32 @@
       "searchChurchesAria": "Search churches"
     },
     "commonsTab": {
-      "allProducts": "All Products",
       "allStatuses": "All Statuses",
-      "allTypes": "All Types",
+      "approve": "Approve",
+      "approveNote": "Note to the writer (optional — shown on their submissions page)",
       "approvedSuffix": "approved",
       "assetStatus": {
-        "published": "Published",
         "pending": "Pending",
+        "published": "Published",
         "removed": "Removed",
         "unpublished": "Unpublished"
       },
-      "assetType": "Asset Type",
+      "attested": "Confirmed",
       "badgeEditBy": "Edit by {name}",
       "badgeEditByAuthor": "Edit by author",
       "badgeNew": "New",
+      "bpm": "{bpm} BPM",
+      "changes": "Changes",
+      "chooseOutcome": "Choose an outcome…",
       "claim": "Claim",
       "colActions": "Actions",
-      "colAge": "Age",
       "colAsset": "Asset",
-      "colChanges": "Changes",
-      "colConfidence": "Confidence",
-      "colScore": "Score",
-      "colSubmitter": "Submitter",
-      "colType": "Type",
-      "confirmReject": "Reject Submission",
-      "copyrightReports": "Copyright",
-      "date": "Date",
-      "detailsUpdated": "Details updated",
-      "downloads": "Downloads",
-      "feature": "Feature",
-      "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
-      "featured": "Featured",
-      "firstSubmission": "first submission",
-      "justNow": "just now",
-      "licensePd": "Public domain",
-      "licenseWc": "Free for worship",
-      "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
-      "listenTitle": "Listened keys for {name}",
-      "listened": "Listened",
-      "name": "Name",
-      "noAssets": "No assets found.",
-      "noKeys": "No published keys yet.",
-      "noReports": "No reports have been filed.",
-      "noSubmissions": "No submissions are waiting for review.",
-      "note": "Note",
-      "policyReports": "Policy & Other",
-      "possibleDuplicate": "Duplicate?",
-      "product": "Product",
-      "publisher": "Publisher",
-      "reason": "Reason",
-      "recentlyResolved": "Recently Resolved",
-      "reject": "Reject",
-      "remove": "Remove",
-      "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
-      "reporterRole": "Reporter Role",
-      "republish": "Republish",
-      "resolve": "Resolve",
-      "review": "Review",
-      "rightsFlag": "Rights",
-      "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
-      "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
-      "searchAssets": "Search assets",
-      "signature": "Signature",
-      "status": "Status",
-      "sundayReady": "Sunday-ready",
-      "tabAssets": "Assets",
-      "tabQueue": "Queue",
-      "tabReports": "Reports",
-      "unpublish": "Unpublish",
-      "viewOnWorshipCommons": "View on WorshipCommons",
-      "approve": "Approve",
-      "approveNote": "Note to the writer (optional — shown on their submissions page)",
-      "changes": "Changes",
       "colBasis": "Basis",
+      "colConfidence": "Confidence",
       "colFile": "File",
+      "colScore": "Score",
       "colSha": "SHA-256",
+      "colType": "Type",
       "confidence": {
         "chart-only": "Chart only",
         "converted-from-abc": "Converted from ABC",
@@ -3428,30 +3386,70 @@
       },
       "confirmApprove": "Approve this submission?",
       "confirmApproveDetail": "Publish {name} under {license}. Churches can use it right away.",
+      "confirmReject": "Reject Submission",
       "confirmRequestChanges": "Send back for changes",
+      "contributionAgreed": "Proposer confirmed the change is accurate and given under the song's license",
       "contributors": "Contributors",
+      "copyrightReports": "Copyright",
+      "date": "Date",
       "declineFile": "Decline",
       "declineReason": "Reason for declining this file",
       "declineReasonRequired": "Give a reason for each declined file.",
       "declinedFiles": "Declined files",
       "declinedSuffix": "declined",
+      "detailsUpdated": "Details updated",
       "download": "Download",
+      "downloads": "Downloads",
+      "feature": "Feature",
+      "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
+      "featured": "Featured",
       "field": {
         "certified": "Writer certifies they hold the rights",
-        "name": "Title",
         "description": "Description",
-        "tags": "Themes",
         "language": "Language",
-        "license": "License"
+        "license": "License",
+        "name": "Title",
+        "tags": "Themes"
       },
       "files": "Files",
+      "firstSubmission": "first submission",
+      "grant": {
+        "adult": "18 or older",
+        "clear": "No publisher, collecting society or admin blocks the grant",
+        "cowriters": "Every co-writer agreed in writing",
+        "forever": "Understands worship use is forever",
+        "human": "Words and melody written by people, not AI",
+        "wrote": "Wrote it or controls its copyright — words, music and every file"
+      },
       "intakeFindings": "Intake findings",
+      "justNow": "just now",
+      "licensePd": "Public domain",
+      "licenseWc": "Free for worship",
+      "listenHelp": "Tick each published key you have listened through. The song becomes Sunday-ready once every key is covered and it has a score, chords and slides.",
+      "listenTitle": "Listened keys for {name}",
+      "listened": "Listened",
       "lyricsAndChords": "Lyrics and chords",
+      "masterLicense": "Master recording",
       "musicEditorRightsBlocked": "This proposal changes rights (license or ownership). Only a server admin can approve it.",
+      "name": "Name",
+      "newNoFiles": "Lyrics and details, no files",
+      "noAssets": "No assets found.",
       "noFieldChanges": "No changes to show.",
       "noFindings": "Nothing flagged at intake.",
+      "noKeys": "No published keys yet.",
+      "noReports": "No reports have been filed.",
+      "noSubmissions": "No submissions are waiting for review.",
+      "note": "Note",
       "original": "original",
+      "policyReports": "Policy & Other",
+      "possibleDuplicate": "Duplicate?",
       "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
+      "possibleDuplicateTooltip": "The file or title matches a song already in the library — check it in the review before approving",
+      "publisher": "Publisher",
+      "reason": "Reason",
+      "recentlyResolved": "Recently Resolved",
+      "recordingOwned": "Owns the recording (or has the owner's permission)",
+      "reject": "Reject",
       "rejectReason": {
         "ai": "AI-generated words or melody",
         "ccli": "Copyrighted (CCLI) song",
@@ -3462,10 +3460,26 @@
         "other": "Other",
         "quality": "Quality"
       },
+      "remove": "Remove",
+      "removeConfirm": "Remove {name}? It will no longer be available to anyone.",
       "removeReason": {
         "copyright": "Copyright",
         "policy": "Policy"
       },
+      "reportReason": {
+        "ai": "AI-generated",
+        "copyright": "Copyright",
+        "other": "Other",
+        "policy": "Policy",
+        "quality": "Quality"
+      },
+      "reportStatus": {
+        "open": "Open",
+        "resolved": "Resolved",
+        "reviewing": "Reviewing"
+      },
+      "reporterRole": "Reporter Role",
+      "republish": "Republish",
       "requestChanges": "Request changes",
       "requestChangesNote": "Tell the submitter what to change",
       "resolution": {
@@ -3473,56 +3487,42 @@
         "duplicate": "Duplicate",
         "upheld": "Upheld"
       },
+      "resolve": "Resolve",
       "resolveAction": {
         "none": "No action",
         "remove": "Remove",
         "unpublish": "Unpublish"
       },
+      "review": "Review",
       "rights": "Rights",
+      "rightsFlag": "Rights",
+      "rightsFlagTooltip": "The writer said a society or publisher administers this song.",
+      "scoreHeuristicOnly": "completeness heuristic only — not an AI judgment",
+      "searchAssets": "Search assets",
+      "shortcuts": "Keys: J / K next / previous · A focus Approve · R reject",
+      "signature": "Signature",
+      "songKey": "Key {key}",
       "sources": "Sources",
+      "status": "Status",
       "submissionType": {
         "additionalFile": "Additional file",
         "arrangement": "Arrangement",
         "correction": "Correction",
         "new": "New song",
+        "recording": "Master recording",
         "removal": "Removal",
-        "translation": "Translation",
-        "recording": "Master recording"
+        "translation": "Translation"
       },
       "submittedBy": "Submitted by",
+      "sundayReady": "Sunday-ready",
+      "tabAssets": "Assets",
+      "tabQueue": "Queue",
+      "tabReports": "Reports",
       "triageScore": "Triage score",
       "unchangedFiles": "Unchanged files",
-      "reportReason": {
-        "copyright": "Copyright",
-        "ai": "AI-generated",
-        "policy": "Policy",
-        "quality": "Quality",
-        "other": "Other"
-      },
-      "reportStatus": {
-        "open": "Open",
-        "reviewing": "Reviewing",
-        "resolved": "Resolved"
-      },
-      "grant": {
-        "adult": "18 or older",
-        "wrote": "Wrote it or controls its copyright — words, music and every file",
-        "cowriters": "Every co-writer agreed in writing",
-        "clear": "No publisher, collecting society or admin blocks the grant",
-        "forever": "Understands worship use is forever",
-        "human": "Words and melody written by people, not AI"
-      },
-      "attested": "Confirmed",
-      "masterLicense": "Master recording",
-      "contributionAgreed": "Proposer confirmed the change is accurate and given under the song's license",
-      "recordingOwned": "Owns the recording (or has the owner's permission)",
-      "shortcuts": "Keys: J / K next / previous · A focus Approve · R reject",
-      "newNoFiles": "Lyrics and details, no files",
-      "possibleDuplicateTooltip": "The file or title matches a song already in the library — check it in the review before approving",
-      "chooseOutcome": "Choose an outcome…",
+      "unpublish": "Unpublish",
       "unpublishConfirm": "Unpublish {name}? Churches stop finding it until you republish it.",
-      "songKey": "Key {key}",
-      "bpm": "{bpm} BPM"
+      "viewOnWorshipCommons": "View on WorshipCommons"
     },
     "impersonateTab": {
       "confirmMessage": "You will be logged out of your own session and signed in as {email}. To return to your account, log out and back in.",
@@ -4110,9 +4110,13 @@
       "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
       "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
       "ministryStuffHelperLink": "ministrystuff.org",
+      "nalo": "Nalo Solutions",
+      "naloHelper": "Enter the auth key from your Nalo Solutions account and a sender ID that Nalo has approved for you. Get an account at",
+      "naloHelperLink": "nalosolutions.com",
       "none": "None",
       "provider": "Provider",
       "saveError": "Error saving texting settings.",
+      "senderId": "Sender ID",
       "textInChurch": "Text In Church",
       "textInChurchHelper": "Visit",
       "textInChurchHelperLink": "Text In Church Support",
@@ -4350,16 +4354,16 @@
       "confirmDelete": "Delete this post? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
+      "draft": "Draft",
       "navHint": "Visitors can read your posts at /blog. Add a navigation link on the Pages screen so they can find it:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Published",
+      "scheduled": "Scheduled",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
       "title": "Blog",
-      "view": "View on Site",
-      "draft": "Draft",
-      "published": "Published",
-      "scheduled": "Scheduled"
+      "view": "View on Site"
     },
     "blogEdit": {
       "author": "Author",
@@ -5084,16 +5088,16 @@
       "dividerNone": "None",
       "dividerShape": "Shape",
       "dividerTop": "Top Divider",
-      "dividers": "Shape Dividers",
-      "duplicate": "Duplicate",
-      "duplicateSection": "Duplicate Section",
-      "id": "ID",
       "divider_curve": "Curve",
       "divider_peaks": "Peaks",
       "divider_slant": "Slant",
       "divider_triangle": "Triangle",
       "divider_wave": "Wave",
-      "divider_waves": "Waves"
+      "divider_waves": "Waves",
+      "dividers": "Shape Dividers",
+      "duplicate": "Duplicate",
+      "duplicateSection": "Duplicate Section",
+      "id": "ID"
     },
     "sectionTemplates": {
       "aboutSplit": "About Us",
@@ -5244,16 +5248,16 @@
     "socialIconsEdit": {
       "alignment": "Alignment",
       "color": "Color",
+      "facebook": "Facebook",
       "filled": "Filled",
       "iconStyle": "Icon Style",
+      "instagram": "Instagram",
       "large": "Large",
       "medium": "Medium",
       "outlined": "Outlined",
+      "podcast": "Podcast",
       "size": "Size",
       "small": "Small",
-      "facebook": "Facebook",
-      "instagram": "Instagram",
-      "podcast": "Podcast",
       "tiktok": "TikTok",
       "vimeo": "Vimeo",
       "x": "X",
@@ -5578,408 +5582,6 @@
     },
     "title": "Songs"
   },
-  "src/calendars/ApprovalsPage": {
-    "tsx:    setSnack(Locale": {
-      "label(action === \"approve\" ? \"calendars": {
-        "approvals": {
-          "approvedToast\" : \"calendars": {
-            "approvals": {
-              "rejectedToast\"));": "Rejected toast\"));"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/components/chatShared/ChatPanel": {
-    "tsx:            placeholder={Locale": {
-      "label(`${labelPrefix}": {
-        "placeholderInput`)}": "Placeholder input`)}"
-      }
-    },
-    "tsx:          <AppIconButton label={Locale": {
-      "label(`${labelPrefix}": {
-        "ariaSend`)} icon={<SendIcon />} tone=\"card\" onClick={handleSend} disabled={isLoading || !input": {
-          "trim()} />": "Trim()} />"
-        }
-      }
-    }
-  },
-  "src/components/chatShared/useChat": {
-    "ts:      setMessages([": {
-      "": {
-        "": {
-          "updatedMessages, { role: \"assistant\", content: Locale": {
-            "label(`${labelPrefix}": {
-              "errorGeneric`) }]);": "Error generic`) }]);"
-            }
-          },
-          "updatedMessages, { role: \"assistant\", content: response": {
-            "answer || Locale": {
-              "label(`${labelPrefix}": {
-                "errorAnswer`) }]);": "Error answer`) }]);"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/components/iconPicker/IconPicker": {
-    "tsx:                        {Locale": {
-      "label(`common": {
-        "iconPicker": {
-          "icons": {
-            "${iconName}`, iconName": "${icon name}`, icon name"
-          }
-        }
-      }
-    }
-  },
-  "src/groups/components/GroupRsvpRosterDialog": {
-    "tsx:                      {Locale": {
-      "label(`groups": {
-        "groupCalendar": {
-          "response_${resp}`)} ({people": {
-            "length})": "Length})"
-          }
-        }
-      }
-    }
-  },
-  "src/mobile/LabelsPage": {
-    "tsx:                          <TableCell>{Locale": {
-      "label(t": {
-        "labelType === \"pickup\" ? \"attendance": {
-          "labels": {
-            "pickup\" : \"attendance": {
-              "labels": {
-                "nametag\")}</TableCell>": "Nametag\")}</ table cell>"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/mobile/components/LabelEditor": {
-    "tsx:const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale": {
-      "label(FIELD_LABEL_KEYS[f]) : f);": "Label( f i e l d_ l a b e l_ k e y s[f]) : f);"
-    }
-  },
-  "src/people/components/PersonEdit": {
-    "tsx:                  <MuiTelInput fullWidth id={field} label={Locale": {
-      "label(labelKey)} value={f": {
-        "value?": {
-          "split(\"x\")[0] ?? \"\"} onChange={(v) => { const ext = f": {
-            "value?": {
-              "split(\"x\")[1] ?? \"\"; f": {
-                "onChange(ext ? v + \"x\" + ext : v); }} defaultCountry=\"US\" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />": "On change(ext ? v + \"x\" + ext : v); }} default country=\" u s\" force calling code focus on select country slot props={phone slot props}  menu props={phone menu props} />"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/people/components/bulk/BulkGroupDialog": {
-    "tsx:        <Typography sx={{ mb: 2 }}>{Locale": {
-      "label(isAdd ? \"people": {
-        "bulk": {
-          "addToGroupPrompt\" : \"people": {
-            "bulk": {
-              "removeFromGroupPrompt\")": {
-                "replace(\"{count}\", count": {
-                  "toString())}</Typography>": "To string())}</ typography>"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "tsx:        message: Locale": {
-      "label(messageKey)": {
-        "replace(\"{count}\", affected": {
-          "toString())": {
-            "replace(\"{group}\", targetGroup": {
-              "name || \"\"),": "Name || \"\"),"
-            }
-          }
-        }
-      }
-    },
-    "tsx:      <DialogTitle>{Locale": {
-      "label(isAdd ? \"people": {
-        "bulk": {
-          "addToGroupTitle\" : \"people": {
-            "bulk": {
-              "removeFromGroupTitle\")}</DialogTitle>": "Remove from group title\")}</ dialog title>"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/people/components/bulk/PeopleBulkActions": {
-    "tsx:            <ListItemText>{Locale": {
-      "label(menuLabels[config": {
-        "field])}</ListItemText>": "Field])}</ list item text>"
-      }
-    },
-    "tsx:          title={Locale": {
-      "label(fieldConfig": {
-        "titleKey)}": "Title key)}"
-      }
-    }
-  },
-  "src/people/helpers/MembershipStatusOptions": {
-    "ts:    const label = Locale": {
-      "label(status": {
-        "labelKey);": "Label key);"
-      }
-    },
-    "ts:    label: Locale": {
-      "label(status": {
-        "labelKey)": "Label key)"
-      }
-    }
-  },
-  "src/serverAdmin/components/CommonsReviewDrawer": {
-    "tsx:const label = (key: string, fallback?: string) => Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "${key}`, fallback);": "${key}`, fallback);"
-        }
-      }
-    }
-  },
-  "src/serverAdmin/components/CommonsTab": {
-    "tsx:                    {RESOLUTIONS": {
-      "map((res) => <MenuItem key={res} value={res}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolution": {
-              "${res}`)}</MenuItem>)}": "${res}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:                    {RESOLVE_ACTIONS": {
-      "map((a) => <MenuItem key={a} value={a}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolveAction": {
-              "${a}`)}</MenuItem>)}": "${a}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:                  <TableCell>{r": {
-      "resolution ? Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "resolution": {
-              "${r": {
-                "resolution}`) : \"-\"}</TableCell>": "Resolution}`) : \"-\"}</ table cell>"
-              }
-            }
-          }
-        }
-      }
-    },
-    "tsx:                <TableCell><Chip size=\"small\" label={Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "assetStatus": {
-            "${a": {
-              "status}`)} /></TableCell>": "Status}`)} /></ table cell>"
-            }
-          }
-        }
-      }
-    },
-    "tsx:              {REJECT_REASONS": {
-      "map((r) => <MenuItem key={r} value={r}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "rejectReason": {
-              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:            {ASSET_STATUSES": {
-      "map((s) => <MenuItem key={s} value={s}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "assetStatus": {
-              "${s}`)}</MenuItem>)}": "${s}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:            {REMOVE_REASONS": {
-      "map((r) => <MenuItem key={r} value={r}>{Locale": {
-        "label(`serverAdmin": {
-          "commonsTab": {
-            "removeReason": {
-              "${r}`)}</MenuItem>)}": "${r}`)}</ menu item>)}"
-            }
-          }
-        }
-      }
-    },
-    "tsx:const confidenceLabel = (c?: Confidence | string) => (c ? Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "confidence": {
-            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
-          }
-        }
-      }
-    }
-  },
-  "src/serving/components/PlanTypeGroups": {
-    "tsx:            <Typography variant=\"body2\">{Locale": {
-      "label(`plans": {
-        "planTypeGroups": {
-          "timeFilter": {
-            "${filter}`)}</Typography>": "${filter}`)}</ typography>"
-          }
-        }
-      }
-    }
-  },
-  "src/serving/songs/SongSearchDialog": {
-    "tsx:const confidenceLabel = (c?: string) => (c ? Locale": {
-      "label(`serverAdmin": {
-        "commonsTab": {
-          "confidence": {
-            "${c}`, c) : \"\");": "${c}`, c) : \"\");"
-          }
-        }
-      }
-    }
-  },
-  "src/settings/components/GivingSettingsEdit": {
-    "tsx:                {Locale": {
-      "label(descriptor": {
-        "webhookInstructionsKey || \"settings": {
-          "givingSettingsEdit": {
-            "kfWebhookInstructions\")} <code style={{ wordBreak: \"break-all\" }}>{webhookUrl}</code>": "Kf webhook instructions\")} <code style={{ word break: \"break-all\" }}>{webhook url}</code>"
-          }
-        }
-      }
-    },
-    "tsx:              {descriptor": {
-      "setupInstructionsKey ? Locale": {
-        "label(descriptor": {
-          "setupInstructionsKey) : \"\"}": "Setup instructions key) : \"\"}"
-        }
-      }
-    },
-    "tsx:    const privateLabel = Locale": {
-      "label(descriptor": {
-        "keyLabels": {
-          "private);": "Private);"
-        }
-      }
-    },
-    "tsx:    const publicLabel = Locale": {
-      "label(descriptor": {
-        "keyLabels": {
-          "public);": "Public);"
-        }
-      }
-    }
-  },
-  "src/settings/components/StatementFormatSettingsEdit": {
-    "tsx:            <TextField fullWidth label={Locale": {
-      "label(registrationLabelKey(format))} {": {
-        "": {
-          "": {
-            "register(\"statementRegistrationNumber\")} />": "Register(\"statement registration number\")} />"
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/A11yPanel": {
-    "tsx:                        <Chip size=\"small\" label={Locale": {
-      "label(RULE_LABEL_KEY[issue": {
-        "rule])} sx={{ mb: 0": {
-          "5, height: 20, fontSize: \"0": {
-            "68rem\" }} />": "68rem\" }} />"
-          }
-        }
-      }
-    },
-    "tsx:                      <Icon sx={{ mt: 0": {
-      "25, color: issue": {
-        "severity === \"error\" ? \"error": {
-          "main\" : \"warning": {
-            "main\" }} aria-label={Locale": {
-              "label(issue": {
-                "severity === \"error\" ? \"site": {
-                  "a11y": {
-                    "errorLabel\" : \"site": {
-                      "a11y": {
-                        "warningLabel\")}>": "Warning label\")}>"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/elements/ElementAdd": {
-    "tsx:        description: ui?": {
-      "description || (ui?": {
-        "descKey ? Locale": {
-          "label(ui": {
-            "descKey) : def": {
-              "label),": "Label),"
-            }
-          }
-        }
-      }
-    },
-    "tsx:        label: ui?": {
-      "label || (ui?": {
-        "labelKey ? Locale": {
-          "label(ui": {
-            "labelKey) : def": {
-              "label),": "Label),"
-            }
-          }
-        }
-      }
-    }
-  },
-  "src/site/admin/templates/SectionTemplatePicker": {
-    "tsx:      <DialogTitle>{Locale": {
-      "label(props": {
-        "switchMode ? \"site": {
-          "sectionTemplates": {
-            "switchTitle\" : \"site": {
-              "sectionTemplates": {
-                "title\")}</DialogTitle>": "Title\")}</ dialog title>"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "stockPhotos": {
     "photoBy": "Photo By",
     "providedBy": "Provided By"
@@ -6218,6 +5820,7 @@
       "days": "Wait days",
       "noAssignee": "Unassigned",
       "noGroup": "No group selected",
+      "noTextingProvider": "No texting provider is set up. Add one in Settings → Texting or texts will not send.",
       "note": "Note",
       "pickAssignee": "Pick assignee",
       "pickGroup": "Pick group",
@@ -6228,6 +5831,8 @@
       "subjectOverride": "Subject (optional)",
       "taskDescription": "Description (optional)",
       "taskTitle": "Task title",
+      "textMergeHint": "Use {{firstName}}, {{lastName}}, {{displayName}} or {{churchName}}. Opted-out people are skipped.",
+      "textMessage": "Text message",
       "title": "Automated actions",
       "type": {
         "addNote": "Add Note",
@@ -6237,6 +5842,7 @@
         "delay": "Wait",
         "removeFromGroup": "Remove from Group",
         "sendEmail": "Send Email",
+        "sendText": "Send Text",
         "setField": "Set Field",
         "webhook": "Call Webhook"
       },

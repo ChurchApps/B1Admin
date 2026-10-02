@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { request, type Page } from "@playwright/test";
 import { groupsTest as test, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -39,6 +39,35 @@ async function selectSession(page: Page, date: string) {
 async function saveAttendance(page: Page) {
   await page.locator('[data-testid="save-attendance-button"]').click();
   await expect(page.locator('[data-testid="attendance-save-message"]')).toHaveText("Attendance saved.", { timeout: 10000 });
+}
+
+// Demo: these groups all meet at the Wednesday "7:00 PM Service" (SST00000004).
+const WEDNESDAY_GROUPS = ["GRP00000003", "GRP00000007", "GRP00000008", "GRP00000009", "GRP00000010"];
+
+async function wednesdaySessionCounts(date: string) {
+  const apiBase = process.env.API_BASE || "http://localhost:8084";
+  const ctx = await request.newContext();
+  const login = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+  const jwt = login.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+  const sessions = await (await ctx.get(`${apiBase}/attendance/sessions`, { headers: { Authorization: "Bearer " + jwt } })).json();
+  const counts = WEDNESDAY_GROUPS.map((groupId) => sessions.filter((s: { groupId: string; serviceTimeId: string; sessionDate: string }) => s.groupId === groupId && s.serviceTimeId === "SST00000004" && s.sessionDate.startsWith(date)).length);
+  await ctx.dispose();
+  return counts;
+}
+
+async function addSessionForAllGroups(page: Page, group: string, date: string) {
+  await openSeedGroup(page, group);
+  await page.locator("button").getByText("Sessions").click();
+  await page.locator("button").getByText("New").first().click();
+  const box = page.locator('[data-cy="add-session-box"]');
+  await box.getByRole("combobox").click();
+  await page.getByRole("option", { name: "7:00 PM Service" }).click();
+  await box.locator('[data-testid="session-date-input"] input').fill(date);
+  await expect(box.getByText("Also add for the other 4 groups in Wednesday Evening Service - 7:00 PM Service")).toBeVisible({ timeout: 10000 });
+  await box.locator('[data-testid="session-all-groups"]').check();
+  const saved = page.waitForResponse((r) => r.url().includes("/attendance/sessions") && r.request().method() === "POST");
+  await box.getByRole("button", { name: "Save", exact: true }).click();
+  expect((await saved).ok()).toBeTruthy();
 }
 
 test.describe.serial("Group Management", () => {
@@ -102,6 +131,26 @@ test.describe.serial("Group Management", () => {
       await dismissSendInviteIfPresent(page);
       const validatedPerson = page.locator('[data-testid="display-box-content"] td').getByText("Demo User");
       await expect(validatedPerson).toHaveCount(1);
+    });
+
+    test("adds a newly created person straight to the group", async () => {
+      await openSeedMembers(page);
+      await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
+
+      const last = `Newcomer${Date.now()}`;
+      await page.locator('input[name="personAddText"]').fill(`Zelda ${last}`);
+      await page.locator('[data-testid="search-button"]').click();
+      await page.locator("#personAddBox").getByRole("button", { name: /Add (a )?New Person/ }).click();
+
+      const dialog = page.getByRole("dialog").filter({ hasText: /Add (a )?New Person/ });
+      await dialog.locator('input[name="first"]').fill("Zelda");
+      await dialog.locator('input[name="last"]').fill(last);
+      const memberSaved = page.waitForResponse((r) => r.url().includes("/groupmembers") && r.request().method() === "POST");
+      await dialog.getByRole("button", { name: "Add", exact: true }).click();
+      await expect(dialog).toBeHidden();
+      expect((await memberSaved).ok()).toBeTruthy();
+
+      await expect(page.locator("#groupMemberTable").getByText(`Zelda ${last}`)).toHaveCount(1);
     });
 
     test("should advanced add people", async () => {
@@ -311,6 +360,49 @@ test.describe.serial("Group Management", () => {
       await expect(sessionCard).toHaveCount(1, { timeout: 10000 });
     });
 
+    test("adds a session for every group in the service time at once, without duplicates", async () => {
+      const date = "2027-02-17";
+      const before = await wednesdaySessionCounts(date);
+      await addSessionForAllGroups(page, "Wednesday Prayer Service", date);
+      // The group you're on always gets the new session; every other class gets one if it doesn't already have it.
+      const afterFirst = before.map((c, i) => (i === 0 ? c + 1 : Math.max(c, 1)));
+      await expect.poll(() => wednesdaySessionCounts(date)).toEqual(afterFirst);
+      // Running it again from another class skips groups that already have the session.
+      await addSessionForAllGroups(page, "Preschool (3-5)", date);
+      await expect.poll(() => wednesdaySessionCounts(date)).toEqual(afterFirst.map((c, i) => (i === 2 ? c + 1 : c)));
+    });
+
+    test("lists which groups at the service time still need attendance", async () => {
+      // Wednesday Prayer Service has attendance on 3/11/2026; the other four Wednesday classes have none.
+      const apiBase = process.env.API_BASE || "http://localhost:8084";
+      const ctx = await request.newContext();
+      const loginRes = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const jwt = loginRes.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+      const headers = { Authorization: "Bearer " + jwt };
+      const sRes = await ctx.post(`${apiBase}/attendance/sessions`, { headers, data: [{ groupId: "GRP00000003", serviceTimeId: "SST00000004", sessionDate: "2026-03-11" }] });
+      const session = (await sRes.json())[0];
+      await ctx.post(`${apiBase}/attendance/visitsessions/log`, { headers, data: { personId: "PER00000001", visitSessions: [{ sessionId: session.id }] } });
+      await ctx.dispose();
+
+      await openSeedGroup(page, "Wednesday Prayer Service");
+      await page.locator("button").getByText("Sessions").click();
+      await page.getByRole("button", { name: "2026", exact: true }).click();
+      await selectSession(page, "2026-03-11");
+      await page.locator('[data-testid="session-attendance-status-button"]').click();
+      const dialog = page.getByRole("dialog");
+      await expect(dialog).toContainText("Who still needs attendance");
+      await expect(dialog.locator('[data-testid="session-status-summary"]')).toHaveText("1 of 5 groups entered", { timeout: 10000 });
+      const rows = dialog.locator('[data-testid="session-status-row"]');
+      await expect(rows).toHaveCount(5);
+      // Not-entered groups come first, then the ones already done.
+      await expect(rows.first()).toContainText("Not entered");
+      await expect(rows.filter({ hasText: "Nursery (0-2)" })).toContainText("Not entered");
+      await expect(rows.last()).toContainText("Wednesday Prayer Service");
+      await expect(rows.last()).toContainText("Entered (1)");
+      await dialog.getByRole("button", { name: "Close" }).click();
+      await expect(dialog).toHaveCount(0);
+    });
+
     test("should add person to session", async () => {
       await openSessionOn(page, "2025-10-01");
       await page.getByRole("checkbox", { name: "William Anderson" }).check();
@@ -357,8 +449,12 @@ test.describe.serial("Group Management", () => {
       const groupId = new URL(page.url()).pathname.split("/").pop();
       await page.goto("/groups/print-roster?groupId=" + groupId + "&date=2025-12-07");
       await expect(page.locator("h1.roster-title")).toHaveText(SESSION_GROUP, { timeout: 10000 });
-      await expect(page.locator('[data-testid="roster-member"]')).toHaveText(["William Anderson", "George Thompson", "Margaret Thompson"]);
-      await expect(page.locator('[data-testid="roster-date"]')).toContainText("December 7, 2025");
+      // Two columns: read down the left column, then the right.
+      await expect(page.locator('[data-testid="roster-member"]')).toHaveCount(3);
+      await expect(page.locator('td[data-testid="roster-member"]:not(.roster-split)')).toHaveText(["William Anderson", "George Thompson"]);
+      await expect(page.locator('td.roster-split[data-testid="roster-member"]')).toHaveText(["Margaret Thompson"]);
+      // The session date sits on its own line right under the group name.
+      await expect(page.locator('h1.roster-title + [data-testid="roster-date"]')).toContainText("December 7, 2025");
       // The print route has no app chrome; go back so later tests can use the nav.
       await page.goBack();
       await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 15000 });

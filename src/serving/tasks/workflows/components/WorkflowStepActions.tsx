@@ -16,6 +16,7 @@ interface Props {
 export const WorkflowStepActions = (props: Props) => {
   const [actions, setActions] = React.useState<WorkflowStepActionInterface[]>([]);
   const [templates, setTemplates] = React.useState<EmailTemplateInterface[]>([]);
+  const [textingProviders, setTextingProviders] = React.useState<any[] | null>(null);
   const [pickerIndex, setPickerIndex] = React.useState<number | null>(null);
 
   const load = React.useCallback(async () => {
@@ -26,6 +27,7 @@ export const WorkflowStepActions = (props: Props) => {
   React.useEffect(() => { load(); }, [load]);
   React.useEffect(() => {
     ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates(d || [])).catch(() => setTemplates([]));
+    ApiHelper.get("/texting/providers", "MessagingApi").then((d: any[]) => setTextingProviders(d || [])).catch(() => setTextingProviders([]));
   }, []);
 
   const config = (a: WorkflowStepActionInterface): any => {
@@ -80,6 +82,15 @@ export const WorkflowStepActions = (props: Props) => {
             <TextField size="small" label={Locale.label("tasks.workflowActions.subjectOverride")} value={c.subject || ""} onChange={(e) => setConfig(index, { subject: e.target.value })} />
           </Stack>
         );
+      case "sendText": {
+        const message: string = c.message || "";
+        return (
+          <Stack spacing={1}>
+            <TextField size="small" fullWidth multiline minRows={3} label={Locale.label("tasks.workflowActions.textMessage")} value={message} data-testid={"action-text-message-" + index} inputProps={{ maxLength: 1600 }} helperText={Locale.label("tasks.workflowActions.textMergeHint") + " " + message.length + "/1600"} onChange={(e) => setConfig(index, { message: e.target.value })} />
+            {textingProviders?.length === 0 && <Typography variant="body2" color="warning.main" data-testid={"action-text-no-provider-" + index}>{Locale.label("tasks.workflowActions.noTextingProvider")}</Typography>}
+          </Stack>
+        );
+      }
       case "addToGroup":
       case "removeFromGroup":
         return (

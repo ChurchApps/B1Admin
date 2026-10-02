@@ -88,14 +88,19 @@ export const PersonPage = () => {
 
   const person = useMemo<PersonInterface | null>(() => {
     if (!personData.data) return null;
-    const p: PersonInterface = personData.data;
-    if (!p.contactInfo) p.contactInfo = { homePhone: "", workPhone: "", mobilePhone: "" };
-    else {
-      if (!p.contactInfo.homePhone) p.contactInfo.homePhone = "";
-      if (!p.contactInfo.mobilePhone) p.contactInfo.mobilePhone = "";
-      if (!p.contactInfo.workPhone) p.contactInfo.workPhone = "";
-    }
-    return p;
+    // Normalise a copy: changing the cached object in place makes every refetch look
+    // different, which hands PersonEdit a new person and resets unsaved input (#1165).
+    const data: PersonInterface = personData.data;
+    const contactInfo = data.contactInfo || {};
+    return {
+      ...data,
+      contactInfo: {
+        ...contactInfo,
+        homePhone: contactInfo.homePhone || "",
+        mobilePhone: contactInfo.mobilePhone || "",
+        workPhone: contactInfo.workPhone || ""
+      }
+    };
   }, [personData.data]);
 
   React.useEffect(() => setEditPerson(person), [person]);

@@ -430,6 +430,27 @@ test.describe("People Management", () => {
       await expect(page.locator("h2").getByText("Visitor Information Card")).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[name="name.first"]')).toHaveCount(0);
     });
+
+    test("unsaved person edits survive the tab regaining focus", async ({ page }) => {
+      // Patricia has no work phone, so each refetch hands the form a new person object.
+      await openPersonRow(page, SEED_PEOPLE.PATRICIA);
+      await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/);
+      const personId = new URL(page.url()).pathname.split("/").pop();
+
+      await personDetailsEditButton(page).first().click();
+      const nick = page.getByTestId("nickname-input").locator("input");
+      await expect(nick).toBeVisible();
+      await nick.fill("Zacchaeus Unsaved");
+
+      // Simulate the user coming back to the tab; react-query refetches on focus.
+      const refetched = page.waitForResponse((r) => r.request().method() === "GET" && new RegExp(`/people/${personId}(\\?|$)`).test(r.url()), { timeout: 10000 });
+      await page.evaluate(() => window.dispatchEvent(new Event("visibilitychange")));
+      await refetched;
+      // Let React commit whatever the refetch triggers before checking.
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 0)))));
+
+      await expect(nick).toHaveValue("Zacchaeus Unsaved");
+    });
   });
 
   test.describe("Main Functions", () => {
@@ -888,11 +909,83 @@ test.describe("People Management", () => {
     });
   });
 
+  test.describe("Print directory", () => {
+    // Record what reaches the printer instead of opening the print dialog.
+    async function printFromPeople(page: Page) {
+      await page.context().addInitScript(() => {
+        window.print = () => {
+          (window as any).__printedText = document.querySelector(".directory-root")?.textContent || "";
+        };
+      });
+      const popupPromise = page.waitForEvent("popup");
+      await page.getByRole("button", { name: /^Print (Directory|Results)$/ }).click();
+      const popup = await popupPromise;
+      await popup.waitForFunction(() => typeof (window as any).__printedText === "string", null, { timeout: 30000 });
+      const text = await popup.evaluate(() => (window as any).__printedText as string);
+      await popup.close();
+      return text;
+    }
+
+    test("prints only the search results after a search", async ({ page }) => {
+      const searchInput = page.locator('input[name="searchText"]');
+      await searchInput.fill("Clark");
+      await page.waitForResponse(
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
+        { timeout: 10000 }
+      );
+      await expect(page.locator("table tbody tr").filter({ hasText: SEED_PEOPLE.DONALD }).first()).toBeVisible({ timeout: 10000 });
+      await expect(page.locator("table tbody tr").filter({ hasText: "Smith" })).toHaveCount(0);
+
+      const printed = await printFromPeople(page);
+      expect(printed).toContain("Clark");
+      expect(printed).not.toContain("Smith");
+    });
+
+    test("prints the full directory when no search is active", async ({ page }) => {
+      await expect(page.getByTestId("people-results-bar")).toBeVisible({ timeout: 10000 });
+      const printed = await printFromPeople(page);
+      expect(printed).toContain("Clark");
+      expect(printed).toContain("Smith");
+    });
+  });
+
   test.describe("People — edge-case affordances", () => {
     test("person profile exposes a top-level Edit button for contact info", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       // The identity panel exposes Edit profile for people with edit permission.
       await expect(personDetailsEditButton(page).first()).toBeVisible({ timeout: 10000 });
+    });
+
+    test("profile Email button opens the templated email composer for that person", async ({ page }) => {
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      const personId = new URL(page.url()).pathname.split("/").filter(Boolean).pop();
+
+      // Never send real email: answer the approval check and the send itself locally.
+      await page.route("**/emailTemplates/sendStatus", (route) => route.fulfill({ json: { approved: true, paused: false, remaining: 100 } }));
+      let posted: any = null;
+      await page.route("**/emailTemplates/send", async (route) => {
+        posted = route.request().postDataJSON();
+        await route.fulfill({ json: { recipientCount: 1, successCount: 1, failCount: 0, noEmailCount: 0, totalMembers: 1 } });
+      });
+
+      await page.locator('[data-testid="email-person-button"]').click();
+      const dialog = page.getByRole("dialog");
+      await expect(dialog.getByRole("heading", { name: `Email ${SEED_PEOPLE.DONALD}` })).toBeVisible({ timeout: 10000 });
+      await expect(dialog.getByText(`Sending to ${SEED_PEOPLE.DONALD_EMAIL}`)).toBeVisible();
+      await expect(dialog.locator('[data-testid="open-mail-app"]')).toBeVisible();
+
+      await dialog.getByLabel("Subject").fill("Hello from Grace");
+      // The second row of merge-field chips writes into the body.
+      await dialog.getByText("First Name", { exact: true }).nth(1).click();
+      const sendButton = dialog.getByRole("button", { name: "Send Email" });
+      await expect(sendButton).toBeEnabled();
+      await sendButton.click();
+
+      await expect(dialog.getByText("Sent to 1 of 1 recipient.")).toBeVisible({ timeout: 10000 });
+      expect(posted.personIds).toEqual([personId]);
+      expect(posted.groupId).toBeUndefined();
+      expect(posted.subject).toBe("Hello from Grace");
+      expect(posted.htmlContent).toContain("{{firstName}}");
     });
 
     test("search with no matches renders an empty results state", async ({ page }) => {

@@ -2,7 +2,7 @@ import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
-import { FormControl, Grid, Select, InputLabel, MenuItem, Box } from "@mui/material";
+import { FormControl, Grid, Select, InputLabel, MenuItem, Box, FormControlLabel, Checkbox } from "@mui/material";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { AppDatePicker } from "../../components";
@@ -27,8 +27,10 @@ export const SessionEdit: React.FC<Props> = (props) => {
   const isAdd = !props.session?.id;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [loading, setLoading] = React.useState(!isAdd);
+  const [otherGroups, setOtherGroups] = React.useState<GroupInterface[]>([]);
 
-  const { control, handleSubmit, reset, setValue } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "" } });
+  const { control, register, handleSubmit, reset, setValue, watch } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "", allGroups: false } });
+  const serviceTimeId = watch("serviceTimeId");
 
   const { errors } = useFormState({ control });
   const e = errors as any;
@@ -54,13 +56,38 @@ export const SessionEdit: React.FC<Props> = (props) => {
     });
   }, [props.group, isAdd, setValue]);
 
-  const onValid = (values: AnyRecord) => {
+  // Other groups that meet at the selected service time, offered for a one-step "add for all".
+  React.useEffect(() => {
+    setValue("allGroups", false);
+    if (!isAdd || UniqueIdHelper.isMissing(serviceTimeId)) { setOtherGroups([]); return; }
+    let cancelled = false;
+    Promise.all([
+      ApiHelper.get("/groupservicetimes", "AttendanceApi"),
+      ApiHelper.get("/groups", "MembershipApi")
+    ]).then(([gsts, groups]: [GroupServiceTimeInterface[], GroupInterface[]]) => {
+      if (cancelled) return;
+      const ids = (gsts || []).filter((gst) => gst.serviceTimeId === serviceTimeId).map((gst) => gst.groupId);
+      setOtherGroups((groups || []).filter((g) => g.id !== props.group.id && ids.includes(g.id)));
+    });
+    return () => { cancelled = true; };
+  }, [isAdd, serviceTimeId, props.group.id, setValue]);
+
+  // Sessions for the other groups, skipping any group that already has one on this date and service time.
+  const getOtherSessions = async (day: string, sessionDate: Date, stId: string) => {
+    const existing: SessionInterface[] = await ApiHelper.get("/sessions", "AttendanceApi").catch((): SessionInterface[] => []);
+    const hasSession = (groupId: string) => (existing || []).some((es) => es.groupId === groupId && es.serviceTimeId === stId && DateHelper.formatHtml5Date(es.sessionDate) === day);
+    return otherGroups.filter((g) => !hasSession(g.id)).map((g) => ({ groupId: g.id, serviceTimeId: stId, sessionDate } as SessionInterface));
+  };
+
+  const onValid = async (values: AnyRecord) => {
     if (!props.group?.id) return;
     const sessionDate = new Date(values.sessionDate);
     const s = { ...(props.session || {}), groupId: props.group.id, sessionDate } as SessionInterface;
     if (!UniqueIdHelper.isMissing(values.serviceTimeId)) s.serviceTimeId = values.serviceTimeId;
     else (s as any).serviceTimeId = null;
-    ApiHelper.post("/sessions", [s], "AttendanceApi").then(() => {
+    const sessions = [s];
+    if (isAdd && values.allGroups && s.serviceTimeId && otherGroups.length > 0) sessions.push(...await getOtherSessions(DateHelper.formatHtml5Date(values.sessionDate), sessionDate, s.serviceTimeId));
+    ApiHelper.post("/sessions", sessions, "AttendanceApi").then(() => {
       props.updatedFunction(s);
       if (isAdd) setValue("sessionDate", DateHelper.formatHtml5Date(new Date()));
     });
@@ -109,6 +136,17 @@ export const SessionEdit: React.FC<Props> = (props) => {
     );
   };
 
+  const getAllGroups = () => {
+    if (!isAdd || otherGroups.length === 0) return <></>;
+    const serviceTimeName = groupServiceTimes.find((gst) => gst.serviceTimeId === serviceTimeId)?.serviceTime?.name || "";
+    const label = Locale.label("groups.sessionAdd.allGroups").replace("{count}", otherGroups.length.toString()).replace("{serviceTime}", serviceTimeName);
+    return (
+      <Controller name="allGroups" control={control} render={({ field }) => (
+        <FormControlLabel label={label} control={<Checkbox checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} inputProps={{ "data-testid": "session-all-groups" } as any} />} />
+      )} />
+    );
+  };
+
   if (loading) {
     return (
       <Box data-cy="edit-session-box">
@@ -137,6 +175,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
               <AppDatePicker fullWidth label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...field} />
             )} />
           </Grid>
+          {isAdd && otherGroups.length > 0 && <Grid size={{ xs: 12 }}>{getAllGroups()}</Grid>}
         </Grid>
       </FormCard>
     </Box>

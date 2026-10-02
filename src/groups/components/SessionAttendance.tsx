@@ -6,6 +6,7 @@ import { Alert, Avatar, Box, Button, Checkbox, Chip, Stack, Table, TableBody, Ta
 import { Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton, Surface } from "../../components/ui";
+import { SessionStatusDialog } from "./SessionStatusDialog";
 
 interface Props {
   group: GroupInterface;
@@ -50,6 +51,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
   const [downloadData, setDownloadData] = React.useState<any[]>([]);
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
+  const [showStatus, setShowStatus] = React.useState(false);
   const loadSeqRef = React.useRef(0);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit), []);
@@ -268,9 +270,14 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         <Stack direction="row" spacing={1} alignItems="center">
           <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id)} data-testid="session-print-roster-button" />
           {session.serviceTimeId && (
-            <Button size="small" onClick={() => openRoster("serviceTimeId=" + session.serviceTimeId)} data-testid="session-print-all-rosters-button">
-              {Locale.label("groups.printRoster.printAll")}
-            </Button>
+            <>
+              <Button size="small" onClick={() => openRoster("serviceTimeId=" + session.serviceTimeId)} data-testid="session-print-all-rosters-button">
+                {Locale.label("groups.printRoster.printAll")}
+              </Button>
+              <Button size="small" onClick={() => setShowStatus(true)} data-testid="session-attendance-status-button">
+                {Locale.label("groups.groupSessions.statusButton")}
+              </Button>
+            </>
           )}
           {downloadData && downloadData.length > 0 && (
             <ExportButton data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />
@@ -307,6 +314,10 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
             <TableBody>{tableRows}</TableBody>
           </Table>
         </>
+      )}
+
+      {showStatus && session.serviceTimeId && (
+        <SessionStatusDialog serviceTimeId={session.serviceTimeId} sessionDate={toDateParam(session.sessionDate)} onClose={() => setShowStatus(false)} />
       )}
 
       {message && <Alert severity={message.type} sx={{ mt: 2 }} data-testid="attendance-save-message">{message.text}</Alert>}

@@ -16,6 +16,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
   const [provider, setProvider] = React.useState("");
   const [apiKey, setApiKey] = React.useState("");
   const [apiSecret, setApiSecret] = React.useState("");
+  const [fromNumber, setFromNumber] = React.useState("");
   const [errors, setErrors] = React.useState<string[]>([]);
   const [credits, setCredits] = React.useState<{ supported?: boolean; hasCredits?: boolean; remaining?: number } | null>(null);
 
@@ -31,6 +32,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
       case "provider": setProvider(e.target.value); break;
       case "apiKey": setApiKey(e.target.value); break;
       case "apiSecret": setApiSecret(e.target.value); break;
+      case "fromNumber": setFromNumber(e.target.value); break;
     }
   };
 
@@ -41,6 +43,18 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
         <Grid size={{ xs: 12, md: 6 }}>
           <TextField fullWidth name="apiKey" label={Locale.label("settings.textingSettingsEdit.apiKey")} value={apiKey} onChange={handleChange} type="password" />
         </Grid>
+      );
+    }
+    if (provider === "Nalo") {
+      return (
+        <>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField fullWidth name="apiKey" label={Locale.label("settings.textingSettingsEdit.apiKey")} value={apiKey} onChange={handleChange} type="password" />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField fullWidth name="fromNumber" label={Locale.label("settings.textingSettingsEdit.senderId")} value={fromNumber} onChange={handleChange} slotProps={{ htmlInput: { maxLength: 11 } }} />
+          </Grid>
+        </>
       );
     }
     // Default: show both key and secret (for future providers like Twilio)
@@ -65,6 +79,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
         tp.provider = provider;
         if (apiKey !== "" && apiKey !== "********") tp.apiKey = apiKey;
         if (apiSecret !== "" && apiSecret !== "********") tp.apiSecret = apiSecret;
+        tp.fromNumber = provider === "Nalo" ? fromNumber : textingProvider?.fromNumber;
         tp.enabled = true;
         await ApiHelper.post("/texting/providers", [tp], "MessagingApi");
       }
@@ -97,11 +112,13 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
       setProvider("");
       setApiKey("");
       setApiSecret("");
+      setFromNumber("");
     } else {
       setTextingProvider(providers[0]);
       setProvider(providers[0].provider || "");
       setApiKey(providers[0].apiKey || "");
       setApiSecret(providers[0].apiSecret || "");
+      setFromNumber(providers[0].fromNumber || "");
     }
   };
 
@@ -122,6 +139,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
               {MINISTRYSTUFF_ENABLED && <MenuItem value="MinistryStuff">{Locale.label("settings.textingSettingsEdit.ministryStuff")}</MenuItem>}
               <MenuItem value="Clearstream">{Locale.label("settings.textingSettingsEdit.clearstream")}</MenuItem>
               <MenuItem value="TextInChurch">{Locale.label("settings.textingSettingsEdit.textInChurch")}</MenuItem>
+              <MenuItem value="Nalo">{Locale.label("settings.textingSettingsEdit.nalo")}</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -146,6 +164,13 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" color="textSecondary" component="div">
               {Locale.label("settings.textingSettingsEdit.textInChurchHelper")} <a href="https://textinchurch.com/support" target="_blank" rel="noopener noreferrer">{Locale.label("settings.textingSettingsEdit.textInChurchHelperLink")}</a> {Locale.label("settings.textingSettingsEdit.textInChurchHelperSuffix")}
+            </Typography>
+          </Grid>
+        )}
+        {provider === "Nalo" && (
+          <Grid size={{ xs: 12 }}>
+            <Typography variant="body2" color="textSecondary" component="div">
+              {Locale.label("settings.textingSettingsEdit.naloHelper")} <a href="https://www.nalosolutions.com" target="_blank" rel="noopener noreferrer">{Locale.label("settings.textingSettingsEdit.naloHelperLink")}</a>
             </Typography>
           </Grid>
         )}

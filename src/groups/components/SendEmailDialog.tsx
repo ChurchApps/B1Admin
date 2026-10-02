@@ -67,8 +67,11 @@ interface SendStatus {
 }
 
 interface Props {
-  groupId: string;
-  groupName: string;
+  groupId?: string;
+  groupName?: string;
+  personId?: string;
+  personName?: string;
+  email?: string;
   onClose: () => void;
 }
 
@@ -83,12 +86,15 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [sendStatus, setSendStatus] = React.useState<SendStatus | null>(null);
   const [requesting, setRequesting] = React.useState(false);
 
+  const isGroupMode = !!props.groupId;
+
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
     previewUrl: props.groupId ? "/emailTemplates/preview/" + props.groupId : null,
     sendUrl: "/emailTemplates/send",
     buildPayload: () => {
       if (!subject.trim() || !htmlContent.trim()) return null;
-      return { groupId: props.groupId, subject, htmlContent };
+      if (isGroupMode) return { groupId: props.groupId, subject, htmlContent };
+      return { personIds: [props.personId], subject, htmlContent };
     },
     fallbackError: Locale.label("groups.sendEmailDialog.fallbackError"),
     buildError: (err: any) => {
@@ -159,7 +165,21 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     }
   };
 
+  const renderOpenMailApp = () => (
+    <Button size="small" onClick={() => (window.location.href = "mailto:" + props.email)} data-testid="open-mail-app">
+      {Locale.label("groups.sendEmailDialog.openMailApp")}
+    </Button>
+  );
+
   const renderPreview = () => {
+    if (!isGroupMode) {
+      return (
+        <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+          <Typography variant="body2" color="textSecondary">{Locale.label("groups.sendEmailDialog.sendingTo").replace("{email}", props.email || "")}</Typography>
+          {renderOpenMailApp()}
+        </Box>
+      );
+    }
     if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.loadingRecipients")}</Typography>;
     if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.sendDefault")}</Typography>;
 
@@ -215,6 +235,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
           </Box>
         </DialogContent>
         <DialogActions>
+          {!isGroupMode && renderOpenMailApp()}
           <Button onClick={props.onClose}>{Locale.label("common.close")}</Button>
           {!sendStatus.requested && (
             <Button variant="contained" onClick={handleRequestReview} disabled={requesting} data-testid="request-email-review">
@@ -232,7 +253,9 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     <SendDialogShell
       onClose={props.onClose}
       maxWidth="md"
-      title={Locale.label("groups.sendEmailDialog.emailGroupTitle").replace("{groupName}", props.groupName)}
+      title={isGroupMode
+        ? Locale.label("groups.sendEmailDialog.emailGroupTitle").replace("{groupName}", props.groupName || "")
+        : Locale.label("groups.sendEmailDialog.emailPersonTitle").replace("{personName}", props.personName || "")}
       isComplete={!!result}
       resultContent={renderResult()}
       sending={sending}

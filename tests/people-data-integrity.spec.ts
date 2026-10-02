@@ -92,6 +92,34 @@ test("merge aborts without deleting when a lookup fails, then merges without dup
   expect(loserGroups).toHaveLength(0);
 });
 
+test("merge moves the merged person's form submissions to the kept person", async ({ page }) => {
+  test.slow();
+  const winner = await createPerson("Formwin", `Integrity${suffix}`);
+  const loser = await createPerson("Formlose", `Integrity${suffix}`);
+  const forms: { id: string; contentType: string }[] = await api("get", "/membership/forms");
+  const form = forms.find((f) => f.contentType === "person");
+  expect(form).toBeTruthy();
+  const [submission] = await api("post", "/membership/formsubmissions", [{ formId: form!.id, contentType: "person", contentId: loser.id, submittedBy: loser.id, answers: [] }]);
+  expect(submission?.id).toBeTruthy();
+
+  await openPerson(page, winner.id);
+  await personDetailsEditButton(page).first().click();
+  await page.getByTestId("merge-person-button").click();
+  await page.locator('[name="personAddText"]').fill(`Formlose Integrity${suffix}`);
+  await page.locator("#mergeBox").getByRole("button", { name: "Search" }).click();
+  const loserRow = page.locator("#searchResults tr").filter({ hasText: "Formlose" }).first();
+  await expect(loserRow).toBeVisible({ timeout: 20000 });
+  await loserRow.locator('[data-testid="select-person-button"]').click();
+  const nav = page.waitForURL(/\/people(\?|$)/, { timeout: 30000 });
+  await page.locator('[data-cy="confirm-merge"]').click();
+  await nav;
+
+  const winnerSubmissions: { id: string }[] = await api("get", `/membership/formsubmissions?personId=${winner.id}`);
+  expect(winnerSubmissions.map((s) => s.id)).toContain(submission.id);
+  const loserSubmissions = await api("get", `/membership/formsubmissions?personId=${loser.id}`);
+  expect(loserSubmissions).toHaveLength(0);
+});
+
 test("household address update keeps the person's other edits", async ({ page }) => {
   const head = await createPerson("Housea", `Integrity${suffix}`, { contactInfo: { address1: "1 Old St", city: "Oldtown", state: "TX", zip: "75001" } });
   const spouse = await createPerson("Houseb", `Integrity${suffix}`, { contactInfo: { address1: "1 Old St", city: "Oldtown", state: "TX", zip: "75001" } });

@@ -514,4 +514,33 @@ test.describe.serial("Serving Management - Workflows", () => {
     await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
     await cleanup.dispose();
   });
+
+  test("configure a Send Text action from the step editor", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, []);
+    await ctx.dispose();
+
+    await openBoardById(page, wf.id);
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    await page.locator('[data-testid="add-action-button"]').click();
+    await page.locator('[data-testid="action-type-0"]').click();
+    await page.getByRole("option", { name: "Send Text" }).click();
+    const message = page.locator('[data-testid="action-text-message-0"] textarea').first();
+    await message.fill("Hi {{firstName}}, welcome to {{churchName}}!");
+    await expect(page.getByText("44/1600")).toBeVisible();
+    const saved = page.waitForResponse((r) => r.url().includes("/workflowStepActions") && r.request().method() === "POST");
+    await page.locator('[data-testid="action-save-0"]').click();
+    expect((await saved).status()).toBe(200);
+
+    await openBoardById(page, wf.id);
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    await expect(page.locator('[data-testid="action-type-0"]')).toContainText("Send Text", { timeout: 10000 });
+    await expect(page.locator('[data-testid="action-text-message-0"] textarea').first()).toHaveValue("Hi {{firstName}}, welcome to {{churchName}}!");
+
+    const cleanup = await request.newContext();
+    const auth2 = await apiAuth(cleanup);
+    await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
+    await cleanup.dispose();
+  });
 });

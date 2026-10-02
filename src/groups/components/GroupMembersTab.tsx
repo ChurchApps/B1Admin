@@ -23,7 +23,7 @@ export const GroupMembersTab = (props: Props) => {
       <GroupMembers group={props.group} addedPerson={addedPerson} addedCallback={handleAddedCallback} />
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <AddBar data-testid="group-members-add" sx={{ mt: 1, "& #personAddBox": { border: 0, boxShadow: "none", bgcolor: "transparent" } }}>
-          <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
+          <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} onCreate={addPerson} showCreatePersonOnNotFound />
         </AddBar>
       )}
     </>

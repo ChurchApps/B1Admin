@@ -3,6 +3,7 @@ import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpe
 import { ApiHelper, DateHelper, Locale, Permissions, PersonAvatar, PersonHelper, UserHelper } from "@churchapps/apphelper";
 import { Box, Button, ButtonBase, Link, Stack, Typography } from "@mui/material";
 import { ChatBubbleOutline as TextIcon, MailOutline as MailIcon, WarningAmber as WarningIcon } from "@mui/icons-material";
+import { SendEmailDialog } from "../../groups/components/SendEmailDialog";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
 import { formatFieldValue } from "../../helpers/PersonFieldHelper";
@@ -35,12 +36,14 @@ export const PersonIdentity: React.FC<Props> = (props) => {
   const [customFields, setCustomFields] = React.useState<PersonFieldInterface[]>([]);
   const [customValues, setCustomValues] = React.useState<Record<string, string>>({});
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
+  const [showEmailDialog, setShowEmailDialog] = React.useState(false);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showWorkflowDialog, setShowWorkflowDialog] = React.useState(false);
   const [exporting, setExporting] = React.useState(false);
   const campuses = useCampuses();
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
+  const canEmail = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
   const formPermission = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit), []);
 
@@ -181,7 +184,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
         <RecordActions
           buttons={<>
             {canEdit && <Button variant="contained" onClick={props.onEdit} data-testid="edit-person-button">{Locale.label("common.edit")}</Button>}
-            {contact.email && <Button variant="outlined" href={"mailto:" + contact.email} startIcon={<MailIcon />} aria-label={Locale.label("people.personBanner.emailPerson")}>{Locale.label("people.personRecord.email", "Email")}</Button>}
+            {contact.email && <Button variant="outlined" {...(canEmail ? { onClick: () => setShowEmailDialog(true) } : { href: "mailto:" + contact.email })} startIcon={<MailIcon />} data-testid="email-person-button" aria-label={Locale.label("people.personBanner.emailPerson")}>{Locale.label("people.personRecord.email", "Email")}</Button>}
             {canSendText && <Button variant="outlined" onClick={() => setShowTextDialog(true)} startIcon={<TextIcon />} aria-label={Locale.label("people.personBanner.sendTextMessage")}>{Locale.label("people.personRecord.text", "Text")}</Button>}
           </>}>
           {canEdit && <TextAction small onClick={() => setShowWorkflowDialog(true)} data-testid="add-to-workflow-button">{Locale.label("people.personRecord.workflow", "Workflow")}</TextAction>}
@@ -201,6 +204,9 @@ export const PersonIdentity: React.FC<Props> = (props) => {
         </Box>
       )}
 
+      {showEmailDialog && contact.email && (
+        <SendEmailDialog personId={person.id} personName={person.name?.display} email={contact.email} onClose={() => setShowEmailDialog(false)} />
+      )}
       {showTextDialog && contact.mobilePhone && (
         <SendTextDialog personId={person.id} personName={person.name?.display} phoneNumber={contact.mobilePhone} onClose={() => setShowTextDialog(false)} />
       )}
