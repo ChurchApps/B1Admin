@@ -24,7 +24,7 @@ test.describe("Sunday home", () => {
     await expect(page.getByTestId("command-palette-section")).toHaveText("Dashboard", { timeout: 10000 });
 
     await openPrimaryNav(page);
-    await expect(page.getByTestId("command-palette").getByRole("button", { name: "Dashboard", exact: true })).toBeVisible();
+    await expect(page.getByTestId("command-palette").getByRole("button", { name: "Dashboard", exact: true }).first()).toBeVisible();
     await page.keyboard.press("Escape");
 
     // The bulletin eyebrow stays a calendar line; it must not collapse to the nav label.
@@ -37,7 +37,10 @@ test.describe("Sunday home", () => {
   });
 
   test("My Work from Sunday opens tasks", async ({ page }) => {
-    const myWork = page.locator('[id="secondaryMenu"]').getByText("My Work", { exact: true }).first();
+    await openPrimaryNav(page);
+    const palette = page.getByTestId("command-palette");
+    await palette.getByRole("textbox").fill("My Work");
+    const myWork = palette.locator(".om-hit", { hasText: "My Work" }).first();
     await expect(myWork).toBeVisible({ timeout: 10000 });
     await myWork.click();
     await expect(page).toHaveURL(/\/serving\/tasks/, { timeout: 10000 });
