@@ -148,6 +148,13 @@ test.describe("Serving - Print Plan without lesson content", () => {
     await expect(page).toHaveURL(new RegExp(`/serving/plans/${planId}$`));
   });
 
+  test("service order header shows the church name and the plan name", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Grace Community Church", { exact: true })).toBeVisible();
+    await expect(page.getByText("Print Worship Order Repro", { exact: true })).toBeVisible();
+  });
+
   test("auto-prints with ?autoprint=1", async ({ page }) => {
     await page.goto(`/serving/plans/print/${planId}?autoprint=1`);
     await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });
