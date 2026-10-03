@@ -76,14 +76,31 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
+  const cleanDomainName = (domain: string) => {
+    const cleanDomain = domain.trim().toLowerCase();
+    return cleanDomain.endsWith("/") ? cleanDomain.slice(0, -1) : cleanDomain;
+  };
+
   const save = async () => {
+    // A domain typed into the box but not yet added with + is saved too.
+    let toSave = domains;
+    if (addDomainName.trim()) {
+      const validationError = validateDomainName(addDomainName);
+      if (validationError) {
+        setError(validationError);
+        props.onSaveComplete?.(false);
+        return;
+      }
+      toSave = [...domains, { domainName: cleanDomainName(addDomainName) }];
+    }
     try {
       for (const d of originalDomains) {
-        if (!ArrayHelper.getOne(domains, "id", d.id)) await ApiHelper.delete("/domains/" + d.id, "MembershipApi");
+        if (!ArrayHelper.getOne(toSave, "id", d.id)) await ApiHelper.delete("/domains/" + d.id, "MembershipApi");
       }
       // One upsert for the whole list: rows without id are creates, rows with id are
       // updates carrying their (possibly changed) siteId.
-      if (domains.length > 0) await ApiHelper.post("/domains", domains, "MembershipApi");
+      if (toSave.length > 0) await ApiHelper.post("/domains", toSave, "MembershipApi");
+      setAddDomainName("");
       setError("");
       props.onSaveComplete?.(true);
     } catch (e: any) {
@@ -109,7 +126,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const handleAdd = (e: React.MouseEvent) => {
+  const handleAdd = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const validationError = validateDomainName(addDomainName);
     if (validationError) {
@@ -117,14 +134,8 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
       return;
     }
 
-    // Clean the domain name before adding
-    let cleanDomain = addDomainName.trim().toLowerCase();
-    if (cleanDomain.endsWith("/")) {
-      cleanDomain = cleanDomain.slice(0, -1);
-    }
-
     const doms: DomainWithSite[] = [...domains];
-    doms.push({ domainName: cleanDomain });
+    doms.push({ domainName: cleanDomainName(addDomainName) });
     setDomains(doms);
     setAddDomainName("");
     setError("");
@@ -216,6 +227,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
                 size="small"
                 value={addDomainName}
                 onChange={handleChange}
+                onKeyDown={(e) => { if (e.key === "Enter") handleAdd(e); }}
                 placeholder={Locale.label("settings.domain.domainPlaceholder")}
                 error={!!error}
                 sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1.5 } }}
