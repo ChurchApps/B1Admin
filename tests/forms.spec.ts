@@ -87,6 +87,8 @@ test.describe("Printing forms", () => {
     const dialog = page.locator('[data-testid="form-print-dialog"]');
     await expect(dialog).toBeVisible({ timeout: 10000 });
     await expect(dialog.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible({ timeout: 10000 });
+    // The paper copy names the church it came from.
+    await expect(dialog.locator('[data-testid="print-church-name"]')).toHaveText("Grace Community Church");
     // Required questions carry a marker; the legend explains it.
     await expect(dialog.getByText("First Name *", { exact: true })).toBeVisible();
     await expect(dialog.getByText("* Required", { exact: true })).toBeVisible();
@@ -126,10 +128,24 @@ test.describe("Printing forms", () => {
     await expect(printHeader).toBeVisible({ timeout: 10000 });
     await expect(pane.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible();
     await expect(pane.getByText(/Submission Date: /)).toBeVisible();
+    await expect(pane.locator('[data-testid="print-church-name"]')).toHaveText("Grace Community Church");
     await expect(printBtn).toBeHidden();
     await page.screenshot({ path: ".pr-screenshots/submission-after.png", fullPage: true });
     await page.emulateMedia({ media: "screen" });
     await expect(printBtn).toBeVisible();
+  });
+
+  test("the printed submissions summary is headed with the church name", async ({ page }) => {
+    await page.goto("/forms/FRM00000001");
+    await page.getByText("Form Submissions", { exact: true }).first().click();
+    await expect(page.getByText("Form Submission Results")).toBeVisible({ timeout: 15000 });
+
+    const churchLine = page.locator('.form-submission-summary [data-testid="print-church-name"]');
+    await expect(churchLine).toHaveText("Grace Community Church");
+    await expect(churchLine).toBeHidden();
+    await page.emulateMedia({ media: "print" });
+    await expect(churchLine).toBeVisible();
+    await page.emulateMedia({ media: "screen" });
   });
 });
 

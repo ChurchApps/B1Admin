@@ -1,4 +1,4 @@
-import React, { memo, useRef } from "react";
+import React, { memo, useContext, useRef } from "react";
 import { Question, PrintStyles } from "./";
 import { Grid, Box, Typography, Stack } from "@mui/material";
 import { Edit as EditIcon, Print as PrintIcon } from "@mui/icons-material";
@@ -6,6 +6,7 @@ import { useReactToPrint } from "react-to-print";
 import { type FormSubmissionInterface, type AnswerInterface } from "@churchapps/helpers";
 import { Permissions, ApiHelper, UserHelper, UniqueIdHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import { AppIconButton } from "./ui/AppIconButton";
+import UserContext from "../UserContext";
 
 interface Props {
   formSubmissionId: string;
@@ -17,6 +18,7 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
   const [loading, setLoading] = React.useState(true);
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
   const printRef = useRef<HTMLDivElement>(null);
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: formSubmission?.form?.name || Locale.label("forms.formPrint.title") });
 
   const loadData = React.useCallback(async () => {
@@ -86,6 +88,7 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
       <Box ref={printRef} sx={{ pr: formPermission ? 9 : 5, "@media print": { pr: 0 } }}>
         <PrintStyles />
         <Box className="print-only" sx={{ mb: 2 }}>
+          {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
           {formSubmission.form?.name && <Typography variant="h5" sx={{ fontWeight: 600 }}>{formSubmission.form.name}</Typography>}
           {formSubmission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(formSubmission.submissionDate))}</Typography>}
         </Box>

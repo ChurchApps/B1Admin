@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography } from "@mui/material";
 import { Print as PrintIcon } from "@mui/icons-material";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
@@ -6,6 +6,7 @@ import { Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { useReactToPrint } from "react-to-print";
 import { PrintStyles } from "../../components";
+import UserContext from "../../UserContext";
 
 interface Props {
   formId: string;
@@ -57,11 +58,12 @@ const BlankAnswer: React.FC<{ question: QuestionInterface }> = ({ question }) =>
 };
 
 // Paper copy of a form: every question with an empty space to write the answer.
-export const BlankForm: React.FC<{ form: PrintableFormInterface; questions: QuestionInterface[] }> = ({ form, questions }) => {
+export const BlankForm: React.FC<{ form: PrintableFormInterface; questions: QuestionInterface[]; churchName?: string }> = ({ form, questions, churchName }) => {
   const printable = questions.filter((q) => !SKIPPED_FIELD_TYPES.includes(q.fieldType || ""));
   const hasRequired = printable.some((q) => q.required);
   return (
     <Box className="blank-form" sx={{ color: "common.black", "& *": { color: "common.black" } }}>
+      {churchName && <Typography variant="subtitle2" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
       <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>{form.name}</Typography>
       {form.description && <Typography variant="body2" sx={{ mb: 1, whiteSpace: "pre-wrap" }}>{form.description}</Typography>}
       {hasRequired && <Typography variant="caption" sx={{ display: "block", mb: 1 }}>{Locale.label("forms.formPrint.requiredNote")}</Typography>}
@@ -91,6 +93,7 @@ export const BlankForm: React.FC<{ form: PrintableFormInterface; questions: Ques
 // react-to-print pattern as FormSubmissions.tsx.
 export const FormPrintDialog: React.FC<Props> = (props) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const form = useQuery<PrintableFormInterface>({ queryKey: ["/forms/" + props.formId, "MembershipApi"] });
   const questions = useQuery<QuestionInterface[]>({ queryKey: ["/questions?formId=" + props.formId, "MembershipApi"] });
   const handlePrint = useReactToPrint({ contentRef, documentTitle: form.data?.name || Locale.label("forms.formPrint.title") });
@@ -105,7 +108,7 @@ export const FormPrintDialog: React.FC<Props> = (props) => {
         ) : (
           <Box ref={contentRef} sx={{ p: 2, backgroundColor: "common.white" }}>
             <PrintStyles />
-            <BlankForm form={form.data} questions={questions.data || []} />
+            <BlankForm form={form.data} questions={questions.data || []} churchName={churchName} />
           </Box>
         )}
       </DialogContent>
