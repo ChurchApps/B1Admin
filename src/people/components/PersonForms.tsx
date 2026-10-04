@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Box, Card, Chip, Grid, List, ListItemButton, Stack, Typography } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
@@ -10,6 +10,7 @@ import { ApiHelper, DateHelper, DisplayBox, Loading, Locale, SmallButton } from 
 import { useReactToPrint } from "react-to-print";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
 import { Question, PrintStyles, SubmissionPersonDialog } from "../../components";
+import UserContext from "../../UserContext";
 
 export interface PersonFormOption {
   id: string;
@@ -47,6 +48,7 @@ export const PersonForms: React.FC<Props> = (props) => {
   const [selectedSubmissionIds, setSelectedSubmissionIds] = useState<Record<string, string>>({});
   const contentId = person?.id;
   const printRef = useRef<HTMLDivElement>(null);
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: `${forms.find((f) => f.id === selectedFormId)?.name || "Form"} - ${person?.name?.display || ""}` });
 
   const personFormSubmissions = useMemo(
@@ -212,6 +214,7 @@ export const PersonForms: React.FC<Props> = (props) => {
           {renderSubmissionPicker(form, submissions, submission)}
           {submission && (
             <Box className="print-only" sx={{ mb: 2 }}>
+              {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
               <Typography variant="h5" sx={{ fontWeight: 600 }}>{headerText}</Typography>
               <Typography variant="body2">{Locale.label("forms.formSubmissions.subFor")}: {person?.name?.display}</Typography>
               {submission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(submission.submissionDate))}</Typography>}

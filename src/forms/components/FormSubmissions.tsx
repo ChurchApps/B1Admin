@@ -1,4 +1,4 @@
-import React, { useRef, useState, memo, useCallback, useMemo } from "react";
+import React, { useContext, useRef, useState, memo, useCallback, useMemo } from "react";
 import {
   type AnswerInterface,
   type FormSubmissionInterface,
@@ -15,6 +15,8 @@ import {
 import { CountChip, ExportButton, hoverRowSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { SubmissionPersonDialog } from "../../components/SubmissionPersonDialog";
+import { PrintStyles } from "../../components";
+import UserContext from "../../UserContext";
 import { SwapHoriz as SwapHorizIcon } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
@@ -31,6 +33,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const [summary, setSummary] = useState<any>([]);
   const [summaryCsv, setSummaryCsv] = useState<any>([]);
   const [changePersonId, setChangePersonId] = useState("");
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const yesNoMap = useMemo(() => ({ True: Locale.label("common.yes"), False: Locale.label("common.no") }), []);
   const yesNoDefault = useMemo(
     () => [
@@ -313,6 +316,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
               .form-submissions-scroll table { min-width: 0 !important; }
             }
           `}</style>
+          <PrintStyles />
+          {churchName && <Box className="print-only" data-testid="print-church-name" sx={{ fontWeight: 600, mb: 1 }}>{churchName}</Box>}
           <DisplayBox headerText={Locale.label("forms.formSubmissions.subSum")} headerIcon="group" editContent={editLinks}>
             <Grid container spacing={3}>
               {summaryContent}
