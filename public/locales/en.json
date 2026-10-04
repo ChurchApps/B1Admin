@@ -1453,6 +1453,7 @@
       "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Loading recipients...",
+      "mergeFieldHint": "Click to insert a placeholder. It is replaced with each recipient's details when the text is sent.",
       "messageLabel": "Message",
       "noPhoneNotice": "{count} members have no phone number on file and will be skipped.",
       "noPhoneNoticeSingular": "{count} member has no phone number on file and will be skipped.",
