@@ -290,6 +290,27 @@ test.describe("Attendance Management", () => {
     });
   });
 
+  test.describe("Group Attendance check-in details", () => {
+    test("shows each person's check-in time and membership status", async ({ page }) => {
+      await page.locator('button[role="tab"]').getByText("Group Attendance").click();
+      await page.locator('[id="mui-component-select-campusId"]').click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill("2024-03-09");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
+      await page.locator("button").getByText("Run Report").click();
+
+      const table = page.locator('[id="reportsBox"] table');
+      await expect(table.locator("th").getByText("Checked In", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(table.locator("th").getByText("Membership Status", { exact: true })).toBeVisible();
+      // Seed: John Smith (Member) checked in at 8:45 AM for the 9:00 AM service on 3/9/2024.
+      const johnRow = table.locator("tr").filter({ has: page.locator("td", { hasText: /^John Smith$/ }) }).first();
+      await expect(johnRow.locator("td").nth(1)).toHaveText(/^8:45\sAM$/);
+      await expect(johnRow.locator("td").nth(2)).toHaveText("Member");
+    });
+  });
+
   test.describe("Group Attendance order", () => {
     const WEEK = "2026-09-27";
 
