@@ -1557,6 +1557,11 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Show sign-in prompt on the app home screen",
+      "signInPromptHelp": "Visitors who are not signed in see this on the app home screen. Sign-in is always available in the app menu.",
+      "signInPromptPlaceholder": "Sign in to see your groups, giving, and more.",
+      "signInPromptText": "Sign-in prompt text",
+      "signInPromptTitle": "Home screen sign-in prompt",
       "subtitle": "Member directory, visibility, and messaging for the B1.church app",
       "title": "Portal settings"
     },
