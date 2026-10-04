@@ -19,6 +19,12 @@ export class ReportHelper {
           result = isNaN(dt.getTime()) ? "" : DateHelper.prettyDate(dt);
         }
         break;
+      case "time":
+        if (result) {
+          const dt = new Date(result);
+          result = isNaN(dt.getTime()) ? "" : DateHelper.prettyTime(dt);
+        }
+        break;
       case "number":
         try {
           const num = parseFloat(result);
