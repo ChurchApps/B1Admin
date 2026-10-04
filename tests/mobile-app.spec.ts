@@ -338,3 +338,55 @@ test.describe("B1 Mobile Save waits for settings load", () => {
     await expect(save).toBeEnabled();
   });
 });
+
+// ChurchAppsSupport#1189: a church can hide the app's home-screen sign-in prompt or change its
+// wording. Both save as public Membership settings so the B1.church app can read them.
+test.describe("B1 Mobile home screen sign-in prompt", () => {
+  test.describe.configure({ mode: "serial" });
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+
+  const publicSettings = async () => (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    auth = { headers: { Authorization: "Bearer " + await apiLogin(ctx) } };
+  });
+
+  test.afterAll(async () => {
+    // Put the prompt back to the default so B1App dashboard specs see it.
+    const all = (await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[];
+    const rows = all.filter(s => s.keyName === "mobileHideSignInPrompt" || s.keyName === "mobileSignInPromptText")
+      .map(s => ({ ...s, value: s.keyName === "mobileHideSignInPrompt" ? "false" : "" }));
+    if (rows.length) await ctx.post(`${API}/membership/settings`, { ...auth, data: rows });
+    await ctx.dispose();
+  });
+
+  test("custom prompt text saves as a public setting", async ({ page }) => {
+    await page.goto("/mobile/b1-mobile");
+    const toggle = page.getByLabel("Show sign-in prompt on the app home screen");
+    await expect(toggle).toBeChecked({ timeout: 15000 });
+    const text = page.getByLabel("Sign-in prompt text");
+    await expect(text).toHaveAttribute("placeholder", "Sign in to see your groups, giving, and more.");
+    await text.fill("Sign in to get conference alerts");
+    await saveSettings(page);
+
+    const pub = await publicSettings();
+    expect(pub.mobileSignInPromptText).toBe("Sign in to get conference alerts");
+    expect(pub.mobileHideSignInPrompt).toBe("false");
+  });
+
+  test("turning the prompt off saves, disables the text field, and survives a reload", async ({ page }) => {
+    await page.goto("/mobile/b1-mobile");
+    const toggle = page.getByLabel("Show sign-in prompt on the app home screen");
+    await expect(toggle).toBeChecked({ timeout: 15000 });
+    await toggle.uncheck();
+    await expect(page.getByLabel("Sign-in prompt text")).toBeDisabled();
+    await saveSettings(page);
+
+    expect((await publicSettings()).mobileHideSignInPrompt).toBe("true");
+    await page.reload();
+    await expect(page.getByLabel("Show sign-in prompt on the app home screen")).not.toBeChecked({ timeout: 15000 });
+    await expect(page.getByLabel("Sign-in prompt text")).toHaveValue("Sign in to get conference alerts");
+  });
+});

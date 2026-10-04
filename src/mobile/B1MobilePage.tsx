@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, Grid, Icon, InputLabel, MenuItem, Select, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
 import type { GenericSettingInterface, GroupInterface, VisibilityPreferenceInterface } from "@churchapps/helpers";
 import { FormCard } from "../components/ui/FormCard";
 import { useRequirePermission } from "../hooks";
+import { clearSiteCache } from "../site/siteCache";
 
 export const B1MobilePage: React.FC = () => {
   const [groups, setGroups] = React.useState<GroupInterface[] | null>(null);
@@ -18,6 +19,10 @@ export const B1MobilePage: React.FC = () => {
   const [pref, setPref] = React.useState<VisibilityPreferenceInterface>({ address: "", phoneNumber: "", email: "" } as VisibilityPreferenceInterface);
   const [messagingMinimumAge, setMessagingMinimumAge] = React.useState("18");
   const [msgAgeSetting, setMsgAgeSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [hideSignInPrompt, setHideSignInPrompt] = React.useState(false);
+  const [hideSignInSetting, setHideSignInSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [signInPromptText, setSignInPromptText] = React.useState("");
+  const [signInPromptTextSetting, setSignInPromptTextSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
 
@@ -54,6 +59,11 @@ export const B1MobilePage: React.FC = () => {
 
     const msgAge = allSettings.find(s => s.keyName === "messagingMinimumAge");
     if (msgAge) { setMsgAgeSetting(msgAge); setMessagingMinimumAge(msgAge.value || "18"); }
+
+    const hideSignIn = allSettings.find(s => s.keyName === "mobileHideSignInPrompt");
+    if (hideSignIn) { setHideSignInSetting(hideSignIn); setHideSignInPrompt(hideSignIn.value === "true"); }
+    const promptText = allSettings.find(s => s.keyName === "mobileSignInPromptText");
+    if (promptText) { setSignInPromptTextSetting(promptText); setSignInPromptText(promptText.value || ""); }
     setLoaded(true);
   }, [churchId]);
 
@@ -77,8 +87,14 @@ export const B1MobilePage: React.FC = () => {
       const phoneSett = toSave(phoneSetting, "phoneVisibility", pref.phoneNumber);
       const emailSett = toSave(emailSetting, "emailVisibility", pref.email);
       const msgAge = toSave(msgAgeSetting, "messagingMinimumAge", messagingMinimumAge);
+      const hideSignIn = toSave(hideSignInSetting, "mobileHideSignInPrompt", hideSignInPrompt ? "true" : "false");
+      const promptText = toSave(signInPromptTextSetting, "mobileSignInPromptText", signInPromptText.trim());
 
-      await ApiHelper.post("/settings", [approval, visibility, addrSett, phoneSett, emailSett, msgAge], "MembershipApi");
+      await ApiHelper.post("/settings", [
+        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText
+      ], "MembershipApi");
+      // The app caches these settings, so refresh it for the home-screen prompt to update right away.
+      clearSiteCache();
       await loadData();
     } finally {
       setSaving(false);
@@ -195,6 +211,31 @@ export const B1MobilePage: React.FC = () => {
                   <MenuItem value="18">{Locale.label("settings.messagingMinimumAge.age18")}</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+          </Grid>
+          <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("mobile.b1MobilePage.signInPromptTitle")}</Typography>
+            <Tooltip title={Locale.label("mobile.b1MobilePage.signInPromptHelp")} arrow>
+              <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+            </Tooltip>
+          </Stack>
+          <FormControlLabel
+            control={<Switch checked={!hideSignInPrompt} onChange={(e) => setHideSignInPrompt(!e.target.checked)} />}
+            label={Locale.label("mobile.b1MobilePage.showSignInPrompt")}
+            sx={{ mb: 2 }}
+          />
+          <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                fullWidth
+                size="small"
+                label={Locale.label("mobile.b1MobilePage.signInPromptText")}
+                placeholder={Locale.label("mobile.b1MobilePage.signInPromptPlaceholder")}
+                value={signInPromptText}
+                onChange={(e) => setSignInPromptText(e.target.value)}
+                disabled={hideSignInPrompt}
+                slotProps={{ inputLabel: { shrink: true }, htmlInput: { maxLength: 150 } }}
+              />
             </Grid>
           </Grid>
         </FormCard>
