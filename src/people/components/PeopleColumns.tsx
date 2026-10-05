@@ -110,7 +110,7 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
             ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: any) => setOptionalColumns((prevState) => [...prevState, ...q]));
           });
         }
-      } else setOptionalColumns([]);
+      }
     });
     ApiHelper.get("/personfields", "MembershipApi")
       .then((fields: any) => setOptionalColumns((prevState) => [...prevState, ...(fields || []).map((f: any) => ({ id: "personField_" + f.id, title: f.name }))]))
