@@ -448,7 +448,7 @@ test.describe.serial("Group Management", () => {
       await expect(page.locator('h1.roster-title + [data-testid="roster-date"]')).toContainText("December 7, 2025");
       // The print route has no app chrome; go back so later tests can use the nav.
       await page.goBack();
-      await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
     });
 
     test("should cancel adding group", async () => {

@@ -52,10 +52,9 @@ test.describe("Primary Navigation", () => {
     await expect(page).toHaveURL(/\/settings/);
   });
 
-  test("hamburger menu toggles", async ({ page }) => {
+  test("main menu opens", async ({ page }) => {
     await openPrimaryNav(page);
-    const anyNavItem = page.locator('[data-testid^="nav-item-"]').first();
-    await expect(anyNavItem).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("command-palette").locator(".om-hit").first()).toBeVisible({ timeout: 10000 });
   });
 });
 

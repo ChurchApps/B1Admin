@@ -1,3 +1,4 @@
+import { siblingNav } from "./helpers/navigation";
 import { siteTest as test, expect } from "./helpers/test-fixtures";
 
 // ZERUBBABEL is the marker name for blog authoring tests. Any "Zerubbabel"
@@ -9,7 +10,7 @@ test.describe.serial("Blog Authoring", () => {
 
   test("create post → row appears → delete → gone", async ({ page }) => {
     // Enter the Blog section from the website secondary bar.
-    await page.locator('[id="secondaryMenu"]').getByText("Blog", { exact: true }).first().click();
+    await (await siblingNav(page)).getByText("Blog", { exact: true }).first().click();
     await page.waitForURL(/\/site\/blog/, { timeout: 15000 });
 
     // Add a post.

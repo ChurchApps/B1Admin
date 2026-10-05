@@ -3,7 +3,7 @@ import { type Page, type APIRequestContext, request } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
-import { navigateToDonations } from "./helpers/navigation";
+import { navigateToDonations, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
 
@@ -23,13 +23,13 @@ function fundRowEditButton(page: Page, name: string) {
 }
 
 async function openFundsTab(page: Page) {
-  const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds");
+  const fundsBtn = (await siblingNav(page)).getByText("Funds");
   await fundsBtn.click();
   await expect(page).toHaveURL(/\/donations\/funds/);
 }
 
 async function openBatchesTab(page: Page) {
-  const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches");
+  const batchesBtn = (await siblingNav(page)).getByText("Batches");
   await batchesBtn.click();
   await expect(page).toHaveURL(/\/donations\/batches/);
 }
@@ -310,7 +310,7 @@ test.describe("Donations summary and fund detail (read-only)", () => {
   });
 
   test("clicking a fund opens its detail page with date filter and donation history", async ({ page }) => {
-    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds");
+    const fundsBtn = (await siblingNav(page)).getByText("Funds");
     await fundsBtn.click();
     await expect(page).toHaveURL(/\/donations\/funds/);
 
@@ -334,27 +334,27 @@ test.describe("Donations summary and fund detail (read-only)", () => {
 // Edge-case extensions: gaps from .notes/B1Admin-test-coverage-gaps.md §3 (donations).
 test.describe("Donations — navigation and listing extras", () => {
   test("Donations primary page exposes Funds, Batches, Statements, Stripe Import secondary nav", async ({ page }) => {
-    await expect(page.locator('[id="secondaryMenu"]').getByText("Funds").first()).toBeVisible({ timeout: 15000 });
-    await expect(page.locator('[id="secondaryMenu"]').getByText("Batches").first()).toBeVisible();
-    await expect(page.locator('[id="secondaryMenu"]').getByText("Giving Statements").first()).toBeVisible();
-    await expect(page.locator('[id="secondaryMenu"]').getByText("Stripe Import").first()).toBeVisible();
+    await expect((await siblingNav(page)).getByText("Funds").first()).toBeVisible({ timeout: 15000 });
+    await expect((await siblingNav(page)).getByText("Batches").first()).toBeVisible();
+    await expect((await siblingNav(page)).getByText("Giving Statements").first()).toBeVisible();
+    await expect((await siblingNav(page)).getByText("Stripe Import").first()).toBeVisible();
   });
 
   test("Stripe Import secondary nav item navigates to /donations/stripe-import", async ({ page }) => {
-    await page.locator('[id="secondaryMenu"]').getByText("Stripe Import").first().click();
+    await (await siblingNav(page)).getByText("Stripe Import").first().click();
     await page.waitForURL(/\/donations\/stripe-import/, { timeout: 10000 });
     await expect(page).toHaveURL(/\/donations\/stripe-import/);
   });
 
   test("Funds list page shows the seed General Fund", async ({ page }) => {
-    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    const fundsBtn = (await siblingNav(page)).getByText("Funds").first();
     await fundsBtn.click();
     await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
     await expect(page.locator("a").getByText("General Fund", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
   test("Giving Link dialog shows a copyable URL with the fund preselected", async ({ page }) => {
-    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    const fundsBtn = (await siblingNav(page)).getByText("Funds").first();
     await fundsBtn.click();
     await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
 
@@ -372,7 +372,7 @@ test.describe("Donations — navigation and listing extras", () => {
   });
 
   test("Batches list page exposes Add Batch and Stripe import affordances", async ({ page }) => {
-    const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches").first();
+    const batchesBtn = (await siblingNav(page)).getByText("Batches").first();
     await batchesBtn.click();
     await page.waitForURL(/\/donations\/batches/, { timeout: 10000 });
     // Either an "Add" button or "+" icon button on the batches page.
@@ -425,7 +425,7 @@ test.describe("Fund visibility", () => {
   test("unchecking Visible to Donors shows a Hidden chip; re-checking it removes the chip", async ({ page }) => {
     const TEST_HIDDEN_FUND = "Zacchaeus Concealed Fund";
 
-    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    const fundsBtn = (await siblingNav(page)).getByText("Funds").first();
     await fundsBtn.click();
     await expect(page).toHaveURL(/\/donations\/funds/, { timeout: 10000 });
 

@@ -2,7 +2,7 @@ import { type Page } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
-import { navigateToDonations } from "./helpers/navigation";
+import { navigateToDonations, siblingNav } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
@@ -18,13 +18,13 @@ function fundRowEditButton(page: Page, name: string) {
 }
 
 async function openFundsTab(page: Page) {
-  const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds");
+  const fundsBtn = (await siblingNav(page)).getByText("Funds");
   await fundsBtn.click();
   await expect(page).toHaveURL(/\/donations\/funds/);
 }
 
 async function openCampaignsTab(page: Page) {
-  const campaignsBtn = page.locator('[id="secondaryMenu"]').getByText("Campaigns");
+  const campaignsBtn = (await siblingNav(page)).getByText("Campaigns");
   await campaignsBtn.click();
   await expect(page).toHaveURL(/\/donations\/campaigns/);
 }

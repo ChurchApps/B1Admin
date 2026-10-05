@@ -41,7 +41,7 @@ export type NavSection = PrimarySection | SecondarySection;
 
 const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   dashboard: /\/dashboard|\/$/,
-  people: /\/people/,
+  people: /\/people\/?(\?|$)/,
   donations: /\/donations(?!\/)/,
   // Users with plan access land on /serving/plans; others fall back to /serving/tasks.
   serving: /\/serving\/(plans|tasks)/,
@@ -53,7 +53,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
 };
 
 // For each secondary section: the primary parent to open first, the text label in
-// the #secondaryMenu, and the URL pattern to wait for after clicking.
+// the header jump menu, and the URL pattern to wait for after clicking.
 const SECONDARY_ROUTES: Record<
   SecondarySection,
   { parent: PrimarySection; label: string; url: RegExp }
@@ -81,22 +81,70 @@ const SECONDARY_ROUTES: Record<
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 
+// Exact landing pages, so "already here" never matches a sub-page like /settings/email-templates.
+const PRIMARY_LANDING: Record<PrimarySection, RegExp> = {
+  dashboard: /^\/(dashboard)?$/,
+  people: /^\/people$/,
+  donations: /^\/donations$/,
+  serving: /^\/serving\/(plans|tasks)$/,
+  sermons: /^\/sermons$/,
+  website: /^\/site\/pages$/,
+  calendars: /^\/calendars$/,
+  mobile: /^\/mobile(\/navigation)?$/,
+  settings: /^\/settings$/
+};
+
+// The header's search/jump bar is the main menu; its section rows carry the same labels as the old dropdown.
+const PRIMARY_LABELS: Record<PrimarySection, string> = {
+  dashboard: "Dashboard",
+  people: "People",
+  donations: "Donations",
+  serving: "Serving",
+  sermons: "Sermons",
+  website: "Website",
+  calendars: "Calendars",
+  mobile: "Mobile",
+  settings: "Settings"
+};
+
 export async function openPrimaryNav(page: Page) {
-  const menuBtn = page.locator("#primaryNavButton");
+  // A previous step may have left the menu open; its overlay would swallow the click on the bar.
+  if (await page.getByTestId("command-palette").isVisible()) await page.keyboard.press("Escape");
+  const menuBtn = page.getByTestId("command-palette-open");
   await menuBtn.waitFor({ state: "visible", timeout: 15000 });
   await menuBtn.click();
+  await page.getByTestId("command-palette").waitFor({ state: "visible", timeout: 10000 });
 }
 
 async function clickPrimary(page: Page, section: PrimarySection) {
+  // Jumping to the page you're already on doesn't change the URL, so a test could fill a form the page then re-renders; reload for a clean page instead.
+  if (PRIMARY_LANDING[section].test(new URL(page.url()).pathname.replace(/(.)\/$/, "$1"))) {
+    await page.reload();
+    await page.getByTestId("command-palette-open").waitFor({ state: "visible", timeout: 15000 });
+    return;
+  }
   await openPrimaryNav(page);
-  const item = page.locator(`.MuiListItemButton-root[data-testid="nav-item-${section}"]`);
+  const palette = page.getByTestId("command-palette");
+  // Typing makes Enter/click jump to the section's page instead of drilling into its submenu.
+  await palette.getByRole("textbox").fill(PRIMARY_LABELS[section]);
+  const item = palette.getByRole("button", { name: PRIMARY_LABELS[section], exact: true }).first();
   await item.waitFor({ state: "visible", timeout: 10000 });
   await item.click();
+  await palette.waitFor({ state: "hidden", timeout: 10000 });
   await page.waitForURL(PRIMARY_URL_PATTERNS[section], { timeout: 15000 });
 }
 
+// Sibling pages live in the header's jump menu, which opens with the current section expanded; returns its page rows.
+export async function siblingNav(page: Page) {
+  const palette = page.getByTestId("command-palette");
+  if (!(await palette.isVisible())) await page.getByTestId("command-palette-open").click();
+  const rows = palette.locator(".om-child");
+  await rows.first().waitFor({ state: "visible", timeout: 10000 });
+  return rows;
+}
+
 async function clickSecondary(page: Page, label: string, url: RegExp) {
-  const item = page.locator('[id="secondaryMenu"]').getByText(label, { exact: true }).first();
+  const item = (await siblingNav(page)).getByText(label, { exact: true }).first();
   await item.waitFor({ state: "visible", timeout: 10000 });
   await item.click();
   await page.waitForURL(url, { timeout: 15000 });

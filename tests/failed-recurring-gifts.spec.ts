@@ -1,3 +1,4 @@
+import { siblingNav } from "./helpers/navigation";
 import { request as pwRequest, type APIRequestContext } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
@@ -72,7 +73,7 @@ test.describe("Failed recurring gifts", () => {
 
   test("is reachable from the donations menu", async ({ page }) => {
     await page.goto("/donations");
-    await page.locator('[id="secondaryMenu"]').getByText("Failed Gifts").click();
+    await (await siblingNav(page)).getByText("Failed Gifts").click();
     await expect(page).toHaveURL(/\/donations\/failed/);
   });
 });

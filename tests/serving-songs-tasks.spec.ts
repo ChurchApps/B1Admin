@@ -1,12 +1,12 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
-import { navigateToServing } from "./helpers/navigation";
+import { navigateToServing, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
 
 async function openMyTasks(page: Page) {
-  await page.locator('[id="secondaryMenu"] a').getByText("My Work").click();
+  await (await siblingNav(page)).getByText("My Work").click();
   await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
 }
 
@@ -32,7 +32,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should add a song", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -59,7 +59,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should add a blank arrangement (same-song variation, not a PraiseCharts cover)", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -82,7 +82,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should add song key", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -100,7 +100,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should upload audio to a song key and play it inline", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -117,7 +117,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should add link from song key menu", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -140,7 +140,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should edit link from song key menu", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -161,7 +161,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should cancel editing link from song key menu", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -181,7 +181,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should delete link from song key menu", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -201,7 +201,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should edit song key", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -222,7 +222,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should cancel editing song key", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -240,7 +240,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should delete key", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -259,7 +259,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should add external link", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -284,7 +284,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should cancel adding external link", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -304,7 +304,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should add lyrics", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -324,7 +324,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("arrangement edit shows a localized Sequence field and length placeholder", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -343,7 +343,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should cancel editing lyrics", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -361,7 +361,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should delete arrangement", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -379,7 +379,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should search for songs", async () => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
@@ -638,26 +638,26 @@ test.describe("Serving Management - Songs & Tasks", () => {
   // Edge-case extensions: navigation surface from .notes/B1Admin-test-coverage-gaps.md §3.
   test.describe("Songs and Tasks navigation extras", () => {
     test("Songs page exposes Add Song affordance", async ({ page }) => {
-      const songsLink = page.locator('[id="secondaryMenu"]').getByText("Songs").first();
+      const songsLink = (await siblingNav(page)).getByText("Songs").first();
       await songsLink.click();
       await page.waitForURL(/\/serving\/songs/, { timeout: 10000 });
       await expect(page.locator("button").getByText(/Add Song/i).first()).toBeVisible({ timeout: 10000 });
     });
 
     test("Serving subnav exposes My Work and Workflows links", async ({ page }) => {
-      const tasksLink = page.locator('[id="secondaryMenu"]').getByText("My Work").first();
+      const tasksLink = (await siblingNav(page)).getByText("My Work").first();
       await tasksLink.click();
       await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
-      const secondaryMenu = page.locator('[id="secondaryMenu"]');
-      await expect(secondaryMenu.locator("a").getByText("My Work")).toBeVisible({ timeout: 10000 });
-      await expect(secondaryMenu.locator("a").getByText("Workflows")).toBeVisible({ timeout: 10000 });
+      const secondaryMenu = await siblingNav(page);
+      await expect(secondaryMenu.getByText("My Work")).toBeVisible({ timeout: 10000 });
+      await expect(secondaryMenu.getByText("Workflows")).toBeVisible({ timeout: 10000 });
     });
   });
 
   // keyOffset is client state (not persisted); verify select presence/default/reactivity.
   test.describe("Songs — transpose key select", () => {
     test("Key select appears for a song with a keySignature and updates on change", async ({ page }) => {
-      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
       await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });

@@ -40,7 +40,7 @@ anonTest.describe("Login landing", () => {
       await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
     }
 
-    await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 30000 });
+    await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 30000 });
     await expect(page).toHaveURL(/\/$|\/\?/);
     await expect(page).not.toHaveURL(/\/people/);
     await expect(page.getByTestId("sunday-home")).toBeVisible({ timeout: 15000 });

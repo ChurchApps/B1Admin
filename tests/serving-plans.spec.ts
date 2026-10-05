@@ -2,7 +2,7 @@ import { request as pwRequest, type APIRequestContext, type Page } from "@playwr
 import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { editIconButton, dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToServing } from "./helpers/navigation";
+import { navigateToServing, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are test marker names; the file is one serial chain to avoid state conflicts.
@@ -470,12 +470,12 @@ test.describe("Plans page navigation", () => {
   });
 
   test("Plans subnavigation reveals secondary entries (Songs, My Work)", async ({ page }) => {
-    await expect(page.locator('[id="secondaryMenu"]').getByText("Songs").first()).toBeVisible({ timeout: 15000 });
-    await expect(page.locator('[id="secondaryMenu"]').getByText("My Work").first()).toBeVisible({ timeout: 15000 });
+    await expect((await siblingNav(page)).getByText("Songs").first()).toBeVisible({ timeout: 15000 });
+    await expect((await siblingNav(page)).getByText("My Work").first()).toBeVisible({ timeout: 15000 });
   });
 
   test("My Work secondary item navigates to /serving/tasks", async ({ page }) => {
-    await page.locator('[id="secondaryMenu"]').getByText("My Work").first().click();
+    await (await siblingNav(page)).getByText("My Work").first().click();
     await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
     await expect(page).toHaveURL(/\/serving\/tasks/);
   });
