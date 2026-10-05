@@ -1536,6 +1536,7 @@
       "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Loading recipients...",
+      "mergeFieldHint": "Click to insert a placeholder. It is replaced with each recipient's details when the text is sent.",
       "messageLabel": "Message",
       "noPhoneNotice": "{count} members have no phone number on file and will be skipped.",
       "noPhoneNoticeSingular": "{count} member has no phone number on file and will be skipped.",
@@ -1654,6 +1655,11 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Show sign-in prompt on the app home screen",
+      "signInPromptHelp": "Visitors who are not signed in see this on the app home screen. Sign-in is always available in the app menu.",
+      "signInPromptPlaceholder": "Sign in to see your groups, giving, and more.",
+      "signInPromptText": "Sign-in prompt text",
+      "signInPromptTitle": "Home screen sign-in prompt",
       "subtitle": "Member directory, visibility, and messaging for the B1.church app",
       "title": "Portal settings"
     },

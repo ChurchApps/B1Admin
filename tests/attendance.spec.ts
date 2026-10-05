@@ -172,6 +172,28 @@ test.describe("Attendance Management", () => {
     });
   });
 
+  test.describe("Printed reports", () => {
+    test("Group Attendance prints the church name in the report header", async ({ page }) => {
+      await openReport(page, "Group Attendance");
+      const campusName = page.locator('[id="mui-component-select-campusId"]');
+      await expect(campusName).toBeVisible({ timeout: 10000 });
+      await campusName.click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill("2024-03-03");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
+      await page.locator("button").getByText("Run Report").click();
+      await expect(page.locator("td").getByText("10:30 AM Service")).toBeVisible({ timeout: 10000 });
+
+      const churchLine = page.locator("#reportsBox .report-print-church");
+      await expect(churchLine).toHaveText("Grace Community Church");
+      await expect(churchLine).toBeHidden();
+      await page.emulateMedia({ media: "print" });
+      await expect(churchLine).toBeVisible();
+    });
+  });
+
   test.describe("Report dates", () => {
     // The Api returns the week's Sunday as a UTC-midnight date; a US browser must still show that calendar day.
     test.use({ timezoneId: "America/Chicago", locale: "en-US" });
@@ -202,7 +224,7 @@ test.describe("Attendance Management", () => {
       await openReport(page, "Attendance Trend");
       await page.locator("button").getByText("Run Report").click();
 
-      const table = page.locator('[id="reportsBox"] table');
+      const table = page.locator('[id="reportsBox"] table.MuiTable-root');
       await expect(table.locator("td").getByText("Sep 27, 2026", { exact: true })).toBeVisible({ timeout: 10000 });
       await expect(table.locator("td").getByText("Sep 26, 2026", { exact: true })).toHaveCount(0);
     });
@@ -269,6 +291,27 @@ test.describe("Attendance Management", () => {
       const runBtn = page.locator("button").getByText("Run Report");
       await expect(runBtn).toBeVisible({ timeout: 10000 });
       await expect(runBtn).toBeEnabled();
+    });
+  });
+
+  test.describe("Group Attendance check-in details", () => {
+    test("shows each person's check-in time and membership status", async ({ page }) => {
+      await openReport(page, "Group Attendance");
+      await page.locator('[id="mui-component-select-campusId"]').click();
+      await page.locator("li").getByText("Main Campus").click();
+      await page.locator('[id="mui-component-select-serviceId"]').click();
+      await page.locator("li").getByText("Sunday Morning Service").click();
+      await page.locator('[name="startDate"]').fill("2024-03-09");
+      await page.locator('[name="endDate"]').fill("2024-03-09");
+      await page.locator("button").getByText("Run Report").click();
+
+      const table = page.locator('[id="reportsBox"] table');
+      await expect(table.locator("th").getByText("Checked In", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(table.locator("th").getByText("Membership Status", { exact: true })).toBeVisible();
+      // Seed: John Smith (Member) checked in at 8:45 AM for the 9:00 AM service on 3/9/2024.
+      const johnRow = table.locator("tr").filter({ has: page.locator("td", { hasText: /^John Smith$/ }) }).first();
+      await expect(johnRow.locator("td").nth(1)).toHaveText(/^8:45\sAM$/);
+      await expect(johnRow.locator("td").nth(2)).toHaveText("Member");
     });
   });
 

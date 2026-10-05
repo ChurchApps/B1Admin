@@ -108,6 +108,8 @@ const PRIMARY_LABELS: Record<PrimarySection, string> = {
 };
 
 export async function openPrimaryNav(page: Page) {
+  // A previous step may have left the menu open; its overlay would swallow the click on the bar.
+  if (await page.getByTestId("command-palette").isVisible()) await page.keyboard.press("Escape");
   const menuBtn = page.getByTestId("command-palette-open");
   await menuBtn.waitFor({ state: "visible", timeout: 15000 });
   await menuBtn.click();

@@ -1,6 +1,6 @@
 import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loading, SmallButton } from "@churchapps/apphelper";
 import { Box, Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
 import { formatClockTime } from "../components/PlanUtils";
@@ -9,6 +9,7 @@ import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
 import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } from "../components/planItemUtils";
+import UserContext from "../../UserContext";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -16,6 +17,7 @@ export const PrintPlan = () => {
   const [searchParams] = useSearchParams();
   const autoprint = searchParams.get("autoprint") === "1";
   const hasPrinted = React.useRef(false);
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
@@ -368,6 +370,12 @@ export const PrintPlan = () => {
 
   const renderWorshipOrder = () => (
     <div style={Styles.body} className="printBackgrounds">
+      {(churchName || plan?.name) && (
+        <div style={{ textAlign: "center", marginBottom: 10 }}>
+          {churchName && <div style={{ fontWeight: "bold", fontSize: 18 }}>{churchName}</div>}
+          {plan?.name && <div style={{ fontSize: 14 }}>{plan.name}</div>}
+        </div>
+      )}
       <Grid container>
         <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
           {Locale.label("plans.printPlan.serviceOrder")}

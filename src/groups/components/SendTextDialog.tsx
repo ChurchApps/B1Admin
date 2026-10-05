@@ -1,8 +1,19 @@
 import React from "react";
-import { TextField, Typography, Alert } from "@mui/material";
+import { TextField, Typography, Alert, Chip, Stack } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
+
+const MERGE_FIELD_KEYS = [
+  { key: "{{firstName}}", label: "groups.sendEmailDialog.mergeFieldFirstName" },
+  { key: "{{lastName}}", label: "groups.sendEmailDialog.mergeFieldLastName" },
+  { key: "{{displayName}}", label: "groups.sendEmailDialog.mergeFieldDisplayName" },
+  { key: "{{churchName}}", label: "groups.sendEmailDialog.mergeFieldChurchName" }
+];
+
+const MAX_LENGTH = 1600;
+
+const keepFocus = (ev: React.MouseEvent) => ev.preventDefault();
 
 interface Props {
   groupId?: string;
@@ -31,6 +42,21 @@ interface SendResult {
 
 export const SendTextDialog: React.FC<Props> = (props) => {
   const [message, setMessage] = React.useState("");
+  const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
+
+  const insertMergeField = (field: string) => {
+    const input = inputRef.current;
+    const start = input?.selectionStart ?? message.length;
+    const end = input?.selectionEnd ?? message.length;
+    const next = message.slice(0, start) + field + message.slice(end);
+    if (next.length > MAX_LENGTH) return;
+    const caret = start + field.length;
+    setMessage(next);
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      inputRef.current?.setSelectionRange(caret, caret);
+    });
+  };
 
   const isGroupMode = !!props.groupId;
   const charCount = message.length;
@@ -129,8 +155,17 @@ export const SendTextDialog: React.FC<Props> = (props) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         disabled={sending}
-        inputProps={{ maxLength: 1600 }}
+        inputRef={inputRef}
+        inputProps={{ maxLength: MAX_LENGTH }}
       />
+      <Typography variant="caption" color="text.secondary" sx={{ mt: 1, mb: 0.5, display: "block" }}>
+        {Locale.label("groups.sendTextDialog.mergeFieldHint")}
+      </Typography>
+      <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap data-testid="text-merge-fields">
+        {MERGE_FIELD_KEYS.map(f => (
+          <Chip key={f.key} label={Locale.label(f.label)} size="small" variant="outlined" disabled={sending} onMouseDown={keepFocus} onClick={() => insertMergeField(f.key)} sx={{ cursor: "pointer" }} />
+        ))}
+      </Stack>
       <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block" }}>
         {(charCount !== 1
           ? Locale.label("groups.sendTextDialog.characterCount")

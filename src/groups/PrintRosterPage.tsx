@@ -51,8 +51,14 @@ const loadSheets = async (groupId: string | null, serviceTimeId: string | null):
     return group?.id ? [await loadSheet(group, serviceTimeId)] : [];
   }
   if (serviceTimeId) {
-    const groups: GroupInterface[] = await ApiHelper.get("/groups/search?campusId=0&serviceId=0&serviceTimeId=" + serviceTimeId, "MembershipApi");
-    return Promise.all((groups || []).map((g) => loadSheet(g, serviceTimeId)));
+    // Groups and their service times live in different modules, so match them here.
+    const [groups, groupServiceTimes] = await Promise.all([
+      ApiHelper.get("/groups", "MembershipApi") as Promise<GroupInterface[]>,
+      ApiHelper.get("/groupservicetimes", "AttendanceApi") as Promise<GroupServiceTimeRow[]>
+    ]);
+    const groupIds = new Set((groupServiceTimes || []).filter((g) => g.serviceTimeId === serviceTimeId).map((g) => g.groupId));
+    const matched = (groups || []).filter((g) => groupIds.has(g.id)).sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+    return Promise.all(matched.map((g) => loadSheet(g, serviceTimeId)));
   }
   return [];
 };

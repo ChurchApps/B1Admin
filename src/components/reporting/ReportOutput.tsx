@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { ArrayHelper, type PersonInterface, type ReportInterface, type ReportResultInterface } from "@churchapps/helpers";
 import { DisplayBox, ExportLink, Loading } from "../";
 import { CurrencyHelper } from "@churchapps/apphelper";
@@ -14,6 +14,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import { Download as DownloadIcon, Print as PrintIcon, Description as DescriptionIcon } from "@mui/icons-material";
 import { useMountedState } from "@churchapps/apphelper";
 import { AppIconButton } from "../ui/AppIconButton";
+import UserContext from "../../UserContext";
 
 interface Props {
   keyName: string;
@@ -28,6 +29,8 @@ export const ReportOutput = (props: Props) => {
   const [downloadData, setDownloadData] = React.useState<ReportResultInterface | null>(null);
   const [kpis, setKpis] = React.useState<GivingKpis | null>(null);
   const [currency, setCurrency] = React.useState<string>("usd");
+
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
 
   const open = Boolean(anchorEl);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -245,7 +248,18 @@ export const ReportOutput = (props: Props) => {
         <>
           <style dangerouslySetInnerHTML={{
             __html: `
+            .report-print-church {
+              display: none;
+            }
             @media print {
+              .report-print-church {
+                display: block !important;
+                font-size: 12px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: #6B7280;
+                margin-bottom: 8px;
+              }
               @page {
                 size: portrait;
                 margin: 20mm 15mm 20mm 15mm;
@@ -292,6 +306,7 @@ export const ReportOutput = (props: Props) => {
           }} />
           {kpis && <GivingKpiCards kpis={kpis} currency={currency} />}
           <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
+            {churchName && <div className="report-print-church">{churchName}</div>}
             {getOutputs()}
           </DisplayBox>
         </>

@@ -158,7 +158,7 @@ test.describe.serial("Settings Management", () => {
       const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
       const validatedRole = page.locator("a").getByText("Zebedee Test Role");
-      await expect(validatedRole).toHaveCount(1);
+      await expect(validatedRole).toHaveCount(1, { timeout: 30000 });
     });
 
     test("should cancel editing role", async () => {
@@ -545,4 +545,86 @@ test.describe.serial("Settings Management", () => {
     });
   });
 
+});
+
+// ChurchAppsSupport#1180: typing a domain and clicking Save (without +) closed the panel and saved nothing.
+test.describe("Settings domains save a typed name", () => {
+  const DOMAIN = "example-1180.org";
+  // Each domain write is slow against the local Api (~10s).
+  const SAVE_MS = 40000;
+
+  test("Save keeps a typed domain even when + was not clicked", async ({ page }) => {
+    test.setTimeout(150000);
+    await page.locator('[data-testid="settings-section-domains"]').click();
+    const section = page.locator('[data-testid="settings-domains"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+
+    const input = section.locator('input[name="domainName"]');
+    const openEdit = () => section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    await openEdit();
+    await expect(input).toBeVisible({ timeout: 10000 });
+    // A run that died before its cleanup leaves the domain behind, which makes the add fail as a duplicate.
+    const leftover = section.locator("tr", { hasText: DOMAIN });
+    if (await leftover.count()) {
+      await leftover.getByRole("button").click();
+      await section.locator("button").getByText("Save").click();
+      await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+      await openEdit();
+      await expect(input).toBeVisible({ timeout: 10000 });
+    }
+    await input.fill(DOMAIN);
+    await section.locator("button").getByText("Save").click();
+    await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+    await expect(section.getByText(DOMAIN)).toBeVisible({ timeout: SAVE_MS });
+
+    // Clean up so later runs start without the domain.
+    await openEdit();
+    const row = section.locator("tr", { hasText: DOMAIN });
+    await row.getByRole("button").click();
+    await section.locator("button").getByText("Save").click();
+    await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+    await expect(section.getByText(DOMAIN)).toHaveCount(0, { timeout: SAVE_MS });
+  });
+});
+
+// ChurchAppsSupport#1181: merge-field chips on the email template editor must insert at the cursor, and editing mid-text must not eat the rest.
+const openNewTemplate = async (page: Page) => {
+  await page.goto("/settings/email-templates");
+  await page.getByRole("button", { name: "New Template" }).first().click();
+  await expect(page.getByText("Insert merge field into subject:")).toBeVisible();
+};
+
+const chipsAfter = (page: Page, caption: string) => page.locator("div", { has: page.getByText(caption, { exact: true }) }).last();
+
+test.describe("Email template editor merge fields", () => {
+  test("subject chip inserts at the cursor", async ({ page }) => {
+    await openNewTemplate(page);
+    const subject = page.getByLabel("Subject", { exact: true });
+    await subject.fill("Hello  welcome");
+    await subject.evaluate((el: HTMLInputElement) => { el.focus(); el.setSelectionRange(6, 6); });
+    await chipsAfter(page, "Insert merge field into subject:").getByText("First Name", { exact: true }).click();
+    await expect(subject).toHaveValue("Hello {{firstName}} welcome");
+  });
+
+  test("body chip inserts at the cursor", async ({ page }) => {
+    await openNewTemplate(page);
+    const body = page.locator(".editor-input[contenteditable='true']").first();
+    await body.click();
+    await page.keyboard.type("Hello  welcome");
+    for (let i = 0; i < 8; i++) await page.keyboard.press("ArrowLeft");
+    await chipsAfter(page, "Insert merge field into body:").getByText("First Name", { exact: true }).click();
+    await expect(body).toHaveText("Hello {{firstName}} welcome");
+    await page.getByRole("button", { name: "Preview" }).click();
+    await expect(page.frameLocator("iframe[title='Email preview']").locator("body")).toContainText("Hello John welcome");
+  });
+
+  test("backspace in the middle of the body only removes one character", async ({ page }) => {
+    await openNewTemplate(page);
+    const body = page.locator(".editor-input[contenteditable='true']").first();
+    await body.click();
+    await page.keyboard.type("Hello world");
+    for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("Backspace");
+    await expect(body).toHaveText("Helloworld");
+  });
 });
