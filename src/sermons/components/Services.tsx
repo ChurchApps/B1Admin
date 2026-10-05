@@ -14,6 +14,7 @@ export const Services: React.FC = () => {
   const [services, setServices] = React.useState<StreamingServiceInterface[]>([]);
   const [currentService, setCurrentService] = React.useState<StreamingServiceInterface | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const loadSeq = React.useRef(0);
 
   const handleUpdated = () => { setCurrentService(null); loadData(); };
   const getEditContent = () => (
@@ -31,7 +32,9 @@ export const Services: React.FC = () => {
     </Button>
   );
   const loadData = () => {
+    const seq = ++loadSeq.current;
     ApiHelper.get("/streamingServices", "ContentApi").then((data: any) => {
+      if (seq !== loadSeq.current) return;
       data.forEach((s: StreamingServiceInterface) => {
         s.serviceTime = new Date(Date.parse(s.serviceTime!.toString()));
         s.serviceTime.setMinutes(s.serviceTime.getMinutes() + s.timezoneOffset);
@@ -48,7 +51,6 @@ export const Services: React.FC = () => {
 
     const link: StreamingServiceInterface = { churchId: UserHelper.currentUserChurch.church.id, serviceTime: defaultDate, chatBefore: 600, chatAfter: 600, duration: 3600, earlyStart: 600, provider: "youtube_live", providerKey: "", recurring: false, timezoneOffset: tz, videoUrl: "", label: Locale.label("sermons.liveStreamTimes.servicesTab.defaultLabel"), sermonId: "latest" };
     setCurrentService(link);
-    loadData();
   };
 
   const getNextSunday = () => {

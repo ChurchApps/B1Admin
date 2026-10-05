@@ -81,7 +81,7 @@ export function PickColors(props: Props) {
       const style: any = { backgroundColor: c, width: "100%", height: props[field] === v ? 20 : 12, display: "block" };
       if (c === "#FFFFFF" || v === "var(--light)") style.border = "1px solid #999";
       result.push(
-        <td>
+        <td key={`${field}-${v}`}>
           <a
             href="about:blank"
             style={style}

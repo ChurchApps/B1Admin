@@ -21,26 +21,26 @@ export function ColorPicker(props: Props) {
 
   const getGrayOptions = () => {
     const colors = ["#FFFFFF", "#CCCCCC", "#888888", "#444444", "#000000"];
-    return getManualOptions(colors, colors);
+    return getManualOptions(colors, colors, "gray");
   };
 
   const getThemeOptions = () => {
     if (props.globalStyles?.palette) {
       const palette = JSON.parse(props.globalStyles.palette);
       const colors = [palette.light, palette.lightAccent, palette.accent, palette.darkAccent, palette.dark];
-      return getManualOptions(colors, ["var(--light)", "var(--lightAccent)", "var(--accent)", "var(--darkAccent)", "var(--dark)"]);
+      return getManualOptions(colors, ["var(--light)", "var(--lightAccent)", "var(--accent)", "var(--darkAccent)", "var(--dark)"], "theme");
     }
   };
 
-  const getManualOptions = (colors:string[], values:string[]) => {
+  const getManualOptions = (colors:string[], values:string[], listKey: string) => {
     const result: React.ReactElement[] = [];
     colors.forEach((c, i) => {
       const v = values[i];
       const style: any = { backgroundColor: c, width: "100%", height: (props.color === v) ? 20 : 12, display: "block" };
       if (c === "#FFFFFF" || v === "var(--light)") style.border = "1px solid #999";
-      result.push(<td><a href="about:blank" style={style} onClick={(e) => { e.preventDefault(); props.updatedCallback(v); }} data-testid={`color-option-${i}`} aria-label={`Select color ${v}`}>&nbsp;</a></td>);
+      result.push(<td key={`${listKey}-${v}`}><a href="about:blank" style={style} onClick={(e) => { e.preventDefault(); props.updatedCallback(v); }} data-testid={`color-option-${listKey}-${i}`} aria-label={`Select color ${v}`}>&nbsp;</a></td>);
     });
-    return (<table style={{ width: "100%", marginTop: 10 }} key={"ManualColors"}>
+    return (<table style={{ width: "100%", marginTop: 10 }} key={listKey}>
       <tbody>
         <tr>
           {result}
