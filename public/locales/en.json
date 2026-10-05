@@ -4095,7 +4095,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4605,7 +4604,6 @@
       "wide": "Wide"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4624,8 +4622,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Click Add Content in the toolbar, then drag a section or element onto the page.",
@@ -5508,7 +5505,6 @@
       "operator": "Operator",
       "pauseAll": "Pause automation",
       "paused": "Paused",
-      "recur_": "Recur_",
       "recurs": "Repeats",
       "resumeAll": "Resume automation",
       "runNow": "Run now",
@@ -5529,7 +5525,6 @@
       "resume": "Resume",
       "retry": "Retry",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Person",
       "title": "Execution History",
       "trigger": "Trigger",

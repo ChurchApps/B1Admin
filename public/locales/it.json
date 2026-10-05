@@ -1358,6 +1358,11 @@
       "selectSession": "Seleziona Sessione",
       "session": "Sessione",
       "sessions": "Sessioni",
+      "statusButton": "Chi deve ancora registrare le presenze",
+      "statusEntered": "Registrate ({count})",
+      "statusNotEntered": "Non registrata",
+      "statusSummary": "{entered} gruppi su {total} registrati",
+      "statusTitle": "Chi deve ancora registrare le presenze",
       "tryAdjusting": "Prova a modificare la tua ricerca",
       "upcoming": "imminente"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "La tua chiesa ha esaurito i crediti SMS per questo ciclo di fatturazione. Nessun messaggio è stato inviato. Aggiorna il piano o attendi il rinnovo dei crediti su",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Caricamento destinatari...",
+      "mergeFieldHint": "Fai clic per inserire un segnaposto. Viene sostituito con i dati di ciascun destinatario quando il messaggio viene inviato.",
       "messageLabel": "Messaggio",
       "noPhoneNotice": "{count} non hanno alcun numero di telefono registrato.",
       "noPhoneNoticeSingular": "{count} non ha alcun numero di telefono registrato.",
@@ -1549,6 +1555,11 @@
       "title": "Tema dell'App"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Mostra l'invito ad accedere nella schermata iniziale dell'app",
+      "signInPromptHelp": "I visitatori che non hanno effettuato l'accesso vedono questo nella schermata iniziale dell'app. L'accesso è sempre disponibile nel menu dell'app.",
+      "signInPromptPlaceholder": "Accedi per vedere i tuoi gruppi, le donazioni e altro.",
+      "signInPromptText": "Testo dell'invito ad accedere",
+      "signInPromptTitle": "Invito ad accedere nella schermata iniziale",
       "subtitle": "Configura le impostazioni per l'app B1 Mobile",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Email Primaria",
       "primPhone": "Telefono Primario",
       "printDirectory": "Stampa elenco",
+      "printResults": "Stampa risultati",
       "searchPpl": "Cerca Persone",
       "searchResults": "Risultati della Ricerca",
       "showAll": "Mostra tutti i membri",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Istruzioni",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Larga"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Orari dei culti",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Clicca su Aggiungi Contenuto nella barra degli strumenti, quindi trascina una sezione o un elemento sulla pagina.",
@@ -5494,7 +5503,6 @@
       "operator": "Operatore",
       "pauseAll": "Sospendi automazione",
       "paused": "Sospeso",
-      "recur_": "Recur_",
       "recurs": "Si ripete",
       "resumeAll": "Riprendi automazione",
       "runNow": "Esegui ora",
@@ -5515,7 +5523,6 @@
       "resume": "Riprendi",
       "retry": "Riprova",
       "statusHeader": "Stato",
-      "status_": "Status_",
       "subject": "Persona",
       "title": "Cronologia esecuzioni",
       "trigger": "Trigger",
@@ -5628,6 +5635,7 @@
       "days": "Giorni di attesa",
       "noAssignee": "Non assegnato",
       "noGroup": "Nessun gruppo selezionato",
+      "noTextingProvider": "Nessun provider SMS configurato. Aggiungine uno in Impostazioni → SMS, altrimenti i messaggi non verranno inviati.",
       "note": "Nota",
       "pickAssignee": "Scegli assegnatario",
       "pickGroup": "Scegli gruppo",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Oggetto (opzionale)",
       "taskDescription": "Descrizione (opzionale)",
       "taskTitle": "Titolo attività",
+      "textMergeHint": "Usa {{firstName}}, {{lastName}}, {{displayName}} o {{churchName}}. Le persone che hanno revocato il consenso vengono escluse.",
+      "textMessage": "Messaggio SMS",
       "title": "Azioni automatizzate",
       "type": {
         "addNote": "Aggiungi nota",
@@ -5647,6 +5657,7 @@
         "delay": "Attendi",
         "removeFromGroup": "Rimuovi dal gruppo",
         "sendEmail": "Invia email",
+        "sendText": "Invia SMS",
         "setField": "Imposta campo",
         "webhook": "Chiama webhook"
       },
