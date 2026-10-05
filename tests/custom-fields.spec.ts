@@ -80,3 +80,63 @@ test.describe.serial("Custom Fields (P-2)", () => {
     await expect(page.locator("table tbody tr").filter({ hasText: SEED_PEOPLE.DONALD })).toBeVisible({ timeout: 10000 });
   });
 });
+
+// Issue #1193: a custom field (e.g. a "Date Joined" Date field) can be turned on as
+// a People list column from the column chooser's Custom tab.
+const DATE_FIELD_NAME = `Zz Date Joined ${Date.now()}`;
+
+test.describe.serial("Custom field as a People list column", () => {
+  let browser: Browser;
+  let page: Page;
+
+  test.beforeAll(async () => {
+    browser = await chromium.launch();
+    const ctx = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await ctx.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page.goto("/settings/custom-fields").catch(() => { });
+    const rows = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: /Zz Date Joined/ });
+    while (await rows.first().isVisible({ timeout: 3000 }).catch(() => false)) {
+      await rows.first().click();
+      await page.locator("#customFieldBox").getByRole("button", { name: "Delete" }).click().catch(() => { });
+      await confirmDelete(page).catch(() => { });
+      await page.locator("#customFieldBox").waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
+    }
+    await browser.close();
+  });
+
+  test("setup: a Date custom field set on Donald Clark", async () => {
+    await page.goto("/settings/custom-fields");
+    await page.locator('[data-testid="add-custom-field-button"], [data-testid="add-custom-field-button-empty"]').first().click();
+    await page.locator('[data-testid="custom-field-name-input"] input').fill(DATE_FIELD_NAME);
+    await page.locator('[data-testid="custom-field-type-select"]').click();
+    await page.getByRole("option", { name: "Date", exact: true }).click();
+    await page.locator("#customFieldBox").getByRole("button", { name: "Save" }).click();
+    await expect(page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: DATE_FIELD_NAME }).first()).toBeVisible({ timeout: 10000 });
+
+    await navigateToPeople(page);
+    await openPersonRow(page, SEED_PEOPLE.DONALD);
+    await page.getByTestId("edit-person-button").click();
+    const form = page.locator("#personDetailsBox");
+    await form.locator('[data-testid="person-custom-fields"]').getByLabel(DATE_FIELD_NAME, { exact: true }).fill("2024-05-01");
+    const saved = page.waitForResponse((r) => r.url().includes("/personfieldvalues") && r.request().method() === "POST" && r.status() === 200, { timeout: 10000 }).catch((): null => null);
+    await form.getByRole("button", { name: "Save" }).click();
+    await saved;
+  });
+
+  test("the custom field can be shown as a column in the People list", async () => {
+    await navigateToPeople(page);
+    await page.getByTestId("columns-button").click();
+    const dialog = page.locator("#fieldsMenu");
+    await dialog.getByRole("tab", { name: "Custom" }).click();
+    await dialog.getByRole("checkbox", { name: `Optional column ${DATE_FIELD_NAME}` }).check();
+    await dialog.getByRole("button", { name: "Close" }).click();
+
+    await expect(page.locator("#peopleTable thead")).toContainText(DATE_FIELD_NAME, { timeout: 10000 });
+    const row = page.locator("#peopleTable tbody tr").filter({ hasText: SEED_PEOPLE.DONALD }).first();
+    await expect(row).toContainText("5/1/2024", { timeout: 10000 });
+  });
+});

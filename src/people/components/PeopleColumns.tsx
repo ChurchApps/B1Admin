@@ -112,6 +112,9 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
         }
       } else setOptionalColumns([]);
     });
+    ApiHelper.get("/personfields", "MembershipApi")
+      .then((fields: any) => setOptionalColumns((prevState) => [...prevState, ...(fields || []).map((f: any) => ({ id: "personField_" + f.id, title: f.name }))]))
+      .catch(() => { });
   }, []);
 
   return (

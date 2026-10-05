@@ -9,6 +9,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { SortableTableHead, StatusChip, type SortableColumn } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
 import { useConfirmDelete } from "../../hooks";
+import { formatFieldValue } from "../../helpers/PersonFieldHelper";
 import { Delete as DeleteIcon, Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
@@ -33,6 +34,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const [currentSortedCol, setCurrentSortedCol] = useState<string>("");
   const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
   const [formSubmissions, setFormSubmissions] = React.useState<any[]>([]);
+  // Custom person field values by fieldId, then personId.
+  const [personFieldValues, setPersonFieldValues] = React.useState<Record<string, Record<string, string>>>({});
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const campuses = useCampuses();
   const campusMap = useMemo(() => {
@@ -69,6 +72,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
 
   const getAnswerValue = useCallback(
     (personId: string, questionId: string): string => {
+      if (questionId.startsWith("personField_")) return personFieldValues[questionId.substring(12)]?.[personId] || "";
       for (const fs of formSubmissions) {
         if (fs.contentId === personId) {
           const answer = ArrayHelper.getOne(fs.answers, "questionId", questionId);
@@ -77,15 +81,17 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       }
       return "";
     },
-    [formSubmissions]
+    [formSubmissions, personFieldValues]
   );
 
   const getAnswer = useCallback(
     (p: PersonInterface, key: string) => {
       const value = getAnswerValue(p.id || "", key);
+      const personField = optionalColumns.find((c) => c.id === key)?.personField;
+      if (personField) return <>{formatFieldValue(personField, value)}</>;
       return value ? <>{value}</> : <></>;
     },
-    [getAnswerValue]
+    [getAnswerValue, optionalColumns]
   );
 
   const handleDelete = useCallback(
@@ -228,6 +234,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         }
       } else setOptionalColumns([]);
     });
+    ApiHelper.get("/personfields", "MembershipApi")
+      .then((fields: any) => setOptionalColumns((prevState) => [...prevState, ...(fields || []).map((f: any) => ({ id: "personField_" + f.id, title: f.name, personField: f }))]))
+      .catch(() => { });
   }, []);
 
   const loadedSubmissionFormIds = React.useRef<Set<string>>(new Set());
@@ -236,6 +245,20 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       if (selectedColumns.indexOf(c.id) === -1 || !c.formId || loadedSubmissionFormIds.current.has(c.formId)) return;
       loadedSubmissionFormIds.current.add(c.formId);
       ApiHelper.get(`/formsubmissions/formId/${c.formId}/?include=questions,answers`, "MembershipApi").then((fs: any) => setFormSubmissions((prevState) => [...prevState, ...(fs || [])]));
+    });
+  }, [optionalColumns, selectedColumns]);
+
+  const loadedPersonFieldIds = React.useRef<Set<string>>(new Set());
+  useEffect(() => {
+    optionalColumns.forEach((c) => {
+      const fieldId = c.personField?.id;
+      if (!fieldId || selectedColumns.indexOf(c.id) === -1 || loadedPersonFieldIds.current.has(fieldId)) return;
+      loadedPersonFieldIds.current.add(fieldId);
+      ApiHelper.get("/personfieldvalues/field/" + fieldId, "MembershipApi").then((values: any) => {
+        const byPerson: Record<string, string> = {};
+        (values || []).forEach((v: any) => { if (v.personId) byPerson[v.personId] = v.value || ""; });
+        setPersonFieldValues((prevState) => ({ ...prevState, [fieldId]: byPerson }));
+      }).catch(() => { });
     });
   }, [optionalColumns, selectedColumns]);
 
