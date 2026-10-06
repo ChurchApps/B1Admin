@@ -582,6 +582,37 @@ test.describe.serial("Settings Management", () => {
       }
       await expect(page.locator('[data-testid="settings-section-region"]')).not.toContainText("Local phone numbers");
     });
+
+    test("local phone format keeps a name typed while the phone setting is still loading", async () => {
+      let release: () => void = () => {};
+      const held = new Promise<void>((resolve) => { release = resolve; });
+      const route = "**/membership/settings/public/**";
+      try {
+        await choosePhoneFormat("local");
+        await page.goto("/people");
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = personDetailsEditButton(page);
+        await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
+
+        await page.route(route, async (r) => { await held; await r.continue(); });
+        await editBtn.first().click();
+        const first = page.locator("#first");
+        await expect(first).toBeVisible({ timeout: 10000 });
+        await first.fill("Zacchaeus");
+        release();
+
+        const mobile = page.locator("#mobilePhone");
+        await expect(mobile).toBeVisible({ timeout: 10000 });
+        await expect(page.locator(".MuiTelInput-IconButton")).toHaveCount(0);
+        await expect(first).toHaveValue("Zacchaeus");
+        await expect(mobile).not.toHaveValue(/^\+/);
+        await page.locator("button").getByText("Cancel").click();
+      } finally {
+        release();
+        await page.unroute(route);
+        await choosePhoneFormat("international");
+      }
+    });
   });
 
 });

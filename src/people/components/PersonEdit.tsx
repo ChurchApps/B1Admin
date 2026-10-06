@@ -93,14 +93,33 @@ export const PersonEdit = memo((props: Props) => {
   const localPhones = publicSettings.data?.phoneFormat === "local";
   const phoneSettingsLoading = !!churchId && publicSettings.isLoading;
 
-  const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person, localPhones) });
+  const { control, register, handleSubmit, reset, resetField, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person, localPhones) });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { errors } = useFormState({ control });
 
+  // Full reset only when the person changes; localPhones resolves after the form is
+  // editable, so a full reset on that flip would wipe whatever was typed meanwhile.
+  const localPhonesRef = React.useRef(localPhones);
+  localPhonesRef.current = localPhones;
   React.useEffect(() => {
-    if (props.person) reset(buildFormDefaults(props.person, localPhones));
-  }, [props.person, reset, localPhones]);
+    if (props.person) reset(buildFormDefaults(props.person, localPhonesRef.current));
+  }, [props.person, reset]);
+
+  // When the phone format resolves, re-normalize just the phone fields the user hasn't touched.
+  const prevLocalPhones = React.useRef(localPhones);
+  React.useEffect(() => {
+    if (prevLocalPhones.current === localPhones) return;
+    const wasLocal = prevLocalPhones.current;
+    prevLocalPhones.current = localPhones;
+    if (!props.person) return;
+    (["homePhone", "workPhone", "mobilePhone"] as const).forEach((field) => {
+      const raw = props.person.contactInfo?.[field];
+      const name = `contactInfo.${field}`;
+      if ((getValues(name) ?? "") !== normalizePhone(raw, wasLocal)) return;
+      resetField(name, { defaultValue: normalizePhone(raw, localPhones) });
+    });
+  }, [localPhones, props.person, getValues, resetField]);
 
   React.useEffect(() => {
     ApiHelper.get("/personfields", "MembershipApi")
