@@ -1396,6 +1396,8 @@
     },
     "printRoster": {
       "absent": "Absent",
+      "attendanceSheet": "Attendance Sheet",
+      "contactRoster": "Contact Roster",
       "date": "Date",
       "noGroups": "No classes found to print.",
       "present": "Present",

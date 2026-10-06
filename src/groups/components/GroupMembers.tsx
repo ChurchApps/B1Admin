@@ -26,6 +26,7 @@ import {
   Divider,
   FormControl,
   InputLabel,
+  Menu,
   MenuItem,
   Paper,
   Select,
@@ -73,6 +74,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const [sending, setSending] = useState<boolean>(false);
   const [sendErrors, setSendErrors] = useState<string[]>([]);
   const [sendSuccess, setSendSuccess] = useState<boolean>(false);
+  const [printAnchor, setPrintAnchor] = useState<HTMLElement | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canView = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view), []);
@@ -324,12 +326,21 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     };
   });
 
+  const openPrint = (extra: string) => {
+    setPrintAnchor(null);
+    window.open("/groups/print-roster?groupId=" + props.group.id + "&autoprint=1" + extra, "_blank");
+  };
+
   const getEditContent = () => (
     <Stack direction="row" spacing={1} alignItems="center" display="inline-flex">
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <AppIconButton label={Locale.label("groups.groupMembers.sendMemMsg")} icon={<EditNoteIcon />} tone="card" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" />
       )}
-      <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/groups/print-roster?groupId=" + props.group.id + "&autoprint=1", "_blank")} data-testid="print-roster-button" />
+      <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={(e: React.MouseEvent<HTMLElement>) => setPrintAnchor(e.currentTarget)} data-testid="print-roster-button" />
+      <Menu anchorEl={printAnchor} open={!!printAnchor} onClose={() => setPrintAnchor(null)}>
+        <MenuItem onClick={() => openPrint("")} data-testid="print-attendance-sheet">{Locale.label("groups.printRoster.attendanceSheet")}</MenuItem>
+        <MenuItem onClick={() => openPrint("&layout=contacts")} data-testid="print-contact-roster">{Locale.label("groups.printRoster.contactRoster")}</MenuItem>
+      </Menu>
       <ExportButton data={exportData} filename="groupmembers.csv" text={Locale.label("groups.groupsPage.export")} />
     </Stack>
   );
