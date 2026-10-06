@@ -3799,7 +3799,8 @@
       "gradePromotionOff": "Automatic promotion disabled",
       "gradePromotionOn": "Promotes on {date} each year",
       "notConfigured": "Not configured",
-      "notSet": "Not set"
+      "notSet": "Not set",
+      "phoneLocalSubtitle": "Local phone numbers"
     },
     "manageChurch": {
       "auditLog": "Audit Log",
@@ -3826,6 +3827,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Date format",
       "helperText": "Dates and times across B1 follow this region's format.",
+      "phoneFormat": "Phone numbers",
+      "phoneHelperText": "Local saves numbers exactly as typed (like 0701 234 5678). Texting works best when numbers include the country code.",
+      "phoneInternational": "International (with country code)",
+      "phoneLocal": "Local (as typed)",
       "region": "Region",
       "title": "Region"
     },
