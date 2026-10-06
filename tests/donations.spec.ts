@@ -775,4 +775,37 @@ test.describe("Donation batch print", () => {
     expect(printed).toMatch(/Benevolence Fund\s*\$\s*80\.00/);
     expect(printed).toMatch(/Batch Total\s*\$\s*1,900\.00/);
   });
+
+  // Issue #1203: the printout says which church the batch belongs to.
+  test("the printed batch carries the church name", async ({ page }) => {
+    await page.goto("/donations/batches/BAT00000001");
+    await expect(page.locator('[data-testid^="donation-row-"]')).toHaveCount(7, { timeout: 15000 });
+
+    await page.getByRole("button", { name: "Print", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => (window as any).__printedText), { timeout: 15000 }).not.toBeNull();
+    const printed: string = await page.evaluate(() => (window as any).__printedText);
+    expect(printed).toContain("Grace Community Church");
+  });
+
+  // Issue #1203: print every batch in a date range at once, one batch per page.
+  test("batches list Print opens a print-all page for a date range", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto("/donations/batches");
+    await page.getByTestId("print-batches-button").click();
+    await expect(page).toHaveURL(/\/donations\/batches\/print-all/);
+
+    // The five March 2025 seed batches each hold seven gifts.
+    // Let the default range (last 30 days) finish loading before changing it.
+    await expect(page.getByTestId("batch-print-document").or(page.getByTestId("print-batches-empty")).first()).toBeVisible({ timeout: 15000 });
+    // End first: the range is empty until the start date lands, so only the March batches are fetched.
+    await page.getByTestId("print-batches-end").locator("input").fill("2025-03-31");
+    await page.getByTestId("print-batches-start").locator("input").fill("2025-03-01");
+    const documents = page.getByTestId("batch-print-document");
+    await expect(documents).toHaveCount(5, { timeout: 15000 });
+    await expect(documents.first()).toContainText("Grace Community Church");
+    await expect(documents.first()).toContainText("March 2, 2025 Batch");
+    await expect(documents.last()).toContainText("March 30, 2025 Batch");
+    await expect(documents.first()).toContainText(/Batch Total\s*\$\s*1,900\.00/);
+    await expect(page.getByText("April 6, 2025 Batch")).toHaveCount(0);
+  });
 });

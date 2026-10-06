@@ -904,6 +904,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "End Date",
+      "noBatches": "No batches with donations in this date range.",
+      "startDate": "Start Date",
+      "title": "Print Batches"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
       "campaign": "Campaign",

@@ -1,12 +1,12 @@
 import React from "react";
 import { BatchEdit, DonationEvents } from "./components";
 import { DateHelper, UserHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
-import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon, Receipt as ReceiptIcon } from "@mui/icons-material";
+import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon, Receipt as ReceiptIcon, Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
 import { useSortableData } from "../hooks";
@@ -17,6 +17,7 @@ const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBat
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
   const [currency, setCurrency] = React.useState<string>("usd");
+  const navigate = useNavigate();
 
   // Each batch's totalAmount arrives already converted into the church currency by the Api, so they can be added up.
   const batches = useQuery<(DonationBatchInterface & { isConverted?: boolean })[]>({
@@ -210,7 +211,12 @@ export const DonationBatchesPage = () => {
           icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
           title={Locale.label("donations.donations.batches")}
           count={sortedBatches.length}
-          actions={batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
+          actions={batches.data && (
+            <Stack direction="row" spacing={1}>
+              <AppIconButton label={Locale.label("common.print")} icon={<PrintIcon />} tone="card" onClick={() => navigate("/donations/batches/print-all")} data-testid="print-batches-button" />
+              <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />
+            </Stack>
+          )}
         >
           {getTable()}
         </CardWithHeader>

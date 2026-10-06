@@ -7,6 +7,8 @@ import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, Volu
 import { IconText, EmptyState } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CardWithHeader, ExportButton, hoverRowSx } from "../../components/ui";
+import UserContext from "../../UserContext";
+import { BatchPrintDocument, getFundTotals } from "./BatchPrintDocument";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -24,15 +26,6 @@ const QBO_HEADERS = [
   { label: "Description", key: "Description" },
   { label: "Name", key: "Name" }
 ];
-
-// Per-fund totals for the batch, converted to the church currency. Callers pass only non-refunded donation ids.
-const getFundTotals = (donationIds: string[], fundDonations: FundDonationInterface[], currency: string, rates: Record<string, number>) => {
-  const fundTotals = new Map<string, number>();
-  fundDonations
-    .filter((fd) => donationIds.includes(fd.donationId || ""))
-    .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + CurrencyHelper.convertAmount(fd.amount || 0, (fd as any).currency || currency, currency, rates)));
-  return fundTotals;
-};
 
 // QBO Journal Entry import format: one debit line (Undeposited Funds) plus one credit line per fund.
 const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[], fundDonations: FundDonationInterface[], funds: FundInterface[], currency: string, rates: Record<string, number>) => {
@@ -52,6 +45,7 @@ const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[
 
 export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
+  const context = React.useContext(UserContext);
   const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [rates, setRates] = React.useState<Record<string, number>>({});
@@ -243,67 +237,17 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     return rows;
   }, [donations, props.funds.length, canEdit, showEditDonation, donationsTotal, isConverted, currency]);
 
-  // Paper copy for the counting team: every gift, a subtotal per fund, and the batch total.
   const getPrintContent = React.useCallback(() => {
     if (!printing || !donations || donations.length === 0) return null;
-    const donationIds = donations.filter((d) => (d as any).status !== "refunded").map((d) => d.id || "");
-    const fundTotals = Array.from(getFundTotals(donationIds, fundDonations, currency, rates).entries())
-      .map(([fundId, amount]) => ({ name: ArrayHelper.getOne(funds, "id", fundId)?.name || "Unknown Fund", amount }))
-      .sort((a, b) => a.name.localeCompare(b.name));
     return (
       <Box sx={{ display: "none" }}>
         <Box ref={printRef} sx={{ p: 2 }} data-testid="batch-print">
-          <Typography variant="h5">{batch?.name}</Typography>
-          {batch?.batchDate && <Typography variant="subtitle1" gutterBottom>{DateHelper.prettyDate(new Date(batch.batchDate.split("T")[0] + "T00:00:00"))}</Typography>}
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>{Locale.label("common.name")}</TableCell>
-                <TableCell>{Locale.label("donations.donations.method")}</TableCell>
-                <TableCell>{Locale.label("donations.donations.notes")}</TableCell>
-                <TableCell>{Locale.label("donations.donations.date")}</TableCell>
-                <TableCell align="right">{Locale.label("donations.donations.amt")}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {donations.map((d, i) => {
-                const isRefunded = (d as any).status === "refunded";
-                return (
-                  <TableRow key={i}>
-                    <TableCell>{d.person?.name.display || Locale.label("donations.donations.anon")}</TableCell>
-                    <TableCell>{[d.method, d.methodDetails].filter(Boolean).join(" - ")}</TableCell>
-                    <TableCell>{d.notes || ""}</TableCell>
-                    <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>
-                    <TableCell align="right" sx={{ textDecoration: isRefunded ? "line-through" : undefined }}>
-                      {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}
-                      {isRefunded && " (" + Locale.label("donations.donations.refunded") + ")"}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-          <Typography variant="h6" sx={{ mt: 3 }}>{Locale.label("donations.donations.fundSubtotals")}</Typography>
-          <Table size="small">
-            <TableBody>
-              {fundTotals.map((f) => (
-                <TableRow key={f.name}>
-                  <TableCell>{f.name}</TableCell>
-                  <TableCell align="right">{CurrencyHelper.formatCurrencyWithLocale(f.amount, currency)}</TableCell>
-                </TableRow>
-              ))}
-              <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>{Locale.label("donations.donations.batchTotal")}</TableCell>
-                <TableCell align="right" sx={{ fontWeight: "bold" }}>{CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-          {isConverted && <Typography variant="caption">{Locale.label("donations.donations.convertedNote")}</Typography>}
+          <BatchPrintDocument churchName={context?.userChurch?.church?.name} batch={batch} donations={donations} fundDonations={fundDonations} funds={funds} currency={currency} rates={rates} />
         </Box>
       </Box>
     );
   }, [
-    printing, donations, fundDonations, funds, batch, currency, rates, donationsTotal, isConverted
+    printing, donations, fundDonations, funds, batch, currency, rates, context
   ]);
 
   React.useEffect(() => {
