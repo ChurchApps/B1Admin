@@ -3,7 +3,8 @@ import { useForm, Controller, useFormState } from "react-hook-form";
 import { MuiTelInput } from "mui-tel-input";
 import { B1AdminPersonHelper, DuplicateDialog, UpdateHouseHold } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper, DateHelper, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
+import { PersonHelper, DateHelper, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar, UserHelper } from "@churchapps/apphelper";
 import { QuestionEdit } from "@churchapps/apphelper/forms";
 import { type QuestionInterface, type AnswerInterface } from "@churchapps/helpers";
 import { GdprActions } from "./GdprActions";
@@ -45,8 +46,10 @@ const phoneMenuProps = { "aria-label": "phone-number" };
 // so MuiTelInput can render them with country flag and spacing. Anything that isn't a
 // US 10/11-digit number or already "+"-prefixed is left as-is — forcing "+" onto a
 // 7-digit partial makes the widget misread it as a foreign country code.
-const normalizePhone = (raw: string | null | undefined): string => {
+// Churches using the "local" phone format keep numbers exactly as stored.
+export const normalizePhone = (raw: string | null | undefined, local = false): string => {
   if (!raw) return "";
+  if (local) return raw;
   const [base, ext] = raw.split("x");
   const trimmed = (base ?? "").trim();
   const digits = trimmed.replace(/\D/g, "");
@@ -58,15 +61,15 @@ const normalizePhone = (raw: string | null | undefined): string => {
   return ext ? normalized + "x" + ext : normalized;
 };
 
-const buildFormDefaults = (p: PersonInterface) => ({
+const buildFormDefaults = (p: PersonInterface, localPhones: boolean) => ({
   ...p,
   birthDate: DateHelper.formatHtml5Date(p?.birthDate) || null,
   anniversary: DateHelper.formatHtml5Date(p?.anniversary) || null,
   contactInfo: {
     ...p?.contactInfo,
-    homePhone: normalizePhone(p?.contactInfo?.homePhone),
-    workPhone: normalizePhone(p?.contactInfo?.workPhone),
-    mobilePhone: normalizePhone(p?.contactInfo?.mobilePhone)
+    homePhone: normalizePhone(p?.contactInfo?.homePhone, localPhones),
+    workPhone: normalizePhone(p?.contactInfo?.workPhone, localPhones),
+    mobilePhone: normalizePhone(p?.contactInfo?.mobilePhone, localPhones)
   }
 });
 
@@ -84,14 +87,39 @@ export const PersonEdit = memo((props: Props) => {
   const [duplicates, setDuplicates] = useState<PersonInterface[] | null>(null);
   const [pendingPerson, setPendingPerson] = useState<PersonInterface | null>(null);
 
-  const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person) });
+  // Public endpoint: people editors may lack settings.edit, which /settings requires.
+  const churchId = UserHelper.currentUserChurch?.church?.id || "";
+  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const localPhones = publicSettings.data?.phoneFormat === "local";
+  const phoneSettingsLoading = !!churchId && publicSettings.isLoading;
+
+  const { control, register, handleSubmit, reset, resetField, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person, localPhones) });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { errors } = useFormState({ control });
 
+  // Full reset only when the person changes; localPhones resolves after the form is
+  // editable, so a full reset on that flip would wipe whatever was typed meanwhile.
+  const localPhonesRef = React.useRef(localPhones);
+  localPhonesRef.current = localPhones;
   React.useEffect(() => {
-    if (props.person) reset(buildFormDefaults(props.person));
+    if (props.person) reset(buildFormDefaults(props.person, localPhonesRef.current));
   }, [props.person, reset]);
+
+  // When the phone format resolves, re-normalize just the phone fields the user hasn't touched.
+  const prevLocalPhones = React.useRef(localPhones);
+  React.useEffect(() => {
+    if (prevLocalPhones.current === localPhones) return;
+    const wasLocal = prevLocalPhones.current;
+    prevLocalPhones.current = localPhones;
+    if (!props.person) return;
+    (["homePhone", "workPhone", "mobilePhone"] as const).forEach((field) => {
+      const raw = props.person.contactInfo?.[field];
+      const name = `contactInfo.${field}`;
+      if ((getValues(name) ?? "") !== normalizePhone(raw, wasLocal)) return;
+      resetField(name, { defaultValue: normalizePhone(raw, localPhones) });
+    });
+  }, [localPhones, props.person, getValues, resetField]);
 
   React.useEffect(() => {
     ApiHelper.get("/personfields", "MembershipApi")
@@ -397,11 +425,12 @@ export const PersonEdit = memo((props: Props) => {
 
           <Grid size={{ md: 3 }}>
             <div className="section">{Locale.label("person.phone")}</div>
-            {(["homePhone", "workPhone", "mobilePhone"] as const).map((field) => {
+            {phoneSettingsLoading ? <Loading size="sm" /> : (["homePhone", "workPhone", "mobilePhone"] as const).map((field) => {
               const labelKey = field === "homePhone" ? "people.personView.home" : field === "workPhone" ? "people.personView.work" : "people.personView.mobile";
               return (
-                <Controller key={field} name={`contactInfo.${field}`} control={control} render={({ field: f }) => (
-                  <MuiTelInput fullWidth id={field} label={Locale.label(labelKey)} value={f.value?.split("x")[0] ?? ""} onChange={(v) => { const ext = f.value?.split("x")[1] ?? ""; f.onChange(ext ? v + "x" + ext : v); }} defaultCountry="US" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />
+                <Controller key={field} name={`contactInfo.${field}`} control={control} render={({ field: f }) => (localPhones
+                  ? <TextField fullWidth type="tel" id={field} label={Locale.label(labelKey)} value={f.value?.split("x")[0] ?? ""} onChange={(ev) => { const ext = f.value?.split("x")[1] ?? ""; f.onChange(ext ? ev.target.value + "x" + ext : ev.target.value); }} slotProps={{ htmlInput: { ...phoneSlotProps.htmlInput, inputMode: "tel" } }} />
+                  : <MuiTelInput fullWidth id={field} label={Locale.label(labelKey)} value={f.value?.split("x")[0] ?? ""} onChange={(v) => { const ext = f.value?.split("x")[1] ?? ""; f.onChange(ext ? v + "x" + ext : v); }} defaultCountry="US" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />
                 )} />
               );
             })}
