@@ -451,6 +451,39 @@ test.describe.serial("Group Management", () => {
       await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
     });
 
+    test("prints a contact roster from the members tab", async () => {
+      await openSeedGroup(page, SESSION_GROUP);
+      await page.locator('[data-testid="print-roster-button"]').click();
+      await expect(page.getByTestId("print-attendance-sheet")).toBeVisible({ timeout: 10000 });
+      await expect(page.getByTestId("print-contact-roster")).toBeVisible();
+      await page.keyboard.press("Escape");
+      const groupId = new URL(page.url()).pathname.split("/").pop();
+
+      await page.goto("/groups/print-roster?groupId=" + groupId + "&layout=contacts");
+      await expect(page.locator("h1.roster-title")).toHaveText(SESSION_GROUP, { timeout: 10000 });
+      await expect(page.locator(".roster-contacts th")).toHaveText(["Name", "Phone", "Email", "Address"]);
+      // Leaders first, then by last name.
+      const rows = page.getByTestId("roster-contact-row");
+      await expect(rows.getByTestId("roster-member")).toHaveText(["William Anderson Leader", "George Thompson", "Margaret Thompson"]);
+      await expect(rows.first().locator(".roster-leader")).toHaveText("Leader");
+      await expect(rows.first().locator("td")).toHaveText(["William Anderson Leader", "(217) 555-1502", "william.anderson@email.com", "486 Pine Street, Springfield, IL 62702"]);
+      await expect(page.locator(".roster-notes")).toHaveCount(0);
+
+      // Opted-out members keep their name but not their contact details.
+      await page.route("**/groupmembers?groupId=*", async (route) => {
+        const members = await (await route.fetch()).json();
+        for (const m of members) if (m.person?.name?.display === "George Thompson") m.person.optedOut = true;
+        await route.fulfill({ json: members });
+      });
+      await page.reload();
+      const george = rows.filter({ hasText: "George Thompson" });
+      await expect(george.locator("td")).toHaveText(["George Thompson", "", "", ""], { timeout: 10000 });
+      await page.unroute("**/groupmembers?groupId=*");
+
+      await page.goBack();
+      await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
+    });
+
     test("should cancel adding group", async () => {
       const addBtn = page.locator("button").getByText("Add Group");
       await addBtn.click();
