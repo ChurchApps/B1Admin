@@ -18,18 +18,14 @@ test.describe("Sunday home", () => {
     expect(await groupLinks.count()).toBeGreaterThan(0);
   });
 
-  // #1126: the dashboard header and primary nav item read "Dashboard", not "Sunday".
-  // The shell renders getPrimaryLabel() (dashboard.dashboardPage.dash) into #primaryNavButton h2;
-  // there is no #page-header-title on this route.
+  // #1126: the dashboard header and main menu item read "Dashboard", not "Sunday".
+  // The search/jump bar shows getPrimaryLabel() (dashboard.dashboardPage.dash); there is no #page-header-title on this route.
   test("dashboard header and nav item read Dashboard, not Sunday", async ({ page }) => {
-    await expect(page.locator("#primaryNavButton h2")).toHaveText("Dashboard", { timeout: 10000 });
+    await expect(page.getByTestId("command-palette-section")).toHaveText("Dashboard", { timeout: 10000 });
 
-    // Header.tsx stamps nav-item-dashboard on the item labelled components.wrapper.dash,
-    // which only exists once the primary drawer is open.
-    const navItem = page.locator('[data-testid="nav-item-dashboard"]');
-    if (!(await navItem.first().isVisible().catch(() => false))) await openPrimaryNav(page);
-    await expect(navItem.first()).toBeVisible({ timeout: 10000 });
-    await expect(navItem.first().locator(".MuiListItemText-primary")).toHaveText(/^dashboard$/i);
+    await openPrimaryNav(page);
+    await expect(page.getByTestId("command-palette").getByRole("button", { name: "Dashboard", exact: true }).first()).toBeVisible();
+    await page.keyboard.press("Escape");
 
     // The bulletin eyebrow stays a calendar line; it must not collapse to the nav label.
     const eyebrow = page.locator('[data-testid="sunday-home"] .om-eyebrow');
@@ -41,7 +37,10 @@ test.describe("Sunday home", () => {
   });
 
   test("My Work from Sunday opens tasks", async ({ page }) => {
-    const myWork = page.locator('[id="secondaryMenu"]').getByText("My Work", { exact: true }).first();
+    await openPrimaryNav(page);
+    const palette = page.getByTestId("command-palette");
+    await palette.getByRole("textbox").fill("My Work");
+    const myWork = palette.locator(".om-hit", { hasText: "My Work" }).first();
     await expect(myWork).toBeVisible({ timeout: 10000 });
     await myWork.click();
     await expect(page).toHaveURL(/\/serving\/tasks/, { timeout: 10000 });

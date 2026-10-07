@@ -1865,6 +1865,7 @@
       "primEmail": "I-imeyili Yensita",
       "primPhone": "Lucingo Lwensita",
       "printDirectory": "Shicelela Luhlu Lwebantfu",
+      "printResults": "Phrinta Imiphumela",
       "searchPpl": "Sesha Bantfu",
       "searchResults": "Imiphumela Yekusesha",
       "showAll": "Khombisa Emalunga Onkhe",
@@ -4081,7 +4082,6 @@
       "failed": "Kubhala kabusha kwehlulekile. Akukho lokushintjiwe.",
       "instruction": "Timiyalo",
       "placeholder": "s.b. Yenta kube nemukelo lokhulu bese wengeta sibiliso sesento",
-      "preset_": "Preset_",
       "rewrite": "Bhala Kabusha",
       "title": "Kubhala Kabusha nge-AI",
       "working": "Kubhalwa kabusha ingxenye..."
@@ -4591,7 +4591,6 @@
       "wide": "Lokubanti"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Bantfu Lababhekiwe",
       "buildingSection": "Kwakhiwa {title} — ingxenye {n} ku-{total}...",
       "button": "Yakha Sayithi",
@@ -4610,8 +4609,7 @@
       "serviceTimes": "Tikhatsi Temkhonto",
       "serviceTimesPlaceholder": "NgeSonto nga-9 na-11 ekuseni",
       "title": "Yakha Sayithi nge-AI",
-      "tone": "Simo Selizwi",
-      "tone_": "Tone_"
+      "tone": "Simo Selizwi"
     },
     "helpDialog": {
       "addBody": "Chofota Engeta Sichubo ebha lemathulusi, bese udontsa ingxenye kumbe incenye ukuyifaka ekhasini.",
@@ -5494,7 +5492,6 @@
       "operator": "Umenti",
       "pauseAll": "Yekelisa kutitjenga",
       "paused": "Kuyekeliwe",
-      "recur_": "Recur_",
       "recurs": "Kuyaphindzaphindza",
       "resumeAll": "Chubeka kutitjenga",
       "runNow": "Sebenta manje",
@@ -5515,7 +5512,6 @@
       "resume": "Chubeka",
       "retry": "Zama Futsi",
       "statusHeader": "Simo",
-      "status_": "Status_",
       "subject": "Umuntfu",
       "title": "Umlandvo Wekusebenta",
       "trigger": "Sicalisi",

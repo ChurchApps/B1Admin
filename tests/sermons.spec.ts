@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 import { sermonsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSermons } from "./helpers/navigation";
+import { navigateToSermons, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
 
@@ -67,6 +67,8 @@ test.describe("Sermons Management", () => {
       await searchBar.fill("Zebedee Test Sermon");
       const validatedSermon = page.locator("td").getByText("Zebedee Test Sermon");
       await expect(validatedSermon).toHaveCount(1);
+      // The filter persists on the page; clear it so later tests in this chain see their new rows.
+      await searchBar.fill("");
     });
 
     test("should set a podcast audio url on a sermon", async () => {
@@ -252,7 +254,7 @@ test.describe("Sermons Management", () => {
     });
 
     test.beforeEach(async () => {
-      const streamHomeBtn = page.locator('[id="secondaryMenu"]').getByText("Live Stream Times");
+      const streamHomeBtn = (await siblingNav(page)).getByText("Live Stream Times");
       await streamHomeBtn.click();
     });
 

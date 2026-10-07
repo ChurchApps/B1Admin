@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { siteTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { trashIconButton, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSite, navigateToCalendars } from "./helpers/navigation";
+import { navigateToSite, navigateToCalendars, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -111,8 +111,12 @@ test.describe("Website Management", () => {
 
     test("should set and persist page visibility", async () => {
       const openSettings = async () => {
-        await page.locator('[data-testid="page-settings-button"]').last().click();
+        // The pages list is a tree, so the last settings button is not the page this chain just renamed.
+        const row = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first();
+        await expect(row).toBeVisible({ timeout: 10000 });
+        await row.locator('[data-testid="page-settings-button"]').click();
         await page.locator('[data-testid="page-visibility-select"]').waitFor({ state: "visible" });
+        await expect(page.locator('[name="title"]')).toHaveValue("Zebedee Test Page");
       };
       await openSettings();
       await page.locator('[data-testid="page-visibility-select"]').click();
@@ -528,7 +532,7 @@ test.describe("Website Management", () => {
     });
 
     test.beforeEach(async () => {
-      const blocksHomeBtn = page.locator("a").getByText("Blocks").first();
+      const blocksHomeBtn = (await siblingNav(page)).getByText("Blocks", { exact: true }).first();
       await blocksHomeBtn.click();
       await expect(page).toHaveURL(/\/site\/blocks/);
     });
@@ -713,7 +717,7 @@ test.describe("Website Management", () => {
     });
 
     test.beforeEach(async () => {
-      const appearanceHomeBtn = page.locator("a").getByText("Appearance").first();
+      const appearanceHomeBtn = (await siblingNav(page)).getByText("Appearance", { exact: true }).first();
       await appearanceHomeBtn.click();
       await expect(page).toHaveURL(/\/site\/appearance/);
     });
@@ -915,7 +919,7 @@ test.describe("Website Management", () => {
     });
 
     test.beforeEach(async () => {
-      const filesHomeBtn = page.locator("a").getByText("Files").first();
+      const filesHomeBtn = (await siblingNav(page)).getByText("Files", { exact: true }).first();
       await filesHomeBtn.click();
       await expect(page).toHaveURL(/\/site\/files/);
     });
@@ -1062,7 +1066,7 @@ test.describe("Website Management", () => {
   // .notes/B1Admin-test-coverage-gaps.md §3 (website.spec.ts row).
   test.describe("Pages — URL slug surface", () => {
     test("Pages list exposes the URL of each page (slugs are visible, clickable)", async ({ page }) => {
-      const pagesNav = page.locator('[id="secondaryMenu"]').getByText("Pages");
+      const pagesNav = (await siblingNav(page)).getByText("Pages");
       await pagesNav.click();
       await page.waitForURL(/\/site\/pages/, { timeout: 10000 });
       // PagesPage renders a tbody with each page's URL in a TableCell.
@@ -1072,7 +1076,7 @@ test.describe("Website Management", () => {
     });
 
     test("Add Page button opens a modal with a URL field affordance", async ({ page }) => {
-      const pagesNav = page.locator('[id="secondaryMenu"]').getByText("Pages");
+      const pagesNav = (await siblingNav(page)).getByText("Pages");
       await pagesNav.click();
       await page.locator('[data-testid="add-page-button"]').click();
       // The modal exposes a Title (name="title") right away. Stay shallow — confirm modal opened.
@@ -1129,13 +1133,13 @@ test.describe("Website Management", () => {
 
   test.describe("Appearance — toggles persist after save", () => {
     test("navigating away and back to Appearance keeps the user on the section", async ({ page }) => {
-      const appearanceTab = page.locator('[id="secondaryMenu"]').getByText("Appearance");
+      const appearanceTab = (await siblingNav(page)).getByText("Appearance");
       await appearanceTab.click();
       await page.waitForURL(/\/site\/appearance/, { timeout: 10000 });
-      const pagesNav = page.locator('[id="secondaryMenu"]').getByText("Pages");
+      const pagesNav = (await siblingNav(page)).getByText("Pages");
       await pagesNav.click();
       await page.waitForURL(/\/site\/pages/, { timeout: 10000 });
-      await appearanceTab.click();
+      await (await siblingNav(page)).getByText("Appearance").click();
       await page.waitForURL(/\/site\/appearance/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/site\/appearance/);
     });

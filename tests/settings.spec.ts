@@ -1,8 +1,8 @@
 import type { Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, openPersonRow, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo } from "./helpers/navigation";
+import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -460,7 +460,7 @@ test.describe.serial("Settings Management", () => {
     test("Settings landing shows the configuration list and Roles in the secondary nav", async () => {
       await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[data-testid="settings-section-campuses"]')).toBeVisible();
-      const rolesNav = page.locator('[id="secondaryMenu"]').getByText("Roles", { exact: true });
+      const rolesNav = (await siblingNav(page)).getByText("Roles", { exact: true });
       await expect(rolesNav).toBeVisible({ timeout: 10000 });
     });
   });
@@ -479,7 +479,7 @@ test.describe.serial("Settings Management", () => {
     });
 
     test("Email Templates, Audit Log and Batches are in the settings menu", async () => {
-      const menu = page.locator('[id="secondaryMenu"]');
+      const menu = await siblingNav(page);
       await expect(menu.getByText("Audit Log", { exact: true })).toBeVisible({ timeout: 10000 });
       await expect(menu.getByText("Batches", { exact: true })).toBeVisible();
       await menu.getByText("Email Templates", { exact: true }).click();
@@ -543,6 +543,145 @@ test.describe.serial("Settings Management", () => {
       await page.goto("/donations/batches");
       await expect(batchDates().first()).toHaveText(MONTH_FIRST, { timeout: 15000 });
     });
+
+    const choosePhoneFormat = async (format: "international" | "local") => {
+      await page.goto("/settings#region");
+      await expect(page.locator('[data-testid="settings-section-region"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });
+      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await page.locator('[data-testid="phone-format-select"]').click();
+      await page.locator(`[data-testid="phone-format-option-${format}"]`).click();
+      await page.locator("button").getByText("Save").click();
+      await expect(page.locator('[data-testid="phone-format-select"]')).toHaveCount(0, { timeout: 10000 });
+    };
+
+    test("local phone format saves a person's number as typed, without a country code", async () => {
+      try {
+        await choosePhoneFormat("local");
+        await expect(page.locator('[data-testid="settings-section-region"]')).toContainText("Local phone numbers");
+        await expect(page.locator('[data-testid="settings-region"]')).toContainText("Local phone numbers");
+
+        await page.goto("/people");
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = personDetailsEditButton(page);
+        await editBtn.first().click();
+        const mobile = page.locator("#mobilePhone");
+        await expect(mobile).toBeVisible({ timeout: 10000 });
+        // Plain field: no country flag button, and the typed number is not prefixed with "+".
+        await expect(page.locator(".MuiTelInput-IconButton")).toHaveCount(0);
+        await mobile.fill("0701234567");
+        await expect(mobile).toHaveValue("0701234567");
+        await page.locator("button").getByText("Save").click();
+        await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
+        await expect(page.locator("body")).toContainText("0701234567");
+
+        await editBtn.first().click();
+        await expect(page.locator("#mobilePhone")).toHaveValue("0701234567", { timeout: 10000 });
+        await page.locator("button").getByText("Cancel").click();
+      } finally {
+        await choosePhoneFormat("international");
+      }
+      await expect(page.locator('[data-testid="settings-section-region"]')).not.toContainText("Local phone numbers");
+    });
+
+    test("local phone format keeps a name typed while the phone setting is still loading", async () => {
+      let release: () => void = () => {};
+      const held = new Promise<void>((resolve) => { release = resolve; });
+      const route = "**/membership/settings/public/**";
+      try {
+        await choosePhoneFormat("local");
+        await page.goto("/people");
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = personDetailsEditButton(page);
+        await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
+
+        await page.route(route, async (r) => { await held; await r.continue(); });
+        await editBtn.first().click();
+        const first = page.locator("#first");
+        await expect(first).toBeVisible({ timeout: 10000 });
+        await first.fill("Zacchaeus");
+        release();
+
+        const mobile = page.locator("#mobilePhone");
+        await expect(mobile).toBeVisible({ timeout: 10000 });
+        await expect(page.locator(".MuiTelInput-IconButton")).toHaveCount(0);
+        await expect(first).toHaveValue("Zacchaeus");
+        await expect(mobile).not.toHaveValue(/^\+/);
+        await page.locator("button").getByText("Cancel").click();
+      } finally {
+        release();
+        await page.unroute(route);
+        await choosePhoneFormat("international");
+      }
+    });
   });
 
+});
+
+// ChurchAppsSupport#1180: typing a domain and clicking Save (without +) closed the panel and saved nothing.
+test.describe("Settings domains save a typed name", () => {
+  const DOMAIN = "example-1180.org";
+
+  test("Save keeps a typed domain even when + was not clicked", async ({ page }) => {
+    await page.locator('[data-testid="settings-section-domains"]').click();
+    const section = page.locator('[data-testid="settings-domains"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+
+    await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    const input = section.locator('input[name="domainName"]');
+    await expect(input).toBeVisible({ timeout: 10000 });
+    await input.fill(DOMAIN);
+    await section.locator("button").getByText("Save").click();
+    await expect(input).toHaveCount(0, { timeout: 10000 });
+    await expect(section.getByText(DOMAIN)).toBeVisible({ timeout: 10000 });
+
+    // Clean up so later runs start without the domain.
+    await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    const row = section.locator("tr", { hasText: DOMAIN });
+    await row.getByRole("button").click();
+    await section.locator("button").getByText("Save").click();
+    await expect(input).toHaveCount(0, { timeout: 10000 });
+    await expect(section.getByText(DOMAIN)).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+// ChurchAppsSupport#1181: merge-field chips on the email template editor must insert at the cursor, and editing mid-text must not eat the rest.
+const openNewTemplate = async (page: Page) => {
+  await page.goto("/settings/email-templates");
+  await page.getByRole("button", { name: "New Template" }).first().click();
+  await expect(page.getByText("Insert merge field into subject:")).toBeVisible();
+};
+
+const chipsAfter = (page: Page, caption: string) => page.locator("div", { has: page.getByText(caption, { exact: true }) }).last();
+
+test.describe("Email template editor merge fields", () => {
+  test("subject chip inserts at the cursor", async ({ page }) => {
+    await openNewTemplate(page);
+    const subject = page.getByLabel("Subject", { exact: true });
+    await subject.fill("Hello  welcome");
+    await subject.evaluate((el: HTMLInputElement) => { el.focus(); el.setSelectionRange(6, 6); });
+    await chipsAfter(page, "Insert merge field into subject:").getByText("First Name", { exact: true }).click();
+    await expect(subject).toHaveValue("Hello {{firstName}} welcome");
+  });
+
+  test("body chip inserts at the cursor", async ({ page }) => {
+    await openNewTemplate(page);
+    const body = page.locator(".editor-input[contenteditable='true']").first();
+    await body.click();
+    await page.keyboard.type("Hello  welcome");
+    for (let i = 0; i < 8; i++) await page.keyboard.press("ArrowLeft");
+    await chipsAfter(page, "Insert merge field into body:").getByText("First Name", { exact: true }).click();
+    await expect(body).toHaveText("Hello {{firstName}} welcome");
+    await page.getByRole("button", { name: "Preview" }).click();
+    await expect(page.frameLocator("iframe[title='Email preview']").locator("body")).toContainText("Hello John welcome");
+  });
+
+  test("backspace in the middle of the body only removes one character", async ({ page }) => {
+    await openNewTemplate(page);
+    const body = page.locator(".editor-input[contenteditable='true']").first();
+    await body.click();
+    await page.keyboard.type("Hello world");
+    for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("Backspace");
+    await expect(body).toHaveText("Helloworld");
+  });
 });

@@ -907,6 +907,46 @@ test.describe("People Management", () => {
     });
   });
 
+  test.describe("Print directory", () => {
+    // Record what reaches the printer instead of opening the print dialog.
+    async function printFromPeople(page: Page) {
+      await page.context().addInitScript(() => {
+        window.print = () => {
+          (window as any).__printedText = document.querySelector(".directory-root")?.textContent || "";
+        };
+      });
+      const popupPromise = page.waitForEvent("popup");
+      await page.getByRole("button", { name: /^Print (Directory|Results)$/ }).click();
+      const popup = await popupPromise;
+      await popup.waitForFunction(() => typeof (window as any).__printedText === "string", null, { timeout: 30000 });
+      const text = await popup.evaluate(() => (window as any).__printedText as string);
+      await popup.close();
+      return text;
+    }
+
+    test("prints only the search results after a search", async ({ page }) => {
+      const searchInput = page.locator('input[name="searchText"]');
+      await searchInput.fill("Clark");
+      await page.waitForResponse(
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
+        { timeout: 10000 }
+      );
+      await expect(page.locator("table tbody tr").filter({ hasText: SEED_PEOPLE.DONALD }).first()).toBeVisible({ timeout: 10000 });
+      await expect(page.locator("table tbody tr").filter({ hasText: "Smith" })).toHaveCount(0);
+
+      const printed = await printFromPeople(page);
+      expect(printed).toContain("Clark");
+      expect(printed).not.toContain("Smith");
+    });
+
+    test("prints the full directory when no search is active", async ({ page }) => {
+      await expect(page.getByRole("heading", { name: "All Members" })).toBeVisible({ timeout: 10000 });
+      const printed = await printFromPeople(page);
+      expect(printed).toContain("Clark");
+      expect(printed).toContain("Smith");
+    });
+  });
+
   test.describe("People — edge-case affordances", () => {
     test("person profile exposes a top-level Edit button for contact info", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);

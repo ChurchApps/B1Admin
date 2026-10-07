@@ -87,6 +87,8 @@ test.describe("Printing forms", () => {
     const dialog = page.locator('[data-testid="form-print-dialog"]');
     await expect(dialog).toBeVisible({ timeout: 10000 });
     await expect(dialog.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible({ timeout: 10000 });
+    // The paper copy names the church it came from.
+    await expect(dialog.locator('[data-testid="print-church-name"]')).toHaveText("Grace Community Church");
     // Required questions carry a marker; the legend explains it.
     await expect(dialog.getByText("First Name *", { exact: true })).toBeVisible();
     await expect(dialog.getByText("* Required", { exact: true })).toBeVisible();
@@ -126,10 +128,30 @@ test.describe("Printing forms", () => {
     await expect(printHeader).toBeVisible({ timeout: 10000 });
     await expect(pane.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible();
     await expect(pane.getByText(/Submission Date: /)).toBeVisible();
+    await expect(pane.locator('[data-testid="print-church-name"]')).toHaveText("Grace Community Church");
     await expect(printBtn).toBeHidden();
     await page.screenshot({ path: ".pr-screenshots/submission-after.png", fullPage: true });
     await page.emulateMedia({ media: "screen" });
     await expect(printBtn).toBeVisible();
+  });
+
+  test("the printed submissions summary is headed with the church name", async ({ page }) => {
+    await page.goto("/forms/FRM00000001");
+    await page.getByText("Form Submissions", { exact: true }).first().click();
+    await expect(page.getByText("Form Submission Results")).toBeVisible({ timeout: 15000 });
+
+    const churchLine = page.locator('.form-submission-summary [data-testid="print-church-name"]');
+    await expect(churchLine).toHaveText("Grace Community Church");
+    await expect(churchLine).toBeHidden();
+    await page.emulateMedia({ media: "print" });
+    await expect(churchLine).toBeVisible();
+    await page.emulateMedia({ media: "screen" });
+  });
+
+  // A "New Form Submission" notification links to /forms/:id?tab=submissions; the page must open on that tab.
+  test("a form link with ?tab=submissions opens on the submissions tab", async ({ page }) => {
+    await page.goto("/forms/FRM00000001?tab=submissions");
+    await expect(page.getByText("Form Submission Results")).toBeVisible({ timeout: 15000 });
   });
 });
 
@@ -584,6 +606,86 @@ loggedInTest.describe.serial("Form submissions table with many questions", () =>
       return !!c && !!h && h.x >= c.x && h.x + h.width <= c.x + c.width + 1;
     }, { timeout: 5000 }).toBe(true);
     await expect(card.getByRole("cell", { name: "Answer for " + wideTitleFor(WIDE_QUESTION_COUNT) })).toBeVisible();
+  });
+});
+
+// The submissions table, summary, print, and CSV list questions in the order the admin
+// arranged them on the form (the Api's `sort`), not alphabetically by title. Each row's
+// cells have to line up with those headers too.
+const ORDER_FORM_NAME = "Zacchaeus Question Order Form";
+const ORDER_PERSON_ID = "PER00000080"; // Donald Clark
+
+loggedInTest.describe.serial("Form submissions keep the form's question order", () => {
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let formId = "";
+
+  loggedInTest.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${WIDE_API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+
+    const formRes = await ctx.post(`${WIDE_API}/membership/forms`, { ...auth, data: [{ name: ORDER_FORM_NAME, contentType: "person" }] });
+    expect(formRes.ok()).toBeTruthy();
+    formId = (await formRes.json())?.[0]?.id;
+    expect(formId).toBeTruthy();
+
+    const qRes = await ctx.post(`${WIDE_API}/membership/questions`, {
+      ...auth,
+      data: [
+        { formId, title: "Name", fieldType: "Textbox", sort: 1 },
+        { formId, title: "Are you baptized?", fieldType: "Yes/No", sort: 2 }
+      ]
+    });
+    expect(qRes.ok()).toBeTruthy();
+    const saved: any[] = await qRes.json();
+    const nameId = saved.find((q: any) => q.title === "Name")?.id;
+    const baptizedId = saved.find((q: any) => q.title === "Are you baptized?")?.id;
+    expect(nameId && baptizedId).toBeTruthy();
+
+    const subRes = await ctx.post(`${WIDE_API}/membership/formsubmissions`, {
+      ...auth,
+      data: [
+        {
+          formId,
+          contentType: "person",
+          contentId: ORDER_PERSON_ID,
+          submittedBy: ORDER_PERSON_ID,
+          submissionDate: new Date().toISOString(),
+          answers: [{ questionId: nameId, value: "Donald Clark" }, { questionId: baptizedId, value: "True" }]
+        }
+      ]
+    });
+    expect(subRes.ok()).toBeTruthy();
+  });
+
+  loggedInTest.afterAll(async () => {
+    if (formId) await ctx.delete(`${WIDE_API}/membership/forms/${formId}`, auth);
+    await ctx?.dispose();
+  });
+
+  loggedInTest("the submissions table lists questions and answers in form order", async ({ page }) => {
+    await page.goto(`/forms/${formId}`);
+    await page.getByText("Form Submissions", { exact: true }).first().click();
+
+    const card = page.locator(".MuiCard-root").filter({ hasText: "Form Submission Results" });
+    await expect(card).toBeVisible({ timeout: 15000 });
+    const headers = card.getByRole("columnheader");
+    await expect(headers.filter({ hasText: "Are you baptized?" })).toBeVisible();
+    const headerTexts = (await headers.allTextContents()).map((t) => t.trim());
+    const nameIdx = headerTexts.indexOf("Name");
+    const baptizedIdx = headerTexts.indexOf("Are you baptized?");
+    expect(nameIdx).toBeGreaterThan(-1);
+    expect(nameIdx).toBeLessThan(baptizedIdx);
+
+    const row = card.getByRole("row").filter({ has: page.getByRole("link", { name: "Donald Clark" }) });
+    await expect(row).toHaveCount(1);
+    const cells = row.getByRole("cell");
+    await expect(cells.nth(nameIdx)).toHaveText("Donald Clark");
+    await expect(cells.nth(baptizedIdx)).toHaveText("Yes");
   });
 });
 

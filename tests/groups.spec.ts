@@ -1,5 +1,5 @@
 import { request, type Page } from "@playwright/test";
-import { groupsTest as test, expect } from "./helpers/test-fixtures";
+import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, editIconButton, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
@@ -363,6 +363,37 @@ test.describe.serial("Group Management", () => {
       await expect.poll(() => wednesdaySessionCounts(date)).toEqual(afterFirst.map((c, i) => (i === 2 ? c + 1 : c)));
     });
 
+    test("lists which groups at the service time still need attendance", async () => {
+      // Wednesday Prayer Service has attendance on 3/11/2026; the other four Wednesday classes have none.
+      const apiBase = process.env.API_BASE || "http://localhost:8084";
+      const ctx = await request.newContext();
+      const loginRes = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const jwt = loginRes.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+      const headers = { Authorization: "Bearer " + jwt };
+      const sRes = await ctx.post(`${apiBase}/attendance/sessions`, { headers, data: [{ groupId: "GRP00000003", serviceTimeId: "SST00000004", sessionDate: "2026-03-11" }] });
+      const session = (await sRes.json())[0];
+      await ctx.post(`${apiBase}/attendance/visitsessions/log`, { headers, data: { personId: "PER00000001", visitSessions: [{ sessionId: session.id }] } });
+      await ctx.dispose();
+
+      await openSeedGroup(page, "Wednesday Prayer Service");
+      await page.locator("button").getByText("Sessions").click();
+      await page.getByRole("button", { name: "2026", exact: true }).click();
+      await selectSession(page, "2026-03-11");
+      await page.locator('[data-testid="session-attendance-status-button"]').click();
+      const dialog = page.getByRole("dialog");
+      await expect(dialog).toContainText("Who still needs attendance");
+      await expect(dialog.locator('[data-testid="session-status-summary"]')).toHaveText("1 of 5 groups entered", { timeout: 10000 });
+      const rows = dialog.locator('[data-testid="session-status-row"]');
+      await expect(rows).toHaveCount(5);
+      // Not-entered groups come first, then the ones already done.
+      await expect(rows.first()).toContainText("Not entered");
+      await expect(rows.filter({ hasText: "Nursery (0-2)" })).toContainText("Not entered");
+      await expect(rows.last()).toContainText("Wednesday Prayer Service");
+      await expect(rows.last()).toContainText("Entered (1)");
+      await dialog.getByRole("button", { name: "Close" }).click();
+      await expect(dialog).toHaveCount(0);
+    });
+
     test("should add person to session", async () => {
       await openSessionOn(page, "2025-10-01");
       await page.getByRole("checkbox", { name: "William Anderson" }).check();
@@ -417,7 +448,40 @@ test.describe.serial("Group Management", () => {
       await expect(page.locator('h1.roster-title + [data-testid="roster-date"]')).toContainText("December 7, 2025");
       // The print route has no app chrome; go back so later tests can use the nav.
       await page.goBack();
-      await expect(page.locator("#primaryNavButton")).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
+    });
+
+    test("prints a contact roster from the members tab", async () => {
+      await openSeedGroup(page, SESSION_GROUP);
+      await page.locator('[data-testid="print-roster-button"]').click();
+      await expect(page.getByTestId("print-attendance-sheet")).toBeVisible({ timeout: 10000 });
+      await expect(page.getByTestId("print-contact-roster")).toBeVisible();
+      await page.keyboard.press("Escape");
+      const groupId = new URL(page.url()).pathname.split("/").pop();
+
+      await page.goto("/groups/print-roster?groupId=" + groupId + "&layout=contacts");
+      await expect(page.locator("h1.roster-title")).toHaveText(SESSION_GROUP, { timeout: 10000 });
+      await expect(page.locator(".roster-contacts th")).toHaveText(["Name", "Phone", "Email", "Address"]);
+      // Leaders first, then by last name.
+      const rows = page.getByTestId("roster-contact-row");
+      await expect(rows.getByTestId("roster-member")).toHaveText(["William Anderson Leader", "George Thompson", "Margaret Thompson"]);
+      await expect(rows.first().locator(".roster-leader")).toHaveText("Leader");
+      await expect(rows.first().locator("td")).toHaveText(["William Anderson Leader", "(217) 555-1502", "william.anderson@email.com", "486 Pine Street, Springfield, IL 62702"]);
+      await expect(page.locator(".roster-notes")).toHaveCount(0);
+
+      // Opted-out members keep their name but not their contact details.
+      await page.route("**/groupmembers?groupId=*", async (route) => {
+        const members = await (await route.fetch()).json();
+        for (const m of members) if (m.person?.name?.display === "George Thompson") m.person.optedOut = true;
+        await route.fulfill({ json: members });
+      });
+      await page.reload();
+      const george = rows.filter({ hasText: "George Thompson" });
+      await expect(george.locator("td")).toHaveText(["George Thompson", "", "", ""], { timeout: 10000 });
+      await page.unroute("**/groupmembers?groupId=*");
+
+      await page.goBack();
+      await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
     });
 
     test("should cancel adding group", async () => {
@@ -697,4 +761,19 @@ test.describe.serial("Groups — Chat feed toggles", () => {
     await expectFeedChip("discussions", true);
     await expectFeedChip("announcements", true);
   });
+});
+
+// ChurchAppsSupport#1178: "Print All Classes" showed "No classes found to print."
+// /groups/search joins attendance tables from the membership module, which fails
+// in production where each module has its own database. Locally one shared DB hides
+// that, so answer the cross-module search the way production does.
+loggedInTest("print all classes for a service time prints every group in it", async ({ page }) => {
+  await page.route("**/membership/groups/search**", (route) =>
+    route.fulfill({ status: 500, contentType: "application/json", body: JSON.stringify({ error: "Table 'membership.groupServiceTimes' doesn't exist" }) }));
+  // Demo seed: five groups meet at the Wednesday 7:00 PM service time.
+  await page.goto("/groups/print-roster?serviceTimeId=SST00000004&date=2025-12-03");
+  await expect(page.locator("h1.roster-title")).toHaveText(
+    ["Elementary (3-5)", "Elementary (K-2)", "Nursery (0-2)", "Preschool (3-5)", "Wednesday Prayer Service"],
+    { timeout: 15000 }
+  );
 });

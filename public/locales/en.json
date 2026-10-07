@@ -904,6 +904,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "End Date",
+      "noBatches": "No batches with donations in this date range.",
+      "startDate": "Start Date",
+      "title": "Print Batches"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
       "campaign": "Campaign",
@@ -1359,6 +1365,11 @@
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Sessions",
+      "statusButton": "Who Still Needs Attendance",
+      "statusEntered": "Entered ({count})",
+      "statusNotEntered": "Not entered",
+      "statusSummary": "{entered} of {total} groups entered",
+      "statusTitle": "Who still needs attendance",
       "tryAdjusting": "Try adjusting your search",
       "upcoming": "upcoming"
     },
@@ -1391,6 +1402,8 @@
     },
     "printRoster": {
       "absent": "Absent",
+      "attendanceSheet": "Attendance Sheet",
+      "contactRoster": "Contact Roster",
       "date": "Date",
       "noGroups": "No classes found to print.",
       "present": "Present",
@@ -1448,6 +1461,7 @@
       "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Loading recipients...",
+      "mergeFieldHint": "Click to insert a placeholder. It is replaced with each recipient's details when the text is sent.",
       "messageLabel": "Message",
       "noPhoneNotice": "{count} members have no phone number on file and will be skipped.",
       "noPhoneNoticeSingular": "{count} member has no phone number on file and will be skipped.",
@@ -1551,6 +1565,11 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Show sign-in prompt on the app home screen",
+      "signInPromptHelp": "Visitors who are not signed in see this on the app home screen. Sign-in is always available in the app menu.",
+      "signInPromptPlaceholder": "Sign in to see your groups, giving, and more.",
+      "signInPromptText": "Sign-in prompt text",
+      "signInPromptTitle": "Home screen sign-in prompt",
       "subtitle": "Member directory, visibility, and messaging for the B1.church app",
       "title": "Portal settings"
     },
@@ -1867,6 +1886,7 @@
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
       "printDirectory": "Print Directory",
+      "printResults": "Print Results",
       "searchPpl": "Search People",
       "searchResults": "Search Results",
       "showAll": "Show All Members",
@@ -3785,7 +3805,8 @@
       "gradePromotionOff": "Automatic promotion disabled",
       "gradePromotionOn": "Promotes on {date} each year",
       "notConfigured": "Not configured",
-      "notSet": "Not set"
+      "notSet": "Not set",
+      "phoneLocalSubtitle": "Local phone numbers"
     },
     "manageChurch": {
       "auditLog": "Audit Log",
@@ -3812,6 +3833,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Date format",
       "helperText": "Dates and times across B1 follow this region's format.",
+      "phoneFormat": "Phone numbers",
+      "phoneHelperText": "Local saves numbers exactly as typed (like 0701 234 5678). Texting works best when numbers include the country code.",
+      "phoneInternational": "International (with country code)",
+      "phoneLocal": "Local (as typed)",
       "region": "Region",
       "title": "Region"
     },
@@ -4083,7 +4108,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4593,7 +4617,6 @@
       "wide": "Wide"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4612,8 +4635,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Click Add Content in the toolbar, then drag a section or element onto the page.",
@@ -5496,7 +5518,6 @@
       "operator": "Operator",
       "pauseAll": "Pause automation",
       "paused": "Paused",
-      "recur_": "Recur_",
       "recurs": "Repeats",
       "resumeAll": "Resume automation",
       "runNow": "Run now",
@@ -5517,7 +5538,6 @@
       "resume": "Resume",
       "retry": "Retry",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Person",
       "title": "Execution History",
       "trigger": "Trigger",

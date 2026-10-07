@@ -293,6 +293,14 @@ export const PeoplePage = memo(() => {
     setSelectedPersonIds([]);
   }, [selectedPersonIds]);
 
+  // Search results can be large, so the IDs go through localStorage instead of the URL.
+  const handlePrint = () => {
+    if (isSearchPerformed && searchResults) {
+      localStorage.setItem("printDirectoryPersonIds", JSON.stringify(searchResults.map((p) => p.id).filter(Boolean)));
+      window.open("/people/print-directory?scope=search", "_blank");
+    } else window.open("/people/print-directory", "_blank");
+  };
+
   const getExportData = (people: PersonInterface[]) => {
     return people.map((person) => {
       const { name, contactInfo, ...rest } = person;
@@ -405,7 +413,7 @@ export const PeoplePage = memo(() => {
                       </Button>
                     )}
                     {searchResults && <ExportButton data={getExportData(searchResults || [])} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
-                    <AppIconButton label={Locale.label("people.peoplePage.printDirectory")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/people/print-directory", "_blank")} />
+                    <AppIconButton label={isSearchPerformed ? Locale.label("people.peoplePage.printResults") : Locale.label("people.peoplePage.printDirectory")} icon={<PrintIcon />} tone="card" onClick={handlePrint} />
                     <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
                   </Stack>
                 </Stack>

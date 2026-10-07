@@ -1358,6 +1358,11 @@
       "selectSession": "Vælg session",
       "session": "Session",
       "sessions": "Sessioner",
+      "statusButton": "Hvem mangler stadig fremmøde",
+      "statusEntered": "Registreret ({count})",
+      "statusNotEntered": "Ikke registreret",
+      "statusSummary": "{entered} af {total} grupper registreret",
+      "statusTitle": "Hvem mangler stadig fremmøde",
       "tryAdjusting": "Prøv at justere din søgning",
       "upcoming": "kommende"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "Din kirke har ikke flere sms-krediter i denne faktureringsperiode. Ingen beskeder blev sendt. Opgrader eller vent på, at dine krediter fornyes på",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Indlæser modtagere...",
+      "mergeFieldHint": "Klik for at indsætte en pladsholder. Den erstattes med hver modtagers oplysninger, når beskeden sendes.",
       "messageLabel": "Besked",
       "noPhoneNotice": "{count} har intet telefonnummer registreret.",
       "noPhoneNoticeSingular": "{count} har intet telefonnummer registreret.",
@@ -1549,6 +1555,11 @@
       "title": "App-tema"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Vis login-opfordring på appens startskærm",
+      "signInPromptHelp": "Besøgende, der ikke er logget ind, ser dette på appens startskærm. Login er altid tilgængeligt i appens menu.",
+      "signInPromptPlaceholder": "Log ind for at se dine grupper, gaver og mere.",
+      "signInPromptText": "Tekst til login-opfordring",
+      "signInPromptTitle": "Login-opfordring på startskærmen",
       "subtitle": "Konfigurer indstillinger for B1 Mobile-appen",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Primær e-mail",
       "primPhone": "Primært telefonnummer",
       "printDirectory": "Udskriv katalog",
+      "printResults": "Udskriv resultater",
       "searchPpl": "Søg personer",
       "searchResults": "Søgeresultater",
       "showAll": "Vis alle medlemmer",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instruktioner",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Bred"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Gudstjenestetider",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Klik på Tilføj indhold i værktøjslinjen, og træk derefter en sektion eller et element til siden.",
@@ -5494,7 +5503,6 @@
       "operator": "Operator",
       "pauseAll": "Sæt automatisering på pause",
       "paused": "På pause",
-      "recur_": "Recur_",
       "recurs": "Gentages",
       "resumeAll": "Genoptag automatisering",
       "runNow": "Kør nu",
@@ -5515,7 +5523,6 @@
       "resume": "Genoptag",
       "retry": "Prøv igen",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Person",
       "title": "Udførelseshistorik",
       "trigger": "Udløser",
@@ -5628,6 +5635,7 @@
       "days": "Ventedag",
       "noAssignee": "Ikke tildelt",
       "noGroup": "Ingen gruppe valgt",
+      "noTextingProvider": "Der er ikke opsat nogen sms-udbyder. Tilføj en under Indstillinger → Sms, ellers bliver beskeder ikke sendt.",
       "note": "Note",
       "pickAssignee": "Vælg ansvarlig",
       "pickGroup": "Vælg gruppe",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Emne (valgfrit)",
       "taskDescription": "Beskrivelse (valgfrit)",
       "taskTitle": "Opgavetitel",
+      "textMergeHint": "Brug {{firstName}}, {{lastName}}, {{displayName}} eller {{churchName}}. Personer, der har frameldt sig, springes over.",
+      "textMessage": "Sms-besked",
       "title": "Automatiserede handlinger",
       "type": {
         "addNote": "Tilføj note",
@@ -5647,6 +5657,7 @@
         "delay": "Vent",
         "removeFromGroup": "Fjern fra gruppe",
         "sendEmail": "Send e-mail",
+        "sendText": "Send sms",
         "setField": "Angiv felt",
         "webhook": "Kald webhook"
       },

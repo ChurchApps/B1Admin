@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, FormNavigation, FormEdit } from "./components";
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, Loading, PageHeader } from "@churchapps/apphelper";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 import { Description as DescriptionIcon, Edit as EditIcon } from "@mui/icons-material";
 import { HeaderPrimaryButton, EmptyState } from "../components/ui";
@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 export const FormPage = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [selectedTab, setSelectedTab] = React.useState("");
   const [editingSettings, setEditingSettings] = React.useState(false);
 
@@ -54,7 +55,8 @@ export const FormPage = () => {
 
   React.useEffect(() => {
     if (selectedTab === "" && availableTabs.length > 0) {
-      setSelectedTab(availableTabs[0].key);
+      const requestedTab = availableTabs.find((t) => t.key === searchParams.get("tab"));
+      setSelectedTab(requestedTab?.key || availableTabs[0].key);
     }
   }, [availableTabs, selectedTab]);
 

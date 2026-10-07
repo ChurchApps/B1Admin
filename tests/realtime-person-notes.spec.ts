@@ -25,7 +25,7 @@ async function signIn(page: Page, email: string) {
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
   }
 
-  await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 30000 });
+  await page.getByTestId("command-palette-open").waitFor({ state: "visible", timeout: 30000 });
 }
 
 async function openPersonNotes(page: Page) {

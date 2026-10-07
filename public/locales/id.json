@@ -1358,6 +1358,11 @@
       "selectSession": "Select Session",
       "session": "Sesi",
       "sessions": "Sesi",
+      "statusButton": "Siapa yang masih perlu mengisi kehadiran",
+      "statusEntered": "Sudah diisi ({count})",
+      "statusNotEntered": "Belum diisi",
+      "statusSummary": "{entered} dari {total} grup sudah diisi",
+      "statusTitle": "Siapa yang masih perlu mengisi kehadiran",
       "tryAdjusting": "Try adjusting your search",
       "upcoming": "akan datang"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "Gereja Anda kehabisan kredit SMS untuk siklus penagihan ini. Tidak ada pesan yang terkirim. Tingkatkan paket atau tunggu kredit Anda diperbarui di",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Memuat penerima...",
+      "mergeFieldHint": "Klik untuk menyisipkan placeholder. Placeholder diganti dengan data setiap penerima saat pesan dikirim.",
       "messageLabel": "Pesan",
       "noPhoneNotice": "{count} tidak memiliki nomor telepon yang terdaftar.",
       "noPhoneNoticeSingular": "{count} tidak memiliki nomor telepon yang terdaftar.",
@@ -1549,6 +1555,11 @@
       "title": "Tema Aplikasi"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Tampilkan ajakan masuk di layar beranda aplikasi",
+      "signInPromptHelp": "Pengunjung yang belum masuk melihat ini di layar beranda aplikasi. Masuk selalu tersedia di menu aplikasi.",
+      "signInPromptPlaceholder": "Masuk untuk melihat grup, persembahan, dan lainnya.",
+      "signInPromptText": "Teks ajakan masuk",
+      "signInPromptTitle": "Ajakan masuk di layar beranda",
       "subtitle": "Configure settings for the B1 Mobile app",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Email Utama",
       "primPhone": "Telepon Utama",
       "printDirectory": "Cetak Direktori",
+      "printResults": "Cetak hasil",
       "searchPpl": "Search People",
       "searchResults": "Hasil Pencarian",
       "showAll": "Tampilkan Semua Anggota",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instruksi",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Lebar"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Jadwal Ibadah",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Klik Tambah Konten di bilah alat, lalu seret bagian atau elemen ke halaman.",
@@ -5494,7 +5503,6 @@
       "operator": "Operator",
       "pauseAll": "Jeda otomatisasi",
       "paused": "Dijeda",
-      "recur_": "Recur_",
       "recurs": "Berulang",
       "resumeAll": "Lanjutkan otomatisasi",
       "runNow": "Jalankan sekarang",
@@ -5515,7 +5523,6 @@
       "resume": "Lanjutkan",
       "retry": "Coba Lagi",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Orang",
       "title": "Riwayat Eksekusi",
       "trigger": "Pemicu",
@@ -5628,6 +5635,7 @@
       "days": "Hari tunggu",
       "noAssignee": "Tidak Ditugaskan",
       "noGroup": "Tidak ada grup yang dipilih",
+      "noTextingProvider": "Belum ada penyedia SMS yang diatur. Tambahkan di Pengaturan → SMS atau pesan tidak akan terkirim.",
       "note": "Catatan",
       "pickAssignee": "Pilih penerima tugas",
       "pickGroup": "Pilih grup",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Subjek (opsional)",
       "taskDescription": "Deskripsi (opsional)",
       "taskTitle": "Judul tugas",
+      "textMergeHint": "Gunakan {{firstName}}, {{lastName}}, {{displayName}} atau {{churchName}}. Orang yang memilih berhenti akan dilewati.",
+      "textMessage": "Pesan teks",
       "title": "Tindakan otomatis",
       "type": {
         "addNote": "Tambah Catatan",
@@ -5647,6 +5657,7 @@
         "delay": "Tunggu",
         "removeFromGroup": "Hapus dari Grup",
         "sendEmail": "Kirim Email",
+        "sendText": "Kirim SMS",
         "setField": "Atur Kolom",
         "webhook": "Panggil Webhook"
       },

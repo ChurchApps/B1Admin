@@ -42,6 +42,16 @@ const appendMergeFieldToHtml = (html: string, field: string) => {
   return doc.body.innerHTML;
 };
 
+// Types into the focused Lexical editor so it lands at the caret; false when the body editor isn't focused.
+const insertIntoFocusedEditor = (field: string) => {
+  const active = document.activeElement as HTMLElement | null;
+  if (!active?.isContentEditable || !active.closest(".editor-container")) return false;
+  return document.execCommand("insertText", false, field);
+};
+
+// Keeps focus (and the caret) in the field being edited when a chip is clicked.
+const keepFocus = (ev: React.MouseEvent) => ev.preventDefault();
+
 interface Props {
   template: EmailTemplateInterface;
   onSave: () => void;
@@ -88,15 +98,21 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
   };
 
   const insertMergeField = (field: string) => {
-    const nextSubject = `${getValues("subject") || ""}${field}`;
+    const current = getValues("subject") || "";
+    const input = subjectInputRef.current;
+    const start = input?.selectionStart ?? current.length;
+    const end = input?.selectionEnd ?? current.length;
+    const nextSubject = current.slice(0, start) + field + current.slice(end);
+    const caret = start + field.length;
     setValue("subject", nextSubject, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
     requestAnimationFrame(() => {
       subjectInputRef.current?.focus();
-      subjectInputRef.current?.setSelectionRange(nextSubject.length, nextSubject.length);
+      subjectInputRef.current?.setSelectionRange(caret, caret);
     });
   };
 
   const insertMergeFieldInBody = (field: string) => {
+    if (insertIntoFocusedEditor(field)) return;
     const nextHtml = appendMergeFieldToHtml(getValues("htmlContent") || "", field);
     setValue("htmlContent", nextHtml, { shouldDirty: true, shouldValidate: true });
     setBodyEditorKey(key => key + 1);
@@ -110,10 +126,10 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
     preview = preview.replace(/\{\{email\}\}/g, "john@example.com");
     preview = preview.replace(/\{\{churchName\}\}/g, churchName);
-    
+
     const isDarkTheme = document.body.classList.contains("dark-theme");
     const styleInjection = isDarkTheme ? "<style>body { color: white; font-family: sans-serif; }</style>" : "<style>body { font-family: sans-serif; }</style>";
-    
+
     return preview + styleInjection;
   };
 
@@ -152,7 +168,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeSubject")}</Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
             {getMergeFields().map(f => (
-              <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => insertMergeField(f.key)} sx={{ cursor: "pointer" }} />
+              <Chip key={f.key} label={f.label} size="small" variant="outlined" onMouseDown={keepFocus} onClick={() => insertMergeField(f.key)} sx={{ cursor: "pointer" }} />
             ))}
           </Stack>
         </Box>
@@ -179,7 +195,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeBody")}</Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
             {getMergeFields().map(f => (
-              <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => insertMergeFieldInBody(f.key)} sx={{ cursor: "pointer" }} />
+              <Chip key={f.key} label={f.label} size="small" variant="outlined" onMouseDown={keepFocus} onClick={() => insertMergeFieldInBody(f.key)} sx={{ cursor: "pointer" }} />
             ))}
           </Stack>
         </Box>

@@ -1358,6 +1358,11 @@
       "selectSession": "Piliin ang Session",
       "session": "Session",
       "sessions": "Mga Sasyon",
+      "statusButton": "Sino pa ang kailangang mag-attendance",
+      "statusEntered": "Naitala ({count})",
+      "statusNotEntered": "Hindi pa naitala",
+      "statusSummary": "{entered} sa {total} grupo ang naitala",
+      "statusTitle": "Sino pa ang kailangang mag-attendance",
       "tryAdjusting": "Subukang ayusin ang iyong paghahanap",
       "upcoming": "paparating"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "Naubusan na ng texting credits ang iyong simbahan para sa billing cycle na ito. Walang naipadalang mensahe. Mag-upgrade o hintaying mag-renew ang iyong credits sa",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Naglo-load ng mga tatanggap...",
+      "mergeFieldHint": "I-click para magsingit ng placeholder. Papalitan ito ng detalye ng bawat tatanggap kapag ipinadala ang text.",
       "messageLabel": "Mensahe",
       "noPhoneNotice": "{count} ay walang phone number sa file.",
       "noPhoneNoticeSingular": "{count} ay walang phone number sa file.",
@@ -1549,6 +1555,11 @@
       "title": "Tema ng App"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Ipakita ang paalala sa pag-sign in sa home screen ng app",
+      "signInPromptHelp": "Makikita ito ng mga bisitang hindi naka-sign in sa home screen ng app. Laging available ang pag-sign in sa menu ng app.",
+      "signInPromptPlaceholder": "Mag-sign in para makita ang iyong mga grupo, pagbibigay, at iba pa.",
+      "signInPromptText": "Teksto ng paalala sa pag-sign in",
+      "signInPromptTitle": "Paalala sa pag-sign in sa home screen",
       "subtitle": "I-configure ang mga setting para sa B1 Mobile app",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Pangunahing Email",
       "primPhone": "Pangunahing Telepono",
       "printDirectory": "I-print ang Direktoryo",
+      "printResults": "I-print ang mga resulta",
       "searchPpl": "Maghanap ng Mga Tao",
       "searchResults": "Mga Resulta ng Paghahanap",
       "showAll": "Ipakita ang Lahat ng Miyembro",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Mga Tagubilin",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Malapad"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Mga Oras ng Serbisyo",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "I-click ang Add Content sa toolbar, pagkatapos ay i-drag ang isang section o element papunta sa page.",
@@ -5494,7 +5503,6 @@
       "operator": "Operator",
       "pauseAll": "I-pause ang automation",
       "paused": "Naka-pause",
-      "recur_": "Recur_",
       "recurs": "Umuulit",
       "resumeAll": "Ipagpatuloy ang automation",
       "runNow": "Patakbuhin ngayon",
@@ -5515,7 +5523,6 @@
       "resume": "Ipagpatuloy",
       "retry": "Subukan Muli",
       "statusHeader": "Katayuan",
-      "status_": "Status_",
       "subject": "Tao",
       "title": "Kasaysayan ng Pagpapatupad",
       "trigger": "Trigger",
@@ -5628,6 +5635,7 @@
       "days": "Mga araw ng paghihintay",
       "noAssignee": "Walang itinalaga",
       "noGroup": "Walang napiling grupo",
+      "noTextingProvider": "Walang naka-set up na texting provider. Magdagdag ng isa sa Settings → Texting o hindi maipapadala ang mga text.",
       "note": "Tala",
       "pickAssignee": "Pumili ng assignee",
       "pickGroup": "Pumili ng grupo",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Subject (opsyonal)",
       "taskDescription": "Paglalarawan (opsyonal)",
       "taskTitle": "Pamagat ng gawain",
+      "textMergeHint": "Gamitin ang {{firstName}}, {{lastName}}, {{displayName}} o {{churchName}}. Nilalaktawan ang mga taong nag-opt out.",
+      "textMessage": "Text message",
       "title": "Mga awtomatikong aksyon",
       "type": {
         "addNote": "Magdagdag ng Tala",
@@ -5647,6 +5657,7 @@
         "delay": "Maghintay",
         "removeFromGroup": "Alisin sa Grupo",
         "sendEmail": "Magpadala ng Email",
+        "sendText": "Magpadala ng Text",
         "setField": "Itakda ang Field",
         "webhook": "Tawagan ang Webhook"
       },

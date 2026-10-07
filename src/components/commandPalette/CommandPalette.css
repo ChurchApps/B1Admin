@@ -1,13 +1,21 @@
-#secondary-menu-container { display: flex; align-items: center; justify-content: flex-end; }
+#primaryNavButton, #primaryNavButton + .MuiPopper-root, #secondaryMenuAlt { display: none !important; }
+
+.om-nav { order: -1; display: flex; align-items: center; gap: 12px; margin-right: 16px; flex-shrink: 0; }
+
+.om-logo { display: flex; padding: 4px; border-radius: 6px; }
+
+.om-logo:hover { background: rgba(255, 255, 255, 0.12); }
+
+.om-logo img { height: 32px; display: block; }
 
 .om-search {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   height: 36px;
-  min-width: 260px;
+  min-width: 220px;
+  max-width: 380px;
   padding: 0 10px 0 12px;
-  margin-right: 16px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.12);
@@ -22,7 +30,11 @@
 .om-search:hover,
 .om-search:focus-visible { background: rgba(255, 255, 255, 0.2); outline: none; }
 
-.om-search span { flex: 1; }
+.om-search-label { flex: 1; font-weight: 600; color: #fff; overflow: hidden; text-overflow: ellipsis; }
+
+.om-search-sep { margin: 0 6px; color: rgba(255, 255, 255, 0.55); }
+
+.om-search-page { font-weight: 500; color: rgba(255, 255, 255, 0.85); }
 
 .om-search kbd {
   font: inherit;
@@ -33,7 +45,11 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-@media (max-width: 899px) { .om-search { display: none; } }
+@media (max-width: 740px) {
+  .om-nav { gap: 8px; margin-right: 8px; }
+  .om-search { min-width: 0; max-width: 45vw; }
+  .om-search kbd { display: none; }
+}
 
 .om-overlay {
   position: fixed;
@@ -71,7 +87,7 @@
 
 .om-palette-results {
   padding: 8px;
-  max-height: min(52vh, 420px);
+  max-height: min(70vh, 560px);
   overflow-y: auto;
 }
 
@@ -103,3 +119,15 @@
 .om-hit.active { background: #e5e8ee; }
 
 .om-hit small { color: #666; }
+
+.om-hit span { display: flex; align-items: center; gap: 10px; }
+
+.om-hit span .MuiIcon-root { color: #1565C0; }
+
+.om-hit small { display: flex; align-items: center; }
+
+.om-hit.om-child { padding: 6px 12px 6px 44px; font-size: 0.9rem; }
+
+.om-hit.om-child .MuiIcon-root { font-size: 18px; color: #666; }
+
+.om-hit[aria-current="page"] span { font-weight: 650; color: #1565C0; }

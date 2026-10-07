@@ -1,6 +1,6 @@
 import { test, expect, type APIRequestContext, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { navigateTo, navigateToServing } from "./helpers/navigation";
+import { navigateTo, navigateToServing, siblingNav } from "./helpers/navigation";
 
 // Commons is a Domain Admin-only moderation tab. demo@b1.church (USR00000001) is a member of
 // the "Domain Admins" role (Api/tools/dbScripts/membership/demo.sql, RME00000001 -> ROL00000001),
@@ -338,7 +338,7 @@ test.describe("serving song search", () => {
 
     await login(page);
     await navigateToServing(page);
-    await page.locator('[id="secondaryMenu"] a').getByText("Songs").click();
+    await (await siblingNav(page)).getByText("Songs").click();
     await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
     await page.getByTestId("add-song-button").waitFor({ state: "visible", timeout: 10000 });
     await page.getByTestId("add-song-button").dispatchEvent("click"); // the fixed site header sits over the page header on this route, so pointer clicks never reach the button

@@ -83,6 +83,8 @@ export const Header: React.FC = () => {
 
   const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search, isMinistryMember });
 
+  const paletteMenu = useMemo(() => primaryMenu.map((m) => ({ ...m, children: SecondaryMenuHelper.getSecondaryMenu(m.url, { formPermission, search: "", isMinistryMember }).menuItems })), [primaryMenu, formPermission, isMinistryMember]);
+
   const handleNavigate = (url: string) => {
     navigate(url);
   };
@@ -114,7 +116,7 @@ export const Header: React.FC = () => {
         "/sermons": "nav-item-sermons"
       };
 
-      const scopes = document.querySelectorAll("header, .MuiDrawer-root");
+      const scopes = document.querySelectorAll("header:not(#page-header), .MuiDrawer-root");
       const navLinks = Array.from(scopes).flatMap((scope) => Array.from(scope.querySelectorAll('a[href^="/"], button[role="menuitem"], .MuiListItemButton-root')));
       navLinks.forEach((link) => {
         const href = link.getAttribute("href");
@@ -179,13 +181,13 @@ export const Header: React.FC = () => {
       <SiteHeader
         primaryMenuItems={primaryMenu}
         primaryMenuLabel={getPrimaryLabel()}
-        secondaryMenuItems={secondaryMenu.menuItems}
+        secondaryMenuItems={[]}
         secondaryMenuLabel={secondaryMenu.label}
         context={context!}
         appName={"B1Admin"}
         onNavigate={handleNavigate}
       />
-      <CommandPalette />
+      <CommandPalette menu={paletteMenu} label={getPrimaryLabel()} page={secondaryMenu.label} />
     </>
   );
 };

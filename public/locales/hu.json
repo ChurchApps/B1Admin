@@ -1358,6 +1358,11 @@
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Sessions",
+      "statusButton": "Kinek kell még jelenlétet rögzítenie",
+      "statusEntered": "Rögzítve ({count})",
+      "statusNotEntered": "Nincs rögzítve",
+      "statusSummary": "{total} csoportból {entered} rögzítve",
+      "statusTitle": "Kinek kell még jelenlétet rögzítenie",
       "tryAdjusting": "Try adjusting your search",
       "upcoming": "közelgő"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "A gyülekezetnek elfogyott az SMS-kreditje erre a számlázási időszakra. Nem küldtünk üzenetet. Frissítsen, vagy várjon a kreditek megújulására itt:",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Címzettek betöltése...",
+      "mergeFieldHint": "Kattintson egy helyőrző beszúrásához. Az üzenet elküldésekor minden címzett saját adataival helyettesítődik.",
       "messageLabel": "Üzenet",
       "noPhoneNotice": "{count} esetében nincs telefonszám a fájlban.",
       "noPhoneNoticeSingular": "{count} esetében nincs telefonszám a fájlban.",
@@ -1549,6 +1555,11 @@
       "title": "Alkalmazás témája"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Bejelentkezési felhívás megjelenítése az alkalmazás kezdőképernyőjén",
+      "signInPromptHelp": "A be nem jelentkezett látogatók ezt látják az alkalmazás kezdőképernyőjén. A bejelentkezés mindig elérhető az alkalmazás menüjében.",
+      "signInPromptPlaceholder": "Jelentkezzen be csoportjai, adományai és egyebek megtekintéséhez.",
+      "signInPromptText": "Bejelentkezési felhívás szövege",
+      "signInPromptTitle": "Bejelentkezési felhívás a kezdőképernyőn",
       "subtitle": "Configure settings for the B1 Mobile app",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Elsődleges e-mail",
       "primPhone": "Elsődleges telefon",
       "printDirectory": "Névjegyzék nyomtatása",
+      "printResults": "Eredmények nyomtatása",
       "searchPpl": "Search People",
       "searchResults": "Keresési eredmények",
       "showAll": "Összes tag megjelenítése",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Utasítások",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Széles"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Istentiszteleti időpontok",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Kattintson a Tartalom hozzáadása gombra az eszköztárban, majd húzzon egy szekciót vagy elemet az oldalra.",
@@ -5494,7 +5503,6 @@
       "operator": "Operátor",
       "pauseAll": "Automatizálás szüneteltetése",
       "paused": "Szüneteltetve",
-      "recur_": "Recur_",
       "recurs": "Ismétlés",
       "resumeAll": "Automatizálás folytatása",
       "runNow": "Futtatás most",
@@ -5515,7 +5523,6 @@
       "resume": "Folytatás",
       "retry": "Újrapróbálás",
       "statusHeader": "Állapot",
-      "status_": "Status_",
       "subject": "Személy",
       "title": "Végrehajtási előzmények",
       "trigger": "Trigger",
@@ -5628,6 +5635,7 @@
       "days": "Várakozási napok",
       "noAssignee": "Nincs hozzárendelve",
       "noGroup": "Nincs kiválasztott csoport",
+      "noTextingProvider": "Nincs beállítva SMS-szolgáltató. Adjon hozzá egyet a Beállítások → SMS menüben, különben az üzenetek nem lesznek elküldve.",
       "note": "Megjegyzés",
       "pickAssignee": "Felelős kiválasztása",
       "pickGroup": "Csoport kiválasztása",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Tárgy (opcionális)",
       "taskDescription": "Leírás (opcionális)",
       "taskTitle": "Feladat neve",
+      "textMergeHint": "Használja: {{firstName}}, {{lastName}}, {{displayName}} vagy {{churchName}}. A leiratkozott személyek kimaradnak.",
+      "textMessage": "SMS-üzenet",
       "title": "Automatizált műveletek",
       "type": {
         "addNote": "Megjegyzés hozzáadása",
@@ -5647,6 +5657,7 @@
         "delay": "Várakozás",
         "removeFromGroup": "Eltávolítás csoportból",
         "sendEmail": "E-mail küldése",
+        "sendText": "SMS küldése",
         "setField": "Mező beállítása",
         "webhook": "Webhook meghívása"
       },

@@ -47,6 +47,7 @@ const PrintPlan = React.lazy(() => import("./serving/plans/PrintPlan").then((mod
 const DevicesPage = React.lazy(() => import("./profile/DevicesPage").then((module) => ({ default: module.DevicesPage })));
 const PrintDonationPage = React.lazy(() => import("./donations/PrintDonationPage").then((module) => ({ default: module.PrintDonationPage })));
 const PrintAllStatementsPage = React.lazy(() => import("./donations/PrintAllStatementsPage").then((module) => ({ default: module.PrintAllStatementsPage })));
+const PrintAllBatchesPage = React.lazy(() => import("./donations/PrintAllBatchesPage").then((module) => ({ default: module.PrintAllBatchesPage })));
 const PrintDirectoryPage = React.lazy(() => import("./people/PrintDirectoryPage").then((module) => ({ default: module.PrintDirectoryPage })));
 const PrintRosterPage = React.lazy(() => import("./groups/PrintRosterPage").then((module) => ({ default: module.PrintRosterPage })));
 const BatchGivingStatementsPage = React.lazy(() => import("./donations/BatchGivingStatementsPage").then((module) => ({ default: module.BatchGivingStatementsPage })));
@@ -212,6 +213,14 @@ export const Authenticated: React.FC = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <PrintAllStatementsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/donations/batches/print-all"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <PrintAllBatchesPage />
             </Suspense>
           }
         />

@@ -1,4 +1,4 @@
-import React, { useRef, useState, memo, useCallback, useMemo } from "react";
+import React, { useContext, useRef, useState, memo, useCallback, useMemo } from "react";
 import {
   type AnswerInterface,
   type FormSubmissionInterface,
@@ -15,6 +15,8 @@ import {
 import { CountChip, ExportButton, hoverRowSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { SubmissionPersonDialog } from "../../components/SubmissionPersonDialog";
+import { PrintStyles } from "../../components";
+import UserContext from "../../UserContext";
 import { SwapHoriz as SwapHorizIcon } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
@@ -31,6 +33,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const [summary, setSummary] = useState<any>([]);
   const [summaryCsv, setSummaryCsv] = useState<any>([]);
   const [changePersonId, setChangePersonId] = useState("");
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const yesNoMap = useMemo(() => ({ True: Locale.label("common.yes"), False: Locale.label("common.no") }), []);
   const yesNoDefault = useMemo(
     () => [
@@ -96,9 +99,6 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       formSubmission.person = { name: submittedBy?.name?.display || Locale.label("forms.formSubmissions.anon"), id: submittedBy?.id || null };
       formSubmission.mappedQA = [];
       formSubmission.csvData = [];
-      if (formSubmission.questions) {
-        formSubmission.questions = formSubmission.questions.sort((a: QuestionInterface, b: QuestionInterface) => ((a.title || "") > (b.title || "") ? 1 : -1));
-      }
       return formSubmission;
     },
     [getPerson]
@@ -173,8 +173,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         </TableCell>
       );
       result.push(<TableCell key="submissionDate">{Locale.label("forms.formSubmissions.subDate")}</TableCell>);
-      [...formSubmissions.data[0].questions].sort((a: QuestionInterface, b: QuestionInterface) => ((a.title || "") > (b.title || "") ? 1 : -1)).forEach((question: QuestionInterface) =>
-        result.push(<TableCell key={question.id}>{question.title}</TableCell>));
+      formSubmissions.data[0].questions.forEach((question: QuestionInterface) => result.push(<TableCell key={question.id}>{question.title}</TableCell>));
     }
     return result;
   }, [formSubmissions.data]);
@@ -317,6 +316,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
               .form-submissions-scroll table { min-width: 0 !important; }
             }
           `}</style>
+          <PrintStyles />
+          {churchName && <Box className="print-only" data-testid="print-church-name" sx={{ fontWeight: 600, mb: 1 }}>{churchName}</Box>}
           <DisplayBox headerText={Locale.label("forms.formSubmissions.subSum")} headerIcon="group" editContent={editLinks}>
             <Grid container spacing={3}>
               {summaryContent}

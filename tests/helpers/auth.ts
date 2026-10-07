@@ -30,7 +30,7 @@ export async function login(page: Page) {
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
-  const navButton = page.locator("#primaryNavButton");
+  const navButton = page.getByTestId("command-palette-open");
 
   // Race dashboard nav vs login form to detect cached vs fresh session.
   const winner = await Promise.race([
@@ -62,5 +62,5 @@ export async function login(page: Page) {
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
   }
 
-  await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 30000 });
+  await page.getByTestId("command-palette-open").waitFor({ state: "visible", timeout: 30000 });
 }
