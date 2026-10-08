@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez-Chat öffnen",
+      "ariaSend": "Nachricht senden",
+      "errorAnswer": "Darauf konnte ich keine Antwort finden.",
+      "errorGeneric": "Bei der Verbindung mit Bez ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "intro": "Hallo, ich bin Bez! Ich kann Ihnen helfen, durch B1 Admin zu navigieren. Versuchen Sie, mich zu fragen:",
+      "placeholderInput": "Stelle eine Frage...",
       "sampleCsv": "\"Wie importiere ich Mitglieder aus einer CSV-Datei?\"",
       "sampleGiving": "\"Wie richte ich Online-Spenden ein?\"",
       "sampleGroup": "\"Wie erstelle ich eine neue Gruppe?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Hilfe-Chat öffnen",
+      "ariaSend": "Nachricht senden",
       "composing": "Antwort wird verfasst...",
+      "errorAnswer": "Darauf konnte ich keine Antwort finden.",
+      "errorGeneric": "Bei der Verbindung mit dem Dokumentationsassistenten ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "intro": "Stellen Sie eine beliebige Frage zu B1 Admin. Zum Beispiel:",
+      "placeholderInput": "Stelle eine Frage...",
       "sampleCsv": "\"Wie importiere ich Mitglieder aus einer CSV-Datei?\"",
       "sampleGiving": "\"Wie richte ich Online-Spenden ein?\"",
       "sampleGroup": "\"Wie erstelle ich eine neue Gruppe?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee-Chat öffnen",
+      "ariaSend": "Nachricht senden",
+      "errorAnswer": "Darauf konnte ich keine Antwort finden.",
+      "errorGeneric": "Bei der Verbindung mit SuperBee ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "intro": "Hey, Champion! Ich bin SuperBee — Ihre B1-Admin-Powerstation. Stellen Sie mir Ihre schwierigsten Fragen!",
+      "placeholderInput": "Stelle eine Frage...",
       "sampleCsv": "\"Wie importiere ich Mitglieder aus einer CSV-Datei?\"",
       "sampleGiving": "\"Wie richte ich Online-Spenden ein?\"",
       "sampleGroup": "\"Wie erstelle ich eine neue Gruppe?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Enddatum",
+      "noBatches": "Keine Stapel mit Spenden in diesem Zeitraum.",
+      "startDate": "Startdatum",
+      "title": "Stapel drucken"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Jährliche Spendenbescheinigung {year}",
       "campaign": "Kampagne",
@@ -1207,6 +1225,9 @@
       "noEvents": "Noch keine Veranstaltungen. Verwenden Sie 'Veranstaltungen hinzufügen', um Treffen dieser Gruppe zu planen.",
       "noResponses": "Noch keine Antworten.",
       "oneTime": "Einmalig",
+      "response_maybe": "Vielleicht",
+      "response_no": "Nehme nicht teil",
+      "response_yes": "Nehme teil",
       "rosterTitle": "Zusagen",
       "rsvpSummary": "{yes} Ja · {maybe} Vielleicht · {no} Nein",
       "rsvps": "Zusagen",
@@ -1384,7 +1405,8 @@
       "showArchived": "Archivierte anzeigen",
       "spPpl": " Personen",
       "subtitle": {
-        "create": "Beginnen Sie mit der Erstellung Ihrer ersten Gruppe"
+        "create": "Beginnen Sie mit der Erstellung Ihrer ersten Gruppe",
+        "manage": "Organisiere und verwalte die Gruppen deiner Gemeinde"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Abwesend",
+      "attendanceSheet": "Anwesenheitsliste",
+      "contactRoster": "Kontaktliste",
       "date": "Datum",
       "noGroups": "Keine Klassen zum Drucken gefunden.",
       "present": "Anwesend",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatischer Aufstieg deaktiviert",
       "gradePromotionOn": "Beförderung jährlich am {date}",
       "notConfigured": "Nicht konfiguriert",
-      "notSet": "Nicht festgelegt"
+      "notSet": "Nicht festgelegt",
+      "phoneLocalSubtitle": "Lokale Telefonnummern"
     },
     "manageChurch": {
       "auditLog": "Audit-Protokoll",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Datumsformat",
       "helperText": "Datums- und Zeitangaben in ganz B1 folgen dem Format dieser Region.",
+      "phoneFormat": "Telefonnummern",
+      "phoneHelperText": "Lokal speichert Nummern genau so, wie sie eingegeben wurden (z. B. 0701 234 5678). SMS funktionieren am besten, wenn die Nummern die Ländervorwahl enthalten.",
+      "phoneInternational": "International (mit Ländervorwahl)",
+      "phoneLocal": "Lokal (wie eingegeben)",
       "region": "Region",
       "title": "Region"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Anweisungen",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Mache den Ton förmlicher.",
+      "preset_grammar": "Korrigiere nur Rechtschreibung und Grammatik.",
+      "preset_shorter": "Mache es kürzer und leichter überfliegbar.",
+      "preset_warmer": "Mache es herzlicher und einladender.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Breit"
     },
     "generateSite": {
+      "audience_community": "Lokale Gemeinschaft",
+      "audience_families": "Familien",
+      "audience_newcomers": "Neue Besucher",
+      "audience_seniors": "Senioren",
+      "audience_youngAdults": "Junge Erwachsene",
+      "audience_youth": "Jugendliche",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Gottesdienstzeiten",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Locker",
+      "tone_formal": "Förmlich",
+      "tone_inspirational": "Inspirierend",
+      "tone_warm": "Herzlich"
     },
     "helpDialog": {
       "addBody": "Klicken Sie in der Symbolleiste auf Inhalt hinzufügen, dann ziehen Sie einen Abschnitt oder ein Element auf die Seite.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Automatisierung pausieren",
       "paused": "Pausiert",
+      "recur_daily": "Täglich",
+      "recur_monthly": "Monatlich",
+      "recur_weekly": "Wöchentlich",
+      "recur_yearly": "Jährlich",
       "recurs": "Wiederholt sich",
       "resumeAll": "Automatisierung fortsetzen",
       "runNow": "Jetzt ausführen",
@@ -5523,6 +5570,10 @@
       "resume": "Fortsetzen",
       "retry": "Erneut versuchen",
       "statusHeader": "Status",
+      "status_failed": "Fehlgeschlagen",
+      "status_paused": "Pausiert",
+      "status_pending": "Ausstehend",
+      "status_success": "Erfolgreich",
       "subject": "Person",
       "title": "Ausführungsverlauf",
       "trigger": "Auslöser",

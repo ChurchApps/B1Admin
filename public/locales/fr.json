@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Ouvrir la discussion Bez",
+      "ariaSend": "Envoyer le message",
+      "errorAnswer": "Je n'ai pas trouvé de réponse à cette question.",
+      "errorGeneric": "Impossible de joindre Bez. Veuillez réessayer.",
       "intro": "Salut, je suis Bez ! Je peux vous aider à naviguer dans B1 Admin. Essayez de me demander :",
+      "placeholderInput": "Posez une question...",
       "sampleCsv": "\"Comment importer des membres depuis un CSV ?\"",
       "sampleGiving": "\"Comment configurer les dons en ligne ?\"",
       "sampleGroup": "\"Comment créer un nouveau groupe ?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Ouvrir la discussion d'aide",
+      "ariaSend": "Envoyer le message",
       "composing": "Composition de la réponse...",
+      "errorAnswer": "Je n'ai pas trouvé de réponse à cette question.",
+      "errorGeneric": "Impossible de joindre l'assistant de documentation. Veuillez réessayer.",
       "intro": "Posez n'importe quelle question sur B1 Admin. Par exemple :",
+      "placeholderInput": "Posez une question...",
       "sampleCsv": "\"Comment importer des membres depuis un CSV ?\"",
       "sampleGiving": "\"Comment configurer les dons en ligne ?\"",
       "sampleGroup": "\"Comment créer un nouveau groupe ?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Ouvrir la discussion SuperBee",
+      "ariaSend": "Envoyer le message",
+      "errorAnswer": "Je n'ai pas trouvé de réponse à cette question.",
+      "errorGeneric": "Impossible de joindre SuperBee. Veuillez réessayer.",
       "intro": "Bonjour champion ! Je suis SuperBee — votre assistant B1 Admin surpuissant. Posez-moi vos questions les plus difficiles !",
+      "placeholderInput": "Posez une question...",
       "sampleCsv": "\"Comment importer des membres depuis un CSV ?\"",
       "sampleGiving": "\"Comment configurer les dons en ligne ?\"",
       "sampleGroup": "\"Comment créer un nouveau groupe ?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Date de fin",
+      "noBatches": "Aucun lot contenant des dons pour cette période.",
+      "startDate": "Date de début",
+      "title": "Imprimer les lots"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Relevé annuel des dons {year}",
       "campaign": "Campagne",
@@ -1207,6 +1225,9 @@
       "noEvents": "Aucun événement pour l'instant. Utilisez Ajouter des événements pour planifier les réunions de ce groupe.",
       "noResponses": "Aucune réponse pour le moment.",
       "oneTime": "Unique",
+      "response_maybe": "Peut-être",
+      "response_no": "Je n'y vais pas",
+      "response_yes": "J'y vais",
       "rosterTitle": "Réponses RSVP",
       "rsvpSummary": "{yes} oui · {maybe} peut-être · {no} non",
       "rsvps": "RSVP",
@@ -1384,7 +1405,8 @@
       "showArchived": "Afficher les archivés",
       "spPpl": " personnes",
       "subtitle": {
-        "create": "Commencez par créer votre premier groupe"
+        "create": "Commencez par créer votre premier groupe",
+        "manage": "Organisez et gérez les groupes de votre église"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Absent",
+      "attendanceSheet": "Feuille de présence",
+      "contactRoster": "Liste des contacts",
       "date": "Date",
       "noGroups": "Aucune classe à imprimer.",
       "present": "Présent",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Promotion automatique désactivée",
       "gradePromotionOn": "Promotion le {date} chaque année",
       "notConfigured": "Non configuré",
-      "notSet": "Non défini"
+      "notSet": "Non défini",
+      "phoneLocalSubtitle": "Numéros de téléphone locaux"
     },
     "manageChurch": {
       "auditLog": "Journal d'audit",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Format de date",
       "helperText": "Les dates et heures dans B1 suivent le format de cette région.",
+      "phoneFormat": "Numéros de téléphone",
+      "phoneHelperText": "Le format local enregistre les numéros tels que saisis (par ex. 0701 234 5678). L'envoi de SMS fonctionne mieux lorsque les numéros incluent l'indicatif du pays.",
+      "phoneInternational": "International (avec indicatif du pays)",
+      "phoneLocal": "Local (tel que saisi)",
       "region": "Région",
       "title": "Région"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Rendre le ton plus formel.",
+      "preset_grammar": "Corriger uniquement l'orthographe et la grammaire.",
+      "preset_shorter": "Rendre le texte plus court et plus facile à parcourir.",
+      "preset_warmer": "Rendre le texte plus chaleureux et plus accueillant.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Large"
     },
     "generateSite": {
+      "audience_community": "Communauté locale",
+      "audience_families": "Familles",
+      "audience_newcomers": "Nouveaux venus",
+      "audience_seniors": "Seniors",
+      "audience_youngAdults": "Jeunes adultes",
+      "audience_youth": "Jeunes",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Horaires des cultes",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Décontracté",
+      "tone_formal": "Formel",
+      "tone_inspirational": "Inspirant",
+      "tone_warm": "Chaleureux"
     },
     "helpDialog": {
       "addBody": "Cliquez sur Ajouter du contenu dans la barre d'outils, puis faites glisser une section ou un élément sur la page.",
@@ -5503,6 +5546,10 @@
       "operator": "Opérateur",
       "pauseAll": "Suspendre l'automatisation",
       "paused": "Suspendu",
+      "recur_daily": "Quotidien",
+      "recur_monthly": "Mensuel",
+      "recur_weekly": "Hebdomadaire",
+      "recur_yearly": "Annuel",
       "recurs": "Se répète",
       "resumeAll": "Reprendre l'automatisation",
       "runNow": "Exécuter maintenant",
@@ -5523,6 +5570,10 @@
       "resume": "Reprendre",
       "retry": "Réessayer",
       "statusHeader": "Statut",
+      "status_failed": "Échec",
+      "status_paused": "En pause",
+      "status_pending": "En attente",
+      "status_success": "Réussi",
       "subject": "Personne",
       "title": "Historique des exécutions",
       "trigger": "Déclencheur",

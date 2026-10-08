@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Odpri klepet Bez",
+      "ariaSend": "Pošlji sporočilo",
+      "errorAnswer": "Odgovora na to nisem našel.",
+      "errorGeneric": "Pri povezovanju z Bez je prišlo do napake. Poskusite znova.",
       "intro": "Pozdravljeni, jaz sem Bez! Pomagam vam pri navigaciji po B1 Adminu. Poskusite me vprašati:",
+      "placeholderInput": "Zastavite vprašanje ...",
       "sampleCsv": "\"Kako uvozim člane iz CSV?\"",
       "sampleGiving": "\"Kako nastavim spletno darovanje?\"",
       "sampleGroup": "\"Kako ustvarim novo skupino?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Odpri klepet pomoči",
+      "ariaSend": "Pošlji sporočilo",
       "composing": "Sestavljanje odgovora...",
+      "errorAnswer": "Odgovora na to nisem našel.",
+      "errorGeneric": "Pri povezovanju s pomočnikom za dokumentacijo je prišlo do napake. Poskusite znova.",
       "intro": "Postavite katero koli vprašanje o B1 Adminu. Na primer:",
+      "placeholderInput": "Zastavite vprašanje ...",
       "sampleCsv": "\"Kako uvozim člane iz CSV?\"",
       "sampleGiving": "\"Kako nastavim spletno darovanje?\"",
       "sampleGroup": "\"Kako ustvarim novo skupino?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Odpri klepet SuperBee",
+      "ariaSend": "Pošlji sporočilo",
+      "errorAnswer": "Odgovora na to nisem našel.",
+      "errorGeneric": "Pri povezovanju s SuperBee je prišlo do napake. Poskusite znova.",
       "intro": "Pozdravljen, prvak! Sem SuperBee — tvoja moč v B1 Adminu. Vrzi mi najtežja vprašanja!",
+      "placeholderInput": "Zastavite vprašanje ...",
       "sampleCsv": "\"Kako uvozim člane iz CSV?\"",
       "sampleGiving": "\"Kako nastavim spletno darovanje?\"",
       "sampleGroup": "\"Kako ustvarim novo skupino?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Končni datum",
+      "noBatches": "V tem obdobju ni paketov z darovi.",
+      "startDate": "Začetni datum",
+      "title": "Natisni pakete"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Letno poročilo o darovanju",
       "campaign": "Kampanja",
@@ -1207,6 +1225,9 @@
       "noEvents": "Ni dogodkov. Uporabite Dodaj dogodke za načrtovanje srečanj te skupine.",
       "noResponses": "Še ni odgovorov.",
       "oneTime": "Enkratno",
+      "response_maybe": "Mogoče",
+      "response_no": "Ne pridem",
+      "response_yes": "Pridem",
       "rosterTitle": "Odgovori na potrditve udeležbe",
       "rsvpSummary": "{yes} da · {maybe} morda · {no} ne",
       "rsvps": "Potrditve udeležbe",
@@ -1384,7 +1405,8 @@
       "showArchived": "Prikaži arhivirane",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "Organizirajte in upravljajte skupine svoje cerkve"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Odsoten",
+      "attendanceSheet": "Seznam prisotnosti",
+      "contactRoster": "Seznam kontaktov",
       "date": "Datum",
       "noGroups": "Ni razredov za tiskanje.",
       "present": "Prisoten",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Samodejno napredovanje onemogočeno",
       "gradePromotionOn": "Napreduje {date} vsako leto",
       "notConfigured": "Ni konfigurirano",
-      "notSet": "Ni nastavljeno"
+      "notSet": "Ni nastavljeno",
+      "phoneLocalSubtitle": "Lokalne telefonske številke"
     },
     "manageChurch": {
       "auditLog": "Dnevnik nadzora",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Oblika datuma",
       "helperText": "Datumi in časi v B1 sledijo obliki te regije.",
+      "phoneFormat": "Telefonske številke",
+      "phoneHelperText": "Lokalna oblika shrani številke točno tako, kot so vnesene (npr. 0701 234 5678). SMS-sporočila delujejo najbolje, če številke vključujejo kodo države.",
+      "phoneInternational": "Mednarodna (s kodo države)",
+      "phoneLocal": "Lokalna (kot vneseno)",
       "region": "Regija",
       "title": "Regija"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Navodila",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Naredi ton bolj formalen.",
+      "preset_grammar": "Popravi samo črkovanje in slovnico.",
+      "preset_shorter": "Skrajšaj besedilo in ga naredi preglednejše.",
+      "preset_warmer": "Naredi besedilo toplejše in bolj prijazno.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Široko"
     },
     "generateSite": {
+      "audience_community": "Lokalna skupnost",
+      "audience_families": "Družine",
+      "audience_newcomers": "Novinci",
+      "audience_seniors": "Starejši",
+      "audience_youngAdults": "Mladi odrasli",
+      "audience_youth": "Mladina",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Časi bogoslužij",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Sproščen",
+      "tone_formal": "Formalen",
+      "tone_inspirational": "Navdihujoč",
+      "tone_warm": "Topel"
     },
     "helpDialog": {
       "addBody": "Kliknite Dodaj vsebino v orodni vrstici, nato povlecite razdelek ali element na stran.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Začasno ustavi avtomatizacijo",
       "paused": "Začasno ustavljeno",
+      "recur_daily": "Dnevno",
+      "recur_monthly": "Mesečno",
+      "recur_weekly": "Tedensko",
+      "recur_yearly": "Letno",
       "recurs": "Ponavlja se",
       "resumeAll": "Nadaljuj avtomatizacijo",
       "runNow": "Zaženi zdaj",
@@ -5523,6 +5570,10 @@
       "resume": "Nadaljuj",
       "retry": "Poskusi znova",
       "statusHeader": "Stanje",
+      "status_failed": "Neuspešno",
+      "status_paused": "Začasno ustavljeno",
+      "status_pending": "V čakanju",
+      "status_success": "Uspešno",
       "subject": "Oseba",
       "title": "Zgodovina izvedb",
       "trigger": "Sprožilec",

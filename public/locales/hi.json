@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez चैट खोलें",
+      "ariaSend": "संदेश भेजें",
+      "errorAnswer": "मुझे इसका उत्तर नहीं मिल सका।",
+      "errorGeneric": "Bez से संपर्क करने में कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।",
       "intro": "नमस्ते, मैं Bez हूँ! मैं आपको B1 Admin में नेविगेट करने में मदद कर सकता हूँ। मुझसे पूछने का प्रयास करें:",
+      "placeholderInput": "कोई प्रश्न पूछें...",
       "sampleCsv": "\"मैं CSV से सदस्यों को कैसे आयात करूं?\"",
       "sampleGiving": "\"मैं ऑनलाइन दान कैसे सेट करूं?\"",
       "sampleGroup": "\"मैं नया समूह कैसे बनाऊं?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "सहायता चैट खोलें",
+      "ariaSend": "संदेश भेजें",
       "composing": "उत्तर लिख रहा है...",
+      "errorAnswer": "मुझे इसका उत्तर नहीं मिल सका।",
+      "errorGeneric": "दस्तावेज़ सहायक से संपर्क करने में कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।",
       "intro": "B1 Admin के बारे में कोई भी प्रश्न पूछें। उदाहरण के लिए:",
+      "placeholderInput": "कोई प्रश्न पूछें...",
       "sampleCsv": "\"मैं CSV से सदस्यों को कैसे आयात करूं?\"",
       "sampleGiving": "\"मैं ऑनलाइन दान कैसे सेट करूं?\"",
       "sampleGroup": "\"मैं नया समूह कैसे बनाऊं?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee चैट खोलें",
+      "ariaSend": "संदेश भेजें",
+      "errorAnswer": "मुझे इसका उत्तर नहीं मिल सका।",
+      "errorGeneric": "SuperBee से संपर्क करने में कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।",
       "intro": "नमस्कार, चैंपियन! मैं SuperBee हूँ — आपकी B1 Admin पावरहाउस। अपने सबसे कठिन सवालों से मुझे चुनौती दें!",
+      "placeholderInput": "कोई प्रश्न पूछें...",
       "sampleCsv": "\"मैं CSV से सदस्यों को कैसे आयात करूं?\"",
       "sampleGiving": "\"मैं ऑनलाइन दान कैसे सेट करूं?\"",
       "sampleGroup": "\"मैं नया समूह कैसे बनाऊं?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "समाप्ति तिथि",
+      "noBatches": "इस तिथि सीमा में दान वाले कोई बैच नहीं हैं।",
+      "startDate": "आरंभ तिथि",
+      "title": "बैच प्रिंट करें"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} वार्षिक दान विवरण",
       "campaign": "अभियान",
@@ -1207,6 +1225,9 @@
       "noEvents": "अभी कोई कार्यक्रम नहीं। इस समूह की बैठकें शेड्यूल करने के लिए कार्यक्रम जोड़ें का उपयोग करें।",
       "noResponses": "अभी तक कोई प्रतिक्रिया नहीं।",
       "oneTime": "एक बार",
+      "response_maybe": "शायद",
+      "response_no": "नहीं जा रहे",
+      "response_yes": "जा रहे हैं",
       "rosterTitle": "RSVP प्रतिक्रियाएं",
       "rsvpSummary": "{yes} हाँ · {maybe} शायद · {no} नहीं",
       "rsvps": "RSVP",
@@ -1384,7 +1405,8 @@
       "showArchived": "संग्रहीत दिखाएं",
       "spPpl": " लोग",
       "subtitle": {
-        "create": "अपना पहला समूह बनाकर आरंभ करें"
+        "create": "अपना पहला समूह बनाकर आरंभ करें",
+        "manage": "अपने चर्च के समूहों को व्यवस्थित और प्रबंधित करें"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "अनुपस्थित",
+      "attendanceSheet": "उपस्थिति पत्रक",
+      "contactRoster": "संपर्क सूची",
       "date": "तिथि",
       "noGroups": "प्रिंट करने के लिए कोई कक्षा नहीं मिली।",
       "present": "उपस्थित",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "स्वचालित पदोन्नति अक्षम",
       "gradePromotionOn": "हर साल {date} को बढ़ावा देता है",
       "notConfigured": "कॉन्फ़िगर नहीं किया गया",
-      "notSet": "सेट नहीं"
+      "notSet": "सेट नहीं",
+      "phoneLocalSubtitle": "स्थानीय फ़ोन नंबर"
     },
     "manageChurch": {
       "auditLog": "ऑडिट लॉग",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "तिथि प्रारूप",
       "helperText": "B1 में सभी तिथियाँ और समय इस क्षेत्र के प्रारूप का पालन करते हैं।",
+      "phoneFormat": "फ़ोन नंबर",
+      "phoneHelperText": "स्थानीय विकल्प नंबरों को ठीक वैसे ही सहेजता है जैसे टाइप किए गए हों (जैसे 0701 234 5678)। संदेश भेजना तब सबसे अच्छा काम करता है जब नंबरों में देश कोड शामिल हो।",
+      "phoneInternational": "अंतरराष्ट्रीय (देश कोड के साथ)",
+      "phoneLocal": "स्थानीय (जैसा टाइप किया गया)",
       "region": "क्षेत्र",
       "title": "क्षेत्र"
     },
@@ -4093,6 +4122,10 @@
       "failed": "पुनर्लेखन विफल रहा। कुछ भी नहीं बदला गया।",
       "instruction": "निर्देश",
       "placeholder": "उदा. इसे और अधिक स्वागत योग्य बनाएं और कार्रवाई के लिए एक कॉल जोड़ें",
+      "preset_formal": "लहजे को अधिक औपचारिक बनाएं।",
+      "preset_grammar": "केवल वर्तनी और व्याकरण ठीक करें।",
+      "preset_shorter": "इसे छोटा और पढ़ने में आसान बनाएं।",
+      "preset_warmer": "इसे अधिक आत्मीय और स्वागतपूर्ण बनाएं।",
       "rewrite": "फिर से लिखना",
       "title": "एआई रीराइट",
       "working": "अनुभाग फिर से लिख रहा है..."
@@ -4602,6 +4635,12 @@
       "wide": "चौड़ा"
     },
     "generateSite": {
+      "audience_community": "स्थानीय समुदाय",
+      "audience_families": "परिवार",
+      "audience_newcomers": "नए आगंतुक",
+      "audience_seniors": "वरिष्ठ नागरिक",
+      "audience_youngAdults": "युवा वयस्क",
+      "audience_youth": "युवा",
       "audiences": "दर्शकों",
       "buildingSection": "बना रहा है {title} — अनुभाग {n} में से {total}...",
       "button": "साइट उत्पन्न करें",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "सेवा का समय",
       "serviceTimesPlaceholder": "रविवार को सुबह 9 और 11 बजे",
       "title": "AI के साथ साइट उत्पन्न करें",
-      "tone": "स्वर"
+      "tone": "स्वर",
+      "tone_casual": "अनौपचारिक",
+      "tone_formal": "औपचारिक",
+      "tone_inspirational": "प्रेरणादायक",
+      "tone_warm": "आत्मीय"
     },
     "helpDialog": {
       "addBody": "टूलबार में सामग्री जोड़ें पर क्लिक करें, फिर पृष्ठ पर एक अनुभाग या तत्व खींचें।",
@@ -5503,6 +5546,10 @@
       "operator": "ऑपरेटर",
       "pauseAll": "स्वचालन रोकें",
       "paused": "रोका गया",
+      "recur_daily": "दैनिक",
+      "recur_monthly": "मासिक",
+      "recur_weekly": "साप्ताहिक",
+      "recur_yearly": "वार्षिक",
       "recurs": "दोहराता है",
       "resumeAll": "स्वचालन फिर से शुरू करें",
       "runNow": "अभी चलाएं",
@@ -5523,6 +5570,10 @@
       "resume": "फिर से शुरू करें",
       "retry": "पुनः प्रयास करें",
       "statusHeader": "स्थिति",
+      "status_failed": "विफल",
+      "status_paused": "रुका हुआ",
+      "status_pending": "लंबित",
+      "status_success": "सफल",
       "subject": "व्यक्ति",
       "title": "निष्पादन इतिहास",
       "trigger": "ट्रिगर",

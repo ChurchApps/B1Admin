@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Atidaryti Bez pokalbį",
+      "ariaSend": "Siųsti žinutę",
+      "errorAnswer": "Nepavyko rasti atsakymo į šį klausimą.",
+      "errorGeneric": "Jungiantis prie Bez įvyko klaida. Bandykite dar kartą.",
       "intro": "Sveiki, aš Bez! Galiu padėti naršyti B1 Admin. Pabandykite paklausti:",
+      "placeholderInput": "Užduokite klausimą...",
       "sampleCsv": "„Kaip importuoti narius iš CSV?\"",
       "sampleGiving": "„Kaip nustatyti aukojimą internetu?\"",
       "sampleGroup": "„Kaip sukurti naują grupę?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Atidaryti pagalbos pokalbį",
+      "ariaSend": "Siųsti žinutę",
       "composing": "Rengiamas atsakymas...",
+      "errorAnswer": "Nepavyko rasti atsakymo į šį klausimą.",
+      "errorGeneric": "Jungiantis prie dokumentacijos asistento įvyko klaida. Bandykite dar kartą.",
       "intro": "Užduokite klausimą apie B1 Admin. Pavyzdžiui:",
+      "placeholderInput": "Užduokite klausimą...",
       "sampleCsv": "„Kaip importuoti narius iš CSV?\"",
       "sampleGiving": "„Kaip nustatyti aukojimą internetu?\"",
       "sampleGroup": "„Kaip sukurti naują grupę?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Atidaryti SuperBee pokalbį",
+      "ariaSend": "Siųsti žinutę",
+      "errorAnswer": "Nepavyko rasti atsakymo į šį klausimą.",
+      "errorGeneric": "Jungiantis prie SuperBee įvyko klaida. Bandykite dar kartą.",
       "intro": "Sveikas, čempione! Aš SuperBee — jūsų B1 Admin galiūnas. Užduokite man sudėtingiausius klausimus!",
+      "placeholderInput": "Užduokite klausimą...",
       "sampleCsv": "„Kaip importuoti narius iš CSV?\"",
       "sampleGiving": "„Kaip nustatyti aukojimą internetu?\"",
       "sampleGroup": "„Kaip sukurti naują grupę?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Pabaigos data",
+      "noBatches": "Šiame datų intervale nėra paketų su aukomis.",
+      "startDate": "Pradžios data",
+      "title": "Spausdinti paketus"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} m. metinė aukų ataskaita",
       "campaign": "Kampanija",
@@ -1207,6 +1225,9 @@
       "noEvents": "Renginių dar nėra. Naudokite Pridėti renginius, kad suplanuotumėte šios grupės susitikimus.",
       "noResponses": "Kol kas nėra atsakymų.",
       "oneTime": "Vieną kartą",
+      "response_maybe": "Galbūt",
+      "response_no": "Nedalyvausiu",
+      "response_yes": "Dalyvausiu",
       "rosterTitle": "Dalyvavimo atsakymai",
       "rsvpSummary": "{yes} taip · {maybe} galbūt · {no} ne",
       "rsvps": "Dalyvavimo patvirtinimai",
@@ -1384,7 +1405,8 @@
       "showArchived": "Rodyti archyvuotas grupes",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "Tvarkykite ir valdykite savo bažnyčios grupes"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Nedalyvavo",
+      "attendanceSheet": "Lankomumo lapas",
+      "contactRoster": "Kontaktų sąrašas",
       "date": "Data",
       "noGroups": "Nerasta klasių spausdinimui.",
       "present": "Dalyvavo",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatinis perkėlimas išjungtas",
       "gradePromotionOn": "Perkelia {date} kiekvienais metais",
       "notConfigured": "Nesukonfigūruota",
-      "notSet": "Nenustatyta"
+      "notSet": "Nenustatyta",
+      "phoneLocalSubtitle": "Vietiniai telefono numeriai"
     },
     "manageChurch": {
       "auditLog": "Audito žurnalas",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Datos formatas",
       "helperText": "Datos ir laikas visoje B1 sistemoje rodomi šio regiono formatu.",
+      "phoneFormat": "Telefono numeriai",
+      "phoneHelperText": "Vietinis formatas išsaugo numerius tiksliai taip, kaip įvesti (pvz., 0701 234 5678). SMS žinutės veikia geriausiai, kai numeriuose nurodytas šalies kodas.",
+      "phoneInternational": "Tarptautinis (su šalies kodu)",
+      "phoneLocal": "Vietinis (kaip įvesta)",
       "region": "Regionas",
       "title": "Regionas"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instrukcijos",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Padaryk toną oficialesnį.",
+      "preset_grammar": "Ištaisyk tik rašybą ir gramatiką.",
+      "preset_shorter": "Sutrumpink ir padaryk lengviau peržvelgiamą.",
+      "preset_warmer": "Padaryk šiltesnį ir svetingesnį.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Platus"
     },
     "generateSite": {
+      "audience_community": "Vietos bendruomenė",
+      "audience_families": "Šeimos",
+      "audience_newcomers": "Naujokai",
+      "audience_seniors": "Senjorai",
+      "audience_youngAdults": "Jauni suaugusieji",
+      "audience_youth": "Jaunimas",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Pamaldų laikas",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Laisvas",
+      "tone_formal": "Oficialus",
+      "tone_inspirational": "Įkvepiantis",
+      "tone_warm": "Šiltas"
     },
     "helpDialog": {
       "addBody": "Įrankių juostoje spustelėkite Pridėti turinį, tada nuvilkite skiltį arba elementą į puslapį.",
@@ -5503,6 +5546,10 @@
       "operator": "Operatorius",
       "pauseAll": "Pristabdyti automatizavimą",
       "paused": "Pristabdyta",
+      "recur_daily": "Kasdien",
+      "recur_monthly": "Kas mėnesį",
+      "recur_weekly": "Kas savaitę",
+      "recur_yearly": "Kasmet",
       "recurs": "Kartojasi",
       "resumeAll": "Atnaujinti automatizavimą",
       "runNow": "Vykdyti dabar",
@@ -5523,6 +5570,10 @@
       "resume": "Tęsti",
       "retry": "Bandyti dar kartą",
       "statusHeader": "Būsena",
+      "status_failed": "Nepavyko",
+      "status_paused": "Pristabdyta",
+      "status_pending": "Laukiama",
+      "status_success": "Pavyko",
       "subject": "Asmuo",
       "title": "Vykdymo istorija",
       "trigger": "Paleidiklis",

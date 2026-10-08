@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "打开 Bez 聊天",
+      "ariaSend": "发送消息",
+      "errorAnswer": "我找不到这个问题的答案。",
+      "errorGeneric": "连接 Bez 时出错，请重试。",
       "intro": "您好，我是 Bez！我可以帮助您导航 B1 Admin。请尝试问我：",
+      "placeholderInput": "提出问题...",
       "sampleCsv": "“如何从 CSV 导入成员？”",
       "sampleGiving": "“如何设置在线奉献？”",
       "sampleGroup": "“如何创建新小组？”",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "打开帮助聊天",
+      "ariaSend": "发送消息",
       "composing": "正在编写答案...",
+      "errorAnswer": "我找不到这个问题的答案。",
+      "errorGeneric": "连接文档助手时出错，请重试。",
       "intro": "询问关于 B1 Admin 的任何问题。例如：",
+      "placeholderInput": "提出问题...",
       "sampleCsv": "“如何从 CSV 导入成员？”",
       "sampleGiving": "“如何设置在线奉献？”",
       "sampleGroup": "“如何创建新小组？”",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "打开 SuperBee 聊天",
+      "ariaSend": "发送消息",
+      "errorAnswer": "我找不到这个问题的答案。",
+      "errorGeneric": "连接 SuperBee 时出错，请重试。",
       "intro": "嘿，冠军！我是 SuperBee — 您的 B1 Admin 强力助手。把您最棘手的问题交给我！",
+      "placeholderInput": "提出问题...",
       "sampleCsv": "“如何从 CSV 导入成员？”",
       "sampleGiving": "“如何设置在线奉献？”",
       "sampleGroup": "“如何创建新小组？”",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "结束日期",
+      "noBatches": "此日期范围内没有包含捐款的批次。",
+      "startDate": "开始日期",
+      "title": "打印批次"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} 年度奉献声明",
       "campaign": "活动",
@@ -1207,6 +1225,9 @@
       "noEvents": "暂无活动。使用「添加活动」安排本团体的会议。",
       "noResponses": "暂无回复。",
       "oneTime": "一次性",
+      "response_maybe": "可能",
+      "response_no": "不参加",
+      "response_yes": "参加",
       "rosterTitle": "出席回复",
       "rsvpSummary": "{yes} 人是 · {maybe} 人也许 · {no} 人否",
       "rsvps": "出席回复",
@@ -1384,7 +1405,8 @@
       "showArchived": "显示已存档",
       "spPpl": " 人",
       "subtitle": {
-        "create": "首先创建您的第一个组"
+        "create": "首先创建您的第一个组",
+        "manage": "组织和管理您的教会小组"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "缺席",
+      "attendanceSheet": "签到表",
+      "contactRoster": "联系人名单",
       "date": "日期",
       "noGroups": "未找到可打印的班级。",
       "present": "出席",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "自动升学已禁用",
       "gradePromotionOn": "每年在 {date} 自动升级",
       "notConfigured": "未配置",
-      "notSet": "未设置"
+      "notSet": "未设置",
+      "phoneLocalSubtitle": "本地电话号码"
     },
     "manageChurch": {
       "auditLog": "审计日志",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "日期格式",
       "helperText": "B1 中的所有日期和时间都将遵循此地区的格式。",
+      "phoneFormat": "电话号码",
+      "phoneHelperText": "本地格式会按输入的原样保存号码（例如 0701 234 5678）。号码包含国家代码时，短信发送效果最佳。",
+      "phoneInternational": "国际（含国家代码）",
+      "phoneLocal": "本地（按输入）",
       "region": "地区",
       "title": "地区"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "说明",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "让语气更正式。",
+      "preset_grammar": "仅修正拼写和语法。",
+      "preset_shorter": "使内容更简短、更易浏览。",
+      "preset_warmer": "让内容更温暖、更亲切。",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "宽幅"
     },
     "generateSite": {
+      "audience_community": "当地社区",
+      "audience_families": "家庭",
+      "audience_newcomers": "新朋友",
+      "audience_seniors": "长者",
+      "audience_youngAdults": "青年",
+      "audience_youth": "青少年",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "聚会时间",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "轻松",
+      "tone_formal": "正式",
+      "tone_inspirational": "励志",
+      "tone_warm": "温暖"
     },
     "helpDialog": {
       "addBody": "在工具栏中点击“添加内容”，然后将部分或元素拖到页面上。",
@@ -5503,6 +5546,10 @@
       "operator": "运算符",
       "pauseAll": "暂停自动化",
       "paused": "已暂停",
+      "recur_daily": "每天",
+      "recur_monthly": "每月",
+      "recur_weekly": "每周",
+      "recur_yearly": "每年",
       "recurs": "重复",
       "resumeAll": "恢复自动化",
       "runNow": "立即运行",
@@ -5523,6 +5570,10 @@
       "resume": "恢复",
       "retry": "重试",
       "statusHeader": "状态",
+      "status_failed": "失败",
+      "status_paused": "已暂停",
+      "status_pending": "待处理",
+      "status_success": "成功",
       "subject": "人员",
       "title": "执行历史",
       "trigger": "触发器",
