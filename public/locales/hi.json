@@ -1358,6 +1358,11 @@
       "selectSession": "सत्र चुनें",
       "session": "सत्र",
       "sessions": "सत्र",
+      "statusButton": "किसकी उपस्थिति अभी भी दर्ज करनी है",
+      "statusEntered": "दर्ज ({count})",
+      "statusNotEntered": "दर्ज नहीं",
+      "statusSummary": "{total} में से {entered} समूह दर्ज",
+      "statusTitle": "किसकी उपस्थिति अभी भी दर्ज करनी है",
       "tryAdjusting": "अपनी खोज को समायोजित करने का प्रयास करें",
       "upcoming": "आगामी"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "आपका चर्च इस बिलिंग चक्र के लिए टेक्स्टिंग क्रेडिट से बाहर है। कोई संदेश नहीं भेजा गया। अपग्रेड करें या अपने क्रेडिट को नवीनीकृत होने की प्रतीक्षा करें।",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "प्राप्तकर्ता लोड हो रहे हैं...",
+      "mergeFieldHint": "प्लेसहोल्डर डालने के लिए क्लिक करें। संदेश भेजे जाने पर इसे हर प्राप्तकर्ता के विवरण से बदल दिया जाता है।",
       "messageLabel": "संदेश",
       "noPhoneNotice": "{count} के पास फ़ाइल पर फ़ोन नंबर नहीं है।",
       "noPhoneNoticeSingular": "{count} के पास फ़ाइल पर फ़ोन नंबर नहीं है।",
@@ -1549,6 +1555,11 @@
       "title": "ऐप थीम"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "ऐप की होम स्क्रीन पर साइन-इन संकेत दिखाएँ",
+      "signInPromptHelp": "जो आगंतुक साइन इन नहीं हैं, वे इसे ऐप की होम स्क्रीन पर देखते हैं। साइन-इन हमेशा ऐप मेनू में उपलब्ध है।",
+      "signInPromptPlaceholder": "अपने समूह, दान और बहुत कुछ देखने के लिए साइन इन करें।",
+      "signInPromptText": "साइन-इन संकेत का टेक्स्ट",
+      "signInPromptTitle": "होम स्क्रीन साइन-इन संकेत",
       "subtitle": "B1 Mobile ऐप के लिए सेटिंग्स कॉन्फ़िगर करें",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "प्राथमिक ईमेल",
       "primPhone": "प्राथमिक फ़ोन",
       "printDirectory": "निर्देशिका प्रिंट करें",
+      "printResults": "परिणाम प्रिंट करें",
       "searchPpl": "लोग खोजें",
       "searchResults": "खोज परिणाम",
       "showAll": "सभी सदस्य दिखाएं",
@@ -4081,7 +4093,6 @@
       "failed": "पुनर्लेखन विफल रहा। कुछ भी नहीं बदला गया।",
       "instruction": "निर्देश",
       "placeholder": "उदा. इसे और अधिक स्वागत योग्य बनाएं और कार्रवाई के लिए एक कॉल जोड़ें",
-      "preset_": "Preset_",
       "rewrite": "फिर से लिखना",
       "title": "एआई रीराइट",
       "working": "अनुभाग फिर से लिख रहा है..."
@@ -4591,7 +4602,6 @@
       "wide": "चौड़ा"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "दर्शकों",
       "buildingSection": "बना रहा है {title} — अनुभाग {n} में से {total}...",
       "button": "साइट उत्पन्न करें",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "सेवा का समय",
       "serviceTimesPlaceholder": "रविवार को सुबह 9 और 11 बजे",
       "title": "AI के साथ साइट उत्पन्न करें",
-      "tone": "स्वर",
-      "tone_": "Tone_"
+      "tone": "स्वर"
     },
     "helpDialog": {
       "addBody": "टूलबार में सामग्री जोड़ें पर क्लिक करें, फिर पृष्ठ पर एक अनुभाग या तत्व खींचें।",
@@ -5494,7 +5503,6 @@
       "operator": "ऑपरेटर",
       "pauseAll": "स्वचालन रोकें",
       "paused": "रोका गया",
-      "recur_": "Recur_",
       "recurs": "दोहराता है",
       "resumeAll": "स्वचालन फिर से शुरू करें",
       "runNow": "अभी चलाएं",
@@ -5515,7 +5523,6 @@
       "resume": "फिर से शुरू करें",
       "retry": "पुनः प्रयास करें",
       "statusHeader": "स्थिति",
-      "status_": "Status_",
       "subject": "व्यक्ति",
       "title": "निष्पादन इतिहास",
       "trigger": "ट्रिगर",
@@ -5628,6 +5635,7 @@
       "days": "प्रतीक्षा दिन",
       "noAssignee": "असाइन नहीं किया गया",
       "noGroup": "कोई समूह नहीं चुना गया",
+      "noTextingProvider": "कोई टेक्स्टिंग प्रदाता सेट नहीं है। सेटिंग्स → टेक्स्टिंग में एक जोड़ें, वरना संदेश नहीं भेजे जाएँगे।",
       "note": "नोट",
       "pickAssignee": "असाइनी चुनें",
       "pickGroup": "समूह चुनें",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "विषय (वैकल्पिक)",
       "taskDescription": "विवरण (वैकल्पिक)",
       "taskTitle": "कार्य शीर्षक",
+      "textMergeHint": "{{firstName}}, {{lastName}}, {{displayName}} या {{churchName}} का उपयोग करें। ऑप्ट-आउट किए गए लोगों को छोड़ दिया जाता है।",
+      "textMessage": "टेक्स्ट संदेश",
       "title": "स्वचालित क्रियाएं",
       "type": {
         "addNote": "नोट जोड़ें",
@@ -5647,6 +5657,7 @@
         "delay": "प्रतीक्षा करें",
         "removeFromGroup": "समूह से हटाएँ",
         "sendEmail": "ईमेल भेजें",
+        "sendText": "टेक्स्ट भेजें",
         "setField": "फ़ील्ड सेट करें",
         "webhook": "वेबहुक कॉल करें"
       },

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
+import { type ContactInfoInterface, type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 
@@ -22,6 +22,17 @@ const sortKey = (gm: GroupMemberInterface) => {
   const display = (name?.display || "").trim();
   const last = name?.last || display.split(" ").pop() || "";
   return `${last.toLowerCase()}|${(name?.first || display).toLowerCase()}`;
+};
+
+// Contact roster: leaders first, then by surname.
+export const contactSort = (a: GroupMemberInterface, b: GroupMemberInterface) => Number(!!b.leader) - Number(!!a.leader) || sortKey(a).localeCompare(sortKey(b));
+
+export const contactPhone = (ci?: ContactInfoInterface) => ci?.mobilePhone || ci?.homePhone || ci?.workPhone || "";
+
+export const contactAddress = (ci?: ContactInfoInterface) => {
+  const street = [ci?.address1, ci?.address2].filter(Boolean).join(" ");
+  const region = [ci?.state, ci?.zip].filter(Boolean).join(" ");
+  return [street, ci?.city, region].filter(Boolean).join(", ");
 };
 
 const formatSheetDate = (date: string | null): string => {
@@ -69,11 +80,12 @@ export const PrintRosterPage = () => {
   const groupId = searchParams.get("groupId");
   const serviceTimeId = searchParams.get("serviceTimeId");
   const autoprint = searchParams.get("autoprint") === "1";
-  const sheetDate = formatSheetDate(searchParams.get("date"));
+  const contacts = searchParams.get("layout") === "contacts" && !!groupId;
+  const sheetDate = formatSheetDate(searchParams.get("date") || (contacts ? DateHelper.formatHtml5Date(new Date()) : null));
   const hasPrinted = React.useRef(false);
 
   const sheets = useQuery<RosterSheet[]>({
-    queryKey: ["print-roster", groupId, serviceTimeId],
+    queryKey: ["print-roster", groupId, serviceTimeId, contacts],
     queryFn: () => loadSheets(groupId, serviceTimeId)
   });
 
@@ -229,6 +241,21 @@ export const PrintRosterPage = () => {
             padding-top: 14px !important;
           }
 
+          .roster-contacts td { white-space: normal; overflow-wrap: break-word; vertical-align: top; }
+
+          .roster-leader {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 0 5px;
+            border: 1px solid #6B7280;
+            border-radius: 3px;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #374151;
+            vertical-align: middle;
+          }
+
           .roster-notes {
             margin-top: 24px;
             font-size: 13px;
@@ -249,51 +276,93 @@ export const PrintRosterPage = () => {
             <div className="roster-date" data-testid="roster-date">
               {Locale.label("groups.printRoster.date")}: {sheetDate || "________________________"}
             </div>
-            <div className="roster-meta">
-              <span>{sheet.serviceTimeName}</span>
-            </div>
+            {contacts ? (
+              <>
+                <div className="roster-meta">
+                  <span>{Locale.label("groups.printRoster.contactRoster")}</span>
+                </div>
+                <table className="roster-table roster-contacts">
+                  <colgroup>
+                    <col style={{ width: "24%" }} />
+                    <col style={{ width: "15%" }} />
+                    <col style={{ width: "31%" }} />
+                    <col style={{ width: "30%" }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>{Locale.label("common.name")}</th>
+                      <th>{Locale.label("person.phone")}</th>
+                      <th>{Locale.label("person.email")}</th>
+                      <th>{Locale.label("person.address")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...sheet.members].sort(contactSort).map((gm) => {
+                      const ci = gm.person?.optedOut ? undefined : gm.person?.contactInfo;
+                      return (
+                        <tr key={gm.id || gm.personId} data-testid="roster-contact-row">
+                          <td data-testid="roster-member">
+                            {gm.person?.name?.display}
+                            {gm.leader && <> <span className="roster-leader">{Locale.label("groups.groupMembers.leader")}</span></>}
+                          </td>
+                          <td>{contactPhone(ci)}</td>
+                          <td>{ci?.email || ""}</td>
+                          <td>{contactAddress(ci)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <>
+                <div className="roster-meta">
+                  <span>{sheet.serviceTimeName}</span>
+                </div>
 
-            <table className="roster-table">
-              <thead>
-                <tr>
-                  {headerCells(false)}
-                  {headerCells(true)}
-                </tr>
-              </thead>
-              <tbody>
-                {splitColumns(sheet.members).map(([left, right]) => (
-                  <tr key={left.id || left.personId}>
-                    <td className="roster-name-cell" data-testid="roster-member">{left.person?.name?.display}</td>
-                    {boxCells()}
-                    {right ? (
-                      <>
-                        <td className="roster-name-cell roster-split" data-testid="roster-member">{right.person?.name?.display}</td>
+                <table className="roster-table">
+                  <thead>
+                    <tr>
+                      {headerCells(false)}
+                      {headerCells(true)}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {splitColumns(sheet.members).map(([left, right]) => (
+                      <tr key={left.id || left.personId}>
+                        <td className="roster-name-cell" data-testid="roster-member">{left.person?.name?.display}</td>
                         {boxCells()}
-                      </>
-                    ) : (
-                      <td colSpan={3} className="roster-split"></td>
-                    )}
-                  </tr>
-                ))}
-                <tr>
-                  <td colSpan={6} className="roster-section">{Locale.label("groups.printRoster.visitors")}</td>
-                </tr>
-                {visitorRows.map((i) => (
-                  <tr key={"visitor-" + i}>
-                    <td></td>
-                    {boxCells()}
-                    <td className="roster-split"></td>
-                    {boxCells()}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        {right ? (
+                          <>
+                            <td className="roster-name-cell roster-split" data-testid="roster-member">{right.person?.name?.display}</td>
+                            {boxCells()}
+                          </>
+                        ) : (
+                          <td colSpan={3} className="roster-split"></td>
+                        )}
+                      </tr>
+                    ))}
+                    <tr>
+                      <td colSpan={6} className="roster-section">{Locale.label("groups.printRoster.visitors")}</td>
+                    </tr>
+                    {visitorRows.map((i) => (
+                      <tr key={"visitor-" + i}>
+                        <td></td>
+                        {boxCells()}
+                        <td className="roster-split"></td>
+                        {boxCells()}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-            <div className="roster-notes">
-              <div>{Locale.label("groups.printRoster.teacherNotes")}</div>
-              <div className="roster-notes-line" />
-              <div className="roster-notes-line" />
-            </div>
+                <div className="roster-notes">
+                  <div>{Locale.label("groups.printRoster.teacherNotes")}</div>
+                  <div className="roster-notes-line" />
+                  <div className="roster-notes-line" />
+                </div>
+              </>
+            )}
           </div>
         ))}
       </div>

@@ -40,9 +40,12 @@ interface Props {
 export const Services: React.FC<Props> = ({ current, onEdit }) => {
   const [services, setServices] = React.useState<StreamingServiceInterface[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const loadSeq = React.useRef(0);
 
   const loadData = () => {
+    const seq = ++loadSeq.current;
     ApiHelper.get("/streamingServices", "ContentApi").then((data: any) => {
+      if (seq !== loadSeq.current) return;
       data.forEach((s: StreamingServiceInterface) => {
         s.serviceTime = new Date(Date.parse(s.serviceTime!.toString()));
         s.serviceTime.setMinutes(s.serviceTime.getMinutes() + s.timezoneOffset);

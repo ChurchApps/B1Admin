@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, openPersonRow, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -542,6 +542,76 @@ test.describe.serial("Settings Management", () => {
       }
       await page.goto("/donations/batches");
       await expect(batchDates().first()).toHaveText(MONTH_FIRST, { timeout: 15000 });
+    });
+
+    const choosePhoneFormat = async (format: "international" | "local") => {
+      await page.goto("/settings#region");
+      await expect(page.locator('[data-testid="settings-section-region"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });
+      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await page.locator('[data-testid="phone-format-select"]').click();
+      await page.locator(`[data-testid="phone-format-option-${format}"]`).click();
+      await page.locator("button").getByText("Save").click();
+      await expect(page.locator('[data-testid="phone-format-select"]')).toHaveCount(0, { timeout: 10000 });
+    };
+
+    test("local phone format saves a person's number as typed, without a country code", async () => {
+      try {
+        await choosePhoneFormat("local");
+        await expect(page.locator('[data-testid="settings-section-region"]')).toContainText("Local phone numbers");
+        await expect(page.locator('[data-testid="settings-region"]')).toContainText("Local phone numbers");
+
+        await page.goto("/people");
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = personDetailsEditButton(page);
+        await editBtn.first().click();
+        const mobile = page.locator("#mobilePhone");
+        await expect(mobile).toBeVisible({ timeout: 10000 });
+        // Plain field: no country flag button, and the typed number is not prefixed with "+".
+        await expect(page.locator(".MuiTelInput-IconButton")).toHaveCount(0);
+        await mobile.fill("0701234567");
+        await expect(mobile).toHaveValue("0701234567");
+        await page.locator("button").getByText("Save").click();
+        await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
+        await expect(page.locator("body")).toContainText("0701234567");
+
+        await editBtn.first().click();
+        await expect(page.locator("#mobilePhone")).toHaveValue("0701234567", { timeout: 10000 });
+        await page.locator("button").getByText("Cancel").click();
+      } finally {
+        await choosePhoneFormat("international");
+      }
+      await expect(page.locator('[data-testid="settings-section-region"]')).not.toContainText("Local phone numbers");
+    });
+
+    test("local phone format keeps a name typed while the phone setting is still loading", async () => {
+      let release: () => void = () => {};
+      const held = new Promise<void>((resolve) => { release = resolve; });
+      const route = "**/membership/settings/public/**";
+      try {
+        await choosePhoneFormat("local");
+        await page.goto("/people");
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = personDetailsEditButton(page);
+        await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
+
+        await page.route(route, async (r) => { await held; await r.continue(); });
+        await editBtn.first().click();
+        const first = page.locator("#first");
+        await expect(first).toBeVisible({ timeout: 10000 });
+        await first.fill("Zacchaeus");
+        release();
+
+        const mobile = page.locator("#mobilePhone");
+        await expect(mobile).toBeVisible({ timeout: 10000 });
+        await expect(page.locator(".MuiTelInput-IconButton")).toHaveCount(0);
+        await expect(first).toHaveValue("Zacchaeus");
+        await expect(mobile).not.toHaveValue(/^\+/);
+        await page.locator("button").getByText("Cancel").click();
+      } finally {
+        release();
+        await page.unroute(route);
+        await choosePhoneFormat("international");
+      }
     });
   });
 

@@ -6,7 +6,7 @@ import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Stack } from "@mui/material";
-import { Add as AddIcon, ErrorOutline as FailedIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
+import { Add as AddIcon, ErrorOutline as FailedIcon, Print as PrintIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
 import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, ResultsBar, SortableTableHead, TextAction, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
@@ -109,6 +109,7 @@ export const DonationBatchesPage = () => {
             {Locale.label("donations.donationBatchesPage.failedEvents", "Failed events ({count})").replace("{count}", unresolvedEvents.toString())}
           </HeaderTextButton>
         )}
+        {(batches.data?.length || 0) > 0 && <HeaderTextButton startIcon={<PrintIcon />} component={Link} to="/donations/batches/print-all" data-testid="print-batches-button">{Locale.label("common.print")}</HeaderTextButton>}
         {yearBatches.length > 0 && <ExportButton data={yearBatches} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
         {canEdit && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openBatch("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</HeaderPrimaryButton>}
       </PageHeader>

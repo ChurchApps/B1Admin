@@ -26,14 +26,19 @@ interface Props {
 export const RegionSettingsEdit: React.FC<Props> = (props) => {
   const [value, setValue] = useState<string>("en-US");
   const [setting, setSetting] = useState<GenericSettingInterface | null>(null);
+  const [phoneFormat, setPhoneFormat] = useState<string>("international");
+  const [phoneSetting, setPhoneSetting] = useState<GenericSettingInterface | null>(null);
   const [error, setError] = useState("");
 
   const save = async () => {
     const s: GenericSettingInterface = setting === null ? { churchId: props.churchId, public: 1, keyName: "region" } : setting;
     s.value = value;
     s.public = 1;
+    const ps: GenericSettingInterface = phoneSetting === null ? { churchId: props.churchId, public: 1, keyName: "phoneFormat" } : phoneSetting;
+    ps.value = phoneFormat;
+    ps.public = 1;
     try {
-      await ApiHelper.post("/settings", [s], "MembershipApi");
+      await ApiHelper.post("/settings", [s, ps], "MembershipApi");
       DateHelper.setLocale(value);
       setError("");
       props.onSaveComplete?.(true);
@@ -53,6 +58,11 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
     if (regionSetting.length > 0) {
       setSetting(regionSetting[0]);
       setValue(DateHelper.normalizeLocale(regionSetting[0].value));
+    }
+    const phone = settings.find((c: GenericSettingInterface) => c.keyName === "phoneFormat");
+    if (phone) {
+      setPhoneSetting(phone);
+      setPhoneFormat(phone.value === "local" ? "local" : "international");
     }
   };
 
@@ -87,6 +97,21 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
           ))}
         </Select>
         <FormHelperText>{Locale.label("settings.regionSettingsEdit.helperText")}</FormHelperText>
+      </FormControl>
+      <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+        <InputLabel id="phone-format-select-label">{Locale.label("settings.regionSettingsEdit.phoneFormat")}</InputLabel>
+        <Select
+          labelId="phone-format-select-label"
+          label={Locale.label("settings.regionSettingsEdit.phoneFormat")}
+          name="phoneFormat"
+          value={phoneFormat}
+          onChange={(e) => setPhoneFormat(e.target.value as string)}
+          data-testid="phone-format-select"
+        >
+          <MenuItem value="international" data-testid="phone-format-option-international">{Locale.label("settings.regionSettingsEdit.phoneInternational")}</MenuItem>
+          <MenuItem value="local" data-testid="phone-format-option-local">{Locale.label("settings.regionSettingsEdit.phoneLocal")}</MenuItem>
+        </Select>
+        <FormHelperText>{Locale.label("settings.regionSettingsEdit.phoneHelperText")}</FormHelperText>
       </FormControl>
     </Box>
   );

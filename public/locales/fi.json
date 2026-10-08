@@ -1358,6 +1358,11 @@
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Istunnot",
+      "statusButton": "Keneltä puuttuu vielä läsnäolo",
+      "statusEntered": "Kirjattu ({count})",
+      "statusNotEntered": "Ei kirjattu",
+      "statusSummary": "{entered}/{total} ryhmää kirjattu",
+      "statusTitle": "Keneltä puuttuu vielä läsnäolo",
       "tryAdjusting": "Try adjusting your search",
       "upcoming": "tuleva"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "Seurakuntanne tekstiviestikrediitit tälle laskutuskaudelle ovat loppuneet. Viestejä ei lähetetty. Päivitä tilaus tai odota krediittien uusiutumista osoitteessa",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Ladataan vastaanottajia...",
+      "mergeFieldHint": "Lisää paikkamerkki napsauttamalla. Se korvataan kunkin vastaanottajan tiedoilla, kun viesti lähetetään.",
       "messageLabel": "Viesti",
       "noPhoneNotice": "{count} ei ole puhelinnumeroa.",
       "noPhoneNoticeSingular": "{count} ei ole puhelinnumeroa.",
@@ -1549,6 +1555,11 @@
       "title": "Sovelluksen teema"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Näytä kirjautumiskehote sovelluksen aloitusnäytössä",
+      "signInPromptHelp": "Kirjautumattomat vierailijat näkevät tämän sovelluksen aloitusnäytössä. Kirjautuminen on aina käytettävissä sovelluksen valikossa.",
+      "signInPromptPlaceholder": "Kirjaudu sisään nähdäksesi ryhmäsi, lahjoituksesi ja paljon muuta.",
+      "signInPromptText": "Kirjautumiskehotteen teksti",
+      "signInPromptTitle": "Aloitusnäytön kirjautumiskehote",
       "subtitle": "Configure settings for the B1 Mobile app",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Ensisijainen sähköposti",
       "primPhone": "Ensisijainen puhelinnumero",
       "printDirectory": "Tulosta jäsenluettelo",
+      "printResults": "Tulosta tulokset",
       "searchPpl": "Etsi ihmisiä",
       "searchResults": "Hakutulokset",
       "showAll": "Näytä kaikki jäsenet",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Ohjeet",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Leveä"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Jumalanpalvelusajat",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Napsauta Lisää sisältö työkalupalkista, sitten vedä osio tai elementti sivulle.",
@@ -5494,7 +5503,6 @@
       "operator": "Operaattori",
       "pauseAll": "Keskeytä automaatio",
       "paused": "Keskeytetty",
-      "recur_": "Recur_",
       "recurs": "Toistuu",
       "resumeAll": "Jatka automaatiota",
       "runNow": "Suorita nyt",
@@ -5515,7 +5523,6 @@
       "resume": "Jatka",
       "retry": "Yritä uudelleen",
       "statusHeader": "Tila",
-      "status_": "Status_",
       "subject": "Henkilö",
       "title": "Suoritushistoria",
       "trigger": "Käynnistin",
@@ -5628,6 +5635,7 @@
       "days": "Odotuspäivät",
       "noAssignee": "Ei osoitettu",
       "noGroup": "Ei ryhmää valittu",
+      "noTextingProvider": "Tekstiviestipalvelua ei ole määritetty. Lisää se kohdassa Asetukset → Tekstiviestit, muuten viestejä ei lähetetä.",
       "note": "Huomio",
       "pickAssignee": "Valitse vastuuhenkilö",
       "pickGroup": "Valitse ryhmä",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Aihe (valinnainen)",
       "taskDescription": "Kuvaus (valinnainen)",
       "taskTitle": "Tehtävän otsikko",
+      "textMergeHint": "Käytä {{firstName}}, {{lastName}}, {{displayName}} tai {{churchName}}. Kieltäytyneet henkilöt ohitetaan.",
+      "textMessage": "Tekstiviesti",
       "title": "Automaattiset toiminnot",
       "type": {
         "addNote": "Lisää muistiinpano",
@@ -5647,6 +5657,7 @@
         "delay": "Odota",
         "removeFromGroup": "Poista ryhmästä",
         "sendEmail": "Lähetä sähköposti",
+        "sendText": "Lähetä tekstiviesti",
         "setField": "Aseta kenttä",
         "webhook": "Kutsu webhookia"
       },

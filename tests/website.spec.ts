@@ -111,8 +111,12 @@ test.describe("Website Management", () => {
 
     test("should set and persist page visibility", async () => {
       const openSettings = async () => {
-        await page.locator('[data-testid="page-settings-button"]').last().click();
+        // The pages list is a tree, so the last settings button is not the page this chain just renamed.
+        const row = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first();
+        await expect(row).toBeVisible({ timeout: 10000 });
+        await row.locator('[data-testid="page-settings-button"]').click();
         await page.locator('[data-testid="page-visibility-select"]').waitFor({ state: "visible" });
+        await expect(page.locator('[name="title"]')).toHaveValue("Zebedee Test Page");
       };
       await openSettings();
       await page.locator('[data-testid="page-visibility-select"]').click();

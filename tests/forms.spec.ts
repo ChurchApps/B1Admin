@@ -147,6 +147,12 @@ test.describe("Printing forms", () => {
     await expect(churchLine).toBeVisible();
     await page.emulateMedia({ media: "screen" });
   });
+
+  // A "New Form Submission" notification links to /forms/:id?tab=submissions; the page must open on that tab.
+  test("a form link with ?tab=submissions opens on the submissions tab", async ({ page }) => {
+    await page.goto("/forms/FRM00000001?tab=submissions");
+    await expect(page.getByText("Form Submission Results")).toBeVisible({ timeout: 15000 });
+  });
 });
 
 test.describe.serial("People-associated form lifecycle", () => {

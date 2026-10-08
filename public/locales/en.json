@@ -970,6 +970,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "End Date",
+      "noBatches": "No batches with donations in this date range.",
+      "startDate": "Start Date",
+      "title": "Print Batches"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
       "campaign": "Campaign",
@@ -1479,6 +1485,8 @@
     },
     "printRoster": {
       "absent": "Absent",
+      "attendanceSheet": "Attendance Sheet",
+      "contactRoster": "Contact Roster",
       "date": "Date",
       "noGroups": "No classes found to print.",
       "present": "Present",
@@ -3979,7 +3987,8 @@
       "gradePromotionOff": "Automatic promotion disabled",
       "gradePromotionOn": "Promotes on {date} each year",
       "notConfigured": "Not configured",
-      "notSet": "Not set"
+      "notSet": "Not set",
+      "phoneLocalSubtitle": "Local phone numbers"
     },
     "manageChurch": {
       "auditLog": "Audit Log",
@@ -4006,6 +4015,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Date format",
       "helperText": "Dates and times across B1 follow this region's format.",
+      "phoneFormat": "Phone numbers",
+      "phoneHelperText": "Local saves numbers exactly as typed (like 0701 234 5678). Texting works best when numbers include the country code.",
+      "phoneInternational": "International (with country code)",
+      "phoneLocal": "Local (as typed)",
       "region": "Region",
       "title": "Region"
     },
@@ -4277,7 +4290,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructions",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4787,7 +4799,6 @@
       "wide": "Wide"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4806,8 +4817,7 @@
       "serviceTimes": "Service Times",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Click Add Content in the toolbar, then drag a section or element onto the page.",
@@ -5690,7 +5700,6 @@
       "operator": "Operator",
       "pauseAll": "Pause automation",
       "paused": "Paused",
-      "recur_": "Recur_",
       "recurs": "Repeats",
       "resumeAll": "Resume automation",
       "runNow": "Run now",
@@ -5711,7 +5720,6 @@
       "resume": "Resume",
       "retry": "Retry",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Person",
       "title": "Execution History",
       "trigger": "Trigger",

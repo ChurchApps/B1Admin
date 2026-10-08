@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, FormNavigation, FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, Loading } from "@churchapps/apphelper";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Button, Link as MuiLink, Stack, Typography } from "@mui/material";
 import { Description as DescriptionIcon } from "@mui/icons-material";
 import { BackVerb, PageContainer, EmptyState, Pill, RecordLayout, TextAction, useRecordView, RecordActions } from "../components/ui";
@@ -13,6 +13,7 @@ export const FormPage = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { view: requestedView, setView } = useRecordView("view", { replace: true });
+  const [searchParams] = useSearchParams();
 
   const form = useQuery<FormInterface>({
     queryKey: ["/forms/" + params.id, "MembershipApi"],
@@ -38,8 +39,9 @@ export const FormPage = () => {
   if ((formAdmin || formMemberAdmin) && formType === "form") availableTabs.push("members");
   if (formAdmin || formMemberAdmin || formMemberView) availableTabs.push("submissions");
 
+  const requestedTab = requestedView || searchParams.get("tab") || "";
   const editing = requestedView === "edit" && canEditSettings;
-  const selectedTab = availableTabs.includes(requestedView) ? requestedView : availableTabs[0] || "";
+  const selectedTab = availableTabs.includes(requestedTab) ? requestedTab : availableTabs[0] || "";
 
   const handleSettingsSaved = async () => {
     setView("");

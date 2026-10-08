@@ -1358,6 +1358,11 @@
       "selectSession": "セッションを選択",
       "session": "セッション",
       "sessions": "セッション",
+      "statusButton": "出席の入力がまだ必要なグループ",
+      "statusEntered": "入力済み ({count})",
+      "statusNotEntered": "未入力",
+      "statusSummary": "{total} グループ中 {entered} グループ入力済み",
+      "statusTitle": "出席の入力がまだ必要なグループ",
       "tryAdjusting": "検索条件を変えてお試しください",
       "upcoming": "今後"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "今回の請求サイクルのテキストクレジットがなくなりました。メッセージは送信されませんでした。アップグレードするか、クレジットが更新されるのをお待ちください：",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "受信者を読み込んでいます...",
+      "mergeFieldHint": "クリックしてプレースホルダーを挿入します。メッセージ送信時に各受信者の情報に置き換えられます。",
       "messageLabel": "メッセージ",
       "noPhoneNotice": "{count}人が電話番号を登録していません。",
       "noPhoneNoticeSingular": "{count}人が電話番号を登録していません。",
@@ -1549,6 +1555,11 @@
       "title": "アプリのテーマ"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "アプリのホーム画面にサインインの案内を表示する",
+      "signInPromptHelp": "サインインしていない訪問者には、アプリのホーム画面にこれが表示されます。サインインはアプリのメニューからいつでも可能です。",
+      "signInPromptPlaceholder": "サインインすると、グループや献金などを確認できます。",
+      "signInPromptText": "サインイン案内のテキスト",
+      "signInPromptTitle": "ホーム画面のサインイン案内",
       "subtitle": "B1 Mobile アプリの設定を行います",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "主なメールアドレス",
       "primPhone": "主な電話番号",
       "printDirectory": "名簿を印刷",
+      "printResults": "結果を印刷",
       "searchPpl": "人を検索",
       "searchResults": "検索結果",
       "showAll": "全メンバーを表示",
@@ -4081,7 +4093,6 @@
       "failed": "書き換えに失敗しました。変更はありません。",
       "instruction": "指示",
       "placeholder": "例: もっと温かみのある表現にして、行動を促す一文を加えてください",
-      "preset_": "Preset_",
       "rewrite": "書き換える",
       "title": "AI による書き換え",
       "working": "セクションを書き換えています..."
@@ -4591,7 +4602,6 @@
       "wide": "ワイド"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "対象",
       "buildingSection": "{title} を作成中 — セクション {n} / {total}...",
       "button": "サイトを生成",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "礼拝時間",
       "serviceTimesPlaceholder": "毎週日曜 午前9時・11時",
       "title": "AI でサイトを生成",
-      "tone": "トーン",
-      "tone_": "Tone_"
+      "tone": "トーン"
     },
     "helpDialog": {
       "addBody": "ツールバーの「コンテンツを追加」をクリックしてから、セクションまたは要素をページにドラッグします。",
@@ -5494,7 +5503,6 @@
       "operator": "演算子",
       "pauseAll": "オートメーションを一時停止",
       "paused": "一時停止中",
-      "recur_": "Recur_",
       "recurs": "繰り返し",
       "resumeAll": "オートメーションを再開",
       "runNow": "今すぐ実行",
@@ -5515,7 +5523,6 @@
       "resume": "再開",
       "retry": "再試行",
       "statusHeader": "ステータス",
-      "status_": "Status_",
       "subject": "人物",
       "title": "実行履歴",
       "trigger": "トリガー",
@@ -5628,6 +5635,7 @@
       "days": "待機日数",
       "noAssignee": "未割り当て",
       "noGroup": "グループが選択されていません",
+      "noTextingProvider": "SMS プロバイダーが設定されていません。設定 → SMS で追加しないと、メッセージは送信されません。",
       "note": "メモ",
       "pickAssignee": "担当者を選択",
       "pickGroup": "グループを選択",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "件名（任意）",
       "taskDescription": "説明（任意）",
       "taskTitle": "タスクタイトル",
+      "textMergeHint": "{{firstName}}, {{lastName}}, {{displayName}}、{{churchName}} を使用できます。配信停止した人はスキップされます。",
+      "textMessage": "テキストメッセージ",
       "title": "自動アクション",
       "type": {
         "addNote": "メモを追加",
@@ -5647,6 +5657,7 @@
         "delay": "待機",
         "removeFromGroup": "グループから削除",
         "sendEmail": "メールを送信",
+        "sendText": "SMS を送信",
         "setField": "フィールドを設定",
         "webhook": "Webhook を呼び出す"
       },

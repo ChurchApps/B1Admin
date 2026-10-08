@@ -1358,6 +1358,11 @@
       "selectSession": "세션 선택",
       "session": "세션",
       "sessions": "세션",
+      "statusButton": "아직 출석 입력이 필요한 그룹",
+      "statusEntered": "입력됨 ({count})",
+      "statusNotEntered": "미입력",
+      "statusSummary": "{total}개 그룹 중 {entered}개 입력됨",
+      "statusTitle": "아직 출석 입력이 필요한 그룹",
       "tryAdjusting": "검색을 조정해 보세요",
       "upcoming": "예정됨"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "귀하의 교회는 이번 청구 주기의 문자 크레딧을 모두 사용했습니다. 메시지가 전송되지 않았습니다. 업그레이드하거나 다음에서 크레딧이 갱신되기를 기다려 주세요.",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "수신자 로딩 중...",
+      "mergeFieldHint": "클릭하여 자리 표시자를 삽입하세요. 문자를 보낼 때 각 수신자의 정보로 바뀝니다.",
       "messageLabel": "메시지",
       "noPhoneNotice": "{count}명에게 등록된 전화번호가 없습니다.",
       "noPhoneNoticeSingular": "{count}명에게 등록된 전화번호가 없습니다.",
@@ -1549,6 +1555,11 @@
       "title": "앱 테마"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "앱 홈 화면에 로그인 안내 표시",
+      "signInPromptHelp": "로그인하지 않은 방문자는 앱 홈 화면에서 이 내용을 봅니다. 로그인은 언제든지 앱 메뉴에서 할 수 있습니다.",
+      "signInPromptPlaceholder": "로그인하면 그룹, 헌금 등을 확인할 수 있습니다.",
+      "signInPromptText": "로그인 안내 문구",
+      "signInPromptTitle": "홈 화면 로그인 안내",
       "subtitle": "B1 Mobile 앱 설정 구성",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "기본 이메일",
       "primPhone": "기본 전화",
       "printDirectory": "명부 인쇄",
+      "printResults": "결과 인쇄",
       "searchPpl": "사람 검색",
       "searchResults": "검색 결과",
       "showAll": "모든 구성원 표시",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "지시 사항",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "와이드"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "예배 시간",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "도구 모음에서 콘텐츠 추가를 클릭한 다음 섹션이나 요소를 페이지에 드래그하세요.",
@@ -5494,7 +5503,6 @@
       "operator": "연산자",
       "pauseAll": "자동화 일시 중지",
       "paused": "일시 중지됨",
-      "recur_": "Recur_",
       "recurs": "반복",
       "resumeAll": "자동화 재개",
       "runNow": "지금 실행",
@@ -5515,7 +5523,6 @@
       "resume": "재개",
       "retry": "다시 시도",
       "statusHeader": "상태",
-      "status_": "Status_",
       "subject": "사람",
       "title": "실행 내역",
       "trigger": "트리거",
@@ -5628,6 +5635,7 @@
       "days": "대기 일수",
       "noAssignee": "미배정",
       "noGroup": "그룹 선택 안 됨",
+      "noTextingProvider": "문자 서비스 제공업체가 설정되지 않았습니다. 설정 → 문자에서 추가하지 않으면 문자가 발송되지 않습니다.",
       "note": "노트",
       "pickAssignee": "담당자 선택",
       "pickGroup": "그룹 선택",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "제목 (선택사항)",
       "taskDescription": "설명 (선택사항)",
       "taskTitle": "작업 제목",
+      "textMergeHint": "{{firstName}}, {{lastName}}, {{displayName}} 또는 {{churchName}}을(를) 사용하세요. 수신 거부한 사람은 제외됩니다.",
+      "textMessage": "문자 메시지",
       "title": "자동화 작업",
       "type": {
         "addNote": "메모 추가",
@@ -5647,6 +5657,7 @@
         "delay": "대기",
         "removeFromGroup": "그룹에서 제거",
         "sendEmail": "이메일 보내기",
+        "sendText": "문자 보내기",
         "setField": "필드 설정",
         "webhook": "웹훅 호출"
       },

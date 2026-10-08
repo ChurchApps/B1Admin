@@ -1358,6 +1358,11 @@
       "selectSession": "Selecione Sessão",
       "session": "Sessão",
       "sessions": "Sessões",
+      "statusButton": "Quem ainda precisa registrar presença",
+      "statusEntered": "Registrados ({count})",
+      "statusNotEntered": "Não registrado",
+      "statusSummary": "{entered} de {total} grupos registrados",
+      "statusTitle": "Quem ainda precisa registrar presença",
       "tryAdjusting": "Tente ajustar sua pesquisa",
       "upcoming": "próximos"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "Sua igreja está sem créditos de mensagens de texto para este ciclo de cobrança. Nenhuma mensagem foi enviada. Faça upgrade ou aguarde a renovação dos seus créditos em",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Carregando destinatários...",
+      "mergeFieldHint": "Clique para inserir um marcador. Ele é substituído pelos dados de cada destinatário quando a mensagem é enviada.",
       "messageLabel": "Mensagem",
       "noPhoneNotice": "{count} não têm número de telefone registrado.",
       "noPhoneNoticeSingular": "{count} não tem número de telefone registrado.",
@@ -1549,6 +1555,11 @@
       "title": "Tema do Aplicativo"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Mostrar aviso de login na tela inicial do aplicativo",
+      "signInPromptHelp": "Visitantes que não estão conectados veem isto na tela inicial do aplicativo. O login está sempre disponível no menu do aplicativo.",
+      "signInPromptPlaceholder": "Entre para ver seus grupos, contribuições e muito mais.",
+      "signInPromptText": "Texto do aviso de login",
+      "signInPromptTitle": "Aviso de login na tela inicial",
       "subtitle": "Configure as definições do aplicativo B1 Mobile",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Email Principal",
       "primPhone": "Telefone Principal",
       "printDirectory": "Imprimir diretório",
+      "printResults": "Imprimir resultados",
       "searchPpl": "Pesquisar Pessoas",
       "searchResults": "Resultados da Pesquisa",
       "showAll": "Mostrar todos os membros",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instruções",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Largo"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Horários dos Cultos",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Clique em Adicionar Conteúdo na barra de ferramentas e arraste uma seção ou elemento para a página.",
@@ -5494,7 +5503,6 @@
       "operator": "Operador",
       "pauseAll": "Pausar automação",
       "paused": "Pausado",
-      "recur_": "Recur_",
       "recurs": "Repete",
       "resumeAll": "Retomar automação",
       "runNow": "Executar agora",
@@ -5515,7 +5523,6 @@
       "resume": "Retomar",
       "retry": "Tentar novamente",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Pessoa",
       "title": "Histórico de execuções",
       "trigger": "Gatilho",
@@ -5628,6 +5635,7 @@
       "days": "Dias de espera",
       "noAssignee": "Sem responsável",
       "noGroup": "Nenhum grupo selecionado",
+      "noTextingProvider": "Nenhum provedor de SMS está configurado. Adicione um em Configurações → SMS ou as mensagens não serão enviadas.",
       "note": "Nota",
       "pickAssignee": "Escolher responsável",
       "pickGroup": "Escolher grupo",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Assunto (opcional)",
       "taskDescription": "Descrição (opcional)",
       "taskTitle": "Título da tarefa",
+      "textMergeHint": "Use {{firstName}}, {{lastName}}, {{displayName}} ou {{churchName}}. Pessoas que cancelaram a inscrição são ignoradas.",
+      "textMessage": "Mensagem de texto",
       "title": "Ações automatizadas",
       "type": {
         "addNote": "Adicionar Anotação",
@@ -5647,6 +5657,7 @@
         "delay": "Aguardar",
         "removeFromGroup": "Remover do Grupo",
         "sendEmail": "Enviar E-mail",
+        "sendText": "Enviar SMS",
         "setField": "Definir Campo",
         "webhook": "Chamar Webhook"
       },

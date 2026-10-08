@@ -76,7 +76,6 @@ export const PlanList = memo((props: Props) => {
       planTypeId: props.planTypeId,
       serviceDate: date,
       name,
-      notes: "",
       serviceOrder: true
     });
   }, [props.ministry.id, props.planTypeId]);

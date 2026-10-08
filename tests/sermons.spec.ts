@@ -65,6 +65,7 @@ test.describe("Sermons Management", () => {
       await searchBar.fill("Zebedee Test Sermon");
       const validatedSermon = page.locator("td").getByText("Zebedee Test Sermon");
       await expect(validatedSermon).toHaveCount(1);
+      // The filter persists on the page; clear it so later tests in this chain see their new rows.
       await searchBar.fill("");
     });
 

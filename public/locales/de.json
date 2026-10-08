@@ -1358,6 +1358,11 @@
       "selectSession": "Wählen Sie Sitzung aus",
       "session": "Sitzung",
       "sessions": "Sitzungen",
+      "statusButton": "Wer muss noch Anwesenheit erfassen",
+      "statusEntered": "Erfasst ({count})",
+      "statusNotEntered": "Nicht erfasst",
+      "statusSummary": "{entered} von {total} Gruppen erfasst",
+      "statusTitle": "Wer muss noch Anwesenheit erfassen",
       "tryAdjusting": "Versuchen Sie, Ihre Suche anzupassen",
       "upcoming": "bevorstehend"
     },
@@ -1446,6 +1451,7 @@
       "insufficientCredits": "Ihre Gemeinde hat für diesen Abrechnungszeitraum keine SMS-Guthaben mehr. Es wurden keine Nachrichten gesendet. Führen Sie ein Upgrade durch oder warten Sie, bis Ihr Guthaben erneuert wird unter",
       "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Empfänger werden geladen...",
+      "mergeFieldHint": "Klicken, um einen Platzhalter einzufügen. Er wird beim Senden der SMS durch die Daten des jeweiligen Empfängers ersetzt.",
       "messageLabel": "Nachricht",
       "noPhoneNotice": "{count} haben keine Telefonnummer hinterlegt.",
       "noPhoneNoticeSingular": "{count} hat keine Telefonnummer hinterlegt.",
@@ -1549,6 +1555,11 @@
       "title": "App-Design"
     },
     "b1MobilePage": {
+      "showSignInPrompt": "Anmeldehinweis auf dem Startbildschirm der App anzeigen",
+      "signInPromptHelp": "Nicht angemeldete Besucher sehen dies auf dem Startbildschirm der App. Die Anmeldung ist jederzeit über das App-Menü möglich.",
+      "signInPromptPlaceholder": "Melde dich an, um deine Gruppen, Spenden und mehr zu sehen.",
+      "signInPromptText": "Text des Anmeldehinweises",
+      "signInPromptTitle": "Anmeldehinweis auf dem Startbildschirm",
       "subtitle": "Einstellungen für die B1 Mobile App konfigurieren",
       "title": "B1 Mobile"
     },
@@ -1865,6 +1876,7 @@
       "primEmail": "Primäre E-Mail",
       "primPhone": "Primäre Telefonnummer",
       "printDirectory": "Verzeichnis drucken",
+      "printResults": "Ergebnisse drucken",
       "searchPpl": "Personen suchen",
       "searchResults": "Suchergebnisse",
       "showAll": "Alle Mitglieder anzeigen",
@@ -4081,7 +4093,6 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Anweisungen",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
-      "preset_": "Preset_",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4591,7 +4602,6 @@
       "wide": "Breit"
     },
     "generateSite": {
-      "audience_": "Audience_",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4610,8 +4620,7 @@
       "serviceTimes": "Gottesdienstzeiten",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone",
-      "tone_": "Tone_"
+      "tone": "Tone"
     },
     "helpDialog": {
       "addBody": "Klicken Sie in der Symbolleiste auf Inhalt hinzufügen, dann ziehen Sie einen Abschnitt oder ein Element auf die Seite.",
@@ -5494,7 +5503,6 @@
       "operator": "Operator",
       "pauseAll": "Automatisierung pausieren",
       "paused": "Pausiert",
-      "recur_": "Recur_",
       "recurs": "Wiederholt sich",
       "resumeAll": "Automatisierung fortsetzen",
       "runNow": "Jetzt ausführen",
@@ -5515,7 +5523,6 @@
       "resume": "Fortsetzen",
       "retry": "Erneut versuchen",
       "statusHeader": "Status",
-      "status_": "Status_",
       "subject": "Person",
       "title": "Ausführungsverlauf",
       "trigger": "Auslöser",
@@ -5628,6 +5635,7 @@
       "days": "Wartetage",
       "noAssignee": "Nicht zugewiesen",
       "noGroup": "Keine Gruppe ausgewählt",
+      "noTextingProvider": "Es ist kein SMS-Anbieter eingerichtet. Füge unter Einstellungen → SMS einen hinzu, sonst werden keine SMS gesendet.",
       "note": "Notiz",
       "pickAssignee": "Zugewiesenen auswählen",
       "pickGroup": "Gruppe auswählen",
@@ -5638,6 +5646,8 @@
       "subjectOverride": "Betreff (optional)",
       "taskDescription": "Beschreibung (optional)",
       "taskTitle": "Aufgabentitel",
+      "textMergeHint": "Verwende {{firstName}}, {{lastName}}, {{displayName}} oder {{churchName}}. Abgemeldete Personen werden übersprungen.",
+      "textMessage": "SMS-Nachricht",
       "title": "Automatisierte Aktionen",
       "type": {
         "addNote": "Notiz hinzufügen",
@@ -5647,6 +5657,7 @@
         "delay": "Warten",
         "removeFromGroup": "Aus Gruppe entfernen",
         "sendEmail": "E-Mail senden",
+        "sendText": "SMS senden",
         "setField": "Feld festlegen",
         "webhook": "Webhook aufrufen"
       },

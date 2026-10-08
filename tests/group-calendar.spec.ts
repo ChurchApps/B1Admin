@@ -338,3 +338,64 @@ test.describe.serial("Editing an existing calendar event", () => {
     await expect(page.locator(".rbc-event").filter({ hasText: EDIT_EVENT_TITLE_UPDATED }).first()).toBeVisible({ timeout: 15000 });
   });
 });
+
+const PRIVATE_EVENT_TITLE = "Zacchaeus Private Curated Event";
+const PRIVATE_EVENT_GROUP = "Youth Group";
+
+// #1211: making a curated-calendar event private hid it from the admin curated calendar, so staff could not reopen it.
+test.describe.serial("Private events on a curated calendar", () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+
+    // Disposable recurring public event on Youth Group, which the seeded Youth Ministry Calendar already includes.
+    await page.goto("/calendars/CAL00000001");
+    await page.locator('[data-testid="new-event-button"]').click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="new-event-group-select"] [role="combobox"]').click();
+    await page.getByRole("option", { name: PRIVATE_EVENT_GROUP, exact: true }).click();
+    await page.locator('[data-testid="new-event-title-input"] input').fill(PRIVATE_EVENT_TITLE);
+    const start = new Date();
+    start.setDate(start.getDate() + 1);
+    start.setHours(18, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(19, 0, 0, 0);
+    await page.locator('[data-testid="new-event-start-input"] input').fill(toInputValue(start));
+    await page.locator('[data-testid="new-event-end-input"] input').fill(toInputValue(end));
+    await page.locator('[data-testid="new-event-recurring-checkbox"]').click();
+    await expect(page.locator('[data-testid="recurrence-frequency-select"]')).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+  });
+
+  test.afterAll(async () => {
+    try {
+      await page.goto("/calendars/CAL00000001");
+      const block = await findEventBlock(page, PRIVATE_EVENT_TITLE);
+      await block.click();
+      await page.locator('[data-testid="calendar-event-edit-button"]').click();
+      await page.locator('[data-testid="event-delete-button"]').click();
+      await confirmDelete(page);
+      await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+    } catch { /* ignore */ }
+    await page?.context().close();
+  });
+
+  test("private event stays on the admin curated calendar", async () => {
+    const block = await findEventBlock(page, PRIVATE_EVENT_TITLE);
+    await block.click();
+    await page.locator('[data-testid="calendar-event-edit-button"]').click();
+    await page.locator('[data-testid="new-event-visibility-select"]').click();
+    await page.getByRole("option", { name: "Private" }).click();
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await expect(page.locator('div[role="dialog"]').last()).toContainText("update the entire series", { timeout: 10000 });
+    await confirmDelete(page);
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+
+    await page.reload();
+    await expect(await findEventBlock(page, PRIVATE_EVENT_TITLE)).toBeVisible({ timeout: 15000 });
+  });
+});
