@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Åbn Bez-chat",
+      "ariaSend": "Send besked",
+      "errorAnswer": "Jeg kunne ikke finde et svar på det.",
+      "errorGeneric": "Der opstod en fejl ved forbindelse til Bez. Prøv igen.",
       "intro": "Hej, jeg er Bez! Jeg kan hjælpe dig med at navigere i B1 Admin. Prøv at spørge mig:",
+      "placeholderInput": "Stil et spørgsmål...",
       "sampleCsv": "\"Hvordan importerer jeg medlemmer fra en CSV?\"",
       "sampleGiving": "\"Hvordan opsætter jeg online giving?\"",
       "sampleGroup": "\"Hvordan opretter jeg en ny gruppe?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Åbn hjælpe-chat",
+      "ariaSend": "Send besked",
       "composing": "Sammensætter svar...",
+      "errorAnswer": "Jeg kunne ikke finde et svar på det.",
+      "errorGeneric": "Der opstod en fejl ved forbindelse til dokumentationsassistenten. Prøv igen.",
       "intro": "Stil ethvert spørgsmål om B1 Admin. For eksempel:",
+      "placeholderInput": "Stil et spørgsmål...",
       "sampleCsv": "\"Hvordan importerer jeg medlemmer fra en CSV?\"",
       "sampleGiving": "\"Hvordan opsætter jeg online giving?\"",
       "sampleGroup": "\"Hvordan opretter jeg en ny gruppe?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Åbn SuperBee-chat",
+      "ariaSend": "Send besked",
+      "errorAnswer": "Jeg kunne ikke finde et svar på det.",
+      "errorGeneric": "Der opstod en fejl ved forbindelse til SuperBee. Prøv igen.",
       "intro": "Hejsa, mester! Jeg er SuperBee — din B1 Admin-kraftstation. Kast dine sværeste spørgsmål mod mig!",
+      "placeholderInput": "Stil et spørgsmål...",
       "sampleCsv": "\"Hvordan importerer jeg medlemmer fra en CSV?\"",
       "sampleGiving": "\"Hvordan opsætter jeg online giving?\"",
       "sampleGroup": "\"Hvordan opretter jeg en ny gruppe?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Slutdato",
+      "noBatches": "Ingen bunker med donationer i dette datointerval.",
+      "startDate": "Startdato",
+      "title": "Udskriv bunker"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Årlig giveerklæring {year}",
       "campaign": "Kampagne",
@@ -1207,6 +1225,9 @@
       "noEvents": "Ingen begivenheder endnu. Brug Tilføj begivenheder til at planlægge denne gruppes møder.",
       "noResponses": "Ingen svar endnu.",
       "oneTime": "Én gang",
+      "response_maybe": "Måske",
+      "response_no": "Kommer ikke",
+      "response_yes": "Kommer",
       "rosterTitle": "RSVP-svar",
       "rsvpSummary": "{yes} ja · {maybe} måske · {no} nej",
       "rsvps": "RSVP'er",
@@ -1384,7 +1405,8 @@
       "showArchived": "Vis arkiverede",
       "spPpl": " personer",
       "subtitle": {
-        "create": "Kom i gang ved at oprette din første gruppe"
+        "create": "Kom i gang ved at oprette din første gruppe",
+        "manage": "Organiser og administrer din kirkes grupper"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Fraværende",
+      "attendanceSheet": "Fremmødeliste",
+      "contactRoster": "Kontaktliste",
       "date": "Dato",
       "noGroups": "Ingen klasser fundet til udskrivning.",
       "present": "Til stede",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatisk oprykning deaktiveret",
       "gradePromotionOn": "Rykker op den {date} hvert år",
       "notConfigured": "Ikke konfigureret",
-      "notSet": "Ikke angivet"
+      "notSet": "Ikke angivet",
+      "phoneLocalSubtitle": "Lokale telefonnumre"
     },
     "manageChurch": {
       "auditLog": "Revisionslog",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Datoformat",
       "helperText": "Datoer og klokkeslæt i hele B1 følger denne regions format.",
+      "phoneFormat": "Telefonnumre",
+      "phoneHelperText": "Lokal gemmer numre præcis som de er indtastet (f.eks. 0701 234 5678). SMS fungerer bedst, når numrene indeholder landekoden.",
+      "phoneInternational": "International (med landekode)",
+      "phoneLocal": "Lokal (som indtastet)",
       "region": "Region",
       "title": "Region"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instruktioner",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Gør tonen mere formel.",
+      "preset_grammar": "Ret kun stavning og grammatik.",
+      "preset_shorter": "Gør den kortere og nemmere at skimme.",
+      "preset_warmer": "Gør den varmere og mere imødekommende.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Bred"
     },
     "generateSite": {
+      "audience_community": "Lokalsamfundet",
+      "audience_families": "Familier",
+      "audience_newcomers": "Nytilkomne",
+      "audience_seniors": "Seniorer",
+      "audience_youngAdults": "Unge voksne",
+      "audience_youth": "Unge",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Gudstjenestetider",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Afslappet",
+      "tone_formal": "Formel",
+      "tone_inspirational": "Inspirerende",
+      "tone_warm": "Varm"
     },
     "helpDialog": {
       "addBody": "Klik på Tilføj indhold i værktøjslinjen, og træk derefter en sektion eller et element til siden.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Sæt automatisering på pause",
       "paused": "På pause",
+      "recur_daily": "Dagligt",
+      "recur_monthly": "Månedligt",
+      "recur_weekly": "Ugentligt",
+      "recur_yearly": "Årligt",
       "recurs": "Gentages",
       "resumeAll": "Genoptag automatisering",
       "runNow": "Kør nu",
@@ -5523,6 +5570,10 @@
       "resume": "Genoptag",
       "retry": "Prøv igen",
       "statusHeader": "Status",
+      "status_failed": "Mislykkedes",
+      "status_paused": "Sat på pause",
+      "status_pending": "Afventer",
+      "status_success": "Gennemført",
       "subject": "Person",
       "title": "Udførelseshistorik",
       "trigger": "Udløser",

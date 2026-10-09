@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez 채팅 열기",
+      "ariaSend": "메시지 보내기",
+      "errorAnswer": "이에 대한 답변을 찾지 못했습니다.",
+      "errorGeneric": "Bez에 연결하는 중 문제가 발생했습니다. 다시 시도해 주세요.",
       "intro": "안녕하세요, 저는 Bez입니다! B1 Admin 탐색을 도와드릴 수 있습니다. 다음과 같이 물어보세요:",
+      "placeholderInput": "질문을 입력하세요...",
       "sampleCsv": "\"CSV에서 멤버를 가져오는 방법은?\"",
       "sampleGiving": "\"온라인 헌금을 설정하는 방법은?\"",
       "sampleGroup": "\"새 그룹을 만드는 방법은?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "도움말 채팅 열기",
+      "ariaSend": "메시지 보내기",
       "composing": "답변 작성 중...",
+      "errorAnswer": "이에 대한 답변을 찾지 못했습니다.",
+      "errorGeneric": "문서 도우미에 연결하는 중 문제가 발생했습니다. 다시 시도해 주세요.",
       "intro": "B1 Admin에 대해 질문하세요. 예:",
+      "placeholderInput": "질문을 입력하세요...",
       "sampleCsv": "\"CSV에서 멤버를 가져오는 방법은?\"",
       "sampleGiving": "\"온라인 헌금을 설정하는 방법은?\"",
       "sampleGroup": "\"새 그룹을 만드는 방법은?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee 채팅 열기",
+      "ariaSend": "메시지 보내기",
+      "errorAnswer": "이에 대한 답변을 찾지 못했습니다.",
+      "errorGeneric": "SuperBee에 연결하는 중 문제가 발생했습니다. 다시 시도해 주세요.",
       "intro": "안녕하세요, 챔프! 저는 SuperBee — 당신의 B1 Admin 강자입니다. 가장 어려운 질문으로 도전하세요!",
+      "placeholderInput": "질문을 입력하세요...",
       "sampleCsv": "\"CSV에서 멤버를 가져오는 방법은?\"",
       "sampleGiving": "\"온라인 헌금을 설정하는 방법은?\"",
       "sampleGroup": "\"새 그룹을 만드는 방법은?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "종료일",
+      "noBatches": "이 기간에 헌금이 있는 배치가 없습니다.",
+      "startDate": "시작일",
+      "title": "배치 인쇄"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} 연간 헌금 명세서",
       "campaign": "캠페인",
@@ -1207,6 +1225,9 @@
       "noEvents": "아직 이벤트가 없습니다. 이벤트 추가를 사용하여 이 그룹의 모임을 예약하세요.",
       "noResponses": "아직 응답이 없습니다.",
       "oneTime": "1회",
+      "response_maybe": "미정",
+      "response_no": "불참",
+      "response_yes": "참석",
       "rosterTitle": "참석 여부 응답",
       "rsvpSummary": "예 {yes} · 미정 {maybe} · 아니오 {no}",
       "rsvps": "참석 여부 응답",
@@ -1384,7 +1405,8 @@
       "showArchived": "보관된 항목 표시",
       "spPpl": " 명",
       "subtitle": {
-        "create": "첫 번째 그룹을 만들어 시작해 보세요."
+        "create": "첫 번째 그룹을 만들어 시작해 보세요.",
+        "manage": "교회 그룹을 구성하고 관리하세요"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "결석",
+      "attendanceSheet": "출석부",
+      "contactRoster": "연락처 명단",
       "date": "날짜",
       "noGroups": "인쇄할 반이 없습니다.",
       "present": "출석",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "자동 진급 비활성화됨",
       "gradePromotionOn": "매년 {date}에 진급",
       "notConfigured": "구성되지 않음",
-      "notSet": "설정되지 않음"
+      "notSet": "설정되지 않음",
+      "phoneLocalSubtitle": "국내 전화번호"
     },
     "manageChurch": {
       "auditLog": "감사 로그",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "날짜 형식",
       "helperText": "B1 전체의 날짜와 시간은 이 지역의 형식을 따릅니다.",
+      "phoneFormat": "전화번호",
+      "phoneHelperText": "국내 형식은 입력한 그대로 번호를 저장합니다(예: 0701 234 5678). 문자 메시지는 번호에 국가 코드가 포함되어 있을 때 가장 잘 작동합니다.",
+      "phoneInternational": "국제(국가 코드 포함)",
+      "phoneLocal": "국내(입력한 그대로)",
       "region": "지역",
       "title": "지역"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "지시 사항",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "어조를 더 격식 있게 바꿔 주세요.",
+      "preset_grammar": "맞춤법과 문법만 고쳐 주세요.",
+      "preset_shorter": "더 짧고 훑어보기 쉽게 만들어 주세요.",
+      "preset_warmer": "더 따뜻하고 친근하게 만들어 주세요.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "와이드"
     },
     "generateSite": {
+      "audience_community": "지역 사회",
+      "audience_families": "가족",
+      "audience_newcomers": "새신자",
+      "audience_seniors": "어르신",
+      "audience_youngAdults": "청년",
+      "audience_youth": "청소년",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "예배 시간",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "캐주얼",
+      "tone_formal": "격식 있는",
+      "tone_inspirational": "영감을 주는",
+      "tone_warm": "따뜻한"
     },
     "helpDialog": {
       "addBody": "도구 모음에서 콘텐츠 추가를 클릭한 다음 섹션이나 요소를 페이지에 드래그하세요.",
@@ -5503,6 +5546,10 @@
       "operator": "연산자",
       "pauseAll": "자동화 일시 중지",
       "paused": "일시 중지됨",
+      "recur_daily": "매일",
+      "recur_monthly": "매월",
+      "recur_weekly": "매주",
+      "recur_yearly": "매년",
       "recurs": "반복",
       "resumeAll": "자동화 재개",
       "runNow": "지금 실행",
@@ -5523,6 +5570,10 @@
       "resume": "재개",
       "retry": "다시 시도",
       "statusHeader": "상태",
+      "status_failed": "실패",
+      "status_paused": "일시 중지됨",
+      "status_pending": "대기 중",
+      "status_success": "성공",
       "subject": "사람",
       "title": "실행 내역",
       "trigger": "트리거",

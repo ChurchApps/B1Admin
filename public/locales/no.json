@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Åpne Bez-chat",
+      "ariaSend": "Send melding",
+      "errorAnswer": "Jeg fant ikke noe svar på det.",
+      "errorGeneric": "Noe gikk galt under kontakt med Bez. Prøv igjen.",
       "intro": "Hei, jeg er Bez! Jeg kan hjelpe deg å navigere i B1 Admin. Prøv å spørre meg:",
+      "placeholderInput": "Still et spørsmål...",
       "sampleCsv": "\"Hvordan importerer jeg medlemmer fra en CSV?\"",
       "sampleGiving": "\"Hvordan setter jeg opp gaver online?\"",
       "sampleGroup": "\"Hvordan oppretter jeg en ny gruppe?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Åpne hjelpechat",
+      "ariaSend": "Send melding",
       "composing": "Komponerer svar...",
+      "errorAnswer": "Jeg fant ikke noe svar på det.",
+      "errorGeneric": "Noe gikk galt under kontakt med dokumentasjonsassistenten. Prøv igjen.",
       "intro": "Still spørsmål om B1 Admin. For eksempel:",
+      "placeholderInput": "Still et spørsmål...",
       "sampleCsv": "\"Hvordan importerer jeg medlemmer fra en CSV?\"",
       "sampleGiving": "\"Hvordan setter jeg opp gaver online?\"",
       "sampleGroup": "\"Hvordan oppretter jeg en ny gruppe?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Åpne SuperBee-chat",
+      "ariaSend": "Send melding",
+      "errorAnswer": "Jeg fant ikke noe svar på det.",
+      "errorGeneric": "Noe gikk galt under kontakt med SuperBee. Prøv igjen.",
       "intro": "Hei, mester! Jeg er SuperBee — din B1 Admin-kraftpakke. Slå meg med dine vanskeligste spørsmål!",
+      "placeholderInput": "Still et spørsmål...",
       "sampleCsv": "\"Hvordan importerer jeg medlemmer fra en CSV?\"",
       "sampleGiving": "\"Hvordan setter jeg opp gaver online?\"",
       "sampleGroup": "\"Hvordan oppretter jeg en ny gruppe?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Sluttdato",
+      "noBatches": "Ingen bunker med gaver i denne datoperioden.",
+      "startDate": "Startdato",
+      "title": "Skriv ut bunker"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Årlig giverbevis for {year}",
       "campaign": "Kampanje",
@@ -1207,6 +1225,9 @@
       "noEvents": "Ingen arrangementer ennå. Bruk Legg til arrangementer for å planlegge gruppens møter.",
       "noResponses": "Ingen svar ennå.",
       "oneTime": "Én gang",
+      "response_maybe": "Kanskje",
+      "response_no": "Kommer ikke",
+      "response_yes": "Kommer",
       "rosterTitle": "RSVP-svar",
       "rsvpSummary": "{yes} ja · {maybe} kanskje · {no} nei",
       "rsvps": "RSVP-er",
@@ -1384,7 +1405,8 @@
       "showArchived": "Vis arkiverte",
       "spPpl": " personer",
       "subtitle": {
-        "create": "Kom i gang ved å opprette din første gruppe"
+        "create": "Kom i gang ved å opprette din første gruppe",
+        "manage": "Organiser og administrer menighetens grupper"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Fraværende",
+      "attendanceSheet": "Fremmøteliste",
+      "contactRoster": "Kontaktliste",
       "date": "Dato",
       "noGroups": "Fant ingen klasser å skrive ut.",
       "present": "Til stede",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatisk opprykk deaktivert",
       "gradePromotionOn": "Rykker opp {date} hvert år",
       "notConfigured": "Ikke konfigurert",
-      "notSet": "Ikke angitt"
+      "notSet": "Ikke angitt",
+      "phoneLocalSubtitle": "Lokale telefonnumre"
     },
     "manageChurch": {
       "auditLog": "Revisjonslogg",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Datoformat",
       "helperText": "Datoer og klokkeslett i hele B1 følger formatet for denne regionen.",
+      "phoneFormat": "Telefonnumre",
+      "phoneHelperText": "Lokalt lagrer numre nøyaktig slik de skrives inn (for eksempel 0701 234 5678). SMS fungerer best når numrene inkluderer landskode.",
+      "phoneInternational": "Internasjonalt (med landskode)",
+      "phoneLocal": "Lokalt (slik det skrives inn)",
       "region": "Region",
       "title": "Region"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instruksjoner",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Gjør tonen mer formell.",
+      "preset_grammar": "Rett bare stavemåte og grammatikk.",
+      "preset_shorter": "Gjør den kortere og lettere å skumlese.",
+      "preset_warmer": "Gjør den varmere og mer imøtekommende.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Bred"
     },
     "generateSite": {
+      "audience_community": "Lokalsamfunnet",
+      "audience_families": "Familier",
+      "audience_newcomers": "Nykommere",
+      "audience_seniors": "Seniorer",
+      "audience_youngAdults": "Unge voksne",
+      "audience_youth": "Ungdom",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Gudstjenestetider",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Uformell",
+      "tone_formal": "Formell",
+      "tone_inspirational": "Inspirerende",
+      "tone_warm": "Varm"
     },
     "helpDialog": {
       "addBody": "Klikk på Legg til innhold i verktøylinjen, og dra deretter en seksjon eller et element til siden.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Sett automatisering på pause",
       "paused": "Satt på pause",
+      "recur_daily": "Daglig",
+      "recur_monthly": "Månedlig",
+      "recur_weekly": "Ukentlig",
+      "recur_yearly": "Årlig",
       "recurs": "Gjentas",
       "resumeAll": "Gjenoppta automatisering",
       "runNow": "Kjør nå",
@@ -5523,6 +5570,10 @@
       "resume": "Gjenoppta",
       "retry": "Prøv igjen",
       "statusHeader": "Status",
+      "status_failed": "Mislyktes",
+      "status_paused": "Satt på pause",
+      "status_pending": "Venter",
+      "status_success": "Vellykket",
       "subject": "Person",
       "title": "Kjøringshistorikk",
       "trigger": "Utløser",

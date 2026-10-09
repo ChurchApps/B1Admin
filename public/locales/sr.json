@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Отвори Bez чет",
+      "ariaSend": "Пошаљи поруку",
+      "errorAnswer": "Нисам пронашао одговор на то.",
+      "errorGeneric": "Дошло је до грешке при повезивању са Bez. Покушајте поново.",
       "intro": "Здраво, ја сам Bez! Могу вам помоћи у навигацији кроз B1 Admin. Покушајте да ме питате:",
+      "placeholderInput": "Поставите питање...",
       "sampleCsv": "\"Како да увезем чланове из CSV-а?\"",
       "sampleGiving": "\"Како да поставим онлајн давање?\"",
       "sampleGroup": "\"Како да направим нову групу?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Отвори чет помоћи",
+      "ariaSend": "Пошаљи поруку",
       "composing": "Састављање одговора...",
+      "errorAnswer": "Нисам пронашао одговор на то.",
+      "errorGeneric": "Дошло је до грешке при повезивању са асистентом за документацију. Покушајте поново.",
       "intro": "Поставите било које питање о B1 Admin-у. На пример:",
+      "placeholderInput": "Поставите питање...",
       "sampleCsv": "\"Како да увезем чланове из CSV-а?\"",
       "sampleGiving": "\"Како да поставим онлајн давање?\"",
       "sampleGroup": "\"Како да направим нову групу?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Отвори SuperBee чет",
+      "ariaSend": "Пошаљи поруку",
+      "errorAnswer": "Нисам пронашао одговор на то.",
+      "errorGeneric": "Дошло је до грешке при повезивању са SuperBee. Покушајте поново.",
       "intro": "Здраво, шампионе! Ја сам SuperBee — твоја B1 Admin суперснага. Постави ми најтежа питања!",
+      "placeholderInput": "Поставите питање...",
       "sampleCsv": "\"Како да увезем чланове из CSV-а?\"",
       "sampleGiving": "\"Како да поставим онлајн давање?\"",
       "sampleGroup": "\"Како да направим нову групу?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Датум завршетка",
+      "noBatches": "Нема пакета са прилозима у овом периоду.",
+      "startDate": "Датум почетка",
+      "title": "Штампај пакете"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Годишњи извештај давања",
       "campaign": "Кампања",
@@ -1207,6 +1225,9 @@
       "noEvents": "Нема догађаја. Користите Додај догађаје да закажете sastanke ове групе.",
       "noResponses": "Још нема одговора.",
       "oneTime": "Једном",
+      "response_maybe": "Можда",
+      "response_no": "Не долазим",
+      "response_yes": "Долазим",
       "rosterTitle": "Одговори на позив",
       "rsvpSummary": "{yes} да · {maybe} можда · {no} не",
       "rsvps": "Потврде присуства",
@@ -1384,7 +1405,8 @@
       "showArchived": "Прикажи архивиране",
       "spPpl": " особе",
       "subtitle": {
-        "create": "Почни прављењем прве групе"
+        "create": "Почни прављењем прве групе",
+        "manage": "Организујте и управљајте групама ваше цркве"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Одсутан",
+      "attendanceSheet": "Списак присуства",
+      "contactRoster": "Списак контаката",
       "date": "Датум",
       "noGroups": "Нема разреда за штампање.",
       "present": "Присутан",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatski prelazak onemogućen",
       "gradePromotionOn": "Напредовање {date} сваке године",
       "notConfigured": "Није конфигурисано",
-      "notSet": "Није постављено"
+      "notSet": "Није постављено",
+      "phoneLocalSubtitle": "Локални бројеви телефона"
     },
     "manageChurch": {
       "auditLog": "Дневник провере",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Формат датума",
       "helperText": "Датуми и времена у B1 прате формат овог региона.",
+      "phoneFormat": "Бројеви телефона",
+      "phoneHelperText": "Локални формат чува бројеве тачно онако како су унети (нпр. 0701 234 5678). СМС поруке најбоље раде када бројеви садрже позивни број земље.",
+      "phoneInternational": "Међународни (са позивним бројем земље)",
+      "phoneLocal": "Локални (како је унето)",
       "region": "Регион",
       "title": "Регион"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Упутства",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Учини тон формалнијим.",
+      "preset_grammar": "Исправи само правопис и граматику.",
+      "preset_shorter": "Скрати текст и учини га прегледнијим.",
+      "preset_warmer": "Учини текст топлијим и пријатнијим.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Широко"
     },
     "generateSite": {
+      "audience_community": "Локална заједница",
+      "audience_families": "Породице",
+      "audience_newcomers": "Придошлице",
+      "audience_seniors": "Старији",
+      "audience_youngAdults": "Млади одрасли",
+      "audience_youth": "Омладина",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Времена богослужења",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Опуштен",
+      "tone_formal": "Формалан",
+      "tone_inspirational": "Инспиративан",
+      "tone_warm": "Топао"
     },
     "helpDialog": {
       "addBody": "Кликните Додај садржај у траци алата, затим превуците секцију или елемент на страницу.",
@@ -5503,6 +5546,10 @@
       "operator": "Оператор",
       "pauseAll": "Паузирај аутоматизацију",
       "paused": "Паузирано",
+      "recur_daily": "Дневно",
+      "recur_monthly": "Месечно",
+      "recur_weekly": "Недељно",
+      "recur_yearly": "Годишње",
       "recurs": "Понавља се",
       "resumeAll": "Настави аутоматизацију",
       "runNow": "Покрени сада",
@@ -5523,6 +5570,10 @@
       "resume": "Настави",
       "retry": "Покушај поново",
       "statusHeader": "Статус",
+      "status_failed": "Неуспешно",
+      "status_paused": "Паузирано",
+      "status_pending": "На чекању",
+      "status_success": "Успешно",
       "subject": "Особа",
       "title": "Историја извршавања",
       "trigger": "Окидач",

@@ -468,7 +468,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez-Chat öffnen",
+      "ariaSend": "Nachricht senden",
+      "errorAnswer": "Darauf konnte ich keine Antwort finden.",
+      "errorGeneric": "Bei der Verbindung mit Bez ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "intro": "Hallo, ich bin Bez! Ich kann Ihnen helfen, durch B1 Admin zu navigieren. Versuchen Sie, mich zu fragen:",
+      "placeholderInput": "Stelle eine Frage...",
       "sampleCsv": "\"Wie importiere ich Mitglieder aus einer CSV-Datei?\"",
       "sampleGiving": "\"Wie richte ich Online-Spenden ein?\"",
       "sampleGroup": "\"Wie erstelle ich eine neue Gruppe?\"",
@@ -476,8 +480,12 @@
     },
     "docChat": {
       "ariaOpen": "Hilfe-Chat öffnen",
+      "ariaSend": "Nachricht senden",
       "composing": "Antwort wird verfasst...",
+      "errorAnswer": "Darauf konnte ich keine Antwort finden.",
+      "errorGeneric": "Bei der Verbindung mit dem Dokumentationsassistenten ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "intro": "Stellen Sie eine beliebige Frage zu B1 Admin. Zum Beispiel:",
+      "placeholderInput": "Stelle eine Frage...",
       "sampleCsv": "\"Wie importiere ich Mitglieder aus einer CSV-Datei?\"",
       "sampleGiving": "\"Wie richte ich Online-Spenden ein?\"",
       "sampleGroup": "\"Wie erstelle ich eine neue Gruppe?\"",
@@ -521,7 +529,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee-Chat öffnen",
+      "ariaSend": "Nachricht senden",
+      "errorAnswer": "Darauf konnte ich keine Antwort finden.",
+      "errorGeneric": "Bei der Verbindung mit SuperBee ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "intro": "Hey, Champion! Ich bin SuperBee — Ihre B1-Admin-Powerstation. Stellen Sie mir Ihre schwierigsten Fragen!",
+      "placeholderInput": "Stelle eine Frage...",
       "sampleCsv": "\"Wie importiere ich Mitglieder aus einer CSV-Datei?\"",
       "sampleGiving": "\"Wie richte ich Online-Spenden ein?\"",
       "sampleGroup": "\"Wie erstelle ich eine neue Gruppe?\"",
@@ -904,6 +916,12 @@
       "nonPledged": "Ohne Zusage",
       "notStarted": "Nicht begonnen"
     },
+    "printAllBatches": {
+      "endDate": "Enddatum",
+      "noBatches": "Keine Stapel mit Spenden in diesem Zeitraum.",
+      "startDate": "Startdatum",
+      "title": "Stapel drucken"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Jährliche Spendenbescheinigung {year}",
       "campaign": "Kampagne",
@@ -1208,6 +1226,9 @@
       "noEvents": "Noch keine Veranstaltungen. Verwenden Sie 'Veranstaltungen hinzufügen', um Treffen dieser Gruppe zu planen.",
       "noResponses": "Noch keine Antworten.",
       "oneTime": "Einmalig",
+      "response_maybe": "Vielleicht",
+      "response_no": "Nehme nicht teil",
+      "response_yes": "Nehme teil",
       "rosterTitle": "Zusagen",
       "rsvpSummary": "{yes} Ja · {maybe} Vielleicht · {no} Nein",
       "rsvps": "Zusagen",
@@ -1348,7 +1369,6 @@
       "attFor": "Anwesenheit für",
       "attendanceSaveFailed": "Die Anwesenheit konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
       "attendanceSaved": "Anwesenheit gespeichert.",
-      "confirmRemove": "Soll diese Person aus der Anwesenheitsliste der Sitzung entfernt werden?",
       "new": "Neu",
       "noAttendance": "Keine Anwesenheitslisten gefunden",
       "noSesMsg": "Es gibt keine Sitzungen.",
@@ -1390,11 +1410,6 @@
         "manage": "Ihre Kirchengruppen organisieren und verwalten"
       }
     },
-    "membersAdd": {
-      "availableMem": "Available Group Members",
-      "noMem": "No group members available.",
-      "unknown": "Unknown"
-    },
     "pendingRequestsPage": {
       "empty": "Keine ausstehenden Anfragen.",
       "subtitle": "Genehmigen oder lehnen Sie von Mitgliedern gestellte Anfragen für alle Gruppen ab.",
@@ -1402,6 +1417,8 @@
     },
     "printRoster": {
       "absent": "Abwesend",
+      "attendanceSheet": "Anwesenheitsliste",
+      "contactRoster": "Kontaktliste",
       "date": "Datum",
       "noGroups": "Keine Klassen zum Drucken gefunden.",
       "present": "Anwesend",
@@ -3181,9 +3198,7 @@
       "searchChurchesAria": "Kirchen suchen"
     },
     "commonsTab": {
-      "allProducts": "Alle Produkte",
       "allStatuses": "Alle Status",
-      "allTypes": "Alle Typen",
       "approve": "Genehmigen",
       "approveNote": "Hinweis an den Autor (optional – wird auf seiner Einreichungsseite angezeigt)",
       "approvedSuffix": "genehmigt",
@@ -3193,7 +3208,6 @@
         "removed": "Gelöscht",
         "unpublished": "Unveröffentlicht"
       },
-      "assetType": "Asset Typ",
       "attested": "Bestätigt",
       "badgeEditBy": "Bearbeitung von {name}",
       "badgeEditByAuthor": "Bearbeitung von Autor",
@@ -3203,15 +3217,12 @@
       "chooseOutcome": "Ergebnis auswählen…",
       "claim": "Beanspruchen",
       "colActions": "Aktionen",
-      "colAge": "Alter",
       "colAsset": "Asset",
       "colBasis": "Grundlage",
-      "colChanges": "Änderungen",
       "colConfidence": "Vertrauen",
       "colFile": "Datei",
       "colScore": "Bewertung",
       "colSha": "SHA-256",
-      "colSubmitter": "Einsender",
       "colType": "Typ",
       "confidence": {
         "chart-only": "Nur Notenblatt",
@@ -3282,7 +3293,6 @@
       "possibleDuplicate": "Duplikat?",
       "possibleDuplicateSearch": "WorshipCommons nach ähnlichen Titeln durchsuchen",
       "possibleDuplicateTooltip": "Datei oder Titel entspricht einem bereits in der Bibliothek vorhandenen Lied – vor der Genehmigung in der Prüfung kontrollieren",
-      "product": "Produkt",
       "publisher": "Herausgeber",
       "reason": "Grund",
       "recentlyResolved": "Kürzlich gelöst",
@@ -3810,7 +3820,8 @@
       "gradePromotionOff": "Automatischer Aufstieg deaktiviert",
       "gradePromotionOn": "Beförderung jährlich am {date}",
       "notConfigured": "Nicht konfiguriert",
-      "notSet": "Nicht festgelegt"
+      "notSet": "Nicht festgelegt",
+      "phoneLocalSubtitle": "Lokale Telefonnummern"
     },
     "manageChurch": {
       "auditLog": "Audit-Protokoll",
@@ -3837,6 +3848,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Datumsformat",
       "helperText": "Datums- und Zeitangaben in ganz B1 folgen dem Format dieser Region.",
+      "phoneFormat": "Telefonnummern",
+      "phoneHelperText": "Lokal speichert Nummern genau so, wie sie eingegeben wurden (z. B. 0701 234 5678). SMS funktionieren am besten, wenn die Nummern die Ländervorwahl enthalten.",
+      "phoneInternational": "International (mit Ländervorwahl)",
+      "phoneLocal": "Lokal (wie eingegeben)",
       "region": "Region",
       "title": "Region"
     },
@@ -4108,6 +4123,10 @@
       "failed": "Die Neufassung ist fehlgeschlagen. Es wurde nichts geändert.",
       "instruction": "Anweisungen",
       "placeholder": "z. B. Gestalte die Seite einladender und füge einen Aufruf für eine Aktion hinzu",
+      "preset_formal": "Mache den Ton förmlicher.",
+      "preset_grammar": "Korrigiere nur Rechtschreibung und Grammatik.",
+      "preset_shorter": "Mache es kürzer und leichter überfliegbar.",
+      "preset_warmer": "Mache es herzlicher und einladender.",
       "rewrite": "Umschreiben",
       "title": "AI Umschreiben",
       "working": "Schreibe Abschnitt um..."
@@ -4617,8 +4636,14 @@
       "wide": "Breit"
     },
     "generateSite": {
+      "audience_community": "Lokale Gemeinschaft",
+      "audience_families": "Familien",
+      "audience_newcomers": "Neue Besucher",
+      "audience_seniors": "Senioren",
+      "audience_youngAdults": "Junge Erwachsene",
+      "audience_youth": "Jugendliche",
       "audiences": "Zielgruppen",
-      "buildingSection": "{Titel} wird gebaut – Abschnitt {n} von {Gesamtzahl}...",
+      "buildingSection": "{title} wird gebaut – Abschnitt {n} von {total}...",
       "button": "Webseite generieren",
       "churchName": "Kirchenname",
       "createPlan": "Plan erstellen",
@@ -4635,7 +4660,11 @@
       "serviceTimes": "Gottesdienstzeiten",
       "serviceTimesPlaceholder": "Sonntags um 9 und 11 Uhr",
       "title": "Website mit KI erstellen",
-      "tone": "Ton"
+      "tone": "Ton",
+      "tone_casual": "Locker",
+      "tone_formal": "Förmlich",
+      "tone_inspirational": "Inspirierend",
+      "tone_warm": "Herzlich"
     },
     "helpDialog": {
       "addBody": "Klicken Sie in der Symbolleiste auf Inhalt hinzufügen, dann ziehen Sie einen Abschnitt oder ein Element auf die Seite.",
@@ -5001,51 +5030,6 @@
     "siteSwitcher": {
       "mainWebsite": "Hauptwebsite",
       "manageSites": "Websites verwalten"
-    },
-    "siteTemplates": {
-      "back": "Zurück",
-      "create": "Website erstellen",
-      "creating": "{title} wird erstellt...",
-      "descriptions": {
-        "classic": "Traditionelle Serifenschrift und eine tiefdunkle Marineblau-Palette.",
-        "community": "Warm und grün, mit Gruppen im Mittelpunkt.",
-        "heritage": "Warme Neutraltöne und klassische Typografie für eine etablierte Kirche.",
-        "media": "Kräftig und dunkel, rund um Predigten und Streaming gestaltet.",
-        "modern": "Abgerundete Karten und eine leuchtende Indigopalette.",
-        "simple": "Klare, übersichtliche Seiten, die schnell laden.",
-        "visitor": "Auf die Planung eines ersten Besuchs ausgerichtet."
-      },
-      "errFailed": "Die Website konnte aus dieser Vorlage nicht erstellt werden. Bitte versuchen Sie es erneut.",
-      "exists": "Bereits vorhanden",
-      "existsNote": "Bereits vorhandene Seiten bleiben unverändert.",
-      "intro": "Wählen Sie einen Ausgangspunkt. Wir erstellen die Seiten und Navigation für Sie; anschließend können Sie alles ändern.",
-      "names": {
-        "classic": "Klassisch",
-        "community": "Gemeinschaft",
-        "heritage": "Tradition",
-        "media": "Medien zuerst",
-        "modern": "Modern",
-        "simple": "Einfach",
-        "visitor": "Auf Besucher ausgerichtet"
-      },
-      "nav": {
-        "about": "Über uns",
-        "connect": "Kontakt",
-        "give": "Spenden",
-        "home": "Startseite",
-        "live": "Live",
-        "sermons": "Predigten",
-        "visit": "Besuchen Sie"
-      },
-      "navLinksNote": "Diese Links werden Ihrem Navigationsmenü hinzugefügt.",
-      "pageCount": "{count} Seiten",
-      "pages": {
-        "about": "Über uns",
-        "connect": "Kontakt",
-        "home": "Startseite",
-        "visit": "Ihren Besuch planen"
-      },
-      "title": "Mit einer Vorlage starten"
     },
     "siteTemplates": {
       "back": "Zurück",
@@ -5563,6 +5547,10 @@
       "operator": "Operator",
       "pauseAll": "Automatisierung pausieren",
       "paused": "Pausiert",
+      "recur_daily": "Täglich",
+      "recur_monthly": "Monatlich",
+      "recur_weekly": "Wöchentlich",
+      "recur_yearly": "Jährlich",
       "recurs": "Wiederholt sich",
       "resumeAll": "Automatisierung fortsetzen",
       "runNow": "Jetzt ausführen",
@@ -5583,6 +5571,10 @@
       "resume": "Fortsetzen",
       "retry": "Erneut versuchen",
       "statusHeader": "Status",
+      "status_failed": "Fehlgeschlagen",
+      "status_paused": "Pausiert",
+      "status_pending": "Ausstehend",
+      "status_success": "Erfolgreich",
       "subject": "Person",
       "title": "Ausführungsverlauf",
       "trigger": "Auslöser",

@@ -467,7 +467,10 @@
   "components": {
     "bezChat": {
       "ariaOpen": "vula ingcoco ye-Bez",
+      "ariaSend": "Tfumela umlayeto",
+      "errorAnswer": "Angikhonanga kutfola imphendvulo yaloko.",
       "intro": "Sawubona, ngingu-Bez! Ngingakusita kuhamba ku-B1 Admin. Zama kungibuta:",
+      "placeholderInput": "Buta umbuto...",
       "sampleCsv": "\"Ngingawangenisa njani emalunga kusuka ku-CSV?\"",
       "sampleGiving": "\"Ngingakusetha njani kunikela nge-inthanethi?\"",
       "sampleGroup": "\"Ngingalakha njani licembu lelisha?\"",
@@ -475,8 +478,11 @@
     },
     "docChat": {
       "ariaOpen": "vula ingcoco yelusito",
+      "ariaSend": "Tfumela umlayeto",
       "composing": "Kubhalwa imphendvulo...",
+      "errorAnswer": "Angikhonanga kutfola imphendvulo yaloko.",
       "intro": "Buta nawuphi umbuto mayelana ne-B1 Admin. Sibonelo:",
+      "placeholderInput": "Buta umbuto...",
       "sampleCsv": "\"Ngingawangenisa njani emalunga kusuka ku-CSV?\"",
       "sampleGiving": "\"Ngingakusetha njani kunikela nge-inthanethi?\"",
       "sampleGroup": "\"Ngingalakha njani licembu lelisha?\"",
@@ -520,7 +526,10 @@
     },
     "superBeeChat": {
       "ariaOpen": "vula ingcoco ye-SuperBee",
+      "ariaSend": "Tfumela umlayeto",
+      "errorAnswer": "Angikhonanga kutfola imphendvulo yaloko.",
       "intro": "Heyi wena, chempion! Ngingu-SuperBee — emandla akho e-B1 Admin. Ngiphe imibuto yakho lenzima kakhulu!",
+      "placeholderInput": "Buta umbuto...",
       "sampleCsv": "\"Ngingawangenisa njani emalunga kusuka ku-CSV?\"",
       "sampleGiving": "\"Ngingakusetha njani kunikela nge-inthanethi?\"",
       "sampleGroup": "\"Ngingalakha njani licembu lelisha?\"",
@@ -903,6 +912,11 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Lusuku Lekugcina",
+      "startDate": "Lusuku Lekucala",
+      "title": "Phrinta Emaqoqo"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Umbiko Wemnikelo Wemnyaka wa-{year}",
       "campaign": "Umkhankaso",
@@ -1207,6 +1221,7 @@
       "noEvents": "Akukho imicimbi kwamanje. Sebentisa Engeta Imicimbi kuhlela imihlangano yalelicembu.",
       "noResponses": "Akukho luphendvulo kwamanje.",
       "oneTime": "Kanye",
+      "response_maybe": "Mhlawumbe",
       "rosterTitle": "Tiphendvulo Te-RSVP",
       "rsvpSummary": "{yes} yebo · {maybe} mhlawumbe · {no} cha",
       "rsvps": "Ema-RSVP",
@@ -1379,7 +1394,8 @@
       "showArchived": "Khombisa lokubekiwe",
       "spPpl": " bantfu",
       "subtitle": {
-        "create": "Chala ngekwakha licembu lakho lekucala"
+        "create": "Chala ngekwakha licembu lakho lekucala",
+        "manage": "Hlela uphindze uphatse emacembu ebandla lakho"
       }
     },
     "pendingRequestsPage": {
@@ -1389,6 +1405,7 @@
     },
     "printRoster": {
       "absent": "Akekho",
+      "attendanceSheet": "Liphepha Lebukhona",
       "date": "Lusuku",
       "noGroups": "Kute emakilasi latfolakele kutsi aphrintwe.",
       "present": "Ukhona",
@@ -3811,6 +3828,7 @@
     "regionSettingsEdit": {
       "dateFormat": "Indlela yekubhala lusuku",
       "helperText": "Tinsuku netikhatsi kulo lonkhe B1 kulandzela indlela yalesifundza.",
+      "phoneFormat": "Tinombolo Telucingo",
       "region": "Sifundza",
       "title": "Sifundza"
     },
@@ -4591,6 +4609,8 @@
       "wide": "Lokubanti"
     },
     "generateSite": {
+      "audience_families": "Imindeni",
+      "audience_youth": "Lusha",
       "audiences": "Bantfu Lababhekiwe",
       "buildingSection": "Kwakhiwa {title} — ingxenye {n} ku-{total}...",
       "button": "Yakha Sayithi",
@@ -4609,7 +4629,8 @@
       "serviceTimes": "Tikhatsi Temkhonto",
       "serviceTimesPlaceholder": "NgeSonto nga-9 na-11 ekuseni",
       "title": "Yakha Sayithi nge-AI",
-      "tone": "Simo Selizwi"
+      "tone": "Simo Selizwi",
+      "tone_warm": "Kufudumele"
     },
     "helpDialog": {
       "addBody": "Chofota Engeta Sichubo ebha lemathulusi, bese udontsa ingxenye kumbe incenye ukuyifaka ekhasini.",
@@ -5492,6 +5513,10 @@
       "operator": "Umenti",
       "pauseAll": "Yekelisa kutitjenga",
       "paused": "Kuyekeliwe",
+      "recur_daily": "Njalo Ngelilanga",
+      "recur_monthly": "Njalo Ngenyanga",
+      "recur_weekly": "Njalo Ngeliviki",
+      "recur_yearly": "Njalo Ngemnyaka",
       "recurs": "Kuyaphindzaphindza",
       "resumeAll": "Chubeka kutitjenga",
       "runNow": "Sebenta manje",
@@ -5512,6 +5537,10 @@
       "resume": "Chubeka",
       "retry": "Zama Futsi",
       "statusHeader": "Simo",
+      "status_failed": "Kwehlulekile",
+      "status_paused": "Kuyekeliwe",
+      "status_pending": "Kusalindzile",
+      "status_success": "Kuphumelele",
       "subject": "Umuntfu",
       "title": "Umlandvo Wekusebenta",
       "trigger": "Sicalisi",

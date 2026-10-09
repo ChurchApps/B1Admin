@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez-chat openen",
+      "ariaSend": "Bericht verzenden",
+      "errorAnswer": "Ik kon daar geen antwoord op vinden.",
+      "errorGeneric": "Er ging iets mis bij het bereiken van Bez. Probeer het opnieuw.",
       "intro": "Hoi, ik ben Bez! Ik kan je helpen B1 Admin te navigeren. Probeer me te vragen:",
+      "placeholderInput": "Stel een vraag...",
       "sampleCsv": "\"Hoe importeer ik leden uit een CSV?\"",
       "sampleGiving": "\"Hoe stel ik online geven in?\"",
       "sampleGroup": "\"Hoe maak ik een nieuwe groep aan?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Hulpchat openen",
+      "ariaSend": "Bericht verzenden",
       "composing": "Antwoord opstellen...",
+      "errorAnswer": "Ik kon daar geen antwoord op vinden.",
+      "errorGeneric": "Er ging iets mis bij het bereiken van de documentatie-assistent. Probeer het opnieuw.",
       "intro": "Stel een vraag over B1 Admin. Bijvoorbeeld:",
+      "placeholderInput": "Stel een vraag...",
       "sampleCsv": "\"Hoe importeer ik leden uit een CSV?\"",
       "sampleGiving": "\"Hoe stel ik online geven in?\"",
       "sampleGroup": "\"Hoe maak ik een nieuwe groep aan?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee-chat openen",
+      "ariaSend": "Bericht verzenden",
+      "errorAnswer": "Ik kon daar geen antwoord op vinden.",
+      "errorGeneric": "Er ging iets mis bij het bereiken van SuperBee. Probeer het opnieuw.",
       "intro": "Hé kampioen! Ik ben SuperBee — jouw B1 Admin krachtpatser. Stel me je moeilijkste vragen!",
+      "placeholderInput": "Stel een vraag...",
       "sampleCsv": "\"Hoe importeer ik leden uit een CSV?\"",
       "sampleGiving": "\"Hoe stel ik online geven in?\"",
       "sampleGroup": "\"Hoe maak ik een nieuwe groep aan?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Einddatum",
+      "noBatches": "Geen batches met donaties in deze periode.",
+      "startDate": "Startdatum",
+      "title": "Batches afdrukken"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Jaaroverzicht giften {year}",
       "campaign": "Campagne",
@@ -1207,6 +1225,9 @@
       "noEvents": "Nog geen evenementen. Gebruik Evenementen toevoegen om de bijeenkomsten van deze groep in te plannen.",
       "noResponses": "Nog geen reacties.",
       "oneTime": "Eenmalig",
+      "response_maybe": "Misschien",
+      "response_no": "Ik ga niet",
+      "response_yes": "Ik ga",
       "rosterTitle": "RSVP-reacties",
       "rsvpSummary": "{yes} ja · {maybe} misschien · {no} nee",
       "rsvps": "RSVP's",
@@ -1384,7 +1405,8 @@
       "showArchived": "Gearchiveerde groepen tonen",
       "spPpl": " mensen",
       "subtitle": {
-        "create": "Begin met het aanmaken van uw eerste groep"
+        "create": "Begin met het aanmaken van uw eerste groep",
+        "manage": "Organiseer en beheer je kerkgroepen"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Afwezig",
+      "attendanceSheet": "Presentielijst",
+      "contactRoster": "Contactenlijst",
       "date": "Datum",
       "noGroups": "Geen klassen gevonden om af te drukken.",
       "present": "Aanwezig",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatische promotie uitgeschakeld",
       "gradePromotionOn": "Bevordert elk jaar op {date}",
       "notConfigured": "Niet geconfigureerd",
-      "notSet": "Niet ingesteld"
+      "notSet": "Niet ingesteld",
+      "phoneLocalSubtitle": "Lokale telefoonnummers"
     },
     "manageChurch": {
       "auditLog": "Audit log",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Datumnotatie",
       "helperText": "Datums en tijden in heel B1 volgen de notatie van deze regio.",
+      "phoneFormat": "Telefoonnummers",
+      "phoneHelperText": "Lokaal slaat nummers precies op zoals ingevoerd (zoals 0701 234 5678). Sms'en werkt het best als nummers de landcode bevatten.",
+      "phoneInternational": "Internationaal (met landcode)",
+      "phoneLocal": "Lokaal (zoals ingevoerd)",
       "region": "Regio",
       "title": "Regio"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instructies",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Maak de toon formeler.",
+      "preset_grammar": "Corrigeer alleen spelling en grammatica.",
+      "preset_shorter": "Maak het korter en makkelijker te scannen.",
+      "preset_warmer": "Maak het warmer en gastvrijer.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Breed"
     },
     "generateSite": {
+      "audience_community": "Lokale gemeenschap",
+      "audience_families": "Gezinnen",
+      "audience_newcomers": "Nieuwkomers",
+      "audience_seniors": "Senioren",
+      "audience_youngAdults": "Jongvolwassenen",
+      "audience_youth": "Jongeren",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Diensttijden",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Informeel",
+      "tone_formal": "Formeel",
+      "tone_inspirational": "Inspirerend",
+      "tone_warm": "Warm"
     },
     "helpDialog": {
       "addBody": "Klik op Inhoud toevoegen in de werkbalk en sleep vervolgens een sectie of element op de pagina.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Automatisering pauzeren",
       "paused": "Gepauzeerd",
+      "recur_daily": "Dagelijks",
+      "recur_monthly": "Maandelijks",
+      "recur_weekly": "Wekelijks",
+      "recur_yearly": "Jaarlijks",
       "recurs": "Herhaalt",
       "resumeAll": "Automatisering hervatten",
       "runNow": "Nu uitvoeren",
@@ -5523,6 +5570,10 @@
       "resume": "Hervatten",
       "retry": "Opnieuw proberen",
       "statusHeader": "Status",
+      "status_failed": "Mislukt",
+      "status_paused": "Gepauzeerd",
+      "status_pending": "In afwachting",
+      "status_success": "Geslaagd",
       "subject": "Persoon",
       "title": "Uitvoeringsgeschiedenis",
       "trigger": "Trigger",

@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "開啟 Bez 聊天",
+      "ariaSend": "傳送訊息",
+      "errorAnswer": "我找不到這個問題的答案。",
+      "errorGeneric": "連線至 Bez 時發生錯誤，請再試一次。",
       "intro": "您好，我是 Bez！我可以幫助您導航 B1 Admin。請嘗試問我：",
+      "placeholderInput": "提出問題...",
       "sampleCsv": "“如何從 CSV 匯入成員？”",
       "sampleGiving": "“如何設定線上奉獻？”",
       "sampleGroup": "“如何建立新小組？”",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "開啟幫助聊天",
+      "ariaSend": "傳送訊息",
       "composing": "正在編寫答案...",
+      "errorAnswer": "我找不到這個問題的答案。",
+      "errorGeneric": "連線至文件助理時發生錯誤，請再試一次。",
       "intro": "詢問關於 B1 Admin 的任何問題。例如：",
+      "placeholderInput": "提出問題...",
       "sampleCsv": "“如何從 CSV 匯入成員？”",
       "sampleGiving": "“如何設定線上奉獻？”",
       "sampleGroup": "“如何建立新小組？”",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "開啟 SuperBee 聊天",
+      "ariaSend": "傳送訊息",
+      "errorAnswer": "我找不到這個問題的答案。",
+      "errorGeneric": "連線至 SuperBee 時發生錯誤，請再試一次。",
       "intro": "嘿，冠軍！我是 SuperBee — 您的 B1 Admin 強力助手。把您最棘手的問題交給我！",
+      "placeholderInput": "提出問題...",
       "sampleCsv": "“如何從 CSV 匯入成員？”",
       "sampleGiving": "“如何設定線上奉獻？”",
       "sampleGroup": "“如何建立新小組？”",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "結束日期",
+      "noBatches": "此日期範圍內沒有包含奉獻的批次。",
+      "startDate": "開始日期",
+      "title": "列印批次"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} 年度奉獻宣告",
       "campaign": "活動",
@@ -1207,6 +1225,9 @@
       "noEvents": "暫無活動。使用「新增活動」安排本團體的會議。",
       "noResponses": "尚無回覆。",
       "oneTime": "一次性",
+      "response_maybe": "可能",
+      "response_no": "不參加",
+      "response_yes": "參加",
       "rosterTitle": "RSVP 回覆名單",
       "rsvpSummary": "{yes} 是 · {maybe} 或許 · {no} 否",
       "rsvps": "RSVP 回覆",
@@ -1384,7 +1405,8 @@
       "showArchived": "顯示已存檔",
       "spPpl": " 人",
       "subtitle": {
-        "create": "首先建立您的第一個組"
+        "create": "首先建立您的第一個組",
+        "manage": "組織並管理您的教會小組"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "缺席",
+      "attendanceSheet": "簽到表",
+      "contactRoster": "聯絡人名單",
       "date": "日期",
       "noGroups": "找不到可列印的班級。",
       "present": "出席",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "已停用自動升級",
       "gradePromotionOn": "每年於 {date} 自動升級",
       "notConfigured": "未配置",
-      "notSet": "未設定"
+      "notSet": "未設定",
+      "phoneLocalSubtitle": "本地電話號碼"
     },
     "manageChurch": {
       "auditLog": "審計日誌",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "日期格式",
       "helperText": "B1 中的所有日期和時間都會依照此地區的格式。",
+      "phoneFormat": "電話號碼",
+      "phoneHelperText": "本地格式會依輸入的原樣儲存號碼（例如 0701 234 5678）。號碼包含國碼時，簡訊傳送效果最佳。",
+      "phoneInternational": "國際（含國碼）",
+      "phoneLocal": "本地（依輸入）",
       "region": "地區",
       "title": "地區"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "指示",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "讓語氣更正式。",
+      "preset_grammar": "僅修正拼字和文法。",
+      "preset_shorter": "讓內容更簡短、更容易瀏覽。",
+      "preset_warmer": "讓內容更溫暖、更親切。",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "寬幅"
     },
     "generateSite": {
+      "audience_community": "在地社區",
+      "audience_families": "家庭",
+      "audience_newcomers": "新朋友",
+      "audience_seniors": "長者",
+      "audience_youngAdults": "青年",
+      "audience_youth": "青少年",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "聚會時間",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "輕鬆",
+      "tone_formal": "正式",
+      "tone_inspirational": "激勵人心",
+      "tone_warm": "溫暖"
     },
     "helpDialog": {
       "addBody": "在工具欄中點選“新增內容”，然後將部分或元素拖到頁面上。",
@@ -5503,6 +5546,10 @@
       "operator": "運算子",
       "pauseAll": "暫停自動化",
       "paused": "已暫停",
+      "recur_daily": "每天",
+      "recur_monthly": "每月",
+      "recur_weekly": "每週",
+      "recur_yearly": "每年",
       "recurs": "重複",
       "resumeAll": "恢復自動化",
       "runNow": "立即執行",
@@ -5523,6 +5570,10 @@
       "resume": "恢復",
       "retry": "重試",
       "statusHeader": "狀態",
+      "status_failed": "失敗",
+      "status_paused": "已暫停",
+      "status_pending": "待處理",
+      "status_success": "成功",
       "subject": "人員",
       "title": "執行歷史",
       "trigger": "觸發器",
