@@ -1666,7 +1666,8 @@
       "placeholder": "Show me men over 30 with birthdays in July",
       "search": "Search",
       "searching": "Searching...",
-      "title": "AI Search"
+      "title": "AI Search",
+      "unavailable": "AI Search is temporarily unavailable. Please try again later, or use the search above."
     },
     "bulk": {
       "actions": "Actions",
