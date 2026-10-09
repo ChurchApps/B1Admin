@@ -32,8 +32,9 @@ export const AISearch = (props: Props) => {
       if (filters?.length) props.onReportCriteria?.(filters);
       setIsSearched(true);
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      setErrors([message]);
+      // AskApi can answer with a raw HTML error page; never show it to the user.
+      console.error(error);
+      setErrors([Locale.label("people.aiSearch.unavailable", "AI Search is temporarily unavailable. Please try again later, or use the search above.")]);
     } finally {
       setIsLoading(false);
     }
