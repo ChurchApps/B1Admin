@@ -187,9 +187,9 @@ export function FormEdit(props: Props) {
       {autoCreatePerson && (
         <>
           <FormControl fullWidth>
-            <InputLabel id="formGroup">{Locale.label("forms.formEdit.addToGroup")}</InputLabel>
+            <InputLabel id="formGroup" shrink>{Locale.label("forms.formEdit.addToGroup")}</InputLabel>
             <Controller name="groupId" control={control} render={({ field }) => (
-              <Select {...field} value={(groupsQuery.data || []).some((g) => g.id === field.value) ? field.value : ""} labelId="formGroup" label={Locale.label("forms.formEdit.addToGroup")} data-testid="form-group-select">
+              <Select {...field} value={(groupsQuery.data || []).some((g) => g.id === field.value) ? field.value : ""} labelId="formGroup" label={Locale.label("forms.formEdit.addToGroup")} displayEmpty notched data-testid="form-group-select">
                 <MenuItem value="">{Locale.label("forms.formEdit.addToGroupNone")}</MenuItem>
                 {(groupsQuery.data || []).map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
               </Select>
