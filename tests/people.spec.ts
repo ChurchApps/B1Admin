@@ -34,6 +34,20 @@ test.describe("People Management", () => {
       await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/);
     });
 
+    test("a Guest's membership status shows on the person edit form", async ({ page }) => {
+      await page.route(/\/membership\/people\/[^/?]+$/, async (route) => {
+        if (route.request().method() !== "GET") return route.continue();
+        const response = await route.fetch();
+        const person = await response.json();
+        await route.fulfill({ response, json: { ...person, membershipStatus: "Guest" } });
+      });
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      await personDetailsEditButton(page).click();
+      const status = page.locator('[data-testid="membership-status-select"]');
+      await expect(status).toBeVisible({ timeout: 10000 });
+      await expect(status.getByRole("combobox")).toHaveText("Guest");
+    });
+
     test("Add Person jumps to the one create form", async ({ page }) => {
       await page.locator('[data-testid="add-person-button"]').click();
       await expect(page.locator('[data-testid="create-person-panel"]')).toHaveCount(0);
