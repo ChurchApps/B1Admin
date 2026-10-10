@@ -138,12 +138,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "Check-in Schedule",
+      "checkinScheduleHelp": "Optional. Check-in opens and closes on its own around this time each week. Leave the day blank to keep check-in open whenever the group isn't closed.",
+      "closeMinutes": "Close check-in (minutes after end)",
       "confirmDelete": "Are you sure you wish to permanently delete this service time?",
+      "day": "Day",
+      "endTime": "End Time",
       "name": "Service Time",
       "nameAria": "Service time name",
       "namePlaceholder": "8:00 AM",
+      "noSchedule": "No schedule",
+      "openMinutes": "Open check-in (minutes before start)",
       "service": "Service",
       "serviceAria": "Select service",
+      "startTime": "Start Time",
       "validate": {
         "name": "Service time name is required.",
         "service": "Please select a service."
