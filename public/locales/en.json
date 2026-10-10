@@ -2030,6 +2030,7 @@
     "firstName": "First Name",
     "gender": "Gender",
     "grade": "Grade",
+    "guest": "Guest",
     "inactive": "Inactive",
     "lastName": "Last Name",
     "line1": "Line 1",

@@ -12,6 +12,7 @@ export interface MembershipStatusOption {
 
 export const membershipStatusDefinitions: MembershipStatusDefinition[] = [
   { value: "Visitor", labelKey: "person.visitor" },
+  { value: "Guest", labelKey: "person.guest" },
   { value: "Regular Attendee", labelKey: "person.regularAttendee" },
   { value: "Member", labelKey: "person.member" },
   { value: "Staff", labelKey: "person.staff" },
