@@ -2378,6 +2378,8 @@
       "planNameAria": "Plan name",
       "planReq": "Plan name is required.",
       "prepared": "Penciled in (hide assignments from volunteers until published)",
+      "repeatWeekly": "Repeat weekly for this many weeks",
+      "repeatWeeklyHelper": "Creates one plan per week, each copied from the one before it",
       "servDate": "Service Date",
       "servReq": "Service date is required.",
       "serviceDateAria": "Service date",

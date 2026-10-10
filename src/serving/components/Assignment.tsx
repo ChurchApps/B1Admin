@@ -75,9 +75,12 @@ export const Assignment = (props: Props) => {
   const handleCopyClick = async (mode: string) => {
     setCopyMenuAnchor(null);
     if (!previousPlan || !mode) return;
+    // targetPlanId fills this plan instead of creating a duplicate one.
     await ApiHelper.post("/plans/copy/" + previousPlan.id, {
-      ...props.plan,
-      copyMode: mode
+      ministryId: props.plan.ministryId,
+      serviceDate: props.plan.serviceDate,
+      copyMode: mode,
+      targetPlanId: props.plan.id
     }, "DoingApi");
     loadData();
   };
