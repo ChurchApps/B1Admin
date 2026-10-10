@@ -105,6 +105,24 @@ test.describe.serial("Serving Management - Workflows", () => {
     await expect(page.locator('[data-testid="workflow-card-TSK00000101"]')).toHaveCount(0, { timeout: 10000 });
   });
 
+  test("a note posted on a workflow card is still there after reopening it", async () => {
+    const openCard = async () => {
+      await openBoardById(page, "WFL00000001");
+      await page.locator('[data-testid="workflow-card-TSK00000104"]').click();
+      const drawer = page.locator('[data-testid="workflow-card-drawer"]');
+      await drawer.waitFor({ state: "visible", timeout: 15000 });
+      return drawer;
+    };
+
+    let drawer = await openCard();
+    await drawer.getByPlaceholder("Type a message...").fill("Called James, has two kids");
+    await drawer.locator("button").filter({ has: page.getByText("send", { exact: true }) }).click();
+    await expect(drawer.getByPlaceholder("Type a message...")).toHaveValue("", { timeout: 10000 });
+
+    drawer = await openCard();
+    await expect(drawer.getByText("Called James, has two kids")).toBeVisible({ timeout: 10000 });
+  });
+
   test("create a new workflow", async () => {
     await gotoWorkflows(page);
     await page.locator('[data-testid="add-workflow-button"]').click();
