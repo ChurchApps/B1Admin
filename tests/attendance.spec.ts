@@ -79,6 +79,38 @@ test.describe("Attendance Management", () => {
       await expect(page.locator("button").getByText("Zebedee Test Time")).toHaveCount(1, { timeout: 10000 });
     });
 
+    test("should set a check-in schedule on the service time", async () => {
+      await page.locator("button").getByText("Zebedee Test Time").click();
+      const box = page.locator("#serviceTimeBox");
+      await expect(box).toBeVisible({ timeout: 10000 });
+      await box.locator('[data-testid="service-time-day-select"]').click();
+      await page.getByRole("option", { name: "Sunday" }).click();
+      await box.locator('[data-testid="service-time-start-input"] input').fill("09:00");
+      await box.locator('[data-testid="service-time-end-input"] input').fill("10:15");
+      await box.locator('[data-testid="service-time-open-minutes-input"] input').fill("30");
+      await box.locator('[data-testid="service-time-close-minutes-input"] input').fill("15");
+      const resp = page.waitForResponse((r) => r.url().includes("/servicetimes") && r.request().method() === "POST" && r.status() === 200);
+      await box.getByRole("button", { name: "Save" }).click();
+      await resp;
+      await expect(box).toBeHidden({ timeout: 10000 });
+
+      await page.locator("button").getByText("Zebedee Test Time").click();
+      await expect(box).toBeVisible({ timeout: 10000 });
+      await expect(box.locator('[data-testid="service-time-day-select"]')).toContainText("Sunday");
+      await expect(box.locator('[data-testid="service-time-start-input"] input')).toHaveValue("09:00");
+      await expect(box.locator('[data-testid="service-time-end-input"] input')).toHaveValue("10:15");
+      await expect(box.locator('[data-testid="service-time-open-minutes-input"] input')).toHaveValue("30");
+      await expect(box.locator('[data-testid="service-time-close-minutes-input"] input')).toHaveValue("15");
+      await box.getByRole("button", { name: "Cancel" }).click();
+
+      const api = await pwRequest.newContext();
+      const times = await (await api.get(`${API}/attendance/servicetimes?serviceId=${createdServiceId}`, await apiLogin(api))).json();
+      await api.dispose();
+      const time = times.find((t: any) => t.name === "Zebedee Test Time");
+      expect(time).toMatchObject({ dayOfWeek: 0, startTime: "09:00", endTime: "10:15", checkinOpenMinutes: 30, checkinCloseMinutes: 15 });
+      expect(typeof time.checkinOpen).toBe("boolean");
+    });
+
     test("should delete the service time", async () => {
       await page.locator("button").getByText("Zebedee Test Time").click();
       const box = page.locator("#serviceTimeBox");
