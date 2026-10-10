@@ -543,6 +543,9 @@ export function ElementEdit(props: Props) {
     </>
   );
 
+  // A lone URL in the JavaScript box runs as a no-op script (label + comment), so nothing renders.
+  const isBareUrl = (value?: string) => /^https?:\/\/\S+$/i.test((value || "").trim());
+
   const getRawHTML = () => (
     <>
       <TextField fullWidth label={Locale.label("site.elements.htmlContent")} name="rawHTML" onChange={handleChange} value={parsedData.rawHTML || ""} multiline minRows={7} maxRows={15} />
@@ -552,6 +555,8 @@ export function ElementEdit(props: Props) {
         name="javascript"
         onChange={handleChange}
         value={parsedData.javascript || ""}
+        error={isBareUrl(parsedData.javascript)}
+        helperText={isBareUrl(parsedData.javascript) ? Locale.label("site.elements.javascriptUrlWarning") : undefined}
         multiline
         minRows={7}
         maxRows={15}
