@@ -15,9 +15,18 @@ const MAX_LENGTH = 1600;
 
 const keepFocus = (ev: React.MouseEvent) => ev.preventDefault();
 
+// Serving overview: every volunteer assigned in a date range.
+export interface TextRange {
+  startDate: string;
+  endDate: string;
+  ministryId: string;
+  planTypeId?: string;
+}
+
 interface Props {
   groupId?: string;
   groupName?: string;
+  range?: TextRange;
   personId?: string;
   personName?: string;
   phoneNumber?: string;
@@ -58,15 +67,20 @@ export const SendTextDialog: React.FC<Props> = (props) => {
     });
   };
 
-  const isGroupMode = !!props.groupId;
+  const range = props.range;
+  const isGroupMode = !!props.groupId || !!range;
+  const rangeQuery = range ? new URLSearchParams({ startDate: range.startDate, endDate: range.endDate, ministryId: range.ministryId, planTypeId: range.planTypeId || "" }).toString() : "";
+  const previewUrl = range ? "/plans/textRange?" + rangeQuery : props.groupId ? "/texting/preview/" + props.groupId : null;
   const charCount = message.length;
   const segmentCount = charCount <= 160 ? 1 : Math.ceil(charCount / 153);
 
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
-    previewUrl: isGroupMode && props.groupId ? "/texting/preview/" + props.groupId : null,
-    sendUrl: isGroupMode ? "/texting/send" : "/texting/sendPerson",
+    previewUrl,
+    sendUrl: range ? "/plans/textRange" : isGroupMode ? "/texting/send" : "/texting/sendPerson",
+    apiName: range ? "DoingApi" : "MessagingApi",
     buildPayload: () => {
       if (!message.trim()) return null;
+      if (range) return { ...range, message };
       return isGroupMode
         ? { groupId: props.groupId, message }
         : { personId: props.personId, phoneNumber: props.phoneNumber, personName: props.personName, message };
@@ -75,6 +89,7 @@ export const SendTextDialog: React.FC<Props> = (props) => {
   });
 
   const getTitle = () => {
+    if (range) return Locale.label("groups.sendTextDialog.textVolunteersTitle");
     if (isGroupMode) return Locale.label("groups.sendTextDialog.textGroupTitle").replace("{groupName}", props.groupName || "");
     return Locale.label("groups.sendTextDialog.textPersonTitle").replace("{personName}", props.personName || "");
   };
@@ -84,9 +99,9 @@ export const SendTextDialog: React.FC<Props> = (props) => {
     if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.loadingRecipients")}</Typography>;
     if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.sendDefault")}</Typography>;
 
-    const eligibleSummary = preview.totalMembers !== 1
-      ? Locale.label("groups.sendTextDialog.eligibleSummary")
-      : Locale.label("groups.sendTextDialog.eligibleSummarySingular");
+    const eligibleSummary = range
+      ? Locale.label(preview.totalMembers !== 1 ? "groups.sendTextDialog.volunteersSummary" : "groups.sendTextDialog.volunteersSummarySingular")
+      : Locale.label(preview.totalMembers !== 1 ? "groups.sendTextDialog.eligibleSummary" : "groups.sendTextDialog.eligibleSummarySingular");
     const noPhoneNotice = preview.noPhoneCount !== 1
       ? Locale.label("groups.sendTextDialog.noPhoneNotice")
       : Locale.label("groups.sendTextDialog.noPhoneNoticeSingular");
@@ -141,7 +156,7 @@ export const SendTextDialog: React.FC<Props> = (props) => {
       {renderPreview()}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          {error.includes("insufficient_credits")
+          {error === "no_provider" ? Locale.label("groups.sendTextDialog.noProvider") : error.includes("insufficient_credits")
             ? <>{Locale.label("groups.sendTextDialog.insufficientCredits")} <a href="https://ministrystuff.org" target="_blank" rel="noopener noreferrer">{Locale.label("groups.sendTextDialog.insufficientCreditsLink")}</a></>
             : error}
         </Alert>

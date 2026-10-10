@@ -18,6 +18,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
   const [apiSecret, setApiSecret] = React.useState("");
   const [fromNumber, setFromNumber] = React.useState("");
   const [errors, setErrors] = React.useState<string[]>([]);
+  const [inboundUrl, setInboundUrl] = React.useState("");
   const [credits, setCredits] = React.useState<{ supported?: boolean; hasCredits?: boolean; remaining?: number } | null>(null);
 
   React.useEffect(() => {
@@ -115,6 +116,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
       setFromNumber("");
     } else {
       setTextingProvider(providers[0]);
+      ApiHelper.get("/texting/inboundUrl", "MessagingApi").then((d: { url?: string }) => setInboundUrl(d?.url || "")).catch(() => setInboundUrl(""));
       setProvider(providers[0].provider || "");
       setApiKey(providers[0].apiKey || "");
       setApiSecret(providers[0].apiSecret || "");
@@ -175,6 +177,11 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
           </Grid>
         )}
         {getKeys()}
+        {inboundUrl && textingProvider?.id && provider === textingProvider.provider && (
+          <Grid size={{ xs: 12 }}>
+            <TextField fullWidth size="small" label={Locale.label("settings.textingSettingsEdit.inboundUrl")} value={inboundUrl} InputProps={{ readOnly: true }} onFocus={(e) => e.target.select()} helperText={Locale.label("settings.textingSettingsEdit.inboundUrlHelper")} data-testid="texting-inbound-url" />
+          </Grid>
+        )}
       </Grid>
     </>
   );

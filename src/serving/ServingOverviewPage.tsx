@@ -1,12 +1,13 @@
 import React from "react";
-import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, type PersonInterface } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, Permissions, UserHelper, type PersonInterface } from "@churchapps/apphelper";
 import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
 import { Alert, Box, Button, Card, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
-import { Close as CloseIcon, Clear as ClearIcon, Email as EmailIcon, PublishedWithChanges as AutoScheduleIcon, Assignment as AssignmentIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Clear as ClearIcon, Email as EmailIcon, Sms as SmsIcon, PublishedWithChanges as AutoScheduleIcon, Assignment as AssignmentIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
 import { hasPlansEditAccess } from "../helpers";
-import { useConfirmDelete } from "../hooks";
+import { useConfirmDelete, useTextingEnabled } from "../hooks";
 import { AssignmentEdit } from "./components/AssignmentEdit";
+import { SendTextDialog } from "../groups/components/SendTextDialog";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { AppDatePicker } from "../components";
@@ -85,6 +86,9 @@ export const ServingOverviewPage = () => {
   const [gapsOnly, setGapsOnly] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
   const [snack, setSnack] = React.useState("");
+  const [showText, setShowText] = React.useState(false);
+  const textingEnabled = useTextingEnabled();
+  const canText = textingEnabled && UserHelper.checkAccess(Permissions.messagingApi.texting.send);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const planType = useQuery<{ id: string; name: string }>({
@@ -282,6 +286,11 @@ export const ServingOverviewPage = () => {
                 {Locale.label("plans.servingOverviewPage.emailAll")}
               </Button>
             )}
+            {canEdit && canText && (
+              <Button variant="outlined" size="small" startIcon={<SmsIcon />} disabled={busy || !ministryId || rows.length === 0} onClick={() => setShowText(true)} data-testid="matrix-text-all">
+                {Locale.label("plans.servingOverviewPage.textAll")}
+              </Button>
+            )}
           </Stack>
         </Card>
 
@@ -372,6 +381,7 @@ export const ServingOverviewPage = () => {
       <Snackbar open={!!snack} autoHideDuration={4000} onClose={() => setSnack("")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert onClose={() => setSnack("")} severity="info" variant="filled" sx={{ width: "100%" }}>{snack}</Alert>
       </Snackbar>
+      {showText && <SendTextDialog range={{ startDate, endDate, ministryId, planTypeId }} onClose={() => setShowText(false)} />}
       {ConfirmDialogElement}
     </>
   );

@@ -122,4 +122,28 @@ test.describe.serial("Serving — Editable Scheduling Matrix", () => {
     expect(res.status()).toBe(200);
     await expect(page.getByText(/Emailed|No assigned/)).toBeVisible({ timeout: 10000 });
   });
+
+  // Demo church has a seeded texting provider. The preview is real; the send is stubbed so no SMS leaves the machine.
+  test("'Text Volunteers' previews who will get the text and sends it for the date range", async () => {
+    let payload: any = null;
+    await page.route("**/plans/textRange", async (route) => {
+      if (route.request().method() !== "POST") return route.continue();
+      payload = route.request().postDataJSON();
+      await route.fulfill({ json: { totalMembers: 3, eligibleCount: 2, recipientCount: 2, successCount: 2, failCount: 0, optedOutCount: 0, noPhoneCount: 1, capped: false } });
+    });
+    await openOverview();
+    const preview = page.waitForResponse((r) => r.url().includes("/plans/textRange?") && r.request().method() === "GET", { timeout: 20000 });
+    await page.getByTestId("matrix-text-all").click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByText("Text Volunteers", { exact: true })).toBeVisible();
+    expect((await preview).status()).toBe(200);
+    await expect(dialog.getByText(/of \d+ volunteers? will receive this text/)).toBeVisible({ timeout: 10000 });
+
+    await dialog.getByLabel("Message").fill("Hi {{firstName}}, thanks for serving this month!");
+    await dialog.getByRole("button", { name: "Send" }).click();
+    await expect(dialog.getByText("Sent to 2 of 2 recipients.")).toBeVisible({ timeout: 10000 });
+    expect(payload).toMatchObject({ ministryId: "GRP0000000a", planTypeId: "PLT00000001", message: "Hi {{firstName}}, thanks for serving this month!" });
+    expect(payload.startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    await page.unroute("**/plans/textRange");
+  });
 });
