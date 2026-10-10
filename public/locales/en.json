@@ -290,6 +290,8 @@
       "modeRegistrants": "Registrants only",
       "modeRegistrantsHoh": "Heads / registrants only",
       "push": "Push",
+      "text": "Text",
+      "textHint": "Texts go out through your church's texting provider, only to people who turned on text reminders. Each text may cost your church.",
       "timeOfDay": "Time of day",
       "timeOfDayHint": "Church local time (e.g. 9:00 AM)",
       "title": "Reminders",
@@ -1489,6 +1491,7 @@
       "noPhoneNotice": "{count} members have no phone number on file and will be skipped.",
       "noPhoneNoticeSingular": "{count} member has no phone number on file and will be skipped.",
       "noPhoneSkipped": "{count} skipped (no phone number).",
+      "noProvider": "Set up a texting provider in Settings before sending texts.",
       "optedOutNotice": "{count} opted out.",
       "optedOutSkipped": "{count} skipped (opted out).",
       "phoneOnFile": "phone on file",
@@ -1500,7 +1503,10 @@
       "sentSummary": "Sent to {successCount} of {recipientCount} recipients.",
       "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "textGroupTitle": "Text Group: {groupName}",
-      "textPersonTitle": "Text: {personName}"
+      "textPersonTitle": "Text: {personName}",
+      "textVolunteersTitle": "Text Volunteers",
+      "volunteersSummary": "{eligibleCount} of {totalMembers} volunteers will receive this text.",
+      "volunteersSummarySingular": "{eligibleCount} of {totalMembers} volunteer will receive this text."
     },
     "serviceTimes": {
       "services": "Service(s):"
@@ -2518,6 +2524,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "Text",
+      "textHint": "Texts go out through your church's texting provider, only to people who turned on text reminders. Each text may cost your church.",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2646,6 +2654,7 @@
       "removeConfirm": "Remove {name} from this assignment?",
       "startDate": "Start Date",
       "subtitle": "Positions by date with assigned volunteers",
+      "textAll": "Text Volunteers",
       "title": "Serving Overview"
     },
     "servingPage": {
@@ -3971,6 +3980,8 @@
       "clearstreamHelper": "Create an API Key in your",
       "clearstreamHelperLink": "Clearstream Account Settings",
       "clearstreamHelperSuffix": "under API Keys.",
+      "inboundUrl": "Inbound (STOP) webhook URL",
+      "inboundUrlHelper": "Paste this into your provider's inbound message webhook so people who reply STOP are opted out of texts here too.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
       "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
@@ -5641,6 +5652,8 @@
       "noDueDate": "This task has no due date, so no reminders will be sent until one is set.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "Text",
+      "textHint": "Texts go out through your church's texting provider, only to people who turned on text reminders. Each text may cost your church.",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"

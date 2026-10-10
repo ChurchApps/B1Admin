@@ -87,7 +87,7 @@ test.describe.serial("Serving Reminders", () => {
   test("admin enables a reminder on a plan type, picks a timing chip, and saves", async () => {
     await page.goto("/serving/plans");
     await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
-    await expect(page.getByRole("tab", { name: "Worship" })).toBeVisible({ timeout: 15000 });
+    await expect(page.locator("tr", { hasText: PLAN_TYPE_NAME })).toBeVisible({ timeout: 15000 }); // Worship ministry page (no ministry tabs any more)
 
     await openPlanTypeEditor(page);
     await expandReminders(page);
@@ -137,6 +137,31 @@ test.describe.serial("Serving Reminders", () => {
     expect(def.channels).toBe("push,email");
     expect(def.recipientMode).toBe("assignments");
     expect(Boolean(def.enabled)).toBe(true); // MySQL returns 1
+    await ctx.dispose();
+  });
+
+  // Demo church has a seeded texting provider, so the Text channel is offered.
+  test("admin adds Text as a reminder channel and it persists", async () => {
+    await page.goto("/serving/plans");
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
+    await openPlanTypeEditor(page);
+    await expandReminders(page);
+
+    const text = page.locator('[data-testid="plan-type-reminder-channel-sms"] input');
+    await expect(text).toBeVisible({ timeout: 10000 });
+    await expect(text).not.toBeChecked();
+    await text.check();
+    await expect(page.getByText("only to people who turned on text reminders", { exact: false })).toBeVisible();
+
+    const upsert = page.waitForResponse((r) => /\/messaging\/reminders\/scope\/plan\//.test(r.url()) && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+    await page.locator('[data-testid="plan-type-reminder-save-button"]').click();
+    await upsert;
+    await closePlanTypeEditor(page);
+
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const defs = await (await ctx.get(`${API_BASE}/messaging/reminders/scope/plan/${planTypeId}`, auth)).json();
+    expect(defs?.[0]?.channels).toBe("push,email,sms");
     await ctx.dispose();
   });
 

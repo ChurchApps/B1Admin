@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { useTextingEnabled } from "../../../hooks";
 
 interface ReminderDefinition {
   id?: string;
@@ -96,6 +97,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
   };
 
   const l = (k: string) => Locale.label("tasks.reminders." + k);
+  const textingEnabled = useTextingEnabled();
 
   return (
     <Accordion>
@@ -149,7 +151,9 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
                 <Stack direction="row">
                   <FormControlLabel control={<Checkbox checked={channels.includes("push")} onChange={() => toggleChannel("push")} size="small" />} label="Push" />
                   <FormControlLabel control={<Checkbox checked={channels.includes("email")} onChange={() => toggleChannel("email")} size="small" />} label="Email" />
+                  {textingEnabled && <FormControlLabel control={<Checkbox checked={channels.includes("sms")} onChange={() => toggleChannel("sms")} size="small" data-testid="task-reminder-channel-sms" />} label={l("text")} />}
                 </Stack>
+                {textingEnabled && channels.includes("sms") && <Typography variant="caption" color="text.secondary">{l("textHint")}</Typography>}
               </Box>
             </>
           )}

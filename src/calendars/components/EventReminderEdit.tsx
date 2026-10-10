@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
+import { useTextingEnabled } from "../../hooks";
 import type { SelectChangeEvent } from "@mui/material/Select";
 
 export interface ReminderDefinition {
@@ -85,6 +86,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
     const [recipientMode, setRecipientMode] = useState<string>(hasRegistration ? "registrants" : "group");
     const [message, setMessage] = useState("");
     const [channels, setChannels] = useState<string[]>(["push", "email"]);
+    const textingEnabled = useTextingEnabled();
     const [preview, setPreview] = useState<ReminderPreview | null>(null);
     const [previewLoading, setPreviewLoading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -267,7 +269,16 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
                       control={<Checkbox checked={channels.includes("email")} onChange={() => toggleChannel("email")} size="small" data-testid="reminder-channel-email" />}
                       label={Locale.label("calendars.eventReminders.email")}
                     />
+                    {textingEnabled && (
+                      <FormControlLabel
+                        control={<Checkbox checked={channels.includes("sms")} onChange={() => toggleChannel("sms")} size="small" data-testid="reminder-channel-sms" />}
+                        label={Locale.label("calendars.eventReminders.text")}
+                      />
+                    )}
                   </Stack>
+                  {textingEnabled && channels.includes("sms") && (
+                    <Typography variant="caption" color="text.secondary">{Locale.label("calendars.eventReminders.textHint")}</Typography>
+                  )}
                 </Box>
 
                 {!previewLoading && previewText() && (
