@@ -4895,7 +4895,7 @@
       "errSave": "Failed to save redirect.",
       "fromPath": "From Path",
       "ga4": "GA4 Measurement ID",
-      "ga4Hint": "Format: G-XXXXXXXXXX",
+      "ga4Hint": "Format: G-XXXXXXXXXX. Also tracks your B1 app (display_mode: installed or browser).",
       "normalizeHint": "Paths are normalized: lowercased, with a leading slash and no trailing slash.",
       "title": "Redirects & analytics",
       "toPath": "To Path"

@@ -918,6 +918,15 @@ test.describe("Website Management", () => {
 
   });
 
+  loggedInTest.describe("Google Analytics", () => {
+    loggedInTest("explains that the GA4 id also tracks the B1 app", async ({ page }) => {
+      await page.goto("/site/appearance");
+      await expect(page.locator('[data-testid="ga4-input"]')).toBeVisible({ timeout: 15000 });
+      await expect(page.getByText(/Also tracks your B1 app/)).toBeVisible();
+      await expect(page.getByText(/display_mode: installed or browser/)).toBeVisible();
+    });
+  });
+
   // ChurchAppsSupport#1157: saving the Announcement Bar never cleared B1App's cache, so the public site showed the old banner.
   loggedInTest.describe("Announcement bar cache", () => {
     loggedInTest("saving announcement and widgets clears the public site cache", async ({ page }) => {
