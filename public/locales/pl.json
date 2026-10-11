@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Otwórz czat Bez",
+      "ariaSend": "Wyślij wiadomość",
+      "errorAnswer": "Nie udało mi się znaleźć odpowiedzi na to pytanie.",
+      "errorGeneric": "Wystąpił problem z połączeniem z Bez. Spróbuj ponownie.",
       "intro": "Cześć, jestem Bez! Mogę pomóc Ci poruszać się po B1 Admin. Spróbuj mnie zapytać:",
+      "placeholderInput": "Zadaj pytanie...",
       "sampleCsv": "\"Jak importować członków z pliku CSV?\"",
       "sampleGiving": "\"Jak skonfigurować dawanie online?\"",
       "sampleGroup": "\"Jak utworzyć nową grupę?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Otwórz czat pomocy",
+      "ariaSend": "Wyślij wiadomość",
       "composing": "Tworzenie odpowiedzi...",
+      "errorAnswer": "Nie udało mi się znaleźć odpowiedzi na to pytanie.",
+      "errorGeneric": "Wystąpił problem z połączeniem z asystentem dokumentacji. Spróbuj ponownie.",
       "intro": "Zadaj dowolne pytanie dotyczące B1 Admin. Na przykład:",
+      "placeholderInput": "Zadaj pytanie...",
       "sampleCsv": "\"Jak importować członków z pliku CSV?\"",
       "sampleGiving": "\"Jak skonfigurować dawanie online?\"",
       "sampleGroup": "\"Jak utworzyć nową grupę?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Otwórz czat SuperBee",
+      "ariaSend": "Wyślij wiadomość",
+      "errorAnswer": "Nie udało mi się znaleźć odpowiedzi na to pytanie.",
+      "errorGeneric": "Wystąpił problem z połączeniem z SuperBee. Spróbuj ponownie.",
       "intro": "Cześć, mistrzu! Jestem SuperBee — twoja moc B1 Admin. Zadaj mi najtrudniejsze pytania!",
+      "placeholderInput": "Zadaj pytanie...",
       "sampleCsv": "\"Jak importować członków z pliku CSV?\"",
       "sampleGiving": "\"Jak skonfigurować dawanie online?\"",
       "sampleGroup": "\"Jak utworzyć nową grupę?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Data zakończenia",
+      "noBatches": "Brak partii z darowiznami w tym zakresie dat.",
+      "startDate": "Data rozpoczęcia",
+      "title": "Drukuj partie"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Roczny raport darowizn za {year}",
       "campaign": "Kampania",
@@ -1207,6 +1225,9 @@
       "noEvents": "Brak wydarzeń. Użyj opcji Dodaj wydarzenia, aby zaplanować spotkania tej grupy.",
       "noResponses": "Brak odpowiedzi.",
       "oneTime": "Jednorazowe",
+      "response_maybe": "Może",
+      "response_no": "Nie idę",
+      "response_yes": "Idę",
       "rosterTitle": "Potwierdzenia obecności",
       "rsvpSummary": "{yes} tak · {maybe} może · {no} nie",
       "rsvps": "Potwierdzenia obecności",
@@ -1384,7 +1405,8 @@
       "showArchived": "Pokaż zarchiwizowane",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "Organizuj grupy kościelne i zarządzaj nimi"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Nieobecny",
+      "attendanceSheet": "Lista obecności",
+      "contactRoster": "Lista kontaktów",
       "date": "Data",
       "noGroups": "Nie znaleziono klas do wydruku.",
       "present": "Obecny",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatyczna promocja wyłączona",
       "gradePromotionOn": "Promuje w dniu {date} każdego roku",
       "notConfigured": "Nieskonfigurowane",
-      "notSet": "Nieustawione"
+      "notSet": "Nieustawione",
+      "phoneLocalSubtitle": "Lokalne numery telefonów"
     },
     "manageChurch": {
       "auditLog": "Dziennik audytu",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Format daty",
       "helperText": "Daty i godziny w całym B1 są wyświetlane w formacie tego regionu.",
+      "phoneFormat": "Numery telefonów",
+      "phoneHelperText": "Format lokalny zapisuje numery dokładnie tak, jak zostały wpisane (np. 0701 234 5678). SMS-y działają najlepiej, gdy numery zawierają kod kraju.",
+      "phoneInternational": "Międzynarodowy (z kodem kraju)",
+      "phoneLocal": "Lokalny (tak, jak wpisano)",
       "region": "Region",
       "title": "Region"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instrukcje",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Nadaj tekstowi bardziej formalny ton.",
+      "preset_grammar": "Popraw tylko pisownię i gramatykę.",
+      "preset_shorter": "Skróć tekst i ułatw jego przeglądanie.",
+      "preset_warmer": "Nadaj tekstowi cieplejszy i bardziej przyjazny charakter.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Szeroki"
     },
     "generateSite": {
+      "audience_community": "Społeczność lokalna",
+      "audience_families": "Rodziny",
+      "audience_newcomers": "Nowe osoby",
+      "audience_seniors": "Seniorzy",
+      "audience_youngAdults": "Młodzi dorośli",
+      "audience_youth": "Młodzież",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Godziny nabożeństw",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Swobodny",
+      "tone_formal": "Formalny",
+      "tone_inspirational": "Inspirujący",
+      "tone_warm": "Ciepły"
     },
     "helpDialog": {
       "addBody": "Kliknij Dodaj treść w pasku narzędzi, a następnie przeciągnij sekcję lub element na stronę.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Wstrzymaj automatyzację",
       "paused": "Wstrzymany",
+      "recur_daily": "Codziennie",
+      "recur_monthly": "Co miesiąc",
+      "recur_weekly": "Co tydzień",
+      "recur_yearly": "Co rok",
       "recurs": "Powtarza się",
       "resumeAll": "Wznów automatyzację",
       "runNow": "Uruchom teraz",
@@ -5523,6 +5570,10 @@
       "resume": "Wznów",
       "retry": "Ponów",
       "statusHeader": "Status",
+      "status_failed": "Niepowodzenie",
+      "status_paused": "Wstrzymane",
+      "status_pending": "Oczekujące",
+      "status_success": "Sukces",
       "subject": "Osoba",
       "title": "Historia wykonań",
       "trigger": "Wyzwalacz",

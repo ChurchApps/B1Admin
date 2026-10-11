@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Mở trò chuyện Bez",
+      "ariaSend": "Gửi tin nhắn",
+      "errorAnswer": "Tôi không tìm được câu trả lời cho câu hỏi đó.",
+      "errorGeneric": "Đã xảy ra lỗi khi kết nối với Bez. Vui lòng thử lại.",
       "intro": "Chào, tôi là Bez! Tôi có thể giúp bạn điều hướng B1 Admin. Hãy thử hỏi tôi:",
+      "placeholderInput": "Đặt câu hỏi...",
       "sampleCsv": "\"Làm cách nào để nhập thành viên từ CSV?\"",
       "sampleGiving": "\"Làm cách nào để thiết lập đóng góp trực tuyến?\"",
       "sampleGroup": "\"Làm cách nào để tạo nhóm mới?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Mở trò chuyện trợ giúp",
+      "ariaSend": "Gửi tin nhắn",
       "composing": "Đang soạn câu trả lời...",
+      "errorAnswer": "Tôi không tìm được câu trả lời cho câu hỏi đó.",
+      "errorGeneric": "Đã xảy ra lỗi khi kết nối với trợ lý tài liệu. Vui lòng thử lại.",
       "intro": "Hỏi bất kỳ câu hỏi nào về B1 Admin. Ví dụ:",
+      "placeholderInput": "Đặt câu hỏi...",
       "sampleCsv": "\"Làm cách nào để nhập thành viên từ CSV?\"",
       "sampleGiving": "\"Làm cách nào để thiết lập đóng góp trực tuyến?\"",
       "sampleGroup": "\"Làm cách nào để tạo nhóm mới?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Mở trò chuyện SuperBee",
+      "ariaSend": "Gửi tin nhắn",
+      "errorAnswer": "Tôi không tìm được câu trả lời cho câu hỏi đó.",
+      "errorGeneric": "Đã xảy ra lỗi khi kết nối với SuperBee. Vui lòng thử lại.",
       "intro": "Chào bạn, nhà vô địch! Tôi là SuperBee — sức mạnh B1 Admin của bạn. Hãy hỏi tôi những câu hỏi khó nhất của bạn!",
+      "placeholderInput": "Đặt câu hỏi...",
       "sampleCsv": "\"Làm cách nào để nhập thành viên từ CSV?\"",
       "sampleGiving": "\"Làm cách nào để thiết lập đóng góp trực tuyến?\"",
       "sampleGroup": "\"Làm cách nào để tạo nhóm mới?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Ngày kết thúc",
+      "noBatches": "Không có lô nào có khoản dâng trong khoảng thời gian này.",
+      "startDate": "Ngày bắt đầu",
+      "title": "In các lô"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Bản kê khai đóng góp hàng năm {year}",
       "campaign": "Chiến dịch",
@@ -1207,6 +1225,9 @@
       "noEvents": "Chưa có sự kiện. Sử dụng Thêm sự kiện để lên lịch các buổi họp của nhóm.",
       "noResponses": "Chưa có phản hồi nào.",
       "oneTime": "Một lần",
+      "response_maybe": "Có thể",
+      "response_no": "Không tham gia",
+      "response_yes": "Tham gia",
       "rosterTitle": "Phản hồi xác nhận tham dự",
       "rsvpSummary": "{yes} có · {maybe} có thể · {no} không",
       "rsvps": "Xác nhận tham dự",
@@ -1384,7 +1405,8 @@
       "showArchived": "Hiển thị mục đã lưu trữ",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first Nhóm"
+        "create": "Get started by creating your first Nhóm",
+        "manage": "Tổ chức và quản lý các nhóm trong hội thánh của bạn"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Vắng mặt",
+      "attendanceSheet": "Bảng điểm danh",
+      "contactRoster": "Danh sách liên lạc",
       "date": "Ngày",
       "noGroups": "Không tìm thấy lớp nào để in.",
       "present": "Có mặt",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Thăng lớp tự động bị vô hiệu hóa",
       "gradePromotionOn": "Thăng khối lớp vào {date} mỗi năm",
       "notConfigured": "Chưa cấu hình",
-      "notSet": "Chưa đặt"
+      "notSet": "Chưa đặt",
+      "phoneLocalSubtitle": "Số điện thoại nội địa"
     },
     "manageChurch": {
       "auditLog": "Nhật ký kiểm tra",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Định dạng ngày",
       "helperText": "Ngày và giờ trong toàn bộ B1 tuân theo định dạng của khu vực này.",
+      "phoneFormat": "Số điện thoại",
+      "phoneHelperText": "Nội địa lưu số điện thoại đúng như khi nhập (ví dụ 0701 234 5678). Nhắn tin hoạt động tốt nhất khi số có mã quốc gia.",
+      "phoneInternational": "Quốc tế (có mã quốc gia)",
+      "phoneLocal": "Nội địa (như khi nhập)",
       "region": "Khu vực",
       "title": "Khu vực"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Hướng dẫn",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Làm cho giọng văn trang trọng hơn.",
+      "preset_grammar": "Chỉ sửa lỗi chính tả và ngữ pháp.",
+      "preset_shorter": "Làm cho ngắn gọn và dễ đọc lướt hơn.",
+      "preset_warmer": "Làm cho ấm áp và thân thiện hơn.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Rộng"
     },
     "generateSite": {
+      "audience_community": "Cộng đồng địa phương",
+      "audience_families": "Gia đình",
+      "audience_newcomers": "Người mới",
+      "audience_seniors": "Người cao tuổi",
+      "audience_youngAdults": "Thanh niên",
+      "audience_youth": "Thiếu niên",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Giờ nhóm lễ",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Thân mật",
+      "tone_formal": "Trang trọng",
+      "tone_inspirational": "Truyền cảm hứng",
+      "tone_warm": "Ấm áp"
     },
     "helpDialog": {
       "addBody": "Nhấp vào Thêm nội dung trong thanh công cụ, sau đó kéo một phần hoặc phần tử lên trang.",
@@ -5503,6 +5546,10 @@
       "operator": "Toán tử",
       "pauseAll": "Tạm dừng tự động hóa",
       "paused": "Đã tạm dừng",
+      "recur_daily": "Hằng ngày",
+      "recur_monthly": "Hằng tháng",
+      "recur_weekly": "Hằng tuần",
+      "recur_yearly": "Hằng năm",
       "recurs": "Lặp lại",
       "resumeAll": "Tiếp tục tự động hóa",
       "runNow": "Chạy ngay",
@@ -5523,6 +5570,10 @@
       "resume": "Tiếp tục",
       "retry": "Thử lại",
       "statusHeader": "Trạng thái",
+      "status_failed": "Thất bại",
+      "status_paused": "Đã tạm dừng",
+      "status_pending": "Đang chờ",
+      "status_success": "Thành công",
       "subject": "Người",
       "title": "Lịch sử thực thi",
       "trigger": "Trình kích hoạt",

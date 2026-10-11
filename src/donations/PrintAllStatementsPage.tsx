@@ -7,6 +7,7 @@ import UserContext from "../UserContext";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
+import { usePrintLogo } from "../components/PrintChurchHeader";
 
 export const PrintAllStatementsPage = () => {
   const [searchParams] = useSearchParams();
@@ -90,13 +91,14 @@ export const PrintAllStatementsPage = () => {
 
   const autoprint = searchParams.get("autoprint") === "1";
   const hasPrinted = useRef(false);
+  const printLogo = usePrintLogo(context?.userChurch?.church?.id);
 
   useEffect(() => {
-    if (autoprint && !isLoading && people.data && people.data.length > 0 && !hasPrinted.current) {
+    if (autoprint && !isLoading && people.data && people.data.length > 0 && printLogo.ready && !hasPrinted.current) {
       hasPrinted.current = true;
       window.print();
     }
-  }, [autoprint, isLoading, people.data]);
+  }, [autoprint, isLoading, people.data, printLogo.ready]);
 
   useEffect(() => {
     const handleAfterPrint = () => window.history.back();
@@ -180,6 +182,7 @@ export const PrintAllStatementsPage = () => {
           showPageBreak={index < people.data!.length - 1}
           showStyles={index === 0}
           statementSettings={parseStatementSettings(churchSettings.data)}
+          logoUrl={printLogo.logoUrl}
         />
       ))}
     </>

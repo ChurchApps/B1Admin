@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Avaa Bez-chat",
+      "ariaSend": "Lähetä viesti",
+      "errorAnswer": "En löytänyt tähän vastausta.",
+      "errorGeneric": "Yhteydessä Beziin tapahtui virhe. Yritä uudelleen.",
       "intro": "Hei, olen Bez! Voin auttaa sinua navigoimaan B1 Adminissa. Kokeile kysyä minulta:",
+      "placeholderInput": "Kysy kysymys...",
       "sampleCsv": "\"Miten tuon jäsenet CSV-tiedostosta?\"",
       "sampleGiving": "\"Miten otan käyttöön verkkolahjoitukset?\"",
       "sampleGroup": "\"Miten luon uuden ryhmän?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Avaa ohje-chat",
+      "ariaSend": "Lähetä viesti",
       "composing": "Laaditaan vastausta...",
+      "errorAnswer": "En löytänyt tähän vastausta.",
+      "errorGeneric": "Yhteydessä dokumentaatioavustajaan tapahtui virhe. Yritä uudelleen.",
       "intro": "Kysy mitä tahansa B1 Administa. Esimerkiksi:",
+      "placeholderInput": "Kysy kysymys...",
       "sampleCsv": "\"Miten tuon jäsenet CSV-tiedostosta?\"",
       "sampleGiving": "\"Miten otan käyttöön verkkolahjoitukset?\"",
       "sampleGroup": "\"Miten luon uuden ryhmän?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Avaa SuperBee-chat",
+      "ariaSend": "Lähetä viesti",
+      "errorAnswer": "En löytänyt tähän vastausta.",
+      "errorGeneric": "Yhteydessä SuperBeehen tapahtui virhe. Yritä uudelleen.",
       "intro": "Hei mestari! Olen SuperBee — sinun B1 Admin -voimavarasi. Anna tulla vaikeimmat kysymyksesi!",
+      "placeholderInput": "Kysy kysymys...",
       "sampleCsv": "\"Miten tuon jäsenet CSV-tiedostosta?\"",
       "sampleGiving": "\"Miten otan käyttöön verkkolahjoitukset?\"",
       "sampleGroup": "\"Miten luon uuden ryhmän?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Päättymispäivä",
+      "noBatches": "Tällä aikavälillä ei ole eriä, joissa on lahjoituksia.",
+      "startDate": "Alkamispäivä",
+      "title": "Tulosta erät"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Vuosittainen lahjoituskatsaus {year}",
       "campaign": "Kampanja",
@@ -1207,6 +1225,9 @@
       "noEvents": "Ei vielä tapahtumia. Lisää tapahtumia aikatauluttaaksesi ryhmän kokoukset.",
       "noResponses": "Ei vastauksia vielä.",
       "oneTime": "Kertaluonteinen",
+      "response_maybe": "Ehkä",
+      "response_no": "En osallistu",
+      "response_yes": "Osallistun",
       "rosterTitle": "Ilmoittautumisvastaukset",
       "rsvpSummary": "{yes} kyllä · {maybe} ehkä · {no} ei",
       "rsvps": "Ilmoittautumiset",
@@ -1384,7 +1405,8 @@
       "showArchived": "Näytä arkistoidut",
       "spPpl": " people",
       "subtitle": {
-        "create": "Aloita luomalla ensimmäinen ryhmä"
+        "create": "Aloita luomalla ensimmäinen ryhmä",
+        "manage": "Järjestä ja hallitse seurakuntasi ryhmiä"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Poissa",
+      "attendanceSheet": "Läsnäololista",
+      "contactRoster": "Yhteystietoluettelo",
       "date": "Päivämäärä",
       "noGroups": "Tulostettavia luokkia ei löytynyt.",
       "present": "Paikalla",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automaattinen siirtyminen pois käytöstä",
       "gradePromotionOn": "Siirtyy {date} joka vuosi",
       "notConfigured": "Ei määritetty",
-      "notSet": "Ei asetettu"
+      "notSet": "Ei asetettu",
+      "phoneLocalSubtitle": "Paikalliset puhelinnumerot"
     },
     "manageChurch": {
       "auditLog": "Auditointiloki",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Päivämäärämuoto",
       "helperText": "Päivämäärät ja ajat kaikkialla B1:ssä noudattavat tämän alueen muotoa.",
+      "phoneFormat": "Puhelinnumerot",
+      "phoneHelperText": "Paikallinen tallentaa numerot täsmälleen kirjoitetussa muodossa (esim. 0701 234 5678). Tekstiviestit toimivat parhaiten, kun numeroissa on maatunnus.",
+      "phoneInternational": "Kansainvälinen (maatunnuksella)",
+      "phoneLocal": "Paikallinen (kuten kirjoitettu)",
       "region": "Alue",
       "title": "Alue"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Ohjeet",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Tee sävystä muodollisempi.",
+      "preset_grammar": "Korjaa vain oikeinkirjoitus ja kielioppi.",
+      "preset_shorter": "Tee siitä lyhyempi ja helpommin silmäiltävä.",
+      "preset_warmer": "Tee siitä lämpimämpi ja kutsuvampi.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Leveä"
     },
     "generateSite": {
+      "audience_community": "Paikallisyhteisö",
+      "audience_families": "Perheet",
+      "audience_newcomers": "Uudet tulijat",
+      "audience_seniors": "Seniorit",
+      "audience_youngAdults": "Nuoret aikuiset",
+      "audience_youth": "Nuoret",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Jumalanpalvelusajat",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Rento",
+      "tone_formal": "Muodollinen",
+      "tone_inspirational": "Inspiroiva",
+      "tone_warm": "Lämmin"
     },
     "helpDialog": {
       "addBody": "Napsauta Lisää sisältö työkalupalkista, sitten vedä osio tai elementti sivulle.",
@@ -5503,6 +5546,10 @@
       "operator": "Operaattori",
       "pauseAll": "Keskeytä automaatio",
       "paused": "Keskeytetty",
+      "recur_daily": "Päivittäin",
+      "recur_monthly": "Kuukausittain",
+      "recur_weekly": "Viikoittain",
+      "recur_yearly": "Vuosittain",
       "recurs": "Toistuu",
       "resumeAll": "Jatka automaatiota",
       "runNow": "Suorita nyt",
@@ -5523,6 +5570,10 @@
       "resume": "Jatka",
       "retry": "Yritä uudelleen",
       "statusHeader": "Tila",
+      "status_failed": "Epäonnistui",
+      "status_paused": "Keskeytetty",
+      "status_pending": "Odottaa",
+      "status_success": "Onnistui",
       "subject": "Henkilö",
       "title": "Suoritushistoria",
       "trigger": "Käynnistin",

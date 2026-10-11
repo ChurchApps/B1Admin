@@ -2,6 +2,7 @@
 export { useMountedState } from "@churchapps/apphelper";
 
 export { useCampuses } from "./useCampuses";
+export { useTextingEnabled } from "./useTextingEnabled";
 export { useConfirmDelete } from "./useConfirmDelete";
 export { useSortableData } from "./useSortableData";
 export { useErrorSummary } from "./useErrorSummary";

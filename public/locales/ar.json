@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "فتح محادثة Bez",
+      "ariaSend": "إرسال الرسالة",
+      "errorAnswer": "لم أتمكن من العثور على إجابة لذلك.",
+      "errorGeneric": "حدث خطأ أثناء الاتصال بـ Bez. يرجى المحاولة مرة أخرى.",
       "intro": "مرحبًا، أنا Bez! يمكنني مساعدتك في التنقل في B1 Admin. حاول أن تسألني:",
+      "placeholderInput": "اطرح سؤالاً...",
       "sampleCsv": "\"كيف أستورد الأعضاء من ملف CSV؟\"",
       "sampleGiving": "\"كيف أُعدّ التبرعات عبر الإنترنت؟\"",
       "sampleGroup": "\"كيف أنشئ مجموعة جديدة؟\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "فتح محادثة المساعدة",
+      "ariaSend": "إرسال الرسالة",
       "composing": "جارٍ تأليف الإجابة...",
+      "errorAnswer": "لم أتمكن من العثور على إجابة لذلك.",
+      "errorGeneric": "حدث خطأ أثناء الاتصال بمساعد الوثائق. يرجى المحاولة مرة أخرى.",
       "intro": "اطرح أي سؤال حول B1 Admin. على سبيل المثال:",
+      "placeholderInput": "اطرح سؤالاً...",
       "sampleCsv": "\"كيف أستورد الأعضاء من ملف CSV؟\"",
       "sampleGiving": "\"كيف أُعدّ التبرعات عبر الإنترنت؟\"",
       "sampleGroup": "\"كيف أنشئ مجموعة جديدة؟\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "فتح محادثة SuperBee",
+      "ariaSend": "إرسال الرسالة",
+      "errorAnswer": "لم أتمكن من العثور على إجابة لذلك.",
+      "errorGeneric": "حدث خطأ أثناء الاتصال بـ SuperBee. يرجى المحاولة مرة أخرى.",
       "intro": "مرحبًا، أيها البطل! أنا SuperBee - قوتك في B1 Admin. اطرح علي أصعب أسئلتك!",
+      "placeholderInput": "اطرح سؤالاً...",
       "sampleCsv": "\"كيف أستورد الأعضاء من ملف CSV؟\"",
       "sampleGiving": "\"كيف أُعدّ التبرعات عبر الإنترنت؟\"",
       "sampleGroup": "\"كيف أنشئ مجموعة جديدة؟\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "تاريخ الانتهاء",
+      "noBatches": "لا توجد دفعات تحتوي على تبرعات في هذا النطاق الزمني.",
+      "startDate": "تاريخ البدء",
+      "title": "طباعة الدفعات"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "بيان التبرعات السنوي {year}",
       "campaign": "الحملة",
@@ -1207,6 +1225,9 @@
       "noEvents": "لا توجد أحداث بعد. استخدم إضافة أحداث لجدولة اجتماعات هذه المجموعة.",
       "noResponses": "لا توجد ردود بعد.",
       "oneTime": "مرة واحدة",
+      "response_maybe": "ربما",
+      "response_no": "لن أحضر",
+      "response_yes": "سأحضر",
       "rosterTitle": "ردود الحضور",
       "rsvpSummary": "{yes} نعم · {maybe} ربما · {no} لا",
       "rsvps": "الردود",
@@ -1384,7 +1405,8 @@
       "showArchived": "إظهار المؤرشف",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "نظّم مجموعات كنيستك وأدِرها"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "غائب",
+      "attendanceSheet": "ورقة الحضور",
+      "contactRoster": "قائمة جهات الاتصال",
       "date": "التاريخ",
       "noGroups": "لم يتم العثور على فصول للطباعة.",
       "present": "حاضر",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "الترقية التلقائية معطلة",
       "gradePromotionOn": "يتم الترقية في {date} من كل عام",
       "notConfigured": "غير مُهيأ",
-      "notSet": "غير محدد"
+      "notSet": "غير محدد",
+      "phoneLocalSubtitle": "أرقام هواتف محلية"
     },
     "manageChurch": {
       "auditLog": "سجل التدقيق",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "تنسيق التاريخ",
       "helperText": "تتبع التواريخ والأوقات في B1 بالكامل تنسيق هذه المنطقة.",
+      "phoneFormat": "أرقام الهواتف",
+      "phoneHelperText": "يحفظ الخيار المحلي الأرقام كما كُتبت تمامًا (مثل 0701 234 5678). تعمل الرسائل النصية بشكل أفضل عندما تتضمن الأرقام رمز الدولة.",
+      "phoneInternational": "دولي (مع رمز الدولة)",
+      "phoneLocal": "محلي (كما كُتب)",
       "region": "المنطقة",
       "title": "المنطقة"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "التعليمات",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "اجعل الأسلوب أكثر رسمية.",
+      "preset_grammar": "صحّح الإملاء والقواعد فقط.",
+      "preset_shorter": "اجعله أقصر وأسهل في التصفح.",
+      "preset_warmer": "اجعله أكثر دفئًا وترحيبًا.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "عريض"
     },
     "generateSite": {
+      "audience_community": "المجتمع المحلي",
+      "audience_families": "العائلات",
+      "audience_newcomers": "القادمون الجدد",
+      "audience_seniors": "كبار السن",
+      "audience_youngAdults": "الشباب البالغون",
+      "audience_youth": "اليافعون",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "مواعيد الخدمات",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "غير رسمي",
+      "tone_formal": "رسمي",
+      "tone_inspirational": "ملهم",
+      "tone_warm": "دافئ"
     },
     "helpDialog": {
       "addBody": "انقر على إضافة محتوى في شريط الأدوات، ثم اسحب قسمًا أو عنصرًا إلى الصفحة.",
@@ -5503,6 +5546,10 @@
       "operator": "العامل",
       "pauseAll": "إيقاف الأتمتة مؤقتًا",
       "paused": "موقوف مؤقتًا",
+      "recur_daily": "يوميًا",
+      "recur_monthly": "شهريًا",
+      "recur_weekly": "أسبوعيًا",
+      "recur_yearly": "سنويًا",
       "recurs": "التكرار",
       "resumeAll": "استئناف الأتمتة",
       "runNow": "تشغيل الآن",
@@ -5523,6 +5570,10 @@
       "resume": "استئناف",
       "retry": "إعادة المحاولة",
       "statusHeader": "الحالة",
+      "status_failed": "فشل",
+      "status_paused": "متوقف مؤقتًا",
+      "status_pending": "قيد الانتظار",
+      "status_success": "نجاح",
       "subject": "الشخص",
       "title": "سجل التنفيذ",
       "trigger": "المحفز",

@@ -480,6 +480,79 @@ test.describe("Copy plan from previous plan", () => {
   });
 });
 
+// ChurchAppsSupport#1183: a weekly plan can be copied forward for several weeks in one step,
+// and "Copy from Previous" inside an empty plan fills that plan instead of adding a duplicate.
+test.describe("Copy plan forward", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  const createdPlanIds: string[] = [];
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+  });
+
+  test.afterAll(async () => {
+    for (const id of createdPlanIds) await ctx.delete(`${API}/doing/plans/${id}`, auth);
+    await ctx.dispose();
+  });
+
+  test("repeat weekly creates one copied plan per week", async ({ page }) => {
+    await page.goto("/serving/planTypes/PLT00000001");
+    const addBtn = page.getByTestId("add-plan-button").first();
+    await expect(addBtn).toBeVisible({ timeout: 15000 });
+    await addBtn.click();
+    await expect(page.getByTestId("copy-mode-select")).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("#signupDeadlineHours")).toBeVisible();
+    await page.getByTestId("repeat-weeks-input").locator("input").fill("3");
+
+    const copies: any[] = [];
+    page.on("response", async (r) => {
+      if (r.url().includes("/plans/copy/") && r.request().method() === "POST" && r.ok()) copies.push(await r.json());
+    });
+    await page.locator("button").getByText("Save").click();
+    await expect.poll(() => copies.length, { timeout: 20000 }).toBe(3);
+    createdPlanIds.push(...copies.map((c) => c.id));
+
+    const days = copies.map((c) => new Date(c.serviceDate).getTime() / 86400000);
+    expect(Math.round(days[1] - days[0])).toBe(7);
+    expect(Math.round(days[2] - days[1])).toBe(7);
+    expect(new Set(copies.map((c) => c.name)).size).toBe(3);
+  });
+
+  test("copy from previous inside an empty plan fills that plan", async ({ page }) => {
+    // Own source and target plans, later than any other spec's, so "previous" is always our source.
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [
+        { name: "Copy Source", serviceDate: "2032-01-04", ministryId: "GRP0000000a", planTypeId: "PLT00000001", serviceOrder: true },
+        { name: "Copy Into Existing", serviceDate: "2032-01-11", ministryId: "GRP0000000a", planTypeId: "PLT00000001", serviceOrder: true }
+      ]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    const [sourceId, planId] = (await planRes.json()).map((p: any) => p.id);
+    createdPlanIds.push(sourceId, planId);
+    const posRes = await ctx.post(`${API}/doing/positions`, { ...auth, data: [{ planId: sourceId, categoryName: "Band", name: "Copy Source Vocals", count: 1 }] });
+    expect(posRes.ok()).toBeTruthy();
+
+    await page.goto(`/serving/plans/${planId}`);
+    await page.getByRole("button", { name: "Copy from Previous" }).click({ timeout: 20000 });
+    const copyPost = page.waitForResponse(r => r.url().includes("/plans/copy/") && r.request().method() === "POST", { timeout: 15000 });
+    await page.getByRole("menuitem", { name: "Positions Only" }).click();
+    const copied = await (await copyPost).json();
+    if (copied?.id && copied.id !== planId) createdPlanIds.push(copied.id);
+
+    expect(copied.id).toBe(planId);
+    const positions = await (await ctx.get(`${API}/doing/positions/plan/${planId}`, auth)).json();
+    expect(positions.map((p: any) => p.name)).toEqual(["Copy Source Vocals"]);
+  });
+});
+
 test.describe("Plans page navigation", () => {
   test("Add Ministry button is visible on the Serving Plans page", async ({ page }) => {
     await page.goto("/serving/plans");

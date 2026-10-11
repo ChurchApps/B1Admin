@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bez chat megnyitása",
+      "ariaSend": "Üzenet küldése",
+      "errorAnswer": "Erre nem találtam választ.",
+      "errorGeneric": "Hiba történt a Bez elérésekor. Kérjük, próbálja újra.",
       "intro": "Üdv, Bez vagyok! Segíthetek eligazodni a B1 Adminban. Próbáljon kérdezni tőlem:",
+      "placeholderInput": "Tegyen fel egy kérdést...",
       "sampleCsv": "\"Hogyan importálok tagokat egy CSV-ből?\"",
       "sampleGiving": "\"Hogyan állítsam be az online adományozást?\"",
       "sampleGroup": "\"Hogyan hozok létre új csoportot?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Súgó chat megnyitása",
+      "ariaSend": "Üzenet küldése",
       "composing": "Válasz írása...",
+      "errorAnswer": "Erre nem találtam választ.",
+      "errorGeneric": "Hiba történt a dokumentációs asszisztens elérésekor. Kérjük, próbálja újra.",
       "intro": "Tegyen fel bármilyen kérdést a B1 Adminról. Például:",
+      "placeholderInput": "Tegyen fel egy kérdést...",
       "sampleCsv": "\"Hogyan importálok tagokat egy CSV-ből?\"",
       "sampleGiving": "\"Hogyan állítsam be az online adományozást?\"",
       "sampleGroup": "\"Hogyan hozok létre új csoportot?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBee chat megnyitása",
+      "ariaSend": "Üzenet küldése",
+      "errorAnswer": "Erre nem találtam választ.",
+      "errorGeneric": "Hiba történt a SuperBee elérésekor. Kérjük, próbálja újra.",
       "intro": "Szia bajnok! Én vagyok SuperBee — a B1 Admin erőforrása. Tegye fel a legnehezebb kérdéseit!",
+      "placeholderInput": "Tegyen fel egy kérdést...",
       "sampleCsv": "\"Hogyan importálok tagokat egy CSV-ből?\"",
       "sampleGiving": "\"Hogyan állítsam be az online adományozást?\"",
       "sampleGroup": "\"Hogyan hozok létre új csoportot?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Befejezés dátuma",
+      "noBatches": "Ebben a dátumtartományban nincsenek adományokat tartalmazó kötegek.",
+      "startDate": "Kezdés dátuma",
+      "title": "Kötegek nyomtatása"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} éves adományozási kimutatás",
       "campaign": "Kampány",
@@ -1207,6 +1225,9 @@
       "noEvents": "Még nincs esemény. Használd az Események hozzáadása funkciót a csoport találkozóinak ütemezéséhez.",
       "noResponses": "Még nincs visszajelzés.",
       "oneTime": "Egyszeri",
+      "response_maybe": "Talán",
+      "response_no": "Nem megyek",
+      "response_yes": "Megyek",
       "rosterTitle": "Visszajelzések",
       "rsvpSummary": "{yes} igen · {maybe} talán · {no} nem",
       "rsvps": "Visszajelzések",
@@ -1384,7 +1405,8 @@
       "showArchived": "Archiváltak megjelenítése",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "Szervezze és kezelje gyülekezete csoportjait"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Hiányzó",
+      "attendanceSheet": "Jelenléti ív",
+      "contactRoster": "Kapcsolattartási lista",
       "date": "Dátum",
       "noGroups": "Nem található nyomtatható osztály.",
       "present": "Jelen",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Automatikus előléptetés kikapcsolva",
       "gradePromotionOn": "Minden évben {date} napon léptet",
       "notConfigured": "Nincs konfigurálva",
-      "notSet": "Nincs beállítva"
+      "notSet": "Nincs beállítva",
+      "phoneLocalSubtitle": "Helyi telefonszámok"
     },
     "manageChurch": {
       "auditLog": "Auditnapló",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Dátumformátum",
       "helperText": "A B1-ben minden dátum és idő ennek a régiónak a formátumát követi.",
+      "phoneFormat": "Telefonszámok",
+      "phoneHelperText": "A helyi formátum pontosan úgy menti a számokat, ahogy beírták (pl. 0701 234 5678). Az SMS-küldés akkor működik a legjobban, ha a számok tartalmazzák az országkódot.",
+      "phoneInternational": "Nemzetközi (országkóddal)",
+      "phoneLocal": "Helyi (ahogy beírták)",
       "region": "Régió",
       "title": "Régió"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Utasítások",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Legyen formálisabb a hangnem.",
+      "preset_grammar": "Csak a helyesírást és a nyelvtant javítsa.",
+      "preset_shorter": "Legyen rövidebb és könnyebben átfutható.",
+      "preset_warmer": "Legyen melegebb és barátságosabb.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Széles"
     },
     "generateSite": {
+      "audience_community": "Helyi közösség",
+      "audience_families": "Családok",
+      "audience_newcomers": "Újonnan érkezők",
+      "audience_seniors": "Idősek",
+      "audience_youngAdults": "Fiatal felnőttek",
+      "audience_youth": "Ifjúság",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Istentiszteleti időpontok",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Közvetlen",
+      "tone_formal": "Formális",
+      "tone_inspirational": "Inspiráló",
+      "tone_warm": "Meleg"
     },
     "helpDialog": {
       "addBody": "Kattintson a Tartalom hozzáadása gombra az eszköztárban, majd húzzon egy szekciót vagy elemet az oldalra.",
@@ -5503,6 +5546,10 @@
       "operator": "Operátor",
       "pauseAll": "Automatizálás szüneteltetése",
       "paused": "Szüneteltetve",
+      "recur_daily": "Naponta",
+      "recur_monthly": "Havonta",
+      "recur_weekly": "Hetente",
+      "recur_yearly": "Évente",
       "recurs": "Ismétlés",
       "resumeAll": "Automatizálás folytatása",
       "runNow": "Futtatás most",
@@ -5523,6 +5570,10 @@
       "resume": "Folytatás",
       "retry": "Újrapróbálás",
       "statusHeader": "Állapot",
+      "status_failed": "Sikertelen",
+      "status_paused": "Szüneteltetve",
+      "status_pending": "Függőben",
+      "status_success": "Sikeres",
       "subject": "Személy",
       "title": "Végrehajtási előzmények",
       "trigger": "Trigger",

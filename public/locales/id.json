@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Buka obrolan Bez",
+      "ariaSend": "Kirim pesan",
+      "errorAnswer": "Saya tidak dapat menemukan jawaban untuk itu.",
+      "errorGeneric": "Terjadi kesalahan saat menghubungi Bez. Silakan coba lagi.",
       "intro": "Hai, saya Bez! Saya dapat membantu Anda menavigasi B1 Admin. Coba tanyakan kepada saya:",
+      "placeholderInput": "Ajukan pertanyaan...",
       "sampleCsv": "\"Bagaimana cara mengimpor anggota dari CSV?\"",
       "sampleGiving": "\"Bagaimana cara mengatur persembahan online?\"",
       "sampleGroup": "\"Bagaimana cara membuat grup baru?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Buka obrolan bantuan",
+      "ariaSend": "Kirim pesan",
       "composing": "Menyusun jawaban...",
+      "errorAnswer": "Saya tidak dapat menemukan jawaban untuk itu.",
+      "errorGeneric": "Terjadi kesalahan saat menghubungi asisten dokumentasi. Silakan coba lagi.",
       "intro": "Tanyakan apa pun tentang B1 Admin. Misalnya:",
+      "placeholderInput": "Ajukan pertanyaan...",
       "sampleCsv": "\"Bagaimana cara mengimpor anggota dari CSV?\"",
       "sampleGiving": "\"Bagaimana cara mengatur persembahan online?\"",
       "sampleGroup": "\"Bagaimana cara membuat grup baru?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Buka obrolan SuperBee",
+      "ariaSend": "Kirim pesan",
+      "errorAnswer": "Saya tidak dapat menemukan jawaban untuk itu.",
+      "errorGeneric": "Terjadi kesalahan saat menghubungi SuperBee. Silakan coba lagi.",
       "intro": "Halo, juara! Saya SuperBee — pusat kekuatan B1 Admin Anda. Tanyakan pertanyaan tersulit Anda!",
+      "placeholderInput": "Ajukan pertanyaan...",
       "sampleCsv": "\"Bagaimana cara mengimpor anggota dari CSV?\"",
       "sampleGiving": "\"Bagaimana cara mengatur persembahan online?\"",
       "sampleGroup": "\"Bagaimana cara membuat grup baru?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Tanggal Selesai",
+      "noBatches": "Tidak ada batch berisi donasi dalam rentang tanggal ini.",
+      "startDate": "Tanggal Mulai",
+      "title": "Cetak Batch"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Laporan Persembahan Tahunan {year}",
       "campaign": "Kampanye",
@@ -1207,6 +1225,9 @@
       "noEvents": "Belum ada acara. Gunakan Tambah Acara untuk menjadwalkan pertemuan grup ini.",
       "noResponses": "Belum ada tanggapan.",
       "oneTime": "Satu kali",
+      "response_maybe": "Mungkin",
+      "response_no": "Tidak Hadir",
+      "response_yes": "Hadir",
       "rosterTitle": "Tanggapan RSVP",
       "rsvpSummary": "{yes} ya · {maybe} mungkin · {no} tidak",
       "rsvps": "RSVP",
@@ -1384,7 +1405,8 @@
       "showArchived": "Tampilkan yang diarsipkan",
       "spPpl": " people",
       "subtitle": {
-        "create": "Get started by creating your first group"
+        "create": "Get started by creating your first group",
+        "manage": "Atur dan kelola kelompok gereja Anda"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Tidak Hadir",
+      "attendanceSheet": "Lembar Kehadiran",
+      "contactRoster": "Daftar Kontak",
       "date": "Tanggal",
       "noGroups": "Tidak ada kelas untuk dicetak.",
       "present": "Hadir",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Kenaikan otomatis dinonaktifkan",
       "gradePromotionOn": "Naik kelas pada {date} setiap tahun",
       "notConfigured": "Belum dikonfigurasi",
-      "notSet": "Belum ditetapkan"
+      "notSet": "Belum ditetapkan",
+      "phoneLocalSubtitle": "Nomor telepon lokal"
     },
     "manageChurch": {
       "auditLog": "Log Audit",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Format tanggal",
       "helperText": "Tanggal dan waktu di seluruh B1 mengikuti format wilayah ini.",
+      "phoneFormat": "Nomor telepon",
+      "phoneHelperText": "Lokal menyimpan nomor persis seperti yang diketik (seperti 0701 234 5678). Pengiriman SMS berfungsi paling baik jika nomor menyertakan kode negara.",
+      "phoneInternational": "Internasional (dengan kode negara)",
+      "phoneLocal": "Lokal (seperti yang diketik)",
       "region": "Wilayah",
       "title": "Wilayah"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Instruksi",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Buat nada lebih formal.",
+      "preset_grammar": "Perbaiki ejaan dan tata bahasa saja.",
+      "preset_shorter": "Buat lebih singkat dan mudah dipindai.",
+      "preset_warmer": "Buat lebih hangat dan ramah.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Lebar"
     },
     "generateSite": {
+      "audience_community": "Komunitas Lokal",
+      "audience_families": "Keluarga",
+      "audience_newcomers": "Pendatang Baru",
+      "audience_seniors": "Lansia",
+      "audience_youngAdults": "Dewasa Muda",
+      "audience_youth": "Remaja",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Jadwal Ibadah",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Santai",
+      "tone_formal": "Formal",
+      "tone_inspirational": "Inspiratif",
+      "tone_warm": "Hangat"
     },
     "helpDialog": {
       "addBody": "Klik Tambah Konten di bilah alat, lalu seret bagian atau elemen ke halaman.",
@@ -5503,6 +5546,10 @@
       "operator": "Operator",
       "pauseAll": "Jeda otomatisasi",
       "paused": "Dijeda",
+      "recur_daily": "Harian",
+      "recur_monthly": "Bulanan",
+      "recur_weekly": "Mingguan",
+      "recur_yearly": "Tahunan",
       "recurs": "Berulang",
       "resumeAll": "Lanjutkan otomatisasi",
       "runNow": "Jalankan sekarang",
@@ -5523,6 +5570,10 @@
       "resume": "Lanjutkan",
       "retry": "Coba Lagi",
       "statusHeader": "Status",
+      "status_failed": "Gagal",
+      "status_paused": "Dijeda",
+      "status_pending": "Tertunda",
+      "status_success": "Berhasil",
       "subject": "Orang",
       "title": "Riwayat Eksekusi",
       "trigger": "Pemicu",

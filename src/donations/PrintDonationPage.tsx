@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import UserContext from "../UserContext";
 import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
+import { usePrintLogo } from "../components/PrintChurchHeader";
 
 export const PrintDonationPage = () => {
   const [currency, setCurrency] = useState<string>("usd");
@@ -51,6 +52,7 @@ export const PrintDonationPage = () => {
 
   const autoprint = searchParams.get("autoprint") === "1";
   const hasPrinted = useRef(false);
+  const printLogo = usePrintLogo(context?.userChurch?.church?.id);
 
   const donations = useMemo(() => {
     return (
@@ -69,11 +71,11 @@ export const PrintDonationPage = () => {
   const dataLoaded = !!person.data && !funds.isPlaceholderData && !allDonations.isPlaceholderData && !allFundDonations.isPlaceholderData && !allPledgeProgress.isPlaceholderData;
 
   useEffect(() => {
-    if (autoprint && dataLoaded && !hasPrinted.current) {
+    if (autoprint && dataLoaded && printLogo.ready && !hasPrinted.current) {
       hasPrinted.current = true;
       window.print();
     }
-  }, [autoprint, dataLoaded]);
+  }, [autoprint, dataLoaded, printLogo.ready]);
 
   useEffect(() => {
     const handleAfterPrint = () => window.history.back();
@@ -139,6 +141,7 @@ export const PrintDonationPage = () => {
         pledgeRows={pledgeRows}
         showPageBreak={false}
         statementSettings={parseStatementSettings(churchSettings.data)}
+        logoUrl={printLogo.logoUrl}
       />
     </>
   );

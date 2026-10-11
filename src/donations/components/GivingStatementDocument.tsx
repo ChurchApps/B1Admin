@@ -164,6 +164,7 @@ interface Props {
   showPageBreak: boolean;
   showStyles?: boolean;
   statementSettings?: StatementSettings;
+  logoUrl?: string;
 }
 
 const styleBlock = `
@@ -428,7 +429,7 @@ const styleBlock = `
         `;
 
 export const GivingStatementDocument = (props: Props) => {
-  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true, statementSettings } = props;
+  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true, statementSettings, logoUrl } = props;
   const labels = statementLabels(labelPrefix);
   const legal = legalLabels();
   const churchName = church?.name || "";
@@ -479,6 +480,7 @@ export const GivingStatementDocument = (props: Props) => {
         <div className="header-bar"></div>
 
         <div className="title-section">
+          {logoUrl && <img src={logoUrl} alt={churchName} data-testid="print-church-logo" style={{ display: "block", maxHeight: 60, maxWidth: 240, objectFit: "contain", margin: "0 auto 16px" }} />}
           <h1 className="page-title">{labels.annualStatementTitle.replace("{year}", year.toString())}</h1>
           <p className="subtitle">{labels.period.replace("{year}", year.toString())}</p>
           <p className="meta-text">{labels.issued} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>

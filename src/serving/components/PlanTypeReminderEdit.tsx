@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { useTextingEnabled } from "../../hooks";
 
 interface ReminderDefinition {
   id?: string;
@@ -51,6 +52,7 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
+  const textingEnabled = useTextingEnabled();
 
   useEffect(() => {
     if (!planTypeId) return;
@@ -148,7 +150,9 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
                 <Stack direction="row">
                   <FormControlLabel control={<Checkbox checked={channels.includes("push")} onChange={() => toggleChannel("push")} size="small" data-testid="plan-type-reminder-channel-push" />} label="Push" />
                   <FormControlLabel control={<Checkbox checked={channels.includes("email")} onChange={() => toggleChannel("email")} size="small" data-testid="plan-type-reminder-channel-email" />} label="Email" />
+                  {textingEnabled && <FormControlLabel control={<Checkbox checked={channels.includes("sms")} onChange={() => toggleChannel("sms")} size="small" data-testid="plan-type-reminder-channel-sms" />} label={Locale.label("plans.planTypeReminders.text")} />}
                 </Stack>
+                {textingEnabled && channels.includes("sms") && <Typography variant="caption" color="text.secondary">{Locale.label("plans.planTypeReminders.textHint")}</Typography>}
               </Box>
             </>
           )}

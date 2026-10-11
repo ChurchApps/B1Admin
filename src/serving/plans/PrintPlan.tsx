@@ -10,6 +10,7 @@ import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInte
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
 import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } from "../components/planItemUtils";
 import UserContext from "../../UserContext";
+import { PrintChurchHeader, usePrintLogo } from "../../components/PrintChurchHeader";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -17,7 +18,9 @@ export const PrintPlan = () => {
   const [searchParams] = useSearchParams();
   const autoprint = searchParams.get("autoprint") === "1";
   const hasPrinted = React.useRef(false);
-  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
+  const church = useContext(UserContext)?.userChurch?.church;
+  const churchName = church?.name || "";
+  const printLogo = usePrintLogo(church?.id);
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
@@ -195,11 +198,11 @@ export const PrintPlan = () => {
   }, []);
 
   useEffect(() => {
-    if (autoprint && !isLoading && !feed && !hasPrinted.current) {
+    if (autoprint && !isLoading && !feed && printLogo.ready && !hasPrinted.current) {
       hasPrinted.current = true;
       window.print();
     }
-  }, [autoprint, isLoading, feed]);
+  }, [autoprint, isLoading, feed, printLogo.ready]);
 
   useEffect(() => {
     const handleAfterPrint = () => navigate("/serving/plans/" + params.id);
@@ -370,9 +373,11 @@ export const PrintPlan = () => {
 
   const renderWorshipOrder = () => (
     <div style={Styles.body} className="printBackgrounds">
-      {(churchName || plan?.name) && (
+      {(churchName || printLogo.logoUrl || plan?.name) && (
         <div style={{ textAlign: "center", marginBottom: 10 }}>
-          {churchName && <div style={{ fontWeight: "bold", fontSize: 18 }}>{churchName}</div>}
+          <PrintChurchHeader churchName={churchName} logoUrl={printLogo.logoUrl} style={{ margin: "0 auto 4px" }}>
+            {churchName && <div style={{ fontWeight: "bold", fontSize: 18 }}>{churchName}</div>}
+          </PrintChurchHeader>
           {plan?.name && <div style={{ fontSize: 14 }}>{plan.name}</div>}
         </div>
       )}

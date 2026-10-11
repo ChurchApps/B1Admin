@@ -34,6 +34,20 @@ test.describe("People Management", () => {
       await expect(page).toHaveURL(/\/people\/(?!demographics|lists)[^/?#]+/);
     });
 
+    test("a Guest's membership status shows on the person edit form", async ({ page }) => {
+      await page.route(/\/membership\/people\/[^/?]+$/, async (route) => {
+        if (route.request().method() !== "GET") return route.continue();
+        const response = await route.fetch();
+        const person = await response.json();
+        await route.fulfill({ response, json: { ...person, membershipStatus: "Guest" } });
+      });
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      await personDetailsEditButton(page).click();
+      const status = page.locator('[data-testid="membership-status-select"]');
+      await expect(status).toBeVisible({ timeout: 10000 });
+      await expect(status.getByRole("combobox")).toHaveText("Guest");
+    });
+
     test("Add Person jumps to the one create form", async ({ page }) => {
       await page.locator('[data-testid="add-person-button"]').click();
       await expect(page.locator('[data-testid="create-person-panel"]')).toHaveCount(0);
@@ -157,6 +171,25 @@ test.describe("People Management", () => {
 
       // Verify input value IS cleared
       await expect(searchInput).toHaveValue("");
+    });
+
+    // When AskApi fails upstream, Express answers with its HTML error page; the user must see a friendly message, not the stack trace.
+    test("should show a friendly message when AI search fails upstream", async ({ page }) => {
+      const htmlError = "<!DOCTYPE html><html lang=\"en\"><head><title>Error</title></head><body><pre>Error: 429 You exceeded your current quota<br> &nbsp; &nbsp;at QueryController.people (/var/task/dist/src/controllers/QueryController.js:37:23)</pre></body></html>";
+      await page.route("**/query/people", async (route) => {
+        const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Access-Control-Allow-Methods": "POST, OPTIONS" };
+        if (route.request().method() === "OPTIONS") return route.fulfill({ status: 204, headers: cors });
+        return route.fulfill({ status: 500, headers: cors, contentType: "text/html; charset=utf-8", body: htmlError });
+      });
+
+      await page.locator("#peopleSearch").getByRole("button", { name: "Ask", exact: true }).click();
+      await page.locator("#aiSearchText").fill("Show me men over 30");
+      await page.locator("#aiSearch").getByRole("button", { name: "Search", exact: true }).click();
+
+      const alerts = page.locator('[role="alert"]');
+      await expect(alerts.filter({ hasText: "AI Search is temporarily unavailable" })).toBeVisible({ timeout: 10000 });
+      await expect(alerts.filter({ hasText: "/var/task" })).toHaveCount(0);
+      await expect(alerts.filter({ hasText: "<!DOCTYPE html" })).toHaveCount(0);
     });
 
     test("should open all notes", async ({ page }) => {

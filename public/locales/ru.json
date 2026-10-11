@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Открыть чат Bez",
+      "ariaSend": "Отправить сообщение",
+      "errorAnswer": "Не удалось найти ответ на этот вопрос.",
+      "errorGeneric": "Не удалось связаться с Bez. Попробуйте ещё раз.",
       "intro": "Привет, я Bez! Я могу помочь вам ориентироваться в B1 Admin. Попробуйте спросить меня:",
+      "placeholderInput": "Задайте вопрос...",
       "sampleCsv": "\"Как импортировать членов из CSV?\"",
       "sampleGiving": "\"Как настроить онлайн-пожертвования?\"",
       "sampleGroup": "\"Как создать новую группу?\"",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "Открыть чат справки",
+      "ariaSend": "Отправить сообщение",
       "composing": "Составление ответа...",
+      "errorAnswer": "Не удалось найти ответ на этот вопрос.",
+      "errorGeneric": "Не удалось связаться с помощником по документации. Попробуйте ещё раз.",
       "intro": "Задайте любой вопрос о B1 Admin. Например:",
+      "placeholderInput": "Задайте вопрос...",
       "sampleCsv": "\"Как импортировать членов из CSV?\"",
       "sampleGiving": "\"Как настроить онлайн-пожертвования?\"",
       "sampleGroup": "\"Как создать новую группу?\"",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "Открыть чат SuperBee",
+      "ariaSend": "Отправить сообщение",
+      "errorAnswer": "Не удалось найти ответ на этот вопрос.",
+      "errorGeneric": "Не удалось связаться с SuperBee. Попробуйте ещё раз.",
       "intro": "Привет, чемпион! Я SuperBee — ваша мощь B1 Admin. Задайте мне самые сложные вопросы!",
+      "placeholderInput": "Задайте вопрос...",
       "sampleCsv": "\"Как импортировать членов из CSV?\"",
       "sampleGiving": "\"Как настроить онлайн-пожертвования?\"",
       "sampleGroup": "\"Как создать новую группу?\"",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "Дата окончания",
+      "noBatches": "Нет пакетов с пожертвованиями за этот период.",
+      "startDate": "Дата начала",
+      "title": "Печать пакетов"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "Годовая выписка о пожертвованиях за {year}",
       "campaign": "Кампания",
@@ -1207,6 +1225,9 @@
       "noEvents": "Событий пока нет. Используйте «Добавить события» для планирования встреч группы.",
       "noResponses": "Пока нет ответов.",
       "oneTime": "Однократно",
+      "response_maybe": "Возможно",
+      "response_no": "Не пойду",
+      "response_yes": "Пойду",
       "rosterTitle": "Ответы на приглашение",
       "rsvpSummary": "{yes} да · {maybe} возможно · {no} нет",
       "rsvps": "Подтверждения участия",
@@ -1384,7 +1405,8 @@
       "showArchived": "Показать архивные",
       "spPpl": " человек",
       "subtitle": {
-        "create": "Начните с создания своей первой группы."
+        "create": "Начните с создания своей первой группы.",
+        "manage": "Организуйте группы вашей церкви и управляйте ими"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "Отсутствует",
+      "attendanceSheet": "Лист посещаемости",
+      "contactRoster": "Список контактов",
       "date": "Дата",
       "noGroups": "Нет классов для печати.",
       "present": "Присутствует",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "Автоматический перевод отключен",
       "gradePromotionOn": "Перевод в класс каждый год {date}",
       "notConfigured": "Не настроено",
-      "notSet": "Не задано"
+      "notSet": "Не задано",
+      "phoneLocalSubtitle": "Местные номера телефонов"
     },
     "manageChurch": {
       "auditLog": "Журнал аудита",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "Формат даты",
       "helperText": "Даты и время во всём B1 отображаются в формате этого региона.",
+      "phoneFormat": "Номера телефонов",
+      "phoneHelperText": "При местном формате номера сохраняются точно так, как введены (например, 0701 234 5678). SMS работают лучше, если номера включают код страны.",
+      "phoneInternational": "Международный (с кодом страны)",
+      "phoneLocal": "Местный (как введено)",
       "region": "Регион",
       "title": "Регион"
     },
@@ -4093,6 +4122,10 @@
       "failed": "The rewrite failed. Nothing was changed.",
       "instruction": "Инструкции",
       "placeholder": "e.g. Make it more welcoming and add a call to action",
+      "preset_formal": "Сделай тон более официальным.",
+      "preset_grammar": "Исправь только орфографию и грамматику.",
+      "preset_shorter": "Сделай текст короче и удобнее для быстрого чтения.",
+      "preset_warmer": "Сделай текст теплее и дружелюбнее.",
       "rewrite": "Rewrite",
       "title": "AI Rewrite",
       "working": "Rewriting section..."
@@ -4602,6 +4635,12 @@
       "wide": "Широкий"
     },
     "generateSite": {
+      "audience_community": "Местное сообщество",
+      "audience_families": "Семьи",
+      "audience_newcomers": "Новички",
+      "audience_seniors": "Пожилые",
+      "audience_youngAdults": "Молодые взрослые",
+      "audience_youth": "Молодёжь",
       "audiences": "Audiences",
       "buildingSection": "Building {title} — section {n} of {total}...",
       "button": "Generate Site",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "Время служений",
       "serviceTimesPlaceholder": "Sundays at 9 & 11 AM",
       "title": "Generate Site with AI",
-      "tone": "Tone"
+      "tone": "Tone",
+      "tone_casual": "Непринуждённый",
+      "tone_formal": "Официальный",
+      "tone_inspirational": "Вдохновляющий",
+      "tone_warm": "Тёплый"
     },
     "helpDialog": {
       "addBody": "Нажмите Добавить контент в панели инструментов, затем перетащите раздел или элемент на страницу.",
@@ -5503,6 +5546,10 @@
       "operator": "Оператор",
       "pauseAll": "Приостановить автоматизацию",
       "paused": "Приостановлен",
+      "recur_daily": "Ежедневно",
+      "recur_monthly": "Ежемесячно",
+      "recur_weekly": "Еженедельно",
+      "recur_yearly": "Ежегодно",
       "recurs": "Повторяется",
       "resumeAll": "Возобновить автоматизацию",
       "runNow": "Запустить сейчас",
@@ -5523,6 +5570,10 @@
       "resume": "Возобновить",
       "retry": "Повторить",
       "statusHeader": "Статус",
+      "status_failed": "Ошибка",
+      "status_paused": "Приостановлено",
+      "status_pending": "В ожидании",
+      "status_success": "Успешно",
       "subject": "Человек",
       "title": "История выполнений",
       "trigger": "Триггер",

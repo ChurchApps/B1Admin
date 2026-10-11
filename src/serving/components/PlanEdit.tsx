@@ -24,6 +24,7 @@ export const PlanEdit = (props: Props) => {
   const [copyMode, setCopyMode] = React.useState<string>("all");
   const [copyServiceOrder, setCopyServiceOrder] = React.useState<boolean>(false);
   const [templateId, setTemplateId] = React.useState<string>("");
+  const [repeatWeeks, setRepeatWeeks] = React.useState<string>("1");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const firstDayOfWeek = useFirstDayOfWeek();
@@ -36,7 +37,7 @@ export const PlanEdit = (props: Props) => {
   });
   const templates = templatesQuery.data || [];
 
-  const { control, register, handleSubmit, watch } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, watch, setValue, getFieldState } = useForm<AnyRecord>({
     defaultValues: {
       name: props.plan?.name ?? "",
       serviceDate: DateHelper.formatHtml5Date(props.plan?.serviceDate) ?? "",
@@ -76,6 +77,33 @@ export const PlanEdit = (props: Props) => {
     return sorted[0] || null;
   }, [props.plans, watchedDate]);
 
+  // A new plan starts with the previous plan's signup deadline unless the user has typed one.
+  React.useEffect(() => {
+    if (props.plan?.id || getFieldState("signupDeadlineHours").isDirty) return;
+    setValue("signupDeadlineHours", previousPlan?.signupDeadlineHours ?? "");
+  }, [previousPlan, props.plan?.id]);
+
+  const isCopying = !templateId && !!previousPlan && (copyMode !== "none" || copyServiceOrder);
+
+  // Each extra week is copied from the plan created the week before, like BulkLessonSchedule.
+  const copyForwardWeeks = async (plan: PlanInterface, firstId: string) => {
+    const weeks = Math.min(12, Math.max(1, parseInt(repeatWeeks) || 1));
+    const firstDate = new Date(plan.serviceDate!);
+    const autoName = plan.name === DateHelper.prettyDate(firstDate);
+    let sourceId = firstId;
+    for (let i = 1; i < weeks && sourceId; i++) {
+      const serviceDate = new Date(firstDate.getFullYear(), firstDate.getMonth(), firstDate.getDate() + 7 * i, 12, 0, 0);
+      const name = autoName ? DateHelper.prettyDate(serviceDate) : plan.name;
+      try {
+        const copied = await ApiHelper.post("/plans/copy/" + sourceId, { ...plan, name, serviceDate, copyMode, copyServiceOrder }, "DoingApi");
+        sourceId = copied?.id;
+      } catch (err) {
+        console.error("Stopped repeating plan copies", err);
+        break;
+      }
+    }
+  };
+
   const savePlanMutation = useMutation({
     mutationFn: async (plan: PlanInterface) => {
       // Template: create plan, then apply snapshot.
@@ -86,10 +114,12 @@ export const PlanEdit = (props: Props) => {
         return saved;
       }
       // Copy-from-previous only for new plans; existing plan avoids duplicate positions.
-      if (plan.id || (copyMode === "none" && !copyServiceOrder) || !previousPlan) {
+      if (plan.id || !isCopying) {
         return ApiHelper.post("/plans", [plan], "DoingApi");
       } else {
-        return ApiHelper.post("/plans/copy/" + previousPlan.id, { ...plan, copyMode, copyServiceOrder }, "DoingApi");
+        const first = await ApiHelper.post("/plans/copy/" + previousPlan!.id, { ...plan, copyMode, copyServiceOrder }, "DoingApi");
+        if (first?.id) await copyForwardWeeks(plan, first.id);
+        return first;
       }
     },
     onSuccess: () => {
@@ -180,11 +210,12 @@ export const PlanEdit = (props: Props) => {
               </Select>
             </FormControl>
             <FormControlLabel control={<Checkbox checked={copyServiceOrder} onChange={(e) => setCopyServiceOrder(e.target.checked)} />} label={Locale.label("plans.planEdit.copyServiceOrder") || "Copy Order of Service"} />
+            <TextField fullWidth label={Locale.label("plans.planEdit.repeatWeekly")} type="number" value={repeatWeeks} disabled={!isCopying} onChange={(e) => setRepeatWeeks(e.target.value)} onBlur={() => setRepeatWeeks(String(Math.min(12, Math.max(1, parseInt(repeatWeeks) || 1))))} helperText={Locale.label("plans.planEdit.repeatWeeklyHelper")} slotProps={{ htmlInput: { min: 1, max: 12 } }} data-testid="repeat-weeks-input" />
           </>
         )}
+        <TextField fullWidth label={Locale.label("plans.planEdit.signupDeadline")} id="signupDeadlineHours" type="number" helperText={Locale.label("plans.planEdit.signupDeadlineHelper")} slotProps={{ inputLabel: { shrink: true } }} {...register("signupDeadlineHours")} />
         {props.plan?.id && (
           <>
-            <TextField fullWidth label={Locale.label("plans.planEdit.signupDeadline")} id="signupDeadlineHours" type="number" helperText={Locale.label("plans.planEdit.signupDeadlineHelper")} {...register("signupDeadlineHours")} />
             <Controller name="showVolunteerNames" control={control} render={({ field }) => (
               <FormControlLabel control={<Checkbox checked={field.value ?? true} onChange={(ev) => field.onChange(ev.target.checked)} />} label={Locale.label("plans.planEdit.showVolunteerNames")} />
             )} />

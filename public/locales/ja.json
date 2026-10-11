@@ -467,7 +467,11 @@
   "components": {
     "bezChat": {
       "ariaOpen": "Bezチャットを開く",
+      "ariaSend": "メッセージを送信",
+      "errorAnswer": "その質問への回答が見つかりませんでした。",
+      "errorGeneric": "Bezへの接続中に問題が発生しました。もう一度お試しください。",
       "intro": "こんにちは、Bezです！B1 Adminのナビゲーションをお手伝いします。試しに聞いてみてください：",
+      "placeholderInput": "質問を入力...",
       "sampleCsv": "「CSVからメンバーをインポートするには？」",
       "sampleGiving": "「オンライン献金を設定するには？」",
       "sampleGroup": "「新しいグループを作成するには？」",
@@ -475,8 +479,12 @@
     },
     "docChat": {
       "ariaOpen": "ヘルプチャットを開く",
+      "ariaSend": "メッセージを送信",
       "composing": "回答を作成中...",
+      "errorAnswer": "その質問への回答が見つかりませんでした。",
+      "errorGeneric": "ドキュメントアシスタントへの接続中に問題が発生しました。もう一度お試しください。",
       "intro": "B1 Adminについて質問してください。例：",
+      "placeholderInput": "質問を入力...",
       "sampleCsv": "「CSVからメンバーをインポートするには？」",
       "sampleGiving": "「オンライン献金を設定するには？」",
       "sampleGroup": "「新しいグループを作成するには？」",
@@ -520,7 +528,11 @@
     },
     "superBeeChat": {
       "ariaOpen": "SuperBeeチャットを開く",
+      "ariaSend": "メッセージを送信",
+      "errorAnswer": "その質問への回答が見つかりませんでした。",
+      "errorGeneric": "SuperBeeへの接続中に問題が発生しました。もう一度お試しください。",
       "intro": "やあ、チャンピオン！僕はSuperBee、B1 Adminのスーパーパワー。一番難しい質問でぶつけてきて！",
+      "placeholderInput": "質問を入力...",
       "sampleCsv": "「CSVからメンバーをインポートするには？」",
       "sampleGiving": "「オンライン献金を設定するには？」",
       "sampleGroup": "「新しいグループを作成するには？」",
@@ -903,6 +915,12 @@
       "nonPledged": "Non-Pledged",
       "notStarted": "Not Started"
     },
+    "printAllBatches": {
+      "endDate": "終了日",
+      "noBatches": "この期間に献金を含むバッチはありません。",
+      "startDate": "開始日",
+      "title": "バッチを印刷"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} 年 年間献金証明書",
       "campaign": "キャンペーン",
@@ -1207,6 +1225,9 @@
       "noEvents": "イベントがまだありません。「イベントを追加」からこのグループのミーティングを設定してください。",
       "noResponses": "まだ回答がありません。",
       "oneTime": "1回のみ",
+      "response_maybe": "未定",
+      "response_no": "欠席",
+      "response_yes": "参加",
       "rosterTitle": "出欠確認の回答",
       "rsvpSummary": "はい：{yes} · 未定：{maybe} · いいえ：{no}",
       "rsvps": "出欠確認",
@@ -1384,7 +1405,8 @@
       "showArchived": "アーカイブ済みを表示",
       "spPpl": " 人",
       "subtitle": {
-        "create": "最初のグループを作成して始めましょう"
+        "create": "最初のグループを作成して始めましょう",
+        "manage": "教会のグループを整理・管理します"
       }
     },
     "pendingRequestsPage": {
@@ -1394,6 +1416,8 @@
     },
     "printRoster": {
       "absent": "欠席",
+      "attendanceSheet": "出席表",
+      "contactRoster": "連絡先名簿",
       "date": "日付",
       "noGroups": "印刷するクラスが見つかりません。",
       "present": "出席",
@@ -3795,7 +3819,8 @@
       "gradePromotionOff": "自動進級が無効です",
       "gradePromotionOn": "毎年{date}に進級",
       "notConfigured": "未設定",
-      "notSet": "未設定"
+      "notSet": "未設定",
+      "phoneLocalSubtitle": "国内の電話番号"
     },
     "manageChurch": {
       "auditLog": "監査ログ",
@@ -3822,6 +3847,10 @@
     "regionSettingsEdit": {
       "dateFormat": "日付の形式",
       "helperText": "B1 全体の日付と時刻は、この地域の形式に従います。",
+      "phoneFormat": "電話番号",
+      "phoneHelperText": "国内形式では、番号を入力したとおりに保存します（例: 0701 234 5678）。SMS送信は、番号に国番号が含まれている場合に最も確実に機能します。",
+      "phoneInternational": "国際形式（国番号付き）",
+      "phoneLocal": "国内形式（入力どおり）",
       "region": "地域",
       "title": "地域"
     },
@@ -4093,6 +4122,10 @@
       "failed": "書き換えに失敗しました。変更はありません。",
       "instruction": "指示",
       "placeholder": "例: もっと温かみのある表現にして、行動を促す一文を加えてください",
+      "preset_formal": "よりフォーマルな口調にする。",
+      "preset_grammar": "スペルと文法のみを修正する。",
+      "preset_shorter": "より短く、読みやすくする。",
+      "preset_warmer": "より温かく、親しみやすくする。",
       "rewrite": "書き換える",
       "title": "AI による書き換え",
       "working": "セクションを書き換えています..."
@@ -4602,6 +4635,12 @@
       "wide": "ワイド"
     },
     "generateSite": {
+      "audience_community": "地域社会",
+      "audience_families": "家族",
+      "audience_newcomers": "初めての方",
+      "audience_seniors": "シニア",
+      "audience_youngAdults": "若い社会人",
+      "audience_youth": "ユース",
       "audiences": "対象",
       "buildingSection": "{title} を作成中 — セクション {n} / {total}...",
       "button": "サイトを生成",
@@ -4620,7 +4659,11 @@
       "serviceTimes": "礼拝時間",
       "serviceTimesPlaceholder": "毎週日曜 午前9時・11時",
       "title": "AI でサイトを生成",
-      "tone": "トーン"
+      "tone": "トーン",
+      "tone_casual": "カジュアル",
+      "tone_formal": "フォーマル",
+      "tone_inspirational": "感動的",
+      "tone_warm": "温かい"
     },
     "helpDialog": {
       "addBody": "ツールバーの「コンテンツを追加」をクリックしてから、セクションまたは要素をページにドラッグします。",
@@ -5503,6 +5546,10 @@
       "operator": "演算子",
       "pauseAll": "オートメーションを一時停止",
       "paused": "一時停止中",
+      "recur_daily": "毎日",
+      "recur_monthly": "毎月",
+      "recur_weekly": "毎週",
+      "recur_yearly": "毎年",
       "recurs": "繰り返し",
       "resumeAll": "オートメーションを再開",
       "runNow": "今すぐ実行",
@@ -5523,6 +5570,10 @@
       "resume": "再開",
       "retry": "再試行",
       "statusHeader": "ステータス",
+      "status_failed": "失敗",
+      "status_paused": "一時停止",
+      "status_pending": "保留中",
+      "status_success": "成功",
       "subject": "人物",
       "title": "実行履歴",
       "trigger": "トリガー",

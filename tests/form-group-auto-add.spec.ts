@@ -52,6 +52,16 @@ test.describe("Form-linked group auto-add", () => {
     await ctx.dispose();
   });
 
+  test("shows None in the group select before a group is chosen", async ({ page }) => {
+    await navigateToForms(page);
+    await page.locator('[data-testid="add-form-button"]').click();
+    await page.locator('[data-testid="auto-create-person-checkbox"] input').check();
+    const groupSelect = page.locator('[data-testid="form-group-select"]');
+    await expect(groupSelect).toBeVisible({ timeout: 10000 });
+    await expect(groupSelect.getByRole("combobox")).toHaveText("None");
+    await page.locator("#formBox button", { hasText: /^Cancel$/ }).click();
+  });
+
   test("links a stand alone form to a group from the Edit Form page", async ({ page }) => {
     await navigateToForms(page);
     await page.locator('[data-testid="add-form-button"]').click();
