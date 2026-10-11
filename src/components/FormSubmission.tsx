@@ -7,6 +7,7 @@ import { type FormSubmissionInterface, type AnswerInterface } from "@churchapps/
 import { Permissions, ApiHelper, UserHelper, UniqueIdHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import { AppIconButton } from "./ui/AppIconButton";
 import UserContext from "../UserContext";
+import { PrintChurchHeader } from "./PrintChurchHeader";
 
 interface Props {
   formSubmissionId: string;
@@ -88,7 +89,9 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
       <Box ref={printRef} sx={{ pr: formPermission ? 9 : 5, "@media print": { pr: 0 } }}>
         <PrintStyles />
         <Box className="print-only" sx={{ mb: 2 }}>
-          {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+          <PrintChurchHeader churchName={churchName} style={{ marginBottom: 8 }}>
+            {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+          </PrintChurchHeader>
           {formSubmission.form?.name && <Typography variant="h5" sx={{ fontWeight: 600 }}>{formSubmission.form.name}</Typography>}
           {formSubmission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(formSubmission.submissionDate))}</Typography>}
         </Box>

@@ -5,6 +5,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import { type ContactInfoInterface, type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
+import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
 
 interface GroupServiceTimeRow { groupId?: string; serviceTimeId?: string; serviceTimeName?: string }
 
@@ -83,6 +84,7 @@ export const PrintRosterPage = () => {
   const contacts = searchParams.get("layout") === "contacts" && !!groupId;
   const sheetDate = formatSheetDate(searchParams.get("date") || (contacts ? DateHelper.formatHtml5Date(new Date()) : null));
   const hasPrinted = React.useRef(false);
+  const printLogo = usePrintLogo(context?.userChurch?.church?.id);
 
   const sheets = useQuery<RosterSheet[]>({
     queryKey: ["print-roster", groupId, serviceTimeId, contacts],
@@ -90,11 +92,11 @@ export const PrintRosterPage = () => {
   });
 
   useEffect(() => {
-    if (!autoprint || hasPrinted.current || sheets.isLoading || !sheets.data?.length) return;
+    if (!autoprint || hasPrinted.current || sheets.isLoading || !sheets.data?.length || !printLogo.ready) return;
     hasPrinted.current = true;
     const t = setTimeout(() => window.print(), 500);
     return () => clearTimeout(t);
-  }, [autoprint, sheets.isLoading, sheets.data]);
+  }, [autoprint, sheets.isLoading, sheets.data, printLogo.ready]);
 
   const churchName = context?.userChurch?.church?.name || "";
   const visitorRows = useMemo(() => Array.from({ length: Math.ceil(VISITOR_LINES / 2) }, (_, i) => i), []);
@@ -271,7 +273,9 @@ export const PrintRosterPage = () => {
       <div className="roster-root" data-testid="print-roster">
         {sheets.data.map((sheet) => (
           <div className="roster-sheet" key={sheet.group.id} data-testid="roster-sheet">
-            {churchName && <div className="roster-church">{churchName}</div>}
+            <PrintChurchHeader churchName={churchName} logoUrl={printLogo.logoUrl} style={{ maxHeight: 48 }}>
+              {churchName && <div className="roster-church">{churchName}</div>}
+            </PrintChurchHeader>
             <h1 className="roster-title">{sheet.group.name}</h1>
             <div className="roster-date" data-testid="roster-date">
               {Locale.label("groups.printRoster.date")}: {sheetDate || "________________________"}
