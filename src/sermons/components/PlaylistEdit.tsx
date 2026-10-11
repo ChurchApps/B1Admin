@@ -6,14 +6,10 @@ import {
   Box,
   Stack,
   Divider,
-  Button,
-  Card,
-  CardContent
+  Button
 } from "@mui/material";
 import {
   PhotoCamera as PhotoCameraIcon,
-  CalendarMonth as CalendarIcon,
-  Title as TitleIcon,
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
@@ -102,12 +98,9 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
       >
         <Grid container spacing={3}>
           <Grid size={12}>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <TitleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: "primary.main" }}>
-                {Locale.label("sermons.playlists.playlistEdit.basicInformation")}
-              </Typography>
-            </Stack>
+            <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+              {Locale.label("sermons.playlists.playlistEdit.basicInformation")}
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid size={12}>
@@ -137,94 +130,66 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
           <Grid size={12}>
             <Divider sx={{ my: 2 }} />
 
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <CalendarIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: "primary.main" }}>
-                {Locale.label("sermons.playlists.playlistEdit.publishingSchedule")}
-              </Typography>
-            </Stack>
+            <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+              {Locale.label("sermons.playlists.playlistEdit.publishingSchedule")}
+            </Typography>
 
             <Controller name="publishDate" control={control} render={({ field }) => (
-              <AppDatePicker fullWidth  label={Locale.label("sermons.playlists.playlistEdit.publishDate")} data-testid="playlist-publish-date-input" variant="outlined" InputLabelProps={{ shrink: true }} helperText={Locale.label("sermons.playlists.playlistEdit.publishHelp")} value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} name="publishDate" />
+              <AppDatePicker fullWidth label={Locale.label("sermons.playlists.playlistEdit.publishDate")} data-testid="playlist-publish-date-input" variant="outlined" InputLabelProps={{ shrink: true }} helperText={Locale.label("sermons.playlists.playlistEdit.publishHelp")} value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} name="publishDate" />
             )} />
           </Grid>
 
           <Grid size={12}>
             <Divider sx={{ my: 2 }} />
 
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <PhotoCameraIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: "primary.main" }}>
-                {Locale.label("sermons.playlists.playlistEdit.thumbnailImage")}
-              </Typography>
-            </Stack>
+            <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+              {Locale.label("sermons.playlists.playlistEdit.thumbnailImage")}
+            </Typography>
 
-            <Card
-              sx={{
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "grey.200",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  borderColor: "primary.main",
-                  boxShadow: 2
-                }
-              }}
-            >
-              <CardContent sx={{ p: 2 }}>
-                <Stack spacing={2}>
-                  <Box
-                    sx={{
-                      position: "relative",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      minHeight: 200,
-                      backgroundColor: "grey.50",
-                      borderRadius: 1,
-                      border: "2px dashed",
-                      borderColor: "grey.300",
-                      overflow: "hidden"
+            <Box>
+              <Stack spacing={2}>
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: 200,
+                    backgroundColor: "var(--b1-canvas)",
+                    borderRadius: "var(--b1-radius-control)",
+                    border: 1,
+                    borderColor: "divider",
+                    overflow: "hidden"
+                  }}
+                >
+                  <img
+                    src={thumbnailDisplay || "/images/no-image.png"}
+                    alt={Locale.label("sermons.playlists.playlistEdit.thumbnailAlt")}
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "200px",
+                      objectFit: "contain",
+                      borderRadius: "var(--b1-radius-control)"
                     }}
-                  >
-                    <img
-                      src={thumbnailDisplay || "/images/no-image.png"}
-                      alt={Locale.label("sermons.playlists.playlistEdit.thumbnailAlt")}
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "200px",
-                        objectFit: "contain",
-                        borderRadius: "4px"
-                      }}
-                    />
-                  </Box>
+                  />
+                </Box>
 
-                  <Button
-                    variant="outlined"
-                    startIcon={<PhotoCameraIcon />}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      props.showPhotoEditor("playlist", thumbnailDisplay || "");
-                    }}
-                    sx={{
-                      textTransform: "none",
-                      borderColor: "primary.main",
-                      color: "primary.main",
-                      "&:hover": {
-                        backgroundColor: "primary.main",
-                        color: "white"
-                      }
-                    }}
-                  >
-                    {thumbnailDisplay ? Locale.label("sermons.playlists.playlistEdit.changeThumbnail") : Locale.label("sermons.playlists.playlistEdit.addThumbnail")}
-                  </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<PhotoCameraIcon />}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    props.showPhotoEditor("playlist", thumbnailDisplay || "");
+                  }}
+                >
+                  {thumbnailDisplay ? Locale.label("sermons.playlists.playlistEdit.changeThumbnail") : Locale.label("sermons.playlists.playlistEdit.addThumbnail")}
+                </Button>
 
-                  <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center" }}>
-                    {Locale.label("sermons.playlists.playlistEdit.recommendedSize")}
-                  </Typography>
-                </Stack>
-              </CardContent>
-            </Card>
+                <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center" }}>
+                  {Locale.label("sermons.playlists.playlistEdit.recommendedSize")}
+                </Typography>
+              </Stack>
+            </Box>
           </Grid>
         </Grid>
       </FormCard>

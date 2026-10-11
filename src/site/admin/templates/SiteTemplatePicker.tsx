@@ -95,12 +95,12 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
   const cardSx = {
     border: "1px solid",
     borderColor: "divider",
-    borderRadius: "8px",
-    padding: "10px",
+    borderRadius: "var(--b1-radius-panel)",
+    padding: "12px",
     cursor: "pointer",
     height: "100%",
-    transition: "border-color 0.15s, box-shadow 0.15s",
-    "&:hover": { borderColor: "primary.main", boxShadow: 2 }
+    transition: "border-color 140ms, background-color 140ms",
+    "&:hover": { borderColor: "primary.main", backgroundColor: "action.hover" }
   };
 
   const getListView = () => (
@@ -111,9 +111,9 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={template.key}>
             <Box sx={cardSx} onClick={() => setSelected(template)} data-testid={"site-template-" + template.key}>
               <SiteTemplatePreview page={template.pages[0]} navLabels={navLabels(template)} churchName={churchName} maxHeight={260} palette={template.theme?.palette} />
-              <Typography sx={{ fontSize: "0.95rem", fontWeight: 600, marginTop: "10px" }}>{label("names." + template.key)}</Typography>
-              <Typography sx={{ fontSize: "0.8rem", color: "text.secondary" }}>{label("descriptions." + template.key)}</Typography>
-              <Typography sx={{ fontSize: "0.72rem", color: "text.disabled", marginTop: "4px" }}>
+              <Typography sx={{ fontSize: 16, fontWeight: 600, marginTop: "12px" }}>{label("names." + template.key)}</Typography>
+              <Typography sx={{ fontSize: 14, color: "text.secondary" }}>{label("descriptions." + template.key)}</Typography>
+              <Typography sx={{ fontSize: 12, color: "text.secondary", marginTop: "4px" }}>
                 {label("pageCount").replace("{count}", customPages(template).length.toString())}
               </Typography>
             </Box>
@@ -132,9 +132,9 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
       <>
         <ErrorMessages errors={errors} />
         {isSubmitting && status && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2, padding: 2, marginBottom: 2, backgroundColor: "primary.main", color: "#fff", borderRadius: 1 }}>
-            <CircularProgress size={22} sx={{ color: "#fff" }} />
-            <Typography sx={{ color: "#fff" }}>{status}</Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, padding: 2, marginBottom: 2, backgroundColor: "var(--b1-selected)", color: "var(--b1-on-selected)", borderRadius: "var(--b1-radius-control)" }}>
+            <CircularProgress size={22} />
+            <Typography>{status}</Typography>
           </Box>
         )}
         <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 2 }}>{label("descriptions." + selected.key)}</Typography>
@@ -142,8 +142,8 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
           {pages.map((p) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={p.url}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: "4px" }}>
-                <Typography sx={{ fontSize: "0.85rem", fontWeight: 600 }}>{pageTitle(p)}</Typography>
-                {pageExists(p) && <Chip label={label("exists")} size="small" color="warning" sx={{ fontSize: "0.65rem", height: 18 }} />}
+                <Typography sx={{ fontSize: 14, fontWeight: 600 }}>{pageTitle(p)}</Typography>
+                {pageExists(p) && <Chip label={label("exists")} size="small" color="warning" />}
               </Box>
               <SiteTemplatePreview page={p} navLabels={navLabels(selected)} churchName={churchName} maxHeight={340} palette={selected.theme?.palette} />
             </Grid>

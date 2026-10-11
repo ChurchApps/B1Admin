@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Box, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Stack, TextField, Typography } from "@mui/material";
 import { NotificationsActive as NotificationsActiveIcon } from "@mui/icons-material";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
@@ -157,7 +157,7 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
           error={!imageUrlValid}
           helperText={!imageUrlValid ? "Use an https URL or leave this blank." : " "}
         />
-        <Paper variant="outlined" sx={{ p: 2, borderRadius: 1.5, bgcolor: (theme) => theme.palette.mode === "dark" ? "background.default" : "grey.50" }}>
+        <Box sx={{ p: 2, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", bgcolor: "var(--b1-canvas)" }}>
           <Stack direction="row" spacing={1.5} alignItems="flex-start">
             <NotificationsActiveIcon sx={{ color: "primary.main", mt: 0.25 }} />
             <Box sx={{ minWidth: 0 }}>
@@ -169,7 +169,7 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
               </Typography>
             </Box>
           </Stack>
-        </Paper>
+        </Box>
       </Stack>
     </SendDialogShell>
   );

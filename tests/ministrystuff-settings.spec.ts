@@ -24,7 +24,7 @@ test.describe.serial("MinistryStuff provider settings", () => {
   test("texting settings offers MinistryStuff and saves it", async () => {
     await page.locator('[data-testid="settings-section-texting"]').click();
     await expect(page.locator('[data-testid="settings-texting"]')).toBeVisible({ timeout: 15000 });
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.locator('[data-testid="settings-texting"] [data-testid="small-button-edit"]').dispatchEvent("click");
     const select = page.locator('[data-testid="settings-texting"]').getByRole("combobox");
     await expect(select).toBeVisible({ timeout: 10000 });
     await select.click();
@@ -38,7 +38,7 @@ test.describe.serial("MinistryStuff provider settings", () => {
   test("storage settings section saves MinistryStuff provider", async () => {
     await page.locator('[data-testid="settings-section-storage"]').click();
     await expect(page.locator('[data-testid="settings-storage"]')).toBeVisible({ timeout: 15000 });
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.locator('[data-testid="settings-storage"] [data-testid="small-button-edit"]').dispatchEvent("click");
     const select = page.locator('[data-testid="settings-storage"]').getByRole("combobox");
     await expect(select).toBeVisible({ timeout: 10000 });
     await select.click();
@@ -50,7 +50,7 @@ test.describe.serial("MinistryStuff provider settings", () => {
   });
 
   test("storage settings switches back to free tier", async () => {
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.locator('[data-testid="settings-storage"] [data-testid="small-button-edit"]').dispatchEvent("click");
     const select = page.locator('[data-testid="settings-storage"]').getByRole("combobox");
     await expect(select).toBeVisible({ timeout: 10000 });
     await select.click();

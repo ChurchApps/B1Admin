@@ -33,7 +33,7 @@ export const RegistrationSelectionsEdit: React.FC<Props> = ({ event, onDirtyChan
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.commerce.noSelections")}</Typography>
       )}
       {rows.map((row, i) => (
-        <Box key={row.id || i} data-testid="registration-selection-row" sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
+        <Box key={row.id || i} data-testid="registration-selection-row" sx={{ p: 1.5, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
           <Stack spacing={1}>
             <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" useFlexGap>
               <TextField label={Locale.label("registrations.commerce.name")} size="small" value={row.name || ""} onChange={(e) => update(i, "name", e.target.value)} data-testid="selection-name" sx={{ flex: "1 1 140px" }} />

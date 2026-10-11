@@ -187,9 +187,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     if (teamMode) return <></>;
     return (
       <>
-        <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
-          <b>{Locale.label("groups.groupDetailsEdit.attendance")}</b>
-        </Box>
+        <Typography variant="h3" component="h3" sx={{ pt: 2, mt: 3, borderTop: 1, borderColor: "divider" }}>
+          {Locale.label("groups.groupDetailsEdit.attendance")}
+        </Typography>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack direction={{ xs: "column", md: "row" }}>
@@ -311,16 +311,16 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                       width: "100%",
                       maxWidth: 280,
                       height: 158,
-                      borderRadius: 2,
+                      borderRadius: "var(--b1-radius-panel)",
                       overflow: "hidden",
                       mx: "auto",
                       mb: 2,
-                      backgroundColor: photoUrl ? "transparent" : "grey.100",
+                      bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      border: "1px solid",
-                      borderColor: "grey.300",
+                      border: 1,
+                      borderColor: "divider",
                       cursor: "pointer",
                       "&:hover": { borderColor: "primary.main" }
                     }}
@@ -328,9 +328,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                     {photoUrl ? (
                       <img src={photoUrl} alt={Locale.label("groups.groupDetailsEdit.groupPhotoAlt")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
-                      <Stack alignItems="center" spacing={1} sx={{ color: "grey.500" }}>
-                        <PhotoCameraIcon sx={{ fontSize: 32 }} />
-                        <Typography variant="body2" color="grey.500">{Locale.label("groups.groupDetailsEdit.clickToAddPhoto")}</Typography>
+                      <Stack alignItems="center" spacing={1} sx={{ color: "text.secondary" }}>
+                        <PhotoCameraIcon />
+                        <Typography variant="body2" color="text.secondary">{Locale.label("groups.groupDetailsEdit.clickToAddPhoto")}</Typography>
                       </Stack>
                     )}
                   </Box>
@@ -409,9 +409,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
-              <b>{Locale.label("groups.groupDetailsEdit.ageGrade")}</b>
-            </Box>
+            <Typography variant="h3" component="h3" sx={{ pt: 2, mt: 3, borderTop: 1, borderColor: "divider" }}>
+              {Locale.label("groups.groupDetailsEdit.ageGrade")}
+            </Typography>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="body2" sx={{ mb: 1, color: "text.secondary" }}>{Locale.label("groups.groupDetailsEdit.minAge")}</Typography>
@@ -450,9 +450,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
-              <b>{Locale.label("groups.groupDetailsEdit.checkinCapacity")}</b>
-            </Box>
+            <Typography variant="h3" component="h3" sx={{ pt: 2, mt: 3, borderTop: 1, borderColor: "divider" }}>
+              {Locale.label("groups.groupDetailsEdit.checkinCapacity")}
+            </Typography>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField fullWidth type="number" label={Locale.label("groups.groupDetailsEdit.capacity")} slotProps={{ htmlInput: { min: 0 } }} data-testid="capacity-input" {...register("capacity")} />

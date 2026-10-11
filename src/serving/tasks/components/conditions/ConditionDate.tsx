@@ -43,14 +43,13 @@ export const ConditionDate = (props: Props) => {
     return (
       <AppDatePicker
         fullWidth
-        
+
         label={label}
         value={props.condition.value || ""}
         name="value"
         onChange={handleChange}
         variant="outlined"
         InputLabelProps={{ shrink: true }}
-        sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
     );
   };
@@ -68,7 +67,6 @@ export const ConditionDate = (props: Props) => {
         data-testid="condition-number-input"
         aria-label={Locale.label("tasks.conditionDate.numberValueAria")}
         variant="outlined"
-        sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
     );
   };
@@ -96,14 +94,7 @@ export const ConditionDate = (props: Props) => {
         value={props.condition.value || "1"}
         name="value"
         onChange={handleChange}
-        sx={{
-          "& .MuiListSubheader-root": {
-            backgroundColor: "grey.100",
-            fontWeight: 600,
-            color: "text.primary",
-            lineHeight: "36px"
-          }
-        }}>
+      >
         <ListSubheader>{Locale.label("tasks.conditionDate.absolute")}</ListSubheader>
         <MenuItem value="1">{Locale.label("month.jan")}</MenuItem>
         <MenuItem value="2">{Locale.label("month.feb")}</MenuItem>

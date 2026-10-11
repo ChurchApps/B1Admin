@@ -9,11 +9,11 @@ import {
   Loading,
   Locale
 } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, Avatar, Box, Typography, Paper, Pagination, Chip } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, Avatar, Box, Typography, Pagination } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
 import { SessionCard } from "./SessionCard";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { ExportButton } from "../../components/ui";
+import { ExportButton, FilterChip, Surface } from "../../components/ui";
 import { type GroupInterface, type PersonInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
 
@@ -234,7 +234,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
   const renderFilterControls = () => (
     <Box sx={{ mb: 3 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Typography variant="h6" component="div">
+        <Typography variant="h3" component="h2">
           {Locale.label("groups.groupSessions.sessions")} ({filteredSessions.length})
         </Typography>
         {canEdit && getAddButton()}
@@ -242,27 +242,25 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
 
       <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
         {availableYears.map((year) => (
-          <Chip
+          <FilterChip
             key={year}
-            label={year}
+            selected={selectedYear === year}
             onClick={() => {
               setSelectedYear(year);
               setCurrentPage(1);
-            }}
-            color={selectedYear === year ? "primary" : "default"}
-            variant={selectedYear === year ? "filled" : "outlined"}
-          />
+            }}>
+            {year}
+          </FilterChip>
         ))}
         {availableYears.length > 1 && (
-          <Chip
-            label={Locale.label("groups.groupSessions.allYears")}
+          <FilterChip
+            selected={selectedYear === "all"}
             onClick={() => {
               setSelectedYear("all");
               setCurrentPage(1);
-            }}
-            color={selectedYear === "all" ? "primary" : "default"}
-            variant={selectedYear === "all" ? "filled" : "outlined"}
-          />
+            }}>
+            {Locale.label("groups.groupSessions.allYears")}
+          </FilterChip>
         )}
       </Box>
     </Box>
@@ -271,30 +269,30 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
   const renderSessionCards = () => {
     if (sessions.length === 0) {
       return (
-        <Paper sx={{ p: 4, textAlign: "center", mb: 3 }}>
-          <Icon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }}>calendar_month</Icon>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+        <Surface sx={{ textAlign: "center", mb: 3 }}>
+          <Icon sx={{ color: "text.secondary", mb: 2 }}>calendar_month</Icon>
+          <Typography variant="h3" component="h2" gutterBottom>
             {Locale.label("groups.groupSessions.noSesMsg")}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
             {Locale.label("groups.groupSessions.addSesMsg")}
           </Typography>
           {getAddButton()}
-        </Paper>
+        </Surface>
       );
     }
 
     if (filteredSessions.length === 0) {
       return (
-        <Paper sx={{ p: 4, textAlign: "center", mb: 3 }}>
-          <Icon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }}>search_off</Icon>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+        <Surface sx={{ textAlign: "center", mb: 3 }}>
+          <Icon sx={{ color: "text.secondary", mb: 2 }}>search_off</Icon>
+          <Typography variant="h3" component="h2" gutterBottom>
             {Locale.label("groups.groupSessions.noSessionsFound")}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {Locale.label("groups.groupSessions.tryAdjusting")}
           </Typography>
-        </Paper>
+        </Surface>
       );
     }
 
@@ -381,19 +379,19 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
   const renderAttendanceSection = () => {
     if (!session) {
       return (
-        <Paper sx={{ p: 4, textAlign: "center" }}>
+        <Surface sx={{ textAlign: "center" }}>
           <Typography variant="body1" color="text.secondary">
             {Locale.label("groups.groupSessions.selectSession")}
           </Typography>
-        </Paper>
+        </Surface>
       );
     }
 
     return (
-      <Paper sx={{ p: 2 }}>
+      <Surface>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
           <Box>
-            <Typography variant="h6" component="div" data-cy="session-present-msg">
+            <Typography variant="h3" component="h2" data-cy="session-present-msg">
               {Locale.label("groups.groupSessions.attFor")} {group.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -420,7 +418,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
             <TableBody>{tableRows}</TableBody>
           </Table>
         )}
-      </Paper>
+      </Surface>
     );
   };
 

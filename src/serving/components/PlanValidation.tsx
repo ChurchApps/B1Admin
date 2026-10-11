@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
+import { CardWithHeader } from "../../components/ui";
 import { Button } from "@mui/material";
-import { ApiHelper, ArrayHelper, CommonEnvironmentHelper, DateHelper, DisplayBox, Locale, type PersonInterface, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, CommonEnvironmentHelper, DateHelper, Locale, type PersonInterface, UserHelper } from "@churchapps/apphelper";
 import { type AssignmentInterface, type BlockoutDateInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { type PlanInterface, type SchedulingPreferenceInterface } from "../../helpers";
 import { useConfirmDelete } from "../../hooks";
@@ -381,10 +382,10 @@ export const PlanValidation = (props: Props) => {
   return (
     <>
       {ConfirmDialogElement}
-      <DisplayBox headerText={Locale.label("plans.planValidation.val")} headerIcon="assignment">
+      <CardWithHeader title={Locale.label("plans.planValidation.val")}>
         {getErrorList()}
         {getNotificationLink()}
-      </DisplayBox>
+      </CardWithHeader>
     </>
   );
 };

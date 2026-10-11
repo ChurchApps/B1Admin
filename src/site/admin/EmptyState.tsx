@@ -20,34 +20,19 @@ export function EmptyState({ onAddClick }: EmptyStateProps) {
           px: 3
         }}
       >
-        <Box
-          sx={{
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            backgroundColor: "var(--bg-sub)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            mb: 2.5
-          }}
-        >
-          <Icon sx={{ fontSize: "2rem", color: "text.secondary" }}>dashboard_customize</Icon>
-        </Box>
-        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, color: "text.primary", mb: 1 }}>
+        <Icon sx={{ fontSize: 32, color: "text.secondary", mb: 2 }}>dashboard_customize</Icon>
+        <Typography variant="h3" component="h2" sx={{ mb: 1 }}>
           {Locale.label("site.emptyState.title")}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 420, mb: 3, lineHeight: 1.5 }}>
+        <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 420, mb: 3 }}>
           {Locale.label("site.emptyState.description")}
         </Typography>
         {onAddClick && (
           <Button
             variant="contained"
             color="primary"
-            disableElevation
             onClick={onAddClick}
             startIcon={<Icon>add</Icon>}
-            sx={{ textTransform: "none", fontWeight: 600 }}
           >
             {Locale.label("site.emptyState.addFirstSection")}
           </Button>

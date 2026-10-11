@@ -1,10 +1,11 @@
 import React from "react";
-import { Chip } from "@mui/material";
+import { Box } from "@mui/material";
 
 export const CountChip: React.FC<{ count: number }> = ({ count }) => (
-  <Chip
-    size="small"
-    label={count}
-    sx={{ backgroundColor: "var(--bg-sub)", border: "1px solid var(--border-light)", color: "var(--text-muted)", fontWeight: 500, fontSize: "0.75rem" }}
-  />
+  <Box
+    component="span"
+    sx={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 24, height: 22, px: 1, borderRadius: "var(--b1-radius-pill)", bgcolor: "var(--b1-neutral-bg)", color: "var(--b1-neutral)", fontSize: 12, fontWeight: 600, fontVariantNumeric: "tabular-nums" }}
+  >
+    {count}
+  </Box>
 );

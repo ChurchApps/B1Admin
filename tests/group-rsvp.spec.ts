@@ -90,7 +90,7 @@ test.describe.serial("Group RSVP summary + roster (B1Admin)", () => {
 
   async function openCalendarTab() {
     await page.goto(`/groups/${groupId}`);
-    await page.getByRole("tab", { name: "Calendar" }).click();
+    await page.getByTestId("group-all-events").click();
     await expect(page.locator('[data-testid="group-calendar-tab"]')).toBeVisible({ timeout: 15000 });
   }
 

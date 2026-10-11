@@ -22,14 +22,14 @@ export const VisibilityToggles: React.FC<Props> = (props) => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap", px: 1 }}>
-      <Typography sx={{ fontSize: "0.85rem", color: "text.secondary" }}>{Locale.label("site.stylesAnimations.visibility")}</Typography>
+      <Typography sx={{ fontSize: 14, color: "text.secondary" }}>{Locale.label("site.stylesAnimations.visibility")}</Typography>
       <FormControlLabel
         control={<Switch size="small" checked={isHidden("desktop")} onChange={(e) => handleVisibilityChange("desktop", e.target.checked)} data-testid="hide-on-desktop-switch" />}
-        label={<Typography sx={{ fontSize: "0.85rem" }}>{Locale.label("site.stylesAnimations.hideOnDesktop")}</Typography>}
+        label={<Typography sx={{ fontSize: 14 }}>{Locale.label("site.stylesAnimations.hideOnDesktop")}</Typography>}
       />
       <FormControlLabel
         control={<Switch size="small" checked={isHidden("mobile")} onChange={(e) => handleVisibilityChange("mobile", e.target.checked)} data-testid="hide-on-mobile-switch" />}
-        label={<Typography sx={{ fontSize: "0.85rem" }}>{Locale.label("site.stylesAnimations.hideOnMobile")}</Typography>}
+        label={<Typography sx={{ fontSize: 14 }}>{Locale.label("site.stylesAnimations.hideOnMobile")}</Typography>}
       />
     </Box>
   );

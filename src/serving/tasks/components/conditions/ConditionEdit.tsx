@@ -1,11 +1,12 @@
-import { FormControl, InputLabel, ListSubheader, MenuItem, Select, type SelectChangeEvent, Card, CardContent, Typography, Stack, Box, Button, Divider } from "@mui/material";
+import { Surface } from "../../../../components/ui";
+import { FormControl, InputLabel, ListSubheader, MenuItem, Select, type SelectChangeEvent, Typography, Stack, Button, Divider } from "@mui/material";
 import React from "react";
 import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
 import { ConditionDate } from "./ConditionDate";
 import { ConditionSelect } from "./ConditionSelect";
 import { ConditionText } from "./ConditionText";
-import { Rule as ConditionIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { useConfirmDelete } from "../../../../hooks";
 
 interface Props {
@@ -79,122 +80,86 @@ export const ConditionEdit = (props: Props) => {
 
   if (!condition) return <></>;
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        border: "1px solid",
-        borderColor: "grey.200",
-        transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 }
-      }}>
-      <CardContent>
-        {ConfirmDialogElement}
-        <Stack spacing={3}>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <ConditionIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                {Locale.label("tasks.conditionEdit.conEdit")}
-              </Typography>
-            </Stack>
+    <Surface>
+      {ConfirmDialogElement}
+      <Stack spacing={3}>
+        <Typography variant="h3" component="h2">
+          {Locale.label("tasks.conditionEdit.conEdit")}
+        </Typography>
+
+        {errors.length > 0 && <ErrorMessages errors={errors} />}
+
+        <Stack spacing={2}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>{Locale.label("tasks.conditionEdit.conType")}</InputLabel>
+            <Select
+              label={Locale.label("tasks.conditionEdit.conType")}
+              value={condition.field || ""}
+              name="field"
+              onChange={handleChange}
+              data-testid="condition-type-select"
+              aria-label={Locale.label("tasks.conditionEdit.conditionTypeAria")}
+            >
+              <ListSubheader>{Locale.label("tasks.conditionEdit.gen")}</ListSubheader>
+              <MenuItem value="today">{Locale.label("tasks.conditionEdit.today")}</MenuItem>
+
+              <ListSubheader>{Locale.label("common.name")}</ListSubheader>
+              <MenuItem value="displayName">{Locale.label("person.displayName")}</MenuItem>
+              <MenuItem value="firstName">{Locale.label("person.firstName")}</MenuItem>
+              <MenuItem value="lastName">{Locale.label("person.lastName")}</MenuItem>
+              <MenuItem value="middleName">{Locale.label("person.middleName")}</MenuItem>
+              <MenuItem value="nickName">{Locale.label("person.nickName")}</MenuItem>
+
+              <ListSubheader>{Locale.label("tasks.conditionEdit.persAtt")}</ListSubheader>
+              <MenuItem value="birthDate">{Locale.label("person.birthDate")}</MenuItem>
+              <MenuItem value="gender">{Locale.label("person.gender")}</MenuItem>
+              <MenuItem value="maritalStatus">{Locale.label("person.maritalStatus")}</MenuItem>
+              <MenuItem value="anniversary">{Locale.label("person.anniversary")}</MenuItem>
+              <MenuItem value="membershipStatus">{Locale.label("person.membershipStatus")}</MenuItem>
+
+              <ListSubheader>{Locale.label("tasks.conditionEdit.conInfo")}</ListSubheader>
+              <MenuItem value="phone">{Locale.label("person.phone")}</MenuItem>
+              <MenuItem value="email">{Locale.label("person.email")}</MenuItem>
+              <MenuItem value="address">{Locale.label("person.address")}</MenuItem>
+              <MenuItem value="city">{Locale.label("person.city")}</MenuItem>
+              <MenuItem value="state">{Locale.label("person.state")}</MenuItem>
+              <MenuItem value="zip">{Locale.label("person.zip")}</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Divider />
+
+          <Box>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
+              {Locale.label("tasks.conditionEdit.conDetails")}
+            </Typography>
+            {getQuestionDetails()}
           </Box>
+        </Stack>
 
-          {errors.length > 0 && <ErrorMessages errors={errors} />}
-
-          <Stack spacing={2}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>{Locale.label("tasks.conditionEdit.conType")}</InputLabel>
-              <Select
-                label={Locale.label("tasks.conditionEdit.conType")}
-                value={condition.field || ""}
-                name="field"
-                onChange={handleChange}
-                data-testid="condition-type-select"
-                aria-label={Locale.label("tasks.conditionEdit.conditionTypeAria")}
-                sx={{
-                  "& .MuiListSubheader-root": {
-                    backgroundColor: "grey.100",
-                    fontWeight: 600,
-                    color: "text.primary",
-                    lineHeight: "36px"
-                  }
-                }}>
-                <ListSubheader>{Locale.label("tasks.conditionEdit.gen")}</ListSubheader>
-                <MenuItem value="today">{Locale.label("tasks.conditionEdit.today")}</MenuItem>
-
-                <ListSubheader>{Locale.label("common.name")}</ListSubheader>
-                <MenuItem value="displayName">{Locale.label("person.displayName")}</MenuItem>
-                <MenuItem value="firstName">{Locale.label("person.firstName")}</MenuItem>
-                <MenuItem value="lastName">{Locale.label("person.lastName")}</MenuItem>
-                <MenuItem value="middleName">{Locale.label("person.middleName")}</MenuItem>
-                <MenuItem value="nickName">{Locale.label("person.nickName")}</MenuItem>
-
-                <ListSubheader>{Locale.label("tasks.conditionEdit.persAtt")}</ListSubheader>
-                <MenuItem value="birthDate">{Locale.label("person.birthDate")}</MenuItem>
-                <MenuItem value="gender">{Locale.label("person.gender")}</MenuItem>
-                <MenuItem value="maritalStatus">{Locale.label("person.maritalStatus")}</MenuItem>
-                <MenuItem value="anniversary">{Locale.label("person.anniversary")}</MenuItem>
-                <MenuItem value="membershipStatus">{Locale.label("person.membershipStatus")}</MenuItem>
-
-                <ListSubheader>{Locale.label("tasks.conditionEdit.conInfo")}</ListSubheader>
-                <MenuItem value="phone">{Locale.label("person.phone")}</MenuItem>
-                <MenuItem value="email">{Locale.label("person.email")}</MenuItem>
-                <MenuItem value="address">{Locale.label("person.address")}</MenuItem>
-                <MenuItem value="city">{Locale.label("person.city")}</MenuItem>
-                <MenuItem value="state">{Locale.label("person.state")}</MenuItem>
-                <MenuItem value="zip">{Locale.label("person.zip")}</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Divider />
-
-            <Box>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
-                {Locale.label("tasks.conditionEdit.conDetails")}
-              </Typography>
-              {getQuestionDetails()}
-            </Box>
-          </Stack>
-
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            {condition?.id && (
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                onClick={handleDelete}
-                sx={{
-                  borderRadius: 2,
-                  textTransform: "none",
-                  fontWeight: 600
-                }}>
-                {Locale.label("common.delete")}
-              </Button>
-            )}
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          {condition?.id && (
             <Button
               variant="outlined"
-              startIcon={<CancelIcon />}
-              onClick={props.onCancel}
-              sx={{
-                borderRadius: 2,
-                textTransform: "none",
-                fontWeight: 600
-              }}>
-              {Locale.label("common.cancel")}
+              startIcon={<DeleteIcon />}
+              onClick={handleDelete}>
+              {Locale.label("common.delete")}
             </Button>
-            <Button
-              variant="contained"
-              startIcon={<SaveIcon />}
-              onClick={handleSave}
-              sx={{
-                borderRadius: 2,
-                textTransform: "none",
-                fontWeight: 600
-              }}>
-              {Locale.label("common.save")}
-            </Button>
-          </Stack>
+          )}
+          <Button
+            variant="outlined"
+            startIcon={<CancelIcon />}
+            onClick={props.onCancel}>
+            {Locale.label("common.cancel")}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={handleSave}>
+            {Locale.label("common.save")}
+          </Button>
         </Stack>
-      </CardContent>
-    </Card>
+      </Stack>
+    </Surface>
   );
 };

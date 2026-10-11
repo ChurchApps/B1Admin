@@ -28,7 +28,7 @@ export function FocalPointPicker({ imageUrl, value, onChange }: Props) {
 
   return (
     <div style={{ marginTop: 8 }}>
-      <div style={{ fontSize: 12, color: "#666", marginBottom: 4 }}>{Locale.label("site.pickColors.focalPointHelper")}</div>
+      <div style={{ fontSize: 12, color: "var(--b1-muted)", marginBottom: 4 }}>{Locale.label("site.pickColors.focalPointHelper")}</div>
       <div
         onClick={handleClick}
         role="button"

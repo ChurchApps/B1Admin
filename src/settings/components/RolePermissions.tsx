@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
 import { RoleCheck } from "./";
-import { ApiHelper, DisplayBox, type PermissionInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, type PermissionInterface, Locale } from "@churchapps/apphelper";
 import { type RoleInterface, type RolePermissionInterface } from "@churchapps/helpers";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Icon, TextField } from "@mui/material";
+import { SettingsPanel } from "./SettingsPanel";
 
 interface Props {
   role: RoleInterface;
@@ -72,7 +73,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
   }, [props.role, loadPermissions]);
 
   return (
-    <DisplayBox id="rolePermissionsBox" headerText={Locale.label("settings.rolePermissions.permEdit")} headerIcon="lock" help="docs/b1-admin/settings/roles-permissions">
+    <SettingsPanel id="rolePermissionsBox" headerText={Locale.label("settings.rolePermissions.permEdit")} headerIcon="lock" help="docs/b1-admin/settings/roles-permissions">
       <TextField
         fullWidth
         size="small"
@@ -81,7 +82,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
         label={Locale.label("settings.rolePermissions.filter")}
         data-testid="role-permission-filter"
       />
-      <div>{getSections()}</div>
-    </DisplayBox>
+      <div style={{ marginTop: 16 }}>{getSections()}</div>
+    </SettingsPanel>
   );
 };

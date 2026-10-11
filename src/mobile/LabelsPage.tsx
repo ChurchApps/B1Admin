@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ApiHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
-import { Box, Chip, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, Label as LabelIcon, StarBorder as StarBorderIcon } from "@mui/icons-material";
-import { EmptyState } from "../components/ui/EmptyState";
-import { AppIconButton } from "../components/ui/AppIconButton";
-import { HeaderPrimaryButton } from "../components/ui";
+import { Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+import { HeaderPrimaryButton, StatusBadge, Surface, TextAction, VerbRow } from "../components/ui";
 import { useConfirmDelete, useRequirePermission } from "../hooks";
 import { LabelEditor, newBlockId, type LabelTemplateInterface } from "./components/LabelEditor";
+import { MobileChrome } from "./components/MobileChrome";
 
 // Starters mirror B1Checkin's bundled 1_1x3_5 / pickup_1_1x3_5 HTML labels.
 const starterNametag = (): LabelTemplateInterface => ({
@@ -68,31 +67,28 @@ export const LabelsPage = () => {
   return (
     <>
       {ConfirmDialogElement}
-      <PageHeader icon={<LabelIcon />} title={Locale.label("attendance.labels.title")} subtitle={Locale.label("attendance.labels.subtitle")}>
-        {!editing && (
-          <HeaderPrimaryButton
-            startIcon={<AddIcon />}
-            onClick={(e) => setMenuAnchor(e.currentTarget)}
-            data-testid="add-label"
-          >
-            {Locale.label("common.add")}
-          </HeaderPrimaryButton>
-        )}
-      </PageHeader>
-      <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
-        <MenuItem onClick={() => startCreate(starterNametag())} data-testid="add-nametag-starter">{Locale.label("attendance.labels.starterNametag")}</MenuItem>
-        <MenuItem onClick={() => startCreate(starterPickup())} data-testid="add-pickup-starter">{Locale.label("attendance.labels.starterPickup")}</MenuItem>
-        <MenuItem onClick={() => startCreate({ name: "", labelType: "nametag", width: 3.5, height: 1.1, content: "[]" })} data-testid="add-blank">{Locale.label("attendance.labels.blank")}</MenuItem>
-      </Menu>
-      <Box sx={{ p: 3 }}>
+      <MobileChrome
+        title={Locale.label("attendance.labels.title")}
+        subtitle={Locale.label("attendance.labels.subtitle")}
+        actions={!editing && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={(e) => setMenuAnchor(e.currentTarget)} data-testid="add-label">{Locale.label("attendance.labels.addLabel", "Add label")}</HeaderPrimaryButton>}>
+        <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
+          <MenuItem onClick={() => startCreate(starterNametag())} data-testid="add-nametag-starter">{Locale.label("attendance.labels.starterNametag")}</MenuItem>
+          <MenuItem onClick={() => startCreate(starterPickup())} data-testid="add-pickup-starter">{Locale.label("attendance.labels.starterPickup")}</MenuItem>
+          <MenuItem onClick={() => startCreate({ name: "", labelType: "nametag", width: 3.5, height: 1.1, content: "[]" })} data-testid="add-blank">{Locale.label("attendance.labels.blank")}</MenuItem>
+        </Menu>
         {editing
           ? <LabelEditor template={editing} updatedCallback={handleUpdated} />
           : templatesQuery.isLoading
             ? <Loading />
             : templates.length === 0
-              ? <EmptyState icon={<LabelIcon />} title={Locale.label("attendance.labels.noTemplates")} description={Locale.label("attendance.labels.noTemplatesDesc")} />
+              ? (
+                <Stack spacing={0.5}>
+                  <Typography color="text.secondary">{Locale.label("attendance.labels.noTemplates")}</Typography>
+                  <Typography variant="body2" color="text.secondary">{Locale.label("attendance.labels.noTemplatesDesc")}</Typography>
+                </Stack>
+              )
               : (
-                <TableContainer component={Paper} variant="outlined">
+                <Surface disablePadding sx={{ overflowX: "auto" }}>
                   <Table data-testid="labels-table">
                     <TableHead>
                       <TableRow>
@@ -108,20 +104,22 @@ export const LabelsPage = () => {
                           <TableCell>{t.name}</TableCell>
                           <TableCell>{Locale.label(t.labelType === "pickup" ? "attendance.labels.pickup" : "attendance.labels.nametag")}</TableCell>
                           <TableCell>{`${Number(t.width)}" × ${Number(t.height)}"`}</TableCell>
-                          <TableCell align="right" className="rowActions">
-                            {t.isDefault
-                              ? <Chip label={Locale.label("attendance.labels.default")} color="primary" size="small" sx={{ mr: 1 }} />
-                              : <AppIconButton tone="card" label={Locale.label("attendance.labels.setDefault")} icon={<StarBorderIcon />} onClick={() => handleSetDefault(t)} data-testid={`default-label-${t.id}`} />}
-                            <AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing(t)} data-testid={`edit-label-${t.id}`} />
-                            <AppIconButton tone="card" intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(t)} data-testid={`delete-label-${t.id}`} />
+                          <TableCell align="right">
+                            <VerbRow sx={{ justifyContent: "flex-end", flexWrap: "nowrap" }}>
+                              {t.isDefault
+                                ? <StatusBadge tone="info">{Locale.label("attendance.labels.default")}</StatusBadge>
+                                : <TextAction small onClick={() => handleSetDefault(t)} aria-label={Locale.label("attendance.labels.setDefault")} data-testid={`default-label-${t.id}`}>{Locale.label("attendance.labels.setDefault")}</TextAction>}
+                              <TextAction small onClick={() => setEditing(t)} aria-label={Locale.label("common.edit")} data-testid={`edit-label-${t.id}`}>{Locale.label("common.edit")}</TextAction>
+                              <TextAction small onClick={() => handleDelete(t)} aria-label={Locale.label("common.delete")} data-testid={`delete-label-${t.id}`}>{Locale.label("common.delete")}</TextAction>
+                            </VerbRow>
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                </TableContainer>
+                </Surface>
               )}
-      </Box>
+      </MobileChrome>
     </>
   );
 };

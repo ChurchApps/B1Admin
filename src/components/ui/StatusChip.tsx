@@ -1,6 +1,7 @@
 import React from "react";
-import { Chip, alpha } from "@mui/material";
-import type { ChipProps, Theme } from "@mui/material";
+import { Chip } from "@mui/material";
+import { StatusBadge, type StatusTone } from "./StatusBadge";
+import { useHeaderTone } from "./headerTone";
 
 interface StatusChipProps {
   status: string;
@@ -8,14 +9,15 @@ interface StatusChipProps {
   size?: "small" | "medium";
 }
 
-type StatusKind = "success" | "warning" | "info" | "default";
-
-const STATUS_KIND: Record<string, StatusKind> = {
+const STATUS_TONE: Record<string, StatusTone> = {
   member: "success",
   active: "success",
+  approved: "success",
   visitor: "warning",
   pending: "warning",
-  staff: "info"
+  staff: "info",
+  failed: "danger",
+  inactive: "neutral"
 };
 
 const headerSx = {
@@ -25,23 +27,10 @@ const headerSx = {
   height: 20
 };
 
-const tintedSx = (kind: Exclude<StatusKind, "default">) => (theme: Theme) => ({
-  backgroundColor: alpha(theme.palette[kind].main, 0.12),
-  color: theme.palette[kind].dark,
-  fontWeight: 600
-});
-
 export const StatusChip: React.FC<StatusChipProps> = ({ status, variant = "standard", size = "small" }) => {
-  if (variant === "header") {
+  const headerTone = useHeaderTone();
+  if (variant === "header" && headerTone === "dark") {
     return <Chip label={status} size={size} variant="filled" sx={headerSx} />;
   }
-
-  const kind: StatusKind = STATUS_KIND[status.toLowerCase()] || "default";
-
-  const chipProps: Partial<ChipProps> =
-    kind === "default"
-      ? { variant: "outlined", sx: { color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" } }
-      : { variant: "filled", sx: tintedSx(kind) };
-
-  return <Chip label={status} size={size} {...chipProps} />;
+  return <StatusBadge tone={STATUS_TONE[status.toLowerCase()] || "neutral"}>{status}</StatusBadge>;
 };

@@ -27,25 +27,23 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
 
   return (
     <Dialog open={open} onClose={onCancel} fullWidth maxWidth="xs" data-testid={props["data-testid"]}>
-      <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1, fontSize: "1rem", fontWeight: 600 }}>
+      <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1, fontSize: "1.125rem", lineHeight: "25px", fontWeight: 650 }}>
         {destructive && (
           <Icon fontSize="small" sx={{ color: "error.main" }}>warning_amber</Icon>
         )}
         {title}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText sx={{ color: "text.secondary", fontSize: "0.9rem" }}>{message}</DialogContentText>
+        <DialogContentText sx={{ color: "text.primary" }}>{message}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onCancel} sx={{ textTransform: "none" }}>
+        <Button variant="outlined" onClick={onCancel}>
           {cancelLabel || Locale.label("common.cancel")}
         </Button>
         <Button
           onClick={onConfirm}
           variant="contained"
-          disableElevation
           color={destructive ? "error" : "primary"}
-          sx={{ textTransform: "none", fontWeight: 600 }}
         >
           {confirmLabel || Locale.label("common.confirm", "Confirm")}
         </Button>

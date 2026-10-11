@@ -165,6 +165,7 @@ test.describe.serial("Registrations — Registration Questions, Add Attendee, fi
   });
 
   test("Registration Questions dropdown assigns a form, revealing the Unanswered filter chip", async () => {
+    await page.getByTestId("registration-settings-button").click();
     const settingsCard = page.locator(".MuiCard-root").filter({ hasText: "Registration Settings" });
     await expect(settingsCard).toBeVisible({ timeout: 10000 });
     const formSelect = settingsCard.locator('[role="combobox"]');

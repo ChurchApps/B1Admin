@@ -42,7 +42,7 @@ async function setEnabled(page: Page, on: boolean) {
 async function openPlanTypeEditor(page: Page) {
   const row = page.locator("tr", { hasText: PLAN_TYPE_NAME });
   await expect(row).toBeVisible({ timeout: 10000 });
-  await row.locator('button:has(svg[data-testid="EditIcon"])').click();
+  await row.getByRole("button", { name: "Edit", exact: true }).click();
   await page.locator('[role="dialog"]').waitFor({ state: "visible", timeout: 10000 });
 }
 

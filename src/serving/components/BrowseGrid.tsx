@@ -36,8 +36,8 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files = [], sel
             {folder.thumbnail ? (
               <CardMedia component="img" height="80" image={folder.thumbnail} alt={folder.title} sx={{ objectFit: "cover", width: "100%" }} />
             ) : (
-              <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: isLeaf ? "primary.light" : "grey.200" }}>
-                {isLeaf ? <PlayArrowIcon sx={{ fontSize: 40, color: "primary.contrastText" }} /> : <FolderIcon sx={{ fontSize: 40, color: "grey.500" }} />}
+              <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: isLeaf ? "var(--b1-selected)" : "var(--b1-hover)" }}>
+                {isLeaf ? <PlayArrowIcon sx={{ fontSize: 40, color: "var(--b1-on-selected)" }} /> : <FolderIcon sx={{ fontSize: 40, color: "text.secondary" }} />}
               </Box>
             )}
             <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
@@ -61,14 +61,14 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files = [], sel
             {file.thumbnail ? (
               <CardMedia component="img" height="80" image={file.thumbnail} alt={file.title} sx={{ objectFit: "cover", width: "100%" }} />
             ) : (
-              <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "secondary.light" }}>
-                <AddIcon sx={{ fontSize: 40, color: "secondary.contrastText" }} />
+              <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "var(--b1-selected)" }}>
+                <AddIcon sx={{ fontSize: 40, color: "var(--b1-on-selected)" }} />
               </Box>
             )}
             {fileSelected && <CheckCircleIcon color="primary" sx={{ position: "absolute", top: 4, right: 4, bgcolor: "background.paper", borderRadius: "50%" }} />}
             <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
               <Typography variant="body2" noWrap title={file.title}>{file.title}</Typography>
-              <Typography variant="caption" color="secondary">{Locale.label("plans.browseGrid.addOn")}</Typography>
+              <Typography variant="caption" color="text.secondary">{Locale.label("plans.browseGrid.addOn")}</Typography>
             </CardContent>
           </CardActionArea>
         </Card>

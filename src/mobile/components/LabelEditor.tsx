@@ -320,7 +320,7 @@ export function LabelEditor(props: Props) {
               <TextField type="number" label={Locale.label("attendance.labels.height")} value={tpl.height ?? ""} onChange={(e) => setTpl({ ...tpl, height: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-height-input" />
             </Stack>
             <Box sx={{ overflowX: "auto" }}>
-              <Paper sx={{ position: "relative", width: CANVAS_W, height: canvasH, border: "1px solid", borderColor: "divider", boxSizing: "content-box", overflow: "hidden", bgcolor: "#FFF" }} onPointerDown={() => setSelectedId(null)} data-testid="label-canvas">
+              <Paper elevation={0} sx={{ position: "relative", width: CANVAS_W, height: canvasH, border: "1px solid", borderColor: "divider", boxSizing: "content-box", overflow: "hidden", bgcolor: "#FFF" }} onPointerDown={() => setSelectedId(null)} data-testid="label-canvas">
                 {blocks.map((b) => (
                   <div key={b.id} style={blockStyle(b)} onPointerDown={(e) => handlePointerDown(e, b)} onPointerMove={handlePointerMove} onPointerUp={() => { drag.current = null; }} data-testid={`block-${b.id}`}>
                     {blockContent(b)}

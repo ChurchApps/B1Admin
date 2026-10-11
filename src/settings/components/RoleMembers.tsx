@@ -1,10 +1,12 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { ApiHelper, DisplayBox, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { type RoleMemberInterface, type RoleInterface } from "@churchapps/helpers";
-import { Alert, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Alert, Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { SettingsPanel } from "./SettingsPanel";
 
 interface Props {
   role: RoleInterface;
@@ -107,13 +109,15 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
   return (
     <>
       {ConfirmDialogElement}
-      <DisplayBox id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
-        <Table id="roleMemberTable">
-          <TableHead>{tableHeader}</TableHead>
-          <TableBody>{tableRows}</TableBody>
-        </Table>
+      <SettingsPanel id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("settings.roleMembers.mem")} tabIndex={0}>
+          <Table id="roleMemberTable">
+            <TableHead>{tableHeader}</TableHead>
+            <TableBody>{tableRows}</TableBody>
+          </Table>
+        </Box>
         {lastAdminWarning}
-      </DisplayBox>
+      </SettingsPanel>
     </>
   );
 });

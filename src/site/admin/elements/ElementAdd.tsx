@@ -49,7 +49,7 @@ function DraggableElement({ config, draggingCallback, index, onSelect }: { confi
   drag(dragRef);
 
   return (
-    <div
+    <Box
       ref={dragRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -57,50 +57,38 @@ function DraggableElement({ config, draggingCallback, index, onSelect }: { confi
         if (isDragging) return;
         onSelect?.({ type: config.type, dndType: config.dndType, blockId: config.blockId });
       }}
-      style={{
-        background: "#fff",
-        border: `1px solid ${isHovered ? "var(--c1)" : "var(--border-main)"}`,
-        borderRadius: "8px",
-        padding: "10px 12px",
+      sx={{
+        bgcolor: isHovered ? "action.hover" : "background.paper",
+        border: 1,
+        borderColor: isHovered ? "primary.main" : "divider",
+        borderRadius: "var(--b1-radius-control)",
+        px: 1.5,
+        py: 1.5,
         cursor: isDragging ? "grabbing" : "grab",
         opacity: isDragging ? 0.6 : 1,
-        boxShadow: isHovered && !isDragging ? "0 2px 8px rgba(0,0,0,0.06)" : "none",
-        transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+        transition: "background-color 140ms, border-color 140ms",
         display: "flex",
         alignItems: "center",
-        gap: "10px",
-        minHeight: "48px"
+        gap: 1.5,
+        minHeight: 48
       }}
       title={config.description}
       tabIndex={index}
       data-testid={`draggable-element-${config.type}${config.blockId ? "-" + config.blockId : ""}`}
     >
-      <Box
-        sx={{
-          width: 32,
-          height: 32,
-          borderRadius: "6px",
-          background: "var(--bg-sub)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0
-        }}
-      >
-        <Icon sx={{ color: "text.primary", fontSize: 18 }}>{config.icon}</Icon>
-      </Box>
+      <Icon sx={{ color: "text.secondary", fontSize: 20, flexShrink: 0 }}>{config.icon}</Icon>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Box sx={{ color: "text.primary", fontSize: "0.85rem", fontWeight: 600, lineHeight: 1.2 }}>
+        <Box sx={{ color: "text.primary", fontSize: 14, fontWeight: 600, lineHeight: "21px" }}>
           {config.label}
         </Box>
         {isHovered && (
-          <Box sx={{ color: "text.secondary", fontSize: "0.72rem", lineHeight: 1.3, mt: 0.25 }}>
+          <Box sx={{ color: "text.secondary", fontSize: 12, lineHeight: "18px", mt: 0.5 }}>
             {config.description}
           </Box>
         )}
       </Box>
-      <Icon sx={{ color: "divider", fontSize: 14, flexShrink: 0 }}>drag_indicator</Icon>
-    </div>
+      <Icon sx={{ color: "text.secondary", fontSize: 16, flexShrink: 0 }}>drag_indicator</Icon>
+    </Box>
   );
 }
 
@@ -238,9 +226,8 @@ export function ElementAdd(props: Props) {
         minHeight: 36,
         "& .MuiTab-root": {
           minHeight: 36,
-          textTransform: "none",
-          fontSize: "0.8rem",
-          fontWeight: 500,
+          fontSize: 14,
+          fontWeight: 600,
           color: "text.secondary",
           minWidth: "auto",
           px: 1.5,
@@ -259,10 +246,10 @@ export function ElementAdd(props: Props) {
   const emptyState = (
     <Box sx={{ textAlign: "center", py: 5, color: "text.secondary" }}>
       <Icon sx={{ fontSize: 36, mb: 1, opacity: 0.5 }}>search_off</Icon>
-      <Box sx={{ fontSize: "0.85rem", fontWeight: 500 }}>
+      <Box sx={{ fontSize: 14, fontWeight: 600 }}>
         {Locale.label("site.elementAdd.noElementsFound")}
       </Box>
-      <Box sx={{ fontSize: "0.75rem", mt: 0.25 }}>
+      <Box sx={{ fontSize: 12, mt: 0.5 }}>
         {Locale.label("site.elementAdd.tryDifferentSearch")}
       </Box>
     </Box>
@@ -272,8 +259,8 @@ export function ElementAdd(props: Props) {
     return (
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <Box sx={{ px: 1.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
-        <Box sx={{ borderBottom: "1px solid var(--border-main)", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
-        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.25, background: "var(--bg-sub)" }}>
+        <Box sx={{ borderBottom: 1, borderBottomColor: "divider", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
+        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.5, bgcolor: "background.default" }}>
           {filteredElements.length === 0 ? (
             emptyState
           ) : (
@@ -300,12 +287,12 @@ export function ElementAdd(props: Props) {
       onClose={props.updateCallback}
       fullWidth
       maxWidth="md"
-      PaperProps={{ sx: { borderRadius: "10px", maxHeight: "80vh", display: "flex", flexDirection: "column" } }}
+      PaperProps={{ sx: { borderRadius: "var(--b1-radius-panel)", maxHeight: "80vh", display: "flex", flexDirection: "column" } }}
       TransitionComponent={Fade}
       transitionDuration={150}
     >
-      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border-main)" }}>
-        <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "text.primary" }}>
+      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: 1, borderBottomColor: "divider" }}>
+        <Box sx={{ fontSize: 18, fontWeight: 600, color: "text.primary" }}>
           {Locale.label("site.elementAdd.addElements")}
         </Box>
         <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={props.updateCallback} />
@@ -313,13 +300,13 @@ export function ElementAdd(props: Props) {
 
       <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
 
-      <Box sx={{ borderBottom: "1px solid var(--border-main)", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
+      <Box sx={{ borderBottom: 1, borderBottomColor: "divider", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
 
-      <DialogContent sx={{ p: 2, overflowY: "auto", background: "var(--bg-sub)", flex: 1 }}>
+      <DialogContent sx={{ p: 2, overflowY: "auto", bgcolor: "background.default", flex: 1 }}>
         {filteredElements.length === 0 ? (
           emptyState
         ) : (
-          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 1.25 }}>
+          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 1.5 }}>
             {filteredElements.map((config, index) => (
               <DraggableElement
                 key={`${config.type}-${config.blockId || index}`}

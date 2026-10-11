@@ -4,9 +4,9 @@ import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Card, Checkbox } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Checkbox } from "@mui/material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { SortableTableHead, StatusChip, type SortableColumn } from "../../components/ui";
+import { EmptyState, SortableTableHead, StatusChip, Surface, type SortableColumn } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
 import { useConfirmDelete } from "../../hooks";
 import { formatFieldValue } from "../../helpers/PersonFieldHelper";
@@ -119,7 +119,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           result = (
             <Box>
               <Link to={"/people/" + (p.id || "")} style={{ textDecoration: "none" }}>
-                <Typography variant="body2" sx={{ color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}>
+                <Typography variant="body2" sx={{ color: "primary.main", fontWeight: 600, "&:hover": { textDecoration: "underline" } }}>
                   {p?.name?.display}
                 </Typography>
               </Link>
@@ -143,7 +143,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Stack direction="row" spacing={1} alignItems="center">
               {p?.contactInfo?.email && (
                 <>
-                  <EmailIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                  <EmailIcon sx={{ fontSize: 20, color: "text.secondary" }} />
                   <Typography variant="body2">{p?.contactInfo?.email}</Typography>
                 </>
               )}
@@ -155,7 +155,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Stack direction="row" spacing={1} alignItems="center">
               {(p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone) && (
                 <>
-                  <PhoneIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                  <PhoneIcon sx={{ fontSize: 20, color: "text.secondary" }} />
                   <Typography variant="body2">{p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone}</Typography>
                 </>
               )}
@@ -346,10 +346,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         return (
           <TableRow
             key={p.id}
-            sx={{
-              "&:hover": { backgroundColor: "rgba(128,128,128,0.1)" },
-              cursor: "pointer"
-            }}
+            sx={{ cursor: "pointer" }}
             onClick={() => navigate(`/people/${p.id}`)}>
             {props.canSelectPeople && (
               <TableCell padding="checkbox">
@@ -421,11 +418,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const getResults = () => {
     if (people.length === 0) {
       return (
-        <Box sx={{ textAlign: "center", py: 4 }}>
-          <Typography variant="h6" color="text.secondary">
-            {Locale.label("people.peopleSearchResults.noResMsg")}
-          </Typography>
-        </Box>
+        <EmptyState variant="plain" title={Locale.label("people.peopleSearchResults.noResMsg")} />
       );
     }
 
@@ -461,11 +454,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       {ConfirmDialogElement}
       {getResults()}
       {props.showCreatePerson !== false && (
-        <Card sx={{ mt: 3 }} id="createPersonForm">
-          <Box sx={{ p: 3 }}>
-            <CreatePerson onCreate={navigateToPersonCreate} />
-          </Box>
-        </Card>
+        <Surface id="createPersonForm" sx={{ mt: 3 }}>
+          <CreatePerson onCreate={navigateToPersonCreate} />
+        </Surface>
       )}
     </Box>
   );

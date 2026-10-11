@@ -168,7 +168,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
               <Box>
                 {photo && (
                   <Box sx={{ mb: 2, maxWidth: 300 }}>
-                    <img src={photo} style={{ width: "100%", height: "auto", aspectRatio: "16/9", objectFit: "cover", borderRadius: 4 }} alt={Locale.label("settings.appEdit.tabIconAlt")} />
+                    <img src={photo} style={{ width: "100%", height: "auto", aspectRatio: "16/9", objectFit: "cover", borderRadius: 6 }} alt={Locale.label("settings.appEdit.tabIconAlt")} />
                   </Box>
                 )}
                 <Button variant="outlined" onClick={() => setShowPhotoGallery(true)} sx={{ textTransform: "none" }}>
@@ -225,7 +225,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
               />
 
               {visibility === "groups" && (
-                <Box sx={{ pl: 2, border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2 }}>
+                <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 2 }}>
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.appEdit.selectGroups")}</Typography>
                   <FormGroup>
                     {groups.map(group => (
@@ -242,7 +242,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 <>
                   <Divider sx={{ mt: 2 }} />
                   <Box sx={{ textAlign: "center" }}>
-                    <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
+                    <Button color="error" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
                   </Box>
                 </>
               )}

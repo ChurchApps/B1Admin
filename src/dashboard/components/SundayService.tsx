@@ -71,6 +71,23 @@ export const SundayService: React.FC = () => {
               )}
             </p>
           )}
+        {!hasLive && !sunday.isLoading && (
+          <p className="om-quiet" data-testid="sunday-live-hint">
+            {data?.isSunday
+              ? Locale.label("dashboard.sunday.liveHintSunday", "Who is in the room, who is serving, and who just walked in will show here once check-in and serving are in use.")
+              : Locale.label("dashboard.sunday.liveHint", "Who was in the room last Sunday and first-time households show here through the week.")}
+            {" "}
+            <Link to="/people">{Locale.label("components.wrapper.ppl", "People")}</Link>
+            {" · "}
+            <Link to="/attendance">{Locale.label("components.wrapper.att", "Attendance")}</Link>
+            {canPlans && (
+              <>
+                {" · "}
+                <Link to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
+              </>
+            )}
+          </p>
+        )}
       </section>
 
       {hasLive && (

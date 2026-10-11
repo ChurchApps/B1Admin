@@ -1,13 +1,15 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader, DateHelper } from "@churchapps/apphelper";
-import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
+import { UserHelper, Permissions, Locale, ApiHelper, Loading, DateHelper } from "@churchapps/apphelper";
+import { useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
-import { Box, Grid, Stack, Typography } from "@mui/material";
-import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Mail as MailIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon } from "@mui/icons-material";
+import { Box, Link as MuiLink, Typography } from "@mui/material";
+import { VerbRow } from "../components/ui";
+import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon, ImportExport as ImportExportIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { HeaderSecondaryButton } from "../components/ui";
-import { SettingsConfigList, type ConfigSection } from "./components/SettingsConfigList";
+import { SettingsLayout, SettingsRow, eyebrowSx } from "./components/SettingsPage";
+import { type ConfigSection } from "./components/SettingsConfigList";
+import { SectionNav } from "./components/SectionNav";
 import { ChurchInfoSection } from "./components/ChurchInfoSection";
 import { SettingsToggleSection } from "./components/SettingsToggleSection";
 import { CampusesSection } from "./components/CampusesSection";
@@ -26,15 +28,7 @@ const SECTION_KEYS = [
   "church-info", "general", "region", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
 ];
 
-const SummaryRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
-  <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ py: 1 }}>
-    <Typography variant="body2" color="text.secondary">{label}</Typography>
-    <Typography variant="body2" sx={{ fontWeight: 500, textAlign: "right" }}>{value || "—"}</Typography>
-  </Stack>
-);
-
 export const ManageChurch = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const hash = location.hash?.replace("#", "");
 
@@ -44,7 +38,7 @@ export const ManageChurch = () => {
   const hasAccess = UserHelper.checkAccess(Permissions.membershipApi.settings.edit);
   const hasGiving = UserHelper.checkAccess(Permissions.givingApi.settings.edit);
 
-  const selected = SECTION_KEYS.includes(hash) ? hash : "church-info";
+  const [selected, setSelected] = useState(SECTION_KEYS.includes(hash) ? hash : "church-info");
 
   const church = useQuery<ChurchInterface>({
     queryKey: [`/churches/${churchId}?include=permissions`, "MembershipApi"],
@@ -57,6 +51,18 @@ export const ManageChurch = () => {
   const domains = useQuery<any[]>({ queryKey: ["/domains", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const campuses = useQuery<any[]>({ queryKey: ["/campuses", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const personFields = useQuery<any[]>({ queryKey: ["/personfields", "MembershipApi"], placeholderData: [], enabled: hasAccess });
+
+  useEffect(() => {
+    if (!hash || church.isLoading) return;
+    document.getElementById(`section-${hash}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [hash, church.isLoading]);
+
+  // Router navigation remounts the whole Authenticated layout (it re-renders on every location change), wiping open editors, so the hash is written directly.
+  const selectSection = (key: string) => {
+    setSelected(key);
+    window.history.replaceState(window.history.state, "", `#${key}`);
+    document.getElementById(`section-${key}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const handleSaved = useCallback(() => {
     church.refetch();
@@ -109,13 +115,13 @@ export const ManageChurch = () => {
   const storageSubtitle = storageNames[storageProviderName] || Locale.label("settings.storageSettingsEdit.churchAppsFree");
 
   const sections: ConfigSection[] = [
-    { key: "church-info", title: Locale.label("settings.churchSettingsEdit.churchInfo"), subtitle: church.data.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle"), icon: <BusinessIcon />, color: "primary" },
+    { key: "church-info", title: Locale.label("settings.churchSettingsEdit.churchInfo"), subtitle: church.data.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle"), icon: <BusinessIcon />, color: "primary", status: "ok" },
     { key: "general", title: Locale.label("settings.churchSettingsEdit.general"), subtitle: Locale.label("settings.supportContactSettingsEdit.supportContact"), icon: <TuneIcon />, color: "secondary" },
     { key: "region", title: Locale.label("settings.regionSettingsEdit.title"), subtitle: regionSubtitle, icon: <PublicIcon />, color: "info" },
-    ...(hasGiving ? [{ key: "giving", title: Locale.label("settings.givingSettingsEdit.giving"), subtitle: givingSubtitle, icon: <VolunteerActivismIcon />, color: "success" } as ConfigSection] : []),
-    { key: "texting", title: Locale.label("settings.churchSettingsEdit.textingTitle"), subtitle: textingSubtitle, icon: <SmsIcon />, color: "warning" },
+    ...(hasGiving ? [{ key: "giving", title: Locale.label("settings.givingSettingsEdit.giving"), subtitle: givingSubtitle, icon: <VolunteerActivismIcon />, color: "success", status: gateway ? "ok" : "todo" } as ConfigSection] : []),
+    { key: "texting", title: Locale.label("settings.churchSettingsEdit.textingTitle"), subtitle: textingSubtitle, icon: <SmsIcon />, color: "warning", status: textingProvider ? "ok" : "todo" },
     { key: "storage", title: Locale.label("settings.storageSettingsEdit.title"), subtitle: storageSubtitle, icon: <CloudIcon />, color: "info" },
-    { key: "domains", title: Locale.label("settings.domainSettingsEdit.domains"), subtitle: domainsSubtitle, icon: <LanguageIcon />, color: "info" },
+    { key: "domains", title: Locale.label("settings.domainSettingsEdit.domains"), subtitle: domainsSubtitle, icon: <LanguageIcon />, color: "info", status: domainList.length ? "ok" : "todo" },
     { key: "grade-promotion", title: Locale.label("settings.gradePromotionSettingsEdit.title"), subtitle: gradePromotionSubtitle, icon: <SchoolIcon />, color: "secondary" },
     { key: "check-ins", title: Locale.label("settings.checkinSettingsEdit.title"), subtitle: checkinsSubtitle, icon: <HowToRegIcon />, color: "info" },
     { key: "campuses", title: Locale.label("settings.campuses.campuses"), subtitle: campusesSubtitle, icon: <BusinessIcon />, color: "primary" },
@@ -127,8 +133,8 @@ export const ManageChurch = () => {
 
   const givingView = gateway ? (
     <Box>
-      <SummaryRow label={Locale.label("settings.givingSettingsEdit.prov")} value={gateway.provider} />
-      <SummaryRow label={Locale.label("settings.givingSettingsEdit.currency")} value={(gateway.currency || "").toUpperCase()} />
+      <SettingsRow label={Locale.label("settings.givingSettingsEdit.prov")} value={gateway.provider} />
+      <SettingsRow label={Locale.label("settings.givingSettingsEdit.currency")} value={(gateway.currency || "").toUpperCase()} />
     </Box>
   ) : (
     <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>{Locale.label("settings.landing.notConfigured")}</Typography>
@@ -136,19 +142,14 @@ export const ManageChurch = () => {
 
   const domainsView = domainList.length > 0 ? (
     <Box>
-      {domainList.map((d) => (
-        <Stack key={d.id || d.domainName} direction="row" spacing={1} alignItems="center" sx={{ py: 0.75 }}>
-          <LinkIcon sx={{ color: "text.disabled", fontSize: 18 }} />
-          <Typography variant="body2">{d.domainName}</Typography>
-        </Stack>
-      ))}
+      {domainList.map((d) => <Typography key={d.id || d.domainName} variant="body2" sx={{ py: 0.75 }}>{d.domainName}</Typography>)}
     </Box>
   ) : (
     <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>{Locale.label("settings.landing.domainsNone")}</Typography>
   );
 
-  const renderDetail = () => {
-    switch (activeKey) {
+  const renderSection = (key: string) => {
+    switch (key) {
       case "church-info":
         return <ChurchInfoSection church={church.data} onSaved={handleSaved} />;
       case "general":
@@ -157,7 +158,7 @@ export const ManageChurch = () => {
             headerText={Locale.label("settings.churchSettingsEdit.general")}
             headerIcon="tune"
             data-testid="settings-general"
-            view={<SummaryRow label={Locale.label("settings.supportContactSettingsEdit.supportContact")} value={supportContact || Locale.label("settings.landing.notSet")} />}
+            view={<SettingsRow label={Locale.label("settings.supportContactSettingsEdit.supportContact")} value={supportContact || Locale.label("settings.landing.notSet")} />}
             renderEdit={(saveTrigger, onSaveComplete) => <SupportContactSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
@@ -170,9 +171,9 @@ export const ManageChurch = () => {
             data-testid="settings-region"
             view={(
               <Box>
-                <SummaryRow label={Locale.label("settings.regionSettingsEdit.region")} value={regionName(region)} />
-                <SummaryRow label={Locale.label("settings.regionSettingsEdit.dateFormat")} value={regionSample(region)} />
-                <SummaryRow label={Locale.label("settings.regionSettingsEdit.phoneFormat")} value={Locale.label(localPhones ? "settings.landing.phoneLocalSubtitle" : "settings.regionSettingsEdit.phoneInternational")} />
+                <SettingsRow label={Locale.label("settings.regionSettingsEdit.region")} value={regionName(region)} />
+                <SettingsRow label={Locale.label("settings.regionSettingsEdit.dateFormat")} value={regionSample(region)} />
+                <SettingsRow label={Locale.label("settings.regionSettingsEdit.phoneFormat")} value={Locale.label(localPhones ? "settings.landing.phoneLocalSubtitle" : "settings.regionSettingsEdit.phoneInternational")} />
               </Box>
             )}
             renderEdit={(saveTrigger, onSaveComplete) => <RegionSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
@@ -196,7 +197,7 @@ export const ManageChurch = () => {
             headerText={Locale.label("settings.churchSettingsEdit.textingTitle")}
             headerIcon="sms"
             data-testid="settings-texting"
-            view={<SummaryRow label={Locale.label("settings.textingSettingsEdit.provider")} value={textingProvider || Locale.label("settings.landing.notConfigured")} />}
+            view={<SettingsRow label={Locale.label("settings.textingSettingsEdit.provider")} value={textingProvider || Locale.label("settings.landing.notConfigured")} />}
             renderEdit={(saveTrigger, onSaveComplete) => <TextingSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
@@ -207,7 +208,7 @@ export const ManageChurch = () => {
             headerText={Locale.label("settings.storageSettingsEdit.title")}
             headerIcon="cloud"
             data-testid="settings-storage"
-            view={<SummaryRow label={Locale.label("settings.storageSettingsEdit.provider")} value={storageSubtitle} />}
+            view={<SettingsRow label={Locale.label("settings.storageSettingsEdit.provider")} value={storageSubtitle} />}
             renderEdit={(saveTrigger, onSaveComplete) => <StorageSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
@@ -229,7 +230,7 @@ export const ManageChurch = () => {
             headerText={Locale.label("settings.gradePromotionSettingsEdit.title")}
             headerIcon="school"
             data-testid="settings-grade-promotion"
-            view={<SummaryRow label={Locale.label("settings.gradePromotionSettingsEdit.title")} value={gradePromotionSubtitle} />}
+            view={<SettingsRow label={Locale.label("settings.gradePromotionSettingsEdit.title")} value={gradePromotionSubtitle} />}
             renderEdit={(saveTrigger, onSaveComplete) => <GradePromotionSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
@@ -241,7 +242,7 @@ export const ManageChurch = () => {
             headerIcon="how_to_reg"
             data-testid="settings-check-ins"
             view={<>
-              <SummaryRow label={Locale.label("settings.checkinSettingsEdit.ratioEnforcement")} value={checkinsSubtitle} />
+              <SettingsRow label={Locale.label("settings.checkinSettingsEdit.ratioEnforcement")} value={checkinsSubtitle} />
               <Typography component={RouterLink} to="/mobile/checkin" variant="body2" sx={{ display: "inline-block", mt: 1, color: "var(--link)" }}>{Locale.label("settings.checkinSettingsEdit.kioskLink")}</Typography>
             </>}
             renderEdit={(saveTrigger, onSaveComplete) => <CheckinSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
@@ -259,43 +260,31 @@ export const ManageChurch = () => {
     }
   };
 
-  return (
-    <>
-      <PageHeader icon={<BusinessIcon />} title={church.data.name || Locale.label("settings.manageChurch.title")} subtitle={church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}>
-        <Stack direction="row" spacing={1}>
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <HeaderSecondaryButton startIcon={<MailIcon />} onClick={() => navigate("/settings/email-templates")}>
-              {Locale.label("settings.emailTemplatesPage.title")}
-            </HeaderSecondaryButton>
-          )}
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <HeaderSecondaryButton startIcon={<HistoryIcon />} onClick={() => navigate("/settings/audit-log")}>
-              {Locale.label("settings.manageChurch.auditLog")}
-            </HeaderSecondaryButton>
-          )}
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <HeaderSecondaryButton startIcon={<LayersIcon />} onClick={() => navigate("/settings/batches")}>
-              {Locale.label("settings.manageChurch.batches")}
-            </HeaderSecondaryButton>
-          )}
-          <HeaderSecondaryButton
-            {...({ href: `https://transfer.b1.church/login?churchId=${churchId}#jwt=${encodeURIComponent(jwt || "")}`, target: "_blank", rel: "noreferrer noopener" } as any)}
-            startIcon={<PlayArrowIcon />}>
-            {Locale.label("settings.manageChurch.imEx")}
-          </HeaderSecondaryButton>
-        </Stack>
-      </PageHeader>
+  const address = [church.data.address1, church.data.address2, church.data.city, [church.data.state, church.data.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  const importExportUrl = `https://transfer.b1.church/login?churchId=${churchId}#jwt=${encodeURIComponent(jwt || "")}`;
 
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SettingsConfigList sections={sections} selected={activeKey} onSelect={(key) => navigate({ hash: key }, { replace: true })} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            {renderDetail()}
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+  return (
+    <SettingsLayout
+      eyebrow={Locale.label("components.wrapper.set")}
+      title={church.data.name || Locale.label("settings.manageChurch.title")}
+      subtitle={(
+        <>
+          {church.data.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}
+          {address && <Box component="span" data-testid="church-address" sx={{ display: "block", mt: 0.5 }}>{address}</Box>}
+        </>
+      )}
+      verbs={(
+        <VerbRow>
+          <MuiLink href={importExportUrl} target="_blank" rel="noreferrer noopener" underline="hover" sx={{ typography: "body2", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 0.75 }}><ImportExportIcon sx={{ fontSize: 18 }} />{Locale.label("settings.manageChurch.imEx")}</MuiLink>
+        </VerbRow>
+      )}
+      nav={<SectionNav hideOnMobile label={Locale.label("settings.landing.configuration")} sections={sections} selected={activeKey} onSelect={selectSection} />}>
+      {sections.map((s) => (
+        <Box key={s.key} id={`section-${s.key}`} className="om-section" sx={{ scrollMarginTop: 24, mb: 3 }}>
+          {s.key === "developer" && <Typography sx={{ ...eyebrowSx, mb: 1 }}>{s.title}</Typography>}
+          {renderSection(s.key)}
+        </Box>
+      ))}
+    </SettingsLayout>
   );
 };

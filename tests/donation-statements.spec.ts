@@ -111,7 +111,7 @@ test.describe.serial("Country statement formats", () => {
     await page.locator('[data-testid="settings-section-giving"]').click();
     const section = page.locator('[data-testid="settings-giving"]');
     await expect(section).toBeVisible({ timeout: 15000 });
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.locator('[data-testid="settings-giving"] [data-testid="small-button-edit"]').dispatchEvent("click");
     const formatSelect = section.locator('[data-testid="statement-format-select"]');
     await expect(formatSelect).toBeVisible({ timeout: 10000 });
     await formatSelect.click();

@@ -63,7 +63,7 @@ export const GroupDetails = memo((props: Props) => {
     if (!group) return <Loading />;
 
     return (
-      <Card elevation={0} sx={{ backgroundColor: "transparent" }}>
+      <Card elevation={0} sx={{ bgcolor: "transparent", border: 0 }}>
         <CardContent sx={{ p: 0 }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 4 }}>
@@ -72,16 +72,16 @@ export const GroupDetails = memo((props: Props) => {
                   sx={{
                     width: { xs: 280, md: 320 },
                     height: { xs: 158, md: 180 },
-                    borderRadius: 3,
+                    borderRadius: "var(--b1-radius-panel)",
                     overflow: "hidden",
                     mx: "auto",
                     mb: 2,
-                    backgroundColor: group.photoUrl ? "transparent" : "grey.100",
+                    bgcolor: group.photoUrl ? "transparent" : "var(--b1-canvas)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     border: "1px solid",
-                    borderColor: "grey.300",
+                    borderColor: "divider",
                     position: "relative"
                   }}>
                   {group.photoUrl ? (
@@ -95,20 +95,20 @@ export const GroupDetails = memo((props: Props) => {
                       }}
                     />
                   ) : (
-                    <Stack alignItems="center" spacing={1} sx={{ color: "grey.500" }}>
-                      <GroupIcon sx={{ fontSize: 48 }} />
-                      <Typography variant="body2" color="grey.500">
+                    <Stack alignItems="center" spacing={1} sx={{ color: "text.secondary" }}>
+                      <GroupIcon fontSize="large" />
+                      <Typography variant="body2" color="text.secondary">
                         {Locale.label("groups.groupDetails.noPhoto")}
                       </Typography>
                     </Stack>
                   )}
                 </Box>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h2" gutterBottom>
                   {group.name}
                 </Typography>
                 {isStandard && group.categoryName && (
                   <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mb: 2 }}>
-                    <CategoryIcon sx={{ fontSize: 20, color: "text.secondary" }} />
+                    <CategoryIcon fontSize="small" sx={{ color: "text.secondary" }} />
                     <Typography variant="body1" color="text.secondary">
                       {group.categoryName}
                     </Typography>
@@ -121,7 +121,7 @@ export const GroupDetails = memo((props: Props) => {
               <Stack spacing={3}>
                 {isStandard && (
                   <Box>
-                    <Typography variant="h6" gutterBottom sx={{ color: "primary.main" }}>
+                    <Typography variant="h3" component="h2" gutterBottom>
                       {Locale.label("groups.groupDetails.meetingInfo")}
                     </Typography>
                     <Stack spacing={2}>
@@ -153,7 +153,7 @@ export const GroupDetails = memo((props: Props) => {
 
                 {isStandard && (
                   <Box>
-                    <Typography variant="h6" gutterBottom sx={{ color: "primary.main" }}>
+                    <Typography variant="h3" component="h2" gutterBottom>
                       {Locale.label("groups.groupDetails.attendanceSettings")}
                     </Typography>
                     <Grid container spacing={2}>
@@ -182,8 +182,8 @@ export const GroupDetails = memo((props: Props) => {
                 {labelChips.length > 0 && (
                   <Box>
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-                      <LabelIcon sx={{ fontSize: 20, color: "text.secondary" }} />
-                      <Typography variant="h6" sx={{ color: "primary.main" }}>
+                      <LabelIcon fontSize="small" sx={{ color: "text.secondary" }} />
+                      <Typography variant="h3" component="h2">
                         {Locale.label("groups.groupDetails.labels")}
                       </Typography>
                     </Stack>
@@ -193,7 +193,7 @@ export const GroupDetails = memo((props: Props) => {
 
                 {isStandard && group.about && (
                   <Box>
-                    <Typography variant="h6" gutterBottom sx={{ color: "primary.main" }}>
+                    <Typography variant="h3" component="h2" gutterBottom>
                       {Locale.label("groups.groupDetails.about")}
                     </Typography>
                     <MarkdownPreview value={group.about} />

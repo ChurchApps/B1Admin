@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, Box, Divider, Table, TableBody, TableRow, TableCell, TableHead, Chip } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, Box, Divider, Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material";
 import { ApiHelper, Loading, Locale, CurrencyHelper } from "@churchapps/apphelper";
 import { FormSubmission } from "../../components";
+import { StatusBadge } from "../../components/ui";
 import { formatDateSafe } from "../../helpers/DateFormatHelper";
 import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface } from "../registrationCommerce";
 
@@ -72,7 +73,7 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
               <Divider sx={{ mb: 1 }} />
               <Stack direction="row" spacing={2} alignItems="center">
                 <Typography variant="body2">{Locale.label("registrations.commerce.paid")}: {money(paid)} / {money(total)}</Typography>
-                {balance > 0 && <Chip size="small" color="warning" label={`${Locale.label("registrations.commerce.balance")}: ${money(balance)}`} />}
+                {balance > 0 && <StatusBadge tone="warning">{`${Locale.label("registrations.commerce.balance")}: ${money(balance)}`}</StatusBadge>}
               </Stack>
             </Box>
 

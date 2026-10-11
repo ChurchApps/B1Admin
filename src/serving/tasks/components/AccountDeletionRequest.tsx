@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
-import { Card, CardContent, Typography, Stack, Box, Button, Alert, Link, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
-import { PersonRemove as DeletionIcon, CheckCircle as ApproveIcon, Block as RejectIcon } from "@mui/icons-material";
+import { Typography, Stack, Box, Button, Alert, Link, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { CheckCircle as ApproveIcon, Block as RejectIcon } from "@mui/icons-material";
+import { Surface } from "../../../components/ui";
 import { useConfirmDelete } from "../../../hooks";
 
 interface Props {
@@ -71,7 +72,7 @@ export const AccountDeletionRequest = (props: Props) => {
   };
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }} data-testid="account-deletion-request">
+    <Surface sx={{ mb: 3 }} data-testid="account-deletion-request">
       {ConfirmDialogElement}
       <Dialog open={rejectOpen} onClose={() => !busy && setRejectOpen(false)} fullWidth maxWidth="sm" data-testid="account-deletion-reject-dialog">
         <DialogTitle>{Locale.label("tasks.accountDeletion.rejectTitle", "Decline this request")}</DialogTitle>
@@ -103,55 +104,50 @@ export const AccountDeletionRequest = (props: Props) => {
           </Stack>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setRejectOpen(false)} disabled={busy} sx={{ textTransform: "none" }}>{Locale.label("common.cancel", "Cancel")}</Button>
-          <Button variant="contained" disableElevation onClick={handleReject} disabled={busy || !canSubmitReject} data-testid="account-deletion-reject-confirm" sx={{ textTransform: "none", fontWeight: 600 }}>
+          <Button onClick={() => setRejectOpen(false)} disabled={busy}>{Locale.label("common.cancel", "Cancel")}</Button>
+          <Button variant="contained" onClick={handleReject} disabled={busy || !canSubmitReject} data-testid="account-deletion-reject-confirm">
             {Locale.label("tasks.accountDeletion.rejectConfirm", "Decline and notify")}
           </Button>
         </DialogActions>
       </Dialog>
-      <CardContent>
-        <Stack spacing={2}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <DeletionIcon sx={{ color: "error.main", fontSize: 20 }} />
-            <Typography variant="h6">{Locale.label("tasks.accountDeletion.title", "Account Deletion Request")}</Typography>
+      <Stack spacing={2}>
+        <Typography variant="h3" component="h2">{Locale.label("tasks.accountDeletion.title", "Account Deletion Request")}</Typography>
+
+        <Typography variant="body2" color="text.secondary" data-testid="account-deletion-description">
+          {Locale.label("tasks.accountDeletion.description", "{name} asked to delete their account. This is a right-to-erasure request: approve unless a legal exception applies. Approving anonymizes their record (name, contact details, notes and photo) and removes their login. The church has 30 days to decide. Declining requires a reason, which is sent to the member.").replace("{name}", personName)}
+        </Typography>
+
+        {props.task.associatedWithId && (
+          <Box>
+            <Link href={"/people/" + props.task.associatedWithId} onClick={(e) => { e.preventDefault(); navigate("/people/" + props.task.associatedWithId); }} data-testid="account-deletion-person">
+              {Locale.label("tasks.accountDeletion.viewPerson", "View person")}: {personName}
+            </Link>
+          </Box>
+        )}
+
+        {error && <Alert severity="error">{error}</Alert>}
+
+        {isOpen && !canApprove && <Alert severity="warning">{Locale.label("tasks.accountDeletion.needsPeopleEdit", "Approving requires the People > Edit permission.")}</Alert>}
+
+        {isOpen && (
+          <Stack direction="row" spacing={1}>
+            <Button variant="contained" color="error" startIcon={<ApproveIcon />} onClick={handleApprove} disabled={busy || !canApprove} data-testid="account-deletion-approve">
+              {Locale.label("tasks.accountDeletion.approve", "Approve deletion")}
+            </Button>
+            <Button variant="outlined" startIcon={<RejectIcon />} onClick={() => setRejectOpen(true)} disabled={busy || !canApprove} data-testid="account-deletion-reject">
+              {Locale.label("tasks.accountDeletion.reject", "Decline")}
+            </Button>
           </Stack>
+        )}
 
-          <Typography variant="body2" color="text.secondary" data-testid="account-deletion-description">
-            {Locale.label("tasks.accountDeletion.description", "{name} asked to delete their account. This is a right-to-erasure request: approve unless a legal exception applies. Approving anonymizes their record (name, contact details, notes and photo) and removes their login. The church has 30 days to decide. Declining requires a reason, which is sent to the member.").replace("{name}", personName)}
-          </Typography>
-
-          {props.task.associatedWithId && (
-            <Box>
-              <Link href={"/people/" + props.task.associatedWithId} onClick={(e) => { e.preventDefault(); navigate("/people/" + props.task.associatedWithId); }} data-testid="account-deletion-person">
-                {Locale.label("tasks.accountDeletion.viewPerson", "View person")}: {personName}
-              </Link>
-            </Box>
-          )}
-
-          {error && <Alert severity="error">{error}</Alert>}
-
-          {isOpen && !canApprove && <Alert severity="warning">{Locale.label("tasks.accountDeletion.needsPeopleEdit", "Approving requires the People > Edit permission.")}</Alert>}
-
-          {isOpen && (
-            <Stack direction="row" spacing={1}>
-              <Button variant="contained" color="error" startIcon={<ApproveIcon />} onClick={handleApprove} disabled={busy || !canApprove} data-testid="account-deletion-approve" sx={{ textTransform: "none", fontWeight: 600 }}>
-                {Locale.label("tasks.accountDeletion.approve", "Approve deletion")}
-              </Button>
-              <Button variant="outlined" startIcon={<RejectIcon />} onClick={() => setRejectOpen(true)} disabled={busy || !canApprove} data-testid="account-deletion-reject" sx={{ textTransform: "none", fontWeight: 600 }}>
-                {Locale.label("tasks.accountDeletion.reject", "Decline")}
-              </Button>
-            </Stack>
-          )}
-
-          {!isOpen && (
-            <Alert severity={outcome === "approved" ? "success" : "info"} data-testid="account-deletion-outcome">
-              {outcome === "approved"
-                ? Locale.label("tasks.accountDeletion.approved", "Approved: the member's record was anonymized and their login was removed.")
-                : Locale.label("tasks.accountDeletion.rejected", "Declined: nothing was changed and the member was told why.") + (storedReason ? " " + storedReason : "")}
-            </Alert>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+        {!isOpen && (
+          <Alert severity={outcome === "approved" ? "success" : "info"} data-testid="account-deletion-outcome">
+            {outcome === "approved"
+              ? Locale.label("tasks.accountDeletion.approved", "Approved: the member's record was anonymized and their login was removed.")
+              : Locale.label("tasks.accountDeletion.rejected", "Declined: nothing was changed and the member was told why.") + (storedReason ? " " + storedReason : "")}
+          </Alert>
+        )}
+      </Stack>
+    </Surface>
   );
 };

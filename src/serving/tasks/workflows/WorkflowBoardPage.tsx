@@ -1,17 +1,16 @@
-import { Box, Button, Stack, Paper, Typography, Select, MenuItem, Menu } from "@mui/material";
+import { Box, Button, Typography, Select, MenuItem, Menu } from "@mui/material";
 import React from "react";
-import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
-import { useNavigate, useParams } from "react-router-dom";
+import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Add as AddIcon, BarChart as ReportIcon, ArrowBack as BackIcon, Bolt as TriggerIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, Edit as EditIcon, ViewKanban as WorkflowsIcon } from "@mui/icons-material";
+import { Add as AddIcon, ArrowBack as BackIcon, Bolt as TriggersIcon, CheckCircle as CompleteIcon, EditOutlined as EditIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, ViewKanbanOutlined as BoardIcon } from "@mui/icons-material";
 import { WorkflowStepColumn } from "./components/WorkflowStepColumn";
 import { WorkflowStepEdit } from "./components/WorkflowStepEdit";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
 import { WorkflowTriggersManager } from "./components/WorkflowTriggersManager";
 import { ContentPicker } from "../components/ContentPicker";
-import { NavigationTabs } from "../../../components/ui/NavigationTabs";
-import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../../components/ui";
+import { BulkBar, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, StatusBadge, ViewToggle, formWidthSx } from "../../../components/ui";
 import { type WorkflowBoardInterface, type WorkflowStepInterface, type TaskInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
 
@@ -100,109 +99,114 @@ export const WorkflowBoardPage = () => {
   const routesForStep = (stepId: string) => routes.filter((r) => r.stepId === stepId);
   const actionsForStep = (stepId: string) => actions.filter((a) => a.stepId === stepId);
 
+  const wf = board.data?.workflow;
+  const onBoard = tab === "board" && !editWorkflow && !editStep;
+  const showBoard = () => { setTab("board"); setEditWorkflow(null); setEditStep(null); };
+  const showTriggers = () => { setTab("triggers"); setEditWorkflow(null); setEditStep(null); };
+
+  const getSlice = () => {
+    if (tab === "triggers") return <WorkflowTriggersManager workflowId={workflowId} canManage={canManage} />;
+    if (editWorkflow && canManage) {
+      return (
+        <Box sx={formWidthSx}>
+          <WorkflowEdit workflow={editWorkflow} categories={categories.data} onCancel={() => setEditWorkflow(null)} onSave={handleWorkflowSaved} onDelete={handleWorkflowDeleted} onCategoriesChanged={() => categories.refetch()} />
+        </Box>
+      );
+    }
+    if (editStep && canManage) {
+      return (
+        <Box sx={formWidthSx}>
+          <WorkflowStepEdit step={editStep} steps={steps} workflows={(workflows.data || []).filter((w) => w.id !== workflowId)}
+            onCancel={() => setEditStep(null)} onSave={(keepOpen) => { if (!keepOpen) setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
+        </Box>
+      );
+    }
+    return (
+      <Box sx={{ overflowX: "auto" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
+          {steps.map((step) => (
+            <WorkflowStepColumn
+              key={step.id}
+              workflowId={workflowId}
+              step={step}
+              cards={cardsForStep(step.id || "")}
+              routes={routesForStep(step.id || "")}
+              actions={actionsForStep(step.id || "")}
+              steps={steps}
+              workflows={workflows.data || []}
+              canEdit={canEdit}
+              canManage={canManage}
+              selectedIds={selectedIds}
+              onToggleSelect={toggleSelect}
+              onDropCard={handleDropCard}
+              onOpenCard={setOpenCard}
+              onEditStep={setEditStep}
+              onChanged={refetch}
+            />
+          ))}
+          {steps.length === 0 && canManage && (
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
+          )}
+        </Box>
+      </Box>
+    );
+  };
+
+  const selectedNames = cards.filter((c) => c.id && selectedIds.has(c.id)).slice(0, 3).map((c) => c.title).filter(Boolean).join(", ");
+
   return (
     <>
       <PageHeader
-        icon={<WorkflowsIcon />}
-        title={board.data?.workflow?.name || Locale.label("tasks.workflowsPage.title")}
+        title={wf?.name || Locale.label("tasks.workflowsPage.title")}
         subtitle={Locale.label("tasks.workflowBoard.subtitle")}
-        tabs={(
-          <NavigationTabs
-            selectedTab={tab}
-            onTabChange={(v) => setTab(v as "board" | "triggers")}
-            testId="board-tabs"
-            onHeader
-            tabs={[
-              { value: "board", label: Locale.label("tasks.workflowBoard.boardTab"), icon: <EditIcon fontSize="small" />, testId: "board-tab" },
-              { value: "triggers", label: Locale.label("tasks.eventTriggers.title"), icon: <TriggerIcon fontSize="small" />, testId: "board-triggers-tab" }
-            ]}
-          />
-        )}
-      >
-        <Stack direction="row" spacing={1}>
-          <HeaderSecondaryButton startIcon={<BackIcon />} onClick={() => navigate("/serving/tasks/workflows")}>{Locale.label("tasks.workflowsPage.title")}</HeaderSecondaryButton>
-          {canManage && <HeaderSecondaryButton startIcon={<EditIcon />} data-testid="edit-workflow-button" onClick={handleEditWorkflow}>{Locale.label("tasks.workflowEdit.editWorkflow")}</HeaderSecondaryButton>}
-          <HeaderSecondaryButton startIcon={<ReportIcon />} data-testid="board-reports-button" onClick={() => navigate("/serving/tasks/workflows/" + workflowId + "/reports")}>{Locale.label("tasks.workflowReports.title")}</HeaderSecondaryButton>
-          {canManage && tab === "board" && <HeaderPrimaryButton startIcon={<AddIcon />} data-testid="add-step-button" onClick={handleAddStep}>{Locale.label("tasks.workflowBoard.addStep")}</HeaderPrimaryButton>}
-        </Stack>
+        chips={wf && <StatusBadge tone={wf.active ? "success" : "neutral"} variant="dot">{wf.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>}>
+        <HeaderTextButton component={RouterLink} to="/serving/tasks/workflows" startIcon={<BackIcon />} data-testid="board-workflows-link">{Locale.label("tasks.workflowsPage.title")}</HeaderTextButton>
+        <HeaderTextButton component={RouterLink} to={"/serving/tasks/workflows/" + workflowId + "/reports"} data-testid="board-reports-button">{Locale.label("tasks.workflowReports.title")}</HeaderTextButton>
+        {canManage && <HeaderSecondaryButton startIcon={<EditIcon />} onClick={handleEditWorkflow} data-testid="edit-workflow-button">{Locale.label("tasks.workflowEdit.editWorkflow")}</HeaderSecondaryButton>}
+        {canManage && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-step-button">{Locale.label("tasks.workflowBoard.addStep")}</HeaderPrimaryButton>}
       </PageHeader>
-
-      {tab === "triggers" && (
-        <Box sx={{ p: 3 }}>
-          <WorkflowTriggersManager workflowId={workflowId} canManage={canManage} />
+      <PageContainer>
+        <Box sx={{ mb: 2 }} data-testid="workflow-identity">
+          <ResultsBar
+            end={
+              <ViewToggle<"board" | "triggers">
+                value={(tab === "triggers" ? "triggers" : onBoard ? "board" : "") as "board" | "triggers"}
+                onChange={(v) => (v === "triggers" ? showTriggers() : showBoard())}
+                options={[
+                  { value: "board", label: Locale.label("tasks.workflowBoard.boardTab"), icon: <BoardIcon />, "data-testid": "board-tab" },
+                  { value: "triggers", label: Locale.label("tasks.eventTriggers.title"), icon: <TriggersIcon />, "data-testid": "board-triggers-tab" }
+                ]}
+              />
+            }>
+            <Typography variant="body2" color="text.secondary">
+              {steps.length} {Locale.label("tasks.workflowBoard.stepsCount", "steps")} · {cards.length} {Locale.label("tasks.workflowBoard.cardsCount", "cards")}
+            </Typography>
+          </ResultsBar>
         </Box>
-      )}
 
-      {tab === "board" && selectedIds.size > 0 && (
-        <Paper data-testid="bulk-action-bar" sx={{ mx: 3, mt: 2, px: 2.5, py: 1.5, borderRadius: 2, border: "1px solid", borderColor: "primary.light", backgroundColor: "background.paper", boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)" }}>
-          <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap">
-            <Typography variant="body2" sx={{ fontWeight: 600 }} data-testid="bulk-selected-count">{Locale.label("tasks.workflowBoard.selectedCount").replace("{count}", String(selectedIds.size))}</Typography>
-            <Button size="small" variant="contained" color="success" startIcon={<CompleteIcon />} data-testid="bulk-complete-button" onClick={bulkComplete}>{Locale.label("tasks.workflowCard.complete")}</Button>
-            <Button size="small" variant="outlined" startIcon={<SnoozeIcon />} data-testid="bulk-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
-            <Button size="small" variant="outlined" startIcon={<PersonIcon />} data-testid="bulk-reassign-button" onClick={() => setShowBulkReassign(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
-            <Select size="small" displayEmpty value="" data-testid="bulk-move-select" onChange={(e) => e.target.value && bulkMove(e.target.value)} sx={{ minWidth: 160 }}>
+        {getSlice()}
+
+        {onBoard && (
+          <BulkBar count={selectedIds.size} names={selectedNames} data-testid="bulk-action-bar">
+            <Button size="small" variant="contained" startIcon={<CompleteIcon />} data-testid="bulk-complete-button" onClick={bulkComplete}>{Locale.label("tasks.workflowCard.complete")}</Button>
+            <Button size="small" startIcon={<SnoozeIcon />} data-testid="bulk-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
+            <Button size="small" startIcon={<PersonIcon />} data-testid="bulk-reassign-button" onClick={() => setShowBulkReassign(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
+            <Select size="small" displayEmpty value="" data-testid="bulk-move-select" onChange={(e) => e.target.value && bulkMove(e.target.value)} sx={{ minWidth: 160, bgcolor: "background.paper" }}>
               <MenuItem value="" disabled>{Locale.label("tasks.workflowBoard.moveTo")}</MenuItem>
               {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
             </Select>
             <Button size="small" startIcon={<ClearIcon />} data-testid="bulk-clear-button" onClick={clearSelection}>{Locale.label("tasks.workflowBoard.clearSelection")}</Button>
-          </Stack>
-          <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
-            <MenuItem onClick={() => bulkSnooze(1)}>{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
-            <MenuItem onClick={() => bulkSnooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
-            <MenuItem onClick={() => bulkSnooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
-          </Menu>
-        </Paper>
-      )}
+          </BulkBar>
+        )}
+        <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
+          <MenuItem onClick={() => bulkSnooze(1)}>{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
+          <MenuItem onClick={() => bulkSnooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
+          <MenuItem onClick={() => bulkSnooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
+        </Menu>
 
-      {tab === "board" && (
-        <Box sx={{ p: 3 }}>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-            <Box sx={{ flexGrow: 1, overflowX: "auto" }}>
-              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
-                {steps.map((step) => (
-                  <WorkflowStepColumn
-                    key={step.id}
-                    workflowId={workflowId}
-                    step={step}
-                    cards={cardsForStep(step.id || "")}
-                    routes={routesForStep(step.id || "")}
-                    actions={actionsForStep(step.id || "")}
-                    steps={steps}
-                    workflows={workflows.data || []}
-                    canEdit={canEdit}
-                    canManage={canManage}
-                    selectedIds={selectedIds}
-                    onToggleSelect={toggleSelect}
-                    onDropCard={handleDropCard}
-                    onOpenCard={setOpenCard}
-                    onEditStep={setEditStep}
-                    onChanged={refetch}
-                  />
-                ))}
-                {steps.length === 0 && canManage && (
-                  <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
-                )}
-              </Box>
-            </Box>
-
-            {editWorkflow && canManage && (
-              <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
-                <WorkflowEdit workflow={editWorkflow} categories={categories.data} onCancel={() => setEditWorkflow(null)} onSave={handleWorkflowSaved} onDelete={handleWorkflowDeleted} onCategoriesChanged={() => categories.refetch()} />
-              </Box>
-            )}
-
-            {editStep && canManage && (
-              <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
-                <WorkflowStepEdit step={editStep} steps={steps} workflows={(workflows.data || []).filter((w) => w.id !== workflowId)}
-                  onCancel={() => setEditStep(null)} onSave={(keepOpen) => { if (!keepOpen) setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
-              </Box>
-            )}
-          </Stack>
-        </Box>
-      )}
-
-      {openCard && <WorkflowCardDrawer card={cards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
-      {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
+        {openCard && <WorkflowCardDrawer card={cards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
+        {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
+      </PageContainer>
     </>
   );
 };

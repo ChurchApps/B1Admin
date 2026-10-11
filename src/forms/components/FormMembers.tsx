@@ -1,11 +1,12 @@
 import React, { useState, memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Box, Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch } from "@mui/material";
+import { Box, Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Switch } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import { PersonAdd } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CardWithHeader, tableScrollSx } from "../../components/ui";
 import { type PersonInterface, type MemberPermissionInterface } from "@churchapps/helpers";
-import { DisplayBox, ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { HelpIcon, ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
 import { useConfirmDelete } from "../../hooks";
 
 interface Props {
@@ -138,26 +139,26 @@ export const FormMembers: React.FC<Props> = memo((props) => {
   const tableHeader = useMemo(() => {
     const rows: JSX.Element[] = [];
     rows.push(
-      <TableRow key="header" sx={{ textAlign: "left" }}>
-        <th>{Locale.label("common.name")}</th>
-        <th>{Locale.label("forms.formMembers.perm")}</th>
-        <th>{Locale.label("forms.formMembers.act")}</th>
-        <th>
+      <TableRow key="header">
+        <TableCell>{Locale.label("common.name")}</TableCell>
+        <TableCell>{Locale.label("forms.formMembers.perm")}</TableCell>
+        <TableCell>{Locale.label("forms.formMembers.act")}</TableCell>
+        <TableCell>
           {Locale.label("forms.formMembers.emailNotif")}
           <AppIconButton tone="card" label={Locale.label("forms.formMembers.emailNotifMsg")} icon={<Info />} data-testid="email-notification-info-button" />
-        </th>
+        </TableCell>
       </TableRow>
     );
     return rows;
   }, []);
 
   const getTable = () => (
-    <Paper sx={{ width: "100%", overflowX: "auto" }}>
+    <Box sx={tableScrollSx} role="region" aria-label={Locale.label("forms.formMembers.formMem")} tabIndex={0}>
       <Table id="formMembersTable" padding="normal">
         <TableHead>{tableHeader}</TableHead>
         <TableBody sx={{ padding: 0 }}>{tableRows}</TableBody>
       </Table>
-    </Paper>
+    </Box>
   );
 
   React.useEffect(loadData, [props.formId]);
@@ -166,14 +167,17 @@ export const FormMembers: React.FC<Props> = memo((props) => {
     <Grid container spacing={3}>
       {ConfirmDialogElement}
       <Grid size={{ xs: 12, md: 8 }}>
-        <DisplayBox headerText={Locale.label("forms.formMembers.formMem")} headerIcon="group" help="docs/b1-admin/forms/">
-          {getTable()}
-        </DisplayBox>
+        <Box sx={{ position: "relative" }}>
+          <HelpIcon article="docs/b1-admin/forms/" />
+          <CardWithHeader title={Locale.label("forms.formMembers.formMem")}>
+            {getTable()}
+          </CardWithHeader>
+        </Box>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        <DisplayBox headerText={Locale.label("forms.formMembers.addPpl")} headerIcon="person_add">
+        <CardWithHeader title={Locale.label("forms.formMembers.addPpl")}>
           <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} filterList={filterList} />
-        </DisplayBox>
+        </CardWithHeader>
       </Grid>
     </Grid>
   );

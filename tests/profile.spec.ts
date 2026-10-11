@@ -2,11 +2,12 @@ import { test as anonTest } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 test.describe("Profile", () => {
-  test("the profile page offers the theme toggle and linked accounts", async ({ page }) => {
+  test("the profile page offers linked accounts and the user menu offers the theme", async ({ page }) => {
     await page.goto("/profile");
-    await expect(page.getByTestId("theme-toggle")).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText("Linked Accounts", { exact: true })).toBeVisible();
+    await expect(page.getByText("Linked Accounts", { exact: true })).toBeVisible({ timeout: 15000 });
     await expect(page.getByTestId("delete-account-button")).toBeVisible();
+    await page.locator("#user-menu-button").click();
+    await expect(page.getByTestId("user-menu-theme")).toBeVisible();
   });
 
   test("devices explains what a paired screen is when there are none", async ({ page }) => {

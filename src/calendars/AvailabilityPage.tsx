@@ -2,13 +2,15 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
-import { ApiHelper, UserHelper, EventHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, EventHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
-import { Box, MenuItem, Stack, TextField } from "@mui/material";
-import { Add as AddIcon, EventAvailable as AvailabilityIcon } from "@mui/icons-material";
+import { MenuItem, Stack, TextField } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { useRequirePermission, useFirstDayOfWeek, applyWeekStart } from "../hooks";
 import { EventModal } from "./components/EventModal";
 import { HeaderPrimaryButton } from "../components/ui/headerButtons";
+import { Surface } from "../components/ui";
+import { CalendarChrome } from "./components/CalendarChrome";
 import { type CalendarBlockoutInterface, type EventBookingInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
 
 type CalEvent = { title: string; start: Date; end: Date; kind: "approved" | "pending" | "blockout"; eventId?: string; eventTitle?: string; targets?: string[]; };
@@ -137,7 +139,7 @@ export const AvailabilityPage = () => {
   }, [bookings, blockouts, rooms, resources, filter]);
 
   const eventStyle = (event: CalEvent) => {
-    const bg = event.kind === "approved" ? "#2e7d32" : event.kind === "pending" ? "#ed6c02" : "#9e9e9e";
+    const bg = event.kind === "approved" ? "var(--b1-success)" : event.kind === "pending" ? "var(--b1-warning)" : "var(--b1-neutral)";
     return { style: { backgroundColor: bg, borderColor: bg } };
   };
 
@@ -149,26 +151,23 @@ export const AvailabilityPage = () => {
 
   return (
     <>
-      <PageHeader icon={<AvailabilityIcon />} title={Locale.label("calendars.availability.title")} subtitle={Locale.label("calendars.availability.subtitle")}>
-        <HeaderPrimaryButton
-          startIcon={<AddIcon />}
-          onClick={() => { setBookEventId(undefined); setShowBook(true); }}
-          data-testid="availability-book-button"
-        >
-          {Locale.label("calendars.availability.book")}
-        </HeaderPrimaryButton>
-      </PageHeader>
-      <Box sx={{ p: 3 }}>
-        <Box sx={{
-          bgcolor: "background.paper",
-          p: 2,
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "grey.200",
+      <CalendarChrome
+        selected="availability"
+        subtitle={Locale.label("calendars.availability.subtitle")}
+        actions={(
+          <HeaderPrimaryButton
+            startIcon={<AddIcon />}
+            onClick={() => { setBookEventId(undefined); setShowBook(true); }}
+            data-testid="availability-book-button"
+          >
+            {Locale.label("calendars.availability.book")}
+          </HeaderPrimaryButton>
+        )}>
+        <Surface sx={{
           "& .rbc-btn-group button": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
           "& .rbc-btn-group button:hover, & .rbc-btn-group button:focus, & .rbc-btn-group button:active, & .rbc-btn-group button.rbc-active": {
-            color: (theme) => theme.palette.mode === "dark" ? "#000 !important" : "inherit",
-            backgroundColor: (theme) => theme.palette.mode === "dark" ? "#e0e0e0 !important" : undefined
+            color: (theme) => theme.palette.mode === "dark" ? `${theme.palette.common.black} !important` : "inherit",
+            backgroundColor: (theme) => theme.palette.mode === "dark" ? `${theme.palette.grey[300]} !important` : undefined
           },
           "& .rbc-toolbar-label": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
           "& .rbc-off-range-bg": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined },
@@ -198,8 +197,8 @@ export const AvailabilityPage = () => {
               data-testid="availability-calendar"
             />
           )}
-        </Box>
-      </Box>
+        </Surface>
+      </CalendarChrome>
       {showBook && (
         <EventModal
           churchId={churchId}

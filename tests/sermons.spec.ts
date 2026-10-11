@@ -61,9 +61,7 @@ test.describe("Sermons Management", () => {
     });
 
     test("should search for a sermon", async () => {
-      // The search field is hidden behind the header search toggle.
-      await page.locator('[data-testid="sermon-search-button"]').click();
-      const searchBar = page.locator("input[placeholder]").first();
+      const searchBar = page.locator('[data-testid="sermon-search-input"]');
       await searchBar.fill("Zebedee Test Sermon");
       const validatedSermon = page.locator("td").getByText("Zebedee Test Sermon");
       await expect(validatedSermon).toHaveCount(1);
@@ -182,7 +180,7 @@ test.describe("Sermons Management", () => {
     });
 
     const panel = () => page.locator('[data-testid="playlists-panel"]');
-    const panelEditButton = () => panel().locator('button:has(svg[data-testid="EditIcon"])').first();
+    const panelEditButton = () => panel().locator('[data-testid^="edit-playlist-"]').first();
 
     test("should add playlist", async () => {
       const addBtn = panel().locator('[data-testid="add-playlist-button"]');
@@ -207,10 +205,9 @@ test.describe("Sermons Management", () => {
     });
 
     test("should search for a playlist", async () => {
-      const searchBtn = panel().locator('[data-testid="playlist-search-button"]');
-      await searchBtn.click();
-      const searchBar = panel().locator("input");
-      await searchBar.fill("Zebedee Test Playlist");
+      // The playlist search field only renders once there are more than 5 playlists.
+      const searchBar = panel().locator('[data-testid="playlist-search-input"]');
+      if (await searchBar.count() > 0) await searchBar.fill("Zebedee Test Playlist");
       const validatedPlaylist = panel().locator("td").getByText("Zebedee Test Playlist");
       await expect(validatedPlaylist).toHaveCount(1);
     });
@@ -322,10 +319,9 @@ test.describe("Sermons Management", () => {
     });
 
     test("should show settings tab with sidebar tabs section and view stream link", async () => {
-      const settingsBtn = page.locator('[role="tab"]').getByText("Settings");
-      await settingsBtn.click();
+      await expect(page.getByRole("link", { name: "View Your Stream" })).toBeVisible({ timeout: 10000 });
+      await (await siblingNav(page)).getByText("Settings", { exact: true }).first().click();
       await expect(page.getByRole("heading", { name: "Content Tabs" })).toBeVisible({ timeout: 10000 });
-      await expect(page.getByRole("link", { name: "View Your Stream" })).toBeVisible();
     });
 
   });

@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
+import { Link as RouterLink } from "react-router-dom";
+import { Loading } from "@churchapps/apphelper";
 import { MultiGatewayDonationForm, RecurringDonations, PaymentMethods, SavedPaymentMethod, getPaymentProvider } from "@churchapps/apphelper/donations";
 import type { PaymentGateway } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
-// import { Link } from "react-router-dom"
-import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem } from "@mui/material";
+import { Box, Table, TableBody, TableRow, TableCell, TableHead, Alert, Link } from "@mui/material";
+import { BackVerb, RecordHeading, TextAction, VerbRow, YearLedger, numericCellSx, pickDefaultYear, tableScrollSx, withCurrentYear, yearOf, yearsFromDates } from "../components/ui";
+import { CsvVerb } from "../donations/components/GivingParts";
 
 interface Props {
   personId: string;
@@ -15,6 +17,20 @@ interface Props {
   church?: ChurchInterface;
   churchLogo?: string;
 }
+
+type Slice = "" | "give" | "recurring" | "methods";
+
+const csvHeaders = [
+  { label: "amount", key: "amount" },
+  { label: "donationDate", key: "donationDate" },
+  { label: "fundName", key: "fund.name" },
+  { label: "method", key: "method" },
+  { label: "methodDetails", key: "methodDetails" },
+  { label: "notes", key: "notes" }
+];
+
+// A person's gifts come back one row per fund split, so the fund amount is the row's amount.
+const giftAmount = (d: DonationInterface) => d.fund?.amount ?? d.amount ?? 0;
 
 export const DonationPage: React.FC<Props> = (props) => {
   const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
@@ -24,13 +40,10 @@ export const DonationPage: React.FC<Props> = (props) => {
   const [person, setPerson] = React.useState<PersonInterface | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
   const [appName, setAppName] = React.useState<string>("");
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currency, setCurrency] = React.useState<string>("usd");
-  const open = Boolean(anchorEl);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [slice, setSlice] = React.useState<Slice>("");
+  // undefined = not chosen yet (defaults to this year, or the newest year with gifts); null = all years.
+  const [year, setYear] = React.useState<number | null | undefined>(undefined);
 
   const loadPaymentMethods = async () => {
     try {
@@ -107,130 +120,6 @@ export const DonationPage: React.FC<Props> = (props) => {
     loadData();
   };
 
-  const getEditContent = () => {
-    const result: React.ReactElement[] = [];
-    const date = new Date();
-    const currentY = date.getFullYear();
-    const lastY = date.getFullYear() - 1;
-
-    const current_year = donations && donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === currentY) : [];
-    const last_year = donations && donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === lastY) : [];
-    const customHeaders = [
-      { label: "amount", key: "amount" },
-      { label: "donationDate", key: "donationDate" },
-      { label: "fundName", key: "fund.name" },
-      { label: "method", key: "method" },
-      { label: "methodDetails", key: "methodDetails" },
-      { label: "notes", key: "notes" }
-    ];
-
-    if (current_year.length > 0 || last_year.length > 0) {
-      result.push(
-        <>
-          <Button
-            id="download-button"
-            aria-controls={open ? "download-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              setAnchorEl(e.currentTarget);
-            }}>
-            <Icon>download</Icon>
-          </Button>
-          <Menu id="download-menu" anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{ "aria-labelledby": "download-button" }}>
-            {current_year.length > 0 && (
-              <MenuItem onClick={handleClose} dense>
-                <ExportLink data={current_year} filename="current_year_donations" customHeaders={customHeaders} text={Locale.label("donation.page.currentYearCsv")} icon="table_chart" />
-              </MenuItem>
-            )}
-            {current_year.length > 0 && (
-              <MenuItem onClick={handleClose} dense>
-                <Link href={"/donations/print/" + person?.id + "?year=" + currentY}>
-                  <Button>
-                    <Icon>print</Icon> &nbsp; {Locale.label("donation.page.currentYearPrint")}
-                  </Button>
-                </Link>
-              </MenuItem>
-            )}
-            {last_year.length > 0 && (
-              <MenuItem onClick={handleClose} dense>
-                <ExportLink data={last_year} filename="last_year_donations" customHeaders={customHeaders} text={Locale.label("donation.page.lastYearCsv")} icon="table_chart" />
-              </MenuItem>
-            )}
-            {last_year.length > 0 && (
-              <MenuItem onClick={handleClose} dense>
-                <Link href={"/donations/print/" + person?.id + "?year=" + lastY}>
-                  <Button>
-                    <Icon>print</Icon> &nbsp; {Locale.label("donation.page.lastYearPrint")}
-                  </Button>
-                </Link>
-              </MenuItem>
-            )}
-          </Menu>
-        </>
-      );
-    }
-
-    return result;
-  };
-
-  const getRows = () => {
-    const rows: React.ReactElement[] = [];
-
-    if (!donations || donations.length === 0) {
-      rows.push(
-        <TableRow key="0">
-          <TableCell>{Locale.label("donation.page.willAppear")}</TableCell>
-        </TableRow>
-      );
-      return rows;
-    }
-
-    for (let i = 0; i < donations.length; i++) {
-      const d = donations[i];
-      rows.push(
-        <TableRow key={i}>
-          {appName !== "B1App" && (
-            <TableCell>
-              {d.batchId ? <Link href={"/donations/batches/" + d.batchId}>{Locale.label("donation.page.viewBatch")}</Link> : ""}
-            </TableCell>
-          )}
-          <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>
-          <TableCell>
-            {d.method} - {d.methodDetails}
-          </TableCell>
-          <TableCell>{d.fund?.name}</TableCell>
-          <TableCell>
-            <span title={d.notes || ""} style={{ display: "inline-block", maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", verticalAlign: "bottom" }}>
-              {d.notes || ""}
-            </span>
-          </TableCell>
-          <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund?.amount || 0, currency)}</TableCell>
-        </TableRow>
-      );
-    }
-    return rows;
-  };
-
-  const getTableHeader = () => {
-    const rows: React.ReactElement[] = [];
-
-    if (donations && donations.length > 0) {
-      rows.push(
-        <TableRow key="header" sx={{ textAlign: "left" }}>
-          {appName !== "B1App" && <th>{Locale.label("donation.page.batch")}</th>}
-          <th>{Locale.label("donation.page.date")}</th>
-          <th>{Locale.label("donation.page.method")}</th>
-          <th>{Locale.label("donation.page.fund")}</th>
-          <th>{Locale.label("donation.page.notes")}</th>
-          <th>{Locale.label("donation.page.amount")}</th>
-        </TableRow>
-      );
-    }
-
-    return rows;
-  };
-
   React.useEffect(() => {
     loadData();
   }, [props.personId]);
@@ -241,25 +130,112 @@ export const DonationPage: React.FC<Props> = (props) => {
     });
   }, []);
 
-  const getTable = () => {
-    if (!donations) return <Loading />;
-    else {
-      return (
-        <Table>
-          <TableHead>{getTableHeader()}</TableHead>
-          <TableBody>{getRows()}</TableBody>
-        </Table>
-      );
-    }
+  const isStaff = appName !== "B1App";
+  const money = (n: number) => CurrencyHelper.formatCurrencyWithLocale(n || 0, currency);
+  const all = donations || [];
+  const dataYears = yearsFromDates(all.map((d) => d.donationDate));
+  const years = withCurrentYear(dataYears);
+  const selectedYear = year === undefined ? pickDefaultYear(dataYears) : year;
+  const yearGifts = selectedYear === null ? all : all.filter((d) => yearOf(d.donationDate) === selectedYear);
+  const yearTotal = yearGifts.reduce((sum, d) => sum + giftAmount(d), 0);
+  const lifetime = all.reduce((sum, d) => sum + giftAmount(d), 0);
+  const firstYear = dataYears[dataYears.length - 1];
+
+  const summary = () => {
+    if (all.length === 0) return "";
+    const since = Locale.label("donation.page.sinceYear", "{amount} since {year}").replace("{amount}", money(lifetime)).replace("{year}", String(firstYear));
+    if (selectedYear === null) return Locale.label("donation.page.giftCount", "{count} gifts").replace("{count}", String(all.length)) + " · " + since;
+    return Locale.label("donation.page.giftsInYear", "{count} gifts in {year}").replace("{count}", String(yearGifts.length)).replace("{year}", String(selectedYear)) + " · " + since;
   };
 
-  const getPaymentMethodComponents = () => {
-    if (!paymentMethods || !donations || !person) return <Loading />;
-    else {
+  const getRows = () => {
+    if (all.length === 0 || yearGifts.length === 0) {
+      const text = all.length === 0 ? Locale.label("donation.page.willAppear") : Locale.label("donation.page.noGiftsInYear", "No gifts in {year}.").replace("{year}", String(selectedYear));
       return (
-        <>
+        <TableRow>
+          <TableCell colSpan={isStaff ? 6 : 5} sx={{ color: "text.secondary" }}>{text}</TableCell>
+        </TableRow>
+      );
+    }
+    return yearGifts.map((d, i) => (
+      <TableRow key={(d.id || "") + i}>
+        {isStaff && (
+          <TableCell>
+            {d.batchId ? <Link component={RouterLink} to={"/donations/batches/" + d.batchId} underline="hover">{Locale.label("donation.page.viewBatch")}</Link> : ""}
+          </TableCell>
+        )}
+        <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>
+        <TableCell>{[d.method, d.methodDetails].filter(Boolean).join(" - ")}</TableCell>
+        <TableCell>{d.fund?.name}</TableCell>
+        <TableCell>
+          <Box component="span" title={d.notes || ""} sx={{ display: "inline-block", maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", verticalAlign: "bottom" }}>
+            {d.notes || ""}
+          </Box>
+        </TableCell>
+        <TableCell align="right" sx={{ ...numericCellSx, fontWeight: 600 }}>{money(giftAmount(d))}</TableCell>
+      </TableRow>
+    ));
+  };
+
+  const ledger = () => {
+    if (!donations) return <Loading />;
+    return (
+      <YearLedger
+        title={Locale.label("donation.page.giving", "Giving")}
+        headline={all.length > 0 ? money(yearTotal) : undefined}
+        summary={summary()}
+        years={all.length > 0 ? years : []}
+        year={selectedYear}
+        onYearChange={setYear}
+        allLabel={Locale.label("donation.page.allYears", "All years")}
+        actions={(
+          <VerbRow>
+            {selectedYear !== null && yearGifts.length > 0 && person?.id && (
+              <TextAction to={"/donations/print/" + person.id + "?year=" + selectedYear} component={RouterLink} data-testid="giving-statement">{Locale.label("donation.page.statement", "Statement")}</TextAction>
+            )}
+            {yearGifts.length > 0 && <CsvVerb data={yearGifts} filename={(selectedYear ?? "all") + "_donations"} customHeaders={csvHeaders} text={Locale.label("donation.page.csv", "CSV")} />}
+            {paymentGateways.length > 0 && <TextAction onClick={() => setSlice("give")} data-testid="giving-give">{Locale.label("donation.page.give", "Give")}</TextAction>}
+            <TextAction onClick={() => setSlice("recurring")} data-testid="giving-recurring">{Locale.label("donation.page.recurring", "Recurring")}</TextAction>
+            <TextAction onClick={() => setSlice("methods")} data-testid="giving-payment-methods">{Locale.label("donation.page.paymentMethods", "Payment methods")}</TextAction>
+          </VerbRow>
+        )}>
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("donation.donationPage.donations")} tabIndex={0}>
+          <Table>
+            {all.length > 0 && (
+              <TableHead>
+                <TableRow>
+                  {isStaff && <TableCell>{Locale.label("donation.page.batch")}</TableCell>}
+                  <TableCell>{Locale.label("donation.page.date")}</TableCell>
+                  <TableCell>{Locale.label("donation.page.method")}</TableCell>
+                  <TableCell>{Locale.label("donation.page.fund")}</TableCell>
+                  <TableCell>{Locale.label("donation.page.notes")}</TableCell>
+                  <TableCell align="right" sx={numericCellSx}>{Locale.label("donation.page.amount")}</TableCell>
+                </TableRow>
+              </TableHead>
+            )}
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
+      </YearLedger>
+    );
+  };
+
+  const sliceShell = (title: string, body: () => React.ReactNode) => (
+    <Box>
+      <Box sx={{ mb: 2 }}>
+        <BackVerb name={Locale.label("donation.page.giving", "Giving")} onClick={() => setSlice("")} data-testid="giving-back" />
+      </Box>
+      <RecordHeading label={title} />
+      {!paymentMethods || !donations || !person ? <Loading /> : body()}
+    </Box>
+  );
+
+  const content = () => {
+    switch (slice) {
+      case "give":
+        return sliceShell(Locale.label("donation.page.give", "Give"), () => (
           <MultiGatewayDonationForm
-            person={person}
+            person={person!}
             customerId={customerId || ""}
             paymentMethods={paymentMethods || []}
             paymentGateways={paymentGateways}
@@ -267,20 +243,24 @@ export const DonationPage: React.FC<Props> = (props) => {
             church={props?.church}
             churchLogo={props?.churchLogo}
           />
-          <DisplayBox headerIcon="payments" headerText={Locale.label("donation.donationPage.donations")} editContent={getEditContent()}>
-            {getTable()}
-          </DisplayBox>
-          <RecurringDonations customerId={customerId || ""} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
-          <PaymentMethods person={person} customerId={customerId || ""} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
-        </>
-      );
+        ));
+      case "recurring":
+        return sliceShell(Locale.label("donation.page.recurring", "Recurring"), () => (
+          <RecurringDonations customerId={customerId || ""} paymentMethods={paymentMethods || []} appName={appName} dataUpdate={handleDataUpdate} />
+        ));
+      case "methods":
+        return sliceShell(Locale.label("donation.page.paymentMethods", "Payment methods"), () => (
+          <PaymentMethods person={person!} customerId={customerId || ""} paymentMethods={paymentMethods || []} appName={appName} dataUpdate={handleDataUpdate} />
+        ));
+      default:
+        return ledger();
     }
   };
 
   return (
     <>
-      {paymentMethods && message && <Alert severity="success">{message}</Alert>}
-      {getPaymentMethodComponents()}
+      {paymentMethods && message && <Alert severity="success" sx={{ mb: 2 }}>{message}</Alert>}
+      {content()}
     </>
   );
 };

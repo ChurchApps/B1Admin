@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Grid, TextField, Box, Typography, Card, CardContent, Stack, Button, alpha } from "@mui/material";
+import { Grid, TextField, Box, Typography, Card, CardContent, Stack, alpha } from "@mui/material";
 import { Palette as PaletteIcon, Visibility as VisibilityIcon, ColorLens as ColorLensIcon } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
+import { StyleEditHeader } from "./StyleEditHeader";
 
 interface Props {
   globalStyle?: GlobalStyleInterface | null;
@@ -108,11 +109,11 @@ export function PaletteEdit(props: Props) {
   };
 
   const getPalette = (p: ColorInterface, index: number) => (
-    <Card sx={{ cursor: "pointer", transition: "all 0.2s ease-in-out", border: "1px solid", borderColor: "grey.200", "&:hover": { transform: "translateY(-2px)", boxShadow: 2, borderColor: "primary.main" } }} onClick={() => applySuggestion(p)} data-testid="suggested-palette" aria-label={Locale.label("site.paletteEdit.applyPaletteAria")}>
+    <Card sx={{ cursor: "pointer", transition: "border-color 140ms", border: "1px solid", borderColor: "divider", "&:hover": { borderColor: "primary.main" } }} onClick={() => applySuggestion(p)} data-testid="suggested-palette" aria-label={Locale.label("site.paletteEdit.applyPaletteAria")}>
       <CardContent sx={{ p: 2 }}>
         <Stack direction="row" spacing={0.5} sx={{ mb: 1 }}>
           {Object.entries(p).map(([key, color]) => (
-            <Box key={key} sx={{ width: 32, height: 32, backgroundColor: color, borderRadius: 1, border: "1px solid", borderColor: "grey.300", flexShrink: 0 }} />
+            <Box key={key} sx={{ width: 32, height: 32, backgroundColor: color, borderRadius: "var(--b1-radius-control)", border: "1px solid", borderColor: "divider", flexShrink: 0 }} />
           ))}
         </Stack>
         <Typography variant="caption" color="text.secondary">{Locale.label("site.paletteEdit.palette")} {index + 1}</Typography>
@@ -135,7 +136,7 @@ export function PaletteEdit(props: Props) {
         const text = palette[p.text as keyof ColorInterface];
         return (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-            <Box sx={{ backgroundColor: bg, color: text, border: "1px solid", borderColor: text ? alpha(text, 0.3) : "grey.300", borderRadius: 1, p: 1.5, textAlign: "center", minHeight: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Box sx={{ backgroundColor: bg, color: text, border: "1px solid", borderColor: text ? alpha(text, 0.3) : "grey.300", borderRadius: "var(--b1-radius-control)", p: 1.5, textAlign: "center", minHeight: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>{p.background} + {p.text}</Typography>
             </Box>
           </Grid>
@@ -148,25 +149,11 @@ export function PaletteEdit(props: Props) {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
-      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <PaletteIcon sx={{ fontSize: 24, color: "#FFF" }} />
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.paletteEdit.headerTitle")}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.paletteEdit.headerSubtitle")}</Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-palette-button">{Locale.label("site.paletteEdit.savePalette")}</LoadingButton>
-          </Stack>
-        </Stack>
-      </Box>
+      <StyleEditHeader title={Locale.label("site.paletteEdit.headerTitle")} subtitle={Locale.label("site.paletteEdit.headerSubtitle")} onCancel={() => props.updatedFunction?.(null)} saveButton={
+        <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} data-testid="save-palette-button">{Locale.label("site.paletteEdit.savePalette")}</LoadingButton>
+      } />
 
-      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ display: "grid", gap: 3 }}>
         <CardWithHeader title={Locale.label("site.paletteEdit.colorValues")} icon={<ColorLensIcon />}>
           <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.paletteEdit.baseColors")}</Typography>
           <Grid container spacing={2} sx={{ mb: 3 }}>

@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
-import { Table, TableBody, TableCell, TableHead, TableRow, Card, CardContent, Typography, Stack, Box, Button, Paper, Avatar } from "@mui/material";
-import { CountChip } from "../../../components/ui";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, Box, Button, Avatar } from "@mui/material";
+import { CountChip, StatusBadge, Surface, tableScrollSx } from "../../../components/ui";
 import {
   AssignmentReturn as ChangesIcon,
   CheckCircle as ApplyIcon,
@@ -32,15 +32,15 @@ export const RequestedChanges = (props: Props) => {
   const navigate = useNavigate();
 
   const getFieldIcon = (field: string) => {
-    if (field.includes("name")) return <PersonIcon sx={{ fontSize: 20, color: "primary.main" }} />;
-    if (field.includes("email")) return <EmailIcon sx={{ fontSize: 20, color: "info.main" }} />;
-    if (field.includes("Phone")) return <PhoneIcon sx={{ fontSize: 20, color: "secondary.main" }} />;
+    if (field.includes("name")) return <PersonIcon />;
+    if (field.includes("email")) return <EmailIcon />;
+    if (field.includes("Phone")) return <PhoneIcon />;
     if (field.includes("address") || field.includes("city") || field.includes("state") || field.includes("zip")) {
-      return <AddressIcon sx={{ fontSize: 20, color: "success.main" }} />;
+      return <AddressIcon />;
     }
-    if (field === "birthDate") return <BirthdayIcon sx={{ fontSize: 20, color: "warning.main" }} />;
-    if (field === "familyMember") return <FamilyIcon sx={{ fontSize: 20, color: "error.main" }} />;
-    return <ChangesIcon sx={{ fontSize: 20, color: "text.secondary" }} />;
+    if (field === "birthDate") return <BirthdayIcon />;
+    if (field === "familyMember") return <FamilyIcon />;
+    return <ChangesIcon />;
   };
 
   const getRows = () => {
@@ -51,25 +51,15 @@ export const RequestedChanges = (props: Props) => {
         val = (
           <Avatar
             src={ch.value}
-            sx={{
-              width: 60,
-              height: 60,
-              border: "2px solid",
-              borderColor: "primary.main"
-            }}
+            sx={{ width: 48, height: 48 }}
             alt={Locale.label("tasks.requestedChanges.newProfile")}
           />
         );
       }
       rows.push(
-        <TableRow
-          key={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            "& td": { py: 2 }
-          }}>
+        <TableRow key={i}>
           <TableCell>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack direction="row" alignItems="center" spacing={1} sx={{ "& .MuiSvgIcon-root": { fontSize: 20, color: "text.secondary" } }}>
               {getFieldIcon(ch.field)}
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
                 {ch.label}
@@ -138,73 +128,42 @@ export const RequestedChanges = (props: Props) => {
   };
 
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        border: "1px solid",
-        borderColor: "grey.200",
-        mb: 3,
-        transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 }
-      }}>
-      <CardContent>
-        <Stack spacing={3}>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <ChangesIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("tasks.requestedChanges.requestedChanges")}
-              </Typography>
-              {(requestedChanges?.length || 0) > 0 && <CountChip count={requestedChanges.length} />}
-            </Stack>
-            {props.task.status !== "Closed" && (
-              <Button
-                variant="contained"
-                startIcon={<ApplyIcon />}
-                onClick={handleApply}
-                disabled={applying}
-                sx={{
-                  borderRadius: 2,
-                  textTransform: "none",
-                  fontWeight: 600
-                }}>
-                {Locale.label("tasks.requestedChanges.apply")}
-              </Button>
-            )}
-          </Box>
-
-          <Paper
-            sx={{
-              overflow: "hidden",
-              border: "1px solid",
-              borderColor: "grey.200"
-            }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 600, color: "text.primary" }}>{Locale.label("tasks.requestedChanges.field")}</TableCell>
-                  <TableCell sx={{ fontWeight: 600, color: "text.primary" }}>{Locale.label("tasks.requestedChanges.value")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{getRows()}</TableBody>
-            </Table>
-          </Paper>
-
-          {props.task.status === "Closed" && (
-            <Box
-              sx={{
-                p: 2,
-                backgroundColor: "success.light",
-                borderRadius: 1,
-                textAlign: "center"
-              }}>
-              <Typography variant="body2" sx={{ color: "success.dark", fontWeight: 600 }}>
-                {Locale.label("tasks.requestedChanges.applied")}
-              </Typography>
-            </Box>
+    <Surface sx={{ mb: 3 }}>
+      <Stack spacing={3}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Typography variant="h3" component="h2">
+              {Locale.label("tasks.requestedChanges.requestedChanges")}
+            </Typography>
+            {(requestedChanges?.length || 0) > 0 && <CountChip count={requestedChanges.length} />}
+          </Stack>
+          {props.task.status !== "Closed" && (
+            <Button
+              variant="contained"
+              startIcon={<ApplyIcon />}
+              onClick={handleApply}
+              disabled={applying}>
+              {Locale.label("tasks.requestedChanges.apply")}
+            </Button>
           )}
         </Stack>
-      </CardContent>
-    </Card>
+
+        <Box sx={tableScrollSx} role="region" aria-label={Locale.label("tasks.requestedChanges.requestedChanges")} tabIndex={0}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("tasks.requestedChanges.field")}</TableCell>
+                <TableCell>{Locale.label("tasks.requestedChanges.value")}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{getRows()}</TableBody>
+          </Table>
+        </Box>
+
+        {props.task.status === "Closed" && (
+          <StatusBadge tone="success">{Locale.label("tasks.requestedChanges.applied")}</StatusBadge>
+        )}
+      </Stack>
+    </Surface>
   );
 };

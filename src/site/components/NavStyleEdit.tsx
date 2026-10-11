@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Grid, TextField, Box, Typography, Stack, Button, Switch, FormControlLabel } from "@mui/material";
+import { Grid, TextField, Box, Typography, Switch, FormControlLabel } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
+import { StyleEditHeader } from "./StyleEditHeader";
 
 interface Props {
   globalStyle?: GlobalStyleInterface | null;
@@ -106,25 +107,11 @@ export function NavStyleEdit(props: Props) {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
-      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <MenuIcon sx={{ fontSize: 24, color: "#FFF" }} />
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.navStyleEdit.headerTitle")}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.navStyleEdit.headerSubtitle")}</Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-nav-button">{Locale.label("site.navStyleEdit.saveNav")}</LoadingButton>
-          </Stack>
-        </Stack>
-      </Box>
+      <StyleEditHeader title={Locale.label("site.navStyleEdit.headerTitle")} subtitle={Locale.label("site.navStyleEdit.headerSubtitle")} onCancel={() => props.updatedFunction?.(null)} saveButton={
+        <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} data-testid="save-nav-button">{Locale.label("site.navStyleEdit.saveNav")}</LoadingButton>
+      } />
 
-      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ display: "grid", gap: 3 }}>
         <CardWithHeader title={Locale.label("site.navStyleEdit.solidSection")} icon={<MenuIcon />}>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.navStyleEdit.solidSectionDesc")}</Typography>
           <Grid container spacing={2}>

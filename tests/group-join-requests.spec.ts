@@ -54,6 +54,7 @@ test.describe.serial("Group Join Requests", () => {
     const firstGroup = page.locator("table tbody tr a").first();
     await firstGroup.click();
     await page.waitForURL(/\/groups\/(?!health(?:\/|$))[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
+    await page.getByTestId("group-all-members").click();
     await expect(page.locator("#groupMembersBox")).toBeVisible({ timeout: 10000 });
   });
 

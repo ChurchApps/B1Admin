@@ -1,6 +1,7 @@
 import React from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import type { IconButtonProps } from "@mui/material";
+import { useHeaderTone } from "./headerTone";
 
 type IconTone = "default" | "card" | "header";
 type IconIntent = "add" | "remove";
@@ -10,16 +11,18 @@ export interface AppIconButtonProps extends Omit<IconButtonProps, "color" | "ari
   label: string;
   /** MUI icon element, e.g. `<EditIcon />`. Sized to match the button automatically. */
   icon: React.ReactElement;
-  /** Color by context: `default` gray (rows/inline), `card` blue (card & section headers), `header` white (blue PageHeader). Delete/Remove follow tone too — red is reserved for the confirm button inside a delete dialog. */
+  /** Color by context: `default` gray (rows/inline), `card` blue (card & section headers), `header` white on the legacy blue PageHeader (renders as `card` under ui/PageHeader). Delete/Remove follow tone too — red is reserved for the confirm button inside a delete dialog. */
   tone?: IconTone;
   /** Hover-color cue: `add` → green, `remove` → red. Otherwise the icon hovers blue (white-on-header stays white). Resting color is always set by `tone`. */
   intent?: IconIntent;
 }
 
 export const AppIconButton = React.forwardRef<HTMLButtonElement, AppIconButtonProps>(function AppIconButton(
-  { label, icon, tone = "default", intent, size = "small", disabled, sx, ...rest },
+  { label, icon, tone: requestedTone = "default", intent, size = "small", disabled, sx, ...rest },
   ref
 ) {
+  const headerTone = useHeaderTone();
+  const tone: IconTone = requestedTone === "header" && headerTone === "light" ? "card" : requestedTone;
   const color: IconButtonProps["color"] = tone === "card" ? "primary" : tone === "header" ? "inherit" : "default";
   const hoverColor = intent === "add" ? "success.main" : intent === "remove" ? "error.main" : tone === "header" ? undefined : "primary.main";
   const baseSx = {

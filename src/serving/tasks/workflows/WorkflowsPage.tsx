@@ -1,14 +1,12 @@
-import { Grid, Typography, Card, CardContent, Stack, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import { Typography, Box, Link as MuiLink, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import React from "react";
-import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
-import { EmptyState } from "../../../components/ui/EmptyState";
-import { AppIconButton } from "../../../components/ui/AppIconButton";
-import { CountChip, HeaderPrimaryButton, HeaderSecondaryButton } from "../../../components/ui";
+import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
+import { EmptyState, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, ResultsBar, StatusBadge, Surface, TextAction, tableScrollSx } from "../../../components/ui";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { ViewKanban as WorkflowsIcon, Add as AddIcon, Assignment as MyCardsIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { ViewKanban as WorkflowsIcon, Add as AddIcon } from "@mui/icons-material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { canViewWorkflows, canManageWorkflows } from "./permissions";
 
 interface TemplateInterface { key: string; name: string; description: string }
@@ -16,6 +14,7 @@ interface TemplateInterface { key: string; name: string; description: string }
 export const WorkflowsPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [addAnchor, setAddAnchor] = React.useState<null | HTMLElement>(null);
+  const [category, setCategory] = React.useState("all");
   const navigate = useNavigate();
 
   const canView = canViewWorkflows();
@@ -24,6 +23,12 @@ export const WorkflowsPage = () => {
   const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [], enabled: canView });
   const categories = useQuery<WorkflowCategoryInterface[]>({ queryKey: ["/workflowCategories", "DoingApi"], placeholderData: [], enabled: canView });
   const templates = useQuery<TemplateInterface[]>({ queryKey: ["/workflows/templates", "DoingApi"], placeholderData: [], enabled: canManage });
+
+  const startBlank = () => {
+    setAddAnchor(null);
+    setShowAdd(true);
+    setTimeout(() => document.getElementById("add-workflow-bar")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
 
   const handleAdded = (workflow: WorkflowInterface) => {
     setShowAdd(false);
@@ -37,104 +42,104 @@ export const WorkflowsPage = () => {
     if (workflow?.id) navigate("/serving/tasks/workflows/" + workflow.id);
   };
 
-  const duplicate = async (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
+  const duplicate = async (id: string) => {
     await ApiHelper.post("/workflows/" + id + "/duplicate", {}, "DoingApi");
     workflows.refetch();
   };
 
-  const getGroupedList = () => {
+  if (!canView) return <Box sx={{ p: 4 }}><Typography>{Locale.label("common.noAccess")}</Typography></Box>;
+
+  const catName = (id?: string) => categories.data?.find((c) => c.id === id)?.name || Locale.label("tasks.workflowCategories.uncategorized");
+  const usedCategories = (categories.data || []).filter((c) => (workflows.data || []).some((w) => w.categoryId === c.id));
+  const list = (workflows.data || []).filter((w) => category === "all" || w.categoryId === category);
+
+  const getList = () => {
     if (workflows.isLoading) return <Loading />;
-    if (!workflows.data || workflows.data.length === 0) {
-      return <EmptyState icon={<WorkflowsIcon />} title={Locale.label("tasks.workflowsPage.noWorkflows")} />;
-    }
-
-    const catName = (id?: string) => categories.data?.find((c) => c.id === id)?.name || Locale.label("tasks.workflowCategories.uncategorized");
-    const groups: Record<string, WorkflowInterface[]> = {};
-    workflows.data.forEach((w) => {
-      const key = catName(w.categoryId);
-      (groups[key] = groups[key] || []).push(w);
-    });
-
+    if (list.length === 0) return <EmptyState variant="plain" icon={<WorkflowsIcon />} title={Locale.label("tasks.workflowsPage.noWorkflows")} />;
     return (
-      <>
-        {Object.keys(groups).map((group) => (
-          <Box key={group} sx={{ mb: 2 }}>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ px: 1, py: 0.5, fontWeight: 600 }}>{group}</Typography>
-            <List sx={{ p: 0 }}>
-              {groups[group].map((workflow) => (
-                <ListItem
-                  key={workflow.id}
-                  disablePadding
-                  secondaryAction={canManage ? (
-                    <AppIconButton label={Locale.label("common.duplicate")} icon={<DuplicateIcon />} edge="end" data-testid={"duplicate-workflow-" + workflow.id} onClick={(e) => duplicate(e, workflow.id || "")} />
-                  ) : undefined}>
-                  <ListItemButton
-                    data-testid={"workflow-row-" + workflow.id}
-                    onClick={() => navigate("/serving/tasks/workflows/" + workflow.id)}
-                    sx={{ borderRadius: 1, mb: 1, border: "1px solid", borderColor: "divider", "&:hover": { borderColor: "primary.main", backgroundColor: "action.hover" } }}>
-                    <ListItemIcon><WorkflowsIcon sx={{ color: workflow.active ? "primary.main" : "grey.400" }} /></ListItemIcon>
-                    <ListItemText
-                      primary={<Typography variant="h6" sx={{ fontWeight: 600, fontSize: "1rem" }}>{workflow.name}</Typography>}
-                      secondary={<Typography variant="body2" color="text.secondary">{workflow.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</Typography>}
-                      slotProps={{ primary: { component: "div" }, secondary: { component: "div" } }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        ))}
-      </>
+      <Box sx={tableScrollSx} role="region" aria-label={Locale.label("tasks.workflowsPage.title")} tabIndex={0}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>{Locale.label("common.name")}</TableCell>
+              <TableCell>{Locale.label("tasks.workflowsPage.category", "Category")}</TableCell>
+              <TableCell>{Locale.label("tasks.workflowsPage.status", "Status")}</TableCell>
+              {canManage && <TableCell />}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.map((workflow) => (
+              <TableRow key={workflow.id} hover data-testid={"workflow-row-" + workflow.id} onClick={() => navigate("/serving/tasks/workflows/" + workflow.id)} sx={{ cursor: "pointer" }}>
+                <TableCell sx={{ py: 1.5 }}>
+                  <MuiLink component={RouterLink} to={"/serving/tasks/workflows/" + workflow.id} underline="hover" onClick={(e) => e.stopPropagation()} sx={{ fontWeight: 600, color: "text.primary", overflowWrap: "anywhere" }}>
+                    {workflow.name}
+                  </MuiLink>
+                </TableCell>
+                <TableCell sx={{ color: "text.secondary" }}>{catName(workflow.categoryId)}</TableCell>
+                <TableCell>
+                  <StatusBadge tone={workflow.active ? "success" : "neutral"} variant="dot">{workflow.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>
+                </TableCell>
+                {canManage && (
+                  <TableCell align="right" className="rowActions" onClick={(e) => e.stopPropagation()}>
+                    <TextAction small onClick={() => duplicate(workflow.id || "")} data-testid={"duplicate-workflow-" + workflow.id}>{Locale.label("common.duplicate")}</TextAction>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
     );
   };
 
-  if (!canView) return <Box sx={{ p: 4 }}><Typography>{Locale.label("common.noAccess")}</Typography></Box>;
-
   return (
     <>
-      <PageHeader icon={<WorkflowsIcon />} title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")}>
-        <Stack direction="row" spacing={1}>
-          <HeaderSecondaryButton startIcon={<MyCardsIcon />} onClick={() => navigate("/serving/tasks")}>
-            {Locale.label("tasks.myCards.title")}
-          </HeaderSecondaryButton>
-          {canManage && (
-            <HeaderPrimaryButton startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)}>
-              {Locale.label("tasks.workflowsPage.addWorkflow")}
-            </HeaderPrimaryButton>
-          )}
-        </Stack>
+      <PageHeader title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")}>
+        <HeaderTextButton component={RouterLink} to="/serving/tasks" data-testid="workflows-my-cards-link">{Locale.label("tasks.myCards.title")}</HeaderTextButton>
+        {canManage && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)}>
+            {Locale.label("tasks.workflowsPage.addWorkflow")}
+          </HeaderPrimaryButton>
+        )}
       </PageHeader>
+      <PageContainer>
+        <Surface>
+          <Stack spacing={3}>
+            {usedCategories.length > 0 && (
+              <PillTabs
+                aria-label={Locale.label("tasks.workflowsPage.categories", "Workflow categories")}
+                value={category}
+                onChange={setCategory}
+                options={[
+                  { value: "all", label: Locale.label("common.all", "All"), "data-testid": "workflow-category-all" },
+                  ...usedCategories.map((c) => ({ value: c.id || "", label: c.name, "data-testid": "workflow-category-" + c.id }))
+                ]}
+              />
+            )}
+            {!workflows.isLoading && (
+              <ResultsBar>
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("tasks.workflowsPage.workflowCount", "{count} workflows").replace("{count}", list.length.toString())}
+                </Typography>
+              </ResultsBar>
+            )}
+            <Box data-testid="workflow-list">{getList()}</Box>
+          </Stack>
+
+          {canManage && showAdd && (
+            <Box id="add-workflow-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
+              <WorkflowEdit workflow={{ name: "", active: true }} categories={categories.data} onCancel={() => setShowAdd(false)} onSave={handleAdded} onCategoriesChanged={() => categories.refetch()} />
+            </Box>
+          )}
+        </Surface>
+      </PageContainer>
 
       <Menu anchorEl={addAnchor} open={Boolean(addAnchor)} onClose={() => setAddAnchor(null)}>
-        <MenuItem data-testid="add-workflow-blank" onClick={() => { setAddAnchor(null); setShowAdd(true); }}>{Locale.label("tasks.workflowsPage.blankWorkflow")}</MenuItem>
+        <MenuItem data-testid="add-workflow-blank" onClick={startBlank}>{Locale.label("tasks.workflowsPage.blankWorkflow")}</MenuItem>
         {(templates.data || []).map((t) => (
           <MenuItem key={t.key} data-testid={"add-workflow-template-" + t.key} onClick={() => createFromTemplate(t.key)}>{t.name}</MenuItem>
         ))}
       </Menu>
-
-      <Box sx={{ p: 3 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: showAdd ? 8 : 12 }}>
-            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-              <CardContent>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
-                  <WorkflowsIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                  <Typography variant="h6">{Locale.label("tasks.workflowsPage.title")}</Typography>
-                  {(workflows.data?.length || 0) > 0 && <CountChip count={workflows.data?.length || 0} />}
-                </Stack>
-                {getGroupedList()}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {showAdd && (
-            <Grid size={{ xs: 12, md: 4 }}>
-              <WorkflowEdit workflow={{ name: "", active: true }} categories={categories.data} onCancel={() => setShowAdd(false)} onSave={handleAdded} onCategoriesChanged={() => categories.refetch()} />
-            </Grid>
-          )}
-        </Grid>
-      </Box>
     </>
   );
 };

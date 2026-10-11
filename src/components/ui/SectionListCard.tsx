@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { Button, Card, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { Loading } from "@churchapps/apphelper";
@@ -28,12 +28,12 @@ interface SectionListCardProps {
   children?: ReactNode;
 }
 
-export const SectionListCard: React.FC<SectionListCardProps> = ({ icon, title, count, onAdd, addLabel, addButtonVariant = "contained", addButtonSize = "medium", addButtonTestId, loading, empty, cardSx, children }) => (
+export const SectionListCard: React.FC<SectionListCardProps> = ({ icon, title, count, onAdd, addLabel, addButtonVariant = "outlined", addButtonSize = "medium", addButtonTestId, loading, empty, cardSx, children }) => (
   <Card sx={cardSx}>
-    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-      <Stack direction="row" spacing={1} alignItems="center">
-        {React.cloneElement(icon as React.ReactElement<any>, { sx: { color: "primary.main", fontSize: 20 } })}
-        <Typography variant="h6">{title}</Typography>
+    <Stack className="om-head" direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ px: { xs: 2, md: 3 }, pt: { xs: 2, md: 3 }, pb: 2 }}>
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+        {React.cloneElement(icon as React.ReactElement<any>, { className: "om-icon", sx: { color: "text.secondary", fontSize: 20 } })}
+        <Typography className="om-title" variant="h3" component="h2">{title}</Typography>
         {count > 0 && <CountChip count={count} />}
       </Stack>
       {onAdd && (
@@ -43,7 +43,9 @@ export const SectionListCard: React.FC<SectionListCardProps> = ({ icon, title, c
       )}
     </Stack>
     {loading ? <Loading /> : count === 0 ? (
-      <EmptyState variant="card" icon={empty.icon} title={empty.title} description={empty.description} action={empty.action} />
+      <Box sx={{ px: { xs: 2, md: 3 }, pb: { xs: 2, md: 3 } }}>
+        <EmptyState variant="plain" icon={empty.icon} title={empty.title} description={empty.description} action={empty.action} />
+      </Box>
     ) : children}
   </Card>
 );

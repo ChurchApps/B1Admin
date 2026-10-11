@@ -663,7 +663,8 @@ const GENERAL_FUND_ID = "FUN00000001";
 const CONVERTED_NOTE = "Converted at current exchange rates";
 
 test.describe("Mixed-currency giving totals", () => {
-  test.describe.configure({ retries: 0 });
+  // Serial so beforeAll seeds the euro gift once; parallel workers each ran it and doubled the totals.
+  test.describe.configure({ mode: "serial", retries: 0 });
   let batchId: string;
   let expectedTotal: string; // header stats round to whole units: "$ 215"
   let expectedExact: string; // list rows keep cents: "$ 214.60"

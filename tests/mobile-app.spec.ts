@@ -49,7 +49,7 @@ async function apiLogin(ctx: APIRequestContext): Promise<string> {
 
 async function findTabRow(page: import("@playwright/test").Page, tabName: string) {
   // Wait for heading to confirm existence, then return listitem via filter for button scope.
-  const heading = page.getByRole("heading", { level: 6, name: tabName, exact: true });
+  const heading = page.getByRole("heading", { level: 3, name: tabName, exact: true });
   await heading.first().waitFor({ state: "visible", timeout: 15000 });
   return page.getByRole("listitem").filter({ has: heading }).first();
 }
@@ -159,7 +159,7 @@ test.describe.serial("Mobile tab lifecycle", () => {
     await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
     await page.getByRole("button", { name: /Delete Tab/i }).click();
     await confirmDelete(page);
-    await expect(page.getByRole("heading", { level: 6, name: DISPOSABLE_TAB, exact: true }))
+    await expect(page.getByRole("heading", { level: 3, name: DISPOSABLE_TAB, exact: true }))
       .toHaveCount(0, { timeout: 15000 });
   });
 });
@@ -193,7 +193,7 @@ test.describe.serial("Mobile tab ordering", () => {
   }
 
   async function tabNames() {
-    return page.getByRole("listitem").getByRole("heading", { level: 6 }).allTextContents();
+    return page.getByRole("listitem").getByRole("heading", { level: 3 }).allTextContents();
   }
 
   test("moves the lower of two created tabs above the other and persists the order", async () => {
@@ -237,7 +237,7 @@ test.describe.serial("Mobile tab ordering", () => {
       await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
       await page.getByRole("button", { name: /Delete Tab/i }).click();
       await confirmDelete(page);
-      await expect(page.getByRole("heading", { level: 6, name, exact: true })).toHaveCount(0, { timeout: 15000 });
+      await expect(page.getByRole("heading", { level: 3, name, exact: true })).toHaveCount(0, { timeout: 15000 });
     }
   });
 });

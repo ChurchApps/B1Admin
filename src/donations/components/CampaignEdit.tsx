@@ -83,11 +83,11 @@ export const CampaignEdit: React.FC<Props> = (props) => {
         </FormControl>
         <TextField fullWidth type="number" inputProps={{ step: "0.01", min: "0" }} label={Locale.label("donations.campaignEdit.goalAmount")} data-testid="campaign-goal-input" {...register("goalAmount")} />
         <Controller name="startDate" control={control} rules={{ required: Locale.label("donations.campaignEdit.errStartDate") }} render={({ field }) => (
-    <AppDatePicker fullWidth  InputLabelProps={{ shrink: true }} label={Locale.label("donations.campaignEdit.startDate")} data-testid="campaign-start-date" error={!!e.startDate} helperText={e.startDate?.message}  {...field} />
-  )} />
+          <AppDatePicker fullWidth InputLabelProps={{ shrink: true }} label={Locale.label("donations.campaignEdit.startDate")} data-testid="campaign-start-date" error={!!e.startDate} helperText={e.startDate?.message} {...field} />
+        )} />
         <Controller name="endDate" control={control} render={({ field }) => (
-    <AppDatePicker fullWidth  InputLabelProps={{ shrink: true }} label={Locale.label("donations.campaignEdit.endDate")} data-testid="campaign-end-date"  {...field} />
-  )} />
+          <AppDatePicker fullWidth InputLabelProps={{ shrink: true }} label={Locale.label("donations.campaignEdit.endDate")} data-testid="campaign-end-date" {...field} />
+        )} />
         <TextField fullWidth multiline rows={3} label={Locale.label("donations.campaignEdit.description")} data-testid="campaign-description-input" {...register("description")} />
         <FormControlLabel
           control={

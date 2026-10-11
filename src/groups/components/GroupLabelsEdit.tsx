@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 
@@ -74,9 +74,9 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
     <>
       <div style={{ marginTop: 10 }}>{Locale.label("groups.groupLabelsEdit.labels")}</div>
       {getItems()}
-      <button type="button" onClick={handleAdd} data-testid="add-new-label-link" aria-label={Locale.label("groups.groupLabelsEdit.addNewLabelAria")} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+      <Button type="button" size="small" onClick={handleAdd} data-testid="add-new-label-link" aria-label={Locale.label("groups.groupLabelsEdit.addNewLabelAria")}>
         {Locale.label("groups.groupLabelsEdit.addNewLabel")}
-      </button>
+      </Button>
     </>
   );
 };

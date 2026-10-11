@@ -18,11 +18,10 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             margin: "16px 0"
           },
           "& .table th": {
-            backgroundColor: "background.subtle",
+            backgroundColor: "var(--b1-canvas)",
             padding: "12px 16px",
             textAlign: "left",
             fontWeight: 600,
-            fontSize: "0.875rem",
             color: "text.primary",
             borderBottom: "2px solid",
             borderBottomColor: "divider"
@@ -31,19 +30,15 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             padding: "12px 16px",
             borderBottom: "1px solid",
             borderBottomColor: "divider",
-            fontSize: "0.95rem",
             color: "text.primary"
           },
-          "& .table tbody tr:hover": { backgroundColor: "background.subtle" },
+          "& .table tbody tr:hover": { backgroundColor: "var(--b1-canvas)" },
           "& .table tbody tr:last-child td": { borderBottom: "none" },
           "& .donationAmount": {
             fontWeight: 600,
             color: "primary.main"
           },
-          "& .donationDate": {
-            color: "text.secondary",
-            fontSize: "0.875rem"
-          },
+          "& .donationDate": { color: "text.secondary" },
           "& .donationFund": {
             color: "text.primary",
             fontWeight: 500
@@ -61,21 +56,19 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             textAlign: "center",
             padding: "32px 16px",
             color: "text.secondary",
-            fontSize: "0.95rem",
             fontStyle: "italic"
           },
           "& .filters": {
             marginBottom: "16px",
             padding: "16px",
-            backgroundColor: "background.subtle",
-            borderRadius: "8px",
+            backgroundColor: "var(--b1-canvas)",
+            borderRadius: "var(--b1-radius-panel)",
             display: "flex",
             gap: "16px",
             alignItems: "center",
             flexWrap: "wrap"
           },
           "& .filters label": {
-            fontSize: "0.875rem",
             fontWeight: 500,
             color: "text.primary",
             marginRight: "8px"
@@ -84,28 +77,26 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             padding: "6px 12px",
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: "4px",
-            fontSize: "0.875rem",
+            borderRadius: "var(--b1-radius-control)",
             backgroundColor: "background.paper",
             color: "text.primary",
             "&:focus": {
               outline: "none",
               borderColor: "primary.main",
-              boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)"
+              boxShadow: "0 0 0 2px var(--b1-focus)"
             }
           },
           '& .filters input[type="date"]': {
             padding: "6px 12px",
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: "4px",
-            fontSize: "0.875rem",
+            borderRadius: "var(--b1-radius-control)",
             backgroundColor: "background.paper",
             color: "text.primary",
             "&:focus": {
               outline: "none",
               borderColor: "primary.main",
-              boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)"
+              boxShadow: "0 0 0 2px var(--b1-focus)"
             }
           }
         }

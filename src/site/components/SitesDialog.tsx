@@ -55,9 +55,9 @@ export function SitesDialog(props: Props) {
         {props.sites.length === 0 && <Typography color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.sitesDialog.empty", "No additional websites yet.")}</Typography>}
         <Stack spacing={1} sx={{ mb: 3 }}>
           {props.sites.map((s) => (
-            <Box key={s.id} sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", border: "1px solid", borderColor: "divider", borderRadius: 1, px: 2, py: 1 }}>
+            <Box key={s.id} sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", px: 2, py: 1 }}>
               <Box>
-                <Typography variant="body1" sx={{ fontWeight: 500 }}>{s.name}</Typography>
+                <Typography variant="body1" sx={{ fontWeight: 600 }}>{s.name}</Typography>
                 <Typography variant="body2" color="text.secondary">{s.subDomain}.b1.church</Typography>
               </Box>
               <AppIconButton label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} intent="remove" onClick={() => handleDelete(s)} data-testid={`delete-site-${s.subDomain}`} />

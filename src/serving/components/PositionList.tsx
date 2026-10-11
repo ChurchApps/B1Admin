@@ -1,4 +1,5 @@
-import { Badge, Chip, Table, TableBody, TableCell, TableHead, TableRow, Avatar, useTheme } from "@mui/material";
+import { Badge, Box, Table, TableBody, TableCell, TableHead, TableRow, Avatar } from "@mui/material";
+import { StatusBadge } from "../../components/ui";
 import {
   type AssignmentInterface,
   type GroupInterface,
@@ -23,16 +24,6 @@ interface Props {
 
 export const PositionList = (props: Props) => {
   const { canEdit } = props;
-  const theme = useTheme();
-
-  const lightColors = [
-    "#FFF8E7", "#E7F2FA", "#E7F4E7", "#F7E7F4", "#F7F4E7", "#E7F7F4", "#F4E7F7", "#F4F7E7", "#E7F7F7", "#F7E7F7", "#F7F7E7", "#E7E7F7", "#F4F4F7", "#F7F4F4", "#F4F7F4", "#F4F4F4"
-  ];
-  const darkColors = [
-    "#3E382A", "#2A353D", "#2A372A", "#3A2A37", "#3A372A", "#2A3A37", "#372A3A", "#373A2A", "#2A3A3A", "#3A2A3A", "#3A3A2A", "#2A2A3A", "#37373A", "#3A3737", "#373A37", "#373737"
-  ];
-  const colorList = theme.palette.mode === "dark" ? darkColors : lightColors;
-
   const getPersonLink = (assignment: AssignmentInterface, position: PositionInterface) => {
     const person = ArrayHelper.getOne(props.people, "id", assignment.personId);
     if (person) {
@@ -61,7 +52,7 @@ export const PositionList = (props: Props) => {
           <button
             type="button"
             onClick={() => props.onAssignmentSelect?.(position, assignment || { positionId: position.id })}
-            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
+            style={{ background: "none", border: 0, padding: 0, color: "var(--b1-primary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
             {wrappedImage}
             {personName}
           </button>
@@ -89,7 +80,7 @@ export const PositionList = (props: Props) => {
           key="remaining"
           type="button"
           onClick={() => props.onAssignmentSelect?.(position, { positionId: position.id })}
-          style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+          style={{ background: "none", border: 0, padding: 0, color: "var(--b1-primary)", cursor: "pointer" }}>
           {label}
         </button>
       );
@@ -97,29 +88,29 @@ export const PositionList = (props: Props) => {
     return result;
   };
 
-  const getPositionRow = (position: PositionInterface, color: string, first: boolean) => {
+  const getPositionRow = (position: PositionInterface, first: boolean) => {
     const assignments = ArrayHelper.getAll(props.assignments || [], "positionId", position.id);
     const hasPeople = assignments.length > 0;
     const group = position.groupId && Array.isArray(props.groups) ? ArrayHelper.getOne(props.groups, "id", position.groupId) : null;
     return (
-      <TableRow key={position.id} style={{ backgroundColor: color }}>
-        <TableCell style={{ paddingLeft: 10, paddingTop: 10, paddingBottom: 10, fontWeight: "bold", verticalAlign: "top" }}>{first ? position.categoryName : ""}</TableCell>
+      <TableRow key={position.id} sx={first ? { "& td": { borderTop: "1px solid var(--b1-border)" } } : undefined}>
+        <TableCell style={{ paddingTop: 10, paddingBottom: 10, fontWeight: 600, verticalAlign: "top" }}>{first ? position.categoryName : ""}</TableCell>
         <TableCell style={{ paddingTop: 10, paddingBottom: 10, verticalAlign: "top" }}>
           {canEdit ? (
             <button
               type="button"
               onClick={() => props.onSelect?.(position)}
-              style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+              style={{ background: "none", border: 0, padding: 0, color: "var(--b1-primary)", cursor: "pointer" }}>
               {position.name}
-              {group && <span style={{ color: "var(--text-muted)", marginLeft: "8px" }}>({group.name})</span>}
+              {group && <span style={{ color: "var(--b1-muted)", marginLeft: "8px" }}>({group.name})</span>}
             </button>
           ) : (
             <span>
               {position.name}
-              {group && <span style={{ color: "var(--text-muted)", marginLeft: "8px" }}>({group.name})</span>}
+              {group && <span style={{ color: "var(--b1-muted)", marginLeft: "8px" }}>({group.name})</span>}
             </span>
           )}
-          <Chip label={assignments.length + "/" + (position.count || 0) + (position.allowSelfSignup ? " " + Locale.label("plans.positionList.signupSuffix") : "")} size="small" color={assignments.length >= (position.count || 0) ? "success" : "default"} variant="outlined" sx={{ ml: 1, fontSize: "0.6875rem" }} />
+          <Box component="span" sx={{ ml: 1 }}><StatusBadge tone={assignments.length >= (position.count || 0) ? "success" : "neutral"}>{assignments.length + "/" + (position.count || 0) + (position.allowSelfSignup ? " " + Locale.label("plans.positionList.signupSuffix") : "")}</StatusBadge></Box>
         </TableCell>
         <TableCell style={{ paddingTop: hasPeople ? 2 : 10, paddingBottom: hasPeople ? 2 : 10, verticalAlign: "top" }}>{getPeopleLinks(position)}</TableCell>
       </TableRow>
@@ -127,18 +118,12 @@ export const PositionList = (props: Props) => {
   };
 
   const getPositions = () => {
-    let colorIndex = -1;
-    const result: JSX.Element[] = [];
-    let lastCategory = "";
-    for (let i = 0; i < props.positions.length; i++) {
-      const position = props.positions[i];
-      if (position.categoryName !== lastCategory) {
-        colorIndex++;
-        lastCategory = position.categoryName || "";
-        result.push(getPositionRow(position, colorList[colorIndex], true));
-      } else result.push(getPositionRow(position, colorList[colorIndex], false));
-    }
-    return result;
+    let lastCategory: string | null = null;
+    return props.positions.map((position) => {
+      const first = position.categoryName !== lastCategory;
+      lastCategory = position.categoryName || "";
+      return getPositionRow(position, first);
+    });
   };
 
   return (
@@ -146,15 +131,9 @@ export const PositionList = (props: Props) => {
       <Table size="small" className="positionsTable">
         <TableHead>
           <TableRow>
-            <TableCell>
-              <b>{Locale.label("plans.positionList.team")}</b>
-            </TableCell>
-            <TableCell>
-              <b>{Locale.label("plans.positionList.pos")}</b>
-            </TableCell>
-            <TableCell>
-              <b>{Locale.label("plans.positionList.ppl")}</b>
-            </TableCell>
+            <TableCell>{Locale.label("plans.positionList.team")}</TableCell>
+            <TableCell>{Locale.label("plans.positionList.pos")}</TableCell>
+            <TableCell>{Locale.label("plans.positionList.ppl")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{getPositions()}</TableBody>

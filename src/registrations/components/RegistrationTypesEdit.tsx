@@ -33,7 +33,7 @@ export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange })
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.commerce.noTypes")}</Typography>
       )}
       {rows.map((row, i) => (
-        <Box key={row.id || i} data-testid="registration-type-row" sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
+        <Box key={row.id || i} data-testid="registration-type-row" sx={{ p: 1.5, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
           <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" useFlexGap>
             <TextField label={Locale.label("registrations.commerce.name")} size="small" value={row.name || ""} onChange={(e) => update(i, "name", e.target.value)} data-testid="type-name" sx={{ flex: "1 1 140px" }} />
             <TextField label={Locale.label("registrations.commerce.price")} type="number" size="small" value={row.price ?? ""} onChange={(e) => update(i, "price", e.target.value)} data-testid="type-price" sx={{ flex: "1 1 90px" }} />

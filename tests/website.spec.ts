@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { siteTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { trashIconButton, confirmDelete } from "./helpers/fixtures";
+import { confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSite, navigateToCalendars, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -496,7 +496,7 @@ test.describe("Website Management", () => {
       expect((await treePost).status()).toBe(200);
       // Creation finishes by opening the only newly-created page (Visit) in the preview.
       await page.waitForURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 30000 });
-      await expect(page.locator("h6").getByText("Plan Your Visit").first()).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText("Plan Your Visit", { exact: true }).first()).toBeVisible({ timeout: 10000 });
       // The new Visit page now exists; the pre-existing Home/About pages were left untouched.
       await navigateToSite(page);
       await expect(page.locator("td").getByText("Plan Your Visit")).toHaveCount(1, { timeout: 10000 });
@@ -765,7 +765,7 @@ test.describe("Website Management", () => {
     });
 
     test("should change color palette", async () => {
-      const colorSettings = page.locator("h6").getByText("Color Palette");
+      const colorSettings = page.getByText("Color Palette", { exact: true });
       await colorSettings.click();
       const palettePreset = page.locator("span").getByText("Palette 16");
       await palettePreset.click();
@@ -776,7 +776,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel changing color palette", async () => {
-      const colorSettings = page.locator("h6").getByText("Color Palette");
+      const colorSettings = page.getByText("Color Palette", { exact: true });
       await colorSettings.click();
       const palettePreset = page.locator("span").getByText("Palette 16");
       await expect(palettePreset).toHaveCount(1);
@@ -786,7 +786,7 @@ test.describe("Website Management", () => {
     });
 
     test("should change font", async () => {
-      const fontSettings = page.locator("h6").getByText("Fonts").last();
+      const fontSettings = page.getByText("Fonts", { exact: true }).last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await headerFontSelect.click();
@@ -800,7 +800,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel changing font", async () => {
-      const fontSettings = page.locator("h6").getByText("Fonts").last();
+      const fontSettings = page.getByText("Fonts", { exact: true }).last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await expect(headerFontSelect).toHaveCount(1);
@@ -810,7 +810,7 @@ test.describe("Website Management", () => {
     });
 
     test("should add custom CSS", async () => {
-      const stylesheetSettings = page.locator("h6").getByText("CSS & Javascript");
+      const stylesheetSettings = page.getByText("CSS & Javascript", { exact: true });
       await stylesheetSettings.click();
       // Scope to the named CSS field — page-level `textarea` also matches the
       // SuperBee chat widget's hidden textarea, which never unmounts.
@@ -823,7 +823,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel adding custom CSS", async () => {
-      const stylesheetSettings = page.locator("h6").getByText("CSS & Javascript");
+      const stylesheetSettings = page.getByText("CSS & Javascript", { exact: true });
       await stylesheetSettings.click();
       const cssBox = page.locator('textarea[name="css"]');
       await expect(cssBox).toHaveCount(1);
@@ -905,13 +905,13 @@ test.describe("Website Management", () => {
     });
 
     test("should group the appearance tools under headings", async () => {
-      await expect(page.locator("h6").getByText("Announcement & widgets")).toBeVisible({ timeout: 10000 });
-      await expect(page.locator("h6").getByText("Redirects & analytics")).toBeVisible();
-      await expect(page.locator("h6").getByText("Theme, fonts & footer")).toBeVisible();
+      await expect(page.getByText("Announcement & widgets", { exact: true })).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText("Redirects & analytics", { exact: true })).toBeVisible();
+      await expect(page.getByText("Theme, fonts & footer", { exact: true })).toBeVisible();
     });
 
     test("should add footer", async () => {
-      const footerSettings = page.locator("h6").getByText("Site Footer");
+      const footerSettings = page.getByText("Site Footer", { exact: true });
       await footerSettings.click();
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/, { timeout: 10000 });
     });
@@ -1038,9 +1038,17 @@ test.describe("Website Management", () => {
       await expect(validatedCalendar).toHaveCount(1);
     });
 
+    const calendarRow = (name: string) => page.locator("tr").filter({ hasText: name }).first();
+    const manageEvents = async (name: string) => {
+      await calendarRow(name).locator('[data-testid^="manage-calendar-"]').click();
+      await expect(page.locator('[data-testid="calendar-identity"]')).toBeVisible({ timeout: 10000 });
+    };
+    const editCalendar = async (name: string) => {
+      await calendarRow(name).locator('[data-testid^="edit-calendar-"]').click();
+    };
+
     test("should add group events to calendar", async () => {
-      const editBtn = page.locator('[aria-label="Manage Events"]').last();
-      await editBtn.click();
+      await manageEvents("Zacchaeus Test Calendar");
       const addBtn = page.locator('[data-testid="calendar-add-event-button"]');
       await addBtn.click();
       const groupSelectBox = page.locator('[role="combobox"]');
@@ -1049,7 +1057,7 @@ test.describe("Website Management", () => {
       await groupSelect.click();
       const saveBtn = page.locator('[data-testid="calendar-edit-save-button"]');
       await saveBtn.click();
-      const validatedGroup = page.locator("td").getByText("Adult Bible Class");
+      const validatedGroup = page.locator('[data-testid="calendar-identity"] li').getByText("Adult Bible Class");
       await expect(validatedGroup).toBeVisible({ timeout: 10000 });
       await expect(validatedGroup).toHaveCount(1);
       const agendaBtn = page.locator("button").getByText("Agenda");
@@ -1059,8 +1067,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel adding group events to calendar", async () => {
-      const editBtn = page.locator('[aria-label="Manage Events"]').last();
-      await editBtn.click();
+      await manageEvents("Zacchaeus Test Calendar");
       const addBtn = page.locator('[data-testid="calendar-add-event-button"]');
       await addBtn.click();
       const groupSelectBox = page.locator('[role="combobox"]');
@@ -1071,18 +1078,16 @@ test.describe("Website Management", () => {
     });
 
     test("should remove group events from calendar", async () => {
-      const editBtn = page.locator('[aria-label="Manage Events"]').last();
-      await editBtn.click();
-      const removeBtn = trashIconButton(page).first();
+      await manageEvents("Zacchaeus Test Calendar");
+      const removeBtn = page.locator('[data-testid^="remove-group-"]').first();
       await removeBtn.click();
       await confirmDelete(page);
-      const validatedDeletion = page.locator("td").getByText("Adult Bible Class");
+      const validatedDeletion = page.locator('[data-testid="calendar-identity"] li').getByText("Adult Bible Class");
       await expect(validatedDeletion).toHaveCount(0);
     });
 
     test("should edit calendar", async () => {
-      const editBtn = page.locator('[aria-label="Edit"]').last();
-      await editBtn.click();
+      await editCalendar("Zacchaeus Test Calendar");
       const name = page.locator('[name="name"]');
       await name.fill("Zebedee Test Calendar");
       const saveBtn = page.locator('[data-testid="save-calendar-button"]');
@@ -1092,8 +1097,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel editing calendar", async () => {
-      const editBtn = page.locator('[aria-label="Edit"]').last();
-      await editBtn.click();
+      await editCalendar("Zebedee Test Calendar");
       const name = page.locator('[name="name"]');
       await expect(name).toHaveCount(1);
       const cancelBtn = page.locator("button").getByText("Cancel");
@@ -1102,12 +1106,11 @@ test.describe("Website Management", () => {
     });
 
     test("should delete calendar", async () => {
-      const editBtn = page.locator('[aria-label="Edit"]').last();
-      await editBtn.click();
+      await editCalendar("Zebedee Test Calendar");
       const deleteBtn = page.locator('[data-testid="delete-calendar-button"]');
       await deleteBtn.click();
       await confirmDelete(page);
-      const validatedDeletion = page.locator("h6").getByText("Zebedee Test Calendar");
+      const validatedDeletion = page.getByText("Zebedee Test Calendar");
       await expect(validatedDeletion).toHaveCount(0);
     });
 

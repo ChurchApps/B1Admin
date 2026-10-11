@@ -24,7 +24,7 @@ test.describe.serial("Check-in label designer", () => {
 
   test("reaches the designer from the B1 CheckIn settings page", async () => {
     await page.goto("/mobile/checkin");
-    await page.getByRole("button", { name: "Design Labels" }).click();
+    await page.getByRole("link", { name: "Design Labels" }).first().click();
     await page.waitForURL(/\/mobile\/checkin\/labels/, { timeout: 15000 });
     await expect(page.locator('[data-testid="add-label"]')).toBeVisible({ timeout: 15000 });
   });

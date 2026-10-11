@@ -10,12 +10,10 @@ import {
   DialogActions,
   Stack,
   Box,
-  Card,
-  CardContent,
   Button,
   Icon
 } from "@mui/material";
-import { Close as CloseIcon, Save as SaveIcon, Delete as DeleteIcon, Link as LinkIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Save as SaveIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { ErrorMessages } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
@@ -121,170 +119,134 @@ export const LinkEdit: React.FC<Props> = (props) => {
         onClose={() => props.updatedFunction?.()}
         maxWidth="md"
         fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: 2,
-            minHeight: "400px"
-          }
-        }}
       >
-        <DialogTitle sx={{
-          backgroundColor: "primary.main",
-          color: "#FFF",
-          p: 3
-        }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Box
-                sx={{
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                  borderRadius: "12px",
-                  p: 1.5,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <LinkIcon sx={{ fontSize: 24, color: "#FFF" }} />
-              </Box>
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  {currentLink?.id ? Locale.label("sermons.liveStreamTimes.linkEdit.editNavigationLink") : Locale.label("sermons.liveStreamTimes.linkEdit.createNewLink")}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>
-                  {Locale.label("sermons.liveStreamTimes.linkEdit.configureSettings")}
-                </Typography>
-              </Box>
-            </Stack>
+        <DialogTitle sx={{ pb: 1 }}>
+          <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+            <Box>
+              <Typography variant="h2" component="span" sx={{ display: "block" }}>
+                {currentLink?.id ? Locale.label("sermons.liveStreamTimes.linkEdit.editNavigationLink") : Locale.label("sermons.liveStreamTimes.linkEdit.createNewLink")}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 400 }}>
+                {Locale.label("sermons.liveStreamTimes.linkEdit.configureSettings")}
+              </Typography>
+            </Box>
             <AppIconButton
               label={Locale.label("common.close")}
               icon={<CloseIcon />}
-              tone="header"
               onClick={() => props.updatedFunction?.()}
             />
           </Stack>
         </DialogTitle>
 
-        <DialogContent sx={{ p: 3 }}>
+        <DialogContent>
           <ErrorMessages errors={errors} />
 
           <Stack spacing={3} sx={{ mt: 2 }}>
-            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <CardContent>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>edit</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                    {Locale.label("sermons.liveStreamTimes.linkEdit.linkDetails")}
-                  </Typography>
-                </Stack>
+            <Box>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                {Locale.label("sermons.liveStreamTimes.linkEdit.linkDetails")}
+              </Typography>
 
-                <Stack spacing={2}>
-                  <TextField
-                    fullWidth
-                    label={Locale.label("sermons.liveStreamTimes.linkEdit.displayText")}
-                    name="text"
-                    type="text"
-                    value={currentLink?.text || ""}
-                    onChange={handleChange}
-                    data-testid="link-text-input"
-                    aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.linkDisplayTextAria")}
-                    placeholder={Locale.label("sermons.liveStreamTimes.linkEdit.displayTextPlaceholder")}
-                    size="small"
-                  />
-                  <TextField
-                    fullWidth
-                    label={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrl")}
-                    name="url"
-                    type="text"
-                    value={currentLink?.url || ""}
-                    onChange={handleChange}
-                    data-testid="link-url-input"
-                    aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrlAria")}
-                    placeholder={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrlPlaceholder")}
-                    size="small"
-                  />
-                </Stack>
-              </CardContent>
-            </Card>
+              <Stack spacing={2}>
+                <TextField
+                  fullWidth
+                  label={Locale.label("sermons.liveStreamTimes.linkEdit.displayText")}
+                  name="text"
+                  type="text"
+                  value={currentLink?.text || ""}
+                  onChange={handleChange}
+                  data-testid="link-text-input"
+                  aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.linkDisplayTextAria")}
+                  placeholder={Locale.label("sermons.liveStreamTimes.linkEdit.displayTextPlaceholder")}
+                  size="small"
+                />
+                <TextField
+                  fullWidth
+                  label={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrl")}
+                  name="url"
+                  type="text"
+                  value={currentLink?.url || ""}
+                  onChange={handleChange}
+                  data-testid="link-url-input"
+                  aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrlAria")}
+                  placeholder={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrlPlaceholder")}
+                  size="small"
+                />
+              </Stack>
+            </Box>
 
             {(filteredGroupLinks?.length ?? 0) > 0 && (
-              <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-                <CardContent>
-                  <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                    <Icon sx={{ color: "primary.main", fontSize: 18 }}>account_tree</Icon>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                      {Locale.label("sermons.liveStreamTimes.linkEdit.menuOrganization")}
-                    </Typography>
-                  </Stack>
+              <Box>
+                <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                  {Locale.label("sermons.liveStreamTimes.linkEdit.menuOrganization")}
+                </Typography>
 
-                  <Stack spacing={2}>
-                    <Box>
-                      {subName && toggleSubName === true
-                        ? (
-                          <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                            <Icon sx={{ fontSize: 16, color: "success.main" }}>check_circle</Icon>
-                            <Typography variant="body2" color="success.main">
-                              {Locale.label("sermons.liveStreamTimes.linkEdit.submenuMessage")} <strong>{subName}</strong>
-                            </Typography>
-                          </Stack>
-                        )
-                        : (
-                          <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                            <Icon sx={{ fontSize: 16, color: "text.secondary" }}>info</Icon>
-                            <Typography variant="body2" color="text.secondary">
-                              {Locale.label("sermons.liveStreamTimes.linkEdit.optionalSubmenuMessage")}
-                            </Typography>
-                          </Stack>
-                        )}
-                    </Box>
+                <Stack spacing={2}>
+                  <Box>
+                    {subName && toggleSubName === true
+                      ? (
+                        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+                          <Icon sx={{ fontSize: 20, color: "success.main" }}>check_circle</Icon>
+                          <Typography variant="body2" color="success.main">
+                            {Locale.label("sermons.liveStreamTimes.linkEdit.submenuMessage")} <strong>{subName}</strong>
+                          </Typography>
+                        </Stack>
+                      )
+                      : (
+                        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+                          <Icon sx={{ fontSize: 16, color: "text.secondary" }}>info</Icon>
+                          <Typography variant="body2" color="text.secondary">
+                            {Locale.label("sermons.liveStreamTimes.linkEdit.optionalSubmenuMessage")}
+                          </Typography>
+                        </Stack>
+                      )}
+                  </Box>
 
-                    <Box>
-                      <ToggleButtonGroup
-                        exclusive
-                        value={currentLink?.parentId}
-                        onChange={toggleChange}
-                        sx={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: 1
-                        }}
-                      >
-                        {filteredGroupLinks!.map((link: LinkInterface) => (
-                          <ToggleButton
-                            key={link.id}
-                            value={link.id || ""}
-                            size="small"
-                            color="primary"
-                            onClick={() => setToggleSubName(!toggleSubName)}
-                            data-testid={`submenu-toggle-${link.id}`}
-                            aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.submenuUnderAria").replace("{text}", link.text || "")}
-                            sx={{
-                              borderRadius: 1,
-                              textTransform: "none",
-                              fontWeight: 500,
-                              "&.Mui-selected": {
-                                backgroundColor: "primary.main",
-                                color: "#FFF",
-                                "&:hover": { backgroundColor: "primary.dark" }
-                              }
-                            }}
-                          >
-                            <Stack direction="row" alignItems="center" spacing={1}>
-                              <Icon sx={{ fontSize: 16 }}>folder</Icon>
-                              <Typography variant="body2">{link.text}</Typography>
-                            </Stack>
-                          </ToggleButton>
-                        ))}
-                      </ToggleButtonGroup>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
+                  <Box>
+                    <ToggleButtonGroup
+                      exclusive
+                      value={currentLink?.parentId}
+                      onChange={toggleChange}
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 1
+                      }}
+                    >
+                      {filteredGroupLinks!.map((link: LinkInterface) => (
+                        <ToggleButton
+                          key={link.id}
+                          value={link.id || ""}
+                          size="small"
+                          color="primary"
+                          onClick={() => setToggleSubName(!toggleSubName)}
+                          data-testid={`submenu-toggle-${link.id}`}
+                          aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.submenuUnderAria").replace("{text}", link.text || "")}
+                          sx={{
+                            textTransform: "none",
+                            "&.Mui-selected": {
+                              backgroundColor: "var(--b1-selected)",
+                              color: "var(--b1-on-selected)",
+                              fontWeight: 650,
+                              "&:hover": { backgroundColor: "var(--b1-selected)" }
+                            }
+                          }}
+                        >
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <Icon sx={{ fontSize: 16 }}>folder</Icon>
+                            <Typography variant="body2">{link.text}</Typography>
+                          </Stack>
+                        </ToggleButton>
+                      ))}
+                    </ToggleButtonGroup>
+                  </Box>
+                </Stack>
+              </Box>
             )}
           </Stack>
         </DialogContent>
 
-        <DialogActions sx={{ p: 3, backgroundColor: "grey.50" }}>
+        <DialogActions sx={{ p: 3 }}>
           <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
             {currentLink?.id && (
               <Button
@@ -292,10 +254,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}
-                sx={{
-                  textTransform: "none",
-                  fontWeight: 500
-                }}
               >
                 {Locale.label("sermons.liveStreamTimes.linkEdit.delete")}
               </Button>
@@ -305,10 +263,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
               variant="outlined"
               onClick={() => props.updatedFunction?.()}
               disabled={isLoading}
-              sx={{
-                textTransform: "none",
-                fontWeight: 500
-              }}
             >
               {Locale.label("sermons.liveStreamTimes.linkEdit.cancel")}
             </Button>
@@ -317,11 +271,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
               startIcon={isLoading ? null : <SaveIcon />}
               onClick={handleSave}
               disabled={isLoading}
-              sx={{
-                textTransform: "none",
-                fontWeight: 600,
-                minWidth: 100
-              }}
             >
               {isLoading ? Locale.label("sermons.liveStreamTimes.linkEdit.saving") : Locale.label("sermons.liveStreamTimes.linkEdit.saveLink")}
             </Button>
@@ -333,7 +282,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
         <DialogTitle>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Icon sx={{ color: "error.main" }}>warning</Icon>
-            <Typography variant="h6">{Locale.label("sermons.liveStreamTimes.linkEdit.deleteLink")}</Typography>
+            <Typography variant="h3" component="span">{Locale.label("sermons.liveStreamTimes.linkEdit.deleteLink")}</Typography>
           </Stack>
         </DialogTitle>
         <DialogContent>
@@ -341,10 +290,10 @@ export const LinkEdit: React.FC<Props> = (props) => {
             {Locale.label("sermons.liveStreamTimes.linkEdit.deleteConfirm")}
           </Typography>
           {links?.some(link => link.parentId === currentLink!.id) && (
-            <Box sx={{ mt: 2, p: 2, backgroundColor: "warning.light", borderRadius: 1 }}>
+            <Box sx={{ mt: 2, p: 2, backgroundColor: "var(--b1-warning-bg)", borderRadius: "var(--b1-radius-control)" }}>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Icon sx={{ color: "warning.main" }}>info</Icon>
-                <Typography variant="body2" color="warning.dark">
+                <Typography variant="body2" color="text.primary">
                   {Locale.label("sermons.liveStreamTimes.linkEdit.deleteNestedLinksFirst")}
                 </Typography>
               </Stack>
@@ -355,7 +304,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
           <Button
             onClick={() => setDeleteDialogOpen(false)}
             disabled={isLoading}
-            sx={{ textTransform: "none" }}
           >
             {Locale.label("sermons.liveStreamTimes.linkEdit.cancel")}
           </Button>
@@ -364,7 +312,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
             color="error"
             variant="contained"
             disabled={isLoading}
-            sx={{ textTransform: "none" }}
           >
             {isLoading ? Locale.label("sermons.liveStreamTimes.linkEdit.deleting") : Locale.label("sermons.liveStreamTimes.linkEdit.delete")}
           </Button>

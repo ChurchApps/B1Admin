@@ -163,6 +163,29 @@
       "headcountTrend": "Headcount Trend",
       "headcounts": "Headcounts",
       "setup": "Setup"
+    },
+    "plate": {
+      "allYears": "All years",
+      "yearsSummary": "Trends, headcounts and group attendance across every year. Use the filters to narrow the dates.",
+      "reports": "Reports",
+      "checkedIn": "{count} checked in",
+      "headcount": "{count} counted",
+      "guests": "{count} guests",
+      "lastRecorded": "Last recorded {date}: {count}",
+      "thisWeek": "This week",
+      "inTheRoom": "in the room",
+      "noCheckins": "No check-ins yet this week.",
+      "kiosk": "Kiosk",
+      "rooms": "Rooms",
+      "noRooms": "No one has checked in to a group this week.",
+      "unknownGroup": "Removed group",
+      "guestsTitle": "Guests",
+      "lastWeeks": "Last {weeks} weeks",
+      "weeklyCheckins": "Weekly check-ins",
+      "weekOf": "Week of {date}: {count}",
+      "weeksWith": "{count} of the last {weeks} weeks had check-ins",
+      "headcountsTitle": "Headcounts this week",
+      "noHeadcounts": "No headcounts entered this week."
     }
   },
   "calendars": {
@@ -251,7 +274,9 @@
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
       "subtitleWithCount": "Subtitle With Count",
-      "title": "Calendars"
+      "title": "Calendars",
+      "find": "Find a calendar",
+      "noMatches": "No calendars match your search."
     },
     "calendarPage": {
       "addEventsHint": "Add events by selecting groups",
@@ -376,7 +401,11 @@
       "subtitle": "Manage bookable rooms, shared resources, blockout dates and event templates",
       "templateName": "Template Name",
       "templates": "Templates",
-      "title": "Rooms & Resources"
+      "title": "Rooms & Resources",
+      "find": "Find"
+    },
+    "chrome": {
+      "sections": "Calendar sections"
     }
   },
   "common": {
@@ -386,11 +415,13 @@
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "Member portal",
     "back": "Back",
+    "backTo": "Back to {name}",
     "bottom": "Bottom",
     "cancel": "Cancel",
     "center": "Center",
     "change": "Change",
     "changePhoto": "Change Photo",
+    "clear": "Clear",
     "close": "Close",
     "collapse": "Collapse",
     "comboBox": {
@@ -467,13 +498,16 @@
     "saving": "Saving...",
     "search": "Search",
     "select": "Select",
+    "selectedCount": "{count} selected",
     "sermons": "Sermons",
     "title": "Title",
     "top": "Top",
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes"
+    "years": "Years",
+    "yes": "Yes",
+    "all": "All"
   },
   "components": {
     "bezChat": {
@@ -646,8 +680,15 @@
       "servingSunday": "Serving Sunday",
       "servingThisHour": "Serving this hour",
       "thisSunday": "This Sunday",
-      "thisWeeksService": "This week's service will live here."
-    }
+      "thisWeeksService": "This week's service will live here.",
+      "liveHintSunday": "Who is in the room, who is serving, and who just walked in will show here once check-in and serving are in use.",
+      "liveHint": "Who was in the room last Sunday and first-time households show here through the week."
+    },
+    "myTasks": "My tasks",
+    "allTasks": "All tasks",
+    "noOpenTasks": "No open tasks assigned to you.",
+    "allGroups": "All groups",
+    "noGroups": "You're not in any groups yet."
   },
   "device": {
     "deviceAuthPage": {
@@ -693,7 +734,18 @@
       "method": "Method",
       "notes": "Notes",
       "viewBatch": "View batch",
-      "willAppear": "Donations will appear here once they have been made."
+      "willAppear": "Donations will appear here once they have been made.",
+      "sinceYear": "{amount} since {year}",
+      "giftCount": "{count} gifts",
+      "giftsInYear": "{count} gifts in {year}",
+      "noGiftsInYear": "No gifts in {year}.",
+      "giving": "Giving",
+      "allYears": "All years",
+      "statement": "Statement",
+      "csv": "CSV",
+      "give": "Give",
+      "recurring": "Recurring",
+      "paymentMethods": "Payment methods"
     }
   },
   "donations": {
@@ -753,7 +805,8 @@
       "pledges": "Pledges",
       "status": "Status",
       "subtitle": "Pledges and giving progress for this campaign",
-      "unknownPerson": "Unknown person"
+      "unknownPerson": "Unknown person",
+      "goalAmount": "{amount} goal"
     },
     "campaignsPage": {
       "addCampaign": "Add Campaign",
@@ -768,7 +821,10 @@
       "pledged": "Pledged",
       "progress": "Progress",
       "subtitle": "Track pledge campaigns and progress toward giving goals",
-      "totalCampaigns": "Total Campaigns"
+      "totalCampaigns": "Total Campaigns",
+      "pledgedAmount": "{amount} pledged",
+      "givenAmount": "{amount} given",
+      "campaignCount": "{count} campaigns"
     },
     "donationBatchPage": {
       "batchDate": "Batch Date:",
@@ -776,7 +832,8 @@
       "editBatch": "Edit Batch",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch",
-      "totalAmount": "Total Amount"
+      "totalAmount": "Total Amount",
+      "giftCount": "{count} gifts"
     },
     "donationBatchesPage": {
       "addBatch": "Add Batch",
@@ -785,7 +842,11 @@
       "export": "Export",
       "stripeImportLink": "Import missing Stripe transactions",
       "subtitle": "Manage donation batches and track giving records",
-      "totalAmount": "Total Amount"
+      "totalAmount": "Total Amount",
+      "batchCount": "{count} batches",
+      "giftCount": "{count} gifts",
+      "allYears": "All",
+      "failedEvents": "Failed events ({count})"
     },
     "donationEdit": {
       "anon": "Anonymous",
@@ -855,7 +916,8 @@
       "retry": "Retry",
       "retryFailed": "The retry was declined.  Ask the donor to update their payment method.",
       "subtitle": "Recurring gifts the gateway could not collect",
-      "title": "Failed Recurring Gifts"
+      "title": "Failed Recurring Gifts",
+      "lede": "{count} failed · {amount} at risk"
     },
     "fundEdit": {
       "ariaFundName": "Fund name",
@@ -872,7 +934,9 @@
       "donors": "Donors",
       "filter": "Filter",
       "subtitle": "Track donations and contributions to this fund",
-      "totalAmount": "Total Amount"
+      "totalAmount": "Total Amount",
+      "giftCount": "{count} gifts",
+      "donorCount": "{count} donors"
     },
     "funds": {
       "fund": "Funds",
@@ -897,7 +961,8 @@
       "taxDeductible": "Tax Deductible",
       "taxStatus": "Tax Status",
       "totalFunds": "Total Funds",
-      "viewBatch": "View batch"
+      "viewBatch": "View batch",
+      "fundCount": "{count} funds"
     },
     "givingLink": {
       "amount": "Amount (optional)",
@@ -909,7 +974,8 @@
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
-      "weekly": "Weekly"
+      "weekly": "Weekly",
+      "label": "Period"
     },
     "pledgeEdit": {
       "addPledge": "Add Pledge",
@@ -1025,6 +1091,11 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "logGift": {
+      "amountError": "Enter an amount greater than zero, such as 25.00.",
+      "title": "Log a gift",
+      "batchHint": "Saved to the batch for this date; one is created if needed."
     }
   },
   "fileUpload": {
@@ -1159,7 +1230,10 @@
       "restore": "Restore",
       "restoreFormAria": "Restore form {name}",
       "subtitleManage": "Create and manage custom forms",
-      "url": "URL"
+      "url": "URL",
+      "archived": "Archived",
+      "noMatches": "No forms match your search.",
+      "find": "Find a form"
     },
     "tabs": {
       "formMem": "Form Members",
@@ -1220,7 +1294,12 @@
       "printNametag": "Print Nametag",
       "team": "Team",
       "textTooltip": "Text this group",
-      "trackAttendance": "Track Attendance"
+      "trackAttendance": "Track Attendance",
+      "email": "Email",
+      "notifyTooltip": "Send push notification",
+      "notify": "Notify",
+      "text": "Text",
+      "duplicate": "Duplicate"
     },
     "groupCalendar": {
       "addEvents": "Add Events",
@@ -1400,11 +1479,14 @@
     },
     "groupsPage": {
       "addGroup": "Add Group",
+      "allCategories": "All",
       "cat": "Category",
+      "clearFilters": "Clear filters",
       "confirmRestore": "Restore {name} from the archive?",
       "export": "Export",
       "groups": "Groups",
       "labels": "Labels",
+      "moreCategories": "More categories",
       "noGroupMsg": "No groups found. Please create a group.",
       "noMatchMsg": "No groups match your search.",
       "pendingRequestSingular": "{count} pending request",
@@ -1412,6 +1494,7 @@
       "pers": "1 person",
       "ppl": "People",
       "restore": "Restore",
+      "resultCount": "{shown} of {total} groups",
       "searchPlaceholder": "Search groups...",
       "showArchived": "Show archived",
       "spPpl": " people",
@@ -1540,6 +1623,21 @@
       "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
       "enable": "Enable Attendance",
       "title": "Attendance tracking isn't enabled"
+    },
+    "groupRecord": {
+      "allMembers": "All members",
+      "allSessions": "All sessions",
+      "allEvents": "All events",
+      "seeHealth": "See health",
+      "noMembers": "No members yet.",
+      "pendingCount": "{count} pending",
+      "noSessions": "No sessions yet.",
+      "latestSession": "Latest {date}",
+      "sessionCountOne": "1 session",
+      "sessionCount": "{count} sessions",
+      "nextEvent": "Next",
+      "lastEvent": "Last",
+      "healthSummary": "{members} members · {joined} joined · {left} left in 90 days"
     }
   },
   "helpers": {
@@ -1738,6 +1836,28 @@
       "title": "Demographics",
       "total": "Total",
       "unassigned": "Unassigned"
+    },
+    "directory": {
+      "addAPerson": "Add a person",
+      "ask": "Ask",
+      "clear": "Clear",
+      "countHouseholds": "{households} households · {people} people",
+      "everyone": "Everyone",
+      "family": "The {name} Family",
+      "households": "Households",
+      "noMatch": "No one matches that search",
+      "noMatchHint": "Try another name, or use Advanced to filter by details.",
+      "noPeople": "No people yet",
+      "noPeopleHint": "Add the first person below.",
+      "savedLists": "Saved lists",
+      "searchLabel": "Find a household or person",
+      "selectAll": "Select all visible households",
+      "selectHousehold": "Select {name}",
+      "selectedCount": "{count} selected",
+      "subtitle": "Browse households, open a person, or narrow things down with a list or a question.",
+      "table": "Table",
+      "title": "People",
+      "viewAs": "View as"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -2026,6 +2146,40 @@
     },
     "updateHouseHold": {
       "update": "Update Address"
+    },
+    "personRecord": {
+      "household": "Household",
+      "noDirectory": "Hidden from directory",
+      "email": "Email",
+      "workflow": "Workflow",
+      "text": "Text",
+      "loadError": "We couldn't load {what}.",
+      "allYears": "All years",
+      "noAttendance": "No attendance recorded yet.",
+      "hereThisWeek": "Here this week",
+      "lastAttended": "Last attended {date}",
+      "weeklyAttendance": "Weekly attendance",
+      "weekAttended": "Week of {date}: attended",
+      "weekNoRecord": "Week of {date}: no attendance recorded",
+      "attendanceSummary": "{count} of the last {weeks} weeks",
+      "recentAttendance": "Recent attendance",
+      "service": "Service",
+      "where": "Where",
+      "wholeHousehold": "whole household",
+      "noHouseholdGiftsYear": "No household gifts recorded in {year}.",
+      "noGiftsYear": "No gifts recorded in {year}.",
+      "lastGift": "Last gift {date}.",
+      "givingYear": "in {year} · {count} gifts",
+      "showingLatest": "showing latest {count}",
+      "recentGifts": "Gifts in {year}",
+      "givenBy": "Given by",
+      "statement": "{year} statement",
+      "allNotes": "All notes",
+      "noNotes": "No notes yet.",
+      "noteCount": "{count} notes",
+      "submitted": "Submitted",
+      "notSubmitted": "Not submitted",
+      "allForms": "All forms"
     }
   },
   "person": {
@@ -2451,6 +2605,7 @@
       "bulkSchedule": "Bulk Schedule",
       "createFirst": "Create First Plan",
       "createPlan": "Create Plan",
+      "date": "Date",
       "newPlan": "New Plan",
       "noPlans": "No plans found",
       "noUpcomingPlans": "No Upcoming Plans",
@@ -2458,7 +2613,10 @@
       "plans": "Plans",
       "scheduleLesson": "Schedule Lesson",
       "serviceOrder": "Service Order",
-      "showPast": "Show Past"
+      "showPast": "Show Past",
+      "upcoming": "Upcoming",
+      "past": "Past",
+      "noUpcomingHint": "Nothing is scheduled from today on. Choose \"Past\" to see earlier plans."
     },
     "planPage": {
       "assign": "Serving Team Assignments",
@@ -2655,11 +2813,19 @@
       "startDate": "Start Date",
       "subtitle": "Positions by date with assigned volunteers",
       "textAll": "Text Volunteers",
-      "title": "Serving Overview"
+      "title": "Serving Overview",
+      "allPositions": "All positions"
     },
     "servingPage": {
       "showAll": "Show All",
-      "showAllHint": "Your ministries are hidden because you're not a member. Turn on \"Show All\" above to see them."
+      "showAllHint": "Your ministries are hidden because you're not a member. Turn on \"Show All\" above to see them.",
+      "actions": "Actions",
+      "findMinistry": "Find a ministry",
+      "ministries": "Ministries",
+      "whichMinistries": "Which ministries",
+      "mine": "Mine",
+      "all": "All",
+      "allHint": "Your ministries are hidden because you're not a member. Choose \"All\" above to see them."
     },
     "signageFeed": {
       "button": "Digital Signage",
@@ -2733,7 +2899,8 @@
     "timeList": {
       "noTime": "No times have been added yet",
       "sunServ": "Sunday Service",
-      "times": "Times"
+      "times": "Times",
+      "addTime": "Add time"
     }
   },
   "profile": {
@@ -2798,8 +2965,13 @@
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
       "subtitle": "Manage your profile and preferences",
+      "colorTheme": "Color theme",
       "themePreferences": "Theme Preferences",
-      "themePreferencesHelper": "Your theme preference is saved automatically and will be remembered on this device.",
+      "themePreferencesHelper": "Your color theme and light or dark setting are saved on this device.",
+      "themeClassic": "Classic",
+      "themePlum": "Plum",
+      "themeSoft": "Soft Blue",
+      "themeWarm": "Warm",
       "togglePasswordVisibility": "toggle password visibility",
       "valEmail": "Please enter a valid email address."
     }
@@ -2870,7 +3042,8 @@
       "subtitle": "Manage registrations for this event",
       "unansweredOnly": "Unanswered questions only",
       "unknown": "Unknown",
-      "viewAnswers": "View Answers"
+      "viewAnswers": "View Answers",
+      "editSettings": "Edit settings"
     },
     "registrationSettingsEdit": {
       "capacity": "Capacity",
@@ -3109,7 +3282,8 @@
         "unauthorizedDelete": "Unauthorized to delete playlists"
       },
       "searchPlaceholder": "Search playlists...",
-      "title": "Playlists"
+      "title": "Playlists",
+      "addPlaylist": "Add playlist"
     },
     "podcast": {
       "copyFeedUrl": "Copy podcast feed URL",
@@ -3167,18 +3341,25 @@
       "youtubeId": "YouTube ID"
     },
     "subtitle": "Manage your sermon library and live streams",
-    "title": "Sermons"
+    "title": "Sermons",
+    "chrome": {
+      "sections": "Sermon sections"
+    }
   },
   "serverAdmin": {
     "adminPage": {
       "act": "Active",
       "arch": "Archived",
       "church": "Church",
+      "churchCount": "{count} churches",
       "churchName": "Church Name",
       "churches": "Churches",
       "churchesSubtitle": "Search and manage all churches",
       "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
+      "groupDirectory": "Directory",
+      "groupOperations": "Operations",
+      "groupSystem": "System",
       "impersonateSubtitle": "Log in as another user for support",
       "impersonateUser": "Impersonate User",
       "jobs": "Background Jobs",
@@ -3198,6 +3379,7 @@
       "servAdmin": "Server Admin",
       "serverHealth": "Server Health",
       "serverHealthSubtitle": "Check the health of backend services",
+      "status": "Status",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
       "translationSubtitle": "Look up translated locale strings",
@@ -5686,7 +5868,8 @@
       "showClosedTasksAria": "Show closed tasks",
       "showOpenTasksAria": "Show open tasks",
       "tasks": "Tasks",
-      "unassigned": "Unassigned"
+      "unassigned": "Unassigned",
+      "status": "Task status"
     },
     "taskPage": {
       "ago": "ago",
@@ -5702,7 +5885,9 @@
       "notSpec": "Not specified",
       "open": "Open",
       "opened": "Opened",
-      "unassigned": "Unassigned"
+      "unassigned": "Unassigned",
+      "closeTask": "Close task",
+      "reopenTask": "Reopen task"
     },
     "tasksPage": {
       "showClosed": "Show Closed",
@@ -5825,7 +6010,21 @@
       "blankWorkflow": "Blank workflow",
       "noWorkflows": "No workflows yet. Add one to get started.",
       "subtitle": "Move people through a series of steps",
-      "title": "Workflows"
+      "title": "Workflows",
+      "categories": "Workflow categories"
+    }
+  },
+  "serving": {
+    "planPage": {
+      "hideNotes": "Hide notes",
+      "hideTimes": "Hide times",
+      "addMenu": "More ways to add"
+    },
+    "keys": {
+      "addKey": "Add key"
+    },
+    "songPage": {
+      "deleteSong": "Delete song"
     }
   }
 }

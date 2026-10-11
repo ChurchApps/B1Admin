@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
-import { Box, Button, Card, CardContent, CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
+import { CardWithHeader, EmptyState } from "../../components/ui";
 import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -384,96 +385,78 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   }
 
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-        <Typography variant="h6">
-          {Locale.label("plans.contentProviderAuth.title") || "Content Provider Accounts"}
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setShowProviderSelector(true)}
-        >
+    <CardWithHeader
+      title={Locale.label("plans.contentProviderAuth.title") || "Content Provider Accounts"}
+      actions={(
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowProviderSelector(true)}>
           {Locale.label("plans.contentProviderAuth.linkNew") || "Link New Provider"}
         </Button>
-      </Stack>
-
-
+      )}>
       {linkedProviders.length === 0 ? (
-        <Card variant="outlined" sx={{ p: 4, textAlign: "center" }}>
-          <LinkIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-          <Typography variant="body2" color="text.secondary">
-            {Locale.label("plans.contentProviderAuth.noLinkedDescription") || "Link a content provider to access their content in your service plans."}
-          </Typography>
-        </Card>
+        <EmptyState
+          variant="plain"
+          icon={<LinkIcon />}
+          title={Locale.label("plans.contentProviderAuth.noLinkedDescription") || "Link a content provider to access their content in your service plans."}
+        />
       ) : (
-        <Stack spacing={2}>
+        <Box>
           {linkedProviders.map((linkedAuth) => {
             const providerInfo = availableProviders.find(p => p.id === linkedAuth.providerId);
             if (!providerInfo) return null;
 
             return (
-              <Card key={linkedAuth.id} variant="outlined">
-                <CardContent>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                    <Box
-                      sx={{
-                        width: 64,
-                        height: 64,
-                        borderRadius: 2,
-                        background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        p: 1,
-                        flexShrink: 0
-                      }}
-                    >
-                      <Box
-                        component="img"
-                        src={providerInfo.logos?.dark || providerInfo.logos?.light}
-                        alt={providerInfo.name}
-                        sx={{
-                          maxWidth: "100%",
-                          maxHeight: "100%",
-                          objectFit: "contain"
-                        }}
-                      />
-                    </Box>
+              <Stack key={linkedAuth.id} direction="row" alignItems="center" spacing={2} sx={{ py: 2, borderTop: 1, borderColor: "divider", "&:first-of-type": { borderTop: 0, pt: 0 } }}>
+                <Box
+                  sx={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: "var(--b1-radius-control)",
+                    bgcolor: "var(--b1-header)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    p: 1,
+                    flexShrink: 0
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={providerInfo.logos?.dark || providerInfo.logos?.light}
+                    alt={providerInfo.name}
+                    sx={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                  />
+                </Box>
 
-                    <Box sx={{ flexGrow: 1 }}>
-                      <Typography variant="subtitle1" fontWeight={600}>
-                        {providerInfo.name}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {Locale.label("plans.contentProviderAuth.linked") || "Account linked"}
-                      </Typography>
-                      {linkedAuth?.expiresAt && (
-                        <Typography variant="caption" color="text.secondary">
-                          {new Date(linkedAuth.expiresAt) > new Date()
-                            ? `${Locale.label("plans.contentProviderAuth.expiresPrefix")} ${new Date(linkedAuth.expiresAt).toLocaleDateString(DateHelper.locale)}`
-                            : Locale.label("plans.contentProviderAuth.tokenExpired")}
-                        </Typography>
-                      )}
-                    </Box>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography fontWeight={600}>
+                    {providerInfo.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {Locale.label("plans.contentProviderAuth.linked") || "Account linked"}
+                  </Typography>
+                  {linkedAuth?.expiresAt && (
+                    <Typography variant="caption" color="text.secondary">
+                      {new Date(linkedAuth.expiresAt) > new Date()
+                        ? `${Locale.label("plans.contentProviderAuth.expiresPrefix")} ${new Date(linkedAuth.expiresAt).toLocaleDateString(DateHelper.locale)}`
+                        : Locale.label("plans.contentProviderAuth.tokenExpired")}
+                    </Typography>
+                  )}
+                </Box>
 
-                    <Stack direction="row" spacing={1}>
-                      <AppIconButton label={Locale.label("plans.contentProviderAuth.refresh") || "Refresh"} icon={<RefreshIcon />} onClick={() => handleLink(providerInfo.id)} />
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<LinkOffIcon />}
-                        onClick={() => handleUnlink(providerInfo.id)}
-                      >
-                        {Locale.label("plans.contentProviderAuth.unlink") || "Unlink"}
-                      </Button>
-                    </Stack>
-                  </Stack>
-                </CardContent>
-              </Card>
+                <Stack direction="row" spacing={1}>
+                  <AppIconButton label={Locale.label("plans.contentProviderAuth.refresh") || "Refresh"} icon={<RefreshIcon />} onClick={() => handleLink(providerInfo.id)} />
+                  <Button
+                    variant="outlined"
+                    startIcon={<LinkOffIcon />}
+                    onClick={() => handleUnlink(providerInfo.id)}
+                  >
+                    {Locale.label("plans.contentProviderAuth.unlink") || "Unlink"}
+                  </Button>
+                </Stack>
+              </Stack>
             );
           })}
-        </Stack>
+        </Box>
       )}
 
       <ProviderSelectorModal
@@ -492,6 +475,6 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
         authError={authError}
         onTryAgain={() => handleLink(authProviderId!)}
       />
-    </Box>
+    </CardWithHeader>
   );
 };

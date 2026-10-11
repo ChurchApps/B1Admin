@@ -11,6 +11,19 @@ import { openPersonRow, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 const FIELD_NAME = "Zz Playwright Shirt Size";
 const FIELD_VALUE = "Large";
 
+const deleteFieldsMatching = async (page: Page, name: string | RegExp) => {
+  await page.goto("/settings/custom-fields").catch(() => { });
+  await page.locator('[data-testid="add-custom-field-button"], [data-testid="add-custom-field-button-empty"]').first().waitFor({ timeout: 10000 }).catch(() => { });
+  const rows = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: name });
+  while (await rows.first().isVisible().catch(() => false)) {
+    await rows.first().click();
+    await page.locator("#customFieldBox").getByRole("button", { name: "Delete" }).click().catch(() => { });
+    await confirmDelete(page).catch(() => { });
+    await page.locator("#customFieldBox").waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
+    await page.waitForTimeout(500);
+  }
+};
+
 test.describe.serial("Custom Fields (P-2)", () => {
   let browser: Browser;
   let page: Page;
@@ -22,16 +35,10 @@ test.describe.serial("Custom Fields (P-2)", () => {
     await login(page);
   });
 
+  test.beforeAll(() => deleteFieldsMatching(page, FIELD_NAME));
+
   test.afterAll(async () => {
-    // Best-effort cleanup: delete the disposable field if it still exists.
-    await page.goto("/settings/custom-fields").catch(() => { });
-    const row = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: FIELD_NAME }).first();
-    if (await row.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await row.click();
-      await page.locator("#customFieldBox").getByRole("button", { name: "Delete" }).click().catch(() => { });
-      await confirmDelete(page).catch(() => { });
-      await page.locator("#customFieldBox").waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
-    }
+    await deleteFieldsMatching(page, FIELD_NAME);
     await browser.close();
   });
 
@@ -65,7 +72,7 @@ test.describe.serial("Custom Fields (P-2)", () => {
 
   test("advanced search filters people by the custom field", async () => {
     await navigateToPeople(page);
-    await page.locator("text=Advanced").first().click();
+    await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
 
     // Expand the Custom Fields accordion so its filter list (incl. the new field) loads.
     await page.getByRole("button", { name: /Custom Fields/ }).click();
@@ -99,14 +106,7 @@ test.describe.serial("Custom field as a People list column", () => {
   });
 
   test.afterAll(async () => {
-    await page.goto("/settings/custom-fields").catch(() => { });
-    const rows = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: /Zz Date Joined/ });
-    while (await rows.first().isVisible({ timeout: 3000 }).catch(() => false)) {
-      await rows.first().click();
-      await page.locator("#customFieldBox").getByRole("button", { name: "Delete" }).click().catch(() => { });
-      await confirmDelete(page).catch(() => { });
-      await page.locator("#customFieldBox").waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
-    }
+    await deleteFieldsMatching(page, /Zz Date Joined/);
     await browser.close();
   });
 
@@ -131,6 +131,7 @@ test.describe.serial("Custom field as a People list column", () => {
 
   test("the custom field can be shown as a column in the People list", async () => {
     await navigateToPeople(page);
+    await page.getByTestId("people-view-table").click();
     await page.getByTestId("columns-button").click();
     const dialog = page.locator("#fieldsMenu");
     await dialog.getByRole("tab", { name: "Custom" }).click();
@@ -168,6 +169,7 @@ test.describe("Custom field columns with no person forms", () => {
 
     await login(page);
     await navigateToPeople(page);
+    await page.getByTestId("people-view-table").click();
     await page.getByTestId("columns-button").click();
     const dialog = page.locator("#fieldsMenu");
     await dialog.getByRole("tab", { name: "Custom" }).click();

@@ -112,14 +112,14 @@ export const WorkflowStepRouting = (props: Props) => {
   return (
     <Box>
       <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-        <RouteIcon fontSize="small" sx={{ color: "primary.main" }} />
+        <RouteIcon fontSize="small" color="action" />
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("tasks.workflowRouting.title")}</Typography>
       </Stack>
 
       <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowRouting.outcomesHelp")}</Typography>
       <Stack spacing={1} sx={{ mt: 1 }}>
         {outcomes.map((route) => (
-          <Box key={route.id} data-testid={"outcome-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
+          <Box key={route.id} data-testid={"outcome-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <TextField fullWidth size="small" label={Locale.label("tasks.workflowRouting.outcomeLabel")} defaultValue={route.label || ""} data-testid={"outcome-label-" + route.id} onBlur={(e) => { if (e.target.value !== route.label) saveRoute({ ...route, label: e.target.value }); }} />
               <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} intent="remove" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
@@ -136,7 +136,7 @@ export const WorkflowStepRouting = (props: Props) => {
       <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowRouting.automaticHelp")}</Typography>
       <Stack spacing={1} sx={{ mt: 1 }}>
         {autos.map((route) => (
-          <Box key={route.id} data-testid={"auto-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
+          <Box key={route.id} data-testid={"auto-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Box sx={{ flexGrow: 1 }}>{targetSelect(route, false)}</Box>
               <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} intent="remove" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />

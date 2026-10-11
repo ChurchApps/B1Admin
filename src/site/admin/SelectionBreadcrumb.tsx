@@ -17,7 +17,7 @@ export const SelectionBreadcrumb: React.FC<Props> = ({ crumbs }) => (
       display: "flex",
       alignItems: "center",
       gap: 0.5,
-      fontSize: "0.7rem",
+      fontSize: 12,
       color: "text.secondary",
       lineHeight: 1.2,
       whiteSpace: "nowrap",

@@ -160,7 +160,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
   });
 
   test("Types / Selections / Discount Codes panels persist across a reload (round-trip)", async () => {
-    await page.goto(`/registrations/${eventAId}`);
+    await page.goto(`/registrations/${eventAId}?view=settings`);
     await expect(page.getByText(EVENT_A, { exact: false }).first()).toBeVisible({ timeout: 15000 });
 
     await page.getByRole("button", { name: "Attendee Types", exact: true }).click();
@@ -210,7 +210,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
   });
 
   test("Shows an unsaved-changes warning while attendee type edits are unsaved", async () => {
-    await page.goto(`/registrations/${eventAId}`);
+    await page.goto(`/registrations/${eventAId}?view=settings`);
     await expect(page.getByText(EVENT_A, { exact: false }).first()).toBeVisible({ timeout: 15000 });
     await expect(page.locator('[data-testid="registration-unsaved-changes-alert"]')).toHaveCount(0);
 
@@ -263,7 +263,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
   });
 
   test("Waitlist toggle round-trips, including the explicit-false un-toggle path", async () => {
-    await page.goto(`/registrations/${eventAId}`);
+    await page.goto(`/registrations/${eventAId}?view=settings`);
     const toggle = page.locator('[data-testid="waitlist-enabled-switch"] input');
     await expect(toggle).toBeVisible({ timeout: 15000 });
 
@@ -277,7 +277,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await ctx.dispose();
 
     // Turn OFF (explicit false — Kysely drops undefined), save, verify cleared.
-    await page.reload();
+    await page.goto(`/registrations/${eventAId}?view=settings`);
     await expect(toggle).toBeVisible({ timeout: 15000 });
     await toggle.uncheck();
     save = page.waitForResponse((r) => r.url().includes("/events") && r.request().method() === "POST" && r.ok(), { timeout: 15000 });

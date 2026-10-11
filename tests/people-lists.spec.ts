@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { peopleTest as test, expect } from "./helpers/test-fixtures";
 
 async function openAdvancedPanel(page: Page) {
-  await page.locator("p").getByText(/[▶▼] Advanced/).click();
+  await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
   await expect(page.locator('#peopleSearch input[type="checkbox"]').first()).toBeVisible({ timeout: 10000 });
 }
 
@@ -128,6 +128,8 @@ test.describe("People Saved Lists", () => {
     await expect(row).toBeVisible({ timeout: 10000 });
     await expect(row.locator('svg[data-testid="LockIcon"]')).toBeVisible({ timeout: 10000 });
 
+    // Manage icons appear once the list pill is selected.
+    await row.locator("button").first().click();
     await row.locator('button[aria-label="List Settings"]').click();
     const settings = page.getByRole("dialog").filter({ hasText: "List Settings" });
     await expect(settings).toBeVisible({ timeout: 10000 });
@@ -151,6 +153,7 @@ test.describe("People Saved Lists", () => {
     const row = savedListRow(page, listName);
     await expect(row).toBeVisible({ timeout: 10000 });
 
+    await row.locator("button").first().click();
     await row.locator('button[aria-label="Delete"]').click();
     const confirm = page.getByRole("dialog").filter({ hasText: "Delete List" });
     await expect(confirm).toBeVisible({ timeout: 10000 });

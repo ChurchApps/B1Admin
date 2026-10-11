@@ -1,5 +1,4 @@
 export * from "../../components";
-export { SettingsSectionHeader } from "./SettingsSectionHeader";
 export { CampusEdit } from "./CampusEdit";
 export { CampusesSection } from "./CampusesSection";
 export { DeveloperSection } from "./DeveloperSection";

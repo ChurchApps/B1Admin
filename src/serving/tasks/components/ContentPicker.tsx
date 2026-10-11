@@ -51,7 +51,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
   ];
 
   return (
-    <Dialog open={true} onClose={props.onClose} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+    <Dialog open={true} onClose={props.onClose} maxWidth="sm" fullWidth>
       <DialogTitle
         sx={{
           display: "flex",
@@ -62,7 +62,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
         {Locale.label("tasks.contentPicker.selPers")}
       </DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
-        <Paper sx={{ borderRadius: 2, overflow: "hidden", p: 2 }}>
+        <Paper variant="outlined" sx={{ overflow: "hidden", p: 2 }}>
           <SmartTabs tabs={tabs} value={activeKey} onChange={(k) => setActiveKey(k)} ariaLabel="content-picker-tabs" />
           {/* <Box sx={{ minHeight: 400 }} /> */}
         </Paper>
@@ -71,12 +71,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
         <Button
           variant="outlined"
           onClick={props.onClose}
-          startIcon={<CloseIcon />}
-          sx={{
-            borderRadius: 2,
-            textTransform: "none",
-            fontWeight: 600
-          }}>
+          startIcon={<CloseIcon />}>
           {Locale.label("common.close")}
         </Button>
       </DialogActions>

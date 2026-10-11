@@ -44,9 +44,9 @@ export const DonutChart = ({ title, data, onSelect }: Props) => {
     : undefined;
 
   return (
-    <Card>
+    <Card sx={{ height: "100%" }}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>{title}</Typography>
+        <Typography variant="h3" component="h2" sx={{ mb: 2 }}>{title}</Typography>
         {total > 0 ? (
           <>
             <Chart chartType="PieChart" data={chartData} width="100%" height="320px" options={options} chartEvents={chartEvents} />

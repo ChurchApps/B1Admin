@@ -1,10 +1,11 @@
 import { memo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { ArrowBack as BackIcon } from "@mui/icons-material";
 import { type SearchCondition } from "@churchapps/helpers";
-import { Box, GlobalStyles, Grid } from "@mui/material";
-import { BarChart as BarChartIcon } from "@mui/icons-material";
-import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { GlobalStyles, Grid } from "@mui/material";
+import { Loading, Locale } from "@churchapps/apphelper";
+import { HeaderTextButton, PageContainer, PageHeader } from "../../components/ui";
 import { AgeChart } from "./components/AgeChart";
 import { DonutChart } from "./components/DonutChart";
 
@@ -57,37 +58,36 @@ export const DemographicsPage = memo(() => {
     <>
       <GlobalStyles styles={googleChartTooltipStyles} />
       <PageHeader
-        icon={<BarChartIcon />}
         title={Locale.label("people.demographics.title")}
         subtitle={data ? `${Locale.label("people.demographics.total")}: ${data.total.toLocaleString()}` : Locale.label("people.demographics.subtitle")}>
-        <BarChartIcon sx={{ fontSize: 32, color: "rgba(255,255,255,0.8)", mr: 2 }} />
+        <HeaderTextButton component={RouterLink} to="/people" startIcon={<BackIcon />} data-testid="demographics-back">{Locale.label("components.wrapper.ppl", "People")}</HeaderTextButton>
       </PageHeader>
 
-      <Box sx={{ p: 3 }}>
+      <PageContainer>
         {query.isLoading ? (
           <Loading />
         ) : data ? (
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, lg: 8 }}>
               <AgeChart title={Locale.label("people.demographics.age")} data={data.ageGroups} onSelect={drillToAge} />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, md: 6, lg: 4 }}>
               <DonutChart title={Locale.label("people.demographics.membershipStatus")} data={data.membershipStatus} onSelect={drillToField("membershipStatus")} />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, md: 6, lg: 4 }}>
               <DonutChart title={Locale.label("people.demographics.gender")} data={data.gender} onSelect={drillToField("gender")} />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, md: 6, lg: 4 }}>
               <DonutChart title={Locale.label("people.demographics.maritalStatus")} data={data.maritalStatus} onSelect={drillToField("maritalStatus")} />
             </Grid>
             {data.campus && data.campus.length > 0 && (
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 6, lg: 4 }}>
                 <DonutChart title={Locale.label("people.demographics.campus")} data={data.campus.map((c) => ({ name: c.name, count: c.count }))} onSelect={drillToCampus} />
               </Grid>
             )}
           </Grid>
         ) : null}
-      </Box>
+      </PageContainer>
     </>
   );
 });

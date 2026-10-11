@@ -58,7 +58,7 @@ export const FundEdit: React.FC<Props> = (props) => {
           }
           label={Locale.label("donations.fundEdit.taxDeductible")}
         />
-        <Typography sx={{ fontStyle: "italic", fontSize: "12px", marginLeft: "5px" }}>
+        <Typography variant="caption" color="text.secondary" sx={{ display: "block", ml: 0.5 }}>
           {taxDeductible ? Locale.label("donations.fundEdit.trackDonations") : Locale.label("donations.fundEdit.trackNonDonations")}
         </Typography>
         <FormControlLabel

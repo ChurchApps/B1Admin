@@ -1,11 +1,11 @@
-import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, InputAdornment } from "@mui/material";
-import { Search as SearchIcon, MusicNote as MusicIcon, Person as ArtistIcon, Close as CloseIcon, Add as AddIcon, OpenInNew as OpenIcon } from "@mui/icons-material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Typography, Stack, Avatar, InputAdornment } from "@mui/material";
+import { Search as SearchIcon, MusicNote as MusicIcon, Close as CloseIcon, Add as AddIcon, OpenInNew as OpenIcon } from "@mui/icons-material";
 import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../helpers";
 import { CreateSongDetail } from "./components/CreateSongDetail";
-import { EmptyState } from "../../components/ui/EmptyState";
+import { EmptyState, StatusBadge } from "../../components/ui";
 import { CommonsApi, getWorshipCommonsOrigin, type CommonsSongSummary } from "../../serverAdmin/commonsApi";
 
 // Sunday-ready WorshipCommons songs (GET /commons/songs?sundayReady=true&q=). Tolerant of the API not having the filter yet: any failure → no section.
@@ -103,34 +103,32 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
         <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("songs.search.worshipCommonsFree")}</Typography>
         <Stack spacing={1.5}>
           {commonsSongs.map((song) => (
-            <Card key={song.id} sx={{ cursor: "pointer", "&:hover": { boxShadow: 2 } }} onClick={() => handleCommonsClick(song)} data-testid={`song-search-commons-${song.id}`}>
-              <CardContent sx={{ py: 1.5, "&:last-child": { pb: 1.5 } }}>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Avatar sx={{ width: 44, height: 44, bgcolor: "success.light" }}><MusicIcon sx={{ fontSize: 22, color: "success.main" }} /></Avatar>
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "primary.main" }}>{song.title}</Typography>
-                    {song.writer && <Typography variant="body2" color="text.secondary">{song.writer}</Typography>}
-                    <Stack direction="row" spacing={0.5} sx={{ mt: 0.5 }} flexWrap="wrap" useFlexGap>
-                      {song.confidence && <Chip size="small" color="success" label={confidenceLabel(song.confidence)} />}
-                      {song.license && <Chip size="small" variant="outlined" label={licenseLabel(song.license)} />}
-                    </Stack>
-                  </Box>
-                  <Button
-                    size="small"
-                    component="a"
-                    href={`${getWorshipCommonsOrigin()}/songs/${song.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    endIcon={<OpenIcon />}
-                    onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                    sx={{ whiteSpace: "nowrap" }}
-                  >
-                    {Locale.label("songs.search.viewOnWorshipCommons")}
-                  </Button>
-                  <AppIconButton label={`Select ${song.title}`} icon={<AddIcon />} tone="card" intent="add" />
-                </Stack>
-              </CardContent>
-            </Card>
+            <Box key={song.id} sx={{ cursor: "pointer", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1.5, "&:hover": { bgcolor: "action.hover" } }} onClick={() => handleCommonsClick(song)} data-testid={`song-search-commons-${song.id}`}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar variant="rounded" sx={{ width: 40, height: 40, bgcolor: "var(--b1-selected)", color: "var(--b1-on-selected)" }}><MusicIcon /></Avatar>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography sx={{ fontWeight: 600 }}>{song.title}</Typography>
+                  {song.writer && <Typography variant="body2" color="text.secondary">{song.writer}</Typography>}
+                  <Stack direction="row" spacing={0.5} sx={{ mt: 0.5 }} flexWrap="wrap" useFlexGap>
+                    {song.confidence && <StatusBadge tone="success">{confidenceLabel(song.confidence)}</StatusBadge>}
+                    {song.license && <StatusBadge tone="neutral">{licenseLabel(song.license)}</StatusBadge>}
+                  </Stack>
+                </Box>
+                <Button
+                  size="small"
+                  component="a"
+                  href={`${getWorshipCommonsOrigin()}/songs/${song.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  endIcon={<OpenIcon />}
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                  sx={{ whiteSpace: "nowrap" }}
+                >
+                  {Locale.label("songs.search.viewOnWorshipCommons")}
+                </Button>
+                <AppIconButton label={`Select ${song.title}`} icon={<AddIcon />} tone="card" intent="add" />
+              </Stack>
+            </Box>
           ))}
         </Stack>
       </Box>
@@ -147,13 +145,14 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
     }
 
     if (songDetails === null) {
-      return <EmptyState icon={<SearchIcon />} title={Locale.label("songs.search.enterQuery") || "Enter a search term to find songs."} />;
+      return <EmptyState variant="plain" icon={<SearchIcon />} title={Locale.label("songs.search.enterQuery") || "Enter a search term to find songs."} />;
     }
 
     if (songDetails.length === 0) {
       if (commonsSongs.length > 0) return null;
       return (
         <EmptyState
+          variant="plain"
           icon={<MusicIcon />}
           title={Locale.label("songs.search.noResults") || "No songs found for your search."}
           action={(
@@ -168,56 +167,26 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
     return (
       <Stack spacing={2}>
         {songDetails.map((songDetail, index) => (
-          <Card
-            key={index}
-            sx={{
-              cursor: "pointer",
-              transition: "all 0.2s ease-in-out",
-              "&:hover": {
-                transform: "translateY(-1px)",
-                boxShadow: 2
-              }
-            }}
-            onClick={() => handleSongClick(songDetail)}>
-            <CardContent sx={{ py: 2 }}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar
-                  src={songDetail.thumbnail}
-                  sx={{
-                    width: 60,
-                    height: 60,
-                    bgcolor: "primary.light"
-                  }}
-                  onError={handleImageError}>
-                  <MusicIcon sx={{ fontSize: 28, color: "primary.main" }} />
-                </Avatar>
+          <Box key={index} sx={{ cursor: "pointer", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 1.5, "&:hover": { bgcolor: "action.hover" } }} onClick={() => handleSongClick(songDetail)}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Avatar
+                variant="rounded"
+                src={songDetail.thumbnail}
+                sx={{ width: 40, height: 40, bgcolor: "var(--b1-selected)", color: "var(--b1-on-selected)" }}
+                onError={handleImageError}>
+                <MusicIcon />
+              </Avatar>
 
-                <Box sx={{ flex: 1, minWidth: 0 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontWeight: 600,
-                      fontSize: "1rem",
-                      mb: 0.5,
-                      color: "primary.main"
-                    }}>
-                    {songDetail.title}
-                  </Typography>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography sx={{ fontWeight: 600 }}>{songDetail.title}</Typography>
+                {songDetail.artist && (
+                  <Typography variant="body2" color="text.secondary">{songDetail.artist}</Typography>
+                )}
+              </Box>
 
-                  {songDetail.artist && (
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <ArtistIcon sx={{ fontSize: 16, color: "text.secondary" }} />
-                      <Typography variant="body2" color="text.secondary">
-                        {songDetail.artist}
-                      </Typography>
-                    </Stack>
-                  )}
-                </Box>
-
-                <AppIconButton label={`Select ${songDetail.title}`} icon={<AddIcon />} tone="card" intent="add" />
-              </Stack>
-            </CardContent>
-          </Card>
+              <AppIconButton label={`Select ${songDetail.title}`} icon={<AddIcon />} tone="card" intent="add" />
+            </Stack>
+          </Box>
         ))}
       </Stack>
     );

@@ -52,7 +52,10 @@ export async function openPersonRow(page: Page, name: SeedPersonName | string) {
     await searched;
   }
   await row.waitFor({ state: "visible", timeout: 10000 });
-  await row.click();
+  // Household rows open the head; click the person's own name link when present.
+  const personLink = row.getByRole("link", { name: String(name), exact: true });
+  if (await personLink.count()) await personLink.first().click();
+  else await row.click();
   await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
 }
 

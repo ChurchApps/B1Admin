@@ -51,7 +51,7 @@ export const RegistrationCouponsEdit: React.FC<Props> = ({ event, onDirtyChange 
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.commerce.noCoupons")}</Typography>
       )}
       {rows.map((row, i) => (
-        <Box key={row.id || i} data-testid="registration-coupon-row" sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
+        <Box key={row.id || i} data-testid="registration-coupon-row" sx={{ p: 1.5, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
           <Stack spacing={1}>
             <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" useFlexGap>
               <TextField label={Locale.label("registrations.commerce.code")} size="small" value={row.code || ""} onChange={(e) => update(i, "code", e.target.value)} data-testid="coupon-code" sx={{ flex: "1 1 120px" }} />

@@ -8,18 +8,17 @@ import {
 } from "@churchapps/helpers";
 import {
   DateHelper,
-  DisplayBox,
   Locale,
   Loading
 } from "@churchapps/apphelper";
-import { CountChip, ExportButton, hoverRowSx } from "../../components/ui";
+import { CardWithHeader, ExportButton, hoverRowSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { SubmissionPersonDialog } from "../../components/SubmissionPersonDialog";
 import { PrintStyles } from "../../components";
 import UserContext from "../../UserContext";
 import { SwapHoriz as SwapHorizIcon } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
+import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 const yesNoChoice: Record<string, string> = { True: "Yes", False: "No" };
@@ -156,7 +155,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     summary.forEach((s: any, i: number) => {
       results.push(
         <Grid size={{ xs: 12, md: 6 }} key={s.id + "-" + i}>
-          <h4>{s.title}</h4>
+          <Typography variant="body1" component="h3" sx={{ fontWeight: 600 }}>{s.title}</Typography>
           {getResultCount(s.values)}
         </Grid>
       );
@@ -199,12 +198,9 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       rows.push(
         <TableRow key="0">
           <TableCell colSpan={6} sx={{ textAlign: "center", py: 4 }}>
-            <Stack spacing={2} alignItems="center">
-              <Icon sx={{ fontSize: 48, color: "text.secondary" }}>assignment</Icon>
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("forms.formSubmissions.noSubmissions")}
-              </Typography>
-            </Stack>
+            <Typography variant="body1" color="text.secondary">
+              {Locale.label("forms.formSubmissions.noSubmissions")}
+            </Typography>
           </TableCell>
         </TableRow>
       );
@@ -226,7 +222,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           <TableCell key="personName">
             <Stack direction="row" spacing={0.5} alignItems="center">
               {personId ? (
-                <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+                <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
                   {personName}
                 </Typography>
               ) : (
@@ -273,21 +269,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
 
   const formSubmissionsTable = useMemo(
     () => (
-      <Card>
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Icon sx={{ color: "primary.main", fontSize: 20 }}>assignment</Icon>
-              <Typography variant="h6">{Locale.label("forms.formSubmissions.subRes")}</Typography>
-              {submissionCount > 0 && <CountChip count={submissionCount} />}
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {editLinks}
-            </Stack>
-          </Stack>
-        </Box>
-        {/* Card clips overflow; one column per question needs its own horizontal scroll. */}
-        <Box className="form-submissions-scroll" sx={{ overflowX: "auto" }}>
+      <CardWithHeader title={Locale.label("forms.formSubmissions.subRes")} count={submissionCount} actions={editLinks}>
+        <Box className="form-submissions-scroll" sx={{ overflowX: "auto" }} role="region" aria-label={Locale.label("forms.formSubmissions.subRes")} tabIndex={0}>
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow key="header">{tableHeader}</TableRow>
@@ -295,7 +278,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
             <TableBody>{tableRows}</TableBody>
           </Table>
         </Box>
-      </Card>
+      </CardWithHeader>
     ),
     [tableHeader, tableRows, editLinks, submissionCount]
   );
@@ -318,11 +301,13 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           `}</style>
           <PrintStyles />
           {churchName && <Box className="print-only" data-testid="print-church-name" sx={{ fontWeight: 600, mb: 1 }}>{churchName}</Box>}
-          <DisplayBox headerText={Locale.label("forms.formSubmissions.subSum")} headerIcon="group" editContent={editLinks}>
-            <Grid container spacing={3}>
-              {summaryContent}
-            </Grid>
-          </DisplayBox>
+          <Box sx={{ mb: 3 }}>
+            <CardWithHeader title={Locale.label("forms.formSubmissions.subSum")} actions={editLinks}>
+              <Grid container spacing={3}>
+                {summaryContent}
+              </Grid>
+            </CardWithHeader>
+          </Box>
           {formSubmissionsTable}
         </div>
         {changePersonId && <SubmissionPersonDialog formSubmissionId={changePersonId} onClose={() => setChangePersonId("")} onUpdated={handlePersonChanged} />}

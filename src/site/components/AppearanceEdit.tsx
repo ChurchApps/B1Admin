@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Resizer from "react-image-file-resizer";
-import { Box, Typography, Stack, Button, Card, CardContent, alpha, TextField } from "@mui/material";
+import { Box, Typography, Stack, Button, alpha, TextField } from "@mui/material";
 import { Image as ImageIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon } from "@mui/icons-material";
 import { ArrayHelper, ApiHelper, ErrorMessages, ImageEditor, Locale } from "@churchapps/apphelper";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import type { GenericSettingInterface } from "@churchapps/helpers";
+import { StyleEditHeader } from "./StyleEditHeader";
 
 interface Props {
   updatedFunction?: () => void;
@@ -178,7 +179,7 @@ export function AppearanceEdit(props: Props) {
     const hasLogo = currentSettings && logoImage !== null && logoImage.value;
 
     return (
-      <Card sx={{ border: "1px solid", borderColor: "grey.200", borderRadius: 2, overflow: "hidden", height: "100%" }}>
+      <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", height: "100%" }}>
         <Box sx={{ backgroundColor: backgroundColor, minHeight: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
           {hasLogo
             ? (<img src={logoImage.value} alt={title} style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }} />)
@@ -188,14 +189,14 @@ export function AppearanceEdit(props: Props) {
             </Stack>)
           }
         </Box>
-        <CardContent sx={{ p: 2 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>{title}</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontSize: "0.875rem" }}>{description}</Typography>
-          <Button variant="outlined" startIcon={hasLogo ? <EditIcon /> : <CloudUploadIcon />} onClick={() => { setEditLogo(true); setCurrentEditLogo(name); }} fullWidth sx={{ textTransform: "none" }} data-testid={`${name}-button`}>
+        <Box sx={{ p: 2 }}>
+          <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>{title}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{description}</Typography>
+          <Button variant="outlined" startIcon={hasLogo ? <EditIcon /> : <CloudUploadIcon />} onClick={() => { setEditLogo(true); setCurrentEditLogo(name); }} fullWidth data-testid={`${name}-button`}>
             {hasLogo ? Locale.label("site.appearanceEdit.edit") : Locale.label("site.appearanceEdit.upload")} {title}
           </Button>
-        </CardContent>
-      </Card>
+        </Box>
+      </Box>
     );
   };
 
@@ -219,36 +220,22 @@ export function AppearanceEdit(props: Props) {
       <ErrorMessages errors={errors} />
       <Box ref={editorRef}>{getLogoEditor(currentEditLogo)}</Box>
 
-      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <ImageIcon sx={{ fontSize: 24, color: "#FFF" }} />
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.appearanceEdit.branding")}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.appearanceEdit.brandingDescription")}</Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={handleCancel} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-appearance-button">{Locale.label("common.saveChanges")}</LoadingButton>
-          </Stack>
-        </Stack>
-      </Box>
+      <StyleEditHeader title={Locale.label("site.appearanceEdit.branding")} subtitle={Locale.label("site.appearanceEdit.brandingDescription")} onCancel={handleCancel} saveButton={
+        <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} data-testid="save-appearance-button">{Locale.label("common.saveChanges")}</LoadingButton>
+      } />
 
-      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ display: "grid", gap: 3 }}>
         <CardWithHeader title={Locale.label("site.appearanceEdit.logoManagement")} icon={<ImageIcon />}>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("site.appearanceEdit.logoUploadDescription")}</Typography>
 
           <Stack spacing={3}>
             <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.appSettings")}</Typography>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>{Locale.label("site.appearanceEdit.appSettings")}</Typography>
               <TextField label={Locale.label("site.appearanceEdit.pwaShortName")} value={getSetting("pwaShortName")} onChange={(e) => handleTextChange("pwaShortName", e.target.value)} inputProps={{ maxLength: 12 }} fullWidth helperText={Locale.label("site.appearanceEdit.pwaShortNameHelper")} />
             </Box>
 
             <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.mainLogos")}</Typography>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>{Locale.label("site.appearanceEdit.mainLogos")}</Typography>
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
                 {getLogoDisplay("logoLight", "#F5F5F5", Locale.label("site.appearanceEdit.logoLight"), Locale.label("site.appearanceEdit.logoLightDesc"))}
                 {getLogoDisplay("logoDark", "#333333", Locale.label("site.appearanceEdit.logoDark"), Locale.label("site.appearanceEdit.logoDarkDesc"))}
@@ -256,7 +243,7 @@ export function AppearanceEdit(props: Props) {
             </Box>
 
             <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.seoAssets")}</Typography>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>{Locale.label("site.appearanceEdit.seoAssets")}</Typography>
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
                 {getLogoDisplay("ogImage", "#1976d2", Locale.label("site.appearanceEdit.ogImage"), Locale.label("site.appearanceEdit.ogImageDesc"))}
                 {getLogoDisplay("favicon_400x400", "#bbdefb", Locale.label("site.appearanceEdit.favicon"), Locale.label("site.appearanceEdit.faviconDesc"))}

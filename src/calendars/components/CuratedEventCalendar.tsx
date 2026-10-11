@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import { Button, Icon, Snackbar, Stack, Menu, MenuItem, Box } from "@mui/material";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon } from "@mui/icons-material";
-import { AppIconButton } from "../../components/ui/AppIconButton";
 import { EventHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 import { EditCalendarEventModal } from "./EditCalendarEventModal";
@@ -109,7 +108,7 @@ export function CuratedEventCalendar(props: Props) {
             endIcon={<ArrowDropDownIcon />}
             title={Locale.label("calendars.calendar.subscribeTitle")}
             size="small"
-            variant="contained"
+            variant="outlined"
             onClick={handleSubscribeClick}
             data-testid="calendar-subscribe-button"
           >
@@ -127,33 +126,20 @@ export function CuratedEventCalendar(props: Props) {
           </Menu>
         </div>
         {props.mode === "edit" && (
-          <AppIconButton
-            tone="card"
-            intent="add"
-            label={Locale.label("common.add")}
-            icon={<AddIcon />}
-            onClick={() => setOpen(true)}
-            data-testid="calendar-add-event-button"
-          />
+          <Button size="small" startIcon={<AddIcon />} onClick={() => setOpen(true)} data-testid="calendar-add-event-button">
+            {Locale.label("calendars.editEvent.addGroup")}
+          </Button>
         )}
       </Stack>
       <Box sx={{
-        "& .rbc-btn-group button": {
-          color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-        },
+        "& .rbc-btn-group button": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
         "& .rbc-btn-group button:hover, & .rbc-btn-group button:focus, & .rbc-btn-group button:active, & .rbc-btn-group button.rbc-active": {
-          color: (theme) => theme.palette.mode === "dark" ? "#000 !important" : "inherit",
-          backgroundColor: (theme) => theme.palette.mode === "dark" ? "#e0e0e0 !important" : undefined
+          color: (theme) => theme.palette.mode === "dark" ? `${theme.palette.common.black} !important` : "inherit",
+          backgroundColor: (theme) => theme.palette.mode === "dark" ? `${theme.palette.grey[300]} !important` : undefined
         },
-        "& .rbc-toolbar-label": {
-          color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit"
-        },
-        "& .rbc-off-range-bg": {
-          backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined
-        },
-        "& .rbc-today": {
-          backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined
-        }
+        "& .rbc-toolbar-label": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
+        "& .rbc-off-range-bg": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.hover : undefined },
+        "& .rbc-today": { backgroundColor: (theme) => theme.palette.mode === "dark" ? theme.palette.action.selected : undefined }
       }}>
         <Calendar
           localizer={localizer}
@@ -176,7 +162,7 @@ export function CuratedEventCalendar(props: Props) {
         autoHideDuration={2000}
         message={Locale.label("calendars.calendar.copiedToClipboard")}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        ContentProps={{ sx: { background: "green" } }}
+        ContentProps={{ sx: { background: "var(--b1-success)" } }}
       />
     </div>
   );

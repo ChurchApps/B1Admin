@@ -1,50 +1,60 @@
 import React, { type ReactNode } from "react";
-import { Paper, Stack, Typography, TableCell } from "@mui/material";
+import { Box, Stack, Typography, TableCell } from "@mui/material";
+import { InRecordContext } from "./RecordLayout";
 
 interface EmptyStateProps {
-  icon: ReactNode;
+  icon?: ReactNode;
   title: string;
   description?: string;
   action?: ReactNode;
-  variant?: "table" | "card";
+  /** "card" = its own bordered panel; "plain" = inside an existing panel; "table" = a full-width table cell. */
+  variant?: "table" | "card" | "plain";
   colSpan?: number; // Required for table variant
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, action, variant = "card", colSpan = 5 }) => {
+  const inRecord = React.useContext(InRecordContext);
+  // Inside a panel or record, empty is one quiet line plus its verbs, not a centered hero.
+  if ((inRecord && variant !== "table") || variant === "plain") {
+    return (
+      <Stack spacing={1} alignItems="flex-start">
+        <Typography variant="body1" color="text.secondary">{title}</Typography>
+        {description && <Typography variant="body2" color="text.secondary">{description}</Typography>}
+        {action}
+      </Stack>
+    );
+  }
+
   const content = (
-    <Stack spacing={2} alignItems="center">
-      {React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: variant === "card" ? 64 : 48, color: variant === "card" ? "grey.400" : "text.secondary" } })}
-      <Typography variant={variant === "card" ? "h6" : "body1"} color="text.secondary" gutterBottom={variant === "card"}>
-        {title}
-      </Typography>
-      {description && (
-        <Typography variant="body2" color="text.secondary" sx={{ mb: variant === "card" ? 3 : 0 }}>
-          {description}
-        </Typography>
-      )}
-      {action}
+    <Stack spacing={1} alignItems="center" sx={{ maxWidth: 480, mx: "auto" }}>
+      {React.isValidElement(icon) && React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: 32, color: "text.secondary", mb: 0.5 }, "aria-hidden": true })}
+      <Typography variant="h3" component="p">{title}</Typography>
+      {description && <Typography variant="body2" color="text.secondary">{description}</Typography>}
+      {action && <Box sx={{ pt: 1 }}>{action}</Box>}
     </Stack>
   );
 
   if (variant === "table") {
     return (
-      <TableCell colSpan={colSpan} sx={{ textAlign: "center", py: 4 }}>
-        {content}
+      <TableCell colSpan={colSpan} sx={{ py: 2.5, borderBottom: 0 }}>
+        <Stack spacing={1} alignItems="flex-start">
+          <Typography variant="body1" color="text.secondary">{title}</Typography>
+          {description && <Typography variant="body2" color="text.secondary">{description}</Typography>}
+          {action}
+        </Stack>
       </TableCell>
     );
   }
 
   return (
-    <Paper
+    <Box
       sx={{
-        p: 6,
+        py: 4,
+        px: 3,
         textAlign: "center",
-        backgroundColor: "background.subtle",
-        border: "1px dashed",
-        borderColor: "divider",
-        borderRadius: 2
+        ...(variant === "card" ? { bgcolor: "background.paper", border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)" } : {})
       }}>
       {content}
-    </Paper>
+    </Box>
   );
 };

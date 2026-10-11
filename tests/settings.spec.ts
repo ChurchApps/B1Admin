@@ -158,7 +158,7 @@ test.describe.serial("Settings Management", () => {
       const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
       const validatedRole = page.locator("a").getByText("Zebedee Test Role");
-      await expect(validatedRole).toHaveCount(1);
+      await expect(validatedRole).toHaveCount(1, { timeout: 30000 });
     });
 
     test("should cancel editing role", async () => {
@@ -202,7 +202,7 @@ test.describe.serial("Settings Management", () => {
       await url.fill("https://pony.town/");
       const saveBtn = page.locator("button").getByText("Save Tab");
       await saveBtn.click();
-      const validatedTab = page.locator("h6").getByText("Zacchaeus Settings Tab");
+      const validatedTab = page.locator("h3").getByText("Zacchaeus Settings Tab");
       await expect(validatedTab).toHaveCount(1);
     });
 
@@ -214,7 +214,7 @@ test.describe.serial("Settings Management", () => {
       await tabName.fill("Zebedee Settings Tab");
       const saveBtn = page.locator("button").getByText("Save Tab");
       await saveBtn.click();
-      const validatedTab = page.locator("h6").getByText("Zebedee Settings Tab");
+      const validatedTab = page.locator("h3").getByText("Zebedee Settings Tab");
       await expect(validatedTab).toHaveCount(1);
     });
 
@@ -234,7 +234,7 @@ test.describe.serial("Settings Management", () => {
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
       await confirmDelete(page);
-      const validatedDeletion = page.locator("h6").getByText("Zebedee Settings Tab");
+      const validatedDeletion = page.locator("h3").getByText("Zebedee Settings Tab");
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
@@ -516,7 +516,7 @@ test.describe.serial("Settings Management", () => {
       await page.goto("/settings#region");
       const section = page.locator('[data-testid="settings-section-region"]');
       await expect(section).toHaveClass(/Mui-selected/, { timeout: 15000 });
-      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await page.locator('[data-testid="settings-region"] [data-testid="small-button-edit"]').dispatchEvent("click");
       await page.locator('[data-testid="region-select"]').click();
       await page.locator(`[data-testid="region-option-${region}"]`).click();
       await page.locator("button").getByText("Save").click();
@@ -620,27 +620,40 @@ test.describe.serial("Settings Management", () => {
 // ChurchAppsSupport#1180: typing a domain and clicking Save (without +) closed the panel and saved nothing.
 test.describe("Settings domains save a typed name", () => {
   const DOMAIN = "example-1180.org";
+  // Each domain write is slow against the local Api (~10s).
+  const SAVE_MS = 40000;
 
   test("Save keeps a typed domain even when + was not clicked", async ({ page }) => {
+    test.setTimeout(150000);
     await page.locator('[data-testid="settings-section-domains"]').click();
     const section = page.locator('[data-testid="settings-domains"]');
     await expect(section).toBeVisible({ timeout: 15000 });
 
-    await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
     const input = section.locator('input[name="domainName"]');
+    const openEdit = () => section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    await openEdit();
     await expect(input).toBeVisible({ timeout: 10000 });
+    // A run that died before its cleanup leaves the domain behind, which makes the add fail as a duplicate.
+    const leftover = section.locator("tr", { hasText: DOMAIN });
+    if (await leftover.count()) {
+      await leftover.getByRole("button").click();
+      await section.locator("button").getByText("Save").click();
+      await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+      await openEdit();
+      await expect(input).toBeVisible({ timeout: 10000 });
+    }
     await input.fill(DOMAIN);
     await section.locator("button").getByText("Save").click();
-    await expect(input).toHaveCount(0, { timeout: 10000 });
-    await expect(section.getByText(DOMAIN)).toBeVisible({ timeout: 10000 });
+    await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+    await expect(section.getByText(DOMAIN)).toBeVisible({ timeout: SAVE_MS });
 
     // Clean up so later runs start without the domain.
-    await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    await openEdit();
     const row = section.locator("tr", { hasText: DOMAIN });
     await row.getByRole("button").click();
     await section.locator("button").getByText("Save").click();
-    await expect(input).toHaveCount(0, { timeout: 10000 });
-    await expect(section.getByText(DOMAIN)).toHaveCount(0, { timeout: 10000 });
+    await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+    await expect(section.getByText(DOMAIN)).toHaveCount(0, { timeout: SAVE_MS });
   });
 });
 

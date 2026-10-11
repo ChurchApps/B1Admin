@@ -6,7 +6,7 @@ import { donationsTest as test, expect } from "./helpers/test-fixtures";
 // never lapsed - used as a negative control.
 test.describe("Lapsed Givers report", () => {
   test("lists a lapsed giver with last gift date and total, and exports a CSV", async ({ page }) => {
-    const lapsedTab = page.locator('button[role="tab"]').getByText("Lapsed Givers");
+    const lapsedTab = page.getByTestId("giving-view-lapsed");
     await expect(lapsedTab).toBeVisible({ timeout: 10000 });
     await lapsedTab.click();
 

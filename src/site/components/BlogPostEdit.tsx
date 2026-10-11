@@ -114,7 +114,7 @@ export function BlogPostEdit(props: Props) {
               </Button>
             </Stack>
             {showPreview
-              ? <Box sx={{ maxHeight: 300, overflowY: "auto", border: "1px solid", borderColor: "grey.300", borderRadius: 1, p: 2 }}><MarkdownPreviewLight value={post.content || ""} /></Box>
+              ? <Box sx={{ maxHeight: 300, overflowY: "auto", border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 2 }}><MarkdownPreviewLight value={post.content || ""} /></Box>
               : <MarkdownEditor value={post.content || ""} onChange={(val) => setPost((p) => ({ ...p, content: val }))} style={{ maxHeight: 300, overflowY: "scroll" }} />}
           </Grid>
           <Grid size={{ xs: 6 }}>
@@ -138,7 +138,7 @@ export function BlogPostEdit(props: Props) {
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" sx={{ mb: 0.5 }}>{Locale.label("site.blogEdit.image")}</Typography>
             <Stack direction="row" spacing={2} alignItems="center">
-              {post.photoUrl && <Box component="img" src={post.photoUrl} alt="" sx={{ height: 48, borderRadius: 1 }} />}
+              {post.photoUrl && <Box component="img" src={post.photoUrl} alt="" sx={{ height: 48, borderRadius: "var(--b1-radius-control)" }} />}
               <Button size="small" variant="outlined" startIcon={<Icon>image</Icon>} onClick={() => setShowGallery(true)}>{Locale.label("site.blogEdit.selectImage")}</Button>
               {post.photoUrl && <Button size="small" color="error" onClick={() => setPost((p) => ({ ...p, photoUrl: "" }))}>{Locale.label("common.remove")}</Button>}
             </Stack>

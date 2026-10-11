@@ -46,7 +46,7 @@ test.describe.serial("Serving Management - Plan Templates", () => {
     await expect(planLink).toBeVisible({ timeout: 10000 });
     await planLink.click();
     await page.waitForURL(/\/serving\/plans\/[^/]+/, { timeout: 15000 });
-    await page.locator('button[role="tab"]').getByText("Service Order").click();
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 15000 });
   }
 
   test("saves a plan as a template", async () => {
@@ -100,7 +100,7 @@ test.describe.serial("Serving Management - Plan Templates", () => {
 
   test("cleanup: deletes the new plan and the template", async () => {
     await gotoPlanList();
-    const card = page.locator(".MuiCard-root").filter({ has: page.getByRole("link", { name: NEW_PLAN, exact: true }) });
+    const card = page.locator("tr").filter({ has: page.getByRole("link", { name: NEW_PLAN, exact: true }) });
     await card.getByRole("button", { name: "Edit" }).click();
     // FormCard's delete carries id="delete"; scope to it.
     await page.locator("#delete").click();

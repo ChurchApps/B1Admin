@@ -1,7 +1,6 @@
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
-import { Assignment as FormIcon, Group as GroupIcon, Description as DescriptionIcon } from "@mui/icons-material";
 import { memo, useMemo } from "react";
-import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { PillTabs, type PillOption } from "../../components/ui";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 
 interface Props {
@@ -9,14 +8,13 @@ interface Props {
   onTabChange: (tab: string) => void;
   form: FormInterface;
   memberPermission: MemberPermissionInterface;
-  onHeader?: boolean;
 }
 
 export const FormNavigation = memo((props: Props) => {
-  const { selectedTab, onTabChange, form, memberPermission, onHeader } = props;
+  const { selectedTab, onTabChange, form, memberPermission } = props;
 
-  const tabs: NavigationTab[] = useMemo(() => {
-    const tabsList = [];
+  const tabs: PillOption[] = useMemo(() => {
+    const tabsList: PillOption[] = [];
     const formType = form?.contentType;
     const formMemberAction = memberPermission?.action;
     const formAdmin = UserHelper.checkAccess(Permissions.membershipApi.forms.admin);
@@ -25,17 +23,18 @@ export const FormNavigation = memo((props: Props) => {
     const formMemberView = formMemberAction === "view" && formType !== undefined && formType === "form";
 
     if (formAdmin || formEdit || formMemberAdmin) {
-      tabsList.push({ value: "questions", label: Locale.label("forms.tabs.questions"), icon: <DescriptionIcon /> });
+      tabsList.push({ value: "questions", label: Locale.label("forms.tabs.questions"), "data-testid": "form-tab-questions" });
     }
     if ((formAdmin || formMemberAdmin) && formType === "form") {
-      tabsList.push({ value: "members", label: Locale.label("forms.tabs.formMem"), icon: <GroupIcon /> });
+      tabsList.push({ value: "members", label: Locale.label("forms.tabs.formMem"), "data-testid": "form-tab-members" });
     }
     if (formAdmin || formMemberAdmin || formMemberView) {
-      tabsList.push({ value: "submissions", label: Locale.label("forms.tabs.formSub"), icon: <FormIcon /> });
+      tabsList.push({ value: "submissions", label: Locale.label("forms.tabs.formSub"), "data-testid": "form-tab-submissions" });
     }
 
     return tabsList;
   }, [form, memberPermission]);
 
-  return <NavigationTabs selectedTab={selectedTab} onTabChange={onTabChange} tabs={tabs} onHeader={onHeader} />;
+  if (tabs.length < 2) return null;
+  return <PillTabs tabs options={tabs} value={selectedTab} onChange={onTabChange} aria-label={form?.name || Locale.label("forms.formsPage.forms")} />;
 });

@@ -22,11 +22,11 @@ export function PropertyPanel({ open, title, subtitle, breadcrumb, icon, onClose
         flexShrink: 0,
         overflow: "hidden",
         transition: "width 0.18s ease-out",
-        borderLeft: open ? "1px solid var(--border-main)" : "none",
-        backgroundColor: "#ffffff",
+        borderLeft: open ? 1 : 0,
+        borderColor: "divider",
+        backgroundColor: "background.paper",
         display: "flex",
-        flexDirection: "column",
-        boxShadow: open ? "-4px 0 12px rgba(0, 0, 0, 0.04)" : "none"
+        flexDirection: "column"
       }}
     >
       <Box
@@ -45,35 +45,20 @@ export function PropertyPanel({ open, title, subtitle, breadcrumb, icon, onClose
             justifyContent: "space-between",
             px: 2,
             py: 1.25,
-            borderBottom: "1px solid var(--border-main)",
-            flexShrink: 0,
-            backgroundColor: "var(--bg-sub)"
+            borderBottom: 1,
+            borderColor: "divider",
+            flexShrink: 0
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
-            {icon && (
-              <Box
-                sx={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: "6px",
-                  background: "var(--c1l7)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0
-                }}
-              >
-                <Icon sx={{ color: "primary.main", fontSize: 18 }}>{icon}</Icon>
-              </Box>
-            )}
+            {icon && <Icon sx={{ color: "text.secondary", fontSize: 20, flexShrink: 0 }}>{icon}</Icon>}
             <Box sx={{ minWidth: 0 }}>
               <Box
                 sx={{
-                  fontSize: "0.9rem",
+                  fontSize: 16,
                   fontWeight: 600,
                   color: "text.primary",
-                  lineHeight: 1.2,
+                  lineHeight: 1.3,
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis"
@@ -84,9 +69,9 @@ export function PropertyPanel({ open, title, subtitle, breadcrumb, icon, onClose
               {breadcrumb || (subtitle && (
                 <Box
                   sx={{
-                    fontSize: "0.7rem",
+                    fontSize: 12,
                     color: "text.secondary",
-                    lineHeight: 1.2,
+                    lineHeight: 1.4,
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis"

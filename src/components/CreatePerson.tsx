@@ -4,7 +4,7 @@ import React from "react";
 import { UserHelper, ApiHelper, Locale } from "../helpers";
 import { Permissions } from "@churchapps/helpers";
 import type { PersonInterface, HouseholdInterface } from "@churchapps/helpers";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Typography } from "@mui/material";
 import { ErrorMessages } from "@churchapps/apphelper";
 import { useMountedState } from "@churchapps/apphelper";
 import { DuplicateDialog } from "../people/components/DuplicateDialog";
@@ -171,9 +171,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
   return (
     <div>
       {duplicateDialog}
-      <p className="pl-1 mb-3 text-dark">
-        <b>{Locale.label("createPerson.addNewPerson")}</b>
-      </p>
+      <Typography variant="h3" component="h2" sx={{ mb: 2 }}>{Locale.label("createPerson.addNewPerson")}</Typography>
       <ErrorMessages errors={errors} />
       <Grid container spacing={3} alignItems="center">
         <Grid size={{ xs: 12, md: 6 }}>

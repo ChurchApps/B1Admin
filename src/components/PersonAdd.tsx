@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "../helpers";
+import { PersonAvatar } from "@churchapps/apphelper";
 import type { PersonInterface } from "@churchapps/helpers";
-import { TextField, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
+import { InputAdornment, Link, TextField, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
 import { PersonAdd as PersonAddIcon, Search as SearchIcon } from "@mui/icons-material";
 import { CreatePerson } from "./CreatePerson";
 import { AppIconButton } from "./ui/AppIconButton";
@@ -11,7 +12,8 @@ import { AppIconButton } from "./ui/AppIconButton";
 interface Props {
   addFunction: (person: PersonInterface) => void;
   person?: PersonInterface;
-  getPhotoUrl: (person: PersonInterface) => string;
+  /** Kept for callers; avatars now come from PersonAvatar (initials fallback). */
+  getPhotoUrl?: (person: PersonInterface) => string;
   searchClicked?: () => void;
   filterList?: string[];
   includeEmail?: boolean;
@@ -22,7 +24,9 @@ interface Props {
   autoSearch?: boolean;
 }
 
-export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false, onCreate, inputRef, autoSearch = false }) => {
+const RECENT_LIMIT = 8;
+
+export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false, onCreate, inputRef, autoSearch = false }) => {
   const [searchResults, setSearchResults] = useState<PersonInterface[]>([]);
   const [searchText, setSearchText] = useState("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
@@ -96,31 +100,24 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
     addFunction(person);
   };
 
-  //<button className="text-success no-default-style" aria-label="addPerson" data-index={i} onClick={handleAdd}><Icon>person</Icon> Add</button>
+  // Recents are a shortcut, not a directory: show a handful until the user searches.
+  const shown = searchText.trim() ? searchResults : searchResults.slice(0, RECENT_LIMIT);
   const rows = [];
-  for (let i = 0; i < searchResults.length; i++) {
-    const sr = searchResults[i];
+  for (let i = 0; i < shown.length; i++) {
+    const sr = shown[i];
 
     rows.push(
       <TableRow key={sr.id}>
-        <TableCell>
-          <img src={getPhotoUrl(sr)} alt="avatar" />
+        <TableCell sx={{ width: 48, pr: 0 }}>
+          <PersonAvatar person={sr} size="small" sx={{ width: 32, height: 32, fontSize: 13 }} />
         </TableCell>
         <TableCell>
-          <button
-            type="button"
-            onClick={() => handleAdd(sr)}
-            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", textDecoration: "underline", textAlign: "left" }}>
+          <Link component="button" type="button" underline="hover" onClick={() => handleAdd(sr)} sx={{ fontWeight: 600, textAlign: "left" }}>
             {sr.name.display}
-          </button>
-          {includeEmail && (
-            <>
-              <br />
-              <i style={{ color: "var(--text-muted)" }}>{sr.contactInfo.email}</i>
-            </>
-          )}
+          </Link>
+          {includeEmail && sr.contactInfo?.email && <Typography variant="body2" color="text.secondary">{sr.contactInfo.email}</Typography>}
         </TableCell>
-        <TableCell>
+        <TableCell align="right" sx={{ width: 48 }}>
           <AppIconButton intent="add" label={actionLabel || Locale.label("common.add")} icon={<PersonAddIcon />} onClick={() => handleAdd(sr)} data-testid={`add-person-button-${sr.id || "new"}`} />
         </TableCell>
       </TableRow>
@@ -138,8 +135,10 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
         onKeyDown={handleKeyDown}
         data-testid="person-search-input"
         inputRef={inputRef}
-        InputProps={autoSearch ? undefined : {
-          endAdornment: (
+        sx={{ "& .MuiOutlinedInput-root": { bgcolor: "background.default", borderRadius: "12px", "&.Mui-focused": { bgcolor: "background.paper" } } }}
+        InputProps={{
+          startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: "text.secondary" }} /></InputAdornment>,
+          endAdornment: autoSearch ? undefined : (
             <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-testid="search-button" onClick={handleSearch} />
           )
         }}
@@ -152,6 +151,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           </button>
         </Typography>
       )}
+      {!searchText.trim() && shown.length > 0 && <Typography variant="body2" color="text.secondary" sx={{ mt: 2, mb: 0.5 }}>{Locale.label("person.recentPeople", "Recent people")}</Typography>}
       <Table size="small" id="householdMemberAddTable">
         <TableBody>{rows}</TableBody>
       </Table>

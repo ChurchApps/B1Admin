@@ -2,11 +2,15 @@ import React from "react";
 
 import { type GroupInterface, type PersonInterface, type SessionInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Grid } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
+import { AddBar } from "../../components/ui";
 import { PersonAddAdvanced } from "../../people/components/PersonAddAdvanced";
 import { GroupSessionsList } from "./GroupSessionsList";
 import { SessionAttendance } from "./SessionAttendance";
 import { SessionEdit } from "./SessionEdit";
+
+// The record is already one surface; drop the inner card chrome.
+const flatSx = { border: 0, boxShadow: "none", bgcolor: "transparent" };
 
 interface Props {
   group: GroupInterface;
@@ -53,8 +57,8 @@ export const GroupSessionsTab = (props: Props) => {
   }, []);
 
   return (
-    <Grid container spacing={3}>
-      <Grid size={{ xs: 12, md: 4 }}>
+    <Grid container spacing={3} sx={{ "& > .MuiGrid-root > section, & > .MuiGrid-root > .MuiStack-root > section:not([data-testid]), & > .MuiGrid-root .MuiPaper-root": flatSx }}>
+      <Grid size={{ xs: 12, md: 5 }}>
         <GroupSessionsList
           group={props.group}
           selectedSession={selectedSession}
@@ -64,21 +68,23 @@ export const GroupSessionsTab = (props: Props) => {
           addedSession={addedSession}
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 5 }}>
-        <SessionAttendance
-          group={props.group}
-          session={selectedSession}
-          addedPerson={addedPerson}
-          addedCallback={handleAddedCallback}
-          onSaved={handleAttendanceSaved}
-        />
-      </Grid>
-      <Grid size={{ xs: 12, md: 3 }}>
-        {addSessionVisible && <SessionEdit key="sessionAdd" group={props.group} updatedFunction={handleSessionAdd} />}
-        {editSessionVisible && editingSession && <SessionEdit key="sessionEdit" group={props.group} session={editingSession} updatedFunction={handleSessionUpdated} />}
-        {!addSessionVisible && !editSessionVisible && UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
-          <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
-        )}
+      <Grid size={{ xs: 12, md: 7 }}>
+        <Stack spacing={3}>
+          {addSessionVisible && <SessionEdit key="sessionAdd" group={props.group} updatedFunction={handleSessionAdd} />}
+          {editSessionVisible && editingSession && <SessionEdit key="sessionEdit" group={props.group} session={editingSession} updatedFunction={handleSessionUpdated} />}
+          <SessionAttendance
+            group={props.group}
+            session={selectedSession}
+            addedPerson={addedPerson}
+            addedCallback={handleAddedCallback}
+            onSaved={handleAttendanceSaved}
+          />
+          {!addSessionVisible && !editSessionVisible && UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
+            <AddBar data-testid="session-person-add" sx={{ mt: 0 }}>
+              <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
+            </AddBar>
+          )}
+        </Stack>
       </Grid>
     </Grid>
   );

@@ -1,7 +1,7 @@
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { Locale } from "@churchapps/apphelper";
-import { FormCard } from "../../components/ui";
+import { FormCard, StatusBadge } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary, useFirstDayOfWeek, applyWeekStart } from "../../hooks";
 import {
   Grid,
@@ -13,7 +13,6 @@ import {
   Box,
   Stack,
   Typography,
-  Chip,
   Divider,
   InputAdornment,
   Alert
@@ -207,12 +206,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
             )}
 
             <Box>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-                <VideoCallIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6" sx={{ color: "primary.main" }}>
-                  {Locale.label("sermons.liveStreamTimes.serviceEdit.basicInformation")}
-                </Typography>
-              </Stack>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                {Locale.label("sermons.liveStreamTimes.serviceEdit.basicInformation")}
+              </Typography>
 
               <Stack spacing={2}>
                 <Controller name="serviceLabel" control={control} rules={{ required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNameRequired") }} render={({ field }) => (
@@ -275,13 +271,13 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                           <MenuItem value="false">
                             <Stack direction="row" spacing={1} alignItems="center">
                               <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.no")}</Typography>
-                              <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: "rgba(237, 108, 2, 0.08)", color: "warning.main" }} />
+                              <StatusBadge tone="warning">{Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")}</StatusBadge>
                             </Stack>
                           </MenuItem>
                           <MenuItem value="true">
                             <Stack direction="row" spacing={1} alignItems="center">
                               <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.yes")}</Typography>
-                              <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
+                              <StatusBadge tone="success">{Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")}</StatusBadge>
                             </Stack>
                           </MenuItem>
                         </Select>
@@ -295,12 +291,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
             <Divider />
 
             <Box>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-                <ChatIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6" sx={{ color: "primary.main" }}>
-                  {Locale.label("sermons.liveStreamTimes.serviceEdit.chatSettings")}
-                </Typography>
-              </Stack>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                {Locale.label("sermons.liveStreamTimes.serviceEdit.chatSettings")}
+              </Typography>
 
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -317,11 +310,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                       ),
                       endAdornment: (
                         <InputAdornment position="end">
-                          <Chip
-                            label={chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
-                            size="small"
-                            sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
-                          />
+                          <StatusBadge tone="info">{chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}</StatusBadge>
                         </InputAdornment>
                       )
                     }}
@@ -342,11 +331,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                       ),
                       endAdornment: (
                         <InputAdornment position="end">
-                          <Chip
-                            label={chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
-                            size="small"
-                            sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
-                          />
+                          <StatusBadge tone="info">{chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}</StatusBadge>
                         </InputAdornment>
                       )
                     }}
@@ -359,12 +344,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
             <Divider />
 
             <Box>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-                <PlayCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6" sx={{ color: "primary.main" }}>
-                  {Locale.label("sermons.liveStreamTimes.serviceEdit.videoSettings")}
-                </Typography>
-              </Stack>
+              <Typography variant="h3" component="h3" sx={{ mb: 2 }}>
+                {Locale.label("sermons.liveStreamTimes.serviceEdit.videoSettings")}
+              </Typography>
 
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -382,11 +364,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                       ),
                       endAdornment: (
                         <InputAdornment position="end">
-                          <Chip
-                            label={earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
-                            size="small"
-                            sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
-                          />
+                          <StatusBadge tone="info">{earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}</StatusBadge>
                         </InputAdornment>
                       )
                     }}
@@ -407,7 +385,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                         <MenuItem value="latest">
                           <Stack direction="row" spacing={1} alignItems="center">
                             <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.latestSermon")}</Typography>
-                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
+                            <StatusBadge tone="success">{Locale.label("sermons.liveStreamTimes.serviceEdit.auto")}</StatusBadge>
                           </Stack>
                         </MenuItem>
                         {getSermons()}

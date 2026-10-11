@@ -95,10 +95,10 @@ export function TokenPicker(props: TokenPickerProps) {
             sx={{
               width: 20,
               height: 20,
-              borderRadius: 1,
+              borderRadius: "var(--b1-radius-control)",
               backgroundColor: token.preview,
               border: "1px solid",
-              borderColor: "grey.300",
+              borderColor: "divider",
               flexShrink: 0
             }}
           />
@@ -144,10 +144,10 @@ export function TokenPicker(props: TokenPickerProps) {
               sx={{
                 width: 20,
                 height: 20,
-                borderRadius: 1,
+                borderRadius: "var(--b1-radius-control)",
                 backgroundColor: preview,
                 border: "1px solid",
-                borderColor: "grey.300"
+                borderColor: "divider"
               }}
             />
           </InputAdornment>
@@ -162,7 +162,7 @@ export function TokenPicker(props: TokenPickerProps) {
           disabled
           sx={{
             opacity: 1,
-            backgroundColor: "grey.50",
+            backgroundColor: "background.default",
             fontWeight: 600,
             py: 1
           }}

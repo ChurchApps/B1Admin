@@ -66,8 +66,8 @@ const InstructionItemRow: React.FC<{
             py: depth === 0 ? 1 : 0.75,
             px: 1,
             borderRadius: 1,
-            bgcolor: depth === 0 ? "grey.100" : "transparent",
-            "&:hover": { bgcolor: depth === 0 ? "grey.200" : "action.hover" }
+            bgcolor: depth === 0 ? "var(--b1-hover)" : "transparent",
+            "&:hover": { bgcolor: "action.selected" }
           }}
         >
           <AppIconButton label={isExpanded ? Locale.label("common.collapse") : Locale.label("common.expand")} icon={isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />} onClick={() => onToggleExpanded(itemId)} sx={{ mr: 1 }} />

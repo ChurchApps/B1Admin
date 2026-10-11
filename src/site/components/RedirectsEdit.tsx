@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Alert, Box, Button, Card, Icon, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Icon, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
+import { CardWithHeader } from "../../components/ui";
 
 interface RedirectInterface { id?: string; fromPath?: string; toPath?: string; }
 
@@ -60,22 +61,16 @@ export const RedirectsEdit: React.FC = () => {
   };
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", mb: 3 }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Icon sx={{ color: "primary.main", fontSize: 20 }}>alt_route</Icon>
-          <Typography variant="h6">{Locale.label("site.redirects.title")}</Typography>
-        </Stack>
-      </Box>
-      <Box sx={{ p: 2 }}>
+    <CardWithHeader title={Locale.label("site.redirects.title")}>
+      <Box>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("site.redirects.description")}</Typography>
         {error && <Alert severity="error" sx={{ mb: 2 }} data-testid="redirect-error">{error}</Alert>}
         {redirects.length > 0 && (
           <Table size="small" sx={{ mb: 2 }}>
             <TableHead>
               <TableRow>
-                <TableCell><Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.redirects.fromPath")}</Typography></TableCell>
-                <TableCell><Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.redirects.toPath")}</Typography></TableCell>
+                <TableCell>{Locale.label("site.redirects.fromPath")}</TableCell>
+                <TableCell>{Locale.label("site.redirects.toPath")}</TableCell>
                 <TableCell sx={{ width: 48 }} />
               </TableRow>
             </TableHead>
@@ -97,8 +92,8 @@ export const RedirectsEdit: React.FC = () => {
         </Stack>
         <Typography variant="caption" color="text.secondary">{Locale.label("site.redirects.normalizeHint")}</Typography>
 
-        <Box sx={{ borderTop: "1px solid var(--border-light)", mt: 3, pt: 2 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("site.redirects.analytics")}</Typography>
+        <Box sx={{ borderTop: 1, borderColor: "divider", mt: 3, pt: 2 }}>
+          <Typography variant="h3" component="h3">{Locale.label("site.redirects.analytics")}</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("site.redirects.analyticsDesc")}</Typography>
           <Stack direction="row" spacing={2} alignItems="center">
             <TextField size="small" label={Locale.label("site.redirects.ga4")} placeholder="G-XXXXXXXXXX" value={ga4} onChange={(e) => setGa4(e.target.value)} helperText={Locale.label("site.redirects.ga4Hint")} data-testid="ga4-input" />
@@ -107,6 +102,6 @@ export const RedirectsEdit: React.FC = () => {
           </Stack>
         </Box>
       </Box>
-    </Card>
+    </CardWithHeader>
   );
 };

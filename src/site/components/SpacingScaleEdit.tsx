@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Grid, TextField, Box, Typography, Stack, Button } from "@mui/material";
+import { Grid, TextField, Box, Typography, Stack } from "@mui/material";
 import { SpaceBar as SpaceBarIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
+import { StyleEditHeader } from "./StyleEditHeader";
 
 interface Props {
   globalStyle?: GlobalStyleInterface | null;
@@ -70,25 +71,11 @@ export function SpacingScaleEdit(props: Props) {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
-      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <SpaceBarIcon sx={{ fontSize: 24, color: "#FFF" }} />
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.spacingScaleEdit.headerTitle")}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.spacingScaleEdit.headerSubtitle")}</Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-spacing-button">{Locale.label("site.spacingScaleEdit.saveSpacing")}</LoadingButton>
-          </Stack>
-        </Stack>
-      </Box>
+      <StyleEditHeader title={Locale.label("site.spacingScaleEdit.headerTitle")} subtitle={Locale.label("site.spacingScaleEdit.headerSubtitle")} onCancel={() => props.updatedFunction?.(null)} saveButton={
+        <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} data-testid="save-spacing-button">{Locale.label("site.spacingScaleEdit.saveSpacing")}</LoadingButton>
+      } />
 
-      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ display: "grid", gap: 3 }}>
         <CardWithHeader title={Locale.label("site.spacingScaleEdit.spacingValues")} icon={<SpaceBarIcon />}>
           <Grid container spacing={3}>
             {spacingItems.map((item) => (
@@ -112,17 +99,17 @@ export function SpacingScaleEdit(props: Props) {
           </Grid>
         </CardWithHeader>
 
-        <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "var(--border-main)", borderTop: "none" }}>
+        <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "var(--b1-border)", borderTop: "none" }}>
           <CardWithHeader title={Locale.label("site.spacingScaleEdit.practicalExamples")} icon={<VisibilityIcon />}>
-            <Box sx={{ p: 3, backgroundColor: "var(--bg-sub)", borderRadius: 2 }}>
+            <Box sx={{ p: 3, backgroundColor: "var(--b1-canvas)", borderRadius: "var(--b1-radius-panel)" }}>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
                 {Locale.label("site.spacingScaleEdit.practicalExamplesDesc")}
               </Typography>
 
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.iconRow")}</Typography>
               <Box sx={{
-                border: "1px solid var(--border-main)",
-                borderRadius: 2,
+                border: "1px solid var(--b1-border)",
+                borderRadius: "var(--b1-radius-panel)",
                 p: `${spacing.sm}px`,
                 mb: 4,
                 backgroundColor: "background.paper",
@@ -130,7 +117,7 @@ export function SpacingScaleEdit(props: Props) {
                 gap: `${spacing.xs}px`
               }}>
                 {["A", "B", "C", "D", "E"].map((letter) => (
-                  <Box key={letter} sx={{ width: 32, height: 32, backgroundColor: "action.selected", borderRadius: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: 600 }}>{letter}</Box>
+                  <Box key={letter} sx={{ width: 32, height: 32, backgroundColor: "action.selected", borderRadius: "var(--b1-radius-control)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: 600 }}>{letter}</Box>
                 ))}
               </Box>
               <Typography variant="caption" color="text.secondary" sx={{ mt: -3, mb: 4, display: "block" }}>
@@ -139,8 +126,8 @@ export function SpacingScaleEdit(props: Props) {
 
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.cardWithContent")}</Typography>
               <Box sx={{
-                border: "1px solid var(--border-main)",
-                borderRadius: 2,
+                border: "1px solid var(--b1-border)",
+                borderRadius: "var(--b1-radius-panel)",
                 p: `${spacing.md}px`,
                 mb: 4,
                 backgroundColor: "background.paper"
@@ -150,15 +137,15 @@ export function SpacingScaleEdit(props: Props) {
                   This card uses <strong>md ({spacing.md}px)</strong> padding and <strong>sm ({spacing.sm}px)</strong> gap between title and text.
                 </Typography>
                 <Stack direction="row" spacing={`${spacing.sm}px`}>
-                  <Box sx={{ px: 2, py: 1, backgroundColor: "primary.main", color: "#fff", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonOne")}</Box>
-                  <Box sx={{ px: 2, py: 1, backgroundColor: "action.disabledBackground", color: "text.primary", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonTwo")}</Box>
+                  <Box sx={{ px: 2, py: 1, backgroundColor: "primary.main", color: "#fff", borderRadius: "var(--b1-radius-control)", fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonOne")}</Box>
+                  <Box sx={{ px: 2, py: 1, backgroundColor: "action.disabledBackground", color: "text.primary", borderRadius: "var(--b1-radius-control)", fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonTwo")}</Box>
                 </Stack>
               </Box>
 
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.pageSection")}</Typography>
               <Box sx={{
-                border: "1px solid var(--border-main)",
-                borderRadius: 2,
+                border: "1px solid var(--b1-border)",
+                borderRadius: "var(--b1-radius-panel)",
                 overflow: "hidden",
                 mb: 4
               }}>
@@ -172,8 +159,8 @@ export function SpacingScaleEdit(props: Props) {
 
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.fullWidthBanner")}</Typography>
               <Box sx={{
-                border: "1px solid var(--border-main)",
-                borderRadius: 2,
+                border: "1px solid var(--b1-border)",
+                borderRadius: "var(--b1-radius-panel)",
                 overflow: "hidden",
                 mb: 4
               }}>

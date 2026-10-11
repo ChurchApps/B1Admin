@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { TextField, Box, Typography, Stack, Button, Alert, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { TextField, Box, Typography, Stack, Alert, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { Code as CodeIcon, Info as InfoIcon, Warning as WarningIcon, ExpandMore as ExpandMoreIcon, Terminal as TerminalIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
+import { StyleEditHeader } from "./StyleEditHeader";
 
 interface Props {
   globalStyle?: GlobalStyleInterface | null;
@@ -86,25 +87,11 @@ a:hover {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
-      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <CodeIcon sx={{ fontSize: 24, color: "#FFF" }} />
-            </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.cssEdit.headerTitle")}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.cssEdit.headerSubtitle")}</Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.cssEdit.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }}>{Locale.label("site.cssEdit.saveChanges")}</LoadingButton>
-          </Stack>
-        </Stack>
-      </Box>
+      <StyleEditHeader title={Locale.label("site.cssEdit.headerTitle")} subtitle={Locale.label("site.cssEdit.headerSubtitle")} onCancel={() => props.updatedFunction?.(null)} saveButton={
+        <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.cssEdit.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }}>{Locale.label("site.cssEdit.saveChanges")}</LoadingButton>
+      } />
 
-      <Box sx={{ p: 3, backgroundColor: "background.paper", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
+      <Box sx={{ display: "grid", gap: 3 }}>
         <Alert severity="warning" icon={<WarningIcon />} sx={{ mb: 3 }}>
           <Typography variant="body2"><strong>{Locale.label("site.cssEdit.advancedFeature")}</strong> {Locale.label("site.cssEdit.advancedFeatureDescription")}</Typography>
         </Alert>
@@ -127,12 +114,12 @@ a {
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.cssEdit.commonCssExamples")}</Typography>
               <Stack spacing={1}>
                 {cssExamples.map((example, index) => (
-                  <Accordion key={index} sx={{ border: "1px solid", borderColor: "grey.200" }}>
+                  <Accordion key={index} sx={{ border: "1px solid", borderColor: "divider" }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>{example.title}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Box sx={{ backgroundColor: "var(--bg-sub)", p: 2, borderRadius: 1, border: "1px solid", borderColor: "grey.200" }}>
+                      <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2, borderRadius: "var(--b1-radius-control)", border: "1px solid", borderColor: "divider" }}>
                         <Typography variant="body2" component="pre" sx={{ fontFamily: "Monaco, Menlo, \"Ubuntu Mono\", monospace", fontSize: "0.75rem", margin: 0, whiteSpace: "pre-wrap", color: "text.primary" }}>{example.code}</Typography>
                       </Box>
                     </AccordionDetails>
@@ -159,12 +146,12 @@ a {
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.cssEdit.commonJsExamples")}</Typography>
                 <Stack spacing={1}>
                   {jsExamples.map((example, index) => (
-                    <Accordion key={index} sx={{ border: "1px solid", borderColor: "grey.200" }}>
+                    <Accordion key={index} sx={{ border: "1px solid", borderColor: "divider" }}>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>{example.title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Box sx={{ backgroundColor: "var(--bg-sub)", p: 2, borderRadius: 1, border: "1px solid", borderColor: "grey.200" }}>
+                        <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2, borderRadius: "var(--b1-radius-control)", border: "1px solid", borderColor: "divider" }}>
                           <Typography variant="body2" component="pre" sx={{ fontFamily: "Monaco, Menlo, \"Ubuntu Mono\", monospace", fontSize: "0.75rem", margin: 0, whiteSpace: "pre-wrap", color: "text.primary" }}>{example.code}</Typography>
                         </Box>
                       </AccordionDetails>

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -81,7 +81,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await openMinistryTab();
     await page.locator('[data-testid="add-team-button"]').click();
     await page.locator('[name="name"]').fill("Jethro Team");
-    await page.locator("button").getByText("Add").last().click();
+    await page.getByRole("button", { name: "Add", exact: true }).click();
     const teamLink = page.locator("a").getByText("Jethro Team");
     await expect(teamLink).toBeVisible({ timeout: 10000 });
     await teamLink.click();
@@ -122,6 +122,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await page.getByRole("button", { name: "Save", exact: true }).click();
     await expect(page.locator(".positionsTable").getByText("Greeter")).toBeVisible({ timeout: 10000 });
 
+    await page.getByTestId("plan-times-toggle").click();
     await page.locator('[data-testid="add-time-button"]').click();
     await page.locator('[data-testid="time-display-name-input"] input, input[id="displayName"]').first().fill("Morning Service");
     await page.locator('input[id="startTime"]').fill("2030-06-09T09:00");
@@ -236,7 +237,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await expect(teamLink).toBeVisible({ timeout: 10000 });
     await teamLink.click();
     await expect(page).toHaveURL(/\/groups\/[^/]+/);
-    const teamEditBtn = editIconButton(page).first();
+    const teamEditBtn = page.getByTestId("edit-group-button");
     await expect(teamEditBtn).toBeVisible({ timeout: 10000 });
     await teamEditBtn.click();
     await page.locator("button").getByText("Delete").click();
@@ -245,7 +246,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     page.once("dialog", async dialog => { await dialog.accept(); });
     await openMinistryTab();
     await page.locator("a").getByText("Edit Ministry").click();
-    const minEditBtn = editIconButton(page).first();
+    const minEditBtn = page.getByTestId("edit-group-button");
     await expect(minEditBtn).toBeVisible({ timeout: 10000 });
     await minEditBtn.click();
     const deleteBtn = page.locator("button").getByText("Delete");

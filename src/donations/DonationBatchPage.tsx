@@ -1,12 +1,12 @@
 import React from "react";
 import { DonationEdit, Donations, BatchEdit, BulkDonationEntry } from "./components";
-import { UserHelper, Permissions, DateHelper, PageHeader, Locale, CurrencyHelper } from "@churchapps/apphelper";
+import { UserHelper, Permissions, DateHelper, Locale, CurrencyHelper } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundInterface, type DonationInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Stack } from "@mui/material";
-import { Receipt as ReceiptIcon, Edit as EditIcon } from "@mui/icons-material";
-import { Breadcrumbs, type BreadcrumbItem, HeaderSecondaryButton, PageHeaderStats } from "../components/ui";
+import { Box, Grid, Stack } from "@mui/material";
+import { Add as AddIcon, EditOutlined as EditIcon } from "@mui/icons-material";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, Surface, HeaderPrimaryButton, HeaderTextButton } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 
 export const DonationBatchPage = () => {
@@ -51,10 +51,6 @@ export const DonationBatchPage = () => {
     return result;
   };
 
-  const stats = {
-    totalDonations: donations.data?.length || 0,
-    totalAmount: batch.data?.totalAmount || 0
-  };
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -65,65 +61,75 @@ export const DonationBatchPage = () => {
   const denied = useRequirePermission(Permissions.givingApi.donations.view);
   if (denied) return denied;
 
+  const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+  const giftCount = donations.data?.length || 0;
+  const dateLabel = batch.data?.batchDate ? DateHelper.prettyDate(new Date(batch.data.batchDate.split("T")[0] + "T00:00:00")) : "";
+  // totalAmount is the Api's converted total; summing donation amounts would mix currencies.
+  const lede = batch.data ? (
+    <>
+      {dateLabel && <>{dateLabel} · </>}
+      {Locale.label("donations.donationBatchPage.giftCount", "{count} gifts").replace("{count}", giftCount.toString())}
+      {" · "}
+      <span data-testid="batch-total-amount">{CurrencyHelper.formatCurrencyWithLocale(batch.data.totalAmount || 0, currency, 0)}</span>
+      {batch.data.isConverted && " (" + Locale.label("donations.donations.convertedNote") + ")"}
+    </>
+  ) : Locale.label("donations.donationBatchPage.subtitle");
+
+  const hasFunds = (funds.data?.length ?? 0) > 0;
+  const showBulk = editDonationId === "notset" && canEdit && hasFunds;
+  const showSide = showBulk || editDonationId !== "notset" || editBatch;
+  const startAdd = () => {
+    if (!showBulk) { showEditDonation(""); return; }
+    const entry = document.getElementById("batch-entry");
+    entry?.scrollIntoView({ behavior: "smooth", block: "start" });
+    (entry?.querySelector("input") as HTMLElement | null)?.focus();
+  };
+
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: Locale.label("donations.donationBatchesPage.batches"), path: "/donations/batches" },
     { label: batch.data?.name || Locale.label("donations.donationBatchPage.title") }
   ];
 
   return (
     <>
       <PageHeader
-        icon={<ReceiptIcon />}
         title={batch.data?.name || Locale.label("donations.donationBatchPage.title")}
-        subtitle={batch.data?.batchDate ? `${Locale.label("donations.donationBatchPage.batchDate")} ${DateHelper.prettyDate(new Date(batch.data.batchDate.split("T")[0] + "T00:00:00"))}` : Locale.label("donations.donationBatchPage.subtitle")}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
-      >
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={{ xs: 2 }}
-          alignItems={{ xs: "flex-start", sm: "center" }}
-          justifyContent={{ sm: "space-between" }}
-          width="100%"
-        >
-          {stats.totalDonations > 0 && (
-            <PageHeaderStats
-              items={[
-                { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: Locale.label("donations.donationBatchPage.donations"), minWidth: 80 },
-                {
-                  value: <span data-testid="batch-total-amount">{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</span>,
-                  label: Locale.label("donations.donationBatchPage.totalAmount"),
-                  note: batch.data?.isConverted ? Locale.label("donations.donations.convertedNote") : undefined
-                }
-              ]}
-            />
-          )}
-          {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
-            <HeaderSecondaryButton
-              startIcon={<EditIcon />}
-              onClick={() => setEditBatch(true)}
-              data-testid="edit-batch-button"
-              sx={{ position: { md: "relative" }, ml: { md: "auto" }, zIndex: 1 }}>
-              {Locale.label("donations.donationBatchPage.editBatch")}
-            </HeaderSecondaryButton>
-          )}
-        </Stack>
+        subtitle={lede}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
+        {canEdit && (
+          <HeaderTextButton startIcon={<EditIcon />} onClick={() => setEditBatch(true)} data-testid="edit-batch-button">{Locale.label("donations.donationBatchPage.editBatch")}</HeaderTextButton>
+        )}
+        {canEdit && hasFunds && (
+          <HeaderPrimaryButton startIcon={<AddIcon />} onClick={startAdd} data-testid="batch-add-donation-button">{Locale.label("donations.bulkEntry.addDonation")}</HeaderPrimaryButton>
+        )}
       </PageHeader>
 
-      <Box sx={{ p: 3 }}>
-        {editDonationId === "notset" && UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (funds.data?.length ?? 0) > 0 && (
-          <BulkDonationEntry
-            batchId={batch.data?.id || ""}
-            batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
-            funds={funds.data || []}
-            updatedFunction={donationUpdated}
-            onOpenFullEditor={() => showEditDonation("")}
-          />
-        )}
-
-        {(editDonationId !== "notset" || editBatch) && <Box sx={{ mb: 3 }}>{getEditModules()}</Box>}
-
-        <Donations key={donationsKey} batch={batch.data || {}} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
-      </Box>
+      <PageContainer>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, lg: showSide ? 8 : 12 }} sx={{ order: { xs: 2, lg: 1 } }}>
+            <Surface>
+              <Donations key={donationsKey} batch={batch.data || {}} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
+            </Surface>
+          </Grid>
+          {showSide && (
+            <Grid size={{ xs: 12, lg: 4 }} sx={{ order: { xs: 1, lg: 2 } }} id="batch-entry">
+              <Stack spacing={3}>
+                {showBulk && (
+                  <BulkDonationEntry
+                    batchId={batch.data?.id || ""}
+                    batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
+                    funds={funds.data || []}
+                    updatedFunction={donationUpdated}
+                    onOpenFullEditor={() => showEditDonation("")}
+                  />
+                )}
+                {(editDonationId !== "notset" || editBatch) && <Box>{getEditModules()}</Box>}
+              </Stack>
+            </Grid>
+          )}
+        </Grid>
+      </PageContainer>
     </>
   );
 };

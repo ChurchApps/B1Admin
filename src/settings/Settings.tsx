@@ -5,12 +5,13 @@ import { RolesPage } from "./RolesPage";
 import { RolePage } from "./RolePage";
 import { AuditLogPage } from "./AuditLogPage";
 import { BatchesPage } from "./BatchesPage";
+import { SettingsPage } from "./components/SettingsPage";
 import { PageSkeleton } from "../components/ui/PageSkeleton";
 
 const EmailTemplatesPage = React.lazy(() => import("./EmailTemplatesPage").then((module) => ({ default: module.EmailTemplatesPage })));
 
 export const Settings: React.FC = () => (
-  <Routes>
+  <SettingsPage><Routes>
     <Route path="/roles" element={<RolesPage />} />
     <Route path="/role/:roleId" element={<RolePage />} />
     <Route path="/audit-log" element={<AuditLogPage />} />
@@ -28,5 +29,5 @@ export const Settings: React.FC = () => (
     <Route path="/webhooks" element={<Navigate to="/settings#developer" replace />} />
     <Route path="/developer" element={<Navigate to="/settings#developer" replace />} />
     <Route path="/" element={<ManageChurch />} />
-  </Routes>
+  </Routes></SettingsPage>
 );

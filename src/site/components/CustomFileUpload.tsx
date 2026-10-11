@@ -128,10 +128,10 @@ export function CustomFileUpload(props: Props) {
       <Box
         sx={{
           border: "2px dashed",
-          borderColor: "#3dc13c",
-          backgroundColor: "rgba(61, 193, 60, 0.2)",
-          color: "#278e26",
-          borderRadius: 2,
+          borderColor: "success.main",
+          backgroundColor: "var(--b1-success-bg)",
+          color: "success.main",
+          borderRadius: "var(--b1-radius-panel)",
           p: 3,
           animation: "fadeIn 0.3s ease",
           transition: "all 0.2s ease"
@@ -140,8 +140,8 @@ export function CustomFileUpload(props: Props) {
         <Stack spacing={1.5} sx={{ width: "100%" }}>
           <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="space-between" sx={{ overflow: "hidden" }}>
             <Stack direction="row" spacing={1.5} alignItems="center" sx={{ overflow: "hidden" }}>
-              <CheckCircleIcon sx={{ color: "#278e26" }} />
-              <FileIcon sx={{ color: "#278e26" }} />
+              <CheckCircleIcon sx={{ color: "success.main" }} />
+              <FileIcon sx={{ color: "success.main" }} />
               <Typography
                 variant="body2"
                 sx={{
@@ -155,15 +155,15 @@ export function CustomFileUpload(props: Props) {
               </Typography>
             </Stack>
             {!isUploading && (
-              <IconButton size="small" onClick={handleClear} sx={{ color: "#278e26" }}>
+              <IconButton size="small" onClick={handleClear} sx={{ color: "success.main" }}>
                 <CancelIcon />
               </IconButton>
             )}
           </Stack>
           {isUploading && (
             <Box sx={{ width: "100%" }}>
-              <LinearProgress variant="determinate" value={uploadProgress} sx={{ height: 4, borderRadius: 2, backgroundColor: "#ffffff", "& .MuiLinearProgress-bar": { backgroundColor: "#278e26" } }} />
-              <Typography variant="caption" sx={{ color: "#278e26", display: "block", mt: 0.5, textAlign: "right", fontWeight: "bold" }}>
+              <LinearProgress variant="determinate" value={uploadProgress} sx={{ height: 4, borderRadius: 2, backgroundColor: "background.paper", "& .MuiLinearProgress-bar": { backgroundColor: "success.main" } }} />
+              <Typography variant="caption" sx={{ color: "success.main", display: "block", mt: 0.5, textAlign: "right", fontWeight: 600 }}>
                 {uploadProgress}%
               </Typography>
             </Box>
@@ -187,7 +187,7 @@ export function CustomFileUpload(props: Props) {
       sx={{
         border: "2px dashed",
         borderColor: "divider",
-        borderRadius: 2,
+        borderRadius: "var(--b1-radius-panel)",
         p: 3,
         textAlign: "center",
         "&:hover": { borderColor: "primary.main", backgroundColor: "action.hover" },

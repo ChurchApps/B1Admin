@@ -247,11 +247,11 @@ export function AddPageModal(props: Props) {
                   color: "#ffffff",
                   borderRadius: 1
                 }}>
-                  <CircularProgress size={24} sx={{ color: "#ffffff" }} />
-                  <Typography sx={{ color: "#ffffff" }}>{aiGenerationStatus}</Typography>
+                  <CircularProgress size={24} />
+                  <Typography>{aiGenerationStatus}</Typography>
                 </Box>
               )}
-              <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
+              <Typography sx={{ mt: 2, mb: 1, fontWeight: 600 }}>
                 {Locale.label("site.addPageModal.describe")}
               </Typography>
               <TextField
@@ -265,7 +265,7 @@ export function AddPageModal(props: Props) {
                 disabled={isSubmitting}
                 data-testid="ai-prompt-input"
               />
-              <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
+              <Typography variant="caption" color="text.secondary" sx={{ display: "block", my: 1 }}>
                 {Locale.label("site.addPageModal.examples")}
                 <br />• {Locale.label("site.addPageModal.exampleHomepage")}
                 <br />• {Locale.label("site.addPageModal.exampleMinistries")}

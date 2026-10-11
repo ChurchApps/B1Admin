@@ -72,13 +72,9 @@ export function DroppableScroll(props: Props) {
     height: 30,
     width: "100%",
     zIndex: 1,
-    backgroundColor: isOver ? "rgba(25, 118, 210, 0.9)" : "rgba(25, 118, 210, 0.75)",
-    borderRadius: "4px",
-    background: isOver
-      ? "linear-gradient(to bottom, rgba(25, 118, 210, 0.9), rgba(21, 101, 192, 0.9))"
-      : "linear-gradient(to bottom, rgba(25, 118, 210, 0.75), rgba(21, 101, 192, 0.75))",
-    backdropFilter: "blur(8px)",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    backgroundColor: isOver ? "var(--b1-primary-hover)" : "var(--b1-primary)",
+    borderRadius: "var(--b1-radius-control)",
+    transition: "background-color 140ms",
     animation: canDrop && !isOver ? "pulse 1.5s ease-in-out infinite" : "none"
   };
 
@@ -87,7 +83,7 @@ export function DroppableScroll(props: Props) {
     return (
       <div style={{ position: "relative" }}>
         <div style={droppableStyle}>
-          <div style={{ textAlign: "center", color: "#FFFFFF", width: "100%" }} ref={drop as any}>
+          <div style={{ textAlign: "center", color: "var(--b1-on-primary)", width: "100%" }} ref={drop as any}>
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "4px" }} onDragEnter={handleMouseOver} onDragLeave={handleMouseOut} onDrop={handleMouseOut}>
               <span>{props.text}</span>
             </Box>

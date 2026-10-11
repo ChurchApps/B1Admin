@@ -1,4 +1,5 @@
-import { Card, CardContent, Typography, Stack, Box, Button, TextField, Divider } from "@mui/material";
+import { Surface } from "../../../../components/ui";
+import { Typography, Stack, Box, Button, TextField, Divider } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Person as PersonIcon } from "@mui/icons-material";
@@ -54,35 +55,33 @@ export const WorkflowStepEdit = (props: Props) => {
   };
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+    <Surface>
       {ConfirmDialogElement}
-      <CardContent>
-        <Stack spacing={2}>
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>{Locale.label("tasks.workflowStepEdit.editStep")}</Typography>
-          <TextField fullWidth label={Locale.label("tasks.workflowStepEdit.stepName")} value={step?.name || ""} data-testid="step-name-input" onChange={(e) => setStep({ ...step, name: e.target.value })} />
+      <Stack spacing={2}>
+        <Typography variant="h3" component="h2">{Locale.label("tasks.workflowStepEdit.editStep")}</Typography>
+        <TextField fullWidth label={Locale.label("tasks.workflowStepEdit.stepName")} value={step?.name || ""} data-testid="step-name-input" onChange={(e) => setStep({ ...step, name: e.target.value })} />
 
-          <TextField fullWidth type="number" label={Locale.label("tasks.workflowStepEdit.dueDays")} value={step?.expectedResponseDays ?? ""} data-testid="step-due-days-input" onChange={(e) => handleNumber("expectedResponseDays", e.target.value)} helperText={Locale.label("tasks.workflowStepEdit.dueDaysHelp")} />
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowStepEdit.defaultAssignee")}: {step?.defaultAssignToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
-            <Button size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
-          </Box>
+        <TextField fullWidth type="number" label={Locale.label("tasks.workflowStepEdit.dueDays")} value={step?.expectedResponseDays ?? ""} data-testid="step-due-days-input" onChange={(e) => handleNumber("expectedResponseDays", e.target.value)} helperText={Locale.label("tasks.workflowStepEdit.dueDaysHelp")} />
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowStepEdit.defaultAssignee")}: {step?.defaultAssignToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
+          <Button size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
+        </Box>
 
-          <Divider />
-          {step?.id
-            ? <WorkflowStepActions stepId={step.id} workflows={props.workflows || []} />
-            : <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowActions.saveFirst")}</Typography>}
+        <Divider />
+        {step?.id
+          ? <WorkflowStepActions stepId={step.id} workflows={props.workflows || []} />
+          : <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowActions.saveFirst")}</Typography>}
 
-          <Divider />
-          <WorkflowStepRouting step={step} steps={props.steps || []} workflows={props.workflows || []} />
+        <Divider />
+        <WorkflowStepRouting step={step} steps={props.steps || []} workflows={props.workflows || []} />
 
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            {step?.id && <Button variant="outlined" startIcon={<DeleteIcon />} data-testid="step-delete-button" onClick={handleDelete}>{Locale.label("common.delete")}</Button>}
-            <Button variant="outlined" startIcon={<CancelIcon />} onClick={props.onCancel}>{Locale.label("common.cancel")}</Button>
-            <Button variant="contained" startIcon={<SaveIcon />} data-testid="step-save-button" onClick={handleSave}>{Locale.label("common.save")}</Button>
-          </Stack>
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
+          {step?.id && <Button variant="outlined" startIcon={<DeleteIcon />} data-testid="step-delete-button" onClick={handleDelete}>{Locale.label("common.delete")}</Button>}
+          <Button variant="outlined" startIcon={<CancelIcon />} onClick={props.onCancel}>{Locale.label("common.cancel")}</Button>
+          <Button variant="contained" startIcon={<SaveIcon />} data-testid="step-save-button" onClick={handleSave}>{Locale.label("common.save")}</Button>
         </Stack>
-      </CardContent>
+      </Stack>
       {showPicker && <ContentPicker onClose={() => setShowPicker(false)} onSelect={handleAssign} />}
-    </Card>
+    </Surface>
   );
 };

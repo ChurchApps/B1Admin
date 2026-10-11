@@ -204,7 +204,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           mt: 1,
           border: "1px solid",
           borderColor: "divider",
-          borderRadius: 1,
+          borderRadius: "var(--b1-radius-control)",
           p: 1,
           overflow: "hidden",
           "& .editor-container": { overflow: "hidden" },
@@ -253,7 +253,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewSubject")}</Typography>
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
-          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "var(--bg-sub)" }}>
+          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: "var(--b1-radius-control)", p: 2, backgroundColor: "var(--b1-canvas)" }}>
             <iframe
               sandbox=""
               srcDoc={getPreviewHtml()}

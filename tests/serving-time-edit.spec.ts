@@ -50,6 +50,7 @@ test.describe.serial("Service time edit keeps the stored time", () => {
 
   test("editor shows the saved time and saving unchanged keeps it", async () => {
     await page.goto(`/serving/plans/${planId}`);
+    await page.getByTestId("plan-times-toggle").click();
     const timeLink = page.locator("td button").getByText("Time Edit Service");
     await expect(timeLink).toBeVisible({ timeout: 15000 });
     await timeLink.click();

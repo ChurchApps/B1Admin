@@ -2,10 +2,10 @@ import React, { memo, useCallback, useMemo } from "react";
 
 import { ServiceEdit, ServiceTimeEdit } from "./";
 import { Link } from "react-router-dom";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Typography, Button, Stack } from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Button, Stack } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { hoverRowSx } from "../../components/ui";
+import { tableScrollSx } from "../../components/ui";
 import {
   type AttendanceInterface,
   type CampusInterface,
@@ -129,8 +129,7 @@ export const AttendanceSetup = memo(() => {
         <TableRow key="0">
           <TableCell colSpan={5} sx={{ textAlign: "center", py: 4 }}>
             <Stack spacing={2} alignItems="center">
-              <Icon sx={{ fontSize: 48, color: "var(--text-muted)" }}>group</Icon>
-              <Typography variant="h6" color="text.secondary">
+              <Typography variant="h3" component="p">
                 {Locale.label("attendance.attendancePage.groupAttMsg")}
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -155,8 +154,8 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "primary.main", fontSize: 20 }}>church</Icon>
-            <Typography sx={{ fontWeight: 600, fontSize: "0.95rem", color: "text.primary" }}>
+            <Icon fontSize="small" sx={{ color: "text.secondary" }}>church</Icon>
+            <Typography sx={{ fontWeight: 600 }}>
               {campus.name}
             </Typography>
           </Stack>
@@ -166,8 +165,8 @@ export const AttendanceSetup = memo(() => {
         service === undefined || (service?.name === lastService && !campusChanged) ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 2 }}>
-            <Icon sx={{ color: "var(--text-muted)", fontSize: 18 }}>calendar_month</Icon>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Icon fontSize="small" sx={{ color: "text.secondary" }}>calendar_month</Icon>
             <Button
               variant="text"
               size="small"
@@ -188,8 +187,8 @@ export const AttendanceSetup = memo(() => {
         serviceTime === undefined || (serviceTime?.name === lastServiceTime && !campusChanged && !serviceChanged) ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 4 }}>
-            <Icon sx={{ color: "var(--text-muted)", fontSize: 16 }}>schedule</Icon>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Icon fontSize="small" sx={{ color: "text.secondary" }}>schedule</Icon>
             <Button
               variant="text"
               size="small"
@@ -199,8 +198,7 @@ export const AttendanceSetup = memo(() => {
                 textTransform: "none",
                 fontWeight: 400,
                 minWidth: "auto",
-                p: 0,
-                fontSize: "0.9rem"
+                p: 0
               }}>
               {serviceTime.name}
             </Button>
@@ -211,9 +209,9 @@ export const AttendanceSetup = memo(() => {
         group === undefined || group?.categoryName === lastCategory ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 6 }}>
-            <Icon sx={{ color: "text.secondary", fontSize: 14 }}>folder</Icon>
-            <Typography variant="body2" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Icon fontSize="small" sx={{ color: "text.secondary" }}>folder</Icon>
+            <Typography variant="body2" color="text.secondary">
               {group.categoryName}
             </Typography>
           </Stack>
@@ -223,18 +221,15 @@ export const AttendanceSetup = memo(() => {
         group === undefined ? (
           <></>
         ) : (
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 8 }}>
-            <Icon sx={{ color: "var(--border-main)", fontSize: 12 }}>circle</Icon>
-            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500, fontSize: "0.85rem" }}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600, "&:hover": { textDecoration: "underline" } }}>
               {group.name}
             </Typography>
           </Stack>
         );
 
       const result = (
-        <TableRow
-          key={key}
-          sx={hoverRowSx}>
+        <TableRow key={key}>
           <TableCell sx={{ py: 0.5, border: 0 }}>{campusHtml}</TableCell>
           <TableCell sx={{ py: 0.5, border: 0 }}>{serviceHtml}</TableCell>
           <TableCell sx={{ py: 0.5, border: 0 }}>{serviceTimeHtml}</TableCell>
@@ -259,7 +254,7 @@ export const AttendanceSetup = memo(() => {
             icon={<AddIcon />}
             data-testid={"add-service-button-" + campus.id}
             onClick={() => selectService({ id: "", campusId: campus.id, name: "" })}
-            sx={{ ml: 2 }}
+            sx={{ ml: -1 }}
           />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
@@ -278,7 +273,7 @@ export const AttendanceSetup = memo(() => {
             icon={<AddIcon />}
             data-testid={"add-service-time-button-" + service.id}
             onClick={() => selectServiceTime({ id: "", serviceId: service.id, name: "" })}
-            sx={{ ml: 4 }}
+            sx={{ ml: -1 }}
           />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
@@ -344,20 +339,12 @@ export const AttendanceSetup = memo(() => {
   const table = useMemo(() => {
     if (attendance.isLoading) return <Loading />;
     return (
-      <Paper
-        sx={{
-          width: "100%",
-          overflowX: "auto",
-          borderRadius: 0,
-          boxShadow: "none",
-          border: "1px solid",
-          borderColor: "divider"
-        }}>
-        <Table size="medium">
+      <Box sx={tableScrollSx} role="region" aria-label={Locale.label("attendance.attendanceSetup.title")} tabIndex={0}>
+        <Table size="small">
           <TableHead>{tableHeader}</TableHead>
           <TableBody sx={{ whiteSpace: "nowrap" }}>{getRows()}</TableBody>
         </Table>
-      </Paper>
+      </Box>
     );
   }, [attendance.isLoading, tableHeader, getRows]);
 
@@ -366,19 +353,16 @@ export const AttendanceSetup = memo(() => {
       <ServiceEdit service={selectedService} updatedFunction={handleUpdated} />
       <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
 
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "primary.main", fontSize: 20 }}>group</Icon>
-            <Typography variant="h6">
-              {Locale.label("attendance.attendanceSetup.title")}
-            </Typography>
-          </Stack>
+          <Typography variant="h3" component="h2">
+            {Locale.label("attendance.attendanceSetup.title")}
+          </Typography>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" size="small" component={Link} to="/mobile/checkin" startIcon={<Icon>how_to_reg</Icon>}>
+            <Button variant="outlined" component={Link} to="/mobile/checkin" startIcon={<Icon>how_to_reg</Icon>}>
               {Locale.label("settings.checkinSettingsEdit.kioskLink")}
             </Button>
-            <Button variant="outlined" size="small" component={Link} to="/settings/campuses" startIcon={<Icon>church</Icon>}>
+            <Button variant="outlined" component={Link} to="/settings/campuses" startIcon={<Icon>church</Icon>}>
               {Locale.label("attendance.attendanceSetup.manageCampuses")}
             </Button>
           </Stack>
