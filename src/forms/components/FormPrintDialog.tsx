@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useReactToPrint } from "react-to-print";
 import { PrintStyles } from "../../components";
 import UserContext from "../../UserContext";
+import { PrintChurchHeader } from "../../components/PrintChurchHeader";
 
 interface Props {
   formId: string;
@@ -63,7 +64,9 @@ export const BlankForm: React.FC<{ form: PrintableFormInterface; questions: Ques
   const hasRequired = printable.some((q) => q.required);
   return (
     <Box className="blank-form" sx={{ color: "common.black", "& *": { color: "common.black" } }}>
-      {churchName && <Typography variant="subtitle2" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+      <PrintChurchHeader churchName={churchName || ""} style={{ marginBottom: 8 }}>
+        {churchName && <Typography variant="subtitle2" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+      </PrintChurchHeader>
       <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>{form.name}</Typography>
       {form.description && <Typography variant="body2" sx={{ mb: 1, whiteSpace: "pre-wrap" }}>{form.description}</Typography>}
       {hasRequired && <Typography variant="caption" sx={{ display: "block", mb: 1 }}>{Locale.label("forms.formPrint.requiredNote")}</Typography>}

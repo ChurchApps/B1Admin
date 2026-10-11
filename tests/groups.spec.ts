@@ -4,6 +4,7 @@ import { dismissSendInviteIfPresent, editIconButton, confirmDelete, openSeedGrou
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { mockChurchLogo } from "./helpers/print-logo";
 
 async function openSessionOn(page: Page, date: string) {
   await openSeedGroup(page, SESSION_GROUP);
@@ -776,4 +777,15 @@ loggedInTest("print all classes for a service time prints every group in it", as
     ["Elementary (3-5)", "Elementary (K-2)", "Nursery (0-2)", "Preschool (3-5)", "Wednesday Prayer Service"],
     { timeout: 15000 }
   );
+});
+
+// ChurchAppsSupport#1230: each roster sheet is headed with the church's logo when it has one.
+loggedInTest("printed rosters show the church logo above the group name", async ({ page }) => {
+  await mockChurchLogo(page);
+  await page.goto("/groups/print-roster?serviceTimeId=SST00000004&date=2025-12-03");
+  await expect(page.locator("h1.roster-title")).toHaveCount(5, { timeout: 15000 });
+  const logos = page.getByTestId("roster-sheet").getByTestId("print-church-logo");
+  await expect(logos).toHaveCount(5);
+  await expect(logos.first()).toHaveAttribute("alt", "Grace Community Church");
+  await expect(page.locator(".roster-church")).toHaveCount(0);
 });

@@ -5,6 +5,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { Locale, PersonHelper, DateHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
+import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
 import { buildHouseholds, firstName } from "./buildHouseholds";
 
 const EXCLUDED_STATUSES = new Set(["Inactive", "Visitor", "Deceased"]);
@@ -49,6 +50,7 @@ const memberAnniversaries = (members: PersonInterface[]) => {
 export const PrintDirectoryPage = () => {
   const navigate = useNavigate();
   const context = useContext(UserContext);
+  const printLogo = usePrintLogo(context?.userChurch?.church?.id);
   const [searchParams] = useSearchParams();
   const searchIds = useMemo(() => (searchParams.get("scope") === "search" ? readSearchIds() : null), [searchParams]);
 
@@ -82,14 +84,14 @@ export const PrintDirectoryPage = () => {
   const isLoading = people.isLoading || householdRecords.isLoading;
 
   useEffect(() => {
-    if (!isLoading && households.length > 0) {
+    if (!isLoading && households.length > 0 && printLogo.ready) {
       const t = setTimeout(() => {
         window.print();
         navigate("/people");
       }, 1500);
       return () => clearTimeout(t);
     }
-  }, [isLoading, households.length, navigate]);
+  }, [isLoading, households.length, printLogo.ready, navigate]);
 
   if (isLoading) {
     return (
@@ -337,6 +339,7 @@ export const PrintDirectoryPage = () => {
 
       <div className="directory-root">
         <div className="directory-cover">
+          <PrintChurchHeader churchName={church?.name || ""} logoUrl={printLogo.logoUrl} style={{ maxHeight: 120, maxWidth: 360, margin: "0 auto 32px" }} />
           <div className="cover-eyebrow">Established Community</div>
           <h1 className="cover-church-name">{church?.name || "Our Church"}</h1>
           <div className="cover-ornament">

@@ -4,6 +4,7 @@ import { navigateToForms, navigateToPeople } from "./helpers/navigation";
 import { openPersonRow, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { mockChurchLogo } from "./helpers/print-logo";
 
 const DISPOSABLE_PERSON_FORM = "Zacchaeus Test Person Form";
 const DISPOSABLE_STANDALONE_FORM = "Zacchaeus Test Standalone Form";
@@ -99,10 +100,27 @@ test.describe("Printing forms", () => {
     await expect(dialog.getByText("Friend or Family", { exact: true })).toBeVisible();
     await expect(dialog.getByText("Community Event", { exact: true })).toBeVisible();
     await expect(dialog.locator('[data-testid="form-print-confirm"]')).toBeEnabled();
-    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
+    await expect(dialog.getByTestId("print-church-logo")).toHaveCount(0);
 
     await dialog.locator('[data-testid="form-print-close"]').click();
     await expect(dialog).toHaveCount(0, { timeout: 10000 });
+  });
+
+  // ChurchAppsSupport#1230: the church's Light Background Logo heads the paper copy in place of its name.
+  test("a blank form prints the church logo when the church has one", async ({ page }) => {
+    await mockChurchLogo(page);
+    await openFormsPage(page);
+    const row = page.locator("table tbody tr").filter({ hasText: "Visitor Information Card" }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.locator('[data-testid^="print-form-button-"]').click();
+
+    const dialog = page.locator('[data-testid="form-print-dialog"]');
+    await expect(dialog.getByRole("heading", { name: "Visitor Information Card" })).toBeVisible({ timeout: 10000 });
+    const logo = dialog.getByTestId("print-church-logo");
+    await expect(logo).toBeVisible({ timeout: 10000 });
+    await expect(logo).toHaveAttribute("alt", "Grace Community Church");
+    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+    await expect(dialog.getByTestId("print-church-name")).toHaveCount(0);
   });
 
   test("a person's submitted form prints with a title, name and submission date", async ({ page }) => {
