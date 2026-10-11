@@ -1,8 +1,9 @@
-import { Drawer, Box, Typography, Stack, Button, Divider, MenuItem, Select, Menu } from "@mui/material";
+import { Drawer, Box, Typography, Stack, Button, Divider, MenuItem, Select, Menu, Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import React, { useContext } from "react";
-import { ApiHelper, type ConversationInterface, Notes, Locale } from "@churchapps/apphelper";
+import { ApiHelper, type ConversationInterface, Notes, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
-import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon, Phone as PhoneIcon, Email as EmailIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
 import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
@@ -32,6 +33,14 @@ export const WorkflowCardDrawer = (props: Props) => {
   const [showPicker, setShowPicker] = React.useState(false);
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
   const editable = canEditCard(card);
+  const isPersonCard = card.associatedWithType === "person" && !!card.associatedWithId;
+  const [contact, setContact] = React.useState<{ mobilePhone?: string; email?: string }>({});
+
+  React.useEffect(() => {
+    setContact({});
+    if (!isPersonCard) return;
+    ApiHelper.get("/tasks/" + card.id + "/contact", "DoingApi").then((data) => setContact(data || {}));
+  }, [card.id, isPersonCard]);
 
   const reassign = async (contentType: string, contentId: string, label: string) => {
     setShowPicker(false);
@@ -88,6 +97,25 @@ export const WorkflowCardDrawer = (props: Props) => {
           <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={props.onClose} />
         </Stack>
         <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowCard.assignedTo")}: {card.assignedToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
+        {isPersonCard && (
+          <Stack spacing={0.5} sx={{ mt: 1 }}>
+            {contact.mobilePhone && (
+              <Stack direction="row" spacing={1} alignItems="center">
+                <PhoneIcon fontSize="small" color="action" aria-label={Locale.label("tasks.workflowCard.phone")} />
+                <Link href={"tel:" + contact.mobilePhone} variant="body2" data-testid="card-contact-phone">{contact.mobilePhone}</Link>
+              </Stack>
+            )}
+            {contact.email && (
+              <Stack direction="row" spacing={1} alignItems="center">
+                <EmailIcon fontSize="small" color="action" aria-label={Locale.label("tasks.workflowCard.email")} />
+                <Link href={"mailto:" + contact.email} variant="body2" data-testid="card-contact-email">{contact.email}</Link>
+              </Stack>
+            )}
+            {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
+              <Link component={RouterLink} to={"/people/" + card.associatedWithId} variant="body2" data-testid="card-contact-profile">{Locale.label("tasks.workflowCard.viewProfile")}</Link>
+            )}
+          </Stack>
+        )}
         {card.pinnedAssignment && <Typography variant="caption" color="primary" data-testid="card-pinned-note">{Locale.label("tasks.workflowCard.pinnedNote")}</Typography>}
 
         <Stack spacing={2} sx={{ mt: 2 }}>

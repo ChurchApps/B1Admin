@@ -5757,9 +5757,11 @@
       "assign": "Assign",
       "assignedTo": "Assigned to",
       "complete": "Complete",
+      "email": "Email",
       "history": "Activity",
       "outcome": "Outcome",
       "overdue": "Overdue",
+      "phone": "Phone",
       "pin": "Pin assignment",
       "pinnedNote": "Pinned — keeps this owner across steps",
       "sendBack": "Send Back",
@@ -5768,7 +5770,8 @@
       "snooze1Day": "1 Day",
       "snooze1Week": "1 Week",
       "snooze3Days": "3 Days",
-      "snoozed": "Snoozed"
+      "snoozed": "Snoozed",
+      "viewProfile": "View profile"
     },
     "workflowCategories": {
       "addCategory": "Add Category",
