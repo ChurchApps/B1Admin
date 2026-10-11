@@ -24,14 +24,8 @@ const getInitialMode = (): ThemeMode => {
   return "light";
 };
 
-const getInitialTheme = (): ThemeId => {
-  if (typeof window === "undefined") return "soft";
-  try {
-    const stored = localStorage.getItem(THEME_ID_KEY);
-    if (stored === "soft" || stored === "warm" || stored === "plum" || stored === "classic") return stored;
-  } catch { /* storage unavailable */ }
-  return "soft";
-};
+// ponytail: picker is hidden, so ignore any stored choice and always start on Classic.
+const getInitialTheme = (): ThemeId => "classic";
 
 interface Props {
   children: React.ReactNode;
