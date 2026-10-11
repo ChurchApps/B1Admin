@@ -145,6 +145,31 @@ test.describe.serial("Serving Management - Workflows", () => {
     await expect(page.locator('[data-testid="workflow-board"]').getByText("Greet").first()).toBeVisible({ timeout: 10000 });
   });
 
+  test("a person card shows tap-to-call phone, email, and a profile link", async () => {
+    await openBoardById(page, "WFL00000001");
+    await page.locator('[data-testid="workflow-card-TSK00000104"]').click();
+    const drawer = page.locator('[data-testid="workflow-card-drawer"]');
+    await drawer.waitFor({ state: "visible", timeout: 15000 });
+    await expect(drawer.locator('[data-testid="card-contact-phone"]')).toHaveAttribute("href", "tel:(217) 555-0106", { timeout: 10000 });
+    await expect(drawer.locator('[data-testid="card-contact-email"]')).toHaveAttribute("href", "mailto:sarah.smith@email.com");
+    await expect(drawer.locator('[data-testid="card-contact-profile"]')).toHaveAttribute("href", "/people/PER00000004");
+  });
+
+  test("a Tasks-only volunteer gets only the contact fields for their card (API)", async () => {
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
+    const ctx = await request.newContext();
+    // Workflow Volunteer: DoingApi/Tasks/View only, assigned TSK00000105 (about Patricia Brown, PER00000005).
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "volunteer@b1.church", password: "password" } });
+    const jwt = (await loginRes.json()).userChurches?.[0]?.jwt as string;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+    const contact = await ctx.get(`${API_BASE}/doing/tasks/TSK00000105/contact`, auth);
+    expect(contact.status()).toBe(200);
+    const body = await contact.json();
+    expect(body.personId).toBe("PER00000005");
+    expect(Object.keys(body).filter((k) => !["personId", "displayName", "mobilePhone", "email"].includes(k))).toEqual([]);
+    await ctx.dispose();
+  });
+
   test("My Work inbox shows the demo user assigned card", async () => {
     await page.goto("/serving/tasks");
     await recoverFromViteError(page, page.locator('[data-testid="my-cards-list"]'));
