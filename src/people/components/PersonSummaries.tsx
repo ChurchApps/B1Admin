@@ -166,17 +166,22 @@ interface GivingProps {
   householdMembers?: PersonInterface[] | null;
   onViewAll: () => void;
   onLogGift?: () => void;
+  hidden?: boolean;
 }
 
-export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, householdMembers, onViewAll, onLogGift }) => {
+export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, householdMembers, onViewAll, onLogGift, hidden }) => {
   const [currency, setCurrency] = React.useState("usd");
+  // The church's hideGivingOnPerson setting keeps amounts off the record (and unfetched) until someone asks for them.
+  const [revealed, setRevealed] = React.useState(false);
+  React.useEffect(() => { setRevealed(false); }, [personId]);
+  const concealed = !!hidden && !revealed;
   React.useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
   // Giving follows the household: the summary covers every member, "All giving" is this person's ledger.
   const donors = useMemo(() => {
     const list = (householdMembers || []).filter((m) => m.id);
     return list.some((m) => m.id === personId) ? list : [{ id: personId } as PersonInterface];
   }, [householdMembers, personId]);
-  const results = useQueries({ queries: donors.map((m) => ({ queryKey: ["/donations?personId=" + m.id + "&includeNonDeductible=1", "GivingApi"], enabled: !UniqueIdHelper.isMissing(m.id) })) });
+  const results = useQueries({ queries: donors.map((m) => ({ queryKey: ["/donations?personId=" + m.id + "&includeNonDeductible=1", "GivingApi"], enabled: !UniqueIdHelper.isMissing(m.id) && !concealed })) });
   const isLoading = results.some((r) => r.isLoading);
   const isError = results.some((r) => r.isError);
   const year = new Date().getFullYear();
@@ -202,6 +207,14 @@ export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, household
   const householdNote = household ? " · " + Locale.label("people.personRecord.wholeHousehold", "whole household") : "";
 
   const body = () => {
+    if (concealed) {
+      return (
+        <Stack spacing={1}>
+          <Muted>{Locale.label("people.personRecord.givingHidden", "Giving is hidden on person records.")}</Muted>
+          <VerbRow>{logVerb}<ViewAll label={Locale.label("people.personRecord.showGiving", "Show giving")} onClick={() => setRevealed(true)} testId="person-giving-show" /></VerbRow>
+        </Stack>
+      );
+    }
     if (isLoading) return <Loading size="sm" />;
     if (isError) return <LoadError what={title.toLowerCase()} onRetry={refetch} />;
     if (yearRows.length === 0) {

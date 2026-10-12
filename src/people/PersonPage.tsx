@@ -28,6 +28,9 @@ export const PersonPage = () => {
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
   const canViewAttendance = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.view), []);
   const canViewGiving = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.view), []);
+  const churchId = UserHelper.currentUserChurch?.church?.id || "";
+  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId && canViewGiving });
+  const givingHidden = publicSettings.data?.hideGivingOnPerson === "true";
   const canLogGift = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
   const [showLogGift, setShowLogGift] = React.useState(false);
   const [giftVersion, setGiftVersion] = React.useState(0);
@@ -248,7 +251,7 @@ export const PersonPage = () => {
         return (
           <>
             {canViewAttendance && <PersonAttendanceSummary personId={person.id!} onViewAll={() => setView("attendance")} onPrint={() => setView("attendance", { print: "1" })} />}
-            {canViewGiving && <PersonGivingSummary personId={person.id!} householdMembers={household.members} onViewAll={() => setView("giving")} onLogGift={canLogGift ? () => setShowLogGift(true) : undefined} />}
+            {canViewGiving && !publicSettings.isLoading && <PersonGivingSummary personId={person.id!} householdMembers={household.members} onViewAll={() => setView("giving")} onLogGift={canLogGift ? () => setShowLogGift(true) : undefined} hidden={givingHidden} />}
             <PersonGroupsSummary personId={person.id!} />
             {canEdit && <PersonNotesSummary conversationId={person.conversationId || ""} onViewAll={() => setView("notes")} />}
             {showForms && <PersonFormsSummary person={person} forms={visibleForms} onOpen={(formId) => setView("forms", { form: formId || "" })} />}

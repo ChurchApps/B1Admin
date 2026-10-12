@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} of the last {weeks} weeks",
       "email": "Email",
       "givenBy": "Given by",
+      "givingHidden": "Giving is hidden on person records.",
       "givingYear": "in {year} · {count} gifts",
       "hereThisWeek": "Here this week",
       "household": "Household",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Recent attendance",
       "recentGifts": "Gifts in {year}",
       "service": "Service",
+      "showGiving": "Show giving",
       "showingLatest": "showing latest {count}",
       "statement": "{year} statement",
       "submitted": "Submitted",
@@ -3923,6 +3925,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Hide each person's giving on their person record until someone with giving access clicks Show giving.",
+      "hide": "Hide giving on person records until clicked",
+      "shown": "Giving on person records",
+      "title": "Giving privacy"
+    },
     "givingSettingsEdit": {
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
@@ -3972,6 +3980,8 @@
       "domainsCount": "{count} connected",
       "domainsNone": "No custom domains",
       "domainsOne": "1 connected",
+      "givingPrivacyOff": "Shown",
+      "givingPrivacyOn": "Hidden until clicked",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatic promotion disabled",
       "gradePromotionOn": "Promotes on {date} each year",
