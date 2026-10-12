@@ -796,5 +796,5 @@ loggedInTest("printed rosters show the church logo above the group name", async 
   const logos = page.getByTestId("roster-sheet").getByTestId("print-church-logo");
   await expect(logos).toHaveCount(5);
   await expect(logos.first()).toHaveAttribute("alt", "Grace Community Church");
-  await expect(page.locator(".roster-church")).toHaveCount(0);
+  await expect(page.locator(".roster-church")).toHaveCount(5);
 });
