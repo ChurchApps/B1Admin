@@ -58,12 +58,15 @@ export const PlanList = memo((props: Props) => {
     if (showPast) return allPlans;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return allPlans.filter(p => {
+    const upcoming = allPlans.filter(p => {
       if (!p.serviceDate) return true;
       const d = DateHelper.toDate(p.serviceDate);
       d.setHours(0, 0, 0, 0);
       return d >= today;
     });
+    // The API returns newest first; upcoming weeks read soonest first, undated plans last.
+    const time = (p: PlanInterface) => p.serviceDate ? DateHelper.toDate(p.serviceDate).getTime() : Number.MAX_SAFE_INTEGER;
+    return [...upcoming].sort((a, b) => time(a) - time(b));
   }, [allPlans, showPast]);
 
   const addPlan = useCallback(() => {

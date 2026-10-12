@@ -3976,7 +3976,9 @@
       "gradePromotionOn": "Promotes on {date} each year",
       "notConfigured": "Not configured",
       "notSet": "Not set",
-      "phoneLocalSubtitle": "Local phone numbers"
+      "phoneLocalSubtitle": "Local phone numbers",
+      "volunteerSignupOff": "All upcoming weeks",
+      "volunteerSignupOn": "Only the next week of each plan type"
     },
     "manageChurch": {
       "auditLog": "Audit Log",
@@ -4158,6 +4160,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Choose how many weeks members see when they browse volunteer signups in the app. With this on, each service plan shows only its next upcoming week, and the following week appears once that date passes.",
+      "nextOnly": "Show only the next week of each plan type",
+      "title": "Volunteer Signup",
+      "weeksShown": "Weeks shown"
     },
     "webhookEdit": {
       "active": "Active",

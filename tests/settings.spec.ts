@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openPersonRow, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -696,5 +696,85 @@ test.describe("Email template editor merge fields", () => {
     for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowLeft");
     await page.keyboard.press("Backspace");
     await expect(body).toHaveText("Helloworld");
+  });
+});
+
+// ChurchAppsSupport#1241: a church setting limits the app's volunteer signup list to the next week of each plan type.
+test.describe.serial("Volunteer signup next week only", () => {
+  test.describe.configure({ retries: 0 });
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const PLAN_TYPE_NAME = "Next Week Only Spec " + Date.now().toString().slice(-6);
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let planTypeId: string;
+  const planIds: string[] = [];
+
+  const signupPlanIds = async () => {
+    const res = await ctx.get(`${API}/doing/plans/public/signup/CHU00000001`);
+    return ((await res.json()) as any[]).map((r) => r.plan.id).filter((id: string) => planIds.includes(id));
+  };
+  const deleteSetting = async () => {
+    const settings = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+    const found = (settings || []).find((s: any) => s.keyName === "volunteerSignupNextOnly");
+    if (found?.id) await ctx.delete(`${API}/membership/settings/${found.id}`, auth);
+  };
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    await deleteSetting();
+    const typeRes = await ctx.post(`${API}/doing/planTypes`, { ...auth, data: [{ ministryId: "GRP0000000a", name: PLAN_TYPE_NAME }] });
+    planTypeId = (await typeRes.json())[0].id;
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [
+        { name: "Signup Week One", serviceDate: "2033-04-03", ministryId: "GRP0000000a", planTypeId },
+        { name: "Signup Week Two", serviceDate: "2033-04-10", ministryId: "GRP0000000a", planTypeId }
+      ]
+    });
+    planIds.push(...(await planRes.json()).map((p: any) => p.id));
+    await ctx.post(`${API}/doing/positions`, { ...auth, data: planIds.map((planId) => ({ planId, categoryName: "Band", name: "Greeter", count: 2, allowSelfSignup: true })) });
+  });
+
+  test.afterAll(async () => {
+    await deleteSetting();
+    for (const id of planIds) await ctx.delete(`${API}/doing/plans/${id}`, auth);
+    if (planTypeId) await ctx.delete(`${API}/doing/planTypes/${planTypeId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("turning the setting on limits the public signup list to the next week of each plan type", async ({ page }) => {
+    expect(await signupPlanIds()).toEqual(planIds);
+
+    await page.goto("/settings#volunteer-signup");
+    const section = page.getByTestId("settings-volunteer-signup");
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await expect(section).toContainText("All upcoming weeks");
+    await section.getByTestId("small-button-edit").dispatchEvent("click");
+    await page.getByTestId("volunteer-signup-next-only-switch").locator("input").check();
+    const save = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200);
+    await page.getByRole("button", { name: "Save" }).click();
+    await save;
+    await expect(section).toContainText("Only the next week of each plan type", { timeout: 10000 });
+
+    expect(await signupPlanIds()).toEqual([planIds[0]]);
+  });
+
+  test("turning the setting off shows every week again", async ({ page }) => {
+    await page.goto("/settings#volunteer-signup");
+    const section = page.getByTestId("settings-volunteer-signup");
+    await expect(section).toContainText("Only the next week of each plan type", { timeout: 15000 });
+    await section.getByTestId("small-button-edit").dispatchEvent("click");
+    await page.getByTestId("volunteer-signup-next-only-switch").locator("input").uncheck();
+    const del = page.waitForResponse((r) => r.url().includes("/settings/") && r.request().method() === "DELETE");
+    await page.getByRole("button", { name: "Save" }).click();
+    await del;
+    await expect(section).toContainText("All upcoming weeks", { timeout: 10000 });
+
+    expect(await signupPlanIds()).toEqual(planIds);
   });
 });
