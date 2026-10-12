@@ -1,5 +1,5 @@
-import { request, type Page } from "@playwright/test";
-import { peopleTest as test, expect } from "./helpers/test-fixtures";
+import { request, type APIRequestContext, type Page } from "@playwright/test";
+import { peopleTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { navigateToPeople } from "./helpers/navigation";
 import { personDetailsEditButton, SEED_PEOPLE, openPersonRow, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -1044,5 +1044,62 @@ test.describe("People Management", () => {
       const empty = page.getByText(/No attendance/i);
       await expect(rows.or(empty)).toBeVisible({ timeout: 10000 });
     });
+  });
+});
+
+// GET /donations?personId= drops gifts to non-deductible funds (a statement filter); the person
+// giving card passes includeNonDeductible=1 so those gifts still show on the record.
+loggedInTest.describe("Person giving card - non-deductible funds", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const DONOR_ID = "PER00000080"; // Donald Clark
+  const FUND_NAME = "Issue 1248 Test Fund";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let fundId: string;
+  let donationId: string;
+
+  loggedInTest.beforeAll(async () => {
+    ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001");
+    expect(uc?.jwt).toBeTruthy();
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+
+    // Make sure the church has not hidden giving on person records.
+    const settings = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+    const hideSetting = (settings || []).find((s: any) => s.keyName === "hideGivingOnPerson");
+    if (hideSetting?.id) await ctx.delete(`${API}/membership/settings/${hideSetting.id}`, auth);
+
+    const fundRes = await ctx.post(`${API}/giving/funds`, { ...auth, data: [{ name: FUND_NAME, taxDeductible: false }] });
+    expect(fundRes.status()).toBe(200);
+    fundId = (await fundRes.json())[0].id;
+
+    const batches = await (await ctx.get(`${API}/giving/donationbatches`, auth)).json();
+    expect(batches.length).toBeGreaterThan(0);
+
+    const donationRes = await ctx.post(`${API}/giving/donations`, {
+      ...auth,
+      data: [{ batchId: batches[0].id, personId: DONOR_ID, donationDate: new Date().toISOString(), amount: 2, currency: "usd", method: "Check", methodDetails: "1248" }]
+    });
+    expect(donationRes.status()).toBe(200);
+    donationId = (await donationRes.json())[0].id;
+
+    const fdRes = await ctx.post(`${API}/giving/funddonations`, { ...auth, data: [{ donationId, fundId, amount: 2 }] });
+    expect(fdRes.status()).toBe(200);
+  });
+
+  loggedInTest.afterAll(async () => {
+    if (donationId) await ctx.delete(`${API}/giving/donations/${donationId}`, auth);
+    if (fundId) await ctx.delete(`${API}/giving/funds/${fundId}`, auth);
+    await ctx.dispose();
+  });
+
+  loggedInTest("lists a gift to a non-deductible fund on the person giving card", async ({ page }) => {
+    await page.goto(`/people/${DONOR_ID}`);
+    const card = page.locator('[data-testid="person-giving-section"]');
+    await expect(card).toBeVisible({ timeout: 15000 });
+    await expect(card).toContainText(FUND_NAME, { timeout: 15000 });
   });
 });
