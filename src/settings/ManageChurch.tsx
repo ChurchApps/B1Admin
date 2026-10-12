@@ -5,7 +5,7 @@ import { useLocation, Link as RouterLink } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
 import { VerbRow } from "../components/ui";
-import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon, ImportExport as ImportExportIcon, EventAvailable as EventAvailableIcon } from "@mui/icons-material";
+import { Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon, Public as PublicIcon, ImportExport as ImportExportIcon, EventAvailable as EventAvailableIcon, VisibilityOff as VisibilityOffIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { SettingsLayout, SettingsRow, eyebrowSx } from "./components/SettingsPage";
 import { type ConfigSection } from "./components/SettingsConfigList";
@@ -23,10 +23,11 @@ import { DomainSettingsEdit } from "./components/DomainSettingsEdit";
 import { GradePromotionSettingsEdit } from "./components/GradePromotionSettingsEdit";
 import { CheckinSettingsEdit } from "./components/CheckinSettingsEdit";
 import { VolunteerSignupSettingsEdit } from "./components/VolunteerSignupSettingsEdit";
+import { GivingPrivacySettingsEdit } from "./components/GivingPrivacySettingsEdit";
 import { RegionSettingsEdit, regionName, regionSample } from "./components/RegionSettingsEdit";
 
 const SECTION_KEYS = [
-  "church-info", "general", "region", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "volunteer-signup", "campuses", "custom-fields", "developer"
+  "church-info", "general", "region", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "volunteer-signup", "giving-privacy", "campuses", "custom-fields", "developer"
 ];
 
 export const ManageChurch = () => {
@@ -92,6 +93,8 @@ export const ManageChurch = () => {
   const checkinsSubtitle = Locale.label("settings.checkinSettingsEdit." + ratioEnforcement);
   const volunteerSignupNextOnly = (settingsQ.data || []).find((s) => s.keyName === "volunteerSignupNextOnly")?.value === "true";
   const volunteerSignupSubtitle = Locale.label(volunteerSignupNextOnly ? "settings.landing.volunteerSignupOn" : "settings.landing.volunteerSignupOff");
+  const hideGivingOnPerson = (settingsQ.data || []).find((s) => s.keyName === "hideGivingOnPerson")?.value === "true";
+  const givingPrivacySubtitle = Locale.label(hideGivingOnPerson ? "settings.landing.givingPrivacyOn" : "settings.landing.givingPrivacyOff");
   const gradePromotionSubtitle = gradePromotionDate
     ? Locale.label("settings.landing.gradePromotionOn").replace("{date}", new Date(2000, Number(gradePromotionDate.split("-")[0]) - 1, Number(gradePromotionDate.split("-")[1])).toLocaleDateString(DateHelper.locale, { month: "long", day: "numeric" }))
     : Locale.label("settings.landing.gradePromotionOff");
@@ -128,6 +131,7 @@ export const ManageChurch = () => {
     { key: "grade-promotion", title: Locale.label("settings.gradePromotionSettingsEdit.title"), subtitle: gradePromotionSubtitle, icon: <SchoolIcon />, color: "secondary" },
     { key: "check-ins", title: Locale.label("settings.checkinSettingsEdit.title"), subtitle: checkinsSubtitle, icon: <HowToRegIcon />, color: "info" },
     { key: "volunteer-signup", title: Locale.label("settings.volunteerSignupSettingsEdit.title"), subtitle: volunteerSignupSubtitle, icon: <EventAvailableIcon />, color: "success" },
+    { key: "giving-privacy", title: Locale.label("settings.givingPrivacySettingsEdit.title"), subtitle: givingPrivacySubtitle, icon: <VisibilityOffIcon />, color: "success" },
     { key: "campuses", title: Locale.label("settings.campuses.campuses"), subtitle: campusesSubtitle, icon: <BusinessIcon />, color: "primary" },
     { key: "custom-fields", title: Locale.label("settings.customFields.customFields"), subtitle: customFieldsSubtitle, icon: <ListAltIcon />, color: "info" },
     { key: "developer", title: Locale.label("settings.developer.title"), subtitle: Locale.label("settings.landing.developerSubtitle"), icon: <CodeIcon />, color: "secondary" }
@@ -261,6 +265,17 @@ export const ManageChurch = () => {
             data-testid="settings-volunteer-signup"
             view={<SettingsRow label={Locale.label("settings.volunteerSignupSettingsEdit.weeksShown")} value={volunteerSignupSubtitle} />}
             renderEdit={(saveTrigger, onSaveComplete) => <VolunteerSignupSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
+            onSaved={handleSaved}
+          />
+        );
+      case "giving-privacy":
+        return (
+          <SettingsToggleSection
+            headerText={Locale.label("settings.givingPrivacySettingsEdit.title")}
+            headerIcon="visibility_off"
+            data-testid="settings-giving-privacy"
+            view={<SettingsRow label={Locale.label("settings.givingPrivacySettingsEdit.shown")} value={givingPrivacySubtitle} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <GivingPrivacySettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );

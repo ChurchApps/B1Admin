@@ -778,3 +778,86 @@ test.describe.serial("Volunteer signup next week only", () => {
     expect(await signupPlanIds()).toEqual(planIds);
   });
 });
+
+// ChurchAppsSupport#1247: a church setting keeps each person's giving off their record until someone clicks Show giving.
+test.describe.serial("Giving privacy on person records", () => {
+  test.describe.configure({ retries: 0 });
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+
+  const deleteSetting = async () => {
+    const settings = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+    const found = (settings || []).find((s: any) => s.keyName === "hideGivingOnPerson");
+    if (found?.id) await ctx.delete(`${API}/membership/settings/${found.id}`, auth);
+  };
+  const openDemoUser = async (page: Page) => {
+    await page.goto("/people");
+    await openPersonRow(page, SEED_PEOPLE.DEMO);
+    const section = page.getByTestId("person-giving-section");
+    await expect(section).toBeVisible({ timeout: 15000 });
+    return section;
+  };
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    await deleteSetting();
+  });
+
+  test.afterAll(async () => {
+    await deleteSetting();
+    await ctx.dispose();
+  });
+
+  test("giving shows on the person record by default", async ({ page }) => {
+    const section = await openDemoUser(page);
+    await expect(section.getByTestId("person-giving-all")).toBeVisible({ timeout: 10000 });
+    await expect(section.getByTestId("person-giving-show")).toHaveCount(0);
+  });
+
+  test("turning the setting on hides giving until Show giving is clicked", async ({ page }) => {
+    await page.goto("/settings#giving-privacy");
+    const settings = page.getByTestId("settings-giving-privacy");
+    await expect(settings).toBeVisible({ timeout: 15000 });
+    await expect(settings).toContainText("Shown");
+    await settings.getByTestId("small-button-edit").dispatchEvent("click");
+    await page.getByTestId("giving-privacy-hide-switch").locator("input").check();
+    const save = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200);
+    await page.getByRole("button", { name: "Save" }).click();
+    await save;
+    await expect(settings).toContainText("Hidden until clicked", { timeout: 10000 });
+
+    const donationRequests: string[] = [];
+    page.on("request", (r) => { if (r.url().includes("/donations?personId=")) donationRequests.push(r.url()); });
+    const section = await openDemoUser(page);
+    await expect(section).toContainText("Giving is hidden on person records.");
+    await expect(section.getByTestId("person-giving-all")).toHaveCount(0);
+    await expect(section).not.toContainText(/\$\s?\d/);
+    expect(donationRequests).toEqual([]);
+
+    await section.getByTestId("person-giving-show").click();
+    await expect(section.getByTestId("person-giving-all")).toBeVisible({ timeout: 10000 });
+    await expect(section).toContainText(/\$\s?\d|No (household )?gifts recorded/);
+    await expect(section.getByTestId("person-giving-show")).toHaveCount(0);
+  });
+
+  test("turning the setting off shows giving right away again", async ({ page }) => {
+    await page.goto("/settings#giving-privacy");
+    const settings = page.getByTestId("settings-giving-privacy");
+    await expect(settings).toContainText("Hidden until clicked", { timeout: 15000 });
+    await settings.getByTestId("small-button-edit").dispatchEvent("click");
+    await page.getByTestId("giving-privacy-hide-switch").locator("input").uncheck();
+    const del = page.waitForResponse((r) => r.url().includes("/settings/") && r.request().method() === "DELETE");
+    await page.getByRole("button", { name: "Save" }).click();
+    await del;
+    await expect(settings).toContainText("Shown", { timeout: 10000 });
+
+    const section = await openDemoUser(page);
+    await expect(section.getByTestId("person-giving-all")).toBeVisible({ timeout: 10000 });
+  });
+});
