@@ -69,6 +69,7 @@
       "wholeService": "All service times"
     },
     "labels": {
+      "addLabel": "Magdagdag ng label",
       "align": "Ihanay",
       "always": "Palagi",
       "barcode": "Barcode",
@@ -126,6 +127,30 @@
       "value": "Halaga",
       "width": "Lapad (in)"
     },
+    "plate": {
+      "allYears": "Lahat ng taon",
+      "checkedIn": "{count} naka-check in",
+      "enterHeadcount": "Ilagay ang bilang ng dumalo",
+      "guests": "{count} bisita",
+      "guestsTitle": "Mga Bisita",
+      "headcount": "{count} nabilang",
+      "headcountsTitle": "Bilang ng dumalo ngayong linggo",
+      "inTheRoom": "nasa silid",
+      "kiosk": "Kiosk",
+      "lastRecorded": "Huling naitala {date}: {count}",
+      "lastWeeks": "Huling {weeks} linggo",
+      "noCheckins": "Wala pang check-in ngayong linggo.",
+      "noHeadcounts": "Walang bilang ng dumalo na nailagay ngayong linggo.",
+      "noRooms": "Wala pang nag-check in sa isang grupo ngayong linggo.",
+      "reports": "Mga Ulat",
+      "rooms": "Mga Silid",
+      "thisWeek": "Ngayong linggo",
+      "unknownGroup": "Inalis na grupo",
+      "weekOf": "Linggo ng {date}: {count}",
+      "weeklyCheckins": "Lingguhang check-in",
+      "weeksWith": "{count} sa huling {weeks} linggo ang may check-in",
+      "yearsSummary": "Mga trend, bilang ng dumalo at pagdalo sa grupo sa bawat taon. Gamitin ang mga filter para paliitin ang mga petsa."
+    },
     "serviceEdit": {
       "campus": "Kampus",
       "campusAria": "Pumili ng campus",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "Iskedyul ng Check-in",
+      "checkinScheduleHelp": "Opsyonal. Kusang nagbubukas at nagsasara ang check-in sa paligid ng oras na ito bawat linggo. Iwanang blangko ang araw para manatiling bukas ang check-in hangga't hindi sarado ang grupo.",
+      "closeMinutes": "Isara ang check-in (minuto pagkatapos ng pagtatapos)",
       "confirmDelete": "Sigurado ka bang nais mong permanenteng tanggalin ang oras ng serbisyong ito?",
+      "day": "Araw",
+      "endTime": "Oras ng Pagtatapos",
       "name": "Oras ng Serbisyo",
       "nameAria": "Pangalan ng oras ng serbisyo",
       "namePlaceholder": "8:00 AM",
+      "noSchedule": "Walang iskedyul",
+      "openMinutes": "Buksan ang check-in (minuto bago magsimula)",
       "service": "Serbisyo",
       "serviceAria": "Pumili ng serbisyo",
+      "startTime": "Oras ng Pagsisimula",
       "validate": {
         "name": "Kinakailangan ang pangalan ng oras ng serbisyo.",
         "service": "Mangyaring pumili ng serbisyo."
@@ -153,7 +186,6 @@
       "attTrend": "Trendo ng Pagdalo",
       "groupAtt": "Pagdalo ng Grupo",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "Setup"
     }
   },
@@ -235,11 +267,13 @@
       "addCalendar": "Magdagdag ng kalendaryo",
       "calendar": "Kalendaryo",
       "calendars": "Kalendaryo",
-      "createCalendar": "Lumikha ng kalendaryo",
       "createFirstCalendar": "Lumikha ng unang kalendaryo",
       "curatedCalendar": "Curated na kalendaryo",
+      "find": "Maghanap ng kalendaryo",
       "manageEvents": "Pamahalaan ang mga kaganapan",
       "noCalendars": "Walang nahanap na kalendaryo",
+      "noMatches": "Walang kalendaryong tumutugma sa iyong paghahanap.",
+      "resultCount": "{shown} sa {total} kalendaryo",
       "status": "Katayuan",
       "subtitleEmpty": "Magsimula sa pamamagitan ng paglikha ng iyong unang kalendaryo",
       "title": "Kalendaryo"
@@ -249,7 +283,6 @@
       "calendar": "Kalendaryo",
       "calendarEvents": "Mga Kaganapan sa Kalendaryo",
       "confirmRemoveGroup": "Sigurado ka bang nais mong alisin ang grupong ito mula sa kalendaryo?",
-      "groupName": "Pangalan ng Grupo",
       "groupsInCalendar": "Mga pangkat sa kalendaryo",
       "importIcs": "Mag-import ng .ics",
       "newEvent": "Bagong Kaganapan",
@@ -281,6 +314,8 @@
       "modeRegistrants": "Mga rehistrado lamang",
       "modeRegistrantsHoh": "Mga puno ng sambahayan / rehistrado lamang",
       "push": "Push",
+      "text": "Text",
+      "textHint": "Ipinapadala ang mga text sa pamamagitan ng texting provider ng inyong simbahan, sa mga taong nag-on lang ng text reminder. Maaaring may bayad sa inyong simbahan ang bawat text.",
       "timeOfDay": "Oras ng araw",
       "timeOfDayHint": "Lokal na oras ng simbahan (hal. 9:00 AM)",
       "title": "Mga Paalala",
@@ -346,6 +381,7 @@
       "endTime": "Katapusan",
       "eventDescription": "Paglalarawan ng Kaganapan",
       "eventTitle": "Pamagat ng Kaganapan",
+      "find": "Maghanap",
       "noApprovalNeeded": "Hindi kailangan ng aprubasyon",
       "noBlockouts": "Wala pang mga blockout",
       "noBlockoutsDesc": "I-block ang mga petsa kung kailan hindi available ang mga silid o mapagkukunan.",
@@ -359,6 +395,7 @@
       "reason": "Dahilan",
       "resourceName": "Pangalan ng Mapagkukunan",
       "resources": "Mga Mapagkukunan",
+      "resultCount": "{shown} sa {total} {items}",
       "roomName": "Pangalan ng Silid",
       "rooms": "Mga Silid",
       "startTime": "Simula",
@@ -370,16 +407,19 @@
   },
   "common": {
     "add": "Magdagdag",
+    "all": "Lahat",
     "amount": "Halaga",
     "appTheme": "Tema ng App",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "Bumalik",
+    "backTo": "Bumalik sa {name}",
     "bottom": "Ibaba",
     "cancel": "Kanselahin",
     "center": "Gitna",
     "change": "Palitan",
     "changePhoto": "Palitan ang Larawan",
+    "clear": "I-clear",
     "close": "Isara",
     "collapse": "I-collapse",
     "comboBox": {
@@ -456,12 +496,14 @@
     "saving": "Nagse-save...",
     "search": "Maghanap",
     "select": "Select",
+    "selectedCount": "{count} ang napili",
     "sermons": "Mga Sermon",
     "title": "Pamagat",
     "top": "Itaas",
     "tryAgain": "Subukan muli",
     "update": "I-update",
     "website": "Website",
+    "years": "Mga Taon",
     "yes": "Oo"
   },
   "components": {
@@ -581,6 +623,8 @@
       "yourChurch": "Ang Iyong Simbahan",
       "yourProfile": "Ang Iyong Profile"
     },
+    "allGroups": "Lahat ng grupo",
+    "allTasks": "Lahat ng gawain",
     "dashboardPage": {
       "dash": "Dashboard"
     },
@@ -593,11 +637,14 @@
       "upcomingEventsTitle": "Tingnan Kung Anong Nangyayari"
     },
     "myGroups": "Aking mga Grupo",
+    "myTasks": "Aking mga gawain",
     "needsAttention": {
       "approvals": "{count} nakabinbing pag-apruba ng kalendaryo",
       "joinRequests": "{count} nakabinbing kahilingan sa pagsali sa grupo",
       "title": "Kailangan ng pansin"
     },
+    "noGroups": "Wala ka pa sa anumang grupo.",
+    "noOpenTasks": "Walang bukas na gawaing nakatalaga sa iyo.",
     "quickSetupModal": {
       "classroomName": "Pangalan ng Classroom",
       "createContinue": "Likhain at Magpatuloy",
@@ -629,6 +676,8 @@
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
+      "liveHint": "Makikita rito buong linggo kung sino ang nasa silid noong nakaraang Linggo at ang mga sambahayang unang beses dumalo.",
+      "liveHintSunday": "Makikita rito kung sino ang nasa silid, sino ang naglilingkod, at sino ang kararating lang kapag ginagamit na ang check-in at paglilingkod.",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
@@ -671,16 +720,23 @@
       "donations": "Mga Donasyon"
     },
     "page": {
+      "allYears": "Lahat ng taon",
       "amount": "Halaga",
       "batch": "Batch",
-      "currentYearCsv": "Kasalukuyang Taon CSV",
-      "currentYearPrint": "Kasalukuyang pag -print ng taon",
+      "csv": "CSV",
       "date": "Petsa",
       "fund": "Pondo",
-      "lastYearCsv": "Noong nakaraang taon CSV",
-      "lastYearPrint": "Noong nakaraang taon print",
+      "giftCount": "{count} kaloob",
+      "giftsInYear": "{count} kaloob noong {year}",
+      "give": "Magbigay",
+      "giving": "Pagbibigay",
       "method": "Paraan",
+      "noGiftsInYear": "Walang kaloob noong {year}.",
       "notes": "Notes",
+      "paymentMethods": "Mga paraan ng pagbabayad",
+      "recurring": "Paulit-ulit",
+      "sinceYear": "{amount} mula {year}",
+      "statement": "Statement",
       "viewBatch": "Tingnan ang batch",
       "willAppear": "Ang mga donasyon ay lilitaw dito kapag ginawa na."
     }
@@ -737,6 +793,7 @@
       "anon": "Anonymous",
       "donor": "Donor",
       "editCampaign": "I-edit ang Kampanya",
+      "goalAmount": "Layunin: {amount}",
       "noPledges": "Wala pang mga pangakong ginawa sa kampanyang ito.",
       "ofGoal": "ng layunin",
       "pledges": "Mga Pangako",
@@ -746,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "Magdagdag ng Kampanya",
+      "campaignCount": "{count} kampanya",
       "campaigns": "Mga Kampanya",
       "dates": "Mga Petsa",
       "export": "I-export",
       "fund": "Pondo",
       "given": "Ibinigay",
+      "givenAmount": "{amount} naibigay",
       "goal": "Layunin",
       "noCampaigns": "Wala pang mga kampanyang ginawa.",
       "ongoing": "Patuloy",
       "pledged": "Ipinangako",
+      "pledgedAmount": "{amount} ipinangako",
       "progress": "Pag-unlad",
-      "subtitle": "Subaybayan ang mga kampanya ng pangako at pag-unlad patungo sa mga layunin ng pagbibigay",
-      "totalCampaigns": "Kabuuang Mga Kampanya"
+      "subtitle": "Subaybayan ang mga kampanya ng pangako at pag-unlad patungo sa mga layunin ng pagbibigay"
     },
     "donationBatchPage": {
-      "batchDate": "Petsa ng Batch:",
-      "donations": "Mga Donasyon",
       "editBatch": "I-edit ang Batch",
+      "giftCount": "{count} kaloob",
       "subtitle": "Pamahalaan ang mga donasyon sa batch na ito",
-      "title": "Batch ng Donasyon",
-      "totalAmount": "Kabuuang Halaga"
+      "title": "Batch ng Donasyon"
     },
     "donationBatchesPage": {
       "addBatch": "Magdagdag ng Batch",
+      "allYears": "Lahat",
+      "batchCount": "{count} batch",
       "batches": "Mga Batch",
-      "donations": "Mga Donasyon",
       "export": "I-export",
+      "failedEvents": "Mga nabigong event ({count})",
+      "giftCount": "{count} kaloob",
       "stripeImportLink": "I-import ang nawawalang mga Stripe transaction",
-      "subtitle": "Pamahalaan ang mga batch ng donasyon at subaybayan ang mga rekord",
-      "totalAmount": "Kabuuang Halaga"
+      "subtitle": "Pamahalaan ang mga batch ng donasyon at subaybayan ang mga rekord"
     },
     "donationEdit": {
       "anon": "Hindi Kilala",
@@ -837,8 +896,7 @@
       "total": "Kabuuan"
     },
     "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
+      "lede": "{count} nabigo · {amount} nanganganib",
       "message": "Gateway Message",
       "none": "No failed recurring gifts.",
       "retry": "Retry",
@@ -858,10 +916,10 @@
       "visible": "Makikita ng mga Donor"
     },
     "fundPage": {
-      "donors": "Mga Donor",
+      "donorCount": "{count} donor",
       "filter": "Filter",
-      "subtitle": "Subaybayan ang mga donasyon at kontribusyon sa pondo",
-      "totalAmount": "Kabuuang Halaga"
+      "giftCount": "{count} kaloob",
+      "subtitle": "Subaybayan ang mga donasyon at kontribusyon sa pondo"
     },
     "funds": {
       "fund": "Pondo",
@@ -877,15 +935,14 @@
       "dateEnd": "Petsa ng Pagtatapos",
       "dateStart": "Petsa ng Pagsisimula",
       "don": "Donasyon",
-      "donFilt": "Filter ng Donasyon",
       "donor": "Donador",
       "export": "I-export",
+      "fundCount": "{count} pondo",
       "noDon": "Walang mga donasyon para sa napiling hanay ng petsa",
       "nonDeductible": "Hindi Maibabawas sa Buwis",
       "subtitle": "Pamahalaan ang mga pondo ng donasyon at subaybayan ang mga kategorya ng pagbibigay",
       "taxDeductible": "Maibabawas sa Buwis",
       "taxStatus": "Katayuan sa Buwis",
-      "totalFunds": "Kabuuang Pondo",
       "viewBatch": "Tingnan ang batch"
     },
     "givingLink": {
@@ -895,7 +952,13 @@
       "title": "Giving Link",
       "url": "Link"
     },
+    "logGift": {
+      "amountError": "Maglagay ng halagang higit sa zero, gaya ng 25.00.",
+      "batchHint": "Ise-save sa batch para sa petsang ito; gagawa ng bago kung kailangan.",
+      "title": "Magtala ng kaloob"
+    },
     "period": {
+      "label": "Panahon",
       "monthly": "Buwanan",
       "quarterly": "Quarterly",
       "weekly": "Lingguhan"
@@ -1014,6 +1077,9 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "view": {
+      "label": "Tingnan"
     }
   },
   "fileUpload": {
@@ -1136,14 +1202,17 @@
       "archForms": "Mga Na-archive na Form",
       "archive": "I-archive",
       "archiveFormAria": "I-archive ang form na {name}",
+      "archived": "Naka-archive",
       "confirmDuplicate": "I-duplicate ang form na ito?",
       "confirmMsg1": "Sigurado ka bang nais mong i-archive ang form na ito?",
       "confirmMsg2": "Sigurado ka bang nais mong ibalik ang form na ito?",
       "duplicate": "Kopyahin",
       "duplicated": "Form duplicated",
+      "find": "Maghanap ng form",
       "forms": "Mga Form",
       "noArch": "Walang na-archive na mga form.",
       "noCustomMsg": "Walang mga custom na form na nagawa pa. Lalabas ang mga ito dito kapag idinagdag.",
+      "noMatches": "Walang form na tumutugma sa iyong paghahanap.",
       "personProfileForm": "Person profile form",
       "restore": "Ibalik",
       "restoreFormAria": "Ibalik ang form na {name}",
@@ -1200,14 +1269,18 @@
       "confirmDuplicate": "Kopyahin ang grupong ito? Hindi kokopyahin ang mga miyembro.",
       "copySuffix": "(Kopya)",
       "discussions": "Discussions",
+      "duplicate": "Doblehin",
       "duplicateTooltip": "Kopyahin ang grupong ito",
+      "email": "Email",
       "emailTooltip": "Mag-email sa grupong ito",
       "location": "Lokasyon",
       "meetingTime": "Oras ng Pagpupulong",
-      "moreLabels": "Marami pang mga label",
+      "notify": "Abisuhan",
+      "notifyTooltip": "Magpadala ng push notification",
       "parentPickup": "Pagkuha ng Magulang",
       "printNametag": "I-print ang Name Tag",
       "team": "Koponan",
+      "text": "Text",
       "textTooltip": "Mag-text sa grupong ito",
       "trackAttendance": "Pagsubaybay sa Pagdalo"
     },
@@ -1361,6 +1434,21 @@
     "groupPage": {
       "addPpl": "Magdagdag ng Tao"
     },
+    "groupRecord": {
+      "allEvents": "Lahat ng event",
+      "allMembers": "Lahat ng miyembro",
+      "allSessions": "Lahat ng session",
+      "healthSummary": "{members} miyembro · {joined} sumali · {left} umalis sa loob ng 90 araw",
+      "lastEvent": "Huli",
+      "latestSession": "Pinakabago {date}",
+      "nextEvent": "Susunod",
+      "noMembers": "Wala pang miyembro.",
+      "noSessions": "Wala pang session.",
+      "pendingCount": "{count} nakabinbin",
+      "seeHealth": "Tingnan ang kalagayan",
+      "sessionCount": "{count} session",
+      "sessionCountOne": "1 session"
+    },
     "groupSessions": {
       "addSesMsg": "Mangyaring magdagdag ng bagong sesyon upang magpatuloy.",
       "allYears": "Lahat ng taon",
@@ -1389,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "Magdagdag ng pangkat",
+      "allCategories": "Lahat",
       "cat": "Kategorya",
+      "clearFilters": "I-clear ang mga filter",
       "confirmRestore": "Ibalik ang {name} mula sa archive?",
       "export": "I-export",
       "groups": "Mga Grupo",
-      "labels": "Mga Label",
+      "moreCategories": "Higit pang kategorya",
       "noGroupMsg": "Walang natagpuang grupo. Mangyaring gumawa ng grupo.",
       "noMatchMsg": "Walang grupong tumugma sa iyong paghahanap.",
       "pendingRequestSingular": "{count} nakabinbing kahilingan",
@@ -1401,6 +1491,7 @@
       "pers": "1 tao",
       "ppl": "Mga Tao",
       "restore": "Ibalik",
+      "resultCount": "{shown} sa {total} grupo",
       "searchPlaceholder": "Maghanap ng mga grupo...",
       "showArchived": "Ipakita ang mga naka-archive",
       "spPpl": " mga tao",
@@ -1480,6 +1571,7 @@
       "noPhoneNotice": "{count} ay walang phone number sa file.",
       "noPhoneNoticeSingular": "{count} ay walang phone number sa file.",
       "noPhoneSkipped": "{count} ang nilaktawan (walang phone number).",
+      "noProvider": "Mag-set up ng texting provider sa Settings bago magpadala ng text.",
       "optedOutNotice": "{count} ang nag-opt out.",
       "optedOutSkipped": "{count} ang nilaktawan (nag-opt out).",
       "phoneOnFile": "phone sa file",
@@ -1491,7 +1583,10 @@
       "sentSummary": "Naipadala sa {successCount} sa {recipientCount} karapat-dapat na tatanggap.",
       "sentSummarySingular": "Naipadala sa {successCount} sa {recipientCount} karapat-dapat na tatanggap.",
       "textGroupTitle": "Mag-text sa Grupo: {groupName}",
-      "textPersonTitle": "Text: {personName}"
+      "textPersonTitle": "Text: {personName}",
+      "textVolunteersTitle": "I-text ang mga Boluntaryo",
+      "volunteersSummary": "{eligibleCount} sa {totalMembers} boluntaryo ang makakatanggap ng text na ito.",
+      "volunteersSummarySingular": "{eligibleCount} sa {totalMembers} boluntaryo ang makakatanggap ng text na ito."
     },
     "serviceTimes": {
       "services": "Mga Serbisyo:"
@@ -1562,7 +1657,7 @@
       "registrations": "Mga Pagpaparehistro",
       "roomsResources": "Mga Silid at Mapagkukunan",
       "sermons": "Mga Sermon",
-      "site": "Site",
+      "streamSettings": "Settings",
       "stripeImport": "Stripe Import",
       "website": "Website"
     }
@@ -1665,7 +1760,8 @@
       "placeholder": "Ipakita sa akin ang mga lalaki na mahigit 30 taong gulang na may kaarawan sa Hulyo",
       "search": "Maghanap",
       "searching": "Naghahanap...",
-      "title": "AI Search"
+      "title": "AI Search",
+      "unavailable": "Pansamantalang hindi available ang AI Search. Pakisubukang muli mamaya, o gamitin ang paghahanap sa itaas."
     },
     "bulk": {
       "actions": "Mga Aksyon",
@@ -1704,7 +1800,6 @@
       "removeFromGroupPrompt": "Alisin ang {count} na napiling tao mula sa isang grupo.",
       "removeFromGroupTitle": "Alisin sa Grupo",
       "removeSuccess": "Naalis ang {count} tao mula sa {group}.",
-      "selected": "Napili",
       "setCampus": "Itakda ang Campus",
       "value": "Value",
       "workflowSuccess": "Naidagdag ang {count} tao sa workflow."
@@ -1722,6 +1817,27 @@
       "title": "Demograpiko",
       "total": "Kabuuan",
       "unassigned": "Hindi Italaga"
+    },
+    "directory": {
+      "ask": "Magtanong",
+      "clear": "I-clear",
+      "countHouseholds": "{households} sambahayan · {people} tao",
+      "everyone": "Lahat",
+      "family": "Pamilya {name}",
+      "households": "Mga Sambahayan",
+      "noMatch": "Walang tumutugma sa paghahanap na iyon",
+      "noMatchHint": "Subukan ang ibang pangalan, o gamitin ang Advanced para mag-filter ayon sa detalye.",
+      "noPeople": "Wala pang tao",
+      "noPeopleHint": "Idagdag ang unang tao sa ibaba.",
+      "savedLists": "Mga naka-save na listahan",
+      "searchLabel": "Maghanap ng sambahayan o tao",
+      "selectAll": "Piliin ang lahat ng nakikitang sambahayan",
+      "selectHousehold": "Piliin ang {name}",
+      "selectedCount": "{count} ang napili",
+      "subtitle": "Mag-browse ng mga sambahayan, magbukas ng tao, o paliitin ang resulta gamit ang listahan o tanong.",
+      "table": "Talahanayan",
+      "title": "Mga Tao",
+      "viewAs": "Tingnan bilang"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -1813,12 +1929,7 @@
       "unknownGroup": "Hindi Kilalang Grupo"
     },
     "household": {
-      "age": "Edad:",
-      "groups": "Mga Grupo:",
-      "house": " Sambahayan",
-      "lastActivity": "Huling Aktibidad:",
-      "noContactInfo": "Walang impormasyon sa pakikipag-ugnayan",
-      "status": "Katayuan:"
+      "house": " Sambahayan"
     },
     "householdEdit": {
       "addMember": "Magdagdag ng Miyembro ng Sambahayan",
@@ -1839,7 +1950,6 @@
       "confirmDelete": "Tanggalin ang listahang \"{name}\"? Hindi ito maaaring ibalik.",
       "createdBy": "ni {name}",
       "delete": "Tanggalin ang Listahan",
-      "empty": "Wala pang mga nakatagong listahan. Bumuo ng advanced na paghahanap, pagkatapos ay \"I-save bilang Listahan.\"",
       "household": "Isama ang sambahayan",
       "householdAll": "Buong sambahayan",
       "householdChildren": "Mga anak ng mga katugma",
@@ -1853,8 +1963,7 @@
       "settings": "Mga Setting ng Listahan",
       "sharing": "Sino ang makakakita ng listahang ito",
       "sharingOrg": "Lahat ng kawani",
-      "sharingPrivate": "Ako lamang",
-      "title": "Mga Nakatagong Listahan"
+      "sharingPrivate": "Ako lamang"
     },
     "merge": {
       "findPerson": "Hanapin ang taong isasama",
@@ -1884,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "Magdagdag ng tao",
-      "allMembers": "Lahat ng Miyembro",
       "bDay": "Kaarawan",
       "bDayNo": "Kaarawan (Walang Taon)",
       "deleteOp": "Pagpipilian sa Pagtanggal",
@@ -1894,15 +2002,12 @@
       "loading": "Naglo-load ng mga tao...",
       "middle": "Gitna",
       "nameNote": "Mga Tala sa Name Tag",
-      "noPeopleFound": "Walang nahanap na tao",
       "peopleFound": "Nakahanap ng {count} tao",
       "photo": "Larawan",
       "primEmail": "Pangunahing Email",
       "primPhone": "Pangunahing Telepono",
       "printDirectory": "I-print ang Direktoryo",
       "printResults": "I-print ang mga resulta",
-      "searchPpl": "Maghanap ng Mga Tao",
-      "searchResults": "Mga Resulta ng Paghahanap",
       "showAll": "Ipakita ang Lahat ng Miyembro",
       "showingMembers": "Ipinapakita ang {count} miyembro"
     },
@@ -1922,13 +2027,10 @@
       "group": "Grupo",
       "membership": "Pagiging Kasapi at Mga Grupo",
       "names": "Mga Pangalan",
-      "placeholder": "Maghanap ayon sa pangalan...",
       "service": "Serbisyo",
       "serviceTime": "Oras ng Serbisyo",
       "simp": "Simple",
-      "simpSearch": "Paghahanap ng Tao",
-      "type": "Uri",
-      "typeToSearch": "Mag-type upang maghanap kaagad"
+      "type": "Uri"
     },
     "peopleSearchResults": {
       "deletePersonAria": "Tanggalin si {name}",
@@ -1939,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "Idagdag sa Workflow",
-      "age": "Edad",
       "emailPerson": "I-email ang taong ito",
-      "gender": "Kasarian",
       "hasLogin": "May login",
-      "maritalStatus": "Civil Status",
       "sendTextMessage": "Magpadala ng text message"
     },
     "personEdit": {
@@ -1973,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "Attendance",
-      "details": "Mga Detalye",
       "donations": "Mga Donasyon",
       "forms": "Mga Form",
       "groups": "Mga Grupo",
@@ -1985,12 +2083,44 @@
       "notesSuffix": " Mga Tala",
       "thisPerson": "ang taong ito"
     },
+    "personRecord": {
+      "allForms": "Lahat ng form",
+      "allNotes": "Lahat ng tala",
+      "allYears": "Lahat ng taon",
+      "attendanceSummary": "{count} sa huling {weeks} linggo",
+      "email": "Email",
+      "givenBy": "Ibinigay ni",
+      "givingYear": "noong {year} · {count} kaloob",
+      "hereThisWeek": "Narito ngayong linggo",
+      "household": "Sambahayan",
+      "lastAttended": "Huling dumalo {date}",
+      "lastGift": "Huling kaloob {date}.",
+      "loadError": "Hindi namin ma-load ang {what}.",
+      "noAttendance": "Wala pang naitalang pagdalo.",
+      "noDirectory": "Nakatago sa directory",
+      "noGiftsYear": "Walang naitalang kaloob noong {year}.",
+      "noHouseholdGiftsYear": "Walang naitalang kaloob ng sambahayan noong {year}.",
+      "noNotes": "Wala pang tala.",
+      "notSubmitted": "Hindi naisumite",
+      "noteCount": "{count} tala",
+      "recentAttendance": "Kamakailang pagdalo",
+      "recentGifts": "Mga kaloob noong {year}",
+      "service": "Serbisyo",
+      "showingLatest": "ipinapakita ang pinakabagong {count}",
+      "statement": "Statement ng {year}",
+      "submitted": "Naisumite",
+      "text": "Text",
+      "weekAttended": "Linggo ng {date}: dumalo",
+      "weekNoRecord": "Linggo ng {date}: walang naitalang pagdalo",
+      "weeklyAttendance": "Lingguhang pagdalo",
+      "where": "Saan",
+      "wholeHousehold": "buong sambahayan",
+      "workflow": "Workflow"
+    },
     "personView": {
       "hasLoginLabel": "May login: {email}",
       "home": "Bahay",
-      "memShip": "Pagiging Miyembro:",
       "mobile": "Mobile",
-      "persDet": "Mga Personal na Detalye",
       "work": "Trabaho"
     },
     "pickup": {
@@ -2004,9 +2134,6 @@
       "status": "Katayuan",
       "title": "Pagsundo",
       "trusted": "Pinagkakatiwalaan"
-    },
-    "tabs": {
-      "noImplement": "Hindi Naipatupad"
     },
     "updateHouseHold": {
       "update": "I-update ang Address"
@@ -2028,6 +2155,7 @@
     "firstName": "Unang Pangalan",
     "gender": "Kasarian",
     "grade": "Baitang",
+    "guest": "Bisita",
     "inactive": "Hindi Aktibo",
     "lastName": "Huling Pangalan",
     "line1": "Linya 1",
@@ -2044,6 +2172,7 @@
     "person": "Tao",
     "phone": "Telepono",
     "prefix": "Prefix",
+    "recentPeople": "Mga kamakailang tao",
     "regularAttendee": "Regular na Dumadalo",
     "school": "Paaralan",
     "single": "Walang asawa",
@@ -2356,7 +2485,6 @@
       "selectedPrefix": "Napili:"
     },
     "ministryList": {
-      "getStarted": "Magsimula sa pamamagitan ng paglikha ng iyong unang ministeryo",
       "noMinMsg": "Walang natagpuang ministro. Mangyaring gumawa ng ministro."
     },
     "ministryPage": {
@@ -2375,6 +2503,8 @@
       "planNameAria": "Pangalan ng plano",
       "planReq": "Kinakailangan ang pangalan ng plano.",
       "prepared": "Tentative (itago ang mga takdang gawain mula sa mga boluntaryo hanggang ma-publish)",
+      "repeatWeekly": "Ulitin lingguhan sa ganitong dami ng linggo",
+      "repeatWeeklyHelper": "Gumagawa ng isang plano bawat linggo, bawat isa ay kinopya mula sa nauna",
       "servDate": "Petsa ng serbisyo",
       "servReq": "Kinakailangan ang petsa ng serbisyo.",
       "serviceDateAria": "Petsa ng serbisyo",
@@ -2430,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Maramihang iskedyul",
-      "createFirst": "Lumikha ng unang plano",
-      "createPlan": "Lumikha ng plano",
       "newPlan": "Bagong plano",
       "noPlans": "Walang nahanap na mga plano",
-      "noUpcomingPlans": "Walang Mga Paparating na Plano",
-      "noUpcomingPlansDescription": "Walang mga plano na naka-iskedyul para sa ngayon o sa hinaharap. Gamitin ang \"Show Past\" toggle sa itaas upang tingnan ang mga nakaraang plano.",
+      "noUpcomingHint": "Walang naka-iskedyul mula ngayon. Piliin ang \"Nakaraan\" para makita ang mga naunang plano.",
+      "past": "Nakaraan",
       "plans": "Mga Plano",
       "scheduleLesson": "Mag-iskedyul ng Aralin",
+      "serviceDate": "Petsa ng serbisyo",
       "serviceOrder": "Pagkakasunud-sunod ng Serbisyo",
-      "showPast": "Ipakita ang Nakaraan"
+      "upcoming": "Paparating"
     },
     "planPage": {
       "assign": "Mga Pagtatalaga ng Koponan",
-      "assignments": "Mga Pagtatalaga",
       "band": "Banda",
       "loadingPlan": "Naglo -load ng plano ...",
       "noteSave": "Nai-save ang tala",
-      "serviceOrder": "Pagkakasunud-sunod ng Serbisyo",
-      "servicePlan": "Plano ng Serbisyo",
-      "subtitle": "Magplano at mag -iskedyul ng iyong serbisyo"
+      "servicePlan": "Plano ng Serbisyo"
     },
     "planType": {
       "details": "Mga Detalye ng Uri ng Plano"
@@ -2483,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "Magdagdag ng uri ng plano",
       "createPlanType": "Lumikha ng uri ng plano",
-      "createPlanTypes": "Lumikha ng mga uri ng plano",
       "noPlanTypes": "Walang nahanap na mga uri ng plano",
       "planTypes": "Mga Uri ng Plano"
     },
     "planTypePage": {
       "notFound": "Hindi natagpuan ang uri ng plano",
       "overview": "Pangkalahatang-ideya",
-      "planType": "Uri ng plano",
-      "subtitle": "I -configure ang mga setting ng uri ng plano"
+      "planType": "Uri ng plano"
     },
     "planTypeReminders": {
       "channels": "Send By",
@@ -2505,6 +2629,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "Text",
+      "textHint": "Ipinapadala ang mga text sa pamamagitan ng texting provider ng inyong simbahan, sa mga taong nag-on lang ng text reminder. Maaaring may bayad sa inyong simbahan ang bawat text.",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2544,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "Magdagdag ng ministeryo",
       "editMinistry": "I-edit ang Ministro",
-      "selMin": "Piliin ang Ministro",
       "subtitle": "Pamahalaan ang mga ministro at mga plano sa serbisyo"
     },
     "positionEdit": {
@@ -2613,6 +2738,7 @@
       "viewingAs": "Tinitingnan bilang"
     },
     "servingOverviewPage": {
+      "allPositions": "Lahat ng posisyon",
       "autoSchedule": "Awtomatikong Iskedyul",
       "autoScheduleConfirm": "Awtomatikong i-schedule ang mga boluntaryo sa bawat bakanteng slot sa saklaw ng petsang ito?",
       "autoScheduleResult": "{filled} sa {total} na plano ang awtomatikong na-iskedyul",
@@ -2633,11 +2759,17 @@
       "removeConfirm": "Alisin si {name} sa assignment na ito?",
       "startDate": "Simulang Petsa",
       "subtitle": "Mga posisyon ayon sa petsa na may nakatakdang mga volunteer",
+      "textAll": "I-text ang mga Boluntaryo",
       "title": "Pangkalahatang-ideya ng Paglilingkod"
     },
     "servingPage": {
-      "showAll": "Ipakita Lahat",
-      "showAllHint": "Nakatago ang iyong mga ministeryo dahil hindi ka miyembro. I-on ang \"Ipakita Lahat\" sa itaas upang makita ang mga ito."
+      "actions": "Mga Aksyon",
+      "all": "Lahat",
+      "allHint": "Nakatago ang iyong mga ministri dahil hindi ka miyembro. Piliin ang \"Lahat\" sa itaas para makita ang mga ito.",
+      "findMinistry": "Maghanap ng ministri",
+      "mine": "Akin",
+      "ministries": "Mga Ministri",
+      "whichMinistries": "Aling mga ministri"
     },
     "signageFeed": {
       "button": "Digital Signage",
@@ -2658,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "Lumikha ng koponan",
-      "createTeams": "Lumikha ng mga koponan",
-      "manage": "Pamahalaan",
       "members": "mga miyembro",
       "newTeam": "Bagong koponan",
       "noTeam": "Walang natagpuang koponan. Mangyaring gumawa ng koponan.",
@@ -2709,6 +2839,7 @@
       "typeService": "Serbisyo"
     },
     "timeList": {
+      "addTime": "Magdagdag ng oras",
       "noTime": "Walang idinagdag na oras pa",
       "sunServ": "Serbisyo ng Linggo",
       "times": "Mga Oras"
@@ -2735,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "Link",
+      "linked": "Naka-link",
+      "notLinked": "Hindi naka-link",
       "signUp": "Mag -sign up",
       "unlink": "Unlink"
     },
@@ -2775,9 +2908,7 @@
       "saveChanges": "I -save ang mga pagbabago",
       "saveError": "Nabigong makatipid ng mga pagbabago",
       "sendRequest": "Send request",
-      "subtitle": "Pamahalaan ang iyong profile at kagustuhan",
       "themePreferences": "Mga Kagustuhan sa Tema",
-      "themePreferencesHelper": "Awtomatikong nase-save ang iyong kagustuhan sa tema at maaalala sa device na ito.",
       "togglePasswordVisibility": "i-toggle ang visibility ng password",
       "valEmail": "Mangyaring magpasok ng balidong email address."
     }
@@ -2834,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "Petsa",
       "deleteConfirm": "Permanenteng tanggalin ang pagpaparehistrong ito?",
+      "editSettings": "I-edit ang settings",
       "eventFull": "Naabot na ng event na ito ang kapasidad nito.",
       "eventNotFound": "Hindi nahanap ang event",
       "eventRegistrations": "Mga Pagpaparehistro sa Event",
@@ -2875,9 +3007,11 @@
       "noEventsHint": "Paganahin ang pagpaparehistro sa isang event sa pamamagitan ng event edit settings.",
       "registered": "nakapagrehistro",
       "registrations": "Mga Pagpaparehistro",
+      "search": "Maghanap ng mga event",
       "subtitle": "Pamahalaan ang mga setting ng pagpaparehistro sa event at tingnan ang mga rehistrado",
       "tags": "Mga Tag",
-      "title": "Mga Pagpaparehistro sa Event"
+      "title": "Mga Pagpaparehistro sa Event",
+      "turnOnRegistration": "I-on ang pagpaparehistro"
     }
   },
   "reporting": {
@@ -3007,14 +3141,17 @@
         "weekly": "Lingguhan",
         "yes": "Oo"
       },
-      "services": "Mga Serbisyo",
       "servicesTab": {
         "addService": "Magdagdag ng Serbisyo",
         "defaultLabel": "Linggo ng Umaga",
+        "duration": "Tagal",
+        "none": "Wala pang serbisyo. Magdagdag ng isa para i-iskedyul ang iyong live stream.",
+        "provider": "Provider",
+        "service": "Serbisyo",
+        "time": "Oras",
         "title": "Mga Serbisyo",
         "weekly": "Lingguhan"
       },
-      "settings": "Mga Setting",
       "sidebarTabs": {
         "add": "Magdagdag",
         "title": "Mga Tab ng Nilalaman"
@@ -3062,6 +3199,7 @@
     "notScheduled": "Hindi naka-iskedyul",
     "playlist": "Playlist",
     "playlists": {
+      "addPlaylist": "Magdagdag ng playlist",
       "createFirstPlaylist": "Lumikha ng Unang Playlist",
       "noPlaylistsFound": "Walang natagpuang playlist",
       "noPlaylistsMatch": "Walang playlist na tumutugma sa iyong paghahanap",
@@ -3096,6 +3234,7 @@
       "title": "Podcast Feed"
     },
     "publishDate": "Petsa ng Paglalathala",
+    "resultCount": "{shown} sa {total} sermon",
     "searchPlaceholder": "Maghanap ng mga sermon ayon sa pamagat o playlist...",
     "sermon": "Sermon",
     "sermonEdit": {
@@ -3152,11 +3291,15 @@
       "act": "Aktibo",
       "arch": "Na-archive",
       "church": "Simbahan",
+      "churchCount": "{count} simbahan",
       "churchName": "Pangalan ng Simbahan",
       "churches": "Mga Simbahan",
       "churchesSubtitle": "Maghanap at pamahalaan ang lahat ng simbahan",
       "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
+      "groupDirectory": "Directory",
+      "groupOperations": "Mga Operasyon",
+      "groupSystem": "Sistema",
       "impersonateSubtitle": "Mag-log in bilang ibang user para sa suporta",
       "impersonateUser": "Gayahin ang User",
       "jobs": "Mga Background Job",
@@ -3176,6 +3319,7 @@
       "servAdmin": "Admin ng Server",
       "serverHealth": "Kalusugan ng Server",
       "serverHealthSubtitle": "Suriin ang kalusugan ng mga backend service",
+      "status": "Katayuan",
       "subtitle": "Pamahalaan ang mga setting ng server at mga simbahan",
       "translationLookups": "Mga lookup ng pagsasalin",
       "translationSubtitle": "Hanapin ang mga isinaling locale string",
@@ -3465,6 +3609,19 @@
       "title": "Paghahanap ng User"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "Magdagdag ng key"
+    },
+    "planPage": {
+      "addMenu": "Iba pang paraan ng pagdagdag",
+      "hideNotes": "Itago ang mga tala",
+      "hideTimes": "Itago ang mga oras"
+    },
+    "songPage": {
+      "deleteSong": "Burahin ang awit"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "Isara",
@@ -3742,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "Kategorya",
-      "createTemplate": "Gumawa ng Template",
       "deleteConfirm": "Tanggalin ang template na \"{name}\"?",
       "emptyDescription": "Gumawa ng template upang magsimula sa bulk email.",
       "emptyTitle": "Wala pang email templates",
@@ -3873,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "Hindi maaaring i-edit ang mga pahintulot para sa papel ng Mga Administrator ng Domain. May buong access ang mga Administrator ng Domain.",
-      "permEdit": "I-edit ang Mga Pahintulot",
-      "roleEdit": "I-edit ang Papel:"
+      "permEdit": "I-edit ang Mga Pahintulot"
     },
     "rolePermissions": {
       "filter": "Filter permissions",
@@ -3885,6 +4040,7 @@
       "accDesc": "May access upang tingnan at pamahalaan ang mga donasyon.",
       "addCustomRoleAria": "Magdagdag ng custom role",
       "addPredefinedRoleAria": "Idagdag ang role na {name}",
+      "addRole": "Magdagdag ng role",
       "canEdit": "Maaaring i-edit ang karamihan ng data sa ",
       "churchDesc": " kasama ang mga tao, grupo, pagdalo, at mga form.",
       "churchStaff": "Kawani ng Simbahan",
@@ -3958,6 +4114,8 @@
       "clearstreamHelper": "Gumawa ng API Key sa iyong",
       "clearstreamHelperLink": "Mga Setting ng Clearstream Account",
       "clearstreamHelperSuffix": "sa ilalim ng API Keys.",
+      "inboundUrl": "Inbound (STOP) webhook URL",
+      "inboundUrlHelper": "I-paste ito sa inbound message webhook ng iyong provider para ang mga taong sumagot ng STOP ay ma-opt out din sa mga text dito.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Aktibo ang iyong MinistryStuff texting subscription na may {} credits na natitira sa cycle na ito.",
       "ministryStuffHelper": "Hindi kailangan ng API key. Ang texting credits ay galing sa iyong MinistryStuff subscription, na awtomatikong naka-link sa simbahang ito. Pamahalaan ang iyong plano sa",
@@ -4192,8 +4350,8 @@
     "blocksPage": {
       "actions": "Mga Aksyon",
       "addBlock": "Magdagdag ng block",
+      "blockCount": "{count} block",
       "blocks": "Mga bloke",
-      "createFirstBlock": "Lumikha ng unang bloke",
       "elements": "(Mga) elemento",
       "getStarted": "Magsimula sa pamamagitan ng paglikha ng iyong unang magagamit na bloke",
       "noBlocksFound": "Walang nahanap na mga bloke",
@@ -4201,7 +4359,6 @@
       "reusableBlocks": "Muling magagamit na mga bloke",
       "sections": "Seksyon (s)",
       "subtitle": "Lumikha at pamahalaan ang magagamit na mga bloke ng nilalaman para sa iyong website",
-      "totalBlocks": "Kabuuang mga bloke",
       "type": "Uri"
     },
     "blog": {
@@ -4212,6 +4369,7 @@
       "draft": "Draft",
       "navHint": "Mababasa ng mga bisita ang iyong mga post sa /blog. Magdagdag ng link sa nabigasyon sa screen ng Mga Pahina para mahanap nila ito:",
       "noPosts": "No posts yet",
+      "postCount": "{count} post",
       "posts": "Posts",
       "published": "Nai-publish",
       "scheduled": "Naka-iskedyul",
@@ -4512,6 +4670,7 @@
       "imageDescribingTopic": "Larawan na naglalarawan sa paksa",
       "info": "Info",
       "javascriptExcludeTag": "JavaScript (hindi kasama ang script tag)",
+      "javascriptUrlWarning": "Isa itong web address, hindi JavaScript. Para magpakita ng larawan, gumamit ng Image element o ilagay ang <img src=\"...\"> sa HTML Content.",
       "label": "Label",
       "linkUrlOptional": "Link URL (Opsyonal)",
       "loadingEditor": "Naglo -load ng editor ...",
@@ -4766,20 +4925,15 @@
       "pageSettings": "Mga Setting ng Pahina",
       "previewOf": "Preview ng {title}",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "Preview: {title}",
-      "title": "Preview ng Website"
+      "subtitle": "Preview: {title}"
     },
     "pages": {
       "convert": "I-convert"
     },
     "pagesPage": {
       "actions": "Mga Aksyon",
-      "addFirstPage": "Magdagdag ng unang pahina",
       "addPage": "Magdagdag ng pahina",
-      "autoGenerated": "Nabuo ng awtomatiko",
       "confirmConvert": "Nais mo bang i-convert ang auto-generated na pahinang ito sa custom na pahina?",
-      "customPages": "Pasadyang mga pahina",
-      "description": "Nasa ibaba ang isang listahan ng mga pasadyang at auto na nabuo ng mga pahina. Maaari kang magdagdag ng mga bagong pahina, i-edit ang mga umiiral na, o i-convert ang mga pahina na nabuo ng awtomatiko sa mga pasadyang pahina.",
       "desktopOnly": "Magagamit lamang ang pahina ng editor sa mode ng desktop",
       "generated": "Nabuo",
       "getStarted": "Magsimula sa pamamagitan ng pagdaragdag ng iyong unang pahina.",
@@ -4788,6 +4942,7 @@
       "hidePublicSiteWarning": "Naka-off ang iyong pampublikong website. Ipinapadala ang mga bisita sa login screen at sinasabihan ang mga search engine na huwag i-index ang site.",
       "mainNavigation": "Pangunahing nabigasyon",
       "noPagesFound": "Walang nahanap na mga pahina",
+      "pageCount": "{count} page",
       "pages": "Mga pahina",
       "path": "Landas",
       "showLogin": "Magpakita ng pag -login",
@@ -4795,7 +4950,6 @@
       "startFromTemplate": "Magsimula sa isang Template",
       "subtitle": "Pamahalaan ang iyong mga pahina ng website, nilalaman, at nabigasyon",
       "toggleLoginVisibility": "Toggle Button Button Visibility",
-      "totalPages": "Kabuuang mga pahina",
       "viewLivePage": "PREVIEW PAGE",
       "websitePages": "Mga pahina ng website"
     },
@@ -5350,7 +5504,6 @@
       "signature": "Key signature"
     },
     "keys": {
-      "add": "Magdagdag",
       "addExternalLink": "Magdagdag ng panlabas na link",
       "addFiles": "Magdagdag ng mga file",
       "audioTracks": "Mga audio track",
@@ -5366,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "Magdagdag ng Unang Awit",
         "message": "Magsimula sa pamamagitan ng pagdagdag ng iyong unang awit sa library.",
         "title": "Walang Natagpuang Awit"
       },
@@ -5424,8 +5576,7 @@
       "addArrangement": "Magdagdag ng Arrangement",
       "loading": "Naglo-load...",
       "noArrangementDescription": "Pumili ng arrangement mula sa sidebar upang magsimula.",
-      "noArrangementSelected": "Walang Napiling Arrangement",
-      "subtitle": "Pamahalaan ang mga detalye at pag -aayos ng kanta"
+      "noArrangementSelected": "Walang Napiling Arrangement"
     },
     "songSearchDialog": {
       "closeDialogAria": "Isara ang dialog",
@@ -5437,7 +5588,7 @@
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "deselectAll": "Alisin ang lahat ng pinili",
-      "search": "Maghanap",
+      "resultCount": "{count} awit",
       "searchSongs": "Maghanap ng mga Awit",
       "selectAll": "Select all",
       "songs": "Mga Awit",
@@ -5626,8 +5777,11 @@
       "message": "Mensahe",
       "messageHint": "Opsyonal. Iwanang blangko para gamitin ang default na pananalita ng paalala.",
       "noDueDate": "Walang due date ang gawaing ito, kaya walang ipapadalang paalala hangga't hindi ito naitatakda.",
+      "none": "Walang nakatakdang paalala.",
       "save": "I-save ang mga Paalala",
       "saved": "Na-save",
+      "text": "Text",
+      "textHint": "Ipinapadala ang mga text sa pamamagitan ng texting provider ng inyong simbahan, sa mga taong nag-on lang ng text reminder. Maaaring may bayad sa inyong simbahan ang bawat text.",
       "timeOfDay": "Oras",
       "title": "Mga Paalala",
       "when": "Kailan dapat ipadala ang mga paalala?"
@@ -5656,8 +5810,9 @@
       "noTasks": "Walang nahanap na mga gawain",
       "notSpecified": "Hindi tinukoy",
       "reqMe": "Hiniling Ni Akin",
-      "showClosedTasksAria": "Ipakita ang mga sarado na task",
-      "showOpenTasksAria": "Ipakita ang mga bukas na task",
+      "status": "Katayuan ng gawain",
+      "statusColumn": "Katayuan",
+      "task": "Gawain",
       "tasks": "Mga Gawain",
       "unassigned": "Hindi pinarangalan"
     },
@@ -5668,6 +5823,7 @@
       "associate": "Associate",
       "associated": "Nauugnay",
       "by": "ni",
+      "closeTask": "Isara ang gawain",
       "closed": "Sarado",
       "created": "Nilikha",
       "editAssigned": "Itinalaga ang I -edit",
@@ -5675,11 +5831,8 @@
       "notSpec": "Hindi tinukoy",
       "open": "Bukas",
       "opened": "Binuksan",
+      "reopenTask": "Buksan muli ang gawain",
       "unassigned": "Hindi pinarangalan"
-    },
-    "tasksPage": {
-      "showClosed": "Ipakita ang Mga Nakasarado",
-      "showOpen": "Ipakita ang Mga Nakabukas"
     },
     "workflowActions": {
       "add": "Magdagdag ng Aksyon",
@@ -5719,10 +5872,12 @@
       "addCard": "Magdagdag ng Card",
       "addStep": "Magdagdag ng Hakbang",
       "boardTab": "Board",
+      "cardsCount": "card",
       "clearSelection": "I-clear",
       "moveTo": "Ilipat sa…",
       "selectedCount": "{count} napili",
       "step": "Hakbang",
+      "stepsCount": "hakbang",
       "subtitle": "I-drag ang mga card sa pagitan ng mga hakbang",
       "unassigned": "Walang Itinalaga"
     },
@@ -5730,9 +5885,11 @@
       "assign": "Italaga",
       "assignedTo": "Itinalaga kay",
       "complete": "Kumpletuhin",
+      "email": "Email",
       "history": "Aktibidad",
       "outcome": "Resulta",
       "overdue": "Huli na",
+      "phone": "Telepono",
       "pin": "I-pin ang takdang gawain",
       "pinnedNote": "Naka-pin — pinapanatili ang may-ari sa lahat ng hakbang",
       "sendBack": "Ibalik",
@@ -5741,7 +5898,8 @@
       "snooze1Day": "1 Araw",
       "snooze1Week": "1 Linggo",
       "snooze3Days": "3 Araw",
-      "snoozed": "Naka-snooze"
+      "snoozed": "Naka-snooze",
+      "viewProfile": "Tingnan ang profile"
     },
     "workflowCategories": {
       "addCategory": "Magdagdag ng Kategorya",
@@ -5793,9 +5951,13 @@
       "addWorkflow": "Magdagdag ng Workflow",
       "added": "Naidagdag sa workflow.",
       "blankWorkflow": "Blangkong workflow",
+      "categories": "Mga kategorya ng workflow",
+      "category": "Kategorya",
       "noWorkflows": "Wala pang mga workflow. Magdagdag ng isa upang makapagsimula.",
+      "status": "Katayuan",
       "subtitle": "Ilipat ang mga tao sa pamamagitan ng isang serye ng mga hakbang",
-      "title": "Mga Workflow"
+      "title": "Mga Workflow",
+      "workflowCount": "{count} workflow"
     }
   }
 }

@@ -69,6 +69,7 @@
       "wholeService": "All service times"
     },
     "labels": {
+      "addLabel": "ラベルを追加",
       "align": "配置",
       "always": "常に",
       "barcode": "バーコード",
@@ -126,6 +127,30 @@
       "value": "値",
       "width": "幅（インチ）"
     },
+    "plate": {
+      "allYears": "すべての年",
+      "checkedIn": "{count} 人がチェックイン",
+      "enterHeadcount": "人数を入力",
+      "guests": "ゲスト {count} 人",
+      "guestsTitle": "ゲスト",
+      "headcount": "{count} 人をカウント",
+      "headcountsTitle": "今週の人数",
+      "inTheRoom": "在室",
+      "kiosk": "キオスク",
+      "lastRecorded": "最終記録 {date}: {count}",
+      "lastWeeks": "過去 {weeks} 週間",
+      "noCheckins": "今週はまだチェックインがありません。",
+      "noHeadcounts": "今週は人数が入力されていません。",
+      "noRooms": "今週はまだ誰もグループにチェックインしていません。",
+      "reports": "レポート",
+      "rooms": "部屋",
+      "thisWeek": "今週",
+      "unknownGroup": "削除されたグループ",
+      "weekOf": "{date} の週: {count}",
+      "weeklyCheckins": "週ごとのチェックイン",
+      "weeksWith": "過去 {weeks} 週間のうち {count} 週にチェックインがありました",
+      "yearsSummary": "すべての年の傾向、人数、グループ出席状況です。フィルターで日付を絞り込めます。"
+    },
     "serviceEdit": {
       "campus": "キャンパス",
       "campusAria": "キャンパスを選択",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "チェックインのスケジュール",
+      "checkinScheduleHelp": "任意。チェックインは毎週この時間の前後に自動的に開始・終了します。グループが閉じていない間は常にチェックインを受け付けるには、曜日を空欄のままにしてください。",
+      "closeMinutes": "チェックイン終了（終了の何分後）",
       "confirmDelete": "この礼拝時間を完全に削除してもよろしいですか？",
+      "day": "曜日",
+      "endTime": "終了時刻",
       "name": "礼拝時間",
       "nameAria": "礼拝時間名",
       "namePlaceholder": "午前 8:00",
+      "noSchedule": "スケジュールなし",
+      "openMinutes": "チェックイン開始（開始の何分前）",
       "service": "サービス",
       "serviceAria": "礼拝を選択",
+      "startTime": "開始時刻",
       "validate": {
         "name": "礼拝時間の名前は必須です。",
         "service": "礼拝を選択してください。"
@@ -153,7 +186,6 @@
       "attTrend": "出席の推移",
       "groupAtt": "グループの出席",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "セットアップ"
     }
   },
@@ -235,11 +267,13 @@
       "addCalendar": "カレンダーを追加",
       "calendar": "カレンダー",
       "calendars": "カレンダー",
-      "createCalendar": "カレンダーを作成",
       "createFirstCalendar": "最初のカレンダーを作成",
       "curatedCalendar": "編集されたカレンダー",
+      "find": "カレンダーを検索",
       "manageEvents": "イベントを管理",
       "noCalendars": "カレンダーが見つかりません",
+      "noMatches": "検索に一致するカレンダーはありません。",
+      "resultCount": "{total} 件中 {shown} 件のカレンダー",
       "status": "ステータス",
       "subtitleEmpty": "最初のカレンダーを作成して始めましょう",
       "title": "カレンダー"
@@ -249,7 +283,6 @@
       "calendar": "カレンダー",
       "calendarEvents": "カレンダーのイベント",
       "confirmRemoveGroup": "このグループをカレンダーから削除してもよろしいですか？",
-      "groupName": "グループ名",
       "groupsInCalendar": "カレンダー内のグループ",
       "importIcs": ".icsをインポート",
       "newEvent": "新しいイベント",
@@ -281,6 +314,8 @@
       "modeRegistrants": "登録者のみ",
       "modeRegistrantsHoh": "世帯主・登録者のみ",
       "push": "Push",
+      "text": "テキスト",
+      "textHint": "テキストメッセージは教会のテキスティングプロバイダーを通じて、テキストリマインダーをオンにした人にのみ送信されます。テキストごとに教会に費用が発生する場合があります。",
       "timeOfDay": "時刻",
       "timeOfDayHint": "教会の現地時間（例：午前9時）",
       "title": "リマインダー",
@@ -346,6 +381,7 @@
       "endTime": "終了",
       "eventDescription": "イベントの説明",
       "eventTitle": "イベントタイトル",
+      "find": "検索",
       "noApprovalNeeded": "承認不要",
       "noBlockouts": "ブロックアウトなし",
       "noBlockoutsDesc": "部屋やリソースが利用できない日程をブロックアウトしてください。",
@@ -359,6 +395,7 @@
       "reason": "理由",
       "resourceName": "リソース名",
       "resources": "リソース",
+      "resultCount": "{total} 件中 {shown} 件の{items}",
       "roomName": "部屋名",
       "rooms": "部屋",
       "startTime": "開始",
@@ -370,16 +407,19 @@
   },
   "common": {
     "add": "追加",
+    "all": "すべて",
     "amount": "金額",
     "appTheme": "アプリのテーマ",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "戻る",
+    "backTo": "{name} に戻る",
     "bottom": "下",
     "cancel": "キャンセル",
     "center": "中央",
     "change": "変更",
     "changePhoto": "写真を変更",
+    "clear": "クリア",
     "close": "閉じる",
     "collapse": "折りたたむ",
     "comboBox": {
@@ -456,12 +496,14 @@
     "saving": "保存しています...",
     "search": "検索",
     "select": "選択",
+    "selectedCount": "{count} 件選択済み",
     "sermons": "説教",
     "title": "タイトル",
     "top": "上",
     "tryAgain": "再試行",
     "update": "更新",
     "website": "ウェブサイト",
+    "years": "年",
     "yes": "はい"
   },
   "components": {
@@ -581,6 +623,8 @@
       "yourChurch": "あなたの教会",
       "yourProfile": "あなたのプロフィール"
     },
+    "allGroups": "すべてのグループ",
+    "allTasks": "すべてのタスク",
     "dashboardPage": {
       "dash": "ダッシュボード"
     },
@@ -593,11 +637,14 @@
       "upcomingEventsTitle": "何が起きているかを見る"
     },
     "myGroups": "自分のグループ",
+    "myTasks": "マイタスク",
     "needsAttention": {
       "approvals": "保留中のカレンダー承認: {count}件",
       "joinRequests": "保留中のグループ参加リクエスト: {count}件",
       "title": "注意が必要"
     },
+    "noGroups": "まだどのグループにも参加していません。",
+    "noOpenTasks": "あなたに割り当てられた未完了のタスクはありません。",
     "quickSetupModal": {
       "classroomName": "教室名",
       "createContinue": "作成して続行",
@@ -629,6 +676,8 @@
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
+      "liveHint": "先週の日曜日に在室していた人と、初めて来た世帯が、週を通してここに表示されます。",
+      "liveHintSunday": "チェックインと奉仕が利用されると、在室している人、奉仕している人、到着したばかりの人がここに表示されます。",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
@@ -671,16 +720,23 @@
       "donations": "献金"
     },
     "page": {
+      "allYears": "すべての年",
       "amount": "金額",
       "batch": "バッチ",
-      "currentYearCsv": "今年分の CSV",
-      "currentYearPrint": "今年分を印刷",
+      "csv": "CSV",
       "date": "日付",
       "fund": "献金先",
-      "lastYearCsv": "昨年分の CSV",
-      "lastYearPrint": "昨年分を印刷",
+      "giftCount": "献金 {count} 件",
+      "giftsInYear": "{year} 年の献金 {count} 件",
+      "give": "献金する",
+      "giving": "献金",
       "method": "支払い方法",
+      "noGiftsInYear": "{year} 年の献金はありません。",
       "notes": "メモ",
+      "paymentMethods": "支払い方法",
+      "recurring": "定期",
+      "sinceYear": "{year} 年以降 {amount}",
+      "statement": "証明書",
       "viewBatch": "バッチを表示",
       "willAppear": "献金が行われると、ここに表示されます。"
     }
@@ -737,6 +793,7 @@
       "anon": "匿名",
       "donor": "献金者",
       "editCampaign": "キャンペーンを編集",
+      "goalAmount": "目標 {amount}",
       "noPledges": "このキャンペーンへの誓約はまだありません。",
       "ofGoal": "目標に対して",
       "pledges": "誓約",
@@ -746,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "キャンペーンを追加",
+      "campaignCount": "キャンペーン {count} 件",
       "campaigns": "キャンペーン",
       "dates": "期間",
       "export": "エクスポート",
       "fund": "ファンド",
       "given": "献金額",
+      "givenAmount": "{amount} 献金済み",
       "goal": "目標",
       "noCampaigns": "キャンペーンはまだ作成されていません。",
       "ongoing": "継続中",
       "pledged": "誓約額",
+      "pledgedAmount": "{amount} 誓約済み",
       "progress": "進捗",
-      "subtitle": "誓約キャンペーンと献金目標の進捗を管理",
-      "totalCampaigns": "キャンペーン合計"
+      "subtitle": "誓約キャンペーンと献金目標の進捗を管理"
     },
     "donationBatchPage": {
-      "batchDate": "バッチの日付:",
-      "donations": "献金",
       "editBatch": "バッチを編集",
+      "giftCount": "献金 {count} 件",
       "subtitle": "このバッチ内の献金を管理します",
-      "title": "献金バッチ",
-      "totalAmount": "合計金額"
+      "title": "献金バッチ"
     },
     "donationBatchesPage": {
       "addBatch": "バッチを追加",
+      "allYears": "すべて",
+      "batchCount": "バッチ {count} 件",
       "batches": "バッチ",
-      "donations": "献金",
       "export": "エクスポート",
+      "failedEvents": "失敗したイベント（{count}）",
+      "giftCount": "献金 {count} 件",
       "stripeImportLink": "Stripeの欠落しているトランザクションをインポート",
-      "subtitle": "献金バッチを管理し、献金記録を追跡します",
-      "totalAmount": "合計金額"
+      "subtitle": "献金バッチを管理し、献金記録を追跡します"
     },
     "donationEdit": {
       "anon": "匿名",
@@ -837,8 +896,7 @@
       "total": "合計"
     },
     "failedDonations": {
-      "atRisk": "リスクあり",
-      "gifts": "失敗",
+      "lede": "{count} 件失敗 · {amount} が未回収のおそれ",
       "message": "ゲートウェイのメッセージ",
       "none": "失敗した継続献金はありません。",
       "retry": "再試行",
@@ -858,10 +916,10 @@
       "visible": "献金者に表示"
     },
     "fundPage": {
-      "donors": "寄付者",
+      "donorCount": "献金者 {count} 人",
       "filter": "フィルター",
-      "subtitle": "この献金先への献金と寄付を記録します",
-      "totalAmount": "合計金額"
+      "giftCount": "献金 {count} 件",
+      "subtitle": "この献金先への献金と寄付を記録します"
     },
     "funds": {
       "fund": "献金先",
@@ -877,15 +935,14 @@
       "dateEnd": "終了日",
       "dateStart": "開始日",
       "don": "献金",
-      "donFilt": "献金の絞り込み",
       "donor": "献金者",
       "export": "エクスポート",
+      "fundCount": "献金先 {count} 件",
       "noDon": "選択した期間の献金はありません",
       "nonDeductible": "控除対象外",
       "subtitle": "献金先を管理し、献金の分類を整理します",
       "taxDeductible": "税控除対象",
       "taxStatus": "税ステータス",
-      "totalFunds": "合計ファンド",
       "viewBatch": "バッチを表示"
     },
     "givingLink": {
@@ -895,7 +952,13 @@
       "title": "献金リンク",
       "url": "リンク"
     },
+    "logGift": {
+      "amountError": "0 より大きい金額を入力してください（例: 25.00）。",
+      "batchHint": "この日付のバッチに保存されます。必要に応じてバッチが作成されます。",
+      "title": "献金を記録"
+    },
     "period": {
+      "label": "期間",
       "monthly": "毎月",
       "quarterly": "四半期ごと",
       "weekly": "毎週"
@@ -1014,6 +1077,9 @@
     "tabs": {
       "dashboard": "ダッシュボード",
       "lapsedGivers": "献金が途絶えた方"
+    },
+    "view": {
+      "label": "表示"
     }
   },
   "fileUpload": {
@@ -1136,14 +1202,17 @@
       "archForms": "アーカイブ済みのフォーム",
       "archive": "アーカイブ",
       "archiveFormAria": "フォーム{name}をアーカイブ",
+      "archived": "アーカイブ済み",
       "confirmDuplicate": "このフォームを複製しますか？",
       "confirmMsg1": "このフォームをアーカイブしてもよろしいですか？",
       "confirmMsg2": "このフォームを復元してもよろしいですか？",
       "duplicate": "複製",
       "duplicated": "Form duplicated",
+      "find": "フォームを検索",
       "forms": "フォーム",
       "noArch": "アーカイブ済みのフォームはありません。",
       "noCustomMsg": "カスタムフォームはまだ作成されていません。追加するとここに表示されます。",
+      "noMatches": "検索に一致するフォームはありません。",
       "personProfileForm": "Person profile form",
       "restore": "復元",
       "restoreFormAria": "フォーム{name}を復元",
@@ -1200,14 +1269,18 @@
       "confirmDuplicate": "このグループを複製しますか？メンバーはコピーされません。",
       "copySuffix": "（コピー）",
       "discussions": "Discussions",
+      "duplicate": "複製",
       "duplicateTooltip": "このグループを複製",
+      "email": "メール",
       "emailTooltip": "このグループにメールを送信",
       "location": "場所",
       "meetingTime": "集会時間",
-      "moreLabels": "その他のラベル",
+      "notify": "通知",
+      "notifyTooltip": "プッシュ通知を送信",
       "parentPickup": "保護者のお迎え",
       "printNametag": "名札を印刷",
       "team": "チーム",
+      "text": "テキスト",
       "textTooltip": "このグループにテキストを送信",
       "trackAttendance": "出席を記録"
     },
@@ -1361,6 +1434,21 @@
     "groupPage": {
       "addPpl": "人を追加"
     },
+    "groupRecord": {
+      "allEvents": "すべてのイベント",
+      "allMembers": "すべてのメンバー",
+      "allSessions": "すべてのセッション",
+      "healthSummary": "メンバー {members} 人 · 90 日間で {joined} 人参加 · {left} 人退出",
+      "lastEvent": "前回",
+      "latestSession": "最新 {date}",
+      "nextEvent": "次回",
+      "noMembers": "まだメンバーがいません。",
+      "noSessions": "まだセッションがありません。",
+      "pendingCount": "保留中 {count} 件",
+      "seeHealth": "健全性を表示",
+      "sessionCount": "セッション {count} 件",
+      "sessionCountOne": "セッション 1 件"
+    },
     "groupSessions": {
       "addSesMsg": "続けるには新しいセッションを追加してください。",
       "allYears": "すべての年",
@@ -1389,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "グループを追加",
+      "allCategories": "すべて",
       "cat": "カテゴリー",
+      "clearFilters": "フィルターをクリア",
       "confirmRestore": "{name} をアーカイブから復元しますか？",
       "export": "エクスポート",
       "groups": "グループ",
-      "labels": "ラベル",
+      "moreCategories": "その他のカテゴリー",
       "noGroupMsg": "グループが見つかりません。グループを作成してください。",
       "noMatchMsg": "検索条件に一致するグループがありません。",
       "pendingRequestSingular": "{count}件の保留中のリクエスト",
@@ -1401,6 +1491,7 @@
       "pers": "1 人",
       "ppl": "人々",
       "restore": "復元",
+      "resultCount": "{total} 件中 {shown} 件のグループ",
       "searchPlaceholder": "グループを検索...",
       "showArchived": "アーカイブ済みを表示",
       "spPpl": " 人",
@@ -1480,6 +1571,7 @@
       "noPhoneNotice": "{count}人が電話番号を登録していません。",
       "noPhoneNoticeSingular": "{count}人が電話番号を登録していません。",
       "noPhoneSkipped": "{count}人をスキップ（電話番号なし）。",
+      "noProvider": "テキストを送信する前に、設定でテキスティングプロバイダーを設定してください。",
       "optedOutNotice": "{count}人がオプトアウト済み。",
       "optedOutSkipped": "{count}人をスキップ（オプトアウト済み）。",
       "phoneOnFile": "登録済み電話",
@@ -1491,7 +1583,10 @@
       "sentSummary": "対象受信者{recipientCount}人中{successCount}人に送信。",
       "sentSummarySingular": "対象受信者{recipientCount}人中{successCount}人に送信。",
       "textGroupTitle": "グループにテキスト：{groupName}",
-      "textPersonTitle": "テキスト：{personName}"
+      "textPersonTitle": "テキスト：{personName}",
+      "textVolunteersTitle": "ボランティアにテキストを送信",
+      "volunteersSummary": "{totalMembers} 人のボランティアのうち {eligibleCount} 人がこのテキストを受信します。",
+      "volunteersSummarySingular": "{totalMembers} 人のボランティアのうち {eligibleCount} 人がこのテキストを受信します。"
     },
     "serviceTimes": {
       "services": "礼拝:"
@@ -1562,7 +1657,7 @@
       "registrations": "登録",
       "roomsResources": "部屋・リソース",
       "sermons": "説教",
-      "site": "サイト",
+      "streamSettings": "設定",
       "stripeImport": "Stripeインポート",
       "website": "ウェブサイト"
     }
@@ -1665,7 +1760,8 @@
       "placeholder": "7月生まれの30歳以上の男性を表示して",
       "search": "検索",
       "searching": "検索中...",
-      "title": "AI 検索"
+      "title": "AI 検索",
+      "unavailable": "AI 検索は一時的に利用できません。後でもう一度お試しいただくか、上の検索をご利用ください。"
     },
     "bulk": {
       "actions": "アクション",
@@ -1704,7 +1800,6 @@
       "removeFromGroupPrompt": "選択した{count}人をグループから削除します。",
       "removeFromGroupTitle": "グループから削除",
       "removeSuccess": "{count}人を{group}から削除しました。",
-      "selected": "選択中",
       "setCampus": "キャンパスを設定",
       "value": "値",
       "workflowSuccess": "{count}人をワークフローに追加しました。"
@@ -1722,6 +1817,27 @@
       "title": "人口統計",
       "total": "合計",
       "unassigned": "未割り当て"
+    },
+    "directory": {
+      "ask": "質問",
+      "clear": "クリア",
+      "countHouseholds": "{households} 世帯 · {people} 人",
+      "everyone": "全員",
+      "family": "{name} 家",
+      "households": "世帯",
+      "noMatch": "その検索に一致する人はいません",
+      "noMatchHint": "別の名前を試すか、詳細検索を使って詳細で絞り込んでください。",
+      "noPeople": "まだ人が登録されていません",
+      "noPeopleHint": "下から最初の人を追加してください。",
+      "savedLists": "保存済みリスト",
+      "searchLabel": "世帯または人を検索",
+      "selectAll": "表示中のすべての世帯を選択",
+      "selectHousehold": "{name} を選択",
+      "selectedCount": "{count} 件選択済み",
+      "subtitle": "世帯を閲覧したり、人を開いたり、リストや質問で絞り込んだりできます。",
+      "table": "表",
+      "title": "人",
+      "viewAs": "表示形式"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -1813,12 +1929,7 @@
       "unknownGroup": "不明なグループ"
     },
     "household": {
-      "age": "年齢：",
-      "groups": "グループ：",
-      "house": " 世帯",
-      "lastActivity": "最終アクティビティ：",
-      "noContactInfo": "連絡先情報なし",
-      "status": "ステータス："
+      "house": " 世帯"
     },
     "householdEdit": {
       "addMember": "世帯メンバーを追加",
@@ -1839,7 +1950,6 @@
       "confirmDelete": "リスト「{name}」を削除しますか？この操作は元に戻せません。",
       "createdBy": "{name}作成",
       "delete": "リストを削除",
-      "empty": "保存済みリストはまだありません。詳細検索を実行して「リストとして保存」してください。",
       "household": "世帯を含める",
       "householdAll": "世帯全員",
       "householdChildren": "該当者の子ども",
@@ -1853,8 +1963,7 @@
       "settings": "リスト設定",
       "sharing": "このリストを見られる人",
       "sharingOrg": "スタッフ全員",
-      "sharingPrivate": "自分のみ",
-      "title": "保存済みリスト"
+      "sharingPrivate": "自分のみ"
     },
     "merge": {
       "findPerson": "統合する人を検索",
@@ -1884,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "人を追加",
-      "allMembers": "全メンバー",
       "bDay": "誕生日",
       "bDayNo": "誕生日（年なし）",
       "deleteOp": "削除オプション",
@@ -1894,15 +2002,12 @@
       "loading": "人々を読み込んでいます...",
       "middle": "ミドルネーム",
       "nameNote": "名札の備考",
-      "noPeopleFound": "人が見つかりません",
       "peopleFound": "{count}人が見つかりました",
       "photo": "写真",
       "primEmail": "主なメールアドレス",
       "primPhone": "主な電話番号",
       "printDirectory": "名簿を印刷",
       "printResults": "結果を印刷",
-      "searchPpl": "人を検索",
-      "searchResults": "検索結果",
       "showAll": "全メンバーを表示",
       "showingMembers": "{count}人のメンバーを表示中"
     },
@@ -1922,13 +2027,10 @@
       "group": "グループ",
       "membership": "会員資格とグループ",
       "names": "名前",
-      "placeholder": "名前で検索...",
       "service": "サービス",
       "serviceTime": "礼拝時間",
       "simp": "簡易",
-      "simpSearch": "人の検索",
-      "type": "タイプ",
-      "typeToSearch": "瞬時に検索するには入力してください"
+      "type": "タイプ"
     },
     "peopleSearchResults": {
       "deletePersonAria": "{name}を削除",
@@ -1939,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "ワークフローに追加",
-      "age": "年齢",
       "emailPerson": "この人にメールを送る",
-      "gender": "性別",
       "hasLogin": "ログインあり",
-      "maritalStatus": "婚姻状況",
       "sendTextMessage": "テキストメッセージを送信"
     },
     "personEdit": {
@@ -1973,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "出席",
-      "details": "詳細",
       "donations": "献金",
       "forms": "フォーム",
       "groups": "グループ",
@@ -1985,12 +2083,44 @@
       "notesSuffix": " メモ",
       "thisPerson": "この人"
     },
+    "personRecord": {
+      "allForms": "すべてのフォーム",
+      "allNotes": "すべてのメモ",
+      "allYears": "すべての年",
+      "attendanceSummary": "過去 {weeks} 週間のうち {count} 週",
+      "email": "メール",
+      "givenBy": "献金者",
+      "givingYear": "{year} 年 · 献金 {count} 件",
+      "hereThisWeek": "今週出席",
+      "household": "世帯",
+      "lastAttended": "最終出席 {date}",
+      "lastGift": "最終献金 {date}。",
+      "loadError": "{what} を読み込めませんでした。",
+      "noAttendance": "まだ出席の記録がありません。",
+      "noDirectory": "名簿に非表示",
+      "noGiftsYear": "{year} 年に記録された献金はありません。",
+      "noHouseholdGiftsYear": "{year} 年に記録された世帯の献金はありません。",
+      "noNotes": "まだメモがありません。",
+      "notSubmitted": "未提出",
+      "noteCount": "メモ {count} 件",
+      "recentAttendance": "最近の出席",
+      "recentGifts": "{year} 年の献金",
+      "service": "礼拝",
+      "showingLatest": "最新 {count} 件を表示中",
+      "statement": "{year} 年の証明書",
+      "submitted": "提出済み",
+      "text": "テキスト",
+      "weekAttended": "{date} の週: 出席",
+      "weekNoRecord": "{date} の週: 出席記録なし",
+      "weeklyAttendance": "週ごとの出席",
+      "where": "場所",
+      "wholeHousehold": "世帯全体",
+      "workflow": "ワークフロー"
+    },
     "personView": {
       "hasLoginLabel": "ログインあり：{email}",
       "home": "ホーム",
-      "memShip": "会員資格:",
       "mobile": "携帯",
-      "persDet": "個人情報",
       "work": "勤務先"
     },
     "pickup": {
@@ -2004,9 +2134,6 @@
       "status": "ステータス",
       "title": "お迎え",
       "trusted": "信頼できる"
-    },
-    "tabs": {
-      "noImplement": "未実装"
     },
     "updateHouseHold": {
       "update": "住所を更新"
@@ -2028,6 +2155,7 @@
     "firstName": "名",
     "gender": "性別",
     "grade": "学年",
+    "guest": "ゲスト",
     "inactive": "非アクティブ",
     "lastName": "姓",
     "line1": "住所 1",
@@ -2044,6 +2172,7 @@
     "person": "人物",
     "phone": "電話",
     "prefix": "敬称（前）",
+    "recentPeople": "最近表示した人",
     "regularAttendee": "定期出席者",
     "school": "学校",
     "single": "独身",
@@ -2356,7 +2485,6 @@
       "selectedPrefix": "選択済み："
     },
     "ministryList": {
-      "getStarted": "最初のミニストリーを作成して始めましょう",
       "noMinMsg": "ミニストリーが見つかりません。ミニストリーを作成してください。"
     },
     "ministryPage": {
@@ -2375,6 +2503,8 @@
       "planNameAria": "プラン名",
       "planReq": "プラン名は必須です。",
       "prepared": "仮登録（公開するまでボランティアには表示されません）",
+      "repeatWeekly": "毎週繰り返す週数",
+      "repeatWeeklyHelper": "1 週間につき 1 つのプランを作成し、それぞれ前のプランからコピーします",
       "servDate": "礼拝日",
       "servReq": "礼拝日は必須です。",
       "serviceDateAria": "礼拝日",
@@ -2430,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "年間プランを適用",
       "bulkSchedule": "一括で予定に追加",
-      "createFirst": "最初のプランを作成",
-      "createPlan": "プランを作成",
       "newPlan": "新しいプラン",
       "noPlans": "プランが見つかりません",
-      "noUpcomingPlans": "今後のプランはありません",
-      "noUpcomingPlansDescription": "今日以降に予定されているプランはありません。過去のプランを表示するには、上の「過去を表示」トグルを使用してください。",
+      "noUpcomingHint": "今日以降の予定はありません。以前のプランを見るには「過去」を選択してください。",
+      "past": "過去",
       "plans": "プラン",
       "scheduleLesson": "レッスンを予定に追加",
+      "serviceDate": "礼拝日",
       "serviceOrder": "式次第",
-      "showPast": "過去を表示"
+      "upcoming": "今後"
     },
     "planPage": {
       "assign": "Team Assignments",
-      "assignments": "割り当て",
       "band": "バンド",
       "loadingPlan": "プランを読み込んでいます...",
       "noteSave": "メモを保存しました",
-      "serviceOrder": "式次第",
-      "servicePlan": "礼拝プラン",
-      "subtitle": "礼拝の計画と予定を管理します"
+      "servicePlan": "礼拝プラン"
     },
     "planType": {
       "details": "プランタイプの詳細"
@@ -2483,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "プランタイプを追加",
       "createPlanType": "プランタイプを作成",
-      "createPlanTypes": "プランタイプを作成",
       "noPlanTypes": "プランタイプが見つかりません",
       "planTypes": "プランタイプ"
     },
     "planTypePage": {
       "notFound": "プランタイプが見つかりません",
       "overview": "概要",
-      "planType": "プランタイプ",
-      "subtitle": "プランタイプの設定を行います"
+      "planType": "プランタイプ"
     },
     "planTypeReminders": {
       "channels": "Send By",
@@ -2505,6 +2629,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "テキスト",
+      "textHint": "テキストメッセージは教会のテキスティングプロバイダーを通じて、テキストリマインダーをオンにした人にのみ送信されます。テキストごとに教会に費用が発生する場合があります。",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2544,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "ミニストリーを追加",
       "editMinistry": "ミニストリーを編集",
-      "selMin": "ミニストリーを選択",
       "subtitle": "ミニストリーと礼拝プランを管理します"
     },
     "positionEdit": {
@@ -2613,6 +2738,7 @@
       "viewingAs": "表示中："
     },
     "servingOverviewPage": {
+      "allPositions": "すべてのポジション",
       "autoSchedule": "自動スケジュール",
       "autoScheduleConfirm": "この期間のすべての空き枠にボランティアを自動で割り当てますか？",
       "autoScheduleResult": "{total}件中{filled}件のプランを自動スケジュール",
@@ -2633,11 +2759,17 @@
       "removeConfirm": "{name} をこの割り当てから外しますか？",
       "startDate": "開始日",
       "subtitle": "割り当てられたボランティアの日付別ポジション",
+      "textAll": "ボランティアにテキストを送信",
       "title": "奉仕の概要"
     },
     "servingPage": {
-      "showAll": "すべて表示",
-      "showAllHint": "メンバーではないため、あなたのミニストリーは非表示になっています。表示するには上の「すべて表示」をオンにしてください。"
+      "actions": "操作",
+      "all": "すべて",
+      "allHint": "メンバーではないため、ミニストリーが非表示になっています。表示するには上の「すべて」を選択してください。",
+      "findMinistry": "ミニストリーを検索",
+      "mine": "自分",
+      "ministries": "ミニストリー",
+      "whichMinistries": "対象のミニストリー"
     },
     "signageFeed": {
       "button": "デジタルサイネージ",
@@ -2658,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "Create Team",
-      "createTeams": "Create Teams",
-      "manage": "管理",
       "members": "名",
       "newTeam": "New Team",
       "noTeam": "No teams found. Please create a team.",
@@ -2709,6 +2839,7 @@
       "typeService": "礼拝"
     },
     "timeList": {
+      "addTime": "時間を追加",
       "noTime": "まだ時間が追加されていません",
       "sunServ": "主日礼拝",
       "times": "時間"
@@ -2735,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "連携",
+      "linked": "連携済み",
+      "notLinked": "未連携",
       "signUp": "サインアップ",
       "unlink": "連携を解除"
     },
@@ -2775,9 +2908,7 @@
       "saveChanges": "変更を保存",
       "saveError": "変更を保存できませんでした",
       "sendRequest": "Send request",
-      "subtitle": "プロフィールと設定を管理します",
       "themePreferences": "テーマ設定",
-      "themePreferencesHelper": "テーマ設定は自動的に保存され、このデバイスで記憶されます。",
       "togglePasswordVisibility": "パスワードの表示/非表示",
       "valEmail": "有効なメールアドレスを入力してください。"
     }
@@ -2834,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "日付",
       "deleteConfirm": "この登録を完全に削除しますか？",
+      "editSettings": "設定を編集",
       "eventFull": "このイベントは定員に達しています。",
       "eventNotFound": "イベントが見つかりません",
       "eventRegistrations": "イベント登録",
@@ -2875,9 +3007,11 @@
       "noEventsHint": "イベント編集設定でイベントの登録を有効にします。",
       "registered": "登録済み",
       "registrations": "登録",
+      "search": "イベントを検索",
       "subtitle": "イベント登録設定を管理し、登録者を表示",
       "tags": "タグ",
-      "title": "イベント登録"
+      "title": "イベント登録",
+      "turnOnRegistration": "登録を有効にする"
     }
   },
   "reporting": {
@@ -3007,14 +3141,17 @@
         "weekly": "毎週",
         "yes": "はい"
       },
-      "services": "サービス",
       "servicesTab": {
         "addService": "礼拝を追加",
         "defaultLabel": "日曜日の朝",
+        "duration": "長さ",
+        "none": "まだ礼拝がありません。ライブ配信をスケジュールするには礼拝を追加してください。",
+        "provider": "プロバイダー",
+        "service": "礼拝",
+        "time": "時間",
         "title": "サービス",
         "weekly": "毎週"
       },
-      "settings": "設定",
       "sidebarTabs": {
         "add": "追加",
         "title": "コンテンツタブ"
@@ -3062,6 +3199,7 @@
     "notScheduled": "予定なし",
     "playlist": "再生リスト",
     "playlists": {
+      "addPlaylist": "プレイリストを追加",
       "createFirstPlaylist": "最初の再生リストを作成",
       "noPlaylistsFound": "再生リストが見つかりません",
       "noPlaylistsMatch": "検索条件に一致する再生リストがありません",
@@ -3096,6 +3234,7 @@
       "title": "Podcast Feed"
     },
     "publishDate": "公開日",
+    "resultCount": "{total} 件中 {shown} 件の説教",
     "searchPlaceholder": "タイトルまたは再生リストで説教を検索...",
     "sermon": "説教",
     "sermonEdit": {
@@ -3152,11 +3291,15 @@
       "act": "アクティブ",
       "arch": "アーカイブ済み",
       "church": "教会",
+      "churchCount": "教会 {count} 件",
       "churchName": "教会名",
       "churches": "教会",
       "churchesSubtitle": "すべての教会を検索・管理",
       "commons": "Commons",
       "commonsSubtitle": "コミュニティから投稿された素材と報告を審査します",
+      "groupDirectory": "ディレクトリ",
+      "groupOperations": "運用",
+      "groupSystem": "システム",
       "impersonateSubtitle": "サポートのために他のユーザーとしてログイン",
       "impersonateUser": "ユーザーとして操作",
       "jobs": "バックグラウンドジョブ",
@@ -3176,6 +3319,7 @@
       "servAdmin": "サーバー管理",
       "serverHealth": "サーバー健全性",
       "serverHealthSubtitle": "バックエンドサービスの状態を確認",
+      "status": "ステータス",
       "subtitle": "サーバー全体の設定と教会を管理します",
       "translationLookups": "翻訳の参照",
       "translationSubtitle": "翻訳されたロケール文字列を検索",
@@ -3465,6 +3609,19 @@
       "title": "ユーザー検索"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "キーを追加"
+    },
+    "planPage": {
+      "addMenu": "その他の追加方法",
+      "hideNotes": "メモを非表示",
+      "hideTimes": "時間を非表示"
+    },
+    "songPage": {
+      "deleteSong": "曲を削除"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "閉じる",
@@ -3742,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "カテゴリ",
-      "createTemplate": "テンプレートを作成",
       "deleteConfirm": "テンプレート「{name}」を削除しますか？",
       "emptyDescription": "一括メールを始めるためにテンプレートを作成します。",
       "emptyTitle": "メールテンプレートはまだありません",
@@ -3873,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "ドメイン管理者の役割は権限を編集できません。ドメイン管理者はすべてにアクセスできます。",
-      "permEdit": "権限を編集",
-      "roleEdit": "役割を編集:"
+      "permEdit": "権限を編集"
     },
     "rolePermissions": {
       "filter": "Filter permissions",
@@ -3885,6 +4040,7 @@
       "accDesc": "献金の閲覧と管理ができます。",
       "addCustomRoleAria": "カスタムロールを追加",
       "addPredefinedRoleAria": "{name}ロールを追加",
+      "addRole": "ロールを追加",
       "canEdit": "次のほとんどのデータを編集できます: ",
       "churchDesc": "（人物、グループ、出席、フォームを含みます）。",
       "churchStaff": "教会スタッフ",
@@ -3958,6 +4114,8 @@
       "clearstreamHelper": "あなたのAPIキーを作成：",
       "clearstreamHelperLink": "Clearstreamアカウント設定",
       "clearstreamHelperSuffix": "「APIキー」の下にあります。",
+      "inboundUrl": "受信（STOP）Webhook URL",
+      "inboundUrlHelper": "これをプロバイダーの受信メッセージ Webhook に貼り付けると、STOP と返信した人はここでもテキストの配信が停止されます。",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "MinistryStuffのテキストメッセージ契約が有効で、今サイクルの残りクレジットは{}件です。",
       "ministryStuffHelper": "APIキーは不要です。テキストメッセージのクレジットは、この教会に自動的にリンクされたMinistryStuffの契約から提供されます。プランの管理はこちら：",
@@ -4192,8 +4350,8 @@
     "blocksPage": {
       "actions": "アクション",
       "addBlock": "ブロックを追加",
+      "blockCount": "ブロック {count} 件",
       "blocks": "ブロック",
-      "createFirstBlock": "最初のブロックを作成",
       "elements": "要素",
       "getStarted": "最初の再利用ブロックを作成して始めましょう",
       "noBlocksFound": "ブロックが見つかりません",
@@ -4201,7 +4359,6 @@
       "reusableBlocks": "再利用ブロック",
       "sections": "セクション",
       "subtitle": "ウェブサイトで再利用できるコンテンツブロックを作成・管理します",
-      "totalBlocks": "ブロック総数",
       "type": "タイプ"
     },
     "blog": {
@@ -4212,6 +4369,7 @@
       "draft": "下書き",
       "navHint": "訪問者は/blogで投稿を読むことができます。見つけられるように、ページ画面にナビゲーションリンクを追加してください:",
       "noPosts": "記事はまだありません",
+      "postCount": "投稿 {count} 件",
       "posts": "記事",
       "published": "公開済み",
       "scheduled": "予約済み",
@@ -4512,6 +4670,7 @@
       "imageDescribingTopic": "テーマを表す画像",
       "info": "情報",
       "javascriptExcludeTag": "JavaScript（script タグは不要）",
+      "javascriptUrlWarning": "これは Web アドレスであり、JavaScript ではありません。画像を表示するには、画像要素を使用するか、HTML コンテンツに <img src=\"...\"> を入れてください。",
       "label": "ラベル",
       "linkUrlOptional": "リンク URL（任意）",
       "loadingEditor": "エディターを読み込んでいます...",
@@ -4766,20 +4925,15 @@
       "pageSettings": "ページの設定",
       "previewOf": "{title}のプレビュー",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "プレビュー中: {title}",
-      "title": "ウェブサイトのプレビュー"
+      "subtitle": "プレビュー中: {title}"
     },
     "pages": {
       "convert": "変換"
     },
     "pagesPage": {
       "actions": "アクション",
-      "addFirstPage": "最初のページを追加",
       "addPage": "ページを追加",
-      "autoGenerated": "自動生成",
       "confirmConvert": "この自動生成ページをカスタムページに変換しますか？",
-      "customPages": "カスタムページ",
-      "description": "以下はカスタムページと自動生成ページの一覧です。ページを追加したり、既存のページを編集したり、自動生成ページをカスタムページに変換したりできます。",
       "desktopOnly": "ページエディターはデスクトップ表示でのみ利用できます",
       "generated": "生成済み",
       "getStarted": "最初のページを追加して始めましょう。",
@@ -4788,6 +4942,7 @@
       "hidePublicSiteWarning": "公開ウェブサイトはオフになっています。訪問者はログイン画面に転送され、検索エンジンにはサイトをインデックスしないよう指示されます。",
       "mainNavigation": "メインナビゲーション",
       "noPagesFound": "ページが見つかりません",
+      "pageCount": "ページ {count} 件",
       "pages": "ページ",
       "path": "パス",
       "showLogin": "ログインを表示",
@@ -4795,7 +4950,6 @@
       "startFromTemplate": "テンプレートから始める",
       "subtitle": "ウェブサイトのページ、コンテンツ、ナビゲーションを管理します",
       "toggleLoginVisibility": "ログインボタンの表示を切り替える",
-      "totalPages": "ページ総数",
       "viewLivePage": "ページをプレビュー",
       "websitePages": "ウェブサイトのページ"
     },
@@ -5350,7 +5504,6 @@
       "signature": "調号"
     },
     "keys": {
-      "add": "追加",
       "addExternalLink": "外部リンクを追加",
       "addFiles": "ファイルを追加",
       "audioTracks": "音声トラック",
@@ -5366,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "最初の曲を追加",
         "message": "最初の曲をライブラリに追加して始めましょう。",
         "title": "曲が見つかりません"
       },
@@ -5424,8 +5576,7 @@
       "addArrangement": "アレンジメントを追加",
       "loading": "読み込んでいます...",
       "noArrangementDescription": "サイドバーからアレンジメントを選択して開始します。",
-      "noArrangementSelected": "アレンジメントが選択されていません",
-      "subtitle": "曲の詳細と編曲を管理します"
+      "noArrangementSelected": "アレンジメントが選択されていません"
     },
     "songSearchDialog": {
       "closeDialogAria": "ダイアログを閉じる",
@@ -5437,7 +5588,7 @@
       "deleteSelected": "選択した曲を削除",
       "deleteSelectedConfirm": "選択した曲を削除しますか？この操作は元に戻せません。",
       "deselectAll": "すべての選択を解除",
-      "search": "検索",
+      "resultCount": "曲 {count} 件",
       "searchSongs": "曲を検索",
       "selectAll": "Select all",
       "songs": "曲",
@@ -5626,8 +5777,11 @@
       "message": "メッセージ",
       "messageHint": "任意。空欄の場合は既定のリマインダー文が使用されます。",
       "noDueDate": "このタスクには期限がないため、期限が設定されるまでリマインダーは送信されません。",
+      "none": "リマインダーは設定されていません。",
       "save": "リマインダーを保存",
       "saved": "保存しました",
+      "text": "テキスト",
+      "textHint": "テキストメッセージは教会のテキスティングプロバイダーを通じて、テキストリマインダーをオンにした人にのみ送信されます。テキストごとに教会に費用が発生する場合があります。",
       "timeOfDay": "時刻",
       "title": "リマインダー",
       "when": "リマインダーをいつ送信しますか？"
@@ -5656,8 +5810,9 @@
       "noTasks": "タスクが見つかりません",
       "notSpecified": "未指定",
       "reqMe": "自分が依頼したもの",
-      "showClosedTasksAria": "完了したタスクを表示",
-      "showOpenTasksAria": "未完了のタスクを表示",
+      "status": "タスクのステータス",
+      "statusColumn": "ステータス",
+      "task": "タスク",
       "tasks": "タスク",
       "unassigned": "未割り当て"
     },
@@ -5668,6 +5823,7 @@
       "associate": "関連付け",
       "associated": "関連付け済み",
       "by": "実行者:",
+      "closeTask": "タスクを閉じる",
       "closed": "クローズ",
       "created": "作成",
       "editAssigned": "担当者を編集",
@@ -5675,11 +5831,8 @@
       "notSpec": "未指定",
       "open": "オープン",
       "opened": "再オープン",
+      "reopenTask": "タスクを再開",
       "unassigned": "未割り当て"
-    },
-    "tasksPage": {
-      "showClosed": "クローズを表示",
-      "showOpen": "オープンを表示"
     },
     "workflowActions": {
       "add": "アクションを追加",
@@ -5719,10 +5872,12 @@
       "addCard": "カードを追加",
       "addStep": "ステップを追加",
       "boardTab": "ボード",
+      "cardsCount": "カード",
       "clearSelection": "選択を解除",
       "moveTo": "移動先…",
       "selectedCount": "{count}件選択中",
       "step": "ステップ",
+      "stepsCount": "ステップ",
       "subtitle": "カードをステップ間にドラッグ",
       "unassigned": "未割り当て"
     },
@@ -5730,9 +5885,11 @@
       "assign": "割り当て",
       "assignedTo": "担当者",
       "complete": "完了",
+      "email": "メール",
       "history": "アクティビティ",
       "outcome": "結果",
       "overdue": "期限超過",
+      "phone": "電話",
       "pin": "担当者を固定",
       "pinnedNote": "固定済み — ステップをまたいでも担当者が保持されます",
       "sendBack": "差し戻す",
@@ -5741,7 +5898,8 @@
       "snooze1Day": "1日",
       "snooze1Week": "1週間",
       "snooze3Days": "3日",
-      "snoozed": "スヌーズ中"
+      "snoozed": "スヌーズ中",
+      "viewProfile": "プロフィールを表示"
     },
     "workflowCategories": {
       "addCategory": "カテゴリを追加",
@@ -5793,9 +5951,13 @@
       "addWorkflow": "ワークフローを追加",
       "added": "ワークフローに追加しました。",
       "blankWorkflow": "空のワークフロー",
+      "categories": "ワークフローのカテゴリー",
+      "category": "カテゴリー",
       "noWorkflows": "ワークフローがまだありません。追加して始めてください。",
+      "status": "ステータス",
       "subtitle": "一連のステップを通じて人々をサポート",
-      "title": "ワークフロー"
+      "title": "ワークフロー",
+      "workflowCount": "ワークフロー {count} 件"
     }
   }
 }

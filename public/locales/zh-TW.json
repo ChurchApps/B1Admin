@@ -69,6 +69,7 @@
       "wholeService": "All service times"
     },
     "labels": {
+      "addLabel": "新增標籤",
       "align": "對齊",
       "always": "始終",
       "barcode": "條形碼",
@@ -126,6 +127,30 @@
       "value": "值",
       "width": "寬度（英寸）"
     },
+    "plate": {
+      "allYears": "所有年份",
+      "checkedIn": "{count} 人已簽到",
+      "enterHeadcount": "輸入人數統計",
+      "guests": "{count} 位訪客",
+      "guestsTitle": "訪客",
+      "headcount": "已統計 {count} 人",
+      "headcountsTitle": "本週人數統計",
+      "inTheRoom": "在場",
+      "kiosk": "自助服務機",
+      "lastRecorded": "最近記錄 {date}：{count}",
+      "lastWeeks": "最近 {weeks} 週",
+      "noCheckins": "本週尚無簽到。",
+      "noHeadcounts": "本週尚未輸入人數統計。",
+      "noRooms": "本週尚無人簽到任何團體。",
+      "reports": "報告",
+      "rooms": "教室",
+      "thisWeek": "本週",
+      "unknownGroup": "已刪除的團體",
+      "weekOf": "{date} 當週：{count}",
+      "weeklyCheckins": "每週簽到",
+      "weeksWith": "最近 {weeks} 週中有 {count} 週有簽到",
+      "yearsSummary": "歷年的趨勢、人數統計和團體出席情況。使用篩選器縮小日期範圍。"
+    },
     "serviceEdit": {
       "campus": "校園",
       "campusAria": "選擇堂區",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "簽到時間表",
+      "checkinScheduleHelp": "選填。每週會在此時間前後自動開啟和關閉簽到。如果日期留空，則只要團體未關閉，簽到將保持開啟。",
+      "closeMinutes": "關閉簽到（結束後分鐘數）",
       "confirmDelete": "您確定要永久刪除該服務時間嗎？",
+      "day": "星期",
+      "endTime": "結束時間",
       "name": "服務時間",
       "nameAria": "禮拜時間名稱",
       "namePlaceholder": "上午 8:00",
+      "noSchedule": "無時間表",
+      "openMinutes": "開啟簽到（開始前分鐘數）",
       "service": "服務",
       "serviceAria": "選擇禮拜",
+      "startTime": "開始時間",
       "validate": {
         "name": "服務時間名稱為必填項。",
         "service": "請選擇一項服務。"
@@ -153,7 +186,6 @@
       "attTrend": "出席趨勢",
       "groupAtt": "團體出席",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "設定"
     }
   },
@@ -235,11 +267,13 @@
       "addCalendar": "新增日曆",
       "calendar": "日曆",
       "calendars": "日曆",
-      "createCalendar": "建立日曆",
       "createFirstCalendar": "建立第一個日曆",
       "curatedCalendar": "策劃日曆",
+      "find": "尋找日曆",
       "manageEvents": "管理活動",
       "noCalendars": "沒有找到日曆",
+      "noMatches": "沒有符合搜尋條件的日曆。",
+      "resultCount": "{shown} / {total} 個日曆",
       "status": "狀態",
       "subtitleEmpty": "從建立您的第一個日曆開始",
       "title": "日曆"
@@ -249,7 +283,6 @@
       "calendar": "日曆",
       "calendarEvents": "日曆活動",
       "confirmRemoveGroup": "您確定要從日曆中刪除此組嗎？",
-      "groupName": "群組名稱",
       "groupsInCalendar": "日曆中的組",
       "importIcs": "匯入 .ics",
       "newEvent": "新建活動",
@@ -281,6 +314,8 @@
       "modeRegistrants": "僅限報名者",
       "modeRegistrantsHoh": "僅限戶主/報名者",
       "push": "Push",
+      "text": "簡訊",
+      "textHint": "簡訊透過您教會的簡訊服務商傳送，僅傳送給已開啟簡訊提醒的人。每則簡訊可能會產生費用。",
       "timeOfDay": "時間",
       "timeOfDayHint": "教會當地時間（例如上午9:00）",
       "title": "提醒",
@@ -346,6 +381,7 @@
       "endTime": "結束",
       "eventDescription": "活動描述",
       "eventTitle": "活動標題",
+      "find": "尋找",
       "noApprovalNeeded": "無需審批",
       "noBlockouts": "暫無封鎖時段",
       "noBlockoutsDesc": "當房間或資源不可用時，設定封鎖日期。",
@@ -359,6 +395,7 @@
       "reason": "原因",
       "resourceName": "資源名稱",
       "resources": "資源",
+      "resultCount": "{shown} / {total} {items}",
       "roomName": "房間名稱",
       "rooms": "房間",
       "startTime": "開始",
@@ -370,16 +407,19 @@
   },
   "common": {
     "add": "新增",
+    "all": "全部",
     "amount": "金額",
     "appTheme": "應用主題",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "返回",
+    "backTo": "返回{name}",
     "bottom": "底部",
     "cancel": "取消",
     "center": "居中",
     "change": "更改",
     "changePhoto": "更改照片",
+    "clear": "清除",
     "close": "關閉",
     "collapse": "摺疊",
     "comboBox": {
@@ -456,12 +496,14 @@
     "saving": "儲存中...",
     "search": "搜尋",
     "select": "Select",
+    "selectedCount": "已選 {count} 個",
     "sermons": "講道",
     "title": "標題",
     "top": "頂部",
     "tryAgain": "重試",
     "update": "更新",
     "website": "網站",
+    "years": "年份",
     "yes": "是"
   },
   "components": {
@@ -581,6 +623,8 @@
       "yourChurch": "您的教會",
       "yourProfile": "您的個人資料"
     },
+    "allGroups": "所有團體",
+    "allTasks": "所有任務",
     "dashboardPage": {
       "dash": "儀表板"
     },
@@ -593,11 +637,14 @@
       "upcomingEventsTitle": "瞭解最新動態"
     },
     "myGroups": "我的群組",
+    "myTasks": "我的任務",
     "needsAttention": {
       "approvals": "{count}個待處理的日曆審批",
       "joinRequests": "{count}個待處理的群組加入請求",
       "title": "需要注意"
     },
+    "noGroups": "您尚未加入任何團體。",
+    "noOpenTasks": "沒有指派給您的未完成任務。",
     "quickSetupModal": {
       "classroomName": "教室名稱",
       "createContinue": "建立並繼續",
@@ -629,6 +676,8 @@
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
+      "liveHint": "上週日的在場人員和首次來訪的家庭會在本週顯示在這裡。",
+      "liveHintSunday": "開始使用簽到和服事功能後，在場人員、服事人員和剛到場的人員將顯示在這裡。",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
@@ -671,16 +720,23 @@
       "donations": "捐款"
     },
     "page": {
+      "allYears": "所有年份",
       "amount": "金額",
       "batch": "批次",
-      "currentYearCsv": "本年度 CSV",
-      "currentYearPrint": "當年列印",
+      "csv": "CSV",
       "date": "日期",
       "fund": "基金",
-      "lastYearCsv": "去年 CSV",
-      "lastYearPrint": "去年印刷",
+      "giftCount": "{count} 筆奉獻",
+      "giftsInYear": "{year} 年共 {count} 筆奉獻",
+      "give": "奉獻",
+      "giving": "奉獻",
       "method": "方法",
+      "noGiftsInYear": "{year} 年無奉獻記錄。",
       "notes": "Notes",
+      "paymentMethods": "付款方式",
+      "recurring": "定期奉獻",
+      "sinceYear": "自 {year} 年以來 {amount}",
+      "statement": "捐贈報表",
       "viewBatch": "查看批次",
       "willAppear": "捐款將在完成後顯示在此處。"
     }
@@ -737,6 +793,7 @@
       "anon": "匿名",
       "donor": "捐款人",
       "editCampaign": "編輯活動",
+      "goalAmount": "目標 {amount}",
       "noPledges": "此活動尚無任何承諾。",
       "ofGoal": "佔目標",
       "pledges": "承諾",
@@ -746,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "新增活動",
+      "campaignCount": "{count} 個活動",
       "campaigns": "活動",
       "dates": "日期",
       "export": "匯出",
       "fund": "基金",
       "given": "已奉獻",
+      "givenAmount": "已奉獻 {amount}",
       "goal": "目標",
       "noCampaigns": "尚未建立任何活動。",
       "ongoing": "進行中",
       "pledged": "已承諾",
+      "pledgedAmount": "已承諾 {amount}",
       "progress": "進度",
-      "subtitle": "跟蹤承諾活動和奉獻目標進度",
-      "totalCampaigns": "活動總數"
+      "subtitle": "跟蹤承諾活動和奉獻目標進度"
     },
     "donationBatchPage": {
-      "batchDate": "批次日期：",
-      "donations": "奉獻",
       "editBatch": "編輯批次",
+      "giftCount": "{count} 筆奉獻",
       "subtitle": "管理此批次中的捐贈",
-      "title": "捐贈批次",
-      "totalAmount": "總金額"
+      "title": "捐贈批次"
     },
     "donationBatchesPage": {
       "addBatch": "新增批次",
+      "allYears": "全部",
+      "batchCount": "{count} 個批次",
       "batches": "批次",
-      "donations": "奉獻",
       "export": "匯出",
+      "failedEvents": "失敗事件（{count}）",
+      "giftCount": "{count} 筆奉獻",
       "stripeImportLink": "匯入缺失的 Stripe 交易",
-      "subtitle": "管理捐贈批次並跟蹤捐贈記錄",
-      "totalAmount": "總金額"
+      "subtitle": "管理捐贈批次並跟蹤捐贈記錄"
     },
     "donationEdit": {
       "anon": "匿名",
@@ -837,8 +896,7 @@
       "total": "總計"
     },
     "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
+      "lede": "{count} 筆失敗 · {amount} 有風險",
       "message": "Gateway Message",
       "none": "No failed recurring gifts.",
       "retry": "Retry",
@@ -858,10 +916,10 @@
       "visible": "對捐贈者可見"
     },
     "fundPage": {
-      "donors": "捐贈者",
+      "donorCount": "{count} 位捐贈者",
       "filter": "篩選",
-      "subtitle": "跟蹤此基金的捐贈和貢獻",
-      "totalAmount": "總金額"
+      "giftCount": "{count} 筆奉獻",
+      "subtitle": "跟蹤此基金的捐贈和貢獻"
     },
     "funds": {
       "fund": "基金",
@@ -877,15 +935,14 @@
       "dateEnd": "結束日期",
       "dateStart": "開始日期",
       "don": "捐款",
-      "donFilt": "捐款篩選",
       "donor": "捐贈者",
       "export": "匯出",
+      "fundCount": "{count} 個基金",
       "noDon": "所選日期範圍內無捐款",
       "nonDeductible": "不可免稅",
       "subtitle": "管理捐贈基金和跟蹤捐贈類別",
       "taxDeductible": "可免稅",
       "taxStatus": "稅務狀態",
-      "totalFunds": "基金總數",
       "viewBatch": "查看批次"
     },
     "givingLink": {
@@ -895,7 +952,13 @@
       "title": "Giving Link",
       "url": "Link"
     },
+    "logGift": {
+      "amountError": "請輸入大於零的金額，例如 25.00。",
+      "batchHint": "儲存到該日期的批次；如有需要會自動建立批次。",
+      "title": "記錄奉獻"
+    },
     "period": {
+      "label": "期間",
       "monthly": "每月",
       "quarterly": "每季度",
       "weekly": "每週"
@@ -1014,6 +1077,9 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "view": {
+      "label": "檢視"
     }
   },
   "fileUpload": {
@@ -1136,14 +1202,17 @@
       "archForms": "已存檔表單",
       "archive": "存檔",
       "archiveFormAria": "存檔表單 {name}",
+      "archived": "已封存",
       "confirmDuplicate": "複製此表單？",
       "confirmMsg1": "您確定要存檔此表單嗎？",
       "confirmMsg2": "您確定要恢復此表單嗎？",
       "duplicate": "複製",
       "duplicated": "Form duplicated",
+      "find": "尋找表單",
       "forms": "表單",
       "noArch": "沒有已存檔的表單。",
       "noCustomMsg": "尚未建立任何自訂表單。新增後它們將顯示在此處。",
+      "noMatches": "沒有符合搜尋條件的表單。",
       "personProfileForm": "Person profile form",
       "restore": "恢復",
       "restoreFormAria": "恢復表單 {name}",
@@ -1200,14 +1269,18 @@
       "confirmDuplicate": "複製此群組？成員不會被複制。",
       "copySuffix": "(副本)",
       "discussions": "Discussions",
+      "duplicate": "複製",
       "duplicateTooltip": "複製此群組",
+      "email": "電子郵件",
       "emailTooltip": "向此小組傳送電子郵件",
       "location": "地點",
       "meetingTime": "聚會時間",
-      "moreLabels": "更多標籤",
+      "notify": "通知",
+      "notifyTooltip": "傳送推播通知",
       "parentPickup": "家長接送",
       "printNametag": "列印名牌",
       "team": "團隊",
+      "text": "簡訊",
       "textTooltip": "向此小組傳送簡訊",
       "trackAttendance": "追蹤出席"
     },
@@ -1361,6 +1434,21 @@
     "groupPage": {
       "addPpl": "新增人員"
     },
+    "groupRecord": {
+      "allEvents": "所有活動",
+      "allMembers": "所有成員",
+      "allSessions": "所有場次",
+      "healthSummary": "{members} 位成員 · 90 天內 {joined} 人加入 · {left} 人離開",
+      "lastEvent": "上次",
+      "latestSession": "最近 {date}",
+      "nextEvent": "下次",
+      "noMembers": "尚無成員。",
+      "noSessions": "尚無場次。",
+      "pendingCount": "{count} 個待審核",
+      "seeHealth": "查看健康狀況",
+      "sessionCount": "{count} 個場次",
+      "sessionCountOne": "1 個場次"
+    },
     "groupSessions": {
       "addSesMsg": "請新增新會話以繼續。",
       "allYears": "所有年份",
@@ -1389,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "新增組",
+      "allCategories": "全部",
       "cat": "類別",
+      "clearFilters": "清除篩選",
       "confirmRestore": "從封存中還原 {name}？",
       "export": "匯出",
       "groups": "團體",
-      "labels": "標籤",
+      "moreCategories": "更多類別",
       "noGroupMsg": "未找到任何群組。請建立一個群組。",
       "noMatchMsg": "沒有符合搜尋條件的群組。",
       "pendingRequestSingular": "{count} 個待審核申請",
@@ -1401,6 +1491,7 @@
       "pers": "1人",
       "ppl": "人員",
       "restore": "恢復",
+      "resultCount": "{shown} / {total} 個團體",
       "searchPlaceholder": "搜尋群組…",
       "showArchived": "顯示已存檔",
       "spPpl": " 人",
@@ -1480,6 +1571,7 @@
       "noPhoneNotice": "{count} 人沒有登記的電話號碼。",
       "noPhoneNoticeSingular": "{count} 人沒有登記的電話號碼。",
       "noPhoneSkipped": "已跳過 {count} 人（沒有電話號碼）。",
+      "noProvider": "傳送簡訊前，請先在設定中設定簡訊服務商。",
       "optedOutNotice": "{count} 人已選擇退出。",
       "optedOutSkipped": "已跳過 {count} 人（已選擇退出）。",
       "phoneOnFile": "登記的電話",
@@ -1491,7 +1583,10 @@
       "sentSummary": "已傳送給 {recipientCount} 名符合條件的收件人中的 {successCount} 名。",
       "sentSummarySingular": "已傳送給 {recipientCount} 名符合條件的收件人中的 {successCount} 名。",
       "textGroupTitle": "向小組傳送簡訊：{groupName}",
-      "textPersonTitle": "簡訊：{personName}"
+      "textPersonTitle": "簡訊：{personName}",
+      "textVolunteersTitle": "傳簡訊給志工",
+      "volunteersSummary": "{totalMembers} 位志工中有 {eligibleCount} 位將收到此簡訊。",
+      "volunteersSummarySingular": "{totalMembers} 位志工中有 {eligibleCount} 位將收到此簡訊。"
     },
     "serviceTimes": {
       "services": "服務："
@@ -1562,7 +1657,7 @@
       "registrations": "報名",
       "roomsResources": "房間與資源",
       "sermons": "講道",
-      "site": "站點",
+      "streamSettings": "設定",
       "stripeImport": "Stripe 匯入",
       "website": "網站"
     }
@@ -1665,7 +1760,8 @@
       "placeholder": "顯示30歲以上且7月生日的男性",
       "search": "搜尋",
       "searching": "正在搜尋...",
-      "title": "AI搜尋"
+      "title": "AI搜尋",
+      "unavailable": "AI 搜尋暫時無法使用。請稍後再試，或使用上方的搜尋。"
     },
     "bulk": {
       "actions": "操作",
@@ -1704,7 +1800,6 @@
       "removeFromGroupPrompt": "將 {count} 位選取的人員從團體中移除。",
       "removeFromGroupTitle": "從團體中移除",
       "removeSuccess": "已將 {count} 人從 {group} 中移除。",
-      "selected": "已選中",
       "setCampus": "設定校園",
       "value": "Value",
       "workflowSuccess": "已將 {count} 人新增到工作流。"
@@ -1722,6 +1817,27 @@
       "title": "人口統計",
       "total": "總計",
       "unassigned": "未分配"
+    },
+    "directory": {
+      "ask": "提問",
+      "clear": "清除",
+      "countHouseholds": "{households} 個家庭 · {people} 人",
+      "everyone": "所有人",
+      "family": "{name} 家",
+      "households": "家庭",
+      "noMatch": "沒有符合該搜尋的人",
+      "noMatchHint": "請嘗試其他姓名，或使用進階搜尋依詳細資料篩選。",
+      "noPeople": "尚無人員",
+      "noPeopleHint": "在下方新增第一位人員。",
+      "savedLists": "已儲存的清單",
+      "searchLabel": "尋找家庭或人員",
+      "selectAll": "選取所有可見家庭",
+      "selectHousehold": "選取 {name}",
+      "selectedCount": "已選 {count} 個",
+      "subtitle": "瀏覽家庭、開啟人員資料，或透過清單或提問縮小範圍。",
+      "table": "表格",
+      "title": "人員",
+      "viewAs": "檢視方式"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -1813,12 +1929,7 @@
       "unknownGroup": "未知小組"
     },
     "household": {
-      "age": "年齡：",
-      "groups": "團體：",
-      "house": " 家庭",
-      "lastActivity": "最近活動：",
-      "noContactInfo": "無聯絡資訊",
-      "status": "狀態："
+      "house": " 家庭"
     },
     "householdEdit": {
       "addMember": "新增家庭成員",
@@ -1839,7 +1950,6 @@
       "confirmDelete": "刪除列表「{name}」？此操作無法撤銷。",
       "createdBy": "由 {name}",
       "delete": "刪除列表",
-      "empty": "暫無儲存的列表。進行高階搜尋，然後「另存為列表」。",
       "household": "包含家庭",
       "householdAll": "整個家庭",
       "householdChildren": "匹配項的子女",
@@ -1853,8 +1963,7 @@
       "settings": "列表設定",
       "sharing": "誰可以看到此列表",
       "sharingOrg": "所有同工",
-      "sharingPrivate": "僅我自己",
-      "title": "已儲存的列表"
+      "sharingPrivate": "僅我自己"
     },
     "merge": {
       "findPerson": "尋找要合併的人員",
@@ -1884,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "新增人員",
-      "allMembers": "所有成員",
       "bDay": "生日",
       "bDayNo": "生日（無年份）",
       "deleteOp": "刪除選項",
@@ -1894,15 +2002,12 @@
       "loading": "正在載入人員...",
       "middle": "中間名",
       "nameNote": "名牌備註",
-      "noPeopleFound": "未找到人員",
       "peopleFound": "找到 {count} 人",
       "photo": "照片",
       "primEmail": "主要電子郵件",
       "primPhone": "主要電話",
       "printDirectory": "列印名錄",
       "printResults": "列印結果",
-      "searchPpl": "搜尋人員",
-      "searchResults": "搜尋結果",
       "showAll": "顯示所有成員",
       "showingMembers": "正在顯示 {count} 名成員"
     },
@@ -1922,13 +2027,10 @@
       "group": "小組",
       "membership": "會員資格和小組",
       "names": "名稱",
-      "placeholder": "按姓名搜尋...",
       "service": "服務",
       "serviceTime": "服務時間",
       "simp": "簡單",
-      "simpSearch": "人員搜尋",
-      "type": "型別",
-      "typeToSearch": "輸入即可即時搜尋"
+      "type": "型別"
     },
     "peopleSearchResults": {
       "deletePersonAria": "刪除 {name}",
@@ -1939,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "新增到工作流",
-      "age": "年齡",
       "emailPerson": "寄送電子郵件給此人",
-      "gender": "性別",
       "hasLogin": "有登入帳號",
-      "maritalStatus": "婚姻狀況",
       "sendTextMessage": "傳送簡訊"
     },
     "personEdit": {
@@ -1973,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "出席",
-      "details": "詳情",
       "donations": "奉獻",
       "forms": "表單",
       "groups": "小組",
@@ -1985,12 +2083,44 @@
       "notesSuffix": " 筆記",
       "thisPerson": "此人"
     },
+    "personRecord": {
+      "allForms": "所有表單",
+      "allNotes": "所有備註",
+      "allYears": "所有年份",
+      "attendanceSummary": "最近 {weeks} 週中出席 {count} 週",
+      "email": "電子郵件",
+      "givenBy": "奉獻人",
+      "givingYear": "{year} 年 · {count} 筆奉獻",
+      "hereThisWeek": "本週出席",
+      "household": "家庭",
+      "lastAttended": "最近出席 {date}",
+      "lastGift": "最近奉獻 {date}。",
+      "loadError": "無法載入{what}。",
+      "noAttendance": "尚無出席記錄。",
+      "noDirectory": "在名錄中隱藏",
+      "noGiftsYear": "{year} 年無奉獻記錄。",
+      "noHouseholdGiftsYear": "{year} 年無家庭奉獻記錄。",
+      "noNotes": "尚無備註。",
+      "notSubmitted": "未提交",
+      "noteCount": "{count} 則備註",
+      "recentAttendance": "最近出席",
+      "recentGifts": "{year} 年奉獻",
+      "service": "聚會",
+      "showingLatest": "顯示最近 {count} 筆",
+      "statement": "{year} 年捐贈報表",
+      "submitted": "已提交",
+      "text": "簡訊",
+      "weekAttended": "{date} 當週：已出席",
+      "weekNoRecord": "{date} 當週：無出席記錄",
+      "weeklyAttendance": "每週出席",
+      "where": "地點",
+      "wholeHousehold": "全家",
+      "workflow": "工作流"
+    },
     "personView": {
       "hasLoginLabel": "有登入帳號：{email}",
       "home": "家庭",
-      "memShip": "會員資格：",
       "mobile": "手機",
-      "persDet": "個人詳情",
       "work": "工作"
     },
     "pickup": {
@@ -2004,9 +2134,6 @@
       "status": "狀態",
       "title": "接送",
       "trusted": "已授權"
-    },
-    "tabs": {
-      "noImplement": "尚未實作"
     },
     "updateHouseHold": {
       "update": "更新地址"
@@ -2028,6 +2155,7 @@
     "firstName": "名字",
     "gender": "性別",
     "grade": "年級",
+    "guest": "訪客",
     "inactive": "不活躍",
     "lastName": "姓氏",
     "line1": "第1行",
@@ -2044,6 +2172,7 @@
     "person": "人",
     "phone": "電話",
     "prefix": "字首",
+    "recentPeople": "最近查看的人員",
     "regularAttendee": "常規參加者",
     "school": "學校",
     "single": "單身",
@@ -2356,7 +2485,6 @@
       "selectedPrefix": "已選："
     },
     "ministryList": {
-      "getStarted": "從建立你的第一個事工開始",
       "noMinMsg": "未找到任何事工。請建立一個事工。"
     },
     "ministryPage": {
@@ -2375,6 +2503,8 @@
       "planNameAria": "計劃名稱",
       "planReq": "計劃名稱為必填項。",
       "prepared": "暫定（在釋出前對志願者隱藏分配）",
+      "repeatWeekly": "每週重複的週數",
+      "repeatWeeklyHelper": "每週建立一個計劃，每個計劃都從前一個複製而來",
       "servDate": "服務日期",
       "servReq": "服務日期為必填項。",
       "serviceDateAria": "禮拜日期",
@@ -2430,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "批次安排",
-      "createFirst": "建立第一個計劃",
-      "createPlan": "建立計劃",
       "newPlan": "新計劃",
       "noPlans": "沒有找到計劃",
-      "noUpcomingPlans": "無即將到來的計劃",
-      "noUpcomingPlansDescription": "今天或之後沒有安排的計劃。使用上方的“顯示過去”切換以檢視過去的計劃。",
+      "noUpcomingHint": "從今天起沒有任何安排。選擇「過去」以查看較早的計劃。",
+      "past": "過去",
       "plans": "計劃",
       "scheduleLesson": "安排課程",
+      "serviceDate": "聚會日期",
       "serviceOrder": "服務順序",
-      "showPast": "顯示過去"
+      "upcoming": "即將到來"
     },
     "planPage": {
       "assign": "團隊分配",
-      "assignments": "分配",
       "band": "樂隊",
       "loadingPlan": "載入計劃...",
       "noteSave": "備註已儲存",
-      "serviceOrder": "服務順序",
-      "servicePlan": "服務計劃",
-      "subtitle": "計劃並安排您的服務"
+      "servicePlan": "服務計劃"
     },
     "planType": {
       "details": "計劃型別詳情"
@@ -2483,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "新增計劃型別",
       "createPlanType": "建立計劃型別",
-      "createPlanTypes": "建立計劃型別",
       "noPlanTypes": "未找到計劃型別",
       "planTypes": "計劃型別"
     },
     "planTypePage": {
       "notFound": "未找到計劃型別",
       "overview": "概覽",
-      "planType": "計劃型別",
-      "subtitle": "配置計劃型別設定"
+      "planType": "計劃型別"
     },
     "planTypeReminders": {
       "channels": "Send By",
@@ -2505,6 +2629,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "簡訊",
+      "textHint": "簡訊透過您教會的簡訊服務商傳送，僅傳送給已開啟簡訊提醒的人。每則簡訊可能會產生費用。",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2544,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "新增事工",
       "editMinistry": "編輯事工",
-      "selMin": "選擇一個事工",
       "subtitle": "管理部門和服務計劃"
     },
     "positionEdit": {
@@ -2613,6 +2738,7 @@
       "viewingAs": "以此身份檢視"
     },
     "servingOverviewPage": {
+      "allPositions": "所有崗位",
       "autoSchedule": "自動排班",
       "autoScheduleConfirm": "自動將志工排入此日期範圍內的所有空缺？",
       "autoScheduleResult": "已自動排班 {filled}/{total} 個計劃",
@@ -2633,11 +2759,17 @@
       "removeConfirm": "將 {name} 從此指派中移除？",
       "startDate": "開始日期",
       "subtitle": "按日期顯示已分配志願者的職位",
+      "textAll": "傳簡訊給志工",
       "title": "服事概覽"
     },
     "servingPage": {
-      "showAll": "顯示全部",
-      "showAllHint": "由於您不是成員，您的事工已被隱藏。請開啟上方的「顯示全部」以檢視。"
+      "actions": "操作",
+      "all": "全部",
+      "allHint": "由於您不是成員，您的事工已被隱藏。選擇上方的「全部」即可查看。",
+      "findMinistry": "尋找事工",
+      "mine": "我的",
+      "ministries": "事工",
+      "whichMinistries": "哪些事工"
     },
     "signageFeed": {
       "button": "Digital Signage",
@@ -2658,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "建立團隊",
-      "createTeams": "建立團隊",
-      "manage": "管理",
       "members": "會員",
       "newTeam": "新團隊",
       "noTeam": "未找到團隊。請建立一個團隊。",
@@ -2709,6 +2839,7 @@
       "typeService": "服務"
     },
     "timeList": {
+      "addTime": "新增時間",
       "noTime": "尚未新增任何時間",
       "sunServ": "週日服務",
       "times": "時間"
@@ -2735,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "連結",
+      "linked": "已連結",
+      "notLinked": "未連結",
       "signUp": "報名",
       "unlink": "取消連結"
     },
@@ -2775,9 +2908,7 @@
       "saveChanges": "儲存更改",
       "saveError": "無法儲存更改",
       "sendRequest": "Send request",
-      "subtitle": "管理您的個人資料和偏好",
       "themePreferences": "主題偏好",
-      "themePreferencesHelper": "您的主題偏好將自動儲存，並在此裝置上記住。",
       "togglePasswordVisibility": "切換密碼可見性",
       "valEmail": "請輸入有效的電子郵件地址。"
     }
@@ -2834,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "日期",
       "deleteConfirm": "永久刪除此報名？",
+      "editSettings": "編輯設定",
       "eventFull": "此活動已達名額上限。",
       "eventNotFound": "未找到活動",
       "eventRegistrations": "活動報名",
@@ -2875,9 +3007,11 @@
       "noEventsHint": "通過活動編輯設定在活動上啟用報名。",
       "registered": "已報名",
       "registrations": "報名",
+      "search": "搜尋活動",
       "subtitle": "管理活動報名設定並檢視報名者",
       "tags": "標籤",
-      "title": "活動報名"
+      "title": "活動報名",
+      "turnOnRegistration": "開啟報名"
     }
   },
   "reporting": {
@@ -3007,14 +3141,17 @@
         "weekly": "每週",
         "yes": "是"
       },
-      "services": "服務",
       "servicesTab": {
         "addService": "新增服務",
         "defaultLabel": "週日上午",
+        "duration": "時長",
+        "none": "尚無聚會。新增一個以安排直播。",
+        "provider": "提供者",
+        "service": "聚會",
+        "time": "時間",
         "title": "服務",
         "weekly": "每週"
       },
-      "settings": "設定",
       "sidebarTabs": {
         "add": "新增",
         "title": "內容標籤"
@@ -3062,6 +3199,7 @@
     "notScheduled": "未安排",
     "playlist": "播放列表",
     "playlists": {
+      "addPlaylist": "新增播放清單",
       "createFirstPlaylist": "建立第一個播放列表",
       "noPlaylistsFound": "未找到播放列表",
       "noPlaylistsMatch": "沒有播放列表符合您的搜尋",
@@ -3096,6 +3234,7 @@
       "title": "Podcast Feed"
     },
     "publishDate": "釋出日期",
+    "resultCount": "{shown} / {total} 篇講道",
     "searchPlaceholder": "按標題或播放列表搜尋講道...",
     "sermon": "講道",
     "sermonEdit": {
@@ -3152,11 +3291,15 @@
       "act": "活躍",
       "arch": "已存檔",
       "church": "教會",
+      "churchCount": "{count} 間教會",
       "churchName": "教會名稱",
       "churches": "教會",
       "churchesSubtitle": "搜尋並管理所有教會",
       "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
+      "groupDirectory": "名錄",
+      "groupOperations": "營運",
+      "groupSystem": "系統",
       "impersonateSubtitle": "以其他使用者身分登入以提供支援",
       "impersonateUser": "模擬使用者",
       "jobs": "背景工作",
@@ -3176,6 +3319,7 @@
       "servAdmin": "伺服器管理",
       "serverHealth": "伺服器健康",
       "serverHealthSubtitle": "檢查後端服務的健康狀態",
+      "status": "狀態",
       "subtitle": "管理伺服器範圍的設定和教堂",
       "translationLookups": "翻譯查詢",
       "translationSubtitle": "查詢翻譯後的語系字串",
@@ -3465,6 +3609,19 @@
       "title": "使用者查詢"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "新增調式"
+    },
+    "planPage": {
+      "addMenu": "更多新增方式",
+      "hideNotes": "隱藏備註",
+      "hideTimes": "隱藏時間"
+    },
+    "songPage": {
+      "deleteSong": "刪除歌曲"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "關閉",
@@ -3742,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "類別",
-      "createTemplate": "建立模板",
       "deleteConfirm": "刪除模板 \"{name}\"？",
       "emptyDescription": "建立模板以開始批次傳送郵件。",
       "emptyTitle": "暫無電子郵件模板",
@@ -3873,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "無法編輯域管理員角色的權限。域管理員擁有完全存取權限。",
-      "permEdit": "編輯權限",
-      "roleEdit": "編輯角色："
+      "permEdit": "編輯權限"
     },
     "rolePermissions": {
       "filter": "Filter permissions",
@@ -3885,6 +4040,7 @@
       "accDesc": "有權檢視和管理捐款。",
       "addCustomRoleAria": "新增自訂角色",
       "addPredefinedRoleAria": "新增 {name} 角色",
+      "addRole": "新增角色",
       "canEdit": "可以編輯大部分資料 ",
       "churchDesc": " 包括人員、團體、出席和表單。",
       "churchStaff": "教會同工",
@@ -3958,6 +4114,8 @@
       "clearstreamHelper": "在您的",
       "clearstreamHelperLink": "Clearstream 帳號設定",
       "clearstreamHelperSuffix": "中的“API Keys”下建立 API 金鑰。",
+      "inboundUrl": "傳入（STOP）Webhook URL",
+      "inboundUrlHelper": "將此貼到您服務商的傳入訊息 Webhook 中，這樣回覆 STOP 的人也會在此處被取消簡訊訂閱。",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "您的 MinistryStuff 簡訊訂閱方案已啟用，本週期尚餘 {} 點額度。",
       "ministryStuffHelper": "無需 API 金鑰。簡訊額度來自您的 MinistryStuff 訂閱方案，並會自動連結至此教會。您可於以下網站管理方案：",
@@ -4192,8 +4350,8 @@
     "blocksPage": {
       "actions": "操作",
       "addBlock": "新增區塊",
+      "blockCount": "{count} 個區塊",
       "blocks": "積木",
-      "createFirstBlock": "建立第一個塊",
       "elements": "元素",
       "getStarted": "首先建立您的第一個可重用塊",
       "noBlocksFound": "沒有找到塊",
@@ -4201,7 +4359,6 @@
       "reusableBlocks": "可重複使用的塊",
       "sections": "部分",
       "subtitle": "為您的網站建立和管理可重複使用的內容塊",
-      "totalBlocks": "總塊數",
       "type": "型別"
     },
     "blog": {
@@ -4212,6 +4369,7 @@
       "draft": "草稿",
       "navHint": "訪客可於 /blog 閱讀您的文章。請於「頁面」畫面新增導覽連結，方便訪客找到：",
       "noPosts": "No posts yet",
+      "postCount": "{count} 篇文章",
       "posts": "Posts",
       "published": "已發布",
       "scheduled": "已排程",
@@ -4512,6 +4670,7 @@
       "imageDescribingTopic": "描述主題的圖片",
       "info": "資訊",
       "javascriptExcludeTag": "JavaScript（不含script標籤）",
+      "javascriptUrlWarning": "這是一個網址，而不是 JavaScript。要顯示圖片，請使用圖片元素，或在 HTML 內容中放入 <img src=\"...\">。",
       "label": "標籤",
       "linkUrlOptional": "連結網址（可選）",
       "loadingEditor": "正在載入編輯器...",
@@ -4766,20 +4925,15 @@
       "pageSettings": "頁面設定",
       "previewOf": "{title} 的預覽",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "預覽：{title}",
-      "title": "網站預覽"
+      "subtitle": "預覽：{title}"
     },
     "pages": {
       "convert": "轉換"
     },
     "pagesPage": {
       "actions": "操作",
-      "addFirstPage": "新增首頁",
       "addPage": "新增頁面",
-      "autoGenerated": "自動生成",
       "confirmConvert": "您想將此自動生成的頁面轉換為自訂頁面嗎？",
-      "customPages": "自訂頁面",
-      "description": "以下是自訂頁面和自動生成頁面的列表。您可以新增新頁面、編輯現有頁面或將自動生成的頁面轉換為自訂頁面。",
       "desktopOnly": "頁面編輯器僅在桌面模式下可用",
       "generated": "生成",
       "getStarted": "首先新增您的第一頁。",
@@ -4788,6 +4942,7 @@
       "hidePublicSiteWarning": "您的公開網站已關閉。訪客會被導向登入畫面，並告知搜尋引擎不要為網站建立索引。",
       "mainNavigation": "主導航",
       "noPagesFound": "沒有找到頁面",
+      "pageCount": "{count} 個頁面",
       "pages": "頁數",
       "path": "小路",
       "showLogin": "顯示登入",
@@ -4795,7 +4950,6 @@
       "startFromTemplate": "從模板開始",
       "subtitle": "管理您的網站頁面、內容和導航",
       "toggleLoginVisibility": "切換登入按鈕可見性",
-      "totalPages": "總頁數",
       "viewLivePage": "預覽頁面",
       "websitePages": "網站頁面"
     },
@@ -5350,7 +5504,6 @@
       "signature": "調號"
     },
     "keys": {
-      "add": "新增",
       "addExternalLink": "新增外部連結",
       "addFiles": "新增檔案",
       "audioTracks": "音軌",
@@ -5366,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "新增第一首歌曲",
         "message": "通過將您的第一首歌曲新增到庫來開始。",
         "title": "未找到歌曲"
       },
@@ -5424,8 +5576,7 @@
       "addArrangement": "新增編排",
       "loading": "載入中...",
       "noArrangementDescription": "從側邊欄選擇一個編排以開始。",
-      "noArrangementSelected": "未選擇編排",
-      "subtitle": "管理歌曲詳細資訊和安排"
+      "noArrangementSelected": "未選擇編排"
     },
     "songSearchDialog": {
       "closeDialogAria": "關閉對話方塊",
@@ -5437,7 +5588,7 @@
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "deselectAll": "取消全選",
-      "search": "搜尋",
+      "resultCount": "{count} 首歌曲",
       "searchSongs": "搜尋歌曲",
       "selectAll": "Select all",
       "songs": "歌曲",
@@ -5626,8 +5777,11 @@
       "message": "訊息",
       "messageHint": "選填。留空則使用預設提醒內容。",
       "noDueDate": "此任務沒有到期日，因此在設定到期日之前不會傳送提醒。",
+      "none": "未設定提醒。",
       "save": "儲存提醒",
       "saved": "已儲存",
+      "text": "簡訊",
+      "textHint": "簡訊透過您教會的簡訊服務商傳送，僅傳送給已開啟簡訊提醒的人。每則簡訊可能會產生費用。",
       "timeOfDay": "時間",
       "title": "提醒",
       "when": "何時傳送提醒？"
@@ -5656,8 +5810,9 @@
       "noTasks": "沒有找到任務",
       "notSpecified": "未指定",
       "reqMe": "我請求的",
-      "showClosedTasksAria": "顯示已關閉的任務",
-      "showOpenTasksAria": "顯示進行中的任務",
+      "status": "任務狀態",
+      "statusColumn": "狀態",
+      "task": "任務",
       "tasks": "任務",
       "unassigned": "未分配"
     },
@@ -5668,6 +5823,7 @@
       "associate": "聯絡",
       "associated": "聯絡",
       "by": "由",
+      "closeTask": "關閉任務",
       "closed": "已關閉",
       "created": "已建立",
       "editAssigned": "編輯已分配",
@@ -5675,11 +5831,8 @@
       "notSpec": "未指定",
       "open": "開啟",
       "opened": "已開啟",
+      "reopenTask": "重新開啟任務",
       "unassigned": "未分配"
-    },
-    "tasksPage": {
-      "showClosed": "顯示已關閉",
-      "showOpen": "顯示開啟"
     },
     "workflowActions": {
       "add": "新增操作",
@@ -5719,10 +5872,12 @@
       "addCard": "新增卡片",
       "addStep": "新增步驟",
       "boardTab": "看板",
+      "cardsCount": "張卡片",
       "clearSelection": "清除",
       "moveTo": "移動到……",
       "selectedCount": "已選 {count} 個",
       "step": "步驟",
+      "stepsCount": "個步驟",
       "subtitle": "拖動卡片在步驟間移動",
       "unassigned": "未分配"
     },
@@ -5730,9 +5885,11 @@
       "assign": "分配",
       "assignedTo": "分配給",
       "complete": "完成",
+      "email": "電子郵件",
       "history": "活動記錄",
       "outcome": "結果",
       "overdue": "逾期",
+      "phone": "電話",
       "pin": "固定分配",
       "pinnedNote": "已固定——跨步驟保留此負責人",
       "sendBack": "退回",
@@ -5741,7 +5898,8 @@
       "snooze1Day": "1天",
       "snooze1Week": "1周",
       "snooze3Days": "3天",
-      "snoozed": "已延後"
+      "snoozed": "已延後",
+      "viewProfile": "查看個人資料"
     },
     "workflowCategories": {
       "addCategory": "新增分類",
@@ -5793,9 +5951,13 @@
       "addWorkflow": "新增工作流",
       "added": "已新增到工作流。",
       "blankWorkflow": "空白工作流",
+      "categories": "工作流分類",
+      "category": "分類",
       "noWorkflows": "暫無工作流。新增一個以開始。",
+      "status": "狀態",
       "subtitle": "讓人們經歷一系列步驟",
-      "title": "工作流"
+      "title": "工作流",
+      "workflowCount": "{count} 個工作流"
     }
   }
 }

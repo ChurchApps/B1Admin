@@ -69,6 +69,7 @@
       "wholeService": "All service times"
     },
     "labels": {
+      "addLabel": "लेबल जोड़ें",
       "align": "संरेखित करें",
       "always": "हमेशा",
       "barcode": "बारकोड",
@@ -126,6 +127,30 @@
       "value": "मान",
       "width": "चौड़ाई (इंच)"
     },
+    "plate": {
+      "allYears": "सभी वर्ष",
+      "checkedIn": "{count} चेक-इन हुए",
+      "enterHeadcount": "उपस्थित संख्या दर्ज करें",
+      "guests": "{count} अतिथि",
+      "guestsTitle": "अतिथि",
+      "headcount": "{count} गिने गए",
+      "headcountsTitle": "इस सप्ताह की उपस्थित संख्या",
+      "inTheRoom": "कमरे में",
+      "kiosk": "कियोस्क",
+      "lastRecorded": "अंतिम दर्ज {date}: {count}",
+      "lastWeeks": "पिछले {weeks} सप्ताह",
+      "noCheckins": "इस सप्ताह अभी तक कोई चेक-इन नहीं।",
+      "noHeadcounts": "इस सप्ताह कोई उपस्थित संख्या दर्ज नहीं की गई।",
+      "noRooms": "इस सप्ताह किसी ने भी किसी समूह में चेक-इन नहीं किया है।",
+      "reports": "रिपोर्ट",
+      "rooms": "कमरे",
+      "thisWeek": "इस सप्ताह",
+      "unknownGroup": "हटाया गया समूह",
+      "weekOf": "{date} का सप्ताह: {count}",
+      "weeklyCheckins": "साप्ताहिक चेक-इन",
+      "weeksWith": "पिछले {weeks} सप्ताहों में से {count} में चेक-इन हुए",
+      "yearsSummary": "हर वर्ष के रुझान, उपस्थित संख्या और समूह उपस्थिति। तारीखें सीमित करने के लिए फ़िल्टर का उपयोग करें।"
+    },
     "serviceEdit": {
       "campus": "कैम्पस",
       "campusAria": "कैंपस चुनें",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "चेक-इन शेड्यूल",
+      "checkinScheduleHelp": "वैकल्पिक। चेक-इन हर सप्ताह इस समय के आसपास अपने आप खुलता और बंद होता है। जब तक समूह बंद न हो, चेक-इन खुला रखने के लिए दिन खाली छोड़ दें।",
+      "closeMinutes": "चेक-इन बंद करें (समाप्ति के बाद मिनट)",
       "confirmDelete": "क्या आप वाकई इस सेवा समय को स्थायी रूप से हटाना चाहते हैं?",
+      "day": "दिन",
+      "endTime": "समाप्ति समय",
       "name": "सेवा समय",
       "nameAria": "सेवा समय का नाम",
       "namePlaceholder": "सुबह 8:00",
+      "noSchedule": "कोई शेड्यूल नहीं",
+      "openMinutes": "चेक-इन खोलें (शुरुआत से पहले मिनट)",
       "service": "सेवा",
       "serviceAria": "सेवा चुनें",
+      "startTime": "आरंभ समय",
       "validate": {
         "name": "सेवा समय का नाम आवश्यक है।",
         "service": "कृपया एक सेवा चुनें।"
@@ -153,7 +186,6 @@
       "attTrend": "उपस्थिति रुझान",
       "groupAtt": "समूह उपस्थिति",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "सेटअप"
     }
   },
@@ -235,11 +267,13 @@
       "addCalendar": "कैलेंडर जोड़ें",
       "calendar": "कैलेंडर",
       "calendars": "CALENDARS",
-      "createCalendar": "कैलेंडर बनाएं",
       "createFirstCalendar": "पहला कैलेंडर बनाएं",
       "curatedCalendar": "क्यूरेटेड कैलेंडर",
+      "find": "कैलेंडर खोजें",
       "manageEvents": "इवेंट प्रबंधित करें",
       "noCalendars": "कोई कैलेंडर नहीं मिला",
+      "noMatches": "आपकी खोज से कोई कैलेंडर मेल नहीं खाता।",
+      "resultCount": "{total} में से {shown} कैलेंडर",
       "status": "स्थिति",
       "subtitleEmpty": "अपना पहला कैलेंडर बनाकर आरंभ करें",
       "title": "CALENDARS"
@@ -249,7 +283,6 @@
       "calendar": "कैलेंडर",
       "calendarEvents": "कैलेंडर घटनाएँ",
       "confirmRemoveGroup": "क्या आप वाकई इस समूह को कैलेंडर से हटाना चाहते हैं?",
-      "groupName": "समूह का नाम",
       "groupsInCalendar": "कैलेंडर में समूह",
       "importIcs": ".ics आयात करें",
       "newEvent": "नया कार्यक्रम",
@@ -281,6 +314,8 @@
       "modeRegistrants": "केवल पंजीकृत",
       "modeRegistrantsHoh": "केवल परिवार प्रमुख / पंजीकृत",
       "push": "Push",
+      "text": "टेक्स्ट",
+      "textHint": "टेक्स्ट संदेश आपके चर्च के टेक्स्टिंग प्रदाता के माध्यम से केवल उन लोगों को भेजे जाते हैं जिन्होंने टेक्स्ट रिमाइंडर चालू किए हैं। हर टेक्स्ट पर आपके चर्च का खर्च हो सकता है।",
       "timeOfDay": "दिन का समय",
       "timeOfDayHint": "चर्च का स्थानीय समय (उदा. सुबह 9:00)",
       "title": "रिमाइंडर",
@@ -346,6 +381,7 @@
       "endTime": "समाप्ति",
       "eventDescription": "कार्यक्रम विवरण",
       "eventTitle": "कार्यक्रम शीर्षक",
+      "find": "खोजें",
       "noApprovalNeeded": "कोई अनुमोदन आवश्यक नहीं",
       "noBlockouts": "अभी कोई ब्लॉकआउट नहीं",
       "noBlockoutsDesc": "जब कमरे या संसाधन अनुपलब्ध हों तो तारीखें ब्लॉक करें।",
@@ -359,6 +395,7 @@
       "reason": "कारण",
       "resourceName": "संसाधन का नाम",
       "resources": "संसाधन",
+      "resultCount": "{total} {items} में से {shown}",
       "roomName": "कमरे का नाम",
       "rooms": "कमरे",
       "startTime": "प्रारंभ",
@@ -370,16 +407,19 @@
   },
   "common": {
     "add": "जोड़ें",
+    "all": "सभी",
     "amount": "राशि",
     "appTheme": "ऐप थीम",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "वापस",
+    "backTo": "{name} पर वापस जाएं",
     "bottom": "नीचे",
     "cancel": "रद्द करें",
     "center": "केंद्र",
     "change": "बदलें",
     "changePhoto": "फोटो बदलें",
+    "clear": "साफ़ करें",
     "close": "बंद करें",
     "collapse": "संकुचित करें",
     "comboBox": {
@@ -456,12 +496,14 @@
     "saving": "सहेजा जा रहा है...",
     "search": "खोज",
     "select": "चुनें",
+    "selectedCount": "{count} चयनित",
     "sermons": "उपदेश",
     "title": "शीर्षक",
     "top": "ऊपर",
     "tryAgain": "पुनः प्रयास करें",
     "update": "अपडेट करें",
     "website": "वेबसाइट",
+    "years": "वर्ष",
     "yes": "हाँ"
   },
   "components": {
@@ -581,6 +623,8 @@
       "yourChurch": "आपका चर्च",
       "yourProfile": "आपकी प्रोफ़ाइल"
     },
+    "allGroups": "सभी समूह",
+    "allTasks": "सभी कार्य",
     "dashboardPage": {
       "dash": "डैशबोर्ड"
     },
@@ -593,11 +637,14 @@
       "upcomingEventsTitle": "देखें क्या हो रहा है"
     },
     "myGroups": "मेरे समूह",
+    "myTasks": "मेरे कार्य",
     "needsAttention": {
       "approvals": "{count} लंबित कैलेंडर स्वीकृतियां",
       "joinRequests": "{count} लंबित समूह में शामिल होने के अनुरोध",
       "title": "ध्यान देने की आवश्यकता है"
     },
+    "noGroups": "आप अभी तक किसी समूह में नहीं हैं।",
+    "noOpenTasks": "आपको कोई खुला कार्य सौंपा नहीं गया है।",
     "quickSetupModal": {
       "classroomName": "कक्षा का नाम",
       "createContinue": "बनाएं और जारी रखें",
@@ -629,6 +676,8 @@
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
+      "liveHint": "पिछले रविवार कमरे में कौन था और पहली बार आए परिवार पूरे सप्ताह यहां दिखाई देते हैं।",
+      "liveHintSunday": "चेक-इन और सेवा उपयोग में आने के बाद यहां दिखेगा कि कमरे में कौन है, कौन सेवा कर रहा है और कौन अभी आया है।",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
@@ -671,16 +720,23 @@
       "donations": "दान"
     },
     "page": {
+      "allYears": "सभी वर्ष",
       "amount": "राशि",
       "batch": "बैच",
-      "currentYearCsv": "चालू वर्ष सीएसवी",
-      "currentYearPrint": "चालू वर्ष का मुद्रण",
+      "csv": "CSV",
       "date": "तारीख",
       "fund": "फंड",
-      "lastYearCsv": "पिछले वर्ष सीएसवी",
-      "lastYearPrint": "पिछले साल का प्रिंट",
+      "giftCount": "{count} दान",
+      "giftsInYear": "{year} में {count} दान",
+      "give": "दान दें",
+      "giving": "दान",
       "method": "तरीका",
+      "noGiftsInYear": "{year} में कोई दान नहीं।",
       "notes": "Notes",
+      "paymentMethods": "भुगतान के तरीके",
+      "recurring": "आवर्ती",
+      "sinceYear": "{year} से {amount}",
+      "statement": "विवरण",
       "viewBatch": "बैच देखें",
       "willAppear": "दान किए जाने के बाद यहां दिखाई देंगे।"
     }
@@ -737,6 +793,7 @@
       "anon": "अज्ञात",
       "donor": "दाता",
       "editCampaign": "अभियान संपादित करें",
+      "goalAmount": "{amount} लक्ष्य",
       "noPledges": "इस अभियान में अभी तक कोई प्रतिज्ञा नहीं की गई है।",
       "ofGoal": "लक्ष्य का",
       "pledges": "प्रतिज्ञाएं",
@@ -746,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "अभियान जोड़ें",
+      "campaignCount": "{count} अभियान",
       "campaigns": "अभियान",
       "dates": "तारीखें",
       "export": "निर्यात करें",
       "fund": "फंड",
       "given": "दिया गया",
+      "givenAmount": "{amount} दिया गया",
       "goal": "लक्ष्य",
       "noCampaigns": "अभी तक कोई अभियान नहीं बनाया गया है।",
       "ongoing": "जारी",
       "pledged": "प्रतिज्ञात",
+      "pledgedAmount": "{amount} प्रतिज्ञात",
       "progress": "प्रगति",
-      "subtitle": "प्रतिज्ञा अभियान और दान लक्ष्यों की ओर प्रगति ट्रैक करें",
-      "totalCampaigns": "कुल अभियान"
+      "subtitle": "प्रतिज्ञा अभियान और दान लक्ष्यों की ओर प्रगति ट्रैक करें"
     },
     "donationBatchPage": {
-      "batchDate": "बैच दिनांक:",
-      "donations": "दान",
       "editBatch": "बैच संपादित करें",
+      "giftCount": "{count} दान",
       "subtitle": "इस बैच में दान प्रबंधित करें",
-      "title": "दान बैच",
-      "totalAmount": "कुल राशि"
+      "title": "दान बैच"
     },
     "donationBatchesPage": {
       "addBatch": "बैच जोड़ें",
+      "allYears": "सभी",
+      "batchCount": "{count} बैच",
       "batches": "बैच",
-      "donations": "दान",
       "export": "निर्यात",
+      "failedEvents": "विफल इवेंट ({count})",
+      "giftCount": "{count} दान",
       "stripeImportLink": "गुम Stripe लेनदेन आयात करें",
-      "subtitle": "दान बैचों को प्रबंधित करें और रिकॉर्ड ट्रैक करें",
-      "totalAmount": "कुल राशि"
+      "subtitle": "दान बैचों को प्रबंधित करें और रिकॉर्ड ट्रैक करें"
     },
     "donationEdit": {
       "anon": "गुमनाम",
@@ -837,8 +896,7 @@
       "total": "कुल"
     },
     "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
+      "lede": "{count} विफल · {amount} जोखिम में",
       "message": "Gateway Message",
       "none": "No failed recurring gifts.",
       "retry": "Retry",
@@ -858,10 +916,10 @@
       "visible": "दाताओं के लिए दृश्यमान"
     },
     "fundPage": {
-      "donors": "दानकर्ता",
+      "donorCount": "{count} दाता",
       "filter": "फ़िल्टर",
-      "subtitle": "इस फंड में दान और योगदान को ट्रैक करें",
-      "totalAmount": "कुल राशि"
+      "giftCount": "{count} दान",
+      "subtitle": "इस फंड में दान और योगदान को ट्रैक करें"
     },
     "funds": {
       "fund": "फंड",
@@ -877,15 +935,14 @@
       "dateEnd": "अंतिम तिथि",
       "dateStart": "प्रारंभ तिथि",
       "don": "दान",
-      "donFilt": "दान फ़िल्टर",
       "donor": "दाता",
       "export": "निर्यात",
+      "fundCount": "{count} फंड",
       "noDon": "चयनित तिथि सीमा के लिए कोई दान नहीं",
       "nonDeductible": "कटौती योग्य नहीं",
       "subtitle": "दान कोष प्रबंधित करें और दान श्रेणियों को ट्रैक करें",
       "taxDeductible": "कर कटौती योग्य",
       "taxStatus": "कर स्थिति",
-      "totalFunds": "कुल फंड",
       "viewBatch": "बैच देखें"
     },
     "givingLink": {
@@ -895,7 +952,13 @@
       "title": "Giving Link",
       "url": "Link"
     },
+    "logGift": {
+      "amountError": "शून्य से अधिक राशि दर्ज करें, जैसे 25.00।",
+      "batchHint": "इस तारीख के बैच में सहेजा जाता है; आवश्यकता होने पर एक बैच बनाया जाता है।",
+      "title": "दान दर्ज करें"
+    },
     "period": {
+      "label": "अवधि",
       "monthly": "मासिक",
       "quarterly": "त्रैमासिक",
       "weekly": "साप्ताहिक"
@@ -1014,6 +1077,9 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "view": {
+      "label": "दृश्य"
     }
   },
   "fileUpload": {
@@ -1136,14 +1202,17 @@
       "archForms": "संग्रहीत प्रपत्र",
       "archive": "संग्रह",
       "archiveFormAria": "फॉर्म {name} संग्रहीत करें",
+      "archived": "संग्रहीत",
       "confirmDuplicate": "क्या इस फ़ॉर्म की प्रतिलिपि बनाएँ?",
       "confirmMsg1": "क्या आप वाकई इस प्रपत्र को संग्रहीत करना चाहते हैं?",
       "confirmMsg2": "क्या आप वाकई इस प्रपत्र को पुनर्स्थापित करना चाहते हैं?",
       "duplicate": "डुप्लिकेट करें",
       "duplicated": "Form duplicated",
+      "find": "फ़ॉर्म खोजें",
       "forms": "प्रपत्र",
       "noArch": "कोई संग्रहीत प्रपत्र नहीं।",
       "noCustomMsg": "अभी तक कोई कस्टम प्रपत्र नहीं बनाए गए हैं। उन्हें जोड़ने पर वे यहाँ दिखाई देंगे।",
+      "noMatches": "आपकी खोज से कोई फ़ॉर्म मेल नहीं खाता।",
       "personProfileForm": "Person profile form",
       "restore": "पुनर्स्थापित करें",
       "restoreFormAria": "फॉर्म {name} पुनर्स्थापित करें",
@@ -1200,14 +1269,18 @@
       "confirmDuplicate": "इस समूह को डुप्लिकेट करें? सदस्यों की प्रतिलिपि नहीं बनाई जाएगी।",
       "copySuffix": "(प्रतिलिपि)",
       "discussions": "Discussions",
+      "duplicate": "डुप्लिकेट करें",
       "duplicateTooltip": "इस समूह को डुप्लिकेट करें",
+      "email": "ईमेल",
       "emailTooltip": "इस समूह को ईमेल भेजें",
       "location": "स्थान",
       "meetingTime": "मिलने का समय",
-      "moreLabels": "अधिक लेबल",
+      "notify": "सूचित करें",
+      "notifyTooltip": "पुश सूचना भेजें",
       "parentPickup": "अभिभावक पिकअप",
       "printNametag": "नाम टैग प्रिंट करें",
       "team": "टीम",
+      "text": "टेक्स्ट",
       "textTooltip": "इस समूह को टेक्स्ट भेजें",
       "trackAttendance": "उपस्थिति ट्रैक करें"
     },
@@ -1361,6 +1434,21 @@
     "groupPage": {
       "addPpl": "व्यक्ति जोड़ें"
     },
+    "groupRecord": {
+      "allEvents": "सभी कार्यक्रम",
+      "allMembers": "सभी सदस्य",
+      "allSessions": "सभी सत्र",
+      "healthSummary": "{members} सदस्य · 90 दिनों में {joined} जुड़े · {left} छोड़कर गए",
+      "lastEvent": "पिछला",
+      "latestSession": "नवीनतम {date}",
+      "nextEvent": "अगला",
+      "noMembers": "अभी तक कोई सदस्य नहीं।",
+      "noSessions": "अभी तक कोई सत्र नहीं।",
+      "pendingCount": "{count} लंबित",
+      "seeHealth": "स्थिति देखें",
+      "sessionCount": "{count} सत्र",
+      "sessionCountOne": "1 सत्र"
+    },
     "groupSessions": {
       "addSesMsg": "कृपया जारी रखने के लिए एक नया सत्र जोड़ें।",
       "allYears": "सभी वर्ष",
@@ -1389,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "समूह जोड़ें",
+      "allCategories": "सभी",
       "cat": "श्रेणी",
+      "clearFilters": "फ़िल्टर साफ़ करें",
       "confirmRestore": "क्या {name} को संग्रह से पुनर्स्थापित करें?",
       "export": "निर्यात करें",
       "groups": "समूह",
-      "labels": "लेबल",
+      "moreCategories": "अधिक श्रेणियां",
       "noGroupMsg": "कोई समूह नहीं मिला। कृपया एक समूह बनाएं।",
       "noMatchMsg": "आपकी खोज से कोई समूह मेल नहीं खाता।",
       "pendingRequestSingular": "{count} लंबित अनुरोध",
@@ -1401,6 +1491,7 @@
       "pers": "1 व्यक्ति",
       "ppl": "लोग",
       "restore": "पुनर्स्थापित करें",
+      "resultCount": "{total} में से {shown} समूह",
       "searchPlaceholder": "समूह खोजें...",
       "showArchived": "संग्रहीत दिखाएं",
       "spPpl": " लोग",
@@ -1480,6 +1571,7 @@
       "noPhoneNotice": "{count} के पास फ़ाइल पर फ़ोन नंबर नहीं है।",
       "noPhoneNoticeSingular": "{count} के पास फ़ाइल पर फ़ोन नंबर नहीं है।",
       "noPhoneSkipped": "{count} छोड़े गए (कोई फ़ोन नंबर नहीं)।",
+      "noProvider": "टेक्स्ट भेजने से पहले सेटिंग्स में एक टेक्स्टिंग प्रदाता सेट करें।",
       "optedOutNotice": "{count} ने ऑप्ट आउट किया।",
       "optedOutSkipped": "{count} छोड़े गए (ऑप्ट आउट)।",
       "phoneOnFile": "फ़ाइल पर फ़ोन",
@@ -1491,7 +1583,10 @@
       "sentSummary": "{recipientCount} योग्य प्राप्तकर्ताओं में से {successCount} को भेजा गया।",
       "sentSummarySingular": "{recipientCount} योग्य प्राप्तकर्ता में से {successCount} को भेजा गया।",
       "textGroupTitle": "समूह को टेक्स्ट करें: {groupName}",
-      "textPersonTitle": "टेक्स्ट: {personName}"
+      "textPersonTitle": "टेक्स्ट: {personName}",
+      "textVolunteersTitle": "स्वयंसेवकों को टेक्स्ट करें",
+      "volunteersSummary": "{totalMembers} में से {eligibleCount} स्वयंसेवकों को यह टेक्स्ट मिलेगा।",
+      "volunteersSummarySingular": "{totalMembers} में से {eligibleCount} स्वयंसेवक को यह टेक्स्ट मिलेगा।"
     },
     "serviceTimes": {
       "services": "सेवाएं:"
@@ -1562,7 +1657,7 @@
       "registrations": "पंजीकरण",
       "roomsResources": "कमरे और संसाधन",
       "sermons": "उपदेश",
-      "site": "साइट",
+      "streamSettings": "सेटिंग्स",
       "stripeImport": "Stripe आयात",
       "website": "वेबसाइट"
     }
@@ -1665,7 +1760,8 @@
       "placeholder": "मुझे जुलाई में जन्मदिन वाले 30 से अधिक उम्र के पुरुष दिखाएं",
       "search": "खोजें",
       "searching": "खोज रहा है...",
-      "title": "AI खोज"
+      "title": "AI खोज",
+      "unavailable": "AI खोज अस्थायी रूप से उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें, या ऊपर दी गई खोज का उपयोग करें।"
     },
     "bulk": {
       "actions": "क्रियाएं",
@@ -1704,7 +1800,6 @@
       "removeFromGroupPrompt": "{count} चयनित लोगों को एक समूह से हटाएं।",
       "removeFromGroupTitle": "समूह से हटाएं",
       "removeSuccess": "{count} लोगों को {group} से हटाया गया।",
-      "selected": "चयनित",
       "setCampus": "कैंपस सेट करें",
       "value": "Value",
       "workflowSuccess": "{count} लोगों को वर्कफ़्लो में जोड़ा गया।"
@@ -1722,6 +1817,27 @@
       "title": "जनसांख्यिकी",
       "total": "कुल",
       "unassigned": "असाइन नहीं किया गया"
+    },
+    "directory": {
+      "ask": "पूछें",
+      "clear": "साफ़ करें",
+      "countHouseholds": "{households} परिवार · {people} लोग",
+      "everyone": "सभी",
+      "family": "{name} परिवार",
+      "households": "परिवार",
+      "noMatch": "उस खोज से कोई मेल नहीं खाता",
+      "noMatchHint": "कोई दूसरा नाम आज़माएं, या विवरण के अनुसार फ़िल्टर करने के लिए उन्नत का उपयोग करें।",
+      "noPeople": "अभी तक कोई लोग नहीं",
+      "noPeopleHint": "नीचे पहला व्यक्ति जोड़ें।",
+      "savedLists": "सहेजी गई सूचियां",
+      "searchLabel": "कोई परिवार या व्यक्ति खोजें",
+      "selectAll": "सभी दिखाई देने वाले परिवार चुनें",
+      "selectHousehold": "{name} चुनें",
+      "selectedCount": "{count} चयनित",
+      "subtitle": "परिवार ब्राउज़ करें, किसी व्यक्ति को खोलें, या किसी सूची या प्रश्न से परिणाम सीमित करें।",
+      "table": "तालिका",
+      "title": "लोग",
+      "viewAs": "इस रूप में देखें"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -1813,12 +1929,7 @@
       "unknownGroup": "अज्ञात समूह"
     },
     "household": {
-      "age": "आयु:",
-      "groups": "समूह:",
-      "house": " परिवार",
-      "lastActivity": "अंतिम गतिविधि:",
-      "noContactInfo": "कोई संपर्क जानकारी नहीं",
-      "status": "स्थिति:"
+      "house": " परिवार"
     },
     "householdEdit": {
       "addMember": "घरेलू सदस्य जोड़ें",
@@ -1839,7 +1950,6 @@
       "confirmDelete": "सूची \"{name}\" हटाएं? इसे पूर्ववत नहीं किया जा सकता।",
       "createdBy": "{name} द्वारा",
       "delete": "सूची हटाएं",
-      "empty": "अभी कोई सहेजी गई सूची नहीं। एक उन्नत खोज बनाएं, फिर \"सूची के रूप में सहेजें\"।",
       "household": "परिवार शामिल करें",
       "householdAll": "पूरा परिवार",
       "householdChildren": "मिलान के बच्चे",
@@ -1853,8 +1963,7 @@
       "settings": "सूची सेटिंग्स",
       "sharing": "यह सूची कौन देख सकता है",
       "sharingOrg": "सभी स्टाफ",
-      "sharingPrivate": "केवल मैं",
-      "title": "सहेजी गई सूचियां"
+      "sharingPrivate": "केवल मैं"
     },
     "merge": {
       "findPerson": "मर्ज करने के लिए व्यक्ति खोजें",
@@ -1884,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "व्यक्ति जोड़ें",
-      "allMembers": "सभी सदस्य",
       "bDay": "जन्मदिन",
       "bDayNo": "जन्मदिन (कोई वर्ष नहीं)",
       "deleteOp": "विकल्प हटाएं",
@@ -1894,15 +2002,12 @@
       "loading": "लोग लोड हो रहे हैं...",
       "middle": "मध्य",
       "nameNote": "नाम टैग नोट्स",
-      "noPeopleFound": "कोई लोग नहीं मिले",
       "peopleFound": "{count} लोग मिले",
       "photo": "फोटो",
       "primEmail": "प्राथमिक ईमेल",
       "primPhone": "प्राथमिक फ़ोन",
       "printDirectory": "निर्देशिका प्रिंट करें",
       "printResults": "परिणाम प्रिंट करें",
-      "searchPpl": "लोग खोजें",
-      "searchResults": "खोज परिणाम",
       "showAll": "सभी सदस्य दिखाएं",
       "showingMembers": "{count} सदस्य दिखाए जा रहे हैं"
     },
@@ -1922,13 +2027,10 @@
       "group": "समूह",
       "membership": "सदस्यता और समूह",
       "names": "नाम",
-      "placeholder": "नाम से खोजें...",
       "service": "सेवा",
       "serviceTime": "सेवा समय",
       "simp": "सरल",
-      "simpSearch": "लोगों की खोज",
-      "type": "प्रकार",
-      "typeToSearch": "तुरंत खोजने के लिए टाइप करें"
+      "type": "प्रकार"
     },
     "peopleSearchResults": {
       "deletePersonAria": "{name} को हटाएं",
@@ -1939,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "वर्कफ़्लो में जोड़ें",
-      "age": "आयु",
       "emailPerson": "इस व्यक्ति को ईमेल करें",
-      "gender": "लिंग",
       "hasLogin": "लॉगिन है",
-      "maritalStatus": "वैवाहिक स्थिति",
       "sendTextMessage": "टेक्स्ट संदेश भेजें"
     },
     "personEdit": {
@@ -1973,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "उपस्थिति",
-      "details": "विवरण",
       "donations": "दान",
       "forms": "फ़ॉर्म",
       "groups": "समूह",
@@ -1985,12 +2083,44 @@
       "notesSuffix": " नोट्स",
       "thisPerson": "यह व्यक्ति"
     },
+    "personRecord": {
+      "allForms": "सभी फ़ॉर्म",
+      "allNotes": "सभी नोट्स",
+      "allYears": "सभी वर्ष",
+      "attendanceSummary": "पिछले {weeks} सप्ताहों में से {count}",
+      "email": "ईमेल",
+      "givenBy": "दाता",
+      "givingYear": "{year} में · {count} दान",
+      "hereThisWeek": "इस सप्ताह उपस्थित",
+      "household": "परिवार",
+      "lastAttended": "अंतिम उपस्थिति {date}",
+      "lastGift": "अंतिम दान {date}।",
+      "loadError": "हम {what} लोड नहीं कर सके।",
+      "noAttendance": "अभी तक कोई उपस्थिति दर्ज नहीं।",
+      "noDirectory": "निर्देशिका से छिपा हुआ",
+      "noGiftsYear": "{year} में कोई दान दर्ज नहीं।",
+      "noHouseholdGiftsYear": "{year} में कोई पारिवारिक दान दर्ज नहीं।",
+      "noNotes": "अभी तक कोई नोट्स नहीं।",
+      "notSubmitted": "जमा नहीं किया गया",
+      "noteCount": "{count} नोट्स",
+      "recentAttendance": "हाल की उपस्थिति",
+      "recentGifts": "{year} में दान",
+      "service": "सेवा",
+      "showingLatest": "नवीनतम {count} दिखाए जा रहे हैं",
+      "statement": "{year} विवरण",
+      "submitted": "जमा किया गया",
+      "text": "टेक्स्ट",
+      "weekAttended": "{date} का सप्ताह: उपस्थित",
+      "weekNoRecord": "{date} का सप्ताह: कोई उपस्थिति दर्ज नहीं",
+      "weeklyAttendance": "साप्ताहिक उपस्थिति",
+      "where": "कहां",
+      "wholeHousehold": "पूरा परिवार",
+      "workflow": "वर्कफ़्लो"
+    },
     "personView": {
       "hasLoginLabel": "लॉगिन है: {email}",
       "home": "घर",
-      "memShip": "सदस्यता:",
       "mobile": "मोबाइल",
-      "persDet": "व्यक्तिगत विवरण",
       "work": "काम"
     },
     "pickup": {
@@ -2004,9 +2134,6 @@
       "status": "स्थिति",
       "title": "पिकअप",
       "trusted": "विश्वसनीय"
-    },
-    "tabs": {
-      "noImplement": "लागू नहीं किया गया"
     },
     "updateHouseHold": {
       "update": "पता अपडेट करें"
@@ -2028,6 +2155,7 @@
     "firstName": "पहला नाम",
     "gender": "लिंग",
     "grade": "ग्रेड",
+    "guest": "अतिथि",
     "inactive": "निष्क्रिय",
     "lastName": "अंतिम नाम",
     "line1": "लाइन 1",
@@ -2044,6 +2172,7 @@
     "person": "व्यक्ति",
     "phone": "फ़ोन",
     "prefix": "उपसर्ग",
+    "recentPeople": "हाल के लोग",
     "regularAttendee": "नियमित उपस्थित",
     "school": "विद्यालय",
     "single": "अकेला",
@@ -2356,7 +2485,6 @@
       "selectedPrefix": "चयनित:"
     },
     "ministryList": {
-      "getStarted": "अपना पहला मंत्रालय बनाकर शुरुआत करें",
       "noMinMsg": "कोई मंत्रालय नहीं मिला। कृपया एक मंत्रालय बनाएं।"
     },
     "ministryPage": {
@@ -2375,6 +2503,8 @@
       "planNameAria": "योजना का नाम",
       "planReq": "योजना का नाम आवश्यक है।",
       "prepared": "अस्थायी रूप से शामिल (प्रकाशित होने तक स्वयंसेवकों से असाइनमेंट छुपाएं)",
+      "repeatWeekly": "इतने सप्ताहों तक साप्ताहिक दोहराएं",
+      "repeatWeeklyHelper": "प्रति सप्ताह एक योजना बनाता है, प्रत्येक पिछली योजना से कॉपी की गई",
       "servDate": "सेवा तिथि",
       "servReq": "सेवा तिथि आवश्यक है।",
       "serviceDateAria": "सेवा तिथि",
@@ -2430,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "सामूहिक शेड्यूल",
-      "createFirst": "पहली योजना बनाएं",
-      "createPlan": "योजना बनाएं",
       "newPlan": "नई योजना",
       "noPlans": "कोई योजना नहीं मिली",
-      "noUpcomingPlans": "कोई आगामी योजनाएँ नहीं",
-      "noUpcomingPlansDescription": "आज या बाद के लिए कोई योजनाएँ निर्धारित नहीं हैं। पिछली योजनाएँ देखने के लिए ऊपर \"पिछला दिखाएं\" टॉगल का उपयोग करें।",
+      "noUpcomingHint": "आज से आगे कुछ भी निर्धारित नहीं है। पिछली योजनाएं देखने के लिए \"पिछली\" चुनें।",
+      "past": "पिछली",
       "plans": "योजनाएं",
       "scheduleLesson": "पाठ शेड्यूल करें",
+      "serviceDate": "सेवा की तारीख",
       "serviceOrder": "सेवा क्रम",
-      "showPast": "पिछला दिखाएं"
+      "upcoming": "आगामी"
     },
     "planPage": {
       "assign": "टीम असाइनमेंट",
-      "assignments": "असाइनमेंट",
       "band": "बैंड",
       "loadingPlan": "योजना लोड हो रही है...",
       "noteSave": "नोट सहेजा गया",
-      "serviceOrder": "सेवा क्रम",
-      "servicePlan": "सेवा योजना",
-      "subtitle": "अपनी सेवा की योजना बनाएं और उसे शेड्यूल करें"
+      "servicePlan": "सेवा योजना"
     },
     "planType": {
       "details": "योजना प्रकार विवरण"
@@ -2483,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "योजना प्रकार जोड़ें",
       "createPlanType": "योजना प्रकार बनाएँ",
-      "createPlanTypes": "योजना प्रकार बनाएँ",
       "noPlanTypes": "कोई योजना प्रकार नहीं मिला",
       "planTypes": "योजना प्रकार"
     },
     "planTypePage": {
       "notFound": "योजना प्रकार नहीं मिला",
       "overview": "अवलोकन",
-      "planType": "योजना का प्रकार",
-      "subtitle": "योजना प्रकार सेटिंग्स कॉन्फ़िगर करें"
+      "planType": "योजना का प्रकार"
     },
     "planTypeReminders": {
       "channels": "Send By",
@@ -2505,6 +2629,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "टेक्स्ट",
+      "textHint": "टेक्स्ट संदेश आपके चर्च के टेक्स्टिंग प्रदाता के माध्यम से केवल उन लोगों को भेजे जाते हैं जिन्होंने टेक्स्ट रिमाइंडर चालू किए हैं। हर टेक्स्ट पर आपके चर्च का खर्च हो सकता है।",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2544,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "मंत्रालय जोड़ें",
       "editMinistry": "मंत्रालय संपादित करें",
-      "selMin": "एक मंत्रालय चुनें",
       "subtitle": "मंत्रालयों और सेवा योजनाओं का प्रबंधन करें"
     },
     "positionEdit": {
@@ -2613,6 +2738,7 @@
       "viewingAs": "इस रूप में देख रहे हैं"
     },
     "servingOverviewPage": {
+      "allPositions": "सभी पद",
       "autoSchedule": "स्वतः-अनुसूची",
       "autoScheduleConfirm": "क्या इस तिथि सीमा के हर खाली स्थान में स्वयंसेवकों को स्वचालित रूप से शेड्यूल करें?",
       "autoScheduleResult": "{total} में से {filled} योजनाएं स्वतः-निर्धारित",
@@ -2633,11 +2759,17 @@
       "removeConfirm": "क्या {name} को इस असाइनमेंट से हटाएँ?",
       "startDate": "प्रारंभ तिथि",
       "subtitle": "नियुक्त स्वयंसेवकों के साथ तिथि के अनुसार स्थिति",
+      "textAll": "स्वयंसेवकों को टेक्स्ट करें",
       "title": "सेवा अवलोकन"
     },
     "servingPage": {
-      "showAll": "सभी दिखाएँ",
-      "showAllHint": "आपकी मंत्रालयें छिपी हुई हैं क्योंकि आप सदस्य नहीं हैं। उन्हें देखने के लिए ऊपर \"सभी दिखाएँ\" चालू करें।"
+      "actions": "क्रियाएं",
+      "all": "सभी",
+      "allHint": "आपके मंत्रालय छिपे हुए हैं क्योंकि आप सदस्य नहीं हैं। उन्हें देखने के लिए ऊपर \"सभी\" चुनें।",
+      "findMinistry": "मंत्रालय खोजें",
+      "mine": "मेरे",
+      "ministries": "मंत्रालय",
+      "whichMinistries": "कौन से मंत्रालय"
     },
     "signageFeed": {
       "button": "Digital Signage",
@@ -2658,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "टीम बनाएं",
-      "createTeams": "टीमें बनाएं",
-      "manage": "प्रबंधित करें",
       "members": "सदस्यों",
       "newTeam": "नई टीम",
       "noTeam": "कोई टीम नहीं मिली। कृपया एक टीम बनाएं।",
@@ -2709,6 +2839,7 @@
       "typeService": "सेवा"
     },
     "timeList": {
+      "addTime": "समय जोड़ें",
       "noTime": "अभी तक कोई समय नहीं जोड़ा गया है",
       "sunServ": "रविवार सेवा",
       "times": "टाइम्स"
@@ -2735,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "लिंक",
+      "linked": "लिंक किया गया",
+      "notLinked": "लिंक नहीं किया गया",
       "signUp": "साइन अप करें",
       "unlink": "अनलिंक"
     },
@@ -2775,9 +2908,7 @@
       "saveChanges": "परिवर्तनों को सुरक्षित करें",
       "saveError": "परिवर्तन सहेजने में विफल",
       "sendRequest": "Send request",
-      "subtitle": "अपनी प्रोफ़ाइल और प्राथमिकताएँ प्रबंधित करें",
       "themePreferences": "थीम प्राथमिकताएँ",
-      "themePreferencesHelper": "आपकी थीम प्राथमिकता स्वचालित रूप से सहेजी जाती है और इस डिवाइस पर याद रखी जाएगी।",
       "togglePasswordVisibility": "पासवर्ड दृश्यता टॉगल करें",
       "valEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।"
     }
@@ -2834,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "तिथि",
       "deleteConfirm": "इस पंजीकरण को स्थायी रूप से हटाएं?",
+      "editSettings": "सेटिंग्स संपादित करें",
       "eventFull": "यह कार्यक्रम अपनी क्षमता तक पहुँच गया है।",
       "eventNotFound": "ईवेंट नहीं मिला",
       "eventRegistrations": "ईवेंट पंजीकरण",
@@ -2875,9 +3007,11 @@
       "noEventsHint": "ईवेंट संपादन सेटिंग्स के माध्यम से ईवेंट पर पंजीकरण सक्षम करें।",
       "registered": "पंजीकृत",
       "registrations": "पंजीकरण",
+      "search": "कार्यक्रम खोजें",
       "subtitle": "ईवेंट पंजीकरण सेटिंग्स प्रबंधित करें और पंजीकर्ताओं को देखें",
       "tags": "टैग",
-      "title": "ईवेंट पंजीकरण"
+      "title": "ईवेंट पंजीकरण",
+      "turnOnRegistration": "पंजीकरण चालू करें"
     }
   },
   "reporting": {
@@ -3007,14 +3141,17 @@
         "weekly": "साप्ताहिक",
         "yes": "हाँ"
       },
-      "services": "सेवाएं",
       "servicesTab": {
         "addService": "सेवा जोड़ें",
         "defaultLabel": "रविवार सुबह",
+        "duration": "अवधि",
+        "none": "अभी तक कोई सेवा नहीं। अपनी लाइव स्ट्रीम शेड्यूल करने के लिए एक जोड़ें।",
+        "provider": "प्रदाता",
+        "service": "सेवा",
+        "time": "समय",
         "title": "सेवाएं",
         "weekly": "साप्ताहिक"
       },
-      "settings": "सेटिंग्स",
       "sidebarTabs": {
         "add": "जोड़ें",
         "title": "सामग्री टैब"
@@ -3062,6 +3199,7 @@
     "notScheduled": "निर्धारित नहीं",
     "playlist": "प्लेलिस्ट",
     "playlists": {
+      "addPlaylist": "प्लेलिस्ट जोड़ें",
       "createFirstPlaylist": "पहली प्लेलिस्ट बनाएं",
       "noPlaylistsFound": "कोई प्लेलिस्ट नहीं मिली",
       "noPlaylistsMatch": "आपकी खोज से मेल खाने वाली कोई प्लेलिस्ट नहीं",
@@ -3096,6 +3234,7 @@
       "title": "Podcast Feed"
     },
     "publishDate": "प्रकाशन तिथि",
+    "resultCount": "{total} में से {shown} उपदेश",
     "searchPlaceholder": "शीर्षक या प्लेलिस्ट से उपदेश खोजें...",
     "sermon": "उपदेश",
     "sermonEdit": {
@@ -3152,11 +3291,15 @@
       "act": "सक्रिय",
       "arch": "संग्रहीत",
       "church": "चर्च",
+      "churchCount": "{count} चर्च",
       "churchName": "चर्च का नाम",
       "churches": "चर्चेस",
       "churchesSubtitle": "सभी चर्च खोजें और प्रबंधित करें",
       "commons": "कॉमन्स",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
+      "groupDirectory": "निर्देशिका",
+      "groupOperations": "संचालन",
+      "groupSystem": "सिस्टम",
       "impersonateSubtitle": "समर्थन के लिए किसी अन्य उपयोगकर्ता के रूप में लॉग इन करें",
       "impersonateUser": "उपयोगकर्ता का प्रतिरूपण करें",
       "jobs": "पृष्ठभूमि नौकरियां",
@@ -3176,6 +3319,7 @@
       "servAdmin": "सर्वर व्यवस्थापक",
       "serverHealth": "सर्वर स्वास्थ्य",
       "serverHealthSubtitle": "बैकएंड सेवाओं के स्वास्थ्य की जांच करें",
+      "status": "स्थिति",
       "subtitle": "सर्वर-व्यापी सेटिंग्स और चर्च प्रबंधित करें",
       "translationLookups": "अनुवाद लुकअप",
       "translationSubtitle": "अनुवादित लोकेल स्ट्रिंग्स देखें",
@@ -3465,6 +3609,19 @@
       "title": "उपयोगकर्ता लुकअप"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "स्केल जोड़ें"
+    },
+    "planPage": {
+      "addMenu": "जोड़ने के और तरीके",
+      "hideNotes": "नोट्स छिपाएं",
+      "hideTimes": "समय छिपाएं"
+    },
+    "songPage": {
+      "deleteSong": "गीत हटाएं"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "बंद करें",
@@ -3742,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "श्रेणी",
-      "createTemplate": "टेम्पलेट बनाएं",
       "deleteConfirm": "टेम्पलेट \"{name}\" हटाएं?",
       "emptyDescription": "बल्क ईमेल के साथ शुरू करने के लिए एक टेम्पलेट बनाएं।",
       "emptyTitle": "अभी तक कोई ईमेल टेम्पलेट नहीं",
@@ -3873,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "डोमेन व्यवस्थापक भूमिका के लिए अनुमतियाँ संपादित नहीं की जा सकतीं। डोमेन व्यवस्थापक को पूर्ण पहुँच है।",
-      "permEdit": "अनुमतियाँ संपादित करें",
-      "roleEdit": "भूमिका संपादित करें:"
+      "permEdit": "अनुमतियाँ संपादित करें"
     },
     "rolePermissions": {
       "filter": "Filter permissions",
@@ -3885,6 +4040,7 @@
       "accDesc": "दान देखने और प्रबंधित करने की पहुँच है।",
       "addCustomRoleAria": "कस्टम भूमिका जोड़ें",
       "addPredefinedRoleAria": "{name} भूमिका जोड़ें",
+      "addRole": "भूमिका जोड़ें",
       "canEdit": "अधिकांश डेटा संपादित कर सकते हैं",
       "churchDesc": " जिसमें लोग, समूह, उपस्थिति और प्रपत्र शामिल हैं।",
       "churchStaff": "चर्च कर्मचारी",
@@ -3958,6 +4114,8 @@
       "clearstreamHelper": "अपने में एक API कुंजी बनाएं",
       "clearstreamHelperLink": "Clearstream खाता सेटिंग्स",
       "clearstreamHelperSuffix": "API कुंजियाँ अनुभाग में।",
+      "inboundUrl": "इनबाउंड (STOP) वेबहुक URL",
+      "inboundUrlHelper": "इसे अपने प्रदाता के इनबाउंड संदेश वेबहुक में पेस्ट करें ताकि STOP का जवाब देने वाले लोग यहां भी टेक्स्ट से हटा दिए जाएं।",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "आपकी MinistryStuff टेक्स्टिंग सदस्यता सक्रिय है, इस चक्र में {} क्रेडिट शेष हैं।",
       "ministryStuffHelper": "किसी API कुंजी की आवश्यकता नहीं है। टेक्स्टिंग क्रेडिट आपकी MinistryStuff सदस्यता से आते हैं, जो स्वचालित रूप से इस चर्च से जुड़ी है। अपनी योजना को प्रबंधित करें",
@@ -4192,8 +4350,8 @@
     "blocksPage": {
       "actions": "क्रियाएं",
       "addBlock": "ब्लॉक जोड़ें",
+      "blockCount": "{count} ब्लॉक",
       "blocks": "ब्लाकों",
-      "createFirstBlock": "पहला ब्लॉक बनाएं",
       "elements": "तत्व",
       "getStarted": "अपना पहला पुन: प्रयोज्य ब्लॉक बनाकर आरंभ करें",
       "noBlocksFound": "कोई ब्लॉक नहीं मिला",
@@ -4201,7 +4359,6 @@
       "reusableBlocks": "पुन: प्रयोज्य ब्लॉक",
       "sections": "अनुभाग",
       "subtitle": "अपनी वेबसाइट के लिए पुन: प्रयोज्य सामग्री ब्लॉक बनाएं और प्रबंधित करें",
-      "totalBlocks": "कुल ब्लॉक",
       "type": "प्रकार"
     },
     "blog": {
@@ -4212,6 +4369,7 @@
       "draft": "प्रारूप",
       "navHint": "आगंतुक /blog पर आपके पोस्ट पढ़ सकते हैं। पेज स्क्रीन पर एक नेविगेशन लिंक जोड़ें ताकि वे इसे खोज सकें:",
       "noPosts": "अभी तक कोई पोस्ट नहीं",
+      "postCount": "{count} पोस्ट",
       "posts": "पोस्ट",
       "published": "प्रकाशित",
       "scheduled": "अनुसूचित",
@@ -4512,6 +4670,7 @@
       "imageDescribingTopic": "विषय का वर्णन करने वाली छवि",
       "info": "जानकारी",
       "javascriptExcludeTag": "JavaScript (script टैग को छोड़कर)",
+      "javascriptUrlWarning": "यह एक वेब पता है, JavaScript नहीं। चित्र दिखाने के लिए, Image एलिमेंट का उपयोग करें या HTML सामग्री में <img src=\"...\"> डालें।",
       "label": "लेबल",
       "linkUrlOptional": "लिंक यूआरएल (वैकल्पिक)",
       "loadingEditor": "संपादक लोड हो रहा है...",
@@ -4766,20 +4925,15 @@
       "pageSettings": "पेज सेटिंग्स",
       "previewOf": "{title} का पूर्वावलोकन",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "पूर्वावलोकन: {title}",
-      "title": "वेबसाइट पूर्वावलोकन"
+      "subtitle": "पूर्वावलोकन: {title}"
     },
     "pages": {
       "convert": "कनवर्ट करें"
     },
     "pagesPage": {
       "actions": "क्रियाएं",
-      "addFirstPage": "प्रथम पृष्ठ जोड़ें",
       "addPage": "पृष्ठ जोड़ें",
-      "autoGenerated": "स्वतः उत्पन्न",
       "confirmConvert": "क्या आप इस स्वतः-जनरेटेड पेज को कस्टम पेज में कनवर्ट करना चाहते हैं?",
-      "customPages": "कस्टम पेज",
-      "description": "नीचे कस्टम और स्वचालित रूप से जेनरेट किए गए पेजों की एक सूची दी गई है। आप नए पेज जोड़ सकते हैं, मौजूदा पेजों को संपादित कर सकते हैं, या स्वचालित रूप से जेनरेट किए गए पेजों को कस्टम पेजों में बदल सकते हैं।",
       "desktopOnly": "पेज एडिटर केवल डेस्कटॉप मोड में उपलब्ध है",
       "generated": "जनरेट किया गया",
       "getStarted": "अपना पहला पृष्ठ जोड़कर आरंभ करें.",
@@ -4788,6 +4942,7 @@
       "hidePublicSiteWarning": "आपकी सार्वजनिक वेबसाइट बंद है। आगंतुकों को लॉगिन स्क्रीन पर भेजा जाता है और सर्च इंजनों को साइट इंडेक्स न करने के लिए कहा जाता है।",
       "mainNavigation": "मुख्य नेविगेशन",
       "noPagesFound": "कोई पेज नहीं मिला",
+      "pageCount": "{count} पेज",
       "pages": "पृष्ठों",
       "path": "पथ",
       "showLogin": "लॉगिन दिखाएँ",
@@ -4795,7 +4950,6 @@
       "startFromTemplate": "टेम्पलेट से शुरू करें",
       "subtitle": "अपने वेबसाइट पेज, सामग्री और नेविगेशन प्रबंधित करें",
       "toggleLoginVisibility": "लॉगिन बटन दृश्यता टॉगल करें",
-      "totalPages": "कुल पृष्ठ",
       "viewLivePage": "पूर्वावलोकन पृष्ठ",
       "websitePages": "वेबसाइट पेज"
     },
@@ -5350,7 +5504,6 @@
       "signature": "कुंजी हस्ताक्षर"
     },
     "keys": {
-      "add": "जोड़ें",
       "addExternalLink": "बाहरी लिंक जोड़ें",
       "addFiles": "फ़ाइलें जोड़ें",
       "audioTracks": "ऑडियो ट्रैक",
@@ -5366,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "पहला गीत जोड़ें",
         "message": "लाइब्रेरी में अपना पहला गीत जोड़कर शुरुआत करें।",
         "title": "कोई गीत नहीं मिला"
       },
@@ -5424,8 +5576,7 @@
       "addArrangement": "व्यवस्था जोड़ें",
       "loading": "लोड हो रहा है...",
       "noArrangementDescription": "शुरू करने के लिए साइडबार से एक व्यवस्था चुनें।",
-      "noArrangementSelected": "कोई व्यवस्था चयनित नहीं",
-      "subtitle": "गीत विवरण और व्यवस्थाएँ प्रबंधित करें"
+      "noArrangementSelected": "कोई व्यवस्था चयनित नहीं"
     },
     "songSearchDialog": {
       "closeDialogAria": "संवाद बंद करें",
@@ -5437,7 +5588,7 @@
       "deleteSelected": "चयनित हटाएं",
       "deleteSelectedConfirm": "चयनित गीतों को हटा दें? इसे पूर्ववत नहीं किया जा सकता।",
       "deselectAll": "सभी का चयन हटाएँ",
-      "search": "खोजें",
+      "resultCount": "{count} गीत",
       "searchSongs": "गीत खोजें",
       "selectAll": "Select all",
       "songs": "गीत",
@@ -5626,8 +5777,11 @@
       "message": "संदेश",
       "messageHint": "वैकल्पिक। डिफ़ॉल्ट अनुस्मारक शब्दों का उपयोग करने के लिए खाली छोड़ें।",
       "noDueDate": "इस कार्य की कोई नियत तिथि नहीं है, इसलिए तिथि सेट होने तक कोई अनुस्मारक नहीं भेजा जाएगा।",
+      "none": "कोई रिमाइंडर सेट नहीं है।",
       "save": "अनुस्मारक सहेजें",
       "saved": "सहेजा गया",
+      "text": "टेक्स्ट",
+      "textHint": "टेक्स्ट संदेश आपके चर्च के टेक्स्टिंग प्रदाता के माध्यम से केवल उन लोगों को भेजे जाते हैं जिन्होंने टेक्स्ट रिमाइंडर चालू किए हैं। हर टेक्स्ट पर आपके चर्च का खर्च हो सकता है।",
       "timeOfDay": "दिन का समय",
       "title": "अनुस्मारक",
       "when": "अनुस्मारक कब भेजे जाने चाहिए?"
@@ -5656,8 +5810,9 @@
       "noTasks": "कोई कार्य नहीं मिला",
       "notSpecified": "निर्दिष्ट नहीं है",
       "reqMe": "मेरे द्वारा अनुरोध किया गया",
-      "showClosedTasksAria": "बंद किए गए कार्य दिखाएं",
-      "showOpenTasksAria": "खुले कार्य दिखाएं",
+      "status": "कार्य स्थिति",
+      "statusColumn": "स्थिति",
+      "task": "कार्य",
       "tasks": "कार्य",
       "unassigned": "सौंपे नहीं गए"
     },
@@ -5668,6 +5823,7 @@
       "associate": "संबंद्ध करना",
       "associated": "संबंधित",
       "by": "द्वारा",
+      "closeTask": "कार्य बंद करें",
       "closed": "बंद",
       "created": "बनाया था",
       "editAssigned": "असाइन किया गया संपादित करें",
@@ -5675,11 +5831,8 @@
       "notSpec": "निर्दिष्ट नहीं है",
       "open": "खुला",
       "opened": "खोला गया",
+      "reopenTask": "कार्य फिर से खोलें",
       "unassigned": "सौंपे नहीं गए"
-    },
-    "tasksPage": {
-      "showClosed": "बंद दिखाएं",
-      "showOpen": "खुला दिखाएं"
     },
     "workflowActions": {
       "add": "क्रिया जोड़ें",
@@ -5719,10 +5872,12 @@
       "addCard": "कार्ड जोड़ें",
       "addStep": "चरण जोड़ें",
       "boardTab": "बोर्ड",
+      "cardsCount": "कार्ड",
       "clearSelection": "साफ़ करें",
       "moveTo": "इसमें ले जाएं…",
       "selectedCount": "{count} चयनित",
       "step": "चरण",
+      "stepsCount": "चरण",
       "subtitle": "कार्ड चरणों के बीच खींचें",
       "unassigned": "असाइन नहीं किया गया"
     },
@@ -5730,9 +5885,11 @@
       "assign": "असाइन करें",
       "assignedTo": "को असाइन किया गया",
       "complete": "पूर्ण करें",
+      "email": "ईमेल",
       "history": "गतिविधि",
       "outcome": "परिणाम",
       "overdue": "अतिदेय",
+      "phone": "फ़ोन",
       "pin": "असाइनमेंट पिन करें",
       "pinnedNote": "पिन किया गया — चरणों के दौरान इस स्वामी को बनाए रखता है",
       "sendBack": "वापस भेजें",
@@ -5741,7 +5898,8 @@
       "snooze1Day": "1 दिन",
       "snooze1Week": "1 सप्ताह",
       "snooze3Days": "3 दिन",
-      "snoozed": "स्नूज़ किया गया"
+      "snoozed": "स्नूज़ किया गया",
+      "viewProfile": "प्रोफ़ाइल देखें"
     },
     "workflowCategories": {
       "addCategory": "श्रेणी जोड़ें",
@@ -5793,9 +5951,13 @@
       "addWorkflow": "वर्कफ़्लो जोड़ें",
       "added": "वर्कफ़्लो में जोड़ा गया।",
       "blankWorkflow": "रिक्त वर्कफ़्लो",
+      "categories": "वर्कफ़्लो श्रेणियां",
+      "category": "श्रेणी",
       "noWorkflows": "अभी कोई वर्कफ़्लो नहीं। शुरू करने के लिए एक जोड़ें।",
+      "status": "स्थिति",
       "subtitle": "लोगों को चरणों की श्रृंखला से गुजारें",
-      "title": "वर्कफ़्लो"
+      "title": "वर्कफ़्लो",
+      "workflowCount": "{count} वर्कफ़्लो"
     }
   }
 }

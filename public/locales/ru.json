@@ -69,6 +69,7 @@
       "wholeService": "All service times"
     },
     "labels": {
+      "addLabel": "Добавить метку",
       "align": "Выравнивание",
       "always": "Всегда",
       "barcode": "Штрихкод",
@@ -126,6 +127,30 @@
       "value": "Значение",
       "width": "Ширина (дюйм)"
     },
+    "plate": {
+      "allYears": "Все годы",
+      "checkedIn": "Отмечено: {count}",
+      "enterHeadcount": "Ввести подсчёт",
+      "guests": "Гости: {count}",
+      "guestsTitle": "Гости",
+      "headcount": "Подсчитано: {count}",
+      "headcountsTitle": "Подсчёты на этой неделе",
+      "inTheRoom": "в зале",
+      "kiosk": "Киоск",
+      "lastRecorded": "Последняя запись {date}: {count}",
+      "lastWeeks": "Последние недели: {weeks}",
+      "noCheckins": "На этой неделе ещё нет отметок.",
+      "noHeadcounts": "На этой неделе подсчёты не вводились.",
+      "noRooms": "На этой неделе никто не отметился в группе.",
+      "reports": "Отчёты",
+      "rooms": "Залы",
+      "thisWeek": "Эта неделя",
+      "unknownGroup": "Удалённая группа",
+      "weekOf": "Неделя с {date}: {count}",
+      "weeklyCheckins": "Отметки по неделям",
+      "weeksWith": "Отметки были в {count} из последних {weeks} недель",
+      "yearsSummary": "Тенденции, подсчёты и посещаемость групп за все годы. Используйте фильтры, чтобы сузить даты."
+    },
     "serviceEdit": {
       "campus": "Кампус",
       "campusAria": "Выбрать кампус",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "Расписание регистрации",
+      "checkinScheduleHelp": "Необязательно. Регистрация открывается и закрывается автоматически примерно в это время каждую неделю. Оставьте день пустым, чтобы регистрация была открыта всегда, когда группа не закрыта.",
+      "closeMinutes": "Закрыть регистрацию (минут после окончания)",
       "confirmDelete": "Вы уверены, что хотите навсегда удалить это время служения?",
+      "day": "День",
+      "endTime": "Время окончания",
       "name": "Время служения",
       "nameAria": "Название времени служения",
       "namePlaceholder": "8:00",
+      "noSchedule": "Без расписания",
+      "openMinutes": "Открыть регистрацию (минут до начала)",
       "service": "Служение",
       "serviceAria": "Выбрать служение",
+      "startTime": "Время начала",
       "validate": {
         "name": "Необходимо указать время служения.",
         "service": "Пожалуйста, выберите служение."
@@ -153,7 +186,6 @@
       "attTrend": "Тенденция посещаемости",
       "groupAtt": "Групповая посещаемость",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "Настройка"
     }
   },
@@ -235,11 +267,13 @@
       "addCalendar": "Добавить календарь",
       "calendar": "Календарь",
       "calendars": "Календари",
-      "createCalendar": "Создать календарь",
       "createFirstCalendar": "Создать первый календарь",
       "curatedCalendar": "Кураторский календарь",
+      "find": "Найти календарь",
       "manageEvents": "Управление событиями",
       "noCalendars": "Календари не найдены",
+      "noMatches": "Нет календарей, соответствующих запросу.",
+      "resultCount": "Календари: {shown} из {total}",
       "status": "Статус",
       "subtitleEmpty": "Начните с создания своего первого календаря",
       "title": "Календари"
@@ -249,7 +283,6 @@
       "calendar": "Календарь",
       "calendarEvents": "Календарные события",
       "confirmRemoveGroup": "Вы уверены, что хотите удалить эту группу из календаря?",
-      "groupName": "Название группы",
       "groupsInCalendar": "Группы в календаре",
       "importIcs": "Импорт .ics",
       "newEvent": "Новое мероприятие",
@@ -281,6 +314,8 @@
       "modeRegistrants": "Только зарегистрированные",
       "modeRegistrantsHoh": "Только главы семей / зарегистрированные",
       "push": "Push",
+      "text": "SMS",
+      "textHint": "SMS отправляются через SMS-провайдера вашей церкви и только тем, кто включил SMS-напоминания. Каждое SMS может стоить денег вашей церкви.",
       "timeOfDay": "Время суток",
       "timeOfDayHint": "Местное время церкви (напр., 9:00)",
       "title": "Напоминания",
@@ -346,6 +381,7 @@
       "endTime": "Конец",
       "eventDescription": "Описание мероприятия",
       "eventTitle": "Название мероприятия",
+      "find": "Найти",
       "noApprovalNeeded": "Согласование не требуется",
       "noBlockouts": "Блокировок пока нет",
       "noBlockoutsDesc": "Заблокируйте даты, когда помещения или ресурсы недоступны.",
@@ -359,6 +395,7 @@
       "reason": "Причина",
       "resourceName": "Название ресурса",
       "resources": "Ресурсы",
+      "resultCount": "{shown} из {total} {items}",
       "roomName": "Название помещения",
       "rooms": "Помещения",
       "startTime": "Начало",
@@ -370,16 +407,19 @@
   },
   "common": {
     "add": "Добавить",
+    "all": "Все",
     "amount": "Сумма",
     "appTheme": "Тема приложения",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "Назад",
+    "backTo": "Назад к {name}",
     "bottom": "Внизу",
     "cancel": "Отмена",
     "center": "Центр",
     "change": "Изменить",
     "changePhoto": "Изменить фото",
+    "clear": "Очистить",
     "close": "Закрыть",
     "collapse": "Свернуть",
     "comboBox": {
@@ -456,12 +496,14 @@
     "saving": "Сохранение...",
     "search": "Поиск",
     "select": "Select",
+    "selectedCount": "Выбрано: {count}",
     "sermons": "Проповеди",
     "title": "Заголовок",
     "top": "Вверху",
     "tryAgain": "Попробовать снова",
     "update": "Обновить",
     "website": "Веб-сайт",
+    "years": "Годы",
     "yes": "Да"
   },
   "components": {
@@ -581,6 +623,8 @@
       "yourChurch": "Ваша церковь",
       "yourProfile": "Ваш профиль"
     },
+    "allGroups": "Все группы",
+    "allTasks": "Все задачи",
     "dashboardPage": {
       "dash": "Панель"
     },
@@ -593,11 +637,14 @@
       "upcomingEventsTitle": "Узнать, что происходит"
     },
     "myGroups": "Мои группы",
+    "myTasks": "Мои задачи",
     "needsAttention": {
       "approvals": "{count} ожидающих одобрений календаря",
       "joinRequests": "{count} ожидающих запросов на присоединение к группе",
       "title": "Требует внимания"
     },
+    "noGroups": "Вы пока не состоите ни в одной группе.",
+    "noOpenTasks": "Нет открытых задач, назначенных вам.",
     "quickSetupModal": {
       "classroomName": "Название класса",
       "createContinue": "Создать и продолжить",
@@ -629,6 +676,8 @@
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
+      "liveHint": "Кто был в зале в прошлое воскресенье и семьи, пришедшие впервые, отображаются здесь в течение недели.",
+      "liveHintSunday": "Кто в зале, кто служит и кто только что пришёл — появится здесь, когда будут использоваться регистрация и служение.",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
@@ -671,16 +720,23 @@
       "donations": "Пожертвования"
     },
     "page": {
+      "allYears": "Все годы",
       "amount": "Сумма",
       "batch": "Пакет",
-      "currentYearCsv": "CSV текущего года",
-      "currentYearPrint": "Печать текущего года",
+      "csv": "CSV",
       "date": "Дата",
       "fund": "Фонд",
-      "lastYearCsv": "CSV за прошлый год",
-      "lastYearPrint": "Распечатка прошлого года",
+      "giftCount": "Пожертвования: {count}",
+      "giftsInYear": "Пожертвования за {year}: {count}",
+      "give": "Пожертвовать",
+      "giving": "Пожертвования",
       "method": "Метод",
+      "noGiftsInYear": "Нет пожертвований за {year}.",
       "notes": "Notes",
+      "paymentMethods": "Способы оплаты",
+      "recurring": "Регулярные",
+      "sinceYear": "{amount} с {year}",
+      "statement": "Выписка",
       "viewBatch": "Просмотреть партию",
       "willAppear": "Пожертвования будут отображаться здесь после того, как они будут сделаны."
     }
@@ -737,6 +793,7 @@
       "anon": "Анонимно",
       "donor": "Жертвователь",
       "editCampaign": "Редактировать кампанию",
+      "goalAmount": "Цель: {amount}",
       "noPledges": "По этой кампании обещаний пожертвований ещё нет.",
       "ofGoal": "от цели",
       "pledges": "Обещания",
@@ -746,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "Добавить кампанию",
+      "campaignCount": "Кампании: {count}",
       "campaigns": "Кампании",
       "dates": "Даты",
       "export": "Экспорт",
       "fund": "Фонд",
       "given": "Собрано",
+      "givenAmount": "Пожертвовано: {amount}",
       "goal": "Цель",
       "noCampaigns": "Кампании ещё не созданы.",
       "ongoing": "Текущие",
       "pledged": "Обещано",
+      "pledgedAmount": "Обещано: {amount}",
       "progress": "Прогресс",
-      "subtitle": "Отслеживайте кампании обещаний и прогресс достижения целей",
-      "totalCampaigns": "Всего кампаний"
+      "subtitle": "Отслеживайте кампании обещаний и прогресс достижения целей"
     },
     "donationBatchPage": {
-      "batchDate": "Дата партии:",
-      "donations": "Пожертвования",
       "editBatch": "Редактировать партию",
+      "giftCount": "Пожертвования: {count}",
       "subtitle": "Управление пожертвованиями в этой партии",
-      "title": "Партия пожертвований",
-      "totalAmount": "Общая сумма"
+      "title": "Партия пожертвований"
     },
     "donationBatchesPage": {
       "addBatch": "Добавить партию",
+      "allYears": "Все",
+      "batchCount": "Партии: {count}",
       "batches": "Партии",
-      "donations": "Пожертвования",
       "export": "Экспорт",
+      "failedEvents": "Неудачные события ({count})",
+      "giftCount": "Пожертвования: {count}",
       "stripeImportLink": "Импортировать пропущенные транзакции Stripe",
-      "subtitle": "Управление партиями пожертвований и отслеживание записей",
-      "totalAmount": "Общая сумма"
+      "subtitle": "Управление партиями пожертвований и отслеживание записей"
     },
     "donationEdit": {
       "anon": "Анонимный",
@@ -837,8 +896,7 @@
       "total": "Итого"
     },
     "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
+      "lede": "Неудачных: {count} · под угрозой: {amount}",
       "message": "Gateway Message",
       "none": "No failed recurring gifts.",
       "retry": "Retry",
@@ -858,10 +916,10 @@
       "visible": "Видно жертвователям"
     },
     "fundPage": {
-      "donors": "Жертвователи",
+      "donorCount": "Жертвователи: {count}",
       "filter": "Фильтр",
-      "subtitle": "Отслеживание пожертвований и взносов в этот фонд",
-      "totalAmount": "Общая сумма"
+      "giftCount": "Пожертвования: {count}",
+      "subtitle": "Отслеживание пожертвований и взносов в этот фонд"
     },
     "funds": {
       "fund": "Фонды",
@@ -877,15 +935,14 @@
       "dateEnd": "Дата окончания",
       "dateStart": "Дата начала",
       "don": "Пожертвования",
-      "donFilt": "Фильтр пожертвований",
       "donor": "Донор",
       "export": "Экспорт",
+      "fundCount": "Фонды: {count}",
       "noDon": "Нет пожертвований за выбранный диапазон дат",
       "nonDeductible": "Облагается налогом",
       "subtitle": "Управляйте фондами пожертвований и отслеживайте категории пожертвований",
       "taxDeductible": "Не облагается налогом",
       "taxStatus": "Налоговый статус",
-      "totalFunds": "Всего фондов",
       "viewBatch": "Просмотреть партию"
     },
     "givingLink": {
@@ -895,7 +952,13 @@
       "title": "Giving Link",
       "url": "Link"
     },
+    "logGift": {
+      "amountError": "Введите сумму больше нуля, например 25.00.",
+      "batchHint": "Сохраняется в партию за эту дату; при необходимости она будет создана.",
+      "title": "Записать пожертвование"
+    },
     "period": {
+      "label": "Период",
       "monthly": "Ежемесячно",
       "quarterly": "Ежеквартально",
       "weekly": "Еженедельно"
@@ -1014,6 +1077,9 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "view": {
+      "label": "Вид"
     }
   },
   "fileUpload": {
@@ -1136,14 +1202,17 @@
       "archForms": "Архивированные формы",
       "archive": "Архивировать",
       "archiveFormAria": "Архивировать форму {name}",
+      "archived": "В архиве",
       "confirmDuplicate": "Создать копию этой формы?",
       "confirmMsg1": "Вы уверены, что хотите заархивировать эту форму?",
       "confirmMsg2": "Вы уверены, что хотите восстановить эту форму?",
       "duplicate": "Дублировать",
       "duplicated": "Form duplicated",
+      "find": "Найти форму",
       "forms": "Формы",
       "noArch": "Нет архивных форм.",
       "noCustomMsg": "Пользовательские формы еще не созданы. Они появятся здесь при добавлении.",
+      "noMatches": "Нет форм, соответствующих запросу.",
       "personProfileForm": "Person profile form",
       "restore": "Восстановить",
       "restoreFormAria": "Восстановить форму {name}",
@@ -1200,14 +1269,18 @@
       "confirmDuplicate": "Дублировать эту группу? Участники не будут скопированы.",
       "copySuffix": "(Копия)",
       "discussions": "Discussions",
+      "duplicate": "Дублировать",
       "duplicateTooltip": "Дублировать эту группу",
+      "email": "Email",
       "emailTooltip": "Отправить email этой группе",
       "location": "Местоположение",
       "meetingTime": "Время встречи",
-      "moreLabels": "Больше ярлыков",
+      "notify": "Уведомить",
+      "notifyTooltip": "Отправить push-уведомление",
       "parentPickup": "Родительская встреча",
       "printNametag": "Печать бейджа",
       "team": "Команда",
+      "text": "SMS",
       "textTooltip": "Отправить SMS этой группе",
       "trackAttendance": "Отслеживать посещаемость"
     },
@@ -1361,6 +1434,21 @@
     "groupPage": {
       "addPpl": "Добавить человека"
     },
+    "groupRecord": {
+      "allEvents": "Все события",
+      "allMembers": "Все участники",
+      "allSessions": "Все сессии",
+      "healthSummary": "Участники: {members} · присоединились: {joined} · ушли: {left} за 90 дней",
+      "lastEvent": "Прошлое",
+      "latestSession": "Последняя {date}",
+      "nextEvent": "Следующее",
+      "noMembers": "Пока нет участников.",
+      "noSessions": "Пока нет сессий.",
+      "pendingCount": "В ожидании: {count}",
+      "seeHealth": "Показать состояние",
+      "sessionCount": "Сессии: {count}",
+      "sessionCountOne": "1 сессия"
+    },
     "groupSessions": {
       "addSesMsg": "Пожалуйста, добавьте новую сессию, чтобы продолжить.",
       "allYears": "Все годы",
@@ -1389,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "Добавить группу",
+      "allCategories": "Все",
       "cat": "Категория",
+      "clearFilters": "Сбросить фильтры",
       "confirmRestore": "Восстановить {name} из архива?",
       "export": "Экспорт",
       "groups": "Группы",
-      "labels": "Метки",
+      "moreCategories": "Другие категории",
       "noGroupMsg": "Группы не найдены. Пожалуйста, создайте группу.",
       "noMatchMsg": "Нет групп, соответствующих вашему запросу.",
       "pendingRequestSingular": "{count} ожидающий запрос",
@@ -1401,6 +1491,7 @@
       "pers": "1 человек",
       "ppl": "Люди",
       "restore": "Восстановить",
+      "resultCount": "Группы: {shown} из {total}",
       "searchPlaceholder": "Поиск групп...",
       "showArchived": "Показать архивные",
       "spPpl": " человек",
@@ -1480,6 +1571,7 @@
       "noPhoneNotice": "{count} не имеют номера телефона в записях.",
       "noPhoneNoticeSingular": "{count} не имеет номера телефона в записях.",
       "noPhoneSkipped": "{count} пропущено (нет номера телефона).",
+      "noProvider": "Настройте SMS-провайдера в Настройках перед отправкой SMS.",
       "optedOutNotice": "{count} отказались от рассылки.",
       "optedOutSkipped": "{count} пропущено (отказались от рассылки).",
       "phoneOnFile": "телефон в записях",
@@ -1491,7 +1583,10 @@
       "sentSummary": "Отправлено {successCount} из {recipientCount} подходящих получателей.",
       "sentSummarySingular": "Отправлено {successCount} из {recipientCount} подходящему получателю.",
       "textGroupTitle": "SMS группе: {groupName}",
-      "textPersonTitle": "SMS: {personName}"
+      "textPersonTitle": "SMS: {personName}",
+      "textVolunteersTitle": "SMS волонтёрам",
+      "volunteersSummary": "Это SMS получат волонтёры: {eligibleCount} из {totalMembers}.",
+      "volunteersSummarySingular": "Это SMS получит волонтёр: {eligibleCount} из {totalMembers}."
     },
     "serviceTimes": {
       "services": "Служения:"
@@ -1562,7 +1657,7 @@
       "registrations": "Регистрации",
       "roomsResources": "Помещения и ресурсы",
       "sermons": "Проповеди",
-      "site": "Сайт",
+      "streamSettings": "Настройки",
       "stripeImport": "Импорт Stripe",
       "website": "Веб-сайт"
     }
@@ -1665,7 +1760,8 @@
       "placeholder": "Покажите мне мужчин старше 30 лет с днями рождения в июле",
       "search": "Поиск",
       "searching": "Поиск...",
-      "title": "Поиск с помощью ИИ"
+      "title": "Поиск с помощью ИИ",
+      "unavailable": "ИИ-поиск временно недоступен. Повторите попытку позже или воспользуйтесь поиском выше."
     },
     "bulk": {
       "actions": "Действия",
@@ -1704,7 +1800,6 @@
       "removeFromGroupPrompt": "Удалить {count} выбранных человек из группы.",
       "removeFromGroupTitle": "Удалить из группы",
       "removeSuccess": "Удалено {count} человек из {group}.",
-      "selected": "Выбрано",
       "setCampus": "Установить кампус",
       "value": "Value",
       "workflowSuccess": "Добавлено {count} человек в рабочий процесс."
@@ -1722,6 +1817,27 @@
       "title": "Демография",
       "total": "Итого",
       "unassigned": "Не назначено"
+    },
+    "directory": {
+      "ask": "Спросить",
+      "clear": "Очистить",
+      "countHouseholds": "Семьи: {households} · люди: {people}",
+      "everyone": "Все",
+      "family": "Семья {name}",
+      "households": "Семьи",
+      "noMatch": "Никто не соответствует запросу",
+      "noMatchHint": "Попробуйте другое имя или используйте расширенный поиск для фильтрации по данным.",
+      "noPeople": "Пока нет людей",
+      "noPeopleHint": "Добавьте первого человека ниже.",
+      "savedLists": "Сохранённые списки",
+      "searchLabel": "Найти семью или человека",
+      "selectAll": "Выбрать все видимые семьи",
+      "selectHousehold": "Выбрать {name}",
+      "selectedCount": "Выбрано: {count}",
+      "subtitle": "Просматривайте семьи, открывайте профиль человека или сужайте результаты с помощью списка или вопроса.",
+      "table": "Таблица",
+      "title": "Люди",
+      "viewAs": "Показать как"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -1813,12 +1929,7 @@
       "unknownGroup": "Неизвестная группа"
     },
     "household": {
-      "age": "Возраст:",
-      "groups": "Группы:",
-      "house": " Домохозяйство",
-      "lastActivity": "Последняя активность:",
-      "noContactInfo": "Нет контактной информации",
-      "status": "Статус:"
+      "house": " Домохозяйство"
     },
     "householdEdit": {
       "addMember": "Добавить члена семьи",
@@ -1839,7 +1950,6 @@
       "confirmDelete": "Удалить список \"{name}\"? Это действие нельзя отменить.",
       "createdBy": "от {name}",
       "delete": "Удалить список",
-      "empty": "Сохранённых списков пока нет. Выполните расширенный поиск, затем нажмите «Сохранить как список».",
       "household": "Включить домохозяйство",
       "householdAll": "Всё домохозяйство",
       "householdChildren": "Дети найденных",
@@ -1853,8 +1963,7 @@
       "settings": "Настройки списка",
       "sharing": "Кто может видеть этот список",
       "sharingOrg": "Все сотрудники",
-      "sharingPrivate": "Только я",
-      "title": "Сохранённые списки"
+      "sharingPrivate": "Только я"
     },
     "merge": {
       "findPerson": "Найти человека для объединения",
@@ -1884,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "Добавить человека",
-      "allMembers": "Все участники",
       "bDay": "День рождения",
       "bDayNo": "День рождения (без года)",
       "deleteOp": "Удалить опцию",
@@ -1894,15 +2002,12 @@
       "loading": "Загрузка людей...",
       "middle": "Отчество",
       "nameNote": "Примечания к бейджу",
-      "noPeopleFound": "Не найдено людей",
       "peopleFound": "Найдено {count} людей",
       "photo": "Фото",
       "primEmail": "Основной email",
       "primPhone": "Основной телефон",
       "printDirectory": "Печать справочника",
       "printResults": "Печать результатов",
-      "searchPpl": "Поиск людей",
-      "searchResults": "Результаты поиска",
       "showAll": "Показать всех участников",
       "showingMembers": "Показано участников: {count}"
     },
@@ -1922,13 +2027,10 @@
       "group": "Группа",
       "membership": "Членство и группы",
       "names": "Имена",
-      "placeholder": "Поиск по имени...",
       "service": "Служба",
       "serviceTime": "Время службы",
       "simp": "Простой",
-      "simpSearch": "Поиск людей",
-      "type": "Тип",
-      "typeToSearch": "Печатайте для мгновенного поиска"
+      "type": "Тип"
     },
     "peopleSearchResults": {
       "deletePersonAria": "Удалить {name}",
@@ -1939,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "Добавить в рабочий процесс",
-      "age": "Возраст",
       "emailPerson": "Написать этому человеку",
-      "gender": "Пол",
       "hasLogin": "Имеет вход",
-      "maritalStatus": "Семейное положение",
       "sendTextMessage": "Отправить SMS"
     },
     "personEdit": {
@@ -1973,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "Посещаемость",
-      "details": "Подробности",
       "donations": "Пожертвования",
       "forms": "Формы",
       "groups": "Группы",
@@ -1985,12 +2083,44 @@
       "notesSuffix": " Заметки",
       "thisPerson": "этот человек"
     },
+    "personRecord": {
+      "allForms": "Все формы",
+      "allNotes": "Все заметки",
+      "allYears": "Все годы",
+      "attendanceSummary": "{count} из последних {weeks} недель",
+      "email": "Email",
+      "givenBy": "Жертвователь",
+      "givingYear": "за {year} · пожертвования: {count}",
+      "hereThisWeek": "Присутствует на этой неделе",
+      "household": "Семья",
+      "lastAttended": "Последнее посещение {date}",
+      "lastGift": "Последнее пожертвование {date}.",
+      "loadError": "Не удалось загрузить: {what}.",
+      "noAttendance": "Посещаемость пока не записана.",
+      "noDirectory": "Скрыт из справочника",
+      "noGiftsYear": "Нет записанных пожертвований за {year}.",
+      "noHouseholdGiftsYear": "Нет записанных пожертвований семьи за {year}.",
+      "noNotes": "Пока нет заметок.",
+      "notSubmitted": "Не отправлено",
+      "noteCount": "Заметки: {count}",
+      "recentAttendance": "Недавняя посещаемость",
+      "recentGifts": "Пожертвования за {year}",
+      "service": "Богослужение",
+      "showingLatest": "показаны последние: {count}",
+      "statement": "Выписка за {year}",
+      "submitted": "Отправлено",
+      "text": "SMS",
+      "weekAttended": "Неделя с {date}: присутствовал",
+      "weekNoRecord": "Неделя с {date}: посещаемость не записана",
+      "weeklyAttendance": "Посещаемость по неделям",
+      "where": "Где",
+      "wholeHousehold": "вся семья",
+      "workflow": "Рабочий процесс"
+    },
     "personView": {
       "hasLoginLabel": "Имеет вход: {email}",
       "home": "Домашний",
-      "memShip": "Членство:",
       "mobile": "Мобильный",
-      "persDet": "Личная информация",
       "work": "Рабочий"
     },
     "pickup": {
@@ -2004,9 +2134,6 @@
       "status": "Статус",
       "title": "Забор",
       "trusted": "Доверенный"
-    },
-    "tabs": {
-      "noImplement": "Не реализовано"
     },
     "updateHouseHold": {
       "update": "Обновить адрес"
@@ -2028,6 +2155,7 @@
     "firstName": "Имя",
     "gender": "Пол",
     "grade": "Класс",
+    "guest": "Гость",
     "inactive": "Неактивный",
     "lastName": "Фамилия",
     "line1": "Строка 1",
@@ -2044,6 +2172,7 @@
     "person": "Человек",
     "phone": "Телефон",
     "prefix": "Префикс",
+    "recentPeople": "Недавние люди",
     "regularAttendee": "Постоянный посетитель",
     "school": "Школа",
     "single": "Не женат/не замужем",
@@ -2356,7 +2485,6 @@
       "selectedPrefix": "Выбрано:"
     },
     "ministryList": {
-      "getStarted": "Начните с создания своего первого служения",
       "noMinMsg": "Служения не найдены. Пожалуйста, создайте служение."
     },
     "ministryPage": {
@@ -2375,6 +2503,8 @@
       "planNameAria": "Название плана",
       "planReq": "Требуется название плана.",
       "prepared": "Предварительно назначен (скрыть назначения от волонтёров до публикации)",
+      "repeatWeekly": "Повторять еженедельно в течение указанного числа недель",
+      "repeatWeeklyHelper": "Создаёт по одному плану в неделю, каждый копируется из предыдущего",
       "servDate": "Дата служения",
       "servReq": "Требуется дата служения.",
       "serviceDateAria": "Дата служения",
@@ -2430,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Массовое планирование",
-      "createFirst": "Создать первый план",
-      "createPlan": "Создать план",
       "newPlan": "Новый план",
       "noPlans": "Планы не найдены",
-      "noUpcomingPlans": "Нет предстоящих планов",
-      "noUpcomingPlansDescription": "Нет планов, запланированных на сегодня или позже. Используйте переключатель \"Показать прошлые\" выше для просмотра прошлых планов.",
+      "noUpcomingHint": "Начиная с сегодняшнего дня ничего не запланировано. Выберите «Прошедшие», чтобы увидеть более ранние планы.",
+      "past": "Прошедшие",
       "plans": "Планы",
       "scheduleLesson": "Запланировать урок",
+      "serviceDate": "Дата богослужения",
       "serviceOrder": "Порядок служения",
-      "showPast": "Показать прошлые"
+      "upcoming": "Предстоящие"
     },
     "planPage": {
       "assign": "Назначения команд",
-      "assignments": "Назначения",
       "band": "Группа",
       "loadingPlan": "План загрузки...",
       "noteSave": "Примечание сохранено",
-      "serviceOrder": "Порядок служения",
-      "servicePlan": "План служения",
-      "subtitle": "Планируйте и планируйте свое обслуживание"
+      "servicePlan": "План служения"
     },
     "planType": {
       "details": "Детали типа плана"
@@ -2483,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "Добавить тип плана",
       "createPlanType": "Создать тип плана",
-      "createPlanTypes": "Создание типов планов",
       "noPlanTypes": "Типы планов не найдены",
       "planTypes": "Типы планов"
     },
     "planTypePage": {
       "notFound": "Тип плана не найден",
       "overview": "Обзор",
-      "planType": "Тип плана",
-      "subtitle": "Настройка параметров типа плана"
+      "planType": "Тип плана"
     },
     "planTypeReminders": {
       "channels": "Send By",
@@ -2505,6 +2629,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "SMS",
+      "textHint": "SMS отправляются через SMS-провайдера вашей церкви и только тем, кто включил SMS-напоминания. Каждое SMS может стоить денег вашей церкви.",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2544,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "Добавить министерство",
       "editMinistry": "Редактировать служение",
-      "selMin": "Выберите служение",
       "subtitle": "Управляйте министерствами и планами обслуживания"
     },
     "positionEdit": {
@@ -2613,6 +2738,7 @@
       "viewingAs": "Просмотр как"
     },
     "servingOverviewPage": {
+      "allPositions": "Все позиции",
       "autoSchedule": "Автоматическое планирование",
       "autoScheduleConfirm": "Автоматически распределить волонтёров на все свободные места в этом диапазоне дат?",
       "autoScheduleResult": "Автоматически запланировано {filled} из {total} планов",
@@ -2633,11 +2759,17 @@
       "removeConfirm": "Удалить {name} из этого назначения?",
       "startDate": "Дата начала",
       "subtitle": "Позиции по дате с назначенными волонтёрами",
+      "textAll": "SMS волонтёрам",
       "title": "Обзор служения"
     },
     "servingPage": {
-      "showAll": "Показать все",
-      "showAllHint": "Ваши служения скрыты, так как вы не являетесь участником. Включите «Показать все» выше, чтобы увидеть их."
+      "actions": "Действия",
+      "all": "Все",
+      "allHint": "Ваши служения скрыты, потому что вы не являетесь участником. Выберите «Все» выше, чтобы увидеть их.",
+      "findMinistry": "Найти служение",
+      "mine": "Мои",
+      "ministries": "Служения",
+      "whichMinistries": "Какие служения"
     },
     "signageFeed": {
       "button": "Digital Signage",
@@ -2658,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "Создать команду",
-      "createTeams": "Создавайте команды",
-      "manage": "Управление",
       "members": "члены",
       "newTeam": "Новая команда",
       "noTeam": "Команды не найдены. Пожалуйста, создайте команду.",
@@ -2709,6 +2839,7 @@
       "typeService": "Богослужение"
     },
     "timeList": {
+      "addTime": "Добавить время",
       "noTime": "Время еще не добавлено",
       "sunServ": "Воскресное служение",
       "times": "Время"
@@ -2735,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "Ссылка",
+      "linked": "Привязан",
+      "notLinked": "Не привязан",
       "signUp": "Зарегистрироваться",
       "unlink": "Отсоединить"
     },
@@ -2775,9 +2908,7 @@
       "saveChanges": "Сохранить изменения",
       "saveError": "Не удалось сохранить изменения.",
       "sendRequest": "Send request",
-      "subtitle": "Управляйте своим профилем и предпочтениями",
       "themePreferences": "Настройки темы",
-      "themePreferencesHelper": "Ваши настройки темы сохраняются автоматически и будут запомнены на этом устройстве.",
       "togglePasswordVisibility": "переключить видимость пароля",
       "valEmail": "Пожалуйста, введите действительный адрес электронной почты."
     }
@@ -2834,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "Дата",
       "deleteConfirm": "Удалить эту регистрацию навсегда?",
+      "editSettings": "Изменить настройки",
       "eventFull": "Это событие заполнено.",
       "eventNotFound": "Событие не найдено",
       "eventRegistrations": "Регистрации на событие",
@@ -2875,9 +3007,11 @@
       "noEventsHint": "Включите регистрацию на событие через настройки редактирования события.",
       "registered": "зарегистрировано",
       "registrations": "Регистрации",
+      "search": "Поиск событий",
       "subtitle": "Управление настройками регистрации на события и просмотр участников",
       "tags": "Теги",
-      "title": "Регистрации на события"
+      "title": "Регистрации на события",
+      "turnOnRegistration": "Включить регистрацию"
     }
   },
   "reporting": {
@@ -3007,14 +3141,17 @@
         "weekly": "Еженедельно",
         "yes": "Да"
       },
-      "services": "Служения",
       "servicesTab": {
         "addService": "Добавить Служение",
         "defaultLabel": "Воскресное утро",
+        "duration": "Длительность",
+        "none": "Пока нет богослужений. Добавьте одно, чтобы запланировать прямую трансляцию.",
+        "provider": "Провайдер",
+        "service": "Богослужение",
+        "time": "Время",
         "title": "Служения",
         "weekly": "Еженедельно"
       },
-      "settings": "Настройки",
       "sidebarTabs": {
         "add": "Добавить",
         "title": "Вкладки Содержимого"
@@ -3062,6 +3199,7 @@
     "notScheduled": "Не запланировано",
     "playlist": "Плейлист",
     "playlists": {
+      "addPlaylist": "Добавить плейлист",
       "createFirstPlaylist": "Создать Первый Плейлист",
       "noPlaylistsFound": "Плейлисты не найдены",
       "noPlaylistsMatch": "Нет плейлистов, соответствующих вашему поиску",
@@ -3096,6 +3234,7 @@
       "title": "Podcast Feed"
     },
     "publishDate": "Дата Публикации",
+    "resultCount": "Проповеди: {shown} из {total}",
     "searchPlaceholder": "Поиск проповедей по названию или плейлисту...",
     "sermon": "Проповедь",
     "sermonEdit": {
@@ -3152,11 +3291,15 @@
       "act": "Активный",
       "arch": "Архивировано",
       "church": "Церковь",
+      "churchCount": "Церкви: {count}",
       "churchName": "Название церкви",
       "churches": "Церкви",
       "churchesSubtitle": "Поиск и управление всеми церквями",
       "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
+      "groupDirectory": "Справочник",
+      "groupOperations": "Операции",
+      "groupSystem": "Система",
       "impersonateSubtitle": "Войти от имени другого пользователя для поддержки",
       "impersonateUser": "Войти от имени пользователя",
       "jobs": "Фоновые задачи",
@@ -3176,6 +3319,7 @@
       "servAdmin": "Администратор сервера",
       "serverHealth": "Состояние сервера",
       "serverHealthSubtitle": "Проверка состояния серверных служб",
+      "status": "Статус",
       "subtitle": "Управляйте общесерверными настройками и церквями",
       "translationLookups": "Поиск перевода",
       "translationSubtitle": "Поиск переведённых строк локализации",
@@ -3465,6 +3609,19 @@
       "title": "Поиск пользователей"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "Добавить тональность"
+    },
+    "planPage": {
+      "addMenu": "Другие способы добавления",
+      "hideNotes": "Скрыть заметки",
+      "hideTimes": "Скрыть время"
+    },
+    "songPage": {
+      "deleteSong": "Удалить песню"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "Закрыть",
@@ -3742,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "Категория",
-      "createTemplate": "Создать шаблон",
       "deleteConfirm": "Удалить шаблон \"{name}\"?",
       "emptyDescription": "Создайте шаблон, чтобы начать массовую рассылку email.",
       "emptyTitle": "Шаблонов email пока нет",
@@ -3873,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "Разрешения для роли администраторов домена не могут быть изменены. Администраторы домена имеют полный доступ.",
-      "permEdit": "Редактировать разрешения",
-      "roleEdit": "Редактировать роль:"
+      "permEdit": "Редактировать разрешения"
     },
     "rolePermissions": {
       "filter": "Filter permissions",
@@ -3885,6 +4040,7 @@
       "accDesc": "Имеет доступ для просмотра и управления пожертвованиями.",
       "addCustomRoleAria": "Добавить пользовательскую роль",
       "addPredefinedRoleAria": "Добавить роль {name}",
+      "addRole": "Добавить роль",
       "canEdit": "Может редактировать большинство данных в ",
       "churchDesc": " включая людей, группы, посещаемость и формы.",
       "churchStaff": "Персонал церкви",
@@ -3958,6 +4114,8 @@
       "clearstreamHelper": "Создайте API-ключ в ваших",
       "clearstreamHelperLink": "Настройках аккаунта Clearstream",
       "clearstreamHelperSuffix": "в разделе API Keys.",
+      "inboundUrl": "URL входящего (STOP) вебхука",
+      "inboundUrlHelper": "Вставьте это в вебхук входящих сообщений вашего провайдера, чтобы люди, ответившие STOP, были отписаны от SMS и здесь.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Ваша подписка MinistryStuff на SMS активна, осталось {} кредитов в этом цикле.",
       "ministryStuffHelper": "API-ключ не требуется. Кредиты для SMS предоставляются вашей подпиской MinistryStuff, автоматически привязанной к этой церкви. Управляйте тарифом на",
@@ -4192,8 +4350,8 @@
     "blocksPage": {
       "actions": "Действия",
       "addBlock": "Добавить блок",
+      "blockCount": "Блоки: {count}",
       "blocks": "Блоки",
-      "createFirstBlock": "Создать первый блок",
       "elements": "Элемент(ы)",
       "getStarted": "Начните с создания своего первого многоразового блока.",
       "noBlocksFound": "Блоки не найдены",
@@ -4201,7 +4359,6 @@
       "reusableBlocks": "Многоразовые блоки",
       "sections": "Раздел(ы)",
       "subtitle": "Создавайте и управляйте повторно используемыми блоками контента для вашего сайта.",
-      "totalBlocks": "Всего блоков",
       "type": "Тип"
     },
     "blog": {
@@ -4212,6 +4369,7 @@
       "draft": "Черновик",
       "navHint": "Посетители могут прочитать ваши записи по адресу /blog. Добавьте навигационную ссылку на экране Страницы, чтобы они могли ее найти:",
       "noPosts": "No posts yet",
+      "postCount": "Публикации: {count}",
       "posts": "Posts",
       "published": "Опубликовано",
       "scheduled": "Запланировано",
@@ -4512,6 +4670,7 @@
       "imageDescribingTopic": "Изображение, описывающее тему",
       "info": "Информация",
       "javascriptExcludeTag": "JavaScript (исключая тег script)",
+      "javascriptUrlWarning": "Это веб-адрес, а не JavaScript. Чтобы показать изображение, используйте элемент «Изображение» или вставьте <img src=\"...\"> в HTML-содержимое.",
       "label": "Метка",
       "linkUrlOptional": "URL-адрес ссылки (необязательно)",
       "loadingEditor": "Загрузка редактора...",
@@ -4766,20 +4925,15 @@
       "pageSettings": "Настройки страницы",
       "previewOf": "Предпросмотр {title}",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "Предварительный просмотр: {title}",
-      "title": "Предварительный просмотр сайта"
+      "subtitle": "Предварительный просмотр: {title}"
     },
     "pages": {
       "convert": "Конвертировать"
     },
     "pagesPage": {
       "actions": "Действия",
-      "addFirstPage": "Добавить первую страницу",
       "addPage": "Добавить страницу",
-      "autoGenerated": "Автоматически генерируется",
       "confirmConvert": "Хотите ли вы конвертировать эту автоматически созданную страницу в пользовательскую страницу?",
-      "customPages": "Пользовательские страницы",
-      "description": "Ниже приведен список пользовательских и автоматически созданных страниц. Вы можете добавлять новые страницы, редактировать существующие или конвертировать автоматически созданные страницы в пользовательские.",
       "desktopOnly": "Редактор страниц доступен только в режиме рабочего стола.",
       "generated": "Сгенерировано",
       "getStarted": "Начните с добавления первой страницы.",
@@ -4788,6 +4942,7 @@
       "hidePublicSiteWarning": "Ваш общедоступный сайт отключён. Посетители перенаправляются на экран входа, а поисковым системам указано не индексировать сайт.",
       "mainNavigation": "Основная навигация",
       "noPagesFound": "Страницы не найдены",
+      "pageCount": "Страницы: {count}",
       "pages": "Страницы",
       "path": "Путь",
       "showLogin": "Показать логин",
@@ -4795,7 +4950,6 @@
       "startFromTemplate": "Начать с шаблона",
       "subtitle": "Управляйте страницами, контентом и навигацией вашего сайта",
       "toggleLoginVisibility": "Переключить видимость кнопки входа в систему",
-      "totalPages": "Всего страниц",
       "viewLivePage": "Страница предварительного просмотра",
       "websitePages": "Страницы сайта"
     },
@@ -5350,7 +5504,6 @@
       "signature": "Тональность"
     },
     "keys": {
-      "add": "Добавить",
       "addExternalLink": "Добавить внешнюю ссылку",
       "addFiles": "Добавить файлы",
       "audioTracks": "Аудиодорожки",
@@ -5366,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "Добавить первую песню",
         "message": "Начните с добавления вашей первой песни в библиотеку.",
         "title": "Песни не найдены"
       },
@@ -5424,8 +5576,7 @@
       "addArrangement": "Добавить аранжировку",
       "loading": "Загрузка...",
       "noArrangementDescription": "Выберите аранжировку из боковой панели, чтобы начать.",
-      "noArrangementSelected": "Аранжировка не выбрана",
-      "subtitle": "Управление деталями и аранжировками песен"
+      "noArrangementSelected": "Аранжировка не выбрана"
     },
     "songSearchDialog": {
       "closeDialogAria": "Закрыть диалог",
@@ -5437,7 +5588,7 @@
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "deselectAll": "Снять выделение со всех",
-      "search": "Поиск",
+      "resultCount": "Песни: {count}",
       "searchSongs": "Поиск песен",
       "selectAll": "Select all",
       "songs": "Песни",
@@ -5626,8 +5777,11 @@
       "message": "Сообщение",
       "messageHint": "Необязательно. Оставьте пустым, чтобы использовать стандартный текст напоминания.",
       "noDueDate": "У этой задачи нет срока, поэтому напоминания не будут отправляться, пока он не установлен.",
+      "none": "Напоминания не заданы.",
       "save": "Сохранить напоминания",
       "saved": "Сохранено",
+      "text": "SMS",
+      "textHint": "SMS отправляются через SMS-провайдера вашей церкви и только тем, кто включил SMS-напоминания. Каждое SMS может стоить денег вашей церкви.",
       "timeOfDay": "Время суток",
       "title": "Напоминания",
       "when": "Когда отправлять напоминания?"
@@ -5656,8 +5810,9 @@
       "noTasks": "Задачи не найдены",
       "notSpecified": "Не указан",
       "reqMe": "Запрошено мной",
-      "showClosedTasksAria": "Показать закрытые задачи",
-      "showOpenTasksAria": "Показать открытые задачи",
+      "status": "Статус задачи",
+      "statusColumn": "Статус",
+      "task": "Задача",
       "tasks": "Задачи",
       "unassigned": "Неназначенный"
     },
@@ -5668,6 +5823,7 @@
       "associate": "Партнер",
       "associated": "Связанный",
       "by": "от",
+      "closeTask": "Закрыть задачу",
       "closed": "Закрыто",
       "created": "Созданный",
       "editAssigned": "Изменить назначенное",
@@ -5675,11 +5831,8 @@
       "notSpec": "Не указан",
       "open": "Открыть",
       "opened": "Открыто",
+      "reopenTask": "Открыть задачу снова",
       "unassigned": "Неназначенный"
-    },
-    "tasksPage": {
-      "showClosed": "Показать закрытые",
-      "showOpen": "Показать открытые"
     },
     "workflowActions": {
       "add": "Добавить действие",
@@ -5719,10 +5872,12 @@
       "addCard": "Добавить карточку",
       "addStep": "Добавить шаг",
       "boardTab": "Доска",
+      "cardsCount": "карточки",
       "clearSelection": "Очистить",
       "moveTo": "Переместить в…",
       "selectedCount": "Выбрано: {count}",
       "step": "Шаг",
+      "stepsCount": "шаги",
       "subtitle": "Перетаскивайте карточки между шагами",
       "unassigned": "Не назначен"
     },
@@ -5730,9 +5885,11 @@
       "assign": "Назначить",
       "assignedTo": "Назначен",
       "complete": "Завершить",
+      "email": "Email",
       "history": "Активность",
       "outcome": "Результат",
       "overdue": "Просрочено",
+      "phone": "Телефон",
       "pin": "Закрепить назначение",
       "pinnedNote": "Закреплено — ответственный сохраняется при переходе между шагами",
       "sendBack": "Вернуть назад",
@@ -5741,7 +5898,8 @@
       "snooze1Day": "На 1 день",
       "snooze1Week": "На 1 неделю",
       "snooze3Days": "На 3 дня",
-      "snoozed": "Отложено"
+      "snoozed": "Отложено",
+      "viewProfile": "Открыть профиль"
     },
     "workflowCategories": {
       "addCategory": "Добавить категорию",
@@ -5793,9 +5951,13 @@
       "addWorkflow": "Добавить рабочий процесс",
       "added": "Добавлено в рабочий процесс.",
       "blankWorkflow": "Пустой рабочий процесс",
+      "categories": "Категории рабочих процессов",
+      "category": "Категория",
       "noWorkflows": "Рабочих процессов пока нет. Добавьте один для начала работы.",
+      "status": "Статус",
       "subtitle": "Проводите людей через серию шагов",
-      "title": "Рабочие процессы"
+      "title": "Рабочие процессы",
+      "workflowCount": "Рабочие процессы: {count}"
     }
   }
 }

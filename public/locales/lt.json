@@ -69,6 +69,7 @@
       "wholeService": "All service times"
     },
     "labels": {
+      "addLabel": "Pridėti etiketę",
       "align": "Lygiuoti",
       "always": "Visada",
       "barcode": "Brūkšninis kodas",
@@ -126,6 +127,30 @@
       "value": "Reikšmė",
       "width": "Plotis (col.)"
     },
+    "plate": {
+      "allYears": "Visi metai",
+      "checkedIn": "Užsiregistravo: {count}",
+      "enterHeadcount": "Įvesti dalyvių skaičių",
+      "guests": "Svečių: {count}",
+      "guestsTitle": "Svečiai",
+      "headcount": "Suskaičiuota: {count}",
+      "headcountsTitle": "Šios savaitės dalyvių skaičiai",
+      "inTheRoom": "patalpoje",
+      "kiosk": "Kioskas",
+      "lastRecorded": "Paskutinį kartą užregistruota {date}: {count}",
+      "lastWeeks": "Paskutinės {weeks} sav.",
+      "noCheckins": "Šią savaitę registracijų dar nėra.",
+      "noHeadcounts": "Šią savaitę dalyvių skaičius neįvestas.",
+      "noRooms": "Šią savaitę niekas neužsiregistravo į grupę.",
+      "reports": "Ataskaitos",
+      "rooms": "Patalpos",
+      "thisWeek": "Ši savaitė",
+      "unknownGroup": "Pašalinta grupė",
+      "weekOf": "{date} savaitė: {count}",
+      "weeklyCheckins": "Savaitės registracijos",
+      "weeksWith": "Registracijų buvo {count} iš paskutinių {weeks} sav.",
+      "yearsSummary": "Visų metų tendencijos, dalyvių skaičiai ir grupių lankomumas. Naudokite filtrus datoms susiaurinti."
+    },
     "serviceEdit": {
       "campus": "Dieginis",
       "campusAria": "Pasirinkti miestelį",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "Registracijos tvarkaraštis",
+      "checkinScheduleHelp": "Neprivaloma. Registracija kas savaitę automatiškai atsidaro ir užsidaro apie šį laiką. Palikite dieną tuščią, kad registracija būtų atvira visada, kai grupė neuždaryta.",
+      "closeMinutes": "Uždaryti registraciją (min. po pabaigos)",
       "confirmDelete": "Ar tikrai norite visam laikui panaikinti šį pamaldų laiką?",
+      "day": "Diena",
+      "endTime": "Pabaigos laikas",
       "name": "Pamaldų laikas",
       "nameAria": "Pamaldų laiko pavadinimas",
       "namePlaceholder": "8:00",
+      "noSchedule": "Nėra tvarkaraščio",
+      "openMinutes": "Atidaryti registraciją (min. prieš pradžią)",
       "service": "Pamaldos",
       "serviceAria": "Pasirinkti pamaldas",
+      "startTime": "Pradžios laikas",
       "validate": {
         "name": "Pamaldų laiko pavadinimas yra būtinas.",
         "service": "Pasirinkite pamalas."
@@ -153,7 +186,6 @@
       "attTrend": "Lankomumo tendencija",
       "groupAtt": "Grupės lankomumas",
       "headcountTrend": "Headcount Trend",
-      "headcounts": "Headcounts",
       "setup": "Nustatymas"
     }
   },
@@ -235,11 +267,13 @@
       "addCalendar": "Add Calendar",
       "calendar": "Calendar",
       "calendars": "Calendars",
-      "createCalendar": "Sukurti kalendorių",
       "createFirstCalendar": "Create First Calendar",
       "curatedCalendar": "Curated Calendar",
+      "find": "Rasti kalendorių",
       "manageEvents": "Manage Events",
       "noCalendars": "No calendars found",
+      "noMatches": "Jūsų paiešką atitinkančių kalendorių nėra.",
+      "resultCount": "Kalendoriai: {shown} iš {total}",
       "status": "Status",
       "subtitleEmpty": "Get started by creating your first calendar",
       "title": "Calendars"
@@ -249,7 +283,6 @@
       "calendar": "Calendar",
       "calendarEvents": "Calendar Events",
       "confirmRemoveGroup": "Are you sure you wish to remove this group from the calendar?",
-      "groupName": "Group Name",
       "groupsInCalendar": "Groups in Calendar",
       "importIcs": "Importuoti .ics",
       "newEvent": "Naujas renginys",
@@ -281,6 +314,8 @@
       "modeRegistrants": "Tik registruotieji",
       "modeRegistrantsHoh": "Tik šeimos galvos / registruotieji",
       "push": "Push",
+      "text": "SMS",
+      "textHint": "SMS žinutės siunčiamos per jūsų bažnyčios SMS paslaugų teikėją tik tiems žmonėms, kurie įjungė SMS priminimus. Kiekviena žinutė jūsų bažnyčiai gali kainuoti.",
       "timeOfDay": "Paros laikas",
       "timeOfDayHint": "Vietinis bažnyčios laikas (pvz., 9:00)",
       "title": "Priminimai",
@@ -346,6 +381,7 @@
       "endTime": "Pabaiga",
       "eventDescription": "Renginio aprašymas",
       "eventTitle": "Renginio pavadinimas",
+      "find": "Rasti",
       "noApprovalNeeded": "Patvirtinimo nereikia",
       "noBlockouts": "Blokavimai dar nenustatyti",
       "noBlockoutsDesc": "Blokuokite datas, kai patalpos ar ištekliai nepasiekiami.",
@@ -359,6 +395,7 @@
       "reason": "Priežastis",
       "resourceName": "Ištekliaus pavadinimas",
       "resources": "Ištekliai",
+      "resultCount": "{items}: {shown} iš {total}",
       "roomName": "Patalpos pavadinimas",
       "rooms": "Patalpos",
       "startTime": "Pradžia",
@@ -370,16 +407,19 @@
   },
   "common": {
     "add": "Pridėti",
+    "all": "Visi",
     "amount": "Amount",
     "appTheme": "App Theme",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "Back",
+    "backTo": "Atgal į {name}",
     "bottom": "Bottom",
     "cancel": "Atšaukti",
     "center": "Center",
     "change": "Change",
     "changePhoto": "Keisti nuotrauką",
+    "clear": "Išvalyti",
     "close": "Close",
     "collapse": "Sutraukti",
     "comboBox": {
@@ -456,12 +496,14 @@
     "saving": "Išsaugoma...",
     "search": "Search",
     "select": "Select",
+    "selectedCount": "Pasirinkta: {count}",
     "sermons": "Sermons",
     "title": "Title",
     "top": "Top",
     "tryAgain": "Try Again",
     "update": "Atnaujinti",
     "website": "Website",
+    "years": "Metai",
     "yes": "Yes"
   },
   "components": {
@@ -581,6 +623,8 @@
       "yourChurch": "Jūsų bažnyčia",
       "yourProfile": "Jūsų profilis"
     },
+    "allGroups": "Visos grupės",
+    "allTasks": "Visos užduotys",
     "dashboardPage": {
       "dash": "Dashboard"
     },
@@ -593,11 +637,14 @@
       "upcomingEventsTitle": "Pažiūrėkite, kas vyksta"
     },
     "myGroups": "My Groups",
+    "myTasks": "Mano užduotys",
     "needsAttention": {
       "approvals": "{count} laukiantys kalendoriaus patvirtinimai",
       "joinRequests": "{count} laukiantys prašymai prisijungti prie grupės",
       "title": "Reikalauja dėmesio"
     },
+    "noGroups": "Dar nepriklausote jokiai grupei.",
+    "noOpenTasks": "Jums nepriskirta jokių atvirų užduočių.",
     "quickSetupModal": {
       "classroomName": "Klasės pavadinimas",
       "createContinue": "Sukurti ir tęsti",
@@ -629,6 +676,8 @@
       "inTheRoom": "in the room",
       "lastSunday": "Last Sunday",
       "live": "Live",
+      "liveHint": "Kas buvo praėjusį sekmadienį ir pirmą kartą apsilankę namų ūkiai čia rodomi visą savaitę.",
+      "liveHintSunday": "Kai bus naudojama registracija ir tarnavimas, čia bus rodoma, kas yra patalpoje, kas tarnauja ir kas ką tik atėjo.",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
@@ -671,16 +720,23 @@
       "donations": "Donations"
     },
     "page": {
+      "allYears": "Visi metai",
       "amount": "Amount",
       "batch": "Batch",
-      "currentYearCsv": "Current Year CSV",
-      "currentYearPrint": "Current Year Print",
+      "csv": "CSV",
       "date": "Date",
       "fund": "Fund",
-      "lastYearCsv": "Last Year CSV",
-      "lastYearPrint": "Last Year Print",
+      "giftCount": "Aukos: {count}",
+      "giftsInYear": "Aukos {year} m.: {count}",
+      "give": "Aukoti",
+      "giving": "Aukojimas",
       "method": "Method",
+      "noGiftsInYear": "{year} m. aukų nėra.",
       "notes": "Notes",
+      "paymentMethods": "Mokėjimo būdai",
+      "recurring": "Pasikartojančios",
+      "sinceYear": "{amount} nuo {year} m.",
+      "statement": "Išrašas",
       "viewBatch": "Peržiūrėti partiją",
       "willAppear": "Donations will appear here once they have been made."
     }
@@ -737,6 +793,7 @@
       "anon": "Anonimas",
       "donor": "Aukotojas",
       "editCampaign": "Redaguoti kampaniją",
+      "goalAmount": "Tikslas: {amount}",
       "noPledges": "Šiai kampanijai dar nėra pateikta pasižadėjimų.",
       "ofGoal": "iš tikslo",
       "pledges": "Pasižadėjimai",
@@ -746,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "Pridėti kampaniją",
+      "campaignCount": "Kampanijos: {count}",
       "campaigns": "Kampanijos",
       "dates": "Datos",
       "export": "Eksportuoti",
       "fund": "Fondas",
       "given": "Paaukota",
+      "givenAmount": "Paaukota: {amount}",
       "goal": "Tikslas",
       "noCampaigns": "Kampanijų dar nesukurta.",
       "ongoing": "Tęsiama",
       "pledged": "Pasižadėta",
+      "pledgedAmount": "Pasižadėta: {amount}",
       "progress": "Pažanga",
-      "subtitle": "Sekite pasižadėjimų kampanijas ir pažangą siekiant aukojimo tikslų",
-      "totalCampaigns": "Iš viso kampanijų"
+      "subtitle": "Sekite pasižadėjimų kampanijas ir pažangą siekiant aukojimo tikslų"
     },
     "donationBatchPage": {
-      "batchDate": "Partijos data:",
-      "donations": "Aukos",
       "editBatch": "Redaguoti partiją",
+      "giftCount": "Aukos: {count}",
       "subtitle": "Manage donations in this batch",
-      "title": "Donation Batch",
-      "totalAmount": "Bendra suma"
+      "title": "Donation Batch"
     },
     "donationBatchesPage": {
       "addBatch": "Pridėti partiją",
+      "allYears": "Visi",
+      "batchCount": "Partijos: {count}",
       "batches": "Partijos",
-      "donations": "Aukos",
       "export": "Eksportuoti",
+      "failedEvents": "Nepavykę įvykiai ({count})",
+      "giftCount": "Aukos: {count}",
       "stripeImportLink": "Importuoti trūkstamas Stripe operacijas",
-      "subtitle": "Manage donation batches and track giving records",
-      "totalAmount": "Bendra suma"
+      "subtitle": "Manage donation batches and track giving records"
     },
     "donationEdit": {
       "anon": "Anonymous",
@@ -837,8 +896,7 @@
       "total": "Total"
     },
     "failedDonations": {
-      "atRisk": "At Risk",
-      "gifts": "Failed",
+      "lede": "Nepavyko: {count} · rizikoje {amount}",
       "message": "Gateway Message",
       "none": "No failed recurring gifts.",
       "retry": "Retry",
@@ -858,10 +916,10 @@
       "visible": "Matoma aukotojams"
     },
     "fundPage": {
-      "donors": "Aukotojai",
+      "donorCount": "Aukotojai: {count}",
       "filter": "Filtras",
-      "subtitle": "Track donations and contributions to this fund",
-      "totalAmount": "Bendra suma"
+      "giftCount": "Aukos: {count}",
+      "subtitle": "Track donations and contributions to this fund"
     },
     "funds": {
       "fund": "Funds",
@@ -877,15 +935,14 @@
       "dateEnd": "End Date",
       "dateStart": "Start Date",
       "don": "Donations",
-      "donFilt": "Donation Filter",
       "donor": "Donor",
       "export": "Eksportuoti",
+      "fundCount": "Fondai: {count}",
       "noDon": "No donations for selected date range",
       "nonDeductible": "Neatskaitoma",
       "subtitle": "Manage donation funds and track giving categories",
       "taxDeductible": "Atskaitoma nuo mokesčių",
       "taxStatus": "Mokesčių statusas",
-      "totalFunds": "Iš viso fondų",
       "viewBatch": "Peržiūrėti partiją"
     },
     "givingLink": {
@@ -895,7 +952,13 @@
       "title": "Giving Link",
       "url": "Link"
     },
+    "logGift": {
+      "amountError": "Įveskite sumą, didesnę už nulį, pvz., 25.00.",
+      "batchHint": "Išsaugoma šios datos partijoje; jei reikia, ji sukuriama.",
+      "title": "Užregistruoti auką"
+    },
     "period": {
+      "label": "Laikotarpis",
       "monthly": "Monthly",
       "quarterly": "Quarterly",
       "weekly": "Weekly"
@@ -1014,6 +1077,9 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Lapsed Givers"
+    },
+    "view": {
+      "label": "Rodinys"
     }
   },
   "fileUpload": {
@@ -1136,14 +1202,17 @@
       "archForms": "Archived Forms",
       "archive": "Archyvuoti",
       "archiveFormAria": "Archyvuoti formą {name}",
+      "archived": "Archyvuota",
       "confirmDuplicate": "Kopijuoti šią formą?",
       "confirmMsg1": "Ar tikrai norite archyvuoti šią formą?",
       "confirmMsg2": "Are you sure you want to restore this form?",
       "duplicate": "Dubliuoti",
       "duplicated": "Form duplicated",
+      "find": "Rasti formą",
       "forms": "Forms",
       "noArch": "Archyvuotų formų nėra.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "noMatches": "Jūsų paiešką atitinkančių formų nėra.",
       "personProfileForm": "Person profile form",
       "restore": "Atkurti",
       "restoreFormAria": "Atkurti formą {name}",
@@ -1200,14 +1269,18 @@
       "confirmDuplicate": "Dubliuoti šią grupę? Nariai nebus nukopijuoti.",
       "copySuffix": "(Kopija)",
       "discussions": "Discussions",
+      "duplicate": "Dubliuoti",
       "duplicateTooltip": "Dubliuoti šią grupę",
+      "email": "El. paštas",
       "emailTooltip": "Siųsti el. laišką šiai grupei",
       "location": "Vieta",
       "meetingTime": "Susitikimo laikas",
-      "moreLabels": "More Labels",
+      "notify": "Pranešti",
+      "notifyTooltip": "Siųsti tiesioginį pranešimą",
       "parentPickup": "Parent Pickup",
       "printNametag": "Print Nametag",
       "team": "Team",
+      "text": "SMS",
       "textTooltip": "Siųsti SMS šiai grupei",
       "trackAttendance": "Track Attendance"
     },
@@ -1361,6 +1434,21 @@
     "groupPage": {
       "addPpl": "Add Person"
     },
+    "groupRecord": {
+      "allEvents": "Visi įvykiai",
+      "allMembers": "Visi nariai",
+      "allSessions": "Visi užsiėmimai",
+      "healthSummary": "Narių: {members} · per 90 dienų prisijungė {joined} · išėjo {left}",
+      "lastEvent": "Paskutinis",
+      "latestSession": "Naujausias {date}",
+      "nextEvent": "Kitas",
+      "noMembers": "Narių dar nėra.",
+      "noSessions": "Užsiėmimų dar nėra.",
+      "pendingCount": "Laukia: {count}",
+      "seeHealth": "Žiūrėti būklę",
+      "sessionCount": "Užsiėmimai: {count}",
+      "sessionCountOne": "1 užsiėmimas"
+    },
     "groupSessions": {
       "addSesMsg": "Please add a new session to continue.",
       "allYears": "All Years",
@@ -1389,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "Add Group",
+      "allCategories": "Visos",
       "cat": "Kategorija",
+      "clearFilters": "Išvalyti filtrus",
       "confirmRestore": "Atkurti {name} iš archyvo?",
       "export": "Eksportuoti",
       "groups": "Grupės",
-      "labels": "Labels",
+      "moreCategories": "Daugiau kategorijų",
       "noGroupMsg": "No groups found. Please create a group.",
       "noMatchMsg": "Jūsų paiešką atitinkančių grupių nerasta.",
       "pendingRequestSingular": "{count} laukiantis prašymas",
@@ -1401,6 +1491,7 @@
       "pers": "1 asmuo",
       "ppl": "People",
       "restore": "Atkurti",
+      "resultCount": "Grupės: {shown} iš {total}",
       "searchPlaceholder": "Ieškoti grupių...",
       "showArchived": "Rodyti archyvuotas grupes",
       "spPpl": " people",
@@ -1480,6 +1571,7 @@
       "noPhoneNotice": "{count} neturi telefono numerio.",
       "noPhoneNoticeSingular": "{count} neturi telefono numerio.",
       "noPhoneSkipped": "{count} praleista (nėra telefono numerio).",
+      "noProvider": "Prieš siųsdami SMS žinutes, nustatymuose nustatykite SMS paslaugų teikėją.",
       "optedOutNotice": "{count} atsisakė.",
       "optedOutSkipped": "{count} praleista (atsisakė).",
       "phoneOnFile": "telefonas užregistruotas",
@@ -1491,7 +1583,10 @@
       "sentSummary": "Išsiųsta {successCount} iš {recipientCount} tinkamų gavėjų.",
       "sentSummarySingular": "Išsiųsta {successCount} iš {recipientCount} tinkamo gavėjo.",
       "textGroupTitle": "Siųsti SMS grupei: {groupName}",
-      "textPersonTitle": "SMS: {personName}"
+      "textPersonTitle": "SMS: {personName}",
+      "textVolunteersTitle": "SMS savanoriams",
+      "volunteersSummary": "Šią žinutę gaus savanorių: {eligibleCount} iš {totalMembers}.",
+      "volunteersSummarySingular": "Šią žinutę gaus savanorių: {eligibleCount} iš {totalMembers}."
     },
     "serviceTimes": {
       "services": "Service(s):"
@@ -1562,7 +1657,7 @@
       "registrations": "Registracijos",
       "roomsResources": "Patalpos ir ištekliai",
       "sermons": "Pamokslai",
-      "site": "Svetainė",
+      "streamSettings": "Nustatymai",
       "stripeImport": "Stripe importavimas",
       "website": "Svetainė"
     }
@@ -1665,7 +1760,8 @@
       "placeholder": "Show me men over 30 with birthdays in July",
       "search": "Ieškoti",
       "searching": "Ieškoma...",
-      "title": "AI Search"
+      "title": "AI Search",
+      "unavailable": "DI paieška laikinai nepasiekiama. Bandykite vėliau arba naudokite paiešką viršuje."
     },
     "bulk": {
       "actions": "Veiksmai",
@@ -1704,7 +1800,6 @@
       "removeFromGroupPrompt": "Pašalinti {count} pasirinktus žmones iš grupės.",
       "removeFromGroupTitle": "Pašalinti iš grupės",
       "removeSuccess": "Pašalinta {count} žmonių iš {group}.",
-      "selected": "Pasirinkta",
       "setCampus": "Nustatyti miestelį",
       "value": "Value",
       "workflowSuccess": "Pridėta {count} žmonių į darbo eigą."
@@ -1722,6 +1817,27 @@
       "title": "Demografija",
       "total": "Iš viso",
       "unassigned": "Nepriskirta"
+    },
+    "directory": {
+      "ask": "Klausti",
+      "clear": "Išvalyti",
+      "countHouseholds": "Namų ūkiai: {households} · žmonės: {people}",
+      "everyone": "Visi",
+      "family": "{name} šeima",
+      "households": "Namų ūkiai",
+      "noMatch": "Šią paiešką atitinkančių žmonių nėra",
+      "noMatchHint": "Išbandykite kitą vardą arba naudokite išplėstinę paiešką, kad filtruotumėte pagal duomenis.",
+      "noPeople": "Žmonių dar nėra",
+      "noPeopleHint": "Pridėkite pirmą žmogų žemiau.",
+      "savedLists": "Išsaugoti sąrašai",
+      "searchLabel": "Rasti namų ūkį arba žmogų",
+      "selectAll": "Pasirinkti visus matomus namų ūkius",
+      "selectHousehold": "Pasirinkti {name}",
+      "selectedCount": "Pasirinkta: {count}",
+      "subtitle": "Naršykite namų ūkius, atidarykite žmogaus kortelę arba susiaurinkite paiešką sąrašu ar klausimu.",
+      "table": "Lentelė",
+      "title": "Žmonės",
+      "viewAs": "Rodyti kaip"
     },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
@@ -1813,12 +1929,7 @@
       "unknownGroup": "Nežinoma grupė"
     },
     "household": {
-      "age": "Amžius:",
-      "groups": "Grupės:",
-      "house": " Household",
-      "lastActivity": "Paskutinis aktyvumas:",
-      "noContactInfo": "Nėra kontaktinės informacijos",
-      "status": "Būsena:"
+      "house": " Household"
     },
     "householdEdit": {
       "addMember": "Pridėti šeimos narį",
@@ -1839,7 +1950,6 @@
       "confirmDelete": "Ištrinti sąrašą \"{name}\"? Šio veiksmo negalima atšaukti.",
       "createdBy": "sukūrė {name}",
       "delete": "Ištrinti sąrašą",
-      "empty": "Išsaugotų sąrašų dar nėra. Sukurkite išplėstinę paiešką, tada 'Išsaugoti kaip sąrašą'.",
       "household": "Įtraukti namų ūkį",
       "householdAll": "Visas namų ūkis",
       "householdChildren": "Atitinkančiųjų vaikai",
@@ -1853,8 +1963,7 @@
       "settings": "Sąrašo nustatymai",
       "sharing": "Kas gali matyti šį sąrašą",
       "sharingOrg": "Visi darbuotojai",
-      "sharingPrivate": "Tik aš",
-      "title": "Išsaugoti sąrašai"
+      "sharingPrivate": "Tik aš"
     },
     "merge": {
       "findPerson": "Rasti asmenį sujungimui",
@@ -1884,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "Add Person",
-      "allMembers": "Visi nariai",
       "bDay": "Birthday",
       "bDayNo": "Gimtadienis (be metų)",
       "deleteOp": "Ištrinti parinktį",
@@ -1894,15 +2002,12 @@
       "loading": "Įkeliami žmonės...",
       "middle": "Middle",
       "nameNote": "Pastabos vardo kortelei",
-      "noPeopleFound": "Žmonių nerasta",
       "peopleFound": "Rasta {count} žmonių",
       "photo": "Photo",
       "primEmail": "Pagrindinis el. paštas",
       "primPhone": "Pagrindinis telefonas",
       "printDirectory": "Spausdinti katalogą",
       "printResults": "Spausdinti rezultatus",
-      "searchPpl": "Search People",
-      "searchResults": "Paieškos rezultatai",
       "showAll": "Rodyti visus narius",
       "showingMembers": "Rodoma {count} narių"
     },
@@ -1922,13 +2027,10 @@
       "group": "Grupė",
       "membership": "Membership & Groups",
       "names": "Names",
-      "placeholder": "Search by name...",
       "service": "Pamaldos",
       "serviceTime": "Pamaldų laikas",
       "simp": "Simple",
-      "simpSearch": "People Search",
-      "type": "Type",
-      "typeToSearch": "Rašykite, kad iškart ieškotumėte"
+      "type": "Type"
     },
     "peopleSearchResults": {
       "deletePersonAria": "Pašalinti {name}",
@@ -1939,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "Pridėti į darbo eigą",
-      "age": "Amžius",
       "emailPerson": "Rašyti šiam asmeniui el. laišką",
-      "gender": "Lytis",
       "hasLogin": "Turi prisijungimą",
-      "maritalStatus": "Šeimyninė padėtis",
       "sendTextMessage": "Siųsti SMS"
     },
     "personEdit": {
@@ -1973,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "Lankomumas",
-      "details": "Išsami informacija",
       "donations": "Aukos",
       "forms": "Formos",
       "groups": "Grupės",
@@ -1985,12 +2083,44 @@
       "notesSuffix": " Užrašai",
       "thisPerson": "šis asmuo"
     },
+    "personRecord": {
+      "allForms": "Visos formos",
+      "allNotes": "Visos pastabos",
+      "allYears": "Visi metai",
+      "attendanceSummary": "{count} iš paskutinių {weeks} sav.",
+      "email": "El. paštas",
+      "givenBy": "Aukotojas",
+      "givingYear": "{year} m. · aukos: {count}",
+      "hereThisWeek": "Buvo šią savaitę",
+      "household": "Namų ūkis",
+      "lastAttended": "Paskutinį kartą lankėsi {date}",
+      "lastGift": "Paskutinė auka {date}.",
+      "loadError": "Nepavyko įkelti: {what}.",
+      "noAttendance": "Lankomumas dar neužregistruotas.",
+      "noDirectory": "Paslėpta kataloge",
+      "noGiftsYear": "{year} m. aukų neužregistruota.",
+      "noHouseholdGiftsYear": "{year} m. namų ūkio aukų neužregistruota.",
+      "noNotes": "Pastabų dar nėra.",
+      "notSubmitted": "Nepateikta",
+      "noteCount": "Pastabos: {count}",
+      "recentAttendance": "Naujausias lankomumas",
+      "recentGifts": "Aukos {year} m.",
+      "service": "Pamaldos",
+      "showingLatest": "rodomi naujausi: {count}",
+      "statement": "{year} m. išrašas",
+      "submitted": "Pateikta",
+      "text": "SMS",
+      "weekAttended": "{date} savaitė: dalyvavo",
+      "weekNoRecord": "{date} savaitė: lankomumas neužregistruotas",
+      "weeklyAttendance": "Savaitės lankomumas",
+      "where": "Kur",
+      "wholeHousehold": "visas namų ūkis",
+      "workflow": "Darbo eiga"
+    },
     "personView": {
       "hasLoginLabel": "Turi prisijungimą: {email}",
       "home": "Home",
-      "memShip": "Membership:",
       "mobile": "Mobile",
-      "persDet": "Personal Details",
       "work": "Work"
     },
     "pickup": {
@@ -2004,9 +2134,6 @@
       "status": "Būsena",
       "title": "Atsiėmimas",
       "trusted": "Patikimas"
-    },
-    "tabs": {
-      "noImplement": "Not Implemented"
     },
     "updateHouseHold": {
       "update": "Update Address"
@@ -2028,6 +2155,7 @@
     "firstName": "First Name",
     "gender": "Gender",
     "grade": "Klasė",
+    "guest": "Svečias",
     "inactive": "Neaktyvus",
     "lastName": "Last Name",
     "line1": "1 eilutė",
@@ -2044,6 +2172,7 @@
     "person": "Person",
     "phone": "Phone",
     "prefix": "Prefix",
+    "recentPeople": "Naujausi žmonės",
     "regularAttendee": "Nuolatinis lankytojas",
     "school": "Mokykla",
     "single": "Single",
@@ -2356,7 +2485,6 @@
       "selectedPrefix": "Pasirinkta:"
     },
     "ministryList": {
-      "getStarted": "Get started by creating your first ministry",
       "noMinMsg": "No ministries found. Please create a ministry."
     },
     "ministryPage": {
@@ -2375,6 +2503,8 @@
       "planNameAria": "Plano pavadinimas",
       "planReq": "Plan name is required.",
       "prepared": "Preliminariai įrašyta (slėpti užduotis nuo savanorių iki paskelbimo)",
+      "repeatWeekly": "Kartoti kas savaitę tiek savaičių",
+      "repeatWeeklyHelper": "Sukuria po vieną planą kiekvienai savaitei, kiekvienas nukopijuojamas iš ankstesnio",
       "servDate": "Service Date",
       "servReq": "Service date is required.",
       "serviceDateAria": "Pamaldų data",
@@ -2430,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
-      "createFirst": "Create First Plan",
-      "createPlan": "Create Plan",
       "newPlan": "New Plan",
       "noPlans": "No plans found",
-      "noUpcomingPlans": "Artėjančių planų nėra",
-      "noUpcomingPlansDescription": "Šiandien ar vėliau planų nėra. Norėdami peržiūrėti praeities planus, naudokite „Rodyti praeitus\" perjungiklį viršuje.",
+      "noUpcomingHint": "Nuo šiandien nieko nesuplanuota. Pasirinkite „Praėję“, kad matytumėte ankstesnius planus.",
+      "past": "Praėję",
       "plans": "Plans",
       "scheduleLesson": "Schedule Lesson",
+      "serviceDate": "Pamaldų data",
       "serviceOrder": "Service Order",
-      "showPast": "Rodyti praeitus"
+      "upcoming": "Būsimi"
     },
     "planPage": {
       "assign": "Team Assignments",
-      "assignments": "Assignments",
       "band": "Band",
       "loadingPlan": "Loading plan...",
       "noteSave": "Note saved",
-      "serviceOrder": "Service Order",
-      "servicePlan": "Service Plan",
-      "subtitle": "Plan and schedule your service"
+      "servicePlan": "Service Plan"
     },
     "planType": {
       "details": "Plan Type Details"
@@ -2483,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "Add Plan Type",
       "createPlanType": "Create Plan Type",
-      "createPlanTypes": "Create Plan Types",
       "noPlanTypes": "No plan types found",
       "planTypes": "Plan Types"
     },
     "planTypePage": {
       "notFound": "Plan type not found",
       "overview": "Apžvalga",
-      "planType": "Plan Type",
-      "subtitle": "Configure plan type settings"
+      "planType": "Plan Type"
     },
     "planTypeReminders": {
       "channels": "Send By",
@@ -2505,6 +2629,8 @@
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "save": "Save Reminders",
       "saved": "Saved",
+      "text": "SMS",
+      "textHint": "SMS žinutės siunčiamos per jūsų bažnyčios SMS paslaugų teikėją tik tiems žmonėms, kurie įjungė SMS priminimus. Kiekviena žinutė jūsų bažnyčiai gali kainuoti.",
       "timeOfDay": "Time of Day",
       "title": "Reminders",
       "when": "When should reminders go out?"
@@ -2544,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "Add Ministry",
       "editMinistry": "Edit Ministry",
-      "selMin": "Pasirinkite tarnystę",
       "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
@@ -2613,6 +2738,7 @@
       "viewingAs": "Peržiūrima kaip"
     },
     "servingOverviewPage": {
+      "allPositions": "Visos pareigos",
       "autoSchedule": "Automatinis planavimas",
       "autoScheduleConfirm": "Automatiškai paskirstyti savanorius į visas laisvas vietas šiame laikotarpyje?",
       "autoScheduleResult": "Automatiškai suplanuota {filled} iš {total} planų",
@@ -2633,11 +2759,17 @@
       "removeConfirm": "Pašalinti {name} iš šio priskyrimo?",
       "startDate": "Pradžios data",
       "subtitle": "Pozicijos pagal datą su priskirtais savanoriais",
+      "textAll": "SMS savanoriams",
       "title": "Tarnystės apžvalga"
     },
     "servingPage": {
-      "showAll": "Rodyti viską",
-      "showAllHint": "Jūsų tarnystės paslėptos, nes nesate narys. Įjunkite „Rodyti visas“ aukščiau, kad jas matytumėte."
+      "actions": "Veiksmai",
+      "all": "Visos",
+      "allHint": "Jūsų tarnystės paslėptos, nes nesate narys. Pasirinkite „Visos“ viršuje, kad jas matytumėte.",
+      "findMinistry": "Rasti tarnystę",
+      "mine": "Mano",
+      "ministries": "Tarnystės",
+      "whichMinistries": "Kurios tarnystės"
     },
     "signageFeed": {
       "button": "Digital Signage",
@@ -2658,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "Create Team",
-      "createTeams": "Create Teams",
-      "manage": "Manage",
       "members": "members",
       "newTeam": "New Team",
       "noTeam": "No teams found. Please create a team.",
@@ -2709,6 +2839,7 @@
       "typeService": "Pamaldos"
     },
     "timeList": {
+      "addTime": "Pridėti laiką",
       "noTime": "No times have been added yet",
       "sunServ": "Sunday Service",
       "times": "Times"
@@ -2735,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "Link",
+      "linked": "Susieta",
+      "notLinked": "Nesusieta",
       "signUp": "Sign Up",
       "unlink": "Unlink"
     },
@@ -2775,9 +2908,7 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
-      "subtitle": "Manage your profile and preferences",
       "themePreferences": "Temos nustatymai",
-      "themePreferencesHelper": "Jūsų temos pasirinkimas išsaugomas automatiškai ir bus prisimintas šiame įrenginyje.",
       "togglePasswordVisibility": "perjungti slaptažodžio matomumą",
       "valEmail": "Please enter a valid email address."
     }
@@ -2834,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "Data",
       "deleteConfirm": "Visam laikui ištrinti šią registraciją?",
+      "editSettings": "Redaguoti nustatymus",
       "eventFull": "Šis renginys jau pilnas.",
       "eventNotFound": "Renginys nerastas",
       "eventRegistrations": "Renginio registracijos",
@@ -2875,9 +3007,11 @@
       "noEventsHint": "Įjunkite registraciją renginyje per renginio redagavimo nustatymus.",
       "registered": "užregistruota",
       "registrations": "Registracijos",
+      "search": "Ieškoti įvykių",
       "subtitle": "Tvarkykite renginių registracijos nustatymus ir peržiūrėkite užsiregistravusiuosius",
       "tags": "Žymos",
-      "title": "Renginio registracijos"
+      "title": "Renginio registracijos",
+      "turnOnRegistration": "Įjungti registraciją"
     }
   },
   "reporting": {
@@ -3007,14 +3141,17 @@
         "weekly": "Weekly",
         "yes": "Yes"
       },
-      "services": "Pamaldos",
       "servicesTab": {
         "addService": "Pridėti pamalas",
         "defaultLabel": "Sekmadienio rytas",
+        "duration": "Trukmė",
+        "none": "Pamaldų dar nėra. Pridėkite pamaldas, kad suplanuotumėte tiesioginę transliaciją.",
+        "provider": "Teikėjas",
+        "service": "Pamaldos",
+        "time": "Laikas",
         "title": "Pamaldos",
         "weekly": "Weekly"
       },
-      "settings": "Settings",
       "sidebarTabs": {
         "add": "Pridėti",
         "title": "Content Tabs"
@@ -3062,6 +3199,7 @@
     "notScheduled": "Not scheduled",
     "playlist": "Playlist",
     "playlists": {
+      "addPlaylist": "Pridėti grojaraštį",
       "createFirstPlaylist": "Create First Playlist",
       "noPlaylistsFound": "No playlists found",
       "noPlaylistsMatch": "Nė vienas grojaraštis neatitinka jūsų paieškos",
@@ -3096,6 +3234,7 @@
       "title": "Podcast Feed"
     },
     "publishDate": "Publish Date",
+    "resultCount": "Pamokslai: {shown} iš {total}",
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
     "sermonEdit": {
@@ -3152,11 +3291,15 @@
       "act": "Active",
       "arch": "Archyvuota",
       "church": "Church",
+      "churchCount": "Bažnyčios: {count}",
       "churchName": "Church Name",
       "churches": "Churches",
       "churchesSubtitle": "Ieškokite ir tvarkykite visas bažnyčias",
       "commons": "Commons",
       "commonsSubtitle": "Moderate community-submitted assets and reports",
+      "groupDirectory": "Katalogas",
+      "groupOperations": "Operacijos",
+      "groupSystem": "Sistema",
       "impersonateSubtitle": "Prisijunkite kaip kitas naudotojas, kad suteiktumėte pagalbą",
       "impersonateUser": "Apsimesti vartotoju",
       "jobs": "Foniniai darbai",
@@ -3176,6 +3319,7 @@
       "servAdmin": "Serverio administravimas",
       "serverHealth": "Serverio būklė",
       "serverHealthSubtitle": "Patikrinkite serverio paslaugų būklę",
+      "status": "Būsena",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Vertimų paieška",
       "translationSubtitle": "Ieškokite išverstų lokalizacijos eilučių",
@@ -3465,6 +3609,19 @@
       "title": "Naudotojų paieška"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "Pridėti tonaciją"
+    },
+    "planPage": {
+      "addMenu": "Daugiau pridėjimo būdų",
+      "hideNotes": "Slėpti pastabas",
+      "hideTimes": "Slėpti laikus"
+    },
+    "songPage": {
+      "deleteSong": "Ištrinti giesmę"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "Uždaryti",
@@ -3742,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "Kategorija",
-      "createTemplate": "Sukurti šabloną",
       "deleteConfirm": "Pašalinti šabloną „{name}\"?",
       "emptyDescription": "Sukurkite šabloną, kad pradėtumėte siųsti masinius el. laiškus.",
       "emptyTitle": "El. laiškų šablonų dar nėra",
@@ -3873,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "Permissions cannot be edited for the Domain Admins role.  Domain Admins have full access.",
-      "permEdit": "Edit Permissions",
-      "roleEdit": "Edit Role:"
+      "permEdit": "Edit Permissions"
     },
     "rolePermissions": {
       "filter": "Filter permissions",
@@ -3885,6 +4040,7 @@
       "accDesc": "Has access to view and manage donations.",
       "addCustomRoleAria": "Pridėti pasirinktinį vaidmenį",
       "addPredefinedRoleAria": "Pridėti {name} vaidmenį",
+      "addRole": "Pridėti vaidmenį",
       "canEdit": "Gali redaguoti daugumą duomenų srityje ",
       "churchDesc": " including people, groups, attendance and forms.",
       "churchStaff": "Church Staff",
@@ -3958,6 +4114,8 @@
       "clearstreamHelper": "Sukurkite API raktą savo",
       "clearstreamHelperLink": "Clearstream paskyros nustatymuose",
       "clearstreamHelperSuffix": "skiltyje API raktai.",
+      "inboundUrl": "Gaunamųjų (STOP) webhook URL",
+      "inboundUrlHelper": "Įklijuokite tai į savo teikėjo gaunamųjų žinučių webhook, kad žmonės, atsakę STOP, būtų atsisakyti SMS žinučių ir čia.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Jūsų MinistryStuff SMS žinučių prenumerata yra aktyvi, likę {} kreditų šiam ciklui.",
       "ministryStuffHelper": "API rakto nereikia. SMS žinučių kreditai gaunami iš jūsų MinistryStuff prenumeratos, automatiškai susietos su šia bažnyčia. Tvarkykite savo planą čia:",
@@ -4192,8 +4350,8 @@
     "blocksPage": {
       "actions": "Actions",
       "addBlock": "Add Block",
+      "blockCount": "Blokai: {count}",
       "blocks": "Blocks",
-      "createFirstBlock": "Create First Block",
       "elements": "Elementas (-ai)",
       "getStarted": "Get started by creating your first reusable block",
       "noBlocksFound": "No blocks found",
@@ -4201,7 +4359,6 @@
       "reusableBlocks": "Reusable Blocks",
       "sections": "Section(s)",
       "subtitle": "Create and manage reusable content blocks for your website",
-      "totalBlocks": "Total Blocks",
       "type": "Type"
     },
     "blog": {
@@ -4212,6 +4369,7 @@
       "draft": "Juodraštis",
       "navHint": "Lankytojai gali skaityti jūsų įrašus adresu /blog. Pridėkite naršymo nuorodą Puslapių ekrane, kad jie galėtų jį rasti:",
       "noPosts": "No posts yet",
+      "postCount": "Įrašai: {count}",
       "posts": "Posts",
       "published": "Paskelbta",
       "scheduled": "Suplanuota",
@@ -4512,6 +4670,7 @@
       "imageDescribingTopic": "Image describing the topic",
       "info": "Info",
       "javascriptExcludeTag": "JavaScript (exclude script tag)",
+      "javascriptUrlWarning": "Tai yra interneto adresas, o ne JavaScript. Norėdami rodyti paveikslėlį, naudokite elementą Paveikslėlis arba įrašykite <img src=\"...\"> į HTML turinį.",
       "label": "Label",
       "linkUrlOptional": "Link URL (optional)",
       "loadingEditor": "Loading editor...",
@@ -4766,20 +4925,15 @@
       "pageSettings": "Page Settings",
       "previewOf": "{title} peržiūra",
       "showingPublished": "This is the published version of the page. Unpublished editor changes are not shown.",
-      "subtitle": "Previewing: {title}",
-      "title": "Svetainės peržiūra"
+      "subtitle": "Previewing: {title}"
     },
     "pages": {
       "convert": "Convert"
     },
     "pagesPage": {
       "actions": "Actions",
-      "addFirstPage": "Add First Page",
       "addPage": "Add Page",
-      "autoGenerated": "Auto-generated",
       "confirmConvert": "Ar norite šį automatiškai sugeneruotą puslapį paversti pasirinktiniu puslapiu?",
-      "customPages": "Custom Pages",
-      "description": "Below is a list of custom and auto-generated pages. You can add new pages, edit existing ones, or convert auto-generated pages to custom pages.",
       "desktopOnly": "Page editor is only available in desktop mode",
       "generated": "Generated",
       "getStarted": "Get started by adding your first page.",
@@ -4788,6 +4942,7 @@
       "hidePublicSiteWarning": "Jūsų vieša svetainė išjungta. Lankytojai nukreipiami į prisijungimo ekraną, o paieškos sistemoms nurodoma svetainės neindeksuoti.",
       "mainNavigation": "Main Navigation",
       "noPagesFound": "No pages found",
+      "pageCount": "Puslapiai: {count}",
       "pages": "Pages",
       "path": "Path",
       "showLogin": "Show Login",
@@ -4795,7 +4950,6 @@
       "startFromTemplate": "Pradėti nuo šablono",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
-      "totalPages": "Total Pages",
       "viewLivePage": "Preview page",
       "websitePages": "Website Pages"
     },
@@ -5350,7 +5504,6 @@
       "signature": "Tonacijos ženklai"
     },
     "keys": {
-      "add": "Pridėti",
       "addExternalLink": "Add external link",
       "addFiles": "Add Files",
       "audioTracks": "Garso takeliai",
@@ -5366,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "Add First Song",
         "message": "Get started by adding your first song to the library.",
         "title": "No Songs Found"
       },
@@ -5424,8 +5576,7 @@
       "addArrangement": "Pridėti aranžuotę",
       "loading": "Įkeliama...",
       "noArrangementDescription": "Pasirinkite aranžuotę iš šoninės juostos, kad pradėtumėte.",
-      "noArrangementSelected": "Aranžuotė nepasirinkta",
-      "subtitle": "Manage song details and arrangements"
+      "noArrangementSelected": "Aranžuotė nepasirinkta"
     },
     "songSearchDialog": {
       "closeDialogAria": "Uždaryti dialogo langą",
@@ -5437,7 +5588,7 @@
       "deleteSelected": "Delete Selected",
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "deselectAll": "Atžymėti visus",
-      "search": "Ieškoti",
+      "resultCount": "Giesmės: {count}",
       "searchSongs": "Ieškoti dainų",
       "selectAll": "Select all",
       "songs": "Giesmės",
@@ -5626,8 +5777,11 @@
       "message": "Žinutė",
       "messageHint": "Neprivaloma. Palikite tuščią, kad būtų naudojamas numatytasis priminimo tekstas.",
       "noDueDate": "Ši užduotis neturi termino, todėl priminimai nebus siunčiami, kol jis nebus nustatytas.",
+      "none": "Priminimų nenustatyta.",
       "save": "Išsaugoti priminimus",
       "saved": "Išsaugota",
+      "text": "SMS",
+      "textHint": "SMS žinutės siunčiamos per jūsų bažnyčios SMS paslaugų teikėją tik tiems žmonėms, kurie įjungė SMS priminimus. Kiekviena žinutė jūsų bažnyčiai gali kainuoti.",
       "timeOfDay": "Paros laikas",
       "title": "Priminimai",
       "when": "Kada siųsti priminimus?"
@@ -5656,8 +5810,9 @@
       "noTasks": "No tasks found",
       "notSpecified": "Not specified",
       "reqMe": "Requested by Me",
-      "showClosedTasksAria": "Rodyti uždarytas užduotis",
-      "showOpenTasksAria": "Rodyti atviras užduotis",
+      "status": "Užduoties būsena",
+      "statusColumn": "Būsena",
+      "task": "Užduotis",
       "tasks": "Tasks",
       "unassigned": "Nepriskirta"
     },
@@ -5668,6 +5823,7 @@
       "associate": "Associate",
       "associated": "Susieta",
       "by": "by",
+      "closeTask": "Uždaryti užduotį",
       "closed": "Closed",
       "created": "Sukurta",
       "editAssigned": "Edit Assigned",
@@ -5675,11 +5831,8 @@
       "notSpec": "Nenurodyta",
       "open": "Open",
       "opened": "Atidaryta",
+      "reopenTask": "Vėl atidaryti užduotį",
       "unassigned": "Nepriskirta"
-    },
-    "tasksPage": {
-      "showClosed": "Show Closed",
-      "showOpen": "Show Open"
     },
     "workflowActions": {
       "add": "Pridėti veiksmą",
@@ -5719,10 +5872,12 @@
       "addCard": "Pridėti kortelę",
       "addStep": "Pridėti žingsnį",
       "boardTab": "Lenta",
+      "cardsCount": "kortelės",
       "clearSelection": "Išvalyti",
       "moveTo": "Perkelti į…",
       "selectedCount": "{count} pasirinkta",
       "step": "Žingsnis",
+      "stepsCount": "žingsniai",
       "subtitle": "Vilkite korteles tarp žingsnių",
       "unassigned": "Nepriskirta"
     },
@@ -5730,9 +5885,11 @@
       "assign": "Priskirti",
       "assignedTo": "Priskirta",
       "complete": "Baigti",
+      "email": "El. paštas",
       "history": "Veikla",
       "outcome": "Rezultatas",
       "overdue": "Vėluojama",
+      "phone": "Telefonas",
       "pin": "Prisegti priskyrimą",
       "pinnedNote": "Prisegta — išsaugo šį savininką visuose žingsniuose",
       "sendBack": "Grąžinti",
@@ -5741,7 +5898,8 @@
       "snooze1Day": "1 dienai",
       "snooze1Week": "1 savaitei",
       "snooze3Days": "3 dienoms",
-      "snoozed": "Atidėta"
+      "snoozed": "Atidėta",
+      "viewProfile": "Peržiūrėti profilį"
     },
     "workflowCategories": {
       "addCategory": "Pridėti kategoriją",
@@ -5793,9 +5951,13 @@
       "addWorkflow": "Pridėti darbo eigą",
       "added": "Pridėta į darbo eigą.",
       "blankWorkflow": "Tuščia darbo eiga",
+      "categories": "Darbo eigų kategorijos",
+      "category": "Kategorija",
       "noWorkflows": "Darbo eigų dar nėra. Pridėkite vieną, kad pradėtumėte.",
+      "status": "Būsena",
       "subtitle": "Veskite žmones per žingsnių seriją",
-      "title": "Darbo eigos"
+      "title": "Darbo eigos",
+      "workflowCount": "Darbo eigos: {count}"
     }
   }
 }

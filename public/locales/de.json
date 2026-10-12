@@ -69,6 +69,7 @@
       "wholeService": "Alle Dienstzeiten"
     },
     "labels": {
+      "addLabel": "Etikett hinzufügen",
       "align": "Ausrichten",
       "always": "Immer",
       "barcode": "Barcode",
@@ -126,6 +127,30 @@
       "value": "Wert",
       "width": "Breite (Zoll)"
     },
+    "plate": {
+      "allYears": "Alle Jahre",
+      "checkedIn": "{count} eingecheckt",
+      "enterHeadcount": "Teilnehmerzahl eintragen",
+      "guests": "{count} Gäste",
+      "guestsTitle": "Gäste",
+      "headcount": "{count} gezählt",
+      "headcountsTitle": "Teilnehmerzahlen dieser Woche",
+      "inTheRoom": "im Raum",
+      "kiosk": "Kiosk",
+      "lastRecorded": "Zuletzt erfasst am {date}: {count}",
+      "lastWeeks": "Letzte {weeks} Wochen",
+      "noCheckins": "Diese Woche noch keine Check-ins.",
+      "noHeadcounts": "Diese Woche wurden keine Teilnehmerzahlen eingetragen.",
+      "noRooms": "Diese Woche hat noch niemand in eine Gruppe eingecheckt.",
+      "reports": "Berichte",
+      "rooms": "Räume",
+      "thisWeek": "Diese Woche",
+      "unknownGroup": "Entfernte Gruppe",
+      "weekOf": "Woche vom {date}: {count}",
+      "weeklyCheckins": "Wöchentliche Check-ins",
+      "weeksWith": "In {count} der letzten {weeks} Wochen gab es Check-ins",
+      "yearsSummary": "Trends, Teilnehmerzahlen und Gruppenanwesenheit über alle Jahre. Verwenden Sie die Filter, um den Zeitraum einzugrenzen."
+    },
     "serviceEdit": {
       "campus": "Campus",
       "campusAria": "Campus auswählen",
@@ -138,12 +163,20 @@
       }
     },
     "serviceTimeEdit": {
+      "checkinSchedule": "Check-in-Zeitplan",
+      "checkinScheduleHelp": "Optional. Der Check-in öffnet und schließt jede Woche automatisch um diese Zeit. Lassen Sie den Tag leer, damit der Check-in immer geöffnet ist, wenn die Gruppe nicht geschlossen ist.",
+      "closeMinutes": "Check-in schließen (Minuten nach Ende)",
       "confirmDelete": "Sind Sie sicher, dass Sie diese Dienstzeit dauerhaft löschen möchten?",
+      "day": "Tag",
+      "endTime": "Endzeit",
       "name": "Dienstzeit",
       "nameAria": "Name der Dienstzeit",
       "namePlaceholder": "8:00 Uhr",
+      "noSchedule": "Kein Zeitplan",
+      "openMinutes": "Check-in öffnen (Minuten vor Beginn)",
       "service": "Dienst",
       "serviceAria": "Service auswählen",
+      "startTime": "Startzeit",
       "validate": {
         "name": "Der Name der Dienstzeit ist erforderlich.",
         "service": "Bitte wählen Sie einen Dienst."
@@ -153,7 +186,6 @@
       "attTrend": "Anwesenheitstrend",
       "groupAtt": "Gruppenanwesenheit",
       "headcountTrend": "Entwicklung Teilnehmerzahlen",
-      "headcounts": "Teilnehmerzahlen",
       "setup": "Einrichtung"
     }
   },
@@ -235,14 +267,15 @@
       "addCalendar": "Kalender hinzufügen",
       "calendar": "Kalender",
       "calendars": "Kalender",
-      "createCalendar": "Kalender erstellen",
       "createFirstCalendar": "Erstellen Sie den ersten Kalender",
       "curatedCalendar": "Kuratierter Kalender",
+      "find": "Kalender suchen",
       "manageEvents": "Veranstaltungen verwalten",
       "noCalendars": "Keine Kalender gefunden",
+      "noMatches": "Keine Kalender entsprechen Ihrer Suche.",
+      "resultCount": "{shown} von {total} Kalendern",
       "status": "Status",
       "subtitleEmpty": "Beginnen Sie mit der Erstellung Ihres ersten Kalenders",
-      "subtitleWithCount": "Untertitel mit Anzahl",
       "title": "Kalender"
     },
     "calendarPage": {
@@ -250,7 +283,6 @@
       "calendar": "Kalender",
       "calendarEvents": "Kalenderereignisse",
       "confirmRemoveGroup": "Sind Sie sicher, dass Sie diese Gruppe aus dem Kalender entfernen möchten?",
-      "groupName": "Gruppenname",
       "groupsInCalendar": "Gruppen im Kalender",
       "importIcs": ".ics importieren",
       "newEvent": "Neue Veranstaltung",
@@ -282,6 +314,8 @@
       "modeRegistrants": "Nur Angemeldete",
       "modeRegistrantsHoh": "Nur Haushaltsvorstände/Angemeldete",
       "push": "Push-Benachrichtigung",
+      "text": "SMS",
+      "textHint": "SMS werden über den SMS-Anbieter Ihrer Gemeinde nur an Personen gesendet, die SMS-Erinnerungen aktiviert haben. Jede SMS kann Ihrer Gemeinde Kosten verursachen.",
       "timeOfDay": "Uhrzeit",
       "timeOfDayHint": "Ortszeit der Kirche (z. B. 9:00 Uhr)",
       "title": "Erinnerungen",
@@ -347,6 +381,7 @@
       "endTime": "Ende",
       "eventDescription": "Veranstaltungsbeschreibung",
       "eventTitle": "Veranstaltungstitel",
+      "find": "Suchen",
       "noApprovalNeeded": "Keine Genehmigung erforderlich",
       "noBlockouts": "Noch keine Sperrzeiten",
       "noBlockoutsDesc": "Sperren Sie Daten, an denen Räume oder Ressourcen nicht verfügbar sind.",
@@ -360,6 +395,7 @@
       "reason": "Grund",
       "resourceName": "Ressourcenname",
       "resources": "Ressourcen",
+      "resultCount": "{shown} von {total} {items}",
       "roomName": "Raumname",
       "rooms": "Räume",
       "startTime": "Start",
@@ -371,16 +407,19 @@
   },
   "common": {
     "add": "Hinzufügen",
+    "all": "Alle",
     "amount": "Betrag",
     "appTheme": "App-Design",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
     "back": "Zurück",
+    "backTo": "Zurück zu {name}",
     "bottom": "Unten",
     "cancel": "Abbrechen",
     "center": "Mitte",
     "change": "Ändern",
     "changePhoto": "Foto ändern",
+    "clear": "Löschen",
     "close": "Schließen",
     "collapse": "Einklappen",
     "comboBox": {
@@ -457,12 +496,14 @@
     "saving": "Speichern...",
     "search": "Suchen",
     "select": "Auswählen",
+    "selectedCount": "{count} ausgewählt",
     "sermons": "Predigten",
     "title": "Titel",
     "top": "Oben",
     "tryAgain": "Erneut versuchen",
     "update": "Aktualisieren",
     "website": "Website",
+    "years": "Jahre",
     "yes": "Ja"
   },
   "components": {
@@ -582,6 +623,8 @@
       "yourChurch": "Ihre Kirche",
       "yourProfile": "Ihr Profil"
     },
+    "allGroups": "Alle Gruppen",
+    "allTasks": "Alle Aufgaben",
     "dashboardPage": {
       "dash": "Dashboard"
     },
@@ -594,11 +637,14 @@
       "upcomingEventsTitle": "Sehen Sie, was los ist"
     },
     "myGroups": "Meine Gruppen",
+    "myTasks": "Meine Aufgaben",
     "needsAttention": {
       "approvals": "{count} ausstehende Kalenderfreigaben",
       "joinRequests": "{count} ausstehende Gruppenbeitrittsanfragen",
       "title": "Erfordert Aufmerksamkeit"
     },
+    "noGroups": "Sie sind noch in keiner Gruppe.",
+    "noOpenTasks": "Ihnen sind keine offenen Aufgaben zugewiesen.",
     "quickSetupModal": {
       "classroomName": "Klassenzimmername",
       "createContinue": "Erstellen und Fortfahren",
@@ -630,6 +676,8 @@
       "inTheRoom": "im Raum",
       "lastSunday": "Letzter Sonntag",
       "live": "Live",
+      "liveHint": "Wer letzten Sonntag im Raum war und neue Haushalte werden hier die ganze Woche über angezeigt.",
+      "liveHintSunday": "Wer im Raum ist, wer mitarbeitet und wer gerade angekommen ist, wird hier angezeigt, sobald Check-in und Mitarbeitereinsatz genutzt werden.",
       "noOrder": "Kein Dienstablauf für diesen Plan vorhanden.",
       "noPlan": "Kein Gottesdienst geplant diese Woche.",
       "rooms": "Räume",
@@ -672,16 +720,23 @@
       "donations": "Spenden"
     },
     "page": {
+      "allYears": "Alle Jahre",
       "amount": "Betrag",
       "batch": "Charge",
-      "currentYearCsv": "Aktuelles Jahr CSV",
-      "currentYearPrint": "Aktuelles Jahr drucken",
+      "csv": "CSV",
       "date": "Datum",
       "fund": "Fonds",
-      "lastYearCsv": "Letztes Jahr CSV",
-      "lastYearPrint": "Druck des letzten Jahres",
+      "giftCount": "{count} Spenden",
+      "giftsInYear": "{count} Spenden in {year}",
+      "give": "Spenden",
+      "giving": "Spenden",
       "method": "Methode",
+      "noGiftsInYear": "Keine Spenden in {year}.",
       "notes": "Notizen",
+      "paymentMethods": "Zahlungsmethoden",
+      "recurring": "Wiederkehrend",
+      "sinceYear": "{amount} seit {year}",
+      "statement": "Bescheinigung",
       "viewBatch": "Stapel anzeigen",
       "willAppear": "Spenden werden hier angezeigt, sobald sie getätigt wurden."
     }
@@ -738,6 +793,7 @@
       "anon": "Anonym",
       "donor": "Spender",
       "editCampaign": "Kampagne bearbeiten",
+      "goalAmount": "Ziel: {amount}",
       "noPledges": "Für diese Kampagne wurden noch keine Zusagen gemacht.",
       "ofGoal": "vom Ziel",
       "pledges": "Zusagen",
@@ -747,35 +803,37 @@
     },
     "campaignsPage": {
       "addCampaign": "Kampagne hinzufügen",
+      "campaignCount": "{count} Kampagnen",
       "campaigns": "Kampagnen",
       "dates": "Daten",
       "export": "Exportieren",
       "fund": "Fonds",
       "given": "Gespendet",
+      "givenAmount": "{amount} gespendet",
       "goal": "Ziel",
       "noCampaigns": "Es wurden noch keine Kampagnen erstellt.",
       "ongoing": "Laufend",
       "pledged": "Zugesagt",
+      "pledgedAmount": "{amount} zugesagt",
       "progress": "Fortschritt",
-      "subtitle": "Zusagekampagnen und Fortschritt zum Spendenziel verfolgen",
-      "totalCampaigns": "Kampagnen gesamt"
+      "subtitle": "Zusagekampagnen und Fortschritt zum Spendenziel verfolgen"
     },
     "donationBatchPage": {
-      "batchDate": "Datum der Sammelbuchung:",
-      "donations": "Spenden",
       "editBatch": "Stapel bearbeiten",
+      "giftCount": "{count} Spenden",
       "subtitle": "Spenden in diesem Stapel verwalten",
-      "title": "Spendenstapel",
-      "totalAmount": "Gesamtbetrag"
+      "title": "Spendenstapel"
     },
     "donationBatchesPage": {
       "addBatch": "Stapel hinzufügen",
+      "allYears": "Alle",
+      "batchCount": "{count} Stapel",
       "batches": "Stapel",
-      "donations": "Spenden",
       "export": "Exportieren",
+      "failedEvents": "Fehlgeschlagene Ereignisse ({count})",
+      "giftCount": "{count} Spenden",
       "stripeImportLink": "Fehlende Stripe-Transaktionen importieren",
-      "subtitle": "Spendenstapel verwalten und Spendenaufzeichnungen verfolgen",
-      "totalAmount": "Gesamtbetrag"
+      "subtitle": "Spendenstapel verwalten und Spendenaufzeichnungen verfolgen"
     },
     "donationEdit": {
       "anon": "Anonym",
@@ -838,8 +896,7 @@
       "total": "Gesamt"
     },
     "failedDonations": {
-      "atRisk": "Gefährdet",
-      "gifts": "Fehlgeschlagen",
+      "lede": "{count} fehlgeschlagen · {amount} gefährdet",
       "message": "Gateway-Meldung",
       "none": "Keine fehlgeschlagenen wiederkehrenden Spenden.",
       "retry": "Erneut versuchen",
@@ -859,10 +916,10 @@
       "visible": "Für Spender sichtbar"
     },
     "fundPage": {
-      "donors": "Spender",
+      "donorCount": "{count} Spender",
       "filter": "Filter",
-      "subtitle": "Spenden und Beiträge zu diesem Fonds verfolgen",
-      "totalAmount": "Gesamtbetrag"
+      "giftCount": "{count} Spenden",
+      "subtitle": "Spenden und Beiträge zu diesem Fonds verfolgen"
     },
     "funds": {
       "fund": "Fonds",
@@ -878,15 +935,14 @@
       "dateEnd": "Enddatum",
       "dateStart": "Startdatum",
       "don": "Spenden",
-      "donFilt": "Spendenfilter",
       "donor": "Spender",
       "export": "Exportieren",
+      "fundCount": "{count} Fonds",
       "noDon": "Keine Spenden für den ausgewählten Datumsbereich",
       "nonDeductible": "Nicht absetzbar",
       "subtitle": "Spendenfonds verwalten und Spendenkategorien verfolgen",
       "taxDeductible": "Steuerlich absetzbar",
       "taxStatus": "Steuerstatus",
-      "totalFunds": "Gesamtfonds",
       "viewBatch": "Stapel anzeigen"
     },
     "givingLink": {
@@ -896,7 +952,13 @@
       "title": "Spendenlink",
       "url": "Link"
     },
+    "logGift": {
+      "amountError": "Geben Sie einen Betrag größer als null ein, z. B. 25.00.",
+      "batchHint": "Wird im Stapel für dieses Datum gespeichert; bei Bedarf wird einer erstellt.",
+      "title": "Spende erfassen"
+    },
     "period": {
+      "label": "Zeitraum",
       "monthly": "Monatlich",
       "quarterly": "Vierteljährlich",
       "weekly": "Wöchentlich"
@@ -1015,6 +1077,9 @@
     "tabs": {
       "dashboard": "Dashboard",
       "lapsedGivers": "Ehemalige Spender"
+    },
+    "view": {
+      "label": "Ansicht"
     }
   },
   "fileUpload": {
@@ -1137,14 +1202,17 @@
       "archForms": "Archivierte Formulare",
       "archive": "Archivieren",
       "archiveFormAria": "Formular {name} archivieren",
+      "archived": "Archiviert",
       "confirmDuplicate": "Dieses Formular duplizieren?",
       "confirmMsg1": "Möchten Sie dieses Formular wirklich archivieren?",
       "confirmMsg2": "Sind Sie sicher, dass Sie dieses Formular wiederherstellen möchten?",
       "duplicate": "Duplizieren",
       "duplicated": "Formular dupliziert",
+      "find": "Formular suchen",
       "forms": "Formulare",
       "noArch": "Keine archivierten Formulare.",
       "noCustomMsg": "Es wurden noch keine benutzerdefinierten Formulare erstellt. Sie werden hier angezeigt, wenn sie hinzugefügt werden.",
+      "noMatches": "Keine Formulare entsprechen Ihrer Suche.",
       "personProfileForm": "Formular für Personenprofil",
       "restore": "Wiederherstellen",
       "restoreFormAria": "Formular {name} wiederherstellen",
@@ -1201,14 +1269,18 @@
       "confirmDuplicate": "Diese Gruppe duplizieren? Mitglieder werden nicht kopiert.",
       "copySuffix": "(Kopie)",
       "discussions": "Diskussionen",
+      "duplicate": "Duplizieren",
       "duplicateTooltip": "Diese Gruppe duplizieren",
+      "email": "E-Mail",
       "emailTooltip": "Diese Gruppe per E-Mail anschreiben",
       "location": "Ort",
       "meetingTime": "Treffzeit",
-      "moreLabels": "Weitere Etiketten",
+      "notify": "Benachrichtigen",
+      "notifyTooltip": "Push-Benachrichtigung senden",
       "parentPickup": "Abholung durch Eltern",
       "printNametag": "Namensschild drucken",
       "team": "Team",
+      "text": "SMS",
       "textTooltip": "Dieser Gruppe SMS senden",
       "trackAttendance": "Anwesenheit verfolgen"
     },
@@ -1362,6 +1434,21 @@
     "groupPage": {
       "addPpl": "Person hinzufügen"
     },
+    "groupRecord": {
+      "allEvents": "Alle Veranstaltungen",
+      "allMembers": "Alle Mitglieder",
+      "allSessions": "Alle Sitzungen",
+      "healthSummary": "{members} Mitglieder · {joined} beigetreten · {left} ausgetreten in 90 Tagen",
+      "lastEvent": "Letzte",
+      "latestSession": "Zuletzt {date}",
+      "nextEvent": "Nächste",
+      "noMembers": "Noch keine Mitglieder.",
+      "noSessions": "Noch keine Sitzungen.",
+      "pendingCount": "{count} ausstehend",
+      "seeHealth": "Entwicklung anzeigen",
+      "sessionCount": "{count} Sitzungen",
+      "sessionCountOne": "1 Sitzung"
+    },
     "groupSessions": {
       "addSesMsg": "Bitte fügen Sie eine neue Sitzung hinzu, um fortzufahren.",
       "allYears": "Alle Jahre",
@@ -1390,11 +1477,13 @@
     },
     "groupsPage": {
       "addGroup": "Gruppe hinzufügen",
+      "allCategories": "Alle",
       "cat": "Kategorie",
+      "clearFilters": "Filter zurücksetzen",
       "confirmRestore": "{name} aus dem Archiv wiederherstellen?",
       "export": "Exportieren",
       "groups": "Gruppen",
-      "labels": "Etiketten",
+      "moreCategories": "Weitere Kategorien",
       "noGroupMsg": "Keine Gruppen gefunden. Bitte erstellen Sie eine Gruppe.",
       "noMatchMsg": "Keine Gruppen entsprechen Ihrer Suche.",
       "pendingRequestSingular": "{count} ausstehende Anfrage",
@@ -1402,6 +1491,7 @@
       "pers": "1 Person",
       "ppl": "Personen",
       "restore": "Wiederherstellen",
+      "resultCount": "{shown} von {total} Gruppen",
       "searchPlaceholder": "Gruppen suchen...",
       "showArchived": "Archivierte anzeigen",
       "spPpl": " Personen",
@@ -1481,6 +1571,7 @@
       "noPhoneNotice": "{count} haben keine Telefonnummer hinterlegt.",
       "noPhoneNoticeSingular": "{count} hat keine Telefonnummer hinterlegt.",
       "noPhoneSkipped": "{count} übersprungen (keine Telefonnummer).",
+      "noProvider": "Richten Sie in den Einstellungen einen SMS-Anbieter ein, bevor Sie SMS senden.",
       "optedOutNotice": "{count} haben sich abgemeldet.",
       "optedOutSkipped": "{count} übersprungen (abgemeldet).",
       "phoneOnFile": "Telefon hinterlegt",
@@ -1492,7 +1583,10 @@
       "sentSummary": "Gesendet an {successCount} von {recipientCount} berechtigten Empfängern.",
       "sentSummarySingular": "Gesendet an {successCount} von {recipientCount} berechtigtem Empfänger.",
       "textGroupTitle": "SMS-Gruppe: {groupName}",
-      "textPersonTitle": "SMS: {personName}"
+      "textPersonTitle": "SMS: {personName}",
+      "textVolunteersTitle": "SMS an Freiwillige",
+      "volunteersSummary": "{eligibleCount} von {totalMembers} Freiwilligen erhalten diese SMS.",
+      "volunteersSummarySingular": "{eligibleCount} von {totalMembers} Freiwilligen erhält diese SMS."
     },
     "serviceTimes": {
       "services": "Dienst(e):"
@@ -1563,7 +1657,7 @@
       "registrations": "Anmeldungen",
       "roomsResources": "Räume & Ressourcen",
       "sermons": "Predigten",
-      "site": "Seite",
+      "streamSettings": "Einstellungen",
       "stripeImport": "Stripe-Import",
       "website": "Webseite"
     }
@@ -1666,7 +1760,8 @@
       "placeholder": "Zeige mir Männer über 30 mit Geburtstagen im Juli",
       "search": "Suchen",
       "searching": "Suche läuft...",
-      "title": "KI-Suche"
+      "title": "KI-Suche",
+      "unavailable": "Die KI-Suche ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut oder verwenden Sie die Suche oben."
     },
     "bulk": {
       "actions": "Aktionen",
@@ -1705,7 +1800,6 @@
       "removeFromGroupPrompt": "{count} ausgewählte Personen aus einer Gruppe entfernen.",
       "removeFromGroupTitle": "Aus Gruppe entfernen",
       "removeSuccess": "{count} Personen aus {group} entfernt.",
-      "selected": "Ausgewählt",
       "setCampus": "Campus festlegen",
       "value": "Wert",
       "workflowSuccess": "{count} Personen zum Workflow hinzugefügt."
@@ -1723,6 +1817,27 @@
       "title": "Demografie",
       "total": "Gesamt",
       "unassigned": "Nicht zugewiesen"
+    },
+    "directory": {
+      "ask": "Fragen",
+      "clear": "Löschen",
+      "countHouseholds": "{households} Haushalte · {people} Personen",
+      "everyone": "Alle",
+      "family": "Familie {name}",
+      "households": "Haushalte",
+      "noMatch": "Niemand entspricht dieser Suche",
+      "noMatchHint": "Versuchen Sie einen anderen Namen oder verwenden Sie „Erweitert“, um nach Details zu filtern.",
+      "noPeople": "Noch keine Personen",
+      "noPeopleHint": "Fügen Sie unten die erste Person hinzu.",
+      "savedLists": "Gespeicherte Listen",
+      "searchLabel": "Haushalt oder Person suchen",
+      "selectAll": "Alle sichtbaren Haushalte auswählen",
+      "selectHousehold": "{name} auswählen",
+      "selectedCount": "{count} ausgewählt",
+      "subtitle": "Durchsuchen Sie Haushalte, öffnen Sie eine Person oder grenzen Sie die Auswahl mit einer Liste oder einer Frage ein.",
+      "table": "Tabelle",
+      "title": "Personen",
+      "viewAs": "Anzeigen als"
     },
     "duplicateDialog": {
       "createAnyway": "Trotzdem erstellen",
@@ -1814,12 +1929,7 @@
       "unknownGroup": "Unbekannte Gruppe"
     },
     "household": {
-      "age": "Alter:",
-      "groups": "Gruppen:",
-      "house": " Haushalt",
-      "lastActivity": "Letzte Aktivität:",
-      "noContactInfo": "Keine Kontaktinformationen",
-      "status": "Status:"
+      "house": " Haushalt"
     },
     "householdEdit": {
       "addMember": "Haushaltsmitglied hinzufügen",
@@ -1840,7 +1950,6 @@
       "confirmDelete": "Die Liste \"{name}\" löschen? Dies kann nicht rückgängig gemacht werden.",
       "createdBy": "von {name}",
       "delete": "Liste löschen",
-      "empty": "Noch keine gespeicherten Listen. Führen Sie eine erweiterte Suche durch und wählen Sie dann 'Als Liste speichern'.",
       "household": "Haushalt einbeziehen",
       "householdAll": "Gesamter Haushalt",
       "householdChildren": "Kinder der Treffer",
@@ -1854,8 +1963,7 @@
       "settings": "Listeneinstellungen",
       "sharing": "Wer kann diese Liste sehen",
       "sharingOrg": "Alle Mitarbeiter",
-      "sharingPrivate": "Nur ich",
-      "title": "Gespeicherte Listen"
+      "sharingPrivate": "Nur ich"
     },
     "merge": {
       "findPerson": "Person zum Zusammenführen suchen",
@@ -1885,7 +1993,6 @@
     },
     "peoplePage": {
       "addPerson": "Person hinzufügen",
-      "allMembers": "Alle Mitglieder",
       "bDay": "Geburtstag",
       "bDayNo": "Geburtstag (ohne Jahr)",
       "deleteOp": "Löschoption",
@@ -1895,15 +2002,12 @@
       "loading": "Personen werden geladen...",
       "middle": "Zweiter Vorname",
       "nameNote": "Notizen zum Namensschild",
-      "noPeopleFound": "Keine Personen gefunden",
       "peopleFound": "{count} Personen gefunden",
       "photo": "Foto",
       "primEmail": "Primäre E-Mail",
       "primPhone": "Primäre Telefonnummer",
       "printDirectory": "Verzeichnis drucken",
       "printResults": "Ergebnisse drucken",
-      "searchPpl": "Personen suchen",
-      "searchResults": "Suchergebnisse",
       "showAll": "Alle Mitglieder anzeigen",
       "showingMembers": "{count} Mitglieder werden angezeigt"
     },
@@ -1923,13 +2027,10 @@
       "group": "Gruppe",
       "membership": "Mitgliedschaft & Gruppen",
       "names": "Namen",
-      "placeholder": "Nach Namen suchen...",
       "service": "Gottesdienst",
       "serviceTime": "Gottesdienstzeit",
       "simp": "Einfach",
-      "simpSearch": "Personensuche",
-      "type": "Typ",
-      "typeToSearch": "Tippen Sie, um sofort zu suchen"
+      "type": "Typ"
     },
     "peopleSearchResults": {
       "deletePersonAria": "{name} löschen",
@@ -1940,11 +2041,8 @@
     },
     "personBanner": {
       "addToWorkflow": "Zum Workflow hinzufügen",
-      "age": "Alter",
       "emailPerson": "Diese Person per E-Mail kontaktieren",
-      "gender": "Geschlecht",
       "hasLogin": "Hat Anmeldung",
-      "maritalStatus": "Familienstand",
       "sendTextMessage": "SMS senden"
     },
     "personEdit": {
@@ -1974,7 +2072,6 @@
     },
     "personNavigation": {
       "attendance": "Anwesenheit",
-      "details": "Details",
       "donations": "Spenden",
       "forms": "Formulare",
       "groups": "Gruppen",
@@ -1986,12 +2083,44 @@
       "notesSuffix": " Notizen",
       "thisPerson": "diese Person"
     },
+    "personRecord": {
+      "allForms": "Alle Formulare",
+      "allNotes": "Alle Notizen",
+      "allYears": "Alle Jahre",
+      "attendanceSummary": "{count} der letzten {weeks} Wochen",
+      "email": "E-Mail",
+      "givenBy": "Gespendet von",
+      "givingYear": "in {year} · {count} Spenden",
+      "hereThisWeek": "Diese Woche anwesend",
+      "household": "Haushalt",
+      "lastAttended": "Zuletzt anwesend am {date}",
+      "lastGift": "Letzte Spende am {date}.",
+      "loadError": "{what} konnte nicht geladen werden.",
+      "noAttendance": "Noch keine Anwesenheit erfasst.",
+      "noDirectory": "Im Verzeichnis ausgeblendet",
+      "noGiftsYear": "Keine Spenden in {year} erfasst.",
+      "noHouseholdGiftsYear": "Keine Haushaltsspenden in {year} erfasst.",
+      "noNotes": "Noch keine Notizen.",
+      "notSubmitted": "Nicht eingereicht",
+      "noteCount": "{count} Notizen",
+      "recentAttendance": "Aktuelle Anwesenheit",
+      "recentGifts": "Spenden in {year}",
+      "service": "Gottesdienst",
+      "showingLatest": "die letzten {count} werden angezeigt",
+      "statement": "Bescheinigung {year}",
+      "submitted": "Eingereicht",
+      "text": "SMS",
+      "weekAttended": "Woche vom {date}: anwesend",
+      "weekNoRecord": "Woche vom {date}: keine Anwesenheit erfasst",
+      "weeklyAttendance": "Wöchentliche Anwesenheit",
+      "where": "Wo",
+      "wholeHousehold": "ganzer Haushalt",
+      "workflow": "Workflow"
+    },
     "personView": {
       "hasLoginLabel": "Hat Anmeldung: {email}",
       "home": "Zuhause",
-      "memShip": "Mitgliedschaft:",
       "mobile": "Mobil",
-      "persDet": "Persönliche Details",
       "work": "Arbeit"
     },
     "pickup": {
@@ -2005,9 +2134,6 @@
       "status": "Status",
       "title": "Abholung",
       "trusted": "Vertrauenswürdig"
-    },
-    "tabs": {
-      "noImplement": "Nicht implementiert"
     },
     "updateHouseHold": {
       "update": "Adresse aktualisieren"
@@ -2029,6 +2155,7 @@
     "firstName": "Vorname",
     "gender": "Geschlecht",
     "grade": "Klasse",
+    "guest": "Gast",
     "inactive": "Inaktiv",
     "lastName": "Nachname",
     "line1": "Zeile 1",
@@ -2045,6 +2172,7 @@
     "person": "Person",
     "phone": "Telefon",
     "prefix": "Präfix",
+    "recentPeople": "Zuletzt angesehene Personen",
     "regularAttendee": "Regelmäßiger Teilnehmer",
     "school": "Schule",
     "single": "Ledig",
@@ -2357,7 +2485,6 @@
       "selectedPrefix": "Ausgewählt:"
     },
     "ministryList": {
-      "getStarted": "Beginnen Sie mit der Gründung Ihres ersten Dienstes",
       "noMinMsg": "Keine Ministerien gefunden. Bitte erstellen Sie ein Ministerium."
     },
     "ministryPage": {
@@ -2376,6 +2503,8 @@
       "planNameAria": "Planname",
       "planReq": "Planname ist erforderlich.",
       "prepared": "Vorläufig eingeplant (Zuweisungen vor Veröffentlichung für Freiwillige ausblenden)",
+      "repeatWeekly": "Wöchentlich für so viele Wochen wiederholen",
+      "repeatWeeklyHelper": "Erstellt einen Plan pro Woche, jeweils kopiert vom vorherigen",
       "servDate": "Dienstdatum",
       "servReq": "Dienstdatum ist erforderlich.",
       "serviceDateAria": "Servicedatum",
@@ -2431,26 +2560,22 @@
     "planList": {
       "applyYearPlan": "Jahresplan anwenden",
       "bulkSchedule": "Massenplanung",
-      "createFirst": "Erstellen Sie den ersten Plan",
-      "createPlan": "Plan erstellen",
       "newPlan": "Neuer Plan",
       "noPlans": "Keine Pläne gefunden",
-      "noUpcomingPlans": "Keine bevorstehenden Pläne",
-      "noUpcomingPlansDescription": "Es gibt keine Pläne für heute oder später. Verwenden Sie oben den Schalter \"Vergangene anzeigen\", um vergangene Pläne anzuzeigen.",
+      "noUpcomingHint": "Ab heute ist nichts geplant. Wählen Sie „Vergangen“, um frühere Pläne zu sehen.",
+      "past": "Vergangen",
       "plans": "Pläne",
       "scheduleLesson": "Lektion planen",
+      "serviceDate": "Gottesdienstdatum",
       "serviceOrder": "Dienstreihenfolge",
-      "showPast": "Vergangene anzeigen"
+      "upcoming": "Bevorstehend"
     },
     "planPage": {
       "assign": "Teamzuweisungen",
-      "assignments": "Zuweisungen",
       "band": "Band",
       "loadingPlan": "Lade Plan...",
       "noteSave": "Notiz gespeichert",
-      "serviceOrder": "Dienstreihenfolge",
-      "servicePlan": "Dienstplan",
-      "subtitle": "Planen Sie Ihren Gottesdienst"
+      "servicePlan": "Dienstplan"
     },
     "planType": {
       "details": "Plantyp-Details"
@@ -2484,15 +2609,13 @@
     "planTypeList": {
       "addPlanType": "Plantyp hinzufügen",
       "createPlanType": "Plantyp erstellen",
-      "createPlanTypes": "Erstellen Sie Plantypen",
       "noPlanTypes": "Keine Plantypen gefunden",
       "planTypes": "Plantypen"
     },
     "planTypePage": {
       "notFound": "Plantyp nicht gefunden",
       "overview": "Übersicht",
-      "planType": "Plantyp",
-      "subtitle": "Plantypeinstellungen konfigurieren"
+      "planType": "Plantyp"
     },
     "planTypeReminders": {
       "channels": "Gesendet von",
@@ -2506,6 +2629,8 @@
       "messageHint": "Optional. Lassen Sie das Feld leer, um den Standardtext für die Erinnerung zu verwenden.",
       "save": "Erinnerungen speichern",
       "saved": "Gespeichert",
+      "text": "SMS",
+      "textHint": "SMS werden über den SMS-Anbieter Ihrer Gemeinde nur an Personen gesendet, die SMS-Erinnerungen aktiviert haben. Jede SMS kann Ihrer Gemeinde Kosten verursachen.",
       "timeOfDay": "Uhrzeit des Tages",
       "title": "Erinnerungen",
       "when": "Wann sollen die Erinnerungen versendet werden?"
@@ -2545,7 +2670,6 @@
     "plansPage": {
       "addMinistry": "Ministerium hinzufügen",
       "editMinistry": "Ministerium bearbeiten",
-      "selMin": "Wählen Sie ein Ministerium",
       "subtitle": "Verwalten Sie Ministerien und Servicepläne"
     },
     "positionEdit": {
@@ -2614,6 +2738,7 @@
       "viewingAs": "Anzeigen als"
     },
     "servingOverviewPage": {
+      "allPositions": "Alle Positionen",
       "autoSchedule": "Automatische Planung",
       "autoScheduleConfirm": "Freiwillige automatisch in jede offene Position in diesem Zeitraum einplanen?",
       "autoScheduleResult": "{filled} von {total} Plänen automatisch geplant",
@@ -2634,11 +2759,17 @@
       "removeConfirm": "{name} aus dieser Zuweisung entfernen?",
       "startDate": "Startdatum",
       "subtitle": "Positionen nach Datum mit zugewiesenen Freiwilligen",
+      "textAll": "SMS an Freiwillige",
       "title": "Dienst-Übersicht"
     },
     "servingPage": {
-      "showAll": "Alle anzeigen",
-      "showAllHint": "Ihre Dienste sind ausgeblendet, da Sie kein Mitglied sind. Aktivieren Sie oben \"Alle anzeigen\", um sie zu sehen."
+      "actions": "Aktionen",
+      "all": "Alle",
+      "allHint": "Ihre Dienste sind ausgeblendet, weil Sie kein Mitglied sind. Wählen Sie oben „Alle“, um sie zu sehen.",
+      "findMinistry": "Dienst suchen",
+      "mine": "Meine",
+      "ministries": "Dienste",
+      "whichMinistries": "Welche Dienste"
     },
     "signageFeed": {
       "button": "Digitale Anzeige",
@@ -2659,8 +2790,6 @@
     },
     "teamList": {
       "createTeam": "Team erstellen",
-      "createTeams": "Erstellen Sie Teams",
-      "manage": "Verwalten",
       "members": "Mitglieder",
       "newTeam": "Neues Team",
       "noTeam": "Keine Teams gefunden. Bitte erstellen Sie ein Team.",
@@ -2710,6 +2839,7 @@
       "typeService": "Gottesdienst"
     },
     "timeList": {
+      "addTime": "Zeit hinzufügen",
       "noTime": "Es wurden noch keine Zeiten hinzugefügt",
       "sunServ": "Sonntagsdienst",
       "times": "Zeiten"
@@ -2736,6 +2866,8 @@
     },
     "linkedAccounts": {
       "link": "Link",
+      "linked": "Verknüpft",
+      "notLinked": "Nicht verknüpft",
       "signUp": "Melden Sie sich an",
       "unlink": "Verknüpfung aufheben"
     },
@@ -2776,9 +2908,7 @@
       "saveChanges": "Änderungen speichern",
       "saveError": "Änderungen konnten nicht gespeichert werden",
       "sendRequest": "Sende Anfrage",
-      "subtitle": "Verwalten Sie Ihr Profil und Ihre Präferenzen",
       "themePreferences": "Designeinstellungen",
-      "themePreferencesHelper": "Ihre Designeinstellung wird automatisch gespeichert und auf diesem Gerät gespeichert.",
       "togglePasswordVisibility": "Passwort-Sichtbarkeit umschalten",
       "valEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
     }
@@ -2835,6 +2965,7 @@
       "csvStatus": "Status",
       "date": "Datum",
       "deleteConfirm": "Diese Anmeldung dauerhaft löschen?",
+      "editSettings": "Einstellungen bearbeiten",
       "eventFull": "Diese Veranstaltung hat ihre Kapazität erreicht.",
       "eventNotFound": "Veranstaltung nicht gefunden",
       "eventRegistrations": "Veranstaltungsanmeldungen",
@@ -2876,9 +3007,11 @@
       "noEventsHint": "Aktivieren Sie die Anmeldung für eine Veranstaltung über die Bearbeitungseinstellungen.",
       "registered": "angemeldet",
       "registrations": "Anmeldungen",
+      "search": "Veranstaltungen suchen",
       "subtitle": "Veranstaltungsanmeldeeinstellungen verwalten und Anmelder anzeigen",
       "tags": "Tags",
-      "title": "Veranstaltungsanmeldungen"
+      "title": "Veranstaltungsanmeldungen",
+      "turnOnRegistration": "Anmeldung aktivieren"
     }
   },
   "reporting": {
@@ -3008,14 +3141,17 @@
         "weekly": "Wöchentlich",
         "yes": "Ja"
       },
-      "services": "Gottesdienste",
       "servicesTab": {
         "addService": "Dienst hinzufügen",
         "defaultLabel": "Sonntagmorgen",
+        "duration": "Dauer",
+        "none": "Noch keine Gottesdienste. Fügen Sie einen hinzu, um Ihren Livestream zu planen.",
+        "provider": "Anbieter",
+        "service": "Gottesdienst",
+        "time": "Zeit",
         "title": "Gottesdienste",
         "weekly": "Wöchentlich"
       },
-      "settings": "Einstellungen",
       "sidebarTabs": {
         "add": "Hinzufügen",
         "title": "Inhalts-Tabs"
@@ -3063,6 +3199,7 @@
     "notScheduled": "Nicht geplant",
     "playlist": "Playlist",
     "playlists": {
+      "addPlaylist": "Playlist hinzufügen",
       "createFirstPlaylist": "Erste Playlist erstellen",
       "noPlaylistsFound": "Keine Playlists gefunden",
       "noPlaylistsMatch": "Keine Playlists entsprechen Ihrer Suche",
@@ -3097,6 +3234,7 @@
       "title": "Podcast-Feed"
     },
     "publishDate": "Veröffentlichungsdatum",
+    "resultCount": "{shown} von {total} Predigten",
     "searchPlaceholder": "Predigten nach Titel oder Playlist suchen...",
     "sermon": "Predigt",
     "sermonEdit": {
@@ -3153,11 +3291,15 @@
       "act": "Aktiv",
       "arch": "Archiviert",
       "church": "Gemeinde",
+      "churchCount": "{count} Gemeinden",
       "churchName": "Gemeindename",
       "churches": "Gemeinden",
       "churchesSubtitle": "Alle Gemeinden suchen und verwalten",
       "commons": "Commons",
       "commonsSubtitle": "Von der Community eingereichte Inhalte und Berichte moderieren",
+      "groupDirectory": "Verzeichnis",
+      "groupOperations": "Betrieb",
+      "groupSystem": "System",
       "impersonateSubtitle": "Als anderer Benutzer für den Support anmelden",
       "impersonateUser": "Benutzer imitieren",
       "jobs": "Hintergrundaufgaben",
@@ -3177,6 +3319,7 @@
       "servAdmin": "Server-Admin",
       "serverHealth": "Serverstatus",
       "serverHealthSubtitle": "Zustand der Backend-Dienste prüfen",
+      "status": "Status",
       "subtitle": "Serverweite Einstellungen und Gemeinden verwalten",
       "translationLookups": "Übersetzungssuchen",
       "translationSubtitle": "Übersetzte Locale-Texte nachschlagen",
@@ -3466,6 +3609,19 @@
       "title": "Benutzersuche"
     }
   },
+  "serving": {
+    "keys": {
+      "addKey": "Tonart hinzufügen"
+    },
+    "planPage": {
+      "addMenu": "Weitere Möglichkeiten zum Hinzufügen",
+      "hideNotes": "Notizen ausblenden",
+      "hideTimes": "Zeiten ausblenden"
+    },
+    "songPage": {
+      "deleteSong": "Lied löschen"
+    }
+  },
   "settings": {
     "apiKeyEdit": {
       "close": "Schließen",
@@ -3743,7 +3899,6 @@
     },
     "emailTemplatesPage": {
       "category": "Kategorie",
-      "createTemplate": "Vorlage erstellen",
       "deleteConfirm": "Vorlage \"{name}\" löschen?",
       "emptyDescription": "Erstellen Sie eine Vorlage, um mit Massen-E-Mails zu beginnen.",
       "emptyTitle": "Noch keine E-Mail-Vorlagen",
@@ -3874,8 +4029,7 @@
     },
     "rolePage": {
       "noEditMsg": "Berechtigungen können für die Rolle des Domain-Admins nicht bearbeitet werden. Domain-Admins haben vollen Zugriff.",
-      "permEdit": "Berechtigungen bearbeiten",
-      "roleEdit": "Rolle bearbeiten:"
+      "permEdit": "Berechtigungen bearbeiten"
     },
     "rolePermissions": {
       "filter": "Berechtigungen filtern",
@@ -3886,6 +4040,7 @@
       "accDesc": "Hat Zugriff auf die Ansicht und Verwaltung von Spenden.",
       "addCustomRoleAria": "Benutzerdefinierte Rolle hinzufügen",
       "addPredefinedRoleAria": "Rolle {name} hinzufügen",
+      "addRole": "Rolle hinzufügen",
       "canEdit": "Kann die meisten Daten bearbeiten in ",
       "churchDesc": " einschließlich Personen, Gruppen, Anwesenheit und Formulare.",
       "churchStaff": "Kirchenpersonal",
@@ -3959,6 +4114,8 @@
       "clearstreamHelper": "Erstellen Sie einen API-Schlüssel in Ihrem",
       "clearstreamHelperLink": "Clearstream-Kontoeinstellungen",
       "clearstreamHelperSuffix": "unter API-Schlüssel.",
+      "inboundUrl": "Webhook-URL für eingehende Nachrichten (STOP)",
+      "inboundUrlHelper": "Fügen Sie dies in den Webhook für eingehende Nachrichten Ihres Anbieters ein, damit Personen, die mit STOP antworten, auch hier von SMS abgemeldet werden.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Ihr MinistryStuff-SMS-Abonnement ist aktiv, mit noch {} Guthaben in diesem Zeitraum.",
       "ministryStuffHelper": "Kein API-Schlüssel erforderlich. SMS-Guthaben stammen aus Ihrem MinistryStuff-Abonnement, das automatisch mit dieser Gemeinde verknüpft ist. Verwalten Sie Ihren Plan unter",
@@ -4193,8 +4350,8 @@
     "blocksPage": {
       "actions": "Aktionen",
       "addBlock": "Block hinzufügen",
+      "blockCount": "{count} Blöcke",
       "blocks": "Blöcke",
-      "createFirstBlock": "Ersten Block erstellen",
       "elements": "Element(e)",
       "getStarted": "Beginnen Sie mit dem Erstellen Ihres ersten wiederverwendbaren Blocks",
       "noBlocksFound": "Keine Blöcke gefunden",
@@ -4202,7 +4359,6 @@
       "reusableBlocks": "Wiederverwendbare Blöcke",
       "sections": "Abschnitt(e)",
       "subtitle": "Erstellen und verwalten Sie wiederverwendbare Inhaltsblöcke für Ihre Website",
-      "totalBlocks": "Blöcke gesamt",
       "type": "Typ"
     },
     "blog": {
@@ -4213,6 +4369,7 @@
       "draft": "Entwurf",
       "navHint": "Besucher können Ihre Beiträge unter /blog lesen. Fügen Sie auf der Seite „Seiten“ einen Navigationslink hinzu, damit sie sie finden:",
       "noPosts": "Keine Beiträge",
+      "postCount": "{count} Beiträge",
       "posts": "Beiträge",
       "published": "Veröffentlicht",
       "scheduled": "Geplant",
@@ -4513,6 +4670,7 @@
       "imageDescribingTopic": "Bild, das das Thema beschreibt",
       "info": "Info",
       "javascriptExcludeTag": "JavaScript (ohne Script-Tag)",
+      "javascriptUrlWarning": "Dies ist eine Webadresse, kein JavaScript. Um ein Bild anzuzeigen, verwenden Sie ein Bild-Element oder fügen Sie <img src=\"...\"> in HTML-Inhalt ein.",
       "label": "Beschriftung",
       "linkUrlOptional": "Link-URL (optional)",
       "loadingEditor": "Editor wird geladen...",
@@ -4767,20 +4925,15 @@
       "pageSettings": "Seiteneinstellungen",
       "previewOf": "Vorschau von {title}",
       "showingPublished": "Dies ist die veröffentlichte Version der Seite. Nicht veröffentlichte Bearbeitungen werden nicht angezeigt.",
-      "subtitle": "Vorschau: {title}",
-      "title": "Website-Vorschau"
+      "subtitle": "Vorschau: {title}"
     },
     "pages": {
       "convert": "Konvertieren"
     },
     "pagesPage": {
       "actions": "Aktionen",
-      "addFirstPage": "Erste Seite hinzufügen",
       "addPage": "Seite hinzufügen",
-      "autoGenerated": "Automatisch generiert",
       "confirmConvert": "Möchten Sie diese automatisch generierte Seite in eine benutzerdefinierte Seite umwandeln?",
-      "customPages": "Benutzerdefinierte Seiten",
-      "description": "Unten finden Sie eine Liste von benutzerdefinierten und automatisch generierten Seiten. Sie können neue Seiten hinzufügen, bestehende bearbeiten oder automatisch generierte Seiten in benutzerdefinierte Seiten konvertieren.",
       "desktopOnly": "Der Seiteneditor ist nur im Desktop-Modus verfügbar",
       "generated": "Generiert",
       "getStarted": "Beginnen Sie mit dem Hinzufügen Ihrer ersten Seite.",
@@ -4789,6 +4942,7 @@
       "hidePublicSiteWarning": "Ihre öffentliche Website ist deaktiviert. Besucher werden zum Anmeldebildschirm weitergeleitet und Suchmaschinen werden angewiesen, die Website nicht zu indexieren.",
       "mainNavigation": "Hauptnavigation",
       "noPagesFound": "Keine Seiten gefunden",
+      "pageCount": "{count} Seiten",
       "pages": "Seiten",
       "path": "Pfad",
       "showLogin": "Login anzeigen",
@@ -4796,7 +4950,6 @@
       "startFromTemplate": "Mit einer Vorlage starten",
       "subtitle": "Verwalten Sie Ihre Webseiten, Inhalte und Navigation",
       "toggleLoginVisibility": "Sichtbarkeit des Login-Buttons umschalten",
-      "totalPages": "Seiten gesamt",
       "viewLivePage": "Seite vorschauen",
       "websitePages": "Webseiten"
     },
@@ -5351,7 +5504,6 @@
       "signature": "Tonart"
     },
     "keys": {
-      "add": "Hinzufügen",
       "addExternalLink": "Externen Link hinzufügen",
       "addFiles": "Dateien hinzufügen",
       "audioTracks": "Audiospuren",
@@ -5367,7 +5519,6 @@
     },
     "library": {
       "empty": {
-        "action": "Erstes Lied hinzufügen",
         "message": "Beginnen Sie, indem Sie Ihr erstes Lied zur Bibliothek hinzufügen.",
         "title": "Keine Lieder gefunden"
       },
@@ -5425,8 +5576,7 @@
       "addArrangement": "Arrangement hinzufügen",
       "loading": "Laden...",
       "noArrangementDescription": "Wählen Sie ein Arrangement aus der Seitenleiste, um zu beginnen.",
-      "noArrangementSelected": "Kein Arrangement ausgewählt",
-      "subtitle": "Verwalten Sie Songdetails und Arrangements"
+      "noArrangementSelected": "Kein Arrangement ausgewählt"
     },
     "songSearchDialog": {
       "closeDialogAria": "Dialog schließen",
@@ -5438,7 +5588,7 @@
       "deleteSelected": "Ausgewählte löschen",
       "deleteSelectedConfirm": "Die ausgewählten Titel löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
       "deselectAll": "Alle abwählen",
-      "search": "Suchen",
+      "resultCount": "{count} Lieder",
       "searchSongs": "Lieder suchen",
       "selectAll": "Alles auswählen",
       "songs": "Lieder",
@@ -5627,8 +5777,11 @@
       "message": "Nachricht",
       "messageHint": "Optional. Leer lassen, um den Standardtext für Erinnerungen zu verwenden.",
       "noDueDate": "Diese Aufgabe hat kein Fälligkeitsdatum. Es werden keine Erinnerungen gesendet, bis eines festgelegt ist.",
+      "none": "Keine Erinnerungen eingerichtet.",
       "save": "Erinnerungen speichern",
       "saved": "Gespeichert",
+      "text": "SMS",
+      "textHint": "SMS werden über den SMS-Anbieter Ihrer Gemeinde nur an Personen gesendet, die SMS-Erinnerungen aktiviert haben. Jede SMS kann Ihrer Gemeinde Kosten verursachen.",
       "timeOfDay": "Uhrzeit",
       "title": "Erinnerungen",
       "when": "Wann sollen Erinnerungen gesendet werden?"
@@ -5657,8 +5810,9 @@
       "noTasks": "Keine Aufgaben gefunden",
       "notSpecified": "Nicht angegeben",
       "reqMe": "Von mir angefordert",
-      "showClosedTasksAria": "Geschlossene Aufgaben anzeigen",
-      "showOpenTasksAria": "Offene Aufgaben anzeigen",
+      "status": "Aufgabenstatus",
+      "statusColumn": "Status",
+      "task": "Aufgabe",
       "tasks": "Aufgaben",
       "unassigned": "Nicht zugewiesen"
     },
@@ -5669,6 +5823,7 @@
       "associate": "Assoziieren",
       "associated": "Zugeordnet",
       "by": "von",
+      "closeTask": "Aufgabe schließen",
       "closed": "Geschlossen",
       "created": "Erstellt",
       "editAssigned": "Zugewiesen bearbeiten",
@@ -5676,11 +5831,8 @@
       "notSpec": "Nicht angegeben",
       "open": "Offen",
       "opened": "Geöffnet",
+      "reopenTask": "Aufgabe wieder öffnen",
       "unassigned": "Nicht zugewiesen"
-    },
-    "tasksPage": {
-      "showClosed": "Geschlossene anzeigen",
-      "showOpen": "Offene anzeigen"
     },
     "workflowActions": {
       "add": "Aktion hinzufügen",
@@ -5720,10 +5872,12 @@
       "addCard": "Karte hinzufügen",
       "addStep": "Schritt hinzufügen",
       "boardTab": "Board",
+      "cardsCount": "Karten",
       "clearSelection": "Auswahl aufheben",
       "moveTo": "Verschieben nach…",
       "selectedCount": "{count} ausgewählt",
       "step": "Schritt",
+      "stepsCount": "Schritte",
       "subtitle": "Karten zwischen Schritten ziehen",
       "unassigned": "Nicht zugewiesen"
     },
@@ -5731,9 +5885,11 @@
       "assign": "Zuweisen",
       "assignedTo": "Zugewiesen an",
       "complete": "Abschließen",
+      "email": "E-Mail",
       "history": "Aktivität",
       "outcome": "Ergebnis",
       "overdue": "Überfällig",
+      "phone": "Telefon",
       "pin": "Zuweisung anheften",
       "pinnedNote": "Angeheftet — behält diesen Besitzer schrittübergreifend",
       "sendBack": "Zurücksenden",
@@ -5742,7 +5898,8 @@
       "snooze1Day": "1 Tag",
       "snooze1Week": "1 Woche",
       "snooze3Days": "3 Tage",
-      "snoozed": "Erinnert"
+      "snoozed": "Erinnert",
+      "viewProfile": "Profil anzeigen"
     },
     "workflowCategories": {
       "addCategory": "Kategorie hinzufügen",
@@ -5794,9 +5951,13 @@
       "addWorkflow": "Workflow hinzufügen",
       "added": "Zum Workflow hinzugefügt.",
       "blankWorkflow": "Leerer Workflow",
+      "categories": "Workflow-Kategorien",
+      "category": "Kategorie",
       "noWorkflows": "Noch keine Workflows. Fügen Sie einen hinzu, um zu beginnen.",
+      "status": "Status",
       "subtitle": "Personen durch eine Reihe von Schritten führen",
-      "title": "Workflows"
+      "title": "Workflows",
+      "workflowCount": "{count} Workflows"
     }
   }
 }
