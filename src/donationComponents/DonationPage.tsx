@@ -102,7 +102,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     if (UniqueIdHelper.isMissing(props.personId)) return;
 
     try {
-      const [donationsData, gatewaysData] = await Promise.all([ApiHelper.get("/donations?personId=" + props.personId, "GivingApi"), ApiHelper.get("/gateways", "GivingApi")]);
+      const [donationsData, gatewaysData] = await Promise.all([ApiHelper.get("/donations?personId=" + props.personId + "&includeNonDeductible=1", "GivingApi"), ApiHelper.get("/gateways", "GivingApi")]);
 
       setDonations(donationsData);
       await loadPersonData(); //loaded before gateway data to fix issue with person data not loading when there's no gateway data

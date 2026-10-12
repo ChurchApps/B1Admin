@@ -176,7 +176,7 @@ export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, household
     const list = (householdMembers || []).filter((m) => m.id);
     return list.some((m) => m.id === personId) ? list : [{ id: personId } as PersonInterface];
   }, [householdMembers, personId]);
-  const results = useQueries({ queries: donors.map((m) => ({ queryKey: ["/donations?personId=" + m.id, "GivingApi"], enabled: !UniqueIdHelper.isMissing(m.id) })) });
+  const results = useQueries({ queries: donors.map((m) => ({ queryKey: ["/donations?personId=" + m.id + "&includeNonDeductible=1", "GivingApi"], enabled: !UniqueIdHelper.isMissing(m.id) })) });
   const isLoading = results.some((r) => r.isLoading);
   const isError = results.some((r) => r.isError);
   const year = new Date().getFullYear();
