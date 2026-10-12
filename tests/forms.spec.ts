@@ -106,7 +106,7 @@ test.describe("Printing forms", () => {
     await expect(dialog).toHaveCount(0, { timeout: 10000 });
   });
 
-  // ChurchAppsSupport#1230: the church's Light Background Logo heads the paper copy in place of its name.
+  // ChurchAppsSupport#1230: the church's Light Background Logo heads the paper copy, above its name.
   test("a blank form prints the church logo when the church has one", async ({ page }) => {
     await mockChurchLogo(page);
     await openFormsPage(page);
@@ -120,7 +120,7 @@ test.describe("Printing forms", () => {
     await expect(logo).toBeVisible({ timeout: 10000 });
     await expect(logo).toHaveAttribute("alt", "Grace Community Church");
     await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
-    await expect(dialog.getByTestId("print-church-name")).toHaveCount(0);
+    await expect(dialog.getByTestId("print-church-name")).toHaveText("Grace Community Church");
   });
 
   test("a person's submitted form prints with a title, name and submission date", async ({ page }) => {

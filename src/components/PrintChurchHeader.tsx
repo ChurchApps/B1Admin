@@ -35,7 +35,7 @@ interface Props {
   // Pass when the page already has the logo; otherwise it is looked up for the current church.
   logoUrl?: string;
   style?: React.CSSProperties;
-  // What prints when the church has no logo (the church name as each page styles it).
+  // The church name as each page styles it; printed under the logo when there is one.
   children?: React.ReactNode;
 }
 
@@ -45,11 +45,14 @@ export const PrintChurchHeader: React.FC<Props> = ({ churchName, logoUrl, style,
   const logo = logoUrl ?? fetched.logoUrl;
   if (!logo) return <>{children}</>;
   return (
-    <img
-      src={logo}
-      alt={churchName}
-      data-testid="print-church-logo"
-      style={{ display: "block", maxHeight: 60, maxWidth: 240, objectFit: "contain", ...style }}
-    />
+    <>
+      <img
+        src={logo}
+        alt={churchName}
+        data-testid="print-church-logo"
+        style={{ display: "block", maxHeight: 60, maxWidth: 240, objectFit: "contain", ...style }}
+      />
+      {children}
+    </>
   );
 };
