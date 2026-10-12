@@ -98,6 +98,21 @@ test.describe.serial("Serving Management - Event Triggers", () => {
     await expect(page.getByText("Zacchaeus Schedule")).toHaveCount(0, { timeout: 10000 });
   });
 
+  // Add condition on a saved scheduled rule used to crash with "Box is not defined".
+  test("add condition on a saved scheduled rule opens the condition editor", async () => {
+    await page.goto("/serving/tasks/workflows/WFL00000004");
+    const board = page.locator('[data-testid="workflow-board"]');
+    await recoverFromViteError(page, board);
+    await board.waitFor({ state: "visible", timeout: 15000 });
+    await page.locator('[data-testid="board-triggers-tab"]').click();
+
+    await page.locator('[data-testid="event-trigger-row-WKT00000004"]').click();
+    await page.locator('[data-testid="add-sched-condition-button"]').click();
+
+    await expect(page.locator('[data-testid="condition-type-select"]')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Box is not defined")).toHaveCount(0);
+  });
+
   // The feature: back-end mutation from ANY front-end fires the trigger.
   test("creating a Visitor person via the API drops a card on the workflow", async () => {
     const ctx = await request.newContext();
