@@ -2561,6 +2561,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "No past plans yet.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Nothing is scheduled from today on. Choose \"Past\" to see earlier plans.",
       "past": "Past",
