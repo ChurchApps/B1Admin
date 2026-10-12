@@ -38,7 +38,7 @@ test.describe.serial("Texting STOP replies", () => {
   test("texting settings shows the inbound STOP webhook URL", async () => {
     await page.locator('[data-testid="settings-section-texting"]').click();
     await expect(page.locator('[data-testid="settings-texting"]')).toBeVisible({ timeout: 15000 });
-    await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+    await page.getByTestId("settings-texting").getByTestId("small-button-edit").click();
     const field = page.getByTestId("texting-inbound-url").locator("input");
     await expect(field).toBeVisible({ timeout: 10000 });
     const url = await field.inputValue();

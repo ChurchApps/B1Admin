@@ -9,6 +9,12 @@ import { ContentPicker } from "../../components/ContentPicker";
 import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
 import { canEditCard } from "../permissions";
 
+// MUI Link's `component` path does not land data-testid on the anchor, so the profile href check cannot see it.
+const ProfileLink = React.forwardRef<HTMLAnchorElement, React.ComponentProps<typeof RouterLink>>((props, ref) => (
+  <RouterLink ref={ref} {...props} data-testid="card-contact-profile" />
+));
+ProfileLink.displayName = "ProfileLink";
+
 interface Props {
   card: TaskInterface;
   steps: WorkflowStepInterface[];
@@ -112,7 +118,7 @@ export const WorkflowCardDrawer = (props: Props) => {
               </Stack>
             )}
             {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
-              <Link component={RouterLink} to={"/people/" + card.associatedWithId} variant="body2" data-testid="card-contact-profile">{Locale.label("tasks.workflowCard.viewProfile")}</Link>
+              <Link component={ProfileLink} to={"/people/" + card.associatedWithId} variant="body2">{Locale.label("tasks.workflowCard.viewProfile")}</Link>
             )}
           </Stack>
         )}

@@ -462,7 +462,8 @@ test.describe.serial("Group Management", () => {
     });
 
     test("prints a contact roster from the members tab", async () => {
-      await openSeedGroup(page, SESSION_GROUP);
+      // The group record opens on the summary plate. The print button lives on the members tab.
+      await openSeedMembers(page, SESSION_GROUP);
       await page.locator('[data-testid="print-roster-button"]').click();
       await expect(page.getByTestId("print-attendance-sheet")).toBeVisible({ timeout: 10000 });
       await expect(page.getByTestId("print-contact-roster")).toBeVisible();

@@ -19,16 +19,20 @@ const providerNames: Record<string, string> = {
   custom: "Custom"
 };
 
-const getNextSunday = () => {
-  const result = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-  while (result.getDay() !== 0) result.setDate(result.getDate() + 1);
-  return result;
+// 9:00 on the coming Sunday. Today is Sunday once 9:00 has passed, so "this Sunday" would already
+// be in the past and the API drops non-recurring services older than six hours on the next load.
+const getNextSundayAtNine = () => {
+  const now = new Date();
+  const nine = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
+  const add = (7 - nine.getDay()) % 7;
+  nine.setDate(nine.getDate() + add);
+  if (nine.getTime() <= now.getTime()) nine.setDate(nine.getDate() + 7);
+  return nine;
 };
 
 // A new service defaulting to 9am next Sunday in the browser's timezone.
 export const newStreamingService = (): StreamingServiceInterface => {
-  const serviceTime = getNextSunday();
-  serviceTime.setTime(serviceTime.getTime() + (9 * 60 * 60 * 1000));
+  const serviceTime = getNextSundayAtNine();
   return { churchId: UserHelper.currentUserChurch.church.id, serviceTime, chatBefore: 600, chatAfter: 600, duration: 3600, earlyStart: 600, provider: "youtube_live", providerKey: "", recurring: false, timezoneOffset: new Date().getTimezoneOffset(), videoUrl: "", label: Locale.label("sermons.liveStreamTimes.servicesTab.defaultLabel"), sermonId: "latest" };
 };
 

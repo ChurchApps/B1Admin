@@ -476,6 +476,7 @@ test.describe("Copy plan from previous plan", () => {
     const newPlan = await (await copyPost).json();
 
     await page.goto("/serving/plans/" + newPlan.id);
+    await page.getByTestId("plan-notes-toggle").click();
     await expect(page.getByTestId("plan-notes-input").locator("textarea").first()).toHaveValue("Upcoming worship services including special seasonal service", { timeout: 15000 });
   });
 });

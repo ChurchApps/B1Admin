@@ -40,6 +40,8 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
   const [slot, setSlot] = React.useState<HTMLElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const resultsRef = React.useRef<HTMLDivElement>(null);
+  // Mouse hover also moves `active`. Scrolling on that yanks the row out from under a click.
+  const fromKeyboard = React.useRef(false);
 
   const catalog = useQuery<{ items: PaletteItem[] }>({ queryKey: ["/palette", "MembershipApi"], enabled: open, staleTime: 30_000 });
   const quickActions = useQuickActions(open);
@@ -85,6 +87,7 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
   }, [current, items, location.pathname]);
   // One section open at a time; with the others collapsed the section's row index equals its index in items.
   const toggle = (u: string) => {
+    fromKeyboard.current = true;
     setExpanded((e) => (e.includes(u) ? [] : [u]));
     setActive(items.findIndex((i) => i.t === "nav" && i.u === u));
   };
@@ -121,9 +124,17 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
     return rows;
   }, [items, query, expanded]);
 
-  // Bring a newly expanded section's pages into view; the active-row effect below then keeps the highlighted row visible.
-  React.useEffect(() => { Array.from(resultsRef.current?.querySelectorAll(".om-child") || []).pop()?.scrollIntoView({ block: "nearest" }); }, [expanded]);
-  React.useEffect(() => { resultsRef.current?.querySelector(".om-hit.active")?.scrollIntoView({ block: "nearest" }); }, [active, shown]);
+  const scrollActiveIntoView = React.useCallback(() => {
+    resultsRef.current?.querySelector(".om-hit.active")?.scrollIntoView({ block: "nearest" });
+  }, []);
+  // Once on open, so the current section is on screen. Not on every result refresh — that
+  // scrolled the list while a click was in flight and the row detached.
+  React.useEffect(() => { if (open) scrollActiveIntoView(); }, [open, scrollActiveIntoView]);
+  React.useEffect(() => {
+    if (!fromKeyboard.current) return;
+    fromKeyboard.current = false;
+    scrollActiveIntoView();
+  }, [active, scrollActiveIntoView]);
 
   const run = React.useCallback((item: PaletteItem) => {
     if (item.k && !query) { toggle(item.u); return; }
@@ -144,9 +155,11 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
   const onInputKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
+      fromKeyboard.current = true;
       setActive((i) => Math.min(shown.length - 1, i + 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
+      fromKeyboard.current = true;
       setActive((i) => Math.max(0, i - 1));
     } else if (e.key === "Enter" && shown[active]) {
       e.preventDefault();
