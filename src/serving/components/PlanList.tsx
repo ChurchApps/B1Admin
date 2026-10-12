@@ -55,15 +55,17 @@ export const PlanList = memo((props: Props) => {
   }, [plansQuery.data, props.ministry.id, props.planTypeId]);
 
   const plans = React.useMemo(() => {
-    if (showPast) return allPlans;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const upcoming = allPlans.filter(p => {
+    const isUpcoming = (p: PlanInterface) => {
       if (!p.serviceDate) return true;
       const d = DateHelper.toDate(p.serviceDate);
       d.setHours(0, 0, 0, 0);
       return d >= today;
-    });
+    };
+    // Past keeps the API order (newest first).
+    if (showPast) return allPlans.filter(p => !isUpcoming(p));
+    const upcoming = allPlans.filter(isUpcoming);
     // The API returns newest first; upcoming weeks read soonest first, undated plans last.
     const time = (p: PlanInterface) => p.serviceDate ? DateHelper.toDate(p.serviceDate).getTime() : Number.MAX_SAFE_INTEGER;
     return [...upcoming].sort((a, b) => time(a) - time(b));
@@ -172,9 +174,7 @@ export const PlanList = memo((props: Props) => {
     </Box>
   );
 
-  const hasPastPlans = !showPast && plans.length === 0 && allPlans.length > 0;
-
-  if (plans.length === 0 && !hasPastPlans) {
+  if (allPlans.length === 0) {
     return (
       <Surface>
         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" useFlexGap flexWrap="wrap" sx={{ mb: 1 }}>
@@ -211,9 +211,11 @@ export const PlanList = memo((props: Props) => {
         sx={{ mb: 2 }}
       />
 
-      {hasPastPlans ? (
+      {plans.length === 0 ? (
         <Typography color="text.secondary">
-          {Locale.label("plans.planList.noUpcomingHint", "Nothing is scheduled from today on. Choose \"Past\" to see earlier plans.")}
+          {showPast
+            ? Locale.label("plans.planList.noPastPlans", "No past plans yet.")
+            : Locale.label("plans.planList.noUpcomingHint", "Nothing is scheduled from today on. Choose \"Past\" to see earlier plans.")}
         </Typography>
       ) : (
         <Box sx={tableScrollSx} role="region" aria-label={Locale.label("plans.planList.plans")} tabIndex={0}>
