@@ -294,7 +294,7 @@ export const PersonPage = () => {
           onClose={() => setShowLogGift(false)}
           onSaved={() => {
             setShowLogGift(false);
-            queryClient.invalidateQueries({ queryKey: ["/donations?personId=" + person.id, "GivingApi"] });
+            queryClient.invalidateQueries({ queryKey: ["/donations?personId=" + person.id + "&includeNonDeductible=1", "GivingApi"] });
             setGiftVersion((v) => v + 1);
             setView("giving");
           }}

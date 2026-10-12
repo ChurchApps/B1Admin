@@ -62,7 +62,7 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
 
   const fetchVisits = (personId: string): Promise<VisitInterface[]> => ApiHelper.get(`/visits?personId=${personId}`, "AttendanceApi");
 
-  const fetchDonations = (personId: string): Promise<DonationInterface[]> => ApiHelper.get(`/donations?personId=${personId}`, "GivingApi");
+  const fetchDonations = (personId: string): Promise<DonationInterface[]> => ApiHelper.get(`/donations?personId=${personId}&includeNonDeductible=1`, "GivingApi");
 
   const fetchFormSubmissions = (personId: string): Promise<FormSubmissionInterface[]> => ApiHelper.get(`/formsubmissions?personId=${personId}`, "MembershipApi");
 
