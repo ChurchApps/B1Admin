@@ -2913,7 +2913,10 @@
       "sendRequest": "Send request",
       "themePreferences": "Theme Preferences",
       "togglePasswordVisibility": "toggle password visibility",
-      "valEmail": "Please enter a valid email address."
+      "valEmail": "Please enter a valid email address.",
+      "themeDefault": "Default",
+      "themeClassic": "Classic",
+      "themeCustom": "Custom"
     }
   },
   "registrations": {

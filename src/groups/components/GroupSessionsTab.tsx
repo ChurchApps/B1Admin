@@ -1,4 +1,5 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { type GroupInterface, type PersonInterface, type SessionInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions } from "@churchapps/apphelper";
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export const GroupSessionsTab = (props: Props) => {
+  const [searchParams] = useSearchParams();
   const [addedPerson, setAddedPerson] = React.useState<PersonInterface | undefined>({} as PersonInterface);
   const [addedSession, setAddedSession] = React.useState({} as SessionInterface);
   const [addSessionVisible, setAddSessionVisible] = React.useState(false);
@@ -66,6 +68,7 @@ export const GroupSessionsTab = (props: Props) => {
           onEditSession={handleSessionEdit}
           onAddSession={handleShowAddSession}
           addedSession={addedSession}
+          initialSessionId={searchParams.get("sessionId") || undefined}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 7 }}>

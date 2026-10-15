@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
-import { type ThemeId } from "./helpers/Themes";
+import { DEFAULT_BRAND, themeIds, type ThemeId } from "./helpers/Themes";
 
 type ThemeMode = "light" | "dark";
 
@@ -8,6 +8,8 @@ interface ThemeContextType {
   toggleTheme: () => void;
   themeId: ThemeId;
   setTheme: (themeId: ThemeId) => void;
+  brandColor: string;
+  setBrandColor: (color: string) => void;
 }
 
 const THEME_STORAGE_KEY = "b1admin-theme-mode";
@@ -24,8 +26,13 @@ const getInitialMode = (): ThemeMode => {
   return "light";
 };
 
-// ponytail: picker is hidden, so ignore any stored choice and always start on Classic.
-const getInitialTheme = (): ThemeId => "classic";
+const getInitialTheme = (): ThemeId => {
+  try {
+    const stored = localStorage.getItem(THEME_ID_KEY) as ThemeId | null;
+    if (stored && themeIds.includes(stored)) return stored;
+  } catch { /* storage unavailable */ }
+  return "classic";
+};
 
 interface Props {
   children: React.ReactNode;
@@ -34,6 +41,7 @@ interface Props {
 export const ThemeContextProvider = ({ children }: Props) => {
   const [mode, setMode] = useState<ThemeMode>(getInitialMode);
   const [themeId, setThemeId] = useState<ThemeId>(getInitialTheme);
+  const [brandColor, setBrandColor] = useState(DEFAULT_BRAND);
 
   useEffect(() => {
     try { localStorage.setItem(THEME_STORAGE_KEY, mode); } catch { /* storage unavailable */ }
@@ -43,7 +51,7 @@ export const ThemeContextProvider = ({ children }: Props) => {
   useEffect(() => {
     try { localStorage.setItem(THEME_ID_KEY, themeId); } catch { /* storage unavailable */ }
     document.body.dataset.b1Theme = themeId;
-    (["soft", "warm", "plum", "classic"] as ThemeId[]).forEach((id) => document.body.classList.toggle("theme-" + id, themeId === id));
+    themeIds.forEach((id) => document.body.classList.toggle("theme-" + id, themeId === id));
   }, [themeId]);
 
   const toggleTheme = () => {
@@ -52,7 +60,7 @@ export const ThemeContextProvider = ({ children }: Props) => {
 
   const setTheme = (next: ThemeId) => setThemeId(next);
 
-  const value = useMemo(() => ({ mode, toggleTheme, themeId, setTheme }), [mode, themeId]);
+  const value = useMemo(() => ({ mode, toggleTheme, themeId, setTheme, brandColor, setBrandColor }), [mode, themeId, brandColor]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

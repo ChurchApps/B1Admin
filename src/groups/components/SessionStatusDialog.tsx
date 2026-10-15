@@ -13,7 +13,7 @@ interface Props {
 
 interface SessionStatusRow { groupId: string; sessionId: string | null; attendanceCount: number }
 
-interface GroupStatus { group: GroupInterface; count: number }
+interface GroupStatus { group: GroupInterface; count: number; sessionId: string | null }
 
 // Every active group assigned to the service time, each marked entered or not for the date.
 const loadStatus = async (serviceTimeId: string, sessionDate: string): Promise<GroupStatus[]> => {
@@ -21,10 +21,10 @@ const loadStatus = async (serviceTimeId: string, sessionDate: string): Promise<G
     ApiHelper.get("/groups", "MembershipApi") as Promise<GroupInterface[]>,
     ApiHelper.get("/attendancerecords/sessionStatus?serviceTimeId=" + serviceTimeId + "&date=" + sessionDate, "AttendanceApi") as Promise<SessionStatusRow[]>
   ]);
-  const counts = new Map((status || []).map((s) => [s.groupId, s.attendanceCount]));
+  const byGroup = new Map((status || []).map((s) => [s.groupId, s]));
   return (groups || [])
-    .filter((group) => counts.has(group.id!))
-    .map((group) => ({ group, count: counts.get(group.id!) || 0 }))
+    .filter((group) => byGroup.has(group.id!))
+    .map((group) => ({ group, count: byGroup.get(group.id!)!.attendanceCount || 0, sessionId: byGroup.get(group.id!)!.sessionId }))
     .sort((a, b) => Number(a.count > 0) - Number(b.count > 0) || (a.group.name || "").localeCompare(b.group.name || ""));
 };
 
@@ -50,10 +50,10 @@ export const SessionStatusDialog: React.FC<Props> = ({ serviceTimeId, sessionDat
             </Typography>
             <Table size="small">
               <TableBody>
-                {rows.map(({ group, count }) => (
+                {rows.map(({ group, count, sessionId }) => (
                   <TableRow key={group.id} data-testid="session-status-row">
                     <TableCell>
-                      <Link to={"/groups/" + group.id} onClick={onClose}>{group.name}</Link>
+                      <Link to={"/groups/" + group.id + "?view=sessions" + (sessionId ? "&sessionId=" + sessionId : "")} onClick={onClose}>{group.name}</Link>
                     </TableCell>
                     <TableCell align="right">
                       {count > 0

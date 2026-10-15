@@ -14,12 +14,13 @@ interface Props {
   onEditSession?: (session: SessionInterface) => void;
   onAddSession: () => void;
   addedSession?: SessionInterface;
+  initialSessionId?: string;
 }
 
 const isSameDay = (a: Date, b: Date) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 
 export const GroupSessionsList: React.FC<Props> = memo((props) => {
-  const { group, selectedSession, onSelectSession, onEditSession, onAddSession, addedSession } = props;
+  const { group, selectedSession, onSelectSession, onEditSession, onAddSession, addedSession, initialSessionId } = props;
   const [sessions, setSessions] = React.useState<SessionInterface[]>([]);
   const [sessionAttendanceCounts, setSessionAttendanceCounts] = React.useState<Record<string, number>>({});
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -115,6 +116,23 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
       onSelectSession(null);
     }
   }, [filteredSessions, selectedSession, onSelectSession]);
+
+  // A link can name a session (e.g. from "Who still needs attendance"); open it once, on its year and page.
+  // Runs after the default pick above so it wins on the render the sessions arrive.
+  const initialAppliedRef = React.useRef<string | undefined>(undefined);
+  React.useEffect(() => {
+    if (!initialSessionId || initialAppliedRef.current === initialSessionId) return;
+    const index = sessions.findIndex((s) => s.id === initialSessionId);
+    if (index === -1) return;
+    initialAppliedRef.current = initialSessionId;
+    yearDefaultedRef.current = true;
+    const session = sessions[index];
+    const year = session.sessionDate ? DateHelper.toDate(session.sessionDate).getFullYear() : NaN;
+    const yearSessions = isNaN(year) ? sessions : sessions.filter((s) => s.sessionDate && DateHelper.toDate(s.sessionDate).getFullYear() === year);
+    setSelectedYear(isNaN(year) ? "all" : String(year));
+    setCurrentPage(Math.floor(yearSessions.findIndex((s) => s.id === initialSessionId) / sessionsPerPage) + 1);
+    onSelectSession(session);
+  }, [initialSessionId, sessions, onSelectSession]);
 
   const paginatedSessions = useMemo(() => {
     const startIndex = (currentPage - 1) * sessionsPerPage;
