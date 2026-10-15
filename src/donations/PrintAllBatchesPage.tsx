@@ -7,6 +7,7 @@ import UserContext from "../UserContext";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { BatchPrintDocument } from "./components/BatchPrintDocument";
 import { useRequirePermission } from "../hooks";
+import { loadPeopleNames } from "./loadPeopleNames";
 
 const defaultStart = () => {
   const d = new Date();
@@ -46,10 +47,7 @@ export const PrintAllBatchesPage = () => {
     queryFn: async () => {
       const results: DonationInterface[][] = await Promise.all(batchIds.map((id) => ApiHelper.get("/donations?batchId=" + id, "GivingApi")));
       const all = results.flat();
-      const personIds = ArrayHelper.getIds(all, "personId");
-      const chunks: string[][] = [];
-      for (let i = 0; i < personIds.length; i += 200) chunks.push(personIds.slice(i, i + 200));
-      const people: PersonInterface[] = (await Promise.all(chunks.map((ids) => ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi")))).flat();
+      const people: PersonInterface[] = await loadPeopleNames(ArrayHelper.getIds(all, "personId"));
       all.forEach((d) => { if (d.personId) d.person = ArrayHelper.getOne(people, "id", d.personId); });
       const result: Record<string, DonationInterface[]> = {};
       batchIds.forEach((id, i) => { result[id] = results[i] || []; });

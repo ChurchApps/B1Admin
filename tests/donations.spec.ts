@@ -810,3 +810,16 @@ test.describe("Donation batch print", () => {
     await expect(page.getByText("April 6, 2025 Batch")).toHaveCount(0);
   });
 });
+
+// ChurchAppsSupport#1252: labeling donors is one names-and-photos call, not a full profile fetch.
+test("fund page loads every donor name in one call", async ({ page }) => {
+  await page.goto("/donations/funds/FUN00000001");
+  await page.locator('[data-cy="start-date"] input').fill("2025-03-01");
+  await page.locator('[data-cy="end-date"] input').fill("2025-03-31");
+  const namesCall = page.waitForRequest((req) => req.method() === "POST" && req.url().includes("/people/names"), { timeout: 15000 });
+  await page.locator("button").filter({ hasText: /^Filter$/ }).click();
+  const req = await namesCall;
+  const body = req.postDataJSON() as { peopleIds?: string[] };
+  expect(body.peopleIds?.length).toBeGreaterThan(1);
+  await expect(page.getByRole("link", { name: "John Smith" }).first()).toBeVisible();
+});

@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface, type PledgeInterface, type PledgeProgressRowInterface, type PledgeStatus } from "../helpers";
 import { CampaignEdit, PledgeEdit } from "./components";
 import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, RecordHeading, StatusBadge, type StatusTone, Surface, SortableTableHead, TextAction, hoverRowSx, numericCellSx, tableScrollSx, type SortDirection } from "../components/ui";
+import { loadPeopleNames } from "./loadPeopleNames";
 
 const statusColors: Record<PledgeStatus, StatusTone> = {
   notStarted: "neutral",
@@ -45,10 +46,12 @@ export const CampaignPage = () => {
   }, [progress.data]);
 
   const people = useQuery<PersonInterface[]>({
-    queryKey: ["/people/ids?ids=" + personIds.join(","), "MembershipApi"],
+    queryKey: ["people-names", personIds],
+    queryFn: () => loadPeopleNames(personIds),
     placeholderData: [],
     enabled: personIds.length > 0
   });
+  const canViewPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
 
   const peopleNames = React.useMemo(() => {
     const result: { [key: string]: string } = {};
@@ -115,10 +118,15 @@ export const CampaignPage = () => {
     }
 
     sortedRows.forEach((row, i) => {
+      const personName = peopleNames[row.personId || ""] || Locale.label("donations.campaignPage.unknownPerson");
       const personCell = row.personId ? (
-        <MuiLink component={Link} to={"/people/" + row.personId} underline="hover" variant="body2" sx={{ fontWeight: 600 }}>
-          {peopleNames[row.personId] || Locale.label("donations.campaignPage.unknownPerson")}
-        </MuiLink>
+        canViewPeople ? (
+          <MuiLink component={Link} to={"/people/" + row.personId} underline="hover" variant="body2" sx={{ fontWeight: 600 }}>
+            {personName}
+          </MuiLink>
+        ) : (
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>{personName}</Typography>
+        )
       ) : (
         <Typography variant="body2" color="text.secondary">{Locale.label("donations.campaignPage.anon")}</Typography>
       );

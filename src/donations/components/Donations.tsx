@@ -8,6 +8,7 @@ import { RecordHeading, StatusBadge, TextAction, VerbRow, hoverRowSx, numericCel
 import { CsvVerb } from "./GivingParts";
 import UserContext from "../../UserContext";
 import { BatchPrintDocument, getFundTotals } from "./BatchPrintDocument";
+import { loadPeopleNames } from "../loadPeopleNames";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -64,7 +65,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const populatePeople = React.useCallback(async (data: DonationInterface[]) => {
     const peopleIds = ArrayHelper.getIds(data, "personId");
     if (peopleIds.length > 0) {
-      const people = await ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi");
+      const people = await loadPeopleNames(peopleIds);
       data.forEach((d) => {
         if (!UniqueIdHelper.isMissing(d.personId)) d.person = ArrayHelper.getOne(people, "id", d.personId);
       });
