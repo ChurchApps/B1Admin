@@ -444,10 +444,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/content-providers@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "@churchapps/content-providers@npm:0.11.0"
-  checksum: 10c0/616f88c2784db66a8eeefa4f751345d12e65a9d678fa80aae0bb16a87a451aa9879ad901f7bc8cee3271cdf42c32284e8b30bde82fa46c8c85939af06c5dbcdc
+"@churchapps/content-providers@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@churchapps/content-providers@npm:0.12.0"
+  checksum: 10c0/b0d331aeefc077968bf7da1f255c636542ca253866997f121f79b46cce2ff0ecb9c26f84f1b4d8ffdebfd7d655895efc1c917623b4226d7a24db7b9b5f44b5ca
   languageName: node
   linkType: hard
 
@@ -2898,7 +2898,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^8.0.1"
     "@churchapps/apphelper": "npm:^1.8.6"
-    "@churchapps/content-providers": "npm:^0.11.0"
+    "@churchapps/content-providers": "npm:^0.12.0"
     "@churchapps/helpers": "npm:^2.7.0"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
