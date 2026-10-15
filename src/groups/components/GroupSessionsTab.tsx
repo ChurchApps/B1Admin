@@ -81,7 +81,7 @@ export const GroupSessionsTab = (props: Props) => {
           />
           {!addSessionVisible && !editSessionVisible && UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
             <AddBar data-testid="session-person-add" sx={{ mt: 0 }}>
-              <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
+              <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} onCreate={addPerson} showCreatePersonOnNotFound />
             </AddBar>
           )}
         </Stack>
