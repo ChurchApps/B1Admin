@@ -40,6 +40,7 @@ export const GroupSessionsTab = (props: Props) => {
 
   const handleSessionUpdated = React.useCallback((session: SessionInterface | null) => {
     setAddedSession(session ? ({ ...session, _updateTimestamp: Date.now() } as SessionInterface) : ({} as SessionInterface));
+    if (session) setSelectedSession((prev) => (prev?.id === session.id ? { ...prev, ...session } : prev));
     setEditSessionVisible(false);
     setEditingSession(null);
   }, []);

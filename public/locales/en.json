@@ -1614,7 +1614,8 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
-      "sesEdit": "Edit Session"
+      "sesEdit": "Edit Session",
+      "notes": "Notes (what was covered, announcements, prayer requests)"
     },
     "sessionsDisabled": {
       "description": "Turn on attendance tracking to record sessions and check-ins for this group.",

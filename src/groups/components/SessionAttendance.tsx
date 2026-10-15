@@ -2,6 +2,7 @@ import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface, type GroupMemberInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { ApiHelper, ArrayHelper, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { Alert, Avatar, Box, Button, Checkbox, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -284,6 +285,12 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           )}
         </Stack>
       </Stack>
+
+      {(session as any).notes && (
+        <Box sx={{ mb: 2, "& p": { mt: 0, mb: 1 }, "& p:last-child": { mb: 0 } }} data-testid="session-notes">
+          <MarkdownPreviewLight value={(session as any).notes} />
+        </Box>
+      )}
 
       {roster.length === 0 ? (
         <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 4 }}>

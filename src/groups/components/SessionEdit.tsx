@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
+import { MarkdownEditor } from "@churchapps/apphelper/markdown";
 import { FormControl, Grid, Select, InputLabel, MenuItem, Box, FormControlLabel, Checkbox } from "@mui/material";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
@@ -28,8 +29,9 @@ export const SessionEdit: React.FC<Props> = (props) => {
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [loading, setLoading] = React.useState(!isAdd);
   const [otherGroups, setOtherGroups] = React.useState<GroupInterface[]>([]);
+  const [notes, setNotes] = React.useState("");
 
-  const { control, register, handleSubmit, reset, setValue, watch } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "", allGroups: false } });
+  const { control, handleSubmit, reset, setValue, watch } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "", allGroups: false } });
   const serviceTimeId = watch("serviceTimeId");
 
   const { errors } = useFormState({ control });
@@ -82,7 +84,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
   const onValid = async (values: AnyRecord) => {
     if (!props.group?.id) return;
     const sessionDate = new Date(values.sessionDate);
-    const s = { ...(props.session || {}), groupId: props.group.id, sessionDate } as SessionInterface;
+    const s = { ...(props.session || {}), groupId: props.group.id, sessionDate, notes } as SessionInterface & { notes?: string };
     if (!UniqueIdHelper.isMissing(values.serviceTimeId)) s.serviceTimeId = values.serviceTimeId;
     else (s as any).serviceTimeId = null;
     const sessions = [s];
@@ -109,6 +111,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
             sessionDate,
             serviceTimeId: data?.serviceTimeId || ""
           });
+          setNotes(data?.notes || "");
           setLoading(false);
         })
         .catch((error: any) => {
@@ -176,6 +179,9 @@ export const SessionEdit: React.FC<Props> = (props) => {
             )} />
           </Grid>
           {isAdd && otherGroups.length > 0 && <Grid size={{ xs: 12 }}>{getAllGroups()}</Grid>}
+          <Grid size={{ xs: 12 }}>
+            <MarkdownEditor value={notes} onChange={setNotes} style={{ maxHeight: 240, overflowY: "auto" }} placeholder={Locale.label("groups.sessionEdit.notes")} data-testid="session-notes-editor" />
+          </Grid>
         </Grid>
       </FormCard>
     </Box>

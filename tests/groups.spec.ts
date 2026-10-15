@@ -363,6 +363,20 @@ test.describe.serial("Group Management", () => {
       await expect(sessionCard).toHaveCount(1, { timeout: 10000 });
     });
 
+    test("saves session notes as markdown and shows them rendered", async () => {
+      const date = "2025-09-03";
+      await openSeedGroup(page, SESSION_GROUP);
+      await page.getByTestId("group-all-sessions").click();
+      await page.locator("button").getByText("New").first().click();
+      const box = page.locator('[data-cy="add-session-box"]');
+      await box.locator('[data-testid="session-date-input"] input').fill(date);
+      await box.locator(".editor-input[contenteditable='true']").first().click();
+      await page.keyboard.type("Read **Romans 9** this week");
+      await box.getByRole("button", { name: "Save", exact: true }).click();
+      await selectSession(page, date);
+      await expect(page.locator('[data-testid="session-notes"] strong')).toHaveText("Romans 9", { timeout: 10000 });
+    });
+
     test("adds a session for every group in the service time at once, without duplicates", async () => {
       const date = "2027-02-17";
       const before = await wednesdaySessionCounts(date);
