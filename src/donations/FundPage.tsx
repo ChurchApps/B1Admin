@@ -1,5 +1,5 @@
 import React from "react";
-import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, UserHelper } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
 import { Table, TableBody, TableRow, TableCell, TableHead, Box, Button, Typography, Stack } from "@mui/material";
@@ -7,6 +7,7 @@ import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, RecordHead
 import { CsvVerb } from "./components/GivingParts";
 import { AppDatePicker } from "../components";
 import { useRequirePermission } from "../hooks";
+import { loadPeopleNames } from "./loadPeopleNames";
 
 export const FundPage = () => {
   const params = useParams();
@@ -48,7 +49,7 @@ export const FundPage = () => {
       (d: FundDonationInterface[]) => {
         const peopleIds = ArrayHelper.getUniqueValues(d, "donation.personId").filter((f) => f !== null);
         if (peopleIds.length > 0) {
-          ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi").then((people: PersonInterface[]) => {
+          loadPeopleNames(peopleIds.filter((id): id is string => !!id)).then((people: PersonInterface[]) => {
             const data: any = {};
             people.forEach((p) => {
               if (p.id) data[p.id] = p.name?.display;
@@ -85,6 +86,8 @@ export const FundPage = () => {
     }
   };
 
+  const canViewPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
+
   const getRows = () => {
     const result: JSX.Element[] = [];
 
@@ -105,6 +108,7 @@ export const FundPage = () => {
       const fd = donationList[i];
       const isAnonymous = UniqueIdHelper.isMissing(fd.donation?.personId);
 
+      const donorName = people[fd.donation?.personId || ""] || Locale.label("donations.fundsPage.anon");
       const personCol = isAnonymous ? (
         <TableCell>
           <Typography variant="body2" color="text.secondary">
@@ -113,9 +117,13 @@ export const FundPage = () => {
         </TableCell>
       ) : (
         <TableCell>
-          <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
-            {people[fd.donation?.personId || ""] || Locale.label("donations.fundsPage.anon")}
-          </Typography>
+          {canViewPeople ? (
+            <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
+              {donorName}
+            </Typography>
+          ) : (
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>{donorName}</Typography>
+          )}
         </TableCell>
       );
 

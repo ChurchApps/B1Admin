@@ -7,6 +7,7 @@ import { Refresh as RetryIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { PageHeader, PageContainer, Surface, EmptyState, LoadingButton, hoverRowSx, numericCellSx, tableScrollSx } from "../components/ui";
 import { useRequirePermission } from "../hooks";
+import { loadPeopleNames } from "./loadPeopleNames";
 
 interface FailedDonationInterface {
   id?: string;
@@ -26,8 +27,9 @@ export const FailedDonationsPage = () => {
   const donations = useQuery<FailedDonationInterface[]>({ queryKey: ["/donations/failed", "GivingApi"], placeholderData: [] });
   const rateTable = useQuery<{ rates?: Record<string, number> }>({ queryKey: ["/donations/exchange-rates", "GivingApi"], placeholderData: {} });
 
-  const personIds = React.useMemo(() => (donations.data || []).map((d) => d.personId).filter(Boolean).join(","), [donations.data]);
-  const people = useQuery<PersonInterface[]>({ queryKey: ["/people/ids?ids=" + personIds, "MembershipApi"], placeholderData: [], enabled: !!personIds });
+  const personIds = React.useMemo(() => [...new Set((donations.data || []).map((d) => d.personId).filter((id): id is string => !!id))], [donations.data]);
+  const people = useQuery<PersonInterface[]>({ queryKey: ["people-names", personIds], queryFn: () => loadPeopleNames(personIds), placeholderData: [], enabled: personIds.length > 0 });
+  const canViewPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => setCurrency(result));
@@ -57,7 +59,9 @@ export const FailedDonationsPage = () => {
         <TableRow key={d.id} sx={hoverRowSx} data-testid={"failed-donation-" + d.id}>
           <TableCell>
             {d.personId
-              ? <Typography component={Link} to={"/people/" + d.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>{person?.name?.display || d.personId}</Typography>
+              ? (canViewPeople
+                ? <Typography component={Link} to={"/people/" + d.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>{person?.name?.display || d.personId}</Typography>
+                : <Typography variant="body2" sx={{ fontWeight: 600 }}>{person?.name?.display || d.personId}</Typography>)
               : <Typography variant="body2">{Locale.label("donations.donations.anon")}</Typography>}
           </TableCell>
           <TableCell align="right" sx={numericCellSx}><Typography variant="body2" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}</Typography></TableCell>

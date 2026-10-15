@@ -2,7 +2,8 @@ import { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { RecordHeading, TextAction } from "../../components/ui";
-import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { DateHelper, ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import { loadPeopleNames } from "../loadPeopleNames";
 import { getPaymentProvider } from "@churchapps/apphelper/donations";
 import { type PersonInterface } from "@churchapps/helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,10 +22,12 @@ export const DonationEvents = memo(() => {
   }, [errorLogs.data]);
 
   const people = useQuery<PersonInterface[]>({
-    queryKey: ["/people/ids?ids=" + personIds, "MembershipApi"],
+    queryKey: ["people-names", personIds],
+    queryFn: () => loadPeopleNames(personIds ? personIds.split(",") : []),
     placeholderData: [],
     enabled: !!personIds
   });
+  const canViewPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
 
   const unresolvedErrorCount = useMemo(() => {
     if (!errorLogs.data?.length) return 0;
@@ -63,7 +66,7 @@ export const DonationEvents = memo(() => {
               <span className="capitalize">{eventType}</span> · {DateHelper.prettyDate(log.created)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {Locale.label("common.person")} {log.personId ? <Link to={"/people/" + log.personId}>{getPersonName(log.personId)}</Link> : null}
+              {Locale.label("common.person")} {log.personId ? (canViewPeople ? <Link to={"/people/" + log.personId}>{getPersonName(log.personId)}</Link> : getPersonName(log.personId)) : null}
             </Typography>
             <Typography variant="body2" color="text.secondary" className="capitalize">
               {Locale.label("donations.donationEvents.event")}
