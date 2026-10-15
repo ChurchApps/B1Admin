@@ -59,7 +59,7 @@ export const GroupPage = () => {
         />
       );
     }
-    return <GroupSessionsTab key="sessions" group={groupData} />;
+    return <GroupSessionsTab key={"sessions-" + groupData.id} group={groupData} />;
   };
 
   const back = (

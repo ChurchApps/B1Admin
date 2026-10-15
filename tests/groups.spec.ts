@@ -373,8 +373,9 @@ test.describe.serial("Group Management", () => {
       await expect.poll(() => wednesdaySessionCounts(date)).toEqual(afterFirst.map((c, i) => (i === 2 ? c + 1 : c)));
     });
 
-    test("lists which groups at the service time still need attendance", async () => {
+    test("lists which groups at the service time still need attendance and opens their same-date session", async () => {
       // Wednesday Prayer Service has attendance on 3/11/2026; the other four Wednesday classes have none.
+      // Nursery also gets an empty 3/11/2026 session plus a newer one that it would otherwise open by default.
       const apiBase = process.env.API_BASE || "http://localhost:8084";
       const ctx = await request.newContext();
       const loginRes = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
@@ -383,6 +384,8 @@ test.describe.serial("Group Management", () => {
       const sRes = await ctx.post(`${apiBase}/attendance/sessions`, { headers, data: [{ groupId: "GRP00000003", serviceTimeId: "SST00000004", sessionDate: "2026-03-11" }] });
       const session = (await sRes.json())[0];
       await ctx.post(`${apiBase}/attendance/visitsessions/log`, { headers, data: { personId: "PER00000001", visitSessions: [{ sessionId: session.id }] } });
+      const nRes = await ctx.post(`${apiBase}/attendance/sessions`, { headers, data: [{ groupId: "GRP00000007", serviceTimeId: "SST00000004", sessionDate: "2026-03-11" }, { groupId: "GRP00000007", serviceTimeId: "SST00000004", sessionDate: "2026-09-30" }] });
+      const nurserySession = (await nRes.json())[0];
       await ctx.dispose();
 
       await openSeedGroup(page, "Wednesday Prayer Service");
@@ -402,6 +405,14 @@ test.describe.serial("Group Management", () => {
       await expect(rows.last()).toContainText("Entered (1)");
       await dialog.getByRole("button", { name: "Close" }).click();
       await expect(dialog).toHaveCount(0);
+
+      // A group name opens that group's session for the same date, not its home page.
+      await page.locator('[data-testid="session-attendance-status-button"]').click();
+      await dialog.locator('[data-testid="session-status-row"]').filter({ hasText: "Nursery (0-2)" }).getByRole("link").click();
+      await expect(dialog).toHaveCount(0);
+      await expect(page).toHaveURL(new RegExp(`/groups/GRP00000007\\?view=sessions&sessionId=${nurserySession.id}`));
+      await expect(page.getByRole("button").filter({ hasText: "03/11/2026" }).first()).toContainText("Active", { timeout: 10000 });
+      await expect(page.locator('[data-cy="session-present-msg"]')).toBeVisible({ timeout: 10000 });
     });
 
     test("should add person to session", async () => {
