@@ -2090,6 +2090,7 @@
       "attendanceSummary": "Son {weeks} haftanın {count} haftası",
       "email": "E-posta",
       "givenBy": "Bağışlayan",
+      "givingHidden": "Bağışlar kişi kayıtlarında gizlidir.",
       "givingYear": "{year} yılında · {count} bağış",
       "hereThisWeek": "Bu hafta burada",
       "household": "Hane",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Son katılım",
       "recentGifts": "{year} yılındaki bağışlar",
       "service": "İbadet",
+      "showGiving": "Bağışları göster",
       "showingLatest": "en son {count} gösteriliyor",
       "statement": "{year} dökümü",
       "submitted": "Gönderildi",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Henüz geçmiş plan yok.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Bugünden itibaren planlanmış bir şey yok. Önceki planları görmek için \"Geçmiş\"i seçin.",
       "past": "Geçmiş",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Değişiklikleri Kaydet",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klasik",
+      "themeCustom": "Özel",
+      "themeDefault": "Varsayılan",
       "themePreferences": "Tema Tercihleri",
       "togglePasswordVisibility": "parola görünürlüğünü değiştir",
       "valEmail": "Please enter a valid email address."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Bağışlara erişimi olan biri Bağışları göster'e tıklayana kadar her kişinin bağışlarını kişi kaydında gizler.",
+      "hide": "Kişi kayıtlarında bağışları tıklanana kadar gizle",
+      "shown": "Kişi kayıtlarında bağışlar",
+      "title": "Bağış gizliliği"
+    },
     "givingSettingsEdit": {
       "clientId": "İstemci Kimliği (Client ID)",
       "clientSecret": "İstemci Gizli Anahtarı (Client Secret)",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} bağlı",
       "domainsNone": "Özel alan adı yok",
       "domainsOne": "1 bağlı",
+      "givingPrivacyOff": "Gösteriliyor",
+      "givingPrivacyOn": "Tıklanana kadar gizli",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Otomatik atlama devre dışı",
       "gradePromotionOn": "Her yıl {date} tarihinde sınıf geçişi yapılır",
       "notConfigured": "Yapılandırılmadı",
       "notSet": "Belirlenmedi",
-      "phoneLocalSubtitle": "Yerel telefon numaraları"
+      "phoneLocalSubtitle": "Yerel telefon numaraları",
+      "volunteerSignupOff": "Tüm yaklaşan haftalar",
+      "volunteerSignupOn": "Her plan türünün yalnızca sonraki haftası"
     },
     "manageChurch": {
       "auditLog": "Denetim Günlüğü",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Üyelerin uygulamada gönüllü kayıtlarına göz atarken kaç hafta göreceğini seçin. Bu açıkken her ayin planı yalnızca yaklaşan bir sonraki haftasını gösterir ve o tarih geçince sonraki hafta görünür.",
+      "nextOnly": "Her plan türünün yalnızca sonraki haftasını göster",
+      "title": "Gönüllü kaydı",
+      "weeksShown": "Gösterilen haftalar"
     },
     "webhookEdit": {
       "active": "Aktif",

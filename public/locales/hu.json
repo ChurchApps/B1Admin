@@ -2090,6 +2090,7 @@
       "attendanceSummary": "Az elmúlt {weeks} hétből {count}",
       "email": "E-mail",
       "givenBy": "Adományozó",
+      "givingHidden": "Az adakozás el van rejtve a személyi adatlapokon.",
       "givingYear": "{year}. évben · {count} adomány",
       "hereThisWeek": "Ezen a héten itt volt",
       "household": "Háztartás",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Legutóbbi jelenlét",
       "recentGifts": "Adományok {year}. évben",
       "service": "Istentisztelet",
+      "showGiving": "Adakozás megjelenítése",
       "showingLatest": "a legutóbbi {count} látható",
       "statement": "{year}. évi kimutatás",
       "submitted": "Beküldve",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Még nincsenek korábbi tervek.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Mától kezdve nincs semmi ütemezve. A korábbi tervek megtekintéséhez válassza a „Korábbi” lehetőséget.",
       "past": "Korábbi",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klasszikus",
+      "themeCustom": "Egyéni",
+      "themeDefault": "Alapértelmezett",
       "themePreferences": "Téma beállítások",
       "togglePasswordVisibility": "jelszó láthatóságának váltása",
       "valEmail": "Please enter a valid email address."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Elrejti minden személy adakozását a személyi adatlapján, amíg egy adakozáshoz hozzáféréssel rendelkező személy rá nem kattint az Adakozás megjelenítése gombra.",
+      "hide": "Adakozás elrejtése a személyi adatlapokon kattintásig",
+      "shown": "Adakozás a személyi adatlapokon",
+      "title": "Adakozás adatvédelme"
+    },
     "givingSettingsEdit": {
       "clientId": "Ügyfélazonosító (Client ID)",
       "clientSecret": "Ügyféltitok (Client Secret)",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} csatlakoztatva",
       "domainsNone": "Nincs egyéni domain",
       "domainsOne": "1 csatlakoztatva",
+      "givingPrivacyOff": "Látható",
+      "givingPrivacyOn": "Kattintásig rejtve",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatikus előléptetés kikapcsolva",
       "gradePromotionOn": "Minden évben {date} napon léptet",
       "notConfigured": "Nincs konfigurálva",
       "notSet": "Nincs beállítva",
-      "phoneLocalSubtitle": "Helyi telefonszámok"
+      "phoneLocalSubtitle": "Helyi telefonszámok",
+      "volunteerSignupOff": "Minden közelgő hét",
+      "volunteerSignupOn": "Csak az egyes tervtípusok következő hete"
     },
     "manageChurch": {
       "auditLog": "Auditnapló",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Válassza ki, hány hetet látnak a tagok, amikor az alkalmazásban az önkéntes jelentkezéseket böngészik. Ha ez be van kapcsolva, minden istentiszteleti terv csak a következő közelgő hetét mutatja, az azt követő hét pedig a dátum elmúltával jelenik meg.",
+      "nextOnly": "Csak az egyes tervtípusok következő hetének megjelenítése",
+      "title": "Önkéntes jelentkezés",
+      "weeksShown": "Megjelenített hetek"
     },
     "webhookEdit": {
       "active": "Aktív",

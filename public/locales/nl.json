@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} van de laatste {weeks} weken",
       "email": "E-mail",
       "givenBy": "Gegeven door",
+      "givingHidden": "Giften zijn verborgen in persoonsgegevens.",
       "givingYear": "in {year} · {count} giften",
       "hereThisWeek": "Deze week aanwezig",
       "household": "Huishouden",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Recente aanwezigheid",
       "recentGifts": "Giften in {year}",
       "service": "Dienst",
+      "showGiving": "Giften tonen",
       "showingLatest": "laatste {count} getoond",
       "statement": "Overzicht {year}",
       "submitted": "Ingediend",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulkplanning",
       "newPlan": "Nieuw plan",
+      "noPastPlans": "Nog geen eerdere plannen.",
       "noPlans": "Geen plannen gevonden",
       "noUpcomingHint": "Vanaf vandaag is er niets gepland. Kies \"Verleden\" om eerdere plannen te zien.",
       "past": "Verleden",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Wijzigingen opslaan",
       "saveError": "Wijzigingen opslaan mislukt",
       "sendRequest": "Send request",
+      "themeClassic": "Klassiek",
+      "themeCustom": "Aangepast",
+      "themeDefault": "Standaard",
       "themePreferences": "Thema-voorkeuren",
       "togglePasswordVisibility": "wachtwoordzichtbaarheid wisselen",
       "valEmail": "Voer een geldig e-mailadres in."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Verberg de giften van elke persoon in diens persoonsgegevens totdat iemand met toegang tot giften op Giften tonen klikt.",
+      "hide": "Giften in persoonsgegevens verbergen tot erop wordt geklikt",
+      "shown": "Giften in persoonsgegevens",
+      "title": "Privacy van giften"
+    },
     "givingSettingsEdit": {
       "clientId": "Client-ID",
       "clientSecret": "Client-geheim",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} verbonden",
       "domainsNone": "Geen aangepaste domeinen",
       "domainsOne": "1 verbonden",
+      "givingPrivacyOff": "Getoond",
+      "givingPrivacyOn": "Verborgen tot erop wordt geklikt",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatische promotie uitgeschakeld",
       "gradePromotionOn": "Bevordert elk jaar op {date}",
       "notConfigured": "Niet geconfigureerd",
       "notSet": "Niet ingesteld",
-      "phoneLocalSubtitle": "Lokale telefoonnummers"
+      "phoneLocalSubtitle": "Lokale telefoonnummers",
+      "volunteerSignupOff": "Alle komende weken",
+      "volunteerSignupOn": "Alleen de volgende week van elk plantype"
     },
     "manageChurch": {
       "auditLog": "Audit log",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Telefoonnummer",
       "staff": "Staff Only",
       "visibilityPreference": "Zichtbaarheidsvoorkeur"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Kies hoeveel weken leden zien wanneer ze in de app door vrijwilligersaanmeldingen bladeren. Als dit aan staat, toont elk dienstplan alleen de eerstvolgende week, en verschijnt de week daarna zodra die datum voorbij is.",
+      "nextOnly": "Alleen de volgende week van elk plantype tonen",
+      "title": "Aanmelding vrijwilligers",
+      "weeksShown": "Getoonde weken"
     },
     "webhookEdit": {
       "active": "Actief",

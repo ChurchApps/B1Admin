@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} из последних {weeks} недель",
       "email": "Email",
       "givenBy": "Жертвователь",
+      "givingHidden": "Пожертвования скрыты в карточках людей.",
       "givingYear": "за {year} · пожертвования: {count}",
       "hereThisWeek": "Присутствует на этой неделе",
       "household": "Семья",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Недавняя посещаемость",
       "recentGifts": "Пожертвования за {year}",
       "service": "Богослужение",
+      "showGiving": "Показать пожертвования",
       "showingLatest": "показаны последние: {count}",
       "statement": "Выписка за {year}",
       "submitted": "Отправлено",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Массовое планирование",
       "newPlan": "Новый план",
+      "noPastPlans": "Прошедших планов пока нет.",
       "noPlans": "Планы не найдены",
       "noUpcomingHint": "Начиная с сегодняшнего дня ничего не запланировано. Выберите «Прошедшие», чтобы увидеть более ранние планы.",
       "past": "Прошедшие",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Сохранить изменения",
       "saveError": "Не удалось сохранить изменения.",
       "sendRequest": "Send request",
+      "themeClassic": "Классическая",
+      "themeCustom": "Пользовательская",
+      "themeDefault": "По умолчанию",
       "themePreferences": "Настройки темы",
       "togglePasswordVisibility": "переключить видимость пароля",
       "valEmail": "Пожалуйста, введите действительный адрес электронной почты."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Скрывает пожертвования каждого человека в его карточке, пока кто-то с доступом к пожертвованиям не нажмёт «Показать пожертвования».",
+      "hide": "Скрывать пожертвования в карточках людей до нажатия",
+      "shown": "Пожертвования в карточках людей",
+      "title": "Конфиденциальность пожертвований"
+    },
     "givingSettingsEdit": {
       "clientId": "ID клиента",
       "clientSecret": "Секрет клиента",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} подключено",
       "domainsNone": "Нет пользовательских доменов",
       "domainsOne": "1 подключён",
+      "givingPrivacyOff": "Показаны",
+      "givingPrivacyOn": "Скрыты до нажатия",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Автоматический перевод отключен",
       "gradePromotionOn": "Перевод в класс каждый год {date}",
       "notConfigured": "Не настроено",
       "notSet": "Не задано",
-      "phoneLocalSubtitle": "Местные номера телефонов"
+      "phoneLocalSubtitle": "Местные номера телефонов",
+      "volunteerSignupOff": "Все предстоящие недели",
+      "volunteerSignupOn": "Только следующая неделя каждого типа плана"
     },
     "manageChurch": {
       "auditLog": "Журнал аудита",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Номер телефона",
       "staff": "Staff Only",
       "visibilityPreference": "Настройки видимости"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Выберите, сколько недель видят участники при просмотре записей волонтёров в приложении. Если этот параметр включён, каждый план служения показывает только ближайшую предстоящую неделю, а следующая неделя появляется, когда эта дата пройдёт.",
+      "nextOnly": "Показывать только следующую неделю каждого типа плана",
+      "title": "Запись волонтёров",
+      "weeksShown": "Показываемые недели"
     },
     "webhookEdit": {
       "active": "Активен",

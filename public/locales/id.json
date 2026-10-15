@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} dari {weeks} minggu terakhir",
       "email": "Email",
       "givenBy": "Diberikan oleh",
+      "givingHidden": "Persembahan disembunyikan di catatan orang.",
       "givingYear": "pada {year} · {count} persembahan",
       "hereThisWeek": "Hadir minggu ini",
       "household": "Rumah Tangga",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Kehadiran terbaru",
       "recentGifts": "Persembahan pada {year}",
       "service": "Ibadah",
+      "showGiving": "Tampilkan persembahan",
       "showingLatest": "menampilkan {count} terbaru",
       "statement": "Laporan {year}",
       "submitted": "Dikirim",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Belum ada rencana sebelumnya.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Tidak ada yang dijadwalkan mulai hari ini. Pilih \"Lampau\" untuk melihat rencana sebelumnya.",
       "past": "Lampau",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klasik",
+      "themeCustom": "Kustom",
+      "themeDefault": "Bawaan",
       "themePreferences": "Preferensi Tema",
       "togglePasswordVisibility": "alihkan visibilitas kata sandi",
       "valEmail": "Silakan masukkan alamat email yang valid."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Sembunyikan persembahan setiap orang di catatan orangnya sampai seseorang dengan akses persembahan mengklik Tampilkan persembahan.",
+      "hide": "Sembunyikan persembahan di catatan orang sampai diklik",
+      "shown": "Persembahan di catatan orang",
+      "title": "Privasi persembahan"
+    },
     "givingSettingsEdit": {
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} terhubung",
       "domainsNone": "Tidak ada domain khusus",
       "domainsOne": "1 terhubung",
+      "givingPrivacyOff": "Ditampilkan",
+      "givingPrivacyOn": "Tersembunyi sampai diklik",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Kenaikan otomatis dinonaktifkan",
       "gradePromotionOn": "Naik kelas pada {date} setiap tahun",
       "notConfigured": "Belum dikonfigurasi",
       "notSet": "Belum ditetapkan",
-      "phoneLocalSubtitle": "Nomor telepon lokal"
+      "phoneLocalSubtitle": "Nomor telepon lokal",
+      "volunteerSignupOff": "Semua minggu mendatang",
+      "volunteerSignupOn": "Hanya minggu berikutnya dari setiap jenis rencana"
     },
     "manageChurch": {
       "auditLog": "Log Audit",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Nomor Telepon",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Pilih berapa minggu yang dilihat anggota saat menelusuri pendaftaran relawan di aplikasi. Jika ini aktif, setiap rencana ibadah hanya menampilkan minggu mendatang berikutnya, dan minggu sesudahnya muncul setelah tanggal tersebut lewat.",
+      "nextOnly": "Tampilkan hanya minggu berikutnya dari setiap jenis rencana",
+      "title": "Pendaftaran Relawan",
+      "weeksShown": "Minggu yang ditampilkan"
     },
     "webhookEdit": {
       "active": "Aktif",

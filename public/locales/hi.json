@@ -2090,6 +2090,7 @@
       "attendanceSummary": "पिछले {weeks} सप्ताहों में से {count}",
       "email": "ईमेल",
       "givenBy": "दाता",
+      "givingHidden": "व्यक्ति रिकॉर्ड पर दान छिपा हुआ है।",
       "givingYear": "{year} में · {count} दान",
       "hereThisWeek": "इस सप्ताह उपस्थित",
       "household": "परिवार",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "हाल की उपस्थिति",
       "recentGifts": "{year} में दान",
       "service": "सेवा",
+      "showGiving": "दान दिखाएँ",
       "showingLatest": "नवीनतम {count} दिखाए जा रहे हैं",
       "statement": "{year} विवरण",
       "submitted": "जमा किया गया",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "सामूहिक शेड्यूल",
       "newPlan": "नई योजना",
+      "noPastPlans": "अभी तक कोई पिछली योजना नहीं।",
       "noPlans": "कोई योजना नहीं मिली",
       "noUpcomingHint": "आज से आगे कुछ भी निर्धारित नहीं है। पिछली योजनाएं देखने के लिए \"पिछली\" चुनें।",
       "past": "पिछली",
@@ -2908,6 +2911,9 @@
       "saveChanges": "परिवर्तनों को सुरक्षित करें",
       "saveError": "परिवर्तन सहेजने में विफल",
       "sendRequest": "Send request",
+      "themeClassic": "क्लासिक",
+      "themeCustom": "कस्टम",
+      "themeDefault": "डिफ़ॉल्ट",
       "themePreferences": "थीम प्राथमिकताएँ",
       "togglePasswordVisibility": "पासवर्ड दृश्यता टॉगल करें",
       "valEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।"
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "प्रत्येक व्यक्ति का दान उसके व्यक्ति रिकॉर्ड पर तब तक छिपाएँ जब तक दान की पहुँच वाला कोई व्यक्ति दान दिखाएँ पर क्लिक न करे।",
+      "hide": "क्लिक किए जाने तक व्यक्ति रिकॉर्ड पर दान छिपाएँ",
+      "shown": "व्यक्ति रिकॉर्ड पर दान",
+      "title": "दान गोपनीयता"
+    },
     "givingSettingsEdit": {
       "clientId": "क्लाइंट आईडी",
       "clientSecret": "क्लाइंट सीक्रेट",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} कनेक्टेड",
       "domainsNone": "कोई कस्टम डोमेन नहीं",
       "domainsOne": "1 कनेक्टेड",
+      "givingPrivacyOff": "दिखाया गया",
+      "givingPrivacyOn": "क्लिक किए जाने तक छिपा",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "स्वचालित पदोन्नति अक्षम",
       "gradePromotionOn": "हर साल {date} को बढ़ावा देता है",
       "notConfigured": "कॉन्फ़िगर नहीं किया गया",
       "notSet": "सेट नहीं",
-      "phoneLocalSubtitle": "स्थानीय फ़ोन नंबर"
+      "phoneLocalSubtitle": "स्थानीय फ़ोन नंबर",
+      "volunteerSignupOff": "सभी आगामी सप्ताह",
+      "volunteerSignupOn": "प्रत्येक योजना प्रकार का केवल अगला सप्ताह"
     },
     "manageChurch": {
       "auditLog": "ऑडिट लॉग",
@@ -4158,6 +4174,12 @@
       "phoneNum": "फोन नंबर",
       "staff": "Staff Only",
       "visibilityPreference": "दृश्यता प्राथमिकता"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "चुनें कि सदस्य ऐप में स्वयंसेवक साइनअप ब्राउज़ करते समय कितने सप्ताह देखें। इसे चालू करने पर, प्रत्येक सेवा योजना केवल अपना अगला आगामी सप्ताह दिखाती है, और उसके बाद का सप्ताह वह तारीख बीत जाने पर दिखाई देता है।",
+      "nextOnly": "प्रत्येक योजना प्रकार का केवल अगला सप्ताह दिखाएँ",
+      "title": "स्वयंसेवक साइनअप",
+      "weeksShown": "दिखाए गए सप्ताह"
     },
     "webhookEdit": {
       "active": "सक्रिय",

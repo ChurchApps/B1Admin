@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} od zadnjih {weeks} tednov",
       "email": "E-pošta",
       "givenBy": "Daroval",
+      "givingHidden": "Darovanje je v zapisih oseb skrito.",
       "givingYear": "v letu {year} · darov: {count}",
       "hereThisWeek": "Prisoten ta teden",
       "household": "Gospodinjstvo",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Nedavna udeležba",
       "recentGifts": "Darovi v letu {year}",
       "service": "Bogoslužje",
+      "showGiving": "Prikaži darovanje",
       "showingLatest": "prikazanih zadnjih {count}",
       "statement": "Izpisek za {year}",
       "submitted": "Oddano",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Še ni preteklih načrtov.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Od danes naprej ni nič načrtovano. Izberite »Pretekli« za ogled starejših načrtov.",
       "past": "Pretekli",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Shrani spremembe",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klasično",
+      "themeCustom": "Po meri",
+      "themeDefault": "Privzeto",
       "themePreferences": "Nastavitve teme",
       "togglePasswordVisibility": "preklopi vidnost gesla",
       "valEmail": "Prosimo, vnesite veljaven naslov e-pošte."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Skrije darovanje vsake osebe v njenem zapisu, dokler nekdo z dostopom do darovanja ne klikne Prikaži darovanje.",
+      "hide": "Skrij darovanje v zapisih oseb do klika",
+      "shown": "Darovanje v zapisih oseb",
+      "title": "Zasebnost darovanja"
+    },
     "givingSettingsEdit": {
       "clientId": "ID odjemalca",
       "clientSecret": "Skrivnost odjemalca",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} povezanih",
       "domainsNone": "Ni lastnih domen",
       "domainsOne": "1 povezana",
+      "givingPrivacyOff": "Prikazano",
+      "givingPrivacyOn": "Skrito do klika",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Samodejno napredovanje onemogočeno",
       "gradePromotionOn": "Napreduje {date} vsako leto",
       "notConfigured": "Ni konfigurirano",
       "notSet": "Ni nastavljeno",
-      "phoneLocalSubtitle": "Lokalne telefonske številke"
+      "phoneLocalSubtitle": "Lokalne telefonske številke",
+      "volunteerSignupOff": "Vsi prihodnji tedni",
+      "volunteerSignupOn": "Samo naslednji teden vsake vrste načrta"
     },
     "manageChurch": {
       "auditLog": "Dnevnik nadzora",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Izberite, koliko tednov člani vidijo, ko v aplikaciji brskajo po prijavah prostovoljcev. Ko je to vklopljeno, vsak načrt bogoslužja prikaže samo naslednji prihajajoči teden, naslednji teden pa se prikaže, ko ta datum mine.",
+      "nextOnly": "Prikaži samo naslednji teden vsake vrste načrta",
+      "title": "Prijava prostovoljcev",
+      "weeksShown": "Prikazani tedni"
     },
     "webhookEdit": {
       "active": "Aktivno",

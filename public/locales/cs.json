@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} z posledních {weeks} týdnů",
       "email": "E-mail",
       "givenBy": "Daroval(a)",
+      "givingHidden": "Dary jsou v záznamech osob skryté.",
       "givingYear": "v roce {year} · darů: {count}",
       "hereThisWeek": "Tento týden přítomen",
       "household": "Domácnost",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Nedávná docházka",
       "recentGifts": "Dary v roce {year}",
       "service": "Bohoslužba",
+      "showGiving": "Zobrazit dary",
       "showingLatest": "zobrazeno posledních {count}",
       "statement": "Výpis za rok {year}",
       "submitted": "Odesláno",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Hromadné plánování",
       "newPlan": "Nový plán",
+      "noPastPlans": "Zatím žádné minulé plány.",
       "noPlans": "Nebyly nalezeny žádné plány",
       "noUpcomingHint": "Od dneška není nic naplánováno. Pro zobrazení dřívějších plánů zvolte „Minulé“.",
       "past": "Minulé",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Uložit změny",
       "saveError": "Nepodařilo se uložit změny",
       "sendRequest": "Send request",
+      "themeClassic": "Klasický",
+      "themeCustom": "Vlastní",
+      "themeDefault": "Výchozí",
       "themePreferences": "Předvolby motivu",
       "togglePasswordVisibility": "přepnout viditelnost hesla",
       "valEmail": "Prosím zadejte platnou e-mailovou adresu."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Skryje dary každé osoby v jejím záznamu, dokud někdo s přístupem k darům neklikne na Zobrazit dary.",
+      "hide": "Skrýt dary v záznamech osob až do kliknutí",
+      "shown": "Dary v záznamech osob",
+      "title": "Soukromí darů"
+    },
     "givingSettingsEdit": {
       "clientId": "ID klienta",
       "clientSecret": "Tajný klíč klienta",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} připojeno",
       "domainsNone": "Žádné vlastní domény",
       "domainsOne": "1 připojeno",
+      "givingPrivacyOff": "Zobrazeno",
+      "givingPrivacyOn": "Skryto až do kliknutí",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatické povýšení vypnuto",
       "gradePromotionOn": "Povyšuje každý rok {date}",
       "notConfigured": "Nenakonfigurováno",
       "notSet": "Nenastaveno",
-      "phoneLocalSubtitle": "Místní telefonní čísla"
+      "phoneLocalSubtitle": "Místní telefonní čísla",
+      "volunteerSignupOff": "Všechny nadcházející týdny",
+      "volunteerSignupOn": "Pouze příští týden každého typu plánu"
     },
     "manageChurch": {
       "auditLog": "Auditní protokol",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Telefonní číslo",
       "staff": "Staff Only",
       "visibilityPreference": "Předvolba viditelnosti"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Zvolte, kolik týdnů členové uvidí při procházení přihlášek dobrovolníků v aplikaci. Když je tato možnost zapnutá, každý plán bohoslužby zobrazuje pouze nejbližší nadcházející týden a další týden se objeví, jakmile toto datum uplyne.",
+      "nextOnly": "Zobrazit pouze příští týden každého typu plánu",
+      "title": "Přihlášky dobrovolníků",
+      "weeksShown": "Zobrazené týdny"
     },
     "webhookEdit": {
       "active": "Aktivní",

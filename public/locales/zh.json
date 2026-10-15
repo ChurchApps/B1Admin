@@ -2090,6 +2090,7 @@
       "attendanceSummary": "最近 {weeks} 周中出席 {count} 周",
       "email": "邮件",
       "givenBy": "奉献人",
+      "givingHidden": "个人记录中的奉献已隐藏。",
       "givingYear": "{year} 年 · {count} 笔奉献",
       "hereThisWeek": "本周出席",
       "household": "家庭",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "最近出席",
       "recentGifts": "{year} 年奉献",
       "service": "聚会",
+      "showGiving": "显示奉献",
       "showingLatest": "显示最近 {count} 条",
       "statement": "{year} 年捐赠报表",
       "submitted": "已提交",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "批量安排",
       "newPlan": "新计划",
+      "noPastPlans": "暂无过去的计划。",
       "noPlans": "没有找到计划",
       "noUpcomingHint": "从今天起没有任何安排。选择“过去”以查看较早的计划。",
       "past": "过去",
@@ -2908,6 +2911,9 @@
       "saveChanges": "保存更改",
       "saveError": "无法保存更改",
       "sendRequest": "Send request",
+      "themeClassic": "经典",
+      "themeCustom": "自定义",
+      "themeDefault": "默认",
       "themePreferences": "主题偏好",
       "togglePasswordVisibility": "切换密码可见性",
       "valEmail": "请输入有效的电子邮件地址。"
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "在拥有奉献访问权限的人点击“显示奉献”之前，隐藏每个人个人记录中的奉献。",
+      "hide": "在点击之前隐藏个人记录中的奉献",
+      "shown": "个人记录中的奉献",
+      "title": "奉献隐私"
+    },
     "givingSettingsEdit": {
       "clientId": "客户端 ID",
       "clientSecret": "客户端密钥",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} 个已连接",
       "domainsNone": "无自定义域名",
       "domainsOne": "1 个已连接",
+      "givingPrivacyOff": "显示",
+      "givingPrivacyOn": "点击前隐藏",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "自动升学已禁用",
       "gradePromotionOn": "每年在 {date} 自动升级",
       "notConfigured": "未配置",
       "notSet": "未设置",
-      "phoneLocalSubtitle": "本地电话号码"
+      "phoneLocalSubtitle": "本地电话号码",
+      "volunteerSignupOff": "所有即将到来的周",
+      "volunteerSignupOn": "每种计划类型仅显示下一周"
     },
     "manageChurch": {
       "auditLog": "审计日志",
@@ -4158,6 +4174,12 @@
       "phoneNum": "电话号码",
       "staff": "Staff Only",
       "visibilityPreference": "可见性偏好"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "选择成员在应用中浏览志愿者报名时可以看到多少周。开启后，每个服务计划只显示即将到来的下一周，该日期过后才会显示再下一周。",
+      "nextOnly": "每种计划类型仅显示下一周",
+      "title": "志愿者报名",
+      "weeksShown": "显示的周数"
     },
     "webhookEdit": {
       "active": "已激活",

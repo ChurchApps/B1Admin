@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} iš paskutinių {weeks} sav.",
       "email": "El. paštas",
       "givenBy": "Aukotojas",
+      "givingHidden": "Aukojimas paslėptas asmenų įrašuose.",
       "givingYear": "{year} m. · aukos: {count}",
       "hereThisWeek": "Buvo šią savaitę",
       "household": "Namų ūkis",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Naujausias lankomumas",
       "recentGifts": "Aukos {year} m.",
       "service": "Pamaldos",
+      "showGiving": "Rodyti aukojimą",
       "showingLatest": "rodomi naujausi: {count}",
       "statement": "{year} m. išrašas",
       "submitted": "Pateikta",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Praėjusių planų dar nėra.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Nuo šiandien nieko nesuplanuota. Pasirinkite „Praėję“, kad matytumėte ankstesnius planus.",
       "past": "Praėję",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klasikinė",
+      "themeCustom": "Pasirinktinė",
+      "themeDefault": "Numatytoji",
       "themePreferences": "Temos nustatymai",
       "togglePasswordVisibility": "perjungti slaptažodžio matomumą",
       "valEmail": "Please enter a valid email address."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Slepia kiekvieno asmens aukojimą jo įraše, kol kas nors, turintis prieigą prie aukojimo, spusteli Rodyti aukojimą.",
+      "hide": "Slėpti aukojimą asmenų įrašuose, kol bus spustelėta",
+      "shown": "Aukojimas asmenų įrašuose",
+      "title": "Aukojimo privatumas"
+    },
     "givingSettingsEdit": {
       "clientId": "Kliento ID",
       "clientSecret": "Kliento slaptasis raktas",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} sujungta",
       "domainsNone": "Nėra tinkintų domenų",
       "domainsOne": "1 sujungta",
+      "givingPrivacyOff": "Rodoma",
+      "givingPrivacyOn": "Paslėpta, kol bus spustelėta",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatinis perkėlimas išjungtas",
       "gradePromotionOn": "Perkelia {date} kiekvienais metais",
       "notConfigured": "Nesukonfigūruota",
       "notSet": "Nenustatyta",
-      "phoneLocalSubtitle": "Vietiniai telefono numeriai"
+      "phoneLocalSubtitle": "Vietiniai telefono numeriai",
+      "volunteerSignupOff": "Visos būsimos savaitės",
+      "volunteerSignupOn": "Tik kita kiekvieno plano tipo savaitė"
     },
     "manageChurch": {
       "auditLog": "Audito žurnalas",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Pasirinkite, kiek savaičių nariai mato naršydami savanorių registracijas programėlėje. Įjungus šią parinktį, kiekvienas pamaldų planas rodo tik artimiausią būsimą savaitę, o tolesnė savaitė pasirodo, kai ta data praeina.",
+      "nextOnly": "Rodyti tik kitą kiekvieno plano tipo savaitę",
+      "title": "Savanorių registracija",
+      "weeksShown": "Rodomos savaitės"
     },
     "webhookEdit": {
       "active": "Aktyvus",

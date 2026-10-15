@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} sa huling {weeks} linggo",
       "email": "Email",
       "givenBy": "Ibinigay ni",
+      "givingHidden": "Nakatago ang pagbibigay sa mga record ng tao.",
       "givingYear": "noong {year} · {count} kaloob",
       "hereThisWeek": "Narito ngayong linggo",
       "household": "Sambahayan",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Kamakailang pagdalo",
       "recentGifts": "Mga kaloob noong {year}",
       "service": "Serbisyo",
+      "showGiving": "Ipakita ang pagbibigay",
       "showingLatest": "ipinapakita ang pinakabagong {count}",
       "statement": "Statement ng {year}",
       "submitted": "Naisumite",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Maramihang iskedyul",
       "newPlan": "Bagong plano",
+      "noPastPlans": "Wala pang nakaraang plano.",
       "noPlans": "Walang nahanap na mga plano",
       "noUpcomingHint": "Walang naka-iskedyul mula ngayon. Piliin ang \"Nakaraan\" para makita ang mga naunang plano.",
       "past": "Nakaraan",
@@ -2908,6 +2911,9 @@
       "saveChanges": "I -save ang mga pagbabago",
       "saveError": "Nabigong makatipid ng mga pagbabago",
       "sendRequest": "Send request",
+      "themeClassic": "Klasiko",
+      "themeCustom": "Custom",
+      "themeDefault": "Default",
       "themePreferences": "Mga Kagustuhan sa Tema",
       "togglePasswordVisibility": "i-toggle ang visibility ng password",
       "valEmail": "Mangyaring magpasok ng balidong email address."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Itago ang pagbibigay ng bawat tao sa kanilang record hanggang may taong may access sa pagbibigay na mag-click ng Ipakita ang pagbibigay.",
+      "hide": "Itago ang pagbibigay sa mga record ng tao hanggang i-click",
+      "shown": "Pagbibigay sa mga record ng tao",
+      "title": "Privacy ng pagbibigay"
+    },
     "givingSettingsEdit": {
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} nakakonekta",
       "domainsNone": "Walang mga custom na domain",
       "domainsOne": "1 nakakonekta",
+      "givingPrivacyOff": "Ipinapakita",
+      "givingPrivacyOn": "Nakatago hanggang i-click",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Na-disable ang awtomatikong promosyon",
       "gradePromotionOn": "Nagpo-promote tuwing {date} bawat taon",
       "notConfigured": "Hindi naka-configure",
       "notSet": "Hindi nakatakda",
-      "phoneLocalSubtitle": "Mga lokal na numero ng telepono"
+      "phoneLocalSubtitle": "Mga lokal na numero ng telepono",
+      "volunteerSignupOff": "Lahat ng darating na linggo",
+      "volunteerSignupOn": "Ang susunod na linggo lang ng bawat uri ng plano"
     },
     "manageChurch": {
       "auditLog": "Audit Log",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Numero ng telepono",
       "staff": "Staff Only",
       "visibilityPreference": "Kagustuhan sa pagiging visible"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Piliin kung ilang linggo ang makikita ng mga miyembro kapag nagba-browse sila ng mga volunteer signup sa app. Kapag naka-on ito, ipinapakita lang ng bawat plano ng serbisyo ang susunod nitong linggo, at lalabas ang kasunod na linggo kapag lumipas na ang petsang iyon.",
+      "nextOnly": "Ipakita lang ang susunod na linggo ng bawat uri ng plano",
+      "title": "Pag-sign Up ng Volunteer",
+      "weeksShown": "Mga linggong ipinapakita"
     },
     "webhookEdit": {
       "active": "Aktibo",

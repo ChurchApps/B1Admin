@@ -2090,6 +2090,7 @@
       "attendanceSummary": "最近 {weeks} 週中出席 {count} 週",
       "email": "電子郵件",
       "givenBy": "奉獻人",
+      "givingHidden": "個人記錄中的奉獻已隱藏。",
       "givingYear": "{year} 年 · {count} 筆奉獻",
       "hereThisWeek": "本週出席",
       "household": "家庭",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "最近出席",
       "recentGifts": "{year} 年奉獻",
       "service": "聚會",
+      "showGiving": "顯示奉獻",
       "showingLatest": "顯示最近 {count} 筆",
       "statement": "{year} 年捐贈報表",
       "submitted": "已提交",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "批次安排",
       "newPlan": "新計劃",
+      "noPastPlans": "尚無過去的計畫。",
       "noPlans": "沒有找到計劃",
       "noUpcomingHint": "從今天起沒有任何安排。選擇「過去」以查看較早的計劃。",
       "past": "過去",
@@ -2908,6 +2911,9 @@
       "saveChanges": "儲存更改",
       "saveError": "無法儲存更改",
       "sendRequest": "Send request",
+      "themeClassic": "經典",
+      "themeCustom": "自訂",
+      "themeDefault": "預設",
       "themePreferences": "主題偏好",
       "togglePasswordVisibility": "切換密碼可見性",
       "valEmail": "請輸入有效的電子郵件地址。"
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "在具有奉獻存取權限的人點擊「顯示奉獻」之前，隱藏每個人個人記錄中的奉獻。",
+      "hide": "在點擊之前隱藏個人記錄中的奉獻",
+      "shown": "個人記錄中的奉獻",
+      "title": "奉獻隱私"
+    },
     "givingSettingsEdit": {
       "clientId": "用戶端 ID",
       "clientSecret": "用戶端金鑰",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} 個已連線",
       "domainsNone": "無自訂域名",
       "domainsOne": "1 個已連線",
+      "givingPrivacyOff": "顯示",
+      "givingPrivacyOn": "點擊前隱藏",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "已停用自動升級",
       "gradePromotionOn": "每年於 {date} 自動升級",
       "notConfigured": "未配置",
       "notSet": "未設定",
-      "phoneLocalSubtitle": "本地電話號碼"
+      "phoneLocalSubtitle": "本地電話號碼",
+      "volunteerSignupOff": "所有即將到來的週",
+      "volunteerSignupOn": "每種計畫類型僅顯示下一週"
     },
     "manageChurch": {
       "auditLog": "審計日誌",
@@ -4158,6 +4174,12 @@
       "phoneNum": "電話號碼",
       "staff": "Staff Only",
       "visibilityPreference": "可見性偏好"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "選擇成員在應用程式中瀏覽志工報名時可以看到多少週。開啟後，每個聚會計畫只會顯示即將到來的下一週，該日期過後才會顯示再下一週。",
+      "nextOnly": "每種計畫類型僅顯示下一週",
+      "title": "志工報名",
+      "weeksShown": "顯示的週數"
     },
     "webhookEdit": {
       "active": "已啟用",

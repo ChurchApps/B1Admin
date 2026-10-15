@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} من آخر {weeks} أسابيع",
       "email": "البريد الإلكتروني",
       "givenBy": "تبرّع به",
+      "givingHidden": "العطاء مخفي في سجلات الأشخاص.",
       "givingYear": "في {year} · التبرعات: {count}",
       "hereThisWeek": "حاضر هذا الأسبوع",
       "household": "الأسرة",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "الحضور الأخير",
       "recentGifts": "التبرعات في {year}",
       "service": "الخدمة",
+      "showGiving": "إظهار العطاء",
       "showingLatest": "عرض أحدث {count}",
       "statement": "بيان {year}",
       "submitted": "تم الإرسال",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "لا توجد خطط سابقة بعد.",
       "noPlans": "No plans found",
       "noUpcomingHint": "لا يوجد شيء مجدول من اليوم فصاعدًا. اختر \"السابقة\" لعرض الخطط السابقة.",
       "past": "السابقة",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "كلاسيكي",
+      "themeCustom": "مخصص",
+      "themeDefault": "افتراضي",
       "themePreferences": "تفضيلات السمة",
       "togglePasswordVisibility": "تبديل رؤية كلمة المرور",
       "valEmail": "Please enter a valid email address."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "يُخفي عطاء كل شخص في سجله حتى ينقر شخص لديه صلاحية الوصول إلى العطاء على إظهار العطاء.",
+      "hide": "إخفاء العطاء في سجلات الأشخاص حتى النقر",
+      "shown": "العطاء في سجلات الأشخاص",
+      "title": "خصوصية العطاء"
+    },
     "givingSettingsEdit": {
       "clientId": "معرّف العميل",
       "clientSecret": "سر العميل",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} متصل",
       "domainsNone": "لا نطاقات مخصصة",
       "domainsOne": "1 متصل",
+      "givingPrivacyOff": "ظاهر",
+      "givingPrivacyOn": "مخفي حتى النقر",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "الترقية التلقائية معطلة",
       "gradePromotionOn": "يتم الترقية في {date} من كل عام",
       "notConfigured": "غير مُهيأ",
       "notSet": "غير محدد",
-      "phoneLocalSubtitle": "أرقام هواتف محلية"
+      "phoneLocalSubtitle": "أرقام هواتف محلية",
+      "volunteerSignupOff": "جميع الأسابيع القادمة",
+      "volunteerSignupOn": "الأسبوع التالي فقط لكل نوع خطة"
     },
     "manageChurch": {
       "auditLog": "سجل التدقيق",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "اختر عدد الأسابيع التي يراها الأعضاء عند تصفح تسجيلات المتطوعين في التطبيق. عند تفعيل هذا الخيار، تعرض كل خطة خدمة أسبوعها القادم فقط، ويظهر الأسبوع الذي يليه بعد مرور ذلك التاريخ.",
+      "nextOnly": "إظهار الأسبوع التالي فقط لكل نوع خطة",
+      "title": "تسجيل المتطوعين",
+      "weeksShown": "الأسابيع المعروضة"
     },
     "webhookEdit": {
       "active": "نشط",

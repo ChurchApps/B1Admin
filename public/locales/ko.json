@@ -2090,6 +2090,7 @@
       "attendanceSummary": "최근 {weeks}주 중 {count}주",
       "email": "이메일",
       "givenBy": "헌금자",
+      "givingHidden": "개인 기록에서 헌금이 숨겨져 있습니다.",
       "givingYear": "{year}년 · 헌금 {count}건",
       "hereThisWeek": "이번 주 출석",
       "household": "가구",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "최근 출석",
       "recentGifts": "{year}년 헌금",
       "service": "예배",
+      "showGiving": "헌금 표시",
       "showingLatest": "최근 {count}개 표시 중",
       "statement": "{year}년 명세서",
       "submitted": "제출됨",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "일괄 일정",
       "newPlan": "새로운 계획",
+      "noPastPlans": "아직 지난 계획이 없습니다.",
       "noPlans": "계획을 찾을 수 없습니다.",
       "noUpcomingHint": "오늘 이후로 예정된 것이 없습니다. 이전 계획을 보려면 \"지난\"을 선택하세요.",
       "past": "지난",
@@ -2908,6 +2911,9 @@
       "saveChanges": "변경 사항 저장",
       "saveError": "변경사항을 저장하지 못했습니다.",
       "sendRequest": "Send request",
+      "themeClassic": "클래식",
+      "themeCustom": "사용자 지정",
+      "themeDefault": "기본",
       "themePreferences": "테마 환경 설정",
       "togglePasswordVisibility": "비밀번호 표시 전환",
       "valEmail": "유효한 이메일 주소를 입력해주세요."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "헌금 접근 권한이 있는 사람이 헌금 표시를 클릭할 때까지 각 사람의 헌금을 개인 기록에서 숨깁니다.",
+      "hide": "클릭할 때까지 개인 기록에서 헌금 숨기기",
+      "shown": "개인 기록의 헌금",
+      "title": "헌금 개인정보 보호"
+    },
     "givingSettingsEdit": {
       "clientId": "클라이언트 ID",
       "clientSecret": "클라이언트 비밀키",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count}개 연결됨",
       "domainsNone": "사용자 정의 도메인 없음",
       "domainsOne": "1개 연결됨",
+      "givingPrivacyOff": "표시됨",
+      "givingPrivacyOn": "클릭할 때까지 숨김",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "자동 진급 비활성화됨",
       "gradePromotionOn": "매년 {date}에 진급",
       "notConfigured": "구성되지 않음",
       "notSet": "설정되지 않음",
-      "phoneLocalSubtitle": "국내 전화번호"
+      "phoneLocalSubtitle": "국내 전화번호",
+      "volunteerSignupOff": "다가오는 모든 주",
+      "volunteerSignupOn": "각 계획 유형의 다음 주만"
     },
     "manageChurch": {
       "auditLog": "감사 로그",
@@ -4158,6 +4174,12 @@
       "phoneNum": "전화번호",
       "staff": "Staff Only",
       "visibilityPreference": "가시성 기본 설정"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "회원이 앱에서 봉사자 신청을 둘러볼 때 볼 수 있는 주 수를 선택하세요. 이 옵션을 켜면 각 예배 계획에 다가오는 다음 주만 표시되고, 그 날짜가 지나면 그다음 주가 표시됩니다.",
+      "nextOnly": "각 계획 유형의 다음 주만 표시",
+      "title": "봉사자 신청",
+      "weeksShown": "표시되는 주"
     },
     "webhookEdit": {
       "active": "활성",

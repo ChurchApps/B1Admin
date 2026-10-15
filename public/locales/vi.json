@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} trong {weeks} tuần qua",
       "email": "Email",
       "givenBy": "Người dâng",
+      "givingHidden": "Dâng hiến được ẩn trên hồ sơ cá nhân.",
       "givingYear": "trong năm {year} · {count} khoản dâng",
       "hereThisWeek": "Có mặt tuần này",
       "household": "Hộ gia đình",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Tham dự gần đây",
       "recentGifts": "Khoản dâng năm {year}",
       "service": "Buổi lễ",
+      "showGiving": "Hiện dâng hiến",
       "showingLatest": "đang hiển thị {count} mới nhất",
       "statement": "Bảng sao kê năm {year}",
       "submitted": "Đã gửi",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "Mới Plan",
+      "noPastPlans": "Chưa có kế hoạch nào đã qua.",
       "noPlans": "Không plans found",
       "noUpcomingHint": "Không có gì được lên lịch từ hôm nay trở đi. Chọn \"Đã qua\" để xem các kế hoạch trước đó.",
       "past": "Đã qua",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Lưu Changes",
       "saveError": "Failed to Lưu changes",
       "sendRequest": "Send request",
+      "themeClassic": "Cổ điển",
+      "themeCustom": "Tùy chỉnh",
+      "themeDefault": "Mặc định",
       "themePreferences": "Tùy chọn chủ đề",
       "togglePasswordVisibility": "bật/tắt hiển thị mật khẩu",
       "valEmail": "Please enter a valid Email Địa chỉ."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Ẩn dâng hiến của mỗi người trên hồ sơ của họ cho đến khi người có quyền truy cập dâng hiến nhấp vào Hiện dâng hiến.",
+      "hide": "Ẩn dâng hiến trên hồ sơ cá nhân cho đến khi được nhấp",
+      "shown": "Dâng hiến trên hồ sơ cá nhân",
+      "title": "Quyền riêng tư dâng hiến"
+    },
     "givingSettingsEdit": {
       "clientId": "ID ứng dụng khách (Client ID)",
       "clientSecret": "Mã bí mật ứng dụng khách (Client Secret)",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} đã kết nối",
       "domainsNone": "Không có tên miền tùy chỉnh",
       "domainsOne": "1 đã kết nối",
+      "givingPrivacyOff": "Hiển thị",
+      "givingPrivacyOn": "Ẩn cho đến khi được nhấp",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Thăng lớp tự động bị vô hiệu hóa",
       "gradePromotionOn": "Thăng khối lớp vào {date} mỗi năm",
       "notConfigured": "Chưa cấu hình",
       "notSet": "Chưa đặt",
-      "phoneLocalSubtitle": "Số điện thoại nội địa"
+      "phoneLocalSubtitle": "Số điện thoại nội địa",
+      "volunteerSignupOff": "Tất cả các tuần sắp tới",
+      "volunteerSignupOn": "Chỉ tuần kế tiếp của mỗi loại kế hoạch"
     },
     "manageChurch": {
       "auditLog": "Nhật ký kiểm tra",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Điện thoại Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Chọn số tuần mà thành viên thấy khi duyệt đăng ký tình nguyện trong ứng dụng. Khi bật tùy chọn này, mỗi kế hoạch buổi lễ chỉ hiển thị tuần sắp tới gần nhất, và tuần tiếp theo sẽ xuất hiện khi ngày đó đã qua.",
+      "nextOnly": "Chỉ hiện tuần kế tiếp của mỗi loại kế hoạch",
+      "title": "Đăng ký tình nguyện",
+      "weeksShown": "Số tuần hiển thị"
     },
     "webhookEdit": {
       "active": "Hoạt động",

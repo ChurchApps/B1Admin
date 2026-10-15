@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} av de senaste {weeks} veckorna",
       "email": "E-post",
       "givenBy": "Given av",
+      "givingHidden": "Givande är dolt på personkort.",
       "givingYear": "under {year} · {count} gåvor",
       "hereThisWeek": "Här denna vecka",
       "household": "Hushåll",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Senaste närvaro",
       "recentGifts": "Gåvor under {year}",
       "service": "Gudstjänst",
+      "showGiving": "Visa givande",
       "showingLatest": "visar de senaste {count}",
       "statement": "Sammanställning {year}",
       "submitted": "Inskickat",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Masschemalägga",
       "newPlan": "Ny plan",
+      "noPastPlans": "Inga tidigare planer ännu.",
       "noPlans": "Inga planer hittades",
       "noUpcomingHint": "Inget är schemalagt från och med idag. Välj \"Tidigare\" för att se äldre planer.",
       "past": "Tidigare",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Spara ändringar",
       "saveError": "Kunde inte spara ändringar",
       "sendRequest": "Send request",
+      "themeClassic": "Klassisk",
+      "themeCustom": "Anpassad",
+      "themeDefault": "Standard",
       "themePreferences": "Temainställningar",
       "togglePasswordVisibility": "växla lösenordssynlighet",
       "valEmail": "Vänligen ange en giltig e-postadress."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Dölj varje persons givande på personkortet tills någon med behörighet till givande klickar på Visa givande.",
+      "hide": "Dölj givande på personkort tills någon klickar",
+      "shown": "Givande på personkort",
+      "title": "Integritet för givande"
+    },
     "givingSettingsEdit": {
       "clientId": "Klient-ID",
       "clientSecret": "Klienthemlighet",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} anslutna",
       "domainsNone": "Inga anpassade domäner",
       "domainsOne": "1 ansluten",
+      "givingPrivacyOff": "Visas",
+      "givingPrivacyOn": "Dolt tills någon klickar",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatisk uppflyttning inaktiverad",
       "gradePromotionOn": "Flyttar upp {date} varje år",
       "notConfigured": "Inte konfigurerad",
       "notSet": "Ej angett",
-      "phoneLocalSubtitle": "Lokala telefonnummer"
+      "phoneLocalSubtitle": "Lokala telefonnummer",
+      "volunteerSignupOff": "Alla kommande veckor",
+      "volunteerSignupOn": "Endast nästa vecka för varje plantyp"
     },
     "manageChurch": {
       "auditLog": "Granskningslogg",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Telefonnummer",
       "staff": "Staff Only",
       "visibilityPreference": "Synlighetsinställning"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Välj hur många veckor medlemmarna ser när de bläddrar bland volontäranmälningar i appen. När detta är aktiverat visar varje gudstjänstplan bara sin närmaste kommande vecka, och veckan därpå visas när det datumet har passerat.",
+      "nextOnly": "Visa endast nästa vecka för varje plantyp",
+      "title": "Volontäranmälan",
+      "weeksShown": "Visade veckor"
     },
     "webhookEdit": {
       "active": "Aktiv",

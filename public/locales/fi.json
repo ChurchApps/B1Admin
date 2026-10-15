@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} viimeisistä {weeks} viikosta",
       "email": "Sähköposti",
       "givenBy": "Lahjoittaja",
+      "givingHidden": "Lahjoitukset on piilotettu henkilötiedoista.",
       "givingYear": "vuonna {year} · {count} lahjoitusta",
       "hereThisWeek": "Paikalla tällä viikolla",
       "household": "Kotitalous",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Viimeaikainen läsnäolo",
       "recentGifts": "Lahjoitukset vuonna {year}",
       "service": "Jumalanpalvelus",
+      "showGiving": "Näytä lahjoitukset",
       "showingLatest": "näytetään viimeisimmät {count}",
       "statement": "Lahjoituskatsaus {year}",
       "submitted": "Lähetetty",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Ei vielä menneitä suunnitelmia.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Tästä päivästä eteenpäin ei ole mitään aikataulutettu. Valitse \"Menneet\" nähdäksesi aiemmat suunnitelmat.",
       "past": "Menneet",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Tallenna muutokset",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klassinen",
+      "themeCustom": "Mukautettu",
+      "themeDefault": "Oletus",
       "themePreferences": "Teema-asetukset",
       "togglePasswordVisibility": "vaihda salasanan näkyvyys",
       "valEmail": "Kirjoita kelvollinen sähköpostiosoite."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Piilota kunkin henkilön lahjoitukset hänen henkilötiedoistaan, kunnes joku, jolla on lahjoitusten käyttöoikeus, napsauttaa Näytä lahjoitukset.",
+      "hide": "Piilota lahjoitukset henkilötiedoista napsautukseen asti",
+      "shown": "Lahjoitukset henkilötiedoissa",
+      "title": "Lahjoitusten yksityisyys"
+    },
     "givingSettingsEdit": {
       "clientId": "Asiakastunnus (Client ID)",
       "clientSecret": "Asiakassalaisuus (Client Secret)",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} yhdistetty",
       "domainsNone": "Ei omia verkkotunnuksia",
       "domainsOne": "1 yhdistetty",
+      "givingPrivacyOff": "Näytetään",
+      "givingPrivacyOn": "Piilotettu napsautukseen asti",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automaattinen siirtyminen pois käytöstä",
       "gradePromotionOn": "Siirtyy {date} joka vuosi",
       "notConfigured": "Ei määritetty",
       "notSet": "Ei asetettu",
-      "phoneLocalSubtitle": "Paikalliset puhelinnumerot"
+      "phoneLocalSubtitle": "Paikalliset puhelinnumerot",
+      "volunteerSignupOff": "Kaikki tulevat viikot",
+      "volunteerSignupOn": "Vain kunkin suunnitelmatyypin seuraava viikko"
     },
     "manageChurch": {
       "auditLog": "Auditointiloki",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Phone Number",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Valitse, montako viikkoa jäsenet näkevät selatessaan vapaaehtoisilmoittautumisia sovelluksessa. Kun tämä on käytössä, kukin jumalanpalvelussuunnitelma näyttää vain seuraavan tulevan viikkonsa, ja sitä seuraava viikko tulee näkyviin, kun päivämäärä on ohitettu.",
+      "nextOnly": "Näytä vain kunkin suunnitelmatyypin seuraava viikko",
+      "title": "Vapaaehtoisten ilmoittautuminen",
+      "weeksShown": "Näytettävät viikot"
     },
     "webhookEdit": {
       "active": "Aktiivinen",

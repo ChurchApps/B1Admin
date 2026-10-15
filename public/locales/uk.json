@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} з останніх {weeks} тижнів",
       "email": "Електронна пошта",
       "givenBy": "Пожертвував",
+      "givingHidden": "Пожертви приховано в картках людей.",
       "givingYear": "у {year} · пожертв: {count}",
       "hereThisWeek": "Присутній цього тижня",
       "household": "Домогосподарство",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Нещодавнє відвідування",
       "recentGifts": "Пожертви у {year}",
       "service": "Служба",
+      "showGiving": "Показати пожертви",
       "showingLatest": "показано останні {count}",
       "statement": "Виписка за {year}",
       "submitted": "Надіслано",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Масовий розклад",
       "newPlan": "Новий план",
+      "noPastPlans": "Минулих планів поки немає.",
       "noPlans": "Планів не знайдено",
       "noUpcomingHint": "Від сьогодні нічого не заплановано. Виберіть «Минулі», щоб переглянути попередні плани.",
       "past": "Минулі",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Зберегти зміни",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Класична",
+      "themeCustom": "Власна",
+      "themeDefault": "За замовчуванням",
       "themePreferences": "Налаштування теми",
       "togglePasswordVisibility": "перемкнути видимість пароля",
       "valEmail": "Введіть дійсну адресу електронної пошти."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Приховує пожертви кожної людини в її картці, доки хтось із доступом до пожертв не натисне «Показати пожертви».",
+      "hide": "Приховувати пожертви в картках людей до натискання",
+      "shown": "Пожертви в картках людей",
+      "title": "Конфіденційність пожертв"
+    },
     "givingSettingsEdit": {
       "clientId": "ID клієнта",
       "clientSecret": "Секрет клієнта",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} підключено",
       "domainsNone": "Немає власних доменів",
       "domainsOne": "1 підключено",
+      "givingPrivacyOff": "Показано",
+      "givingPrivacyOn": "Приховано до натискання",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Автоматичний перехід вимкнено",
       "gradePromotionOn": "Переводить щороку {date}",
       "notConfigured": "Не налаштовано",
       "notSet": "Не встановлено",
-      "phoneLocalSubtitle": "Місцеві номери телефонів"
+      "phoneLocalSubtitle": "Місцеві номери телефонів",
+      "volunteerSignupOff": "Усі наступні тижні",
+      "volunteerSignupOn": "Лише наступний тиждень кожного типу плану"
     },
     "manageChurch": {
       "auditLog": "Журнал аудиту",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Номер телефону",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Виберіть, скільки тижнів бачать учасники, переглядаючи записи волонтерів у застосунку. Якщо цей параметр увімкнено, кожен план служіння показує лише найближчий тиждень, а наступний тиждень з'являється, коли ця дата мине.",
+      "nextOnly": "Показувати лише наступний тиждень кожного типу плану",
+      "title": "Запис волонтерів",
+      "weeksShown": "Показані тижні"
     },
     "webhookEdit": {
       "active": "Активний",

@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} z ostatnich {weeks} tygodni",
       "email": "Email",
       "givenBy": "Przekazane przez",
+      "givingHidden": "Darowizny są ukryte w kartotekach osób.",
       "givingYear": "w {year} · darowizny: {count}",
       "hereThisWeek": "Obecny w tym tygodniu",
       "household": "Rodzina",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Ostatnia obecność",
       "recentGifts": "Darowizny w {year}",
       "service": "Nabożeństwo",
+      "showGiving": "Pokaż darowizny",
       "showingLatest": "wyświetlono ostatnie: {count}",
       "statement": "Zestawienie za {year}",
       "submitted": "Przesłano",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Bulk Schedule",
       "newPlan": "New Plan",
+      "noPastPlans": "Brak jeszcze minionych planów.",
       "noPlans": "No plans found",
       "noUpcomingHint": "Od dziś nic nie zaplanowano. Wybierz „Przeszłe”, aby zobaczyć wcześniejsze plany.",
       "past": "Przeszłe",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Zapisz zmiany",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Klasyczny",
+      "themeCustom": "Niestandardowy",
+      "themeDefault": "Domyślny",
       "themePreferences": "Preferencje motywu",
       "togglePasswordVisibility": "przełącz widoczność hasła",
       "valEmail": "Proszę wpisać prawidłowy adres e-mail."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Ukrywa darowizny każdej osoby w jej kartotece, dopóki ktoś z dostępem do darowizn nie kliknie Pokaż darowizny.",
+      "hide": "Ukrywaj darowizny w kartotekach osób do momentu kliknięcia",
+      "shown": "Darowizny w kartotekach osób",
+      "title": "Prywatność darowizn"
+    },
     "givingSettingsEdit": {
       "clientId": "ID klienta",
       "clientSecret": "Sekret klienta",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} połączonych",
       "domainsNone": "Brak niestandardowych domen",
       "domainsOne": "1 połączona",
+      "givingPrivacyOff": "Widoczne",
+      "givingPrivacyOn": "Ukryte do momentu kliknięcia",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatyczna promocja wyłączona",
       "gradePromotionOn": "Promuje w dniu {date} każdego roku",
       "notConfigured": "Nieskonfigurowane",
       "notSet": "Nieustawione",
-      "phoneLocalSubtitle": "Lokalne numery telefonów"
+      "phoneLocalSubtitle": "Lokalne numery telefonów",
+      "volunteerSignupOff": "Wszystkie nadchodzące tygodnie",
+      "volunteerSignupOn": "Tylko następny tydzień każdego typu planu"
     },
     "manageChurch": {
       "auditLog": "Dziennik audytu",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Numer telefonu",
       "staff": "Staff Only",
       "visibilityPreference": "Visibility Preference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Wybierz, ile tygodni widzą członkowie podczas przeglądania zapisów wolontariuszy w aplikacji. Gdy ta opcja jest włączona, każdy plan nabożeństwa pokazuje tylko najbliższy nadchodzący tydzień, a kolejny tydzień pojawia się po upływie tej daty.",
+      "nextOnly": "Pokazuj tylko następny tydzień każdego typu planu",
+      "title": "Zapisy wolontariuszy",
+      "weeksShown": "Wyświetlane tygodnie"
     },
     "webhookEdit": {
       "active": "Aktywny",

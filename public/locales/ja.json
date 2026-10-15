@@ -2090,6 +2090,7 @@
       "attendanceSummary": "過去 {weeks} 週間のうち {count} 週",
       "email": "メール",
       "givenBy": "献金者",
+      "givingHidden": "個人記録では献金が非表示になっています。",
       "givingYear": "{year} 年 · 献金 {count} 件",
       "hereThisWeek": "今週出席",
       "household": "世帯",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "最近の出席",
       "recentGifts": "{year} 年の献金",
       "service": "礼拝",
+      "showGiving": "献金を表示",
       "showingLatest": "最新 {count} 件を表示中",
       "statement": "{year} 年の証明書",
       "submitted": "提出済み",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "年間プランを適用",
       "bulkSchedule": "一括で予定に追加",
       "newPlan": "新しいプラン",
+      "noPastPlans": "過去のプランはまだありません。",
       "noPlans": "プランが見つかりません",
       "noUpcomingHint": "今日以降の予定はありません。以前のプランを見るには「過去」を選択してください。",
       "past": "過去",
@@ -2908,6 +2911,9 @@
       "saveChanges": "変更を保存",
       "saveError": "変更を保存できませんでした",
       "sendRequest": "Send request",
+      "themeClassic": "クラシック",
+      "themeCustom": "カスタム",
+      "themeDefault": "デフォルト",
       "themePreferences": "テーマ設定",
       "togglePasswordVisibility": "パスワードの表示/非表示",
       "valEmail": "有効なメールアドレスを入力してください。"
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "献金へのアクセス権を持つ人が「献金を表示」をクリックするまで、各個人の献金を個人記録で非表示にします。",
+      "hide": "クリックするまで個人記録の献金を非表示にする",
+      "shown": "個人記録の献金",
+      "title": "献金のプライバシー"
+    },
     "givingSettingsEdit": {
       "clientId": "クライアント ID",
       "clientSecret": "クライアントシークレット",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count}件接続中",
       "domainsNone": "カスタムドメインなし",
       "domainsOne": "1件接続中",
+      "givingPrivacyOff": "表示",
+      "givingPrivacyOn": "クリックするまで非表示",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "自動進級が無効です",
       "gradePromotionOn": "毎年{date}に進級",
       "notConfigured": "未設定",
       "notSet": "未設定",
-      "phoneLocalSubtitle": "国内の電話番号"
+      "phoneLocalSubtitle": "国内の電話番号",
+      "volunteerSignupOff": "今後のすべての週",
+      "volunteerSignupOn": "各プランタイプの次の週のみ"
     },
     "manageChurch": {
       "auditLog": "監査ログ",
@@ -4158,6 +4174,12 @@
       "phoneNum": "電話番号",
       "staff": "Staff Only",
       "visibilityPreference": "公開範囲の設定"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "メンバーがアプリでボランティア募集を閲覧するときに表示される週数を選択します。オンにすると、各礼拝プランには次の週のみが表示され、その日付が過ぎると翌週が表示されます。",
+      "nextOnly": "各プランタイプの次の週のみを表示",
+      "title": "ボランティア登録",
+      "weeksShown": "表示する週"
     },
     "webhookEdit": {
       "active": "有効",

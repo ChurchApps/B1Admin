@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} af de seneste {weeks} uger",
       "email": "E-mail",
       "givenBy": "Givet af",
+      "givingHidden": "Bidrag er skjult på personkort.",
       "givingYear": "i {year} · {count} gaver",
       "hereThisWeek": "Til stede denne uge",
       "household": "Husstand",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Seneste fremmøde",
       "recentGifts": "Gaver i {year}",
       "service": "Gudstjeneste",
+      "showGiving": "Vis bidrag",
       "showingLatest": "viser de seneste {count}",
       "statement": "Opgørelse {year}",
       "submitted": "Indsendt",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Masseplanlægning",
       "newPlan": "Ny plan",
+      "noPastPlans": "Ingen tidligere planer endnu.",
       "noPlans": "Ingen planer fundet",
       "noUpcomingHint": "Intet er planlagt fra i dag og frem. Vælg \"Tidligere\" for at se tidligere planer.",
       "past": "Tidligere",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Gem ændringer",
       "saveError": "Kunne ikke gemme ændringer",
       "sendRequest": "Send request",
+      "themeClassic": "Klassisk",
+      "themeCustom": "Tilpasset",
+      "themeDefault": "Standard",
       "themePreferences": "Temapræferencer",
       "togglePasswordVisibility": "skift adgangskodesynlighed",
       "valEmail": "Indtast venligst en gyldig e-mailadresse."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Skjul hver persons bidrag på deres personkort, indtil en person med adgang til bidrag klikker på Vis bidrag.",
+      "hide": "Skjul bidrag på personkort, indtil der klikkes",
+      "shown": "Bidrag på personkort",
+      "title": "Privatliv for bidrag"
+    },
     "givingSettingsEdit": {
       "clientId": "Klient-ID",
       "clientSecret": "Klienthemmelighed",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} tilsluttet",
       "domainsNone": "Ingen tilpassede domæner",
       "domainsOne": "1 tilsluttet",
+      "givingPrivacyOff": "Vist",
+      "givingPrivacyOn": "Skjult, indtil der klikkes",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Automatisk oprykning deaktiveret",
       "gradePromotionOn": "Rykker op den {date} hvert år",
       "notConfigured": "Ikke konfigureret",
       "notSet": "Ikke angivet",
-      "phoneLocalSubtitle": "Lokale telefonnumre"
+      "phoneLocalSubtitle": "Lokale telefonnumre",
+      "volunteerSignupOff": "Alle kommende uger",
+      "volunteerSignupOn": "Kun den næste uge for hver plantype"
     },
     "manageChurch": {
       "auditLog": "Revisionslog",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Telefonnummer",
       "staff": "Staff Only",
       "visibilityPreference": "Synlighedspræference"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Vælg, hvor mange uger medlemmerne ser, når de gennemser frivilligtilmeldinger i appen. Når dette er slået til, viser hver gudstjenesteplan kun sin næste kommende uge, og den følgende uge vises, når den dato er passeret.",
+      "nextOnly": "Vis kun den næste uge for hver plantype",
+      "title": "Frivilligtilmelding",
+      "weeksShown": "Viste uger"
     },
     "webhookEdit": {
       "active": "Aktiv",

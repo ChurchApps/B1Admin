@@ -2090,6 +2090,7 @@
       "attendanceSummary": "{count} de las últimas {weeks} semanas",
       "email": "Email",
       "givenBy": "Donado por",
+      "givingHidden": "Las donaciones están ocultas en los registros de personas.",
       "givingYear": "en {year} · {count} donaciones",
       "hereThisWeek": "Presente esta semana",
       "household": "Hogar",
@@ -2106,6 +2107,7 @@
       "recentAttendance": "Asistencia reciente",
       "recentGifts": "Donaciones en {year}",
       "service": "Servicio",
+      "showGiving": "Mostrar donaciones",
       "showingLatest": "mostrando los últimos {count}",
       "statement": "Estado de cuenta {year}",
       "submitted": "Enviado",
@@ -2561,6 +2563,7 @@
       "applyYearPlan": "Apply Year Plan",
       "bulkSchedule": "Programación masiva",
       "newPlan": "Nuevo Plan",
+      "noPastPlans": "Aún no hay planes pasados.",
       "noPlans": "No se encontraron planes",
       "noUpcomingHint": "No hay nada programado a partir de hoy. Elija \"Pasados\" para ver planes anteriores.",
       "past": "Pasados",
@@ -2908,6 +2911,9 @@
       "saveChanges": "Guardar cambios",
       "saveError": "No se pudieron guardar los cambios",
       "sendRequest": "Send request",
+      "themeClassic": "Clásico",
+      "themeCustom": "Personalizado",
+      "themeDefault": "Predeterminado",
       "themePreferences": "Preferencias de Tema",
       "togglePasswordVisibility": "alternar visibilidad de la contraseña",
       "valEmail": "Por favor ingrese una dirección de correo electrónico válida."
@@ -3922,6 +3928,12 @@
     "giving": {
       "secretPlaceholder": "********"
     },
+    "givingPrivacySettingsEdit": {
+      "help": "Oculta las donaciones de cada persona en su registro hasta que alguien con acceso a donaciones haga clic en Mostrar donaciones.",
+      "hide": "Ocultar las donaciones en los registros de personas hasta hacer clic",
+      "shown": "Donaciones en los registros de personas",
+      "title": "Privacidad de donaciones"
+    },
     "givingSettingsEdit": {
       "clientId": "ID de Cliente",
       "clientSecret": "Secreto de Cliente",
@@ -3971,12 +3983,16 @@
       "domainsCount": "{count} conectados",
       "domainsNone": "Sin dominios personalizados",
       "domainsOne": "1 conectado",
+      "givingPrivacyOff": "Visibles",
+      "givingPrivacyOn": "Ocultas hasta hacer clic",
       "givingProvider": "{provider} · {currency}",
       "gradePromotionOff": "Promoción automática desactivada",
       "gradePromotionOn": "Promueve el {date} de cada año",
       "notConfigured": "No configurado",
       "notSet": "No establecido",
-      "phoneLocalSubtitle": "Números de teléfono locales"
+      "phoneLocalSubtitle": "Números de teléfono locales",
+      "volunteerSignupOff": "Todas las próximas semanas",
+      "volunteerSignupOn": "Solo la próxima semana de cada tipo de plan"
     },
     "manageChurch": {
       "auditLog": "Registro de Auditoría",
@@ -4158,6 +4174,12 @@
       "phoneNum": "Número de Teléfono",
       "staff": "Staff Only",
       "visibilityPreference": "Preferencia de Visibilidad"
+    },
+    "volunteerSignupSettingsEdit": {
+      "help": "Elige cuántas semanas ven los miembros al explorar las inscripciones de voluntarios en la aplicación. Con esta opción activada, cada plan de servicio muestra solo su próxima semana, y la semana siguiente aparece cuando pasa esa fecha.",
+      "nextOnly": "Mostrar solo la próxima semana de cada tipo de plan",
+      "title": "Inscripción de voluntarios",
+      "weeksShown": "Semanas mostradas"
     },
     "webhookEdit": {
       "active": "Activo",
