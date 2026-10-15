@@ -6,6 +6,8 @@ import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
 import { hasPlansEditAccess } from "./helpers";
+import { churchBrandColor } from "./helpers/Themes";
+import { useThemeMode } from "./ThemeContext";
 
 const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) => ({ default: module.PeoplePage })));
 const PersonPage = React.lazy(() => import("./people/PersonPage").then((module) => ({ default: module.PersonPage })));
@@ -84,11 +86,16 @@ export const Authenticated: React.FC = () => {
   // Dates follow the church's region setting; hold rendering until it is known so pages don't flash US formats.
   const churchId = context?.userChurch?.church?.id;
   const [regionChurchId, setRegionChurchId] = React.useState<string | null>(null);
+  const { setBrandColor } = useThemeMode();
   React.useEffect(() => {
     if (!churchId) return;
     let cancelled = false;
     ApiHelper.getAnonymous("/settings/public/" + churchId, "MembershipApi")
-      .then((settings: { region?: string }) => { if (!cancelled) DateHelper.setLocale(settings?.region); })
+      .then((settings: { region?: string; appTheme?: string; primaryColor?: string }) => {
+        if (cancelled) return;
+        DateHelper.setLocale(settings?.region);
+        setBrandColor(churchBrandColor(settings));
+      })
       .catch(() => { if (!cancelled) DateHelper.setLocale(null); })
       .finally(() => { if (!cancelled) setRegionChurchId(churchId); });
     return () => { cancelled = true; };

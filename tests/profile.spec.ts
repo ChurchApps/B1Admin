@@ -10,6 +10,21 @@ test.describe("Profile", () => {
     await expect(page.getByTestId("user-menu-theme")).toBeVisible();
   });
 
+  test("the Custom theme uses the church's app color and sticks after a reload", async ({ page }) => {
+    await page.route(/\/membership\/settings\/public\//, async (route) => {
+      const res = await route.fetch();
+      await route.fulfill({ response: res, json: { ...(await res.json()), appTheme: JSON.stringify({ light: { primary: "#2E7D32" } }) } });
+    });
+    await page.goto("/people");
+    await page.locator("#user-menu-button").click();
+    await page.getByTestId("theme-custom").click();
+    const primaryVar = () => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--b1-primary").trim().toUpperCase());
+    await expect.poll(primaryVar).toBe("#2E7D32");
+    await page.reload();
+    await expect.poll(primaryVar, { timeout: 15000 }).toBe("#2E7D32");
+    await page.evaluate(() => localStorage.removeItem("b1admin-theme"));
+  });
+
   test("devices explains what a paired screen is when there are none", async ({ page }) => {
     await page.route("**/devices/my", (route) => route.fulfill({ json: [] }));
     await page.goto("/profile/devices");

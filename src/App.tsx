@@ -14,8 +14,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const ThemedApp: React.FC = () => {
-  const { mode, themeId } = useThemeMode();
-  const theme = useMemo(() => createAppTheme(mode, themeId), [mode, themeId]);
+  const { mode, themeId, brandColor } = useThemeMode();
+  const theme = useMemo(() => createAppTheme(mode, themeId, brandColor), [mode, themeId, brandColor]);
 
   return (
     <ThemeProvider theme={theme}>

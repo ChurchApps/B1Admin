@@ -39,7 +39,7 @@ import { WEBSITE_ELEMENT_TYPES } from "./websiteContent";
 import { A11yPanel } from "./A11yPanel";
 import { checkPageAccessibility } from "./a11yChecker";
 
-const editorTheme = (themeId: ThemeId) => createTheme(createAppTheme("light", themeId), {
+const editorTheme = (themeId: ThemeId, brand: string) => createTheme(createAppTheme("light", themeId, brand), {
   components: {
     MuiTextField: { defaultProps: { margin: "normal" } },
     MuiFormControl: { defaultProps: { margin: "normal" } },
@@ -119,8 +119,8 @@ export function ContentEditor(props: Props) {
   };
 
   // Light mode so the preview matches the public site. Color theme stays the one the user picked.
-  const { themeId } = useThemeMode();
-  const lightEditorTheme = useMemo(() => editorTheme(themeId), [themeId]);
+  const { themeId, brandColor } = useThemeMode();
+  const lightEditorTheme = useMemo(() => editorTheme(themeId, brandColor), [themeId, brandColor]);
   useEffect(() => {
     const wasInDarkMode = document.body.classList.contains("dark-theme");
     if (wasInDarkMode) {

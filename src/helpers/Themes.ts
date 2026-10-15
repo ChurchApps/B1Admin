@@ -16,17 +16,11 @@ declare module "@mui/material/styles" {
   }
 }
 
-// Semantic tokens, exposed to page code as var(--b1-<kebab-name>). `soft` is the default;
-// `warm` matches the cream / navy / teal reference; `plum` is aubergine / lilac / coral; `classic` recreates the pre-redesign
-// look (gradient page banner, shadowed cards, grey canvas). Both modes of a theme share one key set.
-export type ThemeId = "soft" | "warm" | "plum" | "classic";
-
-export const themeCatalog: { id: ThemeId; header: string; canvas: string; primary: string; accent: string; ink: string }[] = [
-  { id: "soft", header: "#102E59", canvas: "#F3F7FC", primary: "#1765C1", accent: "#D9A441", ink: "#172B45" },
-  { id: "warm", header: "#082239", canvas: "#F7F3EC", primary: "#0F7478", accent: "#C4A15A", ink: "#2A2926" },
-  { id: "plum", header: "#2B1640", canvas: "#F6F4F9", primary: "#6B3FA0", accent: "#E07A5F", ink: "#251E2E" },
-  { id: "classic", header: "#09245F", canvas: "#E5E8EE", primary: "#1565C0", accent: "#3578CC", ink: "#212121" }
-];
+// Semantic tokens, exposed to page code as var(--b1-<kebab-name>). `soft` is the default; `classic` recreates the pre-redesign
+// look (gradient page banner, shadowed cards, grey canvas); `custom` is Soft mixed from the church's B1 Mobile primary color,
+// the same derivation B1App's MobileThemeProvider uses. Both modes of a theme share one key set.
+export type ThemeId = "soft" | "classic" | "custom";
+export const themeIds: ThemeId[] = ["soft", "classic", "custom"];
 
 interface ThemeShape {
   radius: number;
@@ -41,9 +35,8 @@ interface ThemeShape {
 
 export const themeShape: Record<ThemeId, ThemeShape> = {
   soft: { radius: 6, avatar: "10px", tick: "0px", tickGap: "0px", panel: "10px", control: "6px", shadow: "rgba(16, 46, 89, 0.12)", dialog: "rgba(16, 46, 89, 0.2)" },
-  warm: { radius: 8, avatar: "999px", tick: "3px", tickGap: "8px", panel: "16px", control: "8px", shadow: "rgba(36, 28, 16, 0.10)", dialog: "rgba(36, 28, 16, 0.18)" },
-  plum: { radius: 8, avatar: "12px", tick: "0px", tickGap: "0px", panel: "14px", control: "8px", shadow: "rgba(43, 22, 64, 0.12)", dialog: "rgba(43, 22, 64, 0.22)" },
-  classic: { radius: 6, avatar: "999px", tick: "0px", tickGap: "0px", panel: "8px", control: "6px", shadow: "rgba(0, 0, 0, 0.14)", dialog: "rgba(0, 0, 0, 0.24)" }
+  classic: { radius: 6, avatar: "999px", tick: "0px", tickGap: "0px", panel: "8px", control: "6px", shadow: "rgba(0, 0, 0, 0.14)", dialog: "rgba(0, 0, 0, 0.24)" },
+  custom: { radius: 6, avatar: "10px", tick: "0px", tickGap: "0px", panel: "10px", control: "6px", shadow: "rgba(16, 24, 40, 0.12)", dialog: "rgba(16, 24, 40, 0.2)" }
 };
 
 export const b1Tokens = {
@@ -144,206 +137,6 @@ export const b1Tokens = {
       eyebrow: "#8EBEFA",
       pillBg: "#1E3A5F",
       pillFg: "#CFE2FB",
-      pillBorder: "transparent"
-    }
-  },
-  warm: {
-    light: {
-      canvas: "#F7F3EC",
-      surface: "#FDFCF8",
-      sidebar: "#F3EFE6",
-      header: "#082239",
-      headerHover: "#1C3752",
-      onHeader: "#FFFFFF",
-      headerMuted: "#C5D0DA",
-      primary: "#0F7478",
-      primaryHover: "#0C6064",
-      primaryPressed: "#0A5255",
-      onPrimary: "#FFFFFF",
-      selected: "#D7EEEF",
-      onSelected: "#0C5558",
-      hover: "#F4F1EA",
-      text: "#2A2926",
-      muted: "#6E6C68",
-      border: "#E6E0D4",
-      controlBorder: "#B7B1A6",
-      focus: "#0F7478",
-      success: "#3C9A62",
-      successBg: "#E5F2E4",
-      warning: "#8A6420",
-      warningBg: "#F8E7C0",
-      danger: "#C4353A",
-      dangerBg: "#FDECEC",
-      neutral: "#5C5A56",
-      neutralBg: "#F1EEE6",
-      disabledBg: "#EFEBE3",
-      disabledText: "#8A8680",
-      link: "#0F7478",
-      accent: "#C4A15A",
-      onAccent: "#3E3010",
-      accentBg: "#F8E7C0",
-      mark: "#D7E6C6",
-      markEmpty: "#F8F0D4",
-      wash: "#EEF2F6",
-      tick: "#0F7478",
-      avatar: "#0F7478",
-      onAvatar: "#FFFFFF",
-      chip: "#D7EEEF",
-      onChip: "#0F7478",
-      chipAlt: "#F8E7C0",
-      onChipAlt: "#8A6420",
-      eyebrow: "#5C5B59",
-      pillBg: "#0F7478",
-      pillFg: "#FFFFFF",
-      pillBorder: "#0F7478"
-    },
-    dark: {
-      canvas: "#121A1C",
-      surface: "#1C2628",
-      sidebar: "#172022",
-      header: "#07141C",
-      headerHover: "#143044",
-      onHeader: "#FFFFFF",
-      headerMuted: "#C5D4DE",
-      primary: "#3EBEB8",
-      primaryHover: "#67D0CB",
-      primaryPressed: "#8EDDD8",
-      onPrimary: "#062220",
-      selected: "#1A3A3A",
-      onSelected: "#C9F3F0",
-      hover: "#243234",
-      text: "#F4F1EA",
-      muted: "#B7C0BA",
-      border: "#2E3C3E",
-      controlBorder: "#6E8484",
-      focus: "#5ED4CE",
-      success: "#8FCB9A",
-      successBg: "#1A3324",
-      warning: "#E2C27A",
-      warningBg: "#3A3018",
-      danger: "#F0A0A4",
-      dangerBg: "#3D2224",
-      neutral: "#C5CEC8",
-      neutralBg: "#2A3436",
-      disabledBg: "#2A3336",
-      disabledText: "#8A9694",
-      link: "#5ED4CE",
-      accent: "#E2C27A",
-      onAccent: "#2A220C",
-      accentBg: "#3A3218",
-      mark: "#6FAF86",
-      markEmpty: "#5C5340",
-      wash: "#243033",
-      tick: "#3EBEB8",
-      avatar: "#0F7478",
-      onAvatar: "#FFFFFF",
-      chip: "#1A3E40",
-      onChip: "#B7E8E4",
-      chipAlt: "#3E3420",
-      onChipAlt: "#F0D9A0",
-      eyebrow: "#C9C4BA",
-      pillBg: "#0F7478",
-      pillFg: "#FFFFFF",
-      pillBorder: "#0F7478"
-    }
-  },
-  plum: {
-    light: {
-      canvas: "#F6F4F9",
-      surface: "#FFFFFF",
-      sidebar: "#F0ECF6",
-      header: "#2B1640",
-      headerHover: "#43275E",
-      onHeader: "#FFFFFF",
-      headerMuted: "#D8CCE6",
-      primary: "#6B3FA0",
-      primaryHover: "#5A3388",
-      primaryPressed: "#4B2A72",
-      onPrimary: "#FFFFFF",
-      selected: "#EBE1F7",
-      onSelected: "#4F2A7A",
-      hover: "#F3EEF9",
-      text: "#251E2E",
-      muted: "#6B6178",
-      border: "#E4DEEC",
-      controlBorder: "#8E84A0",
-      focus: "#7C4DD8",
-      success: "#2F7A4D",
-      successBg: "#E6F3EA",
-      warning: "#8A5A00",
-      warningBg: "#FBEED3",
-      danger: "#B42F45",
-      dangerBg: "#FCEDF0",
-      neutral: "#574E66",
-      neutralBg: "#F0EDF4",
-      disabledBg: "#ECE8F1",
-      disabledText: "#7A7088",
-      link: "#6B3FA0",
-      accent: "#E07A5F",
-      onAccent: "#4A1E10",
-      accentBg: "#FCE6DF",
-      mark: "#B79BDB",
-      markEmpty: "#EEE8F6",
-      wash: "#F1ECF8",
-      tick: "transparent",
-      avatar: "#6B3FA0",
-      onAvatar: "#FFFFFF",
-      chip: "#EBE1F7",
-      onChip: "#4F2A7A",
-      chipAlt: "#FCE6DF",
-      onChipAlt: "#8A3A22",
-      eyebrow: "#6B3FA0",
-      pillBg: "#EBE1F7",
-      pillFg: "#4F2A7A",
-      pillBorder: "transparent"
-    },
-    dark: {
-      canvas: "#16121C",
-      surface: "#201A29",
-      sidebar: "#1B1623",
-      header: "#120A1C",
-      headerHover: "#2E1F42",
-      onHeader: "#FFFFFF",
-      headerMuted: "#D8CCE6",
-      primary: "#B794E6",
-      primaryHover: "#C8ADEC",
-      primaryPressed: "#D7C3F1",
-      onPrimary: "#20103A",
-      selected: "#352650",
-      onSelected: "#E6DAF7",
-      hover: "#2A2235",
-      text: "#ECE7F2",
-      muted: "#B3A8C2",
-      border: "#342B40",
-      controlBorder: "#7E7290",
-      focus: "#C3A4F0",
-      success: "#86CFA0",
-      successBg: "#17301F",
-      warning: "#F0C070",
-      warningBg: "#3A2C10",
-      danger: "#F29AA8",
-      dangerBg: "#3D1C24",
-      neutral: "#C2B8D0",
-      neutralBg: "#2B2436",
-      disabledBg: "#2A2333",
-      disabledText: "#857A94",
-      link: "#C3A4F0",
-      accent: "#F0A08A",
-      onAccent: "#3A1408",
-      accentBg: "#3D2018",
-      mark: "#8A6BC0",
-      markEmpty: "#2C2438",
-      wash: "#261E33",
-      tick: "transparent",
-      avatar: "#6B3FA0",
-      onAvatar: "#FFFFFF",
-      chip: "#352650",
-      onChip: "#E6DAF7",
-      chipAlt: "#3D2018",
-      onChipAlt: "#F5C2B3",
-      eyebrow: "#C3A4F0",
-      pillBg: "#352650",
-      pillFg: "#E6DAF7",
       pillBorder: "transparent"
     }
   },
@@ -451,6 +244,115 @@ export const b1Tokens = {
 
 export type B1Tokens = { [K in keyof typeof b1Tokens.soft.light]: string };
 
+export const DEFAULT_BRAND = "#1765C1";
+
+const hexRgb = (hex: string) => {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16) || 0);
+};
+
+export const isHexColor = (v?: string | null): v is string => !!v && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim());
+
+const mix = (a: string, b: string, t: number) => {
+  const x = hexRgb(a), y = hexRgb(b);
+  return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("").toUpperCase();
+};
+
+const luminance = (hex: string) => {
+  const [r, g, b] = hexRgb(hex).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+// Same precedence as B1App's mobile theme: the B1 Mobile light primary, then the website primary.
+export const churchBrandColor = (settings?: { appTheme?: string; primaryColor?: string } | null) => {
+  let appPrimary: string | undefined;
+  try { appPrimary = settings?.appTheme ? JSON.parse(settings.appTheme)?.light?.primary : undefined; } catch { /* malformed setting */ }
+  return [appPrimary, settings?.primaryColor].find(isHexColor) || DEFAULT_BRAND;
+};
+
+// Every surface, hairline and chip is mixed from the church primary; status and accent colors stay Soft's.
+export const customTokens = (brand: string, mode: PaletteMode): B1Tokens => {
+  const b = isHexColor(brand) ? brand : DEFAULT_BRAND;
+  const W = "#FFFFFF", K = "#000000";
+  const base = b1Tokens.soft[mode];
+  if (mode === "dark") {
+    const primary = mix(b, W, 0.4);
+    const surface = mix(b, "#141a22", 0.88);
+    const chip = mix(b, "#141a22", 0.65);
+    const onChip = mix(b, W, 0.78);
+    return {
+      ...base,
+      canvas: mix(b, "#0b0f15", 0.9),
+      surface,
+      sidebar: mix(b, "#0b0f15", 0.86),
+      header: mix(b, K, 0.72),
+      headerHover: mix(b, K, 0.6),
+      headerMuted: mix(b, W, 0.75),
+      primary,
+      primaryHover: mix(b, W, 0.55),
+      primaryPressed: mix(b, W, 0.65),
+      onPrimary: "#0C1118",
+      selected: mix(b, "#141a22", 0.6),
+      onSelected: mix(b, W, 0.8),
+      hover: mix(b, "#141a22", 0.8),
+      text: "#E6EBF1",
+      muted: "#A7B1BD",
+      border: mix(b, "#2a323d", 0.85),
+      controlBorder: mix(b, "#6d7785", 0.85),
+      focus: mix(b, W, 0.5),
+      link: mix(b, W, 0.5),
+      mark: mix(b, K, 0.15),
+      markEmpty: mix(b, "#141a22", 0.82),
+      wash: mix(b, "#141a22", 0.72),
+      avatar: b,
+      onAvatar: luminance(b) > 0.42 ? "#121820" : W,
+      chip,
+      onChip,
+      eyebrow: mix(b, W, 0.5),
+      pillBg: chip,
+      pillFg: onChip
+    };
+  }
+  const onPrimary = luminance(b) > 0.42 ? "#121820" : W;
+  const chip = mix(b, W, 0.87);
+  const onChip = mix(b, K, 0.45);
+  return {
+    ...base,
+    canvas: mix(b, W, 0.955),
+    surface: W,
+    sidebar: mix(b, W, 0.92),
+    header: mix(b, K, 0.58),
+    headerHover: mix(b, K, 0.45),
+    headerMuted: mix(b, W, 0.75),
+    primary: b,
+    primaryHover: mix(b, K, 0.18),
+    primaryPressed: mix(b, K, 0.3),
+    onPrimary,
+    selected: mix(b, W, 0.85),
+    onSelected: mix(b, K, 0.45),
+    hover: mix(b, W, 0.93),
+    text: mix(b, "#141b24", 0.9),
+    muted: mix(b, "#566170", 0.88),
+    border: mix(b, "#dfe4ea", 0.9),
+    controlBorder: mix(b, "#7b8592", 0.88),
+    focus: b,
+    disabledBg: mix(b, "#e7ecf2", 0.9),
+    disabledText: mix(b, "#66788d", 0.9),
+    link: mix(b, K, 0.08),
+    mark: mix(b, W, 0.45),
+    markEmpty: mix(b, W, 0.9),
+    wash: mix(b, W, 0.9),
+    avatar: b,
+    onAvatar: onPrimary,
+    chip,
+    onChip,
+    eyebrow: mix(b, K, 0.05),
+    pillBg: chip,
+    pillFg: onChip
+  };
+};
+
 export const b1Layout = {
   headerHeight: 64,
   sidebarWidth: 272,
@@ -521,8 +423,8 @@ const classicCss = (cardShadow: string) => ({
   "td a, td .MuiLink-root, td .MuiTypography-root a": { fontWeight: 400 }
 });
 
-const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions => {
-  const t: B1Tokens = b1Tokens[themeId][mode];
+const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId, brand: string): ThemeOptions => {
+  const t: B1Tokens = themeId === "custom" ? customTokens(brand, mode) : b1Tokens[themeId][mode];
   const shape = themeShape[themeId];
   const popoverShadow = `0 8px 24px ${shape.shadow}`;
   const dialogShadow = `0 16px 48px ${shape.dialog}`;
@@ -530,7 +432,7 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
   // Panels are bordered, not shadowed (Classic keeps the old soft card shadow); floating layers (menus, popovers, dialogs: elevation >= 8) cast a bigger one.
   const cardShadow = classic ? (mode === "light" ? "0 2px 8px rgba(0, 0, 0, 0.1)" : "0 2px 8px rgba(0, 0, 0, 0.4)") : "none";
   const shadows = Array.from({ length: 25 }, (_, i) => (i === 0 ? "none" : i < 8 ? cardShadow : i >= 16 ? dialogShadow : popoverShadow)) as Shadows;
-  const primaryLight = { soft: mode === "light" ? "#4A8BD6" : "#9CC4F6", warm: mode === "light" ? "#5EBEBE" : "#8EDDD8", plum: mode === "light" ? "#9A72CC" : "#D7C3F1", classic: mode === "light" ? "#3578CC" : "#9CC4F6" }[themeId];
+  const primaryLight = { soft: mode === "light" ? "#4A8BD6" : "#9CC4F6", classic: mode === "light" ? "#3578CC" : "#9CC4F6", custom: mix(t.primary, "#FFFFFF", 0.3) }[themeId];
   return {
     palette: {
       mode,
@@ -682,7 +584,7 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId): ThemeOptions 
   };
 };
 
-export const createAppTheme = (mode: PaletteMode, themeId: ThemeId = "soft") => createTheme(getBaseThemeOptions(mode, themeId));
+export const createAppTheme = (mode: PaletteMode, themeId: ThemeId = "soft", brand: string = DEFAULT_BRAND) => createTheme(getBaseThemeOptions(mode, themeId, brand));
 
 export class Themes {
   static BaseTheme = createAppTheme("light", "soft");
