@@ -31,6 +31,8 @@ async function openSessionOn(page: Page, date: string) {
 async function selectSession(page: Page, date: string) {
   const [y, m, d] = date.split("-");
   const label = `${m}/${d}/${y}`;
+  // The list stays on the year it defaulted to; a new session in another year needs its pill.
+  await page.getByTestId("session-year-pills").getByRole("button", { name: y, exact: true }).click({ timeout: 10000 });
   const item = page.getByRole("button").filter({ hasText: label }).first();
   await item.click({ timeout: 10000 });
   await expect(item).toContainText("Active", { timeout: 10000 });
@@ -421,6 +423,25 @@ test.describe.serial("Group Management", () => {
       await saveAttendance(page);
       await expect(page.locator('[data-testid="session-present-count"]')).toHaveText("1 of 3 present");
       await expect(page.getByRole("checkbox", { name: "William Anderson" })).toBeChecked();
+    });
+
+    test("a person created from the session add box is added and marked present", async () => {
+      await openSessionOn(page, "2026-04-08");
+      const last = `Newcomer${Date.now()}`;
+      const box = page.getByTestId("session-person-add");
+      await box.locator('input[name="personAddText"]').fill(`Zelda ${last}`);
+      await box.locator('[data-testid="search-button"]').click();
+      await box.getByRole("button", { name: /Add (a )?New Person/ }).click();
+
+      const dialog = page.getByRole("dialog").filter({ hasText: /Add (a )?New Person/ });
+      await dialog.locator('input[name="first"]').fill("Zelda");
+      await dialog.locator('input[name="last"]').fill(last);
+      await dialog.getByRole("button", { name: "Add", exact: true }).click();
+      await expect(dialog).toBeHidden();
+
+      const row = page.getByTestId("session-roster-row").filter({ hasText: `Zelda ${last}` });
+      await expect(row).toHaveCount(1, { timeout: 10000 });
+      await expect(row.locator('input[type="checkbox"]')).toBeChecked();
     });
 
     test("should remove person from session", async () => {
