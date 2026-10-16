@@ -35,6 +35,13 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
       <div style={{ marginTop: 15 }}>
         {parsedData.calendarType && (<>{calendars && calendars.length > 0 ? (<><FormControl fullWidth><InputLabel>{Locale.label("site.calendarElementEdit.selectCalendar")}</InputLabel><Select fullWidth size="small" label={Locale.label("site.calendarElementEdit.selectCalendar")} name="calendarId" onChange={handleChange} value={parsedData.calendarId || ""}>{calendars.map((calendar) => <MenuItem value={calendar.id}>{calendar.name}</MenuItem>)}</Select></FormControl></>) : (<Loading />)}</>)}
       </div>
+      <FormControl fullWidth sx={{ mt: 2 }}>
+        <InputLabel>{Locale.label("site.calendarElementEdit.display")}</InputLabel>
+        <Select fullWidth size="small" label={Locale.label("site.calendarElementEdit.display")} name="display" onChange={handleChange} value={parsedData.display || "month"} data-testid="calendar-display-select">
+          <MenuItem value="month">{Locale.label("site.calendarElementEdit.displayMonth")}</MenuItem>
+          <MenuItem value="upcoming">{Locale.label("site.calendarElementEdit.displayUpcoming")}</MenuItem>
+        </Select>
+      </FormControl>
     </>
   );
 };

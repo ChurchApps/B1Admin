@@ -323,6 +323,38 @@ test.describe.serial("Editing an existing calendar event", () => {
     await page.locator('[data-testid="calendar-event-cancel-button"]').click();
   });
 
+  test("adds an event photo from the gallery and sees it again on reopen", async () => {
+    const photo = "content/CHU00000001/gallery/1.78/zacchaeus-event.jpg";
+    const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+    await page.route("**/content/gallery/1.78", (route) => route.fulfill({ json: { images: [photo] } }));
+    await page.route("**/zacchaeus-event.jpg", (route) => route.fulfill({ contentType: "image/png", body: png }));
+
+    const block = await findEventBlock(page, EDIT_EVENT_TITLE);
+    await block.click();
+    await page.locator('[data-testid="calendar-event-edit-button"]').click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue(EDIT_EVENT_TITLE, { timeout: 10000 });
+    await expect(page.locator('[data-testid="new-event-description-input"]')).toContainText("Bold, lists, and links");
+
+    await page.locator('[data-testid="new-event-photo-button"]').click();
+    await page.locator('[data-testid="select-image"]').first().click();
+    await expect(page.locator('[data-testid="new-event-photo"] img')).toHaveAttribute("src", /zacchaeus-event\.jpg$/);
+
+    const eventPost = page.waitForResponse((r) => r.url().includes("/content/events") && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await confirmDelete(page);
+    const saved = await (await eventPost).json();
+    expect(saved[0]?.photoUrl, "saved photoUrl").toMatch(/zacchaeus-event\.jpg$/);
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+
+    const reopened = await findEventBlock(page, EDIT_EVENT_TITLE);
+    await reopened.click();
+    await page.locator('[data-testid="calendar-event-edit-button"]').click();
+    await expect(page.locator('[data-testid="new-event-photo"] img')).toHaveAttribute("src", /zacchaeus-event\.jpg$/, { timeout: 10000 });
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
+    await page.locator('[data-testid="calendar-event-cancel-button"]').click();
+    await page.unroute("**/content/gallery/1.78");
+  });
+
   test("warns that saving a recurring event updates the whole series, then persists the edit", async () => {
     const block = await findEventBlock(page, EDIT_EVENT_TITLE);
     await block.click();
