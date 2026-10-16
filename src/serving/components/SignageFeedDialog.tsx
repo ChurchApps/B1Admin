@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Typography } from "@mui/material";
-import { ContentCopy as CopyIcon, Check as CheckIcon } from "@mui/icons-material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Link, TextField, Typography } from "@mui/material";
+import { ContentCopy as CopyIcon, Check as CheckIcon, OpenInNew as OpenInNewIcon } from "@mui/icons-material";
 import { CommonEnvironmentHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 export const SignageFeedDialog: React.FC<Props> = ({ planTypeId, onClose }) => {
   const [copied, setCopied] = React.useState(false);
   const feedUrl = CommonEnvironmentHelper.DoingApi + "/planFeed/signage/" + planTypeId;
+  const [freePlayBefore, freePlayAfter = ""] = (Locale.label("plans.signageFeed.freePlay") || "Have FreePlay TVs? Schedule this plan type on them at {link}").split("{link}");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(feedUrl);
@@ -41,6 +42,14 @@ export const SignageFeedDialog: React.FC<Props> = ({ planTypeId, onClose }) => {
             htmlInput: { "data-testid": "signage-feed-url" }
           }}
         />
+        <Typography variant="body2" sx={{ mt: 2 }} data-testid="signage-feed-freeplay">
+          {freePlayBefore}
+          <Link href="https://admin.freeplay.church/calendar" target="_blank" rel="noreferrer noopener" sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
+            admin.freeplay.church/calendar
+            <OpenInNewIcon sx={{ fontSize: 16 }} />
+          </Link>
+          {freePlayAfter}
+        </Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>
           <a href="https://support.signpresenter.com/topics/lessons-dot-church.html" target="_blank" rel="noreferrer noopener">
             {Locale.label("plans.signageFeed.instructions") || "Instructions for connecting to SignPresenter"}
