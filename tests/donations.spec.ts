@@ -1,5 +1,5 @@
 import fs from "fs";
-import { type Page, type APIRequestContext, request } from "@playwright/test";
+import { type Page, type APIRequestContext, type Locator, request, test as plainTest } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
@@ -889,4 +889,29 @@ test("fund page loads every donor name in one call", async ({ page }) => {
   const body = req.postDataJSON() as { peopleIds?: string[] };
   expect(body.peopleIds?.length).toBeGreaterThan(1);
   await expect(page.getByRole("link", { name: "John Smith" }).first()).toBeVisible();
+});
+
+const printLuminanceOf = async (el: Locator) => {
+  const color = await el.evaluate((node) => getComputedStyle(node).color);
+  const [r, g, b] = (color.match(/\d+/g) || []).map(Number);
+  return { color, luminance: (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 };
+};
+
+// Issue 1266: in dark mode the batch printout inherits the dark theme's light text,
+// and the browser drops the dark background on paper, so the page prints near-white.
+plainTest.describe("Print colors in dark mode", () => {
+  plainTest.describe.configure({ retries: 0 });
+
+  plainTest("prints batch text in a dark color", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+    await login(page);
+    await page.emulateMedia({ media: "print" });
+    await page.goto("/donations/batches/print-all?start=2000-01-01&end=2100-01-01");
+
+    const total = page.locator('[data-testid="batch-print-document"]').first().getByText("Batch Total", { exact: true });
+    await expect(total).toBeVisible({ timeout: 15000 });
+
+    const { color, luminance } = await printLuminanceOf(total);
+    expect(luminance, "text color " + color).toBeLessThan(0.4);
+  });
 });
