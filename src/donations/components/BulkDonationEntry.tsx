@@ -115,7 +115,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     if (props.funds?.[0]?.id && !defaultValues.fundId) setDefaultValues(prev => ({ ...prev, fundId: props.funds[0].id }));
   }, [props.funds, defaultValues.fundId]);
 
-  const methodDetailsLabel = defaultValues.method === "Check" ? Locale.label("donations.donationEdit.checkNum") : Locale.label("donations.donationEdit.lastDig");
+  const methodDetailsLabel = defaultValues.method === "Check" ? Locale.label("donations.donationEdit.checkNum") : defaultValues.method === "In-Kind" ? Locale.label("donations.donationEdit.item") : Locale.label("donations.donationEdit.lastDig");
 
   if (showPersonSearch) {
     return (

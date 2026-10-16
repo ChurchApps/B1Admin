@@ -848,6 +848,7 @@
       "date": "Date",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "Item",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -2209,6 +2210,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Description of item",
       "lastDigits": "4242",
       "notes": "Add any notes about this donation..."
     },

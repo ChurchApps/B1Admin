@@ -75,7 +75,7 @@ export const LogGiftDialog: React.FC<Props> = ({ open, person, onClose, onSaved 
     }
   };
 
-  const detailsLabel = method === "Check" ? Locale.label("donations.donationEdit.checkNum") : method === "Card" ? Locale.label("donations.donationEdit.lastDig") : "";
+  const detailsLabel = method === "Check" ? Locale.label("donations.donationEdit.checkNum") : method === "Card" ? Locale.label("donations.donationEdit.lastDig") : method === "In-Kind" ? Locale.label("donations.donationEdit.item") : "";
   const currencyCode = (currency || "usd").toUpperCase();
 
   return (

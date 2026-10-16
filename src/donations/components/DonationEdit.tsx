@@ -119,8 +119,8 @@ export const DonationEdit = memo((props: Props) => {
 
   const methodDetailsField = useMemo(() => {
     if (method === "Cash") return null;
-    const label = method === "Check" ? Locale.label("donations.donationEdit.checkNum") : Locale.label("donations.donationEdit.lastDig");
-    const placeholder = method === "Check" ? Locale.label("placeholders.donation.checkNumber") : Locale.label("placeholders.donation.lastDigits");
+    const label = method === "Check" ? Locale.label("donations.donationEdit.checkNum") : method === "In-Kind" ? Locale.label("donations.donationEdit.item") : Locale.label("donations.donationEdit.lastDig");
+    const placeholder = method === "Check" ? Locale.label("placeholders.donation.checkNumber") : method === "In-Kind" ? Locale.label("placeholders.donation.item") : Locale.label("placeholders.donation.lastDigits");
     return <TextField fullWidth label={label} InputLabelProps={{ shrink: !!methodDetails }} placeholder={placeholder} {...register("methodDetails")} />;
   }, [method, methodDetails, register]);
 
@@ -192,6 +192,7 @@ export const DonationEdit = memo((props: Props) => {
                     <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
                     <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
                     <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
+                    <MenuItem value="In-Kind">{Locale.label("donations.donationEdit.inKind")}</MenuItem>
                   </Select>
                 </FormControl>
               )}
