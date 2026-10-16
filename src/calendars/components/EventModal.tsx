@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { RRuleEditor } from "@churchapps/apphelper/website";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
-import { Alert, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField } from "@mui/material";
+import { Alert, Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { GalleryModal } from "../../components/gallery";
 import { type ConflictInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 import { EventReminderEdit, type EventReminderEditRef } from "./EventReminderEdit";
 import { useConfirmDelete } from "../../hooks";
@@ -30,6 +32,8 @@ export function EventModal(props: Props) {
   const [templateId, setTemplateId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [showGallery, setShowGallery] = useState(false);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [rRule, setRRule] = useState("");
@@ -67,6 +71,8 @@ export function EventModal(props: Props) {
       ApiHelper.get("/events/" + props.eventId, "ContentApi").then((data: EventInterface) => {
         if (data.title) setTitle(data.title);
         if (data.description) setDescription(data.description);
+        // ponytail: cast until @churchapps/helpers publishes photoUrl on EventInterface
+        if ((data as any).photoUrl) setPhotoUrl((data as any).photoUrl);
         if (data.groupId) setGroupId(data.groupId.toString());
         if (data.start) setStart(toInputValue(new Date(data.start)));
         if (data.end) setEnd(toInputValue(new Date(data.end)));
@@ -170,6 +176,7 @@ export function EventModal(props: Props) {
         groupId,
         title,
         description,
+        photoUrl: photoUrl || null,
         start: new Date(start),
         end: new Date(end),
         allDay: false,
@@ -219,6 +226,7 @@ export function EventModal(props: Props) {
   return (
     <>
       {ConfirmDialogElement}
+      {showGallery && <GalleryModal aspectRatio={16 / 9} onSelect={(url) => { setPhotoUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
       <Dialog open={true} onClose={() => props.onDone(false)} fullWidth scroll="body">
         <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent") : Locale.label("calendars.newEvent.title")}</DialogTitle>
         <DialogContent>
@@ -233,7 +241,27 @@ export function EventModal(props: Props) {
               </TextField>
             )}
             <TextField fullWidth label={Locale.label("calendars.newEvent.eventTitle")} value={title} onChange={(e) => setTitle(e.target.value)} data-testid="new-event-title-input" />
-            <TextField fullWidth label={Locale.label("calendars.newEvent.description")} value={description} onChange={(e) => setDescription(e.target.value)} multiline rows={2} data-testid="new-event-description-input" />
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Box
+                onClick={() => setShowGallery(true)}
+                data-testid="new-event-photo"
+                sx={{ width: 280, flexShrink: 0, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)", display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", cursor: "pointer", "&:hover": { borderColor: "primary.main" } }}>
+                {photoUrl
+                  ? <img src={photoUrl} alt={Locale.label("calendars.newEvent.photoAlt")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  : <Stack alignItems="center" spacing={1} sx={{ color: "text.secondary" }}>
+                    <PhotoCameraIcon />
+                    <Typography variant="body2" color="text.secondary">{Locale.label("calendars.newEvent.clickToAddPhoto")}</Typography>
+                  </Stack>}
+              </Box>
+              <Stack spacing={1} alignItems="flex-start">
+                <Typography variant="body2" color="text.secondary">{Locale.label("calendars.newEvent.photo")}</Typography>
+                <Button variant="outlined" size="small" onClick={() => setShowGallery(true)} data-testid="new-event-photo-button">
+                  {photoUrl ? Locale.label("common.changePhoto") : Locale.label("calendars.newEvent.addPhoto")}
+                </Button>
+                <Typography variant="caption" color="text.secondary">{Locale.label("calendars.newEvent.photoHint")}</Typography>
+              </Stack>
+            </Stack>
+            <TextField fullWidth label={Locale.label("calendars.newEvent.description")} value={description} onChange={(e) => setDescription(e.target.value)} multiline rows={3} helperText={Locale.label("calendars.newEvent.descriptionHint")} data-testid="new-event-description-input" />
             <Stack direction="row" spacing={2}>
               <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.start")} value={start} onChange={(e) => handleStartChange(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-start-input" />
               <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.end")} value={end} onChange={(e) => setEnd(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-end-input" />
