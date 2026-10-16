@@ -1393,3 +1393,50 @@ test.describe("Website Management", () => {
   });
 
 });
+
+// #1265: the Calendar element can render the month grid or upcoming-event tiles.
+test.describe.serial("Calendar element display", () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  const openCalendarElement = async () => {
+    const wrapper = page.locator('div[data-element-id="ELE00000054"]');
+    await expect(wrapper).toBeVisible({ timeout: 20000 });
+    await wrapper.click({ position: { x: 5, y: 5 } });
+    const select = page.locator('[data-testid="calendar-display-select"]');
+    await expect(select).toBeVisible({ timeout: 10000 });
+    return select;
+  };
+
+  const saveElement = async () => {
+    const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator("button").getByText("Save").click();
+    const resp = await elementPost;
+    expect(resp.status()).toBe(200);
+    return resp.request().postDataJSON()[0].answersJSON as string;
+  };
+
+  test("offers Month calendar or Upcoming events on the Events page calendar element", async () => {
+    await page.goto("/site/pages/PAG00000004");
+    const select = await openCalendarElement();
+    await expect(select).toContainText("Month calendar");
+    await select.click();
+    await page.getByRole("option", { name: "Upcoming events" }).click();
+    expect(JSON.parse(await saveElement()).display).toBe("upcoming");
+
+    const again = await openCalendarElement();
+    await expect(again).toContainText("Upcoming events");
+    await again.click();
+    await page.getByRole("option", { name: "Month calendar" }).click();
+    expect(JSON.parse(await saveElement()).display).toBe("month");
+  });
+});

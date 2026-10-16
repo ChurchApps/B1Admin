@@ -333,14 +333,20 @@
       "title": "Import .ics Calendar"
     },
     "newEvent": {
+      "addPhoto": "Add Photo",
+      "clickToAddPhoto": "Click to add photo",
       "customWindow": "Custom reservation window",
       "daily": "Daily",
       "description": "Description",
+      "descriptionHint": "Shown on the event page. Bold, lists, and links are supported.",
       "end": "End",
       "eventTitle": "Title",
       "group": "Group",
       "monthly": "Monthly",
       "noTemplate": "(no template)",
+      "photo": "Event photo",
+      "photoAlt": "Event photo",
+      "photoHint": "Shown at the top of the event page and as the tile on your website's upcoming events.",
       "private": "Private",
       "public": "Public",
       "repeats": "Repeats",
@@ -4428,6 +4434,9 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Curated Calendar",
+      "display": "Display",
+      "displayMonth": "Month calendar",
+      "displayUpcoming": "Upcoming events",
       "groupCalendar": "Group Calendar",
       "select": "Select",
       "selectCalendar": "Select Calendar"
