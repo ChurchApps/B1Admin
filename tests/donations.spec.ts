@@ -654,6 +654,73 @@ test.describe("Donation refunds", () => {
   });
 });
 
+// In-Kind gifts: every donation form offers In-Kind and labels its detail box "Item".
+const IN_KIND_BATCH_NAME = "Zacchaeus In-Kind Batch";
+
+test.describe("In-kind donations", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+  let donationId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: IN_KIND_BATCH_NAME, batchDate: "2025-11-03" }] });
+    batchId = (await batchRes.json())[0].id;
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, {
+      ...auth,
+      data: [{ batchId, donationDate: "2025-11-03", amount: 5000, method: "In-Kind", methodDetails: "2014 Honda Civic", status: "complete" }]
+    });
+    donationId = (await donationRes.json())[0].id;
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("full donation editor keeps an in-kind gift's method and item", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await page.getByTestId("donation-row-" + donationId).getByRole("button", { name: "Edit" }).click();
+
+    const box = page.locator("#donationBox");
+    await expect(box.getByTestId("payment-method-select")).toContainText("In-Kind", { timeout: 10000 });
+    await expect(box.getByLabel("Item")).toHaveValue("2014 Honda Civic");
+  });
+
+  test("batch quick entry labels the in-kind detail Item", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await page.getByTestId("bulk-donation-anonymous").click();
+
+    await page.locator('[data-testid="bulk-donation-method"] [role="combobox"]').click();
+    await page.locator('[data-value="In-Kind"]').click();
+
+    const details = page.getByTestId("bulk-donation-method-details").getByRole("textbox");
+    await expect(details).toBeVisible();
+    await expect(details).toHaveAccessibleName("Item");
+  });
+
+  test("Log a gift shows an Item box for in-kind and no detail box for cash", async ({ page }) => {
+    await page.goto(`/people/${DONALD_CLARK_ID}`);
+    await page.getByTestId("person-log-gift").first().click();
+
+    const form = page.getByTestId("log-gift-form");
+    await form.getByRole("combobox", { name: "Method" }).click();
+    await page.getByRole("option", { name: "In-Kind" }).click();
+    await expect(form.getByRole("textbox", { name: "Item" })).toBeVisible();
+
+    await form.getByRole("combobox", { name: "Method" }).click();
+    await page.getByRole("option", { name: "Cash" }).click();
+    for (const name of ["Item", "Check #", "Last 4 digits"]) {
+      await expect(form.getByRole("textbox", { name, exact: true })).toHaveCount(0);
+    }
+  });
+});
+
 // Mixed-currency totals: gifts keep their own currency, but every dashboard total is converted into the
 // church currency (USD on the demo church) by the Api with its own cached exchange rates. The expected
 // figure is rebuilt here from the Api's read-only rate table, so the spec follows the live rate.
