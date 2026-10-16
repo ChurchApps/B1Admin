@@ -17,6 +17,8 @@ const printStyles = `@media print {
   .print-area .rbc-calendar { height: 7.8in !important; }
   .print-area .rbc-calendar:has(.rbc-agenda-view) { height: auto !important; }
   .print-area .no-print, .print-area .no-print *, .print-area .rbc-btn-group { display: none !important; }
+  .print-area { background: #fff !important; color: #000 !important; }
+  .print-area .rbc-header, .print-area .rbc-date-cell, .print-area .rbc-toolbar-label, .print-area .rbc-agenda-view { color: #000 !important; }
 }`;
 
 export const CalendarPage = () => {
