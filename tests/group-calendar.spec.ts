@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { type Locator, type Page, test as plainTest } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
@@ -429,5 +429,28 @@ test.describe.serial("Private events on a curated calendar", () => {
 
     await page.reload();
     await expect(await findEventBlock(page, PRIVATE_EVENT_TITLE)).toBeVisible({ timeout: 15000 });
+  });
+});
+
+const printLuminanceOf = async (el: Locator) => {
+  const color = await el.evaluate((node) => getComputedStyle(node).color);
+  const [r, g, b] = (color.match(/\d+/g) || []).map(Number);
+  return { color, luminance: (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 };
+};
+
+// Issue 1266: in dark mode the calendar printout kept the dark theme's light text.
+plainTest.describe("Calendar print colors in dark mode", () => {
+  plainTest.describe.configure({ retries: 0 });
+
+  plainTest("prints calendar headings in a dark color", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+    await login(page);
+    await page.emulateMedia({ media: "print" });
+    await page.goto("/calendars/CAL00000001");
+
+    const label = page.locator(".print-area .rbc-toolbar-label");
+    await expect(label).toBeVisible({ timeout: 15000 });
+    const { color, luminance } = await printLuminanceOf(label);
+    expect(luminance, "text color " + color).toBeLessThan(0.4);
   });
 });
