@@ -861,3 +861,58 @@ test.describe.serial("Giving privacy on person records", () => {
     await expect(section.getByTestId("person-giving-all")).toBeVisible({ timeout: 10000 });
   });
 });
+
+// PR 664: Hungary (hu-HU) is selectable as a region and formats the sample date the Hungarian way.
+test.describe("Region list includes Hungary", () => {
+  test.describe.configure({ retries: 0 });
+
+  const SAMPLE_DATE: [number, number, number] = [2026, 8, 28];
+  // Same Intl calls as regionName / regionSample in RegionSettingsEdit, evaluated in the browser.
+  const regionInfo = (page: Page, region: string) => page.evaluate(({ region, d }) => {
+    const date = new Date(d[0], d[1], d[2]);
+    const name = new Intl.DisplayNames([navigator.language || "en", "en"], { type: "language", languageDisplay: "standard" }).of(region) || region;
+    const sample = new Intl.DateTimeFormat(region, { dateStyle: "medium" }).format(date) + " · " + new Intl.DateTimeFormat(region, { year: "numeric", month: "numeric", day: "numeric" }).format(date);
+    return { name, sample };
+  }, { region, d: SAMPLE_DATE });
+
+  const chooseRegion = async (page: Page, region: string) => {
+    await page.goto("/settings#region");
+    await expect(page.locator('[data-testid="settings-section-region"]')).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="settings-section-region"]').click();
+    const section = page.locator('[data-testid="settings-region"]');
+    await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    await section.locator('[data-testid="region-select"]').click();
+    const option = page.locator(`[data-testid="region-option-${region}"]`);
+    await expect(option).toBeVisible({ timeout: 10000 });
+    await option.click();
+    await section.locator("button").getByText("Save").click();
+    await expect(page.locator('[data-testid="region-select"]')).toHaveCount(0, { timeout: 10000 });
+  };
+
+  test.afterAll(async ({ browser }) => {
+    const page = await browser.newPage();
+    try {
+      await login(page);
+      await chooseRegion(page, "en-US");
+    } finally {
+      await page.close();
+    }
+  });
+
+  test("choosing Hungary shows its name and a Hungarian sample date, and switching back restores en-US", async ({ page }) => {
+    const hu = await regionInfo(page, "hu-HU");
+    const us = await regionInfo(page, "en-US");
+    expect(hu.sample).not.toBe(us.sample);
+    const section = page.locator('[data-testid="settings-region"]');
+    try {
+      await chooseRegion(page, "hu-HU");
+      await expect(section).toContainText(hu.name, { timeout: 10000 });
+      await expect(section).toContainText(hu.sample);
+      await expect(section).not.toContainText(us.sample);
+    } finally {
+      await chooseRegion(page, "en-US");
+    }
+    await expect(section).toContainText(us.sample, { timeout: 10000 });
+    await expect(section).not.toContainText(hu.sample);
+  });
+});

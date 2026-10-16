@@ -4,7 +4,7 @@ import { UniqueIdHelper, ApiHelper, Locale, DateHelper } from "@churchapps/apphe
 import { type GenericSettingInterface } from "@churchapps/helpers";
 
 export const REGIONS = [
-  "en-US", "en-GB", "en-AU", "en-CA", "de-DE", "fr-FR", "es-ES", "es-MX", "pt-BR", "nl-NL"
+  "en-US", "en-GB", "en-AU", "en-CA", "de-DE", "fr-FR", "es-ES", "es-MX", "pt-BR", "nl-NL", "hu-HU"
 ];
 
 const SAMPLE_DATE = new Date(2026, 8, 28);
