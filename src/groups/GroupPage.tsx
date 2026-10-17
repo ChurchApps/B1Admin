@@ -1,6 +1,6 @@
 import React from "react";
 import { GroupBanner, GroupDetailsEdit } from "./components";
-import { type GroupInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { GroupMembersTab } from "./components/GroupMembersTab";
 import { GroupSessionsTab } from "./components/GroupSessionsTab";
@@ -12,6 +12,7 @@ import { CalendarMonth as AttendanceIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { BackVerb, EmptyState, PageContainer, RecordLayout, useRecordView } from "../components/ui";
 import { useQuery } from "@tanstack/react-query";
+import { ContentNotes } from "../components/ContentNotes";
 
 export const GroupPage = () => {
   const params = useParams();
@@ -26,9 +27,12 @@ export const GroupPage = () => {
 
   const isStandard = (groupData?.tags?.indexOf("standard") ?? -1) > -1;
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
+  const members = useQuery<GroupMemberInterface[]>({ queryKey: [`/groupmembers?groupId=${params.id}`, "MembershipApi"], enabled: !!params.id });
+  const canViewNotes = !!members.data?.some((m) => m.leader && m.personId === UserHelper.person?.id);
   const allowedViews: Record<string, boolean> = {
     edit: canEdit && !!groupData?.id,
     members: true,
+    notes: canViewNotes && !!groupData?.id,
     sessions: isStandard,
     calendar: isStandard,
     health: isStandard && UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view)
@@ -75,6 +79,7 @@ export const GroupPage = () => {
       case "sessions": return <>{back}{sessionsSlice()}</>;
       case "calendar": return <>{back}<GroupCalendarTab key="calendar" group={groupData} /></>;
       case "health": return <>{back}<GroupHealthTab key="health" group={groupData} /></>;
+      case "notes": return <>{back}<ContentNotes key="notes" contentType="groupNote" contentId={groupData.id || ""} title={(groupData.name || "") + Locale.label("groups.groupRecord.notesSuffix", " Leader Notes")} /></>;
       default:
         if (!groupData?.id) return null;
         // Teams and ministries only have members, so a one-block plate would just be a detour.

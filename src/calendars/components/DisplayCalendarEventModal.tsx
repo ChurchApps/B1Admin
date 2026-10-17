@@ -7,6 +7,7 @@ import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
 import { EventReminderEdit } from "./EventReminderEdit";
 import { EventModal } from "./EventModal";
+import { ContentNotes } from "../../components/ContentNotes";
 
 interface Props {
   event: CuratedEventWithEventInterface;
@@ -95,6 +96,11 @@ export function DisplayCalendarEventModal(props: Props) {
           {props.mode === "edit" && realEventId && (
             <Box sx={{ mt: 2 }}>
               <EventReminderEdit eventId={realEventId} hasRegistration={!!(props.event as CuratedEventWithEventInterface & { registrationEnabled?: boolean }).registrationEnabled} />
+            </Box>
+          )}
+          {props.mode === "edit" && realEventId && (
+            <Box sx={{ mt: 2 }}>
+              <ContentNotes contentType="eventNote" contentId={realEventId} title={(props.event.title || "") + Locale.label("calendars.calendarEvent.notesSuffix", " Notes")} />
             </Box>
           )}
         </DialogContent>

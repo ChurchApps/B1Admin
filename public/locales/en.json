@@ -256,7 +256,8 @@
       "edit": "Edit",
       "editEvent": "Edit Event",
       "manageRegistrations": "Manage Registrations",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "notesSuffix": " Notes"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -344,6 +345,11 @@
       "group": "Group",
       "monthly": "Monthly",
       "noTemplate": "(no template)",
+      "notesLeaders": "Group leaders",
+      "notesMembers": "Group members",
+      "notesPostRole": "Who can post notes",
+      "notesStaff": "Staff only",
+      "notesViewRole": "Who can view notes",
       "photo": "Event photo",
       "photoAlt": "Event photo",
       "photoHint": "Shown at the top of the event page and as the tile on your website's upcoming events.",
@@ -1438,6 +1444,7 @@
       "calendar": "Calendar",
       "health": "Health",
       "members": "Members",
+      "notes": "Leader notes",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1450,6 +1457,7 @@
       "healthSummary": "{members} members · {joined} joined · {left} left in 90 days",
       "lastEvent": "Last",
       "latestSession": "Latest {date}",
+      "notesSuffix": " Leader Notes",
       "nextEvent": "Next",
       "noMembers": "No members yet.",
       "noSessions": "No sessions yet.",
