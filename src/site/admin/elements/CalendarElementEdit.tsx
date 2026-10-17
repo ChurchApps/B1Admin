@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/material";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import type { GroupInterface, CuratedCalendarInterface } from "@churchapps/helpers";
 
@@ -42,6 +42,7 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
           <MenuItem value="upcoming">{Locale.label("site.calendarElementEdit.displayUpcoming")}</MenuItem>
         </Select>
       </FormControl>
+      <TextField fullWidth size="small" sx={{ mt: 2 }} label={Locale.label("site.calendarElementEdit.tag")} name="tag" value={parsedData.tag || ""} onChange={handleChange} helperText={Locale.label("site.calendarElementEdit.tagHelp")} data-testid="calendar-tag-input" />
     </>
   );
 };

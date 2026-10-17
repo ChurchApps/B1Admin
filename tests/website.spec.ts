@@ -1439,4 +1439,18 @@ test.describe.serial("Calendar element display", () => {
     await page.getByRole("option", { name: "Month calendar" }).click();
     expect(JSON.parse(await saveElement()).display).toBe("month");
   });
+
+  test("restricts the calendar element to one tag and clears it again", async () => {
+    await page.goto("/site/pages/PAG00000004");
+    await openCalendarElement();
+    const tagInput = page.locator('[data-testid="calendar-tag-input"] input');
+    await expect(tagInput).toHaveValue("");
+    await tagInput.fill("youth");
+    expect(JSON.parse(await saveElement()).tag).toBe("youth");
+
+    await openCalendarElement();
+    await expect(tagInput).toHaveValue("youth");
+    await tagInput.fill("");
+    expect(JSON.parse(await saveElement()).tag ?? "").toBe("");
+  });
 });
