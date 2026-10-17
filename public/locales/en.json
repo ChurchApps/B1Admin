@@ -5875,6 +5875,7 @@
       "created": "Created",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Task not found",
       "notSpec": "Not specified",
       "open": "Open",
       "opened": "Opened",
