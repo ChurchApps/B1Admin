@@ -3,7 +3,7 @@ import { Box, Stack, Typography, Button } from "@mui/material";
 import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading } from "@churchapps/apphelper";
 import { type TaskInterface, type UserContextInterface } from "@churchapps/helpers";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import { PageContainer, RecordLayout, StatusBadge, TextAction, eyebrowSx, RecordActions } from "../../components/ui";
+import { PageContainer, EmptyState, RecordLayout, StatusBadge, TextAction, eyebrowSx, RecordActions } from "../../components/ui";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
@@ -11,6 +11,7 @@ import { AccountDeletionRequest } from "./components/AccountDeletionRequest";
 import { GroupJoinRequestTask } from "./components/GroupJoinRequestTask";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Assignment as AssignmentIcon } from "@mui/icons-material";
 
 export const TaskPage = () => {
   const params = useParams();
@@ -88,7 +89,17 @@ export const TaskPage = () => {
   }, [task.data, updateTaskMutation]);
 
   if (task.isLoading) return <Loading />;
-  if (!task.data) return <></>;
+  if (!task.data?.id) {
+    return (
+      <PageContainer>
+        <EmptyState
+          icon={<AssignmentIcon />}
+          title={Locale.label("tasks.taskPage.notFound", "Task not found")}
+          action={<Button variant="contained" component={RouterLink} to="/serving/tasks">{Locale.label("tasks.myWork.title")}</Button>}
+        />
+      </PageContainer>
+    );
+  }
 
   const open = task.data.status === "Open";
   const quiet = { typography: "body2", color: "text.secondary", overflowWrap: "anywhere" } as const;
