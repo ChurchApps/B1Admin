@@ -358,6 +358,8 @@
       "setupMinutes": "Setup (min before)",
       "start": "Start",
       "teardownMinutes": "Teardown (min after)",
+      "tags": "Tags",
+      "tagsHelp": "Comma-separated, e.g. youth, students. Used to filter calendar elements on your site.",
       "template": "Template",
       "title": "New Event",
       "visibility": "Visibility",
@@ -4440,7 +4442,9 @@
       "displayUpcoming": "Upcoming events",
       "groupCalendar": "Group Calendar",
       "select": "Select",
-      "selectCalendar": "Select Calendar"
+      "selectCalendar": "Select Calendar",
+      "tag": "Only events tagged",
+      "tagHelp": "Leave empty to show every event."
     },
     "campaignProgressEdit": {
       "donateUrl": "Donate URL",

@@ -38,6 +38,7 @@ export function EventModal(props: Props) {
   const [end, setEnd] = useState("");
   const [rRule, setRRule] = useState("");
   const [visibility, setVisibility] = useState("public");
+  const [tags, setTags] = useState("");
   const [roomIds, setRoomIds] = useState<string[]>(props.initialRoomId ? [props.initialRoomId] : []);
   const [resourceIds, setResourceIds] = useState<string[]>(props.initialResourceId ? [props.initialResourceId] : []);
   const [conflicts, setConflicts] = useState<ConflictInterface[]>([]);
@@ -78,6 +79,7 @@ export function EventModal(props: Props) {
         if (data.end) setEnd(toInputValue(new Date(data.end)));
         if (data.recurrenceRule) setRRule(data.recurrenceRule);
         if (data.visibility) setVisibility(data.visibility);
+        if (data.tags) setTags(data.tags);
         setHasRegistration(!!data.registrationEnabled);
       });
       ApiHelper.get("/eventBookings/event/" + props.eventId, "ContentApi").then((data: any[]) => {
@@ -181,6 +183,7 @@ export function EventModal(props: Props) {
         end: new Date(end),
         allDay: false,
         visibility,
+        tags: tags.trim() || null,
         recurrenceRule: rRule || undefined
       } as EventInterface;
       const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
@@ -276,6 +279,7 @@ export function EventModal(props: Props) {
                 <MenuItem value="private">{Locale.label("calendars.newEvent.private")}</MenuItem>
               </TextField>
             </Stack>
+            <TextField fullWidth label={Locale.label("calendars.newEvent.tags")} value={tags} onChange={(e) => setTags(e.target.value)} helperText={Locale.label("calendars.newEvent.tagsHelp")} data-testid="new-event-tags-input" />
             {rRule && start && <RRuleEditor start={new Date(start)} rRule={rRule} onChange={setRRule} />}
             {rooms.length > 0 && (
               <TextField
