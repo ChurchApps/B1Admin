@@ -40,6 +40,8 @@ export const GroupRsvpRosterDialog = (props: Props) => {
       if (ids.length > 0) {
         const people: PersonInterface[] = await ApiHelper.get(`/people/ids?ids=${ids.join(",")}`, "MembershipApi");
         people.forEach((p) => { if (p.id) map[p.id] = p.name?.display || `${p.name?.first || ""} ${p.name?.last || ""}`.trim(); });
+        const rank = new Map(people.map((p, i) => [p.id, i]));
+        results.forEach((r) => r.rows.sort((a, b) => (rank.get(a.personId) ?? Infinity) - (rank.get(b.personId) ?? Infinity)));
       }
       if (!cancelled) { setNames(map); setSections(results); setLoading(false); }
     })().catch(() => { if (!cancelled) setLoading(false); });

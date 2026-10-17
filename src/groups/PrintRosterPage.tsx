@@ -17,7 +17,7 @@ interface RosterSheet {
 
 const VISITOR_LINES = 5;
 
-// Group member payloads only carry name.display, so fall back to its last word for the surname.
+// Fall back to the last word of name.display when a payload lacks name.last.
 const sortKey = (gm: GroupMemberInterface) => {
   const name = gm.person?.name;
   const display = (name?.display || "").trim();

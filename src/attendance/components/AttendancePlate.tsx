@@ -218,7 +218,7 @@ export const ThisWeekSlice = ({ onView, canYears }: { onView: (view: AttendanceV
   if (!data.canView) return <Muted>{Locale.label("attendance.attendancePage.subtitle")}</Muted>;
   if (data.loading) return <Loading />;
 
-  const guestPeople = data.guestIds.map((id) => ArrayHelper.getOne(data.guests, "id", id) as PersonInterface | null).filter(Boolean) as PersonInterface[];
+  const guestPeople = data.guests.filter((p) => p.id && data.guestIds.includes(p.id));
   const weeksWith = data.sundays.filter((s) => s.count > 0).length;
 
   return (

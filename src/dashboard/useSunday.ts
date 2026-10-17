@@ -226,6 +226,7 @@ const loadSunday = async (): Promise<SundayData> => {
   const people = (canPeople && peopleIds.length > 0)
     ? await safeGet<PersonInterface[]>("/people/ids?ids=" + peopleIds.join(","), "MembershipApi", [])
     : [];
+  const rank = new Map(people.map((p, i) => [p.id, i]));
 
   const serving: ServingPerson[] = [];
   (assignments || []).forEach((a) => {
@@ -240,11 +241,12 @@ const loadSunday = async (): Promise<SundayData> => {
       role: position?.name || position?.categoryName || ""
     });
   });
+  serving.sort((a, b) => (rank.get(a.personId) ?? Infinity) - (rank.get(b.personId) ?? Infinity));
 
   const guests: GuestChip[] = [];
   if (canPeople && personIds.length) {
     const byHousehold = new Map<string, PersonInterface[]>();
-    personIds.forEach((id) => {
+    [...personIds].sort((a, b) => (rank.get(a) ?? Infinity) - (rank.get(b) ?? Infinity)).forEach((id) => {
       const person = ArrayHelper.getOne(people, "id", id) as PersonInterface | null;
       if (!person) return;
       const visit = visitList.find((v: any) => v.personId === id);

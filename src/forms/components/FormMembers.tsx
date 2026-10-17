@@ -47,12 +47,10 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         action: "view",
         personName: p.name.display
       };
-      ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result: any) => {
-        setFormMembers((prev) => [...prev, result[0]]);
-      });
+      ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then(() => loadData());
       updateFilterList(p.id || "", "add");
     },
-    [props.formId, updateFilterList]
+    [props.formId, updateFilterList, loadData]
   );
 
   const handleActionChange = useCallback(

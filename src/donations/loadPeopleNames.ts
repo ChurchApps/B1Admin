@@ -9,5 +9,5 @@ export function loadPeopleNames(ids: string[]): Promise<PersonInterface[]> {
   if (unique.length === 0) return Promise.resolve([]);
   const chunks: string[][] = [];
   for (let i = 0; i < unique.length; i += CHUNK) chunks.push(unique.slice(i, i + CHUNK));
-  return Promise.all(chunks.map((peopleIds) => ApiHelper.post("/people/names", { peopleIds }, "MembershipApi") as Promise<PersonInterface[]>)).then((batches) => batches.flat());
+  return Promise.all(chunks.map((peopleIds) => ApiHelper.post("/people/names", { peopleIds }, "MembershipApi") as Promise<PersonInterface[]>)).then((batches) => batches.flat().sort((a, b) => (a.name?.last || "").localeCompare(b.name?.last || "") || (a.name?.first || "").localeCompare(b.name?.first || "")));
 }

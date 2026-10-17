@@ -237,12 +237,9 @@ export const PrintPlan = () => {
       .filter((p) => p.categoryName === categoryName)
       .forEach((p) => {
         const names: string[] = [];
-        assignments
-          .filter((a) => a.positionId === p.id)
-          .forEach((a) => {
-            const person = people.find((p) => p.id === a.personId);
-            names.push(person?.name?.display || "");
-          });
+        people.forEach((person) => {
+          if (assignments.some((a) => a.positionId === p.id && a.personId === person.id)) names.push(person?.name?.display || "");
+        });
 
         result.push(
           <div key={p.id}>

@@ -85,15 +85,15 @@ export const CampaignPage = () => {
 
   const sortedRows = React.useMemo(() => {
     const result = [...(progress.data?.rows || [])];
-    if (sortBy === "person") {
-      const dir = sortDirection === "asc" ? 1 : -1;
-      result.sort((a, b) => (peopleNames[a.personId || ""] || "").toUpperCase().localeCompare((peopleNames[b.personId || ""] || "").toUpperCase()) * dir);
-    } else if (sortBy) {
-      const dir = sortDirection === "asc" ? 1 : -1;
+    const rank = new Map((people.data || []).map((p, i) => [p.id, i]));
+    const dir = sortDirection === "asc" ? 1 : -1;
+    if (!sortBy || sortBy === "person") {
+      result.sort((a, b) => ((rank.get(a.personId) ?? Infinity) - (rank.get(b.personId) ?? Infinity)) * dir);
+    } else {
       result.sort((a: any, b: any) => ((a[sortBy] || 0) - (b[sortBy] || 0)) * dir);
     }
     return result;
-  }, [progress.data, sortBy, sortDirection, peopleNames]);
+  }, [progress.data, sortBy, sortDirection, people.data]);
 
   const handleSort = (key: string) => {
     setSortDirection(sortBy === key && sortDirection === "asc" ? "desc" : "asc");
@@ -175,7 +175,7 @@ export const CampaignPage = () => {
     );
   };
 
-  const getExportData = () => (progress.data?.rows || []).map((r) => ({
+  const getExportData = () => sortedRows.map((r) => ({
     donor: r.personId ? peopleNames[r.personId] || r.personId : Locale.label("donations.campaignPage.anon"),
     pledged: r.pledgedAmount || 0,
     given: r.givenAmount || 0,

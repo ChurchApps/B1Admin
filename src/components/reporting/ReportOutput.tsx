@@ -52,8 +52,9 @@ export const ReportOutput = (props: Props) => {
     const headers: { label: string; key: string }[] = [];
     const peopleIds = ArrayHelper.getIds(data, "personId");
     if (peopleIds.length > 0) {
-      const people = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
-      const filteredData = data.filter((d) => d.personId !== null);
+      const people: PersonInterface[] = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
+      const rank = new Map(people.map((p, i) => [p.id, i]));
+      const filteredData = data.filter((d) => d.personId !== null).sort((a, b) => (rank.get(a.personId) ?? Infinity) - (rank.get(b.personId) ?? Infinity));
       filteredData.forEach((d) => {
         const person: PersonInterface = ArrayHelper.getOne(people, "id", d.personId);
         if (!person) return;

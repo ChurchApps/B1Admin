@@ -132,6 +132,9 @@ export const ServingOverviewPage = () => {
     return last ? `${first} ${last.charAt(0)}.` : first;
   };
 
+  const rank = React.useMemo(() => new Map((people.data || []).map((p, i) => [p.id, i])), [people.data]);
+  const byName = (a: string, b: string) => (rank.get(a) ?? Infinity) - (rank.get(b) ?? Infinity);
+
   // Slot per distinct positionId keeps same-named positions independently editable.
   const { dates, rows } = React.useMemo(() => {
     const dateSet = new Set<string>();
@@ -176,7 +179,7 @@ export const ServingOverviewPage = () => {
       const obj: Record<string, string> = { Position: row.position };
       dates.forEach(d => {
         const cell = row.cells[d];
-        const names = cell ? cellPersonIds(cell).map(id => getDisplayName(id)) : [];
+        const names = cell ? cellPersonIds(cell).sort(byName).map(id => getDisplayName(id)) : [];
         obj[formatShortDate(d)] = names.join("; ");
       });
       return obj;
@@ -300,7 +303,7 @@ export const ServingOverviewPage = () => {
                 <InputLabel>{Locale.label("plans.servingOverviewPage.highlightPerson")}</InputLabel>
                 <Select displayEmpty label={Locale.label("plans.servingOverviewPage.highlightPerson")} value={highlightPersonId} onChange={(e) => setHighlightPersonId(e.target.value)} data-testid="highlight-person-select">
                   <MenuItem value="">{Locale.label("plans.servingOverviewPage.highlightAll")}</MenuItem>
-                  {personIds.map(id => <MenuItem key={id} value={id}>{getDisplayName(id)}</MenuItem>)}
+                  {[...personIds].sort(byName).map(id => <MenuItem key={id} value={id}>{getDisplayName(id)}</MenuItem>)}
                 </Select>
               </FormControl>
             </Stack>
@@ -330,7 +333,7 @@ export const ServingOverviewPage = () => {
                         const isGap = isActive && cell && filled < cell.needed;
                         const ids = cell ? cellPersonIds(cell) : [];
                         const isHighlight = !!highlightPersonId && ids.includes(highlightPersonId);
-                        const content = isActive ? (ids.map(id => getDisplayName(id)).join(", ") || "—") : "";
+                        const content = isActive ? ([...ids].sort(byName).map(id => getDisplayName(id)).join(", ") || "—") : "";
                         return (
                           <TableCell
                             key={d}
@@ -365,7 +368,7 @@ export const ServingOverviewPage = () => {
         <DialogContent dividers>
           {editingCell?.slots.map(slot => (
             <Box key={slot.positionId} sx={{ mb: 2 }}>
-              {slot.assignments.map(a => (
+              {[...slot.assignments].sort((a, b) => byName(a.personId, b.personId)).map(a => (
                 <Stack key={a.assignmentId} direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
                   <span>{getDisplayName(a.personId)}</span>
                   <Tooltip title={Locale.label("plans.servingOverviewPage.remove")}>

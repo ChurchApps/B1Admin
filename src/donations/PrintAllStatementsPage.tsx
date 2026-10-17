@@ -67,8 +67,8 @@ export const PrintAllStatementsPage = () => {
     queryFn: async () => {
       const chunks: string[][] = [];
       for (let i = 0; i < personIds.length; i += 200) chunks.push(personIds.slice(i, i + 200));
-      const results = await Promise.all(chunks.map((ids) => ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi")));
-      return results.flat();
+      const results: PersonInterface[][] = await Promise.all(chunks.map((ids) => ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi")));
+      return results.flat().sort((a, b) => (a.name?.last || "").localeCompare(b.name?.last || "") || (a.name?.first || "").localeCompare(b.name?.first || ""));
     },
     placeholderData: [],
     enabled: personIds.length > 0

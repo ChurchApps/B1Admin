@@ -25,7 +25,7 @@ const checkinTypeChip = (type?: string) => {
   return null;
 };
 
-// Group member payloads only carry name.display, so fall back to its last word for the surname.
+// Fall back to the last word of name.display when a payload lacks name.last.
 const sortKey = (p?: PersonInterface) => {
   const display = (p?.name?.display || "").trim();
   const last = (p?.name?.last || display.split(" ").pop() || "").toLowerCase();

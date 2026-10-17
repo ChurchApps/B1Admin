@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
+import type { ColumnInterface, ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material";
 import { ReportHelper } from "./ReportHelper";
 
@@ -34,7 +34,9 @@ export const TreeReport = (props: Props) => {
 
   // Sort by each grouping column, then the first leaf column, so every heading appears once with its rows in order.
   const getSortedTable = () => {
-    const sortColumns = props.output.columns.slice(0, totalGroupings + 1);
+    const sortColumns = (props.output.columns as (ColumnInterface & { sortValue?: string })[])
+      .slice(0, totalGroupings + 1)
+      .map((c) => (c.sortValue ? { ...c, value: c.sortValue } : c));
     return [...props.reportResult.table].sort((a, b) => {
       for (const c of sortColumns) {
         const diff = ReportHelper.getField(c, a).localeCompare(ReportHelper.getField(c, b));

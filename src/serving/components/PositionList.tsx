@@ -69,7 +69,9 @@ export const PositionList = (props: Props) => {
   };
 
   const getPeopleLinks = (position: PositionInterface) => {
-    const assignments = ArrayHelper.getAll(props.assignments || [], "positionId", position.id);
+    const rank = new Map((props.people || []).map((p, i) => [p.id, i]));
+    const assignments = ArrayHelper.getAll(props.assignments || [], "positionId", position.id)
+      .sort((a, b) => (rank.get(a.personId) ?? Infinity) - (rank.get(b.personId) ?? Infinity));
     const result: JSX.Element[] = [];
     assignments.forEach((assignment) => result.push(<div key={assignment.id} style={{ margin: "2px 0" }}>{getPersonLink(assignment, position)}</div>));
     const remaining = (position.count ?? 0) - assignments.length;
