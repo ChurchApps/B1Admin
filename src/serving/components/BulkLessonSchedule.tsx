@@ -47,6 +47,8 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
   const [selectedProviderId, setSelectedProviderId] = useState<string>("");
   const [showLessonSelector, setShowLessonSelector] = useState(false);
 
+  const hasVenueLevel = selectedProviderId === "lessonschurch";
+
   const previousPlan = useMemo(() => {
     if (!props.plans || props.plans.length === 0) return null;
     const withLesson = props.plans
@@ -90,15 +92,17 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
       setEntries([]);
 
       const segments = selectedContentPath.replace(/^\//, "").split("/").filter(Boolean);
-      if (segments.length < 4) {
+      // Lessons.church selects a venue under a lesson; every other provider's leaf is the lesson itself.
+      const lessonDepth = hasVenueLevel ? segments.length - 1 : segments.length;
+      if (lessonDepth < 2) {
         setError(Locale.label("plans.bulkLessonSchedule.pathNotSupported"));
         setLoadingEntries(false);
         return;
       }
 
       try {
-        const studyLevelPath = "/" + segments.slice(0, 3).join("/");
-        const selectedLessonId = segments[3];
+        const studyLevelPath = "/" + segments.slice(0, lessonDepth - 1).join("/");
+        const selectedLessonId = segments[lessonDepth - 1];
 
         const allLessons = await browseAt(studyLevelPath, selectedProviderId);
         if (cancelled) return;
@@ -120,19 +124,21 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
             const date = new Date(startDate);
             date.setDate(date.getDate() + (i * intervalDays));
 
-            let venue: ContentFolder | null = null;
+            let venue: ContentFolder | null = hasVenueLevel ? null : lesson;
             let venueMismatch = false;
-            try {
-              const venues = await browseAt(lesson.path, selectedProviderId);
-              const exact = venues.find(v => v.title === selectedVenueName);
-              if (exact) {
-                venue = exact;
-              } else if (venues[0]) {
-                venue = venues[0];
-                venueMismatch = !!selectedVenueName;
+            if (hasVenueLevel) {
+              try {
+                const venues = await browseAt(lesson.path, selectedProviderId);
+                const exact = venues.find(v => v.title === selectedVenueName);
+                if (exact) {
+                  venue = exact;
+                } else if (venues[0]) {
+                  venue = venues[0];
+                  venueMismatch = !!selectedVenueName;
+                }
+              } catch {
+                void 0;
               }
-            } catch {
-              void 0;
             }
 
             return { lesson, venue, venueMismatch, date, included: true };
@@ -151,7 +157,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
 
     loadSeries();
     return () => { cancelled = true; };
-  }, [selectedContentPath, selectedProviderId]);
+  }, [selectedContentPath, selectedProviderId, hasVenueLevel]);
 
   useEffect(() => {
     if (entries.length > 0) {
@@ -336,7 +342,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
                     <TableCell padding="checkbox" />
                     <TableCell>{Locale.label("plans.bulkLessonSchedule.date") || "Date"}</TableCell>
                     <TableCell>{Locale.label("plans.bulkLessonSchedule.lesson") || "Lesson"}</TableCell>
-                    <TableCell>{Locale.label("plans.bulkLessonSchedule.venue") || "Venue"}</TableCell>
+                    {hasVenueLevel && <TableCell>{Locale.label("plans.bulkLessonSchedule.venue") || "Venue"}</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -351,7 +357,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
                       </TableCell>
                       <TableCell>{DateHelper.prettyDate(entry.date)}</TableCell>
                       <TableCell>{entry.lesson.title}</TableCell>
-                      <TableCell>
+                      {hasVenueLevel && <TableCell>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                           {entry.venue?.title || "—"}
                           {entry.venueMismatch && (
@@ -360,7 +366,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
                             </Typography>
                           )}
                         </Box>
-                      </TableCell>
+                      </TableCell>}
                     </TableRow>
                   ))}
                 </TableBody>
