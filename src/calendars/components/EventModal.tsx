@@ -39,6 +39,8 @@ export function EventModal(props: Props) {
   const [rRule, setRRule] = useState("");
   const [visibility, setVisibility] = useState("public");
   const [tags, setTags] = useState("");
+  const [notesViewRole, setNotesViewRole] = useState("staff");
+  const [notesPostRole, setNotesPostRole] = useState("staff");
   const [roomIds, setRoomIds] = useState<string[]>(props.initialRoomId ? [props.initialRoomId] : []);
   const [resourceIds, setResourceIds] = useState<string[]>(props.initialResourceId ? [props.initialResourceId] : []);
   const [conflicts, setConflicts] = useState<ConflictInterface[]>([]);
@@ -80,6 +82,8 @@ export function EventModal(props: Props) {
         if (data.recurrenceRule) setRRule(data.recurrenceRule);
         if (data.visibility) setVisibility(data.visibility);
         if (data.tags) setTags(data.tags);
+        setNotesViewRole((data as any).notesViewRole || "staff");
+        setNotesPostRole((data as any).notesPostRole || "staff");
         setHasRegistration(!!data.registrationEnabled);
       });
       ApiHelper.get("/eventBookings/event/" + props.eventId, "ContentApi").then((data: any[]) => {
@@ -184,6 +188,8 @@ export function EventModal(props: Props) {
         allDay: false,
         visibility,
         tags: tags.trim() || null,
+        notesViewRole: notesViewRole === "staff" ? null : notesViewRole,
+        notesPostRole: notesPostRole === "staff" ? null : notesPostRole,
         recurrenceRule: rRule || undefined
       } as EventInterface;
       const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
@@ -281,6 +287,18 @@ export function EventModal(props: Props) {
             </Stack>
             <TextField fullWidth label={Locale.label("calendars.newEvent.tags")} value={tags} onChange={(e) => setTags(e.target.value)} helperText={Locale.label("calendars.newEvent.tagsHelp")} data-testid="new-event-tags-input" />
             {rRule && start && <RRuleEditor start={new Date(start)} rRule={rRule} onChange={setRRule} />}
+            <Stack direction="row" spacing={2}>
+              <TextField fullWidth select label={Locale.label("calendars.newEvent.notesViewRole")} value={notesViewRole} onChange={(e) => setNotesViewRole(e.target.value)} data-testid="new-event-notes-view-select">
+                <MenuItem value="staff">{Locale.label("calendars.newEvent.notesStaff")}</MenuItem>
+                <MenuItem value="leaders">{Locale.label("calendars.newEvent.notesLeaders")}</MenuItem>
+                <MenuItem value="members">{Locale.label("calendars.newEvent.notesMembers")}</MenuItem>
+              </TextField>
+              <TextField fullWidth select label={Locale.label("calendars.newEvent.notesPostRole")} value={notesPostRole} onChange={(e) => setNotesPostRole(e.target.value)} data-testid="new-event-notes-post-select">
+                <MenuItem value="staff">{Locale.label("calendars.newEvent.notesStaff")}</MenuItem>
+                <MenuItem value="leaders">{Locale.label("calendars.newEvent.notesLeaders")}</MenuItem>
+                <MenuItem value="members">{Locale.label("calendars.newEvent.notesMembers")}</MenuItem>
+              </TextField>
+            </Stack>
             {rooms.length > 0 && (
               <TextField
                 fullWidth

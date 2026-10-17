@@ -5,6 +5,8 @@ import { Box, Link, Stack, Typography } from "@mui/material";
 import { DateHelper, Loading, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface, type GroupJoinRequestInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { RecordHeading, TextAction, VerbRow, filterChipSx } from "../../components/ui";
+import { useContentConversation } from "../../components/ContentNotes";
+import { PersonNotesSummary } from "../../people/components/PersonSummaries";
 
 interface SessionRow {
   id?: string;
@@ -52,8 +54,10 @@ export const GroupPlate = ({ group, onView, onEnableAttendance }: Props) => {
 
   const members = useQuery<GroupMemberInterface[]>({
     queryKey: [`/groupmembers?groupId=${group?.id}`, "MembershipApi"],
-    enabled: !!group?.id && canViewMembers
+    enabled: !!group?.id
   });
+  const canViewNotes = !!members.data?.some((m) => m.leader && m.personId === UserHelper.person?.id);
+  const noteConversations = useContentConversation("groupNote", canViewNotes ? group?.id : undefined);
 
   const pending = useQuery<GroupJoinRequestInterface[]>({
     queryKey: [`/groupjoinrequests/group/${group?.id}`, "MembershipApi"],
@@ -220,6 +224,11 @@ export const GroupPlate = ({ group, onView, onEnableAttendance }: Props) => {
       {isStandard && (
         <Section id="group-plate-calendar" title={Locale.label("groups.groupNavigation.calendar")} testId="group-plate-calendar">
           {calendarBody()}
+        </Section>
+      )}
+      {canViewNotes && (
+        <Section id="group-plate-notes" title={Locale.label("groups.groupNavigation.notes", "Leader notes")} testId="group-plate-notes">
+          <PersonNotesSummary conversationId={noteConversations.data?.[0]?.id || ""} onViewAll={() => onView("notes")} />
         </Section>
       )}
       {isStandard && canViewMembers && (
