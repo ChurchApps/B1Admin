@@ -1,0 +1,127 @@
+# Publishes the self-host images (b1-api, b1-admin, b1-app) to GHCR as one versioned bundle.
+# Run by hand: pick a version like 2026.10.1. Each image is tagged <version> and, when promote is on, stable.
+name: Release self-host images
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Bundle version (e.g. 2026.10.1)"
+        required: true
+      api_ref:
+        description: "ChurchApps/Api git ref"
+        default: main
+      b1app_ref:
+        description: "ChurchApps/B1App git ref"
+        default: main
+      b1admin_ref:
+        description: "ChurchApps/B1Admin git ref"
+        default: main
+      promote:
+        description: "Also move the stable tag to this version"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    outputs:
+      ns: ${{ steps.ns.outputs.ns }}
+    steps:
+      - id: ns
+        run: echo "ns=ghcr.io/$(echo '${{ github.repository_owner }}' | tr 'A-Z' 'a-z')" >> $GITHUB_OUTPUT
+
+  build:
+    needs: prep
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [b1-api, b1-admin, b1-app]
+        platform:
+          - { os: ubuntu-latest, arch: amd64 }
+          - { os: ubuntu-24.04-arm, arch: arm64 }
+    runs-on: ${{ matrix.platform.os }}
+    steps:
+      - name: Resolve source
+        id: src
+        run: |
+          case "${{ matrix.image }}" in
+            b1-api) echo "repo=ChurchApps/Api" >> $GITHUB_OUTPUT; echo "ref=${{ inputs.api_ref }}" >> $GITHUB_OUTPUT ;;
+            b1-admin) echo "repo=ChurchApps/B1Admin" >> $GITHUB_OUTPUT; echo "ref=${{ inputs.b1admin_ref }}" >> $GITHUB_OUTPUT ;;
+            b1-app) echo "repo=ChurchApps/B1App" >> $GITHUB_OUTPUT; echo "ref=${{ inputs.b1app_ref }}" >> $GITHUB_OUTPUT ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.src.outputs.repo }}
+          ref: ${{ steps.src.outputs.ref }}
+      - name: Record commit
+        run: mkdir -p /tmp/meta && git rev-parse HEAD > "/tmp/meta/${{ matrix.image }}.sha"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/${{ matrix.platform.arch }}
+          outputs: type=image,name=${{ needs.prep.outputs.ns }}/${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
+      - name: Save digest
+        run: echo "${{ steps.build.outputs.digest }}" > "/tmp/meta/${{ matrix.image }}.${{ matrix.platform.arch }}.digest"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: meta-${{ matrix.image }}-${{ matrix.platform.arch }}
+          path: /tmp/meta/*
+          if-no-files-found: error
+
+  publish:
+    needs: [prep, build]
+    runs-on: ubuntu-latest
+    env:
+      NS: ${{ needs.prep.outputs.ns }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: meta-*
+          path: /tmp/meta
+          merge-multiple: true
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create multi-arch manifests
+        run: |
+          set -e
+          for image in b1-api b1-admin b1-app; do
+            tags="-t $NS/$image:${{ inputs.version }}"
+            [ "${{ inputs.promote }}" = "true" ] && tags="$tags -t $NS/$image:stable"
+            docker buildx imagetools create $tags \
+              "$NS/$image@$(cat /tmp/meta/$image.amd64.digest)" \
+              "$NS/$image@$(cat /tmp/meta/$image.arm64.digest)"
+          done
+      - name: Write bundle manifest
+        run: |
+          {
+            echo "version=${{ inputs.version }}"
+            echo "api=$(cat /tmp/meta/b1-api.sha)"
+            echo "b1admin=$(cat /tmp/meta/b1-admin.sha)"
+            echo "b1app=$(cat /tmp/meta/b1-app.sha)"
+          } > bundle.txt
+          cat bundle.txt
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "selfhost-${{ inputs.version }}" bundle.txt \
+            --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "Self-host ${{ inputs.version }}" \
+            --notes "Images: $NS/b1-api, b1-admin, b1-app tagged ${{ inputs.version }}$([ "${{ inputs.promote }}" = "true" ] && echo ' and stable'). Upgrade with: ./deploy/b1 upgrade ${{ inputs.version }}"

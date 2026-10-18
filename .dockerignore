@@ -2,4 +2,6 @@ node_modules
 build
 dist
 .git
-.env
+.env*
+.yarn
+public/apphelper

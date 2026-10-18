@@ -1,0 +1,23 @@
+# SITE_ADDRESS is "http://localhost" for a local install or a bare domain (automatic HTTPS) for a public one.
+{$SITE_ADDRESS} {
+	encode gzip
+
+	# B1App's own cache-busting endpoint, called by B1Admin after a site edit.
+	handle /api/revalidate/* {
+		reverse_proxy b1app:3000
+	}
+
+	handle_path /api/* {
+		reverse_proxy api:8084
+	}
+
+	redir /admin /admin/ permanent
+
+	handle_path /admin/* {
+		reverse_proxy b1admin:3101
+	}
+
+	handle {
+		reverse_proxy b1app:3000
+	}
+}

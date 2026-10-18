@@ -37,7 +37,7 @@ export const ImpersonateTab = () => {
     try {
       const result = await ApiHelper.get("/users/" + confirmTarget.id + "/impersonate", "MembershipApi");
       removeCookie("jwt", { path: "/" });
-      window.location.href = "/login#" + new URLSearchParams({ jwt: result.jwt }).toString();
+      window.location.href = import.meta.env.BASE_URL + "login#" + new URLSearchParams({ jwt: result.jwt }).toString();
     } catch (err) {
       setSubmitting(false);
       console.error("Impersonation failed", err);

@@ -25,7 +25,7 @@ const ThemedApp: React.FC = () => {
           <UserProvider>
             {/* Single app-lifetime backend: multiple DndProviders race on window.__isReactDndBackendSetUp ("Cannot have two HTML5 backends") */}
             <DndProvider backend={HTML5Backend}>
-              <Router>
+              <Router basename={import.meta.env.BASE_URL}>
                 <Routes>
                   <Route path="/*" element={<ControlPanel />} />
                 </Routes>
