@@ -231,8 +231,6 @@
       "subscribeTitle": "订阅日历"
     },
     "calendarEdit": {
-      "calendarDetails": "日历详情",
-      "calendarDetailsDesc": "配置您的日历设置",
       "calendarName": "日历名称",
       "calendarNameAria": "日历名称",
       "cancel": "取消",

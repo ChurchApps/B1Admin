@@ -231,8 +231,6 @@
       "subscribeTitle": "Assine o Calendário"
     },
     "calendarEdit": {
-      "calendarDetails": "Detalhes do calendário",
-      "calendarDetailsDesc": "Defina as configurações do seu calendário",
       "calendarName": "Nome do Calendário",
       "calendarNameAria": "Nome do Calendário",
       "cancel": "Cancelar",

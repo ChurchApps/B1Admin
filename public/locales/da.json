@@ -231,8 +231,6 @@
       "subscribeTitle": "Abonner på kalender"
     },
     "calendarEdit": {
-      "calendarDetails": "Kalenderdetaljer",
-      "calendarDetailsDesc": "Konfigurer dine kalenderindstillinger",
       "calendarName": "Kalendernavn",
       "calendarNameAria": "Kalendernavn",
       "cancel": "Annuller",

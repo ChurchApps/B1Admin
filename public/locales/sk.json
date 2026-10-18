@@ -231,8 +231,6 @@
       "subscribeTitle": "Subscribe to Calendar"
     },
     "calendarEdit": {
-      "calendarDetails": "Calendar Details",
-      "calendarDetailsDesc": "Configure your calendar settings",
       "calendarName": "Calendar Name",
       "calendarNameAria": "Calendar Name",
       "cancel": "Zrušiť",

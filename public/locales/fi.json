@@ -231,8 +231,6 @@
       "subscribeTitle": "Tilaa kalenteri"
     },
     "calendarEdit": {
-      "calendarDetails": "Calendar Details",
-      "calendarDetailsDesc": "Configure your calendar settings",
       "calendarName": "Calendar Name",
       "calendarNameAria": "Calendar Name",
       "cancel": "Peruuta",

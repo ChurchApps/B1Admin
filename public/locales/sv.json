@@ -231,8 +231,6 @@
       "subscribeTitle": "Prenumerera på kalender"
     },
     "calendarEdit": {
-      "calendarDetails": "Kalenderdetaljer",
-      "calendarDetailsDesc": "Konfigurera dina kalenderinställningar",
       "calendarName": "Kalendernamn",
       "calendarNameAria": "Kalendernamn",
       "cancel": "Avbryt",

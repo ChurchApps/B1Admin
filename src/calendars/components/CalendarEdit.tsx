@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ApiHelper, UserHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface } from "@churchapps/helpers";
-import { Box, TextField, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
@@ -110,15 +110,6 @@ export function CalendarEdit(props: Props) {
           placeholder={Locale.label("calendars.calendarEdit.namePlaceholder")}
           variant="outlined"
         />
-
-        <Box>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {Locale.label("calendars.calendarEdit.calendarDetails")}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {Locale.label("calendars.calendarEdit.calendarDetailsDesc")}
-          </Typography>
-        </Box>
       </FormCard>
     </>
   );

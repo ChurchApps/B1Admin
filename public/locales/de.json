@@ -231,8 +231,6 @@
       "subscribeTitle": "Kalender abonnieren"
     },
     "calendarEdit": {
-      "calendarDetails": "Kalenderdetails",
-      "calendarDetailsDesc": "Konfigurieren Sie Ihre Kalendereinstellungen",
       "calendarName": "Kalendername",
       "calendarNameAria": "Kalendername",
       "cancel": "Abbrechen",

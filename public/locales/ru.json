@@ -231,8 +231,6 @@
       "subscribeTitle": "Подписаться на календарь"
     },
     "calendarEdit": {
-      "calendarDetails": "Подробности календаря",
-      "calendarDetailsDesc": "Настройте параметры календаря",
       "calendarName": "Название календаря",
       "calendarNameAria": "Название календаря",
       "cancel": "Отмена",

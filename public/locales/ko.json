@@ -231,8 +231,6 @@
       "subscribeTitle": "캘린더 구독"
     },
     "calendarEdit": {
-      "calendarDetails": "달력 세부정보",
-      "calendarDetailsDesc": "캘린더 설정 구성",
       "calendarName": "캘린더 이름",
       "calendarNameAria": "캘린더 이름",
       "cancel": "취소",

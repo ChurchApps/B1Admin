@@ -231,8 +231,6 @@
       "subscribeTitle": "Iscriviti al calendario"
     },
     "calendarEdit": {
-      "calendarDetails": "Dettagli del calendario",
-      "calendarDetailsDesc": "Configura le impostazioni del tuo calendario",
       "calendarName": "Nome del Calendario",
       "calendarNameAria": "Nome del Calendario",
       "cancel": "Annulla",

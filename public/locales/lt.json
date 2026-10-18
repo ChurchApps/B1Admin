@@ -231,8 +231,6 @@
       "subscribeTitle": "Prenumeruoti kalendorių"
     },
     "calendarEdit": {
-      "calendarDetails": "Kalendoriaus išsamumo duomenys",
-      "calendarDetailsDesc": "Konfigūruokite savo kalendoriaus nustatymus",
       "calendarName": "Kalendoriaus pavadinimas",
       "calendarNameAria": "Kalendoriaus pavadinimas",
       "cancel": "Atšaukti",

@@ -231,8 +231,6 @@
       "subscribeTitle": "الاشتراك في التقويم"
     },
     "calendarEdit": {
-      "calendarDetails": "تفاصيل التقويم",
-      "calendarDetailsDesc": "قم بتكوين إعدادات التقويم الخاص بك",
       "calendarName": "اسم التقويم",
       "calendarNameAria": "اسم التقويم",
       "cancel": "إلغاء",
