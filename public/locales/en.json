@@ -833,8 +833,14 @@
       "subtitle": "Track pledge campaigns and progress toward giving goals"
     },
     "donationBatchPage": {
+      "closeBatch": "Close Batch",
+      "closed": "Closed",
+      "closedNotice": "This batch is closed, so its donations can no longer be changed. Ask someone with Edit Donations to reopen it.",
+      "closedNoticeEdit": "This batch is closed. Only people with Edit Donations can change it; reopen it to let others enter donations again.",
       "editBatch": "Edit Batch",
       "giftCount": "{count} gifts",
+      "open": "Open",
+      "reopenBatch": "Reopen Batch",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -846,6 +852,7 @@
       "export": "Export",
       "failedEvents": "Failed events ({count})",
       "giftCount": "{count} gifts",
+      "status": "Status",
       "stripeImportLink": "Import missing Stripe transactions",
       "subtitle": "Manage donation batches and track giving records"
     },

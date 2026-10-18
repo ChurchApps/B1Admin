@@ -1,5 +1,5 @@
 import fs from "fs";
-import { type Page, type APIRequestContext, type Locator, request, test as plainTest } from "@playwright/test";
+import { type Browser, type Page, type APIRequestContext, type Locator, request, test as plainTest } from "@playwright/test";
 import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
@@ -913,5 +913,127 @@ plainTest.describe("Print colors in dark mode", () => {
 
     const { color, luminance } = await printLuminanceOf(total);
     expect(luminance, "text color " + color).toBeLessThan(0.4);
+  });
+});
+
+// ChurchAppsSupport#1279: Edit Donations closes a counted batch; the seeded Donation Counter
+// (counter@b1.church, Donald Clark: Enter Donations + View Donations) can only work while it is open.
+const LOCK_BATCH_NAME = "Zebedee Counting Batch";
+const COUNTER_EMAIL = "counter@b1.church";
+
+async function apiAuthAs(ctx: APIRequestContext, email: string) {
+  const res = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email, password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+}
+
+async function signInAs(page: Page, email: string) {
+  await page.goto("/");
+  await page.locator('input[type="email"]').fill(email);
+  await page.fill('input[type="password"]', "password");
+  await page.click('button[type="submit"]');
+  const churchDialog = page.locator('[role="dialog"]').filter({ hasText: "Select a Church" });
+  await Promise.race([
+    churchDialog.waitFor({ state: "visible", timeout: 15000 }).catch(() => {}),
+    page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 }).catch(() => {})
+  ]);
+  if (await churchDialog.isVisible().catch(() => false)) {
+    await page.locator('[role="dialog"] h3:has-text("Grace Community Church")').first().click();
+  }
+  await page.getByTestId("command-palette-open").waitFor({ state: "visible", timeout: 30000 });
+}
+
+test.describe.serial("Batch close and reopen", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+  let donationId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: LOCK_BATCH_NAME, batchDate: "2025-11-09" }] });
+    batchId = (await batchRes.json())[0].id;
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, { ...auth, data: [{ batchId, personId: "PER00000080", donationDate: "2025-11-09", amount: 50, method: "Check", status: "complete" }] });
+    donationId = (await donationRes.json())[0].id;
+    await ctx.post(`${API_BASE}/giving/funddonations`, { ...auth, data: [{ donationId, fundId: "FUN00000001", amount: 50 }] });
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  const counterPage = async (browser: Browser) => {
+    const context = await browser.newContext({ storageState: undefined });
+    const page = await context.newPage();
+    await signInAs(page, COUNTER_EMAIL);
+    return page;
+  };
+
+  test("Edit Donations closes a batch and the batch list shows it Closed", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(LOCK_BATCH_NAME, { timeout: 15000 });
+    await expect(page.getByTestId("batch-status")).toHaveText("Open");
+
+    await page.getByTestId("close-batch-button").click();
+    await expect(page.getByTestId("batch-status")).toHaveText("Closed", { timeout: 10000 });
+    await expect(page.getByTestId("batch-closed-notice")).toBeVisible();
+    await expect(page.getByTestId("reopen-batch-button")).toBeVisible();
+    // Edit Donations can still correct a closed batch.
+    await expect(page.getByTestId("donation-row-" + donationId).getByRole("button", { name: "Edit" })).toBeVisible();
+
+    await page.goto("/donations/batches");
+    const row = page.locator("tr").filter({ has: page.getByRole("link", { name: LOCK_BATCH_NAME }) });
+    await expect(row.getByTestId("batch-row-status")).toHaveText("Closed", { timeout: 15000 });
+  });
+
+  test("Enter Donations cannot add to or change a closed batch", async ({ browser }) => {
+    const page = await counterPage(browser);
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(LOCK_BATCH_NAME, { timeout: 15000 });
+    await expect(page.getByTestId("batch-closed-notice")).toBeVisible();
+    await expect(page.getByTestId("donation-row-" + donationId)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("donation-row-" + donationId).getByRole("button", { name: "Edit" })).toHaveCount(0);
+    await expect(page.getByTestId("batch-add-donation-button")).toHaveCount(0);
+    await expect(page.getByTestId("edit-batch-button")).toHaveCount(0);
+    await expect(page.getByTestId("reopen-batch-button")).toHaveCount(0);
+
+    const ctx = await request.newContext();
+    const auth = await apiAuthAs(ctx, COUNTER_EMAIL);
+    const res = await ctx.post(`${API_BASE}/giving/donations`, { ...auth, data: [{ id: donationId, batchId, donationDate: "2025-11-09", amount: 5, method: "Check" }] });
+    expect(res.status()).toBe(403);
+    await ctx.dispose();
+    await page.context().close();
+  });
+
+  test("Edit Donations reopens the batch", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.getByTestId("batch-status")).toHaveText("Closed", { timeout: 15000 });
+    await page.getByTestId("reopen-batch-button").click();
+    await expect(page.getByTestId("batch-status")).toHaveText("Open", { timeout: 10000 });
+    await expect(page.getByTestId("batch-closed-notice")).toHaveCount(0);
+    await expect(page.getByTestId("close-batch-button")).toBeVisible();
+  });
+
+  test("Enter Donations adds and fixes donations in an open batch but cannot close it", async ({ browser }) => {
+    const page = await counterPage(browser);
+    await page.goto(`/donations/batches/${batchId}`);
+    await expect(page.locator("#page-header-title")).toHaveText(LOCK_BATCH_NAME, { timeout: 15000 });
+    await expect(page.getByTestId("batch-add-donation-button")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("donation-row-" + donationId).getByRole("button", { name: "Edit" })).toBeVisible();
+    await expect(page.getByTestId("close-batch-button")).toHaveCount(0);
+
+    await page.locator("button").getByText("Anonymous").click();
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("12.00");
+    const saved = page.waitForResponse((r) => r.url().includes("/giving/funddonations") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator('[data-testid="add-donation-submit"]').click();
+    expect((await saved).status()).toBe(200);
+    await expect(page.locator('[data-testid^="donation-row-"]')).toHaveCount(2, { timeout: 10000 });
+    await page.context().close();
   });
 });
