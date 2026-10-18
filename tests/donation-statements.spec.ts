@@ -10,6 +10,21 @@ test.describe("Donation Statements and Stripe Import", () => {
       await expect(page).toHaveURL(/\/donations\/statements/);
     });
 
+    // A church's whole giving history passed Lambda's 6MB response limit (GET /giving/donations 413 in prod).
+    test("asks the Api for the selected year only, not every donation", async ({ page }) => {
+      const requests: string[] = [];
+      page.on("request", (r) => { if (/\/giving\/(donations|fundDonations)(\?|$)/.test(r.url())) requests.push(r.url()); });
+      await page.reload();
+      const yearSelect = page.locator('[role="combobox"]').first();
+      await yearSelect.click();
+      await page.locator('[data-value="2025"]').click();
+      await expect(page.getByText("Download Options")).toBeVisible({ timeout: 10000 });
+
+      expect(requests.length).toBeGreaterThan(0);
+      for (const url of requests) expect(url).toMatch(/startDate=\d{4}-01-01&endDate=\d{4}-12-31/);
+      expect(requests.some((url) => url.includes("startDate=2025-01-01&endDate=2025-12-31"))).toBe(true);
+    });
+
     test("renders year selector and summary card", async ({ page }) => {
       await expect(page.getByRole("heading", { name: "Select Year" })).toBeVisible({ timeout: 10000 });
       await expect(page.getByRole("heading", { name: "Summary" })).toBeVisible({ timeout: 10000 });

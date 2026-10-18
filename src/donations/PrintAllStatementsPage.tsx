@@ -16,13 +16,15 @@ export const PrintAllStatementsPage = () => {
   const context = useContext(UserContext);
   const [currency, setCurrency] = useState<string>("usd");
 
+  // One year only: a church's full giving history can be too large for one response.
+  const yearRange = `startDate=${currYear}-01-01&endDate=${currYear}-12-31`;
   const allDonations = useQuery<DonationInterface[]>({
-    queryKey: ["/donations", "GivingApi"],
+    queryKey: ["/donations?" + yearRange, "GivingApi"],
     placeholderData: []
   });
 
   const allFundDonations = useQuery<FundDonationInterface[]>({
-    queryKey: ["/fundDonations", "GivingApi"],
+    queryKey: ["/fundDonations?" + yearRange, "GivingApi"],
     placeholderData: []
   });
 
