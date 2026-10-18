@@ -327,6 +327,36 @@ test.describe("serverAdmin Commons tab", () => {
     await expect(chip).toHaveText("Sunday-ready");
   });
 
+  test("links a co-publisher to a song from the assets view", async ({ page, request }) => {
+    const { adminJwt } = await apiLogin(request);
+    const song = await pickListenableSong(request);
+    const rows = await (await request.get(`${API}/commons/admin/assets?q=${song.id}`, auth(adminJwt))).json();
+    const before: string[] = (rows.find((a: any) => a.id === song.id)?.publishers || []).map((p: any) => p.id);
+    try {
+      await openCommons(page);
+      await page.getByTestId("commons-tab-assets").click();
+      await page.getByTestId("commons-asset-search").fill(song.id);
+      const assetRow = page.getByTestId(`commons-asset-${song.id}`);
+      await expect(assetRow).toBeVisible();
+      await assetRow.getByTestId(`commons-asset-publishers-${song.id}`).click();
+
+      const dialog = page.getByTestId("commons-publishers-dialog");
+      await dialog.getByTestId("commons-publisher-search").fill("demo@b1.church");
+      await dialog.getByTestId("commons-publisher-search-go").click();
+      await dialog.getByTestId("commons-publisher-add-USR00000001").click();
+      await expect(dialog.getByTestId("commons-publisher-USR00000001")).toBeVisible();
+      await dialog.getByTestId("commons-publishers-save").click();
+      await expect(dialog).not.toBeVisible();
+
+      const after = await (await request.get(`${API}/commons/admin/assets?q=${song.id}`, auth(adminJwt))).json();
+      const ids = (after.find((a: any) => a.id === song.id)?.publishers || []).map((p: any) => p.id);
+      expect(ids).toEqual([...before.filter((id) => id !== "USR00000001"), "USR00000001"]);
+      await expect(assetRow).toContainText((after.find((a: any) => a.id === song.id)?.publisherName || "").split(", ").pop()!);
+    } finally {
+      await request.post(`${API}/commons/admin/assets/${song.id}/publishers`, { ...auth(adminJwt), data: { userIds: before } });
+    }
+  });
+
   test("opens Commons from tab query param", async ({ page }) => {
     await login(page);
     await page.goto("/admin?tab=commons");

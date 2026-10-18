@@ -242,6 +242,8 @@ export interface CommonsAsset {
   name: string;
   status: AssetStatus;
   publisherName?: string;
+  /** Primary publisher first, then co-publishers. */
+  publishers?: { id: string; name: string }[];
   featured?: boolean;
   downloadCount?: number;
   ratingCount?: number;

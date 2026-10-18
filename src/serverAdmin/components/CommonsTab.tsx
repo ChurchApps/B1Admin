@@ -1,5 +1,5 @@
 import React from "react";
-import { DateHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import {
   Alert, Avatar, Box, Button, Checkbox, Chip, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Paper, Select, Snackbar, Stack,
   Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
@@ -404,6 +404,77 @@ const RemoveAssetDialog = (props: { asset: CommonsAsset | null; onClose: () => v
   );
 };
 
+// Publishers: the accounts that may manage a song. The first is the primary publisher (the uploader); the rest are co-writers.
+const PublishersDialog = (props: { asset: CommonsAsset | null; onClose: () => void; onSaved: (id: string, publishers: { id: string; name: string }[]) => void }) => {
+  const { asset, onClose, onSaved } = props;
+  const [list, setList] = React.useState<{ id: string; name: string }[]>([]);
+  const [term, setTerm] = React.useState("");
+  const [results, setResults] = React.useState<{ id: string; email: string; firstName?: string; lastName?: string }[]>([]);
+  const [busy, setBusy] = React.useState(false);
+  React.useEffect(() => { setList(asset?.publishers || []); setTerm(""); setResults([]); }, [asset?.id]);
+
+  const search = () => {
+    const t = term.trim();
+    if (t) ApiHelper.get("/users/search?term=" + encodeURIComponent(t), "MembershipApi").then((data: any[]) => setResults(data || []));
+  };
+  const add = (u: { id: string; email: string; firstName?: string; lastName?: string }) => {
+    if (!list.some((p) => p.id === u.id)) setList([...list, { id: u.id, name: `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.email }]);
+  };
+  const save = async () => {
+    if (!asset) return;
+    setBusy(true);
+    try {
+      const result = await CommonsApi.post(`/admin/assets/${asset.id}/publishers`, { userIds: list.map((p) => p.id) });
+      onSaved(asset.id, result?.publishers || list);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Dialog open={!!asset} onClose={onClose} fullWidth maxWidth="sm" data-testid="commons-publishers-dialog">
+      <DialogTitle>{Locale.label("serverAdmin.commonsTab.publishersTitle").replace("{name}", asset?.name || "")}</DialogTitle>
+      <DialogContent>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("serverAdmin.commonsTab.publishersHint")}</Typography>
+        {list.length === 0 && <Typography variant="body2" sx={{ my: 1 }}>{Locale.label("serverAdmin.commonsTab.publishersNone")}</Typography>}
+        <Stack spacing={1} sx={{ my: 1 }}>
+          {list.map((p, i) => (
+            <Stack key={p.id} direction="row" spacing={1} alignItems="center" data-testid={`commons-publisher-${p.id}`}>
+              <Typography variant="body2" sx={{ flex: 1, fontWeight: i === 0 ? 600 : 400 }}>{p.name}</Typography>
+              {i === 0
+                ? <Chip size="small" color="primary" label={Locale.label("serverAdmin.commonsTab.publisherPrimary")} />
+                : <Button size="small" onClick={() => setList([p, ...list.filter((x) => x.id !== p.id)])} data-testid={`commons-publisher-primary-${p.id}`}>{Locale.label("serverAdmin.commonsTab.publisherMakePrimary")}</Button>}
+              <Button size="small" color="error" onClick={() => setList(list.filter((x) => x.id !== p.id))} data-testid={`commons-publisher-remove-${p.id}`}>{Locale.label("serverAdmin.commonsTab.remove")}</Button>
+            </Stack>
+          ))}
+        </Stack>
+        <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+          <TextField
+            size="small"
+            fullWidth
+            label={Locale.label("serverAdmin.commonsTab.publisherSearch")}
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") search(); }}
+            slotProps={{ htmlInput: { "data-testid": "commons-publisher-search" } }}
+          />
+          <Button onClick={search} data-testid="commons-publisher-search-go">{Locale.label("common.search")}</Button>
+        </Stack>
+        {results.map((u) => (
+          <Stack key={u.id} direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
+            <Typography variant="body2" sx={{ flex: 1 }}>{`${u.firstName || ""} ${u.lastName || ""}`.trim()} ({u.email})</Typography>
+            <Button size="small" disabled={list.some((p) => p.id === u.id)} onClick={() => add(u)} data-testid={`commons-publisher-add-${u.id}`}>{Locale.label("serverAdmin.commonsTab.publisherAdd")}</Button>
+          </Stack>
+        ))}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>{Locale.label("common.cancel")}</Button>
+        <Button variant="contained" disabled={busy} onClick={save} data-testid="commons-publishers-save">{Locale.label("common.save")}</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 // Listen gate: tick each published key you listened through; the API flips confidence to sunday-ready
 // once every key is covered and the package has a score, chords and slides.
 const ListenDialog = (props: { asset: CommonsAsset | null; onClose: () => void; onSaved: (id: string, song: CommonsSongDetail) => void }) => {
@@ -481,6 +552,7 @@ const AssetsView = () => {
   const [assets, setAssets] = React.useState<CommonsAsset[]>([]);
   const [removeAsset, setRemoveAsset] = React.useState<CommonsAsset | null>(null);
   const [listenAsset, setListenAsset] = React.useState<CommonsAsset | null>(null);
+  const [publishersAsset, setPublishersAsset] = React.useState<CommonsAsset | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
@@ -555,7 +627,14 @@ const AssetsView = () => {
               <TableRow key={a.id} data-testid={`commons-asset-${a.id}`}>
                 <TableCell>{a.name}</TableCell>
                 <TableCell>{a.typeLabel || a.assetType}</TableCell>
-                <TableCell>{a.publisherName || "-"}</TableCell>
+                <TableCell>
+                  {a.publisherName || "-"}
+                  {a.status !== "removed" && (
+                    <Button size="small" onClick={() => setPublishersAsset(a)} data-testid={`commons-asset-publishers-${a.id}`}>
+                      {Locale.label("serverAdmin.commonsTab.editPublishers")}
+                    </Button>
+                  )}
+                </TableCell>
                 <TableCell><Chip size="small" label={assetStatusLabel(a.status)} /></TableCell>
                 <TableCell>
                   {a.confidence === "sunday-ready" ? (
@@ -609,6 +688,15 @@ const AssetsView = () => {
         onSaved={(id, song) => {
           setAssets((prev) => prev.map((x) => (x.id === id ? { ...x, confidence: song.confidence ?? x.confidence, sundayReadyAt: song.sundayReadyAt ?? null, sundayReadyBy: song.sundayReadyBy ?? null } : x)));
           setListenAsset(null);
+        }}
+      />
+
+      <PublishersDialog
+        asset={publishersAsset}
+        onClose={() => setPublishersAsset(null)}
+        onSaved={(id, publishers) => {
+          setAssets((prev) => prev.map((x) => (x.id === id ? { ...x, publishers, publisherName: publishers.map((p) => p.name).join(", ") } : x)));
+          setPublishersAsset(null);
         }}
       />
 
