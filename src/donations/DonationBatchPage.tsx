@@ -1,13 +1,14 @@
 import React from "react";
 import { DonationEdit, Donations, BatchEdit, BulkDonationEntry } from "./components";
-import { UserHelper, Permissions, DateHelper, Locale, CurrencyHelper } from "@churchapps/apphelper";
-import { type DonationBatchInterface, type FundInterface, type DonationInterface } from "@churchapps/helpers";
+import { ApiHelper, Permissions, DateHelper, Locale, CurrencyHelper } from "@churchapps/apphelper";
+import { type FundInterface, type DonationInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Grid, Stack } from "@mui/material";
-import { Add as AddIcon, EditOutlined as EditIcon } from "@mui/icons-material";
-import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, Surface, HeaderPrimaryButton, HeaderTextButton } from "../components/ui";
+import { Alert, Box, Grid, Stack } from "@mui/material";
+import { Add as AddIcon, EditOutlined as EditIcon, LockOutlined as LockIcon, LockOpenOutlined as LockOpenIcon } from "@mui/icons-material";
+import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, Surface, HeaderPrimaryButton, HeaderTextButton, StatusChip } from "../components/ui";
 import { useRequirePermission } from "../hooks";
+import { type BatchWithStatus, canChangeBatch, canEditDonations, isBatchClosed } from "./batchAccess";
 
 export const DonationBatchPage = () => {
   const params = useParams();
@@ -17,7 +18,7 @@ export const DonationBatchPage = () => {
   const [currency, setCurrency] = React.useState<string>("usd");
 
   // totalAmount arrives already converted into the church currency by the Api (server-side exchange rates).
-  const batch = useQuery<DonationBatchInterface & { isConverted?: boolean }>({ queryKey: ["/donationbatches/" + params.id, "GivingApi"] });
+  const batch = useQuery<BatchWithStatus & { isConverted?: boolean }>({ queryKey: ["/donationbatches/" + params.id, "GivingApi"] });
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
@@ -44,10 +45,23 @@ export const DonationBatchPage = () => {
     batch.refetch();
   };
 
+  const [statusSaving, setStatusSaving] = React.useState(false);
+  const setBatchStatus = async (action: "close" | "reopen") => {
+    setStatusSaving(true);
+    try {
+      await ApiHelper.post("/donationbatches/" + params.id + "/" + action, {}, "GivingApi");
+      setEditDonationId("notset");
+      setEditBatch(false);
+      await batch.refetch();
+    } finally {
+      setStatusSaving(false);
+    }
+  };
+
   const getEditModules = () => {
     const result = [];
     if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} currency={currency} />);
-    if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batch={batch.data} updatedFunction={batchUpdated} />);
+    if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batch={batch.data} updatedFunction={batchUpdated} canDelete={canEditDonations()} />);
     return result;
   };
 
@@ -61,7 +75,10 @@ export const DonationBatchPage = () => {
   const denied = useRequirePermission(Permissions.givingApi.donations.view);
   if (denied) return denied;
 
-  const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+  // Enter Donations can work in an open batch; once it is closed only Edit Donations can change it.
+  const canEdit = canChangeBatch(batch.data);
+  const canSetStatus = canEditDonations() && !!batch.data?.id;
+  const closed = isBatchClosed(batch.data);
   const giftCount = donations.data?.length || 0;
   const dateLabel = batch.data?.batchDate ? DateHelper.prettyDate(new Date(batch.data.batchDate.split("T")[0] + "T00:00:00")) : "";
   // totalAmount is the Api's converted total; summing donation amounts would mix currencies.
@@ -96,7 +113,16 @@ export const DonationBatchPage = () => {
       <PageHeader
         title={batch.data?.name || Locale.label("donations.donationBatchPage.title")}
         subtitle={lede}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
+        chips={batch.data && (
+          <Box component="span" data-testid="batch-status">
+            <StatusChip variant="header" status={closed ? Locale.label("donations.donationBatchPage.closed", "Closed") : Locale.label("donations.donationBatchPage.open", "Open")} />
+          </Box>
+        )}>
+        {canSetStatus && (closed
+          ? <HeaderTextButton startIcon={<LockOpenIcon />} onClick={() => setBatchStatus("reopen")} disabled={statusSaving} data-testid="reopen-batch-button">{Locale.label("donations.donationBatchPage.reopenBatch", "Reopen Batch")}</HeaderTextButton>
+          : <HeaderTextButton startIcon={<LockIcon />} onClick={() => setBatchStatus("close")} disabled={statusSaving} data-testid="close-batch-button">{Locale.label("donations.donationBatchPage.closeBatch", "Close Batch")}</HeaderTextButton>
+        )}
         {canEdit && (
           <HeaderTextButton startIcon={<EditIcon />} onClick={() => setEditBatch(true)} data-testid="edit-batch-button">{Locale.label("donations.donationBatchPage.editBatch")}</HeaderTextButton>
         )}
@@ -106,10 +132,17 @@ export const DonationBatchPage = () => {
       </PageHeader>
 
       <PageContainer>
+        {closed && (
+          <Alert severity="info" icon={<LockIcon />} sx={{ mb: 3 }} data-testid="batch-closed-notice">
+            {canEditDonations()
+              ? Locale.label("donations.donationBatchPage.closedNoticeEdit", "This batch is closed. Only people with Edit Donations can change it; reopen it to let others enter donations again.")
+              : Locale.label("donations.donationBatchPage.closedNotice", "This batch is closed, so its donations can no longer be changed. Ask someone with Edit Donations to reopen it.")}
+          </Alert>
+        )}
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, lg: showSide ? 8 : 12 }} sx={{ order: { xs: 2, lg: 1 } }}>
             <Surface>
-              <Donations key={donationsKey} batch={batch.data || {}} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
+              <Donations key={donationsKey} batch={batch.data || {}} canEdit={canEdit} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
             </Surface>
           </Grid>
           {showSide && (

@@ -7,12 +7,13 @@ import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Stack } from "@mui/material";
 import { Add as AddIcon, ErrorOutline as FailedIcon, Print as PrintIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
-import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, ResultsBar, SortableTableHead, TextAction, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
+import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, ResultsBar, SortableTableHead, StatusBadge, TextAction, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
 import { useSortableData } from "../hooks";
-import { useRequirePermission } from "../hooks";
+import { PermissionDenied } from "../components/PermissionDenied";
 import { Lede } from "./components/GivingParts";
+import { type BatchWithStatus, canChangeBatch, canEditDonations, canEnterDonations, canSeeBatches, enterDonationsPermission, isBatchClosed } from "./batchAccess";
 
-type BatchRow = DonationBatchInterface & { isConverted?: boolean };
+type BatchRow = BatchWithStatus & { isConverted?: boolean };
 
 const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate || 0).getTime() - new Date(b.batchDate || 0).getTime() };
 
@@ -48,8 +49,8 @@ export const DonationBatchesPage = () => {
     });
   }, []);
 
-  const denied = useRequirePermission(Permissions.givingApi.donations.viewSummary);
-  if (denied) return denied;
+  // Enter Donations needs the batch list to find the batch it is entering into.
+  if (!canSeeBatches()) return <PermissionDenied permissions={[Permissions.givingApi.donations.viewSummary, enterDonationsPermission]} />;
 
   const years = withCurrentYear(yearsFromDates((batches.data || []).map((b) => b.batchDate)));
   const yearBatches = year === null ? sortedBatches : sortedBatches.filter((b) => yearOf(b.batchDate) === year);
@@ -58,7 +59,8 @@ export const DonationBatchesPage = () => {
   const isConverted = yearBatches.some((b) => b.isConverted);
   const unresolvedEvents = (eventLogs.data || []).filter((log) => !log.resolved).length;
 
-  const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+  const canEdit = canEditDonations();
+  const canAdd = canEnterDonations();
   const canViewBatch = UserHelper.checkAccess(Permissions.givingApi.donations.view);
 
   const editBatch = editBatchId === "notset" ? undefined : editBatchId === "" ? {} : (sortedBatches.find((b) => b.id === editBatchId) || { id: editBatchId });
@@ -67,7 +69,7 @@ export const DonationBatchesPage = () => {
     if (yearBatches.length === 0) {
       return (
         <TableRow key="0">
-          <EmptyState variant="table" colSpan={5} icon={<DonationIcon />} title={Locale.label("donations.donationsPage.noBatch")} />
+          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={Locale.label("donations.donationsPage.noBatch")} />
         </TableRow>
       );
     }
@@ -86,8 +88,13 @@ export const DonationBatchesPage = () => {
           <TableCell align="right" sx={numericCellSx}>
             <Box component="span" data-testid="batch-row-total" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}</Box>
           </TableCell>
+          <TableCell data-testid="batch-row-status">
+            {isBatchClosed(b)
+              ? <StatusBadge tone="neutral" variant="dot">{Locale.label("donations.donationBatchPage.closed", "Closed")}</StatusBadge>
+              : <StatusBadge tone="success" variant="dot">{Locale.label("donations.donationBatchPage.open", "Open")}</StatusBadge>}
+          </TableCell>
           <TableCell align="right">
-            {canEdit && <TextAction small data-cy={`edit-${i}`} onClick={() => openBatch(b.id || "")}>{Locale.label("common.edit")}</TextAction>}
+            {canChangeBatch(b) && <TextAction small data-cy={`edit-${i}`} onClick={() => openBatch(b.id || "")}>{Locale.label("common.edit")}</TextAction>}
           </TableCell>
         </TableRow>
       );
@@ -111,7 +118,7 @@ export const DonationBatchesPage = () => {
         )}
         {(batches.data?.length || 0) > 0 && <HeaderTextButton startIcon={<PrintIcon />} component={Link} to="/donations/batches/print-all" data-testid="print-batches-button">{Locale.label("common.print")}</HeaderTextButton>}
         {yearBatches.length > 0 && <ExportButton data={yearBatches} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
-        {canEdit && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openBatch("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</HeaderPrimaryButton>}
+        {canAdd && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openBatch("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</HeaderPrimaryButton>}
       </PageHeader>
 
       <PageContainer>
@@ -134,6 +141,7 @@ export const DonationBatchesPage = () => {
                         { key: "batchDate", label: Locale.label("donations.donationsPage.date"), sortable: true },
                         { key: "donationCount", label: Locale.label("donations.donationsPage.don"), align: "right" },
                         { key: "totalAmount", label: Locale.label("donations.donationsPage.total"), align: "right" },
+                        { key: "status", label: Locale.label("donations.donationBatchesPage.status", "Status") },
                         { key: "edit", label: "", align: "right" }
                       ]}
                       sortBy={sortBy}
@@ -151,7 +159,7 @@ export const DonationBatchesPage = () => {
 
           {editBatch && (
             <Box id="edit-batch-bar" sx={{ borderTop: 1, borderColor: "divider", pt: 3, mt: 3 }}>
-              <BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} />
+              <BatchEdit key={editBatchId || "new"} batch={editBatch} updatedFunction={batchUpdated} canDelete={canEdit} />
             </Box>
           )}
         </Surface>

@@ -10,6 +10,7 @@ import { AppDatePicker } from "../../components";
 interface Props {
   batch: DonationBatchInterface;
   updatedFunction: () => void;
+  canDelete?: boolean;
 }
 
 type AnyRecord = Record<string, any>;
@@ -34,7 +35,7 @@ export const BatchEdit = memo((props: Props) => {
     }
   }, [batchId, props.updatedFunction, confirm]);
 
-  const getDeleteFunction = useCallback(() => (!UniqueIdHelper.isMissing(batchId) ? handleDelete : undefined), [batchId, handleDelete]);
+  const getDeleteFunction = useCallback(() => (!UniqueIdHelper.isMissing(batchId) && props.canDelete !== false ? handleDelete : undefined), [batchId, handleDelete, props.canDelete]);
 
   const onValid = useCallback((values: AnyRecord) => {
     const batchToSave: DonationBatchInterface = { name: values.name, batchDate: values.date ? DateHelper.formatHtml5Date(values.date) : undefined };
@@ -66,4 +67,4 @@ export const BatchEdit = memo((props: Props) => {
       </FormCard>
     </>
   );
-}, (prev, next) => prev.batch?.id === next.batch?.id && prev.batch?.name === next.batch?.name && String(prev.batch?.batchDate || "") === String(next.batch?.batchDate || "") && prev.updatedFunction === next.updatedFunction);
+}, (prev, next) => prev.batch?.id === next.batch?.id && prev.batch?.name === next.batch?.name && String(prev.batch?.batchDate || "") === String(next.batch?.batchDate || "") && prev.updatedFunction === next.updatedFunction && prev.canDelete === next.canDelete);
