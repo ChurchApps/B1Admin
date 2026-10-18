@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type ContactInfoInterface, type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
 
@@ -62,7 +62,8 @@ const loadSheets = async (groupId: string | null, serviceTimeId: string | null):
     const group: GroupInterface = await ApiHelper.get("/groups/" + groupId, "MembershipApi");
     return group?.id ? [await loadSheet(group, serviceTimeId)] : [];
   }
-  if (serviceTimeId) {
+  // Every group's roster for a service time needs Group Members / View.
+  if (serviceTimeId && UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view)) {
     // Groups and their service times live in different modules, so match them here.
     const [groups, groupServiceTimes] = await Promise.all([
       ApiHelper.get("/groups", "MembershipApi") as Promise<GroupInterface[]>,

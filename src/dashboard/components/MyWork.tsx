@@ -6,6 +6,7 @@ import { Locale, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { NewTask } from "../../serving/tasks/components/NewTask";
 import { RecordHeading, TextAction, VerbRow } from "../../components/ui";
+import { hasAllGroupsAccess } from "../../helpers";
 
 const linkSx = { fontWeight: 600 } as const;
 
@@ -13,6 +14,7 @@ const linkSx = { fontWeight: 600 } as const;
 export const MyWork: React.FC = () => {
   const personId = UserHelper.person?.id || "";
   const [showAdd, setShowAdd] = useState(false);
+  const canAllGroups = hasAllGroupsAccess();
 
   const tasksQuery = useQuery<TaskInterface[]>({ queryKey: ["/tasks", "DoingApi"], enabled: !UniqueIdHelper.isMissing(personId), placeholderData: [] });
   const groupsQuery = useQuery<GroupMemberInterface[]>({ queryKey: ["/groupmembers?personId=" + personId, "MembershipApi"], enabled: !UniqueIdHelper.isMissing(personId), placeholderData: [] });
@@ -49,7 +51,7 @@ export const MyWork: React.FC = () => {
 
       <Box component="section" aria-labelledby="home-my-groups" data-testid="home-my-groups">
         <RecordHeading id="home-my-groups" label={Locale.label("dashboard.myGroups", "My Groups")}>
-          <TextAction small to="/groups" component={Link}>{Locale.label("dashboard.allGroups", "All groups")}</TextAction>
+          {canAllGroups && <TextAction small to="/groups" component={Link}>{Locale.label("dashboard.allGroups", "All groups")}</TextAction>}
         </RecordHeading>
         {myGroups.length === 0
           ? <Typography variant="body2" color="text.secondary">{Locale.label("dashboard.noGroups", "You're not in any groups yet.")}</Typography>

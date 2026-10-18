@@ -5,7 +5,7 @@ import { ApiHelper, DateHelper, NotificationService, UserHelper } from "@churcha
 import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
-import { hasPlansEditAccess } from "./helpers";
+import { hasAllGroupsAccess, hasPlansEditAccess } from "./helpers";
 import { churchBrandColor } from "./helpers/Themes";
 import { useThemeMode } from "./ThemeContext";
 
@@ -144,7 +144,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/groups/pending" element={<PendingRequestsPage />} />
           <Route path="/groups/health" element={<GroupsHealthPage />} />
           <Route path="/groups/:id" element={<GroupPage />} />
-          <Route path="/groups" element={<GroupsPage />} />
+          <Route path="/groups" element={hasAllGroupsAccess() ? <GroupsPage /> : <Navigate to="/" replace />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/donations/funds/:id" element={<FundPage />} />
           <Route path="/donations/funds" element={<FundsPage />} />
