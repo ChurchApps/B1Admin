@@ -49,6 +49,12 @@ export const EDITOR_HOVER_CSS = `
 .dragActive .elementWrapper[data-el-label]:hover::before { display: none; }
 `;
 
+// The Theme sets --headingFont/--bodyFont; B1App applies them via pages.css, which the editor can't import.
+export const EDITOR_PAGE_FONT_CSS = `
+.page { font-family: var(--bodyFont), "Roboto", sans-serif; }
+.page h1, .page h2, .page h3, .page h4, .page h5, .page h6 { font-family: var(--headingFont), "Roboto", sans-serif; }
+`;
+
 export const getSelectionSuppressCss = (selectedElementId: string | null): string => {
   if (!selectedElementId) return "";
   return `

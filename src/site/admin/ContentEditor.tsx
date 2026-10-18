@@ -31,7 +31,7 @@ import { SectionTemplatePicker } from "./templates/SectionTemplatePicker";
 import { buildTemplateSection, remapSectionContent, type SectionTemplateDef } from "./templates/sectionTemplates";
 import { trackSave, resetSaveStatus, subscribeSaveStatus, getSaveStatus, getLastSavedAt } from "./saveStatusTracker";
 import { setActiveSiteSubDomain } from "../siteCache";
-import { EDITOR_HOVER_CSS, getSelectionSuppressCss } from "./editorCss";
+import { EDITOR_HOVER_CSS, EDITOR_PAGE_FONT_CSS, getSelectionSuppressCss } from "./editorCss";
 import { AddSectionDivider } from "./AddSectionDivider";
 import { SelectionBreadcrumb, type BreadcrumbCrumb } from "./SelectionBreadcrumb";
 import { AiRewriteDialog } from "../components/AiRewriteDialog";
@@ -982,6 +982,7 @@ export function ContentEditor(props: Props) {
       <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: lightEditorTheme.palette.background.default }}>
         <Theme globalStyles={props.config?.globalStyles && { ...props.config.globalStyles, customJS: "" }} appearance={props.config?.appearance} />
         {fontUrls.map((url) => <link key={url} rel="stylesheet" href={url} precedence="default" />)}
+        <style>{EDITOR_PAGE_FONT_CSS}</style>
         <style>{css}</style>
         <style>{hoverCss}</style>
 
