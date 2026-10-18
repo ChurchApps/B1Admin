@@ -15,7 +15,7 @@ import {
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { getProvider, type Instructions, type InstructionItem, type ContentFolder } from "@churchapps/content-providers";
+import { getProvider, type Instructions, type InstructionItem, type ContentFolder, type ContentFile } from "@churchapps/content-providers";
 import { getProviderInstructions } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
 import { BrowseGrid } from "./BrowseGrid";
@@ -77,7 +77,8 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
 }) => {
   const browser = useProviderBrowser({
     ministryId,
-    defaultProviderId: providerId || ""
+    defaultProviderId: providerId || "",
+    includeFiles: true
   });
 
   const [instructions, setInstructions] = useState<Instructions | null>(null);
@@ -223,6 +224,23 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
   );
 
   const handleAddAction = useCallback(() => {}, []);
+
+  const handleAddFile = useCallback((file: ContentFile, provId: string, pathIndices?: number[]) => {
+    onSelect([
+      {
+        itemType: "providerFile",
+        relatedId: file.id,
+        label: file.title,
+        seconds: file.seconds || 0,
+        providerId: provId,
+        providerPath: browser.currentPath,
+        providerContentPath: pathIndices ? generatePath(pathIndices) : undefined,
+        link: file.downloadUrl || file.url,
+        thumbnailUrl: file.thumbnail
+      }
+    ]);
+    onClose();
+  }, [onSelect, onClose, browser.currentPath]);
 
   const handleProviderChange = useCallback((newProviderId: string) => {
     setInstructions(null);
@@ -384,7 +402,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
                 excludeActions={true}
               />
             </Box>
-          ) : browser.currentItems.length === 0 ? (
+          ) : browser.currentItems.length === 0 && browser.currentFiles.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
               <Typography color="text.secondary">
                 {Locale.label("plans.lessonHeaderSelector.noContent") || "No content available"}
@@ -393,9 +411,11 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
           ) : (
             <BrowseGrid
               folders={browser.currentItems}
+              files={browser.currentFiles}
               selectedProviderId={browser.selectedProviderId}
               isLeafFolder={isLeafWithInstructions}
               onFolderClick={handleFolderClick}
+              onFileClick={handleAddFile}
             />
           )}
         </Stack>

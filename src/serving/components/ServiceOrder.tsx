@@ -247,7 +247,13 @@ export const ServiceOrder = memo((props: Props) => {
 
       if (instructions?.items && instructions.items.length > 0) {
         // Convert InstructionItems to PlanItemInterface with providerId and providerPath
-        const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
+        const converted = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
+
+        // File-based providers (GO!, Dropbox, ...) send a flat list with no header; wrap it in one
+        // named after the lesson so the customized plan still has a section bar to add into.
+        const planItemsFromInstructions = converted.some((item) => item.itemType === "header")
+          ? converted
+          : [{ itemType: "header", label: instructions.name || contentName || props.plan?.providerPlanName || "", children: converted }];
 
         // Keep top-level headers with their section children, but strip grandchildren (actions)
         const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface): PlanItemInterface => ({
@@ -268,7 +274,9 @@ export const ServiceOrder = memo((props: Props) => {
       customizingRef.current = false;
     }
     return 0;
-  }, [hasAssociatedContent, getContentPath, provider, props.plan?.providerId, props.plan?.ministryId, loadData]);
+  }, [
+    hasAssociatedContent, getContentPath, provider, props.plan?.providerId, props.plan?.ministryId, props.plan?.providerPlanName, contentName, loadData
+  ]);
 
   const addHeader = useCallback(async () => {
     // If in preview mode, first customize (import sections only), then add header
