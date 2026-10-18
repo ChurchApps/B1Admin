@@ -7,8 +7,12 @@ import { AuditLogPage } from "./AuditLogPage";
 import { BatchesPage } from "./BatchesPage";
 import { SettingsPage } from "./components/SettingsPage";
 import { PageSkeleton } from "../components/ui/PageSkeleton";
+import { Permissions, UserHelper } from "@churchapps/apphelper";
 
 const EmailTemplatesPage = React.lazy(() => import("./EmailTemplatesPage").then((module) => ({ default: module.EmailTemplatesPage })));
+
+// Matches the settings menu item and the Api rule for saving templates.
+const canManageEmailTemplates = () => UserHelper.checkAccess(Permissions.membershipApi.settings.edit) || UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit);
 
 export const Settings: React.FC = () => (
   <SettingsPage><Routes>
@@ -20,11 +24,11 @@ export const Settings: React.FC = () => (
     <Route path="/custom-fields" element={<Navigate to="/settings#custom-fields" replace />} />
     <Route
       path="/email-templates"
-      element={(
+      element={canManageEmailTemplates() ? (
         <Suspense fallback={<PageSkeleton />}>
           <EmailTemplatesPage />
         </Suspense>
-      )}
+      ) : <Navigate to="/" replace />}
     />
     <Route path="/webhooks" element={<Navigate to="/settings#developer" replace />} />
     <Route path="/developer" element={<Navigate to="/settings#developer" replace />} />

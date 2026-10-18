@@ -2,7 +2,7 @@ import React from "react";
 import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab, Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import { MarkEmailRead as MarkEmailReadIcon, VerifiedUser as VerifiedUserIcon } from "@mui/icons-material";
 import type { SelectChangeEvent } from "@mui/material";
-import { ApiHelper, Locale, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
@@ -297,7 +297,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
                   </Select>
                 </FormControl>
               )}
-              <a href="/settings/email-templates" style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendEmailDialog.manageTemplates")}</a>
+              {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && <a href="/settings/email-templates" style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendEmailDialog.manageTemplates")}</a>}
             </Box>
           )}
 
