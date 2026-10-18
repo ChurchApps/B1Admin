@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from "react";
 
 import { SecondaryMenuHelper } from "../helpers/SecondaryMenuHelper";
 import { hasPlansEditAccess } from "../helpers";
+import { canSeeBatches } from "../donations/batchAccess";
 import { SiteHeader } from "@churchapps/apphelper";
 import { ThemeMenuControls } from "./ThemeMenuControls";
 import UserContext from "../UserContext";
@@ -40,6 +41,7 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people", icon: "person", label: Locale.label("components.wrapper.ppl") });
     else if (formPermission || isFormMember) menuItems.push({ url: "/forms", icon: "person", label: Locale.label("components.wrapper.ppl") });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("components.wrapper.don"), icon: donationIcon });
+    else if (canSeeBatches()) menuItems.push({ url: "/donations/batches", label: Locale.label("components.wrapper.don"), icon: donationIcon });
 
     const canViewPlans = hasPlansEditAccess() || isMinistryMember;
     if (canViewPlans) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.serving"), icon: "assignment" });

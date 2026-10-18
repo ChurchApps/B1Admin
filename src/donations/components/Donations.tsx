@@ -14,7 +14,8 @@ interface Props {
   batch: DonationBatchInterface;
   funds: FundInterface[];
   editFunction: (id: string) => void;
-  currency?: string
+  currency?: string;
+  canEdit?: boolean;
 }
 
 const QBO_HEADERS = [
@@ -60,7 +61,9 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   }, [printing, handlePrint]);
 
   // Memoize permission check to avoid repeated calls
-  const canEdit = React.useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
+  // The batch page passes canEdit so a closed batch hides the Edit links; elsewhere it follows Edit Donations.
+  const hasEditPermission = React.useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
+  const canEdit = props.canEdit ?? hasEditPermission;
 
   const populatePeople = React.useCallback(async (data: DonationInterface[]) => {
     const peopleIds = ArrayHelper.getIds(data, "personId");
