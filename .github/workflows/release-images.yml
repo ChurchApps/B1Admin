@@ -14,6 +14,9 @@ on:
       b1app_ref:
         description: "ChurchApps/B1App git ref"
         default: main
+      b1admin_ref:
+        description: "ChurchApps/B1Admin git ref"
+        default: main
       promote:
         description: "Also move the stable tag to this version"
         type: boolean
@@ -24,7 +27,16 @@ permissions:
   packages: write
 
 jobs:
+  prep:
+    runs-on: ubuntu-latest
+    outputs:
+      ns: ${{ steps.ns.outputs.ns }}
+    steps:
+      - id: ns
+        run: echo "ns=ghcr.io/$(echo '${{ github.repository_owner }}' | tr 'A-Z' 'a-z')" >> $GITHUB_OUTPUT
+
   build:
+    needs: prep
     strategy:
       fail-fast: false
       matrix:
@@ -39,7 +51,7 @@ jobs:
         run: |
           case "${{ matrix.image }}" in
             b1-api) echo "repo=ChurchApps/Api" >> $GITHUB_OUTPUT; echo "ref=${{ inputs.api_ref }}" >> $GITHUB_OUTPUT ;;
-            b1-admin) echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT; echo "ref=${{ github.sha }}" >> $GITHUB_OUTPUT ;;
+            b1-admin) echo "repo=ChurchApps/B1Admin" >> $GITHUB_OUTPUT; echo "ref=${{ inputs.b1admin_ref }}" >> $GITHUB_OUTPUT ;;
             b1-app) echo "repo=ChurchApps/B1App" >> $GITHUB_OUTPUT; echo "ref=${{ inputs.b1app_ref }}" >> $GITHUB_OUTPUT ;;
           esac
       - uses: actions/checkout@v4
@@ -60,7 +72,7 @@ jobs:
         with:
           context: .
           platforms: linux/${{ matrix.platform.arch }}
-          outputs: type=image,name=ghcr.io/churchapps/${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ needs.prep.outputs.ns }}/${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
       - name: Save digest
         run: echo "${{ steps.build.outputs.digest }}" > "/tmp/meta/${{ matrix.image }}.${{ matrix.platform.arch }}.digest"
       - uses: actions/upload-artifact@v4
@@ -70,8 +82,10 @@ jobs:
           if-no-files-found: error
 
   publish:
-    needs: build
+    needs: [prep, build]
     runs-on: ubuntu-latest
+    env:
+      NS: ${{ needs.prep.outputs.ns }}
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -88,11 +102,11 @@ jobs:
         run: |
           set -e
           for image in b1-api b1-admin b1-app; do
-            tags="-t ghcr.io/churchapps/$image:${{ inputs.version }}"
-            [ "${{ inputs.promote }}" = "true" ] && tags="$tags -t ghcr.io/churchapps/$image:stable"
+            tags="-t $NS/$image:${{ inputs.version }}"
+            [ "${{ inputs.promote }}" = "true" ] && tags="$tags -t $NS/$image:stable"
             docker buildx imagetools create $tags \
-              "ghcr.io/churchapps/$image@$(cat /tmp/meta/$image.amd64.digest)" \
-              "ghcr.io/churchapps/$image@$(cat /tmp/meta/$image.arm64.digest)"
+              "$NS/$image@$(cat /tmp/meta/$image.amd64.digest)" \
+              "$NS/$image@$(cat /tmp/meta/$image.arm64.digest)"
           done
       - name: Write bundle manifest
         run: |
@@ -110,4 +124,4 @@ jobs:
           gh release create "selfhost-${{ inputs.version }}" bundle.txt \
             --repo "${{ github.repository }}" --target "${{ github.sha }}" \
             --title "Self-host ${{ inputs.version }}" \
-            --notes "Images: ghcr.io/churchapps/b1-api, b1-admin, b1-app tagged ${{ inputs.version }}$([ "${{ inputs.promote }}" = "true" ] && echo ' and stable'). Upgrade with: ./deploy/b1 upgrade ${{ inputs.version }}"
+            --notes "Images: $NS/b1-api, b1-admin, b1-app tagged ${{ inputs.version }}$([ "${{ inputs.promote }}" = "true" ] && echo ' and stable'). Upgrade with: ./deploy/b1 upgrade ${{ inputs.version }}"
