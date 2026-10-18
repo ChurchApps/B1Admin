@@ -231,8 +231,6 @@
       "subscribeTitle": "カレンダーを購読する"
     },
     "calendarEdit": {
-      "calendarDetails": "カレンダーの詳細",
-      "calendarDetailsDesc": "カレンダーの設定を行います",
       "calendarName": "カレンダー名",
       "calendarNameAria": "カレンダー名",
       "cancel": "キャンセル",

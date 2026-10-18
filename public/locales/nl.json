@@ -231,8 +231,6 @@
       "subscribeTitle": "Abonneren op kalender"
     },
     "calendarEdit": {
-      "calendarDetails": "Kalendergegevens",
-      "calendarDetailsDesc": "Configureer uw kalenderinstellingen",
       "calendarName": "Kalendernaam",
       "calendarNameAria": "Kalendernaam",
       "cancel": "Annuleren",

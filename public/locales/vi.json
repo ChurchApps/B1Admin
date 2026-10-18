@@ -231,8 +231,6 @@
       "subscribeTitle": "Subscribe to Calendar"
     },
     "calendarEdit": {
-      "calendarDetails": "Calendar Chi tiết",
-      "calendarDetailsDesc": "Configure your calendar Cài đặt",
       "calendarName": "Calendar Tên",
       "calendarNameAria": "Calendar Tên",
       "cancel": "Hủy",

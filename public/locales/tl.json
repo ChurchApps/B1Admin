@@ -231,8 +231,6 @@
       "subscribeTitle": "Mag -subscribe sa kalendaryo"
     },
     "calendarEdit": {
-      "calendarDetails": "Mga detalye ng kalendaryo",
-      "calendarDetailsDesc": "I -configure ang iyong mga setting ng kalendaryo",
       "calendarName": "Pangalan ng Kalendaryo",
       "calendarNameAria": "Pangalan ng Kalendaryo",
       "cancel": "Kanselahin",
