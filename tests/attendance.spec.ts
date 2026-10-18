@@ -1,10 +1,11 @@
 import fs from "fs";
-import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
+import { request as pwRequest, test as plainTest, type APIRequestContext, type Page } from "@playwright/test";
 import { attendanceTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
 
 // /attendance opens on this week; Setup, Headcounts and All years are verbs, and the reports are pills (role=tab) inside All years.
 const openSetup = (page: Page) => page.getByTestId("attendance-verb-setup").click();
@@ -521,4 +522,25 @@ test.describe("Attendance Management", () => {
     });
   });
 
+});
+
+// ChurchAppsSupport#1284: a user whose only people permission is View Names can record attendance but not open Setup.
+plainTest.describe("View People Names Only", () => {
+  plainTest.use({ storageState: { cookies: [], origins: [] } });
+  let roleId = "";
+  plainTest.beforeAll(async () => { roleId = await createNamesOnlyRole("Issue 1284 Names Only (attendance)"); });
+  plainTest.afterAll(async () => { await deleteRole(roleId); });
+
+  plainTest("attendance shows Record but not Setup", async ({ page }) => {
+    await loginAsVolunteer(page);
+    await page.goto("/attendance");
+    await expect(page.getByTestId("attendance-record")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("attendance-verb-setup")).toHaveCount(0);
+
+    await page.goto("/attendance?view=setup");
+    await expect(page.getByTestId("attendance-record")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("attendance-verb-setup")).toHaveCount(0);
+    await expect(page.getByTestId("attendance-setup-helper")).toHaveCount(0);
+    await expect(page.locator('[data-testid^="add-service-button-"]')).toHaveCount(0);
+  });
 });

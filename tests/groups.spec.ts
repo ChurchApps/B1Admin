@@ -1,10 +1,11 @@
-import { request, type Page } from "@playwright/test";
+import { request, test as plainTest, type Page } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { mockChurchLogo } from "./helpers/print-logo";
+import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
 
 // The group record opens on its summary plate; members and sessions are ?view= slices.
 async function openSeedMembers(page: Page, name?: string) {
@@ -844,4 +845,25 @@ loggedInTest("printed rosters show the church logo above the group name", async 
   await expect(logos).toHaveCount(5);
   await expect(logos.first()).toHaveAttribute("alt", "Grace Community Church");
   await expect(page.locator(".roster-church")).toHaveCount(5);
+});
+
+// ChurchAppsSupport#1284: a user whose only people permission is View Names cannot open the All groups list or print every class.
+plainTest.describe("View People Names Only", () => {
+  plainTest.use({ storageState: { cookies: [], origins: [] } });
+  let roleId = "";
+  plainTest.beforeAll(async () => { roleId = await createNamesOnlyRole("Issue 1284 Names Only (groups)"); });
+  plainTest.afterAll(async () => { await deleteRole(roleId); });
+
+  plainTest("groups list redirects home and print all classes prints nothing", async ({ page }) => {
+    await loginAsVolunteer(page);
+    await page.goto("/groups");
+    await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
+    await expect(page.getByTestId("home-my-groups")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("groups-search")).toHaveCount(0);
+    expect(new URL(page.url()).pathname).toBe("/");
+
+    await page.goto("/groups/print-roster?serviceTimeId=SST00000004&date=2025-12-03");
+    await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
+    await expect(page.locator("h1.roster-title")).toHaveCount(0);
+  });
 });
