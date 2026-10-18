@@ -915,4 +915,14 @@ plainTest.describe("View People Names Only", () => {
     await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
     await expect(page.locator("h1.roster-title")).toHaveCount(0);
   });
+
+  plainTest("group page hides Email and the email templates page redirects home", async ({ page }) => {
+    await loginAsVolunteer(page);
+    await page.goto(`/groups/${GREETERS}`);
+    await expect(page.getByRole("heading", { name: "Greeters Ministry" })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("email-group-button")).toHaveCount(0);
+
+    await page.goto("/settings/email-templates");
+    await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
+  });
 });

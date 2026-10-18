@@ -30,6 +30,7 @@ export const GroupBanner = memo((props: Props) => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
+  // Sending a group email or push notification requires groupMembers.edit on the Api.
   const canSendNotifications = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
@@ -162,9 +163,11 @@ export const GroupBanner = memo((props: Props) => {
         <RecordActions
           buttons={<>
             {canEdit && <Button variant="contained" onClick={onEdit} data-testid="edit-group-button">{Locale.label("common.edit")}</Button>}
-            <Button variant="outlined" startIcon={<MailIcon />} onClick={() => setShowEmailDialog(true)} aria-label={Locale.label("groups.groupBanner.emailTooltip")} data-testid="email-group-button">
-              {Locale.label("groups.groupBanner.email", "Email")}
-            </Button>
+            {canSendNotifications && (
+              <Button variant="outlined" startIcon={<MailIcon />} onClick={() => setShowEmailDialog(true)} aria-label={Locale.label("groups.groupBanner.emailTooltip")} data-testid="email-group-button">
+                {Locale.label("groups.groupBanner.email", "Email")}
+              </Button>
+            )}
             {canText && hasTextingProvider && (
               <Button variant="outlined" startIcon={<TextIcon />} onClick={() => setShowTextDialog(true)} aria-label={Locale.label("groups.groupBanner.textTooltip")} data-testid="text-group-button">
                 {Locale.label("groups.groupBanner.text", "Text")}
