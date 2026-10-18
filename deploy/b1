@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+# b1 — install, upgrade, back up, restore and roll back a self-hosted B1 stack.
+# Runs from the folder that holds docker-compose.yml. Needs Docker with Compose v2.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export MSYS_NO_PATHCONV=1   # Git Bash on Windows would otherwise rewrite /backup paths passed to docker
+host_pwd() { pwd -W 2>/dev/null || pwd; }
+
+usage() {
+  cat <<EOF
+Usage: ./deploy/b1 <command>
+
+  install [--domain example.org] [--version X]  first-time setup: writes .env with fresh secrets, pulls, starts
+  upgrade [version]                             backup, pull the given (or current) version, restart, verify
+  backup                                        snapshot database + uploads + .env into ./backups/<timestamp>
+  restore <backup-dir>                          put a snapshot back (stops the api while it runs)
+  rollback                                      restore the newest backup and its recorded version
+  status                                        container health and installed version
+  logs [service]                                follow logs
+
+Pin a release with B1_VERSION in .env (default: stable).
+EOF
+}
+
+compose() { docker compose "$@"; }
+rand_hex() { if command -v openssl >/dev/null 2>&1; then openssl rand -hex "$1"; else head -c "$1" /dev/urandom | od -An -tx1 | tr -d ' \n'; fi; }
+load_env() { set -a; [ -f .env ] && . ./.env; set +a; }
+env_get() { grep -E "^$1=" .env 2>/dev/null | head -1 | cut -d= -f2- || true; }
+env_set() { if grep -qE "^$1=" .env 2>/dev/null; then sed -i.bak "s|^$1=.*|$1=$2|" .env && rm -f .env.bak; else echo "$1=$2" >> .env; fi; }
+
+write_env() {
+  local domain="$1" version="$2" site url
+  if [ "$domain" = "localhost" ]; then site="http://localhost"; url="http://localhost"; else site="$domain"; url="https://$domain"; fi
+  cat > .env <<EOF
+# Written by ./deploy/b1 install on $(date -u +%FT%TZ). Keep this file: it holds the keys that unlock your data.
+B1_VERSION=$version
+DOMAIN=$domain
+SITE_ADDRESS=$site
+PUBLIC_URL=$url
+MYSQL_ROOT_PASSWORD=$(rand_hex 16)
+JWT_SECRET=$(rand_hex 32)
+ENCRYPTION_KEY=$(rand_hex 16)
+
+# Email (recommended; without it members cannot reset their own passwords)
+MAIL_SYSTEM=
+SMTP_HOST=
+SMTP_USER=
+SMTP_PASS=
+SMTP_SECURE=false
+SUPPORT_EMAIL=noreply@$domain
+EOF
+  chmod 600 .env
+}
+
+wait_healthy() {
+  local tries=0
+  echo "Waiting for the api to come up..."
+  while [ $tries -lt 60 ]; do
+    local state
+    state=$(docker inspect --format '{{.State.Health.Status}}' "$(compose ps -aq api 2>/dev/null)" 2>/dev/null || echo starting)
+    [ "$state" = "healthy" ] && return 0
+    if [ "$(docker inspect --format '{{.State.Status}}' "$(compose ps -aq api)" 2>/dev/null)" = "exited" ]; then
+      echo "The api container stopped. Last log lines:"; compose logs --tail 40 api; return 1
+    fi
+    sleep 5; tries=$((tries + 1))
+  done
+  echo "Timed out waiting for the api. Check: ./deploy/b1 logs api"; return 1
+}
+
+do_backup() {
+  load_env
+  local dir="backups/$(date +%Y%m%d-%H%M%S)"
+  mkdir -p "$dir"
+  echo "Backing up to $dir"
+  compose exec -T -e MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql mysqldump -uroot --single-transaction --routines --triggers --add-drop-database \
+    --databases membership attendance content giving messaging doing commons > "$dir/db.sql"
+  local api_id; api_id=$(compose ps -aq api)
+  if [ -n "$api_id" ]; then
+    docker run --rm --volumes-from "$api_id" -v "$(host_pwd)/$dir":/backup alpine tar czf /backup/content.tgz -C /app/content .
+  fi
+  cp .env "$dir/env"
+  echo "$(env_get B1_VERSION)" > "$dir/version"
+  echo "Backup complete: $dir ($(du -sh "$dir" | cut -f1))"
+}
+
+do_restore() {
+  local dir="$1"
+  [ -f "$dir/db.sql" ] || { echo "No db.sql in $dir"; exit 1; }
+  load_env
+  echo "Restoring $dir (the api stops while this runs)"
+  compose stop api
+  compose exec -T -e MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql mysql -uroot < "$dir/db.sql"
+  if [ -f "$dir/content.tgz" ]; then
+    docker run --rm --volumes-from "$(compose ps -aq api)" -v "$(host_pwd)/$dir":/backup alpine sh -c 'rm -rf /app/content/* && tar xzf /backup/content.tgz -C /app/content'
+  fi
+  [ -f "$dir/version" ] && env_set B1_VERSION "$(cat "$dir/version")"
+  compose up -d
+  wait_healthy
+}
+
+cmd="${1:-help}"; shift || true
+case "$cmd" in
+  install)
+    domain="localhost"; version="stable"
+    while [ $# -gt 0 ]; do case "$1" in --domain) domain="$2"; shift 2;; --version) version="$2"; shift 2;; *) echo "Unknown option $1"; exit 1;; esac; done
+    command -v docker >/dev/null || { echo "Docker is not installed: https://docs.docker.com/engine/install/"; exit 1; }
+    docker compose version >/dev/null 2>&1 || { echo "Docker Compose v2 is required"; exit 1; }
+    if [ -f .env ]; then echo ".env already exists; use ./deploy/b1 upgrade"; exit 1; fi
+    if docker volume ls -q | grep -qx "b1church_mysql-data"; then
+      echo "A b1church database volume already exists. Either write a .env with its MYSQL_ROOT_PASSWORD and run ./deploy/b1 upgrade,"
+      echo "or remove the old data first: docker compose down -v"; exit 1
+    fi
+    write_env "$domain" "$version"
+    compose pull
+    compose up -d
+    wait_healthy
+    echo
+    echo "Done. Open $(env_get PUBLIC_URL)/admin and click Register — the first account becomes the server admin."
+    [ "$domain" = "localhost" ] || echo "HTTPS is automatic once DNS for $domain points at this machine (ports 80 and 443 open)."
+    ;;
+  upgrade)
+    [ -f .env ] || { echo "No .env here; run ./deploy/b1 install first"; exit 1; }
+    [ -n "${1:-}" ] && env_set B1_VERSION "$1"
+    load_env
+    echo "Upgrading to ${B1_VERSION:-stable}"
+    compose pull
+    do_backup
+    compose up -d --remove-orphans
+    if wait_healthy; then echo "Upgrade complete."; else echo "Upgrade failed. Run ./deploy/b1 rollback to go back."; exit 1; fi
+    ;;
+  backup) do_backup ;;
+  restore) [ -n "${1:-}" ] || { usage; exit 1; }; do_restore "$1" ;;
+  rollback)
+    last=$(ls -d backups/*/ 2>/dev/null | sort | tail -1)
+    [ -n "$last" ] || { echo "No backups found"; exit 1; }
+    cp "${last}env" .env
+    do_restore "${last%/}"
+    ;;
+  status) load_env; echo "Installed version: ${B1_VERSION:-stable}  URL: ${PUBLIC_URL:-http://localhost}"; compose ps ;;
+  logs) compose logs -f --tail 100 "$@" ;;
+  *) usage ;;
+esac

@@ -35,7 +35,7 @@ export const OAuthCallback: React.FC = () => {
         window.close();
       }, 1000);
     } else {
-      window.location.href = "/";
+      window.location.href = import.meta.env.BASE_URL;
     }
   }, []);
 

@@ -1,0 +1,13 @@
+# Developer override: build the three images from source instead of pulling from GHCR.
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+# Point API_CONTEXT / B1APP_CONTEXT at local checkouts (e.g. ../Api) or a git ref (…/Api.git#v1.2.3).
+services:
+  api:
+    build:
+      context: ${API_CONTEXT:-https://github.com/ChurchApps/Api.git}
+  b1admin:
+    build:
+      context: ${B1ADMIN_CONTEXT:-.}
+  b1app:
+    build:
+      context: ${B1APP_CONTEXT:-https://github.com/ChurchApps/B1App.git}

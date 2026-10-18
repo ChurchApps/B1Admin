@@ -22,15 +22,31 @@ function noindexNonProd(stage: string | undefined): Plugin {
   };
 }
 
+// The self-host image serves the app under /admin. Vite rewrites imports and index.html for `base`,
+// but not root-relative public paths inside runtime strings, so patch those in the emitted chunks.
+function selfHostBase(base: string): Plugin | false {
+  if (base === "/") return false;
+  const re = /(["'`])\/(images|locales|apphelper)\//g;
+  return {
+    name: "selfhost-base",
+    generateBundle(_options, bundle) {
+      for (const file of Object.values(bundle)) if (file.type === "chunk") file.code = file.code.replace(re, `$1${base}$2/`);
+    }
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   // loadEnv doesn't read shell exports; merge process.env so deploy scripts' exports win.
-  const env = { ...loadEnv(mode, process.cwd(), ["PORT", "REACT_APP"]), ...process.env };
+  const env = { ...loadEnv(mode, process.cwd(), ["PORT", "REACT_APP", "VITE_BASE_PATH"]), ...process.env };
+  const base = env.VITE_BASE_PATH || "/";
   return {
+    base,
     plugins: [
       react(),
       babel({ presets: [reactCompilerPreset()] }),
       noindexNonProd(env.REACT_APP_STAGE),
+      selfHostBase(base),
       // Uploads sourcemaps so Sentry stack traces aren't minified; no-op without the token.
       !!env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
         org: "churchapps",

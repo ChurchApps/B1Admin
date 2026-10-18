@@ -21,12 +21,10 @@ Run your own private instance — B1Admin, the B1 member portal, the API, and a 
 ### Docker
 
 ```bash
-git clone https://github.com/ChurchApps/B1Admin.git
-cd B1Admin
-docker compose up -d
+curl -fsSL https://raw.githubusercontent.com/ChurchApps/B1Admin/main/deploy/install.sh | bash -s -- --domain church.example.org
 ```
 
-Then open http://localhost:3101 and register — the first account becomes the server admin. See the [Docker self-hosting guide](https://support.churchapps.org/docs/developer/deployment/docker) for custom domains, email, backups, and updating.
+Prebuilt images, automatic HTTPS, one domain (`/` website, `/admin` dashboard, `/api`). Leave out `--domain` for a local install at http://localhost. Then open `/admin` and register — the first account becomes the server admin. Upgrade any time with `./deploy/b1 upgrade` (it backs up first). See the [Docker self-hosting guide](https://support.churchapps.org/docs/developer/deployment/docker) for email, backups, and the rest.
 
 ### Railway
 

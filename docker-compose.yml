@@ -1,12 +1,29 @@
-# Self-hosted B1 stack: MySQL + Api + B1Admin + B1App.
-# Works with zero configuration: `docker compose up -d`, then open http://localhost:3101
-# Override defaults in a .env file next to this one (see docs/developer/deployment/docker.md
-# on the ChurchApps support site). Api/B1App build from GitHub by default; point
-# API_CONTEXT / B1APP_CONTEXT at local checkouts for development.
+# Self-hosted B1 stack: Caddy (HTTPS) + MySQL + Api + B1Admin + B1App, all behind one domain.
+#   /        B1App  (church website + member portal)
+#   /admin   B1Admin
+#   /api     Api (REST, uploads, websocket)
+# Install and upgrade with ./deploy/b1 (it writes the .env with real secrets). Every value below has a localhost default.
 
 name: b1church
 
 services:
+  caddy:
+    image: caddy:2.10
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-http://localhost}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on:
+      - api
+      - b1admin
+      - b1app
+    restart: unless-stopped
+
   mysql:
     image: mysql:8.4
     environment:
@@ -14,36 +31,29 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-churchapps}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
       interval: 5s
       timeout: 5s
       retries: 30
     restart: unless-stopped
 
   api:
-    build:
-      context: ${API_CONTEXT:-https://github.com/ChurchApps/Api.git}
+    image: ghcr.io/churchapps/b1-api:${B1_VERSION:-stable}
     depends_on:
       mysql:
         condition: service_healthy
-    ports:
-      - "8084:8084"
     environment:
-      ENVIRONMENT: docker
-      SELF_HOSTED: "1"
-      SERVER_PORT: 8084
       JWT_SECRET: ${JWT_SECRET:-please-change-this-jwt-secret}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:-PleaseChangeThisDockerDefaultKey}
-      CORS_ORIGIN: ${CORS_ORIGIN:-*}
       FILE_STORE: ${FILE_STORE:-disk}
       AWS_S3_BUCKET: ${AWS_S3_BUCKET:-}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
       AWS_REGION: ${AWS_REGION:-}
       DELIVERY_PROVIDER: local
-      CONTENT_ROOT: ${API_URL:-http://localhost:8084}/content
-      SOCKET_URL: ${SOCKET_URL:-ws://localhost:8084}
-      B1ADMIN_ROOT: ${B1ADMIN_URL:-http://localhost:3101}
+      CONTENT_ROOT: ${PUBLIC_URL:-http://localhost}/api/content
+      SOCKET_URL: ${PUBLIC_URL:-http://localhost}/api/
+      B1ADMIN_ROOT: ${PUBLIC_URL:-http://localhost}/admin
       SUPPORT_EMAIL: ${SUPPORT_EMAIL:-}
       MAIL_SYSTEM: ${MAIL_SYSTEM:-}
       SMTP_HOST: ${SMTP_HOST:-}
@@ -74,32 +84,18 @@ services:
     restart: unless-stopped
 
   b1admin:
-    build:
-      context: ${B1ADMIN_CONTEXT:-.}
-      args:
-        REACT_APP_STAGE: custom
-        REACT_APP_API_BASE: ${API_URL:-http://localhost:8084}
-        REACT_APP_CONTENT_ROOT: ${API_URL:-http://localhost:8084}/content
-        REACT_APP_MESSAGING_API_SOCKET: ${SOCKET_URL:-ws://localhost:8084}
-        REACT_APP_B1_ROOT: ${B1APP_URL:-http://localhost:3000}
-        REACT_APP_B1ADMIN_ROOT: ${B1ADMIN_URL:-http://localhost:3101}
-    ports:
-      - "3101:3101"
+    image: ghcr.io/churchapps/b1-admin:${B1_VERSION:-stable}
     restart: unless-stopped
 
   b1app:
-    build:
-      context: ${B1APP_CONTEXT:-https://github.com/ChurchApps/B1App.git}
-      args:
-        NEXT_PUBLIC_STAGE: custom
-        NEXT_PUBLIC_API_BASE: ${API_URL:-http://localhost:8084}
-        NEXT_PUBLIC_CONTENT_ROOT: ${API_URL:-http://localhost:8084}/content
-        NEXT_PUBLIC_MESSAGING_API_SOCKET: ${SOCKET_URL:-ws://localhost:8084}
-        NEXT_PUBLIC_B1ADMIN_ROOT: ${B1ADMIN_URL:-http://localhost:3101}
-    ports:
-      - "3000:3000"
+    image: ghcr.io/churchapps/b1-app:${B1_VERSION:-stable}
+    environment:
+      PUBLIC_URL: ${PUBLIC_URL:-http://localhost}
+      B1_API_INTERNAL_URL: http://api:8084
+      DEFAULT_CHURCH_SLUG: ${DEFAULT_CHURCH_SLUG:-church}
     restart: unless-stopped
 
 volumes:
   mysql-data:
   api-content:
+  caddy-data:

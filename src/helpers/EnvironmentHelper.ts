@@ -19,6 +19,7 @@ export class EnvironmentHelper {
       default: EnvironmentHelper.initDev(); break;
     }
     EnvironmentHelper.Common.init(stage || "");
+    if (stage === "selfhost") EnvironmentHelper.initSelfHost();
     // Commons module isn't in @churchapps/helpers' CommonEnvironmentHelper yet — derive its
     // base from MembershipApi's, which every stage already resolves correctly.
     EnvironmentHelper.CommonsApi = CommonEnvironmentHelper.MembershipApi.replace(/\/membership$/, "/commons");
@@ -43,6 +44,23 @@ export class EnvironmentHelper {
   };
 
   static initLocal = async () => { };
+
+  // Self-hosted stack: one origin, Caddy routes /admin, /api and / to the three containers.
+  static initSelfHost = () => {
+    const origin = window.location.origin;
+    const common = EnvironmentHelper.Common;
+    const apiBase = origin + "/api";
+    for (const mod of ["Membership", "Attendance", "Content", "Giving", "Messaging", "Doing", "Reporting"]) (common as any)[mod + "Api"] = apiBase + "/" + mod.toLowerCase();
+    common.MessagingApiSocket = origin.replace(/^http/, "ws") + "/api/";
+    common.ContentRoot = origin + "/api/content";
+    common.B1Root = origin;
+    common.B1AdminRoot = origin + "/admin";
+    common.LessonsRoot = "https://lessons.church";
+    common.AskApi = "https://askapi.churchapps.org";
+    common.GoogleAnalyticsTag = "";
+    EnvironmentHelper.LessonsApi = "https://api.lessons.church";
+    EnvironmentHelper.B1Url = origin;
+  };
 
   static initDev = () => {
     this.initStaging();

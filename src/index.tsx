@@ -36,6 +36,7 @@ setTimeout(() => {
 
 Sentry.init({
   dsn: "https://0fa8dbad4eea6ffc6b2ffc157c43cff2@o4510432524107776.ingest.us.sentry.io/4510432531251200",
+  enabled: process.env.REACT_APP_STAGE !== "selfhost",
   sendDefaultPii: true,
   integrations: [
     Sentry.browserTracingIntegration(),

@@ -1,24 +1,18 @@
-FROM node:22-slim
+FROM node:22-slim AS build
 WORKDIR /app
 RUN corepack enable
 COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install --immutable
+RUN yarn install --immutable && yarn postinstall
 COPY . .
-# Vite bakes these into the bundle at build time; pass as --build-arg.
-ARG REACT_APP_STAGE=custom
-ARG REACT_APP_API_BASE
-ARG REACT_APP_CONTENT_ROOT
-ARG REACT_APP_MESSAGING_API_SOCKET
-ARG REACT_APP_B1_ROOT
-ARG REACT_APP_B1ADMIN_ROOT
-ARG REACT_APP_GOOGLE_ANALYTICS
-ENV REACT_APP_STAGE=$REACT_APP_STAGE \
-    REACT_APP_API_BASE=$REACT_APP_API_BASE \
-    REACT_APP_CONTENT_ROOT=$REACT_APP_CONTENT_ROOT \
-    REACT_APP_MESSAGING_API_SOCKET=$REACT_APP_MESSAGING_API_SOCKET \
-    REACT_APP_B1_ROOT=$REACT_APP_B1_ROOT \
-    REACT_APP_B1ADMIN_ROOT=$REACT_APP_B1ADMIN_ROOT \
-    REACT_APP_GOOGLE_ANALYTICS=$REACT_APP_GOOGLE_ANALYTICS
+# Self-host image: served under /admin, every URL derived from the browser origin at runtime.
+ENV REACT_APP_STAGE=selfhost VITE_BASE_PATH=/admin/
 RUN yarn build
+
+FROM node:22-slim
+RUN npm install -g serve@14.2.6
+WORKDIR /app
+COPY --from=build /app/dist ./dist
 EXPOSE 3101
-CMD ["yarn", "serve"]
+HEALTHCHECK --interval=10s --timeout=5s --retries=6 \
+  CMD node -e "fetch('http://127.0.0.1:3101/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["serve", "-s", "dist", "-l", "3101"]
