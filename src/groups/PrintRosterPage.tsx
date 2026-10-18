@@ -6,6 +6,7 @@ import { type ContactInfoInterface, type GroupInterface, type GroupMemberInterfa
 import { ApiHelper, Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
+import { leadsGroup } from "../helpers";
 
 interface GroupServiceTimeRow { groupId?: string; serviceTimeId?: string; serviceTimeName?: string }
 
@@ -60,7 +61,10 @@ const loadSheet = async (group: GroupInterface, serviceTimeId: string | null): P
 const loadSheets = async (groupId: string | null, serviceTimeId: string | null): Promise<RosterSheet[]> => {
   if (groupId) {
     const group: GroupInterface = await ApiHelper.get("/groups/" + groupId, "MembershipApi");
-    return group?.id ? [await loadSheet(group, serviceTimeId)] : [];
+    if (!group?.id) return [];
+    // One group's roster needs Group Members / View, or leading that group.
+    const sheet = await loadSheet(group, serviceTimeId);
+    return UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) || leadsGroup(sheet.members) ? [sheet] : [];
   }
   // Every group's roster for a service time needs Group Members / View.
   if (serviceTimeId && UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view)) {

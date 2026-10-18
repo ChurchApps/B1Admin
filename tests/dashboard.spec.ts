@@ -122,4 +122,14 @@ plainTest.describe("View People Names Only", () => {
     await expect(hint.getByRole("link", { name: "People" })).toHaveCount(0);
     await expect(hint.getByRole("link", { name: "Attendance" })).toHaveCount(0);
   });
+
+  plainTest("Sunday card shows the plan name without a link to the plan", async ({ page }) => {
+    // On a Sunday the card only looks at today; reset-demo seeds plans from tomorrow on, so look from one day ahead.
+    await page.clock.setFixedTime(new Date(Date.now() + 86400000));
+    await loginAsVolunteer(page);
+    const sermon = page.locator('[data-testid="sunday-home"] h1.om-sermon');
+    // volunteer@b1.church is not a plan editor, not in the plan's ministry and not assigned to the plan.
+    await expect(sermon).toHaveText(/Schedule|Plan/, { timeout: 15000 });
+    await expect(sermon.locator("a")).toHaveCount(0);
+  });
 });

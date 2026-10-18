@@ -56,6 +56,7 @@ import { EmptyState } from "../../components/ui/EmptyState";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ExportButton, StatusBadge } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { useCanPrintRoster } from "../../helpers";
 
 interface Props {
   group: GroupInterface;
@@ -75,6 +76,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const [sendSuccess, setSendSuccess] = useState<boolean>(false);
   const [printAnchor, setPrintAnchor] = useState<HTMLElement | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const canPrintRoster = useCanPrintRoster(props.group?.id);
 
   const canView = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view), []);
 
@@ -284,11 +286,15 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <AppIconButton label={Locale.label("groups.groupMembers.sendMemMsg")} icon={<EditNoteIcon />} tone="card" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" />
       )}
-      <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={(e: React.MouseEvent<HTMLElement>) => setPrintAnchor(e.currentTarget)} data-testid="print-roster-button" />
-      <Menu anchorEl={printAnchor} open={!!printAnchor} onClose={() => setPrintAnchor(null)}>
-        <MenuItem onClick={() => openPrint("")} data-testid="print-attendance-sheet">{Locale.label("groups.printRoster.attendanceSheet")}</MenuItem>
-        <MenuItem onClick={() => openPrint("&layout=contacts")} data-testid="print-contact-roster">{Locale.label("groups.printRoster.contactRoster")}</MenuItem>
-      </Menu>
+      {canPrintRoster && (
+        <>
+          <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={(e: React.MouseEvent<HTMLElement>) => setPrintAnchor(e.currentTarget)} data-testid="print-roster-button" />
+          <Menu anchorEl={printAnchor} open={!!printAnchor} onClose={() => setPrintAnchor(null)}>
+            <MenuItem onClick={() => openPrint("")} data-testid="print-attendance-sheet">{Locale.label("groups.printRoster.attendanceSheet")}</MenuItem>
+            <MenuItem onClick={() => openPrint("&layout=contacts")} data-testid="print-contact-roster">{Locale.label("groups.printRoster.contactRoster")}</MenuItem>
+          </Menu>
+        </>
+      )}
       <ExportButton data={exportData} filename="groupmembers.csv" text={Locale.label("groups.groupsPage.export")} />
     </Stack>
   );
