@@ -850,9 +850,39 @@ loggedInTest("printed rosters show the church logo above the group name", async 
 // ChurchAppsSupport#1284: a user whose only people permission is View Names cannot open the All groups list or print every class.
 plainTest.describe("View People Names Only", () => {
   plainTest.use({ storageState: { cookies: [], origins: [] } });
+  // volunteer@b1.church is a plain member (not the leader) of Greeters Ministry.
+  const GREETERS = "GRP00000025";
+  const apiBase = process.env.API_BASE || "http://localhost:8084";
   let roleId = "";
-  plainTest.beforeAll(async () => { roleId = await createNamesOnlyRole("Issue 1284 Names Only (groups)"); });
-  plainTest.afterAll(async () => { await deleteRole(roleId); });
+  let sessionId = "";
+  let eventId = "";
+
+  const adminContext = async () => {
+    const ctx = await request.newContext();
+    const login = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const jwt = login.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+    return { ctx, auth: { headers: { Authorization: "Bearer " + jwt } } };
+  };
+
+  plainTest.beforeAll(async () => {
+    roleId = await createNamesOnlyRole("Issue 1284 Names Only (groups)");
+    const { ctx, auth } = await adminContext();
+    const sessions = await (await ctx.post(`${apiBase}/attendance/sessions`, { ...auth, data: [{ groupId: GREETERS, sessionDate: "2026-01-04T12:00:00" }] })).json();
+    sessionId = sessions[0].id;
+    const start = new Date(Date.now() + 7 * 86400000);
+    const end = new Date(start.getTime() + 3600000);
+    const events = await (await ctx.post(`${apiBase}/content/events`, { ...auth, data: [{ groupId: GREETERS, title: "E2E 1287 Event", start, end, allDay: false, visibility: "public" }] })).json();
+    eventId = events[0].id;
+    await ctx.dispose();
+  });
+
+  plainTest.afterAll(async () => {
+    const { ctx, auth } = await adminContext();
+    if (sessionId) await ctx.delete(`${apiBase}/attendance/sessions/${sessionId}`, auth);
+    if (eventId) await ctx.delete(`${apiBase}/content/events/${eventId}`, auth);
+    await ctx.dispose();
+    await deleteRole(roleId);
+  });
 
   plainTest("groups list redirects home and print all classes prints nothing", async ({ page }) => {
     await loginAsVolunteer(page);
@@ -863,6 +893,25 @@ plainTest.describe("View People Names Only", () => {
     expect(new URL(page.url()).pathname).toBe("/");
 
     await page.goto("/groups/print-roster?serviceTimeId=SST00000004&date=2025-12-03");
+    await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
+    await expect(page.locator("h1.roster-title")).toHaveCount(0);
+  });
+
+  plainTest("member group hides roster print and event delete", async ({ page }) => {
+    await loginAsVolunteer(page);
+    await page.goto(`/groups/${GREETERS}?view=sessions`);
+    await expect(page.locator('[data-cy="session-present-msg"]')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("session-print-roster-button")).toHaveCount(0);
+
+    await page.goto(`/groups/${GREETERS}?view=members`);
+    await expect(page.locator("#groupMembersBox")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("print-roster-button")).toHaveCount(0);
+
+    await page.goto(`/groups/${GREETERS}?view=calendar`);
+    await expect(page.getByRole("cell", { name: "E2E 1287 Event", exact: true })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId(`delete-event-${eventId}`)).toHaveCount(0);
+
+    await page.goto(`/groups/print-roster?groupId=${GREETERS}`);
     await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
     await expect(page.locator("h1.roster-title")).toHaveCount(0);
   });
