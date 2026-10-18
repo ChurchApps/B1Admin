@@ -1152,6 +1152,16 @@ test.describe("Website Management", () => {
     });
   });
 
+  loggedInTest.describe("Page editor — Appearance fonts", () => {
+    loggedInTest("preview headings use the Appearance heading font", async ({ page }) => {
+      await page.goto("/site/pages/PAG00000001");
+      const heading = page.locator('[data-testid="preview-desktop"]').locator("h1, h2, h3").first();
+      await expect(heading).toBeVisible({ timeout: 15000 });
+      // Demo globalStyles.fonts.heading is Poppins.
+      await expect(heading).toHaveCSS("font-family", /Poppins/);
+    });
+  });
+
   test.describe("Page editor — canvas chrome", () => {
     test("mobile preview renders inside a device frame", async ({ page }) => {
       await page.goto("/site/pages/PAG00000001");
