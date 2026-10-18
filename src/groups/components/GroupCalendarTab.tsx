@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Box, Button, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { RecordHeading, SortableTableHead, TextAction, numericCellSx, tableScrollSx } from "../../components/ui";
@@ -74,6 +74,10 @@ export const GroupCalendarTab = (props: Props) => {
     return label;
   };
 
+  // Matches the Api: content editors, or the requester withdrawing their own pending request.
+  const canDelete = (event: EventInterface) => UserHelper.checkAccess(Permissions.contentApi.content.edit)
+    || ((event as any).approvalStatus === "pending" && !!UserHelper.person?.id && (event as any).requestedBy === UserHelper.person.id);
+
   const handleDelete = async (event: EventInterface) => {
     if (await confirm(Locale.label("groups.groupCalendar.confirmDelete").replace("{title}", event.title || ""))) {
       await ApiHelper.delete(`/events/${event.id}`, "ContentApi");
@@ -139,9 +143,11 @@ export const GroupCalendarTab = (props: Props) => {
                 <TableCell>{ev.visibility === "private" ? Locale.label("calendars.newEvent.private") : Locale.label("calendars.newEvent.public")}</TableCell>
                 <TableCell>{renderRsvpCell(ev)}</TableCell>
                 <TableCell align="right" className="rowActions">
-                  <TextAction small onClick={() => handleDelete(ev)} aria-label={Locale.label("common.delete") + " " + (ev.title || "")} data-testid={`delete-event-${ev.id}`}>
-                    {Locale.label("common.delete")}
-                  </TextAction>
+                  {canDelete(ev) && (
+                    <TextAction small onClick={() => handleDelete(ev)} aria-label={Locale.label("common.delete") + " " + (ev.title || "")} data-testid={`delete-event-${ev.id}`}>
+                      {Locale.label("common.delete")}
+                    </TextAction>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

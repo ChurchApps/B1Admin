@@ -1,7 +1,7 @@
 import { ApiHelper, ArrayHelper, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import type { ApiListType, AssignmentInterface, GroupInterface, PersonInterface, PositionInterface, TimeInterface, VisitInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { type PlanInterface, type PlanItemInterface } from "../helpers";
+import { type PlanInterface, type PlanItemInterface, hasPlansEditAccess } from "../helpers";
 
 export interface OrderItem {
   label: string;
@@ -32,6 +32,7 @@ export interface RoomCount {
 
 export interface SundayData {
   plan?: PlanInterface | null;
+  canOpenPlan?: boolean;
   planStart?: Date | null;
   focusDate?: Date | null;
   order: OrderItem[];
@@ -270,8 +271,14 @@ const loadSunday = async (): Promise<SundayData> => {
     });
   }
 
+  // Same rule as the Serving menu: plan editors, the plan's ministry, or people serving on it.
+  const myPersonId = UserHelper.person?.id;
+  const servingOnPlan = !!myPersonId && assignPlan?.id === plan?.id && (assignments || []).some((a) => a.personId === myPersonId);
+  const canOpenPlan = !!plan?.id && (hasPlansEditAccess() || servingOnPlan
+    || (!!plan.ministryId && (await safeGet<GroupInterface[]>("/groups/my/ministry", "MembershipApi", [])).some((g) => g.id === plan.ministryId)));
+
   const focusDate = plan?.serviceDate ? startOfDay(DateHelper.toDate(plan.serviceDate)) : comingSunday;
-  return { plan, planStart, focusDate, order, inRoom, live, recap, isSunday, split, serving, guests, rooms };
+  return { plan, canOpenPlan, planStart, focusDate, order, inRoom, live, recap, isSunday, split, serving, guests, rooms };
 };
 
 export const useSunday = () => {

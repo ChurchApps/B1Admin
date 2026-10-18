@@ -8,6 +8,7 @@ import { Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton, Surface } from "../../components/ui";
 import { SessionStatusDialog } from "./SessionStatusDialog";
+import { useCanPrintRoster } from "../../helpers";
 
 interface Props {
   group: GroupInterface;
@@ -53,6 +54,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const [downloadData, setDownloadData] = React.useState<any[]>([]);
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
   const [showStatus, setShowStatus] = React.useState(false);
+  const canPrintRoster = useCanPrintRoster(group?.id);
   const loadSeqRef = React.useRef(0);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit), []);
@@ -269,12 +271,14 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={1} alignItems="center">
-          <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id)} data-testid="session-print-roster-button" />
+          {canPrintRoster && <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id)} data-testid="session-print-roster-button" />}
           {session.serviceTimeId && (
             <>
-              <Button size="small" onClick={() => openRoster("serviceTimeId=" + session.serviceTimeId)} data-testid="session-print-all-rosters-button">
-                {Locale.label("groups.printRoster.printAll")}
-              </Button>
+              {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) && (
+                <Button size="small" onClick={() => openRoster("serviceTimeId=" + session.serviceTimeId)} data-testid="session-print-all-rosters-button">
+                  {Locale.label("groups.printRoster.printAll")}
+                </Button>
+              )}
               <Button size="small" onClick={() => setShowStatus(true)} data-testid="session-attendance-status-button">
                 {Locale.label("groups.groupSessions.statusButton")}
               </Button>
