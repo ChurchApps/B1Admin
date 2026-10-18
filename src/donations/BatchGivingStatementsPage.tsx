@@ -21,13 +21,15 @@ export const BatchGivingStatementsPage = () => {
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [currency, setCurrency] = useState<string>("usd");
 
+  // One year only: a church's full giving history can be too large for one response.
+  const yearRange = `startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`;
   const allDonations = useQuery<DonationInterface[]>({
-    queryKey: ["/donations", "GivingApi"],
+    queryKey: ["/donations?" + yearRange, "GivingApi"],
     placeholderData: []
   });
 
   const allFundDonations = useQuery<FundDonationInterface[]>({
-    queryKey: ["/fundDonations", "GivingApi"],
+    queryKey: ["/fundDonations?" + yearRange, "GivingApi"],
     placeholderData: []
   });
 
@@ -137,7 +139,7 @@ export const BatchGivingStatementsPage = () => {
 
   const totalDonations = yearDonations.length;
 
-  const isLoading = allDonations.isLoading || allFundDonations.isLoading || (personIds.length > 0 && people.isLoading);
+  const isLoading = allDonations.isLoading || allFundDonations.isLoading || allDonations.isPlaceholderData || allFundDonations.isPlaceholderData || (personIds.length > 0 && people.isLoading);
 
   const yearOptions = Array.from({ length: 6 }, (_, i) => currentYear - i);
 
