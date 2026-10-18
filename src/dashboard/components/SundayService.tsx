@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Locale, DateHelper } from "@churchapps/apphelper";
+import { Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { useSunday } from "../useSunday";
 import { hasPlansEditAccess } from "../../helpers";
 import "../sunday.css";
@@ -28,6 +28,13 @@ export const SundayService: React.FC = () => {
   const hasAnything = !!(plan || (data?.inRoom || 0) > 0 || (data?.serving.length || 0) > 0 || (data?.guests.length || 0) > 0 || (data?.rooms.length || 0) > 0);
   const hasLive = (data?.inRoom || 0) > 0 || (data?.serving.length || 0) > 0 || (data?.guests.length || 0) > 0 || (data?.rooms.length || 0) > 0;
   const canPlans = hasPlansEditAccess();
+  const canPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
+  const canAttendance = UserHelper.checkAccess(Permissions.attendanceApi.attendance.view) || UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary) || UserHelper.checkAccess(Permissions.attendanceApi.services.edit);
+  const hintLinks = [
+    canPeople && <Link key="people" to="/people">{Locale.label("components.wrapper.ppl", "People")}</Link>,
+    canAttendance && <Link key="attendance" to="/attendance">{Locale.label("components.wrapper.att", "Attendance")}</Link>,
+    canPlans && <Link key="plans" to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
+  ].filter(Boolean);
   const title = plan?.name || Locale.label("dashboard.sunday.thisSunday", "This Sunday");
   const series = [plan?.providerPlanName, plan?.notes].filter(Boolean).join(" · ");
   const recap = !!data?.recap;
@@ -76,16 +83,7 @@ export const SundayService: React.FC = () => {
             {data?.isSunday
               ? Locale.label("dashboard.sunday.liveHintSunday", "Who is in the room, who is serving, and who just walked in will show here once check-in and serving are in use.")
               : Locale.label("dashboard.sunday.liveHint", "Who was in the room last Sunday and first-time households show here through the week.")}
-            {" "}
-            <Link to="/people">{Locale.label("components.wrapper.ppl", "People")}</Link>
-            {" · "}
-            <Link to="/attendance">{Locale.label("components.wrapper.att", "Attendance")}</Link>
-            {canPlans && (
-              <>
-                {" · "}
-                <Link to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
-              </>
-            )}
+            {hintLinks.map((link, i) => <React.Fragment key={i}>{i === 0 ? " " : " · "}{link}</React.Fragment>)}
           </p>
         )}
       </section>

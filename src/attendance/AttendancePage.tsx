@@ -23,7 +23,8 @@ export const AttendancePage = () => {
   const canKiosk = UserHelper.checkAccess(Permissions.membershipApi.settings.edit) || UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit);
   const canHeadcount = UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit);
   const canYears = UserHelper.checkAccess(Permissions.attendanceApi.attendance.view);
-  const allowed: Record<string, boolean> = { setup: true, kiosk: canKiosk, headcount: canHeadcount, years: canYears };
+  const canSetup = canYears || UserHelper.checkAccess(Permissions.attendanceApi.services.edit);
+  const allowed: Record<string, boolean> = { setup: canSetup, kiosk: canKiosk, headcount: canHeadcount, years: canYears };
   const view = (allowed[requestedView] ? requestedView : "") as AttendanceView;
   const kind = REPORTS[searchParams.get("kind") || ""] ? searchParams.get("kind")! : "attendance";
 

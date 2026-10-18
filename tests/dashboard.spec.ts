@@ -1,5 +1,7 @@
+import { test as plainTest } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { openPrimaryNav } from "./helpers/navigation";
+import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
 
 test.describe("Sunday home", () => {
   test.beforeEach(async ({ page }) => {
@@ -98,5 +100,26 @@ test.describe("Sunday home", () => {
     const cancelBtn = page.locator("button").getByText("Cancel");
     await cancelBtn.click();
     await expect(assignInput).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+// ChurchAppsSupport#1284: a user whose only people permission is View Names is not offered All groups, People, or Attendance.
+plainTest.describe("View People Names Only", () => {
+  plainTest.use({ storageState: { cookies: [], origins: [] } });
+  let roleId = "";
+  plainTest.beforeAll(async () => { roleId = await createNamesOnlyRole("Issue 1284 Names Only (dashboard)"); });
+  plainTest.afterAll(async () => { await deleteRole(roleId); });
+
+  plainTest("dashboard hides All groups and the People and Attendance hint links", async ({ page }) => {
+    await loginAsVolunteer(page);
+    const myGroups = page.getByTestId("home-my-groups");
+    await expect(myGroups).toBeVisible({ timeout: 15000 });
+    await expect(myGroups.getByRole("link", { name: "All groups" })).toHaveCount(0);
+    await expect(myGroups.locator('a[href^="/groups/GRP"]').first()).toBeVisible({ timeout: 10000 });
+
+    const hint = page.getByTestId("sunday-live-hint");
+    await expect(hint).toBeVisible({ timeout: 15000 });
+    await expect(hint.getByRole("link", { name: "People" })).toHaveCount(0);
+    await expect(hint.getByRole("link", { name: "Attendance" })).toHaveCount(0);
   });
 });
