@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Muokkaa tapahtumaa",
       "manageRegistrations": "Hallinnoi ilmoittautumisia",
-      "noGroups": "Ryhmiä ei löytynyt."
+      "noGroups": "Ryhmiä ei löytynyt.",
+      "notesSuffix": " Muistiinpanot"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": "Tuo .ics-kalenteri"
     },
     "newEvent": {
+      "addPhoto": "Lisää kuva",
+      "clickToAddPhoto": "Lisää kuva napsauttamalla",
       "customWindow": "Mukautettu varausikkuna",
       "daily": "Päivittäin",
       "description": "Kuvaus",
+      "descriptionHint": "Näytetään tapahtumasivulla. Lihavointi, luettelot ja linkit ovat tuettuja.",
       "end": "Loppu",
       "eventTitle": "Otsikko",
       "group": "Ryhmä",
       "monthly": "Kuukausittain",
       "noTemplate": "(ei mallipohja)",
+      "notesLeaders": "Ryhmän johtajat",
+      "notesMembers": "Ryhmän jäsenet",
+      "notesPostRole": "Kuka voi lisätä muistiinpanoja",
+      "notesStaff": "Vain henkilökunta",
+      "notesViewRole": "Kuka voi nähdä muistiinpanot",
+      "photo": "Tapahtuman kuva",
+      "photoAlt": "Tapahtuman kuva",
+      "photoHint": "Näytetään tapahtumasivun yläosassa ja ruutuna verkkosivustosi tulevissa tapahtumissa.",
       "private": "Yksityinen",
       "public": "Julkinen",
       "repeats": "Toistuu",
@@ -349,6 +361,8 @@
       "seats": "Paikat {}",
       "setupMinutes": "Valmistelu (min ennen)",
       "start": "Alku",
+      "tags": "Tunnisteet",
+      "tagsHelp": "Pilkuilla eroteltuina, esim. nuoret, opiskelijat. Käytetään kalenterielementtien suodattamiseen sivustollasi.",
       "teardownMinutes": "Purku (min jälkeen)",
       "template": "Mallipohja",
       "title": "Uusi tapahtuma",
@@ -817,8 +831,14 @@
       "subtitle": "Seuraa lupaus­kampanjoita ja edistymistä kohti lahjoitustavoitteita"
     },
     "donationBatchPage": {
+      "closeBatch": "Sulje erä",
+      "closed": "Suljettu",
+      "closedNotice": "Tämä erä on suljettu, joten sen lahjoituksia ei voi enää muuttaa. Pyydä henkilöä, jolla on Muokkaa lahjoituksia -oikeus, avaamaan se uudelleen.",
+      "closedNoticeEdit": "Tämä erä on suljettu. Vain henkilöt, joilla on Muokkaa lahjoituksia -oikeus, voivat muuttaa sitä; avaa se uudelleen, jotta muut voivat taas kirjata lahjoituksia.",
       "editBatch": "Muokkaa erää",
       "giftCount": "{count} lahjoitusta",
+      "open": "Avoin",
+      "reopenBatch": "Avaa erä uudelleen",
       "subtitle": "Hallitse lahjoituksia tässä erässä",
       "title": "Lahjoituserä"
     },
@@ -830,6 +850,7 @@
       "export": "Vie",
       "failedEvents": "Epäonnistuneet tapahtumat ({count})",
       "giftCount": "{count} lahjoitusta",
+      "status": "Tila",
       "stripeImportLink": "Tuo puuttuvat Stripe-tapahtumat",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Päivämäärä",
       "fund": "Rahasto",
       "inKind": "Luontoissuoritus",
+      "item": "Kohde",
       "lastDig": "Viimeiset 4 numeroa",
       "method": "Menetelmä",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalenteri",
       "health": "Terveys",
       "members": "Jäsenet",
+      "notes": "Johtajien muistiinpanot",
       "sessions": "Istunnot"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Seuraava",
       "noMembers": "Ei vielä jäseniä.",
       "noSessions": "Ei vielä kokoontumisia.",
+      "notesSuffix": " Johtajien muistiinpanot",
       "pendingCount": "{count} odottaa",
       "seeHealth": "Näytä tila",
       "sessionCount": "{count} kokoontumista",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Muistiinpanot (mitä käsiteltiin, ilmoitukset, rukouspyynnöt)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Kohteen kuvaus",
       "lastDigits": "4242",
       "notes": "Lisää huomautuksia tästä lahjoituksesta..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Onko sinulla FreePlay-televisioita? Ajasta tämä suunnitelmatyyppi niille osoitteessa {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Lataa",
       "downloads": "Downloads",
+      "editPublishers": "Muokkaa",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Hae WorshipCommonsista samankaltaisia nimiä",
       "possibleDuplicateTooltip": "Tiedosto tai nimi vastaa kirjastossa jo olevaa laulua — tarkista se arvioinnissa ennen hyväksymistä",
       "publisher": "Publisher",
+      "publisherAdd": "Lisää",
+      "publisherMakePrimary": "Aseta ensisijaiseksi",
+      "publisherPrimary": "Ensisijainen",
+      "publisherSearch": "Etsi käyttäjää nimellä tai sähköpostilla",
+      "publishersHint": "Jokainen julkaisija näkee laulun Omat laulut -osiossa, voi muokata sitä ja saa sen tilastot ja ilmoitukset. Ensisijainen julkaisija on laulun lataaja.",
+      "publishersNone": "Ei vielä julkaisijoita.",
+      "publishersTitle": "Julkaisijat: {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Omistaa äänitteen (tai hänellä on omistajan lupa)",
@@ -4390,7 +4425,6 @@
       "navHint": "Vierailijat voivat lukea viestejäsi osoitteessa /blog. Lisää navigointilinkki Sivut-näytölle, jotta he voivat löytää sen:",
       "noPosts": "No posts yet",
       "postCount": "{count} julkaisua",
-      "posts": "Posts",
       "published": "Julkaistu",
       "scheduled": "Ajastettu",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kuratoitu kalenteri",
+      "display": "Näyttö",
+      "displayMonth": "Kuukausikalenteri",
+      "displayUpcoming": "Tulevat tapahtumat",
       "groupCalendar": "Ryhmäkalenteri",
       "select": "Valitse",
-      "selectCalendar": "Valitse kalenteri"
+      "selectCalendar": "Valitse kalenteri",
+      "tag": "Vain tapahtumat, joilla on tunniste",
+      "tagHelp": "Jätä tyhjäksi näyttääksesi kaikki tapahtumat."
     },
     "campaignProgressEdit": {
       "donateUrl": "Lahjoitus-URL",
@@ -5848,6 +5887,7 @@
       "created": "Luotu",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Tehtävää ei löytynyt",
       "notSpec": "Ei määritetty",
       "open": "Open",
       "opened": "Avattu",

@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Upravit událost",
       "manageRegistrations": "Spravovat registrace",
-      "noGroups": "Nebyly nalezeny žádné skupiny."
+      "noGroups": "Nebyly nalezeny žádné skupiny.",
+      "notesSuffix": " Poznámky"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendáře vám umožňují organizovat a zobrazovat události pro váš sbor.",
@@ -331,14 +332,25 @@
       "title": "Importovat kalendář .ics"
     },
     "newEvent": {
+      "addPhoto": "Přidat fotku",
+      "clickToAddPhoto": "Klikněte pro přidání fotky",
       "customWindow": "Vlastní rezervační okno",
       "daily": "Denně",
       "description": "Popis",
+      "descriptionHint": "Zobrazuje se na stránce události. Podporuje tučné písmo, seznamy a odkazy.",
       "end": "Konec",
       "eventTitle": "Název",
       "group": "Skupina",
       "monthly": "Měsíčně",
       "noTemplate": "(bez šablony)",
+      "notesLeaders": "Vedoucí skupiny",
+      "notesMembers": "Členové skupiny",
+      "notesPostRole": "Kdo může přidávat poznámky",
+      "notesStaff": "Pouze personál",
+      "notesViewRole": "Kdo může zobrazit poznámky",
+      "photo": "Fotka události",
+      "photoAlt": "Fotka události",
+      "photoHint": "Zobrazuje se v horní části stránky události a jako dlaždice v nadcházejících událostech na vašem webu.",
       "private": "Soukromá",
       "public": "Veřejná",
       "repeats": "Opakování",
@@ -349,6 +361,8 @@
       "seats": "Místa {}",
       "setupMinutes": "Příprava (min před)",
       "start": "Začátek",
+      "tags": "Štítky",
+      "tagsHelp": "Oddělené čárkami, např. mládež, studenti. Slouží k filtrování prvků kalendáře na vašem webu.",
       "teardownMinutes": "Úklid (min po)",
       "template": "Šablona",
       "title": "Nová událost",
@@ -817,8 +831,14 @@
       "subtitle": "Sledujte slib kampaně a průběh plnění darů"
     },
     "donationBatchPage": {
+      "closeBatch": "Uzavřít dávku",
+      "closed": "Uzavřeno",
+      "closedNotice": "Tato dávka je uzavřená, takže její dary již nelze měnit. Požádejte o její znovuotevření někoho s oprávněním „Upravovat dary“.",
+      "closedNoticeEdit": "Tato dávka je uzavřená. Měnit ji mohou pouze lidé s oprávněním „Upravovat dary“; znovu ji otevřete, aby mohli ostatní opět zadávat dary.",
       "editBatch": "Upravit dávku",
       "giftCount": "Darů: {count}",
+      "open": "Otevřeno",
+      "reopenBatch": "Znovu otevřít dávku",
       "subtitle": "Spravujte dary v této dávce",
       "title": "Dávka darů"
     },
@@ -830,6 +850,7 @@
       "export": "Exportovat",
       "failedEvents": "Neúspěšné události ({count})",
       "giftCount": "Darů: {count}",
+      "status": "Stav",
       "stripeImportLink": "Importovat chybějící transakce Stripe",
       "subtitle": "Spravujte dávky darů a sledujte záznamy o darech"
     },
@@ -846,6 +867,7 @@
       "date": "Datum",
       "fund": "Fond",
       "inKind": "Věcný dar",
+      "item": "Položka",
       "lastDig": "Poslední 4 číslice",
       "method": "Metoda",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalendář",
       "health": "Zdraví",
       "members": "Členové",
+      "notes": "Poznámky vedoucích",
       "sessions": "Relace"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Další",
       "noMembers": "Zatím žádní členové.",
       "noSessions": "Zatím žádná setkání.",
+      "notesSuffix": " Poznámky vedoucích",
       "pendingCount": "Čeká: {count}",
       "seeHealth": "Zobrazit vývoj",
       "sessionCount": "Setkání: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Opravdu chcete trvale smazat tuto relaci?",
+      "notes": "Poznámky (co se probíralo, oznámení, modlitební prosby)",
       "sesEdit": "Upravit relaci"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Popis položky",
       "lastDigits": "4242",
       "notes": "Přidejte poznámky k tomuto daru..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Máte televizory FreePlay? Naplánujte na nich tento typ plánu na {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Stáhnout",
       "downloads": "Downloads",
+      "editPublishers": "Upravit",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Hledat podobné názvy ve WorshipCommons",
       "possibleDuplicateTooltip": "Soubor nebo název odpovídá písni, která už v knihovně je — před schválením ji zkontrolujte",
       "publisher": "Publisher",
+      "publisherAdd": "Přidat",
+      "publisherMakePrimary": "Nastavit jako primárního",
+      "publisherPrimary": "Primární",
+      "publisherSearch": "Najděte uživatele podle jména nebo e-mailu",
+      "publishersHint": "Každý vydavatel vidí píseň v sekci Moje písně, může ji upravovat a dostává její statistiky a oznámení. Primární vydavatel je ten, kdo ji nahrál.",
+      "publishersNone": "Zatím žádní vydavatelé.",
+      "publishersTitle": "Vydavatelé písně {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Vlastní nahrávku (nebo má svolení vlastníka)",
@@ -4390,7 +4425,6 @@
       "navHint": "Návštěvníci si mohou přečíst vaše příspěvky na adrese /blog. Přidejte navigační odkaz na obrazovce Stránky, aby jej mohli najít:",
       "noPosts": "No posts yet",
       "postCount": "Příspěvků: {count}",
-      "posts": "Posts",
       "published": "Zveřejněno",
       "scheduled": "Naplánováno",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kurátorovaný kalendář",
+      "display": "Zobrazení",
+      "displayMonth": "Měsíční kalendář",
+      "displayUpcoming": "Nadcházející události",
       "groupCalendar": "Skupinový kalendář",
       "select": "Vybrat",
-      "selectCalendar": "Vybrat kalendář"
+      "selectCalendar": "Vybrat kalendář",
+      "tag": "Pouze události se štítkem",
+      "tagHelp": "Ponechte prázdné pro zobrazení všech událostí."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL pro dary",
@@ -5848,6 +5887,7 @@
       "created": "Vytvořeno",
       "editAssigned": "Upravit přiřazeného",
       "editAssoc": "Upravit přidruženého",
+      "notFound": "Úkol nebyl nalezen",
       "notSpec": "Neuvedeno",
       "open": "Otevřeno",
       "opened": "Otevřeno",

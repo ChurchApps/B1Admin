@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "I-edit ang Kaganapan",
       "manageRegistrations": "Pamahalaan ang Mga Rehistrasyon",
-      "noGroups": "Walang natagpuang grupo."
+      "noGroups": "Walang natagpuang grupo.",
+      "notesSuffix": " Mga Tala"
     },
     "calendarList": {
       "aboutParagraph1": "Pinapayagan ka ng mga kalendaryo na ayusin at ipakita ang mga kaganapan para sa iyong simbahan.",
@@ -331,14 +332,25 @@
       "title": "Mag-import ng .ics Calendar"
     },
     "newEvent": {
+      "addPhoto": "Magdagdag ng Larawan",
+      "clickToAddPhoto": "I-click para magdagdag ng larawan",
       "customWindow": "Custom reservation window",
       "daily": "Araw-araw",
       "description": "Paglalarawan",
+      "descriptionHint": "Ipinapakita sa pahina ng event. Sinusuportahan ang bold, mga listahan, at mga link.",
       "end": "Katapusan",
       "eventTitle": "Pamagat",
       "group": "Grupo",
       "monthly": "Buwanang",
       "noTemplate": "(walang template)",
+      "notesLeaders": "Mga lider ng grupo",
+      "notesMembers": "Mga miyembro ng grupo",
+      "notesPostRole": "Sino ang puwedeng mag-post ng mga tala",
+      "notesStaff": "Staff lamang",
+      "notesViewRole": "Sino ang puwedeng tumingin ng mga tala",
+      "photo": "Larawan ng event",
+      "photoAlt": "Larawan ng event",
+      "photoHint": "Ipinapakita sa itaas ng pahina ng event at bilang tile sa mga paparating na event sa iyong website.",
       "private": "Pribado",
       "public": "Pampubliko",
       "repeats": "Umuulit",
@@ -349,6 +361,8 @@
       "seats": "Mga Upuan {}",
       "setupMinutes": "Paghahanda (min bago)",
       "start": "Simula",
+      "tags": "Mga Tag",
+      "tagsHelp": "Pinaghihiwalay ng kuwit, hal. kabataan, estudyante. Ginagamit para i-filter ang mga elemento ng kalendaryo sa iyong site.",
       "teardownMinutes": "Paglilinis (min pagkatapos)",
       "template": "Template",
       "title": "Bagong Kaganapan",
@@ -817,8 +831,14 @@
       "subtitle": "Subaybayan ang mga kampanya ng pangako at pag-unlad patungo sa mga layunin ng pagbibigay"
     },
     "donationBatchPage": {
+      "closeBatch": "Isara ang Batch",
+      "closed": "Sarado",
+      "closedNotice": "Sarado na ang batch na ito, kaya hindi na mababago ang mga donasyon nito. Hilingin sa isang may pahintulot na Edit Donations na buksan itong muli.",
+      "closedNoticeEdit": "Sarado na ang batch na ito. Ang mga may pahintulot na Edit Donations lamang ang makakapagbago nito; buksan itong muli para makapaglagay ulit ng mga donasyon ang iba.",
       "editBatch": "I-edit ang Batch",
       "giftCount": "{count} kaloob",
+      "open": "Bukas",
+      "reopenBatch": "Buksang Muli ang Batch",
       "subtitle": "Pamahalaan ang mga donasyon sa batch na ito",
       "title": "Batch ng Donasyon"
     },
@@ -830,6 +850,7 @@
       "export": "I-export",
       "failedEvents": "Mga nabigong event ({count})",
       "giftCount": "{count} kaloob",
+      "status": "Katayuan",
       "stripeImportLink": "I-import ang nawawalang mga Stripe transaction",
       "subtitle": "Pamahalaan ang mga batch ng donasyon at subaybayan ang mga rekord"
     },
@@ -846,6 +867,7 @@
       "date": "Petsa",
       "fund": "Pondo",
       "inKind": "Sa Anyong Gamit",
+      "item": "Item",
       "lastDig": "Huling 4 na numero",
       "method": "Paraan",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalendaryo",
       "health": "Kalusugan",
       "members": "Mga Miyembro",
+      "notes": "Mga tala ng lider",
       "sessions": "Mga Sasyon"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Susunod",
       "noMembers": "Wala pang miyembro.",
       "noSessions": "Wala pang session.",
+      "notesSuffix": " Mga Tala ng Lider",
       "pendingCount": "{count} nakabinbin",
       "seeHealth": "Tingnan ang kalagayan",
       "sessionCount": "{count} session",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Sigurado ka bang nais mong permanenteng tanggalin ang sesyon na ito?",
+      "notes": "Mga tala (mga tinalakay, anunsyo, kahilingan sa panalangin)",
       "sesEdit": "I-edit ang Sesyon"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Paglalarawan ng item",
       "lastDigits": "4242",
       "notes": "Buwanang ikapu ng Pamilyang Dela Cruz"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "May FreePlay TV ka ba? I-iskedyul ang uri ng planong ito sa mga iyon sa {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "I-download",
       "downloads": "Downloads",
+      "editPublishers": "I-edit",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Maghanap sa WorshipCommons ng mga katulad na pamagat",
       "possibleDuplicateTooltip": "Tumutugma ang file o pamagat sa isang kantang nasa library na — suriin ito sa review bago mag-apruba",
       "publisher": "Publisher",
+      "publisherAdd": "Magdagdag",
+      "publisherMakePrimary": "Gawing pangunahin",
+      "publisherPrimary": "Pangunahin",
+      "publisherSearch": "Maghanap ng user ayon sa pangalan o email",
+      "publishersHint": "Nakikita ng bawat publisher ang kanta sa My songs, maaari itong i-edit, at natatanggap nila ang mga bilang at abiso nito. Ang pangunahing publisher ay ang nag-upload nito.",
+      "publishersNone": "Wala pang mga publisher.",
+      "publishersTitle": "Mga publisher ng {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "May-ari ng recording (o may pahintulot ng may-ari)",
@@ -4390,7 +4425,6 @@
       "navHint": "Mababasa ng mga bisita ang iyong mga post sa /blog. Magdagdag ng link sa nabigasyon sa screen ng Mga Pahina para mahanap nila ito:",
       "noPosts": "No posts yet",
       "postCount": "{count} post",
-      "posts": "Posts",
       "published": "Nai-publish",
       "scheduled": "Naka-iskedyul",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Curated Calendar",
+      "display": "Display",
+      "displayMonth": "Kalendaryo ng buwan",
+      "displayUpcoming": "Mga paparating na event",
       "groupCalendar": "Group Calendar",
       "select": "Piliin",
-      "selectCalendar": "Pumili ng Kalendaryo"
+      "selectCalendar": "Pumili ng Kalendaryo",
+      "tag": "Mga event lamang na may tag na",
+      "tagHelp": "Iwanang blangko para ipakita ang lahat ng event."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL ng Donasyon",
@@ -5848,6 +5887,7 @@
       "created": "Nilikha",
       "editAssigned": "Itinalaga ang I -edit",
       "editAssoc": "I -edit ang nauugnay",
+      "notFound": "Hindi nahanap ang gawain",
       "notSpec": "Hindi tinukoy",
       "open": "Bukas",
       "opened": "Binuksan",

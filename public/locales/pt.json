@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Editar Evento",
       "manageRegistrations": "Gerenciar inscrições",
-      "noGroups": "Nenhum grupo encontrado."
+      "noGroups": "Nenhum grupo encontrado.",
+      "notesSuffix": " Notas"
     },
     "calendarList": {
       "aboutParagraph1": "Os calendários permitem que você organize e exiba eventos da sua igreja.",
@@ -331,14 +332,25 @@
       "title": "Importar calendário .ics"
     },
     "newEvent": {
+      "addPhoto": "Adicionar foto",
+      "clickToAddPhoto": "Clique para adicionar uma foto",
       "customWindow": "Janela de reserva personalizada",
       "daily": "Diário",
       "description": "Descrição",
+      "descriptionHint": "Exibido na página do evento. Negrito, listas e links são suportados.",
       "end": "Término",
       "eventTitle": "Título",
       "group": "Grupo",
       "monthly": "Mensal",
       "noTemplate": "(sem modelo)",
+      "notesLeaders": "Líderes do grupo",
+      "notesMembers": "Membros do grupo",
+      "notesPostRole": "Quem pode publicar notas",
+      "notesStaff": "Somente equipe",
+      "notesViewRole": "Quem pode ver notas",
+      "photo": "Foto do evento",
+      "photoAlt": "Foto do evento",
+      "photoHint": "Exibida no topo da página do evento e como bloco nos próximos eventos do seu site.",
       "private": "Privado",
       "public": "Público",
       "repeats": "Repetição",
@@ -349,6 +361,8 @@
       "seats": "Vagas {}",
       "setupMinutes": "Preparação (min antes)",
       "start": "Início",
+      "tags": "Tags",
+      "tagsHelp": "Separadas por vírgula, ex.: youth, students. Usadas para filtrar elementos de calendário no seu site.",
       "teardownMinutes": "Desmontagem (min depois)",
       "template": "Modelo",
       "title": "Novo evento",
@@ -817,8 +831,14 @@
       "subtitle": "Acompanhe campanhas de promessas e o progresso em direção às metas de arrecadação"
     },
     "donationBatchPage": {
+      "closeBatch": "Fechar lote",
+      "closed": "Fechado",
+      "closedNotice": "Este lote está fechado, portanto suas doações não podem mais ser alteradas. Peça a alguém com a permissão Editar doações para reabri-lo.",
+      "closedNoticeEdit": "Este lote está fechado. Somente pessoas com a permissão Editar doações podem alterá-lo; reabra-o para permitir que outras pessoas voltem a lançar doações.",
       "editBatch": "Editar Lote",
       "giftCount": "{count} doações",
+      "open": "Aberto",
+      "reopenBatch": "Reabrir lote",
       "subtitle": "Gerenciar doações neste lote",
       "title": "Lote de doações"
     },
@@ -830,6 +850,7 @@
       "export": "Exportar",
       "failedEvents": "Eventos com falha ({count})",
       "giftCount": "{count} doações",
+      "status": "Status",
       "stripeImportLink": "Importar transações Stripe ausentes",
       "subtitle": "Gerenciar lotes de doações e rastrear registros"
     },
@@ -846,6 +867,7 @@
       "date": "Data",
       "fund": "Fundo",
       "inKind": "Em Espécie",
+      "item": "Item",
       "lastDig": "Últimos 4 dígitos",
       "method": "Método",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Calendário",
       "health": "Saúde",
       "members": "Membros",
+      "notes": "Notas do líder",
       "sessions": "Sessões"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Próximo",
       "noMembers": "Nenhum membro ainda.",
       "noSessions": "Nenhuma sessão ainda.",
+      "notesSuffix": " Notas do líder",
       "pendingCount": "{count} pendentes",
       "seeHealth": "Ver saúde",
       "sessionCount": "{count} sessões",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Tem certeza de que deseja excluir permanentemente esta sessão?",
+      "notes": "Notas (o que foi abordado, avisos, pedidos de oração)",
       "sesEdit": "Editar Sessão"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Descrição do item",
       "lastDigits": "4242",
       "notes": "Dízimo mensal da família Silva"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Tem TVs FreePlay? Agende este tipo de plano nelas em {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Baixar",
       "downloads": "Downloads",
+      "editPublishers": "Editar",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Pesquisar títulos semelhantes no WorshipCommons",
       "possibleDuplicateTooltip": "O arquivo ou título corresponde a uma música que já está na biblioteca — verifique-a na análise antes de aprovar",
       "publisher": "Publisher",
+      "publisherAdd": "Adicionar",
+      "publisherMakePrimary": "Tornar principal",
+      "publisherPrimary": "Principal",
+      "publisherSearch": "Encontre um usuário por nome ou e-mail",
+      "publishersHint": "Todo publicador vê a música em My songs, pode editá-la e recebe suas contagens e avisos. O publicador principal é quem fez o upload.",
+      "publishersNone": "Nenhum publicador ainda.",
+      "publishersTitle": "Publicadores de {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "É dono da gravação (ou tem permissão do proprietário)",
@@ -4390,7 +4425,6 @@
       "navHint": "Os visitantes podem ler suas postagens em /blog. Adicione um link de navegação na tela Páginas para que eles possam encontrá-lo:",
       "noPosts": "No posts yet",
       "postCount": "{count} posts",
-      "posts": "Posts",
       "published": "Publicado",
       "scheduled": "Agendado",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Calendário Selecionado",
+      "display": "Exibição",
+      "displayMonth": "Calendário mensal",
+      "displayUpcoming": "Próximos eventos",
       "groupCalendar": "Calendário do Grupo",
       "select": "Selecionar",
-      "selectCalendar": "Selecionar Calendário"
+      "selectCalendar": "Selecionar Calendário",
+      "tag": "Somente eventos com a tag",
+      "tagHelp": "Deixe em branco para mostrar todos os eventos."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL de Doação",
@@ -5848,6 +5887,7 @@
       "created": "Criado",
       "editAssigned": "Editar atribuído",
       "editAssoc": "Editar associado",
+      "notFound": "Tarefa não encontrada",
       "notSpec": "Não especificado",
       "open": "Aberto",
       "opened": "Aberto",

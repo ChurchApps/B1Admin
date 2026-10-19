@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "تحرير الحدث",
       "manageRegistrations": "إدارة التسجيلات",
-      "noGroups": "لم يتم العثور على مجموعات."
+      "noGroups": "لم يتم العثور على مجموعات.",
+      "notesSuffix": " ملاحظات"
     },
     "calendarList": {
       "aboutParagraph1": "تتيح لك التقاويس تنظيم وعرض الأحداث في كنيستك.",
@@ -331,14 +332,25 @@
       "title": "استيراد تقويم .ics"
     },
     "newEvent": {
+      "addPhoto": "إضافة صورة",
+      "clickToAddPhoto": "انقر لإضافة صورة",
       "customWindow": "نافذة حجز مخصصة",
       "daily": "يوميًا",
       "description": "الوصف",
+      "descriptionHint": "تظهر في صفحة الحدث. يدعم الخط العريض والقوائم والروابط.",
       "end": "النهاية",
       "eventTitle": "العنوان",
       "group": "المجموعة",
       "monthly": "شهريًا",
       "noTemplate": "(بدون قالب)",
+      "notesLeaders": "قادة المجموعة",
+      "notesMembers": "أعضاء المجموعة",
+      "notesPostRole": "من يمكنه نشر الملاحظات",
+      "notesStaff": "طاقم العمل فقط",
+      "notesViewRole": "من يمكنه عرض الملاحظات",
+      "photo": "صورة الحدث",
+      "photoAlt": "صورة الحدث",
+      "photoHint": "تظهر أعلى صفحة الحدث وكبطاقة ضمن الأحداث القادمة على موقعك.",
       "private": "خاص",
       "public": "عام",
       "repeats": "التكرار",
@@ -349,6 +361,8 @@
       "seats": "مقاعد {}",
       "setupMinutes": "الإعداد (دقائق قبل البدء)",
       "start": "البداية",
+      "tags": "العلامات",
+      "tagsHelp": "مفصولة بفواصل، مثل: youth, students. تُستخدم لتصفية عناصر التقويم على موقعك.",
       "teardownMinutes": "التجهيز (دقائق بعد الانتهاء)",
       "template": "القالب",
       "title": "حدث جديد",
@@ -817,8 +831,14 @@
       "subtitle": "تتبع حملات الالتزام والتقدم نحو أهداف التبرع"
     },
     "donationBatchPage": {
+      "closeBatch": "إغلاق الدفعة",
+      "closed": "مغلقة",
+      "closedNotice": "هذه الدفعة مغلقة، لذا لم يعد بالإمكان تغيير تبرعاتها. اطلب من شخص لديه صلاحية \"تعديل التبرعات\" إعادة فتحها.",
+      "closedNoticeEdit": "هذه الدفعة مغلقة. يمكن فقط للأشخاص الذين لديهم صلاحية \"تعديل التبرعات\" تغييرها؛ أعد فتحها للسماح للآخرين بإدخال التبرعات مجددًا.",
       "editBatch": "تحرير الدفعة",
       "giftCount": "التبرعات: {count}",
+      "open": "مفتوحة",
+      "reopenBatch": "إعادة فتح الدفعة",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "تصدير",
       "failedEvents": "الأحداث الفاشلة ({count})",
       "giftCount": "التبرعات: {count}",
+      "status": "الحالة",
       "stripeImportLink": "استيراد معاملات Stripe المفقودة",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "التاريخ",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "العنصر",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "التقويم",
       "health": "الصحة",
       "members": "الأعضاء",
+      "notes": "ملاحظات القادة",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "التالي",
       "noMembers": "لا يوجد أعضاء بعد.",
       "noSessions": "لا توجد جلسات بعد.",
+      "notesSuffix": " ملاحظات القادة",
       "pendingCount": "قيد الانتظار: {count}",
       "seeHealth": "عرض الحالة",
       "sessionCount": "الجلسات: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "ملاحظات (ما تمت تغطيته، الإعلانات، طلبات الصلاة)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "وصف العنصر",
       "lastDigits": "4242",
       "notes": "أضف أي ملاحظات حول هذا التبرع..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "هل لديك شاشات FreePlay؟ قم بجدولة نوع الخطة هذا عليها عبر {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "تنزيل",
       "downloads": "Downloads",
+      "editPublishers": "تعديل",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "البحث في WorshipCommons عن عناوين مشابهة",
       "possibleDuplicateTooltip": "الملف أو العنوان يطابق ترنيمة موجودة بالفعل في المكتبة — تحقق منها في المراجعة قبل الموافقة",
       "publisher": "Publisher",
+      "publisherAdd": "إضافة",
+      "publisherMakePrimary": "تعيين كأساسي",
+      "publisherPrimary": "أساسي",
+      "publisherSearch": "ابحث عن مستخدم بالاسم أو البريد الإلكتروني",
+      "publishersHint": "يرى كل ناشر الترنيمة في \"ترانيمي\"، ويمكنه تعديلها، ويتلقى إحصاءاتها وإشعاراتها. الناشر الأساسي هو من قام برفعها.",
+      "publishersNone": "لا يوجد ناشرون بعد.",
+      "publishersTitle": "ناشرو {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "يملك التسجيل (أو لديه إذن المالك)",
@@ -4390,7 +4425,6 @@
       "navHint": "يمكن للزوار قراءة منشوراتك على /blog. أضف رابط تنقل في شاشة الصفحات حتى يتمكنوا من العثور عليه:",
       "noPosts": "No posts yet",
       "postCount": "المنشورات: {count}",
-      "posts": "Posts",
       "published": "منشور",
       "scheduled": "مجدول",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "تقويم منسق",
+      "display": "العرض",
+      "displayMonth": "تقويم شهري",
+      "displayUpcoming": "الأحداث القادمة",
       "groupCalendar": "تقويم المجموعة",
       "select": "اختر",
-      "selectCalendar": "اختر التقويم"
+      "selectCalendar": "اختر التقويم",
+      "tag": "فقط الأحداث الموسومة بـ",
+      "tagHelp": "اتركه فارغًا لعرض جميع الأحداث."
     },
     "campaignProgressEdit": {
       "donateUrl": "عنوان URL للتبرع",
@@ -5848,6 +5887,7 @@
       "created": "تاريخ الإنشاء",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "لم يتم العثور على المهمة",
       "notSpec": "غير محدد",
       "open": "Open",
       "opened": "تاريخ الفتح",

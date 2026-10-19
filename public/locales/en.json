@@ -361,9 +361,9 @@
       "seats": "Seats {}",
       "setupMinutes": "Setup (min before)",
       "start": "Start",
-      "teardownMinutes": "Teardown (min after)",
       "tags": "Tags",
       "tagsHelp": "Comma-separated, e.g. youth, students. Used to filter calendar elements on your site.",
+      "teardownMinutes": "Teardown (min after)",
       "template": "Template",
       "title": "New Event",
       "visibility": "Visibility",
@@ -1462,10 +1462,10 @@
       "healthSummary": "{members} members · {joined} joined · {left} left in 90 days",
       "lastEvent": "Last",
       "latestSession": "Latest {date}",
-      "notesSuffix": " Leader Notes",
       "nextEvent": "Next",
       "noMembers": "No members yet.",
       "noSessions": "No sessions yet.",
+      "notesSuffix": " Leader Notes",
       "pendingCount": "{count} pending",
       "seeHealth": "See health",
       "sessionCount": "{count} sessions",
@@ -1636,8 +1636,8 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
-      "sesEdit": "Edit Session",
-      "notes": "Notes (what was covered, announcements, prayer requests)"
+      "notes": "Notes (what was covered, announcements, prayer requests)",
+      "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
       "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
@@ -2936,12 +2936,12 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "sendRequest": "Send request",
+      "themeClassic": "Classic",
+      "themeCustom": "Custom",
+      "themeDefault": "Default",
       "themePreferences": "Theme Preferences",
       "togglePasswordVisibility": "toggle password visibility",
-      "valEmail": "Please enter a valid email address.",
-      "themeDefault": "Default",
-      "themeClassic": "Classic",
-      "themeCustom": "Custom"
+      "valEmail": "Please enter a valid email address."
     }
   },
   "registrations": {
@@ -3422,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Download",
       "downloads": "Downloads",
+      "editPublishers": "Edit",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3468,7 +3469,6 @@
       "possibleDuplicateSearch": "Search WorshipCommons for similar titles",
       "possibleDuplicateTooltip": "The file or title matches a song already in the library — check it in the review before approving",
       "publisher": "Publisher",
-      "editPublishers": "Edit",
       "publisherAdd": "Add",
       "publisherMakePrimary": "Make primary",
       "publisherPrimary": "Primary",
@@ -4425,7 +4425,6 @@
       "navHint": "Visitors can read your posts at /blog. Add a navigation link on the Pages screen so they can find it:",
       "noPosts": "No posts yet",
       "postCount": "{count} posts",
-      "posts": "Posts",
       "published": "Published",
       "scheduled": "Scheduled",
       "state": "State",

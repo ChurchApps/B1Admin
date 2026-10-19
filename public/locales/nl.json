@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Evenement bewerken",
       "manageRegistrations": "Registraties beheren",
-      "noGroups": "Geen groepen gevonden."
+      "noGroups": "Geen groepen gevonden.",
+      "notesSuffix": " Notities"
     },
     "calendarList": {
       "aboutParagraph1": "Met kalenders kunt u evenementen voor uw kerk organiseren en weergeven.",
@@ -331,14 +332,25 @@
       "title": ".ics-agenda importeren"
     },
     "newEvent": {
+      "addPhoto": "Foto toevoegen",
+      "clickToAddPhoto": "Klik om een foto toe te voegen",
       "customWindow": "Aangepast reserveringsvenster",
       "daily": "Dagelijks",
       "description": "Omschrijving",
+      "descriptionHint": "Wordt getoond op de evenementpagina. Vet, lijsten en links worden ondersteund.",
       "end": "Einde",
       "eventTitle": "Titel",
       "group": "Groep",
       "monthly": "Maandelijks",
       "noTemplate": "(geen sjabloon)",
+      "notesLeaders": "Groepsleiders",
+      "notesMembers": "Groepsleden",
+      "notesPostRole": "Wie kan notities plaatsen",
+      "notesStaff": "Alleen medewerkers",
+      "notesViewRole": "Wie kan notities bekijken",
+      "photo": "Evenementfoto",
+      "photoAlt": "Evenementfoto",
+      "photoHint": "Wordt getoond bovenaan de evenementpagina en als tegel bij de komende evenementen op je website.",
       "private": "Privé",
       "public": "Openbaar",
       "repeats": "Herhaalt",
@@ -349,6 +361,8 @@
       "seats": "Plaatsen {}",
       "setupMinutes": "Instellen (min voor)",
       "start": "Begin",
+      "tags": "Tags",
+      "tagsHelp": "Gescheiden door komma's, bijv. youth, students. Wordt gebruikt om kalenderelementen op je site te filteren.",
       "teardownMinutes": "Afbreken (min na)",
       "template": "Sjabloon",
       "title": "Nieuw evenement",
@@ -817,8 +831,14 @@
       "subtitle": "Beheer toezeggingscampagnes en voortgang richting geefDoelen"
     },
     "donationBatchPage": {
+      "closeBatch": "Batch sluiten",
+      "closed": "Gesloten",
+      "closedNotice": "Deze batch is gesloten, dus de donaties kunnen niet meer worden gewijzigd. Vraag iemand met Donaties bewerken om hem te heropenen.",
+      "closedNoticeEdit": "Deze batch is gesloten. Alleen mensen met Donaties bewerken kunnen hem wijzigen; heropen hem zodat anderen weer donaties kunnen invoeren.",
       "editBatch": "Batch bewerken",
       "giftCount": "{count} giften",
+      "open": "Open",
+      "reopenBatch": "Batch heropenen",
       "subtitle": "Beheer donaties in deze batch",
       "title": "Donatiebatch"
     },
@@ -830,6 +850,7 @@
       "export": "Exporteren",
       "failedEvents": "Mislukte gebeurtenissen ({count})",
       "giftCount": "{count} giften",
+      "status": "Status",
       "stripeImportLink": "Importeer ontbrekende Stripe-transacties",
       "subtitle": "Beheer donatiebatches en volg giftenregistraties"
     },
@@ -846,6 +867,7 @@
       "date": "Datum",
       "fund": "Fonds",
       "inKind": "In natura",
+      "item": "Artikel",
       "lastDig": "Laatste 4 cijfers",
       "method": "Methode",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Agenda",
       "health": "Gezondheid",
       "members": "Leden",
+      "notes": "Leidersnotities",
       "sessions": "Sessies"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Volgende",
       "noMembers": "Nog geen leden.",
       "noSessions": "Nog geen sessies.",
+      "notesSuffix": " Leidersnotities",
       "pendingCount": "{count} in afwachting",
       "seeHealth": "Gezondheid bekijken",
       "sessionCount": "{count} sessies",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Weet u zeker dat u deze sessie permanent wilt verwijderen?",
+      "notes": "Notities (wat er is behandeld, mededelingen, gebedsverzoeken)",
       "sesEdit": "Sessie bewerken"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Beschrijving van artikel",
       "lastDigits": "4242",
       "notes": "Voeg notities over deze donatie toe..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Heb je FreePlay-tv's? Plan dit plantype erop via {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Downloaden",
       "downloads": "Downloads",
+      "editPublishers": "Bewerken",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "WorshipCommons doorzoeken op vergelijkbare titels",
       "possibleDuplicateTooltip": "Het bestand of de titel komt overeen met een lied dat al in de bibliotheek staat — controleer het in de beoordeling voordat u goedkeurt",
       "publisher": "Publisher",
+      "publisherAdd": "Toevoegen",
+      "publisherMakePrimary": "Primair maken",
+      "publisherPrimary": "Primair",
+      "publisherSearch": "Zoek een gebruiker op naam of e-mail",
+      "publishersHint": "Elke publisher ziet het lied in My songs, kan het bewerken en ontvangt de tellingen en meldingen. De primaire publisher is degene die het heeft geüpload.",
+      "publishersNone": "Nog geen publishers.",
+      "publishersTitle": "Publishers van {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Bezit de opname (of heeft toestemming van de eigenaar)",
@@ -4390,7 +4425,6 @@
       "navHint": "Bezoekers kunnen uw berichten lezen op /blog. Voeg een navigatielink toe op het scherm Pagina's zodat ze deze kunnen vinden:",
       "noPosts": "No posts yet",
       "postCount": "{count} berichten",
-      "posts": "Posts",
       "published": "Gepubliceerd",
       "scheduled": "Gepland",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Samengestelde agenda",
+      "display": "Weergave",
+      "displayMonth": "Maandkalender",
+      "displayUpcoming": "Komende evenementen",
       "groupCalendar": "Groepsagenda",
       "select": "Selecteren",
-      "selectCalendar": "Selecteer agenda"
+      "selectCalendar": "Selecteer agenda",
+      "tag": "Alleen evenementen met tag",
+      "tagHelp": "Laat leeg om alle evenementen te tonen."
     },
     "campaignProgressEdit": {
       "donateUrl": "Donatie-URL",
@@ -5848,6 +5887,7 @@
       "created": "Aangemaakt",
       "editAssigned": "Toegewezen bewerken",
       "editAssoc": "Gekoppelde bewerken",
+      "notFound": "Taak niet gevonden",
       "notSpec": "Niet gespecificeerd",
       "open": "Open",
       "opened": "Geopend",

@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Редактировать мероприятие",
       "manageRegistrations": "Управление регистрациями",
-      "noGroups": "Группы не найдены."
+      "noGroups": "Группы не найдены.",
+      "notesSuffix": " Заметки"
     },
     "calendarList": {
       "aboutParagraph1": "Календари позволяют вам организовывать и отображать события для вашей церкви.",
@@ -331,14 +332,25 @@
       "title": "Импорт календаря .ics"
     },
     "newEvent": {
+      "addPhoto": "Добавить фото",
+      "clickToAddPhoto": "Нажмите, чтобы добавить фото",
       "customWindow": "Пользовательское окно бронирования",
       "daily": "Ежедневно",
       "description": "Описание",
+      "descriptionHint": "Отображается на странице мероприятия. Поддерживаются жирный шрифт, списки и ссылки.",
       "end": "Конец",
       "eventTitle": "Название",
       "group": "Группа",
       "monthly": "Ежемесячно",
       "noTemplate": "(без шаблона)",
+      "notesLeaders": "Лидеры группы",
+      "notesMembers": "Участники группы",
+      "notesPostRole": "Кто может публиковать заметки",
+      "notesStaff": "Только персонал",
+      "notesViewRole": "Кто может просматривать заметки",
+      "photo": "Фото мероприятия",
+      "photoAlt": "Фото мероприятия",
+      "photoHint": "Отображается вверху страницы мероприятия и в виде плитки в разделе предстоящих мероприятий на вашем сайте.",
       "private": "Приватное",
       "public": "Публичное",
       "repeats": "Повторение",
@@ -349,6 +361,8 @@
       "seats": "Мест: {}",
       "setupMinutes": "Подготовка (мин до)",
       "start": "Начало",
+      "tags": "Теги",
+      "tagsHelp": "Через запятую, например: молодежь, студенты. Используются для фильтрации элементов календаря на вашем сайте.",
       "teardownMinutes": "Уборка (мин после)",
       "template": "Шаблон",
       "title": "Новое мероприятие",
@@ -817,8 +831,14 @@
       "subtitle": "Отслеживайте кампании обещаний и прогресс достижения целей"
     },
     "donationBatchPage": {
+      "closeBatch": "Закрыть пакет",
+      "closed": "Закрыт",
+      "closedNotice": "Этот пакет закрыт, поэтому его пожертвования больше нельзя изменить. Попросите человека с правом «Редактирование пожертвований» открыть его снова.",
+      "closedNoticeEdit": "Этот пакет закрыт. Изменять его могут только люди с правом «Редактирование пожертвований»; откройте его снова, чтобы другие могли вносить пожертвования.",
       "editBatch": "Редактировать партию",
       "giftCount": "Пожертвования: {count}",
+      "open": "Открыт",
+      "reopenBatch": "Открыть пакет снова",
       "subtitle": "Управление пожертвованиями в этой партии",
       "title": "Партия пожертвований"
     },
@@ -830,6 +850,7 @@
       "export": "Экспорт",
       "failedEvents": "Неудачные события ({count})",
       "giftCount": "Пожертвования: {count}",
+      "status": "Статус",
       "stripeImportLink": "Импортировать пропущенные транзакции Stripe",
       "subtitle": "Управление партиями пожертвований и отслеживание записей"
     },
@@ -846,6 +867,7 @@
       "date": "Дата",
       "fund": "Фонд",
       "inKind": "Натурой",
+      "item": "Предмет",
       "lastDig": "Последние 4 цифры",
       "method": "Метод",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Календарь",
       "health": "Здоровье",
       "members": "Участники",
+      "notes": "Заметки лидера",
       "sessions": "Сессии"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Следующее",
       "noMembers": "Пока нет участников.",
       "noSessions": "Пока нет сессий.",
+      "notesSuffix": " Заметки лидера",
       "pendingCount": "В ожидании: {count}",
       "seeHealth": "Показать состояние",
       "sessionCount": "Сессии: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Вы уверены, что хотите навсегда удалить эту сессию?",
+      "notes": "Заметки (что обсуждалось, объявления, молитвенные нужды)",
       "sesEdit": "Редактировать сессию"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Описание предмета",
       "lastDigits": "4242",
       "notes": "Ежемесячная десятина семьи Ивановых"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Есть телевизоры с FreePlay? Запланируйте на них этот тип плана по ссылке {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Скачать",
       "downloads": "Downloads",
+      "editPublishers": "Изменить",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Искать похожие названия в WorshipCommons",
       "possibleDuplicateTooltip": "Файл или название совпадает с песней, уже имеющейся в библиотеке — проверьте это перед одобрением",
       "publisher": "Publisher",
+      "publisherAdd": "Добавить",
+      "publisherMakePrimary": "Сделать основным",
+      "publisherPrimary": "Основной",
+      "publisherSearch": "Найдите пользователя по имени или email",
+      "publishersHint": "Каждый издатель видит песню в разделе «Мои песни», может редактировать её и получает её статистику и уведомления. Основной издатель — тот, кто её загрузил.",
+      "publishersNone": "Издателей пока нет.",
+      "publishersTitle": "Издатели {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Владеет записью (или имеет разрешение владельца)",
@@ -4390,7 +4425,6 @@
       "navHint": "Посетители могут прочитать ваши записи по адресу /blog. Добавьте навигационную ссылку на экране Страницы, чтобы они могли ее найти:",
       "noPosts": "No posts yet",
       "postCount": "Публикации: {count}",
-      "posts": "Posts",
       "published": "Опубликовано",
       "scheduled": "Запланировано",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Курируемый календарь",
+      "display": "Отображение",
+      "displayMonth": "Календарь на месяц",
+      "displayUpcoming": "Предстоящие мероприятия",
       "groupCalendar": "Календарь группы",
       "select": "Выбрать",
-      "selectCalendar": "Выбрать календарь"
+      "selectCalendar": "Выбрать календарь",
+      "tag": "Только мероприятия с тегом",
+      "tagHelp": "Оставьте пустым, чтобы показывать все мероприятия."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL пожертвования",
@@ -5848,6 +5887,7 @@
       "created": "Созданный",
       "editAssigned": "Изменить назначенное",
       "editAssoc": "Редактировать связанные",
+      "notFound": "Задача не найдена",
       "notSpec": "Не указан",
       "open": "Открыть",
       "opened": "Открыто",

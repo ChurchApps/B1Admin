@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Uredi dogodek",
       "manageRegistrations": "Upravljaj registracije",
-      "noGroups": "Nobene skupina niso bile najdene."
+      "noGroups": "Nobene skupina niso bile najdene.",
+      "notesSuffix": " Opombe"
     },
     "calendarList": {
       "aboutParagraph1": "Koledarji vam omogočajo, da organizirate in prikazujete dogodke vaše cerkve.",
@@ -331,14 +332,25 @@
       "title": "Uvozi .ics koledar"
     },
     "newEvent": {
+      "addPhoto": "Dodaj fotografijo",
+      "clickToAddPhoto": "Kliknite za dodajanje fotografije",
       "customWindow": "Okno rezervacije po meri",
       "daily": "Dnevno",
       "description": "Opis",
+      "descriptionHint": "Prikazano na strani dogodka. Podprti so krepko besedilo, seznami in povezave.",
       "end": "Konec",
       "eventTitle": "Naslov",
       "group": "Skupina",
       "monthly": "Mesečno",
       "noTemplate": "(brez predloge)",
+      "notesLeaders": "Vodje skupine",
+      "notesMembers": "Člani skupine",
+      "notesPostRole": "Kdo lahko objavlja opombe",
+      "notesStaff": "Samo osebje",
+      "notesViewRole": "Kdo lahko vidi opombe",
+      "photo": "Fotografija dogodka",
+      "photoAlt": "Fotografija dogodka",
+      "photoHint": "Prikazano na vrhu strani dogodka in kot ploščica med prihajajočimi dogodki na vaši spletni strani.",
       "private": "Zasebno",
       "public": "Javno",
       "repeats": "Ponavljanje",
@@ -349,6 +361,8 @@
       "seats": "Mesta {}",
       "setupMinutes": "Priprava (min pred)",
       "start": "Začetek",
+      "tags": "Oznake",
+      "tagsHelp": "Ločeno z vejicami, npr. mladi, študenti. Uporablja se za filtriranje elementov koledarja na vaši strani.",
       "teardownMinutes": "Razstavljanje (min po)",
       "template": "Predloga",
       "title": "Nov dogodek",
@@ -817,8 +831,14 @@
       "subtitle": "Sledite kampanjam obljub in napredku pri doseganju ciljev donacij"
     },
     "donationBatchPage": {
+      "closeBatch": "Zapri serijo",
+      "closed": "Zaprto",
+      "closedNotice": "Ta serija je zaprta, zato njenih daritev ni več mogoče spreminjati. Prosite nekoga z dovoljenjem Urejanje daritev, da jo ponovno odpre.",
+      "closedNoticeEdit": "Ta serija je zaprta. Spreminjajo jo lahko samo osebe z dovoljenjem Urejanje daritev; ponovno jo odprite, da bodo lahko drugi spet vnašali daritve.",
       "editBatch": "Uredi paket",
       "giftCount": "Darov: {count}",
+      "open": "Odprto",
+      "reopenBatch": "Ponovno odpri serijo",
       "subtitle": "Upravljajte daritve v tej seriji",
       "title": "Serija daritv"
     },
@@ -830,6 +850,7 @@
       "export": "Izvoz",
       "failedEvents": "Neuspeli dogodki ({count})",
       "giftCount": "Darov: {count}",
+      "status": "Stanje",
       "stripeImportLink": "Uvozi manjkajoče Stripe transakcije",
       "subtitle": "Upravljajte serije daritv in spremljajte zapise daritv"
     },
@@ -846,6 +867,7 @@
       "date": "Datum",
       "fund": "Sklad",
       "inKind": "V naravi",
+      "item": "Predmet",
       "lastDig": "Zadnje 4 števke",
       "method": "Metoda",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Koledar",
       "health": "Zdravje",
       "members": "Members",
+      "notes": "Opombe vodje",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Naslednji",
       "noMembers": "Še ni članov.",
       "noSessions": "Še ni sej.",
+      "notesSuffix": " Opombe vodje",
       "pendingCount": "V čakanju: {count}",
       "seeHealth": "Prikaži stanje",
       "sessionCount": "Sej: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Opombe (kaj je bilo obravnavano, obvestila, molitveni nameni)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Opis predmeta",
       "lastDigits": "4242",
       "notes": "Dodajte opombe o tej donaciji ..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Imate televizorje FreePlay? Na njih načrtujte to vrsto načrta na {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Prenesi",
       "downloads": "Downloads",
+      "editPublishers": "Uredi",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Poišči podobne naslove v WorshipCommons",
       "possibleDuplicateTooltip": "Datoteka ali naslov se ujema s pesmijo, ki je že v knjižnici — preverite jo v pregledu pred odobritvijo",
       "publisher": "Publisher",
+      "publisherAdd": "Dodaj",
+      "publisherMakePrimary": "Nastavi kot glavnega",
+      "publisherPrimary": "Glavni",
+      "publisherSearch": "Poiščite uporabnika po imenu ali e-pošti",
+      "publishersHint": "Vsak založnik vidi pesem v razdelku Moje pesmi, jo lahko ureja ter prejema njeno statistiko in obvestila. Glavni založnik je tisti, ki jo je naložil.",
+      "publishersNone": "Založnikov še ni.",
+      "publishersTitle": "Založniki: {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Ima v lasti posnetek (ali ima dovoljenje lastnika)",
@@ -4390,7 +4425,6 @@
       "navHint": "Obiskovalci lahko berejo vaše objave na naslovu /blog. Dodajte navigacijsko povezavo na zaslonu Strani, da jo lahko najdejo:",
       "noPosts": "No posts yet",
       "postCount": "Objav: {count}",
-      "posts": "Posts",
       "published": "Objavljeno",
       "scheduled": "Načrtovano",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Urejen koledar",
+      "display": "Prikaz",
+      "displayMonth": "Mesečni koledar",
+      "displayUpcoming": "Prihajajoči dogodki",
       "groupCalendar": "Koledar skupine",
       "select": "Izberi",
-      "selectCalendar": "Izberi koledar"
+      "selectCalendar": "Izberi koledar",
+      "tag": "Samo dogodki z oznako",
+      "tagHelp": "Pustite prazno za prikaz vseh dogodkov."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL za doniranje",
@@ -5848,6 +5887,7 @@
       "created": "Ustvarjeno",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Naloge ni mogoče najti",
       "notSpec": "Ni določeno",
       "open": "Open",
       "opened": "Odprto",

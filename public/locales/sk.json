@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Upraviť udalosť",
       "manageRegistrations": "Spravovať registrácie",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "notesSuffix": " Poznámky"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": "Importovať kalendár .ics"
     },
     "newEvent": {
+      "addPhoto": "Pridať fotografiu",
+      "clickToAddPhoto": "Kliknutím pridáte fotografiu",
       "customWindow": "Vlastné okno rezervácie",
       "daily": "Denne",
       "description": "Popis",
+      "descriptionHint": "Zobrazuje sa na stránke udalosti. Podporované je tučné písmo, zoznamy a odkazy.",
       "end": "Koniec",
       "eventTitle": "Názov",
       "group": "Skupina",
       "monthly": "Mesačne",
       "noTemplate": "(bez šablóny)",
+      "notesLeaders": "Vedúci skupiny",
+      "notesMembers": "Členovia skupiny",
+      "notesPostRole": "Kto môže pridávať poznámky",
+      "notesStaff": "Iba personál",
+      "notesViewRole": "Kto môže zobraziť poznámky",
+      "photo": "Fotografia udalosti",
+      "photoAlt": "Fotografia udalosti",
+      "photoHint": "Zobrazuje sa v hornej časti stránky udalosti a ako dlaždica v nadchádzajúcich udalostiach na vašom webe.",
       "private": "Súkromné",
       "public": "Verejné",
       "repeats": "Opakuje sa",
@@ -349,6 +361,8 @@
       "seats": "Miesta {}",
       "setupMinutes": "Príprava (min pred)",
       "start": "Začiatok",
+      "tags": "Štítky",
+      "tagsHelp": "Oddelené čiarkami, napr. mládež, študenti. Slúžia na filtrovanie prvkov kalendára na vašom webe.",
       "teardownMinutes": "Upratovanie (min po)",
       "template": "Šablóna",
       "title": "Nová udalosť",
@@ -817,8 +831,14 @@
       "subtitle": "Sledujte záväzkové kampane a priebeh plnenia cieľov darovania"
     },
     "donationBatchPage": {
+      "closeBatch": "Uzavrieť dávku",
+      "closed": "Uzavretá",
+      "closedNotice": "Táto dávka je uzavretá, takže jej dary už nie je možné meniť. Požiadajte niekoho s oprávnením Upravovať dary, aby ju znovu otvoril.",
+      "closedNoticeEdit": "Táto dávka je uzavretá. Meniť ju môžu iba ľudia s oprávnením Upravovať dary; znovu ju otvorte, aby ostatní mohli opäť zadávať dary.",
       "editBatch": "Upraviť dávku",
       "giftCount": "Dary: {count}",
+      "open": "Otvorená",
+      "reopenBatch": "Znovu otvoriť dávku",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "Exportovať",
       "failedEvents": "Neúspešné udalosti ({count})",
       "giftCount": "Dary: {count}",
+      "status": "Stav",
       "stripeImportLink": "Importovať chýbajúce transakcie Stripe",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Dátum",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "Položka",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalendár",
       "health": "Zdravie",
       "members": "Members",
+      "notes": "Poznámky vedúceho",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Ďalšia",
       "noMembers": "Zatiaľ žiadni členovia.",
       "noSessions": "Zatiaľ žiadne stretnutia.",
+      "notesSuffix": " Poznámky vedúceho",
       "pendingCount": "Čakajúce: {count}",
       "seeHealth": "Zobraziť stav",
       "sessionCount": "Stretnutia: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Poznámky (čo sa preberalo, oznamy, modlitebné prosby)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Popis položky",
       "lastDigits": "4242",
       "notes": "Pridajte poznámky k tomuto daru..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Máte televízory s FreePlay? Naplánujte na nich tento typ plánu na {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Stiahnuť",
       "downloads": "Downloads",
+      "editPublishers": "Upraviť",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Hľadať podobné názvy vo WorshipCommons",
       "possibleDuplicateTooltip": "Súbor alebo názov zodpovedá piesni, ktorá už v knižnici je — pred schválením ju skontrolujte",
       "publisher": "Publisher",
+      "publisherAdd": "Pridať",
+      "publisherMakePrimary": "Nastaviť ako hlavného",
+      "publisherPrimary": "Hlavný",
+      "publisherSearch": "Nájdite používateľa podľa mena alebo e-mailu",
+      "publishersHint": "Každý vydavateľ vidí pieseň v sekcii Moje piesne, môže ju upravovať a dostáva jej štatistiky a upozornenia. Hlavný vydavateľ je ten, kto ju nahral.",
+      "publishersNone": "Zatiaľ žiadni vydavatelia.",
+      "publishersTitle": "Vydavatelia: {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Vlastní nahrávku (alebo má povolenie vlastníka)",
@@ -4390,7 +4425,6 @@
       "navHint": "Návštevníci si môžu prečítať vaše príspevky na adrese /blog. Pridajte navigačný odkaz na obrazovke Stránky, aby ho mohli nájsť:",
       "noPosts": "No posts yet",
       "postCount": "Príspevky: {count}",
-      "posts": "Posts",
       "published": "Zverejnené",
       "scheduled": "Naplánované",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kurátorský kalendár",
+      "display": "Zobrazenie",
+      "displayMonth": "Mesačný kalendár",
+      "displayUpcoming": "Nadchádzajúce udalosti",
       "groupCalendar": "Skupinový kalendár",
       "select": "Vybrať",
-      "selectCalendar": "Vybrať kalendár"
+      "selectCalendar": "Vybrať kalendár",
+      "tag": "Iba udalosti so štítkom",
+      "tagHelp": "Ak chcete zobraziť všetky udalosti, nechajte prázdne."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL na darovanie",
@@ -5848,6 +5887,7 @@
       "created": "Vytvorené",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Úloha sa nenašla",
       "notSpec": "Neuvedené",
       "open": "Open",
       "opened": "Otvorené",

@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Esemény szerkesztése",
       "manageRegistrations": "Regisztrációk kezelése",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "notesSuffix": " Jegyzetek"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": ".ics naptár importálása"
     },
     "newEvent": {
+      "addPhoto": "Fénykép hozzáadása",
+      "clickToAddPhoto": "Kattintson fénykép hozzáadásához",
       "customWindow": "Egyéni foglalási ablak",
       "daily": "Naponta",
       "description": "Leírás",
+      "descriptionHint": "Az esemény oldalán jelenik meg. Félkövér szöveg, listák és hivatkozások támogatottak.",
       "end": "Vége",
       "eventTitle": "Cím",
       "group": "Csoport",
       "monthly": "Havonta",
       "noTemplate": "(nincs sablon)",
+      "notesLeaders": "Csoportvezetők",
+      "notesMembers": "Csoporttagok",
+      "notesPostRole": "Ki tehet közzé jegyzeteket",
+      "notesStaff": "Csak személyzet",
+      "notesViewRole": "Ki láthatja a jegyzeteket",
+      "photo": "Esemény fényképe",
+      "photoAlt": "Esemény fényképe",
+      "photoHint": "Az esemény oldalának tetején, valamint a weboldal közelgő eseményei között csempeként jelenik meg.",
       "private": "Privát",
       "public": "Nyilvános",
       "repeats": "Ismétlés",
@@ -349,6 +361,8 @@
       "seats": "Helyek {}",
       "setupMinutes": "Előkészítés (perc előtte)",
       "start": "Kezdete",
+      "tags": "Címkék",
+      "tagsHelp": "Vesszővel elválasztva, pl. ifjúság, diákok. A webhely naptárelemeinek szűrésére szolgál.",
       "teardownMinutes": "Lebontás (perc utána)",
       "template": "Sablon",
       "title": "Új esemény",
@@ -817,8 +831,14 @@
       "subtitle": "Fogadalmi kampányok és az adományozási célok haladásának nyomon követése"
     },
     "donationBatchPage": {
+      "closeBatch": "Köteg lezárása",
+      "closed": "Lezárva",
+      "closedNotice": "Ez a köteg le van zárva, így az adományai már nem módosíthatók. Kérjen meg valakit, aki rendelkezik az Adományok szerkesztése jogosultsággal, hogy nyissa meg újra.",
+      "closedNoticeEdit": "Ez a köteg le van zárva. Csak az Adományok szerkesztése jogosultsággal rendelkezők módosíthatják; nyissa meg újra, hogy mások is rögzíthessenek adományokat.",
       "editBatch": "Köteg szerkesztése",
       "giftCount": "{count} adomány",
+      "open": "Nyitott",
+      "reopenBatch": "Köteg újranyitása",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "Exportálás",
       "failedEvents": "Sikertelen események ({count})",
       "giftCount": "{count} adomány",
+      "status": "Állapot",
       "stripeImportLink": "Hiányzó Stripe tranzakciók importálása",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Date",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "Tétel",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Naptár",
       "health": "Egészség",
       "members": "Members",
+      "notes": "Vezetői jegyzetek",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Következő",
       "noMembers": "Még nincsenek tagok.",
       "noSessions": "Még nincsenek alkalmak.",
+      "notesSuffix": " Vezetői jegyzetek",
       "pendingCount": "{count} függőben",
       "seeHealth": "Állapot megtekintése",
       "sessionCount": "{count} alkalom",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Jegyzetek (mit vettek át, bejelentések, imakérések)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "A tétel leírása",
       "lastDigits": "4242",
       "notes": "Írjon megjegyzést ehhez az adományhoz..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Vannak FreePlay TV-i? Ütemezze rájuk ezt a tervtípust itt: {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Letöltés",
       "downloads": "Downloads",
+      "editPublishers": "Szerkesztés",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Hasonló címek keresése a WorshipCommonsban",
       "possibleDuplicateTooltip": "A fájl vagy a cím egyezik egy már a könyvtárban lévő dallal — jóváhagyás előtt ellenőrizze az áttekintésben",
       "publisher": "Publisher",
+      "publisherAdd": "Hozzáadás",
+      "publisherMakePrimary": "Legyen elsődleges",
+      "publisherPrimary": "Elsődleges",
+      "publisherSearch": "Felhasználó keresése név vagy e-mail alapján",
+      "publishersHint": "Minden kiadó látja az éneket a Saját énekeim között, szerkesztheti, és megkapja a statisztikáit és értesítéseit. Az elsődleges kiadó a feltöltő.",
+      "publishersNone": "Még nincsenek kiadók.",
+      "publishersTitle": "{name} kiadói",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "A felvétel tulajdonosa (vagy rendelkezik a tulajdonos engedélyével)",
@@ -4390,7 +4425,6 @@
       "navHint": "A látogatók a /blog oldalon olvashatják a bejegyzéseit. Adjon hozzá egy navigációs hivatkozást az Oldalak képernyőn, hogy megtalálják:",
       "noPosts": "No posts yet",
       "postCount": "{count} bejegyzés",
-      "posts": "Posts",
       "published": "Közzétéve",
       "scheduled": "Ütemezve",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Válogatott naptár",
+      "display": "Megjelenítés",
+      "displayMonth": "Havi naptár",
+      "displayUpcoming": "Közelgő események",
       "groupCalendar": "Csoport naptár",
       "select": "Kiválasztás",
-      "selectCalendar": "Naptár kiválasztása"
+      "selectCalendar": "Naptár kiválasztása",
+      "tag": "Csak az ezzel a címkével ellátott események",
+      "tagHelp": "Hagyja üresen az összes esemény megjelenítéséhez."
     },
     "campaignProgressEdit": {
       "donateUrl": "Adományozási URL",
@@ -5848,6 +5887,7 @@
       "created": "Létrehozva",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "A feladat nem található",
       "notSpec": "Nincs megadva",
       "open": "Open",
       "opened": "Megnyitva",

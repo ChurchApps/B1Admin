@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "イベントを編集",
       "manageRegistrations": "登録を管理",
-      "noGroups": "グループが見つかりません。"
+      "noGroups": "グループが見つかりません。",
+      "notesSuffix": " メモ"
     },
     "calendarList": {
       "aboutParagraph1": "カレンダーを使うと、教会のイベントを整理して表示できます。",
@@ -331,14 +332,25 @@
       "title": ".icsカレンダーをインポート"
     },
     "newEvent": {
+      "addPhoto": "写真を追加",
+      "clickToAddPhoto": "クリックして写真を追加",
       "customWindow": "カスタム予約ウィンドウ",
       "daily": "毎日",
       "description": "説明",
+      "descriptionHint": "イベントページに表示されます。太字、リスト、リンクを使用できます。",
       "end": "終了",
       "eventTitle": "タイトル",
       "group": "グループ",
       "monthly": "毎月",
       "noTemplate": "（テンプレートなし）",
+      "notesLeaders": "グループのリーダー",
+      "notesMembers": "グループのメンバー",
+      "notesPostRole": "メモを投稿できる人",
+      "notesStaff": "スタッフのみ",
+      "notesViewRole": "メモを閲覧できる人",
+      "photo": "イベントの写真",
+      "photoAlt": "イベントの写真",
+      "photoHint": "イベントページの上部と、ウェブサイトの今後のイベントのタイルとして表示されます。",
       "private": "非公開",
       "public": "公開",
       "repeats": "繰り返し",
@@ -349,6 +361,8 @@
       "seats": "座席 {}",
       "setupMinutes": "準備（前の分）",
       "start": "開始",
+      "tags": "タグ",
+      "tagsHelp": "カンマ区切り（例: youth, students）。サイト上のカレンダー要素の絞り込みに使用されます。",
       "teardownMinutes": "片付け（後の分）",
       "template": "テンプレート",
       "title": "新しいイベント",
@@ -817,8 +831,14 @@
       "subtitle": "誓約キャンペーンと献金目標の進捗を管理"
     },
     "donationBatchPage": {
+      "closeBatch": "バッチを締める",
+      "closed": "締め済み",
+      "closedNotice": "このバッチは締められているため、献金を変更できません。「献金の編集」権限を持つ人に再開を依頼してください。",
+      "closedNoticeEdit": "このバッチは締められています。「献金の編集」権限を持つ人のみ変更できます。他の人が再び献金を入力できるようにするには、バッチを再開してください。",
       "editBatch": "バッチを編集",
       "giftCount": "献金 {count} 件",
+      "open": "オープン",
+      "reopenBatch": "バッチを再開",
       "subtitle": "このバッチ内の献金を管理します",
       "title": "献金バッチ"
     },
@@ -830,6 +850,7 @@
       "export": "エクスポート",
       "failedEvents": "失敗したイベント（{count}）",
       "giftCount": "献金 {count} 件",
+      "status": "ステータス",
       "stripeImportLink": "Stripeの欠落しているトランザクションをインポート",
       "subtitle": "献金バッチを管理し、献金記録を追跡します"
     },
@@ -846,6 +867,7 @@
       "date": "日付",
       "fund": "献金先",
       "inKind": "現物",
+      "item": "品目",
       "lastDig": "下 4 桁",
       "method": "支払い方法",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "カレンダー",
       "health": "健全性",
       "members": "メンバー",
+      "notes": "リーダーのメモ",
       "sessions": "セッション"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "次回",
       "noMembers": "まだメンバーがいません。",
       "noSessions": "まだセッションがありません。",
+      "notesSuffix": " リーダーのメモ",
       "pendingCount": "保留中 {count} 件",
       "seeHealth": "健全性を表示",
       "sessionCount": "セッション {count} 件",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "このセッションを完全に削除してもよろしいですか？",
+      "notes": "メモ（扱った内容、お知らせ、祈りの課題）",
       "sesEdit": "セッションを編集"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "品目の説明",
       "lastDigits": "4242",
       "notes": "この献金についてのメモを入力..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "コピー",
       "description": "このフィードは常に現在のプランのレッスンコンテンツを再生します。下の URL を SignPresenter などのデジタルサイネージソフトに外部フィード URL として貼り付けてください。",
       "feedUrl": "フィード URL",
+      "freePlay": "FreePlay TVをお持ちですか？{link} でこのプランタイプをスケジュールできます",
       "instructions": "SignPresenter への接続手順",
       "title": "デジタルサイネージフィード"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "詳細を更新しました",
       "download": "ダウンロード",
       "downloads": "ダウンロード数",
+      "editPublishers": "編集",
       "feature": "おすすめにする",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "おすすめ",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "WorshipCommons で類似タイトルを検索",
       "possibleDuplicateTooltip": "ファイルまたはタイトルがライブラリ内の既存の曲と一致します — 承認する前にレビューで確認してください",
       "publisher": "出版元",
+      "publisherAdd": "追加",
+      "publisherMakePrimary": "主にする",
+      "publisherPrimary": "主",
+      "publisherSearch": "名前またはメールでユーザーを検索",
+      "publishersHint": "すべての出版元はマイソングで曲を確認・編集でき、その集計と通知を受け取ります。主な出版元はアップロードした人です。",
+      "publishersNone": "出版元はまだありません。",
+      "publishersTitle": "{name} の出版元",
       "reason": "理由",
       "recentlyResolved": "最近解決したもの",
       "recordingOwned": "録音を所有している（または所有者の許可を得ている）",
@@ -4390,7 +4425,6 @@
       "navHint": "訪問者は/blogで投稿を読むことができます。見つけられるように、ページ画面にナビゲーションリンクを追加してください:",
       "noPosts": "記事はまだありません",
       "postCount": "投稿 {count} 件",
-      "posts": "記事",
       "published": "公開済み",
       "scheduled": "予約済み",
       "state": "状態",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "キュレーションされたカレンダー",
+      "display": "表示",
+      "displayMonth": "月間カレンダー",
+      "displayUpcoming": "今後のイベント",
       "groupCalendar": "グループカレンダー",
       "select": "選択",
-      "selectCalendar": "カレンダーを選択"
+      "selectCalendar": "カレンダーを選択",
+      "tag": "次のタグのイベントのみ",
+      "tagHelp": "すべてのイベントを表示するには空欄のままにします。"
     },
     "campaignProgressEdit": {
       "donateUrl": "寄付URL",
@@ -5848,6 +5887,7 @@
       "created": "作成",
       "editAssigned": "担当者を編集",
       "editAssoc": "関連付けを編集",
+      "notFound": "タスクが見つかりません",
       "notSpec": "未指定",
       "open": "オープン",
       "opened": "再オープン",

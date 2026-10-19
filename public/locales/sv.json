@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Redigera evenemang",
       "manageRegistrations": "Hantera anmälningar",
-      "noGroups": "Inga grupper hittades."
+      "noGroups": "Inga grupper hittades.",
+      "notesSuffix": " Anteckningar"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendrar låter dig organisera och visa evenemang för din kyrka.",
@@ -331,14 +332,25 @@
       "title": "Importera .ics-kalender"
     },
     "newEvent": {
+      "addPhoto": "Lägg till foto",
+      "clickToAddPhoto": "Klicka för att lägga till foto",
       "customWindow": "Anpassat bokningsfönster",
       "daily": "Dagligen",
       "description": "Beskrivning",
+      "descriptionHint": "Visas på evenemangssidan. Fetstil, listor och länkar stöds.",
       "end": "Slut",
       "eventTitle": "Titel",
       "group": "Grupp",
       "monthly": "Månadsvis",
       "noTemplate": "(ingen mall)",
+      "notesLeaders": "Gruppledare",
+      "notesMembers": "Gruppmedlemmar",
+      "notesPostRole": "Vem kan skriva anteckningar",
+      "notesStaff": "Endast personal",
+      "notesViewRole": "Vem kan se anteckningar",
+      "photo": "Evenemangsfoto",
+      "photoAlt": "Evenemangsfoto",
+      "photoHint": "Visas högst upp på evenemangssidan och som ruta bland kommande evenemang på din webbplats.",
       "private": "Privat",
       "public": "Offentlig",
       "repeats": "Upprepas",
@@ -349,6 +361,8 @@
       "seats": "Platser {}",
       "setupMinutes": "Förberedelse (min före)",
       "start": "Start",
+      "tags": "Taggar",
+      "tagsHelp": "Kommaseparerade, t.ex. ungdom, studenter. Används för att filtrera kalenderelement på din webbplats.",
       "teardownMinutes": "Nedmontering (min efter)",
       "template": "Mall",
       "title": "Ny händelse",
@@ -817,8 +831,14 @@
       "subtitle": "Spåra löfteskampanjer och framsteg mot givomål"
     },
     "donationBatchPage": {
+      "closeBatch": "Stäng batch",
+      "closed": "Stängd",
+      "closedNotice": "Den här batchen är stängd, så dess gåvor kan inte längre ändras. Be någon med behörigheten Redigera gåvor att öppna den igen.",
+      "closedNoticeEdit": "Den här batchen är stängd. Endast personer med behörigheten Redigera gåvor kan ändra den; öppna den igen så att andra kan registrera gåvor igen.",
       "editBatch": "Redigera batch",
       "giftCount": "{count} gåvor",
+      "open": "Öppen",
+      "reopenBatch": "Öppna batch igen",
       "subtitle": "Hantera gåvor i denna batch",
       "title": "Gåvobatch"
     },
@@ -830,6 +850,7 @@
       "export": "Exportera",
       "failedEvents": "Misslyckade händelser ({count})",
       "giftCount": "{count} gåvor",
+      "status": "Status",
       "stripeImportLink": "Importera saknade Stripe-transaktioner",
       "subtitle": "Hantera gåvobatcher och spåra givoposter"
     },
@@ -846,6 +867,7 @@
       "date": "Datum",
       "fund": "Fond",
       "inKind": "Naturaprestation",
+      "item": "Föremål",
       "lastDig": "Sista 4 siffror",
       "method": "Metod",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalender",
       "health": "Hälsa",
       "members": "Medlemmar",
+      "notes": "Ledaranteckningar",
       "sessions": "Sessioner"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Nästa",
       "noMembers": "Inga medlemmar ännu.",
       "noSessions": "Inga sessioner ännu.",
+      "notesSuffix": " Ledaranteckningar",
       "pendingCount": "{count} väntande",
       "seeHealth": "Visa status",
       "sessionCount": "{count} sessioner",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Är du säker på att du vill ta bort denna session permanent?",
+      "notes": "Anteckningar (vad som togs upp, meddelanden, böneämnen)",
       "sesEdit": "Redigera session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Beskrivning av föremålet",
       "lastDigits": "4242",
       "notes": "Lägg till eventuella anteckningar om denna gåva..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Har du FreePlay-TV-apparater? Schemalägg den här plantypen på dem på {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Ladda ner",
       "downloads": "Downloads",
+      "editPublishers": "Redigera",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Sök i WorshipCommons efter liknande titlar",
       "possibleDuplicateTooltip": "Filen eller titeln matchar en sång som redan finns i biblioteket — kontrollera den i granskningen innan du godkänner",
       "publisher": "Publisher",
+      "publisherAdd": "Lägg till",
+      "publisherMakePrimary": "Gör till primär",
+      "publisherPrimary": "Primär",
+      "publisherSearch": "Hitta en användare via namn eller e-post",
+      "publishersHint": "Varje utgivare ser sången under Mina sånger, kan redigera den och får dess statistik och aviseringar. Den primära utgivaren är den som laddade upp den.",
+      "publishersNone": "Inga utgivare ännu.",
+      "publishersTitle": "Utgivare av {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Äger inspelningen (eller har ägarens tillstånd)",
@@ -4390,7 +4425,6 @@
       "navHint": "Besökare kan läsa dina inlägg på /blog. Lägg till en navigeringslänk på skärmen Sidor så att de kan hitta den:",
       "noPosts": "No posts yet",
       "postCount": "{count} inlägg",
-      "posts": "Posts",
       "published": "Publicerad",
       "scheduled": "Schemalagd",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kuraterad kalender",
+      "display": "Visning",
+      "displayMonth": "Månadskalender",
+      "displayUpcoming": "Kommande evenemang",
       "groupCalendar": "Gruppkalender",
       "select": "Välj",
-      "selectCalendar": "Välj kalender"
+      "selectCalendar": "Välj kalender",
+      "tag": "Endast evenemang taggade med",
+      "tagHelp": "Lämna tomt för att visa alla evenemang."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL för gåva",
@@ -5848,6 +5887,7 @@
       "created": "Skapad",
       "editAssigned": "Redigera tilldelad",
       "editAssoc": "Redigera kopplad",
+      "notFound": "Uppgiften hittades inte",
       "notSpec": "Ej angiven",
       "open": "Öppen",
       "opened": "Öppnad",

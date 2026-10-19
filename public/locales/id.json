@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Edit Acara",
       "manageRegistrations": "Kelola Pendaftaran",
-      "noGroups": "Tidak ada grup yang ditemukan."
+      "noGroups": "Tidak ada grup yang ditemukan.",
+      "notesSuffix": " Catatan"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": "Impor Kalender .ics"
     },
     "newEvent": {
+      "addPhoto": "Tambah Foto",
+      "clickToAddPhoto": "Klik untuk menambahkan foto",
       "customWindow": "Jendela reservasi kustom",
       "daily": "Harian",
       "description": "Deskripsi",
+      "descriptionHint": "Ditampilkan di halaman acara. Teks tebal, daftar, dan tautan didukung.",
       "end": "Selesai",
       "eventTitle": "Judul",
       "group": "Grup",
       "monthly": "Bulanan",
       "noTemplate": "(tanpa template)",
+      "notesLeaders": "Pemimpin grup",
+      "notesMembers": "Anggota grup",
+      "notesPostRole": "Siapa yang dapat memposting catatan",
+      "notesStaff": "Hanya staf",
+      "notesViewRole": "Siapa yang dapat melihat catatan",
+      "photo": "Foto acara",
+      "photoAlt": "Foto acara",
+      "photoHint": "Ditampilkan di bagian atas halaman acara dan sebagai ubin di acara mendatang pada situs web Anda.",
       "private": "Pribadi",
       "public": "Publik",
       "repeats": "Berulang",
@@ -349,6 +361,8 @@
       "seats": "Kursi {}",
       "setupMinutes": "Persiapan (menit sebelum)",
       "start": "Mulai",
+      "tags": "Tag",
+      "tagsHelp": "Dipisahkan koma, mis. remaja, pelajar. Digunakan untuk memfilter elemen kalender di situs Anda.",
       "teardownMinutes": "Pembersihan (menit sesudah)",
       "template": "Template",
       "title": "Acara Baru",
@@ -817,8 +831,14 @@
       "subtitle": "Lacak kampanye janji dan progres menuju target pemberian"
     },
     "donationBatchPage": {
+      "closeBatch": "Tutup Batch",
+      "closed": "Ditutup",
+      "closedNotice": "Batch ini sudah ditutup, sehingga donasinya tidak dapat diubah lagi. Minta seseorang yang memiliki izin Edit Donasi untuk membukanya kembali.",
+      "closedNoticeEdit": "Batch ini sudah ditutup. Hanya orang dengan izin Edit Donasi yang dapat mengubahnya; buka kembali agar orang lain dapat memasukkan donasi lagi.",
       "editBatch": "Edit Batch",
       "giftCount": "{count} persembahan",
+      "open": "Terbuka",
+      "reopenBatch": "Buka Kembali Batch",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "Ekspor",
       "failedEvents": "Peristiwa gagal ({count})",
       "giftCount": "{count} persembahan",
+      "status": "Status",
       "stripeImportLink": "Impor transaksi Stripe yang hilang",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Tanggal",
       "fund": "Dana",
       "inKind": "In-Kind",
+      "item": "Item",
       "lastDig": "Last 4 digits",
       "method": "Metode",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalender",
       "health": "Kesehatan",
       "members": "Anggota",
+      "notes": "Catatan pemimpin",
       "sessions": "Sesi"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Berikutnya",
       "noMembers": "Belum ada anggota.",
       "noSessions": "Belum ada sesi.",
+      "notesSuffix": " Catatan Pemimpin",
       "pendingCount": "{count} tertunda",
       "seeHealth": "Lihat kesehatan",
       "sessionCount": "{count} sesi",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Catatan (materi yang dibahas, pengumuman, permohonan doa)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Deskripsi item",
       "lastDigits": "4242",
       "notes": "Tambahkan catatan tentang donasi ini..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Punya TV FreePlay? Jadwalkan jenis rencana ini di TV tersebut di {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Unduh",
       "downloads": "Downloads",
+      "editPublishers": "Edit",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Cari judul serupa di WorshipCommons",
       "possibleDuplicateTooltip": "File atau judul cocok dengan lagu yang sudah ada di pustaka — periksa dalam peninjauan sebelum menyetujui",
       "publisher": "Publisher",
+      "publisherAdd": "Tambah",
+      "publisherMakePrimary": "Jadikan utama",
+      "publisherPrimary": "Utama",
+      "publisherSearch": "Cari pengguna berdasarkan nama atau email",
+      "publishersHint": "Setiap penerbit melihat lagu di Lagu saya, dapat mengeditnya, serta menerima statistik dan pemberitahuannya. Penerbit utama adalah pengunggahnya.",
+      "publishersNone": "Belum ada penerbit.",
+      "publishersTitle": "Penerbit {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Memiliki rekaman (atau memiliki izin dari pemiliknya)",
@@ -4390,7 +4425,6 @@
       "navHint": "Pengunjung dapat membaca postingan Anda di /blog. Tambahkan tautan navigasi di layar Halaman agar mereka dapat menemukannya:",
       "noPosts": "No posts yet",
       "postCount": "{count} postingan",
-      "posts": "Posts",
       "published": "Diterbitkan",
       "scheduled": "Dijadwalkan",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kalender Terkurasi",
+      "display": "Tampilan",
+      "displayMonth": "Kalender bulanan",
+      "displayUpcoming": "Acara mendatang",
       "groupCalendar": "Kalender Grup",
       "select": "Pilih",
-      "selectCalendar": "Pilih Kalender"
+      "selectCalendar": "Pilih Kalender",
+      "tag": "Hanya acara dengan tag",
+      "tagHelp": "Biarkan kosong untuk menampilkan semua acara."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL Donasi",
@@ -5848,6 +5887,7 @@
       "created": "Dibuat",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Tugas tidak ditemukan",
       "notSpec": "Tidak ditentukan",
       "open": "Open",
       "opened": "Dibuka",

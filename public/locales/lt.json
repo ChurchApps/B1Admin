@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Redaguoti renginį",
       "manageRegistrations": "Tvarkyti registracijas",
-      "noGroups": "Grupių nerasta."
+      "noGroups": "Grupių nerasta.",
+      "notesSuffix": " Užrašai"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": "Importuoti .ics kalendorių"
     },
     "newEvent": {
+      "addPhoto": "Pridėti nuotrauką",
+      "clickToAddPhoto": "Spustelėkite, kad pridėtumėte nuotrauką",
       "customWindow": "Pasirinktinis rezervavimo langas",
       "daily": "Kasdien",
       "description": "Aprašymas",
+      "descriptionHint": "Rodoma renginio puslapyje. Palaikomas paryškinimas, sąrašai ir nuorodos.",
       "end": "Pabaiga",
       "eventTitle": "Pavadinimas",
       "group": "Grupė",
       "monthly": "Kas mėnesį",
       "noTemplate": "(be šablono)",
+      "notesLeaders": "Grupės vadovai",
+      "notesMembers": "Grupės nariai",
+      "notesPostRole": "Kas gali rašyti užrašus",
+      "notesStaff": "Tik darbuotojai",
+      "notesViewRole": "Kas gali matyti užrašus",
+      "photo": "Renginio nuotrauka",
+      "photoAlt": "Renginio nuotrauka",
+      "photoHint": "Rodoma renginio puslapio viršuje ir kaip plytelė jūsų svetainės artėjančių renginių sąraše.",
       "private": "Privatus",
       "public": "Viešas",
       "repeats": "Kartojasi",
@@ -349,6 +361,8 @@
       "seats": "Vietos {}",
       "setupMinutes": "Paruošimas (min prieš)",
       "start": "Pradžia",
+      "tags": "Žymos",
+      "tagsHelp": "Atskirkite kableliais, pvz., youth, students. Naudojama kalendoriaus elementams jūsų svetainėje filtruoti.",
       "teardownMinutes": "Sutvarkymas (min po)",
       "template": "Šablonas",
       "title": "Naujas renginys",
@@ -817,8 +831,14 @@
       "subtitle": "Sekite pasižadėjimų kampanijas ir pažangą siekiant aukojimo tikslų"
     },
     "donationBatchPage": {
+      "closeBatch": "Uždaryti partiją",
+      "closed": "Uždaryta",
+      "closedNotice": "Ši partija uždaryta, todėl jos aukų nebegalima keisti. Paprašykite asmens, turinčio teisę „Redaguoti aukas“, ją vėl atidaryti.",
+      "closedNoticeEdit": "Ši partija uždaryta. Ją keisti gali tik asmenys, turintys teisę „Redaguoti aukas“; atidarykite ją iš naujo, kad kiti vėl galėtų įvesti aukas.",
       "editBatch": "Redaguoti partiją",
       "giftCount": "Aukos: {count}",
+      "open": "Atidaryta",
+      "reopenBatch": "Vėl atidaryti partiją",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "Eksportuoti",
       "failedEvents": "Nepavykę įvykiai ({count})",
       "giftCount": "Aukos: {count}",
+      "status": "Būsena",
       "stripeImportLink": "Importuoti trūkstamas Stripe operacijas",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Date",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "Prekė",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalendorius",
       "health": "Sveikata",
       "members": "Members",
+      "notes": "Vadovų užrašai",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Kitas",
       "noMembers": "Narių dar nėra.",
       "noSessions": "Užsiėmimų dar nėra.",
+      "notesSuffix": " Vadovų užrašai",
       "pendingCount": "Laukia: {count}",
       "seeHealth": "Žiūrėti būklę",
       "sessionCount": "Užsiėmimai: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Užrašai (kas buvo aptarta, skelbimai, maldos prašymai)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Prekės aprašymas",
       "lastDigits": "4242",
       "notes": "Pridėkite pastabų apie šią auką..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Turite FreePlay televizorių? Suplanuokite šį plano tipą juose adresu {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Atsisiųsti",
       "downloads": "Downloads",
+      "editPublishers": "Redaguoti",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Ieškoti panašių pavadinimų WorshipCommons",
       "possibleDuplicateTooltip": "Failas ar pavadinimas sutampa su giesme, jau esančia bibliotekoje — prieš patvirtindami patikrinkite ją peržiūroje",
       "publisher": "Publisher",
+      "publisherAdd": "Pridėti",
+      "publisherMakePrimary": "Padaryti pagrindiniu",
+      "publisherPrimary": "Pagrindinis",
+      "publisherSearch": "Raskite naudotoją pagal vardą arba el. paštą",
+      "publishersHint": "Kiekvienas leidėjas mato giesmę skiltyje My songs, gali ją redaguoti ir gauna jos skaičiavimus bei pranešimus. Pagrindinis leidėjas yra įkėlėjas.",
+      "publishersNone": "Leidėjų dar nėra.",
+      "publishersTitle": "{name} leidėjai",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Valdo įrašą (arba turi savininko leidimą)",
@@ -4390,7 +4425,6 @@
       "navHint": "Lankytojai gali skaityti jūsų įrašus adresu /blog. Pridėkite naršymo nuorodą Puslapių ekrane, kad jie galėtų jį rasti:",
       "noPosts": "No posts yet",
       "postCount": "Įrašai: {count}",
-      "posts": "Posts",
       "published": "Paskelbta",
       "scheduled": "Suplanuota",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kuruotas kalendorius",
+      "display": "Rodymas",
+      "displayMonth": "Mėnesio kalendorius",
+      "displayUpcoming": "Artėjantys renginiai",
       "groupCalendar": "Grupės kalendorius",
       "select": "Pasirinkti",
-      "selectCalendar": "Pasirinkti kalendorių"
+      "selectCalendar": "Pasirinkti kalendorių",
+      "tag": "Tik renginiai su žyma",
+      "tagHelp": "Palikite tuščią, kad būtų rodomi visi renginiai."
     },
     "campaignProgressEdit": {
       "donateUrl": "Aukojimo URL",
@@ -5848,6 +5887,7 @@
       "created": "Sukurta",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Užduotis nerasta",
       "notSpec": "Nenurodyta",
       "open": "Open",
       "opened": "Atidaryta",

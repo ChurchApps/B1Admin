@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Etkinliği Düzenle",
       "manageRegistrations": "Kayıtları Yönet",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "notesSuffix": " Notlar"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": ".ics Takvimi İçe Aktar"
     },
     "newEvent": {
+      "addPhoto": "Fotoğraf Ekle",
+      "clickToAddPhoto": "Fotoğraf eklemek için tıklayın",
       "customWindow": "Özel rezervasyon penceresi",
       "daily": "Günlük",
       "description": "Açıklama",
+      "descriptionHint": "Etkinlik sayfasında gösterilir. Kalın yazı, listeler ve bağlantılar desteklenir.",
       "end": "Bitiş",
       "eventTitle": "Başlık",
       "group": "Grup",
       "monthly": "Aylık",
       "noTemplate": "(şablon yok)",
+      "notesLeaders": "Grup liderleri",
+      "notesMembers": "Grup üyeleri",
+      "notesPostRole": "Kimler not ekleyebilir",
+      "notesStaff": "Yalnızca personel",
+      "notesViewRole": "Kimler notları görebilir",
+      "photo": "Etkinlik fotoğrafı",
+      "photoAlt": "Etkinlik fotoğrafı",
+      "photoHint": "Etkinlik sayfasının üst kısmında ve web sitenizin yaklaşan etkinliklerinde kutucuk olarak gösterilir.",
       "private": "Özel",
       "public": "Herkese Açık",
       "repeats": "Tekrar",
@@ -349,6 +361,8 @@
       "seats": "Koltuk {}",
       "setupMinutes": "Hazırlık (dk önce)",
       "start": "Başlangıç",
+      "tags": "Etiketler",
+      "tagsHelp": "Virgülle ayrılmış, ör. gençlik, öğrenciler. Sitenizdeki takvim öğelerini filtrelemek için kullanılır.",
       "teardownMinutes": "Toplama (dk sonra)",
       "template": "Şablon",
       "title": "Yeni Etkinlik",
@@ -817,8 +831,14 @@
       "subtitle": "Taahhüt kampanyalarını ve bağış hedeflerine doğru ilerlemeyi takip edin"
     },
     "donationBatchPage": {
+      "closeBatch": "Toplu İşlemi Kapat",
+      "closed": "Kapalı",
+      "closedNotice": "Bu toplu işlem kapalı, bu nedenle bağışları artık değiştirilemez. Yeniden açması için Bağışları Düzenle yetkisine sahip birinden isteyin.",
+      "closedNoticeEdit": "Bu toplu işlem kapalı. Yalnızca Bağışları Düzenle yetkisine sahip kişiler değiştirebilir; başkalarının yeniden bağış girebilmesi için toplu işlemi yeniden açın.",
       "editBatch": "Toplu İşlemi Düzenle",
       "giftCount": "{count} bağış",
+      "open": "Açık",
+      "reopenBatch": "Toplu İşlemi Yeniden Aç",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "Dışa Aktar",
       "failedEvents": "Başarısız olaylar ({count})",
       "giftCount": "{count} bağış",
+      "status": "Durum",
       "stripeImportLink": "Eksik Stripe işlemlerini içe aktar",
       "subtitle": "Manage donation batches and track giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Tarih",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "Öğe",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Takvim",
       "health": "Sağlık",
       "members": "Members",
+      "notes": "Lider notları",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Sonraki",
       "noMembers": "Henüz üye yok.",
       "noSessions": "Henüz oturum yok.",
+      "notesSuffix": " Lider Notları",
       "pendingCount": "{count} beklemede",
       "seeHealth": "Durumu gör",
       "sessionCount": "{count} oturum",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Notlar (işlenen konular, duyurular, dua istekleri)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Öğenin açıklaması",
       "lastDigits": "4242",
       "notes": "Bu bağışla ilgili notlarınızı ekleyin..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "FreePlay TV'leriniz mi var? Bu plan türünü {link} adresinden onlarda planlayın",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "İndir",
       "downloads": "Downloads",
+      "editPublishers": "Düzenle",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "WorshipCommons'ta benzer başlıkları ara",
       "possibleDuplicateTooltip": "Dosya veya başlık, kütüphanede zaten bulunan bir şarkıyla eşleşiyor — onaylamadan önce incelemede kontrol edin",
       "publisher": "Publisher",
+      "publisherAdd": "Ekle",
+      "publisherMakePrimary": "Birincil yap",
+      "publisherPrimary": "Birincil",
+      "publisherSearch": "Ada veya e-postaya göre kullanıcı bulun",
+      "publishersHint": "Her yayıncı şarkıyı Şarkılarım bölümünde görür, düzenleyebilir ve sayılarını ve bildirimlerini alır. Birincil yayıncı, şarkıyı yükleyen kişidir.",
+      "publishersNone": "Henüz yayıncı yok.",
+      "publishersTitle": "{name} yayıncıları",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Kaydın sahibi (veya sahibinin izni var)",
@@ -4390,7 +4425,6 @@
       "navHint": "Ziyaretçiler gönderilerinizi /blog adresinde okuyabilir. Bulabilmeleri için Sayfalar ekranına bir gezinme bağlantısı ekleyin:",
       "noPosts": "No posts yet",
       "postCount": "{count} yazı",
-      "posts": "Posts",
       "published": "Yayınlandı",
       "scheduled": "Zamanlandı",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Düzenlenmiş Takvim",
+      "display": "Görünüm",
+      "displayMonth": "Aylık takvim",
+      "displayUpcoming": "Yaklaşan etkinlikler",
       "groupCalendar": "Grup Takvimi",
       "select": "Seç",
-      "selectCalendar": "Takvim Seç"
+      "selectCalendar": "Takvim Seç",
+      "tag": "Yalnızca şu etiketli etkinlikler",
+      "tagHelp": "Tüm etkinlikleri göstermek için boş bırakın."
     },
     "campaignProgressEdit": {
       "donateUrl": "Bağış URL'si",
@@ -5848,6 +5887,7 @@
       "created": "Oluşturuldu",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Görev bulunamadı",
       "notSpec": "Belirtilmedi",
       "open": "Open",
       "opened": "Açıldı",

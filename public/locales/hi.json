@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "कार्यक्रम संपादित करें",
       "manageRegistrations": "पंजीकरण प्रबंधित करें",
-      "noGroups": "कोई समूह नहीं मिला।"
+      "noGroups": "कोई समूह नहीं मिला।",
+      "notesSuffix": " नोट्स"
     },
     "calendarList": {
       "aboutParagraph1": "कैलेंडर आपको अपने चर्च के लिए कार्यक्रम आयोजित करने और प्रदर्शित करने की अनुमति देते हैं।",
@@ -331,14 +332,25 @@
       "title": ".ics कैलेंडर आयात करें"
     },
     "newEvent": {
+      "addPhoto": "फ़ोटो जोड़ें",
+      "clickToAddPhoto": "फ़ोटो जोड़ने के लिए क्लिक करें",
       "customWindow": "कस्टम आरक्षण विंडो",
       "daily": "दैनिक",
       "description": "विवरण",
+      "descriptionHint": "कार्यक्रम पृष्ठ पर दिखाया जाता है। बोल्ड, सूचियाँ और लिंक समर्थित हैं।",
       "end": "समाप्ति",
       "eventTitle": "शीर्षक",
       "group": "समूह",
       "monthly": "मासिक",
       "noTemplate": "(कोई टेम्पलेट नहीं)",
+      "notesLeaders": "समूह नेता",
+      "notesMembers": "समूह सदस्य",
+      "notesPostRole": "कौन नोट्स पोस्ट कर सकता है",
+      "notesStaff": "केवल कर्मचारी",
+      "notesViewRole": "कौन नोट्स देख सकता है",
+      "photo": "कार्यक्रम फ़ोटो",
+      "photoAlt": "कार्यक्रम फ़ोटो",
+      "photoHint": "कार्यक्रम पृष्ठ के शीर्ष पर और आपकी वेबसाइट के आगामी कार्यक्रमों में टाइल के रूप में दिखाया जाता है।",
       "private": "निजी",
       "public": "सार्वजनिक",
       "repeats": "दोहराएं",
@@ -349,6 +361,8 @@
       "seats": "सीटें {}",
       "setupMinutes": "सेटअप (मिनट पहले)",
       "start": "प्रारंभ",
+      "tags": "टैग",
+      "tagsHelp": "अल्पविराम से अलग करें, जैसे youth, students। आपकी साइट पर कैलेंडर तत्वों को फ़िल्टर करने के लिए उपयोग किया जाता है।",
       "teardownMinutes": "समापन (मिनट बाद)",
       "template": "टेम्पलेट",
       "title": "नया कार्यक्रम",
@@ -817,8 +831,14 @@
       "subtitle": "प्रतिज्ञा अभियान और दान लक्ष्यों की ओर प्रगति ट्रैक करें"
     },
     "donationBatchPage": {
+      "closeBatch": "बैच बंद करें",
+      "closed": "बंद",
+      "closedNotice": "यह बैच बंद है, इसलिए इसके दान अब बदले नहीं जा सकते। इसे फिर से खोलने के लिए “दान संपादित करें” अनुमति वाले किसी व्यक्ति से कहें।",
+      "closedNoticeEdit": "यह बैच बंद है। केवल “दान संपादित करें” अनुमति वाले लोग ही इसे बदल सकते हैं; दूसरों को फिर से दान दर्ज करने देने के लिए इसे फिर से खोलें।",
       "editBatch": "बैच संपादित करें",
       "giftCount": "{count} दान",
+      "open": "खुला",
+      "reopenBatch": "बैच फिर से खोलें",
       "subtitle": "इस बैच में दान प्रबंधित करें",
       "title": "दान बैच"
     },
@@ -830,6 +850,7 @@
       "export": "निर्यात",
       "failedEvents": "विफल इवेंट ({count})",
       "giftCount": "{count} दान",
+      "status": "स्थिति",
       "stripeImportLink": "गुम Stripe लेनदेन आयात करें",
       "subtitle": "दान बैचों को प्रबंधित करें और रिकॉर्ड ट्रैक करें"
     },
@@ -846,6 +867,7 @@
       "date": "तारीख",
       "fund": "फंड",
       "inKind": "वस्तु रूप में",
+      "item": "आइटम",
       "lastDig": "अंतिम 4 अंक",
       "method": "तरीका",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "कैलेंडर",
       "health": "स्वास्थ्य",
       "members": "सदस्य",
+      "notes": "नेता नोट्स",
       "sessions": "सत्र"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "अगला",
       "noMembers": "अभी तक कोई सदस्य नहीं।",
       "noSessions": "अभी तक कोई सत्र नहीं।",
+      "notesSuffix": " नेता नोट्स",
       "pendingCount": "{count} लंबित",
       "seeHealth": "स्थिति देखें",
       "sessionCount": "{count} सत्र",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "क्या आप वाकई इस सत्र को स्थायी रूप से हटाना चाहते हैं?",
+      "notes": "नोट्स (क्या कवर किया गया, घोषणाएँ, प्रार्थना अनुरोध)",
       "sesEdit": "सत्र संपादित करें"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "आइटम का विवरण",
       "lastDigits": "4242",
       "notes": "शर्मा परिवार का मासिक दशमांश"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "क्या आपके पास FreePlay टीवी हैं? इस योजना प्रकार को उन पर {link} पर शेड्यूल करें",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "डाउनलोड करें",
       "downloads": "Downloads",
+      "editPublishers": "संपादित करें",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "WorshipCommons में मिलते-जुलते शीर्षक खोजें",
       "possibleDuplicateTooltip": "फ़ाइल या शीर्षक लाइब्रेरी में पहले से मौजूद किसी गीत से मेल खाता है — स्वीकृत करने से पहले समीक्षा में इसकी जाँच करें",
       "publisher": "Publisher",
+      "publisherAdd": "जोड़ें",
+      "publisherMakePrimary": "प्राथमिक बनाएं",
+      "publisherPrimary": "प्राथमिक",
+      "publisherSearch": "नाम या ईमेल से उपयोगकर्ता खोजें",
+      "publishersHint": "हर प्रकाशक गीत को My songs में देखता है, उसे संपादित कर सकता है और उसकी गिनती व सूचनाएँ प्राप्त करता है। प्राथमिक प्रकाशक वह है जिसने इसे अपलोड किया।",
+      "publishersNone": "अभी तक कोई प्रकाशक नहीं।",
+      "publishersTitle": "{name} के प्रकाशक",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "रिकॉर्डिंग का स्वामी है (या स्वामी की अनुमति है)",
@@ -4390,7 +4425,6 @@
       "navHint": "आगंतुक /blog पर आपके पोस्ट पढ़ सकते हैं। पेज स्क्रीन पर एक नेविगेशन लिंक जोड़ें ताकि वे इसे खोज सकें:",
       "noPosts": "अभी तक कोई पोस्ट नहीं",
       "postCount": "{count} पोस्ट",
-      "posts": "पोस्ट",
       "published": "प्रकाशित",
       "scheduled": "अनुसूचित",
       "state": "राज्य",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "क्यूरेटेड कैलेंडर",
+      "display": "प्रदर्शन",
+      "displayMonth": "मासिक कैलेंडर",
+      "displayUpcoming": "आगामी कार्यक्रम",
       "groupCalendar": "समूह कैलेंडर",
       "select": "चुनें",
-      "selectCalendar": "कैलेंडर चुनें"
+      "selectCalendar": "कैलेंडर चुनें",
+      "tag": "केवल इस टैग वाले कार्यक्रम",
+      "tagHelp": "सभी कार्यक्रम दिखाने के लिए खाली छोड़ें।"
     },
     "campaignProgressEdit": {
       "donateUrl": "दान URL",
@@ -5848,6 +5887,7 @@
       "created": "बनाया था",
       "editAssigned": "असाइन किया गया संपादित करें",
       "editAssoc": "संबद्ध संपादित करें",
+      "notFound": "कार्य नहीं मिला",
       "notSpec": "निर्दिष्ट नहीं है",
       "open": "खुला",
       "opened": "खोला गया",

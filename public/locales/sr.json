@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Уреди догађај",
       "manageRegistrations": "Управљај регистрацијама",
-      "noGroups": "Нема пронађених група."
+      "noGroups": "Нема пронађених група.",
+      "notesSuffix": " Beleške"
     },
     "calendarList": {
       "aboutParagraph1": "Календари вам омогућавају да организујете и приказујете догађаје ваше цркве.",
@@ -331,14 +332,25 @@
       "title": "Увези .ics календар"
     },
     "newEvent": {
+      "addPhoto": "Додај фотографију",
+      "clickToAddPhoto": "Кликните да додате фотографију",
       "customWindow": "Прилагођени прозор резервације",
       "daily": "Дневно",
       "description": "Опис",
+      "descriptionHint": "Приказује се на страници догађаја. Подржани су подебљан текст, листе и линкови.",
       "end": "Крај",
       "eventTitle": "Наслов",
       "group": "Група",
       "monthly": "Месечно",
       "noTemplate": "(без шаблона)",
+      "notesLeaders": "Вође групе",
+      "notesMembers": "Чланови групе",
+      "notesPostRole": "Ко може да објављује напомене",
+      "notesStaff": "Само особље",
+      "notesViewRole": "Ко може да види напомене",
+      "photo": "Фотографија догађаја",
+      "photoAlt": "Фотографија догађаја",
+      "photoHint": "Приказује се на врху странице догађаја и као плочица у предстојећим догађајима на вашем сајту.",
       "private": "Приватно",
       "public": "Јавно",
       "repeats": "Понавља се",
@@ -349,6 +361,8 @@
       "seats": "Места {}",
       "setupMinutes": "Podešavanje (min pre)",
       "start": "Почетак",
+      "tags": "Ознаке",
+      "tagsHelp": "Одвојено зарезима, нпр. млади, студенти. Користи се за филтрирање елемената календара на вашем сајту.",
       "teardownMinutes": "Raspremanje (min posle)",
       "template": "Шаблон",
       "title": "Нови догађај",
@@ -817,8 +831,14 @@
       "subtitle": "Пратите кампање завета и напредак ка циљевима прилога"
     },
     "donationBatchPage": {
+      "closeBatch": "Затвори серију",
+      "closed": "Затворено",
+      "closedNotice": "Ова серија је затворена, па њене донације више не могу да се мењају. Замолите некога са дозволом за уређивање донација да је поново отвори.",
+      "closedNoticeEdit": "Ова серија је затворена. Могу да је мењају само особе са дозволом за уређивање донација; поново је отворите да би други опет могли да уносе донације.",
       "editBatch": "Уреди групу",
       "giftCount": "Прилога: {count}",
+      "open": "Отворено",
+      "reopenBatch": "Поново отвори серију",
       "subtitle": "Управљај донацијама у овој серији",
       "title": "Серија донација"
     },
@@ -830,6 +850,7 @@
       "export": "Извоз",
       "failedEvents": "Неуспели догађаји ({count})",
       "giftCount": "Прилога: {count}",
+      "status": "Статус",
       "stripeImportLink": "Увези недостајуће Stripe трансакције",
       "subtitle": "Управљај серијама донација и прати записе давања"
     },
@@ -846,6 +867,7 @@
       "date": "Датум",
       "fund": "Средство",
       "inKind": "Материјална помоћ",
+      "item": "Ставка",
       "lastDig": "Задње 4 цифре",
       "method": "Метод",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Календар",
       "health": "Здравље",
       "members": "Чланови",
+      "notes": "Напомене вође",
       "sessions": "Сесије"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Следећи",
       "noMembers": "Још нема чланова.",
       "noSessions": "Још нема сесија.",
+      "notesSuffix": " Напомене вође",
       "pendingCount": "На чекању: {count}",
       "seeHealth": "Погледај стање",
       "sessionCount": "Сесија: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Да ли сте сигурни да желите да трајно обришете ову сесију?",
+      "notes": "Напомене (шта је обрађено, обавештења, молитвене потребе)",
       "sesEdit": "Уреди сесију"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Опис ставке",
       "lastDigits": "4242",
       "notes": "Додај напомене о овој донацији..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Имате FreePlay телевизоре? Закажите овај тип плана на њима на {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Преузми",
       "downloads": "Downloads",
+      "editPublishers": "Уреди",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Претражи WorshipCommons за сличне наслове",
       "possibleDuplicateTooltip": "Датотека или наслов се поклапа са песмом која је већ у библиотеци — проверите је у прегледу пре одобравања",
       "publisher": "Publisher",
+      "publisherAdd": "Додај",
+      "publisherMakePrimary": "Постави као примарног",
+      "publisherPrimary": "Примарни",
+      "publisherSearch": "Пронађите корисника по имену или имејлу",
+      "publishersHint": "Сваки издавач види песму у одељку Моје песме, може да је уређује и добија њене бројке и обавештења. Примарни издавач је онај ко ју је отпремио.",
+      "publishersNone": "Још нема издавача.",
+      "publishersTitle": "Издавачи: {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Поседује снимак (или има дозволу власника)",
@@ -4390,7 +4425,6 @@
       "navHint": "Posetioci mogu da čitaju vaše objave na /blog. Dodajte navigacionu vezu na ekranu Stranice da bi mogli da ga pronađu:",
       "noPosts": "No posts yet",
       "postCount": "Објава: {count}",
-      "posts": "Posts",
       "published": "Објављено",
       "scheduled": "Заказано",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Кураторски календар",
+      "display": "Приказ",
+      "displayMonth": "Месечни календар",
+      "displayUpcoming": "Предстојећи догађаји",
       "groupCalendar": "Календар групе",
       "select": "Изабери",
-      "selectCalendar": "Изабери календар"
+      "selectCalendar": "Изабери календар",
+      "tag": "Само догађаји са ознаком",
+      "tagHelp": "Оставите празно да бисте приказали све догађаје."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL за донацију",
@@ -5848,6 +5887,7 @@
       "created": "Креирано",
       "editAssigned": "Уреди додељено",
       "editAssoc": "Уреди повезано",
+      "notFound": "Задатак није пронађен",
       "notSpec": "Није наведено",
       "open": "Отвори",
       "opened": "Отворено",

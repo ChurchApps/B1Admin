@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "编辑活动",
       "manageRegistrations": "管理报名",
-      "noGroups": "未找到组。"
+      "noGroups": "未找到组。",
+      "notesSuffix": " 备注"
     },
     "calendarList": {
       "aboutParagraph1": "日历允许您组织和显示教堂的活动。",
@@ -331,14 +332,25 @@
       "title": "导入 .ics 日历"
     },
     "newEvent": {
+      "addPhoto": "添加照片",
+      "clickToAddPhoto": "点击添加照片",
       "customWindow": "自定义预约窗口",
       "daily": "每天",
       "description": "描述",
+      "descriptionHint": "显示在活动页面上。支持粗体、列表和链接。",
       "end": "结束",
       "eventTitle": "标题",
       "group": "团体",
       "monthly": "每月",
       "noTemplate": "（无模板）",
+      "notesLeaders": "小组领袖",
+      "notesMembers": "小组成员",
+      "notesPostRole": "谁可以发布备注",
+      "notesStaff": "仅限同工",
+      "notesViewRole": "谁可以查看备注",
+      "photo": "活动照片",
+      "photoAlt": "活动照片",
+      "photoHint": "显示在活动页面顶部，并作为您网站即将举行的活动中的图块。",
       "private": "私密",
       "public": "公开",
       "repeats": "重复",
@@ -349,6 +361,8 @@
       "seats": "座位 {}",
       "setupMinutes": "布置（活动前分钟）",
       "start": "开始",
+      "tags": "标签",
+      "tagsHelp": "以逗号分隔，例如：青年, 学生。用于筛选您网站上的日历元素。",
       "teardownMinutes": "拆除（活动后分钟）",
       "template": "模板",
       "title": "新建活动",
@@ -817,8 +831,14 @@
       "subtitle": "跟踪承诺活动和奉献目标进度"
     },
     "donationBatchPage": {
+      "closeBatch": "关闭批次",
+      "closed": "已关闭",
+      "closedNotice": "此批次已关闭，其中的奉献无法再更改。请拥有“编辑奉献”权限的人重新打开。",
+      "closedNoticeEdit": "此批次已关闭。只有拥有“编辑奉献”权限的人才能更改；重新打开后，其他人才能再次录入奉献。",
       "editBatch": "编辑批次",
       "giftCount": "{count} 笔奉献",
+      "open": "开放",
+      "reopenBatch": "重新打开批次",
       "subtitle": "管理此批次中的捐赠",
       "title": "捐赠批次"
     },
@@ -830,6 +850,7 @@
       "export": "导出",
       "failedEvents": "失败事件（{count}）",
       "giftCount": "{count} 笔奉献",
+      "status": "状态",
       "stripeImportLink": "导入缺失的 Stripe 交易",
       "subtitle": "管理捐赠批次并跟踪捐赠记录"
     },
@@ -846,6 +867,7 @@
       "date": "日期",
       "fund": "基金",
       "inKind": "实物捐赠",
+      "item": "物品",
       "lastDig": "最后 4 位数字",
       "method": "方法",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "日历",
       "health": "健康状况",
       "members": "成员",
+      "notes": "领袖备注",
       "sessions": "会话"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "下次",
       "noMembers": "尚无成员。",
       "noSessions": "尚无场次。",
+      "notesSuffix": " 领袖备注",
       "pendingCount": "{count} 个待处理",
       "seeHealth": "查看健康状况",
       "sessionCount": "{count} 个场次",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "您确定要永久删除此会话吗？",
+      "notes": "备注（所讲内容、通知、代祷事项）",
       "sesEdit": "编辑会话"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "物品描述",
       "lastDigits": "4242",
       "notes": "张家月度什一奉献"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "有 FreePlay 电视吗？请在 {link} 为其安排此计划类型",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "下载",
       "downloads": "Downloads",
+      "editPublishers": "编辑",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "在 WorshipCommons 中搜索类似标题",
       "possibleDuplicateTooltip": "该文件或标题与库中已有的歌曲匹配 — 批准前请在审核中检查",
       "publisher": "Publisher",
+      "publisherAdd": "添加",
+      "publisherMakePrimary": "设为主要",
+      "publisherPrimary": "主要",
+      "publisherSearch": "按姓名或邮箱查找用户",
+      "publishersHint": "每位发布者都能在“我的歌曲”中看到这首歌，可以编辑它，并获得其统计数据和通知。主要发布者是上传者。",
+      "publishersNone": "尚无发布者。",
+      "publishersTitle": "{name} 的发布者",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "拥有该录音（或已获得所有者许可）",
@@ -4390,7 +4425,6 @@
       "navHint": "访问者可以在 /blog 上阅读您的帖子。在页面屏幕上添加导航链接，以便他们找到它：",
       "noPosts": "No posts yet",
       "postCount": "{count} 篇文章",
-      "posts": "Posts",
       "published": "已发布",
       "scheduled": "已计划",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "精选日历",
+      "display": "显示方式",
+      "displayMonth": "月历",
+      "displayUpcoming": "即将举行的活动",
       "groupCalendar": "小组日历",
       "select": "选择",
-      "selectCalendar": "选择日历"
+      "selectCalendar": "选择日历",
+      "tag": "仅显示带有此标签的活动",
+      "tagHelp": "留空以显示所有活动。"
     },
     "campaignProgressEdit": {
       "donateUrl": "捐款 URL",
@@ -5848,6 +5887,7 @@
       "created": "已创建",
       "editAssigned": "编辑已分配",
       "editAssoc": "编辑关联",
+      "notFound": "未找到任务",
       "notSpec": "未指定",
       "open": "打开",
       "opened": "已打开",

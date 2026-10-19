@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Rediger arrangement",
       "manageRegistrations": "Administrer påmeldinger",
-      "noGroups": "Ingen grupper funnet."
+      "noGroups": "Ingen grupper funnet.",
+      "notesSuffix": " Notater"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendere lar deg organisere og vise arrangementer for kirken din.",
@@ -331,14 +332,25 @@
       "title": "Importer .ics-kalender"
     },
     "newEvent": {
+      "addPhoto": "Legg til bilde",
+      "clickToAddPhoto": "Klikk for å legge til bilde",
       "customWindow": "Egendefinert reservasjonsvindu",
       "daily": "Daglig",
       "description": "Beskrivelse",
+      "descriptionHint": "Vises på arrangementssiden. Fet skrift, lister og lenker støttes.",
       "end": "Slutt",
       "eventTitle": "Tittel",
       "group": "Gruppe",
       "monthly": "Månedlig",
       "noTemplate": "(ingen mal)",
+      "notesLeaders": "Gruppeledere",
+      "notesMembers": "Gruppemedlemmer",
+      "notesPostRole": "Hvem kan legge inn notater",
+      "notesStaff": "Kun ansatte",
+      "notesViewRole": "Hvem kan se notater",
+      "photo": "Arrangementsbilde",
+      "photoAlt": "Arrangementsbilde",
+      "photoHint": "Vises øverst på arrangementssiden og som flis blant kommende arrangementer på nettstedet ditt.",
       "private": "Privat",
       "public": "Offentlig",
       "repeats": "Gjentas",
@@ -349,6 +361,8 @@
       "seats": "Plasser {}",
       "setupMinutes": "Klargjøring (min før)",
       "start": "Start",
+      "tags": "Tagger",
+      "tagsHelp": "Kommaseparert, f.eks. youth, students. Brukes til å filtrere kalenderelementer på nettstedet ditt.",
       "teardownMinutes": "Rydding (min etter)",
       "template": "Mal",
       "title": "Nytt arrangement",
@@ -817,8 +831,14 @@
       "subtitle": "Spor løftekampanjer og fremgang mot givermål"
     },
     "donationBatchPage": {
+      "closeBatch": "Lukk bunt",
+      "closed": "Lukket",
+      "closedNotice": "Denne bunten er lukket, så donasjonene kan ikke lenger endres. Be noen med Rediger donasjoner om å åpne den igjen.",
+      "closedNoticeEdit": "Denne bunten er lukket. Bare personer med Rediger donasjoner kan endre den; åpne den igjen for å la andre registrere donasjoner på nytt.",
       "editBatch": "Rediger gruppe",
       "giftCount": "{count} gaver",
+      "open": "Åpen",
+      "reopenBatch": "Åpne bunt igjen",
       "subtitle": "Administrer donasjoner i denne bunten",
       "title": "Donasjonsbunt"
     },
@@ -830,6 +850,7 @@
       "export": "Eksporter",
       "failedEvents": "Mislykkede hendelser ({count})",
       "giftCount": "{count} gaver",
+      "status": "Status",
       "stripeImportLink": "Importer manglende Stripe-transaksjoner",
       "subtitle": "Administrer donasjonsbunker og spor poster"
     },
@@ -846,6 +867,7 @@
       "date": "Dato",
       "fund": "Fond",
       "inKind": "Naturalytelse",
+      "item": "Gjenstand",
       "lastDig": "Siste 4 sifre",
       "method": "Metode",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalender",
       "health": "Helse",
       "members": "Medlemmer",
+      "notes": "Ledernotater",
       "sessions": "Økter"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Neste",
       "noMembers": "Ingen medlemmer ennå.",
       "noSessions": "Ingen samlinger ennå.",
+      "notesSuffix": " Ledernotater",
       "pendingCount": "{count} venter",
       "seeHealth": "Se helse",
       "sessionCount": "{count} samlinger",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Er du sikker på at du ønsker å slette denne økten permanent?",
+      "notes": "Notater (hva som ble gjennomgått, kunngjøringer, bønneemner)",
       "sesEdit": "Rediger økt"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Beskrivelse av gjenstand",
       "lastDigits": "4242",
       "notes": "Månedlig tiende fra familien Hansen"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Har du FreePlay-TV-er? Planlegg denne plantypen på dem på {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Last ned",
       "downloads": "Downloads",
+      "editPublishers": "Rediger",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Søk i WorshipCommons etter lignende titler",
       "possibleDuplicateTooltip": "Filen eller tittelen samsvarer med en sang som allerede finnes i biblioteket — sjekk den i gjennomgangen før du godkjenner",
       "publisher": "Publisher",
+      "publisherAdd": "Legg til",
+      "publisherMakePrimary": "Gjør til primær",
+      "publisherPrimary": "Primær",
+      "publisherSearch": "Finn en bruker etter navn eller e-post",
+      "publishersHint": "Alle utgivere ser sangen i My songs, kan redigere den og får tellinger og varsler for den. Den primære utgiveren er den som lastet opp.",
+      "publishersNone": "Ingen utgivere ennå.",
+      "publishersTitle": "Utgivere av {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Eier innspillingen (eller har eierens tillatelse)",
@@ -4390,7 +4425,6 @@
       "navHint": "Besøkende kan lese innleggene dine på /blog. Legg til en navigasjonslenke på Sider-skjermen slik at de kan finne den:",
       "noPosts": "No posts yet",
       "postCount": "{count} innlegg",
-      "posts": "Posts",
       "published": "Publisert",
       "scheduled": "Planlagt",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kuratert kalender",
+      "display": "Visning",
+      "displayMonth": "Månedskalender",
+      "displayUpcoming": "Kommende arrangementer",
       "groupCalendar": "Gruppekalender",
       "select": "Velg",
-      "selectCalendar": "Velg kalender"
+      "selectCalendar": "Velg kalender",
+      "tag": "Bare arrangementer merket med",
+      "tagHelp": "La stå tomt for å vise alle arrangementer."
     },
     "campaignProgressEdit": {
       "donateUrl": "Donasjons-URL",
@@ -5848,6 +5887,7 @@
       "created": "Opprettet",
       "editAssigned": "Rediger tildelt",
       "editAssoc": "Rediger tilknyttet",
+      "notFound": "Fant ikke oppgaven",
       "notSpec": "Ikke spesifisert",
       "open": "Åpen",
       "opened": "Åpnet",

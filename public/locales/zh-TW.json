@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "編輯活動",
       "manageRegistrations": "管理報名",
-      "noGroups": "未找到組。"
+      "noGroups": "未找到組。",
+      "notesSuffix": " 筆記"
     },
     "calendarList": {
       "aboutParagraph1": "日曆允許您組織和顯示教堂的活動。",
@@ -331,14 +332,25 @@
       "title": "匯入 .ics 日曆"
     },
     "newEvent": {
+      "addPhoto": "新增照片",
+      "clickToAddPhoto": "點擊新增照片",
       "customWindow": "自訂預約視窗",
       "daily": "每天",
       "description": "描述",
+      "descriptionHint": "顯示在活動頁面上。支援粗體、清單和連結。",
       "end": "結束",
       "eventTitle": "標題",
       "group": "團體",
       "monthly": "每月",
       "noTemplate": "（無模板）",
+      "notesLeaders": "小組領袖",
+      "notesMembers": "小組成員",
+      "notesPostRole": "誰可以發布備註",
+      "notesStaff": "僅限同工",
+      "notesViewRole": "誰可以查看備註",
+      "photo": "活動照片",
+      "photoAlt": "活動照片",
+      "photoHint": "顯示在活動頁面頂部，並作為您網站即將舉行的活動中的圖塊。",
       "private": "私密",
       "public": "公開",
       "repeats": "重複",
@@ -349,6 +361,8 @@
       "seats": "座位 {}",
       "setupMinutes": "佈置（活動前分鐘）",
       "start": "開始",
+      "tags": "標籤",
+      "tagsHelp": "以逗號分隔，例如：青年, 學生。用於篩選您網站上的日曆元素。",
       "teardownMinutes": "拆除（活動後分鍾）",
       "template": "模板",
       "title": "新建活動",
@@ -817,8 +831,14 @@
       "subtitle": "跟蹤承諾活動和奉獻目標進度"
     },
     "donationBatchPage": {
+      "closeBatch": "關閉批次",
+      "closed": "已關閉",
+      "closedNotice": "此批次已關閉，其中的奉獻無法再更改。請擁有「編輯奉獻」權限的人重新開啟。",
+      "closedNoticeEdit": "此批次已關閉。只有擁有「編輯奉獻」權限的人才能更改；重新開啟後，其他人才能再次輸入奉獻。",
       "editBatch": "編輯批次",
       "giftCount": "{count} 筆奉獻",
+      "open": "開放",
+      "reopenBatch": "重新開啟批次",
       "subtitle": "管理此批次中的捐贈",
       "title": "捐贈批次"
     },
@@ -830,6 +850,7 @@
       "export": "匯出",
       "failedEvents": "失敗事件（{count}）",
       "giftCount": "{count} 筆奉獻",
+      "status": "狀態",
       "stripeImportLink": "匯入缺失的 Stripe 交易",
       "subtitle": "管理捐贈批次並跟蹤捐贈記錄"
     },
@@ -846,6 +867,7 @@
       "date": "日期",
       "fund": "基金",
       "inKind": "實物捐贈",
+      "item": "物品",
       "lastDig": "最後 4 位數字",
       "method": "方法",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "日曆",
       "health": "健康狀況",
       "members": "成員",
+      "notes": "領袖備註",
       "sessions": "會話"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "下次",
       "noMembers": "尚無成員。",
       "noSessions": "尚無場次。",
+      "notesSuffix": " 領袖備註",
       "pendingCount": "{count} 個待審核",
       "seeHealth": "查看健康狀況",
       "sessionCount": "{count} 個場次",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "您確定要永久刪除此會話嗎？",
+      "notes": "備註（所講內容、公告、代禱事項）",
       "sesEdit": "編輯會話"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "物品描述",
       "lastDigits": "4242",
       "notes": "張家月度什一奉獻"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "有 FreePlay 電視嗎？請在 {link} 為其安排此計畫類型",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "下載",
       "downloads": "Downloads",
+      "editPublishers": "編輯",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "在 WorshipCommons 中搜尋類似標題",
       "possibleDuplicateTooltip": "該檔案或標題與資料庫中已有的歌曲相符 — 核准前請在審核中確認",
       "publisher": "Publisher",
+      "publisherAdd": "新增",
+      "publisherMakePrimary": "設為主要",
+      "publisherPrimary": "主要",
+      "publisherSearch": "依姓名或電子郵件尋找使用者",
+      "publishersHint": "每位發布者都能在「我的歌曲」中看到這首歌，可以編輯它，並取得其統計數據和通知。主要發布者是上傳者。",
+      "publishersNone": "尚無發布者。",
+      "publishersTitle": "{name} 的發布者",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "擁有該錄音（或已取得擁有者許可）",
@@ -4390,7 +4425,6 @@
       "navHint": "訪客可於 /blog 閱讀您的文章。請於「頁面」畫面新增導覽連結，方便訪客找到：",
       "noPosts": "No posts yet",
       "postCount": "{count} 篇文章",
-      "posts": "Posts",
       "published": "已發布",
       "scheduled": "已排程",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "精選日曆",
+      "display": "顯示方式",
+      "displayMonth": "月曆",
+      "displayUpcoming": "即將舉行的活動",
       "groupCalendar": "小組日曆",
       "select": "選擇",
-      "selectCalendar": "選擇日曆"
+      "selectCalendar": "選擇日曆",
+      "tag": "僅顯示帶有此標籤的活動",
+      "tagHelp": "留空以顯示所有活動。"
     },
     "campaignProgressEdit": {
       "donateUrl": "捐款 URL",
@@ -5848,6 +5887,7 @@
       "created": "已建立",
       "editAssigned": "編輯已分配",
       "editAssoc": "編輯關聯",
+      "notFound": "找不到任務",
       "notSpec": "未指定",
       "open": "開啟",
       "opened": "已開啟",

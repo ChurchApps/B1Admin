@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Edytuj wydarzenie",
       "manageRegistrations": "Zarządzaj rejestracjami",
-      "noGroups": "Nie znaleziono grup."
+      "noGroups": "Nie znaleziono grup.",
+      "notesSuffix": " Notatki"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": "Importuj kalendarz .ics"
     },
     "newEvent": {
+      "addPhoto": "Dodaj zdjęcie",
+      "clickToAddPhoto": "Kliknij, aby dodać zdjęcie",
       "customWindow": "Niestandardowe okno rezerwacji",
       "daily": "Codziennie",
       "description": "Opis",
+      "descriptionHint": "Wyświetlany na stronie wydarzenia. Obsługiwane są pogrubienie, listy i linki.",
       "end": "Koniec",
       "eventTitle": "Tytuł",
       "group": "Grupa",
       "monthly": "Miesięcznie",
       "noTemplate": "(bez szablonu)",
+      "notesLeaders": "Liderzy grupy",
+      "notesMembers": "Członkowie grupy",
+      "notesPostRole": "Kto może dodawać notatki",
+      "notesStaff": "Tylko personel",
+      "notesViewRole": "Kto może przeglądać notatki",
+      "photo": "Zdjęcie wydarzenia",
+      "photoAlt": "Zdjęcie wydarzenia",
+      "photoHint": "Wyświetlane u góry strony wydarzenia oraz jako kafelek w nadchodzących wydarzeniach na Twojej stronie.",
       "private": "Prywatne",
       "public": "Publiczne",
       "repeats": "Powtarza się",
@@ -349,6 +361,8 @@
       "seats": "Miejsca {}",
       "setupMinutes": "Przygotowanie (min przed)",
       "start": "Początek",
+      "tags": "Tagi",
+      "tagsHelp": "Oddzielone przecinkami, np. youth, students. Służą do filtrowania elementów kalendarza na Twojej stronie.",
       "teardownMinutes": "Sprzątanie (min po)",
       "template": "Szablon",
       "title": "Nowe wydarzenie",
@@ -817,8 +831,14 @@
       "subtitle": "Śledź kampanie zobowiązań i postęp w realizacji celów datków"
     },
     "donationBatchPage": {
+      "closeBatch": "Zamknij partię",
+      "closed": "Zamknięta",
+      "closedNotice": "Ta partia jest zamknięta, więc jej darowizn nie można już zmieniać. Poproś osobę z uprawnieniem Edycja darowizn o jej ponowne otwarcie.",
+      "closedNoticeEdit": "Ta partia jest zamknięta. Mogą ją zmieniać tylko osoby z uprawnieniem Edycja darowizn; otwórz ją ponownie, aby inni mogli znowu wprowadzać darowizny.",
       "editBatch": "Edytuj partię",
       "giftCount": "Darowizny: {count}",
+      "open": "Otwarta",
+      "reopenBatch": "Otwórz partię ponownie",
       "subtitle": "Zarządzaj darowiznami w tej partii",
       "title": "Partia darowizn"
     },
@@ -830,6 +850,7 @@
       "export": "Eksportuj",
       "failedEvents": "Nieudane zdarzenia ({count})",
       "giftCount": "Darowizny: {count}",
+      "status": "Status",
       "stripeImportLink": "Importuj brakujące transakcje Stripe",
       "subtitle": "Zarządzaj partiami darowizn i śledź rekordy darowizn"
     },
@@ -846,6 +867,7 @@
       "date": "Data",
       "fund": "Fundusz",
       "inKind": "Naturalne",
+      "item": "Przedmiot",
       "lastDig": "Ostatnie 4 cyfry",
       "method": "Metoda",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalendarz",
       "health": "Kondycja",
       "members": "Członkowie",
+      "notes": "Notatki lidera",
       "sessions": "Sesje"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Następne",
       "noMembers": "Brak członków.",
       "noSessions": "Brak sesji.",
+      "notesSuffix": " Notatki lidera",
       "pendingCount": "Oczekujące: {count}",
       "seeHealth": "Zobacz kondycję",
       "sessionCount": "Sesje: {count}",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "notes": "Notatki (omawiane tematy, ogłoszenia, intencje modlitewne)",
       "sesEdit": "Edit Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Opis przedmiotu",
       "lastDigits": "4242",
       "notes": "Dodaj notatki dotyczące tej darowizny..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Masz telewizory FreePlay? Zaplanuj na nich ten typ planu pod adresem {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Pobierz",
       "downloads": "Downloads",
+      "editPublishers": "Edytuj",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Szukaj podobnych tytułów w WorshipCommons",
       "possibleDuplicateTooltip": "Plik lub tytuł pasuje do pieśni, która już jest w bibliotece — sprawdź ją w przeglądzie przed zatwierdzeniem",
       "publisher": "Publisher",
+      "publisherAdd": "Dodaj",
+      "publisherMakePrimary": "Ustaw jako głównego",
+      "publisherPrimary": "Główny",
+      "publisherSearch": "Znajdź użytkownika po nazwisku lub adresie e-mail",
+      "publishersHint": "Każdy wydawca widzi pieśń w My songs, może ją edytować oraz otrzymuje jej statystyki i powiadomienia. Głównym wydawcą jest osoba, która ją przesłała.",
+      "publishersNone": "Brak wydawców.",
+      "publishersTitle": "Wydawcy: {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Jest właścicielem nagrania (lub ma zgodę właściciela)",
@@ -4390,7 +4425,6 @@
       "navHint": "Odwiedzający mogą czytać Twoje posty pod adresem /blog. Dodaj link nawigacyjny na ekranie Strony, aby mogli go znaleźć:",
       "noPosts": "No posts yet",
       "postCount": "Posty: {count}",
-      "posts": "Posts",
       "published": "Opublikowano",
       "scheduled": "Zaplanowano",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kalendarz wyselekcjonowany",
+      "display": "Wyświetlanie",
+      "displayMonth": "Kalendarz miesięczny",
+      "displayUpcoming": "Nadchodzące wydarzenia",
       "groupCalendar": "Kalendarz grupy",
       "select": "Wybierz",
-      "selectCalendar": "Wybierz kalendarz"
+      "selectCalendar": "Wybierz kalendarz",
+      "tag": "Tylko wydarzenia z tagiem",
+      "tagHelp": "Pozostaw puste, aby wyświetlić wszystkie wydarzenia."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL darowizny",
@@ -5848,6 +5887,7 @@
       "created": "Utworzono",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
+      "notFound": "Nie znaleziono zadania",
       "notSpec": "Nie określono",
       "open": "Open",
       "opened": "Otwarto",

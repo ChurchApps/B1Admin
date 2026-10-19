@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Chỉnh sửa sự kiện",
       "manageRegistrations": "Quản lý đăng ký",
-      "noGroups": "Không Các nhóm found."
+      "noGroups": "Không Các nhóm found.",
+      "notesSuffix": " Ghi chú"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -331,14 +332,25 @@
       "title": "Nhập lịch .ics"
     },
     "newEvent": {
+      "addPhoto": "Thêm ảnh",
+      "clickToAddPhoto": "Nhấp để thêm ảnh",
       "customWindow": "Cửa sổ đặt chỗ tùy chỉnh",
       "daily": "Hàng ngày",
       "description": "Mô tả",
+      "descriptionHint": "Hiển thị trên trang sự kiện. Hỗ trợ chữ đậm, danh sách và liên kết.",
       "end": "Kết thúc",
       "eventTitle": "Tiêu đề",
       "group": "Nhóm",
       "monthly": "Hàng tháng",
       "noTemplate": "(không có mẫu)",
+      "notesLeaders": "Trưởng nhóm",
+      "notesMembers": "Thành viên nhóm",
+      "notesPostRole": "Ai có thể đăng ghi chú",
+      "notesStaff": "Chỉ nhân viên",
+      "notesViewRole": "Ai có thể xem ghi chú",
+      "photo": "Ảnh sự kiện",
+      "photoAlt": "Ảnh sự kiện",
+      "photoHint": "Hiển thị ở đầu trang sự kiện và làm ô hiển thị trong mục sự kiện sắp tới trên trang web của bạn.",
       "private": "Riêng tư",
       "public": "Công khai",
       "repeats": "Lặp lại",
@@ -349,6 +361,8 @@
       "seats": "Chỗ ngồi {}",
       "setupMinutes": "Chuẩn bị (phút trước)",
       "start": "Bắt đầu",
+      "tags": "Thẻ",
+      "tagsHelp": "Phân tách bằng dấu phẩy, ví dụ: thanh thiếu niên, sinh viên. Dùng để lọc các phần tử lịch trên trang web của bạn.",
       "teardownMinutes": "Dọn dẹp (phút sau)",
       "template": "Mẫu",
       "title": "Sự kiện mới",
@@ -817,8 +831,14 @@
       "subtitle": "Theo dõi các chiến dịch cam kết và tiến độ hướng đến mục tiêu dâng hiến"
     },
     "donationBatchPage": {
+      "closeBatch": "Đóng lô",
+      "closed": "Đã đóng",
+      "closedNotice": "Lô này đã đóng nên không thể thay đổi các khoản đóng góp trong đó nữa. Hãy nhờ người có quyền Chỉnh sửa đóng góp mở lại.",
+      "closedNoticeEdit": "Lô này đã đóng. Chỉ những người có quyền Chỉnh sửa đóng góp mới có thể thay đổi; hãy mở lại để người khác có thể nhập đóng góp tiếp.",
       "editBatch": "Chỉnh sửa lô",
       "giftCount": "{count} khoản dâng",
+      "open": "Mở",
+      "reopenBatch": "Mở lại lô",
       "subtitle": "Manage donations in this batch",
       "title": "Donation Batch"
     },
@@ -830,6 +850,7 @@
       "export": "Xuất",
       "failedEvents": "Sự kiện thất bại ({count})",
       "giftCount": "{count} khoản dâng",
+      "status": "Trạng thái",
       "stripeImportLink": "Nhập các giao dịch Stripe bị thiếu",
       "subtitle": "Manage donation batches and Theo dõi giving records"
     },
@@ -846,6 +867,7 @@
       "date": "Ngày",
       "fund": "Fund",
       "inKind": "In-Kind",
+      "item": "Hiện vật",
       "lastDig": "Last 4 digits",
       "method": "Method",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Lịch",
       "health": "Sức khỏe",
       "members": "Members",
+      "notes": "Ghi chú của trưởng nhóm",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Tiếp theo",
       "noMembers": "Chưa có thành viên.",
       "noSessions": "Chưa có buổi họp.",
+      "notesSuffix": " Ghi chú của trưởng nhóm",
       "pendingCount": "{count} đang chờ",
       "seeHealth": "Xem tình trạng",
       "sessionCount": "{count} buổi họp",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently Xóa this session?",
+      "notes": "Ghi chú (nội dung đã học, thông báo, lời cầu nguyện)",
       "sesEdit": "Chỉnh sửa Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Mô tả hiện vật",
       "lastDigits": "4242",
       "notes": "Thêm any notes Về this donation..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Bạn có TV FreePlay? Hãy lên lịch loại kế hoạch này trên đó tại {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Tải xuống",
       "downloads": "Downloads",
+      "editPublishers": "Chỉnh sửa",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Tìm các tiêu đề tương tự trên WorshipCommons",
       "possibleDuplicateTooltip": "Tệp hoặc tiêu đề trùng với một bài hát đã có trong thư viện — hãy kiểm tra trong phần xem xét trước khi phê duyệt",
       "publisher": "Publisher",
+      "publisherAdd": "Thêm",
+      "publisherMakePrimary": "Đặt làm chính",
+      "publisherPrimary": "Chính",
+      "publisherSearch": "Tìm người dùng theo tên hoặc email",
+      "publishersHint": "Mỗi nhà phát hành đều thấy bài hát trong Bài hát của tôi, có thể chỉnh sửa và nhận số liệu cũng như thông báo của bài hát. Nhà phát hành chính là người tải lên.",
+      "publishersNone": "Chưa có nhà phát hành nào.",
+      "publishersTitle": "Nhà phát hành của {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Sở hữu bản thu âm (hoặc được chủ sở hữu cho phép)",
@@ -4390,7 +4425,6 @@
       "navHint": "Khách truy cập có thể đọc bài đăng của bạn tại /blog. Hãy thêm liên kết điều hướng trên màn hình Trang để họ có thể tìm thấy liên kết đó:",
       "noPosts": "No posts yet",
       "postCount": "{count} bài viết",
-      "posts": "Posts",
       "published": "Đã xuất bản",
       "scheduled": "Đã lên lịch",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Lịch tuyển chọn",
+      "display": "Hiển thị",
+      "displayMonth": "Lịch tháng",
+      "displayUpcoming": "Sự kiện sắp tới",
       "groupCalendar": "Lịch nhóm",
       "select": "Chọn",
-      "selectCalendar": "Chọn lịch"
+      "selectCalendar": "Chọn lịch",
+      "tag": "Chỉ sự kiện có thẻ",
+      "tagHelp": "Để trống để hiển thị mọi sự kiện."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL Quyên góp",
@@ -5848,6 +5887,7 @@
       "created": "Đã tạo",
       "editAssigned": "Chỉnh sửa Assigned",
       "editAssoc": "Chỉnh sửa Associated",
+      "notFound": "Không tìm thấy công việc",
       "notSpec": "Chưa xác định",
       "open": "Open",
       "opened": "Đã mở",

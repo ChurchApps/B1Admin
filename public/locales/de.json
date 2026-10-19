@@ -254,7 +254,8 @@
       "edit": "Bearbeiten",
       "editEvent": "Veranstaltung bearbeiten",
       "manageRegistrations": "Anmeldungen verwalten",
-      "noGroups": "Keine Gruppen gefunden."
+      "noGroups": "Keine Gruppen gefunden.",
+      "notesSuffix": " Notizen"
     },
     "calendarList": {
       "aboutParagraph1": "Mit Kalendern können Sie Veranstaltungen für Ihre Kirche organisieren und anzeigen.",
@@ -331,14 +332,25 @@
       "title": ".ics-Kalender importieren"
     },
     "newEvent": {
+      "addPhoto": "Foto hinzufügen",
+      "clickToAddPhoto": "Klicken, um ein Foto hinzuzufügen",
       "customWindow": "Benutzerdefiniertes Reservierungsfenster",
       "daily": "Täglich",
       "description": "Beschreibung",
+      "descriptionHint": "Wird auf der Veranstaltungsseite angezeigt. Fett, Listen und Links werden unterstützt.",
       "end": "Ende",
       "eventTitle": "Titel",
       "group": "Gruppe",
       "monthly": "Monatlich",
       "noTemplate": "(keine Vorlage)",
+      "notesLeaders": "Gruppenleiter",
+      "notesMembers": "Gruppenmitglieder",
+      "notesPostRole": "Wer darf Notizen verfassen",
+      "notesStaff": "Nur Mitarbeiter",
+      "notesViewRole": "Wer darf Notizen sehen",
+      "photo": "Veranstaltungsfoto",
+      "photoAlt": "Veranstaltungsfoto",
+      "photoHint": "Wird oben auf der Veranstaltungsseite und als Kachel bei den kommenden Veranstaltungen auf Ihrer Website angezeigt.",
       "private": "Privat",
       "public": "Öffentlich",
       "repeats": "Wiederholt sich",
@@ -349,6 +361,8 @@
       "seats": "Plätze {}",
       "setupMinutes": "Aufbau (Min. vorher)",
       "start": "Start",
+      "tags": "Tags",
+      "tagsHelp": "Durch Kommas getrennt, z. B. Jugend, Studenten. Dient zum Filtern von Kalenderelementen auf Ihrer Website.",
       "teardownMinutes": "Abbau (Min. nachher)",
       "template": "Vorlage",
       "title": "Neue Veranstaltung",
@@ -817,8 +831,14 @@
       "subtitle": "Zusagekampagnen und Fortschritt zum Spendenziel verfolgen"
     },
     "donationBatchPage": {
+      "closeBatch": "Stapel schließen",
+      "closed": "Geschlossen",
+      "closedNotice": "Dieser Stapel ist geschlossen, daher können seine Spenden nicht mehr geändert werden. Bitten Sie jemanden mit der Berechtigung „Spenden bearbeiten“, ihn wieder zu öffnen.",
+      "closedNoticeEdit": "Dieser Stapel ist geschlossen. Nur Personen mit der Berechtigung „Spenden bearbeiten“ können ihn ändern; öffnen Sie ihn wieder, damit andere erneut Spenden erfassen können.",
       "editBatch": "Stapel bearbeiten",
       "giftCount": "{count} Spenden",
+      "open": "Offen",
+      "reopenBatch": "Stapel wieder öffnen",
       "subtitle": "Spenden in diesem Stapel verwalten",
       "title": "Spendenstapel"
     },
@@ -830,6 +850,7 @@
       "export": "Exportieren",
       "failedEvents": "Fehlgeschlagene Ereignisse ({count})",
       "giftCount": "{count} Spenden",
+      "status": "Status",
       "stripeImportLink": "Fehlende Stripe-Transaktionen importieren",
       "subtitle": "Spendenstapel verwalten und Spendenaufzeichnungen verfolgen"
     },
@@ -846,6 +867,7 @@
       "date": "Datum",
       "fund": "Fonds",
       "inKind": "Sachspende",
+      "item": "Artikel",
       "lastDig": "Letzte 4 Ziffern",
       "method": "Methode",
       "refund": "Rückerstattung",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalender",
       "health": "Gesundheit",
       "members": "Mitglieder",
+      "notes": "Leiternotizen",
       "sessions": "Sitzungen"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Nächste",
       "noMembers": "Noch keine Mitglieder.",
       "noSessions": "Noch keine Sitzungen.",
+      "notesSuffix": " Leiternotizen",
       "pendingCount": "{count} ausstehend",
       "seeHealth": "Entwicklung anzeigen",
       "sessionCount": "{count} Sitzungen",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Sind Sie sicher, dass Sie diese Sitzung dauerhaft löschen möchten?",
+      "notes": "Notizen (behandelte Themen, Ankündigungen, Gebetsanliegen)",
       "sesEdit": "Sitzung bearbeiten"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Beschreibung des Artikels",
       "lastDigits": "4242",
       "notes": "Notizen zu dieser Spende hinzufügen..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Kopieren",
       "description": "Dieser Feed spielt immer die Lektionsinhalte des aktuellen Plans ab. Fügen Sie die untenstehende URL als URL für einen externen Feed in eine Digital-Anzeige-Software wie SignPresenter ein.",
       "feedUrl": "Feed Url",
+      "freePlay": "Sie haben FreePlay-Fernseher? Planen Sie diesen Plantyp unter {link} darauf ein",
       "instructions": "Anleitung zum Verbinden mit SignPresenter",
       "title": "Digitale Anzeige Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details aktualisiert",
       "download": "Herunterladen",
       "downloads": "Downloads",
+      "editPublishers": "Bearbeiten",
       "feature": "Funktion",
       "featureTooltip": "Unter „Featured“ wird der Song auf der Startseite hervorgehoben. Das ist noch nicht das „Sunday-ready“-Siegel – das gibt es erst über das „Listen Gate“.",
       "featured": "Empfohlen",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "WorshipCommons nach ähnlichen Titeln durchsuchen",
       "possibleDuplicateTooltip": "Datei oder Titel entspricht einem bereits in der Bibliothek vorhandenen Lied – vor der Genehmigung in der Prüfung kontrollieren",
       "publisher": "Herausgeber",
+      "publisherAdd": "Hinzufügen",
+      "publisherMakePrimary": "Als primär festlegen",
+      "publisherPrimary": "Primär",
+      "publisherSearch": "Benutzer nach Name oder E-Mail suchen",
+      "publishersHint": "Jeder Herausgeber sieht das Lied unter „Meine Lieder“, kann es bearbeiten und erhält dessen Zahlen und Benachrichtigungen. Der primäre Herausgeber ist derjenige, der es hochgeladen hat.",
+      "publishersNone": "Noch keine Herausgeber.",
+      "publishersTitle": "Herausgeber von {name}",
       "reason": "Grund",
       "recentlyResolved": "Kürzlich gelöst",
       "recordingOwned": "Besitzt die Aufnahme (oder hat die Erlaubnis des Eigentümers)",
@@ -4390,7 +4425,6 @@
       "navHint": "Besucher können Ihre Beiträge unter /blog lesen. Fügen Sie auf der Seite „Seiten“ einen Navigationslink hinzu, damit sie sie finden:",
       "noPosts": "Keine Beiträge",
       "postCount": "{count} Beiträge",
-      "posts": "Beiträge",
       "published": "Veröffentlicht",
       "scheduled": "Geplant",
       "state": "Status",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kuratierter Kalender",
+      "display": "Anzeige",
+      "displayMonth": "Monatskalender",
+      "displayUpcoming": "Kommende Veranstaltungen",
       "groupCalendar": "Gruppenkalender",
       "select": "Auswählen",
-      "selectCalendar": "Kalender auswählen"
+      "selectCalendar": "Kalender auswählen",
+      "tag": "Nur Veranstaltungen mit dem Tag",
+      "tagHelp": "Leer lassen, um alle Veranstaltungen anzuzeigen."
     },
     "campaignProgressEdit": {
       "donateUrl": "Spenden-URL",
@@ -5848,6 +5887,7 @@
       "created": "Erstellt",
       "editAssigned": "Zugewiesen bearbeiten",
       "editAssoc": "Verknüpft bearbeiten",
+      "notFound": "Aufgabe nicht gefunden",
       "notSpec": "Nicht angegeben",
       "open": "Offen",
       "opened": "Geöffnet",

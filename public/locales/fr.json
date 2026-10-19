@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Modifier l'événement",
       "manageRegistrations": "Gérer les inscriptions",
-      "noGroups": "Aucun groupe trouvé."
+      "noGroups": "Aucun groupe trouvé.",
+      "notesSuffix": " Notes"
     },
     "calendarList": {
       "aboutParagraph1": "Les calendriers vous permettent d'organiser et d'afficher des événements pour votre église.",
@@ -331,14 +332,25 @@
       "title": "Importer un calendrier .ics"
     },
     "newEvent": {
+      "addPhoto": "Ajouter une photo",
+      "clickToAddPhoto": "Cliquez pour ajouter une photo",
       "customWindow": "Fenêtre de réservation personnalisée",
       "daily": "Quotidien",
       "description": "Description",
+      "descriptionHint": "Affiché sur la page de l'événement. Le gras, les listes et les liens sont pris en charge.",
       "end": "Fin",
       "eventTitle": "Titre",
       "group": "Groupe",
       "monthly": "Mensuel",
       "noTemplate": "(aucun modèle)",
+      "notesLeaders": "Responsables du groupe",
+      "notesMembers": "Membres du groupe",
+      "notesPostRole": "Qui peut publier des notes",
+      "notesStaff": "Personnel uniquement",
+      "notesViewRole": "Qui peut voir les notes",
+      "photo": "Photo de l'événement",
+      "photoAlt": "Photo de l'événement",
+      "photoHint": "Affichée en haut de la page de l'événement et comme vignette dans les événements à venir de votre site web.",
       "private": "Privé",
       "public": "Public",
       "repeats": "Se répète",
@@ -349,6 +361,8 @@
       "seats": "Places {}",
       "setupMinutes": "Installation (min avant)",
       "start": "Début",
+      "tags": "Mots-clés",
+      "tagsHelp": "Séparés par des virgules, par ex. jeunes, étudiants. Utilisés pour filtrer les éléments de calendrier sur votre site.",
       "teardownMinutes": "Démontage (min après)",
       "template": "Modèle",
       "title": "Nouvel événement",
@@ -817,8 +831,14 @@
       "subtitle": "Suivre les campagnes de promesses et la progression vers les objectifs de dons"
     },
     "donationBatchPage": {
+      "closeBatch": "Clôturer le lot",
+      "closed": "Clôturé",
+      "closedNotice": "Ce lot est clôturé, ses dons ne peuvent donc plus être modifiés. Demandez à une personne disposant de la permission « Modifier les dons » de le rouvrir.",
+      "closedNoticeEdit": "Ce lot est clôturé. Seules les personnes disposant de la permission « Modifier les dons » peuvent le modifier ; rouvrez-le pour permettre aux autres de saisir à nouveau des dons.",
       "editBatch": "Modifier le lot",
       "giftCount": "{count} dons",
+      "open": "Ouvert",
+      "reopenBatch": "Rouvrir le lot",
       "subtitle": "Gérer les dons de ce lot",
       "title": "Lot de dons"
     },
@@ -830,6 +850,7 @@
       "export": "Exporter",
       "failedEvents": "Événements échoués ({count})",
       "giftCount": "{count} dons",
+      "status": "Statut",
       "stripeImportLink": "Importer les transactions Stripe manquantes",
       "subtitle": "Gérer les lots de dons et suivre les enregistrements"
     },
@@ -846,6 +867,7 @@
       "date": "Date",
       "fund": "Fonds",
       "inKind": "En Nature",
+      "item": "Article",
       "lastDig": "Derniers 4 chiffres",
       "method": "Méthode",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Calendrier",
       "health": "Santé",
       "members": "Membres",
+      "notes": "Notes des responsables",
       "sessions": "Sessions"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Prochain",
       "noMembers": "Aucun membre pour l'instant.",
       "noSessions": "Aucune session pour l'instant.",
+      "notesSuffix": " Notes des responsables",
       "pendingCount": "{count} en attente",
       "seeHealth": "Voir la santé",
       "sessionCount": "{count} sessions",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Êtes-vous sûr de vouloir supprimer définitivement cette session ?",
+      "notes": "Notes (sujets abordés, annonces, sujets de prière)",
       "sesEdit": "Modifier la Session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Description de l'article",
       "lastDigits": "4242",
       "notes": "Dîme mensuelle de la famille Dupont"
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Vous avez des téléviseurs FreePlay ? Programmez-y ce type de plan sur {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Télécharger",
       "downloads": "Downloads",
+      "editPublishers": "Modifier",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Rechercher des titres similaires dans WorshipCommons",
       "possibleDuplicateTooltip": "Le fichier ou le titre correspond à un chant déjà présent dans la bibliothèque — vérifiez-le lors de l'examen avant d'approuver",
       "publisher": "Publisher",
+      "publisherAdd": "Ajouter",
+      "publisherMakePrimary": "Définir comme principal",
+      "publisherPrimary": "Principal",
+      "publisherSearch": "Rechercher un utilisateur par nom ou e-mail",
+      "publishersHint": "Chaque éditeur voit le chant dans Mes chants, peut le modifier et reçoit ses statistiques et notifications. L'éditeur principal est celui qui l'a téléversé.",
+      "publishersNone": "Aucun éditeur pour le moment.",
+      "publishersTitle": "Éditeurs de {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Possède l'enregistrement (ou a l'autorisation du propriétaire)",
@@ -4390,7 +4425,6 @@
       "navHint": "Les visiteurs peuvent lire vos articles sur /blog. Ajoutez un lien de navigation sur l'écran Pages pour qu'ils puissent le trouver :",
       "noPosts": "No posts yet",
       "postCount": "{count} articles",
-      "posts": "Posts",
       "published": "Publié",
       "scheduled": "Programmé",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Calendrier sélectionné",
+      "display": "Affichage",
+      "displayMonth": "Calendrier mensuel",
+      "displayUpcoming": "Événements à venir",
       "groupCalendar": "Calendrier de groupe",
       "select": "Sélectionner",
-      "selectCalendar": "Sélectionner un calendrier"
+      "selectCalendar": "Sélectionner un calendrier",
+      "tag": "Uniquement les événements avec le mot-clé",
+      "tagHelp": "Laissez vide pour afficher tous les événements."
     },
     "campaignProgressEdit": {
       "donateUrl": "URL de don",
@@ -5848,6 +5887,7 @@
       "created": "Créé",
       "editAssigned": "Modifier attribué",
       "editAssoc": "Modifier associé",
+      "notFound": "Tâche introuvable",
       "notSpec": "Non spécifié",
       "open": "Ouvert",
       "opened": "Ouvert",

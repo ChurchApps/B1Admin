@@ -254,7 +254,8 @@
       "edit": "Edit",
       "editEvent": "Rediger begivenhed",
       "manageRegistrations": "Administrer tilmeldinger",
-      "noGroups": "Ingen grupper fundet."
+      "noGroups": "Ingen grupper fundet.",
+      "notesSuffix": " Noter"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendere giver dig mulighed for at organisere og vise begivenheder for din kirke.",
@@ -331,14 +332,25 @@
       "title": "Importér .ics-kalender"
     },
     "newEvent": {
+      "addPhoto": "Tilføj foto",
+      "clickToAddPhoto": "Klik for at tilføje foto",
       "customWindow": "Brugerdefineret reservationsvindue",
       "daily": "Dagligt",
       "description": "Beskrivelse",
+      "descriptionHint": "Vises på begivenhedssiden. Fed skrift, lister og links understøttes.",
       "end": "Slut",
       "eventTitle": "Titel",
       "group": "Gruppe",
       "monthly": "Månedligt",
       "noTemplate": "(ingen skabelon)",
+      "notesLeaders": "Gruppeledere",
+      "notesMembers": "Gruppemedlemmer",
+      "notesPostRole": "Hvem kan skrive noter",
+      "notesStaff": "Kun personale",
+      "notesViewRole": "Hvem kan se noter",
+      "photo": "Begivenhedsfoto",
+      "photoAlt": "Begivenhedsfoto",
+      "photoHint": "Vises øverst på begivenhedssiden og som felt under kommende begivenheder på dit websted.",
       "private": "Privat",
       "public": "Offentlig",
       "repeats": "Gentages",
@@ -349,6 +361,8 @@
       "seats": "Pladser {}",
       "setupMinutes": "Klargøring (min før)",
       "start": "Start",
+      "tags": "Tags",
+      "tagsHelp": "Kommasepareret, f.eks. unge, studerende. Bruges til at filtrere kalenderelementer på dit websted.",
       "teardownMinutes": "Oprydning (min efter)",
       "template": "Skabelon",
       "title": "Ny begivenhed",
@@ -817,8 +831,14 @@
       "subtitle": "Følg løftekampagner og fremgang mod givemål"
     },
     "donationBatchPage": {
+      "closeBatch": "Luk batch",
+      "closed": "Lukket",
+      "closedNotice": "Denne batch er lukket, så dens donationer kan ikke længere ændres. Bed en person med \"Rediger donationer\" om at genåbne den.",
+      "closedNoticeEdit": "Denne batch er lukket. Kun personer med \"Rediger donationer\" kan ændre den; genåbn den, så andre kan registrere donationer igen.",
       "editBatch": "Rediger batch",
       "giftCount": "{count} gaver",
+      "open": "Åben",
+      "reopenBatch": "Genåbn batch",
       "subtitle": "Administrer donationer i denne batch",
       "title": "Donationsbatch"
     },
@@ -830,6 +850,7 @@
       "export": "Eksportér",
       "failedEvents": "Mislykkede hændelser ({count})",
       "giftCount": "{count} gaver",
+      "status": "Status",
       "stripeImportLink": "Importer manglende Stripe-transaktioner",
       "subtitle": "Administrer donationsbatcher og spor bidragsoptegnelser"
     },
@@ -846,6 +867,7 @@
       "date": "Dato",
       "fund": "Fond",
       "inKind": "Naturalier",
+      "item": "Element",
       "lastDig": "Sidste 4 cifre",
       "method": "Metode",
       "refund": "Refund",
@@ -1427,6 +1449,7 @@
       "calendar": "Kalender",
       "health": "Sundhed",
       "members": "Medlemmer",
+      "notes": "Ledernoter",
       "sessions": "Sessioner"
     },
     "groupPage": {
@@ -1442,6 +1465,7 @@
       "nextEvent": "Næste",
       "noMembers": "Ingen medlemmer endnu.",
       "noSessions": "Ingen sessioner endnu.",
+      "notesSuffix": " Ledernoter",
       "pendingCount": "{count} afventer",
       "seeHealth": "Se udvikling",
       "sessionCount": "{count} sessioner",
@@ -1612,6 +1636,7 @@
     },
     "sessionEdit": {
       "deleteConfirm": "Er du sikker på, at du vil slette denne session permanent?",
+      "notes": "Noter (hvad der blev gennemgået, meddelelser, bedeemner)",
       "sesEdit": "Rediger session"
     },
     "sessionsDisabled": {
@@ -2206,6 +2231,7 @@
     },
     "donation": {
       "checkNumber": "1234",
+      "item": "Beskrivelse af element",
       "lastDigits": "4242",
       "notes": "Tilføj eventuelle noter om denne donation..."
     },
@@ -2777,6 +2803,7 @@
       "copy": "Copy",
       "description": "This feed always plays the current plan's lesson content. Paste the url below into digital signage software like SignPresenter as an external feed url.",
       "feedUrl": "Feed Url",
+      "freePlay": "Har du FreePlay-tv'er? Planlæg denne plantype på dem via {link}",
       "instructions": "Instructions for connecting to SignPresenter",
       "title": "Digital Signage Feed"
     },
@@ -3395,6 +3422,7 @@
       "detailsUpdated": "Details updated",
       "download": "Download",
       "downloads": "Downloads",
+      "editPublishers": "Rediger",
       "feature": "Feature",
       "featureTooltip": "Featured highlights the song on the home page. It is not the Sunday-ready mark — that comes from the listen gate.",
       "featured": "Featured",
@@ -3441,6 +3469,13 @@
       "possibleDuplicateSearch": "Søg i WorshipCommons efter lignende titler",
       "possibleDuplicateTooltip": "Filen eller titlen matcher en sang, der allerede er i biblioteket — tjek den i gennemgangen, før du godkender",
       "publisher": "Publisher",
+      "publisherAdd": "Tilføj",
+      "publisherMakePrimary": "Gør til primær",
+      "publisherPrimary": "Primær",
+      "publisherSearch": "Find en bruger efter navn eller e-mail",
+      "publishersHint": "Alle udgivere ser sangen under Mine sange, kan redigere den og modtager dens tal og meddelelser. Den primære udgiver er den, der uploadede den.",
+      "publishersNone": "Ingen udgivere endnu.",
+      "publishersTitle": "Udgivere af {name}",
       "reason": "Reason",
       "recentlyResolved": "Recently Resolved",
       "recordingOwned": "Ejer indspilningen (eller har ejerens tilladelse)",
@@ -4390,7 +4425,6 @@
       "navHint": "Besøgende kan læse dine indlæg på /blog. Tilføj et navigationslink på skærmen Sider, så de kan finde det:",
       "noPosts": "No posts yet",
       "postCount": "{count} indlæg",
-      "posts": "Posts",
       "published": "Udgivet",
       "scheduled": "Planlagt",
       "state": "State",
@@ -4423,9 +4457,14 @@
     },
     "calendarElementEdit": {
       "curatedCalendar": "Kurateret kalender",
+      "display": "Visning",
+      "displayMonth": "Månedskalender",
+      "displayUpcoming": "Kommende begivenheder",
       "groupCalendar": "Gruppekalender",
       "select": "Vælg",
-      "selectCalendar": "Vælg kalender"
+      "selectCalendar": "Vælg kalender",
+      "tag": "Kun begivenheder med tagget",
+      "tagHelp": "Lad stå tomt for at vise alle begivenheder."
     },
     "campaignProgressEdit": {
       "donateUrl": "Donations-URL",
@@ -5848,6 +5887,7 @@
       "created": "Oprettet",
       "editAssigned": "Rediger tildelt",
       "editAssoc": "Rediger tilknyttet",
+      "notFound": "Opgaven blev ikke fundet",
       "notSpec": "Ikke angivet",
       "open": "Åben",
       "opened": "Åbnet",
