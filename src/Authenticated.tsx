@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Routes, Route, useNavigate, Navigate, Outlet } from "react-router-dom";
 import { Wrapper, ErrorBoundary, NotFound } from "./components";
-import { ApiHelper, DateHelper, NotificationService, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, NotificationService, Permissions, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
@@ -138,9 +138,9 @@ export const Authenticated: React.FC = () => {
         <Route element={<LayoutWithWrapper />}>
           <Route path="/admin/report/:keyName" element={<AdminReportPage />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/people/demographics" element={<DemographicsPage />} />
-          <Route path="/people/:id" element={<PersonPage />} />
-          <Route path="/people" element={<PeoplePage />} />
+          <Route path="/people/demographics" element={UserHelper.checkAccess(Permissions.membershipApi.people.view) ? <DemographicsPage /> : <Navigate to="/" replace />} />
+          <Route path="/people/:id" element={UserHelper.checkAccess(Permissions.membershipApi.people.view) ? <PersonPage /> : <Navigate to="/" replace />} />
+          <Route path="/people" element={UserHelper.checkAccess(Permissions.membershipApi.people.view) ? <PeoplePage /> : <Navigate to="/" replace />} />
           <Route path="/groups/pending" element={<PendingRequestsPage />} />
           <Route path="/groups/health" element={<GroupsHealthPage />} />
           <Route path="/groups/:id" element={<GroupPage />} />

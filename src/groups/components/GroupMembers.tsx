@@ -18,6 +18,7 @@ import {
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
+import { canRecordAttendance } from "../../helpers";
 import {
   Alert,
   Box,
@@ -79,11 +80,13 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const canPrintRoster = useCanPrintRoster(props.group?.id);
 
   const canView = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view), []);
+  const canOpenProfile = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.view), []);
+  const canViewRoster = canView || canRecordAttendance();
 
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: [`/groupmembers?groupId=${props.group?.id}`, "MembershipApi"],
     placeholderData: [],
-    enabled: !!props.group?.id && canView
+    enabled: !!props.group?.id && canViewRoster
   });
 
   const pendingRequests = useQuery<GroupJoinRequestInterface[]>({
@@ -200,9 +203,13 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             <PersonAvatar person={gm.person as PersonInterface} size="small" />
           </TableCell>
           <TableCell>
-            <Link component={RouterLink} to={"/people/" + gm.personId} underline="hover" sx={{ fontWeight: 600 }}>
-              {personName}
-            </Link>
+            {canOpenProfile ? (
+              <Link component={RouterLink} to={"/people/" + gm.personId} underline="hover" sx={{ fontWeight: 600 }}>
+                {personName}
+              </Link>
+            ) : (
+              <Box component="span" sx={{ fontWeight: 600 }}>{personName}</Box>
+            )}
           </TableCell>
           <TableCell sx={{ width: 120 }}>{roleCell}</TableCell>
           <TableCell align="right" className="rowActions" sx={{ width: 110, whiteSpace: "nowrap" }}>
@@ -228,7 +235,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       );
     }
     return rows;
-  }, [members, canEdit, handleToggleLeader, handleRemove]);
+  }, [members, canEdit, canOpenProfile, handleToggleLeader, handleRemove]);
 
   const tableHeader = useMemo(() => {
     if (members.length === 0) return null;
