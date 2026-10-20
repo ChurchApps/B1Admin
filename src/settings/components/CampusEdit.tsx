@@ -23,7 +23,7 @@ const getTimezones = (): string[] => {
   return ["America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "UTC"]; // Fallback common zones
 };
 
-const TIMEZONES = getTimezones();
+export const TIMEZONES = getTimezones();
 
 export const CampusEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()

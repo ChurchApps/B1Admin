@@ -657,6 +657,38 @@ test.describe("Settings domains save a typed name", () => {
   });
 });
 
+// ChurchAppsSupport#1296: FreePlay schedules use the church's stored time zone, so Church Information must show and change it.
+test.describe("Church information time zone", () => {
+  test("time zone can be changed and restored", async ({ page }) => {
+    const section = page.locator('[data-testid="settings-section-church-info"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+    const zoneRow = page.getByTestId("church-time-zone");
+    const churchName = page.locator('[name="churchName"]');
+    const original = (await zoneRow.count()) ? (await zoneRow.textContent())?.trim() || "" : "";
+    const target = original === "America/Chicago" ? "America/Denver" : "America/Chicago";
+
+    const saveZone = async (zone: string) => {
+      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await expect(churchName).toBeVisible({ timeout: 10000 });
+      await page.locator("#churchTimeZone").click();
+      if (zone) await page.getByRole("option", { name: zone, exact: true }).click();
+      else await page.getByRole("option").first().click();
+      const save = page.waitForResponse(r => r.url().includes("/membership/churches") && r.request().method() === "POST");
+      await page.locator("button").getByText("Save").click();
+      await save;
+      await expect(churchName).toHaveCount(0, { timeout: 10000 });
+    };
+
+    await saveZone(target);
+    await expect(zoneRow).toHaveText(target);
+
+    // Put the original zone back so the next run still proves a change.
+    await saveZone(original);
+    if (original) await expect(zoneRow).toHaveText(original);
+    else await expect(zoneRow).toHaveCount(0);
+  });
+});
+
 // ChurchAppsSupport#1181: merge-field chips on the email template editor must insert at the cursor, and editing mid-text must not eat the rest.
 const openNewTemplate = async (page: Page) => {
   await page.goto("/settings/email-templates");
