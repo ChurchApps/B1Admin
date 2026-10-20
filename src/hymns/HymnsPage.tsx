@@ -2,17 +2,31 @@ import React from "react";
 import { ApiHelper, Loading, PageHeader, Permissions, UserHelper } from "@churchapps/apphelper";
 import type { HymnInterface, HymnVerseInterface } from "@churchapps/helpers";
 import { Add as AddIcon, MenuBook as HymnsIcon, Archive as ArchiveIcon, Edit as EditIcon, Publish as PublishIcon } from "@mui/icons-material";
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { useRequirePermission } from "../hooks";
 
-const emptyHymn = (): HymnInterface => ({ number: 1, title: "", language: "English", verses: [{ order: 1, text: "" }], chorus: "", category: "", published: false, archived: false });
+const emptyHymn = (): HymnInterface => ({
+  number: 1,
+  title: "",
+  language: "English",
+  verses: [{ order: 1, text: "" }],
+  chorus: "",
+  category: "",
+  published: false,
+  archived: false
+});
 
 const HymnEdit = ({ hymn, onClose, onSaved }: { hymn: HymnInterface; onClose: () => void; onSaved: () => void }) => {
   const [value, setValue] = React.useState<HymnInterface>({ ...hymn, verses: hymn.verses?.length ? hymn.verses.map((verse) => ({ ...verse })) : [{ order: 1, text: "" }] });
   const [saving, setSaving] = React.useState(false);
   const [error, setError] = React.useState("");
   const update = (field: keyof HymnInterface, fieldValue: unknown) => setValue((current) => ({ ...current, [field]: fieldValue }));
-  const updateVerse = (index: number, field: keyof HymnVerseInterface, fieldValue: unknown) => setValue((current) => ({ ...current, verses: (current.verses || []).map((verse, verseIndex) => verseIndex === index ? { ...verse, [field]: fieldValue } : verse) }));
+  const updateVerse = (index: number, field: keyof HymnVerseInterface, fieldValue: unknown) => setValue((current) => ({
+    ...current,
+    verses: (current.verses || []).map((verse, verseIndex) => (
+      verseIndex === index ? { ...verse, [field]: fieldValue } : verse
+    ))
+  }));
   const addVerse = () => setValue((current) => ({ ...current, verses: [...(current.verses || []), { order: (current.verses?.length || 0) + 1, text: "" }] }));
   const removeVerse = (index: number) => setValue((current) => ({ ...current, verses: (current.verses || []).filter((_, verseIndex) => verseIndex !== index).map((verse, verseIndex) => ({ ...verse, order: verseIndex + 1 })) }));
   const save = async () => {
@@ -34,7 +48,15 @@ const HymnEdit = ({ hymn, onClose, onSaved }: { hymn: HymnInterface; onClose: ()
       <Stack spacing={2} sx={{ pt: 1 }}>
         {error && <Alert severity="error">{error}</Alert>}
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>{field("Hymn number", "number")}{field("Title", "title")}</Stack>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>{field("Language", "language")}{field("Category", "category")}</Stack>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+          <FormControl fullWidth>
+            <InputLabel id="hymn-language-label">Language</InputLabel>
+            <Select labelId="hymn-language-label" label="Language" value={value.language || "English"} onChange={(event) => update("language", event.target.value)}>
+              <MenuItem value="English">English</MenuItem><MenuItem value="Yoruba">Yoruba</MenuItem><MenuItem value="Bilingual">Bilingual</MenuItem>
+            </Select>
+          </FormControl>
+          {field("Category", "category")}
+        </Stack>
         {(value.verses || []).map((verse, index) => <Stack direction={{ xs: "column", sm: "row" }} spacing={1} key={index} alignItems="flex-start"><TextField label={`Verse ${index + 1} label`} value={verse.label || ""} onChange={(event) => updateVerse(index, "label", event.target.value)} sx={{ minWidth: { sm: 180 } }} /><TextField label="Verse text" value={verse.text} onChange={(event) => updateVerse(index, "text", event.target.value)} multiline minRows={3} fullWidth /><Button color="error" onClick={() => removeVerse(index)}>Remove</Button></Stack>)}
         <Button onClick={addVerse} startIcon={<AddIcon />}>Add verse</Button>
         {field("Chorus / refrain", "chorus")}
