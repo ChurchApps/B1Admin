@@ -2,10 +2,10 @@ import { request, test as plainTest, type Page } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToGroups } from "./helpers/navigation";
+import { navigateToGroups, openPrimaryNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { mockChurchLogo } from "./helpers/print-logo";
-import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
+import { createLimitedRole, createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
 
 // The group record opens on its summary plate; members and sessions are ?view= slices.
 async function openSeedMembers(page: Page, name?: string) {
@@ -847,82 +847,182 @@ loggedInTest("printed rosters show the church logo above the group name", async 
   await expect(page.locator(".roster-church")).toHaveCount(5);
 });
 
-// ChurchAppsSupport#1284: a user whose only people permission is View Names cannot open the All groups list or print every class.
-plainTest.describe("View People Names Only", () => {
-  plainTest.use({ storageState: { cookies: [], origins: [] } });
-  // volunteer@b1.church is a plain member (not the leader) of Greeters Ministry.
-  const GREETERS = "GRP00000025";
-  const apiBase = process.env.API_BASE || "http://localhost:8084";
-  let roleId = "";
-  let sessionId = "";
-  let eventId = "";
+// Both describes below grant a role to volunteer@b1.church, so they share one worker in order;
+// otherwise the attendance role leaks into the names-only redirect checks.
+plainTest.describe("Names-only volunteer roles", () => {
+  plainTest.describe.configure({ mode: "default" });
 
-  const adminContext = async () => {
-    const ctx = await request.newContext();
-    const login = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
-    const jwt = login.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
-    return { ctx, auth: { headers: { Authorization: "Bearer " + jwt } } };
-  };
+  // ChurchAppsSupport#1284: a user whose only people permission is View Names cannot open the All groups list or print every class.
+  plainTest.describe("View People Names Only", () => {
+    plainTest.use({ storageState: { cookies: [], origins: [] } });
+    // volunteer@b1.church is a plain member (not the leader) of Greeters Ministry.
+    const GREETERS = "GRP00000025";
+    const apiBase = process.env.API_BASE || "http://localhost:8084";
+    let roleId = "";
+    let sessionId = "";
+    let eventId = "";
 
-  plainTest.beforeAll(async () => {
-    roleId = await createNamesOnlyRole("Issue 1284 Names Only (groups)");
-    const { ctx, auth } = await adminContext();
-    const sessions = await (await ctx.post(`${apiBase}/attendance/sessions`, { ...auth, data: [{ groupId: GREETERS, sessionDate: "2026-01-04T12:00:00" }] })).json();
-    sessionId = sessions[0].id;
-    const start = new Date(Date.now() + 7 * 86400000);
-    const end = new Date(start.getTime() + 3600000);
-    const events = await (await ctx.post(`${apiBase}/content/events`, { ...auth, data: [{ groupId: GREETERS, title: "E2E 1287 Event", start, end, allDay: false, visibility: "public" }] })).json();
-    eventId = events[0].id;
-    await ctx.dispose();
+    const adminContext = async () => {
+      const ctx = await request.newContext();
+      const login = await (await ctx.post(`${apiBase}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const jwt = login.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+      return { ctx, auth: { headers: { Authorization: "Bearer " + jwt } } };
+    };
+
+    plainTest.beforeAll(async () => {
+      roleId = await createNamesOnlyRole("Issue 1284 Names Only (groups)");
+      const { ctx, auth } = await adminContext();
+      const sessions = await (await ctx.post(`${apiBase}/attendance/sessions`, { ...auth, data: [{ groupId: GREETERS, sessionDate: "2026-01-04T12:00:00" }] })).json();
+      sessionId = sessions[0].id;
+      const start = new Date(Date.now() + 7 * 86400000);
+      const end = new Date(start.getTime() + 3600000);
+      const events = await (await ctx.post(`${apiBase}/content/events`, { ...auth, data: [{ groupId: GREETERS, title: "E2E 1287 Event", start, end, allDay: false, visibility: "public" }] })).json();
+      eventId = events[0].id;
+      await ctx.dispose();
+    });
+
+    plainTest.afterAll(async () => {
+      const { ctx, auth } = await adminContext();
+      if (sessionId) await ctx.delete(`${apiBase}/attendance/sessions/${sessionId}`, auth);
+      if (eventId) await ctx.delete(`${apiBase}/content/events/${eventId}`, auth);
+      await ctx.dispose();
+      await deleteRole(roleId);
+    });
+
+    plainTest("groups list redirects home and print all classes prints nothing", async ({ page }) => {
+      await loginAsVolunteer(page);
+      await page.goto("/groups");
+      await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
+      await expect(page.getByTestId("home-my-groups")).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("groups-search")).toHaveCount(0);
+      expect(new URL(page.url()).pathname).toBe("/");
+
+      await page.goto("/groups/print-roster?serviceTimeId=SST00000004&date=2025-12-03");
+      await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
+      await expect(page.locator("h1.roster-title")).toHaveCount(0);
+    });
+
+    plainTest("member group hides roster print and event delete", async ({ page }) => {
+      await loginAsVolunteer(page);
+      await page.goto(`/groups/${GREETERS}?view=sessions`);
+      await expect(page.locator('[data-cy="session-present-msg"]')).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("session-print-roster-button")).toHaveCount(0);
+
+      await page.goto(`/groups/${GREETERS}?view=members`);
+      await expect(page.locator("#groupMembersBox")).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("print-roster-button")).toHaveCount(0);
+
+      await page.goto(`/groups/${GREETERS}?view=calendar`);
+      await expect(page.getByRole("cell", { name: "E2E 1287 Event", exact: true })).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId(`delete-event-${eventId}`)).toHaveCount(0);
+
+      await page.goto(`/groups/print-roster?groupId=${GREETERS}`);
+      await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
+      await expect(page.locator("h1.roster-title")).toHaveCount(0);
+    });
+
+    plainTest("group page hides Email and the email templates page redirects home", async ({ page }) => {
+      await loginAsVolunteer(page);
+      await page.goto(`/groups/${GREETERS}`);
+      await expect(page.getByRole("heading", { name: "Greeters Ministry" })).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("email-group-button")).toHaveCount(0);
+
+      await page.goto("/settings/email-templates");
+      await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
+    });
   });
 
-  plainTest.afterAll(async () => {
-    const { ctx, auth } = await adminContext();
-    if (sessionId) await ctx.delete(`${apiBase}/attendance/sessions/${sessionId}`, auth);
-    if (eventId) await ctx.delete(`${apiBase}/content/events/${eventId}`, auth);
-    await ctx.dispose();
-    await deleteRole(roleId);
-  });
+  // ChurchAppsSupport#1308: View People Names Only plus attendance View/Edit is enough to
+  // open Groups and record attendance. Full profiles stay closed.
+  plainTest.describe("View People Names Only with attendance", () => {
+    plainTest.use({ storageState: { cookies: [], origins: [] } });
 
-  plainTest("groups list redirects home and print all classes prints nothing", async ({ page }) => {
-    await loginAsVolunteer(page);
-    await page.goto("/groups");
-    await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
-    await expect(page.getByTestId("home-my-groups")).toBeVisible({ timeout: 15000 });
-    await expect(page.getByTestId("groups-search")).toHaveCount(0);
-    expect(new URL(page.url()).pathname).toBe("/");
+    const API = process.env.API_BASE || "http://localhost:8084";
+    const NURSERY = "GRP00000007";
+    const OLIVIA = "PER00000029";
+    let roleId = "";
+    let sessionId = "";
+    let visitorId = "";
 
-    await page.goto("/groups/print-roster?serviceTimeId=SST00000004&date=2025-12-03");
-    await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
-    await expect(page.locator("h1.roster-title")).toHaveCount(0);
-  });
+    const admin = async () => {
+      const ctx = await request.newContext();
+      const login = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const jwt = login.userChurches.find((uc: { church: { id: string } }) => uc.church.id === "CHU00000001").jwt;
+      return { ctx, auth: { headers: { Authorization: "Bearer " + jwt } } };
+    };
 
-  plainTest("member group hides roster print and event delete", async ({ page }) => {
-    await loginAsVolunteer(page);
-    await page.goto(`/groups/${GREETERS}?view=sessions`);
-    await expect(page.locator('[data-cy="session-present-msg"]')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByTestId("session-print-roster-button")).toHaveCount(0);
+    plainTest.beforeAll(async () => {
+      roleId = await createLimitedRole("Issue 1308 Attendance", [
+        { apiName: "MembershipApi", contentType: "People", action: "View Names" },
+        { apiName: "AttendanceApi", contentType: "Attendance", action: "View" },
+        { apiName: "AttendanceApi", contentType: "Attendance", action: "Edit" }
+      ]);
+      const { ctx, auth } = await admin();
+      const sessions = await (await ctx.post(`${API}/attendance/sessions`, { ...auth, data: [{ groupId: NURSERY, sessionDate: "2026-10-20T15:00:00" }] })).json();
+      sessionId = sessions[0].id;
+      const people = await (await ctx.post(`${API}/membership/people`, {
+        ...auth,
+        data: [{ name: { first: "Zacchaeus", last: "Attendance" }, membershipStatus: "Visitor", contactInfo: { email: "zacchaeus.attendance@example.com" } }]
+      })).json();
+      visitorId = people[0].id;
+      await ctx.dispose();
+    });
 
-    await page.goto(`/groups/${GREETERS}?view=members`);
-    await expect(page.locator("#groupMembersBox")).toBeVisible({ timeout: 15000 });
-    await expect(page.getByTestId("print-roster-button")).toHaveCount(0);
+    plainTest.afterAll(async () => {
+      const { ctx, auth } = await admin();
+      if (sessionId) await ctx.delete(`${API}/attendance/sessions/${sessionId}`, auth);
+      if (visitorId) await ctx.delete(`${API}/membership/people/${visitorId}`, auth);
+      await ctx.dispose();
+      await deleteRole(roleId);
+    });
 
-    await page.goto(`/groups/${GREETERS}?view=calendar`);
-    await expect(page.getByRole("cell", { name: "E2E 1287 Event", exact: true })).toBeVisible({ timeout: 15000 });
-    await expect(page.getByTestId(`delete-event-${eventId}`)).toHaveCount(0);
+    plainTest("names-only attendance taker opens the nursery and logs attendance without a profile", async ({ page }) => {
+      await loginAsVolunteer(page);
 
-    await page.goto(`/groups/print-roster?groupId=${GREETERS}`);
-    await expect(page.getByText("No classes found to print.")).toBeVisible({ timeout: 15000 });
-    await expect(page.locator("h1.roster-title")).toHaveCount(0);
-  });
+      // The header search bar is the menu. People opens Groups for this role.
+      await openPrimaryNav(page);
+      const palette = page.getByTestId("command-palette");
+      await palette.getByRole("textbox").fill("People");
+      const people = palette.getByRole("button", { name: "People", exact: true }).first();
+      await expect(people).toBeVisible();
+      await people.click();
+      await expect(page).toHaveURL(/\/groups\/?$/, { timeout: 15000 });
+      await expect(page.getByTestId("groups-search")).toBeVisible();
+      const search = page.getByTestId("groups-search").locator("input");
+      await search.fill("Care");
+      await expect(page.getByRole("link", { name: "Care & Recovery" })).toHaveCount(0);
+      await search.fill("Nursery");
+      await page.getByRole("link", { name: "Nursery (0-2)" }).click();
+      await page.waitForURL(new RegExp(`/groups/${NURSERY}`), { timeout: 15000 });
 
-  plainTest("group page hides Email and the email templates page redirects home", async ({ page }) => {
-    await loginAsVolunteer(page);
-    await page.goto(`/groups/${GREETERS}`);
-    await expect(page.getByRole("heading", { name: "Greeters Ministry" })).toBeVisible({ timeout: 15000 });
-    await expect(page.getByTestId("email-group-button")).toHaveCount(0);
+      await page.goto(`/groups/${NURSERY}?view=sessions&sessionId=${sessionId}`);
+      const olivia = page.locator('[data-testid="session-roster-row"]').filter({ hasText: "Olivia Davis" });
+      await expect(olivia).toBeVisible({ timeout: 15000 });
+      await expect(olivia.locator("a")).toHaveCount(0);
+      await expect(page.getByText("258 Elm Street")).toHaveCount(0);
+      await expect(page.getByText("zacchaeus.attendance@example.com")).toHaveCount(0);
 
-    await page.goto("/settings/email-templates");
-    await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
+      await page.getByTestId("person-search-input").locator("input").fill("Zacchaeus Attendance");
+      await page.getByTestId("search-button").click();
+      await page.getByTestId(`add-person-button-${visitorId}`).click();
+      const visitor = page.locator('[data-testid="session-roster-row"]').filter({ hasText: "Zacchaeus Attendance" });
+      await expect(visitor).toBeVisible({ timeout: 10000 });
+
+      await olivia.getByRole("checkbox", { name: "Olivia Davis" }).check();
+      await page.getByTestId("save-attendance-button").click();
+      await expect(page.getByTestId("attendance-save-message")).toHaveText("Attendance saved.", { timeout: 15000 });
+
+      await page.reload();
+      await expect(olivia).toBeVisible({ timeout: 15000 });
+      await expect(olivia.getByRole("checkbox", { name: "Olivia Davis" })).toBeChecked();
+      await expect(visitor).toBeVisible({ timeout: 15000 });
+      await expect(visitor.getByRole("checkbox", { name: "Zacchaeus Attendance" })).toBeChecked();
+      await expect(page.getByText("zacchaeus.attendance@example.com")).toHaveCount(0);
+
+      await page.goto(`/people/${OLIVIA}`);
+      await page.waitForURL((url) => url.pathname === "/", { timeout: 15000 });
+      await expect(page.getByText("258 Elm Street")).toHaveCount(0);
+      await expect(page.getByText("Olivia Davis")).toHaveCount(0);
+    });
   });
 });
