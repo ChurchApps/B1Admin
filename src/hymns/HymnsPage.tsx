@@ -30,6 +30,9 @@ const HymnEdit = ({ hymn, onClose, onSaved }: { hymn: HymnInterface; onClose: ()
   const addVerse = () => setValue((current) => ({ ...current, verses: [...(current.verses || []), { order: (current.verses?.length || 0) + 1, text: "" }] }));
   const removeVerse = (index: number) => setValue((current) => ({ ...current, verses: (current.verses || []).filter((_, verseIndex) => verseIndex !== index).map((verse, verseIndex) => ({ ...verse, order: verseIndex + 1 })) }));
   const save = async () => {
+    if (!Number.isInteger(value.number) || value.number < 1) { setError("Enter a whole hymn number greater than zero."); return; }
+    if (!value.title?.trim()) { setError("Enter a hymn title."); return; }
+    if (!value.verses?.length || value.verses.some((verse) => !verse.text?.trim())) { setError("Add at least one verse and enter its text."); return; }
     setSaving(true);
     setError("");
     try {
@@ -41,7 +44,7 @@ const HymnEdit = ({ hymn, onClose, onSaved }: { hymn: HymnInterface; onClose: ()
       setSaving(false);
     }
   };
-  const field = (label: string, key: keyof HymnInterface) => <TextField label={label} value={(value[key] as string | number | undefined) ?? ""} onChange={(event) => update(key, key === "number" ? Number(event.target.value) : event.target.value)} fullWidth />;
+  const field = (label: string, key: keyof HymnInterface) => <TextField label={label} value={(value[key] as string | number | undefined) ?? ""} onChange={(event) => update(key, key === "number" ? Number(event.target.value) : event.target.value)} type={key === "number" ? "number" : "text"} inputProps={key === "number" ? { min: 1, step: 1 } : undefined} required={key === "number" || key === "title"} fullWidth />;
   return <Dialog open fullWidth maxWidth="md" onClose={onClose}>
     <DialogTitle>{value.id ? "Edit hymn" : "New hymn"}</DialogTitle>
     <DialogContent>
@@ -57,7 +60,7 @@ const HymnEdit = ({ hymn, onClose, onSaved }: { hymn: HymnInterface; onClose: ()
           </FormControl>
           {field("Category", "category")}
         </Stack>
-        {(value.verses || []).map((verse, index) => <Stack direction={{ xs: "column", sm: "row" }} spacing={1} key={index} alignItems="flex-start"><TextField label={`Verse ${index + 1} label`} value={verse.label || ""} onChange={(event) => updateVerse(index, "label", event.target.value)} sx={{ minWidth: { sm: 180 } }} /><TextField label="Verse text" value={verse.text} onChange={(event) => updateVerse(index, "text", event.target.value)} multiline minRows={3} fullWidth /><Button color="error" onClick={() => removeVerse(index)}>Remove</Button></Stack>)}
+        {(value.verses || []).map((verse, index) => <Stack direction={{ xs: "column", sm: "row" }} spacing={1} key={index} alignItems="flex-start"><TextField label={`Verse ${index + 1} label`} value={verse.label || ""} onChange={(event) => updateVerse(index, "label", event.target.value)} sx={{ minWidth: { sm: 180 } }} /><TextField label="Verse text" value={verse.text} onChange={(event) => updateVerse(index, "text", event.target.value)} required multiline minRows={3} fullWidth /><Button color="error" onClick={() => removeVerse(index)}>Remove</Button></Stack>)}
         <Button onClick={addVerse} startIcon={<AddIcon />}>Add verse</Button>
         {field("Chorus / refrain", "chorus")}
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>{field("Author", "author")}{field("Composer", "composer")}</Stack>
