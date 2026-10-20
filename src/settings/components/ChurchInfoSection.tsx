@@ -101,6 +101,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
     );
   }
 
+  const timeZone = (church as any)?.timeZone as string | undefined;
   const address = [church?.address1, church?.address2, [church?.city, church?.state].filter(Boolean).join(", "), church?.zip, church?.country].filter(Boolean).join(" · ");
 
   return (
@@ -109,7 +110,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
       <SettingsRow label={Locale.label("person.address")} value={address} />
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
-      <SettingsRow label={Locale.label("settings.churchSettingsEdit.timeZone")} value={church?.timeZone && <span data-testid="church-time-zone">{church.timeZone}</span>} />
+      <SettingsRow label={Locale.label("settings.churchSettingsEdit.timeZone")} value={timeZone && <span data-testid="church-time-zone">{timeZone}</span>} />
     </SettingsPanel>
   );
 };
