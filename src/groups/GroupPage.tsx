@@ -1,7 +1,7 @@
 import React from "react";
 import { GroupBanner, GroupDetailsEdit } from "./components";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { GroupMembersTab } from "./components/GroupMembersTab";
 import { GroupSessionsTab } from "./components/GroupSessionsTab";
 import { GroupCalendarTab } from "./components/GroupCalendarTab";
@@ -11,6 +11,7 @@ import { Box, Button } from "@mui/material";
 import { CalendarMonth as AttendanceIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { BackVerb, EmptyState, PageContainer, RecordLayout, useRecordView } from "../components/ui";
+import { canSeeConfidentialGroups } from "../helpers";
 import { useQuery } from "@tanstack/react-query";
 import { ContentNotes } from "../components/ContentNotes";
 
@@ -87,6 +88,12 @@ export const GroupPage = () => {
         return <GroupPlate group={groupData} onView={setView} onEnableAttendance={enableAttendance} />;
     }
   };
+
+  const isMember = !!members.data?.some((m) => m.personId === UserHelper.person?.id);
+  if (groupData?.confidential && !canSeeConfidentialGroups()) {
+    if (!members.isFetched) return null;
+    if (!isMember) return <Navigate to="/" replace />;
+  }
 
   return (
     <PageContainer>

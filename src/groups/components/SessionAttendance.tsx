@@ -58,6 +58,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const loadSeqRef = React.useRef(0);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit), []);
+  const canOpenProfile = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.view), []);
 
   React.useEffect(() => {
     if (!group?.id) return;
@@ -242,9 +243,13 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           <Avatar src={PersonHelper.getPhotoUrl(person)} sx={{ width: 40, height: 40 }} />
         </TableCell>
         <TableCell>
-          <Link className="personName" to={"/people/" + personId}>
-            {person.name?.display}
-          </Link>
+          {canOpenProfile ? (
+            <Link className="personName" to={"/people/" + personId}>
+              {person.name?.display}
+            </Link>
+          ) : (
+            <span className="personName">{person.name?.display}</span>
+          )}
         </TableCell>
         <TableCell>
           {checkinTypeChip(checkinTypes[personId])}

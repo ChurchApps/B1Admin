@@ -2,7 +2,7 @@ import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelpe
 import React, { useEffect, useMemo } from "react";
 
 import { SecondaryMenuHelper } from "../helpers/SecondaryMenuHelper";
-import { hasPlansEditAccess } from "../helpers";
+import { canRecordAttendance, hasPlansEditAccess } from "../helpers";
 import { canSeeBatches } from "../donations/batchAccess";
 import { SiteHeader } from "@churchapps/apphelper";
 import { ThemeMenuControls } from "./ThemeMenuControls";
@@ -39,6 +39,7 @@ export const Header: React.FC = () => {
     const menuItems: { url: string; icon: string; label: string }[] = [];
     menuItems.push({ url: "/", icon: "home", label: Locale.label("components.wrapper.dash") });
     if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people", icon: "person", label: Locale.label("components.wrapper.ppl") });
+    else if (UserHelper.checkAccess(Permissions.membershipApi.people.viewNames) && canRecordAttendance()) menuItems.push({ url: "/groups", icon: "person", label: Locale.label("components.wrapper.ppl") });
     else if (formPermission || isFormMember) menuItems.push({ url: "/forms", icon: "person", label: Locale.label("components.wrapper.ppl") });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("components.wrapper.don"), icon: donationIcon });
     else if (canSeeBatches()) menuItems.push({ url: "/donations/batches", label: Locale.label("components.wrapper.don"), icon: donationIcon });

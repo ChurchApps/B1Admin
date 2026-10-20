@@ -9,6 +9,7 @@ import { Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { ExportButton, FilterChip, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, SearchField, SortableTableHead, Surface, TextAction, filterChipSx, numericCellSx, tableScrollSx } from "../components/ui";
 import { useConfirmDelete, useSortableData } from "../hooks";
+import { canSeeConfidentialGroups } from "../helpers";
 
 const EXPORT_LABEL_KEYS = [
   "id", "churchId", "campusId", "categoryName", "joinPolicy", "labelCount", "memberCount", "meetingLocation", "meetingTime", "name", "labels", "tags"
@@ -42,7 +43,7 @@ const GroupsPage = () => {
     queryKey: [showArchived ? "/groups?archived=1" : "/groups/tag/standard", "MembershipApi"],
     placeholderData: []
   });
-  const groups = groupsQuery.data || [];
+  const groups = (groupsQuery.data || []).filter((g) => canSeeConfidentialGroups() || !g.confidential);
 
   const query = searchText.trim().toLowerCase();
   const searchedGroups = query

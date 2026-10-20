@@ -2,8 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import { Permissions, UserHelper } from "@churchapps/apphelper";
 import { type GroupMemberInterface } from "@churchapps/helpers";
 
-// The All groups list is for people who manage groups or people; leaders reach their own groups from My Groups.
-export const hasAllGroupsAccess = (): boolean => UserHelper.checkAccess(Permissions.membershipApi.groups.edit) || UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) || UserHelper.checkAccess(Permissions.membershipApi.people.view);
+// Recording attendance (view or edit) is enough to need the class list. Names-only
+// users without it stay on My Groups (ChurchAppsSupport#1284).
+export const canRecordAttendance = (): boolean => UserHelper.checkAccess(Permissions.attendanceApi.attendance.view) || UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit);
+
+// The All groups list is for people who manage groups or people, and for attendance takers
+// whose only people permission is View Names. Leaders reach their own groups from My Groups.
+export const hasAllGroupsAccess = (): boolean =>
+  UserHelper.checkAccess(Permissions.membershipApi.groups.edit)
+  || UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view)
+  || UserHelper.checkAccess(Permissions.membershipApi.people.view)
+  || (UserHelper.checkAccess(Permissions.membershipApi.people.viewNames) && canRecordAttendance());
+
+// Confidential groups stay with staff. Attendance takers see the public class list.
+export const canSeeConfidentialGroups = (): boolean =>
+  UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view)
+  || UserHelper.checkAccess(Permissions.membershipApi.groups.edit)
+  || UserHelper.checkAccess(Permissions.membershipApi.people.view);
 
 export const leadsGroup = (members: GroupMemberInterface[] | undefined): boolean => !!members?.some((m) => m.leader && m.personId === UserHelper.person?.id);
 

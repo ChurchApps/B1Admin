@@ -7,6 +7,7 @@ import { type EventInterface, type GroupInterface, type GroupJoinRequestInterfac
 import { RecordHeading, TextAction, VerbRow, filterChipSx } from "../../components/ui";
 import { useContentConversation } from "../../components/ContentNotes";
 import { PersonNotesSummary } from "../../people/components/PersonSummaries";
+import { canRecordAttendance } from "../../helpers";
 
 interface SessionRow {
   id?: string;
@@ -49,6 +50,8 @@ const plural = (count: number, one: string, many: string) => `${count} ${count =
 export const GroupPlate = ({ group, onView, onEnableAttendance }: Props) => {
   const isStandard = (group?.tags?.indexOf("standard") ?? -1) > -1;
   const canViewMembers = UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view);
+  const canOpenProfile = UserHelper.checkAccess(Permissions.membershipApi.people.view);
+  const canSeeRoster = canViewMembers || canRecordAttendance();
   const canEditGroup = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
   const trackAttendance = !!group?.trackAttendance;
 
@@ -113,18 +116,24 @@ export const GroupPlate = ({ group, onView, onEnableAttendance }: Props) => {
     return (
       <Stack spacing={1.5}>
         <Box component="ul" aria-label={Locale.label("groups.groupNavigation.members")} sx={{ display: "flex", flexWrap: "wrap", gap: 1, listStyle: "none", m: 0, p: 0 }}>
-          {people.slice(0, PREVIEW_COUNT).map((m) => (
-            <Box component="li" key={m.id}>
-              <Link
-                component={RouterLink}
-                to={"/people/" + m.personId}
-                underline="none"
-                sx={{ ...filterChipSx(false), display: "inline-flex", alignItems: "center", gap: 0.75, minHeight: { xs: 36, md: 36 } }}>
+          {people.slice(0, PREVIEW_COUNT).map((m) => {
+            const nameSx = { ...filterChipSx(false), display: "inline-flex", alignItems: "center", gap: 0.75, minHeight: { xs: 36, md: 36 } };
+            const nameText = (
+              <>
                 {m.person?.name?.display || Locale.label("groups.groupMembers.unknown")}
                 {m.leader && <Typography component="span" variant="caption" color="text.secondary">{Locale.label("groups.groupMembers.leader")}</Typography>}
-              </Link>
-            </Box>
-          ))}
+              </>
+            );
+            return (
+              <Box component="li" key={m.id}>
+                {canOpenProfile ? (
+                  <Link component={RouterLink} to={"/people/" + m.personId} underline="none" sx={nameSx}>{nameText}</Link>
+                ) : (
+                  <Box sx={nameSx}>{nameText}</Box>
+                )}
+              </Box>
+            );
+          })}
         </Box>
         <VerbRow>
           <span>{plural(people.length, Locale.label("groups.groupMembers.member"), Locale.label("groups.groupMembers.members"))}</span>
@@ -214,7 +223,7 @@ export const GroupPlate = ({ group, onView, onEnableAttendance }: Props) => {
   return (
     <>
       <Section id="group-plate-members" title={Locale.label("groups.groupNavigation.members")} testId="group-plate-members">
-        {canViewMembers ? membersBody() : <VerbRow>{allMembers}</VerbRow>}
+        {canSeeRoster ? membersBody() : <VerbRow>{allMembers}</VerbRow>}
       </Section>
       {isStandard && (
         <Section id="group-plate-sessions" title={Locale.label("groups.groupNavigation.sessions")} testId="group-plate-sessions">
