@@ -6,6 +6,7 @@ import { FormCard } from "../../components/ui";
 import { Grid, TextField, Typography, MenuItem } from "@mui/material";
 import { EditVerb, SettingsRow } from "./SettingsPage";
 import { SettingsPanel } from "./SettingsPanel";
+import { TIMEZONES } from "./CampusEdit";
 
 type AnyRecord = Record<string, any>;
 
@@ -30,7 +31,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
   const [editing, setEditing] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
 
-  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { ...church, churchName: church?.name || "" } });
+  const { register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { ...church, churchName: church?.name || "" } });
   const fe = formState.errors as any;
 
   React.useEffect(() => { reset({ ...church, churchName: church?.name || "" }); }, [church, reset]);
@@ -89,6 +90,12 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
               {DAY_LABELS.map((_, i) => <MenuItem key={i} value={i}>{dayLabel(i)}</MenuItem>)}
             </TextField>
           </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField fullWidth select label={Locale.label("settings.churchSettingsEdit.timeZone")} id="churchTimeZone" value={watch("timeZone") || ""} {...register("timeZone")}>
+              <MenuItem value="">{Locale.label("settings.campusEdit.noTimezone")}</MenuItem>
+              {TIMEZONES.map((tz) => <MenuItem key={tz} value={tz}>{tz}</MenuItem>)}
+            </TextField>
+          </Grid>
         </Grid>
       </FormCard>
     );
@@ -102,6 +109,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
       <SettingsRow label={Locale.label("person.address")} value={address} />
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
+      <SettingsRow label={Locale.label("settings.churchSettingsEdit.timeZone")} value={church?.timeZone && <span data-testid="church-time-zone">{church.timeZone}</span>} />
     </SettingsPanel>
   );
 };

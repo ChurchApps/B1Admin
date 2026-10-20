@@ -3848,7 +3848,8 @@
       "noNameMsg": "Church name cannot be blank.",
       "noSubMsg": "Subdomain cannot be blank.",
       "subdom": "Subdomain",
-      "textingTitle": "Texting"
+      "textingTitle": "Texting",
+      "timeZone": "Time Zone"
     },
     "customFieldEdit": {
       "confirmDelete": "Are you sure you wish to delete this custom field? Its stored values will also be removed.",
