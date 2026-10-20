@@ -61,4 +61,13 @@ anonTest.describe("Login landing", () => {
     await expect(page).not.toHaveURL(/\/people/);
     await expect(page.getByTestId("sunday-home")).toBeVisible({ timeout: 15000 });
   });
+
+  anonTest("a first-time browser gets the Default theme, a returning one keeps Classic", async ({ page }) => {
+    await page.goto("/login");
+    await expect.poll(() => page.evaluate(() => document.body.dataset.b1Theme)).toBe("soft");
+
+    await page.evaluate(() => { localStorage.removeItem("b1admin-theme"); localStorage.setItem("b1admin-theme-mode", "light"); });
+    await page.reload();
+    await expect.poll(() => page.evaluate(() => document.body.dataset.b1Theme)).toBe("classic");
+  });
 });

@@ -30,8 +30,10 @@ const getInitialTheme = (): ThemeId => {
   try {
     const stored = localStorage.getItem(THEME_ID_KEY) as ThemeId | null;
     if (stored && themeIds.includes(stored)) return stored;
+    // The light/dark key has been written on every load since Jan 2026, so its presence marks a returning user who stays on Classic.
+    if (localStorage.getItem(THEME_STORAGE_KEY)) return "classic";
   } catch { /* storage unavailable */ }
-  return "classic";
+  return "soft";
 };
 
 interface Props {
