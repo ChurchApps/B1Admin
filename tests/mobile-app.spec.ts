@@ -242,151 +242,174 @@ test.describe.serial("Mobile tab ordering", () => {
   });
 });
 
-// ChurchAppsSupport#1058: the church-wide contact visibility defaults on the B1 Mobile page gain
-// two stricter levels, "My Group Leaders and Staff" and "Staff Only", below "Groups Only".
-test.describe("B1 Mobile contact visibility levels", () => {
-  const VISIBILITY_FIELDS = ["Address", "Phone Number", "Email"];
+// Every save below posts the whole B1 Mobile form, so these run one at a time or one
+// worker's save would overwrite another's setting.
+test.describe("B1 Mobile page saves", () => {
+  test.describe.configure({ mode: "serial" });
 
-  async function openB1MobileSettings(page: Page) {
-    await page.goto("/mobile/b1-mobile");
-    await page.getByLabel("Address", { exact: true }).first().waitFor({ state: "visible", timeout: 15000 });
-  }
+  // ChurchAppsSupport#1058: the church-wide contact visibility defaults on the B1 Mobile page gain
+  // two stricter levels, "My Group Leaders and Staff" and "Staff Only", below "Groups Only".
+  test.describe("B1 Mobile contact visibility levels", () => {
+    const VISIBILITY_FIELDS = ["Address", "Phone Number", "Email"];
 
-  test("address, phone and email defaults offer My Group Leaders and Staff and Staff Only", async ({ page }) => {
-    await openB1MobileSettings(page);
-    for (const label of VISIBILITY_FIELDS) {
-      await page.getByLabel(label, { exact: true }).first().click();
-      const listbox = page.locator('[role="listbox"]');
-      await expect(listbox.locator('li[role="option"]', { hasText: /^Groups Only$/ })).toBeVisible({ timeout: 10000 });
-      await expect(listbox.locator('li[role="option"]', { hasText: /^My Group Leaders and Staff$/ })).toBeVisible();
-      await expect(listbox.locator('li[role="option"]', { hasText: /^Staff Only$/ })).toBeVisible();
-      await page.keyboard.press("Escape");
-      await listbox.waitFor({ state: "hidden", timeout: 5000 });
+    async function openB1MobileSettings(page: Page) {
+      await page.goto("/mobile/b1-mobile");
+      await page.getByLabel("Address", { exact: true }).first().waitFor({ state: "visible", timeout: 15000 });
     }
-  });
 
-  test("saving Staff Only as the email default persists across a reload", async ({ page }) => {
-    await openB1MobileSettings(page);
-    await selectMuiByLabel(page, "Email", "Staff Only");
-    await saveSettings(page);
-    await page.reload();
-    await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Staff Only", { timeout: 15000 });
-
-    // Put the effective default back so directory specs keep seeing member-visible emails.
-    await selectMuiByLabel(page, "Email", "Members");
-    await saveSettings(page);
-    await page.reload();
-    await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Members", { timeout: 15000 });
-  });
-});
-
-// The directory gate reads directoryVisibility from the public settings endpoint, so a row stored
-// with public = 0 must come back public after saving the B1 Mobile page.
-test.describe("Show in Directory saves as a public setting", () => {
-  let ctx: APIRequestContext;
-  let auth: { headers: { Authorization: string } };
-  let original: any;
-
-  test.beforeAll(async () => {
-    ctx = await pwRequest.newContext();
-    auth = { headers: { Authorization: "Bearer " + await apiLogin(ctx) } };
-    const all = await (await ctx.get(`${API}/membership/settings`, auth)).json();
-    original = (all as any[]).find(s => s.keyName === "directoryVisibility");
-    const row = { ...(original || {}), churchId: CHURCH_ID, keyName: "directoryVisibility", value: "Members", public: 0 };
-    const res = await ctx.post(`${API}/membership/settings`, { ...auth, data: [row] });
-    expect(res.ok()).toBeTruthy();
-  });
-
-  test.afterAll(async () => {
-    // Put the original tier back so directory specs keep their default.
-    const current = ((await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[]).find(s => s.keyName === "directoryVisibility");
-    if (current) await ctx.post(`${API}/membership/settings`, { ...auth, data: [{ ...current, value: original?.value ?? "Members", public: 1 }] });
-    await ctx.dispose();
-  });
-
-  test("saving Regular Attendees is visible to the public settings endpoint", async ({ page }) => {
-    await page.goto("/mobile/b1-mobile");
-    await expect(page.getByLabel("Show in Directory", { exact: true }).first()).toContainText("Members & Staff", { timeout: 15000 });
-    await selectMuiByLabel(page, "Show in Directory", "Regular Attendees & Above");
-    await saveSettings(page);
-
-    const pub = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
-    expect(pub.directoryVisibility).toBe("Regular Attendees");
-  });
-});
-
-// Saving before the existing settings load would post every setting without its id and
-// create duplicate rows, so Save stays disabled until the settings GET completes.
-test.describe("B1 Mobile Save waits for settings load", () => {
-  test("Save stays disabled until the existing settings have loaded", async ({ page }) => {
-    let release: () => void = () => { };
-    const held = new Promise<void>((resolve) => { release = resolve; });
-    await page.route((url) => url.pathname.endsWith("/membership/settings"), async (route) => {
-      if (route.request().method() !== "GET") return route.continue();
-      await held;
-      await route.continue();
+    test("address, phone and email defaults offer My Group Leaders and Staff and Staff Only", async ({ page }) => {
+      await openB1MobileSettings(page);
+      for (const label of VISIBILITY_FIELDS) {
+        await page.getByLabel(label, { exact: true }).first().click();
+        const listbox = page.locator('[role="listbox"]');
+        await expect(listbox.locator('li[role="option"]', { hasText: /^Groups Only$/ })).toBeVisible({ timeout: 10000 });
+        await expect(listbox.locator('li[role="option"]', { hasText: /^My Group Leaders and Staff$/ })).toBeVisible();
+        await expect(listbox.locator('li[role="option"]', { hasText: /^Staff Only$/ })).toBeVisible();
+        await page.keyboard.press("Escape");
+        await listbox.waitFor({ state: "hidden", timeout: 5000 });
+      }
     });
 
-    await page.goto("/mobile/b1-mobile");
-    const save = page.getByRole("button", { name: /^Save$/ });
-    await expect(save).toBeVisible({ timeout: 15000 });
-    await expect(save).toBeDisabled();
+    test("saving Staff Only as the email default persists across a reload", async ({ page }) => {
+      await openB1MobileSettings(page);
+      await selectMuiByLabel(page, "Email", "Staff Only");
+      await saveSettings(page);
+      await page.reload();
+      await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Staff Only", { timeout: 15000 });
 
-    const loaded = page.waitForResponse((r) => r.url().endsWith("/membership/settings") && r.request().method() === "GET");
-    release();
-    await loaded;
-    await expect(save).toBeEnabled();
-  });
-});
-
-// ChurchAppsSupport#1189: a church can hide the app's home-screen sign-in prompt or change its
-// wording. Both save as public Membership settings so the B1.church app can read them.
-test.describe("B1 Mobile home screen sign-in prompt", () => {
-  test.describe.configure({ mode: "serial" });
-  let ctx: APIRequestContext;
-  let auth: { headers: { Authorization: string } };
-
-  const publicSettings = async () => (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
-
-  test.beforeAll(async () => {
-    ctx = await pwRequest.newContext();
-    auth = { headers: { Authorization: "Bearer " + await apiLogin(ctx) } };
+      // Put the effective default back so directory specs keep seeing member-visible emails.
+      await selectMuiByLabel(page, "Email", "Members");
+      await saveSettings(page);
+      await page.reload();
+      await expect(page.getByLabel("Email", { exact: true }).first()).toHaveText("Members", { timeout: 15000 });
+    });
   });
 
-  test.afterAll(async () => {
-    // Put the prompt back to the default so B1App dashboard specs see it.
-    const all = (await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[];
-    const rows = all.filter(s => s.keyName === "mobileHideSignInPrompt" || s.keyName === "mobileSignInPromptText")
-      .map(s => ({ ...s, value: s.keyName === "mobileHideSignInPrompt" ? "false" : "" }));
-    if (rows.length) await ctx.post(`${API}/membership/settings`, { ...auth, data: rows });
-    await ctx.dispose();
+  // The directory gate reads directoryVisibility from the public settings endpoint, so a row stored
+  // with public = 0 must come back public after saving the B1 Mobile page.
+  test.describe("Show in Directory saves as a public setting", () => {
+    let ctx: APIRequestContext;
+    let auth: { headers: { Authorization: string } };
+    let original: any;
+
+    test.beforeAll(async () => {
+      ctx = await pwRequest.newContext();
+      auth = { headers: { Authorization: "Bearer " + await apiLogin(ctx) } };
+      const all = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+      original = (all as any[]).find(s => s.keyName === "directoryVisibility");
+      const row = { ...(original || {}), churchId: CHURCH_ID, keyName: "directoryVisibility", value: "Members", public: 0 };
+      const res = await ctx.post(`${API}/membership/settings`, { ...auth, data: [row] });
+      expect(res.ok()).toBeTruthy();
+    });
+
+    test.afterAll(async () => {
+      // Put the original tier back so directory specs keep their default.
+      const current = ((await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[]).find(s => s.keyName === "directoryVisibility");
+      if (current) await ctx.post(`${API}/membership/settings`, { ...auth, data: [{ ...current, value: original?.value ?? "Members", public: 1 }] });
+      await ctx.dispose();
+    });
+
+    test("saving Regular Attendees is visible to the public settings endpoint", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      await expect(page.getByLabel("Show in Directory", { exact: true }).first()).toContainText("Members & Staff", { timeout: 15000 });
+      await selectMuiByLabel(page, "Show in Directory", "Regular Attendees & Above");
+      await saveSettings(page);
+
+      const pub = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
+      expect(pub.directoryVisibility).toBe("Regular Attendees");
+    });
   });
 
-  test("custom prompt text saves as a public setting", async ({ page }) => {
-    await page.goto("/mobile/b1-mobile");
-    const toggle = page.getByLabel("Show sign-in prompt on the app home screen");
-    await expect(toggle).toBeChecked({ timeout: 15000 });
-    const text = page.getByLabel("Sign-in prompt text");
-    await expect(text).toHaveAttribute("placeholder", "Sign in to see your groups, giving, and more.");
-    await text.fill("Sign in to get conference alerts");
-    await saveSettings(page);
+  // Saving before the existing settings load would post every setting without its id and
+  // create duplicate rows, so Save stays disabled until the settings GET completes.
+  test.describe("B1 Mobile Save waits for settings load", () => {
+    test("Save stays disabled until the existing settings have loaded", async ({ page }) => {
+      let release: () => void = () => { };
+      const held = new Promise<void>((resolve) => { release = resolve; });
+      await page.route((url) => url.pathname.endsWith("/membership/settings"), async (route) => {
+        if (route.request().method() !== "GET") return route.continue();
+        await held;
+        await route.continue();
+      });
 
-    const pub = await publicSettings();
-    expect(pub.mobileSignInPromptText).toBe("Sign in to get conference alerts");
-    expect(pub.mobileHideSignInPrompt).toBe("false");
+      await page.goto("/mobile/b1-mobile");
+      const save = page.getByRole("button", { name: /^Save$/ });
+      await expect(save).toBeVisible({ timeout: 15000 });
+      await expect(save).toBeDisabled();
+
+      const loaded = page.waitForResponse((r) => r.url().endsWith("/membership/settings") && r.request().method() === "GET");
+      release();
+      await loaded;
+      await expect(save).toBeEnabled();
+    });
   });
 
-  test("turning the prompt off saves, disables the text field, and survives a reload", async ({ page }) => {
-    await page.goto("/mobile/b1-mobile");
-    const toggle = page.getByLabel("Show sign-in prompt on the app home screen");
-    await expect(toggle).toBeChecked({ timeout: 15000 });
-    await toggle.uncheck();
-    await expect(page.getByLabel("Sign-in prompt text")).toBeDisabled();
-    await saveSettings(page);
+  // ChurchAppsSupport#1189: a church can hide the app's home-screen sign-in prompt or change its
+  // wording. #1313: it can also pick how photo links appear on that screen. All save as public
+  // Membership settings so the B1.church app can read them. Serial: each save posts the whole form.
+  test.describe("B1 Mobile home screen settings", () => {
+    test.describe.configure({ mode: "serial" });
+    let ctx: APIRequestContext;
+    let auth: { headers: { Authorization: string } };
 
-    expect((await publicSettings()).mobileHideSignInPrompt).toBe("true");
-    await page.reload();
-    await expect(page.getByLabel("Show sign-in prompt on the app home screen")).not.toBeChecked({ timeout: 15000 });
-    await expect(page.getByLabel("Sign-in prompt text")).toHaveValue("Sign in to get conference alerts");
+    const publicSettings = async () => (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
+
+    test.beforeAll(async () => {
+      ctx = await pwRequest.newContext();
+      auth = { headers: { Authorization: "Bearer " + await apiLogin(ctx) } };
+    });
+
+    test.afterAll(async () => {
+      // Put the prompt and tiles back to the defaults so B1App dashboard specs see them.
+      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileTileLayout: "grid" };
+      const all = (await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[];
+      const rows = all.filter(s => s.keyName in defaults).map(s => ({ ...s, value: defaults[s.keyName] }));
+      if (rows.length) await ctx.post(`${API}/membership/settings`, { ...auth, data: rows });
+      await ctx.dispose();
+    });
+
+    test("custom prompt text saves as a public setting", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      const toggle = page.getByLabel("Show sign-in prompt on the app home screen");
+      await expect(toggle).toBeChecked({ timeout: 15000 });
+      const text = page.getByLabel("Sign-in prompt text");
+      await expect(text).toHaveAttribute("placeholder", "Sign in to see your groups, giving, and more.");
+      await text.fill("Sign in to get conference alerts");
+      await saveSettings(page);
+
+      const pub = await publicSettings();
+      expect(pub.mobileSignInPromptText).toBe("Sign in to get conference alerts");
+      expect(pub.mobileHideSignInPrompt).toBe("false");
+    });
+
+    test("turning the prompt off saves, disables the text field, and survives a reload", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      const toggle = page.getByLabel("Show sign-in prompt on the app home screen");
+      await expect(toggle).toBeChecked({ timeout: 15000 });
+      await toggle.uncheck();
+      await expect(page.getByLabel("Sign-in prompt text")).toBeDisabled();
+      await saveSettings(page);
+
+      expect((await publicSettings()).mobileHideSignInPrompt).toBe("true");
+      await page.reload();
+      await expect(page.getByLabel("Show sign-in prompt on the app home screen")).not.toBeChecked({ timeout: 15000 });
+      await expect(page.getByLabel("Sign-in prompt text")).toHaveValue("Sign in to get conference alerts");
+    });
+
+    test("home screen tiles default to Grid and List saves as a public setting that survives a reload", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      await expect(page.getByRole("heading", { name: "Home screen tiles" })).toBeVisible({ timeout: 15000 });
+      const layout = page.getByRole("combobox", { name: "Layout" });
+      await expect(layout).toHaveText("Grid");
+      await layout.click();
+      await expect(page.getByRole("option", { name: "Scrolling row" })).toBeVisible();
+      await page.getByRole("option", { name: "List" }).click();
+      await saveSettings(page);
+
+      const pub = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
+      expect(pub.mobileTileLayout).toBe("list");
+      await page.reload();
+      await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("List", { timeout: 15000 });
+    });
   });
 });
