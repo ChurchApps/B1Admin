@@ -118,6 +118,16 @@ test.describe("Mobile App Settings page", () => {
     // The group picker section displays "Select Groups:" or "No groups found"
     await expect(page.getByText(/Select Groups|No groups found/i).first()).toBeVisible({ timeout: 10000 });
   });
+
+  test("a Member Directory tab points from Visibility to Show in Directory", async ({ page }) => {
+    await openMobileSettings(page);
+    await openAddTabDrawer(page);
+    const hint = page.getByText(/Who can open the directory is set by Show in Directory/i);
+    await selectMuiByLabel(page, "Tab Type", "Bible");
+    await expect(hint).toHaveCount(0);
+    await selectMuiByLabel(page, "Tab Type", "Member Directory");
+    await expect(hint).toBeVisible({ timeout: 10000 });
+  });
 });
 
 test.describe.serial("Mobile tab lifecycle", () => {
