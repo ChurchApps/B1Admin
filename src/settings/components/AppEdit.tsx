@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, Grid, Checkbox, FormControlLabel, FormGroup, FormHelperText, Typography } from "@mui/material";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
@@ -220,6 +220,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                       <MenuItem value="team">{Locale.label("settings.appEdit.team")}</MenuItem>
                       <MenuItem value="groups">{Locale.label("settings.appEdit.groups")}</MenuItem>
                     </Select>
+                    {linkType === "directory" && <FormHelperText>{Locale.label("settings.appEdit.directoryVisibilityHint")}</FormHelperText>}
                   </FormControl>
                 )}
               />
