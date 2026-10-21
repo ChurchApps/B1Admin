@@ -23,6 +23,8 @@ export const B1MobilePage: React.FC = () => {
   const [hideSignInSetting, setHideSignInSetting] = React.useState<GenericSettingInterface | null>(null);
   const [signInPromptText, setSignInPromptText] = React.useState("");
   const [signInPromptTextSetting, setSignInPromptTextSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [tileLayout, setTileLayout] = React.useState("grid");
+  const [tileLayoutSetting, setTileLayoutSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
 
@@ -64,6 +66,8 @@ export const B1MobilePage: React.FC = () => {
     if (hideSignIn) { setHideSignInSetting(hideSignIn); setHideSignInPrompt(hideSignIn.value === "true"); }
     const promptText = allSettings.find(s => s.keyName === "mobileSignInPromptText");
     if (promptText) { setSignInPromptTextSetting(promptText); setSignInPromptText(promptText.value || ""); }
+    const tiles = allSettings.find(s => s.keyName === "mobileTileLayout");
+    if (tiles) { setTileLayoutSetting(tiles); setTileLayout(tiles.value || "grid"); }
     setLoaded(true);
   }, [churchId]);
 
@@ -89,9 +93,10 @@ export const B1MobilePage: React.FC = () => {
       const msgAge = toSave(msgAgeSetting, "messagingMinimumAge", messagingMinimumAge);
       const hideSignIn = toSave(hideSignInSetting, "mobileHideSignInPrompt", hideSignInPrompt ? "true" : "false");
       const promptText = toSave(signInPromptTextSetting, "mobileSignInPromptText", signInPromptText.trim());
+      const tiles = toSave(tileLayoutSetting, "mobileTileLayout", tileLayout);
 
       await ApiHelper.post("/settings", [
-        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText
+        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText, tiles
       ], "MembershipApi");
       // The app caches these settings, so refresh it for the home-screen prompt to update right away.
       clearSiteCache();
@@ -234,6 +239,30 @@ export const B1MobilePage: React.FC = () => {
               disabled={hideSignInPrompt}
               slotProps={{ inputLabel: { shrink: true }, htmlInput: { maxLength: 150 } }}
             />
+          </Grid>
+        </Grid>
+        <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="h3">{Locale.label("mobile.b1MobilePage.tileLayoutTitle")}</Typography>
+          <Tooltip title={Locale.label("mobile.b1MobilePage.tileLayoutHelp")} arrow>
+            <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+          </Tooltip>
+        </Stack>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="mobileTileLayout">{Locale.label("mobile.b1MobilePage.tileLayout")}</InputLabel>
+              <Select
+                fullWidth
+                labelId="mobileTileLayout"
+                label={Locale.label("mobile.b1MobilePage.tileLayout")}
+                name="mobileTileLayout"
+                value={tileLayout}
+                onChange={(e) => setTileLayout(e.target.value)}>
+                <MenuItem value="grid">{Locale.label("mobile.b1MobilePage.tileLayoutGrid")}</MenuItem>
+                <MenuItem value="scroll">{Locale.label("mobile.b1MobilePage.tileLayoutScroll")}</MenuItem>
+                <MenuItem value="list">{Locale.label("mobile.b1MobilePage.tileLayoutList")}</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
       </FormCard>
