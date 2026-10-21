@@ -3695,6 +3695,7 @@
       "changeImage": "Change Image",
       "checkin": "Check-in",
       "deleteTab": "Delete Tab",
+      "directoryVisibilityHint": "This controls who sees the tab. Who can open the directory is set by Show in Directory on the Member portal page.",
       "donation": "Donation",
       "editTab": "Edit Tab",
       "everyone": "Everyone (including anonymous)",
