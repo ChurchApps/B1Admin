@@ -1,4 +1,5 @@
 import React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Stack, Typography, Alert } from "@mui/material";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
@@ -35,6 +36,7 @@ const getWizardConfig = (): Record<WizardType, { title: string; description: str
 
 export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, onComplete }) => {
   const context = React.useContext(UserContext);
+  const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -137,7 +139,10 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
     const planType = { name: classroomName.trim(), ministryId };
     await ApiHelper.post("/planTypes", [planType], "DoingApi");
 
-    onComplete("/serving/plans");
+    await queryClient.invalidateQueries({ queryKey: ["/groups/tag/ministry", "MembershipApi"] });
+    await queryClient.invalidateQueries({ queryKey: ["/groups/my/ministry", "MembershipApi"] });
+    queryClient.invalidateQueries({ queryKey: ["/planTypes", "DoingApi"] });
+    onComplete(`/serving/plans?ministryId=${ministryId}`);
   };
 
   const handleWebpageSetup = async () => {
