@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, SearchField } from "../components/ui";
 import UserContext from "../UserContext";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const FIND_THRESHOLD = 6;
 
@@ -19,6 +19,9 @@ export const ServingPage = () => {
   const [selectedMinistryId, setSelectedMinistryId] = React.useState<string | null>(null);
   const [showAllMinistries, setShowAllMinistries] = React.useState(false);
   const [find, setFind] = React.useState("");
+  const [searchParams] = useSearchParams();
+  const requestedMinistryId = searchParams.get("ministryId");
+  const [appliedMinistryId, setAppliedMinistryId] = React.useState<string | null>(null);
   const context = React.useContext(UserContext);
   const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
   const canEditGroups = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
@@ -69,14 +72,25 @@ export const ServingPage = () => {
 
   const selectedMinistry = groups.find((g) => g.id === selectedMinistryId);
 
+  // ?ministryId= (e.g. from the FreePlay setup wizard) opens that ministry once, after the list has loaded.
+  const pendingMinistryId = requestedMinistryId && appliedMinistryId !== requestedMinistryId ? requestedMinistryId : null;
   React.useEffect(() => {
+    if (!pendingMinistryId || ministries.isFetching) return;
+    setAppliedMinistryId(pendingMinistryId);
+    if (!(ministries.data || []).some((g) => g.id === pendingMinistryId)) return;
+    if (!groups.some((g) => g.id === pendingMinistryId)) setShowAllMinistries(true);
+    setSelectedMinistryId(pendingMinistryId);
+  }, [pendingMinistryId, ministries.isFetching, ministries.data, groups]);
+
+  React.useEffect(() => {
+    if (pendingMinistryId) return;
     if (groups.length > 0) {
       const isCurrentSelectionValid = groups.some(g => g.id === selectedMinistryId);
       if (!selectedMinistryId || !isCurrentSelectionValid) {
         setSelectedMinistryId(groups[0].id || null);
       }
     }
-  }, [groups, selectedMinistryId]);
+  }, [groups, selectedMinistryId, pendingMinistryId]);
 
   if (ministries.isLoading) return <Loading />;
 
