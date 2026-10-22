@@ -1411,3 +1411,48 @@ test.describe("Service Order customized flat lessons and Add From Lesson files",
     await expect(page.locator(".planItem").filter({ hasText: "This Weeks Song.mp4" })).toHaveCount(1, { timeout: 15000 });
   });
 });
+
+test.describe("Clear a plan's signup deadline", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let planId = "";
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name: "Signup Deadline Clear", serviceDate: "2033-03-06", ministryId: "GRP0000000a", planTypeId: "PLT00000001", signupDeadlineHours: 24 }]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    planId = (await planRes.json())[0].id;
+  });
+
+  test.afterAll(async () => {
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("blanking the deadline saves null and stays blank", async ({ page }) => {
+    await page.goto(`/serving/plans/${planId}?view=edit`);
+    const deadline = page.locator("#signupDeadlineHours");
+    await expect(deadline).toHaveValue("24", { timeout: 15000 });
+    await deadline.fill("");
+
+    const savePost = page.waitForRequest((r) => r.method() === "POST" && new URL(r.url()).pathname.endsWith("/doing/plans"), { timeout: 15000 });
+    await page.locator("button").getByText("Save").click();
+    const body = (await savePost).postDataJSON();
+    expect(Array.isArray(body)).toBeTruthy();
+    expect(body[0]).toHaveProperty("signupDeadlineHours", null);
+
+    await expect.poll(async () => (await (await ctx.get(`${API}/doing/plans/${planId}`, auth)).json()).signupDeadlineHours ?? null, { timeout: 15000 }).toBeNull();
+    await page.goto(`/serving/plans/${planId}?view=edit`);
+    await expect(page.getByTestId("plan-name-input").locator("input")).toHaveValue("Signup Deadline Clear", { timeout: 15000 });
+    await expect(page.locator("#signupDeadlineHours")).toHaveValue("");
+  });
+});
