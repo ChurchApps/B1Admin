@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { CardWithHeader } from "../../components/ui";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { ApiHelper, ArrayHelper, CommonEnvironmentHelper, DateHelper, Locale, type PersonInterface, UserHelper } from "@churchapps/apphelper";
 import { type AssignmentInterface, type BlockoutDateInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { type PlanInterface, type SchedulingPreferenceInterface } from "../../helpers";
@@ -20,6 +20,7 @@ interface Props {
 const servesTime = (t: TimeInterface, categoryName?: string) => !!categoryName && (t?.teams || "").split(",").includes(categoryName);
 
 export const PlanValidation = (props: Props) => {
+  const [notificationError, setNotificationError] = React.useState<string | null>(null);
   const [errors, setErrors] = React.useState<JSX.Element[]>([]);
   const { canEdit } = props;
   const [plans, setPlans] = React.useState<PlanInterface[]>([]);
@@ -300,7 +301,7 @@ export const PlanValidation = (props: Props) => {
   const getPendingNotifications = () => {
     const pending: AssignmentInterface[] = [];
     props.assignments.forEach((a) => {
-      if (!a.notified) pending.push(a);
+      if (!a.notified && (!props.plan.confirmationWorkflowId || a.status === "Unconfirmed")) pending.push(a);
     });
     return pending;
   };
@@ -309,6 +310,14 @@ export const PlanValidation = (props: Props) => {
   const notify = () => {
     if (notifying.current) return;
     notifying.current = true;
+    setNotificationError(null);
+    if (props.plan.confirmationWorkflowId) {
+      ApiHelper.post("/plans/" + props.plan.id + "/issueRequests", {}, "DoingApi")
+        .then(props.onUpdate)
+        .catch(() => setNotificationError(Locale.label("plans.confirmation.issueError", "Requests could not be issued. Check that the selected workflow is active and the plan is published, then try again.")))
+        .finally(() => { notifying.current = false; });
+      return;
+    }
     const pending = getPendingNotifications();
     const promises: Promise<any>[] = [];
     pending.forEach((a) => {
@@ -383,6 +392,8 @@ export const PlanValidation = (props: Props) => {
     <>
       {ConfirmDialogElement}
       <CardWithHeader title={Locale.label("plans.planValidation.val")}>
+        {notificationError && <Alert severity="error">{notificationError}</Alert>}
+        {props.plan.confirmationWorkflowId && <Alert severity="info" sx={{ mb: 2 }}>{Locale.label("plans.confirmation.enabled", "New requests use the confirmation workflow. App alerts stay enabled. Follow-ups stop when each request is accepted or declined.")}</Alert>}
         {getErrorList()}
         {getNotificationLink()}
       </CardWithHeader>

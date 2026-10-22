@@ -11,6 +11,7 @@ interface EmailTemplateInterface { id?: string; name?: string }
 interface Props {
   stepId: string;
   workflows: WorkflowInterface[];
+  assignmentConfirmation?: boolean;
 }
 
 export const WorkflowStepActions = (props: Props) => {
@@ -38,7 +39,7 @@ export const WorkflowStepActions = (props: Props) => {
     setActions((prev) => prev.map((a, i) => (i === index ? { ...a, config: JSON.stringify({ ...config(a), ...patch }) } : a)));
   };
   const setType = (index: number, actionType: string) => {
-    setActions((prev) => prev.map((a, i) => (i === index ? { ...a, actionType, config: "{}" } : a)));
+    setActions((prev) => prev.map((a, i) => (i === index ? { ...a, actionType, config: actionType === "sendAssignmentRequest" ? JSON.stringify({ channel: "email" }) : "{}" } : a)));
   };
 
   const addAction = () => {
@@ -70,6 +71,19 @@ export const WorkflowStepActions = (props: Props) => {
   const renderConfig = (a: WorkflowStepActionInterface, index: number) => {
     const c = config(a);
     switch (a.actionType) {
+      case "sendAssignmentRequest":
+        return (
+          <Stack spacing={1}>
+            <Select size="small" value={c.channel || "email"} data-testid={"action-serving-channel-" + index} onChange={(e) => setConfig(index, { channel: e.target.value })}>
+              <MenuItem value="email">{Locale.label("plans.confirmation.email", "Email")}</MenuItem>
+              <MenuItem value="sms">{Locale.label("plans.confirmation.text", "Text message")}</MenuItem>
+            </Select>
+            <TextField size="small" fullWidth multiline minRows={2} label={Locale.label("plans.confirmation.message", "Request message")} value={c.message || ""} data-testid={"action-serving-message-" + index} onChange={(e) => setConfig(index, { message: e.target.value })}
+              helperText={Locale.label("plans.confirmation.messageHelp", "Includes the role, plan, service date and a response link. Use {{planName}}, {{positionName}} and {{serviceDate}} in your message. Empty uses the default request.")} />
+            {c.channel === "sms" && textingProviders?.length === 0 && <Typography color="warning.main" variant="body2">{Locale.label("tasks.workflowActions.noTextingProvider")}</Typography>}
+            <Typography variant="caption">{Locale.label("plans.confirmation.preferences", "Member preferences, SMS opt-in, provider configuration, and church email approval apply. Skipped or blocked attempts are recorded on the card.")}</Typography>
+          </Stack>
+        );
       case "delay":
         return <TextField type="number" size="small" label={Locale.label("tasks.workflowActions.days")} value={c.days ?? ""} data-testid={"action-days-" + index} onChange={(e) => setConfig(index, { days: e.target.value === "" ? undefined : Number(e.target.value) })} />;
       case "sendEmail":
@@ -103,6 +117,7 @@ export const WorkflowStepActions = (props: Props) => {
         return (
           <Stack spacing={1}>
             <TextField size="small" fullWidth label={Locale.label("tasks.workflowActions.taskTitle")} value={c.title || ""} data-testid={"action-task-title-" + index} onChange={(e) => setConfig(index, { title: e.target.value })} />
+            <TextField size="small" type="number" label={Locale.label("plans.confirmation.dueDays", "Task due in days")} value={c.dueDays ?? ""} onChange={(e) => setConfig(index, { dueDays: e.target.value ? Number(e.target.value) : undefined })} />
             <TextField size="small" fullWidth label={Locale.label("tasks.workflowActions.taskDescription")} value={c.description || ""} onChange={(e) => setConfig(index, { description: e.target.value })} />
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography variant="body2" color="text.secondary">{c.assignedToLabel || Locale.label("tasks.workflowActions.noAssignee")}</Typography>
@@ -145,7 +160,7 @@ export const WorkflowStepActions = (props: Props) => {
             <Stack spacing={1}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Select size="small" value={a.actionType || "delay"} data-testid={"action-type-" + index} onChange={(e) => setType(index, e.target.value)} sx={{ minWidth: 150 }}>
-                  {ACTION_TYPES.map((t) => <MenuItem key={t} value={t}>{Locale.label("tasks.workflowActions.type." + t)}</MenuItem>)}
+                  {ACTION_TYPES.filter((t) => props.assignmentConfirmation ? !["sendEmail", "sendText", "addToWorkflow"].includes(t) : t !== "sendAssignmentRequest").map((t) => <MenuItem key={t} value={t}>{t === "sendAssignmentRequest" ? Locale.label("plans.confirmation.sendRequest", "Send serving request") : Locale.label("tasks.workflowActions.type." + t)}</MenuItem>)}
                 </Select>
                 <Box sx={{ flexGrow: 1 }} />
                 <IconButton size="small" color="primary" data-testid={"action-save-" + index} onClick={() => saveAction(index)}><SaveIcon fontSize="small" /></IconButton>

@@ -18,6 +18,7 @@ export const WorkflowCard = (props: Props) => {
   const due = card.dueDate ? DateHelper.toDate(card.dueDate) : null;
   const snoozed = card.snoozedUntil ? DateHelper.toDate(card.snoozedUntil) : null;
   const isSnoozed = snoozed && snoozed > now;
+  const awaitingResponse = !!card.assignmentId && (() => { try { return !!JSON.parse(card.data || "{}").humanFollowupCompletedAt; } catch { return false; } })();
   const isOverdue = !isSnoozed && due && due < now;
 
   return (
@@ -56,7 +57,7 @@ export const WorkflowCard = (props: Props) => {
               <StatusBadge tone="danger" data-testid={"card-overdue-" + card.id}>{Locale.label("tasks.workflowCard.overdue")}</StatusBadge>
             )}
             {isSnoozed && (
-              <StatusBadge tone="neutral" data-testid={"card-snoozed-" + card.id}>{Locale.label("tasks.workflowCard.snoozed")}</StatusBadge>
+              <StatusBadge tone="neutral" data-testid={"card-snoozed-" + card.id}>{awaitingResponse ? Locale.label("plans.confirmation.awaitingResponse", "Awaiting response") : Locale.label("tasks.workflowCard.snoozed")}</StatusBadge>
             )}
             {!isOverdue && !isSnoozed && due && (
               <StatusBadge tone="neutral">{DateHelper.formatHtml5Date(due)}</StatusBadge>

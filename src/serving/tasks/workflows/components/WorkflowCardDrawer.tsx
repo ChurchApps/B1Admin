@@ -35,6 +35,7 @@ export const WorkflowCardDrawer = (props: Props) => {
       return [];
     }
   })();
+  const assignment = (() => { try { return JSON.parse(card.data || "{}").assignment; } catch { return null; } })();
   const context = useContext(UserContext);
   const [showPicker, setShowPicker] = React.useState(false);
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
@@ -103,6 +104,11 @@ export const WorkflowCardDrawer = (props: Props) => {
           <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={props.onClose} />
         </Stack>
         <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowCard.assignedTo")}: {card.assignedToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
+        {card.assignmentId && assignment && <Box sx={{ my: 1 }} data-testid="card-serving-request">
+          <Typography variant="body2">{assignment.positionName} · {String(assignment.serviceDate || "").slice(0, 10)}</Typography>
+          <Link component={RouterLink} to={"/serving/plans/" + assignment.planId}>{assignment.planName}</Link>
+          <Typography variant="caption" display="block">{Locale.label("plans.confirmation.cardHelp", "This card tracks one serving request. Recording follow-up as done keeps it open and assigned until the volunteer responds or the follow-up window ends.")}</Typography>
+        </Box>}
         {isPersonCard && (
           <Stack spacing={0.5} sx={{ mt: 1 }}>
             {contact.mobilePhone && (
@@ -145,7 +151,7 @@ export const WorkflowCardDrawer = (props: Props) => {
               <Button variant="outlined" size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
               <Button variant="outlined" size="small" startIcon={<SnoozeIcon />} data-testid="card-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
               {outcomes.length === 0 && (
-                <Button variant="contained" size="small" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={() => complete()}>{Locale.label("tasks.workflowCard.complete")}</Button>
+                <Button variant="contained" size="small" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={() => complete()}>{card.assignmentId ? Locale.label("plans.confirmation.followupDone", "Record follow-up done") : Locale.label("tasks.workflowCard.complete")}</Button>
               )}
             </Stack>
           )}

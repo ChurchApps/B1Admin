@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, FormHelperText } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -36,6 +36,11 @@ export const PlanEdit = (props: Props) => {
     placeholderData: []
   });
   const templates = templatesQuery.data || [];
+  const confirmationWorkflows = useQuery<{ id: string; name: string }[]>({
+    queryKey: [`/plans/confirmationWorkflows?ministryId=${props.plan?.ministryId || ""}`, "DoingApi"],
+    enabled: !!props.plan?.ministryId,
+    placeholderData: []
+  });
 
   const { control, register, handleSubmit, watch, setValue, getFieldState } = useForm<AnyRecord>({
     defaultValues: {
@@ -45,7 +50,8 @@ export const PlanEdit = (props: Props) => {
       signupDeadlineHours: props.plan?.signupDeadlineHours ?? "",
       showVolunteerNames: props.plan?.showVolunteerNames !== false,
       prepared: props.plan?.prepared === true,
-      autoReplaceOnDecline: props.plan?.autoReplaceOnDecline === true
+      autoReplaceOnDecline: props.plan?.autoReplaceOnDecline === true,
+      confirmationWorkflowId: props.plan?.confirmationWorkflowId || ""
     }
   });
 
@@ -147,7 +153,8 @@ export const PlanEdit = (props: Props) => {
       signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
       showVolunteerNames: values.showVolunteerNames,
       prepared: values.prepared,
-      autoReplaceOnDecline: values.autoReplaceOnDecline
+      autoReplaceOnDecline: values.autoReplaceOnDecline,
+      confirmationWorkflowId: values.confirmationWorkflowId || null
     };
     plan.campusId = values.campusId || null;
     // undefined is dropped from the JSON body, so the API would keep the old deadline; null clears it
@@ -220,6 +227,17 @@ export const PlanEdit = (props: Props) => {
           <>
             <Controller name="showVolunteerNames" control={control} render={({ field }) => (
               <FormControlLabel control={<Checkbox checked={field.value ?? true} onChange={(ev) => field.onChange(ev.target.checked)} />} label={Locale.label("plans.planEdit.showVolunteerNames")} />
+            )} />
+            <Controller name="confirmationWorkflowId" control={control} render={({ field }) => (
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>{Locale.label("plans.confirmation.workflow", "Confirmation workflow")}</InputLabel>
+                <Select {...field} label={Locale.label("plans.confirmation.workflow", "Confirmation workflow")} data-testid="plan-confirmation-workflow">
+                  <MenuItem value="">{Locale.label("plans.confirmation.none", "Use existing assignment notifications")}</MenuItem>
+                  {(confirmationWorkflows.data || []).map((w) => <MenuItem key={w.id} value={w.id}>{w.name}</MenuItem>)}
+                  {props.plan?.confirmationWorkflowId && !(confirmationWorkflows.data || []).some((w) => w.id === props.plan.confirmationWorkflowId) && <MenuItem value={props.plan.confirmationWorkflowId}>{Locale.label("plans.confirmation.unavailable", "Selected workflow is unavailable")}</MenuItem>}
+                </Select>
+                <FormHelperText>{Locale.label("plans.confirmation.help", "Create a Serving Assignment Confirmation workflow under Serving → Workflows, then select it here. Publishing and notifying starts one card per new request. Accepted requests receive service reminders; unanswered requests use this workflow.")}</FormHelperText>
+              </FormControl>
             )} />
             <Controller name="prepared" control={control} render={({ field }) => (
               <FormControlLabel control={<Checkbox checked={field.value ?? false} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="prepared-checkbox" />} label={Locale.label("plans.planEdit.prepared") || "Penciled in (hide assignments from volunteers until published)"} />
