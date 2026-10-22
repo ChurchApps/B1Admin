@@ -16,7 +16,32 @@
       "loadingChurchData": "Loading church data...",
       "logoAlt": "logo",
       "permissionPlans": "Plans",
-      "promptAccess": "Would you like to access the following data from {churchName} in the above application?"
+      "promptAccess": "Would you like to access the following data from {churchName} in the above application?",
+      "returnTo": "After you choose, you will be sent back to {host}.",
+      "scopes": {
+        "all": "Everything your B1 account can access",
+        "attendance_read": "View attendance",
+        "attendance_write": "Record attendance and check-ins",
+        "content_read": "View registrations",
+        "content_write": "Edit website content, streaming and registrations",
+        "donations_read": "View giving records",
+        "donations_write": "Record and edit donations",
+        "forms_write": "Create and edit forms",
+        "groups_read": "View groups and their members",
+        "groups_write": "Create and edit groups",
+        "messaging_read": "Read messages",
+        "messaging_write": "Send messages and texts",
+        "offline_access": "Stay connected without signing in again",
+        "people_read": "View people, households and contact details",
+        "people_write": "Add and edit people, households and group members",
+        "roles_read": "View roles",
+        "roles_write": "Edit roles and permissions",
+        "settings_read": "View church settings",
+        "settings_write": "Change church settings",
+        "workflows_read": "View workflows and tasks",
+        "workflows_write": "Run and edit workflows, which can send email and texts"
+      },
+      "selfRegisteredNote": "This app registered itself with B1. It can never do more than your own B1 account can, and you can disconnect it at any time under Settings › Developer › Connected Apps."
     }
   },
   "attendance": {
