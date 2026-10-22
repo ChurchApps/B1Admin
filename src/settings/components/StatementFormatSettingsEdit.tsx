@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 import { type GenericSettingInterface } from "@churchapps/helpers";
@@ -11,7 +11,8 @@ interface Props {
 
 type AnyRecord = Record<string, any>;
 
-const KEYS = ["statementFormat", "statementRegistrationNumber", "statementOrgAddress", "statementSignatory", "statementCityOfIssue"] as const;
+const KEYS = ["statementFormat", "statementRegistrationNumber", "statementOrgAddress", "statementSignatory", "statementCityOfIssue", "memberGivingYears", "givingNote"] as const;
+const EMPTY: AnyRecord = Object.fromEntries(KEYS.map((key) => [key, ""]));
 
 const registrationLabelKey = (format: string) => {
   switch (format) {
@@ -26,13 +27,17 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [existing, setExisting] = React.useState<Record<string, GenericSettingInterface>>({});
 
-  const { register, reset, control, watch, getValues } = useForm<AnyRecord>({ defaultValues: { statementFormat: "", statementRegistrationNumber: "", statementOrgAddress: "", statementSignatory: "", statementCityOfIssue: "" } });
+  const { register, reset, control, watch, getValues } = useForm<AnyRecord>({ defaultValues: EMPTY });
   const format = watch("statementFormat");
+  const memberYears = watch("memberGivingYears");
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from({ length: 6 }, (_, i) => String(currentYear - i));
+  if (/^\d{4}$/.test(memberYears) && !yearOptions.includes(memberYears)) yearOptions.push(memberYears);
 
   const loadData = async () => {
     const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
     const found: Record<string, GenericSettingInterface> = {};
-    const next: AnyRecord = { statementFormat: "", statementRegistrationNumber: "", statementOrgAddress: "", statementSignatory: "", statementCityOfIssue: "" };
+    const next: AnyRecord = { ...EMPTY };
     KEYS.forEach((key) => {
       const setting = allSettings.find((s) => s.keyName === key);
       if (setting) {
@@ -100,6 +105,26 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
           )}
         </>
       )}
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          control={control}
+          name="memberGivingYears"
+          render={({ field }) => (
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("settings.statementFormat.memberYears")}</InputLabel>
+              <Select {...field} label={Locale.label("settings.statementFormat.memberYears")} data-testid="member-giving-years-select">
+                <MenuItem value="">{Locale.label("settings.statementFormat.memberYearsAll")}</MenuItem>
+                {yearOptions.map((y) => <MenuItem key={y} value={y}>{Locale.label("settings.statementFormat.memberYearsThrough").replace("{}", y)}</MenuItem>)}
+                <MenuItem value="off">{Locale.label("settings.statementFormat.memberYearsOff")}</MenuItem>
+              </Select>
+              <FormHelperText>{Locale.label("settings.statementFormat.memberYearsHelper")}</FormHelperText>
+            </FormControl>
+          )}
+        />
+      </Grid>
+      <Grid size={{ xs: 12 }}>
+        <TextField fullWidth multiline minRows={2} label={Locale.label("settings.statementFormat.givingNote")} helperText={Locale.label("settings.statementFormat.givingNoteHelper")} {...register("givingNote")} data-testid="giving-note-input" />
+      </Grid>
     </Grid>
   );
 };

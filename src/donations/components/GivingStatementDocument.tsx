@@ -141,6 +141,7 @@ export interface StatementSettings {
   orgAddress: string;
   signatory: string;
   cityOfIssue: string;
+  note: string;
 }
 
 export const parseStatementSettings = (raw: Record<string, string> | undefined): StatementSettings => ({
@@ -148,7 +149,8 @@ export const parseStatementSettings = (raw: Record<string, string> | undefined):
   registrationNumber: raw?.statementRegistrationNumber || "",
   orgAddress: raw?.statementOrgAddress || "",
   signatory: raw?.statementSignatory || "",
-  cityOfIssue: raw?.statementCityOfIssue || ""
+  cityOfIssue: raw?.statementCityOfIssue || "",
+  note: raw?.givingNote || ""
 });
 
 interface Props {
@@ -617,6 +619,7 @@ export const GivingStatementDocument = (props: Props) => {
           <p style={{ fontSize: "10px", marginTop: "4px" }}>
             {labels.disclaimer.split("{churchName}").join(churchName)}
           </p>
+          {statementSettings?.note && <p data-testid="statement-giving-note" style={{ whiteSpace: "pre-line", marginTop: "8px" }}>{statementSettings.note}</p>}
         </div>
       </div>
     </div>
