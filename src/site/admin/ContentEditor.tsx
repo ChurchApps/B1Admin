@@ -534,7 +534,6 @@ export function ContentEditor(props: Props) {
             key={section.id}
             section={section}
             churchSettings={churchSettings}
-            onEdit={handleSectionEdit}
             onMove={() => {
               loadDataInternal("After moving element");
             }}
@@ -549,12 +548,13 @@ export function ContentEditor(props: Props) {
             onElementDuplicate={handleElementDuplicate}
             onElementMove={handleElementMove}
             onElementUpdate={handleSpacingUpdate}
-            onSectionClick={(s) => handleSectionEdit(s, null)}
-            onSectionMove={handleSectionMove}
-            onSectionDuplicate={handleSectionDuplicate}
-            onSectionDelete={(s) => setPendingDeleteSection(s)}
-            onSectionSwitchLayout={(s) => setSwitchSection(s)}
-            onSectionAiRewrite={openAiRewrite}
+            onEdit={elementOnlyMode ? (_section, element) => { if (element) handleSectionEdit(null, element); } : handleSectionEdit}
+            onSectionClick={elementOnlyMode ? undefined : (s) => handleSectionEdit(s, null)}
+            onSectionMove={elementOnlyMode ? undefined : handleSectionMove}
+            onSectionDuplicate={elementOnlyMode ? undefined : handleSectionDuplicate}
+            onSectionDelete={elementOnlyMode ? undefined : (s) => setPendingDeleteSection(s)}
+            onSectionSwitchLayout={elementOnlyMode ? undefined : (s) => setSwitchSection(s)}
+            onSectionAiRewrite={elementOnlyMode ? undefined : openAiRewrite}
             isFirstSection={index === 0}
             isLastSection={index === sections.length - 1}
             isSectionEditing={!!editSection && editSection.id === section.id}
@@ -572,6 +572,8 @@ export function ContentEditor(props: Props) {
 
   const handleSectionEdit = (s: SectionInterface | null, e: ElementInterface | null) => {
     if (s) {
+      // Element blocks are given a stand-in section with no id. It is not a real section, so it has no settings.
+      if (elementOnlyMode && !s.id) return;
       if (s.targetBlockId) requestPanelChange({ kind: "blockNav", blockId: s.targetBlockId });
       else requestPanelChange({ kind: "section", section: s });
     } else if (e) {
@@ -683,7 +685,7 @@ export function ContentEditor(props: Props) {
     const path = findElementPath(editElement.id);
     if (!path) return null;
     const crumbs: BreadcrumbCrumb[] = [
-      { label: Locale.label("site.section.section"), onClick: () => handleSectionEdit(path.section, null) },
+      ...(elementOnlyMode ? [] : [{ label: Locale.label("site.section.section"), onClick: () => handleSectionEdit(path.section, null) }]),
       ...path.ancestors.map((a) => ({ label: getElementTypeMeta(a.elementType).label, onClick: () => handleElementClick(a.id || "") })),
       { label: getElementTypeMeta(path.element.elementType).label }
     ];
