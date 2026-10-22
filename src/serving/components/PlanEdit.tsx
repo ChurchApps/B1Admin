@@ -150,6 +150,8 @@ export const PlanEdit = (props: Props) => {
       autoReplaceOnDecline: values.autoReplaceOnDecline
     };
     plan.campusId = values.campusId || null;
+    // undefined is dropped from the JSON body, so the API would keep the old deadline; null clears it
+    if (!values.signupDeadlineHours) plan.signupDeadlineHours = null as any;
     if (savePlanMutation.isPending) return;
     savePlanMutation.mutate(plan);
   };
