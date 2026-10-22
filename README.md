@@ -66,7 +66,7 @@ To accept online donations you must first register for developer credentials wit
 - **Stripe**: Visit https://dashboard.stripe.com/register (or sign in at https://dashboard.stripe.com/login), then navigate to **Developers → API keys** to copy your Publishable Key and Secret Key for both test and live modes.
 - **PayPal**: Go to https://developer.paypal.com/, log in or create an account, then under **My Apps & Credentials** create a new application to obtain your Sandbox and Live Client ID and Secret.
 - **KingdomFunding**: Kingdom Funding is a payment processing option built with Christian values in mind! To get started:
-  1. Visit the Kingdom Funding signup page (https://kingdomfunding.org/begin-registration/?sponsor=b1) and fill out the application form.
+  1. Visit the Kingdom Funding signup page (https://kingdomfundinginternational.com/churches/apply?sponsor=b1) and fill out the application form.
   2. Kingdom Funding will walk you through the account onboarding process, including identity verification and bank account setup.
   3. Once your account is approved, you will receive your API Source Key (private key) and Tokenization Key (public key) from the merchant portal.
   4. In B1Admin, go to **Settings → Giving Settings**, select **Kingdom Funding** as the provider, paste in your Public Key (Tokenization Key) and Private Key (API Source Key), and save.
