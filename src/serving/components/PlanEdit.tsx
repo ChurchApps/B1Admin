@@ -144,12 +144,14 @@ export const PlanEdit = (props: Props) => {
       name: values.name,
       serviceDate: DateHelper.toDate(values.serviceDate),
       serviceOrder: true,
-      signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : null,
+      signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
       showVolunteerNames: values.showVolunteerNames,
       prepared: values.prepared,
       autoReplaceOnDecline: values.autoReplaceOnDecline
     };
     plan.campusId = values.campusId || null;
+    // undefined is dropped from the JSON body, so the API would keep the old deadline; null clears it
+    if (!values.signupDeadlineHours) plan.signupDeadlineHours = null as any;
     if (savePlanMutation.isPending) return;
     savePlanMutation.mutate(plan);
   };

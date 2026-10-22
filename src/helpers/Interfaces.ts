@@ -209,7 +209,7 @@ export interface PlanInterface {
   providerId?: string;
   providerPlanId?: string;
   providerPlanName?: string;
-  signupDeadlineHours?: number | null;
+  signupDeadlineHours?: number;
   showVolunteerNames?: boolean;
   prepared?: boolean;
   autoReplaceOnDecline?: boolean;
