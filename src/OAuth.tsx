@@ -3,9 +3,24 @@ import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { Alert, Box, Button, Grid, Icon } from "@mui/material";
 import { AuthShell } from "./components/AuthShell";
 
+// Scope strings come from Api shared/auth/Scopes.ts; labels use "_" because ":" is the i18n namespace separator.
+const scopeLabel = (scope: string) => {
+  if (scope === "plans") return Locale.label("app.oauth.permissionPlans");
+  const key = "app.oauth.scopes." + scope.replace(":", "_");
+  const label = Locale.label(key);
+  return label && label !== key ? label : scope;
+};
+
+const parseRedirectUris = (raw: string | string[]) => (Array.isArray(raw) ? raw : (raw || "").split(/[|,\s]+/).filter((u) => u.length > 0));
+
+const redirectHost = (uri: string | null) => {
+  try { return uri ? new URL(uri).host : ""; } catch { return ""; }
+};
+
 export const OAuthPage: React.FC = () => {
   const [clientName, setClientName] = React.useState<string>("");
   const [clientRedirectUris, setClientRedirectUris] = React.useState<string | string[]>("");
+  const [selfRegistered, setSelfRegistered] = React.useState(false);
 
   const search = new URLSearchParams(window.location.search);
   const clientId = search.get("client_id");
@@ -13,6 +28,10 @@ export const OAuthPage: React.FC = () => {
   const scope = search.get("scope");
   const responseType = search.get("response_type");
   const state = search.get("state");
+  const codeChallenge = search.get("code_challenge");
+  const codeChallengeMethod = search.get("code_challenge_method");
+  const scopes = (scope || "").split(/[\s,]+/).filter((s) => s.length > 0);
+  const returnHost = redirectHost(redirectUri);
 
   React.useEffect(() => {
     if (clientId) {
@@ -20,6 +39,7 @@ export const OAuthPage: React.FC = () => {
         if (client) {
           setClientName(client.name);
           setClientRedirectUris(client.redirectUris || "");
+          setSelfRegistered(!!client.selfRegistered);
         }
       }).catch(() => setClientName(clientId));
     }
@@ -31,7 +51,7 @@ export const OAuthPage: React.FC = () => {
 
   const handleAllow = async () => {
     try {
-      const response = await ApiHelper.post("/oauth/authorize", { client_id: clientId, redirect_uri: redirectUri, response_type: responseType, scope: scope, state: state }, "MembershipApi");
+      const response = await ApiHelper.post("/oauth/authorize", { client_id: clientId, redirect_uri: redirectUri, response_type: responseType, scope: scope, state: state, code_challenge: codeChallenge || undefined, code_challenge_method: codeChallengeMethod || undefined }, "MembershipApi");
 
       if (response?.code) {
         // Redirect back to the client with the authorization code
@@ -61,9 +81,19 @@ export const OAuthPage: React.FC = () => {
           </p>
         </div>
 
-        <ul>
-          <li>{Locale.label("app.oauth.permissionPlans")}</li>
+        <ul data-testid="oauth-scopes">
+          {scopes.length === 0
+            ? <li>{Locale.label("app.oauth.scopes.all")}</li>
+            : scopes.map((s) => <li key={s}>{scopeLabel(s)}</li>)}
         </ul>
+        {returnHost && (
+          <p data-testid="oauth-redirect-host">
+            {Locale.label("app.oauth.returnTo").split("{host}").map((part, i, arr) => (
+              <React.Fragment key={i}>{part}{i < arr.length - 1 && <b>{returnHost}</b>}</React.Fragment>
+            ))}
+          </p>
+        )}
+        {selfRegistered && <Alert severity="warning" data-testid="oauth-self-registered" sx={{ mb: 2 }}>{Locale.label("app.oauth.selfRegisteredNote")}</Alert>}
       </div>
       <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2 }}>
         <Grid container spacing={2}>
@@ -72,7 +102,7 @@ export const OAuthPage: React.FC = () => {
               fullWidth
               variant="outlined"
               onClick={() => {
-                if (redirectUri && clientRedirectUris?.includes(redirectUri)) {
+                if (redirectUri && parseRedirectUris(clientRedirectUris).includes(redirectUri)) {
                   const denyUrl = new URL(redirectUri);
                   denyUrl.searchParams.append("error", "access_denied");
                   if (state) denyUrl.searchParams.append("state", state);

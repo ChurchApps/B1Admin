@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import crypto from "crypto";
 import { login } from "./helpers/auth";
 import { navigateToDeveloper } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -82,5 +83,65 @@ test.describe.serial("Developer Portal", () => {
     await row.getByRole("button", { name: "Delete" }).click();
     await confirmDelete(page);
     await expect(page.locator("tr").filter({ hasText: KEY_NAME })).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+// claude.ai / ChatGPT custom connectors: discover the B1 sign-in, register, get consent here, exchange with PKCE.
+test.describe("AI assistant sign-in (MCP connector)", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const CALLBACK = "https://claude.ai/api/mcp/auth_callback";
+  const verifier = crypto.randomBytes(32).toString("base64url");
+  const challenge = crypto.createHash("sha256").update(verifier).digest("base64url");
+
+  test("connects claude.ai to the MCP server with a B1 login", async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    const page = await context.newPage();
+    try {
+      const unauthorized = await page.request.post(`${API}/mcp`, { data: {}, failOnStatusCode: false });
+      expect(unauthorized.status()).toBe(401);
+      expect(unauthorized.headers()["www-authenticate"]).toContain("/.well-known/oauth-protected-resource");
+
+      const resource = await (await page.request.get(`${API}/.well-known/oauth-protected-resource`)).json();
+      const server = await (await page.request.get(`${resource.authorization_servers[0]}/.well-known/oauth-authorization-server`)).json();
+      expect(server.code_challenge_methods_supported).toContain("S256");
+
+      const registration = await page.request.post(server.registration_endpoint, { data: { client_name: "Claude", redirect_uris: [CALLBACK], token_endpoint_auth_method: "none" } });
+      expect(registration.status()).toBe(201);
+      const { client_id: clientId } = await registration.json();
+
+      await page.route("https://claude.ai/**", (route) => route.fulfill({ contentType: "text/html", body: "<p>connected</p>" }));
+      await login(page);
+      const query = new URLSearchParams({ response_type: "code", client_id: clientId, redirect_uri: CALLBACK, scope: "people:read donations:read", state: "st8", code_challenge: challenge, code_challenge_method: "S256", resource: resource.resource });
+      await page.goto(`/oauth?${query.toString()}`);
+
+      await expect(page.getByRole("heading", { name: "Claude" })).toBeVisible({ timeout: 15000 });
+      const scopes = page.getByTestId("oauth-scopes");
+      await expect(scopes.getByText("View people, households and contact details")).toBeVisible();
+      await expect(scopes.getByText("View giving records")).toBeVisible();
+      await expect(page.getByTestId("oauth-redirect-host")).toContainText("claude.ai");
+      await expect(page.getByTestId("oauth-self-registered")).toContainText("Connected Apps");
+
+      await page.getByTestId("oauth-allow-button").click();
+      await page.waitForURL((url) => url.href.startsWith(CALLBACK), { timeout: 15000 });
+      const returned = new URL(page.url());
+      expect(returned.searchParams.get("state")).toBe("st8");
+      const code = returned.searchParams.get("code");
+      expect(code).toBeTruthy();
+
+      const tokenRes = await page.request.post(server.token_endpoint, { form: { grant_type: "authorization_code", code: code!, client_id: clientId, redirect_uri: CALLBACK, code_verifier: verifier, resource: resource.resource } });
+      expect(tokenRes.status()).toBe(200);
+      const token = await tokenRes.json();
+      expect(token.access_token).toBeTruthy();
+      expect(token.scope).toBe("people:read donations:read");
+
+      const mcp = await page.request.post(`${API}/mcp`, {
+        headers: { Authorization: `Bearer ${token.access_token}`, Accept: "application/json, text/event-stream" },
+        data: { jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "playwright", version: "1" } } }
+      });
+      expect(mcp.status()).toBe(200);
+      expect((await mcp.json()).result?.serverInfo).toBeTruthy();
+    } finally {
+      await context.close();
+    }
   });
 });
