@@ -144,7 +144,7 @@ export const PlanEdit = (props: Props) => {
       name: values.name,
       serviceDate: DateHelper.toDate(values.serviceDate),
       serviceOrder: true,
-      signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
+      signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : null,
       showVolunteerNames: values.showVolunteerNames,
       prepared: values.prepared,
       autoReplaceOnDecline: values.autoReplaceOnDecline
