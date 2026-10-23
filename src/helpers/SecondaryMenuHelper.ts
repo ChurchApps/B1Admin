@@ -32,10 +32,13 @@ export class SecondaryMenuHelper {
     menuItems.push({ url: "/groups", label: Locale.label("components.wrapper.groups"), icon: "groups" });
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary)) menuItems.push({ url: "/attendance", label: Locale.label("components.wrapper.att"), icon: "calendar_month" });
     if (data?.formPermission) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.forms"), icon: "description" });
+    // Notes overview: person notes need people.edit, group notes are for that group's leaders.
+    if (UserHelper.checkAccess(Permissions.membershipApi.people.edit) || UserHelper.currentUserChurch?.groups?.some((g) => g.leader)) menuItems.push({ url: "/people/notes", label: Locale.label("people.notesPage.title"), icon: "sticky_note_2" });
 
     if (path.startsWith("/groups") && data?.search?.includes("tag=team")) label = Locale.label("components.wrapper.teams");
     else if (path.startsWith("/groups")) label = Locale.label("components.wrapper.groups");
     else if (path.startsWith("/people/demographics")) label = Locale.label("people.demographics.title");
+    else if (path.startsWith("/people/notes")) label = Locale.label("people.notesPage.title");
     else if (path.startsWith("/people")) label = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/attendance")) label = Locale.label("components.wrapper.att");
     else if (path.startsWith("/forms")) label = Locale.label("components.wrapper.forms");

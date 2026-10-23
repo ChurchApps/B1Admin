@@ -12,6 +12,7 @@ import { useThemeMode } from "./ThemeContext";
 const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) => ({ default: module.PeoplePage })));
 const PersonPage = React.lazy(() => import("./people/PersonPage").then((module) => ({ default: module.PersonPage })));
 const DemographicsPage = React.lazy(() => import("./people/demographics/DemographicsPage").then((module) => ({ default: module.DemographicsPage })));
+const NotesPage = React.lazy(() => import("./people/NotesPage").then((module) => ({ default: module.NotesPage })));
 const GroupsPage = React.lazy(() => import("./groups/GroupsPage"));
 const GroupPage = React.lazy(() => import("./groups/GroupPage").then((module) => ({ default: module.GroupPage })));
 const PendingRequestsPage = React.lazy(() => import("./groups/PendingRequestsPage"));
@@ -138,6 +139,7 @@ export const Authenticated: React.FC = () => {
         <Route element={<LayoutWithWrapper />}>
           <Route path="/admin/report/:keyName" element={<AdminReportPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/people/notes" element={<NotesPage />} />
           <Route path="/people/demographics" element={UserHelper.checkAccess(Permissions.membershipApi.people.view) ? <DemographicsPage /> : <Navigate to="/" replace />} />
           <Route path="/people/:id" element={UserHelper.checkAccess(Permissions.membershipApi.people.view) ? <PersonPage /> : <Navigate to="/" replace />} />
           <Route path="/people" element={UserHelper.checkAccess(Permissions.membershipApi.people.view) ? <PeoplePage /> : <Navigate to="/" replace />} />
