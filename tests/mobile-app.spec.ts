@@ -364,7 +364,8 @@ test.describe("B1 Mobile page saves", () => {
   });
 
   // ChurchAppsSupport#1189: a church can hide the app's home-screen sign-in prompt or change its
-  // wording. #1313: it can also pick how photo links appear on that screen. All save as public
+  // wording. #1313: it can also pick how photo links appear on that screen. #1331: it can show the
+  // Me tab's My Attendance and My Forms on that screen too. All save as public
   // Membership settings so the B1.church app can read them. Serial: each save posts the whole form.
   test.describe("B1 Mobile home screen settings", () => {
     test.describe.configure({ mode: "serial" });
@@ -380,7 +381,7 @@ test.describe("B1 Mobile page saves", () => {
 
     test.afterAll(async () => {
       // Put the prompt and tiles back to the defaults so B1App dashboard specs see them.
-      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileTileLayout: "grid" };
+      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileTileLayout: "grid", mobileHomeAttendance: "false", mobileHomeForms: "false" };
       const all = (await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[];
       const rows = all.filter(s => s.keyName in defaults).map(s => ({ ...s, value: defaults[s.keyName] }));
       if (rows.length) await ctx.post(`${API}/membership/settings`, { ...auth, data: rows });
@@ -429,6 +430,25 @@ test.describe("B1 Mobile page saves", () => {
       expect(pub.mobileTileLayout).toBe("list");
       await page.reload();
       await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("List", { timeout: 15000 });
+    });
+
+    test("My Attendance and My Forms on Home start off and save as public settings that survive a reload", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      await expect(page.getByRole("heading", { name: "Home screen sections" })).toBeVisible({ timeout: 15000 });
+      const attendance = page.getByLabel("Show My Attendance on Home");
+      const forms = page.getByLabel("Show My Forms on Home");
+      await expect(attendance).not.toBeChecked();
+      await expect(forms).not.toBeChecked();
+      await attendance.check();
+      await forms.check();
+      await saveSettings(page);
+
+      const pub = await publicSettings();
+      expect(pub.mobileHomeAttendance).toBe("true");
+      expect(pub.mobileHomeForms).toBe("true");
+      await page.reload();
+      await expect(page.getByLabel("Show My Attendance on Home")).toBeChecked({ timeout: 15000 });
+      await expect(page.getByLabel("Show My Forms on Home")).toBeChecked();
     });
   });
 });
