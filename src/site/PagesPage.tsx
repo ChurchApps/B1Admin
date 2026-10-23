@@ -52,7 +52,8 @@ export const PagesPage = () => {
     } else return <Box sx={{ width: 32, ml: level * 2 }}></Box>;
   };
 
-  const countPages = (items: PageLink[]): number => items.reduce((sum, item) => sum + 1 + countPages(item.children || []), 0);
+  // Count only the rows the table shows; collapsed rows (like Groups) hide their children.
+  const countPages = (items: PageLink[]): number => items.reduce((sum, item) => sum + 1 + (item.expanded ? countPages(item.children || []) : 0), 0);
 
   const getTreeLevel = (items: PageLink[], level: number) => {
     const result: React.ReactElement[] = [];

@@ -55,6 +55,14 @@ export const EDITOR_PAGE_FONT_CSS = `
 .page h1, .page h2, .page h3, .page h4, .page h5, .page h6 { font-family: var(--headingFont), "Roboto", sans-serif; }
 `;
 
+// Section photo backgrounds and light text, mirrored from pages.css so the editor matches the live site.
+export const EDITOR_SECTION_CSS = `
+.page .sectionDark { color: var(--dark-bg-text-color, #EEEEEE); }
+.page .sectionBG { background-position: 50% 50%; background-size: cover; position: relative; }
+.page .sectionBG:before { content: ''; position: absolute; inset: 0; background: #000; opacity: .55; pointer-events: none; }
+.page .sectionBG > .MuiContainer-root { position: relative; z-index: 1; }
+`;
+
 export const getSelectionSuppressCss = (selectedElementId: string | null): string => {
   if (!selectedElementId) return "";
   return `
