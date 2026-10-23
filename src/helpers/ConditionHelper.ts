@@ -28,6 +28,7 @@ export class ConditionHelper {
       "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
     if (fieldData.datePart === "dayOfWeek") displayValue = dayLabels[parseInt(c.value || "") - 1];
+    if (fieldData.datePart === "dayOfMonth" && c.value === "{currentDay}") displayValue = Locale.label("tasks.conditionDate.today");
     if (fieldData.datePart === "month") {
       if ((c.value || "").indexOf("{") > -1) displayValue = this.getTitleCase((c.value || "").replace("{", "").replace("}", ""));
       else displayValue = monthLabels[parseInt(c.value || "") - 1];

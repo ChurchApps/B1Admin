@@ -86,6 +86,25 @@ export const ConditionDate = (props: Props) => {
     </FormControl>
   );
 
+  // "Today" only makes sense on a person's date; the Today's Date field compares against itself.
+  const getDayOfMonth = () => (
+    <FormControl fullWidth variant="outlined">
+      <InputLabel>{Locale.label("tasks.conditionDate.monthDay")}</InputLabel>
+      <Select
+        label={Locale.label("tasks.conditionDate.monthDay")}
+        value={props.condition.value || "1"}
+        name="value"
+        onChange={handleChange}
+        data-testid="day-of-month-select"
+      >
+        {props.condition.field !== "today" && <ListSubheader>{Locale.label("tasks.conditionDate.relative")}</ListSubheader>}
+        {props.condition.field !== "today" && <MenuItem value="{currentDay}">{Locale.label("tasks.conditionDate.today")}</MenuItem>}
+        <ListSubheader>{Locale.label("tasks.conditionDate.absolute")}</ListSubheader>
+        {Array.from({ length: 31 }, (_, i) => (i + 1).toString()).map((d) => <MenuItem key={d} value={d}>{d}</MenuItem>)}
+      </Select>
+    </FormControl>
+  );
+
   const getMonth = () => (
     <FormControl fullWidth variant="outlined">
       <InputLabel>{Locale.label("tasks.conditionDate.month")}</InputLabel>
@@ -121,7 +140,7 @@ export const ConditionDate = (props: Props) => {
     switch (fieldData?.datePart) {
       case "dayOfWeek": result = getDayOfWeek(); break;
       case "month": result = getMonth(); break;
-      case "dayOfMonth":
+      case "dayOfMonth": result = getDayOfMonth(); break;
       case "years": result = getNumberField(); break;
     }
 
