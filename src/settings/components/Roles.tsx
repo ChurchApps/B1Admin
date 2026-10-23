@@ -2,12 +2,14 @@ import React, { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { UserHelper, ApiHelper, Permissions, type ChurchInterface, Locale } from "@churchapps/apphelper";
 import { type RoleInterface, type RolePermissionInterface } from "@churchapps/helpers";
-import { Box, Button, Divider, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Box, Button, Chip, Divider, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Groups as GroupsIcon, Lock as LockIcon } from "@mui/icons-material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { TextAction, tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { SettingsPanel } from "./SettingsPanel";
+
+type RoleWithCount = RoleInterface & { memberCount?: number };
 
 interface Props {
   selectRoleId: (id: string) => void;
@@ -17,7 +19,7 @@ interface Props {
 
 export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
 
-  const roles = useQuery<RoleInterface[]>({
+  const roles = useQuery<RoleWithCount[]>({
     queryKey: [`/roles/church/${church?.id}`, "MembershipApi"],
     enabled: !!church?.id && selectedRoleId === "notset",
     placeholderData: []
@@ -39,6 +41,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
           <TableCell>
             <GroupsIcon fontSize="small" sx={{ verticalAlign: "middle", mr: "3px" }} /> <Link to={`/settings/role/everyone`} style={{ color: "var(--link)", fontWeight: 500 }}>({Locale.label("settings.roles.everyone")})</Link>
           </TableCell>
+          <TableCell align="center" sx={{ color: "text.secondary" }}>{Locale.label("settings.roles.allUsers")}</TableCell>
           <TableCell></TableCell>
         </TableRow>
       );
@@ -48,10 +51,14 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
       const editLink = canEdit ? (
         <TextAction small onClick={() => { selectRoleId(role.id || ""); }} aria-label={Locale.label("common.edit") + " " + (role.name || "")} data-testid="edit-role-button">{Locale.label("common.edit")}</TextAction>
       ) : null;
+      const memberCount = role.memberCount ?? 0;
       result.push(
         <TableRow key={role.id}>
           <TableCell>
             <LockIcon fontSize="small" sx={{ verticalAlign: "middle", mr: "3px" }} /> <Link to={`/settings/role/${role.id}`} style={{ color: "var(--link)", fontWeight: 500 }}>{role.name}</Link>
+          </TableCell>
+          <TableCell align="center">
+            <Chip size="small" label={memberCount} color={memberCount > 0 ? "primary" : "default"} variant={memberCount > 0 ? "filled" : "outlined"} data-testid="role-member-count" />
           </TableCell>
           <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
@@ -69,6 +76,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
             <TableHead>
               <TableRow>
                 <TableCell>{Locale.label("common.name")}</TableCell>
+                <TableCell align="center">{Locale.label("settings.roles.members")}</TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>

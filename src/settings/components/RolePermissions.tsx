@@ -28,9 +28,24 @@ export const RolePermissions: React.FC<Props> = (props) => {
   const loadData = useCallback(() => {
     ApiHelper.get("/rolepermissions/roles/" + (props.role.id ?? "null"), "MembershipApi").then((data: any) => setRolePermissions(data));
   }, [props.role]);
+  const handlePermissionChange = useCallback((rp: RolePermissionInterface, checked: boolean) => {
+    setRolePermissions((prev) => {
+      const rest = prev.filter((p) => !(p.apiName === rp.apiName && p.contentType === rp.contentType && p.action === rp.action));
+      return checked ? [...rest, rp] : rest;
+    });
+  }, []);
   const loadPermissions = useCallback(() => {
     ApiHelper.get("/permissions", "MembershipApi").then((data: any) => setPermissions(data));
   }, []);
+
+  const isChecked = (p: PermissionInterface) => rolePermissions.some((rp) => rp.apiName === p.apiName && rp.contentType === p.section && rp.action === p.action);
+
+  const getSectionCount = (displaySection: string) => {
+    const inSection = permissions.filter((p) => p.displaySection === displaySection);
+    return Locale.label("settings.rolePermissions.countOf")
+      .replace("{checked}", inSection.filter(isChecked).length.toString())
+      .replace("{total}", inSection.length.toString());
+  };
 
   const getSections = () => {
     const lastSection: string[] = [];
@@ -42,7 +57,8 @@ export const RolePermissions: React.FC<Props> = (props) => {
         result.push(
           <Accordion key={p.displaySection || index} expanded={!!search || expanded === "panel" + index} onChange={handleChange("panel" + index)}>
             <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
-              <Typography>{p.displaySection}</Typography>
+              <Typography sx={{ flexGrow: 1 }}>{p.displaySection}</Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }} data-testid="role-permission-section-count">{getSectionCount(p.displaySection || "")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <div>{getChecks(p.displaySection || "")}</div>
@@ -59,7 +75,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
     const result: JSX.Element[] = [];
     visible.forEach((p, index) => {
       if (p.displaySection === displaySection) {
-        result.push(<RoleCheck key={index} roleId={props.role.id} rolePermissions={rolePermissions} apiName={p.apiName || ""} contentType={p.section || ""} action={p.action || ""} label={p.displayAction || ""} />);
+        result.push(<RoleCheck key={index} roleId={props.role.id} rolePermissions={rolePermissions} apiName={p.apiName || ""} contentType={p.section || ""} action={p.action || ""} label={p.displayAction || ""} onChange={handlePermissionChange} />);
       }
     });
     return result;

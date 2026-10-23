@@ -503,6 +503,39 @@ test.describe.serial("Settings Management", () => {
       await filter.fill("");
       await expect(sections).toHaveCount(total);
     });
+
+    test("roles list shows how many people are in each role", async () => {
+      await page.goto("/settings/roles");
+      const table = page.locator("#roleMemberTable");
+      await expect(table.locator("thead")).toContainText("Members", { timeout: 15000 });
+      await expect(table.locator("tbody tr").filter({ hasText: "Everyone" })).toContainText("All users");
+      const volunteer = table.locator("tbody tr").filter({ hasText: "Workflow Volunteer" });
+      await expect(volunteer.getByTestId("role-member-count")).toHaveText("1");
+      const admins = table.locator("tbody tr").filter({ hasText: "Domain Admins" });
+      await expect(admins.getByTestId("role-member-count")).toHaveText("2");
+    });
+
+    test("role permission groups show how many permissions are checked", async () => {
+      await page.goto("/settings/role/ROL00000011");
+      const donations = page.locator("#rolePermissionsBox .MuiAccordion-root").filter({ has: page.locator(".MuiAccordionSummary-root", { hasText: "Donations" }) });
+      const count = donations.getByTestId("role-permission-section-count");
+      await expect(count).toHaveText("2 of 5", { timeout: 15000 });
+      const tasks = page.locator("#rolePermissionsBox .MuiAccordion-root").filter({ has: page.locator(".MuiAccordionSummary-root", { hasText: "Tasks" }) });
+      await expect(tasks.getByTestId("role-permission-section-count")).toHaveText("0 of 3");
+
+      // The count follows the checkboxes without a reload.
+      await donations.locator(".MuiAccordionSummary-root").click();
+      const editDonations = page.getByTestId("role-permission-checkbox-Donations-Edit").locator("input");
+      const saved = (method: string) => page.waitForResponse(r => r.url().includes("/rolepermissions") && r.request().method() === method);
+      const posted = saved("POST");
+      await editDonations.check();
+      await posted;
+      await expect(count).toHaveText("3 of 5");
+      const deleted = saved("DELETE");
+      await editDonations.uncheck();
+      await deleted;
+      await expect(count).toHaveText("2 of 5");
+    });
   });
 
   test.describe.serial("Region", () => {
