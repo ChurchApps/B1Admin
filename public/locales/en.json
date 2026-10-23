@@ -1730,6 +1730,10 @@
       "title": "App Theme"
     },
     "b1MobilePage": {
+      "homeScreen": "Home screen sections",
+      "homeScreenHelp": "Show signed-in members their own records on the app's home screen. They are always on the Me tab.",
+      "showAttendanceOnHome": "Show My Attendance on Home",
+      "showFormsOnHome": "Show My Forms on Home",
       "showSignInPrompt": "Show sign-in prompt on the app home screen",
       "signInPromptHelp": "Visitors who are not signed in see this on the app home screen. Sign-in is always available in the app menu.",
       "signInPromptPlaceholder": "Sign in to see your groups, giving, and more.",

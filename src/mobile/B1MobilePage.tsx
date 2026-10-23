@@ -25,6 +25,10 @@ export const B1MobilePage: React.FC = () => {
   const [signInPromptTextSetting, setSignInPromptTextSetting] = React.useState<GenericSettingInterface | null>(null);
   const [tileLayout, setTileLayout] = React.useState("grid");
   const [tileLayoutSetting, setTileLayoutSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [homeAttendance, setHomeAttendance] = React.useState(false);
+  const [homeAttendanceSetting, setHomeAttendanceSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [homeForms, setHomeForms] = React.useState(false);
+  const [homeFormsSetting, setHomeFormsSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
 
@@ -68,6 +72,10 @@ export const B1MobilePage: React.FC = () => {
     if (promptText) { setSignInPromptTextSetting(promptText); setSignInPromptText(promptText.value || ""); }
     const tiles = allSettings.find(s => s.keyName === "mobileTileLayout");
     if (tiles) { setTileLayoutSetting(tiles); setTileLayout(tiles.value || "grid"); }
+    const attendanceHome = allSettings.find(s => s.keyName === "mobileHomeAttendance");
+    if (attendanceHome) { setHomeAttendanceSetting(attendanceHome); setHomeAttendance(attendanceHome.value === "true"); }
+    const formsHome = allSettings.find(s => s.keyName === "mobileHomeForms");
+    if (formsHome) { setHomeFormsSetting(formsHome); setHomeForms(formsHome.value === "true"); }
     setLoaded(true);
   }, [churchId]);
 
@@ -94,9 +102,11 @@ export const B1MobilePage: React.FC = () => {
       const hideSignIn = toSave(hideSignInSetting, "mobileHideSignInPrompt", hideSignInPrompt ? "true" : "false");
       const promptText = toSave(signInPromptTextSetting, "mobileSignInPromptText", signInPromptText.trim());
       const tiles = toSave(tileLayoutSetting, "mobileTileLayout", tileLayout);
+      const attendanceHome = toSave(homeAttendanceSetting, "mobileHomeAttendance", homeAttendance ? "true" : "false");
+      const formsHome = toSave(homeFormsSetting, "mobileHomeForms", homeForms ? "true" : "false");
 
       await ApiHelper.post("/settings", [
-        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText, tiles
+        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText, tiles, attendanceHome, formsHome
       ], "MembershipApi");
       // The app caches these settings, so refresh it for the home-screen prompt to update right away.
       clearSiteCache();
@@ -265,6 +275,22 @@ export const B1MobilePage: React.FC = () => {
             </FormControl>
           </Grid>
         </Grid>
+        <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+          <Typography variant="h3">{Locale.label("mobile.b1MobilePage.homeScreen")}</Typography>
+          <Tooltip title={Locale.label("mobile.b1MobilePage.homeScreenHelp")} arrow>
+            <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+          </Tooltip>
+        </Stack>
+        <Stack sx={{ mb: 1 }}>
+          <FormControlLabel
+            control={<Switch checked={homeAttendance} onChange={(e) => setHomeAttendance(e.target.checked)} data-testid="mobile-home-attendance-switch" />}
+            label={Locale.label("mobile.b1MobilePage.showAttendanceOnHome")}
+          />
+          <FormControlLabel
+            control={<Switch checked={homeForms} onChange={(e) => setHomeForms(e.target.checked)} data-testid="mobile-home-forms-switch" />}
+            label={Locale.label("mobile.b1MobilePage.showFormsOnHome")}
+          />
+        </Stack>
       </FormCard>
     </MobileChrome>
   );
