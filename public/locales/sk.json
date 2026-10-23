@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Odoslané {successCount} z {recipientCount} oprávnenému príjemcovi.",
       "subject": "Predmet",
       "subjectMergeFieldHint": "Vložiť zlučovacie pole do predmetu:",
-      "subjectPlaceholder": "napr. Ahoj {firstName}, aktualizácia od {churchName}"
+      "subjectPlaceholder": "napr. Ahoj {{firstName}}, aktualizácia od {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} znakov ({segments} SMS segmentov)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Zobrazené vzorové údaje: John Smith, john@example.com",
       "previewSubject": "Predmet:",
       "subject": "Predmet",
-      "subjectPlaceholder": "napr. Ahoj {firstName}, vitajte v {churchName}",
+      "subjectPlaceholder": "napr. Ahoj {{firstName}}, vitajte v {{churchName}}",
       "subjectRequired": "Predmet je povinný.",
       "templateName": "Názov šablóny",
       "templateNamePlaceholder": "napr. Privítací e-mail, Pripomienka udalosti",

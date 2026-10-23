@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Išsiųsta {successCount} iš {recipientCount} tinkamo gavėjo.",
       "subject": "Tema",
       "subjectMergeFieldHint": "Įterpti suliejimo lauką į temą:",
-      "subjectPlaceholder": "pvz. Sveiki {firstName}, atnaujinimas iš {churchName}"
+      "subjectPlaceholder": "pvz. Sveiki {{firstName}}, atnaujinimas iš {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} simbolių ({segments} SMS segmentai)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Rodomi pavyzdiniai duomenys: John Smith, john@example.com",
       "previewSubject": "Tema:",
       "subject": "Tema",
-      "subjectPlaceholder": "pvz. Sveiki {firstName}, sveiki atvykę į {churchName}",
+      "subjectPlaceholder": "pvz. Sveiki {{firstName}}, sveiki atvykę į {{churchName}}",
       "subjectRequired": "Tema privaloma.",
       "templateName": "Šablono pavadinimas",
       "templateNamePlaceholder": "pvz. Pasveikinimo el. laiškas, Renginio priminimas",

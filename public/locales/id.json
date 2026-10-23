@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Dikirim ke {successCount} dari {recipientCount} penerima yang memenuhi syarat.",
       "subject": "Subjek",
       "subjectMergeFieldHint": "Sisipkan kolom gabungan ke subjek:",
-      "subjectPlaceholder": "mis. Halo {firstName}, pembaruan dari {churchName}"
+      "subjectPlaceholder": "mis. Halo {{firstName}}, pembaruan dari {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} karakter ({segments} segmen SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Data sampel ditampilkan: John Smith, john@example.com",
       "previewSubject": "Subjek:",
       "subject": "Subjek",
-      "subjectPlaceholder": "mis. Halo {firstName}, selamat datang di {churchName}",
+      "subjectPlaceholder": "mis. Halo {{firstName}}, selamat datang di {{churchName}}",
       "subjectRequired": "Subjek diperlukan.",
       "templateName": "Nama Templat",
       "templateNamePlaceholder": "mis. Email Selamat Datang, Pengingat Acara",

@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Inviato a {successCount} di {recipientCount} destinatario idoneo.",
       "subject": "Oggetto",
       "subjectMergeFieldHint": "Inserisci campo unione nell'oggetto:",
-      "subjectPlaceholder": "es. Ciao {firstName}, aggiornamento da {churchName}"
+      "subjectPlaceholder": "es. Ciao {{firstName}}, aggiornamento da {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} caratteri ({segments} segmenti SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Dati di esempio mostrati: John Smith, john@example.com",
       "previewSubject": "Oggetto:",
       "subject": "Oggetto",
-      "subjectPlaceholder": "es. Ciao {firstName}, benvenuto in {churchName}",
+      "subjectPlaceholder": "es. Ciao {{firstName}}, benvenuto in {{churchName}}",
       "subjectRequired": "L'oggetto è obbligatorio.",
       "templateName": "Nome del Modello",
       "templateNamePlaceholder": "es. Email di Benvenuto, Promemoria Evento",

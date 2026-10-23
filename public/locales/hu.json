@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Elküldve {successCount}/{recipientCount} jogosult címzettnek.",
       "subject": "Tárgy",
       "subjectMergeFieldHint": "Egyesítő mező beszúrása a tárgyba:",
-      "subjectPlaceholder": "pl. Üdv {firstName}, frissítés a {churchName} gyülekezetből"
+      "subjectPlaceholder": "pl. Üdv {{firstName}}, frissítés a {{churchName}} gyülekezetből"
     },
     "sendTextDialog": {
       "characterCount": "{count} karakter ({segments} SMS szegmens)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Példa adatok megjelenítése: John Smith, john@example.com",
       "previewSubject": "Tárgy:",
       "subject": "Tárgy",
-      "subjectPlaceholder": "pl. Üdv {firstName}, üdvözöljük a {churchName} gyülekezetben",
+      "subjectPlaceholder": "pl. Üdv {{firstName}}, üdvözöljük a {{churchName}} gyülekezetben",
       "subjectRequired": "A tárgy kötelező.",
       "templateName": "Sablon neve",
       "templateNamePlaceholder": "pl. Üdvözlő e-mail, Esemény emlékeztető",

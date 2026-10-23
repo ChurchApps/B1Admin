@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "대상 수신자 {recipientCount}명 중 {successCount}명에게 전송됨.",
       "subject": "제목",
       "subjectMergeFieldHint": "제목에 병합 필드 삽입:",
-      "subjectPlaceholder": "예: 안녕하세요 {firstName}님, {churchName}의 업데이트"
+      "subjectPlaceholder": "예: 안녕하세요 {{firstName}}님, {{churchName}}의 업데이트"
     },
     "sendTextDialog": {
       "characterCount": "{count}자({segments} SMS 세그먼트)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "표시된 샘플 데이터: John Smith, john@example.com",
       "previewSubject": "제목:",
       "subject": "제목",
-      "subjectPlaceholder": "예: 안녕하세요 {firstName}님, {churchName}에 오신 것을 환영합니다",
+      "subjectPlaceholder": "예: 안녕하세요 {{firstName}}님, {{churchName}}에 오신 것을 환영합니다",
       "subjectRequired": "제목이 필요합니다.",
       "templateName": "템플릿 이름",
       "templateNamePlaceholder": "예: 환영 이메일, 이벤트 알림",

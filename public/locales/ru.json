@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Отправлено {successCount} из {recipientCount} подходящему получателю.",
       "subject": "Тема",
       "subjectMergeFieldHint": "Вставить поле слияния в тему:",
-      "subjectPlaceholder": "напр. Привет {firstName}, обновление от {churchName}"
+      "subjectPlaceholder": "напр. Привет {{firstName}}, обновление от {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} символов ({segments} SMS-сегментов)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Пример данных: John Smith, john@example.com",
       "previewSubject": "Тема:",
       "subject": "Тема",
-      "subjectPlaceholder": "напр. Привет {firstName}, добро пожаловать в {churchName}",
+      "subjectPlaceholder": "напр. Привет {{firstName}}, добро пожаловать в {{churchName}}",
       "subjectRequired": "Тема обязательна.",
       "templateName": "Название шаблона",
       "templateNamePlaceholder": "напр. Приветственный email, Напоминание о событии",

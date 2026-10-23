@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Enviado para {successCount} de {recipientCount} destinatário elegível.",
       "subject": "Assunto",
       "subjectMergeFieldHint": "Inserir campo de mesclagem no assunto:",
-      "subjectPlaceholder": "ex: Olá {firstName}, atualização de {churchName}"
+      "subjectPlaceholder": "ex: Olá {{firstName}}, atualização de {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} caracteres ({segments} segmentos SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Dados de exemplo exibidos: John Smith, john@example.com",
       "previewSubject": "Assunto:",
       "subject": "Assunto",
-      "subjectPlaceholder": "ex: Olá {firstName}, bem-vindo a {churchName}",
+      "subjectPlaceholder": "ex: Olá {{firstName}}, bem-vindo a {{churchName}}",
       "subjectRequired": "O assunto é obrigatório.",
       "templateName": "Nome do Modelo",
       "templateNamePlaceholder": "ex: E-mail de Boas-vindas, Lembrete de Evento",

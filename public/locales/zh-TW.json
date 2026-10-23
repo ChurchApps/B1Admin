@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "已傳送給 {recipientCount} 名符合條件的收件人中的 {successCount} 名。",
       "subject": "主題",
       "subjectMergeFieldHint": "在主題中插入合併欄位：",
-      "subjectPlaceholder": "例如：您好 {firstName}，來自 {churchName} 的更新"
+      "subjectPlaceholder": "例如：您好 {{firstName}}，來自 {{churchName}} 的更新"
     },
     "sendTextDialog": {
       "characterCount": "{count} 個字元（{segments} 個 SMS 片段）",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "顯示的樣本資料：John Smith, john@example.com",
       "previewSubject": "主題：",
       "subject": "主題",
-      "subjectPlaceholder": "例如：您好 {firstName}，歡迎來到 {churchName}",
+      "subjectPlaceholder": "例如：您好 {{firstName}}，歡迎來到 {{churchName}}",
       "subjectRequired": "主題為必填項。",
       "templateName": "模板名稱",
       "templateNamePlaceholder": "例如：歡迎郵件、活動提醒",

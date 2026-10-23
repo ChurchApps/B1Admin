@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Wysłano do {successCount} z {recipientCount} uprawnionego odbiorcy.",
       "subject": "Temat",
       "subjectMergeFieldHint": "Wstaw pole scalania do tematu:",
-      "subjectPlaceholder": "np. Cześć {firstName}, aktualizacja od {churchName}"
+      "subjectPlaceholder": "np. Cześć {{firstName}}, aktualizacja od {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} znaków ({segments} segmentów SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Przykładowe dane: John Smith, john@example.com",
       "previewSubject": "Temat:",
       "subject": "Temat",
-      "subjectPlaceholder": "np. Cześć {firstName}, witamy w {churchName}",
+      "subjectPlaceholder": "np. Cześć {{firstName}}, witamy w {{churchName}}",
       "subjectRequired": "Temat jest wymagany.",
       "templateName": "Nazwa szablonu",
       "templateNamePlaceholder": "np. E-mail powitalny, Przypomnienie o wydarzeniu",

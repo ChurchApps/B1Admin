@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "対象受信者{recipientCount}人中{successCount}人に送信。",
       "subject": "件名",
       "subjectMergeFieldHint": "件名にマージフィールドを挿入：",
-      "subjectPlaceholder": "例：こんにちは{firstName}さん、{churchName}からの更新"
+      "subjectPlaceholder": "例：こんにちは{{firstName}}さん、{{churchName}}からの更新"
     },
     "sendTextDialog": {
       "characterCount": "{count}文字（{segments}個のSMSセグメント）",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "表示されるサンプルデータ：John Smith, john@example.com",
       "previewSubject": "件名：",
       "subject": "件名",
-      "subjectPlaceholder": "例：こんにちは{firstName}さん、{churchName}へようこそ",
+      "subjectPlaceholder": "例：こんにちは{{firstName}}さん、{{churchName}}へようこそ",
       "subjectRequired": "件名は必須です。",
       "templateName": "テンプレート名",
       "templateNamePlaceholder": "例：ウェルカムメール、イベントリマインダー",

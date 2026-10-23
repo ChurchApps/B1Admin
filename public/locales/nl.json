@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Verzonden naar {successCount} van {recipientCount} in aanmerking komende ontvanger.",
       "subject": "Onderwerp",
       "subjectMergeFieldHint": "Samenvoegveld in onderwerp invoegen:",
-      "subjectPlaceholder": "bijv. Hallo {firstName}, update van {churchName}"
+      "subjectPlaceholder": "bijv. Hallo {{firstName}}, update van {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} tekens ({segments} sms-segmenten)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Voorbeeldgegevens getoond: John Smith, john@example.com",
       "previewSubject": "Onderwerp:",
       "subject": "Onderwerp",
-      "subjectPlaceholder": "bijv. Hallo {firstName}, welkom bij {churchName}",
+      "subjectPlaceholder": "bijv. Hallo {{firstName}}, welkom bij {{churchName}}",
       "subjectRequired": "Onderwerp is verplicht.",
       "templateName": "Sjabloonnaam",
       "templateNamePlaceholder": "bijv. Welkomstmail, Evenementherinnering",

@@ -536,6 +536,7 @@ const getBaseThemeOptions = (mode: PaletteMode, themeId: ThemeId, brand: string)
       MuiAutocomplete: { styleOverrides: { paper: { boxShadow: popoverShadow, border: `1px solid ${t.border}` } } },
       MuiDialog: { styleOverrides: { paper: { borderRadius: 10 } } },
       MuiDialogTitle: { styleOverrides: { root: { fontSize: "1.375rem", lineHeight: "29px", fontWeight: 650 } } },
+      MuiSwitch: { styleOverrides: { track: { backgroundColor: t.muted, opacity: 1 } } },
       MuiChip: {
         styleOverrides: {
           root: { borderRadius: 999, fontWeight: 600 },

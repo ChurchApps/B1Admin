@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Enviado a {successCount} de {recipientCount} destinatario elegible.",
       "subject": "Asunto",
       "subjectMergeFieldHint": "Insertar campo de combinación en el asunto:",
-      "subjectPlaceholder": "p. ej. Hola {firstName}, actualización de {churchName}"
+      "subjectPlaceholder": "p. ej. Hola {{firstName}}, actualización de {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} caracteres ({segments} segmentos SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Datos de muestra mostrados: John Smith, john@example.com",
       "previewSubject": "Asunto:",
       "subject": "Asunto",
-      "subjectPlaceholder": "p. ej. Hola {firstName}, bienvenido a {churchName}",
+      "subjectPlaceholder": "p. ej. Hola {{firstName}}, bienvenido a {{churchName}}",
       "subjectRequired": "El asunto es obligatorio.",
       "templateName": "Nombre de la Plantilla",
       "templateNamePlaceholder": "p. ej. Correo de Bienvenida, Recordatorio de Evento",

@@ -677,7 +677,9 @@
     "myTasks": "My tasks",
     "needsAttention": {
       "approvals": "{count} pending calendar approvals",
+      "approvalsSingular": "{count} pending calendar approval",
       "joinRequests": "{count} pending group join requests",
+      "joinRequestsSingular": "{count} pending group join request",
       "title": "Needs attention"
     },
     "noGroups": "You're not in any groups yet.",
@@ -700,12 +702,12 @@
       "freeShowTitle": "Set Up FreeShow Backups",
       "groupDescription": "Enter a name for your group. You'll be redirected to the group page to configure it and add members.",
       "groupName": "Group Name",
-      "groupTitle": "Create Your First Group",
+      "groupTitle": "Create a Group",
       "ministryName": "Ministry Name",
       "pageTitle": "Page Title",
       "teamName": "Team Name",
-      "webpageDescription": "Enter a title for your first page. You'll be redirected to the page editor to add content.",
-      "webpageTitle": "Create Your First Webpage"
+      "webpageDescription": "Enter a title for your page. You'll be redirected to the page editor to add content.",
+      "webpageTitle": "Create a Page"
     },
     "sunday": {
       "firstTime": "First time",
@@ -1610,7 +1612,7 @@
       "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "subject": "Subject",
       "subjectMergeFieldHint": "Insert merge field into subject:",
-      "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}"
+      "subjectPlaceholder": "e.g. Hello {{firstName}}, update from {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} characters in {segments} segment(s).",
@@ -3991,7 +3993,7 @@
       "previewSampleData": "Sample data shown: John Smith, john@example.com",
       "previewSubject": "Subject:",
       "subject": "Subject",
-      "subjectPlaceholder": "e.g. Hello {firstName}, welcome to {churchName}",
+      "subjectPlaceholder": "e.g. Hello {{firstName}}, welcome to {{churchName}}",
       "subjectRequired": "Subject is required.",
       "templateName": "Template Name",
       "templateNamePlaceholder": "e.g. Welcome Email, Event Reminder",

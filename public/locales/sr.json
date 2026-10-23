@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Послато {successCount} од {recipientCount} подобног примаоца.",
       "subject": "Тема",
       "subjectMergeFieldHint": "Уметни поље за спајање у тему:",
-      "subjectPlaceholder": "нпр. Здраво {firstName}, ажурирање из {churchName}"
+      "subjectPlaceholder": "нпр. Здраво {{firstName}}, ажурирање из {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} карактера ({segments} СМС сегмената)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Приказани узорак података: John Smith, john@example.com",
       "previewSubject": "Тема:",
       "subject": "Тема",
-      "subjectPlaceholder": "нпр. Здраво {firstName}, добродошли у {churchName}",
+      "subjectPlaceholder": "нпр. Здраво {{firstName}}, добродошли у {{churchName}}",
       "subjectRequired": "Тема је обавезна.",
       "templateName": "Назив шаблона",
       "templateNamePlaceholder": "нпр. Имејл добродошлице, подсетник на догађај",
