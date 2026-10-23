@@ -15,11 +15,16 @@ const GROUP: Record<PaletteItem["t"], string> = { nav: "Menu", do: "Do", person:
 const ORDER: PaletteItem["t"][] = ["nav", "do", "person", "group", "plan", "fund", "jump"];
 const MAX = 12;
 
-export const matches = (item: PaletteItem, q: string) => (item.n + " " + (item.a || []).join(" ")).toLowerCase().includes(q);
+// Hyphens never matter ("b1 checkin" finds "B1 check-in"). When the whole phrase finds nothing, match word by word ("logo church").
+const fold = (s: string) => s.toLowerCase().replace(/-/g, "");
+const hay = (item: PaletteItem) => fold(item.n + " " + (item.a || []).join(" "));
+export const matches = (item: PaletteItem, q: string) => hay(item).includes(fold(q));
+const matchesWords = (item: PaletteItem, q: string) => fold(q).split(/\s+/).filter(Boolean).every((w) => hay(item).includes(w));
 
 export const filterItems = (items: PaletteItem[], query: string) => {
   const q = query.trim().toLowerCase();
-  const hits = q ? items.filter((i) => matches(i, q)) : items.filter((i) => i.t === "nav");
+  const phrase = q ? items.filter((i) => matches(i, q)) : items.filter((i) => i.t === "nav");
+  const hits = q && !phrase.length ? items.filter((i) => matchesWords(i, q)) : phrase;
   const sorted = ORDER.flatMap((t) => hits.filter((i) => i.t === t));
   return q ? sorted.slice(0, MAX) : sorted;
 };
@@ -60,7 +65,14 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
       const k = quickActions.map((q): PaletteItem => ({ n: q.label, t: "do", u: q.url, i: q.icon }));
       nav.push({ n: "Quick Actions", a: ["create", "add", "new", "set up", "get started"], t: "nav", u: "#quick", i: "bolt", k });
     }
-    return [...nav, ...server.filter((s) => !menu.some((m) => m.url === s.u))];
+    const all = [...nav, ...server.filter((s) => !menu.some((m) => m.url === s.u))].map((i) => ({ ...i, a: i.a && [...i.a] }));
+    // Sub-pages and quick actions are searchable too: a row with the same url takes the label as an alias, otherwise the child gets its own row.
+    all.filter((p) => p.t === "nav" && p.k).forEach((p) => p.k!.forEach((c) => {
+      const same = all.find((i) => i.u === c.u);
+      if (!same) all.push({ n: c.n, t: p.u === "#quick" ? "do" : "jump", u: c.u, i: c.i });
+      else if (same.n !== c.n) same.a = [...(same.a || []), c.n];
+    }));
+    return all;
   }, [catalog.data, menu, quickActions]);
 
   const current = React.useMemo(() => {
