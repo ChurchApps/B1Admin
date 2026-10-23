@@ -4230,12 +4230,15 @@
       "supportContact": "Support Contact"
     },
     "textingSettingsEdit": {
+      "accountSid": "Account SID",
       "apiKey": "API Key",
       "apiSecret": "API Secret",
+      "authToken": "Auth Token",
       "clearstream": "Clearstream",
       "clearstreamHelper": "Create an API Key in your",
       "clearstreamHelperLink": "Clearstream Account Settings",
       "clearstreamHelperSuffix": "under API Keys.",
+      "fromNumber": "From Number",
       "inboundUrl": "Inbound (STOP) webhook URL",
       "inboundUrlHelper": "Paste this into your provider's inbound message webhook so people who reply STOP are opted out of texts here too.",
       "ministryStuff": "MinistryStuff",
@@ -4252,7 +4255,11 @@
       "textInChurch": "Text In Church",
       "textInChurchHelper": "Visit",
       "textInChurchHelperLink": "Text In Church Support",
-      "textInChurchHelperSuffix": "to request developer API access. Once approved, create an API Key in your Account Settings > Developer API section."
+      "textInChurchHelperSuffix": "to request developer API access. Once approved, create an API Key in your Account Settings > Developer API section.",
+      "twilio": "Twilio",
+      "twilioHelper": "Your church uses its own Twilio account and pays Twilio directly. Copy the Account SID and Auth Token from the",
+      "twilioHelperLink": "Twilio Console",
+      "twilioHelperSuffix": "and enter a Twilio number (or Messaging Service SID) registered for A2P 10DLC. After saving, paste the inbound URL below into the number's \"A message comes in\" webhook so STOP replies are recorded here too."
     },
     "userAdd": {
       "addTo": "Add To ",

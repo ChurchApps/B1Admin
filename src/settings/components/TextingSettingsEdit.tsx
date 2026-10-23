@@ -58,7 +58,22 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
         </>
       );
     }
-    // Default: show both key and secret (for future providers like Twilio)
+    if (provider === "Twilio") {
+      return (
+        <>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <TextField fullWidth name="apiKey" label={Locale.label("settings.textingSettingsEdit.accountSid")} value={apiKey} onChange={handleChange} type="password" />
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <TextField fullWidth name="apiSecret" label={Locale.label("settings.textingSettingsEdit.authToken")} value={apiSecret} onChange={handleChange} type="password" />
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <TextField fullWidth name="fromNumber" label={Locale.label("settings.textingSettingsEdit.fromNumber")} value={fromNumber} onChange={handleChange} placeholder="+15551234567" />
+          </Grid>
+        </>
+      );
+    }
+    // Default: show both key and secret
     return (
       <>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -80,7 +95,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
         tp.provider = provider;
         if (apiKey !== "" && apiKey !== "********") tp.apiKey = apiKey;
         if (apiSecret !== "" && apiSecret !== "********") tp.apiSecret = apiSecret;
-        tp.fromNumber = provider === "Nalo" ? fromNumber : textingProvider?.fromNumber;
+        tp.fromNumber = (provider === "Nalo" || provider === "Twilio") ? fromNumber : textingProvider?.fromNumber;
         tp.enabled = true;
         await ApiHelper.post("/texting/providers", [tp], "MessagingApi");
       }
@@ -142,6 +157,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
               <MenuItem value="Clearstream">{Locale.label("settings.textingSettingsEdit.clearstream")}</MenuItem>
               <MenuItem value="TextInChurch">{Locale.label("settings.textingSettingsEdit.textInChurch")}</MenuItem>
               <MenuItem value="Nalo">{Locale.label("settings.textingSettingsEdit.nalo")}</MenuItem>
+              <MenuItem value="Twilio">{Locale.label("settings.textingSettingsEdit.twilio")}</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -173,6 +189,13 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" color="textSecondary" component="div">
               {Locale.label("settings.textingSettingsEdit.naloHelper")} <a href="https://www.nalosolutions.com" target="_blank" rel="noopener noreferrer">{Locale.label("settings.textingSettingsEdit.naloHelperLink")}</a>
+            </Typography>
+          </Grid>
+        )}
+        {provider === "Twilio" && (
+          <Grid size={{ xs: 12 }}>
+            <Typography variant="body2" color="textSecondary" component="div">
+              {Locale.label("settings.textingSettingsEdit.twilioHelper")} <a href="https://console.twilio.com" target="_blank" rel="noopener noreferrer">{Locale.label("settings.textingSettingsEdit.twilioHelperLink")}</a> {Locale.label("settings.textingSettingsEdit.twilioHelperSuffix")}
             </Typography>
           </Grid>
         )}
