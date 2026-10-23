@@ -173,18 +173,27 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const hasChanges = changes.toAdd.length > 0 || changes.toRemove.length > 0;
   const presentCount = roster.filter((r) => attendance[r.person.id!]).length;
 
+  // Closing or reloading the tab mid-save would drop whatever hasn't been sent yet.
+  React.useEffect(() => {
+    if (!saving) return;
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [saving]);
+
   const handleSave = useCallback(async () => {
     if (!session?.id) return;
     setSaving(true);
     setMessage(null);
     try {
-      for (const personId of changes.toAdd) {
-        const v = { checkinTime: new Date(), personId, visitSessions: [{ sessionId: session.id }] } as VisitInterface;
-        await ApiHelper.post("/visitsessions/log", v, "AttendanceApi");
-      }
-      for (const personId of changes.toRemove) {
-        await ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + personId, "AttendanceApi");
-      }
+      // Each change is a different person, so they can all go out at once.
+      await Promise.all([
+        ...changes.toAdd.map((personId) => {
+          const v = { checkinTime: new Date(), personId, visitSessions: [{ sessionId: session.id }] } as VisitInterface;
+          return ApiHelper.post("/visitsessions/log", v, "AttendanceApi");
+        }),
+        ...changes.toRemove.map((personId) => ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + personId, "AttendanceApi"))
+      ]);
       loadAttendance();
       loadDownloadData();
       onSaved?.();
@@ -261,9 +270,9 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
 
   return (
     <Surface>
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 2 }}>
-        <Box>
-          <Stack direction="row" spacing={1} alignItems="center">
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: 2 }}>
+        <Box sx={{ minWidth: 0 }}>
+          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
             <Typography variant="h3" component="h2" data-cy="session-present-msg">
               {Locale.label("groups.groupSessions.attFor")} {group.name}
             </Typography>
@@ -275,7 +284,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
             {(session as any).serviceTime?.name && ` • ${(session as any).serviceTime.name}`}
           </Typography>
         </Box>
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
           {canPrintRoster && <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id)} data-testid="session-print-roster-button" />}
           {session.serviceTimeId && (
             <>

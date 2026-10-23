@@ -1,7 +1,8 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import { Locale, ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
+import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
 import { HeadcountEntry } from "./components/HeadcountEntry";
 import { AttendanceIdentity, ThisWeekSlice, type AttendanceView } from "./components/AttendancePlate";
@@ -18,7 +19,6 @@ const flatSliceSx = { "& .MuiPaper-root": { border: 0, boxShadow: "none", bgcolo
 export const AttendancePage = () => {
   const { view: requestedView, setView, searchParams } = useRecordView("view");
   const campuses = useCampuses();
-  const [stats, setStats] = React.useState({ serviceTimes: 0, scheduledGroups: 0, unscheduledGroups: 0, totalGroups: 0 });
 
   const canKiosk = UserHelper.checkAccess(Permissions.membershipApi.settings.edit) || UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit);
   const canHeadcount = UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit);
@@ -28,30 +28,23 @@ export const AttendancePage = () => {
   const view = (allowed[requestedView] ? requestedView : "") as AttendanceView;
   const kind = REPORTS[searchParams.get("kind") || ""] ? searchParams.get("kind")! : "attendance";
 
-  const loadStats = React.useCallback(async () => {
-    try {
-      const [attendanceData, groupsData, groupServiceTimes] = await Promise.all([
-        ApiHelper.get("/attendancerecords/tree", "AttendanceApi"),
-        ApiHelper.get("/groups", "MembershipApi"),
-        ApiHelper.get("/groupservicetimes", "AttendanceApi")
-      ]);
-      const serviceTimes = attendanceData.filter((a: any) => a.serviceTime).length;
-      const trackingGroups = groupsData.filter((g: any) => g.trackAttendance);
-      const assignedGroupIds = new Set(groupServiceTimes.map((gst: any) => gst.groupId));
-      setStats({
-        serviceTimes,
-        scheduledGroups: trackingGroups.filter((g: any) => assignedGroupIds.has(g.id)).length,
-        unscheduledGroups: trackingGroups.filter((g: any) => !assignedGroupIds.has(g.id)).length,
-        totalGroups: groupsData.length
-      });
-    } catch (error) {
-      console.error("Error loading stats:", error);
-    }
-  }, []);
+  // Same query keys as AttendanceSetup, so its refetch after an edit updates these counts too.
+  const onSetup = view === "setup";
+  const attendanceTree = useQuery<any[]>({ queryKey: ["/attendancerecords/tree", "AttendanceApi"], enabled: onSetup });
+  const groupServiceTimes = useQuery<any[]>({ queryKey: ["/groupservicetimes", "AttendanceApi"], enabled: onSetup });
+  const groups = useQuery<any[]>({ queryKey: ["/groups", "MembershipApi"], enabled: onSetup });
 
-  React.useEffect(() => {
-    if (view === "setup") loadStats();
-  }, [view, loadStats]);
+  const stats = React.useMemo(() => {
+    const groupsData = groups.data || [];
+    const trackingGroups = groupsData.filter((g: any) => g.trackAttendance);
+    const assignedGroupIds = new Set((groupServiceTimes.data || []).map((gst: any) => gst.groupId));
+    return {
+      serviceTimes: (attendanceTree.data || []).filter((a: any) => a.serviceTime).length,
+      scheduledGroups: trackingGroups.filter((g: any) => assignedGroupIds.has(g.id)).length,
+      unscheduledGroups: trackingGroups.filter((g: any) => !assignedGroupIds.has(g.id)).length,
+      totalGroups: groupsData.length
+    };
+  }, [attendanceTree.data, groupServiceTimes.data, groups.data]);
 
   const back = (
     <Box>
