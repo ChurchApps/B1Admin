@@ -1,4 +1,4 @@
-import { type Locator, type Page, test as plainTest } from "@playwright/test";
+import { type APIRequestContext, type Locator, type Page, test as plainTest } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
@@ -492,6 +492,13 @@ plainTest.describe("Calendar print colors in dark mode", () => {
 const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const CHURCH_ID = "CHU00000001";
 
+async function apiLogin(api: APIRequestContext) {
+  const res = await api.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID) || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
+}
+
 async function openCuratedCalendar(page: Page, id: string) {
   const entries = page.waitForResponse((r) => r.url().includes(`/curatedEvents/calendar/${id}?withoutEvents=1`));
   await page.goto(`/calendars/${id}`);
@@ -526,23 +533,34 @@ test.describe("Curated calendar groups", () => {
   });
 
   test("adding a whole group does not show its already-listed event twice", async ({ page }) => {
-    // Main Church Calendar already lists EVT00000001 (Sunday Morning Service) on its own.
-    await openCuratedCalendar(page, "CAL00000004");
-    await openAddGroup(page);
-    await page.getByRole("option", { name: "Sunday Morning Service", exact: true }).click();
-    const saved = page.waitForResponse((r) => r.url().includes("/curatedEvents") && r.request().method() === "POST");
-    await page.locator('[data-testid="calendar-edit-save-button"]').click();
-    await saved;
-    const removeGroup = page.locator('[data-testid="remove-group-GRP00000001-button"]');
-    await expect(removeGroup).toBeVisible({ timeout: 15000 });
+    // Uses its own calendar so seeded calendars keep their curated rows.
+    const auth = await apiLogin(page.request);
+    const calRes = await page.request.post(`${API_BASE}/content/curatedCalendars`, { ...auth, data: [{ name: "Zacchaeus Duplicate Event Calendar" }] });
+    expect(calRes.ok()).toBeTruthy();
+    const calendarId: string = (await calRes.json())[0].id;
+    try {
+      // Youth Group is not on Main Church Calendar; list one of its events on its own first.
+      const evRes = await page.request.post(`${API_BASE}/content/curatedEvents`, {
+        ...auth,
+        data: [{ curatedCalendarId: calendarId, groupId: "GRP00000013", eventIds: ["EVT00000005"] }]
+      });
+      expect(evRes.ok()).toBeTruthy();
 
-    const res = await page.request.get(`${API_BASE}/content/curatedEvents/public/calendar/${CHURCH_ID}/CAL00000004`);
-    const rows: { realEventId: string }[] = await res.json();
-    expect(rows.filter((r) => r.realEventId === "EVT00000001")).toHaveLength(1);
+      await openCuratedCalendar(page, calendarId);
+      await openAddGroup(page);
+      await page.getByRole("option", { name: "Youth Group", exact: true }).click();
+      const saved = page.waitForResponse((r) => r.url().includes("/curatedEvents") && r.request().method() === "POST");
+      await page.locator('[data-testid="calendar-edit-save-button"]').click();
+      await saved;
+      await expect(page.locator('[data-testid="remove-group-GRP00000013-button"]')).toBeVisible({ timeout: 15000 });
 
-    // Leave the seeded calendar without the whole group connected.
-    await removeGroup.click();
-    await confirmDelete(page);
-    await expect(removeGroup).toHaveCount(0, { timeout: 15000 });
+      const res = await page.request.get(`${API_BASE}/content/curatedEvents/public/calendar/${CHURCH_ID}/${calendarId}`);
+      const rows: { realEventId: string }[] = await res.json();
+      expect(rows.filter((r) => r.realEventId === "EVT00000005")).toHaveLength(1);
+    } finally {
+      // Deleting the calendar does not delete its curated rows, so remove the group first.
+      await page.request.delete(`${API_BASE}/content/curatedEvents/calendar/${calendarId}/group/GRP00000013`, auth);
+      await page.request.delete(`${API_BASE}/content/curatedCalendars/${calendarId}`, auth);
+    }
   });
 });
