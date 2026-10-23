@@ -14,6 +14,7 @@ interface Props {
   step: WorkflowStepInterface;
   steps?: WorkflowStepInterface[];
   workflows?: WorkflowInterface[];
+  assignmentConfirmation?: boolean;
   onCancel: () => void;
   onSave: (keepOpen?: boolean) => void;
   onDelete?: () => void;
@@ -69,7 +70,7 @@ export const WorkflowStepEdit = (props: Props) => {
 
         <Divider />
         {step?.id
-          ? <WorkflowStepActions stepId={step.id} workflows={props.workflows || []} />
+          ? <WorkflowStepActions assignmentConfirmation={props.assignmentConfirmation} stepId={step.id} workflows={props.workflows || []} />
           : <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowActions.saveFirst")}</Typography>}
 
         <Divider />

@@ -5,6 +5,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../../../hooks";
+import "../types";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 
 const ADD_CATEGORY = "__add__";
@@ -97,6 +98,14 @@ export const WorkflowEdit = (props: Props) => {
         </Typography>
 
         <Stack spacing={2}>
+          {!workflowId && <FormControl fullWidth>
+            <InputLabel>{Locale.label("plans.confirmation.kind", "Workflow purpose")}</InputLabel>
+            <Select label={Locale.label("plans.confirmation.kind", "Workflow purpose")} value={workflow?.workflowType || ""} data-testid="workflow-purpose" onChange={(e) => { if (workflow) setWorkflow({ ...workflow, workflowType: e.target.value || null }); }}>
+              <MenuItem value="">{Locale.label("plans.confirmation.people", "People follow-up")}</MenuItem>
+              <MenuItem value="assignmentConfirmation">{Locale.label("plans.confirmation.purpose", "Serving assignment confirmation")}</MenuItem>
+            </Select>
+          </FormControl>}
+          {workflow?.workflowType === "assignmentConfirmation" && <Typography variant="body2" color="text.secondary">{Locale.label("plans.confirmation.configureHelp", "Select this workflow in a plan's settings to opt in. New published requests get one card per assignment. Set a default assignee on the call step. App alerts remain enabled; email and text follow-up comes from this board. Accepted or declined requests close automatically; expired requests create a leader review task.")}</Typography>}
           <TextField
             fullWidth
             label={Locale.label("tasks.workflowEdit.name")}

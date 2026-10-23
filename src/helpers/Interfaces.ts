@@ -213,6 +213,7 @@ export interface PlanInterface {
   showVolunteerNames?: boolean;
   prepared?: boolean;
   autoReplaceOnDecline?: boolean;
+  confirmationWorkflowId?: string | null;
   lastAutofillRunId?: string;
 }
 

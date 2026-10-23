@@ -16,7 +16,7 @@ export const AddToWorkflowDialog: React.FC<Props> = (props) => {
   const [error, setError] = React.useState("");
 
   const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [] });
-  const activeWorkflows = (workflows.data || []).filter((w) => w.active !== false);
+  const activeWorkflows = (workflows.data || []).filter((w) => w.active !== false && w.workflowType !== "assignmentConfirmation");
 
   const handleAdd = async () => {
     if (!workflowId) return;

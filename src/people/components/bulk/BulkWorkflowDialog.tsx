@@ -21,7 +21,7 @@ export const BulkWorkflowDialog: React.FC<Props> = (props) => {
     onClose: props.onClose,
     onComplete: props.onComplete,
     onOpen: () => setWorkflowId(""),
-    loadOptions: () => ApiHelper.get("/workflows", "DoingApi").then((data: WorkflowInterface[]) => (data || []).filter((w) => w.active !== false)),
+    loadOptions: () => ApiHelper.get("/workflows", "DoingApi").then((data: WorkflowInterface[]) => (data || []).filter((w) => w.active !== false && w.workflowType !== "assignmentConfirmation")),
     apply: async () => {
       const people = props.personIds.map((id) => ({ id }));
       await ApiHelper.post("/tasks/bulkAddToWorkflow", { workflowId, people }, "DoingApi");
