@@ -48,9 +48,12 @@ export function FormEdit(props: Props) {
   const watchedId = watch("id");
   const autoCreatePerson = watch("autoCreatePerson");
 
+  // Stand-alone forms can be linked to a group: its members see the form on the group page and its leaders can view the answers.
+  const showGroup = standAloneForm || !!autoCreatePerson;
+
   const groupsQuery = useQuery<{ id: string; name: string }[]>({
     queryKey: ["/groups", "MembershipApi"],
-    enabled: !!autoCreatePerson
+    enabled: showGroup
   });
 
   const formQuery = useQuery<FormInterface>({
@@ -100,7 +103,7 @@ export function FormEdit(props: Props) {
 
   const onValid = (values: AnyRecord) => {
     const f = { ...values };
-    f.groupId = f.autoCreatePerson ? (f.groupId || null) : null;
+    f.groupId = showGroup ? (f.groupId || null) : null;
     if (!showDates) { f.accessEndTime = null; f.accessStartTime = null; } else {
       f.accessStartTime = f.accessStartTime ? DateHelper.toDate(f.accessStartTime) : null;
       f.accessEndTime = f.accessEndTime ? DateHelper.toDate(f.accessEndTime) : null;
@@ -184,18 +187,24 @@ export function FormEdit(props: Props) {
       <Controller name="autoCreatePerson" control={control} render={({ field }) => (
         <FormControlLabel control={<Checkbox checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} data-testid="auto-create-person-checkbox" />} label={Locale.label("forms.formEdit.autoCreatePerson")} />
       )} />
-      {autoCreatePerson && (
+      {showGroup && (
         <>
           <FormControl fullWidth>
-            <InputLabel id="formGroup" shrink>{Locale.label("forms.formEdit.addToGroup")}</InputLabel>
+            <InputLabel id="formGroup" shrink>{Locale.label("forms.formEdit.linkGroup")}</InputLabel>
             <Controller name="groupId" control={control} render={({ field }) => (
-              <Select {...field} value={(groupsQuery.data || []).some((g) => g.id === field.value) ? field.value : ""} labelId="formGroup" label={Locale.label("forms.formEdit.addToGroup")} displayEmpty notched data-testid="form-group-select">
+              <Select {...field} value={(groupsQuery.data || []).some((g) => g.id === field.value) ? field.value : ""} labelId="formGroup" label={Locale.label("forms.formEdit.linkGroup")} displayEmpty notched data-testid="form-group-select">
                 <MenuItem value="">{Locale.label("forms.formEdit.addToGroupNone")}</MenuItem>
                 {(groupsQuery.data || []).map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
               </Select>
             )} />
           </FormControl>
-          <Typography variant="caption" color="text.secondary">{Locale.label("forms.formEdit.addToGroupHelper")}</Typography>
+          <Typography variant="caption" color="text.secondary" data-testid="form-group-helper">
+            {[standAloneForm && Locale.label("forms.formEdit.linkGroupHelper"), autoCreatePerson && Locale.label("forms.formEdit.addToGroupHelper")].filter(Boolean).join(" ")}
+          </Typography>
+        </>
+      )}
+      {autoCreatePerson && (
+        <>
           <TextField fullWidth label={Locale.label("forms.formEdit.followUpSubject")} type="text" {...register("followUpSubject")} data-testid="follow-up-subject-input" />
           <TextField fullWidth multiline minRows={4} label={Locale.label("forms.formEdit.followUpBody")} {...register("followUpBody")} data-testid="follow-up-body-input" />
           <Typography variant="caption" color="text.secondary">{Locale.label("forms.formEdit.followUpHelper")}</Typography>

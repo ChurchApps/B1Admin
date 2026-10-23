@@ -1177,6 +1177,8 @@
       "followUpHelper": "You can use {firstName} and {churchName} tokens.",
       "followUpSubject": "Follow-up Email Subject",
       "formNameAria": "Form name",
+      "linkGroup": "Linked group",
+      "linkGroupHelper": "Members of this group see this form on their group page, and its leaders can view and print the answers.",
       "name": "Form Name",
       "nameReqMsg": "Form name is required.",
       "ppl": "People",
