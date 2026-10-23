@@ -46,7 +46,7 @@ export const CalendarPage = () => {
       setCurrentCalendar(data);
     });
 
-    ApiHelper.get("/groups/my", "MembershipApi").then((data: GroupInterface[]) => {
+    ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => {
       setGroups(data);
       setIsLoadingGroups(false);
     });
@@ -65,7 +65,8 @@ export const CalendarPage = () => {
     }
   };
 
-  const addedGroups = groups.filter((g) => events.find((event) => event.groupId === g.id));
+  // Only whole-group entries (no eventId) connect a group; single events just carry their groupId.
+  const addedGroups = groups.filter((g) => events.find((event) => event.groupId === g.id && !event.eventId));
 
   useEffect(() => {
     loadData();

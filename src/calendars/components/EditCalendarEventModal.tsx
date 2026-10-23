@@ -51,7 +51,7 @@ export function EditCalendarEventModal(props: Props) {
 
   const loadData = () => {
     setIsLoadingGroups(true);
-    ApiHelper.get("/groups/my", "MembershipApi").then((data: GroupInterface[]) => {
+    ApiHelper.get("/groups/tag/standard", "MembershipApi").then((data: GroupInterface[]) => {
       setGroups(data);
       setIsLoadingGroups(false);
     });
