@@ -138,6 +138,8 @@ export function SectionEdit(props: Props) {
         }
         setSection(data);
         props.updatedCallback(data);
+      }).catch((error: any) => {
+        setErrors([error?.message || Locale.label("site.sectionEdit.saveError")]);
       });
     }
   };

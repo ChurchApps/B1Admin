@@ -5213,7 +5213,8 @@
       "dividers": "Shape Dividers",
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
-      "id": "ID"
+      "id": "ID",
+      "saveError": "Could not save this section. Please try again."
     },
     "sectionTemplates": {
       "aboutSplit": "About Us",
