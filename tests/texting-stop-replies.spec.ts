@@ -31,6 +31,8 @@ test.describe.serial("Texting STOP replies", () => {
     const ctx = await request.newContext();
     const auth = await apiAuth(ctx);
     await ctx.post(`${API_BASE}/membership/users/updateOptedOut`, { ...auth, data: { personId: DONALD_ID, optedOut: false } });
+    // Put the seeded Clearstream provider back after the Twilio test
+    await ctx.post(`${API_BASE}/messaging/texting/providers`, { ...auth, data: [{ id: "TXP00000001", provider: "clearstream", apiKey: "demo_api_key_clearstream", apiSecret: "", fromNumber: "+12175550000", enabled: true }] });
     await ctx.dispose();
     await page?.context().close();
   });
@@ -64,5 +66,23 @@ test.describe.serial("Texting STOP replies", () => {
     const person = await (await ctx.get(`${API_BASE}/membership/people/${DONALD_ID}`, auth)).json();
     expect(Boolean(person.optedOut)).toBe(true);
     await ctx.dispose();
+  });
+
+  test("a church can bring its own Twilio account and number", async () => {
+    const section = page.getByTestId("settings-texting"); // still in edit mode from the first test
+    await section.getByRole("combobox").click();
+    await page.getByRole("option", { name: "Twilio" }).click();
+    await expect(section.getByRole("link", { name: "Twilio Console" })).toBeVisible();
+    await section.getByLabel("Account SID").fill("AC00000000000000000000000000000000");
+    await section.getByLabel("Auth Token").fill("demo-auth-token");
+    await section.getByLabel("From Number").fill("+12175550000");
+    await section.locator("button").getByText("Save").click();
+    await expect(section.getByRole("combobox")).toHaveCount(0, { timeout: 10000 });
+
+    await section.getByTestId("small-button-edit").click();
+    await expect(section.getByRole("combobox")).toHaveText("Twilio", { timeout: 10000 });
+    await expect(section.getByLabel("From Number")).toHaveValue("+12175550000");
+    await expect(section.getByLabel("Auth Token")).toHaveValue("********");
+    await expect(page.getByTestId("texting-inbound-url").locator("input")).toHaveValue(/\/messaging\/texting\/inbound\/CHU00000001\//);
   });
 });
