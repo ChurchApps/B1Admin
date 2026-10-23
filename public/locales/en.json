@@ -1474,6 +1474,7 @@
     },
     "groupNavigation": {
       "calendar": "Calendar",
+      "forms": "Linked forms",
       "health": "Health",
       "members": "Members",
       "notes": "Leader notes",
@@ -1484,8 +1485,13 @@
     },
     "groupRecord": {
       "allEvents": "All events",
+      "allForms": "All forms",
       "allMembers": "All members",
       "allSessions": "All sessions",
+      "formClosed": "Closed",
+      "formCount": "forms",
+      "formCountOne": "form",
+      "formOpen": "Open",
       "healthSummary": "{members} members · {joined} joined · {left} left in 90 days",
       "lastEvent": "Last",
       "latestSession": "Latest {date}",
