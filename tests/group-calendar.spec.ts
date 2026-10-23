@@ -1,4 +1,4 @@
-import { type Locator, type Page, test as plainTest } from "@playwright/test";
+import { type APIRequestContext, type Locator, type Page, test as plainTest } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
@@ -486,5 +486,81 @@ plainTest.describe("Calendar print colors in dark mode", () => {
     await expect(label).toBeVisible({ timeout: 15000 });
     const { color, luminance } = await printLuminanceOf(label);
     expect(luminance, "text color " + color).toBeLessThan(0.4);
+  });
+});
+
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
+const CHURCH_ID = "CHU00000001";
+
+async function apiLogin(api: APIRequestContext) {
+  const res = await api.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID) || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
+}
+
+async function openCuratedCalendar(page: Page, id: string) {
+  const entries = page.waitForResponse((r) => r.url().includes(`/curatedEvents/calendar/${id}?withoutEvents=1`));
+  await page.goto(`/calendars/${id}`);
+  await entries;
+  await page.locator('[data-testid="calendar-add-event-button"]').waitFor({ state: "visible", timeout: 15000 });
+  await expect(page.locator('[data-testid="groups-loading"]')).toHaveCount(0, { timeout: 15000 });
+}
+
+async function openAddGroup(page: Page) {
+  await page.locator('[data-testid="calendar-add-event-button"]').click();
+  const combo = page.locator('[data-testid="calendar-group-select"]').first();
+  await combo.waitFor({ state: "visible", timeout: 10000 });
+  await combo.click();
+}
+
+// Issue 1337: Add Group only listed the admin's own groups, an event listed on its own and through its
+// whole group showed twice, and a single-event entry showed its group under "Groups in Calendar".
+test.describe("Curated calendar groups", () => {
+  test("Add Group lists groups the admin is not a member of", async ({ page }) => {
+    // Demo User is not in Youth Group.
+    await openCuratedCalendar(page, "CAL00000004");
+    await openAddGroup(page);
+    await expect(page.getByRole("option", { name: "Youth Group", exact: true })).toBeVisible({ timeout: 10000 });
+  });
+
+  test("a single-event entry does not show its group as connected", async ({ page }) => {
+    // Small Groups Calendar only lists one Young Families Group event, not the whole group.
+    await openCuratedCalendar(page, "CAL00000003");
+    await expect(page.getByText("Groups in Calendar")).toBeVisible();
+    await expect(page.getByText("No groups added yet")).toBeVisible();
+    await expect(page.locator('[data-testid="remove-group-GRP00000014-button"]')).toHaveCount(0);
+  });
+
+  test("adding a whole group does not show its already-listed event twice", async ({ page }) => {
+    // Uses its own calendar so seeded calendars keep their curated rows.
+    const auth = await apiLogin(page.request);
+    const calRes = await page.request.post(`${API_BASE}/content/curatedCalendars`, { ...auth, data: [{ name: "Zacchaeus Duplicate Event Calendar" }] });
+    expect(calRes.ok()).toBeTruthy();
+    const calendarId: string = (await calRes.json())[0].id;
+    try {
+      // Youth Group is not on Main Church Calendar; list one of its events on its own first.
+      const evRes = await page.request.post(`${API_BASE}/content/curatedEvents`, {
+        ...auth,
+        data: [{ curatedCalendarId: calendarId, groupId: "GRP00000013", eventIds: ["EVT00000005"] }]
+      });
+      expect(evRes.ok()).toBeTruthy();
+
+      await openCuratedCalendar(page, calendarId);
+      await openAddGroup(page);
+      await page.getByRole("option", { name: "Youth Group", exact: true }).click();
+      const saved = page.waitForResponse((r) => r.url().includes("/curatedEvents") && r.request().method() === "POST");
+      await page.locator('[data-testid="calendar-edit-save-button"]').click();
+      await saved;
+      await expect(page.locator('[data-testid="remove-group-GRP00000013-button"]')).toBeVisible({ timeout: 15000 });
+
+      const res = await page.request.get(`${API_BASE}/content/curatedEvents/public/calendar/${CHURCH_ID}/${calendarId}`);
+      const rows: { realEventId: string }[] = await res.json();
+      expect(rows.filter((r) => r.realEventId === "EVT00000005")).toHaveLength(1);
+    } finally {
+      // Deleting the calendar does not delete its curated rows, so remove the group first.
+      await page.request.delete(`${API_BASE}/content/curatedEvents/calendar/${calendarId}/group/GRP00000013`, auth);
+      await page.request.delete(`${API_BASE}/content/curatedCalendars/${calendarId}`, auth);
+    }
   });
 });
