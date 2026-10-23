@@ -1,4 +1,4 @@
-import { request, test as plainTest, type Page } from "@playwright/test";
+import { request, test as plainTest, type Page, type Route } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -845,6 +845,57 @@ loggedInTest("printed rosters show the church logo above the group name", async 
   await expect(logos).toHaveCount(5);
   await expect(logos.first()).toHaveAttribute("alt", "Grace Community Church");
   await expect(page.locator(".roster-church")).toHaveCount(5);
+});
+
+// ChurchAppsSupport#1336: session attendance saves the roster together, warns on leave mid-save, and fits a phone.
+// Demo: SES00000001 is the Sunday Morning Service group's 9:00 AM session, with people already marked present.
+loggedInTest.describe("Session attendance save and layout", () => {
+  const SESSION_URL = "/groups/GRP00000001?view=sessions&sessionId=SES00000001";
+
+  async function openSession(page: Page) {
+    await page.goto(SESSION_URL);
+    await expect(page.locator('[data-cy="session-present-msg"]')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("session-attendance-status-button")).toBeVisible({ timeout: 10000 });
+  }
+
+  loggedInTest("warns before the tab closes while attendance is still saving", async ({ page }) => {
+    await openSession(page);
+    await expect(page.locator('input[type="checkbox"]:checked').first()).toBeVisible({ timeout: 10000 });
+
+    // Hold every save request so the page stays on "Saving...".
+    const held: Route[] = [];
+    await page.route(/\/attendance\/visitsessions(\/log|\?sessionId=)/, (route) => {
+      if (route.request().method() === "GET") return route.continue();
+      held.push(route);
+    });
+
+    await page.getByTestId("attendance-select-none").click();
+    await page.getByTestId("save-attendance-button").click();
+    await expect(page.getByTestId("save-attendance-button")).toHaveText("Saving...", { timeout: 10000 });
+    // The whole roster goes out at once rather than one person after another.
+    await expect.poll(() => held.length, { timeout: 5000 }).toBeGreaterThan(1);
+
+    const warned = await page.evaluate(() => {
+      const e = new Event("beforeunload", { cancelable: true });
+      window.dispatchEvent(e);
+      return e.defaultPrevented;
+    });
+    expect(warned).toBe(true);
+
+    // Abort the held requests so the seeded attendance stays as it was.
+    await Promise.all(held.map((r) => r.abort()));
+  });
+
+  loggedInTest.describe("phone width", () => {
+    loggedInTest.use({ viewport: { width: 390, height: 844 } });
+
+    loggedInTest("session card with a service time fits a 390px screen", async ({ page }) => {
+      await openSession(page);
+      await expect(page.getByTestId("session-print-all-rosters-button")).toBeVisible();
+      const width = await page.evaluate(() => document.documentElement.scrollWidth);
+      expect(width).toBeLessThanOrEqual(390);
+    });
+  });
 });
 
 // Both describes below grant a role to volunteer@b1.church, so they share one worker in order;
