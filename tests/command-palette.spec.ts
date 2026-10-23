@@ -82,4 +82,31 @@ test.describe("Command palette", () => {
     await page.keyboard.press("Escape");
     await expect(palette).toBeHidden();
   });
+
+  const searchPalette = async (page: any, q: string) => {
+    await page.goto("/");
+    await page.getByTestId("command-palette-open").click();
+    const palette = page.getByTestId("command-palette");
+    await palette.getByRole("textbox").fill(q);
+    return palette;
+  };
+
+  test("church logo finds Add Your Church Logo", async ({ page }) => {
+    const palette = await searchPalette(page, "church logo");
+    await expect(palette.getByRole("button", { name: /Add Your Church Logo/ })).toBeVisible();
+  });
+
+  test("qr finds QR guest registration on the B1 CheckIn page", async ({ page }) => {
+    const palette = await searchPalette(page, "qr");
+    await expect(palette.getByRole("button", { name: /QR guest registration/i })).toBeVisible();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/mobile\/checkin/);
+  });
+
+  test("b1 checkin goes to the B1 CheckIn page", async ({ page }) => {
+    const palette = await searchPalette(page, "b1 checkin");
+    await expect(palette.locator(".om-hit").first()).toHaveAccessibleName(/check-?in/i);
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/mobile\/checkin$/);
+  });
 });
