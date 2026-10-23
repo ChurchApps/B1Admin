@@ -3891,11 +3891,11 @@
       "none": "なし"
     },
     "directoryVisibility": {
-      "everyone": "全員（訪問者を含む）",
+      "everyone": "訪問者以上",
       "label": "名簿に表示する",
-      "members": "メンバーとスタッフ",
+      "members": "メンバー以上",
       "regularAttendees": "定期出席者以上",
-      "staff": "スタッフのみ"
+      "staff": "管理者のみ"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

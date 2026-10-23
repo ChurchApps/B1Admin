@@ -3891,11 +3891,11 @@
       "none": "Geen"
     },
     "directoryVisibility": {
-      "everyone": "Iedereen (inclusief bezoekers)",
+      "everyone": "Bezoekers en hoger",
       "label": "In register weergeven",
-      "members": "Leden en medewerkers",
+      "members": "Leden en hoger",
       "regularAttendees": "Regelmatige bezoekers en hoger",
-      "staff": "Alleen medewerkers"
+      "staff": "Alleen beheerders"
     },
     "domain": {
       "domainPlaceholder": "uwsite.nl",

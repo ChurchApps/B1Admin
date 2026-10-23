@@ -3891,11 +3891,11 @@
       "none": "Žádná"
     },
     "directoryVisibility": {
-      "everyone": "Všichni (včetně návštěvníků)",
+      "everyone": "Návštěvníci a výše",
       "label": "Zobrazit v adresáři",
-      "members": "Členové a zaměstnanci",
+      "members": "Členové a výše",
       "regularAttendees": "Pravidelní účastníci a výše",
-      "staff": "Pouze zaměstnanci"
+      "staff": "Pouze administrátoři"
     },
     "domain": {
       "domainPlaceholder": "vasestranky.cz",

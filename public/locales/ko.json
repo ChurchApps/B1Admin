@@ -3891,11 +3891,11 @@
       "none": "없음"
     },
     "directoryVisibility": {
-      "everyone": "모든 사람 (방문자 포함)",
+      "everyone": "방문자 이상",
       "label": "디렉토리에 표시",
-      "members": "회원 및 직원",
+      "members": "회원 이상",
       "regularAttendees": "정기 참석자 이상",
-      "staff": "직원만"
+      "staff": "관리자만"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

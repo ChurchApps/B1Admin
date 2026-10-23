@@ -3891,11 +3891,11 @@
       "none": "无"
     },
     "directoryVisibility": {
-      "everyone": "所有人（包括访客）",
+      "everyone": "访客及以上",
       "label": "在目录中显示",
-      "members": "成员和工作人员",
+      "members": "成员及以上",
       "regularAttendees": "固定参加者及以上",
-      "staff": "仅工作人员"
+      "staff": "仅管理员"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

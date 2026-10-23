@@ -3891,11 +3891,11 @@
       "none": "Nessuno"
     },
     "directoryVisibility": {
-      "everyone": "Tutti (inclusi i visitatori)",
+      "everyone": "Visitatori e superiori",
       "label": "Mostra nella directory",
-      "members": "Membri e personale",
+      "members": "Membri e superiori",
       "regularAttendees": "Frequentatori regolari e superiori",
-      "staff": "Solo personale"
+      "staff": "Solo amministratori"
     },
     "domain": {
       "domainPlaceholder": "tuosito.com",

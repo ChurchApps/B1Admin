@@ -3891,11 +3891,11 @@
       "none": "कोई नहीं"
     },
     "directoryVisibility": {
-      "everyone": "सभी (आगंतुकों सहित)",
+      "everyone": "आगंतुक और ऊपर",
       "label": "डायरेक्टरी में दिखाएं",
-      "members": "सदस्य और कर्मचारी",
+      "members": "सदस्य और ऊपर",
       "regularAttendees": "नियमित उपस्थित और ऊपर",
-      "staff": "केवल कर्मचारी"
+      "staff": "केवल व्यवस्थापक"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

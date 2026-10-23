@@ -3891,11 +3891,11 @@
       "none": "Ingen"
     },
     "directoryVisibility": {
-      "everyone": "Alle (inkludert besøkende)",
+      "everyone": "Besøkende og over",
       "label": "Vis i katalogen",
-      "members": "Medlemmer og ansatte",
+      "members": "Medlemmer og over",
       "regularAttendees": "Faste deltakere og over",
-      "staff": "Kun ansatte"
+      "staff": "Kun administratorer"
     },
     "domain": {
       "domainPlaceholder": "dittsite.com",

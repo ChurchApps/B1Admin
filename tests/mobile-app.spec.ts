@@ -319,10 +319,19 @@ test.describe("B1 Mobile page saves", () => {
       await ctx.dispose();
     });
 
+    // ChurchAppsSupport#1316: the tiers read Admins Only through Visitors and Above; Guests are never an option.
+    test("Show in Directory lists Admins Only through Visitors and Above, in order", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      await page.getByLabel("Show in Directory", { exact: true }).first().click();
+      const options = page.locator('[role="listbox"] li[role="option"]');
+      await expect(options).toHaveText(["Admins Only", "Members and Above", "Regular Attendees and Above", "Visitors and Above"], { timeout: 10000 });
+      await page.keyboard.press("Escape");
+    });
+
     test("saving Regular Attendees is visible to the public settings endpoint", async ({ page }) => {
       await page.goto("/mobile/b1-mobile");
-      await expect(page.getByLabel("Show in Directory", { exact: true }).first()).toContainText("Members & Staff", { timeout: 15000 });
-      await selectMuiByLabel(page, "Show in Directory", "Regular Attendees & Above");
+      await expect(page.getByLabel("Show in Directory", { exact: true }).first()).toContainText("Members and Above", { timeout: 15000 });
+      await selectMuiByLabel(page, "Show in Directory", "Regular Attendees and Above");
       await saveSettings(page);
 
       const pub = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();

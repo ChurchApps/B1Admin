@@ -3891,11 +3891,11 @@
       "none": "Keine"
     },
     "directoryVisibility": {
-      "everyone": "Alle (einschließlich Besucher)",
+      "everyone": "Besucher und höher",
       "label": "Im Verzeichnis anzeigen",
-      "members": "Mitglieder & Mitarbeiter",
+      "members": "Mitglieder und höher",
       "regularAttendees": "Regelmäßige Besucher und höher",
-      "staff": "Nur Mitarbeiter"
+      "staff": "Nur Administratoren"
     },
     "domain": {
       "domainPlaceholder": "ihreseite.de",

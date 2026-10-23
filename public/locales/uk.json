@@ -3891,11 +3891,11 @@
       "none": "Немає"
     },
     "directoryVisibility": {
-      "everyone": "Everyone (Including Visitors)",
+      "everyone": "Visitors and Above",
       "label": "Show in Directory",
-      "members": "Учасники та персонал",
-      "regularAttendees": "Regular Attendees & Above",
-      "staff": "Лише персонал"
+      "members": "Учасники та вище",
+      "regularAttendees": "Regular Attendees and Above",
+      "staff": "Лише адміністратори"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

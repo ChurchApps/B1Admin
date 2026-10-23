@@ -3891,11 +3891,11 @@
       "none": "Нема"
     },
     "directoryVisibility": {
-      "everyone": "Сви (укључујући посетиоце)",
+      "everyone": "Посетиоци и више",
       "label": "Прикажи у именику",
-      "members": "Чланови и особље",
+      "members": "Чланови и више",
       "regularAttendees": "Редовни посетиоци и више",
-      "staff": "Само особље"
+      "staff": "Само администратори"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

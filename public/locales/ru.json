@@ -3891,11 +3891,11 @@
       "none": "Нет"
     },
     "directoryVisibility": {
-      "everyone": "Все (включая посетителей)",
+      "everyone": "Посетители и выше",
       "label": "Показать в каталоге",
-      "members": "Участники и персонал",
+      "members": "Участники и выше",
       "regularAttendees": "Регулярные посетители и выше",
-      "staff": "Только персонал"
+      "staff": "Только администраторы"
     },
     "domain": {
       "domainPlaceholder": "вашсайт.com",

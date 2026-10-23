@@ -3891,11 +3891,11 @@
       "none": "Ingen"
     },
     "directoryVisibility": {
-      "everyone": "Alle (inkl. besøgende)",
+      "everyone": "Besøgende og højere",
       "label": "Vis i register",
-      "members": "Medlemmer og personale",
+      "members": "Medlemmer og højere",
       "regularAttendees": "Regelmæssige deltagere og højere",
-      "staff": "Kun personale"
+      "staff": "Kun administratorer"
     },
     "domain": {
       "domainPlaceholder": "ditsite.dk",

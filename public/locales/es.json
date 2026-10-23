@@ -3891,11 +3891,11 @@
       "none": "Ninguno"
     },
     "directoryVisibility": {
-      "everyone": "Todos (incluyendo visitantes)",
+      "everyone": "Visitantes y superiores",
       "label": "Mostrar en directorio",
-      "members": "Miembros y personal",
+      "members": "Miembros y superiores",
       "regularAttendees": "Asistentes regulares y superiores",
-      "staff": "Solo personal"
+      "staff": "Solo administradores"
     },
     "domain": {
       "domainPlaceholder": "tusitio.com",

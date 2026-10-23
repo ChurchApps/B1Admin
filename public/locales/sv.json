@@ -3891,11 +3891,11 @@
       "none": "Ingen"
     },
     "directoryVisibility": {
-      "everyone": "Alla (inklusive besökare)",
+      "everyone": "Besökare och uppåt",
       "label": "Visa i katalogen",
-      "members": "Medlemmar och personal",
+      "members": "Medlemmar och uppåt",
       "regularAttendees": "Regelbundna deltagare och uppåt",
-      "staff": "Endast personal"
+      "staff": "Endast administratörer"
     },
     "domain": {
       "domainPlaceholder": "dinwebbplats.se",

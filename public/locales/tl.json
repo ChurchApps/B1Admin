@@ -3891,11 +3891,11 @@
       "none": "Wala"
     },
     "directoryVisibility": {
-      "everyone": "Lahat (kasama ang mga bisita)",
+      "everyone": "Mga Bisita at Pataas",
       "label": "Ipakita sa Direktoryo",
-      "members": "Mga Miyembro at Staff",
+      "members": "Mga Miyembro at Pataas",
       "regularAttendees": "Mga Regular na Dumadalo at Pataas",
-      "staff": "Staff Lamang"
+      "staff": "Mga Admin Lamang"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

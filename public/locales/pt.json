@@ -3891,11 +3891,11 @@
       "none": "Nenhum"
     },
     "directoryVisibility": {
-      "everyone": "Todos (incluindo visitantes)",
+      "everyone": "Visitantes e acima",
       "label": "Mostrar no diretório",
-      "members": "Membros e funcionários",
+      "members": "Membros e acima",
       "regularAttendees": "Frequentadores regulares e acima",
-      "staff": "Apenas funcionários"
+      "staff": "Apenas administradores"
     },
     "domain": {
       "domainPlaceholder": "seusite.com",
