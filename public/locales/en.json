@@ -2049,6 +2049,22 @@
       "selMsg": "Please select a value for all fields",
       "with": "with"
     },
+    "notesPage": {
+      "author": "By {name}",
+      "confidential": "Confidential",
+      "emptyEvents": "No event notes you can view yet.",
+      "emptyGroups": "No notes yet for groups you lead.",
+      "emptyPeople": "No person notes you can view yet.",
+      "emptyWorkflows": "No workflow card notes you can view yet.",
+      "events": "Events",
+      "groups": "Groups",
+      "loadMore": "Load more",
+      "people": "People",
+      "subtitle": "Recent notes across people, groups, events and workflow cards",
+      "title": "Notes",
+      "unknownSource": "(unknown)",
+      "workflows": "Workflows"
+    },
     "peopleColumns": {
       "appFilt": "Apply Filters",
       "cust": "Custom",
