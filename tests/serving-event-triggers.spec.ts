@@ -113,6 +113,30 @@ test.describe.serial("Serving Management - Event Triggers", () => {
     await expect(page.getByText("Box is not defined")).toHaveCount(0);
   });
 
+  // Yearly birthday rule: Birth Date day of month can be "Today" (resolved in the church's time zone).
+  test("a scheduled rule condition can match a birthday that is today", async () => {
+    await page.goto("/serving/tasks/workflows/WFL00000004");
+    const board = page.locator('[data-testid="workflow-board"]');
+    await recoverFromViteError(page, board);
+    await board.waitFor({ state: "visible", timeout: 15000 });
+    await page.locator('[data-testid="board-triggers-tab"]').click();
+    await page.locator('[data-testid="event-trigger-row-WKT00000004"]').click();
+    await page.locator('[data-testid="add-sched-condition-button"]').click();
+
+    await page.locator('[data-testid="condition-type-select"]').click();
+    await page.getByRole("option", { name: "Birth Date" }).click();
+    await page.getByRole("combobox").filter({ hasText: "Full Date" }).click();
+    await page.getByRole("option", { name: "Day of Month" }).click();
+    await page.locator('[data-testid="day-of-month-select"]').click();
+    await page.getByRole("option", { name: "Today" }).click();
+    await page.getByRole("button", { name: "Save" }).click();
+
+    const chip = page.locator('[data-testid^="sched-condition-"]').filter({ hasText: "Birth Date: Day of month is Today" });
+    await expect(chip).toBeVisible({ timeout: 10000 });
+    await chip.locator(".MuiChip-deleteIcon").click();
+    await expect(chip).toHaveCount(0, { timeout: 10000 });
+  });
+
   // The feature: back-end mutation from ANY front-end fires the trigger.
   test("creating a Visitor person via the API drops a card on the workflow", async () => {
     const ctx = await request.newContext();
