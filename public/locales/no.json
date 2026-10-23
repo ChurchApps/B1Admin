@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Sendt til {successCount} av {recipientCount} kvalifisert mottaker.",
       "subject": "Emne",
       "subjectMergeFieldHint": "Sett inn flettefelt i emnet:",
-      "subjectPlaceholder": "f.eks. Hei {firstName}, oppdatering fra {churchName}"
+      "subjectPlaceholder": "f.eks. Hei {{firstName}}, oppdatering fra {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} tegn ({segments} SMS-segmenter)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Eksempeldata vist: John Smith, john@example.com",
       "previewSubject": "Emne:",
       "subject": "Emne",
-      "subjectPlaceholder": "f.eks. Hei {firstName}, velkommen til {churchName}",
+      "subjectPlaceholder": "f.eks. Hei {{firstName}}, velkommen til {{churchName}}",
       "subjectRequired": "Emne er påkrevd.",
       "templateName": "Malnavn",
       "templateNamePlaceholder": "f.eks. Velkomst-e-post, Påminnelse om arrangement",

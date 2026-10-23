@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab, Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab, Dialog, DialogContent, DialogActions, Button, CircularProgress } from "@mui/material";
 import { MarkEmailRead as MarkEmailReadIcon, VerifiedUser as VerifiedUserIcon } from "@mui/icons-material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
@@ -84,6 +84,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [bodyEditorKey, setBodyEditorKey] = React.useState(0);
   const [showPreview, setShowPreview] = React.useState(false);
   const [sendStatus, setSendStatus] = React.useState<SendStatus | null>(null);
+  const [statusLoaded, setStatusLoaded] = React.useState(false);
   const [requesting, setRequesting] = React.useState(false);
 
   const isGroupMode = !!props.groupId;
@@ -131,7 +132,10 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi").then((data: SendStatus) => setSendStatus(data)).catch(() => { /* send still enforces the limit server-side */ });
+    ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi")
+      .then((data: SendStatus) => setSendStatus(data))
+      .catch(() => { /* send still enforces the limit server-side */ })
+      .finally(() => setStatusLoaded(true));
   }, []);
 
   const handleRequestReview = async () => {
@@ -216,6 +220,16 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       </>
     );
   };
+
+  if (!statusLoaded) {
+    return (
+      <Dialog open onClose={props.onClose} maxWidth="sm" fullWidth>
+        <DialogContent>
+          <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}><CircularProgress /></Box>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   if (sendStatus && !sendStatus.approved) {
     return (

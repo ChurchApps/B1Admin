@@ -23,10 +23,10 @@ export const DashboardPage = () => {
             <CardWithHeader title={Locale.label("dashboard.needsAttention.title")} icon={<AttentionIcon />}>
               <Stack>
                 {pendingApprovals > 0 && (
-                  <QuickActionItem icon={<ApprovalsIcon fontSize="small" />} title={Locale.label("dashboard.needsAttention.approvals").replace("{count}", String(pendingApprovals))} linkUrl="/calendars/approvals" />
+                  <QuickActionItem icon={<ApprovalsIcon fontSize="small" />} title={Locale.label(pendingApprovals === 1 ? "dashboard.needsAttention.approvalsSingular" : "dashboard.needsAttention.approvals").replace("{count}", String(pendingApprovals))} linkUrl="/calendars/approvals" />
                 )}
                 {pendingJoinRequests > 0 && (
-                  <QuickActionItem icon={<JoinRequestIcon fontSize="small" />} title={Locale.label("dashboard.needsAttention.joinRequests").replace("{count}", String(pendingJoinRequests))} linkUrl="/groups/pending" />
+                  <QuickActionItem icon={<JoinRequestIcon fontSize="small" />} title={Locale.label(pendingJoinRequests === 1 ? "dashboard.needsAttention.joinRequestsSingular" : "dashboard.needsAttention.joinRequests").replace("{count}", String(pendingJoinRequests))} linkUrl="/groups/pending" />
                 )}
               </Stack>
             </CardWithHeader>

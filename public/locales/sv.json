@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Skickat till {successCount} av {recipientCount} behörig mottagare.",
       "subject": "Ämne",
       "subjectMergeFieldHint": "Infoga sammanfogningsfält i ämnet:",
-      "subjectPlaceholder": "t.ex. Hej {firstName}, uppdatering från {churchName}"
+      "subjectPlaceholder": "t.ex. Hej {{firstName}}, uppdatering från {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} tecken ({segments} SMS-segment)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Exempeldata visas: John Smith, john@example.com",
       "previewSubject": "Ämne:",
       "subject": "Ämne",
-      "subjectPlaceholder": "t.ex. Hej {firstName}, välkommen till {churchName}",
+      "subjectPlaceholder": "t.ex. Hej {{firstName}}, välkommen till {{churchName}}",
       "subjectRequired": "Ämne krävs.",
       "templateName": "Mallnamn",
       "templateNamePlaceholder": "t.ex. Välkomstmail, Evenemangspåminnelse",

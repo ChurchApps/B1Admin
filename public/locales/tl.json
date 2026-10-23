@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Naipadala sa {successCount} sa {recipientCount} karapat-dapat na tatanggap.",
       "subject": "Paksa",
       "subjectMergeFieldHint": "Maglagay ng merge field sa paksa:",
-      "subjectPlaceholder": "hal. Hello {firstName}, update mula sa {churchName}"
+      "subjectPlaceholder": "hal. Hello {{firstName}}, update mula sa {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} character ({segments} SMS segments)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Ipinapakitang sample data: John Smith, john@example.com",
       "previewSubject": "Paksa:",
       "subject": "Paksa",
-      "subjectPlaceholder": "hal. Hello {firstName}, maligayang pagdating sa {churchName}",
+      "subjectPlaceholder": "hal. Hello {{firstName}}, maligayang pagdating sa {{churchName}}",
       "subjectRequired": "Kinakailangan ang paksa.",
       "templateName": "Pangalan ng Template",
       "templateNamePlaceholder": "hal. Welcome Email, Event Reminder",

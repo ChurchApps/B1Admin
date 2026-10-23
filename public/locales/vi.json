@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Đã gửi đến {successCount} trên {recipientCount} người nhận đủ điều kiện.",
       "subject": "Chủ đề",
       "subjectMergeFieldHint": "Chèn trường gộp vào chủ đề:",
-      "subjectPlaceholder": "ví dụ: Xin chào {firstName}, cập nhật từ {churchName}"
+      "subjectPlaceholder": "ví dụ: Xin chào {{firstName}}, cập nhật từ {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} ký tự ({segments} đoạn SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Dữ liệu mẫu được hiển thị: John Smith, john@example.com",
       "previewSubject": "Chủ đề:",
       "subject": "Chủ đề",
-      "subjectPlaceholder": "ví dụ: Xin chào {firstName}, chào mừng đến {churchName}",
+      "subjectPlaceholder": "ví dụ: Xin chào {{firstName}}, chào mừng đến {{churchName}}",
       "subjectRequired": "Chủ đề là bắt buộc.",
       "templateName": "Tên mẫu",
       "templateNamePlaceholder": "ví dụ: Email chào mừng, Nhắc nhở sự kiện",

@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "تم الإرسال إلى {successCount} من {recipientCount} مستلم مؤهل.",
       "subject": "الموضوع",
       "subjectMergeFieldHint": "إدراج حقل دمج في الموضوع:",
-      "subjectPlaceholder": "مثال: مرحبًا {firstName}، تحديث من {churchName}"
+      "subjectPlaceholder": "مثال: مرحبًا {{firstName}}، تحديث من {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} حرفًا ({segments} مقاطع SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "البيانات النموذجية المعروضة: John Smith، john@example.com",
       "previewSubject": "الموضوع:",
       "subject": "الموضوع",
-      "subjectPlaceholder": "مثال: مرحبًا {firstName}، أهلاً بك في {churchName}",
+      "subjectPlaceholder": "مثال: مرحبًا {{firstName}}، أهلاً بك في {{churchName}}",
       "subjectRequired": "الموضوع مطلوب.",
       "templateName": "اسم القالب",
       "templateNamePlaceholder": "مثال: بريد ترحيب، تذكير بحدث",

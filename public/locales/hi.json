@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "{recipientCount} योग्य प्राप्तकर्ता में से {successCount} को भेजा गया।",
       "subject": "विषय",
       "subjectMergeFieldHint": "विषय में मर्ज फ़ील्ड डालें:",
-      "subjectPlaceholder": "उदा. नमस्ते {firstName}, {churchName} से अपडेट"
+      "subjectPlaceholder": "उदा. नमस्ते {{firstName}}, {{churchName}} से अपडेट"
     },
     "sendTextDialog": {
       "characterCount": "{count} वर्ण ({segments} SMS खंड)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "नमूना डेटा दिखाया गया: John Smith, john@example.com",
       "previewSubject": "विषय:",
       "subject": "विषय",
-      "subjectPlaceholder": "उदा. नमस्ते {firstName}, {churchName} में आपका स्वागत है",
+      "subjectPlaceholder": "उदा. नमस्ते {{firstName}}, {{churchName}} में आपका स्वागत है",
       "subjectRequired": "विषय आवश्यक है।",
       "templateName": "टेम्पलेट का नाम",
       "templateNamePlaceholder": "उदा. स्वागत ईमेल, ईवेंट अनुस्मारक",

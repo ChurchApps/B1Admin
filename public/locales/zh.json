@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "已发送给 {recipientCount} 名符合条件的收件人中的 {successCount} 名。",
       "subject": "主题",
       "subjectMergeFieldHint": "在主题中插入合并字段：",
-      "subjectPlaceholder": "例如：您好 {firstName}，来自 {churchName} 的更新"
+      "subjectPlaceholder": "例如：您好 {{firstName}}，来自 {{churchName}} 的更新"
     },
     "sendTextDialog": {
       "characterCount": "{count} 个字符（{segments} 个 SMS 片段）",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "显示的样本数据：John Smith, john@example.com",
       "previewSubject": "主题：",
       "subject": "主题",
-      "subjectPlaceholder": "例如：您好 {firstName}，欢迎来到 {churchName}",
+      "subjectPlaceholder": "例如：您好 {{firstName}}，欢迎来到 {{churchName}}",
       "subjectRequired": "主题为必填项。",
       "templateName": "模板名称",
       "templateNamePlaceholder": "例如：欢迎邮件、活动提醒",

@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Надіслано {successCount} з {recipientCount} відповідного одержувача.",
       "subject": "Тема",
       "subjectMergeFieldHint": "Вставити поле злиття в тему:",
-      "subjectPlaceholder": "наприклад, Привіт {firstName}, оновлення від {churchName}"
+      "subjectPlaceholder": "наприклад, Привіт {{firstName}}, оновлення від {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} символів ({segments} сегментів SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Показано зразок: Іван Петренко, john@example.com",
       "previewSubject": "Тема:",
       "subject": "Тема",
-      "subjectPlaceholder": "наприклад, Привіт {firstName}, ласкаво просимо до {churchName}",
+      "subjectPlaceholder": "наприклад, Привіт {{firstName}}, ласкаво просимо до {{churchName}}",
       "subjectRequired": "Тема обов'язкова.",
       "templateName": "Назва шаблону",
       "templateNamePlaceholder": "наприклад, Лист привітання, Нагадування про подію",

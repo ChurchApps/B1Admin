@@ -1555,7 +1555,7 @@
       "sentSummarySingular": "Kutfunyelwe ku-{successCount} kwe-{recipientCount} umemukeli.",
       "subject": "Sihloko",
       "subjectMergeFieldHint": "Faka lensimu lehlanganisiwe esihlokweni:",
-      "subjectPlaceholder": "sib. Sawubona {firstName}, luhlaka lolusha lolusuka ku-{churchName}"
+      "subjectPlaceholder": "sib. Sawubona {{firstName}}, luhlaka lolusha lolusuka ku-{{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} tinhlamvu ku-{segments} singeniso(tingeniso).",
@@ -3897,7 +3897,7 @@
       "previewSampleData": "Imininingwane yesibonelo lekhonjisiwe: John Smith, john@example.com",
       "previewSubject": "Sihloko:",
       "subject": "Sihloko",
-      "subjectPlaceholder": "sib. Sawubona {firstName}, wemukelekile ku-{churchName}",
+      "subjectPlaceholder": "sib. Sawubona {{firstName}}, wemukelekile ku-{{churchName}}",
       "subjectRequired": "Sihloko siyadzingeka.",
       "templateName": "Libito Le-Template",
       "templateNamePlaceholder": "sib. I-imeyili Yekwemukela, Sikhumbuto Semcimbi",

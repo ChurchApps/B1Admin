@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Poslano {successCount} od {recipientCount} upravičenega prejemnika.",
       "subject": "Zadeva",
       "subjectMergeFieldHint": "Vstavi spojno polje v zadevo:",
-      "subjectPlaceholder": "npr. Pozdravljeni {firstName}, novice iz {churchName}"
+      "subjectPlaceholder": "npr. Pozdravljeni {{firstName}}, novice iz {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} znakov ({segments} SMS segmentov)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Prikazani vzorčni podatki: John Smith, john@example.com",
       "previewSubject": "Zadeva:",
       "subject": "Zadeva",
-      "subjectPlaceholder": "npr. Pozdravljeni {firstName}, dobrodošli v {churchName}",
+      "subjectPlaceholder": "npr. Pozdravljeni {{firstName}}, dobrodošli v {{churchName}}",
       "subjectRequired": "Zadeva je obvezna.",
       "templateName": "Ime predloge",
       "templateNamePlaceholder": "npr. E-pošta dobrodošlice, opomnik o dogodku",

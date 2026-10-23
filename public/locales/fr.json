@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Envoyé à {successCount} sur {recipientCount} destinataire éligible.",
       "subject": "Objet",
       "subjectMergeFieldHint": "Insérer le champ de fusion dans l'objet :",
-      "subjectPlaceholder": "ex. Bonjour {firstName}, mise à jour de {churchName}"
+      "subjectPlaceholder": "ex. Bonjour {{firstName}}, mise à jour de {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} caractères ({segments} segments SMS)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Données d'exemple affichées : John Smith, john@example.com",
       "previewSubject": "Objet :",
       "subject": "Objet",
-      "subjectPlaceholder": "ex. Bonjour {firstName}, bienvenue à {churchName}",
+      "subjectPlaceholder": "ex. Bonjour {{firstName}}, bienvenue à {{churchName}}",
       "subjectRequired": "L'objet est requis.",
       "templateName": "Nom du modèle",
       "templateNamePlaceholder": "ex. E-mail de bienvenue, Rappel d'événement",

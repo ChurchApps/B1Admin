@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "{recipientCount} uygun alıcının {successCount} tanesine gönderildi.",
       "subject": "Konu",
       "subjectMergeFieldHint": "Konuya birleştirme alanı ekle:",
-      "subjectPlaceholder": "ör. Merhaba {firstName}, {churchName} kilisesinden güncelleme"
+      "subjectPlaceholder": "ör. Merhaba {{firstName}}, {{churchName}} kilisesinden güncelleme"
     },
     "sendTextDialog": {
       "characterCount": "{count} karakter ({segments} SMS segmenti)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Gösterilen örnek veri: John Smith, john@example.com",
       "previewSubject": "Konu:",
       "subject": "Konu",
-      "subjectPlaceholder": "ör. Merhaba {firstName}, {churchName} kilisesine hoş geldiniz",
+      "subjectPlaceholder": "ör. Merhaba {{firstName}}, {{churchName}} kilisesine hoş geldiniz",
       "subjectRequired": "Konu gereklidir.",
       "templateName": "Şablon Adı",
       "templateNamePlaceholder": "ör. Hoş Geldiniz E-postası, Etkinlik Hatırlatıcısı",

@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Lähetetty {successCount}/{recipientCount} oikeutetulle vastaanottajalle.",
       "subject": "Aihe",
       "subjectMergeFieldHint": "Lisää yhdistämiskenttä aiheeseen:",
-      "subjectPlaceholder": "esim. Hei {firstName}, päivitys seurakunnasta {churchName}"
+      "subjectPlaceholder": "esim. Hei {{firstName}}, päivitys seurakunnasta {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} merkkiä ({segments} SMS-segmenttiä)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Näytetään mallidata: John Smith, john@example.com",
       "previewSubject": "Aihe:",
       "subject": "Aihe",
-      "subjectPlaceholder": "esim. Hei {firstName}, tervetuloa seurakuntaan {churchName}",
+      "subjectPlaceholder": "esim. Hei {{firstName}}, tervetuloa seurakuntaan {{churchName}}",
       "subjectRequired": "Aihe on pakollinen.",
       "templateName": "Mallin nimi",
       "templateNamePlaceholder": "esim. Tervetuloasähköposti, Tapahtumamuistutus",

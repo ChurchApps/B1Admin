@@ -1577,7 +1577,7 @@
       "sentSummarySingular": "Gesendet an {successCount} von {recipientCount} berechtigtem Empfänger.",
       "subject": "Betreff",
       "subjectMergeFieldHint": "Seriendruckfeld in den Betreff einfügen:",
-      "subjectPlaceholder": "z.B. Hallo {firstName}, Update von {churchName}"
+      "subjectPlaceholder": "z.B. Hallo {{firstName}}, Update von {{churchName}}"
     },
     "sendTextDialog": {
       "characterCount": "{count} Zeichen ({segments} SMS-Segmente)",
@@ -3930,7 +3930,7 @@
       "previewSampleData": "Beispieldaten angezeigt: John Smith, john@example.com",
       "previewSubject": "Betreff:",
       "subject": "Betreff",
-      "subjectPlaceholder": "z.B. Hallo {firstName}, willkommen bei {churchName}",
+      "subjectPlaceholder": "z.B. Hallo {{firstName}}, willkommen bei {{churchName}}",
       "subjectRequired": "Betreff ist erforderlich.",
       "templateName": "Vorlagenname",
       "templateNamePlaceholder": "z. B. Willkommens-E-Mail, Veranstaltungserinnerung",
