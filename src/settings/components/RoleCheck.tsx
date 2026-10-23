@@ -10,6 +10,7 @@ interface Props {
   label: string;
   roleId?: string;
   rolePermissions: RolePermissionInterface[];
+  onChange?: (rp: RolePermissionInterface, checked: boolean) => void;
 }
 
 export const RoleCheck: React.FC<Props> = (props) => {
@@ -17,10 +18,8 @@ export const RoleCheck: React.FC<Props> = (props) => {
   const [errors, setErrors] = React.useState<string[]>([]);
 
   const init = () => {
-    for (let i = 0; i < props.rolePermissions.length; i++) {
-      const rp = props.rolePermissions[i];
-      if (rp.apiName === props.apiName && rp.contentType === props.contentType && rp.action === props.action) setRolePermission(rp);
-    }
+    const match = props.rolePermissions.find((rp) => rp.apiName === props.apiName && rp.contentType === props.contentType && rp.action === props.action);
+    setRolePermission(match || null);
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,20 +31,26 @@ export const RoleCheck: React.FC<Props> = (props) => {
         action: props.action
       };
       setRolePermission(rp); // optimistic
+      props.onChange?.(rp, true);
       try {
         const data: RolePermissionInterface[] = await ApiHelper.post("/rolepermissions/", [rp], "MembershipApi");
-        setRolePermission({ ...rp, id: data[0].id });
+        const saved = { ...rp, id: data[0].id };
+        setRolePermission(saved);
+        props.onChange?.(saved, true);
       } catch {
         setRolePermission(null); // revert
+        props.onChange?.(rp, false);
         setErrors([Locale.label("common.saveError")]);
       }
     } else {
       const previous = rolePermission;
       setRolePermission(null); // optimistic
+      props.onChange?.(previous!, false);
       try {
         await ApiHelper.delete("/rolepermissions/" + previous!.id, "MembershipApi");
       } catch {
         setRolePermission(previous); // revert
+        props.onChange?.(previous!, true);
         setErrors([Locale.label("common.saveError")]);
       }
     }

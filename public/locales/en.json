@@ -4116,6 +4116,7 @@
       "permEdit": "Edit Permissions"
     },
     "rolePermissions": {
+      "countOf": "{checked} of {total}",
       "filter": "Filter permissions",
       "permEdit": "Edit Permissions"
     },
@@ -4125,6 +4126,7 @@
       "addCustomRoleAria": "Add custom role",
       "addPredefinedRoleAria": "Add {name} role",
       "addRole": "Add role",
+      "allUsers": "All users",
       "canEdit": "Can edit most data in ",
       "churchDesc": " including people, groups, attendance and forms.",
       "churchStaff": "Church Staff",
@@ -4135,6 +4137,7 @@
       "itMsg": "? It ",
       "lesAdmin": "Lessons Admin",
       "lesAdminDesc": "Can set up classrooms and schedule lessons on ",
+      "members": "Members",
       "role": "Role",
       "roleCreate": "Do you wish to create a new role of ",
       "roles": "Roles"
