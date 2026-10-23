@@ -29,6 +29,8 @@ test.describe("Attendance Management", () => {
   test.describe.serial("Setup", () => {
     let page: Page;
     let createdServiceId = "";
+    let serviceTimesBefore = 0;
+    const serviceTimesCount = () => page.locator("span:has(> span:text-is('Service times')) > strong");
 
     test.beforeAll(async ({ browser }) => {
       const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
@@ -75,8 +77,12 @@ test.describe("Attendance Management", () => {
       await expect(page.getByRole("option", { name: "Sunday Morning Service" })).toBeVisible({ timeout: 10000 });
       await page.getByRole("option", { name: "Zebedee Test Service" }).click();
       await box.locator('[data-testid="service-time-name-input"] input').fill("Zacchaeus Test Time");
+      // ChurchAppsSupport#1336: the Service times count follows the save without a reload.
+      await expect(serviceTimesCount()).toHaveText(/^\d+$/, { timeout: 10000 });
+      serviceTimesBefore = Number(await serviceTimesCount().textContent());
       await box.getByRole("button", { name: "Save" }).click();
       await expect(page.locator("button").getByText("Zacchaeus Test Time")).toHaveCount(1, { timeout: 10000 });
+      await expect(serviceTimesCount()).toHaveText(String(serviceTimesBefore + 1), { timeout: 10000 });
     });
 
     test("should edit the service time", async () => {
@@ -127,6 +133,7 @@ test.describe("Attendance Management", () => {
       await box.getByRole("button", { name: "Delete" }).click();
       await confirmDelete(page);
       await expect(page.locator("button").getByText("Zebedee Test Time")).toHaveCount(0, { timeout: 10000 });
+      await expect(serviceTimesCount()).toHaveText(String(serviceTimesBefore), { timeout: 10000 });
     });
 
     test("should delete the service", async () => {
