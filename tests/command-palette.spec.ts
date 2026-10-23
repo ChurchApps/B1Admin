@@ -47,6 +47,30 @@ test.describe("Command palette", () => {
     await expect(page).toHaveURL(/\/donations\/funds$/);
   });
 
+  test("Create a group and Create a page wizards are not titled as the first one", async ({ page }) => {
+    await page.goto("/");
+    const runWizard = async (search: string, field: string) => {
+      await page.getByTestId("command-palette-open").click();
+      const palette = page.getByTestId("command-palette");
+      await palette.getByRole("textbox").fill(search);
+      await expect(palette.getByRole("button", { name: new RegExp(search) })).toBeVisible();
+      await page.keyboard.press("Enter");
+      const dialog = page.getByRole("dialog");
+      await expect(dialog.getByText(field).first()).toBeVisible({ timeout: 10000 });
+      return dialog;
+    };
+
+    const groupDialog = await runWizard("Create a group", "Group Name");
+    await expect(groupDialog).toContainText("Create a Group");
+    await expect(groupDialog).not.toContainText("First Group");
+    await page.keyboard.press("Escape");
+    await expect(groupDialog).toHaveCount(0);
+
+    const pageDialog = await runWizard("Create a page", "Page Title");
+    await expect(pageDialog).toContainText("Create a Page");
+    await expect(pageDialog).not.toContainText("first page");
+  });
+
   test("Ctrl+K finds a person and Escape closes", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("command-palette-open")).toBeVisible();

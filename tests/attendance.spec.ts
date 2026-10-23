@@ -421,6 +421,26 @@ test.describe("Attendance Management", () => {
       const addSlideBtn = page.locator("button").getByText("Add Slide");
       await expect(addSlideBtn).toBeVisible();
     });
+
+    test("an unchecked switch track has at least 3:1 contrast on white", async ({ page }) => {
+      await page.goto("/mobile/checkin");
+      const track = page.locator(".MuiSwitch-root").first().locator(".MuiSwitch-track");
+      await expect(track).toBeVisible({ timeout: 15000 });
+      const checkbox = page.locator(".MuiSwitch-root").first().locator("input");
+      if (await checkbox.isChecked()) await checkbox.click();
+      await expect(checkbox).not.toBeChecked();
+      // Blend the track color with white by its alpha, then take the WCAG contrast ratio against white.
+      const ratio = await track.evaluate((el) => {
+        const s = getComputedStyle(el);
+        const [r, g, b, a = 1] = (s.backgroundColor.match(/[\d.]+/g) || []).map(Number);
+        const alpha = a * Number(s.opacity);
+        const mix = (c: number) => (c * alpha + 255 * (1 - alpha)) / 255;
+        const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+        const L = 0.2126 * lin(mix(r)) + 0.7152 * lin(mix(g)) + 0.0722 * lin(mix(b));
+        return 1.05 / (L + 0.05);
+      });
+      expect(ratio).toBeGreaterThanOrEqual(3);
+    });
   });
 
   // Manual headcounts: a single total per service/service time/date, no individual check-ins (issue #1063).

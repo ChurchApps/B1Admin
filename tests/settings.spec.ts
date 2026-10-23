@@ -732,6 +732,11 @@ const openNewTemplate = async (page: Page) => {
 const chipsAfter = (page: Page, caption: string) => page.locator("div", { has: page.getByText(caption, { exact: true }) }).last();
 
 test.describe("Email template editor merge fields", () => {
+  test("subject hint uses the double-brace merge fields", async ({ page }) => {
+    await openNewTemplate(page);
+    await expect(page.getByLabel("Subject", { exact: true })).toHaveAttribute("placeholder", "e.g. Hello {{firstName}}, welcome to {{churchName}}");
+  });
+
   test("subject chip inserts at the cursor", async ({ page }) => {
     await openNewTemplate(page);
     const subject = page.getByLabel("Subject", { exact: true });

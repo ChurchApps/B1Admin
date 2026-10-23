@@ -104,6 +104,20 @@ test.describe("Sunday home", () => {
 });
 
 // ChurchAppsSupport#1284: a user whose only people permission is View Names is not offered All groups, People, or Attendance.
+test.describe("Needs attention", () => {
+  test("one pending approval and one join request read in the singular", async ({ page }) => {
+    await page.route("**/events/pending", (route) => route.fulfill({ json: [{ id: "e1", title: "Pending event" }] }));
+    await page.route("**/eventBookings/pending", (route) => route.fulfill({ json: [] }));
+    await page.route("**/groupjoinrequests/pending", (route) => route.fulfill({ json: [{ id: "r1" }] }));
+    await page.goto("/");
+    const card = page.getByTestId("needs-attention");
+    await expect(card).toContainText("1 pending calendar approval", { timeout: 15000 });
+    await expect(card).toContainText("1 pending group join request");
+    await expect(card).not.toContainText("approvals");
+    await expect(card).not.toContainText("requests");
+  });
+});
+
 plainTest.describe("View People Names Only", () => {
   plainTest.use({ storageState: { cookies: [], origins: [] } });
   let roleId = "";

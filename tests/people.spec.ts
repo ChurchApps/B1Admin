@@ -1010,6 +1010,7 @@ test.describe("People Management", () => {
       await expect(dialog.getByText(`Sending to ${SEED_PEOPLE.DONALD_EMAIL}`)).toBeVisible();
       await expect(dialog.locator('[data-testid="open-mail-app"]')).toBeVisible();
 
+      await expect(dialog.getByLabel("Subject")).toHaveAttribute("placeholder", "e.g. Hello {{firstName}}, update from {{churchName}}");
       await dialog.getByLabel("Subject").fill("Hello from Grace");
       // The second row of merge-field chips writes into the body.
       await dialog.getByText("First Name", { exact: true }).nth(1).click();
@@ -1022,6 +1023,23 @@ test.describe("People Management", () => {
       expect(posted.groupId).toBeUndefined();
       expect(posted.subject).toBe("Hello from Grace");
       expect(posted.htmlContent).toContain("{{firstName}}");
+    });
+
+    test("profile Email window waits for the review check before showing the editor", async ({ page }) => {
+      let release: () => void = () => {};
+      const gate = new Promise<void>((resolve) => { release = resolve; });
+      await page.route("**/emailTemplates/sendStatus", async (route) => {
+        await gate;
+        await route.fulfill({ json: { approved: false, paused: false, remaining: 0 } });
+      });
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      await page.locator('[data-testid="email-person-button"]').click();
+      const dialog = page.getByRole("dialog");
+      await expect(dialog).toBeVisible({ timeout: 10000 });
+      await expect(dialog.getByLabel("Subject")).toHaveCount(0);
+      release();
+      await expect(page.getByTestId("request-email-review")).toBeVisible({ timeout: 10000 });
+      await expect(dialog.getByLabel("Subject")).toHaveCount(0);
     });
 
     test("search with no matches renders an empty results state", async ({ page }) => {
