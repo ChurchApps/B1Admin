@@ -55,6 +55,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
 
 export const ServiceOrder = memo((props: Props) => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
+  const [loaded, setLoaded] = React.useState(false);
   const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
@@ -109,6 +110,8 @@ export const ServiceOrder = memo((props: Props) => {
         console.error("Error loading plan items:", error);
         setErrorMessage(Locale.label("plans.serviceOrder.loadError") || "Failed to load plan items");
         setPlanItems([]);
+      } finally {
+        setLoaded(true);
       }
     }
   }, [props.plan?.id]);
@@ -672,7 +675,9 @@ export const ServiceOrder = memo((props: Props) => {
           )}
         </Stack>
 
-        {planItems.length === 0 ? (
+        {!loaded ? (
+          <Typography variant="body2" color="text.secondary" data-testid="service-order-loading">{Locale.label("common.loading")}</Typography>
+        ) : planItems.length === 0 ? (
           showPreviewMode ? (
             <LessonPreview
               lessonItems={previewLessonItems}

@@ -673,6 +673,7 @@
       "setPhotoTitle": "Add Your Photo",
       "upcomingEventsTitle": "See What's Happening"
     },
+    "loadError": "Couldn't load this. Refresh to try again.",
     "myGroups": "My Groups",
     "myTasks": "My tasks",
     "needsAttention": {
@@ -2451,6 +2452,7 @@
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
       "fullyStaffed": "Fully staffed",
+      "loadError": "Couldn't load the serving team. Refresh to try again.",
       "needed": "needed",
       "notesPlaceholder": "Add notes for this service plan...",
       "notesPlaceholderReadOnly": "Plan notes (read-only)",
