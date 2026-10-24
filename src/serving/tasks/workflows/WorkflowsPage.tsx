@@ -15,6 +15,8 @@ export const WorkflowsPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [addAnchor, setAddAnchor] = React.useState<null | HTMLElement>(null);
   const [category, setCategory] = React.useState("all");
+  const [creating, setCreating] = React.useState(false);
+  const [createError, setCreateError] = React.useState(false);
   const navigate = useNavigate();
 
   const canView = canViewWorkflows();
@@ -38,8 +40,20 @@ export const WorkflowsPage = () => {
 
   const createFromTemplate = async (templateKey: string) => {
     setAddAnchor(null);
-    const workflow: WorkflowInterface = await ApiHelper.post("/workflows/fromTemplate", { templateKey }, "DoingApi");
-    if (workflow?.id) navigate("/serving/tasks/workflows/" + workflow.id);
+    if (creating) return;
+    // Creating a template's steps can take a moment; block a second pick so it doesn't make a duplicate.
+    setCreating(true);
+    setCreateError(false);
+    try {
+      const workflow: WorkflowInterface = await ApiHelper.post("/workflows/fromTemplate", { templateKey }, "DoingApi");
+      if (workflow?.id) navigate("/serving/tasks/workflows/" + workflow.id);
+      else setCreateError(true);
+    } catch {
+      setCreateError(true);
+    } finally {
+      setCreating(false);
+      workflows.refetch();
+    }
   };
 
   const duplicate = async (id: string) => {
@@ -97,8 +111,8 @@ export const WorkflowsPage = () => {
       <PageHeader title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")}>
         <HeaderTextButton component={RouterLink} to="/serving/tasks" data-testid="workflows-my-cards-link">{Locale.label("tasks.myCards.title")}</HeaderTextButton>
         {canManage && (
-          <HeaderPrimaryButton startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)}>
-            {Locale.label("tasks.workflowsPage.addWorkflow")}
+          <HeaderPrimaryButton startIcon={<AddIcon />} data-testid="add-workflow-button" disabled={creating} onClick={(e) => setAddAnchor(e.currentTarget)}>
+            {creating ? Locale.label("tasks.workflowsPage.creating", "Creating...") : Locale.label("tasks.workflowsPage.addWorkflow")}
           </HeaderPrimaryButton>
         )}
       </PageHeader>
@@ -116,6 +130,7 @@ export const WorkflowsPage = () => {
                 ]}
               />
             )}
+            {createError && <Typography color="error" variant="body2" data-testid="workflow-template-error">{Locale.label("tasks.workflowsPage.templateError", "The workflow could not be created. Please try again.")}</Typography>}
             {!workflows.isLoading && (
               <ResultsBar>
                 <Typography variant="body2" color="text.secondary">

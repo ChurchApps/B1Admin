@@ -5985,6 +5985,8 @@
     "workflowActions": {
       "add": "Add Action",
       "days": "Wait days",
+      "emailNotApproved": "Your church's email hasn't been approved yet, so these emails won't send. Request a review from a group's Email button.",
+      "emailPaused": "Your church's email is paused because recent messages bounced or were reported as spam, so these emails won't send. Please contact support.",
       "noAssignee": "Unassigned",
       "noGroup": "No group selected",
       "noTextingProvider": "No texting provider is set up. Add one in Settings → Texting or texts will not send.",
@@ -6101,9 +6103,11 @@
       "blankWorkflow": "Blank workflow",
       "categories": "Workflow categories",
       "category": "Category",
+      "creating": "Creating...",
       "noWorkflows": "No workflows yet. Add one to get started.",
       "status": "Status",
       "subtitle": "Move people through a series of steps",
+      "templateError": "The workflow could not be created. Please try again.",
       "title": "Workflows",
       "workflowCount": "{count} workflows"
     }

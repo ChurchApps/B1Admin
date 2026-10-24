@@ -573,7 +573,7 @@ test.describe.serial("Serving Management - Workflows", () => {
     await message.fill("Hi {{firstName}}, welcome to {{churchName}}!");
     await expect(page.getByText("44/1600")).toBeVisible();
     const saved = page.waitForResponse((r) => r.url().includes("/workflowStepActions") && r.request().method() === "POST");
-    await page.locator('[data-testid="action-save-0"]').click();
+    await page.locator('[data-testid="step-save-button"]').click();
     expect((await saved).status()).toBe(200);
 
     await openBoardById(page, wf.id);
@@ -585,5 +585,103 @@ test.describe.serial("Serving Management - Workflows", () => {
     const auth2 = await apiAuth(cleanup);
     await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
     await cleanup.dispose();
+  });
+
+  // Opens the step editor for the Auto step of a fresh action workflow.
+  async function openAutoStepEditor(ctx: any, auth: any) {
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, []);
+    await openBoardById(page, wf.id);
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    await expect(page.locator('[data-testid="add-action-button"]')).toBeVisible({ timeout: 10000 });
+    return { wf, auto };
+  }
+
+  async function addSendEmailAction() {
+    await page.locator('[data-testid="add-action-button"]').click();
+    await page.locator('[data-testid="action-type-0"]').click();
+    await page.getByRole("option", { name: "Send Email" }).click();
+  }
+
+  test("the step's Save also saves a newly added action", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await openAutoStepEditor(ctx, auth);
+    await page.locator('[data-testid="add-action-button"]').click();
+    await page.locator('[data-testid="action-days-0"] input').fill("3");
+    await page.locator('[data-testid="step-save-button"]').click();
+    await expect(page.locator('[data-testid="step-save-button"]')).toHaveCount(0, { timeout: 10000 });
+
+    const actions = await (await ctx.get(`${API_BASE}/doing/workflowStepActions/step/${auto.id}`, auth)).json();
+    expect(actions.map((a: any) => a.actionType)).toEqual(["delay"]);
+    expect(JSON.parse(actions[0].config).days).toBe(3);
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
+  test("the Send Email action warns when the church's email isn't approved", async () => {
+    await page.route("**/emailTemplates/sendStatus", (route) => route.fulfill({ json: { approved: false, paused: false, remaining: 0, requested: false } }));
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    try {
+      const { wf } = await openAutoStepEditor(ctx, auth);
+      await addSendEmailAction();
+      await expect(page.locator('[data-testid="action-email-not-approved-0"]')).toBeVisible({ timeout: 10000 });
+      await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    } finally {
+      await page.unroute("**/emailTemplates/sendStatus");
+      await ctx.dispose();
+    }
+  });
+
+  test("the Send Email action warns when the church's email is paused", async () => {
+    await page.route("**/emailTemplates/sendStatus", (route) => route.fulfill({ json: { approved: true, paused: true, remaining: 0, requested: false } }));
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    try {
+      const { wf } = await openAutoStepEditor(ctx, auth);
+      await addSendEmailAction();
+      await expect(page.locator('[data-testid="action-email-paused-0"]')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="action-email-not-approved-0"]')).toHaveCount(0);
+      await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    } finally {
+      await page.unroute("**/emailTemplates/sendStatus");
+      await ctx.dispose();
+    }
+  });
+
+  test("creating from a template shows a busy state so it can't be picked twice", async () => {
+    let release: () => void = () => {};
+    const held = new Promise<void>((resolve) => { release = resolve; });
+    await page.route("**/workflows/fromTemplate", async (route) => { await held; await route.continue(); });
+    try {
+      await gotoWorkflows(page);
+      await page.locator('[data-testid="add-workflow-button"]').click();
+      await page.locator('[data-testid="add-workflow-template-newVisitor"]').click();
+      await expect(page.locator('[data-testid="add-workflow-button"]')).toBeDisabled();
+      release();
+      await expect(page).toHaveURL(/\/serving\/tasks\/workflows\/[\w-]+$/, { timeout: 15000 });
+    } finally {
+      release();
+      await page.unroute("**/workflows/fromTemplate");
+    }
+    const id = page.url().split("/").pop();
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    await ctx.delete(`${API_BASE}/doing/workflows/${id}`, auth);
+    await ctx.dispose();
+  });
+
+  test("a failed template pick shows an error and re-enables Add Workflow", async () => {
+    await page.route("**/workflows/fromTemplate", (route) => (route.request().method() === "POST" ? route.fulfill({ status: 500, json: { error: "boom" } }) : route.continue()));
+    try {
+      await gotoWorkflows(page);
+      await page.locator('[data-testid="add-workflow-button"]').click();
+      await page.locator('[data-testid="add-workflow-template-newVisitor"]').click();
+      await expect(page.locator('[data-testid="workflow-template-error"]')).toBeVisible({ timeout: 10000 });
+      await expect(page).toHaveURL(/\/serving\/tasks\/workflows$/);
+      await expect(page.locator('[data-testid="add-workflow-button"]')).toBeEnabled();
+    } finally {
+      await page.unroute("**/workflows/fromTemplate");
+    }
   });
 });
