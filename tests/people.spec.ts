@@ -4,6 +4,7 @@ import { navigateToPeople } from "./helpers/navigation";
 import { personDetailsEditButton, SEED_PEOPLE, openPersonRow, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { mockChurchLogo } from "./helpers/print-logo";
 
 // ZACCHAEUS/ZEBEDEE are test marker names.
 
@@ -1073,6 +1074,25 @@ test.describe("People columns dialog", () => {
     await expect(dialog.getByRole("heading", { name: "Select Columns" })).toBeVisible({ timeout: 10000 });
     await expect(dialog.getByRole("button", { name: "Done" })).toBeVisible();
     await expect(dialog.getByText("Apply Filters")).toHaveCount(0);
+  });
+});
+
+// In dark mode the attendance printout keeps dark text on white paper under the church letterhead.
+loggedInTest.describe("Person attendance print", () => {
+  loggedInTest("prints dark text under the church letterhead in dark mode", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+    await mockChurchLogo(page);
+    await page.goto("/people/PER00000080?view=attendance");
+    const sheet = page.locator(".attendance-print");
+    await expect(sheet).toBeVisible({ timeout: 15000 });
+    await page.emulateMedia({ media: "print" });
+
+    const title = sheet.getByText("Donald Clark — Attendance");
+    await expect(title).toBeVisible();
+    const color = await title.evaluate((n) => getComputedStyle(n).color);
+    const [r, g, b] = (color.match(/\d+/g) || []).map(Number);
+    expect(Math.max(r, g, b), `text color ${color}`).toBeLessThan(110);
+    await expect(sheet.locator('[data-testid="print-church-logo"]')).toBeVisible();
   });
 });
 
