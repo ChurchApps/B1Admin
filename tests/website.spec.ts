@@ -555,6 +555,39 @@ test.describe("Website Management", () => {
 
   });
 
+  // ChurchAppsSupport#1341: the logo screen let you leave with unsaved changes, and Save resent every logo.
+  loggedInTest.describe("Appearance unsaved changes", () => {
+    loggedInTest("warns before leaving with unsaved changes and saves only what changed", async ({ page }) => {
+      await page.goto("/site/appearance#logo");
+      await expect(page.locator('[data-testid="save-appearance-button"]')).toBeVisible({ timeout: 15000 });
+
+      const blocksUnload = () => page.evaluate(() => {
+        const e = new Event("beforeunload", { cancelable: true });
+        window.dispatchEvent(e);
+        return e.defaultPrevented;
+      });
+      expect(await blocksUnload()).toBe(false);
+
+      await page.getByLabel(/short name/i).fill("E2E1341");
+      await expect.poll(blocksUnload).toBe(true);
+
+      // Don't write the demo church; capture the body and answer 200.
+      let posted: { keyName?: string }[] | null = null;
+      await page.route(/\/settings$/, async (route) => {
+        if (route.request().method() !== "POST") return route.continue();
+        posted = route.request().postDataJSON();
+        await route.fulfill({ status: 200, contentType: "application/json", body: "[]" });
+      });
+      await page.locator('[data-testid="save-appearance-button"]').click();
+      await expect.poll(() => posted).not.toBeNull();
+
+      expect(Array.isArray(posted)).toBe(true);
+      const keys = (posted as unknown as { keyName?: string }[]).map((s) => s.keyName);
+      expect(keys).toContain("pwaShortName");
+      for (const k of ["logoLight", "logoDark", "ogImage", "favicon_400x400"]) expect(keys).not.toContain(k);
+    });
+  });
+
   test.describe.serial("Blocks", () => {
     // Blocks tests share data — a retry would create duplicate "Zacchaeus
     // Test Block" rows and break subsequent assertions.

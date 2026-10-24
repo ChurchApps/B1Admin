@@ -135,6 +135,7 @@ export const Assignment = (props: Props) => {
       ]);
     } catch {
       setErrorMessage(Locale.label("plans.assignment.loadError", "Couldn't load the serving team. Refresh to try again."));
+      setLoaded(true);
       return;
     }
     positionsData = positionsData || [];
