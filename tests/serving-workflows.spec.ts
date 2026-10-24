@@ -573,7 +573,7 @@ test.describe.serial("Serving Management - Workflows", () => {
     await message.fill("Hi {{firstName}}, welcome to {{churchName}}!");
     await expect(page.getByText("44/1600")).toBeVisible();
     const saved = page.waitForResponse((r) => r.url().includes("/workflowStepActions") && r.request().method() === "POST");
-    await page.locator('[data-testid="action-save-0"]').click();
+    await page.locator('[data-testid="step-save-button"]').click();
     expect((await saved).status()).toBe(200);
 
     await openBoardById(page, wf.id);

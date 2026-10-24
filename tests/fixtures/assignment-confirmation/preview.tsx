@@ -44,6 +44,7 @@ function Preview() {
   const [tab, setTab] = React.useState("actions");
   const [drawer, setDrawer] = React.useState(false);
   const [issued, setIssued] = React.useState(false);
+  const actionsSaveRef = React.useRef<() => Promise<void>>(null);
   const card = { id: "card1", title: "Sample Volunteer · Greeter · Sample Sunday Service", churchId: "c1", taskType: "card", status: "Open", workflowId: "wf1", stepId: "call", assignmentId: "a1", associatedWithType: "person", associatedWithId: "p1", associatedWithLabel: "Sample Volunteer", assignedToType: "person", assignedToId: "leader1", assignedToLabel: "Sample Coordinator", dueDate: new Date("2030-04-05"), data: JSON.stringify({ assignment: { planId: "plan1", planName: plan.name, positionName: "Greeter", serviceDate: "2030-04-07" }, history: [{ date: "2030-04-01", message: "Serving request issued" }, { date: "2030-04-01", message: "Email: sent" }, { date: "2030-04-01", message: "Text: blocked (no_provider)" }, { date: "2030-04-01", message: "Waiting 2 day(s)" }] }) };
   return <Container maxWidth="md" sx={{ py: 4 }}>
     <Typography variant="overline">Synthetic local preview · no messages are sent</Typography>
@@ -56,7 +57,7 @@ function Preview() {
     </Stack>
     <Paper variant="outlined" sx={{ p: 3 }}>
       {tab === "plan" && <PlanEdit plan={plan} plans={[]} updatedFunction={() => {}} />}
-      {tab === "actions" && <><Typography variant="h6" sx={{ mb: 2 }}>Request and wait for response</Typography><WorkflowStepActions stepId="step1" workflows={[workflow]} assignmentConfirmation /></>}
+      {tab === "actions" && <><Typography variant="h6" sx={{ mb: 2 }}>Request and wait for response</Typography><WorkflowStepActions saveRef={actionsSaveRef} stepId="step1" workflows={[workflow]} assignmentConfirmation /><Button variant="contained" data-testid="preview-actions-save" onClick={() => actionsSaveRef.current?.()}>Save</Button></>}
       {tab === "issue" && <><PlanValidation plan={plan} positions={[{ id: "pos1", name: "Greeter", count: 1, planId: "plan1" }]} assignments={[{ id: "a1", personId: "p1", positionId: "pos1", status: "Unconfirmed" }]} people={[{ id: "p1", name: { first: "Sample", last: "Volunteer", display: "Sample Volunteer" }, contactInfo: {} }]} times={[]} blockoutDates={[]} canEdit onUpdate={() => setIssued(true)} />{issued && <Typography role="status" data-testid="preview-issued">One synthetic request issued.</Typography>}</>}
     </Paper>
     {drawer && <WorkflowCardDrawer card={card} steps={[{ id: "call", name: "Call volunteer about unanswered request" }]} onClose={() => setDrawer(false)} onChanged={() => {}} />}

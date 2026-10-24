@@ -14,7 +14,7 @@ test("edits serving email/SMS actions without generic message shortcuts", async 
   await expect(page.getByRole("option", { name: "Send email", exact: true })).toHaveCount(0);
   await page.keyboard.press("Escape");
   await page.getByTestId("action-serving-message-0").locator("textarea").first().fill("Please confirm {{positionName}} for {{serviceDate}}.");
-  await page.getByTestId("action-save-0").click();
+  await page.getByTestId("preview-actions-save").click();
   await expect.poll(() => page.evaluate(() => (window as any).confirmationPreview.calls.length)).toBe(1);
   const call = await page.evaluate(() => (window as any).confirmationPreview.calls[0]);
   expect(call.path).toBe("/workflowStepActions"); expect(JSON.parse(call.body[0].config).message).toContain("{{positionName}}");

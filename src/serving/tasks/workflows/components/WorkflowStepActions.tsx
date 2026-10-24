@@ -1,23 +1,27 @@
 import { Box, Button, IconButton, MenuItem, Select, Stack, TextField, Typography, Paper } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Add as AddIcon, Delete as DeleteIcon, Save as SaveIcon } from "@mui/icons-material";
+import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { type WorkflowInterface } from "@churchapps/helpers";
 import { ContentPicker } from "../../components/ContentPicker";
 import { ACTION_TYPES, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface } from "../types";
 
 interface EmailTemplateInterface { id?: string; name?: string }
+interface EmailSendStatus { approved?: boolean; paused?: boolean }
 
 interface Props {
   stepId: string;
   workflows: WorkflowInterface[];
   assignmentConfirmation?: boolean;
+  // The step editor's Save calls this so every action row is written along with the step.
+  saveRef?: React.Ref<() => Promise<void>>;
 }
 
 export const WorkflowStepActions = (props: Props) => {
   const [actions, setActions] = React.useState<WorkflowStepActionInterface[]>([]);
   const [templates, setTemplates] = React.useState<EmailTemplateInterface[]>([]);
   const [textingProviders, setTextingProviders] = React.useState<any[] | null>(null);
+  const [emailStatus, setEmailStatus] = React.useState<EmailSendStatus | null>(null);
   const [pickerIndex, setPickerIndex] = React.useState<number | null>(null);
 
   const load = React.useCallback(async () => {
@@ -29,6 +33,7 @@ export const WorkflowStepActions = (props: Props) => {
   React.useEffect(() => {
     ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates(d || [])).catch(() => setTemplates([]));
     ApiHelper.get("/texting/providers", "MessagingApi").then((d: any[]) => setTextingProviders(d || [])).catch(() => setTextingProviders([]));
+    ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi").then((d: EmailSendStatus) => setEmailStatus(d || null)).catch(() => setEmailStatus(null));
   }, []);
 
   const config = (a: WorkflowStepActionInterface): any => {
@@ -46,12 +51,12 @@ export const WorkflowStepActions = (props: Props) => {
     setActions((prev) => [...prev, { stepId: props.stepId, sort: prev.length + 1, actionType: "delay", config: "{}" }]);
   };
 
-  const saveAction = async (index: number) => {
-    const action = { ...actions[index], stepId: props.stepId };
-    const saved: WorkflowStepActionInterface[] = await ApiHelper.post("/workflowStepActions", [action], "DoingApi");
-    if (saved?.[0]) setActions((prev) => prev.map((a, i) => (i === index ? { ...a, ...saved[0] } : a)));
-    else load();
+  const saveAll = async () => {
+    if (actions.length === 0) return;
+    await ApiHelper.post("/workflowStepActions", actions.map((a, i) => ({ ...a, stepId: props.stepId, sort: i + 1 })), "DoingApi");
   };
+
+  React.useImperativeHandle(props.saveRef, () => saveAll);
 
   const deleteAction = async (index: number) => {
     const action = actions[index];
@@ -94,6 +99,8 @@ export const WorkflowStepActions = (props: Props) => {
               {templates.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
             </Select>
             <TextField size="small" label={Locale.label("tasks.workflowActions.subjectOverride")} value={c.subject || ""} onChange={(e) => setConfig(index, { subject: e.target.value })} />
+            {emailStatus?.approved === false && <Typography variant="body2" color="warning.main" data-testid={"action-email-not-approved-" + index}>{Locale.label("tasks.workflowActions.emailNotApproved")}</Typography>}
+            {emailStatus?.paused && <Typography variant="body2" color="warning.main" data-testid={"action-email-paused-" + index}>{Locale.label("tasks.workflowActions.emailPaused")}</Typography>}
           </Stack>
         );
       case "sendText": {
@@ -163,7 +170,6 @@ export const WorkflowStepActions = (props: Props) => {
                   {ACTION_TYPES.filter((t) => props.assignmentConfirmation ? !["sendEmail", "sendText", "addToWorkflow"].includes(t) : t !== "sendAssignmentRequest").map((t) => <MenuItem key={t} value={t}>{t === "sendAssignmentRequest" ? Locale.label("plans.confirmation.sendRequest", "Send serving request") : Locale.label("tasks.workflowActions.type." + t)}</MenuItem>)}
                 </Select>
                 <Box sx={{ flexGrow: 1 }} />
-                <IconButton size="small" color="primary" data-testid={"action-save-" + index} onClick={() => saveAction(index)}><SaveIcon fontSize="small" /></IconButton>
                 <IconButton size="small" data-testid={"action-delete-" + index} onClick={() => deleteAction(index)}><DeleteIcon fontSize="small" /></IconButton>
               </Stack>
               {renderConfig(a, index)}

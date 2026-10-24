@@ -23,6 +23,7 @@ interface Props {
 export const WorkflowStepEdit = (props: Props) => {
   const [step, setStep] = React.useState<WorkflowStepInterface>(props.step);
   const [showPicker, setShowPicker] = React.useState(false);
+  const actionsSaveRef = React.useRef<() => Promise<void>>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => { setStep(props.step); }, [props.step]);
@@ -30,6 +31,7 @@ export const WorkflowStepEdit = (props: Props) => {
   const handleSave = async () => {
     const isNew = !step.id;
     const result = await ApiHelper.post("/workflowSteps", [step], "DoingApi");
+    await actionsSaveRef.current?.();
     // A brand-new step needs an id before its actions editor can appear; keep the
     // editor open on the now-saved record instead of forcing a save/close/reopen.
     if (isNew && result?.[0]?.id) {
@@ -70,7 +72,7 @@ export const WorkflowStepEdit = (props: Props) => {
 
         <Divider />
         {step?.id
-          ? <WorkflowStepActions assignmentConfirmation={props.assignmentConfirmation} stepId={step.id} workflows={props.workflows || []} />
+          ? <WorkflowStepActions saveRef={actionsSaveRef} assignmentConfirmation={props.assignmentConfirmation} stepId={step.id} workflows={props.workflows || []} />
           : <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowActions.saveFirst")}</Typography>}
 
         <Divider />
