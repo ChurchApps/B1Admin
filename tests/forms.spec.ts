@@ -67,6 +67,27 @@ test.describe("Forms page", () => {
     await page.locator("#formBox").waitFor({ state: "hidden", timeout: 10000 });
   });
 
+  // Person creation from submissions only works on Stand Alone forms (the ones with a shareable link),
+  // so People forms must not offer it, and switching back to People clears the box.
+  test("person creation is offered only on Stand Alone forms and the type picker explains the shareable link", async ({ page }) => {
+    await openFormsPage(page);
+    await clickAddForm(page);
+    const autoCreate = page.locator('[data-testid="auto-create-person-checkbox"]');
+    await expect(page.locator("#formBox")).toContainText("Choose Stand Alone to get a shareable link.");
+    await expect(autoCreate).toHaveCount(0);
+
+    await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "Stand Alone");
+    await expect(autoCreate).toBeVisible({ timeout: 10000 });
+    await autoCreate.click();
+    await expect(autoCreate.locator("input")).toBeChecked();
+
+    await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "People");
+    await expect(autoCreate).toHaveCount(0, { timeout: 10000 });
+
+    await page.locator("#formBox button", { hasText: /^Cancel$/ }).click();
+    await page.locator("#formBox").waitFor({ state: "hidden", timeout: 10000 });
+  });
+
   test("shows a not-found state for a missing form id", async ({ page }) => {
     await page.goto("/forms/zzz-does-not-exist");
     await expect(page.getByText("Form not found")).toBeVisible({ timeout: 15000 });
