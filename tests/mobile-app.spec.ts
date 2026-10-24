@@ -432,6 +432,19 @@ test.describe("B1 Mobile page saves", () => {
       await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("List", { timeout: 15000 });
     });
 
+    test("home screen tiles can be set to an automatically scrolling row", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      const layout = page.getByRole("combobox", { name: "Layout" });
+      await expect(layout).toBeVisible({ timeout: 15000 });
+      await layout.click();
+      await page.getByRole("option", { name: "Scrolling (automatic)" }).click();
+      await saveSettings(page);
+
+      expect((await publicSettings()).mobileTileLayout).toBe("autoscroll");
+      await page.reload();
+      await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("Scrolling (automatic)", { timeout: 15000 });
+    });
+
     test("My Attendance and My Forms on Home start off and save as public settings that survive a reload", async ({ page }) => {
       await page.goto("/mobile/b1-mobile");
       await expect(page.getByRole("heading", { name: "Home screen sections" })).toBeVisible({ timeout: 15000 });
