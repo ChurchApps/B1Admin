@@ -11,6 +11,7 @@ import { useReactToPrint } from "react-to-print";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
 import { Question, PrintStyles, SubmissionPersonDialog } from "../../components";
 import UserContext from "../../UserContext";
+import { PrintChurchHeader } from "../../components/PrintChurchHeader";
 
 export interface PersonFormOption {
   id: string;
@@ -214,8 +215,10 @@ export const PersonForms: React.FC<Props> = (props) => {
           <PrintStyles />
           {renderSubmissionPicker(form, submissions, submission)}
           {submission && (
-            <Box className="print-only" sx={{ mb: 2 }}>
-              {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+            <Box className="print-only" sx={{ mb: 2, textAlign: "center" }}>
+              <PrintChurchHeader churchName={churchName} style={{ margin: "0 auto 8px", maxHeight: 70 }}>
+                {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+              </PrintChurchHeader>
               <Typography variant="h5" sx={{ fontWeight: 600 }}>{headerText}</Typography>
               <Typography variant="body2">{Locale.label("forms.formSubmissions.subFor")}: {person?.name?.display}</Typography>
               {submission.submissionDate && <Typography variant="body2">{Locale.label("forms.formSubmissions.subDate")}: {DateHelper.prettyDate(new Date(submission.submissionDate))}</Typography>}
