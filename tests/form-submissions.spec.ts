@@ -4,10 +4,10 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 // Forms > Form Submissions only used two-thirds of the content column, so the
 // results table was squeezed and scrolled sideways. It should use the full width.
 const API = process.env.API_BASE || "http://localhost:8084";
-const FORM_NAME = "Issue 1348 Submissions Width";
+const FORM_NAME = "Form Submissions Width Spec";
 const DONALD_CLARK = "PER00000080";
 
-test.describe.serial("Form submissions width", () => {
+test.describe.serial("Form submissions", () => {
   let ctx: APIRequestContext;
   let auth: { headers: { Authorization: string } };
   let formId = "";
