@@ -290,7 +290,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
 
   return (
     <Grid container spacing={3}>
-      <Grid size={{ xs: 12, md: 8 }} className="form-submission-summary">
+      <Grid size={{ xs: 12 }} className="form-submission-summary">
         <div ref={contentRef} className="form-submission-summary">
           <style>{`
             @media print {
