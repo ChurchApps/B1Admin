@@ -24,6 +24,8 @@ const prettyWhen = (date?: Date | string | null, start?: Date | null) => {
 export const SundayService: React.FC = () => {
   const sunday = useSunday();
   const data = sunday.data;
+  // Placeholder data stands in while the first load runs; don't read it as "nothing planned".
+  const loading = sunday.isPending || sunday.isPlaceholderData;
   const plan = data?.plan;
   const hasAnything = !!(plan || (data?.inRoom || 0) > 0 || (data?.serving.length || 0) > 0 || (data?.guests.length || 0) > 0 || (data?.rooms.length || 0) > 0);
   const hasLive = (data?.inRoom || 0) > 0 || (data?.serving.length || 0) > 0 || (data?.guests.length || 0) > 0 || (data?.rooms.length || 0) > 0;
@@ -53,32 +55,34 @@ export const SundayService: React.FC = () => {
         </h1>
         {series
           ? <p className="om-series">{series}</p>
-          : !hasAnything && <p className="om-series">{Locale.label("dashboard.sunday.thisWeeksService", "This week's service will live here.")}</p>}
-        {data?.order && data.order.length > 0
-          ? (
-            <ol className="om-order">
-              {data.order.map((item, i) => (
-                <li key={i} className={item.now ? "now" : undefined}>
-                  <span className="om-mm">{clock(data.planStart, item.startSeconds) || "—"}</span>
-                  <span className="om-what">{item.label}</span>
-                </li>
-              ))}
-            </ol>
-          )
-          : (
-            <p className="om-quiet">
-              {hasAnything
-                ? Locale.label("dashboard.sunday.noOrder", "No order of service on this plan.")
-                : Locale.label("dashboard.sunday.noPlan", "No service planned this week.")}
-              {canPlans && (
-                <>
-                  {" "}
-                  <Link to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
-                </>
-              )}
-            </p>
-          )}
-        {!hasLive && !sunday.isLoading && (
+          : !hasAnything && !loading && <p className="om-series">{Locale.label("dashboard.sunday.thisWeeksService", "This week's service will live here.")}</p>}
+        {loading
+          ? <p className="om-quiet" data-testid="sunday-loading">{Locale.label("common.loading")}</p>
+          : data?.order && data.order.length > 0
+            ? (
+              <ol className="om-order">
+                {data.order.map((item, i) => (
+                  <li key={i} className={item.now ? "now" : undefined}>
+                    <span className="om-mm">{clock(data.planStart, item.startSeconds) || "—"}</span>
+                    <span className="om-what">{item.label}</span>
+                  </li>
+                ))}
+              </ol>
+            )
+            : (
+              <p className="om-quiet">
+                {hasAnything
+                  ? Locale.label("dashboard.sunday.noOrder", "No order of service on this plan.")
+                  : Locale.label("dashboard.sunday.noPlan", "No service planned this week.")}
+                {canPlans && (
+                  <>
+                    {" "}
+                    <Link to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
+                  </>
+                )}
+              </p>
+            )}
+        {!hasLive && !loading && (
           <p className="om-quiet" data-testid="sunday-live-hint">
             {data?.isSunday
               ? Locale.label("dashboard.sunday.liveHintSunday", "Who is in the room, who is serving, and who just walked in will show here once check-in and serving are in use.")

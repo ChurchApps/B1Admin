@@ -393,7 +393,7 @@ export const PlanValidation = (props: Props) => {
       {ConfirmDialogElement}
       <CardWithHeader title={Locale.label("plans.planValidation.val")}>
         {notificationError && <Alert severity="error">{notificationError}</Alert>}
-        {props.plan.confirmationWorkflowId && <Alert severity="info" sx={{ mb: 2 }}>{Locale.label("plans.confirmation.enabled", "New requests use the confirmation workflow. App alerts stay enabled. Follow-ups stop when each request is accepted or declined.")}</Alert>}
+        {props.plan?.confirmationWorkflowId && <Alert severity="info" sx={{ mb: 2 }}>{Locale.label("plans.confirmation.enabled", "New requests use the confirmation workflow. App alerts stay enabled. Follow-ups stop when each request is accepted or declined.")}</Alert>}
         {getErrorList()}
         {getNotificationLink()}
       </CardWithHeader>

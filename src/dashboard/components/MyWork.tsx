@@ -21,6 +21,12 @@ export const MyWork: React.FC = () => {
 
   const myTasks = useMemo(() => (tasksQuery.data || []).filter((t) => t.assignedToId === personId && t.status === "Open").slice(0, 4), [tasksQuery.data, personId]);
   const myGroups = groupsQuery.data || [];
+  // Placeholder [] shows while loading; don't read it as "none".
+  const loadingState = (q: { isPending: boolean; isPlaceholderData: boolean; isError: boolean }, testId: string) => {
+    if (q.isError) return <Typography variant="body2" color="text.secondary">{Locale.label("dashboard.loadError", "Couldn't load this. Refresh to try again.")}</Typography>;
+    if (!UniqueIdHelper.isMissing(personId) && (q.isPending || q.isPlaceholderData)) return <Typography variant="body2" color="text.secondary" data-testid={testId}>{Locale.label("common.loading")}</Typography>;
+    return null;
+  };
 
   return (
     <Box sx={{ display: "grid", gap: { xs: 4, md: 6 }, gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, alignItems: "start" }}>
@@ -36,7 +42,7 @@ export const MyWork: React.FC = () => {
             <NewTask compact onCancel={() => setShowAdd(false)} onSave={() => { tasksQuery.refetch(); setShowAdd(false); }} />
           </Box>
         )}
-        {myTasks.length === 0
+        {loadingState(tasksQuery, "my-tasks-loading") || (myTasks.length === 0
           ? <Typography variant="body2" color="text.secondary">{Locale.label("dashboard.noOpenTasks", "No open tasks assigned to you.")}</Typography>
           : (
             <Stack component="ul" spacing={1} sx={{ listStyle: "none", m: 0, p: 0 }}>
@@ -46,14 +52,14 @@ export const MyWork: React.FC = () => {
                 </li>
               ))}
             </Stack>
-          )}
+          ))}
       </Box>
 
       <Box component="section" aria-labelledby="home-my-groups" data-testid="home-my-groups">
         <RecordHeading id="home-my-groups" label={Locale.label("dashboard.myGroups", "My Groups")}>
           {canAllGroups && <TextAction small to="/groups" component={Link}>{Locale.label("dashboard.allGroups", "All groups")}</TextAction>}
         </RecordHeading>
-        {myGroups.length === 0
+        {loadingState(groupsQuery, "my-groups-loading") || (myGroups.length === 0
           ? <Typography variant="body2" color="text.secondary">{Locale.label("dashboard.noGroups", "You're not in any groups yet.")}</Typography>
           : (
             <VerbRow sx={{ typography: "body1" }}>
@@ -61,7 +67,7 @@ export const MyWork: React.FC = () => {
                 <MuiLink key={gm.id} component={Link} to={"/groups/" + gm.groupId} underline="hover" sx={linkSx}>{gm.group?.name || Locale.label("people.groups.unknownGroup")}</MuiLink>
               ))}
             </VerbRow>
-          )}
+          ))}
       </Box>
     </Box>
   );

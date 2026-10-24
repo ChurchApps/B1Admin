@@ -69,6 +69,9 @@ export function AppearanceEdit(props: Props) {
   const [currentUrl, setCurrentUrl] = useState<string | null>("about:blank");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+  // Only changed settings are posted, so a save doesn't resend every logo.
+  const [changedKeys, setChangedKeys] = useState<string[]>([]);
+  const markChanged = (...keys: string[]) => setChangedKeys((prev) => Array.from(new Set([...prev, ...keys])));
   const editorRef = useRef<HTMLDivElement>(null);
 
   const init = () => {
@@ -124,6 +127,7 @@ export function AppearanceEdit(props: Props) {
         }
 
         setCurrentSettings(settings);
+        markChanged(keyName, ...(keyName === "favicon_400x400" ? ["favicon_16x16"] : []));
       }
     } finally {
       setEditLogo(false);
@@ -141,6 +145,7 @@ export function AppearanceEdit(props: Props) {
     if (keySetting.length === 0) settings.push({ keyName, value, public: 1 });
     else keySetting[0].value = value;
     setCurrentSettings(settings);
+    markChanged(keyName);
   };
 
   const getLogoEditor = (logoName: string) => {
@@ -201,9 +206,12 @@ export function AppearanceEdit(props: Props) {
   };
 
   const handleSave = () => {
+    if (changedKeys.length === 0) { props.updatedFunction?.(); return; }
     setIsSubmitting(true);
     setErrors([]);
-    ApiHelper.post("/settings", currentSettings, "MembershipApi").then(() => {
+    const changed = currentSettings.filter((s) => changedKeys.includes(s.keyName || ""));
+    ApiHelper.post("/settings", changed, "MembershipApi").then(() => {
+      setChangedKeys([]);
       props.updatedFunction?.();
       setIsSubmitting(false);
     }).catch((e: any) => {
@@ -214,6 +222,15 @@ export function AppearanceEdit(props: Props) {
   const handleCancel = () => { props.updatedFunction?.(); };
 
   useEffect(() => { setCurrentSettings(props.settings || []); }, [props.settings]);
+
+  // Staged logos live only in this page until Save finishes; warn before leaving.
+  const unsaved = changedKeys.length > 0 || isSubmitting;
+  useEffect(() => {
+    if (!unsaved) return;
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [unsaved]);
 
   return (
     <Box sx={{ maxWidth: 1200 }}>

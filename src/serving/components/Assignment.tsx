@@ -34,7 +34,7 @@ interface Props {
 const flatCardSx = { "& .MuiPaper-root": { border: 0, boxShadow: "none", bgcolor: "transparent" }, "& .om-head, & .om-body": { px: 0, pt: 0 } };
 
 export const Assignment = (props: Props) => {
-  const [plan, setPlan] = React.useState<PlanInterface | null>(null);
+  const [plan, setPlan] = React.useState<PlanInterface | null>(props.plan || null);
   const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
@@ -55,6 +55,7 @@ export const Assignment = (props: Props) => {
   const [blockoutDates, setBlockoutDates] = React.useState<BlockoutDateInterface[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [loaded, setLoaded] = React.useState(false);
   const notesDirty = React.useRef(false);
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
@@ -125,8 +126,23 @@ export const Assignment = (props: Props) => {
     ApiHelper.get("/plans/" + props.plan?.id, "DoingApi").then((data: PlanInterface) => {
       if (data?.id) setPlan(keepNotes(data));
     });
-    const positionsData = await ApiHelper.get("/positions/plan/" + props.plan?.id, "DoingApi");
+    let positionsData: PositionInterface[];
+    let d: AssignmentInterface[];
+    try {
+      [positionsData, d] = await Promise.all([
+        ApiHelper.get("/positions/plan/" + props.plan?.id, "DoingApi"),
+        ApiHelper.get("/assignments/plan/" + props.plan?.id, "DoingApi")
+      ]);
+    } catch {
+      setErrorMessage(Locale.label("plans.assignment.loadError", "Couldn't load the serving team. Refresh to try again."));
+      setLoaded(true);
+      return;
+    }
+    positionsData = positionsData || [];
+    d = d || [];
     setPositions(positionsData);
+    setAssignments(d);
+    setLoaded(true);
 
     const groupIds = ArrayHelper.getUniqueValues(positionsData, "groupId").filter(id => id);
     if (groupIds.length > 0) {
@@ -141,8 +157,6 @@ export const Assignment = (props: Props) => {
     ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data: any) => {
       setBlockoutDates(data);
     });
-    const d = await ApiHelper.get("/assignments/plan/" + props.plan?.id, "DoingApi");
-    setAssignments(d);
     const peopleIds = ArrayHelper.getUniqueValues(d, "personId");
     if (peopleIds.length > 0) {
       ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi").then((data: PersonInterface[]) => {
@@ -201,7 +215,7 @@ export const Assignment = (props: Props) => {
   const categoryNames = React.useMemo(() => positions?.length > 0 ? ArrayHelper.getUniqueValues(positions, "categoryName") : [Locale.label("plans.planPage.band")], [positions]);
 
   const verbs = [
-    canEdit && positions.length === 0 && previousPlan && (
+    canEdit && loaded && positions.length === 0 && previousPlan && (
       <Box key="copy" component="span" onClick={(e: React.MouseEvent<HTMLElement>) => setCopyMenuAnchor(e.currentTarget)}>
         <TextAction data-testid="copy-previous-button">
           <Box component="span" sx={{ display: "inline-flex", alignItems: "center" }}>
@@ -306,12 +320,13 @@ export const Assignment = (props: Props) => {
               assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId)}
             />
           )}
-          <Box sx={{ overflowX: "auto" }}>
+          {!loaded && <Typography variant="body2" color="text.secondary" data-testid="assignment-loading">{Locale.label("common.loading")}</Typography>}
+          {loaded && <Box sx={{ overflowX: "auto" }}>
             <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
-          </Box>
-          <Box sx={flatCardSx}>
+          </Box>}
+          {loaded && <Box sx={flatCardSx}>
             <PlanValidation plan={plan as PlanInterface} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
-          </Box>
+          </Box>}
         </Stack>
       )}
 

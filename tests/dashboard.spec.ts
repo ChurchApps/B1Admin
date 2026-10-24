@@ -1,4 +1,4 @@
-import { test as plainTest } from "@playwright/test";
+import { test as plainTest, type Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { openPrimaryNav } from "./helpers/navigation";
 import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
@@ -100,6 +100,33 @@ test.describe("Sunday home", () => {
     const cancelBtn = page.locator("button").getByText("Cancel");
     await cancelBtn.click();
     await expect(assignInput).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+// Holds matching API requests until release() is called, so the page stays in its loading state.
+const holdRequests = async (page: Page, pattern: RegExp) => {
+  let release = () => {};
+  const gate = new Promise<void>((resolve) => { release = resolve; });
+  await page.route(pattern, async (route) => { await gate; await route.continue().catch(() => {}); });
+  return () => release();
+};
+
+// ChurchAppsSupport#1341: the home page said "No service planned this week." and "You're not in any groups yet." while still loading.
+test.describe("Home page loading states", () => {
+  test("home page shows loading, not empty, while its cards load", async ({ page }) => {
+    const release = await holdRequests(page, /\/(plans\/presenter|groupmembers\?personId=)/);
+    await page.goto("/");
+    await expect(page.getByTestId("sunday-home")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("home-my-groups")).toBeVisible({ timeout: 15000 });
+
+    await expect(page.getByTestId("sunday-loading")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("my-groups-loading")).toBeVisible();
+    await expect(page.getByText("No service planned this week.")).toHaveCount(0);
+    await expect(page.getByText("You're not in any groups yet.")).toHaveCount(0);
+
+    release();
+    await expect(page.getByTestId("sunday-loading")).toHaveCount(0, { timeout: 15000 });
+    await expect(page.getByTestId("my-groups-loading")).toHaveCount(0, { timeout: 15000 });
   });
 });
 

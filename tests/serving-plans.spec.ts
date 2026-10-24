@@ -462,6 +462,41 @@ test.describe.serial("Serving Management - Plans", () => {
   });
 });
 
+// Holds matching API requests until release() is called, so the page stays in its loading state.
+const holdRequests = async (page: Page, pattern: RegExp) => {
+  let release = () => {};
+  const gate = new Promise<void>((resolve) => { release = resolve; });
+  await page.route(pattern, async (route) => { await gate; await route.continue().catch(() => {}); });
+  return () => release();
+};
+
+// ChurchAppsSupport#1341: the plan page said "No items in service order" and "Plan is valid." while still loading.
+loggedInTest.describe("Plan page loading states", () => {
+  loggedInTest("plan page shows loading, not empty, while its lists load", async ({ page }) => {
+    const release = await holdRequests(page, /\/(planItems|positions|assignments)\/plan\//);
+    await page.goto("/serving/plans/PLA00000001");
+    await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
+
+    await expect(page.getByTestId("service-order-loading")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId("assignment-loading")).toBeVisible();
+    await expect(page.getByText("No items in service order")).toHaveCount(0);
+    await expect(page.getByText("Plan is valid.")).toHaveCount(0);
+
+    release();
+    await expect(page.getByTestId("service-order-loading")).toHaveCount(0, { timeout: 15000 });
+    await expect(page.getByTestId("assignment-loading")).toHaveCount(0, { timeout: 15000 });
+  });
+
+  loggedInTest("a failed serving team load stops loading and shows the error", async ({ page }) => {
+    await page.route(/\/positions\/plan\//, (route) => route.fulfill({ status: 500, body: "{}" }));
+    await page.goto("/serving/plans/PLA00000001");
+    await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
+
+    await expect(page.getByText("Couldn't load the serving team. Refresh to try again.")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("assignment-loading")).toHaveCount(0, { timeout: 15000 });
+  });
+});
+
 // ChurchAppsSupport#1183: a new plan copied from the previous plan lost that plan's notes.
 test.describe("Copy plan from previous plan", () => {
   test("a plan copied from the previous plan keeps its notes", async ({ page }) => {
