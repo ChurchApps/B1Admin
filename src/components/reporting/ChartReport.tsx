@@ -96,7 +96,8 @@ export const ChartReport = (props: Props) => {
     },
     bar: { groupWidth: "75%" },
     isStacked: true,
-    backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
+    // Transparent in dark mode: the card shows through on screen, and paper stays white.
+    backgroundColor: isDark ? "transparent" : "#ffffff",
     hAxis: { textStyle: { color: isDark ? "#e0e0e0" : "#333" } },
     vAxis: {
       textStyle: { color: isDark ? "#e0e0e0" : "#333" },

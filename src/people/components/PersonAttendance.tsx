@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useContext, useMemo, useState } from "react";
 import { type AttendanceRecordInterface, type GroupInterface } from "@churchapps/helpers";
 import { ArrayHelper, DateHelper, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,9 @@ import { EventAvailable as EventIcon, Print as PrintIcon } from "@mui/icons-mate
 import { EmptyState } from "../../components/ui/EmptyState";
 import { CountChip } from "../../components/ui/CountChip";
 import { useCampuses } from "../../hooks/useCampuses";
+import { PrintStyles } from "../../components/PrintStyles";
+import { PrintChurchHeader } from "../../components/PrintChurchHeader";
+import UserContext from "../../UserContext";
 
 interface Props {
   personId: string;
@@ -32,6 +35,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
   const [groupFilter, setGroupFilter] = useState("");
   // Campuses are mastered in the membership module; resolve the campus name by id.
   const campuses = useCampuses();
+  const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const attendanceRecords = useQuery<AttendanceRecordInterface[]>({
     queryKey: ["/attendancerecords?personId=" + props.personId, "AttendanceApi"],
     enabled: !UniqueIdHelper.isMissing(props.personId),
@@ -182,9 +186,15 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
           .attendance-print .MuiCard-root { box-shadow: none !important; border: none !important; }
         }
       `}</style>
-      <Typography variant="h5" className="attendance-print-only" sx={{ display: "none", mb: 1, fontWeight: 500 }}>
-        {props.personName ? `${props.personName} — Attendance` : "Attendance"}
-      </Typography>
+      <PrintStyles />
+      <Box className="attendance-print-only" sx={{ display: "none", mb: 1, textAlign: "center" }}>
+        <PrintChurchHeader churchName={churchName} style={{ margin: "0 auto 8px", maxHeight: 70 }}>
+          {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{churchName}</Typography>}
+        </PrintChurchHeader>
+        <Typography variant="h5" sx={{ fontWeight: 500 }}>
+          {props.personName ? `${props.personName} — Attendance` : "Attendance"}
+        </Typography>
+      </Box>
       <Card>
         <Box className="attendance-no-print" sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>

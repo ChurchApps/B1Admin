@@ -2,7 +2,8 @@
 
 import React, { useContext, useRef } from "react";
 import { ArrayHelper, type PersonInterface, type ReportInterface, type ReportResultInterface } from "@churchapps/helpers";
-import { DisplayBox, ExportLink, Loading } from "../";
+import { DisplayBox, ExportLink, Loading, PrintStyles } from "../";
+import { PrintChurchHeader } from "../PrintChurchHeader";
 import { CurrencyHelper } from "@churchapps/apphelper";
 import { ApiHelper, Locale } from "../../helpers";
 import { useReactToPrint } from "react-to-print";
@@ -10,7 +11,7 @@ import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
 import { TreeReport } from "./TreeReport";
 import { GivingKpiCards, type GivingKpis } from "./GivingKpiCards";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import { Download as DownloadIcon, Print as PrintIcon, Description as DescriptionIcon } from "@mui/icons-material";
 import { useMountedState } from "@churchapps/apphelper";
 import { AppIconButton } from "../ui/AppIconButton";
@@ -249,18 +250,7 @@ export const ReportOutput = (props: Props) => {
         <>
           <style dangerouslySetInnerHTML={{
             __html: `
-            .report-print-church {
-              display: none;
-            }
             @media print {
-              .report-print-church {
-                display: block !important;
-                font-size: 12px;
-                letter-spacing: 0.15em;
-                text-transform: uppercase;
-                color: #6B7280;
-                margin-bottom: 8px;
-              }
               @page {
                 size: portrait;
                 margin: 20mm 15mm 20mm 15mm;
@@ -290,6 +280,9 @@ export const ReportOutput = (props: Props) => {
                 margin-left: calc((100% - 680px) / 2) !important;
                 page-break-inside: avoid !important;
               }
+              .report-chart-container svg text {
+                fill: #333 !important;
+              }
               .MuiTable-root {
                 width: 100% !important;
                 margin-top: 20px !important;
@@ -305,9 +298,14 @@ export const ReportOutput = (props: Props) => {
             }
           `
           }} />
+          <PrintStyles />
           {kpis && <GivingKpiCards kpis={kpis} currency={currency} />}
           <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
-            {churchName && <div className="report-print-church">{churchName}</div>}
+            <Box className="print-only" sx={{ mb: 2, textAlign: "center" }}>
+              <PrintChurchHeader churchName={churchName} style={{ margin: "0 auto 8px", maxHeight: 70 }}>
+                {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+              </PrintChurchHeader>
+            </Box>
             {getOutputs()}
           </DisplayBox>
         </>
