@@ -2074,10 +2074,10 @@
       "workflows": "Workflows"
     },
     "peopleColumns": {
-      "appFilt": "Apply Filters",
+      "appFilt": "Done",
       "cust": "Custom",
-      "filt": "Filters",
-      "noFilt": "No filters available.",
+      "filt": "Select Columns",
+      "noFilt": "No custom columns available.",
       "selectColumns": "Select columns",
       "stand": "Standard"
     },
