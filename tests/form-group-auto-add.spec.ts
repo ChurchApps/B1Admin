@@ -55,6 +55,7 @@ test.describe("Form-linked group auto-add", () => {
   test("shows None in the group select before a group is chosen", async ({ page }) => {
     await navigateToForms(page);
     await page.locator('[data-testid="add-form-button"]').click();
+    await selectMuiOption(page, page.locator('[data-testid="content-type-select"]'), "Stand Alone");
     await page.locator('[data-testid="auto-create-person-checkbox"] input').check();
     const groupSelect = page.locator('[data-testid="form-group-select"]');
     await expect(groupSelect).toBeVisible({ timeout: 10000 });

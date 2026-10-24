@@ -1166,6 +1166,7 @@
       "addToGroupNone": "None",
       "alone": "Stand Alone",
       "associate": "Associate With",
+      "associateHelper": "People forms are filled in from a person's record. Choose Stand Alone to get a shareable link.",
       "autoCreatePerson": "Create a person record from submissions",
       "available": "Set Form Availability Timeframe",
       "availableEnd": "Availability End Date",
