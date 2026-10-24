@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useMountedState, ApiHelper, DateHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
@@ -39,7 +39,7 @@ export function FormEdit(props: Props) {
   const isMounted = useMountedState();
   const queryClient = useQueryClient();
 
-  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "" } });
+  const { control, register, handleSubmit, reset, watch, setValue, formState } = useForm<AnyRecord>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "" } });
 
   const e = formState.errors as any;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "accessStartTime", "accessEndTime"]);
@@ -47,6 +47,8 @@ export function FormEdit(props: Props) {
 
   const watchedId = watch("id");
   const autoCreatePerson = watch("autoCreatePerson");
+  // Only stand-alone forms have a public link, so only they can create people. Older People forms that already have it on keep the checkbox so it can be turned off.
+  const showAutoCreate = standAloneForm || !!autoCreatePerson;
 
   // Stand-alone forms can be linked to a group: its members see the form on the group page and its leaders can view the answers.
   const showGroup = standAloneForm || !!autoCreatePerson;
@@ -126,11 +128,12 @@ export function FormEdit(props: Props) {
         <FormControl fullWidth>
           <InputLabel id="associate">{Locale.label("forms.formEdit.associate")}</InputLabel>
           <Controller name="contentType" control={control} render={({ field }) => (
-            <Select {...field} value={field.value ?? "person"} labelId="associate" label={Locale.label("forms.formEdit.associate")} data-testid="content-type-select" aria-label={Locale.label("forms.formEdit.contentTypeAria")} onChange={(e) => { field.onChange(e); setStandAloneForm(e.target.value === "form"); }}>
+            <Select {...field} value={field.value ?? "person"} labelId="associate" label={Locale.label("forms.formEdit.associate")} data-testid="content-type-select" aria-label={Locale.label("forms.formEdit.contentTypeAria")} onChange={(e) => { field.onChange(e); setStandAloneForm(e.target.value === "form"); if (e.target.value !== "form") setValue("autoCreatePerson", false); }}>
               <MenuItem value="person">{Locale.label("forms.formEdit.ppl")}</MenuItem>
               <MenuItem value="form">{Locale.label("forms.formEdit.alone")}</MenuItem>
             </Select>
           )} />
+          <FormHelperText>{Locale.label("forms.formEdit.associateHelper")}</FormHelperText>
         </FormControl>
       )}
       {standAloneForm && (
@@ -184,9 +187,11 @@ export function FormEdit(props: Props) {
           </Select>
         )} />
       </FormControl>
-      <Controller name="autoCreatePerson" control={control} render={({ field }) => (
-        <FormControlLabel control={<Checkbox checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} data-testid="auto-create-person-checkbox" />} label={Locale.label("forms.formEdit.autoCreatePerson")} />
-      )} />
+      {showAutoCreate && (
+        <Controller name="autoCreatePerson" control={control} render={({ field }) => (
+          <FormControlLabel control={<Checkbox checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} data-testid="auto-create-person-checkbox" />} label={Locale.label("forms.formEdit.autoCreatePerson")} />
+        )} />
+      )}
       {showGroup && (
         <>
           <FormControl fullWidth>
