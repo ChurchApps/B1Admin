@@ -563,4 +563,66 @@ test.describe("Curated calendar groups", () => {
       await page.request.delete(`${API_BASE}/content/curatedCalendars/${calendarId}`, auth);
     }
   });
+
+  // Issue 1343: the button on a curated row said "Delete", but it only takes the row off this calendar.
+  async function openRemoveConfirm(page: Page, title: string, singleEvent: boolean) {
+    const auth = await apiLogin(page.request);
+    const calRes = await page.request.post(`${API_BASE}/content/curatedCalendars`, { ...auth, data: [{ name: title + " Calendar" }] });
+    expect(calRes.ok()).toBeTruthy();
+    const calendarId: string = (await calRes.json())[0].id;
+    let eventId = "";
+    const cleanup = async () => {
+      // Deleting the calendar does not delete its curated rows, so remove the group first.
+      await page.request.delete(`${API_BASE}/content/curatedEvents/calendar/${calendarId}/group/GRP00000004`, auth);
+      if (eventId) await page.request.delete(`${API_BASE}/content/events/${eventId}`, auth);
+      await page.request.delete(`${API_BASE}/content/curatedCalendars/${calendarId}`, auth);
+    };
+    try {
+      const start = new Date();
+      start.setHours(12, 0, 0, 0);
+      const end = new Date(start);
+      end.setHours(13, 0, 0, 0);
+      const evRes = await page.request.post(`${API_BASE}/content/events`, {
+        ...auth,
+        data: [{ groupId: "GRP00000004", title, start, end, allDay: false, visibility: "public" }]
+      });
+      expect(evRes.ok()).toBeTruthy();
+      eventId = (await evRes.json())[0].id;
+      const row = singleEvent ? { curatedCalendarId: calendarId, groupId: "GRP00000004", eventIds: [eventId] } : { curatedCalendarId: calendarId, groupId: "GRP00000004" };
+      const curRes = await page.request.post(`${API_BASE}/content/curatedEvents`, { ...auth, data: [row] });
+      expect(curRes.ok()).toBeTruthy();
+
+      await openCuratedCalendar(page, calendarId);
+      await page.getByText(title, { exact: true }).first().click();
+      const removeButton = page.getByTestId("calendar-event-delete-button");
+      await expect(removeButton).toHaveText("Remove from Calendar", { timeout: 15000 });
+      await removeButton.click();
+      return { confirmDialog: page.locator('div[role="dialog"]').last(), cleanup };
+    } catch (e) {
+      await cleanup();
+      throw e;
+    }
+  }
+
+  test("removing a whole-group row says it takes all of the group's events off the calendar", async ({ page }) => {
+    const { confirmDialog, cleanup } = await openRemoveConfirm(page, "Zacchaeus Remove Group Row Event", false);
+    try {
+      await expect(confirmDialog).toContainText("removes all of that group's events from this calendar");
+      await expect(confirmDialog.getByRole("button", { name: "Remove from Calendar" })).toBeVisible();
+      await confirmDialog.getByRole("button", { name: "Cancel" }).click();
+    } finally {
+      await cleanup();
+    }
+  });
+
+  test("removing a single-event row says the event stays in its group", async ({ page }) => {
+    const { confirmDialog, cleanup } = await openRemoveConfirm(page, "Zacchaeus Remove Direct Row Event", true);
+    try {
+      await expect(confirmDialog).toContainText("The event stays in its group.");
+      await expect(confirmDialog.getByRole("button", { name: "Remove from Calendar" })).toBeVisible();
+      await confirmDialog.getByRole("button", { name: "Cancel" }).click();
+    } finally {
+      await cleanup();
+    }
+  });
 });
