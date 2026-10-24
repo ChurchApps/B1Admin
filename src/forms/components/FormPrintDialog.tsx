@@ -64,10 +64,12 @@ export const BlankForm: React.FC<{ form: PrintableFormInterface; questions: Ques
   const hasRequired = printable.some((q) => q.required);
   return (
     <Box className="blank-form" sx={{ color: "common.black", "& *": { color: "common.black" } }}>
-      <PrintChurchHeader churchName={churchName || ""} style={{ marginBottom: 8 }}>
-        {churchName && <Typography variant="subtitle2" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
-      </PrintChurchHeader>
-      <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>{form.name}</Typography>
+      <Box sx={{ textAlign: "center" }}>
+        <PrintChurchHeader churchName={churchName || ""} style={{ margin: "0 auto 8px", maxHeight: 70 }}>
+          {churchName && <Typography variant="subtitle2" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
+        </PrintChurchHeader>
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>{form.name}</Typography>
+      </Box>
       {form.description && <Typography variant="body2" sx={{ mb: 1, whiteSpace: "pre-wrap" }}>{form.description}</Typography>}
       {hasRequired && <Typography variant="caption" sx={{ display: "block", mb: 1 }}>{Locale.label("forms.formPrint.requiredNote")}</Typography>}
       {printable.length === 0 && <Typography variant="body2">{Locale.label("forms.form.noCustomMsg")}</Typography>}

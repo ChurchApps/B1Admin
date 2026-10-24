@@ -88,8 +88,8 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
 
       <Box ref={printRef} sx={{ pr: formPermission ? 9 : 5, "@media print": { pr: 0 } }}>
         <PrintStyles />
-        <Box className="print-only" sx={{ mb: 2 }}>
-          <PrintChurchHeader churchName={churchName} style={{ marginBottom: 8 }}>
+        <Box className="print-only" sx={{ mb: 2, textAlign: "center" }}>
+          <PrintChurchHeader churchName={churchName} style={{ margin: "0 auto 8px", maxHeight: 70 }}>
             {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }} data-testid="print-church-name">{churchName}</Typography>}
           </PrintChurchHeader>
           {formSubmission.form?.name && <Typography variant="h5" sx={{ fontWeight: 600 }}>{formSubmission.form.name}</Typography>}
