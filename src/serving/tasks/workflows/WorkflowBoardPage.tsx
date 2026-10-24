@@ -46,6 +46,14 @@ export const WorkflowBoardPage = () => {
     });
   };
 
+  const toggleSelectMany = (cardIds: string[], selected: boolean) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      cardIds.filter(Boolean).forEach((id) => { if (selected) next.add(id); else next.delete(id); });
+      return next;
+    });
+  };
+
   const handleDropCard = async (cardId: string, stepId: string) => {
     if (!canEdit) return;
     if (board.data?.cards?.find((c) => c.id === cardId)?.stepId === stepId) return;
@@ -139,6 +147,7 @@ export const WorkflowBoardPage = () => {
               canManage={canManage}
               selectedIds={selectedIds}
               onToggleSelect={toggleSelect}
+              onSelectAll={toggleSelectMany}
               onDropCard={handleDropCard}
               onOpenCard={setOpenCard}
               onEditStep={setEditStep}

@@ -6026,6 +6026,7 @@
       "cardsCount": "cards",
       "clearSelection": "Clear",
       "moveTo": "Move to…",
+      "selectAll": "Select all",
       "selectedCount": "{count} selected",
       "step": "Step",
       "stepsCount": "steps",

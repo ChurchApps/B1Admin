@@ -541,6 +541,60 @@ test.describe.serial("Serving Management - Workflows", () => {
     await ctx.dispose();
   });
 
+  test("a step's select-all checkbox selects every card in it for the bulk bar", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf } = await buildActionWorkflow(ctx, auth, []);
+    const steps = await (await ctx.get(`${API_BASE}/doing/workflowSteps/workflow/${wf.id}`, auth)).json();
+    const greet = steps.find((s: any) => s.name === "Greet");
+    for (const p of [{ id: "PER00000001", label: "John Smith" }, { id: "PER00000005", label: "Patricia Brown" }, { id: "PER00000006", label: "Robert Johnson" }]) {
+      const res = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: greet.id, associatedWith: { type: "person", ...p } } });
+      expect(res.status()).toBe(200);
+    }
+
+    try {
+      await openBoardById(page, wf.id);
+      const column = page.locator(`[data-testid="workflow-column-${greet.id}"]`);
+      await expect(column.locator('[data-testid^="workflow-card-"]')).toHaveCount(3, { timeout: 10000 });
+      const selectAll = page.locator(`[data-testid="select-all-${greet.id}"]`).getByRole("checkbox");
+      await selectAll.check();
+      await expect(page.locator('[data-testid="bulk-action-bar"]')).toContainText("3 selected", { timeout: 10000 });
+      await expect(column.locator('[data-testid^="card-select-"]').getByRole("checkbox", { checked: false })).toHaveCount(0);
+
+      // Unticking one card leaves the header partly checked; ticking it again clears the whole step.
+      await column.locator('[data-testid^="card-select-"]').first().getByRole("checkbox").uncheck();
+      await expect(page.locator('[data-testid="bulk-action-bar"]')).toContainText("2 selected");
+      await expect(page.locator(`[data-testid="select-all-${greet.id}"]`)).toHaveClass(/MuiCheckbox-indeterminate/);
+      await selectAll.check();
+      await expect(page.locator('[data-testid="bulk-action-bar"]')).toContainText("3 selected");
+      await selectAll.uncheck();
+      await expect(page.locator('[data-testid="bulk-action-bar"]')).toHaveCount(0);
+    } finally {
+      await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+      await ctx.dispose();
+    }
+  });
+
+  test("a card's activity shows when each entry happened", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, [{ actionType: "addNote", config: { note: "Zacchaeus dated note" } }]);
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: "person", id: "PER00000001", label: "John Smith" } } });
+    const card = await added.json();
+
+    try {
+      await openBoardById(page, wf.id);
+      await page.locator(`[data-testid="workflow-card-${card.id}"]`).click();
+      await page.locator('[data-testid="workflow-card-drawer"]').waitFor({ state: "visible", timeout: 10000 });
+      const entry = page.locator('[data-testid="history-entry-0"]');
+      await expect(entry).toContainText("Note: Zacchaeus dated note");
+      await expect(entry.locator('[data-testid="history-date-0"]')).toHaveText(/\d{1,2}:\d{2}/);
+    } finally {
+      await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+      await ctx.dispose();
+    }
+  });
+
   test("every step renders as a column with an automated-actions badge (no connector)", async () => {
     const ctx = await request.newContext();
     const auth = await apiAuth(ctx);

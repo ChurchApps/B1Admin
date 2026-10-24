@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Stack } from "@mui/material";
+import { Box, Typography, Button, Stack, Checkbox } from "@mui/material";
 import { StatusBadge } from "../../../../components/ui";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -23,6 +23,7 @@ interface Props {
   canManage: boolean;
   selectedIds: Set<string>;
   onToggleSelect: (cardId: string) => void;
+  onSelectAll: (cardIds: string[], selected: boolean) => void;
   onDropCard: (cardId: string, stepId: string) => void;
   onOpenCard: (card: TaskInterface) => void;
   onEditStep: (step: WorkflowStepInterface) => void;
@@ -32,6 +33,10 @@ interface Props {
 export const WorkflowStepColumn = (props: Props) => {
   const { step, cards } = props;
   const [showPicker, setShowPicker] = React.useState(false);
+
+  const cardIds = cards.map((c) => c.id || "").filter(Boolean);
+  const selectedCount = cardIds.filter((id) => props.selectedIds.has(id)).length;
+  const allSelected = cardIds.length > 0 && selectedCount === cardIds.length;
 
   const routes = props.routes || [];
   const actions = props.actions || [];
@@ -75,6 +80,17 @@ export const WorkflowStepColumn = (props: Props) => {
     >
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1.5, px: 0.5 }}>
         <Stack direction="row" alignItems="center" spacing={1.25}>
+          {props.canEdit && cardIds.length > 0 && (
+            <Checkbox
+              size="small"
+              checked={allSelected}
+              indeterminate={selectedCount > 0 && !allSelected}
+              onChange={() => props.onSelectAll(cardIds, !allSelected)}
+              inputProps={{ "aria-label": Locale.label("tasks.workflowBoard.selectAll") }}
+              data-testid={"select-all-" + step.id}
+              sx={{ p: 0.25, mr: -0.5 }}
+            />
+          )}
           <Typography variant="h3" component="h3">{step.name}</Typography>
           <StatusBadge tone="neutral" data-testid={"step-count-" + step.id}>{cards.length}</StatusBadge>
         </Stack>
