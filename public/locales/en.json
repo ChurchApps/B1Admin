@@ -1748,6 +1748,7 @@
       "signInPromptTitle": "Home screen sign-in prompt",
       "subtitle": "Member directory, visibility, and messaging for the B1.church app",
       "tileLayout": "Layout",
+      "tileLayoutAutoScroll": "Scrolling (automatic)",
       "tileLayoutGrid": "Grid",
       "tileLayoutHelp": "How links with photos appear on the app's home screen.",
       "tileLayoutList": "List",

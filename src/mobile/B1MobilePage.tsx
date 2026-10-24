@@ -270,6 +270,7 @@ export const B1MobilePage: React.FC = () => {
                 onChange={(e) => setTileLayout(e.target.value)}>
                 <MenuItem value="grid">{Locale.label("mobile.b1MobilePage.tileLayoutGrid")}</MenuItem>
                 <MenuItem value="scroll">{Locale.label("mobile.b1MobilePage.tileLayoutScroll")}</MenuItem>
+                <MenuItem value="autoscroll">{Locale.label("mobile.b1MobilePage.tileLayoutAutoScroll")}</MenuItem>
                 <MenuItem value="list">{Locale.label("mobile.b1MobilePage.tileLayoutList")}</MenuItem>
               </Select>
             </FormControl>
