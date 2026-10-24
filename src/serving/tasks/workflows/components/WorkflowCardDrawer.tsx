@@ -6,7 +6,7 @@ import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon, Phone as PhoneIcon, Email as EmailIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
-import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
+import { DateHelper, type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
 import { canEditCard } from "../permissions";
 
 // MUI Link's `component` path does not land data-testid on the anchor, so the profile href check cannot see it.
@@ -178,7 +178,10 @@ export const WorkflowCardDrawer = (props: Props) => {
               <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowCard.history")}</Typography>
               <Stack spacing={0.25} sx={{ mt: 0.5 }}>
                 {history.map((h, i) => (
-                  <Typography key={i} variant="caption" data-testid={"history-entry-" + i}>• {h.message}</Typography>
+                  <Typography key={i} variant="caption" data-testid={"history-entry-" + i}>
+                    • {h.message}
+                    {h.date && <Box component="span" sx={{ color: "text.secondary", ml: 1 }} data-testid={"history-date-" + i}>{DateHelper.prettyDateTime(new Date(h.date))}</Box>}
+                  </Typography>
                 ))}
               </Stack>
             </Box>
