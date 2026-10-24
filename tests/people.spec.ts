@@ -1065,6 +1065,17 @@ test.describe("People Management", () => {
   });
 });
 
+// The columns dialog only picks columns, so it is not labeled as filters.
+test.describe("People columns dialog", () => {
+  test("is labeled for columns, not filters", async ({ page }) => {
+    await page.locator('[data-testid="columns-button"]').click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("heading", { name: "Select Columns" })).toBeVisible({ timeout: 10000 });
+    await expect(dialog.getByRole("button", { name: "Done" })).toBeVisible();
+    await expect(dialog.getByText("Apply Filters")).toHaveCount(0);
+  });
+});
+
 // GET /donations?personId= drops gifts to non-deductible funds (a statement filter); the person
 // giving card passes includeNonDeductible=1 so those gifts still show on the record.
 loggedInTest.describe("Person giving card - non-deductible funds", () => {

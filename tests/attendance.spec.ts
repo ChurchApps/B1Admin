@@ -325,6 +325,12 @@ test.describe("Attendance Management", () => {
       expect(csv).toContain("present");
     });
 
+    test("daily group attendance report title has no unfilled placeholder", async ({ page }) => {
+      await page.goto("/reports/dailyGroupAttendance");
+      await expect(page.getByText("Group attendance by day", { exact: true }).first()).toBeVisible({ timeout: 15000 });
+      await expect(page.getByText("{groupName}")).toHaveCount(0);
+    });
+
     test("Attendance Trend Run Report enabled only after selecting filters", async ({ page }) => {
       await openReport(page, "Attendance Trend");
       // Run Report button is not gated on selections.
