@@ -176,6 +176,7 @@ export const CalendarPage = () => {
       )}
       {showImport && (
         <ImportIcsModal
+          curatedCalendarId={curatedCalendarId}
           onDone={(imported) => {
             setShowImport(false);
             if (imported) {
