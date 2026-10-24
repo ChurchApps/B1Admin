@@ -4,6 +4,7 @@ import { type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from "@mui/material";
 
 interface Props {
+  curatedCalendarId?: string;
   onDone: (imported: boolean) => void;
 }
 
@@ -26,10 +27,17 @@ export function ImportIcsModal(props: Props) {
     file.text().then(setIcsText);
   };
 
+  // Imported events belong to the group; a calendar only shows groups added to it.
+  const linkGroupToCalendar = async () => {
+    if (!props.curatedCalendarId) return;
+    await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId }], "ContentApi");
+  };
+
   const handleImport = () => {
     setImporting(true);
     setError("");
-    ApiHelper.post("/events/ical", { ics: icsText, groupId }, "ContentApi").then((data: any[]) => {
+    ApiHelper.post("/events/ical", { ics: icsText, groupId }, "ContentApi").then(async (data: any[]) => {
+      if (data?.length > 0) await linkGroupToCalendar();
       setImporting(false);
       if (!data || data.length === 0) setError(Locale.label("calendars.importIcs.noEventsFound"));
       else {
