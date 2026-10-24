@@ -43,8 +43,9 @@ export function DisplayCalendarEventModal(props: Props) {
   };
 
   const handleDelete = async () => {
-    const message = props.event.recurrenceRule ? Locale.label("calendars.calendarEvent.confirmDeleteSeries") : Locale.label("calendars.calendarEvent.confirmDelete");
-    if (await confirm(message)) {
+    // Only the calendar link is removed, never the event. A group-sourced entry is the whole group's link.
+    const message = props.event.eventId ? Locale.label("calendars.calendarEvent.confirmRemoveEvent") : Locale.label("calendars.calendarEvent.confirmRemoveGroupEvent");
+    if (await confirm(message, { confirmLabel: Locale.label("calendars.calendarEvent.removeFromCalendar") })) {
       const deleteUrl = props.event.eventId
         ? "/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.eventId
         : "/curatedEvents/" + props.event.id;
@@ -120,7 +121,7 @@ export function DisplayCalendarEventModal(props: Props) {
           )}
           {props.event.id && props.mode === "edit" && (
             <Button variant="contained" onClick={handleDelete} data-testid="calendar-event-delete-button">
-              {Locale.label("calendars.calendarEvent.delete")}
+              {Locale.label("calendars.calendarEvent.removeFromCalendar")}
             </Button>
           )}
         </DialogActions>
