@@ -5,6 +5,7 @@ import { login } from "./helpers/auth";
 import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { mockChurchLogo } from "./helpers/print-logo";
 import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
 
 // /attendance opens on this week; Setup, Headcounts and All years are verbs, and the reports are pills (role=tab) inside All years.
@@ -226,11 +227,33 @@ test.describe("Attendance Management", () => {
       await page.locator("button").getByText("Run Report").click();
       await expect(page.locator("td").getByText("10:30 AM Service")).toBeVisible({ timeout: 10000 });
 
-      const churchLine = page.locator("#reportsBox .report-print-church");
+      const churchLine = page.locator('#reportsBox [data-testid="print-church-name"]');
       await expect(churchLine).toHaveText("Grace Community Church");
       await expect(churchLine).toBeHidden();
       await page.emulateMedia({ media: "print" });
       await expect(churchLine).toBeVisible();
+    });
+
+    test("Attendance Trend prints dark text, a light chart and the letterhead in dark mode", async ({ page }) => {
+      await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+      await mockChurchLogo(page);
+      await page.goto("/reports/attendanceTrend");
+      const runBtn = page.locator("button").getByText("Run Report");
+      await expect(runBtn).toBeVisible({ timeout: 15000 });
+      await runBtn.click();
+      const box = page.locator("#reportsBox");
+      const cell = box.locator("table td").first();
+      await expect(cell).toBeVisible({ timeout: 15000 });
+      const chartBg = box.locator(".report-chart-container svg rect").first();
+      await expect(chartBg).toBeAttached({ timeout: 15000 });
+      await page.emulateMedia({ media: "print" });
+
+      const color = await cell.evaluate((n) => getComputedStyle(n).color);
+      const [r, g, b] = (color.match(/\d+/g) || []).map(Number);
+      expect(Math.max(r, g, b), `text color ${color}`).toBeLessThan(110);
+      await expect(box.locator('[data-testid="print-church-logo"]')).toBeVisible();
+      const fill = await chartBg.evaluate((n) => getComputedStyle(n).fill);
+      expect(fill, "chart background").not.toBe("rgb(30, 30, 30)");
     });
   });
 
