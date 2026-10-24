@@ -18,6 +18,12 @@ async function selectMuiOption(page: import("@playwright/test").Page, openLocato
   await page.locator('[role="listbox"]').waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
 }
 
+async function centerX(locator: import("@playwright/test").Locator) {
+  const box = await locator.boundingBox();
+  expect(box).toBeTruthy();
+  return box!.x + box!.width / 2;
+}
+
 async function openFormsPage(page: import("@playwright/test").Page) {
   await navigateToForms(page);
   await expect(page).toHaveURL(/\/forms/, { timeout: 15000 });
@@ -142,9 +148,17 @@ test.describe("Printing forms", () => {
     await expect(logo).toHaveAttribute("alt", "Grace Community Church");
     await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
     await expect(dialog.getByTestId("print-church-name")).toHaveText("Grace Community Church");
+
+    // ChurchAppsSupport#1352: the letterhead is centered over the form, not squeezed top-left.
+    const title = dialog.getByRole("heading", { name: "Visitor Information Card" });
+    expect(Math.abs((await centerX(logo)) - (await centerX(title)))).toBeLessThan(4);
+    await expect(dialog.getByTestId("print-church-name")).toHaveCSS("text-align", "center");
+    await expect(title).toHaveCSS("text-align", "center");
+    await expect(logo).toHaveCSS("max-height", "70px");
   });
 
   test("a person's submitted form prints with a title, name and submission date", async ({ page }) => {
+    await mockChurchLogo(page);
     await navigateToPeople(page);
     await openPersonRow(page, "Brian Harris");
     await page.getByTestId("person-forms-all").click();
@@ -169,9 +183,18 @@ test.describe("Printing forms", () => {
     await expect(pane.getByText(/Submission Date: /)).toBeVisible();
     await expect(pane.locator('[data-testid="print-church-name"]')).toHaveText("Grace Community Church");
     await expect(printBtn).toBeHidden();
+    // ChurchAppsSupport#1352: the logo and church name are centered over the form title.
+    const logo = pane.getByTestId("print-church-logo");
+    const title = pane.getByRole("heading", { name: "Visitor Information Card" });
+    await expect(logo).toBeVisible({ timeout: 10000 });
+    expect(Math.abs((await centerX(logo)) - (await centerX(title)))).toBeLessThan(4);
+    await expect(pane.locator('[data-testid="print-church-name"]')).toHaveCSS("text-align", "center");
+    await expect(logo).toHaveCSS("max-height", "70px");
     await page.screenshot({ path: ".pr-screenshots/submission-after.png", fullPage: true });
     await page.emulateMedia({ media: "screen" });
     await expect(printBtn).toBeVisible();
+    await expect(printHeader).toBeHidden();
+    await expect(logo).toBeHidden();
   });
 
   test("the printed submissions summary is headed with the church name", async ({ page }) => {
