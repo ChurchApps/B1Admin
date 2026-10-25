@@ -111,7 +111,9 @@ export const ManageChurch = () => {
       : Locale.label("settings.landing.campusesCount").replace("{count}", String(campusCount));
   const customFieldsSubtitle = personFieldCount === 0
     ? Locale.label("settings.landing.customFieldsSubtitle")
-    : Locale.label("settings.landing.customFieldsCount").replace("{count}", String(personFieldCount));
+    : personFieldCount === 1
+      ? Locale.label("settings.landing.customFieldsOne")
+      : Locale.label("settings.landing.customFieldsCount").replace("{count}", String(personFieldCount));
   const givingSubtitle = gateway
     ? Locale.label("settings.landing.givingProvider").replace("{provider}", gateway.provider || "").replace("{currency}", (gateway.currency || "").toUpperCase())
     : Locale.label("settings.landing.notConfigured");

@@ -934,7 +934,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                       }}
                     >
                       <Stack spacing={0.5}>
-                        <Stack direction="row" spacing={0.75} alignItems="center">
+                        <Stack component="label" direction="row" spacing={0.75} alignItems="center" sx={{ cursor: "pointer" }}>
                           <Checkbox
                             checked={!!activeFilters[field.key]}
                             onChange={() => toggleFilter(field.key)}

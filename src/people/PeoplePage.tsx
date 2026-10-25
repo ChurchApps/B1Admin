@@ -221,10 +221,9 @@ export const PeoplePage = memo(() => {
 
   React.useEffect(() => {
     const conditions = (location.state as { searchConditions?: SearchCondition[] } | null)?.searchConditions;
-    if (conditions && conditions.length > 0) {
-      handleSelectList({ conditions });
-      navigate(location.pathname, { replace: true, state: null });
-    }
+    // Leave the drill-down conditions in history state: clearing them with navigate()
+    // re-renders the layout, which remounts this page without them.
+    if (conditions && conditions.length > 0) handleSelectList({ conditions });
 
   }, []);
 
@@ -383,6 +382,9 @@ export const PeoplePage = memo(() => {
   }, [householdsQuery.data]);
 
   const households = React.useMemo(() => groupHouseholds(searchResults || [], householdNames), [searchResults, householdNames]);
+  const peopleCount = searchResults?.length || 0;
+  const countKey = households.length !== 1 ? "people.directory.countHouseholds" : peopleCount === 1 ? "people.directory.countHouseholdOnePerson" : "people.directory.countHouseholdOne";
+  const countLabel = Locale.label(countKey).replace("{households}", households.length.toString()).replace("{people}", peopleCount.toString());
 
   const isLoading = !searchResults || (peopleQuery.isLoading && !isSearchPerformed && allPeople.length === 0);
   const canSaveList = canEdit && !!saveableCriteria && isSearchPerformed && !!searchResults && searchResults.length > 0;
@@ -501,7 +503,7 @@ export const PeoplePage = memo(() => {
                       />
                     )}
                     <Typography variant="body2" color="text.secondary">
-                      {!isLoading && Locale.label("people.directory.countHouseholds").replace("{households}", households.length.toString()).replace("{people}", (searchResults?.length || 0).toString())}
+                      {!isLoading && countLabel}
                     </Typography>
                   </Stack>
                 )}
