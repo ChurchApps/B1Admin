@@ -1,3 +1,4 @@
+import { request as pwRequest, type APIRequestContext } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 
 test.describe("Check-in: group configuration", () => {
@@ -112,5 +113,79 @@ test.describe("Check-in: kiosk configuration links", () => {
     await link.waitFor({ state: "visible", timeout: 15000 });
     await link.click();
     await expect(page).toHaveURL(/\/mobile\/checkin$/, { timeout: 15000 });
+  });
+});
+
+// ChurchAppsSupport#1354: the QR sign-up checklist saves as the public guestRegistrationFields setting.
+loggedInTest.describe("Check-in: QR sign-up fields", () => {
+  loggedInTest.describe.configure({ mode: "serial" });
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const CHURCH_ID = "CHU00000001";
+  let ctx: APIRequestContext;
+  let headers: Record<string, string>;
+  let originals: any[] = [];
+
+  const loadSettings = async () => (await (await ctx.get(`${API}/membership/settings`, { headers })).json()) as any[];
+
+  loggedInTest.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const login = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = (login.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID);
+    headers = { Authorization: "Bearer " + uc.jwt };
+    const all = await loadSettings();
+    originals = ["enableQRGuestRegistration", "guestRegistrationFields"].map((k) => all.find((s) => s.keyName === k)).filter(Boolean);
+    const qr = all.find((s) => s.keyName === "enableQRGuestRegistration") || { churchId: CHURCH_ID, keyName: "enableQRGuestRegistration", public: 1 };
+    const fields = all.find((s) => s.keyName === "guestRegistrationFields") || { churchId: CHURCH_ID, keyName: "guestRegistrationFields", public: 1 };
+    const res = await ctx.post(`${API}/membership/settings`, { headers, data: [{ ...qr, value: "true" }, { ...fields, value: "{}" }] });
+    expect(res.ok()).toBeTruthy();
+  });
+
+  loggedInTest.afterAll(async () => {
+    const all = await loadSettings();
+    const restore = ["enableQRGuestRegistration", "guestRegistrationFields"].map((k) => {
+      const current = all.find((s) => s.keyName === k);
+      const original = originals.find((s) => s.keyName === k);
+      return current ? { ...current, value: original?.value ?? (k === "enableQRGuestRegistration" ? "false" : "{}") } : null;
+    }).filter(Boolean);
+    if (restore.length) await ctx.post(`${API}/membership/settings`, { headers, data: restore });
+    await ctx.dispose();
+  });
+
+  loggedInTest("lists the seven profile fields with Required locked until Include is on", async ({ page }) => {
+    await page.goto("/mobile/checkin");
+    const table = page.getByTestId("guest-registration-fields");
+    await expect(table.getByText("Sign-up fields")).toBeVisible({ timeout: 15000 });
+    await expect(table.getByText(/added to People as a Visitor/)).toBeVisible();
+    for (const label of ["Email", "Phone", "Home address", "Birth date", "Gender", "Marital status", "Grade"]) {
+      await expect(page.getByLabel("Include " + label, { exact: true })).toBeVisible();
+    }
+    await expect(page.getByLabel("Include Email", { exact: true })).toBeChecked();
+    await expect(page.getByLabel("Include Home address", { exact: true })).not.toBeChecked();
+    await expect(page.getByLabel("Required Home address", { exact: true })).toBeDisabled();
+  });
+
+  loggedInTest("saves included and required fields as a public setting", async ({ page }) => {
+    await page.goto("/mobile/checkin");
+    await page.getByLabel("Include Home address", { exact: true }).check({ timeout: 15000 });
+    await page.getByLabel("Required Home address", { exact: true }).check();
+    await page.getByLabel("Include Grade", { exact: true }).check();
+    await page.getByLabel("Include Gender", { exact: true }).check();
+    await page.getByLabel("Required Gender", { exact: true }).check();
+    // Turning Include off clears Required.
+    await page.getByLabel("Include Gender", { exact: true }).uncheck();
+    await expect(page.getByLabel("Required Gender", { exact: true })).not.toBeChecked();
+    await page.getByLabel("Required Phone", { exact: true }).check();
+
+    const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByTestId("qr-guest-registration-save").click();
+    await saved;
+
+    const options = await (await ctx.get(`${API}/membership/people/guest-register/options?churchId=${CHURCH_ID}`)).json();
+    expect(options).toEqual({ email: "optional", phone: "required", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional" });
+
+    await page.reload();
+    await expect(page.getByLabel("Required Home address", { exact: true })).toBeChecked({ timeout: 15000 });
+    await expect(page.getByLabel("Include Grade", { exact: true })).toBeChecked();
+    await expect(page.getByLabel("Include Gender", { exact: true })).not.toBeChecked();
   });
 });

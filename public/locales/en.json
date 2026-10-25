@@ -1778,6 +1778,20 @@
       "disabled": "Disabled",
       "downloadQr": "Download PNG",
       "enabled": "Enabled — QR code will appear on kiosk",
+      "fields": {
+        "address": "Home address",
+        "birthDate": "Birth date",
+        "description": "Choose what the sign-up asks for. First and last names are always required. Everyone who signs up is added to People as a Visitor.",
+        "email": "Email",
+        "field": "Field",
+        "gender": "Gender",
+        "grade": "Grade",
+        "include": "Include",
+        "maritalStatus": "Marital status",
+        "phone": "Phone",
+        "required": "Required",
+        "title": "Sign-up fields"
+      },
       "kiosk": {
         "addSlide": "Add Slide",
         "backgroundImage": "Background Image",

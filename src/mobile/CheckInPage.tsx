@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Icon, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Box, Button, Icon, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
@@ -10,9 +10,27 @@ import { useRequirePermission } from "../hooks";
 import { KioskThemeEdit } from "./KioskThemeEdit";
 import { MobileChrome } from "./components/MobileChrome";
 
+type FieldMode = "off" | "optional" | "required";
+type FieldKey = "email" | "phone" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade";
+type FieldModes = Record<FieldKey, FieldMode>;
+
+const FIELD_KEYS: FieldKey[] = ["email", "phone", "address", "birthDate", "gender", "maritalStatus", "grade"];
+const DEFAULT_FIELDS: FieldModes = { email: "optional", phone: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off" };
+
+const parseFields = (raw?: string): FieldModes => {
+  const result = { ...DEFAULT_FIELDS };
+  try {
+    const parsed = raw ? JSON.parse(raw) : {};
+    FIELD_KEYS.forEach((k) => { if (["off", "optional", "required"].includes(parsed?.[k])) result[k] = parsed[k]; });
+  } catch { /* fall back to defaults */ }
+  return result;
+};
+
 export const CheckInPage: React.FC = () => {
   const [enabled, setEnabled] = React.useState(false);
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [fields, setFields] = React.useState<FieldModes>(DEFAULT_FIELDS);
+  const [fieldsSetting, setFieldsSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -30,6 +48,9 @@ export const CheckInPage: React.FC = () => {
       setSetting(qrSetting);
       setEnabled(qrSetting.value === "true");
     }
+    const savedFields = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationFields");
+    setFieldsSetting(savedFields || null);
+    setFields(parseFields(savedFields?.value));
   }, [churchId]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
@@ -42,7 +63,9 @@ export const CheckInPage: React.FC = () => {
     try {
       const s: GenericSettingInterface = setting || { churchId, public: 1, keyName: "enableQRGuestRegistration" };
       s.value = enabled ? "true" : "false";
-      await ApiHelper.post("/settings", [s], "MembershipApi");
+      const f: GenericSettingInterface = fieldsSetting || { churchId, public: 1, keyName: "guestRegistrationFields" };
+      f.value = JSON.stringify(fields);
+      await ApiHelper.post("/settings", [s, f], "MembershipApi");
       await loadData();
     } finally {
       setSaving(false);
@@ -68,11 +91,15 @@ export const CheckInPage: React.FC = () => {
 
   const dirty = enabled !== (setting?.value === "true");
 
+  // Required only makes sense once a field is included; turning Include off clears it.
+  const setInclude = (key: FieldKey, include: boolean) => setFields({ ...fields, [key]: include ? "optional" : "off" });
+  const setRequired = (key: FieldKey, req: boolean) => setFields({ ...fields, [key]: req ? "required" : "optional" });
+
   return (
     <MobileChrome
       title={Locale.label("mobile.checkInPage.title")}
       subtitle={Locale.label("mobile.checkInPage.subtitle")}>
-      <FormCard title={Locale.label("mobile.checkInPage.qrGuestRegistration")} icon="qr_code_2" onSave={handleSave} isSubmitting={saving}>
+      <FormCard title={Locale.label("mobile.checkInPage.qrGuestRegistration")} icon="qr_code_2" onSave={handleSave} isSubmitting={saving} saveTestId="qr-guest-registration-save">
         <Typography variant="body2" color="text.secondary">{Locale.label("mobile.checkInPage.qrTooltip")}</Typography>
         <Stack direction="row" alignItems="center">
           <Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)} />
@@ -80,6 +107,38 @@ export const CheckInPage: React.FC = () => {
             {enabled ? Locale.label("mobile.checkInPage.enabled") : Locale.label("mobile.checkInPage.disabled")}
           </Typography>
         </Stack>
+
+        {enabled && (
+          <Box data-testid="guest-registration-fields">
+            <Typography variant="h3" sx={{ mb: 0.5 }}>{Locale.label("mobile.checkInPage.fields.title")}</Typography>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 1 }}>{Locale.label("mobile.checkInPage.fields.description")}</Typography>
+            <Table size="small" sx={{ maxWidth: 520 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>{Locale.label("mobile.checkInPage.fields.field")}</TableCell>
+                  <TableCell align="center">{Locale.label("mobile.checkInPage.fields.include")}</TableCell>
+                  <TableCell align="center">{Locale.label("mobile.checkInPage.fields.required")}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {FIELD_KEYS.map((key) => {
+                  const label = Locale.label("mobile.checkInPage.fields." + key);
+                  return (
+                    <TableRow key={key} data-testid={"guest-field-" + key}>
+                      <TableCell>{label}</TableCell>
+                      <TableCell align="center">
+                        <Switch checked={fields[key] !== "off"} onChange={(e) => setInclude(key, e.target.checked)} slotProps={{ input: { "aria-label": Locale.label("mobile.checkInPage.fields.include") + " " + label } }} />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Switch checked={fields[key] === "required"} disabled={fields[key] === "off"} onChange={(e) => setRequired(key, e.target.checked)} slotProps={{ input: { "aria-label": Locale.label("mobile.checkInPage.fields.required") + " " + label } }} />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </Box>
+        )}
 
         {enabled && registrationUrl && (
           <Box>
