@@ -121,6 +121,16 @@ export const WorkflowStepActions = (props: Props) => {
             <Button size="small" data-testid={"action-group-pick-" + index} onClick={() => setPickerIndex(index)}>{Locale.label("tasks.workflowActions.pickGroup")}</Button>
           </Stack>
         );
+      case "recordAttendance":
+        return (
+          <Stack spacing={1}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="body2" color="text.secondary">{c.groupLabel || Locale.label("tasks.workflowActions.noGroup")}</Typography>
+              <Button size="small" data-testid={"action-group-pick-" + index} onClick={() => setPickerIndex(index)}>{Locale.label("tasks.workflowActions.pickGroup")}</Button>
+            </Stack>
+            <Typography variant="caption">{Locale.label("tasks.workflowActions.recordAttendanceHint")}</Typography>
+          </Stack>
+        );
       case "createTask":
         return (
           <Stack spacing={1}>

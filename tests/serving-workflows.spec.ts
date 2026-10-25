@@ -706,6 +706,48 @@ test.describe.serial("Serving Management - Workflows", () => {
     await ctx.dispose();
   });
 
+  test("a Record Attendance action marks the card's person present for the service under way", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    // A group whose service time is always under way: open all week from Sunday 00:00.
+    const group = (await (await ctx.post(`${API_BASE}/membership/groups`, { ...auth, data: [{ name: "Zacchaeus Night Service", categoryName: "Worship", trackAttendance: true }] })).json())[0];
+    const service = (await (await ctx.get(`${API_BASE}/attendance/services`, auth)).json())[0];
+    const serviceTime = (await (await ctx.post(`${API_BASE}/attendance/servicetimes`, { ...auth, data: [{ serviceId: service.id, name: "Zacchaeus 6:30pm", dayOfWeek: 0, startTime: "00:00", endTime: "23:59", checkinCloseMinutes: 7 * 24 * 60 }] })).json())[0];
+    const link = (await (await ctx.post(`${API_BASE}/attendance/groupservicetimes`, { ...auth, data: [{ groupId: group.id, serviceTimeId: serviceTime.id }] })).json())[0];
+
+    const { wf, auto } = await openAutoStepEditor(ctx, auth);
+    await page.locator('[data-testid="add-action-button"]').click();
+    await page.locator('[data-testid="action-type-0"]').click();
+    await page.getByRole("option", { name: "Record Attendance" }).click();
+    await expect(page.getByText("Marks the person present for this group's service time that is in progress")).toBeVisible();
+    await page.locator('[data-testid="action-group-pick-0"]').click();
+    const dialog = page.getByRole("dialog").filter({ hasText: "Select a Person or Group" });
+    await dialog.getByRole("tab", { name: "Group" }).click();
+    await dialog.locator(`[data-testid="select-group-button-${group.id}"]`).click();
+    await expect(page.getByText("Zacchaeus Night Service")).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-testid="step-save-button"]').click();
+    await expect(page.locator('[data-testid="step-save-button"]')).toHaveCount(0, { timeout: 10000 });
+
+    const actions = await (await ctx.get(`${API_BASE}/doing/workflowStepActions/step/${auto.id}`, auth)).json();
+    expect(actions.map((a: any) => a.actionType)).toEqual(["recordAttendance"]);
+    expect(JSON.parse(actions[0].config)).toMatchObject({ groupId: group.id, groupLabel: "Zacchaeus Night Service" });
+
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: "person", id: "PER00000001", label: "John Smith" } } });
+    expect(added.status()).toBe(200);
+    const card = await added.json();
+    expect(JSON.parse(card.data || "{}").history?.some((h: any) => h.message === "Attendance recorded: Zacchaeus Night Service")).toBeTruthy();
+    const visits = await (await ctx.get(`${API_BASE}/attendance/visits?personId=PER00000001`, auth)).json();
+    const visit = visits.find((v: any) => v.groupId === group.id && v.serviceId === service.id);
+    expect(visit).toBeTruthy();
+
+    await ctx.delete(`${API_BASE}/attendance/visits/${visit.id}`, auth);
+    await ctx.delete(`${API_BASE}/attendance/groupservicetimes/${link.id}`, auth);
+    await ctx.delete(`${API_BASE}/attendance/servicetimes/${serviceTime.id}`, auth);
+    await ctx.delete(`${API_BASE}/membership/groups/${group.id}`, auth);
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
   test("the Send Email action warns when the church's email isn't approved", async () => {
     await page.route("**/emailTemplates/sendStatus", (route) => route.fulfill({ json: { approved: false, paused: false, remaining: 0, requested: false } }));
     const ctx = await request.newContext();
