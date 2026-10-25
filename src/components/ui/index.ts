@@ -1,4 +1,3 @@
-export { IconText } from "./IconText";
 export { StatusChip } from "./StatusChip";
 export { StatusBadge } from "./StatusBadge";
 export type { StatusTone } from "./StatusBadge";

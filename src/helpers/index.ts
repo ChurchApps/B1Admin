@@ -14,7 +14,6 @@ export { B1AdminPersonHelper } from "./B1AdminPersonHelper";
 export { ConditionHelper } from "./ConditionHelper";
 export { EnvironmentHelper } from "./EnvironmentHelper";
 export { PageHelper } from "./PageHelper";
-export { ReportHelper } from "./ReportHelper";
 export { hasPlansEditAccess } from "./PlanPermissionHelper";
 export { canRecordAttendance, canSeeConfidentialGroups, hasAllGroupsAccess, leadsGroup, useCanPrintRoster } from "./GroupPermissionHelper";
 export { GRADE_OPTIONS } from "./GradeOptions";
