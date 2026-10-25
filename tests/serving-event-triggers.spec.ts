@@ -210,6 +210,67 @@ test.describe.serial("Serving Management - Event Triggers", () => {
     await ctx.dispose();
   });
 
+  // "Add again after their card is closed": no second open card, but a new one once the first is closed.
+  test("repeat after close re-adds a person only once their card is closed", async () => {
+    const ctx = await request.newContext();
+    const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    const auth = { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+
+    const wf = (await (await ctx.post(`${API_BASE}/doing/workflows`, { ...auth, data: [{ name: "Zacchaeus Repeat WF", active: true }] })).json())[0];
+    await ctx.post(`${API_BASE}/doing/workflowSteps`, { ...auth, data: [{ workflowId: wf.id, name: "Intake", sort: 1 }] });
+    const person = (await (await ctx.post(`${API_BASE}/membership/people`, { ...auth, data: [{ name: { first: "Zelda", last: "Zacchaeus" }, membershipStatus: "Member", contactInfo: {} }] })).json())[0];
+    const touch = () => ctx.post(`${API_BASE}/membership/people`, { ...auth, data: [{ id: person.id, name: { first: "Zelda", last: "Zacchaeus" }, membershipStatus: "Member", contactInfo: {} }] });
+    const openCards = async () => ((await (await ctx.get(`${API_BASE}/doing/tasks/board/${wf.id}`, auth)).json()).cards || []).filter((c: any) => c.associatedWithId === person.id);
+
+    // Turn the option on from the trigger dialog.
+    await page.goto(`/serving/tasks/workflows/${wf.id}`);
+    await recoverFromViteError(page, page.locator('[data-testid="workflow-board"]'));
+    await page.locator('[data-testid="board-triggers-tab"]').click();
+    await page.locator('[data-testid="add-event-trigger-button"]').click();
+    await page.locator('[data-testid="trigger-name"] input').fill("Zacchaeus Repeat Trigger");
+    await page.locator('[data-testid="trigger-event-select"]').click();
+    await page.getByRole("option", { name: /Person.*Updated/ }).click();
+    const repeat = page.locator('[data-testid="trigger-repeat-after-close"] input');
+    await expect(repeat).not.toBeChecked();
+    await repeat.check();
+    // It only applies with "Only once per person" on.
+    await page.locator('[data-testid="trigger-once"] input').uncheck();
+    await expect(page.locator('[data-testid="trigger-repeat-after-close"]')).toHaveCount(0);
+    await page.locator('[data-testid="trigger-once"] input').check();
+    await expect(repeat).toBeChecked();
+    await page.locator('[data-testid="save-trigger-button"]').click();
+
+    const row = page.locator("li").filter({ hasText: "Zacchaeus Repeat Trigger" });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    const trigger = ((await (await ctx.get(`${API_BASE}/doing/workflowTriggers/workflow/${wf.id}`, auth)).json()) || []).find((t: any) => t.name === "Zacchaeus Repeat Trigger");
+    expect(trigger?.allowRepeatAfterClose).toBeTruthy();
+
+    // Reopening the trigger shows the saved choice.
+    await page.locator(`[data-testid="event-trigger-row-${trigger.id}"]`).click();
+    await expect(page.locator('[data-testid="trigger-repeat-after-close"] input')).toBeChecked();
+    await page.getByRole("button", { name: "Cancel" }).click();
+
+    await touch();
+    await expect.poll(async () => (await openCards()).length, { timeout: 10000 }).toBe(1);
+    const first = (await openCards())[0];
+    // While that card is open, another update does not add a second one.
+    await touch();
+    expect((await openCards()).length).toBe(1);
+
+    // Once it is closed, the next update adds a new card.
+    await ctx.post(`${API_BASE}/doing/tasks/${first.id}/complete`, { ...auth, data: {} });
+    await expect.poll(async () => (await openCards()).length, { timeout: 10000 }).toBe(0);
+    await touch();
+    await expect.poll(async () => (await openCards()).map((c: any) => c.id), { timeout: 10000 }).toEqual([expect.not.stringContaining(first.id)]);
+
+    for (const c of await openCards()) await ctx.post(`${API_BASE}/doing/tasks/${c.id}/complete`, { ...auth, data: {} });
+    if (trigger?.id) await ctx.delete(`${API_BASE}/doing/workflowTriggers/${trigger.id}`, auth);
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.delete(`${API_BASE}/membership/people/${person.id}`, auth);
+    await ctx.dispose();
+  });
+
   test("execution history panel lists firings on the board", async () => {
     await openManager(page);
     await expect(page.locator('[data-testid="trigger-executions-panel"]')).toBeVisible({ timeout: 10000 });
