@@ -1,5 +1,5 @@
 import React from "react";
-import { FormEdit, FormPrintDialog, EnvironmentHelper } from "./components";
+import { FormEdit, FormPrintDialog, FormQrDialog, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ export const FormsPage = () => {
   const [selectedTab, setSelectedTab] = React.useState("forms");
   const [showDuplicated, setShowDuplicated] = React.useState(false);
   const [printFormId, setPrintFormId] = React.useState("");
+  const [qrForm, setQrForm] = React.useState<{ name: string; url: string } | null>(null);
   const [query, setQuery] = React.useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
@@ -68,6 +69,7 @@ export const FormsPage = () => {
             <VerbRow sx={{ justifyContent: "flex-end" }}>
               {editable && <TextAction small onClick={() => setSelectedFormId(form.id || "")} data-testid={`edit-form-button-${form.id}`}>{Locale.label("common.edit")}</TextAction>}
               <TextAction small onClick={() => setPrintFormId(form.id || "")} data-testid={`print-form-button-${form.id}`}>{Locale.label("common.print")}</TextAction>
+              {form.contentType === "form" && !isArchived && <TextAction small onClick={() => setQrForm({ name: form.name || "", url: formUrl })} data-testid={`qr-form-button-${form.id}`}>{Locale.label("forms.formsPage.qrCode")}</TextAction>}
               {editable && <TextAction small onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`}>{Locale.label("forms.formsPage.duplicate")}</TextAction>}
               {editable && (
                 <TextAction small onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>
@@ -149,6 +151,7 @@ export const FormsPage = () => {
     <>
       {ConfirmDialogElement}
       {printFormId && <FormPrintDialog formId={printFormId} onClose={() => setPrintFormId("")} />}
+      <FormQrDialog open={!!qrForm} onClose={() => setQrForm(null)} formName={qrForm?.name || ""} formUrl={qrForm?.url || ""} />
       <PageHeader title={Locale.label("forms.formsPage.forms")} subtitle={Locale.label("forms.formsPage.subtitleManage")}>
         <HeaderPrimaryButton startIcon={<AddIcon />} onClick={openAdd} data-testid="add-form-button">{Locale.label("forms.formsPage.addForm")}</HeaderPrimaryButton>
       </PageHeader>

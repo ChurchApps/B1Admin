@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Grid, Typography, Box, Stack, Button, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { TextField, Grid, Typography, Box, Stack, Button, Snackbar, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
@@ -43,6 +43,7 @@ export const AppThemeEdit: React.FC = () => {
   const [themeConfig, setThemeConfig] = React.useState<AppThemeConfig>({ ...DEFAULT_THEME });
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showSaved, setShowSaved] = React.useState(false);
 
   const loadData = React.useCallback(async () => {
     try {
@@ -69,6 +70,7 @@ export const AppThemeEdit: React.FC = () => {
       const s: GenericSettingInterface = setting || { keyName: "appTheme", public: 1 };
       s.value = JSON.stringify(themeConfig);
       await ApiHelper.post("/settings", [s], "MembershipApi");
+      setShowSaved(true);
       await loadData();
     } catch (error) {
       console.error("Error saving app theme:", error);
@@ -142,15 +144,18 @@ export const AppThemeEdit: React.FC = () => {
   );
 
   return (
-    <FormCard title={Locale.label("common.appTheme")} icon="palette" onSave={handleSave} isSubmitting={isSubmitting}>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        {Locale.label("mobile.appThemeEdit.description")}
-      </Typography>
-      <Box sx={{ mb: 2 }}>
-        <Button variant="outlined" size="small" onClick={handleReset}>{Locale.label("mobile.appThemeEdit.resetDefaults")}</Button>
-      </Box>
-      {modeSection("light", Locale.label("mobile.appThemeEdit.lightMode"))}
-      {modeSection("dark", Locale.label("mobile.appThemeEdit.darkMode"))}
-    </FormCard>
+    <>
+      <FormCard title={Locale.label("common.appTheme")} icon="palette" onSave={handleSave} isSubmitting={isSubmitting}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {Locale.label("mobile.appThemeEdit.description")}
+        </Typography>
+        <Box sx={{ mb: 2 }}>
+          <Button variant="outlined" size="small" onClick={handleReset}>{Locale.label("mobile.appThemeEdit.resetDefaults")}</Button>
+        </Box>
+        {modeSection("light", Locale.label("mobile.appThemeEdit.lightMode"))}
+        {modeSection("dark", Locale.label("mobile.appThemeEdit.darkMode"))}
+      </FormCard>
+      <Snackbar open={showSaved} autoHideDuration={3000} onClose={() => setShowSaved(false)} message={Locale.label("common.saved")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} />
+    </>
   );
 };

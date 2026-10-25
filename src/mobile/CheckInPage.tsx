@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Icon, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, Icon, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
@@ -32,6 +32,7 @@ export const CheckInPage: React.FC = () => {
   const [fields, setFields] = React.useState<FieldModes>(DEFAULT_FIELDS);
   const [fieldsSetting, setFieldsSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
+  const [showSaved, setShowSaved] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -66,6 +67,7 @@ export const CheckInPage: React.FC = () => {
       const f: GenericSettingInterface = fieldsSetting || { churchId, public: 1, keyName: "guestRegistrationFields" };
       f.value = JSON.stringify(fields);
       await ApiHelper.post("/settings", [s, f], "MembershipApi");
+      setShowSaved(true);
       await loadData();
     } finally {
       setSaving(false);
@@ -185,6 +187,7 @@ export const CheckInPage: React.FC = () => {
       )}
 
       <KioskThemeEdit />
+      <Snackbar open={showSaved} autoHideDuration={3000} onClose={() => setShowSaved(false)} message={Locale.label("common.saved")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} />
     </MobileChrome>
   );
 };

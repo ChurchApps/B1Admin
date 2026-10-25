@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, FormControlLabel, Grid, Icon, InputLabel, MenuItem, Select, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { FormControl, FormControlLabel, Grid, Icon, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface, GroupInterface, VisibilityPreferenceInterface } from "@churchapps/helpers";
 import { FormCard } from "../components/ui/FormCard";
@@ -30,6 +30,7 @@ export const B1MobilePage: React.FC = () => {
   const [homeForms, setHomeForms] = React.useState(false);
   const [homeFormsSetting, setHomeFormsSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
+  const [showSaved, setShowSaved] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
 
   const churchId = UserHelper.currentUserChurch?.church?.id;
@@ -110,6 +111,7 @@ export const B1MobilePage: React.FC = () => {
       ], "MembershipApi");
       // The app caches these settings, so refresh it for the home-screen prompt to update right away.
       clearSiteCache();
+      setShowSaved(true);
       await loadData();
     } finally {
       setSaving(false);
@@ -293,6 +295,7 @@ export const B1MobilePage: React.FC = () => {
           />
         </Stack>
       </FormCard>
+      <Snackbar open={showSaved} autoHideDuration={3000} onClose={() => setShowSaved(false)} message={Locale.label("common.saved")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} />
     </MobileChrome>
   );
 };

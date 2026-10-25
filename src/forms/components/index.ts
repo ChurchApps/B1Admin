@@ -7,4 +7,5 @@ export { FormNavigation } from "./FormNavigation";
 export { FormSubmissions } from "./FormSubmissions";
 export { Form } from "./Form";
 export { FormPrintDialog } from "./FormPrintDialog";
+export { FormQrDialog } from "./FormQrDialog";
 export { Tabs } from "./Tabs";

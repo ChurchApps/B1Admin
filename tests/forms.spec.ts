@@ -217,6 +217,36 @@ test.describe("Printing forms", () => {
   });
 });
 
+// ChurchAppsSupport#1373: stand-alone forms get a QR Code action next to Print that can be downloaded.
+test.describe("Form QR codes", () => {
+  test("a stand-alone form opens a QR code of its link with a PNG download", async ({ page }) => {
+    await openFormsPage(page);
+    const row = page.locator("table tbody tr").filter({ hasText: "VBS Registration (Public)" }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.locator('[data-testid^="qr-form-button-"]').click();
+
+    const dialog = page.getByTestId("form-qr-dialog");
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+    await expect(dialog.getByText("QR Code: VBS Registration (Public)")).toBeVisible();
+    await expect(dialog.locator("canvas")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /\/forms\/FRM00000004$/ })).toBeVisible();
+
+    const download = page.waitForEvent("download");
+    await dialog.getByTestId("form-qr-download").click();
+    expect((await download).suggestedFilename()).toBe("form-qr-vbs-registration-public.png");
+
+    await dialog.getByTestId("form-qr-close").click();
+    await expect(dialog).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("people forms have no QR Code action", async ({ page }) => {
+    await openFormsPage(page);
+    const row = page.locator("table tbody tr").filter({ hasText: "Visitor Information Card" }).first();
+    await expect(row.locator('[data-testid^="print-form-button-"]')).toBeVisible({ timeout: 10000 });
+    await expect(row.locator('[data-testid^="qr-form-button-"]')).toHaveCount(0);
+  });
+});
+
 test.describe.serial("People-associated form lifecycle", () => {
   let page: Page;
 
