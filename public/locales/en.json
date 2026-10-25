@@ -861,6 +861,23 @@
       "progress": "Progress",
       "subtitle": "Track pledge campaigns and progress toward giving goals"
     },
+    "csvImport": {
+      "badAmount": "Invalid amount",
+      "badDate": "Invalid date",
+      "badFund": "Unknown fund: {fund}",
+      "badMethod": "Unknown method: {method}",
+      "button": "Import CSV",
+      "chooseFile": "Choose CSV File",
+      "donor": "Donor in file",
+      "help": "Columns: Amount (required), Date, Fund, Method (Check, Cash, Card, In-Kind), Check Number, Notes, and Email or Name (or First Name + Last Name) to match the donor. Blank date uses the batch date; blank fund uses the first fund. Unmatched donors are imported as anonymous with their name in the notes.",
+      "importCount": "Import {count}",
+      "importedAs": "Imported as: {name}",
+      "match": "Match",
+      "noAmount": "The file needs a header row with an Amount column and at least one donation.",
+      "notFound": "Not found — anonymous",
+      "row": "Row",
+      "title": "Import Donations from CSV"
+    },
     "donationBatchPage": {
       "closeBatch": "Close Batch",
       "closed": "Closed",

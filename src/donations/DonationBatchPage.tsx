@@ -1,11 +1,11 @@
 import React from "react";
-import { DonationEdit, Donations, BatchEdit, BulkDonationEntry } from "./components";
+import { DonationEdit, Donations, BatchEdit, BulkDonationEntry, CsvImportDialog } from "./components";
 import { ApiHelper, Permissions, DateHelper, Locale, CurrencyHelper } from "@churchapps/apphelper";
 import { type FundInterface, type DonationInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Box, Grid, Stack } from "@mui/material";
-import { Add as AddIcon, EditOutlined as EditIcon, LockOutlined as LockIcon, LockOpenOutlined as LockOpenIcon } from "@mui/icons-material";
+import { Add as AddIcon, EditOutlined as EditIcon, LockOutlined as LockIcon, LockOpenOutlined as LockOpenIcon, UploadFile as UploadIcon } from "@mui/icons-material";
 import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, Surface, HeaderPrimaryButton, HeaderTextButton, StatusChip } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 import { type BatchWithStatus, canChangeBatch, canEditDonations, isBatchClosed } from "./batchAccess";
@@ -14,6 +14,7 @@ export const DonationBatchPage = () => {
   const params = useParams();
   const [editDonationId, setEditDonationId] = React.useState("notset");
   const [editBatch, setEditBatch] = React.useState(false);
+  const [importOpen, setImportOpen] = React.useState(false);
   const [donationsKey, setDonationsKey] = React.useState(0);
   const [currency, setCurrency] = React.useState<string>("usd");
 
@@ -127,6 +128,9 @@ export const DonationBatchPage = () => {
           <HeaderTextButton startIcon={<EditIcon />} onClick={() => setEditBatch(true)} data-testid="edit-batch-button">{Locale.label("donations.donationBatchPage.editBatch")}</HeaderTextButton>
         )}
         {canEdit && hasFunds && (
+          <HeaderTextButton startIcon={<UploadIcon />} onClick={() => setImportOpen(true)} data-testid="batch-import-csv-button">{Locale.label("donations.csvImport.button", "Import CSV")}</HeaderTextButton>
+        )}
+        {canEdit && hasFunds && (
           <HeaderPrimaryButton startIcon={<AddIcon />} onClick={startAdd} data-testid="batch-add-donation-button">{Locale.label("donations.bulkEntry.addDonation")}</HeaderPrimaryButton>
         )}
       </PageHeader>
@@ -163,6 +167,17 @@ export const DonationBatchPage = () => {
           )}
         </Grid>
       </PageContainer>
+      {importOpen && batch.data?.id && (
+        <CsvImportDialog
+          open={importOpen}
+          batchId={batch.data.id}
+          batchDate={batch.data.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
+          funds={funds.data || []}
+          currency={currency}
+          onClose={() => setImportOpen(false)}
+          onImported={() => { setImportOpen(false); donationUpdated(); }}
+        />
+      )}
     </>
   );
 };
