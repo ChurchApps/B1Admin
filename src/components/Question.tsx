@@ -77,7 +77,9 @@ export const Question: React.FC<Props> = memo((props) => {
         backgroundColor: theme.palette.mode === "dark" ? "grey.900" : "grey.50",
         borderRadius: 1,
         border: "1px solid",
-        borderColor: theme.palette.mode === "dark" ? "grey.800" : "grey.200"
+        borderColor: theme.palette.mode === "dark" ? "grey.800" : "grey.200",
+        // Printed text is always dark, so keep the light fill on paper in dark mode.
+        "@media print": { backgroundColor: "grey.50", borderColor: "grey.200" }
       })}>
       <Typography
         variant="subtitle2"
