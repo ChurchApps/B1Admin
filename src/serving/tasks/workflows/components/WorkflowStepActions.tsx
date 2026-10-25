@@ -68,6 +68,7 @@ export const WorkflowStepActions = (props: Props) => {
     if (pickerIndex !== null) {
       const target = actions[pickerIndex];
       if (target?.actionType === "createTask") setConfig(pickerIndex, { assignedToType: contentType, assignedToId: contentId, assignedToLabel: label });
+      else if (target?.actionType === "notifyPerson") setConfig(pickerIndex, contentType === "person" ? { personId: contentId, personLabel: label } : {});
       else if (contentType === "group") setConfig(pickerIndex, { groupId: contentId, groupLabel: label });
     }
     setPickerIndex(null);
@@ -130,6 +131,17 @@ export const WorkflowStepActions = (props: Props) => {
               <Typography variant="body2" color="text.secondary">{c.assignedToLabel || Locale.label("tasks.workflowActions.noAssignee")}</Typography>
               <Button size="small" data-testid={"action-assignee-pick-" + index} onClick={() => setPickerIndex(index)}>{Locale.label("tasks.workflowActions.pickAssignee")}</Button>
             </Stack>
+          </Stack>
+        );
+      case "notifyPerson":
+        return (
+          <Stack spacing={1}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="body2" color="text.secondary" data-testid={"action-notify-person-" + index}>{c.personLabel || Locale.label("tasks.workflowActions.noPerson")}</Typography>
+              <Button size="small" data-testid={"action-notify-pick-" + index} onClick={() => setPickerIndex(index)}>{Locale.label("tasks.workflowActions.pickPerson")}</Button>
+            </Stack>
+            <TextField size="small" fullWidth multiline minRows={2} label={Locale.label("tasks.workflowActions.notifyMessage")} value={c.message || ""} data-testid={"action-notify-message-" + index} onChange={(e) => setConfig(index, { message: e.target.value })} />
+            <Typography variant="caption">{Locale.label("tasks.workflowActions.notifyHint")}</Typography>
           </Stack>
         );
       case "addToWorkflow":
