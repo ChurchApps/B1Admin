@@ -1895,6 +1895,8 @@
     "directory": {
       "ask": "Ask",
       "clear": "Clear",
+      "countHouseholdOne": "1 household · {people} people",
+      "countHouseholdOnePerson": "1 household · 1 person",
       "countHouseholds": "{households} households · {people} people",
       "everyone": "Everyone",
       "family": "The {name} Family",
@@ -4081,6 +4083,7 @@
       "campusesSubtitle": "Physical locations",
       "configuration": "Configuration",
       "customFieldsCount": "{count} custom fields",
+      "customFieldsOne": "1 custom field",
       "customFieldsSubtitle": "No custom fields yet",
       "developerSubtitle": "API keys, webhooks, connected apps",
       "domainsCount": "{count} connected",

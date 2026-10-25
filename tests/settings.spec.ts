@@ -1,5 +1,5 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
-import { settingsTest as test, expect } from "./helpers/test-fixtures";
+import { settingsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openPersonRow, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo, siblingNav } from "./helpers/navigation";
@@ -648,6 +648,16 @@ test.describe.serial("Settings Management", () => {
     });
   });
 
+});
+
+// One custom field reads in the singular on the Settings landing page.
+loggedInTest.describe("Settings custom field count", () => {
+  loggedInTest("one custom field reads in the singular", async ({ page }) => {
+    await page.route(/\/membership\/personfields(\?|$)/, (route) => route.fulfill({ json: [{ id: "PF1", name: "Shirt Size", fieldType: "text" }] }));
+    await page.goto("/settings");
+    await expect(page.getByText(/^1 custom fields?$/)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("1 custom field", { exact: true })).toBeVisible();
+  });
 });
 
 // ChurchAppsSupport#1180: typing a domain and clicking Save (without +) closed the panel and saved nothing.

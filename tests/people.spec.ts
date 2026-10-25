@@ -1066,6 +1066,40 @@ test.describe("People Management", () => {
   });
 });
 
+// People page papercuts: Demographics drill-down, singular counts, clickable Advanced field names.
+loggedInTest.describe("People page papercuts", () => {
+  loggedInTest("a Demographics slice opens People filtered to that slice", async ({ page }) => {
+    await page.goto("/people/demographics");
+    const card = page.locator(".MuiCard-root").filter({ has: page.getByRole("heading", { name: "Marital Status" }) });
+    const legend = card.locator("svg text").filter({ hasText: /^Widowed$/ });
+    await expect(legend).toBeVisible({ timeout: 20000 });
+    await legend.click();
+    await page.waitForURL(/\/people$/);
+    await expect(page.getByTestId("people-results-bar")).toContainText(/people/, { timeout: 15000 });
+    // The filtered list used to show briefly, then the page remounted and refetched everyone.
+    await page.waitForLoadState("networkidle");
+    // Demo seed has five widowed people.
+    await expect(page.getByTestId("people-results-bar")).toContainText("· 5 people");
+  });
+});
+
+test.describe("People results and Advanced search", () => {
+  test("a one-person result says household and person in the singular", async ({ page }) => {
+    await page.locator('input[name="searchText"]').fill("Donald Clark");
+    const bar = page.getByTestId("people-results-bar");
+    await expect(bar).toContainText(/^1 household/, { timeout: 15000 });
+    await expect(bar).toContainText("1 household · 1 person");
+  });
+
+  test("clicking an Advanced search field name ticks its box", async ({ page }) => {
+    await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
+    const row = page.locator("#peopleSearch-advanced").getByText("Middle Name", { exact: true });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.click();
+    await expect(page.locator("span").getByText("1 active:")).toHaveCount(1);
+  });
+});
+
 // The columns dialog only picks columns, so it is not labeled as filters.
 test.describe("People columns dialog", () => {
   test("is labeled for columns, not filters", async ({ page }) => {
