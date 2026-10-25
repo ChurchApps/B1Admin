@@ -125,6 +125,25 @@ test.describe.serial("Website new elements", () => {
     await page.unroute(/\/content\/podcast\/feed\?/);
   });
 
+  test("adds a Social Icons element with a WhatsApp link", async () => {
+    await openEditor();
+
+    await ensurePanelOpen("draggable-element-socialIcons");
+    const card = page.locator('[data-testid="draggable-element-socialIcons"]');
+    await expect(card).toBeVisible({ timeout: 10000 });
+    await card.click();
+
+    const whatsappInput = page.locator('[data-testid="social-whatsapp-input"] input');
+    await expect(whatsappInput).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('[data-testid="social-whatsapp-input"] label')).toHaveText("WhatsApp");
+    await whatsappInput.fill("https://wa.me/15551234567");
+    const elementPost = page.waitForResponse(r => r.url().endsWith("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator("button").getByText("Save").click();
+    const saved = await elementPost;
+    expect(saved.status()).toBe(200);
+    expect(JSON.parse((await saved.json())[0].answersJSON).whatsapp).toBe("https://wa.me/15551234567");
+  });
+
   test("sets a bottom wave divider on the section", async () => {
     await openEditor();
 

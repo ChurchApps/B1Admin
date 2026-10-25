@@ -1,4 +1,5 @@
-import { Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useMountedState, ApiHelper, DateHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
@@ -6,6 +7,7 @@ import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AppDatePicker } from "../../components";
+import { GalleryModal } from "../../components/gallery";
 
 interface Props {
   formId: string;
@@ -28,6 +30,7 @@ export interface FormInterface {
   groupId?: string;
   followUpSubject?: string;
   followUpBody?: string;
+  photoUrl?: string;
 }
 
 type AnyRecord = Record<string, any>;
@@ -36,10 +39,11 @@ export function FormEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [standAloneForm, setStandAloneForm] = useState<boolean>(false);
   const [showDates, setShowDates] = useState<boolean>(false);
+  const [showGallery, setShowGallery] = useState<boolean>(false);
   const isMounted = useMountedState();
   const queryClient = useQueryClient();
 
-  const { control, register, handleSubmit, reset, watch, setValue, formState } = useForm<AnyRecord>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "" } });
+  const { control, register, handleSubmit, reset, watch, setValue, formState } = useForm<AnyRecord>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "", photoUrl: "" } });
 
   const e = formState.errors as any;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "accessStartTime", "accessEndTime"]);
@@ -47,6 +51,7 @@ export function FormEdit(props: Props) {
 
   const watchedId = watch("id");
   const autoCreatePerson = watch("autoCreatePerson");
+  const photoUrl = watch("photoUrl");
   // Only stand-alone forms have a public link, so only they can create people. Older People forms that already have it on keep the checkbox so it can be turned off.
   const showAutoCreate = standAloneForm || !!autoCreatePerson;
 
@@ -79,7 +84,8 @@ export function FormEdit(props: Props) {
         autoCreatePerson: data.autoCreatePerson ?? false,
         groupId: data.groupId ?? "",
         followUpSubject: data.followUpSubject ?? "",
-        followUpBody: data.followUpBody ?? ""
+        followUpBody: data.followUpBody ?? "",
+        photoUrl: data.photoUrl ?? ""
       });
     }
   }, [formQuery.data, isMounted]);
@@ -106,6 +112,7 @@ export function FormEdit(props: Props) {
   const onValid = (values: AnyRecord) => {
     const f = { ...values };
     f.groupId = showGroup ? (f.groupId || null) : null;
+    f.photoUrl = f.photoUrl || null;
     if (!showDates) { f.accessEndTime = null; f.accessStartTime = null; } else {
       f.accessStartTime = f.accessStartTime ? DateHelper.toDate(f.accessStartTime) : null;
       f.accessEndTime = f.accessEndTime ? DateHelper.toDate(f.accessEndTime) : null;
@@ -139,6 +146,36 @@ export function FormEdit(props: Props) {
       {standAloneForm && (
         <TextField fullWidth multiline minRows={3} label={Locale.label("forms.formEdit.description")} placeholder={Locale.label("placeholders.form.description")} helperText={Locale.label("forms.formEdit.descriptionHelper")} data-testid="form-description-input" {...register("description")} />
       )}
+      {standAloneForm && (
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Box
+            onClick={() => setShowGallery(true)}
+            data-testid="form-photo"
+            sx={{ width: 280, flexShrink: 0, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)", display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", cursor: "pointer", "&:hover": { borderColor: "primary.main" } }}>
+            {photoUrl
+              ? <img src={photoUrl} alt={Locale.label("forms.formEdit.photo")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              : <Stack alignItems="center" spacing={1} sx={{ color: "text.secondary" }}>
+                <PhotoCameraIcon />
+                <Typography variant="body2" color="text.secondary">{Locale.label("calendars.newEvent.clickToAddPhoto")}</Typography>
+              </Stack>}
+          </Box>
+          <Stack spacing={1} alignItems="flex-start">
+            <Typography variant="body2" color="text.secondary">{Locale.label("forms.formEdit.photo")}</Typography>
+            <Stack direction="row" spacing={1}>
+              <Button variant="outlined" size="small" onClick={() => setShowGallery(true)} data-testid="form-photo-button">
+                {photoUrl ? Locale.label("common.changePhoto") : Locale.label("forms.formEdit.addPhoto")}
+              </Button>
+              {photoUrl && (
+                <Button variant="text" size="small" color="error" onClick={() => setValue("photoUrl", "", { shouldDirty: true })} data-testid="form-photo-remove-button">
+                  {Locale.label("common.remove")}
+                </Button>
+              )}
+            </Stack>
+            <Typography variant="caption" color="text.secondary">{Locale.label("forms.formEdit.photoHint")}</Typography>
+          </Stack>
+        </Stack>
+      )}
+      {showGallery && <GalleryModal aspectRatio={16 / 9} onSelect={(url) => { setValue("photoUrl", url, { shouldDirty: true }); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
       {standAloneForm && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
