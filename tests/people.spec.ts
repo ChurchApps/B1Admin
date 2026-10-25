@@ -1096,6 +1096,21 @@ loggedInTest.describe("Person attendance print", () => {
   });
 });
 
+// In dark mode a printed form answer box must print on a light fill, since print text is dark.
+loggedInTest.describe("Person form answers print", () => {
+  loggedInTest("print on a light background in dark mode", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+    await page.goto("/people/PER00000079?view=forms&form=FRM00000001");
+    const answer = page.getByTestId("display-box-content").getByText("brian.harris@email.com");
+    await expect(answer).toBeVisible({ timeout: 15000 });
+    await page.emulateMedia({ media: "print" });
+
+    const bg = await answer.evaluate((n) => getComputedStyle(n.parentElement as Element).backgroundColor);
+    const [r, g, b] = (bg.match(/\d+/g) || []).map(Number);
+    expect(Math.min(r, g, b), `answer box background ${bg}`).toBeGreaterThan(200);
+  });
+});
+
 // GET /donations?personId= drops gifts to non-deductible funds (a statement filter); the person
 // giving card passes includeNonDeductible=1 so those gifts still show on the record.
 loggedInTest.describe("Person giving card - non-deductible funds", () => {
