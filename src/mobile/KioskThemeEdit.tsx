@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Switch, FormControlLabel, Typography, Button, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { TextField, Switch, FormControlLabel, Typography, Button, Box, Stack, Snackbar, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, ImageEditor, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
@@ -32,6 +32,7 @@ export const KioskThemeEdit: React.FC = () => {
   const [config, setConfig] = React.useState<CheckinSettingsConfig>({ ...DEFAULT_SETTINGS });
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showSaved, setShowSaved] = React.useState(false);
   const [editingImage, setEditingImage] = React.useState<string | null>(null);
   const [editingSlideIndex, setEditingSlideIndex] = React.useState(-1);
 
@@ -73,6 +74,7 @@ export const KioskThemeEdit: React.FC = () => {
       const s: GenericSettingInterface = setting || { keyName: "checkinSettings", public: 1 };
       s.value = JSON.stringify(config);
       await ApiHelper.post("/settings", [s], "MembershipApi");
+      setShowSaved(true);
       await loadData();
     } catch (error) {
       console.error("Error saving checkin settings:", error);
@@ -150,85 +152,88 @@ export const KioskThemeEdit: React.FC = () => {
   }
 
   return (
-    <FormCard title={Locale.label("mobile.checkInPage.kiosk.sectionTitle")} icon="settings" onSave={handleSave} isSubmitting={isSubmitting}>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        {Locale.label("mobile.checkInPage.kiosk.headerSubtitle")}
-      </Typography>
+    <>
+      <FormCard title={Locale.label("mobile.checkInPage.kiosk.sectionTitle")} icon="settings" onSave={handleSave} isSubmitting={isSubmitting}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {Locale.label("mobile.checkInPage.kiosk.headerSubtitle")}
+        </Typography>
 
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="h3">{Locale.label("mobile.checkInPage.kiosk.backgroundImage")}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            {Locale.label("mobile.checkInPage.kiosk.backgroundImageDesc")}
-          </Typography>
-          {config.backgroundImage && (
-            <Box sx={{ mb: 2 }}>
-              <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: "var(--b1-radius-control)", border: "1px solid var(--b1-border)" }} />
-            </Box>
-          )}
-          <Stack direction="row" spacing={2}>
-            <Button variant="outlined" onClick={() => setEditingImage("background")}>
-              {config.backgroundImage ? Locale.label("mobile.checkInPage.kiosk.changeImage") : Locale.label("mobile.checkInPage.kiosk.uploadImage")}
-            </Button>
+        <Accordion defaultExpanded>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography variant="h3">{Locale.label("mobile.checkInPage.kiosk.backgroundImage")}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {Locale.label("mobile.checkInPage.kiosk.backgroundImageDesc")}
+            </Typography>
             {config.backgroundImage && (
-              <Button variant="outlined" onClick={() => setConfig(prev => ({ ...prev, backgroundImage: "" }))}>
-                {Locale.label("common.remove")}
-              </Button>
+              <Box sx={{ mb: 2 }}>
+                <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: "var(--b1-radius-control)", border: "1px solid var(--b1-border)" }} />
+              </Box>
             )}
-          </Stack>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="h3">{Locale.label("mobile.checkInPage.kiosk.idleScreen")}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={config.idleScreen.enabled}
-                onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, enabled: e.target.checked } }))}
-              />
-            }
-            label={Locale.label("mobile.checkInPage.kiosk.enableIdleScreen")}
-          />
-          <TextField
-            type="number"
-            label={Locale.label("mobile.checkInPage.kiosk.timeoutSeconds")}
-            value={config.idleScreen.timeoutSeconds}
-            onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, timeoutSeconds: parseInt(e.target.value) || 120 } }))}
-            size="small"
-            sx={{ mt: 2, mb: 3, width: 200 }}
-            slotProps={{ htmlInput: { min: 10 } }}
-          />
-
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("mobile.checkInPage.kiosk.slides")}</Typography>
-          {config.idleScreen.slides.map((slide, index) => (
-            <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
-              {slide.imageUrl && (
-                <img src={slide.imageUrl} alt={`${Locale.label("mobile.checkInPage.kiosk.slides")} ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: "var(--b1-radius-control)" }} />
-              )}
-              <Button size="small" variant="outlined" onClick={() => { setEditingSlideIndex(index); setEditingImage("slide"); }}>
-                {slide.imageUrl ? Locale.label("common.change") : Locale.label("mobile.checkInPage.kiosk.upload")}
+            <Stack direction="row" spacing={2}>
+              <Button variant="outlined" onClick={() => setEditingImage("background")}>
+                {config.backgroundImage ? Locale.label("mobile.checkInPage.kiosk.changeImage") : Locale.label("mobile.checkInPage.kiosk.uploadImage")}
               </Button>
-              <TextField
-                type="number"
-                label={Locale.label("mobile.checkInPage.kiosk.duration")}
-                value={slide.durationSeconds}
-                onChange={e => updateSlideDuration(index, parseInt(e.target.value) || 10)}
-                size="small"
-                sx={{ width: 120 }}
-                slotProps={{ htmlInput: { min: 3 } }}
-              />
-              <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => removeSlide(index)} />
+              {config.backgroundImage && (
+                <Button variant="outlined" onClick={() => setConfig(prev => ({ ...prev, backgroundImage: "" }))}>
+                  {Locale.label("common.remove")}
+                </Button>
+              )}
             </Stack>
-          ))}
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>{Locale.label("mobile.checkInPage.kiosk.addSlide")}</Button>
-        </AccordionDetails>
-      </Accordion>
-    </FormCard>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography variant="h3">{Locale.label("mobile.checkInPage.kiosk.idleScreen")}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={config.idleScreen.enabled}
+                  onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, enabled: e.target.checked } }))}
+                />
+              }
+              label={Locale.label("mobile.checkInPage.kiosk.enableIdleScreen")}
+            />
+            <TextField
+              type="number"
+              label={Locale.label("mobile.checkInPage.kiosk.timeoutSeconds")}
+              value={config.idleScreen.timeoutSeconds}
+              onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, timeoutSeconds: parseInt(e.target.value) || 120 } }))}
+              size="small"
+              sx={{ mt: 2, mb: 3, width: 200 }}
+              slotProps={{ htmlInput: { min: 10 } }}
+            />
+
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("mobile.checkInPage.kiosk.slides")}</Typography>
+            {config.idleScreen.slides.map((slide, index) => (
+              <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-control)" }}>
+                {slide.imageUrl && (
+                  <img src={slide.imageUrl} alt={`${Locale.label("mobile.checkInPage.kiosk.slides")} ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: "var(--b1-radius-control)" }} />
+                )}
+                <Button size="small" variant="outlined" onClick={() => { setEditingSlideIndex(index); setEditingImage("slide"); }}>
+                  {slide.imageUrl ? Locale.label("common.change") : Locale.label("mobile.checkInPage.kiosk.upload")}
+                </Button>
+                <TextField
+                  type="number"
+                  label={Locale.label("mobile.checkInPage.kiosk.duration")}
+                  value={slide.durationSeconds}
+                  onChange={e => updateSlideDuration(index, parseInt(e.target.value) || 10)}
+                  size="small"
+                  sx={{ width: 120 }}
+                  slotProps={{ htmlInput: { min: 3 } }}
+                />
+                <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => removeSlide(index)} />
+              </Stack>
+            ))}
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>{Locale.label("mobile.checkInPage.kiosk.addSlide")}</Button>
+          </AccordionDetails>
+        </Accordion>
+      </FormCard>
+      <Snackbar open={showSaved} autoHideDuration={3000} onClose={() => setShowSaved(false)} message={Locale.label("common.saved")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} />
+    </>
   );
 };

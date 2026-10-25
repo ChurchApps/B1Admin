@@ -254,6 +254,32 @@ test.describe.serial("Mobile tab ordering", () => {
 
 // Every save below posts the whole B1 Mobile form, so these run one at a time or one
 // worker's save would overwrite another's setting.
+// ChurchAppsSupport#1373: the Save buttons under Mobile confirm with a "Saved" message.
+test.describe("Mobile saves confirm", () => {
+  async function expectSaved(page: Page, save: import("@playwright/test").Locator) {
+    await expect(save).toBeEnabled({ timeout: 15000 });
+    const saved = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await save.click();
+    await saved;
+    await expect(page.locator(".MuiSnackbar-root").getByText("Saved", { exact: true })).toBeVisible({ timeout: 10000 });
+  }
+
+  test("B1 Mobile Save shows Saved", async ({ page }) => {
+    await page.goto("/mobile/b1-mobile");
+    await expectSaved(page, page.getByRole("button", { name: /^Save$/ }));
+  });
+
+  test("QR Guest Registration Save shows Saved", async ({ page }) => {
+    await page.goto("/mobile/checkin");
+    await expectSaved(page, page.getByTestId("qr-guest-registration-save"));
+  });
+
+  test("App Theme Save shows Saved", async ({ page }) => {
+    await page.goto("/mobile/theme");
+    await expectSaved(page, page.getByRole("button", { name: /^Save$/ }));
+  });
+});
+
 test.describe("B1 Mobile page saves", () => {
   test.describe.configure({ mode: "serial" });
 
