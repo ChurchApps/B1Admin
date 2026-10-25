@@ -5868,6 +5868,7 @@
       "active": "Active",
       "addCondition": "Add Condition",
       "addTrigger": "Add Trigger",
+      "allowRepeatAfterClose": "Add again after their card is closed",
       "conditions": "Only if",
       "editTrigger": "Edit Trigger",
       "event": "When this happens",

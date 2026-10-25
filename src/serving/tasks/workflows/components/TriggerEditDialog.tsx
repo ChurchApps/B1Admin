@@ -1,14 +1,17 @@
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, TextField, Stack, Typography, FormControlLabel, Switch, IconButton, Box, ToggleButtonGroup, ToggleButton, Chip } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, TextField, Stack, Typography, FormControlLabel, Switch, Checkbox, IconButton, Box, ToggleButtonGroup, ToggleButton, Chip } from "@mui/material";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ConditionEdit } from "../../components/conditions/ConditionEdit";
 
 interface FieldDef { key: string; label: string; type: string; options?: { value: string; label: string }[]; optionsSource?: string }
 interface EventDef { eventType: string; label: string; recordType: string; fields: FieldDef[] }
 interface ConditionRow { field: string; operator: string; value: string }
-export interface WorkflowTriggerInterface { id?: string; name?: string; triggerKind?: string; eventType?: string; recurs?: string; workflowId?: string; stepId?: string; conditions?: string; oncePerSubject?: boolean; active?: boolean }
+export interface WorkflowTriggerInterface {
+  id?: string; name?: string; triggerKind?: string; eventType?: string; recurs?: string; workflowId?: string; stepId?: string; conditions?: string;
+  oncePerSubject?: boolean; allowRepeatAfterClose?: boolean; active?: boolean
+}
 interface StepInterface { id?: string; name?: string }
 
 interface Props {
@@ -39,6 +42,7 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
   const workflowId = props.workflowId;
   const [stepId, setStepId] = React.useState(props.trigger.stepId || "");
   const [oncePerSubject, setOncePerSubject] = React.useState(props.trigger.oncePerSubject ?? true);
+  const [allowRepeatAfterClose, setAllowRepeatAfterClose] = React.useState(props.trigger.allowRepeatAfterClose ?? false);
   const [active, setActive] = React.useState(props.trigger.active ?? true);
   const [conjunction, setConjunction] = React.useState<"AND" | "OR">("AND");
   const [rows, setRows] = React.useState<ConditionRow[]>([]);
@@ -113,9 +117,9 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
       const conditions = rows.length > 0
         ? JSON.stringify({ type: "group", conjunction, children: rows.map((r) => ({ type: "condition", field: r.field, operator: r.operator, value: r.value })) })
         : null;
-      await ApiHelper.post("/workflowTriggers", [{ id: props.trigger.id, name, triggerKind: "event", eventType, recurs: null, workflowId, stepId: stepId || null, conditions, oncePerSubject, active }], "DoingApi");
+      await ApiHelper.post("/workflowTriggers", [{ id: props.trigger.id, name, triggerKind: "event", eventType, recurs: null, workflowId, stepId: stepId || null, conditions, oncePerSubject, allowRepeatAfterClose, active }], "DoingApi");
     } else {
-      await ApiHelper.post("/workflowTriggers", [{ id: props.trigger.id, name, triggerKind: "schedule", eventType: null, recurs, workflowId, stepId: stepId || null, conditions: null, oncePerSubject, active }], "DoingApi");
+      await ApiHelper.post("/workflowTriggers", [{ id: props.trigger.id, name, triggerKind: "schedule", eventType: null, recurs, workflowId, stepId: stepId || null, conditions: null, oncePerSubject, allowRepeatAfterClose, active }], "DoingApi");
     }
     props.onSave();
   };
@@ -254,8 +258,16 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
           )}
 
           <Stack direction="row" spacing={3}>
-            <FormControlLabel control={<Switch checked={oncePerSubject} data-testid="trigger-once" onChange={(e) => setOncePerSubject(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.oncePerSubject")} />
-            <FormControlLabel control={<Switch checked={active} data-testid="trigger-active" onChange={(e) => setActive(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.active")} />
+            <Box>
+              <FormControlLabel control={<Switch checked={oncePerSubject} data-testid="trigger-once" onChange={(e) => setOncePerSubject(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.oncePerSubject")} />
+              {/* Schedule triggers dedupe per period instead, so this only applies to event triggers. */}
+              {oncePerSubject && kind === "event" && (
+                <Box sx={{ pl: 4 }}>
+                  <FormControlLabel control={<Checkbox size="small" checked={allowRepeatAfterClose} data-testid="trigger-repeat-after-close" onChange={(e) => setAllowRepeatAfterClose(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.allowRepeatAfterClose")} />
+                </Box>
+              )}
+            </Box>
+            <FormControlLabel control={<Switch checked={active} data-testid="trigger-active" onChange={(e) => setActive(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.active")} sx={{ alignSelf: "flex-start" }} />
           </Stack>
         </Stack>
       </DialogContent>
