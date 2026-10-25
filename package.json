@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "yarn@4.15.0",
   "dependencies": {
-    "@churchapps/apphelper": "^1.9.0",
+    "@churchapps/apphelper": "^1.9.1",
     "@churchapps/content-providers": "^0.14.0",
     "@churchapps/helpers": "^2.11.1",
     "@mui/icons-material": "^7.3.11",
