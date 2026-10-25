@@ -341,6 +341,36 @@ test.describe.serial("Stand Alone form lifecycle", () => {
     await expect(row.locator("td a").filter({ hasText: /\/forms\// }).first()).toBeVisible();
   });
 
+  test("adds a header photo from the gallery and sees it again on reopen", async () => {
+    const photo = "content/CHU00000001/gallery/1.78/zacchaeus-form.jpg";
+    const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+    await page.route("**/content/gallery/1.78", (route) => route.fulfill({ json: { images: [photo] } }));
+    await page.route("**/zacchaeus-form.jpg", (route) => route.fulfill({ contentType: "image/png", body: png }));
+
+    // The previous test leaves the Forms list open with this row on it.
+    const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.locator('[data-testid^="edit-form-button-"]').first().click();
+    await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator('[data-testid="form-photo"] img')).toHaveCount(0);
+
+    await page.locator('[data-testid="form-photo-button"]').click();
+    await page.locator('[data-testid="select-image"]').first().click();
+    await expect(page.locator('[data-testid="form-photo"] img')).toHaveAttribute("src", /zacchaeus-form\.jpg$/);
+
+    const formPost = page.waitForResponse((r) => r.url().endsWith("/membership/forms") && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+    await saveFormDrawer(page);
+    const saved = await (await formPost).json();
+    expect(saved[0]?.photoUrl, "saved photoUrl").toMatch(/zacchaeus-form\.jpg$/);
+
+    await row.locator('[data-testid^="edit-form-button-"]').first().click();
+    await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator('[data-testid="form-photo"] img')).toHaveAttribute("src", /zacchaeus-form\.jpg$/, { timeout: 10000 });
+    await page.locator("#formBox button", { hasText: /^Cancel$/ }).click();
+    await page.locator("#formBox").waitFor({ state: "hidden", timeout: 10000 });
+    await page.unroute("**/content/gallery/1.78");
+  });
+
   test("duplicating a form confirms first and shows a duplicated snackbar", async () => {
     await openFormsPage(page);
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
