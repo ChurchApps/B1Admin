@@ -9,6 +9,12 @@ export class ConditionHelper {
 
   static getLabel(c: ConditionInterface) {
     const fieldData = c.fieldData ? JSON.parse(c.fieldData) : {};
+    if (c.field === "giving") {
+      return Locale.label("helpers.conditionHelper.lapsedGiver")
+        .replace("{minWeeks}", fieldData.minWeeks ?? 3)
+        .replace("{regularWeeks}", fieldData.regularWeeks ?? 12)
+        .replace("{lapsedWeeks}", fieldData.lapsedWeeks ?? 3);
+    }
 
     let displayField = this.getTitleCase(c.field || "");
     if (fieldData.datePart === "dayOfWeek") displayField += Locale.label("helpers.conditionHelper.dayOfWeek");
