@@ -1201,3 +1201,86 @@ loggedInTest.describe("Person giving card - non-deductible funds", () => {
     await expect(card).toContainText(FUND_NAME, { timeout: 15000 });
   });
 });
+
+// A person's "date added" is stamped when the record is created, so only people added from now
+// on carry one; the seeded people (Donald Clark) predate it and show nothing.
+loggedInTest.describe("Person date added and record dates", () => {
+  // One worker, so the person made in beforeAll is the only "Zebedee Newcomer".
+  loggedInTest.describe.configure({ mode: "default" });
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let personId: string;
+
+  loggedInTest.beforeAll(async () => {
+    ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001");
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    const res = await ctx.post(`${API}/membership/people`, { ...auth, data: [{ name: { first: "Zebedee", last: "Newcomer" }, contactInfo: {}, membershipStatus: "Visitor" }] });
+    expect(res.status()).toBe(200);
+    personId = (await res.json())[0].id;
+  });
+
+  loggedInTest.afterAll(async () => {
+    if (personId) await ctx.delete(`${API}/membership/people/${personId}`, auth);
+    await ctx.dispose();
+  });
+
+  loggedInTest.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("people.view", "table"));
+  });
+
+  loggedInTest("Select Columns offers Date Added and the table shows it", async ({ page }) => {
+    await page.goto("/people");
+    const searchText = page.locator('input[name="searchText"]');
+    await expect(searchText).toBeVisible({ timeout: 30000 });
+    await searchText.fill("Zebedee Newcomer");
+    await expect(page.locator("table tbody tr").filter({ hasText: "Zebedee Newcomer" })).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="columns-button"]').click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByTestId("column-checkbox-dateAdded").click();
+    await dialog.getByRole("button", { name: "Done" }).click();
+    await expect(page.getByRole("columnheader", { name: "Date Added" })).toBeVisible();
+    await expect(page.locator("table tbody tr").filter({ hasText: "Zebedee Newcomer" })).toContainText(String(new Date().getFullYear()));
+  });
+
+  loggedInTest("the profile shows when the person was added, and nothing for older people", async ({ page }) => {
+    await page.goto(`/people/${personId}`);
+    await expect(page.getByTestId("person-date-added")).toHaveText(new RegExp(`^Added .*${new Date().getFullYear()}`), { timeout: 15000 });
+    await page.goto("/people/PER00000080");
+    await expect(page.getByTestId("person-identity")).toContainText("Donald Clark", { timeout: 15000 });
+    await expect(page.getByTestId("person-date-added")).toHaveCount(0);
+  });
+
+  loggedInTest("Advanced search finds people added in the last N days", async ({ page }) => {
+    await page.goto("/people");
+    const advancedButton = page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true });
+    await expect(advancedButton).toBeVisible({ timeout: 30000 });
+    await advancedButton.click();
+    const advanced = page.locator("#peopleSearch-advanced");
+    await advanced.getByText("Membership & Groups", { exact: true }).click();
+    await advanced.getByText("Date Added", { exact: true }).click();
+    const days = page.getByTestId("filter-days-dateAdded");
+    await expect(days).toHaveValue("30");
+    const searched = page.waitForResponse((r) => r.url().includes("/people/advancedSearch") && r.status() === 200, { timeout: 10000 });
+    await days.fill("7");
+    await searched;
+    await expect(page.locator("table tbody tr").filter({ hasText: "Zebedee Newcomer" })).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("table tbody tr").filter({ hasText: "Donald Clark" })).toHaveCount(0);
+  });
+
+  loggedInTest("the Groups card shows the date the person joined each group", async ({ page }) => {
+    await page.goto("/people/PER00000080");
+    await expect(page.getByTestId("group-joined-date").first()).toHaveText(/^Joined .*2024/, { timeout: 15000 });
+  });
+
+  loggedInTest("a form filled out once shows its submission date", async ({ page }) => {
+    // Brian Harris has a single Visitor Information Card submission.
+    await page.goto("/people/PER00000079?view=forms&form=FRM00000001");
+    await expect(page.getByTestId("submission-date")).toHaveText(/^Submitted .*2025/, { timeout: 15000 });
+    await expect(page.getByTestId("submission-picker")).toHaveCount(0);
+  });
+});

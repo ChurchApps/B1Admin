@@ -1871,7 +1871,9 @@
       "noCustomFields": "No custom fields defined. Create custom fields in Forms to search by them."
     },
     "advancedSearch": {
+      "daysPlaceholder": "Number of days",
       "enterValuePlaceholder": "Enter value...",
+      "lastDays": "in the last N days",
       "search": "Search",
       "valuePlaceholder": "Value"
     },
@@ -2049,6 +2051,7 @@
       "exporting": "Exporting..."
     },
     "groups": {
+      "joined": "Joined {date}",
       "leader": "Leader",
       "notMemMsg": "Not currently a member of any groups.",
       "unknownGroup": "Unknown Group"
@@ -2209,7 +2212,8 @@
     "personForm": {
       "editAria": "Edit {name}",
       "form": "Form",
-      "notFilledOut": "Not filled out yet."
+      "notFilledOut": "Not filled out yet.",
+      "submittedOn": "Submitted {date}"
     },
     "personNavigation": {
       "attendance": "Attendance",
@@ -2261,6 +2265,7 @@
       "workflow": "Workflow"
     },
     "personView": {
+      "dateAdded": "Added {date}",
       "hasLoginLabel": "Has login: {email}",
       "home": "Home",
       "mobile": "Mobile",
@@ -2290,6 +2295,7 @@
     "campus": "Campus",
     "city": "City",
     "country": "Country",
+    "dateAdded": "Date Added",
     "deceased": "Deceased",
     "displayName": "Display Name",
     "divorced": "Divorced",

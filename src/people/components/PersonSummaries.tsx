@@ -276,7 +276,8 @@ export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, household
 };
 
 export const PersonGroupsSummary: React.FC<{ personId: string }> = ({ personId }) => {
-  const groupMembers = useQuery<GroupMemberInterface[]>({
+  // joinDate is returned by the Api but not on the published GroupMemberInterface yet.
+  const groupMembers = useQuery<(GroupMemberInterface & { joinDate?: Date | string })[]>({
     queryKey: ["/groupmembers?personId=" + personId, "MembershipApi"],
     enabled: !UniqueIdHelper.isMissing(personId)
   });
@@ -300,6 +301,11 @@ export const PersonGroupsSummary: React.FC<{ personId: string }> = ({ personId }
               {gm.leader && <Box component="span" sx={{ fontWeight: 400, opacity: 0.75 }}>{Locale.label("people.groups.leader")}</Box>}
             </Link>
             {gm.group?.categoryName && <Box component="span" sx={{ ml: 1, color: "text.secondary", typography: "body2" }}>{gm.group.categoryName}</Box>}
+            {gm.joinDate && (
+              <Box component="span" sx={{ ml: 1, color: "text.secondary", typography: "body2" }} data-testid="group-joined-date">
+                {Locale.label("people.groups.joined").replace("{date}", DateHelper.prettyDate(new Date(gm.joinDate)))}
+              </Box>
+            )}
           </li>
         ))}
       </Box>
