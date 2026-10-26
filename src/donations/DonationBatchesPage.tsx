@@ -59,6 +59,12 @@ export const DonationBatchesPage = () => {
   const isConverted = yearBatches.some((b) => b.isConverted);
   const unresolvedEvents = (eventLogs.data || []).filter((log) => !log.resolved).length;
 
+  // Print covers the batches on screen: the selected year, or every batch date when All is picked.
+  const batchDates = yearBatches.map((b) => (b.batchDate || "").toString().split("T")[0]).filter(Boolean).sort();
+  const printStart = year === null ? batchDates[0] : year + "-01-01";
+  const printEnd = year === null ? batchDates[batchDates.length - 1] : year + "-12-31";
+  const printLink = "/donations/batches/print-all" + (printStart && printEnd ? "?start=" + printStart + "&end=" + printEnd : "");
+
   const canEdit = canEditDonations();
   const canAdd = canEnterDonations();
   const canViewBatch = UserHelper.checkAccess(Permissions.givingApi.donations.view);
@@ -116,7 +122,7 @@ export const DonationBatchesPage = () => {
             {Locale.label("donations.donationBatchesPage.failedEvents", "Failed events ({count})").replace("{count}", unresolvedEvents.toString())}
           </HeaderTextButton>
         )}
-        {(batches.data?.length || 0) > 0 && <HeaderTextButton startIcon={<PrintIcon />} component={Link} to="/donations/batches/print-all" data-testid="print-batches-button">{Locale.label("common.print")}</HeaderTextButton>}
+        {(batches.data?.length || 0) > 0 && <HeaderTextButton startIcon={<PrintIcon />} component={Link} to={printLink} data-testid="print-batches-button">{Locale.label("common.print")}</HeaderTextButton>}
         {yearBatches.length > 0 && <ExportButton data={yearBatches} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
         {canAdd && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openBatch("")} data-testid="add-batch-button">{Locale.label("donations.donationBatchesPage.addBatch")}</HeaderPrimaryButton>}
       </PageHeader>
