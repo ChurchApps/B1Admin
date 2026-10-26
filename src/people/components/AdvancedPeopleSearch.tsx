@@ -213,7 +213,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           ]
         },
         { key: "age", label: Locale.label("person.age"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] },
-        { key: "birthDate", label: Locale.label("person.birthDate"), type: "date", operators: ["equals", "greaterThan", "lessThan"] },
+        { key: "birthDate", label: Locale.label("person.birthDate"), type: "date", operators: ["equals", "greaterThan", "lessThan", "lastDays"] },
         {
           key: "birthMonth",
           label: Locale.label("people.editCondition.bMonth"),
@@ -247,7 +247,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "Widowed", label: Locale.label("person.widowed") }
           ]
         },
-        { key: "anniversary", label: Locale.label("person.anniversary"), type: "date", operators: ["equals", "greaterThan", "lessThan"] },
+        { key: "anniversary", label: Locale.label("person.anniversary"), type: "date", operators: ["equals", "greaterThan", "lessThan", "lastDays"] },
         {
           key: "anniversaryMonth",
           label: Locale.label("people.editCondition.anniMonth"),
@@ -292,7 +292,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals", "notEquals"],
           options: membershipCampuses.map((c) => ({ value: c.id || "", label: c.name || "" }))
-        }
+        },
+        { key: "dateAdded", label: Locale.label("person.dateAdded"), type: "date", operators: ["lastDays", "greaterThan", "lessThan", "equals"] }
       ],
       activity: [],
       customFields: [
@@ -455,7 +456,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         filters[field] = {
           field,
           operator: fieldConfig.operators?.[0] || "equals",
-          value: fieldConfig.type === "select" ? fieldConfig.options?.[0]?.value || "" : ""
+          value: fieldConfig.type === "select" ? fieldConfig.options?.[0]?.value || "" : fieldConfig.operators?.[0] === "lastDays" ? "30" : ""
         };
       }
     }
@@ -471,7 +472,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const updateFilterOperator = (field: string, operator: string) => {
     const filters = { ...activeFilters };
     if (filters[field]) {
-      filters[field] = { ...filters[field], operator };
+      // "In the last N days" takes a day count, not a date, so switching to or from it clears the value.
+      const switchesValueKind = (operator === "lastDays") !== (filters[field].operator === "lastDays");
+      filters[field] = { ...filters[field], operator, ...(switchesValueKind ? { value: operator === "lastDays" ? "30" : "" } : {}) };
       setActiveFilters(filters);
     }
   };
@@ -697,6 +700,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       greaterThanEqual: "≥",
       lessThan: "<",
       lessThanEqual: "≤",
+      lastDays: Locale.label("people.advancedSearch.lastDays"),
       in: Locale.label("people.editCondition.isMem"),
       notIn: Locale.label("people.editCondition.notMem")
     };
@@ -738,6 +742,10 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           ))}
         </Select>
       );
+    }
+
+    if (field.type === "date" && activeFilters[field.key].operator === "lastDays") {
+      return <TextField size="small" type="number" fullWidth value={activeFilters[field.key].value} onChange={(e) => updateFilterValue(field.key, e.target.value)} variant="outlined" placeholder={Locale.label("people.advancedSearch.daysPlaceholder")} slotProps={{ htmlInput: { min: 0, "data-testid": `filter-days-${field.key}` } }} sx={styles.inputCommon} />;
     }
 
     if (field.type === "date") {

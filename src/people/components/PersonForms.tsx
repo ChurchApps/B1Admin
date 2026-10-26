@@ -214,6 +214,11 @@ export const PersonForms: React.FC<Props> = (props) => {
         <div ref={printRef}>
           <PrintStyles />
           {renderSubmissionPicker(form, submissions, submission)}
+          {submissions.length === 1 && submission?.submissionDate && (
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }} className="no-print" data-testid="submission-date">
+              {Locale.label("people.personForm.submittedOn").replace("{date}", DateHelper.prettyDate(new Date(submission.submissionDate)))}
+            </Typography>
+          )}
           {submission && (
             <Box className="print-only" sx={{ mb: 2, textAlign: "center" }}>
               <PrintChurchHeader churchName={churchName} style={{ margin: "0 auto 8px", maxHeight: 70 }}>

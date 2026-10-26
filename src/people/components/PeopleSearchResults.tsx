@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { PersonHelper, Loading, ApiHelper, ArrayHelper, DateHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Checkbox } from "@mui/material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { EmptyState, SortableTableHead, StatusChip, Surface, type SortableColumn } from "../../components/ui";
@@ -179,6 +179,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
         case "anniversary": result = <>{p.anniversary == null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.anniversary))}</>; break;
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
+        case "dateAdded": result = <>{(p as any).dateAdded ? DateHelper.prettyDate(new Date((p as any).dateAdded)) : ""}</>; break;
         case "deleteOption":
           result = (
             <AppIconButton

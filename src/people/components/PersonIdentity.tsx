@@ -176,6 +176,12 @@ export const PersonIdentity: React.FC<Props> = (props) => {
         </Stack>
       )}
 
+      {(person as any).dateAdded && (
+        <Typography sx={{ ...quiet, mt: 2 }} data-testid="person-date-added">
+          {Locale.label("people.personView.dateAdded").replace("{date}", DateHelper.prettyDate(new Date((person as any).dateAdded)))}
+        </Typography>
+      )}
+
       <Box sx={{ mt: 3 }}>
         <Household person={person} household={props.household} members={props.householdMembers} editing={props.view === "household"} onEdit={props.onEditHousehold} />
       </Box>
