@@ -104,8 +104,13 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
     setActive(items.findIndex((i) => i.t === "nav" && i.u === u));
   };
 
+  // On touch screens a programmatic focus raises the soft keyboard over the menu, so only autofocus with a fine pointer or a keyboard shortcut.
+  const openedByKey = React.useRef(false);
   React.useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    const touch = window.matchMedia?.("(pointer: coarse)").matches;
+    if (!touch || openedByKey.current) inputRef.current?.focus();
+    openedByKey.current = false;
   }, [open]);
 
   React.useEffect(() => {
@@ -113,9 +118,10 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
       const slash = e.key === "/" && !open && !e.metaKey && !e.ctrlKey && !e.altKey && !isTypingTarget(e.target);
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        if (open) close(); else openPalette();
+        if (open) close(); else { openedByKey.current = true; openPalette(); }
       } else if (slash) {
         e.preventDefault();
+        openedByKey.current = true;
         openPalette();
       } else if (e.key === "Escape" && open) {
         e.preventDefault();
