@@ -1,0 +1,36 @@
+diff --git a/lib/cjs/uncontrollable.js b/lib/cjs/uncontrollable.js
+index 2346bc5f6ccfe7d161fe8c6ff65da1e22394ec3d..eabc55eda1cc43287cbf1b937ea6b9a05001b1e1 100644
+--- a/lib/cjs/uncontrollable.js
++++ b/lib/cjs/uncontrollable.js
+@@ -163,12 +163,7 @@ function uncontrollable(Component, controlledValues, methods) {
+   if (_react.default.forwardRef) {
+     WrappedComponent = _react.default.forwardRef(function (props, ref) {
+       return _react.default.createElement(UncontrolledComponent, (0, _extends3.default)({}, props, {
+-        innerRef: ref,
+-        __source: {
+-          fileName: _jsxFileName,
+-          lineNumber: 128
+-        },
+-        __self: this
++        innerRef: ref
+       }));
+     });
+     WrappedComponent.propTypes = UncontrolledComponent.propTypes;
+diff --git a/lib/esm/uncontrollable.js b/lib/esm/uncontrollable.js
+index f5f01cea22e36071fcaa2c398bc3904504f79609..ac2b8bd6dc181d4f3b49bb7a2869f1668934b357 100644
+--- a/lib/esm/uncontrollable.js
++++ b/lib/esm/uncontrollable.js
+@@ -147,12 +147,7 @@ export default function uncontrollable(Component, controlledValues, methods) {
+   if (React.forwardRef) {
+     WrappedComponent = React.forwardRef(function (props, ref) {
+       return React.createElement(UncontrolledComponent, _extends({}, props, {
+-        innerRef: ref,
+-        __source: {
+-          fileName: _jsxFileName,
+-          lineNumber: 128
+-        },
+-        __self: this
++        innerRef: ref
+       }));
+     });
+     WrappedComponent.propTypes = UncontrolledComponent.propTypes;

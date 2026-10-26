@@ -2,7 +2,10 @@ import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   // Only the local Vite fixture and its modules may load; no real account/API traffic.
-  await page.route("**/*", (route) => new URL(route.request().url()).hostname === "127.0.0.1" ? route.continue() : route.abort());
+  await page.route("**/*", (route) => {
+    const host = new URL(route.request().url()).hostname;
+    return host === "127.0.0.1" || host === "localhost" ? route.continue() : route.abort();
+  });
   await page.goto("/tests/fixtures/assignment-confirmation/");
 });
 

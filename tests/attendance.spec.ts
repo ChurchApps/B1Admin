@@ -429,7 +429,13 @@ test.describe("Attendance Management", () => {
         else groups[groups.length - 1]?.push(r.text);
       });
       expect(groups.flat().length).toBeGreaterThan(0);
-      groups.forEach((names) => expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b))));
+      // The report sorts people.sortName ("Last, First") while the cell shows "First Last".
+      const sortName = (name: string) => {
+        const parts = name.split(/\s+/);
+        const last = parts.pop() || "";
+        return `${last}, ${parts.join(" ")}`;
+      };
+      groups.forEach((names) => expect(names).toEqual([...names].sort((a, b) => sortName(a).localeCompare(sortName(b)))));
     });
   });
 

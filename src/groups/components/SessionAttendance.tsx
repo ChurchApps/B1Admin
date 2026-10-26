@@ -9,6 +9,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton, Surface } from "../../components/ui";
 import { SessionStatusDialog } from "./SessionStatusDialog";
 import { useCanPrintRoster } from "../../helpers";
+import { canReadGroupAttendance } from "../attendanceAccess";
 
 interface Props {
   group: GroupInterface;
@@ -75,7 +76,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     const seq = ++loadSeqRef.current;
     setExtraPeople([]);
     setMessage(null);
-    if (session?.id) {
+    if (session?.id && canReadGroupAttendance(group?.id)) {
       ApiHelper.get("/visitsessions?sessionId=" + session.id, "AttendanceApi").then((vs: VisitSessionInterface[]) => {
         if (seq !== loadSeqRef.current) return;
         setVisitSessions(vs);
@@ -98,6 +99,10 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         } else {
           setPeople([]);
         }
+      }).catch(() => {
+        if (seq !== loadSeqRef.current) return;
+        setVisitSessions([]);
+        setPeople([]);
       });
     } else {
       setVisitSessions([]);
@@ -106,13 +111,13 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
       setAttendance({});
       setOriginalAttendance({});
     }
-  }, [session?.id]);
+  }, [session?.id, group?.id]);
 
   const loadDownloadData = useCallback(() => {
-    if (session?.id) {
-      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: any) => setDownloadData(data));
+    if (session?.id && canReadGroupAttendance(group?.id)) {
+      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: any) => setDownloadData(data)).catch(() => setDownloadData([]));
     }
-  }, [session?.id]);
+  }, [session?.id, group?.id]);
 
   React.useEffect(() => {
     loadAttendance();

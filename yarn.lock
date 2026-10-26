@@ -6362,7 +6362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uncontrollable@npm:^7.2.1":
+"uncontrollable@npm:7.2.1":
   version: 7.2.1
   resolution: "uncontrollable@npm:7.2.1"
   dependencies:
@@ -6373,6 +6373,20 @@ __metadata:
   peerDependencies:
     react: ">=15.0.0"
   checksum: 10c0/81473e892027a99f1ead6b9afd16db65097651cd36c4b6db710728f206f1fc4b82ba9170ecb4a1127a23857e01ba51c0194d0a7cfeecfea61ba9418e0276cb56
+  languageName: node
+  linkType: hard
+
+"uncontrollable@patch:uncontrollable@npm%3A7.2.1#~/.yarn/patches/uncontrollable-npm-7.2.1-85b30af5c9.patch":
+  version: 7.2.1
+  resolution: "uncontrollable@patch:uncontrollable@npm%3A7.2.1#~/.yarn/patches/uncontrollable-npm-7.2.1-85b30af5c9.patch::version=7.2.1&hash=1565af"
+  dependencies:
+    "@babel/runtime": "npm:^7.6.3"
+    "@types/react": "npm:>=16.9.11"
+    invariant: "npm:^2.2.4"
+    react-lifecycles-compat: "npm:^3.0.4"
+  peerDependencies:
+    react: ">=15.0.0"
+  checksum: 10c0/97c441fb643519564431992daf26efe199b019c2891a18007a4535e1c556992ae9a8953d01d48121b6c16d8c2e5c715c8546c67ea6236cda2a58a70887c8d6a8
   languageName: node
   linkType: hard
 

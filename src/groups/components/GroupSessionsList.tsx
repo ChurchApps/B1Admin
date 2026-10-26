@@ -2,6 +2,7 @@ import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
 import { ApiHelper, DateHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
+import { canReadGroupAttendance } from "../attendanceAccess";
 import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Typography } from "@mui/material";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -28,6 +29,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
   const sessionsPerPage = 25;
 
   const loadSessionAttendanceCounts = useCallback(async (sessions: SessionInterface[]) => {
+    if (!canReadGroupAttendance(group.id)) return;
     const counts: Record<string, number> = {};
     const sessionsToLoadCounts = sessions.slice(0, 50);
     const batchSize = 10;
@@ -45,7 +47,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
       await Promise.all(batchPromises);
       setSessionAttendanceCounts((prev) => ({ ...prev, ...counts }));
     }
-  }, []);
+  }, [group.id]);
 
   const loadSessions = useCallback(() => {
     if (group.id) {
