@@ -1,9 +1,10 @@
 import { Surface } from "../../../../components/ui";
 import { Box, FormControl, InputLabel, ListSubheader, MenuItem, Select, type SelectChangeEvent, Typography, Stack, Button, Divider } from "@mui/material";
 import React from "react";
-import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
+import { ErrorMessages, ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
 import { ConditionDate } from "./ConditionDate";
+import { ConditionGiving } from "./ConditionGiving";
 import { ConditionSelect } from "./ConditionSelect";
 import { ConditionText } from "./ConditionText";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon } from "@mui/icons-material";
@@ -19,6 +20,8 @@ export const ConditionEdit = (props: Props) => {
   const [condition, setCondition] = React.useState<ConditionInterface | null>(null);
   const [errors, setErrors] = React.useState<string[]>([]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  // Giving rules reveal who stopped giving, so only people who can view donations see them (the Api enforces it too).
+  const canUseGiving = UserHelper.checkAccess(Permissions.givingApi.donations.view);
 
   const init = () => {
     setCondition(props.condition);
@@ -67,6 +70,10 @@ export const ConditionEdit = (props: Props) => {
       case "maritalStatus":
       case "gender":
         result = <ConditionSelect condition={condition} onChange={(c) => setCondition(c)} />;
+        break;
+      case "giving":
+        result = <ConditionGiving condition={condition} onChange={(c) => setCondition(c)} />;
+        break;
     }
     return result;
   };
@@ -102,6 +109,9 @@ export const ConditionEdit = (props: Props) => {
             >
               <ListSubheader>{Locale.label("tasks.conditionEdit.gen")}</ListSubheader>
               <MenuItem value="today">{Locale.label("tasks.conditionEdit.today")}</MenuItem>
+
+              {canUseGiving && <ListSubheader>{Locale.label("tasks.conditionEdit.giving")}</ListSubheader>}
+              {canUseGiving && <MenuItem value="giving">{Locale.label("tasks.conditionEdit.lapsedGiver")}</MenuItem>}
 
               <ListSubheader>{Locale.label("common.name")}</ListSubheader>
               <MenuItem value="displayName">{Locale.label("person.displayName")}</MenuItem>

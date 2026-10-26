@@ -168,6 +168,43 @@ test.describe.serial("Serving Management - Event Triggers", () => {
     await expect(chip).toHaveCount(0, { timeout: 10000 });
   });
 
+  // ChurchAppsSupport#1363: a scheduled rule can start a care card for a regular giver who stopped giving.
+  test("a scheduled rule condition can match a lapsed regular giver without showing amounts", async () => {
+    await page.goto("/serving/tasks/workflows/WFL00000004");
+    const board = page.locator('[data-testid="workflow-board"]');
+    await recoverFromViteError(page, board);
+    await board.waitFor({ state: "visible", timeout: 15000 });
+    await page.locator('[data-testid="board-triggers-tab"]').click();
+    await page.locator('[data-testid="event-trigger-row-WKT00000004"]').click();
+    await page.locator('[data-testid="add-sched-condition-button"]').click();
+
+    await page.locator('[data-testid="condition-type-select"]').click();
+    await page.getByRole("option", { name: "Lapsed regular giver" }).click();
+    await expect(page.locator('[data-testid="giving-min-weeks"] input')).toHaveValue("3");
+    await expect(page.locator('[data-testid="giving-regular-weeks"] input')).toHaveValue("12");
+    await expect(page.locator('[data-testid="giving-lapsed-weeks"] input')).toHaveValue("3");
+    await page.locator('[data-testid="giving-min-weeks"] input').fill("4");
+    await page.locator('[data-testid="giving-regular-weeks"] input').fill("10");
+    await page.locator('[data-testid="giving-lapsed-weeks"] input').fill("2");
+    await page.getByRole("button", { name: "Save" }).click();
+
+    const chip = page.locator('[data-testid^="sched-condition-"]').filter({ hasText: "Gave in 4 of the last 10 weeks, then nothing for 2 weeks" });
+    await expect(chip).toBeVisible({ timeout: 10000 });
+    await expect(chip).not.toContainText("$");
+
+    const ctx = await request.newContext();
+    const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    const auth = { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+    const saved = ((await (await ctx.get(`${API_BASE}/doing/conditions/trigger/WKT00000004`, auth)).json()) || []).find((c: any) => c.field === "giving");
+    expect(saved?.operator).toBe("lapsed");
+    expect(JSON.parse(saved?.fieldData || "{}")).toEqual({ regularWeeks: 10, minWeeks: 4, lapsedWeeks: 2 });
+    await ctx.dispose();
+
+    await chip.locator(".MuiChip-deleteIcon").click();
+    await expect(chip).toHaveCount(0, { timeout: 10000 });
+  });
+
   // The feature: back-end mutation from ANY front-end fires the trigger.
   test("creating a Visitor person via the API drops a card on the workflow", async () => {
     const ctx = await request.newContext();

@@ -1716,6 +1716,7 @@
       "endsWith": "ends with",
       "is": "is",
       "isNot": "is not",
+      "lapsedGiver": "Gave in {minWeeks} of the last {regularWeeks} weeks, then nothing for {lapsedWeeks} weeks",
       "month": ": Month",
       "startsWith": "starts with",
       "yearsSince": "Years since "
@@ -5859,8 +5860,18 @@
       "conditionTypeAria": "Condition type",
       "confirmMsg": "Are you sure you want to delete this condition?",
       "gen": "General",
+      "giving": "Giving",
+      "lapsedGiver": "Lapsed regular giver",
       "persAtt": "Personal Attributes",
       "today": "Today's Date"
+    },
+    "conditionGiving": {
+      "gaveIn": "Gave in at least",
+      "ofTheLast": "of the last",
+      "privacy": "Matches people by gift dates only. Cards and alerts never show amounts.",
+      "thenNothing": "then nothing in the last",
+      "weeks": "Weeks",
+      "weeksLower": "weeks"
     },
     "conditionSelect": {
       "is": "is",
