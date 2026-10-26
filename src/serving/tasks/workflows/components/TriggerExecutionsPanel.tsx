@@ -76,7 +76,7 @@ export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
           <TableBody>
             {executions.map((e) => (
               <TableRow key={e.id} data-testid={"execution-row-" + e.id}>
-                <TableCell>{DateHelper.prettyDateTime(DateHelper.toDate(e.dateCreated))}</TableCell>
+                <TableCell>{DateHelper.prettyDateTime(new Date(e.dateCreated))}</TableCell>
                 <TableCell>{triggerName(e.triggerId)}</TableCell>
                 <TableCell>{e.subjectLabel || e.subjectId}</TableCell>
                 <TableCell>{statusChip(e)}</TableCell>
