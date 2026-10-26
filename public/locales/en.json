@@ -1783,6 +1783,7 @@
     "checkInPage": {
       "addToGroup": "Add new guests to group",
       "addToGroupHelp": "Change this before each event to follow up its guests together.",
+      "changePhoto": "Change photo",
       "copyLink": "Copy link",
       "disabled": "Disabled",
       "downloadQr": "Download PNG",
@@ -1817,6 +1818,8 @@
         "upload": "Upload",
         "uploadImage": "Upload Image"
       },
+      "headerPhoto": "Header photo",
+      "headerPhotoHelp": "Shown at the top of the sign-up page in place of the icon.",
       "linkCopied": "Copied!",
       "manageLabels": "Design Labels",
       "noGroup": "None",
@@ -1824,7 +1827,10 @@
       "qrShareDescription": "Print this QR code on flyers, bulletins, or signage. Guests can scan it to register from their phone.  It will also show in app.",
       "qrShareTitle": "Share registration QR code",
       "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "recordAttendance": "Also record attendance",
+      "recordAttendanceHelp": "Guests who sign up during one of this group's scheduled service times are marked present for it. Sign-ups at other times are not counted.",
       "registrationUrl": "Registration link",
+      "removePhoto": "Remove",
       "saveToActivate": "Save your changes to activate this link.",
       "subtitle": "Configure settings for the B1 CheckIn kiosk app",
       "title": "B1 CheckIn"
