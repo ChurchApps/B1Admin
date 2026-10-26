@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Icon, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Icon, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import type { GenericSettingInterface } from "@churchapps/helpers";
+import type { GenericSettingInterface, GroupInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
 import { FormCard, TextAction } from "../components/ui";
 import { EnvironmentHelper } from "../helpers";
@@ -11,11 +11,13 @@ import { KioskThemeEdit } from "./KioskThemeEdit";
 import { MobileChrome } from "./components/MobileChrome";
 
 type FieldMode = "off" | "optional" | "required";
-type FieldKey = "email" | "phone" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade";
+type FieldKey = "email" | "phone" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade" | "comments";
 type FieldModes = Record<FieldKey, FieldMode>;
 
-const FIELD_KEYS: FieldKey[] = ["email", "phone", "address", "birthDate", "gender", "maritalStatus", "grade"];
-const DEFAULT_FIELDS: FieldModes = { email: "optional", phone: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off" };
+const FIELD_KEYS: FieldKey[] = [
+  "email", "phone", "address", "birthDate", "gender", "maritalStatus", "grade", "comments"
+];
+const DEFAULT_FIELDS: FieldModes = { email: "optional", phone: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off", comments: "off" };
 
 const parseFields = (raw?: string): FieldModes => {
   const result = { ...DEFAULT_FIELDS };
@@ -31,6 +33,9 @@ export const CheckInPage: React.FC = () => {
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [fields, setFields] = React.useState<FieldModes>(DEFAULT_FIELDS);
   const [fieldsSetting, setFieldsSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [groupId, setGroupId] = React.useState("");
+  const [groupSetting, setGroupSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const [saving, setSaving] = React.useState(false);
   const [showSaved, setShowSaved] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
@@ -52,6 +57,11 @@ export const CheckInPage: React.FC = () => {
     const savedFields = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationFields");
     setFieldsSetting(savedFields || null);
     setFields(parseFields(savedFields?.value));
+    const savedGroup = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationGroupId");
+    setGroupSetting(savedGroup || null);
+    setGroupId(savedGroup?.value || "");
+    const allGroups: GroupInterface[] = await ApiHelper.get("/groups", "MembershipApi");
+    setGroups([...(allGroups || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "")));
   }, [churchId]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
@@ -66,7 +76,10 @@ export const CheckInPage: React.FC = () => {
       s.value = enabled ? "true" : "false";
       const f: GenericSettingInterface = fieldsSetting || { churchId, public: 1, keyName: "guestRegistrationFields" };
       f.value = JSON.stringify(fields);
-      await ApiHelper.post("/settings", [s, f], "MembershipApi");
+      // Private: the anonymous sign-up reads it on the server, so guests never see or pick it.
+      const g: GenericSettingInterface = groupSetting || { churchId, public: 0, keyName: "guestRegistrationGroupId" };
+      g.value = groupId;
+      await ApiHelper.post("/settings", [s, f, g], "MembershipApi");
       setShowSaved(true);
       await loadData();
     } finally {
@@ -139,6 +152,14 @@ export const CheckInPage: React.FC = () => {
                 })}
               </TableBody>
             </Table>
+            <FormControl size="small" sx={{ mt: 2, minWidth: 280 }}>
+              <InputLabel id="guest-registration-group-label">{Locale.label("mobile.checkInPage.addToGroup")}</InputLabel>
+              <Select labelId="guest-registration-group-label" label={Locale.label("mobile.checkInPage.addToGroup")} value={groups.some((g) => g.id === groupId) ? groupId : ""} data-testid="guest-registration-group" onChange={(e) => setGroupId(e.target.value)}>
+                <MenuItem value="">{Locale.label("mobile.checkInPage.noGroup")}</MenuItem>
+                {groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
+              </Select>
+            </FormControl>
+            <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>{Locale.label("mobile.checkInPage.addToGroupHelp")}</Typography>
           </Box>
         )}
 

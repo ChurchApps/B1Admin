@@ -1781,6 +1781,8 @@
       "title": "Portal settings"
     },
     "checkInPage": {
+      "addToGroup": "Add new guests to group",
+      "addToGroupHelp": "Change this before each event to follow up its guests together.",
       "copyLink": "Copy link",
       "disabled": "Disabled",
       "downloadQr": "Download PNG",
@@ -1788,6 +1790,7 @@
       "fields": {
         "address": "Home address",
         "birthDate": "Birth date",
+        "comments": "Comments",
         "description": "Choose what the sign-up asks for. First and last names are always required. Everyone who signs up is added to People as a Visitor.",
         "email": "Email",
         "field": "Field",
@@ -1816,6 +1819,7 @@
       },
       "linkCopied": "Copied!",
       "manageLabels": "Design Labels",
+      "noGroup": "None",
       "qrGuestRegistration": "QR Guest Registration",
       "qrShareDescription": "Print this QR code on flyers, bulletins, or signage. Guests can scan it to register from their phone.  It will also show in app.",
       "qrShareTitle": "Share registration QR code",
