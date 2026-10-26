@@ -110,3 +110,19 @@ test.describe("Command palette", () => {
     await expect(page).toHaveURL(/\/mobile\/checkin$/);
   });
 });
+
+test.describe("Command palette on a touch screen", () => {
+  test.use({ viewport: { width: 412, height: 915 }, isMobile: true, hasTouch: true });
+
+  test("opening the menu does not focus the search box", async ({ page }) => {
+    await page.goto("/");
+    await page.getByTestId("command-palette-open").tap();
+    const palette = page.getByTestId("command-palette");
+    await expect(palette).toBeVisible();
+    await expect(palette.locator(".om-hit").first()).toBeVisible();
+    await expect(palette.getByRole("textbox")).not.toBeFocused();
+
+    await palette.getByRole("textbox").tap();
+    await expect(palette.getByRole("textbox")).toBeFocused();
+  });
+});
