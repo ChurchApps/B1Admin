@@ -98,6 +98,37 @@ test.describe.serial("Serving Management - Event Triggers", () => {
     await expect(page.getByText("Zacchaeus Schedule")).toHaveCount(0, { timeout: 10000 });
   });
 
+  // ChurchAppsSupport#1374: "On a schedule" rules honour Only once per person, so they offer the same repeat option.
+  test("a scheduled rule offers and saves add again after close", async () => {
+    await openManager(page);
+    await page.locator('[data-testid="add-event-trigger-button"]').click();
+    await page.locator('[data-testid="trigger-kind-schedule"]').click();
+    await page.locator('[data-testid="trigger-name"] input').fill("Zacchaeus Weekly Repeat");
+    await page.locator('[data-testid="trigger-recurs-select"]').click();
+    await page.getByRole("option", { name: "Weekly" }).click();
+    await expect(page.locator('[data-testid="trigger-once"] input')).toBeChecked();
+    const repeat = page.locator('[data-testid="trigger-repeat-after-close"] input');
+    await expect(repeat).toBeVisible();
+    await repeat.check();
+    await page.locator('[data-testid="save-trigger-button"]').click();
+
+    const row = page.locator("li").filter({ hasText: "Zacchaeus Weekly Repeat" });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    const ctx = await request.newContext();
+    const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    const auth = { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+    const trigger = ((await (await ctx.get(`${API_BASE}/doing/workflowTriggers/workflow/WFL00000001`, auth)).json()) || []).find((t: any) => t.name === "Zacchaeus Weekly Repeat");
+    expect(trigger?.triggerKind).toBe("schedule");
+    expect(trigger?.allowRepeatAfterClose).toBeTruthy();
+
+    await page.locator(`[data-testid="event-trigger-row-${trigger.id}"]`).click();
+    await expect(page.locator('[data-testid="trigger-repeat-after-close"] input')).toBeChecked();
+    await page.getByRole("button", { name: "Cancel" }).click();
+    await ctx.delete(`${API_BASE}/doing/workflowTriggers/${trigger.id}`, auth);
+    await ctx.dispose();
+  });
+
   // Add condition on a saved scheduled rule used to crash with "Box is not defined".
   test("add condition on a saved scheduled rule opens the condition editor", async () => {
     await page.goto("/serving/tasks/workflows/WFL00000004");

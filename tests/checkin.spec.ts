@@ -133,7 +133,7 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     const uc = (login.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID);
     headers = { Authorization: "Bearer " + uc.jwt };
     const all = await loadSettings();
-    originals = ["enableQRGuestRegistration", "guestRegistrationFields"].map((k) => all.find((s) => s.keyName === k)).filter(Boolean);
+    originals = ["enableQRGuestRegistration", "guestRegistrationFields", "guestRegistrationGroupId"].map((k) => all.find((s) => s.keyName === k)).filter(Boolean);
     const qr = all.find((s) => s.keyName === "enableQRGuestRegistration") || { churchId: CHURCH_ID, keyName: "enableQRGuestRegistration", public: 1 };
     const fields = all.find((s) => s.keyName === "guestRegistrationFields") || { churchId: CHURCH_ID, keyName: "guestRegistrationFields", public: 1 };
     const res = await ctx.post(`${API}/membership/settings`, { headers, data: [{ ...qr, value: "true" }, { ...fields, value: "{}" }] });
@@ -142,21 +142,24 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
 
   loggedInTest.afterAll(async () => {
     const all = await loadSettings();
-    const restore = ["enableQRGuestRegistration", "guestRegistrationFields"].map((k) => {
+    const fallback: Record<string, string> = { enableQRGuestRegistration: "false", guestRegistrationFields: "{}", guestRegistrationGroupId: "" };
+    const restore = ["enableQRGuestRegistration", "guestRegistrationFields", "guestRegistrationGroupId"].map((k) => {
       const current = all.find((s) => s.keyName === k);
       const original = originals.find((s) => s.keyName === k);
-      return current ? { ...current, value: original?.value ?? (k === "enableQRGuestRegistration" ? "false" : "{}") } : null;
+      return current ? { ...current, value: original?.value ?? fallback[k] } : null;
     }).filter(Boolean);
     if (restore.length) await ctx.post(`${API}/membership/settings`, { headers, data: restore });
     await ctx.dispose();
   });
 
-  loggedInTest("lists the seven profile fields with Required locked until Include is on", async ({ page }) => {
+  loggedInTest("lists the profile fields with Required locked until Include is on", async ({ page }) => {
     await page.goto("/mobile/checkin");
     const table = page.getByTestId("guest-registration-fields");
     await expect(table.getByText("Sign-up fields")).toBeVisible({ timeout: 15000 });
     await expect(table.getByText(/added to People as a Visitor/)).toBeVisible();
-    for (const label of ["Email", "Phone", "Home address", "Birth date", "Gender", "Marital status", "Grade"]) {
+    for (const label of [
+      "Email", "Phone", "Home address", "Birth date", "Gender", "Marital status", "Grade", "Comments"
+    ]) {
       await expect(page.getByLabel("Include " + label, { exact: true })).toBeVisible();
     }
     await expect(page.getByLabel("Include Email", { exact: true })).toBeChecked();
@@ -181,11 +184,54 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await saved;
 
     const options = await (await ctx.get(`${API}/membership/people/guest-register/options?churchId=${CHURCH_ID}`)).json();
-    expect(options).toEqual({ email: "optional", phone: "required", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional" });
+    expect(options).toEqual({ email: "optional", phone: "required", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional", comments: "off" });
 
     await page.reload();
     await expect(page.getByLabel("Required Home address", { exact: true })).toBeChecked({ timeout: 15000 });
     await expect(page.getByLabel("Include Grade", { exact: true })).toBeChecked();
     await expect(page.getByLabel("Include Gender", { exact: true })).not.toBeChecked();
+  });
+  // ChurchAppsSupport#1374: the church picks a group for this occasion, and a guest's comment lands on their Notes tab.
+  loggedInTest("adds new guests to the chosen group and saves their comment as a note", async ({ page }) => {
+    const lastName = "Zebedeepicnic";
+    // Start from the default checklist; the test above leaves phone and address required.
+    const fieldsRow = (await loadSettings()).find((s) => s.keyName === "guestRegistrationFields");
+    await ctx.post(`${API}/membership/settings`, { headers, data: [{ ...fieldsRow, value: "{}" }] });
+    await page.goto("/mobile/checkin");
+    await page.getByLabel("Include Comments", { exact: true }).check({ timeout: 15000 });
+    await page.getByTestId("guest-registration-group").click();
+    await page.getByRole("option", { name: "Young Adults Class", exact: true }).click();
+    await expect(page.getByText("Change this before each event to follow up its guests together.")).toBeVisible();
+    await expect(page.getByRole("listbox")).toHaveCount(0);
+    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
+
+    const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByTestId("qr-guest-registration-save").click();
+    await saved;
+
+    // The group is private: the guest page never sees it, but the admin list keeps it.
+    const groupSetting = (await loadSettings()).find((s) => s.keyName === "guestRegistrationGroupId");
+    expect(groupSetting?.value).toBe("GRP00000005");
+    expect(Number(groupSetting?.public ?? 0)).toBe(0);
+    const options = await (await ctx.get(`${API}/membership/people/guest-register/options?churchId=${CHURCH_ID}`)).json();
+    expect(options.comments).toBe("optional");
+
+    const reg = await ctx.post(`${API}/membership/people/guest-register`, { data: { churchId: CHURCH_ID, members: [{ firstName: "Zelda", lastName }], comments: "Met you at the church picnic" } });
+    expect(reg.ok()).toBeTruthy();
+    const head = (await reg.json()).people[0];
+    try {
+      const roster = (await (await ctx.get(`${API}/membership/groupmembers?groupId=GRP00000005`, { headers })).json()) as any[];
+      expect(roster.some((gm) => gm.personId === head.id)).toBeTruthy();
+
+      await page.goto(`/people/${head.id}?view=notes`);
+      await expect(page.getByTestId("notes-box").getByText("Met you at the church picnic")).toBeVisible({ timeout: 15000 });
+
+      await page.goto("/mobile/checkin");
+      await expect(page.getByTestId("guest-registration-group")).toContainText("Young Adults Class", { timeout: 15000 });
+    } finally {
+      const roster = (await (await ctx.get(`${API}/membership/groupmembers?groupId=GRP00000005`, { headers })).json()) as any[];
+      for (const gm of roster.filter((m) => m.personId === head.id)) await ctx.delete(`${API}/membership/groupmembers/${gm.id}`, { headers });
+      await ctx.delete(`${API}/membership/people/${head.id}`, { headers });
+    }
   });
 });

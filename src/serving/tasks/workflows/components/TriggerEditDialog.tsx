@@ -260,8 +260,7 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
           <Stack direction="row" spacing={3}>
             <Box>
               <FormControlLabel control={<Switch checked={oncePerSubject} data-testid="trigger-once" onChange={(e) => setOncePerSubject(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.oncePerSubject")} />
-              {/* Schedule triggers dedupe per period instead, so this only applies to event triggers. */}
-              {oncePerSubject && kind === "event" && (
+              {oncePerSubject && (
                 <Box sx={{ pl: 4 }}>
                   <FormControlLabel control={<Checkbox size="small" checked={allowRepeatAfterClose} data-testid="trigger-repeat-after-close" onChange={(e) => setAllowRepeatAfterClose(e.target.checked)} />} label={Locale.label("tasks.eventTriggers.allowRepeatAfterClose")} />
                 </Box>
