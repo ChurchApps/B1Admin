@@ -5,6 +5,7 @@ import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@chu
 import type { GenericSettingInterface, GroupInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
 import { FormCard, TextAction } from "../components/ui";
+import { GalleryModal } from "../components/gallery";
 import { EnvironmentHelper } from "../helpers";
 import { useRequirePermission } from "../hooks";
 import { KioskThemeEdit } from "./KioskThemeEdit";
@@ -35,6 +36,11 @@ export const CheckInPage: React.FC = () => {
   const [fieldsSetting, setFieldsSetting] = React.useState<GenericSettingInterface | null>(null);
   const [groupId, setGroupId] = React.useState("");
   const [groupSetting, setGroupSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [recordAttendance, setRecordAttendance] = React.useState(false);
+  const [attendanceSetting, setAttendanceSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [imageUrl, setImageUrl] = React.useState("");
+  const [imageSetting, setImageSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [showGallery, setShowGallery] = React.useState(false);
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const [saving, setSaving] = React.useState(false);
   const [showSaved, setShowSaved] = React.useState(false);
@@ -60,6 +66,12 @@ export const CheckInPage: React.FC = () => {
     const savedGroup = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationGroupId");
     setGroupSetting(savedGroup || null);
     setGroupId(savedGroup?.value || "");
+    const savedAttendance = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationRecordAttendance");
+    setAttendanceSetting(savedAttendance || null);
+    setRecordAttendance(savedAttendance?.value === "true");
+    const savedImage = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationImage");
+    setImageSetting(savedImage || null);
+    setImageUrl(savedImage?.value || "");
     const allGroups: GroupInterface[] = await ApiHelper.get("/groups", "MembershipApi");
     setGroups([...(allGroups || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "")));
   }, [churchId]);
@@ -79,7 +91,12 @@ export const CheckInPage: React.FC = () => {
       // Private: the anonymous sign-up reads it on the server, so guests never see or pick it.
       const g: GenericSettingInterface = groupSetting || { churchId, public: 0, keyName: "guestRegistrationGroupId" };
       g.value = groupId;
-      await ApiHelper.post("/settings", [s, f, g], "MembershipApi");
+      const a: GenericSettingInterface = attendanceSetting || { churchId, public: 0, keyName: "guestRegistrationRecordAttendance" };
+      a.value = recordAttendance ? "true" : "false";
+      // Public: the sign-up page shows it in place of the icon.
+      const img: GenericSettingInterface = imageSetting || { churchId, public: 1, keyName: "guestRegistrationImage" };
+      img.value = imageUrl;
+      await ApiHelper.post("/settings", [s, f, g, a, img], "MembershipApi");
       setShowSaved(true);
       await loadData();
     } finally {
@@ -160,6 +177,29 @@ export const CheckInPage: React.FC = () => {
               </Select>
             </FormControl>
             <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>{Locale.label("mobile.checkInPage.addToGroupHelp")}</Typography>
+            {groupId && (
+              <Box sx={{ mt: 1 }}>
+                <Stack direction="row" alignItems="center">
+                  <Switch checked={recordAttendance} onChange={(e) => setRecordAttendance(e.target.checked)} slotProps={{ input: { "aria-label": Locale.label("mobile.checkInPage.recordAttendance") } }} data-testid="guest-registration-record-attendance" />
+                  <Typography variant="body2" sx={{ ml: 1 }}>{Locale.label("mobile.checkInPage.recordAttendance")}</Typography>
+                </Stack>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>{Locale.label("mobile.checkInPage.recordAttendanceHelp")}</Typography>
+              </Box>
+            )}
+
+            <Typography variant="h3" sx={{ mt: 3, mb: 0.5 }}>{Locale.label("mobile.checkInPage.headerPhoto")}</Typography>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 1 }}>{Locale.label("mobile.checkInPage.headerPhotoHelp")}</Typography>
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} data-testid="guest-registration-photo">
+              {imageUrl && (
+                <Box sx={{ width: 240, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", border: 1, borderColor: "divider" }}>
+                  <img src={imageUrl} alt={Locale.label("mobile.checkInPage.headerPhoto")} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                </Box>
+              )}
+              <Stack direction="row" spacing={1}>
+                <Button variant="outlined" size="small" startIcon={<Icon>photo_camera</Icon>} onClick={() => setShowGallery(true)}>{Locale.label("mobile.checkInPage.changePhoto")}</Button>
+                {imageUrl && <Button variant="text" size="small" color="error" onClick={() => setImageUrl("")}>{Locale.label("mobile.checkInPage.removePhoto")}</Button>}
+              </Stack>
+            </Stack>
           </Box>
         )}
 
@@ -207,6 +247,7 @@ export const CheckInPage: React.FC = () => {
         </FormCard>
       )}
 
+      {showGallery && <GalleryModal aspectRatio={16 / 9} onSelect={(url) => { setImageUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
       <KioskThemeEdit />
       <Snackbar open={showSaved} autoHideDuration={3000} onClose={() => setShowSaved(false)} message={Locale.label("common.saved")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} />
     </MobileChrome>
