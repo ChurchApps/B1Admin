@@ -3067,6 +3067,25 @@
       "themePreferences": "Theme Preferences",
       "togglePasswordVisibility": "toggle password visibility",
       "valEmail": "Please enter a valid email address."
+    },
+    "twoFactor": {
+      "backupLeft": "Backup codes left: {}",
+      "code": "6-digit code",
+      "codeOrBackup": "Code or backup code",
+      "copy": "Copy",
+      "disablePrompt": "Enter a code from your authenticator app or a backup code to turn off two-factor sign-in.",
+      "done": "I saved them",
+      "enabled": "Two-factor sign-in is on.",
+      "invalidCode": "That code didn't work. Please try again.",
+      "manual": "Can't scan? Enter this key:",
+      "off": "Off. Add a code from an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password, Authy...) to your sign-in.",
+      "on": "On. You'll enter a code from your authenticator app when you sign in.",
+      "saveBackup": "Save these backup codes somewhere safe. Each one signs you in once if you lose your phone. They won't be shown again.",
+      "scan": "Scan this QR code with your authenticator app, then enter the 6-digit code it shows.",
+      "title": "Two-Factor Sign-In",
+      "turnOff": "Turn off",
+      "turnOn": "Turn on",
+      "verify": "Verify"
     }
   },
   "registrations": {
@@ -3770,7 +3789,10 @@
       "searchLabel": "Name or email",
       "staff": "Staff",
       "subDomain": "Subdomain",
-      "title": "User Lookup"
+      "title": "User Lookup",
+      "mfaOn": "Two-factor on",
+      "resetMfa": "Reset 2FA",
+      "resetMfaConfirm": "Turn off two-factor sign-in for {email}? Only do this after confirming who you're talking to."
     }
   },
   "serving": {

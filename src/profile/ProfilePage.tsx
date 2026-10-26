@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { LinkedAccounts } from "./components/LinkedAccounts";
+import { TwoFactorSettings } from "./components/TwoFactorSettings";
 import { LoadingButton } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { FormCard } from "../components/ui/FormCard";
@@ -219,6 +220,7 @@ export const ProfilePage = () => {
             <>
               {saveMessage && <Alert severity={updateProfileMutation.isError ? "error" : "success"}>{saveMessage}</Alert>}
               <LinkedAccounts />
+              {!isDemo && <TwoFactorSettings />}
               <Box component="section">
                 <RecordHeading label={Locale.label("profile.profilePage.accDel")} />
                 <Typography variant="body2" color="text.secondary">

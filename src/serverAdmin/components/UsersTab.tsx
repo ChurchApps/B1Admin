@@ -4,6 +4,7 @@ import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { Box, Button, Link, Table, TableBody, TableCell, TableHead, TableRow, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Stack } from "@mui/material";
 import { EmptyState, SearchField, StatusBadge, tableScrollSx } from "../../components/ui";
 import { AdminPanel } from "./AdminPanel";
+import { useConfirmDelete } from "../../hooks";
 
 interface UserSearchResult {
   id: string;
@@ -15,6 +16,7 @@ interface UserSearchResult {
 }
 
 interface UserDetails extends UserSearchResult {
+  mfaEnabled?: boolean;
   churches: { id: string; name: string; subDomain: string; viaMembership: boolean; viaRoles: boolean }[];
 }
 
@@ -25,6 +27,7 @@ export const UsersTab = () => {
   const [confirmImpersonate, setConfirmImpersonate] = React.useState<boolean>(false);
   const [submitting, setSubmitting] = React.useState<boolean>(false);
   const [, , removeCookie] = useCookies(["jwt"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const loadData = (override?: string) => {
     const term = encodeURIComponent((override ?? searchText).trim());
@@ -48,11 +51,20 @@ export const UsersTab = () => {
     }
   };
 
+  const handleResetMfa = async () => {
+    if (!details) return;
+    const message = Locale.label("serverAdmin.usersTab.resetMfaConfirm", "Turn off two-factor sign-in for {email}? Only do this after confirming who you're talking to.").replace("{email}", details.email);
+    if (!(await confirm(message, { confirmLabel: Locale.label("serverAdmin.usersTab.resetMfa", "Reset 2FA") }))) return;
+    await ApiHelper.post("/users/mfa/reset/" + details.id, {}, "MembershipApi");
+    setDetails({ ...details, mfaEnabled: false });
+  };
+
   const getName = (user: UserSearchResult) => [user.firstName, user.lastName].filter(Boolean).join(" ") || "-";
   const prettyDate = (value?: string) => (value ? DateHelper.prettyDateTime(DateHelper.toDate(value)) : "-");
 
   return (
     <>
+      {ConfirmDialogElement}
       <AdminPanel headerText={Locale.label("serverAdmin.usersTab.title")} subtitle={Locale.label("serverAdmin.usersTab.description")}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "flex-start" }} sx={{ mb: 3 }}>
           <SearchField
@@ -105,6 +117,12 @@ export const UsersTab = () => {
               <Typography variant="body2" color="text.secondary">
                 {Locale.label("serverAdmin.usersTab.lastLogin")}: {prettyDate(details.lastLogin)} &nbsp;•&nbsp; {Locale.label("serverAdmin.adminPage.regist")}: {prettyDate(details.registrationDate)}
               </Typography>
+              {details.mfaEnabled && (
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <StatusBadge tone="info">{Locale.label("serverAdmin.usersTab.mfaOn", "Two-factor on")}</StatusBadge>
+                  <Button size="small" color="error" onClick={handleResetMfa} data-testid="admin-user-reset-mfa">{Locale.label("serverAdmin.usersTab.resetMfa", "Reset 2FA")}</Button>
+                </Stack>
+              )}
               {details.churches.length === 0 ? (
                 <Typography variant="body2">{Locale.label("serverAdmin.usersTab.noChurches")}</Typography>
               ) : (
