@@ -12,6 +12,7 @@ interface EventDef { eventType: string; label: string; recordType: string; field
 interface Props {
   workflowId: string;
   canManage?: boolean;
+  onChanged?: () => void;
 }
 
 // Run-now only works where a "current set" exists to apply against (mirrors the API).
@@ -68,6 +69,7 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
     await ApiHelper.post("/workflowTriggers/" + t.id + "/" + (t.active ? "pauseAll" : "resumeAll"), [], "DoingApi");
     load();
     setExecutionsKey((k) => k + 1);
+    props.onChanged?.();
   };
 
   const runNow = async (e: React.MouseEvent, t: WorkflowTriggerInterface) => {
@@ -82,6 +84,7 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
       setRunMessage(Locale.label("tasks.eventTriggers.runNowFailed"));
     }
     setExecutionsKey((k) => k + 1);
+    props.onChanged?.();
   };
 
   const handleSaved = () => { setEditing(null); load(); };
