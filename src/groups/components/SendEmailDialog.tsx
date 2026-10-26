@@ -88,13 +88,15 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [requesting, setRequesting] = React.useState(false);
 
   const isGroupMode = !!props.groupId;
+  const mergeFields = isGroupMode ? [...MERGE_FIELDS, { key: "{{groupName}}", label: Locale.label("groups.sendEmailDialog.mergeFieldGroupName") }] : MERGE_FIELDS;
+  const resolveGroup = (text: string) => (isGroupMode ? text.replaceAll("{{groupName}}", props.groupName || "") : text);
 
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
     previewUrl: props.groupId ? "/emailTemplates/preview/" + props.groupId : null,
     sendUrl: "/emailTemplates/send",
     buildPayload: () => {
       if (!subject.trim() || !htmlContent.trim()) return null;
-      if (isGroupMode) return { groupId: props.groupId, subject, htmlContent };
+      if (isGroupMode) return { groupId: props.groupId, subject: resolveGroup(subject), htmlContent: resolveGroup(htmlContent) };
       return { personIds: [props.personId], subject, htmlContent };
     },
     fallbackError: Locale.label("groups.sendEmailDialog.fallbackError"),
@@ -107,7 +109,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
 
   const getPreviewHtml = () => {
     const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
-    let previewHtml = htmlContent;
+    let previewHtml = resolveGroup(htmlContent);
     previewHtml = previewHtml.replace(/\{\{firstName\}\}/g, "John");
     previewHtml = previewHtml.replace(/\{\{lastName\}\}/g, "Smith");
     previewHtml = previewHtml.replace(/\{\{displayName\}\}/g, "John Smith");
@@ -122,7 +124,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
 
   const getPreviewSubject = () => {
     const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
-    let previewSubject = subject;
+    let previewSubject = resolveGroup(subject);
     previewSubject = previewSubject.replace(/\{\{firstName\}\}/g, "John");
     previewSubject = previewSubject.replace(/\{\{lastName\}\}/g, "Smith");
     previewSubject = previewSubject.replace(/\{\{displayName\}\}/g, "John Smith");
@@ -320,7 +322,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
               {Locale.label("groups.sendEmailDialog.subjectMergeFieldHint")}
             </Typography>
             <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-              {MERGE_FIELDS.map(f => (
+              {mergeFields.map(f => (
                 <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => setSubject(prev => prev + f.key)} sx={{ cursor: "pointer" }} />
               ))}
             </Stack>
@@ -340,7 +342,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
               {Locale.label("groups.sendEmailDialog.bodyMergeFieldHint")}
             </Typography>
             <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-              {MERGE_FIELDS.map(f => (
+              {mergeFields.map(f => (
                 <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => {
                   setHtmlContent(prev => appendMergeFieldToHtml(prev, f.key));
                   setBodyEditorKey(k => k + 1);

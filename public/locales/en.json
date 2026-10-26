@@ -1618,6 +1618,7 @@
       "mergeFieldDisplayName": "Display Name",
       "mergeFieldEmail": "Email",
       "mergeFieldFirstName": "First Name",
+      "mergeFieldGroupName": "Group Name",
       "mergeFieldLastName": "Last Name",
       "noEmailNotice": "{count} members have no email address on file and will be skipped.",
       "noEmailNoticeSingular": "{count} member has no email address on file and will be skipped.",
