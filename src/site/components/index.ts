@@ -13,6 +13,7 @@ export { AppearanceEdit } from "./AppearanceEdit";
 export { AddPageModal } from "./AddPageModal";
 export { BlogPostEdit } from "./BlogPostEdit";
 export { RedirectsEdit } from "./RedirectsEdit";
+export { BlogFooterEdit } from "./BlogFooterEdit";
 export { GenerateSiteModal } from "./GenerateSiteModal";
 export { AiRewriteDialog } from "./AiRewriteDialog";
 export { BlockEdit } from "./BlockEdit";

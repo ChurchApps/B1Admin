@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Box, Link as MuiLink, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
-import { BlogPostEdit } from "./components";
+import { BlogFooterEdit, BlogPostEdit } from "./components";
 import { clearSiteCache } from "./siteCache";
 import { HeaderPrimaryButton, PageContainer, PageHeader, ResultsBar, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { ConfirmDialog } from "../components/ui/ConfirmDialog";
@@ -109,6 +109,7 @@ export const BlogPage = () => {
             )}
           </Stack>
         </Surface>
+        {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && <Box sx={{ mt: 3 }}><BlogFooterEdit /></Box>}
       </PageContainer>
     </>
   );
