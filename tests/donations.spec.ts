@@ -6,6 +6,7 @@ import { login } from "./helpers/auth";
 import { navigateToDonations, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
+import { mockChurchLogo } from "./helpers/print-logo";
 
 // Test names: ZACCHAEUS/ZEBEDEE used throughout; covers Funds + Batches + Donation entry from donation-report.md/manual-input.md (steps 3-27).
 
@@ -875,6 +876,50 @@ test.describe("Donation batch print", () => {
     await expect(documents.last()).toContainText("March 30, 2025 Batch");
     await expect(documents.first()).toContainText(/Batch Total\s*\$\s*1,900\.00/);
     await expect(page.getByText("April 6, 2025 Batch")).toHaveCount(0);
+  });
+
+  // Issue #1385: with All selected, Print covers every batch on screen, not just the last 30 days.
+  test("batches Print with All selected includes the older batches", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto("/donations/batches");
+    await page.getByTestId("print-batches-button").click();
+    await expect(page).toHaveURL(/\/donations\/batches\/print-all/);
+    const params = new URL(page.url()).searchParams;
+    const start = params.get("start") || "";
+    const end = params.get("end") || "";
+    expect(start).not.toBe("");
+    expect(end).not.toBe("");
+    expect(start <= "2025-03-02").toBe(true);
+    expect(end >= "2025-03-02").toBe(true);
+    await expect(page.getByTestId("batch-print-document").filter({ hasText: "March 2, 2025 Batch" })).toHaveCount(1, { timeout: 15000 });
+  });
+
+  // Issue #1385: a selected year prints that calendar year only.
+  test("batches Print with a year selected prints that calendar year", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto("/donations/batches");
+    await page.getByTestId("year-pill-2025").click();
+    await page.getByTestId("print-batches-button").click();
+    await expect(page).toHaveURL(/start=2025-01-01&end=2025-12-31/);
+    await expect(page.getByTestId("batch-print-document").filter({ hasText: "March 2, 2025 Batch" })).toHaveCount(1, { timeout: 15000 });
+
+    await page.goto("/donations/batches");
+    await page.getByTestId("year-pill-2026").click();
+    await page.getByTestId("print-batches-button").click();
+    await expect(page).toHaveURL(/start=2026-01-01&end=2026-12-31/);
+    await expect(page.getByTestId("batch-print-document").or(page.getByTestId("print-batches-empty")).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("March 2, 2025 Batch")).toHaveCount(0);
+  });
+
+  // Issue #1385: the printout carries the church letterhead.
+  test("batch printout shows the church logo above the church name", async ({ page }) => {
+    await mockChurchLogo(page);
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto("/donations/batches/print-all?start=2025-03-01&end=2025-03-31");
+    const doc = page.getByTestId("batch-print-document").first();
+    await expect(doc).toBeVisible({ timeout: 15000 });
+    await expect(doc.getByTestId("print-church-logo")).toBeVisible();
+    await expect(doc.getByTestId("batch-print-church")).toHaveText("Grace Community Church");
   });
 });
 
