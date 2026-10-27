@@ -1,4 +1,4 @@
-import { request, test as plainTest, type Page, type Route } from "@playwright/test";
+import { request, test as plainTest, type APIRequestContext, type Page, type Route } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -72,6 +72,17 @@ async function addSessionForAllGroups(page: Page, group: string, date: string) {
   const saved = page.waitForResponse((r) => r.url().includes("/attendance/sessions") && r.request().method() === "POST");
   await box.getByRole("button", { name: "Save", exact: true }).click();
   expect((await saved).ok()).toBeTruthy();
+}
+
+// Nursery meets at 9:00 AM and 10:30 AM; its two same-day sessions must be told apart by service time.
+const API = process.env.API_BASE || "http://localhost:8084";
+const NURSERY = "GRP00000007";
+
+async function apiAuth(api: APIRequestContext) {
+  const res = await api.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await res.json();
+  const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
 }
 
 test.describe.serial("Group Management", () => {
@@ -330,6 +341,45 @@ test.describe.serial("Group Management", () => {
   });
 
   test.describe("Sessions", () => {
+    const nurserySessionIds: string[] = [];
+    let lateNurserySessionId = "";
+
+    test.beforeAll(async () => {
+      const api = await request.newContext();
+      const auth = await apiAuth(api);
+      // Clear sessions an earlier run left on this date so the list shows one row per service time.
+      const existing = await (await api.get(`${API}/attendance/sessions?groupId=${NURSERY}`, auth)).json();
+      for (const s of existing || []) if (String(s.sessionDate).startsWith("2026-10-11")) await api.delete(`${API}/attendance/sessions/${s.id}`, auth);
+      const res = await api.post(`${API}/attendance/sessions`, {
+        ...auth,
+        data: [
+          { groupId: NURSERY, serviceTimeId: "SST00000001", sessionDate: "2026-10-11T09:00:00" },
+          { groupId: NURSERY, serviceTimeId: "SST00000002", sessionDate: "2026-10-11T10:30:00" }
+        ]
+      });
+      const sessions = await res.json();
+      sessions.forEach((s: any) => nurserySessionIds.push(s.id));
+      lateNurserySessionId = sessions[1].id;
+      await api.dispose();
+    });
+
+    test.afterAll(async () => {
+      const api = await request.newContext();
+      const auth = await apiAuth(api);
+      for (const id of nurserySessionIds) await api.delete(`${API}/attendance/sessions/${id}`, auth);
+      await api.dispose();
+    });
+
+    test("Sessions list names the service time of each same-day session", async () => {
+      await page.goto(`/groups/${NURSERY}?view=sessions`);
+      // The list opens on the newest year, and other tests leave later Nursery sessions behind.
+      await page.getByTestId("year-pill-2026").click({ timeout: 15000 });
+      const rows = page.getByRole("listitem").filter({ hasText: "10/11/2026" });
+      await expect(rows).toHaveCount(2, { timeout: 15000 });
+      await expect(rows.filter({ hasText: "9:00 AM Service" })).toHaveCount(1);
+      await expect(rows.filter({ hasText: "10:30 AM Service" })).toHaveCount(1);
+    });
+
     test("should cancel adding session to group", async () => {
       await openSeedGroup(page, SESSION_GROUP);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
@@ -508,6 +558,20 @@ test.describe.serial("Group Management", () => {
       await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
     });
 
+    test("roll sheet printed from a session shows that session's service time", async () => {
+      await page.goto(`/groups/${NURSERY}?view=sessions&sessionId=${lateNurserySessionId}`);
+      await page.evaluate(() => {
+        window.open = ((url: string) => { (window as any).__rosterUrl = url; return null; }) as any;
+      });
+      await page.getByTestId("session-print-roster-button").click();
+      const url: string = await page.evaluate(() => (window as any).__rosterUrl);
+      await page.goto(url.replace("&autoprint=1", ""));
+      await expect(page.locator("h1.roster-title")).toHaveText("Nursery (0-2)", { timeout: 15000 });
+      await expect(page.locator(".roster-meta")).toContainText("10:30 AM Service");
+      await page.goBack();
+      await expect(page.getByTestId("command-palette-open")).toBeVisible({ timeout: 15000 });
+    });
+
     test("prints a contact roster from the members tab", async () => {
       // The group record opens on the summary plate. The print button lives on the members tab.
       await openSeedMembers(page, SESSION_GROUP);
@@ -662,6 +726,15 @@ test.describe("Group service times (optional) field", () => {
     await assignedRow.locator('button:has(svg[data-testid="PersonRemoveIcon"])').click();
     await delResp;
     await expect(box.locator("table tbody tr").filter({ hasText: "9:00 AM Service" })).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("Add Service Time select shows one dropdown arrow", async ({ page }) => {
+    await page.goto("/groups/GRP00000007");
+    await editGroupButton(page).first().click();
+    const chooser = page.locator("#groupDetailsBox").locator(".MuiFormControl-root").filter({ has: page.locator('[data-cy="choose-service-time"]') });
+    await expect(chooser).toBeVisible({ timeout: 10000 });
+    await expect(chooser.locator(".MuiSelect-icon")).toHaveCount(1);
+    await expect(chooser.getByText("arrow_drop_down", { exact: true })).toHaveCount(0);
   });
 });
 
