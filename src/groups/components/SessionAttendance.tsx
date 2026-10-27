@@ -290,7 +290,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-          {canPrintRoster && <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id)} data-testid="session-print-roster-button" />}
+          {canPrintRoster && <AppIconButton label={Locale.label("groups.printRoster.print")} icon={<PrintIcon />} tone="card" onClick={() => openRoster("groupId=" + group.id + (session.serviceTimeId ? "&serviceTimeId=" + session.serviceTimeId : ""))} data-testid="session-print-roster-button" />}
           {session.serviceTimeId && (
             <>
               {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) && (

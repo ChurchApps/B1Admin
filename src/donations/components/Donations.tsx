@@ -9,6 +9,7 @@ import { CsvVerb } from "./GivingParts";
 import UserContext from "../../UserContext";
 import { BatchPrintDocument, getFundTotals } from "./BatchPrintDocument";
 import { loadPeopleNames } from "../loadPeopleNames";
+import { usePrintLogo } from "../../components/PrintChurchHeader";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -52,13 +53,14 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const [rates, setRates] = React.useState<Record<string, number>>({});
   const printRef = React.useRef<HTMLDivElement>(null);
   const [printing, setPrinting] = React.useState(false);
+  const printLogo = usePrintLogo(context?.userChurch?.church?.id);
   const onAfterPrint = React.useCallback(() => setPrinting(false), []);
   const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: batch?.name, onAfterPrint });
 
   // The printout is only mounted while printing so the page doesn't carry a hidden second copy of every row.
   React.useEffect(() => {
-    if (printing) handlePrint();
-  }, [printing, handlePrint]);
+    if (printing && printLogo.ready) handlePrint();
+  }, [printing, printLogo.ready, handlePrint]);
 
   // Memoize permission check to avoid repeated calls
   // The batch page passes canEdit so a closed batch hides the Edit links; elsewhere it follows Edit Donations.
@@ -210,12 +212,12 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     return (
       <Box sx={{ display: "none" }}>
         <Box ref={printRef} sx={{ p: 2 }} data-testid="batch-print">
-          <BatchPrintDocument churchName={context?.userChurch?.church?.name} batch={batch} donations={donations} fundDonations={fundDonations} funds={funds} currency={currency} rates={rates} />
+          <BatchPrintDocument churchName={context?.userChurch?.church?.name} logoUrl={printLogo.logoUrl} batch={batch} donations={donations} fundDonations={fundDonations} funds={funds} currency={currency} rates={rates} />
         </Box>
       </Box>
     );
   }, [
-    printing, donations, fundDonations, funds, batch, currency, rates, context
+    printing, donations, fundDonations, funds, batch, currency, rates, context, printLogo.logoUrl
   ]);
 
   React.useEffect(() => {

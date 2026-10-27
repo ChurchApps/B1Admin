@@ -114,7 +114,7 @@ export const WorkflowBoardPage = () => {
 
   const getSlice = () => {
     if (tab === "triggers" && board.data?.workflow?.workflowType === "assignmentConfirmation") return <Typography sx={{ p: 2 }}>{Locale.label("plans.confirmation.triggerHelp", "This workflow starts when new serving requests are issued from a published plan. Select it in the plan settings, then use Publish / Notify. Each assignment has a separate card; a reply closes only that request.")}</Typography>;
-    if (tab === "triggers") return <WorkflowTriggersManager workflowId={workflowId} canManage={canManage} />;
+    if (tab === "triggers") return <WorkflowTriggersManager workflowId={workflowId} canManage={canManage} onChanged={refetch} />;
     if (editWorkflow && canManage) {
       return (
         <Box sx={formWidthSx}>
