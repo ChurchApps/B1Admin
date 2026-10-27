@@ -8,7 +8,7 @@ import UserContext from "../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
 import { leadsGroup } from "../helpers";
 
-interface GroupServiceTimeRow { groupId?: string; serviceTimeId?: string; serviceTimeName?: string }
+interface GroupServiceTimeRow { groupId?: string; serviceTimeId?: string; serviceTime?: { id?: string; name?: string } }
 
 interface RosterSheet {
   group: GroupInterface;
@@ -53,7 +53,7 @@ const loadSheet = async (group: GroupInterface, serviceTimeId: string | null): P
   const match = (serviceTimeId && gsts.find((g) => g.serviceTimeId === serviceTimeId)) || gsts[0];
   return {
     group,
-    serviceTimeName: match?.serviceTimeName || "",
+    serviceTimeName: match?.serviceTime?.name || "",
     members: [...(members || [])].sort((a, b) => sortKey(a).localeCompare(sortKey(b)))
   };
 };
