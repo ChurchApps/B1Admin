@@ -452,8 +452,8 @@ __metadata:
   linkType: hard
 
 "@churchapps/helpers@npm:^2.12.0":
-  version: 2.12.0
-  resolution: "@churchapps/helpers@npm:2.12.0"
+  version: 2.13.0
+  resolution: "@churchapps/helpers@npm:2.13.0"
   dependencies:
     dayjs: "npm:^1.11.20"
   peerDependencies:
@@ -461,7 +461,7 @@ __metadata:
   peerDependenciesMeta:
     rrule:
       optional: true
-  checksum: 10c0/e62ff6c39e728f7ac98babda60f8b9e8775f973bc2a62dbc0c624e4ffa714b3786d44a3a6308386051f49e5f37da702e1bb5ee2016ef337a5a88148c5807836b
+  checksum: 10c0/32f08c482c4b2bd6fb2d57054b8d9a62028809a407bef68543ceea8d68c8059b1cbb3bb43e4b62fe7a8860a0d702ad236bc9cbc5ab4dac43ec3fc62eb83b781e
   languageName: node
   linkType: hard
 

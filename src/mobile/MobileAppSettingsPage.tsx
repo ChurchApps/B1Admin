@@ -11,6 +11,7 @@ import { HeaderPrimaryButton } from "../components/ui";
 
 const ICON_FOR_LINK_TYPE: Record<string, string> = {
   bible: "menu_book",
+  hymns: "music_note",
   votd: "format_quote",
   sermons: "play_circle",
   stream: "live_tv",
