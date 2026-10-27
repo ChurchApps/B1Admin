@@ -109,12 +109,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
           data-cy="choose-service-time"
           value={addServiceTimeId}
           onChange={handleChange}
-          endAdornment={
-            <>
-              <Icon>arrow_drop_down</Icon>
-              <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" size="medium" data-cy="add-service-time" onClick={handleAdd} />
-            </>
-          }>
+          endAdornment={<AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" size="medium" data-cy="add-service-time" onClick={handleAdd} sx={{ mr: 3 }} />}>
           {options}
         </Select>
       </FormControl>

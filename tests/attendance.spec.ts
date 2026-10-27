@@ -439,6 +439,47 @@ test.describe("Attendance Management", () => {
     });
   });
 
+  test.describe("Group Attendance without a service time", () => {
+    // Greeters Ministry has no service time; its sessions still belong in Group Attendance.
+    const GREETERS = "GRP00000025";
+    let sessionId = "";
+
+    test.beforeAll(async () => {
+      const api = await pwRequest.newContext();
+      const auth = await apiLogin(api);
+      const existing = await (await api.get(`${API}/attendance/sessions?groupId=${GREETERS}`, auth)).json();
+      for (const s of existing || []) if (String(s.sessionDate).startsWith("2026-10-11")) await api.delete(`${API}/attendance/sessions/${s.id}`, auth);
+      const res = await api.post(`${API}/attendance/sessions`, { ...auth, data: [{ groupId: GREETERS, sessionDate: "2026-10-11T09:30:00" }] });
+      sessionId = (await res.json())[0].id;
+      await api.post(`${API}/attendance/visitsessions/log`, { ...auth, data: { personId: "PER00000029", visitSessions: [{ sessionId }] } });
+      await api.dispose();
+    });
+
+    test.afterAll(async () => {
+      const api = await pwRequest.newContext();
+      const auth = await apiLogin(api);
+      if (sessionId) await api.delete(`${API}/attendance/sessions/${sessionId}`, auth);
+      await api.dispose();
+    });
+
+    test("Group Attendance includes a group with no service time", async ({ page }) => {
+      await page.goto("/attendance");
+      await page.getByTestId("attendance-verb-years").click();
+      // The tab loads the report and auto-runs its default week; fill the dates only after that so they stick.
+      const autoRun = page.waitForResponse((r) => r.url().includes("/reports/groupAttendance/run"));
+      await page.locator('button[role="tab"]').getByText("Group Attendance", { exact: true }).click();
+      await autoRun;
+      await page.locator('[name="startDate"]').fill("2026-10-11");
+      await page.locator('[name="endDate"]').fill("2026-10-11");
+      await expect(page.locator('[name="startDate"]')).toHaveValue("2026-10-11");
+      await expect(page.locator('[name="endDate"]')).toHaveValue("2026-10-11");
+      await page.locator("button").getByText("Run Report").click();
+      const reportsBox = page.locator('[id="reportsBox"]');
+      await expect(reportsBox.locator("td").getByText("Greeters Ministry", { exact: true })).toBeVisible({ timeout: 15000 });
+      await expect(reportsBox.locator("td").getByText("Olivia Davis", { exact: true })).toBeVisible();
+    });
+  });
+
   // KioskThemeEdit moved to /mobile/checkin.
   test.describe("Kiosk Theme", () => {
     test("should open kiosk theme settings", async ({ page }) => {
