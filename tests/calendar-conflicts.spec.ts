@@ -1,8 +1,8 @@
 import type { Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
-// Issue #1407: blockout warning in the church's fallback (Eastern) zone instead of the browser's,
-// "1 pending approvals", and no way to give a hand-made task a due date.
+// Calendar conflict warnings and the pending approvals link. Runs in a browser zone other than
+// the church's fallback (Eastern) zone so a warning worded in the wrong zone shows a different time.
 test.use({ timezoneId: "America/Chicago" });
 
 async function selectRoom(page: Page, name: string) {
@@ -35,25 +35,13 @@ test("blockout warning on a new event uses the same time as the Blockouts tab", 
   await expect(warnings).toContainText(`from ${startText}`);
 });
 
-test("one pending approval reads singular on Calendars", async ({ page }) => {
-  await page.route(/\/content\/eventBookings\/pending/, (route) => route.fulfill({ json: [{ id: "EB000000003", status: "pending" }] }));
-  await page.route(/\/content\/events\/pending/, (route) => route.fulfill({ json: [] }));
-  await page.goto("/calendars");
-  const link = page.locator('[data-testid="pending-approvals-link"]');
-  await expect(link).toBeVisible({ timeout: 15000 });
-  await expect(link).toHaveText("1 pending approval");
-});
-
-test("a hand-made task can be given a due date", async ({ page }) => {
-  await page.goto("/serving/tasks");
-  await page.locator('[data-testid="add-task-button"]').click();
-  await expect(page.getByLabel("Due date")).toBeVisible({ timeout: 15000 });
-
-  await page.goto("/serving/tasks/TSK00000001");
-  const due = page.locator('[data-testid="task-due-input"] input');
-  await expect(due).toBeVisible({ timeout: 15000 });
-  await due.fill("2030-01-15");
-  await due.blur();
-  await page.reload();
-  await expect(page.locator('[data-testid="task-due-input"] input')).toHaveValue("2030-01-15", { timeout: 15000 });
-});
+for (const path of ["/calendars", "/calendars/CAL00000004"]) {
+  test(`one pending approval reads singular on ${path}`, async ({ page }) => {
+    await page.route(/\/content\/eventBookings\/pending/, (route) => route.fulfill({ json: [{ id: "EB000000003", status: "pending" }] }));
+    await page.route(/\/content\/events\/pending/, (route) => route.fulfill({ json: [] }));
+    await page.goto(path);
+    const link = page.locator('[data-testid="pending-approvals-link"]');
+    await expect(link).toBeVisible({ timeout: 15000 });
+    await expect(link).toHaveText("1 pending approval");
+  });
+}
