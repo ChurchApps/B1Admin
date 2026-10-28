@@ -315,6 +315,7 @@
       "newEvent": "New Event",
       "noGroupsAdded": "No groups added yet",
       "pendingApprovals": "{count} pending approvals",
+      "pendingApprovalsSingular": "{count} pending approval",
       "print": "Print",
       "subtitle": "Manage calendar events and groups"
     },
@@ -6009,6 +6010,7 @@
       "associatePers": "Please associate this task with a person.",
       "associateW": "Associate with",
       "associateWithAria": "Associate with",
+      "dueDate": "Due date",
       "newAssign": "New Assignment",
       "saving": "Saving...",
       "taskNew": "New Task",
@@ -6075,6 +6077,7 @@
       "closeTask": "Close task",
       "closed": "Closed",
       "created": "Created",
+      "due": "Due",
       "editAssigned": "Edit Assigned",
       "editAssoc": "Edit Associated",
       "notFound": "Task not found",
