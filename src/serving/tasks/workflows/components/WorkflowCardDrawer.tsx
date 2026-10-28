@@ -3,11 +3,12 @@ import { Link as RouterLink } from "react-router-dom";
 import React, { useContext } from "react";
 import { ApiHelper, type ConversationInterface, Notes, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
-import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon, Phone as PhoneIcon, Email as EmailIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon, Phone as PhoneIcon, Email as EmailIcon, DeleteOutline as RemoveIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
 import { DateHelper, type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
 import { canEditCard } from "../permissions";
+import { useConfirmDelete } from "../../../../hooks/useConfirmDelete";
 
 // MUI Link's `component` path does not land data-testid on the anchor, so the profile href check cannot see it.
 const ProfileLink = React.forwardRef<HTMLAnchorElement, React.ComponentProps<typeof RouterLink>>((props, ref) => (
@@ -42,6 +43,7 @@ export const WorkflowCardDrawer = (props: Props) => {
   const editable = canEditCard(card);
   const isPersonCard = card.associatedWithType === "person" && !!card.associatedWithId;
   const [contact, setContact] = React.useState<{ mobilePhone?: string; email?: string }>({});
+  const { confirm, ConfirmDialogElement } = useConfirmDelete({ confirmLabel: Locale.label("tasks.workflowCard.remove"), "data-testid": "card-remove-confirm" });
 
   React.useEffect(() => {
     setContact({});
@@ -72,6 +74,13 @@ export const WorkflowCardDrawer = (props: Props) => {
 
   const complete = async (routeId?: string) => {
     await ApiHelper.post("/tasks/" + card.id + "/complete", routeId ? { routeId } : {}, "DoingApi");
+    props.onChanged();
+    props.onClose();
+  };
+
+  const remove = async () => {
+    if (!(await confirm(Locale.label("tasks.workflowCard.removeConfirm")))) return;
+    await ApiHelper.post("/tasks/" + card.id + "/remove", {}, "DoingApi");
     props.onChanged();
     props.onClose();
   };
@@ -167,6 +176,12 @@ export const WorkflowCardDrawer = (props: Props) => {
             </Box>
           )}
 
+          {editable && (
+            <Box>
+              <Button variant="text" color="error" size="small" startIcon={<RemoveIcon />} data-testid="card-remove-button" onClick={remove}>{Locale.label("tasks.workflowCard.remove")}</Button>
+            </Box>
+          )}
+
           <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
             <MenuItem onClick={() => snooze(1)} data-testid="snooze-1">{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
             <MenuItem onClick={() => snooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
@@ -191,6 +206,7 @@ export const WorkflowCardDrawer = (props: Props) => {
           <Notes context={context as UserContextInterface} conversationId={card.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
         </Stack>
       </Box>
+      {ConfirmDialogElement}
       {showPicker && <ContentPicker onClose={() => setShowPicker(false)} onSelect={reassign} />}
     </Drawer>
   );
