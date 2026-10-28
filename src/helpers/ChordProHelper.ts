@@ -24,39 +24,52 @@ export class ChordProHelper {
     Cb: 11
   };
 
-  // Array to convert semitone numbers back to note names (using sharps here)
+  // Arrays to convert semitone numbers back to note names
   static noteNames = [
     "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
   ];
+
+  static flatNoteNames = [
+    "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"
+  ];
+
+  // Key names as musicians usually write them, for key pickers
+  static keyNames = [
+    "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"
+  ];
+
+  // Keys whose signatures use flats (Db, Eb, F, Ab, Bb)
+  static usesFlats = (keyIndex: number) => [1, 3, 5, 8, 10].includes(((keyIndex % 12) + 12) % 12);
 
   static replaceChords = (line: string) => {
     const l = line.replaceAll("[", "<sup>").replaceAll("]", "</sup>");
     return l;
   };
 
-  static transposeChords = (line: string, halfSteps: number) => {
-    return line.replace(/\[[A-G][#b]?[^/\]]*(\/[A-G][#b]?)?\]/g, (chord) => "[" + this.transposeChord(chord.substring(1, chord.length - 1), halfSteps) + "]");
+  static transposeChords = (line: string, halfSteps: number, useFlats?: boolean) => {
+    return line.replace(/\[[A-G][#b]?[^/\]]*(\/[A-G][#b]?)?\]/g, (chord) => "[" + this.transposeChord(chord.substring(1, chord.length - 1), halfSteps, useFlats) + "]");
   };
 
-  static transposeChord = (chord: string, steps: number) => {
+  static transposeChord = (chord: string, steps: number, useFlats?: boolean) => {
     // Handle slash chords (e.g., "C/E")
     const parts = chord.split("/");
     const mainChord = parts[0];
     const bassPart = parts[1] || null;
 
     // Transpose the main chord.
-    let newChord = this.transposeSingle(mainChord, steps);
+    let newChord = this.transposeSingle(mainChord, steps, useFlats);
 
     // If there is a bass note (in a slash chord), transpose that as well.
     if (bassPart) {
-      newChord += "/" + this.transposeSingle(bassPart, steps);
+      newChord += "/" + this.transposeSingle(bassPart, steps, useFlats);
     }
 
     return newChord;
   };
 
   // Function to transpose a single note chord (like "C", "C#", "Cm", etc.)
-  static transposeSingle = (chordStr: string, steps: number) => {
+  // Without useFlats, a flat root stays flat and anything else is spelled with sharps.
+  static transposeSingle = (chordStr: string, steps: number, useFlats?: boolean) => {
     // Extract the root note (first letter plus optional '#' or 'b')
     let root, modifier;
     if (chordStr.length > 1 && (chordStr[1] === "#" || chordStr[1] === "b")) {
@@ -71,11 +84,13 @@ export class ChordProHelper {
     if (originalIndex === undefined) {
       throw new Error("Invalid chord: " + chordStr);
     }
+    if (steps % 12 === 0) return chordStr;
     let newIndex = (originalIndex + steps) % 12;
     if (newIndex < 0) {
       newIndex += 12;
     }
-    const newRoot = this.noteNames[newIndex];
+    const flats = useFlats ?? root[1] === "b";
+    const newRoot = (flats ? this.flatNoteNames : this.noteNames)[newIndex];
 
     return newRoot + modifier;
   };
@@ -87,7 +102,7 @@ export class ChordProHelper {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-  static formatLyrics = (lyrics: string, keyOffset: number) => {
+  static formatLyrics = (lyrics: string, keyOffset: number, useFlats?: boolean) => {
     const lines = lyrics.split("\n");
     const result: string[] = [];
     lines.forEach((line) => {
@@ -101,7 +116,7 @@ export class ChordProHelper {
           break;
         case "line":
           l = this.escapeHtml(l);
-          l = this.transposeChords(l, keyOffset);
+          l = this.transposeChords(l, keyOffset, useFlats);
           l = this.replaceChords(l);
           result.push('<div class="line">' + l + "</div>");
           break;

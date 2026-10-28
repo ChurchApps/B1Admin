@@ -283,7 +283,7 @@ export const SongsPage = memo(() => {
             {!songs.isLoading && (songs.data?.count ?? 0) > 0 && (
               <ResultsBar>
                 <Typography variant="body2" color="text.secondary">
-                  {Locale.label("songs.songsPage.resultCount", "{count} songs").replace("{count}", (songs.data?.count ?? 0).toString())}
+                  {(songs.data?.count === 1 ? Locale.label("songs.songsPage.resultCountOne", "{count} song") : Locale.label("songs.songsPage.resultCount", "{count} songs")).replace("{count}", (songs.data?.count ?? 0).toString())}
                 </Typography>
                 {searchFilter.trim() && (
                   <Button size="small" onClick={() => { setSearchFilter(""); setPage(0); }}>{Locale.label("common.clear", "Clear")}</Button>

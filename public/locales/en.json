@@ -5695,7 +5695,7 @@
   "songs": {
     "addSong": "Add Song",
     "arrangement": {
-      "chordProHint": "Chord Pro Hint",
+      "chordProHint": "ChordPro format: [G] inline chords, [Verse 1] section headers.",
       "deleteConfirm": "Are you sure you want to delete this arrangement?",
       "edit": "Edit Arrangement",
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
@@ -5825,6 +5825,7 @@
       "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "deselectAll": "Deselect all",
       "resultCount": "{count} songs",
+      "resultCountOne": "{count} song",
       "searchSongs": "Search Songs",
       "selectAll": "Select all",
       "songs": "Songs",

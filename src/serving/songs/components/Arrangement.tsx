@@ -9,6 +9,7 @@ import { ArrangementEdit } from "./ArrangementEdit";
 
 interface Props {
   arrangement: ArrangementInterface;
+  songDetailId?: string; // the song's, for arrangements saved without their own
   reload: () => void;
 }
 
@@ -27,7 +28,7 @@ export const Arrangement = memo((props: Props) => {
 
   const getKeyOptions = useCallback(
     (originalIndex: number) =>
-      ChordProHelper.noteNames.map((note, index) => (
+      ChordProHelper.keyNames.map((note, index) => (
         <MenuItem key={note} value={(index - originalIndex).toString()}>{note}</MenuItem>
       )),
     []
@@ -50,16 +51,20 @@ export const Arrangement = memo((props: Props) => {
     );
   }, [songDetail?.keySignature, keyOffset, handleKeyChange, getKeyOptions]);
 
+  const songDetailId = props.arrangement?.songDetailId || props.songDetailId;
+  const originalIndex = songDetail?.keySignature ? ChordProHelper.noteMap[songDetail.keySignature] : undefined;
+  const useFlats = originalIndex === undefined ? undefined : ChordProHelper.usesFlats(originalIndex + keyOffset);
+
   const loadData = useCallback(async () => {
-    if (props.arrangement?.songDetailId) {
-      const sd: SongDetailInterface = await ApiHelper.get("/songDetails/" + props.arrangement.songDetailId, "ContentApi");
+    if (songDetailId) {
+      const sd: SongDetailInterface = await ApiHelper.get("/songDetails/" + songDetailId, "ContentApi");
       setSongDetail(sd);
       setCanImportLyrics(!props.arrangement?.lyrics && !!sd?.praiseChartsId);
     } else {
       setSongDetail(null);
       setCanImportLyrics(false);
     }
-  }, [props.arrangement]);
+  }, [props.arrangement, songDetailId]);
 
   useEffect(() => {
     loadData();
@@ -160,11 +165,13 @@ export const Arrangement = memo((props: Props) => {
               whiteSpace: "pre-wrap"
             }
           }}
-          dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(props.arrangement?.lyrics || Locale.label("songs.arrangement.enterLyrics") || "Enter lyrics...", keyOffset) }}
+          dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(props.arrangement?.lyrics || Locale.label("songs.arrangement.enterLyrics") || "Enter lyrics...", keyOffset, useFlats) }}
         />
       </Box>
     ),
-    [props.arrangement, canEdit, canImportLyrics, importLyrics, formatSeconds, keyOffset, getKeySelect]
+    [
+      props.arrangement, canEdit, canImportLyrics, importLyrics, formatSeconds, keyOffset, useFlats, getKeySelect
+    ]
   );
 
   return (
