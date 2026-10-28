@@ -9,6 +9,7 @@ import { GalleryModal } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
+import { HYMNS_ENABLED } from "../../hymns/enabled";
 
 interface PageInterface {
   id?: string;
@@ -184,7 +185,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                     <InputLabel id="type">{Locale.label("settings.appEdit.tabType")}</InputLabel>
                     <Select {...field} labelId="type" label={Locale.label("settings.appEdit.tabType")}>
                       <MenuItem value="bible">{Locale.label("settings.appEdit.bible")}</MenuItem>
-                      <MenuItem value="hymns">Hymns</MenuItem>
+                      {HYMNS_ENABLED && <MenuItem value="hymns">Hymns</MenuItem>}
                       <MenuItem value="stream">{Locale.label("settings.appEdit.liveStream")}</MenuItem>
                       <MenuItem value="votd">{Locale.label("settings.appEdit.verseOfDay")}</MenuItem>
                       <MenuItem value="sermons">{Locale.label("settings.appEdit.sermons")}</MenuItem>
