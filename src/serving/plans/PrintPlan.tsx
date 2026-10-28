@@ -272,6 +272,16 @@ export const PrintPlan = () => {
     return texts.join(" / ");
   };
 
+  // Empty columns and the empty team box are left off the printout (ChurchAppsSupport#1409).
+  const hasLengths = React.useMemo(() => {
+    const walk = (items: PlanItemInterface[]): boolean =>
+      items.some((pi) => (pi.itemType !== "header" && (pi.seconds || 0) > 0) || (pi.children ? walk(pi.children) : false));
+    return walk(planItems);
+  }, [planItems]);
+  const showClock = serviceTimes.length > 0 || hasLengths;
+  const timeColumnCount = serviceTimes.length || (showClock ? 1 : 0);
+  const hasAssignments = assignments.some((a) => a.personId && positions.some((p) => p.id === a.positionId));
+
   // Per-column accumulators are mutated as the recursive renderer walks the tree.
   // Single-column fallback uses index 0; multi-column uses one entry per service time.
   const renderRows = () => {
@@ -285,7 +295,7 @@ export const PrintPlan = () => {
         if (pi.itemType !== "header") {
           const timeCells: JSX.Element[] = [];
           if (serviceTimes.length === 0) {
-            timeCells.push(<td key="t0" style={Styles.tableCell}>{formatTime(accumulators[0])}</td>);
+            if (showClock) timeCells.push(<td key="t0" style={Styles.tableCell}>{formatTime(accumulators[0])}</td>);
             accumulators[0] += pi.seconds || 0;
           } else {
             serviceTimes.forEach((st, i) => {
@@ -307,13 +317,13 @@ export const PrintPlan = () => {
                   <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{getPositionText(pi)}</span>
                 )}
               </td>
-              <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
+              {hasLengths && <td style={{ ...Styles.tableCell, textAlign: "right" }}>{pi.seconds ? formatTime(pi.seconds) : ""}</td>}
             </tr>
           );
         } else {
           // Section headers span every column so the printed sheet shows where each part of
           // the service begins and who leads it (ChurchAppsSupport#1086).
-          const columnCount = (serviceTimes.length || 1) + 2;
+          const columnCount = timeColumnCount + 1 + (hasLengths ? 1 : 0);
           const positionText = getPositionText(pi);
           rows.push(
             <tr key={pi.id} className="printSectionRow">
@@ -337,7 +347,7 @@ export const PrintPlan = () => {
   const renderHeaderRow = () => {
     const cells: JSX.Element[] = [];
     if (serviceTimes.length === 0) {
-      cells.push(<td key="t0" style={{ textAlign: "left", paddingLeft: 10 }}>{Locale.label("plans.printPlan.time")}</td>);
+      if (showClock) cells.push(<td key="t0" style={{ textAlign: "left", paddingLeft: 10 }}>{Locale.label("plans.printPlan.time")}</td>);
     } else {
       serviceTimes.forEach((st) => {
         const label = formatClockTime(st.startTime, 0) || st.displayName || Locale.label("plans.printPlan.time");
@@ -345,7 +355,7 @@ export const PrintPlan = () => {
       });
     }
     cells.push(<td key="item"></td>);
-    cells.push(<td key="length" style={{ textAlign: "right", paddingRight: 10 }}>{Locale.label("plans.printPlan.length")}</td>);
+    if (hasLengths) cells.push(<td key="length" style={{ textAlign: "right", paddingRight: 10 }}>{Locale.label("plans.printPlan.length")}</td>);
     return <tr style={Styles.inverseHeader}>{cells}</tr>;
   };
 
@@ -391,10 +401,12 @@ export const PrintPlan = () => {
       </Grid>
       <div style={Styles.divider}>&nbsp;</div>
       <Grid container>
-        <Grid size={{ xs: 4 }} style={{ padding: 5 }}>
-          <div style={{ border: "2px solid #000", textAlign: "left", padding: 10 }}>{getPositionCategories()}</div>
-        </Grid>
-        <Grid size={{ xs: 8 }} style={{ padding: 5 }}>
+        {hasAssignments && (
+          <Grid size={{ xs: 4 }} style={{ padding: 5 }}>
+            <div className="printTeamBox" style={{ border: "2px solid #000", textAlign: "left", padding: 10 }}>{getPositionCategories()}</div>
+          </Grid>
+        )}
+        <Grid size={{ xs: hasAssignments ? 8 : 12 }} style={{ padding: 5 }} className="printOrderColumn">
           <div style={{ border: "5px solid #000" }}>
             <table style={{ width: "100%", margin: 0 }} cellSpacing={0}>
               <tbody>

@@ -296,3 +296,94 @@ test.describe("Serving - Print Plan sections and positions", () => {
     await expect(sections.nth(0)).not.toContainText("Donald Clark");
   });
 });
+
+// Issue #1409: a plan with no lengths and no one assigned prints without "0:00" filler,
+// without empty Time/Length columns, and without the empty serving team box, so the
+// order of service takes the full page width.
+test.describe("Serving - Print Plan hides empty times and team box", () => {
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let planId: string;
+  let fullPlanId: string;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    jwt = await apiLogin(ctx);
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+
+    const planRes = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [
+        { name: "Print Empty Columns Repro", serviceDate: "2030-06-02" },
+        { name: "Print Full Columns Repro", serviceDate: "2030-06-09" }
+      ]
+    });
+    expect(planRes.ok()).toBeTruthy();
+    [planId, fullPlanId] = (await planRes.json()).map((p: any) => p.id);
+
+    // An unfilled position must not keep the team box on the page.
+    const posRes = await ctx.post(`${API}/doing/positions`, {
+      ...auth,
+      data: [
+        { planId, categoryName: "Band", name: "Drummer", count: 1 },
+        { planId: fullPlanId, categoryName: "Band", name: "Keys", count: 1 }
+      ]
+    });
+    expect(posRes.ok()).toBeTruthy();
+    const fullPositionId = (await posRes.json())[1].id;
+    const assignRes = await ctx.post(`${API}/doing/assignments`, {
+      ...auth,
+      data: [{ positionId: fullPositionId, personId: "PER00000080", status: "Accepted" }]
+    });
+    expect(assignRes.ok()).toBeTruthy();
+
+    const itemsRes = await ctx.post(`${API}/doing/planItems`, {
+      ...auth,
+      data: [
+        { planId, sort: 1, itemType: "item", label: "Call to Worship", description: "Pastor Clark" },
+        { planId, sort: 2, itemType: "item", label: "Benediction" },
+        { planId: fullPlanId, sort: 1, itemType: "item", label: "Gathering Song", seconds: 300 },
+        { planId: fullPlanId, sort: 2, itemType: "item", label: "Silent Prayer" }
+      ]
+    });
+    expect(itemsRes.ok()).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+    if (planId) await ctx.delete(`${API}/doing/plans/${planId}`, auth);
+    if (fullPlanId) await ctx.delete(`${API}/doing/plans/${fullPlanId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("omits 0:00 times, empty columns, and the empty team box", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByText("Call to Worship")).toBeVisible({ timeout: 15000 });
+
+    await expect(page.getByText("0:00")).toHaveCount(0);
+    const header = page.locator("table tbody tr").first();
+    await expect(header).not.toContainText("Time");
+    await expect(header).not.toContainText("Length");
+    await expect(page.getByText("Drummer")).toHaveCount(0);
+
+    // The order of service fills the page width once the team box is gone.
+    const tableBox = await page.locator("table").boundingBox();
+    const viewport = page.viewportSize();
+    expect(tableBox && viewport && tableBox.width / viewport.width).toBeGreaterThan(0.85);
+  });
+
+  test("keeps lengths and the team box when the plan has them, blanking only empty lengths", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${fullPlanId}`);
+    await expect(page.getByText("Gathering Song")).toBeVisible({ timeout: 15000 });
+
+    const header = page.locator("table tbody tr").first();
+    await expect(header).toContainText("Time");
+    await expect(header).toContainText("Length");
+    await expect(page.getByText("Keys:")).toBeVisible();
+    await expect(page.getByText("Donald Clark")).toBeVisible();
+
+    const silentRow = page.locator("table tbody tr", { hasText: "Silent Prayer" });
+    await expect(silentRow.locator("td").last()).toHaveText("");
+    await expect(page.locator("table tbody tr", { hasText: "Gathering Song" }).locator("td").last()).toHaveText("5:00");
+  });
+});
