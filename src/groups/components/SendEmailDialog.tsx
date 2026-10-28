@@ -152,7 +152,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setLoadingTemplates(true);
     ApiHelper.get("/emailTemplates", "MessagingApi")
-      .then((data: any) => setTemplates(data || []))
+      .then((data: EmailTemplateOption[]) => setTemplates((data || []).filter(t => t.category !== "Text")))
       .catch(() => { /* templates load failure is handled by empty list */ })
       .finally(() => setLoadingTemplates(false));
   }, []);
