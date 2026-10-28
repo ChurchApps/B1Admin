@@ -6,7 +6,7 @@ import { type WorkflowInterface } from "@churchapps/helpers";
 import { ContentPicker } from "../../components/ContentPicker";
 import { ACTION_TYPES, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface } from "../types";
 
-interface EmailTemplateInterface { id?: string; name?: string }
+interface EmailTemplateInterface { id?: string; name?: string; category?: string }
 interface EmailSendStatus { approved?: boolean; paused?: boolean }
 
 interface Props {
@@ -31,7 +31,7 @@ export const WorkflowStepActions = (props: Props) => {
 
   React.useEffect(() => { load(); }, [load]);
   React.useEffect(() => {
-    ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates(d || [])).catch(() => setTemplates([]));
+    ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates((d || []).filter(t => t.category !== "Text"))).catch(() => setTemplates([]));
     ApiHelper.get("/texting/providers", "MessagingApi").then((d: any[]) => setTextingProviders(d || [])).catch(() => setTextingProviders([]));
     ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi").then((d: EmailSendStatus) => setEmailStatus(d || null)).catch(() => setEmailStatus(null));
   }, []);

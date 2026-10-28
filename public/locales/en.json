@@ -1652,7 +1652,9 @@
       "fallbackError": "Failed to send text message.",
       "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
       "insufficientCreditsLink": "ministrystuff.org",
+      "loadTemplate": "Load Template (optional)",
       "loadingRecipients": "Loading recipients...",
+      "manageTemplates": "Manage Templates",
       "mergeFieldHint": "Click to insert a placeholder. It is replaced with each recipient's details when the text is sent.",
       "messageLabel": "Message",
       "noPhoneNotice": "{count} members have no phone number on file and will be skipped.",
@@ -4083,6 +4085,7 @@
       "subjectPlaceholder": "e.g. Hello {{firstName}}, welcome to {{churchName}}",
       "subjectRequired": "Subject is required.",
       "templateName": "Template Name",
+      "textBody": "Text Message",
       "templateNamePlaceholder": "e.g. Welcome Email, Event Reminder",
       "yourChurch": "Your Church"
     },

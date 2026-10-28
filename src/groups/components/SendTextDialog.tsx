@@ -1,6 +1,7 @@
 import React from "react";
-import { TextField, Typography, Alert, Chip, Stack } from "@mui/material";
-import { Locale } from "@churchapps/apphelper";
+import { TextField, Typography, Alert, Chip, Stack, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
+import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
 
@@ -36,6 +37,12 @@ interface Props {
   onClose: () => void;
 }
 
+interface TextTemplateOption {
+  id: string;
+  name: string;
+  category?: string;
+}
+
 interface PreviewData {
   totalMembers: number;
   eligibleCount: number;
@@ -55,6 +62,8 @@ interface SendResult {
 export const SendTextDialog: React.FC<Props> = (props) => {
   const [message, setMessage] = React.useState("");
   const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
+  const [templates, setTemplates] = React.useState<TextTemplateOption[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = React.useState("");
   const range = props.range;
   const isGroupSend = !!props.groupId && !range;
   const mergeFields = isGroupSend ? [...MERGE_FIELD_KEYS, GROUP_NAME_FIELD] : MERGE_FIELD_KEYS;
@@ -72,6 +81,24 @@ export const SendTextDialog: React.FC<Props> = (props) => {
       inputRef.current?.focus();
       inputRef.current?.setSelectionRange(caret, caret);
     });
+  };
+
+  // Text templates are rows in the email templates list with the "Text" category.
+  React.useEffect(() => {
+    ApiHelper.get("/emailTemplates", "MessagingApi")
+      .then((data: TextTemplateOption[]) => setTemplates((data || []).filter(t => t.category === "Text")))
+      .catch(() => setTemplates([]));
+  }, []);
+
+  const handleTemplateSelect = async (templateId: string) => {
+    setSelectedTemplateId(templateId);
+    if (!templateId) return;
+    try {
+      const full = await ApiHelper.get("/emailTemplates/" + templateId, "MessagingApi");
+      setMessage((full?.htmlContent || "").slice(0, MAX_LENGTH));
+    } catch {
+      setSelectedTemplateId("");
+    }
   };
 
   const isGroupMode = !!props.groupId || !!range;
@@ -166,6 +193,26 @@ export const SendTextDialog: React.FC<Props> = (props) => {
             ? <>{Locale.label("groups.sendTextDialog.insufficientCredits")} <a href="https://ministrystuff.org" target="_blank" rel="noopener noreferrer">{Locale.label("groups.sendTextDialog.insufficientCreditsLink")}</a></>
             : error}
         </Alert>
+      )}
+      {(templates.length > 0 || UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) && (
+        <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
+          {templates.length > 0 && (
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel id="text-template-label">{Locale.label("groups.sendTextDialog.loadTemplate")}</InputLabel>
+              <Select
+                labelId="text-template-label"
+                label={Locale.label("groups.sendTextDialog.loadTemplate")}
+                value={selectedTemplateId}
+                onChange={(e: SelectChangeEvent) => handleTemplateSelect(e.target.value)}
+                disabled={sending}
+              >
+                <MenuItem value=""><em>{Locale.label("groups.sendEmailDialog.none")}</em></MenuItem>
+                {templates.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+              </Select>
+            </FormControl>
+          )}
+          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && <a href="/settings/email-templates" style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendTextDialog.manageTemplates")}</a>}
+        </Box>
       )}
       <TextField
         fullWidth
