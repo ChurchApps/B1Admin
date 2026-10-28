@@ -1,5 +1,5 @@
 import React, { useContext, useCallback } from "react";
-import { Box, Stack, Typography, Button } from "@mui/material";
+import { Box, Stack, Typography, Button, TextField } from "@mui/material";
 import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading } from "@churchapps/apphelper";
 import { type TaskInterface, type UserContextInterface } from "@churchapps/helpers";
 import { Link as RouterLink, useParams } from "react-router-dom";
@@ -68,6 +68,14 @@ export const TaskPage = () => {
     [task.data, updateTaskMutation]
   );
 
+  const handleDueDateChange = useCallback(
+    (val: string) => {
+      if (!task.data) return;
+      updateTaskMutation.mutate({ ...task.data, dueDate: (val ? new Date(val + "T12:00") : null) as Date });
+    },
+    [task.data, updateTaskMutation]
+  );
+
   const handleModalClose = useCallback(() => {
     setModalField("");
   }, []);
@@ -130,6 +138,12 @@ export const TaskPage = () => {
         <dd data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</dd>
         <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
         <dd data-testid="task-assigned-label">{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>
+        <dt>{Locale.label("tasks.taskPage.due")}</dt>
+        <dd>
+          {task.data.assignmentId
+            ? (DateHelper.formatHtml5Date(task.data.dueDate) || "-")
+            : <TextField type="date" size="small" variant="standard" defaultValue={DateHelper.formatHtml5Date(task.data.dueDate)} key={String(task.data.dueDate || "")} onBlur={(e) => { if (e.target.value !== DateHelper.formatHtml5Date(task.data.dueDate)) handleDueDateChange(e.target.value); }} inputProps={{ "aria-label": Locale.label("tasks.taskPage.due") }} data-testid="task-due-input" />}
+        </dd>
       </Box>
       <Box sx={{ mt: 3 }}>
         <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />

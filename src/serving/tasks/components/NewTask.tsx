@@ -1,7 +1,7 @@
 import { Grid, TextField, Typography, Stack, Button, InputAdornment } from "@mui/material";
 import { Surface } from "../../../components/ui";
 import React from "react";
-import { ApiHelper, ArrayHelper, type ConversationInterface, ErrorMessages, Locale, type MessageInterface, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, type ConversationInterface, DateHelper, ErrorMessages, Locale, type MessageInterface, UserHelper } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
 import { ContentPicker } from "./ContentPicker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -109,6 +109,9 @@ export const NewTask = (props: Props) => {
         t.title = val;
         setTask(t);
         break;
+      case "dueDate":
+        setTask({ ...task, dueDate: val ? new Date(val + "T12:00") : undefined });
+        break;
       case "note":
         const m = { ...message };
         m.content = val;
@@ -204,6 +207,19 @@ export const NewTask = (props: Props) => {
               placeholder={Locale.label("placeholders.task.title")}
               data-testid="task-title-input"
               aria-label={Locale.label("tasks.newTask.taskTitleAria")}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: props.compact ? 6 : 4 }}>
+            <TextField
+              fullWidth
+              type="date"
+              label={Locale.label("tasks.newTask.dueDate")}
+              value={DateHelper.formatHtml5Date(task.dueDate)}
+              name="dueDate"
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              data-testid="task-due-date-input"
               variant="outlined"
             />
           </Grid>

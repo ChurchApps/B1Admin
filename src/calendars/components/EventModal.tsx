@@ -139,7 +139,8 @@ export function EventModal(props: Props) {
         startTime: customWindow && windowStart ? new Date(windowStart) : undefined,
         endTime: customWindow && windowEnd ? new Date(windowEnd) : undefined,
         roomIds,
-        resources: resourceIds.map((id) => ({ resourceId: id, quantity: 1 }))
+        resources: resourceIds.map((id) => ({ resourceId: id, quantity: 1 })),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       }, "ContentApi").then(setConflicts).catch(() => setConflicts([]));
     }, 400);
     return () => clearTimeout(timeout);

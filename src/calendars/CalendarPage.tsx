@@ -95,7 +95,7 @@ export const CalendarPage = () => {
       {pendingApprovals > 0 && (
         <Box sx={{ mt: 1 }}>
           <TextAction small to="/calendars/approvals" component={Link} data-testid="pending-approvals-link">
-            {Locale.label("calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
+            {Locale.label(pendingApprovals === 1 ? "calendars.calendarPage.pendingApprovalsSingular" : "calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
           </TextAction>
         </Box>
       )}

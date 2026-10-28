@@ -45,7 +45,7 @@ export const CalendarsPage = () => {
         <>
           {pendingApprovals > 0 && (
             <HeaderTextButton component={Link} to="/calendars/approvals" data-testid="pending-approvals-link">
-              {Locale.label("calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
+              {Locale.label(pendingApprovals === 1 ? "calendars.calendarPage.pendingApprovalsSingular" : "calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
             </HeaderTextButton>
           )}
           {canEdit && (
