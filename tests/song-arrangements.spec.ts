@@ -1,8 +1,10 @@
 import { request as pwRequest, type APIRequestContext } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
-// Issue #1406: song page and plan song picker problems.
-// Demo song "It Is Well With My Soul" (SON00000010) is in Eb and has two
+// Song arrangements: flat keys and chords keep their flat names, a new
+// arrangement gets the Key picker, the ChordPro hint is real text, the songs
+// list count is singular for one result, and plan song picker chips name each
+// arrangement. Demo song "It Is Well With My Soul" (SON00000010) is in Eb and has two
 // arrangements, Traditional (Eb key) and Modern (C key).
 const API = process.env.API_BASE || "http://localhost:8084";
 const SONG_ID = "SON00000010";
@@ -17,7 +19,7 @@ async function apiLogin(ctx: APIRequestContext): Promise<string> {
   return uc.jwt as string;
 }
 
-test.describe("Issue 1406 - songs", () => {
+test.describe("Song arrangements - flat keys and picker labels", () => {
   test.describe.configure({ mode: "default", retries: 0 });
   let ctx: APIRequestContext;
   let auth: { headers: { Authorization: string } };
@@ -79,6 +81,7 @@ test.describe("Issue 1406 - songs", () => {
     await page.getByLabel("Search Songs").fill("It Is Well");
     await expect(page.getByText(/^1 songs?$/)).toBeVisible({ timeout: 20000 });
     await expect(page.getByText("1 song", { exact: true })).toBeVisible();
+    await expect(page.getByText("1 songs", { exact: true })).toHaveCount(0);
   });
 
   test("plan song picker names each arrangement", async ({ page }) => {
