@@ -110,6 +110,7 @@ export interface SongDetailInterface {
   arrangementKeyId?: string;
   shortDescription?: string;
   arrangementKeySignature?: string;
+  arrangementName?: string;
 }
 
 export interface SongDetailLinkInterface {

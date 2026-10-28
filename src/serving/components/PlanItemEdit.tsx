@@ -14,6 +14,8 @@ interface Props {
 }
 
 const keyLabel = (shortDescription?: string, keySignature?: string) => (keySignature ? `${shortDescription || ""} (${keySignature})` : shortDescription || "");
+// Name the arrangement too, so two arrangements with a "Default" key can be told apart
+const songKeyLabel = (k: SongDetailInterface) => [k.arrangementName, keyLabel(k.shortDescription, k.arrangementKeySignature)].filter(Boolean).join(" · ");
 
 /** Per-service-time settings for one plan item: hide it, and/or show a different position for it. */
 interface TimeSettings {
@@ -214,7 +216,7 @@ export const PlanItemEdit = (props: Props) => {
       ...planItem,
       relatedId: song.arrangementKeyId,
       label: song.title,
-      description: `${song.artist} - ${keyLabel(song.shortDescription, song.arrangementKeySignature)}`,
+      description: `${song.artist} - ${songKeyLabel(song)}`,
       seconds: song.seconds,
       thumbnailUrl: song.thumbnail
     };
@@ -256,7 +258,7 @@ export const PlanItemEdit = (props: Props) => {
                 {keys.map((k: any) => (
                   <Chip
                     key={k.arrangementKeyId}
-                    label={keyLabel(k.shortDescription, k.arrangementKeySignature)}
+                    label={songKeyLabel(k)}
                     size="small"
                     clickable
                     onClick={() => selectSong(k)}

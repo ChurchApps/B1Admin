@@ -109,9 +109,12 @@ export const SongDialog: React.FC<Props> = (props) => {
   }, [arrangementKey, songDetail]);
 
   const getKeyOptions = (originalIndex: number) =>
-    ChordProHelper.noteNames.map((note, index) => (
+    ChordProHelper.keyNames.map((note, index) => (
       <MenuItem key={note} value={(index - originalIndex).toString()}>{note}</MenuItem>
     ));
+
+  const originalKeyIndex = songDetail?.keySignature ? ChordProHelper.noteMap[songDetail.keySignature] : undefined;
+  const useFlats = originalKeyIndex === undefined ? undefined : ChordProHelper.usesFlats(originalKeyIndex + keyOffset);
 
   const handleKeyChange = (e: SelectChangeEvent) => { setKeyOffset(parseInt(e.target.value)); };
 
@@ -149,7 +152,7 @@ export const SongDialog: React.FC<Props> = (props) => {
               <>
                 <h3>{Locale.label("plans.songDialog.lyrics")}</h3>
                 {getKeySelect()}
-                <div className="chordPro" dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(arrangement?.lyrics, keyOffset) }} />
+                <div className="chordPro" dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(arrangement?.lyrics, keyOffset, useFlats) }} />
               </>
             )}
           </Grid>

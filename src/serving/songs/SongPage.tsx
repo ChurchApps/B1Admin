@@ -94,6 +94,7 @@ export const SongPage = memo(() => {
     if (!song.data?.id) return;
     const a: ArrangementInterface = {
       songId: song.data.id,
+      songDetailId: song.data.songDetailId,
       name: "New Arrangement", // ponytail: default record name, a literal like sibling "(Default)" — not a Locale key (apphelper owns the catalog)
       lyrics: ""
     };
@@ -203,7 +204,7 @@ export const SongPage = memo(() => {
         />
       );
     }
-    return <Arrangement key={selectedArrangement.id} arrangement={selectedArrangement} reload={refetch} />;
+    return <Arrangement key={selectedArrangement.id} arrangement={selectedArrangement} songDetailId={songDetailId} reload={refetch} />;
   };
 
   return (

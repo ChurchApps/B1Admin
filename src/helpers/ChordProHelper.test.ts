@@ -61,3 +61,30 @@ describe("ChordProHelper.formatLyrics", () => {
     assert.equal(html, '<div class="line">&lt;script&gt;</div>');
   });
 });
+
+// Issue #1406: flat chords and keys were respelled as sharps.
+describe("ChordProHelper flat spelling", () => {
+  it("leaves chords untouched when not transposing", () => {
+    assert.equal(ChordProHelper.transposeChords("[Eb] [Ab] [Bb/D] [Gbmaj7]", 0), "[Eb] [Ab] [Bb/D] [Gbmaj7]");
+    assert.equal(ChordProHelper.formatLyrics("[Eb]When peace", 0), '<div class="line"><sup>Eb</sup>When peace</div>');
+  });
+
+  it("keeps flat chords flat when transposing", () => {
+    assert.equal(ChordProHelper.transposeChords("[Eb]", 5), "[Ab]");
+    assert.equal(ChordProHelper.transposeChords("[Ab/C]", 2), "[Bb/D]");
+  });
+
+  it("spells with flats when the target key is a flat key", () => {
+    assert.equal(ChordProHelper.transposeChords("[D] [A]", 1, true), "[Eb] [Bb]");
+    assert.equal(ChordProHelper.transposeChords("[Bb]", 1, false), "[B]");
+  });
+
+  it("lists keys the way musicians name them", () => {
+    assert.deepEqual(ChordProHelper.keyNames, [
+      "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"
+    ]);
+    assert.equal(ChordProHelper.usesFlats(ChordProHelper.noteMap.Eb), true);
+    assert.equal(ChordProHelper.usesFlats(ChordProHelper.noteMap.F), true);
+    assert.equal(ChordProHelper.usesFlats(ChordProHelper.noteMap.G), false);
+  });
+});
