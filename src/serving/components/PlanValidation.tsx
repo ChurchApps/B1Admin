@@ -46,11 +46,14 @@ export const PlanValidation = (props: Props) => {
 
       const blockouts: BlockoutDateInterface[] = ArrayHelper.getAll(props.blockoutDates, "personId", person.id);
       blockouts.forEach((b) => {
-        b.endDate = new Date(b.endDate || 0);
-        b.endDate.setHours(23, 59, 59, 999);
+        // Blockouts are calendar dates; read them as local days so a US browser doesn't shift them back.
+        const start = DateHelper.toDate(b.startDate || 0);
+        start.setHours(0, 0, 0, 0);
+        const end = DateHelper.toDate(b.endDate || 0);
+        end.setHours(23, 59, 59, 999);
         let conflict = false;
         times.forEach((t) => {
-          if (new Date(b.startDate || 0) < new Date(t.endTime || 0) && new Date(b.endDate || 0) > new Date(t.startTime || 0)) conflict = true;
+          if (start < new Date(t.endTime || 0) && end > new Date(t.startTime || 0)) conflict = true;
         });
         if (conflict) conflicts.push({ person, blockout: b });
       });
@@ -59,8 +62,8 @@ export const PlanValidation = (props: Props) => {
     conflicts.forEach((c) => {
       issues.push(
         <>
-          <b>{c.person?.name?.display || Locale.label("person.unknown")}:</b> {Locale.label("plans.planValidation.blockCon")} {DateHelper.prettyDate(new Date(c.blockout.startDate || 0))} {Locale.label("plans.planValidation.to")}{" "}
-          {DateHelper.prettyDate(new Date(c.blockout.endDate || 0))}.
+          <b>{c.person?.name?.display || Locale.label("person.unknown")}:</b> {Locale.label("plans.planValidation.blockCon")} {DateHelper.prettyDate(DateHelper.toDate(c.blockout.startDate || 0))} {Locale.label("plans.planValidation.to")}{" "}
+          {DateHelper.prettyDate(DateHelper.toDate(c.blockout.endDate || 0))}.
         </>
       );
     });
@@ -376,7 +379,7 @@ export const PlanValidation = (props: Props) => {
       );
     }
 
-    if (pending.length === 0) return <p>{Locale.label("plans.planValidation.volNotif")}</p>;
+    if (pending.length === 0) return props.assignments.some((a) => a.personId) ? <p>{Locale.label("plans.planValidation.volNotif")}</p> : null;
     else {
       return (
         <p>
