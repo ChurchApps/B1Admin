@@ -1,9 +1,10 @@
-import { Box, Button, IconButton, MenuItem, Select, Stack, TextField, Typography, Paper } from "@mui/material";
+import { Box, Button, Chip, IconButton, MenuItem, Select, Stack, TextField, Typography, Paper } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { type WorkflowInterface } from "@churchapps/helpers";
 import { ContentPicker } from "../../components/ContentPicker";
+import { MERGE_FIELD_KEYS, keepFocus } from "../../../../groups/components/SendTextDialog";
 import { ACTION_TYPES, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface } from "../types";
 
 interface EmailTemplateInterface { id?: string; name?: string; category?: string }
@@ -23,6 +24,7 @@ export const WorkflowStepActions = (props: Props) => {
   const [textingProviders, setTextingProviders] = React.useState<any[] | null>(null);
   const [emailStatus, setEmailStatus] = React.useState<EmailSendStatus | null>(null);
   const [pickerIndex, setPickerIndex] = React.useState<number | null>(null);
+  const textRefs = React.useRef<Record<number, HTMLTextAreaElement | null>>({});
 
   const load = React.useCallback(async () => {
     const data = await ApiHelper.get("/workflowStepActions/step/" + props.stepId, "DoingApi");
@@ -62,6 +64,22 @@ export const WorkflowStepActions = (props: Props) => {
     const action = actions[index];
     if (action.id) await ApiHelper.delete("/workflowStepActions/" + action.id, "DoingApi");
     setActions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Inserts a merge field at the Send Text cursor, same as the group Send Text window.
+  const insertMergeField = (index: number, field: string) => {
+    const message: string = config(actions[index]).message || "";
+    const input = textRefs.current[index];
+    const start = input?.selectionStart ?? message.length;
+    const end = input?.selectionEnd ?? message.length;
+    const next = message.slice(0, start) + field + message.slice(end);
+    if (next.length > 1600) return;
+    const caret = start + field.length;
+    setConfig(index, { message: next });
+    requestAnimationFrame(() => {
+      textRefs.current[index]?.focus();
+      textRefs.current[index]?.setSelectionRange(caret, caret);
+    });
   };
 
   const handlePick = (contentType: string, contentId: string, label: string) => {
@@ -108,7 +126,12 @@ export const WorkflowStepActions = (props: Props) => {
         const message: string = c.message || "";
         return (
           <Stack spacing={1}>
-            <TextField size="small" fullWidth multiline minRows={3} label={Locale.label("tasks.workflowActions.textMessage")} value={message} data-testid={"action-text-message-" + index} inputProps={{ maxLength: 1600 }} helperText={Locale.label("tasks.workflowActions.textMergeHint") + " " + message.length + "/1600"} onChange={(e) => setConfig(index, { message: e.target.value })} />
+            <TextField size="small" fullWidth multiline minRows={3} label={Locale.label("tasks.workflowActions.textMessage")} value={message} data-testid={"action-text-message-" + index} inputRef={(el: HTMLTextAreaElement | null) => { textRefs.current[index] = el; }} inputProps={{ maxLength: 1600 }} helperText={Locale.label("tasks.workflowActions.textMergeHint") + " " + message.length + "/1600"} onChange={(e) => setConfig(index, { message: e.target.value })} />
+            <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap data-testid={"action-text-merge-fields-" + index}>
+              {MERGE_FIELD_KEYS.map((f) => (
+                <Chip key={f.key} label={Locale.label(f.label)} size="small" variant="outlined" onMouseDown={keepFocus} onClick={() => insertMergeField(index, f.key)} sx={{ cursor: "pointer" }} />
+              ))}
+            </Stack>
             {textingProviders?.length === 0 && <Typography variant="body2" color="warning.main" data-testid={"action-text-no-provider-" + index}>{Locale.label("tasks.workflowActions.noTextingProvider")}</Typography>}
           </Stack>
         );

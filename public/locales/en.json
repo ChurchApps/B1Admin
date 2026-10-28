@@ -6106,7 +6106,7 @@
       "subjectOverride": "Subject (optional)",
       "taskDescription": "Description (optional)",
       "taskTitle": "Task title",
-      "textMergeHint": "Use {{firstName}}, {{lastName}}, {{displayName}} or {{churchName}}. Opted-out people are skipped.",
+      "textMergeHint": "Click a field below to insert it. Opted-out people are skipped.",
       "textMessage": "Text message",
       "title": "Automated actions",
       "type": {
