@@ -641,6 +641,32 @@ test.describe.serial("Serving Management - Workflows", () => {
     await cleanup.dispose();
   });
 
+  test("clicking a merge field chip inserts it into the Send Text message", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, []);
+    await ctx.dispose();
+
+    await openBoardById(page, wf.id);
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    await page.locator('[data-testid="add-action-button"]').click();
+    await page.locator('[data-testid="action-type-0"]').click();
+    await page.getByRole("option", { name: "Send Text" }).click();
+    const message = page.locator('[data-testid="action-text-message-0"] textarea').first();
+    await message.fill("Hi ");
+    const chips = page.locator('[data-testid="action-text-merge-fields-0"]');
+    await chips.getByText("First Name", { exact: true }).click();
+    await expect(message).toHaveValue("Hi {{firstName}}");
+    await page.keyboard.type(", welcome to ");
+    await chips.getByText("Church Name", { exact: true }).click();
+    await expect(message).toHaveValue("Hi {{firstName}}, welcome to {{churchName}}");
+
+    const cleanup = await request.newContext();
+    const auth2 = await apiAuth(cleanup);
+    await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
+    await cleanup.dispose();
+  });
+
   // Opens the step editor for the Auto step of a fresh action workflow.
   async function openAutoStepEditor(ctx: any, auth: any) {
     const { wf, auto } = await buildActionWorkflow(ctx, auth, []);

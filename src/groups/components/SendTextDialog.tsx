@@ -5,7 +5,7 @@ import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelpe
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
 
-const MERGE_FIELD_KEYS = [
+export const MERGE_FIELD_KEYS = [
   { key: "{{firstName}}", label: "groups.sendEmailDialog.mergeFieldFirstName" },
   { key: "{{lastName}}", label: "groups.sendEmailDialog.mergeFieldLastName" },
   { key: "{{displayName}}", label: "groups.sendEmailDialog.mergeFieldDisplayName" },
@@ -17,7 +17,7 @@ const GROUP_NAME_FIELD = { key: "{{groupName}}", label: "groups.sendEmailDialog.
 
 const MAX_LENGTH = 1600;
 
-const keepFocus = (ev: React.MouseEvent) => ev.preventDefault();
+export const keepFocus = (ev: React.MouseEvent) => ev.preventDefault();
 
 // Serving overview: every volunteer assigned in a date range.
 export interface TextRange {
