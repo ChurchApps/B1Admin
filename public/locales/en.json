@@ -6155,6 +6155,8 @@
       "phone": "Phone",
       "pin": "Pin assignment",
       "pinnedNote": "Pinned — keeps this owner across steps",
+      "remove": "Remove card",
+      "removeConfirm": "Remove this card? It will be closed and taken off everyone's list. Its history is kept.",
       "sendBack": "Send Back",
       "skip": "Skip",
       "snooze": "Snooze",

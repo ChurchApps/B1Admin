@@ -357,6 +357,45 @@ test.describe.serial("Serving Management - Workflows", () => {
     await expect(page.locator('[data-testid="workflow-card-TSK00000107"]')).toHaveCount(0, { timeout: 10000 });
   });
 
+  test("remove card closes a card on an outcome-only step and takes it off My Work", async () => {
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    const auth = { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+    // A card on a step with outcomes only (no plain Complete), assigned to the demo user.
+    const added = await (await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: "WFL00000003", stepId: "WFS00000006", associatedWith: { type: "person", id: "PER00000080", label: "Donald Clark" } } })).json();
+    const assigned = await ctx.post(`${API_BASE}/doing/tasks/${added.id}/reassign`, { ...auth, data: { assignedToType: "person", assignedToId: "PER00000082", assignedToLabel: "Demo User" } });
+    expect(assigned.ok()).toBeTruthy();
+
+    await page.goto("/serving/tasks");
+    await recoverFromViteError(page, page.locator('[data-testid="my-cards-list"]'));
+    await expect(page.locator(`[data-testid="my-cards-list"] [data-testid="workflow-card-${added.id}"]`)).toBeVisible({ timeout: 15000 });
+
+    await openBoardById(page, "WFL00000003");
+    await page.locator(`[data-testid="workflow-card-${added.id}"]`).click();
+    const drawer = page.locator('[data-testid="workflow-card-drawer"]');
+    await drawer.waitFor({ state: "visible", timeout: 10000 });
+    await expect(drawer.locator('[data-testid="card-complete-button"]')).toHaveCount(0);
+    await drawer.locator('[data-testid="card-remove-button"]').click();
+    const dialog = page.locator('[data-testid="card-remove-confirm"]');
+    await dialog.waitFor({ state: "visible", timeout: 10000 });
+    await dialog.getByRole("button", { name: "Remove card" }).click();
+    await expect(drawer).toHaveCount(0, { timeout: 10000 });
+    await expect(page.locator(`[data-testid="workflow-card-${added.id}"]`)).toHaveCount(0, { timeout: 10000 });
+
+    const closed = await (await ctx.get(`${API_BASE}/doing/tasks/${added.id}`, auth)).json();
+    expect(closed.status).toBe("Closed");
+    expect(JSON.parse(closed.data || "{}").history.map((h: any) => h.message)).toContain("Removed");
+
+    await page.goto("/serving/tasks");
+    await recoverFromViteError(page, page.locator('[data-testid="my-cards-list"]'));
+    await page.locator('[data-testid="my-cards-list"]').waitFor({ state: "visible", timeout: 15000 });
+    await expect(page.locator(`[data-testid="workflow-card-${added.id}"]`)).toHaveCount(0, { timeout: 10000 });
+    await ctx.dispose();
+  });
+
   test("configure a new outcome from the step editor", async () => {
     await openBoardById(page, "WFL00000003");
     await page.locator('[data-testid="edit-step-WFS00000007"]').click();
