@@ -1,9 +1,9 @@
 import { request as pwRequest, type APIRequestContext } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
-// Issue #1405: blockout dates are DATE columns sent as UTC midnight, and the Validation card read
-// them as instants, so in a US browser a blockout showed a day early and a one-day blockout on the
-// service date was never flagged. A plan with nobody assigned also claimed "All volunteers notified."
+// Plan Validation card. Blockout dates are DATE columns sent as UTC midnight and must be read as
+// local calendar days, or a US browser shows a blockout a day early and misses a one-day blockout on
+// the service date (#1405). A plan with nobody assigned must not claim "All volunteers notified."
 // Production runs the Api in UTC, so DATE columns arrive as "YYYY-MM-DDT00:00:00.000Z"; a local Api
 // in a US timezone sends local midnight instead, so the spec serves the production shape.
 const API = process.env.API_BASE || "http://localhost:8084";
@@ -18,7 +18,7 @@ async function apiLogin(ctx: APIRequestContext): Promise<string> {
   return uc.jwt as string;
 }
 
-test.describe("issue-1405 plan validation blockouts and notified line", () => {
+test.describe("plan validation blockouts and notified line", () => {
   test.use({ timezoneId: "America/Chicago" });
 
   let ctx: APIRequestContext;
