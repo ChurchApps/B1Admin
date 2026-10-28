@@ -7,6 +7,7 @@ import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
 import { hasAllGroupsAccess, hasPlansEditAccess } from "./helpers";
 import { churchBrandColor } from "./helpers/Themes";
+import { HYMNS_ENABLED } from "./hymns/enabled";
 import { useThemeMode } from "./ThemeContext";
 
 const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) => ({ default: module.PeoplePage })));
@@ -182,7 +183,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/sermons/settings" element={<StreamSettingsPage />} />
           <Route path="/sermons/bulk" element={<BulkImportPage />} />
           <Route path="/sermons" element={<SermonsPage />} />
-          <Route path="/hymns" element={<HymnsPage />} />
+          {HYMNS_ENABLED && <Route path="/hymns" element={<HymnsPage />} />}
           <Route path="/registrations/:eventId" element={<RegistrationDetailsPage />} />
           <Route path="/registrations" element={<RegistrationsPage />} />
           <Route path="/calendars/rooms" element={<RoomsResourcesPage />} />
