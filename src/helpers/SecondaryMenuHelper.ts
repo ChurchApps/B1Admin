@@ -16,7 +16,7 @@ export class SecondaryMenuHelper {
     else if (path.startsWith("/mobile")) result = this.getMobileMenu(path);
     else if (path.startsWith("/settings") || path.startsWith("/admin")) result = this.getSettingsMenu(path);
     else if (path.startsWith("/serving")) result = this.getServingMenu(path, data);
-    else if (path.startsWith("/donations")) result = this.getDonationsMenu(path);
+    else if (path.startsWith("/donations")) result = this.getDonationsMenu(path, data);
     else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = this.getCalendarMenu(path);
     else if (path.startsWith("/site")) result = this.getSiteMenu(path);
     else if (path.startsWith("/sermons")) result = this.getSermonsMenu(path);
@@ -117,7 +117,7 @@ export class SecondaryMenuHelper {
     return { menuItems, label };
   };
 
-  static getDonationsMenu = (path: string) => {
+  static getDonationsMenu = (path: string, data?: any) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("donations.donations.summary"), icon: "volunteer_activism" });
@@ -126,7 +126,7 @@ export class SecondaryMenuHelper {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/campaigns", label: Locale.label("donations.donations.campaigns"), icon: "flag" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/statements", label: Locale.label("donations.donations.statements") || "Giving Statements", icon: "description" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) menuItems.push({ url: "/donations/failed", label: Locale.label("donations.donations.failed"), icon: "error_outline" });
-    if (UserHelper.checkAccess(Permissions.givingApi.donations.edit)) menuItems.push({ url: "/donations/stripe-import", label: Locale.label("helpers.secondaryMenuHelper.stripeImport"), icon: "upload_file" });
+    if (UserHelper.checkAccess(Permissions.givingApi.donations.edit) && data?.usesStripe) menuItems.push({ url: "/donations/stripe-import", label: Locale.label("helpers.secondaryMenuHelper.stripeImport"), icon: "upload_file" });
 
     if (path.startsWith("/donations/failed")) label = Locale.label("donations.donations.failed");
     else if (path.startsWith("/donations/stripe-import")) label = Locale.label("helpers.secondaryMenuHelper.stripeImport");
