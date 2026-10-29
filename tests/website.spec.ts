@@ -5,6 +5,40 @@ import { login } from "./helpers/auth";
 import { navigateToSite, navigateToCalendars, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
+// Adds a page from the pages list and opens it in the editor.
+const openNewPageEditor = async (page: Page, title: string) => {
+  const addPageButton = page.locator('[data-testid="add-page-button"]');
+  await expect(addPageButton).toBeVisible({ timeout: 30000 });
+  await addPageButton.click();
+  await page.locator('[name="title"]').fill(title);
+  const pagePost = page.waitForResponse(r => r.url().includes("/content/pages") && r.request().method() === "POST", { timeout: 15000 });
+  await page.locator("button").getByText("Save").click();
+  await pagePost;
+  const newPageDialog = page.locator('div[role="dialog"]:has-text("New Page")');
+  if (await newPageDialog.isVisible()) await newPageDialog.locator("button").getByText("Cancel").click();
+  await expect(newPageDialog).toHaveCount(0, { timeout: 10000 });
+  const row = page.locator("tr").filter({ hasText: title }).first();
+  await expect(row).toBeVisible({ timeout: 10000 });
+  await row.locator('[data-testid="edit-content-button"]').click();
+  await expect(page.locator('[data-testid="publish-button"]')).toBeVisible({ timeout: 15000 });
+};
+
+// Drops a section onto the page and fills it from a section template.
+const addTemplateSection = async (page: Page, key: string) => {
+  const section = page.locator('[data-testid="draggable-element-section"]');
+  const sectionVisible = await section.isVisible({ timeout: 500 }).catch(() => false);
+  if (!sectionVisible) await page.locator('[data-testid="content-editor-add-button"]').click();
+  await expect(section).toBeVisible({ timeout: 10000 });
+  await section.hover();
+  await page.mouse.down();
+  await page.mouse.move(-10, -10);
+  await page.locator('div [data-testid="droppable-area"]').first().hover();
+  await page.mouse.up();
+  const treePost = page.waitForResponse(r => r.url().includes("/content/sections/tree") && r.request().method() === "POST", { timeout: 15000 });
+  await page.locator(`[data-testid="template-${key}"]`).click();
+  expect((await treePost).status()).toBe(200);
+};
+
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Website Management", () => {
 
@@ -356,6 +390,9 @@ test.describe("Website Management", () => {
       expect(buttonResponse.status()).toBe(200);
       expect(buttonResponse.request().postDataJSON()[0].elementType).toBe("buttonLink");
       await expect(page.locator("button").getByText("Zacchaeus Button")).toBeVisible({ timeout: 10000 });
+      // The canvas hover label, panel title and breadcrumb all use the same readable element name.
+      const buttonWrapper = page.locator(".elementWrapper[data-el-label]").filter({ hasText: "Zacchaeus Button" }).last();
+      await expect(buttonWrapper).toHaveAttribute("data-el-label", "Button Link", { timeout: 10000 });
     });
 
     test("should warn before discarding unsaved element edits", async () => {
@@ -491,6 +528,8 @@ test.describe("Website Management", () => {
       // "Plan Your Visit" (/visit) is actually new. The detail view flags each existing
       // page — just confirm the indicator shows up.
       await expect(page.getByText("Already exists", { exact: true }).first()).toBeVisible({ timeout: 10000 });
+      // Demo data already has the Sermons and Give links, so the preview lists no nav links to add.
+      await expect(page.getByText(/These links will be added to your navigation menu/)).toHaveCount(0);
       const treePost = page.waitForResponse(r => r.url().includes("/content/sections/tree") && r.request().method() === "POST", { timeout: 20000 });
       await page.locator('[data-testid="site-template-create-button"]').click();
       expect((await treePost).status()).toBe(200);
@@ -811,6 +850,8 @@ test.describe("Website Management", () => {
     test("should cancel changing color palette", async () => {
       const colorSettings = page.getByText("Color Palette", { exact: true });
       await colorSettings.click();
+      // Suggested palettes only load colors; Save Palette is what applies them.
+      await expect(page.getByText("Click a palette to load its colors, then click Save Palette to apply it")).toBeVisible({ timeout: 10000 });
       const palettePreset = page.locator("span").getByText("Palette 16");
       await expect(palettePreset).toHaveCount(1);
       const cancelBtn = page.locator("button").getByText("Cancel");
@@ -1225,6 +1266,42 @@ test.describe("Website Management", () => {
       // First crumb walks up to the section editor.
       await breadcrumb.locator('[data-testid="breadcrumb-crumb-0"]').click();
       await expect(page.locator("#sectionDetailsBox")).toBeVisible({ timeout: 10000 });
+    });
+  });
+
+  test.describe("Navigation links", () => {
+    test("Add Link dialog has no Delete button", async ({ page }) => {
+      await page.locator('[data-testid="add-navigation-link"]').click();
+      const dialog = page.locator('div[role="dialog"]');
+      await expect(dialog.getByText("Add Link").first()).toBeVisible({ timeout: 10000 });
+      await expect(dialog.getByRole("button", { name: "Delete" })).toHaveCount(0);
+    });
+  });
+
+  test.describe("Page editor — templates and publishing", () => {
+    test("three-column template sections stack on phones", async ({ page }) => {
+      await openNewPageEditor(page, "Zebedee Stack Page");
+      await addTemplateSection(page, "serviceTimes");
+      await expect(page.getByText("Wednesday 6:30 PM").first()).toBeVisible({ timeout: 10000 });
+      // The public site (B1App) is what visitors see on their phones.
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto((process.env.B1APP_URL || "http://grace.localtest.me:3301") + "/zebedee-stack-page");
+      await expect(page.getByText("Wednesday 6:30 PM").first()).toBeVisible({ timeout: 60000 });
+      const column = page.locator(".rowColumn-0").first();
+      const rowWidth = await column.locator("xpath=..").evaluate((el) => el.getBoundingClientRect().width);
+      const colWidth = await column.evaluate((el) => el.getBoundingClientRect().width);
+      expect(colWidth).toBeGreaterThan(rowWidth * 0.8);
+    });
+
+    test("Discard is not offered right after Publish", async ({ page }) => {
+      await openNewPageEditor(page, "Zebedee Publish Page");
+      const publishPost = page.waitForResponse(r => /\/content\/pages\/[^/]+\/publish/.test(r.url()) && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator('[data-testid="publish-button"]').click();
+      expect((await publishPost).status()).toBe(200);
+      await expect(page.locator('[data-testid="publish-status-pill"]')).toHaveAttribute("data-status", "published");
+      await page.locator('[data-testid="content-editor-overflow-button"]').click();
+      await expect(page.getByText("View history")).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="discard-changes-menu-item"]')).toHaveCount(0);
     });
   });
 
