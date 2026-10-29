@@ -7,7 +7,7 @@ import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, 
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
 import { DateHelper, type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
-import { canEditCard } from "../permissions";
+import { canEditCard, canViewWorkflows } from "../permissions";
 import { useConfirmDelete } from "../../../../hooks/useConfirmDelete";
 
 // MUI Link's `component` path does not land data-testid on the anchor, so the profile href check cannot see it.
@@ -22,6 +22,7 @@ interface Props {
   routes?: WorkflowStepRouteInterface[];
   onClose: () => void;
   onChanged: () => void;
+  showBoardLink?: boolean;
 }
 
 export const WorkflowCardDrawer = (props: Props) => {
@@ -112,6 +113,9 @@ export const WorkflowCardDrawer = (props: Props) => {
           <Typography variant="h6" sx={{ fontWeight: 600 }}>{card.title || card.associatedWithLabel}</Typography>
           <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={props.onClose} />
         </Stack>
+        {props.showBoardLink && card.workflowId && canViewWorkflows() && (
+          <Link component={RouterLink} to={"/serving/tasks/workflows/" + card.workflowId} variant="body2" data-testid="card-open-board">{Locale.label("tasks.workflowCard.openBoard")}</Link>
+        )}
         <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowCard.assignedTo")}: {card.assignedToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
         {card.assignmentId && assignment && <Box sx={{ my: 1 }} data-testid="card-serving-request">
           <Typography variant="body2">{assignment.positionName} · {String(assignment.serviceDate || "").slice(0, 10)}</Typography>
@@ -140,12 +144,12 @@ export const WorkflowCardDrawer = (props: Props) => {
         {card.pinnedAssignment && <Typography variant="caption" color="primary" data-testid="card-pinned-note">{Locale.label("tasks.workflowCard.pinnedNote")}</Typography>}
 
         <Stack spacing={2} sx={{ mt: 2 }}>
-          <Box>
+          {steps.length > 0 && <Box>
             <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowBoard.step")}</Typography>
             <Select fullWidth size="small" value={card.stepId || ""} disabled={!editable} data-testid="card-step-select" onChange={(e) => moveStep(e.target.value)}>
               {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
             </Select>
-          </Box>
+          </Box>}
 
           {editable && (
             <Stack direction="row" spacing={1}>
