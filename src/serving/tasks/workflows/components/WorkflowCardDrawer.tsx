@@ -23,6 +23,8 @@ interface Props {
   onClose: () => void;
   onChanged: () => void;
   showBoardLink?: boolean;
+  // False while the caller is still loading routes, so plain Complete cannot bypass a step's outcomes.
+  routesReady?: boolean;
 }
 
 export const WorkflowCardDrawer = (props: Props) => {
@@ -163,7 +165,7 @@ export const WorkflowCardDrawer = (props: Props) => {
             <Stack direction="row" spacing={1}>
               <Button variant="outlined" size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
               <Button variant="outlined" size="small" startIcon={<SnoozeIcon />} data-testid="card-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
-              {outcomes.length === 0 && (
+              {outcomes.length === 0 && props.routesReady !== false && (
                 <Button variant="contained" size="small" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={() => complete()}>{card.assignmentId ? Locale.label("plans.confirmation.followupDone", "Record follow-up done") : Locale.label("tasks.workflowCard.complete")}</Button>
               )}
             </Stack>

@@ -62,7 +62,7 @@ export const TasksPage = () => {
           </Grid>
         </Grid>
       </PageContainer>
-      {openCard && <WorkflowCardDrawer card={cards.data?.find((c) => c.id === openCard.id) || openCard} steps={board.data?.steps || []} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refreshCards} showBoardLink />}
+      {openCard && <WorkflowCardDrawer card={cards.data?.find((c) => c.id === openCard.id) || openCard} steps={board.data?.steps || []} routes={board.data?.routes || []} routesReady={!canViewWorkflows() || !openCard.workflowId || board.isFetched} onClose={() => setOpenCard(null)} onChanged={refreshCards} showBoardLink />}
     </>
   );
 };
