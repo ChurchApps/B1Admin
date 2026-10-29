@@ -12,6 +12,8 @@ interface Props {
   // through `onSaveComplete` (true = saved). Children surface their own error UI.
   renderEdit: (saveTrigger: Date | null, onSaveComplete: (ok: boolean) => void) => React.ReactNode;
   onSaved: () => void;
+  // How long the Save spinner runs before giving up on the child (default 15s).
+  saveTimeoutMs?: number;
   "data-testid"?: string;
 }
 
@@ -20,25 +22,18 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   const [editing, setEditing] = React.useState(false);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const [saving, setSaving] = React.useState(false);
-  const pendingResolve = React.useRef<((ok: boolean) => void) | null>(null);
+  const pending = React.useRef(false);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const finish = (ok: boolean) => {
+  const clearSaveTimeout = () => {
     if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
-    const resolve = pendingResolve.current;
-    if (!resolve) return;
-    pendingResolve.current = null;
-    resolve(ok);
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    const ok = await new Promise<boolean>((resolve) => {
-      pendingResolve.current = resolve;
-      // Safety net: if a child never reports back, stay in edit mode rather than spin forever.
-      timeoutRef.current = setTimeout(() => finish(false), 15000);
-      setSaveTrigger(new Date());
-    });
+  // A result that arrives after the timeout still counts: the save landed, so close and refresh.
+  const finish = (ok: boolean) => {
+    clearSaveTimeout();
+    if (!pending.current) return;
+    pending.current = false;
     setSaving(false);
     if (!ok) return;
     props.onSaved();
@@ -46,7 +41,18 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
     setSaveTrigger(null);
   };
 
+  const handleSave = () => {
+    setSaving(true);
+    pending.current = true;
+    clearSaveTimeout();
+    // Safety net: if a child never reports back, stop the spinner rather than spin forever.
+    timeoutRef.current = setTimeout(() => { timeoutRef.current = null; setSaving(false); }, props.saveTimeoutMs ?? 15000);
+    setSaveTrigger(new Date());
+  };
+
   const handleCancel = () => {
+    pending.current = false;
+    clearSaveTimeout();
     setEditing(false);
     setSaveTrigger(null);
   };
