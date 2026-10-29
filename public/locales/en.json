@@ -4788,6 +4788,7 @@
       "block": "Block",
       "blocks": "Blocks",
       "box": "Box",
+      "buttonLink": "Button Link",
       "calendar": "Calendar",
       "campaignProgress": "Campaign Progress",
       "card": "Card",
@@ -4837,6 +4838,7 @@
       "form": "Form",
       "gallery": "Gallery",
       "groupList": "Group List",
+      "groups": "Groups Browser",
       "html": "HTML",
       "iconFeature": "Icon Feature",
       "image": "Image",
@@ -4859,7 +4861,8 @@
       "textWithPhoto": "Text with Photo",
       "tryDifferentSearch": "Try a different search term",
       "untitledBlock": "Untitled Block",
-      "video": "Video"
+      "video": "Video",
+      "whiteSpace": "White Space"
     },
     "elementEdit": {
       "enableLightbox": "Enable Lightbox",
@@ -5192,7 +5195,7 @@
       "accent": "Accent",
       "accentDesc": "Main accent — buttons and highlights",
       "applyPaletteAria": "Apply suggested color palette",
-      "applySuggested": "Click any palette to apply it instantly",
+      "applySuggested": "Click a palette to load its colors, then click Save Palette to apply it",
       "baseColors": "Base Colors",
       "colorCombinationsPreview": "Color Combinations Preview",
       "colorValues": "Color Values",

@@ -5016,7 +5016,7 @@
       "accent": "Akcent",
       "accentDesc": "Hlavní akcent — tlačítka a zvýraznění",
       "applyPaletteAria": "Použít navrženou paletu barev",
-      "applySuggested": "Kliknutím na libovolnou paletu ji okamžitě použijete",
+      "applySuggested": "Kliknutím na paletu načtete její barvy, poté ji použijte kliknutím na Uložit paletu",
       "baseColors": "Základní barvy",
       "colorCombinationsPreview": "Náhled kombinací barev",
       "colorValues": "Hodnoty barev",

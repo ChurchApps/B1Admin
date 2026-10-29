@@ -5016,7 +5016,7 @@
       "accent": "Akcent",
       "accentDesc": "Główny akcent — przyciski i wyróżnienia",
       "applyPaletteAria": "Zastosuj sugerowaną paletę kolorów",
-      "applySuggested": "Kliknij dowolną paletę, aby ją natychmiast zastosować",
+      "applySuggested": "Kliknij paletę, aby wczytać jej kolory, a następnie kliknij Save Palette, aby ją zastosować",
       "baseColors": "Kolory podstawowe",
       "colorCombinationsPreview": "Color Combinations Preview",
       "colorValues": "Color Values",

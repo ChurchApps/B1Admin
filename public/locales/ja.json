@@ -5016,7 +5016,7 @@
       "accent": "アクセント",
       "accentDesc": "メインアクセント — ボタンとハイライト",
       "applyPaletteAria": "提案されたカラーパレットを適用",
-      "applySuggested": "任意のパレットをクリックすると即座に適用されます",
+      "applySuggested": "パレットをクリックすると色が読み込まれます。適用するには「パレットを保存」をクリックしてください",
       "baseColors": "ベースカラー",
       "colorCombinationsPreview": "配色の組み合わせプレビュー",
       "colorValues": "色の値",

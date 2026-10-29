@@ -247,7 +247,7 @@ export function ContentEditor(props: Props) {
 
   useEffect(() => {
     if (container && !initialSnapshotSavedRef.current) {
-      saveSnapshot(container, "Initial state");
+      saveSnapshot(container, "Initial state", { persist: false });
       initialSnapshotSavedRef.current = true;
     }
   }, [container, saveSnapshot]);

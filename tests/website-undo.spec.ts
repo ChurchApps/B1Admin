@@ -3,6 +3,8 @@ import { expect, test } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { siteTest } from "./helpers/test-fixtures";
+import { navigateToSite } from "./helpers/navigation";
 
 // apphelper 1.3.5 collapses #site-header to width 0, so the absolutely positioned
 // #site-app-bar (z-index 1201) covers the top ~84px of the content column and swallows
@@ -178,4 +180,28 @@ test.describe.serial("Website undo/redo", () => {
     const discard = page.locator('[data-testid="discard-element-dialog"]');
     await discard.locator("button").getByText("Discard", { exact: true }).click({ timeout: 10000 }).catch(() => { });
   });
+});
+
+// Reopening a page's editor must not stack another "Initial state" entry in its history.
+siteTest("reopening the editor keeps a single Initial state in history", async ({ page }) => {
+  const title = "Zacchaeus History Page";
+  await page.locator('[data-testid="add-page-button"]').click();
+  await page.locator('[name="title"]').fill(title);
+  const pagePost = page.waitForResponse(r => r.url().includes("/content/pages") && r.request().method() === "POST", { timeout: 15000 });
+  await page.locator("button").getByText("Save").click();
+  await pagePost;
+  const newPageDialog = page.locator('div[role="dialog"]:has-text("New Page")');
+  if (await newPageDialog.isVisible()) await newPageDialog.locator("button").getByText("Cancel").click();
+  await expect(newPageDialog).toHaveCount(0, { timeout: 10000 });
+  const openEditor = async () => {
+    await page.locator("tr").filter({ hasText: title }).first().locator('[data-testid="edit-content-button"]').click();
+    await expect(page.locator('[data-testid="publish-button"]')).toBeVisible({ timeout: 15000 });
+  };
+  await openEditor();
+  await navigateToSite(page);
+  await openEditor();
+  await page.locator('[data-testid="content-editor-overflow-button"]').click();
+  await page.getByText("View history").click();
+  await expect(page.getByText("Initial state", { exact: true }).first()).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("Initial state", { exact: true })).toHaveCount(1);
 });

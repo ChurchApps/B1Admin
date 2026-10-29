@@ -5016,7 +5016,7 @@
       "accent": "Accent",
       "accentDesc": "Huvudaccent — knappar och highlights",
       "applyPaletteAria": "Tillämpa föreslagen färgpalett",
-      "applySuggested": "Klicka på en palett för att tillämpa den direkt",
+      "applySuggested": "Klicka på en palett för att läsa in dess färger och klicka sedan på Spara palett för att tillämpa den",
       "baseColors": "Basfärger",
       "colorCombinationsPreview": "Förhandsgranskning av färgkombinationer",
       "colorValues": "Färgvärden",
