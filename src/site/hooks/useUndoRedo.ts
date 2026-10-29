@@ -31,7 +31,7 @@ interface UseUndoRedoReturn {
   canRedo: boolean;
   undo: () => Promise<ContainerSnapshot | null>;
   redo: () => Promise<ContainerSnapshot | null>;
-  saveSnapshot: (container: PageInterface | BlockInterface, description: string) => void;
+  saveSnapshot: (container: PageInterface | BlockInterface, description: string, options?: { persist?: boolean }) => void;
   clearHistory: () => void;
   isRestoring: boolean;
   history: HistoryEntryInfo[];
@@ -261,7 +261,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     return { sections: cloneSections(container?.sections || []) };
   };
 
-  const saveSnapshot = useCallback((container: PageInterface | BlockInterface, description: string) => {
+  const saveSnapshot = useCallback((container: PageInterface | BlockInterface, description: string, options?: { persist?: boolean }) => {
     // Don't save snapshot during restore operations
     if (isRestoringRef.current) return;
 
@@ -276,8 +276,8 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     const snapshot = createSnapshot(container);
     const entry: HistoryEntry = { snapshot, description, timestamp: now };
 
-    // Save to API and get the ID
-    if (pageIdRef.current || blockIdRef.current) {
+    // Save to API and get the ID. Non-persisted entries (the editor's opening baseline) stay local.
+    if (options?.persist !== false && (pageIdRef.current || blockIdRef.current)) {
       ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result: any) => {
         // Update entry with the server ID
         setUndoStack(prev => {

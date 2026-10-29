@@ -71,7 +71,7 @@ export function NavLinkEdit(props: Props) {
       setError("root", { message: Locale.label("site.navLinkEdit.unauthorizedDelete") });
       return;
     }
-    if (!props.link?.id) { props.updatedCallback(null); return; }
+    if (!props.link?.id) return;
     ApiHelper.delete("/links/" + props.link.id.toString(), "ContentApi").then(() => { props.updatedCallback(null); });
   };
 
@@ -89,7 +89,7 @@ export function NavLinkEdit(props: Props) {
   if (!props.link) return <></>;
   return (
     <Dialog open={true} onClose={props.onDone} style={{ minWidth: 800 }} sx={{ zIndex: 2000 }}>
-      <FormCard id="pageDetailsBox" title={props.link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} icon="article" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} elevation={0}>
+      <FormCard id="pageDetailsBox" title={props.link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} icon="article" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={props.link?.id ? handleDelete : undefined} elevation={0}>
 
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <Controller name="url" control={control} render={({ field }) => (

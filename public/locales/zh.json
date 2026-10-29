@@ -5016,7 +5016,7 @@
       "accent": "强调色",
       "accentDesc": "主强调色 — 按钮与高亮",
       "applyPaletteAria": "应用建议的调色板",
-      "applySuggested": "点击任何调色板即可立即应用",
+      "applySuggested": "点击调色板以载入其颜色，然后点击“保存调色板”以应用",
       "baseColors": "基础颜色",
       "colorCombinationsPreview": "颜色组合预览",
       "colorValues": "颜色值",

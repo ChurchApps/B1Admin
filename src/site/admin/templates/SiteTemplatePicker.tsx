@@ -44,6 +44,10 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
 
   const customPages = (template: SiteTemplateDef) => template.pages.filter((p) => p.sections?.length);
   const navOnlyPages = (template: SiteTemplateDef) => template.pages.filter((p) => !p.sections?.length);
+  const navLinkExists = (p: SiteTemplatePageDef) => {
+    const navText = label("nav." + p.navKey);
+    return existingLinks.some((l) => l.url === p.url || (l.text || "").toLowerCase() === navText.toLowerCase());
+  };
   const navLabels = (template: SiteTemplateDef) => template.pages.filter((p) => p.navKey).map((p) => label("nav." + p.navKey));
   const churchName = UserHelper.currentUserChurch?.church?.name;
 
@@ -70,8 +74,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
         }
         if (pageDef.navKey) {
           const navText = label("nav." + pageDef.navKey);
-          const linkExists = existingLinks.some((l) => l.url === pageDef.url || (l.text || "").toLowerCase() === navText.toLowerCase());
-          if (!linkExists) {
+          if (!navLinkExists(pageDef)) {
             await ApiHelper.post("/links", [{ churchId, siteId, category: "website", linkType: "url", linkData: "", icon: pageDef.navIcon || "", text: navText, url: pageDef.url, sort: navSort++ }], "ContentApi");
           }
         }
@@ -127,6 +130,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
     if (!selected) return null;
     const pages = customPages(selected);
     const navOnly = navOnlyPages(selected);
+    const navToAdd = navOnly.filter((p) => !navLinkExists(p));
     const hasConflicts = pages.some(pageExists);
     return (
       <>
@@ -149,9 +153,9 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
             </Grid>
           ))}
         </Grid>
-        {navOnly.length > 0 && (
+        {navToAdd.length > 0 && (
           <Typography variant="body2" color="text.secondary" sx={{ marginTop: 2 }}>
-            {label("navLinksNote")} {navOnly.map((p) => label("nav." + p.navKey)).join(", ")}
+            {label("navLinksNote")} {navToAdd.map((p) => label("nav." + p.navKey)).join(", ")}
           </Typography>
         )}
         {hasConflicts && (

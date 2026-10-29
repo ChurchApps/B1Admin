@@ -5016,7 +5016,7 @@
       "accent": "Accent",
       "accentDesc": "Hovedaccent — knapper og fremhævelser",
       "applyPaletteAria": "Anvend foreslået farvepalette",
-      "applySuggested": "Klik på en hvilken som helst palette for at anvende den med det samme",
+      "applySuggested": "Klik på en palette for at indlæse dens farver, og klik derefter på Gem palette for at anvende den",
       "baseColors": "Grundfarver",
       "colorCombinationsPreview": "Forhåndsvisning af farvekombinationer",
       "colorValues": "Farveværdier",

@@ -330,7 +330,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
               {Locale.label("site.editorToolbar.viewHistory")}
             </ListItemText>
           </MenuItem>
-          {isPageMode && publishedAt && onDiscardChanges && (
+          {isPageMode && publishedAt && hasUnpublishedChanges && onDiscardChanges && (
             <MenuItem
               onClick={() => {
                 setMenuAnchor(null);

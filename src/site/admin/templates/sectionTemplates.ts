@@ -27,12 +27,13 @@ export interface SectionTemplateDef extends SectionContentDef {
 
 export const STOCK = "https://content.churchapps.org/stockPhotos";
 
-export const row = (columns: number[], children: TemplateElementDef[][], mobileSizes?: number[]): TemplateElementDef => ({
+// Columns stack full width on phones unless the template gives its own phone widths.
+export const row = (columns: number[], children: TemplateElementDef[][], mobileSizes: number[] = columns.map(() => 12)): TemplateElementDef => ({
   elementType: "row",
-  answers: { columns: columns.join(","), ...(mobileSizes ? { mobileSizes: mobileSizes.join(",") } : {}) },
+  answers: { columns: columns.join(","), mobileSizes: mobileSizes.join(",") },
   elements: columns.map((size, i) => ({
     elementType: "column",
-    answers: { size, ...(mobileSizes ? { mobileSize: mobileSizes[i] } : {}) },
+    answers: { size, mobileSize: mobileSizes[i] },
     elements: children[i] || []
   }))
 });

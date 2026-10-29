@@ -5016,7 +5016,7 @@
       "accent": "強調色",
       "accentDesc": "主要輔色 — 按鈕與強調樣式",
       "applyPaletteAria": "應用建議的調色盤",
-      "applySuggested": "點選任何調色盤即可立即應用",
+      "applySuggested": "點選調色盤以載入其顏色，然後點選「儲存調色盤」以套用",
       "baseColors": "基礎顏色",
       "colorCombinationsPreview": "顏色組合預覽",
       "colorValues": "顏色值",

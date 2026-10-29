@@ -5016,7 +5016,7 @@
       "accent": "강조",
       "accentDesc": "메인 강조색 — 버튼 및 강조 표시",
       "applyPaletteAria": "제안된 색상 팔레트 적용",
-      "applySuggested": "팔레트를 클릭하면 즉시 적용됩니다",
+      "applySuggested": "팔레트를 클릭하면 색상이 불러와지며, 적용하려면 팔레트 저장을 클릭하세요",
       "baseColors": "기본 색상",
       "colorCombinationsPreview": "색상 조합 미리보기",
       "colorValues": "색상 값",

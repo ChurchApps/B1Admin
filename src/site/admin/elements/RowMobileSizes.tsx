@@ -11,7 +11,7 @@ type Props = {
 
 export function RowMobileSizes(props: Props) {
   const mobileSizes: number[] = [];
-  props.parsedData.columns?.split(",").forEach((c: string) => mobileSizes.push(parseInt(c)));
+  props.parsedData.columns?.split(",").forEach(() => mobileSizes.push(12));
   props.parsedData.mobileSizes?.split(",").forEach((c: string, idx:number) => mobileSizes[idx] = parseInt(c));
 
   const updateMobileSizes = () => {
@@ -30,7 +30,7 @@ export function RowMobileSizes(props: Props) {
     const result: React.ReactElement[] = [];
     props.cols.forEach((c:number, idx:number) => {
       const index = idx;
-      const mobileSize = (mobileSizes.length > idx) ? mobileSizes[idx] || c : c;
+      const mobileSize = (mobileSizes.length > idx) ? mobileSizes[idx] || 12 : 12;
       result.push(<TableRow key={idx}>
         <TableCell>{c}</TableCell>
         <TableCell>

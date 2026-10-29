@@ -1,4 +1,5 @@
 import { Locale } from "@churchapps/apphelper";
+import { ElementTypes } from "@churchapps/helpers";
 
 interface ElementTypeMeta {
   label: string;
@@ -39,13 +40,16 @@ const META: Record<string, { getLabel: () => string; icon: string }> = {
   serviceTimes: { getLabel: () => Locale.label("site.elementAdd.serviceTimes", "Service Times"), icon: "schedule" },
   rawHTML: { getLabel: () => Locale.label("site.elementAdd.html", "HTML"), icon: "code" },
   iframe: { getLabel: () => Locale.label("site.elementAdd.embedPage", "Embedded Page"), icon: "web" },
-  block: { getLabel: () => Locale.label("site.elementAdd.block", "Block"), icon: "widgets" }
+  block: { getLabel: () => Locale.label("site.elementAdd.block", "Block"), icon: "widgets" },
+  buttonLink: { getLabel: () => Locale.label("site.elementAdd.buttonLink", "Button Link"), icon: "smart_button" },
+  whiteSpace: { getLabel: () => Locale.label("site.elementAdd.whiteSpace", "White Space"), icon: "space_bar" },
+  groups: { getLabel: () => Locale.label("site.elementAdd.groups", "Groups Browser"), icon: "manage_search" }
 };
 
 export function getElementTypeMeta(elementType?: string | null): ElementTypeMeta {
   if (!elementType) return { label: Locale.label("common.element", "Element"), icon: "tune" };
   const entry = META[elementType];
-  if (!entry) return { label: elementType, icon: "tune" };
+  if (!entry) return { label: (ElementTypes as Record<string, { label?: string }>)[elementType]?.label || elementType, icon: "tune" };
   return {
     label: entry.getLabel(),
     icon: entry.icon
