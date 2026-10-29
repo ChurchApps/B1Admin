@@ -2,19 +2,24 @@ import React from "react";
 import { Locale, Loading } from "@churchapps/apphelper";
 import { TaskList } from "./components/TaskList";
 import { WorkflowCard } from "./workflows/components/WorkflowCard";
+import { WorkflowCardDrawer } from "./workflows/components/WorkflowCardDrawer";
+import { canViewWorkflows } from "./workflows/permissions";
 import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, Surface } from "../../components/ui";
-import { type TaskInterface } from "@churchapps/helpers";
+import { type TaskInterface, type WorkflowBoardInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Box, Grid, Typography } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 export const TasksPage = () => {
   const [status, setStatus] = React.useState("Open");
   const [adding, setAdding] = React.useState(false);
-  const navigate = useNavigate();
+  const [openCard, setOpenCard] = React.useState<TaskInterface | null>(null);
 
   const cards = useQuery<TaskInterface[]>({ queryKey: ["/tasks/cards/my", "DoingApi"], placeholderData: [] });
+  // Steps and routes for the open card; the board needs View Workflows, so assignees without it get a step-less drawer.
+  const board = useQuery<WorkflowBoardInterface>({ queryKey: ["/tasks/board/" + openCard?.workflowId, "DoingApi"], enabled: !!openCard?.workflowId && canViewWorkflows() });
+  const refreshCards = () => { cards.refetch(); if (board.isFetched) board.refetch(); };
 
   const openAdd = () => {
     setAdding(true);
@@ -25,7 +30,7 @@ export const TasksPage = () => {
     if (cards.isLoading) return <Loading />;
     if (!cards.data || cards.data.length === 0) return <Typography variant="body2" color="text.secondary">{Locale.label("tasks.myCards.noCards")}</Typography>;
     return cards.data.map((card) => (
-      <Box key={card.id} onClick={() => navigate("/serving/tasks/workflows/" + card.workflowId)} sx={{ cursor: "pointer", mb: 1 }}>
+      <Box key={card.id} onClick={() => setOpenCard(card)} sx={{ cursor: "pointer", mb: 1 }}>
         <WorkflowCard card={card} />
       </Box>
     ));
@@ -57,6 +62,7 @@ export const TasksPage = () => {
           </Grid>
         </Grid>
       </PageContainer>
+      {openCard && <WorkflowCardDrawer card={cards.data?.find((c) => c.id === openCard.id) || openCard} steps={board.data?.steps || []} routes={board.data?.routes || []} routesReady={!canViewWorkflows() || !openCard.workflowId || board.isFetched} onClose={() => setOpenCard(null)} onChanged={refreshCards} showBoardLink />}
     </>
   );
 };
