@@ -1,5 +1,5 @@
 import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loading, SmallButton } from "@churchapps/apphelper";
-import { Box, Grid } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
@@ -21,6 +21,7 @@ export const PrintPlan = () => {
   const church = useContext(UserContext)?.userChurch?.church;
   const churchName = church?.name || "";
   const printLogo = usePrintLogo(church?.id);
+  const [showHeading, setShowHeading] = React.useState(() => localStorage.getItem("printPlan.showHeading") !== "false");
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
@@ -378,8 +379,19 @@ export const PrintPlan = () => {
     tableCell: { verticalAlign: "top", padding: 5, textAlign: "left" }
   };
 
+  const handleShowHeadingChange = (checked: boolean) => {
+    setShowHeading(checked);
+    localStorage.setItem("printPlan.showHeading", String(checked));
+  };
+
   const renderWorshipOrder = () => (
     <div style={Styles.body} className="printBackgrounds">
+      <Box className="print-toolbar no-print" sx={{ px: 1, pb: 1, textAlign: "left" }}>
+        <FormControlLabel
+          control={<Checkbox checked={showHeading} onChange={(e) => handleShowHeadingChange(e.target.checked)} data-testid="print-plan-show-heading" />}
+          label={Locale.label("plans.printPlan.showHeading")}
+        />
+      </Box>
       {(churchName || printLogo.logoUrl || plan?.name) && (
         <div style={{ textAlign: "center", marginBottom: 10 }}>
           <PrintChurchHeader churchName={churchName} logoUrl={printLogo.logoUrl} style={{ margin: "0 auto 4px" }}>
@@ -388,17 +400,25 @@ export const PrintPlan = () => {
           {plan?.name && <div style={{ fontSize: 14 }}>{plan.name}</div>}
         </div>
       )}
-      <Grid container>
-        <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
-          {Locale.label("plans.printPlan.serviceOrder")}
+      {showHeading ? (
+        <Grid container>
+          <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
+            {Locale.label("plans.printPlan.serviceOrder")}
+          </Grid>
+          <Grid size={{ xs: 4 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
+            {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
+          </Grid>
+          <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
+            {Locale.label("plans.printPlan.serviceOrder")}
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 4 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
-          {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
+      ) : (
+        <Grid container>
+          <Grid size={{ xs: 12 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
+            {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
-          {Locale.label("plans.printPlan.serviceOrder")}
-        </Grid>
-      </Grid>
+      )}
       <div style={Styles.divider}>&nbsp;</div>
       <Grid container>
         {hasAssignments && (

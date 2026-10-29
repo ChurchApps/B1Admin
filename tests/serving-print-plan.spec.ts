@@ -155,6 +155,28 @@ test.describe("Serving - Print Plan without lesson content", () => {
     await expect(page.getByText("Print Worship Order Repro", { exact: true })).toBeVisible();
   });
 
+  // Issue #1415: the SERVICE ORDER heading can be left off so the sheet works for
+  // announcements and scripts; the date still prints and the choice is remembered.
+  test("Service Order heading can be hidden and the choice is remembered", async ({ page }) => {
+    await page.goto(`/serving/plans/print/${planId}`);
+    await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });
+    const toggle = page.getByRole("checkbox", { name: "Show Service Order heading" });
+    await expect(toggle).toBeChecked();
+    await expect(page.getByText("SERVICE ORDER", { exact: true })).toHaveCount(2);
+
+    await toggle.uncheck();
+    await expect(page.getByText("SERVICE ORDER", { exact: true })).toHaveCount(0);
+    await expect(page.getByText(/2030/)).toBeVisible();
+
+    await page.reload();
+    await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });
+    await expect(toggle).not.toBeChecked();
+    await expect(page.getByText("SERVICE ORDER", { exact: true })).toHaveCount(0);
+
+    await toggle.check();
+    await expect(page.getByText("SERVICE ORDER", { exact: true })).toHaveCount(2);
+  });
+
   test("auto-prints with ?autoprint=1", async ({ page }) => {
     await page.goto(`/serving/plans/print/${planId}?autoprint=1`);
     await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });

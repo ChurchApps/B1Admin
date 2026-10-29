@@ -2855,6 +2855,7 @@
     "printPlan": {
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
+      "showHeading": "Show Service Order heading",
       "time": "Time"
     },
     "printPreview": {
