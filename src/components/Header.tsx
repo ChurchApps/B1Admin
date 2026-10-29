@@ -4,6 +4,8 @@ import React, { useEffect, useMemo } from "react";
 import { SecondaryMenuHelper } from "../helpers/SecondaryMenuHelper";
 import { canRecordAttendance, hasPlansEditAccess } from "../helpers";
 import { canSeeBatches } from "../donations/batchAccess";
+import { usesStripeGateway } from "../donations/stripeGateway";
+import { useQuery } from "@tanstack/react-query";
 import { SiteHeader } from "@churchapps/apphelper";
 import { ThemeMenuControls } from "./ThemeMenuControls";
 import UserContext from "../UserContext";
@@ -18,6 +20,9 @@ export const Header: React.FC = () => {
   const [donationError, setDonationError] = React.useState<boolean>(false);
   const [isFormMember, setIsFormMember] = React.useState<boolean>(false);
   const [isMinistryMember, setIsMinistryMember] = React.useState<boolean>(false);
+  const canEditDonations = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
+  const gateways = useQuery<{ provider?: string }[]>({ queryKey: ["/gateways", "GivingApi"], placeholderData: [], enabled: canEditDonations });
+  const usesStripe = usesStripeGateway(gateways.data);
 
   useEffect(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) {
@@ -88,9 +93,9 @@ export const Header: React.FC = () => {
     return result;
   };
 
-  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search, isMinistryMember });
+  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search, isMinistryMember, usesStripe });
 
-  const paletteMenu = useMemo(() => primaryMenu.map((m) => ({ ...m, children: SecondaryMenuHelper.getSecondaryMenu(m.url, { formPermission, search: "", isMinistryMember }).menuItems })), [primaryMenu, formPermission, isMinistryMember]);
+  const paletteMenu = useMemo(() => primaryMenu.map((m) => ({ ...m, children: SecondaryMenuHelper.getSecondaryMenu(m.url, { formPermission, search: "", isMinistryMember, usesStripe }).menuItems })), [primaryMenu, formPermission, isMinistryMember, usesStripe]);
 
   const handleNavigate = (url: string) => {
     navigate(url);

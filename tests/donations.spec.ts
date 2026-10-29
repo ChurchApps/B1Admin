@@ -1082,3 +1082,28 @@ test.describe.serial("Batch close and reopen", () => {
     await page.context().close();
   });
 });
+
+// Stripe-only tools follow the church's gateway: Grace (CHU00000001) uses Stripe, so the tools above stay;
+// here /gateways answers with a Paystack gateway, as for a church that does not give through Stripe.
+test.describe("Donations — Stripe tools hidden for non-Stripe gateways", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route(/\/giving\/gateways$/, async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      await route.fulfill({ json: [{ id: "GAT00000002", provider: "Paystack", publicKey: "pk_test", currency: "GHS" }] });
+    });
+    await page.goto("/donations/batches");
+    await expect(page.locator("button").getByText(/Add/).first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test("Batches page hides the Import missing Stripe transactions button", async ({ page }) => {
+    await expect(page.getByTestId("print-batches-button")).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("a").filter({ hasText: /Import missing Stripe transactions/i })).toHaveCount(0);
+  });
+
+  test("Donations secondary nav hides Stripe Import but keeps the other items", async ({ page }) => {
+    const nav = await siblingNav(page);
+    await expect(nav.getByText("Batches").first()).toBeVisible({ timeout: 10000 });
+    await expect(nav.getByText("Giving Statements").first()).toBeVisible();
+    await expect(nav.getByText("Stripe Import")).toHaveCount(0);
+  });
+});

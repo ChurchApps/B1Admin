@@ -12,6 +12,7 @@ import { useSortableData } from "../hooks";
 import { PermissionDenied } from "../components/PermissionDenied";
 import { Lede } from "./components/GivingParts";
 import { type BatchWithStatus, canChangeBatch, canEditDonations, canEnterDonations, canSeeBatches, enterDonationsPermission, isBatchClosed } from "./batchAccess";
+import { usesStripeGateway } from "./stripeGateway";
 
 type BatchRow = BatchWithStatus & { isConverted?: boolean };
 
@@ -29,6 +30,7 @@ export const DonationBatchesPage = () => {
     placeholderData: []
   });
   const eventLogs = useQuery<{ resolved?: boolean }[]>({ queryKey: ["/eventLog/type/failed", "GivingApi"], placeholderData: [] });
+  const gateways = useQuery<{ provider?: string }[]>({ queryKey: ["/gateways", "GivingApi"], placeholderData: [], enabled: canEditDonations() });
 
   const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<BatchRow>(batches.data || [], "", "asc", batchComparators);
 
@@ -66,6 +68,7 @@ export const DonationBatchesPage = () => {
   const printLink = "/donations/batches/print-all" + (printStart && printEnd ? "?start=" + printStart + "&end=" + printEnd : "");
 
   const canEdit = canEditDonations();
+  const usesStripe = usesStripeGateway(gateways.data);
   const canAdd = canEnterDonations();
   const canViewBatch = UserHelper.checkAccess(Permissions.givingApi.donations.view);
 
@@ -116,7 +119,7 @@ export const DonationBatchesPage = () => {
   return (
     <>
       <PageHeader title={Locale.label("donations.donations.batches")} subtitle={Locale.label("donations.donationBatchesPage.subtitle")}>
-        {canEdit && <HeaderTextButton component={Link} to="/donations/stripe-import">{Locale.label("donations.donationBatchesPage.stripeImportLink")}</HeaderTextButton>}
+        {canEdit && usesStripe && <HeaderTextButton component={Link} to="/donations/stripe-import">{Locale.label("donations.donationBatchesPage.stripeImportLink")}</HeaderTextButton>}
         {(eventLogs.data?.length || 0) > 0 && (
           <HeaderTextButton startIcon={<FailedIcon />} onClick={() => setEventsOpen(!eventsOpen)} data-testid="failed-events-verb">
             {Locale.label("donations.donationBatchesPage.failedEvents", "Failed events ({count})").replace("{count}", unresolvedEvents.toString())}
