@@ -22,7 +22,8 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   const [editing, setEditing] = React.useState(false);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const [saving, setSaving] = React.useState(false);
-  const pending = React.useRef(false);
+  // Each Save (and each Cancel) bumps the generation; a result from an older generation is stale.
+  const saveGen = React.useRef(0);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearSaveTimeout = () => {
@@ -30,10 +31,9 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   };
 
   // A result that arrives after the timeout still counts: the save landed, so close and refresh.
-  const finish = (ok: boolean) => {
+  const finish = (gen: number, ok: boolean) => {
+    if (saveGen.current !== gen) return;
     clearSaveTimeout();
-    if (!pending.current) return;
-    pending.current = false;
     setSaving(false);
     if (!ok) return;
     props.onSaved();
@@ -42,25 +42,34 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
   };
 
   const handleSave = () => {
+    const gen = ++saveGen.current;
     setSaving(true);
-    pending.current = true;
     clearSaveTimeout();
     // Safety net: if a child never reports back, stop the spinner rather than spin forever.
-    timeoutRef.current = setTimeout(() => { timeoutRef.current = null; setSaving(false); }, props.saveTimeoutMs ?? 15000);
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
+      if (saveGen.current === gen) setSaving(false);
+    }, props.saveTimeoutMs ?? 15000);
     setSaveTrigger(new Date());
   };
 
   const handleCancel = () => {
-    pending.current = false;
+    saveGen.current++;
+    setSaving(false);
     clearSaveTimeout();
     setEditing(false);
     setSaveTrigger(null);
   };
 
+  // The child reports through the callback from the render where `saveTrigger` changed,
+  // so this closes over that save's generation.
+  const renderGen = saveGen.current;
+  const onSaveComplete = (ok: boolean) => finish(renderGen, ok);
+
   if (editing) {
     return (
       <FormCard title={props.headerText} icon={props.headerIcon} onSave={handleSave} onCancel={handleCancel} isSubmitting={saving} data-testid={props["data-testid"]}>
-        {props.renderEdit(saveTrigger, finish)}
+        {props.renderEdit(saveTrigger, onSaveComplete)}
       </FormCard>
     );
   }

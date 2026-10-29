@@ -700,6 +700,131 @@ test.describe("Settings domains save a typed name", () => {
   });
 });
 
+// ChurchAppsSupport#1419: removing two domains takes two slow writes (each waits on the
+// proxy sync, ~10s), which outlasted the section's save timeout. The save landed but the
+// editor stayed open and the list kept showing the old domains.
+test.describe.serial("Settings domains slow saves", () => {
+  // Both tests edit the same church domain list.
+  test.describe.configure({ retries: 0 });
+  const DOMAINS = ["www.example-1419.org", "example-1419.org"];
+  const SAVE_MS = 45000;
+  // Prod/demo domain writes each wait on the Caddy sync (~10s). The local Api syncs fast,
+  // so hold each domain write in the browser to match.
+  const SYNC_MS = 8000;
+
+  test("removing two domains closes the editor and clears the list", async ({ page }) => {
+    test.setTimeout(180000);
+    await page.route(/\/membership\/domains(\/|$)/, async (route) => {
+      const method = route.request().method();
+      if (method !== "DELETE" && method !== "POST") return route.continue();
+      const response = await route.fetch();
+      await new Promise((resolve) => setTimeout(resolve, SYNC_MS));
+      await route.fulfill({ response });
+    });
+    await page.locator('[data-testid="settings-section-domains"]').click();
+    const section = page.locator('[data-testid="settings-domains"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+
+    const input = section.locator('input[name="domainName"]');
+    const save = () => section.locator("button").getByText("Save").click();
+    // The editor input shows before its domain list loads, so wait for that load.
+    const openEdit = async () => {
+      const loaded = page.waitForResponse((r) => r.request().method() === "GET" && new URL(r.url()).pathname.endsWith("/membership/domains"));
+      await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+      await loaded;
+      await expect(input).toBeVisible({ timeout: 10000 });
+    };
+
+    // Add both domains in one save.
+    await openEdit();
+    for (const name of DOMAINS) {
+      // reset-demo keeps domains, so a run that died mid-way leaves them behind.
+      if (await section.getByText(name, { exact: true }).count()) continue;
+      await input.fill(name);
+      await section.getByRole("button", { name: "Add" }).click();
+    }
+    await save();
+    await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+    for (const name of DOMAINS) await expect(section.getByText(name, { exact: true })).toBeVisible();
+
+    // Remove both: two DELETEs, each slow.
+    await openEdit();
+    for (const name of DOMAINS) await expect(section.getByText(name, { exact: true })).toBeVisible({ timeout: 10000 });
+    const deleteButtons = section.getByRole("button", { name: "Delete" });
+    while (await deleteButtons.count()) await deleteButtons.first().click();
+    await save();
+
+    await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+    for (const name of DOMAINS) await expect(section.getByText(name, { exact: true })).toHaveCount(0, { timeout: 15000 });
+    await expect(section.getByText("No custom domains")).toBeVisible({ timeout: 15000 });
+  });
+
+  test("cancel during a slow save leaves the reopened editor usable", async ({ page }) => {
+    test.setTimeout(180000);
+    const DOMAIN = "cancel-1419.org";
+    const HOLD_MS = 10000;
+    const SAVE_MS = 40000;
+    let release: () => void = () => {};
+    const held = new Promise<void>((resolve) => { release = resolve; });
+    let holding = true;
+    await page.route(/\/membership\/domains(\/|$)/, async (route) => {
+      const method = route.request().method();
+      if (!holding || (method !== "DELETE" && method !== "POST")) return route.continue();
+      holding = false;
+      const response = await route.fetch();
+      await new Promise((resolve) => setTimeout(resolve, HOLD_MS));
+      await route.fulfill({ response });
+      release();
+    });
+    await page.locator('[data-testid="settings-section-domains"]').click();
+    const section = page.locator('[data-testid="settings-domains"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+
+    const input = section.locator('input[name="domainName"]');
+    const saveButton = section.getByRole("button", { name: "Save" });
+    // The editor input shows before its domain list loads, so wait for that load.
+    const openEdit = async () => {
+      const loaded = page.waitForResponse((r) => r.request().method() === "GET" && new URL(r.url()).pathname.endsWith("/membership/domains"));
+      await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+      await loaded;
+      await expect(input).toBeVisible({ timeout: 10000 });
+    };
+
+    await openEdit();
+    // A run that died before its cleanup leaves the domain behind; the held write is then its DELETE.
+    const leftover = section.locator("tr", { hasText: DOMAIN });
+    if (await leftover.count()) await leftover.getByRole("button").click();
+    else await input.fill(DOMAIN);
+    await saveButton.click();
+    await expect(saveButton).toBeDisabled();
+    await section.getByRole("button", { name: "Cancel" }).click();
+    await expect(input).toHaveCount(0, { timeout: 10000 });
+
+    await openEdit();
+    await expect(saveButton).toBeEnabled();
+
+    // The cancelled save's late result must not close this editor or disable Save.
+    await held;
+    await page.waitForTimeout(1000);
+    await expect(input).toBeVisible();
+    await expect(saveButton).toBeEnabled();
+
+    // Clean up: the held write landed, so remove the domain if it is there.
+    await page.unroute(/\/membership\/domains(\/|$)/);
+    await page.reload();
+    await page.locator('[data-testid="settings-section-domains"]').click();
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await openEdit();
+    const row = section.locator("tr", { hasText: DOMAIN });
+    if (await row.count()) {
+      await row.getByRole("button").click();
+      await saveButton.click();
+      await expect(input).toHaveCount(0, { timeout: SAVE_MS });
+      await expect(section.getByText(DOMAIN)).toHaveCount(0, { timeout: SAVE_MS });
+    }
+  });
+});
+
 // ChurchAppsSupport#1296: FreePlay schedules use the church's stored time zone, so Church Information must show and change it.
 test.describe("Church information time zone", () => {
   test("time zone can be changed and restored", async ({ page }) => {
