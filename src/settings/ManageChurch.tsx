@@ -232,6 +232,8 @@ export const ManageChurch = () => {
             view={domainsView}
             renderEdit={(saveTrigger, onSaveComplete) => <DomainSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
+            // Every domain write waits on the proxy sync, so a multi-domain save can run well past 15s.
+            saveTimeoutMs={60000}
           />
         );
       case "grade-promotion":
