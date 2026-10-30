@@ -32,7 +32,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
 
   const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
 
-  const anyDirty = isDirty || typesDirty || selectionsDirty || couponsDirty;
+  const sectionsDirty = typesDirty || selectionsDirty || couponsDirty;
+  const anyDirty = isDirty || sectionsDirty;
 
   useEffect(() => {
     if (!anyDirty) return;
@@ -82,7 +83,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   return (
     <CardWithHeader title={Locale.label("registrations.registrationSettingsEdit.registrationSettings")}>
       <Box>
-        {anyDirty && (
+        {sectionsDirty && (
           <Alert severity="warning" sx={{ mb: 2 }} data-testid="registration-unsaved-changes-alert">
             {Locale.label("registrations.registrationSettingsEdit.unsavedChanges")}
           </Alert>
@@ -112,7 +113,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
             </Grid>
           </Grid>
           <TextField label={Locale.label("registrations.registrationSettingsEdit.tags")} placeholder={Locale.label("registrations.registrationSettingsEdit.tagsPlaceholder")} helperText={Locale.label("registrations.registrationSettingsEdit.tagsHelper")} size="small" fullWidth {...register("tags")} />
-          <TextField select label={Locale.label("registrations.registrationSettingsEdit.registrationQuestions")} size="small" fullWidth value={watch("formId") || ""} {...register("formId")}>
+          <TextField select label={Locale.label("registrations.registrationSettingsEdit.registrationQuestions")} size="small" fullWidth value={watch("formId") || ""} {...register("formId")} slotProps={{ select: { displayEmpty: true }, inputLabel: { shrink: true } }}>
             <MenuItem value="">{Locale.label("registrations.registrationSettingsEdit.none")}</MenuItem>
             {forms.map((f) => <MenuItem key={f.id} value={f.id}>{f.name}</MenuItem>)}
           </TextField>

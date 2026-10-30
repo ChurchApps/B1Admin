@@ -299,7 +299,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
 
     const counts = page.locator('[data-testid="type-counts"]');
     await expect(counts).toContainText("General: 1");
-    await expect(counts).toContainText("Camper: 1");
+    await expect(counts).toContainText("Camper: 0"); // the Camper registrant is waitlisted
 
     await expect(rosterCard.getByText("$ 0.00 / $ 45.00")).toBeVisible();
 
