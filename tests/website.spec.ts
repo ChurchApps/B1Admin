@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { request, type Page } from "@playwright/test";
 import { siteTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
@@ -1537,63 +1537,119 @@ test.describe("Website Management", () => {
 
 });
 
-// #1265: the Calendar element can render the month grid or upcoming-event tiles.
-test.describe.serial("Calendar element display", () => {
-  let page: Page;
+// Both describes below edit ELE00000054, so they run in order on one worker.
+test.describe.serial("Events page calendar element", () => {
+  // #1265: the Calendar element can render the month grid or upcoming-event tiles.
+  test.describe.serial("Calendar element display", () => {
+    let page: Page;
 
-  test.beforeAll(async ({ browser }) => {
-    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
-    page = await context.newPage();
-    await login(page);
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    const openCalendarElement = async () => {
+      const wrapper = page.locator('div[data-element-id="ELE00000054"]');
+      await expect(wrapper).toBeVisible({ timeout: 20000 });
+      await wrapper.click({ position: { x: 5, y: 5 } });
+      const select = page.locator('[data-testid="calendar-display-select"]');
+      await expect(select).toBeVisible({ timeout: 10000 });
+      return select;
+    };
+
+    const saveElement = async () => {
+      const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator("button").getByText("Save").click();
+      const resp = await elementPost;
+      expect(resp.status()).toBe(200);
+      return resp.request().postDataJSON()[0].answersJSON as string;
+    };
+
+    test("offers Month calendar or Upcoming events on the Events page calendar element", async () => {
+      await page.goto("/site/pages/PAG00000004");
+      const select = await openCalendarElement();
+      await expect(select).toContainText("Month calendar");
+      await select.click();
+      await page.getByRole("option", { name: "Upcoming events" }).click();
+      expect(JSON.parse(await saveElement()).display).toBe("upcoming");
+
+      const again = await openCalendarElement();
+      await expect(again).toContainText("Upcoming events");
+      await again.click();
+      await page.getByRole("option", { name: "Month calendar" }).click();
+      expect(JSON.parse(await saveElement()).display).toBe("month");
+    });
+
+    test("restricts the calendar element to one tag and clears it again", async () => {
+      await page.goto("/site/pages/PAG00000004");
+      await openCalendarElement();
+      const tagInput = page.locator('[data-testid="calendar-tag-input"] input');
+      await expect(tagInput).toHaveValue("");
+      await tagInput.fill("youth");
+      expect(JSON.parse(await saveElement()).tag).toBe("youth");
+
+      await openCalendarElement();
+      await expect(tagInput).toHaveValue("youth");
+      await tagInput.fill("");
+      expect(JSON.parse(await saveElement()).tag ?? "").toBe("");
+    });
   });
 
-  test.afterAll(async () => {
-    await page?.context().close();
-  });
+  // ChurchAppsSupport#1399: Upcoming events can be shown as one row that scrolls by itself, like the Verse of the Day week.
+  test.describe.serial("Upcoming events scrolling layout", () => {
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
+    let page: Page;
+    let auth: { headers: Record<string, string> };
+    let originalElement: any;
 
-  const openCalendarElement = async () => {
-    const wrapper = page.locator('div[data-element-id="ELE00000054"]');
-    await expect(wrapper).toBeVisible({ timeout: 20000 });
-    await wrapper.click({ position: { x: 5, y: 5 } });
-    const select = page.locator('[data-testid="calendar-display-select"]');
-    await expect(select).toBeVisible({ timeout: 10000 });
-    return select;
-  };
+    test.beforeAll(async ({ browser }) => {
+      const ctx = await request.newContext();
+      const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+      auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+      originalElement = await (await ctx.get(`${API_BASE}/content/elements/ELE00000054`, auth)).json();
+      await ctx.dispose();
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+    });
 
-  const saveElement = async () => {
-    const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
-    await page.locator("button").getByText("Save").click();
-    const resp = await elementPost;
-    expect(resp.status()).toBe(200);
-    return resp.request().postDataJSON()[0].answersJSON as string;
-  };
+    test.afterAll(async () => {
+      if (originalElement?.id) {
+        const ctx = await request.newContext();
+        await ctx.post(`${API_BASE}/content/elements`, { ...auth, data: [originalElement] }).catch(() => { });
+        await ctx.dispose();
+      }
+      await page?.context().close();
+    });
 
-  test("offers Month calendar or Upcoming events on the Events page calendar element", async () => {
-    await page.goto("/site/pages/PAG00000004");
-    const select = await openCalendarElement();
-    await expect(select).toContainText("Month calendar");
-    await select.click();
-    await page.getByRole("option", { name: "Upcoming events" }).click();
-    expect(JSON.parse(await saveElement()).display).toBe("upcoming");
+    const openCalendarElement = async () => {
+      const wrapper = page.locator('div[data-element-id="ELE00000054"]');
+      await expect(wrapper).toBeVisible({ timeout: 20000 });
+      await wrapper.click({ position: { x: 5, y: 5 } });
+      const select = page.locator('[data-testid="calendar-display-select"]');
+      await expect(select).toBeVisible({ timeout: 10000 });
+      return select;
+    };
 
-    const again = await openCalendarElement();
-    await expect(again).toContainText("Upcoming events");
-    await again.click();
-    await page.getByRole("option", { name: "Month calendar" }).click();
-    expect(JSON.parse(await saveElement()).display).toBe("month");
-  });
-
-  test("restricts the calendar element to one tag and clears it again", async () => {
-    await page.goto("/site/pages/PAG00000004");
-    await openCalendarElement();
-    const tagInput = page.locator('[data-testid="calendar-tag-input"] input');
-    await expect(tagInput).toHaveValue("");
-    await tagInput.fill("youth");
-    expect(JSON.parse(await saveElement()).tag).toBe("youth");
-
-    await openCalendarElement();
-    await expect(tagInput).toHaveValue("youth");
-    await tagInput.fill("");
-    expect(JSON.parse(await saveElement()).tag ?? "").toBe("");
+    test("offers a scrolling layout for Upcoming events and saves it", async () => {
+      await page.goto("/site/pages/PAG00000004");
+      const display = await openCalendarElement();
+      await display.click();
+      await page.getByRole("option", { name: "Upcoming events" }).click();
+      const layout = page.locator('[data-testid="calendar-layout-select"]');
+      await expect(layout).toContainText("Grid");
+      await layout.click();
+      await page.getByRole("option", { name: "Scrolling (automatic)" }).click();
+      const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator("button").getByText("Save").click();
+      const answers = JSON.parse((await elementPost).request().postDataJSON()[0].answersJSON);
+      expect(answers).toMatchObject({ display: "upcoming", layout: "autoscroll" });
+    });
   });
 });

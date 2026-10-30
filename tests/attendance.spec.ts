@@ -6,7 +6,7 @@ import { navigateToAttendance } from "./helpers/navigation";
 import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { mockChurchLogo } from "./helpers/print-logo";
-import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
+import { createLimitedRole, createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
 
 // /attendance opens on this week; Setup, Headcounts and All years are verbs, and the reports are pills (role=tab) inside All years.
 const openSetup = (page: Page) => page.getByTestId("attendance-verb-setup").click();
@@ -642,6 +642,33 @@ plainTest.describe("View People Names Only", () => {
 
     await page.goto("/attendance?view=setup");
     await expect(page.getByTestId("attendance-record")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("attendance-verb-setup")).toHaveCount(0);
+    await expect(page.getByTestId("attendance-setup-helper")).toHaveCount(0);
+    await expect(page.locator('[data-testid^="add-service-button-"]')).toHaveCount(0);
+  });
+});
+
+// ChurchAppsSupport#1399: a volunteer who can view attendance but not edit services should not be offered Setup.
+plainTest.describe("Attendance Setup needs Edit Services", () => {
+  plainTest.use({ storageState: { cookies: [], origins: [] } });
+  let roleId = "";
+  plainTest.beforeAll(async () => {
+    roleId = await createLimitedRole("Issue 1399 Attendance View", [
+      { apiName: "MembershipApi", contentType: "People", action: "View Names" },
+      { apiName: "AttendanceApi", contentType: "Attendance", action: "View" },
+      { apiName: "AttendanceApi", contentType: "Attendance", action: "Checkin" }
+    ]);
+  });
+  plainTest.afterAll(async () => { await deleteRole(roleId); });
+
+  plainTest("View Attendance without Edit Services hides Setup", async ({ page }) => {
+    await loginAsVolunteer(page);
+    await page.goto("/attendance");
+    await expect(page.getByTestId("attendance-verb-years")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("attendance-verb-setup")).toHaveCount(0);
+
+    await page.goto("/attendance?view=setup");
+    await expect(page.getByTestId("attendance-verb-years")).toBeVisible({ timeout: 15000 });
     await expect(page.getByTestId("attendance-verb-setup")).toHaveCount(0);
     await expect(page.getByTestId("attendance-setup-helper")).toHaveCount(0);
     await expect(page.locator('[data-testid^="add-service-button-"]')).toHaveCount(0);
