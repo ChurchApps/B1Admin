@@ -224,6 +224,16 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await expect(page.locator('[data-testid="registration-unsaved-changes-alert"]')).toHaveCount(0, { timeout: 10000 });
   });
 
+  test("Changing a basic setting like Capacity does not show the type/selection/code warning", async ({ page: freshPage }) => {
+    // Own page so the dirty form's beforeunload guard never blocks the shared page's next navigation.
+    await freshPage.goto(`/registrations/${eventAId}?view=settings`);
+    await expect(freshPage.getByText(EVENT_A, { exact: false }).first()).toBeVisible({ timeout: 15000 });
+    const capacity = freshPage.locator('input[name="capacity"]');
+    await capacity.fill("25");
+    await expect(capacity).toHaveValue("25");
+    await expect(freshPage.locator('[data-testid="registration-unsaved-changes-alert"]')).toHaveCount(0);
+  });
+
   test("Add Attendee requires a type pick when attendee types exist", async () => {
     // Adult/Child both carry a price, which routes register() through the payment-required path.
     // A free third type isolates the type-pick UI assertion from gateway/payment concerns.
@@ -306,6 +316,16 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     // Waitlisted row exposes the Promote action.
     const waitRow = page.locator('[data-testid="registration-row"]').filter({ hasText: "Zacchaeus Waitlisted" });
     await expect(waitRow.locator('button[aria-label="Promote"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test("Capacity block counts confirmed registrants and lists the waitlist separately", async () => {
+    await page.goto(`/registrations/${eventBId}`);
+    const capacity = page.locator('[data-testid="registration-capacity"]');
+    await expect(capacity).toContainText("1 / 1", { timeout: 15000 });
+    await expect(capacity).toContainText("1 waitlisted");
+    const counts = page.locator('[data-testid="type-counts"]');
+    await expect(counts).toContainText("General: 1");
+    await expect(counts).toContainText("Camper: 0");
   });
 
   test("Registration details dialog lists members with type and any payments", async () => {
