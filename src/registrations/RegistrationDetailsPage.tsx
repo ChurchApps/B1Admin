@@ -41,6 +41,8 @@ import { formatDateSafe } from "../helpers/DateFormatHelper";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
 
+const isActive = (status?: string) => status === "pending" || status === "confirmed";
+
 const parseErrorMessage = (raw: string) => {
   try {
     const parsed = JSON.parse(raw);
@@ -84,7 +86,8 @@ export const RegistrationDetailsPage = () => {
     setRegistrations(regsData || []);
     setTypes(typesData || []);
     setSelections(selData || []);
-    setCount((regsData || []).filter((r: CommerceRegistrationInterface) => r.status !== "cancelled").length);
+    // Matches the API's capacity count: pending + confirmed. Waitlisted people are shown separately.
+    setCount((regsData || []).filter((r: CommerceRegistrationInterface) => isActive(r.status)).length);
     setLoading(false);
   };
 
@@ -110,10 +113,12 @@ export const RegistrationDetailsPage = () => {
     if (!event) return;
     setAddError("");
     try {
-      const body: Record<string, unknown> = { churchId: event.churchId, eventId: event.id, personId: person.id };
-      if (types.length > 0) {
-        body.members = [{ personId: person.id, firstName: person.name?.first || "", lastName: person.name?.last || "", registrationTypeId: addAttendeeTypeId }];
-      }
+      const body: Record<string, unknown> = {
+        churchId: event.churchId,
+        eventId: event.id,
+        personId: person.id,
+        members: [{ personId: person.id, firstName: person.name?.first || "", lastName: person.name?.last || "", registrationTypeId: addAttendeeTypeId || undefined }]
+      };
       await ApiHelper.post("/registrations/register", body, "ContentApi");
       setShowAddAttendee(false);
       loadData(false);
@@ -141,13 +146,14 @@ export const RegistrationDetailsPage = () => {
 
   const getTypeCounts = () => {
     const counts = new Map<string, number>();
-    registrations.filter((r) => r.status !== "cancelled").forEach((r) => r.members?.forEach((m) => {
+    registrations.filter((r) => isActive(r.status)).forEach((r) => r.members?.forEach((m) => {
       if (m.registrationTypeId) counts.set(m.registrationTypeId, (counts.get(m.registrationTypeId) || 0) + 1);
     }));
     return counts;
   };
 
   const waitlistOrder = registrations.filter((r) => r.status === "waitlisted").sort((a, b) => new Date(a.registeredDate || 0).getTime() - new Date(b.registeredDate || 0).getTime());
+  const waitlistCount = waitlistOrder.length;
   const waitlistPos = new Map<string, number>(waitlistOrder.map((r, i) => [r.id as string, i + 1]));
 
   const handleExportCSV = async () => {
@@ -308,6 +314,7 @@ export const RegistrationDetailsPage = () => {
         </Typography>
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationsPage.registered")}</Typography>
         {event.capacity ? <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 1 }} /> : null}
+        {waitlistCount > 0 && <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>{Locale.label("registrations.registrationDetailsPage.waitlisted", "{count} waitlisted").replace("{count}", String(waitlistCount))}</Typography>}
       </Box>
 
       {tags.length > 0 && (
@@ -324,7 +331,7 @@ export const RegistrationDetailsPage = () => {
 
   const roster = (
     <CardWithHeader
-      title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""})`}
+      title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""}${waitlistCount > 0 ? " · " + Locale.label("registrations.registrationDetailsPage.waitlisted", "{count} waitlisted").replace("{count}", String(waitlistCount)) : ""})`}
       actions={(
         <Stack direction="row" spacing={1} alignItems="center">
           {canEdit && (

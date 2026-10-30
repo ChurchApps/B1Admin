@@ -3160,7 +3160,8 @@
       "subtitle": "Manage registrations for this event",
       "unansweredOnly": "Unanswered questions only",
       "unknown": "Unknown",
-      "viewAnswers": "View Answers"
+      "viewAnswers": "View Answers",
+      "waitlisted": "{count} waitlisted"
     },
     "registrationSettingsEdit": {
       "capacity": "Capacity",

@@ -253,3 +253,92 @@ test.describe.serial("Registrations — Registration Questions, Add Attendee, fi
     await expect(dialog).toHaveCount(0, { timeout: 5000 });
   });
 });
+
+test.describe("Registrations — Add Attendee on standalone events, Questions default", () => {
+  const start = new Date();
+  start.setDate(start.getDate() + 40);
+  start.setHours(9, 0, 0, 0);
+  const end = new Date(start);
+  end.setHours(12, 0, 0, 0);
+
+  let jwt = "";
+  let groupId = "";
+  const eventIds: string[] = [];
+  const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
+
+  async function createEvent(title: string, types: Record<string, unknown>[] = []) {
+    const ctx = await request.newContext();
+    const res = await ctx.post(`${API_BASE}/content/events`, { ...auth(), data: [{ groupId, title, start, end, allDay: false, visibility: "public", registrationEnabled: true }] });
+    expect(res.ok()).toBeTruthy();
+    const id = (await res.json())[0].id as string;
+    eventIds.push(id);
+    if (types.length) {
+      const typesRes = await ctx.post(`${API_BASE}/content/registrations/types`, { ...auth(), data: types.map((t) => ({ eventId: id, active: true, ...t })) });
+      expect(typesRes.ok()).toBeTruthy();
+    }
+    await ctx.dispose();
+    return id;
+  }
+
+  async function addAttendee(page: Page, name: string, typeName?: string) {
+    await page.getByRole("button", { name: "Add Attendee" }).click();
+    const dialog = page.locator('div[role="dialog"]').filter({ hasText: "Add Attendee" });
+    await expect(dialog).toBeVisible({ timeout: 10000 });
+    if (typeName) {
+      await dialog.locator('[data-testid="add-attendee-type-select"] [role="combobox"]').click();
+      await page.getByRole("option", { name: typeName }).click();
+    }
+    await dialog.locator('input[name="personAddText"]').fill(name);
+    await dialog.locator('[data-testid="search-button"]').click();
+    const registerPost = page.waitForResponse((r) => r.url().includes("/registrations/register") && r.request().method() === "POST", { timeout: 15000 });
+    await dialog.locator('[data-testid^="add-person-button-"]').first().click();
+    const regResp = await registerPost;
+    expect(regResp.ok(), "register response ok").toBeTruthy();
+    await expect(dialog).toHaveCount(0, { timeout: 15000 });
+    return regResp.json();
+  }
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const loginBody = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    jwt = ((loginBody.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID) || loginBody.userChurches[0]).jwt;
+    groupId = (await (await ctx.get(`${API_BASE}/membership/groups`, auth())).json())[0].id;
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    const ctx = await request.newContext();
+    for (const id of eventIds) {
+      const regs = await (await ctx.get(`${API_BASE}/content/registrations/event/${id}`, auth())).json().catch(() => []);
+      for (const r of regs || []) await ctx.delete(`${API_BASE}/content/registrations/${r.id}`, auth()).catch(() => { });
+      await ctx.delete(`${API_BASE}/content/events/${id}`, auth()).catch(() => { });
+    }
+    await ctx.dispose();
+  });
+
+  test("Add Attendee on a free event with no types shows the person and one member", async ({ page }) => {
+    const id = await createEvent("Zacchaeus Free Add Attendee Event");
+    await page.goto(`/registrations/${id}`);
+    await addAttendee(page, "Donald Clark");
+    const row = page.locator('[data-testid="registration-row"]').first();
+    await expect(row).toContainText("Donald Clark", { timeout: 15000 });
+    await expect(row.locator("td").nth(1)).toHaveText("1");
+  });
+
+  test("Add Attendee on a paid type saves the person as pending with a balance due", async ({ page }) => {
+    const id = await createEvent("Zacchaeus Paid Add Attendee Event", [{ name: "Camper", price: 45, sort: 1 }]);
+    await page.goto(`/registrations/${id}`);
+    const created = await addAttendee(page, "Donald Clark", "Camper");
+    expect(created.status, "admin-added paid registration status").toBe("pending");
+    expect(Number(created.amountPaid || 0), "amountPaid").toBe(0);
+    const row = page.locator('[data-testid="registration-row"]').first();
+    await expect(row).toContainText("Donald Clark", { timeout: 15000 });
+    await expect(row).toContainText("$ 0.00 / $ 45.00");
+  });
+
+  test("Registration Questions shows None when no form is chosen", async ({ page }) => {
+    const id = await createEvent("Zacchaeus Questions Default Event");
+    await page.goto(`/registrations/${id}?view=settings`);
+    await expect(page.getByRole("combobox", { name: "Registration Questions" })).toHaveText("None", { timeout: 15000 });
+  });
+});
