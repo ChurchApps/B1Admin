@@ -538,6 +538,33 @@ test.describe("Copy plan forward", () => {
     await ctx.dispose();
   });
 
+  const openAddPlan = async (page: Page) => {
+    await page.goto("/serving/planTypes/PLT00000001");
+    const addBtn = page.getByTestId("add-plan-button").first();
+    await expect(addBtn).toBeVisible({ timeout: 15000 });
+    await addBtn.click();
+    await expect(page.getByTestId("copy-mode-select")).toBeVisible({ timeout: 10000 });
+  };
+
+  // A date far ahead of any other spec's, so a previous plan to copy from always exists.
+  const setServiceDate = async (page: Page, digits: string) => {
+    await page.getByRole("spinbutton", { name: "Month" }).click();
+    await page.keyboard.type(digits);
+  };
+
+  const selectOption = async (page: Page, testId: string, option: string) => {
+    await page.getByTestId(testId).locator('[role="combobox"]').click();
+    await page.getByRole("option", { name: option }).click();
+  };
+
+  const saveAndCollectCopies = (page: Page) => {
+    const copies: any[] = [];
+    page.on("response", async (r) => {
+      if (r.url().includes("/plans/copy/") && r.request().method() === "POST" && r.ok()) copies.push(await r.json());
+    });
+    return copies;
+  };
+
   test("repeat weekly creates one copied plan per week", async ({ page }) => {
     await page.goto("/serving/planTypes/PLT00000001");
     const addBtn = page.getByTestId("add-plan-button").first();
@@ -545,12 +572,9 @@ test.describe("Copy plan forward", () => {
     await addBtn.click();
     await expect(page.getByTestId("copy-mode-select")).toBeVisible({ timeout: 10000 });
     await expect(page.locator("#signupDeadlineHours")).toBeVisible();
-    await page.getByTestId("repeat-weeks-input").locator("input").fill("3");
+    await page.getByTestId("repeat-count-input").locator("input").fill("3");
 
-    const copies: any[] = [];
-    page.on("response", async (r) => {
-      if (r.url().includes("/plans/copy/") && r.request().method() === "POST" && r.ok()) copies.push(await r.json());
-    });
+    const copies = saveAndCollectCopies(page);
     await page.locator("button").getByText("Save").click();
     await expect.poll(() => copies.length, { timeout: 20000 }).toBe(3);
     createdPlanIds.push(...copies.map((c) => c.id));
@@ -559,6 +583,40 @@ test.describe("Copy plan forward", () => {
     expect(Math.round(days[1] - days[0])).toBe(7);
     expect(Math.round(days[2] - days[1])).toBe(7);
     expect(new Set(copies.map((c) => c.name)).size).toBe(3);
+  });
+
+  test("repeat every 2 weeks creates plans 14 days apart", async ({ page }) => {
+    await openAddPlan(page);
+    await page.getByTestId("repeat-interval-input").locator("input").fill("2");
+    await page.getByTestId("repeat-count-input").locator("input").fill("3");
+
+    const copies = saveAndCollectCopies(page);
+    await page.locator("button").getByText("Save").click();
+    await expect.poll(() => copies.length, { timeout: 20000 }).toBe(3);
+    createdPlanIds.push(...copies.map((c) => c.id));
+
+    const days = copies.map((c) => new Date(c.serviceDate).getTime() / 86400000);
+    expect(Math.round(days[1] - days[0])).toBe(14);
+    expect(Math.round(days[2] - days[1])).toBe(14);
+  });
+
+  test("repeat monthly on the nth weekday keeps the weekday and lists the dates before saving", async ({ page }) => {
+    await openAddPlan(page);
+    await setServiceDate(page, "11122033");
+    await selectOption(page, "repeat-frequency-select", "Month");
+    await selectOption(page, "repeat-month-mode-select", "Monthly on the second Saturday");
+    await page.getByTestId("repeat-count-input").locator("input").fill("6");
+    await expect(page.getByText("Nov 12, Dec 10, Jan 14, Feb 11, Mar 11, Apr 8")).toBeVisible();
+
+    const copies = saveAndCollectCopies(page);
+    await page.locator("button").getByText("Save").click();
+    await expect.poll(() => copies.length, { timeout: 30000 }).toBe(6);
+    createdPlanIds.push(...copies.map((c) => c.id));
+
+    const dates = copies.map((c) => new Date(c.serviceDate));
+    expect(dates.map((d) => d.getDay())).toEqual([6, 6, 6, 6, 6, 6]);
+    expect(dates.map((d) => Math.floor((d.getDate() - 1) / 7))).toEqual([1, 1, 1, 1, 1, 1]);
+    expect(dates.map((d) => d.getMonth())).toEqual([10, 11, 0, 1, 2, 3]);
   });
 
   test("copy from previous inside an empty plan fills that plan", async ({ page }) => {
