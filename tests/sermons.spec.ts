@@ -255,6 +255,27 @@ test.describe("Sermons Management", () => {
       await streamHomeBtn.click();
     });
 
+    // Issue #1432: the Stream page counts Minutes Before back from when the video starts, so the chip has to as well.
+    test("chat open chip counts back from the video start", async () => {
+      await page.locator('[data-testid="add-service-button"]').click();
+
+      const chatBefore = page.locator('[name="chatBefore"]');
+      await expect(chatBefore).toBeVisible({ timeout: 10000 });
+      const earlyStart = page.locator('[name="earlyStart"]');
+      const chatChip = page.locator(".MuiTextField-root", { has: chatBefore });
+
+      // A new service is next Sunday at 9:00 AM with both values at 10.
+      await expect(chatBefore).toHaveValue("10");
+      await expect(earlyStart).toHaveValue("10");
+      await expect(chatChip).toContainText("8:40 AM");
+
+      await earlyStart.fill("");
+      await expect(chatChip).toContainText("8:50 AM");
+
+      await page.locator("button").getByText("Cancel").click();
+      await expect(page.locator('[name="serviceLabel"]')).toHaveCount(0);
+    });
+
     test("should add service", async () => {
       const addBtn = page.locator('[data-testid="add-service-button"]');
       await addBtn.click();

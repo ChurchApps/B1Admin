@@ -1018,7 +1018,8 @@
     "givingLink": {
       "amount": "Amount (optional)",
       "button": "Giving Link",
-      "description": "Share this link so donors land on the donate page with the fund and amount already selected.",
+      "description": "Share this link or QR code so donors land on the donate page with the fund and amount already selected.",
+      "downloadQr": "Download PNG",
       "title": "Giving Link",
       "url": "Link"
     },
