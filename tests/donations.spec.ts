@@ -364,8 +364,19 @@ test.describe("Donations — navigation and listing extras", () => {
     await expect(urlField).toBeVisible({ timeout: 10000 });
     await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001/);
 
+    // The QR code follows the link, including the amount (ChurchAppsSupport#1426).
+    const qr = page.getByTestId("giving-link-qr");
+    await expect(qr).toBeVisible({ timeout: 10000 });
+    const qrBefore = await qr.evaluate((c: HTMLCanvasElement) => c.toDataURL());
+
     await page.getByTestId("giving-link-amount").fill("50");
     await expect(urlField).toHaveValue(/\/donate\?fundId=FUN00000001&amount=50/);
+    await expect(qr).toBeVisible();
+    await expect.poll(() => qr.evaluate((c: HTMLCanvasElement) => c.toDataURL())).not.toBe(qrBefore);
+
+    const download = page.waitForEvent("download");
+    await page.getByTestId("giving-link-download").click();
+    expect((await download).suggestedFilename()).toBe("giving-qr-general-fund.png");
 
     await page.getByTestId("copy-giving-link").click();
     await page.getByTestId("close-giving-link").click();
