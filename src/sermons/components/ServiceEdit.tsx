@@ -172,7 +172,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const watchedEarlyStart = watch("earlyStart");
 
   const serviceTimeMs = watchedServiceTime ? new Date(watchedServiceTime).getTime() : null;
-  const chatAndPrayerStartTime = serviceTimeMs && watchedChatBefore ? serviceTimeMs - parseInt(watchedChatBefore) * 60 * 1000 : null;
+  const chatAndPrayerStartTime = serviceTimeMs && watchedChatBefore ? serviceTimeMs - (parseInt(watchedChatBefore) + (parseInt(watchedEarlyStart) || 0)) * 60 * 1000 : null;
   const chatAndPrayerEndTime = serviceTimeMs && watchedChatAfter ? serviceTimeMs + parseInt(watchedChatAfter) * 60 * 1000 : null;
   const earlyStartTime = serviceTimeMs && watchedEarlyStart ? serviceTimeMs - parseInt(watchedEarlyStart) * 60 * 1000 : null;
 
