@@ -570,6 +570,66 @@ test.describe("Donations list — notes column", () => {
   });
 });
 
+// ChurchAppsSupport#1425: a counting team can tell who typed in each gift without a signature sheet.
+const ENTERED_BY_BATCH_NAME = "Zacchaeus Entered By Batch";
+
+test.describe("Donations list — entered by", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...(await apiAuth(ctx)), data: [{ name: ENTERED_BY_BATCH_NAME, batchDate: "2025-11-09" }] });
+    batchId = (await batchRes.json())[0].id;
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, await apiAuth(ctx));
+    await ctx.dispose();
+  });
+
+  test("a hand-entered gift shows who entered it, on the batch page and its printout", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    const anon = page.locator("button").getByText("Anonymous");
+    await expect(anon).toBeVisible({ timeout: 10000 });
+    await anon.click();
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("15.00");
+    await page.locator('[data-testid="add-donation-submit"]').click();
+
+    await expect(page.getByTestId("donation-entered-by")).toHaveText("Entered by Demo User", { timeout: 10000 });
+
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto("/donations/batches/print-all?start=2025-11-09&end=2025-11-09");
+    const doc = page.getByTestId("batch-print-document").filter({ hasText: ENTERED_BY_BATCH_NAME });
+    await expect(doc.getByText("Entered by Demo User", { exact: true })).toBeVisible({ timeout: 15000 });
+  });
+
+  test("the stamp comes from the server and survives an edit", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const created = await ctx.post(`${API_BASE}/giving/donations`, { ...auth, data: [{ batchId, donationDate: "2025-11-09", amount: 10, method: "Check", enteredBy: "PER00000001" }] });
+    const gift = (await created.json())[0];
+    const stamped = await (await ctx.get(`${API_BASE}/giving/donations/${gift.id}`, auth)).json();
+    expect(stamped.enteredBy).toBeTruthy();
+    expect(stamped.enteredBy).not.toBe("PER00000001");
+
+    await ctx.post(`${API_BASE}/giving/donations`, { ...auth, data: [{ ...stamped, amount: 20, enteredBy: "PER00000001" }] });
+    const edited = await (await ctx.get(`${API_BASE}/giving/donations/${gift.id}`, auth)).json();
+    expect(Number(edited.amount)).toBe(20);
+    expect(edited.enteredBy).toBe(stamped.enteredBy);
+    await ctx.dispose();
+  });
+
+  test("gifts with no recorded enterer show no caption", async ({ page }) => {
+    await page.goto("/donations/batches/BAT00000001");
+    await expect(page.locator('[data-testid^="donation-row-"]').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("donation-entered-by")).toHaveCount(0);
+  });
+});
+
 // Refunds: the demo church has no Stripe sandbox, so the button/visibility rules and the list
 // chip run against API-seeded rows and the refund POST itself is route-mocked.
 const REFUND_BATCH_NAME = "Zacchaeus Refund Batch";

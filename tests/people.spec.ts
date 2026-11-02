@@ -1,4 +1,4 @@
-import { request, type APIRequestContext, type Page } from "@playwright/test";
+import { request, type APIRequestContext, type Locator, type Page } from "@playwright/test";
 import { peopleTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { navigateToPeople } from "./helpers/navigation";
 import { personDetailsEditButton, SEED_PEOPLE, openPersonRow, confirmDelete } from "./helpers/fixtures";
@@ -1330,5 +1330,55 @@ loggedInTest.describe("Person date added and record dates", () => {
     await page.goto("/people/PER00000079?view=forms&form=FRM00000001");
     await expect(page.getByTestId("submission-date")).toHaveText(/^Submitted .*2025/, { timeout: 15000 });
     await expect(page.getByTestId("submission-picker")).toHaveCount(0);
+  });
+});
+
+// ChurchAppsSupport#1425: read a child and each person's standing off the list without opening the profile.
+test.describe("People table status and household role", () => {
+  const STATUSES = ["Visitor", "Guest", "Regular Attendee", "Member", "Staff", "Inactive", "Deceased"];
+  const chipColors = (chip: Locator) => chip.evaluate((el) => {
+    const style = getComputedStyle(el);
+    return style.color + " on " + style.backgroundColor;
+  });
+
+  test("a child shows a Child tag beside the status, and an adult does not", async ({ page }) => {
+    await page.getByTestId("people-view-table").click();
+    await page.locator('input[name="searchText"]').fill("Smith");
+    const child = page.locator("#peopleTable tbody tr").filter({ hasText: "James Smith" }).first();
+    await expect(child.getByTestId("person-child-tag")).toHaveText("Child", { timeout: 10000 });
+    await expect(child.getByText("Member", { exact: true })).toBeVisible();
+    const adult = page.locator("#peopleTable tbody tr").filter({ hasText: "John Smith" }).first();
+    await expect(adult).toBeVisible();
+    await expect(adult.getByTestId("person-child-tag")).toHaveCount(0);
+  });
+
+  test("all seven membership statuses have their own colour, and the profile matches the list", async ({ page }) => {
+    await page.route(/\/membership\/people\/list/, async (route) => {
+      const response = await route.fetch();
+      const people = await response.json();
+      await route.fulfill({ response, json: people.map((p: Record<string, unknown>, i: number) => (i < STATUSES.length ? { ...p, membershipStatus: STATUSES[i] } : p)) });
+    });
+    await page.route(/\/membership\/people\/[^/?]+$/, async (route) => {
+      if (route.request().method() !== "GET" || route.request().url().endsWith("/list")) return route.continue();
+      const response = await route.fetch();
+      const person = await response.json();
+      await route.fulfill({ response, json: { ...person, membershipStatus: "Guest" } });
+    });
+    await page.goto("/people");
+    await page.getByTestId("people-view-table").click();
+
+    const rows = page.locator("#peopleTable tbody tr");
+    const colors: Record<string, string> = {};
+    for (const status of STATUSES) {
+      const chip = rows.getByText(status, { exact: true }).first();
+      await expect(chip).toBeVisible({ timeout: 10000 });
+      colors[status] = await chipColors(chip);
+    }
+    expect(new Set(Object.values(colors)).size, JSON.stringify(colors)).toBe(STATUSES.length);
+
+    await openPersonRow(page, SEED_PEOPLE.DONALD);
+    const profileChip = page.getByTestId("person-identity").getByText("Guest", { exact: true });
+    await expect(profileChip).toBeVisible({ timeout: 10000 });
+    expect(await chipColors(profileChip)).toBe(colors.Guest);
   });
 });

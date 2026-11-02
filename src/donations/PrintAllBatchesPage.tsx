@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { BatchPrintDocument } from "./components/BatchPrintDocument";
+import { BatchPrintDocument, setEnteredByName } from "./components/BatchPrintDocument";
 import { useRequirePermission } from "../hooks";
 import { loadPeopleNames } from "./loadPeopleNames";
 import { usePrintLogo } from "../components/PrintChurchHeader";
@@ -49,8 +49,11 @@ export const PrintAllBatchesPage = () => {
     queryFn: async () => {
       const results: DonationInterface[][] = await Promise.all(batchIds.map((id) => ApiHelper.get("/donations?batchId=" + id, "GivingApi")));
       const all = results.flat();
-      const people: PersonInterface[] = await loadPeopleNames(ArrayHelper.getIds(all, "personId"));
-      all.forEach((d) => { if (d.personId) d.person = ArrayHelper.getOne(people, "id", d.personId); });
+      const people: PersonInterface[] = await loadPeopleNames([...ArrayHelper.getIds(all, "personId"), ...ArrayHelper.getIds(all, "enteredBy")]);
+      all.forEach((d) => {
+        if (d.personId) d.person = ArrayHelper.getOne(people, "id", d.personId);
+        setEnteredByName(d, people);
+      });
       const result: Record<string, DonationInterface[]> = {};
       batchIds.forEach((id, i) => { result[id] = results[i] || []; });
       return result;

@@ -14,7 +14,7 @@ import { Household } from "./Household";
 import { PickupPeople } from "./PickupPeople";
 import { formattedPhoneNumber } from "./PersonEdit";
 import { downloadPersonData } from "./personDataExport";
-import { Pill, RecordActions, TextAction, srOnlySx } from "../../components/ui";
+import { Pill, RecordActions, StatusChip, TextAction, srOnlySx } from "../../components/ui";
 
 interface Props {
   person: PersonInterface;
@@ -28,7 +28,6 @@ interface Props {
   onPhoto: () => void;
 }
 
-const memberTone = (status?: string) => (["member", "active", "staff"].includes((status || "").toLowerCase()) ? "primary" : "neutral");
 
 export const PersonIdentity: React.FC<Props> = (props) => {
   const { person } = props;
@@ -135,7 +134,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
 
       {(person.membershipStatus || userEmail || person.nametagNotes || person.optedOut) && (
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 2 }}>
-          {person.membershipStatus && <Pill tone={memberTone(person.membershipStatus)}>{person.membershipStatus}</Pill>}
+          {person.membershipStatus && <StatusChip status={person.membershipStatus} />}
           {person.nametagNotes && (
             <Pill tone="warning" data-testid="person-caution">
               <WarningIcon aria-hidden sx={{ fontSize: 16 }} />
