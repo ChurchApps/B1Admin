@@ -185,7 +185,7 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await saved;
 
     const options = await (await ctx.get(`${API}/membership/people/guest-register/options?churchId=${CHURCH_ID}`)).json();
-    expect(options).toEqual({ email: "optional", phone: "required", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional", comments: "off" });
+    expect(options).toEqual({ title: "off", email: "optional", phone: "required", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional", comments: "off" });
 
     await page.reload();
     await expect(page.getByLabel("Required Home address", { exact: true })).toBeChecked({ timeout: 15000 });

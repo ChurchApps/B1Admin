@@ -12,13 +12,15 @@ import { KioskThemeEdit } from "./KioskThemeEdit";
 import { MobileChrome } from "./components/MobileChrome";
 
 type FieldMode = "off" | "optional" | "required";
-type FieldKey = "email" | "phone" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade" | "comments";
+type FieldKey = "title" | "email" | "phone" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade" | "comments";
 type FieldModes = Record<FieldKey, FieldMode>;
 
 const FIELD_KEYS: FieldKey[] = [
-  "email", "phone", "address", "birthDate", "gender", "maritalStatus", "grade", "comments"
+  "title", "email", "phone", "address", "birthDate", "gender", "maritalStatus", "grade", "comments"
 ];
-const DEFAULT_FIELDS: FieldModes = { email: "optional", phone: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off", comments: "off" };
+// fields.title is the table heading, so the Title row reads its label from fields.personTitle.
+const fieldLabelKey = (key: FieldKey) => "mobile.checkInPage.fields." + (key === "title" ? "personTitle" : key);
+const DEFAULT_FIELDS: FieldModes = { title: "off", email: "optional", phone: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off", comments: "off" };
 
 const parseFields = (raw?: string): FieldModes => {
   const result = { ...DEFAULT_FIELDS };
@@ -154,7 +156,7 @@ export const CheckInPage: React.FC = () => {
               </TableHead>
               <TableBody>
                 {FIELD_KEYS.map((key) => {
-                  const label = Locale.label("mobile.checkInPage.fields." + key);
+                  const label = Locale.label(fieldLabelKey(key));
                   return (
                     <TableRow key={key} data-testid={"guest-field-" + key}>
                       <TableCell>{label}</TableCell>

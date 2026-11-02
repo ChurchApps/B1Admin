@@ -1828,6 +1828,7 @@
         "grade": "Grade",
         "include": "Include",
         "maritalStatus": "Marital status",
+        "personTitle": "Title",
         "phone": "Phone",
         "required": "Required",
         "title": "Sign-up fields"
