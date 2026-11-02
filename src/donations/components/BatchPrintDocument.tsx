@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrayHelper, DateHelper, CurrencyHelper, Locale } from "@churchapps/apphelper";
-import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
+import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography } from "@mui/material";
 import { PrintLightTheme } from "../../components/PrintLightTheme";
 import { PrintChurchHeader } from "../../components/PrintChurchHeader";
@@ -25,6 +25,12 @@ export const getFundTotals = (donationIds: string[], fundDonations: FundDonation
     .filter((fd) => donationIds.includes(fd.donationId || ""))
     .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + CurrencyHelper.convertAmount(fd.amount || 0, (fd as any).currency || currency, currency, rates)));
   return fundTotals;
+};
+
+// A plain string rather than a nested person, so the batch CSV export gains one column instead of the person's name and photo fields.
+export const setEnteredByName = (d: DonationInterface, people: PersonInterface[]) => {
+  const name = ArrayHelper.getOne(people, "id", (d as any).enteredBy)?.name?.display;
+  if (name) (d as any).enteredByName = name;
 };
 
 // Paper copy for the counting team: every gift, a subtotal per fund, and the batch total.
@@ -66,7 +72,10 @@ export const BatchPrintDocument: React.FC<Props> = ({ churchName, logoUrl, batch
               const isRefunded = (d as any).status === "refunded";
               return (
                 <TableRow key={i}>
-                  <TableCell>{d.person?.name.display || Locale.label("donations.donations.anon")}</TableCell>
+                  <TableCell>
+                    {d.person?.name.display || Locale.label("donations.donations.anon")}
+                    {(d as any).enteredByName && <Typography variant="caption" sx={{ display: "block" }}>{Locale.label("donations.donations.enteredBy").replace("{name}", (d as any).enteredByName)}</Typography>}
+                  </TableCell>
                   <TableCell>{[d.method, d.methodDetails].filter(Boolean).join(" - ")}</TableCell>
                   <TableCell>{d.notes || ""}</TableCell>
                   <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>

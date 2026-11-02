@@ -6,7 +6,7 @@ import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, DateHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Checkbox } from "@mui/material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { EmptyState, SortableTableHead, StatusChip, Surface, type SortableColumn } from "../../components/ui";
+import { EmptyState, Pill, SortableTableHead, StatusChip, Surface, type SortableColumn } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
 import { useConfirmDelete } from "../../hooks";
 import { formatFieldValue } from "../../helpers/PersonFieldHelper";
@@ -123,10 +123,11 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
                   {p?.name?.display}
                 </Typography>
               </Link>
-              {p.membershipStatus && (
-                <Box sx={{ mt: 0.5 }}>
-                  <StatusChip status={p.membershipStatus} />
-                </Box>
+              {(p.membershipStatus || p.householdRole === "Child") && (
+                <Stack direction="row" spacing={0.5} alignItems="center" sx={{ mt: 0.5 }}>
+                  {p.membershipStatus && <StatusChip status={p.membershipStatus} />}
+                  {p.householdRole === "Child" && <Pill data-testid="person-child-tag">{Locale.label("people.householdEdit.child")}</Pill>}
+                </Stack>
               )}
             </Box>
           );

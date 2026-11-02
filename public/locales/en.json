@@ -943,6 +943,7 @@
       "convertedNote": "Converted at current exchange rates",
       "date": "Date",
       "don": "Donations",
+      "enteredBy": "Entered by {name}",
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "Export",
       "exportQbo": "Export for QuickBooks",

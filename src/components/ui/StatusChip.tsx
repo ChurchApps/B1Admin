@@ -17,7 +17,10 @@ const STATUS_TONE: Record<string, StatusTone> = {
   pending: "warning",
   staff: "info",
   failed: "danger",
-  inactive: "neutral"
+  inactive: "neutral",
+  guest: "violet",
+  "regular attendee": "teal",
+  deceased: "slate"
 };
 
 const headerSx = {

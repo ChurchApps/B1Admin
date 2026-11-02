@@ -7,7 +7,7 @@ import { EmptyState } from "../../components";
 import { RecordHeading, StatusBadge, TextAction, VerbRow, hoverRowSx, numericCellSx, tableScrollSx } from "../../components/ui";
 import { CsvVerb } from "./GivingParts";
 import UserContext from "../../UserContext";
-import { BatchPrintDocument, getFundTotals } from "./BatchPrintDocument";
+import { BatchPrintDocument, getFundTotals, setEnteredByName } from "./BatchPrintDocument";
 import { loadPeopleNames } from "../loadPeopleNames";
 import { usePrintLogo } from "../../components/PrintChurchHeader";
 
@@ -68,11 +68,12 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const canEdit = props.canEdit ?? hasEditPermission;
 
   const populatePeople = React.useCallback(async (data: DonationInterface[]) => {
-    const peopleIds = ArrayHelper.getIds(data, "personId");
+    const peopleIds = [...ArrayHelper.getIds(data, "personId"), ...ArrayHelper.getIds(data, "enteredBy")];
     if (peopleIds.length > 0) {
       const people = await loadPeopleNames(peopleIds);
       data.forEach((d) => {
         if (!UniqueIdHelper.isMissing(d.personId)) d.person = ArrayHelper.getOne(people, "id", d.personId);
+        setEnteredByName(d, people);
       });
     }
     setDonations(data);
@@ -162,6 +163,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell>
             <Typography variant="body2">{d.person?.name.display || Locale.label("donations.donations.anon")}</Typography>
+            {(d as any).enteredByName && <Typography variant="caption" color="text.secondary" sx={{ display: "block" }} data-testid="donation-entered-by">{Locale.label("donations.donations.enteredBy").replace("{name}", (d as any).enteredByName)}</Typography>}
           </TableCell>
           <TableCell>
             <Typography variant="body2">{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</Typography>

@@ -1,14 +1,17 @@
 import React, { type ReactNode } from "react";
 import { Box } from "@mui/material";
 
-export type StatusTone = "neutral" | "success" | "warning" | "danger" | "info";
+export type StatusTone = "neutral" | "success" | "warning" | "danger" | "info" | "violet" | "teal" | "slate";
 
 const toneVars: Record<StatusTone, { fg: string; bg: string }> = {
   neutral: { fg: "var(--b1-neutral)", bg: "var(--b1-neutral-bg)" },
   success: { fg: "var(--b1-success)", bg: "var(--b1-success-bg)" },
   warning: { fg: "var(--b1-warning)", bg: "var(--b1-warning-bg)" },
   danger: { fg: "var(--b1-danger)", bg: "var(--b1-danger-bg)" },
-  info: { fg: "var(--b1-on-selected)", bg: "var(--b1-selected)" }
+  info: { fg: "var(--b1-on-selected)", bg: "var(--b1-selected)" },
+  violet: { fg: "var(--b1-violet)", bg: "var(--b1-violet-bg)" },
+  teal: { fg: "var(--b1-teal)", bg: "var(--b1-teal-bg)" },
+  slate: { fg: "var(--b1-slate)", bg: "var(--b1-slate-bg)" }
 };
 
 interface Props {
