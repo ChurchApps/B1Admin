@@ -74,6 +74,11 @@ export function CuratedEventCalendar(props: Props) {
     if (props.onRequestRefresh) props.onRequestRefresh();
   };
 
+  const eventStyle = (event: CuratedEventWithEventInterface) => {
+    const color = EventHelper.groupColor(event.groupId);
+    return color ? { style: { backgroundColor: color, borderColor: color } } : {};
+  };
+
   const expandedEvents: CuratedEventWithEventInterface[] = [];
   const startRange = new Date();
   const endRange = new Date();
@@ -148,6 +153,7 @@ export function CuratedEventCalendar(props: Props) {
           endAccessor="end"
           style={{ height: 500 }}
           onSelectEvent={handleEventClick}
+          eventPropGetter={eventStyle}
         />
       </Box>
       {open && props.mode === "edit" && (

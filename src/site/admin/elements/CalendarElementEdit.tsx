@@ -51,6 +51,15 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
           </Select>
         </FormControl>
       )}
+      {parsedData.display === "upcoming" && parsedData.calendarType === "curated" && (
+        <FormControl fullWidth sx={{ mt: 2 }}>
+          <InputLabel>{Locale.label("site.calendarElementEdit.groupBadge")}</InputLabel>
+          <Select fullWidth size="small" label={Locale.label("site.calendarElementEdit.groupBadge")} name="groupBadge" onChange={handleChange} value={parsedData.groupBadge || "hide"} data-testid="calendar-group-badge-select">
+            <MenuItem value="hide">{Locale.label("site.calendarElementEdit.groupBadgeHide")}</MenuItem>
+            <MenuItem value="show">{Locale.label("site.calendarElementEdit.groupBadgeShow")}</MenuItem>
+          </Select>
+        </FormControl>
+      )}
       <TextField fullWidth size="small" sx={{ mt: 2 }} label={Locale.label("site.calendarElementEdit.tag")} name="tag" value={parsedData.tag || ""} onChange={handleChange} helperText={Locale.label("site.calendarElementEdit.tagHelp")} data-testid="calendar-tag-input" />
     </>
   );
