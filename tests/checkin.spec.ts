@@ -325,4 +325,21 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await saved;
     expect((await loadSettings()).find((s) => s.keyName === "guestRegistrationImage")?.value || "").toBe("");
   });
+
+  // ChurchAppsSupport#1444: the checklist has a Title row, off by default, that saves with the other fields.
+  loggedInTest("lists Title off by default and saves it when included", async ({ page }) => {
+    // Start from the default checklist so earlier tests cannot leave Title on.
+    const fieldsRow = (await loadSettings()).find((s) => s.keyName === "guestRegistrationFields");
+    expect((await ctx.post(`${API}/membership/settings`, { headers, data: [{ ...fieldsRow, value: "{}" }] })).ok()).toBeTruthy();
+    await page.goto("/mobile/checkin");
+    const include = page.getByLabel("Include Title", { exact: true });
+    await expect(include).toBeVisible({ timeout: 15000 });
+    await expect(include).not.toBeChecked();
+    await include.check();
+    const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByTestId("qr-guest-registration-save").click();
+    await saved;
+    const row = (await loadSettings()).find((s) => s.keyName === "guestRegistrationFields");
+    expect(JSON.parse(row.value).title).toBe("optional");
+  });
 });
