@@ -33,10 +33,13 @@ export const WorkflowStepActions = (props: Props) => {
 
   React.useEffect(() => { load(); }, [load]);
   React.useEffect(() => {
-    ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates((d || []).filter(t => t.category !== "Text"))).catch(() => setTemplates([]));
+    ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates(d || [])).catch(() => setTemplates([]));
     ApiHelper.get("/texting/providers", "MessagingApi").then((d: any[]) => setTextingProviders(d || [])).catch(() => setTextingProviders([]));
     ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi").then((d: EmailSendStatus) => setEmailStatus(d || null)).catch(() => setEmailStatus(null));
   }, []);
+
+  const emailTemplates = templates.filter(t => t.category !== "Text");
+  const textTemplates = templates.filter(t => t.category === "Text");
 
   const config = (a: WorkflowStepActionInterface): any => {
     if (!a.config) return {};
@@ -82,6 +85,15 @@ export const WorkflowStepActions = (props: Props) => {
     });
   };
 
+  // Fills the Send Text message from a text template, same as the Mass Texting window. The message stays editable.
+  const applyTextTemplate = async (index: number, templateId: string) => {
+    if (!templateId) return;
+    try {
+      const full = await ApiHelper.get("/emailTemplates/" + templateId, "MessagingApi");
+      setConfig(index, { message: (full?.htmlContent || "").slice(0, 1600) });
+    } catch { /* keep the current message */ }
+  };
+
   const handlePick = (contentType: string, contentId: string, label: string) => {
     if (pickerIndex !== null) {
       const target = actions[pickerIndex];
@@ -115,7 +127,7 @@ export const WorkflowStepActions = (props: Props) => {
           <Stack spacing={1}>
             <Select size="small" displayEmpty value={c.templateId || ""} data-testid={"action-template-" + index} onChange={(e) => setConfig(index, { templateId: e.target.value })}>
               <MenuItem value="" disabled>{Locale.label("tasks.workflowActions.selectTemplate")}</MenuItem>
-              {templates.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+              {emailTemplates.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
             </Select>
             <TextField size="small" label={Locale.label("tasks.workflowActions.subjectOverride")} value={c.subject || ""} onChange={(e) => setConfig(index, { subject: e.target.value })} />
             {emailStatus?.approved === false && <Typography variant="body2" color="warning.main" data-testid={"action-email-not-approved-" + index}>{Locale.label("tasks.workflowActions.emailNotApproved")}</Typography>}
@@ -126,6 +138,12 @@ export const WorkflowStepActions = (props: Props) => {
         const message: string = c.message || "";
         return (
           <Stack spacing={1}>
+            {textTemplates.length > 0 && (
+              <Select size="small" displayEmpty value="" data-testid={"action-text-template-" + index} onChange={(e) => applyTextTemplate(index, e.target.value as string)}>
+                <MenuItem value="" disabled>{Locale.label("tasks.workflowActions.textTemplate")}</MenuItem>
+                {textTemplates.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+              </Select>
+            )}
             <TextField size="small" fullWidth multiline minRows={3} label={Locale.label("tasks.workflowActions.textMessage")} value={message} data-testid={"action-text-message-" + index} inputRef={(el: HTMLTextAreaElement | null) => { textRefs.current[index] = el; }} inputProps={{ maxLength: 1600 }} helperText={Locale.label("tasks.workflowActions.textMergeHint") + " " + message.length + "/1600"} onChange={(e) => setConfig(index, { message: e.target.value })} />
             <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap data-testid={"action-text-merge-fields-" + index}>
               {MERGE_FIELD_KEYS.map((f) => (
