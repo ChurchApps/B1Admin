@@ -50,6 +50,7 @@ const SongPage = React.lazy(() => import("./serving/songs/SongPage").then((modul
 const PrintPlan = React.lazy(() => import("./serving/plans/PrintPlan").then((module) => ({ default: module.PrintPlan })));
 const DevicesPage = React.lazy(() => import("./profile/DevicesPage").then((module) => ({ default: module.DevicesPage })));
 const PrintDonationPage = React.lazy(() => import("./donations/PrintDonationPage").then((module) => ({ default: module.PrintDonationPage })));
+const PrintDonationReceiptPage = React.lazy(() => import("./donations/PrintDonationReceiptPage").then((module) => ({ default: module.PrintDonationReceiptPage })));
 const PrintAllStatementsPage = React.lazy(() => import("./donations/PrintAllStatementsPage").then((module) => ({ default: module.PrintAllStatementsPage })));
 const PrintAllBatchesPage = React.lazy(() => import("./donations/PrintAllBatchesPage").then((module) => ({ default: module.PrintAllBatchesPage })));
 const PrintDirectoryPage = React.lazy(() => import("./people/PrintDirectoryPage").then((module) => ({ default: module.PrintDirectoryPage })));
@@ -219,6 +220,14 @@ export const Authenticated: React.FC = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <PrintDonationPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/donations/receipt/:donationId"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <PrintDonationReceiptPage />
             </Suspense>
           }
         />
