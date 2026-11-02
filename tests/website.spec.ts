@@ -1652,4 +1652,51 @@ test.describe.serial("Events page calendar element", () => {
       expect(answers).toMatchObject({ display: "upcoming", layout: "autoscroll" });
     });
   });
+
+  // ChurchAppsSupport#1442: the Group List element gets the same Grid / Scrolling (automatic) layout choice.
+  test.describe.serial("Group list scrolling layout", () => {
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
+    let page: Page;
+    let auth: { headers: Record<string, string> };
+    let elementId: string | undefined;
+
+    test.beforeAll(async ({ browser }) => {
+      const ctx = await request.newContext();
+      const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+      auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+      const res = await ctx.post(`${API_BASE}/content/elements`, { ...auth, data: [{ churchId: "CHU00000001", sectionId: "SEC00000019", elementType: "groupList", sort: 3, answersJSON: JSON.stringify({ label: "worship" }) }] });
+      elementId = (await res.json())[0]?.id;
+      await ctx.dispose();
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+    });
+
+    test.afterAll(async () => {
+      if (elementId) {
+        const ctx = await request.newContext();
+        await ctx.delete(`${API_BASE}/content/elements/${elementId}`, auth).catch(() => { });
+        await ctx.dispose();
+      }
+      await page?.context().close();
+    });
+
+    test("offers a scrolling layout for a Group List and saves it", async () => {
+      expect(elementId).toBeTruthy();
+      await page.goto("/site/pages/PAG00000004");
+      const wrapper = page.locator(`div[data-element-id="${elementId}"]`);
+      await expect(wrapper).toBeVisible({ timeout: 20000 });
+      await wrapper.click({ position: { x: 5, y: 5 } });
+      const layout = page.locator('[data-testid="group-list-layout-select"]');
+      await expect(layout).toBeVisible({ timeout: 10000 });
+      await expect(layout).toContainText("Grid");
+      await layout.click();
+      await page.getByRole("option", { name: "Scrolling (automatic)" }).click();
+      const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator("button").getByText("Save").click();
+      const answers = JSON.parse((await elementPost).request().postDataJSON()[0].answersJSON);
+      expect(answers).toMatchObject({ label: "worship", layout: "autoscroll" });
+    });
+  });
 });

@@ -606,6 +606,13 @@ export function ElementEdit(props: Props) {
         value={parsedData.label || ""}
         helperText={Locale.label("site.elements.categoriesHelper")}
       />
+      <FormControl fullWidth sx={{ mt: 2 }}>
+        <InputLabel>{Locale.label("site.elements.layout")}</InputLabel>
+        <Select fullWidth size="small" label={Locale.label("site.elements.layout")} name="layout" onChange={handleChange} value={parsedData.layout || "grid"} data-testid="group-list-layout-select">
+          <MenuItem value="grid">{Locale.label("site.elements.layoutGrid")}</MenuItem>
+          <MenuItem value="autoscroll">{Locale.label("site.elements.layoutAutoscroll")}</MenuItem>
+        </Select>
+      </FormControl>
     </>
   );
 
