@@ -280,6 +280,22 @@ test.describe("Mobile saves confirm", () => {
   });
 });
 
+// ChurchAppsSupport#1437: each App Theme color takes a typed hex value beside its swatch.
+test.describe("App Theme hex entry", () => {
+  test("typing a hex updates the swatch and a partial value snaps back", async ({ page }) => {
+    await page.goto("/mobile/theme");
+    const hex = page.getByTestId("app-theme-hex-light-primary");
+    await expect(hex).toBeVisible({ timeout: 15000 });
+    const swatch = page.locator('input[type="color"]').nth(2);
+    await hex.fill("#123456");
+    await expect(swatch).toHaveValue("#123456");
+    await hex.fill("#12");
+    await expect(swatch).toHaveValue("#123456");
+    await hex.blur();
+    await expect(hex).toHaveValue("#123456");
+  });
+});
+
 test.describe("B1 Mobile page saves", () => {
   test.describe.configure({ mode: "serial" });
 
