@@ -8,6 +8,7 @@ import { CuratedCalendar } from "./components/CuratedCalendar";
 import { EventModal } from "./components/EventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
 import { CalendarEdit } from "./components/CalendarEdit";
+import { PrintChurchHeader } from "../components/PrintChurchHeader";
 import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, eyebrowSx, useRecordView, RecordActions } from "../components/ui";
 
 const printStyles = `@media print {
@@ -19,6 +20,9 @@ const printStyles = `@media print {
   .print-area .no-print, .print-area .no-print *, .print-area .rbc-btn-group { display: none !important; }
   .print-area { background: #fff !important; color: #000 !important; }
   .print-area .rbc-header, .print-area .rbc-date-cell, .print-area .rbc-toolbar-label, .print-area .rbc-agenda-view { color: #000 !important; }
+  .print-area .print-only { display: block !important; margin-bottom: 12px; }
+  .print-area .rbc-row-segment .rbc-event-content { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+  .print-area .rbc-event { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }`;
 
 export const CalendarPage = () => {
@@ -78,6 +82,7 @@ export const CalendarPage = () => {
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const view = requestedView === "edit" && canEdit && currentCalendar ? "edit" : "";
   const name = currentCalendar?.name || Locale.label("calendars.calendarPage.calendar");
+  const churchName = UserHelper.currentUserChurch?.church?.name || "";
 
   const identity = (
     <Box component="aside" data-testid="calendar-identity">
@@ -148,6 +153,12 @@ export const CalendarPage = () => {
             </>
           ) : (
             <Box className="print-area">
+              <Box className="print-only" sx={{ display: "none", textAlign: "center" }} data-testid="calendar-print-header">
+                <PrintChurchHeader churchName={churchName} style={{ margin: "0 auto 8px", maxHeight: 70 }}>
+                  {churchName && <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{churchName}</Typography>}
+                </PrintChurchHeader>
+                <Typography variant="h6">{name}</Typography>
+              </Box>
               <Typography component="h2" sx={{ ...eyebrowSx, mb: 1.5 }} className="no-print">{Locale.label("calendars.calendarPage.calendarEvents")}</Typography>
               <CuratedCalendar
                 curatedCalendarId={curatedCalendarId}

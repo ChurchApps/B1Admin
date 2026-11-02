@@ -4,6 +4,7 @@ import { navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
+import { mockChurchLogo, DEMO_LOGO } from "./helpers/print-logo";
 
 // Group-level event editing in B1App; B1Admin manages curated calendars (aggregations for public display).
 
@@ -677,6 +678,54 @@ test.describe("Importing an .ics onto a curated calendar", () => {
       await page.request.delete(`${API_BASE}/content/curatedEvents/calendar/${calendarId}/group/${IMPORT_GROUP_ID}`, auth);
       await page.request.delete(`${API_BASE}/content/curatedCalendars/${calendarId}`, auth);
       for (const id of importedIds) await page.request.delete(`${API_BASE}/content/events/${id}`, auth);
+    }
+  });
+});
+
+// Issue 1443: the calendar printout had no church letterhead and cut long event names off at one line.
+test.describe("Calendar print letterhead and full event names", () => {
+  const LONG_TITLE = "Zacchaeus Sunday Worship Service And Fellowship Luncheon In The Hall";
+
+  test("prints the church logo and name above the grid and wraps long event names", async ({ page }) => {
+    const auth = await apiLogin(page.request);
+    const calRes = await page.request.post(`${API_BASE}/content/curatedCalendars`, { ...auth, data: [{ name: "Zacchaeus Print Letterhead Calendar" }] });
+    expect(calRes.ok()).toBeTruthy();
+    const calendarId: string = (await calRes.json())[0].id;
+    let eventId = "";
+    try {
+      const start = new Date();
+      start.setDate(10);
+      start.setHours(10, 0, 0, 0);
+      const end = new Date(start);
+      end.setHours(11, 0, 0, 0);
+      const evRes = await page.request.post(`${API_BASE}/content/events`, {
+        ...auth,
+        data: [{ groupId: "GRP00000004", title: LONG_TITLE, start, end, allDay: false, visibility: "public" }]
+      });
+      expect(evRes.ok()).toBeTruthy();
+      eventId = (await evRes.json())[0].id;
+      const curRes = await page.request.post(`${API_BASE}/content/curatedEvents`, { ...auth, data: [{ curatedCalendarId: calendarId, groupId: "GRP00000004" }] });
+      expect(curRes.ok()).toBeTruthy();
+
+      await mockChurchLogo(page);
+      await openCuratedCalendar(page, calendarId);
+      const content = page.locator(".print-area .rbc-row-segment .rbc-event-content").filter({ hasText: LONG_TITLE }).first();
+      await expect(content).toBeVisible({ timeout: 15000 });
+      const header = page.getByTestId("calendar-print-header");
+      await expect(header).toBeHidden();
+      expect(await content.evaluate((el) => getComputedStyle(el).whiteSpace)).toBe("nowrap");
+
+      await page.emulateMedia({ media: "print" });
+      await expect(header).toBeVisible();
+      await expect(header.getByTestId("print-church-logo")).toHaveAttribute("src", DEMO_LOGO);
+      await expect(header).toContainText("Grace Community Church");
+      await expect(header).toContainText("Zacchaeus Print Letterhead Calendar");
+      expect(await content.evaluate((el) => getComputedStyle(el).whiteSpace)).toBe("normal");
+      expect(await content.evaluate((el) => getComputedStyle(el).overflow)).toBe("visible");
+    } finally {
+      await page.request.delete(`${API_BASE}/content/curatedEvents/calendar/${calendarId}/group/GRP00000004`, auth);
+      if (eventId) await page.request.delete(`${API_BASE}/content/events/${eventId}`, auth);
+      await page.request.delete(`${API_BASE}/content/curatedCalendars/${calendarId}`, auth);
     }
   });
 });
