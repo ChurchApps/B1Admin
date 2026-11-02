@@ -1,9 +1,10 @@
 import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
 import React, { memo, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
-import { FormCard, LoadingButton } from "../../components/ui";
+import { FormCard, LoadingButton, TextAction } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { FundDonations } from "@churchapps/apphelper/donations";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
@@ -33,6 +34,7 @@ export const DonationEdit = memo((props: Props) => {
   const methodDetails = watch("methodDetails");
 
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const navigate = useNavigate();
 
   const handleCancel = useCallback(() => props.updatedFunction(), [props.updatedFunction]);
 
@@ -68,6 +70,16 @@ export const DonationEdit = memo((props: Props) => {
       </LoadingButton>
     );
   }, [donation, refunding, handleRefund]);
+
+  const footerActions = useMemo(() => {
+    if (UniqueIdHelper.isMissing(props.donationId)) return refundButton;
+    return (
+      <>
+        <TextAction data-testid="donation-receipt-link" onClick={() => navigate("/donations/receipt/" + props.donationId)}>{Locale.label("donations.donations.receipt")}</TextAction>
+        {refundButton}
+      </>
+    );
+  }, [props.donationId, refundButton, navigate]);
 
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
@@ -168,7 +180,7 @@ export const DonationEdit = memo((props: Props) => {
   return (
     <>
       {ConfirmDialogElement}
-      <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} footerActions={refundButton} help="docs/b1-admin/donations/">
+      <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} footerActions={footerActions} help="docs/b1-admin/donations/">
         {refundError && <Alert severity="error" data-testid="refund-error">{refundError}</Alert>}
         {saveError && <Alert severity="error">{saveError}</Alert>}
         <Box>

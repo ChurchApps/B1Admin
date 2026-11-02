@@ -1,5 +1,6 @@
 import React from "react";
 import { useReactToPrint } from "react-to-print";
+import { useNavigate } from "react-router-dom";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack } from "@mui/material";
@@ -48,6 +49,7 @@ const buildQboJournalRows = (batch: DonationBatchInterface, donationIds: string[
 export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
   const context = React.useContext(UserContext);
+  const navigate = useNavigate();
   const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [rates, setRates] = React.useState<Record<string, number>>({});
@@ -133,11 +135,11 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           <TableCell>{Locale.label("donations.donations.date")}</TableCell>
           <TableCell>{Locale.label("donations.donations.notes")}</TableCell>
           <TableCell align="right" sx={numericCellSx}>{Locale.label("donations.donations.amt")}</TableCell>
-          {canEdit && <TableCell align="right" />}
+          <TableCell align="right" />
         </TableRow>
       </TableHead>
     );
-  }, [donations, props.funds.length, canEdit]);
+  }, [donations, props.funds.length]);
 
   const getRows = React.useCallback(() => {
     const rows: React.ReactNode[] = [];
@@ -149,6 +151,10 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       const editButton = canEdit ? (
         <TextAction small data-cy={`edit-link-${i}`} onClick={() => editFunction(d.id || "")}>{Locale.label("common.edit")}</TextAction>
       ) : null;
+      // Anyone who can see the batch can print a receipt; Edit stays behind canEdit.
+      const receiptButton = (
+        <TextAction small data-testid={"donation-receipt-" + d.id} onClick={() => navigate("/donations/receipt/" + d.id)}>{Locale.label("donations.donations.receipt")}</TextAction>
+      );
 
       const isPending = (d as any).status === "pending";
       const isRefunded = (d as any).status === "refunded";
@@ -181,7 +187,9 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
               {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}
             </Typography>
           </TableCell>
-          {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}
+          <TableCell align="right" className="rowActions">
+            <Stack direction="row" spacing={1} justifyContent="flex-end">{receiptButton}{editButton}</Stack>
+          </TableCell>
         </TableRow>
       );
     }
@@ -202,12 +210,14 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </Typography>
           {isConverted && <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>{Locale.label("donations.donations.convertedNote")}</Typography>}
         </TableCell>
-        {canEdit && <TableCell></TableCell>}
+        <TableCell></TableCell>
       </TableRow>
     );
 
     return rows;
-  }, [donations, props.funds.length, canEdit, editFunction, donationsTotal, isConverted, currency]);
+  }, [
+    donations, props.funds.length, canEdit, editFunction, navigate, donationsTotal, isConverted, currency
+  ]);
 
   const getPrintContent = React.useCallback(() => {
     if (!printing || !donations || donations.length === 0) return null;

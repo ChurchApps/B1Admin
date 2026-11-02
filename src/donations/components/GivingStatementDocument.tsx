@@ -1,6 +1,7 @@
 import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type ChurchInterface, type PersonInterface } from "@churchapps/helpers";
 import { type PledgeProgressRowInterface, type PledgeStatus } from "../../helpers";
+import { receiptShowsDisclaimer } from "./receiptRules";
 
 // Every locale key below is written out in full. Building them from the labelPrefix prop at
 // runtime hid them from locale-sync's static scan, which then pruned the whole set out of
@@ -71,7 +72,32 @@ const printDonationLabels = (): StatementLabels => ({
   totalContributionsLabel: Locale.label("donations.printDonationPage.totalContributionsLabel")
 });
 
-const statementLabels = (labelPrefix: string): StatementLabels => (labelPrefix === "donations.printDonationPage" ? printDonationLabels() : printAllStatementsLabels());
+const receiptLabels = (): StatementLabels => ({
+  annualStatementTitle: Locale.label("donations.receiptPage.annualStatementTitle"),
+  campaign: Locale.label("donations.receiptPage.campaign"),
+  contributionDetails: Locale.label("donations.receiptPage.contributionDetails"),
+  disclaimer: Locale.label("donations.receiptPage.disclaimer"),
+  donorInformation: Locale.label("donations.receiptPage.donorInformation"),
+  fund: Locale.label("donations.receiptPage.fund"),
+  fundBreakdown: Locale.label("donations.receiptPage.fundBreakdown"),
+  given: Locale.label("donations.receiptPage.given"),
+  issued: Locale.label("donations.receiptPage.issued"),
+  noteLabel: Locale.label("donations.receiptPage.noteLabel"),
+  noteText: Locale.label("donations.receiptPage.noteText"),
+  organization: Locale.label("donations.receiptPage.organization"),
+  period: Locale.label("donations.receiptPage.period"),
+  pledgeProgress: Locale.label("donations.receiptPage.pledgeProgress"),
+  pledged: Locale.label("donations.receiptPage.pledged"),
+  statementSummary: Locale.label("donations.receiptPage.statementSummary"),
+  status: Locale.label("donations.receiptPage.status"),
+  totalContributions: Locale.label("donations.receiptPage.totalContributions"),
+  totalContributionsLabel: Locale.label("donations.receiptPage.totalContributionsLabel")
+});
+
+const statementLabels = (labelPrefix: string): StatementLabels => {
+  if (labelPrefix === "donations.receiptPage") return receiptLabels();
+  return labelPrefix === "donations.printDonationPage" ? printDonationLabels() : printAllStatementsLabels();
+};
 
 interface LegalLabels {
   abn: string;
@@ -167,6 +193,9 @@ interface Props {
   showStyles?: boolean;
   statementSettings?: StatementSettings;
   logoUrl?: string;
+  variant?: "statement" | "receipt";
+  receiptNumber?: string;
+  receiptDate?: string;
 }
 
 const styleBlock = `
@@ -431,7 +460,8 @@ const styleBlock = `
         `;
 
 export const GivingStatementDocument = (props: Props) => {
-  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true, statementSettings, logoUrl } = props;
+  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true, statementSettings, logoUrl, variant = "statement", receiptDate = "" } = props;
+  const isReceipt = variant === "receipt";
   const labels = statementLabels(labelPrefix);
   const legal = legalLabels();
   const churchName = church?.name || "";
@@ -440,7 +470,10 @@ export const GivingStatementDocument = (props: Props) => {
   const format = statementSettings?.format || "";
   const eligibleTotal = contributions.filter((c) => c.taxDeductible !== false).reduce((sum, c) => sum + (c.amount || 0), 0);
   const nonEligibleTotal = totalContributions - eligibleTotal;
-  const receiptNumber = year + "-" + (person?.id || "");
+  const receiptNumber = props.receiptNumber || year + "-" + (person?.id || "");
+  // A statement always carries the disclaimer; a receipt drops it when any fund on the gift is not tax-deductible.
+  const showDisclaimer = !isReceipt || receiptShowsDisclaimer(contributions);
+  const donorName = person?.name?.display || (isReceipt ? Locale.label("donations.donations.anon") : undefined);
   const orgAddress = statementSettings?.orgAddress || [church?.address1, church?.address2, church?.city, church?.country, church?.zip].filter(Boolean).join(", ");
   const donorAddress = [person?.contactInfo?.address1, person?.contactInfo?.address2, person?.contactInfo?.city, person?.contactInfo?.state, person?.contactInfo?.zip].filter(Boolean).join(", ");
   const issuedDate = DateHelper.prettyDate(new Date()).toString();
@@ -456,7 +489,7 @@ export const GivingStatementDocument = (props: Props) => {
       <p className="legal-line">{legal.dateIssued}: {issuedDate}</p>
       {format === "canada" && <p className="legal-line">{legal.placeOfIssue}: {statementSettings?.cityOfIssue}</p>}
       <p className="legal-line">{churchName}{orgAddress ? ", " + orgAddress : ""}</p>
-      <p className="legal-line">{person?.name?.display}{donorAddress ? ", " + donorAddress : ""}</p>
+      <p className="legal-line">{donorName}{donorAddress ? ", " + donorAddress : ""}</p>
       {format === "australia" && (
         <>
           <p className="legal-line">{legal.dgr.replace("{churchName}", churchName)}</p>
@@ -484,7 +517,7 @@ export const GivingStatementDocument = (props: Props) => {
         <div className="title-section">
           {logoUrl && <img src={logoUrl} alt={churchName} data-testid="print-church-logo" style={{ display: "block", maxHeight: 60, maxWidth: 240, objectFit: "contain", margin: "0 auto 16px" }} />}
           <h1 className="page-title">{labels.annualStatementTitle.replace("{year}", year.toString())}</h1>
-          <p className="subtitle">{labels.period.replace("{year}", year.toString())}</p>
+          <p className="subtitle">{labels.period.replace("{year}", year.toString()).replace("{date}", receiptDate)}</p>
           <p className="meta-text">{labels.issued} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
         </div>
 
@@ -494,7 +527,7 @@ export const GivingStatementDocument = (props: Props) => {
           <div className="info-column">
             <h2 className="section-label">{labels.donorInformation}</h2>
             <div className="info-card">
-              <p className="info-name">{person?.name?.display}</p>
+              <p className="info-name">{donorName}</p>
               {person?.contactInfo?.address1 && <p className="info-detail">{person.contactInfo.address1}</p>}
               {person?.contactInfo?.address2 && <p className="info-detail">{person.contactInfo.address2}</p>}
               {person?.contactInfo?.mobilePhone && <p className="info-detail">{person.contactInfo.mobilePhone}</p>}
@@ -614,11 +647,14 @@ export const GivingStatementDocument = (props: Props) => {
           <p>
             <strong>{labels.noteLabel}</strong> {labels.noteText
               .replace("{churchName}", churchName)
-              .replace("{year}", year.toString())}
+              .replace("{year}", year.toString())
+              .replace("{date}", receiptDate)}
           </p>
-          <p style={{ fontSize: "10px", marginTop: "4px" }}>
-            {labels.disclaimer.split("{churchName}").join(churchName)}
-          </p>
+          {showDisclaimer && (
+            <p data-testid="statement-disclaimer" style={{ fontSize: "10px", marginTop: "4px" }}>
+              {labels.disclaimer.split("{churchName}").join(churchName)}
+            </p>
+          )}
           {statementSettings?.note && <p data-testid="statement-giving-note" style={{ whiteSpace: "pre-line", marginTop: "8px" }}>{statementSettings.note}</p>}
         </div>
       </div>
