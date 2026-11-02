@@ -7,7 +7,7 @@
   "dependencies": {
     "@churchapps/apphelper": "^1.10.7",
     "@churchapps/content-providers": "^0.15.2",
-    "@churchapps/helpers": "^2.12.0",
+    "@churchapps/helpers": "^2.13.1",
     "@mui/icons-material": "^7.3.11",
     "@mui/material": "^7.3.11",
     "@mui/x-date-pickers": "^8",
