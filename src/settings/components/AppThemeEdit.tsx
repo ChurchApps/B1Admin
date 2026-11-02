@@ -44,6 +44,7 @@ export const AppThemeEdit: React.FC = () => {
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [showSaved, setShowSaved] = React.useState(false);
+  const [hexDrafts, setHexDrafts] = React.useState<Record<string, string>>({});
 
   const loadData = React.useCallback(async () => {
     try {
@@ -81,10 +82,26 @@ export const AppThemeEdit: React.FC = () => {
 
   const handleReset = () => {
     setThemeConfig({ ...DEFAULT_THEME });
+    setHexDrafts({});
   };
 
   const updateColor = (mode: "light" | "dark", key: keyof AppThemeModeColors, value: string) => {
     setThemeConfig(prev => ({ ...prev, [mode]: { ...prev[mode], [key]: value } }));
+  };
+
+  // Keep the typed text as a draft so half-typed values aren't fought; the swatch follows once it is a full hex.
+  const handleHexChange = (mode: "light" | "dark", key: keyof AppThemeModeColors, value: string) => {
+    setHexDrafts(prev => ({ ...prev, [`${mode}.${key}`]: value }));
+    const hex = value.trim();
+    if (/^#?[0-9a-f]{6}$/i.test(hex)) updateColor(mode, key, "#" + hex.replace("#", "").toLowerCase());
+  };
+
+  const handleHexBlur = (mode: "light" | "dark", key: keyof AppThemeModeColors) => {
+    setHexDrafts(prev => {
+      const next = { ...prev };
+      delete next[`${mode}.${key}`];
+      return next;
+    });
   };
 
   const colorField = (mode: "light" | "dark", label: string, key: keyof AppThemeModeColors) => (
@@ -98,7 +115,15 @@ export const AppThemeEdit: React.FC = () => {
           sx={{ width: 120, "& .MuiInputBase-input": { height: 36 } }}
           size="small"
         />
-        <Typography variant="body2" color="text.secondary" sx={{ fontFamily: "monospace" }}>{themeConfig[mode][key]}</Typography>
+        <TextField
+          label={Locale.label("settings.appThemeEdit.hex")}
+          value={hexDrafts[`${mode}.${key}`] ?? themeConfig[mode][key]}
+          onChange={e => handleHexChange(mode, key, e.target.value)}
+          onBlur={() => handleHexBlur(mode, key)}
+          sx={{ width: 120, "& input": { fontFamily: "monospace" } }}
+          size="small"
+          slotProps={{ htmlInput: { maxLength: 7, "data-testid": `app-theme-hex-${mode}-${key}` } }}
+        />
       </Stack>
     </Grid>
   );
