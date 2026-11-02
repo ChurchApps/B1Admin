@@ -12,7 +12,7 @@ import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { Navigate } from "react-router-dom";
 import UserContext from "../../UserContext";
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, FormControlLabel, Checkbox } from "@mui/material";
+import { Autocomplete, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, FormControlLabel, Checkbox } from "@mui/material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 import { CampusSelect } from "../../components/CampusSelect";
 import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
@@ -22,6 +22,15 @@ import { AppDatePicker } from "../../components";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 type AnyRecord = Record<string, any>;
+
+const TITLE_SUGGESTIONS = [
+  "Mr", "Mrs", "Miss", "Ms", "Dr", "Prof", "Rev", "Pastor"
+];
+// Autocomplete's own padding would make this field taller than the form's other inputs.
+const titleInputSx = {
+  "& .MuiOutlinedInput-root": { paddingTop: 0, paddingBottom: 0, paddingLeft: 0 },
+  "& .MuiOutlinedInput-root .MuiAutocomplete-input": { padding: "10.5px 12px" }
+};
 
 interface Props {
   id?: string;
@@ -306,13 +315,18 @@ export const PersonEdit = memo((props: Props) => {
           <Grid size={{ sm: 1 }}></Grid>
           <Grid size={{ sm: 8 }}>
             <Grid container spacing={3}>
-              <Grid size={{ xs: 12, md: 4 }}>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <Controller name="name.prefix" control={control} render={({ field }) => (
+                  <Autocomplete id="prefix" freeSolo sx={titleInputSx} options={TITLE_SUGGESTIONS} value={field.value || ""} onInputChange={(_, val) => field.onChange(val)} renderInput={(params) => <TextField {...params} fullWidth label={Locale.label("person.prefix")} inputProps={{ ...params.inputProps, maxLength: 10 }} />} />
+                )} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField fullWidth label={Locale.label("person.firstName")} id="first" placeholder={Locale.label("placeholders.person.firstName")} data-testid="first-name-input" aria-label="First name" error={!!e.name?.first} helperText={e.name?.first?.message} {...register("name.first", { required: Locale.label("people.personEdit.firstReq") })} />
               </Grid>
-              <Grid size={{ xs: 12, md: 4 }}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField fullWidth label={Locale.label("person.middleName")} id="middle" placeholder={Locale.label("placeholders.person.middleName")} {...register("name.middle")} />
               </Grid>
-              <Grid size={{ xs: 12, md: 4 }}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField fullWidth label={Locale.label("person.lastName")} id="last" placeholder={Locale.label("placeholders.person.lastName")} data-testid="last-name-input" aria-label="Last name" error={!!e.name?.last} helperText={e.name?.last?.message} {...register("name.last", { required: Locale.label("people.personEdit.lastReq") })} />
               </Grid>
             </Grid>
