@@ -779,6 +779,39 @@ test.describe.serial("Serving Management - Workflows", () => {
     await cleanup.dispose();
   });
 
+  // ChurchAppsSupport#1440: the Send Text action can start from a saved text template, like Mass Texting.
+  test("a Send Text action can start from a text template and stay editable", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const name = "ZACCHAEUS Text Template " + Date.now().toString().slice(-6);
+    const body = "Hi {{firstName}}, glad you visited {{churchName}}.";
+    const [tpl] = await (await ctx.post(`${API_BASE}/messaging/emailTemplates`, { ...auth, data: [{ churchId: "CHU00000001", name, subject: "", htmlContent: body, category: "Text" }] })).json();
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, []);
+    try {
+      await openBoardById(page, wf.id);
+      await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+      await page.locator('[data-testid="add-action-button"]').click();
+      await page.locator('[data-testid="action-type-0"]').click();
+      await page.getByRole("option", { name: "Send Text" }).click();
+      await page.locator('[data-testid="action-text-template-0"]').click();
+      await page.getByRole("option", { name }).click();
+      const message = page.locator('[data-testid="action-text-message-0"] textarea').first();
+      await expect(message).toHaveValue(body);
+      await message.press("End");
+      await page.keyboard.type(" See you Sunday!");
+      await expect(message).toHaveValue(body + " See you Sunday!");
+      const saved = page.waitForResponse((r) => r.url().includes("/workflowStepActions") && r.request().method() === "POST");
+      await page.locator('[data-testid="step-save-button"]').click();
+      expect((await saved).status()).toBe(200);
+      const actions = await (await ctx.get(`${API_BASE}/doing/workflowStepActions/step/${auto.id}`, auth)).json();
+      expect(JSON.parse(actions[0].config)).toEqual({ message: body + " See you Sunday!" });
+    } finally {
+      await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+      await ctx.delete(`${API_BASE}/messaging/emailTemplates/CHU00000001/${tpl.id}`, auth);
+      await ctx.dispose();
+    }
+  });
+
   // Opens the step editor for the Auto step of a fresh action workflow.
   async function openAutoStepEditor(ctx: any, auth: any) {
     const { wf, auto } = await buildActionWorkflow(ctx, auth, []);

@@ -6154,6 +6154,7 @@
       "taskTitle": "Task title",
       "textMergeHint": "Click a field below to insert it. Opted-out people are skipped.",
       "textMessage": "Text message",
+      "textTemplate": "Start from a template",
       "title": "Automated actions",
       "type": {
         "addNote": "Add Note",
