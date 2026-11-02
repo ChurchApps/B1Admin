@@ -485,6 +485,54 @@ test.describe("People Management", () => {
 
       await expect(nick).toHaveValue("Zacchaeus Unsaved");
     });
+
+    test("a person's title accepts custom text and suggestions, and stays within 10 characters", async ({ page }) => {
+      await openPersonRow(page, SEED_PEOPLE.PATRICIA);
+      await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/);
+
+      const title = page.locator("#prefix");
+      const saveAndReopen = async () => {
+        await page.locator("button").getByText("Save").click();
+        await expect(title).toHaveCount(0, { timeout: 10000 });
+        await page.reload();
+        await personDetailsEditButton(page).first().click();
+        await expect(title).toBeVisible({ timeout: 10000 });
+      };
+
+      await personDetailsEditButton(page).first().click();
+      await expect(page.getByLabel("Title", { exact: true })).toBeVisible({ timeout: 10000 });
+      const originalTitle = await title.inputValue();
+
+      // Same height as the name fields beside it.
+      const titleBox = await page.locator(".MuiOutlinedInput-root").filter({ has: title }).boundingBox();
+      const firstNameBox = await page.locator(".MuiOutlinedInput-root").filter({ has: page.locator("#first") }).boundingBox();
+      expect(titleBox?.height).toBe(firstNameBox?.height);
+
+      // Typed titles save without pressing Enter or picking from the list.
+      await title.fill("Deacon");
+      await saveAndReopen();
+      await expect(title).toHaveValue("Deacon");
+
+      await title.fill("");
+      await title.click();
+      await page.getByRole("option", { name: "Prof", exact: true }).click();
+      await saveAndReopen();
+      await expect(title).toHaveValue("Prof");
+
+      // people.prefix is varchar(10).
+      await title.fill("");
+      await title.pressSequentially("Archbishop Emeritus");
+      await expect(title).toHaveValue("Archbishop");
+
+      await title.fill("");
+      await saveAndReopen();
+      await expect(title).toHaveValue("");
+
+      // Put the seed person's title back.
+      await title.fill(originalTitle);
+      await saveAndReopen();
+      await expect(title).toHaveValue(originalTitle);
+    });
   });
 
   test.describe("Main Functions", () => {
