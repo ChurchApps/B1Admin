@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Routes, Route, useNavigate, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, Navigate, Outlet } from "react-router-dom";
 import { Wrapper, ErrorBoundary, NotFound } from "./components";
 import { ApiHelper, DateHelper, NotificationService, Permissions, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
@@ -75,6 +75,25 @@ const Mobile = React.lazy(() => import("./mobile").then((module) => ({ default: 
 
 const LoadingFallback: React.FC = () => <PageSkeleton />;
 
+// Module scope on purpose: declared inside Authenticated, every re-render made a new component
+// type, so React remounted the Header and the current page (closing the jump menu, resetting forms).
+const LayoutWithWrapper: React.FC = () => {
+  // New boundary per page: while a lazy page loads, show the skeleton instead of leaving the
+  // previous page on screen (and clickable) under the new URL. Also clears a page's error on navigation.
+  const { pathname } = useLocation();
+  return (
+    <Box sx={{ display: "flex" }}>
+      <Wrapper>
+        <ErrorBoundary key={pathname}>
+          <Suspense fallback={<LoadingFallback />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
+      </Wrapper>
+    </Box>
+  );
+};
+
 export const Authenticated: React.FC = () => {
   const navigate = useNavigate();
 
@@ -122,18 +141,6 @@ export const Authenticated: React.FC = () => {
 
   if (!context) return null;
   if (churchId && regionChurchId !== churchId) return <PageSkeleton />;
-
-  const LayoutWithWrapper: React.FC = () => (
-    <Box sx={{ display: "flex" }}>
-      <Wrapper>
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingFallback />}>
-            <Outlet />
-          </Suspense>
-        </ErrorBoundary>
-      </Wrapper>
-    </Box>
-  );
 
   if (UserHelper.churchChanged) return null;
   else {

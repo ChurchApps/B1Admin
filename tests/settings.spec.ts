@@ -415,7 +415,8 @@ test.describe.serial("Settings Management", () => {
       await expect(membersTab).toBeVisible({ timeout: 10000 });
       await membersTab.click();
 
-      const removeBtn = page.locator("button").getByText("Remove").last();
+      // Members are listed by last name, so Dorothy is not necessarily the last row (the form's creator can follow her).
+      const removeBtn = page.locator("tr").filter({ has: page.locator("td a").getByText("Dorothy Jackson") }).locator("button").getByText("Remove");
       await removeBtn.click();
       await confirmDelete(page);
       const validatedDeletion = page.locator("td a").getByText("Dorothy Jackson");
@@ -511,8 +512,9 @@ test.describe.serial("Settings Management", () => {
       await expect(table.locator("tbody tr").filter({ hasText: "Everyone" })).toContainText("All users");
       const volunteer = table.locator("tbody tr").filter({ hasText: "Workflow Volunteer" });
       await expect(volunteer.getByTestId("role-member-count")).toHaveText("1");
+      // Demo seed: demo@, tester@ and twofactor@b1.church are Domain Admins.
       const admins = table.locator("tbody tr").filter({ hasText: "Domain Admins" });
-      await expect(admins.getByTestId("role-member-count")).toHaveText("2");
+      await expect(admins.getByTestId("role-member-count")).toHaveText("3");
     });
 
     test("role permission groups show how many permissions are checked", async () => {

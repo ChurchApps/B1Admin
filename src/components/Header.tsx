@@ -9,13 +9,15 @@ import { useQuery } from "@tanstack/react-query";
 import { SiteHeader } from "@churchapps/apphelper";
 import { ThemeMenuControls } from "./ThemeMenuControls";
 import UserContext from "../UserContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CommandPalette } from "./commandPalette/CommandPalette";
 import { HYMNS_ENABLED } from "../hymns/enabled";
 
 export const Header: React.FC = () => {
   const context = React.useContext(UserContext);
   const navigate = useNavigate();
+  // Subscribe to route changes: the labels below are derived from the URL, and this header stays mounted across navigation.
+  const location = useLocation();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
   const [donationError, setDonationError] = React.useState<boolean>(false);
   const [isFormMember, setIsFormMember] = React.useState<boolean>(false);
@@ -74,14 +76,14 @@ export const Header: React.FC = () => {
   }*/
 
   const getPrimaryLabel = () => {
-    const path = window.location.pathname;
+    const path = location.pathname;
     let result = Locale.label("dashboard.dashboardPage.dash");
     if (path.startsWith("/people")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/attendance")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/groups")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/forms")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/donations")) result = Locale.label("components.wrapper.don");
-    else if (path.startsWith("/serving") || window.location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
+    else if (path.startsWith("/serving") || location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
     else if (path.startsWith("/sermons")) result = Locale.label("common.sermons");
     else if (HYMNS_ENABLED && path.startsWith("/hymns")) result = "Hymns";
     else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = Locale.label("helpers.secondaryMenuHelper.calendars");
@@ -93,7 +95,7 @@ export const Header: React.FC = () => {
     return result;
   };
 
-  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search, isMinistryMember, usesStripe });
+  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(location.pathname, { formPermission, search: location.search, isMinistryMember, usesStripe });
 
   const paletteMenu = useMemo(() => primaryMenu.map((m) => ({ ...m, children: SecondaryMenuHelper.getSecondaryMenu(m.url, { formPermission, search: "", isMinistryMember, usesStripe }).menuItems })), [primaryMenu, formPermission, isMinistryMember, usesStripe]);
 

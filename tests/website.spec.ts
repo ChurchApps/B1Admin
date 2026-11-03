@@ -818,8 +818,21 @@ test.describe("Website Management", () => {
 
   test.describe.serial("Appearance", () => {
     let page: Page;
+    // These tests save a new heading font, palette and custom CSS; put the church's styles back
+    // afterwards so later specs (e.g. "preview headings use the Appearance heading font") see the demo data.
+    const appearanceApi = process.env.API_BASE || "http://localhost:8084";
+    let appearanceAuth: { headers: Record<string, string> } | null = null;
+    let originalStyles: any = null;
 
     test.beforeAll(async ({ browser }) => {
+      const api = await request.newContext();
+      const loginBody = await (await api.post(`${appearanceApi}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (loginBody.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || loginBody.userChurches?.[0];
+      appearanceAuth = { headers: { Authorization: "Bearer " + uc?.jwt } };
+      const styles = await (await api.get(`${appearanceApi}/content/globalStyles`, appearanceAuth)).json();
+      originalStyles = styles?.id ? styles : null;
+      await api.dispose();
+
       const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
       page = await context.newPage();
       await login(page);
@@ -828,6 +841,11 @@ test.describe("Website Management", () => {
 
     test.afterAll(async () => {
       await page?.context().close();
+      if (originalStyles && appearanceAuth) {
+        const api = await request.newContext();
+        await api.post(`${appearanceApi}/content/globalStyles`, { ...appearanceAuth, data: [originalStyles] });
+        await api.dispose();
+      }
     });
 
     test.beforeEach(async () => {

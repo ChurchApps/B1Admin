@@ -97,6 +97,15 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
     setExpanded(here ? [here.u] : []);
     setActive(child >= 0 ? current + 1 + child : current);
   }, [current, items, location.pathname]);
+  // A jump changes the URL right away but the router commits the new location only once the lazy page has loaded.
+  // Opened in between, the menu expanded the previous section; follow the route once it lands (unless the user is searching).
+  const openedAtPath = React.useRef(location.pathname);
+  React.useEffect(() => {
+    if (!open) { openedAtPath.current = location.pathname; return; }
+    if (openedAtPath.current === location.pathname) return;
+    openedAtPath.current = location.pathname;
+    if (!query) openPalette();
+  }, [open, location.pathname, query, openPalette]);
   // One section open at a time; with the others collapsed the section's row index equals its index in items.
   const toggle = (u: string) => {
     fromKeyboard.current = true;
