@@ -376,9 +376,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/apphelper@npm:^1.10.10":
-  version: 1.10.10
-  resolution: "@churchapps/apphelper@npm:1.10.10"
+"@churchapps/apphelper@npm:^1.10.11":
+  version: 1.10.11
+  resolution: "@churchapps/apphelper@npm:1.10.11"
   dependencies:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
@@ -440,7 +440,7 @@ __metadata:
       optional: true
     react-google-recaptcha:
       optional: true
-  checksum: 10c0/9f8ad93ead9792be90080d70a043e67e4a836c676ccf294db32c7bcdce207ba0f60ca41b2659ffef9674ec284f7b7ffbe047749e3867ce599bf7cc3b2ffa54dc
+  checksum: 10c0/d881704475e86a061a0fa45425d9d3bbd887bee6168b755796abc213abe8a49d32105fd1f948ea635871316a2b86d1f02238e664a75f3905513fa057b474a58d
   languageName: node
   linkType: hard
 
@@ -451,9 +451,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/helpers@npm:^2.14.1":
-  version: 2.14.1
-  resolution: "@churchapps/helpers@npm:2.14.1"
+"@churchapps/helpers@npm:^2.15.0":
+  version: 2.15.0
+  resolution: "@churchapps/helpers@npm:2.15.0"
   dependencies:
     dayjs: "npm:^1.11.20"
   peerDependencies:
@@ -461,7 +461,7 @@ __metadata:
   peerDependenciesMeta:
     rrule:
       optional: true
-  checksum: 10c0/1178e05766f311fe72f56d5da014462ad12d829ef5f51de7e96d50783714ab24e20530ff339f2a34b38e4228c1a6641add1f794dcb25af6b6b3e31e22f7b1307
+  checksum: 10c0/54bc64c793697e08066614c9621ddb3a2415984bebcde63dfbfd3fdb9ddd3b2254f1dc40ecfd1a177e6bcca28060addc2078137dcb5c0b1755c516632c14427f
   languageName: node
   linkType: hard
 
@@ -2690,9 +2690,9 @@ __metadata:
   resolution: "b1admin@workspace:."
   dependencies:
     "@babel/core": "npm:^8.0.1"
-    "@churchapps/apphelper": "npm:^1.10.10"
+    "@churchapps/apphelper": "npm:^1.10.11"
     "@churchapps/content-providers": "npm:^0.15.2"
-    "@churchapps/helpers": "npm:^2.14.1"
+    "@churchapps/helpers": "npm:^2.15.0"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"
