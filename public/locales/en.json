@@ -2755,7 +2755,8 @@
       "scheduleLesson": "Schedule Lesson",
       "serviceDate": "Service date",
       "serviceOrder": "Service Order",
-      "upcoming": "Upcoming"
+      "upcoming": "Upcoming",
+      "lessonTrimWarning": "Lesson trim warning"
     },
     "planPage": {
       "assign": "Serving Team Assignments",
@@ -3032,6 +3033,25 @@
       "noTime": "No times have been added yet",
       "sunServ": "Sunday Service",
       "times": "Times"
+    },
+    "lessonTrim": {
+      "useForEvery": "Use this for every lesson in {}",
+      "replaceSaved": "Replace the saved trim for {}",
+      "title": "Keep these parts of every lesson",
+      "help": "Each lesson scheduled into {} will be trimmed to these parts. Parts are matched by name; a part inside a section that is renamed each week is kept by its place in the section.",
+      "keeps": "Parts to keep",
+      "partIn": "{} in {}",
+      "alsoTrimUpcoming": "Also trim the {} upcoming lessons already scheduled",
+      "alsoTrimUpcomingOne": "Also trim the upcoming lesson already scheduled",
+      "replacesOrder": "This replaces their order of service.",
+      "saved": "Lesson trim saved for {}.",
+      "savedWithWarnings": "Lesson trim saved. Check these plans before Sunday: {}",
+      "status": "Lesson trim: {} parts kept, saved from {} ({})",
+      "clear": "Clear",
+      "warningBanner": "{}. Check the order of service before Sunday.",
+      "dismiss": "Dismiss",
+      "nothingToSave": "Nothing from the lesson is in this order of service yet.",
+      "error": "The lesson trim could not be saved."
     }
   },
   "profile": {
