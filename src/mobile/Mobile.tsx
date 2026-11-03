@@ -6,12 +6,14 @@ import { LabelsPage } from "./LabelsPage";
 import { AppThemePage } from "./AppThemePage";
 import { B1MobilePage } from "./B1MobilePage";
 import { CheckInPage } from "./CheckInPage";
+import { PushNotificationsPage } from "./PushNotificationsPage";
 
 export const Mobile: React.FC = () => (
   <Routes>
     <Route path="/navigation" element={<MobileAppSettingsPage />} />
     <Route path="/theme" element={<AppThemePage />} />
     <Route path="/b1-mobile" element={<B1MobilePage />} />
+    <Route path="/notifications" element={<PushNotificationsPage />} />
     <Route path="/checkin" element={<CheckInPage />} />
     <Route path="/checkin/labels" element={<LabelsPage />} />
     <Route path="/" element={<Navigate to={UserHelper.checkAccess(Permissions.contentApi.content.edit) ? "navigation" : "theme"} replace />} />

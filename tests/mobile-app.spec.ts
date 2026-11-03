@@ -1,6 +1,6 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
-import { navigateToMobile } from "./helpers/navigation";
+import { navigateToMobile, siblingNav } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
@@ -505,5 +505,123 @@ test.describe("B1 Mobile page saves", () => {
       await expect(page.getByLabel("Show My Attendance on Home")).toBeChecked({ timeout: 15000 });
       await expect(page.getByLabel("Show My Forms on Home")).toBeChecked();
     });
+  });
+});
+
+// Scheduled push notifications (ChurchAppsSupport#1411): a send time on the Notify dialog and a
+// Push Notifications page under Mobile to see, edit, send now or cancel what is queued.
+test.describe.serial("Scheduled push notifications", () => {
+  // Cancelled rows stay in the history, so each run gets its own titles.
+  const RUN = Date.now().toString(36);
+  const TITLE = `Zacchaeus Main Session ${RUN}`;
+  const EDITED = `Zacchaeus Main Session Moved ${RUN}`;
+  const GROUP_TITLE = `Zacchaeus Prayer Reminder ${RUN}`;
+  const GROUP_ID = "GRP00000003"; // Wednesday Prayer Service
+  let page: Page;
+  let ctx: APIRequestContext;
+  let auth: { headers: Record<string, string> };
+
+  // The picker's sections take digits in order: MM DD YYYY hh mm, then A/P for the meridiem.
+  const setSendAt = async (digits: string) => {
+    const dialog = page.getByRole("dialog");
+    await dialog.getByRole("spinbutton", { name: "Month" }).click();
+    await page.keyboard.type(digits);
+  };
+
+  const loadScheduled = async () => (await (await ctx.get(`${API}/messaging/scheduledNotifications`, auth)).json()) as any[];
+
+  test.beforeAll(async ({ browser }) => {
+    ctx = await pwRequest.newContext();
+    auth = { headers: { Authorization: `Bearer ${await apiLogin(ctx)}` } };
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    const rows = await loadScheduled().catch(() => [] as any[]);
+    for (const r of rows.filter((r: any) => r.status === "pending" && String(r.title).startsWith("Zacchaeus"))) {
+      await ctx.delete(`${API}/messaging/scheduledNotifications/${r.id}`, auth);
+    }
+    await page?.context().close();
+    await ctx?.dispose();
+  });
+
+  test("the Mobile menu links to a Push Notifications page", async () => {
+    // Wait out the /mobile -> /mobile/navigation redirect first; it re-renders the header and closes the jump menu.
+    await openMobileSettings(page);
+    await (await siblingNav(page)).getByText("Push Notifications", { exact: true }).first().click();
+    await page.waitForURL(/\/mobile\/notifications/, { timeout: 15000 });
+    await expect(page.locator("#page-header-title")).toHaveText("Push Notifications");
+    await expect(page.getByRole("heading", { name: "Scheduled" })).toBeVisible();
+  });
+
+  test("schedules a notification for everyone with the app", async () => {
+    await page.goto("/mobile/notifications");
+    await page.getByRole("button", { name: "Send Notification" }).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByTestId("push-audience-select")).toContainText("Everyone with the app");
+    await dialog.getByRole("radio", { name: "Schedule for later" }).check();
+    await setSendAt("122520270915A");
+    await expect(dialog.getByText(/Times are in /)).toBeVisible();
+    await dialog.getByLabel("Title").fill(TITLE);
+    await dialog.getByLabel("Message").fill("Starts in 15 minutes in the main hall.");
+    const saved = page.waitForResponse((r) => r.url().includes("/scheduledNotifications") && r.request().method() === "POST");
+    await dialog.getByRole("button", { name: "Schedule Notification" }).click();
+    expect((await saved).ok()).toBeTruthy();
+    await expect(dialog.getByText(/is scheduled for/)).toBeVisible();
+    await dialog.getByRole("button", { name: "Close" }).click();
+
+    const row = page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: TITLE });
+    await expect(row).toContainText("Everyone with the app");
+    await expect(row).toContainText("Dec 25, 2027");
+    await expect(row).toContainText("9:15 AM");
+
+    const stored = (await loadScheduled()).find((r: any) => r.title === TITLE && r.status === "pending");
+    expect(stored?.status).toBe("pending");
+    expect(stored?.audience).toBe("church");
+    expect(new Date(stored.sendAt).getTime()).toBe(new Date(2027, 11, 25, 9, 15).getTime());
+  });
+
+  test("edits the scheduled notification before it goes out", async () => {
+    await page.goto("/mobile/notifications");
+    const row = page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: TITLE });
+    await row.getByRole("button", { name: "Edit" }).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByLabel("Title")).toHaveValue(TITLE);
+    await dialog.getByLabel("Title").fill(EDITED);
+    await dialog.getByRole("button", { name: "Save Changes" }).click();
+    await dialog.getByRole("button", { name: "Close" }).click();
+    await expect(page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: EDITED })).toBeVisible();
+    // Editing updates the queued row rather than adding a second one.
+    expect((await loadScheduled()).filter((r: any) => r.status === "pending" && (r.title === TITLE || r.title === EDITED))).toHaveLength(1);
+  });
+
+  test("cancels it, which moves it to Recent", async () => {
+    await page.goto("/mobile/notifications");
+    const row = page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: EDITED });
+    await row.getByRole("button", { name: "Cancel" }).click();
+    await confirmDelete(page);
+    await expect(page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED })).toContainText("Cancelled");
+    await expect(page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: EDITED })).toHaveCount(0);
+  });
+
+  test("the group Notify dialog can schedule for later", async () => {
+    await page.goto(`/groups/${GROUP_ID}`);
+    await page.getByTestId("notify-group-button").click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("radio", { name: "Send now" })).toBeChecked();
+    await dialog.getByRole("radio", { name: "Schedule for later" }).check();
+    await setSendAt("122620270700P");
+    await dialog.getByLabel("Title").fill(GROUP_TITLE);
+    await dialog.getByLabel("Message").fill("Prayer starts at 7.");
+    await dialog.getByRole("button", { name: "Schedule Notification" }).click();
+    await expect(dialog.getByText(/is scheduled for/)).toBeVisible();
+    await dialog.getByRole("button", { name: "Close" }).click();
+
+    await page.goto("/mobile/notifications");
+    const row = page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: GROUP_TITLE });
+    await expect(row).toContainText("Wednesday Prayer Service");
+    await expect(row).toContainText("7:00 PM");
   });
 });

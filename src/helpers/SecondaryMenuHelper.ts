@@ -78,11 +78,15 @@ export class SecondaryMenuHelper {
       menuItems.push({ url: "/mobile/checkin", label: Locale.label("common.b1CheckIn"), icon: "qr_code" });
       menuItems.push({ url: "/mobile/checkin/labels", label: Locale.label("common.labels"), icon: "label" });
     }
+    if (UserHelper.checkAccess(Permissions.contentApi.content.edit) || UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit)) {
+      menuItems.push({ url: "/mobile/notifications", label: Locale.label("mobile.pushNotifications.title", "Push Notifications"), icon: "notifications_active" });
+    }
 
     if (path.startsWith("/mobile/theme")) label = Locale.label("common.appTheme");
     else if (path.startsWith("/mobile/b1-mobile")) label = Locale.label("common.b1Mobile");
     else if (path.startsWith("/mobile/checkin/labels")) label = Locale.label("common.labels");
     else if (path.startsWith("/mobile/checkin")) label = Locale.label("common.b1CheckIn");
+    else if (path.startsWith("/mobile/notifications")) label = Locale.label("mobile.pushNotifications.title", "Push Notifications");
     else if (path.startsWith("/mobile")) label = Locale.label("common.navigation");
 
     return { menuItems, label };

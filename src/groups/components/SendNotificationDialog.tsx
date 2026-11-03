@@ -1,8 +1,18 @@
 import React from "react";
-import { Alert, Box, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, Stack, TextField, Typography } from "@mui/material";
 import { NotificationsActive as NotificationsActiveIcon } from "@mui/icons-material";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { type Dayjs } from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import type { GroupInterface } from "@churchapps/helpers";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface PreviewData {
   totalMembers: number;
@@ -13,17 +23,40 @@ interface PreviewData {
   webPushDeviceCount: number;
 }
 
-interface SendResult extends PreviewData {
-  recipientCount: number;
-  successCount: number;
-  skippedCount: number;
+interface SendResult extends Partial<PreviewData> {
+  recipientCount?: number;
+  successCount?: number;
+  skippedCount?: number;
+  status?: string;
+  sendAt?: string;
+}
+
+export interface ScheduledNotificationInterface {
+  id?: string;
+  audience?: "group" | "church";
+  groupId?: string;
+  title?: string;
+  message?: string;
+  link?: string;
+  imageUrl?: string;
+  sendAt?: string;
+  timeZone?: string;
+  status?: string;
+  sentAt?: string;
+  recipientCount?: number;
+  successCount?: number;
+  lastError?: string;
 }
 
 interface Props {
-  groupId: string;
-  groupName: string;
+  groupId?: string;
+  groupName?: string;
+  existing?: ScheduledNotificationInterface;
   onClose: () => void;
+  onSaved?: () => void;
 }
+
+const EVERYONE = "church";
 
 const isOptionalUrlValid = (value: string) => {
   const trimmed = value.trim();
@@ -35,27 +68,65 @@ const isOptionalImageUrlValid = (value: string) => {
   return !trimmed || /^https?:\/\//i.test(trimmed);
 };
 
+// Scheduled times are entered in the church's time zone when it is set, otherwise the browser's.
+export const getPushTimeZone = () => (UserHelper.currentUserChurch?.church as any)?.timeZone || dayjs.tz.guess();
+
+export const formatPushTime = (value: string | Date | undefined, zone: string) => (value ? dayjs(value).tz(zone).format("ddd, MMM D, YYYY h:mm A") : "");
+
 export const SendNotificationDialog: React.FC<Props> = (props) => {
-  const [title, setTitle] = React.useState("");
-  const [message, setMessage] = React.useState("");
-  const [link, setLink] = React.useState("");
-  const [imageUrl, setImageUrl] = React.useState("");
+  const existing = props.existing;
+  const zone = React.useMemo(() => existing?.timeZone || getPushTimeZone(), [existing]);
+  const canSendEveryone = React.useMemo(() => UserHelper.checkAccess(Permissions.contentApi.content.edit), []);
+  const canSendGroup = React.useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
+  const showAudience = !props.groupId;
+
+  const [title, setTitle] = React.useState(existing?.title || "");
+  const [message, setMessage] = React.useState(existing?.message || "");
+  const [link, setLink] = React.useState(existing?.link || "");
+  const [imageUrl, setImageUrl] = React.useState(existing?.imageUrl || "");
+  const [audience, setAudience] = React.useState<string>(() => {
+    if (props.groupId) return props.groupId;
+    if (existing) return existing.audience === "group" ? existing.groupId || "" : EVERYONE;
+    return canSendEveryone ? EVERYONE : "";
+  });
+  const [when, setWhen] = React.useState<"now" | "later">(existing ? "later" : "now");
+  // The picker holds the wall-clock time in the push time zone; it is converted to UTC on save.
+  const [sendAt, setSendAt] = React.useState<Dayjs | null>(() => (existing?.sendAt ? dayjs(dayjs(existing.sendAt).tz(zone).format("YYYY-MM-DDTHH:mm")) : null));
+  const [groups, setGroups] = React.useState<GroupInterface[]>([]);
+
+  React.useEffect(() => {
+    if (!showAudience || !canSendGroup) return;
+    ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => setGroups(data || [])).catch(() => setGroups([]));
+  }, [showAudience, canSendGroup]);
+
+  const isEveryone = audience === EVERYONE;
+  const groupId = isEveryone ? "" : audience;
+  const groupName = props.groupName || groups.find((g) => g.id === groupId)?.name || "";
+  const isGroupSendNow = !!groupId && when === "now" && !existing;
+  const sendAtUtc = sendAt && sendAt.isValid() ? dayjs.tz(sendAt.format("YYYY-MM-DDTHH:mm"), zone) : null;
 
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
-    previewUrl: props.groupId ? "/notifications/groupPreview/" + props.groupId : null,
-    sendUrl: "/notifications/group/send",
+    previewUrl: isEveryone ? "/notifications/churchPreview" : groupId ? "/notifications/groupPreview/" + groupId : null,
+    sendUrl: isGroupSendNow ? "/notifications/group/send" : "/scheduledNotifications",
     buildPayload: () => {
-      if (!title.trim() || !message.trim()) return null;
+      if (!title.trim() || !message.trim() || !audience) return null;
+      const base = { title: title.trim(), message: message.trim(), link: link.trim(), imageUrl: imageUrl.trim() };
+      if (isGroupSendNow) return { ...base, groupId };
+      if (when === "later" && !sendAtUtc) return null;
       return {
-        groupId: props.groupId,
-        title: title.trim(),
-        message: message.trim(),
-        link: link.trim(),
-        imageUrl: imageUrl.trim()
+        ...base,
+        id: existing?.id,
+        audience: isEveryone ? "church" : "group",
+        groupId: groupId || undefined,
+        sendAt: when === "later" ? sendAtUtc!.toISOString() : new Date().toISOString(),
+        timeZone: zone
       };
     },
     fallbackError: "Unable to send the push notification."
   });
+
+  const { onSaved } = props;
+  React.useEffect(() => { if (result) onSaved?.(); }, [result, onSaved]);
 
   const renderPreview = () => {
     if (loadingPreview) return <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Loading recipients...</Typography>;
@@ -63,26 +134,40 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
 
     return (
       <Alert severity={preview.eligibleCount > 0 ? "info" : "warning"} sx={{ mb: 2 }}>
-        {preview.eligibleCount} of {preview.totalMembers} members have B1App PWA push enabled.
+        {isEveryone
+          ? <>{preview.eligibleCount} of {preview.totalMembers} people using the app have push enabled.</>
+          : <>{preview.eligibleCount} of {preview.totalMembers} members have B1App PWA push enabled.</>}
         {preview.excludedSenderCount > 0 && <><br />The sender is excluded.</>}
-        {preview.noDeviceCount > 0 && <><br />{preview.noDeviceCount} members do not have a registered PWA push device.</>}
-        {preview.pushDisabledCount > 0 && <><br />{preview.pushDisabledCount} members have push disabled.</>}
+        {!isEveryone && preview.noDeviceCount > 0 && <><br />{preview.noDeviceCount} members do not have a registered PWA push device.</>}
+        {preview.pushDisabledCount > 0 && <><br />{preview.pushDisabledCount} {isEveryone ? "people" : "members"} have push disabled.</>}
+        {when === "later" && <><br />{Locale.label("groups.sendNotificationDialog.resolvedAtSend", "Recipients are checked again when it goes out.")}</>}
       </Alert>
     );
   };
 
   const renderResult = () => {
     if (!result) return null;
+    if (result.status === "pending") {
+      return (
+        <Alert severity="success" sx={{ mt: 1 }}>
+          &ldquo;{title.trim()}&rdquo; {Locale.label("groups.sendNotificationDialog.scheduled", "is scheduled for")} {formatPushTime(result.sendAt, zone)} ({zone}).
+          <br />{Locale.label("groups.sendNotificationDialog.manage", "See, edit or cancel it under Mobile > Push Notifications.")}
+        </Alert>
+      );
+    }
+    const recipientCount = result.recipientCount || 0;
+    const successCount = result.successCount || 0;
+    const skippedCount = result.skippedCount ?? recipientCount - successCount;
     return (
       <>
-        <Alert severity={result.successCount > 0 ? "success" : "warning"} sx={{ mt: 1 }}>
-          {result.successCount} of {result.recipientCount} push notifications were queued.
-          {result.skippedCount > 0 && <><br />{result.skippedCount} recipients were skipped.</>}
+        <Alert severity={successCount > 0 ? "success" : "warning"} sx={{ mt: 1 }}>
+          {successCount} of {recipientCount} push notifications were queued.
+          {skippedCount > 0 && <><br />{skippedCount} recipients were skipped.</>}
         </Alert>
-        {(result.noDeviceCount > 0 || result.pushDisabledCount > 0) && (
+        {(!!result.noDeviceCount || !!result.pushDisabledCount) && (
           <Alert severity="info" sx={{ mt: 1 }}>
-            {result.noDeviceCount > 0 && <>{result.noDeviceCount} members had no registered PWA push device.<br /></>}
-            {result.pushDisabledCount > 0 && <>{result.pushDisabledCount} members had push disabled.</>}
+            {!!result.noDeviceCount && <>{result.noDeviceCount} members had no registered PWA push device.<br /></>}
+            {!!result.pushDisabledCount && <>{result.pushDisabledCount} members had push disabled.</>}
           </Alert>
         )}
       </>
@@ -93,13 +178,23 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
   const messageCount = message.length;
   const linkValid = isOptionalUrlValid(link);
   const imageUrlValid = isOptionalImageUrlValid(imageUrl);
-  const canSend = !sending && title.trim().length > 0 && message.trim().length > 0 && linkValid && imageUrlValid && (!preview || preview.eligibleCount > 0);
+  const sendAtValid = when === "now" || (!!sendAtUtc && sendAtUtc.isAfter(dayjs()));
+  // A scheduled send resolves recipients when it goes out, so no one being reachable yet doesn't block it.
+  const recipientsOk = when === "later" || !preview || preview.eligibleCount > 0;
+  const canSend = !sending && !!audience && title.trim().length > 0 && message.trim().length > 0 && linkValid && imageUrlValid && sendAtValid && recipientsOk;
+
+  const dialogTitle = props.groupName
+    ? <>Push Notification: {props.groupName}</>
+    : existing ? <>{Locale.label("groups.sendNotificationDialog.editTitle", "Edit Push Notification")}</> : <>{Locale.label("groups.sendNotificationDialog.title", "Push Notification")}</>;
+  const sendLabel = existing
+    ? Locale.label("groups.sendNotificationDialog.saveChanges", "Save Changes")
+    : when === "later" ? Locale.label("groups.sendNotificationDialog.scheduleButton", "Schedule Notification") : "Send Notification";
 
   return (
     <SendDialogShell
       onClose={props.onClose}
       maxWidth="md"
-      title={<>Push Notification: {props.groupName}</>}
+      title={dialogTitle}
       isComplete={!!result}
       resultContent={renderResult()}
       sending={sending}
@@ -107,13 +202,58 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
       onSend={handleSend}
       closeLabel="Close"
       cancelLabel="Cancel"
-      sendLabel="Send Notification"
+      sendLabel={sendLabel}
       sendingLabel="Sending..."
     >
+      {showAudience && (
+        <FormControl fullWidth sx={{ mb: 2 }} disabled={sending || !!existing}>
+          <InputLabel id="push-audience-label">{Locale.label("groups.sendNotificationDialog.audience", "Audience")}</InputLabel>
+          <Select
+            labelId="push-audience-label"
+            label={Locale.label("groups.sendNotificationDialog.audience", "Audience")}
+            value={audience}
+            onChange={(e) => setAudience(e.target.value)}
+            data-testid="push-audience-select"
+          >
+            {canSendEveryone && <MenuItem value={EVERYONE}>{Locale.label("mobile.pushNotifications.audienceEveryone", "Everyone with the app")}</MenuItem>}
+            {canSendGroup && groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
+            {!!groupId && !groups.some((g) => g.id === groupId) && <MenuItem value={groupId}>{groupName || groupId}</MenuItem>}
+          </Select>
+        </FormControl>
+      )}
       {renderPreview()}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <Stack spacing={2}>
+        {!existing && (
+          <FormControl disabled={sending}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("groups.sendNotificationDialog.when", "When")}</Typography>
+            <RadioGroup row value={when} onChange={(e) => setWhen(e.target.value as "now" | "later")}>
+              <FormControlLabel value="now" control={<Radio />} label={Locale.label("groups.sendNotificationDialog.sendNow", "Send now")} />
+              <FormControlLabel value="later" control={<Radio />} label={Locale.label("groups.sendNotificationDialog.scheduleForLater", "Schedule for later")} />
+            </RadioGroup>
+          </FormControl>
+        )}
+        {when === "later" && (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              label={Locale.label("groups.sendNotificationDialog.sendAt", "Send at")}
+              value={sendAt}
+              onChange={(v) => setSendAt(v)}
+              disablePast
+              disabled={sending}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  error: !!sendAt && !sendAtValid,
+                  helperText: (!!sendAt && !sendAtValid ? Locale.label("groups.sendNotificationDialog.futureTime", "Pick a time in the future.") + " " : "")
+                    + Locale.label("groups.sendNotificationDialog.timeZoneHelp", "Times are in {zone}.").replace("{zone}", zone),
+                  inputProps: { "data-testid": "push-send-at" }
+                }
+              }}
+            />
+          </LocalizationProvider>
+        )}
         <TextField
           fullWidth
           label="Title"
