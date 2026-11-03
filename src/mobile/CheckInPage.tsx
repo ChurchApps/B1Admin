@@ -12,15 +12,15 @@ import { KioskThemeEdit } from "./KioskThemeEdit";
 import { MobileChrome } from "./components/MobileChrome";
 
 type FieldMode = "off" | "optional" | "required";
-type FieldKey = "title" | "email" | "phone" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade" | "comments";
+type FieldKey = "title" | "email" | "phone" | "householdRole" | "address" | "birthDate" | "gender" | "maritalStatus" | "grade" | "comments";
 type FieldModes = Record<FieldKey, FieldMode>;
 
 const FIELD_KEYS: FieldKey[] = [
-  "title", "email", "phone", "address", "birthDate", "gender", "maritalStatus", "grade", "comments"
+  "title", "email", "phone", "householdRole", "address", "birthDate", "gender", "maritalStatus", "grade", "comments"
 ];
 // fields.title is the table heading, so the Title row reads its label from fields.personTitle.
 const fieldLabelKey = (key: FieldKey) => "mobile.checkInPage.fields." + (key === "title" ? "personTitle" : key);
-const DEFAULT_FIELDS: FieldModes = { title: "off", email: "optional", phone: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off", comments: "off" };
+const DEFAULT_FIELDS: FieldModes = { title: "off", email: "optional", phone: "optional", householdRole: "optional", address: "off", birthDate: "off", gender: "off", maritalStatus: "off", grade: "off", comments: "off" };
 
 const parseFields = (raw?: string): FieldModes => {
   const result = { ...DEFAULT_FIELDS };

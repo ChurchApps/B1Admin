@@ -19,13 +19,11 @@ import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
 import { parseFieldChoices } from "../../helpers/PersonFieldHelper";
 import { AppDatePicker } from "../../components";
+import { TITLE_SUGGESTIONS } from "../../helpers/PersonConstants";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 type AnyRecord = Record<string, any>;
 
-const TITLE_SUGGESTIONS = [
-  "Mr", "Mrs", "Miss", "Ms", "Dr", "Prof", "Rev", "Pastor"
-];
 // Autocomplete's own padding would make this field taller than the form's other inputs.
 const titleInputSx = {
   "& .MuiOutlinedInput-root": { paddingTop: 0, paddingBottom: 0, paddingLeft: 0 },

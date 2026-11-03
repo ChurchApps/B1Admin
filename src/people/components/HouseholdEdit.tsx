@@ -70,7 +70,7 @@ export function HouseholdEdit(props: Props) {
     const toAdd: PersonInterface | null = person || selectedPerson;
     if (!toAdd || !props.household?.id) return;
     const m = [...members];
-    m.push({ ...toAdd, householdId: props.household.id, householdRole: "Other" });
+    m.push({ ...toAdd, householdId: props.household.id, householdRole: toAdd.householdRole || "Other" });
     setMembers(m);
     setShowAdd(false);
   }
@@ -141,7 +141,7 @@ export function HouseholdEdit(props: Props) {
         <h3>{Locale.label("people.householdEdit.addMember")}</h3>
         <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={() => setShowAdd(false)} />
       </div>
-      <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} person={props.currentPerson} showCreatePersonOnNotFound={true} />
+      <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} person={props.currentPerson} showCreatePersonOnNotFound={true} showHouseholdRole onCreate={handlePersonAdd} />
     </div>
   ) : null;
 
