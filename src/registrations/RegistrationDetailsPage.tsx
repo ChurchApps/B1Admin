@@ -69,6 +69,7 @@ export const RegistrationDetailsPage = () => {
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
   const [currency, setCurrency] = useState("usd");
+  const [registrantNames, setRegistrantNames] = useState<Map<string, PersonInterface>>(new Map());
   const { view: requestedView, setView } = useRecordView("view", { replace: ["settings"] });
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const view = requestedView === "settings" && canEdit ? "settings" : "";
@@ -89,7 +90,31 @@ export const RegistrationDetailsPage = () => {
     // Matches the API's capacity count: pending + confirmed. Waitlisted people are shown separately.
     setCount((regsData || []).filter((r: CommerceRegistrationInterface) => isActive(r.status)).length);
     setLoading(false);
+    const personIds = [...new Set((regsData || []).map((r: CommerceRegistrationInterface) => r.personId).filter(Boolean))];
+    const people: PersonInterface[] = personIds.length ? await ApiHelper.get("/people/ids?ids=" + personIds.join(","), "MembershipApi").catch(() => []) : [];
+    setRegistrantNames(new Map((people || []).map((p) => [p.id as string, p])));
   };
+
+  // Older member-site sign-ups saved the registrant without a member row. Guest members carry no personId, so match them by name.
+  const isRegistrantMissing = (reg: CommerceRegistrationInterface) => {
+    const members = reg.members || [];
+    if (!reg.personId || members.some((m) => m.personId === reg.personId)) return false;
+    const person = registrantNames.get(reg.personId);
+    if (!person) return members.length === 0;
+    const same = (a?: string, b?: string) => (a || "").trim().toLowerCase() === (b || "").trim().toLowerCase();
+    return !members.some((m) => !m.personId && same(m.firstName, person.name?.first) && same(m.lastName, person.name?.last));
+  };
+
+  const getMissingRegistrantName = (reg: CommerceRegistrationInterface) => (isRegistrantMissing(reg) && registrantNames.get(reg.personId as string)?.name?.display) || "";
+
+  const getAttendeeNames = (reg: CommerceRegistrationInterface) => {
+    const names = (reg.members || []).map((m) => `${m.firstName} ${m.lastName}`);
+    const registrantName = getMissingRegistrantName(reg);
+    if (registrantName) names.unshift(registrantName);
+    return names;
+  };
+
+  const getPeopleCount = (reg: CommerceRegistrationInterface) => (reg.members?.length || 0) + (isRegistrantMissing(reg) ? 1 : 0);
 
   useEffect(() => { loadData(); }, [eventId]);
   useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
@@ -193,7 +218,7 @@ export const RegistrationDetailsPage = () => {
     ];
     const rows = [header];
     registrations.forEach((reg) => {
-      const members = reg.members?.map((m) => `${m.firstName} ${m.lastName}`).join("; ") || "";
+      const members = getAttendeeNames(reg).join("; ");
       const detail = detailMap.get(reg.id as string);
       const selText = (detail?.selectionChoices || []).map((c: any) => {
         const sel = selMap.get(c.selectionId);
@@ -244,12 +269,9 @@ export const RegistrationDetailsPage = () => {
     return (
       <TableRow key={reg.id} data-testid="registration-row">
         <TableCell>
-          {reg.members && reg.members.length > 0
-            ? reg.members.map((m) => `${m.firstName} ${m.lastName}`).join(", ")
-            : reg.personId || Locale.label("registrations.registrationDetailsPage.unknown")
-          }
+          {getAttendeeNames(reg).join(", ") || Locale.label("registrations.registrationDetailsPage.unknown")}
         </TableCell>
-        <TableCell sx={numericCellSx}>{reg.members?.length || 0}</TableCell>
+        <TableCell sx={numericCellSx}>{getPeopleCount(reg)}</TableCell>
         <TableCell>{getTypeNames(reg)}</TableCell>
         <TableCell sx={numericCellSx}>
           {total > 0 ? (
@@ -293,7 +315,9 @@ export const RegistrationDetailsPage = () => {
   if (loading && !event) return <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>;
   if (!event) return <Typography>{Locale.label("registrations.registrationDetailsPage.eventNotFound")}</Typography>;
 
-  const capacityPct = event.capacity ? Math.min((count / event.capacity) * 100, 100) : 0;
+  // The tally counts people (registrant plus members), not sign-ups.
+  const peopleCount = registrations.filter((r) => isActive(r.status)).reduce((sum, r) => sum + getPeopleCount(r), 0);
+  const capacityPct = event.capacity ? Math.min((peopleCount / event.capacity) * 100, 100) : 0;
   const title = event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations");
   const tags = (event.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
 
@@ -310,7 +334,7 @@ export const RegistrationDetailsPage = () => {
 
       <Box sx={{ mt: 3 }} data-testid="registration-capacity">
         <Typography variant="h3" component="p" sx={{ fontVariantNumeric: "tabular-nums" }}>
-          {count}{event.capacity ? ` / ${event.capacity}` : ""}
+          {peopleCount}{event.capacity ? ` / ${event.capacity}` : ""}
         </Typography>
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationsPage.registered")}</Typography>
         {event.capacity ? <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 1 }} /> : null}
@@ -420,7 +444,7 @@ export const RegistrationDetailsPage = () => {
         </Dialog>
       )}
       {viewDetailId && (
-        <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} onClose={() => setViewDetailId("")} />
+        <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} registrantName={getMissingRegistrantName(registrations.find((r) => r.id === viewDetailId) || {})} onClose={() => setViewDetailId("")} />
       )}
       {viewSubmissionId && (
         <Dialog open onClose={() => setViewSubmissionId("")} maxWidth="md" fullWidth>
