@@ -1,5 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import { DocChatWidget } from "./docChat";
 import { BezChatWidget } from "./bezChat";
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export const Wrapper: React.FC<Props> = (props) => {
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(useLocation().search);
 
   const showHeader = params.get("hideHeader") !== "true";
 

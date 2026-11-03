@@ -19,10 +19,12 @@ export const DonutChart = ({ title, data, onSelect }: Props) => {
 
   const options = {
     pieHole: 0.6,
-    legend: { position: "bottom", textStyle: chartTheme.textStyle },
+    // A one-line bottom legend pages its entries in a narrow card ("1/2"), hiding slices you drill into by
+    // clicking the legend. Wrap instead; Google Charts only honors maxLines for a top legend.
+    legend: { position: "top", maxLines: 4, textStyle: chartTheme.textStyle },
     backgroundColor: chartTheme.backgroundColor,
     colors: CHART_PALETTE,
-    chartArea: { width: "90%", height: "80%" },
+    chartArea: { top: 64, width: "90%", height: "70%" },
     pieSliceText: "none"
   };
 

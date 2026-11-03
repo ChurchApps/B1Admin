@@ -88,7 +88,7 @@ test.describe("People Management", () => {
       );
       const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
       await expect(donaldRow).toBeVisible({ timeout: 10000 });
-      await donaldRow.getByRole("link", { name: "Donald Clark", exact: true }).click();
+      await donaldRow.getByRole("link", { name: /Donald Clark/ }).click();
       await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
