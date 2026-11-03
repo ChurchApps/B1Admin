@@ -10,6 +10,8 @@ import { SmartTabs } from "../../../components/ui";
 interface Props {
   onClose: () => void;
   onSelect: (contentType: string, contentId: string, label: string) => void;
+  /** Offer a "No person or group" choice; it calls onSelect with empty values. */
+  allowNone?: boolean;
 }
 
 export const ContentPicker: React.FC<Props> = (props) => {
@@ -67,7 +69,12 @@ export const ContentPicker: React.FC<Props> = (props) => {
           {/* <Box sx={{ minHeight: 400 }} /> */}
         </Paper>
       </DialogContent>
-      <DialogActions sx={{ p: 2, pt: 0 }}>
+      <DialogActions sx={{ p: 2, pt: 0, justifyContent: props.allowNone ? "space-between" : "flex-end" }}>
+        {props.allowNone && (
+          <Button variant="text" onClick={() => props.onSelect("", "", "")} data-testid="content-picker-none">
+            {Locale.label("tasks.contentPicker.none", "No person or group")}
+          </Button>
+        )}
         <Button
           variant="outlined"
           onClick={props.onClose}

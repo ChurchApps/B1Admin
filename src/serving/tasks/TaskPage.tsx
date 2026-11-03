@@ -41,9 +41,10 @@ export const TaskPage = () => {
       const t = { ...task.data };
       switch (modalField) {
         case "associatedWith":
-          t.associatedWithType = contentType;
-          t.associatedWithId = contentId;
-          t.associatedWithLabel = label;
+          // Empty values clear the association; null (not undefined) so the Api writes NULL.
+          t.associatedWithType = (contentId ? contentType : null) as string;
+          t.associatedWithId = (contentId || null) as string;
+          t.associatedWithLabel = (contentId ? label : null) as string;
           break;
         case "assignedTo":
           t.assignedToType = contentType;
@@ -159,7 +160,7 @@ export const TaskPage = () => {
         {task.data.taskType === "groupJoinRequest" && <GroupJoinRequestTask task={task.data} />}
         <Notes context={context as UserContextInterface} conversationId={task.data.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
       </RecordLayout>
-      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
+      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} allowNone={modalField === "associatedWith"} />}
     </PageContainer>
   );
 };

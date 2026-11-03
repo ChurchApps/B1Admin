@@ -20,10 +20,7 @@ export const NewTask = (props: Props) => {
     createdByType: "person",
     createdById: UserHelper.person?.id,
     createdByLabel: UserHelper.person?.name?.display,
-    dateCreated: new Date(),
-    associatedWithType: "person",
-    associatedWithId: UserHelper.person?.id,
-    associatedWithLabel: UserHelper.person?.name?.display
+    dateCreated: new Date()
   };
   const [task, setTask] = React.useState<TaskInterface>(initialData);
   const [message, setMessage] = React.useState<MessageInterface>({});
@@ -68,7 +65,6 @@ export const NewTask = (props: Props) => {
 
   const validate = () => {
     const result = [];
-    if (!task.associatedWithId) result.push(Locale.label("tasks.newTask.associatePers"));
     if (!task.assignedToId) result.push(Locale.label("tasks.newTask.assignPers"));
     if (!task.title?.trim()) result.push(Locale.label("tasks.newTask.titleTask"));
     setErrors(result);
@@ -124,9 +120,10 @@ export const NewTask = (props: Props) => {
     const t = { ...task };
     switch (modalField) {
       case "associatedWith":
-        t.associatedWithType = contentType;
-        t.associatedWithId = contentId;
-        t.associatedWithLabel = label;
+        // Empty values mean "no person or group": a plain to-do.
+        t.associatedWithType = contentId ? contentType : undefined;
+        t.associatedWithId = contentId || undefined;
+        t.associatedWithLabel = contentId ? label : undefined;
         break;
       case "assignedTo":
         t.assignedToType = contentType;
@@ -157,7 +154,8 @@ export const NewTask = (props: Props) => {
             <TextField
               fullWidth
               label={Locale.label("tasks.newTask.associateW")}
-              value={task.associatedWithLabel}
+              value={task.associatedWithLabel || ""}
+              helperText={Locale.label("tasks.newTask.associateHint", "Optional. Leave blank for a to-do that is not about anyone.")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -256,7 +254,7 @@ export const NewTask = (props: Props) => {
         </Stack>
       </Stack>
 
-      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}
+      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} allowNone={modalField === "associatedWith"} />}
     </Surface>
   );
 };

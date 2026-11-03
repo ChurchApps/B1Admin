@@ -6031,6 +6031,7 @@
     },
     "contentPicker": {
       "group": "Group",
+      "none": "No person or group",
       "pers": "Person",
       "sel": "Select",
       "selPers": "Select a Person or Group"
@@ -6116,7 +6117,7 @@
       "assignPers": "Please assign this task to a person.",
       "assignTo": "Assign to",
       "assignToAria": "Assign to",
-      "associatePers": "Please associate this task with a person.",
+      "associateHint": "Optional. Leave blank for a to-do that is not about anyone.",
       "associateW": "Associate with",
       "associateWithAria": "Associate with",
       "dueDate": "Due date",
