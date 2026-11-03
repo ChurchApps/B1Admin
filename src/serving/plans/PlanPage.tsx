@@ -3,7 +3,7 @@ import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type PlanInterface, type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { type GroupInterface } from "@churchapps/helpers";
-import { Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { PrintOutlined as PrintIcon } from "@mui/icons-material";
 import { Assignment } from "../components/Assignment";
@@ -85,6 +85,11 @@ export const PlanPage = () => {
     }
   };
 
+  const dismissLessonTrimWarning = async () => {
+    await ApiHelper.post("/plans", [{ ...plan, lessonTrimWarning: null }], "DoingApi");
+    setPlan({ ...plan, lessonTrimWarning: null });
+  };
+
   const identity = (
     <Box component="aside" data-testid="plan-identity" sx={{ minWidth: 0 }}>
       {eyebrow && <Typography component="p" sx={{ ...eyebrowSx, mb: 1 }}>{eyebrow}</Typography>}
@@ -118,6 +123,11 @@ export const PlanPage = () => {
           )
           : (
             <>
+              {plan.lessonTrimWarning && canEdit && (
+                <Alert severity="warning" data-testid="lesson-trim-warning" action={<Button color="inherit" size="small" onClick={dismissLessonTrimWarning}>{Locale.label("plans.lessonTrim.dismiss")}</Button>}>
+                  {Locale.label("plans.lessonTrim.warningBanner").replace("{}", plan.lessonTrimWarning)}
+                </Alert>
+              )}
               {plan.serviceOrder && <ServiceOrder plan={plan} onPlanUpdate={loadData} />}
               <Assignment plan={plan} view={view} onViewChange={setView} />
             </>

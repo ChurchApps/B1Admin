@@ -1,11 +1,12 @@
 import React from "react";
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { FormCard } from "../../components/ui";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { FormCard, TextAction } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { type PlanTypeInterface } from "../../helpers";
 import { PlanTypeReminderEdit } from "./PlanTypeReminderEdit";
+import { fillLabel } from "./LessonTrimConfirm";
 
 interface Props {
   planType: PlanTypeInterface | null;
@@ -17,6 +18,14 @@ type AnyRecord = Record<string, any>;
 export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
   const [loading, setLoading] = React.useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const [lessonTrim, setLessonTrim] = React.useState<{ keep?: unknown[]; savedFromName?: string; savedFromDate?: string } | null>(() => {
+    try { return planType?.lessonTrim ? JSON.parse(planType.lessonTrim) : null; } catch { return null; }
+  });
+
+  const clearLessonTrim = async () => {
+    await ApiHelper.delete(`/planTypes/${planType?.id}/lessonTrim`, "DoingApi");
+    setLessonTrim(null);
+  };
 
   const { register, handleSubmit, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: planType?.name || "" } });
   const e = formState.errors as any;
@@ -55,6 +64,14 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
             {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
             <FormCard icon="assignment" title={Locale.label("plans.planType.details")}>
               <TextField fullWidth label={Locale.label("plans.planTypeEdit.planTypeName")} required margin="normal" placeholder={Locale.label("placeholders.planType.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planTypeEdit.nameRequired") })} />
+              {lessonTrim && (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }} data-testid="lesson-trim-status">
+                  <Typography variant="body2" color="text.secondary">
+                    {fillLabel(Locale.label("plans.lessonTrim.status"), lessonTrim.keep?.length || 0, lessonTrim.savedFromName || "", lessonTrim.savedFromDate ? DateHelper.prettyDate(DateHelper.toDate(lessonTrim.savedFromDate)) : "")}
+                  </Typography>
+                  <TextAction small onClick={clearLessonTrim}>{Locale.label("plans.lessonTrim.clear")}</TextAction>
+                </Box>
+              )}
             </FormCard>
             {planType?.id && <PlanTypeReminderEdit planTypeId={planType.id} />}
           </Box>

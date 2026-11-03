@@ -176,6 +176,7 @@ export interface PlanTypeInterface {
   churchId?: string;
   ministryId?: string;
   name?: string;
+  lessonTrim?: string | null;
 }
 
 export interface PlanTemplateInterface {
@@ -216,6 +217,7 @@ export interface PlanInterface {
   autoReplaceOnDecline?: boolean;
   confirmationWorkflowId?: string | null;
   lastAutofillRunId?: string;
+  lessonTrimWarning?: string | null;
 }
 
 export interface SchedulingPreferenceInterface {

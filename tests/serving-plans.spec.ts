@@ -1549,3 +1549,127 @@ test.describe("Clear a plan's signup deadline", () => {
     await expect(page.locator("#signupDeadlineHours")).toHaveValue("");
   });
 });
+
+// #1401: customize one lesson, then save what was kept as the plan type's lesson trim so every lesson
+// scheduled into it comes out trimmed. The browser's lesson read is mocked; the Api has no GO! login on the
+// local stack, so lessons it trims itself report that it couldn't read them, which exercises the warning path.
+test.describe.serial("Lesson trim reused for every lesson in a plan type", () => {
+  test.describe.configure({ retries: 0 });
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const MINISTRY_ID = "GRP0000000a";
+  const PLAN_TYPE_NAME = "Elementary Trim " + Date.now().toString().slice(-6);
+  const GO_LESSON = {
+    name: "Every Good Gift",
+    items: [
+      { id: "lg-0", itemType: "section", label: "Opening", children: [{ id: "lg-0-0", itemType: "action", actionType: "play", label: "Play the countdown", children: [{ id: "f0", itemType: "file", label: "Countdown", downloadUrl: "https://example.com/countdown.mp4" }] }] },
+      { id: "lg-1", itemType: "section", label: "The Fab Five Intro", children: [{ id: "lg-1-0", itemType: "action", actionType: "say", label: "Read this aloud" }] },
+      { id: "lg-2", itemType: "section", label: "Journey Today Show", children: [{ id: "lg-2-0", itemType: "action", actionType: "play", label: "Watch", children: [{ id: "f2", itemType: "file", label: "Journey Today", downloadUrl: "https://example.com/journey.mp4" }] }] },
+      { id: "lg-3", itemType: "section", label: "Big Bible Story Questions", children: [{ id: "lg-3-0", itemType: "action", actionType: "play", label: "Show", children: [{ id: "f3", itemType: "file", label: "Questions", downloadUrl: "https://example.com/q.png" }] }] },
+      { id: "lg-4", itemType: "section", label: "Giving God the Glory", children: [{ id: "lg-4-0", itemType: "action", actionType: "say", label: "Pray together" }] }
+    ]
+  };
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let planTypeId = "";
+  const planIds: string[] = [];
+
+  const createLesson = async (name: string, serviceDate: string, path: string) => {
+    const res = await ctx.post(`${API}/doing/plans`, {
+      ...auth,
+      data: [{ name, serviceDate, ministryId: MINISTRY_ID, planTypeId, serviceOrder: true, providerId: "gocurriculum", providerPlanId: path, providerPlanName: name }]
+    });
+    expect(res.ok()).toBeTruthy();
+    const plan = (await res.json())[0];
+    planIds.push(plan.id);
+    return plan;
+  };
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    const typeRes = await ctx.post(`${API}/doing/planTypes`, { ...auth, data: [{ ministryId: MINISTRY_ID, name: PLAN_TYPE_NAME }] });
+    expect(typeRes.ok()).toBeTruthy();
+    planTypeId = (await typeRes.json())[0].id;
+    await createLesson("GO Trim Nov 1", "2030-11-03", "/elementary/series/nov-1");
+    await createLesson("GO Trim Nov 8", "2030-11-10", "/elementary/series/nov-8");
+  });
+
+  test.afterAll(async () => {
+    for (const id of planIds) await ctx.delete(`${API}/doing/plans/${id}`, auth);
+    if (planTypeId) await ctx.delete(`${API}/doing/planTypes/${planTypeId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("a customized lesson's kept parts become the plan type's trim", async ({ page }) => {
+    await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: GO_LESSON }));
+    await page.goto(`/serving/plans/${planIds[0]}`);
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
+    await expect(page.getByTestId("lesson-trim-link")).toHaveCount(0);
+    await page.getByRole("button", { name: "Customize" }).click();
+    const loadRows = async () => (await (await ctx.get(`${API}/doing/planItems/plan/${planIds[0]}`, auth)).json()) as any[];
+    await expect.poll(async () => (await loadRows())[0]?.children?.length || 0, { timeout: 15000 }).toBe(5);
+
+    // Delete the read-aloud sections, as the church does by hand every week today.
+    const rows = await loadRows();
+    for (const s of rows[0].children.filter((r: any) => ["The Fab Five Intro", "Giving God the Glory"].includes(r.label))) {
+      expect((await ctx.delete(`${API}/doing/planItems/${s.id}`, auth)).ok()).toBeTruthy();
+    }
+    await page.reload();
+
+    const link = page.getByTestId("lesson-trim-link");
+    await expect(link).toHaveText(`Use this for every lesson in ${PLAN_TYPE_NAME}`, { timeout: 20000 });
+    await link.click();
+    const dialog = page.getByTestId("lesson-trim-dialog");
+    await expect(dialog.getByTestId("lesson-trim-keeps").getByRole("listitem")).toHaveText(["Opening", "Journey Today Show", "Big Bible Story Questions"], { timeout: 15000 });
+    await expect(dialog.getByLabel("Also trim the upcoming lesson already scheduled")).toBeChecked();
+    await dialog.getByRole("button", { name: "Save" }).click();
+
+    // The other lesson was re-trimmed on the Api, which can't read GO! locally, so it is flagged rather than trimmed silently.
+    await expect(page.getByTestId("lesson-trim-saved")).toContainText("Check these plans before Sunday: GO Trim Nov 8", { timeout: 20000 });
+    await expect(page.getByTestId("lesson-trim-link")).toHaveText(`Replace the saved trim for ${PLAN_TYPE_NAME}`);
+
+    const planType = await (await ctx.get(`${API}/doing/planTypes/${planTypeId}`, auth)).json();
+    expect(JSON.parse(planType.lessonTrim).keep.map((k: any) => k.section)).toEqual(["Opening", "Journey Today Show", "Big Bible Story Questions"]);
+  });
+
+  test("a lesson scheduled into the plan type is trimmed on save and a miss is flagged in the plan list", async ({ page }) => {
+    const plan = await createLesson("GO Trim Nov 15", "2030-11-17", "/elementary/series/nov-15");
+    expect(plan.lessonTrimWarning).toBe("Couldn't read the lesson to apply the saved trim");
+
+    await page.goto(`/serving/planTypes/${planTypeId}`);
+    const row = page.locator("tr", { hasText: "GO Trim Nov 15" });
+    await expect(row.getByTestId("plan-lesson-trim-warning")).toContainText("Couldn't read the lesson to apply the saved trim", { timeout: 20000 });
+    const savedFrom = page.locator("tr").filter({ has: page.getByRole("link", { name: "GO Trim Nov 1", exact: true }) });
+    await expect(savedFrom.getByTestId("plan-lesson-trim-warning")).toHaveCount(0);
+  });
+
+  test("the plan page warns about a flagged lesson until dismissed", async ({ page }) => {
+    await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: GO_LESSON }));
+    await page.goto(`/serving/plans/${planIds[1]}`);
+    const banner = page.getByTestId("lesson-trim-warning");
+    await expect(banner).toContainText("Couldn't read the lesson to apply the saved trim. Check the order of service before Sunday.", { timeout: 20000 });
+    await banner.getByRole("button", { name: "Dismiss" }).click();
+    await expect(banner).toHaveCount(0);
+    const plan = await (await ctx.get(`${API}/doing/plans/${planIds[1]}`, auth)).json();
+    expect(plan.lessonTrimWarning).toBeNull();
+  });
+
+  test("the plan type dialog shows the saved trim and clears it", async ({ page }) => {
+    await page.goto("/serving/plans");
+    const worshipTab = page.locator('[role="tab"]').getByText("Worship").first();
+    if (await worshipTab.count() > 0) await worshipTab.click();
+    const row = page.locator("tr", { hasText: PLAN_TYPE_NAME });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.getByRole("button", { name: "Edit", exact: true }).click();
+    const status = page.getByTestId("lesson-trim-status");
+    await expect(status).toContainText("Lesson trim: 3 parts kept, saved from GO Trim Nov 1", { timeout: 10000 });
+    await status.getByText("Clear").click();
+    await expect(status).toHaveCount(0);
+    const planType = await (await ctx.get(`${API}/doing/planTypes/${planTypeId}`, auth)).json();
+    expect(planType.lessonTrim).toBeNull();
+  });
+});

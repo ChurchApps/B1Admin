@@ -3,7 +3,7 @@ import { Stack, Box, Menu, MenuItem, Snackbar, Alert, TextField, Typography } fr
 import { Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, FormatListBulleted as FormatListBulletedIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { EmptyState, RecordHeading, TextAction, VerbRow } from "../../components/ui";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PositionInterface, type AssignmentInterface } from "@churchapps/helpers";
-import { type PlanItemInterface, type PlanItemTimeInterface, hasPlansEditAccess } from "../../helpers";
+import { type PlanItemInterface, type PlanItemTimeInterface, type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { ApiHelper, ArrayHelper, Locale, type PersonInterface, DateHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { getProvider, type InstructionItem, type IProvider } from "@churchapps/content-providers";
@@ -12,6 +12,7 @@ import { LessonSelector } from "./LessonSelector";
 import { LessonHeaderSelector } from "./LessonHeaderSelector";
 import { PlanItem } from "./PlanItem";
 import { SaveTemplateDialog } from "./SaveTemplateDialog";
+import { LessonTrimConfirm, fillLabel } from "./LessonTrimConfirm";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
@@ -41,7 +42,8 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
   return {
     itemType,
     actionType: item.actionType,
-    relatedId: item.relatedId,
+    // Falls back to the item id so a TV paired to the plan type can match customized rows (GO! sets no relatedId).
+    relatedId: item.relatedId || item.id,
     label: item.label || "",
     description: item.content,
     seconds: item.seconds ?? 0,
@@ -80,6 +82,8 @@ export const ServiceOrder = memo((props: Props) => {
   const [exclusions, setExclusions] = React.useState<PlanItemTimeInterface[]>([]);
   const [selectedServiceTimeId, setSelectedServiceTimeId] = React.useState<string>("");
   const [showSaveTemplate, setShowSaveTemplate] = React.useState(false);
+  const [showLessonTrim, setShowLessonTrim] = React.useState(false);
+  const [infoMessage, setInfoMessage] = React.useState<string | null>(null);
   const [mediaLookup, setMediaLookup] = React.useState<Record<string, ProviderMediaInfo>>({});
   const [sectionLabels, setSectionLabels] = React.useState<Record<string, SectionLabel>>({});
   const [settingTimes, setSettingTimes] = React.useState(false);
@@ -197,6 +201,16 @@ export const ServiceOrder = memo((props: Props) => {
   }, [props.plan, props.onPlanUpdate]);
 
   const hasAssociatedContent = !!(props.plan?.providerId && props.plan?.providerPlanId);
+
+  const planTypeQuery = useQuery<PlanTypeInterface>({
+    queryKey: ["/planTypes/" + props.plan?.planTypeId, "DoingApi"],
+    enabled: !!props.plan?.planTypeId && hasAssociatedContent && canEdit
+  });
+  const hasProviderRows = useMemo(() => {
+    const walk = (items: PlanItemInterface[]): boolean => items.some((i) => !!i.providerId || walk(i.children || []));
+    return walk(planItems);
+  }, [planItems]);
+  const showLessonTrimLink = canEdit && hasAssociatedContent && hasProviderRows && !!planTypeQuery.data?.id;
 
   const getContentPath = useCallback((): string | null => {
     if (!hasAssociatedContent) return null;
@@ -636,6 +650,15 @@ export const ServiceOrder = memo((props: Props) => {
         ministryId={props.plan?.ministryId}
       />
 
+      {showLessonTrim && planTypeQuery.data && (
+        <LessonTrimConfirm
+          plan={props.plan}
+          planTypeName={planTypeQuery.data.name || ""}
+          onClose={() => setShowLessonTrim(false)}
+          onSaved={(message) => { setShowLessonTrim(false); setInfoMessage(message); planTypeQuery.refetch(); }}
+        />
+      )}
+
       {showSaveTemplate && canEdit && (
         <SaveTemplateDialog plan={props.plan} onClose={() => setShowSaveTemplate(false)} />
       )}
@@ -694,7 +717,17 @@ export const ServiceOrder = memo((props: Props) => {
         ) : (
           renderPlanItems()
         )}
+        {showLessonTrimLink && (
+          <VerbRow sx={{ mt: 1 }}>
+            <TextAction small onClick={() => setShowLessonTrim(true)} data-testid="lesson-trim-link">
+              {fillLabel(Locale.label(planTypeQuery.data?.lessonTrim ? "plans.lessonTrim.replaceSaved" : "plans.lessonTrim.useForEvery"), planTypeQuery.data?.name || "")}
+            </TextAction>
+          </VerbRow>
+        )}
       </Box>
+      <Snackbar open={!!infoMessage} autoHideDuration={8000} onClose={() => setInfoMessage(null)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert severity="success" onClose={() => setInfoMessage(null)} data-testid="lesson-trim-saved">{infoMessage}</Alert>
+      </Snackbar>
       <Snackbar
         open={!!errorMessage}
         autoHideDuration={6000}

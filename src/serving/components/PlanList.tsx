@@ -1,7 +1,7 @@
 import React, { useCallback, memo } from "react";
 import { Box, Typography, Stack, Link, Menu, MenuItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { PillTabs, Surface, TextAction, VerbRow, srOnlySx, tableScrollSx } from "../../components/ui";
-import { CalendarMonth as CalendarIcon, ContentCopyOutlined as TemplatesIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { CalendarMonth as CalendarIcon, ContentCopyOutlined as TemplatesIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, WarningAmber as WarningIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface, hasPlansEditAccess } from "../../helpers";
@@ -235,6 +235,12 @@ export const PlanList = memo((props: Props) => {
                     <Link component={RouterLink} to={`/serving/plans/${p.id}`} underline="hover" sx={{ fontWeight: 600 }}>
                       {p.name}
                     </Link>
+                    {p.lessonTrimWarning && (
+                      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 0.5, mt: 0.5, color: "warning.dark" }} data-testid="plan-lesson-trim-warning">
+                        <WarningIcon aria-label={Locale.label("plans.planList.lessonTrimWarning")} sx={{ fontSize: 16, mt: "2px" }} />
+                        <Typography variant="body2">{p.lessonTrimWarning}</Typography>
+                      </Box>
+                    )}
                   </TableCell>
                   <TableCell sx={{ fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{p.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(p.serviceDate)) : ""}</TableCell>
                   <TableCell sx={{ color: "text.secondary" }}>{p.serviceOrder ? Locale.label("common.yes", "Yes") : Locale.label("common.no", "No")}</TableCell>
