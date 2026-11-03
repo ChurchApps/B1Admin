@@ -10,10 +10,11 @@ interface Props {
   registrationId: string;
   typeMap: Map<string, RegistrationTypeInterface>;
   selMap: Map<string, RegistrationSelectionInterface>;
+  registrantName?: string;
   onClose: () => void;
 }
 
-export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, typeMap, selMap, onClose }) => {
+export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, typeMap, selMap, registrantName, onClose }) => {
   const [reg, setReg] = useState<(CommerceRegistrationInterface & { selectionChoices?: any[]; payments?: RegistrationPaymentInterface[] }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("usd");
@@ -39,6 +40,12 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.members")}</Typography>
               <Table size="small">
                 <TableBody>
+                  {registrantName && (
+                    <TableRow>
+                      <TableCell>{registrantName}</TableCell>
+                      <TableCell />
+                    </TableRow>
+                  )}
                   {(reg?.members || []).map((m, i) => (
                     <TableRow key={m.id || i}>
                       <TableCell>{m.firstName} {m.lastName}</TableCell>

@@ -415,7 +415,8 @@ test.describe.serial("Settings Management", () => {
       await expect(membersTab).toBeVisible({ timeout: 10000 });
       await membersTab.click();
 
-      const removeBtn = page.locator("button").getByText("Remove").last();
+      // Members are listed by last name, so Dorothy is not necessarily the last row (the form's creator can follow her).
+      const removeBtn = page.locator("tr").filter({ has: page.locator("td a").getByText("Dorothy Jackson") }).locator("button").getByText("Remove");
       await removeBtn.click();
       await confirmDelete(page);
       const validatedDeletion = page.locator("td a").getByText("Dorothy Jackson");
@@ -511,8 +512,9 @@ test.describe.serial("Settings Management", () => {
       await expect(table.locator("tbody tr").filter({ hasText: "Everyone" })).toContainText("All users");
       const volunteer = table.locator("tbody tr").filter({ hasText: "Workflow Volunteer" });
       await expect(volunteer.getByTestId("role-member-count")).toHaveText("1");
+      // Demo seed: demo@, tester@ and twofactor@b1.church are Domain Admins.
       const admins = table.locator("tbody tr").filter({ hasText: "Domain Admins" });
-      await expect(admins.getByTestId("role-member-count")).toHaveText("2");
+      await expect(admins.getByTestId("role-member-count")).toHaveText("3");
     });
 
     test("role permission groups show how many permissions are checked", async () => {
@@ -1119,5 +1121,69 @@ test.describe("Region list includes Hungary", () => {
     }
     await expect(section).toContainText(us.sample, { timeout: 10000 });
     await expect(section).not.toContainText(hu.sample);
+  });
+});
+
+// ChurchAppsSupport#1450: a church with no online giving provider can still pick its church currency (PHP here).
+// The demo church has a Stripe gateway, so the gateway list is hidden from the page to stand in for Provider = None;
+// the real gateway is never touched and the saved "currency" setting is removed afterwards.
+test.describe.serial("Church currency without a giving provider", () => {
+  test.describe.configure({ retries: 0 });
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+
+  const deleteCurrencySetting = async () => {
+    const settings = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+    for (const s of (settings || []).filter((r: any) => r.keyName === "currency")) await ctx.delete(`${API}/membership/settings/${s.id}`, auth);
+  };
+  const openGivingSettings = async (page: Page) => {
+    await page.route(/\/giving\/gateways$/, (route) => (route.request().method() === "GET" ? route.fulfill({ json: [] }) : route.continue()));
+    await page.goto("/settings");
+    await page.locator('[data-testid="settings-section-giving"]').click();
+    const section = page.locator('[data-testid="settings-giving"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await section.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+    return section;
+  };
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    await deleteCurrencySetting();
+  });
+
+  test.afterAll(async () => {
+    await deleteCurrencySetting();
+    await ctx.dispose();
+  });
+
+  test("Provider None shows a Currency dropdown and saves PHP as the church currency", async ({ page }) => {
+    const section = await openGivingSettings(page);
+    await expect(section.getByRole("combobox").first()).toBeVisible({ timeout: 10000 });
+    await expect(section.getByLabel("Public Key")).toHaveCount(0);
+    const currency = section.getByTestId("church-currency-select").getByRole("combobox");
+    await expect(currency).toHaveText("USD", { timeout: 10000 });
+    await expect(section.getByText("The currency your church records gifts in.")).toBeVisible();
+
+    await currency.click();
+    await page.getByRole("option", { name: "PHP", exact: true }).click();
+    await expect(currency).toHaveText("PHP");
+    const saved = page.waitForResponse((r) => /\/membership\/settings$/.test(r.url()) && r.request().method() === "POST");
+    await section.locator("button").getByText("Save").click();
+    const rows = await (await saved).json();
+    expect(rows.find((r: any) => r.keyName === "currency")?.value).toBe("php");
+
+    const reopened = await openGivingSettings(page);
+    await expect(reopened.getByTestId("church-currency-select").getByRole("combobox")).toHaveText("PHP", { timeout: 10000 });
+  });
+
+  test("the church currency setting is public so donors and donation-only staff can read it", async () => {
+    const res = await ctx.get(`${API}/membership/settings/public/CHU00000001`);
+    expect((await res.json()).currency).toBe("php");
   });
 });

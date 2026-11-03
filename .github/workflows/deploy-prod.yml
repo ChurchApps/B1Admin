@@ -17,7 +17,9 @@ permissions:
 jobs:
   deploy:
     name: Deploy Prod
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04, which Playwright 1.60 cannot install Chromium deps on.
+    # Can return to ubuntu-latest after upgrading Playwright to >= 1.64.
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout

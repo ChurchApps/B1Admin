@@ -22,11 +22,12 @@ interface Props {
   onCreate?: (person: PersonInterface) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
   autoSearch?: boolean;
+  showHouseholdRole?: boolean;
 }
 
 const RECENT_LIMIT = 8;
 
-export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false, onCreate, inputRef, autoSearch = false }) => {
+export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false, onCreate, inputRef, autoSearch = false, showHouseholdRole = false }) => {
   const [searchResults, setSearchResults] = useState<PersonInterface[]>([]);
   const [searchText, setSearchText] = useState("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
@@ -158,6 +159,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
       {open && (
         <CreatePerson
           showInModal
+          showHouseholdRole={showHouseholdRole}
           onClose={() => {
             setOpen(false);
           }}

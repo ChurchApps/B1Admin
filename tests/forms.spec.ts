@@ -451,7 +451,7 @@ test.describe("Person form submissions (profile rail)", () => {
       const uc = ((await login.json()).userChurches || []).find((c: any) => c.church?.id === "CHU00000001");
       const auth = { headers: { Authorization: "Bearer " + uc.jwt } };
       const found = await (await ctx.get(`${API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DONALD)}`, auth)).json();
-      const donald = (found as any[]).find((p) => p.name?.display === SEED_PEOPLE.DONALD);
+      const donald = (found as any[]).find((p) => `${p.name?.first} ${p.name?.last}` === SEED_PEOPLE.DONALD);
       const person = await (await ctx.get(`${API}/membership/people/${donald.id}`, auth)).json();
       for (const fs of person.formSubmissions || []) await ctx.delete(`${API}/membership/formsubmissions/${fs.id}`, auth);
     } finally {
@@ -853,7 +853,7 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     const qRes = await ctx.post(`${WIDE_API}/membership/questions`, { ...auth, data: [{ formId, title: "Relink Note", fieldType: "Textbox", sort: 1 }] });
     const questionId = (await qRes.json())?.[0]?.id;
     const donaldRes = await ctx.get(`${WIDE_API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DONALD)}`, auth);
-    const donald = ((await donaldRes.json()) as any[]).find((p) => p.name?.display === SEED_PEOPLE.DONALD);
+    const donald = ((await donaldRes.json()) as any[]).find((p) => `${p.name?.first} ${p.name?.last}` === SEED_PEOPLE.DONALD);
     expect(donald?.id).toBeTruthy();
     const subRes = await ctx.post(`${WIDE_API}/membership/formsubmissions`, {
       ...auth,

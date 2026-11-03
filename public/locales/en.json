@@ -646,7 +646,10 @@
     "addNewPerson": "Add New Person",
     "email": "Email",
     "firstName": "First Name",
-    "lastName": "Last Name"
+    "householdRole": "Household Role",
+    "lastName": "Last Name",
+    "mobilePhone": "Mobile Phone",
+    "title": "Title"
   },
   "dashboard": {
     "adminWelcome": {
@@ -1735,6 +1738,22 @@
       "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
       "enable": "Enable Attendance",
       "title": "Attendance tracking isn't enabled"
+    },
+    "sendNotificationDialog": {
+      "audience": "Audience",
+      "editTitle": "Edit Push Notification",
+      "futureTime": "Pick a time in the future.",
+      "manage": "See, edit or cancel it under Mobile > Push Notifications.",
+      "resolvedAtSend": "Recipients are checked again when it goes out.",
+      "saveChanges": "Save Changes",
+      "scheduleButton": "Schedule Notification",
+      "scheduleForLater": "Schedule for later",
+      "scheduled": "is scheduled for",
+      "sendAt": "Send at",
+      "sendNow": "Send now",
+      "timeZoneHelp": "Times are in {zone}.",
+      "title": "Push Notification",
+      "when": "When"
     }
   },
   "helpers": {
@@ -1826,6 +1845,7 @@
         "field": "Field",
         "gender": "Gender",
         "grade": "Grade",
+        "householdRole": "Household role",
         "include": "Include",
         "maritalStatus": "Marital status",
         "personTitle": "Title",
@@ -1864,6 +1884,28 @@
       "saveToActivate": "Save your changes to activate this link.",
       "subtitle": "Configure settings for the B1 CheckIn kiosk app",
       "title": "B1 CheckIn"
+    },
+    "pushNotifications": {
+      "audience": "Audience",
+      "audienceEveryone": "Everyone with the app",
+      "cancel": "Cancel notification",
+      "cancelConfirm": "Cancel this scheduled notification? It will not be sent.",
+      "group": "Group",
+      "missed": "Missed (the send time passed)",
+      "noneRecent": "No notifications have gone out yet.",
+      "noneScheduled": "Nothing is scheduled.",
+      "notification": "Notification",
+      "recent": "Recent",
+      "scheduled": "Scheduled",
+      "send": "Send Notification",
+      "sendAt": "Send at",
+      "sendNowAction": "Send now",
+      "sendNowConfirm": "Send this notification now?",
+      "sentAt": "Sent at",
+      "status": "Status",
+      "subtitle": "Schedule push notifications to the people using your church's app.",
+      "timeZone": "Times are in {zone}.",
+      "title": "Push Notifications"
     }
   },
   "month": {
@@ -4181,6 +4223,7 @@
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
+      "currencyHelperNoProvider": "The currency your church records gifts in.",
       "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",

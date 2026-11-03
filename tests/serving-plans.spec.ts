@@ -1303,7 +1303,7 @@ test.describe.serial("Assign a position directly to a person", () => {
     await expect(page.getByText("No group members found.")).toHaveCount(0);
     await search.fill("Donald");
     await page.locator('[data-testid="search-button"]').click();
-    await page.getByRole("button", { name: "Donald Clark", exact: true }).click();
+    await page.getByRole("button", { name: /Donald Clark/ }).click();
 
     await expect(row.getByRole("button", { name: /Donald Clark/ })).toBeVisible({ timeout: 15000 });
     await expect(row.getByText("1/1")).toBeVisible();

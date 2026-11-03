@@ -88,7 +88,7 @@ test.describe("People Management", () => {
       );
       const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
       await expect(donaldRow).toBeVisible({ timeout: 10000 });
-      await donaldRow.getByRole("link", { name: "Donald Clark", exact: true }).click();
+      await donaldRow.getByRole("link", { name: /Donald Clark/ }).click();
       await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000, waitUntil: "commit" });
     });
 
@@ -668,6 +668,80 @@ test.describe("People Management", () => {
       await expect(closeBtn).toBeVisible({ timeout: 10000 });
       await closeBtn.click();
       await expect(closeBtn).toHaveCount(0, { timeout: 10000 });
+    });
+
+    // ChurchAppsSupport#1448: Add Person asks title and mobile phone, and Add Household Member's
+    // "Add New Person" also asks the household role, so staff don't reopen each new person.
+    test.describe.serial("Add Person title, phone and household role", () => {
+      const API = process.env.API_BASE || "http://localhost:8084";
+      let ctx: APIRequestContext;
+      let auth: { headers: { Authorization: string } };
+      const created: string[] = [];
+
+      test.beforeAll(async () => {
+        ctx = await request.newContext();
+        const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+        const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+        auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+        // A run that failed half way leaves its person behind, so its name would no longer come up empty.
+        for (const term of ["Zebedeeroletest", "Titletest"]) {
+          const found = await (await ctx.post(`${API}/membership/people/search`, { ...auth, data: { term } })).json();
+          for (const p of found || []) await ctx.delete(`${API}/membership/people/${p.id}`, auth);
+        }
+      });
+
+      test.afterAll(async () => {
+        for (const id of created) await ctx.delete(`${API}/membership/people/${id}`, auth).catch(() => { });
+        await ctx?.dispose();
+      });
+
+      test("Add Person saves a title and mobile phone", async ({ page }) => {
+        await page.locator('[data-testid="create-person-title"]').fill("Dr");
+        await page.locator('[name="first"]').fill("Zebedee");
+        await page.locator('[name="last"]').fill("Titletest");
+        await page.locator('[name="mobilePhone"]').fill("555-201-1448");
+        await page.locator('[type="submit"]').click();
+        await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/, { timeout: 10000 });
+        const id = new URL(page.url()).pathname.split("/").pop()!;
+        created.push(id);
+        const person = await (await ctx.get(`${API}/membership/people/${id}`, auth)).json();
+        expect(person.name.prefix).toBe("Dr");
+        expect(person.contactInfo.mobilePhone).toContain("555");
+      });
+
+      test("Add New Person from a household asks the household role", async ({ page }) => {
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        await page.waitForURL(/\/people\/(?!demographics|lists)[^/?#]+/);
+        const donaldId = new URL(page.url()).pathname.split("/").pop()!;
+        await page.locator('#householdBox button[aria-label="Edit"]').first().click();
+        await page.locator('[data-testid="add-household-member-button"]').click();
+        await page.locator('input[name="personAddText"]').fill("Zebedeeroletest");
+        await page.locator('[data-testid="search-button"]').click();
+        await page.getByRole("button", { name: /Add (a )?New Person/ }).click();
+        const dialog = page.getByRole("dialog");
+        await dialog.locator('[name="first"]').fill("Zebedeeroletest");
+        await dialog.locator('[name="last"]').fill("Clark");
+        await dialog.locator('[data-testid="create-person-title"]').fill("Mr");
+        await dialog.locator('[data-testid="create-person-role"]').click();
+        await page.getByRole("option", { name: "Child" }).click();
+        await dialog.getByRole("button", { name: "Add" }).click();
+        await expect(dialog).toHaveCount(0, { timeout: 10000 });
+
+        // The new person goes straight into the household with the role picked in the dialog.
+        const newRow = page.locator("#householdMemberTable tr").filter({ has: page.getByText("Zebedeeroletest Clark") });
+        await expect(newRow.locator('[data-testid="household-role-select"]')).toContainText("Child", { timeout: 10000 });
+        await page.locator("button").getByText("Save").click();
+        await expect(page.locator("#householdBox").getByRole("link", { name: /Zebedeeroletest/ })).toHaveCount(1, { timeout: 10000 });
+
+        const donald = await (await ctx.get(`${API}/membership/people/${donaldId}`, auth)).json();
+        const members = await (await ctx.get(`${API}/membership/people/household/${donald.householdId}`, auth)).json();
+        const person = members.find((m: any) => m.name?.first === "Zebedeeroletest");
+        expect(person).toBeTruthy();
+        created.push(person.id);
+        expect(person.householdId).toBe(donald.householdId);
+        expect(person.householdRole).toBe("Child");
+        expect(person.name.prefix).toBe("Mr");
+      });
     });
 
     test("should cancel editing person details", async ({ page }) => {

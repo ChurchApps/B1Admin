@@ -51,6 +51,13 @@ export const PersonIdentity: React.FC<Props> = (props) => {
     ApiHelper.get("/userchurch/personid/" + person.id, "MembershipApi")
       .then((data: { email: string } | null) => setUserEmail(data?.email || ""))
       .catch(() => setUserEmail(""));
+  }, [person]);
+
+  // Custom field values are saved separately from the person record, so a save that leaves the person
+  // unchanged hands back the same object. Reload them when the edit form closes as well.
+  const isEditing = props.view === "edit";
+  React.useEffect(() => {
+    if (!person.id || isEditing) return;
     ApiHelper.get(`/personfieldvalues/person/${person.id}`, "MembershipApi")
       .then((data: PersonFieldValueInterface[]) => {
         const map: Record<string, string> = {};
@@ -58,7 +65,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
         setCustomValues(map);
       })
       .catch(() => setCustomValues({}));
-  }, [person]);
+  }, [person, isEditing]);
 
   React.useEffect(() => {
     ApiHelper.get("/personfields", "MembershipApi")

@@ -818,8 +818,21 @@ test.describe("Website Management", () => {
 
   test.describe.serial("Appearance", () => {
     let page: Page;
+    // These tests save a new heading font, palette and custom CSS; put the church's styles back
+    // afterwards so later specs (e.g. "preview headings use the Appearance heading font") see the demo data.
+    const appearanceApi = process.env.API_BASE || "http://localhost:8084";
+    let appearanceAuth: { headers: Record<string, string> } | null = null;
+    let originalStyles: any = null;
 
     test.beforeAll(async ({ browser }) => {
+      const api = await request.newContext();
+      const loginBody = await (await api.post(`${appearanceApi}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (loginBody.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || loginBody.userChurches?.[0];
+      appearanceAuth = { headers: { Authorization: "Bearer " + uc?.jwt } };
+      const styles = await (await api.get(`${appearanceApi}/content/globalStyles`, appearanceAuth)).json();
+      originalStyles = styles?.id ? styles : null;
+      await api.dispose();
+
       const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
       page = await context.newPage();
       await login(page);
@@ -828,6 +841,11 @@ test.describe("Website Management", () => {
 
     test.afterAll(async () => {
       await page?.context().close();
+      if (originalStyles && appearanceAuth) {
+        const api = await request.newContext();
+        await api.post(`${appearanceApi}/content/globalStyles`, { ...appearanceAuth, data: [originalStyles] });
+        await api.dispose();
+      }
     });
 
     test.beforeEach(async () => {
@@ -1697,6 +1715,52 @@ test.describe.serial("Events page calendar element", () => {
       await page.locator("button").getByText("Save").click();
       const answers = JSON.parse((await elementPost).request().postDataJSON()[0].answersJSON);
       expect(answers).toMatchObject({ label: "worship", layout: "autoscroll" });
+    });
+  });
+
+  test.describe.serial("Groups browser scrolling layout", () => {
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
+    let page: Page;
+    let auth: { headers: Record<string, string> };
+    let elementId: string | undefined;
+
+    test.beforeAll(async ({ browser }) => {
+      const ctx = await request.newContext();
+      const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+      auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+      const res = await ctx.post(`${API_BASE}/content/elements`, { ...auth, data: [{ churchId: "CHU00000001", sectionId: "SEC00000019", elementType: "groups", sort: 4, answersJSON: JSON.stringify({ title: "Find a Group" }) }] });
+      elementId = (await res.json())[0]?.id;
+      await ctx.dispose();
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+    });
+
+    test.afterAll(async () => {
+      if (elementId) {
+        const ctx = await request.newContext();
+        await ctx.delete(`${API_BASE}/content/elements/${elementId}`, auth).catch(() => { });
+        await ctx.dispose();
+      }
+      await page?.context().close();
+    });
+
+    test("offers a scrolling layout for a Groups Browser and saves it", async () => {
+      expect(elementId).toBeTruthy();
+      await page.goto("/site/pages/PAG00000004");
+      const wrapper = page.locator(`div[data-element-id="${elementId}"]`);
+      await expect(wrapper).toBeVisible({ timeout: 20000 });
+      await wrapper.click({ position: { x: 5, y: 5 } });
+      const layout = page.locator('[data-testid="groups-layout-select"]');
+      await expect(layout).toBeVisible({ timeout: 10000 });
+      await expect(layout).toContainText("Grid");
+      await layout.click();
+      await page.getByRole("option", { name: "Scrolling (automatic)" }).click();
+      const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator("button").getByText("Save").click();
+      const answers = JSON.parse((await elementPost).request().postDataJSON()[0].answersJSON);
+      expect(answers).toMatchObject({ title: "Find a Group", layout: "autoscroll" });
     });
   });
 });
