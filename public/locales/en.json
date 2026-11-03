@@ -646,7 +646,10 @@
     "addNewPerson": "Add New Person",
     "email": "Email",
     "firstName": "First Name",
-    "lastName": "Last Name"
+    "householdRole": "Household Role",
+    "lastName": "Last Name",
+    "mobilePhone": "Mobile Phone",
+    "title": "Title"
   },
   "dashboard": {
     "adminWelcome": {
@@ -1842,6 +1845,7 @@
         "field": "Field",
         "gender": "Gender",
         "grade": "Grade",
+        "householdRole": "Household role",
         "include": "Include",
         "maritalStatus": "Marital status",
         "personTitle": "Title",

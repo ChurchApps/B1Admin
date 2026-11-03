@@ -92,7 +92,7 @@ export const PeoplePage = memo(() => {
   const scrollToCreatePerson = useCallback(() => {
     const form = document.getElementById("createPersonForm");
     form?.scrollIntoView({ behavior: "smooth", block: "start" });
-    (form?.querySelector("input") as HTMLElement | null)?.focus();
+    (form?.querySelector("input[name='first']") as HTMLElement | null)?.focus();
   }, []);
 
   const columns = [

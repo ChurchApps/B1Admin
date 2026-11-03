@@ -19,6 +19,22 @@ interface Props {
   task: TaskInterface;
 }
 
+interface FamilyMemberRequest { first?: string; last?: string; prefix?: string; mobilePhone?: string; householdRole?: string }
+
+// Older requests carry just the first name; newer ones a JSON object with the other fields.
+const parseFamilyMember = (value: string): FamilyMemberRequest => {
+  try {
+    const parsed = JSON.parse(value);
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed;
+  } catch { /* plain first name */ }
+  return { first: value };
+};
+
+const describeFamilyMember = (m: FamilyMemberRequest) => {
+  const name = [m.prefix, m.first, m.last].filter(Boolean).join(" ");
+  return [name, m.householdRole, m.mobilePhone].filter(Boolean).join(" · ");
+};
+
 export const RequestedChanges = (props: Props) => {
   const requestedChanges: { field: string; label: string; value: string }[] = React.useMemo(() => {
     try {
@@ -55,7 +71,7 @@ export const RequestedChanges = (props: Props) => {
             alt={Locale.label("tasks.requestedChanges.newProfile")}
           />
         );
-      }
+      } else if (ch.field === "familyMember") val = describeFamilyMember(parseFamilyMember(ch.value));
       rows.push(
         <TableRow key={i}>
           <TableCell>
@@ -99,6 +115,7 @@ export const RequestedChanges = (props: Props) => {
         case "name.first": p.name.first = value; break;
         case "name.middle": p.name.middle = value; break;
         case "name.last": p.name.last = value; break;
+        case "name.prefix": p.name.prefix = value; break;
         case "photo": {
           p.photo = value;
           const getTime = value.split("?dt=")[1];
@@ -116,8 +133,16 @@ export const RequestedChanges = (props: Props) => {
         case "contactInfo.mobilePhone": p.contactInfo.mobilePhone = value; break;
         case "contactInfo.workPhone": p.contactInfo.workPhone = value; break;
         case "familyMember": {
-          const newPerson: PersonInterface = { name: { first: value, last: p.name.last }, contactInfo: {}, householdId: p.householdId };
+          const m = parseFamilyMember(value);
+          const last = m.last || p.name.last;
+          const newPerson: PersonInterface = {
+            name: { first: m.first, last, prefix: m.prefix || undefined, display: [m.first, last].join(" ") },
+            contactInfo: m.mobilePhone ? { mobilePhone: m.mobilePhone } : {},
+            householdId: p.householdId,
+            householdRole: m.householdRole || "Other"
+          };
           peopleArray.push(newPerson);
+          break;
         }
       }
     });

@@ -6,7 +6,7 @@ import {
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { type PersonInterface, type FormSubmissionInterface, type QuestionInterface, type AnswerInterface } from "@churchapps/helpers";
-import { ApiHelper, DateHelper, DisplayBox, Loading, Locale, SmallButton } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, DisplayBox, Loading, Locale, SmallButton, UserHelper } from "@churchapps/apphelper";
 import { useReactToPrint } from "react-to-print";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
 import { Question, PrintStyles, SubmissionPersonDialog } from "../../components";
@@ -193,6 +193,7 @@ export const PersonForms: React.FC<Props> = (props) => {
             contentType="person"
             contentId={contentId || ""}
             personId={contentId}
+            churchId={UserHelper.currentUserChurch?.church?.id}
             showHeader={false}
             updatedFunction={handleSaved}
             cancelFunction={() => setEditingFormId("")}

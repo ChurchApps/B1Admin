@@ -119,6 +119,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
         contentType={props.contentType}
         contentId={props.contentId}
         personId={props.contentId}
+        churchId={UserHelper.currentUserChurch?.church?.id}
       />
     );
   } else return <div id="formSubmissionsAccordion">{getCards()}</div>;
