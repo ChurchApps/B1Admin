@@ -84,8 +84,11 @@ export const DonationEdit = memo((props: Props) => {
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
   const onValid = async (values: AnyRecord) => {
+    // New gifts are stamped with the church currency; edited gifts keep the currency they were entered in.
+    const currency = (donation.currency || props.currency || "usd").toLowerCase();
     const donationToSave: DonationInterface = {
       ...donation,
+      currency,
       donationDate: values.date ? DateHelper.formatHtml5Date(values.date) : undefined,
       method: values.method,
       methodDetails: values.methodDetails,
@@ -101,7 +104,7 @@ export const DonationEdit = memo((props: Props) => {
       fundDonations.forEach((fd) => {
         if (fd.amount === undefined || fd.amount === 0) {
           if (!UniqueIdHelper.isMissing(fd.id)) promises.push(ApiHelper.delete("/funddonations/" + fd.id, "GivingApi"));
-        } else fDonations.push({ ...fd, donationId: id });
+        } else fDonations.push({ ...fd, donationId: id, currency: fd.currency || currency });
       });
       if (fDonations.length > 0) promises.push(ApiHelper.post("/funddonations", fDonations, "GivingApi"));
       await Promise.all(promises);

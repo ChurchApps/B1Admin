@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Typography, Button, type SelectChangeEvent } from "@mui/material";
+import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField, Box, Typography, Button, type SelectChangeEvent } from "@mui/material";
 import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, ErrorMessages, PersonHelper, Locale } from "@churchapps/apphelper";
@@ -10,6 +10,7 @@ interface Props {
   batchId: string;
   batchDate?: Date;
   funds: FundInterface[];
+  currency?: string;
   updatedFunction: () => void;
   onOpenFullEditor?: () => void;
 }
@@ -23,6 +24,7 @@ export const BulkDonationEntry = memo((props: Props) => {
   const amountInputRef = useRef<HTMLInputElement>(null);
   const savingRef = useRef(false);
   const [errors, setErrors] = React.useState<string[]>([]);
+  const currency = (props.currency || "usd").toLowerCase();
 
   const [defaultValues, setDefaultValues] = React.useState({
     date: DateHelper.formatHtml5Date(props.batchDate || new Date()),
@@ -65,7 +67,8 @@ export const BulkDonationEntry = memo((props: Props) => {
       donationDate: defaultValues.date,
       method: defaultValues.method,
       methodDetails: methodDetails || undefined,
-      notes: defaultValues.notes || undefined
+      notes: defaultValues.notes || undefined,
+      currency
     };
 
     try {
@@ -75,7 +78,8 @@ export const BulkDonationEntry = memo((props: Props) => {
       const fundDonation: FundDonationInterface = {
         donationId,
         fundId: defaultValues.fundId,
-        amount: parseFloat(amount)
+        amount: parseFloat(amount),
+        currency
       };
 
       try {
@@ -98,7 +102,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     props.updatedFunction();
 
     setTimeout(() => searchInputRef.current?.focus(), 100);
-  }, [amount, methodDetails, selectedPerson, defaultValues, props]);
+  }, [amount, methodDetails, selectedPerson, defaultValues, currency, props]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -206,6 +210,7 @@ export const BulkDonationEntry = memo((props: Props) => {
           onKeyDown={handleKeyDown}
           sx={{ flex: 1, "& .MuiInputBase-input": { typography: "h3", fontVariantNumeric: "tabular-nums" } }}
           autoFocus
+          slotProps={{ input: { endAdornment: <InputAdornment position="end" data-testid="bulk-donation-currency">{currency.toUpperCase()}</InputAdornment> } }}
           data-testid="bulk-donation-amount"
         />
         {defaultValues.method !== "Cash" && (

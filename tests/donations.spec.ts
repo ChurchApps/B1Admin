@@ -1178,3 +1178,62 @@ test.describe("Donations — Stripe tools hidden for non-Stripe gateways", () =>
     await expect(nav.getByText("Stripe Import")).toHaveCount(0);
   });
 });
+
+// ChurchAppsSupport#1450: both manual entry forms show the church currency beside Amount and stamp it on the gift.
+// The gateway's currency is swapped to PHP in the page to stand in for a Philippine church; the demo gateway is not changed.
+const CURRENCY_BATCH_NAME = "Zacchaeus Peso Batch";
+
+test.describe("Manual entry records the church currency", () => {
+  test.describe.configure({ retries: 0 });
+  let batchId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...(await apiAuth(ctx)), data: [{ name: CURRENCY_BATCH_NAME, batchDate: "2025-11-10" }] });
+    batchId = (await batchRes.json())[0].id;
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    if (!batchId) return;
+    const ctx = await request.newContext();
+    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, await apiAuth(ctx));
+    await ctx.dispose();
+  });
+
+  const openPesoBatch = async (page: Page) => {
+    await page.route(/\/giving\/gateways$/, async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      const res = await route.fetch();
+      const rows = await res.json();
+      await route.fulfill({ response: res, json: Array.isArray(rows) ? rows.map((g: any) => ({ ...g, currency: "php" })) : rows });
+    });
+    await page.goto(`/donations/batches/${batchId}`);
+    await page.getByTestId("bulk-donation-anonymous").click();
+  };
+  const postedDonation = (page: Page) => page.waitForRequest((r) => /\/giving\/donations$/.test(r.url()) && r.method() === "POST");
+  const postedFundDonation = (page: Page) => page.waitForRequest((r) => /\/giving\/funddonations$/.test(r.url()) && r.method() === "POST");
+
+  test("quick Add Donation shows PHP beside Amount and saves the gift in PHP", async ({ page }) => {
+    await openPesoBatch(page);
+    await expect(page.getByTestId("bulk-donation-currency")).toHaveText("PHP", { timeout: 10000 });
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("500");
+    const donationReq = postedDonation(page);
+    const fundReq = postedFundDonation(page);
+    await page.getByTestId("add-donation-submit").click();
+    expect((await donationReq).postDataJSON()[0].currency).toBe("php");
+    expect((await fundReq).postDataJSON()[0].currency).toBe("php");
+  });
+
+  test("full donation editor saves a new gift in the church currency", async ({ page }) => {
+    await openPesoBatch(page);
+    await page.getByTestId("bulk-donation-full-editor").click();
+    const box = page.locator("#donationBox");
+    await box.locator('input[name="amount"]').fill("250");
+    const donationReq = postedDonation(page);
+    const fundReq = postedFundDonation(page);
+    await box.locator("button").getByText("Save").click();
+    expect((await donationReq).postDataJSON()[0].currency).toBe("php");
+    expect((await fundReq).postDataJSON()[0].currency).toBe("php");
+  });
+});

@@ -157,6 +157,7 @@ export const DonationBatchPage = () => {
                     batchId={batch.data?.id || ""}
                     batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
                     funds={funds.data || []}
+                    currency={currency}
                     updatedFunction={donationUpdated}
                     onOpenFullEditor={() => showEditDonation("")}
                   />

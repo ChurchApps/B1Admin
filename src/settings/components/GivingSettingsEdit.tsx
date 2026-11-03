@@ -5,7 +5,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
 import { listPaymentProviders, getPaymentProvider } from "@churchapps/apphelper/donations";
-import { type ChurchInterface } from "@churchapps/helpers";
+import { type ChurchInterface, type GenericSettingInterface } from "@churchapps/helpers";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
@@ -23,9 +23,19 @@ type AnyRecord = Record<string, any>;
 
 const isProd = process.env.REACT_APP_STAGE === "prod";
 
+// Every ISO currency the browser knows, for churches that record gifts without an online giving provider.
+const allCurrencies = (): string[] => {
+  const iso: string[] = (Intl as any).supportedValuesOf?.("currency") || [];
+  if (iso.length) return iso.map((c) => c.toLowerCase());
+  const union = new Set<string>(["usd"]);
+  listPaymentProviders().forEach((p) => { if (Array.isArray(p.descriptor.currencies)) p.descriptor.currencies.forEach((c) => union.add(c)); });
+  return Array.from(union).sort();
+};
+
 export const GivingSettingsEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [gateway, setGateway] = React.useState<PaymentGatewaysInterface | null>(null);
+  const [currencySetting, setCurrencySetting] = React.useState<GenericSettingInterface | null>(null);
   const [errors, setErrors] = React.useState<string[]>([]);
   const [copySnackbar, setCopySnackbar] = React.useState(false);
   const feeSaveRef = React.useRef<(() => Promise<void>) | null>(null);
@@ -80,6 +90,13 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
           || String(gateway.currency || "usd").toLowerCase() !== gw.currency;
         if (gatewayChanged) await ApiHelper.post("/gateways", [gw], "GivingApi");
       }
+      // The church currency lives in settings too, so it survives without a provider.
+      const churchCurrency = String(values.currency || "usd").toLowerCase();
+      if (currencySetting?.value !== churchCurrency) {
+        const sett: GenericSettingInterface = { ...(currencySetting || { churchId: props.churchId, public: 1, keyName: "currency" }), value: churchCurrency };
+        const saved: GenericSettingInterface[] = await ApiHelper.post("/settings", [sett], "MembershipApi");
+        if (saved?.[0]) setCurrencySetting(saved[0]);
+      }
       await Promise.all([feeSaveRef.current?.(), statementSaveRef.current?.()]);
       setErrors([]);
       props.onSaveComplete?.(true);
@@ -100,10 +117,15 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = async () => {
-    const gateways = await ApiHelper.get("/gateways", "GivingApi");
+    const [gateways, settings] = await Promise.all([
+      ApiHelper.get("/gateways", "GivingApi"),
+      ApiHelper.get("/settings", "MembershipApi").catch((): GenericSettingInterface[] => [])
+    ]);
+    const churchCurrency: GenericSettingInterface | undefined = Array.isArray(settings) ? settings.find((s: GenericSettingInterface) => s.keyName === "currency") : undefined;
+    setCurrencySetting(churchCurrency || null);
     if (gateways.length === 0) {
       setGateway(null);
-      reset({ provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: "usd" });
+      reset({ provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: (churchCurrency?.value || "usd").toLowerCase() });
     } else {
       setGateway(gateways[0]);
       reset({
@@ -158,13 +180,14 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   };
 
   const getCurrency = () => {
-    const currencyOptions = Array.isArray(descriptor?.currencies) ? descriptor!.currencies : [];
-    if (!currencyOptions.length) return null;
+    if (provider && !knownProvider) return null;
+    const currencyOptions = Array.isArray(descriptor?.currencies) && descriptor!.currencies.length ? descriptor!.currencies : allCurrencies();
     return (
       <Grid size={{ xs: 12, md: 4 }}>
         <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
-          {Locale.label("settings.givingSettingsEdit.currencyHelper")}
-          {descriptor?.currencyHelpUrl && <> <a href={descriptor.currencyHelpUrl} target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></>}
+          {descriptor?.currencyHelpUrl
+            ? <>{Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href={descriptor.currencyHelpUrl} target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></>
+            : Locale.label("settings.givingSettingsEdit.currencyHelperNoProvider")}
         </Typography>
         <Controller
           control={control}
@@ -173,6 +196,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
             <FormControl fullWidth>
               <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
               <Select
+                data-testid="church-currency-select"
                 {...field}
                 value={currencyOptions.includes(String(field.value || "").toLowerCase()) ? String(field.value).toLowerCase() : (currencyOptions[0] || "")}
                 onChange={(e) => field.onChange(e.target.value)}
