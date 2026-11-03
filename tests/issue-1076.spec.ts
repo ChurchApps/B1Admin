@@ -1,4 +1,4 @@
-import { test, expect, type BrowserContext, type Page } from "@playwright/test";
+import { test, expect, request as pwRequest, type BrowserContext, type Page } from "@playwright/test";
 
 // Issue #1076: a member without People > Edit is still offered edit/delete controls on
 // the People screens. The Api rejects the requests, so the buttons never work - they
@@ -6,8 +6,18 @@ import { test, expect, type BrowserContext, type Page } from "@playwright/test";
 const DONALD_CLARK = "PER00000080"; // demo seed person, not the signed-in volunteer
 
 // Rachel Martin: demo seed user whose only role permission is DoingApi/Tasks/View.
-// She is a church Member, so the Api's isMember carve-out still lets her read people.
+// Since B1Admin #690, /people redirects anyone without People > View. The test grants
+// that View permission and still withholds People > Edit, which is what hides the controls.
 const VOLUNTEER_EMAIL = "volunteer@b1.church";
+const API = process.env.API_BASE || "http://localhost:8084";
+const VOLUNTEER_ROLE = "ROL00000010";
+
+async function adminAuth(ctx) {
+  const login = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const body = await login.json();
+  const uc = (body.userChurches || []).find((c) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  return { headers: { Authorization: "Bearer " + uc.jwt } };
+}
 
 async function signIn(page: Page, email: string) {
   await page.goto("/", { timeout: 60000 });
@@ -38,15 +48,31 @@ test.describe.serial("Issue #1076 - People edit/delete controls respect People >
   let context: BrowserContext;
   let page: Page;
 
+  let peopleViewPermissionId = "";
+
   test.beforeAll(async ({ browser }) => {
+    const api = await pwRequest.newContext();
+    const auth = await adminAuth(api);
+    const saved = await api.post(`${API}/membership/rolepermissions`, {
+      ...auth,
+      data: [{ roleId: VOLUNTEER_ROLE, apiName: "MembershipApi", contentType: "People", action: "View" }]
+    });
+    peopleViewPermissionId = (await saved.json())?.[0]?.id || "";
+    await api.dispose();
     // Fresh context: the default storageState is the demo Domain Admin.
+    // Sign in after the grant so the volunteer JWT includes People > View.
     context = await browser.newContext({ storageState: undefined });
     page = await context.newPage();
     await signIn(page, VOLUNTEER_EMAIL);
   });
 
   test.afterAll(async () => {
-    await context.close();
+    await context?.close();
+    if (!peopleViewPermissionId) return;
+    const api = await pwRequest.newContext();
+    const auth = await adminAuth(api);
+    await api.delete(`${API}/membership/rolepermissions/${peopleViewPermissionId}`, auth);
+    await api.dispose();
   });
 
   test("person page hides the edit action from a user without People > Edit", async () => {
