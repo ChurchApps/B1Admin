@@ -4199,6 +4199,7 @@
       "copyWebhookUrl": "Copy webhook URL",
       "currency": "Currency",
       "currencyHelper": "Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here:",
+      "currencyHelperNoProvider": "The currency your church records gifts in.",
       "feesAndStatementsSection": "Fees & statements",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "giving": "Giving",
