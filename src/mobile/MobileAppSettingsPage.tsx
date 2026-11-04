@@ -24,7 +24,8 @@ const ICON_FOR_LINK_TYPE: Record<string, string> = {
   volunteer: "volunteer_activism",
   checkin: "how_to_reg",
   page: "description",
-  url: "link"
+  url: "link",
+  folder: "folder"
 };
 
 const buildNewTab = (linkType = "url", linkData = ""): LinkInterface => {

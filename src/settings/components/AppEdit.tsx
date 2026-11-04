@@ -32,12 +32,13 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   const [groupIdsJson, setGroupIdsJson] = useState<string>("");
   const [pages, setPages] = useState<PageInterface[] | null>(null);
   const [groups, setGroups] = useState<GroupInterface[]>([]);
+  const [allTabs, setAllTabs] = useState<LinkInterface[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showPhotoGallery, setShowPhotoGallery] = useState<boolean>(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const { register, handleSubmit, reset, control, watch, setValue } = useForm<AnyRecord>({ defaultValues: { text: "", linkType: "", linkData: "", url: "", visibility: "everyone" } });
+  const { register, handleSubmit, reset, control, watch, setValue } = useForm<AnyRecord>({ defaultValues: { text: "", linkType: "", linkData: "", url: "", visibility: "everyone", parentId: "" } });
   const linkType = watch("linkType");
   const visibility = watch("visibility");
 
@@ -48,7 +49,8 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
         linkType: currentTabFromProps.linkType || "",
         linkData: currentTabFromProps.linkData || "",
         url: currentTabFromProps.url || "",
-        visibility: (currentTabFromProps as any).visibility || "everyone"
+        visibility: (currentTabFromProps as any).visibility || "everyone",
+        parentId: currentTabFromProps.parentId || ""
       });
       setIcon(currentTabFromProps.icon || "");
       setPhoto((currentTabFromProps as any).photo || "");
@@ -58,7 +60,18 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
   useEffect(() => {
     ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => setGroups(data || []));
+    ApiHelper.get("/links?category=b1Tab", "ContentApi").then((data: LinkInterface[]) => setAllTabs(data || []));
   }, []);
+
+  // Folders hold one level of tabs, so only folders can be a parent and a folder has no parent.
+  const folders = allTabs.filter(t => t.linkType === "folder" && t.id !== currentTabFromProps?.id);
+  const isFolder = linkType === "folder";
+
+  // A tab that stops being a folder (or is deleted) moves its tabs back to the top level.
+  const releaseChildren = async () => {
+    const children = allTabs.filter(t => t.parentId && t.parentId === currentTabFromProps?.id);
+    if (children.length > 0) await ApiHelper.post("/links", children.map(c => ({ ...c, parentId: null })), "ContentApi");
+  };
 
   const onValid = async (values: AnyRecord) => {
     setIsSaving(true);
@@ -68,7 +81,14 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
       (t as any).photo = photo;
       (t as any).groupIds = values.visibility === "groups" ? (groupIdsJson || null) : null;
       if (t.linkType !== "url" && t.linkType !== "page") t.url = "";
+      const parentId = t.linkType === "folder" ? "" : (values.parentId || "");
+      t.parentId = parentId || null;
+      if (parentId !== (currentTabFromProps.parentId || "")) {
+        const siblings = allTabs.filter(s => (s.parentId || "") === parentId && s.id !== currentTabFromProps.id);
+        t.sort = siblings.reduce((m, s) => Math.max(m, s.sort || 0), 0) + 1;
+      }
       await ApiHelper.post("/links", [t], "ContentApi");
+      if (currentTabFromProps.linkType === "folder" && t.linkType !== "folder") await releaseChildren();
       updatedFunction();
     } finally {
       setIsSaving(false);
@@ -93,7 +113,9 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("settings.app.confirmDeleteTab"))) {
-      ApiHelper.delete("/links/" + currentTabFromProps.id, "ContentApi").then(() => updatedFunction());
+      await ApiHelper.delete("/links/" + currentTabFromProps.id, "ContentApi");
+      if (currentTabFromProps.linkType === "folder") await releaseChildren();
+      updatedFunction();
     }
   };
 
@@ -197,6 +219,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                       <MenuItem value="plans">{Locale.label("settings.appEdit.plans")}</MenuItem>
                       <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>
                       <MenuItem value="page">{Locale.label("settings.appEdit.internalPage")}</MenuItem>
+                      <MenuItem value="folder">{Locale.label("settings.appEdit.folder")}</MenuItem>
                     </Select>
                   </FormControl>
                 )}
@@ -207,6 +230,22 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
               )}
 
               {getPage()}
+
+              {!isFolder && folders.length > 0 && (
+                <Controller
+                  control={control}
+                  name="parentId"
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="parentTab" shrink>{Locale.label("settings.appEdit.parentTab")}</InputLabel>
+                      <Select {...field} labelId="parentTab" label={Locale.label("settings.appEdit.parentTab")} displayEmpty notched>
+                        <MenuItem value="">{Locale.label("settings.appEdit.noParent")}</MenuItem>
+                        {folders.map(f => <MenuItem value={f.id} key={f.id}>{f.text}</MenuItem>)}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              )}
 
               <Controller
                 control={control}

@@ -3940,6 +3940,7 @@
       "editTab": "Edit Tab",
       "everyone": "Everyone (including anonymous)",
       "externalUrl": "External URL",
+      "folder": "Folder",
       "groups": "Specific Groups...",
       "internalPage": "Internal Page",
       "liveStream": "Live Stream",
@@ -3948,7 +3949,9 @@
       "membersStaff": "Members & Staff",
       "myGroups": "My Groups",
       "noGroupsFound": "No groups found",
+      "noParent": "None (top level)",
       "page": "Page",
+      "parentTab": "Parent tab",
       "plans": "Serving Plans",
       "saveTab": "Save Tab",
       "saving": "Saving...",
@@ -3966,6 +3969,8 @@
       "volunteerOpportunities": "Volunteer Opportunities"
     },
     "appTabs": {
+      "folderOneTab": "Folder · 1 tab",
+      "folderTabs": "Folder · {} tabs",
       "moveDown": "Move Down",
       "moveUp": "Move Up",
       "noTabs": "No tabs configured",
