@@ -19,7 +19,8 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_TONES: Record<string, StatusTone> = { pending: "info", processing: "info", sent: "success", failed: "danger", cancelled: "neutral" };
 
-// Scheduled push notifications (ChurchAppsSupport#1411): what is queued, with edit / send now / cancel, and recent history.
+// Scheduled push notifications (ChurchAppsSupport#1411): what is queued, with edit / send now / cancel, and recent history
+// that can be removed one at a time or cleared (ChurchAppsSupport#1456).
 export const PushNotificationsPage: React.FC = () => {
   const canSendEveryone = React.useMemo(() => UserHelper.checkAccess(Permissions.contentApi.content.edit), []);
   const canSendGroup = React.useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
@@ -68,6 +69,16 @@ export const PushNotificationsPage: React.FC = () => {
   const handleCancel = async (r: ScheduledNotificationInterface) => {
     const ok = await confirm(Locale.label("mobile.pushNotifications.cancelConfirm", "Cancel this scheduled notification? It will not be sent."), { confirmLabel: Locale.label("mobile.pushNotifications.cancel", "Cancel notification") });
     if (ok) await runAction(() => ApiHelper.delete(`/scheduledNotifications/${r.id}`, "MessagingApi"));
+  };
+
+  const handleRemove = async (r: ScheduledNotificationInterface) => {
+    const ok = await confirm(Locale.label("mobile.pushNotifications.removeConfirm", "Remove this notification from the list? This cannot be undone."), { confirmLabel: Locale.label("mobile.pushNotifications.remove", "Remove") });
+    if (ok) await runAction(() => ApiHelper.delete(`/scheduledNotifications/${r.id}`, "MessagingApi"));
+  };
+
+  const handleClearAll = async () => {
+    const ok = await confirm(Locale.label("mobile.pushNotifications.clearAllConfirm", "Remove all sent, failed and cancelled notifications from the list? This cannot be undone."), { confirmLabel: Locale.label("mobile.pushNotifications.clearAll", "Clear all") });
+    if (ok) await runAction(() => ApiHelper.delete("/scheduledNotifications", "MessagingApi"));
   };
 
   const upcoming = (rows || []).filter((r) => r.status === "pending" || r.status === "processing");
@@ -127,7 +138,11 @@ export const PushNotificationsPage: React.FC = () => {
           </Table>
         </CardWithHeader>
 
-        <CardWithHeader title={Locale.label("mobile.pushNotifications.recent", "Recent")} icon={<HistoryIcon />}>
+        <CardWithHeader
+          title={Locale.label("mobile.pushNotifications.recent", "Recent")}
+          icon={<HistoryIcon />}
+          actions={recent.some(canManage) && <Button size="small" color="error" data-testid="clear-recent" onClick={handleClearAll}>{Locale.label("mobile.pushNotifications.clearAll", "Clear all")}</Button>}
+        >
           <Table size="small" data-testid="recent-table">
             <TableHead>
               <TableRow>
@@ -135,11 +150,12 @@ export const PushNotificationsPage: React.FC = () => {
                 <TableCell>{Locale.label("mobile.pushNotifications.audience", "Audience")}</TableCell>
                 <TableCell>{Locale.label("mobile.pushNotifications.notification", "Notification")}</TableCell>
                 <TableCell>{Locale.label("mobile.pushNotifications.status", "Status")}</TableCell>
+                <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
               {rows && recent.length === 0 && (
-                <TableRow><TableCell colSpan={4}><Typography variant="body2" color="text.secondary">{Locale.label("mobile.pushNotifications.noneRecent", "No notifications have gone out yet.")}</Typography></TableCell></TableRow>
+                <TableRow><TableCell colSpan={5}><Typography variant="body2" color="text.secondary">{Locale.label("mobile.pushNotifications.noneRecent", "No notifications have gone out yet.")}</Typography></TableCell></TableRow>
               )}
               {recent.map((r) => (
                 <TableRow key={r.id}>
@@ -152,6 +168,9 @@ export const PushNotificationsPage: React.FC = () => {
                   <TableCell>
                     <StatusBadge tone={STATUS_TONES[r.status || ""] || "neutral"}>{statusText(r)}</StatusBadge>
                     {r.status === "failed" && r.lastError && r.lastError !== "missed send window" && <Typography variant="caption" color="error" display="block">{r.lastError}</Typography>}
+                  </TableCell>
+                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                    {canManage(r) && <Button size="small" color="error" data-testid="remove-notification" onClick={() => handleRemove(r)}>{Locale.label("mobile.pushNotifications.remove", "Remove")}</Button>}
                   </TableCell>
                 </TableRow>
               ))}
