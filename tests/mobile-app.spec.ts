@@ -260,6 +260,8 @@ test.describe.serial("Mobile tab folders", () => {
   const FOLDER = "Zacchaeus Portal";
   const CHILD_A = "Zacchaeus Portal Groups";
   const CHILD_B = "Zacchaeus Portal Directory";
+  // A second folder keeps the Parent tab select on screen after FOLDER is deleted.
+  const SPARE = "Zacchaeus Spare Folder";
 
   test.beforeAll(async ({ browser }) => {
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
@@ -341,18 +343,33 @@ test.describe.serial("Mobile tab folders", () => {
 
   test("deleting the folder moves its tabs back to the top level", async () => {
     await openMobileSettings(page);
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(SPARE);
+    await selectMuiByLabel(page, "Tab Type", "Folder");
+    await saveTab();
+    await findTabRow(page, SPARE);
+    // Fail the editor's own tab list load so the delete cannot lean on it.
+    await page.route(url => url.pathname.endsWith("/links") && url.searchParams.get("category") === "b1Tab", route => route.abort(), { times: 1 });
     await (await findTabRow(page, FOLDER)).getByRole("button", { name: "Edit" }).click();
     await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
     await page.getByRole("button", { name: /Delete Tab/i }).click();
     await confirmDelete(page);
+    // The editor closes only after the delete and the release of its tabs have finished.
+    await expect(page.locator('input[name="text"]')).toHaveCount(0, { timeout: 15000 });
     await expect(page.getByRole("heading", { level: 3, name: FOLDER, exact: true })).toHaveCount(0, { timeout: 15000 });
     await page.reload();
-    for (const name of [CHILD_A, CHILD_B]) await expect((await findTabRow(page, name)).locator("[data-nested]").first()).toHaveAttribute("data-nested", "false");
+    for (const name of [CHILD_A, CHILD_B]) {
+      const row = await findTabRow(page, name);
+      await expect(row.locator("[data-nested]").first()).toHaveAttribute("data-nested", "false");
+      await row.getByRole("button", { name: "Edit" }).click();
+      await expect(page.getByLabel("Parent tab", { exact: true })).toHaveText("None (top level)", { timeout: 10000 });
+      await page.getByRole("button", { name: /^Cancel$/ }).click();
+    }
   });
 
   test("deletes the former folder tabs", async () => {
     await openMobileSettings(page);
-    for (const name of [CHILD_A, CHILD_B]) {
+    for (const name of [CHILD_A, CHILD_B, SPARE]) {
       await (await findTabRow(page, name)).getByRole("button", { name: "Edit" }).click();
       await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
       await page.getByRole("button", { name: /Delete Tab/i }).click();

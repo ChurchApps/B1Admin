@@ -68,8 +68,10 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   const isFolder = linkType === "folder";
 
   // A tab that stops being a folder (or is deleted) moves its tabs back to the top level.
+  // Reads the saved tabs fresh so it does not depend on allTabs having loaded.
   const releaseChildren = async () => {
-    const children = allTabs.filter(t => t.parentId && t.parentId === currentTabFromProps?.id);
+    const saved: LinkInterface[] = (await ApiHelper.get("/links?category=b1Tab", "ContentApi")) || [];
+    const children = saved.filter(t => t.parentId && t.parentId === currentTabFromProps?.id);
     if (children.length > 0) await ApiHelper.post("/links", children.map(c => ({ ...c, parentId: null })), "ContentApi");
   };
 
