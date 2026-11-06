@@ -226,8 +226,12 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     { label: "personName", key: "personName" },
     { label: "status", key: "status" },
     { label: "personId", key: "personId" },
-    { label: "visitId", key: "visitId" }
+    { label: "visitId", key: "visitId" },
+    { label: "sessionNotes", key: "sessionNotes" }
   ];
+
+  // Repeat the session's notes on every row so the file stays one flat, sortable table.
+  const exportData = useMemo(() => (downloadData || []).map((row: any) => ({ ...row, sessionNotes: (session as any)?.notes || "" })), [downloadData, session]);
 
   if (!session) {
     return (
@@ -304,7 +308,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
             </>
           )}
           {downloadData && downloadData.length > 0 && (
-            <ExportButton data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />
+            <ExportButton data={exportData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />
           )}
         </Stack>
       </Stack>
