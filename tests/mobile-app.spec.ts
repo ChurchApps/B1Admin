@@ -733,6 +733,17 @@ test.describe.serial("Scheduled push notifications", () => {
     await expect(page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: EDITED })).toHaveCount(0);
   });
 
+  // ChurchAppsSupport#1456: a finished notification can be removed from Recent.
+  test("removes the cancelled notification from Recent", async () => {
+    await page.goto("/mobile/notifications");
+    const row = page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED });
+    await row.getByTestId("remove-notification").click();
+    await expect(page.getByRole("dialog")).toContainText("Remove this notification from the list?");
+    await confirmDelete(page);
+    await expect(page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED })).toHaveCount(0);
+    expect((await loadScheduled()).some((r: any) => r.title === EDITED)).toBe(false);
+  });
+
   test("the group Notify dialog can schedule for later", async () => {
     await page.goto(`/groups/${GROUP_ID}`);
     await page.getByTestId("notify-group-button").click();
@@ -750,5 +761,18 @@ test.describe.serial("Scheduled push notifications", () => {
     const row = page.getByTestId("scheduled-table").getByRole("row").filter({ hasText: GROUP_TITLE });
     await expect(row).toContainText("Wednesday Prayer Service");
     await expect(row).toContainText("7:00 PM");
+  });
+
+  test("Clear all empties the Recent list", async () => {
+    const queued = (await loadScheduled()).find((r: any) => r.title === GROUP_TITLE && r.status === "pending");
+    expect((await ctx.delete(`${API}/messaging/scheduledNotifications/${queued.id}`, auth)).ok()).toBeTruthy();
+    await page.goto("/mobile/notifications");
+    await expect(page.getByTestId("recent-table").getByRole("row").filter({ hasText: GROUP_TITLE })).toContainText("Cancelled");
+    await page.getByTestId("clear-recent").click();
+    await expect(page.getByRole("dialog")).toContainText("Remove all sent, failed and cancelled notifications");
+    await confirmDelete(page);
+    await expect(page.getByTestId("recent-table")).toContainText("No notifications have gone out yet.");
+    await expect(page.getByTestId("clear-recent")).toHaveCount(0);
+    expect((await loadScheduled()).filter((r: any) => !["pending", "processing"].includes(r.status))).toHaveLength(0);
   });
 });
