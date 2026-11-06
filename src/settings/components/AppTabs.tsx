@@ -15,7 +15,8 @@ import {
   Edit as EditIcon,
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
-  Tab as TabIcon
+  Tab as TabIcon,
+  SubdirectoryArrowRight as ChildIcon
 } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
@@ -30,6 +31,21 @@ interface Props {
 
 export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
   const { links: tabs, moveUp, moveDown } = useReorderableLinks("b1Tab", { refresh: refreshKey });
+
+  // Folders hold one level of tabs. A tab whose folder is gone is listed at the top level.
+  const topLevel = tabs.filter(t => !t.parentId || !tabs.some(p => p.id === t.parentId && p.linkType === "folder"));
+  const childrenOf = (folder: LinkInterface) => (folder.linkType === "folder" ? tabs.filter(t => t.parentId === folder.id) : []);
+  const rows = topLevel.flatMap((tab, index) => [
+    { tab, index, siblings: topLevel, nested: false },
+    ...childrenOf(tab).map((child, childIndex, children) => ({ tab: child, index: childIndex, siblings: children, nested: true }))
+  ]);
+
+  const getTypeLabel = (tab: LinkInterface) => {
+    if (tab.linkType === "url") return tab.url;
+    if (tab.linkType !== "folder") return tab.linkType;
+    const count = childrenOf(tab).length;
+    return count === 1 ? Locale.label("settings.appTabs.folderOneTab") : Locale.label("settings.appTabs.folderTabs").replace("{}", String(count));
+  };
 
   const handleEdit = (tab: LinkInterface) => {
     onSelected(tab);
@@ -46,9 +62,10 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
     }
   };
 
-  const renderTabItem = (tab: LinkInterface, index: number) => (
-    <React.Fragment key={index}>
-      <ListItem sx={{ py: 2 }}>
+  const renderTabItem = ({ tab, index, siblings, nested }: typeof rows[number], rowIndex: number) => (
+    <React.Fragment key={tab.id || rowIndex}>
+      <ListItem sx={{ py: 2, pl: nested ? 6 : 2 }} data-nested={nested ? "true" : "false"}>
+        {nested && <ChildIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />}
         <ListItemIcon sx={{ mr: 2 }}>
           {(tab as any)?.photo ? (
             <Box
@@ -96,7 +113,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
           }
           secondary={
             <Typography variant="body2" color="text.secondary">
-              {tab.linkType === "url" ? tab.url : tab.linkType}
+              {getTypeLabel(tab)}
             </Typography>
           }
           slotProps={{
@@ -106,13 +123,13 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
         />
         <ListItemSecondaryAction>
           <Stack direction="row" spacing={0.5}>
-            <AppIconButton label={Locale.label("settings.appTabs.moveUp")} icon={<ArrowUpIcon />} onClick={() => moveUp(index)} disabled={index === 0} />
-            <AppIconButton label={Locale.label("settings.appTabs.moveDown")} icon={<ArrowDownIcon />} onClick={() => moveDown(index)} disabled={index === tabs.length - 1} />
+            <AppIconButton label={Locale.label("settings.appTabs.moveUp")} icon={<ArrowUpIcon />} onClick={() => moveUp(index, siblings)} disabled={index === 0} />
+            <AppIconButton label={Locale.label("settings.appTabs.moveDown")} icon={<ArrowDownIcon />} onClick={() => moveDown(index, siblings)} disabled={index === siblings.length - 1} />
             <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => handleEdit(tab)} />
           </Stack>
         </ListItemSecondaryAction>
       </ListItem>
-      {index < tabs.length - 1 && <Divider />}
+      {rowIndex < rows.length - 1 && <Divider />}
     </React.Fragment>
   );
 
@@ -132,7 +149,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
         )
         : (
           <List sx={{ p: 0 }}>
-            {tabs.map((tab, index) => renderTabItem(tab, index))}
+            {rows.map((row, rowIndex) => renderTabItem(row, rowIndex))}
           </List>
         )}
     </CardWithHeader>

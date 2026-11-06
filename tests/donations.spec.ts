@@ -1237,3 +1237,30 @@ test.describe("Manual entry records the church currency", () => {
     expect((await fundReq).postDataJSON()[0].currency).toBe("php");
   });
 });
+
+// "Recent people" under the Person search box lists the people the admin just picked first.
+test.describe("Bulk donation entry — recent people", () => {
+  test.describe.configure({ retries: 0 });
+  const DEMO_BATCH = "/donations/batches/BAT00000001";
+  const JENNIFER_WILLIAMS = "PER00000011";
+
+  test("a person just picked is listed first under Recent people", async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    const page = await context.newPage();
+    try {
+      await login(page);
+      await page.goto(DEMO_BATCH);
+      const search = page.getByTestId("person-search-input").locator("input");
+      await expect(search).toBeVisible({ timeout: 15000 });
+      await search.fill("Jennifer Williams");
+      await page.getByTestId(`add-person-button-${JENNIFER_WILLIAMS}`).click();
+
+      await page.getByTestId("bulk-donation-change-person").click();
+      await expect(page.getByText("Recent people")).toBeVisible({ timeout: 15000 });
+      const firstRow = page.locator("#householdMemberAddTable tr").first();
+      await expect(firstRow).toContainText("Jennifer Williams", { timeout: 15000 });
+    } finally {
+      await context.close();
+    }
+  });
+});
