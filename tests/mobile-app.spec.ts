@@ -252,6 +252,133 @@ test.describe.serial("Mobile tab ordering", () => {
   });
 });
 
+// ChurchAppsSupport#1459: a Folder tab holds other tabs. Children list indented under their
+// folder, reorder among themselves, and return to the top level when the folder is deleted.
+test.describe.serial("Mobile tab folders", () => {
+  test.describe.configure({ retries: 0 });
+  let page: Page;
+  const FOLDER = "Zacchaeus Portal";
+  const CHILD_A = "Zacchaeus Portal Groups";
+  const CHILD_B = "Zacchaeus Portal Directory";
+  // A second folder keeps the Parent tab select on screen after FOLDER is deleted.
+  const SPARE = "Zacchaeus Spare Folder";
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  async function saveTab() {
+    const saved = page.waitForResponse(r => r.url().includes("/links") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByRole("button", { name: /Save Tab/i }).click();
+    await saved;
+  }
+
+  async function createChild(name: string, type: string) {
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(name);
+    await selectMuiByLabel(page, "Tab Type", type);
+    await selectMuiByLabel(page, "Parent tab", FOLDER);
+    await saveTab();
+    await findTabRow(page, name);
+  }
+
+  async function tabNames() {
+    return page.getByRole("listitem").getByRole("heading", { level: 3 }).allTextContents();
+  }
+
+  test("creates a Folder tab with no URL or parent of its own", async () => {
+    await openMobileSettings(page);
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(FOLDER);
+    await selectMuiByLabel(page, "Tab Type", "Folder");
+    await expect(page.locator('input[name="url"]')).toHaveCount(0);
+    await expect(page.getByLabel("Parent tab", { exact: true })).toHaveCount(0);
+    await saveTab();
+    const row = await findTabRow(page, FOLDER);
+    await expect(row).toContainText("Folder · 0 tabs");
+  });
+
+  test("puts two tabs inside the folder, listed indented right under it", async () => {
+    await openMobileSettings(page);
+    await createChild(CHILD_A, "My Groups");
+    await createChild(CHILD_B, "Member Directory");
+    await expect(await findTabRow(page, FOLDER)).toContainText("Folder · 2 tabs");
+    for (const name of [CHILD_A, CHILD_B]) await expect((await findTabRow(page, name)).locator("[data-nested]").first()).toHaveAttribute("data-nested", "true");
+    const names = await tabNames();
+    const folderAt = names.indexOf(FOLDER);
+    expect([names[folderAt + 1], names[folderAt + 2]].sort()).toEqual([CHILD_A, CHILD_B].sort());
+  });
+
+  test("reorders tabs within the folder", async () => {
+    await openMobileSettings(page);
+    await findTabRow(page, CHILD_A);
+    const before = await tabNames();
+    const lower = before.indexOf(CHILD_A) > before.indexOf(CHILD_B) ? CHILD_A : CHILD_B;
+    const upper = lower === CHILD_A ? CHILD_B : CHILD_A;
+    const lowerRow = await findTabRow(page, lower);
+    // The last child cannot move down past its folder's end.
+    await expect(lowerRow.getByRole("button", { name: "Move Down" })).toBeDisabled();
+    const saved = page.waitForResponse(r => r.url().includes("/links") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await lowerRow.getByRole("button", { name: "Move Up" }).click();
+    await saved;
+    await page.reload();
+    await findTabRow(page, lower);
+    const after = await tabNames();
+    expect(after.indexOf(lower)).toBe(after.indexOf(FOLDER) + 1);
+    expect(after.indexOf(upper)).toBe(after.indexOf(FOLDER) + 2);
+  });
+
+  test("editing a child shows its folder as the parent", async () => {
+    await openMobileSettings(page);
+    await (await findTabRow(page, CHILD_A)).getByRole("button", { name: "Edit" }).click();
+    await expect(page.getByLabel("Parent tab", { exact: true })).toHaveText(FOLDER, { timeout: 10000 });
+    await page.getByRole("button", { name: /^Cancel$/ }).click();
+  });
+
+  test("deleting the folder moves its tabs back to the top level", async () => {
+    await openMobileSettings(page);
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(SPARE);
+    await selectMuiByLabel(page, "Tab Type", "Folder");
+    await saveTab();
+    await findTabRow(page, SPARE);
+    // Fail the editor's own tab list load so the delete cannot lean on it.
+    await page.route(url => url.pathname.endsWith("/links") && url.searchParams.get("category") === "b1Tab", route => route.abort(), { times: 1 });
+    await (await findTabRow(page, FOLDER)).getByRole("button", { name: "Edit" }).click();
+    await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
+    await page.getByRole("button", { name: /Delete Tab/i }).click();
+    await confirmDelete(page);
+    // The editor closes only after the delete and the release of its tabs have finished.
+    await expect(page.locator('input[name="text"]')).toHaveCount(0, { timeout: 15000 });
+    await expect(page.getByRole("heading", { level: 3, name: FOLDER, exact: true })).toHaveCount(0, { timeout: 15000 });
+    await page.reload();
+    for (const name of [CHILD_A, CHILD_B]) {
+      const row = await findTabRow(page, name);
+      await expect(row.locator("[data-nested]").first()).toHaveAttribute("data-nested", "false");
+      await row.getByRole("button", { name: "Edit" }).click();
+      await expect(page.getByLabel("Parent tab", { exact: true })).toHaveText("None (top level)", { timeout: 10000 });
+      await page.getByRole("button", { name: /^Cancel$/ }).click();
+    }
+  });
+
+  test("deletes the former folder tabs", async () => {
+    await openMobileSettings(page);
+    for (const name of [CHILD_A, CHILD_B, SPARE]) {
+      await (await findTabRow(page, name)).getByRole("button", { name: "Edit" }).click();
+      await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
+      await page.getByRole("button", { name: /Delete Tab/i }).click();
+      await confirmDelete(page);
+      await expect(page.getByRole("heading", { level: 3, name, exact: true })).toHaveCount(0, { timeout: 15000 });
+    }
+  });
+});
+
 // Every save below posts the whole B1 Mobile form, so these run one at a time or one
 // worker's save would overwrite another's setting.
 // ChurchAppsSupport#1373: the Save buttons under Mobile confirm with a "Saved" message.
