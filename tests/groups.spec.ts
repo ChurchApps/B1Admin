@@ -1,3 +1,4 @@
+import fs from "fs";
 import { request, test as plainTest, type APIRequestContext, type Page, type Route } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
@@ -426,6 +427,31 @@ test.describe.serial("Group Management", () => {
       await box.getByRole("button", { name: "Save", exact: true }).click();
       await selectSession(page, date);
       await expect(page.locator('[data-testid="session-notes"] strong')).toHaveText("Romans 9", { timeout: 10000 });
+    });
+
+    test("session export CSV includes the session notes", async () => {
+      const date = "2025-09-05";
+      await openSeedGroup(page, SESSION_GROUP);
+      await page.getByTestId("group-all-sessions").click();
+      await page.locator("button").getByText("New").first().click();
+      const box = page.locator('[data-cy="add-session-box"]');
+      await box.locator('[data-testid="session-date-input"] input').fill(date);
+      await box.locator(".editor-input[contenteditable='true']").first().click();
+      await page.keyboard.type("Topic Romans 9 and prayer for Donald Clark");
+      await box.getByRole("button", { name: "Save", exact: true }).click();
+      await selectSession(page, date);
+
+      // The export only appears once someone has been marked present.
+      await page.getByTestId("attendance-select-all").click();
+      await saveAttendance(page);
+
+      // ExportLink lazy-loads react-csv; wait for the real <a download> wrapper.
+      const exportLink = page.locator('a[download$="_visits.csv"]');
+      await expect(exportLink).toBeVisible({ timeout: 15000 });
+      const [download] = await Promise.all([page.waitForEvent("download", { timeout: 15000 }), exportLink.click()]);
+      const content = fs.readFileSync((await download.path())!, "utf-8").replace(/^\uFEFF/, "");
+      expect(content.split("\n")[0]).toContain("sessionNotes");
+      expect(content).toContain("Topic Romans 9 and prayer for Donald Clark");
     });
 
     test("adds a session for every group in the service time at once, without duplicates", async () => {
