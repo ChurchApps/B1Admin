@@ -15,6 +15,7 @@ async function addPersonNote(page: Page, text: string) {
   const saved = page.waitForResponse((r) => r.url().includes("/messaging/messages") && r.request().method() === "POST" && r.ok());
   await notesBox.locator("button").filter({ has: page.locator('text="send"') }).last().click();
   await saved;
+  await expect(composer).toHaveValue("");
   await expect(notesBox.getByText(text)).toBeVisible();
 }
 
