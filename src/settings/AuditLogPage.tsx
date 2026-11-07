@@ -107,6 +107,12 @@ const AuditLogDetails: React.FC<{ log: AuditLog }> = ({ log }) => {
       const after = parsed?.after ?? null;
       if (active) setNewValues(after);
 
+      // Rows that carry their own before-image (e.g. note edits) need no reconstruction.
+      if (parsed?.before && typeof parsed.before === "object") {
+        if (active) { setOldValues(parsed.before); setLoading(false); }
+        return;
+      }
+
       // Reconstruct old values from this entity's previous audit entry.
       if (log.entityType && log.entityId) {
         try {

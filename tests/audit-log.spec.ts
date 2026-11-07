@@ -36,6 +36,33 @@ async function selectMuiOption(page: Page, comboName: string, optionText: string
   await page.getByRole("option", { name: optionText, exact: true }).click();
 }
 
+// Adds, edits and deletes a note on Donald Clark through the notes box. The delete asks to confirm first.
+async function addPersonNote(page: Page, text: string) {
+  await openKnownPerson(page, SEED_PEOPLE.DONALD);
+  await page.getByTestId("person-notes-all").click();
+  const notesBox = page.getByTestId("notes-box");
+  const composer = notesBox.locator('textarea[name="noteText"]').first();
+  await composer.fill(text);
+  const saved = page.waitForResponse((r) => r.url().includes("/messaging/messages") && r.request().method() === "POST" && r.ok());
+  await notesBox.locator("button").filter({ has: page.locator('text="send"') }).last().click();
+  await saved;
+  await expect(composer).toHaveValue("");
+  await expect(notesBox.getByText(text)).toBeVisible();
+  return notesBox;
+}
+
+// The innermost block holding both the note text and its edit button.
+const noteItem = (page: Page, text: string) =>
+  page.getByTestId("notes-box").locator("div").filter({ hasText: text }).filter({ has: page.getByRole("button", { name: "editNote" }) }).last();
+
+async function openNoteEditor(page: Page, text: string) {
+  const notesBox = page.getByTestId("notes-box");
+  await noteItem(page, text).getByRole("button", { name: "editNote" }).click();
+  const editor = notesBox.locator('textarea[name="noteText"]').first();
+  await expect(editor).toHaveValue(text);
+  return editor;
+}
+
 async function auditSearch(page: Page, filters: { module?: string; category?: string }) {
   if (filters.module) await selectMuiOption(page, "Module", filters.module);
   if (filters.category) await selectMuiOption(page, "Category", filters.category);
@@ -104,6 +131,56 @@ test.describe("Universal audit log + undoable batches", () => {
 
     await expect(page.getByText("Deleted Record", { exact: true })).toBeVisible({ timeout: 10000 });
     await expect(page.getByText(last, { exact: false }).first()).toBeVisible();
+  });
+
+  test("records a note edit with its old text and stamps the note as edited", async ({ page }) => {
+    const original = "Hospital visit " + Date.now();
+    const edited = original + " (home now)";
+    const notesBox = await addPersonNote(page, original);
+    const personId = (page.url().match(/\/people\/(PER\d+)/) || [])[1] as string;
+
+    const editor = await openNoteEditor(page, original);
+    await editor.fill(edited);
+    const saved = page.waitForResponse((r) => r.url().includes("/messaging/messages") && r.request().method() === "POST" && r.ok());
+    await notesBox.locator("button").filter({ has: page.locator('text="send"') }).last().click();
+    await saved;
+    await expect(notesBox.locator('textarea[name="noteText"]').first()).toHaveValue("");
+    await expect(notesBox.getByText(edited)).toBeVisible();
+    await expect(noteItem(page, edited).getByText("(edited)")).toBeVisible();
+
+    await page.goto("/settings/audit-log");
+    await auditSearch(page, { module: "Messaging", category: "People" });
+    const row = page.locator("table tbody tr").filter({ hasText: personId }).filter({ hasText: "Note Updated" }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.getByRole("button", { name: "Details" }).click();
+
+    const content = page.locator("table tbody tr").filter({ has: page.getByRole("cell", { name: "content", exact: true }) }).last();
+    await expect(content).toContainText(original);
+    await expect(content).toContainText(edited);
+  });
+
+  test("records a deleted note with its text after confirming the delete", async ({ page }) => {
+    const text = "Pastoral call " + Date.now();
+    const notesBox = await addPersonNote(page, text);
+    const personId = (page.url().match(/\/people\/(PER\d+)/) || [])[1] as string;
+
+    await openNoteEditor(page, text);
+    page.once("dialog", (d) => d.accept());
+    const deleted = page.waitForResponse((r) => r.url().includes("/messaging/messages/") && r.request().method() === "DELETE" && r.ok());
+    await notesBox.locator("button").filter({ has: page.locator('text="delete"') }).first().click();
+    await deleted;
+    await expect(notesBox.getByText(text)).toHaveCount(0);
+
+    await page.goto("/settings/audit-log");
+    await auditSearch(page, { module: "Messaging", category: "People" });
+    const row = page.locator("table tbody tr").filter({ hasText: personId }).filter({ hasText: "Note Deleted" }).first();
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.getByRole("button", { name: "Details" }).click();
+
+    await expect(page.getByText("Deleted Record", { exact: true })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(text, { exact: true })).toBeVisible();
+    await expect(page.getByText("Demo User", { exact: true }).first()).toBeVisible();
+    await page.screenshot({ path: ".pr-screenshots/after.png" });
   });
 
   test("explicit batch round-trips and undoes from the Batches page", async ({ page }) => {
