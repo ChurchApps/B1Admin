@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiHelper, Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Box, Button, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { RecordHeading, SortableTableHead, TextAction, numericCellSx, tableScrollSx } from "../../components/ui";
+import { PillTabs, RecordHeading, SortableTableHead, TextAction, numericCellSx, tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { BulkGroupEventsModal } from "./BulkGroupEventsModal";
 import { GroupRsvpRosterDialog } from "./GroupRsvpRosterDialog";
@@ -21,9 +21,16 @@ interface RsvpBatchEntry {
   mine: string | null;
 }
 
+const parseUntil = (rule: string) => {
+  const until = /UNTIL=(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})Z)?/.exec(rule);
+  if (!until) return null;
+  return until[4] ? new Date(`${until[1]}-${until[2]}-${until[3]}T${until[4]}:${until[5]}:${until[6]}Z`) : new Date(`${until[1]}-${until[2]}-${until[3]}T12:00:00`);
+};
+
 export const GroupCalendarTab = (props: Props) => {
   const [showBulkAdd, setShowBulkAdd] = useState(false);
   const [rosterFor, setRosterFor] = useState<EventInterface | null>(null);
+  const [showPast, setShowPast] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const events = useQuery<EventInterface[]>({
@@ -61,16 +68,13 @@ export const GroupCalendarTab = (props: Props) => {
     if (!rule) return Locale.label("groups.groupCalendar.oneTime");
     const freq = /FREQ=(\w+)/.exec(rule)?.[1];
     const interval = parseInt(/INTERVAL=(\d+)/.exec(rule)?.[1] || "1", 10);
-    const until = /UNTIL=(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})Z)?/.exec(rule);
+    const until = parseUntil(rule);
     let label: string;
     if (freq === "WEEKLY") label = interval === 2 ? Locale.label("groups.groupCalendar.everyTwoWeeks") : Locale.label("calendars.newEvent.weekly");
     else if (freq === "DAILY") label = Locale.label("calendars.newEvent.daily");
     else if (freq === "MONTHLY") label = Locale.label("calendars.newEvent.monthly");
     else label = rule;
-    if (until) {
-      const untilDate = until[4] ? new Date(`${until[1]}-${until[2]}-${until[3]}T${until[4]}:${until[5]}:${until[6]}Z`) : new Date(`${until[1]}-${until[2]}-${until[3]}T12:00:00`);
-      label += ` ${Locale.label("groups.groupCalendar.until")} ${untilDate.toLocaleDateString(DateHelper.locale)}`;
-    }
+    if (until) label += ` ${Locale.label("groups.groupCalendar.until")} ${until.toLocaleDateString(DateHelper.locale)}`;
     return label;
   };
 
@@ -103,7 +107,21 @@ export const GroupCalendarTab = (props: Props) => {
     );
   };
 
-  const sorted = [...(events.data || [])].sort((a, b) => new Date(b.start!).getTime() - new Date(a.start!).getTime());
+  // Upcoming: ends today or later, or a series that hasn't reached its UNTIL. Soonest first; Past newest first.
+  const sorted = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const isUpcoming = (ev: EventInterface) => {
+      if (ev.recurrenceRule) {
+        const until = parseUntil(ev.recurrenceRule);
+        if (!until || until >= today) return true;
+      }
+      return new Date(ev.end || ev.start!) >= today;
+    };
+    const byStart = (a: EventInterface, b: EventInterface) => new Date(a.start!).getTime() - new Date(b.start!).getTime();
+    const all = events.data || [];
+    return showPast ? all.filter((ev) => !isUpcoming(ev)).sort((a, b) => byStart(b, a)) : all.filter(isUpcoming).sort(byStart);
+  }, [events.data, showPast]);
 
   return (
     <Box data-testid="group-calendar-tab">
@@ -115,6 +133,16 @@ export const GroupCalendarTab = (props: Props) => {
           {"+ " + Locale.label("groups.groupCalendar.addEvents")}
         </TextAction>
       </RecordHeading>
+      <PillTabs
+        aria-label={Locale.label("groups.groupCalendar.events")}
+        value={showPast ? "past" : "upcoming"}
+        onChange={(v) => setShowPast(v === "past")}
+        options={[
+          { value: "upcoming", label: Locale.label("groups.groupCalendar.upcoming"), "data-testid": "group-calendar-upcoming-pill" },
+          { value: "past", label: Locale.label("groups.groupCalendar.past"), "data-testid": "group-calendar-past-pill" }
+        ]}
+        sx={{ mb: 2 }}
+      />
       <Box sx={tableScrollSx} role="region" aria-label={Locale.label("groups.groupCalendar.events")} tabIndex={0}>
         <Table>
           <SortableTableHead
@@ -131,7 +159,7 @@ export const GroupCalendarTab = (props: Props) => {
           <TableBody>
             {sorted.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7}>{Locale.label("groups.groupCalendar.noEvents")}</TableCell>
+                <TableCell colSpan={7}>{Locale.label(showPast ? "groups.groupCalendar.noPastEvents" : "groups.groupCalendar.noEvents")}</TableCell>
               </TableRow>
             )}
             {sorted.map((ev) => (

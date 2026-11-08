@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import type { APIRequestContext, Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToRoomsResources, navigateToApprovals, navigateToAvailability, navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
@@ -351,5 +351,80 @@ test.describe.serial("Rooms, resources & approvals", () => {
     await openTab(page, "templates");
     await deleteViaEdit(page, page.locator('[data-testid="templates-table"] tbody tr').filter({ hasText: TEMPLATE }).locator('[data-testid^="edit-template-"]'), "delete-template-button");
     await expect(page.locator("tbody tr").filter({ hasText: TEMPLATE })).toHaveCount(0, { timeout: 15000 });
+  });
+});
+
+// #1488: decided requests stay on the Approvals page under History, linked to the requester.
+test.describe.serial("Approvals history", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const groupName = `Zacchaeus Approvers ${stamp}`;
+  const roomName = `Zacchaeus History Room ${stamp}`;
+  const eventTitle = `Zacchaeus History Event ${stamp}`;
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let groupId: string;
+  let roomId: string;
+  let eventId: string;
+  let page: Page;
+
+  const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    ctx = await playwright.request.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    const body = await loginRes.json();
+    jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    // A room routed to a group the admin is not in, so the booking lands as pending.
+    groupId = (await (await ctx.post(`${API}/membership/groups`, { ...auth(), data: [{ name: groupName, categoryName: "Approvals Test", tags: "standard" }] })).json())[0].id;
+    roomId = (await (await ctx.post(`${API}/content/rooms`, { ...auth(), data: [{ name: roomName, approvalGroupId: groupId }] })).json())[0].id;
+    const start = new Date(eventStart);
+    start.setDate(start.getDate() + 3);
+    const end = new Date(eventEnd);
+    end.setDate(end.getDate() + 3);
+    eventId = (await (await ctx.post(`${API}/content/events`, { ...auth(), data: [{ groupId, title: eventTitle, start: start.toISOString(), end: end.toISOString(), allDay: false, visibility: "public" }] })).json())[0].id;
+    const bookingRes = await ctx.post(`${API}/content/eventBookings`, { ...auth(), data: [{ eventId, roomId }] });
+    expect((await bookingRes.json())[0].status, "seeded booking is pending").toBe("pending");
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    try {
+      await ctx.delete(`${API}/content/events/${eventId}`, auth());
+      await ctx.delete(`${API}/content/rooms/${roomId}`, auth());
+      await ctx.delete(`${API}/membership/groups/${groupId}`, auth());
+    } catch { /* best effort */ }
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("pending requests show who asked, linked to their record", async () => {
+    await navigateToApprovals(page);
+    const pendingRow = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: eventTitle });
+    await expect(pendingRow).toBeVisible({ timeout: 15000 });
+    await expect(pendingRow.locator('a[href^="/people/"]')).toHaveCount(1);
+    await pendingRow.locator('[data-testid^="approve-booking-"]').click();
+    await page.locator('[data-testid="approve-booking-confirm"]').click();
+    await expect(page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: eventTitle })).toHaveCount(0, { timeout: 15000 });
+  });
+
+  test("History lists the approved booking with requester, decision and decider", async () => {
+    await page.locator('[data-testid="approvals-history-pill"]').click();
+    await expect(page.locator('[data-testid="pending-bookings-table"]')).toHaveCount(0);
+    const historyRow = page.locator('[data-testid="history-bookings-table"] tbody tr').filter({ hasText: eventTitle });
+    await expect(historyRow).toBeVisible({ timeout: 15000 });
+    await expect(historyRow).toContainText(roomName);
+    await expect(historyRow).toContainText("Approved");
+    await expect(historyRow.locator('a[href^="/people/"]')).toHaveCount(1);
+    await expect(historyRow.locator("td").nth(4)).not.toHaveText("—");
+    await expect(page.locator('[data-testid="history-events-table"]').or(page.locator('[data-testid="no-resolved-events"]'))).toBeVisible();
+  });
+
+  test("Pending switches back to the open requests", async () => {
+    await page.locator('[data-testid="approvals-pending-pill"]').click();
+    await expect(page.locator('[data-testid="history-bookings-table"]')).toHaveCount(0);
+    await expect(page.locator('[data-testid="pending-bookings-table"]').or(page.locator('[data-testid="no-pending-bookings"]'))).toBeVisible({ timeout: 15000 });
   });
 });
