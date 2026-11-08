@@ -4,7 +4,7 @@ import { type ActiveFilter } from "./AdvancedPeopleSearch";
 // Mirrors the MembershipApi rules-tree model: provider-scoped conditions a saved List
 // stores instead of resolved person-id snapshots, so cross-product filters
 // (donations, attendance, groups, custom fields) stay live when the list re-runs.
-export interface ListRuleCondition {
+interface ListRuleCondition {
   provider: "person" | "group" | "form" | "field" | "giving" | "attendance" | "serving" | "list";
   field?: string;
   operator?: string;

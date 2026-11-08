@@ -1,6 +1,6 @@
 import type { ElementInterface, SectionInterface } from "../../helpers/Interfaces";
 
-export type A11ySeverity = "error" | "warning";
+type A11ySeverity = "error" | "warning";
 export type A11yRule = "missing-alt" | "contrast" | "heading-order" | "empty-link-text";
 
 export interface A11yIssue {
@@ -58,7 +58,7 @@ const relativeLuminance = (hex: string): number => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
 
-export const contrastRatio = (fg: string, bg: string): number => {
+const contrastRatio = (fg: string, bg: string): number => {
   const l1 = relativeLuminance(fg);
   const l2 = relativeLuminance(bg);
   const [hi, lo] = l1 >= l2 ? [l1, l2] : [l2, l1];
