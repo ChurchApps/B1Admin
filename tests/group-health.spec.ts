@@ -67,6 +67,8 @@ test.describe.serial("Group Health & Calendar", () => {
     await expect(saveButton).toBeEnabled();
     await saveButton.click();
     await expect(saveButton).toBeHidden({ timeout: 10000 });
+    // The series ended 2026-07-31, so it is listed under Past.
+    await page.locator("[data-testid=\"group-calendar-past-pill\"]").click();
 
     const row = page.locator("[data-testid=\"group-calendar-tab\"] tbody tr", { hasText: "Weekly Gathering" });
     await expect(row).toBeVisible();
@@ -77,6 +79,7 @@ test.describe.serial("Group Health & Calendar", () => {
   test("deletes the bulk-created event", async () => {
     await openFirstGroup();
     await page.getByTestId("group-all-events").click();
+    await page.locator("[data-testid=\"group-calendar-past-pill\"]").click();
     const row = page.locator("[data-testid=\"group-calendar-tab\"] tbody tr", { hasText: "Weekly Gathering" });
     await expect(row).toBeVisible();
     await row.locator("[data-testid^=\"delete-event-\"]").click();

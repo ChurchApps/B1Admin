@@ -729,3 +729,81 @@ test.describe("Calendar print letterhead and full event names", () => {
     }
   });
 });
+
+// #1488: a group's Calendar tab splits events into Upcoming and Past, like Plans.
+test.describe.serial("Group Calendar tab Upcoming / Past", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const groupName = `Zacchaeus Past Events Group ${stamp}`;
+  const pastTitle = `Zacchaeus Past Meeting ${stamp}`;
+  const futureTitle = `Zacchaeus Future Meeting ${stamp}`;
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let groupId: string;
+  let page: Page;
+
+  const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
+  const daysFromNow = (days: number, hour: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    d.setHours(hour, 0, 0, 0);
+    return d.toISOString();
+  };
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    ctx = await playwright.request.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    jwt = uc.jwt;
+    const groupRes = await ctx.post(`${API}/membership/groups`, { ...auth(), data: [{ name: groupName, categoryName: "Past Events Test", tags: "standard" }] });
+    groupId = (await groupRes.json())[0].id;
+    const evRes = await ctx.post(`${API}/content/events`, {
+      ...auth(),
+      data: [
+        { groupId, title: pastTitle, start: daysFromNow(-10, 18), end: daysFromNow(-10, 19), allDay: false, visibility: "public" },
+        { groupId, title: futureTitle, start: daysFromNow(10, 18), end: daysFromNow(10, 19), allDay: false, visibility: "public" }
+      ]
+    });
+    expect(evRes.ok(), "seed events POST succeeded").toBeTruthy();
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    try {
+      const events = await (await ctx.get(`${API}/content/events/group/${groupId}`, auth())).json();
+      for (const ev of events || []) await ctx.delete(`${API}/content/events/${ev.id}`, auth());
+      await ctx.delete(`${API}/membership/groups/${groupId}`, auth());
+    } catch { /* best effort */ }
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("Upcoming lists only future events and Past only past ones", async () => {
+    await page.goto(`/groups/${groupId}`);
+    await page.getByTestId("group-all-events").click();
+    const tab = page.locator('[data-testid="group-calendar-tab"]');
+    await expect(tab).toBeVisible({ timeout: 15000 });
+    await expect(tab.getByText(futureTitle)).toBeVisible({ timeout: 15000 });
+    await expect(tab.getByText(pastTitle)).toHaveCount(0);
+
+    await page.locator('[data-testid="group-calendar-past-pill"]').click();
+    await expect(tab.getByText(pastTitle)).toBeVisible();
+    await expect(tab.getByText(futureTitle)).toHaveCount(0);
+
+    await page.locator('[data-testid="group-calendar-upcoming-pill"]').click();
+    await expect(tab.getByText(futureTitle)).toBeVisible();
+  });
+
+  test("Past shows an empty state when the group has no past events", async () => {
+    const events = await (await ctx.get(`${API}/content/events/group/${groupId}`, auth())).json();
+    const past = (events || []).find((e: any) => e.title === pastTitle);
+    await ctx.delete(`${API}/content/events/${past.id}`, auth());
+    await page.goto(`/groups/${groupId}`);
+    await page.getByTestId("group-all-events").click();
+    await page.locator('[data-testid="group-calendar-past-pill"]').click();
+    await expect(page.getByText("No past events yet.")).toBeVisible({ timeout: 15000 });
+  });
+});

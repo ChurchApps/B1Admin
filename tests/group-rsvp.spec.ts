@@ -92,6 +92,8 @@ test.describe.serial("Group RSVP summary + roster (B1Admin)", () => {
     await page.goto(`/groups/${groupId}`);
     await page.getByTestId("group-all-events").click();
     await expect(page.locator('[data-testid="group-calendar-tab"]')).toBeVisible({ timeout: 15000 });
+    // The seeded dates are fixed in 2026, so the events sit under Past.
+    await page.getByTestId("group-calendar-past-pill").click();
   }
 
   test("RSVP summary shows seeded counts on the enabled event", async () => {
