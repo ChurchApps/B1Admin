@@ -1,4 +1,4 @@
-import { type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-providers";
+import { type Instructions, type IProvider } from "@churchapps/content-providers";
 
 export const generatePath = (indices: number[]): string => indices.join(".");
 
@@ -10,40 +10,7 @@ export async function getProviderInstructions(provider: IProvider, path: string,
   return null;
 }
 
-export function extractSections(instructions: Instructions): InstructionItem[] {
-  const sections: InstructionItem[] = [];
-
-  function findSections(items: InstructionItem[]) {
-    for (const item of items) {
-      if (item.itemType === "section" && item.children && item.children.length > 0) {
-        sections.push(item);
-      }
-      if (item.children) {
-        findSections(item.children);
-      }
-    }
-  }
-
-  findSections(instructions.items);
-
-  // Fallback: structure-based detection if itemType not found
-  if (sections.length === 0) {
-    for (const item of instructions.items) {
-      if (item.children && item.children.length > 0) {
-        const hasActionChildren = item.children.some(c =>
-          c.itemType === "action" || c.itemType === "providerPresentation" ||
-          !c.children || c.children.length === 0);
-        if (hasActionChildren) {
-          sections.push(item);
-        }
-      }
-    }
-  }
-
-  return sections;
-}
-
-export type ProviderItemType = "providerSection" | "providerPresentation" | "providerFile";
+type ProviderItemType = "providerSection" | "providerPresentation" | "providerFile";
 
 /** One picked row from the External Item picker; the dialog collects several and imports them together. */
 export interface ProviderItemSelection {

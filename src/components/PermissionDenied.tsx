@@ -1,14 +1,12 @@
 import React from "react";
 import { Alert, Box, Typography } from "@mui/material";
-import { UserHelper, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import type { IApiPermission } from "@churchapps/helpers";
 
 interface Props {
   permissions: IApiPermission[];
   message?: string;
 }
-
-export const hasPermission = (...perms: IApiPermission[]): boolean => perms.every(p => UserHelper.checkAccess(p));
 
 export const PermissionDenied: React.FC<Props> = ({ permissions, message }) => (
   <Box sx={{ p: 3 }}>

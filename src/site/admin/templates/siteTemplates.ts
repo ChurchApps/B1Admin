@@ -8,7 +8,7 @@ export interface SiteTemplatePageDef {
   sections?: (string | SectionContentDef)[];
 }
 
-export interface SiteTemplateTheme {
+interface SiteTemplateTheme {
   palette: { light: string; lightAccent: string; accent: string; darkAccent: string; dark: string; radius?: { sm: string; md: string; lg: string; xl: string }; typeScale?: number };
   fonts: { heading: string; body: string };
 }
