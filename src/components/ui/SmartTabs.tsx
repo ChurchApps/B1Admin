@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Tabs as MuiTabs, Tab, useTheme } from "@mui/material";
 import { navigationTabsSx } from "./NavigationTabs";
 
-export interface SmartTabItem {
+interface SmartTabItem {
   key: string;
   label: React.ReactNode;
   content: React.ReactNode;

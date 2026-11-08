@@ -70,7 +70,7 @@ export interface CommerceEventInterface extends Omit<EventInterface, "capacity" 
   registrationCloseDate?: Date | null;
 }
 
-export interface CommerceMemberInterface extends RegistrationMemberInterface {
+interface CommerceMemberInterface extends RegistrationMemberInterface {
   registrationTypeId?: string;
 }
 
