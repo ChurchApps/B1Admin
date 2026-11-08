@@ -96,9 +96,16 @@ export const DonationEdit = memo((props: Props) => {
     };
     setSaveError("");
     try {
-      const data = await ApiHelper.post("/donations", [donationToSave], "GivingApi");
+      // A new gift carries its fund rows so a Donation trigger sees the funds when it fires.
+      const isNew = UniqueIdHelper.isMissing(donation.id);
+      const newFunds = fundDonations.filter((fd) => fd.amount).map((fd) => ({ fundId: fd.fundId, amount: fd.amount, currency: fd.currency || currency }));
+      const data = await ApiHelper.post("/donations", [isNew ? { ...donationToSave, fundDonations: newFunds } : donationToSave], "GivingApi");
       const id = data[0].id;
       setDonation((prev) => ({ ...prev, id }));
+      if (isNew) {
+        props.updatedFunction();
+        return;
+      }
       const promises = [];
       const fDonations: FundDonationInterface[] = [];
       fundDonations.forEach((fd) => {

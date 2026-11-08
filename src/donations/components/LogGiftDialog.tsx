@@ -11,7 +11,7 @@ interface Props {
   onSaved: () => void;
 }
 
-// Same write path as BulkDonationEntry: /donations, then /funddonations, rolling the donation back if the fund row fails.
+// Same write path as BulkDonationEntry: one /donations post carrying the fund row.
 export const LogGiftDialog: React.FC<Props> = ({ open, person, onClose, onSaved }) => {
   const [funds, setFunds] = React.useState<FundInterface[]>([]);
   const [currency, setCurrency] = React.useState("usd");
@@ -62,11 +62,11 @@ export const LogGiftDialog: React.FC<Props> = ({ open, person, onClose, onSaved 
     let donationId = "";
     try {
       batch = await resolveBatch();
-      const donation: DonationInterface = { personId: person.id, batchId: batch.id, amount: amt, currency, donationDate: date, method, methodDetails: methodDetails || undefined, notes: notes || undefined };
+      // The fund row rides with the gift so a Donation trigger sees the fund when it fires.
+      const fundDonation: FundDonationInterface = { fundId, amount: amt, currency };
+      const donation = { personId: person.id, batchId: batch.id, amount: amt, currency, donationDate: date, method, methodDetails: methodDetails || undefined, notes: notes || undefined, fundDonations: [fundDonation] };
       const saved: DonationInterface[] = await ApiHelper.post("/donations", [donation], "GivingApi");
       donationId = saved[0].id || "";
-      const fundDonation: FundDonationInterface = { donationId, fundId, amount: amt, currency };
-      await ApiHelper.post("/funddonations", [fundDonation], "GivingApi");
       onSaved();
     } catch {
       if (donationId) await ApiHelper.delete("/donations/" + donationId, "GivingApi").catch(() => { /* best effort */ });

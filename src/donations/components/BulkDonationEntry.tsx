@@ -60,7 +60,9 @@ export const BulkDonationEntry = memo((props: Props) => {
     savingRef.current = true;
     setErrors([]);
 
-    const donation: DonationInterface = {
+    // The fund row rides with the gift so a Donation trigger sees the fund when it fires.
+    const fundDonation: FundDonationInterface = { fundId: defaultValues.fundId, amount: parseFloat(amount), currency };
+    const donation: DonationInterface & { fundDonations: FundDonationInterface[] } = {
       batchId: props.batchId,
       personId: selectedPerson?.id || "",
       amount: parseFloat(amount),
@@ -68,26 +70,12 @@ export const BulkDonationEntry = memo((props: Props) => {
       method: defaultValues.method,
       methodDetails: methodDetails || undefined,
       notes: defaultValues.notes || undefined,
-      currency
+      currency,
+      fundDonations: [fundDonation]
     };
 
     try {
-      const savedDonations = await ApiHelper.post("/donations", [donation], "GivingApi");
-      const donationId = savedDonations[0].id;
-
-      const fundDonation: FundDonationInterface = {
-        donationId,
-        fundId: defaultValues.fundId,
-        amount: parseFloat(amount),
-        currency
-      };
-
-      try {
-        await ApiHelper.post("/funddonations", [fundDonation], "GivingApi");
-      } catch (e) {
-        await ApiHelper.delete("/donations/" + donationId, "GivingApi").catch(() => {});
-        throw e;
-      }
+      await ApiHelper.post("/donations", [donation], "GivingApi");
     } catch {
       setErrors([Locale.label("common.saveError")]);
       return;

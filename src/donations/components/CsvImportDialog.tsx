@@ -124,16 +124,10 @@ export const CsvImportDialog: React.FC<Props> = ({ open, batchId, batchDate, fun
 
   const valid = (rows || []).filter((r) => !r.error);
 
-  // Same write path as BulkDonationEntry, batched: /donations, then /funddonations, rolling back the donations if the fund rows fail.
+  // Same write path as BulkDonationEntry, batched: each donation carries its fund row so a Donation trigger sees the fund.
   const handleImport = async () => {
-    const saved: DonationInterface[] = await ApiHelper.post("/donations", valid.map((r) => r.donation), "GivingApi");
-    const fundDonations: FundDonationInterface[] = valid.map((r, i) => ({ donationId: saved[i].id, fundId: r.fund!.id, amount: r.donation.amount }));
-    try {
-      await ApiHelper.post("/funddonations", fundDonations, "GivingApi");
-    } catch (e) {
-      await Promise.all(saved.map((d) => ApiHelper.delete("/donations/" + d.id, "GivingApi").catch(() => {})));
-      throw e;
-    }
+    const donations = valid.map((r) => ({ ...r.donation, fundDonations: [{ fundId: r.fund!.id, amount: r.donation.amount } as FundDonationInterface] }));
+    await ApiHelper.post("/donations", donations, "GivingApi");
     onImported();
   };
 

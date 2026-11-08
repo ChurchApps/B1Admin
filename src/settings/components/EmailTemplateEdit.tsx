@@ -15,8 +15,20 @@ const getMergeFields = () => [
   { key: "{{lastName}}", label: Locale.label("settings.emailTemplateEdit.mergeLastName") },
   { key: "{{displayName}}", label: Locale.label("settings.emailTemplateEdit.mergeDisplayName") },
   { key: "{{email}}", label: Locale.label("settings.emailTemplateEdit.mergeEmail") },
-  { key: "{{churchName}}", label: Locale.label("settings.emailTemplateEdit.mergeChurchName") }
+  { key: "{{churchName}}", label: Locale.label("settings.emailTemplateEdit.mergeChurchName") },
+  { key: "{{amount}}", label: Locale.label("settings.emailTemplateEdit.mergeAmount") },
+  { key: "{{giftDate}}", label: Locale.label("settings.emailTemplateEdit.mergeGiftDate") },
+  { key: "{{fund}}", label: Locale.label("settings.emailTemplateEdit.mergeFund") },
+  { key: "{{receipt}}", label: Locale.label("settings.emailTemplateEdit.mergeReceipt") }
 ];
+
+// Sample gift for the preview; the real values come from the donation that started the workflow.
+const SAMPLE_RECEIPT = "<table role=\"presentation\" cellspacing=\"8\"><tr><th>Fund</th><th>Amount</th></tr><tr><td>General Fund</td><td>$40.00</td></tr><tr><td>Missions</td><td>$10.00</td></tr><tr><th>Total</th><td>$50.00</td></tr></table>";
+const fillSampleGift = (text: string, receipt: string) => text
+  .replace(/\{\{amount\}\}/g, () => "$50.00")
+  .replace(/\{\{giftDate\}\}/g, new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }))
+  .replace(/\{\{fund\}\}/g, "General Fund")
+  .replace(/\{\{receipt\}\}/g, () => receipt);
 
 const TEXT_CATEGORY = "Text";
 const CATEGORIES = ["General", "Events", "Groups", "Giving", "Welcome", TEXT_CATEGORY];
@@ -146,6 +158,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
     preview = preview.replace(/\{\{email\}\}/g, "john@example.com");
     preview = preview.replace(/\{\{churchName\}\}/g, churchName);
+    preview = fillSampleGift(preview, SAMPLE_RECEIPT);
 
     const isDarkTheme = document.body.classList.contains("dark-theme");
     const styleInjection = isDarkTheme ? "<style>body { color: white; font-family: sans-serif; }</style>" : "<style>body { font-family: sans-serif; }</style>";
@@ -161,7 +174,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
     preview = preview.replace(/\{\{email\}\}/g, "john@example.com");
     preview = preview.replace(/\{\{churchName\}\}/g, churchName);
-    return preview;
+    return fillSampleGift(preview, "");
   };
 
   return (
@@ -218,7 +231,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
             <Box sx={{ mt: 2 }}>
               <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeSubject")}</Typography>
               <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-                {getMergeFields().map(f => (
+                {getMergeFields().filter(f => f.key !== "{{receipt}}").map(f => (
                   <Chip key={f.key} label={f.label} size="small" variant="outlined" onMouseDown={keepFocus} onClick={() => insertMergeField(f.key)} sx={{ cursor: "pointer" }} />
                 ))}
               </Stack>
@@ -249,6 +262,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
                   <Chip key={f.key} label={f.label} size="small" variant="outlined" onMouseDown={keepFocus} onClick={() => insertMergeFieldInBody(f.key)} sx={{ cursor: "pointer" }} />
                 ))}
               </Stack>
+              <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: "block" }} data-testid="gift-merge-hint">{Locale.label("settings.emailTemplateEdit.giftMergeHint")}</Typography>
             </Box>
 
             <Box sx={{
