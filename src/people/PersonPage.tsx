@@ -198,13 +198,15 @@ export const PersonPage = () => {
 
   const notes = (
     <React.Fragment key={`notes-${person.conversationId || "new"}-${confidentialConversationId || "new"}`}>
-      <PersonNotes context={context} conversationId={person.conversationId || ""} createConversation={handleCreateConversation} />
+      <PersonNotes context={context} conversationId={person.conversationId || ""} createConversation={handleCreateConversation} contentType="person" contentId={person.id} />
       {canViewConfidentialNotes && (
         <PersonNotes
           title={Locale.label("people.personPage.confidentialNotes")}
           context={context}
           conversationId={confidentialConversationId}
           createConversation={handleCreateConfidentialConversation}
+          contentType="personConfidential"
+          contentId={person.id}
         />
       )}
     </React.Fragment>

@@ -33,5 +33,5 @@ export const ContentNotes: React.FC<Props> = ({ contentType, contentId, title })
   };
 
   if (conversations.isLoading) return <Loading />;
-  return <PersonNotes key={conversationId || "new"} context={context} conversationId={conversationId} createConversation={createConversation} />;
+  return <PersonNotes key={conversationId || "new"} context={context} conversationId={conversationId} createConversation={createConversation} contentType={contentType} contentId={contentId} />;
 };

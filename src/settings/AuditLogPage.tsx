@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { UserHelper, Permissions, ApiHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Select, MenuItem, FormControl, InputLabel, Button, Stack, Typography,
@@ -81,6 +82,14 @@ const displayValue = (v: any): string => {
   if (v === null || v === undefined) return "";
   if (typeof v === "object") return JSON.stringify(v);
   return String(v);
+};
+
+// Note rows link back to where the note lives (mirrors sourceLink in people/NotesPage.tsx). Event notes have no page.
+const noteRecordLink = (log: AuditLog) => {
+  if (log.entityType !== "note" || !log.entityId) return null;
+  if (log.category === "person") return "/people/" + log.entityId + "?view=notes";
+  if (log.category === "group") return "/groups/" + log.entityId + "?view=notes";
+  return null;
 };
 
 const isDelete = (action: string) => (action || "").toLowerCase().includes("delet");
@@ -199,19 +208,31 @@ export const AuditLogPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [category, setCategory] = useState("");
-  const [module, setModule] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initial = useMemo(() => ({
+    category: searchParams.get("category") || "",
+    module: searchParams.get("module") || "",
+    startDate: searchParams.get("startDate") || "",
+    endDate: searchParams.get("endDate") || "",
+    entityType: searchParams.get("entityType") || "",
+    entityId: searchParams.get("entityId") || ""
+  }), []);
+  const [category, setCategory] = useState(initial.category);
+  const [module, setModule] = useState(initial.module);
+  const [startDate, setStartDate] = useState(initial.startDate);
+  const [endDate, setEndDate] = useState(initial.endDate);
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const appliedFilters = React.useRef({ category: "", module: "", startDate: "", endDate: "" });
+  const appliedFilters = React.useRef(initial);
+  const [recordFilter, setRecordFilter] = useState(initial.entityType === "note" && !!initial.entityId);
 
   const fetchLogs = useCallback(async (pageNum: number, limit: number) => {
     setLoading(true);
     setExpandedId(null);
     try {
-      const { category, module, startDate, endDate } = appliedFilters.current;
+      const { category, module, startDate, endDate, entityType, entityId } = appliedFilters.current;
       const params = new URLSearchParams();
+      if (entityType) params.set("entityType", entityType);
+      if (entityId) params.set("entityId", entityId);
       if (category) params.set("category", category);
       if (module) params.set("module", module);
       if (startDate) params.set("startDate", startDate);
@@ -232,10 +253,21 @@ export const AuditLogPage: React.FC = () => {
   }, []);
 
   const handleSearch = useCallback(() => {
-    appliedFilters.current = { category, module, startDate, endDate };
+    appliedFilters.current = { ...appliedFilters.current, category, module, startDate, endDate };
     setPage(0);
     fetchLogs(0, rowsPerPage);
   }, [fetchLogs, rowsPerPage, category, module, startDate, endDate]);
+
+  const clearRecordFilter = useCallback(() => {
+    appliedFilters.current = { ...appliedFilters.current, entityType: "", entityId: "" };
+    const next = new URLSearchParams(searchParams);
+    next.delete("entityType");
+    next.delete("entityId");
+    setSearchParams(next, { replace: true });
+    setRecordFilter(false);
+    setPage(0);
+    fetchLogs(0, rowsPerPage);
+  }, [fetchLogs, rowsPerPage, searchParams, setSearchParams]);
 
   const handlePageChange = useCallback((_: unknown, newPage: number) => {
     setPage(newPage);
@@ -292,6 +324,12 @@ export const AuditLogPage: React.FC = () => {
             <AppDatePicker size="small" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
             <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
           </Stack>
+          {recordFilter && (
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ px: { xs: 2, md: 3 }, py: 1, borderBottom: 1, borderColor: "divider", bgcolor: "action.hover" }} data-testid="audit-record-filter">
+              <Typography variant="body2" color="text.secondary">{Locale.label("settings.auditLogPage.filteredToRecord", "Showing note history for one record.")}</Typography>
+              <Button size="small" onClick={clearRecordFilter}>{Locale.label("settings.auditLogPage.clearRecordFilter", "Show all")}</Button>
+            </Stack>
+          )}
           {loading ? <Loading /> : (
             <>
               <TableContainer sx={tableScrollSx} role="region" aria-label={Locale.label("settings.auditLogPage.title")} tabIndex={0}>
@@ -329,7 +367,9 @@ export const AuditLogPage: React.FC = () => {
                             <TableCell>{formatAction(log.action)}</TableCell>
                             <TableCell>
                               {log.entityType && <Typography variant="caption" color="text.secondary">{log.entityType}</Typography>}
-                              {log.entityId && <Typography variant="body2">{log.entityId}</Typography>}
+                              {log.entityId && (noteRecordLink(log)
+                                ? <Typography variant="body2"><Link to={noteRecordLink(log)!} title={Locale.label("settings.auditLogPage.openRecord", "Open record")} data-testid="audit-entity-link">{log.entityId}</Link></Typography>
+                                : <Typography variant="body2">{log.entityId}</Typography>)}
                             </TableCell>
                             <TableCell><Typography variant="caption" sx={{ fontFamily: "monospace" }}>{log.ipAddress}</Typography></TableCell>
                           </TableRow>
