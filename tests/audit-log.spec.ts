@@ -146,7 +146,8 @@ test.describe("Universal audit log + undoable batches", () => {
     await saved;
     await expect(notesBox.locator('textarea[name="noteText"]').first()).toHaveValue("");
     await expect(notesBox.getByText(edited)).toBeVisible();
-    await expect(noteItem(page, edited).getByText("(edited)")).toBeVisible();
+    // Admins (Settings → Edit) see the edited stamp as a link to the note history.
+    await expect(noteItem(page, edited).getByText(/^\(edited/)).toBeVisible();
 
     await page.goto("/settings/audit-log");
     await auditSearch(page, { module: "Messaging", category: "People" });
@@ -181,6 +182,75 @@ test.describe("Universal audit log + undoable batches", () => {
     await expect(page.getByText(text, { exact: true })).toBeVisible();
     await expect(page.getByText("Demo User", { exact: true }).first()).toBeVisible();
     await page.screenshot({ path: ".pr-screenshots/after.png" });
+  });
+
+  // ChurchAppsSupport#1487: admins see edited/deleted note markers in place, linked to that record's note history.
+  test("marks edited and deleted notes on the person and links to that person's note history", async ({ page }) => {
+    const person = await createPerson(ctx, jwt, "NoteHistory" + Date.now());
+    const kept = "Prayer request " + Date.now();
+    const edited = kept + " (answered)";
+    const removed = "Wrong family " + Date.now();
+
+    await page.goto(`/people/${person.id}?view=notes`);
+    const notesBox = page.getByTestId("notes-box");
+    const post = async (text: string) => {
+      await notesBox.locator('textarea[name="noteText"]').first().fill(text);
+      const saved = page.waitForResponse((r) => r.url().includes("/messaging/messages") && r.request().method() === "POST" && r.ok());
+      await notesBox.locator("button").filter({ has: page.locator('text="send"') }).last().click();
+      await saved;
+      await expect(notesBox.locator('textarea[name="noteText"]').first()).toHaveValue("");
+      await expect(notesBox.getByText(text)).toBeVisible();
+    };
+    await post(kept);
+    await post(removed);
+
+    await openNoteEditor(page, removed);
+    page.once("dialog", (d) => d.accept());
+    const deleted = page.waitForResponse((r) => r.url().includes("/messaging/messages/") && r.request().method() === "DELETE" && r.ok());
+    await notesBox.locator("button").filter({ has: page.locator('text="delete"') }).first().click();
+    await deleted;
+    await expect(notesBox.getByText(removed)).toHaveCount(0);
+
+    await (await openNoteEditor(page, kept)).fill(edited);
+    await post(edited);
+    const historyHref = `/settings/audit-log?module=messaging&entityType=note&entityId=${person.id}`;
+    const editedLink = noteItem(page, edited).getByTestId("note-history-link");
+    await expect(editedLink).toBeVisible();
+    await expect(editedLink).toHaveAttribute("href", historyHref);
+
+    // The deleted-note marker comes from the audit log, so it shows on the next load.
+    await page.reload();
+    await expect(notesBox.getByText(edited)).toBeVisible();
+    const marker = notesBox.getByTestId("deleted-note");
+    await expect(marker).toHaveCount(1);
+    await expect(marker).toContainText("Deleted note");
+    await expect(marker).toContainText("Demo User");
+    await expect(marker).not.toContainText(removed);
+    await page.screenshot({ path: ".pr-screenshots/after.png" });
+
+    await marker.getByTestId("deleted-note-history-link").click();
+    await expect(page).toHaveURL(/\/settings\/audit-log\?/);
+    await expect(page.getByTestId("audit-record-filter")).toBeVisible();
+    const rows = page.locator("table tbody tr");
+    await expect(rows.filter({ hasText: "Note Deleted" })).toHaveCount(1);
+    await expect(rows.filter({ hasText: "Note Updated" })).toHaveCount(1);
+    await expect(rows.filter({ hasText: "Note Saved" })).toHaveCount(2);
+    await expect(rows.filter({ hasNotText: person.id })).toHaveCount(0);
+
+    await rows.filter({ hasText: "Note Deleted" }).getByTestId("audit-entity-link").click();
+    await expect(page).toHaveURL(new RegExp(`/people/${person.id}\\?view=notes`));
+    await expect(page.getByTestId("notes-box").getByText(edited)).toBeVisible();
+  });
+
+  test("the record filter on the audit log clears with Show all", async ({ page }) => {
+    await page.goto("/settings/audit-log?module=messaging&entityType=note&entityId=PER_NONE");
+    await expect(page.getByTestId("audit-record-filter")).toBeVisible();
+    await expect(page.getByText("No audit log entries", { exact: false })).toBeVisible();
+    const resp = page.waitForResponse((r) => r.url().includes("/auditlogs") && !r.url().includes("entityId") && r.status() === 200);
+    await page.getByTestId("audit-record-filter").getByRole("button", { name: "Show all" }).click();
+    await resp;
+    await expect(page.getByTestId("audit-record-filter")).toHaveCount(0);
+    await expect(page).not.toHaveURL(/entityId=/);
   });
 
   test("explicit batch round-trips and undoes from the Batches page", async ({ page }) => {
