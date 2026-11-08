@@ -182,3 +182,65 @@ test.describe("Custom field columns with no person forms", () => {
     await expect(page.locator("#peopleTable thead")).toContainText(STUB_FIELD_NAME, { timeout: 10000 });
   });
 });
+
+// ChurchAppsSupport#1481: a church edits its own Title list under Custom Fields, and the
+// Title box on the person editor offers that list.
+test.describe.serial("Custom Fields Titles list", () => {
+  const TITLE = "Deacon";
+  let browser: Browser;
+  let page: Page;
+
+  const removeTitle = async (title: string) => {
+    const loaded = page.waitForResponse((r) => /\/membership\/settings$/.test(r.url()) && r.request().method() === "GET", { timeout: 15000 }).catch((): null => null);
+    await page.goto("/settings/custom-fields");
+    await loaded;
+    const card = page.getByTestId("titles-card");
+    if (!(await card.waitFor({ timeout: 10000 }).then(() => true).catch(() => false))) return;
+    const chip = card.getByTestId(`title-chip-${title}`);
+    if (!(await chip.isVisible().catch(() => false))) return;
+    await chip.locator(".MuiChip-deleteIcon").click();
+    const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST", { timeout: 10000 }).catch((): null => null);
+    await card.getByTestId("save-titles-button").click();
+    await saved;
+  };
+
+  test.beforeAll(async () => {
+    browser = await chromium.launch();
+    const ctx = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await ctx.newPage();
+    await login(page);
+    await removeTitle(TITLE);
+  });
+
+  test.afterAll(async () => {
+    await removeTitle(TITLE).catch(() => { });
+    await browser.close();
+  });
+
+  test("admin adds a title to the church's title list", async () => {
+    await page.goto("/settings/custom-fields");
+    const card = page.getByTestId("titles-card");
+    await expect(card).toBeVisible({ timeout: 15000 });
+    await expect(card.getByTestId("title-chip-Mr")).toBeVisible();
+
+    await card.getByTestId("new-title-input").fill(TITLE);
+    await card.getByTestId("add-title-button").click();
+    await expect(card.getByTestId(`title-chip-${TITLE}`)).toBeVisible();
+    await card.getByTestId("save-titles-button").click();
+    await expect(card.getByTestId("titles-saved")).toBeVisible({ timeout: 10000 });
+
+    await page.reload();
+    await expect(page.getByTestId("titles-card").getByTestId(`title-chip-${TITLE}`)).toBeVisible({ timeout: 15000 });
+  });
+
+  test("the person editor's Title box offers the church's titles", async () => {
+    await navigateToPeople(page);
+    await openPersonRow(page, SEED_PEOPLE.DONALD);
+    await page.getByTestId("edit-person-button").click();
+    const title = page.locator("#prefix");
+    await expect(title).toBeVisible({ timeout: 10000 });
+    await title.fill("");
+    await title.click();
+    await expect(page.getByRole("option", { name: TITLE, exact: true })).toBeVisible({ timeout: 10000 });
+  });
+});

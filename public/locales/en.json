@@ -4136,6 +4136,16 @@
       "field": "Custom Field",
       "none": "No custom fields have been added yet."
     },
+    "titles": {
+      "addTitle": "Add Title",
+      "description": "Titles offered in the Title box when adding or editing a person. People can still type a title that is not listed.",
+      "duplicate": "That title is already in the list.",
+      "helper": "Up to 10 characters",
+      "newTitle": "New title",
+      "save": "Save",
+      "saved": "Titles saved.",
+      "titles": "Titles"
+    },
     "developer": {
       "actions": "Actions",
       "apiKeys": "API Keys",

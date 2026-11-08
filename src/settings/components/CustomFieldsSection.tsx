@@ -6,6 +6,7 @@ import { ListAlt as ListAltIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { SectionListCard, clickableRowSx, tableScrollSx } from "../../components/ui";
 import { CustomFieldEdit } from "./CustomFieldEdit";
+import { TitlesSettingsCard } from "./TitlesSettingsCard";
 
 // Custom field definition management (list + inline editor). Shared by the Settings
 // landing's Custom Fields section and the standalone /settings/custom-fields page.
@@ -47,6 +48,9 @@ export const CustomFieldsSection: React.FC = () => {
 
   return (
     <Grid container spacing={3}>
+      <Grid size={{ xs: 12 }}>
+        <TitlesSettingsCard />
+      </Grid>
       <Grid size={{ xs: 12, md: editField ? 7 : 12 }}>
         <SectionListCard
           icon={<ListAltIcon />}
