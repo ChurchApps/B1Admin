@@ -8,7 +8,8 @@ import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle
 import { ErrorMessages } from "@churchapps/apphelper";
 import { useMountedState } from "@churchapps/apphelper";
 import { DuplicateDialog } from "../people/components/DuplicateDialog";
-import { HOUSEHOLD_ROLES, TITLE_SUGGESTIONS } from "../helpers/PersonConstants";
+import { useQuery } from "@tanstack/react-query";
+import { HOUSEHOLD_ROLES, parseTitleOptions } from "../helpers/PersonConstants";
 
 interface CommonProps {
   onCreate?: (person: PersonInterface) => void;
@@ -27,6 +28,9 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, showHou
   const [duplicates, setDuplicates] = React.useState<PersonInterface[]>([]);
   const [householdRole, setHouseholdRole] = React.useState("Other");
   const isMounted = useMountedState();
+  const churchId = UserHelper.currentUserChurch?.church?.id || "";
+  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const titleOptions = React.useMemo(() => parseTitleOptions(publicSettings.data?.titleOptions), [publicSettings.data]);
 
   const validate = () => {
     const result = [];
@@ -116,7 +120,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, showHou
     <Autocomplete
       freeSolo
       size={size}
-      options={TITLE_SUGGESTIONS}
+      options={titleOptions}
       value={person.name.prefix || ""}
       onInputChange={(_, val) => handlePrefixChange(val)}
       renderInput={(params) => <TextField {...params} margin={size ? "none" : "dense"} fullWidth label={Locale.label("createPerson.title")} inputProps={{ ...params.inputProps, maxLength: 10, "data-testid": "create-person-title" }} />}

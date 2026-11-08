@@ -19,7 +19,7 @@ import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
 import { parseFieldChoices } from "../../helpers/PersonFieldHelper";
 import { AppDatePicker } from "../../components";
-import { TITLE_SUGGESTIONS } from "../../helpers/PersonConstants";
+import { parseTitleOptions } from "../../helpers/PersonConstants";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 type AnyRecord = Record<string, any>;
@@ -99,6 +99,7 @@ export const PersonEdit = memo((props: Props) => {
   const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
   const localPhones = publicSettings.data?.phoneFormat === "local";
   const phoneSettingsLoading = !!churchId && publicSettings.isLoading;
+  const titleOptions = React.useMemo(() => parseTitleOptions(publicSettings.data?.titleOptions), [publicSettings.data]);
 
   const { control, register, handleSubmit, reset, resetField, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person, localPhones) });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -315,7 +316,7 @@ export const PersonEdit = memo((props: Props) => {
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 3 }}>
                 <Controller name="name.prefix" control={control} render={({ field }) => (
-                  <Autocomplete id="prefix" freeSolo sx={titleInputSx} options={TITLE_SUGGESTIONS} value={field.value || ""} onInputChange={(_, val) => field.onChange(val)} renderInput={(params) => <TextField {...params} fullWidth label={Locale.label("person.prefix")} inputProps={{ ...params.inputProps, maxLength: 10 }} />} />
+                  <Autocomplete id="prefix" freeSolo sx={titleInputSx} options={titleOptions} value={field.value || ""} onInputChange={(_, val) => field.onChange(val)} renderInput={(params) => <TextField {...params} fullWidth label={Locale.label("person.prefix")} inputProps={{ ...params.inputProps, maxLength: 10 }} />} />
                 )} />
               </Grid>
               <Grid size={{ xs: 12, md: 3 }}>
