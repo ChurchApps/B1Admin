@@ -7,6 +7,15 @@ import { ContentPicker } from "../../components/ContentPicker";
 import { MERGE_FIELD_KEYS, keepFocus } from "../../../../groups/components/SendTextDialog";
 import { ACTION_TYPES, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface } from "../types";
 
+// Gift fields fill in only when a Donation trigger started the workflow, so group texting does not offer them.
+const WORKFLOW_TEXT_MERGE_FIELDS = [
+  ...MERGE_FIELD_KEYS,
+  { key: "{{amount}}", label: "tasks.workflowActions.mergeAmount" },
+  { key: "{{giftDate}}", label: "tasks.workflowActions.mergeGiftDate" },
+  { key: "{{fund}}", label: "tasks.workflowActions.mergeFund" },
+  { key: "{{receipt}}", label: "tasks.workflowActions.mergeReceipt" }
+];
+
 interface EmailTemplateInterface { id?: string; name?: string; category?: string }
 interface EmailSendStatus { approved?: boolean; paused?: boolean }
 
@@ -146,10 +155,11 @@ export const WorkflowStepActions = (props: Props) => {
             )}
             <TextField size="small" fullWidth multiline minRows={3} label={Locale.label("tasks.workflowActions.textMessage")} value={message} data-testid={"action-text-message-" + index} inputRef={(el: HTMLTextAreaElement | null) => { textRefs.current[index] = el; }} inputProps={{ maxLength: 1600 }} helperText={Locale.label("tasks.workflowActions.textMergeHint") + " " + message.length + "/1600"} onChange={(e) => setConfig(index, { message: e.target.value })} />
             <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap data-testid={"action-text-merge-fields-" + index}>
-              {MERGE_FIELD_KEYS.map((f) => (
+              {WORKFLOW_TEXT_MERGE_FIELDS.map((f) => (
                 <Chip key={f.key} label={Locale.label(f.label)} size="small" variant="outlined" onMouseDown={keepFocus} onClick={() => insertMergeField(index, f.key)} sx={{ cursor: "pointer" }} />
               ))}
             </Stack>
+            <Typography variant="caption" color="text.secondary" data-testid={"action-text-gift-hint-" + index}>{Locale.label("tasks.workflowActions.giftMergeHint")}</Typography>
             {textingProviders?.length === 0 && <Typography variant="body2" color="warning.main" data-testid={"action-text-no-provider-" + index}>{Locale.label("tasks.workflowActions.noTextingProvider")}</Typography>}
           </Stack>
         );

@@ -407,4 +407,47 @@ test.describe("Serving Management - Event Triggers Run now", () => {
       await ctx.dispose();
     }
   });
+  // ChurchAppsSupport#1486: a gift logged in B1Admin saves its fund with it, so a Fund-conditioned
+  // Donation trigger fires and the card keeps the gift for the Amount/Gift Date/Fund/Receipt merge fields.
+  test("logging a gift starts a Fund-conditioned donation workflow that keeps the gift", async ({ page }) => {
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    const auth = { headers: { Authorization: "Bearer " + (uc?.jwt as string) } };
+    const DONALD_CLARK_ID = "PER00000080";
+    // Log a gift picks the first fund, so the trigger watches that one.
+    const fundId = ((await (await ctx.get(`${API_BASE}/giving/funds`, auth)).json()) as any[])[0].id;
+
+    const wf = (await (await ctx.post(`${API_BASE}/doing/workflows`, { ...auth, data: [{ name: "Zacchaeus Gift WF", active: true }] })).json())[0];
+    await ctx.post(`${API_BASE}/doing/workflowSteps`, { ...auth, data: [{ workflowId: wf.id, name: "Thank", sort: 1 }] });
+    const conditions = JSON.stringify({ type: "group", conjunction: "AND", children: [{ type: "condition", field: "fundDonation.fundId", operator: "=", value: fundId }] });
+    const trigger = (await (await ctx.post(`${API_BASE}/doing/workflowTriggers`, { ...auth, data: [{ name: "Zacchaeus Gift Trigger", triggerKind: "event", eventType: "donation.created", workflowId: wf.id, conditions, oncePerSubject: false, active: true }] })).json())[0];
+    let donationId = "";
+    try {
+      await page.goto(`/people/${DONALD_CLARK_ID}`);
+      await page.getByTestId("person-log-gift").first().click();
+      await page.getByTestId("log-gift-amount").fill("42.00");
+      const saved = page.waitForResponse((r) => /\/giving\/donations$/.test(r.url()) && r.request().method() === "POST");
+      await page.getByTestId("log-gift-save").click();
+      donationId = ((await (await saved).json()) as any[])[0].id;
+
+      await page.goto(`/serving/tasks/workflows/${wf.id}`);
+      await recoverFromViteError(page, page.locator('[data-testid="workflow-board"]'));
+      const board = page.locator('[data-testid="workflow-board"]');
+      await expect(board.getByText("Donald Clark")).toBeVisible({ timeout: 15000 });
+
+      const cards = (await (await ctx.get(`${API_BASE}/doing/tasks/board/${wf.id}`, auth)).json()).cards || [];
+      const card = cards.find((c: any) => c.associatedWithId === DONALD_CLARK_ID);
+      const full = await (await ctx.get(`${API_BASE}/doing/tasks/${card.id}`, auth)).json();
+      expect(JSON.parse(full.data || "{}").event).toMatchObject({ type: "donation.created", donationId, amount: 42 });
+    } finally {
+      const board = await (await ctx.get(`${API_BASE}/doing/tasks/board/${wf.id}`, auth)).json();
+      for (const c of board.cards || []) await ctx.post(`${API_BASE}/doing/tasks/${c.id}/complete`, { ...auth, data: {} });
+      await ctx.delete(`${API_BASE}/doing/workflowTriggers/${trigger.id}`, auth);
+      await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+      if (donationId) await ctx.delete(`${API_BASE}/giving/donations/${donationId}`, auth);
+      await ctx.dispose();
+    }
+  });
 });

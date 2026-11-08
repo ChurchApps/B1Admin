@@ -4185,7 +4185,7 @@
       "newTemplate": "New Template",
       "preview": "Preview",
       "previewBody": "Body:",
-      "previewSampleData": "Sample data shown: John Smith, john@example.com",
+      "previewSampleData": "Sample data shown: John Smith, john@example.com, a $50.00 gift to General Fund",
       "previewSubject": "Subject:",
       "subject": "Subject",
       "subjectPlaceholder": "e.g. Hello {{firstName}}, welcome to {{churchName}}",
@@ -4193,7 +4193,12 @@
       "templateName": "Template Name",
       "textBody": "Text Message",
       "templateNamePlaceholder": "e.g. Welcome Email, Event Reminder",
-      "yourChurch": "Your Church"
+      "yourChurch": "Your Church",
+      "mergeAmount": "Amount",
+      "mergeGiftDate": "Gift Date",
+      "mergeFund": "Fund",
+      "mergeReceipt": "Receipt",
+      "giftMergeHint": "Amount, Gift Date, Fund and Receipt fill in only when a workflow started by a Donation trigger sends this template."
     },
     "emailTemplatesPage": {
       "category": "Category",
@@ -6248,7 +6253,12 @@
         "webhook": "Call Webhook"
       },
       "value": "Value",
-      "webhookUrl": "Webhook URL (https)"
+      "webhookUrl": "Webhook URL (https)",
+      "mergeAmount": "Amount",
+      "mergeGiftDate": "Gift Date",
+      "mergeFund": "Fund",
+      "mergeReceipt": "Receipt",
+      "giftMergeHint": "Amount, Gift Date, Fund and Receipt fill in only when the workflow was started by a Donation trigger."
     },
     "workflowBoard": {
       "addCard": "Add Card",

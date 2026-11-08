@@ -1146,7 +1146,7 @@ test.describe.serial("Batch close and reopen", () => {
 
     await page.locator("button").getByText("Anonymous").click();
     await page.locator('[data-testid="bulk-donation-amount"] input').fill("12.00");
-    const saved = page.waitForResponse((r) => r.url().includes("/giving/funddonations") && r.request().method() === "POST", { timeout: 15000 });
+    const saved = page.waitForResponse((r) => /\/giving\/donations$/.test(r.url()) && r.request().method() === "POST", { timeout: 15000 });
     await page.locator('[data-testid="add-donation-submit"]').click();
     expect((await saved).status()).toBe(200);
     await expect(page.locator('[data-testid^="donation-row-"]')).toHaveCount(2, { timeout: 10000 });
@@ -1212,17 +1212,16 @@ test.describe("Manual entry records the church currency", () => {
     await page.getByTestId("bulk-donation-anonymous").click();
   };
   const postedDonation = (page: Page) => page.waitForRequest((r) => /\/giving\/donations$/.test(r.url()) && r.method() === "POST");
-  const postedFundDonation = (page: Page) => page.waitForRequest((r) => /\/giving\/funddonations$/.test(r.url()) && r.method() === "POST");
 
   test("quick Add Donation shows PHP beside Amount and saves the gift in PHP", async ({ page }) => {
     await openPesoBatch(page);
     await expect(page.getByTestId("bulk-donation-currency")).toHaveText("PHP", { timeout: 10000 });
     await page.locator('[data-testid="bulk-donation-amount"] input').fill("500");
     const donationReq = postedDonation(page);
-    const fundReq = postedFundDonation(page);
     await page.getByTestId("add-donation-submit").click();
-    expect((await donationReq).postDataJSON()[0].currency).toBe("php");
-    expect((await fundReq).postDataJSON()[0].currency).toBe("php");
+    const posted = (await donationReq).postDataJSON()[0];
+    expect(posted.currency).toBe("php");
+    expect(posted.fundDonations[0].currency).toBe("php");
   });
 
   test("full donation editor saves a new gift in the church currency", async ({ page }) => {
@@ -1231,10 +1230,10 @@ test.describe("Manual entry records the church currency", () => {
     const box = page.locator("#donationBox");
     await box.locator('input[name="amount"]').fill("250");
     const donationReq = postedDonation(page);
-    const fundReq = postedFundDonation(page);
     await box.locator("button").getByText("Save").click();
-    expect((await donationReq).postDataJSON()[0].currency).toBe("php");
-    expect((await fundReq).postDataJSON()[0].currency).toBe("php");
+    const posted = (await donationReq).postDataJSON()[0];
+    expect(posted.currency).toBe("php");
+    expect(posted.fundDonations[0].currency).toBe("php");
   });
 });
 

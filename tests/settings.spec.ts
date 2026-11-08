@@ -895,6 +895,29 @@ test.describe("Email template editor merge fields", () => {
     await expect(page.frameLocator("iframe[title='Email preview']").locator("body")).toContainText("Hello John welcome");
   });
 
+  // ChurchAppsSupport#1486: gift merge fields for emails sent by a donation-triggered workflow.
+  test("gift chips insert into the body and preview with a sample gift", async ({ page }) => {
+    await openNewTemplate(page);
+    const subjectChips = chipsAfter(page, "Insert merge field into subject:");
+    await expect(subjectChips.getByText("Amount", { exact: true })).toBeVisible();
+    await expect(subjectChips.getByText("Receipt", { exact: true })).toHaveCount(0);
+    await expect(page.getByTestId("gift-merge-hint")).toHaveText("Amount, Gift Date, Fund and Receipt fill in only when a workflow started by a Donation trigger sends this template.");
+
+    const body = page.locator(".editor-input[contenteditable='true']").first();
+    await body.click();
+    await page.keyboard.type("Thanks for ");
+    const bodyChips = chipsAfter(page, "Insert merge field into body:");
+    await bodyChips.getByText("Amount", { exact: true }).click();
+    await page.keyboard.type(" to ");
+    await bodyChips.getByText("Fund", { exact: true }).click();
+    await bodyChips.getByText("Receipt", { exact: true }).click();
+    await expect(body).toHaveText("Thanks for {{amount}} to {{fund}}{{receipt}}");
+    await page.getByRole("button", { name: "Preview" }).click();
+    const preview = page.frameLocator("iframe[title='Email preview']").locator("body");
+    await expect(preview).toContainText("Thanks for $50.00 to General Fund");
+    await expect(preview.locator("table")).toContainText("Missions");
+  });
+
   test("backspace in the middle of the body only removes one character", async ({ page }) => {
     await openNewTemplate(page);
     const body = page.locator(".editor-input[contenteditable='true']").first();

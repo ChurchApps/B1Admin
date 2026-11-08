@@ -779,6 +779,34 @@ test.describe.serial("Serving Management - Workflows", () => {
     await cleanup.dispose();
   });
 
+  // ChurchAppsSupport#1486: a workflow text can thank a donor for the gift that started it.
+  test("the Send Text action offers the gift merge fields", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, []);
+    await ctx.dispose();
+
+    await openBoardById(page, wf.id);
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    await page.locator('[data-testid="add-action-button"]').click();
+    await page.locator('[data-testid="action-type-0"]').click();
+    await page.getByRole("option", { name: "Send Text" }).click();
+    const message = page.locator('[data-testid="action-text-message-0"] textarea').first();
+    await message.fill("Thanks for ");
+    const chips = page.locator('[data-testid="action-text-merge-fields-0"]');
+    await chips.getByText("Amount", { exact: true }).click();
+    await page.keyboard.type(" on ");
+    await chips.getByText("Gift Date", { exact: true }).click();
+    await expect(message).toHaveValue("Thanks for {{amount}} on {{giftDate}}");
+    await expect(chips.getByText("Receipt", { exact: true })).toBeVisible();
+    await expect(page.locator('[data-testid="action-text-gift-hint-0"]')).toHaveText("Amount, Gift Date, Fund and Receipt fill in only when the workflow was started by a Donation trigger.");
+
+    const cleanup = await request.newContext();
+    const auth2 = await apiAuth(cleanup);
+    await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
+    await cleanup.dispose();
+  });
+
   // ChurchAppsSupport#1440: the Send Text action can start from a saved text template, like Mass Texting.
   test("a Send Text action can start from a text template and stay editable", async () => {
     const ctx = await request.newContext();
