@@ -274,6 +274,8 @@ export const B1MobilePage: React.FC = () => {
                 <MenuItem value="scroll">{Locale.label("mobile.b1MobilePage.tileLayoutScroll")}</MenuItem>
                 <MenuItem value="autoscroll">{Locale.label("mobile.b1MobilePage.tileLayoutAutoScroll")}</MenuItem>
                 <MenuItem value="list">{Locale.label("mobile.b1MobilePage.tileLayoutList")}</MenuItem>
+                <MenuItem value="gridlist">{Locale.label("mobile.b1MobilePage.tileLayoutGridList")}</MenuItem>
+                <MenuItem value="autoscrolllist">{Locale.label("mobile.b1MobilePage.tileLayoutAutoScrollList")}</MenuItem>
               </Select>
             </FormControl>
           </Grid>

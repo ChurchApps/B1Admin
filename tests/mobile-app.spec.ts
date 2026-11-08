@@ -592,7 +592,7 @@ test.describe("B1 Mobile page saves", () => {
       await expect(layout).toHaveText("Grid");
       await layout.click();
       await expect(page.getByRole("option", { name: "Scrolling row" })).toBeVisible();
-      await page.getByRole("option", { name: "List" }).click();
+      await page.getByRole("option", { name: "List", exact: true }).click();
       await saveSettings(page);
 
       const pub = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
@@ -606,12 +606,33 @@ test.describe("B1 Mobile page saves", () => {
       const layout = page.getByRole("combobox", { name: "Layout" });
       await expect(layout).toBeVisible({ timeout: 15000 });
       await layout.click();
-      await page.getByRole("option", { name: "Scrolling (automatic)" }).click();
+      await page.getByRole("option", { name: "Scrolling (automatic)", exact: true }).click();
       await saveSettings(page);
 
       expect((await publicSettings()).mobileTileLayout).toBe("autoscroll");
       await page.reload();
       await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("Scrolling (automatic)", { timeout: 15000 });
+    });
+
+    // ChurchAppsSupport#1494: two combined layouts feature the first three photo links and list the rest beneath.
+    test("home screen tiles offer Grid and list and Scrolling (automatic) and list", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      const layout = page.getByRole("combobox", { name: "Layout" });
+      await expect(layout).toBeVisible({ timeout: 15000 });
+      await layout.click();
+      await expect(page.getByRole("option", { name: "Scrolling (automatic) and list", exact: true })).toBeVisible();
+      await page.getByRole("option", { name: "Grid and list", exact: true }).click();
+      await saveSettings(page);
+      expect((await publicSettings()).mobileTileLayout).toBe("gridlist");
+      await page.reload();
+      await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("Grid and list", { timeout: 15000 });
+
+      await page.getByRole("combobox", { name: "Layout" }).click();
+      await page.getByRole("option", { name: "Scrolling (automatic) and list", exact: true }).click();
+      await saveSettings(page);
+      expect((await publicSettings()).mobileTileLayout).toBe("autoscrolllist");
+      await page.reload();
+      await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("Scrolling (automatic) and list", { timeout: 15000 });
     });
 
     test("My Attendance and My Forms on Home start off and save as public settings that survive a reload", async ({ page }) => {
