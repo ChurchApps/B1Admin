@@ -168,7 +168,7 @@ export const DonationPage: React.FC<Props> = (props) => {
         <TableCell>{[d.method, d.methodDetails].filter(Boolean).join(" - ")}</TableCell>
         <TableCell>{d.fund?.name}</TableCell>
         <TableCell>
-          <Box component="span" title={d.notes || ""} sx={{ display: "inline-block", maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", verticalAlign: "bottom" }}>
+          <Box component="span" sx={{ display: "inline-block", maxWidth: 360, whiteSpace: "pre-wrap", overflowWrap: "anywhere", verticalAlign: "bottom" }}>
             {d.notes || ""}
           </Box>
         </TableCell>

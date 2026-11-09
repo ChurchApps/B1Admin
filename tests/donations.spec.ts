@@ -527,6 +527,8 @@ test.describe("QuickBooks export", () => {
 const API_BASE = process.env.API_BASE || "http://localhost:8084";
 const NOTES_BATCH_NAME = "Habakkuk Notes Batch";
 const NOTES_TEXT = "Envelope #42 — pledge campaign gift";
+// Longer than the old 200px clipped cell, so a nowrap/ellipsis regression shows as scrollWidth > clientWidth.
+const LONG_NOTE = "Envelope #42 for the building fund pledge campaign, given in memory of Donald Clark by the whole family at the fall dinner";
 
 async function apiAuth(ctx: APIRequestContext) {
   const res = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
@@ -537,23 +539,28 @@ async function apiAuth(ctx: APIRequestContext) {
 
 test.describe("Donations list — notes column", () => {
   test.describe.configure({ retries: 0 });
-  let batchId: string;
+  const batchIds: string[] = [];
 
-  test.afterAll(async () => {
-    if (!batchId) return;
+  async function createNotesBatch() {
     const ctx = await request.newContext();
     const auth = await apiAuth(ctx);
-    await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: NOTES_BATCH_NAME, batchDate: "2025-11-01" }] });
+    const batchId: string = (await batchRes.json())[0].id;
+    batchIds.push(batchId);
+    await ctx.dispose();
+    return batchId;
+  }
+
+  test.afterAll(async () => {
+    if (batchIds.length === 0) return;
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    for (const batchId of batchIds) await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
     await ctx.dispose();
   });
 
   test("a donation's notes show in the batch donations list", async ({ page }) => {
-    const ctx = await request.newContext();
-    const auth = await apiAuth(ctx);
-    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: NOTES_BATCH_NAME, batchDate: "2025-11-01" }] });
-    const batches = await batchRes.json();
-    batchId = batches[0].id;
-    await ctx.dispose();
+    const batchId = await createNotesBatch();
 
     await page.goto(`/donations/batches/${batchId}`);
     await expect(page).toHaveURL(new RegExp(`/donations/batches/${batchId}`));
@@ -567,6 +574,74 @@ test.describe("Donations list — notes column", () => {
     await page.locator('[data-testid="add-donation-submit"]').click();
 
     await expect(page.locator("table td").getByText(NOTES_TEXT)).toHaveCount(1, { timeout: 10000 });
+  });
+
+  // ChurchAppsSupport#1511: a long note shows in full instead of being cut off with an ellipsis.
+  test("a long note shows in full in the batch donations list, not clipped", async ({ page }) => {
+    const batchId = await createNotesBatch();
+    await page.goto(`/donations/batches/${batchId}`);
+    const anon = page.locator("button").getByText("Anonymous");
+    await expect(anon).toBeVisible({ timeout: 10000 });
+    await anon.click();
+
+    await page.locator('[data-testid="bulk-donation-notes"] input').fill(LONG_NOTE);
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("15.00");
+    await page.locator('[data-testid="add-donation-submit"]').click();
+
+    const note = page.locator("table td").getByText(LONG_NOTE);
+    await expect(note).toBeVisible({ timeout: 10000 });
+    await expect(note).toHaveText(LONG_NOTE);
+    const clipped = await note.evaluate((el) => el.scrollWidth > el.clientWidth);
+    expect(clipped).toBe(false);
+  });
+});
+
+// ChurchAppsSupport#1511: the person's giving history (/people/:id → All years) shows a long note in full too.
+test.describe("Person giving history — notes column", () => {
+  test.describe.configure({ retries: 0 });
+  const DONOR_ID = "PER00000080"; // Donald Clark
+  let batchId: string;
+  let donationId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    // Make sure the church has not hidden giving on person records.
+    const settings = await (await ctx.get(`${API_BASE}/membership/settings`, auth)).json();
+    const hideSetting = (settings || []).find((s: any) => s.keyName === "hideGivingOnPerson");
+    if (hideSetting?.id) await ctx.delete(`${API_BASE}/membership/settings/${hideSetting.id}`, auth);
+
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: NOTES_BATCH_NAME, batchDate: new Date().toISOString().split("T")[0] }] });
+    batchId = (await batchRes.json())[0].id;
+    // Current-year date so pickDefaultYear lands on the year holding this gift.
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, {
+      ...auth,
+      data: [{ batchId, personId: DONOR_ID, donationDate: new Date().toISOString(), amount: 15, currency: "usd", method: "Check", notes: LONG_NOTE }]
+    });
+    expect(donationRes.status()).toBe(200);
+    donationId = (await donationRes.json())[0].id;
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    if (donationId) await ctx.delete(`${API_BASE}/giving/donations/${donationId}`, auth);
+    if (batchId) await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("a long note shows in full on the person's giving history, not clipped", async ({ page }) => {
+    await page.goto(`/people/${DONOR_ID}`);
+    const allGiving = page.getByTestId("person-giving-all");
+    await expect(allGiving).toBeVisible({ timeout: 15000 });
+    await allGiving.click();
+
+    const note = page.locator("table td").getByText(LONG_NOTE);
+    await expect(note).toBeVisible({ timeout: 10000 });
+    await expect(note).toHaveText(LONG_NOTE);
+    const clipped = await note.evaluate((el) => el.scrollWidth > el.clientWidth);
+    expect(clipped).toBe(false);
   });
 });
 
