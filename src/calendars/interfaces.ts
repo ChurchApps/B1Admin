@@ -4,7 +4,7 @@ export interface RoomInterface {
   name?: string;
   description?: string;
   capacity?: number;
-  approvalGroupId?: string;
+  approvalGroupId?: string | null;
 }
 
 export interface ResourceInterface {
@@ -13,7 +13,7 @@ export interface ResourceInterface {
   name?: string;
   description?: string;
   quantity?: number;
-  approvalGroupId?: string;
+  approvalGroupId?: string | null;
 }
 
 export interface EventBookingInterface {

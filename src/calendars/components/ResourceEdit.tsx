@@ -75,7 +75,7 @@ export function ResourceEdit(props: Props) {
           select
           label={Locale.label("calendars.rooms.approvalGroup")}
           value={resource.approvalGroupId || ""}
-          onChange={(e) => setResource({ ...resource, approvalGroupId: e.target.value || undefined })}
+          onChange={(e) => setResource({ ...resource, approvalGroupId: e.target.value || null })}
           helperText={Locale.label("calendars.rooms.approvalGroupHint")}
           data-testid="resource-approval-group-select"
         >

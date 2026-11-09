@@ -75,7 +75,7 @@ export function RoomEdit(props: Props) {
           select
           label={Locale.label("calendars.rooms.approvalGroup")}
           value={room.approvalGroupId || ""}
-          onChange={(e) => setRoom({ ...room, approvalGroupId: e.target.value || undefined })}
+          onChange={(e) => setRoom({ ...room, approvalGroupId: e.target.value || null })}
           helperText={Locale.label("calendars.rooms.approvalGroupHint")}
           data-testid="room-approval-group-select"
         >
