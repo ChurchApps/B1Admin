@@ -550,7 +550,7 @@ test.describe("B1 Mobile page saves", () => {
 
     test.afterAll(async () => {
       // Put the prompt and tiles back to the defaults so B1App dashboard specs see them.
-      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileTileLayout: "grid", mobileHomeAttendance: "false", mobileHomeForms: "false" };
+      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileTileLayout: "grid", mobileHomeAttendance: "false", mobileHomeForms: "false", mobileHomeNews: "false", mobileHomeNewsCategory: "" };
       const all = (await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[];
       const rows = all.filter(s => s.keyName in defaults).map(s => ({ ...s, value: defaults[s.keyName] }));
       if (rows.length) await ctx.post(`${API}/membership/settings`, { ...auth, data: rows });
@@ -652,6 +652,36 @@ test.describe("B1 Mobile page saves", () => {
       await page.reload();
       await expect(page.getByLabel("Show My Attendance on Home")).toBeChecked({ timeout: 15000 });
       await expect(page.getByLabel("Show My Forms on Home")).toBeChecked();
+    });
+
+    // ChurchAppsSupport#1470: the app Home can show the latest blog posts as a News strip, optionally from one category.
+    test("News on Home starts off and saves with one blog category as public settings", async ({ page }) => {
+      const posts = await (await ctx.post(`${API}/content/posts`, {
+        ...auth,
+        data: [{ title: "Zacchaeus Picnic Sign-ups", slug: `zacchaeus-picnic-${Date.now().toString(36)}`, category: "Announcements", content: "Bring a dish.", publishDate: new Date(Date.now() - 86400000).toISOString() }]
+      })).json();
+      try {
+        await page.goto("/mobile/b1-mobile");
+        await expect(page.getByRole("heading", { name: "Home screen sections" })).toBeVisible({ timeout: 15000 });
+        const news = page.getByLabel("Show News on Home");
+        await expect(news).not.toBeChecked();
+        await expect(page.getByRole("combobox", { name: "Only this category" })).toHaveCount(0);
+        await news.check();
+        const category = page.getByRole("combobox", { name: "Only this category" });
+        await expect(category).toHaveText("All posts");
+        await category.click();
+        await page.getByRole("option", { name: "Announcements", exact: true }).click();
+        await saveSettings(page);
+
+        const pub = await publicSettings();
+        expect(pub.mobileHomeNews).toBe("true");
+        expect(pub.mobileHomeNewsCategory).toBe("Announcements");
+        await page.reload();
+        await expect(page.getByLabel("Show News on Home")).toBeChecked({ timeout: 15000 });
+        await expect(page.getByRole("combobox", { name: "Only this category" })).toHaveText("Announcements");
+      } finally {
+        if (posts?.[0]?.id) await ctx.delete(`${API}/content/posts/${posts[0].id}`, auth);
+      }
     });
   });
 });
