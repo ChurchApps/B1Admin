@@ -9,6 +9,8 @@ import { confirmDelete } from "./helpers/fixtures";
 const HALL = "Zacchaeus Hall";
 const RESTRICTED_ROOM = "Zacchaeus Restricted Room";
 const PROJECTOR = "Zacchaeus Projector";
+const HALL_DESC = "Gym with a stage";
+const PROJECTOR_DESC = "Ceiling mount, HDMI";
 const TEMPLATE = "Zacchaeus Template";
 const CALENDAR = "Zacchaeus Facility Calendar";
 const APPROVAL_GROUP = "High School Youth";
@@ -113,6 +115,7 @@ test.describe.serial("Rooms, resources & approvals", () => {
     await page.locator('[data-testid="add-room-resource"]').click();
     await page.locator('[data-testid="room-name-input"] input').fill(HALL);
     await page.locator('[data-testid="room-capacity-input"] input').fill("80");
+    await page.locator('[data-testid="room-description-input"] input').fill(HALL_DESC);
     await page.locator('[data-testid="save-room-button"]').click();
     await expect(page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: HALL })).toBeVisible({ timeout: 15000 });
   });
@@ -132,6 +135,7 @@ test.describe.serial("Rooms, resources & approvals", () => {
     await page.locator('[data-testid="add-room-resource"]').click();
     await page.locator('[data-testid="resource-name-input"] input').fill(PROJECTOR);
     await page.locator('[data-testid="resource-quantity-input"] input').fill("2");
+    await page.locator('[data-testid="resource-description-input"] input').fill(PROJECTOR_DESC);
     await page.locator('[data-testid="save-resource-button"]').click();
     await expect(page.locator('[data-testid="resources-table"] tbody tr').filter({ hasText: PROJECTOR })).toBeVisible({ timeout: 15000 });
   });
@@ -173,6 +177,19 @@ test.describe.serial("Rooms, resources & approvals", () => {
     await page.locator('[data-testid="new-event-title-input"] input').fill("Zacchaeus Event A");
     await page.locator('[data-testid="new-event-start-input"] input').fill(toInput(eventStart));
     await page.locator('[data-testid="new-event-end-input"] input').fill(toInput(eventEnd));
+
+    // Each room and resource shows its description under the name so the requester knows what it is for.
+    await page.locator('[data-testid="new-event-rooms-select"] [role="combobox"]').first().click();
+    const hallOption = page.getByRole("option", { name: new RegExp(HALL) }).first();
+    await expect(hallOption).toContainText("Seats 80");
+    await expect(hallOption).toContainText(HALL_DESC);
+    await page.keyboard.press("Escape");
+    await page.locator('[role="listbox"]').waitFor({ state: "hidden", timeout: 5000 });
+    await page.locator('[data-testid="new-event-resources-select"] [role="combobox"]').first().click();
+    await expect(page.getByRole("option", { name: new RegExp(PROJECTOR) }).first()).toContainText(PROJECTOR_DESC);
+    await page.keyboard.press("Escape");
+    await page.locator('[role="listbox"]').waitFor({ state: "hidden", timeout: 5000 });
+
     await selectOption(page, "new-event-rooms-select", HALL, true);
     await page.locator('[data-testid="new-event-save-button"]').click();
     await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });

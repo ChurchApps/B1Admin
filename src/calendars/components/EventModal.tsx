@@ -313,7 +313,10 @@ export function EventModal(props: Props) {
                 {rooms.map((r) => (
                   <MenuItem key={r.id} value={r.id}>
                     <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
-                    <ListItemText primary={r.name} secondary={r.capacity ? Locale.label("calendars.newEvent.seats").replace("{}", r.capacity.toString()) : undefined} />
+                    <ListItemText
+                      primary={r.name}
+                      secondary={[r.capacity ? Locale.label("calendars.newEvent.seats").replace("{}", r.capacity.toString()) : undefined, r.description].filter(Boolean).join(" · ") || undefined}
+                    />
                   </MenuItem>
                 ))}
               </TextField>
@@ -331,7 +334,7 @@ export function EventModal(props: Props) {
                 {resources.map((r) => (
                   <MenuItem key={r.id} value={r.id}>
                     <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
-                    <ListItemText primary={r.name} />
+                    <ListItemText primary={r.name} secondary={r.description || undefined} />
                   </MenuItem>
                 ))}
               </TextField>
