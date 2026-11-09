@@ -1,0 +1,75 @@
+{
+  "$comment": "Maps source paths to the specs that cover them. Used by tests/setup/affected.mjs (yarn test:affected). A changed file in no area runs every spec. New spec files must be added to an area; yarn test:areas checks that.",
+  "always": ["navigation.spec.ts"],
+  "ignore": ["**/*.md", ".github/**", ".claude/**", "docs/**", "tests/areas.json", "tests/smoke/**", "tests/setup/smoke.mjs", "tests/setup/affected.mjs", "playwright.smoke.config.ts"],
+  "areas": {
+    "dashboard": {
+      "src": ["src/dashboard/**"],
+      "specs": ["dashboard.spec.ts"]
+    },
+    "people": {
+      "src": ["src/people/**"],
+      "specs": ["people*.spec.ts", "person-data-export.spec.ts", "bulk-custom-field.spec.ts", "custom-fields.spec.ts", "realtime-person-notes.spec.ts", "campus.spec.ts"]
+    },
+    "groups": {
+      "src": ["src/groups/**"],
+      "specs": ["groups*.spec.ts", "group-*.spec.ts", "form-group-auto-add.spec.ts", "text-*.spec.ts", "texting-stop-replies.spec.ts"]
+    },
+    "attendance": {
+      "src": ["src/attendance/**"],
+      "specs": ["attendance.spec.ts", "campus.spec.ts"]
+    },
+    "donations": {
+      "src": ["src/donations/**", "src/donationComponents/**"],
+      "specs": ["donation*.spec.ts", "lapsed-givers.spec.ts", "failed-recurring-gifts.spec.ts", "giving-paystack.spec.ts", "campaigns.spec.ts", "code-review-settings-donations.spec.ts"]
+    },
+    "forms": {
+      "src": ["src/forms/**"],
+      "specs": ["forms*.spec.ts", "form-*.spec.ts", "group-linked-forms.spec.ts"]
+    },
+    "serving": {
+      "src": ["src/serving/**"],
+      "specs": ["serving-*.spec.ts", "song-arrangements.spec.ts", "chordpro-transpose.spec.ts", "plan-validation.spec.ts", "auto-scheduling.spec.ts", "assignment-confirmation-preview.spec.ts", "account-deletion-approval.spec.ts", "lapsed-givers.spec.ts", "text-templates.spec.ts", "texting-stop-replies.spec.ts"]
+    },
+    "sermons": {
+      "src": ["src/sermons/**"],
+      "specs": ["sermons.spec.ts"]
+    },
+    "website": {
+      "src": ["src/site/**", "src/components/gallery/**", "src/components/iconPicker/**"],
+      "specs": ["website*.spec.ts", "blog.spec.ts", "sites.spec.ts", "ai-page-candidates.spec.ts", "save-status-tracker.spec.ts", "section-template-picker.spec.ts", "campaigns.spec.ts"]
+    },
+    "calendars": {
+      "src": ["src/calendars/**"],
+      "specs": ["calendar-conflicts.spec.ts", "group-calendar.spec.ts", "event-*.spec.ts", "rooms-resources.spec.ts"]
+    },
+    "registrations": {
+      "src": ["src/registrations/**"],
+      "specs": ["registration*.spec.ts", "event-reminders.spec.ts"]
+    },
+    "mobile": {
+      "src": ["src/mobile/**"],
+      "specs": ["mobile-app.spec.ts", "checkin*.spec.ts", "label-designer.spec.ts", "hymns.spec.ts", "everyone-role.spec.ts"]
+    },
+    "hymns": {
+      "src": ["src/hymns/**"],
+      "specs": ["hymns.spec.ts"]
+    },
+    "settings": {
+      "src": ["src/settings/**"],
+      "specs": ["settings*.spec.ts", "webhooks.spec.ts", "audit-log.spec.ts", "developer.spec.ts", "campus.spec.ts", "custom-fields.spec.ts", "ministrystuff-settings.spec.ts", "everyone-role.spec.ts", "import-export.spec.ts", "code-review-settings-donations.spec.ts", "texting-stop-replies.spec.ts", "text-templates.spec.ts", "checkin-safety.spec.ts"]
+    },
+    "profile": {
+      "src": ["src/profile/**"],
+      "specs": ["profile.spec.ts", "two-factor.spec.ts", "account-deletion-approval.spec.ts"]
+    },
+    "serverAdmin": {
+      "src": ["src/serverAdmin/**"],
+      "specs": ["serverAdmin-*.spec.ts"]
+    },
+    "commandPalette": {
+      "src": ["src/components/commandPalette/**"],
+      "specs": ["command-palette.spec.ts"]
+    }
+  }
+}
