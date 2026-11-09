@@ -1,21 +1,25 @@
 import React from "react";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type PlanInterface, type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { type GroupInterface } from "@churchapps/helpers";
-import { Alert, Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { PrintOutlined as PrintIcon } from "@mui/icons-material";
 import { Assignment } from "../components/Assignment";
 import { ServiceOrder } from "../components/ServiceOrder";
 import { PlanEdit } from "../components/PlanEdit";
-import { BackVerb, PageContainer, RecordLayout, TextAction, eyebrowSx, useRecordView, RecordActions } from "../../components/ui";
+import { BackVerb, PageContainer, Surface, useRecordView } from "../../components/ui";
+import { InRecordContext } from "../../components/ui/RecordLayout";
+import { PlanHeader } from "./components/PlanHeader";
+import { PlanOverview } from "./components/PlanOverview";
 
-const SERVING_VIEWS = ["notes", "times"];
+type Section = "" | "order" | "team";
 
+// /serving/plans/:id is an overview; /order and /team are full-width subpages. ?view=edit swaps the overview for the details form.
 export const PlanPage = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const section: Section = params.section === "order" || params.section === "team" ? params.section : "";
   const { view: requestedView, setView } = useRecordView("view", { scrollToTop: false });
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [ministry, setMinistry] = React.useState<GroupInterface | null>(null);
@@ -49,8 +53,9 @@ export const PlanPage = () => {
     loadData();
   }, [loadData]);
 
-  const view = requestedView === "edit" ? (canEdit ? "edit" : "") : SERVING_VIEWS.includes(requestedView) ? requestedView : "";
-  const editing = view === "edit";
+  React.useEffect(() => { window.scrollTo({ top: 0 }); }, [section]);
+
+  const editing = section === "" && requestedView === "edit" && canEdit;
 
   React.useEffect(() => {
     if (!editing || !plan?.planTypeId) return;
@@ -85,54 +90,40 @@ export const PlanPage = () => {
     }
   };
 
-  const dismissLessonTrimWarning = async () => {
-    await ApiHelper.post("/plans", [{ ...plan, lessonTrimWarning: null }], "DoingApi");
-    setPlan({ ...plan, lessonTrimWarning: null });
-  };
+  const subpageTitle = section === "order"
+    ? Locale.label("plans.serviceOrder.orderOfService")
+    : section === "team" ? Locale.label("plans.planPage.servingTeam", "Serving team") : undefined;
 
-  const identity = (
-    <Box component="aside" data-testid="plan-identity" sx={{ minWidth: 0 }}>
-      {eyebrow && <Typography component="p" sx={{ ...eyebrowSx, mb: 1 }}>{eyebrow}</Typography>}
-      <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{planName}</Typography>
-      {dateLabel && <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>{dateLabel}</Typography>}
-      <RecordActions
-        sx={{ mt: 2 }}
-        buttons={<>
-          {canEdit && (
-            <Button variant="contained" onClick={() => setView(editing ? "" : "edit")} data-testid="edit-plan-button">
-              {editing ? Locale.label("common.done") : Locale.label("common.edit")}
-            </Button>
-          )}
-          <Button variant="outlined" startIcon={<PrintIcon />} href={`/serving/plans/print/${plan.id}`} target="_blank" rel="noopener" data-testid="print-plan-link">{Locale.label("common.print")}</Button>
-        </>}>
-        {planType?.id && <TextAction small to={`/serving/planTypes/${planType.id}`} component={RouterLink}>{planType.name}</TextAction>}
-        <TextAction small to="/serving/plans" component={RouterLink} data-testid="plan-plans-link">{Locale.label("plans.planList.plans")}</TextAction>
-      </RecordActions>
-    </Box>
-  );
+  let body: React.ReactNode;
+  if (section === "order") {
+    body = <Surface data-testid="plan-order-page"><ServiceOrder plan={plan} onPlanUpdate={loadData} /></Surface>;
+  } else if (section === "team") {
+    body = <Surface data-testid="plan-team-page"><Assignment plan={plan} /></Surface>;
+  } else if (editing) {
+    body = (
+      <Surface data-testid="plan-record">
+        <Box sx={{ mb: 3 }}><BackVerb name={planName} onClick={() => setView("")} data-testid="plan-edit-back" /></Box>
+        <PlanEdit plan={plan} plans={allPlans} updatedFunction={handleEdited} />
+      </Surface>
+    );
+  } else {
+    body = <Box data-testid="plan-record"><PlanOverview plan={plan} canEdit={canEdit} onPlanChanged={loadData} /></Box>;
+  }
 
   return (
     <PageContainer>
-      <RecordLayout identity={identity} spacing={editing ? 3 : 5} sliceSx={{ "&& > * + section": { mt: 4, pt: 4, borderTop: 1, borderColor: "divider" } }} data-testid="plan-record">
-        {editing
-          ? (
-            <>
-              <Box><BackVerb name={planName} onClick={() => setView("")} data-testid="plan-edit-back" /></Box>
-              <PlanEdit plan={plan} plans={allPlans} updatedFunction={handleEdited} />
-            </>
-          )
-          : (
-            <>
-              {plan.lessonTrimWarning && canEdit && (
-                <Alert severity="warning" data-testid="lesson-trim-warning" action={<Button color="inherit" size="small" onClick={dismissLessonTrimWarning}>{Locale.label("plans.lessonTrim.dismiss")}</Button>}>
-                  {Locale.label("plans.lessonTrim.warningBanner").replace("{}", plan.lessonTrimWarning)}
-                </Alert>
-              )}
-              {plan.serviceOrder && <ServiceOrder plan={plan} onPlanUpdate={loadData} />}
-              <Assignment plan={plan} view={view} onViewChange={setView} />
-            </>
-          )}
-      </RecordLayout>
+      <PlanHeader
+        plan={plan}
+        planName={planName}
+        dateLabel={dateLabel}
+        eyebrow={eyebrow}
+        planType={planType}
+        canEdit={canEdit}
+        subpageTitle={subpageTitle}
+        editing={editing}
+        onEdit={section === "" ? () => setView(editing ? "" : "edit") : undefined}
+      />
+      <InRecordContext.Provider value={true}>{body}</InRecordContext.Provider>
     </PageContainer>
   );
 };

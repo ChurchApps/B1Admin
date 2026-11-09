@@ -2836,7 +2836,26 @@
       "band": "Band",
       "loadingPlan": "Loading plan...",
       "noteSave": "Note saved",
-      "servicePlan": "Service Plan"
+      "servicePlan": "Service Plan",
+      "accepted": "accepted",
+      "backToPlan": "Back to plan",
+      "editDetails": "Edit details",
+      "editOrder": "Edit order of service",
+      "filledOf": "{filled} of {total}",
+      "itemsInSections": "{items} items in {sections} sections",
+      "lessonLinked": "This plan follows a linked lesson. Open the order of service to see or customize it.",
+      "manageTeam": "Manage serving team",
+      "moreItems": "+ {count} more items",
+      "noPositions": "No positions yet.",
+      "ofFilled": "of {total} filled",
+      "openCount": "{count} needed",
+      "pendingDeclined": "{pending} pending · {declined} declined",
+      "responses": "Responses",
+      "runTime": "Run time",
+      "servingTeam": "Serving team",
+      "status": "Plan status",
+      "viewOrder": "View order of service",
+      "viewTeam": "View serving team"
     },
     "planType": {
       "details": "Plan Type Details"

@@ -183,6 +183,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/serving/overview" element={<ServingOverviewPage />} />
           <Route path="/serving/planTypes/:id" element={<PlanTypePage />} />
           <Route path="/serving/plans/:id" element={<PlanPage />} />
+          <Route path="/serving/plans/:id/:section" element={<PlanPage />} />
           <Route path="/serving/plans" element={<ServingPage />} />
           <Route path="/serving" element={<Navigate to={hasPlansEditAccess() ? "/serving/plans" : "/serving/tasks"} replace />} />
           <Route path="/serving/songs" element={<SongsPage />} />

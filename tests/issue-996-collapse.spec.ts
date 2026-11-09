@@ -104,7 +104,7 @@ test.describe("issue-996 collapse expanded actions back to a section", () => {
     // No provider is linked locally; keep the dialog's direct provider call off the network.
     await page.route("**/lessons.church/**", (route) => route.abort());
 
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
 
     const sectionRow = page.locator(".planItem").filter({ hasText: "Collapse Repro Section" });

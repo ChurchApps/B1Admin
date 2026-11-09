@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, TextField, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
+import { Box, Typography, Stack, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
 import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
@@ -16,18 +16,14 @@ import {
   Locale
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Pill, RecordHeading, TextAction, VerbRow } from "../../components/ui";
+import { Pill, TextAction, VerbRow, srOnlySx } from "../../components/ui";
 import { PositionEdit } from "./PositionEdit";
 import { PositionList } from "./PositionList";
 import { AssignmentEdit } from "./AssignmentEdit";
-import { TimeList } from "./TimeList";
 import { PlanValidation } from "./PlanValidation";
 
 interface Props {
   plan: PlanInterface;
-  /** "" = positions, "notes" or "times"; held in the plan page's ?view=. */
-  view: string;
-  onViewChange: (view: string) => void;
 }
 
 // Flatten a boxed panel so it reads as a section of the record surface.
@@ -53,10 +49,8 @@ export const Assignment = (props: Props) => {
   const [assignment, setAssignment] = React.useState<AssignmentInterface | null>(null);
   const [times, setTimes] = React.useState<TimeInterface[]>([]);
   const [blockoutDates, setBlockoutDates] = React.useState<BlockoutDateInterface[]>([]);
-  const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [loaded, setLoaded] = React.useState(false);
-  const notesDirty = React.useRef(false);
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
   // Hoisted: the compiler emits non-optional guard reads (position.count/position.id) for
@@ -101,10 +95,7 @@ export const Assignment = (props: Props) => {
       planId: props.plan?.id,
       count: 1
     });
-    if (props.view) props.onViewChange("");
   };
-
-  const toggleView = (next: string) => props.onViewChange(props.view === next ? "" : next);
 
   const handleAssignmentSelect = (p: PositionInterface, a: AssignmentInterface) => {
     setAssignment(a);
@@ -120,11 +111,10 @@ export const Assignment = (props: Props) => {
   };
 
   const loadData = useCallback(async () => {
-    const keepNotes = (next: PlanInterface) => (prev: PlanInterface | null) => (notesDirty.current && prev ? { ...next, notes: prev.notes } : next);
-    setPlan(keepNotes(props.plan));
+    setPlan(props.plan);
     // Refresh the plan row itself — autofill/undo/publish mutate prepared and lastAutofillRunId.
     ApiHelper.get("/plans/" + props.plan?.id, "DoingApi").then((data: PlanInterface) => {
-      if (data?.id) setPlan(keepNotes(data));
+      if (data?.id) setPlan(data);
     });
     let positionsData: PositionInterface[];
     let d: AssignmentInterface[];
@@ -164,13 +154,6 @@ export const Assignment = (props: Props) => {
       });
     }
   }, [props.plan]);
-
-  const handleSave = () => {
-    ApiHelper.post("/plans", [plan], "DoingApi").then(() => {
-      notesDirty.current = false;
-      setShowSuccessMessage(true);
-    });
-  };
 
   const handleAutoAssign = async () => {
     try {
@@ -231,13 +214,7 @@ export const Assignment = (props: Props) => {
     canEdit && positions.length > 0 && (
       <TextAction key="auto" onClick={handleAutoAssign} data-testid="auto-assign-button">{Locale.label("plans.assignment.autoAssign")}</TextAction>
     ),
-    canEdit && <TextAction key="add" onClick={addPosition} data-testid="add-position-button">{Locale.label("plans.assignment.addPosition")}</TextAction>,
-    <TextAction key="notes" onClick={() => toggleView("notes")} data-testid="plan-notes-toggle">
-      {props.view === "notes" ? Locale.label("serving.planPage.hideNotes", "Hide notes") : Locale.label("common.notes")}
-    </TextAction>,
-    <TextAction key="times" onClick={() => toggleView("times")} data-testid="plan-times-toggle">
-      {props.view === "times" ? Locale.label("serving.planPage.hideTimes", "Hide times") : Locale.label("plans.timeList.times")}
-    </TextAction>
+    canEdit && <TextAction key="add" onClick={addPosition} data-testid="add-position-button">{Locale.label("plans.assignment.addPosition")}</TextAction>
   ];
 
   const totalNeeded = positions.reduce((s, p) => s + (p.count || 0), 0);
@@ -246,19 +223,20 @@ export const Assignment = (props: Props) => {
 
   return (
     <Box component="section" aria-labelledby="plan-serving-heading" data-testid="plan-serving">
-      <RecordHeading id="plan-serving-heading" label={Locale.label("plans.planPage.assign") || "Serving Team Assignments"}>
+      <Box component="h2" id="plan-serving-heading" sx={srOnlySx}>{Locale.label("plans.planPage.assign") || "Serving Team Assignments"}</Box>
+      <Stack direction="row" useFlexGap flexWrap="wrap" alignItems="center" columnGap={2} rowGap={1} sx={{ mb: 2 }}>
+        {positions.length > 0 && (
+          <Typography variant="body2" color="text.secondary" data-testid="plan-staffing">
+            {Locale.label("plans.assignment.positionsFilled").replace("{filled}", totalFilled.toString()).replace("{total}", totalNeeded.toString())}
+            {" · "}
+            <Box component="span" sx={{ color: remaining > 0 ? "var(--b1-warning)" : "success.main", fontWeight: 600 }}>
+              {remaining > 0 ? remaining + " " + Locale.label("plans.assignment.needed") : Locale.label("plans.assignment.fullyStaffed")}
+            </Box>
+          </Typography>
+        )}
         {plan?.prepared && <Pill tone="warning" data-testid="penciled-in-chip">{Locale.label("plans.assignment.penciledIn") || "Penciled In"}</Pill>}
-      </RecordHeading>
-      {positions.length > 0 && (
-        <Typography variant="body2" color="text.secondary" data-testid="plan-staffing">
-          {Locale.label("plans.assignment.positionsFilled").replace("{filled}", totalFilled.toString()).replace("{total}", totalNeeded.toString())}
-          {" · "}
-          <Box component="span" sx={{ color: remaining > 0 ? "var(--b1-warning)" : "success.main", fontWeight: 600 }}>
-            {remaining > 0 ? remaining + " " + Locale.label("plans.assignment.needed") : Locale.label("plans.assignment.fullyStaffed")}
-          </Box>
-        </Typography>
-      )}
-      <VerbRow sx={{ mt: 1.5, mb: 2 }}>{verbs}</VerbRow>
+        <VerbRow sx={{ ml: { md: "auto" } }}>{verbs}</VerbRow>
+      </Stack>
       <Menu anchorEl={copyMenuAnchor} open={Boolean(copyMenuAnchor)} onClose={() => setCopyMenuAnchor(null)}>
         <MenuItem onClick={() => handleCopyClick("positions")}>
           {Locale.label("plans.planEdit.copyPositions") || "Positions Only"}
@@ -268,37 +246,8 @@ export const Assignment = (props: Props) => {
         </MenuItem>
       </Menu>
 
-      {props.view === "notes" && (
-        <Stack spacing={1.5} alignItems="flex-start">
-          <TextField
-            fullWidth
-            multiline
-            rows={5}
-            value={plan?.notes || ""}
-            onChange={canEdit ? (e) => {
-              notesDirty.current = true;
-              setPlan({ ...(plan || {}), notes: e.target.value });
-            } : undefined}
-            data-testid="plan-notes-input"
-            aria-label={Locale.label("plans.assignment.planNotesAria")}
-            placeholder={canEdit ? Locale.label("plans.assignment.notesPlaceholder") : Locale.label("plans.assignment.notesPlaceholderReadOnly")}
-            variant="outlined"
-            disabled={!canEdit}
-          />
-          {canEdit && (
-            <Button variant="contained" onClick={handleSave} data-testid="save-plan-notes-button">
-              {Locale.label("plans.assignment.saveNotes")}
-            </Button>
-          )}
-        </Stack>
-      )}
-
-      {props.view === "times" && (
-        <TimeList times={times} positions={positions} plan={plan as PlanInterface} canEdit={canEdit} onUpdate={loadData} />
-      )}
-
-      {!props.view && (
-        <Stack spacing={3}>
+      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 2fr) minmax(320px, 1fr)" }, gap: 3, alignItems: "start" }}>
+        <Stack spacing={3} sx={{ minWidth: 0 }}>
           {canEdit && position && !assignment && (
             <PositionEdit
               key={position?.id || position?.name || "new-position"}
@@ -324,25 +273,12 @@ export const Assignment = (props: Props) => {
           {loaded && <Box sx={{ overflowX: "auto" }}>
             <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
           </Box>}
-          {loaded && <Box sx={flatCardSx}>
-            <PlanValidation plan={plan as PlanInterface} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
-          </Box>}
         </Stack>
-      )}
+        {loaded && <Box sx={flatCardSx}>
+          <PlanValidation plan={plan as PlanInterface} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
+        </Box>}
+      </Box>
 
-      <Snackbar
-        open={showSuccessMessage}
-        autoHideDuration={3000}
-        onClose={() => setShowSuccessMessage(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-        <Alert
-          onClose={() => setShowSuccessMessage(false)}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}>
-          {Locale.label("plans.planPage.noteSave") || "Notes saved successfully"}
-        </Alert>
-      </Snackbar>
       <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={() => setErrorMessage(null)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{ width: "100%" }}>
           {errorMessage}
