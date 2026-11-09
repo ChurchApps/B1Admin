@@ -7,6 +7,7 @@ import { PermissionDenied } from "../components";
 import { CountChip, PillTabs, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { useConfirmDelete } from "../hooks";
 import { CalendarChrome } from "./components/CalendarChrome";
+import { EventModal } from "./components/EventModal";
 import { type EventBookingInterface } from "./interfaces";
 
 const calendarsAdmin = { api: "ContentApi", contentType: "Calendars", action: "Admin" };
@@ -19,6 +20,7 @@ export const ApprovalsPage = () => {
   const [people, setPeople] = useState<Record<string, PersonInterface>>({});
   const [snack, setSnack] = useState("");
   const [approvingId, setApprovingId] = useState("");
+  const [editingEventId, setEditingEventId] = useState("");
   const [publish, setPublish] = useState(false);
   const [curatedCalendarId, setCuratedCalendarId] = useState("");
   const [curatedCalendars, setCuratedCalendars] = useState<CuratedCalendarInterface[] | null>(null);
@@ -84,6 +86,11 @@ export const ApprovalsPage = () => {
     ApiHelper.post("/events/" + id + "/" + action, {}, "ContentApi").then(() => { notifyResolved(action); loadData(); });
   };
 
+  const deleteEvent = async (id: string) => {
+    if (!(await confirm(Locale.label("calendars.calendarEvent.confirmDelete", "Are you sure?"), { confirmLabel: Locale.label("common.delete"), destructive: true }))) return;
+    ApiHelper.delete("/events/" + id, "ContentApi").then(() => loadData());
+  };
+
   if (!canResolve) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   const sectionHead = (title: string, count: number) => (
@@ -122,6 +129,13 @@ export const ApprovalsPage = () => {
       <Typography variant="body2" sx={{ fontWeight: 500 }}>{title}</Typography>
       <Typography variant="caption" color="text.secondary">{when(start)}</Typography>
     </TableCell>
+  );
+
+  const eventActions = (id: string) => (
+    <>
+      <TextAction small onClick={() => setEditingEventId(id)} data-testid={`edit-event-${id}`}>{Locale.label("common.edit")}</TextAction>
+      <TextAction small onClick={() => deleteEvent(id)} data-testid={`delete-event-${id}`}>{Locale.label("common.delete")}</TextAction>
+    </>
   );
 
   const roomCell = (b: EventBookingInterface) => (
@@ -174,6 +188,7 @@ export const ApprovalsPage = () => {
                   <TableCell>{Locale.label("calendars.approvals.description")}</TableCell>
                   <TableCell>{Locale.label("calendars.approvals.requestedBy")}</TableCell>
                   <TableCell>{Locale.label("calendars.approvals.status")}</TableCell>
+                  <TableCell align="right" />
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -183,6 +198,7 @@ export const ApprovalsPage = () => {
                     <TableCell>{e.description}</TableCell>
                     <TableCell>{personLink((e as any).requestedBy)}</TableCell>
                     <TableCell>{decisionBadge((e as any).approvalStatus)}</TableCell>
+                    <TableCell align="right" className="rowActions"><VerbRow sx={{ justifyContent: "flex-end" }}>{eventActions(e.id || "")}</VerbRow></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -277,6 +293,7 @@ export const ApprovalsPage = () => {
                             <VerbRow sx={{ justifyContent: "flex-end" }}>
                               <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>
                               <TextAction small onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
+                              {eventActions(e.id || "")}
                             </VerbRow>
                           </TableCell>
                         </TableRow>
@@ -289,6 +306,13 @@ export const ApprovalsPage = () => {
           </Stack>
         )}
       </CalendarChrome>
+      {editingEventId && (
+        <EventModal
+          churchId={UserHelper.currentUserChurch.church.id}
+          eventId={editingEventId}
+          onDone={(saved) => { setEditingEventId(""); if (saved) loadData(); }}
+        />
+      )}
       <Dialog open={!!approvingId} onClose={() => setApprovingId("")} fullWidth maxWidth="xs" data-testid="approve-booking-dialog">
         <DialogTitle>{Locale.label("calendars.approvals.approveBookingTitle")}</DialogTitle>
         <DialogContent>
