@@ -38,13 +38,15 @@ export const PlanOverview = ({ plan, canEdit, onPlanChanged }: Props) => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
   const [itemsLoaded, setItemsLoaded] = React.useState(false);
 
+  const hasOrder = !!plan.serviceOrder;
+
   React.useEffect(() => {
-    if (!plan.id) return;
+    if (!plan.id || !hasOrder) return;
     ApiHelper.get("/planItems/plan/" + plan.id, "DoingApi")
       .then((data: PlanItemInterface[]) => setPlanItems(data || []))
       .catch(() => setPlanItems([]))
       .finally(() => setItemsLoaded(true));
-  }, [plan.id]);
+  }, [plan.id, hasOrder]);
 
   const basePath = `/serving/plans/${plan.id}`;
 
@@ -135,6 +137,9 @@ export const PlanOverview = ({ plan, canEdit, onPlanChanged }: Props) => {
           </Box>
         );
       })}
+      {team.loaded && positions.length > 0 && (
+        <PlanValidation variant="summary" plan={plan} positions={positions} assignments={assignments} people={people} times={team.times} blockoutDates={team.blockoutDates} canEdit={canEdit} onUpdate={() => { team.reload(); onPlanChanged(); }} />
+      )}
       <Button component={RouterLink} to={basePath + "/team"} variant="contained" endIcon={<ArrowForwardIcon />} sx={{ mt: 2, width: "100%" }} data-testid="plan-team-link">
         {canEdit ? Locale.label("plans.planPage.manageTeam", "Manage serving team") : Locale.label("plans.planPage.viewTeam", "View serving team")}
       </Button>
@@ -143,14 +148,14 @@ export const PlanOverview = ({ plan, canEdit, onPlanChanged }: Props) => {
 
   return (
     <Stack spacing={{ xs: 2, md: 2.5 }} data-testid="plan-overview">
-      <Box component="section" aria-label={Locale.label("plans.planPage.status", "Plan status")} sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, minmax(0, 1fr))", md: "repeat(3, minmax(0, 1fr))" }, gap: { xs: 1.25, md: 2 } }}>
-        <StatTile testId="plan-stat-runtime" label={Locale.label("plans.planPage.runTime", "Run time")} value={itemsLoaded ? (totalSeconds > 0 ? formatTime(totalSeconds) : "–") : "…"}
-          sub={itemsLoaded && itemCount > 0 ? Locale.label("plans.planPage.itemsInSections", "{items} items in {sections} sections").replace("{items}", String(itemCount)).replace("{sections}", String(sectionCount)) : undefined} />
+      <Box component="section" aria-label={Locale.label("plans.planPage.status", "Plan status")} sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, minmax(0, 1fr))", md: `repeat(${hasOrder ? 3 : 2}, minmax(0, 1fr))` }, gap: { xs: 1.25, md: 2 } }}>
+        {hasOrder && <StatTile testId="plan-stat-runtime" label={Locale.label("plans.planPage.runTime", "Run time")} value={itemsLoaded ? (totalSeconds > 0 ? formatTime(totalSeconds) : "–") : "…"}
+          sub={itemsLoaded && itemCount > 0 ? Locale.label("plans.planPage.itemsInSections", "{items} items in {sections} sections").replace("{items}", String(itemCount)).replace("{sections}", String(sectionCount)) : undefined} />}
         <StatTile testId="plan-stat-team" label={Locale.label("plans.planPage.servingTeam", "Serving team")}
           value={<>{totalFilled} <Box component="span" sx={{ fontSize: 15, color: "text.secondary" }}>{Locale.label("plans.planPage.ofFilled", "of {total} filled").replace("{total}", String(totalNeeded))}</Box></>}>
           {totalNeeded > 0 && <LinearProgress variant="determinate" value={Math.round((totalFilled / totalNeeded) * 100)} sx={{ mt: 1, height: 6, borderRadius: 3 }} aria-label={Locale.label("plans.planPage.servingTeam", "Serving team")} />}
         </StatTile>
-        <Box sx={{ gridColumn: { xs: "1 / -1", md: "auto" } }}>
+        <Box sx={{ gridColumn: { xs: hasOrder ? "1 / -1" : "auto", md: "auto" } }}>
           <StatTile testId="plan-stat-responses" label={Locale.label("plans.planPage.responses", "Responses")}
             value={<>{accepted} <Box component="span" sx={{ fontSize: 15, color: "text.secondary" }}>{Locale.label("plans.planPage.accepted", "accepted")}</Box></>}
             sub={Locale.label("plans.planPage.pendingDeclined", "{pending} pending · {declined} declined").replace("{pending}", String(pending)).replace("{declined}", String(declined))} />
@@ -158,14 +163,9 @@ export const PlanOverview = ({ plan, canEdit, onPlanChanged }: Props) => {
       </Box>
 
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 7fr) minmax(0, 5fr)" }, gap: { xs: 2, md: 2.5 }, alignItems: "start" }}>
-        {orderCard}
+        {hasOrder ? orderCard : teamCard}
         <Stack spacing={{ xs: 2, md: 2.5 }} sx={{ minWidth: 0 }}>
-          {teamCard}
-          {team.loaded && positions.length > 0 && (
-            <Box data-testid="plan-attention">
-              <PlanValidation plan={plan} positions={positions} assignments={assignments} people={people} times={team.times} blockoutDates={team.blockoutDates} canEdit={canEdit} onUpdate={() => { team.reload(); onPlanChanged(); }} />
-            </Box>
-          )}
+          {hasOrder && teamCard}
           <Surface>
             <TimeList times={team.times} positions={positions} plan={plan} canEdit={canEdit} onUpdate={team.reload} />
           </Surface>

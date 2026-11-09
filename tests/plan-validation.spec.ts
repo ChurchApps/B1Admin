@@ -80,14 +80,47 @@ test.describe("plan validation blockouts and notified line", () => {
       const body = ((await res.json()) as any[]).map((b) => (b.id === blockoutId ? { ...b, startDate: "2030-12-08T00:00:00.000Z", endDate: "2030-12-08T00:00:00.000Z" } : b));
       await route.fulfill({ response: res, json: body });
     });
-    await page.goto(`/serving/plans/${staffedPlanId}`);
+    await page.goto(`/serving/plans/${staffedPlanId}/team`);
     await expect(page.getByText("Issue1405 Usher").first()).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(/Blockout date conflict of Dec 8, 2030 to Dec 8, 2030/)).toBeVisible({ timeout: 10000 });
   });
 
+  test("the overview sums up conflicts in one line that links to the team page", async ({ page }) => {
+    await page.route("**/doing/blockoutDates/upcoming", async (route) => {
+      const res = await route.fetch();
+      const body = ((await res.json()) as any[]).map((b) => (b.id === blockoutId ? { ...b, startDate: "2030-12-08T00:00:00.000Z", endDate: "2030-12-08T00:00:00.000Z" } : b));
+      await route.fulfill({ response: res, json: body });
+    });
+    await page.goto(`/serving/plans/${staffedPlanId}`);
+    const attention = page.getByTestId("plan-attention");
+    await expect(attention).toContainText("1 conflict", { timeout: 15000 });
+    await expect(page.getByText(/Blockout date conflict/)).toHaveCount(0);
+    await attention.getByTestId("plan-attention-link").click();
+    await expect(page).toHaveURL(new RegExp(`/serving/plans/${staffedPlanId}/team$`));
+    await expect(page.getByText(/Blockout date conflict of Dec 8, 2030 to Dec 8, 2030/)).toBeVisible({ timeout: 10000 });
+  });
+
   test("a plan with nobody assigned does not say all volunteers were notified", async ({ page }) => {
-    await page.goto(`/serving/plans/${emptyPlanId}`);
+    await page.goto(`/serving/plans/${emptyPlanId}/team`);
     await expect(page.getByText(/1 more person needed/)).toBeVisible({ timeout: 15000 });
     await expect(page.getByText("All volunteers notified.")).toHaveCount(0);
+  });
+
+  // These plans are created with the order of service turned off.
+  test("a plan without an order of service has no order card or order page", async ({ page }) => {
+    await page.goto(`/serving/plans/${emptyPlanId}`);
+    await expect(page.getByTestId("plan-team-summary")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("plan-order-summary")).toHaveCount(0);
+    await expect(page.getByTestId("plan-stat-runtime")).toHaveCount(0);
+    await page.goto(`/serving/plans/${emptyPlanId}/order`);
+    await expect(page.getByTestId("plan-overview")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("service-order")).toHaveCount(0);
+  });
+
+  test("the overview leaves unfilled counts to the needed badge", async ({ page }) => {
+    await page.goto(`/serving/plans/${emptyPlanId}`);
+    await expect(page.getByTestId("plan-team-summary")).toContainText("1 needed", { timeout: 15000 });
+    await expect(page.getByText(/more person needed/)).toHaveCount(0);
+    await expect(page.getByTestId("plan-attention")).toHaveCount(0);
   });
 });

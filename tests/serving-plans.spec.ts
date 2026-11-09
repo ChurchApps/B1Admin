@@ -475,7 +475,7 @@ loggedInTest.describe("Plan page loading states", () => {
   loggedInTest("plan subpages show loading, not empty, while their lists load", async ({ page }) => {
     let release = await holdRequests(page, /\/planItems\/plan\//);
     await page.goto("/serving/plans/PLA00000001/order");
-    await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("plan-identity").getByRole("link", { name: "Plans", exact: true })).toBeVisible({ timeout: 15000 });
     await expect(page.getByTestId("service-order-loading")).toBeVisible({ timeout: 10000 });
     await expect(page.getByText("No items in service order")).toHaveCount(0);
     release();
@@ -492,7 +492,7 @@ loggedInTest.describe("Plan page loading states", () => {
   loggedInTest("a failed serving team load stops loading and shows the error", async ({ page }) => {
     await page.route(/\/positions\/plan\//, (route) => route.fulfill({ status: 500, body: "{}" }));
     await page.goto("/serving/plans/PLA00000001/team");
-    await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("plan-identity").getByRole("link", { name: "Plans", exact: true })).toBeVisible({ timeout: 15000 });
 
     await expect(page.getByText("Couldn't load the serving team. Refresh to try again.")).toBeVisible({ timeout: 15000 });
     await expect(page.getByTestId("assignment-loading")).toHaveCount(0, { timeout: 15000 });

@@ -13,8 +13,8 @@ test("Plans breadcrumb goes to the plans list, not My Work", async ({ page }) =>
   await expect(page).not.toHaveURL(/\/serving\/tasks/);
 
   await page.goto("/serving/plans/PLA00000001");
-  await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
-  await page.getByTestId("plan-plans-link").click();
+  await expect(page.getByTestId("plan-identity").getByRole("link", { name: "Plans", exact: true })).toBeVisible({ timeout: 15000 });
+  await page.getByTestId("plan-identity").getByRole("link", { name: "Plans", exact: true }).click();
   await expect(page).toHaveURL(/\/serving\/plans(\/?$|\?)/, { timeout: 15000 });
   await expect(page).not.toHaveURL(/\/serving\/tasks/);
 });

@@ -202,7 +202,10 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await planLink.click();
     await expect(page).toHaveURL(/\/serving\/plans\/[^/]+/);
     await expect(page.locator('[data-testid="penciled-in-chip"]')).toBeVisible({ timeout: 15000 });
-    // Penciled-in copy + publish action surface in the validation panel.
+    // Penciled-in copy + publish action surface in the team page's validation panel.
+    await page.getByTestId("plan-team-link").click();
+    await expect(page).toHaveURL(/\/serving\/plans\/[^/]+\/team/);
+    await expect(page.locator('[data-testid="penciled-in-chip"]')).toBeVisible({ timeout: 15000 });
     await expect(page.locator('[data-testid="publish-plan-button"]')).toBeVisible({ timeout: 15000 });
   });
 

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type PlanInterface, type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { type GroupInterface } from "@churchapps/helpers";
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Button, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { Assignment } from "../components/Assignment";
 import { ServiceOrder } from "../components/ServiceOrder";
@@ -19,7 +19,7 @@ type Section = "" | "order" | "team";
 export const PlanPage = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const section: Section = params.section === "order" || params.section === "team" ? params.section : "";
+  const requestedSection = params.section === "order" || params.section === "team" ? params.section : "";
   const { view: requestedView, setView } = useRecordView("view", { scrollToTop: false });
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [ministry, setMinistry] = React.useState<GroupInterface | null>(null);
@@ -53,9 +53,9 @@ export const PlanPage = () => {
     loadData();
   }, [loadData]);
 
-  React.useEffect(() => { window.scrollTo({ top: 0 }); }, [section]);
+  React.useEffect(() => { window.scrollTo({ top: 0 }); }, [requestedSection]);
 
-  const editing = section === "" && requestedView === "edit" && canEdit;
+  const editing = requestedSection !== "team" && (requestedSection === "" || !plan?.serviceOrder) && requestedView === "edit" && canEdit;
 
   React.useEffect(() => {
     if (!editing || !plan?.planTypeId) return;
@@ -74,6 +74,8 @@ export const PlanPage = () => {
     );
   }
 
+  // Plans with the order of service turned off have no /order page; fall back to the overview.
+  const section: Section = requestedSection === "order" && !plan.serviceOrder ? "" : requestedSection;
   const planName = plan.name || Locale.label("plans.planPage.servicePlan");
   const eyebrow = [ministry?.name, planType?.name].filter(Boolean).join(" · ");
   const dateLabel = plan.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate)) : "";
@@ -88,6 +90,11 @@ export const PlanPage = () => {
     } catch {
       navigate(upPath);
     }
+  };
+
+  const dismissLessonTrimWarning = async () => {
+    await ApiHelper.post("/plans", [{ ...plan, lessonTrimWarning: null }], "DoingApi");
+    setPlan({ ...plan, lessonTrimWarning: null });
   };
 
   const subpageTitle = section === "order"
@@ -123,6 +130,11 @@ export const PlanPage = () => {
         editing={editing}
         onEdit={section === "" ? () => setView(editing ? "" : "edit") : undefined}
       />
+      {plan.lessonTrimWarning && canEdit && !editing && (
+        <Alert severity="warning" sx={{ mb: { xs: 2, md: 2.5 } }} data-testid="lesson-trim-warning" action={<Button color="inherit" size="small" onClick={dismissLessonTrimWarning}>{Locale.label("plans.lessonTrim.dismiss")}</Button>}>
+          {Locale.label("plans.lessonTrim.warningBanner").replace("{}", plan.lessonTrimWarning)}
+        </Alert>
+      )}
       <InRecordContext.Provider value={true}>{body}</InRecordContext.Provider>
     </PageContainer>
   );

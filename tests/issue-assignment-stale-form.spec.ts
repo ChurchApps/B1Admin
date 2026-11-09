@@ -89,24 +89,39 @@ test.describe.serial("Assignment stale position form (PR #457)", () => {
     await addPosition("Usher");
   });
 
-  test("switching positions without saving shows the new position's data, not stale edits", async () => {
+  // The position editor is a dialog: closing it without saving must drop the draft.
+  test("reopening positions after a cancelled edit shows saved data, not stale edits", async () => {
     await openPlanPage();
+    const dialog = page.getByTestId("position-dialog");
     await page.locator(".positionsTable").getByText("Greeter").click();
-    await expect(page.locator('[id="name"]')).toHaveValue("Greeter", { timeout: 10000 });
-    await page.locator('[id="name"]').fill("Stale Draft Name");
+    await expect(dialog.locator('[id="name"]')).toHaveValue("Greeter", { timeout: 10000 });
+    await dialog.locator('[id="name"]').fill("Stale Draft Name");
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(dialog).toHaveCount(0);
 
     await page.locator(".positionsTable").getByText("Usher").click();
-    await expect(page.locator('[id="name"]')).toHaveValue("Usher", { timeout: 10000 });
+    await expect(dialog.locator('[id="name"]')).toHaveValue("Usher", { timeout: 10000 });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+
+    await page.locator(".positionsTable").getByText("Greeter").click();
+    await expect(dialog.locator('[id="name"]')).toHaveValue("Greeter", { timeout: 10000 });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
   });
 
   test("add position after an unsaved edit starts with an empty form", async () => {
     await openPlanPage();
+    const dialog = page.getByTestId("position-dialog");
     await page.locator(".positionsTable").getByText("Greeter").click();
-    await expect(page.locator('[id="name"]')).toHaveValue("Greeter", { timeout: 10000 });
-    await page.locator('[id="name"]').fill("Stale Draft Name");
+    await expect(dialog.locator('[id="name"]')).toHaveValue("Greeter", { timeout: 10000 });
+    await dialog.locator('[id="name"]').fill("Stale Draft Name");
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
 
     await page.locator('[data-testid="add-position-button"]').click();
-    await expect(page.locator('[id="name"]')).toHaveValue("", { timeout: 10000 });
+    await expect(dialog.locator('[id="name"]')).toHaveValue("", { timeout: 10000 });
+    await page.keyboard.press("Escape");
   });
 
   test("cleanup: delete plan and ministry", async () => {

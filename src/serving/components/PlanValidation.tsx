@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { CardWithHeader } from "../../components/ui";
-import { Alert, Button } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Alert, Box, Button } from "@mui/material";
 import { ApiHelper, ArrayHelper, CommonEnvironmentHelper, DateHelper, Locale, type PersonInterface, UserHelper } from "@churchapps/apphelper";
 import { type AssignmentInterface, type BlockoutDateInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { type PlanInterface, type SchedulingPreferenceInterface } from "../../helpers";
@@ -15,6 +16,8 @@ interface Props {
   blockoutDates: BlockoutDateInterface[];
   canEdit: boolean;
   onUpdate: () => void;
+  /** "summary": one line of conflicts + un-notified volunteers linking to the team page (unfilled counts are shown elsewhere). */
+  variant?: "panel" | "summary";
 }
 
 const servesTime = (t: TimeInterface, categoryName?: string) => !!categoryName && (t?.teams || "").split(",").includes(categoryName);
@@ -22,6 +25,7 @@ const servesTime = (t: TimeInterface, categoryName?: string) => !!categoryName &
 export const PlanValidation = (props: Props) => {
   const [notificationError, setNotificationError] = React.useState<string | null>(null);
   const [errors, setErrors] = React.useState<JSX.Element[]>([]);
+  const [conflictCount, setConflictCount] = React.useState(0);
   const { canEdit } = props;
   const [plans, setPlans] = React.useState<PlanInterface[]>([]);
   const [planTimeConflicts, setPlanTimeConflicts] = React.useState<{ time: TimeInterface; overlapingTimes: TimeInterface[] }[]>([]);
@@ -220,10 +224,12 @@ export const PlanValidation = (props: Props) => {
   const validate = () => {
     const result: JSX.Element[] = [];
     validatePoisitionsFilled(result);
+    const unfilled = result.length;
     validateTimeConflicts(result);
     validateBlockout(result);
     validatePreferences(result);
     setErrors(result);
+    setConflictCount(result.length - unfilled);
     return result.length === 0;
   };
 
@@ -390,6 +396,22 @@ export const PlanValidation = (props: Props) => {
       );
     }
   };
+
+  if (props.variant === "summary") {
+    const pendingCount = canEdit ? getPendingNotifications().filter((a) => a.personId).length : 0;
+    const parts: string[] = [];
+    if (conflictCount > 0) parts.push(Locale.label(conflictCount === 1 ? "plans.planValidation.conflictCountOne" : "plans.planValidation.conflictCount", conflictCount === 1 ? "1 conflict" : "{count} conflicts").replace("{count}", String(conflictCount)));
+    if (pendingCount > 0) parts.push(Locale.label("plans.planValidation.notNotifiedCount", "{count} not notified").replace("{count}", String(pendingCount)));
+    if (parts.length === 0) return null;
+    return (
+      <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: 1, mt: 2, px: 1.5, py: 1, borderRadius: "var(--b1-radius-control)", bgcolor: "var(--b1-warning-bg)", typography: "body2" }} data-testid="plan-attention">
+        <Box component="span" sx={{ color: "var(--b1-warning)", fontWeight: 600 }}>{parts.join(" · ")}</Box>
+        <Box component={RouterLink} to={"/serving/plans/" + props.plan.id + "/team"} sx={{ ml: "auto", color: "var(--link)" }} data-testid="plan-attention-link">
+          {Locale.label("plans.planValidation.review", "Review")} →
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <>
