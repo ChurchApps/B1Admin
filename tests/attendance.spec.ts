@@ -147,6 +147,28 @@ test.describe("Attendance Management", () => {
     });
   });
 
+  // A campus with no services shows its add-service button on its own row, not alone on the next one.
+  test("an empty campus keeps its add-service button on the campus row", async ({ browser }) => {
+    const campusName = "Zebedee Empty Campus 1502";
+    const api = await pwRequest.newContext();
+    const auth = await apiLogin(api);
+    const created = await api.post(`${API}/membership/campuses`, { ...auth, data: [{ name: campusName }] });
+    const campusId = (await created.json())[0].id;
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    try {
+      const page = await context.newPage();
+      await login(page);
+      await navigateToAttendance(page);
+      await openSetup(page);
+      await expect(page.getByTestId("add-service-button-" + campusId)).toBeVisible({ timeout: 15000 });
+      await expect(page.locator("tr", { hasText: campusName }).getByTestId("add-service-button-" + campusId)).toHaveCount(1);
+    } finally {
+      await context.close();
+      await api.delete(`${API}/membership/campuses/${campusId}`, auth);
+      await api.dispose();
+    }
+  });
+
   test("Setup is titled Service structure and points named attendance at the group's Sessions tab", async ({ page }) => {
     await openSetup(page);
     await expect(page.getByText("Service structure")).toBeVisible({ timeout: 10000 });
