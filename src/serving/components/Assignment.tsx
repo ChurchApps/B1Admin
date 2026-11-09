@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Typography, Stack, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
+import { Box, Typography, Stack, Snackbar, Alert, Menu, MenuItem, Dialog, useMediaQuery, useTheme } from "@mui/material";
 import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
@@ -27,6 +27,9 @@ interface Props {
 }
 
 // Flatten a boxed panel so it reads as a section of the record surface.
+// The editors are FormCards; inside the dialog the card chrome is the dialog's.
+const dialogCardSx = { "& .MuiCard-root": { border: 0, boxShadow: "none", mb: 0, bgcolor: "transparent" } };
+
 const flatCardSx = { "& .MuiPaper-root": { border: 0, boxShadow: "none", bgcolor: "transparent" }, "& .om-head, & .om-body": { px: 0, pt: 0 } };
 
 export const Assignment = (props: Props) => {
@@ -47,6 +50,8 @@ export const Assignment = (props: Props) => {
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const [position, setPosition] = React.useState<PositionInterface | null>(null);
   const [assignment, setAssignment] = React.useState<AssignmentInterface | null>(null);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [times, setTimes] = React.useState<TimeInterface[]>([]);
   const [blockoutDates, setBlockoutDates] = React.useState<BlockoutDateInterface[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -248,27 +253,6 @@ export const Assignment = (props: Props) => {
 
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 2fr) minmax(320px, 1fr)" }, gap: 3, alignItems: "start" }}>
         <Stack spacing={3} sx={{ minWidth: 0 }}>
-          {canEdit && position && !assignment && (
-            <PositionEdit
-              key={position?.id || position?.name || "new-position"}
-              position={position}
-              categoryNames={categoryNames}
-              updatedFunction={() => {
-                setPosition(null);
-                loadData();
-              }}
-            />
-          )}
-          {canEdit && assignment && position && (
-            <AssignmentEdit
-              key={assignment?.id || position?.id || "new-assignment"}
-              position={position}
-              assignment={assignment}
-              peopleNeeded={peopleNeededForPosition}
-              updatedFunction={handleAssignmentUpdate}
-              assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId)}
-            />
-          )}
           {!loaded && <Typography variant="body2" color="text.secondary" data-testid="assignment-loading">{Locale.label("common.loading")}</Typography>}
           {loaded && <Box sx={{ overflowX: "auto" }}>
             <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
@@ -278,6 +262,37 @@ export const Assignment = (props: Props) => {
           <PlanValidation plan={plan as PlanInterface} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
         </Box>}
       </Box>
+
+      <Dialog
+        open={canEdit && !!position}
+        onClose={() => handleAssignmentUpdate(true)}
+        maxWidth="sm"
+        fullWidth
+        fullScreen={fullScreen}
+        sx={dialogCardSx}
+        data-testid={assignment ? "assignment-dialog" : "position-dialog"}>
+        {canEdit && position && !assignment && (
+          <PositionEdit
+            key={position?.id || position?.name || "new-position"}
+            position={position}
+            categoryNames={categoryNames}
+            updatedFunction={() => {
+              setPosition(null);
+              loadData();
+            }}
+          />
+        )}
+        {canEdit && assignment && position && (
+          <AssignmentEdit
+            key={assignment?.id || position?.id || "new-assignment"}
+            position={position}
+            assignment={assignment}
+            peopleNeeded={peopleNeededForPosition}
+            updatedFunction={handleAssignmentUpdate}
+            assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId)}
+          />
+        )}
+      </Dialog>
 
       <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={() => setErrorMessage(null)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{ width: "100%" }}>

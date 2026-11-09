@@ -28,7 +28,7 @@ export const PlanHeader = (props: Props) => {
   return (
     <Box component="header" data-testid="plan-identity" sx={{ mb: { xs: 2, md: 3 } }}>
       <VerbRow sx={{ mb: 1.5 }}>
-        <TextAction small to="/serving/plans" component={RouterLink} data-testid="plan-plans-link">{Locale.label("plans.planList.plans")}</TextAction>
+        <TextAction small to="/serving/plans" component={RouterLink}>{Locale.label("plans.planList.plans")}</TextAction>
         {planType?.id && <TextAction small to={`/serving/planTypes/${planType.id}`} component={RouterLink}>{planType.name}</TextAction>}
         {subpageTitle && <TextAction small to={planPath} component={RouterLink}>{planName}</TextAction>}
       </VerbRow>

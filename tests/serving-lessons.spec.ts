@@ -647,6 +647,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const lesson = page.locator("a").getByText("Zacchaeus Lesson");
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
+      await page.getByTestId("plan-team-link").click();
 
       const assignment = page.locator("td button").getByText("Zebedee Assignment");
       await expect(assignment).toBeVisible({ timeout: 10000 });
