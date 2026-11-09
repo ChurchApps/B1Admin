@@ -8,6 +8,7 @@ import { listPaymentProviders, getPaymentProvider } from "@churchapps/apphelper/
 import { type ChurchInterface, type GenericSettingInterface } from "@churchapps/helpers";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
+import { CurrencyDefaults } from "../../helpers/CurrencyDefaults";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
 import { StatementFormatSettingsEdit } from "./StatementFormatSettingsEdit";
 
@@ -125,7 +126,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     setCurrencySetting(churchCurrency || null);
     if (gateways.length === 0) {
       setGateway(null);
-      reset({ provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: (churchCurrency?.value || "usd").toLowerCase() });
+      reset({ provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: (churchCurrency?.value || CurrencyDefaults.currencyForCountry(props.churchInfo?.country) || "usd").toLowerCase() });
     } else {
       setGateway(gateways[0]);
       reset({
@@ -141,7 +142,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
-  }, [props.churchId]);
+  }, [props.churchId, props.churchInfo?.country]);
 
   React.useEffect(() => {
     if (props.saveTrigger !== null) save();
