@@ -472,28 +472,53 @@ const holdRequests = async (page: Page, pattern: RegExp) => {
 
 // ChurchAppsSupport#1341: the plan page said "No items in service order" and "Plan is valid." while still loading.
 loggedInTest.describe("Plan page loading states", () => {
-  loggedInTest("plan page shows loading, not empty, while its lists load", async ({ page }) => {
-    const release = await holdRequests(page, /\/(planItems|positions|assignments)\/plan\//);
-    await page.goto("/serving/plans/PLA00000001");
+  loggedInTest("plan subpages show loading, not empty, while their lists load", async ({ page }) => {
+    let release = await holdRequests(page, /\/planItems\/plan\//);
+    await page.goto("/serving/plans/PLA00000001/order");
     await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
-
     await expect(page.getByTestId("service-order-loading")).toBeVisible({ timeout: 10000 });
-    await expect(page.getByTestId("assignment-loading")).toBeVisible();
     await expect(page.getByText("No items in service order")).toHaveCount(0);
-    await expect(page.getByText("Plan is valid.")).toHaveCount(0);
-
     release();
     await expect(page.getByTestId("service-order-loading")).toHaveCount(0, { timeout: 15000 });
+
+    release = await holdRequests(page, /\/(positions|assignments)\/plan\//);
+    await page.goto("/serving/plans/PLA00000001/team");
+    await expect(page.getByTestId("assignment-loading")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Plan is valid.")).toHaveCount(0);
+    release();
     await expect(page.getByTestId("assignment-loading")).toHaveCount(0, { timeout: 15000 });
   });
 
   loggedInTest("a failed serving team load stops loading and shows the error", async ({ page }) => {
     await page.route(/\/positions\/plan\//, (route) => route.fulfill({ status: 500, body: "{}" }));
-    await page.goto("/serving/plans/PLA00000001");
+    await page.goto("/serving/plans/PLA00000001/team");
     await expect(page.getByTestId("plan-plans-link")).toBeVisible({ timeout: 15000 });
 
     await expect(page.getByText("Couldn't load the serving team. Refresh to try again.")).toBeVisible({ timeout: 15000 });
     await expect(page.getByTestId("assignment-loading")).toHaveCount(0, { timeout: 15000 });
+  });
+});
+
+// The plan page is an overview; order of service and serving team are full-width subpages.
+loggedInTest.describe("Plan overview and subpages", () => {
+  loggedInTest("overview summarizes the plan and links to each subpage", async ({ page }) => {
+    await page.goto("/serving/plans/PLA00000001");
+    await expect(page.getByTestId("plan-overview")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("plan-order-summary")).toBeVisible();
+    await expect(page.getByTestId("plan-team-summary")).toBeVisible();
+    await expect(page.getByTestId("plan-times")).toBeVisible();
+    await expect(page.getByTestId("plan-notes")).toBeVisible();
+    await expect(page.getByTestId("service-order")).toHaveCount(0);
+
+    await page.getByTestId("plan-order-link").click();
+    await expect(page).toHaveURL(/\/serving\/plans\/PLA00000001\/order$/);
+    await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 15000 });
+
+    await page.getByTestId("plan-back-link").click();
+    await page.getByTestId("plan-team-link").click();
+    await expect(page).toHaveURL(/\/serving\/plans\/PLA00000001\/team$/);
+    await expect(page.locator(".positionsTable")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("edit-plan-button")).toHaveCount(0);
   });
 });
 
@@ -511,8 +536,7 @@ test.describe("Copy plan from previous plan", () => {
     const newPlan = await (await copyPost).json();
 
     await page.goto("/serving/plans/" + newPlan.id);
-    await page.getByTestId("plan-notes-toggle").click();
-    await expect(page.getByTestId("plan-notes-input").locator("textarea").first()).toHaveValue("Upcoming worship services including special seasonal service", { timeout: 15000 });
+    await expect(page.getByTestId("plan-notes-text")).toHaveText("Upcoming worship services including special seasonal service", { timeout: 15000 });
   });
 });
 
@@ -634,7 +658,7 @@ test.describe("Copy plan forward", () => {
     const posRes = await ctx.post(`${API}/doing/positions`, { ...auth, data: [{ planId: sourceId, categoryName: "Band", name: "Copy Source Vocals", count: 1 }] });
     expect(posRes.ok()).toBeTruthy();
 
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/team`);
     await page.getByRole("button", { name: "Copy from Previous" }).click({ timeout: 20000 });
     const copyPost = page.waitForResponse(r => r.url().includes("/plans/copy/") && r.request().method() === "POST", { timeout: 15000 });
     await page.getByRole("menuitem", { name: "Positions Only" }).click();
@@ -709,7 +733,7 @@ test.describe("Service Order song search error handling", () => {
   test("a failed song search clears the spinner and reports the failure", async ({ page }) => {
     const failure = { status: 500, contentType: "application/json", body: JSON.stringify({ errors: ["Search timed out"] }) };
     await page.route("**/songs/search**", (route) => route.fulfill(failure));
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await expect(page.getByText("Song Search Section")).toBeVisible({ timeout: 20000 });
 
@@ -827,7 +851,6 @@ test.describe.serial("Plan pickers honor First Day of Week", () => {
   // Full page loads only: useFirstDayOfWeek re-reads the church record on boot.
   const openTimePicker = async () => {
     await page.goto("/serving/plans/PLA00000001");
-    await page.getByTestId("plan-times-toggle").click();
     const addTime = page.locator('[data-testid="add-time-button"]');
     await expect(addTime).toBeVisible({ timeout: 15000 });
     await addTime.click();
@@ -916,7 +939,7 @@ test.describe.serial("Service Order bulk delete inside a section", () => {
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
     page = await context.newPage();
     await login(page);
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
   });
 
@@ -1054,7 +1077,7 @@ test.describe.serial("Service Order multi-select import from the External Item p
     await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: INSTRUCTIONS }));
     await page.route("**/lessons.church/**", (route) => route.abort());
 
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
   });
 
@@ -1172,7 +1195,6 @@ test.describe.serial("Service Order heading position per service time", () => {
 
     // The demo plan ships with one service time; a second one is what makes the
     // per-service choice meaningful (and is what the "Include in services" list needs).
-    await page.getByTestId("plan-times-toggle").click();
     const addTime = page.locator('[data-testid="add-time-button"]');
     await expect(addTime).toBeVisible({ timeout: 15000 });
     await addTime.click();
@@ -1180,6 +1202,7 @@ test.describe.serial("Service Order heading position per service time", () => {
     await page.locator("button").getByText("Save").last().click();
     await expect(page.locator("td button").getByText("Second Service")).toHaveCount(1, { timeout: 15000 });
 
+    await page.getByTestId("plan-order-link").click();
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 15000 });
 
     const worshipHeader = page.locator(".planItemHeader").filter({ hasText: "Worship" }).first();
@@ -1293,7 +1316,7 @@ test.describe.serial("Assign a position directly to a person", () => {
   const positionRow = (name: string) => page.locator("tr:not(:has(tr))").filter({ has: page.locator("button", { hasText: name }) });
 
   test("a position with no Volunteer Group can be assigned to anyone in the church", async () => {
-    await page.goto(DEMO_PLAN);
+    await page.goto(DEMO_PLAN + "/team");
     const row = positionRow(GROUPLESS);
     await expect(row).toHaveCount(1, { timeout: 15000 });
     await row.getByRole("button", { name: /1 person needed/i }).click();
@@ -1310,7 +1333,7 @@ test.describe.serial("Assign a position directly to a person", () => {
   });
 
   test("a linked Volunteer Group can be cleared back to None", async () => {
-    await page.goto(DEMO_PLAN);
+    await page.goto(DEMO_PLAN + "/team");
     const row = positionRow(GROUPED);
     await expect(row).toHaveCount(1, { timeout: 15000 });
     await row.getByRole("button", { name: GROUPED }).click();
@@ -1479,7 +1502,7 @@ test.describe("Service Order customized flat lessons and Add From Lesson files",
   test("customizing a flat lesson puts its items under a lesson section bar", async ({ page }) => {
     await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: FLAT_INSTRUCTIONS }));
 
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await page.getByRole("button", { name: "Customize" }).click();
 
@@ -1492,7 +1515,7 @@ test.describe("Service Order customized flat lessons and Add From Lesson files",
     await page.route("**/providerProxy/browse", (route) => route.fulfill({ json: BROWSE_ITEMS }));
     await page.route(`**/contentProviderAuths/ministry/${MINISTRY_ID}`, (route) => route.fulfill({ json: [{ id: "CPA1", ministryId: MINISTRY_ID, providerId: "gocurriculum" }] }));
 
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await page.getByRole("button", { name: "More ways to add" }).click();
     await page.getByRole("menuitem", { name: /Add from Lesson/i }).click();
@@ -1606,7 +1629,7 @@ test.describe.serial("Lesson trim reused for every lesson in a plan type", () =>
 
   test("a customized lesson's kept parts become the plan type's trim", async ({ page }) => {
     await page.route("**/providerProxy/getInstructions", (route) => route.fulfill({ json: GO_LESSON }));
-    await page.goto(`/serving/plans/${planIds[0]}`);
+    await page.goto(`/serving/plans/${planIds[0]}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await expect(page.getByTestId("lesson-trim-link")).toHaveCount(0);
     await page.getByRole("button", { name: "Customize" }).click();

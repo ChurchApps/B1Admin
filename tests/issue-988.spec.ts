@@ -66,7 +66,7 @@ test.describe("Serving - plan item positions", () => {
   });
 
   test("assigning a position shows the volunteer beside the item and in print", async ({ page }) => {
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await expect(page.getByText("Issue988 Sermon")).toBeVisible({ timeout: 20000 });
 

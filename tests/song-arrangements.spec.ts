@@ -85,7 +85,7 @@ test.describe("Song arrangements - flat keys and picker labels", () => {
   });
 
   test("plan song picker names each arrangement", async ({ page }) => {
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByText("Issue1406 Section")).toBeVisible({ timeout: 20000 });
     await page.getByRole("button", { name: "Add Item" }).first().click();
     await page.getByRole("menuitem").filter({ hasText: "Song" }).click();

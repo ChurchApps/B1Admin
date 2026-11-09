@@ -57,7 +57,7 @@ test.describe("Serving - song key formatting", () => {
 
   test("empty key signature does not render empty parentheses", async ({ page }) => {
     await page.route("**/songs/search**", (route) => route.fulfill({ json: SEARCH_RESULTS }));
-    await page.goto(`/serving/plans/${planId}`);
+    await page.goto(`/serving/plans/${planId}/order`);
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 20000 });
     await expect(page.getByText("Issue961 Section")).toBeVisible({ timeout: 20000 });
 

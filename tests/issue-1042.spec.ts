@@ -46,7 +46,7 @@ test.describe("issue-1042 position category dropdown in dark mode", () => {
     const page = await context.newPage();
     try {
       await login(page);
-      await page.goto(DEMO_PLAN);
+      await page.goto(DEMO_PLAN + "/team");
       await expect(page.locator("body.dark-theme")).toHaveCount(1, { timeout: 15000 });
 
       await page.locator(".positionsTable").getByText("Worship Leader").first().click();

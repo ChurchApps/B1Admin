@@ -46,6 +46,9 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await expect(planLink).toBeVisible({ timeout: 10000 });
     await planLink.click();
     await expect(page).toHaveURL(/\/serving\/plans\/[^/]+/);
+    // Positions and assignments live on the plan's Serving team subpage.
+    await page.getByTestId("plan-team-link").click();
+    await expect(page).toHaveURL(/\/serving\/plans\/[^/]+\/team/);
   };
 
   const addTeamMember = async (searchText: string, fullName: string) => {
@@ -122,7 +125,8 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await page.getByRole("button", { name: "Save", exact: true }).click();
     await expect(page.locator(".positionsTable").getByText("Greeter")).toBeVisible({ timeout: 10000 });
 
-    await page.getByTestId("plan-times-toggle").click();
+    // Times are on the plan overview.
+    await page.getByTestId("plan-back-link").click();
     await page.locator('[data-testid="add-time-button"]').click();
     await page.locator('[data-testid="time-display-name-input"] input, input[id="displayName"]').first().fill("Morning Service");
     await page.locator('input[id="startTime"]').fill("2030-06-09T09:00");

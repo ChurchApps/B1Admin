@@ -46,6 +46,8 @@ test.describe.serial("Assignment stale position form (PR #457)", () => {
     await expect(planLink).toBeVisible({ timeout: 10000 });
     await planLink.click();
     await expect(page).toHaveURL(/\/serving\/plans\/[^/]+/);
+    await page.getByTestId("plan-team-link").click();
+    await expect(page).toHaveURL(/\/serving\/plans\/[^/]+\/team/);
   };
 
   const addPosition = async (name: string) => {

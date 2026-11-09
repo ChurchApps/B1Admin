@@ -46,6 +46,7 @@ test.describe.serial("Serving Management - Plan Templates", () => {
     await expect(planLink).toBeVisible({ timeout: 10000 });
     await planLink.click();
     await page.waitForURL(/\/serving\/plans\/[^/]+/, { timeout: 15000 });
+    await page.getByTestId("plan-order-link").click();
     await expect(page.getByTestId("service-order")).toBeVisible({ timeout: 15000 });
   }
 
