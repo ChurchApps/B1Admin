@@ -428,3 +428,93 @@ test.describe.serial("Approvals history", () => {
     await expect(page.locator('[data-testid="pending-bookings-table"]').or(page.locator('[data-testid="no-pending-bookings"]'))).toBeVisible({ timeout: 15000 });
   });
 });
+
+// #1508: a room can go back to "No approval needed", and room-less event requests can be edited and deleted from Approvals.
+test.describe.serial("Room approval reset and event request actions", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const groupName = `Zacchaeus Reset Approvers ${stamp}`;
+  const roomName = `Zacchaeus Reset Room ${stamp}`;
+  const eventTitle = `Zacchaeus Pending Request ${stamp}`;
+  const decidedTitle = `Zacchaeus Decided Request ${stamp}`;
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let groupId: string;
+  let roomId: string;
+  let eventId: string;
+  let decidedId: string;
+  let page: Page;
+
+  const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
+
+  const requestEvent = async (title: string, daysOut: number) => {
+    const start = new Date();
+    start.setDate(start.getDate() + daysOut);
+    start.setHours(18, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(19);
+    return (await (await ctx.post(`${API}/content/events/request`, { ...auth(), data: { title, start: start.toISOString(), end: end.toISOString(), allDay: false } })).json()).event.id as string;
+  };
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    ctx = await playwright.request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    groupId = (await (await ctx.post(`${API}/membership/groups`, { ...auth(), data: [{ name: groupName, categoryName: "Approvals Test", tags: "standard" }] })).json())[0].id;
+    roomId = (await (await ctx.post(`${API}/content/rooms`, { ...auth(), data: [{ name: roomName, approvalGroupId: groupId }] })).json())[0].id;
+    eventId = await requestEvent(eventTitle, 10);
+    decidedId = await requestEvent(decidedTitle, 11);
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    try {
+      await ctx.delete(`${API}/content/events/${eventId}`, auth());
+      await ctx.delete(`${API}/content/events/${decidedId}`, auth());
+      await ctx.delete(`${API}/content/rooms/${roomId}`, auth());
+      await ctx.delete(`${API}/membership/groups/${groupId}`, auth());
+    } catch { /* best effort */ }
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("editing a room back to No approval needed clears its approval group", async () => {
+    await navigateToRoomsResources(page);
+    const row = page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: roomName });
+    await expect(row).toContainText(groupName, { timeout: 15000 });
+    await page.locator(`[data-testid="edit-room-${roomId}"]`).click();
+    await page.locator('[data-testid="room-approval-group-select"] [role="combobox"]').click();
+    await page.getByRole("option", { name: "No approval needed" }).click();
+    await page.locator('[data-testid="save-room-button"]').click();
+    await expect(page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: roomName })).not.toContainText(groupName, { timeout: 15000 });
+    await page.reload();
+    await expect(page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: roomName })).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: roomName })).not.toContainText(groupName);
+  });
+
+  test("a pending event request with no room can be edited and deleted", async () => {
+    await navigateToApprovals(page);
+    const row = page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.locator(`[data-testid="edit-event-${eventId}"]`).click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue(eventTitle, { timeout: 15000 });
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
+    await row.locator(`[data-testid="delete-event-${eventId}"]`).click();
+    await confirmDelete(page);
+    await expect(page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle })).toHaveCount(0, { timeout: 15000 });
+  });
+
+  test("a decided event request keeps Edit and Delete in History", async () => {
+    const row = page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: decidedTitle });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.locator(`[data-testid="approve-event-${decidedId}"]`).click();
+    await expect(page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: decidedTitle })).toHaveCount(0, { timeout: 15000 });
+    await page.locator('[data-testid="approvals-history-pill"]').click();
+    const historyRow = page.locator('[data-testid="history-events-table"] tbody tr').filter({ hasText: decidedTitle });
+    await expect(historyRow).toBeVisible({ timeout: 15000 });
+    await expect(historyRow.locator(`[data-testid="edit-event-${decidedId}"]`)).toBeVisible();
+    await expect(historyRow.locator(`[data-testid="delete-event-${decidedId}"]`)).toBeVisible();
+  });
+});
