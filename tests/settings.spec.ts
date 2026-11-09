@@ -1185,6 +1185,16 @@ test.describe.serial("Church currency without a giving provider", () => {
     await ctx.dispose();
   });
 
+  // ChurchAppsSupport#1483: with nothing saved, the Currency starts on the church country's currency instead of USD.
+  test("with no saved currency the Currency starts on the church country's currency", async ({ page }) => {
+    await page.route(/\/membership\/churches\/CHU00000001\?include=permissions/, async (route) => {
+      const response = await route.fetch();
+      await route.fulfill({ response, json: { ...(await response.json()), country: "Kenya" } });
+    });
+    const section = await openGivingSettings(page);
+    await expect(section.getByTestId("church-currency-select").getByRole("combobox")).toHaveText("KES", { timeout: 10000 });
+  });
+
   test("Provider None shows a Currency dropdown and saves PHP as the church currency", async ({ page }) => {
     const section = await openGivingSettings(page);
     await expect(section.getByRole("combobox").first()).toBeVisible({ timeout: 10000 });
