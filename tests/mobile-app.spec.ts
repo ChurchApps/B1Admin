@@ -89,6 +89,8 @@ test.describe("Mobile App Settings page", () => {
     await expect(page.locator('li[role="option"]', { hasText: /^Live Stream$/ })).toBeVisible();
     await expect(page.locator('li[role="option"]', { hasText: /^Donation$/ })).toBeVisible();
     await expect(page.locator('li[role="option"]', { hasText: /^External URL$/ })).toBeVisible();
+    await expect(page.locator('li[role="option"]', { hasText: /^Registrations$/ })).toBeVisible();
+    await expect(page.locator('li[role="option"]', { hasText: /^Requests$/ })).toBeVisible();
     await expect(page.locator('li[role="option"]', { hasText: /^Lessons$/ })).toHaveCount(0);
     await expect(page.locator('li[role="option"]', { hasText: /^Donation Landing$/ })).toHaveCount(0);
     await page.keyboard.press("Escape");
@@ -171,6 +173,47 @@ test.describe.serial("Mobile tab lifecycle", () => {
     await confirmDelete(page);
     await expect(page.getByRole("heading", { level: 3, name: DISPOSABLE_TAB, exact: true }))
       .toHaveCount(0, { timeout: 15000 });
+  });
+});
+
+// ChurchAppsSupport#1503: Requests opens the member's My Requests screen in the app.
+test.describe.serial("Mobile Requests tab", () => {
+  test.describe.configure({ retries: 0 });
+  let page: Page;
+  const TAB = "Zacchaeus Requests Tab";
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test("creates a Requests tab and keeps its type", async () => {
+    await openMobileSettings(page);
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(TAB);
+    await selectMuiByLabel(page, "Tab Type", "Requests");
+    await selectMuiByLabel(page, "Visibility", "Logged-in Users");
+    await page.getByRole("button", { name: /Save Tab/i }).click();
+    const row = await findTabRow(page, TAB);
+    await expect(row.getByText("requests", { exact: true })).toBeVisible();
+    await row.getByRole("button", { name: "Edit" }).click();
+    await expect(page.locator('input[name="text"]')).toHaveValue(TAB, { timeout: 10000 });
+    await expect(page.getByLabel("Tab Type")).toHaveText("Requests");
+  });
+
+  test("deletes the Requests tab", async () => {
+    await openMobileSettings(page);
+    const row = await findTabRow(page, TAB);
+    await row.getByRole("button", { name: "Edit" }).click();
+    await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
+    await page.getByRole("button", { name: /Delete Tab/i }).click();
+    await confirmDelete(page);
+    await expect(page.getByRole("heading", { level: 3, name: TAB, exact: true })).toHaveCount(0, { timeout: 15000 });
   });
 });
 
