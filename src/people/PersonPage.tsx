@@ -9,7 +9,7 @@ import UserContext from "../UserContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PersonIdentity } from "./components/PersonIdentity";
 import { useHousehold } from "./components/Household";
-import { PersonAttendanceSummary, PersonFormsSummary, PersonGivingSummary, PersonGroupsSummary, PersonNotesSummary } from "./components/PersonSummaries";
+import { PersonAttendanceSummary, PersonFormsSummary, PersonGivingSummary, PersonGroupsSummary, PersonNotesSummary, PersonRequestsSummary } from "./components/PersonSummaries";
 import { LogGiftDialog } from "../donations/components/LogGiftDialog";
 
 const FORM_VIEWS = ["edit", "household"];
@@ -36,6 +36,9 @@ export const PersonPage = () => {
   const [giftVersion, setGiftVersion] = React.useState(0);
   const queryClient = useQueryClient();
   const formPermission = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit), []);
+  // Requests follow the Approvals page permission; registrations follow Registrations > View (#1476).
+  const canViewRequests = useMemo(() => UserHelper.checkAccess(Permissions.contentApi.content.edit) || UserHelper.checkAccess({ api: "ContentApi", contentType: "Calendars", action: "Admin" }), []);
+  const canViewRegistrations = useMemo(() => UserHelper.checkAccess({ api: "ContentApi", contentType: "Registrations", action: "View" }), []);
   const canViewConfidentialNotes = useMemo(() => UserHelper.checkAccess({ api: "MembershipApi", contentType: "People", action: "View Confidential Notes" }), []);
   const [confidentialConversationId, setConfidentialConversationId] = React.useState("");
 
@@ -135,7 +138,8 @@ export const PersonPage = () => {
     attendance: canViewAttendance,
     giving: canViewGiving,
     notes: canEdit,
-    forms: showForms
+    forms: showForms,
+    requests: canViewRequests || canViewRegistrations
   };
   const view = allowedViews[requestedView] ? requestedView : "";
 
@@ -249,6 +253,8 @@ export const PersonPage = () => {
         return <>{backButton}{notes}</>;
       case "forms":
         return <>{backButton}<PersonForms person={person} forms={visibleForms} initialFormId={searchParams.get("form") || ""} updatedFunction={refetch} /></>;
+      case "requests":
+        return <>{backButton}<PersonRequestsSummary personId={person.id!} canViewRequests={canViewRequests} canViewRegistrations={canViewRegistrations} /></>;
       default:
         return (
           <>
@@ -257,6 +263,7 @@ export const PersonPage = () => {
             <PersonGroupsSummary personId={person.id!} />
             {canEdit && <PersonNotesSummary conversationId={person.conversationId || ""} onViewAll={() => setView("notes")} />}
             {showForms && <PersonFormsSummary person={person} forms={visibleForms} onOpen={(formId) => setView("forms", { form: formId || "" })} />}
+            {(canViewRequests || canViewRegistrations) && <PersonRequestsSummary personId={person.id!} canViewRequests={canViewRequests} canViewRegistrations={canViewRegistrations} onViewAll={() => setView("requests")} />}
           </>
         );
     }

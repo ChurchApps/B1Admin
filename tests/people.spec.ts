@@ -1456,3 +1456,50 @@ test.describe("People table status and household role", () => {
     expect(await chipColors(profileChip)).toBe(colors.Guest);
   });
 });
+
+test.describe("Person requests & registrations", () => {
+  const API_BASE = process.env.API_BASE || "http://localhost:8084";
+  let api: APIRequestContext;
+  let auth: { headers: Record<string, string> };
+  let demoPersonId = "";
+  let requestId = "";
+
+  test.beforeAll(async () => {
+    api = await request.newContext();
+    const login = await (await api.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = login.userChurches.find((c: any) => c.church?.id === "CHU00000001");
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    demoPersonId = uc.person.id;
+    const start = new Date(Date.now() + 30 * 86400000);
+    const end = new Date(start.getTime() + 2 * 3600000);
+    const created = await (await api.post(`${API_BASE}/content/events/request`, { ...auth, data: { title: "ZACCHAEUS Youth Retreat", start, end, roomIds: ["RM000000001"] } })).json();
+    requestId = created.event.id;
+  });
+
+  test.afterAll(async () => {
+    if (requestId) await api.delete(`${API_BASE}/content/events/${requestId}`, auth);
+    await api.dispose();
+  });
+
+  test("a person's registrations show on their record", async ({ page }) => {
+    await openPersonRow(page, "Roberto Gonzalez");
+    const section = page.getByTestId("person-requests-section");
+    await expect(section.getByRole("heading", { name: "Requests & registrations" })).toBeVisible({ timeout: 10000 });
+    const row = section.locator("tbody tr").filter({ hasText: "Missions Conference" });
+    await expect(row).toContainText("Registration · 2 people");
+    await expect(row).toContainText("Registered");
+  });
+
+  test("a person's event request shows with its status and in All requests", async ({ page }) => {
+    await page.goto(`/people/${demoPersonId}`);
+    const section = page.getByTestId("person-requests-section");
+    const row = section.locator("tbody tr").filter({ hasText: "ZACCHAEUS Youth Retreat" });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await expect(row).toContainText("Event request · Sanctuary");
+    await expect(row).toContainText("Pending");
+    await page.getByTestId("person-requests-all").click();
+    await expect(page).toHaveURL(/view=requests/);
+    await expect(page.getByTestId("person-requests-section").locator("tbody tr").filter({ hasText: "ZACCHAEUS Youth Retreat" })).toBeVisible();
+    await expect(page.getByTestId("person-record-back")).toBeVisible();
+  });
+});
