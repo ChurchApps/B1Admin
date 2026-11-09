@@ -311,7 +311,7 @@ export function EventModal(props: Props) {
                 data-testid="new-event-rooms-select"
               >
                 {rooms.map((r) => (
-                  <MenuItem key={r.id} value={r.id}>
+                  <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
                     <ListItemText
                       primary={r.name}
@@ -332,7 +332,7 @@ export function EventModal(props: Props) {
                 data-testid="new-event-resources-select"
               >
                 {resources.map((r) => (
-                  <MenuItem key={r.id} value={r.id}>
+                  <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
                     <ListItemText primary={r.name} secondary={r.description || undefined} />
                   </MenuItem>

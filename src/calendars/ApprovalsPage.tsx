@@ -159,6 +159,7 @@ export const ApprovalsPage = () => {
                   <TableCell>{Locale.label("calendars.approvals.requestedBy")}</TableCell>
                   <TableCell>{Locale.label("calendars.approvals.status")}</TableCell>
                   <TableCell>{Locale.label("calendars.approvals.decided")}</TableCell>
+                  <TableCell align="right" />
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -169,6 +170,13 @@ export const ApprovalsPage = () => {
                     <TableCell>{personLink(b.requestedBy)}</TableCell>
                     <TableCell>{decisionBadge(b.status)}</TableCell>
                     <TableCell>{decided(b)}</TableCell>
+                    <TableCell align="right" className="rowActions">
+                      <VerbRow sx={{ justifyContent: "flex-end" }}>
+                        {b.status === "approved"
+                          ? <TextAction small onClick={() => resolveBooking(b.id || "", "reject")} data-testid={`reject-booking-${b.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
+                          : <TextAction small onClick={() => openApproveBooking(b.id || "")} data-testid={`approve-booking-${b.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>}
+                      </VerbRow>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -198,7 +206,14 @@ export const ApprovalsPage = () => {
                     <TableCell>{e.description}</TableCell>
                     <TableCell>{personLink((e as any).requestedBy)}</TableCell>
                     <TableCell>{decisionBadge((e as any).approvalStatus)}</TableCell>
-                    <TableCell align="right" className="rowActions"><VerbRow sx={{ justifyContent: "flex-end" }}>{eventActions(e.id || "")}</VerbRow></TableCell>
+                    <TableCell align="right" className="rowActions">
+                      <VerbRow sx={{ justifyContent: "flex-end" }}>
+                        {(e as any).approvalStatus === "approved"
+                          ? <TextAction small onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
+                          : <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>}
+                        {eventActions(e.id || "")}
+                      </VerbRow>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

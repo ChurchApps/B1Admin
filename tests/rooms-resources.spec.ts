@@ -383,6 +383,7 @@ test.describe.serial("Approvals history", () => {
   let groupId: string;
   let roomId: string;
   let eventId: string;
+  let bookingId: string;
   let page: Page;
 
   const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
@@ -401,7 +402,9 @@ test.describe.serial("Approvals history", () => {
     end.setDate(end.getDate() + 3);
     eventId = (await (await ctx.post(`${API}/content/events`, { ...auth(), data: [{ groupId, title: eventTitle, start: start.toISOString(), end: end.toISOString(), allDay: false, visibility: "public" }] })).json())[0].id;
     const bookingRes = await ctx.post(`${API}/content/eventBookings`, { ...auth(), data: [{ eventId, roomId }] });
-    expect((await bookingRes.json())[0].status, "seeded booking is pending").toBe("pending");
+    const booking = (await bookingRes.json())[0];
+    expect(booking.status, "seeded booking is pending").toBe("pending");
+    bookingId = booking.id;
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
     page = await context.newPage();
     await login(page);
@@ -437,6 +440,19 @@ test.describe.serial("Approvals history", () => {
     await expect(historyRow.locator('a[href^="/people/"]')).toHaveCount(1);
     await expect(historyRow.locator("td").nth(4)).not.toHaveText("—");
     await expect(page.locator('[data-testid="history-events-table"]').or(page.locator('[data-testid="no-resolved-events"]'))).toBeVisible();
+  });
+
+  // #1510: a decision can be changed after the fact, like a serving plan answer.
+  test("a booking decision can be reversed from History", async () => {
+    const historyRow = () => page.locator('[data-testid="history-bookings-table"] tbody tr').filter({ hasText: eventTitle });
+    await historyRow().locator(`[data-testid="reject-booking-${bookingId}"]`).click();
+    await confirmDelete(page);
+    await expect(historyRow()).toContainText("Rejected", { timeout: 15000 });
+    await expect(historyRow().locator(`[data-testid="reject-booking-${bookingId}"]`)).toHaveCount(0);
+    await historyRow().locator(`[data-testid="approve-booking-${bookingId}"]`).click();
+    await page.locator('[data-testid="approve-booking-confirm"]').click();
+    await expect(historyRow()).toContainText("Approved", { timeout: 15000 });
+    await expect(historyRow().locator(`[data-testid="reject-booking-${bookingId}"]`)).toBeVisible();
   });
 
   test("Pending switches back to the open requests", async () => {
@@ -533,5 +549,20 @@ test.describe.serial("Room approval reset and event request actions", () => {
     await expect(historyRow).toBeVisible({ timeout: 15000 });
     await expect(historyRow.locator(`[data-testid="edit-event-${decidedId}"]`)).toBeVisible();
     await expect(historyRow.locator(`[data-testid="delete-event-${decidedId}"]`)).toBeVisible();
+  });
+
+  // #1510: rejecting a previously approved request takes it back off the public calendar.
+  test("a decided event request can be rejected and re-approved from History", async () => {
+    const historyRow = () => page.locator('[data-testid="history-events-table"] tbody tr').filter({ hasText: decidedTitle });
+    const visibility = async () => (await (await ctx.get(`${API}/content/events/${decidedId}`, auth())).json()).visibility;
+    expect(await visibility()).toBe("public");
+    await historyRow().locator(`[data-testid="reject-event-${decidedId}"]`).click();
+    await confirmDelete(page);
+    await expect(historyRow()).toContainText("Rejected", { timeout: 15000 });
+    expect(await visibility()).toBe("private");
+    await historyRow().locator(`[data-testid="approve-event-${decidedId}"]`).click();
+    await expect(historyRow()).toContainText("Approved", { timeout: 15000 });
+    await expect(historyRow().locator(`[data-testid="reject-event-${decidedId}"]`)).toBeVisible();
+    expect(await visibility()).toBe("public");
   });
 });
