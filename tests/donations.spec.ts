@@ -887,8 +887,8 @@ test.describe("Mixed-currency giving totals", () => {
   // Serial so beforeAll seeds the euro gift once; parallel workers each ran it and doubled the totals.
   test.describe.configure({ mode: "serial", retries: 0 });
   let batchId: string;
-  let expectedTotal: string; // header stats round to whole units: "$ 215"
-  let expectedExact: string; // list rows keep cents: "$ 214.60"
+  let expectedTotal: string; // header stats round to whole units: "$215"
+  let expectedExact: string; // list rows keep cents: "$214.60"
 
   // February 2024 holds no seed gifts, so date filters isolate these two: €100 from Donald Clark + $100 anonymous.
   test.beforeAll(async () => {
@@ -912,8 +912,8 @@ test.describe("Mixed-currency giving totals", () => {
     expect(table.rates?.EUR, "Api could not load EUR rates from frankfurter").toBeGreaterThan(0);
     const total = 100 + Number((100 / table.rates.EUR).toFixed(2));
     expect(Math.round(total)).not.toBe(200);
-    expectedTotal = "$ " + Math.round(total).toLocaleString("en-US");
-    expectedExact = "$ " + total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    expectedTotal = "$" + Math.round(total).toLocaleString("en-US");
+    expectedExact = "$" + total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     await ctx.dispose();
   });
 
@@ -930,7 +930,7 @@ test.describe("Mixed-currency giving totals", () => {
     await expect(page.getByTestId("batch-total-amount")).toHaveText(expectedTotal, { timeout: 15000 });
     await expect(page.getByText(CONVERTED_NOTE).first()).toBeVisible();
     // The gift itself stays in euros.
-    await expect(page.locator('[data-testid^="donation-row-"]').filter({ hasText: "Donald Clark" })).toContainText("€ 100.00");
+    await expect(page.locator('[data-testid^="donation-row-"]').filter({ hasText: "Donald Clark" })).toContainText("€100.00");
   });
 
   test("batches list shows the converted batch total", async ({ page }) => {

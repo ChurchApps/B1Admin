@@ -333,7 +333,7 @@ test.describe("Registrations — Add Attendee on standalone events, Questions de
     expect(Number(created.amountPaid || 0), "amountPaid").toBe(0);
     const row = page.locator('[data-testid="registration-row"]').first();
     await expect(row).toContainText("Donald Clark", { timeout: 15000 });
-    await expect(row).toContainText("$ 0.00 / $ 45.00");
+    await expect(row).toContainText("$0.00 / $45.00");
   });
 
   test("Registration Questions shows None when no form is chosen", async ({ page }) => {

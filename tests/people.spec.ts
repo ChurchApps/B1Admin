@@ -296,6 +296,8 @@ test.describe("People Management", () => {
         await expect(seekNotes).toHaveValue("Zacchaeus Delete Target", { timeout: 10000 });
         // Edit mode shows material-icon delete button.
         const deleteBtn = page.getByTestId("notes-box").locator("button").getByText("delete", { exact: true });
+        // Delete asks "Delete this note? This cannot be undone." in a browser confirm.
+        page.once("dialog", (dialog) => dialog.accept());
         await deleteBtn.click();
         await expect(target).toHaveCount(0, { timeout: 15000 });
       });
