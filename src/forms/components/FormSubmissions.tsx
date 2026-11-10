@@ -20,6 +20,7 @@ import { SwapHoriz as SwapHorizIcon } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { Link as RouterLink } from "react-router-dom";
 
 const yesNoChoice: Record<string, string> = { True: "Yes", False: "No" };
 
@@ -222,7 +223,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           <TableCell key="personName">
             <Stack direction="row" spacing={0.5} alignItems="center">
               {personId ? (
-                <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
+                <Typography component={RouterLink} to={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>
                   {personName}
                 </Typography>
               ) : (
@@ -286,7 +287,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const refetchSubmissions = formSubmissions.refetch;
   const handlePersonChanged = useCallback(() => { void refetchSubmissions(); }, [refetchSubmissions]);
 
-  if (people.isLoading || formSubmissions.isLoading) return <Loading />;
+  // placeholderData keeps isLoading false, so wait for real data instead of flashing "No form submissions found".
+  if (people.isLoading || formSubmissions.isLoading || people.isPlaceholderData || formSubmissions.isPlaceholderData) return <Loading />;
 
   return (
     <Grid container spacing={3}>

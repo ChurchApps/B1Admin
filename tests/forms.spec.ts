@@ -105,6 +105,18 @@ test.describe("Forms page", () => {
 // Issue #1066: forms could be edited, duplicated and archived but never printed.
 // The list now offers a paper copy of any form (blank answer spaces), and a person's
 // submitted form can be printed from their Forms section.
+loggedInTest("question reorder arrows and the submissions print button have readable names", async ({ page }) => {
+  // VBS Registration (Public) is seeded with two questions.
+  await page.goto("/forms/FRM00000004");
+  const rows = page.locator("table tbody tr");
+  await expect(rows.first()).toContainText("Child Full Name", { timeout: 15000 });
+  await expect(rows.first().getByRole("button", { name: "Move down" })).toHaveCount(1);
+  await expect(rows.nth(1).getByRole("button", { name: "Move up" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Add question" })).toBeVisible();
+  await page.getByTestId("form-tab-submissions").click();
+  await expect(page.getByRole("button", { name: "Print" }).first()).toBeVisible({ timeout: 15000 });
+});
+
 test.describe("Printing forms", () => {
   test("prints a blank copy of a form from the Forms list", async ({ page }) => {
     await openFormsPage(page);
@@ -277,7 +289,7 @@ test.describe.serial("People-associated form lifecycle", () => {
     await page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
       .locator("a", { hasText: DISPOSABLE_PERSON_FORM }).click();
     await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
-    await expect(page.locator('button[aria-label="addQuestion"]')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("button", { name: "Add question" })).toBeVisible({ timeout: 10000 });
   });
 
   test("adds a required Email question", async () => {
@@ -285,7 +297,7 @@ test.describe.serial("People-associated form lifecycle", () => {
     await page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
       .locator("a", { hasText: DISPOSABLE_PERSON_FORM }).click();
     await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
-    await page.locator('button[aria-label="addQuestion"]').click();
+    await page.getByRole("button", { name: "Add question" }).click();
     await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
 
     const providerSelect = page.locator("#questionBox").getByLabel("Field Type");
@@ -634,7 +646,7 @@ test.describe.serial("Archived forms keep submission history", () => {
 
     await formRow().locator("a", { hasText: ARCHIVE_FORM }).click();
     await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
-    await page.locator('button[aria-label="addQuestion"]').click();
+    await page.getByRole("button", { name: "Add question" }).click();
     await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
     await selectMuiOption(page, page.locator("#questionBox").getByLabel("Field Type"), "Email");
     await page.locator('[data-testid="question-title-input"] input').fill("Email Address");
@@ -834,6 +846,7 @@ loggedInTest.describe.serial("Form submissions keep the form's question order", 
 // from the person's Forms tab, or unlink it back to Anonymous.
 loggedInTest.describe.serial("Relinking a form submission to another person", () => {
   const RELINK_FORM_NAME = "Zacchaeus Relink Form";
+  // Not Donald: the profile-rail describe deletes all of Donald's submissions while this one may be running.
   let ctx: APIRequestContext;
   let auth: { headers: { Authorization: string } };
   let formId = "";
@@ -852,12 +865,12 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     formId = (await formRes.json())?.[0]?.id;
     const qRes = await ctx.post(`${WIDE_API}/membership/questions`, { ...auth, data: [{ formId, title: "Relink Note", fieldType: "Textbox", sort: 1 }] });
     const questionId = (await qRes.json())?.[0]?.id;
-    const donaldRes = await ctx.get(`${WIDE_API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DONALD)}`, auth);
-    const donald = ((await donaldRes.json()) as any[]).find((p) => `${p.name?.first} ${p.name?.last}` === SEED_PEOPLE.DONALD);
-    expect(donald?.id).toBeTruthy();
+    const originalRes = await ctx.get(`${WIDE_API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DOROTHY)}`, auth);
+    const original = ((await originalRes.json()) as any[]).find((p) => `${p.name?.first} ${p.name?.last}` === SEED_PEOPLE.DOROTHY);
+    expect(original?.id).toBeTruthy();
     const subRes = await ctx.post(`${WIDE_API}/membership/formsubmissions`, {
       ...auth,
-      data: [{ formId, contentType: "person", contentId: donald.id, submittedBy: donald.id, submissionDate: new Date().toISOString(), answers: [{ questionId, value: "Wrong person" }] }]
+      data: [{ formId, contentType: "person", contentId: original.id, submittedBy: original.id, submissionDate: new Date().toISOString(), answers: [{ questionId, value: "Wrong person" }] }]
     });
     expect(subRes.ok()).toBeTruthy();
     submissionId = (await subRes.json())?.[0]?.id;
@@ -883,13 +896,31 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     await expect(dialog).toHaveCount(0, { timeout: 10000 });
   }
 
+  loggedInTest("a slow submissions load shows a spinner, not No form submissions found", async ({ page }) => {
+    let release: () => void = () => {};
+    const held = new Promise<void>((r) => { release = r; });
+    await page.route("**/formsubmissions/formId/**", async (route) => { await held; await route.continue(); });
+    await page.goto(`/forms/${formId}`);
+    await page.getByText("Form Submissions", { exact: true }).first().click();
+    await page.waitForTimeout(1500);
+    await expect(page.getByText("No form submissions found")).toHaveCount(0);
+    release();
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DOROTHY })).toBeVisible({ timeout: 15000 });
+  });
+
   loggedInTest("moves a submission to another person from the Submissions table", async ({ page }) => {
     await openSubmissions(page);
-    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toBeVisible();
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DOROTHY })).toBeVisible();
     await page.locator(`[data-testid="submission-change-person-${submissionId}"]`).click();
     await pickPerson(page, SEED_PEOPLE.CAROL);
     await expect(page.getByRole("cell", { name: SEED_PEOPLE.CAROL })).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toHaveCount(0);
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DOROTHY })).toHaveCount(0);
+
+    // The name opens the person in the app, without reloading the whole page.
+    await page.evaluate(() => { (window as any).__noReload = true; });
+    await page.getByRole("cell", { name: SEED_PEOPLE.CAROL }).getByRole("link", { name: SEED_PEOPLE.CAROL }).click();
+    await expect(page).toHaveURL(/\/people\/[\w-]+$/);
+    expect(await page.evaluate(() => (window as any).__noReload)).toBe(true);
   });
 
   loggedInTest("the moved submission shows on the new person's Forms tab and can be unlinked there", async ({ page }) => {
