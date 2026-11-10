@@ -99,8 +99,8 @@ export function CustomFontModal(props: Props) {
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 8 }}>
               <FormControl fullWidth>
-                <InputLabel>{Locale.label("site.customFontModal.categoryFilter")}</InputLabel>
-                <Select fullWidth label={Locale.label("site.customFontModal.categoryFilter")} name="category" value={category} onChange={handleChange}>
+                <InputLabel shrink>{Locale.label("site.customFontModal.categoryFilter")}</InputLabel>
+                <Select fullWidth displayEmpty notched label={Locale.label("site.customFontModal.categoryFilter")} name="category" value={category} onChange={handleChange}>
                   <MenuItem value="">{Locale.label("site.customFontModal.all")}</MenuItem>
                   <MenuItem value="serif">{Locale.label("site.customFontModal.serif")}</MenuItem>
                   <MenuItem value="sans-serif">{Locale.label("site.customFontModal.sansSerif")}</MenuItem>

@@ -680,6 +680,9 @@ test.describe("Website Management", () => {
       await addBtn.click();
       const name = page.locator('[name="name"]');
       await expect(name).toHaveCount(1);
+      // A block that isn't saved yet has nothing to delete.
+      await expect(page.locator('[data-testid="edit-block-inputbox"]').getByText("Add Block")).toBeVisible();
+      await expect(page.locator('[data-testid="edit-block-inputbox"]').getByRole("button", { name: "Delete" })).toHaveCount(0);
       const cancelBtn = page.locator("button").getByText("Cancel");
       await cancelBtn.click();
       await expect(name).toHaveCount(0);
@@ -761,6 +764,16 @@ test.describe("Website Management", () => {
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await doneBtn.click();
       await expect(page).toHaveURL(/\/site\/blocks/, { timeout: 10000 });
+    });
+
+    test("should delete block", async () => {
+      const row = page.locator("tr").filter({ hasText: "Zacchaeus Renamed Block" });
+      await row.locator('[data-testid^="rename-block-"]').click();
+      await page.locator('[data-testid="edit-block-inputbox"]').getByRole("button", { name: "Delete" }).click();
+      const blockDelete = page.waitForResponse(r => r.url().includes("/content/blocks/") && r.request().method() === "DELETE", { timeout: 15000 });
+      await confirmDelete(page);
+      expect((await blockDelete).status()).toBe(200);
+      await expect(page.locator("td").getByText("Zacchaeus Renamed Block")).toHaveCount(0, { timeout: 10000 });
     });
 
   });
@@ -888,7 +901,9 @@ test.describe("Website Management", () => {
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await headerFontSelect.click();
-      const headerFont = page.locator("td").getByText("Montserrat").first();
+      // The list is Google's live popularity order, 10 per page; search so the font is on page one.
+      await page.getByRole("dialog").getByLabel("Search").fill("Montserrat");
+      const headerFont = page.locator("td").getByText("Montserrat", { exact: true }).first();
       await expect(headerFont).toBeVisible({ timeout: 10000 });
       await headerFont.click();
       const saveBtn = page.locator('[data-testid="save-fonts-button"]');
@@ -1303,13 +1318,17 @@ test.describe("Website Management", () => {
   });
 
   test.describe("Page editor — templates and publishing", () => {
-    test("three-column template sections stack on phones", async ({ page }) => {
+    test("three-column template sections stack on phones", async ({ page, request }) => {
+      // Needs the public site (B1App, a Next.js app). On isolated stacks its default port belongs to B1Admin, so check it is really B1App.
+      const b1AppUrl = process.env.B1APP_URL || "http://grace.localtest.me:3301";
+      const probe = await request.get(b1AppUrl, { timeout: 10000 }).then((r) => r.text()).catch((): string => "");
+      test.skip(!probe.includes("/_next/"), "B1App is not running at " + b1AppUrl + " (set B1APP_URL)");
       await openNewPageEditor(page, "Zebedee Stack Page");
       await addTemplateSection(page, "serviceTimes");
       await expect(page.getByText("Wednesday 6:30 PM").first()).toBeVisible({ timeout: 10000 });
       // The public site (B1App) is what visitors see on their phones.
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.goto((process.env.B1APP_URL || "http://grace.localtest.me:3301") + "/zebedee-stack-page");
+      await page.goto(b1AppUrl + "/zebedee-stack-page");
       await expect(page.getByText("Wednesday 6:30 PM").first()).toBeVisible({ timeout: 60000 });
       const column = page.locator(".rowColumn-0").first();
       const rowWidth = await column.locator("xpath=..").evaluate((el) => el.getBoundingClientRect().width);
@@ -1349,6 +1368,18 @@ test.describe("Website Management", () => {
       await expect(hero).toBeVisible({ timeout: 15000 });
       await expect(hero).toHaveCSS("background-size", "cover");
       await expect(hero.getByText("Join us this Sunday", { exact: false })).toHaveCSS("color", "rgb(238, 238, 238)");
+    });
+  });
+
+  test.describe("Appearance preview in dark mode", () => {
+    test("the sample hero uses the site palette, not the admin theme", async ({ page }) => {
+      await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+      await page.goto("/site/appearance");
+      const hero = page.locator('[data-testid="preview-hero"]');
+      await expect(hero).toBeVisible({ timeout: 15000 });
+      // The hero and the Plan Your Visit button both use the palette's accent color.
+      const buttonBg = await page.locator('[data-testid="preview-plan-visit-button"]').evaluate((el) => getComputedStyle(el).backgroundColor);
+      await expect(hero).toHaveCSS("background-color", buttonBg);
     });
   });
 
