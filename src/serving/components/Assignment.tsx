@@ -289,7 +289,7 @@ export const Assignment = (props: Props) => {
             assignment={assignment}
             peopleNeeded={peopleNeededForPosition}
             updatedFunction={handleAssignmentUpdate}
-            assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId)}
+            assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId).filter((id): id is string => !!id)}
           />
         )}
       </Dialog>

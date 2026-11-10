@@ -320,7 +320,7 @@ export const Keys = memo((props: Props) => {
 
       {ConfirmDialogElement}
 
-      {showAudioUpload && canEdit && (
+      {showAudioUpload && canEdit && props.arrangement.id && (
         <AudioFilesEdit
           arrangementId={props.arrangement.id}
           onSave={() => {
