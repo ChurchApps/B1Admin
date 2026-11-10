@@ -105,6 +105,18 @@ test.describe("Forms page", () => {
 // Issue #1066: forms could be edited, duplicated and archived but never printed.
 // The list now offers a paper copy of any form (blank answer spaces), and a person's
 // submitted form can be printed from their Forms section.
+loggedInTest("question reorder arrows and the submissions print button have readable names", async ({ page }) => {
+  // VBS Registration (Public) is seeded with two questions.
+  await page.goto("/forms/FRM00000004");
+  const rows = page.locator("table tbody tr");
+  await expect(rows.first()).toContainText("Child Full Name", { timeout: 15000 });
+  await expect(rows.first().getByRole("button", { name: "Move down" })).toHaveCount(1);
+  await expect(rows.nth(1).getByRole("button", { name: "Move up" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Add question" })).toBeVisible();
+  await page.getByTestId("form-tab-submissions").click();
+  await expect(page.getByRole("button", { name: "Print" }).first()).toBeVisible({ timeout: 15000 });
+});
+
 test.describe("Printing forms", () => {
   test("prints a blank copy of a form from the Forms list", async ({ page }) => {
     await openFormsPage(page);
@@ -277,7 +289,7 @@ test.describe.serial("People-associated form lifecycle", () => {
     await page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
       .locator("a", { hasText: DISPOSABLE_PERSON_FORM }).click();
     await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
-    await expect(page.locator('button[aria-label="addQuestion"]')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("button", { name: "Add question" })).toBeVisible({ timeout: 10000 });
   });
 
   test("adds a required Email question", async () => {
@@ -285,7 +297,7 @@ test.describe.serial("People-associated form lifecycle", () => {
     await page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
       .locator("a", { hasText: DISPOSABLE_PERSON_FORM }).click();
     await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
-    await page.locator('button[aria-label="addQuestion"]').click();
+    await page.getByRole("button", { name: "Add question" }).click();
     await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
 
     const providerSelect = page.locator("#questionBox").getByLabel("Field Type");
@@ -634,7 +646,7 @@ test.describe.serial("Archived forms keep submission history", () => {
 
     await formRow().locator("a", { hasText: ARCHIVE_FORM }).click();
     await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
-    await page.locator('button[aria-label="addQuestion"]').click();
+    await page.getByRole("button", { name: "Add question" }).click();
     await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
     await selectMuiOption(page, page.locator("#questionBox").getByLabel("Field Type"), "Email");
     await page.locator('[data-testid="question-title-input"] input').fill("Email Address");
