@@ -42,7 +42,7 @@ export const CampaignPage = () => {
   const funds = useQuery<FundInterface[]>({ queryKey: ["/funds", "GivingApi"], placeholderData: [] });
 
   const personIds = React.useMemo(() => {
-    const ids = (progress.data?.rows || []).map((r) => r.personId).filter((id) => id);
+    const ids = (progress.data?.rows || []).map((r) => r.personId).filter((id): id is string => !!id);
     return Array.from(new Set(ids)).sort();
   }, [progress.data]);
 
