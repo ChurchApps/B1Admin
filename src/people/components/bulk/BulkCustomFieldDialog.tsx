@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { type PersonFieldInterface } from "@churchapps/helpers";
+import { type PersonFieldInterface } from "../../../helpers/Interfaces";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
 import { useBulkApplyDialog } from "./useBulkApplyDialog";
 import { type BulkResult } from "./BulkFieldDialog";

@@ -144,7 +144,7 @@ export const PersonAttendanceSummary: React.FC<AttendanceProps> = ({ personId, o
                 const group = ArrayHelper.getOne(groups.data || [], "id", r.groupId);
                 const service = [r.service?.name, r.serviceTime?.name].filter(Boolean).join(" · ");
                 return (
-                  <TableRow key={r.id || i}>
+                  <TableRow key={i}>
                     <TableCell>{pretty(day)}</TableCell>
                     <TableCell>{service || "—"}</TableCell>
                     <TableCell align="right">{group ? <Link component={RouterLink} to={"/groups/" + group.id}>{group.name}</Link> : "—"}</TableCell>

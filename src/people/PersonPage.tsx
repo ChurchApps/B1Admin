@@ -170,8 +170,9 @@ export const PersonPage = () => {
       visibility: "hidden"
     };
     const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
-    setConfidentialConversationId(result[0].id);
-    return result[0].id || "";
+    const conversationId = result[0].id || "";
+    setConfidentialConversationId(conversationId);
+    return conversationId;
   };
 
   const handlePhotoUpdated = (dataUrl?: string) => {

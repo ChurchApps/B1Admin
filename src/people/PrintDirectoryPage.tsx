@@ -76,7 +76,7 @@ export const PrintDirectoryPage = () => {
     if (!people.data) return [];
     // A search print keeps whoever the user searched for, regardless of membership status.
     const eligible = searchIds
-      ? people.data.filter((p) => !p.optedOut && searchIds.has(p.id))
+      ? people.data.filter((p) => !p.optedOut && !!p.id && searchIds.has(p.id))
       : people.data.filter((p) => !p.optedOut && !EXCLUDED_STATUSES.has(p.membershipStatus || ""));
     return buildHouseholds(eligible, householdNameById);
   }, [people.data, householdNameById, searchIds]);
