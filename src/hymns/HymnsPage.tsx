@@ -30,7 +30,7 @@ const HymnEdit = ({ hymn, onClose, onSaved }: { hymn: HymnInterface; onClose: ()
   const addVerse = () => setValue((current) => ({ ...current, verses: [...(current.verses || []), { order: (current.verses?.length || 0) + 1, text: "" }] }));
   const removeVerse = (index: number) => setValue((current) => ({ ...current, verses: (current.verses || []).filter((_, verseIndex) => verseIndex !== index).map((verse, verseIndex) => ({ ...verse, order: verseIndex + 1 })) }));
   const save = async () => {
-    if (!Number.isInteger(value.number) || value.number < 1) { setError("Enter a whole hymn number greater than zero."); return; }
+    if (value.number === undefined || !Number.isInteger(value.number) || value.number < 1) { setError("Enter a whole hymn number greater than zero."); return; }
     if (!value.title?.trim()) { setError("Enter a hymn title."); return; }
     if (!value.verses?.length || value.verses.some((verse) => !verse.text?.trim())) { setError("Add at least one verse and enter its text."); return; }
     setSaving(true);
