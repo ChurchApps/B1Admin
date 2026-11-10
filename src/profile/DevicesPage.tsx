@@ -9,6 +9,7 @@ import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, table
 
 export interface DeviceInterface {
   id: string;
+  churchId: string;
   appName: string;
   deviceId: string;
   personId: string;

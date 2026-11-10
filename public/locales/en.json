@@ -3161,10 +3161,12 @@
     "devices": {
       "addScreen": "Add Screen",
       "device": "Device",
+      "confirmRemove": "Remove \"{label}\" from your account? The screen will need a new pairing code to connect again.",
       "editDevice": "Edit Device",
       "emptyDescription": "Paired TVs and screens running FreePlay or ChurchApps Player show up here. Use Add Screen to pair one.",
       "emptyTitle": "No paired screens yet",
       "label": "Label",
+      "remove": "Remove",
       "lastActiveDate": "Last Active Date",
       "registrationDate": "Registration Date",
       "title": "Devices"
