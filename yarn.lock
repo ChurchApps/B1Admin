@@ -376,9 +376,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/apphelper@npm:^1.10.11":
-  version: 1.10.11
-  resolution: "@churchapps/apphelper@npm:1.10.11"
+"@churchapps/apphelper@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "@churchapps/apphelper@npm:1.11.0"
   dependencies:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
@@ -440,7 +440,7 @@ __metadata:
       optional: true
     react-google-recaptcha:
       optional: true
-  checksum: 10c0/d881704475e86a061a0fa45425d9d3bbd887bee6168b755796abc213abe8a49d32105fd1f948ea635871316a2b86d1f02238e664a75f3905513fa057b474a58d
+  checksum: 10c0/96157e4b27ca8809a43c6f0f949a0772f845a9ab5f4d526cfb6613b2a0c9f64de6feb2e1ca2bac9df02fcb531ba05a3e31a7749c48e9d740298cc877593b6538
   languageName: node
   linkType: hard
 
@@ -451,9 +451,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/helpers@npm:^2.15.0":
-  version: 2.15.0
-  resolution: "@churchapps/helpers@npm:2.15.0"
+"@churchapps/helpers@npm:^2.15.1":
+  version: 2.15.1
+  resolution: "@churchapps/helpers@npm:2.15.1"
   dependencies:
     dayjs: "npm:^1.11.20"
   peerDependencies:
@@ -461,7 +461,7 @@ __metadata:
   peerDependenciesMeta:
     rrule:
       optional: true
-  checksum: 10c0/54bc64c793697e08066614c9621ddb3a2415984bebcde63dfbfd3fdb9ddd3b2254f1dc40ecfd1a177e6bcca28060addc2078137dcb5c0b1755c516632c14427f
+  checksum: 10c0/f86039a6f8252444a0337e2a380b1905aba72a2b7f0cd08b672d94b5ade305d6f23385410309544da08c2931d8a698f45deb717e1513c55dd59456d3cfd72e83
   languageName: node
   linkType: hard
 
@@ -2690,9 +2690,9 @@ __metadata:
   resolution: "b1admin@workspace:."
   dependencies:
     "@babel/core": "npm:^8.0.1"
-    "@churchapps/apphelper": "npm:^1.10.11"
+    "@churchapps/apphelper": "npm:^1.11.0"
     "@churchapps/content-providers": "npm:^0.16.1"
-    "@churchapps/helpers": "npm:^2.15.0"
+    "@churchapps/helpers": "npm:^2.15.1"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"
