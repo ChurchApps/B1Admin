@@ -79,16 +79,20 @@ export const PersonPage = () => {
     if (!params.id) return;
     const churchId = UserHelper.currentUserChurch?.church?.id;
     const personId = UserHelper.person?.id;
+    if (!churchId) return;
+    // The person's content room hears about note activity even before the person has a conversation
+    // (the first note creates it), so another user's first note shows here without a reload.
+    const rooms = ["content-person-" + params.id];
     const conversationId = personData.data?.conversationId;
-    if (!churchId || !conversationId) return;
-    SubscriptionManager.joinRoom(conversationId, churchId, personId).catch(() => { /* ignore */ });
+    if (conversationId) rooms.push(conversationId);
+    rooms.forEach((room) => SubscriptionManager.joinRoom(room, churchId, personId).catch(() => { /* ignore */ }));
     const handlerId = `PersonPage-${params.id}`;
     SocketHelper.addHandler("conversationActivity", handlerId, (data: any) => {
       if (data?.contentType === "person" && data?.contentId === params.id) refetchRef.current();
     });
     return () => {
       SocketHelper.removeHandler(handlerId);
-      SubscriptionManager.leaveRoom(conversationId, churchId).catch(() => { /* ignore */ });
+      rooms.forEach((room) => SubscriptionManager.leaveRoom(room, churchId).catch(() => { /* ignore */ }));
     };
   }, [params.id, personData.data?.conversationId]);
 
