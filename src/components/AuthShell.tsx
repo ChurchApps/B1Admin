@@ -6,12 +6,14 @@ interface AuthShellProps {
   children: ReactNode;
 }
 
+// Fixed 500px card on desktop; full width on a phone so the consent buttons don't run off-screen.
 export const AuthShell: React.FC<AuthShellProps> = ({ logoAlt, children }) => (
   <Box sx={{ display: "flex", backgroundColor: "background.default", minHeight: "100vh" }}>
-    <div style={{ marginLeft: "auto", marginRight: "auto", paddingTop: 20 }}>
+    <Box sx={{ mx: "auto", pt: "20px", px: { xs: 2, sm: 0 }, width: { xs: "100%", sm: "auto" }, boxSizing: "border-box" }}>
       <Box
         sx={{
-          width: 500,
+          width: { xs: "100%", sm: 500 },
+          boxSizing: "border-box",
           minHeight: 100,
           backgroundColor: "background.paper",
           border: "1px solid",
@@ -21,11 +23,11 @@ export const AuthShell: React.FC<AuthShellProps> = ({ logoAlt, children }) => (
         }}
         px="16px"
         mx="auto">
-        <div style={{ textAlign: "center", margin: 50 }}>
-          <img src={"/images/logo-login.png"} alt={logoAlt} />
-        </div>
+        <Box sx={{ textAlign: "center", m: { xs: 3, sm: "50px" } }}>
+          <img src={"/images/logo-login.png"} alt={logoAlt} style={{ maxWidth: "100%" }} />
+        </Box>
         {children}
       </Box>
-    </div>
+    </Box>
   </Box>
 );

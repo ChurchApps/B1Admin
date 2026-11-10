@@ -70,6 +70,10 @@
     "commandPalette": {
       "src": ["src/components/commandPalette/**"],
       "specs": ["command-palette.spec.ts"]
+    },
+    "oauth": {
+      "src": ["src/OAuth.tsx", "src/components/AuthShell.tsx", "src/device/**"],
+      "specs": ["oauth-consent.spec.ts"]
     }
   }
 }
