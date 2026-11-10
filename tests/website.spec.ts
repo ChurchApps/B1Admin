@@ -1371,6 +1371,18 @@ test.describe("Website Management", () => {
     });
   });
 
+  test.describe("Appearance preview in dark mode", () => {
+    test("the sample hero uses the site palette, not the admin theme", async ({ page }) => {
+      await page.addInitScript(() => localStorage.setItem("b1admin-theme-mode", "dark"));
+      await page.goto("/site/appearance");
+      const hero = page.locator('[data-testid="preview-hero"]');
+      await expect(hero).toBeVisible({ timeout: 15000 });
+      // The hero and the Plan Your Visit button both use the palette's accent color.
+      const buttonBg = await page.locator('[data-testid="preview-plan-visit-button"]').evaluate((el) => getComputedStyle(el).backgroundColor);
+      await expect(hero).toHaveCSS("background-color", buttonBg);
+    });
+  });
+
   test.describe("Appearance — toggles persist after save", () => {
     test("navigating away and back to Appearance keeps the user on the section", async ({ page }) => {
       const appearanceTab = (await siblingNav(page)).getByText("Appearance");
