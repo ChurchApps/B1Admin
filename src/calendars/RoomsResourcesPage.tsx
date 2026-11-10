@@ -54,7 +54,7 @@ export const RoomsResourcesPage = () => {
     loadData();
   };
 
-  const groupName = (id?: string) => groups.find((g) => g.id === id)?.name || Locale.label("calendars.rooms.noApprovalNeeded");
+  const groupName = (id?: string | null) => groups.find((g) => g.id === id)?.name || Locale.label("calendars.rooms.noApprovalNeeded");
   const targetName = (b: CalendarBlockoutInterface) => {
     if (b.roomId) return rooms.find((r) => r.id === b.roomId)?.name || "";
     if (b.resourceId) return resources.find((r) => r.id === b.resourceId)?.name || "";
