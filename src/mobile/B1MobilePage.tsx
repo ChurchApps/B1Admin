@@ -63,13 +63,14 @@ export const B1MobilePage: React.FC = () => {
       setDirectoryVisibility(dirSetting.value || "Members");
     }
 
-    const p: VisibilityPreferenceInterface = { address: "", phoneNumber: "", email: "" } as VisibilityPreferenceInterface;
+    // With no saved default the Api treats each field as "members", so show that instead of a blank box.
+    const p: VisibilityPreferenceInterface = { address: "members", phoneNumber: "members", email: "members" } as VisibilityPreferenceInterface;
     const addr = allSettings.find(s => s.keyName === "addressVisibility");
-    if (addr) { setAddressSetting(addr); p.address = addr.value; }
+    if (addr) { setAddressSetting(addr); p.address = addr.value || "members"; }
     const phone = allSettings.find(s => s.keyName === "phoneVisibility");
-    if (phone) { setPhoneSetting(phone); p.phoneNumber = phone.value; }
+    if (phone) { setPhoneSetting(phone); p.phoneNumber = phone.value || "members"; }
     const email = allSettings.find(s => s.keyName === "emailVisibility");
-    if (email) { setEmailSetting(email); p.email = email.value; }
+    if (email) { setEmailSetting(email); p.email = email.value || "members"; }
     setPref(p);
 
     const msgAge = allSettings.find(s => s.keyName === "messagingMinimumAge");
