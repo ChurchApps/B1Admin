@@ -376,7 +376,7 @@ test.describe("People Management", () => {
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
       const seekText = page.locator("td").getByText(/Donations will appear/i);
-      const donationRow = page.locator("td").getByText(/\$\d/).first();
+      const donationRow = page.locator("td").getByText(/\$\s?\d/).first();
       await expect(seekText.or(donationRow)).toBeVisible({ timeout: 10000 });
     });
 

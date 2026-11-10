@@ -264,81 +264,50 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     });
   }, [optionalColumns, selectedColumns]);
 
+  // Sort value as shown in the cell: Phone shows the first of mobile/home/work and Campus shows the name.
+  const getSortValue = useCallback((p: any, key: string): any => {
+    if (optionalColumns.some((c) => c.id === key)) return getAnswerValue(p.id, key);
+    if (key === "phone") return p.contactInfo?.mobilePhone || p.contactInfo?.homePhone || p.contactInfo?.workPhone || "";
+    if (key === "campus") return p.campusId ? (campusMap[p.campusId] || "") : "";
+    if (key === "displayName") return p.name?.display || p.displayName || "";
+    // Birthday (no year) sorts by month and day; the year is padded out.
+    if (key === "birthDay") return p.birthDate ? new Date(2000, p.birthDate.getMonth(), p.birthDate.getDate()) : null;
+    return p[key];
+  }, [optionalColumns, getAnswerValue, campusMap]);
+
   const sortTableByKey = useCallback(
     (key: string) => {
-      // Toggle direction if same column, otherwise start descending
-      const asc = currentSortedCol === key ? !sortDirection : false;
+      // The first click on a column sorts ascending (A-Z, youngest first); clicking again reverses it.
+      const asc = currentSortedCol === key ? !sortDirection : true;
       setCurrentSortedCol(key);
       setSortDirection(asc);
 
-      // Check if this is a custom field
-      const isCustomField = optionalColumns.some((c) => c.id === key);
+      const compare = (a: any, b: any): number => {
+        if (typeof a?.getTime === "function" && typeof b?.getTime === "function") return a.getTime() - b.getTime();
+        const numA = Number(a);
+        const numB = Number(b);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return String(a).localeCompare(String(b), undefined, { sensitivity: "base", numeric: true });
+      };
 
-      const sortedPeople = [...people].sort(function (a: any, b: any) {
-        // Handle custom field sorting
-        if (isCustomField) {
-          const valA = getAnswerValue(a.id, key);
-          const valB = getAnswerValue(b.id, key);
-          if (!valA && !valB) return 0;
-          if (!valA) return 1;
-          if (!valB) return -1;
-          const upperA = valA.toUpperCase();
-          const upperB = valB.toUpperCase();
-          if (upperA < upperB) return asc ? 1 : -1;
-          if (upperA > upperB) return asc ? -1 : 1;
-          return 0;
-        }
-
-        if (key !== "birthDay") {
-          const nullA = a[key] === null || a[key] === undefined || a[key] === "";
-          const nullB = b[key] === null || b[key] === undefined || b[key] === "";
-          if (nullA && nullB) return 0;
-          if (nullA) return 1;
-          if (nullB) return -1;
-        }
-        if (key === "birthDay") {
-          //there's no 'birthDay' property in the people object; instead use birthDate to sort
-          if (a["birthDate"] === null && b["birthDate"] === null) return 0;
-          if (a["birthDate"] === null) return 1;
-          if (b["birthDate"] === null) return -1;
-        }
-
-        if (typeof a[key]?.getMonth === "function") return asc ? a[key] - b[key] : b[key] - a[key];
-
-        if (key === "birthDay") {
-          //to sort dates as per the month
-          if (asc) {
-            if (a["birthDate"]?.getMonth() !== b["birthDate"]?.getMonth()) return a["birthDate"]?.getMonth() - b["birthDate"]?.getMonth();
-            else {
-              return a["birthDate"]?.getDate() - b["birthDate"]?.getDate();
-            }
-          } else {
-            if (b["birthDate"]?.getMonth() !== a["birthDate"]?.getMonth()) return b["birthDate"]?.getMonth() - a["birthDate"]?.getMonth();
-            else {
-              return b["birthDate"]?.getDate() - a["birthDate"]?.getDate();
-            }
-          }
-        }
-
-        const numA = Number(a[key]);
-        const numB = Number(b[key]);
-        if (!isNaN(numA) && !isNaN(numB)) {
-          return asc ? numA - numB : numB - numA;
-        }
-
-        const valA = String(a[key]).toUpperCase();
-        const valB = String(b[key]).toUpperCase();
-        if (valA < valB) return asc ? 1 : -1;
-        if (valA > valB) return asc ? -1 : 1;
-        // equal
-        return 0;
+      const sortedPeople = [...people].sort((a: any, b: any) => {
+        const valA = getSortValue(a, key);
+        const valB = getSortValue(b, key);
+        // Blanks always go last, whichever way the column is sorted.
+        const blankA = valA === null || valA === undefined || valA === "";
+        const blankB = valB === null || valB === undefined || valB === "";
+        if (blankA && blankB) return 0;
+        if (blankA) return 1;
+        if (blankB) return -1;
+        const result = compare(valA, valB);
+        return asc ? result : -result;
       });
 
       if (props.updateSearchResults) {
         props.updateSearchResults(sortedPeople);
       }
     },
-    [people, props, optionalColumns, getAnswerValue, currentSortedCol, sortDirection]
+    [people, props, getSortValue, currentSortedCol, sortDirection]
   );
 
   const rows = useMemo(() => {

@@ -42,7 +42,8 @@ interface Props {
 export function formattedPhoneNumber(value: string) {
   if (!value) return "";
   value = value.split("x")[0];
-  value = value.replaceAll(" ", "-");
+  // "+1 217 555 2502" reads as +1-217-555-2502; keep the space in "(217) 555-2502".
+  value = value.replace(/(?<!\)) /g, "-");
   return value;
 }
 

@@ -235,7 +235,7 @@ export const PersonGivingSummary: React.FC<GivingProps> = ({ personId, household
       <Stack spacing={1.5}>
         <Typography variant="body1" color="text.secondary">
           <Box component="span" sx={{ color: "text.primary", fontVariantNumeric: "tabular-nums" }}>{money(total)}</Box>
-          {" " + Locale.label("people.personRecord.givingYear", "in {year} · {count} gifts").replace("{year}", String(year)).replace("{count}", String(yearRows.length))}
+          {" " + (yearRows.length === 1 ? Locale.label("people.personRecord.givingYearSingular", "in {year} · {count} gift") : Locale.label("people.personRecord.givingYear", "in {year} · {count} gifts")).replace("{year}", String(year)).replace("{count}", String(yearRows.length))}
           {householdNote}
           {yearRows.length > shown.length && " · " + Locale.label("people.personRecord.showingLatest", "showing latest {count}").replace("{count}", String(shown.length))}
         </Typography>
@@ -367,7 +367,7 @@ export const PersonNotesSummary: React.FC<NotesProps> = ({ conversationId, onVie
           {latest.content}
         </Typography>
         <VerbRow>
-          <span>{Locale.label("people.personRecord.noteCount", "{count} notes").replace("{count}", String(visible.length))}</span>
+          <span>{Locale.label(visible.length === 1 ? "people.personRecord.noteCountSingular" : "people.personRecord.noteCount", visible.length === 1 ? "{count} note" : "{count} notes").replace("{count}", String(visible.length))}</span>
           {allVerb}
         </VerbRow>
       </Stack>
