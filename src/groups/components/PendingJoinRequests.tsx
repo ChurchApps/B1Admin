@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Typography } from "@mui/material";
 import { CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
-import { ApiHelper, PersonAvatar, DateHelper } from "@churchapps/apphelper";
+import { ApiHelper, PersonAvatar, DateHelper, Locale } from "@churchapps/apphelper";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -23,7 +23,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
       await ApiHelper.post(`/groupjoinrequests/${req.id}/approve`, {}, "MembershipApi");
       onChanged();
     } catch {
-      setError("Unable to approve the request. Please try again.");
+      setError(Locale.label("groups.pendingRequests.approveError"));
     } finally {
       setWorking(null);
     }
@@ -39,7 +39,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
       setDeclineReason("");
       onChanged();
     } catch {
-      setError("Unable to decline the request. Please try again.");
+      setError(Locale.label("groups.pendingRequests.declineError"));
     } finally {
       setWorking(null);
     }
@@ -50,7 +50,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
   return (
     <Box data-testid="pending-requests" sx={{ mb: 2 }}>
       <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-        Pending Requests ({requests.length})
+        {Locale.label("groups.pendingRequests.title").replace("{count}", requests.length.toString())}
       </Typography>
       {error && <Alert severity="error" sx={{ mb: 1 }} onClose={() => setError("")}>{error}</Alert>}
       <Stack spacing={1}>
@@ -60,7 +60,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
               <PersonAvatar person={req.person!} size="small" />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                  {req.person?.name?.display || "Unknown"}
+                  {req.person?.name?.display || Locale.label("groups.groupMembers.unknown")}
                   {showGroupName && req.group?.name && (
                     <Typography component="span" variant="body2" sx={{ ml: 1, color: "text.secondary", fontWeight: 400 }}>
                       → {req.group.name}
@@ -86,7 +86,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
                 disabled={working === req.id}
                 onClick={() => handleApprove(req)}
                 data-testid={`approve-${req.id}`}>
-                Approve
+                {Locale.label("groups.pendingRequests.approve")}
               </Button>
               <Button
                 size="small"
@@ -95,7 +95,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
                 disabled={working === req.id}
                 onClick={() => setDeclineTarget(req)}
                 data-testid={`decline-${req.id}`}>
-                Decline
+                {Locale.label("groups.pendingRequests.decline")}
               </Button>
             </Stack>
           </Box>
@@ -103,10 +103,10 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
       </Stack>
 
       <Dialog open={!!declineTarget} onClose={() => setDeclineTarget(null)} fullWidth maxWidth="sm">
-        <DialogTitle>Decline Request</DialogTitle>
+        <DialogTitle>{Locale.label("groups.pendingRequests.declineTitle")}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ mb: 2 }}>
-            Optionally provide a reason. This will be shown to the requester.
+            {Locale.label("groups.pendingRequests.declineHelp")}
           </Typography>
           <TextField
             autoFocus
@@ -114,7 +114,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
             multiline
             minRows={2}
             maxRows={4}
-            label="Reason (optional)"
+            label={Locale.label("groups.pendingRequests.reason")}
             value={declineReason}
             onChange={(e) => setDeclineReason(e.target.value)}
             slotProps={{ htmlInput: { maxLength: 500 } }}
@@ -122,9 +122,9 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => { setDeclineTarget(null); setDeclineReason(""); }}>Cancel</Button>
+          <Button onClick={() => { setDeclineTarget(null); setDeclineReason(""); }}>{Locale.label("common.cancel")}</Button>
           <Button onClick={handleDeclineSubmit} disabled={!!declineTarget && working === declineTarget.id} variant="contained" color="error" data-testid="decline-confirm">
-            Decline
+            {Locale.label("groups.pendingRequests.decline")}
           </Button>
         </DialogActions>
       </Dialog>

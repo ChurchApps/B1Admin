@@ -351,12 +351,12 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>{Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}</InputLabel>
+                  <InputLabel>{Locale.label("groups.groupDetailsEdit.enrollment")}</InputLabel>
                   <Controller name="joinPolicy" control={control} render={({ field }) => (
-                    <Select {...field} value={field.value ?? "open"} label={Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"} data-testid="join-policy-select">
-                      <MenuItem value="open">Open (members can join immediately)</MenuItem>
-                      <MenuItem value="request">Request to Join (leader approval required)</MenuItem>
-                      <MenuItem value="closed">Closed (admin-add only)</MenuItem>
+                    <Select {...field} value={field.value ?? "open"} label={Locale.label("groups.groupDetailsEdit.enrollment")} data-testid="join-policy-select">
+                      <MenuItem value="open">{Locale.label("groups.groupDetailsEdit.joinOpen")}</MenuItem>
+                      <MenuItem value="request">{Locale.label("groups.groupDetailsEdit.joinRequest")}</MenuItem>
+                      <MenuItem value="closed">{Locale.label("groups.groupDetailsEdit.joinClosed")}</MenuItem>
                     </Select>
                   )} />
                 </FormControl>

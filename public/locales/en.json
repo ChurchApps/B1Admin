@@ -1474,6 +1474,9 @@
       "groupPhotoAlt": "group",
       "groupSlugAria": "Group slug",
       "guestCapacity": "Guest Capacity",
+      "joinClosed": "Closed (admin-add only)",
+      "joinOpen": "Open (members can join immediately)",
+      "joinRequest": "Request to Join (leader approval required)",
       "maxAge": "Maximum Age",
       "maxGrade": "Maximum Grade",
       "meetingLocation": "Meeting Location",
@@ -1766,6 +1769,16 @@
       "timeZoneHelp": "Times are in {zone}.",
       "title": "Push Notification",
       "when": "When"
+    },
+    "pendingRequests": {
+      "approve": "Approve",
+      "approveError": "Unable to approve the request. Please try again.",
+      "decline": "Decline",
+      "declineError": "Unable to decline the request. Please try again.",
+      "declineHelp": "Optionally provide a reason. This will be shown to the requester.",
+      "declineTitle": "Decline Request",
+      "reason": "Reason (optional)",
+      "title": "Pending Requests ({count})"
     }
   },
   "helpers": {
