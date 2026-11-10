@@ -51,7 +51,7 @@ test.describe.serial("Developer Portal", () => {
       (r) => r.url().includes("/apiKeys") && r.request().method() === "POST",
       { timeout: 15000 }
     );
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     await savePost;
 
     const keyDialog = page.locator('div[role="dialog"]:has-text("API Key")');
@@ -66,7 +66,7 @@ test.describe.serial("Developer Portal", () => {
   test("rejects an API key with no scopes selected", async () => {
     await page.getByRole("button", { name: "New API Key" }).click();
     await page.getByLabel("Name", { exact: true }).fill("Barnabas Invalid Key");
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     // Client-side validation blocks the save and surfaces an error message.
     await expect(page.getByText("Select at least one scope")).toBeVisible({ timeout: 5000 });
     await page.locator("button").getByText("Cancel").click();
