@@ -1,6 +1,6 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { servingTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -105,7 +105,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
       // Icon-only buttons; text "Add" would substring-match "Add a New Person".
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Dorothy Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       const memberPost = page.waitForResponse(r => r.url().includes("/groupmembers") && r.request().method() === "POST", { timeout: 15000 }).catch((): null => null);
       await addBtn.click();
@@ -134,7 +134,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const searched = page.waitForResponse(r => r.url().includes("/people") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill("Grace");
       await searched;
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Grace Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText("Grace Jackson");
@@ -345,7 +345,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await personSearch.fill("Dorothy");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Dorothy Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText("Dorothy Jackson");
@@ -374,7 +374,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const searched = page.waitForResponse(r => r.url().includes("/people") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill("Grace");
       await searched;
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Grace Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText("Grace Jackson");

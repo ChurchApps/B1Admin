@@ -4,7 +4,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToRegistrations } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
-import { confirmDelete } from "./helpers/fixtures";
+import { confirmDelete, personAddButton } from "./helpers/fixtures";
 
 
 const API_BASE = process.env.API_BASE || "http://localhost:8084";
@@ -223,7 +223,7 @@ test.describe.serial("Registrations — Registration Questions, Add Attendee, fi
 
     await dialog.locator('input[name="personAddText"]').fill("Demo User");
     await dialog.locator('[data-testid="search-button"]').click();
-    const addBtn = dialog.locator('[data-testid^="add-person-"]').first();
+    const addBtn = personAddButton(dialog, "Demo User");
     await expect(addBtn).toBeVisible({ timeout: 10000 });
     const registerPost = page.waitForResponse((r) => r.url().includes("/registrations/register") && r.request().method() === "POST", { timeout: 15000 });
     await addBtn.click();
@@ -243,7 +243,7 @@ test.describe.serial("Registrations — Registration Questions, Add Attendee, fi
 
     await dialog.locator('input[name="personAddText"]').fill("Dorothy Jackson");
     await dialog.locator('[data-testid="search-button"]').click();
-    const addBtn = dialog.locator('[data-testid^="add-person-"]').first();
+    const addBtn = personAddButton(dialog, "Dorothy Jackson");
     await expect(addBtn).toBeVisible({ timeout: 10000 });
     await addBtn.click();
 
@@ -291,7 +291,7 @@ test.describe("Registrations — Add Attendee on standalone events, Questions de
     await dialog.locator('input[name="personAddText"]').fill(name);
     await dialog.locator('[data-testid="search-button"]').click();
     const registerPost = page.waitForResponse((r) => r.url().includes("/registrations/register") && r.request().method() === "POST", { timeout: 15000 });
-    await dialog.locator('[data-testid^="add-person-button-"]').first().click();
+    await personAddButton(dialog, name).click();
     const regResp = await registerPost;
     expect(regResp.ok(), "register response ok").toBeTruthy();
     await expect(dialog).toHaveCount(0, { timeout: 15000 });

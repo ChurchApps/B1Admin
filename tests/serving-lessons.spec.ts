@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError, confirmDelete, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -72,7 +72,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await personSearch.fill("Dorothy");
       await page.locator('[data-testid="search-button"]').click();
       // Icon-only buttons; text "Add" would substring-match "Add a New Person".
-      const addPerson = page.locator('[data-testid^="add-person-button-"]').first();
+      const addPerson = personAddButton(page, "Dorothy Jackson");
       await expect(addPerson).toBeVisible({ timeout: 10000 });
       await addPerson.click();
       // SendInviteDialog opens for email addresses; dismiss before next test.

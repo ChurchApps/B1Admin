@@ -1,7 +1,7 @@
 import { request, type APIRequestContext, type Locator, type Page } from "@playwright/test";
 import { peopleTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
 import { navigateToPeople } from "./helpers/navigation";
-import { personDetailsEditButton, SEED_PEOPLE, openPersonRow, confirmDelete } from "./helpers/fixtures";
+import { personDetailsEditButton, SEED_PEOPLE, openPersonRow, confirmDelete, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { mockChurchLogo } from "./helpers/print-logo";
@@ -640,8 +640,7 @@ test.describe("People Management", () => {
         await addBtn.click();
         await page.locator('input[name="personAddText"]').fill("Carol");
         await page.locator('[data-testid="search-button"]').click();
-        // Icon-only add button in results; data-testid="add-person-<id>".
-        const selBtn = page.locator('#householdMemberAddTable [data-testid^="add-person-"]').first();
+        const selBtn = personAddButton(page.locator("#householdMemberAddTable"), SEED_PEOPLE.CAROL);
         await expect(selBtn).toBeVisible({ timeout: 10000 });
         await selBtn.click();
         // Confirmation dialog when adding a person who is already in another household.

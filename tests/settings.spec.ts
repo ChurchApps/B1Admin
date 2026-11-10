@@ -1,6 +1,6 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { settingsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, confirmDelete, openPersonRow, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, openPersonRow, personDetailsEditButton, SEED_PEOPLE, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToRoles, navigateToForms, navigateTo, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -135,7 +135,7 @@ test.describe.serial("Settings Management", () => {
       await searchBox.fill("Jennifer Williams");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      const selectBtn = personAddButton(page, "Jennifer Williams");
       await selectBtn.click();
       // Auto-save opens SendInviteDialog; dismiss before asserting on Members table.
       await dismissSendInviteIfPresent(page);
@@ -401,7 +401,7 @@ test.describe.serial("Settings Management", () => {
       await personSearch.fill("Dorothy Jackson");
       const searchBtn = page.locator('[id="searchButton"]');
       await searchBtn.click();
-      const addBtn = page.locator('[data-testid^="add-person-"]').first();
+      const addBtn = personAddButton(page, "Dorothy Jackson");
       await addBtn.click();
 
       const validatedAddition = page.locator("td a").getByText("Dorothy Jackson");

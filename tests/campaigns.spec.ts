@@ -3,7 +3,7 @@ import { donationsTest as test, expect } from "./helpers/test-fixtures";
 import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
 import { navigateToDonations, siblingNav } from "./helpers/navigation";
-import { confirmDelete } from "./helpers/fixtures";
+import { confirmDelete, personAddButton } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 const TEST_FUND = "Zacchaeus Building Fund";
@@ -86,7 +86,7 @@ test.describe.serial("Pledge Campaigns", () => {
     await expect(box).toBeVisible({ timeout: 10000 });
     await box.locator('input[name="personAddText"]').fill(TEST_PERSON);
     await box.locator('[data-testid="search-button"]').click();
-    const personResult = box.locator('[data-testid^="add-person-"]').first();
+    const personResult = personAddButton(box, TEST_PERSON);
     await expect(personResult).toBeVisible({ timeout: 10000 });
     await personResult.click();
 
