@@ -1,5 +1,6 @@
 import { Box, Button, Chip, IconButton, MenuItem, Select, Stack, TextField, Typography, Paper } from "@mui/material";
 import React from "react";
+import { flushSync } from "react-dom";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { type WorkflowInterface } from "@churchapps/helpers";
@@ -87,11 +88,10 @@ export const WorkflowStepActions = (props: Props) => {
     const next = message.slice(0, start) + field + message.slice(end);
     if (next.length > 1600) return;
     const caret = start + field.length;
-    setConfig(index, { message: next });
-    requestAnimationFrame(() => {
-      textRefs.current[index]?.focus();
-      textRefs.current[index]?.setSelectionRange(caret, caret);
-    });
+    // Commit now and place the caret in the same tick; a deferred caret lands after the next keystroke.
+    flushSync(() => setConfig(index, { message: next }));
+    textRefs.current[index]?.focus();
+    textRefs.current[index]?.setSelectionRange(caret, caret);
   };
 
   // Fills the Send Text message from a text template, same as the Mass Texting window. The message stays editable.

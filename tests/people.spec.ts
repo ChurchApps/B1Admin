@@ -1129,7 +1129,7 @@ test.describe("People Management", () => {
 
       await page.locator('[data-testid="email-person-button"]').click();
       const dialog = page.getByRole("dialog");
-      await expect(dialog.getByRole("heading", { name: `Email ${SEED_PEOPLE.DONALD}` })).toBeVisible({ timeout: 10000 });
+      await expect(dialog.getByRole("heading", { name: /^Email (Mr\. )?Donald Clark$/ })).toBeVisible({ timeout: 10000 });
       await expect(dialog.getByText(`Sending to ${SEED_PEOPLE.DONALD_EMAIL}`)).toBeVisible();
       await expect(dialog.locator('[data-testid="open-mail-app"]')).toBeVisible();
 

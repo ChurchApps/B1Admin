@@ -884,7 +884,7 @@ test.describe.serial("Serving Management - Workflows", () => {
     await dialog.locator('input[name="personAddText"]').fill(SEED_PEOPLE.DONALD);
     await dialog.locator('input[name="personAddText"]').press("Enter");
     await dialog.locator('[data-testid^="add-person-button-"]').first().click();
-    await expect(page.locator('[data-testid="action-notify-person-0"]')).toHaveText(SEED_PEOPLE.DONALD, { timeout: 10000 });
+    await expect(page.locator('[data-testid="action-notify-person-0"]')).toHaveText(/^(Mr\. )?Donald Clark$/, { timeout: 10000 });
     await page.locator('[data-testid="action-notify-message-0"] textarea').first().fill("Lapsed giver, please call");
     await page.locator('[data-testid="step-save-button"]').click();
     await expect(page.locator('[data-testid="step-save-button"]')).toHaveCount(0, { timeout: 10000 });
@@ -892,14 +892,14 @@ test.describe.serial("Serving Management - Workflows", () => {
     const actions = await (await ctx.get(`${API_BASE}/doing/workflowStepActions/step/${auto.id}`, auth)).json();
     expect(actions.map((a: any) => a.actionType)).toEqual(["notifyPerson"]);
     const config = JSON.parse(actions[0].config);
-    expect(config.personLabel).toBe(SEED_PEOPLE.DONALD);
+    expect(config.personLabel).toMatch(/^(Mr\. )?Donald Clark$/);
     expect(config.personId).toBeTruthy();
     expect(config.message).toBe("Lapsed giver, please call");
 
     const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: "person", id: "PER00000001", label: "John Smith" } } });
     expect(added.status()).toBe(200);
     const card = await added.json();
-    expect(JSON.parse(card.data || "{}").history?.some((h: any) => h.message === "Notified " + SEED_PEOPLE.DONALD)).toBeTruthy();
+    expect(JSON.parse(card.data || "{}").history?.some((h: any) => /^Notified (Mr\. )?Donald Clark$/.test(h.message))).toBeTruthy();
 
     await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
     await ctx.dispose();

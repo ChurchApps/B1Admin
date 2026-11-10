@@ -1343,6 +1343,8 @@ test.describe.serial("Assign a position directly to a person", () => {
     await groupSelect.click();
     await page.getByRole("option", { name: "None", exact: true }).click();
     await page.locator("button").getByText("Save").last().click();
+    // The save callback closes the edit panel; clicking a row before then gets that panel closed too.
+    await expect(groupSelect).toHaveCount(0, { timeout: 15000 });
 
     // Back to direct assignment: the panel offers the whole-church search, not the team roster.
     await positionRow(GROUPED).getByRole("button", { name: /1 person needed/i }).click();

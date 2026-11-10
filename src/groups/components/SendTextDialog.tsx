@@ -1,4 +1,5 @@
 import React from "react";
+import { flushSync } from "react-dom";
 import { TextField, Typography, Alert, Chip, Stack, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
@@ -76,11 +77,10 @@ export const SendTextDialog: React.FC<Props> = (props) => {
     const next = message.slice(0, start) + field + message.slice(end);
     if (resolveGroup(next).length > MAX_LENGTH) return;
     const caret = start + field.length;
-    setMessage(next);
-    requestAnimationFrame(() => {
-      inputRef.current?.focus();
-      inputRef.current?.setSelectionRange(caret, caret);
-    });
+    // Commit now and place the caret in the same tick; a deferred caret lands after the next keystroke.
+    flushSync(() => setMessage(next));
+    inputRef.current?.focus();
+    inputRef.current?.setSelectionRange(caret, caret);
   };
 
   // Text templates are rows in the email templates list with the "Text" category.

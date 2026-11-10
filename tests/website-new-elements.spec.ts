@@ -64,7 +64,12 @@ test.describe.serial("Website new elements", () => {
     const blankTemplate = page.locator('[data-testid="template-blank"]');
     await expect(blankTemplate).toBeVisible({ timeout: 10000 });
     await blankTemplate.click();
+    // Clicking an element card before the new section is loaded reopens the layout picker instead.
+    const newSectionPost = page.waitForResponse(r => r.url().endsWith("/content/sections") && r.request().method() === "POST", { timeout: 15000 });
+    const treeReload = page.waitForResponse(r => r.url().includes("/content/pages/") && r.url().includes("/tree?id=") && r.request().method() === "GET", { timeout: 15000 });
     await page.locator("button").getByText("Save").click();
+    expect((await newSectionPost).status()).toBe(200);
+    await treeReload;
 
     // Click the Icon Feature catalog card — inserts it and opens its edit form.
     await ensurePanelOpen("draggable-element-iconFeature");

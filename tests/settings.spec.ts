@@ -543,6 +543,28 @@ test.describe.serial("Settings Management", () => {
   test.describe.serial("Region", () => {
     test.describe.configure({ retries: 0 });
 
+    // The phone-format tests save a local number on Donald; later specs (texting STOP replies)
+    // match him by his seeded mobile, so put it back once this group is done.
+    const API = process.env.API_BASE || "http://localhost:8084";
+    const DONALD_ID = "PER00000080";
+    let regionCtx: APIRequestContext;
+    let regionAuth: { headers: { Authorization: string } };
+    let originalMobile: string | undefined;
+
+    test.beforeAll(async () => {
+      regionCtx = await pwRequest.newContext();
+      const body = await (await regionCtx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+      regionAuth = { headers: { Authorization: "Bearer " + uc.jwt } };
+      originalMobile = (await (await regionCtx.get(`${API}/membership/people/${DONALD_ID}`, regionAuth)).json()).contactInfo?.mobilePhone;
+    });
+
+    test.afterAll(async () => {
+      const person = await (await regionCtx.get(`${API}/membership/people/${DONALD_ID}`, regionAuth)).json();
+      await regionCtx.post(`${API}/membership/people`, { ...regionAuth, data: [{ ...person, contactInfo: { ...person.contactInfo, mobilePhone: originalMobile } }] });
+      await regionCtx.dispose();
+    });
+
     const MONTH = "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)";
     const DAY_FIRST = new RegExp(`^\\d{1,2} ${MONTH} \\d{4}$`);
     const MONTH_FIRST = new RegExp(`^${MONTH} \\d{1,2}, \\d{4}$`);
@@ -582,7 +604,7 @@ test.describe.serial("Settings Management", () => {
     const choosePhoneFormat = async (format: "international" | "local") => {
       await page.goto("/settings#region");
       await expect(page.locator('[data-testid="settings-section-region"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });
-      await page.locator('[data-testid="small-button-edit"]').first().dispatchEvent("click");
+      await page.locator('[data-testid="settings-region"] [data-testid="small-button-edit"]').dispatchEvent("click");
       await page.locator('[data-testid="phone-format-select"]').click();
       await page.locator(`[data-testid="phone-format-option-${format}"]`).click();
       await page.locator("button").getByText("Save").click();
