@@ -1,4 +1,4 @@
-import { type Page } from "@playwright/test";
+import { type APIRequestContext, type Page, request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateTo } from "./helpers/navigation";
 
@@ -266,5 +266,65 @@ test.describe("Print all statements labels", () => {
 
     // No raw i18n key may survive to the printed page.
     await expect(page.getByText(/donations\.printAllStatementsPage\./)).toHaveCount(0);
+  });
+});
+
+// Giving statements count only tax-deductible giving (Funds → Tax Deductible). The batch page's summary,
+// ZIP and Print All must leave out a gift made only to a non-deductible fund, exactly like a donor's
+// own statement (GET /donations?personId= drops it on the Api side).
+test.describe.serial("Batch statements skip non-deductible funds", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const YEAR = 2024;
+  const DONALD_CLARK = "PER00000080";
+  const JOHN_SMITH = "PER00000001";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let fundId: string;
+  let batchId: string;
+
+  test.beforeAll(async () => {
+    ctx = await request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = body.userChurches.find((c: any) => c.church?.id === "CHU00000001");
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    fundId = (await (await ctx.post(`${API}/giving/funds`, { ...auth, data: [{ name: "Zebedee Camp Fees", taxDeductible: false }] })).json())[0].id;
+    batchId = (await (await ctx.post(`${API}/giving/donationbatches`, { ...auth, data: [{ name: "Zebedee Statement Batch", batchDate: `${YEAR}-06-09` }] })).json())[0].id;
+    const gifts = [
+      { personId: DONALD_CLARK, amount: 40, fundId },
+      { personId: JOHN_SMITH, amount: 25, fundId: "FUN00000001" }
+    ];
+    for (const g of gifts) {
+      await ctx.post(`${API}/giving/donations`, {
+        ...auth,
+        data: [{ batchId, personId: g.personId, donationDate: `${YEAR}-06-09`, amount: g.amount, currency: "usd", method: "Check", fundDonations: [{ fundId: g.fundId, amount: g.amount, currency: "usd" }] }]
+      });
+    }
+  });
+
+  test.afterAll(async () => {
+    if (batchId) await ctx.delete(`${API}/giving/donationbatches/${batchId}`, auth);
+    if (fundId) await ctx.delete(`${API}/giving/funds/${fundId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("the summary and buttons count only the deductible gift", async ({ page }) => {
+    await page.goto("/donations/statements");
+    await page.locator('[role="combobox"]').first().click();
+    await page.locator(`[data-value="${YEAR}"]`).click();
+    const summary = page.getByRole("heading", { name: `Summary (${YEAR})` }).locator("..");
+    await expect(summary).toContainText("Total Donors:1");
+    await expect(summary).toContainText("Total Donations:1");
+    await expect(summary).toContainText("25.00");
+    await expect(summary).not.toContainText("65.00");
+    await expect(page.getByRole("button", { name: "Print All 1 Statements" })).toBeVisible();
+  });
+
+  test("Print All prints a statement only for the donor with deductible giving", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto(`/donations/print-all?year=${YEAR}`);
+    await expect(page.getByText(`${YEAR} Annual Giving Statement`)).toHaveCount(1, { timeout: 15000 });
+    await expect(page.getByText("Smith", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("Donald Clark")).toHaveCount(0);
+    await expect(page.getByText("Zebedee Camp Fees")).toHaveCount(0);
   });
 });
