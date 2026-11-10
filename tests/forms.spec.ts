@@ -583,7 +583,7 @@ test.describe.serial("Repeated submissions of the same form stay reachable", () 
 // only stop new submissions, never hide history.
 //
 // Uses its own disposable form rather than archiving the seed "Visitor Information
-// Card": that card is asserted on by people.spec.ts, issue-1014.spec.ts and
+// Card": that card is asserted on by people.spec.ts, people-form-results-dark-mode.spec.ts and
 // serving-event-triggers.spec.ts, which run in parallel workers (workers: 4), so
 // archiving it mid-suite would intermittently break those files.
 test.describe.serial("Archived forms keep submission history", () => {

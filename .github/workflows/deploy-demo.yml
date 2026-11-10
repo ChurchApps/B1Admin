@@ -17,7 +17,8 @@ permissions:
 jobs:
   deploy:
     name: Deploy Demo
-    runs-on: ubuntu-latest
+    # Pinned for Playwright's Chromium deps; see deploy-prod.yml.
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
@@ -51,3 +52,18 @@ jobs:
 
       - name: Deploy
         run: yarn deploy-demo
+
+      - name: Install Chromium
+        run: yarn playwright install --with-deps chromium
+
+      - name: Smoke
+        run: node tests/setup/smoke.mjs https://demo.b1.church/login --expect dist/index.html
+
+      - name: Smoke suite
+        env:
+          SMOKE_BASE_URL: https://demo.b1.church
+          SMOKE_EMAIL: demo@b1.church
+          SMOKE_PASSWORD: password
+          SMOKE_CHURCH: Grace Community Church
+          SMOKE_REQUIRE_AUTH: "1"
+        run: yarn test:smoke
