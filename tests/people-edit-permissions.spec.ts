@@ -1,4 +1,4 @@
-import { test, expect, request as pwRequest, type BrowserContext, type Page } from "@playwright/test";
+import { test, expect, request as pwRequest, type APIRequestContext, type BrowserContext, type Page } from "@playwright/test";
 
 // Issue #1076: a member without People > Edit is still offered edit/delete controls on
 // the People screens. The Api rejects the requests, so the buttons never work - they
@@ -12,10 +12,10 @@ const VOLUNTEER_EMAIL = "volunteer@b1.church";
 const API = process.env.API_BASE || "http://localhost:8084";
 const VOLUNTEER_ROLE = "ROL00000010";
 
-async function adminAuth(ctx) {
+async function adminAuth(ctx: APIRequestContext) {
   const login = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
   const body = await login.json();
-  const uc = (body.userChurches || []).find((c) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+  const uc = (body.userChurches || []).find((c: { church?: { id?: string } }) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
   return { headers: { Authorization: "Bearer " + uc.jwt } };
 }
 
