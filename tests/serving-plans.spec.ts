@@ -772,6 +772,18 @@ test.describe("Edit Plan Type locale", () => {
     await expect(dialog).not.toContainText("plans.planTypeReminders.");
     await expect(dialog.getByText("Reminders", { exact: true })).toBeVisible({ timeout: 10000 });
   });
+
+  test("deleting a plan type asks a real question, not \"Confirm Delete\"", async ({ page }) => {
+    await page.goto("/serving/plans");
+    const row = page.locator("tr", { hasText: "Sunday Service" }).first();
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.locator('button[aria-label="Edit"]').click();
+    await page.getByRole("dialog").getByRole("button", { name: "Delete", exact: true }).click();
+    const confirm = page.getByRole("dialog").filter({ hasText: "Are you sure you want to delete this plan type?" });
+    await expect(confirm).toBeVisible({ timeout: 10000 });
+    await confirm.getByRole("button", { name: "Cancel" }).click();
+    await expect(page.getByRole("dialog").filter({ hasText: "Plan Type Details" })).toBeVisible();
+  });
 });
 
 // The schedule matrix used to be reachable only from the Plan Type header button;
