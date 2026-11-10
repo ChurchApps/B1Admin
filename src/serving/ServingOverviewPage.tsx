@@ -382,6 +382,7 @@ export const ServingOverviewPage = () => {
                 assignment={{ positionId: slot.positionId } as AssignmentInterface}
                 peopleNeeded={slot.needed - slot.assignments.length}
                 updatedFunction={(done: boolean) => { overviewData.refetch(); if (done) setEditingKey(null); }}
+                assignedPersonIds={slot.assignments.map((a) => a.personId)}
               />
             </Box>
           ))}
