@@ -139,8 +139,9 @@ export const AvailabilityPage = () => {
   }, [bookings, blockouts, rooms, resources, filter]);
 
   const eventStyle = (event: CalEvent) => {
-    const bg = event.kind === "approved" ? "var(--b1-success)" : event.kind === "pending" ? "var(--b1-warning)" : "var(--b1-neutral)";
-    return { style: { backgroundColor: bg, borderColor: bg } };
+    // Tinted fill with the matching strong text (as on status badges) stays readable in light and dark mode.
+    const tone = event.kind === "approved" ? "success" : event.kind === "pending" ? "warning" : "neutral";
+    return { style: { backgroundColor: `var(--b1-${tone}-bg)`, color: `var(--b1-${tone})`, borderColor: `var(--b1-${tone})`, fontWeight: 600 } };
   };
 
   if (denied) return denied;

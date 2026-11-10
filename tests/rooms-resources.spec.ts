@@ -566,3 +566,29 @@ test.describe.serial("Room approval reset and event request actions", () => {
     expect(await visibility()).toBe("public");
   });
 });
+
+// Booking blocks used white text on a pale green in dark mode, which was hard to read.
+test.describe("Availability booking colors", () => {
+  const luminance = (rgb: string) => {
+    const [r, g, b] = (rgb.match(/\d+(\.\d+)?/g) || []).slice(0, 3).map(Number).map((c) => {
+      const v = c / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a: string, b: string) => {
+    const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+    return (hi + 0.05) / (lo + 0.05);
+  };
+
+  for (const mode of ["light", "dark"]) {
+    test(`booking text is readable in ${mode} mode`, async ({ page }) => {
+      await page.addInitScript((m) => { try { localStorage.setItem("b1admin-theme-mode", m); } catch { /* storage blocked */ } }, mode);
+      await page.goto("/calendars/availability");
+      const block = page.locator(".rbc-event").first();
+      await expect(block).toBeVisible({ timeout: 15000 });
+      const { color, background } = await block.evaluate((el) => { const s = getComputedStyle(el); return { color: s.color, background: s.backgroundColor }; });
+      expect(contrast(color, background)).toBeGreaterThanOrEqual(4.5);
+    });
+  }
+});
