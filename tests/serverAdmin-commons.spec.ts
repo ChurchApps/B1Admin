@@ -94,13 +94,15 @@ async function openCommons(page: Page) {
 
 // The listen gate needs a package with a score, chords and slides. The demo catalog (reset-commons)
 // seeds ~200 such songs; pick the first one so the spec does not depend on a specific title.
+// No score-only fallback: a song without slides can never turn Sunday-ready, and on an unseeded catalog the
+// only scored song is the one the moderation test just published as demo@b1.church (already its publisher).
 type CatalogSong = { id: string; title: string; hasScore?: boolean; hasChords?: boolean; hasSlides?: boolean; confidence?: string };
 async function pickListenableSong(ctx: APIRequestContext): Promise<CatalogSong> {
   const res = await ctx.get(`${API}/commons/songs`);
   expect(res.ok()).toBeTruthy();
   const rows = (await res.json()) as CatalogSong[];
-  const song = rows.find((r) => r.hasScore && r.hasChords && r.hasSlides) || rows.find((r) => r.hasScore);
-  expect(song, "no demo song with a score — run reset-commons first").toBeTruthy();
+  const song = rows.find((r) => r.hasScore && r.hasChords && r.hasSlides);
+  expect(song, "no commons song with a score, chords and slides: seed the commons DB with `npm run reset-commons` (or `commons-up`) in Api; reset-demo leaves commons alone").toBeTruthy();
   return song!;
 }
 
