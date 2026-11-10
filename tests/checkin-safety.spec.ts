@@ -163,7 +163,8 @@ test.describe.serial("Check-Ins child safety", () => {
     await page.getByRole("option", { name: "Block (prevent check-in)" }).click();
 
     const save = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200);
-    await page.getByRole("button", { name: "Save" }).click();
+    // The Settings page has more than one Save; use the one in the Check-Ins card.
+    await page.locator('[data-testid="settings-check-ins"]').getByRole("button", { name: "Save" }).click();
     await save;
 
     const res = await api.get(`${API}/membership/settings`, auth);
