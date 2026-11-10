@@ -41,6 +41,8 @@ test.describe.serial("Paystack giving settings", () => {
     await expect(section.getByText(/\/donate\/webhook\/paystack\?churchId=/)).toBeVisible();
     await expect(section.getByLabel("Webhook Key")).toHaveCount(0);
     await expect(section.getByLabel("Public Key")).toBeVisible();
+    await expect(section.getByText(/enabled in your Paystack Dashboard/)).toBeVisible();
+    await expect(section.getByText("Stripe Dashboard")).toHaveCount(0);
     await expect(section.getByLabel("Secret Key")).toBeVisible();
 
     const currency = section.getByRole("combobox").nth(1);

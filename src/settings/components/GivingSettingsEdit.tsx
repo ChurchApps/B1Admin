@@ -187,7 +187,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       <Grid size={{ xs: 12, md: 4 }}>
         <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
           {descriptor?.currencyHelpUrl
-            ? <>{Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href={descriptor.currencyHelpUrl} target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></>
+            ? <>{Locale.label("settings.givingSettingsEdit.currencyHelper").replace("{provider}", descriptor.label)} <a href={descriptor.currencyHelpUrl} target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.providerDashboard", "{provider} Dashboard").replace("{provider}", descriptor.label)}</a></>
             : Locale.label("settings.givingSettingsEdit.currencyHelperNoProvider")}
         </Typography>
         <Controller
