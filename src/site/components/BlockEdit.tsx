@@ -49,7 +49,7 @@ export function BlockEdit(props: Props) {
   return (
     <>
       {ConfirmDialogElement}
-      <FormCard id="blockDetailsBox" title={Locale.label("site.blocks.editBlock")} icon="school" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} data-testid="edit-block-inputbox">
+      <FormCard id="blockDetailsBox" title={props.block.id ? Locale.label("site.blocks.editBlock") : Locale.label("site.blocksPage.addBlock")} icon="school" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={props.block.id ? handleDelete : undefined} data-testid="edit-block-inputbox">
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>

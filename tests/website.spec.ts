@@ -680,6 +680,9 @@ test.describe("Website Management", () => {
       await addBtn.click();
       const name = page.locator('[name="name"]');
       await expect(name).toHaveCount(1);
+      // A block that isn't saved yet has nothing to delete.
+      await expect(page.locator('[data-testid="edit-block-inputbox"]').getByText("Add Block")).toBeVisible();
+      await expect(page.locator('[data-testid="edit-block-inputbox"]').getByRole("button", { name: "Delete" })).toHaveCount(0);
       const cancelBtn = page.locator("button").getByText("Cancel");
       await cancelBtn.click();
       await expect(name).toHaveCount(0);
@@ -761,6 +764,16 @@ test.describe("Website Management", () => {
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await doneBtn.click();
       await expect(page).toHaveURL(/\/site\/blocks/, { timeout: 10000 });
+    });
+
+    test("should delete block", async () => {
+      const row = page.locator("tr").filter({ hasText: "Zacchaeus Renamed Block" });
+      await row.locator('[data-testid^="rename-block-"]').click();
+      await page.locator('[data-testid="edit-block-inputbox"]').getByRole("button", { name: "Delete" }).click();
+      const blockDelete = page.waitForResponse(r => r.url().includes("/content/blocks/") && r.request().method() === "DELETE", { timeout: 15000 });
+      await confirmDelete(page);
+      expect((await blockDelete).status()).toBe(200);
+      await expect(page.locator("td").getByText("Zacchaeus Renamed Block")).toHaveCount(0, { timeout: 10000 });
     });
 
   });
