@@ -120,6 +120,17 @@ test.describe.serial("Serving — Editable Scheduling Matrix", () => {
     await expect(greeterCell).toHaveText("—", { timeout: 10000 });
   });
 
+  test("Export CSV with 'Unfilled only' downloads only the rows shown", async () => {
+    await openOverview();
+    await page.getByTestId("gaps-only-toggle").click();
+    await expect(page.getByRole("row").filter({ hasText: "Worship Leader" })).toHaveCount(0, { timeout: 10000 });
+    const download = page.waitForEvent("download", { timeout: 15000 });
+    await page.getByText("Export CSV").click();
+    const csv = await (await (await download).createReadStream()).toArray().then((chunks) => Buffer.concat(chunks).toString());
+    expect(csv).toContain("Usher");
+    expect(csv).not.toContain("Worship Leader");
+  });
+
   test("cross-plan auto-schedule requires confirmation, then fills gaps and reports a count", async () => {
     await openOverview();
     await page.getByTestId("matrix-auto-schedule").click();
