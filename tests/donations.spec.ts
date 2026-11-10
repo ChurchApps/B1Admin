@@ -278,6 +278,10 @@ test.describe.serial("Donations Management", () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      // Funds are soft-deleted; the gifts recorded to them stay, so the warning must not say otherwise.
+      const dialog = page.locator('div[role="dialog"]').last();
+      await expect(dialog).toContainText("Donations already recorded to it are kept");
+      await expect(dialog).not.toContainText("all donations within it");
       await confirmDelete(page);
       await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(0, { timeout: 10000 });
     });

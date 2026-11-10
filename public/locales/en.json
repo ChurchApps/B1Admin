@@ -991,7 +991,7 @@
       "ariaFundName": "Fund name",
       "ariaTaxDeductible": "Tax deductible",
       "ariaVisible": "Visible to donors",
-      "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
+      "confirmMsg": "Are you sure you wish to delete this fund? Donations already recorded to it are kept, but it will no longer be available for new donations.",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
