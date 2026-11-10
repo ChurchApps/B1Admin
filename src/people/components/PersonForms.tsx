@@ -5,7 +5,8 @@ import {
   RadioButtonUnchecked as EmptyCircleIcon,
   Description as DescriptionIcon
 } from "@mui/icons-material";
-import { type PersonInterface, type FormSubmissionInterface, type QuestionInterface, type AnswerInterface } from "@churchapps/helpers";
+import { type PersonInterface, type QuestionInterface, type AnswerInterface } from "@churchapps/helpers";
+import { type FormSubmissionInterface } from "../../helpers";
 import { ApiHelper, DateHelper, DisplayBox, Loading, Locale, SmallButton, UserHelper } from "@churchapps/apphelper";
 import { useReactToPrint } from "react-to-print";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";

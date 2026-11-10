@@ -1,5 +1,5 @@
 import React from "react";
-import { type QuestionInterface } from "@churchapps/helpers";
+import { type QuestionInterface } from "../../helpers";
 import { Locale } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, TableHead, FormLabel, TextField } from "@mui/material";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
