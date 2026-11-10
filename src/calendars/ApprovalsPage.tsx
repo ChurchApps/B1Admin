@@ -106,7 +106,7 @@ export const ApprovalsPage = () => {
     </Box>
   );
 
-  const when = (d?: Date | string) => (d ? new Date(d).toLocaleString(DateHelper.locale) : "");
+  const when = (d?: Date | string) => (d ? DateHelper.prettyDateTime(new Date(d)) : "");
 
   const personLink = (personId?: string) => {
     const name = personId ? people[personId]?.name?.display : "";
