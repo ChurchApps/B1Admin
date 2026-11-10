@@ -204,6 +204,16 @@ test.describe.serial("Country statement formats", () => {
     await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
     await expect(page.locator('[data-testid="statement-legal-block"]')).toHaveCount(0);
   });
+
+  test("the Giving editor shows the default Standard format and All years instead of blank boxes", async ({ page }) => {
+    await navigateTo(page, "settings");
+    await page.locator('[data-testid="settings-section-giving"]').click();
+    const section = page.locator('[data-testid="settings-giving"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="settings-giving"] [data-testid="small-button-edit"]').dispatchEvent("click");
+    await expect(section.locator('[data-testid="statement-format-select"]')).toContainText("Standard", { timeout: 10000 });
+    await expect(section.locator('[data-testid="member-giving-years-select"]')).toContainText("All years");
+  });
 });
 
 // Print + Close toolbar replaced the blind auto-print-then-navigate-back behavior.

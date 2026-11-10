@@ -76,8 +76,8 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
           name="statementFormat"
           render={({ field }) => (
             <FormControl fullWidth>
-              <InputLabel>{Locale.label("settings.statementFormat.format")}</InputLabel>
-              <Select {...field} label={Locale.label("settings.statementFormat.format")} data-testid="statement-format-select">
+              <InputLabel shrink>{Locale.label("settings.statementFormat.format")}</InputLabel>
+              <Select {...field} displayEmpty notched label={Locale.label("settings.statementFormat.format")} data-testid="statement-format-select">
                 <MenuItem value="">{Locale.label("settings.statementFormat.standard")}</MenuItem>
                 <MenuItem value="canada">{Locale.label("settings.statementFormat.canada")}</MenuItem>
                 <MenuItem value="australia">{Locale.label("settings.statementFormat.australia")}</MenuItem>
@@ -111,8 +111,8 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
           name="memberGivingYears"
           render={({ field }) => (
             <FormControl fullWidth>
-              <InputLabel>{Locale.label("settings.statementFormat.memberYears")}</InputLabel>
-              <Select {...field} label={Locale.label("settings.statementFormat.memberYears")} data-testid="member-giving-years-select">
+              <InputLabel shrink>{Locale.label("settings.statementFormat.memberYears")}</InputLabel>
+              <Select {...field} displayEmpty notched label={Locale.label("settings.statementFormat.memberYears")} data-testid="member-giving-years-select">
                 <MenuItem value="">{Locale.label("settings.statementFormat.memberYearsAll")}</MenuItem>
                 {yearOptions.map((y) => <MenuItem key={y} value={y}>{Locale.label("settings.statementFormat.memberYearsThrough").replace("{}", y)}</MenuItem>)}
                 <MenuItem value="off">{Locale.label("settings.statementFormat.memberYearsOff")}</MenuItem>
