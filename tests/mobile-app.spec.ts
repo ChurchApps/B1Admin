@@ -841,7 +841,9 @@ test.describe.serial("Scheduled push notifications", () => {
     const row = page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED });
     await row.getByTestId("remove-notification").click();
     await expect(page.getByRole("dialog")).toContainText("Remove this notification from the list?");
+    const removed = page.waitForResponse(r => r.url().includes("/messaging/scheduledNotifications/") && r.request().method() === "DELETE");
     await confirmDelete(page);
+    expect((await removed).ok()).toBeTruthy();
     await expect(page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED })).toHaveCount(0);
     expect((await loadScheduled()).some((r: any) => r.title === EDITED)).toBe(false);
   });
