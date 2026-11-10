@@ -256,6 +256,9 @@ test.describe("Sermons Management", () => {
       await streamHomeBtn.click();
     });
 
+    // Target the test's own row: the seeded service can sort after it, and .last() then edited and deleted the seed.
+    const serviceRow = (name: string) => page.locator("#servicesBox tbody tr", { hasText: name });
+
     // Issue #1432: the Stream page counts Minutes Before back from when the video starts, so the chip has to as well.
     test("chat open chip counts back from the video start", async () => {
       await page.locator('[data-testid="add-service-button"]').click();
@@ -287,12 +290,11 @@ test.describe("Sermons Management", () => {
       const post = page.waitForResponse(r => r.url().includes("/streamingServices") && r.request().method() === "POST", { timeout: 15000 });
       await saveBtn.click();
       await post;
-      const validatedService = page.locator("p").getByText("Zacchaeus Test Service");
-      await expect(validatedService).toHaveCount(1, { timeout: 10000 });
+      await expect(serviceRow("Zacchaeus Test Service")).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should edit service", async () => {
-      const editBtn = page.locator('button[aria-label="Edit"]').last();
+      const editBtn = serviceRow("Zacchaeus Test Service").getByRole("button", { name: "Edit" });
       await editBtn.click();
       const name = page.locator('[name="serviceLabel"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -304,7 +306,7 @@ test.describe("Sermons Management", () => {
     });
 
     test("should cancel editing service", async () => {
-      const editBtn = page.locator('button[aria-label="Edit"]').last();
+      const editBtn = serviceRow("Zebedee Test Service").getByRole("button", { name: "Edit" });
       await editBtn.click();
       const name = page.locator('[name="serviceLabel"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -314,7 +316,7 @@ test.describe("Sermons Management", () => {
     });
 
     test("should delete service", async () => {
-      const editBtn = page.locator('button[aria-label="Edit"]').last();
+      const editBtn = serviceRow("Zebedee Test Service").getByRole("button", { name: "Edit" });
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
