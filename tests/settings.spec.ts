@@ -73,7 +73,7 @@ test.describe.serial("Settings Management", () => {
       await expect(churchName).toBeVisible({ timeout: 10000 });
       const originalName = await churchName.inputValue();
       await churchName.fill("Gracious Community Church");
-      const saveBtn = page.locator("button").getByText("Save");
+      const saveBtn = page.locator("#section-church-info").getByRole("button", { name: "Save" });
       await saveBtn.click();
       // Wait for the edit panel to close (back to read-only view) before re-opening.
       await expect(churchName).toHaveCount(0, { timeout: 10000 });
@@ -576,7 +576,7 @@ test.describe.serial("Settings Management", () => {
       await page.locator('[data-testid="settings-region"] [data-testid="small-button-edit"]').dispatchEvent("click");
       await page.locator('[data-testid="region-select"]').click();
       await page.locator(`[data-testid="region-option-${region}"]`).click();
-      await page.locator("button").getByText("Save").click();
+      await page.locator('[data-testid="settings-region"]').getByRole("button", { name: "Save" }).click();
       await expect(page.locator('[data-testid="region-select"]')).toHaveCount(0, { timeout: 10000 });
     };
 
@@ -607,7 +607,7 @@ test.describe.serial("Settings Management", () => {
       await page.locator('[data-testid="settings-region"] [data-testid="small-button-edit"]').dispatchEvent("click");
       await page.locator('[data-testid="phone-format-select"]').click();
       await page.locator(`[data-testid="phone-format-option-${format}"]`).click();
-      await page.locator("button").getByText("Save").click();
+      await page.locator('[data-testid="settings-region"]').getByRole("button", { name: "Save" }).click();
       await expect(page.locator('[data-testid="phone-format-select"]')).toHaveCount(0, { timeout: 10000 });
     };
 
@@ -866,7 +866,7 @@ test.describe("Church information time zone", () => {
       if (zone) await page.getByRole("option", { name: zone, exact: true }).click();
       else await page.getByRole("option").first().click();
       const save = page.waitForResponse(r => r.url().includes("/membership/churches") && r.request().method() === "POST");
-      await page.locator("button").getByText("Save").click();
+      await page.locator("#section-church-info").getByRole("button", { name: "Save" }).click();
       await save;
       await expect(churchName).toHaveCount(0, { timeout: 10000 });
     };
@@ -1009,7 +1009,7 @@ test.describe.serial("Volunteer signup next week only", () => {
     await section.getByTestId("small-button-edit").dispatchEvent("click");
     await page.getByTestId("volunteer-signup-next-only-switch").locator("input").check();
     const save = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200);
-    await page.getByRole("button", { name: "Save" }).click();
+    await section.getByRole("button", { name: "Save" }).click();
     await save;
     await expect(section).toContainText("Only the next week of each plan type", { timeout: 10000 });
 
@@ -1023,7 +1023,7 @@ test.describe.serial("Volunteer signup next week only", () => {
     await section.getByTestId("small-button-edit").dispatchEvent("click");
     await page.getByTestId("volunteer-signup-next-only-switch").locator("input").uncheck();
     const del = page.waitForResponse((r) => r.url().includes("/settings/") && r.request().method() === "DELETE");
-    await page.getByRole("button", { name: "Save" }).click();
+    await section.getByRole("button", { name: "Save" }).click();
     await del;
     await expect(section).toContainText("All upcoming weeks", { timeout: 10000 });
 
@@ -1080,7 +1080,7 @@ test.describe.serial("Giving privacy on person records", () => {
     await settings.getByTestId("small-button-edit").dispatchEvent("click");
     await page.getByTestId("giving-privacy-hide-switch").locator("input").check();
     const save = page.waitForResponse((r) => r.url().includes("/settings") && r.request().method() === "POST" && r.status() === 200);
-    await page.getByRole("button", { name: "Save" }).click();
+    await settings.getByRole("button", { name: "Save" }).click();
     await save;
     await expect(settings).toContainText("Hidden until clicked", { timeout: 10000 });
 
@@ -1105,7 +1105,7 @@ test.describe.serial("Giving privacy on person records", () => {
     await settings.getByTestId("small-button-edit").dispatchEvent("click");
     await page.getByTestId("giving-privacy-hide-switch").locator("input").uncheck();
     const del = page.waitForResponse((r) => r.url().includes("/settings/") && r.request().method() === "DELETE");
-    await page.getByRole("button", { name: "Save" }).click();
+    await settings.getByRole("button", { name: "Save" }).click();
     await del;
     await expect(settings).toContainText("Shown", { timeout: 10000 });
 
