@@ -1,8 +1,9 @@
 import React, { memo } from "react";
-import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { Permissions, Locale } from "@churchapps/apphelper";
 import { Box, Stack, Typography } from "@mui/material";
 import { YouTubeImport, VimeoImport } from "./components";
 import { SermonChrome } from "./components/SermonChrome";
+import { useRequirePermission } from "../hooks";
 import { PillTabs, Surface, TextAction } from "../components/ui";
 
 type ImportType = "youtube" | "vimeo" | "";
@@ -10,7 +11,8 @@ type ImportType = "youtube" | "vimeo" | "";
 export const BulkImportPage = memo(() => {
   const [importType, setImportType] = React.useState<ImportType>("");
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) return <></>;
+  const denied = useRequirePermission(Permissions.contentApi.streamingServices.edit);
+  if (denied) return denied;
 
   const sources = [
     { key: "youtube" as const, title: Locale.label("sermons.bulkImport.youtube"), description: Locale.label("sermons.bulkImport.youtubeDescription"), action: Locale.label("sermons.bulkImport.importFromYouTube"), testId: "import-youtube-button" },

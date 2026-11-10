@@ -1,9 +1,10 @@
-import type { Page } from "@playwright/test";
+import { test as plainTest, type Page } from "@playwright/test";
 import { sermonsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSermons, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
+import { loginAsVolunteer } from "./helpers/names-only-role";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Sermons Management", () => {
@@ -554,5 +555,18 @@ test.describe("Sermons Management", () => {
       await expect(page.locator('[data-testid="add-to-playlist-button"]')).toHaveText("Add");
       await page.locator("button").getByText("Cancel").first().click();
     });
+  });
+});
+
+// Without Streaming Services / Edit, every Sermons page explains why instead of rendering blank.
+plainTest.describe("Sermons pages without streaming permission", () => {
+  plainTest.use({ storageState: { cookies: [], origins: [] } });
+
+  plainTest("Live Stream Times, Settings and Bulk Import show a permission message", async ({ page }) => {
+    await loginAsVolunteer(page);
+    for (const path of ["/sermons", "/sermons/times", "/sermons/settings", "/sermons/bulk"]) {
+      await page.goto(path);
+      await expect(page.getByText("You don't have permission to view this page.")).toBeVisible({ timeout: 15000 });
+    }
   });
 });

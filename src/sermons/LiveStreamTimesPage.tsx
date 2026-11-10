@@ -5,12 +5,14 @@ import type { StreamingServiceInterface } from "@churchapps/helpers";
 import { Services } from "./components";
 import { newStreamingService } from "./components/Services";
 import { SermonChrome } from "./components/SermonChrome";
+import { useRequirePermission } from "../hooks";
 import { HeaderPrimaryButton, HeaderTextButton } from "../components/ui";
 
 export const LiveStreamTimesPage = memo(() => {
   const [current, setCurrent] = React.useState<StreamingServiceInterface | null>(null);
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) return <></>;
+  const denied = useRequirePermission(Permissions.contentApi.streamingServices.edit);
+  if (denied) return denied;
 
   const streamUrl = CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain || "") + "/stream";
 
