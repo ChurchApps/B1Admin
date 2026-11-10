@@ -124,6 +124,7 @@ test.describe("Group join request tasks", () => {
     await expect(card).toContainText("Community Service Team");
     await expect(card).toContainText("Count me in for the food drive.");
     await expect(page.getByTestId(`approve-${requestId}`)).toHaveText("Approve");
+    await expect(page.getByTestId(`pending-request-person-${requestId}`)).toHaveAttribute("href", `/people/${VOLUNTEER_PERSON_ID}`);
 
     await page.getByTestId(`decline-${requestId}`).click();
     const dialog = page.getByRole("dialog");

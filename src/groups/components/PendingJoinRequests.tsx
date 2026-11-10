@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from "react";
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Link, Stack, TextField, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
-import { ApiHelper, PersonAvatar, DateHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, PersonAvatar, DateHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -15,6 +16,7 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
   const [declineReason, setDeclineReason] = useState("");
   const [working, setWorking] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const canOpenProfile = UserHelper.checkAccess(Permissions.membershipApi.people.view);
 
   const handleApprove = useCallback(async (req: GroupJoinRequestInterface) => {
     setWorking(req.id || null);
@@ -60,7 +62,9 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
               <PersonAvatar person={req.person!} size="small" />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                  {req.person?.name?.display || Locale.label("groups.groupMembers.unknown")}
+                  {canOpenProfile && req.personId
+                    ? <Link component={RouterLink} to={"/people/" + req.personId} underline="hover" data-testid={`pending-request-person-${req.id}`}>{req.person?.name?.display || Locale.label("groups.groupMembers.unknown")}</Link>
+                    : req.person?.name?.display || Locale.label("groups.groupMembers.unknown")}
                   {showGroupName && req.group?.name && (
                     <Typography component="span" variant="body2" sx={{ ml: 1, color: "text.secondary", fontWeight: 400 }}>
                       → {req.group.name}
