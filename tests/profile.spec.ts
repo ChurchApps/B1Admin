@@ -23,6 +23,8 @@ test.describe("Profile", () => {
     await page.reload();
     await expect.poll(primaryVar, { timeout: 15000 }).toBe("#2E7D32");
     await page.evaluate(() => localStorage.removeItem("b1admin-theme"));
+    // A settings request still in flight when the page closes would otherwise fail the test in teardown.
+    await page.unrouteAll({ behavior: "ignoreErrors" });
   });
 
   test("devices explains what a paired screen is when there are none", async ({ page }) => {
