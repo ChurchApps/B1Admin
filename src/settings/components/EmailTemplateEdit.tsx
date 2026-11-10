@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { flushSync } from "react-dom";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { TextField, FormControl, Grid, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
@@ -120,11 +121,10 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     const end = input?.selectionEnd ?? current.length;
     const nextSubject = current.slice(0, start) + field + current.slice(end);
     const caret = start + field.length;
-    setValue("subject", nextSubject, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
-    requestAnimationFrame(() => {
-      subjectInputRef.current?.focus();
-      subjectInputRef.current?.setSelectionRange(caret, caret);
-    });
+    // Commit now and place the caret in the same tick; a deferred caret lands after the next keystroke.
+    flushSync(() => setValue("subject", nextSubject, { shouldDirty: true, shouldValidate: true, shouldTouch: true }));
+    subjectInputRef.current?.focus();
+    subjectInputRef.current?.setSelectionRange(caret, caret);
   };
 
   const insertMergeFieldInBody = (field: string) => {
@@ -143,11 +143,9 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     const next = current.slice(0, start) + field + current.slice(end);
     if (next.length > TEXT_MAX_LENGTH) return;
     const caret = start + field.length;
-    setValue("htmlContent", next, { shouldDirty: true, shouldValidate: true });
-    requestAnimationFrame(() => {
-      textInputRef.current?.focus();
-      textInputRef.current?.setSelectionRange(caret, caret);
-    });
+    flushSync(() => setValue("htmlContent", next, { shouldDirty: true, shouldValidate: true }));
+    textInputRef.current?.focus();
+    textInputRef.current?.setSelectionRange(caret, caret);
   };
 
   const getPreviewHtml = () => {

@@ -15,7 +15,8 @@ const openNewPageEditor = async (page: Page, title: string) => {
   await page.locator("button").getByText("Save").click();
   await pagePost;
   const newPageDialog = page.locator('div[role="dialog"]:has-text("New Page")');
-  if (await newPageDialog.isVisible()) await newPageDialog.locator("button").getByText("Cancel").click();
+  // The dialog normally closes itself after Save; only cancel it if it is still up, and tolerate it closing mid-click.
+  if (await newPageDialog.isVisible()) await newPageDialog.locator("button").getByText("Cancel").click({ timeout: 2000 }).catch(() => {});
   await expect(newPageDialog).toHaveCount(0, { timeout: 10000 });
   const row = page.locator("tr").filter({ hasText: title }).first();
   await expect(row).toBeVisible({ timeout: 10000 });
@@ -122,7 +123,7 @@ test.describe("Website Management", () => {
     });
 
     test("should edit page title", async () => {
-      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
+      const settingsBtn = page.locator("tr").filter({ hasText: "Zacchaeus Test Page" }).first().locator('[data-testid="page-settings-button"]');
       await settingsBtn.click();
       const name = page.locator('[name="title"]');
       await name.fill("Zebedee Test Page");
@@ -134,7 +135,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel editing page title", async () => {
-      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
+      const settingsBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="page-settings-button"]');
       await settingsBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toHaveCount(1);
@@ -172,7 +173,7 @@ test.describe("Website Management", () => {
     });
 
     test("should edit page content", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const addBtn = page.locator('[data-testid="content-editor-add-button"]');
       // Guard against accidental double-click closing the toggle.
@@ -215,7 +216,7 @@ test.describe("Website Management", () => {
     });
 
     test("should add a section from a template", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const addBtn = page.locator('[data-testid="content-editor-add-button"]');
       const ensurePanelOpen = async () => {
@@ -244,7 +245,7 @@ test.describe("Website Management", () => {
     });
 
     test("should toggle per-device visibility on an element", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const textElement = page.locator("p").getByText("Zacchaeus Test Text");
       await expect(textElement).toBeVisible({ timeout: 10000 });
@@ -270,7 +271,7 @@ test.describe("Website Management", () => {
     });
 
     test("should publish, discard draft changes, and turn off publishing", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const publishBtn = page.locator('[data-testid="publish-button"]');
       await expect(publishBtn).toBeVisible({ timeout: 10000 });
@@ -335,7 +336,7 @@ test.describe("Website Management", () => {
     });
 
     test("should click to add a section via the divider", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const divider = page.locator('[data-testid="add-section-divider"]').first();
       await expect(divider).toBeVisible({ timeout: 10000 });
@@ -353,7 +354,7 @@ test.describe("Website Management", () => {
     });
 
     test("should click an element card to insert it", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       // Select the existing text element so the insert lands right after it.
       const textElement = page.locator("p").getByText("Zacchaeus Test Text").first();
@@ -396,7 +397,7 @@ test.describe("Website Management", () => {
     });
 
     test("should warn before discarding unsaved element edits", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const textElement = page.locator("p").getByText("Zacchaeus Click Added").first();
       await expect(textElement).toBeVisible({ timeout: 10000 });
@@ -426,7 +427,7 @@ test.describe("Website Management", () => {
     });
 
     test("should manage sections from the hover toolbar", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const sectionWrapper = page.locator(".sectionEditWrapper").filter({ hasText: "Zacchaeus Click Added" }).first();
       await expect(sectionWrapper).toBeVisible({ timeout: 10000 });
@@ -458,7 +459,7 @@ test.describe("Website Management", () => {
     });
 
     test("should support keyboard shortcuts", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       const textElement = page.locator("p").getByText("Zacchaeus Click Added").first();
       await expect(textElement).toBeVisible({ timeout: 10000 });
@@ -479,7 +480,7 @@ test.describe("Website Management", () => {
     });
 
     test("should verify done button functionality", async () => {
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
       await expect(page).toHaveURL(/\/site\/pages\/[^/]+/);
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
@@ -489,7 +490,7 @@ test.describe("Website Management", () => {
     });
 
     test("should explain the publish status pill", async () => {
-      await page.locator('[data-testid="edit-content-button"]').last().click();
+      await page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="edit-content-button"]').click();
       const pill = page.locator('[data-testid="publish-status-pill"]');
       await expect(pill).toBeVisible({ timeout: 30000 });
       await pill.hover();
@@ -497,7 +498,7 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel deleting page", async () => {
-      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
+      const settingsBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="page-settings-button"]');
       await settingsBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
@@ -508,7 +509,7 @@ test.describe("Website Management", () => {
     });
 
     test("should delete page", async () => {
-      const settingsBtn = page.locator('[data-testid="page-settings-button"]').last();
+      const settingsBtn = page.locator("tr").filter({ hasText: "Zebedee Test Page" }).first().locator('[data-testid="page-settings-button"]');
       await settingsBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
@@ -579,7 +580,12 @@ test.describe("Website Management", () => {
       const blankTemplate = page.locator('[data-testid="template-blank"]');
       await expect(blankTemplate).toBeVisible({ timeout: 10000 });
       await blankTemplate.click();
+      // Clicking an element card before the new section is loaded reopens the layout picker instead.
+      const newSectionPost = page.waitForResponse(r => r.url().endsWith("/content/sections") && r.request().method() === "POST", { timeout: 15000 });
+      const treeReload = page.waitForResponse(r => r.url().includes("/content/pages/") && r.url().includes("/tree?id=") && r.request().method() === "GET", { timeout: 15000 });
       await page.locator("button").getByText("Save").click();
+      expect((await newSectionPost).status()).toBe(200);
+      await treeReload;
 
       const htmlCard = page.locator('[data-testid="draggable-element-rawHTML"]');
       if (!(await htmlCard.isVisible({ timeout: 500 }).catch(() => false))) await addBtn.click();
@@ -1439,7 +1445,7 @@ test.describe("Website Management", () => {
       await expect(page.locator("td").getByText("Zacchaeus Layout Page")).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[name="title"]')).toHaveCount(0);
 
-      const editBtn = page.locator('[data-testid="edit-content-button"]').last();
+      const editBtn = page.locator("tr").filter({ hasText: "Zacchaeus Layout Page" }).first().locator('[data-testid="edit-content-button"]');
       await editBtn.click();
 
       const addContentBtn = page.locator('[data-testid="content-editor-add-button"]');
