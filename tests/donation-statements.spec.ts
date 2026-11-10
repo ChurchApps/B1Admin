@@ -113,6 +113,37 @@ test.describe("Donation Statements and Stripe Import", () => {
       await expect(importBtn).toBeVisible();
       await expect(importBtn).toBeDisabled();
     });
+
+    test("a preview shows each charge's status, and changing the dates asks for a new preview", async ({ page }) => {
+      // Stub the gateway call so the test does not depend on Stripe.
+      const bodies: any[] = [];
+      await page.route("**/giving/donate/replay-stripe-events", async (route) => {
+        bodies.push(route.request().postDataJSON());
+        await route.fulfill({
+          json: {
+            dryRun: true,
+            summary: { total: 2, new: 1, alreadyImported: 1, imported: 0, skipped: 0, errors: 0 },
+            results: [
+              { eventId: "evt_new_1", type: "charge.succeeded", amount: 25, currency: "usd", created: "2026-10-04T15:00:00Z", customer: "cus_1", status: "new" },
+              { eventId: "evt_old_1", type: "charge.succeeded", amount: 40, currency: "usd", created: "2026-10-05T15:00:00Z", customer: "cus_2", status: "already_imported" }
+            ]
+          }
+        });
+      });
+      await page.goto("/donations/stripe-import");
+      await page.locator("button").filter({ hasText: /^Preview$/ }).click();
+      await expect(page.getByText("Preview Results")).toBeVisible();
+      await expect(page.getByRole("row").filter({ hasText: "evt_new_1" })).toContainText("New");
+      await expect(page.getByRole("row").filter({ hasText: "evt_old_1" })).toContainText("Already Imported");
+      expect(bodies[0].dryRun).toBe(true);
+
+      const importBtn = page.locator("button").filter({ hasText: /Import Missing/i }).first();
+      await expect(importBtn).toBeEnabled();
+      await page.getByLabel("Start Date").fill("2026-02-01");
+      await expect(page.getByText("Preview Results")).toHaveCount(0);
+      await expect(importBtn).toBeDisabled();
+      expect(bodies).toHaveLength(1);
+    });
   });
 });
 
