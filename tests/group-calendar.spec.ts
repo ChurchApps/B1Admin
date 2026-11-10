@@ -485,8 +485,8 @@ plainTest.describe("Calendar print colors in dark mode", () => {
 
     const label = page.locator(".print-area .rbc-toolbar-label");
     await expect(label).toBeVisible({ timeout: 15000 });
-    const { color, luminance } = await printLuminanceOf(label);
-    expect(luminance, "text color " + color).toBeLessThan(0.4);
+    // The print styles mount with the page, so poll rather than read the first paint's color.
+    await expect.poll(async () => (await printLuminanceOf(label)).luminance, { timeout: 10000 }).toBeLessThan(0.4);
   });
 });
 
