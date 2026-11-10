@@ -2,7 +2,7 @@ import React from "react";
 import { DonationEdit, Donations, BatchEdit, BulkDonationEntry, CsvImportDialog } from "./components";
 import { ApiHelper, Permissions, DateHelper, Locale, CurrencyHelper } from "@churchapps/apphelper";
 import { type FundInterface, type DonationInterface } from "@churchapps/helpers";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Box, Grid, Stack } from "@mui/material";
 import { Add as AddIcon, EditOutlined as EditIcon, LockOutlined as LockIcon, LockOpenOutlined as LockOpenIcon, UploadFile as UploadIcon } from "@mui/icons-material";
@@ -12,6 +12,7 @@ import { type BatchWithStatus, canChangeBatch, canEditDonations, isBatchClosed }
 
 export const DonationBatchPage = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [editDonationId, setEditDonationId] = React.useState("notset");
   const [editBatch, setEditBatch] = React.useState(false);
   const [importOpen, setImportOpen] = React.useState(false);
@@ -41,6 +42,8 @@ export const DonationBatchPage = () => {
     setDonationsKey(prev => prev + 1);
   };
 
+  const batchDeleted = React.useCallback(() => navigate("/donations/batches"), [navigate]);
+
   const batchUpdated = () => {
     setEditBatch(false);
     batch.refetch();
@@ -62,7 +65,7 @@ export const DonationBatchPage = () => {
   const getEditModules = () => {
     const result = [];
     if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} currency={currency} />);
-    if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batch={batch.data} updatedFunction={batchUpdated} canDelete={canEditDonations()} />);
+    if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batch={batch.data} updatedFunction={batchUpdated} deletedFunction={batchDeleted} canDelete={canEditDonations()} />);
     return result;
   };
 

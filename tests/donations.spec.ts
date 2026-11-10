@@ -1342,3 +1342,29 @@ test.describe("Bulk donation entry — recent people", () => {
     }
   });
 });
+
+// Deleting a batch from its own page (Edit Batch → Delete) returns to the Batches list instead of a dead page.
+test.describe("Batch delete from the batch page", () => {
+  test.describe.configure({ retries: 0 });
+
+  test("Edit Batch → Delete goes back to the Batches list", async ({ page }) => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const name = "Zebedee Doomed Batch " + Date.now();
+    const batchId = (await (await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name, batchDate: "2025-09-14" }] })).json())[0].id;
+    try {
+      await page.goto("/donations/batches/" + batchId);
+      await page.getByTestId("edit-batch-button").click();
+      const deleted = page.waitForResponse((r) => r.url().includes("/giving/donationbatches/" + batchId) && r.request().method() === "DELETE");
+      await page.locator("#batchBox").getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
+      await deleted;
+      await expect(page).toHaveURL(/\/donations\/batches$/);
+      await expect(page.getByTestId("add-batch-button")).toBeVisible();
+      await expect(page.locator("a").getByText(name)).toHaveCount(0);
+    } finally {
+      await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth).catch(() => {});
+      await ctx.dispose();
+    }
+  });
+});
