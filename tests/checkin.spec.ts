@@ -235,6 +235,17 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     }
   });
 
+  loggedInTest("shows None in the add-new-guests-to-group picker when no group is chosen", async ({ page }) => {
+    const groupRow = (await loadSettings()).find((s) => s.keyName === "guestRegistrationGroupId");
+    if (groupRow?.value) await ctx.post(`${API}/membership/settings`, { headers, data: [{ ...groupRow, value: "" }] });
+    try {
+      await page.goto("/mobile/checkin");
+      await expect(page.getByTestId("guest-registration-group")).toContainText("None", { timeout: 15000 });
+    } finally {
+      if (groupRow?.value) await ctx.post(`${API}/membership/settings`, { headers, data: [groupRow] });
+    }
+  });
+
   // ChurchAppsSupport#1375: a guest who signs up while one of the group's scheduled service times is under way is marked present.
   loggedInTest("records attendance for guests who sign up during the group's scheduled service time", async ({ page }) => {
     const lastName = "Zebedeeattends";

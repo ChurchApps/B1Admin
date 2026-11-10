@@ -176,6 +176,15 @@ test.describe("Attendance Management", () => {
     await expect(page.getByText("Service times", { exact: true })).toBeVisible();
   });
 
+  test("Setup shows a serving team's ministry name, not its id, as the category", async ({ page }) => {
+    await openSetup(page);
+    // Demo team "Band Members" belongs to the Worship ministry (GRP0000000a) and tracks attendance without a service time.
+    const row = page.locator("tr").filter({ has: page.locator("a", { hasText: "Band Members" }) });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("GRP0000000a")).toHaveCount(0);
+    await expect(page.locator("tr").filter({ hasText: "Worship" }).filter({ has: page.locator("text=folder") }).first()).toBeVisible();
+  });
+
   test("should view group from attendance homepage", async ({ page }) => {
     await openSetup(page);
     const groupBtn = page.locator("a").getByText("Worship").first();
@@ -337,9 +346,9 @@ test.describe("Attendance Management", () => {
       await page.locator('[name="endDate"]').fill("2024-03-09");
       const runBtn = page.locator("button").getByText("Run Report");
       await runBtn.click();
+      // Wait for a data row below the header; counting rows right away races the report load.
       const reportRows = page.locator('[id="reportsBox"] table tr');
-      await expect(reportRows.first()).toBeVisible({ timeout: 10000 });
-      expect(await reportRows.count()).toBeGreaterThan(1);
+      await expect(reportRows.nth(1)).toBeVisible({ timeout: 10000 });
     });
 
     test("Group Attendance covers a date range and downloads one dated column per session", async ({ page }) => {

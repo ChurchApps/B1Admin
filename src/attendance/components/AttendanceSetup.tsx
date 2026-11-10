@@ -78,7 +78,14 @@ export const AttendanceSetup = memo(() => {
     [removeEditors]
   );
 
-  const compare = useCallback((a: GroupInterface, b: GroupInterface) => (a.categoryName || "").localeCompare(b.categoryName || "") || (a.name || "").localeCompare(b.name || ""), []);
+  // Serving teams keep their ministry's id in categoryName; show the ministry's name instead of the raw id.
+  const categoryOf = useCallback((g?: GroupInterface) => {
+    if (!g) return "";
+    if ((g.tags || "").split(",").includes("team")) return ArrayHelper.getOne(groups.data || [], "id", g.categoryName)?.name || "";
+    return g.categoryName || "";
+  }, [groups.data]);
+
+  const compare = useCallback((a: GroupInterface, b: GroupInterface) => categoryOf(a).localeCompare(categoryOf(b)) || (a.name || "").localeCompare(b.name || ""), [categoryOf]);
 
   const unassignedGroups = useMemo(() => {
     const result: GroupInterface[] = [];
@@ -205,13 +212,13 @@ export const AttendanceSetup = memo(() => {
         );
 
       const categoryHtml =
-        group === undefined || group?.categoryName === lastCategory ? (
+        group === undefined || categoryOf(group) === lastCategory ? (
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center">
             <Icon fontSize="small" sx={{ color: "text.secondary" }}>folder</Icon>
             <Typography variant="body2" color="text.secondary">
-              {group.categoryName}
+              {categoryOf(group)}
             </Typography>
           </Stack>
         );
@@ -240,7 +247,7 @@ export const AttendanceSetup = memo(() => {
       lastCampus = campus?.name || "";
       lastService = service?.name || "";
       lastServiceTime = serviceTime?.name || "";
-      lastCategory = group?.categoryName || "";
+      lastCategory = categoryOf(group);
       return result;
     };
 
@@ -333,7 +340,9 @@ export const AttendanceSetup = memo(() => {
       rows.push(getRow({ name: Locale.label("attendance.attendanceSetup.unassigned") }, undefined, undefined, g, `unassigned-${g.id}`));
     });
     return rows;
-  }, [attendance.data, campuses, getGroups, compare, unassignedGroups, selectService, selectServiceTime]);
+  }, [
+    attendance.data, campuses, getGroups, compare, categoryOf, unassignedGroups, selectService, selectServiceTime
+  ]);
 
   const table = useMemo(() => {
     if (attendance.isLoading) return <Loading />;
