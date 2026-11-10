@@ -713,6 +713,25 @@ test.describe("Group communication and roster controls", () => {
     await expect(page.locator("#groupMembersBox textarea").first()).toBeVisible({ timeout: 10000 });
   });
 
+  test("Notify opens the push notification dialog for the group", async ({ page }) => {
+    await openSeedGroup(page);
+    await page.getByTestId("notify-group-button").click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText("Push Notification: Sunday Morning Service");
+    await expect(dialog).toContainText(/\d+ of \d+ members have B1App PWA push enabled\./, { timeout: 15000 });
+    await expect(dialog.getByLabel("Send now")).toBeChecked();
+    await expect(dialog.getByLabel("Schedule for later")).toBeVisible();
+    for (const label of ["Title", "Message", "Open link or flyer URL", "Image URL"]) await expect(dialog.getByLabel(label, { exact: true })).toBeVisible();
+    await expect(dialog).toContainText("Notification title");
+    await dialog.getByLabel("Title", { exact: true }).fill("Potluck Sunday");
+    await expect(dialog).toContainText("Potluck Sunday");
+    await dialog.getByLabel("Open link or flyer URL").fill("example.com/flyer");
+    await expect(dialog).toContainText("Use an https URL or a relative app path.");
+    await expect(dialog.getByRole("button", { name: "Send Notification" })).toBeDisabled();
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(dialog).toBeHidden();
+  });
+
   test("Add Person leaves out people who are already in the group", async ({ page }) => {
     await openSeedMembers(page);
     // James Smith leads the seed group; searching for him must not offer an add button that does nothing.
