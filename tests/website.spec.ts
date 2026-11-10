@@ -888,7 +888,9 @@ test.describe("Website Management", () => {
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await headerFontSelect.click();
-      const headerFont = page.locator("td").getByText("Montserrat").first();
+      // The list is Google's live popularity order, 10 per page; search so the font is on page one.
+      await page.getByRole("dialog").getByLabel("Search").fill("Montserrat");
+      const headerFont = page.locator("td").getByText("Montserrat", { exact: true }).first();
       await expect(headerFont).toBeVisible({ timeout: 10000 });
       await headerFont.click();
       const saveBtn = page.locator('[data-testid="save-fonts-button"]');
@@ -1303,13 +1305,17 @@ test.describe("Website Management", () => {
   });
 
   test.describe("Page editor — templates and publishing", () => {
-    test("three-column template sections stack on phones", async ({ page }) => {
+    test("three-column template sections stack on phones", async ({ page, request }) => {
+      // Needs the public site (B1App, a Next.js app). On isolated stacks its default port belongs to B1Admin, so check it is really B1App.
+      const b1AppUrl = process.env.B1APP_URL || "http://grace.localtest.me:3301";
+      const probe = await request.get(b1AppUrl, { timeout: 10000 }).then((r) => r.text()).catch((): string => "");
+      test.skip(!probe.includes("/_next/"), "B1App is not running at " + b1AppUrl + " (set B1APP_URL)");
       await openNewPageEditor(page, "Zebedee Stack Page");
       await addTemplateSection(page, "serviceTimes");
       await expect(page.getByText("Wednesday 6:30 PM").first()).toBeVisible({ timeout: 10000 });
       // The public site (B1App) is what visitors see on their phones.
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.goto((process.env.B1APP_URL || "http://grace.localtest.me:3301") + "/zebedee-stack-page");
+      await page.goto(b1AppUrl + "/zebedee-stack-page");
       await expect(page.getByText("Wednesday 6:30 PM").first()).toBeVisible({ timeout: 60000 });
       const column = page.locator(".rowColumn-0").first();
       const rowWidth = await column.locator("xpath=..").evaluate((el) => el.getBoundingClientRect().width);
