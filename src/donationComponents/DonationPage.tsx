@@ -145,7 +145,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     if (all.length === 0) return "";
     const since = Locale.label("donation.page.sinceYear", "{amount} since {year}").replace("{amount}", money(lifetime)).replace("{year}", String(firstYear));
     if (selectedYear === null) return Locale.label("donation.page.giftCount", "{count} gifts").replace("{count}", String(all.length)) + " · " + since;
-    return Locale.label("donation.page.giftsInYear", "{count} gifts in {year}").replace("{count}", String(yearGifts.length)).replace("{year}", String(selectedYear)) + " · " + since;
+    return (yearGifts.length === 1 ? Locale.label("donation.page.giftsInYearSingular", "{count} gift in {year}") : Locale.label("donation.page.giftsInYear", "{count} gifts in {year}")).replace("{count}", String(yearGifts.length)).replace("{year}", String(selectedYear)) + " · " + since;
   };
 
   const getRows = () => {
