@@ -1,4 +1,3 @@
-import React from "react";
 import DOMPurify from "dompurify";
 import { Typography } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
