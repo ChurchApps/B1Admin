@@ -90,10 +90,36 @@ async function deleteViaEdit(page: Page, editButton: import("@playwright/test").
   await confirmDelete(page);
 }
 
+// A failed attempt stops the serial chain before its cleanup test, so the retry would start with a second
+// Event A, Hall and calendar next to the first ones. Remove whatever this chain left behind before it starts.
+async function purgeLeftovers(request: APIRequestContext) {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const body = await (await request.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+  const jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+  const auth = { headers: { Authorization: "Bearer " + jwt } };
+  const list = async (path: string): Promise<any[]> => { const r = await request.get(`${API}${path}`, auth); return r.ok() ? await r.json() : []; };
+  const purge = async (path: string, match: (row: any) => boolean) => {
+    for (const row of (await list(path)).filter(match)) await request.delete(`${API}${path}/${row.id}`, auth);
+  };
+  const group = (await list("/membership/groups")).find((g) => g.name === APPROVAL_GROUP);
+  if (group) {
+    const titles = ["Zacchaeus Event A", "Zacchaeus Event A Edited", "Zacchaeus Event C", "Zacchaeus Event D", "Zacchaeus ICS Event One", "Zacchaeus ICS Event Two"];
+    for (const ev of (await list(`/content/events/group/${group.id}`)).filter((e) => titles.includes(e.title))) await request.delete(`${API}/content/events/${ev.id}`, auth);
+  }
+  await purge("/content/curatedCalendars", (c) => c.name === CALENDAR);
+  await purge("/content/calendarBlockouts", (b) => b.reason === "Zacchaeus Maintenance");
+  await purge("/content/eventTemplates", (t) => t.name === TEMPLATE);
+  await purge("/content/resources", (r) => r.name === PROJECTOR);
+  await purge("/content/rooms", (r) => r.name === HALL || r.name === RESTRICTED_ROOM);
+}
+
 test.describe.serial("Rooms, resources & approvals", () => {
   let page: Page;
 
-  test.beforeAll(async ({ browser }) => {
+  test.beforeAll(async ({ browser, playwright }) => {
+    const request = await playwright.request.newContext();
+    await purgeLeftovers(request);
+    await request.dispose();
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
     page = await context.newPage();
     await login(page);
