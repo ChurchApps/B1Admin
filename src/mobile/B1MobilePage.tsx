@@ -1,11 +1,14 @@
 import React from "react";
 import { FormControl, FormControlLabel, Grid, Icon, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import type { GenericSettingInterface, GroupInterface, VisibilityPreferenceInterface } from "@churchapps/helpers";
+import type { GenericSettingInterface, GroupInterface } from "@churchapps/helpers";
 import { FormCard } from "../components/ui/FormCard";
 import { useRequirePermission } from "../hooks";
 import { MobileChrome } from "./components/MobileChrome";
 import { clearSiteCache } from "../site/siteCache";
+
+// The church-wide defaults always hold a value for every field (the Api falls back to "members").
+interface DefaultVisibility { address: string; phoneNumber: string; email: string }
 
 export const B1MobilePage: React.FC = () => {
   const [groups, setGroups] = React.useState<GroupInterface[] | null>(null);
@@ -16,7 +19,7 @@ export const B1MobilePage: React.FC = () => {
   const [addressSetting, setAddressSetting] = React.useState<GenericSettingInterface | null>(null);
   const [phoneSetting, setPhoneSetting] = React.useState<GenericSettingInterface | null>(null);
   const [emailSetting, setEmailSetting] = React.useState<GenericSettingInterface | null>(null);
-  const [pref, setPref] = React.useState<VisibilityPreferenceInterface>({ address: "", phoneNumber: "", email: "" } as VisibilityPreferenceInterface);
+  const [pref, setPref] = React.useState<DefaultVisibility>({ address: "", phoneNumber: "", email: "" });
   const [messagingMinimumAge, setMessagingMinimumAge] = React.useState("18");
   const [msgAgeSetting, setMsgAgeSetting] = React.useState<GenericSettingInterface | null>(null);
   const [hideSignInPrompt, setHideSignInPrompt] = React.useState(false);
@@ -64,7 +67,7 @@ export const B1MobilePage: React.FC = () => {
     }
 
     // With no saved default the Api treats each field as "members", so show that instead of a blank box.
-    const p: VisibilityPreferenceInterface = { address: "members", phoneNumber: "members", email: "members" } as VisibilityPreferenceInterface;
+    const p: DefaultVisibility = { address: "members", phoneNumber: "members", email: "members" };
     const addr = allSettings.find(s => s.keyName === "addressVisibility");
     if (addr) { setAddressSetting(addr); p.address = addr.value || "members"; }
     const phone = allSettings.find(s => s.keyName === "phoneVisibility");
