@@ -32,7 +32,9 @@ const SECTION_KEYS = [
 
 export const ManageChurch = () => {
   const location = useLocation();
-  const hash = location.hash?.replace("#", "");
+  const rawHash = location.hash?.replace("#", "");
+  // #webhooks (from the old /settings/webhooks route) opens the Developer section on its Webhooks tab.
+  const hash = rawHash === "webhooks" ? "developer" : rawHash;
 
   const jwt = ApiHelper.getConfig("MembershipApi").jwt;
   const churchId = UserHelper.currentUserChurch.church.id || "";
@@ -288,7 +290,7 @@ export const ManageChurch = () => {
       case "custom-fields":
         return <CustomFieldsSection />;
       case "developer":
-        return <DeveloperSection />;
+        return <DeveloperSection initialTab={rawHash === "webhooks" ? "webhooks" : undefined} />;
       default:
         return null;
     }

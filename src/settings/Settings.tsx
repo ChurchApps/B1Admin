@@ -30,7 +30,7 @@ export const Settings: React.FC = () => (
         </Suspense>
       ) : <Navigate to="/" replace />}
     />
-    <Route path="/webhooks" element={<Navigate to="/settings#developer" replace />} />
+    <Route path="/webhooks" element={<Navigate to="/settings#webhooks" replace />} />
     <Route path="/developer" element={<Navigate to="/settings#developer" replace />} />
     <Route path="/" element={<ManageChurch />} />
   </Routes></SettingsPage>

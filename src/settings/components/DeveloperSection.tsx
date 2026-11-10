@@ -50,8 +50,8 @@ type DeveloperTab = "apiKeys" | "webhooks" | "connections";
 
 // Developer portal (API keys, webhooks, connected apps). Rendered as a section of
 // the Settings landing's configuration list.
-export const DeveloperSection: React.FC = () => {
-  const [tab, setTab] = useState<DeveloperTab>("apiKeys");
+export const DeveloperSection: React.FC<{ initialTab?: DeveloperTab }> = ({ initialTab }) => {
+  const [tab, setTab] = useState<DeveloperTab>(initialTab || "apiKeys");
   const [showKeyEdit, setShowKeyEdit] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
