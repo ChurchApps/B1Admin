@@ -172,8 +172,8 @@ export const CheckInPage: React.FC = () => {
               </TableBody>
             </Table>
             <FormControl size="small" sx={{ mt: 2, minWidth: 280 }}>
-              <InputLabel id="guest-registration-group-label">{Locale.label("mobile.checkInPage.addToGroup")}</InputLabel>
-              <Select labelId="guest-registration-group-label" label={Locale.label("mobile.checkInPage.addToGroup")} value={groups.some((g) => g.id === groupId) ? groupId : ""} data-testid="guest-registration-group" onChange={(e) => setGroupId(e.target.value)}>
+              <InputLabel id="guest-registration-group-label" shrink>{Locale.label("mobile.checkInPage.addToGroup")}</InputLabel>
+              <Select labelId="guest-registration-group-label" displayEmpty notched label={Locale.label("mobile.checkInPage.addToGroup")} value={groups.some((g) => g.id === groupId) ? groupId : ""} data-testid="guest-registration-group" onChange={(e) => setGroupId(e.target.value)}>
                 <MenuItem value="">{Locale.label("mobile.checkInPage.noGroup")}</MenuItem>
                 {groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
               </Select>
