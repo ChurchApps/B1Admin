@@ -62,7 +62,9 @@ test.describe.serial("Donations Management", () => {
       await fillFundForm(page, { name: TEST_FUND_INITIAL, toggleTaxDeductible: true });
 
       await expect(page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator("p").getByText("Non-Deductible")).toHaveCount(1, { timeout: 10000 });
+      // Scope to this fund's row: other specs may have their own non-deductible fund in the list at the same time.
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true }) });
+      await expect(row.getByText("Non-Deductible").first()).toBeVisible({ timeout: 10000 });
     });
 
     test("should edit fund", async () => {
@@ -75,7 +77,8 @@ test.describe.serial("Donations Management", () => {
 
       await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(0, { timeout: 10000 });
-      await expect(page.locator("p").getByText("Non-Deductible")).toHaveCount(0, { timeout: 10000 });
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true }) });
+      await expect(row.getByText("Tax Deductible").first()).toBeVisible({ timeout: 10000 });
     });
 
     test("should cancel editing fund", async () => {
@@ -278,6 +281,10 @@ test.describe.serial("Donations Management", () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      // Funds are soft-deleted; the gifts recorded to them stay, so the warning must not say otherwise.
+      const dialog = page.locator('div[role="dialog"]').last();
+      await expect(dialog).toContainText("Donations already recorded to it are kept");
+      await expect(dialog).not.toContainText("all donations within it");
       await confirmDelete(page);
       await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(0, { timeout: 10000 });
     });
@@ -1336,5 +1343,84 @@ test.describe("Bulk donation entry — recent people", () => {
     } finally {
       await context.close();
     }
+  });
+});
+
+// Deleting a batch from its own page (Edit Batch → Delete) returns to the Batches list instead of a dead page.
+test.describe("Batch delete from the batch page", () => {
+  test.describe.configure({ retries: 0 });
+
+  test("Edit Batch → Delete goes back to the Batches list", async ({ page }) => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const name = "Zebedee Doomed Batch " + Date.now();
+    const batchId = (await (await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name, batchDate: "2025-09-14" }] })).json())[0].id;
+    try {
+      await page.goto("/donations/batches/" + batchId);
+      await page.getByTestId("edit-batch-button").click();
+      const deleted = page.waitForResponse((r) => r.url().includes("/giving/donationbatches/" + batchId) && r.request().method() === "DELETE");
+      await page.locator("#batchBox").getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
+      await deleted;
+      await expect(page).toHaveURL(/\/donations\/batches$/);
+      await expect(page.getByTestId("add-batch-button")).toBeVisible();
+      await expect(page.locator("a").getByText(name)).toHaveCount(0);
+    } finally {
+      await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth).catch(() => {});
+      await ctx.dispose();
+    }
+  });
+});
+
+// An empty or zero amount is refused with a message instead of silently doing nothing (quick entry)
+// or saving a $0 gift with no fund (full editor). The full editor starts a new gift on the batch date.
+test.describe("Donation entry validation", () => {
+  test.describe.configure({ retries: 0 });
+  const BATCH_DATE = "2025-08-17";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let batchId: string;
+
+  test.beforeAll(async () => {
+    ctx = await request.newContext();
+    auth = await apiAuth(ctx);
+    batchId = (await (await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: "Zebedee Validation Batch", batchDate: BATCH_DATE }] })).json())[0].id;
+  });
+
+  test.afterAll(async () => {
+    if (batchId) await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  const donationPosts = (page: Page) => {
+    const posts: string[] = [];
+    page.on("request", (r) => { if (/\/giving\/donations$/.test(r.url()) && r.method() === "POST") posts.push(r.url()); });
+    return posts;
+  };
+
+  test("quick entry explains an empty amount instead of ignoring the click", async ({ page }) => {
+    const posts = donationPosts(page);
+    await page.goto("/donations/batches/" + batchId);
+    await page.getByTestId("bulk-donation-anonymous").click();
+    await page.getByTestId("add-donation-submit").click();
+    await expect(page.getByText("Enter an amount greater than zero")).toBeVisible();
+    await page.getByTestId("bulk-donation-amount").locator("input").fill("0");
+    await page.getByTestId("bulk-donation-amount").locator("input").press("Enter");
+    await expect(page.getByText("Enter an amount greater than zero")).toBeVisible();
+    expect(posts).toHaveLength(0);
+  });
+
+  test("full donation editor starts on the batch date and refuses a gift with no amount", async ({ page }) => {
+    const posts = donationPosts(page);
+    await page.goto("/donations/batches/" + batchId);
+    await page.getByTestId("bulk-donation-anonymous").click();
+    await page.getByTestId("bulk-donation-full-editor").click();
+    const box = page.locator("#donationBox");
+    await expect(box.getByTestId("donation-date-input").locator("input")).toHaveValue(BATCH_DATE);
+    await box.getByRole("button", { name: "Save" }).click();
+    await expect(box.getByText("Enter an amount greater than zero")).toBeVisible();
+    expect(posts).toHaveLength(0);
+    const saved = await (await ctx.get(`${API_BASE}/giving/donations?batchId=${batchId}`, auth)).json();
+    expect(saved).toHaveLength(0);
   });
 });

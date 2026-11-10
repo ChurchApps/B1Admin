@@ -12,6 +12,8 @@ interface Props {
   campaign: CampaignInterface;
   funds: FundInterface[];
   updatedFunction: () => void;
+  // Called instead of updatedFunction after a delete, so a page showing this campaign can leave it.
+  deletedFunction?: () => void;
 }
 
 export const CampaignEdit: React.FC<Props> = (props) => {
@@ -51,7 +53,7 @@ export const CampaignEdit: React.FC<Props> = (props) => {
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("donations.campaignEdit.confirmMsg"))) {
-      ApiHelper.delete("/campaigns/" + props.campaign.id, "GivingApi").then(() => props.updatedFunction());
+      ApiHelper.delete("/campaigns/" + props.campaign.id, "GivingApi").then(() => (props.deletedFunction || props.updatedFunction)());
     }
   };
 

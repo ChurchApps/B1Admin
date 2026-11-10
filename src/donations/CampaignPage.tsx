@@ -1,7 +1,7 @@
 import React from "react";
 import { CurrencyHelper, Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import { useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { Box, LinearProgress, Link as MuiLink, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, Flag as CampaignIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
@@ -31,6 +31,7 @@ const pledgeStatusLabel = (status: PledgeStatus | undefined) => {
 
 export const CampaignPage = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [editMode, setEditMode] = React.useState<"none" | "campaign" | "pledge">("none");
   const [editPledge, setEditPledge] = React.useState<PledgeInterface | null>(null);
   const [sortBy, setSortBy] = React.useState<string>("");
@@ -101,7 +102,7 @@ export const CampaignPage = () => {
   };
 
   const getEditContent = () => {
-    if (editMode === "campaign") return <CampaignEdit campaign={campaign as CampaignInterface} funds={funds.data || []} updatedFunction={updated} />;
+    if (editMode === "campaign") return <CampaignEdit campaign={campaign as CampaignInterface} funds={funds.data || []} updatedFunction={updated} deletedFunction={() => navigate("/donations/campaigns")} />;
     if (editMode === "pledge") return <PledgeEdit campaignId={params.id || ""} pledge={editPledge as PledgeInterface} personName={editPledge?.personId ? peopleNames[editPledge.personId] : undefined} updatedFunction={updated} />;
     return null;
   };
@@ -186,6 +187,7 @@ export const CampaignPage = () => {
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: Locale.label("donations.campaignsPage.campaigns"), path: "/donations/campaigns" },
     { label: campaign?.name || "" }
   ];
 

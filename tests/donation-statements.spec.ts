@@ -1,4 +1,4 @@
-import { type Page } from "@playwright/test";
+import { type APIRequestContext, type Page, request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateTo } from "./helpers/navigation";
 
@@ -113,6 +113,37 @@ test.describe("Donation Statements and Stripe Import", () => {
       await expect(importBtn).toBeVisible();
       await expect(importBtn).toBeDisabled();
     });
+
+    test("a preview shows each charge's status, and changing the dates asks for a new preview", async ({ page }) => {
+      // Stub the gateway call so the test does not depend on Stripe.
+      const bodies: any[] = [];
+      await page.route("**/giving/donate/replay-stripe-events", async (route) => {
+        bodies.push(route.request().postDataJSON());
+        await route.fulfill({
+          json: {
+            dryRun: true,
+            summary: { total: 2, new: 1, alreadyImported: 1, imported: 0, skipped: 0, errors: 0 },
+            results: [
+              { eventId: "evt_new_1", type: "charge.succeeded", amount: 25, currency: "usd", created: "2026-10-04T15:00:00Z", customer: "cus_1", status: "new" },
+              { eventId: "evt_old_1", type: "charge.succeeded", amount: 40, currency: "usd", created: "2026-10-05T15:00:00Z", customer: "cus_2", status: "already_imported" }
+            ]
+          }
+        });
+      });
+      await page.goto("/donations/stripe-import");
+      await page.locator("button").filter({ hasText: /^Preview$/ }).click();
+      await expect(page.getByText("Preview Results")).toBeVisible();
+      await expect(page.getByRole("row").filter({ hasText: "evt_new_1" })).toContainText("New");
+      await expect(page.getByRole("row").filter({ hasText: "evt_old_1" })).toContainText("Already Imported");
+      expect(bodies[0].dryRun).toBe(true);
+
+      const importBtn = page.locator("button").filter({ hasText: /Import Missing/i }).first();
+      await expect(importBtn).toBeEnabled();
+      await page.getByLabel("Start Date").fill("2026-02-01");
+      await expect(page.getByText("Preview Results")).toHaveCount(0);
+      await expect(importBtn).toBeDisabled();
+      expect(bodies).toHaveLength(1);
+    });
   });
 });
 
@@ -172,6 +203,16 @@ test.describe.serial("Country statement formats", () => {
     await page.goto("/donations/print/PER00000001?year=2025");
     await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
     await expect(page.locator('[data-testid="statement-legal-block"]')).toHaveCount(0);
+  });
+
+  test("the Giving editor shows the default Standard format and All years instead of blank boxes", async ({ page }) => {
+    await navigateTo(page, "settings");
+    await page.locator('[data-testid="settings-section-giving"]').click();
+    const section = page.locator('[data-testid="settings-giving"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="settings-giving"] [data-testid="small-button-edit"]').dispatchEvent("click");
+    await expect(section.locator('[data-testid="statement-format-select"]')).toContainText("Standard", { timeout: 10000 });
+    await expect(section.locator('[data-testid="member-giving-years-select"]')).toContainText("All years");
   });
 });
 
@@ -235,5 +276,65 @@ test.describe("Print all statements labels", () => {
 
     // No raw i18n key may survive to the printed page.
     await expect(page.getByText(/donations\.printAllStatementsPage\./)).toHaveCount(0);
+  });
+});
+
+// Giving statements count only tax-deductible giving (Funds → Tax Deductible). The batch page's summary,
+// ZIP and Print All must leave out a gift made only to a non-deductible fund, exactly like a donor's
+// own statement (GET /donations?personId= drops it on the Api side).
+test.describe.serial("Batch statements skip non-deductible funds", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const YEAR = 2024;
+  const DONALD_CLARK = "PER00000080";
+  const JOHN_SMITH = "PER00000001";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let fundId: string;
+  let batchId: string;
+
+  test.beforeAll(async () => {
+    ctx = await request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = body.userChurches.find((c: any) => c.church?.id === "CHU00000001");
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    fundId = (await (await ctx.post(`${API}/giving/funds`, { ...auth, data: [{ name: "Zebedee Camp Fees", taxDeductible: false }] })).json())[0].id;
+    batchId = (await (await ctx.post(`${API}/giving/donationbatches`, { ...auth, data: [{ name: "Zebedee Statement Batch", batchDate: `${YEAR}-06-09` }] })).json())[0].id;
+    const gifts = [
+      { personId: DONALD_CLARK, amount: 40, fundId },
+      { personId: JOHN_SMITH, amount: 25, fundId: "FUN00000001" }
+    ];
+    for (const g of gifts) {
+      await ctx.post(`${API}/giving/donations`, {
+        ...auth,
+        data: [{ batchId, personId: g.personId, donationDate: `${YEAR}-06-09`, amount: g.amount, currency: "usd", method: "Check", fundDonations: [{ fundId: g.fundId, amount: g.amount, currency: "usd" }] }]
+      });
+    }
+  });
+
+  test.afterAll(async () => {
+    if (batchId) await ctx.delete(`${API}/giving/donationbatches/${batchId}`, auth);
+    if (fundId) await ctx.delete(`${API}/giving/funds/${fundId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("the summary and buttons count only the deductible gift", async ({ page }) => {
+    await page.goto("/donations/statements");
+    await page.locator('[role="combobox"]').first().click();
+    await page.locator(`[data-value="${YEAR}"]`).click();
+    const summary = page.getByRole("heading", { name: `Summary (${YEAR})` }).locator("..");
+    await expect(summary).toContainText("Total Donors:1");
+    await expect(summary).toContainText("Total Donations:1");
+    await expect(summary).toContainText("25.00");
+    await expect(summary).not.toContainText("65.00");
+    await expect(page.getByRole("button", { name: "Print All 1 Statements" })).toBeVisible();
+  });
+
+  test("Print All prints a statement only for the donor with deductible giving", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto(`/donations/print-all?year=${YEAR}`);
+    await expect(page.getByText(`${YEAR} Annual Giving Statement`)).toHaveCount(1, { timeout: 15000 });
+    await expect(page.getByText("Smith", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("Donald Clark")).toHaveCount(0);
+    await expect(page.getByText("Zebedee Camp Fees")).toHaveCount(0);
   });
 });

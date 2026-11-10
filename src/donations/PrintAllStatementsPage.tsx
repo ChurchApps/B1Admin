@@ -8,6 +8,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
 import { usePrintLogo } from "../components/PrintChurchHeader";
+import { statementDonations } from "./statementDonations";
 
 export const PrintAllStatementsPage = () => {
   const [searchParams] = useSearchParams();
@@ -45,14 +46,13 @@ export const PrintAllStatementsPage = () => {
   });
 
   const yearDonations = useMemo(() => {
-    return (
-      allDonations.data?.filter((don) => {
-        if (!don.donationDate) return false;
-        const donationDate = new Date(don.donationDate.toString().split("T")[0] + "T00:00:00");
-        return donationDate.getFullYear() === currYear;
-      }) || []
-    );
-  }, [allDonations.data, currYear]);
+    const inYear = allDonations.data?.filter((don) => {
+      if (!don.donationDate) return false;
+      const donationDate = new Date(don.donationDate.toString().split("T")[0] + "T00:00:00");
+      return donationDate.getFullYear() === currYear;
+    }) || [];
+    return statementDonations(inYear, allFundDonations.data || [], funds.data || []);
+  }, [allDonations.data, allFundDonations.data, funds.data, currYear]);
 
   const personIds = useMemo(() => {
     const ids = new Set<string>();

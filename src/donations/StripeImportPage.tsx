@@ -45,6 +45,13 @@ export const StripeImportPage = () => {
   const [importData, setImportData] = React.useState<ImportResponse | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
+  // A preview only covers the dates it ran for, so new dates need a new preview before Import Missing.
+  const changeDates = (start: string, end: string) => {
+    setStartDate(start);
+    setEndDate(end);
+    setImportData(null);
+  };
+
   const handlePreview = async () => {
     if (!startDate || !endDate) {
       setError(Locale.label("donations.stripeImportPage.dateRequired"));
@@ -189,14 +196,14 @@ export const StripeImportPage = () => {
             <AppDatePicker
               label={Locale.label("donations.fundsPage.dateStart")}
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={(e) => changeDates(e.target.value, endDate)}
               InputLabelProps={{ shrink: true }}
               sx={{ minWidth: 200 }}
             />
             <AppDatePicker
               label={Locale.label("donations.fundsPage.dateEnd")}
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(e) => changeDates(startDate, e.target.value)}
               InputLabelProps={{ shrink: true }}
               sx={{ minWidth: 200 }}
             />
