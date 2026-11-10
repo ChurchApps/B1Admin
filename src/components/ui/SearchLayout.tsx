@@ -41,7 +41,7 @@ export function ViewToggle<T extends string>({ value, options, onChange, label }
 // The line between the search controls and the results: count (or selection tools) on the left, view controls on the right.
 export const ResultsBar: React.FC<{ children: React.ReactNode; end?: React.ReactNode; "data-testid"?: string }> = ({ children, end, ...rest }) => (
   <Stack direction="row" justifyContent="space-between" alignItems="center" useFlexGap flexWrap="wrap" spacing={1} sx={{ minHeight: end ? 40 : undefined, mb: end ? 0 : -1 }} aria-live="polite" data-testid={rest["data-testid"]}>
-    <Stack direction="row" spacing={1} alignItems="center" useFlexGap flexWrap="wrap">{children}</Stack>
+    <Stack direction="row" spacing={1} alignItems="center" useFlexGap flexWrap="wrap" sx={{ minWidth: 0, maxWidth: "100%" }}>{children}</Stack>
     {end}
   </Stack>
 );

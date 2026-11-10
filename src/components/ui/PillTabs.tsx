@@ -39,7 +39,7 @@ export const PillTabs: React.FC<Props> = ({ options, value, onChange, tabs, sx, 
       data-testid={rest["data-testid"]}
       onKeyDown={handleKeyDown}
       sx={[
-        { display: "flex", gap: 1, flexWrap: { xs: "nowrap", sm: "wrap" }, overflowX: { xs: "auto", sm: "visible" }, WebkitOverflowScrolling: "touch", pb: { xs: 0.5, sm: 0 } },
+        { display: "flex", gap: 1, flexWrap: { xs: "nowrap", sm: "wrap" }, overflowX: { xs: "auto", sm: "visible" }, minWidth: 0, maxWidth: "100%", WebkitOverflowScrolling: "touch", pb: { xs: 0.5, sm: 0 } },
         ...(Array.isArray(sx) ? sx : [sx])
       ]}>
       {options.map((o) => {

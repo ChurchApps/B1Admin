@@ -109,7 +109,8 @@ export const PlanItemRow: React.FC<Props> = ({
           {planItem.actionType}
         </Box>
       )}
-      <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: isTextLine ? "none" : "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* The generic type icon gives way to the text on phones; real thumbnails stay. */}
+      <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: isTextLine ? "none" : (planItem.thumbnailUrl || providerMedia ? "flex" : { xs: "none", sm: "flex" }), alignItems: "center", justifyContent: "center" }}>
         {planItem.thumbnailUrl ? (
           <Box
             component="img"
