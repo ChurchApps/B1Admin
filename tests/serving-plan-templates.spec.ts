@@ -8,6 +8,7 @@ import { STORAGE_STATE_PATH } from "./global-setup";
 const MINISTRY = "Worship";
 const PLAN_TYPE = "Sunday Service";
 const SOURCE_PLAN = "Upcoming Worship Schedule";
+const PAST_PLAN = "Last Week Worship Schedule"; // seeded a week before today
 const TEMPLATE_NAME = "Zephaniah Template";
 const NEW_PLAN = "Zephaniah Plan";
 const CAPTURED_HEADER = "Scripture and Sermon"; // a header from the source plan's order
@@ -97,6 +98,29 @@ test.describe.serial("Serving Management - Plan Templates", () => {
 
     await openOrderTab(NEW_PLAN);
     await expect(page.getByText(CAPTURED_HEADER).first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test("Apply offers upcoming plans and Update from plan offers past ones, whichever list tab is open", async () => {
+    await gotoPlanList();
+    await page.getByTestId("plans-past-pill").click();
+    await expect(page.getByRole("link", { name: PAST_PLAN, exact: true })).toBeVisible({ timeout: 10000 });
+    await page.locator("button").getByText("Templates").first().click();
+    const manager = page.getByRole("dialog");
+    const row = manager.locator("tr").filter({ hasText: TEMPLATE_NAME });
+
+    await row.getByRole("button", { name: "Apply" }).click();
+    const apply = page.getByRole("dialog").filter({ hasText: "Apply Template" });
+    await expect(apply.getByText(SOURCE_PLAN, { exact: false })).toBeVisible({ timeout: 10000 });
+    await expect(apply.getByText(PAST_PLAN, { exact: false })).toHaveCount(0);
+    await apply.getByRole("button", { name: "Cancel" }).click();
+
+    await row.getByRole("button", { name: "Update from plan" }).click();
+    const update = page.getByRole("dialog").filter({ hasText: "Replace this template" });
+    await update.getByRole("combobox").click();
+    await expect(page.getByRole("option").filter({ hasText: PAST_PLAN })).toBeVisible({ timeout: 10000 });
+    await page.keyboard.press("Escape");
+    await update.getByRole("button", { name: "Cancel" }).click();
+    await manager.getByRole("button", { name: "Close" }).click();
   });
 
   test("cleanup: deletes the new plan and the template", async () => {
