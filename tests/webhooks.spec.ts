@@ -58,7 +58,7 @@ test.describe.serial("Webhooks", () => {
       (r) => r.url().includes("/webhooks") && r.request().method() === "POST",
       { timeout: 15000 }
     );
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     await savePost;
 
     // Create returns the secret exactly once, shown in a dialog.
@@ -75,7 +75,7 @@ test.describe.serial("Webhooks", () => {
     await page.getByRole("button", { name: "New Webhook" }).click();
     await page.getByLabel("Name", { exact: true }).fill("Zacchaeus Invalid Webhook");
     await page.getByLabel("Payload URL", { exact: true }).fill(WEBHOOK_URL);
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     // Client-side validation blocks the save and surfaces an error message.
     await expect(page.getByText("Select at least one event")).toBeVisible({ timeout: 5000 });
     await page.locator("button").getByText("Cancel").click();
@@ -91,7 +91,7 @@ test.describe.serial("Webhooks", () => {
       (r) => r.url().includes("/webhooks") && r.request().method() === "POST",
       { timeout: 15000 }
     );
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     await savePost;
 
     // Updates do not return a secret, so no dialog — we land back on the list.
@@ -133,7 +133,7 @@ test.describe.serial("Webhooks", () => {
       (r) => r.url().includes("/webhooks") && r.request().method() === "POST",
       { timeout: 15000 }
     );
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     await savePost;
 
     // Reopen and confirm the connector type persisted.
@@ -193,7 +193,7 @@ test.describe.serial("Webhooks", () => {
       (r) => r.url().includes("/webhooks") && r.request().method() === "POST",
       { timeout: 15000 }
     );
-    await page.locator("button").getByText("Save").click();
+    await page.locator("#section-developer").getByRole("button", { name: "Save", exact: true }).click();
     expect((await savePost).status()).toBe(400);
     await expect(page.getByText(/data center suffix/)).toBeVisible({ timeout: 10000 });
 
@@ -208,5 +208,16 @@ test.describe.serial("Webhooks", () => {
     await row.getByRole("button", { name: "Delete" }).click();
     await confirmDelete(page);
     await expect(page.locator("tr").filter({ hasText: WEBHOOK_NAME_EDITED })).toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+test.describe("Webhooks route", () => {
+  test.use({ storageState: STORAGE_STATE_PATH });
+
+  test("/settings/webhooks opens the Developer section on the Webhooks tab", async ({ page }) => {
+    await page.goto("/settings/webhooks");
+    await expect(page).toHaveURL(/\/settings#webhooks$/);
+    await expect(page.getByRole("tab", { name: "Webhooks", exact: true })).toHaveAttribute("aria-selected", "true", { timeout: 15000 });
+    await expect(page.getByRole("button", { name: "New Webhook" })).toBeVisible();
   });
 });

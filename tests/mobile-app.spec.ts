@@ -479,6 +479,14 @@ test.describe("B1 Mobile page saves", () => {
       await page.getByLabel("Address", { exact: true }).first().waitFor({ state: "visible", timeout: 15000 });
     }
 
+    // With nothing saved the Api uses "members" for each field; the boxes used to show blank.
+    test("contact visibility defaults show Members when none has been saved", async ({ page }) => {
+      await openB1MobileSettings(page);
+      for (const label of VISIBILITY_FIELDS) {
+        await expect(page.getByLabel(label, { exact: true }).first()).toHaveText("Members", { timeout: 15000 });
+      }
+    });
+
     test("address, phone and email defaults offer My Group Leaders and Staff and Staff Only", async ({ page }) => {
       await openB1MobileSettings(page);
       for (const label of VISIBILITY_FIELDS) {
@@ -833,7 +841,9 @@ test.describe.serial("Scheduled push notifications", () => {
     const row = page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED });
     await row.getByTestId("remove-notification").click();
     await expect(page.getByRole("dialog")).toContainText("Remove this notification from the list?");
+    const removed = page.waitForResponse(r => r.url().includes("/messaging/scheduledNotifications/") && r.request().method() === "DELETE");
     await confirmDelete(page);
+    expect((await removed).ok()).toBeTruthy();
     await expect(page.getByTestId("recent-table").getByRole("row").filter({ hasText: EDITED })).toHaveCount(0);
     expect((await loadScheduled()).some((r: any) => r.title === EDITED)).toBe(false);
   });

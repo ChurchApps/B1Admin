@@ -28,7 +28,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   const sortedRoles = useMemo(() => [...(roles.data || [])].sort((a, b) => ((a.name || "") > (b.name || "") ? 1 : -1)), [roles.data]);
 
   const canEdit = useMemo(
-    () => UserHelper.checkAccess(Permissions.membershipApi.roles.edit) && UserHelper.checkAccess(Permissions.membershipApi.roles.edit) && UserHelper.checkAccess(Permissions.membershipApi.people.view),
+    () => UserHelper.checkAccess(Permissions.membershipApi.roles.edit) && UserHelper.checkAccess(Permissions.membershipApi.people.view),
     []
   );
 
@@ -145,7 +145,7 @@ export const AddRoleMenu: React.FC<AddRoleProps> = ({ churchId, onAddCustom }) =
       {
         name: Locale.label("settings.roles.lesAdmin"),
         description: Locale.label("settings.roles.lesAdminDesc") + "Lessons.church.",
-        permissions: [{ api: "LessonsApi", contentType: "Schedules", permission: "Edit" }]
+        permissions: [{ api: "LessonsApi", contentType: "Schedules", action: "Edit" }]
       }
     ],
     []

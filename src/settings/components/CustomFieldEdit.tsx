@@ -65,7 +65,7 @@ export const CustomFieldEdit: React.FC<Props> = (props) => {
       onCancel={props.updatedFunction}
       onDelete={props.field?.id ? handleDelete : undefined}
       isSubmitting={isSubmitting}
-      help="docs/b1-admin/settings/">
+      help="docs/b1-admin/settings/custom-fields">
       {ConfirmDialogElement}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <TextField fullWidth label={Locale.label("settings.customFieldEdit.name")} data-testid="custom-field-name-input" value={name} onChange={(e) => setName(e.target.value)} sx={{ mb: 1 }} />

@@ -881,6 +881,43 @@ test.describe("Church information time zone", () => {
   });
 });
 
+// The provider is stored as an id (the demo seed has "clearstream"); the page shows its name.
+test.describe("Texting provider name", () => {
+  test("the Texting section shows the provider's display name", async ({ page }) => {
+    await page.goto("/settings");
+    await expect(page.getByTestId("settings-section-texting")).toContainText("Clearstream", { timeout: 15000 });
+    await expect(page.locator("#section-texting")).toContainText("Clearstream");
+  });
+});
+
+// The Lessons Admin preset sent its permission under the wrong key, so the role was created with nothing checked.
+test.describe("Predefined roles", () => {
+  test("Add Lessons Admin role grants Edit Schedules", async ({ page }) => {
+    await page.goto("/settings/roles");
+    await page.getByTestId("add-role-button").click();
+    const created = page.waitForResponse(r => r.url().includes("/membership/roles") && r.request().method() === "POST");
+    const perms = page.waitForResponse(r => r.url().includes("/membership/rolepermissions") && r.request().method() === "POST");
+    await page.getByTestId("add-predefined-role-lessons-admin").click();
+    await confirmDelete(page);
+    const roleId = (await (await created).json())[0].id as string;
+    await perms;
+    try {
+      await page.goto("/settings/role/" + roleId);
+      const lessons = page.locator("#rolePermissionsBox .MuiAccordion-root").filter({ has: page.locator(".MuiAccordionSummary-root", { hasText: "Lessons" }) });
+      await expect(lessons.getByTestId("role-permission-section-count")).toHaveText("1 of 2", { timeout: 15000 });
+      await lessons.locator(".MuiAccordionSummary-root").click();
+      await expect(page.getByTestId("role-permission-checkbox-Schedules-Edit").locator("input")).toBeChecked();
+    } finally {
+      await page.goto("/settings/roles");
+      await page.locator("#roleMemberTable tbody tr").filter({ hasText: "Lessons Admin" }).getByTestId("edit-role-button").first().click();
+      await page.locator("button").getByText("Delete").click();
+      const deleted = page.waitForResponse(r => r.url().includes("/membership/roles/" + roleId) && r.request().method() === "DELETE");
+      await confirmDelete(page);
+      await deleted;
+    }
+  });
+});
+
 // ChurchAppsSupport#1181: merge-field chips on the email template editor must insert at the cursor, and editing mid-text must not eat the rest.
 const openNewTemplate = async (page: Page) => {
   await page.goto("/settings/email-templates");

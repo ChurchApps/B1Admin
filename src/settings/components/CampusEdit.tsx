@@ -73,7 +73,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
       title={props.campus.name || Locale.label("settings.campuses.campus")}
       icon="business"
       isSubmitting={isSubmitting}
-      help="docs/b1-admin/settings/">
+      help="docs/b1-admin/settings/campuses">
       {ConfirmDialogElement}
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("settings.campusEdit.name")} id="name" type="text" data-testid="campus-name-input" error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.campusEdit.validate.name") })} sx={{ mb: 1 }} />
