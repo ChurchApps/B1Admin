@@ -37,7 +37,7 @@ export const PersonAddAdvanced: React.FC<Props> = (props: Props) => {
       <>
         <AdvancedPeopleSearch updateSearchResults={updateSearchResults} toggleFunction={toggleAdvanced} />
         <DisplayBox key="displayBox" id="personAddBox" headerIcon="person" headerText={Locale.label("groups.groupPage.addPpl")}>
-          <PersonAddResults addFunction={props.addFunction} getPhotoUrl={props.getPhotoUrl} includeEmail={props.includeEmail} actionLabel={props.actionLabel} searchResults={advancedPeople} />
+          <PersonAddResults addFunction={props.addFunction} getPhotoUrl={props.getPhotoUrl} includeEmail={props.includeEmail} actionLabel={props.actionLabel} searchResults={advancedPeople.filter((p) => !(props.filterList || []).includes(p.id || ""))} />
         </DisplayBox>
       </>
     );
@@ -55,7 +55,7 @@ export const PersonAddAdvanced: React.FC<Props> = (props: Props) => {
 
     return (
       <DisplayBox key="displayBox" id="personAddBox" headerIcon="person" headerText={Locale.label("groups.groupPage.addPpl")} editContent={toggleButton}>
-        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={props.addFunction} showCreatePersonOnNotFound={props.showCreatePersonOnNotFound} onCreate={props.onCreate} />
+        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={props.addFunction} filterList={props.filterList} showCreatePersonOnNotFound={props.showCreatePersonOnNotFound} onCreate={props.onCreate} />
       </DisplayBox>
     );
   }
