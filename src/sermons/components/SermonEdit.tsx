@@ -155,13 +155,15 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
   const fetchVideo = (videoType: "youtube" | "vimeo") => {
     const videoData = watch("videoData");
-    ApiHelper.getAnonymous(`/sermons/lookup?videoType=${videoType}&videoData=${videoData}`, "ContentApi").then((d: any) => {
+    setErrors([]);
+    ApiHelper.getAnonymous(`/sermons/lookup?videoType=${videoType}&videoData=${encodeURIComponent(videoData || "")}`, "ContentApi").then((d: any) => {
+      if (!d || d.error || !d.title) { setErrors([Locale.label("sermons.sermonEdit.fetchError")]); return; }
       setValue("title", d.title);
       setValue("description", d.description);
       setValue("publishDate", d.publishDate ? DateHelper.formatHtml5Date(DateHelper.toDate(d.publishDate)) : "");
       setThumbnail(d.thumbnail);
       setDuration(d.duration);
-    });
+    }).catch(() => setErrors([Locale.label("sermons.sermonEdit.fetchError")]));
   };
 
   const handleVideoDataChange = (e: React.ChangeEvent<HTMLInputElement>, videoType: string) => {

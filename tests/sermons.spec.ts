@@ -1,9 +1,10 @@
-import type { Page } from "@playwright/test";
+import { test as plainTest, type Page } from "@playwright/test";
 import { sermonsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSermons, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
+import { loginAsVolunteer } from "./helpers/names-only-role";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Sermons Management", () => {
@@ -255,6 +256,9 @@ test.describe("Sermons Management", () => {
       await streamHomeBtn.click();
     });
 
+    // Target the test's own row: the seeded service can sort after it, and .last() then edited and deleted the seed.
+    const serviceRow = (name: string) => page.locator("#servicesBox tbody tr", { hasText: name });
+
     // Issue #1432: the Stream page counts Minutes Before back from when the video starts, so the chip has to as well.
     test("chat open chip counts back from the video start", async () => {
       await page.locator('[data-testid="add-service-button"]').click();
@@ -286,12 +290,11 @@ test.describe("Sermons Management", () => {
       const post = page.waitForResponse(r => r.url().includes("/streamingServices") && r.request().method() === "POST", { timeout: 15000 });
       await saveBtn.click();
       await post;
-      const validatedService = page.locator("p").getByText("Zacchaeus Test Service");
-      await expect(validatedService).toHaveCount(1, { timeout: 10000 });
+      await expect(serviceRow("Zacchaeus Test Service")).toHaveCount(1, { timeout: 10000 });
     });
 
     test("should edit service", async () => {
-      const editBtn = page.locator('button[aria-label="Edit"]').last();
+      const editBtn = serviceRow("Zacchaeus Test Service").getByRole("button", { name: "Edit" });
       await editBtn.click();
       const name = page.locator('[name="serviceLabel"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -303,7 +306,7 @@ test.describe("Sermons Management", () => {
     });
 
     test("should cancel editing service", async () => {
-      const editBtn = page.locator('button[aria-label="Edit"]').last();
+      const editBtn = serviceRow("Zebedee Test Service").getByRole("button", { name: "Edit" });
       await editBtn.click();
       const name = page.locator('[name="serviceLabel"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -313,7 +316,7 @@ test.describe("Sermons Management", () => {
     });
 
     test("should delete service", async () => {
-      const editBtn = page.locator('button[aria-label="Edit"]').last();
+      const editBtn = serviceRow("Zebedee Test Service").getByRole("button", { name: "Edit" });
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
@@ -343,6 +346,35 @@ test.describe("Sermons Management", () => {
       await expect(page.getByRole("link", { name: "View Your Stream" })).toBeVisible({ timeout: 10000 });
       await (await siblingNav(page)).getByText("Settings", { exact: true }).first().click();
       await expect(page.getByRole("heading", { name: "Content Tabs" })).toBeVisible({ timeout: 10000 });
+    });
+
+    test("content tabs: only external links are links, and tabs reorder with named arrows", async () => {
+      await page.goto("/sermons/settings");
+      await expect(page.getByRole("heading", { name: "Content Tabs" })).toBeVisible({ timeout: 10000 });
+      // The seeded Chat tab has no URL; it used to be a link that reloaded the page.
+      await expect(page.getByTestId("stream-tab-0")).toContainText("Chat");
+      await expect(page.getByTestId("stream-tab-0").getByRole("link")).toHaveCount(0);
+
+      await page.getByRole("button", { name: "Add", exact: true }).click();
+      const dialog = page.getByRole("dialog");
+      await dialog.getByLabel("Tab Text").fill("Zacchaeus Notes");
+      await dialog.getByTestId("tab-url-input").locator("input").fill("https://example.com/notes");
+      await dialog.getByRole("button", { name: "Save Tab" }).click();
+      await expect(dialog).toBeHidden({ timeout: 10000 });
+
+      const added = page.getByTestId("stream-tab-1");
+      await expect(added.getByRole("link", { name: /Zacchaeus Notes/ })).toHaveAttribute("target", "_blank");
+      const moved = page.waitForResponse((r) => r.url().includes("/links") && r.request().method() === "POST");
+      await added.getByRole("button", { name: "Move up" }).click();
+      await moved;
+      await expect(page.getByTestId("stream-tab-0")).toContainText("Zacchaeus Notes", { timeout: 10000 });
+      await expect(page.getByTestId("stream-tab-0").getByRole("button", { name: "Move down" })).toBeVisible();
+
+      await page.getByTestId("stream-tab-0").getByRole("button", { name: "Edit" }).click();
+      await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
+      await page.getByRole("dialog").filter({ hasText: "Delete Tab" }).getByRole("button", { name: "Delete" }).click();
+      await expect(page.getByText("Zacchaeus Notes")).toHaveCount(0, { timeout: 10000 });
+      await expect(page.getByTestId("stream-tab-0")).toContainText("Chat");
     });
 
   });
@@ -397,6 +429,48 @@ test.describe("Sermons Management", () => {
       const channelInput = page.locator('[name="channelId"]');
       await expect(channelInput).toBeVisible({ timeout: 10000 });
       await expect(page.locator("button").getByText("Fetch")).toBeVisible();
+    });
+
+    test("a failed fetch says so instead of doing nothing", async () => {
+      await page.route("**/sermons/vimeoImport/**", (route) => route.fulfill({ status: 403, contentType: "application/json", body: JSON.stringify({ error: { message: "forbidden" } }) }));
+      await page.locator('[data-testid="import-vimeo-button"]').click();
+      await page.locator('[name="channelId"]').fill("no-such-channel");
+      await page.getByRole("button", { name: "Fetch" }).click();
+      await expect(page.getByText("Couldn't load videos. Check the channel ID and try again.")).toBeVisible({ timeout: 10000 });
+      await page.unroute("**/sermons/vimeoImport/**");
+    });
+
+    test("imports only the checked videos into the chosen playlist", async () => {
+      const videos = [
+        { videoType: "youtube", videoData: "vid-one", title: "Zacchaeus Import One", duration: 60, thumbnail: "" },
+        { videoType: "youtube", videoData: "vid-two", title: "Zacchaeus Import Two", duration: 60, thumbnail: "" }
+      ];
+      await page.route("**/sermons/youtubeImport/**", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(videos) }));
+      let posted: any[] = [];
+      await page.route("**/content/sermons", async (route) => {
+        if (route.request().method() !== "POST") return route.continue();
+        posted = route.request().postDataJSON();
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(posted) });
+      });
+      await page.locator('[data-testid="import-youtube-button"]').click();
+      await page.locator('[name="channelId"]').fill("UCtest");
+      await page.getByRole("button", { name: "Fetch" }).click();
+      const row = page.locator("tr", { hasText: "Zacchaeus Import Two" });
+      await expect(row).toBeVisible({ timeout: 10000 });
+
+      await page.getByLabel("Import Into Playlist").click();
+      await page.getByRole("option").first().click();
+      await page.getByRole("button", { name: "Import", exact: true }).click();
+      await expect(page.getByText("Check at least one video to import.")).toBeVisible();
+      expect(posted).toHaveLength(0);
+
+      await row.locator('input[type="checkbox"]').check();
+      await page.getByRole("button", { name: "Import", exact: true }).click();
+      await expect(page.locator('[data-testid="import-youtube-button"]')).toBeVisible({ timeout: 10000 });
+      expect(posted.map((s) => s.title)).toEqual(["Zacchaeus Import Two"]);
+      expect(posted[0].playlistId).toBeTruthy();
+      await page.unroute("**/sermons/youtubeImport/**");
+      await page.unroute("**/content/sermons");
     });
   });
 
@@ -469,5 +543,32 @@ test.describe("Sermons Management", () => {
       await expect(page.locator('[data-testid="publish-date-input"]')).toBeVisible({ timeout: 10000 });
       await page.locator("button").getByText("Cancel").first().click().catch(() => { });
     });
+
+    test("Fetch explains when the video's details can't be loaded", async () => {
+      await page.route("**/sermons/lookup**", (route) => route.fulfill({ status: 403, contentType: "application/json", body: JSON.stringify({ error: { message: "forbidden" } }) }));
+      await page.locator('[data-testid="add-sermon-button"]').click();
+      await page.locator("li").getByText("Add Sermon").click();
+      await page.locator('[data-testid="video-data-input"] input').fill("notARealId");
+      await page.locator('[data-testid="fetch-youtube-button"]').click();
+      await expect(page.getByText("Couldn't fetch that video's details. Check the ID, or fill them in yourself.")).toBeVisible({ timeout: 10000 });
+      await page.unroute("**/sermons/lookup**");
+
+      await page.locator('[data-testid="add-to-playlist-link"]').click();
+      await expect(page.locator('[data-testid="add-to-playlist-button"]')).toHaveText("Add");
+      await page.locator("button").getByText("Cancel").first().click();
+    });
+  });
+});
+
+// Without Streaming Services / Edit, every Sermons page explains why instead of rendering blank.
+plainTest.describe("Sermons pages without streaming permission", () => {
+  plainTest.use({ storageState: { cookies: [], origins: [] } });
+
+  plainTest("Live Stream Times, Settings and Bulk Import show a permission message", async ({ page }) => {
+    await loginAsVolunteer(page);
+    for (const path of ["/sermons", "/sermons/times", "/sermons/settings", "/sermons/bulk"]) {
+      await page.goto(path);
+      await expect(page.getByText("You don't have permission to view this page.")).toBeVisible({ timeout: 15000 });
+    }
   });
 });
