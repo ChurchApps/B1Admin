@@ -19,6 +19,8 @@ async function apiLogin(ctx: APIRequestContext): Promise<string> {
 }
 
 test.describe("plan validation blockouts and notified line", () => {
+  // Serial so beforeAll creates one blockout; each parallel worker added its own and the conflict listed twice.
+  test.describe.configure({ mode: "serial" });
   test.use({ timezoneId: "America/Chicago" });
 
   let ctx: APIRequestContext;

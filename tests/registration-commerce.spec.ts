@@ -311,7 +311,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await expect(counts).toContainText("General: 1");
     await expect(counts).toContainText("Camper: 0"); // the Camper registrant is waitlisted
 
-    await expect(rosterCard.getByText("$ 0.00 / $ 45.00")).toBeVisible();
+    await expect(rosterCard.getByText("$0.00 / $45.00")).toBeVisible();
 
     // Waitlisted row exposes the Promote action.
     const waitRow = page.locator('[data-testid="registration-row"]').filter({ hasText: "Zacchaeus Waitlisted" });
@@ -335,7 +335,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await expect(dialog).toBeVisible({ timeout: 10000 });
     await expect(dialog.getByText("Zacchaeus Waitlisted")).toBeVisible();
     await expect(dialog.getByText("Camper")).toBeVisible();
-    await expect(dialog.getByText("$ 0.00 / $ 45.00")).toBeVisible();
+    await expect(dialog.getByText("$0.00 / $45.00")).toBeVisible();
     await dialog.getByRole("button", { name: "Close" }).click();
     await expect(dialog).toHaveCount(0, { timeout: 5000 });
   });
