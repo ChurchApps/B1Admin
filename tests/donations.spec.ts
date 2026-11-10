@@ -1368,3 +1368,56 @@ test.describe("Batch delete from the batch page", () => {
     }
   });
 });
+
+// An empty or zero amount is refused with a message instead of silently doing nothing (quick entry)
+// or saving a $0 gift with no fund (full editor). The full editor starts a new gift on the batch date.
+test.describe("Donation entry validation", () => {
+  test.describe.configure({ retries: 0 });
+  const BATCH_DATE = "2025-08-17";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let batchId: string;
+
+  test.beforeAll(async () => {
+    ctx = await request.newContext();
+    auth = await apiAuth(ctx);
+    batchId = (await (await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: "Zebedee Validation Batch", batchDate: BATCH_DATE }] })).json())[0].id;
+  });
+
+  test.afterAll(async () => {
+    if (batchId) await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  const donationPosts = (page: Page) => {
+    const posts: string[] = [];
+    page.on("request", (r) => { if (/\/giving\/donations$/.test(r.url()) && r.method() === "POST") posts.push(r.url()); });
+    return posts;
+  };
+
+  test("quick entry explains an empty amount instead of ignoring the click", async ({ page }) => {
+    const posts = donationPosts(page);
+    await page.goto("/donations/batches/" + batchId);
+    await page.getByTestId("bulk-donation-anonymous").click();
+    await page.getByTestId("add-donation-submit").click();
+    await expect(page.getByText("Enter an amount greater than zero")).toBeVisible();
+    await page.getByTestId("bulk-donation-amount").locator("input").fill("0");
+    await page.getByTestId("bulk-donation-amount").locator("input").press("Enter");
+    await expect(page.getByText("Enter an amount greater than zero")).toBeVisible();
+    expect(posts).toHaveLength(0);
+  });
+
+  test("full donation editor starts on the batch date and refuses a gift with no amount", async ({ page }) => {
+    const posts = donationPosts(page);
+    await page.goto("/donations/batches/" + batchId);
+    await page.getByTestId("bulk-donation-anonymous").click();
+    await page.getByTestId("bulk-donation-full-editor").click();
+    const box = page.locator("#donationBox");
+    await expect(box.getByTestId("donation-date-input").locator("input")).toHaveValue(BATCH_DATE);
+    await box.getByRole("button", { name: "Save" }).click();
+    await expect(box.getByText("Enter an amount greater than zero")).toBeVisible();
+    expect(posts).toHaveLength(0);
+    const saved = await (await ctx.get(`${API_BASE}/giving/donations?batchId=${batchId}`, auth)).json();
+    expect(saved).toHaveLength(0);
+  });
+});

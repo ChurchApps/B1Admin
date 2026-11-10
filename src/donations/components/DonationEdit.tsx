@@ -13,6 +13,8 @@ import { AppDatePicker } from "../../components";
 interface Props {
   donationId: string;
   batchId: string;
+  // A new gift starts on the batch date, like the quick entry panel.
+  batchDate?: string;
   funds: FundInterface[];
   updatedFunction: () => void;
   currency?: string;
@@ -84,6 +86,11 @@ export const DonationEdit = memo((props: Props) => {
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
   const onValid = async (values: AnyRecord) => {
+    // donation.amount follows the fund rows (handleFundDonationsChange), so a gift with nothing in any fund is caught here.
+    if (!((donation.amount || 0) > 0)) {
+      setSaveError(Locale.label("donations.logGift.amountError", "Enter an amount greater than zero, such as 25.00."));
+      return;
+    }
     // New gifts are stamped with the church currency; edited gifts keep the currency they were entered in.
     const currency = (donation.currency || props.currency || "usd").toLowerCase();
     const donationToSave: DonationInterface = {
@@ -123,7 +130,7 @@ export const DonationEdit = memo((props: Props) => {
 
   const loadData = useCallback(() => {
     if (UniqueIdHelper.isMissing(props.donationId)) {
-      const initial = { donationDate: DateHelper.formatHtml5Date(new Date()), batchId: props.batchId, amount: 0, method: "Check" };
+      const initial = { donationDate: props.batchDate || DateHelper.formatHtml5Date(new Date()), batchId: props.batchId, amount: 0, method: "Check" };
       setDonation(initial);
       reset({ date: initial.donationDate, method: "Check", methodDetails: "", notes: "" });
       const fd: FundDonationInterface = { amount: 0, fundId: props.funds[0]?.id };
@@ -137,7 +144,7 @@ export const DonationEdit = memo((props: Props) => {
       });
       ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data: any) => setFundDonations(data));
     }
-  }, [props.donationId, props.batchId, props.funds, reset]);
+  }, [props.donationId, props.batchId, props.batchDate, props.funds, reset]);
 
   const methodDetailsField = useMemo(() => {
     if (method === "Cash") return null;

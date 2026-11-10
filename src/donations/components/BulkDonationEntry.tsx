@@ -55,7 +55,11 @@ export const BulkDonationEntry = memo((props: Props) => {
   }, []);
 
   const handleSave = useCallback(async () => {
-    if (!amount || parseFloat(amount) <= 0) return;
+    if (!amount || !(parseFloat(amount) > 0)) {
+      setErrors([Locale.label("donations.logGift.amountError", "Enter an amount greater than zero, such as 25.00.")]);
+      amountInputRef.current?.focus();
+      return;
+    }
     if (savingRef.current) return;
     savingRef.current = true;
     setErrors([]);

@@ -64,7 +64,7 @@ export const DonationBatchPage = () => {
 
   const getEditModules = () => {
     const result = [];
-    if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} currency={currency} />);
+    if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} batchDate={batch.data?.batchDate?.split("T")[0]} currency={currency} />);
     if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batch={batch.data} updatedFunction={batchUpdated} deletedFunction={batchDeleted} canDelete={canEditDonations()} />);
     return result;
   };
