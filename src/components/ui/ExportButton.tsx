@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Button, Icon } from "@mui/material";
 import { ExportLink } from "@churchapps/apphelper";
 
 interface Props {
@@ -7,6 +7,8 @@ interface Props {
   filename?: string;
   text: string;
   customHeaders?: { label: string; key: string }[];
+  // When set, the button calls this instead of downloading, so the caller can load the rest of the data first.
+  onRequestData?: () => void;
 }
 
 // ExportLink ignores children; style from wrapper instead of props
@@ -28,6 +30,8 @@ export const ExportButton: React.FC<Props> = (props) => (
       },
       "& .MuiIcon-root": { fontSize: 18 }
     }}>
-    <ExportLink data={props.data} filename={props.filename} customHeaders={props.customHeaders} text={props.text} icon="file_download" />
+    {props.onRequestData
+      ? <Button onClick={props.onRequestData}><Icon sx={{ marginRight: 1 }}>file_download</Icon>{props.text}</Button>
+      : <ExportLink data={props.data} filename={props.filename} customHeaders={props.customHeaders} text={props.text} icon="file_download" />}
   </Box>
 );

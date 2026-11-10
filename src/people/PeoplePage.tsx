@@ -64,6 +64,9 @@ export const PeoplePage = memo(() => {
   const [loadAll, setLoadAll] = React.useState(false);
   const [allPeople, setAllPeople] = React.useState<PersonInterface[]>([]);
   const [maybeMore, setMaybeMore] = React.useState(true);
+  // Export from the unfiltered directory loads everyone first; only the first page is on screen until then.
+  const [exportPending, setExportPending] = React.useState(false);
+  const exportRef = React.useRef<HTMLDivElement>(null);
   const [toast, setToast] = React.useState<{ open: boolean; message: string; severity: "success" | "error" }>({
     open: false,
     message: "",
@@ -190,6 +193,26 @@ export const PeoplePage = memo(() => {
   const handleShowAll = useCallback(() => {
     setLoadAll(true);
   }, []);
+
+  const handleExportAll = useCallback(() => {
+    setExportPending(true);
+    setLoadAll(true);
+  }, []);
+
+  React.useEffect(() => {
+    // Wait until the whole directory is the current result set, then click the real download link.
+    if (!exportPending || !loadAll || maybeMore || peopleQuery.isFetching || searchResults !== allPeople) return;
+    let tries = 0;
+    const timer = setInterval(() => {
+      const link = exportRef.current?.querySelector("a");
+      if (link || ++tries > 30) {
+        clearInterval(timer);
+        setExportPending(false);
+        link?.click();
+      }
+    }, 100);
+    return () => clearInterval(timer);
+  }, [exportPending, loadAll, maybeMore, peopleQuery.isFetching, searchResults, allPeople]);
 
   const handleSelectList = useCallback((list: ListInterface) => {
     const conditions = list.conditions;
@@ -452,7 +475,13 @@ export const PeoplePage = memo(() => {
         <HeaderTextButton onClick={handlePrint} data-testid="print-directory-button">
           {isSearchPerformed ? Locale.label("people.peoplePage.printResults") : Locale.label("people.peoplePage.printDirectory")}
         </HeaderTextButton>
-        {searchResults && <ExportButton data={getExportData(searchResults)} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
+        {searchResults && (
+          <Box ref={exportRef} data-testid="people-export">
+            {!isSearchPerformed && !loadAll && maybeMore
+              ? <ExportButton data={[]} text={Locale.label("people.peoplePage.export")} onRequestData={handleExportAll} />
+              : <ExportButton data={getExportData(searchResults)} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
+          </Box>
+        )}
         <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
         {canSaveList && (
           <HeaderTextButton onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })}>
