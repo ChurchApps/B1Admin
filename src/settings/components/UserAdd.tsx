@@ -79,7 +79,7 @@ export const UserAdd = (props: Props) => {
     if (selectedPerson.id && selectedPerson.id === savedPersonId) return;
     const { first, last } = selectedPerson.name;
     const userEmail = showEmailField ? email : (selectedPerson.contactInfo.email || "");
-    const userId = (unlinked?.personId === selectedPerson.id) ? unlinked.userId : (await createUserAndToGroup(first || "", last || "", userEmail)).id || "";
+    const userId = (unlinked && unlinked.personId === selectedPerson.id) ? unlinked.userId : (await createUserAndToGroup(first || "", last || "", userEmail)).id || "";
     try {
       await linkUserAndPerson(userId, selectedPerson.id || "");
 
