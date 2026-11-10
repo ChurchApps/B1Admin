@@ -398,6 +398,48 @@ test.describe("Sermons Management", () => {
       await expect(channelInput).toBeVisible({ timeout: 10000 });
       await expect(page.locator("button").getByText("Fetch")).toBeVisible();
     });
+
+    test("a failed fetch says so instead of doing nothing", async () => {
+      await page.route("**/sermons/vimeoImport/**", (route) => route.fulfill({ status: 403, contentType: "application/json", body: JSON.stringify({ error: { message: "forbidden" } }) }));
+      await page.locator('[data-testid="import-vimeo-button"]').click();
+      await page.locator('[name="channelId"]').fill("no-such-channel");
+      await page.getByRole("button", { name: "Fetch" }).click();
+      await expect(page.getByText("Couldn't load videos. Check the channel ID and try again.")).toBeVisible({ timeout: 10000 });
+      await page.unroute("**/sermons/vimeoImport/**");
+    });
+
+    test("imports only the checked videos into the chosen playlist", async () => {
+      const videos = [
+        { videoType: "youtube", videoData: "vid-one", title: "Zacchaeus Import One", duration: 60, thumbnail: "" },
+        { videoType: "youtube", videoData: "vid-two", title: "Zacchaeus Import Two", duration: 60, thumbnail: "" }
+      ];
+      await page.route("**/sermons/youtubeImport/**", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(videos) }));
+      let posted: any[] = [];
+      await page.route("**/content/sermons", async (route) => {
+        if (route.request().method() !== "POST") return route.continue();
+        posted = route.request().postDataJSON();
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(posted) });
+      });
+      await page.locator('[data-testid="import-youtube-button"]').click();
+      await page.locator('[name="channelId"]').fill("UCtest");
+      await page.getByRole("button", { name: "Fetch" }).click();
+      const row = page.locator("tr", { hasText: "Zacchaeus Import Two" });
+      await expect(row).toBeVisible({ timeout: 10000 });
+
+      await page.getByLabel("Import Into Playlist").click();
+      await page.getByRole("option").first().click();
+      await page.getByRole("button", { name: "Import", exact: true }).click();
+      await expect(page.getByText("Check at least one video to import.")).toBeVisible();
+      expect(posted).toHaveLength(0);
+
+      await row.locator('input[type="checkbox"]').check();
+      await page.getByRole("button", { name: "Import", exact: true }).click();
+      await expect(page.locator('[data-testid="import-youtube-button"]')).toBeVisible({ timeout: 10000 });
+      expect(posted.map((s) => s.title)).toEqual(["Zacchaeus Import Two"]);
+      expect(posted[0].playlistId).toBeTruthy();
+      await page.unroute("**/sermons/youtubeImport/**");
+      await page.unroute("**/content/sermons");
+    });
   });
 
   // Edge-case extensions: provider validation + live-stream config gaps from

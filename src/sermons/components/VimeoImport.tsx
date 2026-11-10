@@ -61,15 +61,25 @@ export const VimeoImport = (props: Props) => {
 
   const handleFetch = () => {
     setIsFetching(true);
-    ApiHelper.get("/sermons/vimeoImport/" + encodeURIComponent(channelId), "ContentApi").then((data: any) => { setSermons(data); setIsFetching(false); }).catch(() => setIsFetching(false));
+    setErrors([]);
+    ApiHelper.get("/sermons/vimeoImport/" + encodeURIComponent(channelId.trim()), "ContentApi")
+      .then((data: any) => {
+        setIsFetching(false);
+        if (!Array.isArray(data) || data.length === 0) setErrors([Locale.label("sermons.bulkImport.noVideos")]);
+        else setSermons(data);
+      })
+      .catch(() => { setIsFetching(false); setErrors([Locale.label("sermons.bulkImport.fetchError")]); });
   };
 
   const handleSave = () => {
     if (playlistId === "") setErrors([Locale.label("sermons.bulkImport.selectPlaylist")]);
+    else if (selectedSermons.length === 0) setErrors([Locale.label("sermons.bulkImport.selectVideos")]);
     else {
-      const data = [...selectedSermons];
-      data.forEach((sermon) => { sermon.playlistId = playlistId; });
-      ApiHelper.post("/sermons", data, "ContentApi").then(() => { props.handleDone(); });
+      setErrors([]);
+      const data = selectedSermons.map((sermon) => ({ ...sermon, playlistId }));
+      ApiHelper.post("/sermons", data, "ContentApi")
+        .then(() => { props.handleDone(); })
+        .catch(() => setErrors([Locale.label("common.saveError")]));
     }
   };
 
@@ -90,8 +100,8 @@ export const VimeoImport = (props: Props) => {
         <ErrorMessages errors={errors} />
         <FormCard icon="video_library" title={Locale.label("sermons.bulkImport.import")} saveText={Locale.label("sermons.bulkImport.import")} onSave={handleSave} onCancel={props.handleDone}>
           <FormControl fullWidth>
-            <InputLabel>{Locale.label("sermons.bulkImport.importIntoPlaylist")}</InputLabel>
-            <Select fullWidth label={Locale.label("sermons.bulkImport.importIntoPlaylist")} name="playlistId" value={playlistId} onChange={(e) => { setPlaylistId(e.target.value); }}>
+            <InputLabel id="import-playlist-label">{Locale.label("sermons.bulkImport.importIntoPlaylist")}</InputLabel>
+            <Select fullWidth labelId="import-playlist-label" label={Locale.label("sermons.bulkImport.importIntoPlaylist")} name="playlistId" value={playlistId} onChange={(e) => { setPlaylistId(e.target.value); }}>
               {playlists.map((playlist) => (
                 <MenuItem key={playlist.id} value={playlist.id}>{playlist.title}</MenuItem>
               ))}
