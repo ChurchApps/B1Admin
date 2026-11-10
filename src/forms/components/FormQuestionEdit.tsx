@@ -2,7 +2,7 @@ import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Se
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { ChoicesEdit } from ".";
-import { type QuestionInterface } from "@churchapps/helpers";
+import { type QuestionInterface } from "../../helpers";
 import { useMountedState, ApiHelper, UniqueIdHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";

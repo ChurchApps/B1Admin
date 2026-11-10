@@ -65,7 +65,7 @@ export const CommandPalette: React.FC<{ menu: PaletteMenuItem[]; label: string; 
       const k = quickActions.map((q): PaletteItem => ({ n: q.label, t: "do", u: q.url, i: q.icon }));
       nav.push({ n: "Quick Actions", a: ["create", "add", "new", "set up", "get started"], t: "nav", u: "#quick", i: "bolt", k });
     }
-    const all = [...nav, ...server.filter((s) => !menu.some((m) => m.url === s.u))].map((i) => ({ ...i, a: i.a && [...i.a] }));
+    const all = [...nav, ...server.filter((s) => !menu.some((m) => m.url === s.u))].map((i): PaletteItem => ({ ...i, a: i.a && [...i.a] }));
     // Sub-pages and quick actions are searchable too: a row with the same url takes the label as an alias, otherwise the child gets its own row.
     all.filter((p) => p.t === "nav" && p.k).forEach((p) => p.k!.forEach((c) => {
       const same = all.find((i) => i.u === c.u);

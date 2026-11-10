@@ -1,4 +1,3 @@
-import React from "react";
 import { Tabs, FormNavigation, FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, Loading } from "@churchapps/apphelper";
@@ -95,7 +94,7 @@ export const FormPage = () => {
         {editing ? (
           <>
             <Box><BackVerb name={data.name || ""} onClick={() => setView("")} data-testid="form-record-back" /></Box>
-            <FormEdit formId={data.id} updatedFunction={handleSettingsSaved} />
+            <FormEdit formId={data.id || ""} updatedFunction={handleSettingsSaved} />
           </>
         ) : (
           <>

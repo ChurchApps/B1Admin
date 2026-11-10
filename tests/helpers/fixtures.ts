@@ -10,6 +10,7 @@ export const SEED_PEOPLE = {
   CAROL: "Carol Clark",
   DOROTHY: "Dorothy Jackson",
   JENNIFER: "Jennifer Williams",
+  JESSICA: "Jessica Taylor",
   PATRICIA: "Patricia Moore",
   ROBERT: "Robert Moore",
   DEMO: "Demo User"

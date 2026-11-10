@@ -323,7 +323,7 @@ export const ApprovalsPage = () => {
       </CalendarChrome>
       {editingEventId && (
         <EventModal
-          churchId={UserHelper.currentUserChurch.church.id}
+          churchId={UserHelper.currentUserChurch?.church?.id || ""}
           eventId={editingEventId}
           onDone={(saved) => { setEditingEventId(""); if (saved) loadData(); }}
         />

@@ -6,7 +6,7 @@ import type { GroupInterface, CuratedCalendarInterface } from "@churchapps/helpe
 
 interface Props {
   parsedData: any;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<string>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
 }
 
 export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {

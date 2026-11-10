@@ -305,7 +305,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
             <Box sx={{ mt: 2 }}>
               <TextField fullWidth label={Locale.label("sermons.sermonEdit.audioUrl")} helperText={Locale.label("sermons.sermonEdit.audioUrlHelp")} data-testid="sermon-audio-url-input" {...register("audioUrl")} />
-              {!UniqueIdHelper.isMissing(props.currentSermon?.id) && (
+              {props.currentSermon?.id && !UniqueIdHelper.isMissing(props.currentSermon.id) && (
                 <Box sx={{ mt: 1 }}>
                   <CustomFileUpload contentType="sermon" contentId={props.currentSermon.id} accept={AUDIO_ACCEPT} pendingSave={pendingAudioUpload} saveCallback={handleAudioUploaded} errorCallback={() => setPendingAudioUpload(false)} />
                   <Button variant="outlined" size="small" sx={{ mt: 1 }} onClick={() => setPendingAudioUpload(true)} data-testid="upload-sermon-audio-button">{Locale.label("sermons.sermonEdit.uploadAudio")}</Button>

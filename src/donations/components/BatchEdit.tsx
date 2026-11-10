@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { ApiHelper, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";

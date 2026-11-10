@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { statementDonations } from "./statementDonations.ts";
 
-const funds = [{ id: "general", taxDeductible: true }, { id: "camp", taxDeductible: false }, { id: "legacy" }];
+const funds = [{ id: "general", name: "General", taxDeductible: true }, { id: "camp", name: "Camp", taxDeductible: false }, { id: "legacy", name: "Legacy" }];
 
 describe("statementDonations", () => {
   it("drops a gift made only to non-deductible funds", () => {

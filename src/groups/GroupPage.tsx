@@ -1,4 +1,3 @@
-import React from "react";
 import { GroupBanner, GroupDetailsEdit } from "./components";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { Navigate, useParams } from "react-router-dom";

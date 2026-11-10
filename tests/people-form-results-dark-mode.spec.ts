@@ -1,6 +1,6 @@
 import { test as base, expect } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { openKnownPerson } from "./helpers/fixtures";
+import { openKnownPerson, SEED_PEOPLE } from "./helpers/fixtures";
 
 const test = base.extend({
   page: async ({ page }, provide) => {
@@ -18,11 +18,13 @@ function luminance(rgb: string) {
 // Issue #1014: person form results use grey.50, which is near-white in dark mode.
 
 test("person form results are not a light card in dark mode", async ({ page }) => {
-  await openKnownPerson(page, "Jessica Taylor");
+  await openKnownPerson(page, SEED_PEOPLE.JESSICA);
   await page.getByTestId("person-forms-all").click();
   await page.getByText("Visitor Information Card", { exact: true }).first().click();
   const title = page.getByText("First Name", { exact: true });
   await expect(title).toBeVisible({ timeout: 15000 });
+  // submissionDate comes from the Api but is missing from the shared FormSubmissionInterface; keep it on screen.
+  await expect(page.getByText("Submitted Sep 22, 2025")).toBeVisible();
   const bg = await title.evaluate((el) => getComputedStyle(el.parentElement as Element).backgroundColor);
   expect(luminance(bg), `expected a dark result card, got ${bg}`).toBeLessThan(80);
 });

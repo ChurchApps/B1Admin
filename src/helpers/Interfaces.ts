@@ -1,4 +1,17 @@
-import type { SessionInterface as BaseSessionInterface, ServiceTimeInterface } from "@churchapps/helpers";
+import type { SessionInterface as BaseSessionInterface, ServiceTimeInterface, FormSubmissionInterface as BaseFormSubmissionInterface, QuestionInterface as BaseQuestionInterface } from "@churchapps/helpers";
+
+// @churchapps/helpers 2.15.0 FormSubmissionInterface leaves out the date fields the Api returns. Remove once Packages adds them.
+export interface FormSubmissionInterface extends BaseFormSubmissionInterface {
+  submissionDate?: Date | string;
+  revisionDate?: Date | string | null;
+  revisedBy?: string | null;
+}
+
+// @churchapps/helpers 2.15.0 types QuestionInterface.choices as a one-element tuple; it is a list. Remove once Packages fixes it.
+export interface QuestionChoiceInterface { value?: string; text?: string }
+export interface QuestionInterface extends Omit<BaseQuestionInterface, "choices"> {
+  choices?: QuestionChoiceInterface[];
+}
 
 export interface SessionInterface extends BaseSessionInterface {
   serviceTime?: ServiceTimeInterface;

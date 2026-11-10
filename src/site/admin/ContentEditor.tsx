@@ -9,7 +9,7 @@ import { Section } from "./Section";
 import React from "react";
 import { Theme, DroppableArea } from "@churchapps/apphelper/website";
 import { SectionBlock } from "./SectionBlock";
-import { StyleHelper } from "@churchapps/apphelper/website";
+import { StyleHelper } from "../apphelperWebsite";
 import { ElementAdd } from "./elements/ElementAdd";
 import { ElementEdit } from "./elements/ElementEdit";
 import { SectionEdit } from "./SectionEdit";
@@ -461,7 +461,7 @@ export function ContentEditor(props: Props) {
       return;
     }
 
-    let target: { sectionId: string; blockId?: string; parentId?: string; sort: number } | null = null;
+    let target: { sectionId: string; blockId?: string; parentId?: string | null; sort: number } | null = null;
     if (selectedElementId) {
       const path = findElementPath(selectedElementId);
       if (path?.section) target = { sectionId: path.section.id || "", blockId: path.section.blockId, parentId: path.element.parentId, sort: (path.element.sort || 0) + 0.1 };
