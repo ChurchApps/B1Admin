@@ -131,7 +131,8 @@ test.describe.serial("Event reminders editor", () => {
 
     // Can't read MUI color, but chips and saved values must round-trip.
     await expect(page.locator(`[data-testid="${OFFSET_1_DAY}"]`)).toBeVisible();
-    await expect(page.locator(`[data-testid="${OFFSET_7_DAYS}"]`)).toBeVisible();
+    await expect(page.locator(`[data-testid="${OFFSET_7_DAYS}"]`)).toHaveText("7 days before");
+    await expect(page.locator(`[data-testid="${OFFSET_1_DAY}"]`)).toHaveText("1 day before");
 
     await expect(page.locator('[data-testid="reminder-time-input"] input')).toHaveValue("08:30");
     await expect(page.locator('[data-testid="reminder-recipient-mode-select"]')).toContainText("Group members");
