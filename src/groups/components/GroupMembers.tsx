@@ -59,6 +59,10 @@ import { ExportButton, StatusBadge } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { useCanPrintRoster } from "../../helpers";
 
+// On a phone the avatar column gives way so the leader and remove buttons stay on screen.
+const avatarCellSx = { width: 56, display: { xs: "none", sm: "table-cell" } };
+const roleCellSx = { width: { xs: "auto", sm: 120 } };
+
 interface Props {
   group: GroupInterface;
   addedPerson?: PersonInterface;
@@ -199,7 +203,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
       rows.push(
         <TableRow key={gm.id}>
-          <TableCell sx={{ width: 56 }}>
+          <TableCell sx={avatarCellSx}>
             <PersonAvatar person={gm.person as PersonInterface} size="small" />
           </TableCell>
           <TableCell>
@@ -211,7 +215,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
               <Box component="span" sx={{ fontWeight: 600 }}>{personName}</Box>
             )}
           </TableCell>
-          <TableCell sx={{ width: 120 }}>{roleCell}</TableCell>
+          <TableCell sx={roleCellSx}>{roleCell}</TableCell>
           <TableCell align="right" className="rowActions" sx={{ width: 110, whiteSpace: "nowrap" }}>
             {canEdit && (
               <Stack
@@ -241,9 +245,9 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     if (members.length === 0) return null;
     return (
       <TableRow>
-        <TableCell sx={{ width: 56 }} />
+        <TableCell sx={avatarCellSx} />
         <TableCell>{Locale.label("common.name")}</TableCell>
-        <TableCell sx={{ width: 120 }}>{Locale.label("groups.groupMembers.role")}</TableCell>
+        <TableCell sx={roleCellSx}>{Locale.label("groups.groupMembers.role")}</TableCell>
         <TableCell sx={{ width: 110, textAlign: "right" }} />
       </TableRow>
     );
@@ -349,7 +353,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   );
 
   const renderTable = () => (
-    <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", overflow: "hidden" }}>
+    <Box sx={{ border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", overflowX: "auto" }}>
       <Table id="groupMemberTable">
         <TableHead>{tableHeader}</TableHead>
         <TableBody>{tableRows}</TableBody>

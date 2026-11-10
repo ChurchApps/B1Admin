@@ -1019,6 +1019,18 @@ loggedInTest.describe("Session attendance save and layout", () => {
       const width = await page.evaluate(() => document.documentElement.scrollWidth);
       expect(width).toBeLessThanOrEqual(390);
     });
+
+    loggedInTest("member list keeps the leader and remove buttons on a 390px screen", async ({ page }) => {
+      await openSeedMembers(page);
+      const table = page.locator("#groupMemberTable");
+      const box = await table.locator("..").boundingBox();
+      for (const id of ["promote-leader-button-", "remove-member-button-"]) {
+        const btn = table.locator(`[data-testid^="${id}"]`).first();
+        await expect(btn).toBeVisible({ timeout: 10000 });
+        const b = await btn.boundingBox();
+        expect(b!.x + b!.width, `${id} must sit inside the member list`).toBeLessThanOrEqual(box!.x + box!.width);
+      }
+    });
   });
 });
 
