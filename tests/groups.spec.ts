@@ -136,17 +136,24 @@ test.describe.serial("Group Management", () => {
       await openSeedMembers(page);
       await expect(page).toHaveURL(/\/groups\/(?!health|pending)[^/?#]+/);
 
+      // Carol Clark is not in the seed group (Demo User already is, so search no longer offers them).
       const searchInput = page.locator('input[name="personAddText"]');
-      await searchInput.fill("Demo User");
+      await searchInput.fill("Carol Clark");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
 
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = page.locator("#personAddBox").locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
+      const added = page.waitForResponse((r) => r.url().includes("/groupmembers") && r.request().method() === "POST");
       await addBtn.click();
+      expect((await added).ok()).toBeTruthy();
       await dismissSendInviteIfPresent(page);
-      const validatedPerson = page.locator('[data-testid="display-box-content"] td').getByText("Demo User");
-      await expect(validatedPerson).toHaveCount(1);
+      const member = page.locator("#groupMemberTable tr").filter({ hasText: "Carol Clark" });
+      await expect(member).toHaveCount(1);
+
+      await member.locator('[data-testid^="remove-member-button-"]').click();
+      await confirmDelete(page);
+      await expect(member).toHaveCount(0, { timeout: 10000 });
     });
 
     test("adds a newly created person straight to the group", async () => {
@@ -706,6 +713,43 @@ test.describe("Group communication and roster controls", () => {
     await expect(page.locator("#groupMembersBox textarea").first()).toBeVisible({ timeout: 10000 });
   });
 
+  test("Notify opens the push notification dialog for the group", async ({ page }) => {
+    await openSeedGroup(page);
+    await page.getByTestId("notify-group-button").click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText("Push Notification: Sunday Morning Service");
+    await expect(dialog).toContainText(/\d+ of \d+ members have B1App PWA push enabled\./, { timeout: 15000 });
+    await expect(dialog.getByLabel("Send now")).toBeChecked();
+    await expect(dialog.getByLabel("Schedule for later")).toBeVisible();
+    for (const label of ["Title", "Message", "Open link or flyer URL", "Image URL"]) await expect(dialog.getByLabel(label, { exact: true })).toBeVisible();
+    await expect(dialog).toContainText("Notification title");
+    await dialog.getByLabel("Title", { exact: true }).fill("Potluck Sunday");
+    await expect(dialog).toContainText("Potluck Sunday");
+    await dialog.getByLabel("Open link or flyer URL").fill("example.com/flyer");
+    await expect(dialog).toContainText("Use an https URL or a relative app path.");
+    await expect(dialog.getByRole("button", { name: "Send Notification" })).toBeDisabled();
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(dialog).toBeHidden();
+  });
+
+  test("Add Person leaves out people who are already in the group", async ({ page }) => {
+    await openSeedMembers(page);
+    // James Smith leads the seed group; searching for him must not offer an add button that does nothing.
+    const member = page.locator("#groupMemberTable").getByRole("link", { name: "James Smith", exact: true });
+    await expect(member).toBeVisible({ timeout: 10000 });
+    const memberId = ((await member.getAttribute("href")) || "").split("/").pop();
+    await expect(page.locator('[data-testid^="add-person-button-"]').first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator(`[data-testid="add-person-button-${memberId}"]`)).toHaveCount(0);
+
+    const searched = page.waitForResponse((r) => r.url().includes("/people/search") && r.ok());
+    await page.locator('input[name="personAddText"]').fill("James Smith");
+    await page.locator('[data-testid="search-button"]').click();
+    await searched;
+    // The search for "James Smith" also matches other Smiths; only the member is left out.
+    await expect(page.locator("#personAddBox").getByRole("button", { name: "Ethan Smith" })).toBeVisible({ timeout: 10000 });
+    await expect(page.locator(`[data-testid="add-person-button-${memberId}"]`)).toHaveCount(0);
+  });
+
   test("promotes a group member to leader and back", async ({ page }) => {
     await openSeedMembers(page);
 
@@ -993,6 +1037,18 @@ loggedInTest.describe("Session attendance save and layout", () => {
       await expect(page.getByTestId("session-print-all-rosters-button")).toBeVisible();
       const width = await page.evaluate(() => document.documentElement.scrollWidth);
       expect(width).toBeLessThanOrEqual(390);
+    });
+
+    loggedInTest("member list keeps the leader and remove buttons on a 390px screen", async ({ page }) => {
+      await openSeedMembers(page);
+      const table = page.locator("#groupMemberTable");
+      const box = await table.locator("..").boundingBox();
+      for (const id of ["promote-leader-button-", "remove-member-button-"]) {
+        const btn = table.locator(`[data-testid^="${id}"]`).first();
+        await expect(btn).toBeVisible({ timeout: 10000 });
+        const b = await btn.boundingBox();
+        expect(b!.x + b!.width, `${id} must sit inside the member list`).toBeLessThanOrEqual(box!.x + box!.width);
+      }
     });
   });
 });

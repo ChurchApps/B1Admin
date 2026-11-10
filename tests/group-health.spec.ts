@@ -46,6 +46,15 @@ test.describe.serial("Group Health & Calendar", () => {
     await expect(tab).toContainText("Left (90d)");
     await expect(tab).toContainText("Churn (90d)");
     await expect(tab).toContainText("Membership Changes");
+
+    // The Gender donut lists Female before Male like the Age chart, so the two charts share colors.
+    const legendOrder = async (title: string) => {
+      const texts = tab.locator(".MuiCard-root", { has: page.getByRole("heading", { name: title, exact: true }) }).locator("svg text");
+      await expect(texts.filter({ hasText: /^Male$/ }).first()).toBeVisible({ timeout: 10000 });
+      return (await texts.allTextContents()).filter((t) => t === "Female" || t === "Male");
+    };
+    expect((await legendOrder("Age")).slice(0, 2)).toEqual(["Female", "Male"]);
+    expect((await legendOrder("Gender")).slice(0, 2)).toEqual(["Female", "Male"]);
   });
 
   test("bulk-adds weekly events and skips a holiday", async () => {

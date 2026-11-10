@@ -122,24 +122,24 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
         timeZone: zone
       };
     },
-    fallbackError: "Unable to send the push notification."
+    fallbackError: Locale.label("groups.sendNotificationDialog.fallbackError", "Unable to send the push notification.")
   });
 
   const { onSaved } = props;
   React.useEffect(() => { if (result) onSaved?.(); }, [result, onSaved]);
 
   const renderPreview = () => {
-    if (loadingPreview) return <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Loading recipients...</Typography>;
-    if (!preview) return <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Push recipients will be checked before sending.</Typography>;
+    if (loadingPreview) return <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("groups.sendNotificationDialog.loadingRecipients", "Loading recipients...")}</Typography>;
+    if (!preview) return <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("groups.sendNotificationDialog.checkedBeforeSending", "Push recipients will be checked before sending.")}</Typography>;
 
     return (
       <Alert severity={preview.eligibleCount > 0 ? "info" : "warning"} sx={{ mb: 2 }}>
         {isEveryone
-          ? <>{preview.eligibleCount} of {preview.totalMembers} people using the app have push enabled.</>
-          : <>{preview.eligibleCount} of {preview.totalMembers} members have B1App PWA push enabled.</>}
-        {preview.excludedSenderCount > 0 && <><br />The sender is excluded.</>}
-        {!isEveryone && preview.noDeviceCount > 0 && <><br />{preview.noDeviceCount} members do not have a registered PWA push device.</>}
-        {preview.pushDisabledCount > 0 && <><br />{preview.pushDisabledCount} {isEveryone ? "people" : "members"} have push disabled.</>}
+          ? <>{Locale.label("groups.sendNotificationDialog.eligibleEveryone", "{eligible} of {total} people using the app have push enabled.").replace("{eligible}", String(preview.eligibleCount)).replace("{total}", String(preview.totalMembers))}</>
+          : <>{Locale.label("groups.sendNotificationDialog.eligibleGroup", "{eligible} of {total} members have B1App PWA push enabled.").replace("{eligible}", String(preview.eligibleCount)).replace("{total}", String(preview.totalMembers))}</>}
+        {preview.excludedSenderCount > 0 && <><br />{Locale.label("groups.sendNotificationDialog.senderExcluded", "The sender is excluded.")}</>}
+        {!isEveryone && preview.noDeviceCount > 0 && <><br />{Locale.label("groups.sendNotificationDialog.noDevice", "{count} members do not have a registered PWA push device.").replace("{count}", String(preview.noDeviceCount))}</>}
+        {preview.pushDisabledCount > 0 && <><br />{(isEveryone ? Locale.label("groups.sendNotificationDialog.pushDisabledPeople", "{count} people have push disabled.") : Locale.label("groups.sendNotificationDialog.pushDisabledMembers", "{count} members have push disabled.")).replace("{count}", String(preview.pushDisabledCount))}</>}
         {when === "later" && <><br />{Locale.label("groups.sendNotificationDialog.resolvedAtSend", "Recipients are checked again when it goes out.")}</>}
       </Alert>
     );
@@ -161,13 +161,13 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
     return (
       <>
         <Alert severity={successCount > 0 ? "success" : "warning"} sx={{ mt: 1 }}>
-          {successCount} of {recipientCount} push notifications were queued.
-          {skippedCount > 0 && <><br />{skippedCount} recipients were skipped.</>}
+          {Locale.label("groups.sendNotificationDialog.queued", "{success} of {total} push notifications were queued.").replace("{success}", String(successCount)).replace("{total}", String(recipientCount))}
+          {skippedCount > 0 && <><br />{Locale.label("groups.sendNotificationDialog.skipped", "{count} recipients were skipped.").replace("{count}", String(skippedCount))}</>}
         </Alert>
         {(!!result.noDeviceCount || !!result.pushDisabledCount) && (
           <Alert severity="info" sx={{ mt: 1 }}>
-            {!!result.noDeviceCount && <>{result.noDeviceCount} members had no registered PWA push device.<br /></>}
-            {!!result.pushDisabledCount && <>{result.pushDisabledCount} members had push disabled.</>}
+            {!!result.noDeviceCount && <>{Locale.label("groups.sendNotificationDialog.hadNoDevice", "{count} members had no registered PWA push device.").replace("{count}", String(result.noDeviceCount))}<br /></>}
+            {!!result.pushDisabledCount && <>{Locale.label("groups.sendNotificationDialog.hadPushDisabled", "{count} members had push disabled.").replace("{count}", String(result.pushDisabledCount))}</>}
           </Alert>
         )}
       </>
@@ -184,11 +184,11 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
   const canSend = !sending && !!audience && title.trim().length > 0 && message.trim().length > 0 && linkValid && imageUrlValid && sendAtValid && recipientsOk;
 
   const dialogTitle = props.groupName
-    ? <>Push Notification: {props.groupName}</>
+    ? <>{Locale.label("groups.sendNotificationDialog.groupTitle", "Push Notification: {groupName}").replace("{groupName}", props.groupName)}</>
     : existing ? <>{Locale.label("groups.sendNotificationDialog.editTitle", "Edit Push Notification")}</> : <>{Locale.label("groups.sendNotificationDialog.title", "Push Notification")}</>;
   const sendLabel = existing
     ? Locale.label("groups.sendNotificationDialog.saveChanges", "Save Changes")
-    : when === "later" ? Locale.label("groups.sendNotificationDialog.scheduleButton", "Schedule Notification") : "Send Notification";
+    : when === "later" ? Locale.label("groups.sendNotificationDialog.scheduleButton", "Schedule Notification") : Locale.label("groups.sendNotificationDialog.sendButton", "Send Notification");
 
   return (
     <SendDialogShell
@@ -200,10 +200,10 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
       sending={sending}
       canSend={canSend}
       onSend={handleSend}
-      closeLabel="Close"
-      cancelLabel="Cancel"
+      closeLabel={Locale.label("common.close")}
+      cancelLabel={Locale.label("common.cancel")}
       sendLabel={sendLabel}
-      sendingLabel="Sending..."
+      sendingLabel={Locale.label("groups.sendNotificationDialog.sending", "Sending...")}
     >
       {showAudience && (
         <FormControl fullWidth sx={{ mb: 2 }} disabled={sending || !!existing}>
@@ -256,11 +256,11 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
         )}
         <TextField
           fullWidth
-          label="Title"
+          label={Locale.label("groups.sendNotificationDialog.titleLabel", "Title")}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           disabled={sending}
-          placeholder="Reminder"
+          placeholder={Locale.label("groups.sendNotificationDialog.titlePlaceholder", "Reminder")}
           inputProps={{ maxLength: 80 }}
           helperText={`${titleCount} / 80`}
         />
@@ -269,43 +269,43 @@ export const SendNotificationDialog: React.FC<Props> = (props) => {
           multiline
           minRows={4}
           maxRows={8}
-          label="Message"
+          label={Locale.label("groups.sendNotificationDialog.messageLabel", "Message")}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           disabled={sending}
-          placeholder="Compose your notification..."
+          placeholder={Locale.label("groups.sendNotificationDialog.messagePlaceholder", "Compose your notification...")}
           inputProps={{ maxLength: 240 }}
           helperText={`${messageCount} / 240`}
         />
         <TextField
           fullWidth
-          label="Open link or flyer URL"
+          label={Locale.label("groups.sendNotificationDialog.linkLabel", "Open link or flyer URL")}
           value={link}
           onChange={(e) => setLink(e.target.value)}
           disabled={sending}
           placeholder="/mobile/groups or https://..."
           error={!linkValid}
-          helperText={!linkValid ? "Use an https URL or a relative app path." : " "}
+          helperText={!linkValid ? Locale.label("groups.sendNotificationDialog.linkInvalid", "Use an https URL or a relative app path.") : " "}
         />
         <TextField
           fullWidth
-          label="Image URL"
+          label={Locale.label("groups.sendNotificationDialog.imageUrlLabel", "Image URL")}
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           disabled={sending}
           placeholder="https://..."
           error={!imageUrlValid}
-          helperText={!imageUrlValid ? "Use an https URL or leave this blank." : " "}
+          helperText={!imageUrlValid ? Locale.label("groups.sendNotificationDialog.imageUrlInvalid", "Use an https URL or leave this blank.") : " "}
         />
         <Box sx={{ p: 2, border: 1, borderColor: "divider", borderRadius: "var(--b1-radius-panel)", bgcolor: "var(--b1-canvas)" }}>
           <Stack direction="row" spacing={1.5} alignItems="flex-start">
             <NotificationsActiveIcon sx={{ color: "primary.main", mt: 0.25 }} />
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 600, wordBreak: "break-word" }}>
-                {title.trim() || "Notification title"}
+                {title.trim() || Locale.label("groups.sendNotificationDialog.previewTitle", "Notification title")}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                {message.trim() || "Notification message"}
+                {message.trim() || Locale.label("groups.sendNotificationDialog.previewMessage", "Notification message")}
               </Typography>
             </Box>
           </Stack>

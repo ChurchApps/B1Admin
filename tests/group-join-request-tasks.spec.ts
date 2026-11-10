@@ -64,7 +64,6 @@ test.describe("Group join request tasks", () => {
   test("a join request creates a task the group leader can approve", async ({ page }) => {
     await page.goto("/serving/tasks");
     await expect(page.getByTestId("add-task-button")).toBeVisible({ timeout: 15000 });
-    await page.screenshot({ path: ".pr-screenshots/before.png", fullPage: true });
 
     const mine: any[] = await (await ctx.get(`${API}/membership/groupjoinrequests/my`, auth(volunteerJwt))).json();
     for (const r of mine) {
@@ -93,7 +92,6 @@ test.describe("Group join request tasks", () => {
     await expect(page.getByTestId("group-join-request-task")).toContainText("Rachel Martin");
     await expect(page.getByTestId("group-join-request-message")).toContainText("community projects");
     await expect(page.getByTestId("group-join-request-approve")).toBeVisible();
-    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
 
     await page.getByTestId("group-join-request-approve").click();
     await page.waitForURL(/\/serving\/tasks$/, { timeout: 15000 });
@@ -103,6 +101,45 @@ test.describe("Group join request tasks", () => {
 
     const closed = await (await ctx.get(`${API}/doing/tasks/${task.id}`, auth(demoJwt))).json();
     expect(closed.status).toBe("Closed");
+    requestId = "";
+  });
+
+  test("staff decline a request from the Pending Join Requests page with a reason", async ({ page }) => {
+    // The first test approved Rachel; take her back out so she can ask again.
+    const members: any[] = await (await ctx.get(`${API}/membership/groupmembers?groupId=${GROUP_ID}`, auth(demoJwt))).json();
+    for (const m of members.filter((x) => x.personId === VOLUNTEER_PERSON_ID)) await ctx.delete(`${API}/membership/groupmembers/${m.id}`, auth(demoJwt));
+    const reqRes = await ctx.post(`${API}/membership/groupjoinrequests`, { ...auth(volunteerJwt), data: { groupId: GROUP_ID, message: "Count me in for the food drive." } });
+    expect(reqRes.ok()).toBeTruthy();
+    requestId = (await reqRes.json()).id;
+
+    await page.goto("/groups");
+    const pendingLink = page.getByTestId("pending-requests-link");
+    await expect(pendingLink).toHaveText("1 pending request", { timeout: 15000 });
+    await pendingLink.click();
+    await expect(page).toHaveURL(/\/groups\/pending$/);
+
+    const card = page.getByTestId(`pending-request-${requestId}`);
+    await expect(page.getByTestId("pending-requests")).toContainText("Pending Requests (1)");
+    await expect(card).toContainText("Rachel Martin");
+    await expect(card).toContainText("Community Service Team");
+    await expect(card).toContainText("Count me in for the food drive.");
+    await expect(page.getByTestId(`approve-${requestId}`)).toHaveText("Approve");
+    await expect(page.getByTestId(`pending-request-person-${requestId}`)).toHaveAttribute("href", `/people/${VOLUNTEER_PERSON_ID}`);
+
+    await page.getByTestId(`decline-${requestId}`).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText("Decline Request");
+    await expect(dialog.getByLabel("Reason (optional)")).toBeVisible();
+    await dialog.getByLabel("Reason (optional)").fill("This team is full for the season.");
+    const declined = page.waitForResponse((r) => r.url().includes(`/groupjoinrequests/${requestId}/decline`) && r.request().method() === "POST");
+    await page.getByTestId("decline-confirm").click();
+    expect((await declined).ok()).toBeTruthy();
+    await expect(page.getByTestId("pending-requests-empty")).toBeVisible({ timeout: 10000 });
+
+    const mine: any[] = await (await ctx.get(`${API}/membership/groupjoinrequests/my`, auth(volunteerJwt))).json();
+    const decided = mine.find((r) => r.id === requestId);
+    expect(decided?.status).toBe("declined");
+    expect(decided?.declineReason).toBe("This team is full for the season.");
     requestId = "";
   });
 });
