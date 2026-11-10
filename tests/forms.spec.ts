@@ -883,6 +883,18 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     await expect(dialog).toHaveCount(0, { timeout: 10000 });
   }
 
+  loggedInTest("a slow submissions load shows a spinner, not No form submissions found", async ({ page }) => {
+    let release: () => void = () => {};
+    const held = new Promise<void>((r) => { release = r; });
+    await page.route("**/formsubmissions/formId/**", async (route) => { await held; await route.continue(); });
+    await page.goto(`/forms/${formId}`);
+    await page.getByText("Form Submissions", { exact: true }).first().click();
+    await page.waitForTimeout(1500);
+    await expect(page.getByText("No form submissions found")).toHaveCount(0);
+    release();
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toBeVisible({ timeout: 15000 });
+  });
+
   loggedInTest("moves a submission to another person from the Submissions table", async ({ page }) => {
     await openSubmissions(page);
     await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toBeVisible();

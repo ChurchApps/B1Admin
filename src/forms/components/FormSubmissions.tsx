@@ -286,7 +286,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const refetchSubmissions = formSubmissions.refetch;
   const handlePersonChanged = useCallback(() => { void refetchSubmissions(); }, [refetchSubmissions]);
 
-  if (people.isLoading || formSubmissions.isLoading) return <Loading />;
+  // placeholderData keeps isLoading false, so wait for real data instead of flashing "No form submissions found".
+  if (people.isLoading || formSubmissions.isLoading || people.isPlaceholderData || formSubmissions.isPlaceholderData) return <Loading />;
 
   return (
     <Grid container spacing={3}>
