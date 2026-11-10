@@ -10,6 +10,7 @@
       "allow": "Allow",
       "allowAria": "Allow authorization",
       "authorizationRequired": "AUTHORIZATION REQUIRED",
+      "completingAuth": "Completing authentication...",
       "deny": "Deny",
       "denyAria": "Deny authorization",
       "loading": "Loading...",

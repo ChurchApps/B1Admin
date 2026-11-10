@@ -70,7 +70,7 @@ export const OAuthPage: React.FC = () => {
       <Alert severity="info">
         {Locale.label("app.oauth.authorizationRequired")}
       </Alert>
-      <div style={{ marginLeft: 50, marginRight: 50 }}>
+      <Box sx={{ mx: { xs: 1, sm: "50px" } }}>
         <div style={{ textAlign: "center" }}>
           <Icon sx={{ fontSize: 56, mt: 3, color: "text.secondary" }}>lock</Icon>
           <h2>{clientName || Locale.label("app.oauth.loading")}</h2>
@@ -94,7 +94,7 @@ export const OAuthPage: React.FC = () => {
           </p>
         )}
         {selfRegistered && <Alert severity="warning" data-testid="oauth-self-registered" sx={{ mb: 2 }}>{Locale.label("app.oauth.selfRegisteredNote")}</Alert>}
-      </div>
+      </Box>
       <Box sx={{ backgroundColor: "var(--b1-canvas)", p: 2 }}>
         <Grid container spacing={2}>
           <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>

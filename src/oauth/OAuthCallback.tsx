@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 
 export const OAuthCallback: React.FC = () => {
   useEffect(() => {
@@ -51,7 +52,7 @@ export const OAuthCallback: React.FC = () => {
       }}
     >
       <CircularProgress />
-      <Typography>Completing authentication...</Typography>
+      <Typography>{Locale.label("app.oauth.completingAuth", "Completing authentication...")}</Typography>
     </Box>
   );
 };
