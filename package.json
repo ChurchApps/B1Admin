@@ -88,6 +88,7 @@
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
     "lint": "eslint --fix src/",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "predeploy-demo": "REACT_APP_STAGE=demo yarn postinstall && REACT_APP_STAGE=demo yarn build",
     "exec-deploy-demo": "aws s3 sync dist/ s3://demo-chums-app --exclude \"sw.js\" && aws s3 cp dist/sw.js s3://demo-chums-app/sw.js --cache-control no-cache",
     "postdeploy-demo": "aws cloudfront create-invalidation --distribution-id E2A9G7SSZ01FRB --paths \"/*\"",
