@@ -24,6 +24,7 @@ export interface PersonFormOption {
 interface FormDetail {
   questions: QuestionInterface[];
   answers: AnswerInterface[];
+  failed?: boolean;
 }
 
 interface Props {
@@ -85,40 +86,32 @@ export const PersonForms: React.FC<Props> = (props) => {
   // id, so the cache has to be dropped here rather than served for a stale answer set.
   useEffect(() => { setDetails({}); }, [personFormSubmissions]);
 
-  // Load questions + answers for the submission on screen for each form; submitted forms
-  // return answers, unsubmitted return blank questions. Switching between two submissions
-  // of the same form fetches the other one once and then reads it from the cache.
-  useEffect(() => {
-    let cancelled = false;
-    const load = async () => {
-      if (forms.length === 0) {
-        setDetails({});
-        return;
-      }
-      const wanted = forms.map((form) => {
-        const submission = selectedSubmissionFor(form.id);
-        return { form, submission, key: detailKey(form.id, submission?.id) };
-      }).filter(({ key }) => !details[key]);
-      if (wanted.length === 0) return;
+  const selectedForm = forms.find((f) => f.id === selectedFormId) || forms[0];
+  const selectedSubmission = selectedForm ? selectedSubmissionFor(selectedForm.id) : undefined;
+  const selectedKey = selectedForm ? detailKey(selectedForm.id, selectedSubmission?.id) : "";
 
-      const entries = await Promise.all(wanted.map(async ({ form, submission, key }): Promise<[string, FormDetail]> => {
-        if (submission) {
-          const detail = await ApiHelper.get(`/formsubmissions/${submission.id}/?include=questions,answers`, "MembershipApi");
-          return [key, { questions: detail?.questions || [], answers: detail?.answers || [] }];
-        }
-        const questions = await ApiHelper.get(`/questions/?formId=${form.id}`, "MembershipApi");
-        return [key, { questions: questions || [], answers: [] }];
-      }));
-      if (cancelled) return;
-      setDetails((prev) => {
-        const map = { ...prev };
-        entries.forEach(([key, detail]) => { map[key] = detail; });
-        return map;
-      });
+  // Load questions + answers for the form on screen only: submitted forms return answers, unsubmitted
+  // return blank questions. Switching between forms or submissions fetches each once and then reads the cache.
+  // Loading every form together let one failed request (a form deleted since the list loaded answers 401)
+  // leave the pane on its spinner for all of them, so a failure is cached as an error for that form alone.
+  useEffect(() => {
+    if (!selectedForm || details[selectedKey]) return;
+    let cancelled = false;
+    const formId = selectedForm.id;
+    const submissionId = selectedSubmission?.id;
+    const load = async (): Promise<FormDetail> => {
+      if (submissionId) {
+        const detail = await ApiHelper.get(`/formsubmissions/${submissionId}/?include=questions,answers`, "MembershipApi");
+        return { questions: detail?.questions || [], answers: detail?.answers || [] };
+      }
+      const questions = await ApiHelper.get(`/questions/?formId=${formId}`, "MembershipApi");
+      return { questions: questions || [], answers: [] };
     };
-    void load();
+    load()
+      .catch((): FormDetail => ({ questions: [], answers: [], failed: true }))
+      .then((detail) => { if (!cancelled) setDetails((prev) => ({ ...prev, [selectedKey]: detail })); });
     return () => { cancelled = true; };
-  }, [forms, submissionsByFormId, selectedSubmissionIds, details]);
+  }, [selectedKey, details]);
 
   const handleSaved = () => {
     setEditingFormId("");
@@ -127,6 +120,7 @@ export const PersonForms: React.FC<Props> = (props) => {
 
   const renderFields = (submission: FormSubmissionInterface | undefined, detail: FormDetail | undefined) => {
     if (!detail) return <Loading size="sm" />;
+    if (detail.failed) return <Typography variant="body2" color="error" data-testid="person-form-load-error">{Locale.label("common.error")}</Typography>;
     const questions = detail.questions || [];
     if (questions.length === 0) return <Typography variant="body2" color="text.secondary">{Locale.label("common.formSubmission.noQuestions")}</Typography>;
 
@@ -238,8 +232,7 @@ export const PersonForms: React.FC<Props> = (props) => {
     );
   };
 
-  if (forms.length === 0) return null;
-  const selectedForm = forms.find((f) => f.id === selectedFormId) || forms[0];
+  if (forms.length === 0 || !selectedForm) return null;
 
   return (
     <Grid container spacing={2}>

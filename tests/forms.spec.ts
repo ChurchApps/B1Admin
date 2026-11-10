@@ -940,3 +940,24 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     await expect(page.getByRole("cell", { name: SEED_PEOPLE.CAROL })).toHaveCount(0);
   });
 });
+
+// A form deleted after the person page loaded its form list used to leave the All forms pane on its
+// spinner for every form: one failed detail request rejected the load for all of them.
+loggedInTest("the person's forms pane still shows other forms when one was deleted after the page loaded", async ({ page }) => {
+  const ctx = await pwRequest.newContext();
+  const body = await (await ctx.post(`${WIDE_API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+  const jwt = (body.userChurches.find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+  const auth = { headers: { Authorization: "Bearer " + jwt } };
+  const form = (await (await ctx.post(`${WIDE_API}/membership/forms`, { ...auth, data: [{ name: `Zacchaeus Doomed Person Form ${Date.now()}`, contentType: "person" }] })).json())[0];
+  try {
+    await page.goto("/people/PER00000081");
+    await page.getByTestId("person-forms-all").waitFor({ timeout: 15000 });
+    await ctx.delete(`${WIDE_API}/membership/forms/${form.id}`, auth);
+    await page.getByTestId("person-forms-all").click();
+    await page.getByRole("button", { name: "Visitor Information Card" }).click();
+    await expect(page.locator('[data-testid="display-box-content"]').getByText("Not filled out yet.")).toBeVisible({ timeout: 10000 });
+  } finally {
+    await ctx.delete(`${WIDE_API}/membership/forms/${form.id}`, auth);
+    await ctx.dispose();
+  }
+});
