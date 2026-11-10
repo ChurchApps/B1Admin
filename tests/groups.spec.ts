@@ -1,7 +1,7 @@
 import fs from "fs";
 import { request, test as plainTest, type APIRequestContext, type Page, type Route } from "@playwright/test";
 import { groupsTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, openSeedGroup, SESSION_GROUP, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups, openPrimaryNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -142,7 +142,7 @@ test.describe.serial("Group Management", () => {
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
 
-      const addBtn = page.locator("#personAddBox").locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page.locator("#personAddBox"), "Carol Clark");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       const added = page.waitForResponse((r) => r.url().includes("/groupmembers") && r.request().method() === "POST");
       await addBtn.click();

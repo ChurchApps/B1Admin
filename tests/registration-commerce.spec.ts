@@ -4,7 +4,7 @@ import { request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
-import { confirmDelete } from "./helpers/fixtures";
+import { confirmDelete, personAddButton } from "./helpers/fixtures";
 
 // Phase 2 "Paid registrations" — B1Admin staff surface.
 //   - RegistrationSettingsEdit now hosts Attendee Types / Selections / Discount Codes accordions
@@ -258,7 +258,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
 
     await dialog.locator('input[name="personAddText"]').fill("Demo User");
     await dialog.locator('[data-testid="search-button"]').click();
-    const addBtn = dialog.locator('[data-testid^="add-person-"]').first();
+    const addBtn = personAddButton(dialog, "Demo User");
     await expect(addBtn).toBeVisible({ timeout: 10000 });
     const registerPost = page.waitForResponse((r) => r.url().includes("/registrations/register") && r.request().method() === "POST", { timeout: 15000 });
     await addBtn.click();

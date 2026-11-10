@@ -126,7 +126,7 @@ test.describe.serial("Website new elements", () => {
     await expect(list.getByText("September 5, 2026")).toBeVisible();
     await expect(list.locator('[data-testid="podcast-episode"]')).toHaveCount(2);
     await expect(list.locator('[data-testid="podcast-audio"]').first()).toHaveAttribute("src", "https://cdn.example.com/audio/ep-2.mp3");
-    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
+    await page.screenshot({ path: test.info().outputPath("after.png"), fullPage: true });
     await page.unroute(/\/content\/podcast\/feed\?/);
   });
 

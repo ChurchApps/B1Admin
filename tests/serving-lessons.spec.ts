@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError, confirmDelete, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -72,7 +72,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       await personSearch.fill("Dorothy");
       await page.locator('[data-testid="search-button"]').click();
       // Icon-only buttons; text "Add" would substring-match "Add a New Person".
-      const addPerson = page.locator('[data-testid^="add-person-button-"]').first();
+      const addPerson = personAddButton(page, "Dorothy Jackson");
       await expect(addPerson).toBeVisible({ timeout: 10000 });
       await addPerson.click();
       // SendInviteDialog opens for email addresses; dismiss before next test.
@@ -691,11 +691,14 @@ test.describe.serial("Serving Management - Lessons", () => {
       const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const deleteBtn = page.locator("button").getByText("Delete");
+      // Group deletes ask in a styled confirm dialog and then land on /groups; until confirmed nothing is deleted.
+      const deleteBtn = page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true });
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedRemoved = page.locator("table a").getByText("Apollos Ministry");
-      await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
+      await confirmDelete(page);
+      await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+      await page.goto("/serving/plans");
+      await expect(page.locator('[role="tab"]').getByText("Apollos Ministry")).toHaveCount(0, { timeout: 10000 });
     });
   });
 });

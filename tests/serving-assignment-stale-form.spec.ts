@@ -130,19 +130,22 @@ test.describe.serial("Assignment stale position form (PR #457)", () => {
     await plansBtn.click();
     await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
     await page.locator('button[aria-label="Edit"]').first().click();
-    await page.locator("button").getByText("Delete").click();
+    await page.getByRole("button", { name: "Delete", exact: true }).click();
     await confirmDelete(page);
     await expect(page.locator("a").getByText("Obadiah Service")).toHaveCount(0, { timeout: 10000 });
 
-    page.once("dialog", async dialog => { await dialog.accept(); });
     await openMinistryTab();
     await page.locator("a").getByText("Edit Ministry").click();
     const minEditBtn = page.getByTestId("edit-group-button");
     await expect(minEditBtn).toBeVisible({ timeout: 10000 });
     await minEditBtn.click();
-    const deleteBtn = page.locator("button").getByText("Delete");
+    const deleteBtn = page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true });
     await expect(deleteBtn).toBeVisible({ timeout: 10000 });
     await deleteBtn.click();
-    await expect(page.locator("table a").getByText("Obadiah Ministry")).toHaveCount(0, { timeout: 10000 });
+    // Group deletes ask in a styled confirm dialog and then land on /groups; until confirmed nothing is deleted.
+    await confirmDelete(page);
+    await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+    await page.goto("/serving/plans");
+    await expect(page.locator('[role="tab"]').getByText("Obadiah Ministry")).toHaveCount(0, { timeout: 10000 });
   });
 });

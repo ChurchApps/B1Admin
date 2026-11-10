@@ -36,7 +36,7 @@ test.describe("People - Notes page", () => {
     await expect(row).toContainText(SEED_PEOPLE.DONALD);
     await expect(row).toContainText("By Demo User");
 
-    await page.screenshot({ path: ".pr-screenshots/after.png" });
+    await page.screenshot({ path: test.info().outputPath("after.png") });
 
     await row.getByTestId("notes-source-link").click();
     await expect(page).toHaveURL(new RegExp(personUrl + "\\?view=notes"));

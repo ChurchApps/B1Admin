@@ -2,6 +2,7 @@ import { test as plainTest, type Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { openPrimaryNav } from "./helpers/navigation";
 import { createNamesOnlyRole, deleteRole, loginAsVolunteer } from "./helpers/names-only-role";
+import { personAddButton } from "./helpers/fixtures";
 
 test.describe("Sunday home", () => {
   test.beforeEach(async ({ page }) => {
@@ -68,7 +69,7 @@ test.describe("Sunday home", () => {
       await personSearch.fill("Demo User");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      const selectBtn = personAddButton(page, "Demo User");
       await selectBtn.click();
 
       const taskName = page.locator('[name="title"]');

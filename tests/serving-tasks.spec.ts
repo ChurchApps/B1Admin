@@ -1,4 +1,5 @@
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
+import { personAddButton } from "./helpers/fixtures";
 
 // Issue #1259: workflow "Send email" bell notifications were saved as tasks pointing at the
 // email template id, so clicking one opened /serving/tasks/<templateId> and the page crashed.
@@ -36,7 +37,7 @@ test("a task can be created with no person or group", async ({ page }) => {
   await page.locator('[data-testid="assign-to-input"]').click();
   await page.locator('[name="personAddText"]').fill("Demo User");
   await page.locator('[data-testid="search-button"]').click();
-  await page.locator('[data-testid^="add-person-"]').first().click();
+  await personAddButton(page, "Demo User").click();
 
   await page.locator('[name="title"]').fill("Order more coffee");
   await page.locator("button").getByText("Save").click();

@@ -1,6 +1,6 @@
 import { request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { servingTest as test, loggedInTest, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete, personAddButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -105,7 +105,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
       // Icon-only buttons; text "Add" would substring-match "Add a New Person".
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Dorothy Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       const memberPost = page.waitForResponse(r => r.url().includes("/groupmembers") && r.request().method() === "POST", { timeout: 15000 }).catch((): null => null);
       await addBtn.click();
@@ -134,7 +134,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const searched = page.waitForResponse(r => r.url().includes("/people") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill("Grace");
       await searched;
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Grace Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText("Grace Jackson");
@@ -345,7 +345,7 @@ test.describe.serial("Serving Management - Plans", () => {
       await personSearch.fill("Dorothy");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Dorothy Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText("Dorothy Jackson");
@@ -374,7 +374,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const searched = page.waitForResponse(r => r.url().includes("/people") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill("Grace");
       await searched;
-      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
+      const addBtn = personAddButton(page, "Grace Jackson");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText("Grace Jackson");
@@ -430,10 +430,13 @@ test.describe.serial("Serving Management - Plans", () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const deleteBtn = page.locator("button").getByText("Delete");
-      await deleteBtn.click();
-      const verifiedRemoved = page.locator("table a").getByText("Zebedee Team");
-      await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
+      // Group deletes ask in a styled confirm dialog and then land on /groups; until confirmed nothing is deleted.
+      await page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true }).click();
+      await confirmDelete(page);
+      await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+      await page.goto("/serving/plans");
+      await page.locator('[role="tab"]').getByText("Zebedee Ministry").first().click();
+      await expect(page.locator("a").getByText("Zebedee Team")).toHaveCount(0, { timeout: 10000 });
     });
   });
 
@@ -453,11 +456,13 @@ test.describe.serial("Serving Management - Plans", () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const deleteBtn = page.locator("button").getByText("Delete");
+      const deleteBtn = page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true });
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedRemoved = page.locator("table a").getByText("Zebedee Ministry");
-      await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
+      await confirmDelete(page);
+      await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+      await page.goto("/serving/plans");
+      await expect(page.locator('[role="tab"]').getByText("Zebedee Ministry")).toHaveCount(0, { timeout: 10000 });
     });
   });
 });

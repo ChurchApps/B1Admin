@@ -3,7 +3,7 @@ import { request } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing, navigateToPeople } from "./helpers/navigation";
-import { openKnownPerson, SEED_PEOPLE, recoverFromViteError } from "./helpers/fixtures";
+import { openKnownPerson, SEED_PEOPLE, recoverFromViteError, personAddButton } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS is the marker name for rows these tests create.
@@ -883,7 +883,7 @@ test.describe.serial("Serving Management - Workflows", () => {
     const dialog = page.getByRole("dialog").filter({ has: page.locator('input[name="personAddText"]') });
     await dialog.locator('input[name="personAddText"]').fill(SEED_PEOPLE.DONALD);
     await dialog.locator('input[name="personAddText"]').press("Enter");
-    await dialog.locator('[data-testid^="add-person-button-"]').first().click();
+    await personAddButton(dialog, SEED_PEOPLE.DONALD).click();
     await expect(page.locator('[data-testid="action-notify-person-0"]')).toHaveText(/^(Mr\. )?Donald Clark$/, { timeout: 10000 });
     await page.locator('[data-testid="action-notify-message-0"] textarea').first().fill("Lapsed giver, please call");
     await page.locator('[data-testid="step-save-button"]').click();

@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { navigateToPeople, navigateToGroups } from "./navigation";
 
 // Named seed people known to exist in the reset demo database (see
@@ -19,6 +19,12 @@ export const SEED_PEOPLE = {
 export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
 
 export const SEED_GROUP = "Sunday Morning Service";
+
+// The person picker lists "Recent people" until a search comes back (#799), so taking the first add button
+// right after searching can pick a recent person instead. Take the add button on the row showing that person.
+export function personAddButton(scope: Page | Locator, name: string | RegExp) {
+  return scope.locator("tr").filter({ hasText: name }).locator('[data-testid^="add-person-button-"]').first();
+}
 export const SESSION_GROUP = "Prayer Team";
 
 export async function openSeedGroup(page: Page, name = SEED_GROUP) {

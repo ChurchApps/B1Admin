@@ -270,7 +270,7 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await page.getByLabel("Also record attendance", { exact: true }).check();
     await expect(page.getByText(/scheduled service times are marked present/)).toBeVisible();
     await page.getByTestId("guest-registration-group").evaluate((el) => el.scrollIntoView({ block: "center" }));
-    await page.screenshot({ path: ".pr-screenshots/after.png" });
+    await page.screenshot({ path: test.info().outputPath("after.png") });
 
     const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
     await page.getByTestId("qr-guest-registration-save").click();

@@ -3,7 +3,7 @@ import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing, siblingNav } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
-import { confirmDelete } from "./helpers/fixtures";
+import { confirmDelete, personAddButton } from "./helpers/fixtures";
 
 async function openMyTasks(page: Page) {
   await (await siblingNav(page)).getByText("My Work").click();
@@ -537,7 +537,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await personSearch.fill("Demo User");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      const selectBtn = personAddButton(page, "Demo User");
       await selectBtn.click();
       const taskName = page.locator('[name="title"]');
       await taskName.fill("Test Task");
@@ -588,7 +588,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await personSearch.fill("Dorothy");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      const selectBtn = personAddButton(page, "Dorothy Jackson");
       await selectBtn.click();
       await openMyTasks(page);
       await expect(task).toHaveCount(0, { timeout: 10000 });
@@ -608,7 +608,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await personSearch.fill("Grace Jackson");
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      const selectBtn = personAddButton(page, "Grace Jackson");
       await selectBtn.click();
       await expect(page.getByText(/Grace Jackson/).first()).toBeVisible({ timeout: 10000 });
     });
