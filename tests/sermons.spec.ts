@@ -540,5 +540,19 @@ test.describe("Sermons Management", () => {
       await expect(page.locator('[data-testid="publish-date-input"]')).toBeVisible({ timeout: 10000 });
       await page.locator("button").getByText("Cancel").first().click().catch(() => { });
     });
+
+    test("Fetch explains when the video's details can't be loaded", async () => {
+      await page.route("**/sermons/lookup**", (route) => route.fulfill({ status: 403, contentType: "application/json", body: JSON.stringify({ error: { message: "forbidden" } }) }));
+      await page.locator('[data-testid="add-sermon-button"]').click();
+      await page.locator("li").getByText("Add Sermon").click();
+      await page.locator('[data-testid="video-data-input"] input').fill("notARealId");
+      await page.locator('[data-testid="fetch-youtube-button"]').click();
+      await expect(page.getByText("Couldn't fetch that video's details. Check the ID, or fill them in yourself.")).toBeVisible({ timeout: 10000 });
+      await page.unroute("**/sermons/lookup**");
+
+      await page.locator('[data-testid="add-to-playlist-link"]').click();
+      await expect(page.locator('[data-testid="add-to-playlist-button"]')).toHaveText("Add");
+      await page.locator("button").getByText("Cancel").first().click();
+    });
   });
 });

@@ -3576,7 +3576,7 @@
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
     "sermonEdit": {
-      "add": "add",
+      "add": "Add",
       "addToAnotherPlaylist": "Add to another playlist",
       "addToAnotherPlaylistAria": "Add sermon to another playlist",
       "addToSelectedPlaylistAria": "Add to selected playlist",
@@ -3593,6 +3593,7 @@
       "editThumbnailAria": "Edit sermon thumbnail",
       "facebook": "Facebook",
       "fetch": "Fetch",
+      "fetchError": "Couldn't fetch that video's details. Check the ID, or fill them in yourself.",
       "fetchVimeoAria": "Fetch Vimeo video details",
       "fetchYouTubeAria": "Fetch YouTube video details",
       "getYourChannelId": "Get Your Channel Id",
