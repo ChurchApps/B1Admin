@@ -345,6 +345,35 @@ test.describe("Sermons Management", () => {
       await expect(page.getByRole("heading", { name: "Content Tabs" })).toBeVisible({ timeout: 10000 });
     });
 
+    test("content tabs: only external links are links, and tabs reorder with named arrows", async () => {
+      await page.goto("/sermons/settings");
+      await expect(page.getByRole("heading", { name: "Content Tabs" })).toBeVisible({ timeout: 10000 });
+      // The seeded Chat tab has no URL; it used to be a link that reloaded the page.
+      await expect(page.getByTestId("stream-tab-0")).toContainText("Chat");
+      await expect(page.getByTestId("stream-tab-0").getByRole("link")).toHaveCount(0);
+
+      await page.getByRole("button", { name: "Add", exact: true }).click();
+      const dialog = page.getByRole("dialog");
+      await dialog.getByLabel("Tab Text").fill("Zacchaeus Notes");
+      await dialog.getByTestId("tab-url-input").locator("input").fill("https://example.com/notes");
+      await dialog.getByRole("button", { name: "Save Tab" }).click();
+      await expect(dialog).toBeHidden({ timeout: 10000 });
+
+      const added = page.getByTestId("stream-tab-1");
+      await expect(added.getByRole("link", { name: /Zacchaeus Notes/ })).toHaveAttribute("target", "_blank");
+      const moved = page.waitForResponse((r) => r.url().includes("/links") && r.request().method() === "POST");
+      await added.getByRole("button", { name: "Move up" }).click();
+      await moved;
+      await expect(page.getByTestId("stream-tab-0")).toContainText("Zacchaeus Notes", { timeout: 10000 });
+      await expect(page.getByTestId("stream-tab-0").getByRole("button", { name: "Move down" })).toBeVisible();
+
+      await page.getByTestId("stream-tab-0").getByRole("button", { name: "Edit" }).click();
+      await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
+      await page.getByRole("dialog").filter({ hasText: "Delete Tab" }).getByRole("button", { name: "Delete" }).click();
+      await expect(page.getByText("Zacchaeus Notes")).toHaveCount(0, { timeout: 10000 });
+      await expect(page.getByTestId("stream-tab-0")).toContainText("Chat");
+    });
+
   });
 
   test.describe.serial("Bulk Import", () => {
