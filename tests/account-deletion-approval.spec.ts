@@ -164,7 +164,7 @@ test.describe("Account deletion approval", () => {
     await page.goto("/serving/tasks/" + task.id);
     await expect(page.getByText("Account Deletion Request", { exact: true })).toBeVisible({ timeout: 15000 });
     await expect(page.getByTestId("account-deletion-approve")).toBeVisible();
-    await page.screenshot({ path: ".pr-screenshots/after.png", fullPage: true });
+    await page.screenshot({ path: test.info().outputPath("after.png"), fullPage: true });
 
     await page.getByTestId("account-deletion-approve").click();
     await confirmDelete(page);

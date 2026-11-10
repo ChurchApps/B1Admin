@@ -181,7 +181,7 @@ test.describe("Universal audit log + undoable batches", () => {
     await expect(page.getByText("Deleted Record", { exact: true })).toBeVisible({ timeout: 10000 });
     await expect(page.getByText(text, { exact: true })).toBeVisible();
     await expect(page.getByText("Demo User", { exact: true }).first()).toBeVisible();
-    await page.screenshot({ path: ".pr-screenshots/after.png" });
+    await page.screenshot({ path: test.info().outputPath("after.png") });
   });
 
   // ChurchAppsSupport#1487: admins see edited/deleted note markers in place, linked to that record's note history.
@@ -226,7 +226,7 @@ test.describe("Universal audit log + undoable batches", () => {
     await expect(marker).toContainText("Deleted note");
     await expect(marker).toContainText("Demo User");
     await expect(marker).not.toContainText(removed);
-    await page.screenshot({ path: ".pr-screenshots/after.png" });
+    await page.screenshot({ path: test.info().outputPath("after.png") });
 
     await marker.getByTestId("deleted-note-history-link").click();
     await expect(page).toHaveURL(/\/settings\/audit-log\?/);

@@ -202,7 +202,7 @@ test.describe("Printing forms", () => {
     expect(Math.abs((await centerX(logo)) - (await centerX(title)))).toBeLessThan(4);
     await expect(pane.locator('[data-testid="print-church-name"]')).toHaveCSS("text-align", "center");
     await expect(logo).toHaveCSS("max-height", "70px");
-    await page.screenshot({ path: ".pr-screenshots/submission-after.png", fullPage: true });
+    await page.screenshot({ path: test.info().outputPath("submission-after.png"), fullPage: true });
     await page.emulateMedia({ media: "screen" });
     await expect(printBtn).toBeVisible();
     await expect(printHeader).toBeHidden();

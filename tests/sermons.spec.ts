@@ -91,7 +91,7 @@ test.describe("Sermons Management", () => {
       await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
       await page.locator('[data-testid="copy-podcast-feed-url"]').click();
       await expect(page.getByText("Podcast feed URL copied")).toBeVisible({ timeout: 10000 });
-      await page.screenshot({ path: ".pr-screenshots/podcast-rss-after.png", fullPage: true });
+      await page.screenshot({ path: test.info().outputPath("podcast-rss-after.png"), fullPage: true });
     });
 
     test("should cancel editing sermon", async () => {
