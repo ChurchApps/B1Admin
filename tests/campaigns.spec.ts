@@ -182,6 +182,8 @@ test.describe("Campaign detail view", () => {
     const campaignId = (await (await ctx.post(`${API}/giving/campaigns`, { ...auth, data: [{ name, fundId: "FUN00000001", startDate: "2026-01-01", goalAmount: 1000 }] })).json())[0].id;
     try {
       await page.goto("/donations/campaigns/" + campaignId);
+      // Like Batches and Funds, the breadcrumb leads back to the list the campaign came from.
+      await expect(page.locator("#page-header-breadcrumbs").getByRole("button", { name: "Campaigns" })).toBeVisible();
       await page.getByTestId("edit-campaign-button").click();
       const deleted = page.waitForResponse((r) => r.url().includes("/giving/campaigns/" + campaignId) && r.request().method() === "DELETE");
       await page.locator("#campaignBox").getByRole("button", { name: "Delete" }).click();

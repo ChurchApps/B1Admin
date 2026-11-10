@@ -187,6 +187,7 @@ export const CampaignPage = () => {
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: Locale.label("donations.campaignsPage.campaigns"), path: "/donations/campaigns" },
     { label: campaign?.name || "" }
   ];
 
