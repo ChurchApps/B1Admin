@@ -3,7 +3,7 @@ import { Alert, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
-import { useErrorSummary } from "../../hooks";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { type DeviceInterface } from "../DevicesPage";
 import { DeviceContent } from "./DeviceContent";
 
@@ -19,6 +19,7 @@ export const DeviceEdit = (props: Props) => {
   const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { label: "" } });
   const e = formState.errors as any;
   const summaryErrors = useErrorSummary(formState.errors, ["label"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   useEffect(() => {
     reset({ ...props.device });
@@ -29,9 +30,17 @@ export const DeviceEdit = (props: Props) => {
     ApiHelper.post("/devices", [device], "MessagingApi").then(() => { props.updatedFunction(); });
   };
 
+  const handleRemove = async () => {
+    const label = props.device.label || Locale.label("profile.devices.device");
+    if (!(await confirm(Locale.label("profile.devices.confirmRemove").replace("{label}", label), { confirmLabel: Locale.label("profile.devices.remove") }))) return;
+    await ApiHelper.delete("/devices/" + props.device.churchId + "/" + props.device.id, "MessagingApi");
+    props.updatedFunction();
+  };
+
   return (
     <>
-      <FormCard title={Locale.label("profile.devices.editDevice")} icon="tv" onSave={handleSubmit(onValid)} onCancel={props.updatedFunction}>
+      {ConfirmDialogElement}
+      <FormCard title={Locale.label("profile.devices.editDevice")} icon="tv" onSave={handleSubmit(onValid)} onCancel={props.updatedFunction} onDelete={handleRemove} deleteText={Locale.label("profile.devices.remove")} deleteTestId="remove-device-button">
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <TextField fullWidth label={Locale.label("profile.deviceEdit.label")} type="text" placeholder={Locale.label("placeholders.device.label")} error={!!e.label} helperText={e.label?.message} {...register("label", { required: Locale.label("profile.deviceEdit.labelRequired") })} />
         <DeviceContent device={props.device} />

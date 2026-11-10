@@ -1,4 +1,4 @@
-import { test as anonTest } from "@playwright/test";
+import { test as anonTest, request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 test.describe("Profile", () => {
@@ -23,6 +23,8 @@ test.describe("Profile", () => {
     await page.reload();
     await expect.poll(primaryVar, { timeout: 15000 }).toBe("#2E7D32");
     await page.evaluate(() => localStorage.removeItem("b1admin-theme"));
+    // A settings request still in flight when the page closes would otherwise fail the test in teardown.
+    await page.unrouteAll({ behavior: "ignoreErrors" });
   });
 
   test("devices explains what a paired screen is when there are none", async ({ page }) => {
@@ -30,6 +32,40 @@ test.describe("Profile", () => {
     await page.goto("/profile/devices");
     await expect(page.locator("#mainContent table")).toBeVisible({ timeout: 20000 });
     await expect(page.getByText("No paired screens yet")).toBeVisible();
+  });
+
+  test("pair a screen with its code, rename it, then remove it", async ({ page }) => {
+    // Stand in for a FreePlay TV: it enrolls anonymously and shows a pairing code.
+    const ctx = await request.newContext();
+    const deviceId = "pw-screen-" + Date.now();
+    const enrolled = await (await ctx.post((process.env.API_BASE || "http://localhost:8084") + "/messaging/devices/enrollAnon", { data: { deviceId, appName: "FreePlay" } })).json();
+    await ctx.dispose();
+    const label = "Lobby Display " + Date.now();
+
+    await page.goto("/profile/devices");
+    await page.getByTestId("add-device-button").click();
+    await page.locator("#code").fill(enrolled.pairingCode);
+    await page.getByRole("button", { name: "Save" }).click();
+    const row = page.locator("#mainContent table tbody tr").filter({ has: page.locator("td", { hasText: /^Device$/ }) }).last();
+    await expect(row).toBeVisible({ timeout: 15000 });
+
+    await row.getByRole("button", { name: "Edit" }).click();
+    await page.getByLabel("Label").fill(label);
+    await page.getByRole("button", { name: "Save" }).click();
+    const named = page.locator("#mainContent table tbody tr", { hasText: label });
+    await expect(named).toBeVisible();
+
+    await named.getByRole("button", { name: "Edit" }).click();
+    await page.getByTestId("remove-device-button").click();
+    const removed = page.waitForRequest((r) => r.method() === "DELETE" && r.url().includes("/messaging/devices/"));
+    await page.getByRole("dialog").getByRole("button", { name: "Remove" }).click();
+    await removed;
+    // The Api deletes the device but does not answer the DELETE yet, so check the list after a reload.
+    await expect.poll(async () => {
+      await page.goto("/profile/devices");
+      await expect(page.locator("#mainContent table")).toBeVisible({ timeout: 15000 });
+      return page.locator("#mainContent table tbody tr", { hasText: label }).count();
+    }, { timeout: 20000 }).toBe(0);
   });
 });
 
