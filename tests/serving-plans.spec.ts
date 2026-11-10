@@ -430,10 +430,13 @@ test.describe.serial("Serving Management - Plans", () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const deleteBtn = page.locator("button").getByText("Delete");
-      await deleteBtn.click();
-      const verifiedRemoved = page.locator("table a").getByText("Zebedee Team");
-      await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
+      // Group deletes ask in a styled confirm dialog and then land on /groups; until confirmed nothing is deleted.
+      await page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true }).click();
+      await confirmDelete(page);
+      await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+      await page.goto("/serving/plans");
+      await page.locator('[role="tab"]').getByText("Zebedee Ministry").first().click();
+      await expect(page.locator("a").getByText("Zebedee Team")).toHaveCount(0, { timeout: 10000 });
     });
   });
 
@@ -453,11 +456,13 @@ test.describe.serial("Serving Management - Plans", () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const deleteBtn = page.locator("button").getByText("Delete");
+      const deleteBtn = page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true });
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedRemoved = page.locator("table a").getByText("Zebedee Ministry");
-      await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
+      await confirmDelete(page);
+      await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+      await page.goto("/serving/plans");
+      await expect(page.locator('[role="tab"]').getByText("Zebedee Ministry")).toHaveCount(0, { timeout: 10000 });
     });
   });
 });

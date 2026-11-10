@@ -691,11 +691,14 @@ test.describe.serial("Serving Management - Lessons", () => {
       const editBtn = page.getByTestId("edit-group-button");
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const deleteBtn = page.locator("button").getByText("Delete");
+      // Group deletes ask in a styled confirm dialog and then land on /groups; until confirmed nothing is deleted.
+      const deleteBtn = page.locator("#groupDetailsBox").getByRole("button", { name: "Delete", exact: true });
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedRemoved = page.locator("table a").getByText("Apollos Ministry");
-      await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
+      await confirmDelete(page);
+      await page.waitForURL(/\/groups(\?|$)/, { timeout: 15000 });
+      await page.goto("/serving/plans");
+      await expect(page.locator('[role="tab"]').getByText("Apollos Ministry")).toHaveCount(0, { timeout: 10000 });
     });
   });
 });
