@@ -846,6 +846,7 @@ loggedInTest.describe.serial("Form submissions keep the form's question order", 
 // from the person's Forms tab, or unlink it back to Anonymous.
 loggedInTest.describe.serial("Relinking a form submission to another person", () => {
   const RELINK_FORM_NAME = "Zacchaeus Relink Form";
+  // Not Donald: the profile-rail describe deletes all of Donald's submissions while this one may be running.
   let ctx: APIRequestContext;
   let auth: { headers: { Authorization: string } };
   let formId = "";
@@ -864,12 +865,12 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     formId = (await formRes.json())?.[0]?.id;
     const qRes = await ctx.post(`${WIDE_API}/membership/questions`, { ...auth, data: [{ formId, title: "Relink Note", fieldType: "Textbox", sort: 1 }] });
     const questionId = (await qRes.json())?.[0]?.id;
-    const donaldRes = await ctx.get(`${WIDE_API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DONALD)}`, auth);
-    const donald = ((await donaldRes.json()) as any[]).find((p) => `${p.name?.first} ${p.name?.last}` === SEED_PEOPLE.DONALD);
-    expect(donald?.id).toBeTruthy();
+    const originalRes = await ctx.get(`${WIDE_API}/membership/people/search?term=${encodeURIComponent(SEED_PEOPLE.DOROTHY)}`, auth);
+    const original = ((await originalRes.json()) as any[]).find((p) => `${p.name?.first} ${p.name?.last}` === SEED_PEOPLE.DOROTHY);
+    expect(original?.id).toBeTruthy();
     const subRes = await ctx.post(`${WIDE_API}/membership/formsubmissions`, {
       ...auth,
-      data: [{ formId, contentType: "person", contentId: donald.id, submittedBy: donald.id, submissionDate: new Date().toISOString(), answers: [{ questionId, value: "Wrong person" }] }]
+      data: [{ formId, contentType: "person", contentId: original.id, submittedBy: original.id, submissionDate: new Date().toISOString(), answers: [{ questionId, value: "Wrong person" }] }]
     });
     expect(subRes.ok()).toBeTruthy();
     submissionId = (await subRes.json())?.[0]?.id;
@@ -904,16 +905,16 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     await page.waitForTimeout(1500);
     await expect(page.getByText("No form submissions found")).toHaveCount(0);
     release();
-    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DOROTHY })).toBeVisible({ timeout: 15000 });
   });
 
   loggedInTest("moves a submission to another person from the Submissions table", async ({ page }) => {
     await openSubmissions(page);
-    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toBeVisible();
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DOROTHY })).toBeVisible();
     await page.locator(`[data-testid="submission-change-person-${submissionId}"]`).click();
     await pickPerson(page, SEED_PEOPLE.CAROL);
     await expect(page.getByRole("cell", { name: SEED_PEOPLE.CAROL })).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toHaveCount(0);
+    await expect(page.getByRole("cell", { name: SEED_PEOPLE.DOROTHY })).toHaveCount(0);
 
     // The name opens the person in the app, without reloading the whole page.
     await page.evaluate(() => { (window as any).__noReload = true; });
