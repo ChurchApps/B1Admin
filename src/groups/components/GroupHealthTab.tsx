@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Chart } from "react-google-charts";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";

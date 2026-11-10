@@ -77,7 +77,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
   // Sessions for the other groups, skipping any group that already has one on this date and service time.
   const getOtherSessions = async (day: string, sessionDate: Date, stId: string) => {
     const existing: SessionInterface[] = await ApiHelper.get("/sessions", "AttendanceApi").catch((): SessionInterface[] => []);
-    const hasSession = (groupId: string) => (existing || []).some((es) => es.groupId === groupId && es.serviceTimeId === stId && DateHelper.formatHtml5Date(es.sessionDate) === day);
+    const hasSession = (groupId?: string) => (existing || []).some((es) => es.groupId === groupId && es.serviceTimeId === stId && DateHelper.formatHtml5Date(es.sessionDate) === day);
     return otherGroups.filter((g) => !hasSession(g.id)).map((g) => ({ groupId: g.id, serviceTimeId: stId, sessionDate } as SessionInterface));
   };
 
