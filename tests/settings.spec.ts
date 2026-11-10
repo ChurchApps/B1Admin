@@ -881,6 +881,15 @@ test.describe("Church information time zone", () => {
   });
 });
 
+// The provider is stored as an id (the demo seed has "clearstream"); the page shows its name.
+test.describe("Texting provider name", () => {
+  test("the Texting section shows the provider's display name", async ({ page }) => {
+    await page.goto("/settings");
+    await expect(page.getByTestId("settings-section-texting")).toContainText("Clearstream", { timeout: 15000 });
+    await expect(page.locator("#section-texting")).toContainText("Clearstream");
+  });
+});
+
 // The Lessons Admin preset sent its permission under the wrong key, so the role was created with nothing checked.
 test.describe("Predefined roles", () => {
   test("Add Lessons Admin role grants Edit Schedules", async ({ page }) => {

@@ -119,7 +119,15 @@ export const ManageChurch = () => {
   const givingSubtitle = gateway
     ? Locale.label("settings.landing.givingProvider").replace("{provider}", gateway.provider || "").replace("{currency}", (gateway.currency || "").toUpperCase())
     : Locale.label("settings.landing.notConfigured");
-  const textingSubtitle = textingProvider || Locale.label("settings.landing.notConfigured");
+  const textingNames: Record<string, string> = {
+    clearstream: Locale.label("settings.textingSettingsEdit.clearstream"),
+    textinchurch: Locale.label("settings.textingSettingsEdit.textInChurch"),
+    nalo: Locale.label("settings.textingSettingsEdit.nalo"),
+    twilio: Locale.label("settings.textingSettingsEdit.twilio"),
+    ministrystuff: Locale.label("settings.textingSettingsEdit.ministryStuff")
+  };
+  const textingName = textingProvider ? (textingNames[String(textingProvider).toLowerCase()] || textingProvider) : "";
+  const textingSubtitle = textingName || Locale.label("settings.landing.notConfigured");
   const storageProviderName = (storage.data || []).find((p) => p.enabled)?.provider;
   const storageNames: Record<string, string> = { ministrystuff: "MinistryStuff", googledrive: "Google Drive", dropbox: "Dropbox", onedrive: "OneDrive", s3: "S3" };
   const storageSubtitle = storageNames[storageProviderName] || Locale.label("settings.storageSettingsEdit.churchAppsFree");
@@ -209,7 +217,7 @@ export const ManageChurch = () => {
             headerText={Locale.label("settings.churchSettingsEdit.textingTitle")}
             headerIcon="sms"
             data-testid="settings-texting"
-            view={<SettingsRow label={Locale.label("settings.textingSettingsEdit.provider")} value={textingProvider || Locale.label("settings.landing.notConfigured")} />}
+            view={<SettingsRow label={Locale.label("settings.textingSettingsEdit.provider")} value={textingSubtitle} />}
             renderEdit={(saveTrigger, onSaveComplete) => <TextingSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
