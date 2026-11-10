@@ -62,7 +62,9 @@ test.describe.serial("Donations Management", () => {
       await fillFundForm(page, { name: TEST_FUND_INITIAL, toggleTaxDeductible: true });
 
       await expect(page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator("p").getByText("Non-Deductible")).toHaveCount(1, { timeout: 10000 });
+      // Scope to this fund's row: other specs may have their own non-deductible fund in the list at the same time.
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true }) });
+      await expect(row.getByText("Non-Deductible").first()).toBeVisible({ timeout: 10000 });
     });
 
     test("should edit fund", async () => {
@@ -75,7 +77,8 @@ test.describe.serial("Donations Management", () => {
 
       await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(0, { timeout: 10000 });
-      await expect(page.locator("p").getByText("Non-Deductible")).toHaveCount(0, { timeout: 10000 });
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true }) });
+      await expect(row.getByText("Tax Deductible").first()).toBeVisible({ timeout: 10000 });
     });
 
     test("should cancel editing fund", async () => {
