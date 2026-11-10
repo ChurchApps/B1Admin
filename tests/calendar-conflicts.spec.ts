@@ -45,3 +45,11 @@ for (const path of ["/calendars", "/calendars/CAL00000004"]) {
     await expect(link).toHaveText("1 pending approval");
   });
 }
+
+// The booking time used the browser's raw date string (with seconds); it now matches other dates in B1.
+test("pending booking requests show the event time in the church date format", async ({ page }) => {
+  await page.goto("/calendars/approvals");
+  const row = page.locator("tbody tr").filter({ hasText: "Missions Conference" }).first();
+  await expect(row).toBeVisible({ timeout: 15000 });
+  await expect(row.locator(".MuiTypography-caption").first()).toHaveText(/^[A-Z][a-z]{2} \d{1,2}, \d{4} \d{1,2}:\d{2} [AP]M$/);
+});

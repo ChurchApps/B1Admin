@@ -52,10 +52,10 @@ interface Props {
 }
 
 const OFFSET_PRESETS = [
-  { label: "7 days before", minutes: 10080 },
-  { label: "3 days before", minutes: 4320 },
-  { label: "1 day before", minutes: 1440 },
-  { label: "Day of", minutes: 0 }
+  { labelKey: "calendars.eventReminders.offset7Days", minutes: 10080 },
+  { labelKey: "calendars.eventReminders.offset3Days", minutes: 4320 },
+  { labelKey: "calendars.eventReminders.offset1Day", minutes: 1440 },
+  { labelKey: "calendars.eventReminders.offsetDayOf", minutes: 0 }
 ] as const;
 
 const MAX_OFFSETS = 3;
@@ -170,12 +170,13 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
     const previewText = (): string | null => {
       if (!preview) return null;
       const parts: string[] = [];
-      if (typeof preview.recipientCount === "number") parts.push(`~${preview.recipientCount} people will be reminded`);
+      if (typeof preview.recipientCount === "number") parts.push(Locale.label("calendars.eventReminders.previewRecipients").replace("{count}", String(preview.recipientCount)));
       if (typeof preview.unlinkedAttendeeCount === "number" && preview.unlinkedAttendeeCount > 0) {
-        parts.push(`${preview.unlinkedAttendeeCount} unlinked attendee${preview.unlinkedAttendeeCount !== 1 ? "s" : ""}`);
+        const key = preview.unlinkedAttendeeCount === 1 ? "calendars.eventReminders.previewUnlinkedOne" : "calendars.eventReminders.previewUnlinked";
+        parts.push(Locale.label(key).replace("{count}", String(preview.unlinkedAttendeeCount)));
       }
       if (preview.nextFires?.length) {
-        parts.push("Next: " + preview.nextFires.slice(0, 2).map(formatFireTime).join(", "));
+        parts.push(Locale.label("calendars.eventReminders.previewNext").replace("{times}", preview.nextFires.slice(0, 2).map(formatFireTime).join(", ")));
       }
       return parts.join(" · ") || null;
     };
@@ -202,7 +203,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
                     {OFFSET_PRESETS.map((p) => (
                       <Chip
                         key={p.minutes}
-                        label={p.label}
+                        label={Locale.label(p.labelKey)}
                         clickable
                         color={selectedOffsets.includes(p.minutes) ? "primary" : "default"}
                         onClick={() => toggleOffset(p.minutes)}
