@@ -74,7 +74,7 @@ export const PlanItemHeader: React.FC<Props> = ({
           sx={{ p: 0.5, mr: 0.5 }}
         />
       )}
-      <Box component="span" sx={{ flex: 1 }}>{planItem.label}</Box>
+      <Box component="span" sx={{ flex: 1, minWidth: 0, overflowWrap: "break-word" }}>{planItem.label}</Box>
       {positionLabel?.text && (
         <Box
           component="span"
@@ -84,7 +84,7 @@ export const PlanItemHeader: React.FC<Props> = ({
           {positionLabel.text}
         </Box>
       )}
-      <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
+      <Box component="span" sx={{ display: "flex", alignItems: "center", gap: { xs: 0.25, sm: 0.75 }, flexShrink: 0, ml: { xs: 0.5, sm: 1.5 } }}>
         {selecting && (
           <>
             <Button
@@ -146,7 +146,7 @@ export const PlanItemHeader: React.FC<Props> = ({
             </Box>
           </>
         )}
-        <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary", visibility: sectionDuration > 0 ? "visible" : "hidden" }} />
+        <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary", visibility: sectionDuration > 0 ? "visible" : "hidden", display: { xs: "none", sm: "inline-block" } }} />
         <Box component="span" sx={{ color: "text.secondary", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
           {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
         </Box>

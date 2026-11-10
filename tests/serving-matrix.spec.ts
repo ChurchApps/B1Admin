@@ -94,6 +94,43 @@ test.describe.serial("Serving — Editable Scheduling Matrix", () => {
     await expect(usherCell()).toHaveText("—", { timeout: 10000 });
   });
 
+  test("a volunteer already in a cell isn't offered for its second spot", async () => {
+    await openOverview();
+    const greeterCell = page.getByRole("row").filter({ hasText: "Greeter" }).first().locator('td[data-testid^="matrix-cell-"]');
+    await expect(greeterCell).toHaveText("—"); // Greeter needs 2, nobody yet
+    await greeterCell.click();
+
+    const dialog = page.getByRole("dialog");
+    const memberBtn = dialog.locator("table button").first();
+    await expect(memberBtn).toBeVisible({ timeout: 10000 });
+    const name = (await memberBtn.innerText()).trim();
+    const post = page.waitForResponse((r) => r.url().includes("/assignments") && r.request().method() === "POST", { timeout: 15000 });
+    await memberBtn.click();
+    await post;
+
+    // One spot is still open, so the dialog stays; the person just assigned is gone from the list.
+    await expect(dialog.locator('[data-testid^="matrix-remove-"]')).toHaveCount(1, { timeout: 10000 });
+    await expect(dialog.locator("table button").filter({ hasText: name })).toHaveCount(0);
+
+    const del = page.waitForResponse((r) => r.url().includes("/assignments/") && r.request().method() === "DELETE", { timeout: 15000 });
+    await dialog.locator('[data-testid^="matrix-remove-"]').first().click();
+    await confirmDelete(page);
+    await del;
+    await page.getByTestId("matrix-cell-close").click();
+    await expect(greeterCell).toHaveText("—", { timeout: 10000 });
+  });
+
+  test("Export CSV with 'Unfilled only' downloads only the rows shown", async () => {
+    await openOverview();
+    await page.getByTestId("gaps-only-toggle").click();
+    await expect(page.getByRole("row").filter({ hasText: "Worship Leader" })).toHaveCount(0, { timeout: 10000 });
+    const download = page.waitForEvent("download", { timeout: 15000 });
+    await page.getByText("Export CSV").click();
+    const csv = await (await (await download).createReadStream()).toArray().then((chunks) => Buffer.concat(chunks).toString());
+    expect(csv).toContain("Usher");
+    expect(csv).not.toContain("Worship Leader");
+  });
+
   test("cross-plan auto-schedule requires confirmation, then fills gaps and reports a count", async () => {
     await openOverview();
     await page.getByTestId("matrix-auto-schedule").click();

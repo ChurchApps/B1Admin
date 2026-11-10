@@ -54,7 +54,7 @@ export const PlanList = memo((props: Props) => {
     return ArrayHelper.getAll(plansQuery.data || [], "ministryId", props.ministry.id);
   }, [plansQuery.data, props.ministry.id, props.planTypeId]);
 
-  const plans = React.useMemo(() => {
+  const upcomingPlans = React.useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const isUpcoming = (p: PlanInterface) => {
@@ -63,13 +63,13 @@ export const PlanList = memo((props: Props) => {
       d.setHours(0, 0, 0, 0);
       return d >= today;
     };
-    // Past keeps the API order (newest first).
-    if (showPast) return allPlans.filter(p => !isUpcoming(p));
-    const upcoming = allPlans.filter(isUpcoming);
     // The API returns newest first; upcoming weeks read soonest first, undated plans last.
     const time = (p: PlanInterface) => p.serviceDate ? DateHelper.toDate(p.serviceDate).getTime() : Number.MAX_SAFE_INTEGER;
-    return [...upcoming].sort((a, b) => time(a) - time(b));
-  }, [allPlans, showPast]);
+    return allPlans.filter(isUpcoming).sort((a, b) => time(a) - time(b));
+  }, [allPlans]);
+
+  // Past keeps the API order (newest first).
+  const plans = React.useMemo(() => (showPast ? allPlans.filter((p) => !upcomingPlans.includes(p)) : upcomingPlans), [allPlans, upcomingPlans, showPast]);
 
   const addPlan = useCallback(() => {
     const lastSunday = DateHelper.getLastSunday();
@@ -259,7 +259,7 @@ export const PlanList = memo((props: Props) => {
       {lessonMenu}
 
       {showTemplates && canEdit && (
-        <PlanTemplateManager ministryId={props.ministry.id || ""} plans={plans} onClose={() => setShowTemplates(false)} />
+        <PlanTemplateManager ministryId={props.ministry.id || ""} plans={allPlans} upcomingPlans={upcomingPlans} onClose={() => setShowTemplates(false)} />
       )}
     </Surface>
   );

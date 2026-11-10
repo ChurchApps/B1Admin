@@ -51,7 +51,10 @@ export const AssignmentEdit = (props: Props) => {
 
   const getMembers = () => {
     const rows: JSX.Element[] = [];
-    if (groupMembers.length === 0) {
+    // Someone already in this position can't fill a second spot in it.
+    const assigned = props.assignedPersonIds || [];
+    const available = groupMembers.filter((gm) => !assigned.includes(gm.personId));
+    if (available.length === 0) {
       rows.push(
         <TableRow key="0">
           <TableCell>{Locale.label("plans.assignmentEdit.noMem")}</TableCell>
@@ -60,8 +63,8 @@ export const AssignmentEdit = (props: Props) => {
       return rows;
     }
 
-    for (let i = 0; i < groupMembers.length; i++) {
-      const gm = groupMembers[i];
+    for (let i = 0; i < available.length; i++) {
+      const gm = available[i];
       const personName = gm.person?.name?.display || Locale.label("person.unknown");
       rows.push(
         <TableRow key={i}>

@@ -174,8 +174,9 @@ export const ServingOverviewPage = () => {
     return rows.filter(row => dates.some(d => row.activeDates.has(d) && cellFilled(row.cells[d]) < (row.cells[d]?.needed || 0)));
   }, [rows, dates, gapsOnly]);
 
+  // The export is the grid as shown, so Unfilled only carries over.
   const csvData = React.useMemo(() => {
-    return rows.map(row => {
+    return displayRows.map(row => {
       const obj: Record<string, string> = { Position: row.position };
       dates.forEach(d => {
         const cell = row.cells[d];
@@ -184,7 +185,7 @@ export const ServingOverviewPage = () => {
       });
       return obj;
     });
-  }, [rows, dates, people.data]);
+  }, [displayRows, dates, people.data]);
 
   const csvHeaders = React.useMemo(() => {
     const headers = [{ label: Locale.label("plans.servingOverviewPage.position"), key: "Position" }];
@@ -267,7 +268,7 @@ export const ServingOverviewPage = () => {
         <HeaderTextButton component={Link} to={planTypeId ? `/serving/planTypes/${planTypeId}` : "/serving/plans"} startIcon={<BackIcon />} data-testid="overview-back-link">
           {planType.data?.name || Locale.label("components.wrapper.plans", "Plans")}
         </HeaderTextButton>
-        {rows.length > 0 && <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />}
+        {displayRows.length > 0 && <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />}
         {canEdit && (
           <HeaderSecondaryButton startIcon={<EmailIcon />} disabled={busy || !ministryId || rows.length === 0} onClick={handleEmailAll} data-testid="matrix-email-all">
             {Locale.label("plans.servingOverviewPage.emailAll")}
@@ -381,6 +382,7 @@ export const ServingOverviewPage = () => {
                 position={{ id: slot.positionId, groupId: slot.groupId, count: slot.needed, name: editingRow?.positionName } as PositionInterface}
                 assignment={{ positionId: slot.positionId } as AssignmentInterface}
                 peopleNeeded={slot.needed - slot.assignments.length}
+                assignedPersonIds={slot.assignments.map((a) => a.personId)}
                 updatedFunction={(done: boolean) => { overviewData.refetch(); if (done) setEditingKey(null); }}
               />
             </Box>

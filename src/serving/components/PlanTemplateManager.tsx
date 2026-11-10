@@ -1,19 +1,28 @@
 import React from "react";
 import { Alert, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormGroup, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Delete as DeleteIcon, Edit as EditIcon, ContentCopy as ApplyIcon, Sync as SyncIcon } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type PlanInterface, type PlanTemplateInterface } from "../../helpers";
 import { useConfirmDelete } from "../../hooks";
 
+// Plan names repeat week to week, so the date tells them apart unless the name already is the date.
+const planLabel = (p: PlanInterface) => {
+  const date = p.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(p.serviceDate)) : "";
+  return date && date !== p.name ? `${p.name} · ${date}` : p.name || date;
+};
+
 interface Props {
   ministryId: string;
+  /** Every plan of the type, newest first: any of them can refresh a template. */
   plans: PlanInterface[];
+  /** Templates are applied forward only, whichever list tab is showing. */
+  upcomingPlans: PlanInterface[];
   onClose: () => void;
 }
 
-export const PlanTemplateManager: React.FC<Props> = ({ ministryId, plans, onClose }) => {
+export const PlanTemplateManager: React.FC<Props> = ({ ministryId, plans, upcomingPlans, onClose }) => {
   const templatesQuery = useQuery<PlanTemplateInterface[]>({
     queryKey: [`/plantemplates/ministry/${ministryId}`, "DoingApi"],
     enabled: !!ministryId,
@@ -77,7 +86,7 @@ export const PlanTemplateManager: React.FC<Props> = ({ ministryId, plans, onClos
 
       {renameItem && <RenameDialog template={renameItem} onClose={() => { setRenameItem(null); refresh(); }} />}
       {updateItem && <UpdateFromPlanDialog template={updateItem} plans={plans} onClose={() => { setUpdateItem(null); refresh(); }} />}
-      {applyItem && <ApplyDialog template={applyItem} plans={plans} onClose={() => setApplyItem(null)} />}
+      {applyItem && <ApplyDialog template={applyItem} plans={upcomingPlans} onClose={() => setApplyItem(null)} />}
     </>
   );
 };
@@ -128,7 +137,7 @@ const UpdateFromPlanDialog: React.FC<{ template: PlanTemplateInterface; plans: P
       <DialogContent>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("plans.templates.updateFromPlanHelp") || "Replace this template's contents with a plan's current order of service and positions."}</Typography>
         <TextField select fullWidth margin="normal" label={Locale.label("plans.templates.plan") || "Plan"} value={planId} onChange={(e) => setPlanId(e.target.value)}>
-          {plans.map((p) => <MenuItem key={p.id} value={p.id}>{p.name}</MenuItem>)}
+          {plans.map((p) => <MenuItem key={p.id} value={p.id}>{planLabel(p)}</MenuItem>)}
         </TextField>
       </DialogContent>
       <DialogActions>
@@ -165,7 +174,7 @@ const ApplyDialog: React.FC<{ template: PlanTemplateInterface; plans: PlanInterf
         ) : (
           <FormGroup>
             {plans.map((p) => (
-              <FormControlLabel key={p.id} control={<Checkbox checked={selected.includes(p.id || "")} onChange={() => toggle(p.id || "")} />} label={p.name} />
+              <FormControlLabel key={p.id} control={<Checkbox checked={selected.includes(p.id || "")} onChange={() => toggle(p.id || "")} />} label={planLabel(p)} />
             ))}
           </FormGroup>
         )}
