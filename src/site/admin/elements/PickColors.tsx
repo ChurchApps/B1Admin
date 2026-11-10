@@ -53,7 +53,7 @@ export function PickColors(props: Props) {
 
   const getGrayOptions = () => {
     const colors = ["#FFFFFF", "#CCCCCC", "#888888", "#444444", "#000000"];
-    return getManualOptions(colors, colors, "background");
+    return getManualOptions(colors, colors, "background", "Gray");
   };
 
   const getThemeOptions = (field: "background" | "textColor" | "headingColor" | "linkColor" = "background") => {
@@ -74,7 +74,7 @@ export function PickColors(props: Props) {
     }
   };
 
-  const getManualOptions = (colors: string[], values: string[], field: "background" | "textColor" | "headingColor" | "linkColor") => {
+  const getManualOptions = (colors: string[], values: string[], field: "background" | "textColor" | "headingColor" | "linkColor", keySuffix = "") => {
     const result: React.ReactElement[] = [];
     colors.forEach((c, i) => {
       const v = values[i];
@@ -95,7 +95,7 @@ export function PickColors(props: Props) {
       );
     });
     return (
-      <table style={{ width: "100%", marginTop: 10 }} key={field + "ManualColors"}>
+      <table style={{ width: "100%", marginTop: 10 }} key={field + keySuffix + "ManualColors"}>
         <tbody>
           <tr>{result}</tr>
         </tbody>
@@ -109,7 +109,7 @@ export function PickColors(props: Props) {
     else if (props.background?.startsWith("youtube")) backgroundType = "youtube";
 
     const result: React.ReactElement[] = [
-      <FormControl fullWidth>
+      <FormControl key="backgroundType" fullWidth>
         <InputLabel>{Locale.label("site.pickColors.backgroundType")}</InputLabel>
         <Select fullWidth size="small" label={Locale.label("site.pickColors.backgroundType")} name="backgroundType" value={backgroundType} onChange={handleChange} data-testid="background-type-select">
           <MenuItem value="color">{Locale.label("site.pickColors.color")}</MenuItem>
@@ -131,19 +131,19 @@ export function PickColors(props: Props) {
       );
       result.push(getGrayOptions());
       result.push(getThemeOptions());
-      result.push(<br />);
+      result.push(<br key="backgroundBreak" />);
       result.push(<TextField key="backgroundText" fullWidth size="small" label={Locale.label("site.pickColors.background")} name="background" value={props.background} onChange={handleChange} />);
     } else if (backgroundType === "youtube") {
       const parts = props.background.split(":");
       const youtubeId = parts.length > 1 ? parts[1] : "";
       result.push(
-        <>
+        <React.Fragment key="youtube">
           <TextField fullWidth size="small" label={Locale.label("site.pickColors.youtubeId")} name="youtubeId" value={youtubeId} onChange={handleChange} />
-        </>
+        </React.Fragment>
       );
     } else if (backgroundType === "image") {
       result.push(
-        <>
+        <React.Fragment key="image">
           <img src={props.background} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt="background image" />
           <br />
           <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button">
@@ -179,7 +179,7 @@ export function PickColors(props: Props) {
               />
             </>
           )}
-        </>
+        </React.Fragment>
       );
     }
 
