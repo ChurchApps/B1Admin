@@ -1961,7 +1961,7 @@
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Loading custom fields...",
-      "noCustomFields": "No custom fields defined. Create custom fields in Forms to search by them."
+      "noCustomFields": "No custom fields defined. Add custom fields in Settings to search by them."
     },
     "advancedSearch": {
       "daysPlaceholder": "Number of days",
@@ -1984,7 +1984,7 @@
     "bulk": {
       "actions": "Actions",
       "addSuccess": "Added {count} people to {group}.",
-      "addToGroup": "Add To Group",
+      "addToGroup": "Add to Group",
       "addToGroupPrompt": "Add {count} selected people to a group.",
       "addToGroupTitle": "Add to Group",
       "addToWorkflow": "Add to Workflow",
@@ -2014,7 +2014,7 @@
       "optedOutNo": "Opted Out No",
       "optedOutTitle": "Set Directory Opt-Out",
       "optedOutYes": "Opted Out Yes",
-      "removeFromGroup": "Remove From Group",
+      "removeFromGroup": "Remove from Group",
       "removeFromGroupPrompt": "Remove {count} selected people from a group.",
       "removeFromGroupTitle": "Remove from Group",
       "removeSuccess": "Removed {count} people from {group}.",
