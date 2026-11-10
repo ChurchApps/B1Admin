@@ -914,6 +914,12 @@ loggedInTest.describe.serial("Relinking a form submission to another person", ()
     await pickPerson(page, SEED_PEOPLE.CAROL);
     await expect(page.getByRole("cell", { name: SEED_PEOPLE.CAROL })).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("cell", { name: SEED_PEOPLE.DONALD })).toHaveCount(0);
+
+    // The name opens the person in the app, without reloading the whole page.
+    await page.evaluate(() => { (window as any).__noReload = true; });
+    await page.getByRole("cell", { name: SEED_PEOPLE.CAROL }).getByRole("link", { name: SEED_PEOPLE.CAROL }).click();
+    await expect(page).toHaveURL(/\/people\/[\w-]+$/);
+    expect(await page.evaluate(() => (window as any).__noReload)).toBe(true);
   });
 
   loggedInTest("the moved submission shows on the new person's Forms tab and can be unlinked there", async ({ page }) => {
