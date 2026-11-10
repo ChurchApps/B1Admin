@@ -76,7 +76,7 @@ test.describe.serial("Pledge Campaigns", () => {
 
   test("should open campaign detail and add pledge", async () => {
     await page.locator("a").getByText(TEST_CAMPAIGN, { exact: true }).click();
-    await expect(page).toHaveURL(/\/donations\/campaigns\/\w+/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/donations\/campaigns\/[\w-]+/, { timeout: 10000 });
 
     const addPledgeBtn = page.locator('[data-testid="add-pledge-button"]');
     await expect(addPledgeBtn).toBeVisible({ timeout: 10000 });
