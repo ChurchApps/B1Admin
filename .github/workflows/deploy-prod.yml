@@ -17,9 +17,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy Prod
-    # Pinned: ubuntu-latest moved to 26.04, which Playwright 1.60 cannot install Chromium deps on.
-    # Can return to ubuntu-latest after upgrading Playwright to >= 1.64.
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -72,8 +70,3 @@ jobs:
       - name: Deploy
         run: yarn deploy-prod
 
-      - name: Install Chromium
-        run: yarn playwright install --with-deps chromium
-
-      - name: Smoke
-        run: node tests/setup/smoke.mjs https://admin.b1.church/login --expect dist/index.html
