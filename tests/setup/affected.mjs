@@ -5,7 +5,8 @@
 //   node tests/setup/affected.mjs --base <ref>    diff against another ref
 //   node tests/setup/affected.mjs --files a,b     use these paths instead of git
 //   node tests/setup/affected.mjs -- --workers=1  pass the rest to playwright
-// A changed file in no area and not ignored runs the whole suite. Changed spec files always run.
+// A changed source file in no area and not ignored runs the whole suite. Changed spec files always run.
+// Screenshots and other images are evidence, not shared code, and never do.
 import { execFileSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -43,6 +44,7 @@ const specsFor = (globs) => { const m = matcher(globs); return allSpecs.filter(m
 const areas = Object.entries(manifest.areas).map(([name, a]) => ({ name, src: matcher(a.src), specGlobs: a.specs, specs: specsFor(a.specs) }));
 const always = specsFor(manifest.always ?? []);
 const ignored = matcher(manifest.ignore);
+const nonSource = matcher([".pr-screenshots/**", "**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.webp"]);
 
 if (args.includes("--check")) {
   const problems = [];
@@ -79,7 +81,7 @@ for (const f of changed) {
     if (fs.existsSync(path.join(root, f))) { picked.add(rel); reasons.push(`${f} (changed spec)`); }
     continue;
   }
-  if (ignored(f)) continue;
+  if (ignored(f) || nonSource(f)) continue;
   const hits = areas.filter((a) => a.src(f));
   if (!hits.length) { full ??= f; continue; }
   for (const a of hits) a.specs.forEach((s) => picked.add(s));
