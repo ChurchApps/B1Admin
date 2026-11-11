@@ -1,7 +1,7 @@
 {
   "$comment": "Maps source paths to the specs that cover them. Used by tests/setup/affected.mjs (yarn test:affected). A changed file in no area runs every spec. New spec files must be added to an area; yarn test:areas checks that.",
   "always": ["navigation.spec.ts"],
-  "ignore": ["**/*.md", ".github/**", ".claude/**", "docs/**", "tests/areas.json", "tests/smoke/**", "tests/setup/smoke.mjs", "tests/setup/affected.mjs", "playwright.smoke.config.ts"],
+  "ignore": ["**/*.md", ".github/**", ".claude/**", "docs/**", ".pr-screenshots/**", "tests/areas.json", "tests/smoke/**", "tests/setup/smoke.mjs", "tests/setup/affected.mjs", "playwright.smoke.config.ts"],
   "areas": {
     "dashboard": {
       "src": ["src/dashboard/**"],
