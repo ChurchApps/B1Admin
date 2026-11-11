@@ -4,7 +4,7 @@ Three tiers, picked by when they run:
 
 | Tier | When | Command |
 |---|---|---|
-| Smoke | After every demo deploy (`deploy-demo.yml`) | `SMOKE_BASE_URL=https://demo.b1.church SMOKE_EMAIL=demo@b1.church SMOKE_PASSWORD=password SMOKE_CHURCH="Grace Community Church" yarn test:smoke` |
+| Smoke | By hand, against demo | `SMOKE_BASE_URL=https://demo.b1.church SMOKE_EMAIL=demo@b1.church SMOKE_PASSWORD=password SMOKE_CHURCH="Grace Community Church" yarn test:smoke` |
 | Affected | Before pushing a PR branch | `yarn test:affected` |
 | Full | Nightly | `yarn test` |
 
@@ -12,4 +12,4 @@ Three tiers, picked by when they run:
 
 **Affected** runs the specs for the areas your branch changed, from `tests/areas.json`, plus any spec you edited and `always` (navigation). A changed file in no area is treated as shared code and runs the whole suite. `yarn test:affected --list` shows the selection; anything after `--` goes to Playwright (`yarn test:affected -- --workers=1`). It needs the local demo stack like `yarn test`.
 
-**Naming.** Name specs after the area and behavior (`serving-plans-breadcrumb.spec.ts`), not the issue number, and add new files to an area in `tests/areas.json`. `yarn test:areas` (also a PR check) fails if a spec is in no area.
+**Naming.** Name specs after the area and behavior (`serving-plans-breadcrumb.spec.ts`), not the issue number, and add new files to an area in `tests/areas.json`. `yarn test:areas` fails if a spec is in no area.
