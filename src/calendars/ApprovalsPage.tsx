@@ -37,7 +37,7 @@ export const ApprovalsPage = () => {
     Promise.all(requests).then(async ([b, e]) => {
       const rows: EventBookingInterface[] = b || [];
       const eventRows: EventInterface[] = e || [];
-      const ids = [...new Set([...rows.flatMap((r) => [r.requestedBy, r.resolvedBy]), ...eventRows.map((r: any) => r.requestedBy)].filter(Boolean))];
+      const ids = [...new Set([...rows.flatMap((r) => [r.requestedBy, r.resolvedBy]), ...eventRows.flatMap((r: any) => [r.requestedBy, r.resolvedBy])].filter(Boolean))];
       const found: PersonInterface[] = ids.length > 0 ? await ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi").catch((): PersonInterface[] => []) : [];
       const map: Record<string, PersonInterface> = {};
       (found || []).forEach((p) => { if (p.id) map[p.id] = p; });
@@ -196,6 +196,7 @@ export const ApprovalsPage = () => {
                   <TableCell>{Locale.label("calendars.approvals.description")}</TableCell>
                   <TableCell>{Locale.label("calendars.approvals.requestedBy")}</TableCell>
                   <TableCell>{Locale.label("calendars.approvals.status")}</TableCell>
+                  <TableCell>{Locale.label("calendars.approvals.decided")}</TableCell>
                   <TableCell align="right" />
                 </TableRow>
               </TableHead>
@@ -206,6 +207,7 @@ export const ApprovalsPage = () => {
                     <TableCell>{e.description}</TableCell>
                     <TableCell>{personLink((e as any).requestedBy)}</TableCell>
                     <TableCell>{decisionBadge((e as any).approvalStatus)}</TableCell>
+                    <TableCell>{decided(e as any)}</TableCell>
                     <TableCell align="right" className="rowActions">
                       <VerbRow sx={{ justifyContent: "flex-end" }}>
                         {(e as any).approvalStatus === "approved"
