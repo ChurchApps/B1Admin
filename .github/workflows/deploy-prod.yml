@@ -27,6 +27,24 @@ jobs:
         with:
           submodules: "true"
 
+      - name: Checkout malware scanner
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          repository: ChurchApps/.github
+          ref: main
+          path: .polinrider
+          persist-credentials: false
+
+      # Step 1: the PolinRider malware scan. The scanner runs from outside the
+      # tree and is removed from it before scanning. A finding fails this step
+      # and nothing below it runs.
+      - name: Malware scan
+        run: |
+          cp .polinrider/scripts/polinrider_scan.py "$RUNNER_TEMP/polinrider_scan.py"
+          rm -rf .polinrider
+          python3 "$RUNNER_TEMP/polinrider_scan.py" --self-test
+          python3 "$RUNNER_TEMP/polinrider_scan.py" .
+
       - name: Enable Corepack
         run: corepack enable
 
