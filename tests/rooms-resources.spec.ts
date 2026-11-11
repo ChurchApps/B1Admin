@@ -502,6 +502,7 @@ test.describe.serial("Room approval reset and event request actions", () => {
   let roomId: string;
   let eventId: string;
   let decidedId: string;
+  let deciderName: string;
   let page: Page;
 
   const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
@@ -518,7 +519,9 @@ test.describe.serial("Room approval reset and event request actions", () => {
   test.beforeAll(async ({ browser, playwright }) => {
     ctx = await playwright.request.newContext();
     const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
-    jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    const userChurch = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0];
+    jwt = userChurch.jwt;
+    deciderName = (await (await ctx.get(`${API}/membership/people/${userChurch.person.id}`, auth())).json()).name.display;
     groupId = (await (await ctx.post(`${API}/membership/groups`, { ...auth(), data: [{ name: groupName, categoryName: "Approvals Test", tags: "standard" }] })).json())[0].id;
     roomId = (await (await ctx.post(`${API}/content/rooms`, { ...auth(), data: [{ name: roomName, approvalGroupId: groupId }] })).json())[0].id;
     eventId = await requestEvent(eventTitle, 10);
@@ -575,6 +578,13 @@ test.describe.serial("Room approval reset and event request actions", () => {
     await expect(historyRow).toBeVisible({ timeout: 15000 });
     await expect(historyRow.locator(`[data-testid="edit-event-${decidedId}"]`)).toBeVisible();
     await expect(historyRow.locator(`[data-testid="delete-event-${decidedId}"]`)).toBeVisible();
+  });
+
+  // #1508: event requests show who decided them and when, like room and resource bookings.
+  test("History shows who decided an event request", async () => {
+    const decidedCell = page.locator('[data-testid="history-events-table"] tbody tr').filter({ hasText: decidedTitle }).locator("td").nth(4);
+    await expect(decidedCell).not.toHaveText("—", { timeout: 15000 });
+    await expect(decidedCell).toContainText(deciderName);
   });
 
   // #1510: rejecting a previously approved request takes it back off the public calendar.
