@@ -176,6 +176,53 @@ test.describe.serial("Mobile tab lifecycle", () => {
   });
 });
 
+// ChurchAppsSupport#1545: a tab's image can be removed, so the tab drops back to a plain link in the app.
+test.describe.serial("Mobile tab image", () => {
+  test.describe.configure({ retries: 0 });
+  const TAB = "Zacchaeus Photo Tab";
+  let page: Page;
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let tabId: string;
+
+  test.beforeAll(async ({ browser }) => {
+    ctx = await pwRequest.newContext();
+    jwt = await apiLogin(ctx);
+    const res = await ctx.post(`${API}/content/links`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: [{ churchId: CHURCH_ID, category: "b1Tab", linkType: "url", url: "https://example.org", text: TAB, icon: "home", photo: "/images/demo/church-light.png", sort: 99, visibility: "everyone" }]
+    });
+    expect(res.ok()).toBeTruthy();
+    tabId = (await res.json())[0].id;
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    if (tabId) await ctx.delete(`${API}/content/links/${tabId}`, { headers: { Authorization: `Bearer ${jwt}` } });
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("Remove Image clears the tab's image and saves it without one", async () => {
+    await openMobileSettings(page);
+    const row = await findTabRow(page, TAB);
+    await row.getByRole("button", { name: "Edit" }).click();
+    await expect(page.locator('input[name="text"]')).toHaveValue(TAB, { timeout: 10000 });
+    await expect(page.getByRole("button", { name: "Change Image", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Remove Image", exact: true }).click();
+    await expect(page.getByRole("img", { name: "Tab icon" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Remove Image", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Select Image", exact: true })).toBeVisible();
+    const saved = page.waitForResponse(r => r.url().includes("/links") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByRole("button", { name: /Save Tab/i }).click();
+    await saved;
+    const link = await (await ctx.get(`${API}/content/links/${tabId}`, { headers: { Authorization: `Bearer ${jwt}` } })).json();
+    expect(link.photo || "").toBe("");
+  });
+});
+
 // ChurchAppsSupport#1503: Requests opens the member's My Requests screen in the app.
 test.describe.serial("Mobile Requests tab", () => {
   test.describe.configure({ retries: 0 });
