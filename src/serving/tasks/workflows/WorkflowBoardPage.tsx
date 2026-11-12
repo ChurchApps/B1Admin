@@ -13,6 +13,7 @@ import { ContentPicker } from "../components/ContentPicker";
 import { BulkBar, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, StatusBadge, ViewToggle, formWidthSx } from "../../../components/ui";
 import { type WorkflowBoardInterface, type WorkflowStepInterface, type TaskInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
+import { latestArrivalFirst } from "../taskOrder";
 
 export const WorkflowBoardPage = () => {
   const params = useParams();
@@ -103,7 +104,7 @@ export const WorkflowBoardPage = () => {
   const cards = board.data?.cards || [];
   const routes = board.data?.routes || [];
   const actions = board.data?.actions || [];
-  const cardsForStep = (stepId: string) => cards.filter((c) => c.stepId === stepId);
+  const cardsForStep = (stepId: string) => cards.filter((c) => c.stepId === stepId).sort(latestArrivalFirst);
   const routesForStep = (stepId: string) => routes.filter((r) => r.stepId === stepId);
   const actionsForStep = (stepId: string) => actions.filter((a) => a.stepId === stepId);
 

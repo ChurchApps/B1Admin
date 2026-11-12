@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { NewTask } from "./";
 import UserContext from "../../../UserContext";
 import { useQuery } from "@tanstack/react-query";
+import { newestFirst } from "../taskOrder";
 
 interface Props {
   status: string;
@@ -53,11 +54,11 @@ export const TaskList = memo((props: Props) => {
 
   const assignedToMyGroups = useMemo(() => {
     if (groupIds.length === 0 || !groupTasks.data?.length) return [];
-    return ArrayHelper.getAllArray(groupTasks.data, "assignedToId", groupIds);
+    return [...ArrayHelper.getAllArray(groupTasks.data, "assignedToId", groupIds)].sort(newestFirst);
   }, [groupIds, groupTasks.data]);
 
-  const assignedToMe = useMemo(() => (tasks.data?.length ? ArrayHelper.getAll(tasks.data, "assignedToId", context?.person?.id) : []), [tasks.data, context?.person?.id]);
-  const createdByMe = useMemo(() => (tasks.data?.length ? ArrayHelper.getAll(tasks.data, "createdById", context?.person?.id) : []), [tasks.data, context?.person?.id]);
+  const assignedToMe = useMemo(() => (tasks.data?.length ? [...ArrayHelper.getAll(tasks.data, "assignedToId", context?.person?.id)].sort(newestFirst) : []), [tasks.data, context?.person?.id]);
+  const createdByMe = useMemo(() => (tasks.data?.length ? [...ArrayHelper.getAll(tasks.data, "createdById", context?.person?.id)].sort(newestFirst) : []), [tasks.data, context?.person?.id]);
 
   if (tasks.isLoading || groupMembers.isLoading) return <Loading />;
 
