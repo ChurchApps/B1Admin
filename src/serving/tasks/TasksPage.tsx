@@ -4,6 +4,7 @@ import { TaskList } from "./components/TaskList";
 import { WorkflowCard } from "./workflows/components/WorkflowCard";
 import { WorkflowCardDrawer } from "./workflows/components/WorkflowCardDrawer";
 import { canViewWorkflows } from "./workflows/permissions";
+import { newestFirst } from "./taskOrder";
 import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, Surface } from "../../components/ui";
 import { type TaskInterface, type WorkflowBoardInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +30,7 @@ export const TasksPage = () => {
   const getCards = () => {
     if (cards.isLoading) return <Loading />;
     if (!cards.data || cards.data.length === 0) return <Typography variant="body2" color="text.secondary">{Locale.label("tasks.myCards.noCards")}</Typography>;
-    return cards.data.map((card) => (
+    return [...cards.data].sort(newestFirst).map((card) => (
       <Box key={card.id} onClick={() => setOpenCard(card)} sx={{ cursor: "pointer", mb: 1 }}>
         <WorkflowCard card={card} />
       </Box>
