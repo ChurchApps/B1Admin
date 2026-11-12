@@ -196,9 +196,16 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                     <img src={photo} style={{ width: "100%", height: "auto", aspectRatio: "16/9", objectFit: "cover", borderRadius: 6 }} alt={Locale.label("settings.appEdit.tabIconAlt")} />
                   </Box>
                 )}
-                <Button variant="outlined" onClick={() => setShowPhotoGallery(true)} sx={{ textTransform: "none" }}>
-                  {photo ? Locale.label("settings.appEdit.changeImage") : Locale.label("settings.appEdit.selectImage")}
-                </Button>
+                <Stack direction="row" spacing={1}>
+                  <Button variant="outlined" onClick={() => setShowPhotoGallery(true)} sx={{ textTransform: "none" }}>
+                    {photo ? Locale.label("settings.appEdit.changeImage") : Locale.label("settings.appEdit.selectImage")}
+                  </Button>
+                  {photo && (
+                    <Button variant="text" color="error" onClick={() => setPhoto("")} sx={{ textTransform: "none" }} data-testid="remove-tab-image">
+                      {Locale.label("settings.appEdit.removeImage")}
+                    </Button>
+                  )}
+                </Stack>
               </Box>
 
               <Controller
