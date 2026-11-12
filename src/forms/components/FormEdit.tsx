@@ -147,11 +147,11 @@ export function FormEdit(props: Props) {
         <TextField fullWidth multiline minRows={3} label={Locale.label("forms.formEdit.description")} placeholder={Locale.label("placeholders.form.description")} helperText={Locale.label("forms.formEdit.descriptionHelper")} data-testid="form-description-input" {...register("description")} />
       )}
       {standAloneForm && (
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "stretch", sm: "center" }}>
           <Box
             onClick={() => setShowGallery(true)}
             data-testid="form-photo"
-            sx={{ width: 280, flexShrink: 0, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)", display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", cursor: "pointer", "&:hover": { borderColor: "primary.main" } }}>
+            sx={{ width: { xs: "100%", sm: 280 }, flexShrink: 0, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)", display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", cursor: "pointer", "&:hover": { borderColor: "primary.main" } }}>
             {photoUrl
               ? <img src={photoUrl} alt={Locale.label("forms.formEdit.photo")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               : <Stack alignItems="center" spacing={1} sx={{ color: "text.secondary" }}>

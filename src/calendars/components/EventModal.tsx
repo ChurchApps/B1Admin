@@ -251,11 +251,11 @@ export function EventModal(props: Props) {
               </TextField>
             )}
             <TextField fullWidth label={Locale.label("calendars.newEvent.eventTitle")} value={title} onChange={(e) => setTitle(e.target.value)} data-testid="new-event-title-input" />
-            <Stack direction="row" spacing={2} alignItems="center">
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "stretch", sm: "center" }}>
               <Box
                 onClick={() => setShowGallery(true)}
                 data-testid="new-event-photo"
-                sx={{ width: 280, flexShrink: 0, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)", display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", cursor: "pointer", "&:hover": { borderColor: "primary.main" } }}>
+                sx={{ width: { xs: "100%", sm: 280 }, flexShrink: 0, aspectRatio: "16 / 9", borderRadius: "var(--b1-radius-panel)", overflow: "hidden", bgcolor: photoUrl ? "transparent" : "var(--b1-canvas)", display: "flex", alignItems: "center", justifyContent: "center", border: 1, borderColor: "divider", cursor: "pointer", "&:hover": { borderColor: "primary.main" } }}>
                 {photoUrl
                   ? <img src={photoUrl} alt={Locale.label("calendars.newEvent.photoAlt")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   : <Stack alignItems="center" spacing={1} sx={{ color: "text.secondary" }}>
