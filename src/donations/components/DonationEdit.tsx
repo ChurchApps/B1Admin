@@ -7,8 +7,9 @@ import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, Permission
 import { FormCard, LoadingButton, TextAction } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { FundDonations } from "@churchapps/apphelper/donations";
-import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
+import { type DonationBatchInterface, type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { AppDatePicker } from "../../components";
+import { batchOptionLabel, batchOptions } from "./batchOptions";
 
 interface Props {
   donationId: string;
@@ -30,6 +31,7 @@ export const DonationEdit = memo((props: Props) => {
   const [refunding, setRefunding] = React.useState(false);
   const [refundError, setRefundError] = React.useState("");
   const [saveError, setSaveError] = React.useState("");
+  const [batches, setBatches] = React.useState<DonationBatchInterface[]>([]);
 
   const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
   const method = watch("method");
@@ -143,6 +145,7 @@ export const DonationEdit = memo((props: Props) => {
         reset({ date: (data.donationDate as string) || "", method: data.method || "Check", methodDetails: data.methodDetails || "", notes: data.notes || "" });
       });
       ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data: any) => setFundDonations(data));
+      ApiHelper.get("/donationbatches", "GivingApi").then((data: DonationBatchInterface[]) => setBatches(data || [])).catch(() => setBatches([]));
     }
   }, [props.donationId, props.batchId, props.batchDate, props.funds, reset]);
 
@@ -152,6 +155,23 @@ export const DonationEdit = memo((props: Props) => {
     const placeholder = method === "Check" ? Locale.label("placeholders.donation.checkNumber") : method === "In-Kind" ? Locale.label("placeholders.donation.item") : Locale.label("placeholders.donation.lastDigits");
     return <TextField fullWidth label={label} InputLabelProps={{ shrink: !!methodDetails }} placeholder={placeholder} {...register("methodDetails")} />;
   }, [method, methodDetails, register]);
+
+  // Moving a gift to another batch is an edit, so it fires no Donation workflow trigger the way re-entering it would.
+  const batchField = useMemo(() => {
+    if (UniqueIdHelper.isMissing(props.donationId)) return null;
+    return (
+      <Grid size={{ xs: 12 }}>
+        <FormControl fullWidth>
+          <InputLabel id="batch">{Locale.label("donations.donationEdit.batch")}</InputLabel>
+          <Select labelId="batch" label={Locale.label("donations.donationEdit.batch")} data-testid="donation-batch-select" value={batches.length > 0 ? donation.batchId || "" : ""} onChange={(e) => setDonation({ ...donation, batchId: e.target.value as string })}>
+            {batchOptions(batches, donation.batchId).map((b) => (
+              <MenuItem key={b.id} value={b.id}>{batchOptionLabel(b, (d) => DateHelper.prettyDate(d))}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+    );
+  }, [props.donationId, batches, donation]);
 
   const handlePersonAdd = useCallback((p: PersonInterface | null) => {
     const d = { ...donation } as DonationInterface;
@@ -227,6 +247,7 @@ export const DonationEdit = memo((props: Props) => {
               )}
             />
           </Grid>
+          {batchField}
         </Grid>
         {methodDetailsField}
         <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} currency={props?.currency} />
