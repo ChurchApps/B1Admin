@@ -932,6 +932,7 @@
       "ariaDate": "Donation date",
       "ariaMethod": "Payment method",
       "ariaNotes": "Donation notes",
+      "batch": "Batch",
       "card": "Card",
       "cash": "Cash",
       "check": "Check",

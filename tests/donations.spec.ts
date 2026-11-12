@@ -1424,3 +1424,51 @@ test.describe("Donation entry validation", () => {
     expect(saved).toHaveLength(0);
   });
 });
+
+// ChurchAppsSupport#1551: a gift entered into the wrong batch can be moved from the gift editor, without deleting and re-entering it.
+test.describe("Donations — move a gift to another batch", () => {
+  test.describe.configure({ retries: 0 });
+  const FROM_BATCH_NAME = "Obadiah Wrong Batch";
+  const TO_BATCH_NAME = "Obadiah Right Batch";
+  const batchIds: string[] = [];
+  let donationId: string;
+
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const batchRes = await ctx.post(`${API_BASE}/giving/donationbatches`, { ...auth, data: [{ name: FROM_BATCH_NAME, batchDate: "2025-11-02" }, { name: TO_BATCH_NAME, batchDate: "2025-11-09" }] });
+    for (const b of await batchRes.json()) batchIds.push(b.id);
+    const donationRes = await ctx.post(`${API_BASE}/giving/donations`, { ...auth, data: [{ batchId: batchIds[0], personId: "PER00000080", donationDate: "2025-11-02", method: "Cash", amount: 10, status: "complete", fundDonations: [{ fundId: "FUN00000001", amount: 10 }] }] });
+    donationId = (await donationRes.json())[0].id;
+    await ctx.dispose();
+  });
+
+  test.afterAll(async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    // Deleting a batch also deletes its gifts.
+    for (const batchId of batchIds) await ctx.delete(`${API_BASE}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("a gift can be moved to another batch from the gift editor", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchIds[0]}`);
+    await expect(page.getByTestId(`donation-row-${donationId}`)).toBeVisible({ timeout: 10000 });
+    await page.locator('[data-cy="edit-link-0"]').click();
+
+    const batchSelect = page.locator('[data-testid="donation-batch-select"] [role="combobox"]');
+    await expect(batchSelect).toContainText(FROM_BATCH_NAME, { timeout: 10000 });
+    await batchSelect.click();
+    await page.locator('li[role="option"]').filter({ hasText: TO_BATCH_NAME }).click();
+    await expect(batchSelect).toContainText(TO_BATCH_NAME);
+    await page.locator("#donationBox").getByRole("button", { name: "Save" }).click();
+
+    await expect(page.getByTestId(`donation-row-${donationId}`)).toHaveCount(0, { timeout: 10000 });
+
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const moved = await (await ctx.get(`${API_BASE}/giving/donations?batchId=${batchIds[1]}`, auth)).json();
+    await ctx.dispose();
+    expect(moved.map((d: any) => d.id)).toContain(donationId);
+  });
+});
