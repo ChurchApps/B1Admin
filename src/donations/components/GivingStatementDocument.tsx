@@ -457,6 +457,34 @@ const styleBlock = `
             font-size: 12px;
             color: #666;
           }
+
+          /* Print: tighter type and spacing so statements don't spill onto extra sheets. */
+          @media print {
+            @page {
+              margin: 0.5in;
+            }
+            .print-container { padding: 0; height: auto; line-height: 1.35; }
+            .header-bar { display: none; }
+            .title-section { margin-bottom: 12px; }
+            .page-title { font-size: 22px; margin-bottom: 4px; }
+            .subtitle, .meta-text { font-size: 11px; margin: 2px 0; }
+            .gradient-divider { margin: 12px 0 16px 0; }
+            .info-section { gap: 24px; margin-bottom: 20px; }
+            .info-card { padding: 10px 12px; }
+            .info-name { font-size: 14px; margin-bottom: 4px; }
+            .info-detail { font-size: 11px; margin: 2px 0; }
+            .section-label { font-size: 11px; margin-bottom: 6px; }
+            .section-container { margin-bottom: 16px; }
+            .section-title { font-size: 15px; margin-bottom: 10px; padding-bottom: 4px; }
+            .total-box { padding: 12px; }
+            .total-amount { font-size: 24px; }
+            .data-table { box-shadow: none; }
+            .table-header th, .table-cell, .table-footer-cell { padding: 4px 8px; font-size: 11px; }
+            .data-table thead { display: table-header-group; }
+            .data-table tr, .info-section, .summary-grid, .footer-note, .legal-block { page-break-inside: avoid; break-inside: avoid; }
+            .footer-note { margin-top: 16px; padding: 8px 12px; font-size: 10px; line-height: 1.4; }
+            .legal-block { margin-bottom: 20px; padding: 12px 16px; }
+          }
         `;
 
 export const GivingStatementDocument = (props: Props) => {
