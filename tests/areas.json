@@ -66,11 +66,7 @@
     },
     "mobile": {
       "src": ["src/mobile/**"],
-      "specs": ["mobile-app.spec.ts", "checkin*.spec.ts", "label-designer.spec.ts", "hymns.spec.ts", "everyone-role.spec.ts"]
-    },
-    "hymns": {
-      "src": ["src/hymns/**"],
-      "specs": ["hymns.spec.ts"]
+      "specs": ["mobile-app.spec.ts", "checkin*.spec.ts", "label-designer.spec.ts", "everyone-role.spec.ts"]
     },
     "settings": {
       "src": ["src/settings/**"],

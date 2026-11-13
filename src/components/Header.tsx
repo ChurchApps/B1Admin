@@ -11,7 +11,6 @@ import { ThemeMenuControls } from "./ThemeMenuControls";
 import UserContext from "../UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CommandPalette } from "./commandPalette/CommandPalette";
-import { HYMNS_ENABLED } from "../hymns/enabled";
 
 export const Header: React.FC = () => {
   const context = React.useContext(UserContext);
@@ -57,7 +56,6 @@ export const Header: React.FC = () => {
     else menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
 
     if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) menuItems.push({ url: "/sermons", label: Locale.label("common.sermons"), icon: "live_tv" });
-    if (HYMNS_ENABLED && UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/hymns", label: "Hymns", icon: "menu_book" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/site/pages", label: Locale.label("common.website"), icon: "language" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit) || UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
@@ -85,7 +83,6 @@ export const Header: React.FC = () => {
     else if (path.startsWith("/donations")) result = Locale.label("components.wrapper.don");
     else if (path.startsWith("/serving") || location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
     else if (path.startsWith("/sermons")) result = Locale.label("common.sermons");
-    else if (HYMNS_ENABLED && path.startsWith("/hymns")) result = "Hymns";
     else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = Locale.label("helpers.secondaryMenuHelper.calendars");
     else if (path.startsWith("/site")) result = Locale.label("common.website");
     else if (path.startsWith("/mobile")) result = Locale.label("common.mobile");
@@ -127,8 +124,7 @@ export const Header: React.FC = () => {
         "/mobile": "nav-item-mobile",
         "/site/pages": "nav-item-website",
         "/calendars": "nav-item-calendars",
-        "/sermons": "nav-item-sermons",
-        "/hymns": "nav-item-hymns"
+        "/sermons": "nav-item-sermons"
       };
 
       const scopes = document.querySelectorAll("header:not(#page-header), .MuiDrawer-root");
