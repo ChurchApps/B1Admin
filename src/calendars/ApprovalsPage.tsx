@@ -24,6 +24,8 @@ export const ApprovalsPage = () => {
   const [publish, setPublish] = useState(false);
   const [curatedCalendarId, setCuratedCalendarId] = useState("");
   const [curatedCalendars, setCuratedCalendars] = useState<CuratedCalendarInterface[] | null>(null);
+  const [rejecting, setRejecting] = useState<{ kind: "event" | "booking"; id: string } | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canEditContent = UserHelper.checkAccess(Permissions.contentApi.content.edit);
@@ -52,18 +54,24 @@ export const ApprovalsPage = () => {
     loadData();
   }, [loadData]);
 
-  const confirmReject = async (action: "approve" | "reject") =>
-    action !== "reject" || (await confirm(Locale.label("calendars.approvals.confirmReject"), {
-      title: Locale.label("calendars.approvals.rejectTitle"),
-      confirmLabel: Locale.label("calendars.approvals.reject"),
-      destructive: true
-    }));
+  // #1546: Reject takes an optional reason, appended to the requester's notification.
+  const openReject = (kind: "event" | "booking", id: string) => {
+    setRejectReason("");
+    setRejecting({ kind, id });
+  };
+
+  const confirmReject = () => {
+    if (!rejecting) return;
+    const url = (rejecting.kind === "event" ? "/events/" : "/eventBookings/") + rejecting.id + "/reject";
+    setRejecting(null);
+    ApiHelper.post(url, { reason: rejectReason.trim() || undefined }, "ContentApi").then(() => { notifyResolved("reject"); loadData(); });
+  };
 
   const notifyResolved = (action: "approve" | "reject") =>
     setSnack(Locale.label(action === "approve" ? "calendars.approvals.approvedToast" : "calendars.approvals.rejectedToast"));
 
-  const resolveBooking = async (id: string, action: "approve" | "reject") => {
-    if (!(await confirmReject(action))) return;
+  const resolveBooking = (id: string, action: "approve" | "reject") => {
+    if (action === "reject") return openReject("booking", id);
     ApiHelper.post("/eventBookings/" + id + "/" + action, {}, "ContentApi").then(() => { notifyResolved(action); loadData(); });
   };
 
@@ -81,8 +89,8 @@ export const ApprovalsPage = () => {
     ApiHelper.post("/eventBookings/" + id + "/approve", body, "ContentApi").then(() => { notifyResolved("approve"); loadData(); });
   };
 
-  const resolveEvent = async (id: string, action: "approve" | "reject") => {
-    if (!(await confirmReject(action))) return;
+  const resolveEvent = (id: string, action: "approve" | "reject") => {
+    if (action === "reject") return openReject("event", id);
     ApiHelper.post("/events/" + id + "/" + action, {}, "ContentApi").then(() => { notifyResolved(action); loadData(); });
   };
 
@@ -348,6 +356,28 @@ export const ApprovalsPage = () => {
         <DialogActions>
           <Button variant="outlined" onClick={() => setApprovingId("")} data-testid="approve-booking-cancel">{Locale.label("common.cancel")}</Button>
           <Button variant="contained" onClick={approveBooking} data-testid="approve-booking-confirm">{Locale.label("calendars.approvals.approve")}</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={!!rejecting} onClose={() => setRejecting(null)} fullWidth maxWidth="sm" data-testid="reject-request-dialog">
+        <DialogTitle>{Locale.label("calendars.approvals.rejectTitle")}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ mb: 2 }}>{Locale.label("calendars.approvals.confirmReject")}</Typography>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            minRows={3}
+            maxRows={5}
+            label={Locale.label("calendars.approvals.rejectReason")}
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+            slotProps={{ htmlInput: { maxLength: 500 } }}
+            data-testid="reject-request-reason"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setRejecting(null)} data-testid="reject-request-cancel">{Locale.label("common.cancel")}</Button>
+          <Button variant="contained" color="error" onClick={confirmReject} data-testid="reject-request-confirm">{Locale.label("calendars.approvals.reject")}</Button>
         </DialogActions>
       </Dialog>
       <Snackbar

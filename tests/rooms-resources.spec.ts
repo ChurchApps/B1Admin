@@ -603,6 +603,97 @@ test.describe.serial("Room approval reset and event request actions", () => {
   });
 });
 
+// #1546: an optional reason on Reject is appended to the notification the requester gets.
+test.describe.serial("Reject a request with a reason", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const groupName = `Zacchaeus Reason Approvers ${stamp}`;
+  const roomName = `Zacchaeus Reason Room ${stamp}`;
+  const eventTitle = `Zacchaeus Reason Request ${stamp}`;
+  const bookingTitle = `Zacchaeus Reason Booking ${stamp}`;
+  const eventReason = `The sanctuary is closed for repairs ${stamp}.`;
+  const bookingReason = `The room is already promised that night ${stamp}.`;
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let groupId: string;
+  let roomId: string;
+  let eventId: string;
+  let bookingEventId: string;
+  let bookingId: string;
+  let page: Page;
+
+  const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
+  const myNotifications = async (): Promise<string[]> => ((await (await ctx.get(`${API}/messaging/notifications/my`, auth())).json()) || []).map((n: any) => n.message);
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    ctx = await playwright.request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    const start = new Date();
+    start.setDate(start.getDate() + 12);
+    start.setHours(18, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(19);
+    eventId = (await (await ctx.post(`${API}/content/events/request`, { ...auth(), data: { title: eventTitle, start: start.toISOString(), end: end.toISOString(), allDay: false } })).json()).event.id;
+    groupId = (await (await ctx.post(`${API}/membership/groups`, { ...auth(), data: [{ name: groupName, categoryName: "Approvals Test", tags: "standard" }] })).json())[0].id;
+    roomId = (await (await ctx.post(`${API}/content/rooms`, { ...auth(), data: [{ name: roomName, approvalGroupId: groupId }] })).json())[0].id;
+    bookingEventId = (await (await ctx.post(`${API}/content/events`, { ...auth(), data: [{ groupId, title: bookingTitle, start: start.toISOString(), end: end.toISOString(), allDay: false, visibility: "public" }] })).json())[0].id;
+    const booking = (await (await ctx.post(`${API}/content/eventBookings`, { ...auth(), data: [{ eventId: bookingEventId, roomId }] })).json())[0];
+    expect(booking.status, "seeded booking is pending").toBe("pending");
+    bookingId = booking.id;
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    try {
+      await ctx.delete(`${API}/content/events/${eventId}`, auth());
+      await ctx.delete(`${API}/content/events/${bookingEventId}`, auth());
+      await ctx.delete(`${API}/content/rooms/${roomId}`, auth());
+      await ctx.delete(`${API}/membership/groups/${groupId}`, auth());
+    } catch { /* best effort */ }
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("Reject asks for an optional reason, and Cancel leaves the request pending", async () => {
+    await navigateToApprovals(page);
+    const row = page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.locator(`[data-testid="reject-event-${eventId}"]`).click();
+    const dialog = page.locator('[data-testid="reject-request-dialog"]');
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText("Reject Request");
+    await expect(dialog.getByLabel("Reason (optional)")).toBeVisible();
+    await page.locator('[data-testid="reject-request-cancel"]').click();
+    await expect(dialog).toHaveCount(0);
+    await expect(row).toBeVisible();
+  });
+
+  test("rejecting an event request with a reason sends it to the requester", async () => {
+    const row = page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle });
+    await row.locator(`[data-testid="reject-event-${eventId}"]`).click();
+    await page.locator('[data-testid="reject-request-reason"] textarea').first().fill(eventReason);
+    await page.locator('[data-testid="reject-request-confirm"]').click();
+    await expect(page.locator('[data-testid="approvals-snackbar"]')).toBeVisible();
+    await expect(page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle })).toHaveCount(0, { timeout: 15000 });
+    await expect.poll(myNotifications, { timeout: 15000 }).toContain(`Your event request "${eventTitle}" was rejected: ${eventReason}`);
+  });
+
+  test("rejecting a room booking with a reason sends it to the requester", async () => {
+    const row = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: bookingTitle });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await row.locator(`[data-testid="reject-booking-${bookingId}"]`).click();
+    await page.locator('[data-testid="reject-request-reason"] textarea').first().fill(bookingReason);
+    await page.locator('[data-testid="reject-request-confirm"]').click();
+    await expect(page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: bookingTitle })).toHaveCount(0, { timeout: 15000 });
+    await page.locator('[data-testid="approvals-history-pill"]').click();
+    await expect(page.locator('[data-testid="history-bookings-table"] tbody tr').filter({ hasText: bookingTitle })).toContainText("Rejected", { timeout: 15000 });
+    await expect.poll(myNotifications, { timeout: 15000 }).toContain(`Your request for ${roomName} for "${bookingTitle}" was rejected: ${bookingReason}`);
+  });
+});
+
 // Booking blocks used white text on a pale green in dark mode, which was hard to read.
 test.describe("Availability booking colors", () => {
   const luminance = (rgb: string) => {
