@@ -2,6 +2,7 @@ import { Badge, Box, Table, TableBody, TableCell, TableHead, TableRow, Avatar } 
 import { StatusBadge } from "../../components/ui";
 import {
   type AssignmentInterface,
+  type BlockoutDateInterface,
   type GroupInterface,
   type PersonInterface,
   type PositionInterface
@@ -11,6 +12,8 @@ import {
   Locale,
   PersonHelper
 } from "@churchapps/apphelper";
+import { findBlockout } from "../helpers/blockoutHelper";
+import { UnavailableBadge } from "./UnavailableBadge";
 
 interface Props {
   positions: PositionInterface[];
@@ -18,6 +21,8 @@ interface Props {
   people: PersonInterface[];
   groups: GroupInterface[];
   canEdit: boolean;
+  blockoutDates?: BlockoutDateInterface[];
+  serviceDate?: Date | string;
   onSelect?: (position: PositionInterface) => void;
   onAssignmentSelect?: (position: PositionInterface, assignment: AssignmentInterface) => void;
 }
@@ -47,6 +52,8 @@ export const PositionList = (props: Props) => {
         );
       }
       const personName = person?.name?.display || Locale.label("person.unknown");
+      const blockout = findBlockout(props.blockoutDates, assignment.personId, props.serviceDate);
+      const badge = blockout && <UnavailableBadge blockout={blockout} />;
       if (canEdit) {
         return (
           <button
@@ -55,6 +62,7 @@ export const PositionList = (props: Props) => {
             style={{ background: "none", border: 0, padding: 0, color: "var(--b1-primary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
             {wrappedImage}
             {personName}
+            {badge}
           </button>
         );
       } else {
@@ -62,6 +70,7 @@ export const PositionList = (props: Props) => {
           <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {wrappedImage}
             {personName}
+            {badge}
           </span>
         );
       }

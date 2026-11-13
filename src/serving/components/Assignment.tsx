@@ -255,7 +255,17 @@ export const Assignment = (props: Props) => {
         <Stack spacing={3} sx={{ minWidth: 0 }}>
           {!loaded && <Typography variant="body2" color="text.secondary" data-testid="assignment-loading">{Locale.label("common.loading")}</Typography>}
           {loaded && <Box sx={{ overflowX: "auto" }}>
-            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => { setAssignment(null); setPosition(p); }} onAssignmentSelect={handleAssignmentSelect} />
+            <PositionList
+              positions={positions}
+              assignments={assignments}
+              people={people}
+              groups={groups}
+              canEdit={canEdit}
+              blockoutDates={blockoutDates}
+              serviceDate={props.plan?.serviceDate}
+              onSelect={(p) => { setAssignment(null); setPosition(p); }}
+              onAssignmentSelect={handleAssignmentSelect}
+            />
           </Box>}
         </Stack>
         {loaded && <Box sx={flatCardSx}>
@@ -290,6 +300,8 @@ export const Assignment = (props: Props) => {
             peopleNeeded={peopleNeededForPosition}
             updatedFunction={handleAssignmentUpdate}
             assignedPersonIds={assignments.filter(a => a.positionId === position.id).map(a => a.personId).filter((id): id is string => !!id)}
+            blockoutDates={blockoutDates}
+            serviceDate={props.plan?.serviceDate}
           />
         )}
       </Dialog>

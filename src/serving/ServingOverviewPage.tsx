@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, Permissions, UserHelper, type PersonInterface } from "@churchapps/apphelper";
-import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
+import { type AssignmentInterface, type BlockoutDateInterface, type PositionInterface } from "@churchapps/helpers";
 import { Alert, Box, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { ArrowBack as BackIcon, AutoFixHigh as AutoIcon, Close as CloseIcon, Clear as ClearIcon, MailOutline as EmailIcon, Sms as SmsIcon } from "@mui/icons-material";
 import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, Surface } from "../components/ui";
@@ -11,6 +11,8 @@ import { SendTextDialog } from "../groups/components/SendTextDialog";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
 import { AppDatePicker } from "../components";
+import { findBlockout, loadUpcomingBlockouts } from "./helpers/blockoutHelper";
+import { UnavailableBadge } from "./components/UnavailableBadge";
 
 interface OverviewRow {
   serviceDate: string;
@@ -107,6 +109,17 @@ export const ServingOverviewPage = () => {
       return ApiHelper.get(url, "DoingApi");
     }
   });
+
+  const blockouts = useQuery<BlockoutDateInterface[]>({
+    queryKey: ["/blockoutDates/upcoming", "DoingApi"],
+    placeholderData: [],
+    queryFn: loadUpcomingBlockouts
+  });
+
+  const blockoutBadge = (personId: string, date: string | undefined, compact?: boolean) => {
+    const blockout = findBlockout(blockouts.data, personId, date);
+    return blockout ? <UnavailableBadge blockout={blockout} compact={compact} /> : null;
+  };
 
   const personIds = React.useMemo(() => {
     const ids = new Set<string>();
@@ -334,7 +347,13 @@ export const ServingOverviewPage = () => {
                         const isGap = isActive && cell && filled < cell.needed;
                         const ids = cell ? cellPersonIds(cell) : [];
                         const isHighlight = !!highlightPersonId && ids.includes(highlightPersonId);
-                        const content = isActive ? ([...ids].sort(byName).map(id => getDisplayName(id)).join(", ") || "—") : "";
+                        const sortedIds = [...ids].sort(byName);
+                        const content = !isActive ? "" : sortedIds.length === 0 ? "—" : sortedIds.map((id, i) => (
+                          <React.Fragment key={id}>
+                            {i > 0 && ", "}
+                            <span>{getDisplayName(id)}{blockoutBadge(id, d, true)}</span>
+                          </React.Fragment>
+                        ));
                         return (
                           <TableCell
                             key={d}
@@ -371,7 +390,7 @@ export const ServingOverviewPage = () => {
             <Box key={slot.positionId} sx={{ mb: 2 }}>
               {[...slot.assignments].sort((a, b) => byName(a.personId, b.personId)).map(a => (
                 <Stack key={a.assignmentId} direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
-                  <span>{getDisplayName(a.personId)}</span>
+                  <Stack direction="row" alignItems="center" spacing={1}><span>{getDisplayName(a.personId)}</span>{blockoutBadge(a.personId, editingKey?.date)}</Stack>
                   <Tooltip title={Locale.label("plans.servingOverviewPage.remove")}>
                     <IconButton size="small" onClick={() => removeAssignment(a.assignmentId, getDisplayName(a.personId))} data-testid={"matrix-remove-" + a.personId}><ClearIcon fontSize="small" /></IconButton>
                   </Tooltip>
@@ -383,6 +402,8 @@ export const ServingOverviewPage = () => {
                 assignment={{ positionId: slot.positionId } as AssignmentInterface}
                 peopleNeeded={slot.needed - slot.assignments.length}
                 assignedPersonIds={slot.assignments.map((a) => a.personId)}
+                blockoutDates={blockouts.data}
+                serviceDate={editingKey?.date}
                 updatedFunction={(done: boolean) => { overviewData.refetch(); if (done) setEditingKey(null); }}
               />
             </Box>
