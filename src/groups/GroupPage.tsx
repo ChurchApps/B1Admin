@@ -6,7 +6,8 @@ import { GroupSessionsTab } from "./components/GroupSessionsTab";
 import { GroupCalendarTab } from "./components/GroupCalendarTab";
 import { GroupHealthTab } from "./components/GroupHealthTab";
 import { GroupPlate } from "./components/GroupPlate";
-import { Box, Button } from "@mui/material";
+import { TeamBlockoutsCard } from "./components/TeamBlockoutsCard";
+import { Box, Button, Stack } from "@mui/material";
 import { CalendarMonth as AttendanceIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { BackVerb, EmptyState, PageContainer, RecordLayout, useRecordView } from "../components/ui";
@@ -26,6 +27,7 @@ export const GroupPage = () => {
   const groupData = group.data as GroupInterface;
 
   const isStandard = (groupData?.tags?.indexOf("standard") ?? -1) > -1;
+  const isTeam = (groupData?.tags?.indexOf("team") ?? -1) > -1;
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
   const members = useQuery<GroupMemberInterface[]>({ queryKey: [`/groupmembers?groupId=${params.id}`, "MembershipApi"], enabled: !!params.id });
   const canViewNotes = !!members.data?.some((m) => m.leader && m.personId === UserHelper.person?.id);
@@ -83,6 +85,7 @@ export const GroupPage = () => {
       default:
         if (!groupData?.id) return null;
         // Teams and ministries only have members, so a one-block plate would just be a detour.
+        if (isTeam) return <Stack spacing={3}><GroupMembersTab key="members" group={groupData} /><TeamBlockoutsCard group={groupData} /></Stack>;
         if (!isStandard) return <GroupMembersTab key="members" group={groupData} />;
         return <GroupPlate group={groupData} onView={setView} onEnableAttendance={enableAttendance} />;
     }

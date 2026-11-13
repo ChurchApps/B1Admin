@@ -3203,6 +3203,20 @@
       "dismiss": "Dismiss",
       "nothingToSave": "Nothing from the lesson is in this order of service yet.",
       "error": "The lesson trim could not be saved."
+    },
+    "blockouts": {
+      "add": "Add block-out",
+      "blockedOut": "Blocked out",
+      "confirmRemove": "Remove this block-out date?",
+      "dateOrder": "The end date can't be before the start date.",
+      "from": "From",
+      "member": "Team member",
+      "memberRequired": "Choose a team member.",
+      "none": "No upcoming block-out dates.",
+      "remove": "Remove",
+      "title": "Block-out dates",
+      "to": "To",
+      "unavailable": "Unavailable"
     }
   },
   "profile": {

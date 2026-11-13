@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
-import { Table, TableCell, TableRow, Avatar, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, Table, TableCell, TableRow, Avatar, IconButton, Tooltip, Typography } from "@mui/material";
 import { Tune as TuneIcon } from "@mui/icons-material";
-import { type AssignmentInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
+import { type AssignmentInterface, type BlockoutDateInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { PersonAdd } from "../../components";
 import { useConfirmDelete } from "../../hooks";
 import { SchedulingPreferenceEdit } from "./SchedulingPreferenceEdit";
+import { UnavailableBadge } from "./UnavailableBadge";
+import { findBlockout } from "../helpers/blockoutHelper";
 
 interface Props {
   assignment: AssignmentInterface;
@@ -14,6 +16,8 @@ interface Props {
   peopleNeeded: number;
   updatedFunction: (done: boolean) => void;
   assignedPersonIds?: string[];
+  blockoutDates?: BlockoutDateInterface[];
+  serviceDate?: Date | string;
 }
 
 export const AssignmentEdit = (props: Props) => {
@@ -53,7 +57,11 @@ export const AssignmentEdit = (props: Props) => {
     const rows: JSX.Element[] = [];
     // Someone already in this position can't fill a second spot in it.
     const assigned = props.assignedPersonIds || [];
-    const available = groupMembers.filter((gm) => !assigned.includes(gm.personId));
+    // Blocked-out members stay selectable but sort last, flagged.
+    const blockoutFor = (gm: GroupMemberInterface) => findBlockout(props.blockoutDates, gm.personId, props.serviceDate);
+    const available = groupMembers.filter((gm) => !assigned.includes(gm.personId))
+      .map((gm) => ({ gm, blockout: blockoutFor(gm) }))
+      .sort((a, b) => (a.blockout ? 1 : 0) - (b.blockout ? 1 : 0));
     if (available.length === 0) {
       rows.push(
         <TableRow key="0">
@@ -64,7 +72,7 @@ export const AssignmentEdit = (props: Props) => {
     }
 
     for (let i = 0; i < available.length; i++) {
-      const gm = available[i];
+      const { gm, blockout } = available[i];
       const personName = gm.person?.name?.display || Locale.label("person.unknown");
       rows.push(
         <TableRow key={i}>
@@ -78,6 +86,7 @@ export const AssignmentEdit = (props: Props) => {
               style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
               {personName}
             </button>
+            {blockout && <Box component="span" sx={{ ml: 1 }}><UnavailableBadge blockout={blockout} /></Box>}
           </TableCell>
           <TableCell align="right" className="rowActions">
             <Tooltip title={Locale.label("plans.schedulingPreference.title") || "Scheduling Preferences"}>
