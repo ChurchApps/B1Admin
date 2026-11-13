@@ -240,6 +240,7 @@
       "publishHelp": "Makes this event public on its group calendar.",
       "publishToCalendar": "Publish to public calendar",
       "reject": "Reject",
+      "rejectReason": "Reason (optional)",
       "rejectTitle": "Reject Request",
       "rejected": "Rejected",
       "rejectedToast": "Booking rejected.",
