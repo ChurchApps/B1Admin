@@ -154,6 +154,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
         onKeyDown={handleKeyDown}
         data-testid="person-search-input"
         inputRef={inputRef}
+        inputProps={{ autoCorrect: "off", spellCheck: false, autoCapitalize: "off", autoComplete: "off" }}
         sx={{ "& .MuiOutlinedInput-root": { bgcolor: "background.default", borderRadius: "12px", "&.Mui-focused": { bgcolor: "background.paper" } } }}
         InputProps={{
           startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: "text.secondary" }} /></InputAdornment>,

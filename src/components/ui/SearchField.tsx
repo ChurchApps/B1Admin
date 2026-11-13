@@ -49,7 +49,7 @@ export const SearchField: React.FC<Props> = ({ value, onChange, onSearch, label,
         ...(Array.isArray(sx) ? sx : [sx])
       ]}
       slotProps={{
-        htmlInput: { id, name: id, "aria-label": name, autoComplete: "off", "data-testid": rest["data-testid"] },
+        htmlInput: { id, name: id, "aria-label": name, autoComplete: "off", autoCorrect: "off", spellCheck: false, autoCapitalize: "off", "data-testid": rest["data-testid"] },
         input: {
           startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: "text.secondary" }} /></InputAdornment>,
           endAdornment: value ? (
