@@ -159,7 +159,7 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await expect(table.getByText("Sign-up fields")).toBeVisible({ timeout: 15000 });
     await expect(table.getByText(/added to People as a Visitor/)).toBeVisible();
     for (const label of [
-      "Email", "Phone", "Home address", "Birth date", "Gender", "Marital status", "Grade", "Comments"
+      "Email", "Phone", "Home address", "Birth date", "Gender", "Marital status", "Grade", "Comments", "Photo"
     ]) {
       await expect(page.getByLabel("Include " + label, { exact: true })).toBeVisible();
     }
@@ -185,13 +185,28 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await saved;
 
     const options = await (await ctx.get(`${API}/membership/people/guest-register/options?churchId=${CHURCH_ID}`)).json();
-    expect(options).toEqual({ title: "off", email: "optional", phone: "required", householdRole: "optional", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional", comments: "off" });
+    expect(options).toEqual({ title: "off", email: "optional", phone: "required", householdRole: "optional", address: "required", birthDate: "off", gender: "off", maritalStatus: "off", grade: "optional", comments: "off", photo: "off" });
 
     await page.reload();
     await expect(page.getByLabel("Required Home address", { exact: true })).toBeChecked({ timeout: 15000 });
     await expect(page.getByLabel("Include Grade", { exact: true })).toBeChecked();
     await expect(page.getByLabel("Include Gender", { exact: true })).not.toBeChecked();
   });
+  // ChurchAppsSupport#1554: a church can ask each guest for a photo; it stays off until turned on.
+  loggedInTest("lets the church ask each guest for a photo", async ({ page }) => {
+    await page.goto("/mobile/checkin");
+    const include = page.getByLabel("Include Photo", { exact: true });
+    await expect(include).not.toBeChecked({ timeout: 15000 });
+    await include.check();
+    const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByTestId("qr-guest-registration-save").click();
+    await saved;
+    const options = await (await ctx.get(`${API}/membership/people/guest-register/options?churchId=${CHURCH_ID}`)).json();
+    expect(options.photo).toBe("optional");
+    await page.getByTestId("guest-field-photo").scrollIntoViewIfNeeded();
+    await page.screenshot({ path: test.info().outputPath("after-checkin.png"), fullPage: true });
+  });
+
   // ChurchAppsSupport#1374: the church picks a group for this occasion, and a guest's comment lands on their Notes tab.
   loggedInTest("adds new guests to the chosen group and saves their comment as a note", async ({ page }) => {
     const lastName = "Zebedeepicnic";

@@ -1920,6 +1920,7 @@
         "maritalStatus": "Marital status",
         "personTitle": "Title",
         "phone": "Phone",
+        "photo": "Photo",
         "required": "Required",
         "title": "Sign-up fields"
       },

@@ -19,7 +19,7 @@ interface Props {
   task: TaskInterface;
 }
 
-interface FamilyMemberRequest { first?: string; last?: string; prefix?: string; mobilePhone?: string; householdRole?: string }
+interface FamilyMemberRequest { first?: string; last?: string; prefix?: string; mobilePhone?: string; email?: string; photo?: string; householdRole?: string }
 
 // Older requests carry just the first name; newer ones a JSON object with the other fields.
 const parseFamilyMember = (value: string): FamilyMemberRequest => {
@@ -32,7 +32,7 @@ const parseFamilyMember = (value: string): FamilyMemberRequest => {
 
 const describeFamilyMember = (m: FamilyMemberRequest) => {
   const name = [m.prefix, m.first, m.last].filter(Boolean).join(" ");
-  return [name, m.householdRole, m.mobilePhone].filter(Boolean).join(" · ");
+  return [name, m.householdRole, m.mobilePhone, m.email].filter(Boolean).join(" · ");
 };
 
 export const RequestedChanges = (props: Props) => {
@@ -71,7 +71,15 @@ export const RequestedChanges = (props: Props) => {
             alt={Locale.label("tasks.requestedChanges.newProfile")}
           />
         );
-      } else if (ch.field === "familyMember") val = describeFamilyMember(parseFamilyMember(ch.value));
+      } else if (ch.field === "familyMember") {
+        const m = parseFamilyMember(ch.value);
+        val = (
+          <Stack direction="row" alignItems="center" spacing={1} component="span">
+            {m.photo && <Avatar src={m.photo} sx={{ width: 48, height: 48 }} alt={Locale.label("tasks.requestedChanges.newProfile")} data-testid="family-member-photo" />}
+            <span>{describeFamilyMember(m)}</span>
+          </Stack>
+        );
+      }
       rows.push(
         <TableRow key={i}>
           <TableCell>
@@ -137,10 +145,12 @@ export const RequestedChanges = (props: Props) => {
           const last = m.last || p.name.last;
           const newPerson: PersonInterface = {
             name: { first: m.first, last, prefix: m.prefix || undefined, display: [m.first, last].join(" ") },
-            contactInfo: m.mobilePhone ? { mobilePhone: m.mobilePhone } : {},
+            contactInfo: { ...(m.mobilePhone ? { mobilePhone: m.mobilePhone } : {}), ...(m.email ? { email: m.email } : {}) },
             householdId: p.householdId,
             householdRole: m.householdRole || "Other"
           };
+          // The pending photo's URL; the Api moves the file onto the new person when it is saved.
+          if (m.photo) newPerson.photo = m.photo;
           peopleArray.push(newPerson);
           break;
         }
