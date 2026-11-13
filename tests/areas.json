@@ -1,7 +1,24 @@
 {
-  "$comment": "Maps source paths to the specs that cover them. Used by tests/setup/affected.mjs (yarn test:affected). A changed file in no area runs every spec. New spec files must be added to an area; yarn test:areas checks that.",
+  "$comment": "Maps source paths to the specs that cover them. Used by tests/setup/affected.mjs (yarn test:affected). A changed file in no area runs every spec. New spec files must be added to an area; yarn test:areas checks that. The source locale file selects areas by changed top-level namespace (locales.namespaces holds the aliases; a namespace named like an area maps to it); other translations are ignored.",
   "always": ["navigation.spec.ts"],
-  "ignore": ["**/*.md", ".github/**", ".claude/**", "docs/**", ".pr-screenshots/**", "tests/areas.json", "tests/smoke/**", "tests/setup/smoke.mjs", "tests/setup/affected.mjs", "playwright.smoke.config.ts"],
+  "ignore": ["**/*.md", ".github/**", ".claude/**", "docs/**", ".pr-screenshots/**", "tests/areas.json", "tests/smoke/**", "tests/setup/smoke.mjs", "playwright.smoke.config.ts", "public/locales/*.json"],
+  "locales": {
+    "source": "public/locales/en.json",
+    "namespaces": {
+      "createPerson": "people",
+      "person": "people",
+      "device": "oauth",
+      "donation": "donations",
+      "gallery": "website",
+      "plans": "serving",
+      "site": "website",
+      "songs": "serving",
+      "stockPhotos": "website",
+      "tasks": "serving",
+      "reporting": "settings",
+      "reports": "settings"
+    }
+  },
   "areas": {
     "dashboard": {
       "src": ["src/dashboard/**"],
@@ -74,6 +91,10 @@
     "oauth": {
       "src": ["src/OAuth.tsx", "src/components/AuthShell.tsx", "src/device/**"],
       "specs": ["oauth-consent.spec.ts"]
+    },
+    "affectedSelector": {
+      "src": ["tests/setup/affected.mjs"],
+      "specs": ["affected-selector.spec.ts"]
     }
   }
 }
