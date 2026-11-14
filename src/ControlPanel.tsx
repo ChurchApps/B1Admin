@@ -79,6 +79,7 @@ const ApiErrorBanner = () => {
           try {
             const parsed = JSON.parse(msg);
             if (typeof parsed?.error === "string" && parsed.error) msg = parsed.error;
+            else if (typeof parsed?.error?.message === "string" && parsed.error.message) msg = parsed.error.message;
             else if (Array.isArray(parsed?.errors) && parsed.errors[0]) msg = String(parsed.errors[0]);
           } catch { /* already a plain string */ }
           setErrors([msg]);

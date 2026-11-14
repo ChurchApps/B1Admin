@@ -76,7 +76,7 @@ export const WorkflowsPage = () => {
           <TableHead>
             <TableRow>
               <TableCell>{Locale.label("common.name")}</TableCell>
-              <TableCell>{Locale.label("tasks.workflowsPage.category", "Category")}</TableCell>
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>{Locale.label("tasks.workflowsPage.category", "Category")}</TableCell>
               <TableCell>{Locale.label("tasks.workflowsPage.status", "Status")}</TableCell>
               {canManage && <TableCell />}
             </TableRow>
@@ -84,12 +84,12 @@ export const WorkflowsPage = () => {
           <TableBody>
             {list.map((workflow) => (
               <TableRow key={workflow.id} hover data-testid={"workflow-row-" + workflow.id} onClick={() => navigate("/serving/tasks/workflows/" + workflow.id)} sx={{ cursor: "pointer" }}>
-                <TableCell sx={{ py: 1.5 }}>
-                  <MuiLink component={RouterLink} to={"/serving/tasks/workflows/" + workflow.id} underline="hover" onClick={(e) => e.stopPropagation()} sx={{ fontWeight: 600, color: "text.primary", overflowWrap: "anywhere" }}>
+                <TableCell sx={{ py: 1.5, minWidth: 200 }}>
+                  <MuiLink component={RouterLink} to={"/serving/tasks/workflows/" + workflow.id} underline="hover" onClick={(e) => e.stopPropagation()} sx={{ fontWeight: 600, color: "text.primary" }}>
                     {workflow.name}
                   </MuiLink>
                 </TableCell>
-                <TableCell sx={{ color: "text.secondary" }}>{catName(workflow.categoryId)}</TableCell>
+                <TableCell sx={{ color: "text.secondary", display: { xs: "none", sm: "table-cell" } }}>{catName(workflow.categoryId)}</TableCell>
                 <TableCell>
                   <StatusBadge tone={workflow.active ? "success" : "neutral"} variant="dot">{workflow.active ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</StatusBadge>
                 </TableCell>

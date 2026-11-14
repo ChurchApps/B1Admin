@@ -21,6 +21,8 @@ interface Props {
   workflows?: WorkflowInterface[];
   canEdit: boolean;
   canManage: boolean;
+  // Assignment-confirmation workflows only get cards from a published plan.
+  assignmentConfirmation?: boolean;
   selectedIds: Set<string>;
   onToggleSelect: (cardId: string) => void;
   onSelectAll: (cardIds: string[], selected: boolean) => void;
@@ -155,7 +157,7 @@ export const WorkflowStepColumn = (props: Props) => {
         </Box>
       </DroppableWrapper>
 
-      {props.canEdit && (
+      {props.canEdit && !props.assignmentConfirmation && (
         <Button
           fullWidth
           size="small"
@@ -168,7 +170,7 @@ export const WorkflowStepColumn = (props: Props) => {
         </Button>
       )}
 
-      {showPicker && <ContentPicker onClose={() => setShowPicker(false)} onSelect={handleAddCard} />}
+      {showPicker && !props.assignmentConfirmation && <ContentPicker onClose={() => setShowPicker(false)} onSelect={handleAddCard} />}
     </Box>
   );
 };

@@ -146,6 +146,7 @@ export const WorkflowBoardPage = () => {
               workflows={workflows.data || []}
               canEdit={canEdit}
               canManage={canManage}
+              assignmentConfirmation={wf?.workflowType === "assignmentConfirmation"}
               selectedIds={selectedIds}
               onToggleSelect={toggleSelect}
               onSelectAll={toggleSelectMany}

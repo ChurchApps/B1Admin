@@ -240,7 +240,7 @@ export const WorkflowStepActions = (props: Props) => {
             <Stack spacing={1}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Select size="small" value={a.actionType || "delay"} data-testid={"action-type-" + index} onChange={(e) => setType(index, e.target.value)} sx={{ minWidth: 150 }}>
-                  {ACTION_TYPES.filter((t) => props.assignmentConfirmation ? !["sendEmail", "sendText", "addToWorkflow"].includes(t) : t !== "sendAssignmentRequest").map((t) => <MenuItem key={t} value={t}>{t === "sendAssignmentRequest" ? Locale.label("plans.confirmation.sendRequest", "Send serving request") : Locale.label("tasks.workflowActions.type." + t)}</MenuItem>)}
+                  {ACTION_TYPES.filter((t) => props.assignmentConfirmation ? !["sendEmail", "sendText", "addToWorkflow"].includes(t) : t !== "sendAssignmentRequest").map((t) => <MenuItem key={t} value={t}>{Locale.label("tasks.workflowActions.type." + t)}</MenuItem>)}
                 </Select>
                 <Box sx={{ flexGrow: 1 }} />
                 <IconButton size="small" data-testid={"action-delete-" + index} onClick={() => deleteAction(index)}><DeleteIcon fontSize="small" /></IconButton>
