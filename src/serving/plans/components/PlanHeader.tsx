@@ -4,6 +4,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, EditOutlined as EditIcon, PrintOutlined as PrintIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { type PlanInterface, type PlanTypeInterface } from "../../../helpers";
+import { withBase } from "../../../helpers/basePath";
 import { TextAction, VerbRow, eyebrowSx } from "../../../components/ui";
 
 interface Props {
@@ -48,7 +49,7 @@ export const PlanHeader = (props: Props) => {
         </Box>
         <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ "& .MuiButton-root": { flex: { xs: 1, sm: "none" } } }}>
           {props.actions}
-          <Button variant="outlined" startIcon={<PrintIcon />} href={`/serving/plans/print/${plan.id}`} target="_blank" rel="noopener" data-testid="print-plan-link">{Locale.label("common.print")}</Button>
+          <Button variant="outlined" startIcon={<PrintIcon />} href={withBase(`/serving/plans/print/${plan.id}`)} target="_blank" rel="noopener" data-testid="print-plan-link">{Locale.label("common.print")}</Button>
           {canEdit && props.onEdit && (
             <Button variant={props.editing ? "contained" : "outlined"} startIcon={props.editing ? undefined : <EditIcon />} onClick={props.onEdit} data-testid="edit-plan-button">
               {props.editing ? Locale.label("common.done") : Locale.label("plans.planPage.editDetails", "Edit details")}

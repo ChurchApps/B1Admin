@@ -88,6 +88,10 @@
       "src": ["src/OAuth.tsx", "src/components/AuthShell.tsx", "src/device/**"],
       "specs": ["oauth-consent.spec.ts"]
     },
+    "basePath": {
+      "src": ["src/helpers/basePath.ts", "src/helpers/basePath.test.ts", "src/serving/plans/components/PlanHeader.tsx", "src/groups/components/GroupMembers.tsx", "src/groups/components/SessionAttendance.tsx", "src/groups/components/SendEmailDialog.tsx", "src/groups/components/SendTextDialog.tsx", "src/people/PeoplePage.tsx", "src/donations/BatchGivingStatementsPage.tsx", "src/components/reporting/ReportOutput.tsx"],
+      "specs": ["base-path-links.spec.ts"]
+    },
     "affectedSelector": {
       "src": ["tests/setup/affected.mjs"],
       "specs": ["affected-selector.spec.ts"]

@@ -6,6 +6,7 @@ import { DisplayBox, ExportLink, Loading, PrintStyles } from "../";
 import { PrintChurchHeader } from "../PrintChurchHeader";
 import { CurrencyHelper } from "@churchapps/apphelper";
 import { ApiHelper, Locale } from "../../helpers";
+import { withBase } from "../../helpers/basePath";
 import { useReactToPrint } from "react-to-print";
 import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
@@ -198,7 +199,7 @@ export const ReportOutput = (props: Props) => {
               <Button
                 startIcon={<DescriptionIcon />}
                 onClick={() => {
-                  window.open("/downloads/DonationTemplate.docx");
+                  window.open(withBase("/downloads/DonationTemplate.docx"));
                 }}>
                 {Locale.label("reporting.sampleTemplate")}
               </Button>

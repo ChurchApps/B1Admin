@@ -5,6 +5,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
+import { withBase } from "../../helpers/basePath";
 
 export const MERGE_FIELD_KEYS = [
   { key: "{{firstName}}", label: "groups.sendEmailDialog.mergeFieldFirstName" },
@@ -211,7 +212,7 @@ export const SendTextDialog: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           )}
-          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && <a href="/settings/email-templates" style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendTextDialog.manageTemplates")}</a>}
+          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && <a href={withBase("/settings/email-templates")} style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendTextDialog.manageTemplates")}</a>}
         </Box>
       )}
       <TextField

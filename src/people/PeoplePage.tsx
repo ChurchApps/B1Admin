@@ -5,6 +5,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { Box, Typography, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Skeleton } from "@mui/material";
 import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
+import { withBase } from "../helpers/basePath";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
 import { buildRulesFromCriteria } from "./components/listRules";
@@ -354,8 +355,8 @@ export const PeoplePage = memo(() => {
   const handlePrint = () => {
     if (isSearchPerformed && searchResults) {
       localStorage.setItem("printDirectoryPersonIds", JSON.stringify(searchResults.map((p) => p.id).filter(Boolean)));
-      window.open("/people/print-directory?scope=search", "_blank");
-    } else window.open("/people/print-directory", "_blank");
+      window.open(withBase("/people/print-directory?scope=search"), "_blank");
+    } else window.open(withBase("/people/print-directory"), "_blank");
   };
 
   const getExportData = (people: PersonInterface[]) => {
