@@ -18,6 +18,8 @@ export const DonationBatchPage = () => {
   const [importOpen, setImportOpen] = React.useState(false);
   const [donationsKey, setDonationsKey] = React.useState(0);
   const [currency, setCurrency] = React.useState<string>("usd");
+  // The date the last gift was keyed with; new gifts start on it, or on the batch date until one is changed.
+  const [entryDate, setEntryDate] = React.useState("");
 
   // totalAmount arrives already converted into the church currency by the Api (server-side exchange rates).
   const batch = useQuery<BatchWithStatus & { isConverted?: boolean }>({ queryKey: ["/donationbatches/" + params.id, "GivingApi"] });
@@ -62,9 +64,11 @@ export const DonationBatchPage = () => {
     }
   };
 
+  const batchDate = batch.data?.batchDate?.split("T")[0] || "";
+
   const getEditModules = () => {
     const result = [];
-    if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} batchDate={batch.data?.batchDate?.split("T")[0]} currency={currency} />);
+    if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} batchDate={entryDate || batchDate} onDateChange={setEntryDate} currency={currency} />);
     if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batch={batch.data} updatedFunction={batchUpdated} deletedFunction={batchDeleted} canDelete={canEditDonations()} />);
     return result;
   };
@@ -97,7 +101,8 @@ export const DonationBatchPage = () => {
   ) : Locale.label("donations.donationBatchPage.subtitle");
 
   const hasFunds = (funds.data?.length ?? 0) > 0;
-  const showBulk = editDonationId === "notset" && canEdit && hasFunds;
+  // Wait for the batch: with funds already cached the panel would otherwise lock in today's date.
+  const showBulk = editDonationId === "notset" && canEdit && hasFunds && !!batch.data?.id;
   const showSide = showBulk || editDonationId !== "notset" || editBatch;
   const startAdd = () => {
     if (!showBulk) { showEditDonation(""); return; }
@@ -158,7 +163,8 @@ export const DonationBatchPage = () => {
                 {showBulk && (
                   <BulkDonationEntry
                     batchId={batch.data?.id || ""}
-                    batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
+                    batchDate={entryDate || batchDate}
+                    onDateChange={setEntryDate}
                     funds={funds.data || []}
                     currency={currency}
                     updatedFunction={donationUpdated}
