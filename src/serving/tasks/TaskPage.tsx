@@ -11,6 +11,7 @@ import { RequestedChanges } from "./components/RequestedChanges";
 import { AccountDeletionRequest } from "./components/AccountDeletionRequest";
 import { GroupJoinRequestTask } from "./components/GroupJoinRequestTask";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
+import { TaskContact } from "./components/TaskContact";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Assignment as AssignmentIcon } from "@mui/icons-material";
 
@@ -142,7 +143,10 @@ export const TaskPage = () => {
       </RecordActions>
       <Box component="dl" sx={{ mt: 3, mb: 0, display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 2, rowGap: 1, typography: "body2", "& dt": { color: "text.secondary", m: 0 }, "& dd": { m: 0, overflowWrap: "anywhere" } }}>
         <dt>{Locale.label("tasks.taskPage.associated")}</dt>
-        <dd data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</dd>
+        <dd>
+          <span data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</span>
+          <TaskContact taskId={task.data.id || ""} associatedWithType={task.data.associatedWithType} associatedWithId={task.data.associatedWithId} />
+        </dd>
         <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
         <dd data-testid="task-assigned-label">{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>
         <dt>{Locale.label("tasks.taskPage.due")}</dt>

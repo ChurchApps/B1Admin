@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
-import { TextField, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, TableContainer } from "@mui/material";
+import { TextField, Table, TableBody, TableRow, TableCell, Typography, Stack, TableContainer } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
-import { Search as SearchIcon, Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
+import { Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
 
 interface Props {
   addFunction: (group: GroupInterface) => void;
@@ -36,22 +36,6 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchText(e.currentTarget.value);
-  };
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSearch(null);
-    }
-  };
-
-  const handleSearch = (e: React.MouseEvent | null) => {
-    if (e !== null) e.preventDefault();
-    const term = searchText.trim().toLowerCase();
-    const result: GroupInterface[] = [];
-    groups.forEach((g) => {
-      if ((g.name || "").toLowerCase().indexOf(term) > -1) result.push(g);
-    });
-    setSearchResults(result);
   };
   const handleAdd = (group: GroupInterface) => {
     props.addFunction(group);
@@ -102,15 +86,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
         label={Locale.label("tasks.selectGroup.group")}
         value={searchText}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
         variant="outlined"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-cy="search-button" onClick={handleSearch} />
-            </InputAdornment>
-          )
-        }}
       />
 
       {searchResults.length > 0 ? (

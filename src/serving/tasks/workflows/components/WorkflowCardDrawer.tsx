@@ -3,9 +3,10 @@ import { Link as RouterLink } from "react-router-dom";
 import React, { useContext } from "react";
 import { ApiHelper, type ConversationInterface, Notes, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
-import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon, Phone as PhoneIcon, Email as EmailIcon, DeleteOutline as RemoveIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon, DeleteOutline as RemoveIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
+import { TaskContact } from "../../components/TaskContact";
 import { DateHelper, type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
 import { canEditCard, canViewWorkflows } from "../permissions";
 import { useConfirmDelete } from "../../../../hooks/useConfirmDelete";
@@ -45,14 +46,7 @@ export const WorkflowCardDrawer = (props: Props) => {
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
   const editable = canEditCard(card);
   const isPersonCard = card.associatedWithType === "person" && !!card.associatedWithId;
-  const [contact, setContact] = React.useState<{ mobilePhone?: string; email?: string }>({});
   const { confirm, ConfirmDialogElement } = useConfirmDelete({ confirmLabel: Locale.label("tasks.workflowCard.remove"), "data-testid": "card-remove-confirm" });
-
-  React.useEffect(() => {
-    setContact({});
-    if (!isPersonCard) return;
-    ApiHelper.get("/tasks/" + card.id + "/contact", "DoingApi").then((data) => setContact(data || {}));
-  }, [card.id, isPersonCard]);
 
   const reassign = async (contentType: string, contentId: string, label: string) => {
     setShowPicker(false);
@@ -126,18 +120,7 @@ export const WorkflowCardDrawer = (props: Props) => {
         </Box>}
         {isPersonCard && (
           <Stack spacing={0.5} sx={{ mt: 1 }}>
-            {contact.mobilePhone && (
-              <Stack direction="row" spacing={1} alignItems="center">
-                <PhoneIcon fontSize="small" color="action" aria-label={Locale.label("tasks.workflowCard.phone")} />
-                <Link href={"tel:" + contact.mobilePhone} variant="body2" data-testid="card-contact-phone">{contact.mobilePhone}</Link>
-              </Stack>
-            )}
-            {contact.email && (
-              <Stack direction="row" spacing={1} alignItems="center">
-                <EmailIcon fontSize="small" color="action" aria-label={Locale.label("tasks.workflowCard.email")} />
-                <Link href={"mailto:" + contact.email} variant="body2" data-testid="card-contact-email">{contact.email}</Link>
-              </Stack>
-            )}
+            <TaskContact taskId={card.id || ""} associatedWithType={card.associatedWithType} associatedWithId={card.associatedWithId} />
             {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
               <Link component={ProfileLink} to={"/people/" + card.associatedWithId} variant="body2">{Locale.label("tasks.workflowCard.viewProfile")}</Link>
             )}

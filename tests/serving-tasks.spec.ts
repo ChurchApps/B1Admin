@@ -71,3 +71,33 @@ test("reassigning a task notifies the new assignee", async ({ page }) => {
   expect(body.contentId).toBe("TSK00000001");
   await expect(page.locator('[data-testid="task-assigned-label"]')).toHaveText("Donald Clark", { timeout: 15000 });
 });
+
+// ChurchAppsSupport#1574: the task page shows the phone and email of the person the task is about,
+// and the person picker shows results as you type.
+test("a task about a person shows their phone and email", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000104");
+  const identity = page.locator('[data-testid="task-identity"]');
+  await expect(identity.locator('[data-testid="card-contact-phone"]')).toHaveAttribute("href", "tel:(217) 555-0106", { timeout: 15000 });
+  await expect(identity.locator('[data-testid="card-contact-email"]')).toHaveAttribute("href", "mailto:sarah.smith@email.com");
+});
+
+test("the task person picker searches as you type", async ({ page }) => {
+  await page.goto("/serving/tasks");
+  await page.locator('[data-testid="add-task-button"]').click();
+  await page.locator('[data-testid="assign-to-input"]').click();
+  await page.locator('[name="personAddText"]').fill("Donald");
+  // Without a typed search the list keeps showing recent people, so only Donalds means it searched.
+  await expect(personAddButton(page, "Donald Clark")).toBeVisible({ timeout: 15000 });
+  await expect(page.locator("#householdMemberAddTable tr").filter({ hasNotText: "Donald" })).toHaveCount(0);
+});
+
+test("the task group picker filters as you type with no Search button", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000001");
+  await page.locator('[data-testid="task-associate"]').click();
+  await page.getByRole("tab", { name: "Group" }).click();
+  const field = page.locator('[name="groupSearchText"]');
+  await expect(field).toBeVisible({ timeout: 15000 });
+  await field.fill("Youth");
+  await expect(page.getByRole("dialog").getByRole("button", { name: "Search" })).toHaveCount(0);
+  await expect(page.getByRole("dialog").getByText(/Youth/).first()).toBeVisible();
+});
