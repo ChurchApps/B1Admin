@@ -1,9 +1,10 @@
 import { Grid, TextField, Typography, Stack, Button, InputAdornment } from "@mui/material";
 import { Surface } from "../../../components/ui";
 import React from "react";
-import { ApiHelper, ArrayHelper, type ConversationInterface, DateHelper, ErrorMessages, Locale, type MessageInterface, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, type ConversationInterface, DateHelper, ErrorMessages, Locale, type MessageInterface, UserHelper } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
 import { ContentPicker } from "./ContentPicker";
+import { notifyAssignee } from "./taskNotifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search as SearchIcon, Cancel as CancelIcon, Save as SaveIcon } from "@mui/icons-material";
 
@@ -52,7 +53,7 @@ export const NewTask = (props: Props) => {
         await ApiHelper.post("/messages", [taskMessage], "MessagingApi");
       }
 
-      await sendNotification(createdTask);
+      await notifyAssignee(createdTask, `${Locale.label("tasks.newTask.newAssign")}: ${createdTask.title}`);
       return createdTask;
     },
     onSuccess: () => {
@@ -69,25 +70,6 @@ export const NewTask = (props: Props) => {
     if (!task.title?.trim()) result.push(Locale.label("tasks.newTask.titleTask"));
     setErrors(result);
     return result.length === 0;
-  };
-
-  const sendNotification = async (task: TaskInterface) => {
-    const type = task.assignedToType;
-    const id = task.assignedToId;
-    const data: any = {
-      peopleIds: [id],
-      contentType: "task",
-      contentId: task.id,
-      message: `${Locale.label("tasks.newTask.newAssign")}: ${task.title}`
-    };
-
-    if (type === "group") {
-      const groupMembers = await ApiHelper.get("/groupmembers?groupId=" + task.assignedToId?.toString(), "MembershipApi");
-      const ids = ArrayHelper.getIds(groupMembers, "personId");
-      data.peopleIds = ids;
-    }
-
-    await ApiHelper.post("/notifications/create", data, "MessagingApi");
   };
 
   const handleSave = () => {
