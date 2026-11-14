@@ -1,5 +1,6 @@
+import { request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
-import { personAddButton } from "./helpers/fixtures";
+import { confirmDelete, personAddButton } from "./helpers/fixtures";
 
 // Issue #1259: workflow "Send email" bell notifications were saved as tasks pointing at the
 // email template id, so clicking one opened /serving/tasks/<templateId> and the page crashed.
@@ -100,4 +101,64 @@ test("the task group picker filters as you type with no Search button", async ({
   await field.fill("Youth");
   await expect(page.getByRole("dialog").getByRole("button", { name: "Search" })).toHaveCount(0);
   await expect(page.getByRole("dialog").getByText(/Youth/).first()).toBeVisible();
+});
+
+// ChurchAppsSupport#1577: the task page shows the exact creation time, keeps a history of reassignments,
+// and lets people with Edit All Cards & Tasks rename or delete any task.
+const TASKS_API = (process.env.API_BASE || "http://localhost:8084") + "/doing/tasks";
+
+async function createTask(title: string, status = "Open") {
+  const ctx = await request.newContext();
+  const login = await ctx.post(`${process.env.API_BASE || "http://localhost:8084"}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const jwt = (await login.json()).userChurches?.find((uc: any) => uc.church?.id === "CHU00000001")?.jwt as string;
+  const res = await ctx.post(TASKS_API, {
+    headers: { Authorization: "Bearer " + jwt },
+    data: [{ title, status, dateClosed: status === "Closed" ? new Date() : undefined, createdByType: "person", createdById: "PER00000080", createdByLabel: "Donald Clark", assignedToType: "person", assignedToId: "PER00000080", assignedToLabel: "Donald Clark" }]
+  });
+  const id = (await res.json())[0].id as string;
+  await ctx.dispose();
+  return id;
+}
+
+test("a task shows its full creation date and time", async ({ page }) => {
+  const id = await createTask("Check the projector bulbs " + Date.now());
+  await page.goto("/serving/tasks/" + id);
+  const identity = page.locator('[data-testid="task-identity"]');
+  await expect(identity.getByText(/Created [A-Z][a-z]{2} \d{1,2}, \d{4},? \d{1,2}:\d{2}\s?[AP]M by Donald Clark/)).toBeVisible({ timeout: 15000 });
+});
+
+test("an admin can rename any task and the title sticks", async ({ page }) => {
+  const id = await createTask("Order new hymnals " + Date.now());
+  await page.goto("/serving/tasks/" + id);
+  await page.locator('[data-testid="task-edit-title"]').click({ timeout: 15000 });
+  const input = page.locator('[data-testid="task-title-input"] input');
+  const renamed = "Order new hymnals and bookmarks " + Date.now();
+  await input.fill(renamed);
+  await page.locator('[data-testid="task-title-save"]').click();
+  await expect(page.locator("#page-header-title")).toHaveText(renamed, { timeout: 15000 });
+  await page.reload();
+  await expect(page.locator("#page-header-title")).toHaveText(renamed, { timeout: 15000 });
+});
+
+test("reassigning a task adds a history line", async ({ page }) => {
+  const id = await createTask("Call the plumber " + Date.now());
+  await page.goto("/serving/tasks/" + id);
+  await page.locator('[data-testid="task-assign"]').click({ timeout: 15000 });
+  await page.locator('[name="personAddText"]').fill("Demo User");
+  await page.locator('[data-testid="search-button"]').click();
+  await personAddButton(page, "Demo User").click();
+  await expect(page.locator('[data-testid="task-assigned-label"]')).toHaveText("Demo User", { timeout: 15000 });
+  await expect(page.locator('[data-testid="task-history"]')).toContainText("Reassigned from Donald Clark to Demo User", { timeout: 15000 });
+});
+
+test("an admin can delete a closed task", async ({ page }) => {
+  const title = "Old closed task " + Date.now();
+  const id = await createTask(title, "Closed");
+  await page.goto("/serving/tasks/" + id);
+  await expect(page.locator('[data-testid="task-identity"]').getByText(/^Closed [A-Z][a-z]{2} \d{1,2}, \d{4}/)).toBeVisible({ timeout: 15000 });
+  await page.locator('[data-testid="task-delete"]').click();
+  await confirmDelete(page);
+  await expect(page).toHaveURL(/\/serving\/tasks$/, { timeout: 15000 });
+  await page.goto("/serving/tasks/" + id);
+  await expect(page.getByText("Task not found")).toBeVisible({ timeout: 15000 });
 });

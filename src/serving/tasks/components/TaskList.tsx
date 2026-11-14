@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Box, Link as MuiLink, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Link as MuiLink, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { PillTabs, ResultsBar, StatusBadge, tableScrollSx } from "../../../components/ui";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
@@ -89,7 +89,9 @@ export const TaskList = memo((props: Props) => {
                 <TableCell sx={{ ...wideCellSx, color: "text.secondary" }}>{task.associatedWithLabel || Locale.label("tasks.taskList.notSpecified")}</TableCell>
                 <TableCell sx={{ ...wideCellSx, color: "text.secondary" }}>{task.assignedToLabel || Locale.label("tasks.taskList.unassigned")}</TableCell>
                 <TableCell sx={{ ...wideCellSx, color: "text.secondary", whiteSpace: "nowrap" }}>
-                  {DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")}
+                  <Tooltip title={DateHelper.prettyDateTime(DateHelper.toDate(task.dateCreated))}>
+                    <span>{DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")}</span>
+                  </Tooltip>
                   <Typography variant="body2" color="text.secondary">{Locale.label("tasks.taskPage.by")} {task.createdByLabel}</Typography>
                 </TableCell>
                 <TableCell align="right"><StatusBadge tone={task.status === "Open" ? "warning" : "success"}>{task.status}</StatusBadge></TableCell>
