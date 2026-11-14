@@ -1892,7 +1892,7 @@
       "tileLayoutAutoScrollList": "Scrolling (automatic) and list",
       "tileLayoutGrid": "Grid",
       "tileLayoutGridList": "Grid and list",
-      "tileLayoutHelp": "How links with photos appear on the app's home screen. In Grid and list the first three are featured and up to three more are listed beneath; in Scrolling (automatic) and list every photo link is in the moving row and the first three are listed beneath. An All link opens the rest.",
+      "tileLayoutHelp": "How links with photos appear on the app's home screen. In Grid and list the first three are featured and up to three more are listed beneath; in Scrolling (automatic) and list every photo link is in the moving row and the next three not already in the menu are listed beneath. An All link opens the rest.",
       "tileLayoutList": "List",
       "tileLayoutScroll": "Scrolling row",
       "tileLayoutTitle": "Home screen tiles",

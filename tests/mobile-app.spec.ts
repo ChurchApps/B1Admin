@@ -733,6 +733,14 @@ test.describe("B1 Mobile page saves", () => {
       await expect(page.getByRole("combobox", { name: "Layout" })).toHaveText("Scrolling (automatic) and list", { timeout: 15000 });
     });
 
+    // ChurchAppsSupport#1573: the list beneath the moving row skips links already in the app's menu.
+    test("tile layout help says Scrolling (automatic) and list skips links already in the menu", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      await expect(page.getByRole("combobox", { name: "Layout" })).toBeVisible({ timeout: 15000 });
+      await page.getByRole("heading", { name: "Home screen tiles" }).locator("xpath=..").getByText("help_outline", { exact: true }).hover();
+      await expect(page.getByRole("tooltip")).toContainText("the next three not already in the menu are listed beneath");
+    });
+
     test("My Attendance and My Forms on Home start off and save as public settings that survive a reload", async ({ page }) => {
       await page.goto("/mobile/b1-mobile");
       await expect(page.getByRole("heading", { name: "Home screen sections" })).toBeVisible({ timeout: 15000 });
