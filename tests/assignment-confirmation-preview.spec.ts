@@ -1,12 +1,13 @@
 import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-  // Only the local Vite fixture and its modules may load; no real account/API traffic.
+  // Only the local fixture page and its modules may load; no real account/API traffic. The explicit index.html
+  // is served by the Vite dev server and by the static test build alike (tests/setup/serve.json).
   await page.route("**/*", (route) => {
     const host = new URL(route.request().url()).hostname;
     return host === "127.0.0.1" || host === "localhost" ? route.continue() : route.abort();
   });
-  await page.goto("/tests/fixtures/assignment-confirmation/");
+  await page.goto("/tests/fixtures/assignment-confirmation/index.html");
 });
 
 test("edits serving email/SMS actions without generic message shortcuts", async ({ page }) => {

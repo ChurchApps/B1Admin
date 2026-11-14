@@ -8,6 +8,14 @@ const STORAGE_STATE_PATH = path.join(__dirname, "tests", ".auth-state.json");
 const baseURL = process.env.BASE_URL || "http://localhost:3101";
 const apiBase = process.env.API_BASE || "http://localhost:8084";
 const messagingSocket = process.env.REACT_APP_MESSAGING_API_SOCKET || "ws://localhost:8087";
+// Tests run against a production build served statically: a fresh page load is ~40 requests instead of the
+// ~240 unbundled modules the Vite dev server sends, and every test starts with one (login + section nav).
+// Measured 2026-11-13: the full suite went from 66 min to about 21. It is the production bundle; the two
+// test-only differences (MUI icon data-testids kept, tests/fixtures pages built in) live in vite.config.ts, and
+// tests/setup/serve.json keeps cleanUrls off so the fixture pages are reachable.
+// Set PW_DEV_SERVER=1 to debug against `npm start`; only then is a server already on the port reused, so a
+// Vite dev server left running by the demo stack fails the run loudly instead of silently slowing it down.
+const useDevServer = !!process.env.PW_DEV_SERVER;
 
 export default defineConfig({
   testDir: "./tests",
@@ -29,7 +37,9 @@ export default defineConfig({
     storageState: STORAGE_STATE_PATH,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    // Video is off: recording every test cost about a core of ffmpeg on a 4-core box; screenshots and the
+    // first-retry trace are what failure triage reads.
+    video: "off",
     actionTimeout: 10 * 1000,
     navigationTimeout: 15 * 1000
   },
@@ -45,7 +55,7 @@ export default defineConfig({
       stderr: "pipe"
     },
     {
-      command: "npm start",
+      command: useDevServer ? "npm start" : "npm run build:test && npm run serve:test",
       // Force dev stage to use localhost URLs; messaging socket to local Api's WS.
       env: {
         PORT: new URL(baseURL).port || "3101",
@@ -54,8 +64,8 @@ export default defineConfig({
         REACT_APP_MESSAGING_API_SOCKET: messagingSocket
       },
       url: baseURL,
-      reuseExistingServer: true,
-      timeout: 120 * 1000
+      reuseExistingServer: useDevServer,
+      timeout: (useDevServer ? 120 : 300) * 1000
     }
   ],
 
