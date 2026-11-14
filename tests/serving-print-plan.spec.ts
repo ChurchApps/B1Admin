@@ -177,6 +177,16 @@ test.describe("Serving - Print Plan without lesson content", () => {
     await expect(page.getByText("SERVICE ORDER", { exact: true })).toHaveCount(2);
   });
 
+  // Issue #1569: the self-host image serves the app under /admin/. The plan's Print button was a root-relative
+  // href, so it opened B1App's 404 there. Relative gotos keep this test on the app base (BASE_URL=.../admin/).
+  test("the plan's Print button opens the print page under the app base", async ({ page, context }) => {
+    await page.goto(`serving/plans/${planId}`);
+    const [popup] = await Promise.all([context.waitForEvent("page"), page.getByTestId("print-plan-link").click()]);
+    await expect(popup.getByText("Print Worship Order Repro", { exact: true })).toBeVisible({ timeout: 15000 });
+    const appBase = new URL("./", test.info().project.use.baseURL + "/").pathname.replace(/\/+$/, "/");
+    await expect(popup).toHaveURL((url) => url.pathname === `${appBase}serving/plans/print/${planId}`);
+  });
+
   test("auto-prints with ?autoprint=1", async ({ page }) => {
     await page.goto(`/serving/plans/print/${planId}?autoprint=1`);
     await expect(page.getByText("Welcome")).toBeVisible({ timeout: 15000 });

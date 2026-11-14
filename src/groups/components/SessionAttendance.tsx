@@ -9,6 +9,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton, Surface } from "../../components/ui";
 import { SessionStatusDialog } from "./SessionStatusDialog";
 import { useCanPrintRoster } from "../../helpers";
+import { withBase } from "../../helpers/basePath";
 import { canReadGroupAttendance } from "../attendanceAccess";
 
 interface Props {
@@ -213,7 +214,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const openRoster = useCallback(
     (query: string) => {
       const date = toDateParam(session?.sessionDate);
-      window.open("/groups/print-roster?" + query + (date ? "&date=" + date : "") + "&autoprint=1", "_blank");
+      window.open(withBase("/groups/print-roster?" + query + (date ? "&date=" + date : "") + "&autoprint=1"), "_blank");
     },
     [session?.sessionDate]
   );

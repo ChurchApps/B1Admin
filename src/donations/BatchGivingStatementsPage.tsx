@@ -14,6 +14,7 @@ import { Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@c
 import { type DonationInterface, type FundDonationInterface, type PersonInterface, type FundInterface } from "@churchapps/helpers";
 import JSZip from "jszip";
 import { statementDonations } from "./statementDonations";
+import { withBase } from "../helpers/basePath";
 import { EmptyState, PageHeader, PageContainer, Surface, HeaderTextButton } from "../components/ui";
 
 export const BatchGivingStatementsPage = () => {
@@ -70,7 +71,7 @@ export const BatchGivingStatementsPage = () => {
   }, [allFundDonations.data, yearDonations]);
 
   const handlePrintAll = () => {
-    const url = `/donations/print-all?year=${selectedYear}`;
+    const url = withBase(`/donations/print-all?year=${selectedYear}`);
     window.location.href = url;
   };
 
