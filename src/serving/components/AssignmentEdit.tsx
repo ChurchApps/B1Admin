@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Table, TableCell, TableRow, Avatar, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Avatar, IconButton, TextField, Tooltip, Typography } from "@mui/material";
 import { Tune as TuneIcon } from "@mui/icons-material";
 import { type AssignmentInterface, type BlockoutDateInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
@@ -22,6 +22,7 @@ interface Props {
 
 export const AssignmentEdit = (props: Props) => {
   const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
+  const [searchText, setSearchText] = React.useState("");
   const [preferencePerson, setPreferencePerson] = React.useState<{ id: string; name: string } | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   // Positions without a Volunteer Group can be filled by anyone in the church.
@@ -59,7 +60,9 @@ export const AssignmentEdit = (props: Props) => {
     const assigned = props.assignedPersonIds || [];
     // Blocked-out members stay selectable but sort last, flagged.
     const blockoutFor = (gm: GroupMemberInterface) => findBlockout(props.blockoutDates, gm.personId, props.serviceDate);
+    const term = searchText.trim().toLowerCase();
     const available = groupMembers.filter((gm) => !assigned.includes(gm.personId))
+      .filter((gm) => !term || (gm.person?.name?.display || "").toLowerCase().includes(term))
       .map((gm) => ({ gm, blockout: blockoutFor(gm) }))
       .sort((a, b) => (a.blockout ? 1 : 0) - (b.blockout ? 1 : 0));
     if (available.length === 0) {
@@ -130,7 +133,19 @@ export const AssignmentEdit = (props: Props) => {
             />
           </>
         ) : (
-          <Table size="small">{getMembers()}</Table>
+          <>
+            <TextField
+              fullWidth
+              size="small"
+              label={Locale.label("plans.assignmentEdit.searchTeam")}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+            {/* The FormCard clips overflow, so a long team scrolls here and Done stays in view. */}
+            <TableContainer sx={{ maxHeight: "max(200px, calc(100vh - 380px))" }}>
+              <Table size="small"><TableBody>{getMembers()}</TableBody></Table>
+            </TableContainer>
+          </>
         )}
       </FormCard>
       {preferencePerson && <SchedulingPreferenceEdit personId={preferencePerson?.id} personName={preferencePerson?.name} onClose={() => setPreferencePerson(null)} />}

@@ -2688,7 +2688,8 @@
       "done": "Done",
       "editAssign": "Edit Assignment",
       "noMem": "No group members found.",
-      "searchAnyone": "Search for anyone in your church"
+      "searchAnyone": "Search for anyone in your church",
+      "searchTeam": "Search team"
     },
     "browseGrid": {
       "addOn": "Add-On"
