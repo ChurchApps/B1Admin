@@ -8,7 +8,8 @@ import { Surface } from "../../components/ui";
 
 interface Props {
   batchId: string;
-  batchDate?: Date;
+  batchDate?: string;
+  onDateChange?: (date: string) => void;
   funds: FundInterface[];
   currency?: string;
   updatedFunction: () => void;
@@ -27,7 +28,7 @@ export const BulkDonationEntry = memo((props: Props) => {
   const currency = (props.currency || "usd").toLowerCase();
 
   const [defaultValues, setDefaultValues] = React.useState({
-    date: DateHelper.formatHtml5Date(props.batchDate || new Date()),
+    date: props.batchDate || DateHelper.formatHtml5Date(new Date()),
     method: "Check" as string,
     fundId: props.funds?.[0]?.id || "",
     notes: ""
@@ -148,7 +149,7 @@ export const BulkDonationEntry = memo((props: Props) => {
             label={Locale.label("donations.donationEdit.date")}
 
             value={defaultValues.date}
-            onChange={(e) => handleDefaultChange("date", e.target.value)}
+            onChange={(e) => { handleDefaultChange("date", e.target.value); props.onDateChange?.(e.target.value); }}
             onKeyDown={handleKeyDown}
             size="small"
             data-testid="bulk-donation-date"

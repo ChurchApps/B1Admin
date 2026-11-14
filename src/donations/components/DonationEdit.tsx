@@ -16,6 +16,8 @@ interface Props {
   batchId: string;
   // A new gift starts on the batch date, like the quick entry panel.
   batchDate?: string;
+  // Reports the date a new gift was saved with, so the next one starts on it.
+  onDateChange?: (date: string) => void;
   funds: FundInterface[];
   updatedFunction: () => void;
   currency?: string;
@@ -112,6 +114,7 @@ export const DonationEdit = memo((props: Props) => {
       const id = data[0].id;
       setDonation((prev) => ({ ...prev, id }));
       if (isNew) {
+        if (donationToSave.donationDate) props.onDateChange?.(donationToSave.donationDate);
         props.updatedFunction();
         return;
       }
