@@ -56,3 +56,18 @@ test("a task's person or group can be cleared", async ({ page }) => {
   await page.reload();
   await expect(label).toHaveText("Not specified", { timeout: 15000 });
 });
+
+// Issue #1562: reassigning a task from the task page saved silently, so the new assignee was never told.
+test("reassigning a task notifies the new assignee", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000001");
+  await page.locator('[data-testid="task-assign"]').click();
+  await page.locator('[name="personAddText"]').fill("Donald Clark");
+  await page.locator('[data-testid="search-button"]').click();
+  const notification = page.waitForRequest((req) => req.method() === "POST" && req.url().includes("/notifications/create"), { timeout: 15000 });
+  await personAddButton(page, "Donald Clark").click();
+  const body = (await notification).postDataJSON();
+  expect(body.peopleIds).toEqual(["PER00000080"]);
+  expect(body.contentType).toBe("task");
+  expect(body.contentId).toBe("TSK00000001");
+  await expect(page.locator('[data-testid="task-assigned-label"]')).toHaveText("Donald Clark", { timeout: 15000 });
+});

@@ -5,6 +5,7 @@ import { type TaskInterface, type UserContextInterface } from "@churchapps/helpe
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { PageContainer, EmptyState, RecordLayout, StatusBadge, TextAction, eyebrowSx, RecordActions } from "../../components/ui";
 import { ContentPicker } from "./components/ContentPicker";
+import { notifyAssignee } from "./components/taskNotifications";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
 import { AccountDeletionRequest } from "./components/AccountDeletionRequest";
@@ -52,7 +53,12 @@ export const TaskPage = () => {
           t.assignedToLabel = label;
           break;
       }
-      updateTaskMutation.mutate(t);
+      const reassigned = modalField === "assignedTo" && !!t.assignedToId && (t.assignedToId !== task.data.assignedToId || t.assignedToType?.toLowerCase() !== task.data.assignedToType?.toLowerCase());
+      updateTaskMutation.mutate(t, {
+        onSuccess: () => {
+          if (reassigned) notifyAssignee(t, `${Locale.label("tasks.newTask.newAssign")}: ${t.title}`);
+        }
+      });
       setModalField("");
     },
     [task.data, modalField, updateTaskMutation]
