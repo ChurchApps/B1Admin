@@ -26,6 +26,7 @@ interface Props {
 }
 
 const RECENT_LIMIT = 8;
+const SEARCH_DEBOUNCE_MS = 400;
 
 // People picked from any Person search box, newest first, remembered per church in this browser.
 const recentPicksKey = () => "people.recentPicks." + (UserHelper.currentUserChurch?.church?.id || "");
@@ -59,6 +60,9 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
 
   const filterListString = filterList.join(",");
   const latestTermRef = React.useRef("");
+  const searchTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(() => () => { if (searchTimerRef.current) clearTimeout(searchTimerRef.current); }, []);
 
   React.useEffect(() => {
     if (!searchText.trim()) {
@@ -73,15 +77,19 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
     const value = e.currentTarget.value;
     setSearchText(value);
     latestTermRef.current = value.trim();
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
     if (autoSearch && value.trim().length >= 2) {
       const term = value.trim();
-      ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
-        if (term !== latestTermRef.current) return;
-        setHasSearched(true);
-        const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
-        setSearchResults(filteredResult);
-        if (searchClicked) searchClicked();
-      });
+      // Wait for a pause in typing so each keystroke does not post its own search.
+      searchTimerRef.current = setTimeout(() => {
+        ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
+          if (term !== latestTermRef.current) return;
+          setHasSearched(true);
+          const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
+          setSearchResults(filteredResult);
+          if (searchClicked) searchClicked();
+        });
+      }, SEARCH_DEBOUNCE_MS);
     } else if (autoSearch && value.trim().length < 2) {
       setSearchResults([]);
       setHasSearched(false);
@@ -90,7 +98,8 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (autoSearch && searchResults.length > 0) {
+      // Until the typed search returns, the list still holds recent people, so search instead of adding one of those.
+      if (autoSearch && hasSearched && searchResults.length > 0) {
         handleAdd(searchResults[0]);
       } else {
         handleSearch(null);
@@ -100,6 +109,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
 
   const handleSearch = (e: React.MouseEvent | null) => {
     if (e !== null) e.preventDefault();
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
     const term = searchText.trim();
     ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
       setHasSearched(true);
@@ -158,7 +168,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
         sx={{ "& .MuiOutlinedInput-root": { bgcolor: "background.default", borderRadius: "12px", "&.Mui-focused": { bgcolor: "background.paper" } } }}
         InputProps={{
           startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: "text.secondary" }} /></InputAdornment>,
-          endAdornment: autoSearch ? undefined : (
+          endAdornment: (
             <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-testid="search-button" onClick={handleSearch} />
           )
         }}

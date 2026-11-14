@@ -33,7 +33,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
       ),
       content: (
         <Box sx={{ pt: 2 }}>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} />
+          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} autoSearch />
         </Box>
       )
     },
