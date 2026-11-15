@@ -51,6 +51,9 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
   const [saved, setSaved] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
   const [open, setOpen] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sentCount, setSentCount] = useState<number | null>(null);
+  const [sendFailed, setSendFailed] = useState(false);
 
   useEffect(() => {
     if (!taskId) return;
@@ -94,6 +97,20 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
     }
   };
 
+  const handleSendNow = async () => {
+    setSentCount(null);
+    setSendFailed(false);
+    setSending(true);
+    try {
+      const result: { sent?: number } = await ApiHelper.post("/reminders/task/" + taskId + "/sendNow", {}, "MessagingApi");
+      setSentCount(Number(result?.sent) || 0);
+    } catch {
+      setSendFailed(true);
+    } finally {
+      setSending(false);
+    }
+  };
+
   const l = (k: string) => Locale.label("tasks.reminders." + k);
   const textingEnabled = useTextingEnabled();
 
@@ -113,7 +130,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
         <Stack spacing={2}>
           {enabled && !dueDate && <Alert severity="warning">{l("noDueDate")}</Alert>}
           <FormControlLabel
-            control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSaved(false); }} data-testid="task-reminder-enabled-toggle" />}
+            control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSaved(false); setSentCount(null); }} data-testid="task-reminder-enabled-toggle" />}
             label={l("enable")}
           />
           {enabled && (
@@ -162,12 +179,17 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
               </Box>
             </>
           )}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1.5 }}>
             <Button variant="contained" size="small" onClick={handleSave} disabled={saving || (enabled && (offsets.length === 0 || channels.length === 0))} data-testid="task-reminder-save-button">
               {saving ? Locale.label("common.saving") : l("save")}
             </Button>
             {saved && <Typography variant="body2" color="success.main">{l("saved")}</Typography>}
             {saveFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}
+            <Button variant="outlined" size="small" onClick={handleSendNow} disabled={sending || saving || !defId || !enabled} data-testid="task-reminder-send-now-button">
+              {sending ? Locale.label("common.saving") : l("sendNow")}
+            </Button>
+            {sentCount !== null && <Typography variant="body2" color="success.main" data-testid="task-reminder-sent-now">{l("sentNow").replace("{count}", String(sentCount))}</Typography>}
+            {sendFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}
           </Box>
         </Stack>
       )}

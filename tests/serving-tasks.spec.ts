@@ -162,3 +162,27 @@ test("an admin can delete a closed task", async ({ page }) => {
   await page.goto("/serving/tasks/" + id);
   await expect(page.getByText("Task not found")).toBeVisible({ timeout: 15000 });
 });
+
+// ChurchAppsSupport#1584: a Send now button beside Save Reminders sends the saved task reminder right away.
+test("a task reminder can be sent now to the assignee", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000003");
+  await page.locator('[data-testid="task-assign"]').click();
+  await page.locator('[name="personAddText"]').fill("Donald Clark");
+  await page.locator('[data-testid="search-button"]').click();
+  await personAddButton(page, "Donald Clark").click();
+  await expect(page.locator('[data-testid="task-assigned-label"]')).toHaveText("Donald Clark", { timeout: 15000 });
+
+  await page.locator('[data-testid="task-reminders-toggle"]').click();
+  const toggle = page.locator('[data-testid="task-reminder-enabled-toggle"] input');
+  if (!(await toggle.isChecked())) await toggle.check();
+  const sendNow = page.locator('[data-testid="task-reminder-send-now-button"]');
+  const saved = page.waitForResponse((r) => /\/messaging\/reminders\/task\/TSK00000003$/.test(r.url()) && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+  await page.locator('[data-testid="task-reminder-save-button"]').click();
+  await saved;
+  await expect(sendNow).toBeEnabled({ timeout: 15000 });
+
+  const sent = page.waitForResponse((r) => r.url().includes("/messaging/reminders/task/TSK00000003/sendNow") && r.ok(), { timeout: 15000 });
+  await sendNow.click();
+  expect((await (await sent).json()).sent).toBe(1);
+  await expect(page.locator('[data-testid="task-reminder-sent-now"]')).toHaveText("Sent to 1 people");
+});
