@@ -83,7 +83,7 @@ export const BatchGivingStatementsPage = () => {
       const personDonations = yearDonations.filter((d) => d.personId === personId);
 
       const csvRows: string[] = [];
-      csvRows.push("amount,donationDate,fundName,method,methodDetails"); // Header
+      csvRows.push("amount,donationDate,fundName,method,methodDetails,memo"); // Header
 
       personDonations.forEach((donation) => {
         const fundDonationsForThisDonation = yearFundDonations.filter((fd) => fd.donationId === donation.id);
@@ -95,6 +95,7 @@ export const BatchGivingStatementsPage = () => {
           const fundName = fund?.name || "";
           const method = donation.method || "";
           const methodDetails = donation.methodDetails || "";
+          const memo = (donation as any).memo || "";
 
           const escapeCsv = (value: any) => {
             const str = String(value);
@@ -105,7 +106,7 @@ export const BatchGivingStatementsPage = () => {
           };
 
           csvRows.push(
-            `${escapeCsv(amount)},${escapeCsv(donationDate)},${escapeCsv(fundName)},${escapeCsv(method)},${escapeCsv(methodDetails)}`
+            `${escapeCsv(amount)},${escapeCsv(donationDate)},${escapeCsv(fundName)},${escapeCsv(method)},${escapeCsv(methodDetails)},${escapeCsv(memo)}`
           );
         });
       });

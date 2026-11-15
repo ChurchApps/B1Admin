@@ -113,11 +113,11 @@ export const PrintDonationPage = () => {
   }, [fundDonations, donations, funds.data]);
 
   const contributions = useMemo(() => {
-    const result: { date: string; method: string | undefined; fund: string | undefined; amount: number; taxDeductible?: boolean }[] = [];
+    const result: { date: string; method: string | undefined; fund: string | undefined; memo?: string; amount: number; taxDeductible?: boolean }[] = [];
     fundDonations.forEach((fd) => {
       const donation = ArrayHelper.getOne(donations, "id", fd.donationId);
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
-      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount || 0, taxDeductible: fund?.taxDeductible !== false });
+      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, memo: (donation as any).memo, amount: fd.amount || 0, taxDeductible: fund?.taxDeductible !== false });
     });
     return result;
   }, [fundDonations, donations, funds.data]);

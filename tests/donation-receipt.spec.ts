@@ -18,7 +18,7 @@ test.describe("Donation receipt", () => {
     const firstRow = page.locator("[data-testid^='donation-row-']").first();
     const rowTestId = await firstRow.getAttribute("data-testid");
     const donationId = (rowTestId || "").replace("donation-row-", "");
-    const amount = (await firstRow.locator("td").nth(4).innerText()).trim();
+    const amount = (await firstRow.locator("td").nth(5).innerText()).trim();
 
     const receiptLink = page.getByTestId("donation-receipt-" + donationId);
     await expect(receiptLink).toHaveText("Receipt");

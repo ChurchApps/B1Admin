@@ -133,6 +133,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           <TableCell>{Locale.label("donations.donations.method")}</TableCell>
           <TableCell>{Locale.label("common.name")}</TableCell>
           <TableCell>{Locale.label("donations.donations.date")}</TableCell>
+          <TableCell>{Locale.label("donations.donations.memo")}</TableCell>
           <TableCell>{Locale.label("donations.donations.notes")}</TableCell>
           <TableCell align="right" sx={numericCellSx}>{Locale.label("donations.donations.amt")}</TableCell>
           <TableCell align="right" />
@@ -173,6 +174,11 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell>
             <Typography variant="body2">{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="body2" sx={{ maxWidth: 240, whiteSpace: "pre-wrap", overflowWrap: "anywhere" }} data-testid="donation-memo">
+              {(d as any).memo || ""}
+            </Typography>
           </TableCell>
           <TableCell>
             <Typography variant="body2" sx={{ maxWidth: 360, whiteSpace: "pre-wrap", overflowWrap: "anywhere", color: "text.secondary" }}>
