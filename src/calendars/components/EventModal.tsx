@@ -180,7 +180,7 @@ export function EventModal(props: Props) {
     try {
       const event: EventInterface = {
         id: props.eventId || savedRef.current.eventId,
-        groupId,
+        groupId: groupId || null,
         title,
         description,
         photoUrl: photoUrl || null,
@@ -231,7 +231,8 @@ export function EventModal(props: Props) {
     }
   };
 
-  const valid = groupId && title.trim() && start && end && new Date(end) > new Date(start);
+  // Member requests can arrive without a group, so only new events require one.
+  const valid = (props.eventId || groupId) && title.trim() && start && end && new Date(end) > new Date(start);
 
   return (
     <>
@@ -241,7 +242,8 @@ export function EventModal(props: Props) {
         <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent") : Locale.label("calendars.newEvent.title")}</DialogTitle>
         <DialogContent>
           {loading ? <Loading /> : <Stack spacing={2} sx={{ mt: 1 }}>
-            <TextField fullWidth select label={Locale.label("calendars.newEvent.group")} value={groupId} onChange={(e) => setGroupId(e.target.value)} data-testid="new-event-group-select">
+            <TextField fullWidth select label={Locale.label("calendars.newEvent.group")} value={groupId} onChange={(e) => setGroupId(e.target.value)} SelectProps={{ displayEmpty: true }} InputLabelProps={{ shrink: true }} data-testid="new-event-group-select">
+              <MenuItem value="">{Locale.label("calendars.newEvent.noGroup")}</MenuItem>
               {groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
             </TextField>
             {templates.length > 0 && (

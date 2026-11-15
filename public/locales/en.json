@@ -391,6 +391,7 @@
       "eventTitle": "Title",
       "group": "Group",
       "monthly": "Monthly",
+      "noGroup": "(no group)",
       "noTemplate": "(no template)",
       "notesLeaders": "Group leaders",
       "notesMembers": "Group members",
