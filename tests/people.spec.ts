@@ -1459,6 +1459,7 @@ test.describe("People table status and household role", () => {
 });
 
 test.describe("Person requests & registrations", () => {
+  test.describe.configure({ mode: "serial" });
   const API_BASE = process.env.API_BASE || "http://localhost:8084";
   let api: APIRequestContext;
   let auth: { headers: Record<string, string> };
@@ -1473,7 +1474,7 @@ test.describe("Person requests & registrations", () => {
     demoPersonId = uc.person.id;
     const start = new Date(Date.now() + 30 * 86400000);
     const end = new Date(start.getTime() + 2 * 3600000);
-    const created = await (await api.post(`${API_BASE}/content/events/request`, { ...auth, data: { title: "ZACCHAEUS Youth Retreat", start, end, roomIds: ["RM000000001"] } })).json();
+    const created = await (await api.post(`${API_BASE}/content/events/request`, { ...auth, data: { title: "ZACCHAEUS Youth Retreat", description: "Overnight lock-in for the youth group with games and pizza", start, end, roomIds: ["RM000000001"] } })).json();
     requestId = created.event.id;
   });
 
@@ -1502,5 +1503,12 @@ test.describe("Person requests & registrations", () => {
     await expect(page).toHaveURL(/view=requests/);
     await expect(page.getByTestId("person-requests-section").locator("tbody tr").filter({ hasText: "ZACCHAEUS Youth Retreat" })).toBeVisible();
     await expect(page.getByTestId("person-record-back")).toBeVisible();
+  });
+
+  // #1585: staff see what the member asked for, not only the title and status.
+  test("a person's event request shows the description they entered", async ({ page }) => {
+    await page.goto(`/people/${demoPersonId}`);
+    const description = page.getByTestId("person-requests-table").getByTestId(`person-request-description-${requestId}`);
+    await expect(description).toHaveText("Overnight lock-in for the youth group with games and pizza", { timeout: 10000 });
   });
 });
