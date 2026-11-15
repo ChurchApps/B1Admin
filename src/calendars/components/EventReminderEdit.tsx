@@ -90,6 +90,9 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
     const [preview, setPreview] = useState<ReminderPreview | null>(null);
     const [previewLoading, setPreviewLoading] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [sending, setSending] = useState(false);
+    const [sentCount, setSentCount] = useState<number | null>(null);
+    const [sendFailed, setSendFailed] = useState(false);
 
     useEffect(() => {
       if (!eventId) return;
@@ -155,6 +158,21 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
       try { await doSave(eventId); } finally { setSaving(false); }
     };
 
+    const handleSendNow = async () => {
+      if (!eventId) return;
+      setSentCount(null);
+      setSendFailed(false);
+      setSending(true);
+      try {
+        const result: { sent?: number } = await ApiHelper.post("/reminders/event/" + eventId + "/sendNow", {}, "MessagingApi");
+        setSentCount(Number(result?.sent) || 0);
+      } catch {
+        setSendFailed(true);
+      } finally {
+        setSending(false);
+      }
+    };
+
     const toggleOffset = (minutes: number) => {
       setSelectedOffsets((prev) => {
         if (prev.includes(minutes)) return prev.filter((m) => m !== minutes);
@@ -189,7 +207,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
         <AccordionDetails>
           <Stack spacing={2}>
             <FormControlLabel
-              control={<Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)} data-testid="reminder-enabled-toggle" />}
+              control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSentCount(null); }} data-testid="reminder-enabled-toggle" />}
               label={Locale.label("calendars.eventReminders.enableReminders")}
             />
 
@@ -289,7 +307,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
             )}
 
             {eventId && (
-              <Box>
+              <Stack direction="row" spacing={1} alignItems="center">
                 <Button
                   variant="contained"
                   size="small"
@@ -299,7 +317,22 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
                 >
                   {saving ? Locale.label("common.saving") : Locale.label("common.save")}
                 </Button>
-              </Box>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={handleSendNow}
+                  disabled={sending || saving || !defId || !enabled}
+                  data-testid="reminder-send-now-button"
+                >
+                  {sending ? Locale.label("common.saving") : Locale.label("calendars.eventReminders.sendNow")}
+                </Button>
+                {sentCount !== null && (
+                  <Typography variant="body2" color="success.main" data-testid="reminder-sent-now">
+                    {Locale.label("calendars.eventReminders.sentNow").replace("{count}", String(sentCount))}
+                  </Typography>
+                )}
+                {sendFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}
+              </Stack>
             )}
           </Stack>
         </AccordionDetails>
