@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper } from "@mui/material";
+import { Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Paper } from "@mui/material";
 import React from "react";
 import { SelectGroup } from ".";
 import { Locale, PersonHelper, type PersonInterface } from "@churchapps/apphelper";
@@ -12,15 +12,25 @@ interface Props {
   onSelect: (contentType: string, contentId: string, label: string) => void;
   /** Offer a "No person or group" choice; it calls onSelect with empty values. */
   allowNone?: boolean;
+  /** Pick several people: the dialog stays open after a person pick and shows the people picked so far. */
+  multiple?: boolean;
+  selected?: { contentType: string; contentId: string; label: string }[];
+  onRemove?: (contentId: string) => void;
+  /** Multiple mode: called instead of onSelect when a group is picked with "a separate task for each member" checked. */
+  onExpandGroup?: (group: GroupInterface) => void;
 }
 
 export const ContentPicker: React.FC<Props> = (props) => {
   const [activeKey, setActiveKey] = React.useState("person");
+  const [perMember, setPerMember] = React.useState(false);
+  const selected = props.selected || [];
+  const { onRemove } = props;
   const handlePersonAdd = (p: PersonInterface) => {
     props.onSelect("person", p?.id || "", p?.name?.display || Locale.label("person.unknown"));
   };
   const handleGroupAdd = (g: GroupInterface) => {
-    props.onSelect("group", g.id || "", g.name || "");
+    if (props.multiple && perMember && props.onExpandGroup) props.onExpandGroup(g);
+    else props.onSelect("group", g.id || "", g.name || "");
   };
 
   const tabs = [
@@ -33,7 +43,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
       ),
       content: (
         <Box sx={{ pt: 2 }}>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} autoSearch />
+          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} autoSearch filterList={props.multiple ? selected.map((s) => s.contentId) : undefined} />
         </Box>
       )
     },
@@ -46,6 +56,13 @@ export const ContentPicker: React.FC<Props> = (props) => {
       ),
       content: (
         <Box sx={{ pt: 2 }}>
+          {props.multiple && (
+            <FormControlLabel
+              control={<Checkbox checked={perMember} onChange={(e) => setPerMember(e.target.checked)} />}
+              label={Locale.label("tasks.contentPicker.perMember", "Create a separate task for each member")}
+              data-testid="content-picker-per-member"
+            />
+          )}
           <SelectGroup addFunction={handleGroupAdd} />
         </Box>
       )
@@ -61,9 +78,16 @@ export const ContentPicker: React.FC<Props> = (props) => {
           justifyContent: "space-between",
           pb: 2
         }}>
-        {Locale.label("tasks.contentPicker.selPers")}
+        {props.multiple ? Locale.label("tasks.contentPicker.selPeople", "Select people or a group") : Locale.label("tasks.contentPicker.selPers")}
       </DialogTitle>
       <DialogContent sx={{ pt: 0 }}>
+        {props.multiple && selected.length > 0 && (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }} data-testid="content-picker-selected">
+            {selected.map((s) => (
+              <Chip key={s.contentId} label={s.label} onDelete={onRemove ? () => onRemove(s.contentId) : undefined} data-testid={"content-picker-chip-" + s.contentId} />
+            ))}
+          </Box>
+        )}
         <Paper variant="outlined" sx={{ overflow: "hidden", p: 2 }}>
           <SmartTabs tabs={tabs} value={activeKey} onChange={(k) => setActiveKey(k)} ariaLabel="content-picker-tabs" />
           {/* <Box sx={{ minHeight: 400 }} /> */}
@@ -75,12 +99,18 @@ export const ContentPicker: React.FC<Props> = (props) => {
             {Locale.label("tasks.contentPicker.none", "No person or group")}
           </Button>
         )}
-        <Button
-          variant="outlined"
-          onClick={props.onClose}
-          startIcon={<CloseIcon />}>
-          {Locale.label("common.close")}
-        </Button>
+        {props.multiple ? (
+          <Button variant="contained" onClick={props.onClose} data-testid="content-picker-done">
+            {Locale.label("tasks.contentPicker.done", "Done")}
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            onClick={props.onClose}
+            startIcon={<CloseIcon />}>
+            {Locale.label("common.close")}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

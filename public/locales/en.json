@@ -6197,10 +6197,13 @@
       "startW": "starts with"
     },
     "contentPicker": {
+      "done": "Done",
       "group": "Group",
       "none": "No person or group",
+      "perMember": "Create a separate task for each member",
       "pers": "Person",
       "sel": "Select",
+      "selPeople": "Select people or a group",
       "selPers": "Select a Person or Group"
     },
     "eventTriggers": {
@@ -6281,6 +6284,7 @@
       "title": "My Work"
     },
     "newTask": {
+      "assignCount": "{{count}} people",
       "assignPers": "Please assign this task to a person.",
       "assignTo": "Assign to",
       "assignToAria": "Assign to",
@@ -6289,6 +6293,7 @@
       "associateWithAria": "Associate with",
       "dueDate": "Due date",
       "newAssign": "New Assignment",
+      "perPersonHint": "One task will be created for each person.",
       "saving": "Saving...",
       "taskNew": "New Task",
       "taskNotesAria": "Task notes",
