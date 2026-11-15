@@ -409,10 +409,10 @@ export const PersonFormsSummary: React.FC<FormsProps> = ({ person, forms, onOpen
 };
 
 interface RequestBooking { status?: string; requestedDate?: string; roomName?: string; resourceName?: string }
-interface RequestEvent { id?: string; title?: string; start?: string; approvalStatus?: string; bookings?: RequestBooking[] }
+interface RequestEvent { id?: string; title?: string; description?: string; start?: string; approvalStatus?: string; bookings?: RequestBooking[] }
 interface PersonRegistration { id?: string; status?: string; registeredDate?: string; event?: { title?: string; start?: string }; members?: unknown[] }
 type RequestTone = "success" | "warning" | "danger" | "neutral";
-interface RequestRow { key: string; day: Date | null; title: string; detail: string; status: string; tone: RequestTone }
+interface RequestRow { key: string; day: Date | null; title: string; requestId?: string; description?: string; detail: string; status: string; tone: RequestTone }
 
 const requestStatus = (status?: string): [string, RequestTone] => {
   if (status === "approved") return [Locale.label("calendars.approvals.approved"), "success"];
@@ -451,6 +451,8 @@ export const PersonRequestsSummary: React.FC<RequestsProps> = ({ personId, canVi
         key: "req-" + (e.id || i),
         day: toDay(e.bookings?.[0]?.requestedDate || e.start),
         title: e.title || "—",
+        requestId: e.id,
+        description: e.description?.trim() || undefined,
         detail: Locale.label("people.personRecord.eventRequest", "Event request") + (places ? " · " + places : ""),
         status,
         tone
@@ -503,6 +505,7 @@ export const PersonRequestsSummary: React.FC<RequestsProps> = ({ personId, canVi
                   <TableCell>{row.day ? pretty(row.day) : "—"}</TableCell>
                   <TableCell>
                     <Typography variant="body2">{row.title}</Typography>
+                    {row.description && <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: "pre-line" }} data-testid={`person-request-description-${row.requestId}`}>{row.description}</Typography>}
                     <Typography variant="body2" color="text.secondary">{row.detail}</Typography>
                   </TableCell>
                   <TableCell align="right"><StatusBadge tone={row.tone}>{row.status}</StatusBadge></TableCell>
