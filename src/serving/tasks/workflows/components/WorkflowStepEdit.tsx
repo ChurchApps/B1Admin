@@ -49,7 +49,8 @@ export const WorkflowStepEdit = (props: Props) => {
   };
 
   const handleNumber = (name: "expectedResponseDays", value: string) => {
-    setStep({ ...step, [name]: value === "" ? undefined : Number(value) });
+    // null, not undefined: JSON drops undefined keys, so a cleared field would never reach the server.
+    setStep({ ...step, [name]: value === "" ? (null as unknown as number) : Number(value) });
   };
 
   const handleAssign = (contentType: string, contentId: string, label: string) => {

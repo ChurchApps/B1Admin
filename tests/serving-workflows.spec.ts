@@ -871,6 +871,25 @@ test.describe.serial("Serving Management - Workflows", () => {
     await ctx.dispose();
   });
 
+  test("clearing a step's due days saves it as no due date", async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, []);
+    await ctx.post(`${API_BASE}/doing/workflowSteps`, { ...auth, data: [{ ...auto, expectedResponseDays: 3 }] });
+    await openBoardById(page, wf.id);
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    const dueDays = page.locator('[data-testid="step-due-days-input"] input');
+    await expect(dueDays).toHaveValue("3", { timeout: 10000 });
+    await dueDays.fill("");
+    await page.locator('[data-testid="step-save-button"]').click();
+    await expect(page.locator('[data-testid="step-save-button"]')).toHaveCount(0, { timeout: 10000 });
+
+    await page.locator(`[data-testid="edit-step-${auto.id}"]`).click();
+    await expect(page.locator('[data-testid="step-due-days-input"] input')).toHaveValue("", { timeout: 10000 });
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
   test("configure a Notify Person action with a staff person and message", async () => {
     const ctx = await request.newContext();
     const auth = await apiAuth(ctx);
