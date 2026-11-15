@@ -86,7 +86,7 @@ export const sundayOnOrBefore = (d: Date) => {
   return result;
 };
 
-export const sundayOnOrAfter = (d: Date) => {
+const sundayOnOrAfter = (d: Date) => {
   const result = noon(d.getFullYear(), d.getMonth(), d.getDate());
   const dow = result.getDay();
   if (dow !== 0) result.setDate(result.getDate() + (7 - dow));
@@ -105,7 +105,7 @@ export const defaultRange = (startMonth: number, targetYear: number) => {
   return { start, end: sundayOnOrBefore(lastDay) };
 };
 
-export const sundaysInRange = (start: Date, end: Date) => {
+const sundaysInRange = (start: Date, end: Date) => {
   const sundays: Date[] = [];
   let cursor = sundayOnOrAfter(start);
   const last = sundayOnOrBefore(end);
