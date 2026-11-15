@@ -539,6 +539,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await searchBtn.click();
       const selectBtn = personAddButton(page, "Demo User");
       await selectBtn.click();
+      await page.locator('[data-testid="content-picker-done"]').click();
       const taskName = page.locator('[name="title"]');
       await taskName.fill("Test Task");
       const taskNotes = page.locator('[name="note"]');

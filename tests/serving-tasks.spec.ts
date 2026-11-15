@@ -39,6 +39,7 @@ test("a task can be created with no person or group", async ({ page }) => {
   await page.locator('[name="personAddText"]').fill("Demo User");
   await page.locator('[data-testid="search-button"]').click();
   await personAddButton(page, "Demo User").click();
+  await page.locator('[data-testid="content-picker-done"]').click();
 
   await page.locator('[name="title"]').fill("Order more coffee");
   await page.locator("button").getByText("Save").click();
@@ -185,4 +186,53 @@ test("a task reminder can be sent now to the assignee", async ({ page }) => {
   await sendNow.click();
   expect((await (await sent).json()).sent).toBe(1);
   await expect(page.locator('[data-testid="task-reminder-sent-now"]')).toHaveText("Sent to 1 people");
+});
+
+// ChurchAppsSupport#1563: New Task can hand the same to-do to several people at once, one task per person.
+test("New Task creates one task per picked person", async ({ page }) => {
+  const title = "Fill out the volunteer form " + Date.now();
+  await page.goto("/serving/tasks");
+  await page.locator('[data-testid="add-task-button"]').click();
+  await page.locator('[data-testid="assign-to-input"]').click();
+  await page.locator('[name="personAddText"]').fill("Donald Clark");
+  await page.locator('[data-testid="search-button"]').click();
+  await personAddButton(page, "Donald Clark").click();
+  await page.locator('[name="personAddText"]').fill("Demo User");
+  await page.locator('[data-testid="search-button"]').click();
+  await personAddButton(page, "Demo User").click();
+  const selected = page.locator('[data-testid="content-picker-selected"]');
+  await expect(selected).toContainText("Donald Clark", { timeout: 15000 });
+  await expect(selected).toContainText("Demo User");
+  await page.locator('[data-testid="content-picker-done"]').click();
+
+  await expect(page.locator('[data-testid="assign-per-person-hint"]')).toBeVisible();
+  await page.locator('[name="title"]').fill(title);
+  const posted = page.waitForRequest((req) => req.method() === "POST" && /\/doing\/tasks$/.test(req.url()), { timeout: 15000 });
+  await page.locator("button").getByText("Save").click();
+  const body = (await posted).postDataJSON();
+  expect(body.map((t: any) => t.assignedToLabel)).toEqual(["Donald Clark", "Demo User"]);
+  await page.locator('[data-testid="tasklist-tab-created"]').click();
+  await expect(page.locator('[data-testid="task-list"] tr', { hasText: title })).toHaveCount(2, { timeout: 15000 });
+});
+
+test("New Task can create a task for each member of a group", async ({ page }) => {
+  const title = "Turn in your background check " + Date.now();
+  await page.goto("/serving/tasks");
+  await page.locator('[data-testid="add-task-button"]').click();
+  await page.locator('[data-testid="assign-to-input"]').click();
+  await page.getByRole("tab", { name: "Group" }).click();
+  await page.locator('[data-testid="content-picker-per-member"] input').check();
+  await page.locator('[name="groupSearchText"]').fill("Greeters Ministry");
+  await page.getByRole("dialog").getByText("Greeters Ministry").click();
+
+  const chips = page.locator('[data-testid="assignee-chips"]');
+  for (const name of ["Kevin Martin", "Rachel Martin", "Brian Harris"]) await expect(chips).toContainText(name, { timeout: 15000 });
+  await page.locator('[name="title"]').fill(title);
+  const posted = page.waitForRequest((req) => req.method() === "POST" && /\/doing\/tasks$/.test(req.url()), { timeout: 15000 });
+  await page.locator("button").getByText("Save").click();
+  const body = (await posted).postDataJSON();
+  expect(body.map((t: any) => t.assignedToId).sort()).toEqual(["PER00000068", "PER00000069", "PER00000079"]);
+  expect(body.every((t: any) => t.assignedToType === "person" && t.title === title)).toBe(true);
+  await page.locator('[data-testid="tasklist-tab-created"]').click();
+  await expect(page.locator('[data-testid="task-list"] tr', { hasText: title })).toHaveCount(3, { timeout: 15000 });
 });

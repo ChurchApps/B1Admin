@@ -1,12 +1,18 @@
-import { Grid, TextField, Typography, Stack, Button, InputAdornment } from "@mui/material";
+import { Grid, TextField, Typography, Stack, Button, InputAdornment, Box, Chip, FormHelperText } from "@mui/material";
 import { Surface } from "../../../components/ui";
 import React from "react";
 import { ApiHelper, type ConversationInterface, DateHelper, ErrorMessages, Locale, type MessageInterface, UserHelper } from "@churchapps/apphelper";
-import { type TaskInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ContentPicker } from "./ContentPicker";
 import { notifyAssignee } from "./taskNotifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search as SearchIcon, Cancel as CancelIcon, Save as SaveIcon } from "@mui/icons-material";
+
+interface Assignee {
+  contentType: string;
+  contentId: string;
+  label: string;
+}
 
 interface Props {
   onCancel: () => void;
@@ -25,36 +31,40 @@ export const NewTask = (props: Props) => {
   };
   const [task, setTask] = React.useState<TaskInterface>(initialData);
   const [message, setMessage] = React.useState<MessageInterface>({});
+  const [assignees, setAssignees] = React.useState<Assignee[]>([]);
   const [modalField, setModalField] = React.useState("");
   const [errors, setErrors] = React.useState<string[]>([]);
 
   const createTaskMutation = useMutation({
-    mutationFn: async (taskData: { task: TaskInterface; message?: MessageInterface }) => {
-      const tasks = await ApiHelper.post("/tasks", [taskData.task], "DoingApi");
-      const createdTask = tasks[0];
+    mutationFn: async (taskData: { task: TaskInterface; assignees: Assignee[]; message?: MessageInterface }) => {
+      // One task per assignee, so each person closes their own.
+      const newTasks = taskData.assignees.map((a) => ({ ...taskData.task, assignedToType: a.contentType, assignedToId: a.contentId, assignedToLabel: a.label }));
+      const createdTasks: TaskInterface[] = await ApiHelper.post("/tasks", newTasks, "DoingApi");
 
-      if (taskData.message?.content && taskData.message.content.trim() !== "") {
-        const conv: ConversationInterface = {
-          allowAnonymousPosts: false,
-          contentType: "task",
-          contentId: createdTask.id,
-          title: "Task #" + createdTask.id + " Notes",
-          visibility: "hidden"
-        };
-        const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
+      await Promise.all(createdTasks.map(async (createdTask) => {
+        if (taskData.message?.content && taskData.message.content.trim() !== "") {
+          const conv: ConversationInterface = {
+            allowAnonymousPosts: false,
+            contentType: "task",
+            contentId: createdTask.id,
+            title: "Task #" + createdTask.id + " Notes",
+            visibility: "hidden"
+          };
+          const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
 
-        const updatedTask = { ...createdTask };
-        updatedTask.conversationId = result[0].id;
-        await ApiHelper.post("/tasks", [updatedTask], "DoingApi");
+          const updatedTask = { ...createdTask };
+          updatedTask.conversationId = result[0].id;
+          await ApiHelper.post("/tasks", [updatedTask], "DoingApi");
 
-        const taskMessage = { ...taskData.message };
-        taskMessage.conversationId = updatedTask.conversationId;
-        taskMessage.displayName = UserHelper.person?.name?.display || "";
-        await ApiHelper.post("/messages", [taskMessage], "MessagingApi");
-      }
+          const taskMessage = { ...taskData.message };
+          taskMessage.conversationId = updatedTask.conversationId;
+          taskMessage.displayName = UserHelper.person?.name?.display || "";
+          await ApiHelper.post("/messages", [taskMessage], "MessagingApi");
+        }
 
-      await notifyAssignee(createdTask, `${Locale.label("tasks.newTask.newAssign")}: ${createdTask.title}`);
-      return createdTask;
+        await notifyAssignee(createdTask, `${Locale.label("tasks.newTask.newAssign")}: ${createdTask.title}`);
+      }));
+      return createdTasks;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/tasks", "DoingApi"] });
@@ -66,7 +76,7 @@ export const NewTask = (props: Props) => {
 
   const validate = () => {
     const result = [];
-    if (!task.assignedToId) result.push(Locale.label("tasks.newTask.assignPers"));
+    if (assignees.length === 0) result.push(Locale.label("tasks.newTask.assignPers"));
     if (!task.title?.trim()) result.push(Locale.label("tasks.newTask.titleTask"));
     setErrors(result);
     return result.length === 0;
@@ -74,7 +84,7 @@ export const NewTask = (props: Props) => {
 
   const handleSave = () => {
     if (validate()) {
-      createTaskMutation.mutate({ task, message });
+      createTaskMutation.mutate({ task, assignees, message });
     }
   };
 
@@ -108,15 +118,39 @@ export const NewTask = (props: Props) => {
         t.associatedWithLabel = contentId ? label : undefined;
         break;
       case "assignedTo":
-        t.assignedToType = contentType;
-        t.assignedToId = contentId;
-        t.assignedToLabel = label;
+        // People add up and the picker stays open for more; a group is one shared task.
+        if (contentType === "person") {
+          const people = assignees.filter((a) => a.contentType === "person");
+          if (contentId && !people.some((a) => a.contentId === contentId)) setAssignees([...people, { contentType, contentId, label }]);
+          return;
+        }
+        setAssignees([{ contentType, contentId, label }]);
         break;
     }
 
     setTask(t);
     setModalField("");
   };
+
+  const handleExpandGroup = async (group: GroupInterface) => {
+    const members: GroupMemberInterface[] = await ApiHelper.get("/groupmembers?groupId=" + group.id, "MembershipApi");
+    const result = assignees.filter((a) => a.contentType === "person");
+    members.forEach((m) => {
+      if (m.personId && !result.some((a) => a.contentId === m.personId)) {
+        result.push({ contentType: "person", contentId: m.personId, label: m.person?.name?.display || Locale.label("person.unknown") });
+      }
+    });
+    setAssignees(result);
+    setModalField("");
+  };
+
+  const handleRemoveAssignee = (contentId: string) => {
+    setAssignees(assignees.filter((a) => a.contentId !== contentId));
+  };
+
+  const assignLabel = assignees.length > 1
+    ? Locale.label("tasks.newTask.assignCount", "{{count}} people").replace("{{count}}", assignees.length.toString())
+    : assignees[0]?.label || "";
 
   const handleModalClose = () => {
     setModalField("");
@@ -159,7 +193,7 @@ export const NewTask = (props: Props) => {
             <TextField
               fullWidth
               label={Locale.label("tasks.newTask.assignTo")}
-              value={task.assignedToLabel || ""}
+              value={assignLabel}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -176,6 +210,18 @@ export const NewTask = (props: Props) => {
               aria-label={Locale.label("tasks.newTask.assignToAria")}
               variant="outlined"
             />
+            {assignees.length > 1 && (
+              <>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mt: 1 }} data-testid="assignee-chips">
+                  {assignees.map((a) => (
+                    <Chip key={a.contentId} size="small" label={a.label} onDelete={() => handleRemoveAssignee(a.contentId)} />
+                  ))}
+                </Box>
+                <FormHelperText data-testid="assign-per-person-hint">
+                  {Locale.label("tasks.newTask.perPersonHint", "One task will be created for each person.")}
+                </FormHelperText>
+              </>
+            )}
           </Grid>
           <Grid size={{ xs: 12, md: props.compact ? 12 : 4 }}>
             <TextField
@@ -236,7 +282,17 @@ export const NewTask = (props: Props) => {
         </Stack>
       </Stack>
 
-      {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} allowNone={modalField === "associatedWith"} />}
+      {modalField !== "" && (
+        <ContentPicker
+          onClose={handleModalClose}
+          onSelect={handleContentPicked}
+          allowNone={modalField === "associatedWith"}
+          multiple={modalField === "assignedTo"}
+          selected={assignees.filter((a) => a.contentType === "person")}
+          onRemove={handleRemoveAssignee}
+          onExpandGroup={handleExpandGroup}
+        />
+      )}
     </Surface>
   );
 };
