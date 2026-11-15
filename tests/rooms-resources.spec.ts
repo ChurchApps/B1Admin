@@ -562,7 +562,11 @@ test.describe.serial("Room approval reset and event request actions", () => {
     await expect(row).toBeVisible({ timeout: 15000 });
     await row.locator(`[data-testid="edit-event-${eventId}"]`).click();
     await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue(eventTitle, { timeout: 15000 });
-    await page.locator('[data-testid="new-event-cancel-button"]').click();
+    // #1587: member requests have no group; admins can still save edits to them.
+    await page.locator('[data-testid="new-event-title-input"] input').fill(`${eventTitle} Edited`);
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toBeEnabled();
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await expect(row).toContainText(`${eventTitle} Edited`, { timeout: 15000 });
     await row.locator(`[data-testid="delete-event-${eventId}"]`).click();
     await confirmDelete(page);
     await expect(page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle })).toHaveCount(0, { timeout: 15000 });
