@@ -31,6 +31,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     date: props.batchDate || DateHelper.formatHtml5Date(new Date()),
     method: "Check" as string,
     fundId: props.funds?.[0]?.id || "",
+    memo: "",
     notes: ""
   });
 
@@ -67,13 +68,14 @@ export const BulkDonationEntry = memo((props: Props) => {
 
     // The fund row rides with the gift so a Donation trigger sees the fund when it fires.
     const fundDonation: FundDonationInterface = { fundId: defaultValues.fundId, amount: parseFloat(amount), currency };
-    const donation: DonationInterface & { fundDonations: FundDonationInterface[] } = {
+    const donation: DonationInterface & { memo?: string; fundDonations: FundDonationInterface[] } = {
       batchId: props.batchId,
       personId: selectedPerson?.id || "",
       amount: parseFloat(amount),
       donationDate: defaultValues.date,
       method: defaultValues.method,
       methodDetails: methodDetails || undefined,
+      memo: defaultValues.memo || undefined,
       notes: defaultValues.notes || undefined,
       currency,
       fundDonations: [fundDonation]
@@ -184,7 +186,16 @@ export const BulkDonationEntry = memo((props: Props) => {
         </Box>
         <TextField
           fullWidth
-          label={Locale.label("common.notes")}
+          label={Locale.label("donations.donationEdit.memo")}
+          value={defaultValues.memo}
+          onChange={(e) => handleDefaultChange("memo", e.target.value)}
+          onKeyDown={handleKeyDown}
+          size="small"
+          data-testid="bulk-donation-memo"
+        />
+        <TextField
+          fullWidth
+          label={Locale.label("donations.donationEdit.notesInternal")}
           value={defaultValues.notes}
           onChange={(e) => handleDefaultChange("notes", e.target.value)}
           onKeyDown={handleKeyDown}

@@ -16,6 +16,7 @@ interface StatementLabels {
   fundBreakdown: string;
   given: string;
   issued: string;
+  memo: string;
   noteLabel: string;
   noteText: string;
   organization: string;
@@ -38,6 +39,7 @@ const printAllStatementsLabels = (): StatementLabels => ({
   fundBreakdown: Locale.label("donations.printAllStatementsPage.fundBreakdown"),
   given: Locale.label("donations.printAllStatementsPage.given"),
   issued: Locale.label("donations.printAllStatementsPage.issued"),
+  memo: Locale.label("donations.printAllStatementsPage.memo"),
   noteLabel: Locale.label("donations.printAllStatementsPage.noteLabel"),
   noteText: Locale.label("donations.printAllStatementsPage.noteText"),
   organization: Locale.label("donations.printAllStatementsPage.organization"),
@@ -60,6 +62,7 @@ const printDonationLabels = (): StatementLabels => ({
   fundBreakdown: Locale.label("donations.printDonationPage.fundBreakdown"),
   given: Locale.label("donations.printDonationPage.given"),
   issued: Locale.label("donations.printDonationPage.issued"),
+  memo: Locale.label("donations.printDonationPage.memo"),
   noteLabel: Locale.label("donations.printDonationPage.noteLabel"),
   noteText: Locale.label("donations.printDonationPage.noteText"),
   organization: Locale.label("donations.printDonationPage.organization"),
@@ -82,6 +85,7 @@ const receiptLabels = (): StatementLabels => ({
   fundBreakdown: Locale.label("donations.receiptPage.fundBreakdown"),
   given: Locale.label("donations.receiptPage.given"),
   issued: Locale.label("donations.receiptPage.issued"),
+  memo: Locale.label("donations.receiptPage.memo"),
   noteLabel: Locale.label("donations.receiptPage.noteLabel"),
   noteText: Locale.label("donations.receiptPage.noteText"),
   organization: Locale.label("donations.receiptPage.organization"),
@@ -157,6 +161,8 @@ interface ContributionRow {
   date: string;
   method: string | undefined;
   fund: string | undefined;
+  // The donor-facing memo. The gift's internal notes are never passed in.
+  memo?: string;
   amount: number;
   taxDeductible?: boolean;
 }
@@ -501,6 +507,8 @@ export const GivingStatementDocument = (props: Props) => {
   const receiptNumber = props.receiptNumber || year + "-" + (person?.id || "");
   // A statement always carries the disclaimer; a receipt drops it when any fund on the gift is not tax-deductible.
   const showDisclaimer = !isReceipt || receiptShowsDisclaimer(contributions);
+  // The Memo column only appears when a gift on this statement has one, so other statements keep their layout.
+  const showMemo = contributions.some((c) => !!c.memo);
   const donorName = person?.name?.display || (isReceipt ? Locale.label("donations.donations.anon") : undefined);
   const orgAddress = statementSettings?.orgAddress || [church?.address1, church?.address2, church?.city, church?.country, church?.zip].filter(Boolean).join(", ");
   const donorAddress = [person?.contactInfo?.address1, person?.contactInfo?.address2, person?.contactInfo?.city, person?.contactInfo?.state, person?.contactInfo?.zip].filter(Boolean).join(", ");
@@ -622,6 +630,7 @@ export const GivingStatementDocument = (props: Props) => {
                 <th>Date</th>
                 <th>Method</th>
                 <th>{labels.fund}</th>
+                {showMemo && <th>{labels.memo}</th>}
                 <th className="align-right">Amount</th>
               </tr>
             </thead>
@@ -633,11 +642,12 @@ export const GivingStatementDocument = (props: Props) => {
                   </td>
                   <td className="table-cell">{detail.method}</td>
                   <td className="table-cell">{detail.fund}</td>
+                  {showMemo && <td className="table-cell" data-testid="statement-memo">{detail.memo}</td>}
                   <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(detail.amount, currency)}</td>
                 </tr>
               ))}
               <tr className="table-footer-row">
-                <td colSpan={2} className="table-footer-cell"></td>
+                <td colSpan={showMemo ? 3 : 2} className="table-footer-cell"></td>
                 <td className="table-footer-cell" style={{ textAlign: "right" }}>{labels.totalContributionsLabel}</td>
                 <td className="table-footer-cell" style={{ textAlign: "right" }}>{formattedTotal}</td>
               </tr>

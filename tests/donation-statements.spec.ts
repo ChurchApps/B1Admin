@@ -338,3 +338,70 @@ test.describe.serial("Batch statements skip non-deductible funds", () => {
     await expect(page.getByText("Zebedee Camp Fees")).toHaveCount(0);
   });
 });
+
+// ChurchAppsSupport#1560: a gift's memo prints on the donor's statement and receipt; the internal note never does.
+test.describe.serial("Gift memo on statements", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const YEAR = 2023;
+  const DONALD_CLARK = "PER00000080";
+  const MEMO = "Youth trip";
+  const NOTE = "Envelope left in the office";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  let batchId: string;
+  // The contribution details table is the one with a Method column (the fund breakdown and pledge tables have none).
+  const contributionTable = (page: Page) => page.locator("table").filter({ has: page.locator("th", { hasText: "Method" }) });
+
+  test.beforeAll(async () => {
+    ctx = await request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = body.userChurches.find((c: any) => c.church?.id === "CHU00000001");
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+    batchId = (await (await ctx.post(`${API}/giving/donationbatches`, { ...auth, data: [{ name: "Zebedee Memo Batch", batchDate: `${YEAR}-06-09` }] })).json())[0].id;
+  });
+
+  test.afterAll(async () => {
+    if (batchId) await ctx.delete(`${API}/giving/donationbatches/${batchId}`, auth);
+    await ctx.dispose();
+  });
+
+  test("batch entry saves a memo apart from the internal note", async ({ page }) => {
+    await page.goto(`/donations/batches/${batchId}`);
+    await page.getByTestId("person-search-input").locator("input").fill("Donald Clark");
+    await page.getByTestId(`add-person-button-${DONALD_CLARK}`).click();
+    await page.locator('[data-testid="bulk-donation-date"] input').fill(`${YEAR}-06-09`);
+    await page.locator('[data-testid="bulk-donation-memo"] input').fill(MEMO);
+    await page.locator('[data-testid="bulk-donation-notes"] input').fill(NOTE);
+    await page.locator('[data-testid="bulk-donation-amount"] input').fill("40.00");
+    await page.locator('[data-testid="add-donation-submit"]').click();
+
+    const row = page.locator("[data-testid^='donation-row-']").first();
+    await expect(row).toContainText(MEMO, { timeout: 10000 });
+    await expect(row).toContainText(NOTE);
+  });
+
+  test("the statement prints the memo and not the note", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto(`/donations/print/${DONALD_CLARK}?year=${YEAR}`);
+    const details = contributionTable(page);
+    await expect(details).toContainText(MEMO, { timeout: 15000 });
+    await expect(details.locator("th")).toContainText(["Date", "Method", "Fund", "Memo", "Amount"]);
+    await expect(page.getByText(NOTE)).toHaveCount(0);
+  });
+
+  test("the gift's receipt prints the memo and not the note", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    const donations = await (await ctx.get(`${API}/giving/donations?batchId=${batchId}`, auth)).json();
+    await page.goto(`/donations/receipt/${donations[0].id}`);
+    await expect(contributionTable(page)).toContainText(MEMO, { timeout: 15000 });
+    await expect(page.getByText(NOTE)).toHaveCount(0);
+  });
+
+  test("a statement with no memos keeps the four columns", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.goto("/donations/print/PER00000001?year=2025");
+    const details = contributionTable(page);
+    await expect(details.locator("tbody tr").first()).toBeVisible({ timeout: 15000 });
+    await expect(details.locator("th")).toHaveText(["Date", "Method", "Fund", "Amount"]);
+  });
+});

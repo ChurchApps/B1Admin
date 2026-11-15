@@ -145,6 +145,7 @@ export const PrintAllStatementsPage = () => {
         date: donation.donationDate,
         method: donation.method,
         fund: fund?.name,
+        memo: (donation as any).memo,
         amount: fd.amount || 0,
         taxDeductible: fund?.taxDeductible !== false
       });
