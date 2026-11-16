@@ -1114,7 +1114,7 @@ test.describe.serial("Service Order multi-select import from the External Item p
     await page.getByRole("menuitem", { name: "External Item" }).click();
     await expect(picker()).toBeVisible({ timeout: 10000 });
 
-    await picker().getByText("Go Curriculum", { exact: true }).click();
+    await picker().getByText(/^(Go|GO!) Curriculum$/).click();
     await picker().getByText("Multi Import Lesson", { exact: true }).click();
 
     const sectionRow = picker().locator("div").filter({ hasText: /^Multi Import Section/ }).first();
