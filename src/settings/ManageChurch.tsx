@@ -25,6 +25,7 @@ import { CheckinSettingsEdit } from "./components/CheckinSettingsEdit";
 import { VolunteerSignupSettingsEdit } from "./components/VolunteerSignupSettingsEdit";
 import { GivingPrivacySettingsEdit } from "./components/GivingPrivacySettingsEdit";
 import { RegionSettingsEdit, regionName, regionSample } from "./components/RegionSettingsEdit";
+import { WorshipDayHelper, weekdayName } from "../helpers/WorshipDayHelper";
 
 const SECTION_KEYS = [
   "church-info", "general", "region", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "volunteer-signup", "giving-privacy", "campuses", "custom-fields", "developer"
@@ -84,7 +85,8 @@ export const ManageChurch = () => {
   const supportContact = (settingsQ.data || []).find((s) => s.keyName === "supportContact")?.value;
   const region = DateHelper.normalizeLocale((settingsQ.data || []).find((s) => s.keyName === "region")?.value);
   const localPhones = (settingsQ.data || []).find((s) => s.keyName === "phoneFormat")?.value === "local";
-  const regionSubtitle = regionName(region) + (localPhones ? " · " + Locale.label("settings.landing.phoneLocalSubtitle") : "");
+  const worshipDay = WorshipDayHelper.parse((settingsQ.data || []).find((s) => s.keyName === "worshipDay")?.value);
+  const regionSubtitle = regionName(region) + (localPhones ? " · " + Locale.label("settings.landing.phoneLocalSubtitle") : "") + (worshipDay !== 0 ? " · " + weekdayName(worshipDay) : "");
   const gateway = (gateways.data || [])[0];
   const textingProvider = (texting.data || [])[0]?.provider;
   const domainList = domains.data || [];
@@ -194,6 +196,7 @@ export const ManageChurch = () => {
                 <SettingsRow label={Locale.label("settings.regionSettingsEdit.region")} value={regionName(region)} />
                 <SettingsRow label={Locale.label("settings.regionSettingsEdit.dateFormat")} value={regionSample(region)} />
                 <SettingsRow label={Locale.label("settings.regionSettingsEdit.phoneFormat")} value={Locale.label(localPhones ? "settings.landing.phoneLocalSubtitle" : "settings.regionSettingsEdit.phoneInternational")} />
+                <SettingsRow label={Locale.label("settings.regionSettingsEdit.worshipDay", "Worship day")} value={weekdayName(worshipDay)} />
               </Box>
             )}
             renderEdit={(saveTrigger, onSaveComplete) => <RegionSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}

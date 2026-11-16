@@ -2,6 +2,7 @@ import { ApiHelper, ArrayHelper, DateHelper, Permissions, UserHelper } from "@ch
 import type { ApiListType, AssignmentInterface, GroupInterface, PersonInterface, PositionInterface, TimeInterface, VisitInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { type PlanInterface, type PlanItemInterface, hasPlansEditAccess } from "../helpers";
+import { WorshipDayHelper } from "../helpers/WorshipDayHelper";
 
 export interface OrderItem {
   label: string;
@@ -39,7 +40,7 @@ export interface SundayData {
   inRoom: number;
   live: boolean;
   recap: boolean;
-  isSunday: boolean;
+  isSunday: boolean; // today is the church's worship day
   split?: string;
   serving: ServingPerson[];
   guests: GuestChip[];
@@ -68,10 +69,13 @@ const inWindow = (p: PlanInterface, from: Date, to: Date) => {
   return t >= from.getTime() && t <= to.getTime();
 };
 
-const sundayOnOrBefore = (d: Date) => addDays(d, -d.getDay());
+// Days since the church's worship day (Sunday unless the worshipDay setting says otherwise).
+const daysSinceWorshipDay = (d: Date) => (d.getDay() - WorshipDayHelper.day + 7) % 7;
 
-const sundayAhead = (d: Date) => {
-  const last = sundayOnOrBefore(d);
+const worshipDayOnOrBefore = (d: Date) => addDays(d, -daysSinceWorshipDay(d));
+
+const worshipDayAhead = (d: Date) => {
+  const last = worshipDayOnOrBefore(d);
   return last.getTime() === d.getTime() ? last : addDays(last, 7);
 };
 
@@ -128,11 +132,11 @@ const safeGet = async <T>(url: string, api: ApiListType, fallback: T): Promise<T
 
 const loadSunday = async (): Promise<SundayData> => {
   const today = startOfDay(new Date());
-  const lastSunday = sundayOnOrBefore(today);
-  const comingSunday = sundayAhead(today);
-  const isSunday = lastSunday.getTime() === today.getTime();
-  const from = lastSunday;
-  const to = comingSunday;
+  const lastWorshipDay = worshipDayOnOrBefore(today);
+  const comingWorshipDay = worshipDayAhead(today);
+  const isWorshipDay = lastWorshipDay.getTime() === today.getTime();
+  const from = lastWorshipDay;
+  const to = comingWorshipDay;
 
   let plans = await safeGet<PlanInterface[]>("/plans/presenter", "DoingApi", []);
   if (!plans.length) {
@@ -156,13 +160,13 @@ const loadSunday = async (): Promise<SundayData> => {
   }));
 
   const upcoming = plans.filter((p) => planTime(p) >= today.getTime());
-  const servingPlan = pickPlan(upcoming, comingSunday, planTimes);
-  const plan = servingPlan || pickPlan(plans, lastSunday, planTimes);
-  const attendanceDay = isSunday ? today : lastSunday;
+  const servingPlan = pickPlan(upcoming, comingWorshipDay, planTimes);
+  const plan = servingPlan || pickPlan(plans, lastWorshipDay, planTimes);
+  const attendanceDay = isWorshipDay ? today : lastWorshipDay;
   const dateStr = DateHelper.formatHtml5Date(attendanceDay);
   const canAttendance = UserHelper.checkAccess(Permissions.attendanceApi.attendance.view);
   const canPeople = UserHelper.checkAccess(Permissions.membershipApi.people.view);
-  const assignPlan = servingPlan || (isSunday ? plan : null);
+  const assignPlan = servingPlan || (isWorshipDay ? plan : null);
 
   const [planItems, times, positions, assignments] = await Promise.all([
     plan?.id ? safeGet<PlanItemInterface[]>("/planItems/plan/" + plan.id, "DoingApi", []) : Promise.resolve([]),
@@ -200,8 +204,8 @@ const loadSunday = async (): Promise<SundayData> => {
       .reduce((sum: number, h: any) => sum + (Number(h.value) || 0), 0);
   }
 
-  const live = isSunday && inRoom > 0;
-  const recap = !isSunday && inRoom > 0;
+  const live = isWorshipDay && inRoom > 0;
+  const recap = !isWorshipDay && inRoom > 0;
 
   const roomMap = new Map<string, { count: number; name?: string }>();
   (groupRows || []).forEach((row: any) => {
@@ -277,14 +281,14 @@ const loadSunday = async (): Promise<SundayData> => {
   const canOpenPlan = !!plan?.id && (hasPlansEditAccess() || servingOnPlan
     || (!!plan.ministryId && (await safeGet<GroupInterface[]>("/groups/my/ministry", "MembershipApi", [])).some((g) => g.id === plan.ministryId)));
 
-  const focusDate = plan?.serviceDate ? startOfDay(DateHelper.toDate(plan.serviceDate)) : comingSunday;
-  return { plan, canOpenPlan, planStart, focusDate, order, inRoom, live, recap, isSunday, split, serving, guests, rooms };
+  const focusDate = plan?.serviceDate ? startOfDay(DateHelper.toDate(plan.serviceDate)) : comingWorshipDay;
+  return { plan, canOpenPlan, planStart, focusDate, order, inRoom, live, recap, isSunday: isWorshipDay, split, serving, guests, rooms };
 };
 
 export const useSunday = () => {
   const churchId = UserHelper.currentUserChurch?.church?.id;
   return useQuery<SundayData>({
-    queryKey: ["sunday-home", churchId],
+    queryKey: ["sunday-home", churchId, WorshipDayHelper.day],
     queryFn: loadSunday,
     enabled: !!churchId,
     placeholderData: { plan: null, planStart: null, focusDate: null, order: [], inRoom: 0, live: false, recap: false, isSunday: false, serving: [], guests: [], rooms: [] }
