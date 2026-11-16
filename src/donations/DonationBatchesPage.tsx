@@ -7,7 +7,7 @@ import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Stack } from "@mui/material";
 import { Add as AddIcon, ErrorOutline as FailedIcon, Print as PrintIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
-import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, ResultsBar, SortableTableHead, StatusBadge, TextAction, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
+import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, PillTabs, ResultsBar, SortableTableHead, StatusBadge, TextAction, YearPills, hoverRowSx, numericCellSx, tableScrollSx, yearOf, yearsFromDates, withCurrentYear } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { PermissionDenied } from "../components/PermissionDenied";
 import { Lede } from "./components/GivingParts";
@@ -15,6 +15,7 @@ import { type BatchWithStatus, canChangeBatch, canEditDonations, canEnterDonatio
 import { usesStripeGateway } from "./stripeGateway";
 
 type BatchRow = BatchWithStatus & { isConverted?: boolean };
+type BatchStatusFilter = "all" | "open" | "closed";
 
 const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate || 0).getTime() - new Date(b.batchDate || 0).getTime() };
 
@@ -22,6 +23,7 @@ export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
   const [currency, setCurrency] = React.useState<string>("usd");
   const [year, setYear] = React.useState<number | null>(null);
+  const [status, setStatus] = React.useState<BatchStatusFilter>("all");
   const [eventsOpen, setEventsOpen] = React.useState(false);
 
   // Each batch's totalAmount arrives already converted into the church currency by the Api, so they can be added up.
@@ -55,7 +57,9 @@ export const DonationBatchesPage = () => {
   if (!canSeeBatches()) return <PermissionDenied permissions={[Permissions.givingApi.donations.viewSummary, enterDonationsPermission]} />;
 
   const years = withCurrentYear(yearsFromDates((batches.data || []).map((b) => b.batchDate)));
-  const yearBatches = year === null ? sortedBatches : sortedBatches.filter((b) => yearOf(b.batchDate) === year);
+  const inYear = year === null ? sortedBatches : sortedBatches.filter((b) => yearOf(b.batchDate) === year);
+  // Closing a batch is the archive step: the status pills narrow the list to the batches still being worked on, or the finished ones.
+  const yearBatches = status === "all" ? inYear : inYear.filter((b) => (status === "closed") === isBatchClosed(b));
   const totalDonations = yearBatches.reduce((sum, b) => sum + (b.donationCount || 0), 0);
   const totalAmount = yearBatches.reduce((sum, b) => sum + (b.totalAmount || 0), 0);
   const isConverted = yearBatches.some((b) => b.isConverted);
@@ -133,7 +137,21 @@ export const DonationBatchesPage = () => {
       <PageContainer>
         <Surface>
           <Stack spacing={3}>
-            <YearPills years={years} value={year} onChange={setYear} allLabel={Locale.label("donations.donationBatchesPage.allYears", "All")} />
+            <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 1.5, md: 3 }} useFlexGap sx={{ alignItems: { md: "center" } }}>
+              <YearPills years={years} value={year} onChange={setYear} allLabel={Locale.label("donations.donationBatchesPage.allYears", "All")} />
+              <PillTabs
+                options={[
+                  { value: "all", label: Locale.label("donations.donationBatchesPage.allYears", "All"), "data-testid": "batch-status-pill-all" },
+                  { value: "open", label: Locale.label("donations.donationBatchPage.open", "Open"), "data-testid": "batch-status-pill-open" },
+                  { value: "closed", label: Locale.label("donations.donationBatchPage.closed", "Closed"), "data-testid": "batch-status-pill-closed" }
+                ]}
+                value={status}
+                onChange={(v) => setStatus(v as BatchStatusFilter)}
+                aria-label={Locale.label("donations.donationBatchesPage.status", "Status")}
+                data-testid="batch-status-pills"
+                sx={{ ml: { md: "auto" }, flexShrink: 0 }}
+              />
+            </Stack>
             {!batches.isLoading && (
               <ResultsBar>
                 <Lede data-testid="batches-lede">{lede}</Lede>
