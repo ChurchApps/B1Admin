@@ -3,9 +3,10 @@ import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from
 import { TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceTimeInterface, type ServiceInterface } from "@churchapps/helpers";
-import { useMountedState, ApiHelper, Locale, ErrorMessages, DateHelper } from "@churchapps/apphelper";
+import { useMountedState, ApiHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
+import { weekdayName } from "../../helpers/WorshipDayHelper";
 
 // Schedule fields are newer than the published ServiceTimeInterface.
 type ScheduledServiceTime = ServiceTimeInterface & {
@@ -23,8 +24,6 @@ interface Props {
 
 type AnyRecord = Record<string, any>;
 
-// 2026-01-04 was a Sunday, so day i of that week is weekday i (0 = Sunday).
-const weekdayName = (day: number) => new Date(2026, 0, 4 + day).toLocaleDateString(DateHelper.locale, { weekday: "long" });
 const toNumberOrNull = (value: any) => (value === "" || value === null || value === undefined || isNaN(Number(value)) ? null : Number(value));
 
 export const ServiceTimeEdit: React.FC<Props> = (props) => {

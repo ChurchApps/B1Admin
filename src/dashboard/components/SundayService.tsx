@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { useSunday } from "../useSunday";
 import { hasPlansEditAccess } from "../../helpers";
+import { WorshipDayHelper } from "../../helpers/WorshipDayHelper";
 import "../sunday.css";
 
 const clock = (start: Date | null | undefined, extraSeconds: number) => {
@@ -37,12 +38,13 @@ export const SundayService: React.FC = () => {
     canAttendance && <Link key="attendance" to="/attendance">{Locale.label("components.wrapper.att", "Attendance")}</Link>,
     canPlans && <Link key="plans" to="/serving/plans">{Locale.label("components.wrapper.plans", "Plans")}</Link>
   ].filter(Boolean);
-  const title = plan?.name || Locale.label("dashboard.sunday.thisSunday", "This Sunday");
+  const day = WorshipDayHelper.name();
+  const title = plan?.name || Locale.label("dashboard.sunday.thisDay", "This {day}").replace("{day}", day);
   const series = [plan?.providerPlanName, plan?.notes].filter(Boolean).join(" · ");
   const recap = !!data?.recap;
   const live = !!data?.live;
-  const servingLabel = live ? Locale.label("dashboard.sunday.servingThisHour", "Serving this hour") : Locale.label("dashboard.sunday.servingSunday", "Serving Sunday");
-  const guestLabel = recap ? Locale.label("dashboard.sunday.firstTimeLastSunday", "First time last Sunday") : Locale.label("dashboard.sunday.firstTime", "First time");
+  const servingLabel = live ? Locale.label("dashboard.sunday.servingThisHour", "Serving this hour") : Locale.label("dashboard.sunday.servingDay", "Serving {day}").replace("{day}", day);
+  const guestLabel = recap ? Locale.label("dashboard.sunday.firstTimeLastDay", "First time last {day}").replace("{day}", day) : Locale.label("dashboard.sunday.firstTime", "First time");
 
   return (
     <div className={"om-sunday" + (hasLive ? " has-live" : "")} data-testid="sunday-home">
@@ -86,7 +88,7 @@ export const SundayService: React.FC = () => {
           <p className="om-quiet" data-testid="sunday-live-hint">
             {data?.isSunday
               ? Locale.label("dashboard.sunday.liveHintSunday", "Who is in the room, who is serving, and who just walked in will show here once check-in and serving are in use.")
-              : Locale.label("dashboard.sunday.liveHint", "Who was in the room last Sunday and first-time households show here through the week.")}
+              : Locale.label("dashboard.sunday.liveHint", "Who was in the room last {day} and first-time households show here through the week.").replace("{day}", day)}
             {hintLinks.map((link, i) => <React.Fragment key={i}>{i === 0 ? " " : " · "}{link}</React.Fragment>)}
           </p>
         )}
@@ -97,7 +99,7 @@ export const SundayService: React.FC = () => {
           {(data?.inRoom || 0) > 0 && (
             <div>
               {live && <div className="om-pulse"><i /> {Locale.label("dashboard.sunday.live", "Live")}</div>}
-              {recap && <p className="om-eyebrow">{Locale.label("dashboard.sunday.lastSunday", "Last Sunday")}</p>}
+              {recap && <p className="om-eyebrow">{Locale.label("dashboard.sunday.lastDay", "Last {day}").replace("{day}", day)}</p>}
               <div className="om-in-room">{data?.inRoom}<span>{Locale.label("dashboard.sunday.inTheRoom", "in the room")}</span></div>
               {data?.split && <p className="om-split">{data.split}</p>}
             </div>

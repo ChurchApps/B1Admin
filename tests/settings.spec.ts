@@ -601,6 +601,23 @@ test.describe.serial("Settings Management", () => {
       await expect(batchDates().first()).toHaveText(MONTH_FIRST, { timeout: 15000 });
     });
 
+    // ChurchAppsSupport#1598: churches pick their main worship day; Sunday until they change it.
+    test("region settings offer a worship day that defaults to Sunday", async () => {
+      await page.goto("/settings#region");
+      await expect(page.locator('[data-testid="settings-section-region"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });
+      const region = page.locator('[data-testid="settings-region"]');
+      await expect(region).toContainText("Worship day");
+      await expect(region).toContainText("Sunday");
+      await region.locator('[data-testid="small-button-edit"]').dispatchEvent("click");
+      const select = page.locator('[data-testid="worship-day-select"]');
+      await expect(select).toHaveText(/Sunday/, { timeout: 10000 });
+      await select.click();
+      await expect(page.locator('[data-testid="worship-day-option-6"]')).toHaveText("Saturday");
+      await page.keyboard.press("Escape");
+      await region.getByRole("button", { name: "Cancel" }).click();
+      await expect(select).toHaveCount(0, { timeout: 10000 });
+    });
+
     const choosePhoneFormat = async (format: "international" | "local") => {
       await page.goto("/settings#region");
       await expect(page.locator('[data-testid="settings-section-region"]')).toHaveClass(/Mui-selected/, { timeout: 15000 });

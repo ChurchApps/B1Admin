@@ -7,6 +7,7 @@ import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
 import { hasAllGroupsAccess, hasPlansEditAccess } from "./helpers";
 import { churchBrandColor } from "./helpers/Themes";
+import { WorshipDayHelper } from "./helpers/WorshipDayHelper";
 import { useThemeMode } from "./ThemeContext";
 
 const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) => ({ default: module.PeoplePage })));
@@ -112,12 +113,13 @@ export const Authenticated: React.FC = () => {
     if (!churchId) return;
     let cancelled = false;
     ApiHelper.getAnonymous("/settings/public/" + churchId, "MembershipApi")
-      .then((settings: { region?: string; appTheme?: string; primaryColor?: string }) => {
+      .then((settings: { region?: string; worshipDay?: string; appTheme?: string; primaryColor?: string }) => {
         if (cancelled) return;
         DateHelper.setLocale(settings?.region);
+        WorshipDayHelper.set(settings?.worshipDay);
         setBrandColor(churchBrandColor(settings));
       })
-      .catch(() => { if (!cancelled) DateHelper.setLocale(null); })
+      .catch(() => { if (!cancelled) { DateHelper.setLocale(null); WorshipDayHelper.set(null); } })
       .finally(() => { if (!cancelled) setRegionChurchId(churchId); });
     return () => { cancelled = true; };
   }, [churchId]);

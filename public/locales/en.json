@@ -743,18 +743,18 @@
     },
     "sunday": {
       "firstTime": "First time",
-      "firstTimeLastSunday": "First time last Sunday",
+      "firstTimeLastDay": "First time last {day}",
       "inTheRoom": "in the room",
-      "lastSunday": "Last Sunday",
+      "lastDay": "Last {day}",
       "live": "Live",
-      "liveHint": "Who was in the room last Sunday and first-time households show here through the week.",
+      "liveHint": "Who was in the room last {day} and first-time households show here through the week.",
       "liveHintSunday": "Who is in the room, who is serving, and who just walked in will show here once check-in and serving are in use.",
       "noOrder": "No order of service on this plan.",
       "noPlan": "No service planned this week.",
       "rooms": "Rooms",
-      "servingSunday": "Serving Sunday",
+      "servingDay": "Serving {day}",
       "servingThisHour": "Serving this hour",
-      "thisSunday": "This Sunday",
+      "thisDay": "This {day}",
       "thisWeeksService": "This week's service will live here."
     }
   },
@@ -4480,7 +4480,9 @@
       "phoneInternational": "International (with country code)",
       "phoneLocal": "Local (as typed)",
       "region": "Region",
-      "title": "Region"
+      "title": "Region",
+      "worshipDay": "Worship day",
+      "worshipDayHelper": "The day your main service meets. The dashboard counts, labels and goes live on this day."
     },
     "roleCheck": {
       "permissionAria": "Permission {label}"

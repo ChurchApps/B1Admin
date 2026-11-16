@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { UniqueIdHelper, ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { type GenericSettingInterface } from "@churchapps/helpers";
+import { WorshipDayHelper, weekdayName } from "../../helpers/WorshipDayHelper";
 
 export const REGIONS = [
   "en-US", "en-GB", "en-AU", "en-CA", "de-DE", "fr-FR", "es-ES", "es-MX", "pt-BR", "nl-NL", "hu-HU"
@@ -28,6 +29,8 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
   const [setting, setSetting] = useState<GenericSettingInterface | null>(null);
   const [phoneFormat, setPhoneFormat] = useState<string>("international");
   const [phoneSetting, setPhoneSetting] = useState<GenericSettingInterface | null>(null);
+  const [worshipDay, setWorshipDay] = useState<string>("0");
+  const [worshipDaySetting, setWorshipDaySetting] = useState<GenericSettingInterface | null>(null);
   const [error, setError] = useState("");
 
   const save = async () => {
@@ -37,9 +40,13 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
     const ps: GenericSettingInterface = phoneSetting === null ? { churchId: props.churchId, public: 1, keyName: "phoneFormat" } : phoneSetting;
     ps.value = phoneFormat;
     ps.public = 1;
+    const ws: GenericSettingInterface = worshipDaySetting === null ? { churchId: props.churchId, public: 1, keyName: "worshipDay" } : worshipDaySetting;
+    ws.value = worshipDay;
+    ws.public = 1;
     try {
-      await ApiHelper.post("/settings", [s, ps], "MembershipApi");
+      await ApiHelper.post("/settings", [s, ps, ws], "MembershipApi");
       DateHelper.setLocale(value);
+      WorshipDayHelper.set(worshipDay);
       setError("");
       props.onSaveComplete?.(true);
     } catch (e: any) {
@@ -63,6 +70,11 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
     if (phone) {
       setPhoneSetting(phone);
       setPhoneFormat(phone.value === "local" ? "local" : "international");
+    }
+    const day = settings.find((c: GenericSettingInterface) => c.keyName === "worshipDay");
+    if (day) {
+      setWorshipDaySetting(day);
+      setWorshipDay(String(WorshipDayHelper.parse(day.value)));
     }
   };
 
@@ -112,6 +124,22 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
           <MenuItem value="local" data-testid="phone-format-option-local">{Locale.label("settings.regionSettingsEdit.phoneLocal")}</MenuItem>
         </Select>
         <FormHelperText>{Locale.label("settings.regionSettingsEdit.phoneHelperText")}</FormHelperText>
+      </FormControl>
+      <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+        <InputLabel id="worship-day-select-label">{Locale.label("settings.regionSettingsEdit.worshipDay", "Worship day")}</InputLabel>
+        <Select
+          labelId="worship-day-select-label"
+          label={Locale.label("settings.regionSettingsEdit.worshipDay", "Worship day")}
+          name="worshipDay"
+          value={worshipDay}
+          onChange={(e) => setWorshipDay(e.target.value as string)}
+          data-testid="worship-day-select"
+        >
+          {[0, 1, 2, 3, 4, 5, 6].map((d) => (
+            <MenuItem key={d} value={String(d)} data-testid={"worship-day-option-" + d}>{weekdayName(d, value)}</MenuItem>
+          ))}
+        </Select>
+        <FormHelperText>{Locale.label("settings.regionSettingsEdit.worshipDayHelper", "The day your main service meets. The dashboard counts, labels and goes live on this day.")}</FormHelperText>
       </FormControl>
     </Box>
   );

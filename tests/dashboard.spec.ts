@@ -105,6 +105,62 @@ test.describe("Sunday home", () => {
   });
 });
 
+// ChurchAppsSupport#1598: a church that worships on Saturday sees Saturday on the dashboard, not Sunday.
+// The worship day, plans and attendance are answered in the browser so the shared demo church is untouched.
+test.describe("Worship day", () => {
+  const SATURDAY = 6;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const ymd = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const monthDay = (d: Date) => d.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+
+  const mockSaturdayChurch = async (page: Page, visitsOn?: string) => {
+    await page.route("**/settings/public/**", async (route) => {
+      const response = await route.fetch();
+      const settings = await response.json();
+      await route.fulfill({ response, json: { ...settings, worshipDay: String(SATURDAY) } });
+    });
+    await page.route(/\/doing\/plans(\/presenter)?(\?.*)?$/, (route) => route.fulfill({ json: [] }));
+    await page.route(/\/attendancerecords\/search\?/, (route) => {
+      const hit = !!visitsOn && route.request().url().includes(`startDate=${visitsOn}`);
+      return route.fulfill({ json: hit ? [{ personId: "PER00000080", checkinType: "member" }] : [] });
+    });
+    await page.route(/\/attendancerecords\/groups\?/, (route) => route.fulfill({ json: [] }));
+    await page.route(/\/attendance\/headcounts$/, (route) => route.fulfill({ json: [] }));
+  };
+
+  test("a Saturday church sees the coming Saturday through the week", async ({ page }) => {
+    const now = new Date();
+    // Through the week means any day but Saturday; on a Saturday look from the Friday before.
+    if (now.getDay() === SATURDAY) {
+      now.setDate(now.getDate() - 1);
+      await page.clock.setFixedTime(now);
+    }
+    const coming = new Date(now);
+    coming.setDate(now.getDate() + ((SATURDAY - now.getDay() + 7) % 7));
+    await mockSaturdayChurch(page);
+    await page.goto("/");
+
+    const home = page.getByTestId("sunday-home");
+    await expect(home.locator("h1.om-sermon")).toHaveText("This Saturday", { timeout: 15000 });
+    await expect(home.locator(".om-eyebrow").first()).toHaveText(new RegExp(`^Saturday · ${monthDay(coming)}`));
+    await expect(page.getByTestId("sunday-live-hint")).toContainText("Who was in the room last Saturday");
+  });
+
+  test("Saturday check-ins go live on Saturday", async ({ page }) => {
+    const saturday = new Date();
+    saturday.setDate(saturday.getDate() - ((saturday.getDay() - SATURDAY + 7) % 7));
+    saturday.setHours(10, 0, 0, 0);
+    await page.clock.setFixedTime(saturday);
+    await mockSaturdayChurch(page, ymd(saturday));
+    await page.goto("/");
+
+    const home = page.getByTestId("sunday-home");
+    await expect(home.locator("h1.om-sermon")).toHaveText("This Saturday", { timeout: 15000 });
+    await expect(home.locator(".om-pulse")).toContainText("Live", { timeout: 15000 });
+    await expect(home.locator(".om-in-room")).toContainText("1");
+  });
+});
+
 // Holds matching API requests until release() is called, so the page stays in its loading state.
 const holdRequests = async (page: Page, pattern: RegExp) => {
   let release = () => {};
