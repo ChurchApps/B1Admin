@@ -236,3 +236,48 @@ test("New Task can create a task for each member of a group", async ({ page }) =
   await page.locator('[data-testid="tasklist-tab-created"]').click();
   await expect(page.locator('[data-testid="task-list"] tr', { hasText: title })).toHaveCount(3, { timeout: 15000 });
 });
+
+// ChurchAppsSupport#1592: "Associate with" takes several people too; Save makes one task per assignee per associated person.
+test("New Task creates one task per associated person", async ({ page }) => {
+  const title = "Follow up with a visitor " + Date.now();
+  await page.goto("/serving/tasks");
+  await page.locator('[data-testid="add-task-button"]').click();
+  await page.locator('[data-testid="associate-with-input"] input').click();
+  for (const name of ["Donald Clark", "Demo User"]) {
+    await page.locator('[name="personAddText"]').fill(name);
+    await page.locator('[data-testid="search-button"]').click();
+    await personAddButton(page, name).click();
+  }
+  const selected = page.locator('[data-testid="content-picker-selected"]');
+  await expect(selected).toContainText("Donald Clark", { timeout: 15000 });
+  await expect(selected).toContainText("Demo User");
+  await page.locator('[data-testid="content-picker-done"]').click();
+
+  const chips = page.locator('[data-testid="associated-chips"]');
+  await expect(chips).toContainText("Donald Clark");
+  await expect(chips).toContainText("Demo User");
+  await expect(page.locator('[data-testid="associate-with-input"] input')).toHaveValue("2 people");
+
+  await page.locator('[data-testid="assign-to-input"]').click();
+  for (const name of ["Demo User", "Donald Clark"]) {
+    await page.locator('[name="personAddText"]').fill(name);
+    await page.locator('[data-testid="search-button"]').click();
+    await personAddButton(page, name).click();
+  }
+  await page.locator('[data-testid="content-picker-done"]').click();
+  await expect(page.locator('[data-testid="task-total-hint"]')).toHaveText("4 tasks will be created.");
+
+  await page.locator('[name="title"]').fill(title);
+  const posted = page.waitForRequest((req) => req.method() === "POST" && /\/doing\/tasks$/.test(req.url()), { timeout: 15000 });
+  await page.locator("button").getByText("Save").click();
+  const body = (await posted).postDataJSON();
+  expect(body.map((t: any) => t.assignedToLabel + " / " + t.associatedWithLabel).sort()).toEqual([
+    "Demo User / Demo User",
+    "Demo User / Donald Clark",
+    "Donald Clark / Demo User",
+    "Donald Clark / Donald Clark"
+  ]);
+  expect(body.every((t: any) => t.associatedWithType === "person" && t.title === title)).toBe(true);
+  await page.locator('[data-testid="tasklist-tab-created"]').click();
+  await expect(page.locator('[data-testid="task-list"] tr', { hasText: title })).toHaveCount(4, { timeout: 15000 });
+});

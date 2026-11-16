@@ -32,13 +32,23 @@ export const NewTask = (props: Props) => {
   const [task, setTask] = React.useState<TaskInterface>(initialData);
   const [message, setMessage] = React.useState<MessageInterface>({});
   const [assignees, setAssignees] = React.useState<Assignee[]>([]);
+  const [associated, setAssociated] = React.useState<Assignee[]>([]);
   const [modalField, setModalField] = React.useState("");
   const [errors, setErrors] = React.useState<string[]>([]);
 
   const createTaskMutation = useMutation({
-    mutationFn: async (taskData: { task: TaskInterface; assignees: Assignee[]; message?: MessageInterface }) => {
-      // One task per assignee, so each person closes their own.
-      const newTasks = taskData.assignees.map((a) => ({ ...taskData.task, assignedToType: a.contentType, assignedToId: a.contentId, assignedToLabel: a.label }));
+    mutationFn: async (taskData: { task: TaskInterface; assignees: Assignee[]; associated: Assignee[]; message?: MessageInterface }) => {
+      // One task per assignee for each associated person, so each person closes their own.
+      const about: (Assignee | undefined)[] = taskData.associated.length > 0 ? taskData.associated : [undefined];
+      const newTasks = taskData.assignees.flatMap((a) => about.map((w) => ({
+        ...taskData.task,
+        assignedToType: a.contentType,
+        assignedToId: a.contentId,
+        assignedToLabel: a.label,
+        associatedWithType: w?.contentType,
+        associatedWithId: w?.contentId,
+        associatedWithLabel: w?.label
+      })));
       const createdTasks: TaskInterface[] = await ApiHelper.post("/tasks", newTasks, "DoingApi");
 
       await Promise.all(createdTasks.map(async (createdTask) => {
@@ -84,7 +94,7 @@ export const NewTask = (props: Props) => {
 
   const handleSave = () => {
     if (validate()) {
-      createTaskMutation.mutate({ task, assignees, message });
+      createTaskMutation.mutate({ task, assignees, associated, message });
     }
   };
 
@@ -108,39 +118,36 @@ export const NewTask = (props: Props) => {
     }
   };
 
-  const handleContentPicked = (contentType: string, contentId: string, label: string) => {
-    const t = { ...task };
-    switch (modalField) {
-      case "associatedWith":
-        // Empty values mean "no person or group": a plain to-do.
-        t.associatedWithType = contentId ? contentType : undefined;
-        t.associatedWithId = contentId || undefined;
-        t.associatedWithLabel = contentId ? label : undefined;
-        break;
-      case "assignedTo":
-        // People add up and the picker stays open for more; a group is one shared task.
-        if (contentType === "person") {
-          const people = assignees.filter((a) => a.contentType === "person");
-          if (contentId && !people.some((a) => a.contentId === contentId)) setAssignees([...people, { contentType, contentId, label }]);
-          return;
-        }
-        setAssignees([{ contentType, contentId, label }]);
-        break;
-    }
+  const listFor = (field: string) => (field === "associatedWith" ? associated : assignees);
+  const setListFor = (field: string, list: Assignee[]) => (field === "associatedWith" ? setAssociated(list) : setAssignees(list));
 
-    setTask(t);
+  const handleContentPicked = (contentType: string, contentId: string, label: string) => {
+    // Empty values mean "no person or group": a plain to-do.
+    if (!contentId) {
+      setListFor(modalField, []);
+      setModalField("");
+      return;
+    }
+    // People add up and the picker stays open for more; a group is one shared task.
+    if (contentType === "person") {
+      const people = listFor(modalField).filter((a) => a.contentType === "person");
+      if (!people.some((a) => a.contentId === contentId)) setListFor(modalField, [...people, { contentType, contentId, label }]);
+      return;
+    }
+    setListFor(modalField, [{ contentType, contentId, label }]);
     setModalField("");
   };
 
   const handleExpandGroup = async (group: GroupInterface) => {
+    const field = modalField;
     const members: GroupMemberInterface[] = await ApiHelper.get("/groupmembers?groupId=" + group.id, "MembershipApi");
-    const result = assignees.filter((a) => a.contentType === "person");
+    const result = listFor(field).filter((a) => a.contentType === "person");
     members.forEach((m) => {
       if (m.personId && !result.some((a) => a.contentId === m.personId)) {
         result.push({ contentType: "person", contentId: m.personId, label: m.person?.name?.display || Locale.label("person.unknown") });
       }
     });
-    setAssignees(result);
+    setListFor(field, result);
     setModalField("");
   };
 
@@ -148,9 +155,15 @@ export const NewTask = (props: Props) => {
     setAssignees(assignees.filter((a) => a.contentId !== contentId));
   };
 
-  const assignLabel = assignees.length > 1
-    ? Locale.label("tasks.newTask.assignCount", "{{count}} people").replace("{{count}}", assignees.length.toString())
-    : assignees[0]?.label || "";
+  const handleRemoveAssociated = (contentId: string) => {
+    setAssociated(associated.filter((a) => a.contentId !== contentId));
+  };
+
+  const countLabel = (list: Assignee[]) => (list.length > 1
+    ? Locale.label("tasks.newTask.assignCount", "{{count}} people").replace("{{count}}", list.length.toString())
+    : list[0]?.label || "");
+  const assignLabel = countLabel(assignees);
+  const assocLabel = countLabel(associated);
 
   const handleModalClose = () => {
     setModalField("");
@@ -170,8 +183,8 @@ export const NewTask = (props: Props) => {
             <TextField
               fullWidth
               label={Locale.label("tasks.newTask.associateW")}
-              value={task.associatedWithLabel || ""}
-              helperText={Locale.label("tasks.newTask.associateHint", "Optional. Leave blank for a to-do that is not about anyone.")}
+              value={assocLabel}
+              helperText={associated.length > 1 ? undefined : Locale.label("tasks.newTask.associateHint", "Optional. Leave blank for a to-do that is not about anyone.")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -188,6 +201,18 @@ export const NewTask = (props: Props) => {
               aria-label={Locale.label("tasks.newTask.associateWithAria")}
               variant="outlined"
             />
+            {associated.length > 1 && (
+              <>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mt: 1 }} data-testid="associated-chips">
+                  {associated.map((a) => (
+                    <Chip key={a.contentId} size="small" label={a.label} onDelete={() => handleRemoveAssociated(a.contentId)} />
+                  ))}
+                </Box>
+                <FormHelperText data-testid="associate-per-person-hint">
+                  {Locale.label("tasks.newTask.perPersonHint", "One task will be created for each person.")}
+                </FormHelperText>
+              </>
+            )}
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: props.compact ? 6 : 4 }}>
             <TextField
@@ -220,6 +245,11 @@ export const NewTask = (props: Props) => {
                 <FormHelperText data-testid="assign-per-person-hint">
                   {Locale.label("tasks.newTask.perPersonHint", "One task will be created for each person.")}
                 </FormHelperText>
+                {associated.length > 1 && (
+                  <FormHelperText data-testid="task-total-hint">
+                    {Locale.label("tasks.newTask.totalHint", "{{count}} tasks will be created.").replace("{{count}}", (assignees.length * associated.length).toString())}
+                  </FormHelperText>
+                )}
               </>
             )}
           </Grid>
@@ -287,9 +317,9 @@ export const NewTask = (props: Props) => {
           onClose={handleModalClose}
           onSelect={handleContentPicked}
           allowNone={modalField === "associatedWith"}
-          multiple={modalField === "assignedTo"}
-          selected={assignees.filter((a) => a.contentType === "person")}
-          onRemove={handleRemoveAssignee}
+          multiple
+          selected={listFor(modalField).filter((a) => a.contentType === "person")}
+          onRemove={modalField === "associatedWith" ? handleRemoveAssociated : handleRemoveAssignee}
           onExpandGroup={handleExpandGroup}
         />
       )}
