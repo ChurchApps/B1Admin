@@ -6302,7 +6302,8 @@
       "taskNew": "New Task",
       "taskNotesAria": "Task notes",
       "taskTitleAria": "Task title",
-      "titleTask": "Please enter a title for this task."
+      "titleTask": "Please enter a title for this task.",
+      "totalHint": "{{count}} tasks will be created."
     },
     "reminders": {
       "channels": "Send By",
