@@ -26,6 +26,8 @@ export const B1MobilePage: React.FC = () => {
   const [hideSignInSetting, setHideSignInSetting] = React.useState<GenericSettingInterface | null>(null);
   const [signInPromptText, setSignInPromptText] = React.useState("");
   const [signInPromptTextSetting, setSignInPromptTextSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [requestEventText, setRequestEventText] = React.useState("");
+  const [requestEventTextSetting, setRequestEventTextSetting] = React.useState<GenericSettingInterface | null>(null);
   const [tileLayout, setTileLayout] = React.useState("grid");
   const [tileLayoutSetting, setTileLayoutSetting] = React.useState<GenericSettingInterface | null>(null);
   const [homeAttendance, setHomeAttendance] = React.useState(false);
@@ -83,6 +85,8 @@ export const B1MobilePage: React.FC = () => {
     if (hideSignIn) { setHideSignInSetting(hideSignIn); setHideSignInPrompt(hideSignIn.value === "true"); }
     const promptText = allSettings.find(s => s.keyName === "mobileSignInPromptText");
     if (promptText) { setSignInPromptTextSetting(promptText); setSignInPromptText(promptText.value || ""); }
+    const reqText = allSettings.find(s => s.keyName === "mobileRequestEventText");
+    if (reqText) { setRequestEventTextSetting(reqText); setRequestEventText(reqText.value || ""); }
     const tiles = allSettings.find(s => s.keyName === "mobileTileLayout");
     if (tiles) { setTileLayoutSetting(tiles); setTileLayout(tiles.value || "grid"); }
     const attendanceHome = allSettings.find(s => s.keyName === "mobileHomeAttendance");
@@ -118,6 +122,7 @@ export const B1MobilePage: React.FC = () => {
       const msgAge = toSave(msgAgeSetting, "messagingMinimumAge", messagingMinimumAge);
       const hideSignIn = toSave(hideSignInSetting, "mobileHideSignInPrompt", hideSignInPrompt ? "true" : "false");
       const promptText = toSave(signInPromptTextSetting, "mobileSignInPromptText", signInPromptText.trim());
+      const requestText = toSave(requestEventTextSetting, "mobileRequestEventText", requestEventText.trim());
       const tiles = toSave(tileLayoutSetting, "mobileTileLayout", tileLayout);
       const attendanceHome = toSave(homeAttendanceSetting, "mobileHomeAttendance", homeAttendance ? "true" : "false");
       const formsHome = toSave(homeFormsSetting, "mobileHomeForms", homeForms ? "true" : "false");
@@ -125,7 +130,7 @@ export const B1MobilePage: React.FC = () => {
       const newsCat = toSave(newsCategorySetting, "mobileHomeNewsCategory", newsCategory);
 
       await ApiHelper.post("/settings", [
-        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText, tiles, attendanceHome, formsHome, newsHome, newsCat
+        approval, visibility, addrSett, phoneSett, emailSett, msgAge, hideSignIn, promptText, requestText, tiles, attendanceHome, formsHome, newsHome, newsCat
       ], "MembershipApi");
       // The app caches these settings, so refresh it for the home-screen prompt to update right away.
       clearSiteCache();
@@ -268,6 +273,27 @@ export const B1MobilePage: React.FC = () => {
               onChange={(e) => setSignInPromptText(e.target.value)}
               disabled={hideSignInPrompt}
               slotProps={{ inputLabel: { shrink: true }, htmlInput: { maxLength: 150 } }}
+            />
+          </Grid>
+        </Grid>
+        <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="h3">{Locale.label("mobile.b1MobilePage.requestEventTitle")}</Typography>
+          <Tooltip title={Locale.label("mobile.b1MobilePage.requestEventHelp")} arrow>
+            <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+          </Tooltip>
+        </Stack>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12 }}>
+            <TextField
+              fullWidth
+              size="small"
+              multiline
+              minRows={3}
+              label={Locale.label("mobile.b1MobilePage.requestEventText")}
+              placeholder={Locale.label("mobile.b1MobilePage.requestEventPlaceholder")}
+              value={requestEventText}
+              onChange={(e) => setRequestEventText(e.target.value)}
+              slotProps={{ inputLabel: { shrink: true }, htmlInput: { maxLength: 1000 } }}
             />
           </Grid>
         </Grid>

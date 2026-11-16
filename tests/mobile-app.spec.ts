@@ -648,7 +648,7 @@ test.describe("B1 Mobile page saves", () => {
 
     test.afterAll(async () => {
       // Put the prompt and tiles back to the defaults so B1App dashboard specs see them.
-      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileTileLayout: "grid", mobileHomeAttendance: "false", mobileHomeForms: "false", mobileHomeNews: "false", mobileHomeNewsCategory: "" };
+      const defaults: Record<string, string> = { mobileHideSignInPrompt: "false", mobileSignInPromptText: "", mobileRequestEventText: "", mobileTileLayout: "grid", mobileHomeAttendance: "false", mobileHomeForms: "false", mobileHomeNews: "false", mobileHomeNewsCategory: "" };
       const all = (await (await ctx.get(`${API}/membership/settings`, auth)).json()) as any[];
       const rows = all.filter(s => s.keyName in defaults).map(s => ({ ...s, value: defaults[s.keyName] }));
       if (rows.length) await ctx.post(`${API}/membership/settings`, { ...auth, data: rows });
@@ -681,6 +681,21 @@ test.describe("B1 Mobile page saves", () => {
       await page.reload();
       await expect(page.getByLabel("Show sign-in prompt on the app home screen")).not.toBeChecked({ timeout: 15000 });
       await expect(page.getByLabel("Sign-in prompt text")).toHaveValue("Sign in to get conference alerts");
+    });
+
+    // ChurchAppsSupport#1588: the church's own instructions replace the Request an Event page's default line.
+    test("event request instructions save trimmed as a public setting that survives a reload", async ({ page }) => {
+      await page.goto("/mobile/b1-mobile");
+      await expect(page.getByRole("heading", { name: "Event request page" })).toBeVisible({ timeout: 15000 });
+      const text = page.getByLabel("Event request instructions");
+      await expect(text).toHaveAttribute("placeholder", "Staff will approve each room and item.");
+      await text.fill("  Requests need two weeks' notice.\nDonald Clark confirms every booking.  ");
+      await saveSettings(page);
+
+      const pub = await publicSettings();
+      expect(pub.mobileRequestEventText).toBe("Requests need two weeks' notice.\nDonald Clark confirms every booking.");
+      await page.reload();
+      await expect(page.getByLabel("Event request instructions")).toHaveValue("Requests need two weeks' notice.\nDonald Clark confirms every booking.", { timeout: 15000 });
     });
 
     test("home screen tiles default to Grid and List saves as a public setting that survives a reload", async ({ page }) => {
