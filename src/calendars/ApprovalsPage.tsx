@@ -4,10 +4,12 @@ import { Permissions, type CuratedCalendarInterface, type EventInterface, type P
 import { Link } from "react-router-dom";
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { PermissionDenied } from "../components";
-import { CountChip, PillTabs, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { AppIconButton, CountChip, PillTabs, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
+import { SwapHoriz as SwapHorizIcon } from "@mui/icons-material";
 import { useConfirmDelete } from "../hooks";
 import { CalendarChrome } from "./components/CalendarChrome";
 import { EventModal } from "./components/EventModal";
+import { RequesterDialog } from "./components/RequesterDialog";
 import { type EventBookingInterface } from "./interfaces";
 
 const calendarsAdmin = { api: "ContentApi", contentType: "Calendars", action: "Admin" };
@@ -21,6 +23,7 @@ export const ApprovalsPage = () => {
   const [snack, setSnack] = useState("");
   const [approvingId, setApprovingId] = useState("");
   const [editingEventId, setEditingEventId] = useState("");
+  const [requesterEventId, setRequesterEventId] = useState("");
   const [publish, setPublish] = useState(false);
   const [curatedCalendarId, setCuratedCalendarId] = useState("");
   const [curatedCalendars, setCuratedCalendars] = useState<CuratedCalendarInterface[] | null>(null);
@@ -122,6 +125,24 @@ export const ApprovalsPage = () => {
     return <Typography component={Link} to={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 600 }}>{name}</Typography>;
   };
 
+  // #1603: the swap icon moves the whole request (event and its bookings) to another person.
+  const requesterCell = (personId?: string, eventId?: string) => (
+    <TableCell>
+      <Stack direction="row" spacing={0.5} alignItems="center">
+        {personLink(personId)}
+        {eventId && (
+          <AppIconButton
+            className="no-print"
+            label={Locale.label("calendars.approvals.changeRequester")}
+            icon={<SwapHorizIcon />}
+            onClick={() => setRequesterEventId(eventId)}
+            data-testid={`change-requester-${eventId}`}
+          />
+        )}
+      </Stack>
+    </TableCell>
+  );
+
   const decisionBadge = (status?: string) => (status === "approved"
     ? <StatusBadge tone="success">{Locale.label("calendars.approvals.approved")}</StatusBadge>
     : <StatusBadge tone="danger">{Locale.label("calendars.approvals.rejected")}</StatusBadge>);
@@ -175,7 +196,7 @@ export const ApprovalsPage = () => {
                   <TableRow key={b.id} hover>
                     {eventCell(b.eventTitle, b.eventStart)}
                     {roomCell(b)}
-                    <TableCell>{personLink(b.requestedBy)}</TableCell>
+                    {requesterCell(b.requestedBy, b.eventId)}
                     <TableCell>{decisionBadge(b.status)}</TableCell>
                     <TableCell>{decided(b)}</TableCell>
                     <TableCell align="right" className="rowActions">
@@ -213,7 +234,7 @@ export const ApprovalsPage = () => {
                   <TableRow key={e.id} hover>
                     {eventCell(e.title, e.start)}
                     <TableCell>{e.description}</TableCell>
-                    <TableCell>{personLink((e as any).requestedBy)}</TableCell>
+                    {requesterCell((e as any).requestedBy, e.id)}
                     <TableCell>{decisionBadge((e as any).approvalStatus)}</TableCell>
                     <TableCell>{decided(e as any)}</TableCell>
                     <TableCell align="right" className="rowActions">
@@ -269,7 +290,7 @@ export const ApprovalsPage = () => {
                         <TableRow key={b.id} hover>
                           {eventCell(b.eventTitle, b.eventStart)}
                           {roomCell(b)}
-                          <TableCell>{personLink(b.requestedBy)}</TableCell>
+                          {requesterCell(b.requestedBy, b.eventId)}
                           <TableCell>
                             {(b.conflicts?.length || 0) > 0 ? (
                               <Tooltip title={<>{(b.conflicts || []).map((c, i) => <div key={i}>{c.message}</div>)}</>}>
@@ -313,7 +334,7 @@ export const ApprovalsPage = () => {
                         <TableRow key={e.id} hover>
                           {eventCell(e.title, e.start)}
                           <TableCell>{e.description}</TableCell>
-                          <TableCell>{personLink((e as any).requestedBy)}</TableCell>
+                          {requesterCell((e as any).requestedBy, e.id)}
                           <TableCell align="right" className="rowActions">
                             <VerbRow sx={{ justifyContent: "flex-end" }}>
                               <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>
@@ -338,6 +359,7 @@ export const ApprovalsPage = () => {
           onDone={(saved) => { setEditingEventId(""); if (saved) loadData(); }}
         />
       )}
+      {requesterEventId && <RequesterDialog eventId={requesterEventId} onClose={() => setRequesterEventId("")} onUpdated={loadData} />}
       <Dialog open={!!approvingId} onClose={() => setApprovingId("")} fullWidth maxWidth="xs" data-testid="approve-booking-dialog">
         <DialogTitle>{Locale.label("calendars.approvals.approveBookingTitle")}</DialogTitle>
         <DialogContent>

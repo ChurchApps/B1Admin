@@ -222,6 +222,7 @@
       "approved": "Approved",
       "approvedToast": "Booking approved.",
       "bookingRequests": "Room & Resource Requests",
+      "changeRequester": "Change requester",
       "confirmReject": "Are you sure you wish to reject this request?",
       "conflicts": "Conflicts",
       "curatedCalendar": "Also add to calendar",
