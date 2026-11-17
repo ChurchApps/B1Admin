@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
+import { ApiHelper, EventHelper, Loading, Locale } from "@churchapps/apphelper";
 import { RRuleEditor } from "@churchapps/apphelper/website";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import { GalleryModal } from "../../components/gallery";
 import { type ConflictInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 import { EventReminderEdit, type EventReminderEditRef } from "./EventReminderEdit";
 import { useConfirmDelete } from "../../hooks";
+import { EditRecurringModal, type RecurringEditType } from "./EditRecurringModal";
 
 interface Props {
   churchId: string;
@@ -15,6 +16,8 @@ interface Props {
   curatedCalendarId?: string;
   initialRoomId?: string;
   initialResourceId?: string;
+  // The clicked date of a recurring event; enables the just-this-date / following-dates choice.
+  occurrenceStart?: Date;
   onDone: (saved: boolean) => void;
 }
 
@@ -22,6 +25,10 @@ const toInputValue = (d: Date) => {
   const pad = (n: number) => n.toString().padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
+
+// UNTIL is inclusive, so end the series at the close of the day before the clicked occurrence.
+// EventHelper.getFullRRule feeds dtstart as local wall-clock labelled UTC, so UNTIL must use the same frame.
+const endBefore = (occurrence: Date) => new Date(Date.UTC(occurrence.getFullYear(), occurrence.getMonth(), occurrence.getDate(), 0, 0, -1));
 
 export function EventModal(props: Props) {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -53,6 +60,8 @@ export function EventModal(props: Props) {
   const [loading, setLoading] = useState(!!props.eventId);
   const [existingBookings, setExistingBookings] = useState<any[]>([]);
   const [hasRegistration, setHasRegistration] = useState(false);
+  const [seriesStart, setSeriesStart] = useState<Date | null>(null);
+  const [recurrenceModalType, setRecurrenceModalType] = useState<"" | "edit" | "delete">("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const reminderRef = useRef<EventReminderEditRef>(null);
   const savedRef = useRef<{ eventId?: string; bookings: boolean; curated: boolean }>({ bookings: false, curated: false });
@@ -77,7 +86,10 @@ export function EventModal(props: Props) {
         // ponytail: cast until @churchapps/helpers publishes photoUrl on EventInterface
         if ((data as any).photoUrl) setPhotoUrl((data as any).photoUrl);
         if (data.groupId) setGroupId(data.groupId.toString());
-        if (data.start) setStart(toInputValue(new Date(data.start)));
+        if (data.start) {
+          setStart(toInputValue(new Date(data.start)));
+          setSeriesStart(new Date(data.start));
+        }
         if (data.end) setEnd(toInputValue(new Date(data.end)));
         if (data.recurrenceRule) setRRule(data.recurrenceRule);
         if (data.visibility) setVisibility(data.visibility);
@@ -171,64 +183,153 @@ export function EventModal(props: Props) {
     if (value && template?.durationMinutes) setEnd(toInputValue(new Date(new Date(value).getTime() + template.durationMinutes * 60 * 1000)));
   };
 
+  const buildEvent = (): EventInterface => ({
+    id: props.eventId || savedRef.current.eventId,
+    groupId: groupId || null,
+    title,
+    description,
+    photoUrl: photoUrl || null,
+    start: new Date(start),
+    end: new Date(end),
+    allDay: false,
+    visibility,
+    tags: tags.trim() || null,
+    notesViewRole: notesViewRole === "staff" ? null : notesViewRole,
+    notesPostRole: notesPostRole === "staff" ? null : notesPostRole,
+    recurrenceRule: rRule || undefined
+  } as EventInterface);
+
+  // splitOff: the event is a new copy of one date or the following dates, so it gets its own
+  // bookings and calendar link and the series keeps the rows it already has.
+  const saveEvent = async (event: EventInterface, splitOff: boolean) => {
+    const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
+    const eventId = savedEvents[0].id;
+    savedRef.current.eventId = eventId;
+    const window = customWindow && windowStart && windowEnd
+      ? { startTime: new Date(windowStart), endTime: new Date(windowEnd), setupMinutes: null, teardownMinutes: null }
+      : { setupMinutes: toInt(setupMinutes) || null, teardownMinutes: toInt(teardownMinutes) || null, startTime: null, endTime: null };
+    if (splitOff && customWindow && windowStart && windowEnd) {
+      const shift = new Date(event.start!).getTime() - new Date(start).getTime();
+      window.startTime = new Date(new Date(windowStart).getTime() + shift);
+      window.endTime = new Date(new Date(windowEnd).getTime() + shift);
+    }
+    const priorBooking = (match: (b: any) => boolean) => {
+      const existing = existingBookings.find(match) || {};
+      if (!splitOff) return existing;
+      const { id: _id, ...rest } = existing;
+      return rest;
+    };
+
+    const newRoomBookings = roomIds.map((roomId) => ({ ...priorBooking(b => b.roomId === roomId), eventId, roomId, ...window }));
+    const newResourceBookings = resourceIds.map((resourceId) => {
+      const existing = priorBooking(b => b.resourceId === resourceId);
+      return { ...existing, eventId, resourceId, quantity: existing.quantity ?? 1, ...window };
+    });
+
+    const bookings = [...newRoomBookings, ...newResourceBookings];
+
+    const toDelete = splitOff ? [] : existingBookings.filter(b => !roomIds.includes(b.roomId) && !resourceIds.includes(b.resourceId));
+
+    if (!savedRef.current.bookings) {
+      for (const b of toDelete) {
+        if (b.id) await ApiHelper.delete("/eventBookings/" + b.id, "ContentApi");
+      }
+      if (bookings.length > 0) await ApiHelper.post("/eventBookings", bookings, "ContentApi");
+      savedRef.current.bookings = true;
+    }
+    if (props.curatedCalendarId && eventId !== props.eventId && !savedRef.current.curated) {
+      await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
+      savedRef.current.curated = true;
+    }
+    // A split-off copy gets no reminder write: the editor holds the series definition.
+    if (!splitOff) await reminderRef.current?.save(eventId);
+  };
+
+  const canSplit = !!(props.eventId && rRule && props.occurrenceStart);
+
   const handleSave = async () => {
+    if (canSplit) {
+      setRecurrenceModalType("edit");
+      return;
+    }
     if (props.eventId && rRule) {
       const ok = await confirm(Locale.label("calendars.calendarEvent.confirmEditSeries"), { confirmLabel: Locale.label("common.save"), destructive: false });
       if (!ok) return;
     }
     setSaving(true);
     try {
-      const event: EventInterface = {
-        id: props.eventId || savedRef.current.eventId,
-        groupId: groupId || null,
-        title,
-        description,
-        photoUrl: photoUrl || null,
-        start: new Date(start),
-        end: new Date(end),
-        allDay: false,
-        visibility,
-        tags: tags.trim() || null,
-        notesViewRole: notesViewRole === "staff" ? null : notesViewRole,
-        notesPostRole: notesPostRole === "staff" ? null : notesPostRole,
-        recurrenceRule: rRule || undefined
-      } as EventInterface;
-      const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
-      const eventId = savedEvents[0].id;
-      savedRef.current.eventId = eventId;
-      const window = customWindow && windowStart && windowEnd
-        ? { startTime: new Date(windowStart), endTime: new Date(windowEnd), setupMinutes: null, teardownMinutes: null }
-        : { setupMinutes: toInt(setupMinutes) || null, teardownMinutes: toInt(teardownMinutes) || null, startTime: null, endTime: null };
-
-      const newRoomBookings = roomIds.map((roomId) => {
-        const existing = existingBookings.find(b => b.roomId === roomId) || {};
-        return { ...existing, eventId, roomId, ...window };
-      });
-      const newResourceBookings = resourceIds.map((resourceId) => {
-        const existing = existingBookings.find(b => b.resourceId === resourceId) || {};
-        return { ...existing, eventId, resourceId, quantity: existing.quantity ?? 1, ...window };
-      });
-
-      const bookings = [...newRoomBookings, ...newResourceBookings];
-
-      const toDelete = existingBookings.filter(b => !roomIds.includes(b.roomId) && !resourceIds.includes(b.resourceId));
-
-      if (!savedRef.current.bookings) {
-        for (const b of toDelete) {
-          if (b.id) await ApiHelper.delete("/eventBookings/" + b.id, "ContentApi");
-        }
-        if (bookings.length > 0) await ApiHelper.post("/eventBookings", bookings, "ContentApi");
-        savedRef.current.bookings = true;
-      }
-      if (props.curatedCalendarId && !props.eventId && !savedRef.current.curated) {
-        await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
-        savedRef.current.curated = true;
-      }
-      await reminderRef.current?.save(eventId);
+      await saveEvent(buildEvent(), false);
       props.onDone(true);
     } catch {
       setSaving(false);
     }
+  };
+
+  // Ends the original series the day before the clicked date, or deletes it when the clicked date is its first.
+  const shortenSeries = async () => {
+    const originalEv: EventInterface = await ApiHelper.get("/events/" + props.eventId, "ContentApi");
+    const rrule = EventHelper.getFullRRule(originalEv);
+    const until = endBefore(props.occurrenceStart!);
+    if (until < rrule.options.dtstart) {
+      await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
+      return;
+    }
+    rrule.options.until = until;
+    EventHelper.cleanRule(rrule.options);
+    originalEv.recurrenceRule = EventHelper.getPartialRRuleString(rrule.options);
+    await ApiHelper.post("/events", [originalEv], "ContentApi");
+  };
+
+  const handleRecurringSave = async (editType: RecurringEditType) => {
+    setRecurrenceModalType("");
+    if (editType === "none") return;
+    setSaving(true);
+    try {
+      const form = buildEvent();
+      if (editType === "all") {
+        await saveEvent(form, false);
+      } else {
+        // The form shows the series' first date; move the edited times onto the clicked date.
+        const occ = props.occurrenceStart!;
+        const shift = new Date(start).getTime() - (seriesStart || new Date(start)).getTime();
+        const occStart = new Date(occ.getTime() + shift);
+        const occEnd = new Date(occStart.getTime() + (new Date(end).getTime() - new Date(start).getTime()));
+        if (editType === "this") {
+          await ApiHelper.post("/eventExceptions", [{ eventId: props.eventId, exceptionDate: occ }], "ContentApi");
+          await saveEvent({ ...form, id: undefined, recurrenceRule: undefined, start: occStart, end: occEnd }, true);
+        } else {
+          await shortenSeries();
+          await saveEvent({ ...form, id: undefined, recurrenceRule: rRule, start: occStart, end: occEnd }, true);
+        }
+      }
+      props.onDone(true);
+    } catch {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (canSplit) {
+      setRecurrenceModalType("delete");
+      return;
+    }
+    if (await confirm(rRule ? Locale.label("calendars.calendarEvent.confirmDeleteSeries", "This is a recurring event. Deleting it will remove the entire series. Are you sure?") : Locale.label("calendars.calendarEvent.confirmDelete", "Are you sure?"))) {
+      try {
+        await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
+        props.onDone(true);
+      } catch { /* surfaced by ErrorHelper */ }
+    }
+  };
+
+  const handleRecurringDelete = async (editType: RecurringEditType) => {
+    setRecurrenceModalType("");
+    if (editType === "none") return;
+    try {
+      if (editType === "this") await ApiHelper.post("/eventExceptions", [{ eventId: props.eventId, exceptionDate: props.occurrenceStart }], "ContentApi");
+      else if (editType === "future") await shortenSeries();
+      else await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
+      props.onDone(true);
+    } catch { /* surfaced by ErrorHelper */ }
   };
 
   // Member requests can arrive without a group, so only new events require one.
@@ -237,6 +338,7 @@ export function EventModal(props: Props) {
   return (
     <>
       {ConfirmDialogElement}
+      {recurrenceModalType && <EditRecurringModal action={recurrenceModalType} onDone={recurrenceModalType === "delete" ? handleRecurringDelete : handleRecurringSave} />}
       {showGallery && <GalleryModal aspectRatio={16 / 9} onSelect={(url) => { setPhotoUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
       <Dialog open={true} onClose={() => props.onDone(false)} fullWidth scroll="body">
         <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent") : Locale.label("calendars.newEvent.title")}</DialogTitle>
@@ -374,14 +476,7 @@ export function EventModal(props: Props) {
         <DialogActions>
           <Button variant="text" onClick={() => props.onDone(false)} data-testid="new-event-cancel-button">{Locale.label("common.cancel")}</Button>
           {props.eventId && (
-            <Button variant="contained" color="error" onClick={async () => {
-              if (await confirm(rRule ? Locale.label("calendars.calendarEvent.confirmDeleteSeries", "This is a recurring event. Deleting it will remove the entire series. Are you sure?") : Locale.label("calendars.calendarEvent.confirmDelete", "Are you sure?"))) {
-                try {
-                  await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
-                  props.onDone(true);
-                } catch { /* surfaced by ErrorHelper */ }
-              }
-            }} data-testid="event-delete-button">
+            <Button variant="contained" color="error" onClick={handleDelete} data-testid="event-delete-button">
               {Locale.label("common.delete")}
             </Button>
           )}
