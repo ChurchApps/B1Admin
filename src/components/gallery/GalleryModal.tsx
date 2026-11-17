@@ -53,8 +53,12 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
       const params = { folder: aspectRatio.toString(), fileName, contentType: blob.type, size: blob.size };
 
       const presigned = await ApiHelper.post("/gallery/requestUpload", params, "ContentApi");
-      if (presigned?.key === undefined) throw new Error("Upload failed - no presigned key received");
-      await FileHelper.postPresignedFile(presigned, file, () => { });
+      if (presigned?.key !== undefined) await FileHelper.postPresignedFile(presigned, file, () => { });
+      else {
+        // Self-hosted installs store files on disk and have no presigned slot; send the image to the API.
+        const uploaded = await ApiHelper.post("/gallery/upload", { folder: params.folder, fileName, contentType: blob.type, fileContents: dataUrl }, "ContentApi");
+        if (uploaded?.key === undefined) throw new Error("Upload failed - no key received");
+      }
 
       setTabIndex(0);
       loadData();
