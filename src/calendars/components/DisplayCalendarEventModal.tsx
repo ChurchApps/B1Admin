@@ -74,6 +74,7 @@ export function DisplayCalendarEventModal(props: Props) {
         churchId={props.churchId || ""}
         eventId={realEventId}
         curatedCalendarId={props.curatedCalendarId}
+        occurrenceStart={props.event.start ? new Date(props.event.start) : undefined}
         onDone={(saved) => {
           setEditing(false);
           if (saved && props.onDone) props.onDone();
