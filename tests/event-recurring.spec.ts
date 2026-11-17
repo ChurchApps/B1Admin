@@ -31,11 +31,15 @@ test.beforeAll(async () => {
   auth = { headers: { Authorization: "Bearer " + uc.jwt } };
 });
 
-test.afterAll(async () => {
+// Clean up after every test: leftover series crowd the 1st into "+N more" and shift which date nth(1) opens.
+test.afterEach(async () => {
   const res = await ctx.get(`${API_BASE}/content/events/group/${GROUP_ID}`, auth);
   const all: any[] = res.ok() ? await res.json() : [];
-  const ids = new Set([...created, ...all.filter((e) => e.title?.startsWith("Recurring Split ")).map((e) => e.id)]);
+  const ids = new Set([...created.splice(0), ...all.filter((e) => e.title?.startsWith("Recurring Split ")).map((e) => e.id)]);
   for (const id of ids) await ctx.delete(`${API_BASE}/content/events/${id}`, auth);
+});
+
+test.afterAll(async () => {
   await ctx.dispose();
 });
 
@@ -148,4 +152,76 @@ test("Delete > Just this date only skips that date", async ({ page }) => {
   expect(sameDay(bodyOf(exceptions[0])[0].exceptionDate, secondDate)).toBe(true);
   expect(writes.filter((r) => r.method() === "DELETE")).toHaveLength(0);
   expect(posts(writes, "/events")).toHaveLength(0);
+});
+
+// Splitting one date off must leave the series reminder alone: no copy on the new event, no delete.
+async function addSeriesReminder(id: string, enabled: boolean) {
+  const res = await ctx.post(`${API_BASE}/messaging/reminders/event/${id}`, {
+    ...auth,
+    data: { offsets: "1440", sendLocalTime: "09:00", channels: "push,email", recipientMode: "group", enabled }
+  });
+  expect(res.ok()).toBeTruthy();
+  return (await res.json()).id as string;
+}
+
+async function splitThisDateWatchingReminders(page: Page, id: string, title: string, beforeSave?: () => Promise<void>) {
+  const reminderWrites: Request[] = [];
+  page.on("request", (r) => {
+    if (r.method() !== "GET" && new URL(r.url()).pathname.includes("/reminders")) reminderWrites.push(r);
+  });
+  const listLoaded = page.waitForResponse((r) => r.request().method() === "GET" && new URL(r.url()).pathname.endsWith(`/messaging/reminders/event/${id}`));
+  await openSecondDate(page, title);
+  expect((await listLoaded).ok()).toBeTruthy();
+  await page.locator('[data-testid="new-event-title-input"] input').fill(title + " moved");
+  if (beforeSave) await beforeSave();
+  await page.locator('[data-testid="new-event-save-button"]').click();
+  await choose(page, "this");
+  return reminderWrites;
+}
+
+async function seriesReminders(id: string) {
+  const res = await ctx.get(`${API_BASE}/messaging/reminders/event/${id}`, auth);
+  expect(res.ok()).toBeTruthy();
+  return (await res.json()) as any[];
+}
+
+test("Save > Just this date does not copy an enabled series reminder", async ({ page }) => {
+  const title = "Recurring Split Reminder On " + Date.now();
+  const id = await createSeries(title);
+  const defId = await addSeriesReminder(id, true);
+  const reminderWrites = await splitThisDateWatchingReminders(page, id, title);
+
+  expect(reminderWrites.filter((r) => r.method() === "POST" || r.method() === "DELETE")).toHaveLength(0);
+  const defs = await seriesReminders(id);
+  const def = defs.find((d) => d.id === defId);
+  expect(def).toBeTruthy();
+  expect(def.enabled).toBeTruthy();
+});
+
+// The Api returns enabled as 0, which the editor reads as on, so the old code POSTed a copy here.
+test("Save > Just this date does not touch a disabled series reminder", async ({ page }) => {
+  const title = "Recurring Split Reminder Off " + Date.now();
+  const id = await createSeries(title);
+  const defId = await addSeriesReminder(id, false);
+  const reminderWrites = await splitThisDateWatchingReminders(page, id, title);
+
+  expect(reminderWrites.filter((r) => r.method() === "POST" || r.method() === "DELETE")).toHaveLength(0);
+  const defs = await seriesReminders(id);
+  expect(defs.find((d) => d.id === defId)).toBeTruthy();
+});
+
+test("Save > Just this date does not delete the series reminder when its switch is turned off", async ({ page }) => {
+  const title = "Recurring Split Reminder Switch " + Date.now();
+  const id = await createSeries(title);
+  const defId = await addSeriesReminder(id, true);
+  const reminderWrites = await splitThisDateWatchingReminders(page, id, title, async () => {
+    const toggle = page.locator('[data-testid="reminder-enabled-toggle"] input');
+    if (!(await toggle.isVisible())) await page.getByText("Reminders", { exact: true }).first().click();
+    await expect(toggle).toBeChecked();
+    await toggle.uncheck();
+  });
+
+  expect(reminderWrites.filter((r) => r.method() === "DELETE")).toHaveLength(0);
+  const defs = await seriesReminders(id);
+  expect(defs.find((d) => d.id === defId)).toBeTruthy();
 });

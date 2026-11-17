@@ -241,7 +241,8 @@ export function EventModal(props: Props) {
       await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
       savedRef.current.curated = true;
     }
-    await reminderRef.current?.save(eventId);
+    // A split-off copy gets no reminder write: the editor holds the series definition.
+    if (!splitOff) await reminderRef.current?.save(eventId);
   };
 
   const canSplit = !!(props.eventId && rRule && props.occurrenceStart);
