@@ -3,7 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToRoomsResources, navigateToApprovals, navigateToAvailability, navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
-import { confirmDelete } from "./helpers/fixtures";
+import { confirmDelete, personAddButton, SEED_PEOPLE } from "./helpers/fixtures";
 
 // Rooms & resources admin (roadmap 2.7/2.8): CRUD, double-booking warnings, approval routing, .ics import.
 const HALL = "Zacchaeus Hall";
@@ -722,4 +722,74 @@ test.describe("Availability booking colors", () => {
       expect(contrast(color, background)).toBeGreaterThanOrEqual(4.5);
     });
   }
+});
+
+// #1603: staff enter requests for members who cannot sign in, then move the request to that member.
+test.describe.serial("Change who a request is for", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const groupName = `Zacchaeus Requester Approvers ${stamp}`;
+  const roomName = `Zacchaeus Requester Room ${stamp}`;
+  const eventTitle = `Zacchaeus Requester Event ${stamp}`;
+  let ctx: APIRequestContext;
+  let jwt: string;
+  let groupId: string;
+  let roomId: string;
+  let eventId: string;
+  let page: Page;
+
+  const auth = () => ({ headers: { Authorization: "Bearer " + jwt } });
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    ctx = await playwright.request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    // A room routed to a group the admin is not in, so the booking on the request lands as pending.
+    groupId = (await (await ctx.post(`${API}/membership/groups`, { ...auth(), data: [{ name: groupName, categoryName: "Approvals Test", tags: "standard" }] })).json())[0].id;
+    roomId = (await (await ctx.post(`${API}/content/rooms`, { ...auth(), data: [{ name: roomName, approvalGroupId: groupId }] })).json())[0].id;
+    const start = new Date();
+    start.setDate(start.getDate() + 12);
+    start.setHours(18, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(19);
+    eventId = (await (await ctx.post(`${API}/content/events/request`, { ...auth(), data: { title: eventTitle, start: start.toISOString(), end: end.toISOString(), allDay: false, roomIds: [roomId] } })).json()).event.id;
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    try {
+      await ctx.delete(`${API}/content/events/${eventId}`, auth());
+      await ctx.delete(`${API}/content/rooms/${roomId}`, auth());
+      await ctx.delete(`${API}/membership/groups/${groupId}`, auth());
+    } catch { /* best effort */ }
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("the swap icon beside Requested by moves the request to another person", async () => {
+    await navigateToApprovals(page);
+    const bookingRow = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: eventTitle });
+    const eventRow = page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle });
+    await expect(bookingRow).toBeVisible({ timeout: 15000 });
+    await expect(bookingRow).not.toContainText(SEED_PEOPLE.DONALD);
+    await bookingRow.locator(`[data-testid="change-requester-${eventId}"]`).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText("Change requester");
+    await dialog.locator('[data-testid="person-search-input"] input, input[name="personAddText"]').first().fill(SEED_PEOPLE.DONALD);
+    await dialog.locator('[data-testid="search-button"]').click();
+    await personAddButton(dialog, SEED_PEOPLE.DONALD).click();
+    await expect(dialog).toHaveCount(0, { timeout: 10000 });
+    // The booking and the event request move together.
+    await expect(bookingRow.getByRole("link", { name: SEED_PEOPLE.DONALD })).toBeVisible({ timeout: 15000 });
+    await expect(eventRow.getByRole("link", { name: SEED_PEOPLE.DONALD })).toBeVisible();
+  });
+
+  test("the moved request shows on the new requester's record", async () => {
+    const bookingRow = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: eventTitle });
+    await bookingRow.getByRole("link", { name: SEED_PEOPLE.DONALD }).click();
+    await expect(page).toHaveURL(/\/people\/[\w-]+$/);
+    await expect(page.getByTestId("person-requests-table").locator("tbody tr").filter({ hasText: eventTitle })).toBeVisible({ timeout: 15000 });
+  });
 });
