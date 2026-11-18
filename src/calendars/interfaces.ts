@@ -5,6 +5,7 @@ export interface RoomInterface {
   description?: string;
   capacity?: number;
   approvalGroupId?: string | null;
+  active?: boolean;
 }
 
 export interface ResourceInterface {
@@ -14,6 +15,7 @@ export interface ResourceInterface {
   description?: string;
   quantity?: number;
   approvalGroupId?: string | null;
+  active?: boolean;
 }
 
 export interface EventBookingInterface {

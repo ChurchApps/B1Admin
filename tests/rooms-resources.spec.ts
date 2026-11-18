@@ -397,6 +397,100 @@ test.describe.serial("Rooms, resources & approvals", () => {
   });
 });
 
+// #1593: an inactive room or resource stays in the admin list with a badge but leaves the booking pickers.
+test.describe.serial("Inactive rooms and resources", () => {
+  const ROOM = "Zacchaeus Retired Room";
+  const RESOURCE = "Zacchaeus Retired Van";
+  let page: Page;
+
+  const roomRow = () => page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: ROOM });
+  const resourceRow = () => page.locator('[data-testid="resources-table"] tbody tr').filter({ hasText: RESOURCE });
+
+  const openBookingPicker = async (selectTestId: string) => {
+    await navigateToAvailability(page);
+    await page.locator('[data-testid="availability-book-button"]').click();
+    await page.locator(`[data-testid="${selectTestId}"] [role="combobox"]`).first().click();
+    await page.locator('[role="listbox"]').waitFor({ state: "visible", timeout: 10000 });
+  };
+
+  const closeBookingPicker = async () => {
+    await page.keyboard.press("Escape");
+    await page.locator('[role="listbox"]').waitFor({ state: "hidden", timeout: 5000 });
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
+  };
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    const API = process.env.API_BASE || "http://localhost:8084";
+    const request = await playwright.request.newContext();
+    const body = await (await request.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+    for (const [path, name] of [["/content/rooms", ROOM], ["/content/resources", RESOURCE]]) {
+      for (const row of ((await (await request.get(`${API}${path}`, auth)).json()) || []).filter((r: any) => r.name === name)) await request.delete(`${API}${path}/${row.id}`, auth);
+    }
+    await request.post(`${API}/content/rooms`, { ...auth, data: [{ name: ROOM, capacity: 12 }] });
+    await request.post(`${API}/content/resources`, { ...auth, data: [{ name: RESOURCE, quantity: 1 }] });
+    await request.dispose();
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test("switching a room to Inactive badges it and hides it from the event editor", async () => {
+    await navigateToRoomsResources(page);
+    await roomRow().locator('[data-testid^="edit-room-"]').click();
+    const toggle = page.locator('[data-testid="room-active-toggle"]');
+    await expect(toggle).toContainText("Active");
+    await toggle.click();
+    await expect(toggle).toContainText("Inactive");
+    await page.locator('[data-testid="save-room-button"]').click();
+    await expect(roomRow()).toContainText("Inactive", { timeout: 15000 });
+
+    await openBookingPicker("new-event-rooms-select");
+    await expect(page.getByRole("option", { name: new RegExp(ROOM) })).toHaveCount(0);
+    await closeBookingPicker();
+  });
+
+  test("switching the room back to Active returns it to the event editor", async () => {
+    await navigateToRoomsResources(page);
+    await roomRow().locator('[data-testid^="edit-room-"]').click();
+    await page.locator('[data-testid="room-active-toggle"]').click();
+    await page.locator('[data-testid="save-room-button"]').click();
+    await expect(roomRow()).toBeVisible({ timeout: 15000 });
+    await expect(roomRow()).not.toContainText("Inactive");
+
+    await openBookingPicker("new-event-rooms-select");
+    await expect(page.getByRole("option", { name: new RegExp(ROOM) })).toBeVisible();
+    await closeBookingPicker();
+  });
+
+  test("an inactive resource is badged and hidden from the event editor", async () => {
+    await navigateToRoomsResources(page);
+    await openTab(page, "resources");
+    await resourceRow().locator('[data-testid^="edit-resource-"]').click();
+    await page.locator('[data-testid="resource-active-toggle"]').click();
+    await page.locator('[data-testid="save-resource-button"]').click();
+    await expect(resourceRow()).toContainText("Inactive", { timeout: 15000 });
+
+    await openBookingPicker("new-event-resources-select");
+    await expect(page.getByRole("option", { name: new RegExp(RESOURCE) })).toHaveCount(0);
+    await closeBookingPicker();
+  });
+
+  test("cleanup: deletes the room and resource", async () => {
+    await navigateToRoomsResources(page);
+    await deleteViaEdit(page, roomRow().locator('[data-testid^="edit-room-"]'), "delete-room-button");
+    await expect(roomRow()).toHaveCount(0, { timeout: 15000 });
+    await openTab(page, "resources");
+    await deleteViaEdit(page, resourceRow().locator('[data-testid^="edit-resource-"]'), "delete-resource-button");
+    await expect(resourceRow()).toHaveCount(0, { timeout: 15000 });
+  });
+});
+
 // #1488: decided requests stay on the Approvals page under History, linked to the requester.
 test.describe.serial("Approvals history", () => {
   const API = process.env.API_BASE || "http://localhost:8084";

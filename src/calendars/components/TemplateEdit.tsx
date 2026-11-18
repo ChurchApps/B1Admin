@@ -95,7 +95,7 @@ export function TemplateEdit(props: Props) {
           SelectProps={{ multiple: true, renderValue: (selected: any) => props.rooms.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
           data-testid="template-rooms-select"
         >
-          {props.rooms.map((r) => (
+          {props.rooms.filter((r) => r.active !== false || roomIds.includes(r.id || "")).map((r) => (
             <MenuItem key={r.id} value={r.id}>
               <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
               <ListItemText primary={r.name} />
@@ -114,7 +114,7 @@ export function TemplateEdit(props: Props) {
           SelectProps={{ multiple: true, renderValue: (selected: any) => props.resources.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
           data-testid="template-resources-select"
         >
-          {props.resources.map((r) => (
+          {props.resources.filter((r) => r.active !== false || resourceIds.includes(r.id || "")).map((r) => (
             <MenuItem key={r.id} value={r.id}>
               <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
               <ListItemText primary={r.name} />
