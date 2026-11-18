@@ -5,9 +5,9 @@
   "type": "module",
   "packageManager": "yarn@4.15.0",
   "dependencies": {
-    "@churchapps/apphelper": "^1.11.5",
-    "@churchapps/content-providers": "^0.16.1",
-    "@churchapps/helpers": "^2.16.0",
+    "@churchapps/apphelper": "^1.11.6",
+    "@churchapps/content-providers": "^0.17.0",
+    "@churchapps/helpers": "^2.16.1",
     "@mui/icons-material": "^7.3.11",
     "@mui/material": "^7.3.11",
     "@mui/x-date-pickers": "^8",
