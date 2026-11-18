@@ -26,6 +26,14 @@ interface BulkDeleteResponse {
 
 const INITIAL_PAGE_SIZE = 50;
 
+// Same people in any order. The first page differs in length, so it never matches the full directory.
+const samePeople = (a: PersonInterface[], b: PersonInterface[]) => {
+  if (a === b) return true;
+  if (!a || !b || a.length !== b.length) return false;
+  const ids = new Set(b.map((p) => p.id));
+  return a.every((p) => ids.has(p.id));
+};
+
 const EXPORT_LABEL_KEYS = [
   "address", "address1", "address2", "age", "anniversary", "birthDate", "campusId", "churchId", "city", "contactCity", "contactEmail", "contactState", "contactZip", "conversationId", "display", "first", "last", "middle", "middleName", "mobilePhone", "nametagNotes", "nick", "optedOut", "phone", "photo", "photoUpdated", "state", "workPhone", "firstName", "lastName", "gender", "membershipStatus", "id", "householdId"
 ];
@@ -202,7 +210,8 @@ export const PeoplePage = memo(() => {
 
   React.useEffect(() => {
     // Wait until the whole directory is the current result set, then click the real download link.
-    if (!exportPending || !loadAll || maybeMore || peopleQuery.isFetching || searchResults !== allPeople) return;
+    // The table may re-sort the list into a new array, so compare people rather than the array reference.
+    if (!exportPending || !loadAll || maybeMore || peopleQuery.isFetching || !samePeople(searchResults, allPeople)) return;
     let tries = 0;
     const timer = setInterval(() => {
       const link = exportRef.current?.querySelector("a");

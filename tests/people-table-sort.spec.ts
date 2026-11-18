@@ -65,4 +65,33 @@ test.describe("People table sorting", () => {
     expect(asc.length).toBeGreaterThan(5);
     expect(isSorted(asc, byText), asc.join(" | ")).toBe(true);
   });
+
+  test("a Z-A name sort is kept after a page refresh", async ({ page }) => {
+    await openTable(page, ["displayName"]);
+    const header = page.locator("#peopleTable thead th", { hasText: /^Name$/ });
+    await sortBy(page, "Name");
+    await sortBy(page, "Name");
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+
+    await page.reload();
+    await expect(page.locator("#peopleTable tbody tr").first()).toBeVisible({ timeout: 15000 });
+    await expect(header).toHaveAttribute("aria-sort", "descending");
+    const desc = await columnValues(page, "Name");
+    expect(desc.length).toBeGreaterThan(5);
+    expect(isSorted([...desc].reverse(), byText), desc.join(" | ")).toBe(true);
+  });
+
+  test("a phone sort is kept after a page refresh", async ({ page }) => {
+    await openTable(page, ["displayName", "phone"]);
+    await sortBy(page, "Phone");
+    const header = page.locator("#peopleTable thead th", { hasText: /^Phone$/ });
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+
+    await page.reload();
+    await expect(page.locator("#peopleTable tbody tr").first()).toBeVisible({ timeout: 15000 });
+    await expect(header).toHaveAttribute("aria-sort", "ascending");
+    const asc = await columnValues(page, "Phone");
+    expect(asc.length).toBeGreaterThan(5);
+    expect(isSorted(asc, byText), asc.join(" | ")).toBe(true);
+  });
 });

@@ -26,12 +26,30 @@ interface Props {
   showCreatePerson?: boolean;
 }
 
+// The chosen sort is kept across refreshes, like the view and the selected columns.
+const SORT_STORAGE_KEY = "people.sort";
+
+const loadStoredSort = (): { key: string; asc: boolean } | null => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(SORT_STORAGE_KEY) || "null");
+    return stored && typeof stored.key === "string" && typeof stored.asc === "boolean" ? stored : null;
+  } catch { return null; }
+};
+
+const compareValues = (a: any, b: any): number => {
+  if (typeof a?.getTime === "function" && typeof b?.getTime === "function") return a.getTime() - b.getTime();
+  const numA = Number(a);
+  const numB = Number(b);
+  if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+  return String(a).localeCompare(String(b), undefined, { sensitivity: "base", numeric: true });
+};
+
 const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const { people, columns, selectedColumns } = props;
   const navigate = useNavigate();
 
-  const [sortDirection, setSortDirection] = useState<boolean | null>(null);
-  const [currentSortedCol, setCurrentSortedCol] = useState<string>("");
+  const [sortDirection, setSortDirection] = useState<boolean | null>(() => loadStoredSort()?.asc ?? null);
+  const [currentSortedCol, setCurrentSortedCol] = useState<string>(() => loadStoredSort()?.key ?? "");
   const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
   const [formSubmissions, setFormSubmissions] = React.useState<any[]>([]);
   // Custom person field values by fieldId, then personId.
@@ -275,39 +293,33 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     return p[key];
   }, [optionalColumns, getAnswerValue, campusMap]);
 
+  const sortPeople = useCallback((list: PersonInterface[], key: string, asc: boolean) => [...list].sort((a: any, b: any) => {
+    const valA = getSortValue(a, key);
+    const valB = getSortValue(b, key);
+    // Blanks always go last, whichever way the column is sorted.
+    const blankA = valA === null || valA === undefined || valA === "";
+    const blankB = valB === null || valB === undefined || valB === "";
+    if (blankA && blankB) return 0;
+    if (blankA) return 1;
+    if (blankB) return -1;
+    const result = compareValues(valA, valB);
+    return asc ? result : -result;
+  }), [getSortValue]);
+
   const sortTableByKey = useCallback(
     (key: string) => {
       // The first click on a column sorts ascending (A-Z, youngest first); clicking again reverses it.
       const asc = currentSortedCol === key ? !sortDirection : true;
       setCurrentSortedCol(key);
       setSortDirection(asc);
+      try { localStorage.setItem(SORT_STORAGE_KEY, JSON.stringify({ key, asc })); } catch { /* storage unavailable */ }
 
-      const compare = (a: any, b: any): number => {
-        if (typeof a?.getTime === "function" && typeof b?.getTime === "function") return a.getTime() - b.getTime();
-        const numA = Number(a);
-        const numB = Number(b);
-        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-        return String(a).localeCompare(String(b), undefined, { sensitivity: "base", numeric: true });
-      };
-
-      const sortedPeople = [...people].sort((a: any, b: any) => {
-        const valA = getSortValue(a, key);
-        const valB = getSortValue(b, key);
-        // Blanks always go last, whichever way the column is sorted.
-        const blankA = valA === null || valA === undefined || valA === "";
-        const blankB = valB === null || valB === undefined || valB === "";
-        if (blankA && blankB) return 0;
-        if (blankA) return 1;
-        if (blankB) return -1;
-        const result = compare(valA, valB);
-        return asc ? result : -result;
-      });
-
+      const sortedPeople = sortPeople(people, key, asc);
       if (props.updateSearchResults) {
         props.updateSearchResults(sortedPeople);
       }
     },
-    [people, props, getSortValue, currentSortedCol, sortDirection]
+    [people, props, sortPeople, currentSortedCol, sortDirection]
   );
 
   const rows = useMemo(() => {
@@ -357,6 +369,15 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     });
     return result;
   }, [columns, selectedColumns, optionalColumns]);
+
+  // A fresh list (after a refresh or a new search) comes back in the default order, so re-apply the
+  // remembered sort. Sorting is stable, so once the list is in order this hands nothing up.
+  useEffect(() => {
+    if (!currentSortedCol || sortDirection === null || !people?.length || !props.updateSearchResults) return;
+    if (!headColumns.some((c) => c.key === currentSortedCol && c.sortable)) return;
+    const sortedPeople = sortPeople(people, currentSortedCol, sortDirection);
+    if (sortedPeople.some((p, i) => p !== people[i])) props.updateSearchResults(sortedPeople);
+  }, [people, headColumns, sortPeople, currentSortedCol, sortDirection, props.updateSearchResults]);
 
   const headers = useMemo(() => (
     <SortableTableHead
