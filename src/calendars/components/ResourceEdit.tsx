@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
-import { TextField, MenuItem } from "@mui/material";
+import { FormControlLabel, MenuItem, Switch, TextField, Typography } from "@mui/material";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { type ResourceInterface } from "../interfaces";
@@ -82,6 +82,11 @@ export function ResourceEdit(props: Props) {
           <MenuItem value="">{Locale.label("calendars.rooms.noApprovalNeeded")}</MenuItem>
           {props.groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
         </TextField>
+        <FormControlLabel
+          control={<Switch checked={resource.active ?? true} onChange={(e) => setResource({ ...resource, active: e.target.checked })} color="primary" />}
+          label={<Typography variant="body1">{resource.active ?? true ? Locale.label("calendars.rooms.active") : Locale.label("calendars.rooms.inactive")}</Typography>}
+          data-testid="resource-active-toggle"
+        />
       </FormCard>
     </>
   );

@@ -69,6 +69,9 @@ export function EventModal(props: Props) {
   const toInt = (v: string) => (v.trim() ? parseInt(v, 10) || 0 : 0);
 
   const hasBookings = roomIds.length > 0 || resourceIds.length > 0;
+  // Inactive rooms and resources leave the pickers, but stay listed while this event still books them.
+  const pickableRooms = rooms.filter((r) => r.active !== false || roomIds.includes(r.id || ""));
+  const pickableResources = resources.filter((r) => r.active !== false || resourceIds.includes(r.id || ""));
 
   const toggleCustomWindow = (on: boolean) => {
     setCustomWindow(on);
@@ -404,7 +407,7 @@ export function EventModal(props: Props) {
                 <MenuItem value="members">{Locale.label("calendars.newEvent.notesMembers")}</MenuItem>
               </TextField>
             </Stack>
-            {rooms.length > 0 && (
+            {pickableRooms.length > 0 && (
               <TextField
                 fullWidth
                 select
@@ -414,7 +417,7 @@ export function EventModal(props: Props) {
                 SelectProps={{ multiple: true, renderValue: (selected: any) => rooms.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-rooms-select"
               >
-                {rooms.map((r) => (
+                {pickableRooms.map((r) => (
                   <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
                     <ListItemText
@@ -425,7 +428,7 @@ export function EventModal(props: Props) {
                 ))}
               </TextField>
             )}
-            {resources.length > 0 && (
+            {pickableResources.length > 0 && (
               <TextField
                 fullWidth
                 select
@@ -435,7 +438,7 @@ export function EventModal(props: Props) {
                 SelectProps={{ multiple: true, renderValue: (selected: any) => resources.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-resources-select"
               >
-                {resources.map((r) => (
+                {pickableResources.map((r) => (
                   <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
                     <ListItemText primary={r.name} secondary={r.description || undefined} />

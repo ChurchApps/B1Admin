@@ -4,7 +4,7 @@ import { Permissions, type GroupInterface } from "@churchapps/helpers";
 import { Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Add as AddIcon, MeetingRoom as RoomIcon } from "@mui/icons-material";
 import { useRequirePermission } from "../hooks";
-import { EmptyState, HeaderPrimaryButton, PillTabs, ResultsBar, SearchField, Surface, TextAction, tableScrollSx } from "../components/ui";
+import { EmptyState, HeaderPrimaryButton, PillTabs, ResultsBar, SearchField, StatusBadge, Surface, TextAction, tableScrollSx } from "../components/ui";
 import { CalendarChrome } from "./components/CalendarChrome";
 import { RoomEdit } from "./components/RoomEdit";
 import { ResourceEdit } from "./components/ResourceEdit";
@@ -68,6 +68,15 @@ export const RoomsResourcesPage = () => {
   const shownBlockouts = blockouts.filter((b) => match(targetName(b)) || match(b.reason));
   const shownTemplates = templates.filter((t) => match(t.name) || match(t.title));
 
+  const nameCell = (r: RoomInterface | ResourceInterface) => (
+    <TableCell>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <span>{r.name}</span>
+        {r.active === false && <StatusBadge tone="neutral" variant="dot">{Locale.label("calendars.rooms.inactive")}</StatusBadge>}
+      </Stack>
+    </TableCell>
+  );
+
   const editVerb = (onClick: () => void, testId: string) => (
     <TextAction small onClick={onClick} data-testid={testId}>{Locale.label("common.edit")}</TextAction>
   );
@@ -85,7 +94,7 @@ export const RoomsResourcesPage = () => {
           <TableBody>
             {shownRooms.map((r) => (
               <TableRow key={r.id} hover>
-                <TableCell>{r.name}</TableCell>
+                {nameCell(r)}
                 <TableCell align="right">{r.capacity ?? ""}</TableCell>
                 <TableCell>{groupName(r.approvalGroupId)}</TableCell>
                 <TableCell align="right" className="rowActions">{editVerb(() => setEditing({ type: "rooms", item: r }), `edit-room-${r.id}`)}</TableCell>
@@ -105,7 +114,7 @@ export const RoomsResourcesPage = () => {
           <TableBody>
             {shownResources.map((r) => (
               <TableRow key={r.id} hover>
-                <TableCell>{r.name}</TableCell>
+                {nameCell(r)}
                 <TableCell align="right">{r.quantity ?? 1}</TableCell>
                 <TableCell>{groupName(r.approvalGroupId)}</TableCell>
                 <TableCell align="right" className="rowActions">{editVerb(() => setEditing({ type: "resources", item: r }), `edit-resource-${r.id}`)}</TableCell>

@@ -426,6 +426,7 @@
       "weekly": "Weekly"
     },
     "rooms": {
+      "active": "Active",
       "addBlockout": "Add Blockout",
       "addResource": "Add Resource",
       "addRoom": "Add Room",
@@ -450,6 +451,7 @@
       "eventDescription": "Event Description",
       "eventTitle": "Event Title",
       "find": "Find",
+      "inactive": "Inactive",
       "noApprovalNeeded": "No approval needed",
       "noBlockouts": "No blockouts yet",
       "noBlockoutsDesc": "Block out dates when rooms or resources are unavailable.",
