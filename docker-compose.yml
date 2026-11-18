@@ -54,6 +54,7 @@ services:
       CONTENT_ROOT: ${PUBLIC_URL:-http://localhost}/api/content
       SOCKET_URL: ${PUBLIC_URL:-http://localhost}/api/
       B1ADMIN_ROOT: ${PUBLIC_URL:-http://localhost}/admin
+      B1APP_ROOT: ${PUBLIC_URL:-http://localhost}
       SUPPORT_EMAIL: ${SUPPORT_EMAIL:-}
       MAIL_SYSTEM: ${MAIL_SYSTEM:-}
       SMTP_HOST: ${SMTP_HOST:-}
