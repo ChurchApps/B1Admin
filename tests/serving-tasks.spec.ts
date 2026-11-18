@@ -188,6 +188,40 @@ test("a task reminder can be sent now to the assignee", async ({ page }) => {
   await expect(page.locator('[data-testid="task-reminder-sent-now"]')).toHaveText("Sent to 1 people");
 });
 
+// ChurchAppsSupport#1600: with Text checked, Send now says how many texts went out and how many were skipped.
+// Donald Clark never turned Text messages on, so his text is skipped.
+test("Send now with Text reports texts sent and skipped", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000003");
+  await page.locator('[data-testid="task-assign"]').click();
+  await page.locator('[name="personAddText"]').fill("Donald Clark");
+  await page.locator('[data-testid="search-button"]').click();
+  await personAddButton(page, "Donald Clark").click();
+  await expect(page.locator('[data-testid="task-assigned-label"]')).toHaveText("Donald Clark", { timeout: 15000 });
+  await page.locator('[data-testid="task-reminders-toggle"]').click();
+  const toggle = page.locator('[data-testid="task-reminder-enabled-toggle"] input');
+  if (!(await toggle.isChecked())) await toggle.check();
+  const sms = page.locator('[data-testid="task-reminder-channel-sms"] input');
+  if (!(await sms.isChecked())) await sms.check();
+  const saved = page.waitForResponse((r) => /\/messaging\/reminders\/task\/TSK00000003$/.test(r.url()) && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+  await page.locator('[data-testid="task-reminder-save-button"]').click();
+  await saved;
+  const sendNow = page.locator('[data-testid="task-reminder-send-now-button"]');
+  await expect(sendNow).toBeEnabled({ timeout: 15000 });
+
+  const sent = page.waitForResponse((r) => r.url().includes("/messaging/reminders/task/TSK00000003/sendNow") && r.ok(), { timeout: 15000 });
+  await sendNow.click();
+  expect((await (await sent).json()).sent).toBe(1);
+  const line = page.locator('[data-testid="task-reminder-sent-now"]');
+  await expect(line).toContainText("Sent to 1 people · 0 texted, 1 skipped");
+  await expect(line).toContainText("Text messages off");
+
+  // Put the reminder back to push and email so other runs start from the same place.
+  await sms.uncheck();
+  const restored = page.waitForResponse((r) => /\/messaging\/reminders\/task\/TSK00000003$/.test(r.url()) && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+  await page.locator('[data-testid="task-reminder-save-button"]').click();
+  await restored;
+});
+
 // ChurchAppsSupport#1563: New Task can hand the same to-do to several people at once, one task per person.
 test("New Task creates one task per picked person", async ({ page }) => {
   const title = "Fill out the volunteer form " + Date.now();

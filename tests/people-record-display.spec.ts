@@ -20,7 +20,7 @@ test.describe("Person record display", () => {
     const person = {
       householdId: household.id,
       name: { first: "Rhoda", last, display: "Rhoda " + last },
-      contactInfo: { homePhone: "(217) 555-0188", workPhone: "+1 217 555 0189" }
+      contactInfo: { homePhone: "(217) 555-0188", workPhone: "+1 217 555 0189", mobilePhone: "(217) 555-0187" }
     };
     personId = (await (await ctx.post(`${API}/membership/people`, { ...auth, data: [person] })).json())[0].id;
   });
@@ -49,5 +49,19 @@ test.describe("Person record display", () => {
     await page.getByTestId("person-record-back").click();
     await expect(page.getByTestId("person-notes-section")).toContainText("1 note");
     await expect(page.getByTestId("person-notes-section")).not.toContainText("1 notes");
+  });
+
+  // ChurchAppsSupport#1600: staff who can send texts turn Text reminders on for the person from the record.
+  test("Text reminders can be turned on from the record and stay on", async ({ page }) => {
+    await page.goto("/people/" + personId);
+    const line = page.getByTestId("person-text-reminders");
+    await expect(line).toContainText("Text reminders Off", { timeout: 15000 });
+    const saved = page.waitForResponse((r) => r.url().includes(`/messaging/notificationpreferences/person/${personId}/sms`) && r.request().method() === "POST" && r.ok());
+    await line.getByRole("button", { name: "Turn on" }).click();
+    await saved;
+    await expect(line).toContainText("Text reminders On");
+    await page.reload();
+    await expect(page.getByTestId("person-text-reminders")).toContainText("Text reminders On", { timeout: 15000 });
+    await expect(page.getByTestId("person-text-reminders").getByRole("button", { name: "Turn off" })).toBeVisible();
   });
 });
