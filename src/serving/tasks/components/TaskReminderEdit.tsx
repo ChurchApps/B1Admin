@@ -14,6 +14,7 @@ import {
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { RecordHeading, TextAction } from "../../../components/ui";
 import { useTextingEnabled } from "../../../hooks";
+import { sentNowText, type SendNowResult } from "../../../helpers/ReminderSendNowHelper";
 
 interface ReminderDefinition {
   id?: string;
@@ -52,7 +53,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
   const [saveFailed, setSaveFailed] = useState(false);
   const [open, setOpen] = useState(false);
   const [sending, setSending] = useState(false);
-  const [sentCount, setSentCount] = useState<number | null>(null);
+  const [sentResult, setSentResult] = useState<SendNowResult | null>(null);
   const [sendFailed, setSendFailed] = useState(false);
 
   useEffect(() => {
@@ -98,12 +99,12 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
   };
 
   const handleSendNow = async () => {
-    setSentCount(null);
+    setSentResult(null);
     setSendFailed(false);
     setSending(true);
     try {
-      const result: { sent?: number } = await ApiHelper.post("/reminders/task/" + taskId + "/sendNow", {}, "MessagingApi");
-      setSentCount(Number(result?.sent) || 0);
+      const result: SendNowResult = await ApiHelper.post("/reminders/task/" + taskId + "/sendNow", {}, "MessagingApi");
+      setSentResult(result || {});
     } catch {
       setSendFailed(true);
     } finally {
@@ -188,7 +189,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
             <Button variant="outlined" size="small" onClick={handleSendNow} disabled={sending || saving || !defId || !enabled} data-testid="task-reminder-send-now-button">
               {sending ? Locale.label("common.saving") : l("sendNow")}
             </Button>
-            {sentCount !== null && <Typography variant="body2" color="success.main" data-testid="task-reminder-sent-now">{l("sentNow").replace("{count}", String(sentCount))}</Typography>}
+            {sentResult && <Typography variant="body2" color="success.main" data-testid="task-reminder-sent-now">{sentNowText(sentResult, channels.includes("sms"), l)}</Typography>}
             {sendFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}
           </Box>
         </Stack>

@@ -21,6 +21,7 @@ import {
 import { ExpandMore } from "@mui/icons-material";
 import { ApiHelper, Locale, DateHelper } from "@churchapps/apphelper";
 import { useTextingEnabled } from "../../hooks";
+import { sentNowText, type SendNowResult } from "../../helpers/ReminderSendNowHelper";
 import type { SelectChangeEvent } from "@mui/material/Select";
 
 export interface ReminderDefinition {
@@ -91,7 +92,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
     const [previewLoading, setPreviewLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [sending, setSending] = useState(false);
-    const [sentCount, setSentCount] = useState<number | null>(null);
+    const [sentResult, setSentResult] = useState<SendNowResult | null>(null);
     const [sendFailed, setSendFailed] = useState(false);
 
     useEffect(() => {
@@ -160,12 +161,12 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
 
     const handleSendNow = async () => {
       if (!eventId) return;
-      setSentCount(null);
+      setSentResult(null);
       setSendFailed(false);
       setSending(true);
       try {
-        const result: { sent?: number } = await ApiHelper.post("/reminders/event/" + eventId + "/sendNow", {}, "MessagingApi");
-        setSentCount(Number(result?.sent) || 0);
+        const result: SendNowResult = await ApiHelper.post("/reminders/event/" + eventId + "/sendNow", {}, "MessagingApi");
+        setSentResult(result || {});
       } catch {
         setSendFailed(true);
       } finally {
@@ -326,9 +327,9 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
                 >
                   {sending ? Locale.label("common.saving") : Locale.label("calendars.eventReminders.sendNow")}
                 </Button>
-                {sentCount !== null && (
+                {sentResult && (
                   <Typography variant="body2" color="success.main" data-testid="reminder-sent-now">
-                    {Locale.label("calendars.eventReminders.sentNow").replace("{count}", String(sentCount))}
+                    {sentNowText(sentResult, channels.includes("sms"), (k) => Locale.label("calendars.eventReminders." + k))}
                   </Typography>
                 )}
                 {sendFailed && <Typography variant="body2" color="error">{Locale.label("common.saveError")}</Typography>}

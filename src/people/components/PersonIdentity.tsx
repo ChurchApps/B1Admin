@@ -35,6 +35,8 @@ export const PersonIdentity: React.FC<Props> = (props) => {
   const [customFields, setCustomFields] = React.useState<PersonFieldInterface[]>([]);
   const [customValues, setCustomValues] = React.useState<Record<string, string>>({});
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
+  const [textRemindersOn, setTextRemindersOn] = React.useState<boolean | null>(null);
+  const [textRemindersError, setTextRemindersError] = React.useState(false);
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showWorkflowDialog, setShowWorkflowDialog] = React.useState(false);
@@ -79,6 +81,27 @@ export const PersonIdentity: React.FC<Props> = (props) => {
       .then((data: unknown[]) => setHasTextingProvider(data?.length > 0))
       .catch(() => setHasTextingProvider(false));
   }, [canText]);
+
+  const showTextReminders = !!person.contactInfo?.mobilePhone && canText && hasTextingProvider;
+  React.useEffect(() => {
+    setTextRemindersOn(null);
+    setTextRemindersError(false);
+    if (!person.id || !showTextReminders) return;
+    ApiHelper.get(`/notificationpreferences/person/${person.id}/sms`, "MessagingApi")
+      .then((data: { allowSms?: boolean }) => setTextRemindersOn(!!data?.allowSms))
+      .catch(() => setTextRemindersOn(null));
+  }, [person.id, showTextReminders]);
+
+  // Reminder texts are opt-in per person; staff who can send texts turn them on here (ChurchAppsSupport#1600).
+  const toggleTextReminders = async () => {
+    setTextRemindersError(false);
+    try {
+      const data: { allowSms?: boolean } = await ApiHelper.post(`/notificationpreferences/person/${person.id}/sms`, { allowSms: !textRemindersOn }, "MessagingApi");
+      setTextRemindersOn(!!data?.allowSms);
+    } catch {
+      setTextRemindersError(true);
+    }
+  };
 
   const facts = useMemo(() => {
     const list: string[] = [];
@@ -160,6 +183,14 @@ export const PersonIdentity: React.FC<Props> = (props) => {
             <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 600, color: "text.primary", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone)}`}>
               {formattedPhoneNumber(contact.mobilePhone)}
             </Link>
+          )}
+          {showTextReminders && textRemindersOn !== null && (
+            <Typography sx={quiet} data-testid="person-text-reminders">
+              {Locale.label("people.personRecord.textReminders", "Text reminders")} <Box component="span" sx={strong}>{Locale.label(textRemindersOn ? "people.personRecord.textRemindersOn" : "people.personRecord.textRemindersOff")}</Box>
+              {" · "}
+              <TextAction small onClick={toggleTextReminders}>{Locale.label(textRemindersOn ? "people.personRecord.turnOff" : "people.personRecord.turnOn")}</TextAction>
+              {textRemindersError && <Box component="span" sx={{ color: "error.main", ml: 1 }}>{Locale.label("common.saveError")}</Box>}
+            </Typography>
           )}
           {phones.filter((p) => p.key !== "mobile").map((p) => (
             <Typography key={p.key} sx={quiet}>
