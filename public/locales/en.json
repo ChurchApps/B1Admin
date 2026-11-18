@@ -299,6 +299,8 @@
       "recurringDeleteTitle": "Delete Recurring Event",
       "recurringEditTitle": "Edit Recurring Event",
       "removeFromCalendar": "Remove from Calendar",
+      "share": "Share",
+      "shareHint": "Anyone with this link can see the event and register. Print the QR code on flyers or show it on slides.",
       "thisAndFollowing": "This and all following dates"
     },
     "calendarList": {
@@ -3404,6 +3406,7 @@
       "noRegistrations": "No registrations yet.",
       "registrations": "Registrations",
       "selectTypeFirst": "Select an attendee type to continue.",
+      "share": "Share",
       "status": "Status",
       "subtitle": "Manage registrations for this event",
       "unansweredOnly": "Unanswered questions only",
