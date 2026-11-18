@@ -27,7 +27,8 @@ import {
   PersonAdd as PersonAddIcon,
   Description as DescriptionIcon,
   ReceiptLong as ReceiptIcon,
-  ArrowUpward as PromoteIcon
+  ArrowUpward as PromoteIcon,
+  Share as ShareIcon
 } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, UserHelper, Permissions, PersonHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
@@ -39,6 +40,8 @@ import { AppIconButton } from "../components/ui/AppIconButton";
 import { BackVerb, CardWithHeader, FilterChip, PageContainer, Pill, RecordLayout, StatusBadge, TextAction, numericCellSx, tableScrollSx, useRecordView, RecordActions } from "../components/ui";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
+import { ShareLinkDialog } from "../components/ShareLinkDialog";
+import { getPublicEventUrl } from "../helpers/EventLinkHelper";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
 
 const isActive = (status?: string) => status === "pending" || status === "confirmed";
@@ -68,6 +71,7 @@ export const RegistrationDetailsPage = () => {
   const [unansweredOnly, setUnansweredOnly] = useState(false);
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
+  const [sharing, setSharing] = useState(false);
   const [currency, setCurrency] = useState("usd");
   const [registrantNames, setRegistrantNames] = useState<Map<string, PersonInterface>>(new Map());
   const { view: requestedView, setView } = useRecordView("view", { replace: ["settings"] });
@@ -361,6 +365,7 @@ export const RegistrationDetailsPage = () => {
           {canEdit && (
             <Button startIcon={<PersonAddIcon />} variant="outlined" onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
           )}
+          <Button startIcon={<ShareIcon />} variant="outlined" onClick={() => setSharing(true)} data-testid="registration-share-button">{Locale.label("registrations.registrationDetailsPage.share")}</Button>
           <Button startIcon={<DownloadIcon />} onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
         </Stack>
       )}>
@@ -442,6 +447,16 @@ export const RegistrationDetailsPage = () => {
             <Button onClick={() => setShowAddAttendee(false)}>{Locale.label("common.cancel")}</Button>
           </DialogActions>
         </Dialog>
+      )}
+      {sharing && event.id && (
+        <ShareLinkDialog
+          open={true}
+          onClose={() => setSharing(false)}
+          title={`${Locale.label("calendars.calendarEvent.share")}: ${event.title || ""}`}
+          url={getPublicEventUrl(event.id)}
+          hint={Locale.label("calendars.calendarEvent.shareHint")}
+          fileName={`event-qr-${(event.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "event"}`}
+        />
       )}
       {viewDetailId && (
         <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} registrantName={getMissingRegistrantName(registrations.find((r) => r.id === viewDetailId) || {})} onClose={() => setViewDetailId("")} />
