@@ -994,6 +994,19 @@ test.describe("Email template editor merge fields", () => {
     await expect(preview.locator("table")).toContainText("Missions");
   });
 
+  // ChurchAppsSupport#1641: the donor number chip inserts into subject and body and previews a sample number.
+  test("donor number chip inserts and previews a sample number", async ({ page }) => {
+    await openNewTemplate(page);
+    await expect(chipsAfter(page, "Insert merge field into subject:").getByText("Donor Number", { exact: true })).toBeVisible();
+    const body = page.locator(".editor-input[contenteditable='true']").first();
+    await body.click();
+    await page.keyboard.type("Donor #");
+    await chipsAfter(page, "Insert merge field into body:").getByText("Donor Number", { exact: true }).click();
+    await expect(body).toHaveText("Donor #{{donorNumber}}");
+    await page.getByRole("button", { name: "Preview" }).click();
+    await expect(page.frameLocator("iframe[title='Email preview']").locator("body")).toContainText("Donor #1042");
+  });
+
   test("backspace in the middle of the body only removes one character", async ({ page }) => {
     await openNewTemplate(page);
     const body = page.locator(".editor-input[contenteditable='true']").first();
