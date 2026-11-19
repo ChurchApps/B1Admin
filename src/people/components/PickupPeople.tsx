@@ -2,7 +2,7 @@ import React from "react";
 import { type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, Permissions, PersonHelper, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, FormControl, InputLabel, Link, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { GalleryModal } from "../../components/gallery";
 import { PersonAdd } from "../../components";
@@ -10,6 +10,8 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
 import { RecordHeading, TextAction } from "../../components/ui";
 import { Delete as DeleteIcon } from "@mui/icons-material";
+import { contactPhone } from "../../groups/PrintRosterPage";
+import { formattedPhoneNumber } from "./PersonEdit";
 
 interface PickupInterface {
   id?: string;
@@ -44,6 +46,22 @@ export const PickupPeople: React.FC<Props> = (props) => {
     enabled: !UniqueIdHelper.isMissing(householdId)
   });
   const people = peopleQuery.data || [];
+
+  // Rows added from the people search link to a person record; show that person's own phone.
+  const linkedIds = React.useMemo(() => Array.from(new Set(people.map((r) => r.personId).filter(Boolean))), [people]);
+  const linkedQuery = useQuery<PersonInterface[]>({
+    queryKey: ["/people/ids?ids=" + linkedIds.join(","), "MembershipApi"],
+    placeholderData: [],
+    enabled: linkedIds.length > 0
+  });
+  const phoneById = React.useMemo(() => {
+    const result: Record<string, string> = {};
+    (linkedQuery.data || []).forEach((p) => {
+      const phone = contactPhone(p.contactInfo);
+      if (p.id && phone) result[p.id] = phone;
+    });
+    return result;
+  }, [linkedQuery.data]);
 
   const save = (row: PickupInterface) => ApiHelper.post("/householdpickup", [{ ...row, householdId }], "MembershipApi").then(() => peopleQuery.refetch());
 
@@ -83,6 +101,11 @@ export const PickupPeople: React.FC<Props> = (props) => {
       <Avatar src={row.photoUrl || undefined} alt="" sx={{ width: 32, height: 32, mt: 0.25 }} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: "break-word" }}>{row.name}</Typography>
+        {row.personId && phoneById[row.personId] && (
+          <Link href={"tel:" + phoneById[row.personId].replace(/[^0-9+]/g, "")} underline="hover" variant="body2" color="text.secondary" data-testid="pickup-phone">
+            {formattedPhoneNumber(phoneById[row.personId])}
+          </Link>
+        )}
         <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
           <Chip
             label={row.status === "notAuthorized" ? Locale.label("people.pickup.notAuthorized") : Locale.label("people.pickup.trusted")}
