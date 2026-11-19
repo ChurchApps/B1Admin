@@ -11,6 +11,7 @@ import { ACTION_TYPES, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface 
 // Gift fields fill in only when a Donation trigger started the workflow, so group texting does not offer them.
 const WORKFLOW_TEXT_MERGE_FIELDS = [
   ...MERGE_FIELD_KEYS,
+  { key: "{{donorNumber}}", label: "tasks.workflowActions.mergeDonorNumber" },
   { key: "{{amount}}", label: "tasks.workflowActions.mergeAmount" },
   { key: "{{giftDate}}", label: "tasks.workflowActions.mergeGiftDate" },
   { key: "{{fund}}", label: "tasks.workflowActions.mergeFund" },

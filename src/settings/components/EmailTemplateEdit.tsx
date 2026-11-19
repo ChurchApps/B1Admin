@@ -16,6 +16,7 @@ const getMergeFields = () => [
   { key: "{{lastName}}", label: Locale.label("settings.emailTemplateEdit.mergeLastName") },
   { key: "{{displayName}}", label: Locale.label("settings.emailTemplateEdit.mergeDisplayName") },
   { key: "{{email}}", label: Locale.label("settings.emailTemplateEdit.mergeEmail") },
+  { key: "{{donorNumber}}", label: Locale.label("settings.emailTemplateEdit.mergeDonorNumber") },
   { key: "{{churchName}}", label: Locale.label("settings.emailTemplateEdit.mergeChurchName") },
   { key: "{{amount}}", label: Locale.label("settings.emailTemplateEdit.mergeAmount") },
   { key: "{{giftDate}}", label: Locale.label("settings.emailTemplateEdit.mergeGiftDate") },
@@ -155,6 +156,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     preview = preview.replace(/\{\{lastName\}\}/g, "Smith");
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
     preview = preview.replace(/\{\{email\}\}/g, "john@example.com");
+    preview = preview.replace(/\{\{donorNumber\}\}/g, "1042");
     preview = preview.replace(/\{\{churchName\}\}/g, churchName);
     preview = fillSampleGift(preview, SAMPLE_RECEIPT);
 
@@ -171,6 +173,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     preview = preview.replace(/\{\{lastName\}\}/g, "Smith");
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
     preview = preview.replace(/\{\{email\}\}/g, "john@example.com");
+    preview = preview.replace(/\{\{donorNumber\}\}/g, "1042");
     preview = preview.replace(/\{\{churchName\}\}/g, churchName);
     return fillSampleGift(preview, "");
   };
