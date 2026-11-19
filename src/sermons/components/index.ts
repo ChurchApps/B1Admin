@@ -11,3 +11,4 @@ export { TabEdit } from "./TabEdit";
 export { ExternalLinks } from "./ExternalLinks";
 export { YouTubeImport } from "./YouTubeImport";
 export { VimeoImport } from "./VimeoImport";
+export { PodcastImport } from "./PodcastImport";
