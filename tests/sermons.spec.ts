@@ -472,6 +472,54 @@ test.describe("Sermons Management", () => {
       await page.unroute("**/sermons/youtubeImport/**");
       await page.unroute("**/content/sermons");
     });
+
+    test("imports only new podcast episodes into the chosen playlist", async () => {
+      const feed = {
+        title: "Zacchaeus Cast",
+        image: "",
+        episodes: [
+          { guid: "ep-1", title: "Zacchaeus Episode One", pubDate: "2025-11-02T00:00:00.000Z", description: "d", audioUrl: "https://example.com/one.mp3", audioType: "audio/mpeg", duration: 1200, image: "" },
+          { guid: "ep-2", title: "Zacchaeus Episode Two", pubDate: "2025-11-09T00:00:00.000Z", description: "d", audioUrl: "https://example.com/two.mp3", audioType: "audio/mpeg", duration: 1300, image: "https://example.com/two.jpg" }
+        ]
+      };
+      await page.route("**/podcast/feed**", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(feed) }));
+      let posted: any[] = [];
+      await page.route("**/content/sermons", async (route) => {
+        if (route.request().method() === "GET") {
+          return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify([{ id: "s1", title: "Zacchaeus Episode One", audioUrl: "https://example.com/one.mp3" }]) });
+        }
+        posted = route.request().postDataJSON();
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(posted) });
+      });
+
+      await expect(page.locator('[data-testid="import-podcast-button"]')).toBeVisible({ timeout: 10000 });
+      await page.locator('[data-testid="import-podcast-button"]').click();
+      await page.locator('[data-testid="podcast-feed-url-input"] input').fill("https://anchor.fm/s/zacchaeus/podcast/rss");
+      await page.getByRole("button", { name: "Fetch" }).click();
+      await expect(page.getByText("Zacchaeus Cast")).toBeVisible({ timeout: 10000 });
+
+      const oldRow = page.locator("tr", { hasText: "Zacchaeus Episode One" });
+      await expect(oldRow).toContainText("Already imported");
+      await expect(oldRow.locator('input[type="checkbox"]')).toBeDisabled();
+      await expect(page.locator("tr", { hasText: "Zacchaeus Episode Two" }).locator('input[type="checkbox"]')).toBeChecked();
+
+      await page.getByLabel("Import Into Playlist").click();
+      await page.getByRole("option").first().click();
+      await page.getByRole("button", { name: "Import", exact: true }).click();
+      await expect(page.locator('[data-testid="import-podcast-button"]')).toBeVisible({ timeout: 10000 });
+
+      expect(posted).toHaveLength(1);
+      expect(posted[0].audioUrl).toBe("https://example.com/two.mp3");
+      expect(posted[0].title).toBe("Zacchaeus Episode Two");
+      expect(posted[0].duration).toBe(1300);
+      expect(posted[0].thumbnail).toBe("https://example.com/two.jpg");
+      expect(new Date(posted[0].publishDate).toISOString()).toBe("2025-11-09T00:00:00.000Z");
+      expect(posted[0].playlistId).toBeTruthy();
+      expect(posted[0].churchId).toBeTruthy();
+      expect(posted[0].videoType).toBe("");
+      await page.unroute("**/podcast/feed**");
+      await page.unroute("**/content/sermons");
+    });
   });
 
   // Edge-case extensions: provider validation + live-stream config gaps from
