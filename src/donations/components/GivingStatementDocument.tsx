@@ -12,6 +12,7 @@ interface StatementLabels {
   contributionDetails: string;
   disclaimer: string;
   donorInformation: string;
+  donorNumber: string;
   fund: string;
   fundBreakdown: string;
   given: string;
@@ -35,6 +36,7 @@ const printAllStatementsLabels = (): StatementLabels => ({
   contributionDetails: Locale.label("donations.printAllStatementsPage.contributionDetails"),
   disclaimer: Locale.label("donations.printAllStatementsPage.disclaimer"),
   donorInformation: Locale.label("donations.printAllStatementsPage.donorInformation"),
+  donorNumber: Locale.label("donations.printAllStatementsPage.donorNumber"),
   fund: Locale.label("donations.printAllStatementsPage.fund"),
   fundBreakdown: Locale.label("donations.printAllStatementsPage.fundBreakdown"),
   given: Locale.label("donations.printAllStatementsPage.given"),
@@ -58,6 +60,7 @@ const printDonationLabels = (): StatementLabels => ({
   contributionDetails: Locale.label("donations.printDonationPage.contributionDetails"),
   disclaimer: Locale.label("donations.printDonationPage.disclaimer"),
   donorInformation: Locale.label("donations.printDonationPage.donorInformation"),
+  donorNumber: Locale.label("donations.printDonationPage.donorNumber"),
   fund: Locale.label("donations.printDonationPage.fund"),
   fundBreakdown: Locale.label("donations.printDonationPage.fundBreakdown"),
   given: Locale.label("donations.printDonationPage.given"),
@@ -81,6 +84,7 @@ const receiptLabels = (): StatementLabels => ({
   contributionDetails: Locale.label("donations.receiptPage.contributionDetails"),
   disclaimer: Locale.label("donations.receiptPage.disclaimer"),
   donorInformation: Locale.label("donations.receiptPage.donorInformation"),
+  donorNumber: Locale.label("donations.receiptPage.donorNumber"),
   fund: Locale.label("donations.receiptPage.fund"),
   fundBreakdown: Locale.label("donations.receiptPage.fundBreakdown"),
   given: Locale.label("donations.receiptPage.given"),
@@ -568,6 +572,7 @@ export const GivingStatementDocument = (props: Props) => {
               {person?.contactInfo?.address2 && <p className="info-detail">{person.contactInfo.address2}</p>}
               {person?.contactInfo?.mobilePhone && <p className="info-detail">{person.contactInfo.mobilePhone}</p>}
               {person?.contactInfo?.email && <p className="info-detail">{person.contactInfo.email}</p>}
+              {person?.donorNumber && <p className="info-detail">{labels.donorNumber} {person.donorNumber}</p>}
             </div>
           </div>
 
