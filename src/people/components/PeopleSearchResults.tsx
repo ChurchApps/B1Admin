@@ -194,6 +194,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "membershipStatus":
           result = <StatusChip status={p.membershipStatus || "Unknown"} />;
           break;
+        case "donorNumber": result = <>{p.donorNumber}</>; break;
         case "maritalStatus": result = <>{p.maritalStatus}</>; break;
         case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
         case "anniversary": result = <>{p.anniversary == null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.anniversary))}</>; break;
