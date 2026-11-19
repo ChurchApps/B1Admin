@@ -16,7 +16,13 @@
       "loadingChurchData": "Kirchendaten werden geladen...",
       "logoAlt": "Logo",
       "permissionPlans": "Pläne",
-      "promptAccess": "Möchten Sie auf die folgenden Daten von {churchName} in der oben genannten Anwendung zugreifen?"
+      "promptAccess": "Möchten Sie auf die folgenden Daten von {churchName} in der oben genannten Anwendung zugreifen?",
+      "completingAuth": "Authentifizierung wird abgeschlossen...",
+      "returnTo": "Nach Ihrer Auswahl werden Sie zurück zu {host} geleitet.",
+      "scopes": {
+        "all": "Alle angeforderten Berechtigungen"
+      },
+      "selfRegisteredNote": "Dieses Konto wurde selbst registriert."
     }
   },
   "attendance": {
@@ -60,7 +66,7 @@
       "service": "Dienst",
       "serviceTime": "Dienstzeit",
       "title": "Teilnehmerzahl eintragen",
-      "totalOnlyHint": "This is a total count, not a named roster. Record who attended on the group's Sessions tab.",
+      "totalOnlyHint": "Dies ist eine Gesamtzahl und keine namentliche Teilnehmerliste. Erfassen Sie, wer teilgenommen hat, auf der Registerkarte „Sitzungen“ der Gruppe.",
       "validate": {
         "count": "Geben Sie eine ganze Zahl ab Null ein.",
         "date": "Bitte wählen Sie ein Datum aus.",
@@ -175,7 +181,7 @@
       "noSchedule": "Kein Zeitplan",
       "openMinutes": "Check-in öffnen (Minuten vor Beginn)",
       "service": "Dienst",
-      "serviceAria": "Service auswählen",
+      "serviceAria": "Dienst auswählen",
       "startTime": "Startzeit",
       "validate": {
         "name": "Der Name der Dienstzeit ist erforderlich.",
@@ -213,7 +219,17 @@
       "roomResource": "Raum / Ressource",
       "status": "Status",
       "subtitle": "Ausstehende Raum-, Ressourcen- und Veranstaltungsanfragen prüfen",
-      "title": "Genehmigungen"
+      "title": "Genehmigungen",
+      "approved": "Genehmigt",
+      "changeRequester": "Anfragende Person ändern",
+      "decided": "Entschieden am",
+      "history": "Verlauf",
+      "noResolvedBookings": "Keine abgeschlossenen Raumbuchungen.",
+      "noResolvedEvents": "Keine abgeschlossenen Veranstaltungsanfragen.",
+      "pending": "Ausstehend",
+      "rejectReason": "Ablehnungsgrund",
+      "rejected": "Abgelehnt",
+      "requestedBy": "Angefragt von"
     },
     "availability": {
       "allRoomsResources": "Alle Räume & Ressourcen",
@@ -255,7 +271,17 @@
       "editEvent": "Veranstaltung bearbeiten",
       "manageRegistrations": "Anmeldungen verwalten",
       "noGroups": "Keine Gruppen gefunden.",
-      "notesSuffix": " Notizen"
+      "notesSuffix": " Notizen",
+      "allDates": "Alle Termine",
+      "confirmRemoveEvent": "Möchten Sie diese Veranstaltung wirklich aus dem Kalender entfernen?",
+      "confirmRemoveGroupEvent": "Möchten Sie diese Gruppenveranstaltung wirklich aus dem Kalender entfernen?",
+      "justThisDate": "Nur diesen Termin",
+      "recurringDeleteTitle": "Wiederkehrende Veranstaltung löschen",
+      "recurringEditTitle": "Wiederkehrende Veranstaltung bearbeiten",
+      "removeFromCalendar": "Aus dem Kalender entfernen",
+      "share": "Teilen",
+      "shareHint": "Teilen Sie diese Veranstaltung über einen Link.",
+      "thisAndFollowing": "Diesen und alle folgenden Termine"
     },
     "calendarList": {
       "aboutParagraph1": "Mit Kalendern können Sie Veranstaltungen für Ihre Kirche organisieren und anzeigen.",
@@ -302,7 +328,7 @@
     },
     "eventReminders": {
       "channels": "Kanäle",
-      "email": "Email",
+      "email": "E-Mail",
       "enableReminders": "Erinnerungen aktivieren",
       "maxOffsets": "Maximal 3 ausgewählte Zeiten",
       "message": "Nachricht (optional)",
@@ -319,7 +345,10 @@
       "timeOfDayHint": "Ortszeit der Kirche (z. B. 9:00 Uhr)",
       "title": "Erinnerungen",
       "when": "Wann (bis zu 3)",
-      "who": "Wer"
+      "who": "Wer",
+      "previewNext": "Nächste: {times}",
+      "previewRecipients": "~{count} Personen werden erinnert",
+      "sendNow": "Jetzt senden"
     },
     "importIcs": {
       "chooseFile": ".ics-Datei auswählen",
@@ -367,7 +396,8 @@
       "template": "Vorlage",
       "title": "Neue Veranstaltung",
       "visibility": "Sichtbarkeit",
-      "weekly": "Wöchentlich"
+      "weekly": "Wöchentlich",
+      "noGroup": "Keine Gruppe"
     },
     "rooms": {
       "addBlockout": "Sperrzeit hinzufügen",
@@ -414,7 +444,9 @@
       "subtitle": "Buchbare Räume, gemeinsame Ressourcen, Sperrzeiten und Veranstaltungsvorlagen verwalten",
       "templateName": "Vorlagenname",
       "templates": "Vorlagen",
-      "title": "Räume & Ressourcen"
+      "title": "Räume & Ressourcen",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
     }
   },
   "common": {
@@ -464,7 +496,7 @@
     "error": "Fehler",
     "errorBoundary": {
       "message": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
-      "retry": "Wiederholen",
+      "retry": "Erneut versuchen",
       "title": "Hoppla! Es ist ein Fehler aufgetreten"
     },
     "expand": "Ausklappen",
@@ -516,7 +548,10 @@
     "update": "Aktualisieren",
     "website": "Website",
     "years": "Jahre",
-    "yes": "Ja"
+    "yes": "Ja",
+    "moveDown": "Nach unten verschieben",
+    "moveUp": "Nach oben verschieben",
+    "saved": "Gespeichert"
   },
   "components": {
     "bezChat": {
@@ -616,7 +651,10 @@
     "addNewPerson": "Neue Person hinzufügen",
     "email": "E-Mail",
     "firstName": "Vorname",
-    "lastName": "Nachname"
+    "lastName": "Nachname",
+    "householdRole": "Rolle im Haushalt",
+    "mobilePhone": "Mobiltelefon",
+    "title": "Anrede"
   },
   "dashboard": {
     "adminWelcome": {
@@ -684,20 +722,21 @@
     },
     "sunday": {
       "firstTime": "Erste Zeit",
-      "firstTimeLastSunday": "Erstes Mal am letzten Sonntag",
       "inTheRoom": "im Raum",
-      "lastSunday": "Letzter Sonntag",
       "live": "Live",
-      "liveHint": "Wer letzten Sonntag im Raum war und neue Haushalte werden hier die ganze Woche über angezeigt.",
+      "liveHint": "Wer am letzten {day} im Raum war und neue Haushalte werden hier die ganze Woche über angezeigt.",
       "liveHintSunday": "Wer im Raum ist, wer mitarbeitet und wer gerade angekommen ist, wird hier angezeigt, sobald Check-in und Mitarbeitereinsatz genutzt werden.",
       "noOrder": "Kein Dienstablauf für diesen Plan vorhanden.",
       "noPlan": "Kein Gottesdienst geplant diese Woche.",
       "rooms": "Räume",
-      "servingSunday": "Gottesdienst am Sonntag",
       "servingThisHour": "Dienst in dieser Stunde",
-      "thisSunday": "Dieser Sonntag",
-      "thisWeeksService": "Der Gottesdienst dieser Woche wird hier zu sehen sein."
-    }
+      "thisWeeksService": "Der Gottesdienst dieser Woche wird hier zu sehen sein.",
+      "firstTimeLastDay": "Zum ersten Mal am letzten {day}",
+      "lastDay": "Letzter {day}",
+      "servingDay": "Dienst am {day}",
+      "thisDay": "Dieser {day}"
+    },
+    "loadError": "Laden fehlgeschlagen."
   },
   "device": {
     "deviceAuthPage": {
@@ -750,7 +789,8 @@
       "sinceYear": "{amount} seit {year}",
       "statement": "Bescheinigung",
       "viewBatch": "Stapel anzeigen",
-      "willAppear": "Spenden werden hier angezeigt, sobald sie getätigt wurden."
+      "willAppear": "Spenden werden hier angezeigt, sobald sie getätigt wurden.",
+      "giftsInYearSingular": "{count} Spende in {year}"
     }
   },
   "donations": {
@@ -770,7 +810,7 @@
       "printDescription": "Erstellen Sie ein konsolidiertes Dokument mit allen Spendenbescheinigungen zum Drucken",
       "printStatements": "Druckbare Bescheinigungen",
       "selectYear": "Jahr auswählen",
-      "statementFormat": "Statement format",
+      "statementFormat": "Format der Spendenbescheinigung",
       "subtitle": "Spendenbescheinigungen für alle Spender herunterladen",
       "summary": "Zusammenfassung",
       "title": "Sammel-Spendenbescheinigungen",
@@ -782,10 +822,10 @@
     },
     "bulkEntry": {
       "addDonation": "Spende hinzufügen",
-      "fullEditor": "full donation editor",
+      "fullEditor": "vollständigen Spendeneditor",
       "pressEnter": "Drücken Sie die Eingabetaste, um zu speichern und eine weitere Spende hinzuzufügen",
       "selectPerson": "Person auswählen oder Anonym",
-      "splitFundsHint": "Need a split across funds? Use the"
+      "splitFundsHint": "Möchten Sie eine Spende auf mehrere Spendenzwecke aufteilen? Verwenden Sie den"
     },
     "campaignEdit": {
       "allowSelfPledge": "Spendern ermöglichen, Zusagen zu machen",
@@ -873,7 +913,10 @@
       "refund": "Rückerstattung",
       "refundConfirm": "Diese Spende vollständig über das Zahlungs-Gateway erstatten? Dies kann nicht rückgängig gemacht werden.",
       "refundConfirmLabel": "Rückerstattung",
-      "refundFailed": "Die Rückerstattung konnte nicht verarbeitet werden."
+      "refundFailed": "Die Rückerstattung konnte nicht verarbeitet werden.",
+      "batch": "Sammelbuchung",
+      "memo": "Verwendungszweck",
+      "notesInternal": "Interne Notizen"
     },
     "donationEvents": {
       "event": "Veranstaltung: ",
@@ -895,7 +938,7 @@
       "don": "Spenden",
       "errMsg": "Kein Fonds gefunden. Bitte erstellen Sie einen Fonds, bevor Sie eine Spende tätigen",
       "export": "Exportieren",
-      "exportQbo": "Export for QuickBooks",
+      "exportQbo": "Für QuickBooks exportieren",
       "failed": "Fehlgeschlagene Spenden",
       "fundSubtotals": "Zwischensummen nach Spendenzweck",
       "funds": "Fonds",
@@ -906,7 +949,10 @@
       "refunded": "Rückerstattet",
       "statements": "Spendenbescheinigungen",
       "summary": "Zusammenfassung",
-      "total": "Gesamt"
+      "total": "Gesamt",
+      "enteredBy": "Erfasst von {name}",
+      "memo": "Verwendungszweck",
+      "receipt": "Quittung"
     },
     "donationsPage": {
       "date": "Datum",
@@ -968,9 +1014,10 @@
     "givingLink": {
       "amount": "Betrag (optional)",
       "button": "Spendenlink",
-      "description": "Teilen Sie diesen Link mit Ihren Spender, damit diese auf der Spendenseite mit dem gewünschten Fonds und Betrag landen.",
+      "description": "Teilen Sie diesen Link mit Ihren Spendern, damit diese auf der Spendenseite mit dem gewünschten Fonds und Betrag landen.",
       "title": "Spendenlink",
-      "url": "Link"
+      "url": "Link",
+      "downloadQr": "QR-Code herunterladen"
     },
     "logGift": {
       "amountError": "Geben Sie einen Betrag größer als null ein, z. B. 25.00.",
@@ -1024,7 +1071,8 @@
       "statementSummary": "Zusammenfassung der Bescheinigung",
       "status": "Status",
       "totalContributions": "Gesamtspenden",
-      "totalContributionsLabel": "Gesamtspenden:"
+      "totalContributionsLabel": "Gesamtspenden:",
+      "memo": "Verwendungszweck"
     },
     "printDonationPage": {
       "annualStatementTitle": "Jährliche Spendenbescheinigung {year}",
@@ -1045,7 +1093,8 @@
       "statementSummary": "Zusammenfassung der Bescheinigung",
       "status": "Status",
       "totalContributions": "Gesamtspenden",
-      "totalContributionsLabel": "Gesamtspenden:"
+      "totalContributionsLabel": "Gesamtspenden:",
+      "memo": "Verwendungszweck"
     },
     "statementLegal": {
       "abn": "ABN",
@@ -1100,6 +1149,45 @@
     },
     "view": {
       "label": "Ansicht"
+    },
+    "csvImport": {
+      "badAmount": "Ungültiger Betrag",
+      "badDate": "Ungültiges Datum",
+      "badFund": "Unbekannter Spendenzweck: {fund}",
+      "badMethod": "Unbekannte Zahlungsmethode: {method}",
+      "button": "CSV importieren",
+      "chooseFile": "CSV-Datei auswählen",
+      "donor": "Spender in der Datei",
+      "help": "Spalten: Betrag (erforderlich), Datum, Spendenzweck, Zahlungsmethode (Scheck, Bargeld, Karte, Sachspende), Schecknummer, Notizen und E-Mail-Adresse oder Name (oder Vorname + Nachname), um den Spender zuzuordnen. Bei leerem Datum wird das Datum der Sammelbuchung verwendet; bei leerem Spendenzweck wird der erste Spendenzweck verwendet. Nicht zugeordnete Spender werden anonym importiert; ihr Name wird in den Notizen gespeichert.",
+      "importCount": "Import {count}",
+      "importedAs": "Importiert als: {name}",
+      "match": "Match",
+      "noAmount": "Die Datei muss eine Kopfzeile mit einer Spalte „Betrag“ und mindestens eine Spende enthalten.",
+      "notFound": "Nicht gefunden – anonym",
+      "row": "Row",
+      "title": "Spenden aus CSV-Datei importieren"
+    },
+    "receiptPage": {
+      "annualStatementTitle": "Spendenquittung",
+      "campaign": "Kampagne",
+      "contributionDetails": "Spendendetails",
+      "disclaimer": "{churchName} ist eine gemeinnützige Organisation. Für diese Zuwendungen wurden keine Waren oder Dienstleistungen erbracht, abgesehen von immateriellen religiösen Leistungen.",
+      "donorInformation": "Spenderinformationen",
+      "fund": "Spendenzweck",
+      "fundBreakdown": "Aufschlüsselung nach Spendenzweck",
+      "given": "Gespendet",
+      "issued": "Ausgestellt:",
+      "memo": "Verwendungszweck",
+      "noteLabel": "Hinweis:",
+      "noteText": "Diese Quittung bestätigt eine Zuwendung, die {churchName} am {date} erhalten hat.",
+      "organization": "Organisation",
+      "period": "Datum: {date}",
+      "pledgeProgress": "Fortschritt der Zusage",
+      "pledged": "Zugesagt",
+      "statementSummary": "Zusammenfassung der Bescheinigung",
+      "status": "Status",
+      "totalContributions": "Gesamtspenden",
+      "totalContributionsLabel": "Gesamtspenden:"
     }
   },
   "fileUpload": {
@@ -1158,7 +1246,13 @@
       "public": "Öffentlich",
       "restrict": "Eingeschränkt",
       "startReqMsg": "Startdatum ist erforderlich.",
-      "thankYouMessage": "Danke-Nachricht"
+      "thankYouMessage": "Danke-Nachricht",
+      "addPhoto": "Foto hinzufügen",
+      "associateHelper": "Verknüpfen Sie dieses Formular mit einer Person oder einem Haushalt.",
+      "linkGroup": "Mit Gruppe verknüpfen",
+      "linkGroupHelper": "Personen, die dieses Formular ausfüllen, können der ausgewählten Gruppe zugeordnet werden.",
+      "photo": "Formularfoto",
+      "photoHint": "Dieses Foto wird auf der Formularseite angezeigt."
     },
     "formMembers": {
       "act": "Aktion",
@@ -1237,7 +1331,10 @@
       "restore": "Wiederherstellen",
       "restoreFormAria": "Formular {name} wiederherstellen",
       "subtitleManage": "Erstellen und verwalten Sie benutzerdefinierte Formulare",
-      "url": "URL"
+      "url": "URL",
+      "downloadQr": "QR-Code herunterladen",
+      "qrCode": "QR-Code",
+      "qrHint": "Scannen Sie den QR-Code, um das Formular zu öffnen."
     },
     "tabs": {
       "formMem": "Formularmitglieder",
@@ -1327,7 +1424,9 @@
       "rsvpsDisabled": "Deaktiviert",
       "skipHolidays": "Feiertage überspringen",
       "skippedDates": "Übersprungene Daten",
-      "until": "bis"
+      "until": "bis",
+      "past": "Vergangen",
+      "upcoming": "Bevorstehend"
     },
     "groupDetails": {
       "about": "Um",
@@ -1358,8 +1457,8 @@
       "catName": "Kategoriename",
       "catNameMsg": "Bitte geben Sie einen Kategorienamen ein.",
       "changePhotoAria": "Gruppenfoto ändern",
-      "checkinCapacity": "Check-In-Kapazität",
-      "checkinClosed": "Geschlossen für Check-In",
+      "checkinCapacity": "Check-in-Kapazität",
+      "checkinClosed": "Für Check-in geschlossen",
       "clickToAddPhoto": "Klicken Sie, um ein Foto hinzuzufügen",
       "confidential": "Vertrauliche Gruppe",
       "confidentialHelp": "Diese Gruppe und ihre Mitgliederliste vor öffentlichen Seiten, der Gruppensuche und Nichtmitgliedern verbergen.",
@@ -1392,7 +1491,10 @@
       "publicRoster": "Mitgliederliste auf der Website anzeigen",
       "slug": "Slug (Schlüsselname für URLs)",
       "volunteerRatio": "Kinder pro Freiwilligem",
-      "years": "Jahre"
+      "years": "Jahre",
+      "joinClosed": "Beitritt geschlossen",
+      "joinOpen": "Beitritt offen",
+      "joinRequest": "Beitritt auf Anfrage"
     },
     "groupHealth": {
       "attendance": "Anwesenheit",
@@ -1420,11 +1522,11 @@
     "groupMembers": {
       "groupMem": "Gruppenmitglieder",
       "leader": "Leiter",
-      "leaderLower": "leiter",
-      "leadersLower": "leiter",
+      "leaderLower": "Leiter",
+      "leadersLower": "Leiter",
       "makeLeader": "Zum Leiter machen",
       "member": "Mitglied",
-      "members": "mitglieder",
+      "members": "Mitglieder",
       "messagePlaceholder": "Schreiben Sie eine Nachricht an alle Gruppenmitglieder…",
       "messageSent": "Nachricht gesendet.",
       "noMemDesc": "Fügen Sie Mitglieder aus dem Bereich rechts hinzu, um diese Gruppe aufzubauen.",
@@ -1450,7 +1552,8 @@
       "health": "Gesundheit",
       "members": "Mitglieder",
       "notes": "Leiternotizen",
-      "sessions": "Sitzungen"
+      "sessions": "Sitzungen",
+      "forms": "Verknüpfte Formulare"
     },
     "groupPage": {
       "addPpl": "Person hinzufügen"
@@ -1469,7 +1572,12 @@
       "pendingCount": "{count} ausstehend",
       "seeHealth": "Entwicklung anzeigen",
       "sessionCount": "{count} Sitzungen",
-      "sessionCountOne": "1 Sitzung"
+      "sessionCountOne": "1 Sitzung",
+      "allForms": "Alle Formulare",
+      "formClosed": "Geschlossen",
+      "formCount": "Formulare",
+      "formCountOne": "Formular",
+      "formOpen": "Offen"
     },
     "groupSessions": {
       "addSesMsg": "Bitte fügen Sie eine neue Sitzung hinzu, um fortzufahren.",
@@ -1577,7 +1685,8 @@
       "sentSummarySingular": "Gesendet an {successCount} von {recipientCount} berechtigtem Empfänger.",
       "subject": "Betreff",
       "subjectMergeFieldHint": "Seriendruckfeld in den Betreff einfügen:",
-      "subjectPlaceholder": "z.B. Hallo {{firstName}}, Update von {{churchName}}"
+      "subjectPlaceholder": "z.B. Hallo {{firstName}}, Update von {{churchName}}",
+      "mergeFieldGroupName": "Gruppenname"
     },
     "sendTextDialog": {
       "characterCount": "{count} Zeichen ({segments} SMS-Segmente)",
@@ -1608,7 +1717,9 @@
       "textPersonTitle": "SMS: {personName}",
       "textVolunteersTitle": "SMS an Freiwillige",
       "volunteersSummary": "{eligibleCount} von {totalMembers} Freiwilligen erhalten diese SMS.",
-      "volunteersSummarySingular": "{eligibleCount} von {totalMembers} Freiwilligen erhält diese SMS."
+      "volunteersSummarySingular": "{eligibleCount} von {totalMembers} Freiwilligen erhält diese SMS.",
+      "loadTemplate": "Vorlage laden",
+      "manageTemplates": "Vorlagen verwalten"
     },
     "serviceTimes": {
       "services": "Dienst(e):"
@@ -1643,6 +1754,58 @@
       "description": "Aktivieren Sie die Anwesenheitserfassung, um Sitzungen und Check-Ins für diese Gruppe zu erfassen.",
       "enable": "Anwesenheit aktivieren",
       "title": "Anwesenheitserfassung ist nicht aktiviert"
+    },
+    "pendingRequests": {
+      "approve": "Genehmigen",
+      "approveError": "Die Anfrage konnte nicht genehmigt werden.",
+      "decline": "Ablehnen",
+      "declineError": "Die Anfrage konnte nicht abgelehnt werden.",
+      "declineHelp": "Geben Sie optional einen Grund für die Ablehnung an.",
+      "declineTitle": "Beitrittsanfrage ablehnen",
+      "reason": "Grund",
+      "title": "Ausstehende Anfragen ({count})"
+    },
+    "sendNotificationDialog": {
+      "audience": "Zielgruppe",
+      "checkedBeforeSending": "Die Empfänger von Push-Benachrichtigungen werden vor dem Versand überprüft.",
+      "editTitle": "Push-Benachrichtigung bearbeiten",
+      "eligibleEveryone": "{eligible} von {total} Personen, die die App verwenden, haben Push-Benachrichtigungen aktiviert.",
+      "eligibleGroup": "{eligible} von {total} Mitgliedern haben Push-Benachrichtigungen für die B1App-PWA aktiviert.",
+      "fallbackError": "Die Push-Benachrichtigung konnte nicht gesendet werden.",
+      "futureTime": "Wählen Sie einen Zeitpunkt in der Zukunft.",
+      "groupTitle": "Push-Benachrichtigung: {groupName}",
+      "hadNoDevice": "Für {count} Mitglieder war kein PWA-Gerät für Push-Benachrichtigungen registriert.",
+      "hadPushDisabled": "Bei {count} Mitgliedern waren Push-Benachrichtigungen deaktiviert.",
+      "imageUrlInvalid": "Verwenden Sie eine HTTPS-URL oder lassen Sie dieses Feld leer.",
+      "imageUrlLabel": "Bild-URL",
+      "linkInvalid": "Verwenden Sie eine HTTPS-URL oder einen relativen App-Pfad.",
+      "linkLabel": "Link oder URL des Flyers öffnen",
+      "loadingRecipients": "Empfänger werden geladen ...",
+      "manage": "Sie können sie unter „Mobil > Push-Benachrichtigungen“ anzeigen, bearbeiten oder abbrechen.",
+      "messageLabel": "Nachricht",
+      "messagePlaceholder": "Benachrichtigung verfassen ...",
+      "noDevice": "Für {count} Mitglieder ist kein PWA-Gerät für Push-Benachrichtigungen registriert.",
+      "previewMessage": "Benachrichtigungstext",
+      "previewTitle": "Benachrichtigungstitel",
+      "pushDisabledMembers": "Bei {count} Mitgliedern sind Push-Benachrichtigungen deaktiviert.",
+      "pushDisabledPeople": "Bei {count} Personen sind Push-Benachrichtigungen deaktiviert.",
+      "queued": "{success} von {total} Push-Benachrichtigungen wurden zum Versand vorgemerkt.",
+      "resolvedAtSend": "Beim Versand werden die Empfänger erneut überprüft.",
+      "saveChanges": "Änderungen speichern",
+      "scheduleButton": "Benachrichtigung planen",
+      "scheduleForLater": "Für später planen",
+      "scheduled": "ist geplant für",
+      "sendAt": "Senden um",
+      "sendButton": "Benachrichtigung senden",
+      "sendNow": "Jetzt senden",
+      "senderExcluded": "Der Absender ist ausgeschlossen.",
+      "sending": "Wird gesendet ...",
+      "skipped": "{count} Empfänger wurden übersprungen.",
+      "timeZoneHelp": "Die Zeitangaben erfolgen in {zone}.",
+      "title": "Push-Benachrichtigung",
+      "titleLabel": "Titel",
+      "titlePlaceholder": "Erinnerung",
+      "when": "Wann"
     }
   },
   "helpers": {
@@ -1654,7 +1817,8 @@
       "isNot": "ist nicht",
       "month": ": Monat",
       "startsWith": "beginnt mit",
-      "yearsSince": "Jahre seit "
+      "yearsSince": "Jahre seit ",
+      "lapsedGiver": "Hat in {minWeeks} der letzten {regularWeeks} Wochen gespendet, dann {lapsedWeeks} Wochen lang nichts"
     },
     "pageHelper": {
       "bible": "Bibel",
@@ -1682,7 +1846,7 @@
       "sermons": "Predigten",
       "streamSettings": "Einstellungen",
       "stripeImport": "Stripe-Import",
-      "website": "Webseite"
+      "website": "Website"
     }
   },
   "mobile": {
@@ -1703,7 +1867,28 @@
       "signInPromptText": "Text des Anmeldehinweises",
       "signInPromptTitle": "Anmeldehinweis auf dem Startbildschirm",
       "subtitle": "Einstellungen für die B1 Mobile App konfigurieren",
-      "title": "B1 Mobile"
+      "title": "B1 Mobile",
+      "homeScreen": "Startbildschirm",
+      "homeScreenHelp": "Legen Sie fest, welche Inhalte auf dem Startbildschirm der App angezeigt werden.",
+      "newsCategory": "Nachrichtenkategorie",
+      "newsCategoryAll": "Alle Kategorien",
+      "requestEventHelp": "Ermöglichen Sie Mitgliedern, Veranstaltungen anzufragen.",
+      "requestEventPlaceholder": "Beschreiben Sie die gewünschte Veranstaltung",
+      "requestEventText": "Veranstaltung anfragen",
+      "requestEventTitle": "Veranstaltungsanfrage",
+      "showAttendanceOnHome": "Anwesenheit auf dem Startbildschirm anzeigen",
+      "showFormsOnHome": "Formulare auf dem Startbildschirm anzeigen",
+      "showNewsOnHome": "Nachrichten auf dem Startbildschirm anzeigen",
+      "showNewsOnHomeHelp": "Zeigt aktuelle Nachrichten auf dem Startbildschirm der App an.",
+      "tileLayout": "Kachel-Layout",
+      "tileLayoutAutoScroll": "Automatisches Scrollen",
+      "tileLayoutAutoScrollList": "Liste mit automatischem Scrollen",
+      "tileLayoutGrid": "Raster",
+      "tileLayoutGridList": "Raster- und Listenansicht",
+      "tileLayoutHelp": "Wählen Sie aus, wie Inhalte auf dem Startbildschirm angeordnet werden.",
+      "tileLayoutList": "Liste",
+      "tileLayoutScroll": "Scroll-Ansicht",
+      "tileLayoutTitle": "Layout des Startbildschirms"
     },
     "checkInPage": {
       "copyLink": "Link kopieren",
@@ -1734,7 +1919,49 @@
       "registrationUrl": "Registrierungslink",
       "saveToActivate": "Speichern Sie Ihre Änderungen, um diesen Link zu aktivieren.",
       "subtitle": "Einstellungen für die B1 CheckIn Kiosk-App konfigurieren",
-      "title": "B1 CheckIn"
+      "title": "B1 CheckIn",
+      "addToGroup": "Zur Gruppe hinzufügen",
+      "addToGroupHelp": "Fügen Sie eingecheckte Personen automatisch dieser Gruppe hinzu.",
+      "changePhoto": "Foto ändern",
+      "fields": {
+        "description": "Beschreibung",
+        "field": "Feld",
+        "include": "Einbeziehen",
+        "required": "Erforderlich",
+        "title": "Titel"
+      },
+      "headerPhoto": "Titelbild",
+      "headerPhotoHelp": "Dieses Foto wird oben auf der Check-in-Seite angezeigt.",
+      "noGroup": "Keine Gruppe",
+      "recordAttendance": "Anwesenheit erfassen",
+      "recordAttendanceHelp": "Erfasst die Anwesenheit beim Check-in automatisch.",
+      "removePhoto": "Foto entfernen"
+    },
+    "pushNotifications": {
+      "audience": "Zielgruppe",
+      "audienceEveryone": "Alle Personen mit der App",
+      "cancel": "Benachrichtigung abbrechen",
+      "cancelConfirm": "Diese geplante Benachrichtigung abbrechen? Sie wird dann nicht gesendet.",
+      "clearAll": "Alle entfernen",
+      "clearAllConfirm": "Alle gesendeten, fehlgeschlagenen und abgebrochenen Benachrichtigungen aus der Liste entfernen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      "group": "Gruppe",
+      "missed": "Verpasst (der geplante Versandzeitpunkt ist vorbei)",
+      "noneRecent": "Bisher wurden keine Benachrichtigungen versendet.",
+      "noneScheduled": "Es sind keine Benachrichtigungen geplant.",
+      "notification": "Benachrichtigung",
+      "recent": "Zuletzt",
+      "remove": "Entfernen",
+      "removeConfirm": "Diese Benachrichtigung aus der Liste entfernen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      "scheduled": "Geplant",
+      "send": "Benachrichtigung senden",
+      "sendAt": "Senden um",
+      "sendNowAction": "Jetzt senden",
+      "sendNowConfirm": "Diese Benachrichtigung jetzt senden?",
+      "sentAt": "Gesendet am",
+      "status": "Status",
+      "subtitle": "Push-Benachrichtigungen für die Mitglieder Ihrer Gemeinde planen",
+      "timeZone": "Die Zeitangaben erfolgen in {zone}.",
+      "title": "Push-Benachrichtigungen"
     }
   },
   "month": {
@@ -1773,7 +2000,9 @@
     "advancedSearch": {
       "enterValuePlaceholder": "Wert eingeben...",
       "search": "Suchen",
-      "valuePlaceholder": "Wert"
+      "valuePlaceholder": "Wert",
+      "daysPlaceholder": "Anzahl der Tage",
+      "lastDays": "in den letzten N Tagen"
     },
     "aiSearch": {
       "clearSearch": "Suche löschen",
@@ -1949,7 +2178,8 @@
     "groups": {
       "leader": "Leiter",
       "notMemMsg": "Derzeit kein Mitglied einer Gruppe.",
-      "unknownGroup": "Unbekannte Gruppe"
+      "unknownGroup": "Unbekannte Gruppe",
+      "joined": "Beigetreten am {date}"
     },
     "household": {
       "house": " Haushalt"
@@ -2091,14 +2321,16 @@
     "personForm": {
       "editAria": "{name} bearbeiten",
       "form": "Formular",
-      "notFilledOut": "Noch nicht ausgefüllt."
+      "notFilledOut": "Noch nicht ausgefüllt.",
+      "submittedOn": "Eingereicht am {date}"
     },
     "personNavigation": {
       "attendance": "Anwesenheit",
       "donations": "Spenden",
       "forms": "Formulare",
       "groups": "Gruppen",
-      "notes": "Notizen"
+      "notes": "Notizen",
+      "requests": "Anfragen & Anmeldungen"
     },
     "personPage": {
       "confidentialNotes": "Vertrauliche Notizen",
@@ -2140,13 +2372,25 @@
       "weeklyAttendance": "Wöchentliche Anwesenheit",
       "where": "Wo",
       "wholeHousehold": "ganzer Haushalt",
-      "workflow": "Workflow"
+      "workflow": "Workflow",
+      "allRequests": "Alle Anfragen",
+      "cancelled": "Abgebrochen",
+      "eventRequest": "Veranstaltungsanfrage",
+      "givingYearSingular": "in {year} · {count} Spende",
+      "noRequests": "Bisher keine Anfragen oder Anmeldungen.",
+      "registered": "Angemeldet",
+      "registration": "Anmeldung",
+      "registrationPeople": "Anmeldung · {count} Personen",
+      "status": "Status",
+      "textReminders": "SMS-Erinnerungen",
+      "waitlisted": "Auf der Warteliste"
     },
     "personView": {
       "hasLoginLabel": "Hat Anmeldung: {email}",
       "home": "Zuhause",
       "mobile": "Mobil",
-      "work": "Arbeit"
+      "work": "Arbeit",
+      "dateAdded": "Hinzugefügt am {date}"
     },
     "pickup": {
       "add": "Hinzufügen",
@@ -2162,6 +2406,14 @@
     },
     "updateHouseHold": {
       "update": "Adresse aktualisieren"
+    },
+    "notesPage": {
+      "author": "Von {name}",
+      "confidential": "Vertraulich",
+      "loadMore": "Weitere laden",
+      "subtitle": "Notizen zu dieser Person",
+      "title": "Notizen",
+      "unknownSource": "Unbekannte Quelle"
     }
   },
   "person": {
@@ -2208,7 +2460,8 @@
     "unspecified": "Nicht spezifiziert",
     "visitor": "Besucher",
     "widowed": "Verwitwet",
-    "zip": "Postleitzahl"
+    "zip": "Postleitzahl",
+    "dateAdded": "Hinzugefügt am"
   },
   "placeholders": {
     "addPage": {
@@ -2356,7 +2609,7 @@
       "fallbackLoading": "Wird geladen...",
       "fallbackSection": "Abschnitt",
       "fromAssociatedLesson": "Von verknüpfter Lektion:",
-      "importCount": "Import ({count})",
+      "importCount": "Importieren ({count})",
       "noActionsAvailable": "Keine Aktionen verfügbar",
       "noContent": "Kein Inhalt verfügbar",
       "selectAction": "Aktion auswählen",
@@ -2397,7 +2650,8 @@
       "planNotesAria": "Plannotizen",
       "positionsFilled": "{filled} von {total} Positionen besetzt",
       "saveNotes": "Notizen speichern",
-      "undoAutoAssign": "Automatische Zuweisung rückgängig machen"
+      "undoAutoAssign": "Automatische Zuweisung rückgängig machen",
+      "loadError": "Der Dienstplan konnte nicht geladen werden."
     },
     "assignmentEdit": {
       "assignPos": "Position zuweisen",
@@ -2405,10 +2659,11 @@
       "done": "Fertig",
       "editAssign": "Zuweisung bearbeiten",
       "noMem": "Keine Gruppenmitglieder gefunden.",
-      "searchAnyone": "Nach einer beliebigen Person in Ihrer Kirche suchen"
+      "searchAnyone": "Nach einer beliebigen Person in Ihrer Kirche suchen",
+      "searchTeam": "Team suchen"
     },
     "browseGrid": {
-      "addOn": "Add-On"
+      "addOn": "Zusatzmodul"
     },
     "bulkLessonSchedule": {
       "biWeekly": "Zweiwöchentlich",
@@ -2529,14 +2784,20 @@
       "planNameAria": "Planname",
       "planReq": "Planname ist erforderlich.",
       "prepared": "Vorläufig eingeplant (Zuweisungen vor Veröffentlichung für Freiwillige ausblenden)",
-      "repeatWeekly": "Wöchentlich für so viele Wochen wiederholen",
-      "repeatWeeklyHelper": "Erstellt einen Plan pro Woche, jeweils kopiert vom vorherigen",
       "servDate": "Dienstdatum",
       "servReq": "Dienstdatum ist erforderlich.",
       "serviceDateAria": "Servicedatum",
       "showVolunteerNames": "Freiwilligennamen auf der Anmeldeseite anzeigen",
       "signupDeadline": "Anmeldeschluss (Stunden vor dem Dienst)",
-      "signupDeadlineHelper": "Leer lassen für keinen Stichtag"
+      "signupDeadlineHelper": "Leer lassen für keinen Stichtag",
+      "repeatCount": "Wiederholen alle",
+      "repeatDay": "Wochentag",
+      "repeatEvery": "Wiederholen alle",
+      "repeatFrequency": "Wiederholungsintervall",
+      "repeatHelper": "Legen Sie fest, wie oft sich dieser Plan wiederholen soll.",
+      "repeatMonth": "Monat",
+      "repeatOn": "Wiederholen am",
+      "repeatWeek": "Woche"
     },
     "planItem": {
       "addItem": "Element hinzufügen",
@@ -2595,14 +2856,34 @@
       "scheduleLesson": "Lektion planen",
       "serviceDate": "Gottesdienstdatum",
       "serviceOrder": "Dienstreihenfolge",
-      "upcoming": "Bevorstehend"
+      "upcoming": "Bevorstehend",
+      "lessonTrimWarning": "Einige Inhalte der verknüpften Lektion wurden gekürzt."
     },
     "planPage": {
       "assign": "Teamzuweisungen",
       "band": "Band",
-      "loadingPlan": "Lade Plan...",
+      "loadingPlan": "Dienstplan wird geladen...",
       "noteSave": "Notiz gespeichert",
-      "servicePlan": "Dienstplan"
+      "servicePlan": "Dienstplan",
+      "accepted": "Zugesagt",
+      "backToPlan": "Zurück zum Plan",
+      "editDetails": "Details bearbeiten",
+      "editOrder": "Gottesdienstablauf bearbeiten",
+      "filledOf": "{filled} von {total}",
+      "itemsInSections": "{items} Elemente in {sections} Abschnitten",
+      "lessonLinked": "Dieser Plan folgt einer verknüpften Lektion. Öffnen Sie den Gottesdienstablauf, um ihn anzuzeigen oder anzupassen.",
+      "manageTeam": "Mitarbeiterteam verwalten",
+      "moreItems": "+ {count} weitere Elemente",
+      "noPositions": "Noch keine Positionen vorhanden.",
+      "ofFilled": "von {total} ausgefüllt",
+      "openCount": "{count} noch benötigt",
+      "pendingDeclined": "{pending} ausstehend · {declined} abgelehnt",
+      "responses": "Rückmeldungen",
+      "runTime": "Dauer",
+      "servingTeam": "Mitarbeiterteam",
+      "status": "Planstatus",
+      "viewOrder": "Gottesdienstablauf anzeigen",
+      "viewTeam": "Mitarbeiterteam anzeigen"
     },
     "planType": {
       "details": "Plantyp-Details"
@@ -2692,7 +2973,9 @@
       "valPlan": "Plan ist gültig.",
       "vol": "Freiwillige(r)",
       "volNotif": "Alle Freiwilligen benachrichtigt.",
-      "volReq": "Anfragen an Freiwillige: "
+      "volReq": "Anfragen an Freiwillige: ",
+      "notNotifiedCount": "{count} nicht benachrichtigt",
+      "review": "Überprüfung"
     },
     "plansPage": {
       "addMinistry": "Ministerium hinzufügen",
@@ -2726,7 +3009,8 @@
     "printPlan": {
       "length": "Länge",
       "serviceOrder": "DIENSTREIHENFOLGE",
-      "time": "Zeit"
+      "time": "Zeit",
+      "showHeading": "Überschrift anzeigen"
     },
     "printPreview": {
       "colorCoded": "Farbcodiert",
@@ -2871,6 +3155,37 @@
       "noTime": "Es wurden noch keine Zeiten hinzugefügt",
       "sunServ": "Sonntagsdienst",
       "times": "Zeiten"
+    },
+    "blockouts": {
+      "add": "Sperrzeit hinzufügen",
+      "blockedOut": "Nicht verfügbar",
+      "confirmRemove": "Diese Sperrzeit entfernen?",
+      "dateOrder": "Das Enddatum darf nicht vor dem Startdatum liegen.",
+      "from": "Von",
+      "member": "Teammitglied",
+      "memberRequired": "Wählen Sie ein Teammitglied aus.",
+      "none": "Keine bevorstehenden Sperrzeiten.",
+      "remove": "Entfernen",
+      "title": "Sperrzeiten",
+      "to": "Bis",
+      "unavailable": "Nicht verfügbar"
+    },
+    "lessonTrim": {
+      "alsoTrimUpcoming": "Auch die {} bereits geplanten kommenden Lektionen kürzen",
+      "alsoTrimUpcomingOne": "Auch die nächste Lektion kürzen",
+      "clear": "Zurücksetzen",
+      "dismiss": "Schließen",
+      "error": "Beim Kürzen der Lektion ist ein Fehler aufgetreten.",
+      "help": "Jede in {} geplante Lektion wird auf diese Teile gekürzt. Teile werden anhand des Namens zugeordnet; ein Teil in einem Abschnitt, der jede Woche umbenannt wird, wird anhand seiner Position im Abschnitt beibehalten.",
+      "keeps": "Wird beibehalten",
+      "nothingToSave": "Keine Änderungen zum Speichern.",
+      "partIn": "{} in {}",
+      "replacesOrder": "Ersetzt den Ablauf",
+      "saved": "Lektionskürzung für {} gespeichert.",
+      "savedWithWarnings": "Lektionskürzung gespeichert. Prüfen Sie diese Pläne vor Sonntag: {}",
+      "status": "Lektionskürzung: {} Teile beibehalten, gespeichert von {} ({})",
+      "title": "Lektion kürzen",
+      "warningBanner": "{}. Prüfen Sie den Gottesdienstablauf vor Sonntag."
     }
   },
   "profile": {
@@ -2890,7 +3205,9 @@
       "label": "Bezeichnung",
       "lastActiveDate": "Letztes aktives Datum",
       "registrationDate": "Anmeldedatum",
-      "title": "Geräte"
+      "title": "Geräte",
+      "confirmRemove": "„{label}“ aus Ihrem Konto entfernen? Der Bildschirm benötigt einen neuen Kopplungscode, um sich erneut zu verbinden.",
+      "remove": "Gerät entfernen"
     },
     "linkedAccounts": {
       "link": "Link",
@@ -2942,6 +3259,25 @@
       "themePreferences": "Designeinstellungen",
       "togglePasswordVisibility": "Passwort-Sichtbarkeit umschalten",
       "valEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+    },
+    "twoFactor": {
+      "backupLeft": "Verbleibende Wiederherstellungscodes: {}",
+      "code": "6-stelliger Code",
+      "codeOrBackup": "Code oder Wiederherstellungscode",
+      "copy": "Kopieren",
+      "disablePrompt": "Geben Sie einen Code aus Ihrer Authentifizierungs-App oder einen Wiederherstellungscode ein, um die Zwei-Faktor-Anmeldung zu deaktivieren.",
+      "done": "Ich habe sie gespeichert",
+      "enabled": "Die Zwei-Faktor-Anmeldung ist aktiviert.",
+      "invalidCode": "Dieser Code ist ungültig oder abgelaufen.",
+      "manual": "Sie können den Einrichtungsschlüssel auch manuell in Ihrer Authentifizierungs-App eingeben.",
+      "off": "Aus. Fügen Sie Ihrer Anmeldung einen Code aus einer Authentifizierungs-App hinzu (Google Authenticator, Microsoft Authenticator, 1Password, Authy ...).",
+      "on": "Ein. Ihre Anmeldung erfordert jetzt zusätzlich zu Ihrem Passwort einen Code aus Ihrer Authentifizierungs-App.",
+      "saveBackup": "Bewahren Sie diese Wiederherstellungscodes an einem sicheren Ort auf. Jeder Code ermöglicht eine einmalige Anmeldung, falls Sie Ihr Telefon verlieren. Sie können jeden Code nur einmal verwenden.",
+      "scan": "Scannen Sie diesen QR-Code mit Ihrer Authentifizierungs-App und geben Sie anschließend den angezeigten sechsstelligen Code ein.",
+      "title": "Zwei-Faktor-Anmeldung",
+      "turnOff": "Deaktivieren",
+      "turnOn": "Aktivieren",
+      "verify": "Überprüfen"
     }
   },
   "registrations": {
@@ -2980,7 +3316,7 @@
       "selections": "Auswahlmöglichkeiten",
       "sort": "Sortieren",
       "startDate": "Startdatum",
-      "total": "Total",
+      "total": "Gesamt",
       "type": "Typ",
       "usesSoFar": "Verwendungen: {count}",
       "value": "Wert"
@@ -3011,7 +3347,9 @@
       "subtitle": "Anmeldungen für diese Veranstaltung verwalten",
       "unansweredOnly": "Nur unbeantwortete Fragen",
       "unknown": "Unbekannt",
-      "viewAnswers": "Antworten anzeigen"
+      "viewAnswers": "Antworten anzeigen",
+      "share": "Anmeldung teilen",
+      "waitlisted": "{count} auf der Warteliste"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapazität",
@@ -3093,7 +3431,10 @@
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube-Kanal-ID",
       "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
-      "youtubeDescription": "Videos von Ihrem YouTube-Kanal oder Playlists importieren"
+      "youtubeDescription": "Videos von Ihrem YouTube-Kanal oder Playlists importieren",
+      "fetchError": "Videos konnten nicht abgerufen werden.",
+      "noVideos": "Keine Videos gefunden.",
+      "selectVideos": "Videos auswählen"
     },
     "duration": {
       "minutes": "Minuten",
@@ -3312,7 +3653,8 @@
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube-Kanal-ID",
       "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Dies ist nicht Ihre Kanal-URL",
-      "youtubeId": "YouTube-ID"
+      "youtubeId": "YouTube-ID",
+      "fetchError": "Das Video konnte nicht abgerufen werden."
     },
     "subtitle": "Verwalten Sie Ihre Predigtbibliothek und Live-Streams",
     "title": "Predigten"
@@ -3645,7 +3987,10 @@
       "searchLabel": "Name oder E-Mail",
       "staff": "Mitarbeiter",
       "subDomain": "Subdomain",
-      "title": "Benutzersuche"
+      "title": "Benutzersuche",
+      "mfaOn": "Zwei-Faktor-Authentifizierung aktiviert",
+      "resetMfa": "Zwei-Faktor-Authentifizierung zurücksetzen",
+      "resetMfaConfirm": "Zwei-Faktor-Anmeldung für {email} deaktivieren? Tun Sie dies erst, nachdem Sie die Identität der Person überprüft haben."
     }
   },
   "serving": {
@@ -3716,15 +4061,24 @@
       "url": "URL",
       "verseOfDay": "Vers des Tages",
       "visibility": "Sichtbarkeit",
-      "volunteerOpportunities": "Freiwilligenmöglichkeiten"
+      "volunteerOpportunities": "Freiwilligenmöglichkeiten",
+      "directoryVisibilityHint": "Legen Sie fest, ob diese Inhalte im Mitgliederverzeichnis sichtbar sind.",
+      "folder": "Ordner",
+      "noParent": "Kein übergeordneter Eintrag",
+      "parentTab": "Übergeordneter Tab",
+      "registrations": "Anmeldungen",
+      "removeImage": "Bild entfernen",
+      "requests": "Anfragen"
     },
     "appTabs": {
-      "moveDown": "Nach unten bewegen",
-      "moveUp": "Nach oben bewegen",
+      "moveDown": "Nach unten verschieben",
+      "moveUp": "Nach oben verschieben",
       "noTabs": "Keine Registerkarten konfiguriert",
       "noTabsDesc": "Fügen Sie Registerkarten hinzu, um Ihre App-Navigation anzupassen",
       "title": "App-Registerkarten",
-      "untitled": "Ohne Titel"
+      "untitled": "Ohne Titel",
+      "folderOneTab": "Ordner mit einem Tab",
+      "folderTabs": "Ordner · {} Tabs"
     },
     "appThemeEdit": {
       "background": "Hintergrund",
@@ -3737,7 +4091,8 @@
       "secondary": "Sekundär",
       "secondaryText": "Sekundärtext",
       "surface": "Oberfläche",
-      "textColor": "Textfarbe"
+      "textColor": "Textfarbe",
+      "hex": "Hex-Farbwert"
     },
     "associatePerson": {
       "change": "Ändern"
@@ -3780,7 +4135,10 @@
       "startDate": "Startdatum",
       "subtitle": "Verfolgen Sie Änderungen und Aktivitäten in Ihrer Gemeinde",
       "title": "Audit-Log",
-      "truncated": "Details wurden abgeschnitten und dieser Eintrag kann nicht rückgängig gemacht werden."
+      "truncated": "Details wurden abgeschnitten und dieser Eintrag kann nicht rückgängig gemacht werden.",
+      "clearRecordFilter": "Alle anzeigen",
+      "filteredToRecord": "Der Notizverlauf für einen Datensatz wird angezeigt.",
+      "openRecord": "Datensatz öffnen"
     },
     "batches": {
       "action": "Aktion",
@@ -3830,11 +4188,11 @@
       "none": "Noch keine Campusse hinzugefügt."
     },
     "checkinSettingsEdit": {
-      "block": "Blockieren (Check-In verhindern)",
-      "help": "Legen Sie fest, wie der Check-In reagiert, wenn ein Raum sein Verhältnis von Freiwilligen zu Kindern überschreitet oder die Mindestanzahl an Freiwilligen unterschreitet.",
-      "kioskLink": "Check-in Kiosk, QR, und Labels",
+      "block": "Blockieren (Check-in verhindern)",
+      "help": "Legen Sie fest, wie der Check-in reagiert, wenn in einem Raum das Verhältnis von Freiwilligen zu Kindern überschritten oder die Mindestanzahl an Freiwilligen unterschritten wird.",
+      "kioskLink": "Check-in-Kiosk, QR-Codes und Etiketten",
       "ratioEnforcement": "Durchsetzung des Freiwilligenverhältnisses",
-      "title": "Check-In",
+      "title": "Check-in",
       "warn": "Warnen (mit Bestätigung zulassen)"
     },
     "churchSettingsEdit": {
@@ -3848,7 +4206,8 @@
       "noNameMsg": "Kirchenname darf nicht leer sein.",
       "noSubMsg": "Subdomain darf nicht leer sein.",
       "subdom": "Subdomain",
-      "textingTitle": "SMS-Versand"
+      "textingTitle": "SMS-Versand",
+      "timeZone": "Zeitzone"
     },
     "customFieldEdit": {
       "confirmDelete": "Sind Sie sicher, dass Sie dieses benutzerdefinierte Feld löschen möchten? Die gespeicherten Werte werden ebenfalls entfernt.",
@@ -3934,7 +4293,13 @@
       "subjectRequired": "Betreff ist erforderlich.",
       "templateName": "Vorlagenname",
       "templateNamePlaceholder": "z. B. Willkommens-E-Mail, Veranstaltungserinnerung",
-      "yourChurch": "Ihre Kirche"
+      "yourChurch": "Ihre Kirche",
+      "giftMergeHint": "Verwenden Sie die folgenden Platzhalter, um Spendeninformationen einzufügen.",
+      "mergeAmount": "Spendenbetrag",
+      "mergeFund": "Spendenzweck",
+      "mergeGiftDate": "Spendendatum",
+      "mergeReceipt": "Quittungsnummer",
+      "textBody": "Nachrichtentext"
     },
     "emailTemplatesPage": {
       "category": "Kategorie",
@@ -3972,7 +4337,7 @@
       "clientSecret": "Client-Geheimnis",
       "copyWebhookUrl": "Webhook-URL kopieren",
       "currency": "Währung",
-      "currencyHelper": "Stellen Sie sicher, dass diese Währung auch in Ihrem Stripe-Dashboard aktiviert ist. Aktivieren Sie die Währung hier:",
+      "currencyHelper": "Stellen Sie sicher, dass diese Währung auch in Ihrem {provider}-Dashboard aktiviert ist. Aktivieren Sie die Währung hier:",
       "feesAndStatementsSection": "Gebühren & Abrechnungen",
       "forceMsg": "Erzwingt automatisch, dass Benutzer die Transaktionsgebühren übernehmen",
       "giving": "Spenden",
@@ -3995,7 +4360,9 @@
       "transFee": "Transaktionsgebühr",
       "webhookKey": "Webhook-Schlüssel",
       "webhookKeyHelper": "Webhook-Signiergeheimnis aus dem Kingdom Funding-Bedienfeld. Erforderlich für Transaktionsstatusaktualisierungen.",
-      "webhookUrlCopied": "Webhook-URL in Zwischenablage kopiert"
+      "webhookUrlCopied": "Webhook-URL in Zwischenablage kopiert",
+      "currencyHelperNoProvider": "Wählen Sie die Währung aus, in der Spenden erfasst werden.",
+      "providerDashboard": "{provider} Dashboard"
     },
     "gradePromotionSettingsEdit": {
       "day": "Tag",
@@ -4025,7 +4392,8 @@
       "notSet": "Nicht festgelegt",
       "phoneLocalSubtitle": "Lokale Telefonnummern",
       "volunteerSignupOff": "Alle kommenden Wochen",
-      "volunteerSignupOn": "Nur die nächste Woche jedes Plantyps"
+      "volunteerSignupOn": "Nur die nächste Woche jedes Plantyps",
+      "customFieldsOne": "Benutzerdefiniertes Feld"
     },
     "manageChurch": {
       "auditLog": "Audit-Protokoll",
@@ -4057,7 +4425,9 @@
       "phoneInternational": "International (mit Ländervorwahl)",
       "phoneLocal": "Lokal (wie eingegeben)",
       "region": "Region",
-      "title": "Region"
+      "title": "Region",
+      "worshipDay": "Gottesdiensttag",
+      "worshipDayHelper": "Der Wochentag, an dem Ihr Hauptgottesdienst stattfindet. Das Dashboard verwendet diesen Tag für Zählungen, Beschriftungen und die Live-Anzeige."
     },
     "roleCheck": {
       "permissionAria": "Berechtigung {label}"
@@ -4082,7 +4452,8 @@
     },
     "rolePermissions": {
       "filter": "Berechtigungen filtern",
-      "permEdit": "Berechtigungen bearbeiten"
+      "permEdit": "Berechtigungen bearbeiten",
+      "countOf": "{checked} von {total}"
     },
     "roles": {
       "acc": "Buchhaltung",
@@ -4102,7 +4473,9 @@
       "lesAdminDesc": "Kann Klassenzimmer einrichten und Unterrichtspläne auf ",
       "role": "Rolle",
       "roleCreate": "Möchten Sie eine neue Rolle erstellen von ",
-      "roles": "Rollen"
+      "roles": "Rollen",
+      "allUsers": "Alle Benutzer",
+      "members": "Mitglieder"
     },
     "rolesPage": {
       "subtitle": "Rollen und Berechtigungen verwalten"
@@ -4120,7 +4493,14 @@
       "orgAddress": "Organisationsanschrift",
       "registrationNumber": "Registrierungsnummer",
       "signatory": "Name des Zeichnungsberechtigten",
-      "standard": "Standard"
+      "standard": "Standard",
+      "givingNote": "Spendenhinweis",
+      "givingNoteHelper": "Dieser Hinweis wird auf Spendenbescheinigungen angezeigt.",
+      "memberYears": "Mitgliedsjahre",
+      "memberYearsAll": "Alle Mitgliedsjahre",
+      "memberYearsHelper": "Legen Sie fest, ob die Dauer der Mitgliedschaft auf der Bescheinigung erscheint.",
+      "memberYearsOff": "Nicht anzeigen",
+      "memberYearsThrough": "Bis {}"
     },
     "storageSettingsEdit": {
       "authFailed": "Authentifizierung fehlgeschlagen",
@@ -4178,8 +4558,15 @@
       "senderId": "Absender-ID",
       "textInChurch": "Text in der Kirche",
       "textInChurchHelper": "Besuchen Sie",
-      "textInChurchHelperLink": "Text In Church Support",
-      "textInChurchHelperSuffix": "um Entwickler-API-Zugriff anzufordern. Nach der Genehmigung erstellen Sie einen API-Schlüssel in Ihren Kontoeinstellungen > Entwickler-API-Bereich."
+      "textInChurchHelperLink": "Text-In-Church-Support",
+      "textInChurchHelperSuffix": "um Entwickler-API-Zugriff anzufordern. Nach der Genehmigung erstellen Sie einen API-Schlüssel in Ihren Kontoeinstellungen > Entwickler-API-Bereich.",
+      "accountSid": "Account-SID",
+      "authToken": "Authentifizierungstoken",
+      "fromNumber": "Absendernummer",
+      "twilio": "Twilio",
+      "twilioHelper": "Hinterlegen Sie Ihre Twilio-Zugangsdaten, um SMS zu versenden.",
+      "twilioHelperLink": "Twilio-Konto öffnen",
+      "twilioHelperSuffix": "Die Zugangsdaten werden sicher gespeichert."
     },
     "userAdd": {
       "addTo": "Hinzufügen zu ",
@@ -4236,9 +4623,9 @@
       "events": "Ereignisse",
       "eventsRequired": "Mindestens ein Ereignis auswählen",
       "mailchimpApiKey": "Mailchimp API-Schlüssel",
-      "mailchimpApiKeyHelp": "Found in Mailchimp under Account > Extras > API keys. Stored encrypted.",
+      "mailchimpApiKeyHelp": "Zu finden in Mailchimp unter „Konto > Extras > API-Schlüssel“. Wird verschlüsselt gespeichert.",
       "mailchimpAudienceId": "Zielgruppen-ID",
-      "mailchimpAudienceIdHelp": "Found in Mailchimp under Audience > Settings > Audience name and defaults.",
+      "mailchimpAudienceIdHelp": "Zu finden in Mailchimp unter „Zielgruppe > Einstellungen > Zielgruppenname und Standardwerte“.",
       "name": "Name",
       "namePlaceholder": "z. B. Zapier — neue Mitglieder",
       "nameRequired": "Name ist erforderlich",
@@ -4272,6 +4659,16 @@
       "status": "Status",
       "title": "Webhooks",
       "url": "URL"
+    },
+    "titles": {
+      "addTitle": "Anrede hinzufügen",
+      "description": "Verwalten Sie die verfügbaren Anreden.",
+      "duplicate": "Anrede duplizieren",
+      "helper": "Wählen Sie eine Anrede aus oder erstellen Sie eine neue.",
+      "newTitle": "Neue Anrede",
+      "save": "Anrede speichern",
+      "saved": "Anrede gespeichert",
+      "titles": "Anreden"
     }
   },
   "site": {
@@ -4430,7 +4827,10 @@
       "state": "Status",
       "subtitle": "Blogbeiträge für Ihre Website erstellen und verwalten",
       "title": "Blog",
-      "view": "Auf der Website ansehen"
+      "view": "Auf der Website ansehen",
+      "footerDesc": "Beschreibung im Blog-Fußbereich",
+      "footerLabel": "Beschriftung im Fußbereich",
+      "footerTitle": "Titel im Fußbereich"
     },
     "blogEdit": {
       "author": "Autor",
@@ -4464,7 +4864,13 @@
       "select": "Auswählen",
       "selectCalendar": "Kalender auswählen",
       "tag": "Nur Veranstaltungen mit dem Tag",
-      "tagHelp": "Leer lassen, um alle Veranstaltungen anzuzeigen."
+      "tagHelp": "Leer lassen, um alle Veranstaltungen anzuzeigen.",
+      "groupBadge": "Gruppenkennzeichnung",
+      "groupBadgeHide": "Gruppenkennzeichnung ausblenden",
+      "groupBadgeShow": "Gruppenkennzeichnung anzeigen",
+      "layout": "Layout",
+      "layoutAutoscroll": "Automatisches Scrollen",
+      "layoutGrid": "Raster-Layout"
     },
     "campaignProgressEdit": {
       "donateUrl": "Spenden-URL",
@@ -4683,7 +5089,10 @@
       "textWithPhoto": "Text mit Foto",
       "tryDifferentSearch": "Versuchen Sie einen anderen Suchbegriff",
       "untitledBlock": "Unbenannter Block",
-      "video": "Video"
+      "video": "Video",
+      "buttonLink": "Button-Link",
+      "groups": "Gruppenübersicht",
+      "whiteSpace": "Leerraum"
     },
     "elementEdit": {
       "enableLightbox": "Lightbox aktivieren",
@@ -4774,7 +5183,10 @@
       "warning": "Warnung",
       "youtube": "YouTube",
       "zoomLevel": "Zoomstufe",
-      "zoomLevelExample": "10 ist ein guter Standardwert. Höher bedeutet stärker vergrößert."
+      "zoomLevelExample": "10 ist ein guter Standardwert. Höher bedeutet stärker vergrößert.",
+      "layout": "Layout",
+      "layoutAutoscroll": "Automatisches Scrollen",
+      "layoutGrid": "Raster-Layout"
     },
     "emptyState": {
       "addFirstSection": "Fügen Sie Ihren ersten Abschnitt hinzu",
@@ -5173,7 +5585,8 @@
       "dividers": "Formtrenner",
       "duplicate": "Duplizieren",
       "duplicateSection": "Abschnitt duplizieren",
-      "id": "ID"
+      "id": "ID",
+      "saveError": "Der Abschnitt konnte nicht gespeichert werden."
     },
     "sectionTemplates": {
       "aboutSplit": "Über uns",
@@ -5337,7 +5750,8 @@
       "tiktok": "TikTok",
       "vimeo": "Vimeo",
       "x": "X",
-      "youtube": "YouTube"
+      "youtube": "YouTube",
+      "whatsappPlaceholder": "WhatsApp-Link"
     },
     "spacingScaleEdit": {
       "buttonOne": "Schaltfläche 1",
@@ -5651,7 +6065,8 @@
       "searchSongs": "Lieder suchen",
       "selectAll": "Alles auswählen",
       "songs": "Lieder",
-      "subtitle": "Verwalten Sie Ihre Musikbibliothek"
+      "subtitle": "Verwalten Sie Ihre Musikbibliothek",
+      "resultCountOne": "{count} Lied"
     },
     "title": "Lieder"
   },
@@ -5704,7 +6119,8 @@
       "tues": "Dienstag",
       "wed": "Mittwoch",
       "weekDay": "Wochentag",
-      "yearsE": "Verstrichene Jahre"
+      "yearsE": "Verstrichene Jahre",
+      "today": "Heute"
     },
     "conditionEdit": {
       "conDetails": "Zustandsdetails",
@@ -5715,7 +6131,9 @@
       "confirmMsg": "Sind Sie sicher, dass Sie diese Bedingung löschen möchten?",
       "gen": "Allgemein",
       "persAtt": "Persönliche Attribute",
-      "today": "Heutiges Datum"
+      "today": "Heutiges Datum",
+      "giving": "Spenden",
+      "lapsedGiver": "Länger nicht gespendet"
     },
     "conditionSelect": {
       "is": "ist",
@@ -5734,7 +6152,11 @@
       "group": "Gruppe",
       "pers": "Person",
       "sel": "Auswählen",
-      "selPers": "Wählen Sie eine Person oder Gruppe aus"
+      "selPers": "Wählen Sie eine Person oder Gruppe aus",
+      "done": "Erledigt",
+      "none": "Keine Person oder Gruppe",
+      "perMember": "Für jedes Mitglied eine separate Aufgabe erstellen",
+      "selPeople": "Personen oder eine Gruppe auswählen"
     },
     "eventTriggers": {
       "active": "Aktiv",
@@ -5769,7 +6191,8 @@
       "step": "Startschritt",
       "subtitle": "Einen Workflow automatisch starten, wenn ein Datensatz hinzugefügt, geändert oder entfernt wird — einschließlich Formulareinreichungen.",
       "title": "Auslöser",
-      "value": "Wert"
+      "value": "Wert",
+      "allowRepeatAfterClose": "Wiederholung nach Abschluss zulassen"
     },
     "executions": {
       "attempts": "Versuche",
@@ -5816,7 +6239,6 @@
       "assignPers": "Bitte weisen Sie diese Aufgabe einer Person zu.",
       "assignTo": "Zuweisen an",
       "assignToAria": "Zuweisen an",
-      "associatePers": "Bitte verknüpfen Sie diese Aufgabe mit einer Person.",
       "associateW": "Verknüpfen mit",
       "associateWithAria": "Verknüpfen mit",
       "newAssign": "Neue Aufgabe",
@@ -5824,7 +6246,12 @@
       "taskNew": "Neue Aufgabe",
       "taskNotesAria": "Aufgabennotizen",
       "taskTitleAria": "Aufgabentitel",
-      "titleTask": "Bitte geben Sie einen Titel für diese Aufgabe ein."
+      "titleTask": "Bitte geben Sie einen Titel für diese Aufgabe ein.",
+      "assignCount": "{{count}} Personen",
+      "associateHint": "Optional. Leer lassen, wenn sich die Aufgabe auf keine bestimmte Person bezieht.",
+      "dueDate": "Fälligkeitsdatum",
+      "perPersonHint": "Für jede Person wird eine Aufgabe erstellt.",
+      "totalHint": "{{count}} Aufgaben werden erstellt."
     },
     "reminders": {
       "channels": "Senden über",
@@ -5892,7 +6319,15 @@
       "open": "Offen",
       "opened": "Geöffnet",
       "reopenTask": "Aufgabe wieder öffnen",
-      "unassigned": "Nicht zugewiesen"
+      "unassigned": "Nicht zugewiesen",
+      "cancelTitle": "Aufgabe abbrechen",
+      "closedOn": "Abgeschlossen am",
+      "confirmDelete": "Möchten Sie diese Aufgabe wirklich löschen?",
+      "deleteTask": "Aufgabe löschen",
+      "due": "Fällig",
+      "editTitle": "Aufgabe bearbeiten",
+      "history": "Verlauf",
+      "saveTitle": "Aufgabe speichern"
     },
     "workflowActions": {
       "add": "Aktion hinzufügen",
@@ -5910,7 +6345,7 @@
       "subjectOverride": "Betreff (optional)",
       "taskDescription": "Beschreibung (optional)",
       "taskTitle": "Aufgabentitel",
-      "textMergeHint": "Verwende {{firstName}}, {{lastName}}, {{displayName}} oder {{churchName}}. Abgemeldete Personen werden übersprungen.",
+      "textMergeHint": "Klicken Sie unten auf ein Feld, um es einzufügen. Abgemeldete Personen werden übersprungen.",
       "textMessage": "SMS-Nachricht",
       "title": "Automatisierte Aktionen",
       "type": {
@@ -5926,7 +6361,16 @@
         "webhook": "Webhook aufrufen"
       },
       "value": "Wert",
-      "webhookUrl": "Webhook-URL (https)"
+      "webhookUrl": "Webhook-URL (https)",
+      "emailNotApproved": "E-Mail-Versand ist nicht freigegeben.",
+      "emailPaused": "E-Mail-Versand ist pausiert.",
+      "giftMergeHint": "Verwenden Sie Platzhalter für Spendeninformationen.",
+      "noPerson": "Keine Person ausgewählt",
+      "notifyHint": "Benachrichtigen Sie die zuständige Person.",
+      "notifyMessage": "Benachrichtigungsnachricht",
+      "pickPerson": "Person auswählen",
+      "recordAttendanceHint": "Anwesenheit für die ausgewählte Person erfassen.",
+      "textTemplate": "SMS-Vorlage"
     },
     "workflowBoard": {
       "addCard": "Karte hinzufügen",
@@ -5939,7 +6383,8 @@
       "step": "Schritt",
       "stepsCount": "Schritte",
       "subtitle": "Karten zwischen Schritten ziehen",
-      "unassigned": "Nicht zugewiesen"
+      "unassigned": "Nicht zugewiesen",
+      "selectAll": "Alle auswählen"
     },
     "workflowCard": {
       "assign": "Zuweisen",
@@ -5959,7 +6404,10 @@
       "snooze1Week": "1 Woche",
       "snooze3Days": "3 Tage",
       "snoozed": "Erinnert",
-      "viewProfile": "Profil anzeigen"
+      "viewProfile": "Profil anzeigen",
+      "openBoard": "Board öffnen",
+      "remove": "Entfernen",
+      "removeConfirm": "Möchten Sie diese Karte wirklich entfernen?"
     },
     "workflowCategories": {
       "addCategory": "Kategorie hinzufügen",
@@ -6017,7 +6465,17 @@
       "status": "Status",
       "subtitle": "Personen durch eine Reihe von Schritten führen",
       "title": "Workflows",
-      "workflowCount": "{count} Workflows"
+      "workflowCount": "{count} Workflows",
+      "creating": "Wird erstellt ...",
+      "templateError": "Der Workflow konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
+    },
+    "conditionGiving": {
+      "gaveIn": "Hat gespendet in",
+      "ofTheLast": "der letzten",
+      "privacy": "Spendeninformationen sind vertraulich.",
+      "thenNothing": "Andernfalls keine Aktion ausführen.",
+      "weeks": "Wochen",
+      "weeksLower": "Wochen"
     }
   }
 }
