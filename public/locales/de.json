@@ -181,7 +181,7 @@
             "noSchedule": "Kein Zeitplan",
             "openMinutes": "Check-in öffnen (Minuten vor Beginn)",
             "service": "Dienst",
-            "serviceAria": "Service auswählen",
+            "serviceAria": "Dienst auswählen",
             "startTime": "Startzeit",
             "validate": {
                 "name": "Der Name der Dienstzeit ist erforderlich.",
@@ -328,7 +328,7 @@
         },
         "eventReminders": {
             "channels": "Kanäle",
-            "email": "Email",
+            "email": "E-Mail",
             "enableReminders": "Erinnerungen aktivieren",
             "maxOffsets": "Maximal 3 ausgewählte Zeiten",
             "message": "Nachricht (optional)",
@@ -497,7 +497,7 @@
         "error": "Fehler",
         "errorBoundary": {
             "message": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
-            "retry": "Wiederholen",
+            "retry": "Erneut versuchen",
             "title": "Hoppla! Es ist ein Fehler aufgetreten"
         },
         "expand": "Ausklappen",
@@ -1022,7 +1022,7 @@
         "givingLink": {
             "amount": "Betrag (optional)",
             "button": "Spendenlink",
-            "description": "Teilen Sie diesen Link mit Ihren Spender, damit diese auf der Spendenseite mit dem gewünschten Fonds und Betrag landen.",
+            "description": "Teilen Sie diesen Link mit Ihren Spendern, damit diese auf der Spendenseite mit dem gewünschten Fonds und Betrag landen.",
             "title": "Spendenlink",
             "url": "Link",
             "downloadQr": "QR-Code herunterladen"
@@ -1165,13 +1165,13 @@
             "badMethod": "Unbekannte Zahlungsmethode: {method}",
             "button": "CSV importieren",
             "chooseFile": "CSV-Datei auswählen",
-            "donor": "Donor in file",
+            "donor": "Spender in der Datei",
             "help": "Spalten: Betrag (erforderlich), Datum, Spendenzweck, Zahlungsmethode (Scheck, Bargeld, Karte, Sachspende), Schecknummer, Notizen und E-Mail-Adresse oder Name (oder Vorname + Nachname), um den Spender zuzuordnen. Bei leerem Datum wird das Datum der Sammelbuchung verwendet; bei leerem Spendenzweck wird der erste Spendenzweck verwendet. Nicht zugeordnete Spender werden anonym importiert; ihr Name wird in den Notizen gespeichert.",
             "importCount": "Import {count}",
             "importedAs": "Importiert als: {name}",
             "match": "Match",
             "noAmount": "Die Datei muss eine Kopfzeile mit einer Spalte „Betrag“ und mindestens eine Spende enthalten.",
-            "notFound": "Not found — anonymous",
+            "notFound": "Nicht gefunden – anonym",
             "row": "Row",
             "title": "Spenden aus CSV-Datei importieren"
         },
@@ -1467,8 +1467,8 @@
             "catName": "Kategoriename",
             "catNameMsg": "Bitte geben Sie einen Kategorienamen ein.",
             "changePhotoAria": "Gruppenfoto ändern",
-            "checkinCapacity": "Check-In-Kapazität",
-            "checkinClosed": "Geschlossen für Check-In",
+            "checkinCapacity": "Check-in-Kapazität",
+            "checkinClosed": "Für Check-in geschlossen",
             "clickToAddPhoto": "Klicken Sie, um ein Foto hinzuzufügen",
             "confidential": "Vertrauliche Gruppe",
             "confidentialHelp": "Diese Gruppe und ihre Mitgliederliste vor öffentlichen Seiten, der Gruppensuche und Nichtmitgliedern verbergen.",
@@ -1532,11 +1532,11 @@
         "groupMembers": {
             "groupMem": "Gruppenmitglieder",
             "leader": "Leiter",
-            "leaderLower": "leiter",
-            "leadersLower": "leiter",
+            "leaderLower": "Leiter",
+            "leadersLower": "Leiter",
             "makeLeader": "Zum Leiter machen",
             "member": "Mitglied",
-            "members": "mitglieder",
+            "members": "Mitglieder",
             "messagePlaceholder": "Schreiben Sie eine Nachricht an alle Gruppenmitglieder…",
             "messageSent": "Nachricht gesendet.",
             "noMemDesc": "Fügen Sie Mitglieder aus dem Bereich rechts hinzu, um diese Gruppe aufzubauen.",
@@ -1815,7 +1815,7 @@
             "title": "Push-Benachrichtigung",
             "titleLabel": "Titel",
             "titlePlaceholder": "Erinnerung",
-            "when": "Zeitpunkt"
+            "when": "Wann"
         }
     },
     "helpers": {
@@ -1856,7 +1856,7 @@
             "sermons": "Predigten",
             "streamSettings": "Einstellungen",
             "stripeImport": "Stripe-Import",
-            "website": "Webseite"
+            "website": "Website"
         }
     },
     "mobile": {
@@ -3354,7 +3354,7 @@
             "selections": "Auswahlmöglichkeiten",
             "sort": "Sortieren",
             "startDate": "Startdatum",
-            "total": "Total",
+            "total": "Gesamt",
             "type": "Typ",
             "usesSoFar": "Verwendungen: {count}",
             "value": "Wert"
@@ -4111,8 +4111,8 @@
             "requests": "Anfragen"
         },
         "appTabs": {
-            "moveDown": "Nach unten bewegen",
-            "moveUp": "Nach oben bewegen",
+            "moveDown": "Nach unten verschieben",
+            "moveUp": "Nach oben verschieben",
             "noTabs": "Keine Registerkarten konfiguriert",
             "noTabsDesc": "Fügen Sie Registerkarten hinzu, um Ihre App-Navigation anzupassen",
             "title": "App-Registerkarten",
@@ -4232,7 +4232,7 @@
             "help": "Legen Sie fest, wie der Check-in reagiert, wenn in einem Raum das Verhältnis von Freiwilligen zu Kindern überschritten oder die Mindestanzahl an Freiwilligen unterschritten wird.",
             "kioskLink": "Check-in-Kiosk, QR-Codes und Etiketten",
             "ratioEnforcement": "Durchsetzung des Freiwilligenverhältnisses",
-            "title": "Check-In",
+            "title": "Check-in",
             "warn": "Warnen (mit Bestätigung zulassen)",
             "": "Weitere Optionen"
         },
