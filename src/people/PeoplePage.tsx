@@ -124,6 +124,7 @@ export const PeoplePage = memo(() => {
     { key: "age", label: Locale.label("person.age"), shortName: Locale.label("person.age") },
     { key: "gender", label: Locale.label("person.gender"), shortName: Locale.label("person.gender") },
     { key: "membershipStatus", label: Locale.label("person.membershipStatus"), shortName: Locale.label("person.membershipStatus") },
+    { key: "donorNumber", label: Locale.label("people.personEdit.donorNumber"), shortName: Locale.label("people.personEdit.donorNumber") },
     { key: "campus", label: Locale.label("person.campus"), shortName: Locale.label("person.campus") },
     { key: "maritalStatus", label: Locale.label("person.maritalStatus"), shortName: Locale.label("person.married") },
     { key: "anniversary", label: Locale.label("person.anniversary"), shortName: Locale.label("person.anniversary") },

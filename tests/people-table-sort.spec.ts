@@ -1,4 +1,4 @@
-import { type Page } from "@playwright/test";
+import { request, type Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 
 // Table view sorting: the arrow on a header must match the order of the rows, and columns
@@ -25,6 +25,31 @@ async function columnValues(page: Page, header: string) {
 
 async function sortBy(page: Page, header: string) {
   await page.locator("#peopleTable thead .MuiTableSortLabel-root", { hasText: new RegExp(`^${header}$`) }).click();
+}
+
+const API_BASE = process.env.API_BASE || "http://localhost:8084";
+
+// The demo seed has no donor numbers, so give three people from the first page of the list one through the Api and clear them afterwards.
+const DONORS = [
+  { last: "Clark", first: "Donald", donorNumber: "1042" },
+  { last: "Clark", first: "Carol", donorNumber: "205" },
+  { last: "Brown", first: "Daniel", donorNumber: "37" }
+];
+
+async function setDonorNumbers(clear: boolean) {
+  const ctx = await request.newContext();
+  const login = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+  const jwt = (await login.json()).userChurches?.find((uc: any) => uc.church?.id === "CHU00000001")?.jwt as string;
+  const headers = { Authorization: "Bearer " + jwt };
+  for (const d of DONORS) {
+    const found = await (await ctx.get(`${API_BASE}/membership/people/search?term=${encodeURIComponent(d.first + " " + d.last)}`, { headers })).json();
+    const match = found.find((p: any) => p.name?.first === d.first && p.name?.last === d.last);
+    if (!match) throw new Error(`demo person ${d.first} ${d.last} not found`);
+    const person = await (await ctx.get(`${API_BASE}/membership/people/${match.id}`, { headers })).json();
+    person.donorNumber = clear ? null : d.donorNumber;
+    await ctx.post(`${API_BASE}/membership/people`, { headers, data: [person] });
+  }
+  await ctx.dispose();
 }
 
 const isSorted = (values: string[], cmp: (a: string, b: string) => number) => values.every((v, i) => i === 0 || cmp(values[i - 1], v) <= 0);
@@ -93,5 +118,24 @@ test.describe("People table sorting", () => {
     const asc = await columnValues(page, "Phone");
     expect(asc.length).toBeGreaterThan(5);
     expect(isSorted(asc, byText), asc.join(" | ")).toBe(true);
+  });
+
+  test.describe("donor number column", () => {
+    test.beforeAll(async () => { await setDonorNumbers(false); });
+    test.afterAll(async () => { await setDonorNumbers(true); });
+
+    test("Donor Number can be picked in Select Columns, shows each number and sorts by it", async ({ page }) => {
+      await openTable(page, ["displayName"]);
+      await page.getByTestId("columns-button").click();
+      await page.getByTestId("column-checkbox-donorNumber").click();
+      await page.locator("#fieldsMenu").getByRole("button", { name: "Close" }).click();
+
+      const header = page.locator("#peopleTable thead th", { hasText: /^Donor Number$/ });
+      await expect(header).toBeVisible();
+      await sortBy(page, "Donor Number");
+      await expect(header).toHaveAttribute("aria-sort", "ascending");
+      const asc = await columnValues(page, "Donor Number");
+      expect(asc.slice(0, 3)).toEqual(["37", "205", "1042"]);
+    });
   });
 });
