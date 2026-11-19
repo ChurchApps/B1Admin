@@ -1,6 +1,6 @@
 import { test, expect, request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { confirmDelete, openKnownPerson, SEED_PEOPLE } from "./helpers/fixtures";
+import { confirmDelete, openKnownPerson, personAddButton, SEED_PEOPLE } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Phase 3 — Check-Ins child safety (B1Admin side). Covers the Check-In Capacity
@@ -90,7 +90,10 @@ test.describe.serial("Check-Ins child safety", () => {
     expect(saved.guestCapacity).toBe(3);
   });
 
-  test("Pickup card: add trusted + not-authorized, toggle, delete", async () => {
+  test("Pickup card: add trusted + not-authorized, toggle, linked phone, delete", async () => {
+    // Clear a Carol Clark pickup row a failed earlier run may have left on Donald's household.
+    const existing = await (await api.get(`${API}/membership/householdpickup/HOU00000025`, auth)).json();
+    for (const row of existing.filter((r: { personId?: string }) => r.personId === "PER00000081")) await api.delete(`${API}/membership/householdpickup/${row.id}`, auth);
     await openKnownPerson(page, SEED_PEOPLE.DONALD);
     const trustedName = `Grandpa Joe ${TS}`;
     const flaggedName = `Bad Actor ${TS}`;
@@ -122,7 +125,24 @@ test.describe.serial("Check-Ins child safety", () => {
     await trustedRow.locator('[data-testid="pickup-status-chip"]').click();
     await toggle;
     await expect(trustedRow.locator('[data-testid="pickup-status-chip"]')).toHaveText("Not Authorized", { timeout: 10000 });
-    for (const name of [trustedName, flaggedName]) {
+
+    // A pickup person linked from the people search shows their own phone as a tel: link.
+    await page.locator('[data-testid="pickup-add-toggle"]').click();
+    await box.locator('[data-testid="person-search-input"] input').fill("Carol Clark");
+    await box.locator('[data-testid="search-button"]').click();
+    const add3 = page.waitForResponse((r) => r.url().includes("/householdpickup") && r.request().method() === "POST");
+    await personAddButton(box, "Carol Clark").click();
+    await add3;
+    const linkedRow = page.locator('[data-testid="pickup-row"]').filter({ hasText: "Carol Clark" });
+    await expect(linkedRow).toBeVisible({ timeout: 10000 });
+    const phone = linkedRow.locator('[data-testid="pickup-phone"]');
+    await expect(phone).toHaveText("(217) 555-2504", { timeout: 10000 });
+    await expect(phone).toHaveAttribute("href", "tel:2175552504");
+    // Typed-in names have no linked record, so no phone line.
+    await expect(trustedRow.locator('[data-testid="pickup-phone"]')).toHaveCount(0);
+    await expect(flaggedRow.locator('[data-testid="pickup-phone"]')).toHaveCount(0);
+
+    for (const name of [trustedName, flaggedName, "Carol Clark"]) {
       const row = page.locator('[data-testid="pickup-row"]').filter({ hasText: name });
       const del = page.waitForResponse((r) => r.url().includes("/householdpickup") && r.request().method() === "DELETE");
       await row.locator('[data-testid="pickup-delete-button"]').click();
