@@ -72,7 +72,8 @@ export function HouseholdEdit(props: Props) {
     const m = [...members];
     m.push({ ...toAdd, householdId: props.household.id, householdRole: toAdd.householdRole || "Other" });
     setMembers(m);
-    setShowAdd(false);
+    // Keep the search open so staff can add each family member from one search.
+    setSelectedPerson(null);
   }
 
   const onValid = (values: AnyRecord) => {
@@ -135,13 +136,15 @@ export function HouseholdEdit(props: Props) {
     </TableRow>
   ));
 
+  const memberIds = members.map((m) => m.id).filter(Boolean) as string[];
+
   const personAdd = showAdd ? (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
         <h3>{Locale.label("people.householdEdit.addMember")}</h3>
         <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={() => setShowAdd(false)} />
       </div>
-      <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} person={props.currentPerson} showCreatePersonOnNotFound={true} showHouseholdRole onCreate={handlePersonAdd} />
+      <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} filterList={memberIds} person={props.currentPerson} showCreatePersonOnNotFound={true} showHouseholdRole onCreate={handlePersonAdd} />
     </div>
   ) : null;
 

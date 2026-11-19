@@ -671,6 +671,56 @@ test.describe("People Management", () => {
       await expect(closeBtn).toHaveCount(0, { timeout: 10000 });
     });
 
+    // Add Household Member stays open after a pick, so one search of the last name adds each family member.
+    test.describe.serial("Household add several members from one search", () => {
+      const API = process.env.API_BASE || "http://localhost:8084";
+      const last = "Zzhousemulti" + Date.now().toString().slice(-6);
+      let ctx: APIRequestContext;
+      let auth: { headers: { Authorization: string } };
+      const ids: string[] = [];
+
+      test.beforeAll(async () => {
+        ctx = await request.newContext();
+        const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+        const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+        auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+        for (const first of ["Anna", "Ben", "Cara"]) {
+          const [p] = await (await ctx.post(`${API}/membership/people`, { ...auth, data: [{ name: { first, last }, contactInfo: {} }] })).json();
+          ids.push(p.id);
+        }
+      });
+
+      test.afterAll(async () => {
+        for (const id of ids) await ctx.delete(`${API}/membership/people/${id}`, auth).catch(() => { });
+        await ctx?.dispose();
+      });
+
+      test("keeps the search open and hides people already added", async ({ page }) => {
+        await page.goto(`/people/${ids[0]}`);
+        await page.locator('#householdBox button[aria-label="Edit"]').first().click();
+        await page.locator('[data-testid="add-household-member-button"]').click();
+        const search = page.locator('input[name="personAddText"]');
+        await search.fill(last);
+        await page.locator('[data-testid="search-button"]').click();
+        const results = page.locator("#householdMemberAddTable");
+        // Anna is already in the household, so she is not offered.
+        await expect(results.getByTestId(`add-person-button-${ids[1]}`)).toBeVisible({ timeout: 10000 });
+        await expect(results.getByTestId(`add-person-button-${ids[0]}`)).toHaveCount(0);
+        await results.getByTestId(`add-person-button-${ids[1]}`).click();
+
+        // No retyping: the search and the remaining match are still there.
+        await expect(search).toHaveValue(last);
+        await expect(results.getByTestId(`add-person-button-${ids[1]}`)).toHaveCount(0);
+        await results.getByTestId(`add-person-button-${ids[2]}`).click();
+        await expect(page.locator("#householdMemberTable [data-testid=\"household-role-select\"]")).toHaveCount(3);
+
+        await page.locator("button").getByText("Save").click();
+        const box = page.locator("#householdBox");
+        await expect(box.getByRole("link", { name: `Ben ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await expect(box.getByRole("link", { name: `Cara ${last}` })).toHaveCount(1);
+      });
+    });
+
     // ChurchAppsSupport#1448: Add Person asks title and mobile phone, and Add Household Member's
     // "Add New Person" also asks the household role, so staff don't reopen each new person.
     test.describe.serial("Add Person title, phone and household role", () => {
