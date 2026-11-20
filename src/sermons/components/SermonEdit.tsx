@@ -24,7 +24,7 @@ interface Props {
   updatedFunction?: () => void
 }
 
-type PodcastSermon = SermonInterface & { audioUrl?: string };
+export type PodcastSermon = SermonInterface & { audioUrl?: string };
 
 type AnyRecord = Record<string, any>;
 

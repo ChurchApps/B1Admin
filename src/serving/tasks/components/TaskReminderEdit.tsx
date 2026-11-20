@@ -131,7 +131,7 @@ export const TaskReminderEdit = ({ taskId, dueDate }: Props) => {
         <Stack spacing={2}>
           {enabled && !dueDate && <Alert severity="warning">{l("noDueDate")}</Alert>}
           <FormControlLabel
-            control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSaved(false); setSentCount(null); }} data-testid="task-reminder-enabled-toggle" />}
+            control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSaved(false); setSentResult(null); }} data-testid="task-reminder-enabled-toggle" />}
             label={l("enable")}
           />
           {enabled && (

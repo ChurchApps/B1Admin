@@ -188,6 +188,38 @@ test("a task reminder can be sent now to the assignee", async ({ page }) => {
   await expect(page.locator('[data-testid="task-reminder-sent-now"]')).toHaveText("Sent to 1 people");
 });
 
+// B1Admin#899: turning the reminder off after Send now cleared nothing because the toggle called an undefined setSentCount.
+test("turning the task reminder off after Send now clears the sent line", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000003");
+  await page.locator('[data-testid="task-assign"]').click();
+  await page.locator('[name="personAddText"]').fill("Donald Clark");
+  await page.locator('[data-testid="search-button"]').click();
+  await personAddButton(page, "Donald Clark").click();
+  await expect(page.locator('[data-testid="task-assigned-label"]')).toHaveText("Donald Clark", { timeout: 15000 });
+
+  await page.locator('[data-testid="task-reminders-toggle"]').click();
+  const toggle = page.locator('[data-testid="task-reminder-enabled-toggle"] input');
+  if (!(await toggle.isChecked())) await toggle.check();
+  const sendNow = page.locator('[data-testid="task-reminder-send-now-button"]');
+  const saved = page.waitForResponse((r) => /\/messaging\/reminders\/task\/TSK00000003$/.test(r.url()) && r.request().method() === "POST" && r.ok(), { timeout: 15000 });
+  await page.locator('[data-testid="task-reminder-save-button"]').click();
+  await saved;
+  await expect(sendNow).toBeEnabled({ timeout: 15000 });
+
+  const sent = page.waitForResponse((r) => r.url().includes("/messaging/reminders/task/TSK00000003/sendNow") && r.ok(), { timeout: 15000 });
+  await sendNow.click();
+  await sent;
+  const line = page.locator('[data-testid="task-reminder-sent-now"]');
+  await expect(line).toHaveText("Sent to 1 people");
+
+  const errors: string[] = [];
+  page.on("pageerror", (err) => errors.push(err.message));
+  await toggle.click();
+  await expect(toggle).not.toBeChecked();
+  expect(errors.filter((m) => m.includes("setSentCount"))).toEqual([]);
+  await expect(line).not.toBeVisible();
+});
+
 // ChurchAppsSupport#1600: with Text checked, Send now says how many texts went out and how many were skipped.
 // Donald Clark never turned Text messages on, so his text is skipped.
 test("Send now with Text reports texts sent and skipped", async ({ page }) => {

@@ -2,6 +2,9 @@ import React from "react";
 import { Box } from "@mui/material";
 import type { SectionTemplateDef, TemplateElementDef } from "./sectionTemplates";
 
+const MOCK_BUTTON = "#1976d2";
+const MOCK_INK = "#374151";
+
 interface Props {
   template: SectionTemplateDef;
 }
@@ -47,7 +50,7 @@ const PreviewElement: React.FC<{ def: TemplateElementDef; color: string }> = ({ 
     case "buttonLink":
       return (
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <Box sx={{ height: 10, width: 42, borderRadius: "5px", backgroundColor: def.answers?.buttonLinkVariant === "outlined" ? "transparent" : "#1976d2", border: def.answers?.buttonLinkVariant === "outlined" ? `1px solid ${color}` : "none" }} />
+          <Box sx={{ height: 10, width: 42, borderRadius: "5px", backgroundColor: def.answers?.buttonLinkVariant === "outlined" ? "transparent" : MOCK_BUTTON, border: def.answers?.buttonLinkVariant === "outlined" ? `1px solid ${color}` : "none" }} />
         </Box>
       );
     case "image":
@@ -62,8 +65,8 @@ const PreviewElement: React.FC<{ def: TemplateElementDef; color: string }> = ({ 
         return (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "3px", border: "1px solid rgba(128,128,128,0.35)", borderRadius: "4px", padding: "3px", backgroundColor: "rgba(255,255,255,0.6)" }}>
             {img}
-            <Box sx={{ height: 4, width: "60%", margin: "0 auto", borderRadius: 1, backgroundColor: "#374151", opacity: 0.8 }} />
-            <Box sx={{ height: 3, width: "80%", margin: "0 auto", borderRadius: 1, backgroundColor: "#374151", opacity: 0.4 }} />
+            <Box sx={{ height: 4, width: "60%", margin: "0 auto", borderRadius: 1, backgroundColor: MOCK_INK, opacity: 0.8 }} />
+            <Box sx={{ height: 3, width: "80%", margin: "0 auto", borderRadius: 1, backgroundColor: MOCK_INK, opacity: 0.4 }} />
           </Box>
         );
       }
@@ -77,8 +80,8 @@ const PreviewElement: React.FC<{ def: TemplateElementDef; color: string }> = ({ 
     case "faq":
       return (
         <Box sx={{ display: "flex", alignItems: "center", gap: "4px", border: "1px solid rgba(128,128,128,0.35)", borderRadius: "3px", padding: "3px 5px", backgroundColor: "rgba(255,255,255,0.6)" }}>
-          <Box sx={{ height: 3, flex: 1, borderRadius: 1, backgroundColor: "#374151", opacity: 0.6 }} />
-          <Box sx={{ width: 0, height: 0, borderLeft: "3px solid transparent", borderRight: "3px solid transparent", borderTop: "4px solid #374151", opacity: 0.6 }} />
+          <Box sx={{ height: 3, flex: 1, borderRadius: 1, backgroundColor: MOCK_INK, opacity: 0.6 }} />
+          <Box sx={{ width: 0, height: 0, borderLeft: "3px solid transparent", borderRight: "3px solid transparent", borderTop: `4px solid ${MOCK_INK}`, opacity: 0.6 }} />
         </Box>
       );
     case "sermons":
@@ -100,7 +103,7 @@ const PreviewElement: React.FC<{ def: TemplateElementDef; color: string }> = ({ 
           <Box sx={{ display: "flex", gap: "3px" }}>
             {[0, 1, 2].map((i) => <Box key={i} sx={{ height: 9, width: 22, borderRadius: "4px", border: `1px solid ${color}`, opacity: 0.6 }} />)}
           </Box>
-          <Box sx={{ height: 9, width: 50, borderRadius: "4px", backgroundColor: "#1976d2" }} />
+          <Box sx={{ height: 9, width: 50, borderRadius: "4px", backgroundColor: MOCK_BUTTON }} />
         </Box>
       );
     default:
