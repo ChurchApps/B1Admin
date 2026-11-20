@@ -81,7 +81,7 @@ export function BulkGroupEventsModal(props: Props) {
           : undefined
       } as EventInterface;
       // Explicit boolean (never undefined) so Kysely persists the disabled flag on the created event.
-      (event as any).rsvpDisabled = !allowRsvps;
+      event.rsvpDisabled = !allowRsvps;
       let eventId = savedEventId;
       if (!eventId) {
         const saved = await ApiHelper.post("/events", [event], "ContentApi");

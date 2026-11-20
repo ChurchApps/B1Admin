@@ -12,7 +12,7 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+type ServiceFormValues = { name: string; campusId?: string };
 
 export const ServiceEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -20,12 +20,12 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const campuses = useCampuses();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", campusId: "" } });
-  const e = formState.errors as any;
+  const { control, register, handleSubmit, reset, formState } = useForm<ServiceFormValues>({ defaultValues: { name: "", campusId: "" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "campusId"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: ServiceFormValues) => {
     setIsSubmitting(true);
     const service = { ...props.service, ...values };
     ApiHelper.post("/services", [service], "AttendanceApi")

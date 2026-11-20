@@ -51,7 +51,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
 
   const loadSessions = useCallback(() => {
     if (group.id) {
-      ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data: any) => {
+      ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data: SessionInterface[]) => {
         if (data.length > 0) {
           const sortedSessions = [...data].sort((a, b) => {
             const dateA = a?.sessionDate ? new Date(a.sessionDate).getTime() : 0;
@@ -146,7 +146,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
 
   React.useEffect(() => {
     if (group.id !== undefined) loadSessions();
-  }, [group.id, addedSession?.id, addedSession?.sessionDate, (addedSession as any)?._updateTimestamp, loadSessions]);
+  }, [group.id, addedSession?.id, addedSession?.sessionDate, addedSession?._updateTimestamp, loadSessions]);
 
   const handleAddClick = useCallback(
     (e: React.MouseEvent) => {

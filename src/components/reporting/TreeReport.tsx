@@ -3,7 +3,7 @@
 import React from "react";
 import type { ColumnInterface, ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material";
-import { ReportHelper } from "./ReportHelper";
+import { ReportHelper, type ReportRow } from "./ReportHelper";
 
 interface Props {
   reportResult: ReportResultInterface;
@@ -49,7 +49,7 @@ export const TreeReport = (props: Props) => {
   const getRows = () => {
     const result: React.ReactElement[] = [];
     const columns = props.output.columns;
-    let previousData = {};
+    let previousData: ReportRow = {};
     getSortedTable().forEach((d, rowIdx) => {
       const row: React.ReactElement[] = [];
       const groupingRows: React.ReactElement[] = getGroupingRows(previousData, d, rowIdx);
@@ -65,7 +65,7 @@ export const TreeReport = (props: Props) => {
     return result;
   };
 
-  const getGroupingRows = (previousData: any, data: any, rowIdx: number) => {
+  const getGroupingRows = (previousData: ReportRow, data: ReportRow, rowIdx: number) => {
     const result: React.ReactElement[] = [];
     const firstGroupModified = getFirstGroupModified(previousData, data);
     for (let i = firstGroupModified; i < groupings.length; i++) {
@@ -74,7 +74,7 @@ export const TreeReport = (props: Props) => {
     return result;
   };
 
-  const getGroupingRow = (row: any, groupNumber: number, rowIdx: number) => {
+  const getGroupingRow = (row: ReportRow, groupNumber: number, rowIdx: number) => {
     const g = groupings[groupNumber];
     const prevCols = getPreviousGroupingCount(groupNumber);
     const outputRow: React.ReactElement[] = [];
@@ -92,7 +92,7 @@ export const TreeReport = (props: Props) => {
     return <TableRow key={`group-${rowIdx}-${groupNumber}`}>{outputRow}</TableRow>;
   };
 
-  const getFirstGroupModified = (previousRow: any, row: any) => {
+  const getFirstGroupModified = (previousRow: ReportRow, row: ReportRow) => {
     let firstColumnModified = props.output.columns.length - 1;
     for (let i = props.output.columns.length - 1; i >= 0; i--) {
       const colName = props.output.columns[i].value;

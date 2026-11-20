@@ -5,7 +5,7 @@ import { useBulkApplyDialog } from "./useBulkApplyDialog";
 
 export interface BulkFieldOption { value: string; label: string }
 
-export interface BulkResult { message: string; severity: "success" | "error"; fieldUpdates?: Record<string, any> }
+export interface BulkResult { message: string; severity: "success" | "error"; fieldUpdates?: Record<string, string | boolean> }
 
 interface Props {
   open: boolean;

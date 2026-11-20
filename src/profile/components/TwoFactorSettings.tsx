@@ -19,7 +19,7 @@ export const TwoFactorSettings = () => {
   const run = async (action: () => Promise<void>) => {
     setError("");
     setBusy(true);
-    try { await action(); } catch (e: any) { setError(e?.message || Locale.label("profile.twoFactor.invalidCode", "That code didn't work. Please try again.")); } finally { setBusy(false); }
+    try { await action(); } catch (e) { setError((e as { message?: string } | null | undefined)?.message || Locale.label("profile.twoFactor.invalidCode", "That code didn't work. Please try again.")); } finally { setBusy(false); }
   };
 
   const start = () => run(async () => {

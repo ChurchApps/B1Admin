@@ -33,7 +33,14 @@ export interface FormInterface {
   photoUrl?: string;
 }
 
-type AnyRecord = Record<string, any>;
+// Dates are edited as yyyy-mm-dd strings and turned back into Dates on save; empty values save as null.
+type FormValues = Omit<FormInterface, "archived" | "accessStartTime" | "accessEndTime" | "groupId" | "photoUrl"> & {
+  archived?: boolean;
+  accessStartTime: string | Date | null;
+  accessEndTime: string | Date | null;
+  groupId?: string | null;
+  photoUrl?: string | null;
+};
 
 export function FormEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -43,9 +50,9 @@ export function FormEdit(props: Props) {
   const isMounted = useMountedState();
   const queryClient = useQueryClient();
 
-  const { control, register, handleSubmit, reset, watch, setValue, formState } = useForm<AnyRecord>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "", photoUrl: "" } });
+  const { control, register, handleSubmit, reset, watch, setValue, formState } = useForm<FormValues>({ defaultValues: { name: "", description: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null, displayMode: "standard", autoCreatePerson: false, groupId: "", followUpSubject: "", followUpBody: "", photoUrl: "" } });
 
-  const e = formState.errors as any;
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "accessStartTime", "accessEndTime"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -91,7 +98,7 @@ export function FormEdit(props: Props) {
   }, [formQuery.data, isMounted]);
 
   const saveFormMutation = useMutation({
-    mutationFn: (formData: AnyRecord) => ApiHelper.post("/forms", [formData], "MembershipApi"),
+    mutationFn: (formData: FormValues) => ApiHelper.post("/forms", [formData], "MembershipApi"),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/forms", "MembershipApi"] });
       queryClient.invalidateQueries({ queryKey: ["/forms/archived", "MembershipApi"] });
@@ -109,7 +116,7 @@ export function FormEdit(props: Props) {
     }
   });
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: FormValues) => {
     const f = { ...values };
     f.groupId = showGroup ? (f.groupId || null) : null;
     f.photoUrl = f.photoUrl || null;

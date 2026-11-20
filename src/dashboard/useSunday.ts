@@ -3,6 +3,7 @@ import type { ApiListType, AssignmentInterface, GroupInterface, PersonInterface,
 import { useQuery } from "@tanstack/react-query";
 import { type PlanInterface, type PlanItemInterface, hasPlansEditAccess } from "../helpers";
 import { WorshipDayHelper } from "../helpers/WorshipDayHelper";
+import type { HeadcountInterface } from "../attendance/components/HeadcountEntry";
 
 export interface OrderItem {
   label: string;
@@ -176,8 +177,8 @@ const loadSunday = async (): Promise<SundayData> => {
   ]);
   const [visits, groupRows, headcounts, groups] = await Promise.all([
     canAttendance ? safeGet<VisitInterface[]>(`/attendancerecords/search?startDate=${dateStr}&endDate=${dateStr}`, "AttendanceApi", []) : Promise.resolve([]),
-    canAttendance ? safeGet<any[]>(`/attendancerecords/groups?serviceId=0&week=${dateStr}`, "AttendanceApi", []) : Promise.resolve([]),
-    canAttendance ? safeGet<any[]>("/headcounts", "AttendanceApi", []) : Promise.resolve([]),
+    canAttendance ? safeGet<{ groupId?: string; groupName?: string }[]>(`/attendancerecords/groups?serviceId=0&week=${dateStr}`, "AttendanceApi", []) : Promise.resolve([]),
+    canAttendance ? safeGet<HeadcountInterface[]>("/headcounts", "AttendanceApi", []) : Promise.resolve([]),
     safeGet<GroupInterface[]>("/groups", "MembershipApi", [])
   ]);
 
@@ -200,15 +201,15 @@ const loadSunday = async (): Promise<SundayData> => {
   let inRoom = personIds.length;
   if (!inRoom && headcounts?.length) {
     inRoom = headcounts
-      .filter((h: any) => DateHelper.formatHtml5Date(new Date(h.headcountDate || "")) === dateStr)
-      .reduce((sum: number, h: any) => sum + (Number(h.value) || 0), 0);
+      .filter((h) => DateHelper.formatHtml5Date(new Date(h.headcountDate || "")) === dateStr)
+      .reduce((sum: number, h) => sum + (Number(h.value) || 0), 0);
   }
 
   const live = isWorshipDay && inRoom > 0;
   const recap = !isWorshipDay && inRoom > 0;
 
   const roomMap = new Map<string, { count: number; name?: string }>();
-  (groupRows || []).forEach((row: any) => {
+  (groupRows || []).forEach((row) => {
     if (!row.groupId) return;
     const cur = roomMap.get(row.groupId) || { count: 0, name: row.groupName };
     cur.count += 1;
@@ -254,7 +255,7 @@ const loadSunday = async (): Promise<SundayData> => {
     [...personIds].sort((a, b) => (rank.get(a) ?? Infinity) - (rank.get(b) ?? Infinity)).forEach((id) => {
       const person = ArrayHelper.getOne(people, "id", id) as PersonInterface | null;
       if (!person) return;
-      const visit = visitList.find((v: any) => v.personId === id);
+      const visit = visitList.find((v) => v.personId === id);
       const status = (person.membershipStatus || "").toLowerCase();
       const first = status === "visitor" || status === "guest" || visit?.checkinType === "guest";
       if (!first) return;

@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { Box, Stack, Typography, TableCell } from "@mui/material";
+import { Box, Stack, Typography, TableCell, type SxProps, type Theme } from "@mui/material";
 import { InRecordContext } from "./RecordLayout";
 
 interface EmptyStateProps {
@@ -27,7 +27,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description
 
   const content = (
     <Stack spacing={1} alignItems="center" sx={{ maxWidth: 480, mx: "auto" }}>
-      {React.isValidElement(icon) && React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: 32, color: "text.secondary", mb: 0.5 }, "aria-hidden": true })}
+      {React.isValidElement(icon) && React.cloneElement(icon as React.ReactElement<{ sx?: SxProps<Theme>; "aria-hidden"?: boolean }>, { sx: { fontSize: 32, color: "text.secondary", mb: 0.5 }, "aria-hidden": true })}
       <Typography variant="h3" component="p">{title}</Typography>
       {description && <Typography variant="body2" color="text.secondary">{description}</Typography>}
       {action && <Box sx={{ pt: 1 }}>{action}</Box>}

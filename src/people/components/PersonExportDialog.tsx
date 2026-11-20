@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { type FormSubmissionInterface, type PersonInterface } from "@churchapps/helpers";
+import { type AnswerInterface, type FormSubmissionInterface, type PersonInterface, type QuestionInterface } from "@churchapps/helpers";
+import type { WithId } from "../../helpers/Interfaces";
 import { ApiHelper, DateHelper, Loading, Locale } from "@churchapps/apphelper";
 import {
   Alert,
@@ -39,8 +40,8 @@ interface ResponseRow {
 }
 
 interface DetailedSubmission extends FormSubmissionInterface {
-  questions?: any[];
-  answers?: any[];
+  questions?: (WithId<QuestionInterface> & { fieldType: string })[];
+  answers?: AnswerInterface[];
 }
 
 export const PersonExportDialog: React.FC<Props> = memo((props) => {
@@ -114,8 +115,8 @@ export const PersonExportDialog: React.FC<Props> = memo((props) => {
   const responseRows = useMemo(() => {
     const rows: ResponseRow[] = [];
     detailedSubmissions.forEach((submission) => {
-      const answersByQuestionId = new Map((submission.answers || []).map((answer: any) => [answer.questionId, answer]));
-      (submission.questions || []).forEach((question: any) => {
+      const answersByQuestionId = new Map((submission.answers || []).map((answer) => [answer.questionId, answer]));
+      (submission.questions || []).forEach((question) => {
         if (question.fieldType === "Heading" || question.fieldType === "Payment") return;
         const answer = answersByQuestionId.get(question.id);
         rows.push({

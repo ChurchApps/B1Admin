@@ -88,7 +88,7 @@ export const KioskThemeEdit: React.FC = () => {
     try {
       const imgSetting: GenericSettingInterface = { keyName: "checkinSettings_bg", value: dataUrl, public: 1 };
       const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
-      const result = saved?.checkinSettings_bg || saved?.find?.((s: any) => s.keyName === "checkinSettings_bg");
+      const result = saved?.checkinSettings_bg || saved?.find?.((s: GenericSettingInterface) => s.keyName === "checkinSettings_bg");
       if (result?.value) {
         setConfig(prev => ({ ...prev, backgroundImage: result.value }));
       }
@@ -104,7 +104,7 @@ export const KioskThemeEdit: React.FC = () => {
       const slideKey = "checkinSettings_slide_" + Date.now().toString(36);
       const imgSetting: GenericSettingInterface = { keyName: slideKey, value: dataUrl, public: 1 };
       const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
-      const result = saved?.[slideKey] || saved?.find?.((s: any) => s.keyName === slideKey);
+      const result = saved?.[slideKey] || saved?.find?.((s: GenericSettingInterface) => s.keyName === slideKey);
       if (result?.value) {
         setConfig(prev => {
           const slides = [...prev.idleScreen.slides];

@@ -23,10 +23,10 @@ export const Form: React.FC<Props> = (props) => {
     setEditQuestionId("notset");
   };
   const loadData = () => {
-    ApiHelper.get("/forms/" + props.id, "MembershipApi").then((data: any) => setForm(data));
+    ApiHelper.get("/forms/" + props.id, "MembershipApi").then((data: FormInterface) => setForm(data));
     loadQuestions();
   };
-  const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data: any) => setQuestions(data));
+  const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data: QuestionInterface[]) => setQuestions(data));
   const sendSort = (questionId: string, direction: "up" | "down") => {
     sortQueue.current = sortQueue.current.then(() => ApiHelper.get("/questions/sort/" + questionId + "/" + direction, "MembershipApi")).catch(() => loadQuestions());
   };

@@ -3,7 +3,7 @@ import { Box, Button, Icon } from "@mui/material";
 import { ExportLink } from "@churchapps/apphelper";
 
 interface Props {
-  data: any[];
+  data: unknown[];
   filename?: string;
   text: string;
   customHeaders?: { label: string; key: string }[];

@@ -4,7 +4,7 @@ import { MarkEmailRead as MarkEmailReadIcon, VerifiedUser as VerifiedUserIcon } 
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
-import { useSendDialog } from "./useSendDialog";
+import { useSendDialog, type SendDialogError } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
 import { withBase } from "../../helpers/basePath";
 
@@ -101,7 +101,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       return { personIds: [props.personId], subject, htmlContent };
     },
     fallbackError: Locale.label("groups.sendEmailDialog.fallbackError"),
-    buildError: (err: any) => {
+    buildError: (err: SendDialogError) => {
       const status = err?.status || err?.response?.status;
       if (status === 401 || err?.message === "Unauthorized") return Locale.label("groups.sendEmailDialog.permissionError");
       return err?.message || Locale.label("groups.sendEmailDialog.fallbackError");

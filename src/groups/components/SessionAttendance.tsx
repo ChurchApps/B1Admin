@@ -1,5 +1,5 @@
 import React, { useCallback, memo, useMemo } from "react";
-import { type GroupInterface, type GroupMemberInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupMemberInterface, type PersonInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { ApiHelper, ArrayHelper, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
@@ -8,13 +8,16 @@ import { Print as PrintIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, ExportButton, Surface } from "../../components/ui";
 import { SessionStatusDialog } from "./SessionStatusDialog";
-import { useCanPrintRoster } from "../../helpers";
+import { useCanPrintRoster, type SessionInterface } from "../../helpers";
 import { withBase } from "../../helpers/basePath";
 import { canReadGroupAttendance } from "../attendanceAccess";
 
+// notes is not on the session interfaces yet.
+type SessionWithNotes = SessionInterface & { notes?: string };
+
 interface Props {
   group: GroupInterface;
-  session: SessionInterface | null;
+  session: SessionWithNotes | null;
   addedPerson?: PersonInterface;
   addedCallback?: (personId: string) => void;
   onSaved?: () => void;
@@ -53,7 +56,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const [originalAttendance, setOriginalAttendance] = React.useState<AttendanceMap>({});
   const [saving, setSaving] = React.useState(false);
   const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [downloadData, setDownloadData] = React.useState<any[]>([]);
+  const [downloadData, setDownloadData] = React.useState<Record<string, unknown>[]>([]);
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
   const [showStatus, setShowStatus] = React.useState(false);
   const canPrintRoster = useCanPrintRoster(group?.id);
@@ -94,7 +97,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         setOriginalAttendance(present);
         const peopleIds = ArrayHelper.getUniqueValues(vs, "visit.personId");
         if (peopleIds.length > 0) {
-          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: any) => {
+          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: PersonInterface[]) => {
             if (seq === loadSeqRef.current) setPeople(data);
           });
         } else {
@@ -116,7 +119,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
 
   const loadDownloadData = useCallback(() => {
     if (session?.id && canReadGroupAttendance(group?.id)) {
-      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: any) => setDownloadData(data)).catch(() => setDownloadData([]));
+      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: Record<string, unknown>[]) => setDownloadData(data)).catch(() => setDownloadData([]));
     }
   }, [session?.id, group?.id]);
 
@@ -232,7 +235,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   ];
 
   // Repeat the session's notes on every row so the file stays one flat, sortable table.
-  const exportData = useMemo(() => (downloadData || []).map((row: any) => ({ ...row, sessionNotes: (session as any)?.notes || "" })), [downloadData, session]);
+  const exportData = useMemo(() => (downloadData || []).map((row) => ({ ...row, sessionNotes: session?.notes || "" })), [downloadData, session]);
 
   if (!session) {
     return (
@@ -291,7 +294,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           </Stack>
           <Typography variant="body2" color="text.secondary">
             {Locale.label("groups.groupSessions.session")}: {session.displayName}
-            {(session as any).serviceTime?.name && ` • ${(session as any).serviceTime.name}`}
+            {session.serviceTime?.name && ` • ${session.serviceTime.name}`}
           </Typography>
         </Box>
         <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
@@ -314,9 +317,9 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         </Stack>
       </Stack>
 
-      {(session as any).notes && (
+      {session.notes && (
         <Box sx={{ mb: 2, "& p": { mt: 0, mb: 1 }, "& p:last-child": { mb: 0 } }} data-testid="session-notes">
-          <MarkdownPreviewLight value={(session as any).notes} />
+          <MarkdownPreviewLight value={session.notes} />
         </Box>
       )}
 

@@ -12,12 +12,10 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
-
 export const DeviceEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { label: "" } });
-  const e = formState.errors as any;
+  const { register, handleSubmit, reset, formState } = useForm<DeviceInterface>({ defaultValues: { label: "" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["label"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -25,7 +23,7 @@ export const DeviceEdit = (props: Props) => {
     reset({ ...props.device });
   }, [props.device, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: DeviceInterface) => {
     const device = { ...props.device, ...values };
     ApiHelper.post("/devices", [device], "MessagingApi").then(() => { props.updatedFunction(); });
   };

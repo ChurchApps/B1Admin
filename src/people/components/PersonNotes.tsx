@@ -1,10 +1,11 @@
 import React, { memo } from "react";
 import { DisplayBox, Notes } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
+import type { UserContextInterface } from "@churchapps/helpers";
 import { useNoteAudit } from "../../components/noteAudit";
 
 interface Props {
-  context: any;
+  context: UserContextInterface | undefined;
   conversationId: string;
   createConversation: () => Promise<string>;
   title?: string;
@@ -15,6 +16,8 @@ interface Props {
 export const PersonNotes: React.FC<Props> = memo((props) => {
   // Spread so the props stay optional for older apphelper builds that predate note history.
   const history = useNoteAudit(props.contentType, props.contentId);
+  // Callers pass useContext(UserContext), which UserProvider always fills inside the app.
+  const context = props.context as UserContextInterface;
 
   return (
     <Box
@@ -85,9 +88,9 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
       }}>
       {props.title
         ? <DisplayBox headerText={props.title} headerIcon="lock" data-testid="confidential-notes-box">
-          <Notes context={props.context} conversationId={props.conversationId} createConversation={props.createConversation} noDisplayBox {...history} />
+          <Notes context={context} conversationId={props.conversationId} createConversation={props.createConversation} noDisplayBox {...history} />
         </DisplayBox>
-        : <Notes context={props.context} conversationId={props.conversationId} createConversation={props.createConversation} {...history} />}
+        : <Notes context={context} conversationId={props.conversationId} createConversation={props.createConversation} {...history} />}
     </Box>
   );
 });

@@ -25,8 +25,8 @@ export const AddToWorkflowDialog: React.FC<Props> = (props) => {
     try {
       await ApiHelper.post("/tasks/addToWorkflow", { workflowId, associatedWith: { type: "person", id: props.person.id, label: props.person.name?.display } }, "DoingApi");
       setDone(true);
-    } catch (e: any) {
-      setError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setError((e as { message?: string } | null | undefined)?.message || Locale.label("common.saveError"));
     } finally {
       setSaving(false);
     }

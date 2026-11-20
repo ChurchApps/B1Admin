@@ -1,7 +1,9 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import type { GroupInterface } from "@churchapps/helpers";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
+import type { PageInterface, PlanTypeInterface } from "../../helpers/Interfaces";
 
 export interface QuickAction { label: string; icon: string; url: string }
 
@@ -10,15 +12,15 @@ export const useQuickActions = (enabled: boolean): QuickAction[] => {
   const can = (p: Parameters<typeof UserHelper.checkAccess>[0]) => UserHelper.checkAccess(p);
   const content = can(Permissions.contentApi.content.edit);
   const groupsEdit = can(Permissions.membershipApi.groups.edit);
-  const teams = useQuery<any[]>({ queryKey: ["/groups/tag/team", "MembershipApi"], enabled: enabled && groupsEdit });
-  const groups = useQuery<any[]>({ queryKey: ["/groups/tag/standard", "MembershipApi"], enabled: enabled && groupsEdit });
-  const pages = useQuery<any[]>({ queryKey: ["/pages", "ContentApi"], enabled: enabled && content });
-  const planTypes = useQuery<any[]>({ queryKey: ["/planTypes", "DoingApi"], enabled: enabled && groupsEdit });
+  const teams = useQuery<GroupInterface[]>({ queryKey: ["/groups/tag/team", "MembershipApi"], enabled: enabled && groupsEdit });
+  const groups = useQuery<GroupInterface[]>({ queryKey: ["/groups/tag/standard", "MembershipApi"], enabled: enabled && groupsEdit });
+  const pages = useQuery<PageInterface[]>({ queryKey: ["/pages", "ContentApi"], enabled: enabled && content });
+  const planTypes = useQuery<PlanTypeInterface[]>({ queryKey: ["/planTypes", "DoingApi"], enabled: enabled && groupsEdit });
 
   return React.useMemo(() => {
     const b1Url = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch?.church?.subDomain || "");
     const avatar = { label: Locale.label("dashboard.adminWelcome.setAvatarTitle"), icon: "camera_alt", url: b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit" };
-    const setup = (data: any[] | undefined, wizard: string, url: string) => (data?.length ? url : "#wizard:" + wizard);
+    const setup = (data: unknown[] | undefined, wizard: string, url: string) => (data?.length ? url : "#wizard:" + wizard);
     const admin: (QuickAction | false)[] = [
       content && { label: Locale.label("dashboard.adminWelcome.addLogoTitle"), icon: "image", url: "/site/appearance#logo" },
       content && { label: Locale.label("dashboard.adminWelcome.createWebpageTitle"), icon: "language", url: setup(pages.data, "webpage", "/site/pages") },

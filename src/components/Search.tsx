@@ -14,13 +14,13 @@ interface Props {
 
 export const Search: React.FC<Props> = (props) => {
   const [searchText, setSearchText] = React.useState<string>("");
-  const [rows, setRows] = React.useState<any[] | null>(null);
+  const [rows, setRows] = React.useState<React.ReactElement[] | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       props.handleSearch(searchText);

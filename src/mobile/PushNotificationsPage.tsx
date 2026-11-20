@@ -50,13 +50,13 @@ export const PushNotificationsPage: React.FC = () => {
     : groups.find((g) => g.id === r.groupId)?.name || Locale.label("mobile.pushNotifications.group", "Group"));
   const canManage = (r: ScheduledNotificationInterface) => (r.audience === "church" ? canSendEveryone : canSendGroup);
 
-  const runAction = async (action: () => Promise<any>) => {
+  const runAction = async (action: () => Promise<unknown>) => {
     setError("");
     try {
-      const resp = await action();
+      const resp = (await action()) as { error?: string } | null | undefined;
       if (resp?.error) setError(resp.error);
-    } catch (e: any) {
-      setError(e?.message || "Unable to update the notification.");
+    } catch (e) {
+      setError((e as { message?: string } | null | undefined)?.message || "Unable to update the notification.");
     }
     await loadData();
   };

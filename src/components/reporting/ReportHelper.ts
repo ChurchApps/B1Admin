@@ -1,8 +1,11 @@
 import { DateHelper } from "@churchapps/apphelper";
 import type { ColumnInterface } from "@churchapps/helpers";
 
+// One row of a report's result table, keyed by column value.
+export type ReportRow = Record<string, string | number | boolean | Date | null | undefined>;
+
 export class ReportHelper {
-  static getField = (column: ColumnInterface, dataRow: any) => {
+  static getField = (column: ColumnInterface, dataRow: ReportRow) => {
     let result = "";
     try {
       result = dataRow[column.value]?.toString() || "";

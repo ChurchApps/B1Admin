@@ -46,20 +46,20 @@ const NavRow: React.FC<{
     <tr key={link.id || `${linkText}-${index}`}>
       <td style={style} data-pagetype={"navItemLink"}>
         {(index === 0 && nextLevel === 0) && (
-          <DroppableWrapper accept={accept} onDrop={(item) => { handleDrop(-1, link.parentId || "", item.data); }}>
+          <DroppableWrapper accept={accept} onDrop={(item: { data: LinkInterface }) => { handleDrop(-1, link.parentId || "", item.data); }}>
             <div style={{ height: 5 }}></div>
           </DroppableWrapper>
         )}
         <DraggableWrapper dndType={dndType} data={link}>
           {anchor}
         </DraggableWrapper>
-        <DroppableWrapper accept={accept} onDrop={(item) => { handleDrop(index + 0.5, link.parentId || "", item.data); }}>
+        <DroppableWrapper accept={accept} onDrop={(item: { data: LinkInterface }) => { handleDrop(index + 0.5, link.parentId || "", item.data); }}>
           <div style={{ height: 5 }}></div>
         </DroppableWrapper>
       </td>
       <td>
         {nextLevel === 0 && (
-          <DroppableWrapper hideWhenInactive={true} accept={["navItemLink"]} onDrop={(item) => { handleDrop(-1, link.id || "", item.data); }}>
+          <DroppableWrapper hideWhenInactive={true} accept={["navItemLink"]} onDrop={(item: { data: LinkInterface }) => { handleDrop(-1, link.id || "", item.data); }}>
             <Icon style={{ height: 18 }}>chevron_right</Icon>
           </DroppableWrapper>
         )}

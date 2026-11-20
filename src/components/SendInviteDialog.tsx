@@ -36,8 +36,8 @@ export const SendInviteDialog: React.FC<Props> = (props) => {
       }, "MembershipApi");
       setSent(true);
       closeTimer.current = setTimeout(() => props.onClose(), 1500);
-    } catch (err: any) {
-      setError(err?.message || Locale.label("components.sendInviteDialog.errorFailed"));
+    } catch (err) {
+      setError((err as { message?: string } | null | undefined)?.message || Locale.label("components.sendInviteDialog.errorFailed"));
     } finally {
       setSending(false);
     }

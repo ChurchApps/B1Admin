@@ -1,6 +1,6 @@
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { GroupInterface } from "@churchapps/helpers";
-import type { PageLink } from "./Interfaces";
+import type { PageInterface, PageLink } from "./Interfaces";
 
 export class PageHelper {
 
@@ -21,7 +21,7 @@ export class PageHelper {
     let result: PageLink[] = [...templatePages];
 
     const groupPage = result.find((p) => p.url === "/groups");
-    (Array.isArray(customPages) ? customPages : []).forEach((p: any) => {
+    (Array.isArray(customPages) ? customPages : []).forEach((p: PageInterface & { title: string }) => {
       const url = p.url || "";
       const page: PageLink = { pageId: p.id, title: p.title, url: url, custom: true };
       if (!groupPage || url.indexOf("/groups") === -1) {
@@ -60,10 +60,10 @@ export class PageHelper {
 
     const groupPage: PageLink = { title: Locale.label("helpers.pageHelper.groups"), url: "/groups", custom: false, children: [] };
     const groupsResult = await ApiHelper.get("/groups", "MembershipApi").catch(() => []);
-    const groups: GroupInterface[] = Array.isArray(groupsResult) ? groupsResult : [];
+    const groups: (GroupInterface & { name: string })[] = Array.isArray(groupsResult) ? groupsResult : [];
 
     const labels: string[] = [];
-    groups.forEach((g: any) => {
+    groups.forEach((g) => {
       g.labelArray?.forEach((l: string) => {
         if (!labels.includes(l)) labels.push(l);
       });
@@ -74,7 +74,7 @@ export class PageHelper {
     });
 
 
-    groups.forEach((g: any) => {
+    groups.forEach((g) => {
       groupPage.children!.push({ title: g.name, url: `/mobile/groups/${g.slug}`, custom: false });
     });
     templatePages.push(groupPage);

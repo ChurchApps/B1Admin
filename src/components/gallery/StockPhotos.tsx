@@ -21,7 +21,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
 
   const contentRoot = CommonEnvironmentHelper.ContentRoot;
 
-  const loadData = () => { ApiHelper.getAnonymous("/gallery/stock/" + props.aspectRatio.toString(), "ContentApi").then((data: any) => setImages(data.images)); };
+  const loadData = () => { ApiHelper.getAnonymous("/gallery/stock/" + props.aspectRatio.toString(), "ContentApi").then((data: { images: string[] }) => setImages(data.images)); };
 
   React.useEffect(loadData, [props.aspectRatio]);
 
@@ -40,7 +40,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
 
   const getResults = () => {
     const result: React.ReactElement[] = [];
-    searchResults?.forEach((p: any) => {
+    searchResults?.forEach((p: SearchResult) => {
       result.push(<Grid size={{ xs: 12, md: 4 }}>
         <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onStockSelect(p.large); }}>
           <img
@@ -65,7 +65,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
 
   const getSuggested = () => {
     const result: React.ReactElement[] = [];
-    images.forEach((img: any) => {
+    images.forEach((img: string) => {
       result.push(<Grid size={{ xs: 12, md: 4 }}>
         <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onSelect(contentRoot + "/" + img); }}>
           <img

@@ -22,7 +22,6 @@ import { AppDatePicker } from "../../components";
 import { parseTitleOptions } from "../../helpers/PersonConstants";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
-type AnyRecord = Record<string, any>;
 
 // Autocomplete's own padding would make this field taller than the form's other inputs.
 const titleInputSx = {
@@ -81,6 +80,8 @@ const buildFormDefaults = (p: PersonInterface, localPhones: boolean) => ({
   }
 });
 
+type PersonFormValues = ReturnType<typeof buildFormDefaults>;
+
 export const PersonEdit = memo((props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const context = React.useContext(UserContext);
@@ -97,12 +98,12 @@ export const PersonEdit = memo((props: Props) => {
 
   // Public endpoint: people editors may lack settings.edit, which /settings requires.
   const churchId = UserHelper.currentUserChurch?.church?.id || "";
-  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const publicSettings = useQuery<Record<string, string>>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
   const localPhones = publicSettings.data?.phoneFormat === "local";
   const phoneSettingsLoading = !!churchId && publicSettings.isLoading;
   const titleOptions = React.useMemo(() => parseTitleOptions(publicSettings.data?.titleOptions), [publicSettings.data]);
 
-  const { control, register, handleSubmit, reset, resetField, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person, localPhones) });
+  const { control, register, handleSubmit, reset, resetField, getValues } = useForm<PersonFormValues>({ defaultValues: buildFormDefaults(props.person, localPhones) });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { errors } = useFormState({ control });
@@ -124,7 +125,7 @@ export const PersonEdit = memo((props: Props) => {
     if (!props.person) return;
     (["homePhone", "workPhone", "mobilePhone"] as const).forEach((field) => {
       const raw = props.person.contactInfo?.[field];
-      const name = `contactInfo.${field}`;
+      const name = `contactInfo.${field}` as const;
       if ((getValues(name) ?? "") !== normalizePhone(raw, wasLocal)) return;
       resetField(name, { defaultValue: normalizePhone(raw, localPhones) });
     });
@@ -153,7 +154,7 @@ export const PersonEdit = memo((props: Props) => {
     await ApiHelper.post("/personfieldvalues", payload, "MembershipApi");
   }, [customFields, customValues, props.person?.id]);
 
-  const e = errors as any;
+  const e = errors;
   const summaryErrors: string[] = React.useMemo(() => {
     const errs: string[] = [];
     if (e.name?.first?.message) errs.push(e.name.first.message);
@@ -170,7 +171,7 @@ export const PersonEdit = memo((props: Props) => {
 
   React.useEffect(fetchMembers, [fetchMembers]);
 
-  const buildPerson = useCallback((values: AnyRecord): PersonInterface => {
+  const buildPerson = useCallback((values: PersonFormValues): PersonInterface => {
     const p: PersonInterface = JSON.parse(JSON.stringify(props.person));
     Object.assign(p, values);
     // "" = the Unassigned option; store as null so it matches campusId IS NULL.
@@ -214,7 +215,7 @@ export const PersonEdit = memo((props: Props) => {
     }
   }, []);
 
-  const onValid = useCallback(async (values: AnyRecord) => {
+  const onValid = useCallback(async (values: PersonFormValues) => {
     setIsSubmitting(true);
     setSaveErrors([]);
     const p = buildPerson(values);
@@ -332,7 +333,7 @@ export const PersonEdit = memo((props: Props) => {
             </Grid>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 4 }}>
-                <TextField fullWidth label={Locale.label("person.email")} type="email" id="email" placeholder={Locale.label("placeholders.person.email")} data-testid="email-input" aria-label="Email address" error={!!e.contactInfo?.email} helperText={e.contactInfo?.email?.message} {...register("contactInfo.email", { validate: (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || Locale.label("people.personEdit.valEmail") })} />
+                <TextField fullWidth label={Locale.label("person.email")} type="email" id="email" placeholder={Locale.label("placeholders.person.email")} data-testid="email-input" aria-label="Email address" error={!!e.contactInfo?.email} helperText={e.contactInfo?.email?.message} {...register("contactInfo.email", { validate: (v: string | undefined) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || Locale.label("people.personEdit.valEmail") })} />
               </Grid>
               <Grid size={{ xs: 12, md: 4 }}>
                 <TextField inputProps={{ maxLength: 20 }} fullWidth label={Locale.label("people.personEdit.nameNote")} id="nametagnotes" placeholder={Locale.label("placeholders.person.nameTag")} {...register("nametagNotes")} />

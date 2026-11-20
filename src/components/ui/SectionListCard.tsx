@@ -32,7 +32,7 @@ export const SectionListCard: React.FC<SectionListCardProps> = ({ icon, title, c
   <Card sx={cardSx}>
     <Stack className="om-head" direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ px: { xs: 2, md: 3 }, pt: { xs: 2, md: 3 }, pb: 2 }}>
       <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
-        {React.cloneElement(icon as React.ReactElement<any>, { className: "om-icon", sx: { color: "text.secondary", fontSize: 20 } })}
+        {React.cloneElement(icon as React.ReactElement<{ className?: string; sx?: SxProps<Theme> }>, { className: "om-icon", sx: { color: "text.secondary", fontSize: 20 } })}
         <Typography className="om-title" variant="h3" component="h2">{title}</Typography>
         {count > 0 && <CountChip count={count} />}
       </Stack>

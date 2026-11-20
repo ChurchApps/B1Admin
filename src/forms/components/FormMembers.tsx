@@ -19,7 +19,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results: any) => {
+    ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results: MemberPermissionInterface[]) => {
       const filterMembers: string[] = [];
       results.forEach((member: MemberPermissionInterface) => filterMembers.push(member.memberId || ""));
       setFilterList(filterMembers);

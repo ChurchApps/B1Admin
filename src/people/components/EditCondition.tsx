@@ -19,12 +19,21 @@ import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 import { AppDatePicker } from "../../components";
 
 interface Props {
-  conditionAdded: (condition: any) => void;
+  conditionAdded: (condition: SearchCondition) => void;
+}
+
+// A value/text choice for the value dropdown; memberAttendance loads one entry per list instead (campuses, services, ...).
+interface OptionItem { value?: string; text?: string }
+interface LoadedOption extends OptionItem {
+  campuses?: OptionItem[];
+  services?: OptionItem[];
+  serviceTimes?: OptionItem[];
+  groups?: OptionItem[];
 }
 
 export function EditCondition(props: Props) {
   const [condition, setCondition] = React.useState<SearchCondition>({ field: "displayName", operator: "equals", value: "" });
-  const [loadedOptions, setLoadedOptions] = React.useState<any[]>([]);
+  const [loadedOptions, setLoadedOptions] = React.useState<LoadedOption[]>([]);
   const [loadedOptionsField, setLoadedOptionsField] = React.useState("");
   const [loadingOptions, setLoadingOptions] = React.useState(false);
 
@@ -247,7 +256,7 @@ export function EditCondition(props: Props) {
           );
           defaultAttendanceValue = JSON.stringify([{ value: "any", text: "Any" }, defaultDateObj]);
         } else if (condition.operator === "attendedService") {
-          const serviceOptions: any[] = loadedOptions.length > 0 && loadedOptions.filter((item) => "services" in item)[0]?.services;
+          const serviceOptions: OptionItem[] | false | undefined = loadedOptions.length > 0 && loadedOptions.filter((item) => "services" in item)[0]?.services;
           if (serviceOptions) {
             serviceOptions.forEach((o, i) => {
               options.push(
@@ -257,9 +266,9 @@ export function EditCondition(props: Props) {
               );
             });
           }
-          defaultAttendanceValue = serviceOptions?.length > 0 ? JSON.stringify([serviceOptions[0], defaultDateObj]) : "";
+          defaultAttendanceValue = serviceOptions && serviceOptions.length > 0 ? JSON.stringify([serviceOptions[0], defaultDateObj]) : "";
         } else if (condition.operator === "attendedServiceTime") {
-          const serviceTimeOptions: any[] = loadedOptions.length > 0 && loadedOptions.filter((item) => "serviceTimes" in item)[0]?.serviceTimes;
+          const serviceTimeOptions: OptionItem[] | false | undefined = loadedOptions.length > 0 && loadedOptions.filter((item) => "serviceTimes" in item)[0]?.serviceTimes;
           if (serviceTimeOptions) {
             serviceTimeOptions.forEach((o, i) => {
               options.push(
@@ -269,9 +278,9 @@ export function EditCondition(props: Props) {
               );
             });
           }
-          defaultAttendanceValue = serviceTimeOptions?.length > 0 ? JSON.stringify([serviceTimeOptions[0], defaultDateObj]) : "";
+          defaultAttendanceValue = serviceTimeOptions && serviceTimeOptions.length > 0 ? JSON.stringify([serviceTimeOptions[0], defaultDateObj]) : "";
         } else if (condition.operator === "attendedGroup") {
-          const groupOptions: any[] = loadedOptions.length > 0 && loadedOptions.filter((item) => "groups" in item)[0]?.groups;
+          const groupOptions: OptionItem[] | false | undefined = loadedOptions.length > 0 && loadedOptions.filter((item) => "groups" in item)[0]?.groups;
           if (groupOptions) {
             groupOptions.forEach((o, i) => {
               options.push(
@@ -281,9 +290,9 @@ export function EditCondition(props: Props) {
               );
             });
           }
-          defaultAttendanceValue = groupOptions?.length > 0 ? JSON.stringify([groupOptions[0], defaultDateObj]) : "";
+          defaultAttendanceValue = groupOptions && groupOptions.length > 0 ? JSON.stringify([groupOptions[0], defaultDateObj]) : "";
         } else {
-          const campusOptions: any[] = loadedOptions.length > 0 && loadedOptions.filter((item) => "campuses" in item)[0]?.campuses;
+          const campusOptions: OptionItem[] | false | undefined = loadedOptions.length > 0 && loadedOptions.filter((item) => "campuses" in item)[0]?.campuses;
           if (campusOptions) {
             campusOptions.forEach((o, i) => {
               options.push(
@@ -293,7 +302,7 @@ export function EditCondition(props: Props) {
               );
             });
           }
-          defaultAttendanceValue = campusOptions?.length > 0 ? JSON.stringify([campusOptions[0], defaultDateObj]) : "";
+          defaultAttendanceValue = campusOptions && campusOptions.length > 0 ? JSON.stringify([campusOptions[0], defaultDateObj]) : "";
         }
         setDefaultValue(defaultAttendanceValue);
         result = (
@@ -319,7 +328,7 @@ export function EditCondition(props: Props) {
       if (condition.field === "groupMember") {
         setLoadingOptions(true);
         ApiHelper.get("/groups", "MembershipApi").then((groups: GroupInterface[]) => {
-          const options: any[] = [];
+          const options: OptionItem[] = [];
           groups.forEach((g) => {
             options.push({ value: g.id, text: g.name });
           });
@@ -330,7 +339,7 @@ export function EditCondition(props: Props) {
       if (condition.field === "memberDonations") {
         setLoadingOptions(true);
         ApiHelper.get("/funds", "GivingApi").then((funds: FundInterface[]) => {
-          const options: any[] = [];
+          const options: OptionItem[] = [];
           funds.forEach((f) => {
             options.push({ value: f.id, text: f.name });
           });
@@ -350,7 +359,7 @@ export function EditCondition(props: Props) {
           ]);
           const campusName = (id: string) => campuses.find((c) => c.id === id)?.name || "";
           const serviceById = (id: string) => services.find((s) => s.id === id);
-          const optionsArray: any[] = [];
+          const optionsArray: LoadedOption[] = [];
           optionsArray.push({ campuses: campuses.map((c) => ({ value: c.id, text: c.name })) });
           optionsArray.push({ services: services.map((s) => ({ value: s.id, text: `${campusName(s.campusId || "")} - ${s.name}` })) });
           optionsArray.push({

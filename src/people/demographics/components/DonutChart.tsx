@@ -14,7 +14,7 @@ export const DonutChart = ({ title, data, onSelect }: Props) => {
   const chartTheme = getChartTheme(theme.palette.mode === "dark");
   const total = data.reduce((sum, d) => sum + d.count, 0);
 
-  const chartData: any[] = [["Type", "Count"]];
+  const chartData: (string | number)[][] = [["Type", "Count"]];
   data.forEach((d) => chartData.push([d.name, d.count]));
 
   const options = {
@@ -32,6 +32,7 @@ export const DonutChart = ({ title, data, onSelect }: Props) => {
     ? [
       {
         eventName: "select" as const,
+        // react-google-charts types chartWrapper as nullable and its chart without setSelection, so this stays untyped.
         callback: ({ chartWrapper }: any) => {
           const chart = chartWrapper.getChart();
           const selection = chart.getSelection();

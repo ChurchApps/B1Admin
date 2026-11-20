@@ -2,6 +2,7 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import type { AttendanceInterface, GroupInterface, GroupServiceTimeInterface } from "@churchapps/helpers";
 import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
 import { HeadcountEntry } from "./components/HeadcountEntry";
@@ -31,18 +32,18 @@ export const AttendancePage = () => {
 
   // Same query keys as AttendanceSetup, so its refetch after an edit updates these counts too.
   const onSetup = view === "setup";
-  const attendanceTree = useQuery<any[]>({ queryKey: ["/attendancerecords/tree", "AttendanceApi"], enabled: onSetup });
-  const groupServiceTimes = useQuery<any[]>({ queryKey: ["/groupservicetimes", "AttendanceApi"], enabled: onSetup });
-  const groups = useQuery<any[]>({ queryKey: ["/groups", "MembershipApi"], enabled: onSetup });
+  const attendanceTree = useQuery<AttendanceInterface[]>({ queryKey: ["/attendancerecords/tree", "AttendanceApi"], enabled: onSetup });
+  const groupServiceTimes = useQuery<GroupServiceTimeInterface[]>({ queryKey: ["/groupservicetimes", "AttendanceApi"], enabled: onSetup });
+  const groups = useQuery<GroupInterface[]>({ queryKey: ["/groups", "MembershipApi"], enabled: onSetup });
 
   const stats = React.useMemo(() => {
     const groupsData = groups.data || [];
-    const trackingGroups = groupsData.filter((g: any) => g.trackAttendance);
-    const assignedGroupIds = new Set((groupServiceTimes.data || []).map((gst: any) => gst.groupId));
+    const trackingGroups = groupsData.filter((g) => g.trackAttendance);
+    const assignedGroupIds = new Set((groupServiceTimes.data || []).map((gst) => gst.groupId));
     return {
-      serviceTimes: (attendanceTree.data || []).filter((a: any) => a.serviceTime).length,
-      scheduledGroups: trackingGroups.filter((g: any) => assignedGroupIds.has(g.id)).length,
-      unscheduledGroups: trackingGroups.filter((g: any) => !assignedGroupIds.has(g.id)).length,
+      serviceTimes: (attendanceTree.data || []).filter((a) => a.serviceTime).length,
+      scheduledGroups: trackingGroups.filter((g) => assignedGroupIds.has(g.id)).length,
+      unscheduledGroups: trackingGroups.filter((g) => !assignedGroupIds.has(g.id)).length,
       totalGroups: groupsData.length
     };
   }, [attendanceTree.data, groupServiceTimes.data, groups.data]);

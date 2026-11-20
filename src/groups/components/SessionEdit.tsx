@@ -8,7 +8,11 @@ import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { AppDatePicker } from "../../components";
 
-type AnyRecord = Record<string, any>;
+interface SessionForm {
+  sessionDate: string;
+  serviceTimeId: string;
+  allGroups: boolean;
+}
 
 interface Props {
   group: GroupInterface;
@@ -31,11 +35,11 @@ export const SessionEdit: React.FC<Props> = (props) => {
   const [otherGroups, setOtherGroups] = React.useState<GroupInterface[]>([]);
   const [notes, setNotes] = React.useState("");
 
-  const { control, handleSubmit, reset, setValue, watch } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "", allGroups: false } });
+  const { control, handleSubmit, reset, setValue, watch } = useForm<SessionForm>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "", allGroups: false } });
   const serviceTimeId = watch("serviceTimeId");
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
   const summaryErrors = useErrorSummary(errors, ["sessionDate"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -52,7 +56,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => {
+    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: (GroupServiceTimeInterface & { serviceTimeId: string })[]) => {
       setGroupServiceTimes(data);
       if (isAdd && data.length > 0) setValue("serviceTimeId", data[0].serviceTimeId);
     });
@@ -81,12 +85,16 @@ export const SessionEdit: React.FC<Props> = (props) => {
     return otherGroups.filter((g) => !hasSession(g.id)).map((g) => ({ groupId: g.id, serviceTimeId: stId, sessionDate } as SessionInterface));
   };
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: SessionForm) => {
     if (!props.group?.id) return;
     const sessionDate = new Date(values.sessionDate);
     const s = { ...(props.session || {}), groupId: props.group.id, sessionDate, notes } as SessionInterface & { notes?: string };
     if (!UniqueIdHelper.isMissing(values.serviceTimeId)) s.serviceTimeId = values.serviceTimeId;
-    else (s as any).serviceTimeId = null;
+    else {
+      // Saved as null so the session has no service time.
+      const clearable: { serviceTimeId: string | null } = s;
+      clearable.serviceTimeId = null;
+    }
     const sessions = [s];
     if (isAdd && values.allGroups && s.serviceTimeId && otherGroups.length > 0) sessions.push(...await getOtherSessions(DateHelper.formatHtml5Date(values.sessionDate), sessionDate, s.serviceTimeId));
     ApiHelper.post("/sessions", sessions, "AttendanceApi").then(() => {
@@ -103,7 +111,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
     if (props.session?.id) {
       setLoading(true);
       ApiHelper.get("/sessions/" + props.session.id, "AttendanceApi")
-        .then((data: any) => {
+        .then((data: (SessionInterface & { notes?: string }) | null) => {
           const sessionDate = data?.sessionDate && !isNaN(new Date(data.sessionDate).getTime())
             ? DateHelper.formatHtml5Date(data.sessionDate)
             : DateHelper.formatHtml5Date(new Date());
@@ -114,7 +122,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
           setNotes(data?.notes || "");
           setLoading(false);
         })
-        .catch((error: any) => {
+        .catch((error: unknown) => {
           console.error("Failed to load session:", error);
           setLoading(false);
         });
@@ -145,7 +153,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
     const label = Locale.label("groups.sessionAdd.allGroups").replace("{count}", otherGroups.length.toString()).replace("{serviceTime}", serviceTimeName);
     return (
       <Controller name="allGroups" control={control} render={({ field }) => (
-        <FormControlLabel label={label} control={<Checkbox checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} inputProps={{ "data-testid": "session-all-groups" } as any} />} />
+        <FormControlLabel label={label} control={<Checkbox checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} inputProps={{ "data-testid": "session-all-groups" } as React.InputHTMLAttributes<HTMLInputElement>} />} />
       )} />
     );
   };

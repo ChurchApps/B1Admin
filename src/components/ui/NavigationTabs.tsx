@@ -10,7 +10,7 @@ export interface NavigationTab {
   testId?: string;
 }
 
-export interface NavigationDropdown<T = any> {
+export interface NavigationDropdown<T extends { id?: string } = { id?: string }> {
   value: string;
   label: string;
   icon?: string | React.ReactElement;
@@ -78,7 +78,7 @@ export const NavigationTabs = memo((props: Props) => {
     setDropdownAnchor(null);
   };
 
-  const handleItemSelect = (item: any) => {
+  const handleItemSelect = (item: { id?: string }) => {
     dropdown?.onItemSelect(item);
     handleDropdownClose();
   };
@@ -145,7 +145,7 @@ export const NavigationTabs = memo((props: Props) => {
               mt: 0.5
             }
           }}>
-          {dropdown.items?.map((item: any, index) => (
+          {dropdown.items?.map((item, index) => (
             <MenuItem
               key={item.id || index}
               onClick={() => handleItemSelect(item)}

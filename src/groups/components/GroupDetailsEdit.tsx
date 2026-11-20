@@ -15,7 +15,22 @@ import { GroupLabelsEdit } from "./GroupLabelsEdit";
 import { CampusSelect } from "../../components/CampusSelect";
 import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
 
-type AnyRecord = Record<string, any>;
+// Every field is a string in the form (booleans as "true"/"false", numbers as text).
+type GroupDetailsForm = Record<"name" | "categoryName" | "meetingTime" | "meetingLocation" | "trackAttendance" | "attendanceReminders" | "parentPickup" | "printNametag" | "slug" | "campusId" | "joinPolicy" | "discussionsEnabled" | "announcementsEnabled" | "publicRoster" | "confidential" | "minYears" | "minMonths" | "maxYears" | "maxMonths" | "minGrade" | "maxGrade" | "capacity" | "guestCapacity" | "checkinClosed" | "volunteerRatio" | "minVolunteers", string>;
+
+// publicRoster is not on the published GroupInterface yet.
+type GroupWithRoster = GroupInterface & { publicRoster?: boolean };
+
+// Cleared values are saved as null so they reach the update SQL.
+type GroupSave = Omit<GroupWithRoster, "campusId" | "minGrade" | "maxGrade" | "capacity" | "guestCapacity" | "volunteerRatio" | "minVolunteers"> & {
+  campusId?: string | null;
+  minGrade?: string | null;
+  maxGrade?: string | null;
+  capacity?: number | null;
+  guestCapacity?: number | null;
+  volunteerRatio?: number | null;
+  minVolunteers?: number | null;
+};
 
 interface Props {
   id?: string;
@@ -34,7 +49,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   const [labelArray, setLabelArray] = React.useState<string[]>([]);
   const isMounted = useMountedState();
 
-  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, reset } = useForm<GroupDetailsForm>({
     defaultValues: {
       name: "",
       categoryName: "",
@@ -76,7 +91,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   };
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
   const summaryErrors = useErrorSummary(errors, ["categoryName", "name"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -88,28 +103,28 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         meetingTime: props.group.meetingTime || "",
         meetingLocation: props.group.meetingLocation || "",
         trackAttendance: props.group.trackAttendance?.toString() || "false",
-        attendanceReminders: (props.group as AnyRecord).attendanceReminders?.toString() || "false",
+        attendanceReminders: props.group.attendanceReminders?.toString() || "false",
         parentPickup: props.group.parentPickup?.toString() || "false",
         printNametag: props.group.printNametag?.toString() || "false",
         slug: props.group.slug || "",
         campusId: props.group.campusId || "",
         joinPolicy: props.group.joinPolicy || "open",
         // Both chat feeds default on; only an explicit false turns one off.
-        discussionsEnabled: (props.group as AnyRecord).discussionsEnabled === false ? "false" : "true",
-        announcementsEnabled: (props.group as AnyRecord).announcementsEnabled === false ? "false" : "true",
-        publicRoster: (props.group as AnyRecord).publicRoster?.toString() || "false",
-        confidential: (props.group as AnyRecord).confidential?.toString() || "false",
+        discussionsEnabled: props.group.discussionsEnabled === false ? "false" : "true",
+        announcementsEnabled: props.group.announcementsEnabled === false ? "false" : "true",
+        publicRoster: (props.group as GroupWithRoster).publicRoster?.toString() || "false",
+        confidential: props.group.confidential?.toString() || "false",
         minYears: monthsToParts(props.group.minAgeMonths).years,
         minMonths: monthsToParts(props.group.minAgeMonths).months,
         maxYears: monthsToParts(props.group.maxAgeMonths).years,
         maxMonths: monthsToParts(props.group.maxAgeMonths).months,
         minGrade: props.group.minGrade || "",
         maxGrade: props.group.maxGrade || "",
-        capacity: numToField((props.group as AnyRecord).capacity),
-        guestCapacity: numToField((props.group as AnyRecord).guestCapacity),
-        checkinClosed: (props.group as AnyRecord).checkinClosed ? "true" : "false",
-        volunteerRatio: numToField((props.group as AnyRecord).volunteerRatio),
-        minVolunteers: numToField((props.group as AnyRecord).minVolunteers)
+        capacity: numToField(props.group.capacity),
+        guestCapacity: numToField(props.group.guestCapacity),
+        checkinClosed: props.group.checkinClosed ? "true" : "false",
+        volunteerRatio: numToField(props.group.volunteerRatio),
+        minVolunteers: numToField(props.group.minVolunteers)
       });
       setAbout(props.group.about || "");
       setPhotoUrl(props.group.photoUrl || "");
@@ -119,8 +134,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
 
   const handleCancel = () => props.updatedFunction();
 
-  const onValid = (values: AnyRecord) => {
-    const group: GroupInterface = {
+  const onValid = (values: GroupDetailsForm) => {
+    const group: GroupSave = {
       ...props.group,
       name: values.name,
       categoryName: values.categoryName,
@@ -141,18 +156,17 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     };
     // "" = Unassigned; store null so it matches campusId IS NULL.
     group.campusId = values.campusId || null;
-    // Cast until the published GroupInterface includes attendanceReminders.
-    (group as AnyRecord).attendanceReminders = values.attendanceReminders === "true";
-    (group as AnyRecord).publicRoster = values.publicRoster === "true";
-    (group as AnyRecord).discussionsEnabled = values.discussionsEnabled === "true";
-    (group as AnyRecord).announcementsEnabled = values.announcementsEnabled === "true";
+    group.attendanceReminders = values.attendanceReminders === "true";
+    group.publicRoster = values.publicRoster === "true";
+    group.discussionsEnabled = values.discussionsEnabled === "true";
+    group.announcementsEnabled = values.announcementsEnabled === "true";
     // Explicit boolean (never undefined) so the un-set path persists — Kysely drops undefined.
-    (group as AnyRecord).confidential = values.confidential === "true";
-    (group as AnyRecord).capacity = fieldToNum(values.capacity);
-    (group as AnyRecord).guestCapacity = fieldToNum(values.guestCapacity);
-    (group as AnyRecord).checkinClosed = values.checkinClosed === "true";
-    (group as AnyRecord).volunteerRatio = fieldToNum(values.volunteerRatio);
-    (group as AnyRecord).minVolunteers = fieldToNum(values.minVolunteers);
+    group.confidential = values.confidential === "true";
+    group.capacity = fieldToNum(values.capacity);
+    group.guestCapacity = fieldToNum(values.guestCapacity);
+    group.checkinClosed = values.checkinClosed === "true";
+    group.volunteerRatio = fieldToNum(values.volunteerRatio);
+    group.minVolunteers = fieldToNum(values.minVolunteers);
     setSaveErrors([]);
     ApiHelper.post("/groups", [group], "MembershipApi").then(() => {
       props.updatedFunction();

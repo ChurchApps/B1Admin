@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FormSubmission } from "./";
 import { Accordion, AccordionDetails, AccordionSummary, Box } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { type FormSubmissionInterface } from "@churchapps/helpers";
+import { type FormInterface, type FormSubmissionInterface } from "@churchapps/helpers";
+import type { WithId } from "../helpers/Interfaces";
 import { Permissions, UserHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
 import { AppIconButton } from "./ui/AppIconButton";
@@ -17,8 +18,8 @@ interface Props {
 export const AssociatedForms: React.FC<Props> = (props) => {
   const [mode, setMode] = useState("display");
   const [editFormSubmissionId, setEditFormSubmissionId] = useState("");
-  const [allForms, setAllForms] = useState<any[] | null>(null);
-  const [unsubmittedForms, setUnsubmittedForms] = useState<any[]>([]);
+  const [allForms, setAllForms] = useState<WithId<FormInterface>[] | null>(null);
+  const [unsubmittedForms, setUnsubmittedForms] = useState<WithId<FormInterface>[]>([]);
   const [selectedFormId, setSelectedFormId] = useState<string>("");
   const [expanded, setExpanded] = useState<string>("");
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
@@ -41,7 +42,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
   };
 
   const getCards = () => {
-    const cards: any[] = [];
+    const cards: React.ReactElement[] = [];
     const submittedCards = getSubmittedCards() || []; // when there are no submitted cards, function will return undefined
     const unsubmittedCards = getUnsubmittedCards();
     cards.push(...submittedCards, ...unsubmittedCards);
@@ -88,7 +89,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
       ));
 
   const determineUnsubmitted = () => {
-    let unsubmitted: any[] = [];
+    let unsubmitted: WithId<FormInterface>[] = [];
     if (allForms !== undefined && allForms !== null && props !== null) {
       const sf = props.formSubmissions;
       if (sf !== undefined && sf !== null) {
@@ -104,7 +105,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => setAllForms(data));
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: WithId<FormInterface>[]) => setAllForms(data));
   }, []);
 
   useEffect(determineUnsubmitted, [allForms, props]);

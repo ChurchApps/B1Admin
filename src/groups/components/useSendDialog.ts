@@ -2,13 +2,16 @@ import React from "react";
 import { ApiHelper } from "@churchapps/apphelper";
 import type { ApiListType } from "@churchapps/helpers";
 
+// What a failed ApiHelper call may carry: an Error message and/or an HTTP status.
+export type SendDialogError = { message?: string; status?: number; response?: { status?: number } } | null | undefined;
+
 interface UseSendDialogOptions {
   previewUrl: string | null;
   sendUrl: string;
-  buildPayload: () => Record<string, any> | null;
+  buildPayload: () => Record<string, unknown> | null;
   fallbackError: string;
   apiName?: ApiListType;
-  buildError?: (err: any) => string;
+  buildError?: (err: SendDialogError) => string;
 }
 
 interface UseSendDialogResult<TPreview, TResult> {
@@ -20,7 +23,7 @@ interface UseSendDialogResult<TPreview, TResult> {
   handleSend: () => Promise<void>;
 }
 
-export function useSendDialog<TPreview = any, TResult = any>(options: UseSendDialogOptions): UseSendDialogResult<TPreview, TResult> {
+export function useSendDialog<TPreview = unknown, TResult = unknown>(options: UseSendDialogOptions): UseSendDialogResult<TPreview, TResult> {
   const { previewUrl, sendUrl, buildPayload, fallbackError, apiName = "MessagingApi", buildError } = options;
   const [sending, setSending] = React.useState(false);
   const [result, setResult] = React.useState<TResult | null>(null);
@@ -32,7 +35,7 @@ export function useSendDialog<TPreview = any, TResult = any>(options: UseSendDia
     if (!previewUrl) return;
     setLoadingPreview(true);
     ApiHelper.get(previewUrl, apiName)
-      .then((data: any) => setPreview(data))
+      .then((data: TPreview) => setPreview(data))
       .catch(() => setPreview(null))
       .finally(() => setLoadingPreview(false));
   }, [previewUrl, apiName]);
@@ -51,7 +54,8 @@ export function useSendDialog<TPreview = any, TResult = any>(options: UseSendDia
       const resp = await ApiHelper.post(sendUrl, payload, apiName);
       if (resp?.error) setError(resp.error);
       else setResult(resp ?? ({} as TResult));
-    } catch (err: any) {
+    } catch (caught) {
+      const err = caught as SendDialogError;
       setError(buildError ? buildError(err) : (err?.message || fallbackError));
     } finally {
       sendingRef.current = false;

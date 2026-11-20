@@ -47,13 +47,14 @@ export const MergeModal: React.FC<Props> = (props) => {
     if (!person1 || !person2) return;
 
     const keys = Object.keys(person1) as Array<keyof PersonInterface>;
-    const aggregate: any = {};
+    const aggregate: Partial<PersonInterface> & Record<string, unknown> = {};
     const newConflicts: IConflicts[] = [];
 
-    const determine = (basedOn: boolean, key: string, value1: any, value2: any, subKey?: string) => {
+    const determine = (basedOn: boolean, key: string, value1: unknown, value2: unknown, subKey?: string) => {
       if (basedOn) {
         if (subKey) {
-          aggregate[key][subKey] = value1 || value2;
+          // The contactInfo/name branches set aggregate[key] to {} before comparing their sub keys.
+          (aggregate[key] as Record<string, unknown>)[subKey] = value1 || value2;
           return;
         }
         aggregate[key] = value1 || value2;
@@ -62,7 +63,7 @@ export const MergeModal: React.FC<Props> = (props) => {
 
       newConflicts.push({
         value: subKey || key,
-        options: [value1, value2],
+        options: [value1, value2] as string[],
         selected: ""
       });
     };
@@ -96,8 +97,8 @@ export const MergeModal: React.FC<Props> = (props) => {
             });
           }
           break;
-        case SpecialKeys.HOUSEHOLD_ID: aggregate.householdId = value1; break;
-        case SpecialKeys.ID: aggregate.id = value1; break;
+        case SpecialKeys.HOUSEHOLD_ID: aggregate.householdId = person1.householdId; break;
+        case SpecialKeys.ID: aggregate.id = person1.id; break;
         default:
           const check = primitiveCompare(value1, value2);
           determine(check, key, value1, value2);
@@ -110,11 +111,11 @@ export const MergeModal: React.FC<Props> = (props) => {
       c.selected = c.options[0];
     });
 
-    setAggregatePerson(aggregate);
+    setAggregatePerson(aggregate as PersonInterface);
     setConflicts(newConflicts);
   };
 
-  const primitiveCompare = (value1: any, value2: any): boolean => {
+  const primitiveCompare = (value1: unknown, value2: unknown): boolean => {
     if (!value2 || !value1 || value1 === value2) return true;
     return false;
   };

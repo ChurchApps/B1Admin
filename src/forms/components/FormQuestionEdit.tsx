@@ -14,17 +14,18 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+// The form starts with choices: null until a question is loaded.
+type QuestionFormValues = Omit<QuestionInterface, "choices"> & { choices?: QuestionInterface["choices"] | null };
 
 export function FormQuestionEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const isMounted = useMountedState();
 
-  const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { title: "", fieldType: "Textbox", placeholder: "", required: false, description: "", choices: null } });
+  const { control, register, handleSubmit, reset, watch } = useForm<QuestionFormValues>({ defaultValues: { title: "", fieldType: "Textbox", placeholder: "", required: false, description: "", choices: null } });
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
   const summaryErrors = useErrorSummary(errors, ["title", "fieldType"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -40,7 +41,7 @@ export function FormQuestionEdit(props: Props) {
     }
   }
 
-  const getChoices = (ft: string) => {
+  const getChoices = (ft: string | undefined) => {
     switch (ft) {
       case "Multiple Choice":
       case "Checkbox":
@@ -52,7 +53,7 @@ export function FormQuestionEdit(props: Props) {
     }
   };
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: QuestionFormValues) => {
     setIsSubmitting(true);
     ApiHelper.post("/questions/", [values], "MembershipApi")
       .then(() => props.updatedFunction())

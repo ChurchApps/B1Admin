@@ -7,7 +7,7 @@ import dayjs, { type Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
-import type { GroupInterface } from "@churchapps/helpers";
+import type { ChurchInterface, GroupInterface } from "@churchapps/helpers";
 import { useSendDialog } from "./useSendDialog";
 import { SendDialogShell } from "./SendDialogShell";
 
@@ -69,7 +69,7 @@ const isOptionalImageUrlValid = (value: string) => {
 };
 
 // Scheduled times are entered in the church's time zone when it is set, otherwise the browser's.
-export const getPushTimeZone = () => (UserHelper.currentUserChurch?.church as any)?.timeZone || dayjs.tz.guess();
+export const getPushTimeZone = () => (UserHelper.currentUserChurch?.church as (ChurchInterface & { timeZone?: string }) | undefined)?.timeZone || dayjs.tz.guess();
 
 export const formatPushTime = (value: string | Date | undefined, zone: string) => (value ? dayjs(value).tz(zone).format("ddd, MMM D, YYYY h:mm A") : "");
 

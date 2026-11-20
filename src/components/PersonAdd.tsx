@@ -95,7 +95,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, searchClicked, filterL
       setHasSearched(false);
     }
   };
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       // Until the typed search returns, the list still holds recent people, so search instead of adding one of those.

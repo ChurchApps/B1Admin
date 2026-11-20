@@ -4,6 +4,7 @@ import { CurrencyHelper } from "@churchapps/helpers";
 import { type QuestionInterface } from "../../helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
+import type { WithId } from "../../helpers/Interfaces";
 
 interface Props {
   question: QuestionInterface;
@@ -11,9 +12,9 @@ interface Props {
 }
 
 export const PaymentEdit: React.FC<Props> = (props) => {
-  const [funds, setFunds] = React.useState([]);
-  const [fundId, setFundId] = React.useState(props.question.choices?.find((c: any) => c.text === "FundId")?.value || "");
-  const [amount, setAmount] = React.useState(props.question.choices?.find((c: any) => c.text === "Amount")?.value || 0);
+  const [funds, setFunds] = React.useState<FundInterface[]>([]);
+  const [fundId, setFundId] = React.useState(props.question.choices?.find((c) => c.text === "FundId")?.value || "");
+  const [amount, setAmount] = React.useState<string | number>(props.question.choices?.find((c) => c.text === "Amount")?.value || 0);
   const [currency, setCurrency] = React.useState<string>("usd");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
@@ -28,7 +29,7 @@ export const PaymentEdit: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    ApiHelper.get("/funds", "GivingApi").then((data: any) => {
+    ApiHelper.get("/funds", "GivingApi").then((data: WithId<FundInterface>[]) => {
       setFunds(data);
       if (fundId === "" && data.length > 0) {
         setFundId(data[0].id);

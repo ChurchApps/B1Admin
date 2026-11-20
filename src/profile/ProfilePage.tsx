@@ -33,7 +33,7 @@ export const ProfilePage = () => {
   const [deletionRequested, setDeletionRequested] = useState(false);
 
   // Churches with a directory approval group review account deletions instead of the login vanishing on click.
-  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const publicSettings = useQuery<Record<string, string>>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
   const requiresApproval = !!publicSettings.data?.directoryApprovalGroupId;
   const myTasks = useQuery<TaskInterface[]>({ queryKey: ["/tasks", "DoingApi"], placeholderData: [] });
   const pendingDeletion = deletionRequested || !!myTasks.data?.find((t) => t.taskType === "accountDeletion" && t.status === "Open");

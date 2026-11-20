@@ -24,14 +24,31 @@ import { Link as RouterLink } from "react-router-dom";
 
 const yesNoChoice: Record<string, string> = { True: "Yes", False: "No" };
 
+// A submission as /formsubmissions/formId returns it (with questions and answers), plus the fields setFormSubmissionData adds.
+type LoadedSubmission = Omit<FormSubmissionInterface, "id" | "submissionDate" | "questions" | "answers"> & {
+  id: string;
+  submissionDate: Date;
+  questions: QuestionInterface[];
+  answers: AnswerInterface[];
+  person?: { name: string; id: string | null };
+  mappedQA?: unknown[];
+  csvData?: Record<string, string>[];
+};
+
+type ProcessedSubmission = LoadedSubmission & Required<Pick<LoadedSubmission, "person" | "mappedQA" | "csvData">>;
+
+// One choice's tally, keyed by the choice value, plus its label.
+type ChoiceCount = Record<string, number> & { text?: string };
+type SummaryResult = { id?: string; title?: string; values: ChoiceCount[] };
+
 interface Props {
   formId: string;
   memberPermissions: MemberPermissionInterface;
 }
 
 export const FormSubmissions: React.FC<Props> = memo((props) => {
-  const [summary, setSummary] = useState<any>([]);
-  const [summaryCsv, setSummaryCsv] = useState<any>([]);
+  const [summary, setSummary] = useState<SummaryResult[]>([]);
+  const [summaryCsv, setSummaryCsv] = useState<Record<string, string>[]>([]);
   const [changePersonId, setChangePersonId] = useState("");
   const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
   const yesNoMap = useMemo(() => ({ True: Locale.label("common.yes"), False: Locale.label("common.no") }), []);
@@ -47,25 +64,25 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     if (question.fieldType === "Yes/No") return (yesNoMap as Record<string, string>)[value] ?? value;
     return value;
   }, [yesNoMap]);
-  const contentRef: any = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const handleSummaryPrint = useReactToPrint({ contentRef });
 
-  const getPerson = useCallback((people: PersonInterface[], formSubmission: any) => {
+  const getPerson = useCallback((people: PersonInterface[], formSubmission: LoadedSubmission) => {
     let result = people.find((person: PersonInterface) => person.id === formSubmission.submittedBy);
     if (formSubmission.contentType === "person") result = people.find((person: PersonInterface) => person.id === formSubmission.contentId);
     return result;
   }, []);
 
   const setSummaryResultDefault = useCallback(
-    (question: QuestionInterface, answer: AnswerInterface) => {
-      const choices: any = [];
+    (question: QuestionInterface, answer: AnswerInterface | null): SummaryResult => {
+      const choices: ChoiceCount[] = [];
       const questionChoices = question.choices || yesNoDefault;
-      questionChoices.forEach((choice: any) => {
-        const choiceCount = { [choice.value]: 0, text: choice.text };
+      questionChoices.forEach((choice: { value?: string; text?: string }) => {
+        const choiceCount = { [choice.value as string]: 0, text: choice.text } as ChoiceCount;
         if (question.fieldType === "Checkbox") {
           if (answer && answer?.value) {
             const splitAnswer = answer.value?.split(",");
-            if (splitAnswer.indexOf(choice.value) > -1) choiceCount[choice.value] = 1;
+            if (splitAnswer.indexOf(choice.value as string) > -1) choiceCount[choice.value as string] = 1;
           }
         } else {
           if (answer && answer?.value && choice.value === answer.value) choiceCount[choice.value] = 1;
@@ -77,10 +94,10 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     [yesNoDefault]
   );
 
-  const setSummaryResultData = useCallback((summaryData: any, question: QuestionInterface, answer: AnswerInterface) => {
-    const match = summaryData.find((result: any) => result.title === question.title);
+  const setSummaryResultData = useCallback((summaryData: SummaryResult[], question: QuestionInterface, answer: AnswerInterface | null) => {
+    const match = summaryData.find((result) => result.title === question.title);
     if (match) {
-      match.values.forEach((resultValue: any) => {
+      match.values.forEach((resultValue) => {
         const key: string = Object.keys(resultValue)[0];
         if (question.fieldType === "Checkbox") {
           const splitAnswer = answer?.value?.split(",");
@@ -93,13 +110,13 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   }, [setSummaryResultDefault]);
 
   const setFormSubmissionData = useCallback(
-    (people: PersonInterface[], formSubmission: any) => {
+    (people: PersonInterface[], formSubmission: LoadedSubmission) => {
       const submittedBy = getPerson(people, formSubmission);
 
       formSubmission.person = { name: submittedBy?.name?.display || Locale.label("forms.formSubmissions.anon"), id: submittedBy?.id || null };
       formSubmission.mappedQA = [];
       formSubmission.csvData = [];
-      return formSubmission;
+      return formSubmission as ProcessedSubmission;
     },
     [getPerson]
   );
@@ -109,7 +126,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     placeholderData: []
   });
 
-  const formSubmissions = useQuery<any[]>({
+  const formSubmissions = useQuery<LoadedSubmission[]>({
     queryKey: ["/formsubmissions/formId/" + props.formId, "MembershipApi"],
     placeholderData: []
   });
@@ -117,13 +134,13 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   // Process data when both queries are loaded
   React.useEffect(() => {
     if (people.data && formSubmissions.data) {
-      const csv: any[] = [];
-      const summaryData: any = [];
-      formSubmissions.data.forEach((formSubmission: any) => {
-        const submittedBy = getPerson(people.data, formSubmission);
-        const csvData: any = {};
+      const csv: Record<string, string>[] = [];
+      const summaryData: SummaryResult[] = [];
+      formSubmissions.data.forEach((loaded) => {
+        const submittedBy = getPerson(people.data, loaded);
+        const csvData: Record<string, string> = {};
         csvData["For"] = submittedBy?.name?.display || Locale.label("forms.formSubmissions.anon");
-        formSubmission = setFormSubmissionData(people.data, formSubmission);
+        const formSubmission = setFormSubmissionData(people.data, loaded);
         formSubmission.questions.forEach((question: QuestionInterface) => {
           let answer = formSubmission.answers.find((answer: AnswerInterface) => answer.questionId === question.id) || null;
           const answerValue = displayValue(question, answer);
@@ -142,9 +159,9 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     }
   }, [people.data, formSubmissions.data, displayValue, getPerson, setFormSubmissionData, setSummaryResultData, setSummaryResultDefault]);
 
-  const getResultCount = useCallback((summaryValues: any[]) => {
+  const getResultCount = useCallback((summaryValues: ChoiceCount[]) => {
     const results: JSX.Element[] = [];
-    summaryValues.forEach((sv: any, i: number) => {
+    summaryValues.forEach((sv, i: number) => {
       const key: string = Object.keys(sv)[0];
       results.push(<div key={sv.text + "-" + i}>{`${sv.text}: ${sv[key]}`}</div>);
     });
@@ -153,7 +170,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
 
   const summaryContent = useMemo(() => {
     const results: JSX.Element[] = [];
-    summary.forEach((s: any, i: number) => {
+    summary.forEach((s, i: number) => {
       results.push(
         <Grid size={{ xs: 12, md: 6 }} key={s.id + "-" + i}>
           <Typography variant="body1" component="h3" sx={{ fontWeight: 600 }}>{s.title}</Typography>
@@ -208,7 +225,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       return rows;
     }
 
-    formSubmissions.data?.forEach((submission: any, i: number) => {
+    formSubmissions.data?.forEach((submission, i: number) => {
       // Process the submission data inline
       const processedSubmission = people.data ? setFormSubmissionData(people.data, submission) : submission;
 

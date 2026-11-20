@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { ReportInterface, ParameterInterface } from "@churchapps/helpers";
+import type { ReportInterface, ParameterInterface, GroupServiceTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper, Locale } from "../../helpers";
 import { FormControl, InputLabel, Select, type SelectChangeEvent, MenuItem } from "@mui/material";
 import { useMountedState } from "@churchapps/apphelper";
@@ -13,9 +13,13 @@ interface Props {
   onChange: (parameter: ParameterInterface, permittedChildIds: string[]) => void;
 }
 
+// Rows loaded from an API source (campuses, services, groups, ...) or given as value/text options (month, provided).
+type IdNameRow = { id: string; name: string };
+type ValueTextRow = { value: string; text: string };
+
 export const ReportFilterField = (props: Props) => {
-  const [rawData, setRawData] = React.useState<any[] | null>(null);
-  const [secondaryData, setSecondaryData] = React.useState<any[] | null>(null);
+  const [rawData, setRawData] = React.useState<(IdNameRow | ValueTextRow)[] | null>(null);
+  const [secondaryData, setSecondaryData] = React.useState<GroupServiceTimeInterface[] | null>(null);
   const isMounted = useMountedState();
 
   const init = async () => {
@@ -23,7 +27,7 @@ export const ReportFilterField = (props: Props) => {
       case "provided": setRawData(props.parameter.options); break;
       case "month": setRawData(getMonths()); break;
       case "campus":
-        ApiHelper.get("/campuses", "MembershipApi").then((data: any) => {
+        ApiHelper.get("/campuses", "MembershipApi").then((data: IdNameRow[]) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           if (isMounted()) {
             setRawData(data);
@@ -31,7 +35,7 @@ export const ReportFilterField = (props: Props) => {
         });
         break;
       case "service":
-        ApiHelper.get("/services", "AttendanceApi").then((data: any) => {
+        ApiHelper.get("/services", "AttendanceApi").then((data: IdNameRow[]) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           if (isMounted()) {
             setRawData(data);
@@ -39,7 +43,7 @@ export const ReportFilterField = (props: Props) => {
         });
         break;
       case "serviceTime":
-        ApiHelper.get("/serviceTimes", "AttendanceApi").then((data: any) => {
+        ApiHelper.get("/serviceTimes", "AttendanceApi").then((data: IdNameRow[]) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           if (isMounted()) {
             setRawData(data);
@@ -47,20 +51,20 @@ export const ReportFilterField = (props: Props) => {
         });
         break;
       case "group":
-        ApiHelper.get("/groups", "MembershipApi").then((data: any) => {
+        ApiHelper.get("/groups", "MembershipApi").then((data: IdNameRow[]) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           if (isMounted()) {
             setRawData(data);
           }
         });
-        ApiHelper.get("/groupServiceTimes", "AttendanceApi").then((data: any) => {
+        ApiHelper.get("/groupServiceTimes", "AttendanceApi").then((data: GroupServiceTimeInterface[]) => {
           if (isMounted()) {
             setSecondaryData(data);
           }
         });
         break;
       case "fund":
-        ApiHelper.get("/funds", "GivingApi").then((data: any) => {
+        ApiHelper.get("/funds", "GivingApi").then((data: IdNameRow[]) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           if (isMounted()) {
             setRawData(data);
@@ -138,7 +142,8 @@ export const ReportFilterField = (props: Props) => {
           break;
       }
     }
-    return result || [];
+    // Only called for the API sources, whose rows are id/name.
+    return (result || []) as IdNameRow[];
   };
 
   const getOptions = () => {
@@ -151,7 +156,7 @@ export const ReportFilterField = (props: Props) => {
         case "group":
         case "fund": options = getIdName(); break;
         case "month":
-        case "provided": options = rawData; break;
+        case "provided": options = rawData as ValueTextRow[]; break;
       }
     }
 

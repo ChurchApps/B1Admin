@@ -31,9 +31,9 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   const contentRoot = props.contentRoot || CommonEnvironmentHelper.ContentRoot;
   const handleClose = () => { if (props.onClose) props.onClose(); else if (props.onCancel) props.onCancel(); };
 
-  const handleTabChange = (_el: any, newValue: any) => { setTabIndex(newValue); };
+  const handleTabChange = (_el: React.SyntheticEvent, newValue: number) => { setTabIndex(newValue); };
 
-  const loadData = () => { ApiHelper.get("/gallery/" + aspectRatio.toString(), "ContentApi").then((data: any) => setImages(data.images)); };
+  const loadData = () => { ApiHelper.get("/gallery/" + aspectRatio.toString(), "ContentApi").then((data: { images: string[] }) => setImages(data.images)); };
 
   const handleImageUpdated = async (dataUrl?: string) => {
 
@@ -81,7 +81,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
 
   const getImages = () => {
     const result: React.ReactElement[] = [];
-    images.forEach((img: any, index: number) => {
+    images.forEach((img: string, index: number) => {
       const parts = img.split("/");
 
       result.push(<Grid key={img || index} size={{ xs: 12, md: 4 }}>

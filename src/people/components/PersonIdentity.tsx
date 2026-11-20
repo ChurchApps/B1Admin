@@ -213,9 +213,9 @@ export const PersonIdentity: React.FC<Props> = (props) => {
         </Stack>
       )}
 
-      {(person as any).dateAdded && (
+      {person.dateAdded && (
         <Typography sx={{ ...quiet, mt: 2 }} data-testid="person-date-added">
-          {Locale.label("people.personView.dateAdded").replace("{date}", DateHelper.prettyDate(new Date((person as any).dateAdded)))}
+          {Locale.label("people.personView.dateAdded").replace("{date}", DateHelper.prettyDate(new Date(person.dateAdded)))}
         </Typography>
       )}
 

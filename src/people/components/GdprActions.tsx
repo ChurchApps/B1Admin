@@ -35,8 +35,8 @@ export const GdprActions: React.FC<Props> = (props) => {
       setAnonymizeOpen(false);
       setConfirmText("");
       if (props.onAnonymized) props.onAnonymized();
-    } catch (e: any) {
-      setAnonymizeError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setAnonymizeError((e as { message?: string } | null | undefined)?.message || Locale.label("common.saveError"));
       setAnonymizing(false);
     }
   };

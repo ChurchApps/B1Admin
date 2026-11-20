@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableRow, TextField, FormControl, Select, 
 import { PersonRemove as PersonRemoveIcon, PersonAdd as PersonAddIcon, Close as CloseIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
-type AnyRecord = Record<string, any>;
+type HouseholdFormValues = { name: string };
 
 interface Props {
   updatedFunction: () => void;
@@ -29,10 +29,10 @@ export function HouseholdEdit(props: Props) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [saveErrors, setSaveErrors] = React.useState<string[]>([]);
 
-  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: props.household?.name || "" } });
+  const { control, register, handleSubmit, reset } = useForm<HouseholdFormValues>({ defaultValues: { name: props.household?.name || "" } });
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
   const summaryErrors = useErrorSummary(errors, ["name"]);
 
   React.useEffect(() => {
@@ -76,7 +76,7 @@ export function HouseholdEdit(props: Props) {
     setSelectedPerson(null);
   }
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: HouseholdFormValues) => {
     if (!props.household?.id) return;
     setIsSubmitting(true);
     setSaveErrors([]);

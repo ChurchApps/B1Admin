@@ -28,7 +28,7 @@ const ICON_FOR_LINK_TYPE: Record<string, string> = {
 };
 
 const buildNewTab = (linkType = "url", linkData = ""): LinkInterface => {
-  const tab: LinkInterface = {
+  const tab: LinkInterface & { visibility?: string } = {
     churchId: UserHelper.currentUserChurch.church.id,
     sort: 0,
     text: "",
@@ -38,7 +38,7 @@ const buildNewTab = (linkType = "url", linkData = ""): LinkInterface => {
     linkType,
     category: "b1Tab"
   };
-  (tab as any).visibility = "everyone";
+  tab.visibility = "everyone";
   return tab;
 };
 
