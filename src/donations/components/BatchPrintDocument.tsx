@@ -1,16 +1,17 @@
 import React from "react";
 import { ArrayHelper, DateHelper, CurrencyHelper, Locale } from "@churchapps/apphelper";
-import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
+import { type DonationBatchInterface, type FundInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography } from "@mui/material";
 import { PrintLightTheme } from "../../components/PrintLightTheme";
 import { PrintChurchHeader } from "../../components/PrintChurchHeader";
+import { type DonationRecord } from "../types";
 
 interface Props {
   churchName?: string;
   // Pass when the page already has the logo; otherwise PrintChurchHeader looks it up.
   logoUrl?: string;
   batch: DonationBatchInterface;
-  donations: DonationInterface[]; // person already populated
+  donations: DonationRecord[]; // person already populated
   fundDonations: FundDonationInterface[];
   funds: FundInterface[];
   currency: string;
@@ -23,24 +24,24 @@ export const getFundTotals = (donationIds: string[], fundDonations: FundDonation
   const fundTotals = new Map<string, number>();
   fundDonations
     .filter((fd) => donationIds.includes(fd.donationId || ""))
-    .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + CurrencyHelper.convertAmount(fd.amount || 0, (fd as any).currency || currency, currency, rates)));
+    .forEach((fd) => fundTotals.set(fd.fundId || "", (fundTotals.get(fd.fundId || "") || 0) + CurrencyHelper.convertAmount(fd.amount || 0, fd.currency || currency, currency, rates)));
   return fundTotals;
 };
 
 // A plain string rather than a nested person, so the batch CSV export gains one column instead of the person's name and photo fields.
-export const setEnteredByName = (d: DonationInterface, people: PersonInterface[]) => {
-  const name = ArrayHelper.getOne(people, "id", (d as any).enteredBy)?.name?.display;
-  if (name) (d as any).enteredByName = name;
+export const setEnteredByName = (d: DonationRecord, people: PersonInterface[]) => {
+  const name = ArrayHelper.getOne(people, "id", d.enteredBy)?.name?.display;
+  if (name) d.enteredByName = name;
 };
 
 // Paper copy for the counting team: every gift, a subtotal per fund, and the batch total.
 export const BatchPrintDocument: React.FC<Props> = ({ churchName, logoUrl, batch, donations, fundDonations, funds, currency, rates, className }) => {
-  const donationIds = donations.filter((d) => (d as any).status !== "refunded").map((d) => d.id || "");
+  const donationIds = donations.filter((d) => d.status !== "refunded").map((d) => d.id || "");
   const fundTotals = Array.from(getFundTotals(donationIds, fundDonations, currency, rates).entries())
     .map(([fundId, amount]) => ({ name: ArrayHelper.getOne(funds, "id", fundId)?.name || "Unknown Fund", amount }))
     .sort((a, b) => a.name.localeCompare(b.name));
   const donationsTotal = donations.reduce((sum, d) => {
-    if ((d as any).status === "refunded") return sum;
+    if (d.status === "refunded") return sum;
     return sum + CurrencyHelper.convertAmount(d.amount || 0, d.currency || currency, currency, rates);
   }, 0);
   const isConverted = donations.some((d) => d.currency && d.currency.toLowerCase() !== currency.toLowerCase() && !!rates[d.currency.toUpperCase()]);
@@ -69,12 +70,12 @@ export const BatchPrintDocument: React.FC<Props> = ({ churchName, logoUrl, batch
           </TableHead>
           <TableBody>
             {donations.map((d, i) => {
-              const isRefunded = (d as any).status === "refunded";
+              const isRefunded = d.status === "refunded";
               return (
                 <TableRow key={i}>
                   <TableCell>
                     {d.person?.name.display || Locale.label("donations.donations.anon")}
-                    {(d as any).enteredByName && <Typography variant="caption" sx={{ display: "block" }}>{Locale.label("donations.donations.enteredBy").replace("{name}", (d as any).enteredByName)}</Typography>}
+                    {d.enteredByName && <Typography variant="caption" sx={{ display: "block" }}>{Locale.label("donations.donations.enteredBy").replace("{name}", d.enteredByName)}</Typography>}
                   </TableCell>
                   <TableCell>{[d.method, d.methodDetails].filter(Boolean).join(" - ")}</TableCell>
                   <TableCell>{d.notes || ""}</TableCell>

@@ -66,8 +66,8 @@ export const StripeImportPage = () => {
       } else {
         setImportData(result);
       }
-    } catch (err: any) {
-      setError(err.message || Locale.label("donations.stripeImportPage.failedFetch"));
+    } catch (err) {
+      setError((err instanceof Error ? err.message : "") || Locale.label("donations.stripeImportPage.failedFetch"));
     }
     setLoading(false);
   };
@@ -86,8 +86,8 @@ export const StripeImportPage = () => {
       } else {
         setImportData(result);
       }
-    } catch (err: any) {
-      setError(err.message || Locale.label("donations.stripeImportPage.failedImport"));
+    } catch (err) {
+      setError((err instanceof Error ? err.message : "") || Locale.label("donations.stripeImportPage.failedImport"));
     }
     setLoading(false);
   };

@@ -28,8 +28,8 @@ export function SitesDialog(props: Props) {
       setName("");
       setSubDomain("");
       props.onChanged();
-    } catch (e: any) {
-      setErrors([e?.message || e?.toString() || "Error"]);
+    } catch (e) {
+      setErrors([(e instanceof Error ? e.message : "") || (e != null ? String(e) : "") || "Error"]);
     }
   };
 
@@ -38,8 +38,8 @@ export function SitesDialog(props: Props) {
     setErrors([]);
     try {
       await ApiHelper.delete("/sites/" + site.id, "MembershipApi");
-    } catch (e: any) {
-      setErrors([e?.message || e?.toString() || "Error"]);
+    } catch (e) {
+      setErrors([(e instanceof Error ? e.message : "") || (e != null ? String(e) : "") || "Error"]);
       return;
     }
     if (props.siteId === site.id) props.onSelectSite("");

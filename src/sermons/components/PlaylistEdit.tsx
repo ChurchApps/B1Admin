@@ -31,14 +31,14 @@ interface Props {
   updatedPhoto: string | null
 }
 
-type AnyRecord = Record<string, any>;
+type PlaylistFormValues = Omit<PlaylistInterface, "publishDate"> & { publishDate: string };
 
 export const PlaylistEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const thumbnailRef = React.useRef<string | null>(null);
   const [thumbnailDisplay, setThumbnailDisplay] = React.useState<string | null>(null);
 
-  const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { title: "", description: "", publishDate: "" } });
+  const { control, register, handleSubmit, reset, watch } = useForm<PlaylistFormValues>({ defaultValues: { title: "", description: "", publishDate: "" } });
   const watchedId = watch("id");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -74,13 +74,14 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: PlaylistFormValues) => {
     const errs: string[] = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.playlists.playlistEdit.unauthorized"));
     if (errs.length > 0) return;
 
-    const p: PlaylistInterface = { ...props.currentPlaylist, ...values, thumbnail: thumbnailRef.current ?? undefined };
-    p.publishDate = values.publishDate ? DateHelper.toDate(values.publishDate) : undefined;
+    const { publishDate, ...rest } = values;
+    const p: PlaylistInterface = { ...props.currentPlaylist, ...rest, thumbnail: thumbnailRef.current ?? undefined };
+    p.publishDate = publishDate ? DateHelper.toDate(publishDate) : undefined;
     ApiHelper.post("/playlists", [p], "ContentApi").then(props.updatedFunction);
   };
 

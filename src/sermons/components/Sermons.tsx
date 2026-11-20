@@ -113,17 +113,17 @@ export const Sermons = () => {
   );
 
   const loadData = () => {
-    ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
-    ApiHelper.get("/sermons", "ContentApi").then((data: any) => {
+    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { setPlaylists(data); });
+    ApiHelper.get("/sermons", "ContentApi").then((data: SermonInterface[]) => {
       setSermons(data);
       setFilteredSermons(filterSermons(data, searchTerm));
       setIsLoading(false);
     });
   };
 
-  const filterSermons = (list: any[], value: string) => {
+  const filterSermons = (list: SermonInterface[], value: string) => {
     if (value === "") return list;
-    return list.filter((sermon: any) => {
+    return list.filter((sermon) => {
       const playlistTitle = getPlaylistTitle(sermon.playlistId) || "";
       return (
         (sermon.title || "").toLowerCase().includes(value.toLowerCase())
@@ -149,7 +149,7 @@ export const Sermons = () => {
     loadData();
   };
 
-  const getPlaylistTitle = (playlistId: string) => {
+  const getPlaylistTitle = (playlistId: string | undefined) => {
     let result = "";
     if (playlists) {
       const p: PlaylistInterface = ArrayHelper.getOne(playlists, "id", playlistId);
@@ -178,7 +178,7 @@ export const Sermons = () => {
 
   const getRows = () => {
     const rows: React.ReactElement[] = [];
-    filteredSermons.forEach((video: any) => {
+    filteredSermons.forEach((video) => {
       rows.push(
         <TableRow
           key={video.id}
@@ -260,7 +260,7 @@ export const Sermons = () => {
 
   const getPlaylistRows = () => {
     const displayed = playlistSearch
-      ? playlists.filter((p: any) =>
+      ? playlists.filter((p) =>
         p.title?.toLowerCase().includes(playlistSearch.toLowerCase())
         || p.description?.toLowerCase().includes(playlistSearch.toLowerCase()))
       : playlists;

@@ -14,12 +14,13 @@ import { hasExtractableContent } from "./templates/sectionTemplates";
 import { getElementTypeMeta } from "./elements/elementTypeMeta";
 import { trackSave } from "./saveStatusTracker";
 import "./elements/SafeRawHTMLElement";
+import type { ChurchSettings, SiteDropItem } from "../types";
 
 interface Props {
   first?: boolean,
   section: SectionInterface,
   church?: ChurchInterface;
-  churchSettings: any;
+  churchSettings: ChurchSettings;
   onEdit?: (section: SectionInterface | null, element: ElementInterface | null) => void;
   onMove?: () => void;
   onBeforeChange?: (description: string) => void;
@@ -413,7 +414,7 @@ export const Section: React.FC<Props> = props => {
     }
   }*/
 
-  const handleDrop = (data: any, sort: number) => {
+  const handleDrop = (data: SiteDropItem<ElementInterface> & { elementType: string }, sort: number) => {
     if (data.data) {
       const element: ElementInterface = data.data;
       element.sort = sort;

@@ -6,10 +6,15 @@ import { GalleryModal } from "../../../components/gallery";
 
 type Quote = { text: string; author: string; role?: string; photoUrl?: string };
 
+type TestimonialAnswers = {
+  quotes?: Quote[];
+  displayMode?: string;
+};
+
 type Props = {
-  parsedData: any;
+  parsedData: TestimonialAnswers;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
-  handleHtmlChange: (field: string, newValue: any) => void;
+  handleHtmlChange: (field: string, newValue: unknown) => void;
 };
 
 export function TestimonialEdit({ parsedData, handleChange, handleHtmlChange }: Props) {

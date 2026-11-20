@@ -19,7 +19,7 @@ export function CalendarEdit(props: Props) {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => props.updatedCallback(calendar);
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSave();
@@ -42,7 +42,7 @@ export function CalendarEdit(props: Props) {
   const handleSave = () => {
     if (validate()) {
       setSaving(true);
-      ApiHelper.post("/curatedCalendars", [calendar], "ContentApi").then((data: any) => {
+      ApiHelper.post("/curatedCalendars", [calendar], "ContentApi").then((data: CuratedCalendarInterface) => {
         setCalendar(data);
         setSaving(false);
         props.updatedCallback(data);

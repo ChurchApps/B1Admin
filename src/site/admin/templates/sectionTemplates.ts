@@ -1,9 +1,12 @@
 import type { ElementInterface, SectionInterface } from "../../../helpers";
 
+// CSS property name -> value for one platform (all / desktop / mobile).
+export type TemplateStyleSet = { all?: Record<string, string>; desktop?: Record<string, string>; mobile?: Record<string, string> };
+
 export interface TemplateElementDef {
   elementType: string;
   answers?: Record<string, unknown>;
-  styles?: { all?: any; desktop?: any; mobile?: any };
+  styles?: TemplateStyleSet;
   animations?: { onShow?: string; onShowSpeed?: string };
   elements?: TemplateElementDef[];
 }
@@ -15,7 +18,7 @@ export interface SectionContentDef {
     headingColor?: string;
     linkColor?: string;
     answers?: Record<string, unknown>;
-    styles?: { all?: any; desktop?: any; mobile?: any };
+    styles?: TemplateStyleSet;
   };
   elements: TemplateElementDef[];
 }
@@ -301,7 +304,17 @@ const toElement = (def: TemplateElementDef, sort: number): ElementInterface => (
   elements: def.elements?.map((child, i) => toElement(child, i + 1))
 });
 
-const getAnswers = (source: { answers?: Record<string, any>; answersJSON?: string }): Record<string, any> => {
+// The answer fields the content extractor reads; the rest are carried along untouched.
+type SourceAnswers = {
+  text?: string;
+  description?: string;
+  photo?: string;
+  photoAlt?: string;
+  buttonLinkText?: string;
+  [field: string]: unknown;
+};
+
+const getAnswers = (source: { answers?: SourceAnswers; answersJSON?: string }): SourceAnswers => {
   if (source?.answers) return source.answers;
   if (!source?.answersJSON) return {};
   try {
@@ -314,7 +327,7 @@ const getAnswers = (source: { answers?: Record<string, any>; answersJSON?: strin
 interface ExtractedContent {
   texts: string[];
   images: { photo: string; photoAlt?: string }[];
-  buttons: Record<string, any>[];
+  buttons: Record<string, unknown>[];
 }
 
 const TEXT_TYPES = ["text", "textWithPhoto", "card"];
@@ -404,7 +417,7 @@ export const assertRemapSelfCheck = (): true => {
   if (content.images.length !== 1 || content.images[0].photo !== "/p.png") fail("image extraction wrong");
   if (content.buttons.length !== 1 || content.buttons[0].buttonLinkText !== "B1") fail("button extraction wrong");
 
-  const first = (s: SectionInterface): any => JSON.parse(s.elements![0].answersJSON || "{}");
+  const first = (s: SectionInterface): Record<string, unknown> => JSON.parse(s.elements![0].answersJSON || "{}");
 
   // Fewer slots than content: only the first text survives (lossy drop of the rest).
   const oneSlot: SectionContentDef = { section: { background: "#FFF", textColor: "dark" }, elements: [text("<h1>placeholder</h1>")] };

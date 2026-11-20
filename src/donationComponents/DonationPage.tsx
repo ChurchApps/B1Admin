@@ -6,7 +6,7 @@ import { Loading } from "@churchapps/apphelper";
 import { MultiGatewayDonationForm, RecurringDonations, PaymentMethods, SavedPaymentMethod, getPaymentProvider } from "@churchapps/apphelper/donations";
 import type { PaymentGateway } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
-import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
+import type { DonationInterface, PersonInterface, ChurchInterface, PaymentMethodInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableRow, TableCell, TableHead, Alert, Link } from "@mui/material";
 import { BackVerb, RecordHeading, TextAction, VerbRow, YearLedger, numericCellSx, pickDefaultYear, tableScrollSx, withCurrentYear, yearOf, yearsFromDates } from "../components/ui";
 import { CsvVerb } from "../donations/components/GivingParts";
@@ -19,6 +19,13 @@ interface Props {
 }
 
 type Slice = "" | "give" | "recurring" | "methods";
+
+// /paymentmethods/personid returns either a flat list of methods or (older Api) one row holding the raw gateway cards and banks.
+type PaymentMethodsRow = PaymentMethodInterface & {
+  cards?: { data?: Record<string, unknown>[] };
+  banks?: { data?: Record<string, unknown>[] };
+  customer?: { id?: string };
+};
 
 const csvHeaders = [
   { label: "amount", key: "amount" },
@@ -36,7 +43,7 @@ export const DonationPage: React.FC<Props> = (props) => {
   const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
   const [paymentMethods, setPaymentMethods] = React.useState<SavedPaymentMethod[] | null>(null);
   const [paymentGateways, setPaymentGateways] = React.useState<PaymentGateway[]>([]);
-  const [customerId, setCustomerId] = React.useState<string | null>(null);
+  const [customerId, setCustomerId] = React.useState<string | null | undefined>(null);
   const [person, setPerson] = React.useState<PersonInterface | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
   const [appName, setAppName] = React.useState<string>("");
@@ -47,7 +54,7 @@ export const DonationPage: React.FC<Props> = (props) => {
 
   const loadPaymentMethods = async () => {
     try {
-      const data = await ApiHelper.get("/paymentmethods/personid/" + props.personId, "GivingApi");
+      const data: PaymentMethodsRow[] = await ApiHelper.get("/paymentmethods/personid/" + props.personId, "GivingApi");
       if (!data.length) {
         setPaymentMethods([]);
         return;
@@ -56,17 +63,17 @@ export const DonationPage: React.FC<Props> = (props) => {
       // Handle both old nested format and new flat array format
       if (data[0]?.cards?.data || data[0]?.banks?.data) {
         // Old format with nested cards/banks structure
-        const cards = data[0]?.cards?.data?.map((card: any) => new SavedPaymentMethod(card)) || [];
-        const banks = data[0]?.banks?.data?.map((bank: any) => new SavedPaymentMethod(bank)) || [];
+        const cards = data[0]?.cards?.data?.map((card) => new SavedPaymentMethod(card)) || [];
+        const banks = data[0]?.banks?.data?.map((bank) => new SavedPaymentMethod(bank)) || [];
         setCustomerId(data[0]?.customer?.id);
         setPaymentMethods(cards.concat(banks));
       } else {
         // New flat array format from normalized API response
         const methods = data
-          .filter((pm: any) => getPaymentProvider(pm.provider).capabilities.savedCard)
-          .map((pm: any) => new SavedPaymentMethod(pm));
+          .filter((pm) => getPaymentProvider(pm.provider).capabilities.savedCard)
+          .map((pm) => new SavedPaymentMethod(pm));
         // Get customerId from first payment method if available
-        const firstMethod = data.find((pm: any) => pm.customerId);
+        const firstMethod = data.find((pm) => pm.customerId);
         if (firstMethod?.customerId) {
           setCustomerId(firstMethod.customerId);
         }
@@ -87,7 +94,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     }
   };
 
-  const loadGatewayData = async (gatewayData: any) => {
+  const loadGatewayData = async (gatewayData: PaymentGateway[]) => {
     if (!gatewayData.length) {
       setPaymentMethods([]);
       return;

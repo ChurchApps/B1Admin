@@ -38,6 +38,8 @@ import { AiRewriteDialog } from "../components/AiRewriteDialog";
 import { WEBSITE_ELEMENT_TYPES } from "./websiteContent";
 import { A11yPanel } from "./A11yPanel";
 import { checkPageAccessibility } from "./a11yChecker";
+import type { ChurchSettings, SiteDropItem } from "../types";
+import type { ChurchInterface, LoginUserChurchInterface } from "@churchapps/helpers";
 
 const editorTheme = (themeId: ThemeId, brand: string) => createTheme(createAppTheme("light", themeId, brand), {
   components: {
@@ -50,12 +52,12 @@ const editorTheme = (themeId: ThemeId, brand: string) => createTheme(createAppTh
 
 interface ConfigInterface {
   globalStyles?: GlobalStyleInterface;
-  appearance?: any;
-  church?: any;
+  appearance?: ChurchSettings;
+  church?: ChurchInterface;
 }
 
 interface Props {
-  loadData: (id: string) => Promise<any>;
+  loadData: (id: string) => Promise<PageInterface | BlockInterface>;
   pageId?: string;
   blockId?: string;
   onDone?: (url?: string) => void;
@@ -185,13 +187,13 @@ export function ContentEditor(props: Props) {
   let elementOnlyMode = false;
   if (props.blockId && container?.sections?.length === 1 && container?.sections[0]?.id === "") elementOnlyMode = true;
 
-  const zones: any = {
+  const zones: Record<string, string[]> = {
     cleanCentered: ["main"],
     embed: ["main"],
     headerFooter: ["main"]
   };
 
-  const churchSettings = props.config?.appearance || (context?.userChurch as any)?.settings || {};
+  const churchSettings = props.config?.appearance || (context?.userChurch as LoginUserChurchInterface & { settings?: ChurchSettings })?.settings || {};
 
   useEffect(() => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) navigate("/site");
@@ -273,7 +275,7 @@ export function ContentEditor(props: Props) {
   const [rewriteBusy, setRewriteBusy] = useState(false);
   const [rewriteError, setRewriteError] = useState("");
 
-  const handleDrop = (data: any, sort: number, zone: string) => {
+  const handleDrop = (data: SiteDropItem<SectionInterface>, sort: number, zone: string) => {
     if (container) saveSnapshot(container, "Before adding section");
     if (data.data) {
       const section: SectionInterface = data.data;
@@ -284,7 +286,7 @@ export function ContentEditor(props: Props) {
         loadDataInternal("After adding section");
       });
     } else if (data.blockId) {
-      const sec = {
+      const sec: Omit<SectionInterface, "pageId"> & { pageId?: string | null } = {
         sort,
         background: "#FFF",
         textColor: "dark",
@@ -293,8 +295,8 @@ export function ContentEditor(props: Props) {
         targetBlockId: data.blockId,
         zone: zone
       };
-      if (sec.zone === "siteFooter") (sec as any).pageId = null;
-      requestPanelChange({ kind: "section", section: sec });
+      if (sec.zone === "siteFooter") sec.pageId = null;
+      requestPanelChange({ kind: "section", section: sec as SectionInterface });
     } else {
       setTemplateDrop({ sort, zone });
     }
@@ -360,7 +362,7 @@ export function ContentEditor(props: Props) {
     setRewriteBusy(true);
     setRewriteError("");
     try {
-      const result: any = await ApiHelper.post("/website/rewriteSection", {
+      const result: { fallback?: boolean; error?: string; section?: SectionInterface } | null = await ApiHelper.post("/website/rewriteSection", {
         section: source,
         instruction,
         churchName: context?.userChurch?.church?.name,
@@ -374,14 +376,14 @@ export function ContentEditor(props: Props) {
       if (container) saveSnapshot(container, "Before AI rewrite");
       const rewritten = result.section;
       const syncAnswers = (el: ElementInterface) => {
-        if ((el as any).answers) el.answersJSON = JSON.stringify((el as any).answers);
+        if (el.answers) el.answersJSON = JSON.stringify(el.answers);
         el.elements?.forEach(syncAnswers);
       };
       rewritten.elements?.forEach(syncAnswers);
       const section: SectionInterface = {
         ...rewritten,
         id: undefined,
-        pageId: source.zone === "siteFooter" ? null : props.pageId,
+        pageId: (source.zone === "siteFooter" ? null : props.pageId) as string | undefined,
         blockId: props.blockId,
         zone: source.zone,
         sort: (source.sort ?? 0) - 0.05
@@ -394,15 +396,15 @@ export function ContentEditor(props: Props) {
       ).then(() => {
         loadDataInternal("After AI rewrite");
       });
-    } catch (err: any) {
-      setRewriteError(err?.message || Locale.label("site.aiRewrite.failed"));
+    } catch (err) {
+      setRewriteError((err instanceof Error ? err.message : "") || Locale.label("site.aiRewrite.failed"));
       setRewriteBusy(false);
     }
   };
 
   const handlePublish = () => {
     if (!props.pageId) return;
-    trackSave(ApiHelper.post(`/pages/${props.pageId}/publish`, {}, "ContentApi")).then((data: any) => {
+    trackSave(ApiHelper.post(`/pages/${props.pageId}/publish`, {}, "ContentApi")).then((data: PageInterface) => {
       setContainer((prev) => (prev ? { ...prev, publishedAt: data.publishedAt } : prev));
       setHasUnpublishedChanges(false);
     });
@@ -887,7 +889,7 @@ export function ContentEditor(props: Props) {
   );
 
   const getZoneBoxes = () => {
-    const result: any[] = [];
+    const result: React.ReactElement[] = [];
     if (props.pageId) {
       const page = container as PageInterface;
       if (page) {

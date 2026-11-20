@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { type PledgeProgressRowInterface } from "../helpers";
-import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
+import { GivingStatementDocument, parseStatementSettings, type ContributionRow, type FundTotal } from "./components/GivingStatementDocument";
 import { usePrintLogo } from "../components/PrintChurchHeader";
 import { statementDonations } from "./statementDonations";
 
@@ -121,7 +121,7 @@ export const PrintAllStatementsPage = () => {
   };
 
   const getFundTotals = (personId: string) => {
-    const result: any[] = [];
+    const result: FundTotal[] = [];
     fundDonationsByPerson.get(personId)?.forEach(({ fd }) => {
       const fund = funds.data?.find((f) => f.id === fd.fundId);
       const existing = result.find((r) => r.fund === fund?.name);
@@ -138,14 +138,14 @@ export const PrintAllStatementsPage = () => {
   const getPledgeRows = (personId: string) => pledgeProgress.data?.filter((row) => row.personId === personId) || [];
 
   const getDonationDetails = (personId: string) => {
-    const result: any[] = [];
+    const result: ContributionRow[] = [];
     fundDonationsByPerson.get(personId)?.forEach(({ fd, donation }) => {
       const fund = funds.data?.find((f) => f.id === fd.fundId);
       result.push({
-        date: donation.donationDate,
+        date: donation.donationDate || "", // yearDonations already drops gifts without a date
         method: donation.method,
         fund: fund?.name,
-        memo: (donation as any).memo,
+        memo: donation.memo,
         amount: fd.amount || 0,
         taxDeductible: fund?.taxDeductible !== false
       });

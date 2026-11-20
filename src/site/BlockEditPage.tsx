@@ -2,20 +2,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper } from "../helpers";
 import { ContentEditor } from "./admin/ContentEditor";
-import type { GlobalStyleInterface } from "../helpers/Interfaces";
+import type { BlockInterface, GlobalStyleInterface } from "../helpers/Interfaces";
+import type { SiteEditorConfig, UserChurchWithSettings } from "./components/types";
 import UserContext from "../UserContext";
-
-interface ConfigInterface {
-  globalStyles?: GlobalStyleInterface;
-  appearance?: any;
-  church?: any;
-}
 
 export const BlockEditPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const context = useContext(UserContext);
-  const [config, setConfig] = useState<ConfigInterface | undefined>(undefined);
+  const [config, setConfig] = useState<SiteEditorConfig | undefined>(undefined);
 
   const loadData = async (id: string) =>
     await ApiHelper.get("/blocks/" + UserHelper.currentUserChurch.church.id + "/tree/" + id, "ContentApi");
@@ -27,13 +22,13 @@ export const BlockEditPage: React.FC = () => {
 
   useEffect(() => {
     if (!id) return;
-    ApiHelper.get("/blocks/" + id, "ContentApi").then((block: any) => {
+    ApiHelper.get("/blocks/" + id, "ContentApi").then((block: BlockInterface) => {
       const siteId = block?.siteId || "";
-      ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: any) => {
+      ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: GlobalStyleInterface) => {
         if (gs) {
           setConfig({
             globalStyles: gs,
-            appearance: (context?.userChurch as any)?.settings,
+            appearance: (context?.userChurch as UserChurchWithSettings)?.settings,
             church: context?.userChurch?.church
           });
         }

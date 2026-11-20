@@ -91,7 +91,8 @@ export const CampaignPage = () => {
     if (!sortBy || sortBy === "person") {
       result.sort((a, b) => ((rank.get(a.personId) ?? Infinity) - (rank.get(b.personId) ?? Infinity)) * dir);
     } else {
-      result.sort((a: any, b: any) => ((a[sortBy] || 0) - (b[sortBy] || 0)) * dir);
+      const sortKey = sortBy as keyof PledgeProgressRowInterface;
+      result.sort((a, b) => (Number(a[sortKey] || 0) - Number(b[sortKey] || 0)) * dir);
     }
     return result;
   }, [progress.data, sortBy, sortDirection, people.data]);

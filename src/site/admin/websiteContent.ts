@@ -33,8 +33,8 @@ export const WEBSITE_ELEMENT_TYPES = [
   "block"
 ];
 
-const getAnswers = (element: ElementInterface): Record<string, any> => {
-  if ((element as any).answers) return (element as any).answers;
+const getAnswers = (element: ElementInterface): Record<string, unknown> => {
+  if (element.answers) return element.answers;
   if (!element.answersJSON) return {};
   try { return JSON.parse(element.answersJSON); } catch { return {}; }
 };

@@ -8,7 +8,7 @@ interface Props {
   churchId: string;
   mode: "view" | "edit";
   updatedCallback?: () => void;
-  refresh?: any;
+  refresh?: unknown; // change token: a new value triggers a reload
   "data-testid"?: string;
 }
 

@@ -52,7 +52,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     handlePersonAdd(null);
   }, [handlePersonAdd]);
 
-  const handleDefaultChange = useCallback((field: string, value: any) => {
+  const handleDefaultChange = useCallback((field: keyof typeof defaultValues, value: string) => {
     setDefaultValues(prev => ({ ...prev, [field]: value }));
   }, []);
 

@@ -4,10 +4,11 @@ import React from "react";
 import { RowMobileSizes } from "./RowMobileSizes";
 import { RowMobileOrder } from "./RowMobileOrder";
 import { Locale } from "@churchapps/apphelper";
+import type { RowAnswers } from "../../types";
 
 type Props = {
-  parsedData: any;
-  onRealtimeChange: (parsedData: any) => void;
+  parsedData: RowAnswers;
+  onRealtimeChange: (parsedData: RowAnswers) => void;
   setErrors: (errors: string[]) => void
 };
 

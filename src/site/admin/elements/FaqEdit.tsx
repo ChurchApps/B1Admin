@@ -5,8 +5,15 @@ import { ColorPicker } from "../ColorPicker";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import { Locale } from "@churchapps/apphelper";
 
+type FaqAnswers = {
+  headingType?: string;
+  title?: string;
+  description?: string;
+  iconColor?: string;
+};
+
 type Props = {
-  parsedData: any;
+  parsedData: FaqAnswers;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
   handleHtmlChange: (field: string, newValue: string) => void;
   handleEditorHtmlChange: (field: string, newValue: string) => void;
@@ -31,7 +38,7 @@ export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange, handleEdit
     </Box>
     <Box sx={{ marginTop: 2 }}>
       <InputLabel>{Locale.label("site.faqEdit.iconColor")}</InputLabel>
-      <ColorPicker color={parsedData?.iconColor || "#03a9f4"} updatedCallback={(c) => handleHtmlChange("iconColor", c)} globalStyles={null as any} />
+      <ColorPicker color={parsedData?.iconColor || "#03a9f4"} updatedCallback={(c) => handleHtmlChange("iconColor", c)} globalStyles={null} />
     </Box>
   </>
 );

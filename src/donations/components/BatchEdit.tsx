@@ -15,12 +15,15 @@ interface Props {
   canDelete?: boolean;
 }
 
-type AnyRecord = Record<string, any>;
+interface BatchFormValues {
+  name: string;
+  date: string;
+}
 
 export const BatchEdit = memo((props: Props) => {
   "use no memo";
   const batchId = props.batch?.id || "";
-  const { register, handleSubmit, control } = useForm<AnyRecord>({
+  const { register, handleSubmit, control } = useForm<BatchFormValues>({
     defaultValues: {
       name: props.batch?.name || "",
       date: props.batch?.batchDate ? DateHelper.formatHtml5Date(props.batch.batchDate) : DateHelper.formatHtml5Date(new Date())
@@ -39,7 +42,7 @@ export const BatchEdit = memo((props: Props) => {
 
   const getDeleteFunction = useCallback(() => (!UniqueIdHelper.isMissing(batchId) && props.canDelete !== false ? handleDelete : undefined), [batchId, handleDelete, props.canDelete]);
 
-  const onValid = useCallback((values: AnyRecord) => {
+  const onValid = useCallback((values: BatchFormValues) => {
     const batchToSave: DonationBatchInterface = { name: values.name, batchDate: values.date ? DateHelper.formatHtml5Date(values.date) : undefined };
     if (!UniqueIdHelper.isMissing(batchId)) batchToSave.id = batchId;
     return ApiHelper.post("/donationbatches", [batchToSave], "GivingApi").then(() => props.updatedFunction());

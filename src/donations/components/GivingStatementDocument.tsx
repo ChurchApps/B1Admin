@@ -156,12 +156,12 @@ const pledgeStatusLabel = (status: PledgeStatus | undefined) => {
   }
 };
 
-interface FundTotal {
+export interface FundTotal {
   fund: string | undefined;
   total: number;
 }
 
-interface ContributionRow {
+export interface ContributionRow {
   date: string;
   method: string | undefined;
   fund: string | undefined;

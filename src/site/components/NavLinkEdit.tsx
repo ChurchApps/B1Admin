@@ -16,15 +16,15 @@ type Props = {
   onDone: () => void;
 };
 
-type AnyRecord = Record<string, any>;
+type NavLinkFormValues = { linkText: string; url: string; parentId: string };
 
 export function NavLinkEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [pageTree, setPageTree] = useState<PageLink[]>([]);
   const [allLinks, setAllLinks] = useState<LinkInterface[]>([]);
 
-  const { control, register, handleSubmit, reset, setError, formState } = useForm<AnyRecord>({ defaultValues: { linkText: "", url: "", parentId: "" } });
-  const e = formState.errors as any;
+  const { control, register, handleSubmit, reset, setError, formState } = useForm<NavLinkFormValues>({ defaultValues: { linkText: "", url: "", parentId: "" } });
+  const e = formState.errors;
   const summaryErrors: string[] = [];
   if (e.linkText?.message) summaryErrors.push(e.linkText.message);
   if (e.root?.message) summaryErrors.push(e.root.message);
@@ -50,7 +50,7 @@ export function NavLinkEdit(props: Props) {
 
   const getPageOptions = (): string[] => pageTree.map((p) => p.url);
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: NavLinkFormValues) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       setError("root", { message: Locale.label("site.navLinkEdit.unauthorizedCreate") });
       return;
@@ -93,7 +93,7 @@ export function NavLinkEdit(props: Props) {
 
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <Controller name="url" control={control} render={({ field }) => (
-          <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} value={field.value} onChange={(_e: SyntheticEvent, value: string) => { field.onChange(value); }} onInputChange={(_e: SyntheticEvent, value: string) => { field.onChange(value); }} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} renderInput={(params) => <TextField {...params} size="small" fullWidth label={Locale.label("site.navLinkEdit.url")} name="linkUrl" />} />
+          <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} value={field.value} onChange={(_e: SyntheticEvent, value: string | null) => { field.onChange(value); }} onInputChange={(_e: SyntheticEvent, value: string) => { field.onChange(value); }} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} renderInput={(params) => <TextField {...params} size="small" fullWidth label={Locale.label("site.navLinkEdit.url")} name="linkUrl" />} />
         )} />
         <TextField size="small" fullWidth label={Locale.label("site.navLinkEdit.linkText")} error={!!e.linkText} helperText={e.linkText?.message} {...register("linkText", { required: Locale.label("site.navLinkEdit.errLinkText") })} />
         <FormControl fullWidth size="small" sx={{ mt: 2 }}>

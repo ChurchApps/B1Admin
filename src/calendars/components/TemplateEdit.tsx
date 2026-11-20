@@ -22,7 +22,7 @@ export function TemplateEdit(props: Props) {
   const roomIds = template.roomIds ? template.roomIds.split(",").filter((r) => r) : [];
   let resourceIds: string[] = [];
   try {
-    if (template.resourcesJson) resourceIds = JSON.parse(template.resourcesJson).map((r: any) => r.resourceId);
+    if (template.resourcesJson) resourceIds = JSON.parse(template.resourcesJson).map((r: { resourceId: string }) => r.resourceId);
   } catch { /* malformed template JSON */ }
 
   const handleSave = () => {
@@ -92,7 +92,7 @@ export function TemplateEdit(props: Props) {
             const value = e.target.value as unknown as string[];
             setTemplate({ ...template, roomIds: value.join(",") });
           }}
-          SelectProps={{ multiple: true, renderValue: (selected: any) => props.rooms.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
+          SelectProps={{ multiple: true, renderValue: (selected) => props.rooms.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
           data-testid="template-rooms-select"
         >
           {props.rooms.filter((r) => r.active !== false || roomIds.includes(r.id || "")).map((r) => (
@@ -111,7 +111,7 @@ export function TemplateEdit(props: Props) {
             const value = e.target.value as unknown as string[];
             setTemplate({ ...template, resourcesJson: JSON.stringify(value.map((id) => ({ resourceId: id, quantity: 1 }))) });
           }}
-          SelectProps={{ multiple: true, renderValue: (selected: any) => props.resources.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
+          SelectProps={{ multiple: true, renderValue: (selected) => props.resources.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
           data-testid="template-resources-select"
         >
           {props.resources.filter((r) => r.active !== false || resourceIds.includes(r.id || "")).map((r) => (

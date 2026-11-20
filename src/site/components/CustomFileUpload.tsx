@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FileHelper } from "@churchapps/helpers";
+import { FileHelper, type FileInterface } from "@churchapps/helpers";
 import { LinearProgress, Box, Typography, Button, IconButton, Stack } from "@mui/material";
 import {
   InsertDriveFile as FileIcon,
@@ -13,14 +13,17 @@ interface Props {
   contentType: string;
   contentId: string;
   pendingSave: boolean;
-  saveCallback: (file: any) => void;
+  saveCallback: (file: FileInterface) => void;
   accept?: string;
   errorCallback?: () => void;
   onFileSelected?: () => void;
 }
 
+// The file record posted to /files; fileContents carries the FileReader data URL when there is no presigned upload.
+type PendingFile = Omit<FileInterface, "fileContents"> & { fileContents?: string | ArrayBuffer | null };
+
 export function CustomFileUpload(props: Props) {
-  const [file] = useState<any>({});
+  const [file] = useState<FileInterface>({});
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(-1);
   const [uploadError, setUploadError] = useState<string>("");
@@ -59,7 +62,7 @@ export function CustomFileUpload(props: Props) {
 
   const handleSave = async () => {
     if (!uploadedFile) return;
-    const f: any = { ...file };
+    const f: PendingFile = { ...file };
     f.size = uploadedFile.size;
     f.fileType = uploadedFile.type;
     f.fileName = uploadedFile.name;
@@ -72,7 +75,7 @@ export function CustomFileUpload(props: Props) {
         const base64 = await convertBase64();
         f.fileContents = base64;
       } else if (preUploaded.externalId) f.externalId = preUploaded.externalId;
-      const data = await ApiHelper.post("/files", [f], "ContentApi");
+      const data: FileInterface[] = await ApiHelper.post("/files", [f], "ContentApi");
       handleClear();
       props.saveCallback(data[0]);
     } catch (error) {

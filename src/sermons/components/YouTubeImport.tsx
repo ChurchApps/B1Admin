@@ -18,7 +18,7 @@ export const YouTubeImport = (props: Props) => {
   const [errors, setErrors] = React.useState<string[]>([]);
   const [isFetching, setIsFetching] = React.useState(false);
   const loadData = () => {
-    ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
+    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { setPlaylists(data); });
   };
 
   const handleCheck = (sermon:SermonInterface, checked: boolean) => {
@@ -35,7 +35,7 @@ export const YouTubeImport = (props: Props) => {
       const sermon = ser;
       rows.push(<TableRow key={sermon.videoData}>
         <TableCell>
-          <Checkbox onChange={(e) => handleCheck(sermon, e.currentTarget.checked)} checked={ selectedSermons.filter((s: any) => s.videoData === sermon.videoData).length > 0 } />
+          <Checkbox onChange={(e) => handleCheck(sermon, e.currentTarget.checked)} checked={ selectedSermons.filter((s) => s.videoData === sermon.videoData).length > 0 } />
         </TableCell>
         <TableCell>{sermon.title}</TableCell>
       </TableRow>);
@@ -62,7 +62,7 @@ export const YouTubeImport = (props: Props) => {
     setIsFetching(true);
     setErrors([]);
     ApiHelper.get("/sermons/youtubeImport/" + encodeURIComponent(channelId.trim()), "ContentApi")
-      .then((data: any) => {
+      .then((data: unknown) => {
         setIsFetching(false);
         if (!Array.isArray(data) || data.length === 0) setErrors([Locale.label("sermons.bulkImport.noVideos")]);
         else setSermons(data);

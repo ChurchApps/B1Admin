@@ -8,7 +8,7 @@ import { Locale } from "@churchapps/apphelper";
 type Props = {
   color:string;
   updatedCallback: (color:string) => void;
-  globalStyles: GlobalStyleInterface;
+  globalStyles: GlobalStyleInterface | null;
 };
 
 export function ColorPicker(props: Props) {
@@ -36,7 +36,7 @@ export function ColorPicker(props: Props) {
     const result: React.ReactElement[] = [];
     colors.forEach((c, i) => {
       const v = values[i];
-      const style: any = { backgroundColor: c, width: "100%", height: (props.color === v) ? 20 : 12, display: "block" };
+      const style: React.CSSProperties = { backgroundColor: c, width: "100%", height: (props.color === v) ? 20 : 12, display: "block" };
       if (c === "#FFFFFF" || v === "var(--light)") style.border = "1px solid #999";
       result.push(<td key={`${listKey}-${v}`}><a href="about:blank" style={style} onClick={(e) => { e.preventDefault(); props.updatedCallback(v); }} data-testid={`color-option-${listKey}-${i}`} aria-label={`Select color ${v}`}>&nbsp;</a></td>);
     });

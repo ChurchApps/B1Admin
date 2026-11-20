@@ -4,18 +4,20 @@ import { AppearanceHelper } from "@churchapps/apphelper";
 import { YoutubeBackground } from "@churchapps/apphelper/website";
 import "../admin/elements/SafeRawHTMLElement";
 import { StyleHelper, Element } from "../apphelperWebsite";
+import type { ChurchInterface } from "@churchapps/helpers";
 import type { SectionInterface, GlobalStyleInterface, ElementInterface } from "../../helpers/Interfaces";
+import type { ChurchSettings } from "../types";
 
 interface Props {
-  church: any;
-  appearance: any;
+  church: ChurchInterface;
+  appearance: ChurchSettings;
   globalStyles?: GlobalStyleInterface;
   footerSections?: SectionInterface[];
 }
 
 interface ElementRendererProps {
   element: ElementInterface;
-  churchSettings: any;
+  churchSettings: ChurchSettings;
   textColor: string;
 }
 
@@ -26,7 +28,7 @@ const ElementRenderer: React.FC<ElementRendererProps> = ({ element, churchSettin
 interface SectionProps {
   section: SectionInterface;
   first?: boolean;
-  churchSettings: any;
+  churchSettings: ChurchSettings;
   globalStyles: GlobalStyleInterface;
 }
 

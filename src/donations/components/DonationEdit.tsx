@@ -23,11 +23,20 @@ interface Props {
   currency?: string;
 }
 
-type AnyRecord = Record<string, any>;
+interface DonationFormValues {
+  date: string;
+  method: string;
+  methodDetails: string;
+  memo: string;
+  notes: string;
+}
+
+// The Api also returns the gateway transaction id for online gifts.
+type EditableDonation = DonationInterface & { transactionId?: string };
 
 export const DonationEdit = memo((props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const [donation, setDonation] = React.useState<DonationInterface>({});
+  const [donation, setDonation] = React.useState<EditableDonation>({});
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);
   const [refunding, setRefunding] = React.useState(false);
@@ -35,7 +44,7 @@ export const DonationEdit = memo((props: Props) => {
   const [saveError, setSaveError] = React.useState("");
   const [batches, setBatches] = React.useState<DonationBatchInterface[]>([]);
 
-  const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", memo: "", notes: "" } });
+  const { register, handleSubmit, reset, control, watch } = useForm<DonationFormValues>({ defaultValues: { date: "", method: "Check", methodDetails: "", memo: "", notes: "" } });
   const method = watch("method");
   const methodDetails = watch("methodDetails");
 
@@ -58,9 +67,9 @@ export const DonationEdit = memo((props: Props) => {
     try {
       await ApiHelper.post("/donate/refund/" + donation.id, {}, "GivingApi");
       props.updatedFunction();
-    } catch (e: any) {
+    } catch (e) {
       // ApiHelper rethrows the raw JSON body as the message, so dig the gateway error out of it.
-      let message = e?.message || "";
+      let message = e instanceof Error ? e.message : "";
       try { message = JSON.parse(message).error || message; } catch { /* not JSON */ }
       setRefundError(message || Locale.label("donations.donationEdit.refundFailed"));
     }
@@ -68,8 +77,7 @@ export const DonationEdit = memo((props: Props) => {
   }, [donation.id, props.updatedFunction, confirm]);
 
   const refundButton = useMemo(() => {
-    const d = donation as any;
-    if (!UserHelper.checkAccess(Permissions.givingApi.donations.edit) || d.status !== "complete" || !d.transactionId) return null;
+    if (!UserHelper.checkAccess(Permissions.givingApi.donations.edit) || donation.status !== "complete" || !donation.transactionId) return null;
     return (
       <LoadingButton color="warning" loading={refunding} onClick={handleRefund} data-testid="refund-donation">
         {Locale.label("donations.donationEdit.refund")}
@@ -89,7 +97,7 @@ export const DonationEdit = memo((props: Props) => {
 
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: DonationFormValues) => {
     // donation.amount follows the fund rows (handleFundDonationsChange), so a gift with nothing in any fund is caught here.
     if (!((donation.amount || 0) > 0)) {
       setSaveError(Locale.label("donations.logGift.amountError", "Enter an amount greater than zero, such as 25.00."));
@@ -142,13 +150,13 @@ export const DonationEdit = memo((props: Props) => {
       const fd: FundDonationInterface = { amount: 0, fundId: props.funds[0]?.id };
       setFundDonations([fd]);
     } else {
-      ApiHelper.get("/donations/" + props.donationId, "GivingApi").then(async (data: DonationInterface) => {
+      ApiHelper.get("/donations/" + props.donationId, "GivingApi").then(async (data: EditableDonation) => {
         if (!UniqueIdHelper.isMissing(data.personId)) data.person = await ApiHelper.get("/people/" + data.personId!.toString(), "MembershipApi");
         if (data.donationDate) data.donationDate = DateHelper.formatHtml5Date(data.donationDate);
         setDonation(data);
-        reset({ date: (data.donationDate as string) || "", method: data.method || "Check", methodDetails: data.methodDetails || "", memo: (data as any).memo || "", notes: data.notes || "" });
+        reset({ date: (data.donationDate as string) || "", method: data.method || "Check", methodDetails: data.methodDetails || "", memo: data.memo || "", notes: data.notes || "" });
       });
-      ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data: any) => setFundDonations(data));
+      ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data: FundDonationInterface[]) => setFundDonations(data));
       ApiHelper.get("/donationbatches", "GivingApi").then((data: DonationBatchInterface[]) => setBatches(data || [])).catch(() => setBatches([]));
     }
   }, [props.donationId, props.batchId, props.batchDate, props.funds, reset]);

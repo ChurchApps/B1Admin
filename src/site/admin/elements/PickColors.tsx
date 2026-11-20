@@ -14,7 +14,7 @@ type Props = {
   linkColor: string;
   updatedCallback: (background: string, textColor: string, headingColor: string, linkColor: string) => void;
   globalStyles: GlobalStyleInterface;
-  backgroundOpacity?: any;
+  backgroundOpacity?: string | number;
   overlayColor?: string;
   focalPoint?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
@@ -30,7 +30,7 @@ export function PickColors(props: Props) {
   };
 
   const handleFocalChange = (value: string) => {
-    props.onChange?.({ target: { name: "focalPoint", value }, preventDefault: () => {} } as any);
+    props.onChange?.({ target: { name: "focalPoint", value }, preventDefault: () => {} } as SelectChangeEvent<string>);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
@@ -78,7 +78,7 @@ export function PickColors(props: Props) {
     const result: React.ReactElement[] = [];
     colors.forEach((c, i) => {
       const v = values[i];
-      const style: any = { backgroundColor: c, width: "100%", height: props[field] === v ? 20 : 12, display: "block" };
+      const style: React.CSSProperties = { backgroundColor: c, width: "100%", height: props[field] === v ? 20 : 12, display: "block" };
       if (c === "#FFFFFF" || v === "var(--light)") style.border = "1px solid #999";
       result.push(
         <td key={`${field}-${v}`}>
@@ -199,7 +199,7 @@ export function PickColors(props: Props) {
     return { r: r, g: g, b: b };
   };
 
-  const enoughContrast = (rgb1: any, rgb2: any) => {
+  const enoughContrast = (rgb1: { r: number; g: number; b: number }, rgb2: { r: number; g: number; b: number }) => {
     const contrastR = Math.abs(rgb1.r - rgb2.r);
     const contrastG = Math.abs(rgb1.g - rgb2.g);
     const contrastB = Math.abs(rgb1.b - rgb2.b);
@@ -220,9 +220,9 @@ export function PickColors(props: Props) {
 
   const getSuggestedColors = () => {
     if (!props.globalStyles?.palette) return null;
-    let colors: any;
+    let colors: Record<string, string>;
     try { colors = JSON.parse(props.globalStyles.palette); } catch { return null; }
-    const pairings: any[] = [];
+    const pairings: string[][] = [];
     const names = ["light", "lightAccent", "accent", "darkAccent", "dark"];
     names.forEach((nb) => {
       names.forEach((nt) => {

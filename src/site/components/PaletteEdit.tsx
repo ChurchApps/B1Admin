@@ -25,8 +25,6 @@ export interface ColorInterface {
   error?: string;
 }
 
-type AnyRecord = Record<string, any>;
-
 const pairings = [
   { background: "light", text: "lightAccent" },
   { background: "light", text: "accent" },
@@ -74,7 +72,7 @@ export function PaletteEdit(props: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const { register, reset, watch, getValues } = useForm<AnyRecord>({ defaultValues: { light: "", lightAccent: "", accent: "", darkAccent: "", dark: "", primary: "#1976d2", secondary: "#dc004e", success: "#2e7d32", warning: "#ed6c02", error: "#d32f2f" } });
+  const { register, reset, watch, getValues } = useForm<ColorInterface>({ defaultValues: { light: "", lightAccent: "", accent: "", darkAccent: "", dark: "", primary: "#1976d2", secondary: "#dc004e", success: "#2e7d32", warning: "#ed6c02", error: "#d32f2f" } });
   const palette = watch();
 
   useEffect(() => {

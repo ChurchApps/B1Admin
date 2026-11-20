@@ -85,8 +85,8 @@ export function BlogPostEdit(props: Props) {
       };
       await ApiHelper.post("/posts", [toSave], "ContentApi");
       props.updatedCallback();
-    } catch (err: any) {
-      setErrors([err?.message || Locale.label("site.blogEdit.errSave")]);
+    } catch (err) {
+      setErrors([(err instanceof Error ? err.message : "") || Locale.label("site.blogEdit.errSave")]);
     } finally {
       setIsSubmitting(false);
     }

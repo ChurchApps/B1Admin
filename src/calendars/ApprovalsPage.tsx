@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ApiHelper, UserHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
-import { Permissions, type CuratedCalendarInterface, type EventInterface, type PersonInterface } from "@churchapps/helpers";
+import { Permissions, type CuratedCalendarInterface, type IApiPermission, type PersonInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { PermissionDenied } from "../components";
@@ -10,13 +10,13 @@ import { useConfirmDelete } from "../hooks";
 import { CalendarChrome } from "./components/CalendarChrome";
 import { EventModal } from "./components/EventModal";
 import { RequesterDialog } from "./components/RequesterDialog";
-import { type EventBookingInterface } from "./interfaces";
+import { type ApprovalEventInterface, type EventBookingInterface } from "./interfaces";
 
-const calendarsAdmin = { api: "ContentApi", contentType: "Calendars", action: "Admin" };
+const calendarsAdmin: IApiPermission = { api: "ContentApi", contentType: "Calendars", action: "Admin" };
 
 export const ApprovalsPage = () => {
   const [bookings, setBookings] = useState<EventBookingInterface[]>([]);
-  const [events, setEvents] = useState<EventInterface[]>([]);
+  const [events, setEvents] = useState<ApprovalEventInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [showHistory, setShowHistory] = useState(false);
   const [people, setPeople] = useState<Record<string, PersonInterface>>({});
@@ -32,17 +32,17 @@ export const ApprovalsPage = () => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canEditContent = UserHelper.checkAccess(Permissions.contentApi.content.edit);
-  const canResolve = canEditContent || UserHelper.checkAccess(calendarsAdmin as any);
+  const canResolve = canEditContent || UserHelper.checkAccess(calendarsAdmin);
 
   const loadData = useCallback(() => {
     setLoading(true);
     const list = showHistory ? "resolved" : "pending";
-    const requests: Promise<any>[] = [ApiHelper.get("/eventBookings/" + list, "ContentApi")];
+    const requests: Promise<EventBookingInterface[] | ApprovalEventInterface[] | undefined>[] = [ApiHelper.get("/eventBookings/" + list, "ContentApi")];
     if (canResolve) requests.push(ApiHelper.get("/events/" + list, "ContentApi"));
     Promise.all(requests).then(async ([b, e]) => {
-      const rows: EventBookingInterface[] = b || [];
-      const eventRows: EventInterface[] = e || [];
-      const ids = [...new Set([...rows.flatMap((r) => [r.requestedBy, r.resolvedBy]), ...eventRows.flatMap((r: any) => [r.requestedBy, r.resolvedBy])].filter(Boolean))];
+      const rows = (b || []) as EventBookingInterface[];
+      const eventRows = (e || []) as ApprovalEventInterface[];
+      const ids = [...new Set([...rows.flatMap((r) => [r.requestedBy, r.resolvedBy]), ...eventRows.flatMap((r) => [r.requestedBy, r.resolvedBy])].filter(Boolean))];
       const found: PersonInterface[] = ids.length > 0 ? await ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi").catch((): PersonInterface[] => []) : [];
       const map: Record<string, PersonInterface> = {};
       (found || []).forEach((p) => { if (p.id) map[p.id] = p; });
@@ -147,7 +147,7 @@ export const ApprovalsPage = () => {
     ? <StatusBadge tone="success">{Locale.label("calendars.approvals.approved")}</StatusBadge>
     : <StatusBadge tone="danger">{Locale.label("calendars.approvals.rejected")}</StatusBadge>);
 
-  const decided = (b: EventBookingInterface) => {
+  const decided = (b: Pick<EventBookingInterface, "resolvedBy" | "resolvedDate">) => {
     const name = b.resolvedBy ? people[b.resolvedBy]?.name?.display : "";
     if (!name || !b.resolvedDate) return "—";
     return <>{name}<Typography variant="caption" color="text.secondary" component="div">{DateHelper.prettyDate(new Date(b.resolvedDate))}</Typography></>;
@@ -234,12 +234,12 @@ export const ApprovalsPage = () => {
                   <TableRow key={e.id} hover>
                     {eventCell(e.title, e.start)}
                     <TableCell>{e.description}</TableCell>
-                    {requesterCell((e as any).requestedBy, e.id)}
-                    <TableCell>{decisionBadge((e as any).approvalStatus)}</TableCell>
-                    <TableCell>{decided(e as any)}</TableCell>
+                    {requesterCell(e.requestedBy, e.id)}
+                    <TableCell>{decisionBadge(e.approvalStatus)}</TableCell>
+                    <TableCell>{decided(e)}</TableCell>
                     <TableCell align="right" className="rowActions">
                       <VerbRow sx={{ justifyContent: "flex-end" }}>
-                        {(e as any).approvalStatus === "approved"
+                        {e.approvalStatus === "approved"
                           ? <TextAction small onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
                           : <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>}
                         {eventActions(e.id || "")}
@@ -334,7 +334,7 @@ export const ApprovalsPage = () => {
                         <TableRow key={e.id} hover>
                           {eventCell(e.title, e.start)}
                           <TableCell>{e.description}</TableCell>
-                          {requesterCell((e as any).requestedBy, e.id)}
+                          {requesterCell(e.requestedBy, e.id)}
                           <TableCell align="right" className="rowActions">
                             <VerbRow sx={{ justifyContent: "flex-end" }}>
                               <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>

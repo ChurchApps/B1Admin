@@ -11,7 +11,7 @@ export const Lede: React.FC<{ children: React.ReactNode; sx?: SxProps<Theme>; "d
 );
 
 interface CsvProps {
-  data: any[];
+  data: unknown[]; // rows of any shape; react-csv reads their keys
   filename: string;
   text: string;
   customHeaders?: { label: string; key: string }[];

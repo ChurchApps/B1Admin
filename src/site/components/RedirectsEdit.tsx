@@ -6,8 +6,8 @@ import { CardWithHeader } from "../../components/ui";
 
 interface RedirectInterface { id?: string; fromPath?: string; toPath?: string; }
 
-const parseError = (err: any): string => {
-  const raw = err?.message || "";
+const parseError = (err: unknown): string => {
+  const raw = (err instanceof Error ? err.message : "") || "";
   try { const json = JSON.parse(raw); if (json?.error) return json.error; } catch { /* not json */ }
   return raw || Locale.label("site.redirects.errSave");
 };

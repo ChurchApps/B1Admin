@@ -7,6 +7,7 @@ import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit
 import { useNavigate, useLocation } from "react-router-dom";
 import { SettingsConfigList, type ConfigSection } from "../../settings/components/SettingsConfigList";
 import { clearSiteCache } from "../siteCache";
+import type { ChurchSettings } from "../types";
 
 type Props = {
   siteId: string;
@@ -21,7 +22,7 @@ export function StylesManager(props: Props) {
   const hash = location.hash?.replace("#", "");
   const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface | null>(null);
   const [section, setSection] = useState<string>(["palette", "fonts", "typography", "spacing", "nav", "css", "logo"].includes(hash) ? hash : "");
-  const [churchSettings, setChurchSettings] = useState<any>(null);
+  const [churchSettings, setChurchSettings] = useState<ChurchSettings | null>(null);
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
 
   const clearCache = () => clearSiteCache(selectedSite?.subDomain);
@@ -38,10 +39,10 @@ export function StylesManager(props: Props) {
   };
 
   const loadData = () => {
-    ApiHelper.getAnonymous("/settings/public/" + UserHelper.currentUserChurch.church.id, "MembershipApi").then((s: any) => setChurchSettings(s));
-    ApiHelper.get("/settings", "MembershipApi").then((settings: any) => { setCurrentSettings(settings); });
+    ApiHelper.getAnonymous("/settings/public/" + UserHelper.currentUserChurch.church.id, "MembershipApi").then((s: ChurchSettings) => setChurchSettings(s));
+    ApiHelper.get("/settings", "MembershipApi").then((settings: GenericSettingInterface[]) => { setCurrentSettings(settings); });
 
-    ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: any) => {
+    ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: GlobalStyleInterface) => {
       if (gs.palette) setGlobalStyle(gs);
       else {
         setGlobalStyle({
@@ -117,7 +118,7 @@ export function StylesManager(props: Props) {
     if (match) navigate("/site/blocks/" + match.id);
     else {
       const block: BlockInterface = { name: Locale.label("site.stylesManager.siteFooterName"), blockType: "footerBlock", siteId: siteId || undefined };
-      ApiHelper.post("/blocks", [block], "ContentApi").then((data: any) => {
+      ApiHelper.post("/blocks", [block], "ContentApi").then((data: BlockInterface[]) => {
         navigate("/site/blocks/" + data[0].id);
       });
     }

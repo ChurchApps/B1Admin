@@ -5,7 +5,7 @@ import { ApiHelper } from "@churchapps/apphelper";
 const FALLBACK_PHOTO = "/tempLibrary/backgrounds/worship.jpg";
 
 /** Generated trees reference photos as "pexels:<search term>"; swap each for a real stock photo URL. */
-export const resolvePhotos = async (sections: any[]): Promise<any[]> => {
+export const resolvePhotos = async <T>(sections: T[]): Promise<T[]> => {
   let json = JSON.stringify(sections);
   const terms = [...new Set([...json.matchAll(/pexels:([a-z ]+)/g)].map((m) => m[1]))];
   const used = new Set<string>();
@@ -24,6 +24,9 @@ export const resolvePhotos = async (sections: any[]): Promise<any[]> => {
   json = json.replace(/pexels:([a-z ]+)/g, (match, term) => urls[terms.indexOf(term)] ?? match);
   return JSON.parse(json);
 };
+
+interface PublicServiceTime { serviceName?: string; campusName?: string; times?: { name?: string }[] }
+interface PublicGroup { name?: string }
 
 const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
@@ -47,13 +50,13 @@ export const parseNextService = (services: { serviceName?: string; times?: { nam
 /** Facts the church already keeps in B1, so generated copy can use them without the user retyping them. */
 export const gatherChurchFacts = async (churchId: string) => {
   const [services, groups] = await Promise.all([
-    ApiHelper.getAnonymous(`/servicetimes/public/${churchId}`, "AttendanceApi").catch((): any[] => []),
-    ApiHelper.getAnonymous(`/groups/public/${churchId}/list`, "MembershipApi").catch((): any[] => [])
+    ApiHelper.getAnonymous(`/servicetimes/public/${churchId}`, "AttendanceApi").catch((): PublicServiceTime[] => []),
+    ApiHelper.getAnonymous(`/groups/public/${churchId}/list`, "MembershipApi").catch((): PublicGroup[] => [])
   ]);
-  const serviceList: any[] = Array.isArray(services) ? services : [];
-  const groupList: any[] = Array.isArray(groups) ? groups : [];
+  const serviceList: PublicServiceTime[] = Array.isArray(services) ? services : [];
+  const groupList: PublicGroup[] = Array.isArray(groups) ? groups : [];
   const facts: string[] = [];
-  if (serviceList.length > 0) facts.push("Service times: " + serviceList.map((s) => `${s.serviceName}${s.campusName ? ` (${s.campusName})` : ""}: ${(s.times || []).map((t: any) => t.name).join(", ")}`).join("; ") + ".");
+  if (serviceList.length > 0) facts.push("Service times: " + serviceList.map((s) => `${s.serviceName}${s.campusName ? ` (${s.campusName})` : ""}: ${(s.times || []).map((t) => t.name).join(", ")}`).join("; ") + ".");
   if (groupList.length > 0) facts.push("Groups people can join: " + groupList.slice(0, 10).map((g) => g.name).filter(Boolean).join(", ") + ".");
   return { facts: facts.join(" "), hasServiceTimes: serviceList.length > 0, hasGroups: groupList.length > 0, nextService: parseNextService(serviceList) };
 };

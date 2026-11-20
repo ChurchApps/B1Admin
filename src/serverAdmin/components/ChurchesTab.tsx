@@ -3,7 +3,7 @@ import { ApiHelper, UserHelper, DateHelper, ArrayHelper, Locale } from "@churcha
 import { Navigate } from "react-router-dom";
 import { Box, Button, ButtonBase, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import UserContext from "../../UserContext";
-import { type ChurchInterface } from "@churchapps/helpers";
+import { type ChurchInterface, type LoginUserChurchInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
 import { EmptyState, SearchField, StatusBadge, tableScrollSx } from "../../components/ui";
 import { AdminPanel } from "./AdminPanel";
@@ -22,7 +22,7 @@ export const ChurchesTab = () => {
 
   const loadData = (override?: string) => {
     const term = encodeURIComponent((override ?? searchText).trim());
-    ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: any) => setChurches(data));
+    ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: ChurchRow[]) => setChurches(data));
   };
 
   const handleArchive = async (church: ChurchInterface) => {
@@ -82,7 +82,7 @@ export const ChurchesTab = () => {
   };
 
   const handleEditAccess = async (churchId: string) => {
-    let result: any;
+    let result: { userChurches?: LoginUserChurchInterface[] };
     try {
       result = await ApiHelper.get("/churches/" + churchId + "/impersonate", "MembershipApi");
     } catch { return; }

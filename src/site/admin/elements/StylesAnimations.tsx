@@ -10,7 +10,7 @@ interface Props {
   fields: string[],
   styles: InlineStylesInterface,
   animations: AnimationsInterface,
-  onStylesChange: (styles: any) => void;
+  onStylesChange: (styles: InlineStylesInterface) => void;
   onAnimationsChange: (animations: AnimationsInterface) => void;
 }
 

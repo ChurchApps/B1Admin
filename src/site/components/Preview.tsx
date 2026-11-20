@@ -2,10 +2,11 @@ import { Button, Grid } from "@mui/material";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import type { FontsInterface } from "./FontEdit";
 import type { ColorInterface } from "./PaletteEdit";
+import type { ChurchSettings } from "../types";
 
 interface Props {
   globalStyle?: GlobalStyleInterface | null;
-  churchSettings: any;
+  churchSettings: ChurchSettings;
   churchName: string;
 }
 

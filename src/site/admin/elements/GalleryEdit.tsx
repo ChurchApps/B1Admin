@@ -6,10 +6,17 @@ import { GalleryModal } from "../../../components/gallery";
 
 type Photo = { url: string; alt?: string; caption?: string };
 
+type GalleryAnswers = {
+  photos?: Photo[];
+  layout?: string;
+  columns?: number | string;
+  spacing?: string;
+};
+
 type Props = {
-  parsedData: any;
+  parsedData: GalleryAnswers;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
-  handleHtmlChange: (field: string, newValue: any) => void;
+  handleHtmlChange: (field: string, newValue: unknown) => void;
 };
 
 export function GalleryEdit({ parsedData, handleChange, handleHtmlChange }: Props) {

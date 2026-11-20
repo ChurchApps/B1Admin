@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
-import type { AnimationsInterface, BlockInterface, GlobalStyleInterface, SectionInterface } from "../../helpers";
+import type { AnimationsInterface, BlockInterface, GlobalStyleInterface, InlineStylesInterface, SectionInterface } from "../../helpers";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Checkbox, Dialog, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { PickColors } from "./elements/PickColors";
 import { ColorPicker } from "./ColorPicker";
@@ -83,7 +83,7 @@ export function SectionEdit(props: Props) {
     setSection(s);
   };
 
-  const setDividerField = (edge: "dividerTop" | "dividerBottom", field: string, value: any) => {
+  const setDividerField = (edge: "dividerTop" | "dividerBottom", field: string, value: string | boolean) => {
     const p = { ...section };
     const current = { ...(parsedData[edge] || {}) };
     if (field === "shape" && !value) {
@@ -130,7 +130,7 @@ export function SectionEdit(props: Props) {
 
   const handleSave = () => {
     if (validate()) {
-      trackSave(ApiHelper.post("/sections", [section], "ContentApi")).then((data: any) => {
+      trackSave(ApiHelper.post("/sections", [section], "ContentApi")).then((data: SectionInterface) => {
         baselineRef.current = sectionFingerprint(data);
         if (dirtyRef.current) {
           dirtyRef.current = false;
@@ -138,7 +138,7 @@ export function SectionEdit(props: Props) {
         }
         setSection(data);
         props.updatedCallback(data);
-      }).catch((error: any) => {
+      }).catch((error: { message?: string } | undefined) => {
         setErrors([error?.message || Locale.label("site.sectionEdit.saveError")]);
       });
     }
@@ -213,7 +213,7 @@ export function SectionEdit(props: Props) {
     </>);
   };
 
-  const handleStyleChange = (styles: { name: string, value: string }[]) => {
+  const handleStyleChange = (styles: InlineStylesInterface) => {
     const p = { ...section };
     p.styles = styles;
     p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : undefined;
@@ -230,7 +230,7 @@ export function SectionEdit(props: Props) {
   const handleDuplicate = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (await confirm(Locale.label("site.section.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
-      trackSave(ApiHelper.post("/sections/duplicate/" + props.section.id, {}, "ContentApi")).then((data: any) => {
+      trackSave(ApiHelper.post("/sections/duplicate/" + props.section.id, {}, "ContentApi")).then((data: SectionInterface) => {
         props.updatedCallback(data);
       });
     }
@@ -240,7 +240,7 @@ export function SectionEdit(props: Props) {
     e.preventDefault();
     const name = window.prompt(Locale.label("site.sectionEdit.convertToBlockPrompt"), Locale.label("site.sectionEdit.blockNamePromptDefault"));
     if (name !== null) {
-      trackSave(ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${encodeURIComponent(name.toString())}`, {}, "ContentApi")).then((data: any) => {
+      trackSave(ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${encodeURIComponent(name.toString())}`, {}, "ContentApi")).then((data: SectionInterface) => {
         props.updatedCallback(data);
       });
     }

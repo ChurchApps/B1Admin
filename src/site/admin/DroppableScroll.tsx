@@ -7,13 +7,13 @@ import { useDrop } from "react-dnd";
 type Props = {
   direction: "up" | "down",
   text?: string
-  dndDeps?: any
+  dndDeps?: unknown
   acceptTypes?: string[]
   scrollRef?: React.RefObject<HTMLElement | null>
 };
 
 export function DroppableScroll(props: Props) {
-  const intervalIdRef = React.useRef<number | null>(null);
+  const intervalIdRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const stepsRef = React.useRef<number>(0);
 
   const defaultTypes = ["section", "sectionBlock", "element", "elementBlock"];
@@ -53,8 +53,8 @@ export function DroppableScroll(props: Props) {
   const handleMouseOver = () => {
     handleMouseOut();
     stepsRef.current = 0;
-    const id: any = setInterval((props.direction === "up") ? scrollUp : scrollDown, 50);
-    intervalIdRef.current = id as number;
+    const id = setInterval((props.direction === "up") ? scrollUp : scrollDown, 50);
+    intervalIdRef.current = id;
   };
 
   const handleMouseOut = () => {
@@ -83,6 +83,7 @@ export function DroppableScroll(props: Props) {
     return (
       <div style={{ position: "relative" }}>
         <div style={droppableStyle}>
+          {/* any: react-dnd's ConnectDropTarget returns a ReactElement, which React's ref type rejects; a typed wrapper would change ref identity. */}
           <div style={{ textAlign: "center", color: "var(--b1-on-primary)", width: "100%" }} ref={drop as any}>
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "4px" }} onDragEnter={handleMouseOver} onDragLeave={handleMouseOut} onDrop={handleMouseOut}>
               <span>{props.text}</span>

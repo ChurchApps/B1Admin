@@ -53,7 +53,7 @@ const SAMPLE_GROUPS = [
 ];
 
 // Like the real renderer, buttons are inline and inherit the section's text-align.
-const MiniButton: React.FC<{ text: string; variant?: string; centered?: boolean }> = ({ text, variant }) => {
+const MiniButton: React.FC<{ text?: string; variant?: string; centered?: boolean }> = ({ text, variant }) => {
   const { accent } = React.useContext(ThemeCtx);
   return (
     <div style={{ textAlign: "inherit", marginTop: 8 }}>
@@ -70,9 +70,24 @@ const MiniButton: React.FC<{ text: string; variant?: string; centered?: boolean 
   );
 };
 
+// The answer fields the mini renderer reads.
+type MiniAnswers = {
+  background?: string;
+  textColor?: string;
+  rounded?: string;
+  textAlignment?: React.CSSProperties["textAlign"];
+  text?: string;
+  buttonLinkText?: string;
+  buttonLinkVariant?: string;
+  photo?: string;
+  photoAlt?: string;
+  photoPosition?: string;
+  title?: string;
+};
+
 const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
   const { resolve: resolveBackground, accent } = React.useContext(ThemeCtx);
-  const a: Record<string, any> = def.answers || {};
+  const a = (def.answers || {}) as MiniAnswers;
   switch (def.elementType) {
     case "row":
       return (
@@ -91,7 +106,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
           color: resolveBackground(String(a.textColor || "inherit")),
           borderRadius: a.rounded === "true" ? 15 : 0,
           padding: 22,
-          textAlign: (def.styles?.all?.["text-align"] as any) || "inherit",
+          textAlign: (def.styles?.all?.["text-align"] as React.CSSProperties["textAlign"]) || "inherit",
           display: "flex",
           flexDirection: "column",
           gap: 12
@@ -100,7 +115,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
         </div>
       );
     case "text":
-      return <div className="miniText" style={{ textAlign: (a.textAlignment as any) || "left" }} dangerouslySetInnerHTML={{ __html: a.text || "" }} />;
+      return <div className="miniText" style={{ textAlign: a.textAlignment || "left" }} dangerouslySetInnerHTML={{ __html: a.text || "" }} />;
     case "buttonLink":
       return <MiniButton text={a.buttonLinkText} variant={a.buttonLinkVariant} />;
     case "image":
@@ -119,7 +134,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
       return (
         <div style={{ display: "flex", gap: 28, alignItems: "center", flexDirection: a.photoPosition === "left" ? "row-reverse" : "row" }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="miniText" style={{ textAlign: (a.textAlignment as any) || "left" }} dangerouslySetInnerHTML={{ __html: a.text || "" }} />
+            <div className="miniText" style={{ textAlign: a.textAlignment || "left" }} dangerouslySetInnerHTML={{ __html: a.text || "" }} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <img src={a.photo} alt={a.photoAlt || ""} style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", borderRadius: 6, display: "block" }} />
@@ -198,7 +213,7 @@ const MiniSection: React.FC<{ section: SectionContentDef }> = ({ section }) => {
   const padTop = parseInt(styles["padding-top"], 10) || 56;
   const padBottom = parseInt(styles["padding-bottom"], 10) || 56;
 
-  const textAlign = (section.section.styles?.all?.["text-align"] as any) || "left";
+  const textAlign = (section.section.styles?.all?.["text-align"] as React.CSSProperties["textAlign"]) || "left";
 
   return (
     <div style={{

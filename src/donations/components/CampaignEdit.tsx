@@ -16,10 +16,24 @@ interface Props {
   deletedFunction?: () => void;
 }
 
+interface CampaignFormValues {
+  name: string;
+  fundId: string;
+  goalAmount: number | string; // a number from reset(), a string once the field is edited
+  startDate: string;
+  endDate: string;
+  description: string;
+  showPublic: boolean;
+  allowSelfPledge: boolean;
+}
+
+// The Api clears a campaign's end date when it is sent as null.
+type CampaignToSave = Omit<CampaignInterface, "endDate"> & { endDate?: string | null };
+
 export const CampaignEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { control, register, handleSubmit, reset, formState } = useForm<Record<string, any>>({ defaultValues: { name: "", fundId: "", goalAmount: "", startDate: "", endDate: "", description: "", showPublic: false, allowSelfPledge: false } });
-  const e = formState.errors as any;
+  const { control, register, handleSubmit, reset, formState } = useForm<CampaignFormValues>({ defaultValues: { name: "", fundId: "", goalAmount: "", startDate: "", endDate: "", description: "", showPublic: false, allowSelfPledge: false } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "fundId", "startDate"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -36,12 +50,12 @@ export const CampaignEdit: React.FC<Props> = (props) => {
     });
   }, [props.campaign, reset]);
 
-  const onValid = (values: Record<string, any>) => {
-    const campaign: CampaignInterface = {
+  const onValid = (values: CampaignFormValues) => {
+    const campaign: CampaignToSave = {
       ...props.campaign,
       name: values.name.trim(),
       fundId: values.fundId,
-      goalAmount: values.goalAmount === "" ? undefined : parseFloat(values.goalAmount),
+      goalAmount: values.goalAmount === "" ? undefined : parseFloat(String(values.goalAmount)),
       startDate: values.startDate,
       endDate: values.endDate === "" ? null : values.endDate,
       description: values.description,

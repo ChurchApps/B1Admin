@@ -80,7 +80,7 @@ export const PrintDonationReceiptPage = () => {
     const method = [d.method, d.methodDetails].filter(Boolean).join(" - ");
     return (fundDonations.data || []).map((fd) => {
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
-      return { date: d.donationDate || "", method, fund: fund?.name, memo: (d as any).memo, amount: fd.amount || 0, taxDeductible: fund?.taxDeductible !== false };
+      return { date: d.donationDate || "", method, fund: fund?.name, memo: d.memo, amount: fd.amount || 0, taxDeductible: fund?.taxDeductible !== false };
     });
   }, [donation.data, fundDonations.data, funds.data]);
 

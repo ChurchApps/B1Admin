@@ -3,13 +3,14 @@ import type { ElementInterface, SectionInterface } from "../../helpers";
 import { DraggableIcon } from "./DraggableIcon";
 import { Section } from "./Section";
 import { SectionToolbar } from "./SectionToolbar";
+import type { ChurchSettings } from "../types";
 
 
 interface Props {
   first?: boolean,
   section: SectionInterface,
   churchId?: string;
-  churchSettings: any;
+  churchSettings: ChurchSettings;
   onEdit?: (section: SectionInterface, element: ElementInterface | null) => void
   onMove?: () => void
   onSectionMove?: (section: SectionInterface, direction: "up" | "down") => void;

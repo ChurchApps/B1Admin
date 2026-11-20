@@ -8,27 +8,28 @@ import type { BlockInterface } from "../../helpers";
 
 type Props = {
   block: BlockInterface;
-  updatedCallback: (block: BlockInterface | null) => void;
+  // receives the POST /blocks response (an array) after save, null after delete
+  updatedCallback: (block: BlockInterface | BlockInterface[] | null) => void;
 };
 
-type AnyRecord = Record<string, any>;
+type BlockFormValues = { name: string; blockType: string };
 
 export function BlockEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { control, register, handleSubmit, reset, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: "", blockType: "elementBlock" } });
-  const e = formState.errors as any;
+  const { control, register, handleSubmit, reset, setError, formState } = useForm<BlockFormValues>({ defaultValues: { name: "", blockType: "elementBlock" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "root"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => props.updatedCallback(props.block);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: BlockFormValues) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       setError("root", { message: Locale.label("site.blockEdit.unauthorizedCreate") });
       return;
     }
     const block = { ...props.block, ...values };
-    ApiHelper.post("/blocks", [block], "ContentApi").then((data: any) => {
+    ApiHelper.post("/blocks", [block], "ContentApi").then((data: BlockInterface[]) => {
       props.updatedCallback(data);
     });
   };
