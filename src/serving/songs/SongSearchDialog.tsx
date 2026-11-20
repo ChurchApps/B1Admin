@@ -60,7 +60,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
   }, [searchText]);
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<any>) => {
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
         handleSearch();

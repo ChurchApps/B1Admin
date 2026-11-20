@@ -50,8 +50,8 @@ export const TitlesSettingsCard: React.FC = () => {
       await queryClient.invalidateQueries({ queryKey: ["/settings", "MembershipApi"] });
       await queryClient.invalidateQueries({ queryKey: ["/settings/public/" + churchId, "MembershipApi"] });
       setSaved(true);
-    } catch (e: any) {
-      setError(e?.message || String(e));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || String(e));
     } finally {
       setSaving(false);
     }

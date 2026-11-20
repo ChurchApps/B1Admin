@@ -73,12 +73,21 @@ const categoryTone = (category: string): StatusTone => {
   }
 };
 
-const parseDetails = (details: string): any => {
+type AuditValues = Record<string, unknown>;
+
+/** The JSON stored in an audit log's `details`. */
+interface AuditDetails {
+  truncated?: boolean;
+  before?: AuditValues | null;
+  after?: AuditValues | null;
+}
+
+const parseDetails = (details: string): AuditDetails | null => {
   if (!details) return null;
   try { return JSON.parse(details); } catch { return null; }
 };
 
-const displayValue = (v: any): string => {
+const displayValue = (v: unknown): string => {
   if (v === null || v === undefined) return "";
   if (typeof v === "object") return JSON.stringify(v);
   return String(v);
@@ -96,9 +105,9 @@ const isDelete = (action: string) => (action || "").toLowerCase().includes("dele
 
 const AuditLogDetails: React.FC<{ log: AuditLog }> = ({ log }) => {
   const [loading, setLoading] = useState(true);
-  const [oldValues, setOldValues] = useState<any>(null);
-  const [newValues, setNewValues] = useState<any>(null);
-  const [before, setBefore] = useState<any>(null);
+  const [oldValues, setOldValues] = useState<AuditValues | null>(null);
+  const [newValues, setNewValues] = useState<AuditValues | null>(null);
+  const [before, setBefore] = useState<AuditValues | null>(null);
   const [truncated, setTruncated] = useState(false);
 
   React.useEffect(() => {

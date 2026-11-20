@@ -49,8 +49,8 @@ export const RegionSettingsEdit: React.FC<Props> = (props) => {
       WorshipDayHelper.set(worshipDay);
       setError("");
       props.onSaveComplete?.(true);
-    } catch (e: any) {
-      setError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("common.saveError"));
       props.onSaveComplete?.(false);
     }
   };

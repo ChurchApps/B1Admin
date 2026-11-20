@@ -12,7 +12,16 @@ interface Props {
   currency?: string;
 }
 
-type AnyRecord = Record<string, any>;
+interface FeeOptionsFormValues {
+  flatRateCC: string;
+  transFeeCC: string;
+  flatRateACH: string;
+  hardLimitACH: string;
+  flatRatePayPal: string;
+  transFeePayPal: string;
+  flatRateKF: string;
+  transFeeKF: string;
+}
 
 export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -28,7 +37,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
   const [loadedCurrency, setLoadedCurrency] = React.useState("usd");
   const [hasLoadedData, setHasLoadedData] = React.useState(false);
 
-  const { register, reset, getValues, setValue } = useForm<AnyRecord>({ defaultValues: { flatRateCC: "0.30", transFeeCC: "2.9", flatRateACH: "0.8", hardLimitACH: "5", flatRatePayPal: "0.30", transFeePayPal: "2.9", flatRateKF: "0.30", transFeeKF: "2.9" } });
+  const { register, reset, getValues, setValue } = useForm<FeeOptionsFormValues>({ defaultValues: { flatRateCC: "0.30", transFeeCC: "2.9", flatRateACH: "0.8", hardLimitACH: "5", flatRatePayPal: "0.30", transFeePayPal: "2.9", flatRateKF: "0.30", transFeeKF: "2.9" } });
 
   const defaultFees = props.provider ? getPaymentProvider(props.provider).descriptor.defaultFees : undefined;
 

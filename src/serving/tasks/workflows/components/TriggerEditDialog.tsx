@@ -8,6 +8,8 @@ import { ConditionEdit } from "../../components/conditions/ConditionEdit";
 interface FieldDef { key: string; label: string; type: string; options?: { value: string; label: string }[]; optionsSource?: string }
 interface EventDef { eventType: string; label: string; recordType: string; fields: FieldDef[] }
 interface ConditionRow { field: string; operator: string; value: string }
+interface ConditionNode extends ConditionRow { type: string }
+interface NamedRecord { id: string; name: string }
 export interface WorkflowTriggerInterface {
   id?: string; name?: string; triggerKind?: string; eventType?: string; recurs?: string; workflowId?: string; stepId?: string; conditions?: string;
   oncePerSubject?: boolean; allowRepeatAfterClose?: boolean; active?: boolean
@@ -56,7 +58,7 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
       const parsed = props.trigger.conditions ? JSON.parse(props.trigger.conditions) : null;
       if (parsed?.type === "group") {
         setConjunction(parsed.conjunction === "OR" ? "OR" : "AND");
-        setRows((parsed.children || []).filter((c: any) => c.type === "condition").map((c: any) => ({ field: c.field, operator: c.operator, value: c.value })));
+        setRows((parsed.children || []).filter((c: ConditionNode) => c.type === "condition").map((c: ConditionNode) => ({ field: c.field, operator: c.operator, value: c.value })));
       }
     } catch { /* ignore malformed */ }
   }, [props.trigger.conditions]);
@@ -79,11 +81,11 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
     const sources = new Set((eventDef?.fields || []).map((f) => f.optionsSource).filter(Boolean) as string[]);
     sources.forEach((src) => {
       if (dynamicOptions[src]) return;
-      if (src === "funds") ApiHelper.get("/funds", "GivingApi").then((f: any[]) => setDynamicOptions((p) => ({ ...p, funds: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
-      else if (src === "groups") ApiHelper.get("/groups", "MembershipApi").then((g: any[]) => setDynamicOptions((p) => ({ ...p, groups: (g || []).map((x) => ({ value: x.id, label: x.name })) })));
-      else if (src === "forms") ApiHelper.get("/forms", "MembershipApi").then((f: any[]) => setDynamicOptions((p) => ({ ...p, forms: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
-      else if (src === "lists") ApiHelper.get("/lists", "MembershipApi").then((l: any[]) => setDynamicOptions((p) => ({ ...p, lists: (l || []).map((x) => ({ value: x.id, label: x.name })) })));
-      else if (src === "events") ApiHelper.get("/events/registerable", "ContentApi").then((ev: any[]) => setDynamicOptions((p) => ({ ...p, events: (ev || []).map((x) => ({ value: x.id, label: x.title || x.id })) })));
+      if (src === "funds") ApiHelper.get("/funds", "GivingApi").then((f: NamedRecord[]) => setDynamicOptions((p) => ({ ...p, funds: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "groups") ApiHelper.get("/groups", "MembershipApi").then((g: NamedRecord[]) => setDynamicOptions((p) => ({ ...p, groups: (g || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "forms") ApiHelper.get("/forms", "MembershipApi").then((f: NamedRecord[]) => setDynamicOptions((p) => ({ ...p, forms: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "lists") ApiHelper.get("/lists", "MembershipApi").then((l: NamedRecord[]) => setDynamicOptions((p) => ({ ...p, lists: (l || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "events") ApiHelper.get("/events/registerable", "ContentApi").then((ev: { id: string; title?: string }[]) => setDynamicOptions((p) => ({ ...p, events: (ev || []).map((x) => ({ value: x.id, label: x.title || x.id })) })));
     });
   }, [eventType]);
 

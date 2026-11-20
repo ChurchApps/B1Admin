@@ -26,7 +26,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
   };
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/rolepermissions/roles/" + (props.role.id ?? "null"), "MembershipApi").then((data: any) => setRolePermissions(data));
+    ApiHelper.get("/rolepermissions/roles/" + (props.role.id ?? "null"), "MembershipApi").then((data: RolePermissionInterface[]) => setRolePermissions(data));
   }, [props.role]);
   const handlePermissionChange = useCallback((rp: RolePermissionInterface, checked: boolean) => {
     setRolePermissions((prev) => {
@@ -35,7 +35,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
     });
   }, []);
   const loadPermissions = useCallback(() => {
-    ApiHelper.get("/permissions", "MembershipApi").then((data: any) => setPermissions(data));
+    ApiHelper.get("/permissions", "MembershipApi").then((data: PermissionInterface[]) => setPermissions(data));
   }, []);
 
   const isChecked = (p: PermissionInterface) => rolePermissions.some((rp) => rp.apiName === p.apiName && rp.contentType === p.section && rp.action === p.action);

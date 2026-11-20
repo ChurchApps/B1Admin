@@ -16,7 +16,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
   const [searchText, setSearchText] = useState("");
 
   const loadData = () => {
-    ApiHelper.get("/groups", "MembershipApi").then((data: any) => {
+    ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => {
       setGroups(data);
       setSearchResults(data);
     });

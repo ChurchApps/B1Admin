@@ -6,7 +6,7 @@ import { OAuthHelper } from "@churchapps/content-providers";
 import { MINISTRYSTUFF_ENABLED } from "../../helpers/MinistryStuffFlag";
 import { BYOS_PROVIDERS } from "./byosProviders";
 
-interface StorageProviderInterface {
+export interface StorageProviderInterface {
   id?: string;
   churchId?: string;
   provider?: string;
@@ -76,8 +76,8 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
       setErrors([]);
       await loadData();
       props.onSaveComplete?.(true);
-    } catch (error: any) {
-      const message = error?.message || Locale.label("settings.storageSettingsEdit.saveError");
+    } catch (error) {
+      const message = (error instanceof Error ? error.message : "") || Locale.label("settings.storageSettingsEdit.saveError");
       setErrors([message]);
       if (props.onError) props.onError([message]);
       props.onSaveComplete?.(false);
@@ -157,10 +157,10 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
           // The relay session is consumed by the completed read, so a failed exchange is terminal — surface it, don't re-poll.
           try {
             await ApiHelper.post("/storage/exchange", { provider: descriptor.id, code: result.authCode, codeVerifier: verifier, redirectUri: relayData.redirectUri }, "ContentApi");
-          } catch (e: any) {
+          } catch (e) {
             if (isCancelled()) return;
             setConnecting(false);
-            setErrors([e?.message || Locale.label("settings.storageSettingsEdit.authFailed", "Sign-in failed. Please try again.")]);
+            setErrors([(e instanceof Error ? e.message : "") || Locale.label("settings.storageSettingsEdit.authFailed", "Sign-in failed. Please try again.")]);
             return;
           }
           if (isCancelled()) return;
@@ -171,9 +171,9 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
         window.setTimeout(poll, 3000);
       };
       window.setTimeout(poll, 3000);
-    } catch (error: any) {
+    } catch (error) {
       setConnecting(false);
-      setErrors([error?.message || Locale.label("settings.storageSettingsEdit.authFailed", "Sign-in failed. Please try again.")]);
+      setErrors([(error instanceof Error ? error.message : "") || Locale.label("settings.storageSettingsEdit.authFailed", "Sign-in failed. Please try again.")]);
     }
   };
 

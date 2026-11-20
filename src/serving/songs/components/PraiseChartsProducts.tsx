@@ -5,6 +5,7 @@ import { Download as DownloadIcon, ExpandLess as ExpandLessIcon, ExpandMore as E
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { PraiseChartsHelper } from "../../../helpers/PraiseChartsHelper";
 import { Link } from "react-router-dom";
+import { type PraiseChartsCatalogProduct } from "../../types";
 
 interface Props {
   praiseChartsId: string;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export const PraiseChartsProducts = (props: Props) => {
-  const [products, setProducts] = React.useState<any[]>([]);
+  const [products, setProducts] = React.useState<PraiseChartsCatalogProduct[]>([]);
   const [expandedSkus, setExpandedSkus] = React.useState<string[]>([]);
   const [hasAccount, setHasAccount] = React.useState<boolean>(true);
 
@@ -21,7 +22,7 @@ export const PraiseChartsProducts = (props: Props) => {
     if (props.praiseChartsId) {
       let url = "/praiseCharts/products/" + props.praiseChartsId;
       if (props.keySignature) url += "?keys=" + props.keySignature;
-      const data = await ApiHelper.get(url, "ContentApi");
+      const data: PraiseChartsCatalogProduct[] = await ApiHelper.get(url, "ContentApi");
       const tree = buildTree(data);
 
       if (data.length === 0) {
@@ -33,29 +34,30 @@ export const PraiseChartsProducts = (props: Props) => {
     }
   };
 
-  const addChildren = (product: any, allProducts: any[]) => {
+  const addChildren = (product: PraiseChartsCatalogProduct | undefined, allProducts: PraiseChartsCatalogProduct[]) => {
     if (product?.child_products) {
-      product.children = [];
-      product.child_products.forEach((child: any) => {
-        const c = allProducts.find((p: any) => p.sku === child.sku);
-        if (c) product.children.push(c);
+      const children: PraiseChartsCatalogProduct[] = [];
+      product.children = children;
+      product.child_products.forEach((child) => {
+        const c = allProducts.find((p) => p.sku === child.sku);
+        if (c) children.push(c);
         addChildren(c, allProducts);
       });
     }
   };
 
-  const buildTree = (allProducts: any[]) => {
+  const buildTree = (allProducts: PraiseChartsCatalogProduct[]) => {
     const rootExcludedSkus: string[] = [];
-    allProducts.forEach((product: any) => {
+    allProducts.forEach((product) => {
       if (product.child_products) {
-        product.child_products.forEach((child: any) => {
+        product.child_products.forEach((child) => {
           rootExcludedSkus.push(child.sku);
         });
       }
     });
 
-    const result: any[] = [];
-    allProducts.forEach((product: any) => {
+    const result: PraiseChartsCatalogProduct[] = [];
+    allProducts.forEach((product) => {
       if (!rootExcludedSkus.includes(product.sku)) {
         result.push(product);
       }
@@ -77,7 +79,7 @@ export const PraiseChartsProducts = (props: Props) => {
   };
   useEffect(() => removeMessageListener, []);
 
-  const download = async (product: any) => {
+  const download = async (product: PraiseChartsCatalogProduct) => {
     PraiseChartsHelper.download(product.sku, product.file_name, "");
   };
 
@@ -96,7 +98,7 @@ export const PraiseChartsProducts = (props: Props) => {
     window.addEventListener("message", messageListener.current);
   };
 
-  const getPriceButton = (product: any) => {
+  const getPriceButton = (product: PraiseChartsCatalogProduct) => {
     let result = <></>;
     if (product.price) {
       if (product.permissions?.can_download) {
@@ -143,9 +145,9 @@ export const PraiseChartsProducts = (props: Props) => {
     return result;
   };
 
-  const getProductRow = (product: any, indent: number) => {
+  const getProductRow = (product: PraiseChartsCatalogProduct, indent: number): React.ReactNode => {
     let expand = <></>;
-    if (product.children?.length > 0) {
+    if ((product.children?.length || 0) > 0) {
       if (expandedSkus.includes(product.sku)) {
         expand = (
           <AppIconButton label={Locale.label("common.collapse")} icon={<ExpandLessIcon />} onClick={() => setExpandedSkus(expandedSkus.filter((s) => s !== product.sku))} />
@@ -169,7 +171,7 @@ export const PraiseChartsProducts = (props: Props) => {
     );
 
     if (expandedSkus.includes(product.sku)) {
-      return [result, ...(product.children?.map((child: any) => getProductRow(child, indent + 1)) || [])];
+      return [result, ...(product.children?.map((child) => getProductRow(child, indent + 1)) || [])];
     }
 
     return result;
@@ -179,7 +181,7 @@ export const PraiseChartsProducts = (props: Props) => {
     <Dialog open={true} fullWidth={true} maxWidth="lg">
       <DialogTitle>{Locale.label("songs.praiseChartsProducts.title")}</DialogTitle>
       <DialogContent>
-        {products.map((product: any) => getProductRow(product, 0))}
+        {products.map((product) => getProductRow(product, 0))}
         {!hasAccount && (
           <p>
             {Locale.label("songs.praiseChartsProducts.linkAccountPrefix")} <Link to="/profile">{Locale.label("songs.praiseChartsProducts.profile")}</Link> {Locale.label("songs.praiseChartsProducts.linkAccountSuffix")}{" "}
