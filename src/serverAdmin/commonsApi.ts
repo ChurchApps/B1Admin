@@ -6,10 +6,10 @@ import type { ApiListType } from "@churchapps/helpers";
 const COMMONS_API: string = "CommonsApi";
 const commonsApiName = COMMONS_API as ApiListType;
 
-// Same contract as ApiHelper: the response body is untyped, so callers annotate it.
+// Callers name the response type; it defaults to unknown so an untyped read must be narrowed.
 export const CommonsApi = {
-  get: (path: string): ReturnType<typeof ApiHelper.get> => ApiHelper.get(path, commonsApiName),
-  post: (path: string, data: unknown[] | Record<string, unknown> = {}): ReturnType<typeof ApiHelper.post> => ApiHelper.post(path, data, commonsApiName)
+  get: <T = unknown>(path: string): Promise<T> => ApiHelper.get(path, commonsApiName),
+  post: <T = unknown>(path: string, data: unknown[] | Record<string, unknown> = {}): Promise<T> => ApiHelper.post(path, data, commonsApiName)
 };
 
 export const getWorshipCommonsOrigin = (): string => {

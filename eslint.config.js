@@ -25,7 +25,7 @@ export default [
       ...tseslint.configs.recommended.reduce((acc, cfg) => ({ ...acc, ...(cfg.rules || {}) }), {}),
 
       "prefer-const": "error",
-      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": ["warn", {
         args: "all",
         argsIgnorePattern: "^_",

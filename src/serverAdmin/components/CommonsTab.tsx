@@ -166,8 +166,8 @@ const QueueView = (props: { onPublished?: (assetId: string) => void; musicEditor
   const [reviewId, setReviewId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    CommonsApi.get("/admin/types").then((data: CommonsTypeDef[]) => setTypes(data || []));
-    CommonsApi.get("/admin/submissions?status=pending").then((data: CommonsQueueRow[]) => setRows(data || []));
+    CommonsApi.get<CommonsTypeDef[]>("/admin/types").then((data) => setTypes(data || []));
+    CommonsApi.get<CommonsQueueRow[]>("/admin/submissions?status=pending").then((data) => setRows(data || []));
   }, []);
 
   const counts = React.useMemo(() => {
@@ -230,7 +230,7 @@ const ReportsView = () => {
   const [resolveAction, setResolveAction] = React.useState<Record<string, ReportAction>>({});
   const [resolveNote, setResolveNote] = React.useState<Record<string, string>>({});
 
-  const load = () => CommonsApi.get("/admin/reports").then((data: CommonsReport[]) => setReports(data || []));
+  const load = () => CommonsApi.get<CommonsReport[]>("/admin/reports").then((data) => setReports(data || []));
   React.useEffect(() => { load(); }, []);
 
   const claim = async (r: CommonsReport) => {
@@ -424,7 +424,7 @@ const PublishersDialog = (props: { asset: CommonsAsset | null; onClose: () => vo
     if (!asset) return;
     setBusy(true);
     try {
-      const result = await CommonsApi.post(`/admin/assets/${asset.id}/publishers`, { userIds: list.map((p) => p.id) });
+      const result = await CommonsApi.post<{ publishers?: CommonsAsset["publishers"] } | null>(`/admin/assets/${asset.id}/publishers`, { userIds: list.map((p) => p.id) });
       onSaved(asset.id, result?.publishers || list);
     } finally {
       setBusy(false);
@@ -488,7 +488,7 @@ const ListenDialog = (props: { asset: CommonsAsset | null; onClose: () => void; 
     setSong(null); setKeys([]); setError("");
     if (!asset) return;
     let cancelled = false;
-    CommonsApi.get(`/songs/${asset.id}`).then((data: CommonsSongDetail) => {
+    CommonsApi.get<CommonsSongDetail>(`/songs/${asset.id}`).then((data) => {
       if (cancelled) return;
       setSong(data || null);
       setKeys(Array.isArray(data?.listenedKeys) ? data.listenedKeys : []);
@@ -561,7 +561,7 @@ const AssetsView = () => {
     if (q) params.set("q", q);
     if (status) params.set("status", status);
     const timer = setTimeout(() => {
-      CommonsApi.get(`/admin/assets?${params.toString()}`).then((data: CommonsAsset[]) => { if (!cancelled) setAssets(data || []); });
+      CommonsApi.get<CommonsAsset[]>(`/admin/assets?${params.toString()}`).then((data) => { if (!cancelled) setAssets(data || []); });
     }, 250);
     return () => { cancelled = true; clearTimeout(timer); };
   }, [q, status]);
@@ -577,7 +577,7 @@ const AssetsView = () => {
     setAssets((prev) => prev.map((x) => (x.id === a.id ? { ...x, status: "published" } : x)));
   };
   const feature = async (a: CommonsAsset) => {
-    const result = await CommonsApi.post(`/admin/assets/${a.id}/feature`, {});
+    const result = await CommonsApi.post<{ featured?: boolean } | null>(`/admin/assets/${a.id}/feature`, {});
     setAssets((prev) => prev.map((x) => (x.id === a.id ? { ...x, featured: !!result?.featured } : x)));
   };
 

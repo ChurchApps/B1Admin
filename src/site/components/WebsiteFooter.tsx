@@ -86,7 +86,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
   };
 
   const getSectionAnchor = () => {
-    if (section.answers?.sectionId) return <a id={section.answers?.sectionId} className="sectionAnchor"></a>;
+    if (section.answers?.sectionId) return <a id={section.answers?.sectionId as string} className="sectionAnchor"></a>;
     else return <></>;
   };
 

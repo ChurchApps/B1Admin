@@ -14,7 +14,7 @@ export function Preview(props: Props) {
   if (!props.globalStyle) return null;
 
   const fonts: FontsInterface = JSON.parse(props.globalStyle.fonts || "{}");
-  const palette: ColorInterface = JSON.parse(props.globalStyle.palette);
+  const palette: ColorInterface = JSON.parse(props.globalStyle.palette as string);
 
   return (
     <>

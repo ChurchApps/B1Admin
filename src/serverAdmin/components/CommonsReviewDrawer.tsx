@@ -384,7 +384,7 @@ export const CommonsReviewDrawer = (props: Props) => {
     setDeclined({});
     setError("");
     let cancelled = false;
-    CommonsApi.get(`/admin/submissions/${submissionId}`).then((d) => { if (!cancelled) setDetail(d); }).catch((e) => { if (!cancelled) setError(errorText(e)); });
+    CommonsApi.get<CommonsSubmissionDetail>(`/admin/submissions/${submissionId}`).then((d) => { if (!cancelled) setDetail(d); }).catch((e) => { if (!cancelled) setError(errorText(e)); });
     return () => { cancelled = true; };
   }, [submissionId]);
 
@@ -401,7 +401,7 @@ export const CommonsReviewDrawer = (props: Props) => {
     const body: Record<string, unknown> = {};
     if (approveNote.trim()) body.note = approveNote.trim();
     if (declineFiles.length) body.declineFiles = declineFiles;
-    const result = await CommonsApi.post(`/admin/submissions/${submissionId}/approve`, body);
+    const result = await CommonsApi.post<{ assetId?: string } | null>(`/admin/submissions/${submissionId}/approve`, body);
     setApproveConfirm(false);
     onApproved(submissionId, result?.assetId || detail?.assetId);
   });
