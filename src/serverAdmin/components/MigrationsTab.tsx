@@ -63,8 +63,8 @@ export const MigrationsTab = () => {
     try {
       const q = rerunNames.length ? "?rerun=" + encodeURIComponent(rerunNames.join(",")) : "";
       setDetection(await ApiHelper.get("/serverHealth/migrations/" + moduleName + "/detect" + q, "MembershipApi"));
-    } catch (e: any) {
-      setDetection({ module: moduleName, migrations: [], suggested: [], error: e?.message || String(e) });
+    } catch (e) {
+      setDetection({ module: moduleName, migrations: [], suggested: [], error: (e instanceof Error && e.message) || String(e) });
     }
     setDetecting(null);
   };
@@ -81,8 +81,8 @@ export const MigrationsTab = () => {
       if (result.error) { setBaselineError(result.error); return; }
       setDetection(null);
       await refetch();
-    } catch (e: any) {
-      setBaselineError(e?.message || String(e));
+    } catch (e) {
+      setBaselineError((e instanceof Error && e.message) || String(e));
     }
   };
 
@@ -110,8 +110,8 @@ export const MigrationsTab = () => {
         const run: ModuleRun = await ApiHelper.post("/serverHealth/migrations/" + m.module + "/run", {}, "MembershipApi");
         out.push(run);
         if (run.error) break;
-      } catch (e: any) {
-        out.push({ module: m.module, applied: [], error: e?.message || String(e) });
+      } catch (e) {
+        out.push({ module: m.module, applied: [], error: (e instanceof Error && e.message) || String(e) });
         break;
       }
     }

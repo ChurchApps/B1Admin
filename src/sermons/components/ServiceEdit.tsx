@@ -38,7 +38,18 @@ import type { SermonInterface, StreamingServiceInterface } from "@churchapps/hel
 
 interface Props { currentService: StreamingServiceInterface, updatedFunction?: () => void }
 
-type AnyRecord = Record<string, any>;
+// Minute fields start as numbers from the saved service and become strings once edited.
+interface ServiceFormValues {
+  serviceLabel: string;
+  serviceTime: string;
+  chatBefore: number | string;
+  chatAfter: number | string;
+  earlyStart: number | string;
+  provider: string;
+  providerKey: string;
+  recurs: string;
+  sermonId: string;
+}
 
 export const ServiceEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -49,7 +60,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const sermonsQuery = useQuery<SermonInterface[]>({ queryKey: ["/sermons", "ContentApi"], placeholderData: [] });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const { control, register, handleSubmit, watch, reset } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, watch, reset } = useForm<ServiceFormValues>({
     defaultValues: {
       serviceLabel: props.currentService?.label ?? "",
       serviceTime: DateHelper.formatHtml5DateTime(props.currentService?.serviceTime as Date) ?? "",
@@ -63,7 +74,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     }
   });
 
-  const { errors } = useFormState({ control }); const e = errors as any;
+  const { errors } = useFormState({ control }); const e = errors;
 
   const summaryErrors = useErrorSummary(errors, ["serviceLabel", "serviceTime"]);
 
@@ -122,15 +133,15 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     return key;
   };
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: ServiceFormValues) => {
     const providerKey = normalizeProviderKey(values.providerKey, values.provider);
     const service: StreamingServiceInterface = {
       ...props.currentService,
       label: values.serviceLabel,
       serviceTime: values.serviceTime ? new Date(values.serviceTime) : undefined,
-      chatBefore: values.chatBefore ? parseInt(values.chatBefore) * 60 : 0,
-      chatAfter: values.chatAfter ? parseInt(values.chatAfter) * 60 : 0,
-      earlyStart: values.earlyStart ? parseInt(values.earlyStart) * 60 : 0,
+      chatBefore: values.chatBefore ? parseInt(String(values.chatBefore)) * 60 : 0,
+      chatAfter: values.chatAfter ? parseInt(String(values.chatAfter)) * 60 : 0,
+      earlyStart: values.earlyStart ? parseInt(String(values.earlyStart)) * 60 : 0,
       provider: values.provider,
       providerKey,
       recurring: values.recurs === "true",
@@ -172,9 +183,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const watchedEarlyStart = watch("earlyStart");
 
   const serviceTimeMs = watchedServiceTime ? new Date(watchedServiceTime).getTime() : null;
-  const chatAndPrayerStartTime = serviceTimeMs && watchedChatBefore ? serviceTimeMs - (parseInt(watchedChatBefore) + (parseInt(watchedEarlyStart) || 0)) * 60 * 1000 : null;
-  const chatAndPrayerEndTime = serviceTimeMs && watchedChatAfter ? serviceTimeMs + parseInt(watchedChatAfter) * 60 * 1000 : null;
-  const earlyStartTime = serviceTimeMs && watchedEarlyStart ? serviceTimeMs - parseInt(watchedEarlyStart) * 60 * 1000 : null;
+  const chatAndPrayerStartTime = serviceTimeMs && watchedChatBefore ? serviceTimeMs - (parseInt(String(watchedChatBefore)) + (parseInt(String(watchedEarlyStart)) || 0)) * 60 * 1000 : null;
+  const chatAndPrayerEndTime = serviceTimeMs && watchedChatAfter ? serviceTimeMs + parseInt(String(watchedChatAfter)) * 60 * 1000 : null;
+  const earlyStartTime = serviceTimeMs && watchedEarlyStart ? serviceTimeMs - parseInt(String(watchedEarlyStart)) * 60 * 1000 : null;
 
   if (sermonsQuery.isLoading) return <Loading />;
   else {

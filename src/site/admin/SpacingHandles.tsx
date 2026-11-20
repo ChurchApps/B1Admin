@@ -9,6 +9,9 @@ interface Props {
   onUpdate: (element: ElementInterface) => void;
 }
 
+// Parsed element styles keyed by property (margin/padding) then side (top/right/bottom/left).
+type SpacingStyles = Record<string, Record<string, string>>;
+
 const SPACING_TOKENS: Record<string, number> = { "0": 0, "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 32, "xxl": 48 };
 
 const snapToToken = (px: number): string => {
@@ -33,7 +36,7 @@ const getTokenValue = (token: string): number => {
 export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
   const [hoveredHandle, setHoveredHandle] = useState<string | null>(null);
   const [draggingHandle, setDraggingHandle] = useState<string | null>(null);
-  const [localStyles, setLocalStyles] = useState<any>(null);
+  const [localStyles, setLocalStyles] = useState<SpacingStyles | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const draggingRef = useRef<string | null>(null);
@@ -41,7 +44,7 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
   const startValueRef = useRef(0);
   const elementRef = useRef(element);
   const onUpdateRef = useRef(onUpdate);
-  const localStylesRef = useRef<any>(null);
+  const localStylesRef = useRef<SpacingStyles | null>(null);
 
   useEffect(() => {
     elementRef.current = element;

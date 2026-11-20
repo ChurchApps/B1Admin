@@ -1,17 +1,18 @@
 import React from "react";
 import { Box, FormControlLabel, Switch, Typography } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
+import type { InlineStylesInterface } from "../../../helpers";
 
 interface Props {
-  styles: any;
-  onChange: (styles: any) => void;
+  styles: InlineStylesInterface;
+  onChange: (styles: InlineStylesInterface) => void;
 }
 
 export const VisibilityToggles: React.FC<Props> = (props) => {
   const isHidden = (device: "desktop" | "mobile") => props.styles?.[device]?.display === "none";
 
   const handleVisibilityChange = (device: "desktop" | "mobile", hidden: boolean) => {
-    const styles: any = { ...(props.styles || {}) };
+    const styles: InlineStylesInterface = { ...(props.styles || {}) };
     const deviceStyles = { ...(styles[device] || {}) };
     if (hidden) deviceStyles.display = "none";
     else delete deviceStyles.display;

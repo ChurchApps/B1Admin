@@ -10,7 +10,7 @@ import { DateHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { ImageEditor } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
-import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
+import type { SermonInterface, PlaylistInterface, FileInterface } from "@churchapps/helpers";
 import { Duration } from "./Duration";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
@@ -26,7 +26,25 @@ interface Props {
 
 export type PodcastSermon = SermonInterface & { audioUrl?: string };
 
-type AnyRecord = Record<string, any>;
+interface SermonFormValues {
+  playlistId: string;
+  videoType: string;
+  videoData: string;
+  publishDate: string;
+  title: string;
+  description: string;
+  audioUrl: string;
+}
+
+// Response of /sermons/lookup (video metadata fetched from YouTube/Vimeo).
+interface SermonLookupResult {
+  error?: string;
+  title?: string;
+  description: string;
+  publishDate?: string;
+  thumbnail: string;
+  duration: number;
+}
 
 export const SermonEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -40,7 +58,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const [duration, setDuration] = React.useState<number>(props.currentSermon?.duration ?? 0);
   const [pendingAudioUpload, setPendingAudioUpload] = React.useState(false);
 
-  const { control, register, handleSubmit, watch, setValue, reset } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, watch, setValue, reset } = useForm<SermonFormValues>({
     defaultValues: {
       playlistId: props.currentSermon?.playlistId ?? "",
       videoType: props.currentSermon?.videoType ?? "",
@@ -55,7 +73,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentSermon?.id)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction?.(); };
 
-  const handleAudioUploaded = (file: any) => {
+  const handleAudioUploaded = (file: FileInterface) => {
     setPendingAudioUpload(false);
     if (file?.contentPath) setValue("audioUrl", file.contentPath);
   };
@@ -108,7 +126,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: SermonFormValues) => {
     const errs: string[] = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.sermonEdit.unauthorized"));
     if (errs.length > 0) { setErrors(errs); return; }
@@ -129,7 +147,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     ApiHelper.post("/sermons", [sermon], "ContentApi").then(props.updatedFunction);
   };
 
-  const handleAdd = (values: AnyRecord) => {
+  const handleAdd = (values: SermonFormValues) => {
     const errs: string[] = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.sermonEdit.unauthorized"));
     if (errs.length > 0) { setErrors(errs); return; }
@@ -156,7 +174,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const fetchVideo = (videoType: "youtube" | "vimeo") => {
     const videoData = watch("videoData");
     setErrors([]);
-    ApiHelper.getAnonymous(`/sermons/lookup?videoType=${videoType}&videoData=${encodeURIComponent(videoData || "")}`, "ContentApi").then((d: any) => {
+    ApiHelper.getAnonymous(`/sermons/lookup?videoType=${videoType}&videoData=${encodeURIComponent(videoData || "")}`, "ContentApi").then((d: SermonLookupResult | null) => {
       if (!d || d.error || !d.title) { setErrors([Locale.label("sermons.sermonEdit.fetchError")]); return; }
       setValue("title", d.title);
       setValue("description", d.description);
@@ -176,7 +194,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
   const getPlaylists = () => {
     const result: React.ReactElement[] = [];
-    (playlistsQuery.data || []).forEach((playlist: any) => {
+    (playlistsQuery.data || []).forEach((playlist) => {
       result.push(<MenuItem key={playlist.id} value={playlist.id} data-testid={`playlist-option-${playlist.id}`} aria-label={playlist.title}>{playlist.title}</MenuItem>);
     });
     return result;
@@ -185,7 +203,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const getAdditionalPlaylists = () => {
     const currentPlaylistId = watch("playlistId");
     const result: React.ReactElement[] = [];
-    (playlistsQuery.data || []).forEach((playlist: any) => {
+    (playlistsQuery.data || []).forEach((playlist) => {
       if (playlist.id !== currentPlaylistId) result.push(<MenuItem key={playlist.id} value={playlist.id} data-testid={`additional-playlist-option-${playlist.id}`} aria-label={playlist.title}>{playlist.title}</MenuItem>);
     });
     return result;

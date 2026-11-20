@@ -3,7 +3,7 @@ import { Alert, Box, Button, Checkbox, Chip, Dialog, FormControl, FormControlLab
 import { ApiHelper, SlugHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { WEBSITE_ELEMENT_TYPES } from "../admin/websiteContent";
-import type { ElementInterface } from "../../helpers/Interfaces";
+import type { ElementInterface, SectionInterface } from "../../helpers/Interfaces";
 
 type Props = {
   onDone: () => void;
@@ -16,6 +16,7 @@ const AUDIENCE_KEYS = ["families", "youth", "youngAdults", "seniors", "newcomers
 
 interface PlanSection { id: string; purpose: string; }
 interface PlanPage { title: string; url?: string; layout?: string; sections: PlanSection[]; }
+interface GlobalStylesResponse { palette?: { primary?: string; secondary?: string }; fonts?: string; }
 
 export function GenerateSiteModal(props: Props) {
   const church = UserHelper.currentUserChurch.church;
@@ -34,8 +35,8 @@ export function GenerateSiteModal(props: Props) {
 
   const toggleAudience = (key: string) => setAudiences((a) => (a.includes(key) ? a.filter((x) => x !== key) : [...a, key]));
 
-  const buildChurchContext = async (): Promise<any> => {
-    let globalStyles: any;
+  const buildChurchContext = async () => {
+    let globalStyles: GlobalStylesResponse | null;
     try { globalStyles = await ApiHelper.get("/globalStyles" + (props.siteId ? "?siteId=" + props.siteId : ""), "ContentApi"); } catch { globalStyles = null; }
     return {
       churchId: church.id,
@@ -53,7 +54,7 @@ export function GenerateSiteModal(props: Props) {
     setBusy(true);
     setErrors([]);
     try {
-      const result: any = await ApiHelper.post("/website/generateSite", {
+      const result: { error?: string; pages?: PlanPage[] } = await ApiHelper.post("/website/generateSite", {
         churchName,
         description: description.trim(),
         tone,
@@ -69,15 +70,15 @@ export function GenerateSiteModal(props: Props) {
       setPlan(result.pages);
       setIncludes(result.pages.map(() => true));
       setPhase("plan");
-    } catch (err: any) {
-      setErrors([err?.message || Locale.label("site.generateSite.errPlan")]);
+    } catch (err) {
+      setErrors([(err instanceof Error ? err.message : "") || Locale.label("site.generateSite.errPlan")]);
     } finally {
       setBusy(false);
     }
   };
 
   const syncAnswers = (el: ElementInterface) => {
-    if ((el as any).answers) el.answersJSON = JSON.stringify((el as any).answers);
+    if (el.answers) el.answersJSON = JSON.stringify(el.answers);
     el.elements?.forEach(syncAnswers);
   };
 
@@ -108,7 +109,7 @@ export function GenerateSiteModal(props: Props) {
         const outline = page.sections[s];
         setProgress(Locale.label("site.generateSite.buildingSection").replace("{title}", page.title).replace("{n}", String(s + 1)).replace("{total}", String(page.sections.length)));
         try {
-          const secResult: any = await ApiHelper.post("/website/generateSection", {
+          const secResult: { section?: SectionInterface } = await ApiHelper.post("/website/generateSection", {
             sectionOutline: outline,
             churchContext,
             availableElementTypes: WEBSITE_ELEMENT_TYPES,

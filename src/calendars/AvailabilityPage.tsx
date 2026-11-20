@@ -78,18 +78,18 @@ export const AvailabilityPage = () => {
       };
 
       if (b.startTime && b.endTime) {
-        pushItem(new Date(b.startTime as any), new Date(b.endTime as any));
+        pushItem(new Date(b.startTime), new Date(b.endTime));
         return;
       }
       const setupMs = (b.setupMinutes || 0) * 60000;
       const teardownMs = (b.teardownMinutes || 0) * 60000;
       const pad = (s: Date, e: Date) => ({ start: new Date(s.getTime() - setupMs), end: new Date(e.getTime() + teardownMs) });
-      const start = new Date(b.eventStart as any);
-      const end = new Date(b.eventEnd as any);
+      const start = new Date(b.eventStart ?? NaN); // NaN: same Invalid Date that new Date(undefined) gives
+      const end = new Date(b.eventEnd ?? NaN);
       if (b.eventRecurrenceRule) {
-        const dates = EventHelper.getRange({ start, end, recurrenceRule: b.eventRecurrenceRule } as any, rangeStart, rangeEnd);
+        const dates: Date[] = EventHelper.getRange({ start, end, recurrenceRule: b.eventRecurrenceRule }, rangeStart, rangeEnd);
         const diff = end.getTime() - start.getTime();
-        dates.forEach((d: any) => {
+        dates.forEach((d) => {
           const padded = pad(d, new Date(d.getTime() + diff));
           pushItem(padded.start, padded.end);
         });
@@ -130,8 +130,8 @@ export const AvailabilityPage = () => {
       const name = bo.roomId ? rooms.find((r) => r.id === bo.roomId)?.name : bo.resourceId ? resources.find((r) => r.id === bo.resourceId)?.name : Locale.label("calendars.rooms.allRoomsResources");
       result.push({
         title: `${Locale.label("calendars.availability.blocked")}: ${bo.reason || name || ""}`,
-        start: new Date(bo.startTime as any),
-        end: new Date(bo.endTime as any),
+        start: new Date(bo.startTime ?? NaN),
+        end: new Date(bo.endTime ?? NaN),
         kind: "blockout"
       });
     });
@@ -188,7 +188,7 @@ export const AvailabilityPage = () => {
               startAccessor="start"
               endAccessor="end"
               style={{ height: 600 }}
-              eventPropGetter={eventStyle as any}
+              eventPropGetter={eventStyle}
               onSelectEvent={(e) => {
                 if (e.eventId) {
                   setBookEventId(e.eventId);

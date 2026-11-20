@@ -11,12 +11,16 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface FundFormValues {
+  fundName: string;
+  taxDeductible: boolean;
+  visible: boolean;
+}
 
 export const FundEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { fundName: "", taxDeductible: true, visible: true } });
-  const e = formState.errors as any;
+  const { control, register, handleSubmit, reset, watch, formState } = useForm<FundFormValues>({ defaultValues: { fundName: "", taxDeductible: true, visible: true } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["fundName"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -26,7 +30,7 @@ export const FundEdit: React.FC<Props> = (props) => {
     reset({ fundName: props.fund?.name ?? "", taxDeductible: props.fund?.taxDeductible ?? true, visible: props.fund?.visible ?? true });
   }, [props.fund, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: FundFormValues) => {
     const fund = { ...props.fund, name: values.fundName.trim(), taxDeductible: values.taxDeductible, visible: values.visible };
     ApiHelper.post("/funds", [fund], "GivingApi").then(() => props.updatedFunction());
   };

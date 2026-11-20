@@ -18,7 +18,7 @@ export const VimeoImport = (props: Props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const loadData = () => {
-    ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
+    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { setPlaylists(data); });
   };
 
   const handleCheck = (sermon: SermonInterface, checked: boolean) => {
@@ -63,7 +63,7 @@ export const VimeoImport = (props: Props) => {
     setIsFetching(true);
     setErrors([]);
     ApiHelper.get("/sermons/vimeoImport/" + encodeURIComponent(channelId.trim()), "ContentApi")
-      .then((data: any) => {
+      .then((data: unknown) => {
         setIsFetching(false);
         if (!Array.isArray(data) || data.length === 0) setErrors([Locale.label("sermons.bulkImport.noVideos")]);
         else setSermons(data);

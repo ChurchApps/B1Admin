@@ -4,9 +4,17 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, ListIte
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { FundInterface } from "@churchapps/helpers";
 
+type DonationAnswers = {
+  allowSingleGift?: boolean;
+  allowRecurring?: boolean;
+  showFundSelector?: boolean;
+  allowedFundIds?: string[];
+  defaultFundId?: string;
+};
+
 type Props = {
-  parsedData: any;
-  onRealtimeChange: (parsedData: any) => void;
+  parsedData: DonationAnswers;
+  onRealtimeChange: (parsedData: DonationAnswers) => void;
 };
 
 export function DonationEdit({ parsedData, onRealtimeChange }: Props) {
@@ -18,7 +26,7 @@ export function DonationEdit({ parsedData, onRealtimeChange }: Props) {
   const allowedFundIds: string[] = Array.isArray(parsedData.allowedFundIds) ? parsedData.allowedFundIds : [];
   const defaultFundId: string = parsedData.defaultFundId || "";
 
-  const update = (changes: any) => {
+  const update = (changes: Partial<DonationAnswers>) => {
     onRealtimeChange({ ...parsedData, ...changes });
   };
 
@@ -29,7 +37,7 @@ export function DonationEdit({ parsedData, onRealtimeChange }: Props) {
   const handleAllowedFundsChange = (e: SelectChangeEvent<string[]>) => {
     const value = e.target.value;
     const next = typeof value === "string" ? value.split(",") : value;
-    const changes: any = { allowedFundIds: next };
+    const changes: Partial<DonationAnswers> = { allowedFundIds: next };
     if (defaultFundId && next.length > 0 && !next.includes(defaultFundId)) {
       changes.defaultFundId = "";
     }

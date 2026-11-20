@@ -8,11 +8,11 @@ import { Locale } from "@churchapps/apphelper";
 interface Props {
   fields: string[];
   styles: InlineStylesInterface;
-  onChange: (styles: any) => void;
+  onChange: (styles: InlineStylesInterface) => void;
 }
 
 export const StyleList: React.FC<Props> = (props) => {
-  const [editStyle, setEditStyle] = React.useState<{ platform: string; name: string; value: any } | null>(null);
+  const [editStyle, setEditStyle] = React.useState<{ platform: string; name: string; value: string } | null>(null);
 
   const options: StyleOption[] = [];
   allStyleOptions.forEach((o) => {
@@ -31,10 +31,10 @@ export const StyleList: React.FC<Props> = (props) => {
   const getPlatformStyles = (platformKey: string, displayName: string) => {
     const result = [];
     result.push(<div key={crypto.randomUUID()}>{displayName}:</div>);
-    const platform: any = props.styles[platformKey as keyof InlineStylesInterface] || {};
+    const platform: Record<string, string | number> = props.styles[platformKey as keyof InlineStylesInterface] || {};
     Object.keys(platform).forEach((key: string) => {
       const value = platform[key];
-      const field = options.find((o: any) => o.key === key);
+      const field = options.find((o) => o.key === key);
       if (field) {
         result.push(
           <div key={crypto.randomUUID()} style={{ marginBottom: 5 }}>
@@ -43,7 +43,7 @@ export const StyleList: React.FC<Props> = (props) => {
               style={{ color: "var(--b1-muted)", textDecoration: "underline" }}
               onClick={(e) => {
                 e.preventDefault();
-                setEditStyle({ platform: platformKey, name: key, value });
+                setEditStyle({ platform: platformKey, name: key, value: String(value) });
               }}>
               {field.label}: {value}
             </a>
@@ -70,15 +70,16 @@ export const StyleList: React.FC<Props> = (props) => {
     );
   };
 
-  const handleSave = (platform: string, name: string, value: any) => {
+  const handleSave = (platform: string, name: string, value: string | number | null | undefined) => {
     if (name) {
-      const styles = props.styles ? { ...props.styles } : ({} as any);
-      const p: any = styles[platform] ? { ...styles[platform] } : {};
+      const styles: InlineStylesInterface = props.styles ? { ...props.styles } : {};
+      const platformKey = platform as keyof InlineStylesInterface;
+      const p: Record<string, string | number> = styles[platformKey] ? { ...styles[platformKey] } : {};
       delete p[name];
       if (value) p[name] = value;
       if (Object.keys(p).length === 0) {
-        delete styles[platform];
-      } else styles[platform] = p;
+        delete styles[platformKey];
+      } else styles[platformKey] = p;
 
       props.onChange(styles);
     }

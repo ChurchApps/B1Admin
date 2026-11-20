@@ -424,9 +424,9 @@ export interface GenericSettingInterface {
 }
 
 export interface InlineStylesInterface {
-  all?: Record<string, string>;
-  desktop?: Record<string, string>;
-  mobile?: Record<string, string>;
+  all?: Record<string, string | number>;
+  desktop?: Record<string, string | number>;
+  mobile?: Record<string, string | number>;
 }
 
 export interface AnimationsInterface {

@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { RecordHeading, TextAction } from "../../components/ui";
 import { DateHelper, ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { loadPeopleNames } from "../loadPeopleNames";
+import { type GatewayEventLogInterface } from "../types";
 import { getPaymentProvider } from "@churchapps/apphelper/donations";
 import { type PersonInterface } from "@churchapps/helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,14 +12,14 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 export const DonationEvents = memo(() => {
   const queryClient = useQueryClient();
 
-  const errorLogs = useQuery<any[]>({
+  const errorLogs = useQuery<GatewayEventLogInterface[]>({
     queryKey: ["/eventLog/type/failed", "GivingApi"],
     placeholderData: []
   });
 
   const personIds = useMemo(() => {
     if (!errorLogs.data?.length) return "";
-    return [...new Set(errorLogs.data.map((log: any) => log.personId).filter(Boolean))].join(",");
+    return [...new Set(errorLogs.data.map((log) => log.personId).filter(Boolean))].join(",");
   }, [errorLogs.data]);
 
   const people = useQuery<PersonInterface[]>({
@@ -31,7 +32,7 @@ export const DonationEvents = memo(() => {
 
   const unresolvedErrorCount = useMemo(() => {
     if (!errorLogs.data?.length) return 0;
-    return errorLogs.data.filter((log: any) => !log.resolved).length;
+    return errorLogs.data.filter((log) => !log.resolved).length;
   }, [errorLogs.data]);
 
   const handleClick = useCallback(
@@ -46,7 +47,7 @@ export const DonationEvents = memo(() => {
 
   const getPersonName = useCallback(
     (personId: string) => {
-      const person = people.data?.find((person: any) => person.id === personId);
+      const person = people.data?.find((person) => person.id === personId);
       return person?.name?.display;
     },
     [people.data]
@@ -57,7 +58,7 @@ export const DonationEvents = memo(() => {
   return (
     <Box data-cy="eventLogs">
       <RecordHeading label={Locale.label("donations.donationEvents.failed") + unresolvedErrorCount + Locale.label("donations.donationEvents.unres")} />
-      {errorLogs.data.map((log: any) => {
+      {errorLogs.data.map((log) => {
         const eventType = log.eventType?.replace(".", " ") || "";
         const eventUrl = getPaymentProvider(log.provider).descriptor.eventUrl?.(log.id);
         return (

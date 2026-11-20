@@ -6,7 +6,7 @@ import type { FormInterface } from "@churchapps/helpers";
 import { EnvironmentHelper } from "../../../helpers/EnvironmentHelper";
 
 type Props = {
-  parsedData: any;
+  parsedData: { formId?: string };
   handleChange: (e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<string>) => void;
 };
 
@@ -14,7 +14,7 @@ export const FormEdit = ({ parsedData, handleChange }: Props) => {
   const [forms, setForms] = useState<FormInterface[] | null>(null);
 
   useEffect(() => {
-    ApiHelper.get("/forms", "MembershipApi").then((data: any) => setForms(data));
+    ApiHelper.get("/forms", "MembershipApi").then((data: FormInterface[]) => setForms(data));
   }, []);
 
   const standaloneForms = forms?.filter((form) => form.contentType === "form");

@@ -415,7 +415,7 @@ const PublishersDialog = (props: { asset: CommonsAsset | null; onClose: () => vo
 
   const search = () => {
     const t = term.trim();
-    if (t) ApiHelper.get("/users/search?term=" + encodeURIComponent(t), "MembershipApi").then((data: any[]) => setResults(data || []));
+    if (t) ApiHelper.get("/users/search?term=" + encodeURIComponent(t), "MembershipApi").then((data: { id: string; email: string; firstName?: string; lastName?: string }[]) => setResults(data || []));
   };
   const add = (u: { id: string; email: string; firstName?: string; lastName?: string }) => {
     if (!list.some((p) => p.id === u.id)) setList([...list, { id: u.id, name: `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.email }]);

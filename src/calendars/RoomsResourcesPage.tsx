@@ -13,7 +13,12 @@ import { TemplateEdit } from "./components/TemplateEdit";
 import { type CalendarBlockoutInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
 
 type TabKey = "rooms" | "resources" | "blockouts" | "templates";
-type Editing = { type: TabKey; item: any } | null;
+type Editing =
+  | { type: "rooms"; item: RoomInterface }
+  | { type: "resources"; item: ResourceInterface }
+  | { type: "blockouts"; item: CalendarBlockoutInterface }
+  | { type: "templates"; item: EventTemplateInterface }
+  | null;
 
 export const RoomsResourcesPage = () => {
   const [tab, setTab] = useState<TabKey>("rooms");

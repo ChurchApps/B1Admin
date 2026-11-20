@@ -30,7 +30,20 @@ const EN: Record<string, string> = {
 const applyParams = (template: string, params?: Record<string, string>): string =>
   params ? Object.keys(params).reduce((acc, k) => acc.replace("{" + k + "}", params[k]), template) : template;
 
-const parseAnswers = (source?: { answers?: any; answersJSON?: string }): Record<string, any> => {
+// The answer fields the checker reads; other fields in the JSON are ignored.
+type A11yAnswers = {
+  photo?: string;
+  photoAlt?: string;
+  photos?: { url?: string; alt?: string }[];
+  buttonLinkUrl?: string;
+  buttonLinkText?: string;
+  url?: string;
+  title?: string;
+  text?: string;
+  [field: string]: unknown;
+};
+
+const parseAnswers = (source?: { answers?: A11yAnswers; answersJSON?: string }): A11yAnswers => {
   if (source?.answers) return source.answers;
   if (!source?.answersJSON) return {};
   try {
@@ -123,18 +136,18 @@ const walkElement = (element: ElementInterface, sectionId: string, issues: A11yI
   }
 
   if (type === "gallery" && Array.isArray(answers.photos)) {
-    answers.photos.forEach((photo: any, i: number) => {
+    answers.photos.forEach((photo, i: number) => {
       if (photo?.url && !(photo.alt || "").trim()) push("error", "missing-alt", "missingAltGallery", { n: String(i + 1) });
     });
   }
 
   if (type === "buttonLink" && (answers.buttonLinkUrl || "").trim() && !(answers.buttonLinkText || "").trim()) {
-    push("warning", "empty-link-text", "emptyButtonText", { url: answers.buttonLinkUrl });
+    push("warning", "empty-link-text", "emptyButtonText", { url: answers.buttonLinkUrl || "" });
   }
 
   if (type === "card" && (answers.url || "").trim()) {
     const cardText = (answers.text || "").replace(/<[^>]*>/g, "").trim();
-    if (!(answers.title || "").trim() && !cardText) push("warning", "empty-link-text", "emptyCardText", { url: answers.url });
+    if (!(answers.title || "").trim() && !cardText) push("warning", "empty-link-text", "emptyCardText", { url: answers.url || "" });
   }
 
   (HTML_FIELDS[type] || []).forEach((field) => {
@@ -193,7 +206,7 @@ export const checkPageAccessibility = (sections: SectionInterface[] | undefined)
 // Runnable invariant check; throws on any failure. Mirrors assertRemapSelfCheck.
 export const assertA11ySelfCheck = (): true => {
   const fail = (msg: string): never => { throw new Error("assertA11ySelfCheck: " + msg); };
-  const el = (elementType: string, answers: Record<string, any>, sort = 1, elements?: ElementInterface[]): ElementInterface =>
+  const el = (elementType: string, answers: Record<string, unknown>, sort = 1, elements?: ElementInterface[]): ElementInterface =>
     ({ id: elementType + "-" + sort, elementType, answersJSON: JSON.stringify(answers), sort, elements });
 
   // contrastRatio: white on white = 1, black on white = 21.

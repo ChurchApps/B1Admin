@@ -6,13 +6,18 @@ import { AppDatePicker } from "../../components";
 import { numericCellSx, tableScrollSx } from "../../components/ui";
 import { AdminPanel } from "./AdminPanel";
 
+interface BibleLookupStat {
+  abbreviation?: string;
+  lookups?: number;
+}
+
 export const TranslationTab = () => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
-  const [report, setReport] = React.useState([]);
+  const [report, setReport] = React.useState<BibleLookupStat[]>([]);
 
   const loadData = async () => {
-    const reportData = await ApiHelper.get("/bibles/stats?startDate=" + DateHelper.formatHtml5Date(startDate) + "&endDate=" + DateHelper.formatHtml5Date(endDate), "ContentApi");
+    const reportData: BibleLookupStat[] = await ApiHelper.get("/bibles/stats?startDate=" + DateHelper.formatHtml5Date(startDate) + "&endDate=" + DateHelper.formatHtml5Date(endDate), "ContentApi");
     setReport(reportData);
   };
 
@@ -39,7 +44,7 @@ export const TranslationTab = () => {
     const rows: JSX.Element[] = [];
     let keyVal = 0;
 
-    report.forEach((r: any) => {
+    report.forEach((r) => {
       rows.push(
         <TableRow key={keyVal.toString()}>
           <TableCell>{r.abbreviation}</TableCell>

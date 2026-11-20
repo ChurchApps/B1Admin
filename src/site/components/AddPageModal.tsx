@@ -5,6 +5,7 @@ import { Permissions, type LinkInterface } from "@churchapps/helpers";
 import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField, Typography, CircularProgress, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { gatherChurchFacts, resolvePhotos } from "../aiPageCandidates";
+import type { SectionInterface } from "../../helpers/Interfaces";
 
 type Props = {
   mode: string,
@@ -22,6 +23,18 @@ interface PageInterface {
   siteId?: string;
 }
 
+interface AiChurchContext {
+  churchName?: string;
+  address?: string;
+  theme: { palette: Record<string, string> };
+  resolvesPhotos: boolean;
+  facts: string;
+  hasServiceTimes: boolean;
+  hasGroups: boolean;
+  nextService?: { dayOfWeek: number; time: string };
+  assumedDetails?: unknown[];
+}
+
 export function AddPageModal(props: Props) {
   const navigate = useNavigate();
   const [page, setPage] = useState<PageInterface | null>(null);
@@ -34,7 +47,7 @@ export function AddPageModal(props: Props) {
   const [aiGenerationStatus, setAiGenerationStatus] = useState<string>("");
 
   const handleCancel = () => props.onDone();
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     e.preventDefault();
     const p = { ...page };
@@ -102,11 +115,11 @@ export function AddPageModal(props: Props) {
       const [globalStyles, records, existingPages] = await Promise.all([
         ApiHelper.get("/globalStyles", "ContentApi"),
         gatherChurchFacts(church.id || ""),
-        ApiHelper.get("/pages", "ContentApi").catch((): any[] => [])
+        ApiHelper.get("/pages", "ContentApi").catch((): PageInterface[] => [])
       ]);
       const palette = typeof globalStyles?.palette === "string" ? JSON.parse(globalStyles.palette || "{}") : globalStyles?.palette;
       const address = [church.address1, church.city, church.state].filter(Boolean).join(", ");
-      const request = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, resolvesPhotos: true, ...records } };
+      const request: { prompt: string; churchContext: AiChurchContext } = { prompt: aiPrompt.trim(), churchContext: { churchName: church.name, address: address || undefined, theme: { palette }, resolvesPhotos: true, ...records } };
 
       // Each phase is its own request so every call stays inside the API gateway timeout.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusPlanning"));
@@ -123,8 +136,8 @@ export function AddPageModal(props: Props) {
       // Only the best-ranked layout is written; the runner-up is a fallback if that write fails.
       setAiGenerationStatus(Locale.label("site.addPageModal.statusGenerating").replace("{count}", plan.candidates[0].layout.length.toString()));
       // the details the request left out were decided once while planning, so every section tells the same story
-      (request.churchContext as any).assumedDetails = Array.isArray(plan.assumedDetails) ? plan.assumedDetails : [];
-      let first: { sections: any[] } | null = null;
+      request.churchContext.assumedDetails = Array.isArray(plan.assumedDetails) ? plan.assumedDetails : [];
+      let first: { sections: SectionInterface[] } | null = null;
       for (const candidate of plan.candidates.slice(0, 2)) {
         const result = await ApiHelper.post("/website/writePage", { ...request, layout: candidate.layout, tone: plan.tone, pageType: plan.pageType }, "AskApi").catch((): null => null);
         if (result?.sections?.length) { first = { sections: await resolvePhotos(result.sections) }; break; }
@@ -153,7 +166,7 @@ export function AddPageModal(props: Props) {
     } else if (validate()) {
       setIsSubmitting(true);
       try {
-        let pageData = null;
+        let pageData: PageInterface | null = null;
         if (pageTemplate !== "link") {
           const p = { ...page };
           p.siteId = props.siteId || undefined;
@@ -161,7 +174,7 @@ export function AddPageModal(props: Props) {
           p.url = props.requestedSlug || SlugHelper.slugifyString("/" + slugString.toLowerCase().replace(" ", "-"), "urlPath");
           if (!p.url) p.url = "/untitled";
 
-          pageData = await ApiHelper.post("/pages", [p], "ContentApi").then((data: any) => {
+          pageData = await ApiHelper.post("/pages", [p], "ContentApi").then((data: PageInterface[]) => {
             setPage(data[0]);
             return data[0];
           });
@@ -169,15 +182,16 @@ export function AddPageModal(props: Props) {
 
         if (props.mode === "navigation") {
           const l: LinkInterface & { siteId?: string } = { ...link, siteId: props.siteId || undefined } as LinkInterface & { siteId?: string };
-          if (pageTemplate !== "link") l.url = pageData.url;
+          // pageData is always assigned above when pageTemplate !== "link"
+          if (pageTemplate !== "link") l.url = (pageData as PageInterface).url;
           await ApiHelper.post("/links", [l], "ContentApi");
         }
 
         props.updatedCallback();
-      } catch (err: any) {
+      } catch (err) {
         // Surface backend errors (e.g., duplicate URL) instead of silently
         // leaving the dialog open with no feedback.
-        const message = err?.message || Locale.label("site.addPageModal.errFailedGenerate");
+        const message = (err instanceof Error ? err.message : "") || Locale.label("site.addPageModal.errFailedGenerate");
         setErrors([message]);
       } finally {
         setIsSubmitting(false);

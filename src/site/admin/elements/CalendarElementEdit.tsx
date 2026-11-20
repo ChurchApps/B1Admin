@@ -4,8 +4,17 @@ import { FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/mater
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import type { GroupInterface, CuratedCalendarInterface } from "@churchapps/helpers";
 
+type CalendarAnswers = {
+  calendarType?: string;
+  calendarId?: string;
+  display?: string;
+  layout?: string;
+  groupBadge?: string;
+  tag?: string;
+};
+
 interface Props {
-  parsedData: any;
+  parsedData: CalendarAnswers;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
 }
 
@@ -14,8 +23,8 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
 
   const loadCalendars = () => {
     const apiCalls = () => {
-      if (parsedData.calendarType === "group") ApiHelper.get("/groups/my", "MembershipApi").then((data: any) => setCalendars(data));
-      else ApiHelper.get("/curatedCalendars", "ContentApi").then((data: any) => setCalendars(data));
+      if (parsedData.calendarType === "group") ApiHelper.get("/groups/my", "MembershipApi").then((data: GroupInterface[]) => setCalendars(data));
+      else ApiHelper.get("/curatedCalendars", "ContentApi").then((data: CuratedCalendarInterface[]) => setCalendars(data));
     };
 
     if (parsedData.calendarType) apiCalls();

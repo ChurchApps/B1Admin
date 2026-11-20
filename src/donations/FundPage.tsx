@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiHelper, DateHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, UserHelper } from "@churchapps/apphelper";
-import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
+import { type DonationBatchInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
 import { Table, TableBody, TableRow, TableCell, TableHead, Box, Button, Typography, Stack } from "@mui/material";
 import { PageHeader, PageContainer, Breadcrumbs, type BreadcrumbItem, RecordHeading, Surface, VerbRow, YearPills, hoverRowSx, numericCellSx, recentYears, tableScrollSx } from "../components/ui";
@@ -18,7 +18,7 @@ export const FundPage = () => {
   const [year, setYear] = React.useState<number | null>(thisYear);
   const [startDate, setStartDate] = React.useState<Date>(new Date(thisYear, 0, 1));
   const [endDate, setEndDate] = React.useState<Date>(new Date(thisYear, 11, 31));
-  const [people, setPeople] = React.useState<{ [key: string]: string }>({});
+  const [people, setPeople] = React.useState<{ [key: string]: string | undefined }>({});
   const [stats, setStats] = React.useState({
     totalDonations: 0,
     totalAmount: 0,
@@ -31,7 +31,7 @@ export const FundPage = () => {
   const donationList = fundDonations || [];
 
   const loadData = () => {
-    ApiHelper.get("/funds/" + params.id, "GivingApi").then((data: any) => {
+    ApiHelper.get("/funds/" + params.id, "GivingApi").then((data: FundInterface) => {
       setFund(data);
     });
     loadDonations();
@@ -50,7 +50,7 @@ export const FundPage = () => {
         const peopleIds = ArrayHelper.getUniqueValues(d, "donation.personId").filter((f) => f !== null);
         if (peopleIds.length > 0) {
           loadPeopleNames(peopleIds.filter((id): id is string => !!id)).then((people: PersonInterface[]) => {
-            const data: any = {};
+            const data: { [key: string]: string | undefined } = {};
             people.forEach((p) => {
               if (p.id) data[p.id] = p.name?.display;
             });

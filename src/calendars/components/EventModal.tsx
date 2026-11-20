@@ -5,7 +5,7 @@ import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Box, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField, Typography } from "@mui/material";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { GalleryModal } from "../../components/gallery";
-import { type ConflictInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
+import { type ConflictInterface, type EventBookingInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 import { EventReminderEdit, type EventReminderEditRef } from "./EventReminderEdit";
 import { useConfirmDelete } from "../../hooks";
 import { EditRecurringModal, type RecurringEditType } from "./EditRecurringModal";
@@ -29,6 +29,9 @@ const toInputValue = (d: Date) => {
 // UNTIL is inclusive, so end the series at the close of the day before the clicked occurrence.
 // EventHelper.getFullRRule feeds dtstart as local wall-clock labelled UTC, so UNTIL must use the same frame.
 const endBefore = (occurrence: Date) => new Date(Date.UTC(occurrence.getFullYear(), occurrence.getMonth(), occurrence.getDate(), 0, 0, -1));
+
+// The API also returns who may view/post event notes (null means the default, staff).
+type EventWithNotesRoles = EventInterface & { notesViewRole?: string | null; notesPostRole?: string | null };
 
 export function EventModal(props: Props) {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -58,7 +61,7 @@ export function EventModal(props: Props) {
   const [windowEnd, setWindowEnd] = useState("");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!!props.eventId);
-  const [existingBookings, setExistingBookings] = useState<any[]>([]);
+  const [existingBookings, setExistingBookings] = useState<EventBookingInterface[]>([]);
   const [hasRegistration, setHasRegistration] = useState(false);
   const [seriesStart, setSeriesStart] = useState<Date | null>(null);
   const [recurrenceModalType, setRecurrenceModalType] = useState<"" | "edit" | "delete">("");
@@ -83,11 +86,10 @@ export function EventModal(props: Props) {
 
   useEffect(() => {
     if (props.eventId) {
-      ApiHelper.get("/events/" + props.eventId, "ContentApi").then((data: EventInterface) => {
+      ApiHelper.get("/events/" + props.eventId, "ContentApi").then((data: EventWithNotesRoles) => {
         if (data.title) setTitle(data.title);
         if (data.description) setDescription(data.description);
-        // ponytail: cast until @churchapps/helpers publishes photoUrl on EventInterface
-        if ((data as any).photoUrl) setPhotoUrl((data as any).photoUrl);
+        if (data.photoUrl) setPhotoUrl(data.photoUrl);
         if (data.groupId) setGroupId(data.groupId.toString());
         if (data.start) {
           setStart(toInputValue(new Date(data.start)));
@@ -97,14 +99,14 @@ export function EventModal(props: Props) {
         if (data.recurrenceRule) setRRule(data.recurrenceRule);
         if (data.visibility) setVisibility(data.visibility);
         if (data.tags) setTags(data.tags);
-        setNotesViewRole((data as any).notesViewRole || "staff");
-        setNotesPostRole((data as any).notesPostRole || "staff");
+        setNotesViewRole(data.notesViewRole || "staff");
+        setNotesPostRole(data.notesPostRole || "staff");
         setHasRegistration(!!data.registrationEnabled);
       });
-      ApiHelper.get("/eventBookings/event/" + props.eventId, "ContentApi").then((data: any[]) => {
+      ApiHelper.get("/eventBookings/event/" + props.eventId, "ContentApi").then((data: EventBookingInterface[]) => {
         setExistingBookings(data);
-        setRoomIds(data.filter(b => b.roomId).map(b => b.roomId.toString()));
-        setResourceIds(data.filter(b => b.resourceId).map(b => b.resourceId.toString()));
+        setRoomIds(data.filter((b): b is EventBookingInterface & { roomId: string } => !!b.roomId).map(b => b.roomId.toString()));
+        setResourceIds(data.filter((b): b is EventBookingInterface & { resourceId: string } => !!b.resourceId).map(b => b.resourceId.toString()));
         const first = data[0];
         if (first) {
           if (first.setupMinutes || first.teardownMinutes) {
@@ -172,7 +174,7 @@ export function EventModal(props: Props) {
     if (template.visibility) setVisibility(template.visibility);
     if (template.roomIds) setRoomIds(template.roomIds.split(",").filter((r) => r));
     if (template.resourcesJson) {
-      try { setResourceIds(JSON.parse(template.resourcesJson).map((r: any) => r.resourceId)); } catch { /* malformed template JSON */ }
+      try { setResourceIds(JSON.parse(template.resourcesJson).map((r: { resourceId: string }) => r.resourceId)); } catch { /* malformed template JSON */ }
     }
     if (template.durationMinutes && start) {
       const startDate = new Date(start);
@@ -216,8 +218,8 @@ export function EventModal(props: Props) {
       window.startTime = new Date(new Date(windowStart).getTime() + shift);
       window.endTime = new Date(new Date(windowEnd).getTime() + shift);
     }
-    const priorBooking = (match: (b: any) => boolean) => {
-      const existing = existingBookings.find(match) || {};
+    const priorBooking = (match: (b: EventBookingInterface) => boolean) => {
+      const existing: EventBookingInterface = existingBookings.find(match) || {};
       if (!splitOff) return existing;
       const { id: _id, ...rest } = existing;
       return rest;
@@ -231,7 +233,9 @@ export function EventModal(props: Props) {
 
     const bookings = [...newRoomBookings, ...newResourceBookings];
 
-    const toDelete = splitOff ? [] : existingBookings.filter(b => !roomIds.includes(b.roomId) && !resourceIds.includes(b.resourceId));
+    const bookedRoomIds: (string | undefined)[] = roomIds;
+    const bookedResourceIds: (string | undefined)[] = resourceIds;
+    const toDelete = splitOff ? [] : existingBookings.filter(b => !bookedRoomIds.includes(b.roomId) && !bookedResourceIds.includes(b.resourceId));
 
     if (!savedRef.current.bookings) {
       for (const b of toDelete) {
@@ -414,7 +418,7 @@ export function EventModal(props: Props) {
                 label={Locale.label("calendars.newEvent.rooms")}
                 value={roomIds}
                 onChange={(e) => setRoomIds(e.target.value as unknown as string[])}
-                SelectProps={{ multiple: true, renderValue: (selected: any) => rooms.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
+                SelectProps={{ multiple: true, renderValue: (selected) => rooms.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-rooms-select"
               >
                 {pickableRooms.map((r) => (
@@ -435,7 +439,7 @@ export function EventModal(props: Props) {
                 label={Locale.label("calendars.newEvent.resources")}
                 value={resourceIds}
                 onChange={(e) => setResourceIds(e.target.value as unknown as string[])}
-                SelectProps={{ multiple: true, renderValue: (selected: any) => resources.filter((r) => selected.includes(r.id)).map((r) => r.name).join(", ") }}
+                SelectProps={{ multiple: true, renderValue: (selected) => resources.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-resources-select"
               >
                 {pickableResources.map((r) => (

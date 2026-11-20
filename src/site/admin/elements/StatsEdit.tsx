@@ -5,10 +5,15 @@ import { Locale } from "@churchapps/apphelper";
 
 type Stat = { value: number; prefix?: string; suffix?: string; label: string };
 
+type StatsAnswers = {
+  items?: Stat[];
+  columns?: number | string;
+};
+
 type Props = {
-  parsedData: any;
+  parsedData: StatsAnswers;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void;
-  handleHtmlChange: (field: string, newValue: any) => void;
+  handleHtmlChange: (field: string, newValue: unknown) => void;
 };
 
 export function StatsEdit({ parsedData, handleChange, handleHtmlChange }: Props) {

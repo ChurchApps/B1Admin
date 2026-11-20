@@ -2,7 +2,7 @@ import React from "react";
 import { useReactToPrint } from "react-to-print";
 import { useNavigate } from "react-router-dom";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
-import { type DonationInterface, type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
+import { type DonationBatchInterface, type FundInterface, type FundDonationInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack } from "@mui/material";
 import { EmptyState } from "../../components";
 import { RecordHeading, StatusBadge, TextAction, VerbRow, hoverRowSx, numericCellSx, tableScrollSx } from "../../components/ui";
@@ -10,6 +10,7 @@ import { CsvVerb } from "./GivingParts";
 import UserContext from "../../UserContext";
 import { BatchPrintDocument, getFundTotals, setEnteredByName } from "./BatchPrintDocument";
 import { loadPeopleNames } from "../loadPeopleNames";
+import { type DonationRecord } from "../types";
 import { usePrintLogo } from "../../components/PrintChurchHeader";
 
 interface Props {
@@ -50,7 +51,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
   const context = React.useContext(UserContext);
   const navigate = useNavigate();
-  const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
+  const [donations, setDonations] = React.useState<DonationRecord[] | null>(null);
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [rates, setRates] = React.useState<Record<string, number>>({});
   const printRef = React.useRef<HTMLDivElement>(null);
@@ -69,7 +70,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const hasEditPermission = React.useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
   const canEdit = props.canEdit ?? hasEditPermission;
 
-  const populatePeople = React.useCallback(async (data: DonationInterface[]) => {
+  const populatePeople = React.useCallback(async (data: DonationRecord[]) => {
     const peopleIds = [...ArrayHelper.getIds(data, "personId"), ...ArrayHelper.getIds(data, "enteredBy")];
     if (peopleIds.length > 0) {
       const people = await loadPeopleNames(peopleIds);
@@ -88,7 +89,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       ApiHelper.get("/fundDonations", "GivingApi"),
       // Server-owned exchange rates for the church currency; the total row converts gifts made in other currencies.
       ApiHelper.get("/donations/exchange-rates", "GivingApi").catch(() => null)
-    ]).then(([donationsData, fundDonationsData, rateTable]: [DonationInterface[], FundDonationInterface[], { rates?: Record<string, number> } | null]) => {
+    ]).then(([donationsData, fundDonationsData, rateTable]: [DonationRecord[], FundDonationInterface[], { rates?: Record<string, number> } | null]) => {
       setRates(rateTable?.rates || {});
       setFundDonations(fundDonationsData || []);
       populatePeople(donationsData);
@@ -97,7 +98,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
 
   const getHeaderActions = React.useCallback(() => {
     if (funds.length === 0 || !donations) return null;
-    const donationIds = donations.filter((d) => (d as any).status !== "refunded").map((d) => d.id || "");
+    const donationIds = donations.filter((d) => d.status !== "refunded").map((d) => d.id || "");
     const qboRows = buildQboJournalRows(batch, donationIds, fundDonations, funds, currency, rates);
     return (
       <VerbRow>
@@ -112,7 +113,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const donationsTotal = React.useMemo(() => {
     if (!donations || donations.length === 0) return 0;
     return donations.reduce((sum, donation) => {
-      if ((donation as any).status === "refunded") return sum;
+      if (donation.status === "refunded") return sum;
       return sum + CurrencyHelper.convertAmount(donation.amount || 0, donation.currency || currency, currency, rates);
     }, 0);
   }, [donations, currency, rates]);
@@ -157,8 +158,8 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
         <TextAction small data-testid={"donation-receipt-" + d.id} onClick={() => navigate("/donations/receipt/" + d.id)}>{Locale.label("donations.donations.receipt")}</TextAction>
       );
 
-      const isPending = (d as any).status === "pending";
-      const isRefunded = (d as any).status === "refunded";
+      const isPending = d.status === "pending";
+      const isRefunded = d.status === "refunded";
       rows.push(
         <TableRow key={i} sx={{ ...hoverRowSx, opacity: isPending || isRefunded ? 0.8 : 1 }} data-testid={"donation-row-" + d.id}>
           <TableCell>
@@ -170,14 +171,14 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell>
             <Typography variant="body2">{d.person?.name.display || Locale.label("donations.donations.anon")}</Typography>
-            {(d as any).enteredByName && <Typography variant="caption" color="text.secondary" sx={{ display: "block" }} data-testid="donation-entered-by">{Locale.label("donations.donations.enteredBy").replace("{name}", (d as any).enteredByName)}</Typography>}
+            {d.enteredByName && <Typography variant="caption" color="text.secondary" sx={{ display: "block" }} data-testid="donation-entered-by">{Locale.label("donations.donations.enteredBy").replace("{name}", d.enteredByName)}</Typography>}
           </TableCell>
           <TableCell>
             <Typography variant="body2">{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</Typography>
           </TableCell>
           <TableCell>
             <Typography variant="body2" sx={{ maxWidth: 240, whiteSpace: "pre-wrap", overflowWrap: "anywhere" }} data-testid="donation-memo">
-              {(d as any).memo || ""}
+              {d.memo || ""}
             </Typography>
           </TableCell>
           <TableCell>

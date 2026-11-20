@@ -1,15 +1,16 @@
 import React from "react";
 import { Element } from "../apphelperWebsite";
 import "./elements/SafeRawHTMLElement";
-import type { ElementInterface } from "../../helpers";
+import type { ElementInterface, SectionInterface } from "../../helpers";
+import type { ChurchSettings } from "../types";
 import type { ChurchInterface } from "@churchapps/helpers";
 
 interface Props {
   element: ElementInterface;
   church?: ChurchInterface;
-  churchSettings: any;
+  churchSettings: ChurchSettings;
   textColor: string;
-  onEdit?: (section: any, element: ElementInterface) => void;
+  onEdit?: (section: SectionInterface | null, element: ElementInterface) => void;
   onMove?: () => void;
 }
 

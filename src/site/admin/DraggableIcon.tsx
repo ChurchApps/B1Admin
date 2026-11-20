@@ -2,7 +2,7 @@ import { Icon } from "@mui/material";
 import { useDrag } from "react-dnd";
 
 type Props = {
-  dndType: string, elementType: string, data: any
+  dndType: string, elementType: string, data: unknown
 };
 
 export function DraggableIcon(props: Props) {

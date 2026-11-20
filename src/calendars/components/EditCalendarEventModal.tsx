@@ -74,7 +74,7 @@ export function EditCalendarEventModal(props: Props) {
   };
 
   const handleSave = () => {
-    const data: any = { curatedCalendarId: props.curatedCalendarId, groupId: selectedGroupId };
+    const data: { curatedCalendarId: string; groupId: string; eventIds?: string[] } = { curatedCalendarId: props.curatedCalendarId, groupId: selectedGroupId };
     if (addType === "events" && eventIdsList.length > 0) data.eventIds = eventIdsList;
 
     ApiHelper.post("/curatedEvents", [data], "ContentApi").then(() => {
@@ -116,8 +116,8 @@ export function EditCalendarEventModal(props: Props) {
     ev.start = new Date(ev.start!);
     ev.end = new Date(ev.end!);
     if (ev.recurrenceRule) {
-      const dates = EventHelper.getRange(ev, startRange, endRange);
-      dates.forEach((date: any) => {
+      const dates: Date[] = EventHelper.getRange(ev, startRange, endRange);
+      dates.forEach((date) => {
         const evt = { ...event };
         const diff = new Date(evt.end!).getTime() - new Date(evt.start!).getTime();
         evt.start = date;

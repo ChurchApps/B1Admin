@@ -12,7 +12,7 @@ interface Props {
   settings?: GenericSettingInterface[];
 }
 
-function getOgImage(img: any) {
+function getOgImage(img: HTMLImageElement) {
   return new Promise<string>((resolve) => {
     img.onerror = () => resolve(img.src);
     img.onload = function () {
@@ -50,7 +50,7 @@ function resizeImage(file: File, width: number, height: number) {
         "PNG",
         100,
         0,
-        (uri: any) => { resolve(uri.toString()); },
+        (uri: string | Blob | File | ProgressEvent<FileReader>) => { resolve(uri.toString()); },
         "base64",
         width,
         height
@@ -106,7 +106,7 @@ export function AppearanceEdit(props: Props) {
     try {
       if (dataUrl !== null) {
         const settings = [...currentSettings];
-        const keySetting = settings.filter((s: any) => s.keyName === keyName);
+        const keySetting = settings.filter((s: GenericSettingInterface) => s.keyName === keyName);
 
         if (keySetting.length === 0) settings.push({ keyName, value: await getValue(keyName, dataUrl), public: 1 });
         else keySetting[0].value = await getValue(keyName, dataUrl);
@@ -141,7 +141,7 @@ export function AppearanceEdit(props: Props) {
 
   const handleTextChange = (keyName: string, value: string) => {
     const settings = [...currentSettings];
-    const keySetting = settings.filter((s: any) => s.keyName === keyName);
+    const keySetting = settings.filter((s: GenericSettingInterface) => s.keyName === keyName);
     if (keySetting.length === 0) settings.push({ keyName, value, public: 1 });
     else keySetting[0].value = value;
     setCurrentSettings(settings);
@@ -214,9 +214,9 @@ export function AppearanceEdit(props: Props) {
       setChangedKeys([]);
       props.updatedFunction?.();
       setIsSubmitting(false);
-    }).catch((e: any) => {
+    }).catch((e: unknown) => {
       setIsSubmitting(false);
-      setErrors([e?.message || Locale.label("common.error")]);
+      setErrors([(e instanceof Error ? e.message : "") || Locale.label("common.error")]);
     });
   };
   const handleCancel = () => { props.updatedFunction?.(); };

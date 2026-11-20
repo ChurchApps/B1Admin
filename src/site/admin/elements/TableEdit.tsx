@@ -6,9 +6,16 @@ import { Locale } from "@churchapps/apphelper";
 import { Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableRow, TextField } from "@mui/material";
 import React from "react";
 
+type TableAnswers = {
+  contents?: string[][];
+  head?: boolean;
+  markdown?: boolean;
+  size?: string;
+};
+
 type Props = {
-  parsedData: any;
-  onRealtimeChange: (parsedData: any) => void;
+  parsedData: TableAnswers;
+  onRealtimeChange: (parsedData: TableAnswers) => void;
 };
 
 export function TableEdit(props: Props) {

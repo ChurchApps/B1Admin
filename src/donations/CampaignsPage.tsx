@@ -55,7 +55,8 @@ export const CampaignsPage = () => {
     const result = [...(progress.data || [])];
     if (sortBy) {
       const dir = sortDirection === "asc" ? 1 : -1;
-      result.sort((a: any, b: any) => ((a.campaign?.[sortBy] || "").toString().toUpperCase().localeCompare((b.campaign?.[sortBy] || "").toString().toUpperCase())) * dir);
+      const sortKey = sortBy as keyof CampaignInterface;
+      result.sort((a, b) => ((a.campaign?.[sortKey] || "").toString().toUpperCase().localeCompare((b.campaign?.[sortKey] || "").toString().toUpperCase())) * dir);
     }
     return result;
   }, [progress.data, sortBy, sortDirection]);

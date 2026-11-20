@@ -95,9 +95,9 @@ export const BatchGivingStatementsPage = () => {
           const fundName = fund?.name || "";
           const method = donation.method || "";
           const methodDetails = donation.methodDetails || "";
-          const memo = (donation as any).memo || "";
+          const memo = donation.memo || "";
 
-          const escapeCsv = (value: any) => {
+          const escapeCsv = (value: unknown) => {
             const str = String(value);
             if (str.includes(",") || str.includes('"') || str.includes("\n")) {
               return `"${str.replace(/"/g, '""')}"`;

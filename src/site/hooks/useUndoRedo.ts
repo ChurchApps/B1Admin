@@ -14,6 +14,13 @@ interface ContainerSnapshot {
   sections: SectionInterface[];
 }
 
+interface PageHistoryRecord {
+  id?: string;
+  snapshotJSON: string;
+  description: string;
+  createdDate: string;
+}
+
 interface UseUndoRedoOptions {
   pageId?: string;
   blockId?: string;
@@ -81,14 +88,14 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
         const endpoint = pageId
           ? `/pageHistory/page/${pageId}`
           : `/pageHistory/block/${blockId}`;
-        const serverHistory = await ApiHelper.get(endpoint, "ContentApi");
+        const serverHistory: PageHistoryRecord[] = await ApiHelper.get(endpoint, "ContentApi");
         if (cancelled) return;
 
         if (serverHistory && serverHistory.length > 0) {
           // Convert server history to local format (newest first from server, we need oldest first for undo stack)
           const entries: HistoryEntry[] = serverHistory
             .reverse() // Server returns newest first, we want oldest first
-            .map((h: any) => ({ id: h.id, snapshot: JSON.parse(h.snapshotJSON), description: h.description, timestamp: new Date(h.createdDate).getTime() }));
+            .map((h: PageHistoryRecord) => ({ id: h.id, snapshot: JSON.parse(h.snapshotJSON), description: h.description, timestamp: new Date(h.createdDate).getTime() }));
           setUndoStack(prev => [...entries.filter(e => !prev.some(p => p.id && p.id === e.id)), ...prev]);
         }
       } catch (err) {
@@ -278,7 +285,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
 
     // Save to API and get the ID. Non-persisted entries (the editor's opening baseline) stay local.
     if (options?.persist !== false && (pageIdRef.current || blockIdRef.current)) {
-      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result: any) => {
+      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result: PageHistoryRecord) => {
         // Update entry with the server ID
         setUndoStack(prev => {
           // Find and update the entry we just added
@@ -288,7 +295,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
               : e);
           return newStack;
         });
-      }).catch((err: any) => {
+      }).catch((err: unknown) => {
         console.error("Failed to save history to API:", err);
       });
     }

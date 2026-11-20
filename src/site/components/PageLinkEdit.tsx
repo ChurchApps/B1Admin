@@ -20,7 +20,16 @@ type Props = {
   onDone: () => void;
 };
 
-type AnyRecord = Record<string, any>;
+type PageLinkFormValues = {
+  title: string;
+  url: string;
+  layout: string;
+  linkText: string;
+  linkUrl: string;
+  visibility: string;
+  metaDescription: string;
+  _checkUrl?: string; // error-only key for the "check URL" validation message
+};
 
 export function PageLinkEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -30,16 +39,16 @@ export function PageLinkEdit(props: Props) {
   const [metaGenerating, setMetaGenerating] = useState<boolean>(false);
   const [metaError, setMetaError] = useState<string>("");
 
-  const { control, register, handleSubmit, reset, setValue, setError, watch, formState } = useForm<AnyRecord>({ defaultValues: { title: "", url: "", layout: "", linkText: "", linkUrl: "", visibility: "everyone", metaDescription: "" } });
+  const { control, register, handleSubmit, reset, setValue, setError, watch, formState } = useForm<PageLinkFormValues>({ defaultValues: { title: "", url: "", layout: "", linkText: "", linkUrl: "", visibility: "everyone", metaDescription: "" } });
   const visibility = watch("visibility");
   const metaDescription = watch("metaDescription") || "";
-  const e = formState.errors as any;
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["url", "title", "root", "_checkUrl"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => props.updatedCallback(props.page, props.link || null);
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: PageLinkFormValues) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       setError("root", { message: Locale.label("site.pageLinkEdit.unauthorizedCreate") });
       return;
@@ -56,8 +65,8 @@ export function PageLinkEdit(props: Props) {
     try {
       if (pageData) { [pageData] = await ApiHelper.post("/pages", [pageData], "ContentApi"); }
       if (linkData) { [linkData] = await ApiHelper.post("/links", [linkData], "ContentApi"); }
-    } catch (err: any) {
-      setError("root", { message: err?.message || Locale.label("common.error") });
+    } catch (err) {
+      setError("root", { message: (err instanceof Error ? err.message : "") || Locale.label("common.error") });
       return;
     }
 
@@ -96,7 +105,7 @@ export function PageLinkEdit(props: Props) {
   const handleDuplicate = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (await confirm(Locale.label("site.pageLink.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
-      ApiHelper.post("/pages/duplicate/" + props.page?.id, {}, "ContentApi").then((data: any) => {
+      ApiHelper.post("/pages/duplicate/" + props.page?.id, {}, "ContentApi").then((data: PageInterface) => {
         props.updatedCallback(data, props.link || null);
       });
     }

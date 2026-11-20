@@ -23,6 +23,9 @@ interface PodcastEpisode {
   link?: string;
 }
 
+// Response of /podcast/feed; episodes is checked with Array.isArray before use.
+type PodcastFeedResponse = Omit<PodcastFeed, "episodes"> & { error?: string; episodes?: PodcastEpisode[] };
+
 interface PodcastFeed {
   title: string;
   image: string;
@@ -40,7 +43,7 @@ export const PodcastImport = (props: Props) => {
   const [isFetching, setIsFetching] = React.useState(false);
 
   const loadData = () => {
-    ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
+    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { setPlaylists(data); });
     ApiHelper.get("/sermons", "ContentApi").then((data: PodcastSermon[]) => {
       const urls = new Set<string>();
       (data || []).forEach((s) => { if (s.audioUrl?.trim()) urls.add(s.audioUrl.trim()); });
@@ -61,7 +64,7 @@ export const PodcastImport = (props: Props) => {
     setIsFetching(true);
     setErrors([]);
     ApiHelper.getAnonymous("/podcast/feed?url=" + encodeURIComponent(feedUrl.trim()), "ContentApi")
-      .then((data: any) => {
+      .then((data: PodcastFeedResponse | null) => {
         setIsFetching(false);
         if (!data || data.error || !Array.isArray(data.episodes)) { setErrors([Locale.label("sermons.bulkImport.podcastFetchError")]); return; }
         const episodes: PodcastEpisode[] = data.episodes.filter((ep: PodcastEpisode) => ep.audioUrl);

@@ -4,6 +4,7 @@ import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyle
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, FormControl, Icon, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
 import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { ElementTypes } from "@churchapps/helpers";
+import type { FundInterface, GroupInterface, PlaylistInterface } from "@churchapps/helpers";
 import { FormCard } from "../../../components/ui";
 import { useConfirmDelete } from "../../../hooks";
 import { GalleryModal } from "../../../components/gallery";
@@ -11,7 +12,7 @@ import React from "react";
 
 const HtmlEditorLazy = lazy(() => import("@churchapps/apphelper/markdown").then((mod) => ({ default: mod.HtmlEditor })));
 
-const HtmlEditor = (props: any) => (
+const HtmlEditor = (props: React.ComponentProps<typeof HtmlEditorLazy>) => (
   <Suspense fallback={<div>{Locale.label("site.elements.loadingEditor")}</div>}>
     <HtmlEditorLazy {...props} />
   </Suspense>
@@ -94,9 +95,9 @@ export function ElementEdit(props: Props) {
   const [groupCategoryOptions, setGroupCategoryOptions] = useState<string[]>([]);
   const [selectPhotoField, setSelectPhotoField] = React.useState<string | null>(null);
   const [showIconPicker, setShowIconPicker] = useState(false);
-  const [playlists, setPlaylists] = useState<any[]>([]);
-  const [funds, setFunds] = useState<any[]>([]);
-  const [staffGroups, setStaffGroups] = useState<any[]>([]);
+  const [playlists, setPlaylists] = useState<PlaylistInterface[]>([]);
+  const [funds, setFunds] = useState<FundInterface[]>([]);
+  const [staffGroups, setStaffGroups] = useState<GroupInterface[]>([]);
   const [element, setElement] = useState<ElementInterface | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [innerErrors, setInnerErrors] = useState<string[]>([]);
@@ -133,7 +134,7 @@ export function ElementEdit(props: Props) {
     if (props.onCancel) props.onCancel();
     else props.updatedCallback(props.element);
   };
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSave();
@@ -156,7 +157,7 @@ export function ElementEdit(props: Props) {
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const p = { ...element };
-    const val: any = e.target.checked.toString();
+    const val: string = e.target.checked.toString();
     switch (e.target.name) {
       case "elementType": p.elementType = val; break;
       case "answersJSON": p.answersJSON = val; break;
@@ -186,7 +187,7 @@ export function ElementEdit(props: Props) {
     handleHtmlChange(field, newValue);
   };
 
-  const handleHtmlChange = (field: string, newValue: any) => {
+  const handleHtmlChange = (field: string, newValue: unknown) => {
     try {
       parsedData[field] = newValue;
       const p = { ...element };
@@ -222,7 +223,7 @@ export function ElementEdit(props: Props) {
     if (innerErrors.length === 0) {
       const toSave = element?.elements ? { ...element, elements: element.elements.filter((c) => !c.id?.startsWith("__preview_col_")) } : element;
       trackSave(ApiHelper.post("/elements", [toSave], "ContentApi"))
-        .then((response: any) => {
+        .then((response: ElementInterface | ElementInterface[]) => {
           const data = Array.isArray(response) ? response[0] : response;
           if (data.answersJSON) data.answers = JSON.parse(data.answersJSON);
           if (data.stylesJSON) data.styles = JSON.parse(data.stylesJSON);
@@ -235,7 +236,7 @@ export function ElementEdit(props: Props) {
           setElement(data);
           props.updatedCallback(data);
         })
-        .catch((error: any) => {
+        .catch((error: { message?: string } | undefined) => {
           console.error("ElementEdit API error:", error);
           setErrors([error?.message || Locale.label("common.error")]);
         });
@@ -330,7 +331,7 @@ export function ElementEdit(props: Props) {
     >
       <HtmlEditor
         value={parsedData[field] || ""}
-        onChange={(val: any) => {
+        onChange={(val: string) => {
           handleEditorHtmlChange(field, val);
         }}
       />
@@ -588,7 +589,7 @@ export function ElementEdit(props: Props) {
       <Typography fontSize="13px" sx={{ marginTop: 1 }}>
         {Locale.label("site.elements.zoomLevel")}
       </Typography>
-      <Slider defaultValue={15} valueLabelDisplay="auto" step={1} min={8} max={20} name="mapZoom" value={parsedData?.mapZoom || 15} onChange={(e: any) => handleChange(e)} />
+      <Slider defaultValue={15} valueLabelDisplay="auto" step={1} min={8} max={20} name="mapZoom" value={parsedData?.mapZoom || 15} onChange={(e) => handleChange(e as SelectChangeEvent<string>)} />
       <Typography fontSize="12px" fontStyle="italic">
         {Locale.label("site.elements.zoomLevelExample")}
       </Typography>
@@ -1005,7 +1006,7 @@ export function ElementEdit(props: Props) {
     setSelectPhotoField(null);
   };
 
-  const handleRowChange = (parsedData: any) => {
+  const handleRowChange = (parsedData: Record<string, unknown>) => {
     const e = { ...element };
     e.answersJSON = JSON.stringify(parsedData);
     if (element?.elementType === "row" && typeof parsedData.columns === "string") {
@@ -1077,17 +1078,17 @@ export function ElementEdit(props: Props) {
 
   useEffect(() => {
     if (element?.elementType !== "sermons" || playlists.length) return;
-    ApiHelper.get("/playlists", "ContentApi").then((data: any) => { if (Array.isArray(data)) setPlaylists(data); });
+    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { if (Array.isArray(data)) setPlaylists(data); });
   }, [element?.elementType]);
 
   useEffect(() => {
     if (element?.elementType !== "campaignProgress" || funds.length) return;
-    ApiHelper.get("/funds", "GivingApi").then((data: any) => { if (Array.isArray(data)) setFunds(data); });
+    ApiHelper.get("/funds", "GivingApi").then((data: FundInterface[]) => { if (Array.isArray(data)) setFunds(data); });
   }, [element?.elementType]);
 
   useEffect(() => {
     if (element?.elementType !== "staffGrid" || staffGroups.length) return;
-    ApiHelper.get("/groups", "MembershipApi").then((data: any) => { if (Array.isArray(data)) setStaffGroups(data); });
+    ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => { if (Array.isArray(data)) setStaffGroups(data); });
   }, [element?.elementType]);
 
   // Load existing labels + categories so the Groups element's pre-filter
@@ -1095,7 +1096,7 @@ export function ElementEdit(props: Props) {
   useEffect(() => {
     if (element?.elementType !== "groups") return;
     if (groupLabelOptions.length || groupCategoryOptions.length) return;
-    ApiHelper.get("/groups", "MembershipApi").then((groups: any[]) => {
+    ApiHelper.get("/groups", "MembershipApi").then((groups: GroupInterface[]) => {
       if (!Array.isArray(groups)) return;
       const labels = new Set<string>();
       const cats = new Set<string>();

@@ -48,7 +48,7 @@ export const Services: React.FC<Props> = ({ current, onEdit }) => {
 
   const loadData = () => {
     const seq = ++loadSeq.current;
-    ApiHelper.get("/streamingServices", "ContentApi").then((data: any) => {
+    ApiHelper.get("/streamingServices", "ContentApi").then((data: StreamingServiceInterface[]) => {
       if (seq !== loadSeq.current) return;
       data.forEach((s: StreamingServiceInterface) => {
         s.serviceTime = new Date(Date.parse(s.serviceTime!.toString()));

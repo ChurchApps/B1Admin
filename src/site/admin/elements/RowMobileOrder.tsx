@@ -2,11 +2,12 @@ import { MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow } fr
 import type { SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { Locale } from "@churchapps/apphelper";
+import type { RowAnswers } from "../../types";
 
 type Props = {
   cols: number[]
-  parsedData: any;
-  onRealtimeChange: (parsedData: any) => void;
+  parsedData: RowAnswers;
+  onRealtimeChange: (parsedData: RowAnswers) => void;
 };
 
 export function RowMobileOrder(props: Props) {

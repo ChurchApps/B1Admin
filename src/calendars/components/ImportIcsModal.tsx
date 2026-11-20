@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { type GroupInterface } from "@churchapps/helpers";
+import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from "@mui/material";
 
 interface Props {
@@ -36,7 +36,7 @@ export function ImportIcsModal(props: Props) {
   const handleImport = () => {
     setImporting(true);
     setError("");
-    ApiHelper.post("/events/ical", { ics: icsText, groupId }, "ContentApi").then(async (data: any[]) => {
+    ApiHelper.post("/events/ical", { ics: icsText, groupId }, "ContentApi").then(async (data: EventInterface[]) => {
       if (data?.length > 0) await linkGroupToCalendar();
       setImporting(false);
       if (!data || data.length === 0) setError(Locale.label("calendars.importIcs.noEventsFound"));

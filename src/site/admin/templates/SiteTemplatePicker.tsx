@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from "@mui/material";
 import { ApiHelper, ErrorMessages, Locale, UserHelper } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
+import type { GlobalStyleInterface } from "../../../helpers";
 import { buildTemplateSection } from "./sectionTemplates";
 import { getSectionDefs, siteTemplates, type SiteTemplateDef, type SiteTemplatePageDef } from "./siteTemplates";
 import { SiteTemplatePreview } from "./SiteTemplatePreview";
@@ -23,7 +24,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
   const [selected, setSelected] = useState<SiteTemplateDef | null>(null);
   const [existingPages, setExistingPages] = useState<PageSummary[]>([]);
   const [existingLinks, setExistingLinks] = useState<LinkInterface[]>([]);
-  const [existingStyle, setExistingStyle] = useState<any>(null);
+  const [existingStyle, setExistingStyle] = useState<GlobalStyleInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
@@ -34,7 +35,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
       setErrors([]);
       ApiHelper.get("/pages" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((data: PageSummary[]) => setExistingPages(data || []));
       ApiHelper.get("/links?category=website" + (siteId ? "&siteId=" + siteId : ""), "ContentApi").then((data: LinkInterface[]) => setExistingLinks(data || []));
-      ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: any) => setExistingStyle(gs || {}));
+      ApiHelper.get("/globalStyles" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((gs: GlobalStyleInterface) => setExistingStyle(gs || {}));
     }
   }, [props.open, siteId]);
 
@@ -81,14 +82,14 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
       }
       // Theme the site to the chosen template, but never overwrite a church's own palette.
       if (selected.theme && existingStyle && !existingStyle.palette) {
-        const gs: any = { ...existingStyle, palette: JSON.stringify(selected.theme.palette), fonts: JSON.stringify(selected.theme.fonts) };
+        const gs: GlobalStyleInterface = { ...existingStyle, palette: JSON.stringify(selected.theme.palette), fonts: JSON.stringify(selected.theme.fonts) };
         // Copy-on-write: if the loaded row isn't this site's, fork it so we never overwrite the primary.
         if ((existingStyle.siteId || "") !== siteId) { delete gs.id; gs.siteId = siteId; }
         await ApiHelper.post("/globalStyles", [gs], "ContentApi");
       }
       props.updatedCallback(firstCreatedPageId);
-    } catch (err: any) {
-      setErrors([err?.message || label("errFailed")]);
+    } catch (err) {
+      setErrors([(err instanceof Error ? err.message : "") || label("errFailed")]);
     } finally {
       setIsSubmitting(false);
       setStatus("");

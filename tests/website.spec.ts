@@ -1800,4 +1800,56 @@ test.describe.serial("Events page calendar element", () => {
       expect(answers).toMatchObject({ title: "Find a Group", layout: "autoscroll" });
     });
   });
+
+  // A style saved as a number (height: 500, font-size: 16) used to crash StyleEdit on value.replace.
+  test.describe.serial("Numeric element styles", () => {
+    const API_BASE = process.env.API_BASE || "http://localhost:8084";
+    let page: Page;
+    let auth: { headers: Record<string, string> };
+    let elementId: string | undefined;
+    const pageErrors: string[] = [];
+
+    test.beforeAll(async ({ browser }) => {
+      const ctx = await request.newContext();
+      const body = await (await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+      const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+      auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+      const res = await ctx.post(`${API_BASE}/content/elements`, { ...auth, data: [{ churchId: "CHU00000001", sectionId: "SEC00000019", elementType: "text", sort: 5, answersJSON: JSON.stringify({ text: "Zacchaeus Numeric Style" }), stylesJSON: JSON.stringify({ all: { "font-size": 16 } }) }] });
+      elementId = (await res.json())[0]?.id;
+      await ctx.dispose();
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      page.on("pageerror", (err) => pageErrors.push(err.message));
+      await login(page);
+    });
+
+    test.afterAll(async () => {
+      if (elementId) {
+        const ctx = await request.newContext();
+        await ctx.delete(`${API_BASE}/content/elements/${elementId}`, auth).catch(() => { });
+        await ctx.dispose();
+      }
+      await page?.context().close();
+    });
+
+    test("opens the style editor for a numeric font size", async () => {
+      expect(elementId).toBeTruthy();
+      await page.goto("/site/pages/PAG00000004");
+      const wrapper = page.locator(`div[data-element-id="${elementId}"]`).first();
+      await expect(wrapper).toBeVisible({ timeout: 20000 });
+      await wrapper.click({ position: { x: 5, y: 5 } });
+      const styleGroup = page.locator('[data-testid="element-group-style"]');
+      await expect(styleGroup).toBeVisible({ timeout: 10000 });
+      await styleGroup.getByText("Style", { exact: true }).click();
+      const styleRow = styleGroup.locator("a").filter({ hasText: "Font Size: 16" });
+      await expect(styleRow).toBeVisible({ timeout: 10000 });
+      pageErrors.length = 0;
+      await styleRow.click();
+      const valueField = styleGroup.locator('input[name="value"]');
+      await expect(valueField).toBeVisible({ timeout: 10000 });
+      await expect(valueField).toHaveValue("16");
+      await expect(page.getByText("Oops! An Error Occurred")).toHaveCount(0);
+      expect(pageErrors).toEqual([]);
+    });
+  });
 });

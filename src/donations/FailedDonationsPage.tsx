@@ -14,7 +14,7 @@ interface FailedDonationInterface {
   personId?: string;
   amount?: number;
   currency?: string;
-  donationDate?: Date;
+  donationDate?: string; // ISO string from JSON
   gatewayMessage?: string;
   canRetry?: boolean;
 }
@@ -42,8 +42,8 @@ export const FailedDonationsPage = () => {
     try {
       await ApiHelper.post("/donate/retry/" + id, {}, "GivingApi");
       await refetch();
-    } catch (e: any) {
-      setError(e?.message || Locale.label("donations.failedDonations.retryFailed"));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("donations.failedDonations.retryFailed"));
     }
     setRetryingId("");
   }, [refetch]);
@@ -65,7 +65,7 @@ export const FailedDonationsPage = () => {
               : <Typography variant="body2">{Locale.label("donations.donations.anon")}</Typography>}
           </TableCell>
           <TableCell align="right" sx={numericCellSx}><Typography variant="body2" sx={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, d.currency || currency)}</Typography></TableCell>
-          <TableCell><Typography variant="body2">{DateHelper.prettyDate(new Date(d.donationDate as any))}</Typography></TableCell>
+          <TableCell><Typography variant="body2">{DateHelper.prettyDate(new Date(d.donationDate ?? ""))}</Typography></TableCell>
           <TableCell>
             <Tooltip title={message}>
               <Typography variant="body2" noWrap sx={{ maxWidth: { xs: 260, lg: 560 } }}>{message}</Typography>

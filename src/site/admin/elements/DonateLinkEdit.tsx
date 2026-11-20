@@ -2,14 +2,22 @@ import { useEffect, useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import { Button, Chip, FormControl, Icon, InputAdornment, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { ApiHelper, CurrencyHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import type { FundInterface } from "@churchapps/helpers";
+
+type DonateLinkAnswers = {
+  url?: string;
+  text?: string;
+  fundId?: string;
+  amounts?: string;
+};
 
 type Props = {
-  parsedData: any;
-  onRealtimeChange: (parsedData: any) => void;
+  parsedData: DonateLinkAnswers;
+  onRealtimeChange: (parsedData: DonateLinkAnswers) => void;
 };
 
 export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
-  const [funds, setFunds] = useState<any[] | null>(null);
+  const [funds, setFunds] = useState<FundInterface[] | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
   const [amountValue, setAmountValue] = useState<number>();
   const [currency, setCurrency] = useState<string>("usd");
@@ -28,7 +36,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
     onRealtimeChange(data);
   };
 
-  const handleAmountAdd = (e: any) => {
+  const handleAmountAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const data = { ...parsedData };
     let a: number[] = [];
@@ -50,7 +58,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
 
   const handleAmountDelete = (amount: number) => {
     const data = { ...parsedData };
-    const a = JSON.parse(data.amounts);
+    const a = JSON.parse(data.amounts as string);
     const idx = a.indexOf(amount);
     a.splice(idx, 1);
     setAmounts(a);
@@ -59,7 +67,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
   };
 
   useEffect(() => {
-    ApiHelper.get("/funds", "GivingApi").then((data: any) => setFunds(data));
+    ApiHelper.get("/funds", "GivingApi").then((data: FundInterface[]) => setFunds(data));
     if (parsedData?.amounts) {
       setAmounts(JSON.parse(parsedData.amounts));
     }
@@ -97,7 +105,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
           <FormControl fullWidth>
             <InputLabel>{Locale.label("site.donateLink.funds")}</InputLabel>
             <Select fullWidth label={Locale.label("site.donateLink.funds")} name="fundId" value={parsedData.fundId} onChange={handleChange} data-testid="donate-link-fund-select" aria-label={Locale.label("site.donateLink.selectFund")}>
-              {funds.map((f: any) => (
+              {funds.map((f) => (
                 <MenuItem key={f.id} value={f.id} data-testid={`fund-option-${f.id}`} aria-label={f.name}>{f.name}</MenuItem>
               ))}
             </Select>
