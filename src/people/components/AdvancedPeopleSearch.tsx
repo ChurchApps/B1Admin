@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
 import { useCampuses } from "../../hooks/useCampuses";
-import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
+import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface, type FormInterface } from "@churchapps/helpers";
 import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
@@ -25,7 +25,8 @@ import {
   DialogContent,
   DialogActions,
   Paper,
-  alpha
+  alpha,
+  type Theme
 } from "@mui/material";
 import {
   ExpandMore as ExpandMoreIcon,
@@ -116,7 +117,7 @@ const styles = {
   activeFiltersPaper: {
     p: 1.5,
     mb: 2,
-    bgcolor: (theme: any) => alpha(theme.palette.primary.main, 0.05),
+    bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.05),
     borderRadius: 1
   },
   filterChip: {
@@ -137,7 +138,7 @@ const styles = {
     borderColor: "divider"
   },
   accordionSummary: {
-    bgcolor: (theme: any) => alpha(theme.palette.primary.main, 0.02),
+    bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.02),
     minHeight: 42,
     "&.Mui-expanded": {
       minHeight: 42,
@@ -155,7 +156,7 @@ const styles = {
     px: 0.5,
     borderRadius: 0.5
   },
-  filterRowActive: (theme: any) => ({ bgcolor: alpha(theme.palette.primary.main, 0.03) }),
+  filterRowActive: (theme: Theme) => ({ bgcolor: alpha(theme.palette.primary.main, 0.03) }),
   checkbox: { p: 0.5 },
   filterLabel: {
     fontSize: "0.8125rem",
@@ -326,7 +327,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               case "Checkbox":
                 type = "select";
                 operators = ["equals", "contains"];
-                options = q.choices?.map((c: any) => ({ value: c.value || c.text, label: c.text })) || [];
+                // The form editor always saves a choice's text.
+                options = (q.choices as { value?: string; text: string }[] | undefined)?.map((c) => ({ value: c.value || c.text, label: c.text })) || [];
                 break;
               default:
                 // Textbox, Text Area, Email, Phone Number - keep as text
@@ -405,11 +407,11 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     if (category === "customFields") {
-      const [forms, fields] = await Promise.all([
+      const [forms, fields]: [FormInterface[], PersonFieldInterface[] | null] = await Promise.all([
         ApiHelper.get("/forms?contentType=person", "MembershipApi"),
         ApiHelper.get("/personfields", "MembershipApi").catch(() => [])
       ]);
-      const personForms = forms.filter((f: any) => f.contentType === "person");
+      const personForms = forms.filter((f: FormInterface) => f.contentType === "person");
       const allQuestions: QuestionInterface[] = [];
       for (const form of personForms) {
         const questions = await ApiHelper.get("/questions?formId=" + form.id, "MembershipApi");
@@ -499,7 +501,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       props.onReportCriteria?.(activeFilters);
       debounceTimerRef.current = setTimeout(async () => {
         const postConditions = await convertConditions();
-        const data: any = await ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi");
+        const data: PersonInterface[] = await ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi");
         if (seq !== searchSeqRef.current) return;
         props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       }, 500);
@@ -609,7 +611,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               const isDateField = question.fieldType === "Date";
 
               for (const submission of formSubmissions) {
-                const answer = submission.answers?.find((a: any) => a.questionId === questionId);
+                const answer = submission.answers?.find((a) => a.questionId === questionId);
                 if (answer?.value) {
                   let matches = false;
 
@@ -673,7 +675,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     const seq = ++searchSeqRef.current;
     props.onReportCriteria?.(activeFilters);
     const postConditions = await convertConditions();
-    const data: any = await ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi");
+    const data: PersonInterface[] = await ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi");
     if (seq !== searchSeqRef.current) return;
     props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
   }, [convertConditions, props.updateSearchResults, activeFilters]);

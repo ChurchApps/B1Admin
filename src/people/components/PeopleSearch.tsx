@@ -35,7 +35,7 @@ export function PeopleSearch(props: Props) {
     if (term.trim()) {
       const conditions: SearchCondition[] = [{ field: "displayName", operator: "contains", value: term.trim() }];
       props.onReportCriteria?.(conditions);
-      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
+      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: PersonInterface[]) => {
         props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else {

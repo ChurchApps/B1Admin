@@ -89,7 +89,7 @@ export const useThisWeekAttendance = () => {
         id,
         name: group?.name || "",
         count: [...byGroup[id]].filter(Boolean).length,
-        capacity: Number((group as Record<string, any> | null)?.capacity) || 0
+        capacity: Number(group?.capacity) || 0
       };
     }).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   }, [weekRows, groups.data]);

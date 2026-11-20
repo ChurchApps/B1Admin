@@ -314,7 +314,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const handleSend = async () => {
     const peopleIds = ArrayHelper.getIds(members, "personId");
     const ids = peopleIds.filter((id) => id !== UserHelper.person.id); //remove the one that is sending the message.
-    const data: any = {
+    const data: { peopleIds: string[]; contentType: string; contentId?: string; message: string } = {
       peopleIds: ids,
       contentType: "groupMessage",
       contentId: props.group.id,

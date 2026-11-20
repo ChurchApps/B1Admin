@@ -121,8 +121,11 @@ const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale.label(FIELD_LABE
 
 type Props = { template: LabelTemplateInterface; updatedCallback: () => void };
 
+// Width and height hold the raw input text while editing and are turned back into numbers on save.
+type EditableTemplate = Omit<LabelTemplateInterface, "width" | "height"> & { width?: number | string; height?: number | string };
+
 export function LabelEditor(props: Props) {
-  const [tpl, setTpl] = useState<LabelTemplateInterface>(props.template);
+  const [tpl, setTpl] = useState<EditableTemplate>(props.template);
   const [blocks, setBlocks] = useState<LabelBlock[]>(() => {
     try { return JSON.parse(props.template.content || "[]"); } catch { return []; }
   });
@@ -316,8 +319,8 @@ export function LabelEditor(props: Props) {
                 <MenuItem value="nametag">{Locale.label("attendance.labels.nametag")}</MenuItem>
                 <MenuItem value="pickup">{Locale.label("attendance.labels.pickup")}</MenuItem>
               </TextField>
-              <TextField type="number" label={Locale.label("attendance.labels.width")} value={tpl.width ?? ""} onChange={(e) => setTpl({ ...tpl, width: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-width-input" />
-              <TextField type="number" label={Locale.label("attendance.labels.height")} value={tpl.height ?? ""} onChange={(e) => setTpl({ ...tpl, height: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-height-input" />
+              <TextField type="number" label={Locale.label("attendance.labels.width")} value={tpl.width ?? ""} onChange={(e) => setTpl({ ...tpl, width: e.target.value })} sx={{ minWidth: 100 }} data-testid="template-width-input" />
+              <TextField type="number" label={Locale.label("attendance.labels.height")} value={tpl.height ?? ""} onChange={(e) => setTpl({ ...tpl, height: e.target.value })} sx={{ minWidth: 100 }} data-testid="template-height-input" />
             </Stack>
             <Box sx={{ overflowX: "auto" }}>
               <Paper elevation={0} sx={{ position: "relative", width: CANVAS_W, height: canvasH, border: "1px solid", borderColor: "divider", boxSizing: "content-box", overflow: "hidden", bgcolor: "#FFF" }} onPointerDown={() => setSelectedId(null)} data-testid="label-canvas">

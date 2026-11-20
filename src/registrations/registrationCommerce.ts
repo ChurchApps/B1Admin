@@ -1,4 +1,4 @@
-import { type EventInterface, type RegistrationInterface, type RegistrationMemberInterface } from "@churchapps/helpers";
+import { type EventInterface, type RegistrationInterface, type RegistrationMemberInterface, type RegistrationSelectionChoiceInterface } from "@churchapps/helpers";
 
 // Phase 2 commerce fields live on the Api models but aren't in the published @churchapps/helpers
 // interfaces yet; these local extensions/interfaces cover them until helpers is republished.
@@ -63,8 +63,10 @@ export interface RegistrationPaymentInterface {
   createdDate?: Date | string;
 }
 
-export interface CommerceEventInterface extends Omit<EventInterface, "capacity" | "registrationOpenDate" | "registrationCloseDate"> {
+export interface CommerceEventInterface extends Omit<EventInterface, "capacity" | "registrationOpenDate" | "registrationCloseDate" | "formId"> {
   waitlistEnabled?: boolean;
+  // Saved as null to unlink the form.
+  formId?: string | null;
   capacity?: number | null;
   registrationOpenDate?: Date | null;
   registrationCloseDate?: Date | null;
@@ -73,6 +75,9 @@ export interface CommerceEventInterface extends Omit<EventInterface, "capacity" 
 interface CommerceMemberInterface extends RegistrationMemberInterface {
   registrationTypeId?: string;
 }
+
+// A saved selection choice always points at its selection.
+export type LoadedSelectionChoice = RegistrationSelectionChoiceInterface & { selectionId: string };
 
 export interface CommerceRegistrationInterface extends RegistrationInterface {
   totalAmount?: number;

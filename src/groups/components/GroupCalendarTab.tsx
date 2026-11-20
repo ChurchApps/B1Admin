@@ -79,8 +79,9 @@ export const GroupCalendarTab = (props: Props) => {
   };
 
   // Matches the Api: content editors, or the requester withdrawing their own pending request.
-  const canDelete = (event: EventInterface) => UserHelper.checkAccess(Permissions.contentApi.content.edit)
-    || ((event as any).approvalStatus === "pending" && !!UserHelper.person?.id && (event as any).requestedBy === UserHelper.person.id);
+  // approvalStatus and requestedBy are not on the published EventInterface yet.
+  const canDelete = (event: EventInterface & { approvalStatus?: string; requestedBy?: string }) => UserHelper.checkAccess(Permissions.contentApi.content.edit)
+    || (event.approvalStatus === "pending" && !!UserHelper.person?.id && event.requestedBy === UserHelper.person.id);
 
   const handleDelete = async (event: EventInterface) => {
     if (await confirm(Locale.label("groups.groupCalendar.confirmDelete").replace("{title}", event.title || ""))) {
@@ -95,7 +96,7 @@ export const GroupCalendarTab = (props: Props) => {
   };
 
   const renderRsvpCell = (ev: EventInterface) => {
-    if ((ev as any).rsvpDisabled) return <Typography variant="body2" color="text.secondary">{Locale.label("groups.groupCalendar.rsvpsDisabled")}</Typography>;
+    if (ev.rsvpDisabled) return <Typography variant="body2" color="text.secondary">{Locale.label("groups.groupCalendar.rsvpsDisabled")}</Typography>;
     const totals = totalsFor(ev.id);
     if (!totals) return <Typography variant="body2" color="text.secondary">—</Typography>;
     const summary = Locale.label("groups.groupCalendar.rsvpSummary")
@@ -167,7 +168,7 @@ export const GroupCalendarTab = (props: Props) => {
                 <TableCell>{ev.title}</TableCell>
                 <TableCell>{new Date(ev.start!).toLocaleString(DateHelper.locale, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
                 <TableCell>{describeRecurrence(ev.recurrenceRule)}</TableCell>
-                <TableCell sx={numericCellSx}>{(ev as any).exceptionDates?.length || 0}</TableCell>
+                <TableCell sx={numericCellSx}>{ev.exceptionDates?.length || 0}</TableCell>
                 <TableCell>{ev.visibility === "private" ? Locale.label("calendars.newEvent.private") : Locale.label("calendars.newEvent.public")}</TableCell>
                 <TableCell>{renderRsvpCell(ev)}</TableCell>
                 <TableCell align="right" className="rowActions">

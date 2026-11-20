@@ -85,7 +85,7 @@ export interface PaymentGatewaysInterface {
   payFees?: boolean;
   currency?: string;
   enabled?: boolean;
-  settings?: Record<string, any>;
+  settings?: Record<string, unknown>;
 }
 
 export interface SongInterface {
@@ -309,6 +309,7 @@ export interface GlobalStyleInterface {
   churchId?: string;
   siteId?: string;
   fonts?: string;
+  // JSON string; site/ components pass it straight to JSON.parse without an undefined check, so it stays untyped until they do.
   palette?: any;
   typography?: string;
   spacing?: string;
@@ -331,9 +332,10 @@ export interface ElementInterface {
   parentId?: string | null;
   size?: number;
   answersJSON?: string;
+  // Free-form per-element JSON (strings, numbers, arrays) read loosely by the site editor outside this module; left untyped until those readers narrow it.
   answers?: any;
   stylesJSON?: string;
-  styles?: { all?: any; desktop?: any; mobile?: any };
+  styles?: InlineStylesInterface;
   animationsJSON?: string;
   animations?: { onShow?: string; onShowSpeed?: string };
   sort?: number;
@@ -354,11 +356,13 @@ export interface SectionInterface {
   sort?: number;
   targetBlockId?: string;
   answersJSON?: string;
+  // Free-form per-section JSON (strings, numbers, arrays) read loosely by the site editor outside this module; left untyped until those readers narrow it.
   answers?: any;
   stylesJSON?: string;
+  // site/ code both indexes this by device (InlineStylesInterface) and stores a name/value list in it (SectionEdit); left untyped until those agree.
   styles?: any;
   animationsJSON?: string;
-  animations?: any;
+  animations?: { onShow?: string; onShowSpeed?: string };
   sourceId?: string;
   sections?: SectionInterface[];
   elements?: ElementInterface[];
@@ -420,9 +424,9 @@ export interface GenericSettingInterface {
 }
 
 export interface InlineStylesInterface {
-  all?: any;
-  desktop?: any;
-  mobile?: any;
+  all?: Record<string, string>;
+  desktop?: Record<string, string>;
+  mobile?: Record<string, string>;
 }
 
 export interface AnimationsInterface {
@@ -525,3 +529,5 @@ export interface FeedVenueInterface {
   sections?: FeedSectionInterface[];
 }
 
+// An API record that is known to have been saved, so its id is always set.
+export type WithId<T> = T & { id: string };

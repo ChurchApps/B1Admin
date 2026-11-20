@@ -42,7 +42,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = () => {
-    ApiHelper.get("/groups", "MembershipApi").then((groups: any) => {
+    ApiHelper.get("/groups", "MembershipApi").then((groups: GroupInterface[]) => {
       const result: string[] = [];
       groups.forEach((group: GroupInterface) => {
         (group.labelArray || []).forEach((label) => {

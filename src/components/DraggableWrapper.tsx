@@ -5,7 +5,7 @@ import { Locale } from "@churchapps/apphelper";
 type Props = {
   children?: React.ReactNode;
   dndType: string;
-  data: any;
+  data: unknown;
   onDoubleClick?: () => void;
   draggingCallback?: (isDragging: boolean) => void;
   /** When set, only the first descendant with this class starts a drag (the whole

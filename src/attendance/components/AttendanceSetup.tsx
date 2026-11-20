@@ -99,7 +99,7 @@ export const AttendanceSetup = memo(() => {
   }, [groups.data, groupServiceTimes.data]);
 
   const getGroups = useCallback(
-    (serviceTimeId: string) => {
+    (serviceTimeId: string | undefined) => {
       const result: GroupInterface[] = [];
       const gsts: GroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes.data || [], "serviceTimeId", serviceTimeId);
       gsts.forEach((gst) => {
@@ -288,7 +288,7 @@ export const AttendanceSetup = memo(() => {
       </TableRow>
     );
 
-    const servicesByCampus: { [campusId: string]: { [serviceKey: string]: { service: any; serviceTimes: any[] } } } = {};
+    const servicesByCampus: { [campusId: string]: { [serviceKey: string]: { service: ServiceInterface; serviceTimes: AttendanceInterface[] } } } = {};
     (attendance.data || []).forEach((a) => {
       if (!a.service) return; // campus-only tree row; the campus comes from the membership list below
       const cid = a.campus?.id || "";
@@ -317,8 +317,8 @@ export const AttendanceSetup = memo(() => {
         // Campus with no services yet — show its header with the add-service button on the same row.
         rows.push(getAddServiceRow(campus, `add-svc-${campusIdx}`, true));
       } else {
-        servicesList.forEach((serviceGroup: any, serviceIdx) => {
-          serviceGroup.serviceTimes.forEach((a: any, stIdx: number) => {
+        servicesList.forEach((serviceGroup, serviceIdx) => {
+          serviceGroup.serviceTimes.forEach((a, stIdx: number) => {
             const filteredGroups = a.serviceTime === undefined ? [] : getGroups(a.serviceTime.id);
             const sortedGroups = filteredGroups.sort(compare);
             if (sortedGroups.length > 0) {

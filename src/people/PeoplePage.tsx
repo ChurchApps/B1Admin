@@ -374,7 +374,7 @@ export const PeoplePage = memo(() => {
       const { name, contactInfo, ...rest } = person;
       const photoUrl = person.photo ? (person.photo.startsWith("http") ? person.photo : (EnvironmentHelper.Common.ContentRoot + person.photo)) : "";
 
-      const rawExport: any = {
+      const rawExport: Record<string, unknown> = {
         ...rest,
         photo: photoUrl,
 
@@ -401,7 +401,7 @@ export const PeoplePage = memo(() => {
         contactEmail: contactInfo?.email
       };
 
-      const formattedExport: any = {};
+      const formattedExport: Record<string, unknown> = {};
       Object.keys(rawExport).forEach((key) => {
         formattedExport[formatHeader(key)] = rawExport[key];
       });

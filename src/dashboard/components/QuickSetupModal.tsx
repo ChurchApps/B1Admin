@@ -73,8 +73,8 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
           await handleGroupSetup();
           break;
       }
-    } catch (e: any) {
-      setError(e.message || Locale.label("dashboard.quickSetupModal.errorGeneric"));
+    } catch (e) {
+      setError((e as { message?: string }).message || Locale.label("dashboard.quickSetupModal.errorGeneric"));
     } finally {
       setIsSubmitting(false);
     }

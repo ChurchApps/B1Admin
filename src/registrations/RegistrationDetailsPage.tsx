@@ -42,7 +42,7 @@ import { formatDateSafe } from "../helpers/DateFormatHelper";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
 import { ShareLinkDialog } from "../components/ShareLinkDialog";
 import { getPublicEventUrl } from "../helpers/EventLinkHelper";
-import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
+import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type LoadedSelectionChoice } from "./registrationCommerce";
 
 const isActive = (status?: string) => status === "pending" || status === "confirmed";
 
@@ -151,8 +151,8 @@ export const RegistrationDetailsPage = () => {
       await ApiHelper.post("/registrations/register", body, "ContentApi");
       setShowAddAttendee(false);
       loadData(false);
-    } catch (err: any) {
-      setAddError(parseErrorMessage(err?.message || "") || Locale.label("registrations.registrationDetailsPage.addAttendeeError"));
+    } catch (err) {
+      setAddError(parseErrorMessage((err as { message?: string } | null | undefined)?.message || "") || Locale.label("registrations.registrationDetailsPage.addAttendeeError"));
     }
   };
 
@@ -186,7 +186,7 @@ export const RegistrationDetailsPage = () => {
   const waitlistPos = new Map<string, number>(waitlistOrder.map((r, i) => [r.id as string, i + 1]));
 
   const handleExportCSV = async () => {
-    const detailMap = new Map<string, any>();
+    const detailMap = new Map<string, Omit<CommerceRegistrationInterface, "selectionChoices"> & { selectionChoices?: LoadedSelectionChoice[] }>();
     const answerMap = new Map<string, Record<string, string>>();
     const questionTitles: string[] = [];
     const seenQ = new Set<string>();
@@ -197,12 +197,12 @@ export const RegistrationDetailsPage = () => {
       const detail = await ApiHelper.get(`/registrations/${reg.id}`, "ContentApi").catch(() => null);
       if (detail) detailMap.set(reg.id as string, detail);
       if (reg.formSubmissionId) {
-        const sub = await ApiHelper.get(`/formsubmissions/${reg.formSubmissionId}/?include=questions,answers`, "MembershipApi").catch(() => null);
+        const sub: { questions?: { id: string; title: string }[]; answers?: { questionId: string; value: string }[] } | null = await ApiHelper.get(`/formsubmissions/${reg.formSubmissionId}/?include=questions,answers`, "MembershipApi").catch(() => null);
         if (sub) {
-          const qById = new Map<string, string>((sub.questions || []).map((q: any) => [q.id, q.title]));
-          (sub.questions || []).forEach((q: any) => { if (!seenQ.has(q.title)) { seenQ.add(q.title); questionTitles.push(q.title); } });
+          const qById = new Map<string, string>((sub.questions || []).map((q) => [q.id, q.title]));
+          (sub.questions || []).forEach((q) => { if (!seenQ.has(q.title)) { seenQ.add(q.title); questionTitles.push(q.title); } });
           const map: Record<string, string> = {};
-          (sub.answers || []).forEach((a: any) => { const t = qById.get(a.questionId); if (t) map[t] = a.value; });
+          (sub.answers || []).forEach((a) => { const t = qById.get(a.questionId); if (t) map[t] = a.value; });
           answerMap.set(reg.id as string, map);
         }
       }
@@ -224,7 +224,7 @@ export const RegistrationDetailsPage = () => {
     registrations.forEach((reg) => {
       const members = getAttendeeNames(reg).join("; ");
       const detail = detailMap.get(reg.id as string);
-      const selText = (detail?.selectionChoices || []).map((c: any) => {
+      const selText = (detail?.selectionChoices || []).map((c) => {
         const sel = selMap.get(c.selectionId);
         return `${sel?.name || c.selectionId}${(c.quantity || 1) > 1 ? ` x${c.quantity}` : ""}`;
       }).join("; ");

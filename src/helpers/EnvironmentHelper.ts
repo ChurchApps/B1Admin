@@ -50,7 +50,7 @@ export class EnvironmentHelper {
     const origin = window.location.origin;
     const common = EnvironmentHelper.Common;
     const apiBase = origin + "/api";
-    for (const mod of ["Membership", "Attendance", "Content", "Giving", "Messaging", "Doing", "Reporting"]) (common as any)[mod + "Api"] = apiBase + "/" + mod.toLowerCase();
+    for (const mod of ["Membership", "Attendance", "Content", "Giving", "Messaging", "Doing", "Reporting"] as const) common[`${mod}Api`] = apiBase + "/" + mod.toLowerCase();
     common.MessagingApiSocket = origin.replace(/^http/, "ws") + "/api/";
     common.ContentRoot = origin + "/api/content";
     common.B1Root = origin;

@@ -2,6 +2,8 @@ import React, { memo, useCallback, useMemo } from "react";
 import { Grid, FormControlLabel, Checkbox, Dialog, DialogTitle, DialogActions, Button, DialogContent, Tabs, Tab, Box } from "@mui/material";
 import { ViewColumn as ViewColumnIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import type { FormInterface, QuestionInterface } from "@churchapps/helpers";
+import type { PersonFieldInterface, WithId } from "../../helpers/Interfaces";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
 export const PeopleColumns = memo(function PeopleColumns(props: Props) {
   const [open, setOpen] = React.useState(false);
   const [tabValue, setTabValue] = React.useState("standard");
-  const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
+  const [optionalColumns, setOptionalColumns] = React.useState<WithId<QuestionInterface>[]>([]);
 
   const handleClick = useCallback((e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault();
@@ -102,18 +104,18 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
   }, [tabValue, standardItems, optionalItems, optionalColumns.length]);
 
   React.useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => {
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: FormInterface[]) => {
       if (data.length > 0) {
-        const personForms = data.filter((f: any) => f.contentType === "person");
+        const personForms = data.filter((f) => f.contentType === "person");
         if (personForms.length > 0) {
-          personForms.forEach((f: any) => {
-            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: any) => setOptionalColumns((prevState) => [...prevState, ...q]));
+          personForms.forEach((f) => {
+            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: WithId<QuestionInterface>[]) => setOptionalColumns((prevState) => [...prevState, ...q]));
           });
         }
       }
     });
     ApiHelper.get("/personfields", "MembershipApi")
-      .then((fields: any) => setOptionalColumns((prevState) => [...prevState, ...(fields || []).map((f: any) => ({ id: "personField_" + f.id, title: f.name }))]))
+      .then((fields: PersonFieldInterface[] | null) => setOptionalColumns((prevState) => [...prevState, ...(fields || []).map((f) => ({ id: "personField_" + f.id, title: f.name }))]))
       .catch(() => { });
   }, []);
 

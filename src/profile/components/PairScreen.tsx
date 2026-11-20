@@ -10,14 +10,14 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+type PairFormValues = { code: string };
 
 export const PairScreen = (props: Props) => {
-  const { register, handleSubmit, setError, formState } = useForm<AnyRecord>({ defaultValues: { code: "" } });
+  const { register, handleSubmit, setError, formState } = useForm<PairFormValues>({ defaultValues: { code: "" } });
   const [planTypes, setPlanTypes] = useState<PlanTypeInterface[]>([]);
   const [ministries, setMinistries] = useState<GroupInterface[]>([]);
   const [planTypeId, setPlanTypeId] = useState("");
-  const e = formState.errors as any;
+  const e = formState.errors;
   const summaryErrors: string[] = [];
   if (e.code?.message) summaryErrors.push(e.code.message);
 
@@ -31,9 +31,9 @@ export const PairScreen = (props: Props) => {
     return ministry ? `${ministry.name} — ${pt.name}` : pt.name;
   };
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: PairFormValues) => {
     const query = planTypeId ? `?contentType=b1church&contentId=${planTypeId}` : "";
-    ApiHelper.get("/devices/pair/" + values.code + query, "MessagingApi").then((data: any) => {
+    ApiHelper.get("/devices/pair/" + values.code + query, "MessagingApi").then((data: { success?: boolean }) => {
       if (data.success) props.updatedFunction();
       else setError("code", { message: Locale.label("profile.pairScreen.invalidCode") });
     });

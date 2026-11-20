@@ -3,21 +3,21 @@ import React, { useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { Locale } from "@churchapps/apphelper";
 
-type Props = {
+type Props<T> = {
   children?: React.ReactNode;
-  accept: any;
-  onDrop: (data: any) => void;
-  dndDeps?: any;
+  accept: string | string[];
+  onDrop: (data: T) => void;
+  dndDeps?: unknown;
   updateIsDragging?: (isDragging: boolean) => void;
   hideWhenInactive?: boolean;
 };
 
-export function DroppableWrapper(props: Props) {
+export function DroppableWrapper<T = unknown>(props: Props<T>) {
   const { accept, onDrop, dndDeps, updateIsDragging, hideWhenInactive, children } = props;
 
   const [isDragging, setIsDragging] = React.useState(false);
 
-  const [{ isOver, canDrop }, drop] = useDrop(
+  const [{ isOver, canDrop }, drop] = useDrop<T, void, { isOver: boolean; canDrop: boolean }>(
     () => ({
       accept,
       drop: (data) => {
@@ -37,6 +37,9 @@ export function DroppableWrapper(props: Props) {
     }),
     [accept, onDrop, dndDeps]
   );
+
+  // Stable while `drop` is, like passing `drop` directly; the wrapper only drops the connector's return value from the ref type.
+  const dropRef = React.useCallback((node: HTMLDivElement | null) => { drop(node); }, [drop]);
 
   // Update dragging state via effect to avoid state updates during render
   useEffect(() => {
@@ -71,7 +74,7 @@ export function DroppableWrapper(props: Props) {
   } : { ...baseStyle, ...(hidden ? { opacity: 0 } : {}) };
 
   return (
-    <div ref={drop as any} style={dropZoneStyle} data-testid="droppable-wrapper" aria-label={Locale.label("components.droppableWrapper.ariaLabel")}>
+    <div ref={dropRef} style={dropZoneStyle} data-testid="droppable-wrapper" aria-label={Locale.label("components.droppableWrapper.ariaLabel")}>
       {children}
     </div>
   );

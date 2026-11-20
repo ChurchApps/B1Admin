@@ -4,7 +4,7 @@ import { ApiHelper, Loading, Locale, CurrencyHelper } from "@churchapps/apphelpe
 import { FormSubmission } from "../../components";
 import { StatusBadge } from "../../components/ui";
 import { formatDateSafe } from "../../helpers/DateFormatHelper";
-import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface } from "../registrationCommerce";
+import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface, type LoadedSelectionChoice } from "../registrationCommerce";
 
 interface Props {
   registrationId: string;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, typeMap, selMap, registrantName, onClose }) => {
-  const [reg, setReg] = useState<(CommerceRegistrationInterface & { selectionChoices?: any[]; payments?: RegistrationPaymentInterface[] }) | null>(null);
+  const [reg, setReg] = useState<(Omit<CommerceRegistrationInterface, "selectionChoices"> & { selectionChoices?: LoadedSelectionChoice[]; payments?: RegistrationPaymentInterface[] }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("usd");
 
@@ -62,7 +62,7 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("registrations.commerce.selections")}</Typography>
                 <Table size="small" data-testid="detail-selections">
                   <TableBody>
-                    {(reg?.selectionChoices || []).map((c: any, i: number) => {
+                    {(reg?.selectionChoices || []).map((c, i: number) => {
                       const sel = selMap.get(c.selectionId);
                       return (
                         <TableRow key={c.id || i}>

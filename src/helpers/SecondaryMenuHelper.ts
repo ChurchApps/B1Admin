@@ -2,6 +2,13 @@ import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { hasPlansEditAccess } from "./PlanPermissionHelper";
 import { canSeeBatches } from "../donations/batchAccess";
 
+export interface SecondaryMenuData {
+  formPermission?: boolean;
+  search?: string;
+  isMinistryMember?: boolean;
+  usesStripe?: boolean;
+}
+
 interface MenuItem {
   url: string;
   label: string;
@@ -9,7 +16,7 @@ interface MenuItem {
 }
 
 export class SecondaryMenuHelper {
-  static getSecondaryMenu = (path: string, data: any) => {
+  static getSecondaryMenu = (path: string, data: SecondaryMenuData) => {
     let result: { menuItems: MenuItem[]; label: string } = { menuItems: [], label: "" };
 
     if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance") || path.startsWith("/forms")) result = this.getPeopleMenu(path, data);
@@ -25,7 +32,7 @@ export class SecondaryMenuHelper {
     return result;
   };
 
-  static getPeopleMenu = (path: string, data: any) => {
+  static getPeopleMenu = (path: string, data: SecondaryMenuData) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people", label: Locale.label("components.wrapper.ppl"), icon: "person" });
@@ -102,7 +109,7 @@ export class SecondaryMenuHelper {
     return { menuItems, label };
   };
 
-  static getServingMenu = (path: string, data?: any) => {
+  static getServingMenu = (path: string, data?: SecondaryMenuData) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     const canViewPlans = hasPlansEditAccess() || data?.isMinistryMember;
@@ -121,7 +128,7 @@ export class SecondaryMenuHelper {
     return { menuItems, label };
   };
 
-  static getDonationsMenu = (path: string, data?: any) => {
+  static getDonationsMenu = (path: string, data?: SecondaryMenuData) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("donations.donations.summary"), icon: "volunteer_activism" });

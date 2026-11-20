@@ -13,15 +13,21 @@ interface DeviceContentInterface {
   contentType: string;
 }
 
+// A Lessons.church classroom as /classrooms returns it.
+interface ClassroomInterface {
+  id?: string;
+  name?: string;
+}
+
 export const DeviceContent = (props: Props) => {
-  const [classRooms, setClassRooms] = React.useState<any[]>([]);
+  const [classRooms, setClassRooms] = React.useState<ClassroomInterface[]>([]);
   const [contents, setContents] = React.useState<DeviceContentInterface[]>([]);
 
   const loadData = () => {
-    ApiHelper.get("/classrooms", "LessonsApi").then((data: any) => {
+    ApiHelper.get("/classrooms", "LessonsApi").then((data: ClassroomInterface[]) => {
       setClassRooms(data);
     });
-    ApiHelper.get("/deviceContents/deviceId/" + props.device.id, "MessagingApi").then((data: any) => {
+    ApiHelper.get("/deviceContents/deviceId/" + props.device.id, "MessagingApi").then((data: DeviceContentInterface[]) => {
       setContents(data);
     });
   };

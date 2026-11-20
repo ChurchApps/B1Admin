@@ -15,7 +15,7 @@ export const ChartReport = (props: Props) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
-  let rows: any = [];
+  let rows: (string | number)[][] = [];
 
   const getChartData = () => {
     if (props.output.columns.length === 2) return getSingleData();
@@ -48,13 +48,13 @@ export const ChartReport = (props: Props) => {
   };
 
   const transformData = (headers: string[]) => {
-    const result: any[] = [];
+    const result: (string | number)[][] = [];
     props.reportResult.table.forEach((d) => {
       const firstVal = ReportHelper.getField(props.output.columns[0], d);
       const secondVal = ReportHelper.getField(props.output.columns[1], d);
       const headerIndex = getHeaderIndex(headers, secondVal);
 
-      let row: any[] = [];
+      let row: (string | number)[] = [];
       if (result.length === 0 || firstVal !== result[result.length - 1][0]) {
         row[0] = firstVal;
         for (let i = 1; i < headers.length; i++) row[i] = 0;

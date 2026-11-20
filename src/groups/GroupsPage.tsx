@@ -100,14 +100,14 @@ const GroupsPage = () => {
   const exportData = groups.map((g) => {
     const { labelArray, ...rest } = g;
 
-    const rawExport: any = {
+    const rawExport: Record<string, unknown> = {
       ...rest,
       labels: Array.isArray(labelArray) ? labelArray.join(", ") : "",
       labelCount: Array.isArray(labelArray) ? labelArray.length : 0,
       memberCount: Number(g.memberCount || 0)
     };
 
-    const formattedExport: any = {};
+    const formattedExport: Record<string, unknown> = {};
     Object.keys(rawExport).forEach((key) => {
       formattedExport[formatHeader(key)] = rawExport[key];
     });

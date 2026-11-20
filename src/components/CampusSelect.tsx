@@ -1,18 +1,17 @@
-import React from "react";
-import { Controller, type Control } from "react-hook-form";
+import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { useCampuses } from "../hooks/useCampuses";
 
-interface Props {
-  control: Control<any>;
-  name?: string;
+interface Props<T extends FieldValues> {
+  control: Control<T>;
+  name?: FieldPath<T>;
   label?: string;
   testId?: string;
 }
 
 // Reusable campus dropdown for person/group/plan editors.
-export const CampusSelect: React.FC<Props> = ({ control, name = "campusId", label, testId = "campus-select" }) => {
+export const CampusSelect = <T extends FieldValues>({ control, name = "campusId" as FieldPath<T>, label, testId = "campus-select" }: Props<T>) => {
   const campuses = useCampuses();
   const lbl = label ?? Locale.label("person.campus");
   const labelId = `${name}-campus-label`;

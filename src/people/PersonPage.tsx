@@ -29,7 +29,7 @@ export const PersonPage = () => {
   const canViewAttendance = useMemo(() => UserHelper.checkAccess(Permissions.attendanceApi.attendance.view), []);
   const canViewGiving = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.view), []);
   const churchId = UserHelper.currentUserChurch?.church?.id || "";
-  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId && canViewGiving });
+  const publicSettings = useQuery<Record<string, string>>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId && canViewGiving });
   const givingHidden = publicSettings.data?.hideGivingOnPerson === "true";
   const canLogGift = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
   const [showLogGift, setShowLogGift] = React.useState(false);
@@ -87,7 +87,7 @@ export const PersonPage = () => {
     if (conversationId) rooms.push(conversationId);
     rooms.forEach((room) => SubscriptionManager.joinRoom(room, churchId, personId).catch(() => { /* ignore */ }));
     const handlerId = `PersonPage-${params.id}`;
-    SocketHelper.addHandler("conversationActivity", handlerId, (data: any) => {
+    SocketHelper.addHandler("conversationActivity", handlerId, (data: { contentType?: string; contentId?: string } | null) => {
       if (data?.contentType === "person" && data?.contentId === params.id) refetchRef.current();
     });
     return () => {

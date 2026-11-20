@@ -3,7 +3,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ApiListType } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
 
-export const toNum = (v: any) => (v === null || v === undefined || v === "" ? null : Number(v));
+export const toNum = (v: unknown) => (v === null || v === undefined || v === "" ? null : Number(v));
 
 interface EditableRowListOptions<T> {
   loadUrl: string;
@@ -14,7 +14,7 @@ interface EditableRowListOptions<T> {
   enabled?: boolean;
   sortBy?: keyof T;
   filter?: (row: T) => boolean;
-  coerce?: (row: T) => any;
+  coerce?: (row: T) => unknown;
 }
 
 export function useEditableRowList<T extends { id?: string }>(options: EditableRowListOptions<T>) {
@@ -36,7 +36,8 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
 
   useEffect(() => { if (enabled) load(); }, [loadUrl, enabled]);
 
-  const update = (i: number, field: keyof T, value: any) => {
+  // Inputs store their raw text (e.g. "12" for a numeric field) until coerce runs on save.
+  const update = (i: number, field: keyof T, value: unknown) => {
     setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
   };
 
@@ -49,8 +50,8 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
       setError(null);
       try {
         await ApiHelper.delete(`${deleteUrlPrefix}${row.id}`, api);
-      } catch (e: any) {
-        setError(e?.message || Locale.label("common.saveError"));
+      } catch (e) {
+        setError((e as { message?: string } | null | undefined)?.message || Locale.label("common.saveError"));
         return;
       }
       setSnapshot((prev) => JSON.stringify((JSON.parse(prev) as T[]).filter((r) => r.id !== row.id)));
@@ -67,8 +68,8 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
       if (payload.length > 0) await ApiHelper.post(saveUrl, payload, api);
       load();
       return true;
-    } catch (e: any) {
-      setError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setError((e as { message?: string } | null | undefined)?.message || Locale.label("common.saveError"));
       return false;
     } finally {
       setSaving(false);

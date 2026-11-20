@@ -11,7 +11,7 @@ interface UseBulkApplyDialogParams<T> {
   onOpen?: () => void;
 }
 
-export function useBulkApplyDialog<T = any>(params: UseBulkApplyDialogParams<T>) {
+export function useBulkApplyDialog<T = unknown>(params: UseBulkApplyDialogParams<T>) {
   const { open, apply, onComplete, onClose, loadOptions, onOpen } = params;
   const [options, setOptions] = React.useState<T[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);

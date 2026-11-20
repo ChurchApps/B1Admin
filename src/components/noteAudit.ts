@@ -22,7 +22,7 @@ export const toDeletedNotes = (rows: NoteAuditRow[], contentType: string): Delet
   const result: DeletedNote[] = [];
   (rows || []).forEach((row) => {
     if (row.action !== "note_deleted") return;
-    let details: any;
+    let details: { contentType?: string; messageId?: string; before?: { displayName?: string; timeSent?: string } } | null;
     try { details = JSON.parse(row.details); } catch { return; }
     if (details?.contentType !== contentType) return;
     result.push({ messageId: details.messageId, displayName: details.before?.displayName, timeSent: details.before?.timeSent, deletedAt: row.created });

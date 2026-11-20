@@ -22,9 +22,18 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+// Number fields hold "" until the user fills them in.
+type ServiceTimeFormValues = {
+  name: string;
+  serviceId?: string;
+  dayOfWeek: number | string;
+  startTime: string;
+  endTime: string;
+  checkinOpenMinutes: number | string;
+  checkinCloseMinutes: number | string;
+};
 
-const toNumberOrNull = (value: any) => (value === "" || value === null || value === undefined || isNaN(Number(value)) ? null : Number(value));
+const toNumberOrNull = (value: number | string | null | undefined) => (value === "" || value === null || value === undefined || isNaN(Number(value)) ? null : Number(value));
 
 export const ServiceTimeEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -33,12 +42,12 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
   const [loaded, setLoaded] = React.useState<ScheduledServiceTime | null>(null);
   const isMounted = useMountedState();
 
-  const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", serviceId: "", dayOfWeek: "", startTime: "", endTime: "", checkinOpenMinutes: "", checkinCloseMinutes: "" } });
-  const e = formState.errors as any;
+  const { control, register, handleSubmit, reset, formState } = useForm<ServiceTimeFormValues>({ defaultValues: { name: "", serviceId: "", dayOfWeek: "", startTime: "", endTime: "", checkinOpenMinutes: "", checkinCloseMinutes: "" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name", "serviceId"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: ServiceTimeFormValues) => {
     setIsSubmitting(true);
     const dayOfWeek = toNumberOrNull(values.dayOfWeek);
     const scheduled = dayOfWeek !== null && !!values.startTime;

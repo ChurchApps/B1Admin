@@ -35,7 +35,7 @@ export const OAuthPage: React.FC = () => {
 
   React.useEffect(() => {
     if (clientId) {
-      ApiHelper.get(`/oauth/clients/clientId/${clientId}`, "MembershipApi").then((client: any) => {
+      ApiHelper.get(`/oauth/clients/clientId/${clientId}`, "MembershipApi").then((client: { name: string; redirectUris?: string | string[]; selfRegistered?: boolean } | null) => {
         if (client) {
           setClientName(client.name);
           setClientRedirectUris(client.redirectUris || "");

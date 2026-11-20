@@ -15,7 +15,15 @@ interface Props {
   onUpdate: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+type RegistrationSettingsFormValues = {
+  registrationEnabled: boolean;
+  waitlistEnabled: boolean;
+  capacity: string;
+  registrationOpenDate: string;
+  registrationCloseDate: string;
+  tags: string;
+  formId: string;
+};
 
 const toLocalInput = (d: Date | string) => {
   const dt = new Date(d);
@@ -30,7 +38,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   const [selectionsDirty, setSelectionsDirty] = useState(false);
   const [couponsDirty, setCouponsDirty] = useState(false);
 
-  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
+  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<RegistrationSettingsFormValues>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
 
   const sectionsDirty = typesDirty || selectionsDirty || couponsDirty;
   const anyDirty = isDirty || sectionsDirty;
@@ -59,7 +67,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
     });
   }, [event, reset]);
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: RegistrationSettingsFormValues) => {
     setSaving(true);
     const updated: CommerceEventInterface = {
       ...event,

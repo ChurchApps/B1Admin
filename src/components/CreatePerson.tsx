@@ -29,7 +29,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, showHou
   const [householdRole, setHouseholdRole] = React.useState("Other");
   const isMounted = useMountedState();
   const churchId = UserHelper.currentUserChurch?.church?.id || "";
-  const publicSettings = useQuery<any>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const publicSettings = useQuery<Record<string, string>>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
   const titleOptions = React.useMemo(() => parseTitleOptions(publicSettings.data?.titleOptions), [publicSettings.data]);
 
   const validate = () => {
@@ -80,11 +80,11 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, showHou
     const household = { name: person.name.last } as HouseholdInterface;
 
     setIsSubmitting(true);
-    ApiHelper.post("/households", [household], "MembershipApi").then((data: any) => {
+    ApiHelper.post("/households", [household], "MembershipApi").then((data: HouseholdInterface[]) => {
       household.id = data[0].id;
       const newPerson: PersonInterface = { ...person, householdId: household.id, name: { ...person.name, display: [person.name.first, person.name.last].join(" ") } };
       ApiHelper.post("/people", [newPerson], "MembershipApi")
-        .then((data: any) => {
+        .then((data: PersonInterface[]) => {
           newPerson.id = data[0].id;
           onCreate(showHouseholdRole ? { ...newPerson, householdRole } : newPerson);
           setPerson({ name: { first: "", last: "" }, contactInfo: { email: "" } });

@@ -8,7 +8,10 @@ import { useErrorSummary } from "../../hooks";
 import { CategorySelect } from "./CategorySelect";
 import UserContext from "../../UserContext";
 
-type AnyRecord = Record<string, any>;
+interface GroupAddForm {
+  categoryName: string;
+  name: string;
+}
 
 interface Props {
   updatedFunction: () => void;
@@ -21,17 +24,17 @@ export const GroupAdd: React.FC<Props> = (props) => {
   const [saveErrors, setSaveErrors] = React.useState<string[]>([]);
   const context = React.useContext(UserContext);
 
-  const { control, register, handleSubmit } = useForm<AnyRecord>({ defaultValues: { categoryName: props.categoryName || "", name: "" } });
+  const { control, register, handleSubmit } = useForm<GroupAddForm>({ defaultValues: { categoryName: props.categoryName || "", name: "" } });
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
   const summaryErrors = useErrorSummary(errors, ["categoryName", "name"]);
 
   const handleCancel = () => {
     props.updatedFunction();
   };
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: GroupAddForm) => {
     setIsSubmitting(true);
     setSaveErrors([]);
     try {

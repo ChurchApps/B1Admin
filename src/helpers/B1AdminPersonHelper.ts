@@ -38,8 +38,7 @@ export class B1AdminPersonHelper {
       displayName: person?.name?.display,
       birthDate: person?.birthDate ? new Date(person?.birthDate) : null,
       anniversary: person?.anniversary ? new Date(person?.anniversary) : null,
-      // dateAdded is not on the published PersonInterface yet.
-      dateAdded: (person as any)?.dateAdded ? new Date((person as any).dateAdded) : null
+      dateAdded: person?.dateAdded ? new Date(person.dateAdded) : null
     } as unknown as PersonInterface;
   }
 }

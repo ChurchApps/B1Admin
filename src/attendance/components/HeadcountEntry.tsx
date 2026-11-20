@@ -157,7 +157,7 @@ export const HeadcountEntry: React.FC = () => {
                 {groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
               </Select>
             </FormControl>
-            <AppDatePicker fullWidth label={Locale.label("attendance.headcountEntry.date")} name="headcountDate" value={current.headcountDate || ""} data-testid="headcount-date-input" onChange={(e: any) => setCurrent({ ...current, headcountDate: e.target.value })} />
+            <AppDatePicker fullWidth label={Locale.label("attendance.headcountEntry.date")} name="headcountDate" value={current.headcountDate || ""} data-testid="headcount-date-input" onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setCurrent({ ...current, headcountDate: e.target.value })} />
             <TextField fullWidth type="number" label={Locale.label("attendance.headcountEntry.count")} value={valueText} data-testid="headcount-value-input" slotProps={{ htmlInput: { min: 0, step: 1, inputMode: "numeric" } }} onChange={(e) => setValueText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") handleSave(); }} />
           </FormCard>
         </Grid>
