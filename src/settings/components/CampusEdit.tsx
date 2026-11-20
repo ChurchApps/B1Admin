@@ -11,12 +11,20 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface CampusFormValues {
+  name: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  timezone: string;
+  website: string;
+}
 
 const getTimezones = (): string[] => {
   try {
-    const anyIntl = Intl as any;
-    if (typeof anyIntl.supportedValuesOf === "function") return anyIntl.supportedValuesOf("timeZone"); // Use IANA zones if supported
+    if (typeof Intl.supportedValuesOf === "function") return Intl.supportedValuesOf("timeZone"); // Use IANA zones if supported
   } catch {
     /* ignore */
   }
@@ -29,12 +37,12 @@ export const CampusEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const { register, handleSubmit, reset, formState, watch } = useForm<AnyRecord>({ defaultValues: { name: "" } });
-  const e = formState.errors as any;
+  const { register, handleSubmit, reset, formState, watch } = useForm<CampusFormValues>({ defaultValues: { name: "" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: CampusFormValues) => {
     setIsSubmitting(true);
     const campus = { ...props.campus, ...values };
     ApiHelper.post("/campuses", [campus], "MembershipApi")

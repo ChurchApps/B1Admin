@@ -12,20 +12,18 @@ interface Props {
   onCancel: () => void;
 }
 
-type AnyRecord = Record<string, any>;
-
 export const LinkEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { url: "", text: "" } });
+  const { register, handleSubmit, reset } = useForm<LinkInterface>({ defaultValues: { url: "", text: "" } });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   useEffect(() => {
     if (props.link) reset({ ...props.link });
   }, [props.link, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: LinkInterface) => {
     const l: LinkInterface = { ...props.link, ...values };
-    ApiHelper.post("/links", [l], "ContentApi").then((data: any) => {
+    ApiHelper.post("/links", [l], "ContentApi").then((data: LinkInterface[]) => {
       props.onSave(data[0]);
     });
   };

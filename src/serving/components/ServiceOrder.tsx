@@ -15,7 +15,7 @@ import { SaveTemplateDialog } from "./SaveTemplateDialog";
 import { LessonTrimConfirm, fillLabel } from "./LessonTrimConfirm";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
-import { RowDropZone } from "./RowDropZone";
+import { RowDropZone, type PlanItemDragItem } from "./RowDropZone";
 import { formatTime } from "./PlanUtils";
 import { findThumbnailRecursive, buildProviderMediaLookup, buildSectionLabels, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, buildPositionLabels, type ProviderMediaInfo, type SectionLabel } from "./planItemUtils";
 
@@ -471,7 +471,7 @@ export const ServiceOrder = memo((props: Props) => {
   );
 
   const handleDrop = useCallback(
-    (data: any, sort: number) => {
+    (data: PlanItemDragItem, sort: number) => {
       const pi = { ...(data.data as PlanItemInterface), sort, parentId: null };
       ApiHelper.post("/planItems/sort", pi, "DoingApi").then(() => {
         loadData();

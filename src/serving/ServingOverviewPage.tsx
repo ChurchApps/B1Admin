@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, Permissions, UserHelper, type PersonInterface } from "@churchapps/apphelper";
-import { type AssignmentInterface, type BlockoutDateInterface, type PositionInterface } from "@churchapps/helpers";
+import { type AssignmentInterface, type BlockoutDateInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
 import { Alert, Box, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { ArrowBack as BackIcon, AutoFixHigh as AutoIcon, Close as CloseIcon, Clear as ClearIcon, MailOutline as EmailIcon, Sms as SmsIcon } from "@mui/icons-material";
 import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, Surface } from "../components/ui";
@@ -247,7 +247,7 @@ export const ServingOverviewPage = () => {
       // Sequential: each /autofill reads same-date assignments from the DB, so a
       // parallel run would double-book people serving the same day across plans.
       for (const [planId, slots] of planSlots) {
-        const teams = slots.map(s => ({ positionId: s.positionId, personIds: ArrayHelper.getAll(groupMembers, "groupId", s.groupId).map((m: any) => m.personId) }));
+        const teams = slots.map(s => ({ positionId: s.positionId, personIds: ArrayHelper.getAll(groupMembers, "groupId", s.groupId).map((m: GroupMemberInterface) => m.personId) }));
         try {
           const res = await ApiHelper.post("/plans/autofill/" + planId, { teams }, "DoingApi");
           if (res?.created > 0) filled++;

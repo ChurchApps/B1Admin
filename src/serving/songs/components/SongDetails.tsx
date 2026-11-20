@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Locale, DateHelper } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
-import { Box, Typography, Stack, Avatar, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
+import { Box, Typography, Stack, Avatar, List, ListItem, ListItemIcon, ListItemText, Divider, type SvgIconProps } from "@mui/material";
 import { EmptyState, StatusBadge, Surface } from "../../../components/ui";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import {
@@ -37,7 +37,7 @@ export const SongDetails = memo((props: Props) => {
   }, []);
 
   const songDetailItems = useMemo(() => {
-    const items: any[] = [];
+    const items: { icon: React.ReactElement<SvgIconProps>; label: string; value: string; color: string }[] = [];
     if (!props.songDetail) return items;
 
     if (props.songDetail.artist) {

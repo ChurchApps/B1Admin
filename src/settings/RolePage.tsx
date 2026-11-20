@@ -29,10 +29,10 @@ export const RolePage = () => {
       setRole({ id: undefined, name: "Everyone" });
       return;
     }
-    ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data: any) => setRole(data));
+    ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data: RoleInterface) => setRole(data));
   };
   const loadRoleMembers = () => {
-    ApiHelper.get("/rolemembers/roles/" + params.roleId + "?include=users", "MembershipApi").then((data: any) => {
+    ApiHelper.get("/rolemembers/roles/" + params.roleId + "?include=users", "MembershipApi").then((data: RoleMemberInterface[]) => {
       setRoleMembers(data);
     });
   };

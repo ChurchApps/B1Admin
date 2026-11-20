@@ -1,12 +1,12 @@
 import React from "react";
-import { useForm, Controller, useFormState } from "react-hook-form";
+import { useForm, Controller, useFormState, type FieldValues } from "react-hook-form";
 import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, FormHelperText } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { ApiHelper, DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
-import { type PlanInterface } from "../../helpers";
+import { type PlanInterface, type PlanTemplateInterface } from "../../helpers";
 import { CampusSelect } from "../../components/CampusSelect";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
@@ -19,7 +19,20 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+// Extends FieldValues so the form control fits CampusSelect's Control<any> prop.
+interface PlanFormValues extends FieldValues {
+  name: string;
+  serviceDate: string;
+  campusId: string;
+  signupDeadlineHours: number | string;
+  showVolunteerNames: boolean;
+  prepared: boolean;
+  autoReplaceOnDecline: boolean;
+  confirmationWorkflowId: string;
+}
+
+// The API accepts null to clear these fields.
+type PlanSaveInterface = Omit<PlanInterface, "campusId" | "signupDeadlineHours"> & { campusId?: string | null; signupDeadlineHours?: number | null };
 
 const MAX_REPEAT_INTERVAL = 52;
 const MAX_REPEAT_COUNT = 12;
@@ -39,7 +52,7 @@ export const PlanEdit = (props: Props) => {
   const firstDayOfWeek = useFirstDayOfWeek();
   applyWeekStart(firstDayOfWeek);
 
-  const templatesQuery = useQuery<any[]>({
+  const templatesQuery = useQuery<PlanTemplateInterface[]>({
     queryKey: [`/plantemplates/ministry/${props.plan?.ministryId}`, "DoingApi"],
     enabled: !props.plan?.id && !!props.plan?.ministryId,
     placeholderData: []
@@ -51,7 +64,7 @@ export const PlanEdit = (props: Props) => {
     placeholderData: []
   });
 
-  const { control, register, handleSubmit, watch, setValue, getFieldState } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, watch, setValue, getFieldState } = useForm<PlanFormValues>({
     defaultValues: {
       name: props.plan?.name ?? "",
       serviceDate: DateHelper.formatHtml5Date(props.plan?.serviceDate) ?? "",
@@ -65,7 +78,7 @@ export const PlanEdit = (props: Props) => {
   });
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
 
   const summaryErrors: string[] = React.useMemo(() => {
     const errs: string[] = [];
@@ -108,7 +121,7 @@ export const PlanEdit = (props: Props) => {
   });
 
   // Each extra plan is copied from the plan created before it, like BulkLessonSchedule.
-  const copyForwardPlans = async (plan: PlanInterface, firstId: string) => {
+  const copyForwardPlans = async (plan: PlanSaveInterface, firstId: string) => {
     const firstDate = new Date(plan.serviceDate!);
     const autoName = plan.name === DateHelper.prettyDate(firstDate);
     const dates = getRepeatDates(firstDate);
@@ -150,7 +163,7 @@ export const PlanEdit = (props: Props) => {
   })();
 
   const savePlanMutation = useMutation({
-    mutationFn: async (plan: PlanInterface) => {
+    mutationFn: async (plan: PlanSaveInterface) => {
       // Template: create plan, then apply snapshot.
       if (!plan.id && templateId) {
         const saved = await ApiHelper.post("/plans", [plan], "DoingApi");
@@ -183,13 +196,13 @@ export const PlanEdit = (props: Props) => {
     }
   });
 
-  const onValid = (values: AnyRecord) => {
-    const plan: PlanInterface = {
+  const onValid = (values: PlanFormValues) => {
+    const plan: PlanSaveInterface = {
       ...props.plan,
       name: values.name,
       serviceDate: DateHelper.toDate(values.serviceDate),
       serviceOrder: true,
-      signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
+      signupDeadlineHours: values.signupDeadlineHours ? parseInt(String(values.signupDeadlineHours)) : undefined,
       showVolunteerNames: values.showVolunteerNames,
       prepared: values.prepared,
       autoReplaceOnDecline: values.autoReplaceOnDecline,
@@ -197,7 +210,7 @@ export const PlanEdit = (props: Props) => {
     };
     plan.campusId = values.campusId || null;
     // undefined is dropped from the JSON body, so the API would keep the old deadline; null clears it
-    if (!values.signupDeadlineHours) plan.signupDeadlineHours = null as any;
+    if (!values.signupDeadlineHours) plan.signupDeadlineHours = null;
     if (savePlanMutation.isPending) return;
     savePlanMutation.mutate(plan);
   };

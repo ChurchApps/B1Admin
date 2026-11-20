@@ -23,6 +23,7 @@ import type { LinkInterface } from "@churchapps/helpers";
 import { CardWithHeader, EmptyState, StatusBadge } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useReorderableLinks } from "../../hooks";
+import { type AppTabInterface } from "../types";
 
 interface Props {
   onSelected?: (tab: LinkInterface) => void;
@@ -51,7 +52,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
     onSelected(tab);
   };
 
-  const getVisibilityLabel = (visibility: string) => {
+  const getVisibilityLabel = (visibility?: string) => {
     switch (visibility) {
       case "visitors": return Locale.label("settings.appEdit.loggedInUsers");
       case "members": return Locale.label("settings.appEdit.membersStaff");
@@ -67,7 +68,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
       <ListItem sx={{ py: 2, pl: nested ? 6 : 2 }} data-nested={nested ? "true" : "false"}>
         {nested && <ChildIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />}
         <ListItemIcon sx={{ mr: 2 }}>
-          {(tab as any)?.photo ? (
+          {(tab as AppTabInterface)?.photo ? (
             <Box
               sx={{
                 borderRadius: "var(--b1-radius-control)",
@@ -80,7 +81,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
               }}
             >
               <img
-                src={(tab as any).photo}
+                src={(tab as AppTabInterface).photo}
                 alt={tab.text || Locale.label("settings.appEdit.tabIconAlt")}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
@@ -108,7 +109,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
               <Typography variant="body1" component="h3" sx={{ fontWeight: 600 }}>
                 {tab.text || Locale.label("settings.appTabs.untitled")}
               </Typography>
-              <StatusBadge>{getVisibilityLabel((tab as any).visibility)}</StatusBadge>
+              <StatusBadge>{getVisibilityLabel((tab as AppTabInterface).visibility)}</StatusBadge>
             </Stack>
           }
           secondary={

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import type { LinkInterface } from "@churchapps/helpers";
+import type { FileInterface, LinkInterface } from "@churchapps/helpers";
 import type { ArrangementInterface, ArrangementKeyInterface, SongDetailInterface } from "../../helpers/Interfaces";
 import { SongDetails } from "./SongDetails";
 import { ChordProHelper } from "../../helpers/ChordProHelper";
@@ -24,7 +24,7 @@ export const SongDialog: React.FC<Props> = (props) => {
   const [songDetail, setSongDetail] = React.useState<SongDetailInterface | null>(null);
   const [products, setProducts] = React.useState<PraiseChartsProduct[]>([]);
   const [links, setLinks] = React.useState<LinkInterface[]>([]);
-  const [audioFiles, setAudioFiles] = React.useState<any[]>([]);
+  const [audioFiles, setAudioFiles] = React.useState<FileInterface[]>([]);
   const [keyOffset, setKeyOffset] = React.useState(0);
 
   const loadData = async () => {

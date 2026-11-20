@@ -103,8 +103,8 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
       setAddDomainName("");
       setError("");
       props.onSaveComplete?.(true);
-    } catch (e: any) {
-      setError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("common.saveError"));
       props.onSaveComplete?.(false);
     }
   };

@@ -13,7 +13,9 @@ interface Props {
   onClose: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface PlanTypeFormValues {
+  name: string;
+}
 
 export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
   const [loading, setLoading] = React.useState(false);
@@ -27,17 +29,17 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
     setLessonTrim(null);
   };
 
-  const { register, handleSubmit, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: planType?.name || "" } });
-  const e = formState.errors as any;
+  const { register, handleSubmit, setError, formState } = useForm<PlanTypeFormValues>({ defaultValues: { name: planType?.name || "" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["name"]);
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: PlanTypeFormValues) => {
     setLoading(true);
     try {
       await ApiHelper.post("/planTypes", [{ ...planType, ...values }], "DoingApi");
       onClose();
-    } catch (error: any) {
-      setError("name", { message: error.message || Locale.label("plans.planTypeEdit.errorSaving") });
+    } catch (error) {
+      setError("name", { message: (error instanceof Error ? error.message : "") || Locale.label("plans.planTypeEdit.errorSaving") });
     }
     setLoading(false);
   };
@@ -48,8 +50,8 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
     try {
       await ApiHelper.delete("/planTypes/" + planType?.id, "DoingApi");
       onClose();
-    } catch (error: any) {
-      setError("name", { message: error.message || Locale.label("plans.planTypeEdit.errorDeleting") });
+    } catch (error) {
+      setError("name", { message: (error instanceof Error ? error.message : "") || Locale.label("plans.planTypeEdit.errorDeleting") });
       setLoading(false);
     }
   };

@@ -1,9 +1,10 @@
 import { ApiHelper, ArrayHelper } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
+import { type CreateNotificationRequest } from "../../types";
 
 // Tells a task's assignee (or every member of an assigned group) about the task.
 export const notifyAssignee = async (task: TaskInterface, message: string) => {
-  const data: any = {
+  const data: CreateNotificationRequest = {
     peopleIds: [task.assignedToId],
     contentType: "task",
     contentId: task.id,

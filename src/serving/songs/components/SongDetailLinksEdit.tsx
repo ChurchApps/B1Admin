@@ -12,19 +12,22 @@ interface Props {
   reload: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface SongDetailLinkFormValues {
+  service: string;
+  serviceKey: string;
+}
 
 export const SongDetailLinksEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [songDetailLinks, setSongDetailLinks] = React.useState<SongDetailLinkInterface[]>([]);
   const [editLink, setEditLink] = React.useState<SongDetailLinkInterface | null>(null);
 
-  const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { service: "Apple", serviceKey: "" } });
+  const { control, register, handleSubmit, reset, watch } = useForm<SongDetailLinkFormValues>({ defaultValues: { service: "Apple", serviceKey: "" } });
   const watchedService = watch("service");
 
   const loadData = () => {
     if (props.songDetailId) {
-      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetailId, "ContentApi").then((data: any) => {
+      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetailId, "ContentApi").then((data: SongDetailLinkInterface[]) => {
         setSongDetailLinks(data);
       });
     }
@@ -76,7 +79,7 @@ export const SongDetailLinksEdit = (props: Props) => {
     });
   };
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: SongDetailLinkFormValues) => {
     if (!editLink) return;
     const l: SongDetailLinkInterface = { ...editLink, service: values.service, serviceKey: values.serviceKey };
     l.url = determineUrl(values.service, values.serviceKey);

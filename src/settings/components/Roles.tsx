@@ -9,6 +9,13 @@ import { TextAction, tableScrollSx } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { SettingsPanel } from "./SettingsPanel";
 
+/** A ready-made role offered in the Add Role menu. */
+interface PredefinedRole {
+  name: string;
+  description: string;
+  permissions: { api: string; contentType: string; action: string }[];
+}
+
 type RoleWithCount = RoleInterface & { memberCount?: number };
 
 interface Props {
@@ -152,13 +159,13 @@ export const AddRoleMenu: React.FC<AddRoleProps> = ({ churchId, onAddCustom }) =
   );
 
   const addRole = useCallback(
-    async (role: any) => {
+    async (role: PredefinedRole) => {
       handleClose();
       if (await confirm(Locale.label("settings.roles.roleCreate") + role.name + Locale.label("settings.roles.itMsg") + role.description.toLowerCase(), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
         const rolesData = await ApiHelper.post("/roles", [{ name: role.name }], "MembershipApi");
         const r = rolesData[0];
         const perms: RolePermissionInterface[] = [];
-        role.permissions.forEach((p: any) => {
+        role.permissions.forEach((p) => {
           perms.push({
             roleId: r.id,
             apiName: p.api,

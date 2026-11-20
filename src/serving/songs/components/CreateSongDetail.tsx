@@ -9,14 +9,18 @@ interface Props {
   onSave: (songDetail: SongDetailInterface) => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface CreateSongDetailFormValues {
+  title: string;
+  artist: string;
+  seconds: number;
+}
 
 export const CreateSongDetail: React.FC<Props> = (props) => {
-  const { register, handleSubmit } = useForm<AnyRecord>({ defaultValues: { title: "", artist: "", seconds: 0 } });
+  const { register, handleSubmit } = useForm<CreateSongDetailFormValues>({ defaultValues: { title: "", artist: "", seconds: 0 } });
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: CreateSongDetailFormValues) => {
     const sd = { ...values } as SongDetailInterface;
-    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: any) => {
+    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: SongDetailInterface[]) => {
       props.onSave(data[0]);
     });
   };

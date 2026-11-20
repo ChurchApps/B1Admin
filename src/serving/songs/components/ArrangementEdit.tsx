@@ -13,11 +13,9 @@ interface Props {
   onCancel: () => void;
 }
 
-type AnyRecord = Record<string, any>;
-
 export const ArrangementEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { name: "", lyrics: "" } });
+  const { register, handleSubmit, reset, watch } = useForm<ArrangementInterface>({ defaultValues: { name: "", lyrics: "" } });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const lyrics = watch("lyrics");
 
@@ -25,11 +23,11 @@ export const ArrangementEdit = (props: Props) => {
     if (props.arrangement) reset({ ...props.arrangement });
   }, [props.arrangement, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: ArrangementInterface) => {
     const a: ArrangementInterface = { ...props.arrangement, ...values };
     if (Number.isNaN(a.bpm as number)) a.bpm = undefined;
     if (Number.isNaN(a.seconds as number)) a.seconds = undefined;
-    ApiHelper.post("/arrangements", [a], "ContentApi").then((data: any) => {
+    ApiHelper.post("/arrangements", [a], "ContentApi").then((data: ArrangementInterface[]) => {
       props.onSave(data[0]);
     });
   };

@@ -53,8 +53,8 @@ export const AccountDeletionRequest = (props: Props) => {
     setError("");
     try {
       await decide({ outcome: "approved" });
-    } catch (e: any) {
-      setError(e?.message || Locale.label("tasks.accountDeletion.approveError", "The account could not be deleted."));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("tasks.accountDeletion.approveError", "The account could not be deleted."));
       setBusy(false);
     }
   };
@@ -65,8 +65,8 @@ export const AccountDeletionRequest = (props: Props) => {
     setError("");
     try {
       await decide({ outcome: "rejected", reason: rejectReason });
-    } catch (e: any) {
-      setError(e?.message || Locale.label("tasks.accountDeletion.rejectError", "The request could not be closed."));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("tasks.accountDeletion.rejectError", "The request could not be closed."));
       setBusy(false);
     }
   };

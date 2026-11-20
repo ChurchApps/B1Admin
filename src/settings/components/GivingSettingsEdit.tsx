@@ -20,13 +20,20 @@ interface Props {
   onSaveComplete?: (ok: boolean) => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface GivingFormValues {
+  provider: string;
+  publicKey: string;
+  privateKey: string;
+  webhookKey: string;
+  payFees: boolean;
+  currency: string;
+}
 
 const isProd = process.env.REACT_APP_STAGE === "prod";
 
 // Every ISO currency the browser knows, for churches that record gifts without an online giving provider.
 const allCurrencies = (): string[] => {
-  const iso: string[] = (Intl as any).supportedValuesOf?.("currency") || [];
+  const iso: string[] = Intl.supportedValuesOf?.("currency") || [];
   if (iso.length) return iso.map((c) => c.toLowerCase());
   const union = new Set<string>(["usd"]);
   listPaymentProviders().forEach((p) => { if (Array.isArray(p.descriptor.currencies)) p.descriptor.currencies.forEach((c) => union.add(c)); });
@@ -42,7 +49,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const feeSaveRef = React.useRef<(() => Promise<void>) | null>(null);
   const statementSaveRef = React.useRef<(() => Promise<void>) | null>(null);
 
-  const { register, reset, control, watch, getValues } = useForm<AnyRecord>({ defaultValues: { provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: "usd" } });
+  const { register, reset, control, watch, getValues } = useForm<GivingFormValues>({ defaultValues: { provider: "", publicKey: "", privateKey: "", webhookKey: "", payFees: false, currency: "usd" } });
   const provider = watch("provider");
   const currency = watch("currency");
 
@@ -101,9 +108,9 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       await Promise.all([feeSaveRef.current?.(), statementSaveRef.current?.()]);
       setErrors([]);
       props.onSaveComplete?.(true);
-    } catch (error: any) {
+    } catch (error) {
       let message = Locale.label("settings.givingSettingsEdit.saveError");
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         try {
           const parsed = JSON.parse(error.message);
           message = parsed.message || error.message;
