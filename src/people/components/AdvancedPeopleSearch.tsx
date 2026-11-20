@@ -768,7 +768,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       try {
         const parsed = JSON.parse(filter.value);
         displayText = `${parsed[0]?.text || Locale.label("people.editCondition.any")}`;
-      } catch (e) {
+      } catch {
         // ignore
       }
     }
@@ -791,7 +791,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 fromDate: parsed[1]?.from || DateHelper.formatHtml5Date(new Date()),
                 toDate: parsed[1]?.to || DateHelper.formatHtml5Date(new Date())
               });
-            } catch (e) {
+            } catch {
               // ignore
             }
           }

@@ -27,7 +27,7 @@ interface BulkDeleteResponse {
 const INITIAL_PAGE_SIZE = 50;
 
 // Same people in any order. The first page differs in length, so it never matches the full directory.
-const samePeople = (a: PersonInterface[], b: PersonInterface[]) => {
+const samePeople = (a: PersonInterface[] | null, b: PersonInterface[] | null) => {
   if (a === b) return true;
   if (!a || !b || a.length !== b.length) return false;
   const ids = new Set(b.map((p) => p.id));

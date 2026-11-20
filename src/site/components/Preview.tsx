@@ -50,8 +50,20 @@ export function Preview(props: Props) {
           <h1 style={{ fontFamily: fonts.heading }}>Our Story</h1>
         </div>
         <div style={{ backgroundColor: palette.light, color: palette.dark, padding: 20 }}>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vulputate ut pharetra sit amet aliquam id diam. Magna sit amet purus gravida. Urna molestie at elementum eu facilisis sed. Bibendum est ultricies integer quis auctor elit. Donec et odio pellentesque diam volutpat commodo sed. Dignissim suspendisse in est ante in nibh mauris. Elit ullamcorper dignissim cras tincidunt lobortis feugiat. Euismod elementum nisi quis eleifend quam adipiscing. Dictum varius duis at consectetur lorem.</p>
-          <p>Quis viverra nibh cras pulvinar. Suspendisse interdum consectetur libero id faucibus nisl tincidunt. Neque ornare aenean euismod elementum nisi quis eleifend. Nec nam aliquam sem et tortor consequat. Eget nulla facilisi etiam dignissim diam. Mattis rhoncus urna neque viverra justo. Neque sodales ut etiam sit amet nisl purus. Consequat ac felis donec et odio pellentesque. Neque gravida in fermentum et sollicitudin ac orci. Non nisi est sit amet. Id aliquet lectus proin nibh nisl. Pharetra convallis posuere morbi leo urna molestie at elementum eu. Purus non enim praesent elementum. Blandit massa enim nec dui nunc. Condimentum vitae sapien pellentesque habitant morbi tristique senectus et. Adipiscing commodo elit at imperdiet dui. Nibh tortor id aliquet lectus.</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vulputate ut
+            pharetra sit amet aliquam id diam. Magna sit amet purus gravida. Urna molestie at elementum eu facilisis sed. Bibendum est ultricies integer
+            quis auctor elit. Donec et odio pellentesque diam volutpat commodo sed. Dignissim suspendisse in est ante in nibh mauris. Elit ullamcorper
+            dignissim cras tincidunt lobortis feugiat. Euismod elementum nisi quis eleifend quam adipiscing. Dictum varius duis at consectetur lorem.
+          </p>
+          <p>
+            Quis viverra nibh cras pulvinar. Suspendisse interdum consectetur libero id faucibus nisl tincidunt. Neque ornare aenean euismod elementum
+            nisi quis eleifend. Nec nam aliquam sem et tortor consequat. Eget nulla facilisi etiam dignissim diam. Mattis rhoncus urna neque viverra
+            justo. Neque sodales ut etiam sit amet nisl purus. Consequat ac felis donec et odio pellentesque. Neque gravida in fermentum et sollicitudin
+            ac orci. Non nisi est sit amet. Id aliquet lectus proin nibh nisl. Pharetra convallis posuere morbi leo urna molestie at elementum eu. Purus
+            non enim praesent elementum. Blandit massa enim nec dui nunc. Condimentum vitae sapien pellentesque habitant morbi tristique senectus et.
+            Adipiscing commodo elit at imperdiet dui. Nibh tortor id aliquet lectus.
+          </p>
         </div>
         <div style={{ backgroundColor: palette.dark, color: palette.lightAccent, padding: 20 }}>
           <Grid container spacing={3}>

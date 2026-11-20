@@ -81,7 +81,7 @@ export const DeviceAuthPage: React.FC = () => {
       } else {
         setError(Locale.label("device.deviceAuthPage.invalidCode"));
       }
-    } catch (err) {
+    } catch {
       setError(Locale.label("device.deviceAuthPage.verifyFailed"));
     } finally {
       setLoading(false);

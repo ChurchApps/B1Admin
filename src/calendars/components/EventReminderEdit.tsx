@@ -208,7 +208,7 @@ export const EventReminderEdit = forwardRef<EventReminderEditRef, Props>(
         <AccordionDetails>
           <Stack spacing={2}>
             <FormControlLabel
-              control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSentCount(null); }} data-testid="reminder-enabled-toggle" />}
+              control={<Switch checked={enabled} onChange={(e) => { setEnabled(e.target.checked); setSentResult(null); }} data-testid="reminder-enabled-toggle" />}
               label={Locale.label("calendars.eventReminders.enableReminders")}
             />
 

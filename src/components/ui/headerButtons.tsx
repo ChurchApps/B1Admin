@@ -3,6 +3,9 @@ import { Button } from "@mui/material";
 import type { ButtonProps } from "@mui/material/Button";
 import { useHeaderTone } from "./headerTone";
 
+const HEADER_BUTTON_HOVER = "#f0f5fd";
+const HEADER_BUTTON_TEXT_FALLBACK = "#11439b";
+
 // Header buttons are often links: `component={RouterLink} to=…` or `href` + `target`.
 type HeaderButtonProps = ButtonProps & { component?: React.ElementType; to?: string; target?: string; rel?: string };
 
@@ -16,12 +19,12 @@ export const HeaderPrimaryButton: React.FC<HeaderButtonProps> = ({ sx, ...props 
       {...props}
       sx={{
         backgroundColor: "#FFF",
-        color: "var(--c1d1, #11439B)",
+        color: `var(--c1d1, ${HEADER_BUTTON_TEXT_FALLBACK})`,
         fontWeight: 600,
         borderRadius: "7px",
         boxShadow: "0 1px 4px rgba(0,0,0,.22)",
         "&:hover": {
-          backgroundColor: "#F0F5FD",
+          backgroundColor: HEADER_BUTTON_HOVER,
           boxShadow: "0 1px 4px rgba(0,0,0,.22)"
         },
         ...sx

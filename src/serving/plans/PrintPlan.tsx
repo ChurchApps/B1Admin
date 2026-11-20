@@ -12,6 +12,10 @@ import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } f
 import UserContext from "../../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../../components/PrintChurchHeader";
 
+const PRINT_FAINT = "#999";
+const PRINT_INK = "#000";
+const PRINT_MUTED = "#555";
+
 export const PrintPlan = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -302,7 +306,7 @@ export const PrintPlan = () => {
             serviceTimes.forEach((st, i) => {
               const excluded = isExcluded(pi.id || "", st.id || "") || (pi.parentId ? isExcluded(pi.parentId, st.id || "") : false);
               if (excluded) {
-                timeCells.push(<td key={st.id} style={{ ...Styles.tableCell, color: "#999" }}>—</td>);
+                timeCells.push(<td key={st.id} style={{ ...Styles.tableCell, color: PRINT_FAINT }}>—</td>);
               } else {
                 timeCells.push(<td key={st.id} style={Styles.tableCell}>{formatClockTime(st.startTime, accumulators[i])}</td>);
                 accumulators[i] += pi.seconds || 0;
@@ -315,7 +319,7 @@ export const PrintPlan = () => {
               <td style={Styles.tableCell}>
                 <b>{pi.label}:</b> {pi.description}
                 {getPositionText(pi) && (
-                  <span style={{ float: "right", paddingLeft: 10, color: "#555" }}>{getPositionText(pi)}</span>
+                  <span style={{ float: "right", paddingLeft: 10, color: PRINT_MUTED }}>{getPositionText(pi)}</span>
                 )}
               </td>
               {hasLengths && <td style={{ ...Styles.tableCell, textAlign: "right" }}>{pi.seconds ? formatTime(pi.seconds) : ""}</td>}
@@ -328,10 +332,10 @@ export const PrintPlan = () => {
           const positionText = getPositionText(pi);
           rows.push(
             <tr key={pi.id} className="printSectionRow">
-              <td colSpan={columnCount} style={{ ...Styles.tableCell, fontWeight: "bold", fontSize: "1.1em", borderTop: "2px solid #000", paddingTop: 8 }}>
+              <td colSpan={columnCount} style={{ ...Styles.tableCell, fontWeight: "bold", fontSize: "1.1em", borderTop: `2px solid ${PRINT_INK}`, paddingTop: 8 }}>
                 {pi.label}
                 {positionText && (
-                  <span className="printSectionPosition" style={{ float: "right", paddingLeft: 10, fontWeight: "normal", fontSize: "0.9em", color: "#555" }}>{positionText}</span>
+                  <span className="printSectionPosition" style={{ float: "right", paddingLeft: 10, fontWeight: "normal", fontSize: "0.9em", color: PRINT_MUTED }}>{positionText}</span>
                 )}
               </td>
             </tr>
@@ -405,7 +409,7 @@ export const PrintPlan = () => {
           <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
             {Locale.label("plans.printPlan.serviceOrder")}
           </Grid>
-          <Grid size={{ xs: 4 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
+          <Grid size={{ xs: 4 }} style={{ ...Styles.header, borderTop: `5px solid ${PRINT_INK}` }}>
             {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
           </Grid>
           <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
@@ -414,7 +418,7 @@ export const PrintPlan = () => {
         </Grid>
       ) : (
         <Grid container>
-          <Grid size={{ xs: 12 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
+          <Grid size={{ xs: 12 }} style={{ ...Styles.header, borderTop: `5px solid ${PRINT_INK}` }}>
             {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
           </Grid>
         </Grid>
@@ -423,11 +427,11 @@ export const PrintPlan = () => {
       <Grid container>
         {hasAssignments && (
           <Grid size={{ xs: 4 }} style={{ padding: 5 }}>
-            <div className="printTeamBox" style={{ border: "2px solid #000", textAlign: "left", padding: 10 }}>{getPositionCategories()}</div>
+            <div className="printTeamBox" style={{ border: `2px solid ${PRINT_INK}`, textAlign: "left", padding: 10 }}>{getPositionCategories()}</div>
           </Grid>
         )}
         <Grid size={{ xs: hasAssignments ? 8 : 12 }} style={{ padding: 5 }} className="printOrderColumn">
-          <div style={{ border: "5px solid #000" }}>
+          <div style={{ border: `5px solid ${PRINT_INK}` }}>
             <table style={{ width: "100%", margin: 0 }} cellSpacing={0}>
               <tbody>
                 {renderHeaderRow()}

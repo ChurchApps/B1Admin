@@ -1,9 +1,10 @@
 import { ErrorMessages, Locale, DateHelper, UserHelper } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
-import type { PlaylistInterface, SermonInterface } from "@churchapps/helpers";
+import type { PlaylistInterface } from "@churchapps/helpers";
 import { Box, Checkbox, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import React from "react";
 import { FormCard } from "../../components/ui";
+import type { PodcastSermon } from "./SermonEdit";
 
 interface Props {
   handleDone: () => void;
@@ -40,7 +41,7 @@ export const PodcastImport = (props: Props) => {
 
   const loadData = () => {
     ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
-    ApiHelper.get("/sermons", "ContentApi").then((data: SermonInterface[]) => {
+    ApiHelper.get("/sermons", "ContentApi").then((data: PodcastSermon[]) => {
       const urls = new Set<string>();
       (data || []).forEach((s) => { if (s.audioUrl?.trim()) urls.add(s.audioUrl.trim()); });
       setExistingAudioUrls(urls);

@@ -2,6 +2,16 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
 import type { SectionContentDef, TemplateElementDef } from "./sectionTemplates";
 
+const MOCK_BLACK = "#000";
+const MOCK_BODY = "#444";
+const MOCK_BORDER = "#d0d5dc";
+const MOCK_DIVIDER = "#e5e8ec";
+const MOCK_HEADING = "#222";
+const MOCK_PLACEHOLDER = "#9aa1ab";
+const MOCK_SURFACE = "#fff";
+const MOCK_TEXT = "#333";
+const MOCK_TEXT_MUTED = "#555";
+
 export interface MiniPalette { light: string; lightAccent: string; accent: string; darkAccent: string; dark: string }
 
 const PALETTE_FALLBACKS: Record<string, string> = {
@@ -97,7 +107,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
       return <img src={a.photo} alt={a.photoAlt || ""} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", borderRadius: 6, display: "block" }} />;
     case "card":
       return (
-        <div style={{ backgroundColor: "#fff", color: "#333", borderRadius: 8, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.15)", height: "100%" }}>
+        <div style={{ backgroundColor: MOCK_SURFACE, color: MOCK_TEXT, borderRadius: 8, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.15)", height: "100%" }}>
           {a.photo && <img src={a.photo} alt={a.photoAlt || ""} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }} />}
           <div style={{ padding: "14px 16px" }}>
             <div style={{ fontSize: 19, fontWeight: 600, textAlign: "center", marginBottom: 6 }}>{a.title}</div>
@@ -118,7 +128,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
       );
     case "faq":
       return (
-        <div style={{ backgroundColor: "#fff", color: "#333", borderRadius: 6, boxShadow: "0 1px 3px rgba(0,0,0,0.12)", padding: "13px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ backgroundColor: MOCK_SURFACE, color: MOCK_TEXT, borderRadius: 6, boxShadow: "0 1px 3px rgba(0,0,0,0.12)", padding: "13px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ fontSize: 15, fontWeight: 500 }}>{a.title}</span>
           <span style={{ fontSize: 13, opacity: 0.55 }}>▼</span>
         </div>
@@ -146,13 +156,13 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
         <div>
           {def.elementType === "groups" && (
             <div style={{ display: "flex", gap: 12, marginBottom: 18, justifyContent: "center" }}>
-              <div style={{ flex: "0 0 45%", backgroundColor: "#fff", border: "1px solid #d0d5dc", borderRadius: 20, padding: "8px 16px", fontSize: 13, color: "#9aa1ab" }}>Search groups...</div>
-              <div style={{ backgroundColor: "#fff", border: "1px solid #d0d5dc", borderRadius: 20, padding: "8px 16px", fontSize: 13, color: "#555" }}>All Categories ▾</div>
+              <div style={{ flex: "0 0 45%", backgroundColor: MOCK_SURFACE, border: `1px solid ${MOCK_BORDER}`, borderRadius: 20, padding: "8px 16px", fontSize: 13, color: MOCK_PLACEHOLDER }}>Search groups...</div>
+              <div style={{ backgroundColor: MOCK_SURFACE, border: `1px solid ${MOCK_BORDER}`, borderRadius: 20, padding: "8px 16px", fontSize: 13, color: MOCK_TEXT_MUTED }}>All Categories ▾</div>
             </div>
           )}
           <div style={{ display: "flex", gap: 20 }}>
             {SAMPLE_GROUPS.map((g, i) => (
-              <div key={i} style={{ flex: 1, minWidth: 0, backgroundColor: "#fff", color: "#333", borderRadius: 8, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.15)" }}>
+              <div key={i} style={{ flex: 1, minWidth: 0, backgroundColor: MOCK_SURFACE, color: MOCK_TEXT, borderRadius: 8, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.15)" }}>
                 <img src={g.photo} alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }} />
                 <div style={{ padding: "10px 14px" }}>
                   <div style={{ fontSize: 15, fontWeight: 600 }}>{g.name}</div>
@@ -194,11 +204,11 @@ const MiniSection: React.FC<{ section: SectionContentDef }> = ({ section }) => {
     <div style={{
       position: "relative",
       padding: `${padTop}px 56px ${padBottom}px`,
-      color: light ? "#fff" : "#333",
+      color: light ? MOCK_SURFACE : MOCK_TEXT,
       textAlign,
       ...(isImage ? { backgroundImage: `url('${background}')`, backgroundSize: "cover", backgroundPosition: "center" } : { background })
     }}>
-      {isImage && <div style={{ position: "absolute", inset: 0, backgroundColor: "#000", opacity: 0.55 }} />}
+      {isImage && <div style={{ position: "absolute", inset: 0, backgroundColor: MOCK_BLACK, opacity: 0.55 }} />}
       <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 18 }}>
         {section.elements.map((def, i) => <MiniElement key={i} def={def} />)}
       </div>
@@ -261,13 +271,13 @@ export const TemplateMiniRender: React.FC<Props> = ({ sections, navLabels, churc
       <ThemeCtx.Provider value={theme}>
         <div ref={innerRef} style={{ width: DESIGN_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
           {navLabels && navLabels.length > 0 && (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 32px", backgroundColor: "#fff", borderBottom: "1px solid #e5e8ec" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 32px", backgroundColor: MOCK_SURFACE, borderBottom: `1px solid ${MOCK_DIVIDER}` }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: theme.accent }} />
-                <span style={{ fontSize: 17, fontWeight: 700, color: "#222" }}>{churchName || "Your Church"}</span>
+                <span style={{ fontSize: 17, fontWeight: 700, color: MOCK_HEADING }}>{churchName || "Your Church"}</span>
               </div>
               <div style={{ display: "flex", gap: 22 }}>
-                {navLabels.map((l, i) => <span key={i} style={{ fontSize: 14, fontWeight: 500, color: i === 0 ? theme.accent : "#444" }}>{l}</span>)}
+                {navLabels.map((l, i) => <span key={i} style={{ fontSize: 14, fontWeight: 500, color: i === 0 ? theme.accent : MOCK_BODY }}>{l}</span>)}
               </div>
             </div>
           )}
