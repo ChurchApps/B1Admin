@@ -12,8 +12,8 @@ const sanitize = (html: string) => DOMPurify.sanitize(html, {
 });
 
 const SafeRawHTMLElement = ({ element, editing }: { element: ElementInterface; editing: boolean }) => {
-  const rawHTML: string = element.answers?.rawHTML || "";
-  const hasScript = !!element.answers?.javascript?.trim() || /<script/i.test(rawHTML);
+  const rawHTML = (element.answers?.rawHTML as string | undefined) || "";
+  const hasScript = !!(element.answers?.javascript as string | undefined)?.trim() || /<script/i.test(rawHTML);
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: sanitize(rawHTML) }} style={editing ? { minHeight: 50 } : {}} />

@@ -28,6 +28,9 @@ export function DroppableScroll(props: Props) {
     }), [props?.dndDeps, props.acceptTypes]
   );
 
+  // Stable while `drop` is, like passing `drop` directly; the wrapper only drops the connector's return value from the ref type.
+  const dropRef = React.useCallback((node: HTMLDivElement | null) => { drop(node); }, [drop]);
+
   React.useEffect(() => () => handleMouseOut(), []);
 
   const getScrollTop = () => props.scrollRef?.current ? props.scrollRef.current.scrollTop : window.scrollY;
@@ -83,8 +86,7 @@ export function DroppableScroll(props: Props) {
     return (
       <div style={{ position: "relative" }}>
         <div style={droppableStyle}>
-          {/* any: react-dnd's ConnectDropTarget returns a ReactElement, which React's ref type rejects; a typed wrapper would change ref identity. */}
-          <div style={{ textAlign: "center", color: "var(--b1-on-primary)", width: "100%" }} ref={drop as any}>
+          <div style={{ textAlign: "center", color: "var(--b1-on-primary)", width: "100%" }} ref={dropRef}>
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "4px" }} onDragEnter={handleMouseOver} onDragLeave={handleMouseOut} onDrop={handleMouseOut}>
               <span>{props.text}</span>
             </Box>

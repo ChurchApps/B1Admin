@@ -309,8 +309,7 @@ export interface GlobalStyleInterface {
   churchId?: string;
   siteId?: string;
   fonts?: string;
-  // JSON string; site/ components pass it straight to JSON.parse without an undefined check, so it stays untyped until they do.
-  palette?: any;
+  palette?: string;
   typography?: string;
   spacing?: string;
   borderRadius?: string;
@@ -332,8 +331,8 @@ export interface ElementInterface {
   parentId?: string | null;
   size?: number;
   answersJSON?: string;
-  // Free-form per-element JSON (strings, numbers, arrays) read loosely by the site editor outside this module; left untyped until those readers narrow it.
-  answers?: any;
+  // Free-form per-element JSON (strings, numbers, arrays); readers narrow each field.
+  answers?: Record<string, unknown>;
   stylesJSON?: string;
   styles?: InlineStylesInterface;
   animationsJSON?: string;
@@ -356,11 +355,10 @@ export interface SectionInterface {
   sort?: number;
   targetBlockId?: string;
   answersJSON?: string;
-  // Free-form per-section JSON (strings, numbers, arrays) read loosely by the site editor outside this module; left untyped until those readers narrow it.
-  answers?: any;
+  // Free-form per-section JSON (strings, numbers, arrays); readers narrow each field.
+  answers?: Record<string, unknown>;
   stylesJSON?: string;
-  // site/ code both indexes this by device (InlineStylesInterface) and stores a name/value list in it (SectionEdit); left untyped until those agree.
-  styles?: any;
+  styles?: InlineStylesInterface;
   animationsJSON?: string;
   animations?: { onShow?: string; onShowSpeed?: string };
   sourceId?: string;

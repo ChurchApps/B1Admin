@@ -1,7 +1,7 @@
-import { Chart } from "react-google-charts";
+import { Chart, type GoogleChartWrapper } from "react-google-charts";
 import { Card, CardContent, Typography, useTheme } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
-import { CHART_PALETTE, getChartTheme } from "./chartTheme";
+import { CHART_PALETTE, getChartTheme, getSelectableChart } from "./chartTheme";
 
 interface AgeGroup {
   group: string;
@@ -49,9 +49,8 @@ export const AgeChart = ({ title, data, onSelect }: Props) => {
     ? [
       {
         eventName: "select" as const,
-        // react-google-charts types chartWrapper as nullable and its chart without setSelection, so this stays untyped.
-        callback: ({ chartWrapper }: any) => {
-          const chart = chartWrapper.getChart();
+        callback: ({ chartWrapper }: { chartWrapper: GoogleChartWrapper | null }) => {
+          const chart = getSelectableChart(chartWrapper);
           const selection = chart.getSelection();
           if (selection.length > 0 && selection[0].row != null && selection[0].column != null) {
             const group = data[selection[0].row]?.group;
