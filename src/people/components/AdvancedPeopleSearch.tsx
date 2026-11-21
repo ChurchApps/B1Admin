@@ -25,6 +25,7 @@ import {
   DialogContent,
   DialogActions,
   Paper,
+  ListItemText,
   alpha,
   type Theme
 } from "@mui/material";
@@ -81,7 +82,9 @@ interface FilterField {
   label: string;
   type: "text" | "select" | "number" | "date" | "complex";
   operators?: string[];
+  operatorLabels?: Record<string, string>;
   options?: Array<{ value: string; label: string }>;
+  multiple?: boolean;
   icon?: React.ReactNode;
 }
 
@@ -284,7 +287,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           key: "membershipStatus",
           label: Locale.label("person.membershipStatus"),
           type: "select",
-          operators: ["equals", "notEquals"],
+          operators: ["in", "notIn"],
+          operatorLabels: { in: Locale.label("people.editCondition.isAnyOf"), notIn: Locale.label("people.editCondition.isNoneOf") },
+          multiple: true,
           options: getMembershipStatusOptions()
         },
         {
@@ -692,7 +697,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const renderOperatorSelect = (field: FilterField) => {
     if (!activeFilters[field.key] || !field.operators) return null;
 
-    const operatorLabels: Record<string, string> = {
+    const baseLabels: Record<string, string> = {
       equals: "=",
       notEquals: "≠",
       contains: Locale.label("people.editCondition.contains"),
@@ -706,6 +711,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       in: Locale.label("people.editCondition.isMem"),
       notIn: Locale.label("people.editCondition.notMem")
     };
+    const operatorLabels = { ...baseLabels, ...(field.operatorLabels ?? {}) };
 
     return (
       <Select
@@ -726,6 +732,31 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
   const renderValueInput = (field: FilterField) => {
     if (!activeFilters[field.key]) return null;
+
+    // Multi-select values travel as a comma list (the Api's in / notIn); status values hold no commas.
+    if (field.type === "select" && field.multiple && field.options) {
+      const options = field.options;
+      const selected = activeFilters[field.key].value ? activeFilters[field.key].value.split(",") : [];
+      return (
+        <Select
+          multiple
+          value={selected}
+          onChange={(e) => updateFilterValue(field.key, (e.target.value as string[]).join(","))}
+          renderValue={(values) => (values as string[]).map((v) => options.find((o) => o.value === v)?.label ?? v).join(", ")}
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={styles.inputCommon}
+        >
+          {options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value} sx={styles.menuItem}>
+              <Checkbox size="small" checked={selected.includes(opt.value)} sx={{ p: 0.5, mr: 0.5 }} />
+              <ListItemText primary={opt.label} />
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
 
     if (field.type === "select" && field.options) {
       return (
@@ -962,7 +993,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         </Stack>
                         {activeFilters[field.key] && (
                           <Stack direction="row" spacing={0.75} sx={{ pl: 3.5, alignItems: "center" }}>
-                            {field.type !== "complex" && (field.type !== "select" || field.key === "groupMember") && (
+                            {field.type !== "complex" && (field.type !== "select" || (field.operators?.length ?? 0) > 1) && (
                               <Box sx={{ flexShrink: 0 }}>
                                 {renderOperatorSelect(field)}
                               </Box>
