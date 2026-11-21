@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Checkbox, CircularProgress, FormControlLabel, Typography } from "@mui/material";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
-import { Locale, PersonHelper, DateHelper } from "@churchapps/apphelper";
+import { Locale, PersonHelper, DateHelper, SmallButton } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
 import { buildHouseholds, firstName } from "./buildHouseholds";
@@ -16,6 +16,21 @@ const readSearchIds = (): Set<string> => {
     return new Set(Array.isArray(ids) ? ids : []);
   } catch {
     return new Set();
+  }
+};
+
+type DirectoryOptions = { photos: boolean; address: boolean; phone: boolean; email: boolean; birthdays: boolean; anniversaries: boolean };
+
+const DEFAULT_OPTIONS: DirectoryOptions = { photos: true, address: true, phone: true, email: true, birthdays: true, anniversaries: true };
+
+const OPTION_KEYS = Object.keys(DEFAULT_OPTIONS) as (keyof DirectoryOptions)[];
+
+const readOptions = (): DirectoryOptions => {
+  try {
+    const saved = JSON.parse(localStorage.getItem("printDirectoryOptions") || "{}");
+    return { ...DEFAULT_OPTIONS, ...(saved && typeof saved === "object" ? saved : {}) };
+  } catch {
+    return DEFAULT_OPTIONS;
   }
 };
 
@@ -53,6 +68,17 @@ export const PrintDirectoryPage = () => {
   const printLogo = usePrintLogo(context?.userChurch?.church?.id);
   const [searchParams] = useSearchParams();
   const searchIds = useMemo(() => (searchParams.get("scope") === "search" ? readSearchIds() : null), [searchParams]);
+  const [options, setOptions] = useState<DirectoryOptions>(readOptions);
+
+  const toggle = (key: keyof DirectoryOptions) => {
+    const updated = { ...options, [key]: !options[key] };
+    setOptions(updated);
+    try {
+      localStorage.setItem("printDirectoryOptions", JSON.stringify(updated));
+    } catch {
+      // Storage unavailable (private mode); the choice still applies to this print.
+    }
+  };
 
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people", "MembershipApi"],
@@ -84,14 +110,10 @@ export const PrintDirectoryPage = () => {
   const isLoading = people.isLoading || householdRecords.isLoading;
 
   useEffect(() => {
-    if (!isLoading && households.length > 0 && printLogo.ready) {
-      const t = setTimeout(() => {
-        window.print();
-        navigate("/people");
-      }, 1500);
-      return () => clearTimeout(t);
-    }
-  }, [isLoading, households.length, printLogo.ready, navigate]);
+    const handleAfterPrint = () => navigate("/people");
+    window.addEventListener("afterprint", handleAfterPrint);
+    return () => window.removeEventListener("afterprint", handleAfterPrint);
+  }, [navigate]);
 
   if (isLoading) {
     return (
@@ -118,6 +140,7 @@ export const PrintDirectoryPage = () => {
           @media print {
             @page { margin: 0.5in; size: letter; }
             body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-toolbar { display: none !important; }
             .household-card { break-inside: avoid; page-break-inside: avoid; }
             .section-band { break-inside: avoid; page-break-inside: avoid; break-after: avoid-page; page-break-after: avoid; }
             .directory-cover { break-after: page; page-break-after: always; }
@@ -337,6 +360,20 @@ export const PrintDirectoryPage = () => {
         `}
       </style>
 
+      <Box className="print-toolbar" sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2, px: 2, py: 1, borderBottom: 1, borderColor: "divider" }}>
+        <Typography variant="body2">{Locale.label("people.printDirectory.include")}</Typography>
+        {OPTION_KEYS.map((key) => (
+          <FormControlLabel
+            key={key}
+            label={Locale.label("people.printDirectory." + key)}
+            control={<Checkbox size="small" checked={options[key]} onChange={() => toggle(key)} inputProps={{ "data-testid": `print-directory-option-${key}` } as React.InputHTMLAttributes<HTMLInputElement>} />}
+          />
+        ))}
+        <Box sx={{ display: "flex", gap: 1, ml: "auto" }}>
+          <SmallButton icon="print" text={Locale.label("common.print")} ariaLabel={Locale.label("common.print")} onClick={() => window.print()} data-testid="print-directory-print-button" />
+          <SmallButton icon="close" text={Locale.label("common.close")} ariaLabel={Locale.label("common.close")} onClick={() => navigate("/people")} />
+        </Box>
+      </Box>
       <div className="directory-root">
         <div className="directory-cover">
           <PrintChurchHeader churchName={church?.name || ""} logoUrl={printLogo.logoUrl} style={{ maxHeight: 120, maxWidth: 360, margin: "0 auto 32px" }} />
@@ -358,8 +395,8 @@ export const PrintDirectoryPage = () => {
             {households.map((h) => {
               const showSection = h.letter !== currentLetter;
               if (showSection) currentLetter = h.letter;
-              const birthdays = memberBirthdays(h.members);
-              const anniversaries = memberAnniversaries(h.members);
+              const birthdays = options.birthdays ? memberBirthdays(h.members) : "";
+              const anniversaries = options.anniversaries ? memberAnniversaries(h.members) : "";
 
               return (
                 <React.Fragment key={h.key}>
@@ -373,25 +410,27 @@ export const PrintDirectoryPage = () => {
                     <h3 className="household-name">{h.displayName}</h3>
                     <div className="household-underline" />
 
-                    <div className="member-photos">
-                      {h.members.map((m) => (
-                        <div key={m.id} className="member-photo-block">
-                          <img
-                            className="member-photo"
-                            src={PersonHelper.getPhotoUrl(m)}
-                            alt=""
-                            onError={(e) => {
-                              e.currentTarget.onerror = null;
-                              e.currentTarget.src = "/images/sample-profile.png";
-                            }}
-                          />
-                          <div className="member-photo-name">{firstName(m)}</div>
-                        </div>
-                      ))}
-                    </div>
+                    {options.photos && (
+                      <div className="member-photos">
+                        {h.members.map((m) => (
+                          <div key={m.id} className="member-photo-block">
+                            <img
+                              className="member-photo"
+                              src={PersonHelper.getPhotoUrl(m)}
+                              alt=""
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = "/images/sample-profile.png";
+                              }}
+                            />
+                            <div className="member-photo-name">{firstName(m)}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     <div className="household-details">
-                      {(h.address1 || h.cityStateZip) && (
+                      {options.address && (h.address1 || h.cityStateZip) && (
                         <>
                           <div className="detail-label">Home</div>
                           <div className="detail-value">
@@ -401,13 +440,13 @@ export const PrintDirectoryPage = () => {
                           </div>
                         </>
                       )}
-                      {h.phone && (
+                      {options.phone && h.phone && (
                         <>
                           <div className="detail-label">Phone</div>
                           <div className="detail-value">{h.phone}</div>
                         </>
                       )}
-                      {h.email && (
+                      {options.email && h.email && (
                         <>
                           <div className="detail-label">Email</div>
                           <div className="detail-value">{h.email}</div>
