@@ -941,6 +941,7 @@
       "export": "Export",
       "failedEvents": "Failed events ({count})",
       "giftCount": "{count} gifts",
+      "noOpenBatches": "No open batches. Choose All to see closed batches.",
       "status": "Status",
       "stripeImportLink": "Import missing Stripe transactions",
       "subtitle": "Manage donation batches and track giving records"
