@@ -86,3 +86,68 @@ peopleTest.describe("Issue 983: print directory page", () => {
     await expect(page.locator(".household-name")).not.toContainText("Abrahams");
   });
 });
+
+const stubDirectory = async (page: import("@playwright/test").Page) => {
+  const people = [
+    person({ id: "p-donald", first: "Donald", last: "Clark", householdId: "h-clark", householdRole: "Head", birthDate: "1980-04-12T00:00:00.000Z" }),
+    person({ id: "p-carol", first: "Carol", last: "Clark", householdId: "h-clark" })
+  ];
+  await page.route("**/membership/people", async (route) => {
+    if (route.request().method() !== "GET") return route.continue();
+    if (/\/people\/.+/.test(route.request().url())) return route.continue();
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(people) });
+  });
+  await page.route("**/membership/households", async (route) => {
+    if (route.request().method() !== "GET") return route.continue();
+    if (/\/households\/.+/.test(route.request().url())) return route.continue();
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify([{ id: "h-clark", name: "Clark" }]) });
+  });
+};
+
+peopleTest.describe("Print directory field options", () => {
+  peopleTest("unchecking Birthdays hides them and remembers the choice", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await stubDirectory(page);
+
+    await page.goto("/people/print-directory");
+    await expect(page.locator(".household-name")).toContainText("Clark", { timeout: 15000 });
+    const birthdays = page.getByTestId("print-directory-option-birthdays");
+    await expect(birthdays).toBeChecked();
+    await expect(page.locator(".detail-label", { hasText: "Birthdays" })).toHaveCount(1);
+
+    await birthdays.click();
+    await expect(birthdays).not.toBeChecked();
+    await expect(page.locator(".detail-label", { hasText: "Birthdays" })).toHaveCount(0);
+    expect(await page.evaluate(() => localStorage.getItem("printDirectoryOptions"))).toContain("\"birthdays\":false");
+  });
+
+  peopleTest("does not print on its own; the Print button prints", async ({ page }) => {
+    await page.addInitScript(() => { (window as unknown as { __printed: boolean }).__printed = false; window.print = () => { (window as unknown as { __printed: boolean }).__printed = true; }; });
+    await stubDirectory(page);
+
+    await page.goto("/people/print-directory");
+    await expect(page.locator(".household-name")).toContainText("Clark", { timeout: 15000 });
+    // The old page printed itself 1.5 s after loading; give it longer than that.
+    await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 2500)));
+    expect(await page.evaluate(() => (window as unknown as { __printed: boolean }).__printed)).toBe(false);
+    await expect(page).toHaveURL(/print-directory/);
+
+    await page.getByTestId("print-directory-print-button").click();
+    await expect.poll(() => page.evaluate(() => (window as unknown as { __printed: boolean }).__printed)).toBe(true);
+  });
+
+  peopleTest("restores saved choices on reload", async ({ page }) => {
+    await page.addInitScript(() => {
+      window.print = () => {};
+      localStorage.setItem("printDirectoryOptions", JSON.stringify({ birthdays: false }));
+    });
+    await stubDirectory(page);
+
+    await page.goto("/people/print-directory");
+    await expect(page.locator(".household-name")).toContainText("Clark", { timeout: 15000 });
+    await expect(page.getByTestId("print-directory-option-birthdays")).not.toBeChecked();
+    await expect(page.getByTestId("print-directory-option-photos")).toBeChecked();
+    await expect(page.locator(".detail-label", { hasText: "Birthdays" })).toHaveCount(0);
+    await expect(page.locator(".member-photos")).toHaveCount(1);
+  });
+});
