@@ -75,7 +75,8 @@ export const TaskPage = () => {
       if (!task.data) return;
       const t = { ...task.data };
       t.status = status;
-      t.dateClosed = status === "Open" ? undefined : new Date();
+      // null (not undefined) so the reopen reaches the Api and clears the old close date.
+      t.dateClosed = (status === "Open" ? null : new Date()) as Date;
       updateTaskMutation.mutate(t);
     },
     [task.data, updateTaskMutation]
