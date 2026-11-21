@@ -120,7 +120,7 @@ export const RoomsResourcesPage = () => {
             {shownResources.map((r) => (
               <TableRow key={r.id} hover>
                 {nameCell(r)}
-                <TableCell align="right">{r.quantity ?? 1}</TableCell>
+                <TableCell align="right">{r.quantity ?? ""}</TableCell>
                 <TableCell>{groupName(r.approvalGroupId)}</TableCell>
                 <TableCell align="right" className="rowActions">{editVerb(() => setEditing({ type: "resources", item: r }), `edit-resource-${r.id}`)}</TableCell>
               </TableRow>
