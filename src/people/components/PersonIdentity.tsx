@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, Locale, Permissions, PersonAvatar, PersonHelper, UserHelper } from "@churchapps/apphelper";
 import { Box, Button, ButtonBase, Link, Stack, Typography } from "@mui/material";
@@ -42,6 +43,9 @@ export const PersonIdentity: React.FC<Props> = (props) => {
   const [showWorkflowDialog, setShowWorkflowDialog] = React.useState(false);
   const [exporting, setExporting] = React.useState(false);
   const campuses = useCampuses();
+  const churchId = UserHelper.currentUserChurch?.church?.id || "";
+  const publicSettings = useQuery<Record<string, string>>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const localPhones = publicSettings.data?.phoneFormat === "local";
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
   const canEmail = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
@@ -180,8 +184,8 @@ export const PersonIdentity: React.FC<Props> = (props) => {
       {(contact.email || phones.length > 0 || addressLines.length > 0 || userEmail || person.donorNumber || extraFields.length > 0) && (
         <Stack spacing={1} sx={{ mt: 2 }} data-testid="person-contact">
           {contact.mobilePhone && (
-            <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 600, color: "text.primary", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone)}`}>
-              {formattedPhoneNumber(contact.mobilePhone)}
+            <Link href={"tel:" + contact.mobilePhone.replace(/[^0-9+]/g, "")} underline="hover" sx={{ typography: "h3", fontWeight: 600, color: "text.primary", width: "fit-content" }} aria-label={`${Locale.label("people.personView.mobile")} ${formattedPhoneNumber(contact.mobilePhone, localPhones)}`}>
+              {formattedPhoneNumber(contact.mobilePhone, localPhones)}
             </Link>
           )}
           {showTextReminders && textRemindersOn !== null && (
@@ -194,7 +198,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
           )}
           {phones.filter((p) => p.key !== "mobile").map((p) => (
             <Typography key={p.key} sx={quiet}>
-              {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={strong}>{formattedPhoneNumber(p.value || "")}</Box></CopyableText>
+              {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={strong}>{formattedPhoneNumber(p.value || "", localPhones)}</Box></CopyableText>
             </Typography>
           ))}
           {contact.email && <Typography sx={quiet}><Link href={"mailto:" + contact.email} sx={{ color: "var(--b1-link)" }}>{contact.email}</Link></Typography>}
