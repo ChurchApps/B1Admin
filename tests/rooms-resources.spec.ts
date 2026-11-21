@@ -491,6 +491,62 @@ test.describe.serial("Inactive rooms and resources", () => {
   });
 });
 
+// #1659: the Resources list shows the quantity as entered; a blank quantity stays blank, and clearing one saves.
+test.describe.serial("Resource quantity left blank", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const BLANK = `Zacchaeus Podium ${stamp}`;
+  const COUNTED = `Zacchaeus Music Stands ${stamp}`;
+  let page: Page;
+  let auth: { headers: { Authorization: string } };
+  let blankId = "";
+  let countedId = "";
+
+  const quantityCell = (name: string) => page.locator('[data-testid="resources-table"] tbody tr').filter({ hasText: name }).locator("td").nth(1);
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    const request = await playwright.request.newContext();
+    const body = await (await request.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const jwt = ((body.userChurches || []).find((c: { church?: { id?: string } }) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    auth = { headers: { Authorization: "Bearer " + jwt } };
+    const saved = await (await request.post(`${API}/content/resources`, { ...auth, data: [{ name: BLANK }, { name: COUNTED, quantity: 5 }] })).json();
+    blankId = saved[0].id;
+    countedId = saved[1].id;
+    await request.dispose();
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async ({ playwright }) => {
+    const request = await playwright.request.newContext();
+    for (const id of [blankId, countedId]) if (id) await request.delete(`${API}/content/resources/${id}`, auth).catch(() => { });
+    await request.dispose();
+    await page?.context().close();
+  });
+
+  test("a resource saved without a quantity lists a blank quantity", async () => {
+    await navigateToRoomsResources(page);
+    await openTab(page, "resources");
+    await expect(quantityCell(COUNTED)).toHaveText("5", { timeout: 15000 });
+    await expect(quantityCell(BLANK)).toHaveText("");
+  });
+
+  test("clearing a resource's quantity saves it blank", async () => {
+    await page.locator(`[data-testid="edit-resource-${countedId}"]`).click();
+    const input = page.locator('[data-testid="resource-quantity-input"] input');
+    await expect(input).toHaveValue("5");
+    await input.fill("");
+    await page.locator('[data-testid="save-resource-button"]').click();
+    await expect(quantityCell(COUNTED)).toHaveText("", { timeout: 15000 });
+    await page.reload();
+    await openTab(page, "resources");
+    await expect(quantityCell(COUNTED)).toHaveText("", { timeout: 15000 });
+    await page.locator(`[data-testid="edit-resource-${countedId}"]`).click();
+    await expect(page.locator('[data-testid="resource-quantity-input"] input')).toHaveValue("");
+  });
+});
+
 // #1652: an event books part of a pooled resource (4 of 10 chairs) instead of the whole stock.
 test.describe.serial("Booking a quantity of a resource", () => {
   const API = process.env.API_BASE || "http://localhost:8084";
