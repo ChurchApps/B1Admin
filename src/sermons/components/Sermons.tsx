@@ -5,23 +5,28 @@ import { ArrayHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
 import { ImageEditor } from "@churchapps/apphelper";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
-import { Alert, Box, Button, Grid, IconButton, Menu, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, ContentCopy as ContentCopyIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, ArrowDropDown as ArrowDropDownIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
+import { Alert, Box, Button, Checkbox, Grid, IconButton, Menu, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, ContentCopy as ContentCopyIcon, DeleteOutline as DeleteIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, ArrowDropDown as ArrowDropDownIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { SermonEdit } from "./SermonEdit";
 import { PlaylistEdit } from "./PlaylistEdit";
 import { CountChip, HeaderPrimaryButton, ResultsBar, SearchField, Surface, TextAction, tableScrollSx } from "../../components/ui";
 import { hoverRowSx } from "../../components/ui/tableStyles";
+import { useConfirmDelete } from "../../hooks";
 import { SermonChrome } from "./SermonChrome";
 
 export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
-  const [filteredSermons, setFilteredSermons] = React.useState<SermonInterface[]>([]);
   const [playlists, setPlaylists] = React.useState<PlaylistInterface[]>([]);
   const [currentSermon, setCurrentSermon] = React.useState<SermonInterface | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const latestSermonRequest = React.useRef<Promise<SermonInterface[]> | null>(null);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [selectedSermonIds, setSelectedSermonIds] = React.useState<Set<string>>(new Set());
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [deleteError, setDeleteError] = React.useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
@@ -73,6 +78,7 @@ export const Sermons = () => {
         startIcon={<AddIcon />}
         endIcon={<ArrowDropDownIcon />}
         onClick={handleMenuClick}
+        disabled={isDeleting}
         data-testid="add-sermon-button"
       >
         {Locale.label("sermons.addSermon")}
@@ -112,29 +118,25 @@ export const Sermons = () => {
     </>
   );
 
-  const loadData = () => {
-    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { setPlaylists(data); });
-    ApiHelper.get("/sermons", "ContentApi").then((data: SermonInterface[]) => {
+  const loadSermons = async () => {
+    const request: Promise<SermonInterface[]> = ApiHelper.get("/sermons", "ContentApi");
+    latestSermonRequest.current = request;
+    const data = await request;
+    if (latestSermonRequest.current === request) {
       setSermons(data);
-      setFilteredSermons(filterSermons(data, searchTerm));
       setIsLoading(false);
-    });
+    }
   };
 
-  const filterSermons = (list: SermonInterface[], value: string) => {
-    if (value === "") return list;
-    return list.filter((sermon) => {
-      const playlistTitle = getPlaylistTitle(sermon.playlistId) || "";
-      return (
-        (sermon.title || "").toLowerCase().includes(value.toLowerCase())
-        || playlistTitle.toLowerCase().includes(value.toLowerCase())
-      );
-    });
+  const loadData = () => {
+    ApiHelper.get("/playlists", "ContentApi").then((data: PlaylistInterface[]) => { setPlaylists(data); });
+    void loadSermons();
   };
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    setFilteredSermons(filterSermons(sermons, value));
+    setSelectedSermonIds(new Set());
+    setDeleteError(false);
   };
 
   const handleAdd = (permanentUrl: boolean) => {
@@ -158,6 +160,46 @@ export const Sermons = () => {
     return result;
   };
 
+  const searchText = searchTerm.toLowerCase();
+  const filteredSermons = searchText ? sermons.filter((sermon) => {
+    const playlistTitle = getPlaylistTitle(sermon.playlistId) || Locale.label("sermons.noPlaylist");
+    return (sermon.title || "").toLowerCase().includes(searchText) || playlistTitle.toLowerCase().includes(searchText);
+  }) : sermons;
+  const selectableIds = filteredSermons.flatMap((sermon) => sermon.id && !sermon.permanentUrl ? [sermon.id] : []);
+  const selectedIds = selectableIds.filter((id) => selectedSermonIds.has(id));
+  const allSelected = selectableIds.length > 0 && selectedIds.length === selectableIds.length;
+  const selectionDisabled = isDeleting || currentSermon !== null || currentPlaylist !== null;
+
+  const toggleSelected = (id: string, checked: boolean) => {
+    setSelectedSermonIds((current) => {
+      const next = new Set(current);
+      if (checked) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectionDisabled || selectedIds.length === 0) return;
+    const message = selectedIds.length === 1
+      ? Locale.label("sermons.bulkDelete.confirmOne")
+      : Locale.label("sermons.bulkDelete.confirmMany").replace("{count}", String(selectedIds.length));
+    if (!(await confirm(message, { title: Locale.label("sermons.bulkDelete.title") }))) return;
+
+    setIsDeleting(true);
+    setDeleteError(false);
+    try {
+      const results = await Promise.allSettled(selectedIds.map((id) => ApiHelper.delete("/sermons/" + id, "ContentApi")));
+      const deletedIds = new Set(selectedIds.filter((_, index) => results[index].status === "fulfilled"));
+      setSermons((current) => current.filter((sermon) => !sermon.id || !deletedIds.has(sermon.id)));
+      setSelectedSermonIds((current) => new Set([...current].filter((id) => !deletedIds.has(id))));
+      setDeleteError(deletedIds.size !== selectedIds.length);
+      await loadSermons().catch(() => { /* Keep the confirmed deletions reflected if the refresh fails. */ });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const handlePlaylistUpdated = () => { setCurrentPlaylist(null); loadData(); };
 
   const showPhotoEditor = (pType: string, url: string | null) => {
@@ -179,11 +221,24 @@ export const Sermons = () => {
   const getRows = () => {
     const rows: React.ReactElement[] = [];
     filteredSermons.forEach((video) => {
+      const id = video.id;
+      const selected = !!id && selectedSermonIds.has(id);
       rows.push(
         <TableRow
-          key={video.id}
+          key={id}
+          selected={selected}
           sx={hoverRowSx}
         >
+          <TableCell padding="checkbox">
+            {id && !video.permanentUrl && (
+              <Checkbox
+                checked={selected}
+                disabled={selectionDisabled}
+                onChange={(_, checked) => toggleSelected(id, checked)}
+                slotProps={{ input: { "aria-label": Locale.label("sermons.bulkDelete.selectOne").replace("{title}", video.title || Locale.label("sermons.sermon")) } }}
+              />
+            )}
+          </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <PlaylistIcon sx={{ fontSize: 18, color: "text.secondary" }} />
@@ -206,7 +261,7 @@ export const Sermons = () => {
             </Stack>
           </TableCell>
           <TableCell align="right" className="rowActions">
-            <TextAction small onClick={() => { setCurrentPlaylist(null); setCurrentSermon(video); }} data-testid={`edit-sermon-${video.id}`}>
+            <TextAction small disabled={isDeleting} onClick={() => { setCurrentPlaylist(null); setCurrentSermon(video); }} data-testid={`edit-sermon-${video.id}`}>
               {Locale.label("common.edit")}
             </TextAction>
           </TableCell>
@@ -218,7 +273,7 @@ export const Sermons = () => {
 
   const getEmptyState = () => (
     <TableRow>
-      <TableCell colSpan={4} sx={{ textAlign: "center", py: 8 }}>
+      <TableCell colSpan={5} sx={{ textAlign: "center", py: 8 }}>
         <Stack spacing={2} alignItems="center">
           <LiveTvIcon sx={{ fontSize: 40, color: "text.secondary" }} />
           <Typography variant="h3" color="text.secondary">
@@ -228,7 +283,7 @@ export const Sermons = () => {
             {searchTerm ? Locale.label("sermons.adjustSearchTerms") : Locale.label("sermons.getStarted")}
           </Typography>
           {!searchTerm && (
-            <TextAction onClick={() => handleAdd(false)} data-testid="add-first-sermon-button">
+            <TextAction disabled={isDeleting} onClick={() => handleAdd(false)} data-testid="add-first-sermon-button">
               {Locale.label("sermons.addFirstSermon")}
             </TextAction>
           )}
@@ -244,8 +299,17 @@ export const Sermons = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  checked={allSelected}
+                  indeterminate={!allSelected && selectedIds.length > 0}
+                  disabled={selectionDisabled || selectableIds.length === 0}
+                  onChange={(_, checked) => setSelectedSermonIds(new Set(checked ? selectableIds : []))}
+                  slotProps={{ input: { "aria-label": Locale.label("sermons.bulkDelete.selectAll") } }}
+                />
+              </TableCell>
               <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.playlist")}</TableCell>
-              <TableCell sx={{ width: "45%" }}>{Locale.label("sermons.sermon")}</TableCell>
+              <TableCell>{Locale.label("sermons.sermon")}</TableCell>
               <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.publishDate")}</TableCell>
               <TableCell sx={{ width: "5%" }} align="right"></TableCell>
             </TableRow>
@@ -275,7 +339,7 @@ export const Sermons = () => {
                 {playlistSearch ? Locale.label("sermons.playlists.noPlaylistsMatch") : Locale.label("sermons.playlists.noPlaylistsFound")}
               </Typography>
               {!playlistSearch && (
-                <TextAction small onClick={handleAddPlaylist} data-testid="add-first-playlist-button">
+                <TextAction small disabled={isDeleting} onClick={handleAddPlaylist} data-testid="add-first-playlist-button">
                   {Locale.label("sermons.playlists.createFirstPlaylist")}
                 </TextAction>
               )}
@@ -296,7 +360,7 @@ export const Sermons = () => {
           </Typography>
         </TableCell>
         <TableCell align="right" className="rowActions">
-          <TextAction small onClick={() => { setCurrentSermon(null); setCurrentPlaylist(playlist); }} data-testid={`edit-playlist-${playlist.id}`}>
+          <TextAction small disabled={isDeleting} onClick={() => { setCurrentSermon(null); setCurrentPlaylist(playlist); }} data-testid={`edit-playlist-${playlist.id}`}>
             {Locale.label("common.edit")}
           </TextAction>
         </TableCell>
@@ -331,13 +395,14 @@ export const Sermons = () => {
         <Typography variant="h3" component="h2">{Locale.label("sermons.playlists.title")}</Typography>
         {playlists.length > 0 && <CountChip count={playlists.length} />}
       </Stack>
-      <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={handleAddPlaylist} data-testid="add-playlist-button">{Locale.label("sermons.playlists.addPlaylist", "Add playlist")}</Button>
+      <Button variant="outlined" size="small" startIcon={<AddIcon />} disabled={isDeleting} onClick={handleAddPlaylist} data-testid="add-playlist-button">{Locale.label("sermons.playlists.addPlaylist", "Add playlist")}</Button>
     </Stack>
   );
 
   return (
     <>
       <SermonChrome selected="sermons" actions={getActionButtons()}>
+        {ConfirmDialogElement}
         <Grid container spacing={3} alignItems="flex-start">
           <Grid size={{ xs: 12, lg: 8 }}>
             {currentSermon !== null && (
@@ -353,8 +418,14 @@ export const Sermons = () => {
                     <Typography variant="body2" color="text.secondary">
                       {Locale.label("sermons.resultCount", "{shown} of {total} sermons").replace("{shown}", filteredSermons.length.toString()).replace("{total}", sermons.length.toString())}
                     </Typography>
+                    {(selectedIds.length > 0 || isDeleting) && (
+                      <Button size="small" color="error" variant="outlined" startIcon={<DeleteIcon />} disabled={selectionDisabled} onClick={handleDeleteSelected}>
+                        {isDeleting ? Locale.label("sermons.bulkDelete.deleting") : Locale.label("sermons.bulkDelete.action").replace("{count}", String(selectedIds.length))}
+                      </Button>
+                    )}
                   </ResultsBar>
                 )}
+                {deleteError && <Alert severity="error" onClose={() => setDeleteError(false)}>{Locale.label("sermons.bulkDelete.error")}</Alert>}
                 <Box sx={tableScrollSx} role="region" aria-label={Locale.label("sermons.title")} tabIndex={0}>
                   {getTable()}
                 </Box>
