@@ -491,6 +491,70 @@ test.describe.serial("Inactive rooms and resources", () => {
   });
 });
 
+// #1652: an event books part of a pooled resource (4 of 10 chairs) instead of the whole stock.
+test.describe.serial("Booking a quantity of a resource", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const CHAIRS = `Zacchaeus Folding Chairs ${stamp}`;
+  const EASEL = `Zacchaeus Easel ${stamp}`;
+  const TITLE = `Zacchaeus Chair Event ${stamp}`;
+  let page: Page;
+  let auth: { headers: { Authorization: string } };
+  let chairsId = "";
+  let easelId = "";
+  let eventId = "";
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    const request = await playwright.request.newContext();
+    const body = await (await request.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const jwt = ((body.userChurches || []).find((c: { church?: { id?: string } }) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    auth = { headers: { Authorization: "Bearer " + jwt } };
+    const saved = await (await request.post(`${API}/content/resources`, { ...auth, data: [{ name: CHAIRS, quantity: 10 }, { name: EASEL, quantity: 1 }] })).json();
+    chairsId = saved[0].id;
+    easelId = saved[1].id;
+    await request.dispose();
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async ({ playwright }) => {
+    const request = await playwright.request.newContext();
+    if (eventId) await request.delete(`${API}/content/events/${eventId}`, auth).catch(() => { });
+    for (const id of [chairsId, easelId]) if (id) await request.delete(`${API}/content/resources/${id}`, auth).catch(() => { });
+    await request.dispose();
+    await page?.context().close();
+  });
+
+  test("the event editor books the quantity entered for a pooled resource", async () => {
+    await navigateToAvailability(page);
+    await page.locator('[data-testid="availability-book-button"]').click();
+    await selectOption(page, "new-event-group-select", APPROVAL_GROUP);
+    await page.locator('[data-testid="new-event-title-input"] input').fill(TITLE);
+    await page.locator('[data-testid="new-event-start-input"] input').fill(toInput(eventStart));
+    await page.locator('[data-testid="new-event-end-input"] input').fill(toInput(eventEnd));
+    await selectOption(page, "new-event-resources-select", new RegExp(CHAIRS), true);
+    await selectOption(page, "new-event-resources-select", new RegExp(EASEL), true);
+
+    const qty = page.getByTestId("new-event-resource-quantity-" + chairsId);
+    await expect(qty).toHaveValue("1");
+    await expect(page.getByTestId("new-event-resource-quantity-" + easelId)).toHaveCount(0);
+    await qty.fill("4");
+    await expect(qty).toHaveValue("4");
+
+    const posted = page.waitForRequest((req) => req.url().includes("/content/eventBookings") && req.method() === "POST");
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    const bookings: { eventId: string; resourceId?: string; quantity?: number }[] = (await posted).postDataJSON();
+    eventId = bookings[0].eventId;
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+
+    const request = page.context().request;
+    const stored: { resourceId?: string; quantity?: number }[] = await (await request.get(`${API}/content/eventBookings/event/${eventId}`, auth)).json();
+    expect(stored.find((b) => b.resourceId === chairsId)?.quantity).toBe(4);
+    expect(stored.find((b) => b.resourceId === easelId)?.quantity).toBe(1);
+  });
+});
+
 // #1488: decided requests stay on the Approvals page under History, linked to the requester.
 test.describe.serial("Approvals history", () => {
   const API = process.env.API_BASE || "http://localhost:8084";
