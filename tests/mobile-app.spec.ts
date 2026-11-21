@@ -264,6 +264,47 @@ test.describe.serial("Mobile Requests tab", () => {
   });
 });
 
+// ChurchAppsSupport#1660: Songs opens the church's song library in the app.
+test.describe.serial("Mobile Songs tab", () => {
+  test.describe.configure({ retries: 0 });
+  let page: Page;
+  const TAB = "Zacchaeus Songs Tab";
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test("creates a Songs tab and keeps its type", async () => {
+    await openMobileSettings(page);
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(TAB);
+    await selectMuiByLabel(page, "Tab Type", "Songs");
+    await selectMuiByLabel(page, "Visibility", "Logged-in Users");
+    await page.getByRole("button", { name: /Save Tab/i }).click();
+    const row = await findTabRow(page, TAB);
+    await expect(row.getByText("songs", { exact: true })).toBeVisible();
+    await row.getByRole("button", { name: "Edit" }).click();
+    await expect(page.locator('input[name="text"]')).toHaveValue(TAB, { timeout: 10000 });
+    await expect(page.getByLabel("Tab Type")).toHaveText("Songs");
+  });
+
+  test("deletes the Songs tab", async () => {
+    await openMobileSettings(page);
+    const row = await findTabRow(page, TAB);
+    await row.getByRole("button", { name: "Edit" }).click();
+    await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
+    await page.getByRole("button", { name: /Delete Tab/i }).click();
+    await confirmDelete(page);
+    await expect(page.getByRole("heading", { level: 3, name: TAB, exact: true })).toHaveCount(0, { timeout: 15000 });
+  });
+});
+
 // mobile-admin.md steps 12-13: tab ordering via the row Move Up / Move Down
 // icon buttons (each move POSTs the re-sorted list to /links).
 test.describe.serial("Mobile tab ordering", () => {
