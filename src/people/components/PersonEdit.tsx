@@ -20,6 +20,9 @@ import { type PersonFieldInterface, type PersonFieldValueInterface } from "../..
 import { parseFieldChoices } from "../../helpers/PersonFieldHelper";
 import { AppDatePicker } from "../../components";
 import { parseTitleOptions } from "../../helpers/PersonConstants";
+import { normalizePhone } from "../helpers/PhoneFormatHelper";
+
+export { formattedPhoneNumber, normalizePhone } from "../helpers/PhoneFormatHelper";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 
@@ -38,35 +41,8 @@ interface Props {
   onDuplicateSelected?: (person: PersonInterface) => void;
 }
 
-export function formattedPhoneNumber(value: string) {
-  if (!value) return "";
-  value = value.split("x")[0];
-  // "+1 217 555 2502" reads as +1-217-555-2502; keep the space in "(217) 555-2502".
-  value = value.replace(/(?<!\)) /g, "-");
-  return value;
-}
-
 const phoneSlotProps = { htmlInput: { "aria-describedby": "errorMsg", "aria-labelledby": "tel-label errorMsg" } };
 const phoneMenuProps = { "aria-label": "phone-number" };
-
-// Normalize legacy phone formats like "(217) 555-2504" or "217-555-2504" into E.164
-// so MuiTelInput can render them with country flag and spacing. Anything that isn't a
-// US 10/11-digit number or already "+"-prefixed is left as-is — forcing "+" onto a
-// 7-digit partial makes the widget misread it as a foreign country code.
-// Churches using the "local" phone format keep numbers exactly as stored.
-export const normalizePhone = (raw: string | null | undefined, local = false): string => {
-  if (!raw) return "";
-  if (local) return raw;
-  const [base, ext] = raw.split("x");
-  const trimmed = (base ?? "").trim();
-  const digits = trimmed.replace(/\D/g, "");
-  if (!digits) return ext ? "x" + ext : "";
-  const normalized = trimmed.startsWith("+") ? "+" + digits
-    : digits.length === 10 ? "+1" + digits
-      : digits.length === 11 && digits.startsWith("1") ? "+" + digits
-        : trimmed;
-  return ext ? normalized + "x" + ext : normalized;
-};
 
 const buildFormDefaults = (p: PersonInterface, localPhones: boolean) => ({
   ...p,
@@ -177,12 +153,17 @@ export const PersonEdit = memo((props: Props) => {
     // "" = the Unassigned option; store as null so it matches campusId IS NULL.
     if (!p.campusId) p.campusId = null as unknown as string;
     if (p.contactInfo) {
+      // A phone the user never touched still holds the normalized form default; keep the stored string.
+      (["homePhone", "workPhone", "mobilePhone"] as const).forEach((field) => {
+        const stored = props.person.contactInfo?.[field];
+        if (stored && p.contactInfo[field] === normalizePhone(stored, localPhones)) p.contactInfo[field] = stored;
+      });
       p.contactInfo.homePhone = ((p.contactInfo.homePhone?.length ?? 0) <= 4 ? null : p.contactInfo.homePhone) as unknown as string;
       p.contactInfo.workPhone = ((p.contactInfo.workPhone?.length ?? 0) <= 4 ? null : p.contactInfo.workPhone) as unknown as string;
       p.contactInfo.mobilePhone = ((p.contactInfo.mobilePhone?.length ?? 0) <= 4 ? null : p.contactInfo.mobilePhone) as unknown as string;
     }
     return p;
-  }, [props.person]);
+  }, [props.person, localPhones]);
 
   const updatePerson = useCallback(async (p: PersonInterface) => {
     try {

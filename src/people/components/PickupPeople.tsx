@@ -46,6 +46,9 @@ export const PickupPeople: React.FC<Props> = (props) => {
     enabled: !UniqueIdHelper.isMissing(householdId)
   });
   const people = peopleQuery.data || [];
+  const churchId = UserHelper.currentUserChurch?.church?.id || "";
+  const publicSettings = useQuery<Record<string, string>>({ queryKey: ["/settings/public/" + churchId, "MembershipApi"], enabled: !!churchId });
+  const localPhones = publicSettings.data?.phoneFormat === "local";
 
   // Rows added from the people search link to a person record; show that person's own phone.
   const linkedIds = React.useMemo(() => Array.from(new Set(people.map((r) => r.personId).filter(Boolean))), [people]);
@@ -103,7 +106,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
         <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: "break-word" }}>{row.name}</Typography>
         {row.personId && phoneById[row.personId] && (
           <Link href={"tel:" + phoneById[row.personId].replace(/[^0-9+]/g, "")} underline="hover" variant="body2" color="text.secondary" data-testid="pickup-phone">
-            {formattedPhoneNumber(phoneById[row.personId])}
+            {formattedPhoneNumber(phoneById[row.personId], localPhones)}
           </Link>
         )}
         <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 0.5 }}>
