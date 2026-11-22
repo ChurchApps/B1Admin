@@ -295,6 +295,12 @@ export const PrintDirectoryPage = () => {
             margin: 0;
           }
 
+          .household-members {
+            font-size: 11px;
+            color: #374151;
+            line-height: 1.4;
+          }
+
           .member-photos {
             display: flex;
             gap: 10px;
@@ -397,6 +403,9 @@ export const PrintDirectoryPage = () => {
               if (showSection) currentLetter = h.letter;
               const birthdays = options.birthdays ? memberBirthdays(h.members) : "";
               const anniversaries = options.anniversaries ? memberAnniversaries(h.members) : "";
+              // Without photos there are no captions, so name the members unless the title already does.
+              const names = options.photos ? [] : h.members.map(firstName).filter(Boolean);
+              const showNames = names.length > 0 && !names.every((n) => h.displayName.includes(n));
 
               return (
                 <React.Fragment key={h.key}>
@@ -409,6 +418,12 @@ export const PrintDirectoryPage = () => {
                   <div className="household-card">
                     <h3 className="household-name">{h.displayName}</h3>
                     <div className="household-underline" />
+
+                    {showNames && (
+                      <div className="household-members" data-testid="print-directory-members">
+                        {names.length > 1 ? `${names.slice(0, -1).join(", ")} & ${names[names.length - 1]}` : names[0]}
+                      </div>
+                    )}
 
                     {options.photos && (
                       <div className="member-photos">

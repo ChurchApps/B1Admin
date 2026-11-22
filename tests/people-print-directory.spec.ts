@@ -87,11 +87,12 @@ peopleTest.describe("Issue 983: print directory page", () => {
   });
 });
 
-const stubDirectory = async (page: import("@playwright/test").Page) => {
-  const people = [
-    person({ id: "p-donald", first: "Donald", last: "Clark", householdId: "h-clark", householdRole: "Head", birthDate: "1980-04-12T00:00:00.000Z" }),
-    person({ id: "p-carol", first: "Carol", last: "Clark", householdId: "h-clark" })
-  ];
+const clarkCouple = () => [
+  person({ id: "p-donald", first: "Donald", last: "Clark", householdId: "h-clark", householdRole: "Head", birthDate: "1980-04-12T00:00:00.000Z" }),
+  person({ id: "p-carol", first: "Carol", last: "Clark", householdId: "h-clark" })
+];
+
+const stubDirectory = async (page: import("@playwright/test").Page, people: PersonInterface[] = clarkCouple()) => {
   await page.route("**/membership/people", async (route) => {
     if (route.request().method() !== "GET") return route.continue();
     if (/\/people\/.+/.test(route.request().url())) return route.continue();
@@ -149,6 +150,26 @@ peopleTest.describe("Print directory field options", () => {
     await expect(page.getByTestId("print-directory-option-photos")).toBeChecked();
     await expect(page.locator(".detail-label", { hasText: "Birthdays" })).toHaveCount(0);
     await expect(page.locator(".member-photos")).toHaveCount(1);
+  });
+
+  peopleTest("names each member of a larger household when photos are off", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await stubDirectory(page, [
+      person({ id: "p-donald", first: "Donald", last: "Clark", householdId: "h-clark", householdRole: "Head" }),
+      person({ id: "p-carol", first: "Carol", last: "Clark", householdId: "h-clark", householdRole: "Spouse" }),
+      person({ id: "p-amy", first: "Amy", last: "Clark", householdId: "h-clark", householdRole: "Child" }),
+      person({ id: "p-jamie", first: "Jamie", last: "Solo", householdId: "h-solo", householdRole: "Head" }),
+      person({ id: "p-pat", first: "Pat", last: "Solo", householdId: "h-solo", householdRole: "Spouse" })
+    ]);
+
+    await page.goto("/people/print-directory");
+    await expect(page.locator(".household-name").first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator(".household-name")).toHaveText(["The Clark Family", "Jamie & Pat Solo"]);
+    await expect(page.getByTestId("print-directory-members")).toHaveCount(0);
+
+    await page.getByTestId("print-directory-option-photos").click();
+    await expect(page.locator(".member-photos")).toHaveCount(0);
+    await expect(page.getByTestId("print-directory-members")).toHaveText(["Donald, Carol & Amy"]);
   });
 });
 
