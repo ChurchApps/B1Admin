@@ -440,16 +440,24 @@ export const PrintDirectoryPage = () => {
                           </div>
                         </>
                       )}
-                      {options.phone && h.phone && (
+                      {options.phone && h.phones.length > 0 && (
                         <>
                           <div className="detail-label">Phone</div>
-                          <div className="detail-value">{h.phone}</div>
+                          <div className="detail-value">
+                            {h.phones.map((line) => (
+                              <div key={line.value} data-testid="print-directory-phone-line">{line.name ? `${line.name}: ${line.value}` : line.value}</div>
+                            ))}
+                          </div>
                         </>
                       )}
-                      {options.email && h.email && (
+                      {options.email && h.emails.length > 0 && (
                         <>
                           <div className="detail-label">Email</div>
-                          <div className="detail-value">{h.email}</div>
+                          <div className="detail-value">
+                            {h.emails.map((line) => (
+                              <div key={line.value} data-testid="print-directory-email-line">{line.name ? `${line.name}: ${line.value}` : line.value}</div>
+                            ))}
+                          </div>
                         </>
                       )}
                       {birthdays && (

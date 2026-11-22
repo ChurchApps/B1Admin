@@ -4,15 +4,8 @@ import { ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, Locale, Pe
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Link, Typography } from "@mui/material";
 import { RecordHeading, TextAction } from "../../components/ui";
+import { sortHouseholdMembers as sortMembers } from "../buildHouseholds";
 
-const roleOrder: Record<string, number> = { Head: 0, Spouse: 1, Child: 2 };
-const birthTime = (d?: string | Date) => {
-  const t = d ? new Date(d).getTime() : NaN;
-  return Number.isNaN(t) ? Number.POSITIVE_INFINITY : t;
-};
-const sortMembers = (list: PersonInterface[]) => [...list].sort((a, b) => ((roleOrder[a.householdRole || ""] ?? 3) - (roleOrder[b.householdRole || ""] ?? 3))
-  || (birthTime(a.birthDate) - birthTime(b.birthDate))
-  || (a.name?.display || "").localeCompare(b.name?.display || ""));
 
 export const useHousehold = (person: PersonInterface | null) => {
   const [household, setHousehold] = React.useState<HouseholdInterface | null>(null);
