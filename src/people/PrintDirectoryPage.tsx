@@ -131,7 +131,19 @@ export const PrintDirectoryPage = () => {
   const year = new Date().getFullYear();
   const printedOn = new Date().toLocaleDateString(DateHelper.locale, { month: "long", day: "numeric", year: "numeric" });
 
-  let currentLetter = "";
+  // Group each letter's households into two-card rows. Browsers ignore break-inside: avoid on items of a grid that
+  // runs across pages, so each row is its own block and is kept whole on a printed page.
+  const sections: { letter: string; rows: (typeof households)[] }[] = [];
+  households.forEach((h) => {
+    let section = sections[sections.length - 1];
+    if (!section || section.letter !== h.letter) {
+      section = { letter: h.letter, rows: [] };
+      sections.push(section);
+    }
+    const row = section.rows[section.rows.length - 1];
+    if (row && row.length < 2) row.push(h);
+    else section.rows.push([h]);
+  });
 
   return (
     <>
@@ -141,7 +153,7 @@ export const PrintDirectoryPage = () => {
             @page { margin: 0.5in; size: letter; }
             body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .print-toolbar { display: none !important; }
-            .household-card { break-inside: avoid; page-break-inside: avoid; }
+            .household-row, .household-card { break-inside: avoid; page-break-inside: avoid; }
             .section-band { break-inside: avoid; page-break-inside: avoid; break-after: avoid-page; page-break-after: avoid; }
             .directory-cover { break-after: page; page-break-after: always; }
           }
@@ -243,11 +255,10 @@ export const PrintDirectoryPage = () => {
           }
 
           .section-band {
-            grid-column: 1 / -1;
             display: flex;
             align-items: center;
             gap: 16px;
-            margin: 24px 0 12px 0;
+            margin: 52px 0 40px 0;
           }
           .section-band:first-child {
             margin-top: 0;
@@ -267,10 +278,14 @@ export const PrintDirectoryPage = () => {
           }
 
           .household-grid {
+            padding: 8px 0 16px 0;
+          }
+
+          .household-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 28px 32px;
-            padding: 8px 0 16px 0;
+            column-gap: 32px;
+            margin-bottom: 28px;
           }
 
           .household-card {
@@ -398,100 +413,102 @@ export const PrintDirectoryPage = () => {
 
         <div className="directory-body">
           <div className="household-grid">
-            {households.map((h) => {
-              const showSection = h.letter !== currentLetter;
-              if (showSection) currentLetter = h.letter;
-              const birthdays = options.birthdays ? memberBirthdays(h.members) : "";
-              const anniversaries = options.anniversaries ? memberAnniversaries(h.members) : "";
-              // Without photos there are no captions, so name the members unless the title already does.
-              const names = options.photos ? [] : h.members.map(firstName).filter(Boolean);
-              const showNames = names.length > 0 && !names.every((n) => h.displayName.includes(n));
+            {sections.map((section) => (
+              <React.Fragment key={section.letter}>
+                <div className="section-band">
+                  <div className="section-letter">{section.letter}</div>
+                  <div className="section-rule" />
+                </div>
+                {section.rows.map((row) => (
+                  <div className="household-row" key={row[0].key}>
+                    {row.map((h) => {
+                      const birthdays = options.birthdays ? memberBirthdays(h.members) : "";
+                      const anniversaries = options.anniversaries ? memberAnniversaries(h.members) : "";
+                      // Without photos there are no captions, so name the members unless the title already does.
+                      const names = options.photos ? [] : h.members.map(firstName).filter(Boolean);
+                      const showNames = names.length > 0 && !names.every((n) => h.displayName.includes(n));
 
-              return (
-                <React.Fragment key={h.key}>
-                  {showSection && (
-                    <div className="section-band">
-                      <div className="section-letter">{h.letter}</div>
-                      <div className="section-rule" />
-                    </div>
-                  )}
-                  <div className="household-card">
-                    <h3 className="household-name">{h.displayName}</h3>
-                    <div className="household-underline" />
+                      return (
+                        <div className="household-card" key={h.key}>
+                          <h3 className="household-name">{h.displayName}</h3>
+                          <div className="household-underline" />
 
-                    {showNames && (
-                      <div className="household-members" data-testid="print-directory-members">
-                        {names.length > 1 ? `${names.slice(0, -1).join(", ")} & ${names[names.length - 1]}` : names[0]}
-                      </div>
-                    )}
+                          {showNames && (
+                            <div className="household-members" data-testid="print-directory-members">
+                              {names.length > 1 ? `${names.slice(0, -1).join(", ")} & ${names[names.length - 1]}` : names[0]}
+                            </div>
+                          )}
 
-                    {options.photos && (
-                      <div className="member-photos">
-                        {h.members.map((m) => (
-                          <div key={m.id} className="member-photo-block">
-                            <img
-                              className="member-photo"
-                              src={PersonHelper.getPhotoUrl(m)}
-                              alt=""
-                              onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/images/sample-profile.png";
-                              }}
-                            />
-                            <div className="member-photo-name">{firstName(m)}</div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                          {options.photos && (
+                            <div className="member-photos">
+                              {h.members.map((m) => (
+                                <div key={m.id} className="member-photo-block">
+                                  <img
+                                    className="member-photo"
+                                    src={PersonHelper.getPhotoUrl(m)}
+                                    alt=""
+                                    onError={(e) => {
+                                      e.currentTarget.onerror = null;
+                                      e.currentTarget.src = "/images/sample-profile.png";
+                                    }}
+                                  />
+                                  <div className="member-photo-name">{firstName(m)}</div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
 
-                    <div className="household-details">
-                      {options.address && (h.address1 || h.cityStateZip) && (
-                        <>
-                          <div className="detail-label">Home</div>
-                          <div className="detail-value">
-                            {h.address1}
-                            {h.address2 ? <>, {h.address2}</> : null}
-                            {h.cityStateZip ? <><br />{h.cityStateZip}</> : null}
+                          <div className="household-details">
+                            {options.address && (h.address1 || h.cityStateZip) && (
+                              <>
+                                <div className="detail-label">Home</div>
+                                <div className="detail-value">
+                                  {h.address1}
+                                  {h.address2 ? <>, {h.address2}</> : null}
+                                  {h.cityStateZip ? <><br />{h.cityStateZip}</> : null}
+                                </div>
+                              </>
+                            )}
+                            {options.phone && h.phones.length > 0 && (
+                              <>
+                                <div className="detail-label">Phone</div>
+                                <div className="detail-value">
+                                  {h.phones.map((line) => (
+                                    <div key={line.value} data-testid="print-directory-phone-line">{line.name ? `${line.name}: ${line.value}` : line.value}</div>
+                                  ))}
+                                </div>
+                              </>
+                            )}
+                            {options.email && h.emails.length > 0 && (
+                              <>
+                                <div className="detail-label">Email</div>
+                                <div className="detail-value">
+                                  {h.emails.map((line) => (
+                                    <div key={line.value} data-testid="print-directory-email-line">{line.name ? `${line.name}: ${line.value}` : line.value}</div>
+                                  ))}
+                                </div>
+                              </>
+                            )}
+                            {birthdays && (
+                              <>
+                                <div className="detail-label">Birthdays</div>
+                                <div className="detail-value">{birthdays}</div>
+                              </>
+                            )}
+                            {anniversaries && (
+                              <>
+                                <div className="detail-label">Anniversary</div>
+                                <div className="detail-value">{anniversaries}</div>
+                              </>
+                            )}
                           </div>
-                        </>
-                      )}
-                      {options.phone && h.phones.length > 0 && (
-                        <>
-                          <div className="detail-label">Phone</div>
-                          <div className="detail-value">
-                            {h.phones.map((line) => (
-                              <div key={line.value} data-testid="print-directory-phone-line">{line.name ? `${line.name}: ${line.value}` : line.value}</div>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                      {options.email && h.emails.length > 0 && (
-                        <>
-                          <div className="detail-label">Email</div>
-                          <div className="detail-value">
-                            {h.emails.map((line) => (
-                              <div key={line.value} data-testid="print-directory-email-line">{line.name ? `${line.name}: ${line.value}` : line.value}</div>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                      {birthdays && (
-                        <>
-                          <div className="detail-label">Birthdays</div>
-                          <div className="detail-value">{birthdays}</div>
-                        </>
-                      )}
-                      {anniversaries && (
-                        <>
-                          <div className="detail-label">Anniversary</div>
-                          <div className="detail-value">{anniversaries}</div>
-                        </>
-                      )}
-                    </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                </React.Fragment>
-              );
-            })}
+                ))}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>
