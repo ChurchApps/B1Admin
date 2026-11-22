@@ -151,3 +151,81 @@ peopleTest.describe("Print directory field options", () => {
     await expect(page.locator(".member-photos")).toHaveCount(1);
   });
 });
+
+const withContact = (p: PersonInterface, contactInfo: PersonInterface["contactInfo"]): PersonInterface => ({ ...p, contactInfo });
+
+test.describe("Print directory member order and contact lines", () => {
+  test("orders members Head, Spouse, Child regardless of name or birth date", () => {
+    const people = [
+      person({ id: "c", first: "Amy", last: "Clark", householdId: "h", householdRole: "Child" }),
+      person({ id: "s", first: "Carol", last: "Clark", householdId: "h", householdRole: "Spouse" }),
+      person({ id: "h1", first: "Donald", last: "Clark", householdId: "h", householdRole: "Head" })
+    ];
+    const result = buildHouseholds(people);
+    expect(result[0].members.map((m) => m.name?.first)).toEqual(["Donald", "Carol", "Amy"]);
+  });
+
+  test("names a couple Head & Spouse even when the spouse is older", () => {
+    const people = [
+      person({ id: "s", first: "Carol", last: "Clark", householdId: "h", householdRole: "Spouse", birthDate: "1960-01-01" }),
+      person({ id: "h1", first: "Donald", last: "Clark", householdId: "h", householdRole: "Head", birthDate: "1980-01-01" })
+    ];
+    expect(buildHouseholds(people)[0].displayName).toBe("Donald & Carol Clark");
+  });
+
+  test("puts older children first", () => {
+    const people = [
+      person({ id: "a", first: "Young", last: "Clark", householdId: "h", householdRole: "Child", birthDate: "2015-01-01" }),
+      person({ id: "b", first: "Old", last: "Clark", householdId: "h", householdRole: "Child", birthDate: "2010-01-01" })
+    ];
+    expect(buildHouseholds(people)[0].members.map((m) => m.name?.first)).toEqual(["Old", "Young"]);
+  });
+
+  test("lists each member's phones and emails once, shared values without a name", () => {
+    const people = [
+      withContact(person({ id: "h1", first: "Donald", last: "Clark", householdId: "h", householdRole: "Head" }), { homePhone: "(555) 010-1000", mobilePhone: "555-010-2000", email: "family@example.com" }),
+      withContact(person({ id: "s", first: "Carol", last: "Clark", householdId: "h", householdRole: "Spouse" }), { homePhone: "555.010.1000", mobilePhone: "555-010-3000", email: "Family@Example.com " })
+    ];
+    const h = buildHouseholds(people)[0];
+    expect(h.phones).toEqual([
+      { value: "(555) 010-1000" },
+      { name: "Donald", value: "555-010-2000" },
+      { name: "Carol", value: "555-010-3000" }
+    ]);
+    expect(h.emails).toEqual([{ value: "family@example.com" }]);
+  });
+
+  test("a single-person household prints bare values", () => {
+    const people = [withContact(person({ id: "x", first: "Jamie", last: "Solo" }), { mobilePhone: "555-010-4000", workPhone: "555-010-5000", email: "jamie@example.com" })];
+    const h = buildHouseholds(people)[0];
+    expect(h.phones).toEqual([{ value: "555-010-4000" }, { value: "555-010-5000" }]);
+    expect(h.emails).toEqual([{ value: "jamie@example.com" }]);
+  });
+});
+
+peopleTest.describe("Print directory per-member contact details", () => {
+  peopleTest("prints every member's phone and email on its own line in household order", async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    const people = [
+      withContact(person({ id: "p-carol", first: "Carol", last: "Clark", householdId: "h-clark", householdRole: "Spouse", birthDate: "1975-02-01T00:00:00.000Z" }), { homePhone: "555-010-1000", mobilePhone: "555-010-3000", email: "carol@example.com" }),
+      withContact(person({ id: "p-donald", first: "Donald", last: "Clark", householdId: "h-clark", householdRole: "Head", birthDate: "1980-04-12T00:00:00.000Z" }), { homePhone: "555-010-1000", mobilePhone: "555-010-2000", email: "donald@example.com" })
+    ];
+    await page.route("**/membership/people", async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      if (/\/people\/.+/.test(route.request().url())) return route.continue();
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(people) });
+    });
+    await page.route("**/membership/households", async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      if (/\/households\/.+/.test(route.request().url())) return route.continue();
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify([{ id: "h-clark", name: "Clark" }]) });
+    });
+
+    await page.goto("/people/print-directory");
+    await expect(page.locator(".household-name")).toContainText("Clark", { timeout: 15000 });
+    if (process.env.PR_SCREENSHOT) await page.screenshot({ path: process.env.PR_SCREENSHOT, fullPage: true });
+    await expect(page.locator(".household-name")).toHaveText("Donald & Carol Clark");
+    await expect(page.getByTestId("print-directory-phone-line")).toHaveText(["555-010-1000", "Donald: 555-010-2000", "Carol: 555-010-3000"]);
+    await expect(page.getByTestId("print-directory-email-line")).toHaveText(["Donald: donald@example.com", "Carol: carol@example.com"]);
+  });
+});
