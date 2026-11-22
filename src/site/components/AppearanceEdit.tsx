@@ -12,24 +12,6 @@ interface Props {
   settings?: GenericSettingInterface[];
 }
 
-function getOgImage(img: HTMLImageElement) {
-  return new Promise<string>((resolve) => {
-    img.onerror = () => resolve(img.src);
-    img.onload = function () {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = 1200;
-      canvas.height = 630;
-      if (!ctx) return resolve(img.src);
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 15, 15);
-      const dataURL = canvas.toDataURL();
-      resolve(dataURL.toString());
-    };
-  });
-}
-
 async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
 
   const [header, base64 = ""] = dataUrl.split(",");
@@ -86,16 +68,6 @@ export function AppearanceEdit(props: Props) {
     if (editLogo) editorRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
   }, [editLogo]);
 
-  const getValue = async (keyName: string, dataURL: string) => {
-    let url = dataURL;
-    if (keyName === "ogImage") {
-      const image = new Image();
-      image.src = dataURL;
-      url = await getOgImage(image);
-    }
-    return url;
-  };
-
   const getImageUri = async (dataUrl: string, fileName: string, width: number, height: number) => {
     const file = await dataUrlToFile(dataUrl, fileName);
     const uri = await resizeImage(file, width, height);
@@ -108,8 +80,8 @@ export function AppearanceEdit(props: Props) {
         const settings = [...currentSettings];
         const keySetting = settings.filter((s: GenericSettingInterface) => s.keyName === keyName);
 
-        if (keySetting.length === 0) settings.push({ keyName, value: await getValue(keyName, dataUrl), public: 1 });
-        else keySetting[0].value = await getValue(keyName, dataUrl);
+        if (keySetting.length === 0) settings.push({ keyName, value: dataUrl, public: 1 });
+        else keySetting[0].value = dataUrl;
 
         if (keyName === "favicon_400x400") {
           // The 16x16 derivation is a nice-to-have; never let a failure here block
@@ -157,9 +129,9 @@ export function AppearanceEdit(props: Props) {
         outputWidth = 400;
         outputHeight = 400;
       } else if (currentEditLogo.includes("ogImage")) {
-        aspectRatio = 1170 / 600;
-        outputWidth = 1170;
-        outputHeight = 600;
+        aspectRatio = 1200 / 630;
+        outputWidth = 1200;
+        outputHeight = 630;
       } else {
         aspectRatio = 4;
         outputWidth = 1280;
