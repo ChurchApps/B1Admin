@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogActions, Typography, Box, Button } from "@mui/material";
-import { HowToReg as RegIcon, Edit as EditIcon, Share as ShareIcon } from "@mui/icons-material";
+import { HowToReg as RegIcon, Edit as EditIcon, Share as ShareIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
 import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface, type EventInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
@@ -22,6 +22,7 @@ interface Props {
 export function DisplayCalendarEventModal(props: Props) {
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
+  const [duplicating, setDuplicating] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const [sharing, setSharing] = useState(false);
   const [fullEvent, setFullEvent] = useState<EventInterface | null>(null);
@@ -97,6 +98,21 @@ export function DisplayCalendarEventModal(props: Props) {
     );
   }
 
+  if (duplicating && realEventId) {
+    return (
+      <EventModal
+        churchId={props.churchId || ""}
+        copyFromEventId={realEventId}
+        copyStart={props.event.start ? new Date(props.event.start) : undefined}
+        curatedCalendarId={props.curatedCalendarId}
+        onDone={(saved) => {
+          setDuplicating(false);
+          if (saved && props.onDone) props.onDone();
+        }}
+      />
+    );
+  }
+
   return (
     <>
       {ConfirmDialogElement}
@@ -127,6 +143,11 @@ export function DisplayCalendarEventModal(props: Props) {
           {realEventId && props.mode === "edit" && (
             <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setEditing(true)} data-testid="calendar-event-edit-button">
               {Locale.label("calendars.calendarEvent.edit")}
+            </Button>
+          )}
+          {realEventId && props.mode === "edit" && (
+            <Button variant="outlined" startIcon={<DuplicateIcon />} onClick={() => setDuplicating(true)} data-testid="calendar-event-duplicate-button">
+              {Locale.label("calendars.calendarEvent.duplicate")}
             </Button>
           )}
           {realEventId && props.mode === "edit" && shareable && (
