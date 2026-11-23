@@ -376,9 +376,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/apphelper@npm:^1.12.0":
-  version: 1.12.0
-  resolution: "@churchapps/apphelper@npm:1.12.0"
+"@churchapps/apphelper@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@churchapps/apphelper@npm:1.13.0"
   dependencies:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
@@ -440,7 +440,7 @@ __metadata:
       optional: true
     react-google-recaptcha:
       optional: true
-  checksum: 10c0/c2e2c52c3e791cf966a33d087a0b2999c076c58c7980c2e25f1cb5459d0a1b1fff2a47cba9d10abc02d16a018de775513887786567e704255d5c776672b74217
+  checksum: 10c0/6d9b01ab679cc5ec081e3a71652e3dd500a9d02efb70b1b90fe1a58d765de9d8d42ff0ff6d18731c14cd7949274ccb61a73b3df025e84cf421877e3d4144d983
   languageName: node
   linkType: hard
 
@@ -2690,7 +2690,7 @@ __metadata:
   resolution: "b1admin@workspace:."
   dependencies:
     "@babel/core": "npm:^8.0.1"
-    "@churchapps/apphelper": "npm:^1.12.0"
+    "@churchapps/apphelper": "npm:^1.13.0"
     "@churchapps/content-providers": "npm:^0.17.0"
     "@churchapps/helpers": "npm:^2.17.0"
     "@eslint/js": "npm:^10.0.1"
