@@ -1093,6 +1093,11 @@
       "button": "Giving Link",
       "description": "Share this link or QR code so donors land on the donate page with the fund and amount already selected.",
       "downloadQr": "Download PNG",
+      "pageButton": "Giving Page Link",
+      "pageDescription": "Share this link or QR code so donors land on your church's giving page.",
+      "pageTitle": "Giving Page Link",
+      "recurring": "Start as a recurring gift",
+      "recurringHelp": "The donate form opens with Recurring selected. Donors can still switch to a one-time gift before they give.",
       "title": "Giving Link",
       "url": "Link"
     },
