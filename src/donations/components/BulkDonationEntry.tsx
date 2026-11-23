@@ -122,7 +122,7 @@ export const BulkDonationEntry = memo((props: Props) => {
         <Typography variant="h3" component="h2" sx={{ mb: 2 }}>
           {Locale.label("donations.bulkEntry.selectPerson")}
         </Typography>
-        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
+        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} onCreate={handlePersonAdd} showCreatePersonOnNotFound inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
         <Box sx={{ mt: 2 }}>
           <Button variant="text" size="small" onClick={handleAnonymousSelect} data-testid="bulk-donation-anonymous">
             {Locale.label("donations.donationEdit.anon")}

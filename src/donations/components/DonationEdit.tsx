@@ -206,7 +206,7 @@ export const DonationEdit = memo((props: Props) => {
     if (showSelectPerson) {
       return (
         <>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} />
+          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} onCreate={handlePersonAdd} showCreatePersonOnNotFound />
           <hr />
           <button type="button" className="text-decoration" onClick={handleAnonymousSelect} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("donations.donationEdit.anon")}
