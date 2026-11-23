@@ -59,6 +59,15 @@ export const SavedLists = (props: Props) => {
     invalidate();
   };
 
+  const handleDuplicate = async () => {
+    if (!settingsTarget?.name?.trim()) return;
+    const { id: _id, churchId: _churchId, createdByPersonId: _createdBy, createdByPersonName: _createdByName, ...rest } = settingsTarget;
+    const saved: ListInterface[] = await ApiHelper.post("/lists", [{ ...rest, name: Locale.label("people.lists.copyName").replace("{name}", settingsTarget.name.trim()) }], "MembershipApi");
+    setSettingsTarget(null);
+    invalidate();
+    if (saved?.[0]?.id) props.onSelect(saved[0]);
+  };
+
   const { grouped, categories } = useMemo(() => {
     const grouped = lists.reduce<Record<string, ListInterface[]>>((acc, list) => {
       const key = list.category?.trim() || "";
@@ -129,6 +138,7 @@ export const SavedLists = (props: Props) => {
                   <MenuItem value="none">{Locale.label("people.lists.householdNone")}</MenuItem>
                   <MenuItem value="children">{Locale.label("people.lists.householdChildren")}</MenuItem>
                   <MenuItem value="household">{Locale.label("people.lists.householdAll")}</MenuItem>
+                  <MenuItem value="adults">{Locale.label("people.lists.householdAdults")}</MenuItem>
                 </Select>
               </FormControl>
             )}
@@ -149,6 +159,7 @@ export const SavedLists = (props: Props) => {
           </Stack>
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleDuplicate} disabled={!settingsTarget?.name?.trim()} sx={{ mr: "auto" }} data-testid="list-settings-duplicate">{Locale.label("common.duplicate")}</Button>
           <Button onClick={() => setSettingsTarget(null)}>{Locale.label("common.cancel")}</Button>
           <Button onClick={handleSaveSettings} variant="contained" disabled={!settingsTarget?.name?.trim()} data-testid="list-settings-save">{Locale.label("common.save")}</Button>
         </DialogActions>
