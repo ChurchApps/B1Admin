@@ -3552,6 +3552,16 @@
     "addPermanentLiveUrl": "Add Permanent Live URL",
     "addSermon": "Add Sermon",
     "adjustSearchTerms": "Try adjusting your search terms",
+    "bulkDelete": {
+      "action": "Delete Selected ({count})",
+      "confirmMany": "Delete the {count} selected sermons? This cannot be undone.",
+      "confirmOne": "Delete the selected sermon? This cannot be undone.",
+      "deleting": "Deleting sermons…",
+      "error": "Some sermons could not be deleted. Please try again.",
+      "selectAll": "Select all visible sermons",
+      "selectOne": "Select {title}",
+      "title": "Delete selected sermons"
+    },
     "bulkImport": {
       "alreadyImported": "Already imported",
       "chooseSource": "Choose Import Source",
