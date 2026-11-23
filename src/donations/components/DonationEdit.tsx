@@ -185,6 +185,9 @@ export const DonationEdit = memo((props: Props) => {
     );
   }, [props.donationId, batches, donation]);
 
+  // Offer "Add New Person" only to staff who may create people.
+  const canCreatePerson = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
+
   const handlePersonAdd = useCallback((p: PersonInterface | null) => {
     const d = { ...donation } as DonationInterface;
     if (p === null) { d.person = undefined; d.personId = ""; } else { d.person = p; d.personId = p.id; }
@@ -206,7 +209,7 @@ export const DonationEdit = memo((props: Props) => {
     if (showSelectPerson) {
       return (
         <>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} onCreate={handlePersonAdd} showCreatePersonOnNotFound />
+          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} onCreate={canCreatePerson ? handlePersonAdd : undefined} showCreatePersonOnNotFound={canCreatePerson} />
           <hr />
           <button type="button" className="text-decoration" onClick={handleAnonymousSelect} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("donations.donationEdit.anon")}

@@ -1,7 +1,7 @@
 import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField, Box, Typography, Button, type SelectChangeEvent } from "@mui/material";
 import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
-import { ApiHelper, DateHelper, ErrorMessages, PersonHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, ErrorMessages, PersonHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import { AppDatePicker } from "../../components";
 import { Surface } from "../../components/ui";
@@ -26,6 +26,8 @@ export const BulkDonationEntry = memo((props: Props) => {
   const savingRef = useRef(false);
   const [errors, setErrors] = React.useState<string[]>([]);
   const currency = (props.currency || "usd").toLowerCase();
+  // Offer "Add New Person" only to staff who may create people; the donor search itself needs no more.
+  const canCreatePerson = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
 
   const [defaultValues, setDefaultValues] = React.useState({
     date: props.batchDate || DateHelper.formatHtml5Date(new Date()),
@@ -122,7 +124,14 @@ export const BulkDonationEntry = memo((props: Props) => {
         <Typography variant="h3" component="h2" sx={{ mb: 2 }}>
           {Locale.label("donations.bulkEntry.selectPerson")}
         </Typography>
-        <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} onCreate={handlePersonAdd} showCreatePersonOnNotFound inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
+        <PersonAdd
+          getPhotoUrl={PersonHelper.getPhotoUrl}
+          addFunction={handlePersonAdd}
+          onCreate={canCreatePerson ? handlePersonAdd : undefined}
+          showCreatePersonOnNotFound={canCreatePerson}
+          inputRef={searchInputRef as React.RefObject<HTMLInputElement>}
+          autoSearch
+        />
         <Box sx={{ mt: 2 }}>
           <Button variant="text" size="small" onClick={handleAnonymousSelect} data-testid="bulk-donation-anonymous">
             {Locale.label("donations.donationEdit.anon")}
