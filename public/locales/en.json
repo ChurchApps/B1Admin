@@ -2445,6 +2445,7 @@
       "attendanceSummary": "{count} of the last {weeks} weeks",
       "cancelled": "Cancelled",
       "email": "Email",
+      "emailBounced": "The last email to this address bounced.",
       "eventRequest": "Event request",
       "givenBy": "Given by",
       "givingHidden": "Giving is hidden on person records.",

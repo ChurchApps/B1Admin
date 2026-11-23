@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, Locale, Permissions, PersonAvatar, PersonHelper, UserHelper } from "@churchapps/apphelper";
-import { Box, Button, ButtonBase, Link, Stack, Typography } from "@mui/material";
-import { ChatBubbleOutline as TextIcon, MailOutline as MailIcon, WarningAmber as WarningIcon } from "@mui/icons-material";
+import { Box, Button, ButtonBase, Link, Stack, Tooltip, Typography } from "@mui/material";
+import { ChatBubbleOutline as TextIcon, ErrorOutline as BouncedIcon, MailOutline as MailIcon, WarningAmber as WarningIcon } from "@mui/icons-material";
 import { SendEmailDialog } from "../../groups/components/SendEmailDialog";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { type PersonFieldInterface, type PersonFieldValueInterface } from "../../helpers/Interfaces";
@@ -50,6 +50,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
   const canEmail = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
+  const canViewPeople = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.view) || UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
   const formPermission = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit), []);
 
   React.useEffect(() => {
@@ -134,6 +135,12 @@ export const PersonIdentity: React.FC<Props> = (props) => {
     .map((l) => (l || "").trim())
     .filter(Boolean);
 
+  const emailStatus = useQuery<{ bounced?: boolean; address?: string }>({
+    queryKey: [`/deliverylogs/person/${person.id}/emailStatus`, "MessagingApi"],
+    enabled: !!person.id && !!contact.email && canViewPeople
+  });
+  const emailBounced = !!emailStatus.data?.bounced && (emailStatus.data.address || "").trim().toLowerCase() === (contact.email || "").trim().toLowerCase();
+
   const canSendText = !!contact.mobilePhone && canText && hasTextingProvider;
   const editing = props.view === "edit";
 
@@ -201,7 +208,16 @@ export const PersonIdentity: React.FC<Props> = (props) => {
               {p.label} <CopyableText text={p.value || ""}><Box component="span" sx={strong}>{formattedPhoneNumber(p.value || "", localPhones)}</Box></CopyableText>
             </Typography>
           ))}
-          {contact.email && <Typography sx={quiet}><Link href={"mailto:" + contact.email} sx={{ color: "var(--b1-link)" }}>{contact.email}</Link></Typography>}
+          {contact.email && (
+            <Typography sx={quiet}>
+              <Link href={"mailto:" + contact.email} sx={{ color: "var(--b1-link)" }}>{contact.email}</Link>
+              {emailBounced && (
+                <Tooltip title={Locale.label("people.personRecord.emailBounced")}>
+                  <BouncedIcon role="img" aria-label={Locale.label("people.personRecord.emailBounced")} data-testid="person-email-bounced" sx={{ fontSize: 16, color: "warning.main", ml: 0.5, verticalAlign: "text-bottom" }} />
+                </Tooltip>
+              )}
+            </Typography>
+          )}
           {addressLines.length > 0 && (
             <Typography sx={quiet}>
               <CopyableText text={addressLines.join(", ")}>
