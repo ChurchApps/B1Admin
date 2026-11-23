@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, Icon, IconButton, TextField, Typography } from "@mui/material";
 import { ContentCopy as CopyIcon, Check as CheckIcon } from "@mui/icons-material";
 import { QRCodeCanvas } from "qrcode.react";
 import { Locale, UserHelper } from "@churchapps/apphelper";
@@ -7,18 +7,29 @@ import { type FundInterface } from "@churchapps/helpers";
 import { EnvironmentHelper } from "../../helpers";
 
 interface Props {
-  fund: FundInterface;
+  // Without a fund the dialog gives the plain giving-page link (/donate).
+  fund?: FundInterface | null;
   onClose: () => void;
 }
 
+export const buildGivingLink = (base: string, opts: { fundId?: string; amount?: string; recurring?: boolean }) => {
+  const params: string[] = [];
+  if (opts.fundId) params.push(`fundId=${encodeURIComponent(opts.fundId)}`);
+  if (opts.fundId && opts.amount) params.push(`amount=${encodeURIComponent(opts.amount)}`);
+  // The donation forms start on Recurring for ?recurring=1; donors can still switch to one-time.
+  if (opts.recurring) params.push("recurring=1");
+  return `${base}/donate${params.length ? "?" + params.join("&") : ""}`;
+};
+
 export const GivingLinkDialog: React.FC<Props> = ({ fund, onClose }) => {
   const [amount, setAmount] = React.useState("");
+  const [recurring, setRecurring] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const subDomain = UserHelper.currentUserChurch?.church?.subDomain || "";
   const base = subDomain ? EnvironmentHelper.B1Url.replace("{subdomain}", subDomain) : "";
-  const url = `${base}/donate?fundId=${fund.id}${amount ? `&amount=${amount}` : ""}`;
+  const url = buildGivingLink(base, { fundId: fund?.id, amount, recurring });
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url);
@@ -29,7 +40,7 @@ export const GivingLinkDialog: React.FC<Props> = ({ fund, onClose }) => {
   const handleDownload = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const slug = (fund.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "fund";
+    const slug = fund ? ((fund.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "fund") : "donate";
     const link = document.createElement("a");
     link.href = canvas.toDataURL("image/png");
     link.download = `giving-qr-${slug}.png`;
@@ -38,18 +49,27 @@ export const GivingLinkDialog: React.FC<Props> = ({ fund, onClose }) => {
 
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{Locale.label("donations.givingLink.title")}</DialogTitle>
+      <DialogTitle>{Locale.label(fund ? "donations.givingLink.title" : "donations.givingLink.pageTitle")}</DialogTitle>
       <DialogContent>
-        <Typography variant="body2" sx={{ mb: 2 }}>{Locale.label("donations.givingLink.description")}</Typography>
-        <TextField
-          fullWidth
-          type="number"
-          label={Locale.label("donations.givingLink.amount")}
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          sx={{ mb: 2 }}
-          slotProps={{ htmlInput: { "data-testid": "giving-link-amount" } }}
-        />
+        <Typography variant="body2" sx={{ mb: 2 }}>{Locale.label(fund ? "donations.givingLink.description" : "donations.givingLink.pageDescription")}</Typography>
+        {fund && (
+          <TextField
+            fullWidth
+            type="number"
+            label={Locale.label("donations.givingLink.amount")}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            sx={{ mb: 2 }}
+            slotProps={{ htmlInput: { "data-testid": "giving-link-amount" } }}
+          />
+        )}
+        <Box sx={{ mb: 2 }}>
+          <FormControlLabel
+            control={<Checkbox checked={recurring} onChange={(e) => setRecurring(e.target.checked)} data-testid="giving-link-recurring" />}
+            label={Locale.label("donations.givingLink.recurring")}
+          />
+          <FormHelperText sx={{ mt: 0 }}>{Locale.label("donations.givingLink.recurringHelp")}</FormHelperText>
+        </Box>
         <TextField
           fullWidth
           label={Locale.label("donations.givingLink.url")}

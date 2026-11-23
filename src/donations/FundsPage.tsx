@@ -5,15 +5,16 @@ import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableRow, Box, Link as MuiLink, Typography, Stack } from "@mui/material";
-import { Add as AddIcon, VolunteerActivism as FundIcon } from "@mui/icons-material";
+import { Add as AddIcon, QrCode2 as QrCodeIcon, VolunteerActivism as FundIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, ResultsBar, StatusBadge, SortableTableHead, TextAction, VerbRow, hoverRowSx, tableScrollSx } from "../components/ui";
+import { PageHeader, PageContainer, Surface, EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, ResultsBar, StatusBadge, SortableTableHead, TextAction, VerbRow, hoverRowSx, tableScrollSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 import { useRequirePermission } from "../hooks";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
-  const [linkFund, setLinkFund] = React.useState<FundInterface | null>(null);
+  // A fund opens its own link; "page" opens the plain giving-page link.
+  const [linkFund, setLinkFund] = React.useState<FundInterface | "page" | null>(null);
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
@@ -130,6 +131,7 @@ export const FundsPage = () => {
   return (
     <>
       <PageHeader title={Locale.label("donations.donations.funds")} subtitle={Locale.label("donations.fundsPage.subtitle")}>
+        <HeaderSecondaryButton startIcon={<QrCodeIcon />} onClick={() => setLinkFund("page")} data-testid="giving-page-link-button">{Locale.label("donations.givingLink.pageButton")}</HeaderSecondaryButton>
         {(funds.data?.length || 0) > 0 && <ExportButton data={funds.data || []} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
         {canEdit && <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => openFund("")} data-testid="add-fund-button">{Locale.label("donations.fundsPage.addFund")}</HeaderPrimaryButton>}
       </PageHeader>
@@ -150,7 +152,7 @@ export const FundsPage = () => {
         </Surface>
       </PageContainer>
 
-      {linkFund && <GivingLinkDialog fund={linkFund} onClose={() => setLinkFund(null)} />}
+      {linkFund && <GivingLinkDialog fund={linkFund === "page" ? null : linkFund} onClose={() => setLinkFund(null)} />}
     </>
   );
 };
