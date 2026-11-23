@@ -1,6 +1,7 @@
 import { Tabs, FormNavigation, FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, Loading } from "@churchapps/apphelper";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Button, Link as MuiLink, Stack, Typography } from "@mui/material";
 import { Description as DescriptionIcon } from "@mui/icons-material";
@@ -81,7 +82,7 @@ export const FormPage = () => {
           {formUrl}
         </MuiLink>
       )}
-      {data.description && <Typography variant="body2" color="text.secondary" sx={{ mt: 2, whiteSpace: "pre-line" }}>{data.description}</Typography>}
+      {data.description && <Typography component="div" variant="body2" color="text.secondary" sx={{ mt: 2, "& p": { my: 0.5 } }}><MarkdownPreviewLight value={data.description} breaks /></Typography>}
       <RecordActions buttons={canEditSettings && !editing && <Button variant="contained" onClick={() => setView("edit")} data-testid="edit-form-settings-button">{Locale.label("forms.formEdit.editForm")}</Button>}>
         <TextAction small to="/forms" component={Link} data-testid="form-back-to-forms">{Locale.label("forms.formsPage.forms")}</TextAction>
       </RecordActions>

@@ -1,17 +1,21 @@
 import React from "react";
 import { Link, Stack } from "@mui/material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { Phone as PhoneIcon, Email as EmailIcon } from "@mui/icons-material";
+import { SendEmailDialog } from "../../../groups/components/SendEmailDialog";
 
 interface Props {
   taskId: string;
   associatedWithType?: string;
   associatedWithId?: string;
+  personName?: string;
 }
 
 // Phone and email of the person a task is about. The Api only returns them to people who can view the task.
-export const TaskContact = ({ taskId, associatedWithType, associatedWithId }: Props) => {
+export const TaskContact = ({ taskId, associatedWithType, associatedWithId, personName }: Props) => {
   const [contact, setContact] = React.useState<{ mobilePhone?: string; email?: string }>({});
+  const [showEmailDialog, setShowEmailDialog] = React.useState(false);
+  const canEmail = UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit);
   const isPerson = associatedWithType?.toLowerCase() === "person" && !!associatedWithId;
 
   React.useEffect(() => {
@@ -36,9 +40,10 @@ export const TaskContact = ({ taskId, associatedWithType, associatedWithId }: Pr
       {contact.email && (
         <Stack direction="row" spacing={1} alignItems="center">
           <EmailIcon fontSize="small" color="action" aria-label={Locale.label("tasks.workflowCard.email")} />
-          <Link href={"mailto:" + contact.email} variant="body2" data-testid="card-contact-email">{contact.email}</Link>
+          <Link href={"mailto:" + contact.email} onClick={canEmail ? (e: React.MouseEvent) => { e.preventDefault(); setShowEmailDialog(true); } : undefined} variant="body2" data-testid="card-contact-email">{contact.email}</Link>
         </Stack>
       )}
+      {showEmailDialog && contact.email && <SendEmailDialog personId={associatedWithId} personName={personName} email={contact.email} onClose={() => setShowEmailDialog(false)} />}
     </Stack>
   );
 };

@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Paper } from "@mui/material";
 import React from "react";
 import { SelectGroup } from ".";
-import { Locale, PersonHelper, type PersonInterface } from "@churchapps/apphelper";
+import { Locale, Permissions, PersonHelper, UserHelper, type PersonInterface } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
 import { PersonAdd } from "../../../components";
 import { Person as PersonIcon, Group as GroupIcon, Close as CloseIcon } from "@mui/icons-material";
@@ -18,6 +18,8 @@ interface Props {
   onRemove?: (contentId: string) => void;
   /** Multiple mode: called instead of onSelect when a group is picked with "a separate task for each member" checked. */
   onExpandGroup?: (group: GroupInterface) => void;
+  /** Offer to add a new person when the search finds no one. */
+  allowCreatePerson?: boolean;
 }
 
 export const ContentPicker: React.FC<Props> = (props) => {
@@ -25,6 +27,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
   const [perMember, setPerMember] = React.useState(false);
   const selected = props.selected || [];
   const { onRemove } = props;
+  const canCreatePerson = !!props.allowCreatePerson && UserHelper.checkAccess(Permissions.membershipApi.people.edit);
   const handlePersonAdd = (p: PersonInterface) => {
     props.onSelect("person", p?.id || "", p?.name?.display || Locale.label("person.unknown"));
   };
@@ -43,7 +46,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
       ),
       content: (
         <Box sx={{ pt: 2 }}>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} autoSearch filterList={props.multiple ? selected.map((s) => s.contentId) : undefined} />
+          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} autoSearch filterList={props.multiple ? selected.map((s) => s.contentId) : undefined} showCreatePersonOnNotFound={canCreatePerson} onCreate={canCreatePerson ? handlePersonAdd : undefined} />
         </Box>
       )
     },

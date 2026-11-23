@@ -1246,6 +1246,8 @@
       "act": "Action",
       "addQuestion": "Add Question",
       "addQuestionAria": "Add question",
+      "copyTitle": "{} (copy)",
+      "duplicateAria": "Duplicate question",
       "moveDownAria": "Move down",
       "moveUpAria": "Move up",
       "noCustomMsg": "No custom questions have been created yet. Questions will be listed here.",
@@ -1274,14 +1276,14 @@
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
       "contentTypeAria": "Content type",
       "description": "Description",
-      "descriptionHelper": "Shown above the questions on the public form page.",
+      "descriptionHelper": "Shown above the questions on the public form page. Supports Markdown: **bold**, *italic*, lists and links.",
       "displayConversational": "Conversational (one question at a time)",
       "displayMode": "Display Mode",
       "displayStandard": "Standard",
       "editForm": "Edit Form",
       "endReqMsg": "End date is required.",
       "followUpBody": "Follow-up Email Body",
-      "followUpHelper": "You can use {firstName} and {churchName} tokens.",
+      "followUpHelper": "You can use {firstName}, {churchName}, and {answers} tokens. {answers} adds a copy of what they submitted.",
       "followUpSubject": "Follow-up Email Subject",
       "formNameAria": "Form name",
       "linkGroup": "Linked group",
@@ -1329,6 +1331,8 @@
       "fieldType": "Field Type",
       "fund": "Fund",
       "hasDependents": "Other questions depend on this one, so it can't have a condition of its own.",
+      "heading": "Heading",
+      "markdownHelper": "Supports Markdown: **bold**, *italic*, lists and [links](https://example.com).",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
       "phoneNum": "Phone Number",
@@ -2062,6 +2066,7 @@
       "enterValuePlaceholder": "Enter value...",
       "lastDays": "in the last N days",
       "search": "Search",
+      "thisMonth": "This month",
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
@@ -2228,6 +2233,7 @@
       "first": "First Name",
       "firstName": "First Name",
       "gender": "Gender",
+      "grade": "Grade",
       "householdId": "Household Id",
       "id": "Id",
       "last": "Last Name",
@@ -2242,6 +2248,7 @@
       "phone": "Home Phone",
       "photo": "Photo",
       "photoUpdated": "Photo Updated",
+      "school": "School",
       "state": "State/Province",
       "workPhone": "Work Phone"
     },
@@ -2283,9 +2290,11 @@
       "category": "Category",
       "categoryPlaceholder": "Optional — group related lists",
       "confirmDelete": "Delete the list \"{name}\"? This cannot be undone.",
+      "copyName": "{name} (copy)",
       "createdBy": "by {name}",
       "delete": "Delete List",
       "household": "Include household",
+      "householdAdults": "Adults of matches",
       "householdAll": "Entire household",
       "householdChildren": "Children of matches",
       "householdNone": "Matches only",
@@ -2406,6 +2415,7 @@
       "sendTextMessage": "Send text message"
     },
     "personEdit": {
+      "andHomePhone": "and the home phone to",
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot delete your own person record.",
       "confirmMsg": "Are you sure you wish to permanently delete this person record?",
@@ -2423,6 +2433,7 @@
       "noCampus": "No Campus",
       "persDet": "Personal Details",
       "upAddress": "You updated the address to",
+      "upHomePhone": "You updated the home phone to",
       "valEmail": "Please enter a valid email address."
     },
     "personForm": {
@@ -2453,6 +2464,7 @@
       "attendanceSummary": "{count} of the last {weeks} weeks",
       "cancelled": "Cancelled",
       "email": "Email",
+      "emailBounced": "The last email to this address bounced.",
       "eventRequest": "Event request",
       "givenBy": "Given by",
       "givingHidden": "Giving is hidden on person records.",
@@ -2467,6 +2479,7 @@
       "noDirectory": "Hidden from directory",
       "noGiftsYear": "No gifts recorded in {year}.",
       "noHouseholdGiftsYear": "No household gifts recorded in {year}.",
+      "noTexts": "Opted out of texts",
       "noNotes": "No notes yet.",
       "noRequests": "No requests or registrations yet.",
       "notSubmitted": "Not submitted",
@@ -2504,6 +2517,19 @@
       "mobile": "Mobile",
       "work": "Work"
     },
+    "possibleDuplicates": {
+      "added": "Added {date}",
+      "count": "{count} possible duplicates.",
+      "countOne": "1 possible duplicate.",
+      "hint": "Merge keeps the record added first and moves everything from the other record onto it.",
+      "matchEmail": "email",
+      "matchNameBirthDate": "name and birthdate",
+      "matchPhone": "phone",
+      "matchedOn": "Same {fields}",
+      "none": "No possible duplicates found",
+      "noneHint": "People with the same first name and email or phone, or the same name and birthdate, show up here.",
+      "title": "Possible duplicates"
+    },
     "pickup": {
       "add": "Add",
       "confirmDelete": "Are you sure you want to remove this pickup person?",
@@ -2517,7 +2543,9 @@
       "trusted": "Trusted"
     },
     "updateHouseHold": {
-      "update": "Update Address"
+      "update": "Update Address",
+      "updateAddressAndPhone": "Update Address and Home Phone",
+      "updateHomePhone": "Update Home Phone"
     }
   },
   "person": {
@@ -3532,6 +3560,16 @@
     "addPermanentLiveUrl": "Add Permanent Live URL",
     "addSermon": "Add Sermon",
     "adjustSearchTerms": "Try adjusting your search terms",
+    "bulkDelete": {
+      "action": "Delete Selected ({count})",
+      "confirmMany": "Delete the {count} selected sermons? This cannot be undone.",
+      "confirmOne": "Delete the selected sermon? This cannot be undone.",
+      "deleting": "Deleting sermons…",
+      "error": "Some sermons could not be deleted. Please try again.",
+      "selectAll": "Select all visible sermons",
+      "selectOne": "Select {title}",
+      "title": "Delete selected sermons"
+    },
     "bulkImport": {
       "alreadyImported": "Already imported",
       "chooseSource": "Choose Import Source",
@@ -6526,18 +6564,26 @@
     "workflowBoard": {
       "addCard": "Add Card",
       "addStep": "Add Step",
+      "allCards": "All cards",
       "boardTab": "Board",
       "cardsCount": "cards",
       "clearSelection": "Clear",
       "moveTo": "Move to…",
+      "myCards": "My cards",
       "selectAll": "Select all",
       "selectedCount": "{count} selected",
+      "sortBy": "Sort cards",
+      "sortFirstName": "First name",
+      "sortLastName": "Last name",
+      "sortNewest": "Newest first",
+      "sortOldest": "Oldest first",
       "step": "Step",
       "stepsCount": "steps",
       "subtitle": "Drag cards between steps",
       "unassigned": "Unassigned"
     },
     "workflowCard": {
+      "addedByTrigger": "Added by trigger",
       "assign": "Assign",
       "assignedTo": "Assigned to",
       "complete": "Complete",
@@ -6557,6 +6603,9 @@
       "snooze1Day": "1 Day",
       "snooze1Week": "1 Week",
       "snooze3Days": "3 Days",
+      "snoozeDate": "Date",
+      "snoozePickDate": "Pick a date…",
+      "snoozeUntil": "Snooze until",
       "snoozed": "Snoozed",
       "viewProfile": "View profile"
     },
@@ -6604,6 +6653,8 @@
       "dueDays": "Due in (days)",
       "dueDaysHelp": "Sets a due date when a card enters this step. Leave blank for no due date.",
       "editStep": "Edit Step",
+      "instructions": "Instructions",
+      "instructionsHelp": "Shown at the top of each card in this step, so whoever has the card knows what to do. Leave blank for none.",
       "stepName": "Step Name"
     },
     "workflowsPage": {

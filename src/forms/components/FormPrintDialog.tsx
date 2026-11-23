@@ -3,6 +3,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, 
 import { Print as PrintIcon } from "@mui/icons-material";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { Loading, Locale } from "@churchapps/apphelper";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { useQuery } from "@tanstack/react-query";
 import { useReactToPrint } from "react-to-print";
 import { PrintStyles } from "../../components";
@@ -70,20 +71,23 @@ export const BlankForm: React.FC<{ form: PrintableFormInterface; questions: Ques
         </PrintChurchHeader>
         <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>{form.name}</Typography>
       </Box>
-      {form.description && <Typography variant="body2" sx={{ mb: 1, whiteSpace: "pre-wrap" }}>{form.description}</Typography>}
+      {form.description && <Typography component="div" variant="body2" sx={{ mb: 1, "& p": { my: 0.5 } }}><MarkdownPreviewLight value={form.description} breaks /></Typography>}
       {hasRequired && <Typography variant="caption" sx={{ display: "block", mb: 1 }}>{Locale.label("forms.formPrint.requiredNote")}</Typography>}
       {printable.length === 0 && <Typography variant="body2">{Locale.label("forms.form.noCustomMsg")}</Typography>}
       <Stack spacing={2.5} sx={{ mt: 1 }}>
         {printable.map((q, index) => (
           <Box key={q.id || index} sx={{ breakInside: "avoid" }}>
             {q.fieldType === "Heading" ? (
-              <Typography variant="h6" sx={{ fontWeight: 600, borderBottom: "2px solid", borderColor: "grey.800", pb: 0.5, mt: 1 }}>{q.title}</Typography>
+              <>
+                <Typography variant="h6" sx={{ fontWeight: 600, borderBottom: "2px solid", borderColor: "grey.800", pb: 0.5, mt: 1 }}>{q.title}</Typography>
+                {q.description && <Typography component="div" variant="body2" sx={{ mt: 0.5, "& p": { my: 0.5 } }}><MarkdownPreviewLight value={q.description} breaks /></Typography>}
+              </>
             ) : (
               <>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                   {q.title}{q.required ? " *" : ""}
                 </Typography>
-                {q.description && <Typography variant="caption" sx={{ display: "block", mb: 0.5 }}>{q.description}</Typography>}
+                {q.description && <Typography component="div" variant="caption" sx={{ display: "block", mb: 0.5, "& p": { my: 0 } }}><MarkdownPreviewLight value={q.description} breaks /></Typography>}
                 <Box sx={{ mt: 0.5 }}><BlankAnswer question={q} /></Box>
               </>
             )}

@@ -41,6 +41,7 @@ import {
   Assignment as CustomFieldIcon
 } from "@mui/icons-material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
+import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
 import { getGroupCategories, getGroupIdsForCategory } from "./listRules";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
 import { AppDatePicker } from "../../components";
@@ -225,6 +226,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals"],
           options: [
+            { value: "thisMonth", label: Locale.label("people.advancedSearch.thisMonth") },
             { value: "1", label: Locale.label("month.jan") },
             { value: "2", label: Locale.label("month.feb") },
             { value: "3", label: Locale.label("month.mar") },
@@ -259,6 +261,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals"],
           options: [
+            { value: "thisMonth", label: Locale.label("people.advancedSearch.thisMonth") },
             { value: "1", label: Locale.label("month.jan") },
             { value: "2", label: Locale.label("month.feb") },
             { value: "3", label: Locale.label("month.mar") },
@@ -273,7 +276,17 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "12", label: Locale.label("month.dec") }
           ]
         },
-        { key: "yearsMarried", label: Locale.label("people.editCondition.marYears"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] }
+        { key: "yearsMarried", label: Locale.label("people.editCondition.marYears"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] },
+        {
+          key: "grade",
+          label: Locale.label("person.grade"),
+          type: "select",
+          operators: ["in", "notIn"],
+          operatorLabels: { in: Locale.label("people.editCondition.isAnyOf"), notIn: Locale.label("people.editCondition.isNoneOf") },
+          multiple: true,
+          options: GRADE_OPTIONS.map((g) => ({ value: g, label: g }))
+        },
+        { key: "school", label: Locale.label("person.school"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] }
       ],
       contact: [
         { key: "email", label: Locale.label("person.email"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },

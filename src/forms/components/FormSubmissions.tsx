@@ -23,6 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
 
 const yesNoChoice: Record<string, string> = { True: "Yes", False: "No" };
+const isAnswerable = (question: QuestionInterface) => question.fieldType !== "Heading";
 
 // A submission as /formsubmissions/formId returns it (with questions and answers), plus the fields setFormSubmissionData adds.
 type LoadedSubmission = Omit<FormSubmissionInterface, "id" | "submissionDate" | "questions" | "answers"> & {
@@ -141,7 +142,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         const csvData: Record<string, string> = {};
         csvData["For"] = submittedBy?.name?.display || Locale.label("forms.formSubmissions.anon");
         const formSubmission = setFormSubmissionData(people.data, loaded);
-        formSubmission.questions.forEach((question: QuestionInterface) => {
+        formSubmission.questions.filter(isAnswerable).forEach((question: QuestionInterface) => {
           let answer = formSubmission.answers.find((answer: AnswerInterface) => answer.questionId === question.id) || null;
           const answerValue = displayValue(question, answer);
           if (question.fieldType === "Yes/No" && answer?.value) answer = { ...answer, value: yesNoChoice[answer.value] ?? answer.value };
@@ -190,7 +191,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         </TableCell>
       );
       result.push(<TableCell key="submissionDate">{Locale.label("forms.formSubmissions.subDate")}</TableCell>);
-      formSubmissions.data[0].questions.forEach((question: QuestionInterface) => result.push(<TableCell key={question.id}>{question.title}</TableCell>));
+      formSubmissions.data[0].questions.filter(isAnswerable).forEach((question: QuestionInterface) => result.push(<TableCell key={question.id}>{question.title}</TableCell>));
     }
     return result;
   }, [formSubmissions.data]);
@@ -198,7 +199,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const getAnswers = useCallback((formSubmission: FormSubmissionInterface) => {
     const rows: JSX.Element[] = [];
     formSubmission.questions?.forEach((question: QuestionInterface) => {
-      if (!question?.id) return;
+      if (!question?.id || !isAnswerable(question)) return;
       const answer = formSubmission.answers?.find((answer: AnswerInterface) => answer.questionId === question.id);
       rows.push(
         <TableCell key={question.id}>
