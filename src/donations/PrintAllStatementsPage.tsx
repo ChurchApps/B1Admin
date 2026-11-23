@@ -9,35 +9,43 @@ import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings, type ContributionRow, type FundTotal } from "./components/GivingStatementDocument";
 import { usePrintLogo } from "../components/PrintChurchHeader";
 import { statementDonations } from "./statementDonations";
+import { currentStatementYear, statementRange, statementYearOf } from "./statementPeriod";
 
 export const PrintAllStatementsPage = () => {
   const [searchParams] = useSearchParams();
   const yearParam = searchParams.get("year");
-  const currYear = yearParam ? parseInt(yearParam, 10) : new Date().getFullYear();
   const context = useContext(UserContext);
   const [currency, setCurrency] = useState<string>("usd");
-
-  // One year only: a church's full giving history can be too large for one response.
-  const yearRange = `startDate=${currYear}-01-01&endDate=${currYear}-12-31`;
-  const allDonations = useQuery<DonationInterface[]>({
-    queryKey: ["/donations?" + yearRange, "GivingApi"],
-    placeholderData: []
-  });
-
-  const allFundDonations = useQuery<FundDonationInterface[]>({
-    queryKey: ["/fundDonations?" + yearRange, "GivingApi"],
-    placeholderData: []
-  });
-
-  const funds = useQuery<FundInterface[]>({
-    queryKey: ["/funds", "GivingApi"],
-    placeholderData: []
-  });
 
   const churchSettings = useQuery<Record<string, string>>({
     queryKey: ["/settings/public/" + context?.userChurch?.church?.id, "MembershipApi"],
     placeholderData: {},
     enabled: !!context?.userChurch?.church?.id
+  });
+  const statementSettings = useMemo(() => parseStatementSettings(churchSettings.data), [churchSettings.data]);
+  const startMonth = statementSettings.yearStartMonth;
+  const currYear = yearParam ? parseInt(yearParam, 10) : currentStatementYear(startMonth);
+  // The statement year depends on the church's start month, so wait for the settings before asking for gifts.
+  const settingsReady = !churchSettings.isPlaceholderData;
+
+  // One year only: a church's full giving history can be too large for one response.
+  const { startDate, endDate } = statementRange(currYear, startMonth);
+  const yearRange = `startDate=${startDate}&endDate=${endDate}`;
+  const allDonations = useQuery<DonationInterface[]>({
+    queryKey: ["/donations?" + yearRange, "GivingApi"],
+    placeholderData: [],
+    enabled: settingsReady
+  });
+
+  const allFundDonations = useQuery<FundDonationInterface[]>({
+    queryKey: ["/fundDonations?" + yearRange, "GivingApi"],
+    placeholderData: [],
+    enabled: settingsReady
+  });
+
+  const funds = useQuery<FundInterface[]>({
+    queryKey: ["/funds", "GivingApi"],
+    placeholderData: []
   });
 
   const pledgeProgress = useQuery<PledgeProgressRowInterface[]>({
@@ -46,13 +54,9 @@ export const PrintAllStatementsPage = () => {
   });
 
   const yearDonations = useMemo(() => {
-    const inYear = allDonations.data?.filter((don) => {
-      if (!don.donationDate) return false;
-      const donationDate = new Date(don.donationDate.toString().split("T")[0] + "T00:00:00");
-      return donationDate.getFullYear() === currYear;
-    }) || [];
+    const inYear = allDonations.data?.filter((don) => statementYearOf(don.donationDate, startMonth) === currYear) || [];
     return statementDonations(inYear, allFundDonations.data || [], funds.data || []);
-  }, [allDonations.data, allFundDonations.data, funds.data, currYear]);
+  }, [allDonations.data, allFundDonations.data, funds.data, currYear, startMonth]);
 
   const personIds = useMemo(() => {
     const ids = new Set<string>();
@@ -184,7 +188,7 @@ export const PrintAllStatementsPage = () => {
           pledgeRows={getPledgeRows(person.id!)}
           showPageBreak={index < people.data!.length - 1}
           showStyles={index === 0}
-          statementSettings={parseStatementSettings(churchSettings.data)}
+          statementSettings={statementSettings}
           logoUrl={printLogo.logoUrl}
         />
       ))}

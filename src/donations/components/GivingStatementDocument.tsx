@@ -2,6 +2,7 @@ import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type ChurchInterface, type PersonInterface } from "@churchapps/helpers";
 import { type PledgeProgressRowInterface, type PledgeStatus } from "../../helpers";
 import { receiptShowsDisclaimer } from "./receiptRules";
+import { parseStartMonth, statementRangeDates, statementYearLabel } from "../statementPeriod";
 
 // Every locale key below is written out in full. Building them from the labelPrefix prop at
 // runtime hid them from locale-sync's static scan, which then pruned the whole set out of
@@ -178,6 +179,9 @@ export interface StatementSettings {
   signatory: string;
   cityOfIssue: string;
   note: string;
+  // Replaces the fixed "no goods or services" sentence when filled in.
+  disclaimer: string;
+  yearStartMonth: number;
 }
 
 export const parseStatementSettings = (raw: Record<string, string> | undefined): StatementSettings => ({
@@ -186,7 +190,9 @@ export const parseStatementSettings = (raw: Record<string, string> | undefined):
   orgAddress: raw?.statementOrgAddress || "",
   signatory: raw?.statementSignatory || "",
   cityOfIssue: raw?.statementCityOfIssue || "",
-  note: raw?.givingNote || ""
+  note: raw?.givingNote || "",
+  disclaimer: (raw?.statementDisclaimer || "").trim(),
+  yearStartMonth: parseStartMonth(raw?.statementYearStartMonth)
 });
 
 interface Props {
@@ -517,6 +523,14 @@ export const GivingStatementDocument = (props: Props) => {
   const orgAddress = statementSettings?.orgAddress || [church?.address1, church?.address2, church?.city, church?.country, church?.zip].filter(Boolean).join(", ");
   const donorAddress = [person?.contactInfo?.address1, person?.contactInfo?.address2, person?.contactInfo?.city, person?.contactInfo?.state, person?.contactInfo?.zip].filter(Boolean).join(", ");
   const issuedDate = DateHelper.prettyDate(new Date()).toString();
+  const startMonth = statementSettings?.yearStartMonth || 1;
+  const yearLabel = isReceipt ? year.toString() : statementYearLabel(year, startMonth);
+  const periodText = () => {
+    if (isReceipt || startMonth === 1) return labels.period.replace("{year}", year.toString()).replace("{date}", receiptDate);
+    const { start, end } = statementRangeDates(year, startMonth);
+    return Locale.label("donations.statementPeriod.range").replace("{start}", DateHelper.prettyDate(start).toString()).replace("{end}", DateHelper.prettyDate(end).toString());
+  };
+  const disclaimerText = (statementSettings?.disclaimer || labels.disclaimer).split("{churchName}").join(churchName);
 
   const legalTitle = format === "australia" ? legal.australiaTitle : format === "canada" ? legal.canadaTitle : legal.newZealandTitle;
   const registrationLabel = format === "australia" ? legal.abn : format === "canada" ? legal.craNumber : legal.nzNumber;
@@ -556,8 +570,8 @@ export const GivingStatementDocument = (props: Props) => {
 
         <div className="title-section">
           {logoUrl && <img src={logoUrl} alt={churchName} data-testid="print-church-logo" style={{ display: "block", maxHeight: 60, maxWidth: 240, objectFit: "contain", margin: "0 auto 16px" }} />}
-          <h1 className="page-title">{labels.annualStatementTitle.replace("{year}", year.toString())}</h1>
-          <p className="subtitle">{labels.period.replace("{year}", year.toString()).replace("{date}", receiptDate)}</p>
+          <h1 className="page-title">{labels.annualStatementTitle.replace("{year}", yearLabel)}</h1>
+          <p className="subtitle" data-testid="statement-period">{periodText()}</p>
           <p className="meta-text">{labels.issued} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
         </div>
 
@@ -690,12 +704,12 @@ export const GivingStatementDocument = (props: Props) => {
           <p>
             <strong>{labels.noteLabel}</strong> {labels.noteText
               .replace("{churchName}", churchName)
-              .replace("{year}", year.toString())
+              .replace("{year}", yearLabel)
               .replace("{date}", receiptDate)}
           </p>
           {showDisclaimer && (
-            <p data-testid="statement-disclaimer" style={{ fontSize: "10px", marginTop: "4px" }}>
-              {labels.disclaimer.split("{churchName}").join(churchName)}
+            <p data-testid="statement-disclaimer" style={{ fontSize: "10px", marginTop: "4px", whiteSpace: "pre-line" }}>
+              {disclaimerText}
             </p>
           )}
           {statementSettings?.note && <p data-testid="statement-giving-note" style={{ whiteSpace: "pre-line", marginTop: "8px" }}>{statementSettings.note}</p>}

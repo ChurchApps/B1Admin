@@ -9,6 +9,8 @@ interface Props {
   value: number | null;
   onChange: (year: number | null) => void;
   allLabel?: string;
+  /** Pill text for a year; defaults to the number. */
+  formatYear?: (year: number) => string;
   tabs?: boolean;
   "aria-label"?: string;
   "data-testid"?: string;
@@ -17,8 +19,8 @@ interface Props {
 
 const ALL = "all";
 
-export const YearPills: React.FC<Props> = ({ years, value, onChange, allLabel, tabs, sx, ...rest }) => {
-  const options: PillOption[] = years.map((y) => ({ value: String(y), label: y, "data-testid": `year-pill-${y}` }));
+export const YearPills: React.FC<Props> = ({ years, value, onChange, allLabel, formatYear, tabs, sx, ...rest }) => {
+  const options: PillOption[] = years.map((y) => ({ value: String(y), label: formatYear ? formatYear(y) : y, "data-testid": `year-pill-${y}` }));
   if (allLabel) options.unshift({ value: ALL, label: allLabel, "data-testid": "year-pill-all" });
   return (
     <PillTabs

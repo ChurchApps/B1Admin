@@ -8,13 +8,13 @@ import UserContext from "../UserContext";
 import { type PledgeProgressRowInterface } from "../helpers";
 import { GivingStatementDocument, parseStatementSettings } from "./components/GivingStatementDocument";
 import { usePrintLogo } from "../components/PrintChurchHeader";
+import { currentStatementYear, statementYearOf } from "./statementPeriod";
 
 export const PrintDonationPage = () => {
   const [currency, setCurrency] = useState<string>("usd");
   const params = useParams();
   const [searchParams] = useSearchParams();
   const yearParam = searchParams.get("year");
-  const currYear = yearParam ? parseInt(yearParam, 10) : new Date().getFullYear();
   const context = useContext(UserContext);
 
   const person = useQuery<PersonInterface>({
@@ -48,6 +48,10 @@ export const PrintDonationPage = () => {
     placeholderData: []
   });
 
+  const statementSettings = useMemo(() => parseStatementSettings(churchSettings.data), [churchSettings.data]);
+  const startMonth = statementSettings.yearStartMonth;
+  const currYear = yearParam ? parseInt(yearParam, 10) : currentStatementYear(startMonth);
+
   const pledgeRows = useMemo(() => allPledgeProgress.data?.filter((row) => row.personId === params.personId) || [], [allPledgeProgress.data, params.personId]);
 
   const autoprint = searchParams.get("autoprint") === "1";
@@ -56,19 +60,15 @@ export const PrintDonationPage = () => {
 
   const donations = useMemo(() => {
     return (
-      allDonations.data?.filter((don) => {
-        if (!don.donationDate) return false;
-        const donationDate = new Date(don.donationDate.split("T")[0] + "T00:00:00");
-        return donationDate.getFullYear() === currYear;
-      }) || []
+      allDonations.data?.filter((don) => statementYearOf(don.donationDate, startMonth) === currYear) || []
     );
-  }, [allDonations.data, currYear]);
+  }, [allDonations.data, currYear, startMonth]);
 
   const fundDonations = useMemo(() => {
     return allFundDonations.data?.filter((fundDonation) => donations.some((donation) => donation.id === fundDonation.donationId)) || [];
   }, [allFundDonations.data, donations]);
 
-  const dataLoaded = !!person.data && !funds.isPlaceholderData && !allDonations.isPlaceholderData && !allFundDonations.isPlaceholderData && !allPledgeProgress.isPlaceholderData;
+  const dataLoaded = !!person.data && !funds.isPlaceholderData && !allDonations.isPlaceholderData && !allFundDonations.isPlaceholderData && !allPledgeProgress.isPlaceholderData && !churchSettings.isPlaceholderData;
 
   useEffect(() => {
     if (autoprint && dataLoaded && printLogo.ready && !hasPrinted.current) {
@@ -140,7 +140,7 @@ export const PrintDonationPage = () => {
         contributions={contributions}
         pledgeRows={pledgeRows}
         showPageBreak={false}
-        statementSettings={parseStatementSettings(churchSettings.data)}
+        statementSettings={statementSettings}
         logoUrl={printLogo.logoUrl}
       />
     </>

@@ -54,7 +54,7 @@ export const PrintDonationReceiptPage = () => {
     return raw ? new Date(raw.split("T")[0] + "T00:00:00") : new Date();
   }, [donation.data?.donationDate]);
 
-  const dataLoaded = !!donation.data && !fundDonations.isPlaceholderData && !funds.isPlaceholderData && (!personId || !!person.data);
+  const dataLoaded = !!donation.data && !fundDonations.isPlaceholderData && !funds.isPlaceholderData && (!personId || !!person.data) && !churchSettings.isPlaceholderData;
 
   useEffect(() => {
     if (autoprint && dataLoaded && printLogo.ready && !hasPrinted.current) {
