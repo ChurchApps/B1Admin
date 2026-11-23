@@ -38,8 +38,8 @@ const dayEnd = (v: string) => `${v.slice(0, 10)}T23:59`;
 // EventHelper.getFullRRule feeds dtstart as local wall-clock labelled UTC, so UNTIL must use the same frame.
 const endBefore = (occurrence: Date) => new Date(Date.UTC(occurrence.getFullYear(), occurrence.getMonth(), occurrence.getDate(), 0, 0, -1));
 
-// The API also returns who may view/post event notes (null means the default, staff).
-type EventWithNotesRoles = EventInterface & { notesViewRole?: string | null; notesPostRole?: string | null };
+// The API also returns who may view/post event notes (null means the default, staff) and a free-text location.
+type EventWithNotesRoles = EventInterface & { notesViewRole?: string | null; notesPostRole?: string | null; location?: string | null };
 
 export function EventModal(props: Props) {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -51,6 +51,7 @@ export function EventModal(props: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
+  const [location, setLocation] = useState("");
   const [showGallery, setShowGallery] = useState(false);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
@@ -104,6 +105,7 @@ export function EventModal(props: Props) {
         if (data.title) setTitle(data.title);
         if (data.description) setDescription(data.description);
         if (data.photoUrl) setPhotoUrl(data.photoUrl);
+        if (data.location) setLocation(data.location);
         if (data.groupId) setGroupId(data.groupId.toString());
         if (data.start) {
           setStart(toInputValue(new Date(data.start)));
@@ -152,6 +154,7 @@ export function EventModal(props: Props) {
       if (data.title) setTitle(data.title + " " + Locale.label("calendars.calendarEvent.copySuffix"));
       if (data.description) setDescription(data.description);
       if (data.photoUrl) setPhotoUrl(data.photoUrl);
+      if (data.location) setLocation(data.location);
       if (data.groupId) setGroupId(data.groupId.toString());
       if (data.start) setStart(moved(data.start));
       if (data.end) setEnd(moved(data.end));
@@ -268,6 +271,7 @@ export function EventModal(props: Props) {
     title,
     description,
     photoUrl: photoUrl || null,
+    location: location.trim() || null,
     start: new Date(start),
     end: new Date(end),
     allDay,
@@ -457,6 +461,7 @@ export function EventModal(props: Props) {
               </Stack>
             </Stack>
             <TextField fullWidth label={Locale.label("calendars.newEvent.description")} value={description} onChange={(e) => setDescription(e.target.value)} multiline rows={3} helperText={Locale.label("calendars.newEvent.descriptionHint")} data-testid="new-event-description-input" />
+            <TextField fullWidth label={Locale.label("calendars.newEvent.location")} value={location} onChange={(e) => setLocation(e.target.value)} helperText={Locale.label("calendars.newEvent.locationHint")} inputProps={{ maxLength: 255 }} data-testid="new-event-location-input" />
             <Stack direction="row" spacing={2}>
               <TextField fullWidth type={allDay ? "date" : "datetime-local"} label={Locale.label("calendars.newEvent.start")} value={allDay ? start.slice(0, 10) : start} onChange={(e) => handleStartChange(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-start-input" />
               <TextField fullWidth type={allDay ? "date" : "datetime-local"} label={Locale.label("calendars.newEvent.end")} value={allDay ? end.slice(0, 10) : end} onChange={(e) => setEnd(allDay && e.target.value ? dayEnd(e.target.value) : e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-end-input" />

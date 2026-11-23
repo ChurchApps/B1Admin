@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogActions, Typography, Box, Button } from "@mui/material";
-import { HowToReg as RegIcon, Edit as EditIcon, Share as ShareIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
+import { HowToReg as RegIcon, Edit as EditIcon, Share as ShareIcon, ContentCopy as DuplicateIcon, Place as PlaceIcon } from "@mui/icons-material";
 import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface, type EventInterface } from "@churchapps/helpers";
 import { useConfirmDelete } from "../../hooks";
@@ -71,6 +71,17 @@ export function DisplayCalendarEventModal(props: Props) {
     }
   };
 
+  const renderLocation = () => {
+    const location = (props.event as CuratedEventWithEventInterface & { location?: string }).location;
+    if (!location) return null;
+    return (
+      <Box display="flex" alignItems="center" gap={0.5} marginTop={1} data-testid="calendar-event-location">
+        <PlaceIcon fontSize="small" color="action" />
+        <Typography variant="body2">{location}</Typography>
+      </Box>
+    );
+  };
+
   const renderDescription = () => {
     if (!props.event.description) return null;
 
@@ -123,6 +134,7 @@ export function DisplayCalendarEventModal(props: Props) {
               {props.event.title}
             </Typography>
             <i>{getDisplayTime()}</i>
+            {renderLocation()}
             {renderDescription()}
           </Box>
           {props.mode === "edit" && realEventId && (
