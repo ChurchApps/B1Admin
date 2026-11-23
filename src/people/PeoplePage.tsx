@@ -35,7 +35,7 @@ const samePeople = (a: PersonInterface[] | null, b: PersonInterface[] | null) =>
 };
 
 const EXPORT_LABEL_KEYS = [
-  "address", "address1", "address2", "age", "anniversary", "birthDate", "campusId", "churchId", "city", "contactCity", "contactEmail", "contactState", "contactZip", "conversationId", "display", "first", "last", "middle", "middleName", "mobilePhone", "nametagNotes", "nick", "optedOut", "phone", "photo", "photoUpdated", "state", "workPhone", "firstName", "lastName", "gender", "membershipStatus", "id", "householdId"
+  "address", "address1", "address2", "age", "anniversary", "birthDate", "campusId", "churchId", "city", "contactCity", "contactEmail", "contactState", "contactZip", "conversationId", "display", "first", "last", "middle", "middleName", "mobilePhone", "nametagNotes", "nick", "optedOut", "phone", "photo", "photoUpdated", "state", "workPhone", "firstName", "lastName", "gender", "membershipStatus", "id", "householdId", "grade", "school"
 ];
 
 const formatHeader = (key: string): string => {
@@ -123,6 +123,8 @@ export const PeoplePage = memo(() => {
     { key: "birthDay", label: Locale.label("people.peoplePage.bDayNo"), shortName: Locale.label("people.peoplePage.bDay") },
     { key: "age", label: Locale.label("person.age"), shortName: Locale.label("person.age") },
     { key: "gender", label: Locale.label("person.gender"), shortName: Locale.label("person.gender") },
+    { key: "grade", label: Locale.label("person.grade"), shortName: Locale.label("person.grade") },
+    { key: "school", label: Locale.label("person.school"), shortName: Locale.label("person.school") },
     { key: "membershipStatus", label: Locale.label("person.membershipStatus"), shortName: Locale.label("person.membershipStatus") },
     { key: "donorNumber", label: Locale.label("people.personEdit.donorNumber"), shortName: Locale.label("people.personEdit.donorNumber") },
     { key: "campus", label: Locale.label("person.campus"), shortName: Locale.label("person.campus") },
