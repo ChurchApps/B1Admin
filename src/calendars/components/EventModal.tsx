@@ -19,6 +19,9 @@ interface Props {
   initialResourceId?: string;
   // The clicked date of a recurring event; enables the just-this-date / following-dates choice.
   occurrenceStart?: Date;
+  // Duplicate: pre-fill a new event from this one (no id, no repeat), moved to copyStart when given.
+  copyFromEventId?: string;
+  copyStart?: Date;
   onDone: (saved: boolean) => void;
 }
 
@@ -66,7 +69,7 @@ export function EventModal(props: Props) {
   const [windowStart, setWindowStart] = useState("");
   const [windowEnd, setWindowEnd] = useState("");
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(!!props.eventId);
+  const [loading, setLoading] = useState(!!props.eventId || !!props.copyFromEventId);
   // How many of each ticked resource the event books; a missing key means 1.
   const [resourceQuantities, setResourceQuantities] = useState<Record<string, number>>({});
   const [clearedQuantity, setClearedQuantity] = useState<string | null>(null);
@@ -135,6 +138,44 @@ export function EventModal(props: Props) {
       }).finally(() => setLoading(false));
     }
   }, [props.eventId]);
+
+  useEffect(() => {
+    if (!props.copyFromEventId) return;
+    const sourceId = props.copyFromEventId;
+    Promise.all([
+      ApiHelper.get("/events/" + sourceId, "ContentApi"),
+      ApiHelper.get("/eventBookings/event/" + sourceId, "ContentApi")
+    ]).then(([data, bookings]: [EventWithNotesRoles, EventBookingInterface[]]) => {
+      // A recurring source loads its first date; the copy lands on the date that was clicked.
+      const shift = props.copyStart && data.start ? props.copyStart.getTime() - new Date(data.start).getTime() : 0;
+      const moved = (d: Date | string) => toInputValue(new Date(new Date(d).getTime() + shift));
+      if (data.title) setTitle(data.title + " " + Locale.label("calendars.calendarEvent.copySuffix"));
+      if (data.description) setDescription(data.description);
+      if (data.photoUrl) setPhotoUrl(data.photoUrl);
+      if (data.groupId) setGroupId(data.groupId.toString());
+      if (data.start) setStart(moved(data.start));
+      if (data.end) setEnd(moved(data.end));
+      setAllDay(!!data.allDay);
+      if (data.visibility) setVisibility(data.visibility);
+      if (data.tags) setTags(data.tags);
+      setNotesViewRole(data.notesViewRole || "staff");
+      setNotesPostRole(data.notesPostRole || "staff");
+      // Fresh bookings (no ids or status) so the copy goes through the usual approval.
+      const resourceBookings = bookings.filter((b): b is EventBookingInterface & { resourceId: string } => !!b.resourceId);
+      setRoomIds(bookings.filter((b): b is EventBookingInterface & { roomId: string } => !!b.roomId).map(b => b.roomId.toString()));
+      setResourceIds(resourceBookings.map(b => b.resourceId.toString()));
+      setResourceQuantities(Object.fromEntries(resourceBookings.map(b => [b.resourceId.toString(), b.quantity ?? 1])));
+      const first = bookings[0];
+      if (first?.setupMinutes || first?.teardownMinutes) {
+        setSetupMinutes(first.setupMinutes?.toString() || "");
+        setTeardownMinutes(first.teardownMinutes?.toString() || "");
+      } else if (first?.startTime && first.endTime) {
+        setCustomWindow(true);
+        setWindowStart(moved(first.startTime));
+        setWindowEnd(moved(first.endTime));
+      }
+    }).finally(() => setLoading(false));
+  }, [props.copyFromEventId]);
 
   useEffect(() => {
     ApiHelper.get("/groups/tag/standard", "MembershipApi").then(setGroups);
