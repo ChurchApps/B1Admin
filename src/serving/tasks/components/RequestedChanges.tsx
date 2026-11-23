@@ -12,6 +12,7 @@ import {
   Phone as PhoneIcon,
   Home as AddressIcon,
   Cake as BirthdayIcon,
+  Favorite as AnniversaryIcon,
   FamilyRestroom as FamilyIcon
 } from "@mui/icons-material";
 
@@ -55,6 +56,7 @@ export const RequestedChanges = (props: Props) => {
       return <AddressIcon />;
     }
     if (field === "birthDate") return <BirthdayIcon />;
+    if (field === "anniversary") return <AnniversaryIcon />;
     if (field === "familyMember") return <FamilyIcon />;
     return <ChangesIcon />;
   };
@@ -131,6 +133,7 @@ export const RequestedChanges = (props: Props) => {
           break;
         }
         case "birthDate": p.birthDate = value; break;
+        case "anniversary": p.anniversary = value; break;
         case "contactInfo.email": p.contactInfo.email = value; break;
         case "contactInfo.address1": p.contactInfo.address1 = value; break;
         case "contactInfo.address2": p.contactInfo.address2 = value; break;
