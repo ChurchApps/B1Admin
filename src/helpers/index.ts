@@ -14,6 +14,7 @@ export { B1AdminPersonHelper } from "./B1AdminPersonHelper";
 export { ConditionHelper } from "./ConditionHelper";
 export { EnvironmentHelper } from "./EnvironmentHelper";
 export { getPublicEventUrl } from "./EventLinkHelper";
+export { getPublicGroupUrl, getPublicGroupsUrl, hasPublicGroupPage } from "./GroupLinkHelper";
 export { PageHelper } from "./PageHelper";
 export { hasPlansEditAccess } from "./PlanPermissionHelper";
 export { canRecordAttendance, canSeeConfidentialGroups, hasAllGroupsAccess, leadsGroup, useCanPrintRoster } from "./GroupPermissionHelper";

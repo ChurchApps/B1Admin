@@ -9,6 +9,8 @@ import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
 import { Pill, TextAction, RecordActions } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
+import { ShareLinkDialog } from "../../components/ShareLinkDialog";
+import { getPublicGroupUrl, hasPublicGroupPage } from "../../helpers/GroupLinkHelper";
 
 // publicRoster is not on the published GroupInterface yet.
 type GroupWithRoster = GroupInterface & { publicRoster?: boolean };
@@ -30,6 +32,7 @@ export const GroupBanner = memo((props: Props) => {
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = React.useState(false);
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
+  const [sharing, setSharing] = React.useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
@@ -182,6 +185,11 @@ export const GroupBanner = memo((props: Props) => {
               {Locale.label("groups.groupBanner.notify", "Notify")}
             </TextAction>
           )}
+          {hasPublicGroupPage(group) && (
+            <TextAction small onClick={() => setSharing(true)} aria-label={Locale.label("groups.groupBanner.shareTooltip")} data-testid="share-group-button">
+              {Locale.label("groups.groupBanner.share")}
+            </TextAction>
+          )}
           {canEdit && (
             <TextAction small onClick={handleDuplicate} aria-label={Locale.label("groups.groupBanner.duplicateTooltip")} data-testid="duplicate-group-button">
               {Locale.label("groups.groupBanner.duplicate", "Duplicate")}
@@ -196,6 +204,17 @@ export const GroupBanner = memo((props: Props) => {
       )}
       {showEmailDialog && (
         <SendEmailDialog groupId={group.id || ""} groupName={group.name || ""} onClose={() => setShowEmailDialog(false)} />
+      )}
+      {sharing && (
+        <ShareLinkDialog
+          open={true}
+          onClose={() => setSharing(false)}
+          title={`${Locale.label("groups.groupBanner.share")}: ${group.name || ""}`}
+          url={getPublicGroupUrl(group)}
+          hint={Locale.label("groups.groupBanner.shareHint")}
+          fileName={`group-qr-${(group.slug || group.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "group"}`}
+          testIdPrefix="group-share"
+        />
       )}
       {showNotificationDialog && (
         <SendNotificationDialog groupId={group.id || ""} groupName={group.name || ""} onClose={() => setShowNotificationDialog(false)} />
