@@ -27,6 +27,10 @@ const toInputValue = (d: Date) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
+// An all-day event runs from 00:00 on its first date to 23:59 on its last.
+const dayStart = (v: string) => `${v.slice(0, 10)}T00:00`;
+const dayEnd = (v: string) => `${v.slice(0, 10)}T23:59`;
+
 // UNTIL is inclusive, so end the series at the close of the day before the clicked occurrence.
 // EventHelper.getFullRRule feeds dtstart as local wall-clock labelled UTC, so UNTIL must use the same frame.
 const endBefore = (occurrence: Date) => new Date(Date.UTC(occurrence.getFullYear(), occurrence.getMonth(), occurrence.getDate(), 0, 0, -1));
@@ -47,6 +51,7 @@ export function EventModal(props: Props) {
   const [showGallery, setShowGallery] = useState(false);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [allDay, setAllDay] = useState(false);
   const [rRule, setRRule] = useState("");
   const [visibility, setVisibility] = useState("public");
   const [tags, setTags] = useState("");
@@ -102,6 +107,7 @@ export function EventModal(props: Props) {
           setSeriesStart(new Date(data.start));
         }
         if (data.end) setEnd(toInputValue(new Date(data.end)));
+        setAllDay(!!data.allDay);
         if (data.recurrenceRule) setRRule(data.recurrenceRule);
         if (data.visibility) setVisibility(data.visibility);
         if (data.tags) setTags(data.tags);
@@ -191,13 +197,25 @@ export function EventModal(props: Props) {
     if (template.resourcesJson) {
       try { setResourceIds(JSON.parse(template.resourcesJson).map((r: { resourceId: string }) => r.resourceId)); } catch { /* malformed template JSON */ }
     }
-    if (template.durationMinutes && start) {
+    if (template.durationMinutes && start && !allDay) {
       const startDate = new Date(start);
       setEnd(toInputValue(new Date(startDate.getTime() + template.durationMinutes * 60 * 1000)));
     }
   };
 
+  const toggleAllDay = (on: boolean) => {
+    setAllDay(on);
+    if (on) {
+      if (start) setStart(dayStart(start));
+      if (end || start) setEnd(dayEnd(end || start));
+    }
+  };
+
   const handleStartChange = (value: string) => {
+    if (allDay) {
+      setStart(value ? dayStart(value) : "");
+      return;
+    }
     setStart(value);
     const template = templates.find((t) => t.id === templateId);
     if (value && template?.durationMinutes) setEnd(toInputValue(new Date(new Date(value).getTime() + template.durationMinutes * 60 * 1000)));
@@ -211,7 +229,7 @@ export function EventModal(props: Props) {
     photoUrl: photoUrl || null,
     start: new Date(start),
     end: new Date(end),
-    allDay: false,
+    allDay,
     visibility,
     tags: tags.trim() || null,
     notesViewRole: notesViewRole === "staff" ? null : notesViewRole,
@@ -399,9 +417,13 @@ export function EventModal(props: Props) {
             </Stack>
             <TextField fullWidth label={Locale.label("calendars.newEvent.description")} value={description} onChange={(e) => setDescription(e.target.value)} multiline rows={3} helperText={Locale.label("calendars.newEvent.descriptionHint")} data-testid="new-event-description-input" />
             <Stack direction="row" spacing={2}>
-              <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.start")} value={start} onChange={(e) => handleStartChange(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-start-input" />
-              <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.end")} value={end} onChange={(e) => setEnd(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-end-input" />
+              <TextField fullWidth type={allDay ? "date" : "datetime-local"} label={Locale.label("calendars.newEvent.start")} value={allDay ? start.slice(0, 10) : start} onChange={(e) => handleStartChange(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-start-input" />
+              <TextField fullWidth type={allDay ? "date" : "datetime-local"} label={Locale.label("calendars.newEvent.end")} value={allDay ? end.slice(0, 10) : end} onChange={(e) => setEnd(allDay && e.target.value ? dayEnd(e.target.value) : e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-end-input" />
             </Stack>
+            <FormControlLabel
+              control={<Switch checked={allDay} onChange={(e) => toggleAllDay(e.target.checked)} data-testid="new-event-all-day-toggle" />}
+              label={Locale.label("calendars.newEvent.allDay")}
+            />
             <Stack direction="row" spacing={2} alignItems="center">
               <FormControlLabel
                 control={<Checkbox checked={!!rRule} onChange={(e) => handleToggleRecurring(e.target.checked)} data-testid="new-event-recurring-checkbox" />}
