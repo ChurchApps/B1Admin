@@ -84,39 +84,39 @@ const binaryToSvg = (binary: string) => {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${binary.length + QUIET * 2} 100" width="100%" height="100%" preserveAspectRatio="none">${rects}</svg>`;
 };
 
-const SAMPLE: Record<string, string> = {
-  "person.displayName": "Emma Johnson",
-  "person.firstName": "Emma",
-  "person.lastName": "Johnson",
-  "person.nickName": "Emma",
-  "person.nametagNotes": "Peanut allergy",
-  "person.isBirthdayWeek": "true",
-  sessions: "9:00 AM: Preschool",
-  securityCode: "BXRC",
-  date: new Date().toLocaleDateString(DateHelper.locale),
-  churchName: "Grace Community Church",
-  children: "Emma Johnson - 9:00 AM: Preschool\nNoah Johnson - 9:00 AM: Elementary",
-  childrenAllergies: "Emma Johnson - Peanut allergy"
-};
-
-const NAMETAG_FIELDS = "person.displayName person.firstName person.lastName person.nickName person.nametagNotes person.isBirthdayWeek sessions securityCode date churchName".split(" ");
-const PICKUP_FIELDS = ["children", "childrenAllergies", "securityCode", "date", "churchName"];
+// One row per field a block can print. The kiosk (B1Checkin LabelHelper) supplies the value under the same key.
+// To add a field: add a row here, its label key in en.json, and the value in the kiosk's label context.
+interface LabelFieldDef { key: string; labelKey: string; sample: string; types: ("nametag" | "pickup")[] }
+const FIELD_DEFS: LabelFieldDef[] = [
+  { key: "person.displayName", labelKey: "fieldDisplayName", sample: "Emma Johnson", types: ["nametag"] },
+  { key: "person.firstName", labelKey: "fieldFirstName", sample: "Emma", types: ["nametag"] },
+  { key: "person.lastName", labelKey: "fieldLastName", sample: "Johnson", types: ["nametag"] },
+  { key: "person.nickName", labelKey: "fieldNickName", sample: "Emma", types: ["nametag"] },
+  { key: "person.nametagNotes", labelKey: "fieldNametagNotes", sample: "Peanut allergy", types: ["nametag"] },
+  { key: "person.isBirthdayWeek", labelKey: "fieldIsBirthdayWeek", sample: "true", types: ["nametag"] },
+  { key: "person.age", labelKey: "fieldAge", sample: "4", types: ["nametag"] },
+  { key: "person.grade", labelKey: "fieldGrade", sample: "PreK", types: ["nametag"] },
+  { key: "person.birthDate", labelKey: "fieldBirthDate", sample: new Date(2022, 2, 14).toLocaleDateString(DateHelper.locale), types: ["nametag"] },
+  { key: "checkinType", labelKey: "fieldCheckinType", sample: "Member", types: ["nametag"] },
+  { key: "sessions", labelKey: "fieldSessions", sample: "9:00 AM: Preschool", types: ["nametag"] },
+  { key: "children", labelKey: "fieldChildren", sample: "Emma Johnson - 9:00 AM: Preschool\nNoah Johnson - 9:00 AM: Elementary", types: ["pickup"] },
+  { key: "childrenAllergies", labelKey: "fieldChildrenAllergies", sample: "Emma Johnson - Peanut allergy", types: ["pickup"] },
+  { key: "securityCode", labelKey: "fieldSecurityCode", sample: "BXRC", types: ["nametag", "pickup"] },
+  { key: "date", labelKey: "fieldDate", sample: new Date().toLocaleDateString(DateHelper.locale), types: ["nametag", "pickup"] },
+  { key: "churchName", labelKey: "fieldChurchName", sample: "Grace Community Church", types: ["nametag", "pickup"] }
+];
+const SAMPLE: Record<string, string> = Object.fromEntries(FIELD_DEFS.map((f) => [f.key, f.sample]));
+const NAMETAG_FIELDS = FIELD_DEFS.filter((f) => f.types.includes("nametag")).map((f) => f.key);
+const PICKUP_FIELDS = FIELD_DEFS.filter((f) => f.types.includes("pickup")).map((f) => f.key);
 const CANVAS_W = 560;
 
-const FIELD_LABEL_KEYS: Record<string, string> = {
-  "person.displayName": "attendance.labels.fieldDisplayName",
-  "person.firstName": "attendance.labels.fieldFirstName",
-  "person.lastName": "attendance.labels.fieldLastName",
-  "person.nickName": "attendance.labels.fieldNickName",
-  "person.nametagNotes": "attendance.labels.fieldNametagNotes",
-  "person.isBirthdayWeek": "attendance.labels.fieldIsBirthdayWeek",
-  sessions: "attendance.labels.fieldSessions",
-  securityCode: "attendance.labels.fieldSecurityCode",
-  date: "attendance.labels.fieldDate",
-  churchName: "attendance.labels.fieldChurchName",
-  children: "attendance.labels.fieldChildren",
-  childrenAllergies: "attendance.labels.fieldChildrenAllergies"
-};
+const FIELD_LABEL_KEYS: Record<string, string> = Object.fromEntries(FIELD_DEFS.map((f) => [f.key, "attendance.labels." + f.labelKey]));
+// Check-in Type values the kiosk puts in the label context ("Member", "Guest", "Volunteer").
+const CHECKIN_TYPE_VALUES = [
+  { value: "Member", labelKey: "attendance.checkinType.member" },
+  { value: "Guest", labelKey: "attendance.checkinType.guest" },
+  { value: "Volunteer", labelKey: "attendance.checkinType.volunteer" }
+];
 const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale.label(FIELD_LABEL_KEYS[f]) : f);
 
 type Props = { template: LabelTemplateInterface; updatedCallback: () => void };
@@ -277,7 +277,13 @@ export function LabelEditor(props: Props) {
             <MenuItem value="notEquals">{Locale.label("attendance.labels.opDoesNotEqual")}</MenuItem>
           </TextField>
         )}
-        {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && (
+        {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && selected.condition.field === "checkinType" && (
+          // The kiosk compares against the stable English value, so offer the three values instead of free text.
+          <TextField fullWidth select label={Locale.label("attendance.labels.value")} value={selected.condition.value || ""} onChange={(e) => update({ condition: { ...selected.condition!, value: e.target.value } })} data-testid="prop-cond-value">
+            {CHECKIN_TYPE_VALUES.map((v) => <MenuItem key={v.value} value={v.value}>{Locale.label(v.labelKey, v.value)}</MenuItem>)}
+          </TextField>
+        )}
+        {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && selected.condition.field !== "checkinType" && (
           <TextField fullWidth label={Locale.label("attendance.labels.value")} value={selected.condition.value || ""} onChange={(e) => update({ condition: { ...selected.condition!, value: e.target.value } })} data-testid="prop-cond-value" />
         )}
         <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => { setBlocks(blocks.filter((b) => b.id !== selectedId)); setSelectedId(null); }} sx={{ textTransform: "none" }} data-testid="delete-block-button">
