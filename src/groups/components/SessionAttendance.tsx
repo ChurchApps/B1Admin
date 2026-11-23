@@ -11,6 +11,7 @@ import { SessionStatusDialog } from "./SessionStatusDialog";
 import { useCanPrintRoster, type SessionInterface } from "../../helpers";
 import { withBase } from "../../helpers/basePath";
 import { canReadGroupAttendance } from "../attendanceAccess";
+import { type CheckinDetails, checkinDetailColumns, formatClockTime, visibleCheckinColumns } from "../../attendance/checkinDetails";
 
 // notes is not on the session interfaces yet.
 type SessionWithNotes = SessionInterface & { notes?: string };
@@ -24,6 +25,9 @@ interface Props {
 }
 
 type AttendanceMap = Record<string, boolean>;
+
+// The Api adds the check-in details to each session visit; the shared interface does not list them yet.
+type SessionVisit = VisitInterface & CheckinDetails;
 
 const checkinTypeChip = (type?: string) => {
   if (type === "volunteer") return <Chip label={Locale.label("attendance.checkinType.volunteer")} color="info" size="small" variant="outlined" data-testid="checkin-type-chip" />;
@@ -58,6 +62,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
   const [downloadData, setDownloadData] = React.useState<Record<string, unknown>[]>([]);
   const [checkinTypes, setCheckinTypes] = React.useState<Record<string, string>>({});
+  const [checkinDetails, setCheckinDetails] = React.useState<Record<string, CheckinDetails>>({});
   const [showStatus, setShowStatus] = React.useState(false);
   const canPrintRoster = useCanPrintRoster(group?.id);
   const loadSeqRef = React.useRef(0);
@@ -85,14 +90,18 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         if (seq !== loadSeqRef.current) return;
         setVisitSessions(vs);
         const types: Record<string, string> = {};
+        const details: Record<string, CheckinDetails> = {};
         const present: AttendanceMap = {};
         vs.forEach((v) => {
-          const personId = v.visit?.personId;
+          const visit = v.visit as SessionVisit | undefined;
+          const personId = visit?.personId;
           if (!personId) return;
           present[personId] = true;
-          if (v.visit?.checkinType) types[personId] = v.visit.checkinType;
+          if (visit.checkinType) types[personId] = visit.checkinType;
+          details[personId] = visit;
         });
         setCheckinTypes(types);
+        setCheckinDetails(details);
         setAttendance(present);
         setOriginalAttendance(present);
         const peopleIds = ArrayHelper.getUniqueValues(vs, "visit.personId");
@@ -112,6 +121,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
       setVisitSessions([]);
       setPeople([]);
       setCheckinTypes({});
+      setCheckinDetails({});
       setAttendance({});
       setOriginalAttendance({});
     }
@@ -231,11 +241,19 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     { label: "status", key: "status" },
     { label: "personId", key: "personId" },
     { label: "visitId", key: "visitId" },
+    ...checkinDetailColumns.map((c) => ({ label: c.csvLabel, key: c.key })),
+    { label: "checkinType", key: "checkinType" },
     { label: "sessionNotes", key: "sessionNotes" }
   ];
 
   // Repeat the session's notes on every row so the file stays one flat, sortable table.
-  const exportData = useMemo(() => (downloadData || []).map((row) => ({ ...row, sessionNotes: session?.notes || "" })), [downloadData, session]);
+  // Clock times read as local times; the date is already in sessionDate.
+  const exportData = useMemo(() => (downloadData || []).map((row) => {
+    const details = row as CheckinDetails;
+    return { ...row, checkinTime: formatClockTime(details.checkinTime), checkoutTime: formatClockTime(details.checkoutTime), sessionNotes: session?.notes || "" };
+  }), [downloadData, session]);
+
+  const checkinColumns = useMemo(() => visibleCheckinColumns(Object.values(checkinDetails)), [checkinDetails]);
 
   if (!session) {
     return (
@@ -277,6 +295,14 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           {checkinTypeChip(checkinTypes[personId])}
           {!isMember && !checkinTypes[personId] && <Chip label={Locale.label("attendance.checkinType.guest")} size="small" variant="outlined" />}
         </TableCell>
+        {checkinColumns.map((c) => {
+          const value = checkinDetails[personId] ? c.value(checkinDetails[personId]) : "";
+          return (
+            <TableCell key={c.key} data-testid={`session-${c.key}`} sx={{ whiteSpace: "nowrap" }}>
+              {value || <Typography component="span" variant="body2" color="text.disabled">—</Typography>}
+            </TableCell>
+          );
+        })}
       </TableRow>
     );
   });
@@ -347,6 +373,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
                 <TableCell />
                 <TableCell>{Locale.label("common.name")}</TableCell>
                 <TableCell>{Locale.label("attendance.checkinType.header")}</TableCell>
+                {checkinColumns.map((c) => <TableCell key={c.key}>{c.label()}</TableCell>)}
               </TableRow>
             </TableHead>
             <TableBody>{tableRows}</TableBody>
