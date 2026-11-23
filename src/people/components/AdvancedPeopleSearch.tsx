@@ -226,6 +226,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals"],
           options: [
+            { value: "thisMonth", label: Locale.label("people.advancedSearch.thisMonth") },
             { value: "1", label: Locale.label("month.jan") },
             { value: "2", label: Locale.label("month.feb") },
             { value: "3", label: Locale.label("month.mar") },
@@ -260,6 +261,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals"],
           options: [
+            { value: "thisMonth", label: Locale.label("people.advancedSearch.thisMonth") },
             { value: "1", label: Locale.label("month.jan") },
             { value: "2", label: Locale.label("month.feb") },
             { value: "3", label: Locale.label("month.mar") },

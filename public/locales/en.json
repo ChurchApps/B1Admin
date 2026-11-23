@@ -2054,6 +2054,7 @@
       "enterValuePlaceholder": "Enter value...",
       "lastDays": "in the last N days",
       "search": "Search",
+      "thisMonth": "This month",
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
@@ -2277,9 +2278,11 @@
       "category": "Category",
       "categoryPlaceholder": "Optional — group related lists",
       "confirmDelete": "Delete the list \"{name}\"? This cannot be undone.",
+      "copyName": "{name} (copy)",
       "createdBy": "by {name}",
       "delete": "Delete List",
       "household": "Include household",
+      "householdAdults": "Adults of matches",
       "householdAll": "Entire household",
       "householdChildren": "Children of matches",
       "householdNone": "Matches only",

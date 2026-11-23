@@ -609,6 +609,7 @@ export const PeoplePage = memo(() => {
                 <MenuItem value="none">{Locale.label("people.lists.householdNone")}</MenuItem>
                 <MenuItem value="children">{Locale.label("people.lists.householdChildren")}</MenuItem>
                 <MenuItem value="household">{Locale.label("people.lists.householdAll")}</MenuItem>
+                <MenuItem value="adults">{Locale.label("people.lists.householdAdults")}</MenuItem>
               </Select>
             </FormControl>
             <FormControlLabel
