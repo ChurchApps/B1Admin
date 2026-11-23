@@ -49,7 +49,7 @@ export const WorkflowCardDrawer = (props: Props) => {
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
   const editable = canEditCard(card);
   const isPersonCard = card.associatedWithType === "person" && !!card.associatedWithId;
-  const triggerId = (card as TaskInterface & { triggerId?: string }).triggerId;
+  const { triggerId } = card;
   const triggers = useQuery<WorkflowTriggerInterface[]>({ queryKey: ["/workflowTriggers/workflow/" + card.workflowId, "DoingApi"], enabled: !!triggerId && !!card.workflowId && canViewWorkflows() });
   const triggerName = triggerId && triggers.data ? (triggers.data.find((t) => t.id === triggerId)?.name || Locale.label("tasks.executions.deletedTrigger")) : "";
   const { confirm, ConfirmDialogElement } = useConfirmDelete({ confirmLabel: Locale.label("tasks.workflowCard.remove"), "data-testid": "card-remove-confirm" });
