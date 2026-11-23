@@ -11,12 +11,13 @@ import { SavedLists, type ListConditions, type ListInterface } from "./component
 import { buildRulesFromCriteria } from "./components/listRules";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
 import { Add as AddIcon, HomeOutlined as HouseholdsIcon, PersonSearch as PersonSearchIcon, TableRowsOutlined as TableIcon } from "@mui/icons-material";
-import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, Surface, ViewToggle } from "../components/ui";
+import { EmptyState, ExportButton, FilterChip, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, Surface, ViewToggle } from "../components/ui";
 import { CreatePerson } from "../components";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DirectoryHouseholds, groupHouseholds } from "./components/DirectoryHouseholds";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
 import { type BulkResult } from "./components/bulk/BulkFieldDialog";
+import { PossibleDuplicates } from "./components/PossibleDuplicates";
 
 interface BulkDeleteResponse {
   success: boolean;
@@ -35,7 +36,7 @@ const samePeople = (a: PersonInterface[] | null, b: PersonInterface[] | null) =>
 };
 
 const EXPORT_LABEL_KEYS = [
-  "address", "address1", "address2", "age", "anniversary", "birthDate", "campusId", "churchId", "city", "contactCity", "contactEmail", "contactState", "contactZip", "conversationId", "display", "first", "last", "middle", "middleName", "mobilePhone", "nametagNotes", "nick", "optedOut", "phone", "photo", "photoUpdated", "state", "workPhone", "firstName", "lastName", "gender", "membershipStatus", "id", "householdId"
+  "address", "address1", "address2", "age", "anniversary", "birthDate", "campusId", "churchId", "city", "contactCity", "contactEmail", "contactState", "contactZip", "conversationId", "display", "first", "last", "middle", "middleName", "mobilePhone", "nametagNotes", "nick", "optedOut", "phone", "photo", "photoUpdated", "state", "workPhone", "firstName", "lastName", "gender", "membershipStatus", "id", "householdId", "grade", "school"
 ];
 
 const formatHeader = (key: string): string => {
@@ -55,6 +56,7 @@ export const PeoplePage = memo(() => {
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
   const [selectedListFilters, setSelectedListFilters] = React.useState<Record<string, ActiveFilter> | undefined>(undefined);
   const [selectedListId, setSelectedListId] = React.useState<string | undefined>(undefined);
+  const [showDuplicates, setShowDuplicates] = React.useState(false);
   // Remounts PeopleSearch so "Everyone" / list picks start from a clean field and panels.
   const [searchKey, setSearchKey] = React.useState(0);
   const [view, setView] = React.useState<"households" | "table">(() => {
@@ -123,6 +125,8 @@ export const PeoplePage = memo(() => {
     { key: "birthDay", label: Locale.label("people.peoplePage.bDayNo"), shortName: Locale.label("people.peoplePage.bDay") },
     { key: "age", label: Locale.label("person.age"), shortName: Locale.label("person.age") },
     { key: "gender", label: Locale.label("person.gender"), shortName: Locale.label("person.gender") },
+    { key: "grade", label: Locale.label("person.grade"), shortName: Locale.label("person.grade") },
+    { key: "school", label: Locale.label("person.school"), shortName: Locale.label("person.school") },
     { key: "membershipStatus", label: Locale.label("person.membershipStatus"), shortName: Locale.label("person.membershipStatus") },
     { key: "donorNumber", label: Locale.label("people.personEdit.donorNumber"), shortName: Locale.label("people.personEdit.donorNumber") },
     { key: "campus", label: Locale.label("person.campus"), shortName: Locale.label("person.campus") },
@@ -183,6 +187,7 @@ export const PeoplePage = memo(() => {
 
   const clearAll = useCallback(() => {
     listRequestRef.current++;
+    setShowDuplicates(false);
     setSelectedListId(undefined);
     setSelectedListFilters(undefined);
     setSaveableCriteria(null);
@@ -199,6 +204,17 @@ export const PeoplePage = memo(() => {
     if (allPeople.length === 0 && peopleQuery.isFetching) return;
     setSearchResults(allPeople);
   }, [allPeople, isSearchPerformed, peopleQuery.isFetching]);
+
+  const handleShowDuplicates = useCallback(() => {
+    clearAll();
+    setSearchKey((k) => k + 1);
+    setShowDuplicates(true);
+  }, [clearAll]);
+
+  const handleDuplicatesMerged = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ["/people/list", "MembershipApi"] });
+    queryClient.invalidateQueries({ queryKey: [`/people/list?pageSize=${INITIAL_PAGE_SIZE}`, "MembershipApi"] });
+  }, [queryClient]);
 
   const handleShowAll = useCallback(() => {
     setLoadAll(true);
@@ -235,6 +251,7 @@ export const PeoplePage = memo(() => {
       if (requestId === listRequestRef.current) setToast({ open: true, message: Locale.label("common.error"), severity: "error" });
     };
     setIsSearchPerformed(true);
+    setShowDuplicates(false);
     setSelectedListId(list.id);
     setSearchKey((k) => k + 1);
     // Server-eval for match-any and household-inclusion; client-eval for plain all-match.
@@ -267,7 +284,9 @@ export const PeoplePage = memo(() => {
     setSaveListDialog((d) => ({ ...d, saving: true }));
     try {
       // Rules tree is canonical server query; conditions blob allows re-seeding for edit.
-      const rules = buildRulesFromCriteria(saveableCriteria, saveListDialog.match);
+      const needsGroups = !Array.isArray(saveableCriteria) && Object.values(saveableCriteria).some((f) => f.field === "groupCategory");
+      const groups = needsGroups ? await ApiHelper.get("/groups", "MembershipApi") : [];
+      const rules = buildRulesFromCriteria(saveableCriteria, saveListDialog.match, groups);
       await ApiHelper.post("/lists", [
         {
           name: saveListDialog.name.trim(),
@@ -509,13 +528,24 @@ export const PeoplePage = memo(() => {
       <PageContainer>
         <Surface>
           <Stack spacing={3}>
-            <SavedLists onSelect={handleSelectList} onClear={handleEveryone} selectedId={selectedListId} canManage={canEdit} />
+            <SavedLists
+              onSelect={handleSelectList}
+              onClear={handleEveryone}
+              selectedId={showDuplicates ? "possibleDuplicates" : selectedListId}
+              canManage={canEdit}
+              builtInChips={canEdit && (
+                <FilterChip selected={showDuplicates} onClick={handleShowDuplicates} data-testid="people-possible-duplicates">
+                  {Locale.label("people.possibleDuplicates.title")}
+                </FilterChip>
+              )}
+            />
 
             <PeopleSearch
               key={searchKey}
               updateSearchResults={(people) => {
                 setSearchResults(people);
                 setIsSearchPerformed(true);
+                setShowDuplicates(false);
               }}
               resetSearchResults={resetSearchResults}
               onClear={clearAll}
@@ -524,7 +554,7 @@ export const PeoplePage = memo(() => {
               onReportCriteria={setSaveableCriteria}
             />
 
-            <Box>
+            {showDuplicates ? <PossibleDuplicates onMerged={handleDuplicatesMerged} /> : (<Box>
               <Stack direction="row" justifyContent="space-between" alignItems="center" useFlexGap flexWrap="wrap" spacing={1} sx={{ minHeight: 40 }} data-testid="people-results-bar">
                 {canEdit && selectedPersonIds.length > 0 ? (
                   <Stack direction="row" spacing={1} alignItems="center" useFlexGap flexWrap="wrap">
@@ -568,7 +598,7 @@ export const PeoplePage = memo(() => {
                   </Button>
                 </Box>
               )}
-            </Box>
+            </Box>)}
 
             {canEdit && (
               <Box id="createPersonForm" sx={{ borderTop: 1, borderColor: "divider", pt: 3 }}>
@@ -605,6 +635,7 @@ export const PeoplePage = memo(() => {
                 <MenuItem value="none">{Locale.label("people.lists.householdNone")}</MenuItem>
                 <MenuItem value="children">{Locale.label("people.lists.householdChildren")}</MenuItem>
                 <MenuItem value="household">{Locale.label("people.lists.householdAll")}</MenuItem>
+                <MenuItem value="adults">{Locale.label("people.lists.householdAdults")}</MenuItem>
               </Select>
             </FormControl>
             <FormControlLabel

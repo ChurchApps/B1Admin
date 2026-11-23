@@ -23,7 +23,7 @@ export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
   const [currency, setCurrency] = React.useState<string>("usd");
   const [year, setYear] = React.useState<number | null>(null);
-  const [status, setStatus] = React.useState<BatchStatusFilter>("all");
+  const [status, setStatus] = React.useState<BatchStatusFilter>("open");
   const [eventsOpen, setEventsOpen] = React.useState(false);
 
   // Each batch's totalAmount arrives already converted into the church currency by the Api, so they can be added up.
@@ -80,9 +80,13 @@ export const DonationBatchesPage = () => {
 
   const getRows = () => {
     if (yearBatches.length === 0) {
+      // The page opens on Open, so a church that closed every batch is told where they went.
+      const emptyTitle = status === "open" && inYear.length > 0
+        ? Locale.label("donations.donationBatchesPage.noOpenBatches", "No open batches. Choose All to see closed batches.")
+        : Locale.label("donations.donationsPage.noBatch");
       return (
         <TableRow key="0">
-          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={Locale.label("donations.donationsPage.noBatch")} />
+          <EmptyState variant="table" colSpan={6} icon={<DonationIcon />} title={emptyTitle} />
         </TableRow>
       );
     }

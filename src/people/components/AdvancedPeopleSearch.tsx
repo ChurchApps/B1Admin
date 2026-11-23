@@ -25,6 +25,7 @@ import {
   DialogContent,
   DialogActions,
   Paper,
+  ListItemText,
   alpha,
   type Theme
 } from "@mui/material";
@@ -40,6 +41,8 @@ import {
   Assignment as CustomFieldIcon
 } from "@mui/icons-material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
+import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
+import { getGroupCategories, getGroupIdsForCategory } from "./listRules";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
 import { AppDatePicker } from "../../components";
 
@@ -81,7 +84,9 @@ interface FilterField {
   label: string;
   type: "text" | "select" | "number" | "date" | "complex";
   operators?: string[];
+  operatorLabels?: Record<string, string>;
   options?: Array<{ value: string; label: string }>;
+  multiple?: boolean;
   icon?: React.ReactNode;
 }
 
@@ -221,6 +226,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals"],
           options: [
+            { value: "thisMonth", label: Locale.label("people.advancedSearch.thisMonth") },
             { value: "1", label: Locale.label("month.jan") },
             { value: "2", label: Locale.label("month.feb") },
             { value: "3", label: Locale.label("month.mar") },
@@ -255,6 +261,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals"],
           options: [
+            { value: "thisMonth", label: Locale.label("people.advancedSearch.thisMonth") },
             { value: "1", label: Locale.label("month.jan") },
             { value: "2", label: Locale.label("month.feb") },
             { value: "3", label: Locale.label("month.mar") },
@@ -269,7 +276,17 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "12", label: Locale.label("month.dec") }
           ]
         },
-        { key: "yearsMarried", label: Locale.label("people.editCondition.marYears"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] }
+        { key: "yearsMarried", label: Locale.label("people.editCondition.marYears"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] },
+        {
+          key: "grade",
+          label: Locale.label("person.grade"),
+          type: "select",
+          operators: ["in", "notIn"],
+          operatorLabels: { in: Locale.label("people.editCondition.isAnyOf"), notIn: Locale.label("people.editCondition.isNoneOf") },
+          multiple: true,
+          options: GRADE_OPTIONS.map((g) => ({ value: g, label: g }))
+        },
+        { key: "school", label: Locale.label("person.school"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] }
       ],
       contact: [
         { key: "email", label: Locale.label("person.email"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },
@@ -284,7 +301,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           key: "membershipStatus",
           label: Locale.label("person.membershipStatus"),
           type: "select",
-          operators: ["equals", "notEquals"],
+          operators: ["in", "notIn"],
+          operatorLabels: { in: Locale.label("people.editCondition.isAnyOf"), notIn: Locale.label("people.editCondition.isNoneOf") },
+          multiple: true,
           options: getMembershipStatusOptions()
         },
         {
@@ -356,6 +375,16 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         operators: ["in", "notIn"],
         options: groups.map((g) => ({ value: g.id || "", label: g.name || "" }))
       });
+      const categoryOptions = getGroupCategories(groups).map((c) => ({ value: c, label: c }));
+      if (categoryOptions.length > 0) {
+        categories.membership.push({
+          key: "groupCategory",
+          label: Locale.label("people.editCondition.groupCategory"),
+          type: "select",
+          operators: ["in", "notIn"],
+          options: categoryOptions
+        });
+      }
     }
 
     // Add donations if permissions allow
@@ -490,7 +519,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   };
 
   // Auto-search on filter change; report spec for "Save as List" offer.
-  // customFieldQuestions is a dep so a seeded customField_ filter re-runs once its questions load.
+  // customFieldQuestions/groups are deps so a seeded customField_/groupCategory filter re-runs once its options load.
   useEffect(() => {
     const seq = ++searchSeqRef.current;
     if (debounceTimerRef.current) {
@@ -512,7 +541,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         props.resetSearchResults?.();
       }
     }
-  }, [activeFilters, customFieldQuestions]);
+  }, [activeFilters, customFieldQuestions, groups]);
 
   const handleComplexFilterSave = () => {
     if (!complexFilterDialog.field || !complexConfig) return;
@@ -559,6 +588,17 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           if (filter.operator === "notIn") peopleIds.forEach((pid) => result.push({ field: "id", operator: "notEqual", value: pid }));
           else result.push({ field: "id", operator: "in", value: peopleIds.join(",") });
           break;
+        case "groupCategory": {
+          const catGroupIds = getGroupIdsForCategory(groups, filter.value);
+          let catPeopleIds: string[] = [];
+          if (catGroupIds.length > 0) {
+            const catMembers: GroupMemberInterface[] = await ApiHelper.get(`/groupmembers?groupIds=${catGroupIds.join(",")}`, "MembershipApi");
+            catPeopleIds = ArrayHelper.getUniqueValues(catMembers, "personId").filter((id: string) => !!id);
+          }
+          if (filter.operator === "notIn") catPeopleIds.forEach((pid) => result.push({ field: "id", operator: "notEqual", value: pid }));
+          else result.push({ field: "id", operator: "in", value: catPeopleIds.join(",") });
+          break;
+        }
         case "memberDonations":
           const fundVal = JSON.parse(filter.value);
           let memberDonations: FundDonationInterface[];
@@ -669,7 +709,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       }
     }
     return result;
-  }, [activeFilters, customFieldQuestions]);
+  }, [activeFilters, customFieldQuestions, groups]);
 
   const handleAdvancedSearch = useCallback(async () => {
     const seq = ++searchSeqRef.current;
@@ -692,7 +732,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const renderOperatorSelect = (field: FilterField) => {
     if (!activeFilters[field.key] || !field.operators) return null;
 
-    const operatorLabels: Record<string, string> = {
+    const baseLabels: Record<string, string> = {
       equals: "=",
       notEquals: "≠",
       contains: Locale.label("people.editCondition.contains"),
@@ -706,6 +746,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       in: Locale.label("people.editCondition.isMem"),
       notIn: Locale.label("people.editCondition.notMem")
     };
+    const operatorLabels = { ...baseLabels, ...(field.operatorLabels ?? {}) };
 
     return (
       <Select
@@ -726,6 +767,31 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
   const renderValueInput = (field: FilterField) => {
     if (!activeFilters[field.key]) return null;
+
+    // Multi-select values travel as a comma list (the Api's in / notIn); status values hold no commas.
+    if (field.type === "select" && field.multiple && field.options) {
+      const options = field.options;
+      const selected = activeFilters[field.key].value ? activeFilters[field.key].value.split(",") : [];
+      return (
+        <Select
+          multiple
+          value={selected}
+          onChange={(e) => updateFilterValue(field.key, (e.target.value as string[]).join(","))}
+          renderValue={(values) => (values as string[]).map((v) => options.find((o) => o.value === v)?.label ?? v).join(", ")}
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={styles.inputCommon}
+        >
+          {options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value} sx={styles.menuItem}>
+              <Checkbox size="small" checked={selected.includes(opt.value)} sx={{ p: 0.5, mr: 0.5 }} />
+              <ListItemText primary={opt.label} />
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
 
     if (field.type === "select" && field.options) {
       return (
@@ -839,7 +905,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     const categories = new Set<string>();
     Object.keys(props.initialFilters).forEach((key) => {
       if (key.startsWith("customField_") || key.startsWith("personField_")) categories.add("customFields");
-      else if (key === "groupMember") categories.add("membership");
+      else if (key === "groupMember" || key === "groupCategory") categories.add("membership");
       else if (key === "memberDonations" || key === "memberAttendance") categories.add("activity");
     });
     categories.forEach((c) => loadCategoryData(c));
@@ -962,7 +1028,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         </Stack>
                         {activeFilters[field.key] && (
                           <Stack direction="row" spacing={0.75} sx={{ pl: 3.5, alignItems: "center" }}>
-                            {field.type !== "complex" && (field.type !== "select" || field.key === "groupMember") && (
+                            {field.type !== "complex" && (field.type !== "select" || (field.operators?.length ?? 0) > 1) && (
                               <Box sx={{ flexShrink: 0 }}>
                                 {renderOperatorSelect(field)}
                               </Box>

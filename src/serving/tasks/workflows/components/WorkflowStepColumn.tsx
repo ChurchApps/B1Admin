@@ -170,7 +170,7 @@ export const WorkflowStepColumn = (props: Props) => {
         </Button>
       )}
 
-      {showPicker && !props.assignmentConfirmation && <ContentPicker onClose={() => setShowPicker(false)} onSelect={handleAddCard} />}
+      {showPicker && !props.assignmentConfirmation && <ContentPicker onClose={() => setShowPicker(false)} onSelect={handleAddCard} allowCreatePerson />}
     </Box>
   );
 };

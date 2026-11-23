@@ -20,6 +20,9 @@ import { type PersonFieldInterface, type PersonFieldValueInterface } from "../..
 import { parseFieldChoices } from "../../helpers/PersonFieldHelper";
 import { AppDatePicker } from "../../components";
 import { parseTitleOptions } from "../../helpers/PersonConstants";
+import { normalizePhone } from "../helpers/PhoneFormatHelper";
+
+export { formattedPhoneNumber, normalizePhone } from "../helpers/PhoneFormatHelper";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 
@@ -38,35 +41,8 @@ interface Props {
   onDuplicateSelected?: (person: PersonInterface) => void;
 }
 
-export function formattedPhoneNumber(value: string) {
-  if (!value) return "";
-  value = value.split("x")[0];
-  // "+1 217 555 2502" reads as +1-217-555-2502; keep the space in "(217) 555-2502".
-  value = value.replace(/(?<!\)) /g, "-");
-  return value;
-}
-
 const phoneSlotProps = { htmlInput: { "aria-describedby": "errorMsg", "aria-labelledby": "tel-label errorMsg" } };
 const phoneMenuProps = { "aria-label": "phone-number" };
-
-// Normalize legacy phone formats like "(217) 555-2504" or "217-555-2504" into E.164
-// so MuiTelInput can render them with country flag and spacing. Anything that isn't a
-// US 10/11-digit number or already "+"-prefixed is left as-is — forcing "+" onto a
-// 7-digit partial makes the widget misread it as a foreign country code.
-// Churches using the "local" phone format keep numbers exactly as stored.
-export const normalizePhone = (raw: string | null | undefined, local = false): string => {
-  if (!raw) return "";
-  if (local) return raw;
-  const [base, ext] = raw.split("x");
-  const trimmed = (base ?? "").trim();
-  const digits = trimmed.replace(/\D/g, "");
-  if (!digits) return ext ? "x" + ext : "";
-  const normalized = trimmed.startsWith("+") ? "+" + digits
-    : digits.length === 10 ? "+1" + digits
-      : digits.length === 11 && digits.startsWith("1") ? "+" + digits
-        : trimmed;
-  return ext ? normalized + "x" + ext : normalized;
-};
 
 const buildFormDefaults = (p: PersonInterface, localPhones: boolean) => ({
   ...p,
@@ -88,6 +64,7 @@ export const PersonEdit = memo((props: Props) => {
   const [redirect, setRedirect] = useState("");
   const [showUpdateAddressModal, setShowUpdateAddressModal] = useState(false);
   const [modalText, setModalText] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
   const [members, setMembers] = useState<PersonInterface[] | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customFields, setCustomFields] = useState<PersonFieldInterface[]>([]);
@@ -177,12 +154,17 @@ export const PersonEdit = memo((props: Props) => {
     // "" = the Unassigned option; store as null so it matches campusId IS NULL.
     if (!p.campusId) p.campusId = null as unknown as string;
     if (p.contactInfo) {
+      // A phone the user never touched still holds the normalized form default; keep the stored string.
+      (["homePhone", "workPhone", "mobilePhone"] as const).forEach((field) => {
+        const stored = props.person.contactInfo?.[field];
+        if (stored && p.contactInfo[field] === normalizePhone(stored, localPhones)) p.contactInfo[field] = stored;
+      });
       p.contactInfo.homePhone = ((p.contactInfo.homePhone?.length ?? 0) <= 4 ? null : p.contactInfo.homePhone) as unknown as string;
       p.contactInfo.workPhone = ((p.contactInfo.workPhone?.length ?? 0) <= 4 ? null : p.contactInfo.workPhone) as unknown as string;
       p.contactInfo.mobilePhone = ((p.contactInfo.mobilePhone?.length ?? 0) <= 4 ? null : p.contactInfo.mobilePhone) as unknown as string;
     }
     return p;
-  }, [props.person]);
+  }, [props.person, localPhones]);
 
   const updatePerson = useCallback(async (p: PersonInterface) => {
     try {
@@ -215,6 +197,11 @@ export const PersonEdit = memo((props: Props) => {
     }
   }, []);
 
+  const getHouseholdChanges = useCallback((p: PersonInterface) => ({
+    address: PersonHelper.compareAddress(props.person.contactInfo, p.contactInfo),
+    homePhone: !!p.contactInfo?.homePhone && p.contactInfo.homePhone !== props.person.contactInfo?.homePhone
+  }), [props.person]);
+
   const onValid = useCallback(async (values: PersonFormValues) => {
     setIsSubmitting(true);
     setSaveErrors([]);
@@ -228,16 +215,21 @@ export const PersonEdit = memo((props: Props) => {
       return;
     }
 
-    if (members && members.length > 1 && PersonHelper.compareAddress(props.person.contactInfo, p.contactInfo)) {
+    const changes = getHouseholdChanges(p);
+    if (members && members.length > 1 && (changes.address || changes.homePhone)) {
+      const updates: string[] = [];
+      if (changes.address) updates.push(`${Locale.label("people.personEdit.upAddress")} ${PersonHelper.addressToString(p.contactInfo)}`);
+      if (changes.homePhone) updates.push(`${Locale.label(changes.address ? "people.personEdit.andHomePhone" : "people.personEdit.upHomePhone")} ${p.contactInfo.homePhone}`);
+      setModalTitle(!changes.homePhone ? "" : Locale.label(changes.address ? "people.updateHouseHold.updateAddressAndPhone" : "people.updateHouseHold.updateHomePhone"));
       setModalText(
-        `${Locale.label("people.personEdit.upAddress")} ${PersonHelper.addressToString(p.contactInfo)} ${Locale.label("people.personEdit.for")} ${p.name.display}.  ${Locale.label("people.personEdit.applyQuestion")} ${p.name.last} ${Locale.label("people.personEdit.family")}?`
+        `${updates.join(" ")} ${Locale.label("people.personEdit.for")} ${p.name.display}.  ${Locale.label("people.personEdit.applyQuestion")} ${p.name.last} ${Locale.label("people.personEdit.family")}?`
       );
       setShowUpdateAddressModal(true);
       setIsSubmitting(false);
       return;
     }
     await updatePerson(p);
-  }, [props.person, members, context, updatePerson, buildPerson, checkDuplicates]);
+  }, [members, updatePerson, buildPerson, checkDuplicates, getHouseholdChanges]);
 
   const handleUseExisting = useCallback((existing: PersonInterface) => {
     setDuplicates(null);
@@ -271,12 +263,14 @@ export const PersonEdit = memo((props: Props) => {
     setShowUpdateAddressModal(false);
     setIsSubmitting(true);
     const p = buildPerson(getValues());
+    const changes = getHouseholdChanges(p);
     await Promise.all((members || []).filter((member) => member.id !== p.id).map(async (member) => {
-      const updated = { ...member, contactInfo: PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo) };
-      try { await ApiHelper.post("/people", [updated], "MembershipApi"); } catch (error) { console.log(`error in updating ${member.name?.display}'s address`, error); }
+      let contactInfo = changes.address ? PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo) : { ...member.contactInfo };
+      if (changes.homePhone) contactInfo = { ...contactInfo, homePhone: p.contactInfo.homePhone };
+      try { await ApiHelper.post("/people", [{ ...member, contactInfo }], "MembershipApi"); } catch (error) { console.log(`error in updating ${member.name?.display}'s contact info`, error); }
     }));
     await updatePerson(p);
-  }, [members, getValues, buildPerson, updatePerson]);
+  }, [members, getValues, buildPerson, updatePerson, getHouseholdChanges]);
 
   const handleNo = useCallback(() => {
     setShowUpdateAddressModal(false);
@@ -296,7 +290,7 @@ export const PersonEdit = memo((props: Props) => {
           onClose={() => { setDuplicates(null); setPendingPerson(null); }}
         />
       )}
-      <UpdateHouseHold show={showUpdateAddressModal} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
+      <UpdateHouseHold show={showUpdateAddressModal} title={modalTitle} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
       <FormCard id={props.id} icon="person" title={Locale.label("people.personEdit.persDet")} onCancel={props.updatedFunction} onDelete={handleDelete} onSave={handleSubmit(onValid)} isSubmitting={isSubmitting}
         headerActions={
           <Button id="mergeButton" size="small" onClick={props.showMergeSearch} data-testid="merge-person-button" aria-label={Locale.label("people.personEdit.mergePersonAria")}>

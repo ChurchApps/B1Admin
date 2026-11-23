@@ -197,6 +197,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           );
           break;
         case "gender": result = <>{p.gender}</>; break;
+        case "grade": result = <>{p.grade}</>; break;
+        case "school": result = <>{p.school}</>; break;
         case "membershipStatus":
           result = <StatusChip status={p.membershipStatus || "Unknown"} />;
           break;

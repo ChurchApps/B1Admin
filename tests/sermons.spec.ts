@@ -1,4 +1,5 @@
 import { test as plainTest, type Page } from "@playwright/test";
+import type { LoginUserChurchInterface } from "@churchapps/helpers";
 import { sermonsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSermons, siblingNav } from "./helpers/navigation";
@@ -606,6 +607,103 @@ test.describe("Sermons Management", () => {
       await page.locator("button").getByText("Cancel").first().click();
     });
   });
+});
+
+plainTest("bulk deletes selected sermons with and without a playlist and retries failures", async ({ page, request }) => {
+  const api = new URL(process.env.API_BASE || "http://localhost:8084");
+  expect(["localhost", "127.0.0.1", "[::1]"]).toContain(api.hostname);
+  const loginResponse = await request.post(new URL("/membership/users/login", api).href, { data: { email: "demo@b1.church", password: "password" } });
+  await expect(loginResponse).toBeOK();
+  const { userChurches }: { userChurches: LoginUserChurchInterface[] } = await loginResponse.json();
+  const demoChurch = userChurches.find(({ church }) => church.id === "CHU00000001")!;
+  const churchId = demoChurch.church.id;
+  const contentApi = new URL("/content/", api).href;
+  const auth = { headers: { Authorization: "Bearer " + (demoChurch.apis?.find(({ keyName }) => keyName === "ContentApi")?.jwt || demoChurch.jwt) } };
+  const marker = `Bulk Delete ${Date.now()}`;
+  const playlistTitle = `${marker} Series`;
+  const inPlaylist = `${marker} Playlist Sermon`;
+  const standalone = `${marker} Standalone Sermon`;
+  const unchecked = `${marker} Unchecked Sermon`;
+  const permanent = `${marker} Permanent Live URL`;
+  const playlistResponse = await request.post(contentApi + "playlists", { ...auth, data: [{ churchId, title: playlistTitle }] });
+  await expect(playlistResponse).toBeOK();
+  const [{ id: playlistId }]: { id: string }[] = await playlistResponse.json();
+  let sermons: { id: string; title: string }[] = [];
+
+  try {
+    const sermonResponse = await request.post(contentApi + "sermons", {
+      ...auth,
+      data: [
+        { churchId, title: inPlaylist, playlistId, permanentUrl: false },
+        { churchId, title: standalone, permanentUrl: false },
+        { churchId, title: unchecked, playlistId, permanentUrl: false },
+        { churchId, title: permanent, permanentUrl: true }
+      ]
+    });
+    await expect(sermonResponse).toBeOK();
+    sermons = await sermonResponse.json();
+    const playlistSermonId = sermons.find(({ title }) => title === inPlaylist)!.id;
+    const standaloneId = sermons.find(({ title }) => title === standalone)!.id;
+    const deleteRequests: string[] = [];
+    let failStandaloneDelete = true;
+    await page.route(contentApi + "sermons/*", async (route) => {
+      if (route.request().method() !== "DELETE") return route.continue();
+      const id = new URL(route.request().url()).pathname.split("/").pop()!;
+      deleteRequests.push(id);
+      if (id === standaloneId && failStandaloneDelete) return route.fulfill({ status: 403, json: { error: "Test delete failure" } });
+      await route.continue();
+    });
+
+    await login(page);
+    await navigateToSermons(page);
+    const search = page.getByTestId("sermon-search-input");
+    const selectAll = page.getByRole("checkbox", { name: "Select all visible sermons" });
+    const deleteSelected = page.getByRole("button", { name: /^Delete Selected/ });
+    const row = (title: string) => page.getByRole("row").filter({ hasText: title });
+    const dialog = page.getByRole("dialog");
+
+    await search.fill(playlistTitle);
+    await expect(row(inPlaylist)).toBeVisible();
+    await selectAll.check();
+    await expect(deleteSelected).toHaveText("Delete Selected (2)");
+    await search.fill("No Playlist");
+    await expect(deleteSelected).toBeHidden();
+    await expect(row(standalone)).toBeVisible();
+    await expect(row(permanent)).toBeVisible();
+    await expect(row(permanent).getByRole("checkbox")).toHaveCount(0);
+
+    await search.fill(marker);
+    await row(inPlaylist).getByRole("checkbox").check();
+    await row(standalone).getByRole("checkbox").check();
+    await deleteSelected.click();
+    await expect(dialog.getByText("Delete the 2 selected sermons? This cannot be undone.")).toBeVisible();
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    expect(deleteRequests).toEqual([]);
+    await expect(deleteSelected).toHaveText("Delete Selected (2)");
+
+    await deleteSelected.click();
+    await confirmDelete(page);
+    await expect(page.getByText("Some sermons could not be deleted. Please try again.")).toBeVisible();
+    await expect(row(inPlaylist)).toHaveCount(0);
+    await expect(row(standalone).getByRole("checkbox")).toBeChecked();
+    expect([...deleteRequests].sort()).toEqual([playlistSermonId, standaloneId].sort());
+
+    failStandaloneDelete = false;
+    await deleteSelected.click();
+    await confirmDelete(page);
+    await expect(row(standalone)).toHaveCount(0);
+    expect(deleteRequests.slice(2)).toEqual([standaloneId]);
+
+    await page.reload();
+    await expect(row(unchecked)).toBeVisible();
+    await expect(row(permanent)).toBeVisible();
+    await expect(row(inPlaylist)).toHaveCount(0);
+    await expect(row(standalone)).toHaveCount(0);
+    await expect(page.getByTestId("playlists-panel").getByText(playlistTitle)).toBeVisible();
+  } finally {
+    for (const { id } of sermons) await request.delete(contentApi + "sermons/" + id, auth);
+    await request.delete(contentApi + "playlists/" + playlistId, auth);
+  }
 });
 
 // Without Streaming Services / Edit, every Sermons page explains why instead of rendering blank.

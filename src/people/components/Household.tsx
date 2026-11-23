@@ -3,16 +3,9 @@ import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpe
 import { ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Link, Typography } from "@mui/material";
-import { RecordHeading, TextAction } from "../../components/ui";
+import { RecordHeading, StatusBadge, TextAction } from "../../components/ui";
+import { sortHouseholdMembers as sortMembers } from "../buildHouseholds";
 
-const roleOrder: Record<string, number> = { Head: 0, Spouse: 1, Child: 2 };
-const birthTime = (d?: string | Date) => {
-  const t = d ? new Date(d).getTime() : NaN;
-  return Number.isNaN(t) ? Number.POSITIVE_INFINITY : t;
-};
-const sortMembers = (list: PersonInterface[]) => [...list].sort((a, b) => ((roleOrder[a.householdRole || ""] ?? 3) - (roleOrder[b.householdRole || ""] ?? 3))
-  || (birthTime(a.birthDate) - birthTime(b.birthDate))
-  || (a.name?.display || "").localeCompare(b.name?.display || ""));
 
 export const useHousehold = (person: PersonInterface | null) => {
   const [household, setHousehold] = React.useState<HouseholdInterface | null>(null);
@@ -62,11 +55,13 @@ export const Household: React.FC<Props> = ({ person, household, members, editing
   const tiles = (members || []).map((m) => {
     const isSelf = m.id === person.id;
     const name = m.name?.display || "";
+    const flaggedStatus = m.membershipStatus === "Inactive" ? Locale.label("person.inactive") : m.membershipStatus === "Deceased" ? Locale.label("person.deceased") : "";
     const face = (
       <>
         <PersonAvatar person={m} sx={{ width: 56, height: 56, fontSize: 18, fontWeight: 700, borderRadius: "var(--b1-radius-avatar)", bgcolor: m.householdRole === "Child" ? "var(--b1-accent)" : "var(--b1-avatar)", color: m.householdRole === "Child" ? "var(--b1-on-accent)" : "var(--b1-on-avatar)", outline: isSelf ? "2px solid" : "none", outlineColor: "primary.main", outlineOffset: 2 }} />
         <Typography variant="caption" component="span" noWrap sx={{ display: "block", mt: 0.75, color: isSelf ? "text.primary" : "inherit", fontWeight: isSelf ? 600 : 400 }}>{name}</Typography>
         {m.householdRole && <Typography variant="caption" component="span" noWrap sx={{ display: "block", color: "text.secondary" }}>{m.householdRole}</Typography>}
+        {flaggedStatus && <Box component="span" sx={{ display: "flex", justifyContent: "center", mt: 0.5 }}><StatusBadge tone={m.membershipStatus === "Deceased" ? "slate" : "neutral"}>{flaggedStatus}</StatusBadge></Box>}
       </>
     );
     const tileSx = { display: "block", width: 72, textAlign: "center", color: "text.primary", textDecoration: "none", borderRadius: "var(--b1-radius-control)" } as const;
@@ -74,7 +69,7 @@ export const Household: React.FC<Props> = ({ person, household, members, editing
       <Box component="li" key={m.id} sx={{ minWidth: 0 }}>
         {isSelf
           ? <Box aria-current="page" title={name} sx={tileSx}>{face}</Box>
-          : <Link component={RouterLink} to={"/people/" + m.id} title={name} aria-label={[name, m.householdRole].filter(Boolean).join(", ")} underline="none" sx={{ ...tileSx, "&:hover .MuiAvatar-root": { opacity: 0.85 } }}>{face}</Link>}
+          : <Link component={RouterLink} to={"/people/" + m.id} title={name} aria-label={[name, m.householdRole, flaggedStatus].filter(Boolean).join(", ")} underline="none" sx={{ ...tileSx, "&:hover .MuiAvatar-root": { opacity: 0.85 } }}>{face}</Link>}
       </Box>
     );
   });

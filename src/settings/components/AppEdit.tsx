@@ -232,6 +232,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                       <MenuItem value="groups">{Locale.label("settings.appEdit.myGroups")}</MenuItem>
                       <MenuItem value="volunteer">{Locale.label("settings.appEdit.volunteerOpportunities")}</MenuItem>
                       <MenuItem value="plans">{Locale.label("settings.appEdit.plans")}</MenuItem>
+                      <MenuItem value="songs">{Locale.label("settings.appEdit.songs")}</MenuItem>
                       <MenuItem value="registrations">{Locale.label("settings.appEdit.registrations")}</MenuItem>
                       <MenuItem value="requests">{Locale.label("settings.appEdit.requests")}</MenuItem>
                       <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>

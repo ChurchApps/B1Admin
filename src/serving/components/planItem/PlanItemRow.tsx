@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Checkbox, Chip } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, MusicNote as MusicNoteIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
+import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon, Delete as DeleteIcon, MusicNote as MusicNoteIcon, RestartAlt as RestartAltIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
@@ -18,6 +18,7 @@ interface Props {
   onLabelClick?: () => void;
   onEditClick: () => void;
   onDuplicateClick?: () => void;
+  onDeleteClick?: () => void;
   onSaveDescription?: (text: string) => void;
   onRestoreOriginal?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
@@ -42,6 +43,7 @@ export const PlanItemRow: React.FC<Props> = ({
   onLabelClick,
   onEditClick,
   onDuplicateClick,
+  onDeleteClick,
   onSaveDescription,
   onRestoreOriginal,
   mediaLookup,
@@ -266,6 +268,19 @@ export const PlanItemRow: React.FC<Props> = ({
                 sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
               >
                 <ContentCopyIcon />
+              </Box>
+            )}
+            {onDeleteClick && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton rowControl"
+                onClick={(e: React.MouseEvent) => { e.stopPropagation(); onDeleteClick(); }}
+                aria-label={Locale.label("plans.planItem.deleteItem") || "Delete Item"}
+                title={Locale.label("plans.planItem.deleteItem") || "Delete Item"}
+                sx={{ border: 0, cursor: "pointer", color: "error.main", background: "transparent" }}
+              >
+                <DeleteIcon />
               </Box>
             )}
           </>

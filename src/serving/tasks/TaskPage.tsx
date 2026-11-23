@@ -75,7 +75,8 @@ export const TaskPage = () => {
       if (!task.data) return;
       const t = { ...task.data };
       t.status = status;
-      t.dateClosed = status === "Open" ? undefined : new Date();
+      // null (not undefined) so the reopen reaches the Api and clears the old close date.
+      t.dateClosed = (status === "Open" ? null : new Date()) as Date;
       updateTaskMutation.mutate(t);
     },
     [task.data, updateTaskMutation]
@@ -193,7 +194,7 @@ export const TaskPage = () => {
         <dt>{Locale.label("tasks.taskPage.associated")}</dt>
         <dd>
           <span data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</span>
-          <TaskContact taskId={task.data.id || ""} associatedWithType={task.data.associatedWithType} associatedWithId={task.data.associatedWithId} />
+          <TaskContact taskId={task.data.id || ""} associatedWithType={task.data.associatedWithType} associatedWithId={task.data.associatedWithId} personName={task.data.associatedWithLabel} />
         </dd>
         <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
         <dd data-testid="task-assigned-label">{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>

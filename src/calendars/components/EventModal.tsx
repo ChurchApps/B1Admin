@@ -7,6 +7,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { GalleryModal } from "../../components/gallery";
 import { type ConflictInterface, type EventBookingInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 import { EventReminderEdit, type EventReminderEditRef } from "./EventReminderEdit";
+import { categorizedOptions } from "./categoryGroups";
 import { useConfirmDelete } from "../../hooks";
 import { EditRecurringModal, type RecurringEditType } from "./EditRecurringModal";
 
@@ -61,6 +62,9 @@ export function EventModal(props: Props) {
   const [windowEnd, setWindowEnd] = useState("");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(!!props.eventId);
+  // How many of each ticked resource the event books; a missing key means 1.
+  const [resourceQuantities, setResourceQuantities] = useState<Record<string, number>>({});
+  const [clearedQuantity, setClearedQuantity] = useState<string | null>(null);
   const [existingBookings, setExistingBookings] = useState<EventBookingInterface[]>([]);
   const [hasRegistration, setHasRegistration] = useState(false);
   const [seriesStart, setSeriesStart] = useState<Date | null>(null);
@@ -75,6 +79,8 @@ export function EventModal(props: Props) {
   // Inactive rooms and resources leave the pickers, but stay listed while this event still books them.
   const pickableRooms = rooms.filter((r) => r.active !== false || roomIds.includes(r.id || ""));
   const pickableResources = resources.filter((r) => r.active !== false || resourceIds.includes(r.id || ""));
+  // Ticked resources with more than one unit get a quantity box below the picker.
+  const pooledResources = resources.filter((r) => resourceIds.includes(r.id || "") && (r.quantity || 0) > 1);
 
   const toggleCustomWindow = (on: boolean) => {
     setCustomWindow(on);
@@ -107,6 +113,7 @@ export function EventModal(props: Props) {
         setExistingBookings(data);
         setRoomIds(data.filter((b): b is EventBookingInterface & { roomId: string } => !!b.roomId).map(b => b.roomId.toString()));
         setResourceIds(data.filter((b): b is EventBookingInterface & { resourceId: string } => !!b.resourceId).map(b => b.resourceId.toString()));
+        setResourceQuantities(Object.fromEntries(data.filter((b): b is EventBookingInterface & { resourceId: string } => !!b.resourceId).map(b => [b.resourceId.toString(), b.quantity ?? 1])));
         const first = data[0];
         if (first) {
           if (first.setupMinutes || first.teardownMinutes) {
@@ -156,14 +163,22 @@ export function EventModal(props: Props) {
         startTime: customWindow && windowStart ? new Date(windowStart) : undefined,
         endTime: customWindow && windowEnd ? new Date(windowEnd) : undefined,
         roomIds,
-        resources: resourceIds.map((id) => ({ resourceId: id, quantity: 1 })),
+        resources: resourceIds.map((id) => ({ resourceId: id, quantity: resourceQuantities[id] ?? 1 })),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       }, "ContentApi").then(setConflicts).catch(() => setConflicts([]));
     }, 400);
     return () => clearTimeout(timeout);
   }, [
-    start, end, rRule, roomIds, resourceIds, setupMinutes, teardownMinutes, customWindow, windowStart, windowEnd
+    start, end, rRule, roomIds, resourceIds, resourceQuantities, setupMinutes, teardownMinutes, customWindow, windowStart, windowEnd
   ]);
+
+  const changeQuantity = (id: string, raw: string, max: number) => {
+    setClearedQuantity(raw.trim() ? null : id);
+    if (!raw.trim()) return;
+    const n = parseInt(raw, 10);
+    const qty = Math.min(Math.max(Number.isNaN(n) ? 1 : n, 1), max);
+    setResourceQuantities((prev) => ({ ...prev, [id]: qty }));
+  };
 
   const applyTemplate = (id: string) => {
     setTemplateId(id);
@@ -228,7 +243,7 @@ export function EventModal(props: Props) {
     const newRoomBookings = roomIds.map((roomId) => ({ ...priorBooking(b => b.roomId === roomId), eventId, roomId, ...window }));
     const newResourceBookings = resourceIds.map((resourceId) => {
       const existing = priorBooking(b => b.resourceId === resourceId);
-      return { ...existing, eventId, resourceId, quantity: existing.quantity ?? 1, ...window };
+      return { ...existing, eventId, resourceId, quantity: resourceQuantities[resourceId] ?? existing.quantity ?? 1, ...window };
     });
 
     const bookings = [...newRoomBookings, ...newResourceBookings];
@@ -421,7 +436,7 @@ export function EventModal(props: Props) {
                 SelectProps={{ multiple: true, renderValue: (selected) => rooms.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-rooms-select"
               >
-                {pickableRooms.map((r) => (
+                {categorizedOptions(pickableRooms, (r) => (
                   <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
                     <ListItemText
@@ -442,7 +457,7 @@ export function EventModal(props: Props) {
                 SelectProps={{ multiple: true, renderValue: (selected) => resources.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-resources-select"
               >
-                {pickableResources.map((r) => (
+                {categorizedOptions(pickableResources, (r) => (
                   <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
                     <ListItemText primary={r.name} secondary={r.description || undefined} />
@@ -450,6 +465,22 @@ export function EventModal(props: Props) {
                 ))}
               </TextField>
             )}
+            {pooledResources.map((r) => (
+              <Stack key={r.id} direction="row" spacing={2} alignItems="center">
+                <Typography sx={{ flex: 1 }}>{r.name}</Typography>
+                <TextField
+                  type="number"
+                  size="small"
+                  label={Locale.label("calendars.newEvent.quantity")}
+                  value={clearedQuantity === r.id ? "" : resourceQuantities[r.id || ""] ?? 1}
+                  onChange={(e) => changeQuantity(r.id || "", e.target.value, r.quantity || 1)}
+                  onBlur={() => setClearedQuantity(null)}
+                  inputProps={{ min: 1, max: r.quantity, "data-testid": "new-event-resource-quantity-" + r.id }}
+                  helperText={Locale.label("calendars.newEvent.available").replace("{}", String(r.quantity))}
+                  sx={{ width: 160 }}
+                />
+              </Stack>
+            ))}
             {hasBookings && (
               <>
                 {!customWindow && (
