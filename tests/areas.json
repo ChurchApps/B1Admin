@@ -70,7 +70,7 @@
     },
     "settings": {
       "src": ["src/settings/**"],
-      "specs": ["settings*.spec.ts", "webhooks.spec.ts", "audit-log.spec.ts", "developer.spec.ts", "campus.spec.ts", "custom-fields.spec.ts", "ministrystuff-settings.spec.ts", "everyone-role.spec.ts", "import-export.spec.ts", "code-review-settings-donations.spec.ts", "texting-stop-replies.spec.ts", "text-templates.spec.ts", "checkin-safety.spec.ts"]
+      "specs": ["settings*.spec.ts", "webhooks.spec.ts", "audit-log.spec.ts", "developer.spec.ts", "campus.spec.ts", "custom-fields.spec.ts", "ministrystuff-settings.spec.ts", "everyone-role.spec.ts", "import-export.spec.ts", "code-review-settings-donations.spec.ts", "donation-statement-settings.spec.ts", "texting-stop-replies.spec.ts", "text-templates.spec.ts", "checkin-safety.spec.ts"]
     },
     "profile": {
       "src": ["src/profile/**"],

@@ -1221,6 +1221,9 @@
       "receiptNumber": "Receipt number",
       "signature": "Authorized signature"
     },
+    "statementPeriod": {
+      "range": "Period: {start} - {end}"
+    },
     "stripeImportPage": {
       "alreadyImported": "Already Imported",
       "alreadyImportedLabel": "Already Imported:",
@@ -4689,6 +4692,8 @@
       "canada": "Canada - CRA official receipt",
       "cityOfIssue": "City of Issue",
       "craNumber": "CRA Registration Number",
+      "disclaimer": "Tax Disclaimer",
+      "disclaimerHelper": "Replaces the \"no goods or services\" sentence on giving statements and receipts. Leave blank to use the standard wording. {churchName} is replaced with your church's name.",
       "format": "Statement Format",
       "givingNote": "Giving Note",
       "givingNoteHelper": "Shown to members on their giving page and history, and printed at the bottom of giving statements (for example, your refund policy).",
@@ -4703,7 +4708,9 @@
       "orgAddress": "Organization Address",
       "registrationNumber": "Registration Number",
       "signatory": "Authorized Signatory Name",
-      "standard": "Standard"
+      "standard": "Standard",
+      "yearStart": "Statement Year Starts In",
+      "yearStartHelper": "The first month of the year your giving statements cover, for example July for a July–June tax year."
     },
     "storageSettingsEdit": {
       "authFailed": "Sign-in failed. Please try again.",

@@ -8,7 +8,8 @@ import type { PaymentGateway } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import type { DonationInterface, PersonInterface, ChurchInterface, PaymentMethodInterface } from "@churchapps/helpers";
 import { Box, Table, TableBody, TableRow, TableCell, TableHead, Alert, Link } from "@mui/material";
-import { BackVerb, RecordHeading, TextAction, VerbRow, YearLedger, numericCellSx, pickDefaultYear, tableScrollSx, withCurrentYear, yearOf, yearsFromDates } from "../components/ui";
+import { BackVerb, RecordHeading, TextAction, VerbRow, YearLedger, numericCellSx, pickDefaultYear, tableScrollSx, withCurrentYear } from "../components/ui";
+import { currentStatementYear, parseStartMonth, statementYearLabel, statementYearOf } from "../donations/statementPeriod";
 import { CsvVerb } from "../donations/components/GivingParts";
 
 interface Props {
@@ -51,6 +52,8 @@ export const DonationPage: React.FC<Props> = (props) => {
   const [slice, setSlice] = React.useState<Slice>("");
   // undefined = not chosen yet (defaults to this year, or the newest year with gifts); null = all years.
   const [year, setYear] = React.useState<number | null | undefined>(undefined);
+  // Years on this page are statement years, so each year's Statement link prints the same gifts the pill shows.
+  const [startMonth, setStartMonth] = React.useState<number>(1);
 
   const loadPaymentMethods = async () => {
     try {
@@ -109,8 +112,10 @@ export const DonationPage: React.FC<Props> = (props) => {
     if (UniqueIdHelper.isMissing(props.personId)) return;
 
     try {
-      const [donationsData, gatewaysData] = await Promise.all([ApiHelper.get("/donations?personId=" + props.personId + "&includeNonDeductible=1", "GivingApi"), ApiHelper.get("/gateways", "GivingApi")]);
+      const loadSettings = (): Promise<Record<string, string> | null> => (props.church?.id ? ApiHelper.get("/settings/public/" + props.church.id, "MembershipApi").catch((): null => null) : Promise.resolve(null));
+      const [donationsData, gatewaysData, settings] = await Promise.all([ApiHelper.get("/donations?personId=" + props.personId + "&includeNonDeductible=1", "GivingApi"), ApiHelper.get("/gateways", "GivingApi"), loadSettings()]);
 
+      setStartMonth(parseStartMonth(settings?.statementYearStartMonth));
       setDonations(donationsData);
       await loadPersonData(); //loaded before gateway data to fix issue with person data not loading when there's no gateway data
       await loadGatewayData(gatewaysData);
@@ -140,24 +145,27 @@ export const DonationPage: React.FC<Props> = (props) => {
   const isStaff = appName !== "B1App";
   const money = (n: number) => CurrencyHelper.formatCurrencyWithLocale(n || 0, currency);
   const all = donations || [];
-  const dataYears = yearsFromDates(all.map((d) => d.donationDate));
-  const years = withCurrentYear(dataYears);
-  const selectedYear = year === undefined ? pickDefaultYear(dataYears) : year;
-  const yearGifts = selectedYear === null ? all : all.filter((d) => yearOf(d.donationDate) === selectedYear);
+  const yearOfGift = (d: DonationInterface) => statementYearOf(d.donationDate, startMonth);
+  const dataYears = Array.from(new Set(all.map(yearOfGift).filter((y): y is number => y !== null))).sort((a, b) => b - a);
+  const thisYear = currentStatementYear(startMonth);
+  const years = withCurrentYear(dataYears, thisYear);
+  const selectedYear = year === undefined ? pickDefaultYear(dataYears, thisYear) : year;
+  const yearGifts = selectedYear === null ? all : all.filter((d) => yearOfGift(d) === selectedYear);
+  const yearLabel = (y: number) => statementYearLabel(y, startMonth);
   const yearTotal = yearGifts.reduce((sum, d) => sum + giftAmount(d), 0);
   const lifetime = all.reduce((sum, d) => sum + giftAmount(d), 0);
   const firstYear = dataYears[dataYears.length - 1];
 
   const summary = () => {
     if (all.length === 0) return "";
-    const since = Locale.label("donation.page.sinceYear", "{amount} since {year}").replace("{amount}", money(lifetime)).replace("{year}", String(firstYear));
+    const since = Locale.label("donation.page.sinceYear", "{amount} since {year}").replace("{amount}", money(lifetime)).replace("{year}", yearLabel(firstYear));
     if (selectedYear === null) return Locale.label("donation.page.giftCount", "{count} gifts").replace("{count}", String(all.length)) + " · " + since;
-    return (yearGifts.length === 1 ? Locale.label("donation.page.giftsInYearSingular", "{count} gift in {year}") : Locale.label("donation.page.giftsInYear", "{count} gifts in {year}")).replace("{count}", String(yearGifts.length)).replace("{year}", String(selectedYear)) + " · " + since;
+    return (yearGifts.length === 1 ? Locale.label("donation.page.giftsInYearSingular", "{count} gift in {year}") : Locale.label("donation.page.giftsInYear", "{count} gifts in {year}")).replace("{count}", String(yearGifts.length)).replace("{year}", yearLabel(selectedYear)) + " · " + since;
   };
 
   const getRows = () => {
     if (all.length === 0 || yearGifts.length === 0) {
-      const text = all.length === 0 ? Locale.label("donation.page.willAppear") : Locale.label("donation.page.noGiftsInYear", "No gifts in {year}.").replace("{year}", String(selectedYear));
+      const text = all.length === 0 ? Locale.label("donation.page.willAppear") : Locale.label("donation.page.noGiftsInYear", "No gifts in {year}.").replace("{year}", selectedYear === null ? "" : yearLabel(selectedYear));
       return (
         <TableRow>
           <TableCell colSpan={isStaff ? 6 : 5} sx={{ color: "text.secondary" }}>{text}</TableCell>
@@ -194,6 +202,7 @@ export const DonationPage: React.FC<Props> = (props) => {
         years={all.length > 0 ? years : []}
         year={selectedYear}
         onYearChange={setYear}
+        formatYear={yearLabel}
         allLabel={Locale.label("donation.page.allYears", "All years")}
         actions={(
           <VerbRow>

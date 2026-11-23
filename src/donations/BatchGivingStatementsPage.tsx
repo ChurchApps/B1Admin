@@ -10,29 +10,45 @@ import {
   PrintOutlined as PrintIcon,
   SettingsOutlined as SettingsIcon
 } from "@mui/icons-material";
-import { Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@churchapps/apphelper";
+import { Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper, UniqueIdHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type PersonInterface, type FundInterface } from "@churchapps/helpers";
 import JSZip from "jszip";
 import { statementDonations } from "./statementDonations";
+import { currentStatementYear, parseStartMonth, statementPeriodLabel, statementRange, statementYearLabel, statementYearOf } from "./statementPeriod";
+import UserContext from "../UserContext";
 import { withBase } from "../helpers/basePath";
 import { EmptyState, PageHeader, PageContainer, Surface, HeaderTextButton } from "../components/ui";
 
 export const BatchGivingStatementsPage = () => {
   const navigate = useNavigate();
-  const currentYear = new Date().getFullYear();
-  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const churchId = React.useContext(UserContext)?.userChurch?.church?.id;
+  const churchSettings = useQuery<Record<string, string>>({
+    queryKey: ["/settings/public/" + churchId, "MembershipApi"],
+    placeholderData: {},
+    enabled: !UniqueIdHelper.isMissing(churchId)
+  });
+  const startMonth = parseStartMonth(churchSettings.data?.statementYearStartMonth);
+  const settingsReady = !churchSettings.isPlaceholderData;
+  const currentYear = currentStatementYear(startMonth);
+  // undefined until chosen, so the default follows the church's statement year once the settings load.
+  const [chosenYear, setChosenYear] = useState<number | undefined>(undefined);
+  const selectedYear = chosenYear ?? currentYear;
+  const selectedYearLabel = statementYearLabel(selectedYear, startMonth);
   const [currency, setCurrency] = useState<string>("usd");
 
   // One year only: a church's full giving history can be too large for one response.
-  const yearRange = `startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`;
+  const { startDate, endDate } = statementRange(selectedYear, startMonth);
+  const yearRange = `startDate=${startDate}&endDate=${endDate}`;
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations?" + yearRange, "GivingApi"],
-    placeholderData: []
+    placeholderData: [],
+    enabled: settingsReady
   });
 
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations?" + yearRange, "GivingApi"],
-    placeholderData: []
+    placeholderData: [],
+    enabled: settingsReady
   });
 
   const funds = useQuery<FundInterface[]>({
@@ -41,13 +57,9 @@ export const BatchGivingStatementsPage = () => {
   });
 
   const yearDonations = useMemo(() => {
-    const inYear = allDonations.data?.filter((don) => {
-      if (!don.donationDate) return false;
-      const donationDate = new Date(don.donationDate.toString().split("T")[0] + "T00:00:00");
-      return donationDate.getFullYear() === selectedYear;
-    }) || [];
+    const inYear = allDonations.data?.filter((don) => statementYearOf(don.donationDate, startMonth) === selectedYear) || [];
     return statementDonations(inYear, allFundDonations.data || [], funds.data || []);
-  }, [allDonations.data, allFundDonations.data, funds.data, selectedYear]);
+  }, [allDonations.data, allFundDonations.data, funds.data, selectedYear, startMonth]);
 
   const personIds = useMemo(() => {
     const ids = new Set<string>();
@@ -180,11 +192,11 @@ export const BatchGivingStatementsPage = () => {
                   <Select
                     value={selectedYear}
                     label={Locale.label("donations.batchStatements.year")}
-                    onChange={(e) => setSelectedYear(Number(e.target.value))}
+                    onChange={(e) => setChosenYear(Number(e.target.value))}
                   >
                     {yearOptions.map((year) => (
                       <MenuItem key={year} value={year}>
-                        {year}
+                        {statementPeriodLabel(year, startMonth)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -194,7 +206,7 @@ export const BatchGivingStatementsPage = () => {
               {!isLoading && (
                 <Surface>
                   <Typography variant="h3" component="h2">
-                    {Locale.label("donations.batchStatements.summary")} ({selectedYear})
+                    {Locale.label("donations.batchStatements.summary")} ({selectedYearLabel})
                   </Typography>
                   <Divider sx={{ my: 2 }} />
                   <Stack spacing={2}>
@@ -271,7 +283,7 @@ export const BatchGivingStatementsPage = () => {
                   </Grid>
                 </Grid>
               ) : (
-                <EmptyState variant="plain" title={Locale.label("donations.batchStatements.noDonations").replace("{year}", selectedYear.toString())} />
+                <EmptyState variant="plain" title={Locale.label("donations.batchStatements.noDonations").replace("{year}", selectedYearLabel)} />
               )}
             </Surface>
           </Grid>

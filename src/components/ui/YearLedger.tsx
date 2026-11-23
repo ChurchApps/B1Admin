@@ -13,6 +13,7 @@ interface Props {
   year: number | null;
   onYearChange: (year: number | null) => void;
   allLabel?: string;
+  formatYear?: (year: number) => string;
   tabs?: boolean;
   /** Text-link verbs (VerbRow of TextAction) beside the headline: Statement, Export, Log a gift. */
   actions?: React.ReactNode;
@@ -23,7 +24,7 @@ interface Props {
   "data-testid"?: string;
 }
 
-export const YearLedger: React.FC<Props> = ({ title, headline, summary, years, year, onYearChange, allLabel, tabs, actions, back, children, ...rest }) => (
+export const YearLedger: React.FC<Props> = ({ title, headline, summary, years, year, onYearChange, allLabel, formatYear, tabs, actions, back, children, ...rest }) => (
   <Box data-testid={rest["data-testid"]}>
     {back && <Box sx={{ mb: 2 }}>{back}</Box>}
     <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 1, sm: 3 }} sx={{ justifyContent: "space-between", alignItems: { sm: "flex-end" }, mb: 2 }}>
@@ -36,7 +37,7 @@ export const YearLedger: React.FC<Props> = ({ title, headline, summary, years, y
       </Box>
       {actions}
     </Stack>
-    {years.length > 0 && <YearPills years={years} value={year} onChange={onYearChange} allLabel={allLabel} tabs={tabs} sx={{ mb: 2 }} />}
+    {years.length > 0 && <YearPills years={years} value={year} onChange={onYearChange} allLabel={allLabel} formatYear={formatYear} tabs={tabs} sx={{ mb: 2 }} />}
     {children}
   </Box>
 );
