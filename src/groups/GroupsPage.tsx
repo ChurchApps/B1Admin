@@ -3,13 +3,15 @@ import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, Loading, Locale } from "@churchapps/apphelper";
 import { Link as RouterLink } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow, Box, Button, Stack, Typography, Link, Menu, MenuItem } from "@mui/material";
-import { Add as AddIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { Add as AddIcon, ExpandMore as ExpandMoreIcon, Share as ShareIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { ExportButton, FilterChip, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, SearchField, SortableTableHead, Surface, TextAction, filterChipSx, numericCellSx, tableScrollSx } from "../components/ui";
 import { useConfirmDelete, useSortableData } from "../hooks";
-import { canSeeConfidentialGroups } from "../helpers";
+import { canSeeConfidentialGroups, getPublicGroupsUrl } from "../helpers";
+import { useCampuses } from "../hooks/useCampuses";
+import { ShareLinkDialog } from "../components/ShareLinkDialog";
 
 const EXPORT_LABEL_KEYS = [
   "id", "churchId", "campusId", "categoryName", "joinPolicy", "labelCount", "memberCount", "meetingLocation", "meetingTime", "name", "labels", "tags"
@@ -32,6 +34,8 @@ const GroupsPage = () => {
   const [showArchived, setShowArchived] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("");
+  const [campusId, setCampusId] = useState("");
+  const [sharing, setSharing] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLSpanElement>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -59,12 +63,19 @@ const GroupsPage = () => {
   const shownCategories = categoryNames.slice(0, VISIBLE_CATEGORIES);
   const overflowCategories = categoryNames.slice(VISIBLE_CATEGORIES).sort((a, b) => a.localeCompare(b));
   const activeCategory = category && categoryCounts.has(category) ? category : "";
-  const visibleGroups = activeCategory ? searchedGroups.filter((g) => g.categoryName === activeCategory) : searchedGroups;
+  // Campus chips only appear for multi-campus churches.
+  const campuses = useCampuses();
+  const showCampuses = campuses.length > 1;
+  const activeCampus = showCampuses && campuses.some((c) => c.id === campusId) ? campusId : "";
+  const visibleGroups = searchedGroups
+    .filter((g) => !activeCategory || g.categoryName === activeCategory)
+    .filter((g) => !activeCampus || g.campusId === activeCampus);
   const { sorted: sortedGroups, sortBy, sortDirection, handleSort } = useSortableData(visibleGroups);
-  const filtersActive = !!query || !!activeCategory;
+  const filtersActive = !!query || !!activeCategory || !!activeCampus;
   const clearFilters = () => {
     setSearchText("");
     setCategory("");
+    setCampusId("");
   };
 
   // Categories and Archived are one list choice: picking a category leaves the archive.
@@ -196,6 +207,14 @@ const GroupsPage = () => {
             {archivedPill}
           </Stack>
         )}
+        {showCampuses && groups.length > 0 && (
+          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" alignItems="center" role="group" aria-label={Locale.label("groups.groupsPage.campus")} data-testid="groups-campus-filter">
+            <FilterChip selected={!activeCampus} onClick={() => setCampusId("")}>{Locale.label("groups.groupsPage.allCampuses")}</FilterChip>
+            {campuses.map((c) => (
+              <FilterChip key={c.id} selected={activeCampus === c.id} onClick={() => setCampusId(c.id || "")} data-testid={`groups-campus-${c.id}`}>{c.name}</FilterChip>
+            ))}
+          </Stack>
+        )}
         {groups.length > 0 && (
           <ResultsBar>
             <Typography variant="body2" color="text.secondary">
@@ -230,6 +249,17 @@ const GroupsPage = () => {
   return (
     <>
       {ConfirmDialogElement}
+      {sharing && (
+        <ShareLinkDialog
+          open={true}
+          onClose={() => setSharing(false)}
+          title={Locale.label("groups.groupsPage.shareTitle")}
+          url={getPublicGroupsUrl()}
+          hint={Locale.label("groups.groupsPage.shareHint")}
+          fileName="groups-qr"
+          testIdPrefix="groups-share"
+        />
+      )}
       <PageHeader
         title={Locale.label("groups.groupsPage.groups")}
         subtitle={groups.length > 0 ? Locale.label("groups.groupsPage.subtitle.manage").replace("{count}", groups.length.toString()) : Locale.label("groups.groupsPage.subtitle.create")}>
@@ -243,6 +273,7 @@ const GroupsPage = () => {
               : Locale.label("groups.groupsPage.pendingRequests").replace("{count}", pendingCount.toString())}
           </HeaderTextButton>
         )}
+        <HeaderTextButton startIcon={<ShareIcon />} onClick={() => setSharing(true)} data-testid="share-groups-page-button">{Locale.label("groups.groupsPage.share")}</HeaderTextButton>
         {groups.length > 0 && canEditGroups && <ExportButton data={exportData} filename="groups.csv" text={Locale.label("groups.groupsPage.export")} />}
         {canEditGroups && (
           <HeaderPrimaryButton startIcon={<AddIcon />} onClick={openAdd} data-testid="add-group-button">{Locale.label("groups.groupsPage.addGroup")}</HeaderPrimaryButton>
