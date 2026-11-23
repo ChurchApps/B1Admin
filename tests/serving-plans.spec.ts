@@ -1715,3 +1715,108 @@ test.describe.serial("Lesson trim reused for every lesson in a plan type", () =>
     expect(planType.lessonTrim).toBeNull();
   });
 });
+
+// ChurchAppsSupport#1678: items and sections delete straight from their row, and an earlier
+// plan's order of service can be pulled into a plan that already exists.
+loggedInTest.describe("Order of Service management", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+  const createdPlanIds: string[] = [];
+
+  loggedInTest.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const loginRes = await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+  });
+
+  loggedInTest.afterAll(async () => {
+    for (const id of createdPlanIds) await ctx.delete(`${API}/doing/plans/${id}`, auth);
+    await ctx.dispose();
+  });
+
+  const createPlan = async (name: string, serviceDate: string) => {
+    const res = await ctx.post(`${API}/doing/plans`, { ...auth, data: [{ name, serviceDate, ministryId: "GRP0000000a", planTypeId: "PLT00000001", serviceOrder: true }] });
+    expect(res.ok()).toBeTruthy();
+    const id = (await res.json())[0].id as string;
+    createdPlanIds.push(id);
+    return id;
+  };
+
+  const addSection = async (planId: string, sort: number, label: string, children: string[]) => {
+    const headerRes = await ctx.post(`${API}/doing/planItems`, { ...auth, data: [{ planId, sort, itemType: "header", label }] });
+    expect(headerRes.ok()).toBeTruthy();
+    const parentId = (await headerRes.json())[0].id;
+    const childRes = await ctx.post(`${API}/doing/planItems`, { ...auth, data: children.map((c, i) => ({ planId, parentId, sort: i + 1, itemType: "item", label: c, seconds: 60 })) });
+    expect(childRes.ok()).toBeTruthy();
+  };
+
+  const labelsFor = async (planId: string) => {
+    const items = await (await ctx.get(`${API}/doing/planItems/plan/${planId}`, auth)).json();
+    return (items as any[]).map((h) => [h.label, ...(h.children || []).map((c: any) => c.label)]);
+  };
+
+  loggedInTest("an item row deletes after confirming", async ({ page }) => {
+    const planId = await createPlan("Row Delete Plan", "2035-02-04");
+    await addSection(planId, 1, "Row Delete Section", ["Row Delete Keep", "Row Delete Remove"]);
+
+    await page.goto(`/serving/plans/${planId}/order`);
+    const row = page.locator(".planItem").filter({ hasText: "Row Delete Remove" });
+    await expect(row).toHaveCount(1, { timeout: 20000 });
+    await row.getByRole("button", { name: "Delete Item" }).click();
+    const dialog = page.getByTestId("confirm-delete-item-dialog");
+    await expect(dialog).toContainText("Row Delete Remove");
+    await dialog.getByRole("button", { name: "Delete" }).click();
+
+    await expect(row).toHaveCount(0, { timeout: 15000 });
+    await expect(page.locator(".planItem").filter({ hasText: "Row Delete Keep" })).toHaveCount(1);
+    expect(await labelsFor(planId)).toEqual([["Row Delete Section", "Row Delete Keep"]]);
+  });
+
+  loggedInTest("a section header deletes with its items", async ({ page }) => {
+    const planId = await createPlan("Section Delete Plan", "2035-02-11");
+    await addSection(planId, 1, "Section Delete Keep", ["Kept Item"]);
+    await addSection(planId, 2, "Section Delete Remove", ["Removed Item One", "Removed Item Two"]);
+
+    await page.goto(`/serving/plans/${planId}/order`);
+    const header = page.locator(".planItemHeader").filter({ hasText: "Section Delete Remove" });
+    await expect(header).toHaveCount(1, { timeout: 20000 });
+    await header.getByRole("button", { name: "Delete Section" }).click();
+    const dialog = page.getByTestId("confirm-delete-item-dialog");
+    await expect(dialog).toContainText("items in it");
+    await dialog.getByRole("button", { name: "Delete" }).click();
+
+    await expect(header).toHaveCount(0, { timeout: 15000 });
+    await expect(page.locator(".planItem").filter({ hasText: "Removed Item One" })).toHaveCount(0);
+    expect(await labelsFor(planId)).toEqual([["Section Delete Keep", "Kept Item"]]);
+  });
+
+  loggedInTest("copy from previous plan adds an earlier plan's order after the current items", async ({ page }) => {
+    const sourceId = await createPlan("Order Copy Source", "2035-03-04");
+    await addSection(sourceId, 1, "Copied Worship", ["Copied Opening Song", "Copied Prayer"]);
+    const planId = await createPlan("Order Copy Target", "2035-03-11");
+    await addSection(planId, 1, "Existing Welcome", ["Existing Announcements"]);
+
+    await page.goto(`/serving/plans/${planId}/order`);
+    await expect(page.locator(".planItemHeader").filter({ hasText: "Existing Welcome" })).toHaveCount(1, { timeout: 20000 });
+    await page.getByTestId("copy-service-order-button").click();
+    const dialog = page.getByTestId("copy-service-order-dialog");
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole("radio", { name: /Order Copy Source/ }).check();
+    const copyPost = page.waitForResponse((r) => r.url().includes(`/plans/copy/${sourceId}`) && r.request().method() === "POST", { timeout: 15000 });
+    await dialog.getByRole("button", { name: "Copy" }).click();
+    expect((await (await copyPost).json()).id).toBe(planId);
+
+    await expect(page.locator(".planItem").filter({ hasText: "Copied Opening Song" })).toHaveCount(1, { timeout: 15000 });
+    await expect(page.locator(".planItemHeader").nth(1)).toContainText("Copied Worship");
+    expect(await labelsFor(planId)).toEqual([
+      ["Existing Welcome", "Existing Announcements"],
+      ["Copied Worship", "Copied Opening Song", "Copied Prayer"]
+    ]);
+    // The source plan is left as it was.
+    expect(await labelsFor(sourceId)).toEqual([["Copied Worship", "Copied Opening Song", "Copied Prayer"]]);
+  });
+});

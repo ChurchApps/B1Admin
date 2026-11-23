@@ -95,6 +95,15 @@ test.describe.serial("Serving Reminders", () => {
 
     // Add "7 days before" to disambiguate from default 1-day preset.
     await page.locator('[data-testid="plan-type-reminder-offset-10080"]').click();
+    // "Other" box: 6 days before (Monday for a Sunday service).
+    await page.locator('[data-testid="plan-type-reminder-custom-days"]').fill("6");
+    await page.locator('[data-testid="plan-type-reminder-custom-add"]').click();
+    await expect(page.locator('[data-testid="plan-type-reminder-offset-8640"]')).toBeVisible();
+    await expect(page.locator('[data-testid="plan-type-reminder-offset-8640"]')).toHaveText("6 days before");
+    // Three timings selected, so another custom timing cannot be added.
+    await page.locator('[data-testid="plan-type-reminder-custom-days"]').fill("5");
+    await expect(page.locator('[data-testid="plan-type-reminder-custom-add"]')).toBeDisabled();
+    await page.locator('[data-testid="plan-type-reminder-custom-days"]').fill("");
     await page.locator('[data-testid="plan-type-reminder-time-input"] input').fill("08:15");
     await page.locator('[data-testid="plan-type-reminder-message-input"] textarea').first().fill("Come prepared and warmed up!");
     await expect(page.locator('[data-testid="plan-type-reminder-channel-push"] input')).toBeChecked();
@@ -119,6 +128,7 @@ test.describe.serial("Serving Reminders", () => {
     await expect(page.locator('[data-testid="plan-type-reminder-message-input"] textarea').first()).toHaveValue("Come prepared and warmed up!");
     await expect(page.locator('[data-testid="plan-type-reminder-channel-push"] input')).toBeChecked();
     await expect(page.locator('[data-testid="plan-type-reminder-channel-email"] input')).toBeChecked();
+    await expect(page.locator('[data-testid="plan-type-reminder-offset-8640"]')).toHaveText("6 days before");
 
     await closePlanTypeEditor(page);
   });
@@ -131,7 +141,7 @@ test.describe.serial("Serving Reminders", () => {
     expect(def).toBeTruthy();
     expect(def.entityType).toBe("plan");
     expect(def.scopeId).toBe(planTypeId);
-    expect(def.offsets).toBe("1440,10080");
+    expect(def.offsets).toBe("1440,10080,8640");
     expect(def.sendLocalTime?.slice(0, 5)).toBe("08:15");
     expect(def.message).toBe("Come prepared and warmed up!");
     expect(def.channels).toBe("push,email");

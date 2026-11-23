@@ -38,6 +38,12 @@ const OFFSET_PRESETS = [
   { minutes: 0, label: () => Locale.label("plans.planTypeReminders.dayOf") }
 ] as const;
 const MAX_OFFSETS = 3;
+const MAX_CUSTOM_DAYS = 14;
+const PRESET_MINUTES: number[] = OFFSET_PRESETS.map((p) => p.minutes);
+
+const customLabel = (m: number) => (m % 1440 === 0
+  ? Locale.label("plans.planTypeReminders.daysN", "{count} days before").replace("{count}", String(m / 1440))
+  : Locale.label("plans.planTypeReminders.minutesN", "{count} minutes before").replace("{count}", String(m)));
 
 const parseOffsets = (csv: string): number[] =>
   csv ? csv.split(",").map((s) => parseInt(s.trim(), 10)).filter((n) => !isNaN(n)) : [];
@@ -49,6 +55,7 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
   const [sendLocalTime, setSendLocalTime] = useState("09:00");
   const [message, setMessage] = useState("");
   const [channels, setChannels] = useState<string[]>(["push", "email"]);
+  const [customDays, setCustomDays] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
@@ -72,6 +79,16 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
 
   const toggleOffset = (m: number) =>
     setOffsets((p) => (p.includes(m) ? p.filter((x) => x !== m) : p.length >= MAX_OFFSETS ? p : [...p, m]));
+  const customValue = customDays.trim() === "" ? NaN : Number(customDays);
+  const customValid = Number.isInteger(customValue) && customValue >= 0 && customValue <= MAX_CUSTOM_DAYS;
+  const canAddCustom = customValid && (offsets.length < MAX_OFFSETS || offsets.includes(customValue * 1440));
+  const addCustom = () => {
+    if (!canAddCustom) return;
+    const m = customValue * 1440;
+    if (!offsets.includes(m)) setOffsets((p) => (p.includes(m) || p.length >= MAX_OFFSETS ? p : [...p, m]));
+    setCustomDays("");
+    setSaved(false);
+  };
   const toggleChannel = (c: string) =>
     setChannels((p) => (p.includes(c) ? p.filter((x) => x !== c) : [...p, c]));
 
@@ -123,6 +140,29 @@ export const PlanTypeReminderEdit = ({ planTypeId }: Props) => {
                       data-testid={`plan-type-reminder-offset-${p.minutes}`}
                     />
                   ))}
+                  {offsets.filter((m) => !PRESET_MINUTES.includes(m)).sort((a, b) => b - a).map((m) => (
+                    <Chip
+                      key={m}
+                      label={customLabel(m)}
+                      color="primary"
+                      onDelete={() => toggleOffset(m)}
+                      data-testid={`plan-type-reminder-offset-${m}`}
+                    />
+                  ))}
+                </Stack>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1.5 }}>
+                  <Typography variant="body2" color="text.secondary">{Locale.label("plans.planTypeReminders.other")}</Typography>
+                  <TextField
+                    type="number"
+                    size="small"
+                    value={customDays}
+                    onChange={(e) => setCustomDays(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustom(); } }}
+                    inputProps={{ min: 0, max: MAX_CUSTOM_DAYS, "data-testid": "plan-type-reminder-custom-days", "aria-label": Locale.label("plans.planTypeReminders.daysBefore") }}
+                    sx={{ width: 80 }}
+                  />
+                  <Typography variant="body2" color="text.secondary">{Locale.label("plans.planTypeReminders.daysBefore")}</Typography>
+                  <Button size="small" onClick={addCustom} disabled={!canAddCustom} data-testid="plan-type-reminder-custom-add">{Locale.label("plans.planTypeReminders.add")}</Button>
                 </Stack>
               </Box>
               <TextField

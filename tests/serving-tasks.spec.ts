@@ -347,3 +347,25 @@ test("New Task creates one task per associated person", async ({ page }) => {
   await page.locator('[data-testid="tasklist-tab-created"]').click();
   await expect(page.locator('[data-testid="task-list"] tr', { hasText: title })).toHaveCount(4, { timeout: 15000 });
 });
+
+// Issue #1649: reopening a closed task left its old "Closed" date on the page.
+test("a reopened task no longer shows a closed date", async ({ page }) => {
+  await page.goto("/serving/tasks/TSK00000002");
+  const status = page.locator('[data-testid="task-status"]');
+  const toggle = page.locator('[data-testid="task-status-toggle"]');
+  const closedOn = page.locator('[data-testid="task-closed-on"]');
+  await expect(status).toBeVisible({ timeout: 15000 });
+  if ((await status.textContent()) !== "Open") {
+    await toggle.click();
+    await expect(status).toHaveText("Open", { timeout: 15000 });
+  }
+  await toggle.click();
+  await expect(status).toHaveText("Closed", { timeout: 15000 });
+  await expect(closedOn).toBeVisible();
+
+  await toggle.click();
+  await expect(status).toHaveText("Open", { timeout: 15000 });
+  await page.reload();
+  await expect(status).toHaveText("Open", { timeout: 15000 });
+  await expect(closedOn).toHaveCount(0);
+});

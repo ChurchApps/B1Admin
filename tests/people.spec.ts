@@ -114,6 +114,148 @@ test.describe("People Management", () => {
       await expect(checkTwo).toHaveCount(0);
     });
 
+    // ChurchAppsSupport#1654: Membership Status takes several statuses at once, and can exclude them.
+    test.describe.serial("Advanced search by several membership statuses", () => {
+      const API = process.env.API_BASE || "http://localhost:8084";
+      const last = "Zzstatus" + Date.now().toString().slice(-6);
+      let ctx: APIRequestContext;
+      let auth: { headers: { Authorization: string } };
+      const ids: string[] = [];
+
+      test.beforeAll(async () => {
+        ctx = await request.newContext();
+        const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+        const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+        auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+        for (const [first, membershipStatus] of [["Zacchaeus", "Visitor"], ["Zebedee", "Regular Attendee"], ["Zara", "Member"]]) {
+          const [p] = await (await ctx.post(`${API}/membership/people`, { ...auth, data: [{ name: { first, last }, contactInfo: {}, membershipStatus }] })).json();
+          ids.push(p.id);
+        }
+      });
+
+      test.afterAll(async () => {
+        for (const id of ids) await ctx.delete(`${API}/membership/people/${id}`, auth).catch(() => { });
+        await ctx?.dispose();
+      });
+
+      test("lists members and regular attendees together, then everyone but them", async ({ page }) => {
+        // A filter row is the <label> holding its checkbox plus the operator/value line beside it.
+        const filterRow = (name: string) => page.locator("label", { has: page.getByText(name, { exact: true }) }).locator("..");
+        await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
+        const lastRow = filterRow("Last Name");
+        await lastRow.locator('input[type="checkbox"]').click();
+        await lastRow.locator('input[placeholder="Enter value..."]').fill(last);
+
+        await page.getByRole("button", { name: "Membership & Groups" }).click();
+        const statusRow = filterRow("Membership Status");
+        await statusRow.locator('input[type="checkbox"]').click();
+        const [operator, values] = [statusRow.locator('[aria-haspopup="listbox"]').first(), statusRow.locator('[aria-haspopup="listbox"]').last()];
+        await expect(operator).toHaveText("is any of");
+
+        await values.click();
+        const listbox = page.getByRole("listbox");
+        await listbox.locator('li[data-value="Visitor"]').click();
+        await listbox.locator('li[data-value="Regular Attendee"]').click();
+        await listbox.locator('li[data-value="Member"]').click();
+        await page.keyboard.press("Escape");
+        await expect(values).toHaveText(/Regular Attendee, Member/);
+
+        const rows = page.locator("table tbody tr");
+        await expect(rows.filter({ hasText: `Zebedee ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await expect(rows.filter({ hasText: `Zara ${last}` })).toHaveCount(1);
+        await expect(rows.filter({ hasText: `Zacchaeus ${last}` })).toHaveCount(0);
+
+        await operator.click();
+        await page.getByRole("option", { name: "is none of" }).click();
+        await expect(rows.filter({ hasText: `Zacchaeus ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await expect(rows.filter({ hasText: `Zebedee ${last}` })).toHaveCount(0);
+        await expect(rows.filter({ hasText: `Zara ${last}` })).toHaveCount(0);
+      });
+    });
+
+    test.describe.serial("Advanced search by group category", () => {
+      const API = process.env.API_BASE || "http://localhost:8084";
+      const last = "Zzcategory" + Date.now().toString().slice(-6);
+      const listName = `E2E Small Groups ${Date.now()}`;
+      let ctx: APIRequestContext;
+      let auth: { headers: { Authorization: string } };
+      const ids: string[] = [];
+      const memberIds: string[] = [];
+
+      // Zacchaeus and Zebedee join two different Small Groups (Young Families, Men's Bible Study); Zara joins none.
+      test.beforeAll(async () => {
+        ctx = await request.newContext();
+        const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+        const uc = (body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches?.[0];
+        auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+        for (const [first, groupId] of [["Zacchaeus", "GRP00000014"], ["Zebedee", "GRP00000016"], ["Zara", ""]]) {
+          const [p] = await (await ctx.post(`${API}/membership/people`, { ...auth, data: [{ name: { first, last }, contactInfo: {} }] })).json();
+          ids.push(p.id);
+          if (groupId) {
+            const [gm] = await (await ctx.post(`${API}/membership/groupmembers`, { ...auth, data: [{ groupId, personId: p.id }] })).json();
+            memberIds.push(gm.id);
+          }
+        }
+      });
+
+      test.afterAll(async () => {
+        const lists = await (await ctx.get(`${API}/membership/lists`, auth)).json().catch(() => []);
+        for (const l of (Array.isArray(lists) ? lists : []).filter((l: any) => l.name === listName)) await ctx.delete(`${API}/membership/lists/${l.id}`, auth).catch(() => { });
+        for (const id of memberIds) await ctx.delete(`${API}/membership/groupmembers/${id}`, auth).catch(() => { });
+        for (const id of ids) await ctx.delete(`${API}/membership/people/${id}`, auth).catch(() => { });
+        await ctx?.dispose();
+      });
+
+      test("lists everyone in any group of a category, then everyone outside it, and keeps it in a saved list", async ({ page }) => {
+        const filterRow = (name: string) => page.locator("label", { has: page.getByText(name, { exact: true }) }).locator("..");
+        await page.locator("#peopleSearch").getByRole("button", { name: "Advanced", exact: true }).click();
+        const lastRow = filterRow("Last Name");
+        await lastRow.locator('input[type="checkbox"]').click();
+        await lastRow.locator('input[placeholder="Enter value..."]').fill(last);
+
+        await page.getByRole("button", { name: "Membership & Groups" }).click();
+        const categoryRow = filterRow("Group Category");
+        await categoryRow.locator('input[type="checkbox"]').click();
+        const [operator, value] = [categoryRow.locator('[aria-haspopup="listbox"]').first(), categoryRow.locator('[aria-haspopup="listbox"]').last()];
+        await expect(operator).toHaveText("is member of");
+        await value.click();
+        // Ministry/team groups are left out: the "Worship" ministry's team stores its ministry id as its category.
+        await expect(page.getByRole("option", { name: "GRP0000000a" })).toHaveCount(0);
+        await page.getByRole("option", { name: "Small Groups", exact: true }).click();
+
+        const rows = page.locator("table tbody tr");
+        await expect(rows.filter({ hasText: `Zacchaeus ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await expect(rows.filter({ hasText: `Zebedee ${last}` })).toHaveCount(1);
+        await expect(rows.filter({ hasText: `Zara ${last}` })).toHaveCount(0);
+
+        await operator.click();
+        await page.getByRole("option", { name: "is not member of" }).click();
+        await expect(rows.filter({ hasText: `Zara ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await expect(rows.filter({ hasText: `Zacchaeus ${last}` })).toHaveCount(0);
+        await expect(rows.filter({ hasText: `Zebedee ${last}` })).toHaveCount(0);
+
+        // Back to "is member of", then save with a household option so the list runs from its server-side rules.
+        await operator.click();
+        await page.getByRole("option", { name: "is member of", exact: true }).click();
+        await expect(rows.filter({ hasText: `Zacchaeus ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await page.getByRole("button", { name: "Save as List" }).click();
+        const dialog = page.getByRole("dialog").filter({ hasText: "Save as List" });
+        await dialog.getByRole("textbox", { name: "List Name" }).fill(listName);
+        await dialog.getByTestId("save-list-household").click();
+        await page.getByRole("option", { name: "Entire household" }).click();
+        const saved = page.waitForResponse((r) => r.url().includes("/lists") && r.request().method() === "POST" && r.status() === 200, { timeout: 10000 });
+        await page.getByTestId("save-list-confirm").click();
+        await saved;
+
+        const evaluated = page.waitForResponse((r) => /\/lists\/[^/]+\/people/.test(r.url()) && r.status() === 200, { timeout: 10000 });
+        await page.getByTestId("saved-list-row").filter({ hasText: listName }).locator("button").first().click();
+        await evaluated;
+        await expect(rows.filter({ hasText: `Zacchaeus ${last}` })).toHaveCount(1, { timeout: 10000 });
+        await expect(rows.filter({ hasText: `Zebedee ${last}` })).toHaveCount(1);
+        await expect(rows.filter({ hasText: `Zara ${last}` })).toHaveCount(0);
+      });
+    });
+
     // Skipped: AI Search requires AskApi (separate service, not in local stack).
     test.skip("should AI search for people", async ({ page }) => {
       await page.locator("#peopleSearch").getByRole("button", { name: "Ask", exact: true }).click();

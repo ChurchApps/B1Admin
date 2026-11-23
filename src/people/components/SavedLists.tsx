@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
@@ -34,6 +34,8 @@ interface Props {
   onClear: () => void;
   selectedId?: string;
   canManage: boolean;
+  // Built-in views shown after Everyone, such as Possible duplicates.
+  builtInChips?: ReactNode;
 }
 
 export const SavedLists = (props: Props) => {
@@ -59,6 +61,15 @@ export const SavedLists = (props: Props) => {
     invalidate();
   };
 
+  const handleDuplicate = async () => {
+    if (!settingsTarget?.name?.trim()) return;
+    const { id: _id, churchId: _churchId, createdByPersonId: _createdBy, createdByPersonName: _createdByName, ...rest } = settingsTarget;
+    const saved: ListInterface[] = await ApiHelper.post("/lists", [{ ...rest, name: Locale.label("people.lists.copyName").replace("{name}", settingsTarget.name.trim()) }], "MembershipApi");
+    setSettingsTarget(null);
+    invalidate();
+    if (saved?.[0]?.id) props.onSelect(saved[0]);
+  };
+
   const { grouped, categories } = useMemo(() => {
     const grouped = lists.reduce<Record<string, ListInterface[]>>((acc, list) => {
       const key = list.category?.trim() || "";
@@ -71,11 +82,12 @@ export const SavedLists = (props: Props) => {
 
   return (
     <>
-      {lists.length > 0 && (
+      {(lists.length > 0 || !!props.builtInChips) && (
         <Stack direction="row" useFlexGap flexWrap="wrap" alignItems="center" spacing={1} role="group" aria-label={Locale.label("people.directory.savedLists")}>
           <FilterChip selected={!props.selectedId} onClick={props.onClear} data-testid="saved-list-everyone">
             {Locale.label("people.directory.everyone")}
           </FilterChip>
+          {props.builtInChips}
           {categories.flatMap((category) => [
             category ? <Typography key={"cat-" + category} variant="caption" color="text.secondary" sx={{ fontWeight: 600, ml: 1 }}>{category}</Typography> : null,
             ...grouped[category].map((list) => (
@@ -129,6 +141,7 @@ export const SavedLists = (props: Props) => {
                   <MenuItem value="none">{Locale.label("people.lists.householdNone")}</MenuItem>
                   <MenuItem value="children">{Locale.label("people.lists.householdChildren")}</MenuItem>
                   <MenuItem value="household">{Locale.label("people.lists.householdAll")}</MenuItem>
+                  <MenuItem value="adults">{Locale.label("people.lists.householdAdults")}</MenuItem>
                 </Select>
               </FormControl>
             )}
@@ -149,6 +162,7 @@ export const SavedLists = (props: Props) => {
           </Stack>
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleDuplicate} disabled={!settingsTarget?.name?.trim()} sx={{ mr: "auto" }} data-testid="list-settings-duplicate">{Locale.label("common.duplicate")}</Button>
           <Button onClick={() => setSettingsTarget(null)}>{Locale.label("common.cancel")}</Button>
           <Button onClick={handleSaveSettings} variant="contained" disabled={!settingsTarget?.name?.trim()} data-testid="list-settings-save">{Locale.label("common.save")}</Button>
         </DialogActions>

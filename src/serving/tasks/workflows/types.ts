@@ -9,11 +9,13 @@ export interface WorkflowStepActionInterface {
 
 declare module "@churchapps/helpers" {
   interface WorkflowInterface { workflowType?: string | null }
-  interface TaskInterface { assignmentId?: string | null }
+  interface TaskInterface { assignmentId?: string | null; triggerId?: string | null }
 
   interface WorkflowBoardInterface {
     actions?: WorkflowStepActionInterface[];
   }
+
+  interface WorkflowStepInterface { instructions?: string | null }
 }
 
 export const ACTION_TYPES = [

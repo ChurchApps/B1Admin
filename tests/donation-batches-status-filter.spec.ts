@@ -51,20 +51,28 @@ test.describe.serial("Batches status filter", () => {
     const closedRow = page.getByRole("link", { name: CLOSED_NAME, exact: true });
     const statusCells = page.getByTestId("batch-row-status");
 
-    // All is the default, so nobody loses a batch they used to see.
+    // Open is the default, like the Tasks page: the working list, with finished batches one click away.
     const pills = page.getByTestId("batch-status-pills");
     await expect(pills).toHaveAttribute("aria-label", "Status");
+    await expect(page.getByTestId("batch-status-pill-open")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByTestId("batch-status-pill-all")).toHaveAttribute("aria-pressed", "false");
+    await expect(openRow).toBeVisible();
+    await expect(closedRow).toHaveCount(0);
+    for (const text of await statusCells.allTextContents()) expect(text).toBe("Open");
+    const openCount = await batchCount(page);
+
+    await page.getByTestId("batch-status-pill-all").click();
     await expect(page.getByTestId("batch-status-pill-all")).toHaveAttribute("aria-pressed", "true");
     await expect(openRow).toBeVisible();
     await expect(closedRow).toBeVisible();
     const allCount = await batchCount(page);
+    expect(openCount).toBeLessThan(allCount);
 
     await page.getByTestId("batch-status-pill-open").click();
     await expect(page.getByTestId("batch-status-pill-open")).toHaveAttribute("aria-pressed", "true");
     await expect(closedRow).toHaveCount(0);
     await expect(openRow).toBeVisible();
-    for (const text of await statusCells.allTextContents()) expect(text).toBe("Open");
-    expect(await batchCount(page)).toBeLessThan(allCount);
+    expect(await batchCount(page)).toBe(openCount);
 
     await page.getByTestId("batch-status-pill-closed").click();
     await expect(openRow).toHaveCount(0);
@@ -75,5 +83,23 @@ test.describe.serial("Batches status filter", () => {
     await expect(openRow).toBeVisible();
     await expect(closedRow).toBeVisible();
     expect(await batchCount(page)).toBe(allCount);
+  });
+
+  test("When every batch is closed, the Open list points at All", async ({ page }) => {
+    // Show the church as if it closed every batch at year end.
+    await page.route(/\/giving\/donationbatches$/, async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      const res = await route.fetch();
+      const all = (await res.json()) as { status?: string }[];
+      await route.fulfill({ response: res, json: all.map((b) => ({ ...b, status: "closed" })) });
+    });
+    await (await siblingNav(page)).getByText("Batches").click();
+    await expect(page).toHaveURL(/\/donations\/batches$/);
+    await expect(page.getByTestId("batch-status-pill-open")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByText("No open batches. Choose All to see closed batches.")).toBeVisible({ timeout: 10000 });
+
+    await page.getByTestId("batch-status-pill-all").click();
+    await expect(page.getByText("No open batches. Choose All to see closed batches.")).toHaveCount(0);
+    await expect(page.getByRole("link", { name: CLOSED_NAME, exact: true })).toBeVisible();
   });
 });
