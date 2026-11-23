@@ -2,18 +2,27 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
-import { ApiHelper, UserHelper, EventHelper, Loading, Locale } from "@churchapps/apphelper";
-import { Permissions } from "@churchapps/helpers";
-import { MenuItem, Stack, TextField } from "@mui/material";
+import { ApiHelper, DateHelper, UserHelper, EventHelper, Loading, Locale } from "@churchapps/apphelper";
+import { Permissions, type PersonInterface } from "@churchapps/helpers";
+import { Box, MenuItem, Stack, TextField } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { useRequirePermission, useFirstDayOfWeek, applyWeekStart } from "../hooks";
 import { EventModal } from "./components/EventModal";
 import { HeaderPrimaryButton } from "../components/ui/headerButtons";
-import { Surface } from "../components/ui";
+import { ExportButton, Surface } from "../components/ui";
 import { CalendarChrome } from "./components/CalendarChrome";
 import { type CalendarBlockoutInterface, type EventBookingInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
 
 type CalEvent = { title: string; start: Date; end: Date; kind: "approved" | "pending" | "blockout"; eventId?: string; eventTitle?: string; targets?: string[]; };
+// One booking on one date. start/end is the block drawn on the calendar (setup and teardown included); eventStart/eventEnd is the event itself.
+type Occurrence = { booking: EventBookingInterface; start: Date; end: Date; eventStart: Date; eventEnd: Date; };
+type DateRange = { start: Date; end: Date };
+
+// react-big-calendar reports a list of days (week, day) or a start/end pair (month, agenda).
+const toDateRange = (range: Date[] | { start: Date; end: Date }): DateRange => {
+  const days = Array.isArray(range) ? range : [range.start, range.end];
+  return { start: dayjs(days[0]).startOf("day").toDate(), end: dayjs(days[days.length - 1]).endOf("day").toDate() };
+};
 
 export const AvailabilityPage = () => {
   const [bookings, setBookings] = useState<EventBookingInterface[]>([]);
@@ -24,6 +33,8 @@ export const AvailabilityPage = () => {
   const [showBook, setShowBook] = useState(false);
   const [bookEventId, setBookEventId] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(true);
+  const [range, setRange] = useState<DateRange | null>(null);
+  const [requesterNames, setRequesterNames] = useState<Record<string, string>>({});
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
   const firstDayOfWeek = useFirstDayOfWeek();
@@ -32,6 +43,13 @@ export const AvailabilityPage = () => {
     applyWeekStart(firstDayOfWeek);
     return dayjsLocalizer(dayjs);
   }, [firstDayOfWeek]);
+
+  // The calendar opens on this month and only reports its range once the user changes view or date.
+  // firstDayOfWeek: the localizer memo above has already applied it to dayjs.
+  const visibleRange = useMemo<DateRange>(() => range || {
+    start: dayjs().startOf("month").startOf("week").toDate(),
+    end: dayjs().endOf("month").endOf("week").toDate()
+  }, [range, firstDayOfWeek]);
 
   const loadBookings = useCallback(() => {
     const start = new Date();
@@ -62,42 +80,62 @@ export const AvailabilityPage = () => {
     loadBookings();
   }, [loadBookings]);
 
-  const events = useMemo<CalEvent[]>(() => {
-    const result: CalEvent[] = [];
+  useEffect(() => {
+    const ids = [...new Set(bookings.map((b) => b.requestedBy).filter((id): id is string => !!id))].filter((id) => !(id in requesterNames));
+    if (ids.length === 0) return;
+    ApiHelper.get("/people/ids?ids=" + ids.join(","), "MembershipApi")
+      .then((found: PersonInterface[]) => {
+        const names: Record<string, string> = {};
+        ids.forEach((id) => { names[id] = ""; });
+        (found || []).forEach((p) => { if (p.id) names[p.id] = p.name?.display || ""; });
+        setRequesterNames((prev) => ({ ...prev, ...names }));
+      })
+      .catch(() => { /* the export leaves Requested by blank */ });
+  }, [bookings, requesterNames]);
+
+  const occurrences = useMemo<Occurrence[]>(() => {
+    const result: Occurrence[] = [];
     const rangeStart = new Date();
     rangeStart.setFullYear(rangeStart.getFullYear() - 1);
     const rangeEnd = new Date();
     rangeEnd.setFullYear(rangeEnd.getFullYear() + 1);
 
-    const resultItems: (CalEvent & { eventTitle?: string; target?: string })[] = [];
     bookings.forEach((b) => {
-      const target = b.roomName || b.resourceName || "";
-      const kind = b.status === "approved" ? "approved" : "pending";
-      const pushItem = (start: Date, end: Date) => {
-        resultItems.push({ title: "", eventTitle: b.eventTitle || "", target, start, end, kind, eventId: b.eventId });
-      };
-
       if (b.startTime && b.endTime) {
-        pushItem(new Date(b.startTime), new Date(b.endTime));
+        const start = new Date(b.startTime);
+        const end = new Date(b.endTime);
+        result.push({ booking: b, start, end, eventStart: start, eventEnd: end });
         return;
       }
       const setupMs = (b.setupMinutes || 0) * 60000;
       const teardownMs = (b.teardownMinutes || 0) * 60000;
-      const pad = (s: Date, e: Date) => ({ start: new Date(s.getTime() - setupMs), end: new Date(e.getTime() + teardownMs) });
+      const pushPadded = (s: Date, e: Date) => {
+        result.push({ booking: b, start: new Date(s.getTime() - setupMs), end: new Date(e.getTime() + teardownMs), eventStart: s, eventEnd: e });
+      };
       const start = new Date(b.eventStart ?? NaN); // NaN: same Invalid Date that new Date(undefined) gives
       const end = new Date(b.eventEnd ?? NaN);
       if (b.eventRecurrenceRule) {
         const dates: Date[] = EventHelper.getRange({ start, end, recurrenceRule: b.eventRecurrenceRule }, rangeStart, rangeEnd);
         const diff = end.getTime() - start.getTime();
-        dates.forEach((d) => {
-          const padded = pad(d, new Date(d.getTime() + diff));
-          pushItem(padded.start, padded.end);
-        });
+        dates.forEach((d) => pushPadded(d, new Date(d.getTime() + diff)));
       } else {
-        const padded = pad(start, end);
-        pushItem(padded.start, padded.end);
+        pushPadded(start, end);
       }
     });
+    return result;
+  }, [bookings]);
+
+  const events = useMemo<CalEvent[]>(() => {
+    const result: CalEvent[] = [];
+    const resultItems: (CalEvent & { eventTitle?: string; target?: string })[] = occurrences.map(({ booking: b, start, end }) => ({
+      title: "",
+      eventTitle: b.eventTitle || "",
+      target: b.roomName || b.resourceName || "",
+      start,
+      end,
+      kind: b.status === "approved" ? "approved" : "pending",
+      eventId: b.eventId
+    }));
 
     const combined: CalEvent[] = [];
     resultItems.forEach((r) => {
@@ -136,7 +174,38 @@ export const AvailabilityPage = () => {
       });
     });
     return result;
-  }, [bookings, blockouts, rooms, resources, filter]);
+  }, [occurrences, blockouts, rooms, resources, filter]);
+
+  // One row per booking on each date in view; the room/resource filter is already applied by the API.
+  const exportRows = useMemo(() => occurrences
+    .filter((o) => o.start < visibleRange.end && o.end > visibleRange.start)
+    .sort((a, b) => a.eventStart.getTime() - b.eventStart.getTime())
+    .map(({ booking: b, eventStart, eventEnd }) => {
+      const hasAbsoluteTimes = !!(b.startTime && b.endTime);
+      return {
+        event: b.eventTitle || "",
+        roomResource: b.roomName || b.resourceName || "",
+        quantity: b.resourceId ? b.quantity || 1 : "",
+        start: DateHelper.prettyDateTime(eventStart),
+        end: DateHelper.prettyDateTime(eventEnd),
+        setupMinutes: hasAbsoluteTimes ? "" : b.setupMinutes || 0,
+        teardownMinutes: hasAbsoluteTimes ? "" : b.teardownMinutes || 0,
+        status: b.status === "approved" ? Locale.label("calendars.approvals.approved") : b.status === "pending" ? Locale.label("calendars.approvals.pending") : b.status || "",
+        requestedBy: (b.requestedBy && requesterNames[b.requestedBy]) || ""
+      };
+    }), [occurrences, visibleRange, requesterNames]);
+
+  const exportHeaders = [
+    { label: Locale.label("calendars.approvals.event"), key: "event" },
+    { label: Locale.label("calendars.approvals.roomResource"), key: "roomResource" },
+    { label: Locale.label("calendars.rooms.quantity"), key: "quantity" },
+    { label: Locale.label("calendars.availability.start"), key: "start" },
+    { label: Locale.label("calendars.availability.end"), key: "end" },
+    { label: Locale.label("calendars.availability.setupMinutes"), key: "setupMinutes" },
+    { label: Locale.label("calendars.availability.teardownMinutes"), key: "teardownMinutes" },
+    { label: Locale.label("calendars.approvals.status"), key: "status" },
+    { label: Locale.label("calendars.approvals.requestedBy"), key: "requestedBy" }
+  ];
 
   const eventStyle = (event: CalEvent) => {
     // Tinted fill with the matching strong text (as on status badges) stays readable in light and dark mode.
@@ -156,13 +225,20 @@ export const AvailabilityPage = () => {
         selected="availability"
         subtitle={Locale.label("calendars.availability.subtitle")}
         actions={(
-          <HeaderPrimaryButton
-            startIcon={<AddIcon />}
-            onClick={() => { setBookEventId(undefined); setShowBook(true); }}
-            data-testid="availability-book-button"
-          >
-            {Locale.label("calendars.availability.book")}
-          </HeaderPrimaryButton>
+          <>
+            {exportRows.length > 0 && (
+              <Box data-testid="availability-export">
+                <ExportButton data={exportRows} filename="availability.csv" customHeaders={exportHeaders} text={Locale.label("calendars.availability.export")} />
+              </Box>
+            )}
+            <HeaderPrimaryButton
+              startIcon={<AddIcon />}
+              onClick={() => { setBookEventId(undefined); setShowBook(true); }}
+              data-testid="availability-book-button"
+            >
+              {Locale.label("calendars.availability.book")}
+            </HeaderPrimaryButton>
+          </>
         )}>
         <Surface sx={{
           "& .rbc-btn-group button": { color: (theme) => theme.palette.mode === "dark" ? "text.primary" : "inherit" },
@@ -189,6 +265,7 @@ export const AvailabilityPage = () => {
               endAccessor="end"
               style={{ height: 600 }}
               eventPropGetter={eventStyle}
+              onRangeChange={(r) => setRange(toDateRange(r))}
               onSelectEvent={(e) => {
                 if (e.eventId) {
                   setBookEventId(e.eventId);

@@ -255,8 +255,13 @@
       "allRoomsResources": "All rooms & resources",
       "blocked": "Blocked",
       "book": "Book",
+      "end": "End",
+      "export": "Export",
       "filter": "Room / Resource",
+      "setupMinutes": "Setup (min)",
+      "start": "Start",
       "subtitle": "See what's booked across rooms and resources",
+      "teardownMinutes": "Teardown (min)",
       "title": "Availability"
     },
     "calendar": {

@@ -58,7 +58,7 @@
     },
     "calendars": {
       "src": ["src/calendars/**"],
-      "specs": ["calendar-conflicts.spec.ts", "calendar-duplicate-event.spec.ts", "group-calendar.spec.ts", "event-*.spec.ts", "rooms-resources.spec.ts"]
+      "specs": ["calendar-availability-export.spec.ts", "calendar-conflicts.spec.ts", "calendar-duplicate-event.spec.ts", "group-calendar.spec.ts", "event-*.spec.ts", "rooms-resources.spec.ts"]
     },
     "registrations": {
       "src": ["src/registrations/**"],
