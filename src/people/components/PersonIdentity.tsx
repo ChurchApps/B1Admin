@@ -32,6 +32,7 @@ interface Props {
 
 export const PersonIdentity: React.FC<Props> = (props) => {
   const { person } = props;
+  const smsOptedOut = !!(person as PersonInterface & { smsOptedOut?: boolean }).smsOptedOut;
   const [userEmail, setUserEmail] = React.useState("");
   const [customFields, setCustomFields] = React.useState<PersonFieldInterface[]>([]);
   const [customValues, setCustomValues] = React.useState<Record<string, string>>({});
@@ -166,7 +167,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
       <Typography id="page-header-title" variant="h1" component="h1" sx={{ mt: 2, overflowWrap: "anywhere" }}>{person.name?.display}</Typography>
       {facts && <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>{facts}</Typography>}
 
-      {(person.membershipStatus || userEmail || person.nametagNotes || person.optedOut) && (
+      {(person.membershipStatus || userEmail || person.nametagNotes || person.optedOut || smsOptedOut) && (
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 2 }}>
           {person.membershipStatus && <StatusChip status={person.membershipStatus} />}
           {person.nametagNotes && (
@@ -178,6 +179,7 @@ export const PersonIdentity: React.FC<Props> = (props) => {
           )}
           {userEmail && <Pill>{Locale.label("people.personBanner.hasLogin")}</Pill>}
           {person.optedOut && <Pill>{Locale.label("people.personRecord.noDirectory", "Hidden from directory")}</Pill>}
+          {smsOptedOut && <Pill data-testid="person-sms-opted-out">{Locale.label("people.personRecord.noTexts", "Opted out of texts")}</Pill>}
         </Stack>
       )}
 
