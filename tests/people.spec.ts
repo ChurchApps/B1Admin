@@ -17,7 +17,7 @@ function prettyClock(input: string | Date) {
 }
 
 async function checkedInCell(page: Page, rowIndex: number) {
-  await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
+  await expect(page.getByRole("columnheader", { name: "Checked In", exact: true })).toBeVisible();
   const idx = await page.getByRole("columnheader").evaluateAll(
     (els, name) => els.findIndex((el) => (el.textContent || "").trim() === name),
     "Checked In"
@@ -494,7 +494,7 @@ test.describe("People Management", () => {
       const records = await (await recordsPromise).json();
       const withTime = (Array.isArray(records) ? records : []).find((r: { checkinTime?: string }) => r.checkinTime);
       expect(withTime).toBeTruthy();
-      await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
+      await expect(page.getByRole("columnheader", { name: "Checked In", exact: true })).toBeVisible();
       await expect(page.getByRole("cell", { name: prettyClock(withTime.checkinTime) }).first()).toBeVisible();
       // Service-time name stays in Time; Checked In is the actual arrival clock.
       await expect(page.getByRole("columnheader", { name: "Time" })).toBeVisible();
@@ -510,7 +510,7 @@ test.describe("People Management", () => {
       });
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       await page.getByTestId("person-attendance-all").click();
-      await expect(page.getByRole("columnheader", { name: "Checked In" })).toBeVisible();
+      await expect(page.getByRole("columnheader", { name: "Checked In", exact: true })).toBeVisible();
       await expect(await checkedInCell(page, 0)).toHaveText("—");
     });
 
