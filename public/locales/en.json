@@ -70,6 +70,7 @@
     },
     "checkinDetails": {
       "checkedIn": "Checked In",
+      "checkedInBy": "Checked In By",
       "checkedOut": "Checked Out",
       "pickedUpBy": "Picked Up By"
     },
@@ -116,6 +117,8 @@
       "field": "Field",
       "fieldAge": "Age",
       "fieldBirthDate": "Birth Date",
+      "fieldCheckedInByName": "Checked In By Name",
+      "fieldCheckedInByPhone": "Checked In By Phone",
       "fieldCheckinType": "Check-in Type",
       "fieldChildren": "Children",
       "fieldChildrenAllergies": "Children & Allergies",

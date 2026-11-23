@@ -98,6 +98,8 @@ const FIELD_DEFS: LabelFieldDef[] = [
   { key: "person.grade", labelKey: "fieldGrade", sample: "PreK", types: ["nametag"] },
   { key: "person.birthDate", labelKey: "fieldBirthDate", sample: new Date(2022, 2, 14).toLocaleDateString(DateHelper.locale), types: ["nametag"] },
   { key: "checkinType", labelKey: "fieldCheckinType", sample: "Member", types: ["nametag"] },
+  { key: "checkedInBy.name", labelKey: "fieldCheckedInByName", sample: "Sarah Johnson", types: ["nametag"] },
+  { key: "checkedInBy.phone", labelKey: "fieldCheckedInByPhone", sample: "(555) 123-4567", types: ["nametag"] },
   { key: "sessions", labelKey: "fieldSessions", sample: "9:00 AM: Preschool", types: ["nametag"] },
   { key: "children", labelKey: "fieldChildren", sample: "Emma Johnson - 9:00 AM: Preschool\nNoah Johnson - 9:00 AM: Elementary", types: ["pickup"] },
   { key: "childrenAllergies", labelKey: "fieldChildrenAllergies", sample: "Emma Johnson - Peanut allergy", types: ["pickup"] },

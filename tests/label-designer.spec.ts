@@ -80,6 +80,24 @@ test.describe.serial("Check-in label designer", () => {
     await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
   });
 
+  test("adds Checked In By name and phone field blocks", async () => {
+    const newFields = [
+      { key: "checkedInBy.name", label: "Checked In By Name", sample: "Sarah Johnson", x: "0" },
+      { key: "checkedInBy.phone", label: "Checked In By Phone", sample: "(555) 123-4567", x: "50" }
+    ];
+    for (const f of newFields) {
+      await expect(page.locator(`[data-testid="palette-${f.key}"]`)).toHaveText(f.label);
+      await page.locator(`[data-testid="palette-${f.key}"]`).click();
+      await expect(page.locator('[data-testid="prop-field"] input')).toHaveValue(f.key);
+      // Move each below the stacked blocks so the Check-in Type block stays clickable.
+      await page.locator('[data-testid="prop-x"] input').fill(f.x);
+      await page.locator('[data-testid="prop-y"] input').fill("60");
+      await expect(page.locator('[data-testid^="block-"]').filter({ hasText: f.sample })).toBeVisible();
+    }
+    await expect(page.locator('[data-testid^="block-"]')).toHaveCount(11);
+    await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
+  });
+
   test("saves the template and shows it in the list", async () => {
     await page.locator('[data-testid="template-name-input"] input').fill(TEMPLATE);
     const post = labelTemplatesPost(page);
@@ -97,10 +115,12 @@ test.describe.serial("Check-in label designer", () => {
     await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
     await expect(page.locator('[data-testid="prop-cond-field"] input')).toHaveValue("person.isBirthdayWeek");
     await expect(page.locator('[data-testid="prop-cond-operator"] input')).toHaveValue("notEmpty");
-    await expect(page.locator('[data-testid^="block-"]')).toHaveCount(9);
-    // The new blocks stack at the same spot; the last one added (Check-in Type) is on top.
+    await expect(page.locator('[data-testid^="block-"]')).toHaveCount(11);
+    // The Age..Check-in Type blocks stack at the same spot; the last one added (Check-in Type) is on top.
     await page.locator('[data-testid^="block-"]').filter({ hasText: "Member" }).click();
     await expect(page.locator('[data-testid="prop-field"] input')).toHaveValue("checkinType");
+    await page.locator('[data-testid^="block-"]').filter({ hasText: "(555) 123-4567" }).click();
+    await expect(page.locator('[data-testid="prop-field"] input')).toHaveValue("checkedInBy.phone");
     await page.getByRole("button", { name: "Cancel" }).click();
   });
 

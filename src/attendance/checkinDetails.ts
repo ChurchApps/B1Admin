@@ -3,6 +3,8 @@ import { DateHelper, Locale } from "@churchapps/apphelper";
 // What the Api returns about one check-in, on a session's visit and on a person's attendance record.
 export interface CheckinDetails {
   checkinTime?: Date | string | null;
+  // Name of the adult who checked the person in at the kiosk (blank when none was recorded).
+  checkedInBy?: string | null;
   checkoutTime?: Date | string | null;
   checkedOutBy?: string | null;
 }
@@ -27,6 +29,7 @@ export interface CheckinDetailColumn {
 // The check-in columns shown beside each other on the session roster and a person's attendance list.
 export const checkinDetailColumns: CheckinDetailColumn[] = [
   { key: "checkinTime", csvLabel: "checkinTime", label: () => Locale.label("attendance.checkinDetails.checkedIn", "Checked In"), value: (d) => formatClockTime(d.checkinTime), always: true },
+  { key: "checkedInBy", csvLabel: "checkedInBy", label: () => Locale.label("attendance.checkinDetails.checkedInBy", "Checked In By"), value: (d) => d.checkedInBy || "" },
   { key: "checkoutTime", csvLabel: "checkoutTime", label: () => Locale.label("attendance.checkinDetails.checkedOut", "Checked Out"), value: (d) => formatClockTime(d.checkoutTime) },
   { key: "checkedOutBy", csvLabel: "pickedUpBy", label: () => Locale.label("attendance.checkinDetails.pickedUpBy", "Picked Up By"), value: (d) => d.checkedOutBy || "" }
 ];
