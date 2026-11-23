@@ -1956,6 +1956,11 @@
     "checkInPage": {
       "addToGroup": "Add new guests to group",
       "addToGroupHelp": "Change this before each event to follow up its guests together.",
+      "announcement": {
+        "help": "Shown on the kiosk before each household picks who to check in. They tap OK to continue. Leave blank to turn it off.",
+        "label": "Announcement",
+        "title": "Check-in announcement"
+      },
       "changePhoto": "Change photo",
       "copyLink": "Copy link",
       "disabled": "Disabled",
