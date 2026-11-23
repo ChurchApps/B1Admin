@@ -41,6 +41,7 @@ import {
   Assignment as CustomFieldIcon
 } from "@mui/icons-material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
+import { getGroupCategories, getGroupIdsForCategory } from "./listRules";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
 import { AppDatePicker } from "../../components";
 
@@ -361,6 +362,16 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         operators: ["in", "notIn"],
         options: groups.map((g) => ({ value: g.id || "", label: g.name || "" }))
       });
+      const categoryOptions = getGroupCategories(groups).map((c) => ({ value: c, label: c }));
+      if (categoryOptions.length > 0) {
+        categories.membership.push({
+          key: "groupCategory",
+          label: Locale.label("people.editCondition.groupCategory"),
+          type: "select",
+          operators: ["in", "notIn"],
+          options: categoryOptions
+        });
+      }
     }
 
     // Add donations if permissions allow
@@ -495,7 +506,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   };
 
   // Auto-search on filter change; report spec for "Save as List" offer.
-  // customFieldQuestions is a dep so a seeded customField_ filter re-runs once its questions load.
+  // customFieldQuestions/groups are deps so a seeded customField_/groupCategory filter re-runs once its options load.
   useEffect(() => {
     const seq = ++searchSeqRef.current;
     if (debounceTimerRef.current) {
@@ -517,7 +528,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         props.resetSearchResults?.();
       }
     }
-  }, [activeFilters, customFieldQuestions]);
+  }, [activeFilters, customFieldQuestions, groups]);
 
   const handleComplexFilterSave = () => {
     if (!complexFilterDialog.field || !complexConfig) return;
@@ -564,6 +575,17 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           if (filter.operator === "notIn") peopleIds.forEach((pid) => result.push({ field: "id", operator: "notEqual", value: pid }));
           else result.push({ field: "id", operator: "in", value: peopleIds.join(",") });
           break;
+        case "groupCategory": {
+          const catGroupIds = getGroupIdsForCategory(groups, filter.value);
+          let catPeopleIds: string[] = [];
+          if (catGroupIds.length > 0) {
+            const catMembers: GroupMemberInterface[] = await ApiHelper.get(`/groupmembers?groupIds=${catGroupIds.join(",")}`, "MembershipApi");
+            catPeopleIds = ArrayHelper.getUniqueValues(catMembers, "personId").filter((id: string) => !!id);
+          }
+          if (filter.operator === "notIn") catPeopleIds.forEach((pid) => result.push({ field: "id", operator: "notEqual", value: pid }));
+          else result.push({ field: "id", operator: "in", value: catPeopleIds.join(",") });
+          break;
+        }
         case "memberDonations":
           const fundVal = JSON.parse(filter.value);
           let memberDonations: FundDonationInterface[];
@@ -674,7 +696,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       }
     }
     return result;
-  }, [activeFilters, customFieldQuestions]);
+  }, [activeFilters, customFieldQuestions, groups]);
 
   const handleAdvancedSearch = useCallback(async () => {
     const seq = ++searchSeqRef.current;
@@ -870,7 +892,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     const categories = new Set<string>();
     Object.keys(props.initialFilters).forEach((key) => {
       if (key.startsWith("customField_") || key.startsWith("personField_")) categories.add("customFields");
-      else if (key === "groupMember") categories.add("membership");
+      else if (key === "groupMember" || key === "groupCategory") categories.add("membership");
       else if (key === "memberDonations" || key === "memberAttendance") categories.add("activity");
     });
     categories.forEach((c) => loadCategoryData(c));

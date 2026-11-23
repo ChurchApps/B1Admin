@@ -267,7 +267,9 @@ export const PeoplePage = memo(() => {
     setSaveListDialog((d) => ({ ...d, saving: true }));
     try {
       // Rules tree is canonical server query; conditions blob allows re-seeding for edit.
-      const rules = buildRulesFromCriteria(saveableCriteria, saveListDialog.match);
+      const needsGroups = !Array.isArray(saveableCriteria) && Object.values(saveableCriteria).some((f) => f.field === "groupCategory");
+      const groups = needsGroups ? await ApiHelper.get("/groups", "MembershipApi") : [];
+      const rules = buildRulesFromCriteria(saveableCriteria, saveListDialog.match, groups);
       await ApiHelper.post("/lists", [
         {
           name: saveListDialog.name.trim(),

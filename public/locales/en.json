@@ -2184,6 +2184,7 @@
       "endW": "ends with",
       "field": "Field",
       "from": "From",
+      "groupCategory": "Group Category",
       "groupMem": "Group Member",
       "hasDon": "has donated (in general)",
       "isAnyOf": "is any of",
