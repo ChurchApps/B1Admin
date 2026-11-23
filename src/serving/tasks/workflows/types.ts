@@ -14,6 +14,8 @@ declare module "@churchapps/helpers" {
   interface WorkflowBoardInterface {
     actions?: WorkflowStepActionInterface[];
   }
+
+  interface WorkflowStepInterface { instructions?: string | null }
 }
 
 export const ACTION_TYPES = [

@@ -30,6 +30,7 @@ interface Props {
 
 export const WorkflowCardDrawer = (props: Props) => {
   const { card, steps } = props;
+  const instructions = steps.find((s) => s.id === card.stepId)?.instructions;
   const outcomes = (props.routes || []).filter((r) => r.stepId === card.stepId && r.trigger === "onComplete");
   const history: { date?: string; message?: string }[] = (() => {
     if (!card.data) return [];
@@ -109,6 +110,11 @@ export const WorkflowCardDrawer = (props: Props) => {
           <Typography variant="h6" sx={{ fontWeight: 600 }}>{card.title || card.associatedWithLabel}</Typography>
           <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={props.onClose} />
         </Stack>
+        {instructions && (
+          <Box sx={{ my: 1, p: 1.5, borderRadius: 1, bgcolor: "action.hover", whiteSpace: "pre-wrap" }} data-testid="card-step-instructions">
+            <Typography variant="body2">{instructions}</Typography>
+          </Box>
+        )}
         {props.showBoardLink && card.workflowId && canViewWorkflows() && (
           <Link component={RouterLink} to={"/serving/tasks/workflows/" + card.workflowId} variant="body2" data-testid="card-open-board">{Locale.label("tasks.workflowCard.openBoard")}</Link>
         )}
