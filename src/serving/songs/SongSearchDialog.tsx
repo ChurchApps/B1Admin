@@ -11,7 +11,7 @@ import { CommonsApi, getWorshipCommonsOrigin, type CommonsSongSummary } from "..
 // Sunday-ready WorshipCommons songs (GET /commons/songs?sundayReady=true&q=). Tolerant of the API not having the filter yet: any failure → no section.
 const searchWorshipCommons = async (q: string): Promise<CommonsSongSummary[]> => {
   try {
-    const data = await CommonsApi.get(`/songs?sundayReady=true&q=${encodeURIComponent(q)}`);
+    const data = await CommonsApi.get<CommonsSongSummary[] | { rows?: CommonsSongSummary[] } | null>(`/songs?sundayReady=true&q=${encodeURIComponent(q)}`);
     const rows: CommonsSongSummary[] = Array.isArray(data) ? data : Array.isArray(data?.rows) ? data.rows : [];
     return rows.filter((r) => r && r.id && r.title);
   } catch {

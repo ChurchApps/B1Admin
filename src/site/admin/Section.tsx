@@ -443,7 +443,7 @@ export const Section: React.FC<Props> = props => {
 
 
   const getSectionAnchor = () => {
-    if (props.section.answers?.sectionId) return <a id={props.section.answers?.sectionId} className="sectionAnchor"></a>;
+    if (props.section.answers?.sectionId) return <a id={props.section.answers?.sectionId as string} className="sectionAnchor"></a>;
     else return <></>;
   };
 

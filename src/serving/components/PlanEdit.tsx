@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, Controller, useFormState, type FieldValues } from "react-hook-form";
+import { useForm, Controller, useFormState } from "react-hook-form";
 import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, FormHelperText } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -19,8 +19,7 @@ interface Props {
   updatedFunction: () => void;
 }
 
-// Extends FieldValues so the form control fits CampusSelect's Control<any> prop.
-interface PlanFormValues extends FieldValues {
+interface PlanFormValues {
   name: string;
   serviceDate: string;
   campusId: string;
