@@ -6,7 +6,7 @@ import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpe
 import { Locale, PersonHelper, DateHelper, SmallButton } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../components/PrintChurchHeader";
-import { buildHouseholds, firstName } from "./buildHouseholds";
+import { buildHouseholds, firstName, memberLabel } from "./buildHouseholds";
 
 const EXCLUDED_STATUSES = new Set(["Inactive", "Visitor", "Deceased"]);
 
@@ -425,7 +425,7 @@ export const PrintDirectoryPage = () => {
                       const birthdays = options.birthdays ? memberBirthdays(h.members) : "";
                       const anniversaries = options.anniversaries ? memberAnniversaries(h.members) : "";
                       // Without photos there are no captions, so name the members unless the title already does.
-                      const names = options.photos ? [] : h.members.map(firstName).filter(Boolean);
+                      const names = options.photos ? [] : h.members.map((m) => memberLabel(m, h.surname)).filter(Boolean);
                       const showNames = names.length > 0 && !names.every((n) => h.displayName.includes(n));
 
                       return (
@@ -452,7 +452,7 @@ export const PrintDirectoryPage = () => {
                                       e.currentTarget.src = "/images/sample-profile.png";
                                     }}
                                   />
-                                  <div className="member-photo-name">{firstName(m)}</div>
+                                  <div className="member-photo-name">{memberLabel(m, h.surname)}</div>
                                 </div>
                               ))}
                             </div>

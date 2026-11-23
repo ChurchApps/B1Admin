@@ -7,6 +7,7 @@ export interface DirectoryHousehold {
   sortName: string;
   letter: string;
   displayName: string;
+  surname: string;
   address1?: string;
   address2?: string;
   cityStateZip?: string;
@@ -27,6 +28,12 @@ export const sortHouseholdMembers = (list: PersonInterface[]) => [...list].sort(
   || (a.name?.display || "").localeCompare(b.name?.display || ""));
 
 export const firstName = (p: PersonInterface) => p.name?.nick || p.name?.first || p.name?.display || "";
+
+// First name, plus the member's own surname when it is not the household's.
+export const memberLabel = (p: PersonInterface, surname: string) => {
+  const last = (p.name?.last || "").trim();
+  return last && last.toLowerCase() !== surname.toLowerCase() ? `${firstName(p)} ${last}` : firstName(p);
+};
 
 // One line per distinct value in member order; a value more than one member has prints once without a name.
 const contactLines = (members: PersonInterface[], values: (p: PersonInterface) => (string | undefined)[], keyOf: (v: string) => string): ContactLine[] => {
@@ -66,7 +73,7 @@ export const buildHouseholds = (people: PersonInterface[], householdNameById: Ma
     let displayName: string;
     if (members.length === 1) {
       displayName = primary.name?.display || `${firstName(primary)} ${lastName}`.trim();
-    } else if (members.length === 2 && lastName) {
+    } else if (members.length === 2 && lastName && sorted.every((m) => m.householdRole !== "Child")) {
       displayName = `${firstName(sorted[0])} & ${firstName(sorted[1])} ${lastName}`;
     } else if (lastName) {
       displayName = `The ${lastName} Family`;
@@ -88,6 +95,7 @@ export const buildHouseholds = (people: PersonInterface[], householdNameById: Ma
       sortName: (lastName || displayName).toLowerCase(),
       letter,
       displayName,
+      surname: lastName,
       address1: ci.address1,
       address2: ci.address2,
       cityStateZip: cityStateZip.trim() || undefined,
