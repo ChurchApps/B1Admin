@@ -64,6 +64,7 @@ export const PersonEdit = memo((props: Props) => {
   const [redirect, setRedirect] = useState("");
   const [showUpdateAddressModal, setShowUpdateAddressModal] = useState(false);
   const [modalText, setModalText] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
   const [members, setMembers] = useState<PersonInterface[] | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customFields, setCustomFields] = useState<PersonFieldInterface[]>([]);
@@ -196,6 +197,11 @@ export const PersonEdit = memo((props: Props) => {
     }
   }, []);
 
+  const getHouseholdChanges = useCallback((p: PersonInterface) => ({
+    address: PersonHelper.compareAddress(props.person.contactInfo, p.contactInfo),
+    homePhone: !!p.contactInfo?.homePhone && p.contactInfo.homePhone !== props.person.contactInfo?.homePhone
+  }), [props.person]);
+
   const onValid = useCallback(async (values: PersonFormValues) => {
     setIsSubmitting(true);
     setSaveErrors([]);
@@ -209,16 +215,21 @@ export const PersonEdit = memo((props: Props) => {
       return;
     }
 
-    if (members && members.length > 1 && PersonHelper.compareAddress(props.person.contactInfo, p.contactInfo)) {
+    const changes = getHouseholdChanges(p);
+    if (members && members.length > 1 && (changes.address || changes.homePhone)) {
+      const updates: string[] = [];
+      if (changes.address) updates.push(`${Locale.label("people.personEdit.upAddress")} ${PersonHelper.addressToString(p.contactInfo)}`);
+      if (changes.homePhone) updates.push(`${Locale.label(changes.address ? "people.personEdit.andHomePhone" : "people.personEdit.upHomePhone")} ${p.contactInfo.homePhone}`);
+      setModalTitle(!changes.homePhone ? "" : Locale.label(changes.address ? "people.updateHouseHold.updateAddressAndPhone" : "people.updateHouseHold.updateHomePhone"));
       setModalText(
-        `${Locale.label("people.personEdit.upAddress")} ${PersonHelper.addressToString(p.contactInfo)} ${Locale.label("people.personEdit.for")} ${p.name.display}.  ${Locale.label("people.personEdit.applyQuestion")} ${p.name.last} ${Locale.label("people.personEdit.family")}?`
+        `${updates.join(" ")} ${Locale.label("people.personEdit.for")} ${p.name.display}.  ${Locale.label("people.personEdit.applyQuestion")} ${p.name.last} ${Locale.label("people.personEdit.family")}?`
       );
       setShowUpdateAddressModal(true);
       setIsSubmitting(false);
       return;
     }
     await updatePerson(p);
-  }, [props.person, members, context, updatePerson, buildPerson, checkDuplicates]);
+  }, [members, updatePerson, buildPerson, checkDuplicates, getHouseholdChanges]);
 
   const handleUseExisting = useCallback((existing: PersonInterface) => {
     setDuplicates(null);
@@ -252,12 +263,14 @@ export const PersonEdit = memo((props: Props) => {
     setShowUpdateAddressModal(false);
     setIsSubmitting(true);
     const p = buildPerson(getValues());
+    const changes = getHouseholdChanges(p);
     await Promise.all((members || []).filter((member) => member.id !== p.id).map(async (member) => {
-      const updated = { ...member, contactInfo: PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo) };
-      try { await ApiHelper.post("/people", [updated], "MembershipApi"); } catch (error) { console.log(`error in updating ${member.name?.display}'s address`, error); }
+      let contactInfo = changes.address ? PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo) : { ...member.contactInfo };
+      if (changes.homePhone) contactInfo = { ...contactInfo, homePhone: p.contactInfo.homePhone };
+      try { await ApiHelper.post("/people", [{ ...member, contactInfo }], "MembershipApi"); } catch (error) { console.log(`error in updating ${member.name?.display}'s contact info`, error); }
     }));
     await updatePerson(p);
-  }, [members, getValues, buildPerson, updatePerson]);
+  }, [members, getValues, buildPerson, updatePerson, getHouseholdChanges]);
 
   const handleNo = useCallback(() => {
     setShowUpdateAddressModal(false);
@@ -277,7 +290,7 @@ export const PersonEdit = memo((props: Props) => {
           onClose={() => { setDuplicates(null); setPendingPerson(null); }}
         />
       )}
-      <UpdateHouseHold show={showUpdateAddressModal} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
+      <UpdateHouseHold show={showUpdateAddressModal} title={modalTitle} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
       <FormCard id={props.id} icon="person" title={Locale.label("people.personEdit.persDet")} onCancel={props.updatedFunction} onDelete={handleDelete} onSave={handleSubmit(onValid)} isSubmitting={isSubmitting}
         headerActions={
           <Button id="mergeButton" size="small" onClick={props.showMergeSearch} data-testid="merge-person-button" aria-label={Locale.label("people.personEdit.mergePersonAria")}>

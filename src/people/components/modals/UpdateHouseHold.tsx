@@ -8,11 +8,12 @@ interface Props {
   handleNo: () => void;
   handleYes: () => void;
   text: string;
+  title?: string;
 }
 
 export const UpdateHouseHold: React.FC<Props> = (props) => (
   <Dialog open={props.show} aria-labelledby="contained-modal-title-vcenter" data-cy="update-household-modal">
-    <DialogTitle>{Locale.label("people.updateHouseHold.update")}</DialogTitle>
+    <DialogTitle>{props.title || Locale.label("people.updateHouseHold.update")}</DialogTitle>
     <DialogContent>
       <p>{props.text}</p>
     </DialogContent>

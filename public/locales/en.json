@@ -2220,6 +2220,7 @@
       "first": "First Name",
       "firstName": "First Name",
       "gender": "Gender",
+      "grade": "Grade",
       "householdId": "Household Id",
       "id": "Id",
       "last": "Last Name",
@@ -2234,6 +2235,7 @@
       "phone": "Home Phone",
       "photo": "Photo",
       "photoUpdated": "Photo Updated",
+      "school": "School",
       "state": "State/Province",
       "workPhone": "Work Phone"
     },
@@ -2398,6 +2400,7 @@
       "sendTextMessage": "Send text message"
     },
     "personEdit": {
+      "andHomePhone": "and the home phone to",
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot delete your own person record.",
       "confirmMsg": "Are you sure you wish to permanently delete this person record?",
@@ -2415,6 +2418,7 @@
       "noCampus": "No Campus",
       "persDet": "Personal Details",
       "upAddress": "You updated the address to",
+      "upHomePhone": "You updated the home phone to",
       "valEmail": "Please enter a valid email address."
     },
     "personForm": {
@@ -2509,7 +2513,9 @@
       "trusted": "Trusted"
     },
     "updateHouseHold": {
-      "update": "Update Address"
+      "update": "Update Address",
+      "updateAddressAndPhone": "Update Address and Home Phone",
+      "updateHomePhone": "Update Home Phone"
     }
   },
   "person": {
