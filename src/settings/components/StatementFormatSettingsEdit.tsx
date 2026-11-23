@@ -9,10 +9,9 @@ interface Props {
   saveRef: React.Ref<() => Promise<void>>;
 }
 
-type AnyRecord = Record<string, any>;
-
 const KEYS = ["statementFormat", "statementRegistrationNumber", "statementOrgAddress", "statementSignatory", "statementCityOfIssue", "memberGivingYears", "givingNote"] as const;
-const EMPTY: AnyRecord = Object.fromEntries(KEYS.map((key) => [key, ""]));
+type StatementFormValues = Record<(typeof KEYS)[number], string>;
+const EMPTY = Object.fromEntries(KEYS.map((key) => [key, ""])) as StatementFormValues;
 
 const registrationLabelKey = (format: string) => {
   switch (format) {
@@ -27,7 +26,7 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [existing, setExisting] = React.useState<Record<string, GenericSettingInterface>>({});
 
-  const { register, reset, control, watch, getValues } = useForm<AnyRecord>({ defaultValues: EMPTY });
+  const { register, reset, control, watch, getValues } = useForm<StatementFormValues>({ defaultValues: EMPTY });
   const format = watch("statementFormat");
   const memberYears = watch("memberGivingYears");
   const currentYear = new Date().getFullYear();
@@ -37,7 +36,7 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
   const loadData = async () => {
     const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
     const found: Record<string, GenericSettingInterface> = {};
-    const next: AnyRecord = { ...EMPTY };
+    const next: StatementFormValues = { ...EMPTY };
     KEYS.forEach((key) => {
       const setting = allSettings.find((s) => s.keyName === key);
       if (setting) {

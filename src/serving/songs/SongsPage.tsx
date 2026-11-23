@@ -10,6 +10,9 @@ import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetai
 import { useQuery } from "@tanstack/react-query";
 import { useConfirmDelete } from "../../hooks";
 
+// /songDetails rows join in the parent song, so each one carries its songId.
+type SongListRow = SongDetailInterface & { id: string; songId: string };
+
 export const SongsPage = memo(() => {
   const [showSearch, setShowSearch] = React.useState(false);
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
@@ -22,7 +25,7 @@ export const SongsPage = memo(() => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const songs = useQuery<{ songDetails: SongDetailInterface[], count: number }>({
+  const songs = useQuery<{ songDetails: SongListRow[], count: number }>({
     queryKey: [`/songDetails?limit=${rowsPerPage}&offset=${page * rowsPerPage}&search=${encodeURIComponent(searchFilter)}`, "ContentApi"],
     placeholderData: { songDetails: [], count: 0 }
   });
@@ -116,7 +119,7 @@ export const SongsPage = memo(() => {
     // Dedupe by songId: /songDetails join produces one row per arrangement.
     const seen = new Set<string>();
     const unique = songList.filter((song) => {
-      const id = (song as any).songId || song.id;
+      const id = song.songId || song.id;
       if (seen.has(id)) return false;
       seen.add(id);
       return true;
@@ -125,7 +128,7 @@ export const SongsPage = memo(() => {
   }, [songs.data?.songDetails]);
 
   // Select all / deselect all is scoped to the songs on the current page (same as the People list and plan sections).
-  const visibleSongIds = useMemo(() => filteredSongs?.map((song) => (song as any).songId || song.id) ?? [], [filteredSongs]);
+  const visibleSongIds = useMemo(() => filteredSongs?.map((song) => song.songId || song.id) ?? [], [filteredSongs]);
   const visibleSelectedCount = useMemo(() => visibleSongIds.filter((id) => selected.has(id)).length, [visibleSongIds, selected]);
   const allVisibleSelected = visibleSongIds.length > 0 && visibleSelectedCount === visibleSongIds.length;
 
@@ -183,7 +186,7 @@ export const SongsPage = memo(() => {
             </TableHead>
             <TableBody>
               {filteredSongs?.map((songDetail) => {
-                const songId = (songDetail as any).songId || songDetail.id;
+                const songId = songDetail.songId || songDetail.id;
                 return (
                   <TableRow key={songId}>
                     {canEdit && (
@@ -206,7 +209,7 @@ export const SongsPage = memo(() => {
                           <MusicIcon />
                         </Avatar>
                         <Box sx={{ minWidth: 0 }}>
-                          <Link component={RouterLink} to={`/serving/songs/${(songDetail as any).songId}`} underline="hover" sx={{ fontWeight: 600 }}>
+                          <Link component={RouterLink} to={`/serving/songs/${songDetail.songId}`} underline="hover" sx={{ fontWeight: 600 }}>
                             {songDetail.title}
                           </Link>
                           {(songDetail.artist || songDetail.seconds) && (
@@ -255,7 +258,7 @@ export const SongsPage = memo(() => {
 
   if (redirect) return <Navigate to={redirect} />;
 
-  const selectedNames = (filteredSongs || []).filter((sd) => selected.has((sd as any).songId || sd.id)).slice(0, 3).map((sd) => sd.title).join(", ");
+  const selectedNames = (filteredSongs || []).filter((sd) => selected.has(sd.songId || sd.id)).slice(0, 3).map((sd) => sd.title).join(", ");
 
   return (
     <>

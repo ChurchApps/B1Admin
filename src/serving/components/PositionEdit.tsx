@@ -5,7 +5,7 @@ import { type GroupInterface, type PositionInterface } from "@churchapps/helpers
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
-import ReactSelect from "react-select";
+import ReactSelect, { type CSSObjectWithLabel } from "react-select";
 
 interface Props {
   position: PositionInterface;
@@ -13,7 +13,13 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface PositionFormValues {
+  categoryName: string;
+  name: string;
+  count: number | string;
+  groupId: string;
+  description: string;
+}
 
 type OptionType = {
   value: string;
@@ -22,13 +28,13 @@ type OptionType = {
 
 // react-select renders outside the MUI theme, so it needs the theme css variables directly.
 const selectStyles = {
-  menuPortal: (base: AnyRecord) => ({ ...base, zIndex: 9999 }),
-  menu: (base: AnyRecord) => ({ ...base, zIndex: 9999, backgroundColor: "var(--bg-card)", border: "1px solid var(--border-main)" }),
-  control: (base: AnyRecord) => ({ ...base, backgroundColor: "var(--bg-card)", borderColor: "var(--border-main)" }),
-  singleValue: (base: AnyRecord) => ({ ...base, color: "var(--text-main)" }),
-  input: (base: AnyRecord) => ({ ...base, color: "var(--text-main)" }),
-  placeholder: (base: AnyRecord) => ({ ...base, color: "var(--text-muted)" }),
-  option: (base: AnyRecord, state: { isSelected: boolean; isFocused: boolean }) => ({
+  menuPortal: (base: CSSObjectWithLabel) => ({ ...base, zIndex: 9999 }),
+  menu: (base: CSSObjectWithLabel) => ({ ...base, zIndex: 9999, backgroundColor: "var(--bg-card)", border: "1px solid var(--border-main)" }),
+  control: (base: CSSObjectWithLabel) => ({ ...base, backgroundColor: "var(--bg-card)", borderColor: "var(--border-main)" }),
+  singleValue: (base: CSSObjectWithLabel) => ({ ...base, color: "var(--text-main)" }),
+  input: (base: CSSObjectWithLabel) => ({ ...base, color: "var(--text-main)" }),
+  placeholder: (base: CSSObjectWithLabel) => ({ ...base, color: "var(--text-muted)" }),
+  option: (base: CSSObjectWithLabel, state: { isSelected: boolean; isFocused: boolean }) => ({
     ...base,
     backgroundColor: state.isSelected ? "var(--c1)" : state.isFocused ? "var(--bg-sub)" : "transparent",
     color: state.isSelected ? "var(--b1-on-primary)" : "var(--text-main)"
@@ -44,7 +50,7 @@ export const PositionEdit = (props: Props) => {
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const { control, register, handleSubmit, setValue, watch } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, setValue, watch } = useForm<PositionFormValues>({
     defaultValues: {
       categoryName: props.position?.categoryName ?? "",
       name: props.position?.name ?? "",
@@ -55,7 +61,7 @@ export const PositionEdit = (props: Props) => {
   });
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
 
   const summaryErrors: string[] = React.useMemo(() => {
     const errs: string[] = [];
@@ -89,12 +95,12 @@ export const PositionEdit = (props: Props) => {
     ))
   ];
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: PositionFormValues) => {
     const p: PositionInterface = {
       ...props.position,
       categoryName: values.categoryName,
       name: values.name,
-      count: parseInt(values.count),
+      count: parseInt(String(values.count)),
       groupId: values.groupId,
       description: values.description,
       allowSelfSignup
@@ -108,7 +114,7 @@ export const PositionEdit = (props: Props) => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => setGroups(data));
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: GroupInterface[]) => setGroups(data));
   }, []);
 
   return (

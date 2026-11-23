@@ -1,6 +1,6 @@
 import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface } from "../../../helpers";
-import { type LinkInterface } from "@churchapps/helpers";
+import { type FileInterface, type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Button, Menu, MenuItem, Typography, Stack, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon, AudioFile as AudioFileIcon, Delete as DeleteIcon } from "@mui/icons-material";
@@ -13,6 +13,7 @@ import { LinkEdit } from "./LinkEdit";
 import { AudioFilesEdit } from "./AudioFilesEdit";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { useConfirmDelete } from "../../../hooks";
+import { type PraiseChartsArrangementProduct } from "../../types";
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -25,9 +26,9 @@ export const Keys = memo((props: Props) => {
   const [selectedKey, setSelectedKey] = React.useState<ArrangementKeyInterface | null>(null);
   const [editKey, setEditKey] = React.useState<ArrangementKeyInterface | null>(null);
   const [editLink, setEditLink] = React.useState<LinkInterface | null>(null);
-  const [products, setProducts] = React.useState<any[]>([]);
+  const [products, setProducts] = React.useState<PraiseChartsArrangementProduct[]>([]);
   const [links, setLinks] = React.useState<LinkInterface[]>([]);
-  const [audioFiles, setAudioFiles] = React.useState<any[]>([]);
+  const [audioFiles, setAudioFiles] = React.useState<FileInterface[]>([]);
   const [showImport, setShowImport] = React.useState(false);
   const [showAudioUpload, setShowAudioUpload] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
@@ -85,7 +86,7 @@ export const Keys = memo((props: Props) => {
 
   const loadLinks = useCallback(() => {
     if (selectedKey) {
-      ApiHelper.get("/links?category=arrangementKey_" + selectedKey.id, "ContentApi").then((data: any) => {
+      ApiHelper.get("/links?category=arrangementKey_" + selectedKey.id, "ContentApi").then((data: LinkInterface[]) => {
         setLinks(data);
       });
     }
@@ -94,7 +95,7 @@ export const Keys = memo((props: Props) => {
   // Scoped to the arrangement, not the selected key, so tracks persist across key tabs.
   const loadAudioFiles = useCallback(() => {
     if (props.arrangement?.id) {
-      ApiHelper.get("/files/arrangement/" + props.arrangement.id, "ContentApi").then((data: any) => {
+      ApiHelper.get("/files/arrangement/" + props.arrangement.id, "ContentApi").then((data: FileInterface[]) => {
         setAudioFiles(data || []);
       });
     }
@@ -114,7 +115,7 @@ export const Keys = memo((props: Props) => {
   //<DisplayBox headerText="Keys" headerIcon="music_note">
   //<PraiseChartsProducts praiseChartsId={songDetail?.praiseChartsId} />
 
-  const download = useCallback(async (product: any) => {
+  const download = useCallback(async (product: PraiseChartsArrangementProduct) => {
     if (!product?.download) return;
     const queryPart = product.download.split("?")[1];
     if (!queryPart) return;
@@ -198,7 +199,7 @@ export const Keys = memo((props: Props) => {
   }, [links, canEdit]);
 
   const handleDeleteAudio = useCallback(
-    async (file: any) => {
+    async (file: FileInterface) => {
       if (await confirm(Locale.label("songs.audio.deleteConfirm") || "Are you sure you want to delete this audio file?")) {
         await ApiHelper.delete("/files/" + file.id, "ContentApi");
         loadAudioFiles();

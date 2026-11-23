@@ -137,7 +137,7 @@ export const PrintPlan = () => {
       ApiHelper.get("/planItems/plan/" + params.id?.toString(), "DoingApi"),
       ApiHelper.get("/times/plan/" + params.id, "DoingApi"),
       // Per-service exclusions are optional; a failed lookup should not blank the printout.
-      ApiHelper.get("/planItemTimes/plan/" + params.id, "DoingApi").catch((error: any) => { console.error("Failed to load plan item exclusions:", error); return []; }),
+      ApiHelper.get("/planItemTimes/plan/" + params.id, "DoingApi").catch((error: unknown) => { console.error("Failed to load plan item exclusions:", error); return []; }),
       ApiHelper.get("/assignments/plan/" + params.id, "DoingApi")
     ];
 
@@ -147,8 +147,8 @@ export const PrintPlan = () => {
     setPositions(positionsData);
     setPlanItems(planItemsData);
 
-    const services = (timesData || []).filter((t: any) => (t.serviceTimeType ?? "service") === "service");
-    services.sort((a: any, b: any) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
+    const services = (timesData || []).filter((t: TimeInterface) => (t.serviceTimeType ?? "service") === "service");
+    services.sort((a: TimeInterface, b: TimeInterface) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
     setServiceTimes(services);
 
     setExclusions(exclusionsData || []);
@@ -364,7 +364,7 @@ export const PrintPlan = () => {
     return <tr style={Styles.inverseHeader}>{cells}</tr>;
   };
 
-  const Styles: any = {
+  const Styles: Record<string, React.CSSProperties> = {
     body: {
       padding: "20px",
       backgroundColor: "#FFF",

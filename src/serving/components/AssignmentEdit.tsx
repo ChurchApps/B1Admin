@@ -39,7 +39,7 @@ export const AssignmentEdit = (props: Props) => {
 
   const loadData = () => {
     if (!props.position?.groupId) return;
-    ApiHelper.get("/groupmembers?groupId=" + props.position.groupId, "MembershipApi").then((data: any) => {
+    ApiHelper.get("/groupmembers?groupId=" + props.position.groupId, "MembershipApi").then((data: GroupMemberInterface[]) => {
       setGroupMembers(data);
     });
   };

@@ -141,7 +141,7 @@ export const WorkflowStepColumn = (props: Props) => {
         </Box>
       )}
 
-      <DroppableWrapper accept="workflowCard" onDrop={(d: any) => props.onDropCard(d.data.id, step.id || "")}>
+      <DroppableWrapper accept="workflowCard" onDrop={(d: { data: TaskInterface & { id: string } }) => props.onDropCard(d.data.id, step.id || "")}>
         <Box sx={{ minHeight: 60 }}>
           {cards.map((card) => (
             <DraggableWrapper key={card.id} dndType="workflowCard" data={card} onDoubleClick={() => props.onOpenCard(card)}>

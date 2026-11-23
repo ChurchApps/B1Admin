@@ -62,7 +62,7 @@ export const RequestedChanges = (props: Props) => {
   const getRows = () => {
     const rows: JSX.Element[] = [];
     requestedChanges?.forEach((ch, i) => {
-      let val: any = ch.value;
+      let val: React.ReactNode = ch.value;
       if (ch.field === "photo") {
         val = (
           <Avatar

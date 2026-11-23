@@ -7,8 +7,9 @@ import { Grid, TextField, Typography, MenuItem } from "@mui/material";
 import { EditVerb, SettingsRow } from "./SettingsPage";
 import { SettingsPanel } from "./SettingsPanel";
 import { TIMEZONES } from "./CampusEdit";
+import { type ChurchInfoInterface } from "../types";
 
-type AnyRecord = Record<string, any>;
+type ChurchInfoFormValues = ChurchInfoInterface & { churchName: string };
 
 const DAY_LABELS = [
   () => Locale.label("common.days.sunday"),
@@ -22,7 +23,7 @@ const DAY_LABELS = [
 const dayLabel = (day: number) => DAY_LABELS[day]();
 
 interface Props {
-  church: ChurchInterface;
+  church: ChurchInfoInterface;
   onSaved: () => void;
 }
 
@@ -31,12 +32,12 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
   const [editing, setEditing] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
 
-  const { register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { ...church, churchName: church?.name || "" } });
-  const fe = formState.errors as any;
+  const { register, handleSubmit, reset, watch, formState } = useForm<ChurchInfoFormValues>({ defaultValues: { ...church, churchName: church?.name || "" } });
+  const fe = formState.errors;
 
   React.useEffect(() => { reset({ ...church, churchName: church?.name || "" }); }, [church, reset]);
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: ChurchInfoFormValues) => {
     setSaving(true);
     const { churchName, ...rest } = values;
     const updated: ChurchInterface = { ...church, ...rest, name: churchName };
@@ -86,7 +87,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
             <TextField fullWidth label={Locale.label("person.country")} id="country" {...register("country")} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth select label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} id="firstDayOfWeek" {...register("firstDayOfWeek", { valueAsNumber: true })} defaultValue={(church as any)?.firstDayOfWeek || 0}>
+            <TextField fullWidth select label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} id="firstDayOfWeek" {...register("firstDayOfWeek", { valueAsNumber: true })} defaultValue={church?.firstDayOfWeek || 0}>
               {DAY_LABELS.map((_, i) => <MenuItem key={i} value={i}>{dayLabel(i)}</MenuItem>)}
             </TextField>
           </Grid>
@@ -101,7 +102,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
     );
   }
 
-  const timeZone = (church as any)?.timeZone as string | undefined;
+  const timeZone = church?.timeZone;
   const address = [church?.address1, church?.address2, [church?.city, church?.state].filter(Boolean).join(", "), church?.zip, church?.country].filter(Boolean).join(" · ");
 
   return (
@@ -109,7 +110,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.churchName")} value={church?.name} />
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.subdom")} value={church?.subDomain ? `${church.subDomain}.b1.church` : ""} />
       <SettingsRow label={Locale.label("person.address")} value={address} />
-      <SettingsRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel((church as any)?.firstDayOfWeek || 0)} />
+      <SettingsRow label={Locale.label("settings.churchSettingsEdit.firstDayOfWeek") || "First Day of Week"} value={dayLabel(church?.firstDayOfWeek || 0)} />
       <SettingsRow label={Locale.label("settings.churchSettingsEdit.timeZone")} value={timeZone && <span data-testid="church-time-zone">{timeZone}</span>} />
     </SettingsPanel>
   );

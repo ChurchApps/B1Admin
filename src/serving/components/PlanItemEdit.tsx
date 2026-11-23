@@ -113,7 +113,7 @@ export const PlanItemEdit = (props: Props) => {
       }
     });
 
-    const ops: Promise<any>[] = [];
+    const ops: Promise<unknown>[] = [];
     if (toSave.length > 0) ops.push(ApiHelper.post("/planItemTimes", toSave, "DoingApi"));
     toDelete.forEach((e) => { if (e.id) ops.push(ApiHelper.delete("/planItemTimes/" + e.id, "DoingApi")); });
     await Promise.all(ops);
@@ -174,7 +174,7 @@ export const PlanItemEdit = (props: Props) => {
       setHasSearched(true);
       setSearchError("");
       ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi")
-        .then((data: any) => {
+        .then((data: SongDetailInterface[]) => {
           setSongs(data || []);
         })
         .catch(() => {
@@ -255,7 +255,7 @@ export const PlanItemEdit = (props: Props) => {
             <ListItem key={sd.id} sx={{ flexDirection: "column", alignItems: "flex-start" }}>
               <ListItemText primary={`${sd.title} - ${sd.artist}`} />
               <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 0.5 }}>
-                {keys.map((k: any) => (
+                {keys.map((k: SongDetailInterface) => (
                   <Chip
                     key={k.arrangementKeyId}
                     label={songKeyLabel(k)}

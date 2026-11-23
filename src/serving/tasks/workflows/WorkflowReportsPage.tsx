@@ -10,7 +10,7 @@ import { type WorkflowStepInterface } from "@churchapps/helpers";
 
 interface ReportData {
   stepCounts: { stepId: string; count: number }[];
-  overdue: any[];
+  overdue: unknown[];
   throughput: { day: string; count: number }[];
 }
 
@@ -24,13 +24,13 @@ export const WorkflowReportsPage = () => {
   const stepName = (id: string) => steps.data?.find((s) => s.id === id)?.name || Locale.label("tasks.workflowBoard.unassigned");
 
   const perStepData = () => {
-    const rows: any[] = [[Locale.label("tasks.workflowBoard.step"), Locale.label("tasks.workflowReports.perStep")]];
+    const rows: (string | number)[][] = [[Locale.label("tasks.workflowBoard.step"), Locale.label("tasks.workflowReports.perStep")]];
     (report.data?.stepCounts || []).forEach((sc) => rows.push([stepName(sc.stepId), Number(sc.count)]));
     return rows;
   };
 
   const throughputData = () => {
-    const rows: any[] = [[Locale.label("tasks.workflowReports.throughput"), Locale.label("tasks.workflowReports.throughput")]];
+    const rows: (string | number)[][] = [[Locale.label("tasks.workflowReports.throughput"), Locale.label("tasks.workflowReports.throughput")]];
     (report.data?.throughput || []).forEach((t) => rows.push([String(t.day), Number(t.count)]));
     return rows;
   };

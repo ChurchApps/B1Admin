@@ -21,8 +21,8 @@ export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
       await ApiHelper.post("/settings", [s], "MembershipApi");
       setError("");
       props.onSaveComplete?.(true);
-    } catch (e: any) {
-      setError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("common.saveError"));
       props.onSaveComplete?.(false);
     }
   };

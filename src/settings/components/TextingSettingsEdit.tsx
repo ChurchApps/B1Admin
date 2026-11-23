@@ -101,9 +101,9 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
       }
       setErrors([]);
       props.onSaveComplete?.(true);
-    } catch (error: any) {
+    } catch (error) {
       let message = Locale.label("settings.textingSettingsEdit.saveError");
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         try {
           const parsed = JSON.parse(error.message);
           message = parsed.message || error.message;

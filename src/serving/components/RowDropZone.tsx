@@ -1,12 +1,18 @@
 import React from "react";
-import { useDrop } from "react-dnd";
+import { useDrop, type DropTargetMonitor } from "react-dnd";
+import { type PlanItemInterface } from "../../helpers";
+
+/** The item DraggableWrapper hands to drop targets; a folded section carries its run of rows. */
+export interface PlanItemDragItem {
+  data: PlanItemInterface & { runItems?: PlanItemInterface[] };
+}
 
 interface Props {
   accept: string | string[];
   /** "reorder": drop above/below based on cursor half, shown as an insertion line.
    *  "into": whole child is one target (e.g. a section header = add to that section). */
   mode?: "reorder" | "into";
-  onDrop: (data: any, position: "before" | "after") => void;
+  onDrop: (data: PlanItemDragItem, position: "before" | "after") => void;
   children: React.ReactNode;
 }
 
@@ -26,12 +32,12 @@ export const RowDropZone: React.FC<Props> = ({ accept, mode = "reorder", onDrop,
     return y < rect.top + rect.height / 2 ? "before" : "after";
   };
 
-  const [{ isOver }, drop] = useDrop(() => ({
+  const [{ isOver }, drop] = useDrop<PlanItemDragItem, void, { isOver: boolean }>(() => ({
     accept,
-    hover: (_item: any, monitor: any) => {
+    hover: (_item: PlanItemDragItem, monitor: DropTargetMonitor<PlanItemDragItem>) => {
       if (mode === "reorder") setHoverHalf(getHalf(monitor));
     },
-    drop: (item: any, monitor: any) => {
+    drop: (item: PlanItemDragItem, monitor: DropTargetMonitor<PlanItemDragItem>) => {
       if (monitor.didDrop()) return;
       onDrop(item, mode === "reorder" ? getHalf(monitor) : "after");
     },

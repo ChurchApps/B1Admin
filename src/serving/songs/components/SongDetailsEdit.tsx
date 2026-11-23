@@ -13,26 +13,33 @@ interface Props {
   onCancel: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+// Inputs hold the date as an HTML5 date string and the numbers as typed.
+type SongDetailFormValues = Omit<SongDetailInterface, "releaseDate" | "bpm" | "seconds"> & { releaseDate: string; bpm?: number | string; seconds?: number | string };
 
-const buildDefaults = (sd: SongDetailInterface): AnyRecord => ({
+// The API takes null to clear these fields.
+type SongDetailSaveInterface = Omit<SongDetailInterface, "releaseDate" | "bpm" | "seconds"> & { releaseDate: Date | null; bpm: number | null; seconds: number | null };
+
+const buildDefaults = (sd: SongDetailInterface): SongDetailFormValues => ({
   ...sd,
   releaseDate: sd?.releaseDate ? DateHelper.formatHtml5Date(sd.releaseDate) : ""
 });
 
 export const SongDetailsEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset, control } = useForm<AnyRecord>({ defaultValues: buildDefaults(props.songDetail) });
+  const { register, handleSubmit, reset, control } = useForm<SongDetailFormValues>({ defaultValues: buildDefaults(props.songDetail) });
   useEffect(() => {
     reset(buildDefaults(props.songDetail));
   }, [props.songDetail, reset]);
 
-  const onValid = (values: AnyRecord) => {
-    const sd: SongDetailInterface = { ...props.songDetail, ...values };
-    (sd as any).releaseDate = values.releaseDate ? DateHelper.toDate(values.releaseDate) : null;
-    (sd as any).bpm = values.bpm !== "" && values.bpm != null ? Number(values.bpm) : null;
-    (sd as any).seconds = values.seconds !== "" && values.seconds != null ? Number(values.seconds) : null;
-    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: any) => {
+  const onValid = (values: SongDetailFormValues) => {
+    const sd: SongDetailSaveInterface = {
+      ...props.songDetail,
+      ...values,
+      releaseDate: values.releaseDate ? DateHelper.toDate(values.releaseDate) : null,
+      bpm: values.bpm !== "" && values.bpm != null ? Number(values.bpm) : null,
+      seconds: values.seconds !== "" && values.seconds != null ? Number(values.seconds) : null
+    };
+    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: SongDetailInterface[]) => {
       props.onSave(data[0]);
     });
   };

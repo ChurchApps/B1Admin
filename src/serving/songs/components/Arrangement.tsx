@@ -76,7 +76,7 @@ export const Arrangement = memo((props: Props) => {
   const importLyrics = useCallback(async () => {
     if (!songDetail?.praiseChartsId) return;
 
-    const data: any = await ApiHelper.get("/praiseCharts/raw/" + songDetail.praiseChartsId, "ContentApi");
+    const data: { details?: { lyrics?: string } } | null = await ApiHelper.get("/praiseCharts/raw/" + songDetail.praiseChartsId, "ContentApi");
     const lyrics = data?.details?.lyrics;
     if (!lyrics) {
       setCanImportLyrics(false);

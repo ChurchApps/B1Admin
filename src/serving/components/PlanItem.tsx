@@ -3,7 +3,7 @@ import { Alert, Menu, MenuItem, Snackbar } from "@mui/material";
 import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
-import { RowDropZone } from "./RowDropZone";
+import { RowDropZone, type PlanItemDragItem } from "./RowDropZone";
 import { type TimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
@@ -214,7 +214,7 @@ export const PlanItem = React.memo((props: Props) => {
     if (props.onChange) props.onChange();
   };
 
-  const handleDrop = async (data: any, sort: number) => {
+  const handleDrop = async (data: PlanItemDragItem, sort: number) => {
     const pi = { ...data.data } as PlanItemInterface & { runItems?: PlanItemInterface[] };
     // A folded section moves as a block: park the rest of its rows just after the first, then renumber once.
     const rest = (pi.runItems || []).slice(1).map((r, i) => ({ ...r, parentId: props.planItem.id, sort: sort + (i + 1) * 0.001 }));

@@ -12,12 +12,14 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface RoleFormValues {
+  roleName: string;
+}
 
 export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { roleName: "" } });
-  const e = formState.errors as any;
+  const { register, handleSubmit, reset, formState } = useForm<RoleFormValues>({ defaultValues: { roleName: "" } });
+  const e = formState.errors;
   const summaryErrors = useErrorSummary(formState.errors, ["roleName"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -34,7 +36,7 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
     }
   }, [roleId, roleQuery.data, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: RoleFormValues) => {
     const r = { ...roleQuery.data, name: values.roleName.trim() };
     ApiHelper.post("/roles", [r], "MembershipApi").then(() => updatedFunction());
   };

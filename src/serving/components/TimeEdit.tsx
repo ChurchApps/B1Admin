@@ -15,7 +15,12 @@ interface Props {
   onUpdate: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface TimeFormValues {
+  serviceTimeType: string;
+  displayName: string;
+  startTime: string;
+  endTime: string;
+}
 
 export const TimeEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -25,7 +30,7 @@ export const TimeEdit = (props: Props) => {
   const firstDayOfWeek = useFirstDayOfWeek();
   applyWeekStart(firstDayOfWeek);
 
-  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({
+  const { control, register, handleSubmit, reset } = useForm<TimeFormValues>({
     defaultValues: {
       serviceTimeType: props.time?.serviceTimeType ?? "service",
       displayName: props.time?.displayName ?? "",
@@ -35,7 +40,7 @@ export const TimeEdit = (props: Props) => {
   });
 
   const { errors } = useFormState({ control });
-  const e = errors as any;
+  const e = errors;
 
   const summaryErrors: string[] = React.useMemo(() => {
     const errs: string[] = [];
@@ -55,7 +60,7 @@ export const TimeEdit = (props: Props) => {
     setTeams(props.time?.teams ?? "");
   }, [props.time, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: TimeFormValues) => {
     const t: TimeInterface = {
       ...props.time,
       serviceTimeType: values.serviceTimeType,

@@ -12,20 +12,18 @@ interface Props {
   onCancel: () => void;
 }
 
-type AnyRecord = Record<string, any>;
-
 export const KeyEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { keySignature: "", shortDescription: "" } });
+  const { register, handleSubmit, reset } = useForm<ArrangementKeyInterface>({ defaultValues: { keySignature: "", shortDescription: "" } });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   useEffect(() => {
     if (props.arrangementKey) reset({ ...props.arrangementKey });
   }, [props.arrangementKey, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: ArrangementKeyInterface) => {
     const k: ArrangementKeyInterface = { ...props.arrangementKey, ...values };
-    ApiHelper.post("/arrangementKeys", [k], "ContentApi").then((data: any) => {
+    ApiHelper.post("/arrangementKeys", [k], "ContentApi").then((data: ArrangementKeyInterface[]) => {
       props.onSave(data[0]);
     });
   };

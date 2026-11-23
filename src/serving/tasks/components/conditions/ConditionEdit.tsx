@@ -37,7 +37,7 @@ export const ConditionEdit = (props: Props) => {
 
   const handleSave = async () => {
     if (validate()) {
-      ApiHelper.post("/conditions", [condition], "DoingApi").then((d: any) => {
+      ApiHelper.post("/conditions", [condition], "DoingApi").then((d: ConditionInterface[]) => {
         props.onSave(d[0]);
       });
     }

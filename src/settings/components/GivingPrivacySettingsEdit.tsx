@@ -35,8 +35,8 @@ export const GivingPrivacySettingsEdit: React.FC<Props> = (props) => {
       }
       setError("");
       props.onSaveComplete?.(true);
-    } catch (e: any) {
-      setError(e?.message || Locale.label("common.saveError"));
+    } catch (e) {
+      setError((e instanceof Error ? e.message : "") || Locale.label("common.saveError"));
       props.onSaveComplete?.(false);
     }
   };

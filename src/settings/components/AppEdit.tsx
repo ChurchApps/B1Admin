@@ -9,6 +9,7 @@ import { GalleryModal } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useConfirmDelete } from "../../hooks";
+import { type AppTabInterface } from "../types";
 
 interface PageInterface {
   id?: string;
@@ -18,11 +19,18 @@ interface PageInterface {
 }
 
 interface Props {
-  currentTab: LinkInterface;
+  currentTab: AppTabInterface;
   updatedFunction?: () => void;
 }
 
-type AnyRecord = Record<string, any>;
+interface AppTabFormValues {
+  text: string;
+  linkType: string;
+  linkData: string;
+  url: string;
+  visibility: string;
+  parentId: string;
+}
 
 export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () => {} }: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
@@ -37,7 +45,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   const [showPhotoGallery, setShowPhotoGallery] = useState<boolean>(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const { register, handleSubmit, reset, control, watch, setValue } = useForm<AnyRecord>({ defaultValues: { text: "", linkType: "", linkData: "", url: "", visibility: "everyone", parentId: "" } });
+  const { register, handleSubmit, reset, control, watch, setValue } = useForm<AppTabFormValues>({ defaultValues: { text: "", linkType: "", linkData: "", url: "", visibility: "everyone", parentId: "" } });
   const linkType = watch("linkType");
   const visibility = watch("visibility");
 
@@ -48,12 +56,12 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
         linkType: currentTabFromProps.linkType || "",
         linkData: currentTabFromProps.linkData || "",
         url: currentTabFromProps.url || "",
-        visibility: (currentTabFromProps as any).visibility || "everyone",
+        visibility: currentTabFromProps.visibility || "everyone",
         parentId: currentTabFromProps.parentId || ""
       });
       setIcon(currentTabFromProps.icon || "");
-      setPhoto((currentTabFromProps as any).photo || "");
-      setGroupIdsJson((currentTabFromProps as any).groupIds || "");
+      setPhoto(currentTabFromProps.photo || "");
+      setGroupIdsJson(currentTabFromProps.groupIds || "");
     }
   }, [currentTabFromProps, reset]);
 
@@ -74,13 +82,13 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
     if (children.length > 0) await ApiHelper.post("/links", children.map(c => ({ ...c, parentId: null })), "ContentApi");
   };
 
-  const onValid = async (values: AnyRecord) => {
+  const onValid = async (values: AppTabFormValues) => {
     setIsSaving(true);
     try {
-      const t: LinkInterface = { ...currentTabFromProps, text: values.text, linkType: values.linkType, linkData: values.linkData, url: values.url, icon };
-      (t as any).visibility = values.visibility;
-      (t as any).photo = photo;
-      (t as any).groupIds = values.visibility === "groups" ? (groupIdsJson || null) : null;
+      const t: AppTabInterface = { ...currentTabFromProps, text: values.text, linkType: values.linkType, linkData: values.linkData, url: values.url, icon };
+      t.visibility = values.visibility;
+      t.photo = photo;
+      t.groupIds = values.visibility === "groups" ? (groupIdsJson || null) : null;
       if (t.linkType !== "url" && t.linkType !== "page") t.url = "";
       const parentId = t.linkType === "folder" ? "" : (values.parentId || "");
       t.parentId = parentId || null;

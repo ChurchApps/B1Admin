@@ -146,10 +146,10 @@ export const Assignment = (props: Props) => {
       });
     }
 
-    ApiHelper.get("/times/plan/" + props.plan?.id, "DoingApi").then((data: any) => {
+    ApiHelper.get("/times/plan/" + props.plan?.id, "DoingApi").then((data: TimeInterface[]) => {
       setTimes(data);
     });
-    ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data: any) => {
+    ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data: BlockoutDateInterface[]) => {
       setBlockoutDates(data);
     });
     const peopleIds = ArrayHelper.getUniqueValues(d, "personId");

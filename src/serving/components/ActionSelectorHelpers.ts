@@ -1,8 +1,8 @@
-import { type Instructions, type IProvider } from "@churchapps/content-providers";
+import { type ContentProviderAuthData, type Instructions, type IProvider } from "@churchapps/content-providers";
 
 export const generatePath = (indices: number[]): string => indices.join(".");
 
-export async function getProviderInstructions(provider: IProvider, path: string, auth?: any): Promise<Instructions | null> {
+export async function getProviderInstructions(provider: IProvider, path: string, auth?: ContentProviderAuthData | null): Promise<Instructions | null> {
   const capabilities = provider.capabilities;
   if (capabilities.instructions && provider.getInstructions) {
     return provider.getInstructions(path, auth);

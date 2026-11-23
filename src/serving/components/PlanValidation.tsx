@@ -6,6 +6,7 @@ import { ApiHelper, ArrayHelper, CommonEnvironmentHelper, DateHelper, Locale, ty
 import { type AssignmentInterface, type BlockoutDateInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { type PlanInterface, type SchedulingPreferenceInterface } from "../../helpers";
 import { useConfirmDelete } from "../../hooks";
+import { type CreateNotificationRequest } from "../types";
 
 interface Props {
   plan: PlanInterface;
@@ -242,7 +243,7 @@ export const PlanValidation = (props: Props) => {
     }
     ApiHelper.get("/schedulingPreferences/people?ids=" + personIds.join(","), "DoingApi").then((data: SchedulingPreferenceInterface[]) => setPreferences(data || []));
     if (props.plan?.serviceDate) {
-      ApiHelper.get("/assignments/monthCounts?date=" + new Date(props.plan.serviceDate).toISOString().split("T")[0], "DoingApi").then((data: any[]) => setMonthCounts(data || []));
+      ApiHelper.get("/assignments/monthCounts?date=" + new Date(props.plan.serviceDate).toISOString().split("T")[0], "DoingApi").then((data: { personId: string; count: number }[]) => setMonthCounts(data || []));
     }
   };
 
@@ -258,13 +259,13 @@ export const PlanValidation = (props: Props) => {
       const data = await ApiHelper.get(`/times/all`, "DoingApi");
       if (!data?.length) clearExternal();
       else {
-        let filteredTimes: any[] = [];
-        let timeConflicts: any[] = [];
+        let filteredTimes: TimeInterface[] = [];
+        let timeConflicts: { time: TimeInterface; overlapingTimes: TimeInterface[] }[] = [];
         for (const t of props.times) {
           const overlapingTimes = data.filter((d: TimeInterface) => new Date(d.startTime || 0) < new Date(t.endTime || 0) && new Date(d.endTime || 0) > new Date(t.startTime || 0));
           const removedcurrentPlan = overlapingTimes.filter((ot: TimeInterface) => ot.planId !== props.plan.id);
           // ponytail: dedupe across loop iterations before accumulating
-          filteredTimes = [...filteredTimes, ...removedcurrentPlan.filter((c: any) => !filteredTimes.includes(c))];
+          filteredTimes = [...filteredTimes, ...removedcurrentPlan.filter((c: TimeInterface) => !filteredTimes.includes(c))];
           timeConflicts = [...timeConflicts, { time: t, overlapingTimes: [...removedcurrentPlan] }];
         }
         setPlanTimeConflicts(timeConflicts);
@@ -328,11 +329,11 @@ export const PlanValidation = (props: Props) => {
       return;
     }
     const pending = getPendingNotifications();
-    const promises: Promise<any>[] = [];
+    const promises: Promise<unknown>[] = [];
     pending.forEach((a) => {
       const position: PositionInterface | null = ArrayHelper.getOne(props.positions, "id", a.positionId);
       a.notified = new Date();
-      const data: any = {
+      const data: CreateNotificationRequest = {
         peopleIds: [a.personId],
         contentType: "assignment",
         contentId: props.plan.id,
