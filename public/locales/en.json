@@ -2145,6 +2145,23 @@
       "title": "People",
       "viewAs": "View as"
     },
+    "documents": {
+      "addLink": "Add link",
+      "added": "Added",
+      "confirmDelete": "Delete {name}? This can't be undone.",
+      "download": "Download",
+      "empty": "No documents yet.",
+      "invalidUrl": "Enter a full web address starting with http:// or https://",
+      "link": "Link",
+      "linkText": "Name",
+      "linkUrl": "Web address",
+      "name": "Name",
+      "open": "Open",
+      "size": "Size",
+      "storage": "{used} of {max} used",
+      "title": "Documents",
+      "upload": "Upload"
+    },
     "duplicateDialog": {
       "createAnyway": "Create Anyway",
       "matchBirthDate": "Birthdate",
