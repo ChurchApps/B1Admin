@@ -6502,6 +6502,7 @@
       "field": "Field",
       "newProfile": "New Profile",
       "requestedChanges": "Requested Changes",
+      "submittedByFor": "Submitted by {requester} for {person}",
       "value": "Value"
     },
     "selectGroup": {

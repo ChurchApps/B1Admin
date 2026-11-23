@@ -46,6 +46,8 @@ export const RequestedChanges = (props: Props) => {
     }
   }, [props.task?.data]);
   const [applying, setApplying] = React.useState(false);
+  // A household adult can request changes for a child, so the requester is not always the person being changed.
+  const submittedForSomeoneElse = props.task.createdByType === "person" && !!props.task.createdById && props.task.createdById !== props.task.associatedWithId;
   const navigate = useNavigate();
 
   const getFieldIcon = (field: string) => {
@@ -185,6 +187,14 @@ export const RequestedChanges = (props: Props) => {
             </Button>
           )}
         </Stack>
+
+        {submittedForSomeoneElse && (
+          <Typography variant="body2" color="text.secondary" data-testid="requested-changes-submitted-by">
+            {Locale.label("tasks.requestedChanges.submittedByFor", "Submitted by {requester} for {person}")
+              .replace("{requester}", props.task.createdByLabel || "")
+              .replace("{person}", props.task.associatedWithLabel || "")}
+          </Typography>
+        )}
 
         <Box sx={tableScrollSx} role="region" aria-label={Locale.label("tasks.requestedChanges.requestedChanges")} tabIndex={0}>
           <Table>
