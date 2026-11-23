@@ -7,6 +7,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { GalleryModal } from "../../components/gallery";
 import { type ConflictInterface, type EventBookingInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 import { EventReminderEdit, type EventReminderEditRef } from "./EventReminderEdit";
+import { categorizedOptions } from "./categoryGroups";
 import { useConfirmDelete } from "../../hooks";
 import { EditRecurringModal, type RecurringEditType } from "./EditRecurringModal";
 
@@ -435,7 +436,7 @@ export function EventModal(props: Props) {
                 SelectProps={{ multiple: true, renderValue: (selected) => rooms.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-rooms-select"
               >
-                {pickableRooms.map((r) => (
+                {categorizedOptions(pickableRooms, (r) => (
                   <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
                     <ListItemText
@@ -456,7 +457,7 @@ export function EventModal(props: Props) {
                 SelectProps={{ multiple: true, renderValue: (selected) => resources.filter((r) => (selected as (string | undefined)[]).includes(r.id)).map((r) => r.name).join(", ") }}
                 data-testid="new-event-resources-select"
               >
-                {pickableResources.map((r) => (
+                {categorizedOptions(pickableResources, (r) => (
                   <MenuItem key={r.id} value={r.id} sx={{ whiteSpace: "normal" }}>
                     <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
                     <ListItemText primary={r.name} secondary={r.description || undefined} />
