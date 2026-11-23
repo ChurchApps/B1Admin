@@ -11,6 +11,7 @@ import { useCampuses } from "../../hooks/useCampuses";
 import { PrintStyles } from "../../components/PrintStyles";
 import { PrintChurchHeader } from "../../components/PrintChurchHeader";
 import UserContext from "../../UserContext";
+import { type CheckinDetails, visibleCheckinColumns } from "../../attendance/checkinDetails";
 
 interface Props {
   personId: string;
@@ -21,13 +22,8 @@ interface Props {
 
 const Dash = <Typography component="span" variant="body2" color="text.disabled">—</Typography>;
 
-function formatCheckinTime(record: AttendanceRecordInterface) {
-  const raw = (record as AttendanceRecordInterface & { checkinTime?: Date | string | null }).checkinTime;
-  if (!raw) return "";
-  const d = raw instanceof Date ? raw : new Date(raw);
-  if (isNaN(d.getTime())) return "";
-  return DateHelper.prettyTime(d);
-}
+// checkoutTime and checkedOutBy are not on the shared interface yet.
+type AttendanceRecord = AttendanceRecordInterface & CheckinDetails;
 
 export const PersonAttendance: React.FC<Props> = memo((props) => {
   const [serviceFilter, setServiceFilter] = useState("");
@@ -36,7 +32,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
   // Campuses are mastered in the membership module; resolve the campus name by id.
   const campuses = useCampuses();
   const churchName = useContext(UserContext)?.userChurch?.church?.name || "";
-  const attendanceRecords = useQuery<AttendanceRecordInterface[]>({
+  const attendanceRecords = useQuery<AttendanceRecord[]>({
     queryKey: ["/attendancerecords?personId=" + props.personId, "AttendanceApi"],
     enabled: !UniqueIdHelper.isMissing(props.personId),
     placeholderData: []
@@ -86,6 +82,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
     const hasService = records.some(r => r.service?.name);
     const hasTime = records.some(r => r.serviceTime?.name);
     const hasGroup = records.some(r => !!ArrayHelper.getOne(groups.data, "id", r.groupId));
+    const checkinColumns = visibleCheckinColumns(records);
 
     const grouped = records.reduce(
       (acc, record) => {
@@ -93,7 +90,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
         (acc[key] ||= []).push(record);
         return acc;
       },
-      {} as Record<string, AttendanceRecordInterface[]>
+      {} as Record<string, AttendanceRecord[]>
     );
     const dates = Object.entries(grouped).sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime());
 
@@ -107,7 +104,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             {hasCampus && headCell("Campus", "campus")}
             {hasService && headCell("Service", "service")}
             {hasTime && headCell("Time", "time")}
-            {headCell("Checked In", "checkinTime")}
+            {checkinColumns.map(c => headCell(c.label(), c.key))}
             {hasGroup && headCell("Group", "group")}
           </TableRow>
         </TableHead>
@@ -117,7 +114,6 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             return dateRecords.map((record, index) => {
               const group = ArrayHelper.getOne(groups.data, "id", record.groupId);
               const campusName = resolveCampus(record);
-              const checkinLabel = formatCheckinTime(record);
               return (
                 <TableRow key={`${date}-${index}`} hover sx={{ "& > td": { verticalAlign: "top" } }}>
                   {index === 0 && (
@@ -129,7 +125,10 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                   {hasCampus && <TableCell>{campusName ? <Typography variant="body2">{campusName}</Typography> : Dash}</TableCell>}
                   {hasService && <TableCell>{record.service?.name ? <Typography variant="body2">{record.service.name}</Typography> : Dash}</TableCell>}
                   {hasTime && <TableCell>{record.serviceTime?.name ? <Typography variant="body2">{record.serviceTime.name}</Typography> : Dash}</TableCell>}
-                  <TableCell>{checkinLabel ? <Typography variant="body2">{checkinLabel}</Typography> : Dash}</TableCell>
+                  {checkinColumns.map(c => {
+                    const value = c.value(record);
+                    return <TableCell key={c.key} data-testid={`attendance-${c.key}`}>{value ? <Typography variant="body2">{value}</Typography> : Dash}</TableCell>;
+                  })}
                   {hasGroup && (
                     <TableCell>
                       {group

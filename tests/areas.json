@@ -26,15 +26,15 @@
     },
     "people": {
       "src": ["src/people/**"],
-      "specs": ["people*.spec.ts", "person-data-export.spec.ts", "bulk-custom-field.spec.ts", "custom-fields.spec.ts", "realtime-person-notes.spec.ts", "campus.spec.ts"]
+      "specs": ["people*.spec.ts", "person-data-export.spec.ts", "attendance-checkout-details.spec.ts", "bulk-custom-field.spec.ts", "custom-fields.spec.ts", "realtime-person-notes.spec.ts", "campus.spec.ts"]
     },
     "groups": {
       "src": ["src/groups/**"],
-      "specs": ["groups*.spec.ts", "group-*.spec.ts", "form-group-auto-add.spec.ts", "text-*.spec.ts", "texting-stop-replies.spec.ts"]
+      "specs": ["groups*.spec.ts", "group-*.spec.ts", "attendance-checkout-details.spec.ts", "form-group-auto-add.spec.ts", "text-*.spec.ts", "texting-stop-replies.spec.ts"]
     },
     "attendance": {
       "src": ["src/attendance/**"],
-      "specs": ["attendance.spec.ts", "campus.spec.ts"]
+      "specs": ["attendance.spec.ts", "attendance-checkout-details.spec.ts", "campus.spec.ts"]
     },
     "donations": {
       "src": ["src/donations/**", "src/donationComponents/**"],

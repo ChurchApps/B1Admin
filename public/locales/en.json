@@ -68,6 +68,11 @@
       "title": "Service structure",
       "unassigned": "Unassigned"
     },
+    "checkinDetails": {
+      "checkedIn": "Checked In",
+      "checkedOut": "Checked Out",
+      "pickedUpBy": "Picked Up By"
+    },
     "checkinType": {
       "guest": "Guest",
       "header": "Type",
