@@ -1279,7 +1279,7 @@
       "editForm": "Edit Form",
       "endReqMsg": "End date is required.",
       "followUpBody": "Follow-up Email Body",
-      "followUpHelper": "You can use {firstName} and {churchName} tokens.",
+      "followUpHelper": "You can use {firstName}, {churchName}, and {answers} tokens. {answers} adds a copy of what they submitted.",
       "followUpSubject": "Follow-up Email Subject",
       "formNameAria": "Form name",
       "linkGroup": "Linked group",
