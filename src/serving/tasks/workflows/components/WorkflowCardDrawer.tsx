@@ -1,4 +1,5 @@
-import { Drawer, Box, Typography, Stack, Button, Divider, MenuItem, Select, Menu, Link } from "@mui/material";
+import { Drawer, Box, Typography, Stack, Button, Divider, MenuItem, Select, Link } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { Link as RouterLink } from "react-router-dom";
 import React, { useContext } from "react";
 import { ApiHelper, type ConversationInterface, Notes, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
@@ -10,6 +11,8 @@ import { TaskContact } from "../../components/TaskContact";
 import { DateHelper, type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
 import { canEditCard, canViewWorkflows } from "../permissions";
 import { useConfirmDelete } from "../../../../hooks/useConfirmDelete";
+import { SnoozeMenu } from "./SnoozeMenu";
+import { type WorkflowTriggerInterface } from "./TriggerEditDialog";
 
 // MUI Link's `component` path does not land data-testid on the anchor, so the profile href check cannot see it.
 const ProfileLink = React.forwardRef<HTMLAnchorElement, React.ComponentProps<typeof RouterLink>>((props, ref) => (
@@ -46,6 +49,9 @@ export const WorkflowCardDrawer = (props: Props) => {
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
   const editable = canEditCard(card);
   const isPersonCard = card.associatedWithType === "person" && !!card.associatedWithId;
+  const { triggerId } = card;
+  const triggers = useQuery<WorkflowTriggerInterface[]>({ queryKey: ["/workflowTriggers/workflow/" + card.workflowId, "DoingApi"], enabled: !!triggerId && !!card.workflowId && canViewWorkflows() });
+  const triggerName = triggerId && triggers.data ? (triggers.data.find((t) => t.id === triggerId)?.name || Locale.label("tasks.executions.deletedTrigger")) : "";
   const { confirm, ConfirmDialogElement } = useConfirmDelete({ confirmLabel: Locale.label("tasks.workflowCard.remove"), "data-testid": "card-remove-confirm" });
 
   const reassign = async (contentType: string, contentId: string, label: string) => {
@@ -82,9 +88,9 @@ export const WorkflowCardDrawer = (props: Props) => {
     props.onClose();
   };
 
-  const snooze = async (days: number) => {
+  const snooze = async (body: { days?: number; until?: string }) => {
     setSnoozeAnchor(null);
-    await ApiHelper.post("/tasks/" + card.id + "/snooze", { days }, "DoingApi");
+    await ApiHelper.post("/tasks/" + card.id + "/snooze", body, "DoingApi");
     props.onChanged();
   };
 
@@ -113,6 +119,7 @@ export const WorkflowCardDrawer = (props: Props) => {
           <Link component={RouterLink} to={"/serving/tasks/workflows/" + card.workflowId} variant="body2" data-testid="card-open-board">{Locale.label("tasks.workflowCard.openBoard")}</Link>
         )}
         <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowCard.assignedTo")}: {card.assignedToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
+        {triggerName && <Typography variant="body2" color="text.secondary" data-testid="card-trigger">{Locale.label("tasks.workflowCard.addedByTrigger")}: {triggerName}</Typography>}
         {card.assignmentId && assignment && <Box sx={{ my: 1 }} data-testid="card-serving-request">
           <Typography variant="body2">{assignment.positionName} · {String(assignment.serviceDate || "").slice(0, 10)}</Typography>
           <Link component={RouterLink} to={"/serving/plans/" + assignment.planId}>{assignment.planName}</Link>
@@ -120,7 +127,7 @@ export const WorkflowCardDrawer = (props: Props) => {
         </Box>}
         {isPersonCard && (
           <Stack spacing={0.5} sx={{ mt: 1 }}>
-            <TaskContact taskId={card.id || ""} associatedWithType={card.associatedWithType} associatedWithId={card.associatedWithId} />
+            <TaskContact taskId={card.id || ""} associatedWithType={card.associatedWithType} associatedWithId={card.associatedWithId} personName={card.associatedWithLabel} />
             {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
               <Link component={ProfileLink} to={"/people/" + card.associatedWithId} variant="body2">{Locale.label("tasks.workflowCard.viewProfile")}</Link>
             )}
@@ -171,11 +178,7 @@ export const WorkflowCardDrawer = (props: Props) => {
             </Box>
           )}
 
-          <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
-            <MenuItem onClick={() => snooze(1)} data-testid="snooze-1">{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
-            <MenuItem onClick={() => snooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
-            <MenuItem onClick={() => snooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
-          </Menu>
+          <SnoozeMenu anchorEl={snoozeAnchor} onClose={() => setSnoozeAnchor(null)} onSnooze={snooze} />
 
           {history.length > 0 && (
             <Box data-testid="card-history">
