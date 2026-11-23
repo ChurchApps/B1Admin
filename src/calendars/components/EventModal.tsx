@@ -155,6 +155,7 @@ export function EventModal(props: Props) {
       if (data.groupId) setGroupId(data.groupId.toString());
       if (data.start) setStart(moved(data.start));
       if (data.end) setEnd(moved(data.end));
+      setAllDay(!!data.allDay);
       if (data.visibility) setVisibility(data.visibility);
       if (data.tags) setTags(data.tags);
       setNotesViewRole(data.notesViewRole || "staff");
