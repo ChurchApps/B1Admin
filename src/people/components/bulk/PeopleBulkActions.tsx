@@ -1,12 +1,15 @@
 import React from "react";
-import { Locale } from "@churchapps/apphelper";
+import { Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { useCampuses } from "../../../hooks/useCampuses";
+import { useTextingEnabled } from "../../../hooks/useTextingEnabled";
 import { Button, Menu, MenuItem, Divider, ListItemIcon, ListItemText } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon, Business as CampusIcon, ViewKanban as WorkflowIcon, RuleFolder as CustomFieldIcon } from "@mui/icons-material";
+import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon, Business as CampusIcon, ViewKanban as WorkflowIcon, RuleFolder as CustomFieldIcon, MailOutline as MailIcon, ChatBubbleOutline as TextIcon } from "@mui/icons-material";
 import { BulkFieldDialog, type BulkFieldOption, type BulkResult } from "./BulkFieldDialog";
 import { BulkGroupDialog } from "./BulkGroupDialog";
 import { BulkWorkflowDialog } from "./BulkWorkflowDialog";
 import { BulkCustomFieldDialog } from "./BulkCustomFieldDialog";
+import { SendEmailDialog } from "../../../groups/components/SendEmailDialog";
+import { SendTextDialog } from "../../../groups/components/SendTextDialog";
 import { getMembershipStatusOptions } from "../../helpers/MembershipStatusOptions";
 
 interface FieldConfig {
@@ -29,6 +32,11 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
   const [groupMode, setGroupMode] = React.useState<"add" | "remove" | null>(null);
   const [showWorkflow, setShowWorkflow] = React.useState(false);
   const [showCustomField, setShowCustomField] = React.useState(false);
+  const [showEmail, setShowEmail] = React.useState(false);
+  const [showText, setShowText] = React.useState(false);
+  const canEmail = React.useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
+  const canText = React.useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
+  const textingEnabled = useTextingEnabled();
   const campuses = useCampuses();
   const campusOptions: BulkFieldOption[] = React.useMemo(
     () => campuses.filter((c) => c.id).map((c) => ({ value: c.id as string, label: c.name || "" })),
@@ -136,6 +144,19 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
           <ListItemIcon><WorkflowIcon fontSize="small" /></ListItemIcon>
           <ListItemText>{Locale.label("people.bulk.addToWorkflow")}</ListItemText>
         </MenuItem>
+        {(canEmail || (canText && textingEnabled)) && <Divider />}
+        {canEmail && (
+          <MenuItem onClick={() => { setShowEmail(true); closeMenu(); }} data-testid="bulk-action-email">
+            <ListItemIcon><MailIcon fontSize="small" /></ListItemIcon>
+            <ListItemText>{Locale.label("people.bulk.email")}</ListItemText>
+          </MenuItem>
+        )}
+        {canText && textingEnabled && (
+          <MenuItem onClick={() => { setShowText(true); closeMenu(); }} data-testid="bulk-action-text">
+            <ListItemIcon><TextIcon fontSize="small" /></ListItemIcon>
+            <ListItemText>{Locale.label("people.bulk.text")}</ListItemText>
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem onClick={handleDelete} data-testid="bulk-action-delete" sx={{ color: "error.main" }}>
           <ListItemIcon><DeleteIcon fontSize="small" /></ListItemIcon>
@@ -175,6 +196,9 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
           onComplete={props.onComplete}
         />
       )}
+
+      {showEmail && <SendEmailDialog personIds={props.selectedPersonIds} onClose={() => setShowEmail(false)} />}
+      {showText && <SendTextDialog personIds={props.selectedPersonIds} onClose={() => setShowText(false)} />}
 
       {showWorkflow && (
         <BulkWorkflowDialog
