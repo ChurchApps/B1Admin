@@ -73,3 +73,60 @@ test.describe.serial("Directory update: family member with email and photo", () 
     expect(file.status()).toBe(200);
   });
 });
+
+// A member can request an anniversary change from the app; approving it saves the date.
+test.describe.serial("Directory update: anniversary", () => {
+  let ctx: APIRequestContext;
+  let jwt = "";
+
+  const resetAnniversary = async () => {
+    const me = await (await ctx.get(`${API}/membership/people/${DEMO_PERSON_ID}`, auth(jwt))).json();
+    // The demo seed has no anniversary.
+    await ctx.post(`${API}/membership/people`, { ...auth(jwt), data: [{ ...me, anniversary: null }] });
+  };
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const login = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    jwt = (login.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID)?.jwt;
+    expect(jwt).toBeTruthy();
+  });
+
+  test.afterAll(async () => {
+    await resetAnniversary();
+    await ctx.dispose();
+  });
+
+  test("shows the requested anniversary and applies it", async ({ page }) => {
+    const taskRes = await ctx.post(`${API}/doing/tasks?type=directoryUpdate`, {
+      ...auth(jwt),
+      data: [
+        {
+          dateCreated: new Date(),
+          associatedWithType: "person",
+          associatedWithId: DEMO_PERSON_ID,
+          associatedWithLabel: "Demo User",
+          createdByType: "person",
+          createdById: DEMO_PERSON_ID,
+          createdByLabel: "Demo User",
+          title: "Profile changes for Demo User",
+          status: "Open",
+          data: JSON.stringify([{ field: "anniversary", label: "Anniversary", value: "2011-06-18" }])
+        }
+      ]
+    });
+    expect(taskRes.ok()).toBeTruthy();
+    const task = (await taskRes.json())[0];
+
+    await page.goto("/serving/tasks/" + task.id);
+    await expect(page.getByText("Requested Changes", { exact: true })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("cell", { name: "Anniversary" })).toBeVisible();
+    await expect(page.getByRole("cell", { name: "2011-06-18" })).toBeVisible();
+
+    await page.getByRole("button", { name: "Apply" }).click();
+    await page.waitForURL(/\/serving\/tasks$/, { timeout: 20000 });
+
+    const me = await (await ctx.get(`${API}/membership/people/${DEMO_PERSON_ID}`, auth(jwt))).json();
+    expect(String(me.anniversary).slice(0, 10)).toBe("2011-06-18");
+  });
+});
